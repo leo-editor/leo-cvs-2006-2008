@@ -1,0 +1,14 @@
+C:\prog\leoCVS\leo\src\LeoPy.leo
+C:\Documents and Settings\Ed\My Documents\ekr.leo
+C:\prog\leoCVS\leo\test\test.leo
+C:\prog\leoCVS\leo\config\leoSettings2.leo
+C:\prog\leoCVS\leo\config\leoSettings.leo
+C:\prog\leoCVS\leo\scripts\scripts.leo
+C:\prog\leoCVS\leo\plugins\leoPlugins.leo
+C:\prog\leoCVS\leo\test\unitTest.leo
+C:\prog\leoCVS\leo\doc\LeoDocs.leo
+C:/prog/leoCVS/leo/src/LeoPyRef.leo
+C:\prog\leoCVS\leo\src\oldLeoProjects.leo
+C:/prog/leoCVS/leo/plugins/leoPluginsRef.leo
+C:\prog\leoCVS\leo\plugins\chapters2.leo
+C:\prog\leoCVS\leo\test\ut.leo
