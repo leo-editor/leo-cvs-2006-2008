@@ -2,24 +2,6 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20060411095710:To do 4.4 b3
-#@+node:ekr.20060408093907:Crash after clearRecentFiles command
-exception executing command
-Traceback (most recent call last):
-  File "C:\prog\leoCVS\leo\src\leoCommands.py", line 264, in doCommand
-    val = command(event)
-  File "C:\prog\leoCVS\leo\src\leoCommands.py", line 884, in clearRecentFiles
-    u.afterClearRecentFiles(bunch)
-  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 621, in afterClearRecentFiles
-    u.pushBead(bunch)
-  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 192, in pushBead
-    u.setUndoTypes()
-  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 341, in setUndoTypes
-    u.cutStack()
-  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 136, in cutStack
-    if bunch.kind == 'beforeGroup':
-AttributeError: 'Bunch' object has no attribute 'kind'
-#@nonl
-#@-node:ekr.20060408093907:Crash after clearRecentFiles command
 #@+node:ekr.20060408065447:modify selfInsertCommand for MacOS
 #@+node:ekr.20051125080855:selfInsertCommand
 def selfInsertCommand(self,event,action='insert'):

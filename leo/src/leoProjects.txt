@@ -8439,6 +8439,47 @@ c.frame.putStatusLine('%s %s' % (name,args))
 #@-node:ekr.20060224103829.5:<< put the status line >>
 #@-node:ekr.20060220110302:calltip
 #@-node:ekr.20060410112600.1:Fixed crash in string.startswith and string.endswith
+#@+node:ekr.20060408093907:Fixed Crash after undoing clearRecentFiles command
+#@+node:ekr.20060411135857:Trace
+exception executing command
+Traceback (most recent call last):
+  File "C:\prog\leoCVS\leo\src\leoCommands.py", line 264, in doCommand
+    val = command(event)
+  File "C:\prog\leoCVS\leo\src\leoCommands.py", line 884, in clearRecentFiles
+    u.afterClearRecentFiles(bunch)
+  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 621, in afterClearRecentFiles
+    u.pushBead(bunch)
+  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 192, in pushBead
+    u.setUndoTypes()
+  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 341, in setUndoTypes
+    u.cutStack()
+  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 136, in cutStack
+    if bunch.kind == 'beforeGroup':
+AttributeError: 'Bunch' object has no attribute 'kind'
+#@-node:ekr.20060411135857:Trace
+#@+node:ekr.20060127052111.1:cutStack
+def cutStack (self):
+    
+    u = self ; n = u.max_undo_stack_size
+
+    if n > 0 and u.bead >= n and not g.app.unitTesting:
+        
+        # Do nothing if we are in the middle of creating a group.
+        i = len(u.beads)-1
+        while i >= 0:
+            bunch = u.beads[i]
+            if hasattr(bunch,'kind') and bunch.kind == 'beforeGroup':
+                return
+            i -= 1
+
+        # This work regardless of how many items appear after bead n.
+        # g.trace('Cutting undo stack to %d entries' % (n))
+        u.beads = u.beads[-n:]
+        u.bead = n-1
+        # g.trace('bead:',u.bead,'len(u.beads)',len(u.beads))
+#@nonl
+#@-node:ekr.20060127052111.1:cutStack
+#@-node:ekr.20060408093907:Fixed Crash after undoing clearRecentFiles command
 #@-node:ekr.20060323131536.1:Bugs
 #@+node:ekr.20060323140748:Plugins
 #@+node:ekr.20060301182319:Support for chapters plugin
