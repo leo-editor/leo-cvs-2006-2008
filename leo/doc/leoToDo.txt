@@ -2,9 +2,25 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20060411095710:To do 4.4 b3
-#@+node:ekr.20060329095728:b3 distribution
-- Make sure leoSettings.leo works on the Mac.
+#@+node:ekr.20060408093907:Crash after clearRecentFiles command
+exception executing command
+Traceback (most recent call last):
+  File "C:\prog\leoCVS\leo\src\leoCommands.py", line 264, in doCommand
+    val = command(event)
+  File "C:\prog\leoCVS\leo\src\leoCommands.py", line 884, in clearRecentFiles
+    u.afterClearRecentFiles(bunch)
+  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 621, in afterClearRecentFiles
+    u.pushBead(bunch)
+  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 192, in pushBead
+    u.setUndoTypes()
+  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 341, in setUndoTypes
+    u.cutStack()
+  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 136, in cutStack
+    if bunch.kind == 'beforeGroup':
+AttributeError: 'Bunch' object has no attribute 'kind'
 #@nonl
+#@-node:ekr.20060408093907:Crash after clearRecentFiles command
+#@+node:ekr.20060408065447:modify selfInsertCommand for MacOS
 #@+node:ekr.20051125080855:selfInsertCommand
 def selfInsertCommand(self,event,action='insert'):
     
@@ -153,132 +169,7 @@ def updateTab (self,p,w):
 #@nonl
 #@-node:ekr.20051026092433:updateTab
 #@-node:ekr.20051125080855:selfInsertCommand
-#@-node:ekr.20060329095728:b3 distribution
-#@+node:ekr.20060408065447:modify selfInsertCommand for MacOS
 #@-node:ekr.20060408065447:modify selfInsertCommand for MacOS
-#@+node:ekr.20060410112600.1:crash in string.startswith and string.endswith
-leoID = ekr (in c:\Documents and Settings\Ed)
-reading settings in C:\prog\leoCVS\leo\config\leoSettings.leo
-reading settings in C:\prog\leoCVS\leo\src\LeoPy.leo
-rst3 plugin: SilverCity not loaded
-selfInsertCommand: '\n'
-selfInsertCommand: '\n'
-selfInsertCommand: '\n'
-selfInsertCommand: '\n'
-selfInsertCommand: '\n'
-selfInsertCommand: '\n'
-selfInsertCommand: '\n'
-selfInsertCommand: '\n'
-selfInsertCommand: '\n'
-AttributeError Exception in Tk callback
-  Function: <function bindKeyCallback at 0x016F2E70> (type: <type 'function'>)
-  Args: (<Tkinter.Event instance at 0x03510288>,)
-  Event type: KeyPress (type num: 2)
-Traceback (innermost last):
-  File "C:\prog\leoCVS\leo\extensions\Pmw\Pmw_1_2\lib\PmwBase.py", line 1752, in __call__
-    return apply(self.func, args)
-  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2002, in bindKeyCallback
-    return k.masterKeyHandler(event,stroke=stroke)
-  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2928, in masterKeyHandler
-    val = self.masterKeyHandlerHelper(event,stroke)
-  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2992, in masterKeyHandlerHelper
-    val = k.callStateFunction(event) # Calls end-command.
-  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2219, in callStateFunction
-    val = k.state.handler(event)
-  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 348, in autoCompleterStateHandler
-    self.insertNormalChar(ch,keysym)
-  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 856, in insertNormalChar
-    self.calltip(obj)
-  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 455, in calltip
-    obj = getattr(string,obj.__name__)
-AttributeError: 'module' object has no attribute 'startswith'
-
-================================================
-  Event contents:
-    char: (
-    delta: 57
-    height: ??
-    keycode: 57
-    keysym: parenleft
-    keysym_num: 40
-    num: ??
-    serial: 120644
-    state: 1
-    time: 16118166
-    type: 2
-    widget: .20658096.20658616.23344872.23344992.body-pane
-    width: ??
-    x: 562
-    x_root: 740
-    y: 38
-    y_root: 732
-
-selfInsertCommand: '\n'
-selfInsertCommand: '\n'
-AttributeError Exception in Tk callback
-  Function: <function bindKeyCallback at 0x016F2E70> (type: <type 'function'>)
-  Args: (<Tkinter.Event instance at 0x03289C88>,)
-  Event type: KeyPress (type num: 2)
-Traceback (innermost last):
-  File "C:\prog\leoCVS\leo\extensions\Pmw\Pmw_1_2\lib\PmwBase.py", line 1752, in __call__
-    return apply(self.func, args)
-  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2002, in bindKeyCallback
-    return k.masterKeyHandler(event,stroke=stroke)
-  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2928, in masterKeyHandler
-    val = self.masterKeyHandlerHelper(event,stroke)
-  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2992, in masterKeyHandlerHelper
-    val = k.callStateFunction(event) # Calls end-command.
-  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2219, in callStateFunction
-    val = k.state.handler(event)
-  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 348, in autoCompleterStateHandler
-    self.insertNormalChar(ch,keysym)
-  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 856, in insertNormalChar
-    self.calltip(obj)
-  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 455, in calltip
-    obj = getattr(string,obj.__name__)
-AttributeError: 'module' object has no attribute 'endswith'
-
-================================================
-  Event contents:
-    char: (
-    delta: 57
-    height: ??
-    keycode: 57
-    keysym: parenleft
-    keysym_num: 40
-    num: ??
-    serial: 123470
-    state: 1
-    time: 16173496
-    type: 2
-    widget: .20658096.20658616.23344872.23344992.body-pane
-    width: ??
-    x: 324
-    x_root: 502
-    y: 95
-    y_root: 789
-
-#@-node:ekr.20060410112600.1:crash in string.startswith and string.endswith
-#@+node:ekr.20060408093907:Crash after clearRecentFiles command
-exception executing command
-Traceback (most recent call last):
-  File "C:\prog\leoCVS\leo\src\leoCommands.py", line 264, in doCommand
-    val = command(event)
-  File "C:\prog\leoCVS\leo\src\leoCommands.py", line 884, in clearRecentFiles
-    u.afterClearRecentFiles(bunch)
-  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 621, in afterClearRecentFiles
-    u.pushBead(bunch)
-  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 192, in pushBead
-    u.setUndoTypes()
-  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 341, in setUndoTypes
-    u.cutStack()
-  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 136, in cutStack
-    if bunch.kind == 'beforeGroup':
-AttributeError: 'Bunch' object has no attribute 'kind'
-#@nonl
-#@-node:ekr.20060408093907:Crash after clearRecentFiles command
-#@+node:ekr.20060410091939:Add note about not installing Leo in the "Program Files" directory
-#@-node:ekr.20060410091939:Add note about not installing Leo in the "Program Files" directory
 #@+node:ekr.20060411101844:Fixed failed unit tests
 leoID = ekr (in c:\Documents and Settings\Ed)
 reading settings in C:\prog\tigris-cvs\leo\config\leoSettings.leo

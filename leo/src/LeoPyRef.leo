@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="9381" clone_windows="0"/>
 <globals body_outline_ratio="0.715460526316">
-	<global_window_position top="17" left="174" height="922" width="1086"/>
+	<global_window_position top="17" left="166" height="922" width="1086"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -473,6 +473,16 @@
 <v t="ekr.20050920084036.203"><vh>_executeMacro (revise)</vh></v>
 </v>
 </v>
+<v t="ekr.20060410112600.1"><vh>Fixed crash in string.startswith and string.endswith</vh>
+<v t="ekr.20060220110302"><vh>calltip</vh>
+<v t="ekr.20060224103829"><vh>&lt;&lt; try to set s from a Python global function &gt;&gt;</vh></v>
+<v t="ekr.20060224103829.1"><vh>&lt;&lt; get s using inspect &gt;&gt;</vh></v>
+<v t="ekr.20060224103829.2"><vh>&lt;&lt; remove 'self' from s, but not from args &gt;&gt;</vh></v>
+<v t="ekr.20060224103829.3"><vh>&lt;&lt; remove 's' from s *and* args &gt;&gt;</vh></v>
+<v t="ekr.20060224103829.4"><vh>&lt;&lt; insert the text and set j1 and j2 &gt;&gt;</vh></v>
+<v t="ekr.20060224103829.5"><vh>&lt;&lt; put the status line &gt;&gt;</vh></v>
+</v>
+</v>
 </v>
 <v t="ekr.20060323140748"><vh>Plugins</vh>
 <v t="ekr.20060301182319"><vh>Support for chapters plugin</vh>
@@ -642,8 +652,9 @@ marks="ekr.20040629121554.2,"><vh>@thin leoCommands.py</vh></v>
 <v t="ekr.20031218072017.3748"><vh>@thin leoKeys.py</vh></v>
 <v t="ekr.20050710142719"><vh>@thin leoEditCommands.py</vh></v>
 </v>
-<v t="ekr.20060411095710" a="E"><vh>To do 4.4 b3</vh>
-<v t="ekr.20060329095728"><vh>b3 distribution</vh>
+<v t="ekr.20060411095710" a="EV"><vh>To do 4.4 b3</vh>
+<v t="ekr.20060408093907"><vh>Crash after clearRecentFiles command</vh></v>
+<v t="ekr.20060408065447"><vh>modify selfInsertCommand for MacOS</vh>
 <v t="ekr.20051125080855"><vh>selfInsertCommand</vh>
 <v t="ekr.20051026171121"><vh>&lt;&lt; handle newline &gt;&gt;</vh></v>
 <v t="ekr.20051027172949"><vh>updateAutomatchBracket</vh></v>
@@ -651,11 +662,7 @@ marks="ekr.20040629121554.2,"><vh>@thin leoCommands.py</vh></v>
 <v t="ekr.20051026092433"><vh>updateTab</vh></v>
 </v>
 </v>
-<v t="ekr.20060408065447"><vh>modify selfInsertCommand for MacOS</vh></v>
-<v t="ekr.20060410112600.1"><vh>crash in string.startswith and string.endswith</vh></v>
-<v t="ekr.20060408093907"><vh>Crash after clearRecentFiles command</vh></v>
-<v t="ekr.20060410091939"><vh>Add note about not installing Leo in the "Program Files" directory</vh></v>
-<v t="ekr.20060411101844" a="V"><vh>Fixed failed unit tests</vh></v>
+<v t="ekr.20060411101844"><vh>Fixed failed unit tests</vh></v>
 </v>
 </vnodes>
 <tnodes>
@@ -6522,6 +6529,31 @@ if alt and not ctrl:
         break # Found.
 else:
     accelerator = ''</t>
+<t tx="ekr.20060220110302">def calltip (self,obj=None):
+    
+    c = self.c ; w = self.widget
+    isStringMethod = False ; s = None
+    # g.trace(self.leadinWord,obj)
+
+    if self.leadinWord and (not obj or type(obj) == types.BuiltinFunctionType):
+        &lt;&lt; try to set s from a Python global function &gt;&gt;
+
+    if not s:
+        &lt;&lt; get s using inspect &gt;&gt;
+        
+    &lt;&lt; remove 'self' from s, but not from args &gt;&gt;
+    if isStringMethod:
+        &lt;&lt; remove 's' from s *and* args &gt;&gt;
+
+    s = s.rstrip(')') # Convenient.
+    &lt;&lt; insert the text and set j1 and j2 &gt;&gt;
+
+    # End autocompletion mode, restoring the selection.
+    self.finish()
+    c.widgetWantsFocusNow(w)
+    g.app.gui.setSelectionRange(w,j1,j2,insert=j2)
+    &lt;&lt; put the status line &gt;&gt;
+</t>
 <t tx="ekr.20060220155313"></t>
 <t tx="ekr.20060221141535">def completeAllBindingsForWidget (self,w):
     
@@ -6533,6 +6565,61 @@ else:
             return k.masterKeyHandler(event,stroke=stroke)
             
         k.completeOneBindingForWidget(w,stroke,bindKeyCallback)</t>
+<t tx="ekr.20060224103829"># The first line of the docstring is good enough, except for classes.
+f = __builtins__.get(self.leadinWord)
+doc = f and type(f) != types.ClassType and f.__doc__
+if doc:
+    s = g.splitLines(doc)
+    s = args = s and s [0] or ''
+    i = s.find('(')
+    if i &gt; -1: s = s [i:]
+    s = s and s.strip() or ''</t>
+<t tx="ekr.20060224103829.1">isStringMethod = self.prevObjects and type(self.prevObjects[-1]) == types.StringType
+
+# g.trace(self.prevObjects)
+
+if isStringMethod and hasattr(string,obj.__name__):
+    # A hack. String functions are builtins, and getargspec doesn't handle them.
+    # Get the corresponding string function instead, and remove the s arg later.
+    obj = getattr(string,obj.__name__)
+
+try:
+    s1,s2,s3,s4 = inspect.getargspec(obj)
+except:
+    # g.es('inspect failed:',repr(obj))
+    self.extendSelection('(')
+    self.finish()
+    return # Not a function.  Just '('.
+
+s = args = inspect.formatargspec(s1,s2,s3,s4)</t>
+<t tx="ekr.20060224103829.2">if g.match(s,1,'self,'):
+    s = s[0] + s[6:].strip()
+elif g.match_word(s,1,'self'):
+    s = s[0] + s[5:].strip()</t>
+<t tx="ekr.20060224103829.3">if g.match(s,1,'s,'):
+    s = s[0] + s[3:]
+    args = args[0] + args[3:]
+elif g.match_word(s,1,'s'):
+    s = s[0] + s[2:]
+    args = args[0] + args[2:]</t>
+<t tx="ekr.20060224103829.4">if g.app.gui.hasSelection(w):
+    i,j = g.app.gui.getSelectionRange(w)
+else:
+    i = j = g.app.gui.getInsertPoint(w)
+w.insert(j,s)
+c.frame.body.onBodyChanged('Typing')
+
+if 1:
+    j1 = w.index('%s + 1c' % j)
+    j2 = w.index('%s + %sc' % (j,len(s)))
+else:
+    j1 = j2 = w.index('%s + 2c' % j)</t>
+<t tx="ekr.20060224103829.5">c.frame.clearStatusLine()
+if obj:
+    name = hasattr(obj,'__name__') and obj.__name__ or repr(obj)
+else:
+    name = self.leadinWord
+c.frame.putStatusLine('%s %s' % (name,args))</t>
 <t tx="ekr.20060226131603"></t>
 <t tx="ekr.20060227120635"></t>
 <t tx="ekr.20060227125713">@nocolor
@@ -7240,7 +7327,6 @@ def get_window_info (top):
     
     return w,h,x,y</t>
 <t tx="ekr.20060329090924"></t>
-<t tx="ekr.20060329095728">- Make sure leoSettings.leo works on the Mac.</t>
 <t tx="ekr.20060408065447"></t>
 <t tx="ekr.20060408093907">exception executing command
 Traceback (most recent call last):
@@ -7262,7 +7348,6 @@ http://sourceforge.net/forum/message.php?msg_id=3671350
 
 Change aString.lstrip and aString.rstrip to the aString.replace.
 @color</t>
-<t tx="ekr.20060410091939"></t>
 <t tx="ekr.20060410104419"></t>
 <t tx="ekr.20060410112600">def stripBrackets (s):
     
@@ -7277,15 +7362,6 @@ Change aString.lstrip and aString.rstrip to the aString.replace.
 reading settings in C:\prog\leoCVS\leo\config\leoSettings.leo
 reading settings in C:\prog\leoCVS\leo\src\LeoPy.leo
 rst3 plugin: SilverCity not loaded
-selfInsertCommand: '\n'
-selfInsertCommand: '\n'
-selfInsertCommand: '\n'
-selfInsertCommand: '\n'
-selfInsertCommand: '\n'
-selfInsertCommand: '\n'
-selfInsertCommand: '\n'
-selfInsertCommand: '\n'
-selfInsertCommand: '\n'
 AttributeError Exception in Tk callback
   Function: &lt;function bindKeyCallback at 0x016F2E70&gt; (type: &lt;type 'function'&gt;)
   Args: (&lt;Tkinter.Event instance at 0x03510288&gt;,)

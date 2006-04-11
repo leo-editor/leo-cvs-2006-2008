@@ -42,7 +42,7 @@
 <v t="ekr.20050902080416"><vh>@@button reformat-paragraph</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="V"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.1"><vh>Documentation for rst3 plugin</vh>
 <v t="ekr.20050818163826"><vh>@rst html\rstplugin3.html</vh>
 <v t="ekr.20050818163826.1"><vh>@rst-no-head links</vh></v>
@@ -119,7 +119,7 @@
 <v t="ekr.20050830115714.113"><vh>How can I create a template .leo file?</vh></v>
 <v t="ekr.20050830115714.116"><vh>How can I show Leo files with Excel?</vh></v>
 </v>
-<v t="ekr.20050830115714.76" a="E"><vh>Trouble shooting</vh>
+<v t="ekr.20050830115714.76"><vh>Trouble shooting</vh>
 <v t="ekr.20060329101442"><vh>Nothing (or almost nothing) happens when I start Leo.  What should I do?</vh></v>
 <v t="ekr.20060210070421"><vh>I can't run Leo from a cvs sandbox.  What's going on?</vh></v>
 <v t="ekr.20060323105214"><vh>Leo's Recent Files menu doesn't work from a cvs shandbox.  What's going on?</vh></v>
@@ -161,7 +161,7 @@
 </v>
 </v>
 <v t="ekr.20050831195331.2"><vh>Chapter 1: Installing Leo</vh>
-<v t="edream.110203163054.48" a="E"><vh>@rst html\install.html</vh>
+<v t="edream.110203163054.48"><vh>@rst html\install.html</vh>
 <v t="ekr.20050901110110"><vh>@rst-no-head links</vh></v>
 <v t="edream.110203163054.49"><vh>System requirements</vh></v>
 <v t="edream.110203163054.50"><vh>How to install Leo on Linux</vh></v>
@@ -317,7 +317,7 @@
 </v>
 </v>
 <v t="EKR.20040524104904.161"><vh>Chapter 6: Leo and Literate Programming</vh>
-<v t="ekr.20050901101608.3" a="E"><vh>@rst html\design.html</vh>
+<v t="ekr.20050901101608.3"><vh>@rst html\design.html</vh>
 <v t="ekr.20050901101949"><vh>@rst-no-head links</vh></v>
 <v t="EKR.20040524104904.162"><vh>Why I like Literate Programming</vh></v>
 <v t="EKR.20040524104904.173"><vh>How Leo Improves Literate Programming</vh></v>
@@ -326,7 +326,7 @@
 </v>
 </v>
 <v t="ekr.20050831195331.4"><vh>Chapter 7: Scripting Leo with Python</vh>
-<v t="ekr.20040403171740" a="E"><vh>@rst html\scripting.html</vh>
+<v t="ekr.20040403171740"><vh>@rst html\scripting.html</vh>
 <v t="ekr.20050812134441.1"><vh>@rst-no-head Links</vh></v>
 <v t="ekr.20050901184158"><vh>@rst-ignore Important: you can run these examples!</vh></v>
 <v t="ekr.20040403183229" rst_http_attribute="5d71002855443c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d3122206e616d653d22687474702d6e6f64652d6d61726b65722d31223e710155043c2f613e71025d710328553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710455063c2f6469763e71055d71062855063c626f64793e710755073c2f626f64793e71085d71092855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e710a55073c2f68746d6c3e710b4e65656555243c64697620636c6173733d2273656374696f6e222069643d226f76657276696577223e0a710c55493c68313e3c6120636c6173733d22746f632d6261636b7265662220687265663d222369643122206e616d653d226f76657276696577223e4f766572766965773c2f613e3c2f68313e0a710d652e"><vh>Overview</vh></v>
@@ -360,7 +360,7 @@
 </v>
 </v>
 <v t="EKR.20040524104904.211"><vh>Chapter 8: Customizing Leo</vh>
-<v t="ekr.20050901101608.4" a="E"><vh>@rst html\customizing.html</vh>
+<v t="ekr.20050901101608.4"><vh>@rst html\customizing.html</vh>
 <v t="ekr.20050901102055"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20050903075144"><vh>Overview</vh></v>
 <v t="ekr.20050903161843"><vh>Creating script buttons</vh></v>
@@ -570,7 +570,7 @@
 <v t="ekr.20050912133515"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="EKR.20040524104904.274" a="E"><vh>Appendices</vh>
+<v t="EKR.20040524104904.274"><vh>Appendices</vh>
 <v t="ekr.20050831231852"><vh>@rst html\appendices.html</vh>
 <v t="ekr.20050831232205"><vh>@rst-no-head links</vh></v>
 <v t="EKR.20040524104904.351"><vh>Bugs</vh></v>
@@ -586,7 +586,7 @@
 </v>
 </v>
 <v t="EKR.20040524104904.380"><vh>Glossary</vh>
-<v t="ekr.20050901071041" a="E"><vh>@rst html\glossary.html</vh>
+<v t="ekr.20050901071041"><vh>@rst html\glossary.html</vh>
 <v t="ekr.20050901071300"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20050901073048"><vh>@rst-no-head glossary</vh></v>
 <v t="ekr.20050901083017"><vh>@rst-no-head end stuff</vh></v>
@@ -669,8 +669,8 @@
 <v t="ekr.20051203084850.16"><vh>@rst-no-head end-of-page stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20050914132220" a="E"><vh>Other docs</vh>
-<v t="ekr.20060409104528" a="E"><vh>Tigir index.html</vh>
+<v t="ekr.20050914132220"><vh>Other docs</vh>
+<v t="ekr.20060409104528"><vh>Tigir index.html</vh>
 <v t="ekr.20060409104957"><vh>@ignore</vh>
 <v t="ekr.20060409104957.1"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20060409104957.2"><vh>System requirements</vh></v>
@@ -685,7 +685,7 @@
 <v t="ekr.20060409104957.11"><vh>How to install the Aspell spell checker</vh></v>
 <v t="ekr.20060409104957.12"><vh>@rst-no-head end stuff</vh></v>
 </v>
-<v t="ekr.20060409104957.13" a="EV"><vh>@rst html\tigris\index.html</vh></v>
+<v t="ekr.20060409104957.13"><vh>@rst html\tigris\index.html</vh></v>
 <v t="ekr.20060409104957.14"><vh>NewHeadline</vh></v>
 </v>
 <v t="ekr.20050916184158"><vh>Leo Tech report</vh>
@@ -2530,8 +2530,8 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20060328171518" a="E"><vh>4.4 b3</vh>
+<v t="edream.110203163054.63"><vh>Latest version</vh>
+<v t="ekr.20060328171518"><vh>4.4 b3</vh>
 <v t="ekr.20060328171518.1"><vh>New features</vh>
 <v t="ekr.20060328171518.10"><vh>Added scroll outline pane commands</vh></v>
 <v t="ekr.20060328171518.11"><vh>Improved registerCommand</vh></v>
@@ -5042,6 +5042,8 @@ then `run Leo`_.</t>
 You can install Leo from the .zip file as follows:
 
 -   Unzip the .zip file and place the leo folder somewhere, say under the Python directory.
+    **Important**: When using the installer, do not install Leo in a folder whose full path name contains a space,
+    such as 'Program Files'. Yes, this sucks.
 
 -   Copy your existing Leo shortcut then modify the original so that it points to
     pythonw.exe (in the python24 dir) and has the location of Leo within quotes.
