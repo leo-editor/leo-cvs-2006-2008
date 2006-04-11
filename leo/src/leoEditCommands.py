@@ -3086,7 +3086,7 @@ class editCommandsClass (baseEditCommandsClass):
     def fillParagraph( self, event ):
         k = self.k ; w = event.widget
         txt = w.get( 'insert linestart', 'insert lineend' )
-        txt = txt.lstrip().rstrip()
+        txt = txt.strip()
         if txt:
             i = w.index( 'insert' )
             i2 = i
@@ -3097,7 +3097,7 @@ class editCommandsClass (baseEditCommandsClass):
                 if w.index( '%s linestart' % pi2 ) == '1.0':
                     i2 = w.search( '\w', '1.0', regexp = True, stopindex = 'end' )
                     break
-                if txt2.lstrip().rstrip() == '': break
+                if txt2.strip() == '': break
                 i2 = pi2
             i3 = i
             txt3 = txt
@@ -3107,7 +3107,7 @@ class editCommandsClass (baseEditCommandsClass):
                 if w.index( '%s lineend' % pi3 ) == w.index( 'end' ):
                     i3 = w.search( '\w', 'end', backwards = True, regexp = True, stopindex = '1.0' )
                     break
-                if txt3.lstrip().rstrip() == '': break
+                if txt3.strip() == '': break
                 i3 = pi3
             ntxt = w.get( '%s linestart' %i2, '%s lineend' %i3 )
             ntxt = self._addPrefix( ntxt )
@@ -3156,7 +3156,7 @@ class editCommandsClass (baseEditCommandsClass):
         i = w.index('insert')
         txt = w.get('insert linestart','insert lineend')
     
-        if not txt.rstrip().lstrip():
+        if not txt.strip():
             i = w.search(r'\w',i,regexp=True,stopindex='end')
     
         self.selectParagraphHelper(w,i)
@@ -3171,14 +3171,13 @@ class editCommandsClass (baseEditCommandsClass):
     
         k = self.k ; w = event.widget
         txt = w.get('insert linestart','insert lineend')
-        txt = txt.lstrip().rstrip()
+        txt = txt.strip()
         i = w.index('insert')
     
         if not txt:
             while 1:
                 i = w.index('%s + 1 lines' % i)
-                txt = w.get('%s linestart' % i,'%s lineend' % i)
-                txt = txt.lstrip().rstrip()
+                txt = w.get('%s linestart' % i,'%s lineend' % i).strip()
                 if txt:
                     self.selectParagraphHelper(w,i) ; break
                 if w.index('%s lineend' % i) == w.index('end'):
@@ -3187,8 +3186,7 @@ class editCommandsClass (baseEditCommandsClass):
         if txt:
             while 1:
                 i = w.index('%s - 1 lines' % i)
-                txt = w.get('%s linestart' % i,'%s lineend' % i)
-                txt = txt.lstrip().rstrip()
+                txt = w.get('%s linestart' % i,'%s lineend' % i).strip()
                 if not txt or w.index('%s linestart' % i) == w.index('1.0'):
                     if not txt: i = w.index('%s + 1 lines' % i)
                     self.selectParagraphHelper(w,i)
@@ -3202,7 +3200,7 @@ class editCommandsClass (baseEditCommandsClass):
             txt = w.get('%s linestart' % i2,'%s lineend' % i2)
             if w.index('%s lineend' % i2) == w.index('end'):
                 break
-            txt = txt.lstrip().rstrip()
+            txt = txt.strip()
             if not txt: break
             else:
                 i2 = w.index('%s + 1 lines' % i2)
@@ -4910,7 +4908,7 @@ class macroCommandsClass (baseEditCommandsClass):
             if len(z) == 2:
                 w.event_generate('<Key>',keycode=z[0],keysym=z[1])
             else:
-                meth = z [0].lstrip('<').rstrip('>')
+                meth = g.stripBrackets(z [0])
                 bunchList = k.bindingsDict.get(meth,[])  ### Probably should not strip < and >
                 if bunchList:
                     b = bunchList[0]

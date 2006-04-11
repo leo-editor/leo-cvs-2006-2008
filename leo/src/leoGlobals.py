@@ -4784,7 +4784,7 @@ class mulderUpdateAlgorithm:
         """
     
         for i in xrange(len(lines)):
-            stripped_line = lines[i].lstrip(" \t")
+            stripped_line = lines[i].lstrip() # Was lstrip(" \t"), but that is redundant and does not work with Python 2.2.1.
             if stripped_line in ('\n',''):
                 lines[i] = stripped_line
                 
@@ -5346,6 +5346,18 @@ def prettyPrintType (obj):
         return theType
 #@nonl
 #@-node:ekr.20060221083356:g.prettyPrintType
+#@+node:ekr.20060410112600:g.stripBrackets
+def stripBrackets (s):
+    
+    '''Same as s.lstrip('<').rstrip('>') except it works for Python 2.2.1.'''
+    
+    if s.startswith('<'):
+        s = s[1:]
+    if s.endswith('>'):
+        s = s[:-1]
+    return s
+#@nonl
+#@-node:ekr.20060410112600:g.stripBrackets
 #@+node:ekr.20040629162023:readLines class and generator
 #@+node:EKR.20040612114220.3:g.readLinesGenerator
 def readLinesGenerator(s):

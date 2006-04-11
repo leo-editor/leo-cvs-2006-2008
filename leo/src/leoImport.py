@@ -3077,7 +3077,7 @@ class baseLeoImportCommands:
     
         # g.trace(g.get_line(s,0))
         s_original = s
-        s = string.lstrip(s)
+        s = s.lstrip()
         i = 0 ; comment = ""
         if self.fileType in [".c", ".cpp"]: # 11/2/02: don't mess with java comments.
             #@        << scan for C-style comments >>

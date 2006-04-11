@@ -1889,7 +1889,7 @@ class keyHandlerClass:
             k.bindKeyToDict(pane,shortcut,callback,commandName)
             bunchList.append(
                 g.bunch(pane=pane,func=callback,commandName=commandName))
-            shortcut = shortcut.strip().lstrip('<').rstrip('>')
+            shortcut = g.stripBrackets(shortcut.strip())
             # if shortcut.startswith('<Shift'): g.trace('ooops',shortcut,g.callers())
             k.bindingsDict [shortcut] = bunchList
             return True
@@ -1909,7 +1909,7 @@ class keyHandlerClass:
         k = self
         d =  k.masterBindingsDict.get(pane,{})
         
-        stroke = stroke.lstrip('<').rstrip('>')
+        stroke = g.stripBrackets(stroke)
         
         if 0:
             g.trace('%-4s %-18s %-40s %s' % (
@@ -3757,7 +3757,7 @@ class keyHandlerClass:
         
         '''Convert a stroke (key to k.bindingsDict) to an actual Tk binding.'''
         
-        stroke = stroke.lstrip('<').rstrip('>')
+        stroke = g.stripBrackets(stroke)
         
         for a,b in (
             ('Alt+','Alt-'),
@@ -3773,7 +3773,7 @@ class keyHandlerClass:
     #@+node:ekr.20060201083154:k.prettyPrintKey
     def prettyPrintKey (self,stroke):
         
-        s = stroke and stroke.strip().lstrip('<').rstrip('>')
+        s = stroke and g.stripBrackets(stroke.strip())
         if not s: return ''
     
         shift = s.find("shift") >= 0 or s.find("shft") >= 0
@@ -4005,7 +4005,7 @@ class keyHandlerClass:
             for z in xrange(n):
                 k.fullCommand()
         else:
-            stroke = stroke.lstrip('<').rstrip('>')
+            stroke = g.stripBrackets(stroke)
             bunchList = k.bindingsDict.get(stroke,[])
             if bunchList:
                 b = bunchList[0]
@@ -4028,7 +4028,7 @@ class keyHandlerClass:
         
         k = self ; c = k.c
     
-        k.setLabelBlue('Control-u %s' % stroke.lstrip('<').rstrip('>'))
+        k.setLabelBlue('Control-u %s' % g.stripBrackets(stroke))
     
         if event.keysym == 'parenleft': # Execute the macro.
     

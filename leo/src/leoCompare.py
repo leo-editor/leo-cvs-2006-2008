@@ -237,8 +237,8 @@ class baseLeoCompare:
     def compare_lines (self,s1,s2):
         
         if self.ignoreLeadingWhitespace:
-            s1 = string.lstrip(s1)
-            s2 = string.lstrip(s2)
+            s1 = s1.lstrip()
+            s2 = s2.lstrip()
     
         if self.ignoreInteriorWhitespace:
             k1 = g.skip_ws(s1,0)

@@ -4501,7 +4501,7 @@ def createMenuEntries (self,menu,table,dynamicMenu=False):
         << get label & command or continue >>
         << compute commandName & accel from label & command >>
         accelerator = stroke = k.shortcutFromSetting(accel) or ''
-        accelerator = accelerator and k.prettyPrintKey(accelerator).lstrip('<').rstrip('>')
+        accelerator = accelerator and g.stripBrackets(k.prettyPrintKey(accelerator))
         def masterMenuCallback (k=k,stroke=stroke,command=command,commandName=commandName):
             return k.masterMenuHandler(stroke,command,commandName)
         realLabel = self.getRealMenuName(label)
@@ -5552,7 +5552,7 @@ def createMenuEntries (self,menu,table,dynamicMenu=False):
         << get label & command or continue >>
         << compute commandName & accel from label & command >>
         accelerator = stroke = k.shortcutFromSetting(accel) or ''
-        accelerator = accelerator and k.prettyPrintKey(accelerator).lstrip('<').rstrip('>')
+        accelerator = accelerator and g.stripBrackets(k.prettyPrintKey(accelerator))
         def masterMenuCallback (k=k,stroke=stroke,command=command,commandName=commandName):
             return k.masterMenuHandler(stroke,command,commandName)
         realLabel = self.getRealMenuName(label)
@@ -5733,7 +5733,7 @@ if ok:
     else:
         label,accelerator,openWithData = data
         accelerator = k.shortcutFromSetting(accelerator)
-        accelerator = accelerator and k.prettyPrintKey(accelerator).lstrip('<').rstrip('>')
+        accelerator = accelerator and g.stripBrackets(k.prettyPrintKey(accelerator))
 else:
     g.trace('bad data in Open With table: %s' % repr(data))
     continue # Ignore bad data
@@ -5970,7 +5970,7 @@ def bindKey (self,pane,shortcut,callback,commandName):
         k.bindKeyToDict(pane,shortcut,callback,commandName)
         bunchList.append(
             g.bunch(pane=pane,func=callback,commandName=commandName))
-        shortcut = shortcut.strip().lstrip('<').rstrip('>')
+        shortcut = g.stripBrackets(shortcut.strip())
         # if shortcut.startswith('<Shift'): g.trace('ooops',shortcut,g.callers())
         k.bindingsDict [shortcut] = bunchList
         return True
@@ -6015,7 +6015,7 @@ def bindKeyToDict (self,pane,stroke,func,commandName):
     k = self
     d =  k.masterBindingsDict.get(pane,{})
     
-    stroke = stroke.lstrip('<').rstrip('>')
+    stroke = g.stripBrackets(stroke)
     
     if 0:
         g.trace('%-4s %-18s %-40s %s' % (
@@ -7271,6 +7271,981 @@ def get_window_info (top):
 #@-node:ekr.20060329083657:cantImportDialog & helpers
 #@-node:ekr.20041219071407:g.importExtension & helpers
 #@-node:ekr.20060329090924:Rewrote g.importExtension to simplify startup logic
+#@+node:ekr.20060410091659:Removed lstrip and rstrip for compatibility with Python 2.2.1
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3671350
+
+Change aString.lstrip and aString.rstrip to the aString.replace.
+@color
+#@nonl
+#@+node:ekr.20060410112600:g.stripBrackets
+def stripBrackets (s):
+    
+    '''Same as s.lstrip('<').rstrip('>') except it works for Python 2.2.1.'''
+    
+    if s.startswith('<'):
+        s = s[1:]
+    if s.endswith('>'):
+        s = s[:-1]
+    return s
+#@nonl
+#@-node:ekr.20060410112600:g.stripBrackets
+#@+node:ekr.20060410104419:Found: lstrip
+#@+node:ekr.20040718101315:stripWhitespaceFromBlankLines(before_lines)
+def stripWhitespaceFromBlankLines (self,lines):
+    
+    # All backslashes must be doubled.
+
+    """Strip blanks and tabs from lines containing only blanks and tabs.
+    
+    >>> import leoGlobals as g
+    >>> s = "a\\n \\t\\n\\t\\t \\t\\nb"
+    >>> theLines = g.splitLines(s)
+    >>> theLines
+    ['a\\n', ' \\t\\n', '\\t\\t \\t\\n', 'b']
+    >>> g.mulderUpdateAlgorithm().stripWhitespaceFromBlankLines(theLines)
+    ['a\\n', '\\n', '\\n', 'b']
+    """
+
+    for i in xrange(len(lines)):
+        stripped_line = lines[i].lstrip() # Was lstrip(" \t"), but that is redundant and does not work with Python 2.2.1.
+        if stripped_line in ('\n',''):
+            lines[i] = stripped_line
+            
+    return lines
+#@nonl
+#@-node:ekr.20040718101315:stripWhitespaceFromBlankLines(before_lines)
+#@+node:ekr.20031218072017.3315:skipLeadingComments
+def skipLeadingComments (self,s):
+
+    """Skips all leading comments in s, returning the remaining body text and the massaged comment text.
+
+    Returns (body, comment)"""
+
+    # g.trace(g.get_line(s,0))
+    s_original = s
+    s = s.lstrip()
+    i = 0 ; comment = ""
+    if self.fileType in [".c", ".cpp"]: # 11/2/02: don't mess with java comments.
+        << scan for C-style comments >>
+    elif self.fileType == ".lua":
+        << scan for Lua comments >>
+    elif self.fileType == ".pas":
+        << scan for Pascal comments >>
+    elif self.fileType == ".py":
+        << scan for Python comments >>
+    comment = string.strip(comment)
+    if len(comment) == 0:
+        return s_original, "" # Bug fix: 11/2/02: don't skip leading whitespace!
+    elif self.treeType == "@file":
+        return s[i:], "@ " + comment
+    else:
+        return s[i:], "@ " + comment + "\n"
+#@nonl
+#@+node:ekr.20031218072017.3316:<< scan for C-style comments >>
+while i < len(s):
+    if g.match(s,i,"//"): # Handle a C++ comment.
+        while g.match(s,i,'/'):
+            i += 1
+        j = i ; i = g.skip_line(s,i)
+        comment = comment + self.massageComment(s[j:i]) + "\n"
+        # 8/2/02: Preserve leading whitespace for undentBody
+        i = g.skip_ws(s,i)
+        i = g.skip_blank_lines(s,i)
+    elif g.match(s,i,"/*"): # Handle a block C comment.
+        j = i + 2 ; i = g.skip_block_comment (s,i)
+        k = g.choose(g.match(s,i-2,"*/"),i-2,i)
+        if self.fileType == ".java":
+            # 8/2/02: a hack: add leading whitespace then remove it.
+            comment = self.undentBody(comment)
+            comment2 = ' ' * 2 + s[j:k]
+            comment2 = self.undentBody(comment2)
+            comment = comment + comment2 + "\n"
+        else:
+            comment = comment + self.massageComment(s[j:k]) + "\n"
+        # 8/2/02: Preserve leading whitespace for undentBody
+        i = g.skip_ws(s,i)
+        i = g.skip_blank_lines(s,i)
+    else: break
+#@nonl
+#@-node:ekr.20031218072017.3316:<< scan for C-style comments >>
+#@+node:ekr.20060328112327.1:<< scan for Lua comments >>
+while i < len(s):
+    if g.match(s,i,"--"): # Handle a Lua line comment.
+        while g.match(s,i,'/'):
+            i += 1
+        j = i ; i = g.skip_line(s,i)
+        comment = comment + self.massageComment(s[j:i]) + "\n"
+        # 8/2/02: Preserve leading whitespace for undentBody
+        i = g.skip_ws(s,i)
+        i = g.skip_blank_lines(s,i)
+    else: break
+#@nonl
+#@-node:ekr.20060328112327.1:<< scan for Lua comments >>
+#@+node:ekr.20031218072017.3317:<< scan for Pascal comments >>
+while i < len(s):
+    if g.match(s,i,"//"): # Handle a Pascal line comment.
+        while g.match(s,i,'/'):
+            i += 1
+        j = i ; i = g.skip_line(s,i)
+        comment = comment + self.massageComment(s[j:i]) + "\n"
+        # 8/2/02: Preserve leading whitespace for undentBody
+        i = g.skip_ws(s,i)
+        i = g.skip_blank_lines(s,i)
+    elif g.match(s,i,'(*'):
+        j = i + 1 ; i = g.skip_pascal_block_comment(s,i)
+        comment = comment + self.massageComment(s[j:i]) + "\n"
+        # 8/2/02: Preserve leading whitespace for undentBody
+        i = g.skip_ws(s,i)
+        i = g.skip_blank_lines(s,i)
+    else: break
+#@nonl
+#@-node:ekr.20031218072017.3317:<< scan for Pascal comments >>
+#@+node:ekr.20031218072017.3318:<< scan for Python comments >>
+while i < len(s) and g.match(s,i,'#'):
+    j = i + 1 ; i = g.skip_line(s,i)
+    comment = self.undentBody(comment)
+    comment = comment + self.massageComment(s[j:i]) + "\n"
+    # 8/2/02: Preserve leading whitespace for undentBody
+    i = g.skip_ws(s,i)
+    i = g.skip_blank_lines(s,i)
+#@nonl
+#@-node:ekr.20031218072017.3318:<< scan for Python comments >>
+#@-node:ekr.20031218072017.3315:skipLeadingComments
+#@+node:ekr.20031218072017.3637:compare_lines
+def compare_lines (self,s1,s2):
+    
+    if self.ignoreLeadingWhitespace:
+        s1 = s1.lstrip()
+        s2 = s2.lstrip()
+
+    if self.ignoreInteriorWhitespace:
+        k1 = g.skip_ws(s1,0)
+        k2 = g.skip_ws(s2,0)
+        ws1 = s1[:k1]
+        ws2 = s2[:k2]
+        tail1 = s1[k1:]
+        tail2 = s2[k2:]
+        tail1 = string.replace(tail1," ","")
+        tail1 = string.replace(tail1,"\t","")
+        tail2 = string.replace(tail2," ","")
+        tail2 = string.replace(tail2,"\t","")
+        s1 = ws1 + tail1
+        s2 = ws2 + tail2
+
+    return s1 == s2
+#@nonl
+#@-node:ekr.20031218072017.3637:compare_lines
+#@+node:ekr.20051022043713.1:<< get label, accelerator & command or continue >>
+ok = (
+    type(data) in (type(()), type([])) and
+    len(data) in (2,3)
+)
+    
+if ok:
+    if len(data) == 2:
+        label,openWithData = data ; accelerator = None
+    else:
+        label,accelerator,openWithData = data
+        accelerator = k.shortcutFromSetting(accelerator)
+        accelerator = accelerator and g.stripBrackets(k.prettyPrintKey(accelerator))
+else:
+    g.trace('bad data in Open With table: %s' % repr(data))
+    continue # Ignore bad data
+#@nonl
+#@-node:ekr.20051022043713.1:<< get label, accelerator & command or continue >>
+#@+node:ekr.20031218072017.1723:createMenuEntries
+def createMenuEntries (self,menu,table,dynamicMenu=False):
+        
+    '''Create a menu entry from the table.
+    New in 4.4: this method shows the shortcut in the menu,
+    but this method **never** binds any shortcuts.'''
+    
+    c = self.c ; f = c.frame ; k = c.k
+    if g.app.unitTesting: return
+    for data in table:
+        << get label & command or continue >>
+        << compute commandName & accel from label & command >>
+        accelerator = stroke = k.shortcutFromSetting(accel) or ''
+        accelerator = accelerator and g.stripBrackets(k.prettyPrintKey(accelerator))
+        def masterMenuCallback (k=k,stroke=stroke,command=command,commandName=commandName):
+            return k.masterMenuHandler(stroke,command,commandName)
+        realLabel = self.getRealMenuName(label)
+        amp_index = realLabel.find("&")
+        realLabel = realLabel.replace("&","")
+        if sys.platform == 'darwin':
+            << clear accelerator if it is a plain key >>
+        self.add_command(menu,label=realLabel,
+            accelerator=accelerator,
+            command=masterMenuCallback,
+            underline=amp_index)
+#@nonl
+#@+node:ekr.20051021091958:<< get label & command or continue >>
+ok = (
+    type(data) in (type(()), type([])) and
+    len(data) in (2,3)
+)
+    
+if ok:
+    if len(data) == 2:
+        # New in 4.4b2: command can be a minibuffer-command name (a string)
+        label,command = data
+    else:
+        # New in 4.4: we ignore shortcuts bound in menu tables.
+        label,junk,command = data
+else:
+    g.trace('bad data in menu table: %s' % repr(data))
+    continue # Ignore bad data
+     
+if ok and label in (None,'-'):
+    self.add_separator(menu)
+    continue # That's all.
+#@nonl
+#@-node:ekr.20051021091958:<< get label & command or continue >>
+#@+node:ekr.20031218072017.1725:<< compute commandName & accel from label & command >>
+# New in 4.4b2: command can be a minibuffer-command name (a string)
+minibufferCommand = type(command) == type('')
+accel = None
+if minibufferCommand:
+    commandName = command 
+    command = c.commandsDict.get(commandName)
+    if command:
+        rawKey,bunchList = c.config.getShortcut(commandName)
+        # Pick the first entry that is not a mode.
+        for bunch in bunchList:
+            if not bunch.pane.endswith('-mode'):
+                # g.trace('1',bunch)
+                accel = bunch and bunch.val ; break
+    else:
+        if not g.app.unitTesting and not not dynamicMenu:
+            # Don't warn during unit testing.
+            # This may come from a plugin that normally isn't enabled.
+            g.trace('No inverse for %s' % commandName)
+        continue # There is no way to make this menu entry.
+else:
+    # First, get the old-style name.
+    commandName = self.computeOldStyleShortcutKey(label)
+    rawKey,bunchList = c.config.getShortcut(commandName)
+    for bunch in bunchList:
+        if not bunch.pane.endswith('-mode'):
+            # g.trace('2',bunch)
+            accel = bunch and bunch.val ; break
+    # Second, get new-style name.
+    if not accel:
+        << compute emacs_name >>
+            # Contains the not-so-horrible kludge.
+        if emacs_name:
+            commandName = emacs_name
+            rawKey,bunchList = c.config.getShortcut(emacs_name)
+            # Pick the first entry that is not a mode.
+            for bunch in bunchList:
+                if not bunch.pane.endswith('-mode'):
+                    accel = bunch.val ; break
+                    # g.trace('2',bunch)
+        elif not dynamicMenu:
+            g.trace('No inverse for %s' % commandName)
+#@nonl
+#@+node:ekr.20051021100806.1:<< compute emacs_name >>
+@ One not-so-horrible kludge remains.
+
+The cut/copy/paste commands in the menu tables are not the same as the methods
+actually bound to cut/copy/paste-text minibuffer commands, so we must do a bit
+of extra translation to discover whether the user has overridden their
+bindings.
+@c
+
+if command in (f.OnCutFromMenu,f.OnCopyFromMenu,f.OnPasteFromMenu):
+    emacs_name = '%s-text' % commandName
+else:
+    try: # User errors in the table can cause this.
+        emacs_name = k.inverseCommandsDict.get(command.__name__)
+    except Exception:
+        emacs_name = None
+#@nonl
+#@-node:ekr.20051021100806.1:<< compute emacs_name >>
+#@-node:ekr.20031218072017.1725:<< compute commandName & accel from label & command >>
+#@+node:ekr.20060216110502:<< clear accelerator if it is a plain key >>
+for z in ('Alt','Ctrl','Command'):
+    if accelerator.find(z) != -1:
+        break # Found.
+else:
+    accelerator = ''
+#@nonl
+#@-node:ekr.20060216110502:<< clear accelerator if it is a plain key >>
+#@-node:ekr.20031218072017.1723:createMenuEntries
+#@+node:ekr.20050920085536.16:bindKey
+def bindKey (self,pane,shortcut,callback,commandName):
+
+    '''Bind the indicated shortcut (a Tk keystroke) to the callback.
+    callback calls commandName (for error messages).'''
+    
+    k = self ; c = k.c
+
+    # g.trace(pane,shortcut,commandName)
+    if not shortcut:
+        # g.trace('No shortcut for %s' % commandName)
+        return False
+    if pane.endswith('-mode'):
+        g.trace('oops: ignoring mode binding',shortcut,commandName,g.callers())
+        return False
+    bunchList = k.bindingsDict.get(shortcut,[])
+    << give warning and return if there is a serious redefinition >>
+    << trace bindings if enabled in leoSettings.leo >>
+    try:
+        k.bindKeyToDict(pane,shortcut,callback,commandName)
+        bunchList.append(
+            g.bunch(pane=pane,func=callback,commandName=commandName))
+        shortcut = g.stripBrackets(shortcut.strip())
+        # if shortcut.startswith('<Shift'): g.trace('ooops',shortcut,g.callers())
+        k.bindingsDict [shortcut] = bunchList
+        return True
+    except Exception: # Could be a user error.
+        if not g.app.menuWarningsGiven:
+            g.es_print('Exception binding %s to %s' % (shortcut,commandName))
+            g.es_exception()
+            g.app.menuWarningsGiven = True
+        return False
+        
+bindShortcut = bindKey # For compatibility
+#@nonl
+#@+node:ekr.20060114115648:<< give warning and return if there is a serious redefinition >>
+for bunch in bunchList:
+    if ( bunch and
+        # (not bunch.pane.endswith('-mode') and not pane.endswith('-mode')) and
+        bunch.pane != 'mini' and # Minibuffer bindings are completely separate.
+        (bunch.pane == pane or pane == 'all' or bunch.pane == 'all') and
+        commandName != bunch.commandName
+    ):
+        g.es_print('Ignoring redefinition of %s from %s to %s in %s' % (
+            k.prettyPrintKey(shortcut),
+            bunch.commandName,commandName,pane),
+            color='blue')
+        return
+#@nonl
+#@-node:ekr.20060114115648:<< give warning and return if there is a serious redefinition >>
+#@+node:ekr.20060114110141:<< trace bindings if enabled in leoSettings.leo >>
+if c.config.getBool('trace_bindings'):
+    theFilter = c.config.getString('trace_bindings_filter') or ''
+    # g.trace(repr(theFilter))
+    if not theFilter or shortcut.find(theFilter) != -1:
+        pane_filter = c.config.getString('trace_bindings_pane_filter')
+        if not pane_filter or pane_filter.lower() == pane:
+            g.trace(pane,shortcut,commandName)
+#@nonl
+#@-node:ekr.20060114110141:<< trace bindings if enabled in leoSettings.leo >>
+#@-node:ekr.20050920085536.16:bindKey
+#@+node:ekr.20060130093055:bindKeyToDict
+def bindKeyToDict (self,pane,stroke,func,commandName):
+    
+    k = self
+    d =  k.masterBindingsDict.get(pane,{})
+    
+    stroke = g.stripBrackets(stroke)
+    
+    if 0:
+        g.trace('%-4s %-18s %-40s %s' % (
+            pane,repr(stroke),commandName,func and func.__name__)) # ,len(d.keys()))
+
+    if d.get(stroke):
+        g.es('ignoring duplicate definition of %s to %s in %s' % (
+            stroke,commandName,pane), color='blue')
+    else:
+        d [stroke] = g.Bunch(commandName=commandName,func=func,pane=pane,stroke=stroke)
+        k.masterBindingsDict [pane] = d
+#@nonl
+#@-node:ekr.20060130093055:bindKeyToDict
+#@+node:ekr.20060131075440:k.tkbindingFromStroke
+def tkbindingFromStroke (self,stroke):
+    
+    '''Convert a stroke (key to k.bindingsDict) to an actual Tk binding.'''
+    
+    stroke = g.stripBrackets(stroke)
+    
+    for a,b in (
+        ('Alt+','Alt-'),
+        ('Ctrl+','Control-'),
+        ('Shift+','Shift-'),
+        ('Command+','Command-'),
+    ):
+        stroke = stroke.replace(a,b)
+        
+    return '<%s>' % stroke
+#@nonl
+#@-node:ekr.20060131075440:k.tkbindingFromStroke
+#@+node:ekr.20060201083154:k.prettyPrintKey
+def prettyPrintKey (self,stroke):
+    
+    s = stroke and g.stripBrackets(stroke.strip())
+    if not s: return ''
+
+    shift = s.find("shift") >= 0 or s.find("shft") >= 0
+    
+    # Replace all minus signs by plus signs, except a trailing minus:
+    if s.endswith('-'): s = s[:-1].replace('-','+') + '-'
+    else:               s = s.replace('-','+')
+    fields = s.split('+')
+    last = fields and fields[-1]
+
+    if last and len(last) == 1:
+        prev = s[:-1]
+        if last.isalpha():
+            if last.isupper():
+                if not shift:
+                    s = prev + 'Shift+' + last
+            elif last.islower():
+                if not prev:
+                    s = 'Key+' + last.upper()
+                else:
+                    s = prev + last.upper()
+
+    return '<%s>' % s
+#@nonl
+#@-node:ekr.20060201083154:k.prettyPrintKey
+#@+node:ekr.20050920085536.75:executeNTimes
+def executeNTimes (self,event,n):
+    
+    __pychecker__ = '--no-local' # z is used just for a repeat count.
+    
+    k = self ; stroke = k.stroke ; w = event.widget
+    g.trace('stroke',stroke,'keycode',event.keycode,'n',n)
+
+    if stroke == k.fullCommandKey:
+        for z in xrange(n):
+            k.fullCommand()
+    else:
+        stroke = g.stripBrackets(stroke)
+        bunchList = k.bindingsDict.get(stroke,[])
+        if bunchList:
+            b = bunchList[0]
+            g.trace('method',b.f)
+            for z in xrange(n):
+                if 1: # No need to do this: commands never alter events.
+                    ev = Tk.Event()
+                    ev.widget = event.widget
+                    ev.keysym = event.keysym
+                    ev.keycode = event.keycode
+                    ev.char = event.char
+                k.masterCommand(event,b.f,'<%s>' % stroke)
+        else:
+            for z in xrange(n):
+                w.event_generate('<Key>',keycode=event.keycode,keysym=event.keysym)
+#@nonl
+#@-node:ekr.20050920085536.75:executeNTimes
+#@+node:ekr.20050920085536.76:doControlU
+def doControlU (self,event,stroke):
+    
+    k = self ; c = k.c
+
+    k.setLabelBlue('Control-u %s' % g.stripBrackets(stroke))
+
+    if event.keysym == 'parenleft': # Execute the macro.
+
+        k.clearState()
+        k.resetLabel()
+        c.macroCommands.startKbdMacro(event)
+        c.macroCommands.callLastKeyboardMacro(event)
+#@nonl
+#@-node:ekr.20050920085536.76:doControlU
+#@+node:ekr.20050920084036.103:fillParagraph
+def fillParagraph( self, event ):
+    k = self.k ; w = event.widget
+    txt = w.get( 'insert linestart', 'insert lineend' )
+    txt = txt.strip()
+    if txt:
+        i = w.index( 'insert' )
+        i2 = i
+        txt2 = txt
+        while txt2:
+            pi2 = w.index( '%s - 1 lines' % i2)
+            txt2 = w.get( '%s linestart' % pi2, '%s lineend' % pi2 )
+            if w.index( '%s linestart' % pi2 ) == '1.0':
+                i2 = w.search( '\w', '1.0', regexp = True, stopindex = 'end' )
+                break
+            if txt2.strip() == '': break
+            i2 = pi2
+        i3 = i
+        txt3 = txt
+        while txt3:
+            pi3 = w.index( '%s + 1 lines' %i3 )
+            txt3 = w.get( '%s linestart' % pi3, '%s lineend' % pi3 )
+            if w.index( '%s lineend' % pi3 ) == w.index( 'end' ):
+                i3 = w.search( '\w', 'end', backwards = True, regexp = True, stopindex = '1.0' )
+                break
+            if txt3.strip() == '': break
+            i3 = pi3
+        ntxt = w.get( '%s linestart' %i2, '%s lineend' %i3 )
+        ntxt = self._addPrefix( ntxt )
+        w.delete( '%s linestart' %i2, '%s lineend' % i3 )
+        w.insert( i2, ntxt )
+        w.mark_set( 'insert', i )
+#@nonl
+#@-node:ekr.20050920084036.103:fillParagraph
+#@+node:ekr.20050920084036.98:killParagraph (Test)
+def killParagraph (self,event):
+
+    k = self.k ; c = k.c ; w = event.widget
+    i = w.index('insert')
+    txt = w.get('insert linestart','insert lineend')
+
+    if not txt.strip():
+        i = w.search(r'\w',i,regexp=True,stopindex='end')
+
+    self.selectParagraphHelper(w,i)
+    i2 = w.index('insert')
+    c.killBufferCommands.kill(event,i,i2)
+    w.mark_set('insert',i)
+    w.selection_clear()
+#@nonl
+#@-node:ekr.20050920084036.98:killParagraph (Test)
+#@+node:ekr.20050920084036.96:selectParagraph & helper
+def selectParagraph (self,event):
+
+    k = self.k ; w = event.widget
+    txt = w.get('insert linestart','insert lineend')
+    txt = txt.strip()
+    i = w.index('insert')
+
+    if not txt:
+        while 1:
+            i = w.index('%s + 1 lines' % i)
+            txt = w.get('%s linestart' % i,'%s lineend' % i).strip()
+            if txt:
+                self.selectParagraphHelper(w,i) ; break
+            if w.index('%s lineend' % i) == w.index('end'):
+                return
+
+    if txt:
+        while 1:
+            i = w.index('%s - 1 lines' % i)
+            txt = w.get('%s linestart' % i,'%s lineend' % i).strip()
+            if not txt or w.index('%s linestart' % i) == w.index('1.0'):
+                if not txt: i = w.index('%s + 1 lines' % i)
+                self.selectParagraphHelper(w,i)
+                break
+#@nonl
+#@+node:ekr.20050920084036.97:selectParagraphHelper
+def selectParagraphHelper (self,w,start):
+
+    i2 = start
+    while 1:
+        txt = w.get('%s linestart' % i2,'%s lineend' % i2)
+        if w.index('%s lineend' % i2) == w.index('end'):
+            break
+        txt = txt.strip()
+        if not txt: break
+        else:
+            i2 = w.index('%s + 1 lines' % i2)
+
+    w.tag_add('sel','%s linestart' % start,'%s lineend' % i2)
+    w.mark_set('insert','%s lineend' % i2)
+#@nonl
+#@-node:ekr.20050920084036.97:selectParagraphHelper
+#@-node:ekr.20050920084036.96:selectParagraph & helper
+#@+node:ekr.20050920084036.97:selectParagraphHelper
+def selectParagraphHelper (self,w,start):
+
+    i2 = start
+    while 1:
+        txt = w.get('%s linestart' % i2,'%s lineend' % i2)
+        if w.index('%s lineend' % i2) == w.index('end'):
+            break
+        txt = txt.strip()
+        if not txt: break
+        else:
+            i2 = w.index('%s + 1 lines' % i2)
+
+    w.tag_add('sel','%s linestart' % start,'%s lineend' % i2)
+    w.mark_set('insert','%s lineend' % i2)
+#@nonl
+#@-node:ekr.20050920084036.97:selectParagraphHelper
+#@+node:ekr.20050920084036.107:indentRegion
+def indentRegion (self,event):
+    w = event.widget
+    mrk = 'sel'
+    trange = w.tag_ranges(mrk)
+    if len(trange) != 0:
+        ind = w.search('\w','%s linestart' % trange[0],stopindex='end',regexp=True)
+        if not ind: return
+        text = w.get('%s linestart' % ind,'%s lineend' % ind)
+        sstring = text.lstrip()
+        sstring = sstring [0]
+        ws = text.split(sstring)
+        if len(ws) > 1:
+            ws = ws [0]
+        else:
+            ws = ''
+        s, s1 = trange [0].split('.')
+        e, e1 = trange [ -1].split('.')
+        s = int(s)
+        s = s + 1
+        e = int(e) + 1
+        for z in xrange(s,e):
+            t2 = w.get('%s.0' % z,'%s.0 lineend' % z)
+            t2 = t2.lstrip()
+            t2 = ws + t2
+            w.delete('%s.0' % z,'%s.0 lineend' % z)
+            w.insert('%s.0' % z,t2)
+        ### w.event_generate('<Key>')
+        ### w.update_idletasks()
+    self.removeRKeys(w)
+#@nonl
+#@-node:ekr.20050920084036.107:indentRegion
+#@+node:ekr.20050920084036.203:_executeMacro (revise)
+def _executeMacro (self,macro,w):
+
+    k = self.k
+
+    for z in macro:
+        if len(z) == 2:
+            w.event_generate('<Key>',keycode=z[0],keysym=z[1])
+        else:
+            meth = g.stripBrackets(z [0])
+            bunchList = k.bindingsDict.get(meth,[])  ### Probably should not strip < and >
+            if bunchList:
+                b = bunchList[0]
+                ev = Tk.Event()
+                ev.widget = w
+                ev.keycode = z [1]
+                ev.keysym = z [2]
+                ev.char = z [3]
+                k.masterCommand(ev,b.f,'<%s>' % meth)
+#@nonl
+#@-node:ekr.20050920084036.203:_executeMacro (revise)
+#@-node:ekr.20060410104419:Found: lstrip
+#@+node:ekr.20060410112600.2:Found: rstrip
+#@+node:ekr.20051022043713.1:<< get label, accelerator & command or continue >>
+ok = (
+    type(data) in (type(()), type([])) and
+    len(data) in (2,3)
+)
+    
+if ok:
+    if len(data) == 2:
+        label,openWithData = data ; accelerator = None
+    else:
+        label,accelerator,openWithData = data
+        accelerator = k.shortcutFromSetting(accelerator)
+        accelerator = accelerator and g.stripBrackets(k.prettyPrintKey(accelerator))
+else:
+    g.trace('bad data in Open With table: %s' % repr(data))
+    continue # Ignore bad data
+#@nonl
+#@-node:ekr.20051022043713.1:<< get label, accelerator & command or continue >>
+#@+node:ekr.20031218072017.1723:createMenuEntries
+def createMenuEntries (self,menu,table,dynamicMenu=False):
+        
+    '''Create a menu entry from the table.
+    New in 4.4: this method shows the shortcut in the menu,
+    but this method **never** binds any shortcuts.'''
+    
+    c = self.c ; f = c.frame ; k = c.k
+    if g.app.unitTesting: return
+    for data in table:
+        << get label & command or continue >>
+        << compute commandName & accel from label & command >>
+        accelerator = stroke = k.shortcutFromSetting(accel) or ''
+        accelerator = accelerator and g.stripBrackets(k.prettyPrintKey(accelerator))
+        def masterMenuCallback (k=k,stroke=stroke,command=command,commandName=commandName):
+            return k.masterMenuHandler(stroke,command,commandName)
+        realLabel = self.getRealMenuName(label)
+        amp_index = realLabel.find("&")
+        realLabel = realLabel.replace("&","")
+        if sys.platform == 'darwin':
+            << clear accelerator if it is a plain key >>
+        self.add_command(menu,label=realLabel,
+            accelerator=accelerator,
+            command=masterMenuCallback,
+            underline=amp_index)
+#@nonl
+#@+node:ekr.20051021091958:<< get label & command or continue >>
+ok = (
+    type(data) in (type(()), type([])) and
+    len(data) in (2,3)
+)
+    
+if ok:
+    if len(data) == 2:
+        # New in 4.4b2: command can be a minibuffer-command name (a string)
+        label,command = data
+    else:
+        # New in 4.4: we ignore shortcuts bound in menu tables.
+        label,junk,command = data
+else:
+    g.trace('bad data in menu table: %s' % repr(data))
+    continue # Ignore bad data
+     
+if ok and label in (None,'-'):
+    self.add_separator(menu)
+    continue # That's all.
+#@nonl
+#@-node:ekr.20051021091958:<< get label & command or continue >>
+#@+node:ekr.20031218072017.1725:<< compute commandName & accel from label & command >>
+# New in 4.4b2: command can be a minibuffer-command name (a string)
+minibufferCommand = type(command) == type('')
+accel = None
+if minibufferCommand:
+    commandName = command 
+    command = c.commandsDict.get(commandName)
+    if command:
+        rawKey,bunchList = c.config.getShortcut(commandName)
+        # Pick the first entry that is not a mode.
+        for bunch in bunchList:
+            if not bunch.pane.endswith('-mode'):
+                # g.trace('1',bunch)
+                accel = bunch and bunch.val ; break
+    else:
+        if not g.app.unitTesting and not not dynamicMenu:
+            # Don't warn during unit testing.
+            # This may come from a plugin that normally isn't enabled.
+            g.trace('No inverse for %s' % commandName)
+        continue # There is no way to make this menu entry.
+else:
+    # First, get the old-style name.
+    commandName = self.computeOldStyleShortcutKey(label)
+    rawKey,bunchList = c.config.getShortcut(commandName)
+    for bunch in bunchList:
+        if not bunch.pane.endswith('-mode'):
+            # g.trace('2',bunch)
+            accel = bunch and bunch.val ; break
+    # Second, get new-style name.
+    if not accel:
+        << compute emacs_name >>
+            # Contains the not-so-horrible kludge.
+        if emacs_name:
+            commandName = emacs_name
+            rawKey,bunchList = c.config.getShortcut(emacs_name)
+            # Pick the first entry that is not a mode.
+            for bunch in bunchList:
+                if not bunch.pane.endswith('-mode'):
+                    accel = bunch.val ; break
+                    # g.trace('2',bunch)
+        elif not dynamicMenu:
+            g.trace('No inverse for %s' % commandName)
+#@nonl
+#@+node:ekr.20051021100806.1:<< compute emacs_name >>
+@ One not-so-horrible kludge remains.
+
+The cut/copy/paste commands in the menu tables are not the same as the methods
+actually bound to cut/copy/paste-text minibuffer commands, so we must do a bit
+of extra translation to discover whether the user has overridden their
+bindings.
+@c
+
+if command in (f.OnCutFromMenu,f.OnCopyFromMenu,f.OnPasteFromMenu):
+    emacs_name = '%s-text' % commandName
+else:
+    try: # User errors in the table can cause this.
+        emacs_name = k.inverseCommandsDict.get(command.__name__)
+    except Exception:
+        emacs_name = None
+#@nonl
+#@-node:ekr.20051021100806.1:<< compute emacs_name >>
+#@-node:ekr.20031218072017.1725:<< compute commandName & accel from label & command >>
+#@+node:ekr.20060216110502:<< clear accelerator if it is a plain key >>
+for z in ('Alt','Ctrl','Command'):
+    if accelerator.find(z) != -1:
+        break # Found.
+else:
+    accelerator = ''
+#@nonl
+#@-node:ekr.20060216110502:<< clear accelerator if it is a plain key >>
+#@-node:ekr.20031218072017.1723:createMenuEntries
+#@+node:ekr.20050920085536.16:bindKey
+def bindKey (self,pane,shortcut,callback,commandName):
+
+    '''Bind the indicated shortcut (a Tk keystroke) to the callback.
+    callback calls commandName (for error messages).'''
+    
+    k = self ; c = k.c
+
+    # g.trace(pane,shortcut,commandName)
+    if not shortcut:
+        # g.trace('No shortcut for %s' % commandName)
+        return False
+    if pane.endswith('-mode'):
+        g.trace('oops: ignoring mode binding',shortcut,commandName,g.callers())
+        return False
+    bunchList = k.bindingsDict.get(shortcut,[])
+    << give warning and return if there is a serious redefinition >>
+    << trace bindings if enabled in leoSettings.leo >>
+    try:
+        k.bindKeyToDict(pane,shortcut,callback,commandName)
+        bunchList.append(
+            g.bunch(pane=pane,func=callback,commandName=commandName))
+        shortcut = g.stripBrackets(shortcut.strip())
+        # if shortcut.startswith('<Shift'): g.trace('ooops',shortcut,g.callers())
+        k.bindingsDict [shortcut] = bunchList
+        return True
+    except Exception: # Could be a user error.
+        if not g.app.menuWarningsGiven:
+            g.es_print('Exception binding %s to %s' % (shortcut,commandName))
+            g.es_exception()
+            g.app.menuWarningsGiven = True
+        return False
+        
+bindShortcut = bindKey # For compatibility
+#@nonl
+#@+node:ekr.20060114115648:<< give warning and return if there is a serious redefinition >>
+for bunch in bunchList:
+    if ( bunch and
+        # (not bunch.pane.endswith('-mode') and not pane.endswith('-mode')) and
+        bunch.pane != 'mini' and # Minibuffer bindings are completely separate.
+        (bunch.pane == pane or pane == 'all' or bunch.pane == 'all') and
+        commandName != bunch.commandName
+    ):
+        g.es_print('Ignoring redefinition of %s from %s to %s in %s' % (
+            k.prettyPrintKey(shortcut),
+            bunch.commandName,commandName,pane),
+            color='blue')
+        return
+#@nonl
+#@-node:ekr.20060114115648:<< give warning and return if there is a serious redefinition >>
+#@+node:ekr.20060114110141:<< trace bindings if enabled in leoSettings.leo >>
+if c.config.getBool('trace_bindings'):
+    theFilter = c.config.getString('trace_bindings_filter') or ''
+    # g.trace(repr(theFilter))
+    if not theFilter or shortcut.find(theFilter) != -1:
+        pane_filter = c.config.getString('trace_bindings_pane_filter')
+        if not pane_filter or pane_filter.lower() == pane:
+            g.trace(pane,shortcut,commandName)
+#@nonl
+#@-node:ekr.20060114110141:<< trace bindings if enabled in leoSettings.leo >>
+#@-node:ekr.20050920085536.16:bindKey
+#@+node:ekr.20060130093055:bindKeyToDict
+def bindKeyToDict (self,pane,stroke,func,commandName):
+    
+    k = self
+    d =  k.masterBindingsDict.get(pane,{})
+    
+    stroke = g.stripBrackets(stroke)
+    
+    if 0:
+        g.trace('%-4s %-18s %-40s %s' % (
+            pane,repr(stroke),commandName,func and func.__name__)) # ,len(d.keys()))
+
+    if d.get(stroke):
+        g.es('ignoring duplicate definition of %s to %s in %s' % (
+            stroke,commandName,pane), color='blue')
+    else:
+        d [stroke] = g.Bunch(commandName=commandName,func=func,pane=pane,stroke=stroke)
+        k.masterBindingsDict [pane] = d
+#@nonl
+#@-node:ekr.20060130093055:bindKeyToDict
+#@+node:ekr.20060131075440:k.tkbindingFromStroke
+def tkbindingFromStroke (self,stroke):
+    
+    '''Convert a stroke (key to k.bindingsDict) to an actual Tk binding.'''
+    
+    stroke = g.stripBrackets(stroke)
+    
+    for a,b in (
+        ('Alt+','Alt-'),
+        ('Ctrl+','Control-'),
+        ('Shift+','Shift-'),
+        ('Command+','Command-'),
+    ):
+        stroke = stroke.replace(a,b)
+        
+    return '<%s>' % stroke
+#@nonl
+#@-node:ekr.20060131075440:k.tkbindingFromStroke
+#@+node:ekr.20060201083154:k.prettyPrintKey
+def prettyPrintKey (self,stroke):
+    
+    s = stroke and g.stripBrackets(stroke.strip())
+    if not s: return ''
+
+    shift = s.find("shift") >= 0 or s.find("shft") >= 0
+    
+    # Replace all minus signs by plus signs, except a trailing minus:
+    if s.endswith('-'): s = s[:-1].replace('-','+') + '-'
+    else:               s = s.replace('-','+')
+    fields = s.split('+')
+    last = fields and fields[-1]
+
+    if last and len(last) == 1:
+        prev = s[:-1]
+        if last.isalpha():
+            if last.isupper():
+                if not shift:
+                    s = prev + 'Shift+' + last
+            elif last.islower():
+                if not prev:
+                    s = 'Key+' + last.upper()
+                else:
+                    s = prev + last.upper()
+
+    return '<%s>' % s
+#@nonl
+#@-node:ekr.20060201083154:k.prettyPrintKey
+#@+node:ekr.20050920085536.75:executeNTimes
+def executeNTimes (self,event,n):
+    
+    __pychecker__ = '--no-local' # z is used just for a repeat count.
+    
+    k = self ; stroke = k.stroke ; w = event.widget
+    g.trace('stroke',stroke,'keycode',event.keycode,'n',n)
+
+    if stroke == k.fullCommandKey:
+        for z in xrange(n):
+            k.fullCommand()
+    else:
+        stroke = g.stripBrackets(stroke)
+        bunchList = k.bindingsDict.get(stroke,[])
+        if bunchList:
+            b = bunchList[0]
+            g.trace('method',b.f)
+            for z in xrange(n):
+                if 1: # No need to do this: commands never alter events.
+                    ev = Tk.Event()
+                    ev.widget = event.widget
+                    ev.keysym = event.keysym
+                    ev.keycode = event.keycode
+                    ev.char = event.char
+                k.masterCommand(event,b.f,'<%s>' % stroke)
+        else:
+            for z in xrange(n):
+                w.event_generate('<Key>',keycode=event.keycode,keysym=event.keysym)
+#@nonl
+#@-node:ekr.20050920085536.75:executeNTimes
+#@+node:ekr.20050920085536.76:doControlU
+def doControlU (self,event,stroke):
+    
+    k = self ; c = k.c
+
+    k.setLabelBlue('Control-u %s' % g.stripBrackets(stroke))
+
+    if event.keysym == 'parenleft': # Execute the macro.
+
+        k.clearState()
+        k.resetLabel()
+        c.macroCommands.startKbdMacro(event)
+        c.macroCommands.callLastKeyboardMacro(event)
+#@nonl
+#@-node:ekr.20050920085536.76:doControlU
+#@+node:ekr.20050920084036.203:_executeMacro (revise)
+def _executeMacro (self,macro,w):
+
+    k = self.k
+
+    for z in macro:
+        if len(z) == 2:
+            w.event_generate('<Key>',keycode=z[0],keysym=z[1])
+        else:
+            meth = g.stripBrackets(z [0])
+            bunchList = k.bindingsDict.get(meth,[])  ### Probably should not strip < and >
+            if bunchList:
+                b = bunchList[0]
+                ev = Tk.Event()
+                ev.widget = w
+                ev.keycode = z [1]
+                ev.keysym = z [2]
+                ev.char = z [3]
+                k.masterCommand(ev,b.f,'<%s>' % meth)
+#@nonl
+#@-node:ekr.20050920084036.203:_executeMacro (revise)
+#@-node:ekr.20060410112600.2:Found: rstrip
+#@-node:ekr.20060410091659:Removed lstrip and rstrip for compatibility with Python 2.2.1
 #@-node:ekr.20060323131536.1:Bugs
 #@+node:ekr.20060323140748:Plugins
 #@+node:ekr.20060301182319:Support for chapters plugin

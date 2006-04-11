@@ -576,7 +576,7 @@ class leoMenu:
                 else:
                     label,accelerator,openWithData = data
                     accelerator = k.shortcutFromSetting(accelerator)
-                    accelerator = accelerator and k.prettyPrintKey(accelerator).lstrip('<').rstrip('>')
+                    accelerator = accelerator and g.stripBrackets(k.prettyPrintKey(accelerator))
             else:
                 g.trace('bad data in Open With table: %s' % repr(data))
                 continue # Ignore bad data
@@ -1403,7 +1403,7 @@ class leoMenu:
             #@-node:ekr.20031218072017.1725:<< compute commandName & accel from label & command >>
             #@nl
             accelerator = stroke = k.shortcutFromSetting(accel) or ''
-            accelerator = accelerator and k.prettyPrintKey(accelerator).lstrip('<').rstrip('>')
+            accelerator = accelerator and g.stripBrackets(k.prettyPrintKey(accelerator))
             def masterMenuCallback (k=k,stroke=stroke,command=command,commandName=commandName):
                 return k.masterMenuHandler(stroke,command,commandName)
             realLabel = self.getRealMenuName(label)
