@@ -133,7 +133,7 @@ class baseUndoer:
             i = len(u.beads)-1
             while i >= 0:
                 bunch = u.beads[i]
-                if bunch.kind == 'beforeGroup':
+                if hasattr(bunch,'kind') and bunch.kind == 'beforeGroup':
                     return
                 i -= 1
     
