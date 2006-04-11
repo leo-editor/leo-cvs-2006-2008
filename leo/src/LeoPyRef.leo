@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="9381" clone_windows="0"/>
 <globals body_outline_ratio="0.715460526316">
-	<global_window_position top="45" left="248" height="789" width="973"/>
+	<global_window_position top="17" left="174" height="922" width="1086"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -415,6 +415,64 @@
 </v>
 </v>
 </v>
+<v t="ekr.20060410091659"><vh>Removed lstrip and rstrip for compatibility with Python 2.2.1</vh>
+<v t="ekr.20060410112600"><vh>g.stripBrackets</vh></v>
+<v t="ekr.20060410104419"><vh>Found: lstrip</vh>
+<v t="ekr.20040718101315"><vh>stripWhitespaceFromBlankLines(before_lines)</vh></v>
+<v t="ekr.20031218072017.3315"><vh>skipLeadingComments</vh>
+<v t="ekr.20031218072017.3316"><vh>&lt;&lt; scan for C-style comments &gt;&gt;</vh></v>
+<v t="ekr.20060328112327.1"><vh>&lt;&lt; scan for Lua comments &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.3317"><vh>&lt;&lt; scan for Pascal comments &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.3318"><vh>&lt;&lt; scan for Python comments &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20031218072017.3637"><vh>compare_lines</vh></v>
+<v t="ekr.20051022043713.1"><vh>&lt;&lt; get label, accelerator &amp; command or continue &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.1723"><vh>createMenuEntries</vh>
+<v t="ekr.20051021091958"><vh>&lt;&lt; get label &amp; command or continue &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.1725"><vh>&lt;&lt; compute commandName &amp; accel from label &amp; command &gt;&gt;</vh>
+<v t="ekr.20051021100806.1"><vh>&lt;&lt; compute emacs_name &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20060216110502"><vh>&lt;&lt; clear accelerator if it is a plain key &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20050920085536.16"><vh>bindKey</vh>
+<v t="ekr.20060114115648"><vh>&lt;&lt; give warning and return if there is a serious redefinition &gt;&gt;</vh></v>
+<v t="ekr.20060114110141"><vh>&lt;&lt; trace bindings if enabled in leoSettings.leo &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20060130093055"><vh>bindKeyToDict</vh></v>
+<v t="ekr.20060131075440"><vh>k.tkbindingFromStroke</vh></v>
+<v t="ekr.20060201083154"><vh>k.prettyPrintKey</vh></v>
+<v t="ekr.20050920085536.75"><vh>executeNTimes</vh></v>
+<v t="ekr.20050920085536.76"><vh>doControlU</vh></v>
+<v t="ekr.20050920084036.103"><vh>fillParagraph</vh></v>
+<v t="ekr.20050920084036.98"><vh>killParagraph (Test)</vh></v>
+<v t="ekr.20050920084036.96"><vh>selectParagraph &amp; helper</vh>
+<v t="ekr.20050920084036.97"><vh>selectParagraphHelper</vh></v>
+</v>
+<v t="ekr.20050920084036.97"><vh>selectParagraphHelper</vh></v>
+<v t="ekr.20050920084036.107"><vh>indentRegion</vh></v>
+<v t="ekr.20050920084036.203"><vh>_executeMacro (revise)</vh></v>
+</v>
+<v t="ekr.20060410112600.2"><vh>Found: rstrip</vh>
+<v t="ekr.20051022043713.1"><vh>&lt;&lt; get label, accelerator &amp; command or continue &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.1723"><vh>createMenuEntries</vh>
+<v t="ekr.20051021091958"><vh>&lt;&lt; get label &amp; command or continue &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.1725"><vh>&lt;&lt; compute commandName &amp; accel from label &amp; command &gt;&gt;</vh>
+<v t="ekr.20051021100806.1"><vh>&lt;&lt; compute emacs_name &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20060216110502"><vh>&lt;&lt; clear accelerator if it is a plain key &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20050920085536.16"><vh>bindKey</vh>
+<v t="ekr.20060114115648"><vh>&lt;&lt; give warning and return if there is a serious redefinition &gt;&gt;</vh></v>
+<v t="ekr.20060114110141"><vh>&lt;&lt; trace bindings if enabled in leoSettings.leo &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20060130093055"><vh>bindKeyToDict</vh></v>
+<v t="ekr.20060131075440"><vh>k.tkbindingFromStroke</vh></v>
+<v t="ekr.20060201083154"><vh>k.prettyPrintKey</vh></v>
+<v t="ekr.20050920085536.75"><vh>executeNTimes</vh></v>
+<v t="ekr.20050920085536.76"><vh>doControlU</vh></v>
+<v t="ekr.20050920084036.203"><vh>_executeMacro (revise)</vh></v>
+</v>
+</v>
 </v>
 <v t="ekr.20060323140748"><vh>Plugins</vh>
 <v t="ekr.20060301182319"><vh>Support for chapters plugin</vh>
@@ -584,7 +642,21 @@ marks="ekr.20040629121554.2,"><vh>@thin leoCommands.py</vh></v>
 <v t="ekr.20031218072017.3748"><vh>@thin leoKeys.py</vh></v>
 <v t="ekr.20050710142719"><vh>@thin leoEditCommands.py</vh></v>
 </v>
-<v t="ekr.20060329095728" a="V"><vh>b3 distribution</vh></v>
+<v t="ekr.20060411095710" a="E"><vh>To do 4.4 b3</vh>
+<v t="ekr.20060329095728"><vh>b3 distribution</vh>
+<v t="ekr.20051125080855"><vh>selfInsertCommand</vh>
+<v t="ekr.20051026171121"><vh>&lt;&lt; handle newline &gt;&gt;</vh></v>
+<v t="ekr.20051027172949"><vh>updateAutomatchBracket</vh></v>
+<v t="ekr.20051026171121.1"><vh>udpateAutoIndent</vh></v>
+<v t="ekr.20051026092433"><vh>updateTab</vh></v>
+</v>
+</v>
+<v t="ekr.20060408065447"><vh>modify selfInsertCommand for MacOS</vh></v>
+<v t="ekr.20060410112600.1"><vh>crash in string.startswith and string.endswith</vh></v>
+<v t="ekr.20060408093907"><vh>Crash after clearRecentFiles command</vh></v>
+<v t="ekr.20060410091939"><vh>Add note about not installing Leo in the "Program Files" directory</vh></v>
+<v t="ekr.20060411101844" a="V"><vh>Fixed failed unit tests</vh></v>
+</v>
 </vnodes>
 <tnodes>
 <t tx="EKR.20040430162943"></t>
@@ -1559,7 +1631,7 @@ u.newNewlines = new_newlines</t>
         &lt;&lt; get label &amp; command or continue &gt;&gt;
         &lt;&lt; compute commandName &amp; accel from label &amp; command &gt;&gt;
         accelerator = stroke = k.shortcutFromSetting(accel) or ''
-        accelerator = accelerator and k.prettyPrintKey(accelerator).lstrip('&lt;').rstrip('&gt;')
+        accelerator = accelerator and g.stripBrackets(k.prettyPrintKey(accelerator))
         def masterMenuCallback (k=k,stroke=stroke,command=command,commandName=commandName):
             return k.masterMenuHandler(stroke,command,commandName)
         realLabel = self.getRealMenuName(label)
@@ -2610,7 +2682,100 @@ else:
     gui.makeIndexVisible(t,insert)
     if self.wrap and not self.wrapPosition:
         self.wrapPosition = self.p</t>
+<t tx="ekr.20031218072017.3315">def skipLeadingComments (self,s):
+
+    """Skips all leading comments in s, returning the remaining body text and the massaged comment text.
+
+    Returns (body, comment)"""
+
+    # g.trace(g.get_line(s,0))
+    s_original = s
+    s = s.lstrip()
+    i = 0 ; comment = ""
+    if self.fileType in [".c", ".cpp"]: # 11/2/02: don't mess with java comments.
+        &lt;&lt; scan for C-style comments &gt;&gt;
+    elif self.fileType == ".lua":
+        &lt;&lt; scan for Lua comments &gt;&gt;
+    elif self.fileType == ".pas":
+        &lt;&lt; scan for Pascal comments &gt;&gt;
+    elif self.fileType == ".py":
+        &lt;&lt; scan for Python comments &gt;&gt;
+    comment = string.strip(comment)
+    if len(comment) == 0:
+        return s_original, "" # Bug fix: 11/2/02: don't skip leading whitespace!
+    elif self.treeType == "@file":
+        return s[i:], "@ " + comment
+    else:
+        return s[i:], "@ " + comment + "\n"</t>
+<t tx="ekr.20031218072017.3316">while i &lt; len(s):
+    if g.match(s,i,"//"): # Handle a C++ comment.
+        while g.match(s,i,'/'):
+            i += 1
+        j = i ; i = g.skip_line(s,i)
+        comment = comment + self.massageComment(s[j:i]) + "\n"
+        # 8/2/02: Preserve leading whitespace for undentBody
+        i = g.skip_ws(s,i)
+        i = g.skip_blank_lines(s,i)
+    elif g.match(s,i,"/*"): # Handle a block C comment.
+        j = i + 2 ; i = g.skip_block_comment (s,i)
+        k = g.choose(g.match(s,i-2,"*/"),i-2,i)
+        if self.fileType == ".java":
+            # 8/2/02: a hack: add leading whitespace then remove it.
+            comment = self.undentBody(comment)
+            comment2 = ' ' * 2 + s[j:k]
+            comment2 = self.undentBody(comment2)
+            comment = comment + comment2 + "\n"
+        else:
+            comment = comment + self.massageComment(s[j:k]) + "\n"
+        # 8/2/02: Preserve leading whitespace for undentBody
+        i = g.skip_ws(s,i)
+        i = g.skip_blank_lines(s,i)
+    else: break</t>
+<t tx="ekr.20031218072017.3317">while i &lt; len(s):
+    if g.match(s,i,"//"): # Handle a Pascal line comment.
+        while g.match(s,i,'/'):
+            i += 1
+        j = i ; i = g.skip_line(s,i)
+        comment = comment + self.massageComment(s[j:i]) + "\n"
+        # 8/2/02: Preserve leading whitespace for undentBody
+        i = g.skip_ws(s,i)
+        i = g.skip_blank_lines(s,i)
+    elif g.match(s,i,'(*'):
+        j = i + 1 ; i = g.skip_pascal_block_comment(s,i)
+        comment = comment + self.massageComment(s[j:i]) + "\n"
+        # 8/2/02: Preserve leading whitespace for undentBody
+        i = g.skip_ws(s,i)
+        i = g.skip_blank_lines(s,i)
+    else: break</t>
+<t tx="ekr.20031218072017.3318">while i &lt; len(s) and g.match(s,i,'#'):
+    j = i + 1 ; i = g.skip_line(s,i)
+    comment = self.undentBody(comment)
+    comment = comment + self.massageComment(s[j:i]) + "\n"
+    # 8/2/02: Preserve leading whitespace for undentBody
+    i = g.skip_ws(s,i)
+    i = g.skip_blank_lines(s,i)</t>
 <t tx="ekr.20031218072017.3625">&lt;&lt; about gui classes and gui plugins &gt;&gt;</t>
+<t tx="ekr.20031218072017.3637">def compare_lines (self,s1,s2):
+    
+    if self.ignoreLeadingWhitespace:
+        s1 = s1.lstrip()
+        s2 = s2.lstrip()
+
+    if self.ignoreInteriorWhitespace:
+        k1 = g.skip_ws(s1,0)
+        k2 = g.skip_ws(s2,0)
+        ws1 = s1[:k1]
+        ws2 = s2[:k2]
+        tail1 = s1[k1:]
+        tail2 = s2[k2:]
+        tail1 = string.replace(tail1," ","")
+        tail1 = string.replace(tail1,"\t","")
+        tail2 = string.replace(tail2," ","")
+        tail2 = string.replace(tail2,"\t","")
+        s1 = ws1 + tail1
+        s2 = ws2 + tail2
+
+    return s1 == s2</t>
 <t tx="ekr.20031218072017.3821"></t>
 <t tx="ekr.20031218072017.3941"></t>
 <t tx="ekr.20031218072017.3942">def __repr__ (self):
@@ -3213,6 +3378,27 @@ else: # Use plain click.
     canvas.bind_all( '&lt;Button-1&gt;',scrollUp)
     canvas.bind_all( '&lt;ButtonRelease-1&gt;',off)
     canvas.bind_all( '&lt;ButtonRelease-3&gt;',off)</t>
+<t tx="ekr.20040718101315">def stripWhitespaceFromBlankLines (self,lines):
+    
+    # All backslashes must be doubled.
+
+    """Strip blanks and tabs from lines containing only blanks and tabs.
+    
+    &gt;&gt;&gt; import leoGlobals as g
+    &gt;&gt;&gt; s = "a\\n \\t\\n\\t\\t \\t\\nb"
+    &gt;&gt;&gt; theLines = g.splitLines(s)
+    &gt;&gt;&gt; theLines
+    ['a\\n', ' \\t\\n', '\\t\\t \\t\\n', 'b']
+    &gt;&gt;&gt; g.mulderUpdateAlgorithm().stripWhitespaceFromBlankLines(theLines)
+    ['a\\n', '\\n', '\\n', 'b']
+    """
+
+    for i in xrange(len(lines)):
+        stripped_line = lines[i].lstrip() # Was lstrip(" \t"), but that is redundant and does not work with Python 2.2.1.
+        if stripped_line in ('\n',''):
+            lines[i] = stripped_line
+            
+    return lines</t>
 <t tx="ekr.20040731071037">def initIvars(self):
 
     c = self
@@ -4617,6 +4803,118 @@ Important:  the first Tkinter index is '1.0', not '0.0', but the row returned by
         
     if name.startswith('body'):
         self.endCommand(changed=changed,setLabel=False)</t>
+<t tx="ekr.20050920084036.96">def selectParagraph (self,event):
+
+    k = self.k ; w = event.widget
+    txt = w.get('insert linestart','insert lineend')
+    txt = txt.strip()
+    i = w.index('insert')
+
+    if not txt:
+        while 1:
+            i = w.index('%s + 1 lines' % i)
+            txt = w.get('%s linestart' % i,'%s lineend' % i).strip()
+            if txt:
+                self.selectParagraphHelper(w,i) ; break
+            if w.index('%s lineend' % i) == w.index('end'):
+                return
+
+    if txt:
+        while 1:
+            i = w.index('%s - 1 lines' % i)
+            txt = w.get('%s linestart' % i,'%s lineend' % i).strip()
+            if not txt or w.index('%s linestart' % i) == w.index('1.0'):
+                if not txt: i = w.index('%s + 1 lines' % i)
+                self.selectParagraphHelper(w,i)
+                break</t>
+<t tx="ekr.20050920084036.97">def selectParagraphHelper (self,w,start):
+
+    i2 = start
+    while 1:
+        txt = w.get('%s linestart' % i2,'%s lineend' % i2)
+        if w.index('%s lineend' % i2) == w.index('end'):
+            break
+        txt = txt.strip()
+        if not txt: break
+        else:
+            i2 = w.index('%s + 1 lines' % i2)
+
+    w.tag_add('sel','%s linestart' % start,'%s lineend' % i2)
+    w.mark_set('insert','%s lineend' % i2)</t>
+<t tx="ekr.20050920084036.98">def killParagraph (self,event):
+
+    k = self.k ; c = k.c ; w = event.widget
+    i = w.index('insert')
+    txt = w.get('insert linestart','insert lineend')
+
+    if not txt.strip():
+        i = w.search(r'\w',i,regexp=True,stopindex='end')
+
+    self.selectParagraphHelper(w,i)
+    i2 = w.index('insert')
+    c.killBufferCommands.kill(event,i,i2)
+    w.mark_set('insert',i)
+    w.selection_clear()</t>
+<t tx="ekr.20050920084036.103">def fillParagraph( self, event ):
+    k = self.k ; w = event.widget
+    txt = w.get( 'insert linestart', 'insert lineend' )
+    txt = txt.strip()
+    if txt:
+        i = w.index( 'insert' )
+        i2 = i
+        txt2 = txt
+        while txt2:
+            pi2 = w.index( '%s - 1 lines' % i2)
+            txt2 = w.get( '%s linestart' % pi2, '%s lineend' % pi2 )
+            if w.index( '%s linestart' % pi2 ) == '1.0':
+                i2 = w.search( '\w', '1.0', regexp = True, stopindex = 'end' )
+                break
+            if txt2.strip() == '': break
+            i2 = pi2
+        i3 = i
+        txt3 = txt
+        while txt3:
+            pi3 = w.index( '%s + 1 lines' %i3 )
+            txt3 = w.get( '%s linestart' % pi3, '%s lineend' % pi3 )
+            if w.index( '%s lineend' % pi3 ) == w.index( 'end' ):
+                i3 = w.search( '\w', 'end', backwards = True, regexp = True, stopindex = '1.0' )
+                break
+            if txt3.strip() == '': break
+            i3 = pi3
+        ntxt = w.get( '%s linestart' %i2, '%s lineend' %i3 )
+        ntxt = self._addPrefix( ntxt )
+        w.delete( '%s linestart' %i2, '%s lineend' % i3 )
+        w.insert( i2, ntxt )
+        w.mark_set( 'insert', i )</t>
+<t tx="ekr.20050920084036.107">def indentRegion (self,event):
+    w = event.widget
+    mrk = 'sel'
+    trange = w.tag_ranges(mrk)
+    if len(trange) != 0:
+        ind = w.search('\w','%s linestart' % trange[0],stopindex='end',regexp=True)
+        if not ind: return
+        text = w.get('%s linestart' % ind,'%s lineend' % ind)
+        sstring = text.lstrip()
+        sstring = sstring [0]
+        ws = text.split(sstring)
+        if len(ws) &gt; 1:
+            ws = ws [0]
+        else:
+            ws = ''
+        s, s1 = trange [0].split('.')
+        e, e1 = trange [ -1].split('.')
+        s = int(s)
+        s = s + 1
+        e = int(e) + 1
+        for z in xrange(s,e):
+            t2 = w.get('%s.0' % z,'%s.0 lineend' % z)
+            t2 = t2.lstrip()
+            t2 = ws + t2
+            w.delete('%s.0' % z,'%s.0 lineend' % z)
+            w.insert('%s.0' % z,t2)
+        ### w.event_generate('&lt;Key&gt;')
+        ### w.update_idletasks()
+    self.removeRKeys(w)</t>
 <t tx="ekr.20050920084036.135">def deleteSpaces (self,event,insertspace=False):
 
     c = self.c ; w = event and event.widget
@@ -4681,6 +4979,24 @@ insertNewline = insertNewLine</t>
     
     if result != body:
         c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview)</t>
+<t tx="ekr.20050920084036.203">def _executeMacro (self,macro,w):
+
+    k = self.k
+
+    for z in macro:
+        if len(z) == 2:
+            w.event_generate('&lt;Key&gt;',keycode=z[0],keysym=z[1])
+        else:
+            meth = g.stripBrackets(z [0])
+            bunchList = k.bindingsDict.get(meth,[])  ### Probably should not strip &lt; and &gt;
+            if bunchList:
+                b = bunchList[0]
+                ev = Tk.Event()
+                ev.widget = w
+                ev.keycode = z [1]
+                ev.keysym = z [2]
+                ev.char = z [3]
+                k.masterCommand(ev,b.f,'&lt;%s&gt;' % meth)</t>
 <t tx="ekr.20050920085536.1"></t>
 <t tx="ekr.20050920085536.2">def __init__ (self,c,useGlobalKillbuffer=False,useGlobalRegisters=False):
     
@@ -4736,7 +5052,7 @@ insertNewline = insertNewLine</t>
         k.bindKeyToDict(pane,shortcut,callback,commandName)
         bunchList.append(
             g.bunch(pane=pane,func=callback,commandName=commandName))
-        shortcut = shortcut.strip().lstrip('&lt;').rstrip('&gt;')
+        shortcut = g.stripBrackets(shortcut.strip())
         # if shortcut.startswith('&lt;Shift'): g.trace('ooops',shortcut,g.callers())
         k.bindingsDict [shortcut] = bunchList
         return True
@@ -4877,6 +5193,45 @@ if 0: # traces
     g.trace(keysym,stroke)
     g.trace(k.keysymHistory)
     g.trace(keyHandlerClass.lossage)</t>
+<t tx="ekr.20050920085536.75">def executeNTimes (self,event,n):
+    
+    __pychecker__ = '--no-local' # z is used just for a repeat count.
+    
+    k = self ; stroke = k.stroke ; w = event.widget
+    g.trace('stroke',stroke,'keycode',event.keycode,'n',n)
+
+    if stroke == k.fullCommandKey:
+        for z in xrange(n):
+            k.fullCommand()
+    else:
+        stroke = g.stripBrackets(stroke)
+        bunchList = k.bindingsDict.get(stroke,[])
+        if bunchList:
+            b = bunchList[0]
+            g.trace('method',b.f)
+            for z in xrange(n):
+                if 1: # No need to do this: commands never alter events.
+                    ev = Tk.Event()
+                    ev.widget = event.widget
+                    ev.keysym = event.keysym
+                    ev.keycode = event.keycode
+                    ev.char = event.char
+                k.masterCommand(event,b.f,'&lt;%s&gt;' % stroke)
+        else:
+            for z in xrange(n):
+                w.event_generate('&lt;Key&gt;',keycode=event.keycode,keysym=event.keysym)</t>
+<t tx="ekr.20050920085536.76">def doControlU (self,event,stroke):
+    
+    k = self ; c = k.c
+
+    k.setLabelBlue('Control-u %s' % g.stripBrackets(stroke))
+
+    if event.keysym == 'parenleft': # Execute the macro.
+
+        k.clearState()
+        k.resetLabel()
+        c.macroCommands.startKbdMacro(event)
+        c.macroCommands.callLastKeyboardMacro(event)</t>
 <t tx="ekr.20050920093543">def finishCreate (self):  # New in 4.4.
     
     '''Finish creating the commander after frame.finishCreate.
@@ -5431,7 +5786,7 @@ if ok:
     else:
         label,accelerator,openWithData = data
         accelerator = k.shortcutFromSetting(accelerator)
-        accelerator = accelerator and k.prettyPrintKey(accelerator).lstrip('&lt;').rstrip('&gt;')
+        accelerator = accelerator and g.stripBrackets(k.prettyPrintKey(accelerator))
 else:
     g.trace('bad data in Open With table: %s' % repr(data))
     continue # Ignore bad data</t>
@@ -5575,6 +5930,8 @@ def removeTrailingNewlines (self,old,new,ch):
         # So at worst we have misrepresented the user's intentions slightly.
         return True</t>
 <t tx="ekr.20051026171121">i,j = oldSel
+
+g.trace(repr(ch))
 
 if i != j:
     # No auto-indent if there is selected text.
@@ -5973,7 +6330,7 @@ masterDoubleClick3Handler = masterClickHandler</t>
     k = self
     d =  k.masterBindingsDict.get(pane,{})
     
-    stroke = stroke.lstrip('&lt;').rstrip('&gt;')
+    stroke = g.stripBrackets(stroke)
     
     if 0:
         g.trace('%-4s %-18s %-40s %s' % (
@@ -5985,12 +6342,53 @@ masterDoubleClick3Handler = masterClickHandler</t>
     else:
         d [stroke] = g.Bunch(commandName=commandName,func=func,pane=pane,stroke=stroke)
         k.masterBindingsDict [pane] = d</t>
+<t tx="ekr.20060131075440">def tkbindingFromStroke (self,stroke):
+    
+    '''Convert a stroke (key to k.bindingsDict) to an actual Tk binding.'''
+    
+    stroke = g.stripBrackets(stroke)
+    
+    for a,b in (
+        ('Alt+','Alt-'),
+        ('Ctrl+','Control-'),
+        ('Shift+','Shift-'),
+        ('Command+','Command-'),
+    ):
+        stroke = stroke.replace(a,b)
+        
+    return '&lt;%s&gt;' % stroke</t>
 <t tx="ekr.20060201065809">s2 = s.lower()
 
 cmd   = s2.find("cmd") &gt;= 0     or s2.find("command") &gt;= 0
 ctrl  = s2.find("control") &gt;= 0 or s2.find("ctrl") &gt;= 0
 alt   = s2.find("alt") &gt;= 0
 shift = s2.find("shift") &gt;= 0   or s2.find("shft") &gt;= 0</t>
+<t tx="ekr.20060201083154">def prettyPrintKey (self,stroke):
+    
+    s = stroke and g.stripBrackets(stroke.strip())
+    if not s: return ''
+
+    shift = s.find("shift") &gt;= 0 or s.find("shft") &gt;= 0
+    
+    # Replace all minus signs by plus signs, except a trailing minus:
+    if s.endswith('-'): s = s[:-1].replace('-','+') + '-'
+    else:               s = s.replace('-','+')
+    fields = s.split('+')
+    last = fields and fields[-1]
+
+    if last and len(last) == 1:
+        prev = s[:-1]
+        if last.isalpha():
+            if last.isupper():
+                if not shift:
+                    s = prev + 'Shift+' + last
+            elif last.islower():
+                if not prev:
+                    s = 'Key+' + last.upper()
+                else:
+                    s = prev + last.upper()
+
+    return '&lt;%s&gt;' % s</t>
 <t tx="ekr.20060203112912.1"></t>
 <t tx="ekr.20060205221734">def masterKeyHandlerHelper (self,event,stroke):
     
@@ -6704,6 +7102,16 @@ idioms vary); no support for Lua v5+ metamethods.
 
 Implementation method - I loaded LeoPy.leo, searched the whole outline for 'java',
 and added lua counterparts throughout, including a Lua comment scanner.</t>
+<t tx="ekr.20060328112327.1">while i &lt; len(s):
+    if g.match(s,i,"--"): # Handle a Lua line comment.
+        while g.match(s,i,'/'):
+            i += 1
+        j = i ; i = g.skip_line(s,i)
+        comment = comment + self.massageComment(s[j:i]) + "\n"
+        # 8/2/02: Preserve leading whitespace for undentBody
+        i = g.skip_ws(s,i)
+        i = g.skip_blank_lines(s,i)
+    else: break</t>
 <t tx="ekr.20060328120455"></t>
 <t tx="ekr.20060328121145">def runUnitTests (self,event=None):
     
@@ -6833,5 +7241,216 @@ def get_window_info (top):
     return w,h,x,y</t>
 <t tx="ekr.20060329090924"></t>
 <t tx="ekr.20060329095728">- Make sure leoSettings.leo works on the Mac.</t>
+<t tx="ekr.20060408065447"></t>
+<t tx="ekr.20060408093907">exception executing command
+Traceback (most recent call last):
+  File "C:\prog\leoCVS\leo\src\leoCommands.py", line 264, in doCommand
+    val = command(event)
+  File "C:\prog\leoCVS\leo\src\leoCommands.py", line 884, in clearRecentFiles
+    u.afterClearRecentFiles(bunch)
+  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 621, in afterClearRecentFiles
+    u.pushBead(bunch)
+  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 192, in pushBead
+    u.setUndoTypes()
+  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 341, in setUndoTypes
+    u.cutStack()
+  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 136, in cutStack
+    if bunch.kind == 'beforeGroup':
+AttributeError: 'Bunch' object has no attribute 'kind'</t>
+<t tx="ekr.20060410091659">@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3671350
+
+Change aString.lstrip and aString.rstrip to the aString.replace.
+@color</t>
+<t tx="ekr.20060410091939"></t>
+<t tx="ekr.20060410104419"></t>
+<t tx="ekr.20060410112600">def stripBrackets (s):
+    
+    '''Same as s.lstrip('&lt;').rstrip('&gt;') except it works for Python 2.2.1.'''
+    
+    if s.startswith('&lt;'):
+        s = s[1:]
+    if s.endswith('&gt;'):
+        s = s[:-1]
+    return s</t>
+<t tx="ekr.20060410112600.1">leoID = ekr (in c:\Documents and Settings\Ed)
+reading settings in C:\prog\leoCVS\leo\config\leoSettings.leo
+reading settings in C:\prog\leoCVS\leo\src\LeoPy.leo
+rst3 plugin: SilverCity not loaded
+selfInsertCommand: '\n'
+selfInsertCommand: '\n'
+selfInsertCommand: '\n'
+selfInsertCommand: '\n'
+selfInsertCommand: '\n'
+selfInsertCommand: '\n'
+selfInsertCommand: '\n'
+selfInsertCommand: '\n'
+selfInsertCommand: '\n'
+AttributeError Exception in Tk callback
+  Function: &lt;function bindKeyCallback at 0x016F2E70&gt; (type: &lt;type 'function'&gt;)
+  Args: (&lt;Tkinter.Event instance at 0x03510288&gt;,)
+  Event type: KeyPress (type num: 2)
+Traceback (innermost last):
+  File "C:\prog\leoCVS\leo\extensions\Pmw\Pmw_1_2\lib\PmwBase.py", line 1752, in __call__
+    return apply(self.func, args)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2002, in bindKeyCallback
+    return k.masterKeyHandler(event,stroke=stroke)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2928, in masterKeyHandler
+    val = self.masterKeyHandlerHelper(event,stroke)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2992, in masterKeyHandlerHelper
+    val = k.callStateFunction(event) # Calls end-command.
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2219, in callStateFunction
+    val = k.state.handler(event)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 348, in autoCompleterStateHandler
+    self.insertNormalChar(ch,keysym)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 856, in insertNormalChar
+    self.calltip(obj)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 455, in calltip
+    obj = getattr(string,obj.__name__)
+AttributeError: 'module' object has no attribute 'startswith'
+
+================================================
+  Event contents:
+    char: (
+    delta: 57
+    height: ??
+    keycode: 57
+    keysym: parenleft
+    keysym_num: 40
+    num: ??
+    serial: 120644
+    state: 1
+    time: 16118166
+    type: 2
+    widget: .20658096.20658616.23344872.23344992.body-pane
+    width: ??
+    x: 562
+    x_root: 740
+    y: 38
+    y_root: 732
+
+selfInsertCommand: '\n'
+selfInsertCommand: '\n'
+AttributeError Exception in Tk callback
+  Function: &lt;function bindKeyCallback at 0x016F2E70&gt; (type: &lt;type 'function'&gt;)
+  Args: (&lt;Tkinter.Event instance at 0x03289C88&gt;,)
+  Event type: KeyPress (type num: 2)
+Traceback (innermost last):
+  File "C:\prog\leoCVS\leo\extensions\Pmw\Pmw_1_2\lib\PmwBase.py", line 1752, in __call__
+    return apply(self.func, args)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2002, in bindKeyCallback
+    return k.masterKeyHandler(event,stroke=stroke)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2928, in masterKeyHandler
+    val = self.masterKeyHandlerHelper(event,stroke)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2992, in masterKeyHandlerHelper
+    val = k.callStateFunction(event) # Calls end-command.
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2219, in callStateFunction
+    val = k.state.handler(event)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 348, in autoCompleterStateHandler
+    self.insertNormalChar(ch,keysym)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 856, in insertNormalChar
+    self.calltip(obj)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 455, in calltip
+    obj = getattr(string,obj.__name__)
+AttributeError: 'module' object has no attribute 'endswith'
+
+================================================
+  Event contents:
+    char: (
+    delta: 57
+    height: ??
+    keycode: 57
+    keysym: parenleft
+    keysym_num: 40
+    num: ??
+    serial: 123470
+    state: 1
+    time: 16173496
+    type: 2
+    widget: .20658096.20658616.23344872.23344992.body-pane
+    width: ??
+    x: 324
+    x_root: 502
+    y: 95
+    y_root: 789
+
+</t>
+<t tx="ekr.20060410112600.2"></t>
+<t tx="ekr.20060411095710"></t>
+<t tx="ekr.20060411101844">leoID = ekr (in c:\Documents and Settings\Ed)
+reading settings in C:\prog\tigris-cvs\leo\config\leoSettings.leo
+reading settings in C:\prog\tigris-cvs\leo\test\unitTest.leo
+rst3 plugin: SilverCity not loaded
+Registered unit-test-command1
+found  3 doctests for leoGlobals
+found  1 doctests for leoTest
+found  5 test routines for leoAtFile
+found  4 test routines for leoEditCommands
+found  1 test routine for leoFileCommands
+found 14 test routines for leoGlobals
+EKR: reportlab.__init__
+found  5 test routines for multifile
+..F.
+End of doctests
+..........OSError: [Errno 2] No such file or directory: 'xyzzy'
+
+......
+test of es_print: ─é
+.es_trace:
+test of es_trace: ─é
+........
+End of test routines
+..leoID = ekr (in c:\Documents and Settings\Ed)
+leoID = ekr (in c:\Documents and Settings\Ed)
+...............................................Registered test-registerCommand bound to &lt;Alt+Ctrl+Shift+Z&gt;
+...............................
+End of new find tests
+.............................................
+End of tests of @file nodes
+.................................
+End of general unit tests
+....
+End of commands tests
+.............................F..........................................................................................
+..................
+opening a new window to test more plugin logic
+
+.........................................................................................................
+======================================================================
+FAIL: Doctest: leoGlobals.mulderUpdateAlgorithm.stripWhitespaceFromBlankLines
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\python24\lib\doctest.py", line 2152, in runTest
+    raise self.failureException(self.format_failure(new.getvalue()))
+AssertionError: Failed doctest test for leoGlobals.mulderUpdateAlgorithm.stripWhitespaceFromBlankLines
+  File "c:\prog\tigris-cvs\leo\src\leoGlobals.py", line 4774, in stripWhitespaceFromBlankLines
+
+----------------------------------------------------------------------
+File "c:\prog\tigris-cvs\leo\src\leoGlobals.py", line 4782, in leoGlobals.mulderUpdateAlgorithm.stripWhitespaceFromBlank
+Lines
+Failed example:
+    g.mulderUpdateAlgorithm().stripWhitespaceFromBlankLines(theLines)
+Expected:
+    ['a\n', '\n', '\n', 'b']
+Got:
+    ['a\n', '', '', 'b']
+
+
+======================================================================
+FAIL: @test line endings of Linux scripts
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 155, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 20, in ?
+  File "&lt;string&gt;", line 14, in checkLinuxLineEndings
+AssertionError: Bad Linux line ending in C:\prog\tigris-cvs\leo\src\..\install: cr: 156, nl: 156
+
+----------------------------------------------------------------------
+Ran 434 tests in 179.829s
+
+FAILED (failures=2)
+&gt;&gt;&gt;</t>
 </tnodes>
 </leo_file>
