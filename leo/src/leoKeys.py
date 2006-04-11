@@ -449,7 +449,7 @@ class autoCompleterClass:
             
             # g.trace(self.prevObjects)
             
-            if isStringMethod:
+            if isStringMethod and hasattr(string,obj.__name__):
                 # A hack. String functions are builtins, and getargspec doesn't handle them.
                 # Get the corresponding string function instead, and remove the s arg later.
                 obj = getattr(string,obj.__name__)

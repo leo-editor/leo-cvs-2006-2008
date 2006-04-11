@@ -8246,6 +8246,199 @@ def _executeMacro (self,macro,w):
 #@-node:ekr.20050920084036.203:_executeMacro (revise)
 #@-node:ekr.20060410112600.2:Found: rstrip
 #@-node:ekr.20060410091659:Removed lstrip and rstrip for compatibility with Python 2.2.1
+#@+node:ekr.20060410112600.1:Fixed crash in string.startswith and string.endswith
+leoID = ekr (in c:\Documents and Settings\Ed)
+reading settings in C:\prog\leoCVS\leo\config\leoSettings.leo
+reading settings in C:\prog\leoCVS\leo\src\LeoPy.leo
+rst3 plugin: SilverCity not loaded
+AttributeError Exception in Tk callback
+  Function: <function bindKeyCallback at 0x016F2E70> (type: <type 'function'>)
+  Args: (<Tkinter.Event instance at 0x03510288>,)
+  Event type: KeyPress (type num: 2)
+Traceback (innermost last):
+  File "C:\prog\leoCVS\leo\extensions\Pmw\Pmw_1_2\lib\PmwBase.py", line 1752, in __call__
+    return apply(self.func, args)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2002, in bindKeyCallback
+    return k.masterKeyHandler(event,stroke=stroke)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2928, in masterKeyHandler
+    val = self.masterKeyHandlerHelper(event,stroke)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2992, in masterKeyHandlerHelper
+    val = k.callStateFunction(event) # Calls end-command.
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2219, in callStateFunction
+    val = k.state.handler(event)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 348, in autoCompleterStateHandler
+    self.insertNormalChar(ch,keysym)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 856, in insertNormalChar
+    self.calltip(obj)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 455, in calltip
+    obj = getattr(string,obj.__name__)
+AttributeError: 'module' object has no attribute 'startswith'
+
+================================================
+  Event contents:
+    char: (
+    delta: 57
+    height: ??
+    keycode: 57
+    keysym: parenleft
+    keysym_num: 40
+    num: ??
+    serial: 120644
+    state: 1
+    time: 16118166
+    type: 2
+    widget: .20658096.20658616.23344872.23344992.body-pane
+    width: ??
+    x: 562
+    x_root: 740
+    y: 38
+    y_root: 732
+
+selfInsertCommand: '\n'
+selfInsertCommand: '\n'
+AttributeError Exception in Tk callback
+  Function: <function bindKeyCallback at 0x016F2E70> (type: <type 'function'>)
+  Args: (<Tkinter.Event instance at 0x03289C88>,)
+  Event type: KeyPress (type num: 2)
+Traceback (innermost last):
+  File "C:\prog\leoCVS\leo\extensions\Pmw\Pmw_1_2\lib\PmwBase.py", line 1752, in __call__
+    return apply(self.func, args)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2002, in bindKeyCallback
+    return k.masterKeyHandler(event,stroke=stroke)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2928, in masterKeyHandler
+    val = self.masterKeyHandlerHelper(event,stroke)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2992, in masterKeyHandlerHelper
+    val = k.callStateFunction(event) # Calls end-command.
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2219, in callStateFunction
+    val = k.state.handler(event)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 348, in autoCompleterStateHandler
+    self.insertNormalChar(ch,keysym)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 856, in insertNormalChar
+    self.calltip(obj)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 455, in calltip
+    obj = getattr(string,obj.__name__)
+AttributeError: 'module' object has no attribute 'endswith'
+
+================================================
+  Event contents:
+    char: (
+    delta: 57
+    height: ??
+    keycode: 57
+    keysym: parenleft
+    keysym_num: 40
+    num: ??
+    serial: 123470
+    state: 1
+    time: 16173496
+    type: 2
+    widget: .20658096.20658616.23344872.23344992.body-pane
+    width: ??
+    x: 324
+    x_root: 502
+    y: 95
+    y_root: 789
+
+#@+node:ekr.20060220110302:calltip
+def calltip (self,obj=None):
+    
+    c = self.c ; w = self.widget
+    isStringMethod = False ; s = None
+    # g.trace(self.leadinWord,obj)
+
+    if self.leadinWord and (not obj or type(obj) == types.BuiltinFunctionType):
+        << try to set s from a Python global function >>
+
+    if not s:
+        << get s using inspect >>
+        
+    << remove 'self' from s, but not from args >>
+    if isStringMethod:
+        << remove 's' from s *and* args >>
+
+    s = s.rstrip(')') # Convenient.
+    << insert the text and set j1 and j2 >>
+
+    # End autocompletion mode, restoring the selection.
+    self.finish()
+    c.widgetWantsFocusNow(w)
+    g.app.gui.setSelectionRange(w,j1,j2,insert=j2)
+    << put the status line >>
+#@+node:ekr.20060224103829:<< try to set s from a Python global function >>
+# The first line of the docstring is good enough, except for classes.
+f = __builtins__.get(self.leadinWord)
+doc = f and type(f) != types.ClassType and f.__doc__
+if doc:
+    s = g.splitLines(doc)
+    s = args = s and s [0] or ''
+    i = s.find('(')
+    if i > -1: s = s [i:]
+    s = s and s.strip() or ''
+#@nonl
+#@-node:ekr.20060224103829:<< try to set s from a Python global function >>
+#@+node:ekr.20060224103829.1:<< get s using inspect >>
+isStringMethod = self.prevObjects and type(self.prevObjects[-1]) == types.StringType
+
+# g.trace(self.prevObjects)
+
+if isStringMethod and hasattr(string,obj.__name__):
+    # A hack. String functions are builtins, and getargspec doesn't handle them.
+    # Get the corresponding string function instead, and remove the s arg later.
+    obj = getattr(string,obj.__name__)
+
+try:
+    s1,s2,s3,s4 = inspect.getargspec(obj)
+except:
+    # g.es('inspect failed:',repr(obj))
+    self.extendSelection('(')
+    self.finish()
+    return # Not a function.  Just '('.
+
+s = args = inspect.formatargspec(s1,s2,s3,s4)
+#@nonl
+#@-node:ekr.20060224103829.1:<< get s using inspect >>
+#@+node:ekr.20060224103829.2:<< remove 'self' from s, but not from args >>
+if g.match(s,1,'self,'):
+    s = s[0] + s[6:].strip()
+elif g.match_word(s,1,'self'):
+    s = s[0] + s[5:].strip()
+#@nonl
+#@-node:ekr.20060224103829.2:<< remove 'self' from s, but not from args >>
+#@+node:ekr.20060224103829.3:<< remove 's' from s *and* args >>
+if g.match(s,1,'s,'):
+    s = s[0] + s[3:]
+    args = args[0] + args[3:]
+elif g.match_word(s,1,'s'):
+    s = s[0] + s[2:]
+    args = args[0] + args[2:]
+#@nonl
+#@-node:ekr.20060224103829.3:<< remove 's' from s *and* args >>
+#@+node:ekr.20060224103829.4:<< insert the text and set j1 and j2 >>
+if g.app.gui.hasSelection(w):
+    i,j = g.app.gui.getSelectionRange(w)
+else:
+    i = j = g.app.gui.getInsertPoint(w)
+w.insert(j,s)
+c.frame.body.onBodyChanged('Typing')
+
+if 1:
+    j1 = w.index('%s + 1c' % j)
+    j2 = w.index('%s + %sc' % (j,len(s)))
+else:
+    j1 = j2 = w.index('%s + 2c' % j)
+#@nonl
+#@-node:ekr.20060224103829.4:<< insert the text and set j1 and j2 >>
+#@+node:ekr.20060224103829.5:<< put the status line >>
+c.frame.clearStatusLine()
+if obj:
+    name = hasattr(obj,'__name__') and obj.__name__ or repr(obj)
+else:
+    name = self.leadinWord
+c.frame.putStatusLine('%s %s' % (name,args))
+#@nonl
+#@-node:ekr.20060224103829.5:<< put the status line >>
+#@-node:ekr.20060220110302:calltip
+#@-node:ekr.20060410112600.1:Fixed crash in string.startswith and string.endswith
 #@-node:ekr.20060323131536.1:Bugs
 #@+node:ekr.20060323140748:Plugins
 #@+node:ekr.20060301182319:Support for chapters plugin
