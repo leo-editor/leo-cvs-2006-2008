@@ -41,7 +41,7 @@
 <v t="ekr.20050819055746"><vh>@button Save</vh></v>
 <v t="ekr.20050722075812"><vh>Remove blank trailing lines</vh></v>
 </v>
-<v t="edream.110203113231.618" a="V"><vh>Plugins</vh>
+<v t="edream.110203113231.618"><vh>Plugins</vh>
 <v t="EKR.20040517090508"><vh>  Enable plugins by changing pluginsManager.txt or using plugin_manager plugin</vh>
 <v t="edream.120603093808"><vh>@thin pluginsManager.txt</vh></v>
 </v>
@@ -1133,6 +1133,173 @@ marks="ekr.20050809082854.1,"><vh>@thin rst3.py</vh></v>
 </v>
 <v t="ekr.20050830091910"><vh>Zodb</vh>
 <v t="ekr.20050825154553"><vh>@thin zodb.py</vh></v>
+</v>
+</v>
+<v t="ekr.20050329082101" a="EV"><vh>AutoTrees</vh>
+<v t="ekr.20050329082101.1"><vh>AutoTrees plugin</vh>
+<v t="ekr.20050329082101.2"><vh>Introduction</vh></v>
+<v t="ekr.20050329082101.3"><vh>Why use this?</vh></v>
+<v t="ekr.20050329082101.4"><vh>Details</vh></v>
+<v t="ekr.20050329082101.5"><vh>How do I create my own handlers?</vh></v>
+</v>
+<v t="ekr.20050329082101.6" annotate="7d71002e"><vh>Example handlers</vh>
+<v t="ekr.20050329082101.7"><vh>Testing</vh>
+<v t="ekr.20050329082101.8" annotate="7d71002e"><vh>@auto-test something</vh>
+<v t="ekr.20050329082101.9"><vh>one</vh></v>
+<v t="ekr.20050329082101.10"><vh>two</vh></v>
+<v t="ekr.20050329082101.11"><vh>three</vh>
+<v t="ekr.20050329082101.12"><vh>three-one</vh></v>
+<v t="ekr.20050329082101.13"><vh>three-two</vh></v>
+<v t="ekr.20050329082101.14"><vh>three-three</vh></v>
+</v>
+</v>
+</v>
+<v t="ekr.20050329082101.15"><vh>RSS</vh>
+<v t="ekr.20050329082101.16"><vh>@auto-rss http://news.bbc.co.uk/rss/newsonline_uk_edition/world/rss091.xml</vh>
+<v t="ekr.20050329092553"><vh>Hundreds die in Indonesia quake</vh></v>
+<v t="ekr.20050329092553.1"><vh>Ousted Kyrgyz president defiant</vh></v>
+<v t="ekr.20050329092553.2"><vh>Hair 'good source of stem cells'</vh></v>
+<v t="ekr.20050329092553.3"><vh>Ashdown sacks top Bosnian Croat</vh></v>
+<v t="ekr.20050329092553.4"><vh>Splits paralyse Iraqi parliament</vh></v>
+<v t="ekr.20050329092553.5"><vh>Mongolians protest for new poll</vh></v>
+<v t="ekr.20050329092553.6"><vh>Libya's Bulgarian medics appeal</vh></v>
+<v t="ekr.20050329092553.7"><vh>Schiavo rivals 'agree to autopsy'</vh></v>
+<v t="ekr.20050329092553.8"><vh>Would-be sex tourist, 87, jailed</vh></v>
+<v t="ekr.20050329092553.9"><vh>Golf: Funk claims Players title</vh></v>
+<v t="ekr.20050329092553.10"><vh>Cricket: Series win for Aussies</vh></v>
+<v t="ekr.20050329092553.11"><vh>Angola says virus 'under control'</vh></v>
+<v t="ekr.20050329092553.12"><vh>Mugabe criticises MDC 'traitors'</vh></v>
+<v t="ekr.20050329092553.13"><vh>Ex-US diplomats round on Bolton</vh></v>
+<v t="ekr.20050329092553.14"><vh>Brazil quits loan accord with IMF</vh></v>
+<v t="ekr.20050329092553.15"><vh>Japanese economy hit by weak data</vh></v>
+<v t="ekr.20050329092553.16"><vh>Donors pledge $40m for KR trials</vh></v>
+<v t="ekr.20050329092553.17"><vh>Three Romanians missing in Iraq</vh></v>
+<v t="ekr.20050329092553.18"><vh>Wolfowitz 'to meet EU officials'</vh></v>
+<v t="ekr.20050329092553.19"><vh>Knesset rejects Gaza referendum</vh></v>
+<v t="ekr.20050329092553.20"><vh>Militants to attend PLO meeting</vh></v>
+<v t="ekr.20050329092553.21"><vh>South Asia cancels tsunami alerts</vh></v>
+<v t="ekr.20050329092553.22"><vh>Devastation as Afghan dam bursts</vh></v>
+<v t="ekr.20050329092553.23"><vh>Kyrgyzstan's friendly revolution</vh></v>
+</v>
+<v t="ekr.20050329082101.40" annotate="7d71002e"><vh>@auto-rss http://slashdot.org/index.rss</vh>
+<v t="ekr.20050329092553.24"><vh>Followup on MS and Brazil in NY Times</vh></v>
+<v t="ekr.20050329092553.25"><vh>A9.com with Syndicated Search</vh></v>
+<v t="ekr.20050329092553.26"><vh>What's Next At Apple</vh></v>
+<v t="ekr.20050329092553.27"><vh>Berkeley Grads' Identity Data Stolen</vh></v>
+<v t="ekr.20050329092553.28"><vh>South Korean Gov't. Advocates Linux</vh></v>
+<v t="ekr.20050329092553.29"><vh>MS, EU Agree on Name for Windows Sans Media Player</vh></v>
+<v t="ekr.20050329092553.30"><vh>Blackbox (Finally) Updated</vh></v>
+<v t="ekr.20050329092553.31"><vh>Your Face On the Big Screen</vh></v>
+<v t="ekr.20050329092553.32"><vh>Ars Technica Builds Make Magazine's Steadicam</vh></v>
+<v t="ekr.20050329092553.33"><vh>New Photovoltaics Made with Titanium Foil</vh></v>
+</v>
+<v t="ekr.20050329082101.51"><vh>@auto-rss http://www.python.org/channews.rdf</vh>
+<v t="ekr.20050329082101.52"><vh>Python 2.4.1 (release candidate 1)</vh></v>
+<v t="ekr.20050329082101.53"><vh>Greg Stein, of Google and Apache Software Foundation, to deliver keynote at PyCon</vh></v>
+<v t="ekr.20050329082101.54"><vh>New RSS feed for python-dev summaries</vh></v>
+<v t="ekr.20050329082101.55"><vh>Guido van Rossum speaking in Palo Alto</vh></v>
+<v t="ekr.20050329082101.56"><vh>Python 2.3.5 (final)</vh></v>
+<v t="ekr.20050329082101.57"><vh>Security advisory for SimpleXMLRPCServer.py.</vh></v>
+<v t="ekr.20050329082101.58"><vh>Deadline for OSCON proposals</vh></v>
+<v t="ekr.20050329082101.59"><vh>PyCon abstracts now available</vh></v>
+<v t="ekr.20050329082101.60"><vh>PyCon preliminary schedule now available</vh></v>
+<v t="ekr.20050329082101.61"><vh>PSF has awarded three grants</vh></v>
+<v t="ekr.20050329082101.62"><vh>Python for Nokia Series 60 now available</vh></v>
+<v t="ekr.20050329082101.63"><vh>Python 2.4 (final)</vh></v>
+<v t="ekr.20050329082101.64"><vh>PyZine issue 7</vh></v>
+<v t="ekr.20050329082101.65"><vh>PyCon 2005 Call for Proposals</vh></v>
+<v t="ekr.20050329082101.66"><vh>Cameron Laird receives the Frank Willison Award</vh></v>
+</v>
+</v>
+<v t="ekr.20050329082101.67"><vh>Remote</vh>
+<v t="ekr.20050329082101.68"><vh>@auto-remote http://www.bbc.co.uk/news.html</vh></v>
+</v>
+<v t="ekr.20050329082101.69"><vh>Documentation</vh>
+<v t="ekr.20050329082101.70"><vh>@auto-doc docutils.core</vh>
+<v t="ekr.20050329082101.71"><vh>Component</vh>
+<v t="ekr.20050329082101.72"><vh>component_type</vh></v>
+<v t="ekr.20050329082101.73"><vh>default_transforms</vh></v>
+<v t="ekr.20050329082101.74"><vh>supports</vh></v>
+</v>
+<v t="ekr.20050329082101.75"><vh>ConfigParser</vh>
+<v t="ekr.20050329082101.76"><vh>OPTCRE</vh></v>
+<v t="ekr.20050329082101.77"><vh>SECTCRE</vh></v>
+<v t="ekr.20050329082101.78"><vh>add_section</vh></v>
+<v t="ekr.20050329082101.79"><vh>standard_config_files</vh></v>
+<v t="ekr.20050329082101.80"><vh>validation</vh></v>
+</v>
+<v t="ekr.20050329082101.81"><vh>OptionParser</vh>
+<v t="ekr.20050329082101.82"><vh>default_error_encoding_error_handler</vh></v>
+<v t="ekr.20050329082101.83"><vh>relative_path_settings</vh></v>
+<v t="ekr.20050329082101.84"><vh>settings_defaults</vh></v>
+<v t="ekr.20050329082101.85"><vh>settings_spec</vh></v>
+<v t="ekr.20050329082101.86"><vh>standard_option_list</vh></v>
+<v t="ekr.20050329082101.87"><vh>threshold_choices</vh></v>
+<v t="ekr.20050329082101.88"><vh>thresholds</vh></v>
+<v t="ekr.20050329082101.89"><vh>version_template</vh></v>
+</v>
+<v t="ekr.20050329082101.90"><vh>Publisher</vh></v>
+<v t="ekr.20050329082101.91"><vh>default_description</vh></v>
+<v t="ekr.20050329082101.92"><vh>default_usage</vh></v>
+<v t="ekr.20050329082101.93"><vh>frontend</vh></v>
+<v t="ekr.20050329082101.94"><vh>io</vh></v>
+<v t="ekr.20050329082101.95"><vh>parsers</vh></v>
+<v t="ekr.20050329082101.96"><vh>publish_cmdline</vh></v>
+<v t="ekr.20050329082101.97"><vh>publish_file</vh></v>
+<v t="ekr.20050329082101.98"><vh>publish_string</vh></v>
+<v t="ekr.20050329082101.99"><vh>readers</vh></v>
+<v t="ekr.20050329082101.100"><vh>sys</vh></v>
+<v t="ekr.20050329082101.101"><vh>writers</vh></v>
+</v>
+</v>
+<v t="ekr.20050329082101.102"><vh>News Reader</vh>
+<v t="ekr.20050329082101.103"><vh>@auto-news news-server.houston.rr.com/comp.lang.python</vh>
+<v t="ekr.20050329082101.104"><vh>@auto-newsitem 356970 - Easy way to check modules for python version compatibility?</vh></v>
+<v t="ekr.20050329082101.105"><vh>@auto-newsitem 356972 - Q: Module Shared Data</vh></v>
+<v t="ekr.20050329082101.106"><vh>@auto-newsitem 356978 - Re: __contains__ inconsistencies between Python 2.2 and 2.3</vh></v>
+<v t="ekr.20050329082101.107"><vh>@auto-newsitem 356979 - Re: [Numeric] column vector faster than row vector in mat multiply?</vh></v>
+<v t="ekr.20050329082101.108"><vh>@auto-newsitem 356986 - Python 2.4 removes None data type?</vh></v>
+<v t="ekr.20050329082101.109"><vh>@auto-newsitem 356987 - Re: Integer From A Float List?!?</vh></v>
+<v t="ekr.20050329082101.110"><vh>@auto-newsitem 356988 - Suspicious header</vh></v>
+<v t="ekr.20050329082101.111"><vh>@auto-newsitem 356991 - Re: Suspicious header</vh></v>
+<v t="ekr.20050329082101.112"><vh>@auto-newsitem 356992 - survey</vh></v>
+<v t="ekr.20050329082101.113"><vh>@auto-newsitem 356993 - Re: Python 2.4 removes None data type?</vh></v>
+</v>
+</v>
+</v>
+<v t="ekr.20050329082101.114"><vh>AutoTrees Code</vh>
+<v t="ekr.20050329082101.115"><vh>@thin autotrees.py</vh></v>
+<v t="ekr.20050329082101.145"><vh>@--thin trees\pluginsManager.txt</vh></v>
+<v t="ekr.20050329082101.146"><vh>Example tree handlers</vh>
+<v t="ekr.20050329082101.147"><vh>@--thin trees\test.py</vh>
+<v t="ekr.20050329082101.148"><vh>&lt;&lt; docstring &gt;&gt;</vh></v>
+<v t="ekr.20050329082101.149"><vh>&lt;&lt; version history &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20050329082101.150"><vh>@--thin trees\rss.py</vh>
+<v t="ekr.20050329082101.151"><vh>&lt;&lt; docstring &gt;&gt;</vh></v>
+<v t="ekr.20050329082101.152"><vh>&lt;&lt; version history &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20050329082101.153"><vh>@--thin trees\news.py</vh>
+<v t="ekr.20050329082101.154"><vh>&lt;&lt; docstring &gt;&gt;</vh></v>
+<v t="ekr.20050329082101.155"><vh>&lt;&lt; version history &gt;&gt;</vh></v>
+<v t="ekr.20050329082101.156"><vh>Error Classes</vh></v>
+<v t="ekr.20050329082101.157"><vh>getConnection</vh></v>
+<v t="ekr.20050329082101.158"><vh>class News</vh>
+<v t="ekr.20050329082101.159"><vh>initFrom</vh></v>
+</v>
+<v t="ekr.20050329082101.160"><vh>class NewsItem</vh>
+<v t="ekr.20050329082101.161"><vh>initFrom</vh></v>
+</v>
+</v>
+<v t="ekr.20050329082101.162"><vh>@--thin trees\remote.py</vh>
+<v t="ekr.20050329082101.163"><vh>&lt;&lt; docstring &gt;&gt;</vh></v>
+<v t="ekr.20050329082101.164"><vh>&lt;&lt; version history &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20050329082101.165"><vh>@--thin trees\doc.py</vh>
+<v t="ekr.20050329082101.166"><vh>&lt;&lt; docstring &gt;&gt;</vh></v>
+<v t="ekr.20050329082101.167"><vh>&lt;&lt; version history &gt;&gt;</vh></v>
+</v>
+</v>
 </v>
 </v>
 </vnodes>
