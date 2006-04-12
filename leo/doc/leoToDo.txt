@@ -56,7 +56,9 @@ def selfInsertCommand(self,event,action='insert'):
 #@+node:ekr.20051026171121:<< handle newline >>
 i,j = oldSel
 
-g.trace(repr(ch))
+if sys.platform == 'darwin':
+    g.trace(repr(ch))
+    ch = '\r'
 
 if i != j:
     # No auto-indent if there is selected text.
@@ -152,6 +154,8 @@ def updateTab (self,p,w):
 #@-node:ekr.20051026092433:updateTab
 #@-node:ekr.20051125080855:selfInsertCommand
 #@-node:ekr.20060408065447:modify selfInsertCommand for MacOS
+#@+node:ekr.20060411190539:Fix missing files in test.leo
+#@-node:ekr.20060411190539:Fix missing files in test.leo
 #@+node:ekr.20060411101844:Fixed failed unit tests
 leoID = ekr (in c:\Documents and Settings\Ed)
 reading settings in C:\prog\tigris-cvs\leo\config\leoSettings.leo

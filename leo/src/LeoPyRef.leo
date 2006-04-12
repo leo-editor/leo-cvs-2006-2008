@@ -483,6 +483,10 @@
 <v t="ekr.20060224103829.5"><vh>&lt;&lt; put the status line &gt;&gt;</vh></v>
 </v>
 </v>
+<v t="ekr.20060408093907"><vh>Fixed Crash after undoing clearRecentFiles command</vh>
+<v t="ekr.20060411135857"><vh>Trace</vh></v>
+<v t="ekr.20060127052111.1"><vh>cutStack</vh></v>
+</v>
 </v>
 <v t="ekr.20060323140748"><vh>Plugins</vh>
 <v t="ekr.20060301182319"><vh>Support for chapters plugin</vh>
@@ -629,7 +633,6 @@ marks="ekr.20040629121554.2,"><vh>@thin leoCommands.py</vh></v>
 <v t="ekr.20031218072017.3439"><vh>@thin leoPlugins.py</vh></v>
 <v t="ekr.20031218072017.3446"><vh>@thin leoTangle.py</vh></v>
 <v t="ekr.20051104075904" annotate="7d71002e"><vh>@thin leoTest.py</vh></v>
-<v t="ekr.20031218072017.3603"><vh>@thin leoUndo.py</vh></v>
 </v>
 <v t="ekr.20031218072017.3625"><vh>Gui Base classes</vh>
 <v t="ekr.20050721093241"><vh>&lt;&lt; about gui classes and gui plugins &gt;&gt;</vh></v>
@@ -652,8 +655,8 @@ marks="ekr.20040629121554.2,"><vh>@thin leoCommands.py</vh></v>
 <v t="ekr.20031218072017.3748"><vh>@thin leoKeys.py</vh></v>
 <v t="ekr.20050710142719"><vh>@thin leoEditCommands.py</vh></v>
 </v>
-<v t="ekr.20060411095710" a="EV"><vh>To do 4.4 b3</vh>
-<v t="ekr.20060408093907"><vh>Crash after clearRecentFiles command</vh></v>
+<v t="ekr.20031218072017.3603"><vh>@thin leoUndo.py</vh></v>
+<v t="ekr.20060411095710"><vh>To do 4.4 b3</vh>
 <v t="ekr.20060408065447"><vh>modify selfInsertCommand for MacOS</vh>
 <v t="ekr.20051125080855"><vh>selfInsertCommand</vh>
 <v t="ekr.20051026171121"><vh>&lt;&lt; handle newline &gt;&gt;</vh></v>
@@ -662,7 +665,16 @@ marks="ekr.20040629121554.2,"><vh>@thin leoCommands.py</vh></v>
 <v t="ekr.20051026092433"><vh>updateTab</vh></v>
 </v>
 </v>
+<v t="ekr.20060411190539"><vh>Fix missing files in test.leo</vh></v>
 <v t="ekr.20060411101844"><vh>Fixed failed unit tests</vh></v>
+</v>
+<v t="ekr.20060408065447" a="E"><vh>modify selfInsertCommand for MacOS</vh>
+<v t="ekr.20051125080855" a="V"><vh>selfInsertCommand</vh>
+<v t="ekr.20051026171121"><vh>&lt;&lt; handle newline &gt;&gt;</vh></v>
+<v t="ekr.20051027172949"><vh>updateAutomatchBracket</vh></v>
+<v t="ekr.20051026171121.1"><vh>udpateAutoIndent</vh></v>
+<v t="ekr.20051026092433"><vh>updateTab</vh></v>
+</v>
 </v>
 </vnodes>
 <tnodes>
@@ -5938,7 +5950,9 @@ def removeTrailingNewlines (self,old,new,ch):
         return True</t>
 <t tx="ekr.20051026171121">i,j = oldSel
 
-g.trace(repr(ch))
+if sys.platform == 'darwin':
+    g.trace(repr(ch))
+    ch = '\r'
 
 if i != j:
     # No auto-indent if there is selected text.
@@ -6214,6 +6228,25 @@ remove-tab-from lines   Removes a space from start of all selected lines.</t>
 <t tx="ekr.20060122194643"></t>
 <t tx="ekr.20060123091352"></t>
 <t tx="ekr.20060123095316">Useful, e.g., after a find.</t>
+<t tx="ekr.20060127052111.1">def cutStack (self):
+    
+    u = self ; n = u.max_undo_stack_size
+
+    if n &gt; 0 and u.bead &gt;= n and not g.app.unitTesting:
+        
+        # Do nothing if we are in the middle of creating a group.
+        i = len(u.beads)-1
+        while i &gt;= 0:
+            bunch = u.beads[i]
+            if hasattr(bunch,'kind') and bunch.kind == 'beforeGroup':
+                return
+            i -= 1
+
+        # This work regardless of how many items appear after bead n.
+        # g.trace('Cutting undo stack to %d entries' % (n))
+        u.beads = u.beads[-n:]
+        u.bead = n-1
+        # g.trace('bead:',u.bead,'len(u.beads)',len(u.beads))</t>
 <t tx="ekr.20060127183752">master_key_count = 0
 
 def masterKeyHandler (self,event,stroke=None):
@@ -7328,21 +7361,7 @@ def get_window_info (top):
     return w,h,x,y</t>
 <t tx="ekr.20060329090924"></t>
 <t tx="ekr.20060408065447"></t>
-<t tx="ekr.20060408093907">exception executing command
-Traceback (most recent call last):
-  File "C:\prog\leoCVS\leo\src\leoCommands.py", line 264, in doCommand
-    val = command(event)
-  File "C:\prog\leoCVS\leo\src\leoCommands.py", line 884, in clearRecentFiles
-    u.afterClearRecentFiles(bunch)
-  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 621, in afterClearRecentFiles
-    u.pushBead(bunch)
-  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 192, in pushBead
-    u.setUndoTypes()
-  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 341, in setUndoTypes
-    u.cutStack()
-  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 136, in cutStack
-    if bunch.kind == 'beforeGroup':
-AttributeError: 'Bunch' object has no attribute 'kind'</t>
+<t tx="ekr.20060408093907"></t>
 <t tx="ekr.20060410091659">@nocolor
 http://sourceforge.net/forum/message.php?msg_id=3671350
 
@@ -7528,5 +7547,22 @@ Ran 434 tests in 179.829s
 
 FAILED (failures=2)
 &gt;&gt;&gt;</t>
+<t tx="ekr.20060411135857">exception executing command
+Traceback (most recent call last):
+  File "C:\prog\leoCVS\leo\src\leoCommands.py", line 264, in doCommand
+    val = command(event)
+  File "C:\prog\leoCVS\leo\src\leoCommands.py", line 884, in clearRecentFiles
+    u.afterClearRecentFiles(bunch)
+  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 621, in afterClearRecentFiles
+    u.pushBead(bunch)
+  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 192, in pushBead
+    u.setUndoTypes()
+  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 341, in setUndoTypes
+    u.cutStack()
+  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 136, in cutStack
+    if bunch.kind == 'beforeGroup':
+AttributeError: 'Bunch' object has no attribute 'kind'
+</t>
+<t tx="ekr.20060411190539"></t>
 </tnodes>
 </leo_file>
