@@ -4784,7 +4784,10 @@ class mulderUpdateAlgorithm:
         """
     
         for i in xrange(len(lines)):
-            stripped_line = lines[i].lstrip() # Was lstrip(" \t"), but that is redundant and does not work with Python 2.2.1.
+            # stripped_line = lines[i].lstrip(" \t") # lstrip does not exist in python 2.2.1.
+            stripped_line = lines[i]
+            while stripped_line and stripped_line[0] in (' ','\t'):
+                stripped_line = stripped_line [1:]
             if stripped_line in ('\n',''):
                 lines[i] = stripped_line
                 
