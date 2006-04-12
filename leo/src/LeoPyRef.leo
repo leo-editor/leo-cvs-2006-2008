@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="9381" clone_windows="0"/>
 <globals body_outline_ratio="0.715460526316">
-	<global_window_position top="17" left="166" height="922" width="1086"/>
+	<global_window_position top="9" left="108" height="922" width="1086"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -487,6 +487,18 @@
 <v t="ekr.20060411135857"><vh>Trace</vh></v>
 <v t="ekr.20060127052111.1"><vh>cutStack</vh></v>
 </v>
+<v t="ekr.20060408065447"><vh>fixed? newline problem on MacOS</vh>
+<v t="ekr.20050920084036.138"><vh>insertNewLine (not undoable)</vh></v>
+<v t="ekr.20051125080855"><vh>selfInsertCommand</vh>
+<v t="ekr.20051026171121"><vh>&lt;&lt; handle newline &gt;&gt;</vh></v>
+<v t="ekr.20051027172949"><vh>updateAutomatchBracket</vh></v>
+<v t="ekr.20051026171121.1"><vh>udpateAutoIndent</vh></v>
+<v t="ekr.20051026092433"><vh>updateTab</vh></v>
+</v>
+</v>
+<v t="ekr.20060411101844"><vh>Fixed failed unit tests</vh>
+<v t="ekr.20040718101315"><vh>stripWhitespaceFromBlankLines(before_lines)</vh></v>
+</v>
 </v>
 <v t="ekr.20060323140748"><vh>Plugins</vh>
 <v t="ekr.20060301182319"><vh>Support for chapters plugin</vh>
@@ -577,8 +589,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060226131603"><vh>To do 4.4 b4</vh>
-<v t="ekr.20060220155313"><vh>Script: update-leo-settings-file</vh></v>
+<v t="ekr.20060226131603" a="V"><vh>To do 4.4 b4 or final</vh>
 <v t="ekr.20060210140415"><vh>Most important 10</vh>
 <v t="ekr.20060307074302.1"><vh>set-change-text command should work when entering find text.</vh></v>
 <v t="ekr.20060122183544"><vh>Improve isearch</vh></v>
@@ -633,6 +644,7 @@ marks="ekr.20040629121554.2,"><vh>@thin leoCommands.py</vh></v>
 <v t="ekr.20031218072017.3439"><vh>@thin leoPlugins.py</vh></v>
 <v t="ekr.20031218072017.3446"><vh>@thin leoTangle.py</vh></v>
 <v t="ekr.20051104075904" annotate="7d71002e"><vh>@thin leoTest.py</vh></v>
+<v t="ekr.20031218072017.3603"><vh>@thin leoUndo.py</vh></v>
 </v>
 <v t="ekr.20031218072017.3625"><vh>Gui Base classes</vh>
 <v t="ekr.20050721093241"><vh>&lt;&lt; about gui classes and gui plugins &gt;&gt;</vh></v>
@@ -654,27 +666,6 @@ marks="ekr.20040629121554.2,"><vh>@thin leoCommands.py</vh></v>
 </v>
 <v t="ekr.20031218072017.3748"><vh>@thin leoKeys.py</vh></v>
 <v t="ekr.20050710142719"><vh>@thin leoEditCommands.py</vh></v>
-</v>
-<v t="ekr.20031218072017.3603"><vh>@thin leoUndo.py</vh></v>
-<v t="ekr.20060411095710"><vh>To do 4.4 b3</vh>
-<v t="ekr.20060408065447"><vh>modify selfInsertCommand for MacOS</vh>
-<v t="ekr.20051125080855"><vh>selfInsertCommand</vh>
-<v t="ekr.20051026171121"><vh>&lt;&lt; handle newline &gt;&gt;</vh></v>
-<v t="ekr.20051027172949"><vh>updateAutomatchBracket</vh></v>
-<v t="ekr.20051026171121.1"><vh>udpateAutoIndent</vh></v>
-<v t="ekr.20051026092433"><vh>updateTab</vh></v>
-</v>
-</v>
-<v t="ekr.20060411190539"><vh>Fix missing files in test.leo</vh></v>
-<v t="ekr.20060411101844"><vh>Fixed failed unit tests</vh></v>
-</v>
-<v t="ekr.20060408065447" a="E"><vh>modify selfInsertCommand for MacOS</vh>
-<v t="ekr.20051125080855" a="V"><vh>selfInsertCommand</vh>
-<v t="ekr.20051026171121"><vh>&lt;&lt; handle newline &gt;&gt;</vh></v>
-<v t="ekr.20051027172949"><vh>updateAutomatchBracket</vh></v>
-<v t="ekr.20051026171121.1"><vh>udpateAutoIndent</vh></v>
-<v t="ekr.20051026092433"><vh>updateTab</vh></v>
-</v>
 </v>
 </vnodes>
 <tnodes>
@@ -3331,7 +3322,7 @@ self.putPostlog()</t>
     return c.ver[10:-1] # Strip off "(dollar)Revision" and the trailing "$"</t>
 <t tx="ekr.20040629121554.1">def getSignOnLine (self):
     c = self
-    return "Leo 4.4 a7, build %s, February 28, 2006" % c.getBuildNumber()</t>
+    return "Leo 4.4 b3, build %s, April 14, 2006" % c.getBuildNumber()</t>
 <t tx="ekr.20040629121554.2">def initVersion (self):
     c = self
     c.ver = "$Revision$" # CVS updates this.</t>
@@ -3413,7 +3404,10 @@ else: # Use plain click.
     """
 
     for i in xrange(len(lines)):
-        stripped_line = lines[i].lstrip() # Was lstrip(" \t"), but that is redundant and does not work with Python 2.2.1.
+        # stripped_line = lines[i].lstrip(" \t") # lstrip does not exist in python 2.2.1.
+        stripped_line = lines[i]
+        while stripped_line and stripped_line[0] in (' ','\t'):
+            stripped_line = stripped_line [1:]
         if stripped_line in ('\n',''):
             lines[i] = stripped_line
             
@@ -5950,10 +5944,6 @@ def removeTrailingNewlines (self,old,new,ch):
         return True</t>
 <t tx="ekr.20051026171121">i,j = oldSel
 
-if sys.platform == 'darwin':
-    g.trace(repr(ch))
-    ch = '\r'
-
 if i != j:
     # No auto-indent if there is selected text.
     w.delete(i,j)
@@ -5962,7 +5952,8 @@ else:
     w.insert(i,ch)
     if c.frame.body.colorizer.useSyntaxColoring(p) and undoType != "Change":
         # No auto-indent if in @nocolor mode or after a Change command.
-        removeTrailing = self.updateAutoIndent(p)</t>
+        removeTrailing = self.updateAutoIndent(p)
+        # g.trace(removeTrailing)</t>
 <t tx="ekr.20051026171121.1"># By David McNab:
 def updateAutoIndent (self,p):
 
@@ -6094,7 +6085,7 @@ C:\prog\leoCVS\leo\src\leoImport.py:158: No class attribute (_forcedGnxPositionL
     undoType = 'Typing'
     trace = c.config.getBool('trace_masterCommand')
     
-    if trace: g.trace(name)
+    if trace: g.trace(name,repr(ch))
     
     if g.doHook("bodykey1",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType):
         return "break" # The hook claims to have handled the event.
@@ -6119,6 +6110,7 @@ C:\prog\leoCVS\leo\src\leoImport.py:158: No class attribute (_forcedGnxPositionL
 
     # Update the text and handle undo.
     newText = g.app.gui.getAllText(w) # New in 4.4b3: converts to unicode.
+    # g.trace(repr(newText))
     w.see(w.index('insert'))
     if newText != oldText:
         c.frame.body.onBodyChanged(undoType=undoType,
@@ -6587,7 +6579,6 @@ else:
     g.app.gui.setSelectionRange(w,j1,j2,insert=j2)
     &lt;&lt; put the status line &gt;&gt;
 </t>
-<t tx="ekr.20060220155313"></t>
 <t tx="ekr.20060221141535">def completeAllBindingsForWidget (self,w):
     
     k = self
@@ -7360,7 +7351,8 @@ def get_window_info (top):
     
     return w,h,x,y</t>
 <t tx="ekr.20060329090924"></t>
-<t tx="ekr.20060408065447"></t>
+<t tx="ekr.20060408065447"># Very weird.  Things are working now, but I don't know why...
+</t>
 <t tx="ekr.20060408093907"></t>
 <t tx="ekr.20060410091659">@nocolor
 http://sourceforge.net/forum/message.php?msg_id=3671350
@@ -7471,7 +7463,6 @@ AttributeError: 'module' object has no attribute 'endswith'
 
 </t>
 <t tx="ekr.20060410112600.2"></t>
-<t tx="ekr.20060411095710"></t>
 <t tx="ekr.20060411101844">leoID = ekr (in c:\Documents and Settings\Ed)
 reading settings in C:\prog\tigris-cvs\leo\config\leoSettings.leo
 reading settings in C:\prog\tigris-cvs\leo\test\unitTest.leo
@@ -7563,6 +7554,5 @@ Traceback (most recent call last):
     if bunch.kind == 'beforeGroup':
 AttributeError: 'Bunch' object has no attribute 'kind'
 </t>
-<t tx="ekr.20060411190539"></t>
 </tnodes>
 </leo_file>

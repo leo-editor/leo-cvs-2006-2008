@@ -4347,7 +4347,7 @@ def selfInsertCommand(self,event,action='insert'):
     undoType = 'Typing'
     trace = c.config.getBool('trace_masterCommand')
     
-    if trace: g.trace(name)
+    if trace: g.trace(name,repr(ch))
     
     if g.doHook("bodykey1",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType):
         return "break" # The hook claims to have handled the event.
@@ -4372,6 +4372,7 @@ def selfInsertCommand(self,event,action='insert'):
 
     # Update the text and handle undo.
     newText = g.app.gui.getAllText(w) # New in 4.4b3: converts to unicode.
+    # g.trace(repr(newText))
     w.see(w.index('insert'))
     if newText != oldText:
         c.frame.body.onBodyChanged(undoType=undoType,
@@ -4383,10 +4384,6 @@ def selfInsertCommand(self,event,action='insert'):
 #@+node:ekr.20051026171121:<< handle newline >>
 i,j = oldSel
 
-if sys.platform == 'darwin':
-    g.trace(repr(ch))
-    ch = '\r'
-
 if i != j:
     # No auto-indent if there is selected text.
     w.delete(i,j)
@@ -4396,6 +4393,7 @@ else:
     if c.frame.body.colorizer.useSyntaxColoring(p) and undoType != "Change":
         # No auto-indent if in @nocolor mode or after a Change command.
         removeTrailing = self.updateAutoIndent(p)
+        # g.trace(removeTrailing)
 #@nonl
 #@-node:ekr.20051026171121:<< handle newline >>
 #@+node:ekr.20051027172949:updateAutomatchBracket
@@ -5087,7 +5085,7 @@ def selfInsertCommand(self,event,action='insert'):
     undoType = 'Typing'
     trace = c.config.getBool('trace_masterCommand')
     
-    if trace: g.trace(name)
+    if trace: g.trace(name,repr(ch))
     
     if g.doHook("bodykey1",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType):
         return "break" # The hook claims to have handled the event.
@@ -5112,6 +5110,7 @@ def selfInsertCommand(self,event,action='insert'):
 
     # Update the text and handle undo.
     newText = g.app.gui.getAllText(w) # New in 4.4b3: converts to unicode.
+    # g.trace(repr(newText))
     w.see(w.index('insert'))
     if newText != oldText:
         c.frame.body.onBodyChanged(undoType=undoType,
@@ -5123,10 +5122,6 @@ def selfInsertCommand(self,event,action='insert'):
 #@+node:ekr.20051026171121:<< handle newline >>
 i,j = oldSel
 
-if sys.platform == 'darwin':
-    g.trace(repr(ch))
-    ch = '\r'
-
 if i != j:
     # No auto-indent if there is selected text.
     w.delete(i,j)
@@ -5136,6 +5131,7 @@ else:
     if c.frame.body.colorizer.useSyntaxColoring(p) and undoType != "Change":
         # No auto-indent if in @nocolor mode or after a Change command.
         removeTrailing = self.updateAutoIndent(p)
+        # g.trace(removeTrailing)
 #@nonl
 #@-node:ekr.20051026171121:<< handle newline >>
 #@+node:ekr.20051027172949:updateAutomatchBracket
@@ -7312,7 +7308,10 @@ def stripWhitespaceFromBlankLines (self,lines):
     """
 
     for i in xrange(len(lines)):
-        stripped_line = lines[i].lstrip() # Was lstrip(" \t"), but that is redundant and does not work with Python 2.2.1.
+        # stripped_line = lines[i].lstrip(" \t") # lstrip does not exist in python 2.2.1.
+        stripped_line = lines[i]
+        while stripped_line and stripped_line[0] in (' ','\t'):
+            stripped_line = stripped_line [1:]
         if stripped_line in ('\n',''):
             lines[i] = stripped_line
             
@@ -8484,6 +8483,274 @@ def cutStack (self):
 #@nonl
 #@-node:ekr.20060127052111.1:cutStack
 #@-node:ekr.20060408093907:Fixed Crash after undoing clearRecentFiles command
+#@+node:ekr.20060408065447:fixed? newline problem on MacOS
+# Very weird.  Things are working now, but I don't know why...
+#@+node:ekr.20050920084036.138:insertNewLine (not undoable)
+def insertNewLine (self,event):
+
+    w = event.widget
+    wname = g.app.gui.widget_name(w)
+    
+    if not wname.startswith('head'):
+        w.insert('insert','\n')
+
+insertNewline = insertNewLine
+#@nonl
+#@-node:ekr.20050920084036.138:insertNewLine (not undoable)
+#@+node:ekr.20051125080855:selfInsertCommand
+def selfInsertCommand(self,event,action='insert'):
+    
+    '''Insert a character in the body pane.
+    
+    This is the default binding for all keys in the body pane.'''
+    
+    c = self.c ; p = c.currentPosition()
+    ch = event and event.char or ''
+    w = event and event.widget
+    name = c.widget_name(w)
+    oldSel =  name.startswith('body') and g.app.gui.getTextSelection(w)
+    oldText = name.startswith('body') and p.bodyString()
+    removeTrailing = None # A signal to compute it later.
+    undoType = 'Typing'
+    trace = c.config.getBool('trace_masterCommand')
+    
+    if trace: g.trace(name,repr(ch))
+    
+    if g.doHook("bodykey1",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType):
+        return "break" # The hook claims to have handled the event.
+        
+    if ch == '\t':
+        removeTrailing = self.updateTab(p,w)
+    elif ch == '\b':
+        # This is correct: we only come here if there no bindngs for this key. 
+        self.backwardDeleteCharacter(event)
+    elif ch in ('\r','\n'):
+        ch = '\n'
+        << handle newline >>
+    elif ch in ('(',')','[',']','{','}') and c.config.getBool('autocomplete-brackets'):
+        self.updateAutomatchBracket(p,w,ch,oldSel)
+    elif ch: # Null chars must not delete the selection.
+        i,j = oldSel
+        if i != j:                  w.delete(i,j)
+        elif action == 'overwrite': w.delete(i,'%s+1c' % i)
+        w.insert(i,ch)                     
+    else:
+        return 'break' # New in 4.4a5: this method *always* returns 'break'
+
+    # Update the text and handle undo.
+    newText = g.app.gui.getAllText(w) # New in 4.4b3: converts to unicode.
+    # g.trace(repr(newText))
+    w.see(w.index('insert'))
+    if newText != oldText:
+        c.frame.body.onBodyChanged(undoType=undoType,
+            oldSel=oldSel,oldText=oldText,oldYview=None,removeTrailing=removeTrailing)
+            
+    g.doHook("bodykey2",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType)
+    return 'break'
+#@nonl
+#@+node:ekr.20051026171121:<< handle newline >>
+i,j = oldSel
+
+if i != j:
+    # No auto-indent if there is selected text.
+    w.delete(i,j)
+    w.insert(i,ch)
+else:
+    w.insert(i,ch)
+    if c.frame.body.colorizer.useSyntaxColoring(p) and undoType != "Change":
+        # No auto-indent if in @nocolor mode or after a Change command.
+        removeTrailing = self.updateAutoIndent(p)
+        # g.trace(removeTrailing)
+#@nonl
+#@-node:ekr.20051026171121:<< handle newline >>
+#@+node:ekr.20051027172949:updateAutomatchBracket
+def updateAutomatchBracket (self,p,w,ch,oldSel):
+    
+    # assert ch in ('(',')','[',']','{','}')
+    
+    c = self.c ; d = g.scanDirectives(c,p) ; i,j = oldSel
+    language = d.get('language')
+    
+    if ch in ('(','[','{',):
+        automatch = language not in ('plain',)
+        if automatch:
+            ch = ch + {'(':')','[':']','{':'}'}.get(ch)
+        if i != j:
+            w.delete(i,j)
+        w.insert(i,ch)
+        if automatch:
+            w.mark_set('insert','insert-1c')
+    else:
+        ch2 = w.get('insert')
+        if ch2 in (')',']','}'):
+            w.mark_set('insert','insert+1c')
+        else:
+            if i != j:
+                w.delete(i,j)
+            w.insert(i,ch)
+#@nonl
+#@-node:ekr.20051027172949:updateAutomatchBracket
+#@+node:ekr.20051026171121.1:udpateAutoIndent
+# By David McNab:
+def updateAutoIndent (self,p):
+
+    c = self.c ; d = g.scanDirectives(c,p)
+    tab_width = d.get("tabwidth",c.tab_width) # Get the previous line.
+    s = c.frame.bodyCtrl.get("insert linestart - 1 lines","insert linestart -1c")
+    # Add the leading whitespace to the present line.
+    junk, width = g.skip_leading_ws_with_indent(s,0,tab_width)
+    if s and len(s) > 0 and s [ -1] == ':':
+        # For Python: increase auto-indent after colons.
+        if c.frame.body.colorizer.scanColorDirectives(p) == "python":
+            width += abs(tab_width)
+    if c.config.getBool("smart_auto_indent"):
+        # Determine if prev line has unclosed parens/brackets/braces
+        brackets = [width] ; tabex = 0
+        for i in range(0,len(s)):
+            if s [i] == '\t':
+                tabex += tab_width-1
+            if s [i] in '([{':
+                brackets.append(i+tabex+1)
+            elif s [i] in '}])' and len(brackets) > 1:
+                brackets.pop()
+        width = brackets.pop()
+    ws = g.computeLeadingWhitespace(width,tab_width)
+    if ws:
+        c.frame.bodyCtrl.insert("insert",ws)
+        removeTrailing = False
+    else:
+        removeTrailing = None
+    return removeTrailing
+#@nonl
+#@-node:ekr.20051026171121.1:udpateAutoIndent
+#@+node:ekr.20051026092433:updateTab
+def updateTab (self,p,w):
+
+    c = self.c ; d = g.scanDirectives(c,p)
+    tab_width = d.get("tabwidth",c.tab_width)
+    
+    i,j = g.app.gui.getTextSelection(w)
+    if i != j:
+        w.delete(i,j)
+    if tab_width > 0:
+        w.insert("insert",'\t')
+    else:
+        # Get the preceeding characters.
+        s = w.get("insert linestart","insert")
+    
+        # Compute n, the number of spaces to insert.
+        width = g.computeWidth(s,tab_width)
+        n = abs(tab_width) - (width % abs(tab_width))
+        w.insert("insert",' ' * n)
+#@nonl
+#@-node:ekr.20051026092433:updateTab
+#@-node:ekr.20051125080855:selfInsertCommand
+#@-node:ekr.20060408065447:fixed? newline problem on MacOS
+#@+node:ekr.20060411101844:Fixed failed unit tests
+leoID = ekr (in c:\Documents and Settings\Ed)
+reading settings in C:\prog\tigris-cvs\leo\config\leoSettings.leo
+reading settings in C:\prog\tigris-cvs\leo\test\unitTest.leo
+rst3 plugin: SilverCity not loaded
+Registered unit-test-command1
+found  3 doctests for leoGlobals
+found  1 doctests for leoTest
+found  5 test routines for leoAtFile
+found  4 test routines for leoEditCommands
+found  1 test routine for leoFileCommands
+found 14 test routines for leoGlobals
+EKR: reportlab.__init__
+found  5 test routines for multifile
+..F.
+End of doctests
+..........OSError: [Errno 2] No such file or directory: 'xyzzy'
+
+......
+test of es_print: ─é
+.es_trace:
+test of es_trace: ─é
+........
+End of test routines
+..leoID = ekr (in c:\Documents and Settings\Ed)
+leoID = ekr (in c:\Documents and Settings\Ed)
+...............................................Registered test-registerCommand bound to <Alt+Ctrl+Shift+Z>
+...............................
+End of new find tests
+.............................................
+End of tests of @file nodes
+.................................
+End of general unit tests
+....
+End of commands tests
+.............................F..........................................................................................
+..................
+opening a new window to test more plugin logic
+
+.........................................................................................................
+======================================================================
+FAIL: Doctest: leoGlobals.mulderUpdateAlgorithm.stripWhitespaceFromBlankLines
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\python24\lib\doctest.py", line 2152, in runTest
+    raise self.failureException(self.format_failure(new.getvalue()))
+AssertionError: Failed doctest test for leoGlobals.mulderUpdateAlgorithm.stripWhitespaceFromBlankLines
+  File "c:\prog\tigris-cvs\leo\src\leoGlobals.py", line 4774, in stripWhitespaceFromBlankLines
+
+----------------------------------------------------------------------
+File "c:\prog\tigris-cvs\leo\src\leoGlobals.py", line 4782, in leoGlobals.mulderUpdateAlgorithm.stripWhitespaceFromBlank
+Lines
+Failed example:
+    g.mulderUpdateAlgorithm().stripWhitespaceFromBlankLines(theLines)
+Expected:
+    ['a\n', '\n', '\n', 'b']
+Got:
+    ['a\n', '', '', 'b']
+
+
+======================================================================
+FAIL: @test line endings of Linux scripts
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 155, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "<string>", line 20, in ?
+  File "<string>", line 14, in checkLinuxLineEndings
+AssertionError: Bad Linux line ending in C:\prog\tigris-cvs\leo\src\..\install: cr: 156, nl: 156
+
+----------------------------------------------------------------------
+Ran 434 tests in 179.829s
+
+FAILED (failures=2)
+>>>
+#@nonl
+#@+node:ekr.20040718101315:stripWhitespaceFromBlankLines(before_lines)
+def stripWhitespaceFromBlankLines (self,lines):
+    
+    # All backslashes must be doubled.
+
+    """Strip blanks and tabs from lines containing only blanks and tabs.
+    
+    >>> import leoGlobals as g
+    >>> s = "a\\n \\t\\n\\t\\t \\t\\nb"
+    >>> theLines = g.splitLines(s)
+    >>> theLines
+    ['a\\n', ' \\t\\n', '\\t\\t \\t\\n', 'b']
+    >>> g.mulderUpdateAlgorithm().stripWhitespaceFromBlankLines(theLines)
+    ['a\\n', '\\n', '\\n', 'b']
+    """
+
+    for i in xrange(len(lines)):
+        # stripped_line = lines[i].lstrip(" \t") # lstrip does not exist in python 2.2.1.
+        stripped_line = lines[i]
+        while stripped_line and stripped_line[0] in (' ','\t'):
+            stripped_line = stripped_line [1:]
+        if stripped_line in ('\n',''):
+            lines[i] = stripped_line
+            
+    return lines
+#@nonl
+#@-node:ekr.20040718101315:stripWhitespaceFromBlankLines(before_lines)
+#@-node:ekr.20060411101844:Fixed failed unit tests
 #@-node:ekr.20060323131536.1:Bugs
 #@+node:ekr.20060323140748:Plugins
 #@+node:ekr.20060301182319:Support for chapters plugin

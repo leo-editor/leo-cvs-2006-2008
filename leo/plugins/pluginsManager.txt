@@ -32,7 +32,7 @@ mod_http.py
 #vim.py
 #chapters2.py
 #bibtex.py
-autotrees.py
+#autotrees.py
 #mod_autosave.py
 #image.py
 #pie_menus.py

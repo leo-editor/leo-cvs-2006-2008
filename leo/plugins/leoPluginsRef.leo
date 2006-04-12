@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="6305" clone_windows="0"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="6345" clone_windows="0"/>
 <globals body_outline_ratio="0.595562130178">
-	<global_window_position top="27" left="362" height="850" width="852"/>
+	<global_window_position top="31" left="293" height="850" width="852"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -71,8 +71,9 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060306151759"><vh>Chapters plugin</vh>
+<v t="ekr.20060306151759"><vh>Chapters plugins</vh>
 <v t="ekr.20060306151759.1"><vh>@thin chapters2.py</vh></v>
+<v t="ekr.20060328125925"><vh>@thin chapter_hoist.py</vh></v>
 </v>
 <v t="edream.110203113231.667"><vh>Commands &amp; directives</vh>
 <v t="edream.110203113231.668"><vh> Importing Cisco configuration files</vh>
@@ -186,8 +187,7 @@
 <v t="ktenney.20041211072654.1"><vh>@thin at_view.py</vh></v>
 <v t="mork.20041020082242.1"><vh>@thin base64Packager.py</vh></v>
 <v t="mork.20041018091414.1"><vh>@thin fastGotoNode.py</vh></v>
-<v t="ekr.20050301095332"
-expanded="ekr.20050301095332.37,ekr.20050301095332.40,ekr.20050301095332.44,ekr.20050301095332.48,ekr.20050301095332.49,ekr.20050301095332.53,ekr.20050301095332.57,"><vh>@thin mod_labels.py</vh></v>
+<v t="ekr.20050301095332"><vh>@thin mod_labels.py</vh></v>
 <v t="edream.110203113231.876"><vh>@thin read_only_nodes.py</vh></v>
 <v t="ekr.20040910070811.1"><vh>@thin run_nodes.py</vh></v>
 <v t="ekr.20040828103325"><vh>@thin startfile.py</vh></v>
@@ -325,36 +325,13 @@ expanded="ekr.20050301095332.37,ekr.20050301095332.40,ekr.20050301095332.44,ekr.
 </v>
 <v t="ekr.20050329082101.114"><vh>AutoTrees Code</vh>
 <v t="ekr.20050329082101.115"><vh>@thin autotrees.py</vh></v>
-<v t="ekr.20050329082101.145"><vh>@--thin trees\pluginsManager.txt</vh></v>
+<v t="ekr.20050329082101.145"><vh>@thin trees\pluginsManager.txt</vh></v>
 <v t="ekr.20050329082101.146"><vh>Example tree handlers</vh>
-<v t="ekr.20050329082101.147"><vh>@--thin trees\test.py</vh>
-<v t="ekr.20050329082101.148"><vh>&lt;&lt; docstring &gt;&gt;</vh></v>
-<v t="ekr.20050329082101.149"><vh>&lt;&lt; version history &gt;&gt;</vh></v>
-</v>
-<v t="ekr.20050329082101.150"><vh>@--thin trees\rss.py</vh>
-<v t="ekr.20050329082101.151"><vh>&lt;&lt; docstring &gt;&gt;</vh></v>
-<v t="ekr.20050329082101.152"><vh>&lt;&lt; version history &gt;&gt;</vh></v>
-</v>
-<v t="ekr.20050329082101.153"><vh>@--thin trees\news.py</vh>
-<v t="ekr.20050329082101.154"><vh>&lt;&lt; docstring &gt;&gt;</vh></v>
-<v t="ekr.20050329082101.155"><vh>&lt;&lt; version history &gt;&gt;</vh></v>
-<v t="ekr.20050329082101.156"><vh>Error Classes</vh></v>
-<v t="ekr.20050329082101.157"><vh>getConnection</vh></v>
-<v t="ekr.20050329082101.158"><vh>class News</vh>
-<v t="ekr.20050329082101.159"><vh>initFrom</vh></v>
-</v>
-<v t="ekr.20050329082101.160"><vh>class NewsItem</vh>
-<v t="ekr.20050329082101.161"><vh>initFrom</vh></v>
-</v>
-</v>
-<v t="ekr.20050329082101.162"><vh>@--thin trees\remote.py</vh>
-<v t="ekr.20050329082101.163"><vh>&lt;&lt; docstring &gt;&gt;</vh></v>
-<v t="ekr.20050329082101.164"><vh>&lt;&lt; version history &gt;&gt;</vh></v>
-</v>
-<v t="ekr.20050329082101.165"><vh>@--thin trees\doc.py</vh>
-<v t="ekr.20050329082101.166"><vh>&lt;&lt; docstring &gt;&gt;</vh></v>
-<v t="ekr.20050329082101.167"><vh>&lt;&lt; version history &gt;&gt;</vh></v>
-</v>
+<v t="ekr.20050329082101.147"><vh>@thin trees\test.py</vh></v>
+<v t="ekr.20050329082101.150"><vh>@thin trees\rss.py</vh></v>
+<v t="ekr.20050329082101.153"><vh>@thin trees\news.py</vh></v>
+<v t="ekr.20050329082101.162"><vh>@thin trees\remote.py</vh></v>
+<v t="ekr.20050329082101.165"><vh>@thin trees\doc.py</vh></v>
 </v>
 </v>
 </v>
@@ -871,7 +848,7 @@ expanded="ekr.20050301095332.37,ekr.20050301095332.40,ekr.20050301095332.44,ekr.
 <v t="pap.20050605183206"><vh>@thin leoupdate.py</vh></v>
 </v>
 <v t="ekr.20041001210557"><vh>Scripting</vh>
-<v t="EKR.20040613213623"><vh>@thin mod_scripting.py</vh></v>
+<v t="ekr.20060328125248"><vh>@thin mod_scripting.py</vh></v>
 </v>
 <v t="ekr.20050111122605"><vh>Servers</vh>
 <v t="EKR.20040517080250.1"><vh>@thin mod_http.py</vh></v>
@@ -9296,382 +9273,7 @@ Los Angeles, CA 90095</t>
 <t tx="ekr.20050329082101.112">news-server.houston.rr.com/comp.lang.python</t>
 <t tx="ekr.20050329082101.113">news-server.houston.rr.com/comp.lang.python</t>
 <t tx="ekr.20050329082101.114"></t>
-<t tx="ekr.20050329082101.145"># This file allows you to turn handlers on and off
-doc.py
-remote.py
-rss.py
-test.py
-news.py
-
-plugin_manager.py</t>
 <t tx="ekr.20050329082101.146"></t>
-<t tx="ekr.20050329082101.147">&lt;&lt; docstring &gt;&gt;
-
-from autotrees import BaseTreeHandler, TreeNode
-
-__version__ = "0.1"
-__plugin_requires__ = ["autotrees"]
-__plugin_group__ = "Test"
-
-&lt;&lt; version history &gt;&gt;
-
-
-# This module contains multiple handlers for testing only
-# This isn't recommended since the Manager dialog cannot
-# cope with it very well - it assumes a single handler per
-# file.
-
-class Test(BaseTreeHandler):
-    """A test handler"""
-    
-    def initFrom(self, parameter):
-        """Initialize the tree"""
-        self.children = [
-            TreeNode("one", "this is one"),
-            TreeNode("two", "this is two !!!"),
-            TreeNode("three", "this is three",[
-                TreeNode("three-one"),
-                TreeNode("three-two"),
-                TreeNode("three-three"),
-            ])
-        ]
-        
-class Test2(BaseTreeHandler):
-    """A test2 handler - wont do much!"""
-    
-class Test3(Test):
-    """A test3 handler - much like Test but the nodes don't get deleted"""
-    
-    def preprocessNode(self):
-        """Override the default deleting of child nodes"""
-        pass
-        
-    </t>
-<t tx="ekr.20050329082101.148">"""A Test handler.
-
-This defines
-    @auto-test = adds some nodes
-    @auto-test2 = doesn't do anything
-    @auto-test3 = adds nodes but doesn't delete the old ones
-     
-"""
-
-</t>
-<t tx="ekr.20050329082101.149">@
-
-Version history
-
-0.1 Paul Paterson:
-    - Initial version</t>
-<t tx="ekr.20050329082101.150">&lt;&lt; docstring &gt;&gt;
-
-from autotrees import BaseTreeHandler, TreeNode
-import feedparser
-import leoGlobals as g
-
-__version__ = "0.1"
-__plugin_requires__ = ["feedparser", "autotrees", "plugin_manager"]
-__plugin_group__ = "Network"
-
-&lt;&lt; version history &gt;&gt;
-
-class RSS(BaseTreeHandler):
-    """RSS auto tree handler"""
-        
-    def initFrom(self, parameter):
-        """Initialize the tree"""
-        node_body = self.node.bodyString().strip()
-        self.children = []
-        #
-        g.es("Starting download", color="blue")
-        try:
-            feed = feedparser.parse(parameter)
-        except Exception, err:
-            g.es("Failed: %s" % (err,), color="red")
-            self.children.append(TreeNode("error", str(err)))
-        #
-        else:
-            g.es("Done!", color="blue")
-            for item in feed['items']:
-                if not node_body:
-                    content = '\n'.join(['%s:\n%s\n' % (name, item[name]) for name in item.keys()])
-                else:
-                    content = self.replaceAll(node_body, item)
-                self.children.append(TreeNode(
-                        item.get('title', 'No title1'),
-                        content))
-        
-    def replaceAll(self, text, dct):
-        """Replace all suitable looking names in text with their dictionary values"""
-        for name in dct.keys():
-            item = dct[name]
-            if isinstance(item, dict):
-                item = item.get('value', item)
-            text = text.replace(name, str(item))
-        return text
-</t>
-<t tx="ekr.20050329082101.151">"""A handler that downloads RSS feeds
-
-The parameter in the @auto-rss headline is the URL to load from. The
-body of the node contains the keys to display in the created node
-bodies.
-
-To begin with, leave the main body empty - this signifies to use *all*
-the data in the bodies of the node. You can then use the keys identified
-there to select which things you want to see.
-
-Details will appear as "key:" followed by the content. If you want to 
-see the keyed value, then put "key" in the body of the @auto-rss node.
-Actually the body text is a series of keywords which will be replaced
-by their values in the stream, so the formatting is kept too!
-
-Requires feedparser installed:
-    http://sourceforge.net/projects/feedparser/
-    
-"""
-</t>
-<t tx="ekr.20050329082101.152">@
-
-Version history
-
-0.1 Paul Paterson:
-    - Initial version</t>
-<t tx="ekr.20050329082101.153">&lt;&lt; docstring &gt;&gt;
-
-from autotrees import BaseTreeHandler, TreeNode
-import feedparser
-import leoGlobals as g
-import nntplib
-import sets
-
-__version__ = "0.1"
-__plugin_requires__ = ["autotrees"]
-__plugin_group__ = "Network"
-
-&lt;&lt; version history &gt;&gt;
-
-@others</t>
-<t tx="ekr.20050329082101.154">"""A handler that downloads messages from a news server
-
-The parameter in the @auto-rss headline is the news server followed
-by the group name in the form:
-    
-    @auto-news newserver.myisp.com/comp.lang.python
-    
-Messages will be downloaded directly as nodes. Doesn't support threading
-but message bodies are downloaded lazily, ie only when you click on the
-header. This is achieved by using the @auto-newsitem headline. 
-    
-"""
-</t>
-<t tx="ekr.20050329082101.155">@
-
-Version history
-
-0.1 Paul Paterson:
-    - Initial version</t>
-<t tx="ekr.20050329082101.156">class NewsTreeError(Exception):
-    """Something went wrong with the tree"""
-    
-</t>
-<t tx="ekr.20050329082101.157">def getConnection(parameter):
-    """Return a connection to a news server group"""
-    try:
-        server, group = parameter.split(r"/")
-    except ValueError:
-        g.es("Could not decifer server/group from '%s'" % (parameter,), color="red")
-        raise NewsTreeError
-    #
-    try:
-        connection = nntplib.NNTP(server)
-    except Exception, err:
-        g.es("Unable to connect to '%s': %s" % (server, err), color="red")
-        raise NewsTreeError
-    #
-    try:
-        resp, count, first, last, name = connection.group(group)
-    except Exception, err:
-        g.es("Unable to talk to group '%s': %s" % (group, err), color="red")
-        raise NewsTreeError
-    #
-    return (connection, resp, count, first, last, name)</t>
-<t tx="ekr.20050329082101.158">class News(BaseTreeHandler):
-    """News auto tree handler"""
-        
-    @others</t>
-<t tx="ekr.20050329082101.159">def initFrom(self, parameter):
-    """Initialize the tree"""
-    self.children = []
-    #
-    try:
-        connection, resp, count, first, last, name = getConnection(parameter)
-    except NewsTreeError:
-        return
-    #
-    resp, subs = connection.xhdr('subject', first + '-' + last)
-    #
-    for item in subs[:10]: # First 10 articles .... just for testing as this is slooooow!
-        id, subject = item
-        self.children.append(
-            TreeNode("@auto-newsitem %s - %s" % (id, subject),
-                     parameter
-            )
-        )
-    
-    connection.quit()</t>
-<t tx="ekr.20050329082101.160">class NewsItem(BaseTreeHandler):
-    """Handlers news item bodies"""
-    
-    handles = sets.Set(["headclick1"])    
-    
-    @others
-</t>
-<t tx="ekr.20050329082101.161">def initFrom(self, parameter):
-    """Initialize the tree"""
-    self.children = []
-    #
-    # Get the server name which we conveniently left in the body
-    body = self.node.bodyString().splitlines()[0]
-    try:
-        connection, resp, count, first, last, name = getConnection(body)
-    except NewsTreeError:
-        return
-    #
-    # Now get the article 
-    id = self.node.headString().split(" - ", 1)[0][15:]
-    article = connection.body(id)
-    self.node.setBodyTextOrPane("\n".join(article[-1]))
-    #
-    connection.quit()
-
-</t>
-<t tx="ekr.20050329082101.162">&lt;&lt; docstring &gt;&gt;
-
-from autotrees import BaseTreeHandler, TreeNode
-import pycurl
-import StringIO
-
-import leoGlobals as g
-
-__version__ = "0.1"
-__plugin_requires__ = ["pycurl", "autotrees", "plugin_manager"]
-__plugin_group__ = "Network"
-
-&lt;&lt; version history &gt;&gt;
-
-
-class Remote(BaseTreeHandler):
-    """A handler for remote files"""
-        
-    def initFrom(self, parameter):
-        """Initialize the tree"""
-        self.children = []
-
-        content = StringIO.StringIO()
-        #
-        g.es("Starting download", color="blue")
-        connection = pycurl.Curl()
-        connection.setopt(pycurl.URL, str(parameter)) # Cannot take unicode!
-        connection.setopt(pycurl.WRITEFUNCTION, content.write)
-        #
-        try:
-            connection.perform()
-        except Exception, err:
-            g.es("Failed: %s" % (err,), color="red")
-            self.children.append(TreeNode("error", str(err)))
-        #
-        else:
-            g.es("Done!", color="blue")
-            self.node.setBodyTextOrPane(content.getvalue())
-        
-</t>
-<t tx="ekr.20050329082101.163">"""A handler that downloads remote files
-
-The parameter in the @auto-remote headline is the URL to load from. You
-can pass username passwords in the URL, eg
-    ftp://username:password@mysite.org/myfile.txt
-
-Requires pyCurl:
-    http://pycurl.sourceforge.net/
-    
-"""
-</t>
-<t tx="ekr.20050329082101.164">@
-
-Version history
-
-0.1 - Paul Paterson:
-      Initial version
-</t>
-<t tx="ekr.20050329082101.165">&lt;&lt; docstring &gt;&gt;
-
-from autotrees import BaseTreeHandler, TreeNode
-import inspect
-import sets
-
-import leoGlobals as g
-
-__version__ = "0.1"
-__plugin_requires__ = ["autotrees"]
-__plugin_group__ = "Coding"
-
-&lt;&lt; version history &gt;&gt;
-
-
-class Doc(BaseTreeHandler):
-    """Handler for documentation nodes"""
-        
-    def initFrom(self, parameter):
-        """Initialize the tree"""
-        self.children = []
-        self.done = sets.Set()
-        try:
-            module = __import__(parameter)
-        except Exception, err:
-            g.es("Failed: %s" % (err,), color="red")
-        else:
-            components = parameter.split('.')
-            for comp in components[1:]:
-                module = getattr(module, comp)
-            self.children.extend(self.getDocsFor(module))
-            
-    def getDocsFor(self, object):
-        """Return a list of child nodes documenting the object"""
-        #print object
-        children = []
-        for name in dir(object):
-            item = getattr(object, name)
-            if not name.startswith("_") and not id(item) in self.done:
-                self.done.add(id(item))
-                if inspect.isclass(item):
-                    #print "Class", item.__name__
-                    grandchildren = self.getDocsFor(item)
-                else:
-                    #print "item", item
-                    grandchildren = []
-                children.append(
-                    TreeNode(
-                        name,
-                        getattr(item, "__doc__", "No documentation for %s" % name),
-                        grandchildren
-                    )
-                )
-        return children
-            
-</t>
-<t tx="ekr.20050329082101.166">"""A handler that documents a module
-
-The parameter in the @auto-doc headline is the module to document.
-    
-"""
-</t>
-<t tx="ekr.20050329082101.167">@
-
-Version history
-
-0.1 - Paul Paterson:
-      Initial version
-</t>
 <t tx="ekr.20050329092553">Hundreds die in Indonesia quake
 
 Hundreds are believed to have died in Indonesia after a strong earthquake which sparked fears of a tsunami.</t>

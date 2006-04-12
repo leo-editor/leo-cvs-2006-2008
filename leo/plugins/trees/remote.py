@@ -18,7 +18,6 @@ Requires pyCurl:
 from autotrees import BaseTreeHandler, TreeNode
 import pycurl
 import StringIO
-
 import leoGlobals as g
 
 __version__ = "0.1"
@@ -36,7 +35,6 @@ __plugin_group__ = "Network"
 #@-at
 #@-node:ekr.20050329082101.164:<< version history >>
 #@nl
-
 
 class Remote(BaseTreeHandler):
     """A handler for remote files"""
@@ -61,6 +59,6 @@ class Remote(BaseTreeHandler):
         else:
             g.es("Done!", color="blue")
             self.node.setBodyTextOrPane(content.getvalue())
-        
+#@nonl
 #@-node:ekr.20050329082101.162:@thin trees\remote.py
 #@-leo
