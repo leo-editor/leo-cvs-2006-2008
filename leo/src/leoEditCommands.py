@@ -2356,7 +2356,7 @@ class editCommandsClass (baseEditCommandsClass):
         undoType = 'Typing'
         trace = c.config.getBool('trace_masterCommand')
         
-        if trace: g.trace(name)
+        if trace: g.trace(name,repr(ch))
         
         if g.doHook("bodykey1",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType):
             return "break" # The hook claims to have handled the event.
@@ -2372,10 +2372,6 @@ class editCommandsClass (baseEditCommandsClass):
             #@+node:ekr.20051026171121:<< handle newline >>
             i,j = oldSel
             
-            if sys.platform == 'darwin':
-                g.trace(repr(ch))
-                ch = '\r'
-            
             if i != j:
                 # No auto-indent if there is selected text.
                 w.delete(i,j)
@@ -2385,6 +2381,7 @@ class editCommandsClass (baseEditCommandsClass):
                 if c.frame.body.colorizer.useSyntaxColoring(p) and undoType != "Change":
                     # No auto-indent if in @nocolor mode or after a Change command.
                     removeTrailing = self.updateAutoIndent(p)
+                    g.trace(removeTrailing)
             #@nonl
             #@-node:ekr.20051026171121:<< handle newline >>
             #@nl
@@ -2400,6 +2397,7 @@ class editCommandsClass (baseEditCommandsClass):
     
         # Update the text and handle undo.
         newText = g.app.gui.getAllText(w) # New in 4.4b3: converts to unicode.
+        g.trace(repr(newText))
         w.see(w.index('insert'))
         if newText != oldText:
             c.frame.body.onBodyChanged(undoType=undoType,
