@@ -2372,7 +2372,9 @@ class editCommandsClass (baseEditCommandsClass):
             #@+node:ekr.20051026171121:<< handle newline >>
             i,j = oldSel
             
-            g.trace(repr(ch))
+            if sys.platform == 'darwin':
+                g.trace(repr(ch))
+                ch = '\r'
             
             if i != j:
                 # No auto-indent if there is selected text.
