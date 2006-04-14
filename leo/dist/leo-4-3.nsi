@@ -479,11 +479,11 @@ SectionEnd
 ;
 ; UninstallText "This will uninstall Leo from your system"
 ; UninstallCaption "Uninstall Leo"
-; UninstallIcon c:\prog\leoCVS\leo\Icons\uninst.ico
+; UninstallIcon c:\prog\tigris-cvs\leo\Icons\uninst.ico
 
 ; UninstallText "This will uninstall Leo from your system"
 UninstallCaption "Uninstall Leo"
-UninstallIcon c:\prog\leoCVS\leo\Icons\uninst.ico
+UninstallIcon c:\prog\tigris-cvs\leo\Icons\uninst.ico
 ;@nonl
 ;@-node:ekr.20050118092706.18:<< Uninstall-related Settings >>
 ;@nl

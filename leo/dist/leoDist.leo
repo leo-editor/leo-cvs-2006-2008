@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="1126" clone_windows="0"/>
 <globals body_outline_ratio="0.714833759591">
-	<global_window_position top="8" left="278" height="862" width="863"/>
+	<global_window_position top="42" left="264" height="862" width="863"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -92,7 +92,7 @@
 <v t="ekr.20050118125236"><vh>Write a script to make sure .nsi and main install scripts create the same files</vh></v>
 <v t="ekr.20050119191034"><vh>Create manifest.in from manifest-nn.in</vh></v>
 </v>
-<v t="EKR.20040519080201.1" a="V"><vh>Distribution checklist</vh></v>
+<v t="EKR.20040519080201.1"><vh>Distribution checklist</vh></v>
 <v t="ekr.20040629175400"><vh>Pychecker stuff</vh>
 <v t="ekr.20050910192724"><vh>Pychecker warnings</vh></v>
 <v t="EKR.20040519080201.2" tnodeList="EKR.20040519080201.2"><vh>@file-nosent c:\prog\leoCVS\.pycheckrc</vh></v>
@@ -117,7 +117,7 @@
 <v t="ekr.20040629180414"><vh>pycheckrc (reference)</vh></v>
 </v>
 <v t="ekr.20051205102401"><vh>Note: do search replace to update version numbers</vh></v>
-<v t="ekr.20050118095021"><vh>Leo 4.x installer  (update for each release)</vh>
+<v t="ekr.20050118095021" a="E"><vh>Leo 4.x installer  (update for each release)</vh>
 <v t="EKR.20040519082027.28"><vh>&lt;&lt; setup info for createLeoDist.py &gt;&gt;</vh></v>
 <v t="ekr.20050118124408"><vh>&lt;&lt; 4.3 nsi installer version &gt;&gt;</vh></v>
 <v t="ekr.20050118092706.4"><vh>&lt;&lt; Settings &gt;&gt;</vh></v>
@@ -170,7 +170,7 @@
 <v t="ekr.20050118103447.1"><vh>&lt;&lt; uninstall top-level files &gt;&gt;</vh></v>
 </v>
 </v>
-<v t="ekr.20050118092706"><vh>@thin leo-4-3.nsi</vh></v>
+<v t="ekr.20050118092706" a="E"><vh>@thin leo-4-3.nsi</vh></v>
 </v>
 <v t="EKR.20040519090846"><vh>Distribution files (update for each release)</vh>
 <v t="EKR.20040519090846.2"><vh>@asis ../doc/INSTALL.TXT</vh>

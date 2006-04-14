@@ -8,7 +8,6 @@ Icons\LeoApp16.ico
 Icons\LeoDoc.ico
 Icons\LeoWin.gif
 Icons\Leoapp.GIF
-Icons\Thumbs.db
 Icons\box00.GIF
 Icons\box00.bmp
 Icons\box01.GIF
@@ -54,6 +53,7 @@ Icons\rt_arrow_disabled.gif
 Icons\rt_arrow_enabled.gif
 Icons\uninst.ico
 Icons\CVS\Entries.Extra
+Icons\CVS\Entries.Extra.Old
 Icons\CVS\Entries.Old
 config\.leoRecentFiles.txt
 config\leoSettings.leo
@@ -82,7 +82,6 @@ doc\html\Blank.gif
 doc\html\FAQ.html
 doc\html\LeoCodeGray.gif
 doc\html\LeoProse.gif
-doc\html\ListManagerDocs.html
 doc\html\PCWindow.gif
 doc\html\PythonPowered.gif
 doc\html\appendices.html
@@ -93,7 +92,6 @@ doc\html\customizing.html
 doc\html\default.css
 doc\html\design.html
 doc\html\directives.html
-doc\html\front.html
 doc\html\frontMatter.html
 doc\html\glossary.html
 doc\html\history.html
@@ -106,13 +104,19 @@ doc\html\leo_rst.css
 doc\html\outlines.html
 doc\html\plugins.html
 doc\html\rstplugin3.html
-doc\html\rstplugin4.html
 doc\html\scripting.html
 doc\html\silver_city.css
 doc\html\techReport.html
 doc\html\testimonials.html
 doc\html\theory.html
 doc\html\whitepapers.html
+doc\html\CVS\Entries.Extra
+doc\html\CVS\Entries.Extra.Old
+doc\html\CVS\Entries.Old
+doc\html\tigris\index.html
+doc\html\tigris\CVS\Entries.Extra
+doc\html\tigris\CVS\Entries.Extra.Old
+doc\html\tigris\CVS\Entries.Old
 extensions\__init__.py
 extensions\aspell23.pyd
 extensions\aspell24.pyd
@@ -123,12 +127,18 @@ extensions\subprocess.py
 extensions\Pmw\__init__.py
 extensions\Pmw\Pmw_1_2\__init__.py
 extensions\Pmw\Pmw_1_2\bin\bundlepmw.py
+extensions\Pmw\Pmw_1_2\bin\CVS\Entries.Extra
+extensions\Pmw\Pmw_1_2\bin\CVS\Entries.Extra.Old
+extensions\Pmw\Pmw_1_2\bin\CVS\Entries.Old
 extensions\Pmw\Pmw_1_2\contrib\DirBrowser.py
 extensions\Pmw\Pmw_1_2\contrib\MCListbox.py
 extensions\Pmw\Pmw_1_2\contrib\PmwFileDialog.py
 extensions\Pmw\Pmw_1_2\contrib\PmwFullTimeCounter.py
 extensions\Pmw\Pmw_1_2\contrib\PmwVerticalGauge.py
 extensions\Pmw\Pmw_1_2\contrib\TreeBrowser.py
+extensions\Pmw\Pmw_1_2\contrib\CVS\Entries.Extra
+extensions\Pmw\Pmw_1_2\contrib\CVS\Entries.Extra.Old
+extensions\Pmw\Pmw_1_2\contrib\CVS\Entries.Old
 extensions\Pmw\Pmw_1_2\demos\AboutDialog.py
 extensions\Pmw\Pmw_1_2\demos\All.py
 extensions\Pmw\Pmw_1_2\demos\Args.py
@@ -186,6 +196,9 @@ extensions\Pmw\Pmw_1_2\demos\TextDialog.py
 extensions\Pmw\Pmw_1_2\demos\TextDisplay.py
 extensions\Pmw\Pmw_1_2\demos\TimeCounter.py
 extensions\Pmw\Pmw_1_2\demos\WidgetDestroy.py
+extensions\Pmw\Pmw_1_2\demos\CVS\Entries.Extra
+extensions\Pmw\Pmw_1_2\demos\CVS\Entries.Extra.Old
+extensions\Pmw\Pmw_1_2\demos\CVS\Entries.Old
 extensions\Pmw\Pmw_1_2\doc\AboutDialog.gif
 extensions\Pmw\Pmw_1_2\doc\AboutDialog.html
 extensions\Pmw\Pmw_1_2\doc\Balloon.gif
@@ -277,6 +290,9 @@ extensions\Pmw\Pmw_1_2\doc\scale2.gif
 extensions\Pmw\Pmw_1_2\doc\starting.html
 extensions\Pmw\Pmw_1_2\doc\todo.html
 extensions\Pmw\Pmw_1_2\doc\transdove.gif
+extensions\Pmw\Pmw_1_2\doc\CVS\Entries.Extra
+extensions\Pmw\Pmw_1_2\doc\CVS\Entries.Extra.Old
+extensions\Pmw\Pmw_1_2\doc\CVS\Entries.Old
 extensions\Pmw\Pmw_1_2\lib\Pmw.def
 extensions\Pmw\Pmw_1_2\lib\PmwAboutDialog.py
 extensions\Pmw\Pmw_1_2\lib\PmwBalloon.py
@@ -314,6 +330,9 @@ extensions\Pmw\Pmw_1_2\lib\PmwTextDialog.py
 extensions\Pmw\Pmw_1_2\lib\PmwTimeCounter.py
 extensions\Pmw\Pmw_1_2\lib\PmwTimeFuncs.py
 extensions\Pmw\Pmw_1_2\lib\__init__.py
+extensions\Pmw\Pmw_1_2\lib\CVS\Entries.Extra
+extensions\Pmw\Pmw_1_2\lib\CVS\Entries.Extra.Old
+extensions\Pmw\Pmw_1_2\lib\CVS\Entries.Old
 extensions\Pmw\Pmw_1_2\tests\AboutDialog_test.py
 extensions\Pmw\Pmw_1_2\tests\All.py
 extensions\Pmw\Pmw_1_2\tests\Blt_test.py
@@ -347,6 +366,9 @@ extensions\Pmw\Pmw_1_2\tests\TextDialog_test.py
 extensions\Pmw\Pmw_1_2\tests\Tkinter_test.py
 extensions\Pmw\Pmw_1_2\tests\earthris.gif
 extensions\Pmw\Pmw_1_2\tests\flagup.bmp
+extensions\Pmw\Pmw_1_2\tests\CVS\Entries.Extra
+extensions\Pmw\Pmw_1_2\tests\CVS\Entries.Extra.Old
+extensions\Pmw\Pmw_1_2\tests\CVS\Entries.Old
 modes\actionscript.xml
 modes\ada95.xml
 modes\antlr.xml
@@ -509,7 +531,7 @@ plugins\autocompleter.py
 plugins\autotrees.py
 plugins\base64Packager.py
 plugins\bibtex.py
-plugins\chapters.py
+plugins\chapter_hoist.py
 plugins\chapters2.py
 plugins\chinese_menu.py
 plugins\cleo.py
@@ -591,7 +613,7 @@ plugins\table.py
 plugins\temacs.py
 plugins\templates.py
 plugins\testRegisterCommand.py
-plugins\trace_gc.py
+plugins\trace_gc_plugin.py
 plugins\trace_keys.py
 plugins\trace_tags.py
 plugins\usetemacs.ini
@@ -628,6 +650,7 @@ src\leoColor.py
 src\leoCommands.py
 src\leoCompare.py
 src\leoConfig.py
+src\leoDebugger.py
 src\leoEditCommands.py
 src\leoFileCommands.py
 src\leoFind.py
@@ -652,7 +675,6 @@ src\leoTkinterMenu.py
 src\leoTkinterTree.py
 src\leoUndo.py
 src\oldLeoProjects.leo
-test\__init__.py
 test\test.leo
 test\unitTest.leo
 test\unittest\batchTest.py
