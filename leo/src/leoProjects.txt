@@ -1318,10 +1318,10 @@ def drawTopTree (self):
     self.dragging = False
     if self.trace:
         self.redrawCount += 1
-        # print ; print
-        delta = g.app.positions - self.prevPositions
-        # g.trace("**** gen: %-3d positions: %5d +%4d" % (
-            # self.generation,g.app.positions,delta),g.callers())
+        if 0:
+            delta = g.app.positions - self.prevPositions
+            g.trace("**** gen: %-3d positions: %5d +%4d" % (
+                self.generation,g.app.positions,delta),g.callers())
         
     self.prevPositions = g.app.positions
 
@@ -6034,7 +6034,7 @@ def bindOpenWith (self,shortcut,name,data):
     
     '''Register an open-with command.'''
     
-    k = self ; c = k.c ; f = c.frame
+    k = self ; c = k.c
     
     # The first parameter must be event, and it must default to None.
     def openWithCallback(event=None,c=c,data=data):
@@ -6043,17 +6043,6 @@ def bindOpenWith (self,shortcut,name,data):
     # Use k.registerCommand to set the shortcuts in the various binding dicts.
     commandName = 'open-with-%s' % name.lower()
     k.registerCommand(commandName,shortcut,openWithCallback,pane='text',verbose=False)
-    
-    if 0: # now in k.registerCommand
-    
-        # Duplicate the logic k.completeAllBindings to set the actual bindings.
-        stroke = k.shortcutFromSetting(shortcut)
-        
-        def bindKeyCallback (event,k=k,stroke=stroke):
-            return k.masterKeyHandler(event,stroke=stroke)
-    
-        for w in (f.body.bodyCtrl,f.tree.canvas,f.tree.bindingWidget):
-            k.completeOneBindingForWidget(w,stroke,bindKeyCallback)
 #@nonl
 #@-node:ekr.20051008135051.1:bindOpenWith
 #@+node:ekr.20051011103654:checkBindings
@@ -6347,7 +6336,7 @@ def openWith(self,event=None,data=None):
     try:
         openType,arg,ext=data
         if not g.doHook("openwith1",c=c,p=p,v=p.v,openType=openType,arg=arg,ext=ext):
-            enableIdleTimeHook(idleTimeDelay=100)
+            g.enableIdleTimeHook(idleTimeDelay=100)
             << set ext based on the present language >>
             << create or reopen temp file, testing for conflicting changes >>
             << execute a command to open path in external editor >>
@@ -7117,160 +7106,520 @@ before g.app.gui.guiName() is known.
 # It's not ready for prime time.
 #@nonl
 #@-node:ekr.20060325122134.1:Removed autocompletion for self
-#@+node:ekr.20060329090924:Rewrote g.importExtension to simplify startup logic
-#@+node:ekr.20041219071407:g.importExtension & helpers
-def importExtension (moduleName,pluginName=None,verbose=False,required=False):
+#@+node:ekr.20060414065810:Fixed minor problems reported by Pychecker
+# No change for now
+C:\prog\tigris-cvs\leo\src\leoKeys.py:1050: Parameter (thread) not used
 
-    '''Try to import a module.  If that fails,
-    try to import the module from Leo's extensions directory.
+# Fixed
+C:\prog\tigris-cvs\leo\src\leoTkinterFrame.py:1428: Function returns a value and also implicitly returns None
+C:\prog\tigris-cvs\leo\src\leoTkinterTree.py:1222: Local variable (delta) not used
+C:\prog\tigris-cvs\leo\src\leoKeys.py:1931: Local variable (f) not used
+C:\prog\tigris-cvs\leo\src\leoGlobals.py:5246: Local variable (buttonList) not used
+C:\prog\tigris-cvs\leo\src\leoCommands.py:493: No global (enableIdleTimeHook) found
+#@nonl
+#@-node:ekr.20060414065810:Fixed minor problems reported by Pychecker
+#@+node:ekr.20060411101844:Fixed failed unit tests
+leoID = ekr (in c:\Documents and Settings\Ed)
+reading settings in C:\prog\tigris-cvs\leo\config\leoSettings.leo
+reading settings in C:\prog\tigris-cvs\leo\test\unitTest.leo
+rst3 plugin: SilverCity not loaded
+Registered unit-test-command1
+found  3 doctests for leoGlobals
+found  1 doctests for leoTest
+found  5 test routines for leoAtFile
+found  4 test routines for leoEditCommands
+found  1 test routine for leoFileCommands
+found 14 test routines for leoGlobals
+EKR: reportlab.__init__
+found  5 test routines for multifile
+..F.
+End of doctests
+..........OSError: [Errno 2] No such file or directory: 'xyzzy'
 
-    moduleName is the module's name, without file extension.'''
+......
+test of es_print: ─é
+.es_trace:
+test of es_trace: ─é
+........
+End of test routines
+..leoID = ekr (in c:\Documents and Settings\Ed)
+leoID = ekr (in c:\Documents and Settings\Ed)
+...............................................Registered test-registerCommand bound to <Alt+Ctrl+Shift+Z>
+...............................
+End of new find tests
+.............................................
+End of tests of @file nodes
+.................................
+End of general unit tests
+....
+End of commands tests
+.............................F..........................................................................................
+..................
+opening a new window to test more plugin logic
+
+.........................................................................................................
+======================================================================
+FAIL: Doctest: leoGlobals.mulderUpdateAlgorithm.stripWhitespaceFromBlankLines
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\python24\lib\doctest.py", line 2152, in runTest
+    raise self.failureException(self.format_failure(new.getvalue()))
+AssertionError: Failed doctest test for leoGlobals.mulderUpdateAlgorithm.stripWhitespaceFromBlankLines
+  File "c:\prog\tigris-cvs\leo\src\leoGlobals.py", line 4774, in stripWhitespaceFromBlankLines
+
+----------------------------------------------------------------------
+File "c:\prog\tigris-cvs\leo\src\leoGlobals.py", line 4782, in leoGlobals.mulderUpdateAlgorithm.stripWhitespaceFromBlank
+Lines
+Failed example:
+    g.mulderUpdateAlgorithm().stripWhitespaceFromBlankLines(theLines)
+Expected:
+    ['a\n', '\n', '\n', 'b']
+Got:
+    ['a\n', '', '', 'b']
+
+
+======================================================================
+FAIL: @test line endings of Linux scripts
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 155, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "<string>", line 20, in ?
+  File "<string>", line 14, in checkLinuxLineEndings
+AssertionError: Bad Linux line ending in C:\prog\tigris-cvs\leo\src\..\install: cr: 156, nl: 156
+
+----------------------------------------------------------------------
+Ran 434 tests in 179.829s
+
+FAILED (failures=2)
+>>>
+#@nonl
+#@+node:ekr.20040718101315:stripWhitespaceFromBlankLines(before_lines)
+def stripWhitespaceFromBlankLines (self,lines):
     
-    # g.trace(verbose,moduleName,pluginName)
-    
-    module = g.importModule(moduleName,pluginName=pluginName,verbose=False)
+    # All backslashes must be doubled.
 
-    if not module:
-        module = g.importFromPath(moduleName,g.app.extensionsDir,
-            pluginName=pluginName,verbose=verbose)
+    """Strip blanks and tabs from lines containing only blanks and tabs.
+    
+    >>> import leoGlobals as g
+    >>> s = "a\\n \\t\\n\\t\\t \\t\\nb"
+    >>> theLines = g.splitLines(s)
+    >>> theLines
+    ['a\\n', ' \\t\\n', '\\t\\t \\t\\n', 'b']
+    >>> g.mulderUpdateAlgorithm().stripWhitespaceFromBlankLines(theLines)
+    ['a\\n', '\\n', '\\n', 'b']
+    """
+
+    for i in xrange(len(lines)):
+        # stripped_line = lines[i].lstrip(" \t") # lstrip does not exist in python 2.2.1.
+        stripped_line = lines[i]
+        while stripped_line and stripped_line[0] in (' ','\t'):
+            stripped_line = stripped_line [1:]
+        if stripped_line in ('\n',''):
+            lines[i] = stripped_line
             
-        if not module and required:
-            g.cantImportDialog(pluginName,moduleName)
-            try: # Avoid raising SystemExit if possible.
-                import os ; os._exit(1) # May not be available on all platforms.
-            except Exception:
-                import sys ; sys.exit(1)
-
-    return module
+    return lines
 #@nonl
-#@+node:ekr.20060329083657:cantImportDialog & helpers
-def cantImportDialog (pluginName,moduleName):
-    
-    message = '''
-%s requires the %s module.
-Official distributions contain this module in Leo's extensions folder,
-but this module may be missing if you get Leo from cvs.
-''' % (pluginName,moduleName)
+#@-node:ekr.20040718101315:stripWhitespaceFromBlankLines(before_lines)
+#@-node:ekr.20060411101844:Fixed failed unit tests
+#@+node:ekr.20060408065447:fixed? newline problem on MacOS
+# Very weird.  Things are working now, but I don't know why...
+#@+node:ekr.20050920084036.138:insertNewLine (not undoable)
+def insertNewLine (self,event):
 
-    if 1: # Requires minimal further imports.
-        try:
-            import Tkinter as Tk
-            root = g.app.root or Tk.Tk()
-            title = 'Can not import %s' % moduleName
-            top = createDialogFrame(Tk,root,title,message)
-            root.wait_window(top)
-        except ImportError:
-            print 'Can not import %s' % moduleName
-            print 'Can not import Tkinter'
-            print 'Leo must now exit'
+    w = event.widget
+    wname = g.app.gui.widget_name(w)
+    
+    if not wname.startswith('head'):
+        w.insert('insert','\n')
+
+insertNewline = insertNewLine
+#@nonl
+#@-node:ekr.20050920084036.138:insertNewLine (not undoable)
+#@+node:ekr.20051125080855:selfInsertCommand
+def selfInsertCommand(self,event,action='insert'):
+    
+    '''Insert a character in the body pane.
+    
+    This is the default binding for all keys in the body pane.'''
+    
+    c = self.c ; p = c.currentPosition()
+    ch = event and event.char or ''
+    w = event and event.widget
+    name = c.widget_name(w)
+    oldSel =  name.startswith('body') and g.app.gui.getTextSelection(w)
+    oldText = name.startswith('body') and p.bodyString()
+    removeTrailing = None # A signal to compute it later.
+    undoType = 'Typing'
+    trace = c.config.getBool('trace_masterCommand')
+    
+    if trace: g.trace(name,repr(ch))
+    
+    if g.doHook("bodykey1",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType):
+        return "break" # The hook claims to have handled the event.
         
-    else: # Can cause import problems during startup.
-        import leoTkinterDialog
+    if ch == '\t':
+        removeTrailing = self.updateTab(p,w)
+    elif ch == '\b':
+        # This is correct: we only come here if there no bindngs for this key. 
+        self.backwardDeleteCharacter(event)
+    elif ch in ('\r','\n'):
+        ch = '\n'
+        << handle newline >>
+    elif ch in ('(',')','[',']','{','}') and c.config.getBool('autocomplete-brackets'):
+        self.updateAutomatchBracket(p,w,ch,oldSel)
+    elif ch: # Null chars must not delete the selection.
+        i,j = oldSel
+        if i != j:                  w.delete(i,j)
+        elif action == 'overwrite': w.delete(i,'%s+1c' % i)
+        w.insert(i,ch)                     
+    else:
+        return 'break' # New in 4.4a5: this method *always* returns 'break'
+
+    # Update the text and handle undo.
+    newText = g.app.gui.getAllText(w) # New in 4.4b3: converts to unicode.
+    # g.trace(repr(newText))
+    w.see(w.index('insert'))
+    if newText != oldText:
+        c.frame.body.onBodyChanged(undoType=undoType,
+            oldSel=oldSel,oldText=oldText,oldYview=None,removeTrailing=removeTrailing)
+            
+    g.doHook("bodykey2",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType)
+    return 'break'
+#@nonl
+#@+node:ekr.20051026171121:<< handle newline >>
+i,j = oldSel
+
+if i != j:
+    # No auto-indent if there is selected text.
+    w.delete(i,j)
+    w.insert(i,ch)
+else:
+    w.insert(i,ch)
+    if c.frame.body.colorizer.useSyntaxColoring(p) and undoType != "Change":
+        # No auto-indent if in @nocolor mode or after a Change command.
+        removeTrailing = self.updateAutoIndent(p)
+        # g.trace(removeTrailing)
+#@nonl
+#@-node:ekr.20051026171121:<< handle newline >>
+#@+node:ekr.20051027172949:updateAutomatchBracket
+def updateAutomatchBracket (self,p,w,ch,oldSel):
+    
+    # assert ch in ('(',')','[',']','{','}')
+    
+    c = self.c ; d = g.scanDirectives(c,p) ; i,j = oldSel
+    language = d.get('language')
+    
+    if ch in ('(','[','{',):
+        automatch = language not in ('plain',)
+        if automatch:
+            ch = ch + {'(':')','[':']','{':'}'}.get(ch)
+        if i != j:
+            w.delete(i,j)
+        w.insert(i,ch)
+        if automatch:
+            w.mark_set('insert','insert-1c')
+    else:
+        ch2 = w.get('insert')
+        if ch2 in (')',']','}'):
+            w.mark_set('insert','insert+1c')
+        else:
+            if i != j:
+                w.delete(i,j)
+            w.insert(i,ch)
+#@nonl
+#@-node:ekr.20051027172949:updateAutomatchBracket
+#@+node:ekr.20051026171121.1:udpateAutoIndent
+# By David McNab:
+def updateAutoIndent (self,p):
+
+    c = self.c ; d = g.scanDirectives(c,p)
+    tab_width = d.get("tabwidth",c.tab_width) # Get the previous line.
+    s = c.frame.bodyCtrl.get("insert linestart - 1 lines","insert linestart -1c")
+    # Add the leading whitespace to the present line.
+    junk, width = g.skip_leading_ws_with_indent(s,0,tab_width)
+    if s and len(s) > 0 and s [ -1] == ':':
+        # For Python: increase auto-indent after colons.
+        if c.frame.body.colorizer.scanColorDirectives(p) == "python":
+            width += abs(tab_width)
+    if c.config.getBool("smart_auto_indent"):
+        # Determine if prev line has unclosed parens/brackets/braces
+        brackets = [width] ; tabex = 0
+        for i in range(0,len(s)):
+            if s [i] == '\t':
+                tabex += tab_width-1
+            if s [i] in '([{':
+                brackets.append(i+tabex+1)
+            elif s [i] in '}])' and len(brackets) > 1:
+                brackets.pop()
+        width = brackets.pop()
+    ws = g.computeLeadingWhitespace(width,tab_width)
+    if ws:
+        c.frame.bodyCtrl.insert("insert",ws)
+        removeTrailing = False
+    else:
+        removeTrailing = None
+    return removeTrailing
+#@nonl
+#@-node:ekr.20051026171121.1:udpateAutoIndent
+#@+node:ekr.20051026092433:updateTab
+def updateTab (self,p,w):
+
+    c = self.c ; d = g.scanDirectives(c,p)
+    tab_width = d.get("tabwidth",c.tab_width)
+    
+    i,j = g.app.gui.getTextSelection(w)
+    if i != j:
+        w.delete(i,j)
+    if tab_width > 0:
+        w.insert("insert",'\t')
+    else:
+        # Get the preceeding characters.
+        s = w.get("insert linestart","insert")
+    
+        # Compute n, the number of spaces to insert.
+        width = g.computeWidth(s,tab_width)
+        n = abs(tab_width) - (width % abs(tab_width))
+        w.insert("insert",' ' * n)
+#@nonl
+#@-node:ekr.20051026092433:updateTab
+#@-node:ekr.20051125080855:selfInsertCommand
+#@-node:ekr.20060408065447:fixed? newline problem on MacOS
+#@+node:ekr.20060408093907:Fixed Crash after undoing clearRecentFiles command
+#@+node:ekr.20060411135857:Trace
+exception executing command
+Traceback (most recent call last):
+  File "C:\prog\leoCVS\leo\src\leoCommands.py", line 264, in doCommand
+    val = command(event)
+  File "C:\prog\leoCVS\leo\src\leoCommands.py", line 884, in clearRecentFiles
+    u.afterClearRecentFiles(bunch)
+  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 621, in afterClearRecentFiles
+    u.pushBead(bunch)
+  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 192, in pushBead
+    u.setUndoTypes()
+  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 341, in setUndoTypes
+    u.cutStack()
+  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 136, in cutStack
+    if bunch.kind == 'beforeGroup':
+AttributeError: 'Bunch' object has no attribute 'kind'
+#@-node:ekr.20060411135857:Trace
+#@+node:ekr.20060127052111.1:cutStack
+def cutStack (self):
+    
+    u = self ; n = u.max_undo_stack_size
+
+    if n > 0 and u.bead >= n and not g.app.unitTesting:
         
-        d = leoTkinterDialog.tkinterAskOk(
-            c=None,title='Can not import %s' %(moduleName),
-            message=message)
-        d.run(modal=True)
+        # Do nothing if we are in the middle of creating a group.
+        i = len(u.beads)-1
+        while i >= 0:
+            bunch = u.beads[i]
+            if hasattr(bunch,'kind') and bunch.kind == 'beforeGroup':
+                return
+            i -= 1
+
+        # This work regardless of how many items appear after bead n.
+        # g.trace('Cutting undo stack to %d entries' % (n))
+        u.beads = u.beads[-n:]
+        u.bead = n-1
+        # g.trace('bead:',u.bead,'len(u.beads)',len(u.beads))
 #@nonl
-#@+node:ekr.20060329083310.1:createDialogFrame
-def createDialogFrame(Tk,root,title,message):
-    
-    """Create the Tk.Toplevel widget for a leoTkinterDialog."""
+#@-node:ekr.20060127052111.1:cutStack
+#@-node:ekr.20060408093907:Fixed Crash after undoing clearRecentFiles command
+#@+node:ekr.20060410112600.1:Fixed crash in string.startswith and string.endswith
+leoID = ekr (in c:\Documents and Settings\Ed)
+reading settings in C:\prog\leoCVS\leo\config\leoSettings.leo
+reading settings in C:\prog\leoCVS\leo\src\LeoPy.leo
+rst3 plugin: SilverCity not loaded
+AttributeError Exception in Tk callback
+  Function: <function bindKeyCallback at 0x016F2E70> (type: <type 'function'>)
+  Args: (<Tkinter.Event instance at 0x03510288>,)
+  Event type: KeyPress (type num: 2)
+Traceback (innermost last):
+  File "C:\prog\leoCVS\leo\extensions\Pmw\Pmw_1_2\lib\PmwBase.py", line 1752, in __call__
+    return apply(self.func, args)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2002, in bindKeyCallback
+    return k.masterKeyHandler(event,stroke=stroke)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2928, in masterKeyHandler
+    val = self.masterKeyHandlerHelper(event,stroke)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2992, in masterKeyHandlerHelper
+    val = k.callStateFunction(event) # Calls end-command.
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2219, in callStateFunction
+    val = k.state.handler(event)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 348, in autoCompleterStateHandler
+    self.insertNormalChar(ch,keysym)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 856, in insertNormalChar
+    self.calltip(obj)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 455, in calltip
+    obj = getattr(string,obj.__name__)
+AttributeError: 'module' object has no attribute 'startswith'
 
-    top = Tk.Toplevel(root)
-    top.title(title)
+================================================
+  Event contents:
+    char: (
+    delta: 57
+    height: ??
+    keycode: 57
+    keysym: parenleft
+    keysym_num: 40
+    num: ??
+    serial: 120644
+    state: 1
+    time: 16118166
+    type: 2
+    widget: .20658096.20658616.23344872.23344992.body-pane
+    width: ??
+    x: 562
+    x_root: 740
+    y: 38
+    y_root: 732
 
-    def onKey(event,top=top):
-        if event.char.lower() in ('\n','\r'):
-            top.destroy()
-    top.bind("<Key>",onKey)
+selfInsertCommand: '\n'
+selfInsertCommand: '\n'
+AttributeError Exception in Tk callback
+  Function: <function bindKeyCallback at 0x016F2E70> (type: <type 'function'>)
+  Args: (<Tkinter.Event instance at 0x03289C88>,)
+  Event type: KeyPress (type num: 2)
+Traceback (innermost last):
+  File "C:\prog\leoCVS\leo\extensions\Pmw\Pmw_1_2\lib\PmwBase.py", line 1752, in __call__
+    return apply(self.func, args)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2002, in bindKeyCallback
+    return k.masterKeyHandler(event,stroke=stroke)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2928, in masterKeyHandler
+    val = self.masterKeyHandlerHelper(event,stroke)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2992, in masterKeyHandlerHelper
+    val = k.callStateFunction(event) # Calls end-command.
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2219, in callStateFunction
+    val = k.state.handler(event)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 348, in autoCompleterStateHandler
+    self.insertNormalChar(ch,keysym)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 856, in insertNormalChar
+    self.calltip(obj)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 455, in calltip
+    obj = getattr(string,obj.__name__)
+AttributeError: 'module' object has no attribute 'endswith'
 
-    f = Tk.Frame(top)
-    f.pack(side="top",expand=1,fill="both")
-    
-    label = Tk.Label(f,text=message)
-    label.pack(pady=10)
-    
-    def okButton(top=top):
-        top.destroy()
-    
-    buttons = {"text":'OK',"command":okButton,"default":True}, # Singleton tuple.
-    createDialogButtons(Tk,top,buttons)
-    
-    center(top)
-    top.lift()
-    top.focus_force()
-    
-    # Attach the icon at idle time.
-    def attachIconCallback(top=top):
-        g.app.gui.attachLeoIcon(top)
-    top.after_idle(attachIconCallback)
+================================================
+  Event contents:
+    char: (
+    delta: 57
+    height: ??
+    keycode: 57
+    keysym: parenleft
+    keysym_num: 40
+    num: ??
+    serial: 123470
+    state: 1
+    time: 16173496
+    type: 2
+    widget: .20658096.20658616.23344872.23344992.body-pane
+    width: ??
+    x: 324
+    x_root: 502
+    y: 95
+    y_root: 789
 
-    return top
+#@+node:ekr.20060220110302:calltip
+def calltip (self,obj=None):
+    
+    c = self.c ; w = self.widget
+    isStringMethod = False ; s = None
+    # g.trace(self.leadinWord,obj)
+
+    if self.leadinWord and (not obj or type(obj) == types.BuiltinFunctionType):
+        << try to set s from a Python global function >>
+
+    if not s:
+        << get s using inspect >>
+        
+    << remove 'self' from s, but not from args >>
+    if isStringMethod:
+        << remove 's' from s *and* args >>
+
+    s = s.rstrip(')') # Convenient.
+    << insert the text and set j1 and j2 >>
+
+    # End autocompletion mode, restoring the selection.
+    self.finish()
+    c.widgetWantsFocusNow(w)
+    g.app.gui.setSelectionRange(w,j1,j2,insert=j2)
+    << put the status line >>
+#@+node:ekr.20060224103829:<< try to set s from a Python global function >>
+# The first line of the docstring is good enough, except for classes.
+f = __builtins__.get(self.leadinWord)
+doc = f and type(f) != types.ClassType and f.__doc__
+if doc:
+    s = g.splitLines(doc)
+    s = args = s and s [0] or ''
+    i = s.find('(')
+    if i > -1: s = s [i:]
+    s = s and s.strip() or ''
 #@nonl
-#@-node:ekr.20060329083310.1:createDialogFrame
-#@+node:ekr.20060329083310.2:createDialogButtons
-def createDialogButtons (Tk,top,buttons):
-    
-    """Create a row of buttons.
-    
-    buttons is a list of dictionaries containing the properties of each button."""
-    
-    f = Tk.Frame(top)
-    f.pack(side="top",padx=30)
+#@-node:ekr.20060224103829:<< try to set s from a Python global function >>
+#@+node:ekr.20060224103829.1:<< get s using inspect >>
+isStringMethod = self.prevObjects and type(self.prevObjects[-1]) == types.StringType
 
-    buttonList = []
-    for d in buttons:
-        text = d.get("text","<missing button name>")
-        isDefault = d.get("default",False)
-        underline = d.get("underline",0)
-        command = d.get("command",None)
-        bd = g.choose(isDefault,4,2)
+# g.trace(self.prevObjects)
 
-        b = Tk.Button(f,width=6,text=text,bd=bd,underline=underline,command=command)
-        b.pack(side="left",padx=5,pady=10)
+if isStringMethod and hasattr(string,obj.__name__):
+    # A hack. String functions are builtins, and getargspec doesn't handle them.
+    # Get the corresponding string function instead, and remove the s arg later.
+    obj = getattr(string,obj.__name__)
+
+try:
+    s1,s2,s3,s4 = inspect.getargspec(obj)
+except:
+    # g.es('inspect failed:',repr(obj))
+    self.extendSelection('(')
+    self.finish()
+    return # Not a function.  Just '('.
+
+s = args = inspect.formatargspec(s1,s2,s3,s4)
 #@nonl
-#@-node:ekr.20060329083310.2:createDialogButtons
-#@+node:ekr.20060329085417.1:center
-def center(top):
-
-    """Center the dialog on the screen.
-
-    WARNING: Call this routine _after_ creating a dialog.
-    (This routine inhibits the grid and pack geometry managers.)"""
-
-    sw = top.winfo_screenwidth()
-    sh = top.winfo_screenheight()
-    w,h,x,y = get_window_info(top)
-    
-    # Set the new window coordinates, leaving w and h unchanged.
-    x = (sw - w)/2
-    y = (sh - h)/2
-    top.geometry("%dx%d%+d%+d" % (w,h,x,y))
-    
-    return w,h,x,y
+#@-node:ekr.20060224103829.1:<< get s using inspect >>
+#@+node:ekr.20060224103829.2:<< remove 'self' from s, but not from args >>
+if g.match(s,1,'self,'):
+    s = s[0] + s[6:].strip()
+elif g.match_word(s,1,'self'):
+    s = s[0] + s[5:].strip()
 #@nonl
-#@-node:ekr.20060329085417.1:center
-#@+node:ekr.20060329085612:get_window_info
-# WARNING: Call this routine _after_ creating a dialog.
-# (This routine inhibits the grid and pack geometry managers.)
-
-def get_window_info (top):
-    
-    top.update_idletasks() # Required to get proper info.
-
-    # Get the information about top and the screen.
-    geom = top.geometry() # geom = "WidthxHeight+XOffset+YOffset"
-    dim,x,y = string.split(geom,'+')
-    w,h = string.split(dim,'x')
-    w,h,x,y = int(w),int(h),int(x),int(y)
-    
-    return w,h,x,y
+#@-node:ekr.20060224103829.2:<< remove 'self' from s, but not from args >>
+#@+node:ekr.20060224103829.3:<< remove 's' from s *and* args >>
+if g.match(s,1,'s,'):
+    s = s[0] + s[3:]
+    args = args[0] + args[3:]
+elif g.match_word(s,1,'s'):
+    s = s[0] + s[2:]
+    args = args[0] + args[2:]
 #@nonl
-#@-node:ekr.20060329085612:get_window_info
-#@-node:ekr.20060329083657:cantImportDialog & helpers
-#@-node:ekr.20041219071407:g.importExtension & helpers
-#@-node:ekr.20060329090924:Rewrote g.importExtension to simplify startup logic
+#@-node:ekr.20060224103829.3:<< remove 's' from s *and* args >>
+#@+node:ekr.20060224103829.4:<< insert the text and set j1 and j2 >>
+if g.app.gui.hasSelection(w):
+    i,j = g.app.gui.getSelectionRange(w)
+else:
+    i = j = g.app.gui.getInsertPoint(w)
+w.insert(j,s)
+c.frame.body.onBodyChanged('Typing')
+
+if 1:
+    j1 = w.index('%s + 1c' % j)
+    j2 = w.index('%s + %sc' % (j,len(s)))
+else:
+    j1 = j2 = w.index('%s + 2c' % j)
+#@nonl
+#@-node:ekr.20060224103829.4:<< insert the text and set j1 and j2 >>
+#@+node:ekr.20060224103829.5:<< put the status line >>
+c.frame.clearStatusLine()
+if obj:
+    name = hasattr(obj,'__name__') and obj.__name__ or repr(obj)
+else:
+    name = self.leadinWord
+c.frame.putStatusLine('%s %s' % (name,args))
+#@nonl
+#@-node:ekr.20060224103829.5:<< put the status line >>
+#@-node:ekr.20060220110302:calltip
+#@-node:ekr.20060410112600.1:Fixed crash in string.startswith and string.endswith
 #@+node:ekr.20060410091659:Removed lstrip and rstrip for compatibility with Python 2.2.1
 @nocolor
 http://sourceforge.net/forum/message.php?msg_id=3671350
@@ -8249,508 +8598,159 @@ def _executeMacro (self,macro,w):
 #@-node:ekr.20050920084036.203:_executeMacro (revise)
 #@-node:ekr.20060410112600.2:Found: rstrip
 #@-node:ekr.20060410091659:Removed lstrip and rstrip for compatibility with Python 2.2.1
-#@+node:ekr.20060410112600.1:Fixed crash in string.startswith and string.endswith
-leoID = ekr (in c:\Documents and Settings\Ed)
-reading settings in C:\prog\leoCVS\leo\config\leoSettings.leo
-reading settings in C:\prog\leoCVS\leo\src\LeoPy.leo
-rst3 plugin: SilverCity not loaded
-AttributeError Exception in Tk callback
-  Function: <function bindKeyCallback at 0x016F2E70> (type: <type 'function'>)
-  Args: (<Tkinter.Event instance at 0x03510288>,)
-  Event type: KeyPress (type num: 2)
-Traceback (innermost last):
-  File "C:\prog\leoCVS\leo\extensions\Pmw\Pmw_1_2\lib\PmwBase.py", line 1752, in __call__
-    return apply(self.func, args)
-  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2002, in bindKeyCallback
-    return k.masterKeyHandler(event,stroke=stroke)
-  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2928, in masterKeyHandler
-    val = self.masterKeyHandlerHelper(event,stroke)
-  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2992, in masterKeyHandlerHelper
-    val = k.callStateFunction(event) # Calls end-command.
-  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2219, in callStateFunction
-    val = k.state.handler(event)
-  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 348, in autoCompleterStateHandler
-    self.insertNormalChar(ch,keysym)
-  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 856, in insertNormalChar
-    self.calltip(obj)
-  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 455, in calltip
-    obj = getattr(string,obj.__name__)
-AttributeError: 'module' object has no attribute 'startswith'
+#@+node:ekr.20060329090924:Rewrote g.importExtension to simplify startup logic
+#@+node:ekr.20041219071407:g.importExtension & helpers
+def importExtension (moduleName,pluginName=None,verbose=False,required=False):
 
-================================================
-  Event contents:
-    char: (
-    delta: 57
-    height: ??
-    keycode: 57
-    keysym: parenleft
-    keysym_num: 40
-    num: ??
-    serial: 120644
-    state: 1
-    time: 16118166
-    type: 2
-    widget: .20658096.20658616.23344872.23344992.body-pane
-    width: ??
-    x: 562
-    x_root: 740
-    y: 38
-    y_root: 732
+    '''Try to import a module.  If that fails,
+    try to import the module from Leo's extensions directory.
 
-selfInsertCommand: '\n'
-selfInsertCommand: '\n'
-AttributeError Exception in Tk callback
-  Function: <function bindKeyCallback at 0x016F2E70> (type: <type 'function'>)
-  Args: (<Tkinter.Event instance at 0x03289C88>,)
-  Event type: KeyPress (type num: 2)
-Traceback (innermost last):
-  File "C:\prog\leoCVS\leo\extensions\Pmw\Pmw_1_2\lib\PmwBase.py", line 1752, in __call__
-    return apply(self.func, args)
-  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2002, in bindKeyCallback
-    return k.masterKeyHandler(event,stroke=stroke)
-  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2928, in masterKeyHandler
-    val = self.masterKeyHandlerHelper(event,stroke)
-  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2992, in masterKeyHandlerHelper
-    val = k.callStateFunction(event) # Calls end-command.
-  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2219, in callStateFunction
-    val = k.state.handler(event)
-  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 348, in autoCompleterStateHandler
-    self.insertNormalChar(ch,keysym)
-  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 856, in insertNormalChar
-    self.calltip(obj)
-  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 455, in calltip
-    obj = getattr(string,obj.__name__)
-AttributeError: 'module' object has no attribute 'endswith'
-
-================================================
-  Event contents:
-    char: (
-    delta: 57
-    height: ??
-    keycode: 57
-    keysym: parenleft
-    keysym_num: 40
-    num: ??
-    serial: 123470
-    state: 1
-    time: 16173496
-    type: 2
-    widget: .20658096.20658616.23344872.23344992.body-pane
-    width: ??
-    x: 324
-    x_root: 502
-    y: 95
-    y_root: 789
-
-#@+node:ekr.20060220110302:calltip
-def calltip (self,obj=None):
+    moduleName is the module's name, without file extension.'''
     
-    c = self.c ; w = self.widget
-    isStringMethod = False ; s = None
-    # g.trace(self.leadinWord,obj)
-
-    if self.leadinWord and (not obj or type(obj) == types.BuiltinFunctionType):
-        << try to set s from a Python global function >>
-
-    if not s:
-        << get s using inspect >>
-        
-    << remove 'self' from s, but not from args >>
-    if isStringMethod:
-        << remove 's' from s *and* args >>
-
-    s = s.rstrip(')') # Convenient.
-    << insert the text and set j1 and j2 >>
-
-    # End autocompletion mode, restoring the selection.
-    self.finish()
-    c.widgetWantsFocusNow(w)
-    g.app.gui.setSelectionRange(w,j1,j2,insert=j2)
-    << put the status line >>
-#@+node:ekr.20060224103829:<< try to set s from a Python global function >>
-# The first line of the docstring is good enough, except for classes.
-f = __builtins__.get(self.leadinWord)
-doc = f and type(f) != types.ClassType and f.__doc__
-if doc:
-    s = g.splitLines(doc)
-    s = args = s and s [0] or ''
-    i = s.find('(')
-    if i > -1: s = s [i:]
-    s = s and s.strip() or ''
-#@nonl
-#@-node:ekr.20060224103829:<< try to set s from a Python global function >>
-#@+node:ekr.20060224103829.1:<< get s using inspect >>
-isStringMethod = self.prevObjects and type(self.prevObjects[-1]) == types.StringType
-
-# g.trace(self.prevObjects)
-
-if isStringMethod and hasattr(string,obj.__name__):
-    # A hack. String functions are builtins, and getargspec doesn't handle them.
-    # Get the corresponding string function instead, and remove the s arg later.
-    obj = getattr(string,obj.__name__)
-
-try:
-    s1,s2,s3,s4 = inspect.getargspec(obj)
-except:
-    # g.es('inspect failed:',repr(obj))
-    self.extendSelection('(')
-    self.finish()
-    return # Not a function.  Just '('.
-
-s = args = inspect.formatargspec(s1,s2,s3,s4)
-#@nonl
-#@-node:ekr.20060224103829.1:<< get s using inspect >>
-#@+node:ekr.20060224103829.2:<< remove 'self' from s, but not from args >>
-if g.match(s,1,'self,'):
-    s = s[0] + s[6:].strip()
-elif g.match_word(s,1,'self'):
-    s = s[0] + s[5:].strip()
-#@nonl
-#@-node:ekr.20060224103829.2:<< remove 'self' from s, but not from args >>
-#@+node:ekr.20060224103829.3:<< remove 's' from s *and* args >>
-if g.match(s,1,'s,'):
-    s = s[0] + s[3:]
-    args = args[0] + args[3:]
-elif g.match_word(s,1,'s'):
-    s = s[0] + s[2:]
-    args = args[0] + args[2:]
-#@nonl
-#@-node:ekr.20060224103829.3:<< remove 's' from s *and* args >>
-#@+node:ekr.20060224103829.4:<< insert the text and set j1 and j2 >>
-if g.app.gui.hasSelection(w):
-    i,j = g.app.gui.getSelectionRange(w)
-else:
-    i = j = g.app.gui.getInsertPoint(w)
-w.insert(j,s)
-c.frame.body.onBodyChanged('Typing')
-
-if 1:
-    j1 = w.index('%s + 1c' % j)
-    j2 = w.index('%s + %sc' % (j,len(s)))
-else:
-    j1 = j2 = w.index('%s + 2c' % j)
-#@nonl
-#@-node:ekr.20060224103829.4:<< insert the text and set j1 and j2 >>
-#@+node:ekr.20060224103829.5:<< put the status line >>
-c.frame.clearStatusLine()
-if obj:
-    name = hasattr(obj,'__name__') and obj.__name__ or repr(obj)
-else:
-    name = self.leadinWord
-c.frame.putStatusLine('%s %s' % (name,args))
-#@nonl
-#@-node:ekr.20060224103829.5:<< put the status line >>
-#@-node:ekr.20060220110302:calltip
-#@-node:ekr.20060410112600.1:Fixed crash in string.startswith and string.endswith
-#@+node:ekr.20060408093907:Fixed Crash after undoing clearRecentFiles command
-#@+node:ekr.20060411135857:Trace
-exception executing command
-Traceback (most recent call last):
-  File "C:\prog\leoCVS\leo\src\leoCommands.py", line 264, in doCommand
-    val = command(event)
-  File "C:\prog\leoCVS\leo\src\leoCommands.py", line 884, in clearRecentFiles
-    u.afterClearRecentFiles(bunch)
-  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 621, in afterClearRecentFiles
-    u.pushBead(bunch)
-  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 192, in pushBead
-    u.setUndoTypes()
-  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 341, in setUndoTypes
-    u.cutStack()
-  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 136, in cutStack
-    if bunch.kind == 'beforeGroup':
-AttributeError: 'Bunch' object has no attribute 'kind'
-#@-node:ekr.20060411135857:Trace
-#@+node:ekr.20060127052111.1:cutStack
-def cutStack (self):
+    # g.trace(verbose,moduleName,pluginName)
     
-    u = self ; n = u.max_undo_stack_size
+    module = g.importModule(moduleName,pluginName=pluginName,verbose=False)
 
-    if n > 0 and u.bead >= n and not g.app.unitTesting:
-        
-        # Do nothing if we are in the middle of creating a group.
-        i = len(u.beads)-1
-        while i >= 0:
-            bunch = u.beads[i]
-            if hasattr(bunch,'kind') and bunch.kind == 'beforeGroup':
-                return
-            i -= 1
-
-        # This work regardless of how many items appear after bead n.
-        # g.trace('Cutting undo stack to %d entries' % (n))
-        u.beads = u.beads[-n:]
-        u.bead = n-1
-        # g.trace('bead:',u.bead,'len(u.beads)',len(u.beads))
-#@nonl
-#@-node:ekr.20060127052111.1:cutStack
-#@-node:ekr.20060408093907:Fixed Crash after undoing clearRecentFiles command
-#@+node:ekr.20060408065447:fixed? newline problem on MacOS
-# Very weird.  Things are working now, but I don't know why...
-#@+node:ekr.20050920084036.138:insertNewLine (not undoable)
-def insertNewLine (self,event):
-
-    w = event.widget
-    wname = g.app.gui.widget_name(w)
-    
-    if not wname.startswith('head'):
-        w.insert('insert','\n')
-
-insertNewline = insertNewLine
-#@nonl
-#@-node:ekr.20050920084036.138:insertNewLine (not undoable)
-#@+node:ekr.20051125080855:selfInsertCommand
-def selfInsertCommand(self,event,action='insert'):
-    
-    '''Insert a character in the body pane.
-    
-    This is the default binding for all keys in the body pane.'''
-    
-    c = self.c ; p = c.currentPosition()
-    ch = event and event.char or ''
-    w = event and event.widget
-    name = c.widget_name(w)
-    oldSel =  name.startswith('body') and g.app.gui.getTextSelection(w)
-    oldText = name.startswith('body') and p.bodyString()
-    removeTrailing = None # A signal to compute it later.
-    undoType = 'Typing'
-    trace = c.config.getBool('trace_masterCommand')
-    
-    if trace: g.trace(name,repr(ch))
-    
-    if g.doHook("bodykey1",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType):
-        return "break" # The hook claims to have handled the event.
-        
-    if ch == '\t':
-        removeTrailing = self.updateTab(p,w)
-    elif ch == '\b':
-        # This is correct: we only come here if there no bindngs for this key. 
-        self.backwardDeleteCharacter(event)
-    elif ch in ('\r','\n'):
-        ch = '\n'
-        << handle newline >>
-    elif ch in ('(',')','[',']','{','}') and c.config.getBool('autocomplete-brackets'):
-        self.updateAutomatchBracket(p,w,ch,oldSel)
-    elif ch: # Null chars must not delete the selection.
-        i,j = oldSel
-        if i != j:                  w.delete(i,j)
-        elif action == 'overwrite': w.delete(i,'%s+1c' % i)
-        w.insert(i,ch)                     
-    else:
-        return 'break' # New in 4.4a5: this method *always* returns 'break'
-
-    # Update the text and handle undo.
-    newText = g.app.gui.getAllText(w) # New in 4.4b3: converts to unicode.
-    # g.trace(repr(newText))
-    w.see(w.index('insert'))
-    if newText != oldText:
-        c.frame.body.onBodyChanged(undoType=undoType,
-            oldSel=oldSel,oldText=oldText,oldYview=None,removeTrailing=removeTrailing)
+    if not module:
+        module = g.importFromPath(moduleName,g.app.extensionsDir,
+            pluginName=pluginName,verbose=verbose)
             
-    g.doHook("bodykey2",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType)
-    return 'break'
+        if not module and required:
+            g.cantImportDialog(pluginName,moduleName)
+            try: # Avoid raising SystemExit if possible.
+                import os ; os._exit(1) # May not be available on all platforms.
+            except Exception:
+                import sys ; sys.exit(1)
+
+    return module
 #@nonl
-#@+node:ekr.20051026171121:<< handle newline >>
-i,j = oldSel
+#@+node:ekr.20060329083657:cantImportDialog & helpers
+def cantImportDialog (pluginName,moduleName):
+    
+    message = '''
+%s requires the %s module.
+Official distributions contain this module in Leo's extensions folder,
+but this module may be missing if you get Leo from cvs.
+''' % (pluginName,moduleName)
 
-if i != j:
-    # No auto-indent if there is selected text.
-    w.delete(i,j)
-    w.insert(i,ch)
-else:
-    w.insert(i,ch)
-    if c.frame.body.colorizer.useSyntaxColoring(p) and undoType != "Change":
-        # No auto-indent if in @nocolor mode or after a Change command.
-        removeTrailing = self.updateAutoIndent(p)
-        # g.trace(removeTrailing)
+    if 1: # Requires minimal further imports.
+        try:
+            import Tkinter as Tk
+            root = g.app.root or Tk.Tk()
+            title = 'Can not import %s' % moduleName
+            top = createDialogFrame(Tk,root,title,message)
+            root.wait_window(top)
+        except ImportError:
+            print 'Can not import %s' % moduleName
+            print 'Can not import Tkinter'
+            print 'Leo must now exit'
+        
+    else: # Can cause import problems during startup.
+        import leoTkinterDialog
+        
+        d = leoTkinterDialog.tkinterAskOk(
+            c=None,title='Can not import %s' %(moduleName),
+            message=message)
+        d.run(modal=True)
 #@nonl
-#@-node:ekr.20051026171121:<< handle newline >>
-#@+node:ekr.20051027172949:updateAutomatchBracket
-def updateAutomatchBracket (self,p,w,ch,oldSel):
+#@+node:ekr.20060329083310.1:createDialogFrame
+def createDialogFrame(Tk,root,title,message):
     
-    # assert ch in ('(',')','[',']','{','}')
+    """Create the Tk.Toplevel widget for a leoTkinterDialog."""
+
+    top = Tk.Toplevel(root)
+    top.title(title)
+
+    def onKey(event,top=top):
+        if event.char.lower() in ('\n','\r'):
+            top.destroy()
+    top.bind("<Key>",onKey)
+
+    f = Tk.Frame(top)
+    f.pack(side="top",expand=1,fill="both")
     
-    c = self.c ; d = g.scanDirectives(c,p) ; i,j = oldSel
-    language = d.get('language')
+    label = Tk.Label(f,text=message)
+    label.pack(pady=10)
     
-    if ch in ('(','[','{',):
-        automatch = language not in ('plain',)
-        if automatch:
-            ch = ch + {'(':')','[':']','{':'}'}.get(ch)
-        if i != j:
-            w.delete(i,j)
-        w.insert(i,ch)
-        if automatch:
-            w.mark_set('insert','insert-1c')
-    else:
-        ch2 = w.get('insert')
-        if ch2 in (')',']','}'):
-            w.mark_set('insert','insert+1c')
-        else:
-            if i != j:
-                w.delete(i,j)
-            w.insert(i,ch)
+    def okButton(top=top):
+        top.destroy()
+    
+    buttons = {"text":'OK',"command":okButton,"default":True}, # Singleton tuple.
+    createDialogButtons(Tk,top,buttons)
+    
+    center(top)
+    top.lift()
+    top.focus_force()
+    
+    # Attach the icon at idle time.
+    def attachIconCallback(top=top):
+        g.app.gui.attachLeoIcon(top)
+    top.after_idle(attachIconCallback)
+
+    return top
 #@nonl
-#@-node:ekr.20051027172949:updateAutomatchBracket
-#@+node:ekr.20051026171121.1:udpateAutoIndent
-# By David McNab:
-def updateAutoIndent (self,p):
-
-    c = self.c ; d = g.scanDirectives(c,p)
-    tab_width = d.get("tabwidth",c.tab_width) # Get the previous line.
-    s = c.frame.bodyCtrl.get("insert linestart - 1 lines","insert linestart -1c")
-    # Add the leading whitespace to the present line.
-    junk, width = g.skip_leading_ws_with_indent(s,0,tab_width)
-    if s and len(s) > 0 and s [ -1] == ':':
-        # For Python: increase auto-indent after colons.
-        if c.frame.body.colorizer.scanColorDirectives(p) == "python":
-            width += abs(tab_width)
-    if c.config.getBool("smart_auto_indent"):
-        # Determine if prev line has unclosed parens/brackets/braces
-        brackets = [width] ; tabex = 0
-        for i in range(0,len(s)):
-            if s [i] == '\t':
-                tabex += tab_width-1
-            if s [i] in '([{':
-                brackets.append(i+tabex+1)
-            elif s [i] in '}])' and len(brackets) > 1:
-                brackets.pop()
-        width = brackets.pop()
-    ws = g.computeLeadingWhitespace(width,tab_width)
-    if ws:
-        c.frame.bodyCtrl.insert("insert",ws)
-        removeTrailing = False
-    else:
-        removeTrailing = None
-    return removeTrailing
-#@nonl
-#@-node:ekr.20051026171121.1:udpateAutoIndent
-#@+node:ekr.20051026092433:updateTab
-def updateTab (self,p,w):
-
-    c = self.c ; d = g.scanDirectives(c,p)
-    tab_width = d.get("tabwidth",c.tab_width)
+#@-node:ekr.20060329083310.1:createDialogFrame
+#@+node:ekr.20060329083310.2:createDialogButtons
+def createDialogButtons (Tk,top,buttons):
     
-    i,j = g.app.gui.getTextSelection(w)
-    if i != j:
-        w.delete(i,j)
-    if tab_width > 0:
-        w.insert("insert",'\t')
-    else:
-        # Get the preceeding characters.
-        s = w.get("insert linestart","insert")
+    """Create a row of buttons.
     
-        # Compute n, the number of spaces to insert.
-        width = g.computeWidth(s,tab_width)
-        n = abs(tab_width) - (width % abs(tab_width))
-        w.insert("insert",' ' * n)
-#@nonl
-#@-node:ekr.20051026092433:updateTab
-#@-node:ekr.20051125080855:selfInsertCommand
-#@-node:ekr.20060408065447:fixed? newline problem on MacOS
-#@+node:ekr.20060411101844:Fixed failed unit tests
-leoID = ekr (in c:\Documents and Settings\Ed)
-reading settings in C:\prog\tigris-cvs\leo\config\leoSettings.leo
-reading settings in C:\prog\tigris-cvs\leo\test\unitTest.leo
-rst3 plugin: SilverCity not loaded
-Registered unit-test-command1
-found  3 doctests for leoGlobals
-found  1 doctests for leoTest
-found  5 test routines for leoAtFile
-found  4 test routines for leoEditCommands
-found  1 test routine for leoFileCommands
-found 14 test routines for leoGlobals
-EKR: reportlab.__init__
-found  5 test routines for multifile
-..F.
-End of doctests
-..........OSError: [Errno 2] No such file or directory: 'xyzzy'
-
-......
-test of es_print: ─é
-.es_trace:
-test of es_trace: ─é
-........
-End of test routines
-..leoID = ekr (in c:\Documents and Settings\Ed)
-leoID = ekr (in c:\Documents and Settings\Ed)
-...............................................Registered test-registerCommand bound to <Alt+Ctrl+Shift+Z>
-...............................
-End of new find tests
-.............................................
-End of tests of @file nodes
-.................................
-End of general unit tests
-....
-End of commands tests
-.............................F..........................................................................................
-..................
-opening a new window to test more plugin logic
-
-.........................................................................................................
-======================================================================
-FAIL: Doctest: leoGlobals.mulderUpdateAlgorithm.stripWhitespaceFromBlankLines
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\python24\lib\doctest.py", line 2152, in runTest
-    raise self.failureException(self.format_failure(new.getvalue()))
-AssertionError: Failed doctest test for leoGlobals.mulderUpdateAlgorithm.stripWhitespaceFromBlankLines
-  File "c:\prog\tigris-cvs\leo\src\leoGlobals.py", line 4774, in stripWhitespaceFromBlankLines
-
-----------------------------------------------------------------------
-File "c:\prog\tigris-cvs\leo\src\leoGlobals.py", line 4782, in leoGlobals.mulderUpdateAlgorithm.stripWhitespaceFromBlank
-Lines
-Failed example:
-    g.mulderUpdateAlgorithm().stripWhitespaceFromBlankLines(theLines)
-Expected:
-    ['a\n', '\n', '\n', 'b']
-Got:
-    ['a\n', '', '', 'b']
-
-
-======================================================================
-FAIL: @test line endings of Linux scripts
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 155, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "<string>", line 20, in ?
-  File "<string>", line 14, in checkLinuxLineEndings
-AssertionError: Bad Linux line ending in C:\prog\tigris-cvs\leo\src\..\install: cr: 156, nl: 156
-
-----------------------------------------------------------------------
-Ran 434 tests in 179.829s
-
-FAILED (failures=2)
->>>
-#@nonl
-#@+node:ekr.20040718101315:stripWhitespaceFromBlankLines(before_lines)
-def stripWhitespaceFromBlankLines (self,lines):
+    buttons is a list of dictionaries containing the properties of each button."""
     
-    # All backslashes must be doubled.
+    f = Tk.Frame(top)
+    f.pack(side="top",padx=30)
 
-    """Strip blanks and tabs from lines containing only blanks and tabs.
-    
-    >>> import leoGlobals as g
-    >>> s = "a\\n \\t\\n\\t\\t \\t\\nb"
-    >>> theLines = g.splitLines(s)
-    >>> theLines
-    ['a\\n', ' \\t\\n', '\\t\\t \\t\\n', 'b']
-    >>> g.mulderUpdateAlgorithm().stripWhitespaceFromBlankLines(theLines)
-    ['a\\n', '\\n', '\\n', 'b']
-    """
+    for d in buttons:
+        text = d.get("text","<missing button name>")
+        isDefault = d.get("default",False)
+        underline = d.get("underline",0)
+        command = d.get("command",None)
+        bd = g.choose(isDefault,4,2)
 
-    for i in xrange(len(lines)):
-        # stripped_line = lines[i].lstrip(" \t") # lstrip does not exist in python 2.2.1.
-        stripped_line = lines[i]
-        while stripped_line and stripped_line[0] in (' ','\t'):
-            stripped_line = stripped_line [1:]
-        if stripped_line in ('\n',''):
-            lines[i] = stripped_line
-            
-    return lines
+        b = Tk.Button(f,width=6,text=text,bd=bd,underline=underline,command=command)
+        b.pack(side="left",padx=5,pady=10)
 #@nonl
-#@-node:ekr.20040718101315:stripWhitespaceFromBlankLines(before_lines)
-#@-node:ekr.20060411101844:Fixed failed unit tests
+#@-node:ekr.20060329083310.2:createDialogButtons
+#@+node:ekr.20060329085417.1:center
+def center(top):
+
+    """Center the dialog on the screen.
+
+    WARNING: Call this routine _after_ creating a dialog.
+    (This routine inhibits the grid and pack geometry managers.)"""
+
+    sw = top.winfo_screenwidth()
+    sh = top.winfo_screenheight()
+    w,h,x,y = get_window_info(top)
+    
+    # Set the new window coordinates, leaving w and h unchanged.
+    x = (sw - w)/2
+    y = (sh - h)/2
+    top.geometry("%dx%d%+d%+d" % (w,h,x,y))
+    
+    return w,h,x,y
+#@nonl
+#@-node:ekr.20060329085417.1:center
+#@+node:ekr.20060329085612:get_window_info
+# WARNING: Call this routine _after_ creating a dialog.
+# (This routine inhibits the grid and pack geometry managers.)
+
+def get_window_info (top):
+    
+    top.update_idletasks() # Required to get proper info.
+
+    # Get the information about top and the screen.
+    geom = top.geometry() # geom = "WidthxHeight+XOffset+YOffset"
+    dim,x,y = string.split(geom,'+')
+    w,h = string.split(dim,'x')
+    w,h,x,y = int(w),int(h),int(x),int(y)
+    
+    return w,h,x,y
+#@nonl
+#@-node:ekr.20060329085612:get_window_info
+#@-node:ekr.20060329083657:cantImportDialog & helpers
+#@-node:ekr.20041219071407:g.importExtension & helpers
+#@-node:ekr.20060329090924:Rewrote g.importExtension to simplify startup logic
 #@-node:ekr.20060323131536.1:Bugs
 #@+node:ekr.20060323140748:Plugins
 #@+node:ekr.20060301182319:Support for chapters plugin
@@ -9356,10 +9356,10 @@ def drawTopTree (self):
     self.dragging = False
     if self.trace:
         self.redrawCount += 1
-        # print ; print
-        delta = g.app.positions - self.prevPositions
-        # g.trace("**** gen: %-3d positions: %5d +%4d" % (
-            # self.generation,g.app.positions,delta),g.callers())
+        if 0:
+            delta = g.app.positions - self.prevPositions
+            g.trace("**** gen: %-3d positions: %5d +%4d" % (
+                self.generation,g.app.positions,delta),g.callers())
         
     self.prevPositions = g.app.positions
 

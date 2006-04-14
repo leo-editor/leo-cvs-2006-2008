@@ -1,4 +1,4 @@
-Leo 4.4 beta 3                                             March 31, 2006
+Leo 4.4 beta 3                                             April 14, 2006
 
 The highlights of Leo 4.4:
 --------------------------

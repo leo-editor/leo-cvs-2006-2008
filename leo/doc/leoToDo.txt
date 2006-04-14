@@ -1,42 +1,29 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
-#@+node:ekr.20060411095710:To do 4.4 b3
-#@-node:ekr.20060411095710:To do 4.4 b3
-#@+node:ekr.20060226131603:To do 4.4 b4 or final
-#@+node:ekr.20060210140415:Most important 10
-#@+node:ekr.20060307074302.1:set-change-text command should work when entering find text.
-# It's not clear how to do this.
-#@nonl
-#@-node:ekr.20060307074302.1:set-change-text command should work when entering find text.
-#@+node:ekr.20060122183544:Improve isearch
+#@+node:ekr.20060227163911.1:Leo's web site
 @nocolor
 
-- Handle backspace for isearch: keep a stack of previous matches.
-- Allow cross-node isearches.
-#@-node:ekr.20060122183544:Improve isearch
+- Put more screen shots on Leo's web site.
+- Put complete slide show on Leo's web site.
+#@nonl
+#@-node:ekr.20060227163911.1:Leo's web site
+#@+node:ekr.20060226131603:To do 4.4 b4 or final
+#@+node:ekr.20060412114843:easy 10
+#@+node:ekr.20060116085649:find-word-on-line, find-character-on-line (forward & backward)
+#@-node:ekr.20060116085649:find-word-on-line, find-character-on-line (forward & backward)
 #@+node:ekr.20060123095316:clear-selection
 Useful, e.g., after a find.
 #@nonl
 #@-node:ekr.20060123095316:clear-selection
-#@+node:ekr.20060113090042:open-outline-by-name & filename completion
-#@-node:ekr.20060113090042:open-outline-by-name & filename completion
-#@+node:ekr.20060122194643:isearch-headline (forward & backward)
-#@-node:ekr.20060122194643:isearch-headline (forward & backward)
-#@+node:ekr.20060116085649:find-word-on-line, find-character-on-line (forward & backward)
-#@-node:ekr.20060116085649:find-word-on-line, find-character-on-line (forward & backward)
-#@+node:ekr.20060116074839.2:extend-to-word
-#@-node:ekr.20060116074839.2:extend-to-word
-#@+node:ekr.20060123091352:Incremental search in switch-to-buffer
-#@-node:ekr.20060123091352:Incremental search in switch-to-buffer
-#@+node:ekr.20060206103922:Minibuffer interface for GoToLine number (rewrite goto-line)
-#@-node:ekr.20060206103922:Minibuffer interface for GoToLine number (rewrite goto-line)
 #@+node:ekr.20060122185244.2:Fix unindent command
 # unindent-region should work in all panes.
 #@nonl
 #@-node:ekr.20060122185244.2:Fix unindent command
-#@-node:ekr.20060210140415:Most important 10
-#@+node:ekr.20060328120455:Next 7
+#@+node:ekr.20060116074839.2:extend-to-word
+#@-node:ekr.20060116074839.2:extend-to-word
+#@+node:ekr.20060206103922:Minibuffer interface for GoToLine number (rewrite goto-line)
+#@-node:ekr.20060206103922:Minibuffer interface for GoToLine number (rewrite goto-line)
 #@+node:ekr.20051202095626:help-for-command
 Use docstrings as the help message.
 #@nonl
@@ -53,8 +40,6 @@ remove-space-from lines Removes a space from start of all selected lines.
 remove-tab-from lines   Removes a space from start of all selected lines.
 #@nonl
 #@-node:ekr.20060116084526.1:insert/remove spaces/tabs from lines (LeoUser)
-#@+node:ekr.20060117115212:Fix rename-buffer command
-#@-node:ekr.20060117115212:Fix rename-buffer command
 #@+node:ekr.20060104083551:move-line-up/down (LeoUser)
 http://sourceforge.net/forum/message.php?msg_id=3488030
 
@@ -73,22 +58,37 @@ of the node.
 In all cases the moved text remains selected, even when the text moves to another node.
 #@nonl
 #@-node:ekr.20060104083551:move-line-up/down (LeoUser)
-#@+node:ekr.20060211093935:Support for @list and on-enter-mode
-#@-node:ekr.20060211093935:Support for @list and on-enter-mode
-#@+node:ekr.20060116090428:Expand 'point' so it indicates node as well as text location
-#@-node:ekr.20060116090428:Expand 'point' so it indicates node as well as text location
+#@+node:ekr.20060117115212:Fix rename-buffer command
+#@-node:ekr.20060117115212:Fix rename-buffer command
 #@+node:ekr.20060211184834:Review all commands in leoEditCommands.py
 Any command that alters text should call begin/endCommand.
 #@nonl
 #@-node:ekr.20060211184834:Review all commands in leoEditCommands.py
-#@-node:ekr.20060328120455:Next 7
-#@+node:ekr.20060227163911.1:Leo's web site
+#@-node:ekr.20060412114843:easy 10
+#@+node:ekr.20060413065803:searches 4
+#@+node:ekr.20060307074302.1:set-change-text command should work when entering find text.
+# It's not clear how to do this.
+#@nonl
+#@-node:ekr.20060307074302.1:set-change-text command should work when entering find text.
+#@+node:ekr.20060122183544:Improve isearch
 @nocolor
 
-- Put more screen shots on Leo's web site.
-- Put complete slide show on Leo's web site.
-#@nonl
-#@-node:ekr.20060227163911.1:Leo's web site
+- Handle backspace for isearch: keep a stack of previous matches.
+- Allow cross-node isearches.
+#@-node:ekr.20060122183544:Improve isearch
+#@+node:ekr.20060122194643:isearch-headline (forward & backward)
+#@-node:ekr.20060122194643:isearch-headline (forward & backward)
+#@+node:ekr.20060123091352:Incremental search in switch-to-buffer
+#@-node:ekr.20060123091352:Incremental search in switch-to-buffer
+#@-node:ekr.20060413065803:searches 4
+#@+node:ekr.20060210140415:others 3
+#@+node:ekr.20060113090042:open-outline-by-name & filename completion
+#@-node:ekr.20060113090042:open-outline-by-name & filename completion
+#@+node:ekr.20060211093935:Support for @list and on-enter-mode
+#@-node:ekr.20060211093935:Support for @list and on-enter-mode
+#@+node:ekr.20060116090428:Expand 'point' so it indicates node as well as text location
+#@-node:ekr.20060116090428:Expand 'point' so it indicates node as well as text location
+#@-node:ekr.20060210140415:others 3
 #@-node:ekr.20060226131603:To do 4.4 b4 or final
 #@-all
 #@nonl

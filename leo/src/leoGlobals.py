@@ -5243,7 +5243,6 @@ def createDialogButtons (Tk,top,buttons):
     f = Tk.Frame(top)
     f.pack(side="top",padx=30)
 
-    buttonList = []
     for d in buttons:
         text = d.get("text","<missing button name>")
         isDefault = d.get("default",False)

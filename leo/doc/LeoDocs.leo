@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="23395" clone_windows="0"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="23454" clone_windows="0"/>
 <globals body_outline_ratio="0.60175879397">
 	<global_window_position top="24" left="339" height="857" width="911"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
@@ -42,7 +42,7 @@
 <v t="ekr.20050902080416"><vh>@@button reformat-paragraph</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647" a="V"><vh>Users Guide</vh>
+<v t="ekr.20040414161647"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.1"><vh>Documentation for rst3 plugin</vh>
 <v t="ekr.20050818163826"><vh>@rst html\rstplugin3.html</vh>
 <v t="ekr.20050818163826.1"><vh>@rst-no-head links</vh></v>
@@ -779,7 +779,7 @@
 <v t="ekr.20050916065715"><vh>suggestions for tutorial</vh></v>
 </v>
 </v>
-<v t="edream.110203163054.46"><vh>Release Notes</vh>
+<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
 <v t="edream.110203163054.117"><vh>Previous versions...</vh>
 <v t="ekr.20060206111717"><vh>Ancient...</vh>
 <v t="edream.110203163054.118"><vh>3.x...</vh>
@@ -2528,9 +2528,6 @@
 </v>
 <v t="ekr.20060227102028.111"><vh>Autocompletion and calltips</vh></v>
 </v>
-</v>
-</v>
-<v t="edream.110203163054.63"><vh>Latest version</vh>
 <v t="ekr.20060328171518"><vh>4.4 b3</vh>
 <v t="ekr.20060328171518.1"><vh>New features</vh>
 <v t="ekr.20060328171518.10"><vh>Added scroll outline pane commands</vh></v>
@@ -2555,6 +2552,52 @@
 <v t="ekr.20060328171518.190"><vh>Investigated colorizer problems: can not reproduce</vh></v>
 <v t="ekr.20060328171518.248"><vh>Removed support @ifgui: it doesn't and can't work</vh></v>
 <v t="ekr.20060328171518.249"><vh>Removed autocompletion for self</vh></v>
+<v t="ekr.20060414071350.1" a="E"><vh>Rewrote g.importExtension to simplify startup logic</vh></v>
+<v t="ekr.20060414071350.8" a="E"><vh>Removed calls to lstrip and rstrip for compatibility with Python 2.2.1</vh></v>
+<v t="ekr.20060414071350.39" a="E"><vh>Fixed crash in string.startswith and string.endswith</vh></v>
+<v t="ekr.20060414071350.47" a="E"><vh>Fixed Crash after undoing clearRecentFiles command</vh></v>
+<v t="ekr.20060414071350.58"><vh>Fixed minor problems reported by Pychecker</vh></v>
+</v>
+<v t="ekr.20060328171518.191"><vh>Plugins</vh>
+<v t="ekr.20060328171518.238"><vh>Changed path to stylesheet in the rst3 plugin</vh></v>
+<v t="ekr.20060328171518.240"><vh>Fixed problems with chapters plugin</vh></v>
+<v t="ekr.20060328171518.244"><vh>Improved groupoperations plugin</vh></v>
+<v t="ekr.20060328171518.245"><vh>Fixed crasher in Word (and other) plugins</vh></v>
+<v t="ekr.20060328171518.246"><vh>Fixed problem with labels plugin</vh></v>
+</v>
+</v>
+</v>
+</v>
+<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
+<v t="ekr.20060328171518" a="V"><vh>4.4 b3</vh>
+<v t="ekr.20060328171518.1"><vh>New features</vh>
+<v t="ekr.20060328171518.10"><vh>Added scroll outline pane commands</vh></v>
+<v t="ekr.20060328171518.11"><vh>Improved registerCommand</vh></v>
+<v t="ekr.20060328171518.15"><vh>Suppressed autocompletion after numbers</vh></v>
+<v t="ekr.20060328171518.16"><vh>Added colorizing support for Lua language</vh></v>
+<v t="ekr.20060328171518.45"><vh>Added run-unit-test command</vh></v>
+</v>
+<v t="ekr.20060328171518.47"><vh>Bugs</vh>
+<v t="ekr.20060328171518.48"><vh>Fixed problem with left &amp; right arrows in outline mode</vh></v>
+<v t="ekr.20060328171518.57"><vh>Fixed undo problem with clones</vh></v>
+<v t="ekr.20060328171518.83"><vh>Investigated setting descendant @file nodes dirty when changing body text</vh></v>
+<v t="ekr.20060328171518.85"><vh>Work around newline problems on the Mac</vh></v>
+<v t="ekr.20060328171518.101"><vh>Got rid of settings messages</vh></v>
+<v t="ekr.20060328171518.108"><vh>Clicks outside minibuffer no longer rip focus</vh></v>
+<v t="ekr.20060328171518.111"><vh>Handled missing leoSettings.leo files more gracefully</vh></v>
+<v t="ekr.20060328171518.119"><vh>Converted all shortcuts to unicode</vh></v>
+<v t="ekr.20060328171518.135"><vh>Made Open With shortcuts work again</vh></v>
+<v t="ekr.20060328171518.151"><vh>Made sure autocompleter and calltip text stick</vh></v>
+<v t="ekr.20060328171518.152"><vh>Fixed a bug in c.openWith</vh></v>
+<v t="ekr.20060328171518.169"><vh>Import/export commands now set directory for next open</vh></v>
+<v t="ekr.20060328171518.190"><vh>Investigated colorizer problems: can not reproduce</vh></v>
+<v t="ekr.20060328171518.248"><vh>Removed support @ifgui: it doesn't and can't work</vh></v>
+<v t="ekr.20060328171518.249"><vh>Removed autocompletion for self</vh></v>
+<v t="ekr.20060414071350.1" a="E"><vh>Rewrote g.importExtension to simplify startup logic</vh></v>
+<v t="ekr.20060414071350.8" a="E"><vh>Removed calls to lstrip and rstrip for compatibility with Python 2.2.1</vh></v>
+<v t="ekr.20060414071350.39" a="E"><vh>Fixed crash in string.startswith and string.endswith</vh></v>
+<v t="ekr.20060414071350.47" a="E"><vh>Fixed Crash after undoing clearRecentFiles command</vh></v>
+<v t="ekr.20060414071350.58"><vh>Fixed minor problems reported by Pychecker</vh></v>
 </v>
 <v t="ekr.20060328171518.191"><vh>Plugins</vh>
 <v t="ekr.20060328171518.238"><vh>Changed path to stylesheet in the rst3 plugin</vh></v>
@@ -24684,7 +24727,7 @@ disable-auto-completer-command and disable-calltips-command.</t>
 <t tx="ekr.20060323105214">You must create .leoRecentFiles.txt in the config directory.
 .leoRecentFiles.txt is part of the standard releases but is not part of the cvs repository.
 </t>
-<t tx="ekr.20060328171518">Leo 4.4 beta 3                                             March 31, 2006
+<t tx="ekr.20060328171518">Leo 4.4 beta 3                                             April 14, 2006
 
 This version fixes some minor problems and adds various features.  This code
 has been in use for several weeks without any major problems reported.
@@ -25102,5 +25145,61 @@ Link to other stuff that you know about. It will help you research requirements 
 Why reinvent the wheel? What is better about this wheel? Is there any existing project that you can partner with or reuse? 
 Where would you go to try to find potential contibutors? 
 </t>
+<t tx="ekr.20060414071350.1"></t>
+<t tx="ekr.20060414071350.8">@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3671350
+
+Change aString.lstrip and aString.rstrip to the aString.replace.
+@color</t>
+<t tx="ekr.20060414071350.39">leoID = ekr (in c:\Documents and Settings\Ed)
+reading settings in C:\prog\leoCVS\leo\config\leoSettings.leo
+reading settings in C:\prog\leoCVS\leo\src\LeoPy.leo
+rst3 plugin: SilverCity not loaded
+AttributeError Exception in Tk callback
+  Function: &lt;function bindKeyCallback at 0x016F2E70&gt; (type: &lt;type 'function'&gt;)
+  Args: (&lt;Tkinter.Event instance at 0x03510288&gt;,)
+  Event type: KeyPress (type num: 2)
+Traceback (innermost last):
+  File "C:\prog\leoCVS\leo\extensions\Pmw\Pmw_1_2\lib\PmwBase.py", line 1752, in __call__
+    return apply(self.func, args)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2002, in bindKeyCallback
+    return k.masterKeyHandler(event,stroke=stroke)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2928, in masterKeyHandler
+    val = self.masterKeyHandlerHelper(event,stroke)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2992, in masterKeyHandlerHelper
+    val = k.callStateFunction(event) # Calls end-command.
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 2219, in callStateFunction
+    val = k.state.handler(event)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 348, in autoCompleterStateHandler
+    self.insertNormalChar(ch,keysym)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 856, in insertNormalChar
+    self.calltip(obj)
+  File "C:\prog\leoCVS\leo\src\leoKeys.py", line 455, in calltip
+    obj = getattr(string,obj.__name__)
+AttributeError: 'module' object has no attribute 'startswith'</t>
+<t tx="ekr.20060414071350.47">exception executing command
+Traceback (most recent call last):
+  File "C:\prog\leoCVS\leo\src\leoCommands.py", line 264, in doCommand
+    val = command(event)
+  File "C:\prog\leoCVS\leo\src\leoCommands.py", line 884, in clearRecentFiles
+    u.afterClearRecentFiles(bunch)
+  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 621, in afterClearRecentFiles
+    u.pushBead(bunch)
+  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 192, in pushBead
+    u.setUndoTypes()
+  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 341, in setUndoTypes
+    u.cutStack()
+  File "C:\prog\leoCVS\leo\src\leoUndo.py", line 136, in cutStack
+    if bunch.kind == 'beforeGroup':
+AttributeError: 'Bunch' object has no attribute 'kind'</t>
+<t tx="ekr.20060414071350.58"># No change for now
+C:\prog\tigris-cvs\leo\src\leoKeys.py:1050: Parameter (thread) not used
+
+# Fixed
+C:\prog\tigris-cvs\leo\src\leoTkinterFrame.py:1428: Function returns a value and also implicitly returns None
+C:\prog\tigris-cvs\leo\src\leoTkinterTree.py:1222: Local variable (delta) not used
+C:\prog\tigris-cvs\leo\src\leoKeys.py:1931: Local variable (f) not used
+C:\prog\tigris-cvs\leo\src\leoGlobals.py:5246: Local variable (buttonList) not used
+C:\prog\tigris-cvs\leo\src\leoCommands.py:493: No global (enableIdleTimeHook) found</t>
 </tnodes>
 </leo_file>

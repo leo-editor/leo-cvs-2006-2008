@@ -1928,7 +1928,7 @@ class keyHandlerClass:
         
         '''Register an open-with command.'''
         
-        k = self ; c = k.c ; f = c.frame
+        k = self ; c = k.c
         
         # The first parameter must be event, and it must default to None.
         def openWithCallback(event=None,c=c,data=data):
@@ -1937,17 +1937,6 @@ class keyHandlerClass:
         # Use k.registerCommand to set the shortcuts in the various binding dicts.
         commandName = 'open-with-%s' % name.lower()
         k.registerCommand(commandName,shortcut,openWithCallback,pane='text',verbose=False)
-        
-        if 0: # now in k.registerCommand
-        
-            # Duplicate the logic k.completeAllBindings to set the actual bindings.
-            stroke = k.shortcutFromSetting(shortcut)
-            
-            def bindKeyCallback (event,k=k,stroke=stroke):
-                return k.masterKeyHandler(event,stroke=stroke)
-        
-            for w in (f.body.bodyCtrl,f.tree.canvas,f.tree.bindingWidget):
-                k.completeOneBindingForWidget(w,stroke,bindKeyCallback)
     #@nonl
     #@-node:ekr.20051008135051.1:bindOpenWith
     #@+node:ekr.20051011103654:checkBindings

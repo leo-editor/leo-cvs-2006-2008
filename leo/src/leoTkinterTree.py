@@ -1218,10 +1218,10 @@ class leoTkinterTree (leoFrame.leoTree):
         self.dragging = False
         if self.trace:
             self.redrawCount += 1
-            # print ; print
-            delta = g.app.positions - self.prevPositions
-            # g.trace("**** gen: %-3d positions: %5d +%4d" % (
-                # self.generation,g.app.positions,delta),g.callers())
+            if 0:
+                delta = g.app.positions - self.prevPositions
+                g.trace("**** gen: %-3d positions: %5d +%4d" % (
+                    self.generation,g.app.positions,delta),g.callers())
             
         self.prevPositions = g.app.positions
     

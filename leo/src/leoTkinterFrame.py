@@ -1424,7 +1424,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
                 self.statusLineComponentName,name))
         except Exception:
             # g.es_exception()
-            pass # Support for chapters plugin.
+            return None # Support for chapters plugin.
     
     def createStatusLine (self):
         self.callStatus('show')

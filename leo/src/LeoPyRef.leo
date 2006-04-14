@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="9381" clone_windows="0"/>
-<globals body_outline_ratio="0.715460526316">
-	<global_window_position top="9" left="108" height="922" width="1086"/>
+<globals body_outline_ratio="0.439262472885">
+	<global_window_position top="-3" left="156" height="922" width="1086"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -405,14 +405,31 @@
 <v t="ekr.20060227125713"><vh>Investigated colorizer problems: can not reproduce</vh></v>
 <v t="ekr.20060325073234"><vh>Removed support @ifgui: it doesn't and can't work</vh></v>
 <v t="ekr.20060325122134.1"><vh>Removed autocompletion for self</vh></v>
-<v t="ekr.20060329090924"><vh>Rewrote g.importExtension to simplify startup logic</vh>
-<v t="ekr.20041219071407"><vh>g.importExtension &amp; helpers</vh>
-<v t="ekr.20060329083657"><vh>cantImportDialog &amp; helpers</vh>
-<v t="ekr.20060329083310.1"><vh>createDialogFrame</vh></v>
-<v t="ekr.20060329083310.2"><vh>createDialogButtons</vh></v>
-<v t="ekr.20060329085417.1"><vh>center</vh></v>
-<v t="ekr.20060329085612"><vh>get_window_info</vh></v>
+<v t="ekr.20060414065810"><vh>Fixed minor problems reported by Pychecker</vh></v>
+<v t="ekr.20060411101844"><vh>Fixed failed unit tests</vh>
+<v t="ekr.20040718101315"><vh>stripWhitespaceFromBlankLines(before_lines)</vh></v>
 </v>
+<v t="ekr.20060408065447"><vh>fixed? newline problem on MacOS</vh>
+<v t="ekr.20050920084036.138"><vh>insertNewLine (not undoable)</vh></v>
+<v t="ekr.20051125080855"><vh>selfInsertCommand</vh>
+<v t="ekr.20051026171121"><vh>&lt;&lt; handle newline &gt;&gt;</vh></v>
+<v t="ekr.20051027172949"><vh>updateAutomatchBracket</vh></v>
+<v t="ekr.20051026171121.1"><vh>udpateAutoIndent</vh></v>
+<v t="ekr.20051026092433"><vh>updateTab</vh></v>
+</v>
+</v>
+<v t="ekr.20060408093907"><vh>Fixed Crash after undoing clearRecentFiles command</vh>
+<v t="ekr.20060411135857"><vh>Trace</vh></v>
+<v t="ekr.20060127052111.1"><vh>cutStack</vh></v>
+</v>
+<v t="ekr.20060410112600.1"><vh>Fixed crash in string.startswith and string.endswith</vh>
+<v t="ekr.20060220110302"><vh>calltip</vh>
+<v t="ekr.20060224103829"><vh>&lt;&lt; try to set s from a Python global function &gt;&gt;</vh></v>
+<v t="ekr.20060224103829.1"><vh>&lt;&lt; get s using inspect &gt;&gt;</vh></v>
+<v t="ekr.20060224103829.2"><vh>&lt;&lt; remove 'self' from s, but not from args &gt;&gt;</vh></v>
+<v t="ekr.20060224103829.3"><vh>&lt;&lt; remove 's' from s *and* args &gt;&gt;</vh></v>
+<v t="ekr.20060224103829.4"><vh>&lt;&lt; insert the text and set j1 and j2 &gt;&gt;</vh></v>
+<v t="ekr.20060224103829.5"><vh>&lt;&lt; put the status line &gt;&gt;</vh></v>
 </v>
 </v>
 <v t="ekr.20060410091659"><vh>Removed lstrip and rstrip for compatibility with Python 2.2.1</vh>
@@ -473,31 +490,15 @@
 <v t="ekr.20050920084036.203"><vh>_executeMacro (revise)</vh></v>
 </v>
 </v>
-<v t="ekr.20060410112600.1"><vh>Fixed crash in string.startswith and string.endswith</vh>
-<v t="ekr.20060220110302"><vh>calltip</vh>
-<v t="ekr.20060224103829"><vh>&lt;&lt; try to set s from a Python global function &gt;&gt;</vh></v>
-<v t="ekr.20060224103829.1"><vh>&lt;&lt; get s using inspect &gt;&gt;</vh></v>
-<v t="ekr.20060224103829.2"><vh>&lt;&lt; remove 'self' from s, but not from args &gt;&gt;</vh></v>
-<v t="ekr.20060224103829.3"><vh>&lt;&lt; remove 's' from s *and* args &gt;&gt;</vh></v>
-<v t="ekr.20060224103829.4"><vh>&lt;&lt; insert the text and set j1 and j2 &gt;&gt;</vh></v>
-<v t="ekr.20060224103829.5"><vh>&lt;&lt; put the status line &gt;&gt;</vh></v>
+<v t="ekr.20060329090924"><vh>Rewrote g.importExtension to simplify startup logic</vh>
+<v t="ekr.20041219071407"><vh>g.importExtension &amp; helpers</vh>
+<v t="ekr.20060329083657"><vh>cantImportDialog &amp; helpers</vh>
+<v t="ekr.20060329083310.1"><vh>createDialogFrame</vh></v>
+<v t="ekr.20060329083310.2"><vh>createDialogButtons</vh></v>
+<v t="ekr.20060329085417.1"><vh>center</vh></v>
+<v t="ekr.20060329085612"><vh>get_window_info</vh></v>
 </v>
 </v>
-<v t="ekr.20060408093907"><vh>Fixed Crash after undoing clearRecentFiles command</vh>
-<v t="ekr.20060411135857"><vh>Trace</vh></v>
-<v t="ekr.20060127052111.1"><vh>cutStack</vh></v>
-</v>
-<v t="ekr.20060408065447"><vh>fixed? newline problem on MacOS</vh>
-<v t="ekr.20050920084036.138"><vh>insertNewLine (not undoable)</vh></v>
-<v t="ekr.20051125080855"><vh>selfInsertCommand</vh>
-<v t="ekr.20051026171121"><vh>&lt;&lt; handle newline &gt;&gt;</vh></v>
-<v t="ekr.20051027172949"><vh>updateAutomatchBracket</vh></v>
-<v t="ekr.20051026171121.1"><vh>udpateAutoIndent</vh></v>
-<v t="ekr.20051026092433"><vh>updateTab</vh></v>
-</v>
-</v>
-<v t="ekr.20060411101844"><vh>Fixed failed unit tests</vh>
-<v t="ekr.20040718101315"><vh>stripWhitespaceFromBlankLines(before_lines)</vh></v>
 </v>
 </v>
 <v t="ekr.20060323140748"><vh>Plugins</vh>
@@ -589,31 +590,32 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060226131603" a="V"><vh>To do 4.4 b4 or final</vh>
-<v t="ekr.20060210140415"><vh>Most important 10</vh>
-<v t="ekr.20060307074302.1"><vh>set-change-text command should work when entering find text.</vh></v>
-<v t="ekr.20060122183544"><vh>Improve isearch</vh></v>
-<v t="ekr.20060123095316"><vh>clear-selection</vh></v>
-<v t="ekr.20060113090042"><vh>open-outline-by-name &amp; filename completion</vh></v>
-<v t="ekr.20060122194643"><vh>isearch-headline (forward &amp; backward)</vh></v>
+<v t="ekr.20060226131603"><vh>To do 4.4 b4 or final</vh>
+<v t="ekr.20060412114843"><vh>easy 10</vh>
 <v t="ekr.20060116085649"><vh>find-word-on-line, find-character-on-line (forward &amp; backward)</vh></v>
-<v t="ekr.20060116074839.2"><vh>extend-to-word</vh></v>
-<v t="ekr.20060123091352"><vh>Incremental search in switch-to-buffer</vh></v>
-<v t="ekr.20060206103922"><vh>Minibuffer interface for GoToLine number (rewrite goto-line)</vh></v>
+<v t="ekr.20060123095316"><vh>clear-selection</vh></v>
 <v t="ekr.20060122185244.2"><vh>Fix unindent command</vh></v>
-</v>
-<v t="ekr.20060328120455"><vh>Next 7</vh>
+<v t="ekr.20060116074839.2"><vh>extend-to-word</vh></v>
+<v t="ekr.20060206103922"><vh>Minibuffer interface for GoToLine number (rewrite goto-line)</vh></v>
 <v t="ekr.20051202095626"><vh>help-for-command</vh></v>
 <v t="ekr.20060116084526.1"><vh>insert/remove spaces/tabs from lines (LeoUser)</vh></v>
-<v t="ekr.20060117115212"><vh>Fix rename-buffer command</vh></v>
 <v t="ekr.20060104083551"><vh>move-line-up/down (LeoUser)</vh></v>
-<v t="ekr.20060211093935"><vh>Support for @list and on-enter-mode</vh></v>
-<v t="ekr.20060116090428"><vh>Expand 'point' so it indicates node as well as text location</vh></v>
+<v t="ekr.20060117115212"><vh>Fix rename-buffer command</vh></v>
 <v t="ekr.20060211184834"><vh>Review all commands in leoEditCommands.py</vh></v>
 </v>
-<v t="ekr.20060227163911.1"><vh>Leo's web site</vh></v>
+<v t="ekr.20060413065803"><vh>searches 4</vh>
+<v t="ekr.20060307074302.1"><vh>set-change-text command should work when entering find text.</vh></v>
+<v t="ekr.20060122183544"><vh>Improve isearch</vh></v>
+<v t="ekr.20060122194643"><vh>isearch-headline (forward &amp; backward)</vh></v>
+<v t="ekr.20060123091352"><vh>Incremental search in switch-to-buffer</vh></v>
 </v>
-<v t="ekr.20031218072017.2406"><vh>Code</vh>
+<v t="ekr.20060210140415"><vh>others 3</vh>
+<v t="ekr.20060113090042"><vh>open-outline-by-name &amp; filename completion</vh></v>
+<v t="ekr.20060211093935"><vh>Support for @list and on-enter-mode</vh></v>
+<v t="ekr.20060116090428"><vh>Expand 'point' so it indicates node as well as text location</vh></v>
+</v>
+</v>
+<v t="ekr.20031218072017.2406" a="V"><vh>Code</vh>
 <v t="ekr.20031218072017.2606"><vh>&lt;&lt; Import pychecker &gt;&gt;</vh></v>
 <v t="ekr.20031218072017.2582"><vh> version &amp; signon stuff</vh>
 <v t="ekr.20040629121554"><vh>getBuildNumber</vh></v>
@@ -2134,7 +2136,7 @@ closeFlag = (
     try:
         openType,arg,ext=data
         if not g.doHook("openwith1",c=c,p=p,v=p.v,openType=openType,arg=arg,ext=ext):
-            enableIdleTimeHook(idleTimeDelay=100)
+            g.enableIdleTimeHook(idleTimeDelay=100)
             &lt;&lt; set ext based on the present language &gt;&gt;
             &lt;&lt; create or reopen temp file, testing for conflicting changes &gt;&gt;
             &lt;&lt; execute a command to open path in external editor &gt;&gt;
@@ -3563,10 +3565,10 @@ else: # Use plain click.
     self.dragging = False
     if self.trace:
         self.redrawCount += 1
-        # print ; print
-        delta = g.app.positions - self.prevPositions
-        # g.trace("**** gen: %-3d positions: %5d +%4d" % (
-            # self.generation,g.app.positions,delta),g.callers())
+        if 0:
+            delta = g.app.positions - self.prevPositions
+            g.trace("**** gen: %-3d positions: %5d +%4d" % (
+                self.generation,g.app.positions,delta),g.callers())
         
     self.prevPositions = g.app.positions
 
@@ -5453,7 +5455,7 @@ self.setDefaultUnboundKeyAction()</t>
     
     '''Register an open-with command.'''
     
-    k = self ; c = k.c ; f = c.frame
+    k = self ; c = k.c
     
     # The first parameter must be event, and it must default to None.
     def openWithCallback(event=None,c=c,data=data):
@@ -5461,18 +5463,7 @@ self.setDefaultUnboundKeyAction()</t>
 
     # Use k.registerCommand to set the shortcuts in the various binding dicts.
     commandName = 'open-with-%s' % name.lower()
-    k.registerCommand(commandName,shortcut,openWithCallback,pane='text',verbose=False)
-    
-    if 0: # now in k.registerCommand
-    
-        # Duplicate the logic k.completeAllBindings to set the actual bindings.
-        stroke = k.shortcutFromSetting(shortcut)
-        
-        def bindKeyCallback (event,k=k,stroke=stroke):
-            return k.masterKeyHandler(event,stroke=stroke)
-    
-        for w in (f.body.bodyCtrl,f.tree.canvas,f.tree.bindingWidget):
-            k.completeOneBindingForWidget(w,stroke,bindKeyCallback)</t>
+    k.registerCommand(commandName,shortcut,openWithCallback,pane='text',verbose=False)</t>
 <t tx="ekr.20051008152134">def initSpecialIvars (self):
     
     '''Set ivars for special keystrokes from previously-existing bindings.'''
@@ -6679,10 +6670,6 @@ I know its a tradeoff of constant colorizing runs vrs incremental update, its
 not technically a new problem, but this seems way buggier.
 
 @color</t>
-<t tx="ekr.20060227163911.1">@nocolor
-
-- Put more screen shots on Leo's web site.
-- Put complete slide show on Leo's web site.</t>
 <t tx="ekr.20060228071700"></t>
 <t tx="ekr.20060301182319"></t>
 <t tx="ekr.20060305110016">g.</t>
@@ -7223,7 +7210,6 @@ and added lua counterparts throughout, including a Lua comment scanner.</t>
         i = g.skip_ws(s,i)
         i = g.skip_blank_lines(s,i)
     else: break</t>
-<t tx="ekr.20060328120455"></t>
 <t tx="ekr.20060328121145">def runUnitTests (self,event=None):
     
     '''Run all unit tests contained in the presently selected outline.'''
@@ -7282,7 +7268,6 @@ and added lua counterparts throughout, including a Lua comment scanner.</t>
     f = Tk.Frame(top)
     f.pack(side="top",padx=30)
 
-    buttonList = []
     for d in buttons:
         text = d.get("text","&lt;missing button name&gt;")
         isDefault = d.get("default",False)
@@ -7554,5 +7539,16 @@ Traceback (most recent call last):
     if bunch.kind == 'beforeGroup':
 AttributeError: 'Bunch' object has no attribute 'kind'
 </t>
+<t tx="ekr.20060412114843"></t>
+<t tx="ekr.20060413065803"></t>
+<t tx="ekr.20060414065810"># No change for now
+C:\prog\tigris-cvs\leo\src\leoKeys.py:1050: Parameter (thread) not used
+
+# Fixed
+C:\prog\tigris-cvs\leo\src\leoTkinterFrame.py:1428: Function returns a value and also implicitly returns None
+C:\prog\tigris-cvs\leo\src\leoTkinterTree.py:1222: Local variable (delta) not used
+C:\prog\tigris-cvs\leo\src\leoKeys.py:1931: Local variable (f) not used
+C:\prog\tigris-cvs\leo\src\leoGlobals.py:5246: Local variable (buttonList) not used
+C:\prog\tigris-cvs\leo\src\leoCommands.py:493: No global (enableIdleTimeHook) found</t>
 </tnodes>
 </leo_file>
