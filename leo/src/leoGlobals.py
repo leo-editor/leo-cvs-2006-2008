@@ -4867,7 +4867,7 @@ class nullObject:
     def __setattr__(self,attr,val): return self
 #@nonl
 #@-node:ekr.20031219074948.1:class nullObject
-#@+node:ekr.20031218072017.3144:g,makeDict
+#@+node:ekr.20031218072017.3144:g.makeDict
 # From the Python cookbook.
 
 def makeDict(**keys):
@@ -4876,7 +4876,7 @@ def makeDict(**keys):
 
     return keys
 #@nonl
-#@-node:ekr.20031218072017.3144:g,makeDict
+#@-node:ekr.20031218072017.3144:g.makeDict
 #@+node:ekr.20031218072017.3103:g.computeWindowTitle
 def computeWindowTitle (fileName):
 
