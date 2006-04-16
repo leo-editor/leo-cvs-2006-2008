@@ -165,6 +165,22 @@ def computeHomeDir():
     return home
 #@nonl
 #@-node:ekr.20041117151301:computeHomeDir
+#@+node:ekr.20060416113431:computeLeoDir
+def computeLeoDir ():
+    
+    loadDir = g.app.loadDir
+    
+    g.app.leoDir = theDir = g.os_path_dirname(loadDir)
+    
+    if theDir not in sys.path:
+        sys.path.append(theDir)
+        
+    if 0: # This is required so we can do import leo (as a package)
+        theParentDir = g.os_path_dirname(theDir)
+        if theParentDir not in sys.path:
+            sys.path.append(theParentDir)
+#@nonl
+#@-node:ekr.20060416113431:computeLeoDir
 #@+node:ekr.20031218072017.1937:computeLoadDir
 def computeLoadDir():
     
@@ -173,13 +189,13 @@ def computeLoadDir():
     import leoGlobals as g
 
     try:
-        import leo
+        ### import leo
         import sys
         
         # Fix a hangnail: on Windows the drive letter returned by
         # __file__ is randomly upper or lower case!
         # The made for an ugly recent files list.
-        path = leo.__file__
+        path = g.__file__ # was leo.__file__
         if sys.platform=='win32':
             if len(path) > 2 and path[1]==':':
                 # Convert the drive name to upper case.
@@ -212,8 +228,14 @@ def computeStandardDirectories():
     
     '''Set g.app.loadDir, g.app.homeDir and g.app.globalConfigDir.'''
     
+    if 0:
+        import sys
+        for s in sys.path: g.trace(s)
+    
     g.app.loadDir = g.computeLoadDir()
         # Depends on g.app.tkEncoding: uses utf-8 for now.
+        
+    g.app.leoDir = g.computeLeoDir()
     
     g.app.homeDir = g.computeHomeDir()
     
