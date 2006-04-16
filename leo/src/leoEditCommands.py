@@ -81,38 +81,39 @@ class baseEditCommandsClass:
         return self.beginCommandHelper(ch=event.char,undoType=undoType,w=event.widget)
     #@nonl
     #@+node:ekr.20051215102349:beingCommandHelper
+    # New in Leo 4.4b4: calling beginCommand is valid for all widgets,
+    # but does nothing unless we are in the body pane.
+    
     def beginCommandHelper (self,ch,undoType,w):
     
         c = self.c ; p = c.currentPosition()
         name = c.widget_name(w)
-        
-        # Don't do this in headlines!
+    
         if name.startswith('body'):
             oldSel =  g.app.gui.getTextSelection(w)
             oldText = p.bodyString()
             self.undoData = g.Bunch(
                 ch=ch,name=name,oldSel=oldSel,oldText=oldText,w=w,undoType=undoType)
+        else:
+            self.undoData = None
             
         return w
     #@nonl
     #@-node:ekr.20051215102349:beingCommandHelper
     #@-node:ekr.20051214133130:beginCommand  & beginCommandWithEvent
     #@+node:ekr.20051214133130.1:endCommand
+    # New in Leo 4.4b4: calling endCommand is valid for all widgets,
+    # but does handles undo only if we are in body pane.
+    
     def endCommand(self,label=None,changed=True,setLabel=True):
         
         '''Do the common processing at the end of each command.'''
         
         c = self.c ; b = self.undoData ; k = self.k
     
-        if b:
-            name = b.name
-            if name.startswith('body'):
-                if changed:
-                    c.frame.body.onBodyChanged(undoType=b.undoType,
-                        oldSel=b.oldSel,oldText=b.oldText,oldYview=None)
-            elif name.startswith('head'):
-                g.trace('Should not happen: endCommand does not support undo in headlines')
-            else: pass
+        if b and b.name.startswith('body') and changed:
+            c.frame.body.onBodyChanged(undoType=b.undoType,
+                oldSel=b.oldSel,oldText=b.oldText,oldYview=None)
             
         self.undoData = None # Bug fix: 1/6/06 (after a5 released).
     
@@ -1189,7 +1190,9 @@ class editCommandsClass (baseEditCommandsClass):
             'capitalize-word':                      self.capitalizeWord,
             'center-line':                          self.centerLine,
             'center-region':                        self.centerRegion,
+            'clean-lines':                          self.cleanLines,
             'clear-extend-mode':                    self.clearExtendMode,
+            'clear-selected-text':                  self.clearSelectedText,
             'click-click-box':                      self.clickClickBox,
             'click-headline':                       self.clickHeadline,
             'click-icon-box':                       self.clickIconBox,
@@ -1287,7 +1290,7 @@ class editCommandsClass (baseEditCommandsClass):
             'sort-columns':                         self.sortColumns,
             'sort-fields':                          self.sortFields,
             'sort-lines':                           self.sortLines,
-            'split-line':                           self.insertNewLineIndent,
+            'split-line':                           self.splitLine,
             'tabify':                               self.tabify,
             'toggle-extend-mode':                   self.toggleExtendMode,
             'transpose-chars':                      self.transposeCharacters,
@@ -1304,20 +1307,22 @@ class editCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20050920084036.57:capitalization & case
     #@+node:ekr.20051015114221:capitalizeWord & up/downCaseWord
     def capitalizeWord (self,event):
-        self.capitalizeHelper(event,'cap')
+        self.capitalizeHelper(event,'cap','capitalize-word')
     
     def downCaseWord (self,event):
-        self.capitalizeHelper(event,'low')
+        self.capitalizeHelper(event,'low','downcase-word')
     
     def upCaseWord (self,event):
-        self.capitalizeHelper(event,'up')
+        self.capitalizeHelper(event,'up','upcase-word')
     #@nonl
     #@-node:ekr.20051015114221:capitalizeWord & up/downCaseWord
-    #@+node:ekr.20050920084036.145:changePreviousWord
+    #@+node:ekr.20050920084036.145:changePreviousWord (not used)
     def changePreviousWord (self,event):
     
         k = self.k ; stroke = k.stroke ; w = event.widget
         i = w.index('insert')
+        
+        self.beginCommand(undoType='change-previous-word')
     
         self.moveWordHelper(event,extend=False,forward=False)
     
@@ -1329,15 +1334,20 @@ class editCommandsClass (baseEditCommandsClass):
             self.downCaseWord(event)
     
         w.mark_set('insert',i)
+        
+        self.endCommand(changed=True,setLabel=True)
     #@nonl
-    #@-node:ekr.20050920084036.145:changePreviousWord
+    #@-node:ekr.20050920084036.145:changePreviousWord (not used)
     #@+node:ekr.20051015114221.1:capitalizeHelper
-    def capitalizeHelper (self,event,which):
+    def capitalizeHelper (self,event,which,undoType):
     
         w = event.widget
         text = w.get('insert wordstart','insert wordend')
         i = w.index('insert')
         if text == ' ': return
+        
+        self.beginCommand(undoType=undoType)
+        
         w.delete('insert wordstart','insert wordend')
         if which == 'cap':
             text = text.capitalize()
@@ -1348,6 +1358,7 @@ class editCommandsClass (baseEditCommandsClass):
         w.insert('insert',text)
         w.mark_set('insert',i)
         
+        self.endCommand(changed=True,setLabel=True)
     #@-node:ekr.20051015114221.1:capitalizeHelper
     #@-node:ekr.20050920084036.57:capitalization & case
     #@+node:ekr.20051022142249:clicks and focus (editCommandsClass)
@@ -1778,6 +1789,8 @@ class editCommandsClass (baseEditCommandsClass):
     def indentToCommentColumn (self,event):
     
         k = self.k ; w = event.widget
+        
+        self.beginCommand(undoType='indent-to-comment-column')
     
         i = w.index('insert lineend')
         i1, i2 = i.split('.')
@@ -1790,6 +1803,8 @@ class editCommandsClass (baseEditCommandsClass):
         if i2 >= c1:
             w.insert('insert lineend',' ')
         w.mark_set('insert','insert lineend')
+        
+        self.endCommand(changed=True,setLabel=True)
     #@nonl
     #@-node:ekr.20050920084036.134:indentToCommentColumn
     #@-node:ekr.20050920084036.132:comment column...
@@ -1966,6 +1981,8 @@ class editCommandsClass (baseEditCommandsClass):
         txt = w.get('insert linestart','insert lineend')
         txt = txt.strip()
         if len(txt) >= self.fillColumn: return
+        
+        self.beginCommand(undoType='center-line')
     
         amount = (self.fillColumn-len(txt)) / 2
         ws = ' ' * amount
@@ -1974,6 +1991,8 @@ class editCommandsClass (baseEditCommandsClass):
         if ind:
             w.delete('insert linestart','%s' % ind)
             w.insert('insert linestart',ws)
+            
+        self.endCommand(changed=True,setLabel=True)
     #@nonl
     #@-node:ekr.20050920084036.67:centerLine
     #@+node:ekr.20050920084036.68:setFillColumn
@@ -2006,6 +2025,9 @@ class editCommandsClass (baseEditCommandsClass):
         end = w.index( 'sel.last linestart' )
         eindex , x = end.split( '.' )
         eindex = int( eindex )
+        
+        self.beginCommand(undoType='center-region')
+    
         while sindex <= eindex:
             txt = w.get( '%s.0 linestart' % sindex , '%s.0 lineend' % sindex )
             txt = txt.strip()
@@ -2021,6 +2043,8 @@ class editCommandsClass (baseEditCommandsClass):
             w.delete( '%s.0' % sindex , '%s' % ind )
             w.insert( '%s.0' % sindex , ws )
             sindex = sindex + 1
+            
+        self.endCommand(changed=True,setLabel=True)
     #@nonl
     #@-node:ekr.20050920084036.69:centerRegion
     #@+node:ekr.20050920084036.70:setFillPrefix
@@ -2085,23 +2109,29 @@ class editCommandsClass (baseEditCommandsClass):
     #@nonl
     #@-node:ekr.20050929124234:gotoLine
     #@-node:ekr.20050920084036.72:goto...
-    #@+node:ekr.20050920084036.74:indent... (To do: undo)
+    #@+node:ekr.20050920084036.74:indent...
     #@+node:ekr.20050920084036.75:backToIndentation
     def backToIndentation (self,event):
         
         '''The back-to-indentation command, given anywhere on a line,
         positions the point at the first non-blank character on the line.'''
     
+        self.beginCommand(undoType='back-to-indentation')
+    
         w = event.widget
         i = w.index('insert linestart')
         i2 = w.search(r'\w',i,stopindex='%s lineend' % i,regexp=True)
         w.mark_set('insert',i2)
+    
+        self.endCommand(changed=True,setLabel=True)
     #@nonl
     #@-node:ekr.20050920084036.75:backToIndentation
     #@+node:ekr.20050920084036.76:deleteIndentation
     def deleteIndentation (self,event):
     
         k = self.k ; w = event.widget
+        
+        self.beginCommand(undoType='delete-indentation')
     
         txt = w.get('insert linestart','insert lineend')
         txt = ' %s' % txt.lstrip()
@@ -2109,19 +2139,25 @@ class editCommandsClass (baseEditCommandsClass):
         i = w.index('insert - 1c')
         w.insert('insert -1c',txt)
         w.mark_set('insert',i)
+    
+        self.endCommand(changed=True,setLabel=True)
     #@nonl
     #@-node:ekr.20050920084036.76:deleteIndentation
-    #@+node:ekr.20050920084036.77:insertNewLineIndent
-    def insertNewLineIndent (self,event):
+    #@+node:ekr.20050920084036.77:splitLine
+    def splitLine (self,event):
     
         w = event.widget
-        txt = w.get('insert linestart','insert lineend')
-        txt = self.getWSString(txt)
+        s = w.get('insert linestart','insert lineend')
+        
+        self.beginCommand(undoType='split-line')
+        s = self.getWSString(s)
         i = w.index('insert')
-        w.insert(i,txt)
-        w.mark_set('insert',i)
-        self.insertNewLine(event)
-    #@-node:ekr.20050920084036.77:insertNewLineIndent
+        w.insert(i,s + '\n')
+        # w.mark_set('insert',i)
+        # w.insert('insert','\n')
+        self.endCommand(changed=True,setLabel=True)
+    #@nonl
+    #@-node:ekr.20050920084036.77:splitLine
     #@+node:ekr.20050920084036.78:indentRelative
     def indentRelative (self,event):
         
@@ -2136,9 +2172,10 @@ class editCommandsClass (baseEditCommandsClass):
         indentation point then applicable is used. If no indentation point is
         applicable even then whitespace equivalent to a single tab is inserted.'''
         
-        c = self.c ; undoType = 'Indent Relative'
+        c = self.c ; undoType = 'indent-relative'
         
         k = self.k ; w = event.widget
+        self.beginCommand(undoType=undoType)
         i = w.index('insert')
         oldSel = (i,i)
         line, col = i.split('.')
@@ -2165,9 +2202,10 @@ class editCommandsClass (baseEditCommandsClass):
         head = tail = oldYview = None
         c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview)
         w.mark_set('insert',i)
+        self.endCommand(changed=True,setLabel=True)
     #@nonl
     #@-node:ekr.20050920084036.78:indentRelative
-    #@-node:ekr.20050920084036.74:indent... (To do: undo)
+    #@-node:ekr.20050920084036.74:indent...
     #@+node:ekr.20050920084036.85:insert & delete...
     #@+node:ekr.20051026092433.1:backwardDeleteCharacter
     def backwardDeleteCharacter (self,event=None):
@@ -2226,6 +2264,54 @@ class editCommandsClass (baseEditCommandsClass):
                 w.delete('insert-1c')
     #@nonl
     #@-node:ekr.20051026092433.1:backwardDeleteCharacter
+    #@+node:ekr.20060415112257:clean-lines
+    def cleanLines (self,event):
+        
+        '''Removes leading whitespace from otherwise blanks lines.'''
+    
+        k = self.k ; w = event.widget
+        
+        if g.app.gui.hasSelection(w):
+            s = g.app.gui.getSelectedText(w)
+        else:
+            s = g.app.gui.getAllText(w)
+    
+        lines = [] ; changed = False
+        for line in g.splitlines(s):
+            if line.strip():
+                lines.append(line)
+            else:
+                if line.endswith('\n'):
+                    lines.append('\n')
+                changed = '\n' != line
+    
+        if changed:
+            self.beginCommand(undoType='clean-lines')
+            result = ''.join(lines)
+            if g.app.gui.hasSelection(w):
+                i,j = g.app.gui.getSelectionRange(w)
+                w.delete(i,j)
+                w.insert(i,result)
+                g.app.gui.setSelectionRange(w, i, j + '%dc' %(len(result)))
+            else:
+                w.delete('1.0','end')
+                w.insert('1.0',result)
+            self.endCommand(changed=changed,setLabel=True)
+    #@-node:ekr.20060415112257:clean-lines
+    #@+node:ekr.20060414085834:clearSelectedText
+    def clearSelectedText (self,event):
+        
+        c = self.c ; w = event and event.widget
+        if not g.app.gui.isTextWidget(w): return
+    
+        i,j = g.app.gui.getTextSelection(w)
+        if i == j: return
+    
+        self.beginCommand(undoType='clear-selected-text')
+        g.app.gui.replaceSelectionRangeWithText (w,i,j,'')
+        self.endCommand(changed=True,setLabel=True)
+    #@nonl
+    #@-node:ekr.20060414085834:clearSelectedText
     #@+node:ekr.20050920084036.87:deleteNextChar
     def deleteNextChar (self,event):
     
@@ -2237,8 +2323,7 @@ class editCommandsClass (baseEditCommandsClass):
         end = w.index('end-1c')
         # g.trace(i,j,'end',w.index('end-1c'))
         
-        if name.startswith('body'):
-            self.beginCommand()
+        self.beginCommand(undoType='delete-char')
     
         changed = True
         if i != j:
@@ -2248,8 +2333,7 @@ class editCommandsClass (baseEditCommandsClass):
         else:
             changed = False
             
-        if name.startswith('body'):
-            self.endCommand(changed=changed,setLabel=False)
+        self.endCommand(changed=changed,setLabel=False)
     #@nonl
     #@-node:ekr.20050920084036.87:deleteNextChar
     #@+node:ekr.20050920084036.135:deleteSpaces
@@ -2262,20 +2346,58 @@ class editCommandsClass (baseEditCommandsClass):
         char = w.get('insert','insert + 1c ')
         if not char.isspace(): return
         
-        if name.startswith('body'):
-            oldText = w.get('1.0','end')
-            oldSel = g.app.gui.getTextSelection(w)
-            i = w.index('insert')
-            wf = w.search(r'\w',i,stopindex='%s lineend' % i,regexp=True)
-            wb = w.search(r'\w',i,stopindex='%s linestart' % i,regexp=True,backwards=True)
-            if '' in (wf,wb): return
+        undoType = g.choose(insertspace,'insert-space','delete-spaces')
+        self.beginCommand(undoType=undoType)
+        
+        i = w.index('insert')
+        wf = w.search(r'\w',i,stopindex='%s lineend' % i,regexp=True)
+        wb = w.search(r'\w',i,stopindex='%s linestart' % i,regexp=True,backwards=True)
+        if '' not in (wf,wb):
             w.delete('%s +1c' % wb,wf)
             if insertspace: w.insert('insert',' ')
-            
-            c.frame.body.onBodyChanged(undoType='delete-spaces',
-                oldSel=oldSel,oldText=oldText,oldYview=None)
+    
+        self.endCommand(changed=True,setLabel=True)
     #@nonl
     #@-node:ekr.20050920084036.135:deleteSpaces
+    #@+node:ekr.20050920084036.138:insertNewLine
+    def insertNewLine (self,event):
+    
+        w = event.widget
+        wname = g.app.gui.widget_name(w)
+        
+        if not wname.startswith('head'):
+            self.beginCommand(undoType='insert-newline')
+            w.insert('insert','\n')
+            self.endCommand(changed=True,setLabel=False)
+    
+    insertNewline = insertNewLine
+    #@nonl
+    #@-node:ekr.20050920084036.138:insertNewLine
+    #@+node:ekr.20050920084036.86:insertNewLineAndTab
+    def insertNewLineAndTab (self,event):
+    
+        '''Insert a newline and tab'''
+    
+        w = event.widget
+        wname = g.app.gui.widget_name(w)
+        
+        if not wname.startswith('head'):
+            self.beginCommand(undoType='insert-newline-and-indent')
+            w.insert('insert','\n\t')
+            self.endCommand(changed=True,setLabel=False)
+    #@nonl
+    #@-node:ekr.20050920084036.86:insertNewLineAndTab
+    #@+node:ekr.20050920084036.139:insertParentheses
+    def insertParentheses (self,event):
+    
+        w = event.widget
+        
+        self.beginCommand(undoType='insert-parenthesis')
+        w.insert('insert','()')
+        w.mark_set('insert','insert -1c')
+        self.endCommand(changed=True,setLabel=False)
+    #@nonl
+    #@-node:ekr.20050920084036.139:insertParentheses
     #@+node:ekr.20050920084036.141:removeBlankLines
     def removeBlankLines (self,event):
         
@@ -2284,7 +2406,7 @@ class editCommandsClass (baseEditCommandsClass):
         text are affected; otherwise all blank lines in the selected node are
         affected.'''
         
-        c = self.c ; undoType = 'Remove Blank Lines' ; p = c.currentPosition()
+        c = self.c ; undoType = 'remove-blank-lines' ; p = c.currentPosition()
         result = []
         body = p.bodyString()
         hasSelection = c.frame.body.hasTextSelection()
@@ -2308,37 +2430,6 @@ class editCommandsClass (baseEditCommandsClass):
             c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview)
     #@nonl
     #@-node:ekr.20050920084036.141:removeBlankLines
-    #@+node:ekr.20050920084036.138:insertNewLine (not undoable)
-    def insertNewLine (self,event):
-    
-        w = event.widget
-        wname = g.app.gui.widget_name(w)
-        
-        if not wname.startswith('head'):
-            w.insert('insert','\n')
-    
-    insertNewline = insertNewLine
-    #@nonl
-    #@-node:ekr.20050920084036.138:insertNewLine (not undoable)
-    #@+node:ekr.20050920084036.86:insertNewLineAndTab
-    def insertNewLineAndTab (self,event):
-    
-        '''Insert a newline and tab'''
-    
-        w = event.widget
-        wname = g.app.gui.widget_name(w)
-        
-        if not wname.startswith('head'):
-            w.insert('insert','\n\t')
-    #@-node:ekr.20050920084036.86:insertNewLineAndTab
-    #@+node:ekr.20050920084036.139:insertParentheses
-    def insertParentheses (self,event):
-    
-        w = event.widget
-        w.insert('insert','()')
-        w.mark_set('insert','insert -1c')
-    #@nonl
-    #@-node:ekr.20050920084036.139:insertParentheses
     #@+node:ekr.20051125080855:selfInsertCommand
     def selfInsertCommand(self,event,action='insert'):
         
@@ -2347,7 +2438,9 @@ class editCommandsClass (baseEditCommandsClass):
         This is the default binding for all keys in the body pane.'''
         
         c = self.c ; p = c.currentPosition()
+        # g.trace('event',event,g.callers())
         ch = event and event.char or ''
+        if event and event.keysym == 'Return': ch = '\n' # This fixes the MacOS return bug.
         w = event and event.widget
         name = c.widget_name(w)
         oldSel =  name.startswith('body') and g.app.gui.getTextSelection(w)
@@ -2488,6 +2581,23 @@ class editCommandsClass (baseEditCommandsClass):
     #@nonl
     #@-node:ekr.20051026092433:updateTab
     #@-node:ekr.20051125080855:selfInsertCommand
+    #@+node:ekr.20060116084526.1:insert/remove spaces/tabs from lines (LeoUser)
+    #@+at
+    # 
+    # http://sourceforge.net/forum/message.php?msg_id=3488030
+    # 
+    # add-space-to-lines      Adds a space to start of all selected lines.
+    # 
+    # add-tab-to-line         Adds 4 spaces to start of all selected lines.
+    # 
+    # remove-space-from lines Removes a space from start of all selected 
+    # lines.
+    # 
+    # remove-tab-from lines   Removes a space from start of all selected 
+    # lines.
+    #@-at
+    #@nonl
+    #@-node:ekr.20060116084526.1:insert/remove spaces/tabs from lines (LeoUser)
     #@-node:ekr.20050920084036.85:insert & delete...
     #@+node:ekr.20050920084036.79:info...
     #@+node:ekr.20050920084036.80:howMany
@@ -2580,10 +2690,11 @@ class editCommandsClass (baseEditCommandsClass):
     #@nonl
     #@-node:ekr.20051002095724:keepLines
     #@+node:ekr.20050920084036.92:linesHelper
-    def linesHelper (self,event,pattern,which):
+    def linesHelper (self,event,pattern,which,undoType):
     
         k = self.k ; w = event.widget
        
+        self.beginCommand(undoType=which+'-lines')
         if w.tag_ranges('sel'):
             i = w.index('sel.first') ; end = w.index('sel.last')
         else:
@@ -2608,6 +2719,7 @@ class editCommandsClass (baseEditCommandsClass):
         w.delete(i,end)
         w.insert(i,''.join(keeplines))
         w.mark_set('insert',i)
+        self.endCommand(changed=True,setLabel=True)
     #@nonl
     #@-node:ekr.20050920084036.92:linesHelper
     #@-node:ekr.20050920084036.88:line...
@@ -3072,6 +3184,9 @@ class editCommandsClass (baseEditCommandsClass):
         i = w.index('insert')
         i2 = i
         txt = w.get('insert linestart','insert lineend')
+        
+        self.beginCommand(undoType='backward-kill-paragraph')
+    
         if not txt.rstrip().lstrip():
             self.backwardParagraph(event)
             i2 = w.index('insert')
@@ -3080,6 +3195,8 @@ class editCommandsClass (baseEditCommandsClass):
         c.killBufferCommands.kill(event,i3,i2)
         w.mark_set('insert',i)
         w.selection_clear()
+    
+        self.endCommand(changed=True,setLabel=True)
     #@nonl
     #@-node:ekr.20050920084036.99:backwardKillParagraph
     #@+node:ekr.20050920084036.103:fillParagraph
@@ -3088,6 +3205,7 @@ class editCommandsClass (baseEditCommandsClass):
         txt = w.get( 'insert linestart', 'insert lineend' )
         txt = txt.strip()
         if txt:
+            self.beginCommand(undoType='fill-paragraph')
             i = w.index( 'insert' )
             i2 = i
             txt2 = txt
@@ -3114,6 +3232,7 @@ class editCommandsClass (baseEditCommandsClass):
             w.delete( '%s linestart' %i2, '%s lineend' % i3 )
             w.insert( i2, ntxt )
             w.mark_set( 'insert', i )
+            self.endCommand(changed=True,setLabel=True)
     #@nonl
     #@-node:ekr.20050920084036.103:fillParagraph
     #@+node:ekr.20050920084036.100:fillRegion
@@ -3121,6 +3240,8 @@ class editCommandsClass (baseEditCommandsClass):
     
         k = self.k ; w = event.widget
         if not self._chckSel(event): return
+        
+        self.beginCommand(undoType='fill-region')
     
         s1 = w.index('sel.first')
         s2 = w.index('sel.last')
@@ -3133,6 +3254,8 @@ class editCommandsClass (baseEditCommandsClass):
             if w.compare('insert','>',s2):
                 break
             self.fillParagraph(event)
+    
+        self.endCommand(changed=True,setLabel=True)
     #@nonl
     #@-node:ekr.20050920084036.100:fillRegion
     #@+node:ekr.20050920084036.104:fillRegionAsParagraph
@@ -3140,6 +3263,8 @@ class editCommandsClass (baseEditCommandsClass):
     
         k = self.k ; w = event.widget
         if not self._chckSel(event): return
+        
+        self.beginCommand(undoType='fill-region-as-paragraph')
     
         i1 = w.index('sel.first linestart')
         i2 = w.index('sel.last lineend')
@@ -3147,6 +3272,8 @@ class editCommandsClass (baseEditCommandsClass):
         txt = self._addPrefix(txt)
         w.delete(i1,i2)
         w.insert(i1,txt)
+    
+        self.endCommand(changed=True,setLabel=True)
     #@nonl
     #@-node:ekr.20050920084036.104:fillRegionAsParagraph
     #@+node:ekr.20050920084036.98:killParagraph (Test)
@@ -3155,15 +3282,18 @@ class editCommandsClass (baseEditCommandsClass):
         k = self.k ; c = k.c ; w = event.widget
         i = w.index('insert')
         txt = w.get('insert linestart','insert lineend')
+        
+        self.beginCommand(undoType='kill-paragraph')
     
         if not txt.strip():
             i = w.search(r'\w',i,regexp=True,stopindex='end')
-    
         self.selectParagraphHelper(w,i)
         i2 = w.index('insert')
         c.killBufferCommands.kill(event,i,i2)
         w.mark_set('insert',i)
         w.selection_clear()
+    
+        self.endCommand(changed=True,setLabel=True)
     #@nonl
     #@-node:ekr.20050920084036.98:killParagraph (Test)
     #@+node:ekr.20050920084036.96:selectParagraph & helper
@@ -3302,7 +3432,7 @@ class editCommandsClass (baseEditCommandsClass):
         return 'break'
     #@nonl
     #@-node:ekr.20050920084036.106:setRegion
-    #@+node:ekr.20050920084036.107:indentRegion
+    #@+node:ekr.20050920084036.107:indentRegion (not used: use c.indentBody instead)
     def indentRegion (self,event):
         w = event.widget
         mrk = 'sel'
@@ -3333,12 +3463,14 @@ class editCommandsClass (baseEditCommandsClass):
             ### w.update_idletasks()
         self.removeRKeys(w)
     #@nonl
-    #@-node:ekr.20050920084036.107:indentRegion
+    #@-node:ekr.20050920084036.107:indentRegion (not used: use c.indentBody instead)
     #@+node:ekr.20050920084036.108:tabIndentRegion
     def tabIndentRegion (self,event):
     
         k = self.k ; w = event.widget
         if not self._chckSel(event): return
+        
+        self.beginCommand(undoType='indent-rigidly')
     
         i = w.index('sel.first')
         i2 = w.index('sel.last')
@@ -3371,6 +3503,8 @@ class editCommandsClass (baseEditCommandsClass):
         k = self.k ; w = event.widget
         if not self._chckSel(event): return
     
+        self.beginCommand(undoType='reverse-region')
+    
         ins = w.index('insert')
         is1 = w.index('sel.first')
         is2 = w.index('sel.last')
@@ -3386,20 +3520,23 @@ class editCommandsClass (baseEditCommandsClass):
         w.mark_set('insert',ins)
         k.clearState()
         k.resetLabel()
+        
+        self.endCommand(changed=True,setLabel=True)
     #@nonl
     #@-node:ekr.20050920084036.110:reverseRegion
     #@+node:ekr.20050920084036.111:up/downCaseRegion & helper
     def downCaseRegion (self,event):
-        self.caseHelper(event,'low')
-    
+        self.caseHelper(event,'low','downcase-region')
+        
     def upCaseRegion (self,event):
-        self.caseHelper(event,'up')
-    
-    def caseHelper (self,event,way):
+        self.caseHelper(event,'up','upcase-region')
+        
+    def caseHelper (self,event,way,undoType):
     
         w = event.widget ; trange = w.tag_ranges('sel')
     
         if len(trange) != 0:
+            self.beginCommand(undoType=undoType)
             text = w.get(trange[0],trange[-1])
             i = w.index('insert')
             if text == ' ': return
@@ -3408,6 +3545,7 @@ class editCommandsClass (baseEditCommandsClass):
             if way == 'up':  text = text.upper()
             w.insert('insert',text)
             w.mark_set('insert',i)
+            self.endCommand(changed=True,setLabel=True)
     
         self.removeRKeys(w)
     #@nonl
@@ -3576,7 +3714,8 @@ class editCommandsClass (baseEditCommandsClass):
         c = self.c ; k = c.k ; w = event.widget
         g.trace(c.widget_name(w))
         if not self._chckSel(event): return
-        self.beginCommand()
+    
+        self.beginCommand(undoType='sort-lines')
         i = w.index('sel.first')
         i2 = w.index('sel.last')
         is1 = i.split('.')
@@ -3593,7 +3732,7 @@ class editCommandsClass (baseEditCommandsClass):
             w.insert('%s.0' % inum,'%s\n' % z)
             inum = inum + 1
         w.mark_set('insert',ins)
-        self.endCommand(changed=True,setLabel=False)
+        self.endCommand(changed=True,setLabel=True)
     #@nonl
     #@-node:ekr.20050920084036.118:sortLines
     #@+node:ekr.20050920084036.119:sortColumns
@@ -3602,6 +3741,7 @@ class editCommandsClass (baseEditCommandsClass):
         k = self.k ; w = event.widget
         if not self._chckSel(event): return
     
+        self.beginCommand(undoType='sort-columns')
         ins = w.index('insert')
         is1 = w.index('sel.first')
         is2 = w.index('sel.last')
@@ -3626,6 +3766,7 @@ class editCommandsClass (baseEditCommandsClass):
              w.insert('%s.0' % i,'%s\n' % zlist[z][1])
              i = i + 1
         w.mark_set('insert',ins)
+        self.endCommand(changed=True,setLabel=True)
     #@nonl
     #@-node:ekr.20050920084036.119:sortColumns
     #@+node:ekr.20050920084036.120:sortFields
@@ -3634,6 +3775,7 @@ class editCommandsClass (baseEditCommandsClass):
         k = self.k ; w = event.widget
         if not self._chckSel(event): return
     
+        self.beginCommand(undoType='sort-fields')
         ins = w.index('insert')
         is1 = w.index('sel.first')
         is2 = w.index('sel.last')
@@ -3660,6 +3802,7 @@ class editCommandsClass (baseEditCommandsClass):
             w.insert('%s.0' % int1,'%s\n' % z[1])
             int1 = int1 + 1
         w.mark_set('insert',ins)
+        self.endCommand(changed=True,setLabel=True)
     #@nonl
     #@-node:ekr.20050920084036.120:sortFields
     #@-node:ekr.20050920084036.117:sort...
@@ -3672,6 +3815,7 @@ class editCommandsClass (baseEditCommandsClass):
         i1, i2 = i.split('.')
         i1 = str(int(i1)-1)
     
+        self.beginCommand(undoType='transpose-lines')
         if i1 != '0':
             l2 = w.get('insert linestart','insert lineend')
             w.delete('insert linestart-1c','insert lineend')
@@ -3680,6 +3824,7 @@ class editCommandsClass (baseEditCommandsClass):
             l2 = w.get('2.0','2.0 lineend')
             w.delete('2.0','2.0 lineend')
             w.insert('1.0',l2+'\n')
+        self.endCommand(changed=True,setLabel=True)
     #@nonl
     #@-node:ekr.20050920084036.122:transposeLines
     #@+node:ekr.20050920084036.123:swapWords & transposeWords
@@ -3689,6 +3834,8 @@ class editCommandsClass (baseEditCommandsClass):
         txt = w.get('insert wordstart','insert wordend')
         if txt == ' ': return
         i = w.index('insert wordstart')
+        
+        self.beginCommand(undoType='swap-words')
         if len(swapspots) != 0:
             if w.compare(i,'>',swapspots[1]):
                 self.swapHelper(w,i,txt,swapspots[1],swapspots[0])
@@ -3697,9 +3844,12 @@ class editCommandsClass (baseEditCommandsClass):
         else:
             swapspots.append(txt)
             swapspots.append(i)
+        self.endCommand(changed=True,setLabel=True)
     
     def transposeWords (self,event):
+        self.beginCommand(undoType='transpose-words')
         self.swapWords(event,self.swapSpots)
+        self.endCommand(changed=True,setLabel=True)
     
     def swapHelper (self,w,find,ftext,lind,ltext):
         w.delete(find,'%s wordend' % find)
@@ -3716,11 +3866,14 @@ class editCommandsClass (baseEditCommandsClass):
         i = w.index('insert')
         c1 = w.get('insert','insert +1c')
         c2 = w.get('insert -1c','insert')
+        
+        self.beginCommand(undoType='swap-characters')
         w.delete('insert -1c','insert')
         w.insert('insert',c1)
         w.delete('insert','insert +1c')
         w.insert('insert',c2)
         w.mark_set('insert',i)
+        self.endCommand(changed=True,setLabel=True)
     
     transposeCharacters = swapCharacters
     #@nonl
@@ -3737,6 +3890,7 @@ class editCommandsClass (baseEditCommandsClass):
     
         k = self.k ; w = event.widget
         if w.tag_ranges('sel'):
+            self.beginCommand(undoType=which)
             i = w.index('sel.first')
             end = w.index('sel.last')
             txt = w.get(i,end)
@@ -3748,6 +3902,7 @@ class editCommandsClass (baseEditCommandsClass):
                 ntxt = pattern.sub('    ',txt)
             w.delete(i,end)
             w.insert(i,ntxt)
+            self.endCommand(changed=True,setLabel=True)
     #@nonl
     #@-node:ekr.20050920084036.126:tabify & untabify
     #@-others
