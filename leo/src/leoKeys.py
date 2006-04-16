@@ -1985,6 +1985,8 @@ class keyHandlerClass:
         
         k = self
         
+        # g.trace('Return','Return' in k.bindingsDict.keys())
+        
         for stroke in k.bindingsDict.keys():
             
             def bindKeyCallback (event,k=k,stroke=stroke):
