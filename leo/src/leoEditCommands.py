@@ -1171,7 +1171,9 @@ class editCommandsClass (baseEditCommandsClass):
             'activate-help-menu':                   self.activateHelpMenu,
             'activate-outline-menu':                self.activateOutlineMenu,
             'activate-plugins-menu':                self.activatePluginsMenu,
-            'activate-window-menu':                 self.activateWindowMenu,        
+            'activate-window-menu':                 self.activateWindowMenu,
+            'add-space-to-lines':                   self.addSpaceToLines,
+            'add-tab-to-lines':                     self.addTabToLines, 
             'back-to-indentation':                  self.backToIndentation,
             'back-char':                            self.backCharacter,
             'back-char-extend-selection':           self.backCharacterExtendSelection,
@@ -1266,6 +1268,8 @@ class editCommandsClass (baseEditCommandsClass):
             'previous-line':                        self.prevLine,
             'previous-line-extend-selection':       self.prevLineExtendSelection,
             'remove-blank-lines':                   self.removeBlankLines,
+            'remove-space-from lines':              self.removeSpaceFromLines,
+            'remove-tab-from lines':                self.removeTabFromLines,
             'reverse-region':                       self.reverseRegion,
             'scroll-down':                          self.scrollDown,
             'scroll-down-extend-selection':         self.scrollDownExtendSelection,
@@ -2207,6 +2211,54 @@ class editCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20050920084036.78:indentRelative
     #@-node:ekr.20050920084036.74:indent...
     #@+node:ekr.20050920084036.85:insert & delete...
+    #@+node:ekr.20060417171125:addSpace/TabToLines & removeSpace/TabFromLines & helper
+    def addSpaceToLines (self,event):
+        '''Add a space to start of all lines, or all selected lines.'''
+        self.addRemoveHelper(event,ch=' ',add=True,undoType='add-space-to-lines')
+        
+    def addTabToLines (self,event):
+        '''Add a tab to start of all lines, or all selected lines.'''
+        self.addRemoveHelper(event,ch='\t',add=True,undoType='add-tab-to-lines')
+        
+    def removeSpaceFromLines (self,event):
+        '''Remove a space from start of all lines, or all selected lines.'''
+        self.addRemoveHelper(event,ch=' ',add=False,undoType='remove-space-from-lines')
+        
+    def removeTabFromLines (self,event):
+        '''Remove a tab from start of all lines, or all selected lines.'''
+        self.addRemoveHelper(event,ch='\t',add=False,undoType='remove-tab-from-lines')
+    #@nonl
+    #@+node:ekr.20060417172056:addRemoveHelper
+    def addRemoveHelper(self,event,ch,add,undoType):
+    
+        c = self.c ; k = self.k ; w = event.widget
+        if g.app.gui.hasSelection(w):
+            s = g.app.gui.getSelectedText(w)
+        else:
+            s = g.app.gui.getAllText(w)
+        if not s: return
+        
+        # Insert or delete spaces instead of tabs when negative tab width is in effect.
+        d = g.scanDirectives(c) ; width = d.get('tabwidth')
+        if ch == '\t' and width < 0: ch = ' ' * abs(width)
+        self.beginCommand(undoType=undoType)
+        if add:
+            result = [ch + line for line in g.splitLines(s)]
+        else:
+            result = [g.choose(line.startswith(ch),line[len(ch):],line) for line in g.splitLines(s)]
+        result = ''.join(result)
+        if g.app.gui.hasSelection(w):
+            i,j = g.app.gui.getSelectionRange(w)
+            w.delete(i,j)
+            w.insert(i,result)
+            g.app.gui.setSelectionRange(w, i, j + '%dc' %(len(result)))
+        else:
+            w.delete('1.0','end')
+            w.insert('1.0',result)
+        self.endCommand(changed=True,setLabel=True)
+    #@nonl
+    #@-node:ekr.20060417172056:addRemoveHelper
+    #@-node:ekr.20060417171125:addSpace/TabToLines & removeSpace/TabFromLines & helper
     #@+node:ekr.20051026092433.1:backwardDeleteCharacter
     def backwardDeleteCharacter (self,event=None):
         
@@ -2581,23 +2633,6 @@ class editCommandsClass (baseEditCommandsClass):
     #@nonl
     #@-node:ekr.20051026092433:updateTab
     #@-node:ekr.20051125080855:selfInsertCommand
-    #@+node:ekr.20060116084526.1:insert/remove spaces/tabs from lines (LeoUser)
-    #@+at
-    # 
-    # http://sourceforge.net/forum/message.php?msg_id=3488030
-    # 
-    # add-space-to-lines      Adds a space to start of all selected lines.
-    # 
-    # add-tab-to-line         Adds 4 spaces to start of all selected lines.
-    # 
-    # remove-space-from lines Removes a space from start of all selected 
-    # lines.
-    # 
-    # remove-tab-from lines   Removes a space from start of all selected 
-    # lines.
-    #@-at
-    #@nonl
-    #@-node:ekr.20060116084526.1:insert/remove spaces/tabs from lines (LeoUser)
     #@-node:ekr.20050920084036.85:insert & delete...
     #@+node:ekr.20050920084036.79:info...
     #@+node:ekr.20050920084036.80:howMany
