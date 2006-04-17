@@ -27,9 +27,6 @@ import types
 #@@nocolor
 #@+at
 # 
-# k.strokeFromEvent must generate exactly the same keys as used in 
-# k.bindingsDict.
-# 
 # Here are the rules for translating key bindings (in leoSettings.leo) into 
 # keys for k.bindingsDict:
 # 
@@ -1647,7 +1644,7 @@ class keyHandlerClass:
         "~" : "asciitilde",
     }
     
-    # No translation: these suppress a warning in k.strokeFromEvent.
+    # No translation.
     for s in tkNamesList:
         tkBindNamesDict[s] = s
         
@@ -2947,16 +2944,11 @@ class keyHandlerClass:
         #@+node:ekr.20060321105403.1:<< do key traces >>
         self.master_key_count += 1
         
-        if trace and (self.master_key_count % 100) == 0:
-            g.printGcSummary(trace=True)
-        
-        if 0:
-            if stroke is None:
-                if trace: g.trace('no stroke: using strokeFromEvent')
-                stroke = k.strokeFromEvent(event)
-                
         if trace:
+            if (self.master_key_count % 100) == 0:
+                g.printGcSummary(trace=True)
             g.trace(repr(stroke),'state',state)
+        #@nonl
         #@-node:ekr.20060321105403.1:<< do key traces >>
         #@nl
     
@@ -3676,73 +3668,6 @@ class keyHandlerClass:
     strokeFromSetting    = shortcutFromSetting
     #@nonl
     #@-node:ekr.20060128081317:shortcutFromSetting
-    #@+node:ekr.20060126163152.2:k.strokeFromEvent
-    # The keys to k.bindingsDict must be consistent with what this method returns.
-    # See 'about internal bindings' for details.
-     
-    def strokeFromEvent (self,event):
-        
-        k = self
-        if event is None: return ''
-        trace = k.trace_key_event and not g.app.unitTesting
-        state = event.state or 0
-        keysym = event.keysym or ''
-        ch = event.char
-        result = []
-        shift = (state & 1) == 1 # Not used for alpha chars.
-        caps  = (state & 2) == 2
-        ctrl  = (state & 4) == 4
-        # Linux uses, 8 and 0x80, XP uses 0x20000.
-        if sys.platform=='darwin':
-            alt = (state&0x10) == 0x10
-            #num = False
-        elif sys.platform.startswith('win'):
-            alt = (state & 0x20000) == 0x20000
-            #num = (state & 8) == 8
-        else:
-            #num = False # ???
-            alt = (state & 8) == 8 or (state & 0x80) == 0x80
-        plain = len(keysym) == 1 # E.g., for ctrl-v the keysym is 'v' but ch is empty.
-        
-        if trace: g.trace('ch',repr(ch),'keysym',repr(keysym),'state: %x' % state)
-        
-        # Undo the effect of the caps-lock key.
-        if caps:
-            if alt or ctrl or k.ignore_caps_lock:
-                if shift:
-                    ch = ch.upper() ; keysym = keysym.upper()
-                    event.char=event.char.upper()
-                    event.keysym=event.keysym.upper()
-                else:
-                    ch = ch.lower() ; keysym = keysym.lower()
-                    event.char=event.char.lower()
-                    event.keysym=event.keysym.lower()
-        
-        # The big aha: we can ignore the shift state.
-        if plain:
-            if shift and ch.isalpha() and ch.islower():
-                g.trace('oops: inconsistent shift state. shift: %s, ch: %s' % (shift,ch))
-            ch = keysym
-            shift = False
-        else:
-            ch2 = k.tkBindNamesInverseDict.get(keysym)
-            if ch2:
-                ch = ch2
-                if len(ch) == 1: shift = False
-            else:
-                # Just use the unknown keysym.
-                pass # There are lots of keysyms that Leo may not know about.
-                # g.trace('*'*30,'unknown keysym',repr(keysym))
-        
-        if alt: result.append('Alt+')
-        if ctrl: result.append('Ctrl+')
-        if shift: result.append('Shift+')
-        result.append(ch)
-        result = ''.join(result)
-        # g.trace('state',state,'keysym',keysym,'result',repr(result))
-        return result
-    #@nonl
-    #@-node:ekr.20060126163152.2:k.strokeFromEvent
     #@+node:ekr.20060131075440:k.tkbindingFromStroke
     def tkbindingFromStroke (self,stroke):
         
