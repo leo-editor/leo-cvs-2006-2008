@@ -1224,6 +1224,7 @@ class editCommandsClass (baseEditCommandsClass):
             'expand-log-pane':                      c.frame.expandLogPane,
             'expand-outline-pane':                  c.frame.expandOutlinePane,
             'expand-pane':                          c.frame.expandPane,
+            'extend-to-word':                       self.extendToWord,
             'fill-paragraph':                       self.fillParagraph,
             'fill-region':                          self.fillRegion,
             'fill-region-as-paragraph':             self.fillRegionAsParagraph,
@@ -1245,6 +1246,7 @@ class editCommandsClass (baseEditCommandsClass):
             'fully-expand-pane':                    c.frame.fullyExpandPane,
             'fully-expand-outline-pane':            c.frame.fullyExpandOutlinePane,
             'goto-char':                            self.gotoCharacter,
+            'goto-global-line':                     self.gotoGlobalLine,
             'goto-line':                            self.gotoLine,
             'hide-body-pane':                       c.frame.hideBodyPane,
             'hide-log-pane':                        c.frame.hideLogPane,
@@ -1949,6 +1951,17 @@ class editCommandsClass (baseEditCommandsClass):
                 k.setLabelGrey('Invalid Expression: %s' % e)
     #@nonl
     #@-node:ekr.20050920084036.65:evalExpression
+    #@+node:ekr.20060116074839.2:extend-to-word
+    def extendToWord (self,event):
+        
+        w = event.widget
+        if g.app.gui.hasSelection(w):
+            i,j = g.app.gui.getSelectionRange(w)
+        else:
+            i = g.app.gui.getInsertPoint(w)
+        g.app.gui.setSelectionRange(w, i+' wordstart', i+' wordend')
+    #@nonl
+    #@-node:ekr.20060116074839.2:extend-to-word
     #@+node:ekr.20050920084036.66:fill column and centering
     #@+at
     # These methods are currently just used in tandem to center the line or 
@@ -2092,6 +2105,26 @@ class editCommandsClass (baseEditCommandsClass):
             k.clearState()
     #@nonl
     #@-node:ekr.20050929115226:gotoCharacter
+    #@+node:ekr.20060417181052:gotoGlobalLine
+    def gotoGlobalLine (self,event):
+        
+        '''Put the cursor at the n'th line of a file or script
+        This is a minibuffer interface to Leo's legacy Go To Line number command.'''
+    
+        k = self.k ; state = k.getState('goto-global-line')
+        
+        if state == 0:
+            self.widget = event.widget
+            k.setLabelBlue('Goto global line: ')
+            k.getArg(event,'goto-global-line',1,self.gotoGlobalLine)
+        else:
+            n = k.arg ;  w = self.widget
+            k.resetLabel()
+            k.clearState()
+            if n.isdigit():
+                self.c.goToLineNumber (n=int(n))
+    #@nonl
+    #@-node:ekr.20060417181052:gotoGlobalLine
     #@+node:ekr.20050929124234:gotoLine
     def gotoLine (self,event):
         
