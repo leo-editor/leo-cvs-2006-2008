@@ -2800,16 +2800,11 @@ special_keys = (
 #@+node:ekr.20060321105403.1:<< do key traces >>
 self.master_key_count += 1
 
-if trace and (self.master_key_count % 100) == 0:
-    g.printGcSummary(trace=True)
-
-if 0:
-    if stroke is None:
-        if trace: g.trace('no stroke: using strokeFromEvent')
-        stroke = k.strokeFromEvent(event)
-        
 if trace:
+    if (self.master_key_count % 100) == 0:
+        g.printGcSummary(trace=True)
     g.trace(repr(stroke),'state',state)
+#@nonl
 #@-node:ekr.20060321105403.1:<< do key traces >>
 #@+node:ekr.20060321105403.2:<< handle mode bindings >>
 # First, honor minibuffer bindings for all except user modes.
@@ -2949,16 +2944,11 @@ special_keys = (
 #@+node:ekr.20060321105403.1:<< do key traces >>
 self.master_key_count += 1
 
-if trace and (self.master_key_count % 100) == 0:
-    g.printGcSummary(trace=True)
-
-if 0:
-    if stroke is None:
-        if trace: g.trace('no stroke: using strokeFromEvent')
-        stroke = k.strokeFromEvent(event)
-        
 if trace:
+    if (self.master_key_count % 100) == 0:
+        g.printGcSummary(trace=True)
     g.trace(repr(stroke),'state',state)
+#@nonl
 #@-node:ekr.20060321105403.1:<< do key traces >>
 #@+node:ekr.20060321105403.2:<< handle mode bindings >>
 # First, honor minibuffer bindings for all except user modes.
@@ -5863,16 +5853,11 @@ special_keys = (
 #@+node:ekr.20060321105403.1:<< do key traces >>
 self.master_key_count += 1
 
-if trace and (self.master_key_count % 100) == 0:
-    g.printGcSummary(trace=True)
-
-if 0:
-    if stroke is None:
-        if trace: g.trace('no stroke: using strokeFromEvent')
-        stroke = k.strokeFromEvent(event)
-        
 if trace:
+    if (self.master_key_count % 100) == 0:
+        g.printGcSummary(trace=True)
     g.trace(repr(stroke),'state',state)
+#@nonl
 #@-node:ekr.20060321105403.1:<< do key traces >>
 #@+node:ekr.20060321105403.2:<< handle mode bindings >>
 # First, honor minibuffer bindings for all except user modes.
@@ -9404,16 +9389,11 @@ special_keys = (
 #@+node:ekr.20060321105403.1:<< do key traces >>
 self.master_key_count += 1
 
-if trace and (self.master_key_count % 100) == 0:
-    g.printGcSummary(trace=True)
-
-if 0:
-    if stroke is None:
-        if trace: g.trace('no stroke: using strokeFromEvent')
-        stroke = k.strokeFromEvent(event)
-        
 if trace:
+    if (self.master_key_count % 100) == 0:
+        g.printGcSummary(trace=True)
     g.trace(repr(stroke),'state',state)
+#@nonl
 #@-node:ekr.20060321105403.1:<< do key traces >>
 #@+node:ekr.20060321105403.2:<< handle mode bindings >>
 # First, honor minibuffer bindings for all except user modes.
@@ -10719,6 +10699,27 @@ The fix: all menu commands now have event=None in their argument list.
 #@-node:ekr.20060323140748:Plugins
 #@-node:ekr.20060306070425:4.4 b3 projects
 #@+node:ekr.20060414090519:4.4 b4 projects
+#@+node:ekr.20060417092153:Bugs
+#@+node:ekr.20060416104711.1:Investigated problems with legacy bindings
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3688804
+By: paulpaterson
+
+It seems that copying and pasting nodes with CTRL-SHIFT-C, V is not working.
+- (legacy bindings)
+- select a node
+- CTRL-SHIFT-C
+- CTRL-SHIFT-V
+- Vim opens up! I expect to paste the node. The clipboard doesn't seem to contain
+any XML
+- The menu items show that these keys are bound to the copy and paste node
+commands
+
+*** Also on legacy bindings the arrow keys don't seem to move the cursor in the
+body.
+#@nonl
+#@-node:ekr.20060416104711.1:Investigated problems with legacy bindings
+#@-node:ekr.20060417092153:Bugs
 #@+node:ekr.20060414090519.1:New features
 #@+node:ekr.20060123095316:Added clear-selection command
 Useful, e.g., after a find.
@@ -14102,6 +14103,20 @@ def tabifyHelper (self,event,which):
 #@nonl
 #@-node:ekr.20050920084036.126:tabify & untabify
 #@-node:ekr.20050920084036.53:class editCommandsClass
+#@+node:ekr.20060116084526.1:insert/remove spaces/tabs from lines (LeoUser)
+@
+
+http://sourceforge.net/forum/message.php?msg_id=3488030
+
+add-space-to-lines      Adds a space to start of all selected lines.
+
+add-tab-to-line         Adds 4 spaces to start of all selected lines.
+
+remove-space-from lines Removes a space from start of all selected lines.
+
+remove-tab-from lines   Removes a space from start of all selected lines.
+#@nonl
+#@-node:ekr.20060116084526.1:insert/remove spaces/tabs from lines (LeoUser)
 #@-node:ekr.20060414092733:Added new commands
 #@-node:ekr.20060414090519.1:New features
 #@-node:ekr.20060414090519:4.4 b4 projects

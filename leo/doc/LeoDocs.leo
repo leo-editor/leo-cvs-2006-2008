@@ -2529,7 +2529,7 @@
 <v t="ekr.20060227102028.111"><vh>Autocompletion and calltips</vh></v>
 </v>
 <v t="ekr.20060328171518"><vh>4.4 b3</vh>
-<v t="ekr.20060328171518.1"><vh>New features</vh>
+<v t="ekr.20060328171518.1" a="E"><vh>New features</vh>
 <v t="ekr.20060328171518.10"><vh>Added scroll outline pane commands</vh></v>
 <v t="ekr.20060328171518.11"><vh>Improved registerCommand</vh></v>
 <v t="ekr.20060328171518.15"><vh>Suppressed autocompletion after numbers</vh></v>
@@ -2569,42 +2569,9 @@
 </v>
 </v>
 <v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20060328171518" a="V"><vh>4.4 b3</vh>
-<v t="ekr.20060328171518.1"><vh>New features</vh>
-<v t="ekr.20060328171518.10"><vh>Added scroll outline pane commands</vh></v>
-<v t="ekr.20060328171518.11"><vh>Improved registerCommand</vh></v>
-<v t="ekr.20060328171518.15"><vh>Suppressed autocompletion after numbers</vh></v>
-<v t="ekr.20060328171518.16"><vh>Added colorizing support for Lua language</vh></v>
-<v t="ekr.20060328171518.45"><vh>Added run-unit-test command</vh></v>
-</v>
-<v t="ekr.20060328171518.47"><vh>Bugs</vh>
-<v t="ekr.20060328171518.48"><vh>Fixed problem with left &amp; right arrows in outline mode</vh></v>
-<v t="ekr.20060328171518.57"><vh>Fixed undo problem with clones</vh></v>
-<v t="ekr.20060328171518.83"><vh>Investigated setting descendant @file nodes dirty when changing body text</vh></v>
-<v t="ekr.20060328171518.85"><vh>Work around newline problems on the Mac</vh></v>
-<v t="ekr.20060328171518.101"><vh>Got rid of settings messages</vh></v>
-<v t="ekr.20060328171518.108"><vh>Clicks outside minibuffer no longer rip focus</vh></v>
-<v t="ekr.20060328171518.111"><vh>Handled missing leoSettings.leo files more gracefully</vh></v>
-<v t="ekr.20060328171518.119"><vh>Converted all shortcuts to unicode</vh></v>
-<v t="ekr.20060328171518.135"><vh>Made Open With shortcuts work again</vh></v>
-<v t="ekr.20060328171518.151"><vh>Made sure autocompleter and calltip text stick</vh></v>
-<v t="ekr.20060328171518.152"><vh>Fixed a bug in c.openWith</vh></v>
-<v t="ekr.20060328171518.169"><vh>Import/export commands now set directory for next open</vh></v>
-<v t="ekr.20060328171518.190"><vh>Investigated colorizer problems: can not reproduce</vh></v>
-<v t="ekr.20060328171518.248"><vh>Removed support @ifgui: it doesn't and can't work</vh></v>
-<v t="ekr.20060328171518.249"><vh>Removed autocompletion for self</vh></v>
-<v t="ekr.20060414071350.1" a="E"><vh>Rewrote g.importExtension to simplify startup logic</vh></v>
-<v t="ekr.20060414071350.8" a="E"><vh>Removed calls to lstrip and rstrip for compatibility with Python 2.2.1</vh></v>
-<v t="ekr.20060414071350.39" a="E"><vh>Fixed crash in string.startswith and string.endswith</vh></v>
-<v t="ekr.20060414071350.47" a="E"><vh>Fixed Crash after undoing clearRecentFiles command</vh></v>
-<v t="ekr.20060414071350.58"><vh>Fixed minor problems reported by Pychecker</vh></v>
-</v>
-<v t="ekr.20060328171518.191"><vh>Plugins</vh>
-<v t="ekr.20060328171518.238"><vh>Changed path to stylesheet in the rst3 plugin</vh></v>
-<v t="ekr.20060328171518.240"><vh>Fixed problems with chapters plugin</vh></v>
-<v t="ekr.20060328171518.244"><vh>Improved groupoperations plugin</vh></v>
-<v t="ekr.20060328171518.245"><vh>Fixed crasher in Word (and other) plugins</vh></v>
-<v t="ekr.20060328171518.246"><vh>Fixed problem with labels plugin</vh></v>
+<v t="ekr.20060417092536" a="EV"><vh>4.4 b4</vh>
+<v t="ekr.20060417092825"><vh>New features</vh>
+<v t="ekr.20060417092825.1"><vh>Added script to update new copies of leoSettting.leo from previous copies</vh></v>
 </v>
 </v>
 </v>
@@ -25201,5 +25168,67 @@ C:\prog\tigris-cvs\leo\src\leoTkinterTree.py:1222: Local variable (delta) not us
 C:\prog\tigris-cvs\leo\src\leoKeys.py:1931: Local variable (f) not used
 C:\prog\tigris-cvs\leo\src\leoGlobals.py:5246: Local variable (buttonList) not used
 C:\prog\tigris-cvs\leo\src\leoCommands.py:493: No global (enableIdleTimeHook) found</t>
+<t tx="ekr.20060417092536">Leo 4.4 beta 4                                             April 19, 2006
+
+This version fixes a long-standing MacOS bug.  It is likely to be the last
+beta release before 4.4 final.
+
+Leo is a text editor, data organizer, project manager and much more. See:
+http://webpages.charter.net/edreamleo/intro.html
+
+The highlights of Leo 4.4:
+--------------------------
+- An Emacs-like mini-buffer: you can now execute any command by typing its long
+name, with tab completion.
+
+- Many new commands, including cursor and screen movement, basic character, word
+and paragraph manipulation, and commands to manipulate buffers, the kill ring,
+regions and rectangles. You can use Leo without using a mouse.
+
+- Flexible key bindings and input modes. You can emulate the operation of Emacs,
+Vim, or any other editor.
+
+- A tabbed log pane. The Find and Spell Check commands now use tabs instead of
+dialogs, making those commands much easier to use. Plugins or scripts can easily
+create new tabs. The Completion tab shows possible typing completions.
+
+- Autocompletion and calltips.  Autocompletion works much like tab completion.
+
+- Dozens of other new features and bug fixes since Leo 4.3.3.
+
+Links:
+------
+Leo:      http://webpages.charter.net/edreamleo/front.html
+Home:     http://sourceforge.net/projects/leo/
+Download: http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:      http://sourceforge.net/cvs/?group_id=3458
+Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
+<t tx="ekr.20060417092825"></t>
+<t tx="ekr.20060417092825.1">See the (presently disabled) script button in scripts.leo at:
+
+Buttons--&gt;@@button updateSettings
+
+From the docstring:
+
+Here is a **preliminary** script that updates a new leoSettings.leo file
+(path2) from the settings in a previous leoSettings.leo file (path1).
+Presumably, the path2 file is the leoSettings.leo file from a new distribution,
+and the path1 file a leoSettings.leo file containing settings that you have
+modified.  You must specify the full path of both files in the top-level @button node.
+
+**Warning**: This script modifies the path2 file. Make sure that you don't mind
+modifying this file.
+
+**Warning**: This script is unsophisticated in its update algorithm. If if finds
+corresponding nodes (node with the same settings name) in both outlines it simply
+replaces the node in the path2 file with the node in the path1 file. In
+particular, it does not keep track of individual shortcuts: it repaces the body
+of one @shortcuts node with the body of the corresponding @shortcuts node.
+
+**Note**: If the path1 file contains a settings node not in the path2 file it
+attempts to create a new node in the corresponding place in the path2 file. If
+this is not possible, say because the structures of the files are different, the
+script places the new node as the last child of the @settings node in the path2
+file.</t>
 </tnodes>
 </leo_file>

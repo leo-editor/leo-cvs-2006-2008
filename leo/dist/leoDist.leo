@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="1126" clone_windows="0"/>
 <globals body_outline_ratio="0.714833759591">
-	<global_window_position top="42" left="264" height="862" width="863"/>
+	<global_window_position top="31" left="210" height="862" width="863"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -16,7 +16,7 @@
 <v t="ekr.20050315084922"><vh>@button Spell</vh></v>
 <v t="ekr.20051015172713"><vh>@button Save</vh></v>
 </v>
-<v t="EKR.20040519091259"><vh>Annoucnements (don't split into lines)</vh>
+<v t="EKR.20040519091259" a="E"><vh>Annoucnements (don't split into lines)</vh>
 <v t="EKR.20040519091259.1"><vh>Download statistics</vh></v>
 <v t="EKR.20040519091259.2"><vh>Quotes of the month</vh>
 <v t="ekr.20060213160806"><vh>February 2005</vh></v>
@@ -25,7 +25,7 @@
 <v t="EKR.20040519091259.3"><vh>November 2003</vh></v>
 <v t="EKR.20040519091259.4"><vh>October 2003</vh></v>
 </v>
-<v t="ekr.20060330134831"><vh>ANN: Leo 4.4b3</vh></v>
+<v t="ekr.20060330134831" a="V"><vh>ANN: Leo 4.4b3</vh></v>
 <v t="ekr.20060227110642"><vh>ANN: Leo 4.4a7</vh></v>
 <v t="ekr.20060217073112"><vh>ANN: Leo 4.4a6</vh></v>
 <v t="ekr.20060215120457"><vh>ANN: Leo 4.4x1</vh></v>
@@ -117,7 +117,7 @@
 <v t="ekr.20040629180414"><vh>pycheckrc (reference)</vh></v>
 </v>
 <v t="ekr.20051205102401"><vh>Note: do search replace to update version numbers</vh></v>
-<v t="ekr.20050118095021" a="E"><vh>Leo 4.x installer  (update for each release)</vh>
+<v t="ekr.20050118095021"><vh>Leo 4.x installer  (update for each release)</vh>
 <v t="EKR.20040519082027.28"><vh>&lt;&lt; setup info for createLeoDist.py &gt;&gt;</vh></v>
 <v t="ekr.20050118124408"><vh>&lt;&lt; 4.3 nsi installer version &gt;&gt;</vh></v>
 <v t="ekr.20050118092706.4"><vh>&lt;&lt; Settings &gt;&gt;</vh></v>
@@ -170,7 +170,7 @@
 <v t="ekr.20050118103447.1"><vh>&lt;&lt; uninstall top-level files &gt;&gt;</vh></v>
 </v>
 </v>
-<v t="ekr.20050118092706" a="E"><vh>@thin leo-4-3.nsi</vh></v>
+<v t="ekr.20050118092706"><vh>@thin leo-4-3.nsi</vh></v>
 </v>
 <v t="EKR.20040519090846"><vh>Distribution files (update for each release)</vh>
 <v t="EKR.20040519090846.2"><vh>@asis ../doc/INSTALL.TXT</vh>
@@ -4487,6 +4487,10 @@ Leo 4.4 beta 3 is now available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
 
 This version fixes some minor problems and adds various features.  This code has been in use for several weeks without any major problems reported.
+
+Warning: it seems impossible to get large numbers of people to test either alpha versions or cvs versions.  There may still be some keystroke issues, and there may be some new distribution issues due to the migration of cvs to tigris from SourceForge.  So if you are going to recommend this version of Leo to a group of people (such as your students) please do some testing in your environment first.
+
+Edward
 
 Leo is a text editor, data organizer, project manager and much more. See:
 http://webpages.charter.net/edreamleo/intro.html

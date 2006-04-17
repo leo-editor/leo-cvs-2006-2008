@@ -675,6 +675,7 @@ src\leoTkinterMenu.py
 src\leoTkinterTree.py
 src\leoUndo.py
 src\oldLeoProjects.leo
+test\__init__.py
 test\test.leo
 test\unitTest.leo
 test\unittest\batchTest.py

@@ -1,1 +1,10 @@
+C:/prog/tigris-cvs/leo/src/LeoPyRef.leo
+C:\prog\tigris-cvs\leo\scripts\scripts.leo
+C:\prog\tigris-cvs\leo\doc\LeoDocs.leo
+C:\prog\tigris-cvs\leo\config\leoSettings.leo
+C:\prog\tigris-cvs\leo\plugins\leoPlugins.leo
+C:\prog\tigris-cvs\leo\src\LeoPy.leo
+C:\prog\tigris-cvs\leo\test\test.leo
+C:\Documents and Settings\Ed\My Documents\ekr.leo
 C:\prog\tigris-cvs\leo\dist\leoDist.leo
+C:\prog\tigris-cvs\leo\src\-mine -your.leo
