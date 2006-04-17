@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="9381" clone_windows="0"/>
 <globals body_outline_ratio="0.575921908894">
-	<global_window_position top="10" left="156" height="746" width="919"/>
+	<global_window_position top="10" left="156" height="922" width="1086"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -16,7 +16,8 @@
 <v t="EKR.20040429143933"><vh>@thin leoProjects.txt</vh></v>
 </v>
 <v t="EKR.20040519090151.2"><vh>To do</vh>
-<v t="ekr.20040117181936"><vh>@thin ../doc/leoToDo.txt</vh></v>
+<v t="ekr.20040117181936"
+expanded="ekr.20060412114843,ekr.20060413065803,"><vh>@thin ../doc/leoToDo.txt</vh></v>
 <v t="ekr.20060207133601"><vh>@thin ../doc/leoToDoLater.txt</vh></v>
 </v>
 <v t="ekr.20050924073836"><vh>4.4 projects</vh>
@@ -230,6 +231,9 @@
 <v t="ekr.20060306193836"><vh>Work around newline problems on the Mac</vh>
 <v t="ekr.20060323095532"><vh>Report</vh></v>
 <v t="ekr.20050920084036.85"><vh>insert &amp; delete...</vh>
+<v t="ekr.20060417171125"><vh>addSpace/TabToLines &amp; removeSpace/TabFromLines &amp; helper</vh>
+<v t="ekr.20060417172056"><vh>addRemoveHelper</vh></v>
+</v>
 <v t="ekr.20051026092433.1"><vh>backwardDeleteCharacter</vh>
 <v t="ekr.20051026092746"><vh>&lt;&lt; backspace with negative tab_width &gt;&gt;</vh></v>
 </v>
@@ -247,7 +251,6 @@
 <v t="ekr.20051026171121.1"><vh>udpateAutoIndent</vh></v>
 <v t="ekr.20051026092433"><vh>updateTab</vh></v>
 </v>
-<v t="ekr.20060116084526.1"><vh>insert/remove spaces/tabs from lines (LeoUser)</vh></v>
 </v>
 </v>
 <v t="ekr.20060321111639"><vh>Got rid of settings messages</vh>
@@ -740,6 +743,7 @@
 <v t="ekr.20050920084036.64"><vh>escEvaluate (Revise)</vh></v>
 </v>
 <v t="ekr.20050920084036.65"><vh>evalExpression</vh></v>
+<v t="ekr.20060116074839.2"><vh>extend-to-word</vh></v>
 <v t="ekr.20050920084036.66"><vh>fill column and centering</vh>
 <v t="ekr.20050920084036.67"><vh>centerLine</vh></v>
 <v t="ekr.20050920084036.68"><vh>setFillColumn</vh></v>
@@ -749,6 +753,7 @@
 </v>
 <v t="ekr.20050920084036.72"><vh>goto...</vh>
 <v t="ekr.20050929115226"><vh>gotoCharacter</vh></v>
+<v t="ekr.20060417181052"><vh>gotoGlobalLine</vh></v>
 <v t="ekr.20050929124234"><vh>gotoLine</vh></v>
 </v>
 <v t="ekr.20050920084036.74"><vh>indent...</vh>
@@ -758,6 +763,9 @@
 <v t="ekr.20050920084036.78"><vh>indentRelative</vh></v>
 </v>
 <v t="ekr.20050920084036.85"><vh>insert &amp; delete...</vh>
+<v t="ekr.20060417171125"><vh>addSpace/TabToLines &amp; removeSpace/TabFromLines &amp; helper</vh>
+<v t="ekr.20060417172056"><vh>addRemoveHelper</vh></v>
+</v>
 <v t="ekr.20051026092433.1"><vh>backwardDeleteCharacter</vh>
 <v t="ekr.20051026092746"><vh>&lt;&lt; backspace with negative tab_width &gt;&gt;</vh></v>
 </v>
@@ -775,7 +783,6 @@
 <v t="ekr.20051026171121.1"><vh>udpateAutoIndent</vh></v>
 <v t="ekr.20051026092433"><vh>updateTab</vh></v>
 </v>
-<v t="ekr.20060116084526.1"><vh>insert/remove spaces/tabs from lines (LeoUser)</vh></v>
 </v>
 <v t="ekr.20050920084036.79"><vh>info...</vh>
 <v t="ekr.20050920084036.80"><vh>howMany</vh></v>
@@ -853,22 +860,55 @@
 </v>
 <v t="ekr.20050920084036.126"><vh>tabify &amp; untabify</vh></v>
 </v>
-<v t="ekr.20060116084526.1"><vh>insert/remove spaces/tabs from lines (LeoUser)</vh></v>
+<v t="ekr.20060116084526.1"><vh>Added add-space/tab-to-lines and remove-space/tab-from-lines commands</vh>
+<v t="ekr.20060417171501"><vh>Request</vh></v>
+<v t="ekr.20060417171125"><vh>addSpace/TabToLines &amp; removeSpace/TabFromLines &amp; helper</vh>
+<v t="ekr.20060417172056"><vh>addRemoveHelper</vh></v>
 </v>
 </v>
-</v>
-</v>
-<v t="ekr.20060226131603"><vh>To do 4.4 b4 or final</vh>
-<v t="ekr.20060415110109"><vh>Add unit tests for editCommandsClass</vh></v>
-<v t="ekr.20060412114843"><vh>easy 6</vh>
-<v t="ekr.20060116085649"><vh>find-word-on-line, find-character-on-line (forward &amp; backward)</vh></v>
 <v t="ekr.20060116074839.2"><vh>extend-to-word</vh></v>
-<v t="ekr.20060206103922"><vh>Minibuffer interface for GoToLine number (rewrite goto-line)</vh></v>
-<v t="ekr.20051202095626"><vh>help-for-command</vh></v>
+<v t="ekr.20060206103922"><vh>goto-global-line command (minibuffer interface for Go To Line Number command)</vh>
+<v t="ekr.20031218072017.2864"><vh>goToLineNumber &amp; allies</vh>
+<v t="ekr.20031218072017.2865"><vh>&lt;&lt; set root &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2866"><vh>&lt;&lt; read the file into lines &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2867"><vh>&lt;&lt; get n, the line number, from a dialog &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2868"><vh>&lt;&lt; count outline lines, setting p,n2,found &gt;&gt; (@file-nosent only)</vh></v>
+<v t="ekr.20031218072017.2869"><vh>&lt;&lt; set p to the node given by vnodeName, etc. &gt;&gt;</vh>
+<v t="ekr.20041111093404"><vh>&lt;&lt; just scan for the node name &gt;&gt;</vh></v>
+<v t="EKR.20040609110138"><vh>&lt;&lt; 4.2: get node from gnx &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2870"><vh>&lt;&lt; 4.x: scan for the node using tnodeList and n &gt;&gt;</vh>
+<v t="ekr.20031218072017.2871"><vh>&lt;&lt; set tnodeIndex to the number of +node sentinels before line n &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2872"><vh>&lt;&lt; set p to the first vnode whose tnode is tnodeList[tnodeIndex] or set ok = false &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2873"><vh>&lt;&lt; set p to the first node whose headline matches vnodeName &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20031218072017.2874"><vh>&lt;&lt; 3.x: scan for the node with the given childIndex &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20031218072017.2875"><vh>&lt;&lt; select p and make it visible &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2876"><vh>&lt;&lt; put the cursor on line n2 of the body text &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2877"><vh>convertLineToVnodeNameIndexLine</vh>
+<v t="ekr.20031218072017.2878"><vh>&lt;&lt; set delim, leoLine from the @+leo line &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2879"><vh>&lt;&lt; scan back to  @+node, setting offset,nodeSentinelLine &gt;&gt;</vh>
+<v t="ekr.20031218072017.2880"><vh>&lt;&lt; handle delim while scanning backward &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20031218072017.2881"><vh>&lt;&lt; set vnodeName and (childIndex or gnx) from s &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20031218072017.2882"><vh>skipToMatchingNodeSentinel</vh></v>
+</v>
+<v t="ekr.20060417181052"><vh>gotoGlobalLine</vh></v>
+</v>
+</v>
+</v>
+</v>
+</v>
+<v t="ekr.20060226131603" a="V"><vh>To do 4.4 b4 or final</vh>
+<v t="ekr.20060415110109"><vh>Add unit tests for editCommandsClass</vh></v>
+<v t="ekr.20060412114843" a="E"><vh>easy 3</vh>
 <v t="ekr.20060104083551"><vh>move-line-up/down (LeoUser)</vh></v>
 <v t="ekr.20060117115212"><vh>Fix rename-buffer command</vh></v>
+<v t="ekr.20051202095626"><vh>help-for-command</vh></v>
 </v>
-<v t="ekr.20060413065803"><vh>searches 4</vh>
+<v t="ekr.20060413065803" a="E"><vh>searches 5</vh>
+<v t="ekr.20060116085649"><vh>find-word-on-line, find-character-on-line (forward &amp; backward)</vh></v>
 <v t="ekr.20060307074302.1"><vh>set-change-text command should work when entering find text.</vh></v>
 <v t="ekr.20060122183544"><vh>Improve isearch</vh></v>
 <v t="ekr.20060122194643"><vh>isearch-headline (forward &amp; backward)</vh></v>
@@ -1002,6 +1042,7 @@
 <v t="ekr.20050920084036.64"><vh>escEvaluate (Revise)</vh></v>
 </v>
 <v t="ekr.20050920084036.65"><vh>evalExpression</vh></v>
+<v t="ekr.20060116074839.2"><vh>extend-to-word</vh></v>
 <v t="ekr.20050920084036.66"><vh>fill column and centering</vh>
 <v t="ekr.20050920084036.67"><vh>centerLine</vh></v>
 <v t="ekr.20050920084036.68"><vh>setFillColumn</vh></v>
@@ -1011,6 +1052,7 @@
 </v>
 <v t="ekr.20050920084036.72"><vh>goto...</vh>
 <v t="ekr.20050929115226"><vh>gotoCharacter</vh></v>
+<v t="ekr.20060417181052"><vh>gotoGlobalLine</vh></v>
 <v t="ekr.20050929124234"><vh>gotoLine</vh></v>
 </v>
 <v t="ekr.20050920084036.74"><vh>indent...</vh>
@@ -1020,6 +1062,9 @@
 <v t="ekr.20050920084036.78"><vh>indentRelative</vh></v>
 </v>
 <v t="ekr.20050920084036.85"><vh>insert &amp; delete...</vh>
+<v t="ekr.20060417171125"><vh>addSpace/TabToLines &amp; removeSpace/TabFromLines &amp; helper</vh>
+<v t="ekr.20060417172056"><vh>addRemoveHelper</vh></v>
+</v>
 <v t="ekr.20051026092433.1"><vh>backwardDeleteCharacter</vh>
 <v t="ekr.20051026092746"><vh>&lt;&lt; backspace with negative tab_width &gt;&gt;</vh></v>
 </v>
@@ -1037,7 +1082,6 @@
 <v t="ekr.20051026171121.1"><vh>udpateAutoIndent</vh></v>
 <v t="ekr.20051026092433"><vh>updateTab</vh></v>
 </v>
-<v t="ekr.20060116084526.1"><vh>insert/remove spaces/tabs from lines (LeoUser)</vh></v>
 </v>
 <v t="ekr.20050920084036.79"><vh>info...</vh>
 <v t="ekr.20050920084036.80"><vh>howMany</vh></v>
@@ -1115,9 +1159,44 @@
 </v>
 <v t="ekr.20050920084036.126"><vh>tabify &amp; untabify</vh></v>
 </v>
-<v t="ekr.20060116084526.1"><vh>insert/remove spaces/tabs from lines (LeoUser)</vh></v>
+<v t="ekr.20060116084526.1"><vh>Added add-space/tab-to-lines and remove-space/tab-from-lines commands</vh>
+<v t="ekr.20060417171501"><vh>Request</vh></v>
+<v t="ekr.20060417171125"><vh>addSpace/TabToLines &amp; removeSpace/TabFromLines &amp; helper</vh>
+<v t="ekr.20060417172056"><vh>addRemoveHelper</vh></v>
 </v>
-<v t="ekr.20031218072017.2406" a="V"><vh>Code</vh>
+</v>
+<v t="ekr.20060116074839.2"><vh>extend-to-word</vh></v>
+<v t="ekr.20060206103922"><vh>goto-global-line command (minibuffer interface for Go To Line Number command)</vh>
+<v t="ekr.20031218072017.2864"><vh>goToLineNumber &amp; allies</vh>
+<v t="ekr.20031218072017.2865"><vh>&lt;&lt; set root &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2866"><vh>&lt;&lt; read the file into lines &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2867"><vh>&lt;&lt; get n, the line number, from a dialog &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2868"><vh>&lt;&lt; count outline lines, setting p,n2,found &gt;&gt; (@file-nosent only)</vh></v>
+<v t="ekr.20031218072017.2869"><vh>&lt;&lt; set p to the node given by vnodeName, etc. &gt;&gt;</vh>
+<v t="ekr.20041111093404"><vh>&lt;&lt; just scan for the node name &gt;&gt;</vh></v>
+<v t="EKR.20040609110138"><vh>&lt;&lt; 4.2: get node from gnx &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2870"><vh>&lt;&lt; 4.x: scan for the node using tnodeList and n &gt;&gt;</vh>
+<v t="ekr.20031218072017.2871"><vh>&lt;&lt; set tnodeIndex to the number of +node sentinels before line n &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2872"><vh>&lt;&lt; set p to the first vnode whose tnode is tnodeList[tnodeIndex] or set ok = false &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2873"><vh>&lt;&lt; set p to the first node whose headline matches vnodeName &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20031218072017.2874"><vh>&lt;&lt; 3.x: scan for the node with the given childIndex &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20031218072017.2875"><vh>&lt;&lt; select p and make it visible &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2876"><vh>&lt;&lt; put the cursor on line n2 of the body text &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2877"><vh>convertLineToVnodeNameIndexLine</vh>
+<v t="ekr.20031218072017.2878"><vh>&lt;&lt; set delim, leoLine from the @+leo line &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2879"><vh>&lt;&lt; scan back to  @+node, setting offset,nodeSentinelLine &gt;&gt;</vh>
+<v t="ekr.20031218072017.2880"><vh>&lt;&lt; handle delim while scanning backward &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20031218072017.2881"><vh>&lt;&lt; set vnodeName and (childIndex or gnx) from s &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20031218072017.2882"><vh>skipToMatchingNodeSentinel</vh></v>
+</v>
+<v t="ekr.20060417181052"><vh>gotoGlobalLine</vh></v>
+</v>
+</v>
+<v t="ekr.20031218072017.2406"><vh>Code</vh>
 <v t="ekr.20031218072017.2606"><vh>&lt;&lt; Import pychecker &gt;&gt;</vh></v>
 <v t="ekr.20031218072017.2582"><vh> version &amp; signon stuff</vh>
 <v t="ekr.20040629121554"><vh>getBuildNumber</vh></v>
@@ -1279,6 +1358,21 @@ def idleTimeHookHandler(*args,**keys):
         g.app.afterHandler = g.idleTimeHookHandler
     else:
         g.app.afterHandler = None</t>
+<t tx="EKR.20040609110138">found = False
+gnx = g.app.nodeIndices.scanGnx(gnx,0)
+
+# g.trace(vnodeName)
+# g.trace(gnx)
+
+for p in root.self_and_subtree_iter():
+    if p.matchHeadline(vnodeName):
+        # g.trace(p.v.t.fileIndex)
+        if p.v.t.fileIndex == gnx:
+            found = True ; break
+
+if not found:
+    g.es("not found: " + vnodeName, color="red")
+    return</t>
 <t tx="EKR.20040623090054">case_insensitiveLanguages = ['plsql',]</t>
 <t tx="bwmulder.20041023131509">ada_keywords = [
     "abort",       "else",       "new",        "return",
@@ -3155,6 +3249,328 @@ except Exception:
         g.setGlobalOpenDir(fileName)
         c.importCommands.weave(fileName)
 </t>
+<t tx="ekr.20031218072017.2864">def goToLineNumber (self,event=None,root=None,lines=None,n=None,scriptFind=False):
+    
+    __pychecker__ = 'maxlines=400'
+
+    c = self ; p = c.currentPosition()
+    root1 = root
+    if root is None:
+        &lt;&lt; set root &gt;&gt;
+    if lines is None:
+        &lt;&lt; read the file into lines &gt;&gt;
+    if n is None:
+        &lt;&lt; get n, the line number, from a dialog &gt;&gt;
+        n = self.applyLineNumberMappingIfAny(n) #bwm
+    if n==1:
+        p = root ; n2 = 1 ; found = True
+    elif n &gt;= len(lines):
+        p = root ; found = False
+        n2 = p.bodyString().count('\n')
+    elif root.isAtAsisFileNode():
+        &lt;&lt; count outline lines, setting p,n2,found &gt;&gt;
+    else:
+        vnodeName,childIndex,gnx,n2,delim = self.convertLineToVnodeNameIndexLine(lines,n,root,scriptFind)
+        found = True
+        if not vnodeName:
+            g.es("error handling: " + root.headString())
+            return
+        &lt;&lt; set p to the node given by vnodeName, etc. &gt;&gt;
+    &lt;&lt; select p and make it visible &gt;&gt;
+    &lt;&lt; put the cursor on line n2 of the body text &gt;&gt;</t>
+<t tx="ekr.20031218072017.2865"># First look for ancestor @file node.
+fileName = None
+for p in p.self_and_parents_iter():
+    fileName = p.anyAtFileNodeName()
+    if fileName: break
+
+# New in 4.2: Search the entire tree for joined nodes.
+if not fileName:
+    p1 = c.currentPosition()
+    for p in c.all_positions_iter():
+        if p.v.t == p1.v.t and p != p1:
+            # Found a joined position.
+            for p in p.self_and_parents_iter():
+                fileName = p.anyAtFileNodeName()
+                # New in 4.2 b3: ignore @all nodes.
+                if fileName and not p.isAtAllNode(): break
+        if fileName: break
+
+if fileName:
+    root = p.copy()
+else:
+    # New in 4.2.1: assume the c.currentPosition is the root of a script.
+    root = c.currentPosition()
+    g.es("No ancestor @file node: using script line numbers", color="blue")
+    scriptFind = True
+    lines = g.getScript (c,root,useSelectedText=False)
+    lines = g.splitLines(lines)
+    if 0:
+        for line in lines:
+            print line,</t>
+<t tx="ekr.20031218072017.2866"># 1/26/03: calculate the full path.
+d = g.scanDirectives(c)
+path = d.get("path")
+
+fileName = g.os_path_join(path,fileName)
+
+try:
+    lines=self.gotoLineNumberOpen(fileName) # bwm
+except:
+    g.es("not found: " + fileName)
+    return</t>
+<t tx="ekr.20031218072017.2867">n = g.app.gui.runAskOkCancelNumberDialog(c,"Enter Line Number","Line number:")
+if n == -1:
+    return</t>
+<t tx="ekr.20031218072017.2868">p = lastv = root
+prev = 0 ; found = False
+
+for p in p.self_and_subtree_iter():
+    lastv = p.copy()
+    s = p.bodyString()
+    lines = s.count('\n')
+    if len(s) &gt; 0 and s[-1] != '\n':
+        lines += 1
+    # print lines,prev,p
+    if prev + lines &gt;= n:
+        found = True ; break
+    prev += lines
+
+p = lastv
+n2 = max(1,n-prev)</t>
+<t tx="ekr.20031218072017.2869">if scriptFind:
+    &lt;&lt; just scan for the node name &gt;&gt;
+elif gnx:
+    &lt;&lt; 4.2: get node from gnx &gt;&gt;
+elif childIndex == -1:
+    &lt;&lt; 4.x: scan for the node using tnodeList and n &gt;&gt;
+else:
+    &lt;&lt; 3.x: scan for the node with the given childIndex &gt;&gt;</t>
+<t tx="ekr.20031218072017.2870"># This is about the best that can be done without replicating the entire atFile write logic.
+
+ok = True
+
+if not hasattr(root.v.t,"tnodeList"):
+    s = "no child index for " + root.headString()
+    g.es_print(s, color="red")
+    ok = False
+
+if ok:
+    tnodeList = root.v.t.tnodeList
+    &lt;&lt; set tnodeIndex to the number of +node sentinels before line n &gt;&gt;
+    tnodeIndex = max(0,tnodeIndex)
+    &lt;&lt; set p to the first vnode whose tnode is tnodeList[tnodeIndex] or set ok = False &gt;&gt;
+            
+if not ok:
+    # Fall back to the old logic.
+    &lt;&lt; set p to the first node whose headline matches vnodeName &gt;&gt;</t>
+<t tx="ekr.20031218072017.2871">tnodeIndex = -1 # Don't count the @file node.
+scanned = 0 # count of lines scanned.
+
+for s in lines:
+    if scanned &gt;= n:
+        break
+    i = g.skip_ws(s,0)
+    if g.match(s,i,delim):
+        i += len(delim)
+        if g.match(s,i,"+node"):
+            # g.trace(tnodeIndex,s.rstrip())
+            tnodeIndex += 1
+    scanned += 1</t>
+<t tx="ekr.20031218072017.2872">@ We use the tnodeList to find a _tnode_ corresponding to the proper node, so the user will for sure be editing the proper text, even if several nodes happen to have the same headline.  This is really all that we need.
+
+However, this code has no good way of distinguishing between different cloned vnodes in the file: they all have the same tnode.  So this code just picks p = t.vnodeList[0] and leaves it at that.
+
+The only way to do better is to scan the outline, replicating the write logic to determine which vnode created the given line.  That's way too difficult, and it would create an unwanted dependency in this code.
+@c
+
+# g.trace("tnodeIndex",tnodeIndex)
+if tnodeIndex &lt; len(tnodeList):
+    t = tnodeList[tnodeIndex]
+    # Find the first vnode whose tnode is t.
+    found = False
+    for p in root.self_and_subtree_iter():
+        if p.v.t == t:
+            found = True ; break
+    if not found:
+        s = "tnode not found for " + vnodeName
+        g.es_print(s, color="red") ; ok = False
+    elif p.headString().strip() != vnodeName:
+        if 0: # Apparently this error doesn't prevent a later scan for working properly.
+            s = "Mismatched vnodeName\nExpecting: %s\n got: %s" % (p.headString(),vnodeName)
+            g.es_print(s, color="red")
+        ok = False
+else:
+    if root1 is None: # Kludge: disable this message when called by goToScriptLineNumber.
+        s = "Invalid computed tnodeIndex: %d" % tnodeIndex
+        g.es_print(s, color = "red")
+    ok = False</t>
+<t tx="ekr.20031218072017.2873">found = False
+for p in root.self_and_subtree_iter():
+    if p.matchHeadline(vnodeName):
+        found = True ; break
+
+if not found:
+    s = "not found: " + vnodeName
+    g.es_print(s, color="red")
+    return</t>
+<t tx="ekr.20031218072017.2874">found = False
+for p in root.self_and_subtree_iter():
+    if p.matchHeadline(vnodeName):
+        if childIndex &lt;= 0 or p.childIndex() + 1 == childIndex:
+            found = True ; break
+
+if not found:
+    g.es("not found: " + vnodeName, color="red")
+    return</t>
+<t tx="ekr.20031218072017.2875">c.beginUpdate()
+try:
+    c.frame.tree.expandAllAncestors(p)
+    c.selectVnode(p)
+finally:
+    c.endUpdate()</t>
+<t tx="ekr.20031218072017.2876">if found:
+    c.frame.body.setInsertPointToStartOfLine(n2-1)
+else:
+    c.frame.body.setInsertionPointToEnd()
+    g.es("%d lines" % len(lines), color="blue")
+
+c.bodyWantsFocus()
+c.frame.body.makeInsertPointVisible()</t>
+<t tx="ekr.20031218072017.2877">@ We count "real" lines in the derived files, ignoring all sentinels that do not arise from source lines.  When the indicated line is found, we scan backwards for an @+body line, get the vnode's name from that line and set p to the indicated vnode.  This will fail if vnode names have been changed, and that can't be helped.
+
+Returns (vnodeName,offset)
+
+vnodeName: the name found in the previous @+body sentinel.
+offset: the offset within p of the desired line.
+@c
+
+def convertLineToVnodeNameIndexLine (self,lines,n,root,scriptFind):
+    
+    """Convert a line number n to a vnode name, (child index or gnx) and line number."""
+    
+    c = self ; at = c.atFileCommands
+    childIndex = 0 ; gnx = None ; newDerivedFile = False
+    thinFile = root.isAtThinFileNode()
+    &lt;&lt; set delim, leoLine from the @+leo line &gt;&gt;
+    if not delim:
+        g.es("bad @+leo sentinel")
+        return None,None,None,None,None
+    &lt;&lt; scan back to @+node, setting offset,nodeSentinelLine &gt;&gt;
+    if nodeSentinelLine == -1:
+        # The line precedes the first @+node sentinel
+        # g.trace("before first line")
+        return root.headString(),0,gnx,1,delim # 10/13/03
+    s = lines[nodeSentinelLine]
+    # g.trace(s)
+    &lt;&lt; set vnodeName and (childIndex or gnx) from s &gt;&gt;
+    # g.trace("childIndex,offset",childIndex,offset,vnodeName)
+    return vnodeName,childIndex,gnx,offset,delim
+</t>
+<t tx="ekr.20031218072017.2878"># Find the @+leo line.
+tag = "@+leo"
+i = 0 
+while i &lt; len(lines) and lines[i].find(tag)==-1:
+    i += 1
+leoLine = i # Index of the line containing the leo sentinel
+
+if leoLine &lt; len(lines):
+    s = lines[leoLine]
+    valid,newDerivedFile,start,end,derivedFileIsThin = at.parseLeoSentinel(s)
+    if valid: delim = start + '@'
+    else:     delim = None
+else:
+    delim = None
+</t>
+<t tx="ekr.20031218072017.2879">offset = 0 # This is essentially the Tk line number.
+nodeSentinelLine = -1
+line = n - 1
+while line &gt;= 0:
+    s = lines[line]
+    # g.trace(s)
+    i = g.skip_ws(s,0)
+    if g.match(s,i,delim):
+        &lt;&lt; handle delim while scanning backward &gt;&gt;
+    else:
+        offset += 1 # Assume the line is real.  A dubious assumption.
+    line -= 1</t>
+<t tx="ekr.20031218072017.2880">if line == n:
+    g.es("line "+str(n)+" is a sentinel line")
+i += len(delim)
+
+if g.match(s,i,"-node"):
+    # The end of a nested section.
+    line = self.skipToMatchingNodeSentinel(lines,line,delim)
+elif g.match(s,i,"+node"):
+    nodeSentinelLine = line
+    break
+elif g.match(s,i,"&lt;&lt;") or g.match(s,i,"@first"):
+    offset += 1 # Count these as a "real" lines.</t>
+<t tx="ekr.20031218072017.2881">if scriptFind:
+    # The vnode name follows the first ':'
+    i = s.find(':',i)
+    if i &gt; -1:
+        vnodeName = s[i+1:].strip()
+    childIndex = -1
+elif newDerivedFile:
+    i = 0
+    if thinFile:
+        # gnx is lies between the first and second ':':
+        i = s.find(':',i)
+        if i &gt; 0:
+            i += 1
+            j = s.find(':',i)
+            if j &gt; 0:
+                gnx = s[i:j]
+            else: i = len(s)
+        else: i = len(s)
+    # vnode name is everything following the first or second':'
+    # childIndex is -1 as a flag for later code.
+    i = s.find(':',i)
+    if i &gt; -1: vnodeName = s[i+1:].strip()
+    else: vnodeName = None
+    childIndex = -1
+else:
+    # vnode name is everything following the third ':'
+    i = 0 ; colons = 0
+    while i &lt; len(s) and colons &lt; 3:
+        if s[i] == ':':
+            colons += 1
+            if colons == 1 and i+1 &lt; len(s) and s[i+1] in string.digits:
+                junk,childIndex = g.skip_long(s,i+1)
+        i += 1
+    vnodeName = s[i:].strip()
+    
+# g.trace("gnx",gnx,"vnodeName:",vnodeName)
+if not vnodeName:
+    vnodeName = None
+    g.es("bad @+node sentinel")</t>
+<t tx="ekr.20031218072017.2882">def skipToMatchingNodeSentinel (self,lines,n,delim):
+    
+    s = lines[n]
+    i = g.skip_ws(s,0)
+    assert(g.match(s,i,delim))
+    i += len(delim)
+    if g.match(s,i,"+node"):
+        start="+node" ; end="-node" ; delta=1
+    else:
+        assert(g.match(s,i,"-node"))
+        start="-node" ; end="+node" ; delta=-1
+    # Scan to matching @+-node delim.
+    n += delta ; level = 0
+    while 0 &lt;= n &lt; len(lines):
+        s = lines[n] ; i = g.skip_ws(s,0)
+        if g.match(s,i,delim):
+            i += len(delim)
+            if g.match(s,i,start):
+                level += 1
+            elif g.match(s,i,end):
+                if level == 0: break
+                else: level -= 1
+        n += delta
+        
+    # g.trace(n)
+    return n</t>
 <t tx="ekr.20031218072017.2950">@
 **Important** These methods ensure that exactly zero or one (depending on the
 argument to endUpdate) redraws exist within the section of code bounded by
@@ -4805,6 +5221,11 @@ forth_italicwords = [ ]
 # Forth bold-italics words: extemded leo-forthbolditalicwords.txt if present
 # Note: on some boxen, bold italics may show in plain bold.
 forth_bolditalicwords = [ ]</t>
+<t tx="ekr.20041111093404"># This is safe enough because clones are not much of an issue.
+found = False
+for p in root.self_and_subtree_iter():
+    if p.matchHeadline(vnodeName):
+        found = True ; break</t>
 <t tx="ekr.20041117062717.14">def getShortcut (self,c,shortcutName):
     
     '''Return rawKey,accel for shortcutName'''
@@ -5737,7 +6158,9 @@ Important:  the first Tkinter index is '1.0', not '0.0', but the row returned by
         'activate-help-menu':                   self.activateHelpMenu,
         'activate-outline-menu':                self.activateOutlineMenu,
         'activate-plugins-menu':                self.activatePluginsMenu,
-        'activate-window-menu':                 self.activateWindowMenu,        
+        'activate-window-menu':                 self.activateWindowMenu,
+        'add-space-to-lines':                   self.addSpaceToLines,
+        'add-tab-to-lines':                     self.addTabToLines, 
         'back-to-indentation':                  self.backToIndentation,
         'back-char':                            self.backCharacter,
         'back-char-extend-selection':           self.backCharacterExtendSelection,
@@ -5788,6 +6211,7 @@ Important:  the first Tkinter index is '1.0', not '0.0', but the row returned by
         'expand-log-pane':                      c.frame.expandLogPane,
         'expand-outline-pane':                  c.frame.expandOutlinePane,
         'expand-pane':                          c.frame.expandPane,
+        'extend-to-word':                       self.extendToWord,
         'fill-paragraph':                       self.fillParagraph,
         'fill-region':                          self.fillRegion,
         'fill-region-as-paragraph':             self.fillRegionAsParagraph,
@@ -5809,6 +6233,7 @@ Important:  the first Tkinter index is '1.0', not '0.0', but the row returned by
         'fully-expand-pane':                    c.frame.fullyExpandPane,
         'fully-expand-outline-pane':            c.frame.fullyExpandOutlinePane,
         'goto-char':                            self.gotoCharacter,
+        'goto-global-line':                     self.gotoGlobalLine,
         'goto-line':                            self.gotoLine,
         'hide-body-pane':                       c.frame.hideBodyPane,
         'hide-log-pane':                        c.frame.hideLogPane,
@@ -5832,6 +6257,8 @@ Important:  the first Tkinter index is '1.0', not '0.0', but the row returned by
         'previous-line':                        self.prevLine,
         'previous-line-extend-selection':       self.prevLineExtendSelection,
         'remove-blank-lines':                   self.removeBlankLines,
+        'remove-space-from lines':              self.removeSpaceFromLines,
+        'remove-tab-from lines':                self.removeTabFromLines,
         'reverse-region':                       self.reverseRegion,
         'scroll-down':                          self.scrollDown,
         'scroll-down-extend-selection':         self.scrollDownExtendSelection,
@@ -9076,18 +9503,15 @@ In all cases the moved text remains selected, even when the text moves to anothe
         self.unboundKeyAction = 'insert'
         
     k.setInputState(self.unboundKeyAction)</t>
-<t tx="ekr.20060116074839.2"></t>
-<t tx="ekr.20060116084526.1">@
-
-http://sourceforge.net/forum/message.php?msg_id=3488030
-
-add-space-to-lines      Adds a space to start of all selected lines.
-
-add-tab-to-line         Adds 4 spaces to start of all selected lines.
-
-remove-space-from lines Removes a space from start of all selected lines.
-
-remove-tab-from lines   Removes a space from start of all selected lines.</t>
+<t tx="ekr.20060116074839.2">def extendToWord (self,event):
+    
+    w = event.widget
+    if g.app.gui.hasSelection(w):
+        i,j = g.app.gui.getSelectionRange(w)
+    else:
+        i = g.app.gui.getInsertPoint(w)
+    g.app.gui.setSelectionRange(w, i+' wordstart', i+' wordend')</t>
+<t tx="ekr.20060116084526.1"></t>
 <t tx="ekr.20060116085649"></t>
 <t tx="ekr.20060116090428"></t>
 <t tx="ekr.20060117115212"></t>
@@ -10533,7 +10957,11 @@ C:\prog\tigris-cvs\leo\src\leoCommands.py:493: No global (enableIdleTimeHook) fo
 <t tx="ekr.20060414090519"></t>
 <t tx="ekr.20060414090519.1"></t>
 <t tx="ekr.20060414092733">clear-selected-text
-clean-lines</t>
+clean-lines
+add-space-to-lines
+add-tab-to-lines
+remove-space-from-lines
+remove-tab-from-lines</t>
 <t tx="ekr.20060415075830"></t>
 <t tx="ekr.20060415080442"></t>
 <t tx="ekr.20060415101441">self.beginCommand(undoType='xxx')
@@ -10590,5 +11018,75 @@ commands
 *** Also on legacy bindings the arrow keys don't seem to move the cursor in the
 body.</t>
 <t tx="ekr.20060417092153"></t>
+<t tx="ekr.20060417171125">def addSpaceToLines (self,event):
+    '''Add a space to start of all lines, or all selected lines.'''
+    self.addRemoveHelper(event,ch=' ',add=True,undoType='add-space-to-lines')
+    
+def addTabToLines (self,event):
+    '''Add a tab to start of all lines, or all selected lines.'''
+    self.addRemoveHelper(event,ch='\t',add=True,undoType='add-tab-to-lines')
+    
+def removeSpaceFromLines (self,event):
+    '''Remove a space from start of all lines, or all selected lines.'''
+    self.addRemoveHelper(event,ch=' ',add=False,undoType='remove-space-from-lines')
+    
+def removeTabFromLines (self,event):
+    '''Remove a tab from start of all lines, or all selected lines.'''
+    self.addRemoveHelper(event,ch='\t',add=False,undoType='remove-tab-from-lines')</t>
+<t tx="ekr.20060417171501">@
+
+http://sourceforge.net/forum/message.php?msg_id=3488030
+
+add-space-to-lines      Adds a space to start of all selected lines.
+
+add-tab-to-lines        Adds tab (or equivalent spaces) to start of all selected lines.
+
+remove-space-from lines Removes a space from start of all selected lines.
+
+remove-tab-from lines   Removes a tab (or equivalent spaces) from start of all selected lines.</t>
+<t tx="ekr.20060417172056">def addRemoveHelper(self,event,ch,add,undoType):
+
+    c = self.c ; k = self.k ; w = event.widget
+    if g.app.gui.hasSelection(w):
+        s = g.app.gui.getSelectedText(w)
+    else:
+        s = g.app.gui.getAllText(w)
+    if not s: return
+    
+    # Insert or delete spaces instead of tabs when negative tab width is in effect.
+    d = g.scanDirectives(c) ; width = d.get('tabwidth')
+    if ch == '\t' and width &lt; 0: ch = ' ' * abs(width)
+    self.beginCommand(undoType=undoType)
+    if add:
+        result = [ch + line for line in g.splitLines(s)]
+    else:
+        result = [g.choose(line.startswith(ch),line[len(ch):],line) for line in g.splitLines(s)]
+    result = ''.join(result)
+    if g.app.gui.hasSelection(w):
+        i,j = g.app.gui.getSelectionRange(w)
+        w.delete(i,j)
+        w.insert(i,result)
+        g.app.gui.setSelectionRange(w, i, j + '%dc' %(len(result)))
+    else:
+        w.delete('1.0','end')
+        w.insert('1.0',result)
+    self.endCommand(changed=True,setLabel=True)</t>
+<t tx="ekr.20060417181052">def gotoGlobalLine (self,event):
+    
+    '''Put the cursor at the n'th line of a file or script
+    This is a minibuffer interface to Leo's legacy Go To Line number command.'''
+
+    k = self.k ; state = k.getState('goto-global-line')
+    
+    if state == 0:
+        self.widget = event.widget
+        k.setLabelBlue('Goto global line: ')
+        k.getArg(event,'goto-global-line',1,self.gotoGlobalLine)
+    else:
+        n = k.arg ;  w = self.widget
+        k.resetLabel()
+        k.clearState()
+        if n.isdigit():
+            self.c.goToLineNumber (n=int(n))</t>
 </tnodes>
 </leo_file>

@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="261" clone_windows="0"/>
 <globals body_outline_ratio="0.549828178694">
-	<global_window_position top="83" left="334" height="789" width="895"/>
+	<global_window_position top="83" left="337" height="789" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -44,7 +44,7 @@
 <v t="ekr.20060112104823"><vh>main</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" a="V" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20051126062243" annotate="7d71002e"><vh>Debugging options</vh>
 <v t="ekr.20060201110016"><vh>@bool allow_idle_time_hook = False</vh></v>
 <v t="ekr.20060212101234"><vh>@bool gc_before_redraw = False</vh></v>
@@ -398,7 +398,7 @@
 </v>
 <v t="ekr.20060408090018"><vh>@bool added_setting = True</vh></v>
 </v>
-<v t="ekr.20060219103020"><vh>Recent settings</vh>
+<v t="ekr.20060219103020" a="V"><vh>Recent settings</vh>
 <v t="ekr.20051126062830"><vh>@bool trace_g.app.gui.set_focus = False</vh></v>
 <v t="ekr.20060301085047"><vh>@bool trace_chapters = False</vh></v>
 <v t="ekr.20051126062243.1"><vh>@bool trace_redraw_now = False</vh></v>
@@ -1449,6 +1449,8 @@ activate-plugins-menu               = None
 activate-window-menu                = None
 add-comments                        = None
 add-global-abbrev                   = None
+add-spaces-to-lines                 = None
+add-tab-to-lines                    = None
 advertised-undo                     = None
 append-to-buffer                    = None
 append-to-register                  = None
@@ -1481,6 +1483,7 @@ center-region                       = None
 check-all-python-code               = None
 check-outline                       = None
 check-python-code                   = None
+clean-line                          = None
 clear-extend-mode                   = None
 clear-kill-ring                     = None
 clear-recent-files                  = None
@@ -3150,11 +3153,12 @@ go-forward                          = None
 goto-char                           = None
 goto-first-node                     = None
 goto-first-sibling                  = None
+goto-global-line                    = None
 goto-last-node                      = None
 goto-last-sibling                   = None
 goto-last-visible                   = None
 goto-line                           = None # Leo's goto-line-number is better.
-goto-line-number                    = None
+goto-line-number                    = None # Leo's legacy Go To Line number command.  goto-global-line is preferred.
 goto-next-changed                   = None
 goto-next-clone                     = None
 goto-next-marked                    = None
@@ -3295,6 +3299,8 @@ reformat-paragraph                  = None
 remove-blank-lines                  = None
 remove-directory                    = None
 remove-sentinels                    = None
+remove-spaces-from-lines            = None
+remove-tab-from-lines               = None
 rename-buffer                       = None
 repeat-complex-command              = None
 replace-string                      = None
@@ -4028,10 +4034,11 @@ fully-expand-pane                   = Alt-Ctrl-!
 goto-first-node                     ! text = Alt-Home
 goto-first-node                     ! tree = Alt-Home
 goto-first-node                     ! tree = Home
+goto-global-line                    = Alt-g # New minibuffer interface.
 goto-last-visible                   ! text = Alt-End
 goto-last-visible                   ! tree = Alt-End
 goto-last-visible                   ! tree = End
-goto-line-number                    = Alt-g 
+goto-line-number                    = None # Leo's legacy Go To Line Number command: uses dialog.
 goto-next-clone                     = Alt-N
 goto-next-visible                   ! text = Alt-DnArrow
 goto-next-visible                   ! tree = Alt-DnArrow

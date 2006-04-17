@@ -11,17 +11,7 @@
 #@+node:ekr.20060226131603:To do 4.4 b4 or final
 #@+node:ekr.20060415110109:Add unit tests for editCommandsClass
 #@-node:ekr.20060415110109:Add unit tests for editCommandsClass
-#@+node:ekr.20060412114843:easy 6
-#@+node:ekr.20060116085649:find-word-on-line, find-character-on-line (forward & backward)
-#@-node:ekr.20060116085649:find-word-on-line, find-character-on-line (forward & backward)
-#@+node:ekr.20060116074839.2:extend-to-word
-#@-node:ekr.20060116074839.2:extend-to-word
-#@+node:ekr.20060206103922:Minibuffer interface for GoToLine number (rewrite goto-line)
-#@-node:ekr.20060206103922:Minibuffer interface for GoToLine number (rewrite goto-line)
-#@+node:ekr.20051202095626:help-for-command
-Use docstrings as the help message.
-#@nonl
-#@-node:ekr.20051202095626:help-for-command
+#@+node:ekr.20060412114843:easy 3
 #@+node:ekr.20060104083551:move-line-up/down (LeoUser)
 http://sourceforge.net/forum/message.php?msg_id=3488030
 
@@ -42,8 +32,14 @@ In all cases the moved text remains selected, even when the text moves to anothe
 #@-node:ekr.20060104083551:move-line-up/down (LeoUser)
 #@+node:ekr.20060117115212:Fix rename-buffer command
 #@-node:ekr.20060117115212:Fix rename-buffer command
-#@-node:ekr.20060412114843:easy 6
-#@+node:ekr.20060413065803:searches 4
+#@+node:ekr.20051202095626:help-for-command
+Use docstrings as the help message.
+#@nonl
+#@-node:ekr.20051202095626:help-for-command
+#@-node:ekr.20060412114843:easy 3
+#@+node:ekr.20060413065803:searches 5
+#@+node:ekr.20060116085649:find-word-on-line, find-character-on-line (forward & backward)
+#@-node:ekr.20060116085649:find-word-on-line, find-character-on-line (forward & backward)
 #@+node:ekr.20060307074302.1:set-change-text command should work when entering find text.
 # It's not clear how to do this.
 #@nonl
@@ -58,7 +54,7 @@ In all cases the moved text remains selected, even when the text moves to anothe
 #@-node:ekr.20060122194643:isearch-headline (forward & backward)
 #@+node:ekr.20060123091352:Incremental search in switch-to-buffer
 #@-node:ekr.20060123091352:Incremental search in switch-to-buffer
-#@-node:ekr.20060413065803:searches 4
+#@-node:ekr.20060413065803:searches 5
 #@+node:ekr.20060210140415:others 3
 #@+node:ekr.20060113090042:open-outline-by-name & filename completion
 #@-node:ekr.20060113090042:open-outline-by-name & filename completion
