@@ -1741,6 +1741,7 @@ class keyHandlerClass:
         self.mb_copyKey = None
         self.mb_pasteKey = None
         self.mb_cutKey = None
+        self.mb_help = False
         
         self.abortAllModesKey = None
         self.fullCommandKey = None
@@ -2255,26 +2256,37 @@ class keyHandlerClass:
     #@-node:ekr.20051026083544:handleDefaultChar
     #@-node:ekr.20050920085536.65:masterCommand & helpers
     #@+node:ekr.20050920085536.41:fullCommand (alt-x) & helper
-    def fullCommand (self,event,specialStroke=None,specialFunc=None):
+    def fullCommand (self,event,specialStroke=None,specialFunc=None,help=False,helpHandler=None):
         
         '''Handle 'full-command' (alt-x) mode.'''
     
         k = self ; c = k.c ; state = k.getState('full-command')
+        helpPrompt = 'Help for command: '
         keysym = (event and event.keysym) or ''
         ch = (event and event.char) or ''
         trace = c.config.getBool('trace_modes')
         if trace: g.trace('state',state,keysym)
         if state == 0:
             k.mb_event = event # Save the full event for later.
-            k.setState('full-command',1,handler=k.fullCommand) 
-            k.setLabelBlue('%s' % (k.altX_prompt),protect=True)
+            k.setState('full-command',1,handler=k.fullCommand)
+            prompt = g.choose(help,helpPrompt,k.altX_prompt)
+            k.setLabelBlue('%s' % (prompt),protect=True)
             # Init mb_ ivars. This prevents problems with an initial backspace.
-            k.mb_prompt = k.mb_tabListPrefix = k.mb_prefix = k.altX_prompt
+            k.mb_prompt = k.mb_tabListPrefix = k.mb_prefix = prompt ### k.altX_prompt
             k.mb_tabList = [] ; k.mb_tabListIndex = -1
+            k.mb_help = help
+            k.mb_helpHandler = helpHandler
             c.minibufferWantsFocus()
         elif keysym == 'Return':
             c.frame.log.deleteTab('Completion')
-            k.callAltXFunction(k.mb_event)
+            if k.mb_help:
+                s = k.getLabel()
+                commandName = s[len(helpPrompt):].strip()
+                k.clearState()
+                k.resetLabel()
+                if k.mb_helpHandler: k.mb_helpHandler(commandName)
+            else:
+                k.callAltXFunction(k.mb_event)
         elif keysym == 'Tab':
             k.doTabCompletion(c.commandsDict.keys())
             c.minibufferWantsFocus()
@@ -2569,7 +2581,7 @@ class keyHandlerClass:
     #@+node:ekr.20050920085536.62:getArg
     def getArg (self,event,
         returnKind=None,returnState=None,handler=None,
-        prefix=None,tabList=[],completion=True):
+        prefix=None,tabList=[],completion=True,oneCharacter=False):
         
         '''Accumulate an argument until the user hits return (or control-g).
         Enter the given return state when done.
@@ -2584,7 +2596,6 @@ class keyHandlerClass:
             'completion', state==0 and completion or state!=0 and k.arg_completion)
         if state == 0:
             k.arg = ''
-            
             #@        << init altX vars >>
             #@+node:ekr.20050928092516:<< init altX vars >>
             k.argTabList = tabList and tabList[:] or []
@@ -2596,6 +2607,7 @@ class keyHandlerClass:
             
             # Clear the list: any non-tab indicates that a new prefix is in effect.
             k.mb_tabListPrefix = k.getLabel()
+            k.oneCharacterArg = oneCharacter
             #@nonl
             #@-node:ekr.20050928092516:<< init altX vars >>
             #@nl
@@ -2606,8 +2618,11 @@ class keyHandlerClass:
             k.setState('getArg',1,k.getArg)
             k.afterArgWidget = event and event.widget or c.frame.body.bodyCtrl
             if k.useTextWidget: c.minibufferWantsFocus()
-        elif keysym == 'Return':
-            k.arg = k.getLabel(ignorePrompt=True)
+        elif keysym == 'Return' or k.oneCharacterArg:
+            if k.oneCharacterArg:
+                k.arg = event.char
+            else:
+                k.arg = k.getLabel(ignorePrompt=True)
             kind,n,handler = k.afterGetArgState
             if kind: k.setState(kind,n,handler)
             c.frame.log.deleteTab('Completion')
