@@ -13,11 +13,11 @@
 <v t="ekr.20031218072017.329"><vh>@thin ../doc/leoNotes.txt</vh></v>
 </v>
 <v t="EKR.20040519090151.3"><vh>Projects</vh>
-<v t="EKR.20040429143933"><vh>@thin leoProjects.txt</vh></v>
+<v t="EKR.20040429143933"
+expanded="ekr.20050920085536.1,ekr.20050920085536.2,ekr.20050920085536.41,"><vh>@thin leoProjects.txt</vh></v>
 </v>
 <v t="EKR.20040519090151.2"><vh>To do</vh>
-<v t="ekr.20040117181936"
-expanded="ekr.20060412114843,ekr.20060413065803,"><vh>@thin ../doc/leoToDo.txt</vh></v>
+<v t="ekr.20040117181936"><vh>@thin ../doc/leoToDo.txt</vh></v>
 <v t="ekr.20060207133601"><vh>@thin ../doc/leoToDoLater.txt</vh></v>
 </v>
 <v t="ekr.20050924073836"><vh>4.4 projects</vh>
@@ -83,8 +83,8 @@ expanded="ekr.20060412114843,ekr.20060413065803,"><vh>@thin ../doc/leoToDo.txt</
 <v t="ekr.20031218072017.1974"><vh>destroySelf (tkFrame)</vh></v>
 </v>
 </v>
-<v t="ekr.20050920085536.1"><vh> Birth (keyHandler)</vh>
-<v t="ekr.20050920085536.2"><vh> ctor (keyHandler)</vh>
+<v t="ekr.20050920085536.1" a="E"><vh> Birth (keyHandler)</vh>
+<v t="ekr.20050920085536.2" a="E"><vh> ctor (keyHandler)</vh>
 <v t="ekr.20051006092617"><vh>&lt;&lt; define Tk ivars &gt;&gt;</vh></v>
 <v t="ekr.20051006092617.1"><vh>&lt;&lt; define externally visible ivars &gt;&gt;</vh></v>
 <v t="ekr.20050923213858"><vh>&lt;&lt; define internal ivars &gt;&gt;</vh></v>
@@ -688,6 +688,27 @@ expanded="ekr.20060412114843,ekr.20060413065803,"><vh>@thin ../doc/leoToDo.txt</
 </v>
 <v t="ekr.20051214133130.1"><vh>endCommand</vh></v>
 </v>
+<v t="ekr.20050920084036.31"><vh>class bufferCommandsClass</vh>
+<v t="ekr.20050920084036.32"><vh> ctor (bufferCommandsClass)</vh></v>
+<v t="ekr.20050920084036.33"><vh> getPublicCommands</vh></v>
+<v t="ekr.20050920084036.34"><vh>Entry points</vh>
+<v t="ekr.20050920084036.35"><vh>appendToBuffer</vh></v>
+<v t="ekr.20050920084036.38"><vh>killBuffer</vh></v>
+<v t="ekr.20050920084036.42"><vh>listBuffers &amp; listBuffersAlphabetically</vh></v>
+<v t="ekr.20050920084036.39"><vh>prependToBuffer (test)</vh></v>
+<v t="ekr.20050920084036.43"><vh>renameBuffer</vh></v>
+<v t="ekr.20050920084036.40"><vh>switchToBuffer</vh></v>
+<v t="ekr.20051216080913"><vh>Not ready, and not very useful</vh>
+<v t="ekr.20050920084036.36"><vh>copyToBuffer (what should this do?)</vh></v>
+<v t="ekr.20050920084036.37"><vh>insertToBuffer (test)</vh></v>
+</v>
+</v>
+<v t="ekr.20050927102133.1"><vh>Utils</vh>
+<v t="ekr.20051215121416"><vh>computeData</vh></v>
+<v t="ekr.20051215164823"><vh>findBuffer</vh></v>
+<v t="ekr.20050927093851"><vh>getBufferName</vh></v>
+</v>
+</v>
 <v t="ekr.20050920084036.53"><vh>class editCommandsClass</vh>
 <v t="ekr.20050929155208"><vh> birth</vh>
 <v t="ekr.20050920084036.54"><vh> ctor (editCommandsClass)</vh></v>
@@ -751,6 +772,10 @@ expanded="ekr.20060412114843,ekr.20060413065803,"><vh>@thin ../doc/leoToDo.txt</
 <v t="ekr.20050920084036.70"><vh>setFillPrefix</vh></v>
 <v t="ekr.20050920084036.71"><vh>_addPrefix</vh></v>
 </v>
+<v t="ekr.20060417194232"><vh>find (quick) To do: extend selection</vh>
+<v t="ekr.20060417194232.1"><vh>findCharacter</vh></v>
+<v t="ekr.20060417194232.2"><vh>findWord</vh></v>
+</v>
 <v t="ekr.20050920084036.72"><vh>goto...</vh>
 <v t="ekr.20050929115226"><vh>gotoCharacter</vh></v>
 <v t="ekr.20060417181052"><vh>gotoGlobalLine</vh></v>
@@ -796,7 +821,7 @@ expanded="ekr.20060412114843,ekr.20060413065803,"><vh>@thin ../doc/leoToDo.txt</
 <v t="ekr.20050920084036.92"><vh>linesHelper</vh></v>
 </v>
 <v t="ekr.20050920084036.147"><vh>measure</vh></v>
-<v t="ekr.20050929114218"><vh>move... (leoEditCommands)</vh>
+<v t="ekr.20050929114218"><vh>move cursor... (leoEditCommands)</vh>
 <v t="ekr.20051218170358"><vh> helpers</vh>
 <v t="ekr.20060113130510"><vh>extendHelper</vh></v>
 <v t="ekr.20060113105246.1"><vh>moveUpOrDownHelper</vh></v>
@@ -839,6 +864,8 @@ expanded="ekr.20060412114843,ekr.20060413065803,"><vh>@thin ../doc/leoToDo.txt</
 <v t="ekr.20050920084036.107"><vh>indentRegion (not used: use c.indentBody instead)</vh></v>
 <v t="ekr.20050920084036.108"><vh>tabIndentRegion</vh></v>
 <v t="ekr.20050920084036.109"><vh>countRegion</vh></v>
+<v t="ekr.20060417183606"><vh>moveRegionDown TO DO</vh></v>
+<v t="ekr.20060417183606.1"><vh>moveRegionUp TO DO</vh></v>
 <v t="ekr.20050920084036.110"><vh>reverseRegion</vh></v>
 <v t="ekr.20050920084036.111"><vh>up/downCaseRegion &amp; helper</vh></v>
 </v>
@@ -896,19 +923,30 @@ expanded="ekr.20060412114843,ekr.20060413065803,"><vh>@thin ../doc/leoToDo.txt</
 </v>
 <v t="ekr.20060417181052"><vh>gotoGlobalLine</vh></v>
 </v>
+<v t="ekr.20060104083551"><vh>move-line-up/down</vh>
+<v t="ekr.20060417183606"><vh>moveRegionDown TO DO</vh></v>
+<v t="ekr.20060417183606.1"><vh>moveRegionUp TO DO</vh></v>
+</v>
+<v t="ekr.20050920085536.62"><vh>getArg</vh>
+<v t="ekr.20050928092516"><vh>&lt;&lt; init altX vars &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20060117115212"><vh>Fixed rename-buffer command</vh>
+<v t="ekr.20050920084036.43"><vh>renameBuffer</vh></v>
+</v>
+<v t="ekr.20050920085536.41" a="E"><vh>fullCommand (alt-x) &amp; helper</vh>
+<v t="ekr.20050920085536.45"><vh>callAltXFunction</vh></v>
+</v>
+<v t="ekr.20060417203717"><vh>helpForCommand</vh></v>
 </v>
 </v>
 </v>
 </v>
 <v t="ekr.20060226131603" a="V"><vh>To do 4.4 b4 or final</vh>
-<v t="ekr.20060415110109"><vh>Add unit tests for editCommandsClass</vh></v>
-<v t="ekr.20060412114843" a="E"><vh>easy 3</vh>
-<v t="ekr.20060104083551"><vh>move-line-up/down (LeoUser)</vh></v>
-<v t="ekr.20060117115212"><vh>Fix rename-buffer command</vh></v>
-<v t="ekr.20051202095626"><vh>help-for-command</vh></v>
+<v t="ekr.20060413065803"><vh>searches 5</vh>
+<v t="ekr.20060417194232"><vh>find (quick) To do: extend selection</vh>
+<v t="ekr.20060417194232.1"><vh>findCharacter</vh></v>
+<v t="ekr.20060417194232.2"><vh>findWord</vh></v>
 </v>
-<v t="ekr.20060413065803" a="E"><vh>searches 5</vh>
-<v t="ekr.20060116085649"><vh>find-word-on-line, find-character-on-line (forward &amp; backward)</vh></v>
 <v t="ekr.20060307074302.1"><vh>set-change-text command should work when entering find text.</vh></v>
 <v t="ekr.20060122183544"><vh>Improve isearch</vh></v>
 <v t="ekr.20060122194643"><vh>isearch-headline (forward &amp; backward)</vh></v>
@@ -918,7 +956,64 @@ expanded="ekr.20060412114843,ekr.20060413065803,"><vh>@thin ../doc/leoToDo.txt</
 <v t="ekr.20060113090042"><vh>open-outline-by-name &amp; filename completion</vh></v>
 <v t="ekr.20060211093935"><vh>Support for @list and on-enter-mode</vh></v>
 <v t="ekr.20060116090428"><vh>Expand 'point' so it indicates node as well as text location</vh></v>
+<v t="ekr.20060415110109"><vh>Add unit tests for editCommandsClass</vh></v>
 </v>
+</v>
+<v t="ekr.20031218072017.2406"><vh>Code</vh>
+<v t="ekr.20031218072017.2606"><vh>&lt;&lt; Import pychecker &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2582"><vh> version &amp; signon stuff</vh>
+<v t="ekr.20040629121554"><vh>getBuildNumber</vh></v>
+<v t="ekr.20040629121554.1"><vh>getSignOnLine (Contains hard-coded version info)</vh></v>
+<v t="ekr.20040629121554.2" a="M" labels="540801000032383634373033303061353332373632363536363666373236353230363336383631366536373635336132373061373033313061353636343635363632303639366536393734353636353732373336393666366532303238373336353663363632393361356337353330333033303631323032303230323036333230336432303733363536633636356337353330333033303631323032303230323036333265373636353732323033643230323232343532363537363639373336393666366533613230333132653332333233353230323432323230323332303433353635333230373537303634363137343635373332303734363836393733326530613730333230613733326571002e"><vh>initVersion</vh></v>
+<v t="ekr.20040629121554.3"><vh>c.signOnWithVersion</vh></v>
+</v>
+<v t="ekr.20051031040240"><vh>Buttons and settings</vh>
+<v t="ekr.20051027111215"><vh>@thin buttons.txt</vh></v>
+<v t="ekr.20041119040438"><vh>@settings</vh>
+<v t="ekr.20050420073615"><vh>@recent-files</vh></v>
+<v t="ekr.20041119042418"><vh>@bool use_plugins = True</vh></v>
+<v t="ekr.20041211042119"><vh>@int page_width = 80</vh></v>
+</v>
+</v>
+<v t="ekr.20031218072017.2604"><vh>Core classes...</vh>
+<v t="ekr.20031218072017.2605"><vh>@thin leo.py </vh></v>
+<v t="ekr.20031218072017.2608"><vh>@thin leoApp.py</vh></v>
+<v t="ekr.20041005105605.1"><vh>@thin leoAtFile.py</vh></v>
+<v t="ekr.20031218072017.2794"><vh>@thin leoColor.py</vh></v>
+<v t="ekr.20031218072017.2810"
+marks="ekr.20040629121554.2,"><vh>@thin leoCommands.py</vh></v>
+<v t="ekr.20041117062700"><vh>@thin leoConfig.py</vh></v>
+<v t="ekr.20031218072017.3018"><vh>@thin leoFileCommands.py</vh></v>
+<v t="ekr.20031218072017.3093"><vh>@thin leoGlobals.py</vh></v>
+<v t="ekr.20031218072017.3206"><vh>@thin leoImport.py</vh></v>
+<v t="ekr.20031218072017.3320"><vh>@thin leoNodes.py</vh></v>
+<v t="ekr.20031218072017.3439"><vh>@thin leoPlugins.py</vh></v>
+<v t="ekr.20031218072017.3446"><vh>@thin leoTangle.py</vh></v>
+<v t="ekr.20051104075904" annotate="7d71002e"><vh>@thin leoTest.py</vh></v>
+<v t="ekr.20031218072017.3603"><vh>@thin leoUndo.py</vh></v>
+</v>
+<v t="ekr.20031218072017.3625"><vh>Gui Base classes</vh>
+<v t="ekr.20050721093241"><vh>&lt;&lt; about gui classes and gui plugins &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.3630"><vh>@thin leoCompare.py</vh></v>
+<v t="ekr.20060123151617"><vh>@thin leoFind.py</vh></v>
+<v t="ekr.20031218072017.3655"><vh>@thin leoFrame.py</vh></v>
+<v t="ekr.20031218072017.3719"><vh>@thin leoGui.py</vh></v>
+<v t="ekr.20031218072017.3749"><vh>@thin leoMenu.py</vh></v>
+</v>
+<v t="ekr.20031218072017.3821"><vh>Gui Tkinter classes</vh>
+<v t="ekr.20031218072017.3838"><vh>@thin leoTkinterComparePanel.py</vh></v>
+<v t="ekr.20031218072017.3858"><vh>@thin leoTkinterDialog.py</vh></v>
+<v t="ekr.20031218072017.3897"><vh>@thin leoTkinterFind.py</vh></v>
+<v t="ekr.20031218072017.3939"><vh>@thin leoTkinterFrame.py</vh></v>
+<v t="ekr.20031218072017.4047"><vh>@thin leoTkinterGui.py</vh></v>
+<v t="ekr.20031218072017.4099"><vh>@thin leoTkinterKeys.py</vh></v>
+<v t="ekr.20031218072017.4100"><vh>@thin leoTkinterMenu.py</vh></v>
+<v t="ekr.20040803072955"><vh>@thin leoTkinterTree.py</vh></v>
+</v>
+<v t="ekr.20031218072017.3748" a="E"
+expanded="ekr.20050920085536.1,ekr.20050920085536.2,ekr.20051001051355,ekr.20050920085536.41,"><vh>@thin leoKeys.py</vh></v>
+<v t="ekr.20050710142719"
+expanded="ekr.20060205164707,"><vh>@thin leoEditCommands.py</vh></v>
 </v>
 <v t="ekr.20060414092733"><vh>Added new commands</vh>
 <v t="ekr.20031218072017.4059"><vh>app.gui.Tkinter.utils</vh>
@@ -987,6 +1082,27 @@ expanded="ekr.20060412114843,ekr.20060413065803,"><vh>@thin ../doc/leoToDo.txt</
 </v>
 <v t="ekr.20051214133130.1"><vh>endCommand</vh></v>
 </v>
+<v t="ekr.20050920084036.31"><vh>class bufferCommandsClass</vh>
+<v t="ekr.20050920084036.32"><vh> ctor (bufferCommandsClass)</vh></v>
+<v t="ekr.20050920084036.33"><vh> getPublicCommands</vh></v>
+<v t="ekr.20050920084036.34"><vh>Entry points</vh>
+<v t="ekr.20050920084036.35"><vh>appendToBuffer</vh></v>
+<v t="ekr.20050920084036.38"><vh>killBuffer</vh></v>
+<v t="ekr.20050920084036.42"><vh>listBuffers &amp; listBuffersAlphabetically</vh></v>
+<v t="ekr.20050920084036.39"><vh>prependToBuffer (test)</vh></v>
+<v t="ekr.20050920084036.43"><vh>renameBuffer</vh></v>
+<v t="ekr.20050920084036.40"><vh>switchToBuffer</vh></v>
+<v t="ekr.20051216080913"><vh>Not ready, and not very useful</vh>
+<v t="ekr.20050920084036.36"><vh>copyToBuffer (what should this do?)</vh></v>
+<v t="ekr.20050920084036.37"><vh>insertToBuffer (test)</vh></v>
+</v>
+</v>
+<v t="ekr.20050927102133.1"><vh>Utils</vh>
+<v t="ekr.20051215121416"><vh>computeData</vh></v>
+<v t="ekr.20051215164823"><vh>findBuffer</vh></v>
+<v t="ekr.20050927093851"><vh>getBufferName</vh></v>
+</v>
+</v>
 <v t="ekr.20050920084036.53"><vh>class editCommandsClass</vh>
 <v t="ekr.20050929155208"><vh> birth</vh>
 <v t="ekr.20050920084036.54"><vh> ctor (editCommandsClass)</vh></v>
@@ -1050,6 +1166,10 @@ expanded="ekr.20060412114843,ekr.20060413065803,"><vh>@thin ../doc/leoToDo.txt</
 <v t="ekr.20050920084036.70"><vh>setFillPrefix</vh></v>
 <v t="ekr.20050920084036.71"><vh>_addPrefix</vh></v>
 </v>
+<v t="ekr.20060417194232"><vh>find (quick) To do: extend selection</vh>
+<v t="ekr.20060417194232.1"><vh>findCharacter</vh></v>
+<v t="ekr.20060417194232.2"><vh>findWord</vh></v>
+</v>
 <v t="ekr.20050920084036.72"><vh>goto...</vh>
 <v t="ekr.20050929115226"><vh>gotoCharacter</vh></v>
 <v t="ekr.20060417181052"><vh>gotoGlobalLine</vh></v>
@@ -1095,7 +1215,7 @@ expanded="ekr.20060412114843,ekr.20060413065803,"><vh>@thin ../doc/leoToDo.txt</
 <v t="ekr.20050920084036.92"><vh>linesHelper</vh></v>
 </v>
 <v t="ekr.20050920084036.147"><vh>measure</vh></v>
-<v t="ekr.20050929114218"><vh>move... (leoEditCommands)</vh>
+<v t="ekr.20050929114218"><vh>move cursor... (leoEditCommands)</vh>
 <v t="ekr.20051218170358"><vh> helpers</vh>
 <v t="ekr.20060113130510"><vh>extendHelper</vh></v>
 <v t="ekr.20060113105246.1"><vh>moveUpOrDownHelper</vh></v>
@@ -1138,6 +1258,8 @@ expanded="ekr.20060412114843,ekr.20060413065803,"><vh>@thin ../doc/leoToDo.txt</
 <v t="ekr.20050920084036.107"><vh>indentRegion (not used: use c.indentBody instead)</vh></v>
 <v t="ekr.20050920084036.108"><vh>tabIndentRegion</vh></v>
 <v t="ekr.20050920084036.109"><vh>countRegion</vh></v>
+<v t="ekr.20060417183606"><vh>moveRegionDown TO DO</vh></v>
+<v t="ekr.20060417183606.1"><vh>moveRegionUp TO DO</vh></v>
 <v t="ekr.20050920084036.110"><vh>reverseRegion</vh></v>
 <v t="ekr.20050920084036.111"><vh>up/downCaseRegion &amp; helper</vh></v>
 </v>
@@ -1195,60 +1317,20 @@ expanded="ekr.20060412114843,ekr.20060413065803,"><vh>@thin ../doc/leoToDo.txt</
 </v>
 <v t="ekr.20060417181052"><vh>gotoGlobalLine</vh></v>
 </v>
+<v t="ekr.20060104083551"><vh>move-line-up/down</vh>
+<v t="ekr.20060417183606"><vh>moveRegionDown TO DO</vh></v>
+<v t="ekr.20060417183606.1"><vh>moveRegionUp TO DO</vh></v>
 </v>
-<v t="ekr.20031218072017.2406"><vh>Code</vh>
-<v t="ekr.20031218072017.2606"><vh>&lt;&lt; Import pychecker &gt;&gt;</vh></v>
-<v t="ekr.20031218072017.2582"><vh> version &amp; signon stuff</vh>
-<v t="ekr.20040629121554"><vh>getBuildNumber</vh></v>
-<v t="ekr.20040629121554.1"><vh>getSignOnLine (Contains hard-coded version info)</vh></v>
-<v t="ekr.20040629121554.2" a="M" labels="540801000032383634373033303061353332373632363536363666373236353230363336383631366536373635336132373061373033313061353636343635363632303639366536393734353636353732373336393666366532303238373336353663363632393361356337353330333033303631323032303230323036333230336432303733363536633636356337353330333033303631323032303230323036333265373636353732323033643230323232343532363537363639373336393666366533613230333132653332333233353230323432323230323332303433353635333230373537303634363137343635373332303734363836393733326530613730333230613733326571002e"><vh>initVersion</vh></v>
-<v t="ekr.20040629121554.3"><vh>c.signOnWithVersion</vh></v>
+<v t="ekr.20050920085536.62"><vh>getArg</vh>
+<v t="ekr.20050928092516"><vh>&lt;&lt; init altX vars &gt;&gt;</vh></v>
 </v>
-<v t="ekr.20051031040240"><vh>Buttons and settings</vh>
-<v t="ekr.20051027111215"><vh>@thin buttons.txt</vh></v>
-<v t="ekr.20041119040438"><vh>@settings</vh>
-<v t="ekr.20050420073615"><vh>@recent-files</vh></v>
-<v t="ekr.20041119042418"><vh>@bool use_plugins = True</vh></v>
-<v t="ekr.20041211042119"><vh>@int page_width = 80</vh></v>
+<v t="ekr.20060117115212"><vh>Fixed rename-buffer command</vh>
+<v t="ekr.20050920084036.43"><vh>renameBuffer</vh></v>
 </v>
+<v t="ekr.20050920085536.41" a="E"><vh>fullCommand (alt-x) &amp; helper</vh>
+<v t="ekr.20050920085536.45"><vh>callAltXFunction</vh></v>
 </v>
-<v t="ekr.20031218072017.2604"><vh>Core classes...</vh>
-<v t="ekr.20031218072017.2605"><vh>@thin leo.py </vh></v>
-<v t="ekr.20031218072017.2608"><vh>@thin leoApp.py</vh></v>
-<v t="ekr.20041005105605.1"><vh>@thin leoAtFile.py</vh></v>
-<v t="ekr.20031218072017.2794"><vh>@thin leoColor.py</vh></v>
-<v t="ekr.20031218072017.2810"
-marks="ekr.20040629121554.2,"><vh>@thin leoCommands.py</vh></v>
-<v t="ekr.20041117062700"><vh>@thin leoConfig.py</vh></v>
-<v t="ekr.20031218072017.3018"><vh>@thin leoFileCommands.py</vh></v>
-<v t="ekr.20031218072017.3093"><vh>@thin leoGlobals.py</vh></v>
-<v t="ekr.20031218072017.3206"><vh>@thin leoImport.py</vh></v>
-<v t="ekr.20031218072017.3320"><vh>@thin leoNodes.py</vh></v>
-<v t="ekr.20031218072017.3439"><vh>@thin leoPlugins.py</vh></v>
-<v t="ekr.20031218072017.3446"><vh>@thin leoTangle.py</vh></v>
-<v t="ekr.20051104075904" annotate="7d71002e"><vh>@thin leoTest.py</vh></v>
-<v t="ekr.20031218072017.3603"><vh>@thin leoUndo.py</vh></v>
-</v>
-<v t="ekr.20031218072017.3625"><vh>Gui Base classes</vh>
-<v t="ekr.20050721093241"><vh>&lt;&lt; about gui classes and gui plugins &gt;&gt;</vh></v>
-<v t="ekr.20031218072017.3630"><vh>@thin leoCompare.py</vh></v>
-<v t="ekr.20060123151617"><vh>@thin leoFind.py</vh></v>
-<v t="ekr.20031218072017.3655"><vh>@thin leoFrame.py</vh></v>
-<v t="ekr.20031218072017.3719"><vh>@thin leoGui.py</vh></v>
-<v t="ekr.20031218072017.3749"><vh>@thin leoMenu.py</vh></v>
-</v>
-<v t="ekr.20031218072017.3821"><vh>Gui Tkinter classes</vh>
-<v t="ekr.20031218072017.3838"><vh>@thin leoTkinterComparePanel.py</vh></v>
-<v t="ekr.20031218072017.3858"><vh>@thin leoTkinterDialog.py</vh></v>
-<v t="ekr.20031218072017.3897"><vh>@thin leoTkinterFind.py</vh></v>
-<v t="ekr.20031218072017.3939"><vh>@thin leoTkinterFrame.py</vh></v>
-<v t="ekr.20031218072017.4047"><vh>@thin leoTkinterGui.py</vh></v>
-<v t="ekr.20031218072017.4099"><vh>@thin leoTkinterKeys.py</vh></v>
-<v t="ekr.20031218072017.4100"><vh>@thin leoTkinterMenu.py</vh></v>
-<v t="ekr.20040803072955"><vh>@thin leoTkinterTree.py</vh></v>
-</v>
-<v t="ekr.20031218072017.3748"><vh>@thin leoKeys.py</vh></v>
-<v t="ekr.20050710142719"><vh>@thin leoEditCommands.py</vh></v>
+<v t="ekr.20060417203717"><vh>helpForCommand</vh></v>
 </v>
 </vnodes>
 <tnodes>
@@ -6125,6 +6207,194 @@ Two (recently written) functions in leoGlobals.py support conversions from Pytho
 - g.convertRowColToPythonIndex does the reverse.
 
 Important:  the first Tkinter index is '1.0', not '0.0', but the row returned by g.convertPythonIndexToRowCol is zero based, so the code that actually creates Tkinter indices from row/col must add 1 to the row.  Similar remarks apply when going in the reverse direction.</t>
+<t tx="ekr.20050920084036.31">@ An Emacs instance does not have knowledge of what is considered a buffer in the environment.
+
+The call to setBufferInteractionMethods calls the buffer configuration methods.
+@c
+
+class bufferCommandsClass (baseEditCommandsClass):
+
+    @others</t>
+<t tx="ekr.20050920084036.32">def __init__ (self,c):
+    
+    baseEditCommandsClass.__init__(self,c) # init the base class.
+    
+    self.fromName = '' # Saved name from getBufferName.
+    self.nameList = [] # [n: &lt;headline&gt;]
+    self.names = {}
+    self.tnodes = {} # Keys are n: &lt;headline&gt;, values are tnodes.
+    
+    try:
+        self.w = c.frame.body.bodyCtrl
+    except AttributeError:
+        self.w = None</t>
+<t tx="ekr.20050920084036.33">def getPublicCommands (self):
+
+    return {
+    
+        # These do not seem useful.
+            # 'copy-to-buffer':               self.copyToBuffer,
+            # 'insert-to-buffer':             self.insertToBuffer,
+       
+        'append-to-buffer':             self.appendToBuffer,
+        'kill-buffer' :                 self.killBuffer,
+        'list-buffers' :                self.listBuffers,
+        'list-buffers-alphabetically':  self.listBuffersAlphabetically,
+        'prepend-to-buffer':            self.prependToBuffer,
+        'rename-buffer':                self.renameBuffer,
+        'switch-to-buffer':             self.switchToBuffer,
+    }</t>
+<t tx="ekr.20050920084036.34"></t>
+<t tx="ekr.20050920084036.35">def appendToBuffer (self,event):
+
+    self.k.setLabelBlue('Append to buffer: ')
+    self.getBufferName(self.appendToBufferFinisher)
+
+def appendToBufferFinisher (self,name):
+
+    c = self.c ; k = self.k ; w = self.w
+    s = g.app.gui.getSelectedText(w)
+    p = self.findBuffer(name)
+    if s and p:
+        c.beginUpdate()
+        try:
+            c.selectPosition(p)
+            self.beginCommand('append-to-buffer: %s' % p.headString())
+            w.insert('end',s)
+            w.mark_set('insert','end')
+            w.see('end')
+            self.endCommand()
+        finally:
+            c.endUpdate()
+            c.recolor_now()</t>
+<t tx="ekr.20050920084036.36">def copyToBuffer (self,event):
+
+    self.k.setLabelBlue('Copy to buffer: ')
+    self.getBufferName(self.copyToBufferFinisher)
+
+def copyToBufferFinisher (self,event,name):
+
+    c = self.c ; k = self.k ; w = self.w
+    s = g.app.gui.getSelectedText(w)
+    p = self.findBuffer(name)
+    if s and p:
+        c.beginUpdate()
+        try:
+            c.selectPosition(p)
+            self.beginCommand('copy-to-buffer: %s' % p.headString())
+            w.insert('end',s)
+            w.mark_set('insert','end')
+            w.see('end')
+            self.endCommand()
+        finally:
+            c.endUpdate()
+            c.recolor_now()</t>
+<t tx="ekr.20050920084036.37">def insertToBuffer (self,event):
+
+    self.k.setLabelBlue('Insert to buffer: ')
+    self.getBufferName(self.insertToBufferFinisher)
+
+def insertToBufferFinisher (self,event,name):
+    
+    c = self.c ; k = self.k ; w = self.w
+    s = g.app.gui.getSelectedText(w)
+    p = self.findBuffer(name)
+    if s and p:
+        c.beginUpdate()
+        try:
+            c.selectPosition(p)
+            self.beginCommand('insert-to-buffer: %s' % p.headString())
+            w.insert('insert',s)
+            w.see('insert')
+            self.endCommand()
+        finally:
+            c.endUpdate()</t>
+<t tx="ekr.20050920084036.38">def killBuffer (self,event):
+
+    self.k.setLabelBlue('Kill buffer: ')
+    self.getBufferName(self.killBufferFinisher)
+
+def killBufferFinisher (self,name):
+
+    c = self.c ; p = self.findBuffer(name)
+    if p:
+        h = p.headString()
+        current = c.currentPosition()
+        c.selectPosition(p)
+        c.deleteOutline (op_name='kill-buffer: %s' % h)
+        c.selectPosition(current)
+        self.k.setLabelBlue('Killed buffer: %s' % h)</t>
+<t tx="ekr.20050920084036.39">def prependToBuffer (self,event):
+
+    self.k.setLabelBlue('Prepend to buffer: ')
+    self.getBufferName(self.prependToBufferFinisher)
+    
+def prependToBufferFinisher (self,event,name):
+    
+    c = self.c ; k = self.k ; w = self.w
+    s = g.app.gui.getSelectedText(w)
+    p = self.findBuffer(name)
+    if s and p:
+        c.beginUpdate()
+        try:
+            c.selectPosition(p)
+            self.beginCommand('prepend-to-buffer: %s' % p.headString())
+            w.insert('1.0',s)
+            w.mark_set('insert','1.0')
+            w.see('1.0')
+            self.endCommand()
+        finally:
+            c.endUpdate()
+            c.recolor_now()</t>
+<t tx="ekr.20050920084036.40">def switchToBuffer (self,event):
+
+    self.k.setLabelBlue('Switch to buffer: ')
+    self.getBufferName(self.switchToBufferFinisher)
+    
+def switchToBufferFinisher (self,name):
+    
+    c = self.c ; p = self.findBuffer(name)
+    if p:
+        c.beginUpdate()
+        try:
+            c.selectPosition(p)
+        finally:
+            c.endUpdate()</t>
+<t tx="ekr.20050920084036.42">def listBuffers (self,event):
+    
+    self.computeData()
+    
+    g.es('Buffers...')
+    for name in self.nameList:
+        g.es(name)
+        
+def listBuffersAlphabetically (self,event):
+    
+    self.computeData()
+    names = self.nameList[:] ; names.sort()
+    
+    g.es('Buffers...')
+    for name in names:
+        g.es(name)</t>
+<t tx="ekr.20050920084036.43">def renameBuffer (self,event):
+    
+    self.k.setLabelBlue('Rename buffer from: ')
+    self.getBufferName(self.renameBufferFinisher1)
+    
+def renameBufferFinisher1 (self,name):
+    
+    self.fromName = name
+    self.k.setLabelBlue('Rename buffer from: %s to: ' % (name))
+    self.getBufferName(self.renameBufferFinisher2)
+    
+def renameBufferFinisher2 (self,name):
+    
+    c = self.c ; p = self.findBuffer(self.fromName)
+    if p:
+        c.endEditing()
+        c.beginUpdate()
+        p.setHeadStringOrHeadline(name)
+        c.endUpdate()</t>
 <t tx="ekr.20050920084036.53">class editCommandsClass (baseEditCommandsClass):
     
     '''Contains editing commands with little or no state.'''
@@ -6215,6 +6485,8 @@ Important:  the first Tkinter index is '1.0', not '0.0', but the row returned by
         'fill-paragraph':                       self.fillParagraph,
         'fill-region':                          self.fillRegion,
         'fill-region-as-paragraph':             self.fillRegionAsParagraph,
+        'find-character':                       self.findCharacter,
+        'find-word':                            self.findWord,
         'flush-lines':                          self.flushLines,
         'focus-to-body':                        self.focusToBody,
         'focus-to-log':                         self.focusToLog,
@@ -6251,6 +6523,8 @@ Important:  the first Tkinter index is '1.0', not '0.0', but the row returned by
         'line-number':                          self.lineNumber,
         'move-past-close':                      self.movePastClose,
         'move-past-close-extend-selection':     self.movePastCloseExtendSelection,
+        'move-region-down':                     self.moveRegionDown,
+        'move-region-up':                       self.moveRegionUp,
         'newline-and-indent':                   self.insertNewLineAndTab,
         'next-line':                            self.nextLine,
         'next-line-extend-selection':           self.nextLineExtendSelection,
@@ -7587,6 +7861,127 @@ def forwardWordExtendSelection (self,event):
         return False
         
 bindShortcut = bindKey # For compatibility</t>
+<t tx="ekr.20050920085536.41">def fullCommand (self,event,specialStroke=None,specialFunc=None,help=False,helpHandler=None):
+    
+    '''Handle 'full-command' (alt-x) mode.'''
+
+    k = self ; c = k.c ; state = k.getState('full-command')
+    helpPrompt = 'Help for command: '
+    keysym = (event and event.keysym) or ''
+    ch = (event and event.char) or ''
+    trace = c.config.getBool('trace_modes')
+    if trace: g.trace('state',state,keysym)
+    if state == 0:
+        k.mb_event = event # Save the full event for later.
+        k.setState('full-command',1,handler=k.fullCommand)
+        prompt = g.choose(help,helpPrompt,k.altX_prompt)
+        k.setLabelBlue('%s' % (prompt),protect=True)
+        # Init mb_ ivars. This prevents problems with an initial backspace.
+        k.mb_prompt = k.mb_tabListPrefix = k.mb_prefix = prompt ### k.altX_prompt
+        k.mb_tabList = [] ; k.mb_tabListIndex = -1
+        k.mb_help = help
+        k.mb_helpHandler = helpHandler
+        c.minibufferWantsFocus()
+    elif keysym == 'Return':
+        c.frame.log.deleteTab('Completion')
+        if k.mb_help:
+            s = k.getLabel()
+            commandName = s[len(helpPrompt):].strip()
+            k.clearState()
+            k.resetLabel()
+            if k.mb_helpHandler: k.mb_helpHandler(commandName)
+        else:
+            k.callAltXFunction(k.mb_event)
+    elif keysym == 'Tab':
+        k.doTabCompletion(c.commandsDict.keys())
+        c.minibufferWantsFocus()
+    elif keysym == 'BackSpace':
+        k.doBackSpace(c.commandsDict.keys())
+        c.minibufferWantsFocus()
+    elif k.ignore_unbound_non_ascii_keys and len(ch) &gt; 1:
+        # g.trace('non-ascii')
+        if specialStroke:
+            g.trace(specialStroke)
+            specialFunc()
+        c.minibufferWantsFocus()
+    else:
+        # Clear the list, any other character besides tab indicates that a new prefix is in effect.
+        k.mb_tabList = []
+        k.updateLabel(event)
+        k.mb_tabListPrefix = k.getLabel()
+        c.minibufferWantsFocus()
+        # g.trace('new prefix',k.mb_tabListPrefix)
+
+    return 'break'</t>
+<t tx="ekr.20050920085536.45">def callAltXFunction (self,event):
+    
+    k = self ; c = k.c ; s = k.getLabel()
+    k.mb_tabList = []
+    commandName = s[len(k.mb_prefix):].strip()
+    func = c.commandsDict.get(commandName)
+
+    if func:
+        # These must be done *after* getting the command.
+        k.clearState()
+        k.resetLabel()
+        if commandName != 'repeat-complex-command':
+            k.mb_history.insert(0,commandName)
+        c.widgetWantsFocusNow(event.widget) # Important, so cut-text works, e.g.
+        func(event)
+        k.endCommand(event,commandName)
+    else:
+        if 1: # Useful.
+            k.doTabCompletion(c.commandsDict.keys())
+        else: # Annoying.
+            k.keyboardQuit(event)
+            k.setLabel('Command does not exist: %s' % commandName)
+            c.bodyWantsFocus()</t>
+<t tx="ekr.20050920085536.62">def getArg (self,event,
+    returnKind=None,returnState=None,handler=None,
+    prefix=None,tabList=[],completion=True,oneCharacter=False):
+    
+    '''Accumulate an argument until the user hits return (or control-g).
+    Enter the given return state when done.
+    The prefix is does not form the arg.  The prefix defaults to the k.getLabel().
+    '''
+
+    k = self ; c = k.c ; state = k.getState('getArg')
+    keysym = (event and event.keysym) or ''
+    trace = c.config.getBool('trace_modes') and not g.app.unitTesting
+    if trace: g.trace(
+        'state',state,'keysym',keysym,
+        'completion', state==0 and completion or state!=0 and k.arg_completion)
+    if state == 0:
+        k.arg = ''
+        &lt;&lt; init altX vars &gt;&gt;
+        # Set the states.
+        bodyCtrl = c.frame.body.bodyCtrl
+        c.widgetWantsFocus(bodyCtrl)
+        k.afterGetArgState=returnKind,returnState,handler
+        k.setState('getArg',1,k.getArg)
+        k.afterArgWidget = event and event.widget or c.frame.body.bodyCtrl
+        if k.useTextWidget: c.minibufferWantsFocus()
+    elif keysym == 'Return' or k.oneCharacterArg:
+        if k.oneCharacterArg:
+            k.arg = event.char
+        else:
+            k.arg = k.getLabel(ignorePrompt=True)
+        kind,n,handler = k.afterGetArgState
+        if kind: k.setState(kind,n,handler)
+        c.frame.log.deleteTab('Completion')
+        trace and g.trace('kind',kind,'n',n,'handler',handler and handler.__name__)
+        if handler: handler(event)
+    elif keysym == 'Tab':
+        k.doTabCompletion(k.argTabList,k.arg_completion)
+    elif keysym == 'BackSpace':
+        k.doBackSpace(k.argTabList,k.arg_completion)
+        c.minibufferWantsFocus()
+    else:
+        # Clear the list, any other character besides tab indicates that a new prefix is in effect.
+        k.mb_tabList = []
+        k.updateLabel(event)
+        k.mb_tabListPrefix = k.getLabel()
+    return 'break'</t>
 <t tx="ekr.20050920085536.63">def keyboardQuit (self,event,hideTabs=True):
 
     '''This method clears the state and the minibuffer label.
@@ -7848,6 +8243,7 @@ self.masterBindingsDict = {}
 self.mb_copyKey = None
 self.mb_pasteKey = None
 self.mb_cutKey = None
+self.mb_help = False
 
 self.abortAllModesKey = None
 self.fullCommandKey = None
@@ -7876,6 +8272,35 @@ self.afterGetArgState = None
 self.argTabList = []
 self.modeBindingsDict = {}</t>
 <t tx="ekr.20050924073836"></t>
+<t tx="ekr.20050927093851">def getBufferName (self,finisher):
+    
+    '''Get a buffer name into k.arg and call k.setState(kind,n,handler).'''
+    
+    k = self.k ; c = k.c ; state = k.getState('getBufferName')
+    
+    if state == 0:
+        self.computeData()
+        self.getBufferNameFinisher = finisher
+        prefix = k.getLabel() ; event = None
+        k.getArg(event,'getBufferName',1,self.getBufferName,
+            prefix=prefix,tabList=self.nameList)
+    else:
+        k.resetLabel()
+        k.clearState()
+        finisher = self.getBufferNameFinisher
+        self.getBufferNameFinisher = None
+        finisher(k.arg)</t>
+<t tx="ekr.20050927102133.1"></t>
+<t tx="ekr.20050928092516">k.argTabList = tabList and tabList[:] or []
+k.arg_completion = completion
+
+k.mb_prefix = prefix or k.getLabel()
+k.mb_prompt = prefix or ''
+k.mb_tabList = []
+
+# Clear the list: any non-tab indicates that a new prefix is in effect.
+k.mb_tabListPrefix = k.getLabel()
+k.oneCharacterArg = oneCharacter</t>
 <t tx="ekr.20050929114218"></t>
 <t tx="ekr.20050929115226">def gotoCharacter (self,event):
     
@@ -9078,7 +9503,6 @@ C:\prog\leoCVS\leo\src\leoImport.py:158: No class attribute (_forcedGnxPositionL
     
     i,j = self.getTextSelection(widget)
     return i and j and i != j</t>
-<t tx="ekr.20051202095626">Use docstrings as the help message.</t>
 <t tx="ekr.20051213080533">def backCharacter (self,event):
     
     self.moveToHelper(event,'insert-1c',extend=False)
@@ -9164,6 +9588,40 @@ def beginCommandHelper (self,ch,undoType,w):
         self.undoData = None
         
     return w</t>
+<t tx="ekr.20051215121416">def computeData (self):
+    
+    counts = {} ; self.nameList = []
+    self.names = {} ; self.tnodes = {}
+   
+    for p in self.c.allNodes_iter():
+        h = p.headString().strip()
+        t = p.v.t
+        n = counts.get(t,0) + 1
+        counts[t] = n
+        if n == 1: # Only make one entry per set of clones.
+            nameList = self.names.get(h,[])
+            if nameList:
+                if p.parent():
+                    key = '%s, parent: %s' % (h,p.parent().headString())
+                else:
+                    key = '%s, child index: %d' % (h,p.childIndex())
+            else:
+                key = h
+            self.nameList.append(key)
+            self.tnodes[key] = t
+            nameList.append(key)
+            self.names[h] = nameList</t>
+<t tx="ekr.20051215164823">def findBuffer (self,name):
+    
+    t = self.tnodes.get(name)
+
+    for p in self.c.allNodes_iter():
+        if p.v.t == t:
+            return p
+           
+    g.trace("Can't happen",name)
+    return None</t>
+<t tx="ekr.20051216080913"># These commands are disabled in getPublicCommands.</t>
 <t tx="ekr.20051216155728">def beginUpdate (self):
     
     self.updateCount += 1
@@ -9346,6 +9804,8 @@ def toggleExtendMode (self,event):
     return w and isinstance(w,Tk.Text) </t>
 <t tx="ekr.20060104083551">http://sourceforge.net/forum/message.php?msg_id=3488030
 
+Maybe this should really be move-lines-up/down
+
 move-region-up
 
 Swap the selection with the line above it. If we are at the top of a node, the
@@ -9512,7 +9972,6 @@ In all cases the moved text remains selected, even when the text moves to anothe
         i = g.app.gui.getInsertPoint(w)
     g.app.gui.setSelectionRange(w, i+' wordstart', i+' wordend')</t>
 <t tx="ekr.20060116084526.1"></t>
-<t tx="ekr.20060116085649"></t>
 <t tx="ekr.20060116090428"></t>
 <t tx="ekr.20060117115212"></t>
 <t tx="ekr.20060122183544">@nocolor
@@ -10932,7 +11391,6 @@ Traceback (most recent call last):
     if bunch.kind == 'beforeGroup':
 AttributeError: 'Bunch' object has no attribute 'kind'
 </t>
-<t tx="ekr.20060412114843"></t>
 <t tx="ekr.20060413065803"></t>
 <t tx="ekr.20060414065810"># No change for now
 C:\prog\tigris-cvs\leo\src\leoKeys.py:1050: Parameter (thread) not used
@@ -11076,17 +11534,104 @@ remove-tab-from lines   Removes a tab (or equivalent spaces) from start of all s
     '''Put the cursor at the n'th line of a file or script
     This is a minibuffer interface to Leo's legacy Go To Line number command.'''
 
-    k = self.k ; state = k.getState('goto-global-line')
+    k = self.k ; tag = 'goto-global-line' ; state = k.getState(tag)
     
     if state == 0:
         self.widget = event.widget
         k.setLabelBlue('Goto global line: ')
-        k.getArg(event,'goto-global-line',1,self.gotoGlobalLine)
+        k.getArg(event,tag,1,self.gotoGlobalLine)
     else:
         n = k.arg ;  w = self.widget
         k.resetLabel()
         k.clearState()
         if n.isdigit():
             self.c.goToLineNumber (n=int(n))</t>
+<t tx="ekr.20060417183606">def moveRegionDown (self,event):
+
+    w = event.widget
+    if not g.app.gui.hasSelection(w): return
+
+    self.beginCommand(undoType='move-region-down')
+
+    i,j = g.app.gui.getSelectionRange(w)
+    j = w.index(j+' lineend + 1c')
+    s = w.get(i,j)
+    if w.compare(j,'==','end'):
+        # Move region to next node.
+        pass
+    else:
+        i2 = w.index(j+' lineend + 1line linestart')
+        j2 = w.index(i2+' lineend')
+        w.insert(j2,s)
+        # w.mark_set('insert',????)
+        w.delete(i,j)
+        g.trace(i,j,i2,j2,repr(s))
+    
+    self.endCommand(changed=True,setLabel=True)</t>
+<t tx="ekr.20060417183606.1">def moveRegionUp (self,event):
+
+    w = event.widget
+    if not g.app.gui.hasSelection(w): return
+    
+    self.beginCommand(undoType='move-region-up')
+
+    i,j = g.app.gui.getSelectionRange(w)
+    if w.compare(j,'==','end'):
+        # Move region to next node.
+        pass
+    else:
+        i2 = w.index(i+' linestart - 1line')
+        j2 = w.index(i2+'lineend')
+        g.trace(i,j,i2,j2)
+    
+    self.endCommand(changed=True,setLabel=True)</t>
+<t tx="ekr.20060417194232"></t>
+<t tx="ekr.20060417194232.1">def findCharacter (self,event):
+    
+    '''Put the cursor at the next occurance of a character on a line.'''
+
+    k = self.k ; tag = 'find-char' ; state = k.getState(tag)
+    
+    if state == 0:
+        self.widget = event.widget
+        k.setLabelBlue('Find character: ')
+        k.getArg(event,tag,1,self.findCharacterOnLine,oneCharacter=True)
+    else:
+        w = self.widget
+        ch = k.arg
+        g.trace(repr(ch))
+        k.resetLabel()
+        k.clearState()</t>
+<t tx="ekr.20060417194232.2">def findWord (self,event):
+    
+    '''Put the cursor at the next word (on a line) that starts with a character.'''
+
+    k = self.k ; tag = 'find-word-on-line' ; state = k.getState(tag)
+    
+    if state == 0:
+        self.widget = event.widget
+        k.setLabelBlue('Find word: ')
+        k.getArg(event,tag,1,self.findCharacterOnLine,oneCharacter=True)
+    else:
+        w = self.widget
+        ch = k.arg
+        g.trace(repr(ch))
+        k.resetLabel()
+        k.clearState()</t>
+<t tx="ekr.20060417203717">def helpForCommand (self,event):
+    
+    '''Return the docstring for a user-specified command.'''
+    
+    k = self.k
+    k.fullCommand(event,help=True,helpHandler=self.helpForCommandFinisher)
+    
+def helpForCommandFinisher (self,commandName):
+
+    c = self.c
+    func = c.commandsDict.get(commandName)
+    if func and func.__doc__:
+        g.es('%s:\n%s\n' % (commandName,func.__doc__),color='blue')
+    else:
+        g.es('No help available for %s' % (commandName),color='blue')</t>
 </tnodes>
 </leo_file>

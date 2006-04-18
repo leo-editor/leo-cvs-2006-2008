@@ -9,37 +9,47 @@
 #@nonl
 #@-node:ekr.20060227163911.1:Leo's web site
 #@+node:ekr.20060226131603:To do 4.4 b4 or final
-#@+node:ekr.20060415110109:Add unit tests for editCommandsClass
-#@-node:ekr.20060415110109:Add unit tests for editCommandsClass
-#@+node:ekr.20060412114843:easy 3
-#@+node:ekr.20060104083551:move-line-up/down (LeoUser)
-http://sourceforge.net/forum/message.php?msg_id=3488030
-
-move-region-up
-
-Swap the selection with the line above it. If we are at the top of a node, the
-node identified by threadBack() is selected and the text is moved to the bottom
-of the node.
-
-move-region-down
-
-Swap the selection with the line below it. If we are at the bottom of the node,
-the node identified by threadNext() is selected and the text is moved to the top
-of the node.
-
-In all cases the moved text remains selected, even when the text moves to another node.
-#@nonl
-#@-node:ekr.20060104083551:move-line-up/down (LeoUser)
-#@+node:ekr.20060117115212:Fix rename-buffer command
-#@-node:ekr.20060117115212:Fix rename-buffer command
-#@+node:ekr.20051202095626:help-for-command
-Use docstrings as the help message.
-#@nonl
-#@-node:ekr.20051202095626:help-for-command
-#@-node:ekr.20060412114843:easy 3
 #@+node:ekr.20060413065803:searches 5
-#@+node:ekr.20060116085649:find-word-on-line, find-character-on-line (forward & backward)
-#@-node:ekr.20060116085649:find-word-on-line, find-character-on-line (forward & backward)
+#@+node:ekr.20060417194232:find (quick) To do: extend selection
+#@+node:ekr.20060417194232.1:findCharacter
+def findCharacter (self,event):
+    
+    '''Put the cursor at the next occurance of a character on a line.'''
+
+    k = self.k ; tag = 'find-char' ; state = k.getState(tag)
+    
+    if state == 0:
+        self.widget = event.widget
+        k.setLabelBlue('Find character: ')
+        k.getArg(event,tag,1,self.findCharacterOnLine,oneCharacter=True)
+    else:
+        w = self.widget
+        ch = k.arg
+        g.trace(repr(ch))
+        k.resetLabel()
+        k.clearState()
+#@nonl
+#@-node:ekr.20060417194232.1:findCharacter
+#@+node:ekr.20060417194232.2:findWord
+def findWord (self,event):
+    
+    '''Put the cursor at the next word (on a line) that starts with a character.'''
+
+    k = self.k ; tag = 'find-word-on-line' ; state = k.getState(tag)
+    
+    if state == 0:
+        self.widget = event.widget
+        k.setLabelBlue('Find word: ')
+        k.getArg(event,tag,1,self.findCharacterOnLine,oneCharacter=True)
+    else:
+        w = self.widget
+        ch = k.arg
+        g.trace(repr(ch))
+        k.resetLabel()
+        k.clearState()
+#@nonl
+#@-node:ekr.20060417194232.2:findWord
+#@-node:ekr.20060417194232:find (quick) To do: extend selection
 #@+node:ekr.20060307074302.1:set-change-text command should work when entering find text.
 # It's not clear how to do this.
 #@nonl
@@ -62,6 +72,8 @@ Use docstrings as the help message.
 #@-node:ekr.20060211093935:Support for @list and on-enter-mode
 #@+node:ekr.20060116090428:Expand 'point' so it indicates node as well as text location
 #@-node:ekr.20060116090428:Expand 'point' so it indicates node as well as text location
+#@+node:ekr.20060415110109:Add unit tests for editCommandsClass
+#@-node:ekr.20060415110109:Add unit tests for editCommandsClass
 #@-node:ekr.20060210140415:others 3
 #@-node:ekr.20060226131603:To do 4.4 b4 or final
 #@-all
