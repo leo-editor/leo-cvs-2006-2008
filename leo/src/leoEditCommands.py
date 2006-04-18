@@ -749,12 +749,10 @@ class bufferCommandsClass (baseEditCommandsClass):
         
         c = self.c ; p = self.findBuffer(self.fromName)
         if p:
-            c.frame.tree.editLabel(p)
-            w = p.edit_widget()
-            if w:
-                w.delete("1.0","end")
-                w.insert("1.0",name)
-                c.endEditing()
+            c.endEditing()
+            c.beginUpdate()
+            p.setHeadStringOrHeadline(name)
+            c.endUpdate()
     #@nonl
     #@-node:ekr.20050920084036.43:renameBuffer
     #@+node:ekr.20050920084036.40:switchToBuffer
@@ -1228,6 +1226,8 @@ class editCommandsClass (baseEditCommandsClass):
             'fill-paragraph':                       self.fillParagraph,
             'fill-region':                          self.fillRegion,
             'fill-region-as-paragraph':             self.fillRegionAsParagraph,
+            'find-character':                       self.findCharacter,
+            'find-word':                            self.findWord,
             'flush-lines':                          self.flushLines,
             'focus-to-body':                        self.focusToBody,
             'focus-to-log':                         self.focusToLog,
@@ -1264,6 +1264,8 @@ class editCommandsClass (baseEditCommandsClass):
             'line-number':                          self.lineNumber,
             'move-past-close':                      self.movePastClose,
             'move-past-close-extend-selection':     self.movePastCloseExtendSelection,
+            'move-region-down':                     self.moveRegionDown,
+            'move-region-up':                       self.moveRegionUp,
             'newline-and-indent':                   self.insertNewLineAndTab,
             'next-line':                            self.nextLine,
             'next-line-extend-selection':           self.nextLineExtendSelection,
@@ -2084,6 +2086,46 @@ class editCommandsClass (baseEditCommandsClass):
     #@-others
     #@nonl
     #@-node:ekr.20050920084036.66:fill column and centering
+    #@+node:ekr.20060417194232:find (quick) To do: extend selection
+    #@+node:ekr.20060417194232.1:findCharacter
+    def findCharacter (self,event):
+        
+        '''Put the cursor at the next occurance of a character on a line.'''
+    
+        k = self.k ; tag = 'find-char' ; state = k.getState(tag)
+        
+        if state == 0:
+            self.widget = event.widget
+            k.setLabelBlue('Find character: ')
+            k.getArg(event,tag,1,self.findCharacterOnLine,oneCharacter=True)
+        else:
+            w = self.widget
+            ch = k.arg
+            g.trace(repr(ch))
+            k.resetLabel()
+            k.clearState()
+    #@nonl
+    #@-node:ekr.20060417194232.1:findCharacter
+    #@+node:ekr.20060417194232.2:findWord
+    def findWord (self,event):
+        
+        '''Put the cursor at the next word (on a line) that starts with a character.'''
+    
+        k = self.k ; tag = 'find-word-on-line' ; state = k.getState(tag)
+        
+        if state == 0:
+            self.widget = event.widget
+            k.setLabelBlue('Find word: ')
+            k.getArg(event,tag,1,self.findCharacterOnLine,oneCharacter=True)
+        else:
+            w = self.widget
+            ch = k.arg
+            g.trace(repr(ch))
+            k.resetLabel()
+            k.clearState()
+    #@nonl
+    #@-node:ekr.20060417194232.2:findWord
+    #@-node:ekr.20060417194232:find (quick) To do: extend selection
     #@+node:ekr.20050920084036.72:goto...
     #@+node:ekr.20050929115226:gotoCharacter
     def gotoCharacter (self,event):
@@ -2111,12 +2153,12 @@ class editCommandsClass (baseEditCommandsClass):
         '''Put the cursor at the n'th line of a file or script
         This is a minibuffer interface to Leo's legacy Go To Line number command.'''
     
-        k = self.k ; state = k.getState('goto-global-line')
+        k = self.k ; tag = 'goto-global-line' ; state = k.getState(tag)
         
         if state == 0:
             self.widget = event.widget
             k.setLabelBlue('Goto global line: ')
-            k.getArg(event,'goto-global-line',1,self.gotoGlobalLine)
+            k.getArg(event,tag,1,self.gotoGlobalLine)
         else:
             n = k.arg ;  w = self.widget
             k.resetLabel()
@@ -2823,7 +2865,7 @@ class editCommandsClass (baseEditCommandsClass):
         return watch, top, bottom
     #@nonl
     #@-node:ekr.20050920084036.147:measure
-    #@+node:ekr.20050929114218:move... (leoEditCommands)
+    #@+node:ekr.20050929114218:move cursor... (leoEditCommands)
     #@+node:ekr.20051218170358: helpers
     #@+node:ekr.20060113130510:extendHelper
     def extendHelper (self,w,extend,ins1,spot,setSpot=True):
@@ -3242,7 +3284,7 @@ class editCommandsClass (baseEditCommandsClass):
         
         self.moveWordHelper(event,extend=True,forward=True)
     #@-node:ekr.20050920084036.149:words
-    #@-node:ekr.20050929114218:move... (leoEditCommands)
+    #@-node:ekr.20050929114218:move cursor... (leoEditCommands)
     #@+node:ekr.20050920084036.95:paragraph...
     #@+others
     #@+node:ekr.20050920084036.99:backwardKillParagraph
@@ -3565,6 +3607,51 @@ class editCommandsClass (baseEditCommandsClass):
             lines,chars,g.choose(chars==1,'','s')))
     #@nonl
     #@-node:ekr.20050920084036.109:countRegion
+    #@+node:ekr.20060417183606:moveRegionDown TO DO
+    def moveRegionDown (self,event):
+    
+        w = event.widget
+        if not g.app.gui.hasSelection(w): return
+    
+        self.beginCommand(undoType='move-region-down')
+    
+        i,j = g.app.gui.getSelectionRange(w)
+        j = w.index(j+' lineend + 1c')
+        s = w.get(i,j)
+        if w.compare(j,'==','end'):
+            # Move region to next node.
+            pass
+        else:
+            i2 = w.index(j+' lineend + 1line linestart')
+            j2 = w.index(i2+' lineend')
+            w.insert(j2,s)
+            # w.mark_set('insert',????)
+            w.delete(i,j)
+            g.trace(i,j,i2,j2,repr(s))
+        
+        self.endCommand(changed=True,setLabel=True)
+    #@nonl
+    #@-node:ekr.20060417183606:moveRegionDown TO DO
+    #@+node:ekr.20060417183606.1:moveRegionUp TO DO
+    def moveRegionUp (self,event):
+    
+        w = event.widget
+        if not g.app.gui.hasSelection(w): return
+        
+        self.beginCommand(undoType='move-region-up')
+    
+        i,j = g.app.gui.getSelectionRange(w)
+        if w.compare(j,'==','end'):
+            # Move region to next node.
+            pass
+        else:
+            i2 = w.index(i+' linestart - 1line')
+            j2 = w.index(i2+'lineend')
+            g.trace(i,j,i2,j2)
+        
+        self.endCommand(changed=True,setLabel=True)
+    #@nonl
+    #@-node:ekr.20060417183606.1:moveRegionUp TO DO
     #@+node:ekr.20050920084036.110:reverseRegion
     def reverseRegion (self,event):
     
@@ -4132,6 +4219,7 @@ class helpCommandsClass (baseEditCommandsClass):
         
         return {
             'help':                     self.help,
+            'help-for-command':         self.helpForCommand,
             'apropos-autocompletion':   self.aproposAutocompletion,
             'apropos-bindings':         self.aproposBindings,
             'apropos-find-commands':    self.aproposFindCommands,
@@ -4174,6 +4262,24 @@ class helpCommandsClass (baseEditCommandsClass):
     #@nonl
     #@-node:ekr.20060205165654:test_help
     #@-node:ekr.20051014170754:help
+    #@+node:ekr.20060417203717:helpForCommand
+    def helpForCommand (self,event):
+        
+        '''Return the docstring for a user-specified command.'''
+        
+        k = self.k
+        k.fullCommand(event,help=True,helpHandler=self.helpForCommandFinisher)
+        
+    def helpForCommandFinisher (self,commandName):
+    
+        c = self.c
+        func = c.commandsDict.get(commandName)
+        if func and func.__doc__:
+            g.es('%s:\n%s\n' % (commandName,func.__doc__),color='blue')
+        else:
+            g.es('No help available for %s' % (commandName),color='blue')
+    #@nonl
+    #@-node:ekr.20060417203717:helpForCommand
     #@+node:ekr.20060226131603.1:aproposAutocompletion
     def aproposAutocompletion (self,event=None):
         
