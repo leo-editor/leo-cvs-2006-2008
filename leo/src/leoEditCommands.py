@@ -1262,10 +1262,10 @@ class editCommandsClass (baseEditCommandsClass):
             'keep-lines':                           self.keepLines,
             'kill-paragraph':                       self.killParagraph,
             'line-number':                          self.lineNumber,
+            'move-lines-down':                      self.moveLinesDown,
+            'move-lines-up':                        self.moveLinesUp,
             'move-past-close':                      self.movePastClose,
             'move-past-close-extend-selection':     self.movePastCloseExtendSelection,
-            'move-region-down':                     self.moveRegionDown,
-            'move-region-up':                       self.moveRegionUp,
             'newline-and-indent':                   self.insertNewLineAndTab,
             'next-line':                            self.nextLine,
             'next-line-extend-selection':           self.nextLineExtendSelection,
@@ -2150,7 +2150,8 @@ class editCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20060417181052:gotoGlobalLine
     def gotoGlobalLine (self,event):
         
-        '''Put the cursor at the n'th line of a file or script
+        '''Put the cursor at the n'th line of a file or script.
+    
         This is a minibuffer interface to Leo's legacy Go To Line number command.'''
     
         k = self.k ; tag = 'goto-global-line' ; state = k.getState(tag)
@@ -3607,51 +3608,92 @@ class editCommandsClass (baseEditCommandsClass):
             lines,chars,g.choose(chars==1,'','s')))
     #@nonl
     #@-node:ekr.20050920084036.109:countRegion
-    #@+node:ekr.20060417183606:moveRegionDown TO DO
-    def moveRegionDown (self,event):
+    #@+node:ekr.20060417183606:moveLinesDown
+    def moveLinesDown (self,event):
     
-        w = event.widget
+        c = self.c ; w = event.widget
+        
         if not g.app.gui.hasSelection(w): return
     
-        self.beginCommand(undoType='move-region-down')
+        self.beginCommand(undoType='move-lines-down')
     
         i,j = g.app.gui.getSelectionRange(w)
-        j = w.index(j+' lineend + 1c')
-        s = w.get(i,j)
-        if w.compare(j,'==','end'):
-            # Move region to next node.
-            pass
-        else:
-            i2 = w.index(j+' lineend + 1line linestart')
-            j2 = w.index(i2+' lineend')
-            w.insert(j2,s)
-            # w.mark_set('insert',????)
-            w.delete(i,j)
-            g.trace(i,j,i2,j2,repr(s))
-        
+        i = w.index(i+' linestart')
+        j = w.index(j+' lineend+1c')
+        j2 = w.index(j+ ' lineend+1c')
+        selected = w.get(i,j) # g.trace('selected',repr(selected))
+        moved = w.get(j,j2)  # g.trace('moved',repr(moved))
+        if moved:
+            if not moved.endswith('\n'): moved = moved + '\n'
+            w.mark_set('i',i)
+            w.mark_set('j',j)
+            w.delete(j,j2)
+            w.insert(i,moved)
+            w.mark_set('sel.start','i')
+            w.mark_set('sel.end','j')
+            w.mark_unset('i')
+            w.mark_unset('j')
+        else: # Move the text to the top of the next node.
+            p = c.currentPosition()
+            if not p.hasThreadNext(): return
+            if not moved.endswith('\n'): moved = moved + '\n'
+            w.delete(i,j) # Deleted the old selection.
+            p.setBodyString(w.get('1.0','end')) # Doesn't really work: undo doesn't work.
+            p = p.threadNext()
+            c.beginUpdate()
+            c.selectPosition(p)
+            c.endUpdate()
+            w.focus_force()
+            w.insert('1.0',selected)
+            g.app.gui.setSelectionRangeWithLength(w,'1.0',len(selected)-1)
+    
         self.endCommand(changed=True,setLabel=True)
     #@nonl
-    #@-node:ekr.20060417183606:moveRegionDown TO DO
-    #@+node:ekr.20060417183606.1:moveRegionUp TO DO
-    def moveRegionUp (self,event):
+    #@-node:ekr.20060417183606:moveLinesDown
+    #@+node:ekr.20060417183606.1:moveLinesUp
+    def moveLinesUp (self,event):
     
-        w = event.widget
+        c = self.c ; w = event.widget
+    
         if not g.app.gui.hasSelection(w): return
         
-        self.beginCommand(undoType='move-region-up')
-    
-        i,j = g.app.gui.getSelectionRange(w)
-        if w.compare(j,'==','end'):
-            # Move region to next node.
-            pass
-        else:
-            i2 = w.index(i+' linestart - 1line')
-            j2 = w.index(i2+'lineend')
-            g.trace(i,j,i2,j2)
+        self.beginCommand(undoType='move-lines-up')
         
+        i,j = g.app.gui.getSelectionRange(w)
+        i = w.index(i+' linestart')
+        j = w.index(j+' lineend+1c')
+        i2 = w.index(i+'-1c linestart')
+        selected = w.get(i,j) # g.trace('selected',repr(selected))
+        moved = w.get(i2,i)   # g.trace('moved',repr(moved))
+        
+        if moved:
+            w.mark_set('i',i)
+            w.mark_set('j',j)
+            w.delete(i2,i)
+            if w.compare('j','==','end'):
+                w.insert('j','\n' + moved)
+            else:
+                w.insert('j',moved)
+            w.mark_set('sel.start','i')
+            w.mark_set('sel.end','j')
+            w.mark_unset('i')
+            w.mark_unset('j')
+        else: # Move the text to the bottom of the previous node.
+            p = c.currentPosition()
+            if not p.hasThreadBack(): return
+            w.delete(i,j+'+1c')
+            p.setBodyString(w.get('1.0','end'))
+            p = p.threadBack()
+            c.beginUpdate()
+            c.selectPosition(p)
+            c.endUpdate()
+            w.focus_force()
+            w.insert('end','\n'+selected)
+            g.app.gui.setSelectionRange(w,'end-%dc' % (len(selected)+1),'end-2c')
+    
         self.endCommand(changed=True,setLabel=True)
     #@nonl
-    #@-node:ekr.20060417183606.1:moveRegionUp TO DO
+    #@-node:ekr.20060417183606.1:moveLinesUp
     #@+node:ekr.20050920084036.110:reverseRegion
     def reverseRegion (self,event):
     
