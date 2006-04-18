@@ -734,9 +734,9 @@ class tkinterGui(leoGui.leoGui):
     #@nonl
     #@-node:ekr.20051126171929:hasSelection
     #@+node:ekr.20031218072017.4088:setSelectionRangeWithLength
-    def setSelectionRangeWithLength(self,t,start,length):
+    def setSelectionRangeWithLength(self,t,start,length,insert='sel.end'):
         
-        return g.app.gui.setTextSelection(t,start,"%s+%dc" % (start,length))
+        return g.app.gui.setTextSelection(t,start,"%s+%dc" % (start,length),insert=insert)
     #@nonl
     #@-node:ekr.20031218072017.4088:setSelectionRangeWithLength
     #@+node:ekr.20031218072017.4089:setTextSelection & setSelectionRange

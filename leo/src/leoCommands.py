@@ -2397,6 +2397,14 @@ class baseCommands:
     #@-node:ekr.20031218072017.1827:findMatchingBracket
     #@+node:ekr.20031218072017.1829:getBodyLines
     def getBodyLines (self,expandSelection=False):
+        
+        """Return head,lines,tail where:
+            
+        before is string containg all the lines before the selected text
+        (or the text before the insert point if no selection)
+        lines is a list of lines containing the selected text (or the line containing the insert point if no selection)
+        after is a string all lines after the selected text
+        (or the text after the insert point if no selection)"""
     
         c = self ; body = c.frame.body
         oldVview = body.getYScrollPosition()
@@ -2409,7 +2417,7 @@ class baseCommands:
             # Note: lines is the entire line containing the insert point if no selection.
             head,lines,tail = body.getSelectionLines()
     
-        lines = string.split(lines,'\n') # It would be better to use splitLines.
+        lines = string.split(lines,'\n') # It would be better to use g.splitLines.
     
         return head,lines,tail,oldSel,oldVview
     #@nonl
