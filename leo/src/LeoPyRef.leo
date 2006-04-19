@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="9381" clone_windows="0"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="9382" clone_windows="0"/>
 <globals body_outline_ratio="0.575921908894">
 	<global_window_position top="10" left="156" height="922" width="1086"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
@@ -13,14 +13,13 @@
 <v t="ekr.20031218072017.329"><vh>@thin ../doc/leoNotes.txt</vh></v>
 </v>
 <v t="EKR.20040519090151.3"><vh>Projects</vh>
-<v t="EKR.20040429143933"
-expanded="ekr.20050920085536.1,ekr.20050920085536.2,ekr.20050920085536.41,"><vh>@thin leoProjects.txt</vh></v>
+<v t="EKR.20040429143933"><vh>@thin leoProjects.txt</vh></v>
 </v>
 <v t="EKR.20040519090151.2"><vh>To do</vh>
 <v t="ekr.20040117181936"><vh>@thin ../doc/leoToDo.txt</vh></v>
 <v t="ekr.20060207133601"><vh>@thin ../doc/leoToDoLater.txt</vh></v>
 </v>
-<v t="ekr.20050924073836"><vh>4.4 projects</vh>
+<v t="ekr.20050924073836" a="V"><vh>4.4 projects</vh>
 <v t="ekr.20031218072017.2606"><vh>&lt;&lt; Import pychecker &gt;&gt;</vh></v>
 <v t="ekr.20051029070945"><vh>Pychecker report</vh></v>
 <v t="ekr.20060203112912.1"><vh>Initing</vh>
@@ -83,8 +82,8 @@ expanded="ekr.20050920085536.1,ekr.20050920085536.2,ekr.20050920085536.41,"><vh>
 <v t="ekr.20031218072017.1974"><vh>destroySelf (tkFrame)</vh></v>
 </v>
 </v>
-<v t="ekr.20050920085536.1" a="E"><vh> Birth (keyHandler)</vh>
-<v t="ekr.20050920085536.2" a="E"><vh> ctor (keyHandler)</vh>
+<v t="ekr.20050920085536.1"><vh> Birth (keyHandler)</vh>
+<v t="ekr.20050920085536.2"><vh> ctor (keyHandler)</vh>
 <v t="ekr.20051006092617"><vh>&lt;&lt; define Tk ivars &gt;&gt;</vh></v>
 <v t="ekr.20051006092617.1"><vh>&lt;&lt; define externally visible ivars &gt;&gt;</vh></v>
 <v t="ekr.20050923213858"><vh>&lt;&lt; define internal ivars &gt;&gt;</vh></v>
@@ -615,6 +614,45 @@ expanded="ekr.20050920085536.1,ekr.20050920085536.2,ekr.20050920085536.41,"><vh>
 <v t="ekr.20060414090519"><vh>4.4 b4 projects</vh>
 <v t="ekr.20060417092153"><vh>Bugs</vh>
 <v t="ekr.20060416104711.1"><vh>Investigated problems with legacy bindings</vh></v>
+<v t="ekr.20060418120328"><vh>Fixed bug when cutting text in headline</vh>
+<v t="ekr.20060419075847"><vh>Report</vh></v>
+<v t="ekr.20031218072017.840"><vh>Cut/Copy/Paste (tkFrame)</vh>
+<v t="ekr.20051011072903.2"><vh>copyText</vh></v>
+<v t="ekr.20051011072049.2"><vh>cutText</vh></v>
+<v t="ekr.20051011072903.5"><vh>pasteText</vh></v>
+</v>
+</v>
+<v t="ekr.20060419080626"><vh>Fixed crasher in open-find-dialog</vh>
+<v t="ekr.20060419080626.1"><vh>Report</vh></v>
+<v t="ekr.20060419080626.2"><vh>Traceback</vh></v>
+<v t="ekr.20041025152343.1"><vh>class leoTkinterFind</vh>
+<v t="ekr.20031218072017.3898"><vh>Birth &amp; death</vh>
+<v t="ekr.20031218072017.3899"><vh>__init__</vh>
+<v t="ekr.20031218072017.3900"><vh>&lt;&lt; create the tkinter intVars &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20031218072017.3901"><vh>destroySelf</vh></v>
+<v t="ekr.20031218072017.3902"><vh>find.createFrame</vh>
+<v t="ekr.20031218072017.3904"><vh>&lt;&lt; Create the Find and Change panes &gt;&gt;</vh>
+<v t="ekr.20041026092141"><vh>&lt;&lt; Bind Tab and control-tab &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20031218072017.3903"><vh>&lt;&lt; Create four columns of radio and checkboxes &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.3905"><vh>&lt;&lt; Create two rows of buttons &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20060207080537"><vh>find.createBindings</vh></v>
+<v t="ekr.20031218072017.2059"><vh>find.init</vh>
+<v t="ekr.20031218072017.2060"><vh>&lt;&lt; set find/change widgets &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2061"><vh>&lt;&lt; set radio buttons from ivars &gt;&gt;</vh></v>
+</v>
+</v>
+<v t="ekr.20031218072017.1460"><vh>find.update_ivars</vh></v>
+<v t="ekr.20050204090259"><vh>tkFind.adjust_find_text</vh></v>
+<v t="ekr.20031218072017.3906"><vh>onCloseWindow</vh></v>
+<v t="ekr.20051013084256"><vh>dismiss</vh></v>
+<v t="ekr.20031218072017.3907"><vh>bringToFront</vh></v>
+<v t="EKR.20040603221140"><vh>selectAllFindText</vh></v>
+<v t="ekr.20031218072017.3908"><vh>Tkinter wrappers (leoTkinterFind)</vh></v>
+</v>
+</v>
 </v>
 <v t="ekr.20060414090519.1"><vh>New features</vh>
 <v t="ekr.20060123095316"><vh>Added clear-selection command</vh>
@@ -622,6 +660,8 @@ expanded="ekr.20050920085536.1,ekr.20050920085536.2,ekr.20050920085536.41,"><vh>
 </v>
 <v t="ekr.20060415101441"><vh>Made all edit command undoable</vh></v>
 <v t="ekr.20060414092733"><vh>Added new commands</vh>
+<v t="ekr.20060418080701"><vh>What I did</vh></v>
+<v t="ekr.20060418080920"><vh>Reference</vh>
 <v t="ekr.20031218072017.4059"><vh>app.gui.Tkinter.utils</vh>
 <v t="ekr.20031218072017.844"><vh>Clipboard (tkGui)</vh>
 <v t="ekr.20031218072017.845"><vh>replaceClipboardWith</vh></v>
@@ -687,27 +727,6 @@ expanded="ekr.20050920085536.1,ekr.20050920085536.2,ekr.20050920085536.41,"><vh>
 <v t="ekr.20051215102349"><vh>beingCommandHelper</vh></v>
 </v>
 <v t="ekr.20051214133130.1"><vh>endCommand</vh></v>
-</v>
-<v t="ekr.20050920084036.31"><vh>class bufferCommandsClass</vh>
-<v t="ekr.20050920084036.32"><vh> ctor (bufferCommandsClass)</vh></v>
-<v t="ekr.20050920084036.33"><vh> getPublicCommands</vh></v>
-<v t="ekr.20050920084036.34"><vh>Entry points</vh>
-<v t="ekr.20050920084036.35"><vh>appendToBuffer</vh></v>
-<v t="ekr.20050920084036.38"><vh>killBuffer</vh></v>
-<v t="ekr.20050920084036.42"><vh>listBuffers &amp; listBuffersAlphabetically</vh></v>
-<v t="ekr.20050920084036.39"><vh>prependToBuffer (test)</vh></v>
-<v t="ekr.20050920084036.43"><vh>renameBuffer</vh></v>
-<v t="ekr.20050920084036.40"><vh>switchToBuffer</vh></v>
-<v t="ekr.20051216080913"><vh>Not ready, and not very useful</vh>
-<v t="ekr.20050920084036.36"><vh>copyToBuffer (what should this do?)</vh></v>
-<v t="ekr.20050920084036.37"><vh>insertToBuffer (test)</vh></v>
-</v>
-</v>
-<v t="ekr.20050927102133.1"><vh>Utils</vh>
-<v t="ekr.20051215121416"><vh>computeData</vh></v>
-<v t="ekr.20051215164823"><vh>findBuffer</vh></v>
-<v t="ekr.20050927093851"><vh>getBufferName</vh></v>
-</v>
 </v>
 <v t="ekr.20050920084036.53"><vh>class editCommandsClass</vh>
 <v t="ekr.20050929155208"><vh> birth</vh>
@@ -864,8 +883,8 @@ expanded="ekr.20050920085536.1,ekr.20050920085536.2,ekr.20050920085536.41,"><vh>
 <v t="ekr.20050920084036.107"><vh>indentRegion (not used: use c.indentBody instead)</vh></v>
 <v t="ekr.20050920084036.108"><vh>tabIndentRegion</vh></v>
 <v t="ekr.20050920084036.109"><vh>countRegion</vh></v>
-<v t="ekr.20060417183606"><vh>moveRegionDown TO DO</vh></v>
-<v t="ekr.20060417183606.1"><vh>moveRegionUp TO DO</vh></v>
+<v t="ekr.20060417183606"><vh>moveLinesDown</vh></v>
+<v t="ekr.20060417183606.1"><vh>moveLinesUp</vh></v>
 <v t="ekr.20050920084036.110"><vh>reverseRegion</vh></v>
 <v t="ekr.20050920084036.111"><vh>up/downCaseRegion &amp; helper</vh></v>
 </v>
@@ -887,14 +906,12 @@ expanded="ekr.20050920085536.1,ekr.20050920085536.2,ekr.20050920085536.41,"><vh>
 </v>
 <v t="ekr.20050920084036.126"><vh>tabify &amp; untabify</vh></v>
 </v>
-<v t="ekr.20060116084526.1"><vh>Added add-space/tab-to-lines and remove-space/tab-from-lines commands</vh>
-<v t="ekr.20060417171501"><vh>Request</vh></v>
-<v t="ekr.20060417171125"><vh>addSpace/TabToLines &amp; removeSpace/TabFromLines &amp; helper</vh>
-<v t="ekr.20060417172056"><vh>addRemoveHelper</vh></v>
+<v t="ekr.20050920085536.62"><vh>getArg</vh>
+<v t="ekr.20050928092516"><vh>&lt;&lt; init altX vars &gt;&gt;</vh></v>
 </v>
+<v t="ekr.20050920085536.41"><vh>fullCommand (alt-x) &amp; helper</vh>
+<v t="ekr.20050920085536.45"><vh>callAltXFunction</vh></v>
 </v>
-<v t="ekr.20060116074839.2"><vh>extend-to-word</vh></v>
-<v t="ekr.20060206103922"><vh>goto-global-line command (minibuffer interface for Go To Line Number command)</vh>
 <v t="ekr.20031218072017.2864"><vh>goToLineNumber &amp; allies</vh>
 <v t="ekr.20031218072017.2865"><vh>&lt;&lt; set root &gt;&gt;</vh></v>
 <v t="ekr.20031218072017.2866"><vh>&lt;&lt; read the file into lines &gt;&gt;</vh></v>
@@ -921,27 +938,402 @@ expanded="ekr.20050920085536.1,ekr.20050920085536.2,ekr.20050920085536.41,"><vh>
 </v>
 <v t="ekr.20031218072017.2882"><vh>skipToMatchingNodeSentinel</vh></v>
 </v>
-<v t="ekr.20060417181052"><vh>gotoGlobalLine</vh></v>
 </v>
-<v t="ekr.20060104083551"><vh>move-line-up/down</vh>
-<v t="ekr.20060417183606"><vh>moveRegionDown TO DO</vh></v>
-<v t="ekr.20060417183606.1"><vh>moveRegionUp TO DO</vh></v>
+<v t="ekr.20031218072017.2884"><vh>Edit Body submenu</vh>
+<v t="ekr.20031218072017.1704"><vh>convertAllBlanks</vh></v>
+<v t="ekr.20031218072017.1705"><vh>convertAllTabs</vh></v>
+<v t="ekr.20031218072017.1821"><vh>convertBlanks</vh></v>
+<v t="ekr.20031218072017.1822"><vh>convertTabs</vh></v>
+<v t="ekr.20031218072017.1823"><vh>createLastChildNode</vh></v>
+<v t="ekr.20031218072017.1824"><vh>dedentBody</vh></v>
+<v t="ekr.20031218072017.1706"><vh>extract</vh></v>
+<v t="ekr.20031218072017.1708"><vh>extractSection</vh>
+<v t="ekr.20031218072017.1709"><vh>&lt;&lt; Set headline for extractSection &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20031218072017.1710"><vh>extractSectionNames</vh>
+<v t="ekr.20031218072017.1711"><vh>&lt;&lt; Find the next section name &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20031218072017.1825"><vh>findBoundParagraph</vh>
+<v t="ekr.20031218072017.1826"><vh>&lt;&lt; trace head_lines, ins, tail_lines &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20031218072017.1827"><vh>findMatchingBracket</vh>
+<v t="ekr.20031218072017.1828"><vh>findMatchingBracket</vh></v>
+</v>
+<v t="ekr.20031218072017.1829"><vh>getBodyLines</vh></v>
+<v t="ekr.20031218072017.1830"><vh>indentBody</vh></v>
+<v t="ekr.20031218072017.1831"><vh>insertBodyTime &amp; allies</vh>
+<v t="ekr.20031218072017.1832"><vh>getTime &amp; test</vh></v>
+</v>
+<v t="ekr.20050312114529"><vh>insert/removeComments</vh>
+<v t="ekr.20050312114529.1"><vh>addComments</vh></v>
+<v t="ekr.20050312114529.2"><vh>deleteComments</vh></v>
+</v>
+<v t="ekr.20031218072017.1833"><vh>reformatParagraph</vh>
+<v t="ekr.20031218072017.1834"><vh>&lt;&lt; compute vars for reformatParagraph &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.1835"><vh>&lt;&lt; compute the leading whitespace &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.1836"><vh>&lt;&lt; compute the result of wrapping all lines &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.1837"><vh>&lt;&lt; update the body, selection &amp; undo state &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20031218072017.1838"><vh>updateBodyPane (handles changeNodeContents)</vh></v>
+</v>
+<v t="ekr.20060418080920.1"><vh>New or fixed commands</vh>
+<v t="ekr.20060116084526.1"><vh>Added add-space/tab-to-lines and remove-space/tab-from-lines</vh>
+<v t="ekr.20060417171501"><vh>Request</vh></v>
+<v t="ekr.20060417171125"><vh>addSpace/TabToLines &amp; removeSpace/TabFromLines &amp; helper</vh>
+<v t="ekr.20060417172056"><vh>addRemoveHelper</vh></v>
+</v>
+</v>
+<v t="ekr.20060116074839.2"><vh>extend-to-word</vh></v>
+<v t="ekr.20060417181052"><vh>gotoGlobalLine</vh></v>
+<v t="ekr.20050920084036.43"><vh>renameBuffer</vh></v>
+<v t="ekr.20060417203717"><vh>helpForCommand</vh></v>
+<v t="ekr.20060104083551"><vh>move-lines-up/down</vh>
+<v t="ekr.20060418080701.1"><vh>Request</vh></v>
+<v t="ekr.20060417183606"><vh>moveLinesDown</vh></v>
+<v t="ekr.20060417183606.1"><vh>moveLinesUp</vh></v>
+</v>
+</v>
+</v>
+</v>
+</v>
+</v>
+<v t="ekr.20060226131603"><vh>To do 4.4 b4 or final</vh>
+<v t="ekr.20060418085407"><vh>DONT DO TYPING COMPLETION FOR NUMBERS!!!</vh></v>
+<v t="ekr.20060414092733"><vh>Added new commands</vh>
+<v t="ekr.20060418080701"><vh>What I did</vh></v>
+<v t="ekr.20060418080920"><vh>Reference</vh>
+<v t="ekr.20031218072017.4059"><vh>app.gui.Tkinter.utils</vh>
+<v t="ekr.20031218072017.844"><vh>Clipboard (tkGui)</vh>
+<v t="ekr.20031218072017.845"><vh>replaceClipboardWith</vh></v>
+<v t="ekr.20031218072017.846"><vh>getTextFromClipboard</vh></v>
+</v>
+<v t="ekr.20031218072017.4060"><vh>Dialog</vh>
+<v t="ekr.20031218072017.4061"><vh>get_window_info</vh></v>
+<v t="ekr.20031218072017.4062"><vh>center_dialog</vh></v>
+<v t="ekr.20031218072017.4063"><vh>create_labeled_frame</vh></v>
+</v>
+<v t="ekr.20031218072017.4064"><vh>Focus</vh>
+<v t="ekr.20031218072017.4065"><vh>get_focus</vh></v>
+<v t="ekr.20031218072017.2373"><vh>set_focus (app.gui)</vh></v>
+</v>
+<v t="ekr.20031218072017.4066"><vh>Font</vh>
+<v t="ekr.20031218072017.2187"><vh>tkGui.getFontFromParams</vh></v>
+</v>
+<v t="ekr.20031218072017.4067"><vh>Icons</vh>
+<v t="ekr.20031218072017.4068"><vh>attachLeoIcon &amp; createLeoIcon</vh>
+<v t="ekr.20031218072017.4069"><vh>&lt;&lt; try to use the PIL and tkIcon packages to draw the icon &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.4070"><vh>createLeoIcon</vh></v>
+</v>
+</v>
+<v t="ekr.20031218072017.4071"><vh>Idle Time</vh>
+<v t="ekr.20031218072017.4072"><vh>tkinterGui.setIdleTimeHook</vh></v>
+<v t="ekr.20031218072017.4073"><vh>setIdleTimeHookAfterDelay</vh></v>
+</v>
+<v t="ekr.20031218072017.4074"><vh>Indices (Tk)</vh>
+<v t="ekr.20031218072017.4075"><vh>firstIndex</vh></v>
+<v t="ekr.20031218072017.4076"><vh>lastIndex</vh></v>
+<v t="ekr.20031218072017.4077"><vh>moveIndexBackward</vh></v>
+<v t="ekr.20031218072017.4078"><vh>moveIndexForward &amp; moveIndexToNextLine</vh></v>
+<v t="ekr.20031218072017.4079"><vh>compareIndices</vh></v>
+<v t="ekr.20031218072017.4080"><vh>getindex</vh></v>
+</v>
+<v t="ekr.20031218072017.4081"><vh>Insert Point</vh>
+<v t="ekr.20031218072017.4082"><vh>getInsertPoint</vh></v>
+<v t="ekr.20031218072017.4083"><vh>setInsertPoint</vh></v>
+</v>
+<v t="ekr.20031218072017.4084"><vh>Selection</vh>
+<v t="ekr.20031218072017.4085"><vh>getSelectionRange</vh></v>
+<v t="ekr.20051126125950"><vh>getSelectedText</vh></v>
+<v t="ekr.20031218072017.4086"><vh>getTextSelection</vh></v>
+<v t="ekr.20051126171929"><vh>hasSelection</vh></v>
+<v t="ekr.20031218072017.4088"><vh>setSelectionRangeWithLength</vh></v>
+<v t="ekr.20031218072017.4089"><vh>setTextSelection &amp; setSelectionRange</vh></v>
+</v>
+<v t="ekr.20031218072017.4090"><vh>Text</vh>
+<v t="ekr.20031218072017.4091"><vh>g.app.gui.getAllText</vh></v>
+<v t="ekr.20031218072017.4092"><vh>getCharAfterIndex</vh></v>
+<v t="ekr.20031218072017.4093"><vh>getCharAtIndex</vh></v>
+<v t="ekr.20031218072017.4094"><vh>getCharBeforeIndex</vh></v>
+<v t="ekr.20031218072017.4095"><vh>getLineContainingIndex</vh></v>
+<v t="ekr.20031218072017.4096"><vh>replaceSelectionRangeWithText (leoTkinterGui)</vh></v>
+</v>
+<v t="ekr.20031218072017.4097"><vh>Visibility</vh>
+<v t="ekr.20031218072017.4098"><vh>makeIndexVisible</vh></v>
+</v>
+<v t="ekr.20051220144507"><vh>isTextWidget</vh></v>
+</v>
+<v t="ekr.20051214132256"><vh>begin/endCommand</vh>
+<v t="ekr.20051214133130"><vh>beginCommand  &amp; beginCommandWithEvent</vh>
+<v t="ekr.20051215102349"><vh>beingCommandHelper</vh></v>
+</v>
+<v t="ekr.20051214133130.1"><vh>endCommand</vh></v>
+</v>
+<v t="ekr.20050920084036.53"><vh>class editCommandsClass</vh>
+<v t="ekr.20050929155208"><vh> birth</vh>
+<v t="ekr.20050920084036.54"><vh> ctor (editCommandsClass)</vh></v>
+<v t="ekr.20050920084036.55"><vh> getPublicCommands (editCommandsClass)</vh></v>
+</v>
+<v t="ekr.20050920084036.57"><vh>capitalization &amp; case</vh>
+<v t="ekr.20051015114221"><vh>capitalizeWord &amp; up/downCaseWord</vh></v>
+<v t="ekr.20050920084036.145"><vh>changePreviousWord (not used)</vh></v>
+<v t="ekr.20051015114221.1"><vh>capitalizeHelper</vh></v>
+</v>
+<v t="ekr.20051022142249"><vh>clicks and focus (editCommandsClass)</vh>
+<v t="ekr.20060211100905"><vh>activate-x-menu &amp; activateMenu (editCommandsClass)</vh></v>
+<v t="ekr.20051022144825.1"><vh>cycleFocus</vh></v>
+<v t="ekr.20051022144825"><vh>focusTo...</vh></v>
+<v t="ekr.20060211063744.1"><vh>clicks in the headline</vh></v>
+<v t="ekr.20060211055455"><vh>clicks in the icon box</vh></v>
+<v t="ekr.20060211062025"><vh>clickClickBox</vh></v>
+<v t="ekr.20060211063744.2"><vh>simulate...Drag</vh></v>
+</v>
+<v t="ekr.20051019183105"><vh>color &amp; font</vh>
+<v t="ekr.20051019183105.1"><vh>show-colors</vh>
+<v t="ekr.20051019183105.2"><vh>&lt;&lt; define colors &gt;&gt;</vh></v>
+<v t="ekr.20051019183105.3"><vh>createColorPicker</vh>
+<v t="ekr.20051019183105.4"><vh>&lt;&lt; create optionMenu and callback &gt;&gt;</vh></v>
+<v t="ekr.20051019183105.5"><vh>&lt;&lt; create picker button and callback &gt;&gt;</vh></v>
+</v>
+</v>
+<v t="ekr.20051019201809"><vh>show-fonts &amp; helpers</vh>
+<v t="ekr.20051019201809.1"><vh>createFontPicker</vh>
+<v t="ekr.20051019202139"><vh>&lt;&lt; create the frames &gt;&gt;</vh></v>
+<v t="ekr.20051019201809.2"><vh>&lt;&lt; create the family combo box &gt;&gt;</vh></v>
+<v t="ekr.20051019201809.3"><vh>&lt;&lt; create the size entry &gt;&gt;</vh></v>
+<v t="ekr.20051019201809.4"><vh>&lt;&lt; create the weight combo box &gt;&gt;</vh></v>
+<v t="ekr.20051019201809.5"><vh>&lt;&lt; create the slant combo box&gt;&gt;</vh></v>
+<v t="ekr.20051019202139.1"><vh>&lt;&lt; create the sample text widget &gt;&gt;</vh></v>
+<v t="ekr.20051019202328"><vh>&lt;&lt; create and bind the callbacks &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20051019201809.6"><vh>getFont</vh></v>
+<v t="ekr.20051019201809.7"><vh>setFont</vh></v>
+</v>
+</v>
+<v t="ekr.20050920084036.132"><vh>comment column...</vh>
+<v t="ekr.20050920084036.133"><vh>setCommentColumn</vh></v>
+<v t="ekr.20050920084036.134"><vh>indentToCommentColumn</vh></v>
+</v>
+<v t="ekr.20050920084036.58"><vh>dynamic abbreviation...</vh>
+<v t="ekr.20050920084036.59"><vh>dynamicExpansion</vh></v>
+<v t="ekr.20050920084036.60"><vh>dynamicExpansion2</vh></v>
+<v t="ekr.20050920084036.61"><vh>getDynamicList (helper)</vh></v>
+</v>
+<v t="ekr.20050920084036.62"><vh>esc methods for Python evaluation</vh>
+<v t="ekr.20050920084036.63"><vh>watchEscape (Revise)</vh></v>
+<v t="ekr.20050920084036.64"><vh>escEvaluate (Revise)</vh></v>
+</v>
+<v t="ekr.20050920084036.65"><vh>evalExpression</vh></v>
+<v t="ekr.20060116074839.2"><vh>extend-to-word</vh></v>
+<v t="ekr.20050920084036.66"><vh>fill column and centering</vh>
+<v t="ekr.20050920084036.67"><vh>centerLine</vh></v>
+<v t="ekr.20050920084036.68"><vh>setFillColumn</vh></v>
+<v t="ekr.20050920084036.69"><vh>centerRegion</vh></v>
+<v t="ekr.20050920084036.70"><vh>setFillPrefix</vh></v>
+<v t="ekr.20050920084036.71"><vh>_addPrefix</vh></v>
+</v>
+<v t="ekr.20060417194232"><vh>find (quick) To do: extend selection</vh>
+<v t="ekr.20060417194232.1"><vh>findCharacter</vh></v>
+<v t="ekr.20060417194232.2"><vh>findWord</vh></v>
+</v>
+<v t="ekr.20050920084036.72"><vh>goto...</vh>
+<v t="ekr.20050929115226"><vh>gotoCharacter</vh></v>
+<v t="ekr.20060417181052"><vh>gotoGlobalLine</vh></v>
+<v t="ekr.20050929124234"><vh>gotoLine</vh></v>
+</v>
+<v t="ekr.20050920084036.74"><vh>indent...</vh>
+<v t="ekr.20050920084036.75"><vh>backToIndentation</vh></v>
+<v t="ekr.20050920084036.76"><vh>deleteIndentation</vh></v>
+<v t="ekr.20050920084036.77"><vh>splitLine</vh></v>
+<v t="ekr.20050920084036.78"><vh>indentRelative</vh></v>
+</v>
+<v t="ekr.20050920084036.85"><vh>insert &amp; delete...</vh>
+<v t="ekr.20060417171125"><vh>addSpace/TabToLines &amp; removeSpace/TabFromLines &amp; helper</vh>
+<v t="ekr.20060417172056"><vh>addRemoveHelper</vh></v>
+</v>
+<v t="ekr.20051026092433.1"><vh>backwardDeleteCharacter</vh>
+<v t="ekr.20051026092746"><vh>&lt;&lt; backspace with negative tab_width &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20060415112257"><vh>clean-lines</vh></v>
+<v t="ekr.20060414085834"><vh>clearSelectedText</vh></v>
+<v t="ekr.20050920084036.87"><vh>deleteNextChar</vh></v>
+<v t="ekr.20050920084036.135"><vh>deleteSpaces</vh></v>
+<v t="ekr.20050920084036.138"><vh>insertNewLine</vh></v>
+<v t="ekr.20050920084036.86"><vh>insertNewLineAndTab</vh></v>
+<v t="ekr.20050920084036.139"><vh>insertParentheses</vh></v>
+<v t="ekr.20050920084036.141"><vh>removeBlankLines</vh></v>
+<v t="ekr.20051125080855"><vh>selfInsertCommand</vh>
+<v t="ekr.20051026171121"><vh>&lt;&lt; handle newline &gt;&gt;</vh></v>
+<v t="ekr.20051027172949"><vh>updateAutomatchBracket</vh></v>
+<v t="ekr.20051026171121.1"><vh>udpateAutoIndent</vh></v>
+<v t="ekr.20051026092433"><vh>updateTab</vh></v>
+</v>
+</v>
+<v t="ekr.20050920084036.79"><vh>info...</vh>
+<v t="ekr.20050920084036.80"><vh>howMany</vh></v>
+<v t="ekr.20050920084036.81"><vh>lineNumber</vh></v>
+<v t="ekr.20050920084036.83"><vh>viewLossage</vh></v>
+<v t="ekr.20050920084036.84"><vh>whatLine</vh></v>
+</v>
+<v t="ekr.20050920084036.88"><vh>line...</vh>
+<v t="ekr.20050920084036.90"><vh>flushLines</vh></v>
+<v t="ekr.20051002095724"><vh>keepLines</vh></v>
+<v t="ekr.20050920084036.92"><vh>linesHelper</vh></v>
+</v>
+<v t="ekr.20050920084036.147"><vh>measure</vh></v>
+<v t="ekr.20050929114218"><vh>move cursor... (leoEditCommands)</vh>
+<v t="ekr.20051218170358"><vh> helpers</vh>
+<v t="ekr.20060113130510"><vh>extendHelper</vh></v>
+<v t="ekr.20060113105246.1"><vh>moveUpOrDownHelper</vh></v>
+<v t="ekr.20051218122116"><vh>moveToHelper</vh></v>
+<v t="ekr.20051218121447"><vh>moveWordHelper</vh></v>
+<v t="ekr.20051218171457"><vh>movePastCloseHelper</vh></v>
+<v t="ekr.20051213094517"><vh>backSentenceHelper</vh></v>
+<v t="ekr.20050920084036.137"><vh>forwardSentenceHelper</vh></v>
+<v t="ekr.20051218133207.1"><vh>forwardParagraphHelper</vh></v>
+<v t="ekr.20051218133207"><vh>backwardParagraphHelper</vh></v>
+<v t="ekr.20060209095101"><vh>setMoveCol</vh></v>
+</v>
+<v t="ekr.20050920084036.136"><vh>exchangePointMark</vh></v>
+<v t="ekr.20051218174113"><vh>extendMode</vh></v>
+<v t="ekr.20050920084036.148"><vh>buffers</vh></v>
+<v t="ekr.20051213080533"><vh>characters</vh></v>
+<v t="ekr.20051218141237"><vh>lines</vh></v>
+<v t="ekr.20050920084036.140"><vh>movePastClose (test)</vh></v>
+<v t="ekr.20050920084036.102"><vh>paragraphs</vh></v>
+<v t="ekr.20050920084036.131"><vh>sentences</vh></v>
+<v t="ekr.20050920084036.149"><vh>words</vh></v>
+</v>
+<v t="ekr.20050920084036.95"><vh>paragraph...</vh>
+<v t="ekr.20050920084036.99"><vh>backwardKillParagraph</vh></v>
+<v t="ekr.20050920084036.103"><vh>fillParagraph</vh></v>
+<v t="ekr.20050920084036.100"><vh>fillRegion</vh></v>
+<v t="ekr.20050920084036.104"><vh>fillRegionAsParagraph</vh></v>
+<v t="ekr.20050920084036.98"><vh>killParagraph (Test)</vh></v>
+<v t="ekr.20050920084036.96"><vh>selectParagraph &amp; helper</vh>
+<v t="ekr.20050920084036.97"><vh>selectParagraphHelper</vh></v>
+</v>
+</v>
+<v t="ekr.20050920084036.105"><vh>region...</vh>
+<v t="ekr.20050920084036.106"><vh>setRegion</vh>
+<v t="ekr.20051002102410"><vh>down</vh></v>
+<v t="ekr.20051002102410.1"><vh>extend</vh></v>
+<v t="ekr.20051002102410.2"><vh>truncate</vh></v>
+<v t="ekr.20051002102410.3"><vh>up</vh></v>
+</v>
+<v t="ekr.20050920084036.107"><vh>indentRegion (not used: use c.indentBody instead)</vh></v>
+<v t="ekr.20050920084036.108"><vh>tabIndentRegion</vh></v>
+<v t="ekr.20050920084036.109"><vh>countRegion</vh></v>
+<v t="ekr.20060417183606"><vh>moveLinesDown</vh></v>
+<v t="ekr.20060417183606.1"><vh>moveLinesUp</vh></v>
+<v t="ekr.20050920084036.110"><vh>reverseRegion</vh></v>
+<v t="ekr.20050920084036.111"><vh>up/downCaseRegion &amp; helper</vh></v>
+</v>
+<v t="ekr.20060309060654"><vh>scrolling...</vh>
+<v t="ekr.20050920084036.116"><vh>scrollUp/Down/extendSelection</vh>
+<v t="ekr.20060113082917"><vh>scrollHelper</vh></v>
+</v>
+<v t="ekr.20060309060654.1"><vh>scrollOutlineUp/Down/Line/Page</vh></v>
+</v>
+<v t="ekr.20050920084036.117"><vh>sort...</vh>
+<v t="ekr.20050920084036.118"><vh>sortLines</vh></v>
+<v t="ekr.20050920084036.119"><vh>sortColumns</vh></v>
+<v t="ekr.20050920084036.120"><vh>sortFields</vh></v>
+</v>
+<v t="ekr.20050920084036.121"><vh>swap/transpose...</vh>
+<v t="ekr.20050920084036.122"><vh>transposeLines</vh></v>
+<v t="ekr.20050920084036.123"><vh>swapWords &amp; transposeWords</vh></v>
+<v t="ekr.20050920084036.124"><vh>swapCharacters &amp; transeposeCharacters</vh></v>
+</v>
+<v t="ekr.20050920084036.126"><vh>tabify &amp; untabify</vh></v>
 </v>
 <v t="ekr.20050920085536.62"><vh>getArg</vh>
 <v t="ekr.20050928092516"><vh>&lt;&lt; init altX vars &gt;&gt;</vh></v>
 </v>
-<v t="ekr.20060117115212"><vh>Fixed rename-buffer command</vh>
-<v t="ekr.20050920084036.43"><vh>renameBuffer</vh></v>
-</v>
-<v t="ekr.20050920085536.41" a="E"><vh>fullCommand (alt-x) &amp; helper</vh>
+<v t="ekr.20050920085536.41"><vh>fullCommand (alt-x) &amp; helper</vh>
 <v t="ekr.20050920085536.45"><vh>callAltXFunction</vh></v>
 </v>
+<v t="ekr.20031218072017.2864"><vh>goToLineNumber &amp; allies</vh>
+<v t="ekr.20031218072017.2865"><vh>&lt;&lt; set root &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2866"><vh>&lt;&lt; read the file into lines &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2867"><vh>&lt;&lt; get n, the line number, from a dialog &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2868"><vh>&lt;&lt; count outline lines, setting p,n2,found &gt;&gt; (@file-nosent only)</vh></v>
+<v t="ekr.20031218072017.2869"><vh>&lt;&lt; set p to the node given by vnodeName, etc. &gt;&gt;</vh>
+<v t="ekr.20041111093404"><vh>&lt;&lt; just scan for the node name &gt;&gt;</vh></v>
+<v t="EKR.20040609110138"><vh>&lt;&lt; 4.2: get node from gnx &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2870"><vh>&lt;&lt; 4.x: scan for the node using tnodeList and n &gt;&gt;</vh>
+<v t="ekr.20031218072017.2871"><vh>&lt;&lt; set tnodeIndex to the number of +node sentinels before line n &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2872"><vh>&lt;&lt; set p to the first vnode whose tnode is tnodeList[tnodeIndex] or set ok = false &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2873"><vh>&lt;&lt; set p to the first node whose headline matches vnodeName &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20031218072017.2874"><vh>&lt;&lt; 3.x: scan for the node with the given childIndex &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20031218072017.2875"><vh>&lt;&lt; select p and make it visible &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2876"><vh>&lt;&lt; put the cursor on line n2 of the body text &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2877"><vh>convertLineToVnodeNameIndexLine</vh>
+<v t="ekr.20031218072017.2878"><vh>&lt;&lt; set delim, leoLine from the @+leo line &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2879"><vh>&lt;&lt; scan back to  @+node, setting offset,nodeSentinelLine &gt;&gt;</vh>
+<v t="ekr.20031218072017.2880"><vh>&lt;&lt; handle delim while scanning backward &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20031218072017.2881"><vh>&lt;&lt; set vnodeName and (childIndex or gnx) from s &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20031218072017.2882"><vh>skipToMatchingNodeSentinel</vh></v>
+</v>
+</v>
+<v t="ekr.20031218072017.2884"><vh>Edit Body submenu</vh>
+<v t="ekr.20031218072017.1704"><vh>convertAllBlanks</vh></v>
+<v t="ekr.20031218072017.1705"><vh>convertAllTabs</vh></v>
+<v t="ekr.20031218072017.1821"><vh>convertBlanks</vh></v>
+<v t="ekr.20031218072017.1822"><vh>convertTabs</vh></v>
+<v t="ekr.20031218072017.1823"><vh>createLastChildNode</vh></v>
+<v t="ekr.20031218072017.1824"><vh>dedentBody</vh></v>
+<v t="ekr.20031218072017.1706"><vh>extract</vh></v>
+<v t="ekr.20031218072017.1708"><vh>extractSection</vh>
+<v t="ekr.20031218072017.1709"><vh>&lt;&lt; Set headline for extractSection &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20031218072017.1710"><vh>extractSectionNames</vh>
+<v t="ekr.20031218072017.1711"><vh>&lt;&lt; Find the next section name &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20031218072017.1825"><vh>findBoundParagraph</vh>
+<v t="ekr.20031218072017.1826"><vh>&lt;&lt; trace head_lines, ins, tail_lines &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20031218072017.1827"><vh>findMatchingBracket</vh>
+<v t="ekr.20031218072017.1828"><vh>findMatchingBracket</vh></v>
+</v>
+<v t="ekr.20031218072017.1829"><vh>getBodyLines</vh></v>
+<v t="ekr.20031218072017.1830"><vh>indentBody</vh></v>
+<v t="ekr.20031218072017.1831"><vh>insertBodyTime &amp; allies</vh>
+<v t="ekr.20031218072017.1832"><vh>getTime &amp; test</vh></v>
+</v>
+<v t="ekr.20050312114529"><vh>insert/removeComments</vh>
+<v t="ekr.20050312114529.1"><vh>addComments</vh></v>
+<v t="ekr.20050312114529.2"><vh>deleteComments</vh></v>
+</v>
+<v t="ekr.20031218072017.1833"><vh>reformatParagraph</vh>
+<v t="ekr.20031218072017.1834"><vh>&lt;&lt; compute vars for reformatParagraph &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.1835"><vh>&lt;&lt; compute the leading whitespace &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.1836"><vh>&lt;&lt; compute the result of wrapping all lines &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.1837"><vh>&lt;&lt; update the body, selection &amp; undo state &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20031218072017.1838"><vh>updateBodyPane (handles changeNodeContents)</vh></v>
+</v>
+<v t="ekr.20060418080920.1"><vh>New or fixed commands</vh>
+<v t="ekr.20060116084526.1"><vh>Added add-space/tab-to-lines and remove-space/tab-from-lines</vh>
+<v t="ekr.20060417171501"><vh>Request</vh></v>
+<v t="ekr.20060417171125"><vh>addSpace/TabToLines &amp; removeSpace/TabFromLines &amp; helper</vh>
+<v t="ekr.20060417172056"><vh>addRemoveHelper</vh></v>
+</v>
+</v>
+<v t="ekr.20060116074839.2"><vh>extend-to-word</vh></v>
+<v t="ekr.20060417181052"><vh>gotoGlobalLine</vh></v>
+<v t="ekr.20050920084036.43"><vh>renameBuffer</vh></v>
 <v t="ekr.20060417203717"><vh>helpForCommand</vh></v>
+<v t="ekr.20060104083551"><vh>move-lines-up/down</vh>
+<v t="ekr.20060418080701.1"><vh>Request</vh></v>
+<v t="ekr.20060417183606"><vh>moveLinesDown</vh></v>
+<v t="ekr.20060417183606.1"><vh>moveLinesUp</vh></v>
 </v>
 </v>
 </v>
-</v>
-<v t="ekr.20060226131603" a="V"><vh>To do 4.4 b4 or final</vh>
 <v t="ekr.20060413065803"><vh>searches 5</vh>
 <v t="ekr.20060417194232"><vh>find (quick) To do: extend selection</vh>
 <v t="ekr.20060417194232.1"><vh>findCharacter</vh></v>
@@ -1003,334 +1395,16 @@ marks="ekr.20040629121554.2,"><vh>@thin leoCommands.py</vh></v>
 <v t="ekr.20031218072017.3821"><vh>Gui Tkinter classes</vh>
 <v t="ekr.20031218072017.3838"><vh>@thin leoTkinterComparePanel.py</vh></v>
 <v t="ekr.20031218072017.3858"><vh>@thin leoTkinterDialog.py</vh></v>
-<v t="ekr.20031218072017.3897"><vh>@thin leoTkinterFind.py</vh></v>
+<v t="ekr.20031218072017.3897"
+expanded="ekr.20041025152343.1,"><vh>@thin leoTkinterFind.py</vh></v>
 <v t="ekr.20031218072017.3939"><vh>@thin leoTkinterFrame.py</vh></v>
 <v t="ekr.20031218072017.4047"><vh>@thin leoTkinterGui.py</vh></v>
 <v t="ekr.20031218072017.4099"><vh>@thin leoTkinterKeys.py</vh></v>
 <v t="ekr.20031218072017.4100"><vh>@thin leoTkinterMenu.py</vh></v>
 <v t="ekr.20040803072955"><vh>@thin leoTkinterTree.py</vh></v>
 </v>
-<v t="ekr.20031218072017.3748" a="E"
-expanded="ekr.20050920085536.1,ekr.20050920085536.2,ekr.20051001051355,ekr.20050920085536.41,"><vh>@thin leoKeys.py</vh></v>
-<v t="ekr.20050710142719"
-expanded="ekr.20060205164707,"><vh>@thin leoEditCommands.py</vh></v>
-</v>
-<v t="ekr.20060414092733"><vh>Added new commands</vh>
-<v t="ekr.20031218072017.4059"><vh>app.gui.Tkinter.utils</vh>
-<v t="ekr.20031218072017.844"><vh>Clipboard (tkGui)</vh>
-<v t="ekr.20031218072017.845"><vh>replaceClipboardWith</vh></v>
-<v t="ekr.20031218072017.846"><vh>getTextFromClipboard</vh></v>
-</v>
-<v t="ekr.20031218072017.4060"><vh>Dialog</vh>
-<v t="ekr.20031218072017.4061"><vh>get_window_info</vh></v>
-<v t="ekr.20031218072017.4062"><vh>center_dialog</vh></v>
-<v t="ekr.20031218072017.4063"><vh>create_labeled_frame</vh></v>
-</v>
-<v t="ekr.20031218072017.4064"><vh>Focus</vh>
-<v t="ekr.20031218072017.4065"><vh>get_focus</vh></v>
-<v t="ekr.20031218072017.2373"><vh>set_focus (app.gui)</vh></v>
-</v>
-<v t="ekr.20031218072017.4066"><vh>Font</vh>
-<v t="ekr.20031218072017.2187"><vh>tkGui.getFontFromParams</vh></v>
-</v>
-<v t="ekr.20031218072017.4067"><vh>Icons</vh>
-<v t="ekr.20031218072017.4068"><vh>attachLeoIcon &amp; createLeoIcon</vh>
-<v t="ekr.20031218072017.4069"><vh>&lt;&lt; try to use the PIL and tkIcon packages to draw the icon &gt;&gt;</vh></v>
-<v t="ekr.20031218072017.4070"><vh>createLeoIcon</vh></v>
-</v>
-</v>
-<v t="ekr.20031218072017.4071"><vh>Idle Time</vh>
-<v t="ekr.20031218072017.4072"><vh>tkinterGui.setIdleTimeHook</vh></v>
-<v t="ekr.20031218072017.4073"><vh>setIdleTimeHookAfterDelay</vh></v>
-</v>
-<v t="ekr.20031218072017.4074"><vh>Indices (Tk)</vh>
-<v t="ekr.20031218072017.4075"><vh>firstIndex</vh></v>
-<v t="ekr.20031218072017.4076"><vh>lastIndex</vh></v>
-<v t="ekr.20031218072017.4077"><vh>moveIndexBackward</vh></v>
-<v t="ekr.20031218072017.4078"><vh>moveIndexForward &amp; moveIndexToNextLine</vh></v>
-<v t="ekr.20031218072017.4079"><vh>compareIndices</vh></v>
-<v t="ekr.20031218072017.4080"><vh>getindex</vh></v>
-</v>
-<v t="ekr.20031218072017.4081"><vh>Insert Point</vh>
-<v t="ekr.20031218072017.4082"><vh>getInsertPoint</vh></v>
-<v t="ekr.20031218072017.4083"><vh>setInsertPoint</vh></v>
-</v>
-<v t="ekr.20031218072017.4084"><vh>Selection</vh>
-<v t="ekr.20031218072017.4085"><vh>getSelectionRange</vh></v>
-<v t="ekr.20051126125950"><vh>getSelectedText</vh></v>
-<v t="ekr.20031218072017.4086"><vh>getTextSelection</vh></v>
-<v t="ekr.20051126171929"><vh>hasSelection</vh></v>
-<v t="ekr.20031218072017.4088"><vh>setSelectionRangeWithLength</vh></v>
-<v t="ekr.20031218072017.4089"><vh>setTextSelection &amp; setSelectionRange</vh></v>
-</v>
-<v t="ekr.20031218072017.4090"><vh>Text</vh>
-<v t="ekr.20031218072017.4091"><vh>g.app.gui.getAllText</vh></v>
-<v t="ekr.20031218072017.4092"><vh>getCharAfterIndex</vh></v>
-<v t="ekr.20031218072017.4093"><vh>getCharAtIndex</vh></v>
-<v t="ekr.20031218072017.4094"><vh>getCharBeforeIndex</vh></v>
-<v t="ekr.20031218072017.4095"><vh>getLineContainingIndex</vh></v>
-<v t="ekr.20031218072017.4096"><vh>replaceSelectionRangeWithText (leoTkinterGui)</vh></v>
-</v>
-<v t="ekr.20031218072017.4097"><vh>Visibility</vh>
-<v t="ekr.20031218072017.4098"><vh>makeIndexVisible</vh></v>
-</v>
-<v t="ekr.20051220144507"><vh>isTextWidget</vh></v>
-</v>
-<v t="ekr.20051214132256"><vh>begin/endCommand</vh>
-<v t="ekr.20051214133130"><vh>beginCommand  &amp; beginCommandWithEvent</vh>
-<v t="ekr.20051215102349"><vh>beingCommandHelper</vh></v>
-</v>
-<v t="ekr.20051214133130.1"><vh>endCommand</vh></v>
-</v>
-<v t="ekr.20050920084036.31"><vh>class bufferCommandsClass</vh>
-<v t="ekr.20050920084036.32"><vh> ctor (bufferCommandsClass)</vh></v>
-<v t="ekr.20050920084036.33"><vh> getPublicCommands</vh></v>
-<v t="ekr.20050920084036.34"><vh>Entry points</vh>
-<v t="ekr.20050920084036.35"><vh>appendToBuffer</vh></v>
-<v t="ekr.20050920084036.38"><vh>killBuffer</vh></v>
-<v t="ekr.20050920084036.42"><vh>listBuffers &amp; listBuffersAlphabetically</vh></v>
-<v t="ekr.20050920084036.39"><vh>prependToBuffer (test)</vh></v>
-<v t="ekr.20050920084036.43"><vh>renameBuffer</vh></v>
-<v t="ekr.20050920084036.40"><vh>switchToBuffer</vh></v>
-<v t="ekr.20051216080913"><vh>Not ready, and not very useful</vh>
-<v t="ekr.20050920084036.36"><vh>copyToBuffer (what should this do?)</vh></v>
-<v t="ekr.20050920084036.37"><vh>insertToBuffer (test)</vh></v>
-</v>
-</v>
-<v t="ekr.20050927102133.1"><vh>Utils</vh>
-<v t="ekr.20051215121416"><vh>computeData</vh></v>
-<v t="ekr.20051215164823"><vh>findBuffer</vh></v>
-<v t="ekr.20050927093851"><vh>getBufferName</vh></v>
-</v>
-</v>
-<v t="ekr.20050920084036.53"><vh>class editCommandsClass</vh>
-<v t="ekr.20050929155208"><vh> birth</vh>
-<v t="ekr.20050920084036.54"><vh> ctor (editCommandsClass)</vh></v>
-<v t="ekr.20050920084036.55"><vh> getPublicCommands (editCommandsClass)</vh></v>
-</v>
-<v t="ekr.20050920084036.57"><vh>capitalization &amp; case</vh>
-<v t="ekr.20051015114221"><vh>capitalizeWord &amp; up/downCaseWord</vh></v>
-<v t="ekr.20050920084036.145"><vh>changePreviousWord (not used)</vh></v>
-<v t="ekr.20051015114221.1"><vh>capitalizeHelper</vh></v>
-</v>
-<v t="ekr.20051022142249"><vh>clicks and focus (editCommandsClass)</vh>
-<v t="ekr.20060211100905"><vh>activate-x-menu &amp; activateMenu (editCommandsClass)</vh></v>
-<v t="ekr.20051022144825.1"><vh>cycleFocus</vh></v>
-<v t="ekr.20051022144825"><vh>focusTo...</vh></v>
-<v t="ekr.20060211063744.1"><vh>clicks in the headline</vh></v>
-<v t="ekr.20060211055455"><vh>clicks in the icon box</vh></v>
-<v t="ekr.20060211062025"><vh>clickClickBox</vh></v>
-<v t="ekr.20060211063744.2"><vh>simulate...Drag</vh></v>
-</v>
-<v t="ekr.20051019183105"><vh>color &amp; font</vh>
-<v t="ekr.20051019183105.1"><vh>show-colors</vh>
-<v t="ekr.20051019183105.2"><vh>&lt;&lt; define colors &gt;&gt;</vh></v>
-<v t="ekr.20051019183105.3"><vh>createColorPicker</vh>
-<v t="ekr.20051019183105.4"><vh>&lt;&lt; create optionMenu and callback &gt;&gt;</vh></v>
-<v t="ekr.20051019183105.5"><vh>&lt;&lt; create picker button and callback &gt;&gt;</vh></v>
-</v>
-</v>
-<v t="ekr.20051019201809"><vh>show-fonts &amp; helpers</vh>
-<v t="ekr.20051019201809.1"><vh>createFontPicker</vh>
-<v t="ekr.20051019202139"><vh>&lt;&lt; create the frames &gt;&gt;</vh></v>
-<v t="ekr.20051019201809.2"><vh>&lt;&lt; create the family combo box &gt;&gt;</vh></v>
-<v t="ekr.20051019201809.3"><vh>&lt;&lt; create the size entry &gt;&gt;</vh></v>
-<v t="ekr.20051019201809.4"><vh>&lt;&lt; create the weight combo box &gt;&gt;</vh></v>
-<v t="ekr.20051019201809.5"><vh>&lt;&lt; create the slant combo box&gt;&gt;</vh></v>
-<v t="ekr.20051019202139.1"><vh>&lt;&lt; create the sample text widget &gt;&gt;</vh></v>
-<v t="ekr.20051019202328"><vh>&lt;&lt; create and bind the callbacks &gt;&gt;</vh></v>
-</v>
-<v t="ekr.20051019201809.6"><vh>getFont</vh></v>
-<v t="ekr.20051019201809.7"><vh>setFont</vh></v>
-</v>
-</v>
-<v t="ekr.20050920084036.132"><vh>comment column...</vh>
-<v t="ekr.20050920084036.133"><vh>setCommentColumn</vh></v>
-<v t="ekr.20050920084036.134"><vh>indentToCommentColumn</vh></v>
-</v>
-<v t="ekr.20050920084036.58"><vh>dynamic abbreviation...</vh>
-<v t="ekr.20050920084036.59"><vh>dynamicExpansion</vh></v>
-<v t="ekr.20050920084036.60"><vh>dynamicExpansion2</vh></v>
-<v t="ekr.20050920084036.61"><vh>getDynamicList (helper)</vh></v>
-</v>
-<v t="ekr.20050920084036.62"><vh>esc methods for Python evaluation</vh>
-<v t="ekr.20050920084036.63"><vh>watchEscape (Revise)</vh></v>
-<v t="ekr.20050920084036.64"><vh>escEvaluate (Revise)</vh></v>
-</v>
-<v t="ekr.20050920084036.65"><vh>evalExpression</vh></v>
-<v t="ekr.20060116074839.2"><vh>extend-to-word</vh></v>
-<v t="ekr.20050920084036.66"><vh>fill column and centering</vh>
-<v t="ekr.20050920084036.67"><vh>centerLine</vh></v>
-<v t="ekr.20050920084036.68"><vh>setFillColumn</vh></v>
-<v t="ekr.20050920084036.69"><vh>centerRegion</vh></v>
-<v t="ekr.20050920084036.70"><vh>setFillPrefix</vh></v>
-<v t="ekr.20050920084036.71"><vh>_addPrefix</vh></v>
-</v>
-<v t="ekr.20060417194232"><vh>find (quick) To do: extend selection</vh>
-<v t="ekr.20060417194232.1"><vh>findCharacter</vh></v>
-<v t="ekr.20060417194232.2"><vh>findWord</vh></v>
-</v>
-<v t="ekr.20050920084036.72"><vh>goto...</vh>
-<v t="ekr.20050929115226"><vh>gotoCharacter</vh></v>
-<v t="ekr.20060417181052"><vh>gotoGlobalLine</vh></v>
-<v t="ekr.20050929124234"><vh>gotoLine</vh></v>
-</v>
-<v t="ekr.20050920084036.74"><vh>indent...</vh>
-<v t="ekr.20050920084036.75"><vh>backToIndentation</vh></v>
-<v t="ekr.20050920084036.76"><vh>deleteIndentation</vh></v>
-<v t="ekr.20050920084036.77"><vh>splitLine</vh></v>
-<v t="ekr.20050920084036.78"><vh>indentRelative</vh></v>
-</v>
-<v t="ekr.20050920084036.85"><vh>insert &amp; delete...</vh>
-<v t="ekr.20060417171125"><vh>addSpace/TabToLines &amp; removeSpace/TabFromLines &amp; helper</vh>
-<v t="ekr.20060417172056"><vh>addRemoveHelper</vh></v>
-</v>
-<v t="ekr.20051026092433.1"><vh>backwardDeleteCharacter</vh>
-<v t="ekr.20051026092746"><vh>&lt;&lt; backspace with negative tab_width &gt;&gt;</vh></v>
-</v>
-<v t="ekr.20060415112257"><vh>clean-lines</vh></v>
-<v t="ekr.20060414085834"><vh>clearSelectedText</vh></v>
-<v t="ekr.20050920084036.87"><vh>deleteNextChar</vh></v>
-<v t="ekr.20050920084036.135"><vh>deleteSpaces</vh></v>
-<v t="ekr.20050920084036.138"><vh>insertNewLine</vh></v>
-<v t="ekr.20050920084036.86"><vh>insertNewLineAndTab</vh></v>
-<v t="ekr.20050920084036.139"><vh>insertParentheses</vh></v>
-<v t="ekr.20050920084036.141"><vh>removeBlankLines</vh></v>
-<v t="ekr.20051125080855"><vh>selfInsertCommand</vh>
-<v t="ekr.20051026171121"><vh>&lt;&lt; handle newline &gt;&gt;</vh></v>
-<v t="ekr.20051027172949"><vh>updateAutomatchBracket</vh></v>
-<v t="ekr.20051026171121.1"><vh>udpateAutoIndent</vh></v>
-<v t="ekr.20051026092433"><vh>updateTab</vh></v>
-</v>
-</v>
-<v t="ekr.20050920084036.79"><vh>info...</vh>
-<v t="ekr.20050920084036.80"><vh>howMany</vh></v>
-<v t="ekr.20050920084036.81"><vh>lineNumber</vh></v>
-<v t="ekr.20050920084036.83"><vh>viewLossage</vh></v>
-<v t="ekr.20050920084036.84"><vh>whatLine</vh></v>
-</v>
-<v t="ekr.20050920084036.88"><vh>line...</vh>
-<v t="ekr.20050920084036.90"><vh>flushLines</vh></v>
-<v t="ekr.20051002095724"><vh>keepLines</vh></v>
-<v t="ekr.20050920084036.92"><vh>linesHelper</vh></v>
-</v>
-<v t="ekr.20050920084036.147"><vh>measure</vh></v>
-<v t="ekr.20050929114218"><vh>move cursor... (leoEditCommands)</vh>
-<v t="ekr.20051218170358"><vh> helpers</vh>
-<v t="ekr.20060113130510"><vh>extendHelper</vh></v>
-<v t="ekr.20060113105246.1"><vh>moveUpOrDownHelper</vh></v>
-<v t="ekr.20051218122116"><vh>moveToHelper</vh></v>
-<v t="ekr.20051218121447"><vh>moveWordHelper</vh></v>
-<v t="ekr.20051218171457"><vh>movePastCloseHelper</vh></v>
-<v t="ekr.20051213094517"><vh>backSentenceHelper</vh></v>
-<v t="ekr.20050920084036.137"><vh>forwardSentenceHelper</vh></v>
-<v t="ekr.20051218133207.1"><vh>forwardParagraphHelper</vh></v>
-<v t="ekr.20051218133207"><vh>backwardParagraphHelper</vh></v>
-<v t="ekr.20060209095101"><vh>setMoveCol</vh></v>
-</v>
-<v t="ekr.20050920084036.136"><vh>exchangePointMark</vh></v>
-<v t="ekr.20051218174113"><vh>extendMode</vh></v>
-<v t="ekr.20050920084036.148"><vh>buffers</vh></v>
-<v t="ekr.20051213080533"><vh>characters</vh></v>
-<v t="ekr.20051218141237"><vh>lines</vh></v>
-<v t="ekr.20050920084036.140"><vh>movePastClose (test)</vh></v>
-<v t="ekr.20050920084036.102"><vh>paragraphs</vh></v>
-<v t="ekr.20050920084036.131"><vh>sentences</vh></v>
-<v t="ekr.20050920084036.149"><vh>words</vh></v>
-</v>
-<v t="ekr.20050920084036.95"><vh>paragraph...</vh>
-<v t="ekr.20050920084036.99"><vh>backwardKillParagraph</vh></v>
-<v t="ekr.20050920084036.103"><vh>fillParagraph</vh></v>
-<v t="ekr.20050920084036.100"><vh>fillRegion</vh></v>
-<v t="ekr.20050920084036.104"><vh>fillRegionAsParagraph</vh></v>
-<v t="ekr.20050920084036.98"><vh>killParagraph (Test)</vh></v>
-<v t="ekr.20050920084036.96"><vh>selectParagraph &amp; helper</vh>
-<v t="ekr.20050920084036.97"><vh>selectParagraphHelper</vh></v>
-</v>
-</v>
-<v t="ekr.20050920084036.105"><vh>region...</vh>
-<v t="ekr.20050920084036.106"><vh>setRegion</vh>
-<v t="ekr.20051002102410"><vh>down</vh></v>
-<v t="ekr.20051002102410.1"><vh>extend</vh></v>
-<v t="ekr.20051002102410.2"><vh>truncate</vh></v>
-<v t="ekr.20051002102410.3"><vh>up</vh></v>
-</v>
-<v t="ekr.20050920084036.107"><vh>indentRegion (not used: use c.indentBody instead)</vh></v>
-<v t="ekr.20050920084036.108"><vh>tabIndentRegion</vh></v>
-<v t="ekr.20050920084036.109"><vh>countRegion</vh></v>
-<v t="ekr.20060417183606"><vh>moveRegionDown TO DO</vh></v>
-<v t="ekr.20060417183606.1"><vh>moveRegionUp TO DO</vh></v>
-<v t="ekr.20050920084036.110"><vh>reverseRegion</vh></v>
-<v t="ekr.20050920084036.111"><vh>up/downCaseRegion &amp; helper</vh></v>
-</v>
-<v t="ekr.20060309060654"><vh>scrolling...</vh>
-<v t="ekr.20050920084036.116"><vh>scrollUp/Down/extendSelection</vh>
-<v t="ekr.20060113082917"><vh>scrollHelper</vh></v>
-</v>
-<v t="ekr.20060309060654.1"><vh>scrollOutlineUp/Down/Line/Page</vh></v>
-</v>
-<v t="ekr.20050920084036.117"><vh>sort...</vh>
-<v t="ekr.20050920084036.118"><vh>sortLines</vh></v>
-<v t="ekr.20050920084036.119"><vh>sortColumns</vh></v>
-<v t="ekr.20050920084036.120"><vh>sortFields</vh></v>
-</v>
-<v t="ekr.20050920084036.121"><vh>swap/transpose...</vh>
-<v t="ekr.20050920084036.122"><vh>transposeLines</vh></v>
-<v t="ekr.20050920084036.123"><vh>swapWords &amp; transposeWords</vh></v>
-<v t="ekr.20050920084036.124"><vh>swapCharacters &amp; transeposeCharacters</vh></v>
-</v>
-<v t="ekr.20050920084036.126"><vh>tabify &amp; untabify</vh></v>
-</v>
-<v t="ekr.20060116084526.1"><vh>Added add-space/tab-to-lines and remove-space/tab-from-lines commands</vh>
-<v t="ekr.20060417171501"><vh>Request</vh></v>
-<v t="ekr.20060417171125"><vh>addSpace/TabToLines &amp; removeSpace/TabFromLines &amp; helper</vh>
-<v t="ekr.20060417172056"><vh>addRemoveHelper</vh></v>
-</v>
-</v>
-<v t="ekr.20060116074839.2"><vh>extend-to-word</vh></v>
-<v t="ekr.20060206103922"><vh>goto-global-line command (minibuffer interface for Go To Line Number command)</vh>
-<v t="ekr.20031218072017.2864"><vh>goToLineNumber &amp; allies</vh>
-<v t="ekr.20031218072017.2865"><vh>&lt;&lt; set root &gt;&gt;</vh></v>
-<v t="ekr.20031218072017.2866"><vh>&lt;&lt; read the file into lines &gt;&gt;</vh></v>
-<v t="ekr.20031218072017.2867"><vh>&lt;&lt; get n, the line number, from a dialog &gt;&gt;</vh></v>
-<v t="ekr.20031218072017.2868"><vh>&lt;&lt; count outline lines, setting p,n2,found &gt;&gt; (@file-nosent only)</vh></v>
-<v t="ekr.20031218072017.2869"><vh>&lt;&lt; set p to the node given by vnodeName, etc. &gt;&gt;</vh>
-<v t="ekr.20041111093404"><vh>&lt;&lt; just scan for the node name &gt;&gt;</vh></v>
-<v t="EKR.20040609110138"><vh>&lt;&lt; 4.2: get node from gnx &gt;&gt;</vh></v>
-<v t="ekr.20031218072017.2870"><vh>&lt;&lt; 4.x: scan for the node using tnodeList and n &gt;&gt;</vh>
-<v t="ekr.20031218072017.2871"><vh>&lt;&lt; set tnodeIndex to the number of +node sentinels before line n &gt;&gt;</vh></v>
-<v t="ekr.20031218072017.2872"><vh>&lt;&lt; set p to the first vnode whose tnode is tnodeList[tnodeIndex] or set ok = false &gt;&gt;</vh></v>
-<v t="ekr.20031218072017.2873"><vh>&lt;&lt; set p to the first node whose headline matches vnodeName &gt;&gt;</vh></v>
-</v>
-<v t="ekr.20031218072017.2874"><vh>&lt;&lt; 3.x: scan for the node with the given childIndex &gt;&gt;</vh></v>
-</v>
-<v t="ekr.20031218072017.2875"><vh>&lt;&lt; select p and make it visible &gt;&gt;</vh></v>
-<v t="ekr.20031218072017.2876"><vh>&lt;&lt; put the cursor on line n2 of the body text &gt;&gt;</vh></v>
-<v t="ekr.20031218072017.2877"><vh>convertLineToVnodeNameIndexLine</vh>
-<v t="ekr.20031218072017.2878"><vh>&lt;&lt; set delim, leoLine from the @+leo line &gt;&gt;</vh></v>
-<v t="ekr.20031218072017.2879"><vh>&lt;&lt; scan back to  @+node, setting offset,nodeSentinelLine &gt;&gt;</vh>
-<v t="ekr.20031218072017.2880"><vh>&lt;&lt; handle delim while scanning backward &gt;&gt;</vh></v>
-</v>
-<v t="ekr.20031218072017.2881"><vh>&lt;&lt; set vnodeName and (childIndex or gnx) from s &gt;&gt;</vh></v>
-</v>
-<v t="ekr.20031218072017.2882"><vh>skipToMatchingNodeSentinel</vh></v>
-</v>
-<v t="ekr.20060417181052"><vh>gotoGlobalLine</vh></v>
-</v>
-<v t="ekr.20060104083551"><vh>move-line-up/down</vh>
-<v t="ekr.20060417183606"><vh>moveRegionDown TO DO</vh></v>
-<v t="ekr.20060417183606.1"><vh>moveRegionUp TO DO</vh></v>
-</v>
-<v t="ekr.20050920085536.62"><vh>getArg</vh>
-<v t="ekr.20050928092516"><vh>&lt;&lt; init altX vars &gt;&gt;</vh></v>
-</v>
-<v t="ekr.20060117115212"><vh>Fixed rename-buffer command</vh>
-<v t="ekr.20050920084036.43"><vh>renameBuffer</vh></v>
-</v>
-<v t="ekr.20050920085536.41" a="E"><vh>fullCommand (alt-x) &amp; helper</vh>
-<v t="ekr.20050920085536.45"><vh>callAltXFunction</vh></v>
-</v>
-<v t="ekr.20060417203717"><vh>helpForCommand</vh></v>
+<v t="ekr.20031218072017.3748"><vh>@thin leoKeys.py</vh></v>
+<v t="ekr.20050710142719"><vh>@thin leoEditCommands.py</vh></v>
 </v>
 </vnodes>
 <tnodes>
@@ -1440,6 +1514,14 @@ def idleTimeHookHandler(*args,**keys):
         g.app.afterHandler = g.idleTimeHookHandler
     else:
         g.app.afterHandler = None</t>
+<t tx="EKR.20040603221140">def selectAllFindText (self,event=None):
+
+    try:
+        w = self.frame.focus_get()
+        g.app.gui.setTextSelection(w,"1.0","end")
+        return "break"
+    except:
+        return None # To keep pychecker happy.</t>
 <t tx="EKR.20040609110138">found = False
 gnx = g.app.nodeIndices.scanGnx(gnx,0)
 
@@ -2248,6 +2330,40 @@ self.prolog_postfix_string = "?&gt;"
 # leo.py 3.11
 self.use_unicode = True # True: use new unicode logic.
 </t>
+<t tx="ekr.20031218072017.1460">def update_ivars (self):
+    
+    """Called just before doing a find to update ivars from the find panel."""
+
+    for key in self.intKeys:
+        val = self.dict[key].get()
+        setattr(self, key, val) # No more _flag hack.
+        # g.trace(key,val)
+
+    # Set ivars from radio buttons. Convert these to 1 or 0.
+    if 0: ###
+        find_type = self.dict["radio-find-type"].get()
+        self.pattern_match = g.choose(find_type == "pattern-search",1,0)
+        self.script_search = g.choose(find_type == "script-search",1,0)
+    
+    search_scope = self.dict["radio-search-scope"].get()
+    self.suboutline_only = g.choose(search_scope == "suboutline-only",1,0)
+    self.node_only       = g.choose(search_scope == "node-only",1,0)
+    self.selection       = g.choose(search_scope == "selection-only",1,0) # 11/9/03
+
+    # New in 4.3: The caller is responsible for removing most trailing cruft.
+    # Among other things, this allows Leo to search for a single trailing space.
+    s = self.find_ctrl.get("1.0","end")
+    s = g.toUnicode(s,g.app.tkEncoding)
+    # g.trace(repr(s))
+    if s and s[-1] in ('\r','\n'):
+        s = s[:-1]
+    self.find_text = s
+
+    s = self.change_ctrl.get("1.0","end")
+    if s and s[-1] in ('\r','\n'):
+        s = s[:-1]
+    s = g.toUnicode(s,g.app.tkEncoding)
+    self.change_text = s</t>
 <t tx="ekr.20031218072017.1490">@ This routine saves enough information so a typing operation can be undone and redone.
 
 We do nothing when called from the undo/redo logic because the Undo and Redo commands merely reset the bead pointer.
@@ -2353,6 +2469,222 @@ u.oldMiddleLines = old_middle_lines
 u.newMiddleLines = new_middle_lines
 u.oldNewlines = old_newlines
 u.newNewlines = new_newlines</t>
+<t tx="ekr.20031218072017.1704">def convertAllBlanks (self,event=None):
+    
+    c = self ; u = c.undoer ; undoType = 'Convert All Blanks'
+    current = c.currentPosition()
+
+    if g.app.batchMode:
+        c.notValidInBatchMode(undoType)
+        return
+    
+    d = g.scanDirectives(c)
+    tabWidth  = d.get("tabwidth")
+    c.beginUpdate()
+    try: # In update...
+        count = 0 ; dirtyVnodeList = []
+        u.beforeChangeGroup(current,undoType)
+        for p in current.self_and_subtree_iter():
+            # g.trace(p.headString(),tabWidth)
+            innerUndoData = u.beforeChangeNodeContents(p)
+            if p == current:
+                changed,dirtyVnodeList2 = c.convertBlanks(event)
+                if changed:
+                    count += 1
+                    dirtyVnodeList.extend(dirtyVnodeList2)
+            else:
+                changed = False ; result = []
+                text = p.t.bodyString
+                assert(g.isUnicode(text))
+                lines = string.split(text, '\n')
+                for line in lines:
+                    i,w = g.skip_leading_ws_with_indent(line,0,tabWidth)
+                    s = g.computeLeadingWhitespace(w,abs(tabWidth)) + line[i:] # use positive width.
+                    if s != line: changed = True
+                    result.append(s)
+                if changed:
+                    count += 1
+                    dirtyVnodeList2 = p.setDirty()
+                    dirtyVnodeList.extend(dirtyVnodeList2)
+                    result = string.join(result,'\n')
+                    p.setTnodeText(result)
+                    u.afterChangeNodeContents(p,undoType,innerUndoData)
+        u.afterChangeGroup(current,undoType,dirtyVnodeList=dirtyVnodeList)
+        g.es("blanks converted to tabs in %d nodes" % count) # Must come before c.endUpdate().
+    finally:
+        c.endUpdate(count &gt; 0)</t>
+<t tx="ekr.20031218072017.1705">def convertAllTabs (self,event=None):
+
+    c = self ; u = c.undoer ; undoType = 'Convert All Tabs'
+    current = c.currentPosition()
+
+    if g.app.batchMode:
+        c.notValidInBatchMode(undoType)
+        return
+    theDict = g.scanDirectives(c)
+    tabWidth  = theDict.get("tabwidth")
+    c.beginUpdate()
+    try: # In update:
+        count = 0 ; dirtyVnodeList = []
+        u.beforeChangeGroup(current,undoType)
+        for p in current.self_and_subtree_iter():
+            undoData = u.beforeChangeNodeContents(p)
+            if p == current:
+                changed,dirtyVnodeList2 = self.convertTabs(event)
+                if changed:
+                    count += 1
+                    dirtyVnodeList.extend(dirtyVnodeList2)
+            else:
+                result = [] ; changed = False
+                text = p.t.bodyString
+                assert(g.isUnicode(text))
+                lines = string.split(text, '\n')
+                for line in lines:
+                    i,w = g.skip_leading_ws_with_indent(line,0,tabWidth)
+                    s = g.computeLeadingWhitespace(w,-abs(tabWidth)) + line[i:] # use negative width.
+                    if s != line: changed = True
+                    result.append(s)
+                if changed:
+                    count += 1
+                    dirtyVnodeList2 = p.setDirty()
+                    dirtyVnodeList.extend(dirtyVnodeList2)
+                    result = string.join(result,'\n')
+                    p.setTnodeText(result)
+                    u.afterChangeNodeContents(p,undoType,undoData)
+        u.afterChangeGroup(current,undoType,dirtyVnodeList=dirtyVnodeList)
+        g.es("tabs converted to blanks in %d nodes" % count)
+    finally:
+        c.endUpdate(count &gt; 0)</t>
+<t tx="ekr.20031218072017.1706">def extract (self,event=None):
+
+    c = self ; u = c.undoer ; undoType = 'Extract'
+    current = c.currentPosition()
+    
+    if g.app.batchMode:
+        c.notValidInBatchMode(undoType)
+        return
+    
+    head,lines,tail,oldSel,oldYview = self.getBodyLines()
+    if not lines: return
+    headline = lines[0].strip() ; del lines[0]
+    
+    if not lines:
+        g.es("Nothing follows section name",color="blue")
+        return
+
+    # Remove leading whitespace from all body lines.
+    junk, ws = g.skip_leading_ws_with_indent(lines[0],0,c.tab_width)
+    strippedLines = [g.removeLeadingWhitespace(line,ws,c.tab_width)
+        for line in lines]
+    newBody = string.join(strippedLines,'\n')
+    if head: head = head.rstrip()
+
+    c.beginUpdate()
+    try: # In update...
+        u.beforeChangeGroup(current,undoType)
+        if 1: # In group...
+            undoData = u.beforeInsertNode(current)
+            p = c.createLastChildNode(current,headline,newBody)
+            u.afterInsertNode(p,undoType,undoData)
+            c.updateBodyPane(head,None,tail,undoType,oldSel,oldYview,setSel=False)
+        u.afterChangeGroup(current,undoType)
+    finally:
+        c.endUpdate()</t>
+<t tx="ekr.20031218072017.1708">def extractSection (self,event=None):
+
+    c = self ; u = c.undoer ; undoType = 'Extract Section'
+    current = c.currentPosition()
+
+    if g.app.batchMode:
+        c.notValidInBatchMode(undoType)
+        return
+    head,lines,tail,oldSel,oldYview = self.getBodyLines()
+    if not lines: return
+
+    line1 = '\n' + lines[0]
+    headline = lines[0].strip() ; del lines[0]
+    &lt;&lt; Set headline for extractSection &gt;&gt;
+    
+    if not lines:
+        g.es("Nothing follows section name",color="blue")
+        return
+    
+    # Remove leading whitespace from all body lines.
+    junk, ws = g.skip_leading_ws_with_indent(lines[0],0,c.tab_width)
+    strippedLines = [g.removeLeadingWhitespace(line,ws,c.tab_width)
+        for line in lines]
+    newBody = string.join(strippedLines,'\n')
+    if head: head = head.rstrip()
+
+    c.beginUpdate()
+    try: # In update...
+        u.beforeChangeGroup(current,undoType)
+        if 1: # In group...
+            undoData = u.beforeInsertNode(current)
+            p = c.createLastChildNode(current,headline,newBody)
+            u.afterInsertNode(p,undoType,undoData)
+            c.updateBodyPane(head+line1,None,tail,undoType,oldSel,oldYview,setSel=False)
+        u.afterChangeGroup(current,undoType)
+    finally:
+        c.endUpdate()</t>
+<t tx="ekr.20031218072017.1709">if len(headline) &lt; 5:
+    oops = True
+else:
+    head1 = headline[0:2] == '&lt;&lt;'
+    head2 = headline[0:2] == '@&lt;'
+    tail1 = headline[-2:] == '&gt;&gt;'
+    tail2 = headline[-2:] == '@&gt;'
+    oops = not (head1 and tail1) and not (head2 and tail2)
+
+if oops:
+    g.es("Selected text should start with a section name",color="blue")
+    return</t>
+<t tx="ekr.20031218072017.1710">def extractSectionNames(self,event=None):
+
+    c = self ; u = c.undoer ; undoType = 'Extract Section Names'
+    body = c.frame.body ; current = c.currentPosition()
+    
+    if g.app.batchMode:
+        c.notValidInBatchMode(undoType)
+        return
+    head,lines,tail,oldSel,oldYview = self.getBodyLines()
+    if not lines: return
+
+    c.beginUpdate()
+    try: # In update...
+        u.beforeChangeGroup(current,undoType)
+        if 1: # In group...
+            found = False
+            for s in lines:
+                &lt;&lt; Find the next section name &gt;&gt;
+                if name:
+                    undoData = u.beforeInsertNode(current)
+                    p = self.createLastChildNode(current,name,None)
+                    u.afterInsertNode(p,undoType,undoData)
+                    found = True
+            c.selectPosition(current)
+            c.validateOutline()
+            if not found:
+                g.es("Selected text should contain one or more section names",color="blue")
+        u.afterChangeGroup(current,undoType)
+    finally:
+        c.endUpdate()
+
+    # Restore the selection.
+    body.setTextSelection(oldSel)
+    body.setFocus()</t>
+<t tx="ekr.20031218072017.1711">head1 = string.find(s,"&lt;&lt;")
+if head1 &gt; -1:
+    head2 = string.find(s,"&gt;&gt;",head1)
+else:
+    head1 = string.find(s,"@&lt;")
+    if head1 &gt; -1:
+        head2 = string.find(s,"@&gt;",head1)
+        
+if head1 == -1 or head2 == -1 or head1 &gt; head2:
+    name = None
+else:
+    name = s[head1:head2+2]</t>
 <t tx="ekr.20031218072017.1723">def createMenuEntries (self,menu,table,dynamicMenu=False):
         
     '''Create a menu entry from the table.
@@ -2533,6 +2865,446 @@ self.scrollWay = None</t>
 
     if names:
         c.importCommands.importDerivedFiles(parent=p,paths=names)</t>
+<t tx="ekr.20031218072017.1821">def convertBlanks (self,event=None):
+
+    c = self ; undoType = 'Convert Blanks'
+    
+    if g.app.batchMode:
+        c.notValidInBatchMode(undoType)
+        return False
+
+    head,lines,tail,oldSel,oldYview = c.getBodyLines(expandSelection=True)
+    result = [] ; changed = False
+
+    # Use the relative @tabwidth, not the global one.
+    theDict = g.scanDirectives(c)
+    tabWidth  = theDict.get("tabwidth")
+    if not tabWidth: return False
+
+    for line in lines:
+        s = g.optimizeLeadingWhitespace(line,abs(tabWidth)) # Use positive width.
+        if s != line: changed = True
+        result.append(s)
+
+    if changed:
+        result = string.join(result,'\n')
+        dirtyVnodeList = c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview) # Handles undo
+    else:
+        dirtyVnodeList = []
+
+    return changed,dirtyVnodeList</t>
+<t tx="ekr.20031218072017.1822">def convertTabs (self,event=None):
+
+    c = self ; undoType = 'Convert Tabs'
+    
+    if g.app.batchMode:
+        c.notValidInBatchMode(undoType)
+        return False
+
+    head,lines,tail,oldSel,oldYview = self.getBodyLines(expandSelection=True)
+    result = [] ; changed = False
+    
+    # Use the relative @tabwidth, not the global one.
+    theDict = g.scanDirectives(c)
+    tabWidth  = theDict.get("tabwidth")
+    if not tabWidth: return False,None
+
+    for line in lines:
+        i,w = g.skip_leading_ws_with_indent(line,0,tabWidth)
+        s = g.computeLeadingWhitespace(w,-abs(tabWidth)) + line[i:] # use negative width.
+        if s != line: changed = True
+        result.append(s)
+
+    if changed:
+        result = string.join(result,'\n')
+        dirtyVnodeList = c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview) # Handles undo
+    else:
+        dirtyVnodeList = []
+        
+    return changed,dirtyVnodeList</t>
+<t tx="ekr.20031218072017.1823">def createLastChildNode (self,parent,headline,body):
+    
+    '''A helper function for the three extract commands.'''
+    
+    c = self
+    
+    if body and len(body) &gt; 0:
+        body = string.rstrip(body)
+    if not body or len(body) == 0:
+        body = ""
+
+    p = parent.insertAsLastChild()
+    p.initHeadString(headline)
+    p.setTnodeText(body)
+    p.setDirty()
+    c.validateOutline()
+    return p</t>
+<t tx="ekr.20031218072017.1824">def dedentBody (self,event=None):
+    
+    c = self ; undoType = 'Unindent' ; current = c.currentPosition()
+    
+    if g.app.batchMode:
+        c.notValidInBatchMode(undoType)
+        return
+
+    d = g.scanDirectives(c,current) # Support @tab_width directive properly.
+    tab_width = d.get("tabwidth",c.tab_width)
+    head,lines,tail,oldSel,oldYview = self.getBodyLines()
+    
+    result = [] ; changed = False
+    for line in lines:
+        i, width = g.skip_leading_ws_with_indent(line,0,tab_width)
+        s = g.computeLeadingWhitespace(width-abs(tab_width),tab_width) + line[i:]
+        if s != line: changed = True
+        result.append(s)
+
+    if changed:
+        result = string.join(result,'\n')
+        c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview)</t>
+<t tx="ekr.20031218072017.1825">def findBoundParagraph (self,event=None):
+    
+    c = self
+    head,ins,tail = c.frame.body.getInsertLines()
+
+    if not ins or ins.isspace() or ins[0] == '@':
+        return None,None,None,None # DTHEIN 18-JAN-2004
+        
+    head_lines = g.splitLines(head)
+    tail_lines = g.splitLines(tail)
+
+    if 0:
+        &lt;&lt; trace head_lines, ins, tail_lines &gt;&gt;
+
+    # Scan backwards.
+    i = len(head_lines)
+    while i &gt; 0:
+        i -= 1
+        line = head_lines[i]
+        if len(line) == 0 or line.isspace() or line[0] == '@':
+            i += 1 ; break
+
+    pre_para_lines = head_lines[:i]
+    para_head_lines = head_lines[i:]
+
+    # Scan forwards.
+    i = 0
+    trailingNL = False # DTHEIN 18-JAN-2004: properly capture terminating NL
+    while i &lt; len(tail_lines):
+        line = tail_lines[i]
+        if len(line) == 0 or line.isspace() or line[0] == '@':
+            trailingNL = line.endswith(u'\n') or line.startswith(u'@') # DTHEIN 21-JAN-2004
+            break
+        i += 1
+        
+#   para_tail_lines = tail_lines[:i]
+    para_tail_lines = tail_lines[:i]
+    post_para_lines = tail_lines[i:]
+    
+    head = g.joinLines(pre_para_lines)
+    result = para_head_lines 
+    result.extend([ins])
+    result.extend(para_tail_lines)
+    tail = g.joinLines(post_para_lines)
+
+    # DTHEIN 18-JAN-2004: added trailingNL to return value list
+    return head,result,tail,trailingNL # string, list, string, bool</t>
+<t tx="ekr.20031218072017.1826">if 0:
+    print ; print "head_lines"
+    for line in head_lines: print line
+    print ; print "ins", ins
+    print ; print "tail_lines"
+    for line in tail_lines: print line
+else:
+    g.es("head_lines: ",head_lines)
+    g.es("ins: ",ins)
+    g.es("tail_lines: ",tail_lines)</t>
+<t tx="ekr.20031218072017.1827">def findMatchingBracket (self,event=None):
+    
+    c = self ; body = c.frame.body
+    
+    if g.app.batchMode:
+        c.notValidInBatchMode("Match Brackets")
+        return
+
+    brackets = "()[]{}&lt;&gt;"
+    ch1 = body.getCharBeforeInsertPoint()
+    ch2 = body.getCharAtInsertPoint()
+
+    # Prefer to match the character to the left of the cursor.
+    if ch1 in brackets:
+        ch = ch1 ; index = body.getBeforeInsertionPoint()
+    elif ch2 in brackets:
+        ch = ch2 ; index = body.getInsertionPoint()
+    else:
+        return
+    
+    index2 = self.findSingleMatchingBracket(ch,index)
+    if index2:
+        if body.compareIndices(index,"&lt;=",index2):
+            adj_index = body.adjustIndex(index2,1)
+            body.setTextSelection(index,adj_index)
+        else:
+            adj_index = body.adjustIndex(index,1)
+            body.setTextSelection(index2,adj_index)
+        adj_index = body.adjustIndex(index2,1)
+        body.setInsertionPoint(adj_index)
+        body.makeIndexVisible(adj_index)
+    else:
+        g.es("unmatched '%s'",ch)</t>
+<t tx="ekr.20031218072017.1828"># To do: replace comments with blanks before scanning.
+# Test  unmatched())
+def findSingleMatchingBracket(self,ch,index):
+    
+    c = self ; body = c.frame.body
+    open_brackets  = "([{&lt;" ; close_brackets = ")]}&gt;"
+    brackets = open_brackets + close_brackets
+    matching_brackets = close_brackets + open_brackets
+    forward = ch in open_brackets
+    # Find the character matching the initial bracket.
+    for n in xrange(len(brackets)):
+        if ch == brackets[n]:
+            match_ch = matching_brackets[n]
+            break
+    level = 0
+    while 1:
+        if forward and body.compareIndices(index,"&gt;=","end"):
+            # g.trace("not found")
+            return None
+        ch2 = body.getCharAtIndex(index)
+        if ch2 == ch:
+            level += 1 #; g.trace(level,index)
+        if ch2 == match_ch:
+            level -= 1 #; g.trace(level,index)
+            if level &lt;= 0:
+                return index
+        if not forward and body.compareIndices(index,"&lt;=","1.0"):
+            # g.trace("not found")
+            return None
+        adj = g.choose(forward,1,-1)
+        index = body.adjustIndex(index,adj)
+    return 0 # unreachable: keeps pychecker happy.
+# Test  (
+# ([(x){y}]))
+# Test  ((x)(unmatched</t>
+<t tx="ekr.20031218072017.1829">def getBodyLines (self,expandSelection=False):
+    
+    """Return head,lines,tail where:
+        
+    before is string containg all the lines before the selected text
+    (or the text before the insert point if no selection)
+    lines is a list of lines containing the selected text (or the line containing the insert point if no selection)
+    after is a string all lines after the selected text
+    (or the text after the insert point if no selection)"""
+
+    c = self ; body = c.frame.body
+    oldVview = body.getYScrollPosition()
+    oldSel   = body.getTextSelection()
+
+    if expandSelection: # 12/3/03
+        lines = body.getAllText()
+        head = tail = None
+    else:
+        # Note: lines is the entire line containing the insert point if no selection.
+        head,lines,tail = body.getSelectionLines()
+
+    lines = string.split(lines,'\n') # It would be better to use g.splitLines.
+
+    return head,lines,tail,oldSel,oldVview</t>
+<t tx="ekr.20031218072017.1830">def indentBody (self,event=None):
+    
+    '''The indent-region command indents each line of the selected body text,
+    or each line of a node if there is no selected text. The @tabwidth directive
+    in effect determines amount of indentation. (not yet) A numeric argument
+    specifies the column to indent to.'''
+
+    c = self ; undoType = 'Indent Region' ; current = c.currentPosition()
+    
+    if g.app.batchMode:
+        c.notValidInBatchMode(undoType)
+        return
+
+    d = g.scanDirectives(c,current) # Support @tab_width directive properly.
+    tab_width = d.get("tabwidth",c.tab_width)
+    head,lines,tail,oldSel,oldYview = self.getBodyLines()
+
+    result = [] ; changed = False
+    for line in lines:
+        i, width = g.skip_leading_ws_with_indent(line,0,tab_width)
+        s = g.computeLeadingWhitespace(width+abs(tab_width),tab_width) + line[i:]
+        if s != line: changed = True
+        result.append(s)
+
+    if changed:
+        result = string.join(result,'\n')
+        c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview)</t>
+<t tx="ekr.20031218072017.1831">def insertBodyTime (self,event=None):
+    
+    c = self ; undoType = 'Insert Body Time'
+    
+    if g.app.batchMode:
+        c.notValidInBatchMode(undoType)
+        return
+    
+    oldSel = c.frame.body.getTextSelection()
+    c.frame.body.deleteTextSelection() # Works if nothing is selected.
+    s = self.getTime(body=True)
+
+    c.frame.body.insertAtInsertPoint(s)
+    c.frame.body.onBodyChanged(undoType,oldSel=oldSel)</t>
+<t tx="ekr.20031218072017.1832">def getTime (self,body=True):
+
+    c = self
+    default_format =  "%m/%d/%Y %H:%M:%S" # E.g., 1/30/2003 8:31:55
+    
+    # Try to get the format string from leoConfig.txt.
+    if body:
+        format = c.config.getString("body_time_format_string")
+        gmt    = c.config.getBool("body_gmt_time")
+    else:
+        format = c.config.getString("headline_time_format_string")
+        gmt    = c.config.getBool("headline_gmt_time")
+
+    if format == None:
+        format = default_format
+
+    try:
+        import time
+        if gmt:
+            s = time.strftime(format,time.gmtime())
+        else:
+            s = time.strftime(format,time.localtime())
+    except (ImportError, NameError):
+        g.es("time.strftime not available on this platform",color="blue")
+        return ""
+    except:
+        g.es_exception() # Probably a bad format string in leoSettings.leo.
+        s = time.strftime(default_format,time.gmtime())
+    return s
+</t>
+<t tx="ekr.20031218072017.1833">def reformatParagraph (self,event=None):
+
+    """Reformat a text paragraph in a Tk.Text widget
+
+Wraps the concatenated text to present page width setting. Leading tabs are
+sized to present tab width setting. First and second line of original text is
+used to determine leading whitespace in reformatted text. Hanging indentation
+is honored.
+
+Paragraph is bound by start of body, end of body, blank lines, and lines
+starting with "@". Paragraph is selected by position of current insertion
+cursor."""
+
+    c = self ; body = c.frame.body
+    
+    if g.app.batchMode:
+        c.notValidInBatchMode("xxx")
+        return
+
+    if body.hasTextSelection():
+        g.es("Text selection inhibits Reformat Paragraph",color="blue")
+        return
+
+    &lt;&lt; compute vars for reformatParagraph &gt;&gt;
+    if lines:
+        &lt;&lt; compute the leading whitespace &gt;&gt;
+        &lt;&lt; compute the result of wrapping all lines &gt;&gt;
+        &lt;&lt; update the body, selection &amp; undo state &gt;&gt;</t>
+<t tx="ekr.20031218072017.1834">theDict = g.scanDirectives(c)
+pageWidth = theDict.get("pagewidth")
+tabWidth  = theDict.get("tabwidth")
+
+original = body.getAllText()
+oldSel   = body.getTextSelection()
+oldYview = body.getYScrollPosition()
+head,lines,tail,trailingNL = c.findBoundParagraph() # DTHEIN 18-JAN-2004: add trailingNL</t>
+<t tx="ekr.20031218072017.1835">indents = [0,0] ; leading_ws = ["",""]
+
+for i in (0,1):
+    if i &lt; len(lines):
+        # Use the original, non-optimized leading whitespace.
+        leading_ws[i] = ws = g.get_leading_ws(lines[i])
+        indents[i] = g.computeWidth(ws,tabWidth)
+        
+indents[1] = max(indents)
+if len(lines) == 1:
+    leading_ws[1] = leading_ws[0]
+</t>
+<t tx="ekr.20031218072017.1836"># Remember whether the last line ended with a newline.
+lastLine = lines[-1]
+if 0: # DTHEIN 18-JAN-2004: removed because findBoundParagraph now gives trailingNL
+    trailingNL = lastLine and lastLine[-1] == '\n'
+
+# Remove any trailing newlines for wraplines.
+lines = [line[:-1] for line in lines[:-1]]
+if lastLine and not trailingNL:
+    lastLine = lastLine[:-1]
+lines.extend([lastLine])
+
+# Wrap the lines, decreasing the page width by indent.
+result = g.wrap_lines(lines,
+    pageWidth-indents[1],
+    pageWidth-indents[0])
+
+# DTHEIN 18-JAN-2004
+# prefix with the leading whitespace, if any
+paddedResult = []
+paddedResult.append(leading_ws[0] + result[0])
+for line in result[1:]:
+    paddedResult.append(leading_ws[1] + line)
+
+# Convert the result to a string.
+result = '\n'.join(paddedResult) # DTHEIN 18-JAN-2004: use paddedResult
+if 0: # DTHEIN 18-JAN-2004:  No need to do this.
+    if trailingNL:
+        result += '\n'
+</t>
+<t tx="ekr.20031218072017.1837">sel_start, sel_end = body.setSelectionAreas(head,result,tail)
+
+changed = original != head + result + tail
+undoType = g.choose(changed,"Reformat Paragraph",None)
+body.onBodyChanged(undoType,oldSel=oldSel,oldYview=oldYview)
+
+# Advance the selection to the next paragraph.
+newSel = sel_end, sel_end
+body.setTextSelection(newSel)
+body.makeIndexVisible(sel_end)
+
+c.recolor()</t>
+<t tx="ekr.20031218072017.1838">def updateBodyPane (self,head,middle,tail,undoType,oldSel,oldYview,setSel=True):
+    
+    c = self ; body = c.frame.body ; p = c.currentPosition()
+    
+    # g.trace(undoType)
+
+    # Update the text and notify the event handler.
+    body.setSelectionAreas(head,middle,tail)
+
+    if setSel and oldSel:
+        body.setTextSelection(oldSel)
+
+    # This handles the undo.
+    body.onBodyChanged(undoType,oldSel=oldSel,oldYview=oldYview)
+
+    # Update the changed mark and icon.
+    c.beginUpdate()
+    try: # In update...
+        c.setChanged(True)
+        if p.isDirty():
+            dirtyVnodeList = []
+        else:
+            dirtyVnodeList = p.setDirty()
+    finally:
+        c.endUpdate()
+
+    # Scroll as necessary.
+    if oldYview:
+        body.setYScrollPosition(oldYview)
+    else:
+        body.makeInsertPointVisible()
+
+    body.setFocus()
+    c.recolor()
+    return dirtyVnodeList</t>
 <t tx="ekr.20031218072017.1974">def destroySelf (self):
     
     # Remember these: we are about to destroy all of our ivars!
@@ -2653,6 +3425,53 @@ vList = [] ; tDict = {} # Remove these references immediately.</t>
         g.es("exceptions opening: %s" % (fileName),color="red")
         g.es_exception()
         return False, None</t>
+<t tx="ekr.20031218072017.2059">def init (self,c):
+
+    # N.B.: separate c.ivars are much more convenient than a dict.
+    for key in self.intKeys:
+        # New in 4.3: get ivars from @settings.
+        val = c.config.getBool(key)
+        setattr(self,key,val)
+        val = g.choose(val,1,0) # Work around major Tk problem.
+        self.dict[key].set(val)
+        # g.trace(key,val)
+
+    &lt;&lt; set find/change widgets &gt;&gt;
+    &lt;&lt; set radio buttons from ivars &gt;&gt;</t>
+<t tx="ekr.20031218072017.2060">self.find_ctrl.delete("1.0","end")
+self.change_ctrl.delete("1.0","end")
+
+# New in 4.3: Get setting from @settings.
+for w,setting,defaultText in (
+    (self.find_ctrl,"find_text",'&lt;find pattern here&gt;'),
+    (self.change_ctrl,"change_text",''),
+):
+    s = c.config.getString(setting)
+    if not s: s = defaultText
+    w.insert("end",s)</t>
+<t tx="ekr.20031218072017.2061">found = False
+for var,setting in (
+    ("pattern_match","pattern-search"),
+    ("script_search","script-search")):
+    val = self.dict[var].get()
+    if val:
+        self.dict["radio-find-type"].set(setting)
+        found = True ; break
+if not found:
+    self.dict["radio-find-type"].set("plain-search")
+    
+found = False
+for var,setting in (
+    ("suboutline_only","suboutline-only"),
+    ("node_only","node-only"),
+    # ("selection_only","selection-only"),
+):
+    val = self.dict[var].get()
+    if val:
+        self.dict["radio-search-scope"].set(setting)
+        found = True ; break
+if not found:
+    self.dict["radio-search-scope"].set("entire-outline")</t>
 <t tx="ekr.20031218072017.2176">def finishCreate (self,c):
     
     f = self ; f.c = c
@@ -3653,6 +4472,7 @@ if not vnodeName:
         
     # g.trace(n)
     return n</t>
+<t tx="ekr.20031218072017.2884"></t>
 <t tx="ekr.20031218072017.2950">@
 **Important** These methods ensure that exactly zero or one (depending on the
 argument to endUpdate) redraws exist within the section of code bounded by
@@ -3883,6 +4703,222 @@ else:
 
     return s1 == s2</t>
 <t tx="ekr.20031218072017.3821"></t>
+<t tx="ekr.20031218072017.3898"></t>
+<t tx="ekr.20031218072017.3899">def __init__(self,c,resizeable=False,title=None,show=True):
+
+    g.trace("leoTkinterFind",c)
+    
+    # Init the base classes...
+    leoFind.leoFind.__init__(self,c,title=title)
+    leoTkinterDialog.leoTkinterDialog.__init__(self,c,self.title,resizeable,show=show)
+
+    &lt;&lt; create the tkinter intVars &gt;&gt;
+    
+    # These are created later.
+    self.find_ctrl = None
+    self.change_ctrl = None 
+    
+    self.createTopFrame() # Create the outer tkinter dialog frame.
+    self.createFrame()
+    if self.top and not show:
+        self.top.withdraw()
+    self.init(c) # New in 4.3: init only once.</t>
+<t tx="ekr.20031218072017.3900">self.dict = {}
+
+for key in self.intKeys:
+    self.dict[key] = Tk.IntVar()
+
+for key in self.newStringKeys:
+    self.dict[key] = Tk.StringVar()
+    
+self.s_ctrl = Tk.Text() # Used by find.search()</t>
+<t tx="ekr.20031218072017.3901">def destroySelf (self):
+    
+    self.top.destroy()</t>
+<t tx="ekr.20031218072017.3902">def createFrame (self):
+    
+    # g.trace('legacy')
+
+    # Create the find panel...
+    outer = Tk.Frame(self.frame,relief="groove",bd=2)
+    outer.pack(padx=2,pady=2)
+
+    &lt;&lt; Create the Find and Change panes &gt;&gt;
+    &lt;&lt; Create four columns of radio and checkboxes &gt;&gt;
+    &lt;&lt; Create two rows of buttons &gt;&gt;
+
+    self.top.protocol("WM_DELETE_WINDOW", self.onCloseWindow)</t>
+<t tx="ekr.20031218072017.3903">columnsFrame = Tk.Frame(outer,relief="groove",bd=2)
+columnsFrame.pack(anchor="e",expand=1,padx="7p",pady="2p") # Don't fill.
+
+numberOfColumns = 4 # Number of columns
+columns = [] ; radioLists = [] ; checkLists = []
+for i in xrange(numberOfColumns):
+    columns.append(Tk.Frame(columnsFrame,bd=1))
+    radioLists.append([])
+    checkLists.append([])
+
+for i in xrange(numberOfColumns):
+    columns[i].pack(side="left",padx="1p") # fill="y" Aligns to top. padx expands columns.
+    
+# HotKeys used for check/radio buttons:  a,b,c,e,h,i,l,m,n,o,p,r,s,t,w
+
+radioLists[0] = [
+    (self.dict["radio-find-type"],"P&amp;Lain Search","plain-search"),  
+    (self.dict["radio-find-type"],"&amp;Pattern Match Search","pattern-search"),
+    (self.dict["radio-find-type"],"&amp;Script Search","script-search")]
+checkLists[0] = [
+    ("Scrip&amp;t Change",self.dict["script_change"])]
+checkLists[1] = [
+    ("&amp;Whole Word",  self.dict["whole_word"]),
+    ("&amp;Ignore Case", self.dict["ignore_case"]),
+    ("Wrap &amp;Around", self.dict["wrap"]),
+    ("&amp;Reverse",     self.dict["reverse"])]
+radioLists[2] = [
+    (self.dict["radio-search-scope"],"&amp;Entire Outline","entire-outline"),
+    (self.dict["radio-search-scope"],"Suboutline &amp;Only","suboutline-only"),  
+    (self.dict["radio-search-scope"],"&amp;Node Only","node-only"),
+    # I don't know what selection-only is supposed to do.
+    (self.dict["radio-search-scope"],"Selection Only",None)] #,"selection-only")]
+checkLists[2] = []
+checkLists[3] = [
+    ("Search &amp;Headline Text", self.dict["search_headline"]),
+    ("Search &amp;Body Text",     self.dict["search_body"]),
+    ("&amp;Mark Finds",           self.dict["mark_finds"]),
+    ("Mark &amp;Changes",         self.dict["mark_changes"])]
+
+for i in xrange(numberOfColumns):
+    for var,name,val in radioLists[i]:
+        box = underlinedTkButton("radio",columns[i],anchor="w",text=name,variable=var,value=val)
+        box.button.pack(fill="x")
+        box.button.bind("&lt;1&gt;", self.resetWrap)
+        if val == None: box.button.configure(state="disabled")
+        box.bindHotKey(ftxt)
+        box.bindHotKey(ctxt)
+    for name,var in checkLists[i]:
+        box = underlinedTkButton("check",columns[i],anchor="w",text=name,variable=var)
+        box.button.pack(fill="x")
+        box.button.bind("&lt;1&gt;", self.resetWrap)
+        box.bindHotKey(ftxt)
+        box.bindHotKey(ctxt)
+        if var is None: box.button.configure(state="disabled")</t>
+<t tx="ekr.20031218072017.3904">fc = Tk.Frame(outer, bd="1m")
+fc.pack(anchor="n", fill="x", expand=1)
+
+# Removed unused height/width params: using fractions causes problems in some locales!
+fpane = Tk.Frame(fc, bd=1)
+cpane = Tk.Frame(fc, bd=1)
+
+fpane.pack(anchor="n", expand=1, fill="x")
+cpane.pack(anchor="s", expand=1, fill="x")
+
+# Create the labels and text fields...
+flab = Tk.Label(fpane, width=8, text="Find:")
+clab = Tk.Label(cpane, width=8, text="Change:")
+
+# Use bigger boxes for scripts.
+self.find_ctrl   = ftxt = Tk.Text(fpane,bd=1,relief="groove",height=4,width=20)
+self.change_ctrl = ctxt = Tk.Text(cpane,bd=1,relief="groove",height=4,width=20)
+
+&lt;&lt; Bind Tab and control-tab &gt;&gt;
+
+fBar = Tk.Scrollbar(fpane,name='findBar')
+cBar = Tk.Scrollbar(cpane,name='changeBar')
+
+# Add scrollbars.
+for bar,txt in ((fBar,ftxt),(cBar,ctxt)):
+    txt['yscrollcommand'] = bar.set
+    bar['command'] = txt.yview
+    bar.pack(side="right", fill="y")
+
+flab.pack(side="left")
+clab.pack(side="left")
+ctxt.pack(side="right", expand=1, fill="both")
+ftxt.pack(side="right", expand=1, fill="both")</t>
+<t tx="ekr.20031218072017.3905"># Create the button panes
+buttons  = Tk.Frame(outer,bd=1)
+buttons2 = Tk.Frame(outer,bd=1)
+buttons.pack (anchor="n",expand=1,fill="x")
+buttons2.pack(anchor="n",expand=1,fill="x")
+
+# In 4.4 it's dubious to define these keys.  For example, Alt-x must be reserved!
+# HotKeys used for check/radio buttons:  a,b,c,e,h,i,l,m,n,o,p,r,s,t,w
+# HotKeys used for plain buttons (enter),d,g,t
+
+def findButtonCallback(event=None,self=self):
+    self.findButton()
+    return 'break'
+
+# Create the first row of buttons
+findButton=Tk.Button(buttons,
+    width=9,text="Find",bd=4,command=findButtonCallback) # The default.
+
+findButton.pack(pady="1p",padx="25p",side="left")
+
+contextBox = underlinedTkButton("check",buttons,
+    anchor="w",text="Show Conte&amp;xt",variable=self.dict["batch"])
+contextBox.button.pack(pady="1p",side="left",expand=1)
+contextBox.bindHotKey(ftxt)
+contextBox.bindHotKey(ctxt)
+
+findAllButton = underlinedTkButton("button",buttons,
+    width=9,text="Fin&amp;d All",command=self.findAllButton)
+findAllButton.button.pack(pady="1p",padx="25p",side="right",fill="x")
+findAllButton.bindHotKey(ftxt)
+findAllButton.bindHotKey(ctxt)
+
+# Create the second row of buttons
+changeButton = underlinedTkButton("button",buttons2,
+    width=10,text="Chan&amp;Ge",command=self.changeButton)
+changeButton.button.pack(pady="1p",padx="25p",side="left")
+changeButton.bindHotKey(ftxt)
+changeButton.bindHotKey(ctxt)
+
+changeFindButton = underlinedTkButton("button",buttons2,
+    text="Change, &amp;Then Find",command=self.changeThenFindButton)
+changeFindButton.button.pack(pady="1p",side="left",expand=1)
+changeFindButton.bindHotKey(ftxt)
+changeFindButton.bindHotKey(ctxt)
+    
+changeAllButton = underlinedTkButton("button",buttons2,
+    width=10,text="Change All",command=self.changeAllButton)
+changeAllButton.button.pack(pady="1p",padx="25p",side="right")
+changeAllButton.bindHotKey(ftxt)
+changeAllButton.bindHotKey(ctxt)</t>
+<t tx="ekr.20031218072017.3906">def onCloseWindow(self,event=None):
+    
+    __pychecker__ = '--no-argsused' # the event param must be present.
+    
+    g.trace()
+
+    self.top.withdraw()</t>
+<t tx="ekr.20031218072017.3907">def bringToFront (self):
+    
+    """Bring the tkinter Find Panel to the front."""
+    
+    c = self.c ; t = self.find_ctrl ; gui = g.app.gui
+            
+    self.top.withdraw() # Helps bring the window to the front.
+    self.top.deiconify()
+    self.top.lift()
+    c.widgetWantsFocusNow(t)
+    
+    # Apparently, the text can not be adjusted unless the widget has focus...
+    s = t.get('1.0','end')
+    if s and s[-1] in ('\n','\r'):
+        t.delete('end-1c','end')
+
+    # New in 4.3: don't highlight the stupid added trailing newline!
+    gui.setTextSelection (t,"1.0","end-1c") # Thanks Rich.</t>
+<t tx="ekr.20031218072017.3908">def gui_search (self,t,*args,**keys):
+    return t.search(*args,**keys)
+
+def init_s_ctrl (self,s):
+    t = self.s_ctrl
+    t.delete("1.0","end")
+    t.insert("end",s)
+    t.mark_set("insert",g.choose(self.reverse,"end","1.0"))
+    return t</t>
 <t tx="ekr.20031218072017.3941"></t>
 <t tx="ekr.20031218072017.3942">def __repr__ (self):
 
@@ -4254,9 +5290,9 @@ def moveIndexToNextLine(self,t,index):
         # Return the insertion point if there is no selected text.
         insert = t.index("insert")
         return insert,insert</t>
-<t tx="ekr.20031218072017.4088">def setSelectionRangeWithLength(self,t,start,length):
+<t tx="ekr.20031218072017.4088">def setSelectionRangeWithLength(self,t,start,length,insert='sel.end'):
     
-    return g.app.gui.setTextSelection(t,start,"%s+%dc" % (start,length))</t>
+    return g.app.gui.setTextSelection(t,start,"%s+%dc" % (start,length),insert=insert)</t>
 <t tx="ekr.20031218072017.4089">def setTextSelection (self,t,start,end,insert='sel.end'):
     
     """tk gui: set the selection range in Tk.Text widget t."""
@@ -5266,6 +6302,34 @@ setCurrentVnode = setCurrentPosition</t>
     
 # For compatibiility with old scripts.
 setRootVnode = setRootPosition</t>
+<t tx="ekr.20041025152343.1">class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
+
+    """A class that implements Leo's tkinter find dialog."""
+
+    @others</t>
+<t tx="ekr.20041026092141">def setFocus(w):
+    c = self.c
+    c.widgetWantsFocus(w)
+    g.app.gui.setSelectionRange(w,"1.0","1.0")
+    return "break"
+    
+def toFind(event,w=ftxt): return setFocus(w)
+def toChange(event,w=ctxt): return setFocus(w)
+
+def insertTab(w):
+    data = g.app.gui.getSelectionRange(w)
+    if data: start,end = data
+    else: start = end = g.app.gui.getInsertPoint(w)
+    g.app.gui.replaceSelectionRangeWithText(w,start,end,"\t")
+    return "break"
+
+def insertFindTab(event,w=ftxt): return insertTab(w)
+def insertChangeTab(event,w=ctxt): return insertTab(w)
+
+ftxt.bind("&lt;Tab&gt;",toChange)
+ctxt.bind("&lt;Tab&gt;",toFind)
+ftxt.bind("&lt;Control-Tab&gt;",insertFindTab)
+ctxt.bind("&lt;Control-Tab&gt;",insertChangeTab)</t>
 <t tx="ekr.20041107093834"># Default forth keywords: extended by leo-forthwords.txt.
 forth_keywords = [
     "variable", "constant", "code", "end-code",
@@ -5718,6 +6782,96 @@ else:
             g.es('Exception in setUndoRedoTypingParams',color='blue')
             g.es_exception()
             newBead = True</t>
+<t tx="ekr.20050204090259">def adjust_find_text(self,s):
+    
+    w = self.find_ctrl
+    
+    w.delete("1.0","end")
+    w.insert("end",s)</t>
+<t tx="ekr.20050312114529"></t>
+<t tx="ekr.20050312114529.1">def addComments (self,event=None):
+
+    c = self ; undoType = 'Add Comments' ; p = c.currentPosition()
+    
+    d = g.scanDirectives(c,p)
+    # d1 is the line delim.
+    d1,d2,d3 = d.get('delims')
+
+    head,lines,tail,oldSel,oldYview = self.getBodyLines()
+    result = []
+    if not lines:
+        g.es('No text selected',color='blue')
+        return
+    
+    if d1:
+        # Append the single-line comment delim in front of each line
+        for line in lines:
+            i = g.skip_ws(line,0)
+            result.append('%s%s %s' % (line[0:i],d1,line[i:]))
+    else:
+        n = len(lines)
+        for i in xrange(n):
+            line = lines[i]
+            if i not in (0,n-1):
+                result.append(line)
+            if i == 0:
+                j = g.skip_ws(line,0)
+                result.append('%s%s %s' % (line[0:j],d2,line[j:]))
+            if i == n-1:
+                j = len(line.rstrip())
+                result.append('%s %s' % (line[0:j],d3))
+
+    result = string.join(result,'\n')
+    c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview)</t>
+<t tx="ekr.20050312114529.2">def deleteComments (self,event=None):
+
+    c = self ; undoType = 'Delete Comments' ; p = c.currentPosition()
+    
+    d = g.scanDirectives(c,p)
+    # d1 is the line delim.
+    d1,d2,d3 = d.get('delims')
+
+    head,lines,tail,oldSel,oldYview = self.getBodyLines()
+    result = []
+    if not lines:
+        g.es('No text selected',color='blue')
+        return
+    
+    if d1:
+        # Append the single-line comment delim in front of each line
+        for line in lines:
+            i = g.skip_ws(line,0)
+            if g.match(line,i,d1):
+                j = g.skip_ws(line,i + len(d1))
+                result.append(line[0:i] + line[j:])
+            else:
+                result.append(line)
+    else:
+        n = len(lines)
+        for i in xrange(n):
+            line = lines[i]
+            if i not in (0,n-1):
+                result.append(line)
+            if i == 0:
+                j = g.skip_ws(line,0)
+                if g.match(line,j,d2):
+                    k = g.skip_ws(line,j + len(d2))
+                    result.append(line[0:j] + line[k:])
+                else:
+                    g.es("'%s' not found" % (d2),color='blue')
+                    return
+            if i == n-1:
+                if i == 0:
+                    line = result[0] ; result = []
+                s = line.rstrip()
+                if s.endswith(d3):
+                    result.append(s[:-len(d3)].rstrip())
+                else:
+                    g.es("'%s' not found" % (d3),color='blue')
+                    return
+
+    result = string.join(result,'\n')
+    c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview)</t>
 <t tx="ekr.20050405103712">if fileName and g.os_path_exists(fileName):
     self.deleteFileWithMessage(fileName,'')
 </t>
@@ -6207,175 +7361,6 @@ Two (recently written) functions in leoGlobals.py support conversions from Pytho
 - g.convertRowColToPythonIndex does the reverse.
 
 Important:  the first Tkinter index is '1.0', not '0.0', but the row returned by g.convertPythonIndexToRowCol is zero based, so the code that actually creates Tkinter indices from row/col must add 1 to the row.  Similar remarks apply when going in the reverse direction.</t>
-<t tx="ekr.20050920084036.31">@ An Emacs instance does not have knowledge of what is considered a buffer in the environment.
-
-The call to setBufferInteractionMethods calls the buffer configuration methods.
-@c
-
-class bufferCommandsClass (baseEditCommandsClass):
-
-    @others</t>
-<t tx="ekr.20050920084036.32">def __init__ (self,c):
-    
-    baseEditCommandsClass.__init__(self,c) # init the base class.
-    
-    self.fromName = '' # Saved name from getBufferName.
-    self.nameList = [] # [n: &lt;headline&gt;]
-    self.names = {}
-    self.tnodes = {} # Keys are n: &lt;headline&gt;, values are tnodes.
-    
-    try:
-        self.w = c.frame.body.bodyCtrl
-    except AttributeError:
-        self.w = None</t>
-<t tx="ekr.20050920084036.33">def getPublicCommands (self):
-
-    return {
-    
-        # These do not seem useful.
-            # 'copy-to-buffer':               self.copyToBuffer,
-            # 'insert-to-buffer':             self.insertToBuffer,
-       
-        'append-to-buffer':             self.appendToBuffer,
-        'kill-buffer' :                 self.killBuffer,
-        'list-buffers' :                self.listBuffers,
-        'list-buffers-alphabetically':  self.listBuffersAlphabetically,
-        'prepend-to-buffer':            self.prependToBuffer,
-        'rename-buffer':                self.renameBuffer,
-        'switch-to-buffer':             self.switchToBuffer,
-    }</t>
-<t tx="ekr.20050920084036.34"></t>
-<t tx="ekr.20050920084036.35">def appendToBuffer (self,event):
-
-    self.k.setLabelBlue('Append to buffer: ')
-    self.getBufferName(self.appendToBufferFinisher)
-
-def appendToBufferFinisher (self,name):
-
-    c = self.c ; k = self.k ; w = self.w
-    s = g.app.gui.getSelectedText(w)
-    p = self.findBuffer(name)
-    if s and p:
-        c.beginUpdate()
-        try:
-            c.selectPosition(p)
-            self.beginCommand('append-to-buffer: %s' % p.headString())
-            w.insert('end',s)
-            w.mark_set('insert','end')
-            w.see('end')
-            self.endCommand()
-        finally:
-            c.endUpdate()
-            c.recolor_now()</t>
-<t tx="ekr.20050920084036.36">def copyToBuffer (self,event):
-
-    self.k.setLabelBlue('Copy to buffer: ')
-    self.getBufferName(self.copyToBufferFinisher)
-
-def copyToBufferFinisher (self,event,name):
-
-    c = self.c ; k = self.k ; w = self.w
-    s = g.app.gui.getSelectedText(w)
-    p = self.findBuffer(name)
-    if s and p:
-        c.beginUpdate()
-        try:
-            c.selectPosition(p)
-            self.beginCommand('copy-to-buffer: %s' % p.headString())
-            w.insert('end',s)
-            w.mark_set('insert','end')
-            w.see('end')
-            self.endCommand()
-        finally:
-            c.endUpdate()
-            c.recolor_now()</t>
-<t tx="ekr.20050920084036.37">def insertToBuffer (self,event):
-
-    self.k.setLabelBlue('Insert to buffer: ')
-    self.getBufferName(self.insertToBufferFinisher)
-
-def insertToBufferFinisher (self,event,name):
-    
-    c = self.c ; k = self.k ; w = self.w
-    s = g.app.gui.getSelectedText(w)
-    p = self.findBuffer(name)
-    if s and p:
-        c.beginUpdate()
-        try:
-            c.selectPosition(p)
-            self.beginCommand('insert-to-buffer: %s' % p.headString())
-            w.insert('insert',s)
-            w.see('insert')
-            self.endCommand()
-        finally:
-            c.endUpdate()</t>
-<t tx="ekr.20050920084036.38">def killBuffer (self,event):
-
-    self.k.setLabelBlue('Kill buffer: ')
-    self.getBufferName(self.killBufferFinisher)
-
-def killBufferFinisher (self,name):
-
-    c = self.c ; p = self.findBuffer(name)
-    if p:
-        h = p.headString()
-        current = c.currentPosition()
-        c.selectPosition(p)
-        c.deleteOutline (op_name='kill-buffer: %s' % h)
-        c.selectPosition(current)
-        self.k.setLabelBlue('Killed buffer: %s' % h)</t>
-<t tx="ekr.20050920084036.39">def prependToBuffer (self,event):
-
-    self.k.setLabelBlue('Prepend to buffer: ')
-    self.getBufferName(self.prependToBufferFinisher)
-    
-def prependToBufferFinisher (self,event,name):
-    
-    c = self.c ; k = self.k ; w = self.w
-    s = g.app.gui.getSelectedText(w)
-    p = self.findBuffer(name)
-    if s and p:
-        c.beginUpdate()
-        try:
-            c.selectPosition(p)
-            self.beginCommand('prepend-to-buffer: %s' % p.headString())
-            w.insert('1.0',s)
-            w.mark_set('insert','1.0')
-            w.see('1.0')
-            self.endCommand()
-        finally:
-            c.endUpdate()
-            c.recolor_now()</t>
-<t tx="ekr.20050920084036.40">def switchToBuffer (self,event):
-
-    self.k.setLabelBlue('Switch to buffer: ')
-    self.getBufferName(self.switchToBufferFinisher)
-    
-def switchToBufferFinisher (self,name):
-    
-    c = self.c ; p = self.findBuffer(name)
-    if p:
-        c.beginUpdate()
-        try:
-            c.selectPosition(p)
-        finally:
-            c.endUpdate()</t>
-<t tx="ekr.20050920084036.42">def listBuffers (self,event):
-    
-    self.computeData()
-    
-    g.es('Buffers...')
-    for name in self.nameList:
-        g.es(name)
-        
-def listBuffersAlphabetically (self,event):
-    
-    self.computeData()
-    names = self.nameList[:] ; names.sort()
-    
-    g.es('Buffers...')
-    for name in names:
-        g.es(name)</t>
 <t tx="ekr.20050920084036.43">def renameBuffer (self,event):
     
     self.k.setLabelBlue('Rename buffer from: ')
@@ -6521,10 +7506,10 @@ def renameBufferFinisher2 (self,name):
         'keep-lines':                           self.keepLines,
         'kill-paragraph':                       self.killParagraph,
         'line-number':                          self.lineNumber,
+        'move-lines-down':                      self.moveLinesDown,
+        'move-lines-up':                        self.moveLinesUp,
         'move-past-close':                      self.movePastClose,
         'move-past-close-extend-selection':     self.movePastCloseExtendSelection,
-        'move-region-down':                     self.moveRegionDown,
-        'move-region-up':                       self.moveRegionUp,
         'newline-and-indent':                   self.insertNewLineAndTab,
         'next-line':                            self.nextLine,
         'next-line-extend-selection':           self.nextLineExtendSelection,
@@ -8272,25 +9257,6 @@ self.afterGetArgState = None
 self.argTabList = []
 self.modeBindingsDict = {}</t>
 <t tx="ekr.20050924073836"></t>
-<t tx="ekr.20050927093851">def getBufferName (self,finisher):
-    
-    '''Get a buffer name into k.arg and call k.setState(kind,n,handler).'''
-    
-    k = self.k ; c = k.c ; state = k.getState('getBufferName')
-    
-    if state == 0:
-        self.computeData()
-        self.getBufferNameFinisher = finisher
-        prefix = k.getLabel() ; event = None
-        k.getArg(event,'getBufferName',1,self.getBufferName,
-            prefix=prefix,tabList=self.nameList)
-    else:
-        k.resetLabel()
-        k.clearState()
-        finisher = self.getBufferNameFinisher
-        self.getBufferNameFinisher = None
-        finisher(k.arg)</t>
-<t tx="ekr.20050927102133.1"></t>
 <t tx="ekr.20050928092516">k.argTabList = tabList and tabList[:] or []
 k.arg_completion = completion
 
@@ -8643,6 +9609,7 @@ def createStatusLineComponents (self):
     elif name.startswith('head'):
         # The headline is not officially changed yet.
         # p.initHeadString(s)
+        s=g.app.gui.getAllText(w)
         w.configure(width=f.tree.headWidth(s=s))
     else: pass
 
@@ -8726,6 +9693,9 @@ OnPasteFromMenu = pasteText</t>
                     name,abbrev,key))
             else:
                 g.trace('No shortcut for %s = %s' % (name,key))</t>
+<t tx="ekr.20051013084256">def dismiss (self):
+    
+    self.top.withdraw()</t>
 <t tx="ekr.20051015110547">def registerCommand (self,commandName,shortcut,func,pane='all',verbose=True):
     
     '''Make the function available as a minibuffer command,
@@ -9588,40 +10558,6 @@ def beginCommandHelper (self,ch,undoType,w):
         self.undoData = None
         
     return w</t>
-<t tx="ekr.20051215121416">def computeData (self):
-    
-    counts = {} ; self.nameList = []
-    self.names = {} ; self.tnodes = {}
-   
-    for p in self.c.allNodes_iter():
-        h = p.headString().strip()
-        t = p.v.t
-        n = counts.get(t,0) + 1
-        counts[t] = n
-        if n == 1: # Only make one entry per set of clones.
-            nameList = self.names.get(h,[])
-            if nameList:
-                if p.parent():
-                    key = '%s, parent: %s' % (h,p.parent().headString())
-                else:
-                    key = '%s, child index: %d' % (h,p.childIndex())
-            else:
-                key = h
-            self.nameList.append(key)
-            self.tnodes[key] = t
-            nameList.append(key)
-            self.names[h] = nameList</t>
-<t tx="ekr.20051215164823">def findBuffer (self,name):
-    
-    t = self.tnodes.get(name)
-
-    for p in self.c.allNodes_iter():
-        if p.v.t == t:
-            return p
-           
-    g.trace("Can't happen",name)
-    return None</t>
-<t tx="ekr.20051216080913"># These commands are disabled in getPublicCommands.</t>
 <t tx="ekr.20051216155728">def beginUpdate (self):
     
     self.updateCount += 1
@@ -9802,23 +10738,7 @@ def toggleExtendMode (self,event):
     '''Return True if w is a Text widget suitable for text-oriented commands.'''
     
     return w and isinstance(w,Tk.Text) </t>
-<t tx="ekr.20060104083551">http://sourceforge.net/forum/message.php?msg_id=3488030
-
-Maybe this should really be move-lines-up/down
-
-move-region-up
-
-Swap the selection with the line above it. If we are at the top of a node, the
-node identified by threadBack() is selected and the text is moved to the bottom
-of the node.
-
-move-region-down
-
-Swap the selection with the line below it. If we are at the bottom of the node,
-the node identified by threadNext() is selected and the text is moved to the top
-of the node.
-
-In all cases the moved text remains selected, even when the text moves to another node.</t>
+<t tx="ekr.20060104083551"># Undo doesn't work when multiple bodies change.</t>
 <t tx="ekr.20060104154937">def addModeCommands (self):
     
     '''Add commands created by @mode settings to c.commandsDict and k.inverseCommandsDict.'''
@@ -9973,7 +10893,6 @@ In all cases the moved text remains selected, even when the text moves to anothe
     g.app.gui.setSelectionRange(w, i+' wordstart', i+' wordend')</t>
 <t tx="ekr.20060116084526.1"></t>
 <t tx="ekr.20060116090428"></t>
-<t tx="ekr.20060117115212"></t>
 <t tx="ekr.20060122183544">@nocolor
 
 - Handle backspace for isearch: keep a stack of previous matches.
@@ -10216,7 +11135,24 @@ shift = s2.find("shift") &gt;= 0   or s2.find("shft") &gt;= 0</t>
 
     &lt;&lt; handle per-pane bindings &gt;&gt;
 </t>
-<t tx="ekr.20060206103922"></t>
+<t tx="ekr.20060207080537">def createBindings (self):
+    
+    # Legacy bindings.  Can be overwritten in subclasses.
+    
+    # g.trace('legacy')
+    
+    def findButtonCallback2(event,self=self):
+        self.findButton()
+        return 'break'
+
+    for widget in (self.find_ctrl, self.change_ctrl):
+        widget.bind ("&lt;Button-1&gt;",  self.resetWrap)
+        widget.bind("&lt;Key&gt;",        self.resetWrap)
+        widget.bind("&lt;Control-a&gt;",  self.selectAllFindText)
+    
+    for widget in (self.find_ctrl, self.change_ctrl):
+        widget.bind("&lt;Key-Return&gt;", findButtonCallback2)
+        widget.bind("&lt;Key-Escape&gt;", self.onCloseWindow)</t>
 <t tx="ekr.20060209095101">def setMoveCol (self,spot):
     
     self.moveSpot = spot
@@ -11414,12 +12350,7 @@ C:\prog\tigris-cvs\leo\src\leoCommands.py:493: No global (enableIdleTimeHook) fo
     self.endCommand(changed=True,setLabel=True)</t>
 <t tx="ekr.20060414090519"></t>
 <t tx="ekr.20060414090519.1"></t>
-<t tx="ekr.20060414092733">clear-selected-text
-clean-lines
-add-space-to-lines
-add-tab-to-lines
-remove-space-from-lines
-remove-tab-from-lines</t>
+<t tx="ekr.20060414092733"></t>
 <t tx="ekr.20060415075830"></t>
 <t tx="ekr.20060415080442"></t>
 <t tx="ekr.20060415101441">self.beginCommand(undoType='xxx')
@@ -11531,7 +12462,8 @@ remove-tab-from lines   Removes a tab (or equivalent spaces) from start of all s
     self.endCommand(changed=True,setLabel=True)</t>
 <t tx="ekr.20060417181052">def gotoGlobalLine (self,event):
     
-    '''Put the cursor at the n'th line of a file or script
+    '''Put the cursor at the n'th line of a file or script.
+
     This is a minibuffer interface to Leo's legacy Go To Line number command.'''
 
     k = self.k ; tag = 'goto-global-line' ; state = k.getState(tag)
@@ -11546,44 +12478,85 @@ remove-tab-from lines   Removes a tab (or equivalent spaces) from start of all s
         k.clearState()
         if n.isdigit():
             self.c.goToLineNumber (n=int(n))</t>
-<t tx="ekr.20060417183606">def moveRegionDown (self,event):
+<t tx="ekr.20060417183606">def moveLinesDown (self,event):
 
-    w = event.widget
+    c = self.c ; w = event.widget
+    
     if not g.app.gui.hasSelection(w): return
 
-    self.beginCommand(undoType='move-region-down')
+    self.beginCommand(undoType='move-lines-down')
 
     i,j = g.app.gui.getSelectionRange(w)
-    j = w.index(j+' lineend + 1c')
-    s = w.get(i,j)
-    if w.compare(j,'==','end'):
-        # Move region to next node.
-        pass
-    else:
-        i2 = w.index(j+' lineend + 1line linestart')
-        j2 = w.index(i2+' lineend')
-        w.insert(j2,s)
-        # w.mark_set('insert',????)
-        w.delete(i,j)
-        g.trace(i,j,i2,j2,repr(s))
-    
+    i = w.index(i+' linestart')
+    j = w.index(j+' lineend+1c')
+    j2 = w.index(j+ ' lineend+1c')
+    selected = w.get(i,j) # g.trace('selected',repr(selected))
+    moved = w.get(j,j2)  # g.trace('moved',repr(moved))
+    if moved:
+        if not moved.endswith('\n'): moved = moved + '\n'
+        w.mark_set('i',i)
+        w.mark_set('j',j)
+        w.delete(j,j2)
+        w.insert(i,moved)
+        w.mark_set('sel.start','i')
+        w.mark_set('sel.end','j')
+        w.mark_unset('i')
+        w.mark_unset('j')
+    else: # Move the text to the top of the next node.
+        p = c.currentPosition()
+        if not p.hasThreadNext(): return
+        if not moved.endswith('\n'): moved = moved + '\n'
+        w.delete(i,j) # Deleted the old selection.
+        p.setBodyString(w.get('1.0','end')) # Doesn't really work: undo doesn't work.
+        p = p.threadNext()
+        c.beginUpdate()
+        c.selectPosition(p)
+        c.endUpdate()
+        w.focus_force()
+        w.insert('1.0',selected)
+        g.app.gui.setSelectionRangeWithLength(w,'1.0',len(selected)-1)
+
     self.endCommand(changed=True,setLabel=True)</t>
-<t tx="ekr.20060417183606.1">def moveRegionUp (self,event):
+<t tx="ekr.20060417183606.1">def moveLinesUp (self,event):
 
-    w = event.widget
+    c = self.c ; w = event.widget
+
     if not g.app.gui.hasSelection(w): return
     
-    self.beginCommand(undoType='move-region-up')
-
-    i,j = g.app.gui.getSelectionRange(w)
-    if w.compare(j,'==','end'):
-        # Move region to next node.
-        pass
-    else:
-        i2 = w.index(i+' linestart - 1line')
-        j2 = w.index(i2+'lineend')
-        g.trace(i,j,i2,j2)
+    self.beginCommand(undoType='move-lines-up')
     
+    i,j = g.app.gui.getSelectionRange(w)
+    i = w.index(i+' linestart')
+    j = w.index(j+' lineend+1c')
+    i2 = w.index(i+'-1c linestart')
+    selected = w.get(i,j) # g.trace('selected',repr(selected))
+    moved = w.get(i2,i)   # g.trace('moved',repr(moved))
+    
+    if moved:
+        w.mark_set('i',i)
+        w.mark_set('j',j)
+        w.delete(i2,i)
+        if w.compare('j','==','end'):
+            w.insert('j','\n' + moved)
+        else:
+            w.insert('j',moved)
+        w.mark_set('sel.start','i')
+        w.mark_set('sel.end','j')
+        w.mark_unset('i')
+        w.mark_unset('j')
+    else: # Move the text to the bottom of the previous node.
+        p = c.currentPosition()
+        if not p.hasThreadBack(): return
+        w.delete(i,j+'+1c')
+        p.setBodyString(w.get('1.0','end'))
+        p = p.threadBack()
+        c.beginUpdate()
+        c.selectPosition(p)
+        c.endUpdate()
+        w.focus_force()
+        w.insert('end','\n'+selected)
+        g.app.gui.setSelectionRange(w,'end-%dc' % (len(selected)+1),'end-2c')
+
     self.endCommand(changed=True,setLabel=True)</t>
 <t tx="ekr.20060417194232"></t>
 <t tx="ekr.20060417194232.1">def findCharacter (self,event):
@@ -11633,5 +12606,118 @@ def helpForCommandFinisher (self,commandName):
         g.es('%s:\n%s\n' % (commandName,func.__doc__),color='blue')
     else:
         g.es('No help available for %s' % (commandName),color='blue')</t>
+<t tx="ekr.20060418080701">@nocolor
+
+New commands:
+
+add-space-to-lines
+add-tab-to-lines
+clean-lines
+clear-selected-text
+goto-global-line
+help-for-command
+remove-space-from-lines
+remove-tab-from-lines
+
+Fixed commands
+
+rename-buffer</t>
+<t tx="ekr.20060418080701.1">@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3488030
+
+move-lines-up
+
+Swap the selection with the line above it. If we are at the top of a node, the
+node identified by threadBack() is selected and the text is moved to the bottom
+of the node.
+
+move-lines-down
+
+Swap the selection with the line below it. If we are at the bottom of the node,
+the node identified by threadNext() is selected and the text is moved to the top
+of the node.
+
+In all cases the moved text remains selected, even when the text moves to another node.</t>
+<t tx="ekr.20060418080920"></t>
+<t tx="ekr.20060418080920.1"></t>
+<t tx="ekr.20060418085407"></t>
+<t tx="ekr.20060418120328"></t>
+<t tx="ekr.20060419075847">@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3692247
+By: vpe
+
+After cutting selection in the headline, headline area shrinks too much.  Example:
+headline is 'NewHeadline', select last 'e', ctrl-x, it shrinks to 'Ne'
+
+To fix by hand: add
+
+s=g.app.gui.getAllText(w)
+
+Just before
+
+w.configure(width=f.tree.headWidth(s=s))
+
+in cutText in leoTkFrame.py</t>
+<t tx="ekr.20060419080626"></t>
+<t tx="ekr.20060419080626.1">@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3692247
+
+Find panel cannot be re-opened. Run open-find-dialog. Close it. Run open-find-dialog
+again -- crash.
+
+The fix was to move the line:
+
+self.top.protocol("WM_DELETE_WINDOW", self.onCloseWindow)
+
+from createBindings to createFrame in the leoTkinterFind class.</t>
+<t tx="ekr.20060419080626.2">TclError Exception in Tk callback
+  Function: &lt;function bindKeyCallback at 0x0169B170&gt; (type: &lt;type 'function'&gt;)
+  Args: (&lt;Tkinter.Event instance at 0x01865EB8&gt;,)
+  Event type: KeyPress (type num: 2)
+Traceback (innermost last):
+  File "C:\prog\tigris-cvs\leo\extensions\Pmw\Pmw_1_2\lib\PmwBase.py", line 1752, in __call__
+    return apply(self.func, args)
+  File "c:\prog\tigris-cvs\leo\src\leoKeys.py", line 1991, in bindKeyCallback
+    return k.masterKeyHandler(event,stroke=stroke)
+  File "c:\prog\tigris-cvs\leo\src\leoKeys.py", line 2931, in masterKeyHandler
+    val = self.masterKeyHandlerHelper(event,stroke)
+  File "c:\prog\tigris-cvs\leo\src\leoKeys.py", line 2990, in masterKeyHandlerHelper
+    val = k.callStateFunction(event) # Calls end-command.
+  File "c:\prog\tigris-cvs\leo\src\leoKeys.py", line 2208, in callStateFunction
+    val = k.state.handler(event)
+  File "c:\prog\tigris-cvs\leo\src\leoKeys.py", line 2289, in fullCommand
+    k.callAltXFunction(k.mb_event)
+  File "c:\prog\tigris-cvs\leo\src\leoKeys.py", line 2327, in callAltXFunction
+    func(event)
+  File "C:\prog\tigris-cvs\leo\src\leoCommands.py", line 2801, in showFindPanel
+    c.frame.findPanel.bringToFront()
+  File "C:\prog\tigris-cvs\leo\src\leoTkinterFind.py", line 469, in bringToFront
+    self.top.withdraw() # Helps bring the window to the front.
+  File "c:\python24\lib\lib-tk\Tkinter.py", line 1562, in wm_withdraw
+    return self.tk.call('wm', 'withdraw', self._w)
+TclError: bad window path name ".25637872"
+
+================================================
+  Event contents:
+    char:
+    delta: 13
+    height: ??
+    keycode: 13
+    keysym: Return
+    keysym_num: 65293
+    num: ??
+    serial: 1486
+    state: 0
+    time: 1717970
+    type: 2
+    widget: .17570752.17571352.19882152.minibuffer
+    width: ??
+    x: 183
+    x_root: 576
+    y: -62
+    y_root: 859
+
+</t>
 </tnodes>
 </leo_file>

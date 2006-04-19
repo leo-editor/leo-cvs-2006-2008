@@ -1,7 +1,8 @@
-C:\prog\tigris-cvs\leo\config\leoSettings.leo
+C:\prog\tigris-cvs\leo\test\unitTest.leo
+C:/prog/tigris-cvs/leo/src/LeoPyRef.leo
 C:\prog\tigris-cvs\leo\src\LeoPy.leo
 C:\prog\tigris-cvs\leo\test\test.leo
-C:/prog/tigris-cvs/leo/src/LeoPyRef.leo
+C:\prog\tigris-cvs\leo\config\leoSettings.leo
 C:\prog\tigris-cvs\leo\scripts\scripts.leo
 C:\prog\tigris-cvs\leo\doc\LeoDocs.leo
 C:\prog\tigris-cvs\leo\plugins\leoPlugins.leo

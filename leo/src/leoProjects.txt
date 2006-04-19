@@ -3382,6 +3382,7 @@ def cutText (self,event=None):
     elif name.startswith('head'):
         # The headline is not officially changed yet.
         # p.initHeadString(s)
+        s=g.app.gui.getAllText(w)
         w.configure(width=f.tree.headWidth(s=s))
     else: pass
 
@@ -10764,6 +10765,609 @@ commands
 body.
 #@nonl
 #@-node:ekr.20060416104711.1:Investigated problems with legacy bindings
+#@+node:ekr.20060418120328:Fixed bug when cutting text in headline
+#@+node:ekr.20060419075847:Report
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3692247
+By: vpe
+
+After cutting selection in the headline, headline area shrinks too much.  Example:
+headline is 'NewHeadline', select last 'e', ctrl-x, it shrinks to 'Ne'
+
+To fix by hand: add
+
+s=g.app.gui.getAllText(w)
+
+Just before
+
+w.configure(width=f.tree.headWidth(s=s))
+
+in cutText in leoTkFrame.py
+#@nonl
+#@-node:ekr.20060419075847:Report
+#@+node:ekr.20031218072017.840:Cut/Copy/Paste (tkFrame)
+#@+node:ekr.20051011072903.2:copyText
+def copyText (self,event=None):
+    
+    '''Copy the selected text from the widget to the clipboard.'''
+    
+    f = self ; c = f.c ; w = event and event.widget
+    if not w or not g.app.gui.isTextWidget(w): return
+
+    # Set the clipboard text.
+    i,j = g.app.gui.getTextSelection(w)
+    if i != j:
+        s = w.get(i,j)
+        g.app.gui.replaceClipboardWith(s)
+        
+OnCopyFromMenu = copyText
+#@nonl
+#@-node:ekr.20051011072903.2:copyText
+#@+node:ekr.20051011072049.2:cutText
+def cutText (self,event=None):
+    
+    '''Invoked from the mini-buffer and from shortcuts.'''
+    
+    f = self ; c = f.c ; w = event and event.widget
+    if not w or not g.app.gui.isTextWidget(w): return
+
+    name = c.widget_name(w)
+    oldSel = g.app.gui.getTextSelection(w)
+    oldText = w.get('1.0','end')
+    i,j = g.app.gui.getTextSelection(w)
+    
+    # Update the widget and set the clipboard text.
+    s = w.get(i,j)
+    if i != j:
+        w.delete(i,j)
+        g.app.gui.replaceClipboardWith(s)
+
+    if name.startswith('body'):
+        c.frame.body.onBodyChanged('Cut',oldSel=oldSel,oldText=oldText)
+    elif name.startswith('head'):
+        # The headline is not officially changed yet.
+        # p.initHeadString(s)
+        s=g.app.gui.getAllText(w)
+        w.configure(width=f.tree.headWidth(s=s))
+    else: pass
+
+OnCutFromMenu = cutText
+#@nonl
+#@-node:ekr.20051011072049.2:cutText
+#@+node:ekr.20051011072903.5:pasteText
+def pasteText (self,event=None):
+
+    '''Paste the clipboard into a widget.'''
+
+    f = self ; c = f.c ; w = event and event.widget
+    if not w or not g.app.gui.isTextWidget(w): return
+
+    wname = c.widget_name(w)
+    oldSel = g.app.gui.getTextSelection(w)
+    oldText = w.get('1.0','end')
+    i,j = g.app.gui.getTextSelection(w)
+    s = s1 = g.app.gui.getTextFromClipboard()
+    # g.trace(wname,s,i,j)
+    
+    singleLine = wname.startswith('head') or wname.startswith('minibuffer')
+    
+    if singleLine:
+        # Strip trailing newlines so the truncation doesn't cause confusion.
+        while s and s [ -1] in ('\n','\r'):
+            s = s [: -1]
+
+    try:
+        # Update the widget.
+        if i != j:
+            w.delete(i,j)
+        w.insert(i,s)
+    
+        if wname.startswith('body'):
+            c.frame.body.onBodyChanged('Paste',oldSel=oldSel,oldText=oldText)
+        elif singleLine:
+            s = w.get('1.0','end')
+            while s and s [ -1] in ('\n','\r'):
+                s = s [: -1]
+            if wname.startswith('head'):
+                # The headline is not officially changed yet.
+                # p.initHeadString(s)
+                w.configure(width=f.tree.headWidth(s=s))
+        else: pass
+    except Exception:
+        pass # Tk sometimes throws weird exceptions here.
+        
+    return 'break' # Essential
+
+OnPasteFromMenu = pasteText
+#@nonl
+#@-node:ekr.20051011072903.5:pasteText
+#@-node:ekr.20031218072017.840:Cut/Copy/Paste (tkFrame)
+#@-node:ekr.20060418120328:Fixed bug when cutting text in headline
+#@+node:ekr.20060419080626:Fixed crasher in open-find-dialog
+#@+node:ekr.20060419080626.1:Report
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3692247
+
+Find panel cannot be re-opened. Run open-find-dialog. Close it. Run open-find-dialog
+again -- crash.
+
+The fix was to move the line:
+
+self.top.protocol("WM_DELETE_WINDOW", self.onCloseWindow)
+
+from createBindings to createFrame in the leoTkinterFind class.
+#@nonl
+#@-node:ekr.20060419080626.1:Report
+#@+node:ekr.20060419080626.2:Traceback
+TclError Exception in Tk callback
+  Function: <function bindKeyCallback at 0x0169B170> (type: <type 'function'>)
+  Args: (<Tkinter.Event instance at 0x01865EB8>,)
+  Event type: KeyPress (type num: 2)
+Traceback (innermost last):
+  File "C:\prog\tigris-cvs\leo\extensions\Pmw\Pmw_1_2\lib\PmwBase.py", line 1752, in __call__
+    return apply(self.func, args)
+  File "c:\prog\tigris-cvs\leo\src\leoKeys.py", line 1991, in bindKeyCallback
+    return k.masterKeyHandler(event,stroke=stroke)
+  File "c:\prog\tigris-cvs\leo\src\leoKeys.py", line 2931, in masterKeyHandler
+    val = self.masterKeyHandlerHelper(event,stroke)
+  File "c:\prog\tigris-cvs\leo\src\leoKeys.py", line 2990, in masterKeyHandlerHelper
+    val = k.callStateFunction(event) # Calls end-command.
+  File "c:\prog\tigris-cvs\leo\src\leoKeys.py", line 2208, in callStateFunction
+    val = k.state.handler(event)
+  File "c:\prog\tigris-cvs\leo\src\leoKeys.py", line 2289, in fullCommand
+    k.callAltXFunction(k.mb_event)
+  File "c:\prog\tigris-cvs\leo\src\leoKeys.py", line 2327, in callAltXFunction
+    func(event)
+  File "C:\prog\tigris-cvs\leo\src\leoCommands.py", line 2801, in showFindPanel
+    c.frame.findPanel.bringToFront()
+  File "C:\prog\tigris-cvs\leo\src\leoTkinterFind.py", line 469, in bringToFront
+    self.top.withdraw() # Helps bring the window to the front.
+  File "c:\python24\lib\lib-tk\Tkinter.py", line 1562, in wm_withdraw
+    return self.tk.call('wm', 'withdraw', self._w)
+TclError: bad window path name ".25637872"
+
+================================================
+  Event contents:
+    char:
+    delta: 13
+    height: ??
+    keycode: 13
+    keysym: Return
+    keysym_num: 65293
+    num: ??
+    serial: 1486
+    state: 0
+    time: 1717970
+    type: 2
+    widget: .17570752.17571352.19882152.minibuffer
+    width: ??
+    x: 183
+    x_root: 576
+    y: -62
+    y_root: 859
+
+#@-node:ekr.20060419080626.2:Traceback
+#@+node:ekr.20041025152343.1:class leoTkinterFind
+class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
+
+    """A class that implements Leo's tkinter find dialog."""
+
+    @others
+#@nonl
+#@+node:ekr.20031218072017.3898:Birth & death
+#@+node:ekr.20031218072017.3899:__init__
+def __init__(self,c,resizeable=False,title=None,show=True):
+
+    # g.trace("leoTkinterFind",c)
+    
+    # Init the base classes...
+    leoFind.leoFind.__init__(self,c,title=title)
+    leoTkinterDialog.leoTkinterDialog.__init__(self,c,self.title,resizeable,show=show)
+
+    << create the tkinter intVars >>
+    
+    # These are created later.
+    self.find_ctrl = None
+    self.change_ctrl = None 
+    
+    self.createTopFrame() # Create the outer tkinter dialog frame.
+    self.createFrame()
+    if self.top and not show:
+        self.top.withdraw()
+    self.init(c) # New in 4.3: init only once.
+#@nonl
+#@+node:ekr.20031218072017.3900:<< create the tkinter intVars >>
+self.dict = {}
+
+for key in self.intKeys:
+    self.dict[key] = Tk.IntVar()
+
+for key in self.newStringKeys:
+    self.dict[key] = Tk.StringVar()
+    
+self.s_ctrl = Tk.Text() # Used by find.search()
+#@nonl
+#@-node:ekr.20031218072017.3900:<< create the tkinter intVars >>
+#@-node:ekr.20031218072017.3899:__init__
+#@+node:ekr.20031218072017.3901:destroySelf
+def destroySelf (self):
+    
+    self.top.destroy()
+#@nonl
+#@-node:ekr.20031218072017.3901:destroySelf
+#@+node:ekr.20031218072017.3902:find.createFrame
+def createFrame (self):
+    
+    # g.trace('legacy')
+
+    # Create the find panel...
+    outer = Tk.Frame(self.frame,relief="groove",bd=2)
+    outer.pack(padx=2,pady=2)
+
+    << Create the Find and Change panes >>
+    << Create four columns of radio and checkboxes >>
+    << Create two rows of buttons >>
+
+    if self.top: # self.top may not exist during unit testing.
+        self.top.protocol("WM_DELETE_WINDOW", self.onCloseWindow)
+#@nonl
+#@+node:ekr.20031218072017.3904:<< Create the Find and Change panes >>
+fc = Tk.Frame(outer, bd="1m")
+fc.pack(anchor="n", fill="x", expand=1)
+
+# Removed unused height/width params: using fractions causes problems in some locales!
+fpane = Tk.Frame(fc, bd=1)
+cpane = Tk.Frame(fc, bd=1)
+
+fpane.pack(anchor="n", expand=1, fill="x")
+cpane.pack(anchor="s", expand=1, fill="x")
+
+# Create the labels and text fields...
+flab = Tk.Label(fpane, width=8, text="Find:")
+clab = Tk.Label(cpane, width=8, text="Change:")
+
+# Use bigger boxes for scripts.
+self.find_ctrl   = ftxt = Tk.Text(fpane,bd=1,relief="groove",height=4,width=20)
+self.change_ctrl = ctxt = Tk.Text(cpane,bd=1,relief="groove",height=4,width=20)
+
+<< Bind Tab and control-tab >>
+
+fBar = Tk.Scrollbar(fpane,name='findBar')
+cBar = Tk.Scrollbar(cpane,name='changeBar')
+
+# Add scrollbars.
+for bar,txt in ((fBar,ftxt),(cBar,ctxt)):
+    txt['yscrollcommand'] = bar.set
+    bar['command'] = txt.yview
+    bar.pack(side="right", fill="y")
+
+flab.pack(side="left")
+clab.pack(side="left")
+ctxt.pack(side="right", expand=1, fill="both")
+ftxt.pack(side="right", expand=1, fill="both")
+#@nonl
+#@+node:ekr.20041026092141:<< Bind Tab and control-tab >>
+def setFocus(w):
+    c = self.c
+    c.widgetWantsFocus(w)
+    g.app.gui.setSelectionRange(w,"1.0","1.0")
+    return "break"
+    
+def toFind(event,w=ftxt): return setFocus(w)
+def toChange(event,w=ctxt): return setFocus(w)
+
+def insertTab(w):
+    data = g.app.gui.getSelectionRange(w)
+    if data: start,end = data
+    else: start = end = g.app.gui.getInsertPoint(w)
+    g.app.gui.replaceSelectionRangeWithText(w,start,end,"\t")
+    return "break"
+
+def insertFindTab(event,w=ftxt): return insertTab(w)
+def insertChangeTab(event,w=ctxt): return insertTab(w)
+
+ftxt.bind("<Tab>",toChange)
+ctxt.bind("<Tab>",toFind)
+ftxt.bind("<Control-Tab>",insertFindTab)
+ctxt.bind("<Control-Tab>",insertChangeTab)
+#@nonl
+#@-node:ekr.20041026092141:<< Bind Tab and control-tab >>
+#@-node:ekr.20031218072017.3904:<< Create the Find and Change panes >>
+#@+node:ekr.20031218072017.3903:<< Create four columns of radio and checkboxes >>
+columnsFrame = Tk.Frame(outer,relief="groove",bd=2)
+columnsFrame.pack(anchor="e",expand=1,padx="7p",pady="2p") # Don't fill.
+
+numberOfColumns = 4 # Number of columns
+columns = [] ; radioLists = [] ; checkLists = []
+for i in xrange(numberOfColumns):
+    columns.append(Tk.Frame(columnsFrame,bd=1))
+    radioLists.append([])
+    checkLists.append([])
+
+for i in xrange(numberOfColumns):
+    columns[i].pack(side="left",padx="1p") # fill="y" Aligns to top. padx expands columns.
+    
+# HotKeys used for check/radio buttons:  a,b,c,e,h,i,l,m,n,o,p,r,s,t,w
+
+radioLists[0] = [
+    (self.dict["radio-find-type"],"P&Lain Search","plain-search"),  
+    (self.dict["radio-find-type"],"&Pattern Match Search","pattern-search"),
+    (self.dict["radio-find-type"],"&Script Search","script-search")]
+checkLists[0] = [
+    ("Scrip&t Change",self.dict["script_change"])]
+checkLists[1] = [
+    ("&Whole Word",  self.dict["whole_word"]),
+    ("&Ignore Case", self.dict["ignore_case"]),
+    ("Wrap &Around", self.dict["wrap"]),
+    ("&Reverse",     self.dict["reverse"])]
+radioLists[2] = [
+    (self.dict["radio-search-scope"],"&Entire Outline","entire-outline"),
+    (self.dict["radio-search-scope"],"Suboutline &Only","suboutline-only"),  
+    (self.dict["radio-search-scope"],"&Node Only","node-only"),
+    # I don't know what selection-only is supposed to do.
+    (self.dict["radio-search-scope"],"Selection Only",None)] #,"selection-only")]
+checkLists[2] = []
+checkLists[3] = [
+    ("Search &Headline Text", self.dict["search_headline"]),
+    ("Search &Body Text",     self.dict["search_body"]),
+    ("&Mark Finds",           self.dict["mark_finds"]),
+    ("Mark &Changes",         self.dict["mark_changes"])]
+
+for i in xrange(numberOfColumns):
+    for var,name,val in radioLists[i]:
+        box = underlinedTkButton("radio",columns[i],anchor="w",text=name,variable=var,value=val)
+        box.button.pack(fill="x")
+        box.button.bind("<1>", self.resetWrap)
+        if val == None: box.button.configure(state="disabled")
+        box.bindHotKey(ftxt)
+        box.bindHotKey(ctxt)
+    for name,var in checkLists[i]:
+        box = underlinedTkButton("check",columns[i],anchor="w",text=name,variable=var)
+        box.button.pack(fill="x")
+        box.button.bind("<1>", self.resetWrap)
+        box.bindHotKey(ftxt)
+        box.bindHotKey(ctxt)
+        if var is None: box.button.configure(state="disabled")
+#@nonl
+#@-node:ekr.20031218072017.3903:<< Create four columns of radio and checkboxes >>
+#@+node:ekr.20031218072017.3905:<< Create two rows of buttons >>
+# Create the button panes
+buttons  = Tk.Frame(outer,bd=1)
+buttons2 = Tk.Frame(outer,bd=1)
+buttons.pack (anchor="n",expand=1,fill="x")
+buttons2.pack(anchor="n",expand=1,fill="x")
+
+# In 4.4 it's dubious to define these keys.  For example, Alt-x must be reserved!
+# HotKeys used for check/radio buttons:  a,b,c,e,h,i,l,m,n,o,p,r,s,t,w
+# HotKeys used for plain buttons (enter),d,g,t
+
+def findButtonCallback(event=None,self=self):
+    self.findButton()
+    return 'break'
+
+# Create the first row of buttons
+findButton=Tk.Button(buttons,
+    width=9,text="Find",bd=4,command=findButtonCallback) # The default.
+
+findButton.pack(pady="1p",padx="25p",side="left")
+
+contextBox = underlinedTkButton("check",buttons,
+    anchor="w",text="Show Conte&xt",variable=self.dict["batch"])
+contextBox.button.pack(pady="1p",side="left",expand=1)
+contextBox.bindHotKey(ftxt)
+contextBox.bindHotKey(ctxt)
+
+findAllButton = underlinedTkButton("button",buttons,
+    width=9,text="Fin&d All",command=self.findAllButton)
+findAllButton.button.pack(pady="1p",padx="25p",side="right",fill="x")
+findAllButton.bindHotKey(ftxt)
+findAllButton.bindHotKey(ctxt)
+
+# Create the second row of buttons
+changeButton = underlinedTkButton("button",buttons2,
+    width=10,text="Chan&Ge",command=self.changeButton)
+changeButton.button.pack(pady="1p",padx="25p",side="left")
+changeButton.bindHotKey(ftxt)
+changeButton.bindHotKey(ctxt)
+
+changeFindButton = underlinedTkButton("button",buttons2,
+    text="Change, &Then Find",command=self.changeThenFindButton)
+changeFindButton.button.pack(pady="1p",side="left",expand=1)
+changeFindButton.bindHotKey(ftxt)
+changeFindButton.bindHotKey(ctxt)
+    
+changeAllButton = underlinedTkButton("button",buttons2,
+    width=10,text="Change All",command=self.changeAllButton)
+changeAllButton.button.pack(pady="1p",padx="25p",side="right")
+changeAllButton.bindHotKey(ftxt)
+changeAllButton.bindHotKey(ctxt)
+#@nonl
+#@-node:ekr.20031218072017.3905:<< Create two rows of buttons >>
+#@-node:ekr.20031218072017.3902:find.createFrame
+#@+node:ekr.20060207080537:find.createBindings
+def createBindings (self):
+    
+    # Legacy bindings.  Can be overwritten in subclasses.
+    
+    # g.trace('legacy')
+    
+    def findButtonCallback2(event,self=self):
+        self.findButton()
+        return 'break'
+
+    for widget in (self.find_ctrl, self.change_ctrl):
+        widget.bind ("<Button-1>",  self.resetWrap)
+        widget.bind("<Key>",        self.resetWrap)
+        widget.bind("<Control-a>",  self.selectAllFindText)
+    
+    for widget in (self.find_ctrl, self.change_ctrl):
+        widget.bind("<Key-Return>", findButtonCallback2)
+        widget.bind("<Key-Escape>", self.onCloseWindow)
+#@nonl
+#@-node:ekr.20060207080537:find.createBindings
+#@+node:ekr.20031218072017.2059:find.init
+def init (self,c):
+
+    # N.B.: separate c.ivars are much more convenient than a dict.
+    for key in self.intKeys:
+        # New in 4.3: get ivars from @settings.
+        val = c.config.getBool(key)
+        setattr(self,key,val)
+        val = g.choose(val,1,0) # Work around major Tk problem.
+        self.dict[key].set(val)
+        # g.trace(key,val)
+
+    << set find/change widgets >>
+    << set radio buttons from ivars >>
+#@nonl
+#@+node:ekr.20031218072017.2060:<< set find/change widgets >>
+self.find_ctrl.delete("1.0","end")
+self.change_ctrl.delete("1.0","end")
+
+# New in 4.3: Get setting from @settings.
+for w,setting,defaultText in (
+    (self.find_ctrl,"find_text",'<find pattern here>'),
+    (self.change_ctrl,"change_text",''),
+):
+    s = c.config.getString(setting)
+    if not s: s = defaultText
+    w.insert("end",s)
+#@nonl
+#@-node:ekr.20031218072017.2060:<< set find/change widgets >>
+#@+node:ekr.20031218072017.2061:<< set radio buttons from ivars >>
+found = False
+for var,setting in (
+    ("pattern_match","pattern-search"),
+    ("script_search","script-search")):
+    val = self.dict[var].get()
+    if val:
+        self.dict["radio-find-type"].set(setting)
+        found = True ; break
+if not found:
+    self.dict["radio-find-type"].set("plain-search")
+    
+found = False
+for var,setting in (
+    ("suboutline_only","suboutline-only"),
+    ("node_only","node-only"),
+    # ("selection_only","selection-only"),
+):
+    val = self.dict[var].get()
+    if val:
+        self.dict["radio-search-scope"].set(setting)
+        found = True ; break
+if not found:
+    self.dict["radio-search-scope"].set("entire-outline")
+#@nonl
+#@-node:ekr.20031218072017.2061:<< set radio buttons from ivars >>
+#@-node:ekr.20031218072017.2059:find.init
+#@-node:ekr.20031218072017.3898:Birth & death
+#@+node:ekr.20031218072017.1460:find.update_ivars
+def update_ivars (self):
+    
+    """Called just before doing a find to update ivars from the find panel."""
+
+    for key in self.intKeys:
+        val = self.dict[key].get()
+        setattr(self, key, val) # No more _flag hack.
+        # g.trace(key,val)
+
+    # Set ivars from radio buttons. Convert these to 1 or 0.
+    if 0: ###
+        find_type = self.dict["radio-find-type"].get()
+        self.pattern_match = g.choose(find_type == "pattern-search",1,0)
+        self.script_search = g.choose(find_type == "script-search",1,0)
+    
+    search_scope = self.dict["radio-search-scope"].get()
+    self.suboutline_only = g.choose(search_scope == "suboutline-only",1,0)
+    self.node_only       = g.choose(search_scope == "node-only",1,0)
+    self.selection       = g.choose(search_scope == "selection-only",1,0) # 11/9/03
+
+    # New in 4.3: The caller is responsible for removing most trailing cruft.
+    # Among other things, this allows Leo to search for a single trailing space.
+    s = self.find_ctrl.get("1.0","end")
+    s = g.toUnicode(s,g.app.tkEncoding)
+    # g.trace(repr(s))
+    if s and s[-1] in ('\r','\n'):
+        s = s[:-1]
+    self.find_text = s
+
+    s = self.change_ctrl.get("1.0","end")
+    if s and s[-1] in ('\r','\n'):
+        s = s[:-1]
+    s = g.toUnicode(s,g.app.tkEncoding)
+    self.change_text = s
+#@nonl
+#@-node:ekr.20031218072017.1460:find.update_ivars
+#@+node:ekr.20050204090259:tkFind.adjust_find_text
+def adjust_find_text(self,s):
+    
+    w = self.find_ctrl
+    
+    w.delete("1.0","end")
+    w.insert("end",s)
+#@nonl
+#@-node:ekr.20050204090259:tkFind.adjust_find_text
+#@+node:ekr.20031218072017.3906:onCloseWindow
+def onCloseWindow(self,event=None):
+    
+    __pychecker__ = '--no-argsused' # the event param must be present.
+
+    self.top.withdraw()
+#@nonl
+#@-node:ekr.20031218072017.3906:onCloseWindow
+#@+node:ekr.20051013084256:dismiss
+def dismiss (self):
+    
+    self.top.withdraw()
+#@nonl
+#@-node:ekr.20051013084256:dismiss
+#@+node:ekr.20031218072017.3907:bringToFront
+def bringToFront (self):
+    
+    """Bring the tkinter Find Panel to the front."""
+    
+    c = self.c ; t = self.find_ctrl ; gui = g.app.gui
+            
+    self.top.withdraw() # Helps bring the window to the front.
+    self.top.deiconify()
+    self.top.lift()
+    c.widgetWantsFocusNow(t)
+    
+    # Apparently, the text can not be adjusted unless the widget has focus...
+    s = t.get('1.0','end')
+    if s and s[-1] in ('\n','\r'):
+        t.delete('end-1c','end')
+
+    # New in 4.3: don't highlight the stupid added trailing newline!
+    gui.setTextSelection (t,"1.0","end-1c") # Thanks Rich.
+#@nonl
+#@-node:ekr.20031218072017.3907:bringToFront
+#@+node:EKR.20040603221140:selectAllFindText
+def selectAllFindText (self,event=None):
+
+    try:
+        w = self.frame.focus_get()
+        g.app.gui.setTextSelection(w,"1.0","end")
+        return "break"
+    except:
+        return None # To keep pychecker happy.
+#@nonl
+#@-node:EKR.20040603221140:selectAllFindText
+#@+node:ekr.20031218072017.3908:Tkinter wrappers (leoTkinterFind)
+def gui_search (self,t,*args,**keys):
+    return t.search(*args,**keys)
+
+def init_s_ctrl (self,s):
+    t = self.s_ctrl
+    t.delete("1.0","end")
+    t.insert("end",s)
+    t.mark_set("insert",g.choose(self.reverse,"end","1.0"))
+    return t
+#@nonl
+#@-node:ekr.20031218072017.3908:Tkinter wrappers (leoTkinterFind)
+#@-node:ekr.20041025152343.1:class leoTkinterFind
+#@-node:ekr.20060419080626:Fixed crasher in open-find-dialog
 #@-node:ekr.20060417092153:Bugs
 #@+node:ekr.20060414090519.1:New features
 #@+node:ekr.20060123095316:Added clear-selection command
