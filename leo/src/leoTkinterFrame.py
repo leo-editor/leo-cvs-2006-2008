@@ -1972,6 +1972,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
         elif name.startswith('head'):
             # The headline is not officially changed yet.
             # p.initHeadString(s)
+            s=g.app.gui.getAllText(w)
             w.configure(width=f.tree.headWidth(s=s))
         else: pass
     
