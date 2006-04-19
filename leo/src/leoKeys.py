@@ -747,12 +747,17 @@ class autoCompleterClass:
         start = g.app.gui.getInsertPoint(w)
         start = w.index(start+'-1c')
         i,word = self.findAnchor(w)
-        if word and word.isdigit(): return False
+    
+        if word and word.isdigit():
+            self.membersList = []
+            return False
+    
         self.setObjectAndMembersList(word)
         
         # g.trace(word,self.object,len(self.membersList))
     
         if not word:
+            self.membersList = []
             return False
         elif not self.object:
             self.membersList = []
@@ -775,7 +780,6 @@ class autoCompleterClass:
                 i = j
             self.leadinWord = word
             return True
-        
     #@nonl
     #@-node:ekr.20060219111416:getLeadinWord
     #@+node:ekr.20060219174642:getMembersList
