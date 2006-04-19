@@ -3608,11 +3608,13 @@ class editCommandsClass (baseEditCommandsClass):
             lines,chars,g.choose(chars==1,'','s')))
     #@nonl
     #@-node:ekr.20050920084036.109:countRegion
-    #@+node:ekr.20060417183606:moveLinesDown
+    #@+node:ekr.20060417183606:moveLinesDown (works)
     def moveLinesDown (self,event):
+        
+        '''Move all lines containing any selected text down one line,
+        moving to the next node if the lines are the last lines of the body.'''
     
         c = self.c ; w = event.widget
-        
         if not g.app.gui.hasSelection(w): return
     
         self.beginCommand(undoType='move-lines-down')
@@ -3633,7 +3635,8 @@ class editCommandsClass (baseEditCommandsClass):
             w.mark_set('sel.end','j')
             w.mark_unset('i')
             w.mark_unset('j')
-        else: # Move the text to the top of the next node.
+        elif g.app.gui.widget_name(w).startswith('body'):
+            # Move the text to the top of the next node.
             p = c.currentPosition()
             if not p.hasThreadNext(): return
             if not moved.endswith('\n'): moved = moved + '\n'
@@ -3649,9 +3652,12 @@ class editCommandsClass (baseEditCommandsClass):
     
         self.endCommand(changed=True,setLabel=True)
     #@nonl
-    #@-node:ekr.20060417183606:moveLinesDown
-    #@+node:ekr.20060417183606.1:moveLinesUp
+    #@-node:ekr.20060417183606:moveLinesDown (works)
+    #@+node:ekr.20060417183606.1:moveLinesUp (works, except for selection point when last line selected)
     def moveLinesUp (self,event):
+        
+        '''Move all lines containing any selected text up one line,
+        moving to the previous node as needed.'''
     
         c = self.c ; w = event.widget
     
@@ -3663,22 +3669,24 @@ class editCommandsClass (baseEditCommandsClass):
         i = w.index(i+' linestart')
         j = w.index(j+' lineend+1c')
         i2 = w.index(i+'-1c linestart')
-        selected = w.get(i,j) # g.trace('selected',repr(selected))
-        moved = w.get(i2,i)   # g.trace('moved',repr(moved))
-        
+        selected = w.get(i,j) # ; g.trace('selected',repr(selected))
+        moved = w.get(i2,i)   # ; g.trace('moved',repr(moved))
+    
         if moved:
             w.mark_set('i',i)
             w.mark_set('j',j)
             w.delete(i2,i)
             if w.compare('j','==','end'):
+                if moved.endswith('\n'): moved = moved[:-1]
                 w.insert('j','\n' + moved)
             else:
                 w.insert('j',moved)
+            w.mark_unset('sel')
             w.mark_set('sel.start','i')
             w.mark_set('sel.end','j')
             w.mark_unset('i')
             w.mark_unset('j')
-        else: # Move the text to the bottom of the previous node.
+        elif g.app.gui.widget_name(w).startswith('body'):
             p = c.currentPosition()
             if not p.hasThreadBack(): return
             w.delete(i,j+'+1c')
@@ -3688,12 +3696,17 @@ class editCommandsClass (baseEditCommandsClass):
             c.selectPosition(p)
             c.endUpdate()
             w.focus_force()
-            w.insert('end','\n'+selected)
-            g.app.gui.setSelectionRange(w,'end-%dc' % (len(selected)+1),'end-2c')
+            s = w.get('1.0','end-1c')
+            if s.endswith('\n'):
+                w.insert('end',selected)
+            else:
+                if selected.endswith('\n'): selected = selected[:-1]
+                w.insert('end','\n'+selected)
+            g.app.gui.setSelectionRange(w,'end-%dc' % (len(selected)+1),'end-1c') # works
     
         self.endCommand(changed=True,setLabel=True)
     #@nonl
-    #@-node:ekr.20060417183606.1:moveLinesUp
+    #@-node:ekr.20060417183606.1:moveLinesUp (works, except for selection point when last line selected)
     #@+node:ekr.20050920084036.110:reverseRegion
     def reverseRegion (self,event):
     
