@@ -8,7 +8,7 @@
 - Put complete slide show on Leo's web site.
 #@nonl
 #@-node:ekr.20060227163911.1:Leo's web site
-#@+node:ekr.20060226131603:To do 4.4 b4 or final
+#@+node:ekr.20060226131603:To do 4.4
 #@+node:ekr.20060413065803:searches 5
 #@+node:ekr.20060417194232:find (quick) To do: extend selection
 #@+node:ekr.20060417194232.1:findCharacter
@@ -21,7 +21,7 @@ def findCharacter (self,event):
     if state == 0:
         self.widget = event.widget
         k.setLabelBlue('Find character: ')
-        k.getArg(event,tag,1,self.findCharacterOnLine,oneCharacter=True)
+        k.getArg(event,tag,1,self.findCharacter,oneCharacter=True)
     else:
         w = self.widget
         ch = k.arg
@@ -40,7 +40,7 @@ def findWord (self,event):
     if state == 0:
         self.widget = event.widget
         k.setLabelBlue('Find word: ')
-        k.getArg(event,tag,1,self.findCharacterOnLine,oneCharacter=True)
+        k.getArg(event,tag,1,self.findWord,oneCharacter=True)
     else:
         w = self.widget
         ch = k.arg
@@ -71,7 +71,7 @@ def findWord (self,event):
 #@+node:ekr.20060211093935:Support for @list and on-enter-mode
 #@-node:ekr.20060211093935:Support for @list and on-enter-mode
 #@-node:ekr.20060419123128.1:Maybe
-#@-node:ekr.20060226131603:To do 4.4 b4 or final
+#@-node:ekr.20060226131603:To do 4.4
 #@-all
 #@nonl
 #@-node:ekr.20040117181936:@thin ../doc/leoToDo.txt

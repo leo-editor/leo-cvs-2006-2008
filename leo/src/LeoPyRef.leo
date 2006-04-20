@@ -13,8 +13,7 @@
 <v t="ekr.20031218072017.329"><vh>@thin ../doc/leoNotes.txt</vh></v>
 </v>
 <v t="EKR.20040519090151.3"><vh>Projects</vh>
-<v t="EKR.20040429143933"
-expanded="ekr.20060419124420.1,"><vh>@thin leoProjects.txt</vh></v>
+<v t="EKR.20040429143933"><vh>@thin leoProjects.txt</vh></v>
 </v>
 <v t="EKR.20040519090151.2"><vh>To do</vh>
 <v t="ekr.20040117181936"><vh>@thin ../doc/leoToDo.txt</vh></v>
@@ -457,7 +456,7 @@ expanded="ekr.20060419124420.1,"><vh>@thin leoProjects.txt</vh></v>
 <v t="ekr.20050920085536.62"><vh>getArg</vh>
 <v t="ekr.20050928092516"><vh>&lt;&lt; init altX vars &gt;&gt;</vh></v>
 </v>
-<v t="ekr.20060419124420.1" a="E"><vh>getFileName &amp; helpers</vh>
+<v t="ekr.20060419124420.1"><vh>getFileName &amp; helpers</vh>
 <v t="ekr.20060419125211"><vh>&lt;&lt; init altX vars &gt;&gt;</vh></v>
 <v t="ekr.20060419125301"><vh>k.doFileNameBackSpace</vh></v>
 <v t="ekr.20060419125554"><vh>k.computeFileNameCompletionList</vh></v>
@@ -467,7 +466,7 @@ expanded="ekr.20060419124420.1,"><vh>@thin leoProjects.txt</vh></v>
 </v>
 </v>
 </v>
-<v t="ekr.20060226131603"><vh>To do 4.4 b4 or final</vh>
+<v t="ekr.20060226131603" a="V"><vh>To do 4.4</vh>
 <v t="ekr.20060413065803"><vh>searches 5</vh>
 <v t="ekr.20060417194232"><vh>find (quick) To do: extend selection</vh>
 <v t="ekr.20060417194232.1"><vh>findCharacter</vh></v>
@@ -483,7 +482,7 @@ expanded="ekr.20060419124420.1,"><vh>@thin leoProjects.txt</vh></v>
 <v t="ekr.20060211093935"><vh>Support for @list and on-enter-mode</vh></v>
 </v>
 </v>
-<v t="ekr.20031218072017.2406" a="V"><vh>Code</vh>
+<v t="ekr.20031218072017.2406"><vh>Code</vh>
 <v t="ekr.20031218072017.2606"><vh>&lt;&lt; Import pychecker &gt;&gt;</vh></v>
 <v t="ekr.20031218072017.2582"><vh> version &amp; signon stuff</vh>
 <v t="ekr.20040629121554"><vh>getBuildNumber</vh></v>
@@ -2006,7 +2005,7 @@ setSelectionRange = setTextSelection</t>
     return c.ver[10:-1] # Strip off "(dollar)Revision" and the trailing "$"</t>
 <t tx="ekr.20040629121554.1">def getSignOnLine (self):
     c = self
-    return "Leo 4.4 b3, build %s, April 14, 2006" % c.getBuildNumber()</t>
+    return "Leo 4.4 b4, build %s, April 27, 2006" % c.getBuildNumber()</t>
 <t tx="ekr.20040629121554.2">def initVersion (self):
     c = self
     c.ver = "$Revision$" # CVS updates this.</t>
@@ -2944,7 +2943,6 @@ after an center-region command via Alt-x.
     c = self.c ; w = event and event.widget
     if not g.app.gui.isTextWidget(w): return
 
-    name = c.widget_name(w)
     i,j = g.app.gui.getTextSelection(w)
     end = w.index('end-1c')
     # g.trace(i,j,'end',w.index('end-1c'))
@@ -2977,7 +2975,7 @@ after an center-region command via Alt-x.
         k.resetLabel()
         self.linesHelper(event,k.arg,'flush')
         k.commandName = 'flush-lines %s' % k.arg</t>
-<t tx="ekr.20050920084036.92">def linesHelper (self,event,pattern,which,undoType):
+<t tx="ekr.20050920084036.92">def linesHelper (self,event,pattern,which):
 
     k = self.k ; w = event.widget
    
@@ -3616,7 +3614,6 @@ def forwardSentenceExtendSelection (self,event):
     c = self.c ; w = event and event.widget
     if not g.app.gui.isTextWidget(w): return
 
-    name = c.widget_name(w)
     char = w.get('insert','insert + 1c ')
     if not char.isspace(): return
     
@@ -5712,7 +5709,7 @@ remove-tab-from lines   Removes a tab (or equivalent spaces) from start of all s
         k.setLabelBlue('Goto global line: ')
         k.getArg(event,tag,1,self.gotoGlobalLine)
     else:
-        n = k.arg ;  w = self.widget
+        n = k.arg
         k.resetLabel()
         k.clearState()
         if n.isdigit():
@@ -5820,7 +5817,7 @@ remove-tab-from lines   Removes a tab (or equivalent spaces) from start of all s
     if state == 0:
         self.widget = event.widget
         k.setLabelBlue('Find character: ')
-        k.getArg(event,tag,1,self.findCharacterOnLine,oneCharacter=True)
+        k.getArg(event,tag,1,self.findCharacter,oneCharacter=True)
     else:
         w = self.widget
         ch = k.arg
@@ -5836,7 +5833,7 @@ remove-tab-from lines   Removes a tab (or equivalent spaces) from start of all s
     if state == 0:
         self.widget = event.widget
         k.setLabelBlue('Find word: ')
-        k.getArg(event,tag,1,self.findCharacterOnLine,oneCharacter=True)
+        k.getArg(event,tag,1,self.findWord,oneCharacter=True)
     else:
         w = self.widget
         ch = k.arg
@@ -6102,9 +6099,9 @@ AttributeError: 'Bunch' object has no attribute 'kind'</t>
     k = self ; tabName = 'Completion'
     
     for path in k.mb_tabList:
-        dir,fileName = g.os_path_split(path)
-        s = g.choose(path.endswith('\\'),dir,fileName)
-        s = fileName or g.os_path_basename(dir) + '\\'
+        theDir,fileName = g.os_path_split(path)
+        s = g.choose(path.endswith('\\'),theDir,fileName)
+        s = fileName or g.os_path_basename(theDir) + '\\'
         g.es(s,tabName=tabName)</t>
 </tnodes>
 </leo_file>

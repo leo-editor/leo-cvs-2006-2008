@@ -3497,7 +3497,7 @@ def findCharacter (self,event):
     if state == 0:
         self.widget = event.widget
         k.setLabelBlue('Find character: ')
-        k.getArg(event,tag,1,self.findCharacterOnLine,oneCharacter=True)
+        k.getArg(event,tag,1,self.findCharacter,oneCharacter=True)
     else:
         w = self.widget
         ch = k.arg
@@ -3516,7 +3516,7 @@ def findWord (self,event):
     if state == 0:
         self.widget = event.widget
         k.setLabelBlue('Find word: ')
-        k.getArg(event,tag,1,self.findCharacterOnLine,oneCharacter=True)
+        k.getArg(event,tag,1,self.findWord,oneCharacter=True)
     else:
         w = self.widget
         ch = k.arg
@@ -3561,7 +3561,7 @@ def gotoGlobalLine (self,event):
         k.setLabelBlue('Goto global line: ')
         k.getArg(event,tag,1,self.gotoGlobalLine)
     else:
-        n = k.arg ;  w = self.widget
+        n = k.arg
         k.resetLabel()
         k.clearState()
         if n.isdigit():
@@ -3845,7 +3845,6 @@ def deleteNextChar (self,event):
     c = self.c ; w = event and event.widget
     if not g.app.gui.isTextWidget(w): return
 
-    name = c.widget_name(w)
     i,j = g.app.gui.getTextSelection(w)
     end = w.index('end-1c')
     # g.trace(i,j,'end',w.index('end-1c'))
@@ -3869,7 +3868,6 @@ def deleteSpaces (self,event,insertspace=False):
     c = self.c ; w = event and event.widget
     if not g.app.gui.isTextWidget(w): return
 
-    name = c.widget_name(w)
     char = w.get('insert','insert + 1c ')
     if not char.isspace(): return
     
@@ -4199,7 +4197,7 @@ def keepLines (self,event):
 #@nonl
 #@-node:ekr.20051002095724:keepLines
 #@+node:ekr.20050920084036.92:linesHelper
-def linesHelper (self,event,pattern,which,undoType):
+def linesHelper (self,event,pattern,which):
 
     k = self.k ; w = event.widget
    
@@ -6146,7 +6144,7 @@ def gotoGlobalLine (self,event):
         k.setLabelBlue('Goto global line: ')
         k.getArg(event,tag,1,self.gotoGlobalLine)
     else:
-        n = k.arg ;  w = self.widget
+        n = k.arg
         k.resetLabel()
         k.clearState()
         if n.isdigit():
@@ -6613,9 +6611,9 @@ def showFileNameTabList (self):
     k = self ; tabName = 'Completion'
     
     for path in k.mb_tabList:
-        dir,fileName = g.os_path_split(path)
-        s = g.choose(path.endswith('\\'),dir,fileName)
-        s = fileName or g.os_path_basename(dir) + '\\'
+        theDir,fileName = g.os_path_split(path)
+        s = g.choose(path.endswith('\\'),theDir,fileName)
+        s = fileName or g.os_path_basename(theDir) + '\\'
         g.es(s,tabName=tabName)
 #@nonl
 #@-node:ekr.20060420100610:k.showFileNameTabList
