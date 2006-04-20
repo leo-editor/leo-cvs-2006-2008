@@ -3533,9 +3533,9 @@ class keyHandlerClass:
         k = self ; tabName = 'Completion'
         
         for path in k.mb_tabList:
-            dir,fileName = g.os_path_split(path)
-            s = g.choose(path.endswith('\\'),dir,fileName)
-            s = fileName or g.os_path_basename(dir) + '\\'
+            theDir,fileName = g.os_path_split(path)
+            s = g.choose(path.endswith('\\'),theDir,fileName)
+            s = fileName or g.os_path_basename(theDir) + '\\'
             g.es(s,tabName=tabName)
     #@nonl
     #@-node:ekr.20060420100610:k.showFileNameTabList

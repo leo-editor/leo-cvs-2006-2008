@@ -2097,7 +2097,7 @@ class editCommandsClass (baseEditCommandsClass):
         if state == 0:
             self.widget = event.widget
             k.setLabelBlue('Find character: ')
-            k.getArg(event,tag,1,self.findCharacterOnLine,oneCharacter=True)
+            k.getArg(event,tag,1,self.findCharacter,oneCharacter=True)
         else:
             w = self.widget
             ch = k.arg
@@ -2116,7 +2116,7 @@ class editCommandsClass (baseEditCommandsClass):
         if state == 0:
             self.widget = event.widget
             k.setLabelBlue('Find word: ')
-            k.getArg(event,tag,1,self.findCharacterOnLine,oneCharacter=True)
+            k.getArg(event,tag,1,self.findWord,oneCharacter=True)
         else:
             w = self.widget
             ch = k.arg
@@ -2161,7 +2161,7 @@ class editCommandsClass (baseEditCommandsClass):
             k.setLabelBlue('Goto global line: ')
             k.getArg(event,tag,1,self.gotoGlobalLine)
         else:
-            n = k.arg ;  w = self.widget
+            n = k.arg
             k.resetLabel()
             k.clearState()
             if n.isdigit():
@@ -2446,7 +2446,6 @@ class editCommandsClass (baseEditCommandsClass):
         c = self.c ; w = event and event.widget
         if not g.app.gui.isTextWidget(w): return
     
-        name = c.widget_name(w)
         i,j = g.app.gui.getTextSelection(w)
         end = w.index('end-1c')
         # g.trace(i,j,'end',w.index('end-1c'))
@@ -2470,7 +2469,6 @@ class editCommandsClass (baseEditCommandsClass):
         c = self.c ; w = event and event.widget
         if not g.app.gui.isTextWidget(w): return
     
-        name = c.widget_name(w)
         char = w.get('insert','insert + 1c ')
         if not char.isspace(): return
         
@@ -2801,7 +2799,7 @@ class editCommandsClass (baseEditCommandsClass):
     #@nonl
     #@-node:ekr.20051002095724:keepLines
     #@+node:ekr.20050920084036.92:linesHelper
-    def linesHelper (self,event,pattern,which,undoType):
+    def linesHelper (self,event,pattern,which):
     
         k = self.k ; w = event.widget
        
