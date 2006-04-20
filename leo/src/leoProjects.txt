@@ -6532,7 +6532,7 @@ def getFileName (self,event=None,handler=None,prefix='',filterExt='.leo'):
         handler = k.getFileNameHandler
         c.frame.log.deleteTab(tabName)
         if handler: handler(event)
-    elif keysym == 'Tab':
+    elif keysym in 'Tab':
         k.computeFileNameCompletionList(backspace=False)
     elif keysym == 'BackSpace':
         k.doFileNameBackSpace() 
@@ -6542,7 +6542,8 @@ def getFileName (self,event=None,handler=None,prefix='',filterExt='.leo'):
         k.mb_tabList = []
         k.updateLabel(event)
         k.mb_tabListPrefix = k.getLabel()
-        # k.computeFileNameCompletionList(backspace=False)
+        if keysym.lower() != 'period':
+            k.computeFileNameCompletionList(backspace=False)
     return 'break'
 #@nonl
 #@+node:ekr.20060419125211:<< init altX vars >>

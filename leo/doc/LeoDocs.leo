@@ -42,7 +42,7 @@
 <v t="ekr.20050902080416"><vh>@@button reformat-paragraph</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="V"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.1"><vh>Documentation for rst3 plugin</vh>
 <v t="ekr.20050818163826"><vh>@rst html\rstplugin3.html</vh>
 <v t="ekr.20050818163826.1"><vh>@rst-no-head links</vh></v>
@@ -275,7 +275,8 @@
 <v t="EKR.20040524104904.99"><vh>Chapter 5: Using Leo's Commands</vh>
 <v t="ekr.20050901101608.2"><vh>@rst html\commands.html</vh>
 <v t="ekr.20050901101852"><vh>@rst-no-head links</vh></v>
-<v t="EKR.20040524104904.100"><vh> The File Menu</vh>
+<v t="ekr.20060420094611"><vh>The minibuffer</vh></v>
+<v t="EKR.20040524104904.100"><vh>The File Menu</vh>
 <v t="EKR.20040524104904.101"><vh>Loading, Saving and Reverting Files</vh></v>
 <v t="EKR.20040524104904.102"><vh>Communicating with external editors</vh></v>
 <v t="EKR.20040524104904.105"><vh>Tangling an outline: Producing Derived Files</vh></v>
@@ -284,7 +285,7 @@
 <v t="EKR.20040524104904.109"><vh>Exporting Files from Leo Outlines</vh></v>
 <v t="EKR.20040524104904.110"><vh>Quitting Leo</vh></v>
 </v>
-<v t="EKR.20040524104904.111"><vh> The Edit Menu</vh>
+<v t="EKR.20040524104904.111"><vh>The Edit Menu</vh>
 <v t="EKR.20040524104904.112"><vh>Undoing changes</vh></v>
 <v t="EKR.20040524104904.113"><vh>Cutting, pasting and selecting text</vh></v>
 <v t="EKR.20040524104904.114"><vh>Shifting body text</vh></v>
@@ -302,7 +303,7 @@
 <v t="ekr.20060105214753"><vh>Input modes</vh></v>
 </v>
 </v>
-<v t="EKR.20040524104904.143"><vh> The Outline Menu</vh>
+<v t="EKR.20040524104904.143"><vh>The Outline Menu</vh>
 <v t="EKR.20040524104904.144"><vh> Checking outlines</vh></v>
 <v t="EKR.20040524104904.145"><vh> Creating &amp; cloning nodes</vh></v>
 <v t="EKR.20040524104904.146"><vh> Cutting, pasting and deleting nodes</vh></v>
@@ -311,7 +312,7 @@
 <v t="EKR.20040524104904.150"><vh> Moving, sorting and reorganizing nodes</vh></v>
 <v t="EKR.20040524104904.148"><vh> Hoisting &amp; De-hoisting nodes</vh></v>
 </v>
-<v t="EKR.20040524104904.151"><vh> The Window Menu</vh></v>
+<v t="EKR.20040524104904.151"><vh>The Window Menu</vh></v>
 <v t="EKR.20040524104904.157"><vh>The Help Menu</vh></v>
 <v t="ekr.20050901102400.1"><vh>@rst-no-head end stuff</vh></v>
 </v>
@@ -779,7 +780,7 @@
 <v t="ekr.20050916065715"><vh>suggestions for tutorial</vh></v>
 </v>
 </v>
-<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
+<v t="edream.110203163054.46"><vh>Release Notes</vh>
 <v t="edream.110203163054.117"><vh>Previous versions...</vh>
 <v t="ekr.20060206111717"><vh>Ancient...</vh>
 <v t="edream.110203163054.118"><vh>3.x...</vh>
@@ -2529,7 +2530,7 @@
 <v t="ekr.20060227102028.111"><vh>Autocompletion and calltips</vh></v>
 </v>
 <v t="ekr.20060328171518"><vh>4.4 b3</vh>
-<v t="ekr.20060328171518.1" a="E"><vh>New features</vh>
+<v t="ekr.20060328171518.1"><vh>New features</vh>
 <v t="ekr.20060328171518.10"><vh>Added scroll outline pane commands</vh></v>
 <v t="ekr.20060328171518.11"><vh>Improved registerCommand</vh></v>
 <v t="ekr.20060328171518.15"><vh>Suppressed autocompletion after numbers</vh></v>
@@ -2552,10 +2553,10 @@
 <v t="ekr.20060328171518.190"><vh>Investigated colorizer problems: can not reproduce</vh></v>
 <v t="ekr.20060328171518.248"><vh>Removed support @ifgui: it doesn't and can't work</vh></v>
 <v t="ekr.20060328171518.249"><vh>Removed autocompletion for self</vh></v>
-<v t="ekr.20060414071350.1" a="E"><vh>Rewrote g.importExtension to simplify startup logic</vh></v>
-<v t="ekr.20060414071350.8" a="E"><vh>Removed calls to lstrip and rstrip for compatibility with Python 2.2.1</vh></v>
-<v t="ekr.20060414071350.39" a="E"><vh>Fixed crash in string.startswith and string.endswith</vh></v>
-<v t="ekr.20060414071350.47" a="E"><vh>Fixed Crash after undoing clearRecentFiles command</vh></v>
+<v t="ekr.20060414071350.1"><vh>Rewrote g.importExtension to simplify startup logic</vh></v>
+<v t="ekr.20060414071350.8"><vh>Removed calls to lstrip and rstrip for compatibility with Python 2.2.1</vh></v>
+<v t="ekr.20060414071350.39"><vh>Fixed crash in string.startswith and string.endswith</vh></v>
+<v t="ekr.20060414071350.47"><vh>Fixed Crash after undoing clearRecentFiles command</vh></v>
 <v t="ekr.20060414071350.58"><vh>Fixed minor problems reported by Pychecker</vh></v>
 </v>
 <v t="ekr.20060328171518.191"><vh>Plugins</vh>
@@ -2568,8 +2569,8 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20060417092536" a="EV"><vh>4.4 b4</vh>
+<v t="edream.110203163054.63"><vh>Latest version</vh>
+<v t="ekr.20060417092536"><vh>4.4 b4</vh>
 <v t="ekr.20060417092825"><vh>New features</vh>
 <v t="ekr.20060417092825.1"><vh>Added script to update new copies of leoSettting.leo from previous copies</vh></v>
 </v>
@@ -25230,5 +25231,24 @@ attempts to create a new node in the corresponding place in the path2 file. If
 this is not possible, say because the structures of the files are different, the
 script places the new node as the last child of the @settings node in the path2
 file.</t>
+<t tx="ekr.20060420094611">**New in Leo 4.4**:  The mini-buffer is a text area at the bottom of the body pane.
+You use it like the Emacs mini-buffer to invoke commands by their so-called *long name*.
+The following commands affect the minibuffer:
+
+- **full-command**: (default shortcut: Alt-x) Puts the focus in the minibuffer. Type a
+  full command name, then hit &lt;Return&gt; to execute the command. Tab completion
+  works, but not yet for file names.
+
+- **quick-command-mode**: (default shortcut: Alt-x) Like Emacs Control-C. This mode is
+  defined in leoSettings.leo. It is useful for commonly-used commands.
+
+- **universal-argument**: (default shortcut: Alt-u) Like Emacs Ctrl-u. Adds a repeat
+  count for later command. Ctrl-u 999 a adds 999 a's. Many features remain
+  unfinished.
+
+- **keyboard-quit**: (default shortcut: Ctrl-g) Exits any minibuffer mode and puts
+  the focus in the body pane.
+
+For example, to print a list of all commands type Alt-X print-commands &lt;Return&gt;.</t>
 </tnodes>
 </leo_file>

@@ -467,7 +467,7 @@ expanded="ekr.20060419124420.1,"><vh>@thin leoProjects.txt</vh></v>
 </v>
 </v>
 </v>
-<v t="ekr.20060226131603" a="V"><vh>To do 4.4 b4 or final</vh>
+<v t="ekr.20060226131603"><vh>To do 4.4 b4 or final</vh>
 <v t="ekr.20060413065803"><vh>searches 5</vh>
 <v t="ekr.20060417194232"><vh>find (quick) To do: extend selection</vh>
 <v t="ekr.20060417194232.1"><vh>findCharacter</vh></v>
@@ -483,7 +483,7 @@ expanded="ekr.20060419124420.1,"><vh>@thin leoProjects.txt</vh></v>
 <v t="ekr.20060211093935"><vh>Support for @list and on-enter-mode</vh></v>
 </v>
 </v>
-<v t="ekr.20031218072017.2406"><vh>Code</vh>
+<v t="ekr.20031218072017.2406" a="V"><vh>Code</vh>
 <v t="ekr.20031218072017.2606"><vh>&lt;&lt; Import pychecker &gt;&gt;</vh></v>
 <v t="ekr.20031218072017.2582"><vh> version &amp; signon stuff</vh>
 <v t="ekr.20040629121554"><vh>getBuildNumber</vh></v>
@@ -6010,7 +6010,7 @@ def openOutlineByNameFinisher (self,event):
         handler = k.getFileNameHandler
         c.frame.log.deleteTab(tabName)
         if handler: handler(event)
-    elif keysym == 'Tab':
+    elif keysym in 'Tab':
         k.computeFileNameCompletionList(backspace=False)
     elif keysym == 'BackSpace':
         k.doFileNameBackSpace() 
@@ -6020,7 +6020,8 @@ def openOutlineByNameFinisher (self,event):
         k.mb_tabList = []
         k.updateLabel(event)
         k.mb_tabListPrefix = k.getLabel()
-        # k.computeFileNameCompletionList(backspace=False)
+        if keysym.lower() != 'period':
+            k.computeFileNameCompletionList(backspace=False)
     return 'break'</t>
 <t tx="ekr.20060419125211">k.filterExt = filterExt
 k.mb_prefix = (prefix or k.getLabel())

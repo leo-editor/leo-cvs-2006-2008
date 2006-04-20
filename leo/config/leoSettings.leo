@@ -398,18 +398,18 @@
 </v>
 <v t="ekr.20060408090018"><vh>@bool added_setting = True</vh></v>
 </v>
-<v t="ekr.20060219103020" a="V"><vh>Recent settings</vh>
+<v t="ekr.20060219103020" a="E"><vh>Recent settings</vh>
 <v t="ekr.20051126062830"><vh>@bool trace_g.app.gui.set_focus = False</vh></v>
 <v t="ekr.20060301085047"><vh>@bool trace_chapters = False</vh></v>
 <v t="ekr.20051126062243.1"><vh>@bool trace_redraw_now = False</vh></v>
 <v t="ekr.20060131071947"><vh>@bool trace_masterClickHandler = False</vh></v>
-<v t="ekr.20060306031258"><vh>@bool trace_onBodyChanged = False</vh></v>
 <v t="ekr.20060121102627"><vh>@bool trace_modes = False</vh></v>
 <v t="ekr.20060323131801"><vh>@bool warn_about_missing_settings = False</vh></v>
 <v t="ekr.20060114073238"><vh>@bool trace_bindings = False</vh></v>
 <v t="ekr.20060216145416"><vh>@bool trace_autocompleter = False</vh></v>
 <v t="ekr.20060131071612"><vh>@bool trace_masterKeyHandler = False</vh></v>
 <v t="ekr.20051126062525"><vh>@bool trace_masterCommand = False</vh></v>
+<v t="ekr.20060306031258" a="V"><vh>@bool trace_onBodyChanged = False</vh></v>
 </v>
 </vnodes>
 <tnodes>
