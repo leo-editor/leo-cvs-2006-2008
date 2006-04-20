@@ -2777,25 +2777,18 @@ class keyHandlerClass:
         
         k = self ; w = self.widget
         if not w: return ''
-        trace = self.trace_minibuffer and not g.app.unitTesting
         
         if self.useTextWidget:
             w.update_idletasks()
-            s = w and w.get('1.0','end')
-            # Remove the cursed Tk newline.
-            while s.endswith('\n') or s.endswith('\r'):
-                s = s[:-1]
-            
+            s = w.get('1.0','end-1c')
         else:
             s = k.svar and k.svar.get()
-            
-        trace and g.trace(repr(s))
     
         if ignorePrompt:
             return s[len(k.mb_prefix):]
         else:
             return s or ''
-    
+    #@nonl
     #@-node:ekr.20051023132350:getLabel
     #@+node:ekr.20051023132350.2:protectLabel
     def protectLabel (self):
@@ -2902,12 +2895,17 @@ class keyHandlerClass:
                 i,j = g.app.gui.getTextSelection(w)
                 if i != j:
                     w.delete(i,j)
-                i = w.index('insert')
-                w.insert(i,ch)
+                if ch == '\b':
+                    s = w.get('1.0','end-1c')
+                    if len(s) > len(k.mb_prefix):
+                        w.delete(i+'-1c')
+                else:
+                    w.insert('insert',ch)
                 # g.trace(k.mb_prefix)       
             else:
                 # Just add the character.
                 k.setLabel(k.getLabel() + ch)
+    #@nonl
     #@-node:ekr.20050920085536.38:updateLabel
     #@+node:ekr.20060210141604.1:getEditableTextRange
     def getEditableTextRange (self):
@@ -3013,7 +3011,12 @@ class keyHandlerClass:
                         if trace: g.trace('calling modeHelp')
                         k.modeHelp(event)
                 else:
-                    g.trace('No state dictionary for %s' % state)
+                    # New in 4.4b4.
+                    handler = k.getStateHandler()
+                    if handler:
+                        handler(event)
+                    else:
+                        g.trace('No state handler for %s' % state)
                 return 'break'
             #@nonl
             #@-node:ekr.20060321105403.2:<< handle mode bindings >>
@@ -3862,6 +3865,12 @@ class keyHandlerClass:
         k.state.handler = None
     #@nonl
     #@-node:ekr.20050923172814.1:clearState
+    #@+node:ekr.20060420150209:getStateHandler
+    def getStateHandler (self):
+    
+        return self.state.handler
+    #@nonl
+    #@-node:ekr.20060420150209:getStateHandler
     #@+node:ekr.20050923172814.2:getState
     def getState (self,kind):
         

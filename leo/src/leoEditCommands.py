@@ -7135,6 +7135,7 @@ class searchCommandsClass (baseEditCommandsClass):
         
         self.findTabHandler = None
         self.minibufferFindHandler = None
+        self.stack = [] # A stack of previous matches.
         
         try:
             self.w = c.frame.body.bodyCtrl
@@ -7357,16 +7358,44 @@ class searchCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20050920084036.262:startIncremental
     def startIncremental (self,event,forward,regexp):
     
-        c = self.c ; k = self.k
+        c = self.c ; k = self.k ; w = self.w
         
         self.forward = forward
         self.regexp = regexp
+        
+        old_i = w.index('insert')
+        old_color = w.tag_ranges('color')
+        old_p = c.currentPosition()
+        self.stack = [g.Bunch(insert=old_i,p=old_p,color=old_color)]
+    
         k.setLabelBlue('isearch: ',protect=True)
         k.setState('isearch',1,handler=self.iSearchStateHandler)
-        c.minibufferWantsFocus()
+        c.minibufferWantsFocusNow()
     #@nonl
     #@-node:ekr.20050920084036.262:startIncremental
-    #@+node:ekr.20050920084036.264:iSearchStateHandler & helper
+    #@+node:ekr.20060420144640:iSearchBackspace
+    def iSearchBackspace (self):
+        
+        c = self.c ; k = self.k ; w = self.w
+        
+        
+        b = self.stack.pop()
+        if not self.stack:
+            # Always leave one entry on the stack.
+            self.stack.append(b)
+    
+        if 1:
+            s = k.getLabel(ignorePrompt=True)
+            g.trace(s,b.insert,b.color)
+    
+        c.selectPosition(b.p)
+        w.mark_set('insert',b.insert)
+        w.see('insert')
+        w.update_idletasks()
+        self.scolorizer(event=None)
+    #@nonl
+    #@-node:ekr.20060420144640:iSearchBackspace
+    #@+node:ekr.20050920084036.264:iSearchStateHandler
     # Called when from the state manager when the state is 'isearch'
     
     def iSearchStateHandler (self,event):
@@ -7382,7 +7411,7 @@ class searchCommandsClass (baseEditCommandsClass):
         
         c.bodyWantsFocus()
         
-        # g.trace('keysym',keysym,'stroke',k.stroke)
+        # g.trace('keysym',keysym)
         
         if 0: # Useful, but presently conflicts with other bindings.
             if k.stroke == '<Control-s>':
@@ -7396,13 +7425,10 @@ class searchCommandsClass (baseEditCommandsClass):
             j = w.index('insert +%sc' % len(s))
             if not self.forward: i,j = j,i
             self.endSearch(i,j)
-            return
-    
-        if ch == '\b':
-            g.trace('backspace not handled yet')
-            return
-        
-        if ch:
+        elif keysym == 'BackSpace':
+            k.updateLabel(event)
+            self.iSearchBackspace()
+        elif ch:
             k.updateLabel(event)
             s = k.getLabel(ignorePrompt=True)
             i = w.search(s,'insert',stopindex='insert +%sc' % len(s))
@@ -7412,25 +7438,24 @@ class searchCommandsClass (baseEditCommandsClass):
                self.iSearchHelper(event,self.forward,self.regexp)
             self.scolorizer(event)
     #@nonl
-    #@-node:ekr.20050920084036.264:iSearchStateHandler & helper
+    #@-node:ekr.20050920084036.264:iSearchStateHandler
     #@+node:ekr.20050920084036.265:scolorizer
     def scolorizer (self,event):
     
         k = self.k ; w = self.w
-    
-        stext = k.getLabel(ignorePrompt=True)
-        w.tag_delete('color')
-        w.tag_delete('color1')
-        if stext == '': return
+        s = k.getLabel(ignorePrompt=True)
+        g.trace(repr(s))
+        w.tag_delete('color','color1')
+        if not s: return
         ind = '1.0'
         while ind:
             try:
-                ind = w.search(stext,ind,stopindex='end',regexp=self.regexp)
+                ind = w.search(s,ind,stopindex='end',regexp=self.regexp)
             except:
                 break
             if ind:
                 i, d = ind.split('.')
-                d = str(int(d)+len(stext))
+                d = str(int(d)+len(s))
                 index = w.index('insert')
                 if ind == index:
                     w.tag_add('color1',ind,'%s.%s' % (i,d))
@@ -7446,7 +7471,7 @@ class searchCommandsClass (baseEditCommandsClass):
     
         '''This method moves the insert spot to position that matches the pattern in the miniBuffer'''
         
-        k = self.k ; w = self.w
+        c = self.c ; k = self.k ; w = self.w
         pattern = k.getLabel(ignorePrompt=True)
         if not pattern: return
         
@@ -7454,30 +7479,37 @@ class searchCommandsClass (baseEditCommandsClass):
         self.incremental = True
         self.forward = forward
         self.regexp = regexp
-       
-        try:
-            i = None
-            if forward:
-                i = w.search(pattern,"insert + 1c",stopindex='end',regexp=regexp)
-                if 0: # Not so useful when searches can cross buffer boundaries.
-                    if not i: # Start again at the top of the buffer.
-                        i = w.search(pattern,'1.0',stopindex='insert',regexp=regexp)
-            else:
-                i = w.search(pattern,'insert',backwards=True,stopindex='1.0',regexp=regexp)
-                if 0: # Not so useful when searches can cross buffer boundaries.
-                    if not i: # Start again at the bottom of the buffer.
-                        i = w.search(pattern,'end',backwards=True,stopindex='insert',regexp=regexp)
-        except: pass
-            
-        # Don't call endSearch here.  We'll do that when the user hits return.
-        if i and not i.isspace():
-            w.mark_set('insert',i)
-            w.see('insert')
+        start = g.choose(forward,'insert+1c','insert')
+        stopindex = g.choose(forward,'end','1.0')
+        
+        p1 = c.currentPosition()
+        p = p1.copy() ; old_p = p1.copy()
+        while 1:
+            try:
+                i = None
+                old_i = w.index('insert')
+                old_color = w.tag_ranges('color')
+                i = w.search(pattern,start,backwards=not forward,stopindex=stopindex,regexp=regexp)
+                # Don't call endSearch here.  We'll do that when the user hits return.
+                if not i.isspace():
+                    w.mark_set('insert',i)
+                    w.see('insert')
+                    self.stack.append(g.Bunch(insert=old_i,p=old_p,color=old_color))
+                    return   
+            except: pass # g.es_exception()
+            old_p = p.copy()
+            p.moveToThreadNext()
+            if not p: break
+            g.es('searching',p.headString())
+            c.selectPosition(p)
+        c.selectPosition(p1)
     #@nonl
     #@-node:ekr.20050920084036.263:iSearchHelper
     #@+node:ekr.20060203072636:endSearch
     def endSearch (self,i,j):
     
+        w = self.w
+        w.tag_delete('color','color1')
         g.app.gui.setTextSelection (self.w,i,j,insert='sel.end')
         self.k.keyboardQuit(event=None)
     #@nonl
