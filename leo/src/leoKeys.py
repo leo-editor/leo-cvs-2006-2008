@@ -3465,7 +3465,7 @@ class keyHandlerClass:
             handler = k.getFileNameHandler
             c.frame.log.deleteTab(tabName)
             if handler: handler(event)
-        elif keysym == 'Tab':
+        elif keysym in 'Tab':
             k.computeFileNameCompletionList(backspace=False)
         elif keysym == 'BackSpace':
             k.doFileNameBackSpace() 
@@ -3475,7 +3475,8 @@ class keyHandlerClass:
             k.mb_tabList = []
             k.updateLabel(event)
             k.mb_tabListPrefix = k.getLabel()
-            # k.computeFileNameCompletionList(backspace=False)
+            if keysym.lower() != 'period':
+                k.computeFileNameCompletionList(backspace=False)
         return 'break'
     #@nonl
     #@+node:ekr.20060419125301:k.doFileNameBackSpace
