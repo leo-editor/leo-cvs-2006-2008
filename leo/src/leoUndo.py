@@ -179,7 +179,7 @@ class baseUndoer:
         # New in 4.4b2:  Add this to the group if it is being accumulated.
         bunch2 = u.bead >= 0 and u.bead < len(u.beads) and u.beads[u.bead]
     
-        if bunch2 and bunch2.kind == 'beforeGroup':
+        if bunch2 and hasattr(bunch2,'kind') and bunch2.kind == 'beforeGroup':
             # Just append the new bunch the group's items.
             bunch2.items.append(bunch)
         else:
