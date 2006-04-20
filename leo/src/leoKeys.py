@@ -13,12 +13,15 @@ import leoEditCommands
 import Tkinter as Tk
 
 import compiler
+import glob
 import inspect
+import os
 import parser
 import re
 import string
 import sys
 import types
+#@nonl
 #@-node:ekr.20050920094258:<< imports >>
 #@nl
 #@<< about 'internal' bindings >>
@@ -2276,7 +2279,7 @@ class keyHandlerClass:
             prompt = g.choose(help,helpPrompt,k.altX_prompt)
             k.setLabelBlue('%s' % (prompt),protect=True)
             # Init mb_ ivars. This prevents problems with an initial backspace.
-            k.mb_prompt = k.mb_tabListPrefix = k.mb_prefix = prompt ### k.altX_prompt
+            k.mb_prompt = k.mb_tabListPrefix = k.mb_prefix = prompt
             k.mb_tabList = [] ; k.mb_tabListIndex = -1
             k.mb_help = help
             k.mb_helpHandler = helpHandler
@@ -2981,13 +2984,15 @@ class keyHandlerClass:
             #@        << handle mode bindings >>
             #@+node:ekr.20060321105403.2:<< handle mode bindings >>
             # First, honor minibuffer bindings for all except user modes.
-            if state in ('getArg','full-command','auto-complete'):
+            if state in ('getArg','getFileName','full-command','auto-complete'):
                 if k.handleMiniBindings(event,state,stroke):
                     return 'break'
             
             # Second, honor general modes.
             if state == 'getArg':
                 return k.getArg(event)
+            elif state == 'getFileName':
+                return k.getFileName(event)
             elif state in ('full-command','auto-complete'):
                 # Do the default state action.
                 if trace: g.trace('calling state function')
@@ -3423,6 +3428,117 @@ class keyHandlerClass:
     #@-node:ekr.20060120193743:showStateAndMode
     #@-node:ekr.20060115103349:Modes
     #@+node:ekr.20051002152108.1:Shared helpers
+    #@+node:ekr.20060419124420.1:getFileName & helpers
+    def getFileName (self,event=None,handler=None,prefix='',filterExt='.leo'):
+        
+        '''Similar to k.getArg, but uses completion to indicate files on the file system.'''
+        
+        k = self ; c = k.c ; tag = 'getFileName' ; state = k.getState(tag)
+        tabName = 'Completion'
+        keysym = (event and event.keysym) or ''
+        # g.trace('state',state,'keysym',keysym)
+        if state == 0:
+            k.arg = ''
+            #@        << init altX vars >>
+            #@+node:ekr.20060419125211:<< init altX vars >>
+            k.filterExt = filterExt
+            k.mb_prefix = (prefix or k.getLabel())
+            k.mb_prompt = prefix or k.getLabel()
+            k.mb_tabList = []
+            
+            # Clear the list: any non-tab indicates that a new prefix is in effect.
+            theDir = g.os_path_abspath(os.curdir)
+            k.extendLabel(theDir,select=False,protect=False)
+            
+            k.mb_tabListPrefix = k.getLabel()
+            #@nonl
+            #@-node:ekr.20060419125211:<< init altX vars >>
+            #@nl
+            # Set the states.
+            k.getFileNameHandler = handler
+            k.setState(tag,1,k.getFileName)
+            k.afterArgWidget = event and event.widget or c.frame.body.bodyCtrl
+            c.frame.log.clearTab(tabName)
+            c.minibufferWantsFocusNow()
+        elif keysym == 'Return':
+            k.arg = k.getLabel(ignorePrompt=True)
+            handler = k.getFileNameHandler
+            c.frame.log.deleteTab(tabName)
+            if handler: handler(event)
+        elif keysym == 'Tab':
+            k.computeFileNameCompletionList(backspace=False)
+        elif keysym == 'BackSpace':
+            k.doFileNameBackSpace() 
+            c.minibufferWantsFocus()
+        else:
+            # Clear the list, any other character besides tab indicates that a new prefix is in effect.
+            k.mb_tabList = []
+            k.updateLabel(event)
+            k.mb_tabListPrefix = k.getLabel()
+            # k.computeFileNameCompletionList(backspace=False)
+        return 'break'
+    #@nonl
+    #@+node:ekr.20060419125301:k.doFileNameBackSpace
+    def doFileNameBackSpace (self):
+    
+        '''Cut back to previous prefix and update prefix.'''
+    
+        k = self ; c = k.c
+        
+        if 0:
+            g.trace(
+                len(k.mb_tabListPrefix) > len(k.mb_prefix),
+                repr(k.mb_tabListPrefix),repr(k.mb_prefix))
+    
+        if len(k.mb_tabListPrefix) > len(k.mb_prefix):
+            k.mb_tabListPrefix = k.mb_tabListPrefix [:-1]
+            k.setLabel(k.mb_tabListPrefix)
+            k.computeFileNameCompletionList(backspace=True)
+    #@-node:ekr.20060419125301:k.doFileNameBackSpace
+    #@+node:ekr.20060419125554:k.computeFileNameCompletionList
+    # This code must not change mb_tabListPrefix.
+    
+    def computeFileNameCompletionList (self,backspace):
+    
+        k = self ; c = k.c ; s = k.getLabel() ; tabName = 'Completion'
+        path = k.getLabel(ignorePrompt=True)
+        sep = os.path.sep
+        if path.endswith(sep):
+            tabList = [g.os_path_join(path,'..\\')]
+        else:
+            path = g.os_path_abspath(path) # To handle . and ..
+            tabList = []
+    
+        for f in glob.glob(path+'*'):
+            if g.os_path_isdir(f):
+                tabList.append(f + sep)
+            else:
+                junk,ext = g.os_path_splitext(f)
+                if not ext or ext == k.filterExt:
+                    tabList.append(f)
+        k.mb_tabList = tabList
+        junk,common_prefix = g.itemsMatchingPrefixInList(path,tabList)
+        c.frame.log.clearTab(tabName)
+        if tabList:
+            k.mb_tabListIndex = -1 # The next item will be item 0.
+            if not backspace:
+                k.setLabel(k.mb_prompt + common_prefix)
+            k.showFileNameTabList()
+    #@nonl
+    #@-node:ekr.20060419125554:k.computeFileNameCompletionList
+    #@+node:ekr.20060420100610:k.showFileNameTabList
+    def showFileNameTabList (self):
+        
+        k = self ; tabName = 'Completion'
+        
+        for path in k.mb_tabList:
+            dir,fileName = g.os_path_split(path)
+            s = g.choose(path.endswith('\\'),dir,fileName)
+            s = fileName or g.os_path_basename(dir) + '\\'
+            g.es(s,tabName=tabName)
+    #@nonl
+    #@-node:ekr.20060420100610:k.showFileNameTabList
+    #@-node:ekr.20060419124420.1:getFileName & helpers
     #@+node:ekr.20051017212452:computeCompletionList
     # Important: this code must not change mb_tabListPrefix.  Only doBackSpace should do that.
     
@@ -3975,6 +4091,7 @@ class keyHandlerClass:
     #@-node:ekr.20050920085536.76:doControlU
     #@-node:ekr.20050920085536.73:universalDispatcher & helpers
     #@-others
+#@nonl
 #@-node:ekr.20060219100201:class keyHandlerClass
 #@-others
 #@nonl
