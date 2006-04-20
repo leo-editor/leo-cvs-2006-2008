@@ -4136,12 +4136,13 @@ class editFileCommandsClass (baseEditCommandsClass):
         k = self.k
     
         return {
-            'delete-file':      self.deleteFile,
-            'diff':             self.diff, 
-            'insert-file':      self.insertFile,
-            'make-directory':   self.makeDirectory,
-            'remove-directory': self.removeDirectory,
-            'save-file':        self.saveFile
+            'delete-file':          self.deleteFile,
+            'diff':                 self.diff, 
+            'insert-file':          self.insertFile,
+            'make-directory':       self.makeDirectory,
+            'open-outline-by-name': self.openOutlineByName,
+            'remove-directory':     self.removeDirectory,
+            'save-file':            self.saveFile
         }
     #@nonl
     #@-node:ekr.20050920084036.163: getPublicCommands (editFileCommandsClass)
@@ -4230,6 +4231,24 @@ class editFileCommandsClass (baseEditCommandsClass):
                 k.setLabel("Not Create: %s" % k.arg)
     #@nonl
     #@-node:ekr.20050920084036.168:makeDirectory
+    #@+node:ekr.20060419123128:open-outline-by-name
+    def openOutlineByName (self,event):
+    
+        '''A minibuffer inteface to Leo's open command.'''
+    
+        k = self.k
+        k.setLabelBlue('Open Leo Outline: ',protect=True)
+        k.getFileName(event,handler=self.openOutlineByNameFinisher)
+    
+    def openOutlineByNameFinisher (self,event):
+    
+        c = self.c ; k = self.k ; fileName = k.arg
+        
+        k.resetLabel()
+        if fileName and g.os_path_exists(fileName):
+            g.openWithFileName(fileName,c)
+    #@nonl
+    #@-node:ekr.20060419123128:open-outline-by-name
     #@+node:ekr.20050920084036.169:removeDirectory
     def removeDirectory (self,event):
     
