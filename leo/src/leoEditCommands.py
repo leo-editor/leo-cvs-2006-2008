@@ -2086,7 +2086,9 @@ class editCommandsClass (baseEditCommandsClass):
     #@-others
     #@nonl
     #@-node:ekr.20050920084036.66:fill column and centering
-    #@+node:ekr.20060417194232:find (quick) To do: extend selection
+    #@+node:ekr.20060417194232:find (quick)
+    # To do: extend selection.
+    #@nonl
     #@+node:ekr.20060417194232.1:findCharacter
     def findCharacter (self,event):
         
@@ -2125,7 +2127,7 @@ class editCommandsClass (baseEditCommandsClass):
             k.clearState()
     #@nonl
     #@-node:ekr.20060417194232.2:findWord
-    #@-node:ekr.20060417194232:find (quick) To do: extend selection
+    #@-node:ekr.20060417194232:find (quick)
     #@+node:ekr.20050920084036.72:goto...
     #@+node:ekr.20050929115226:gotoCharacter
     def gotoCharacter (self,event):
@@ -7377,7 +7379,6 @@ class searchCommandsClass (baseEditCommandsClass):
     def iSearchBackspace (self):
         
         c = self.c ; k = self.k ; w = self.w
-        
         
         b = self.stack.pop()
         if not self.stack:

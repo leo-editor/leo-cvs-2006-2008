@@ -16,7 +16,7 @@
 <v t="ekr.20050315084922"><vh>@button Spell</vh></v>
 <v t="ekr.20051015172713"><vh>@button Save</vh></v>
 </v>
-<v t="EKR.20040519091259" a="E"><vh>Annoucnements (don't split into lines)</vh>
+<v t="EKR.20040519091259"><vh>Annoucnements (don't split into lines)</vh>
 <v t="EKR.20040519091259.1"><vh>Download statistics</vh></v>
 <v t="EKR.20040519091259.2"><vh>Quotes of the month</vh>
 <v t="ekr.20060213160806"><vh>February 2005</vh></v>
@@ -25,7 +25,8 @@
 <v t="EKR.20040519091259.3"><vh>November 2003</vh></v>
 <v t="EKR.20040519091259.4"><vh>October 2003</vh></v>
 </v>
-<v t="ekr.20060330134831" a="V"><vh>ANN: Leo 4.4b3</vh></v>
+<v t="ekr.20060421071350"><vh>ANN: Leo 4.4b4</vh></v>
+<v t="ekr.20060330134831"><vh>ANN: Leo 4.4b3</vh></v>
 <v t="ekr.20060227110642"><vh>ANN: Leo 4.4a7</vh></v>
 <v t="ekr.20060217073112"><vh>ANN: Leo 4.4a6</vh></v>
 <v t="ekr.20060215120457"><vh>ANN: Leo 4.4x1</vh></v>
@@ -172,7 +173,7 @@
 </v>
 <v t="ekr.20050118092706"><vh>@thin leo-4-3.nsi</vh></v>
 </v>
-<v t="EKR.20040519090846"><vh>Distribution files (update for each release)</vh>
+<v t="EKR.20040519090846" a="E"><vh>Distribution files (update for each release)</vh>
 <v t="EKR.20040519090846.2"><vh>@asis ../doc/INSTALL.TXT</vh>
 <v t="EKR.20040519090846.3"><vh>System requirements</vh></v>
 <v t="EKR.20040519090846.4"><vh>Linux installation</vh></v>
@@ -182,7 +183,7 @@
 </v>
 <v t="EKR.20040519090846.1"><vh>@asis ../doc/LICENSE.TXT</vh></v>
 <v t="EKR.20040519090846.8"><vh>@asis ../doc/PKG-INFO.TXT</vh></v>
-<v t="EKR.20040519090846.9"><vh>@asis ../doc/README.TXT</vh></v>
+<v t="EKR.20040519090846.9" a="V"><vh>@asis ../doc/README.TXT</vh></v>
 <v t="EKR.20040519082027.23"><vh>@thin createLeoDist.py</vh></v>
 <v t="EKR.20040519100230"><vh>In leo directory</vh>
 <v t="EKR.20040519090846.10"><vh>@asis ../manifest.in</vh></v>
@@ -474,7 +475,7 @@ else: # Doesn't work
 # dict: suppress warnings where keys can be regular expressions
 suppressionRegexs = {}</t>
 <t tx="EKR.20040519082027.28">name="leo",
-version="4-4-b3", # No spaces here!
+version="4-4-b4", # No spaces here!
 author="Edward K. Ream",
 author_email="edreamleo@charter.net",
 url="http://webpages.charter.net/edreamleo/front.html",
@@ -647,7 +648,7 @@ c:\python22\python &lt;leopath&gt;leo.py %1
 </t>
 <t tx="EKR.20040519090846.8">Metadata-Version: 1.0
 Name: leo
-Version: 4.4-b3
+Version: 4.4-b4
 Summary: Leo: Literate Editor with Outlines
 Home-page: http://webpages.charter.net/edreamleo/front.html
 Author: Edward K. Ream
@@ -666,7 +667,14 @@ Description: Leo is an outline-oriented editor written in 100% pure Python.
 		Download tkIcon from http://www.effbot.org/downloads/#tkIcon
 Platform: Windows, Linux, Macintosh
 </t>
-<t tx="EKR.20040519090846.9">Leo 4.4 beta 3                                             April 14, 2006
+<t tx="EKR.20040519090846.9">Leo 4.4 beta 4                                             April 21, 2006
+
+This version fixes a long-standing MacOS bug.  It is likely to be the last beta release before 4.4 final.  This release also adds several new commands and contains a script for updating leoSettings.leo.
+
+Warning: The previous beta was not widely distributed. Please do some testing in your environment before recommending this version of Leo to others, (such as your students).
+
+Leo is a text editor, data organizer, project manager and much more. See:
+http://webpages.charter.net/edreamleo/intro.html
 
 The highlights of Leo 4.4:
 --------------------------
@@ -3053,7 +3061,7 @@ WindowIcon off
 
 ; settings from HM NIS Edit Wizard
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "LeoSetup-4-4-b3.exe"
+OutFile "LeoSetup-4-4-b4.exe"
 LoadLanguageFile "${NSISDIR}\Contrib\Language files\English.nlf"
 InstallDir "$PROGRAMFILES\Leo"
 Icon "..\Icons\leo_inst.ico"
@@ -3267,7 +3275,7 @@ Delete "$INSTDIR\extensions\Pmw\Pmw_1_2\tests\*.*"</t>
 Delete "$INSTDIR\test\test.leo"
 Delete "$INSTDIR\test\unitTest.leo"
 </t>
-<t tx="ekr.20050118124408">!define PRODUCT_VERSION "4.4-b3"</t>
+<t tx="ekr.20050118124408">!define PRODUCT_VERSION "4.4-b4"</t>
 <t tx="ekr.20050118125236"></t>
 <t tx="ekr.20050119191034"></t>
 <t tx="ekr.20050124083006">Leo 4.3 alpha 1 is now available at http://sourceforge.net/projects/leo/
@@ -4519,5 +4527,41 @@ Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
 <t tx="ekr.20060330135143"></t>
 <t tx="ekr.20060330135143.1"></t>
 <t tx="ekr.20060330135143.2"></t>
+<t tx="ekr.20060421071350">[ANN: Leo 4.4 b4 released]
+
+Leo 4.4 beta 4 is now available at:
+http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+
+This version fixes a long-standing MacOS bug.  It is likely to be the last beta release before 4.4 rc1.  This release also adds several new commands and contains a script for updating leoSettings.leo.
+
+Warning: The previous beta was not widely distributed.  Please do some testing in your environment before recommending this version of Leo to others, (such as your students).
+
+Edward
+
+Leo is a text editor, data organizer, project manager and much more. See:
+http://webpages.charter.net/edreamleo/intro.html
+
+The highlights of Leo 4.4:
+--------------------------
+- An Emacs-like mini-buffer: you can now execute any command by typing its long name, with tab completion.
+
+- Many new commands, including cursor and screen movement, basic character, word and paragraph manipulation, and commands to manipulate buffers, the kill ring, regions and rectangles. You can use Leo without using a mouse.
+
+- Flexible key bindings and input modes. You can emulate the operation of Emacs, Vim, or any other editor.
+
+- A tabbed log pane. The Find and Spell Check commands now use tabs instead of dialogs, making those commands much easier to use. Plugins or scripts can easily create new tabs. The Completion tab shows possible typing completions.
+
+- Autocompletion and calltips.
+
+- Dozens of other new features and bug fixes since Leo 4.3.3.
+
+Links:
+------
+Leo:      http://webpages.charter.net/edreamleo/front.html
+Home:     http://sourceforge.net/projects/leo/
+Download: http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:      http://sourceforge.net/cvs/?group_id=3458
+Quotes:   http://webpages.charter.net/edreamleo/testimonials.html
+</t>
 </tnodes>
 </leo_file>

@@ -1,4 +1,11 @@
-Leo 4.4 beta 3                                             April 14, 2006
+Leo 4.4 beta 4                                             April 21, 2006
+
+This version fixes a long-standing MacOS bug.  It is likely to be the last beta release before 4.4 final.  This release also adds several new commands and contains a script for updating leoSettings.leo.
+
+Warning: The previous beta was not widely distributed. Please do some testing in your environment before recommending this version of Leo to others, (such as your students).
+
+Leo is a text editor, data organizer, project manager and much more. See:
+http://webpages.charter.net/edreamleo/intro.html
 
 The highlights of Leo 4.4:
 --------------------------
