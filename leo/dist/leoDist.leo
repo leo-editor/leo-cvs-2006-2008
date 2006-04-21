@@ -173,7 +173,7 @@
 </v>
 <v t="ekr.20050118092706"><vh>@thin leo-4-3.nsi</vh></v>
 </v>
-<v t="EKR.20040519090846" a="E"><vh>Distribution files (update for each release)</vh>
+<v t="EKR.20040519090846" a="V"><vh>Distribution files (update for each release)</vh>
 <v t="EKR.20040519090846.2"><vh>@asis ../doc/INSTALL.TXT</vh>
 <v t="EKR.20040519090846.3"><vh>System requirements</vh></v>
 <v t="EKR.20040519090846.4"><vh>Linux installation</vh></v>
@@ -183,7 +183,7 @@
 </v>
 <v t="EKR.20040519090846.1"><vh>@asis ../doc/LICENSE.TXT</vh></v>
 <v t="EKR.20040519090846.8"><vh>@asis ../doc/PKG-INFO.TXT</vh></v>
-<v t="EKR.20040519090846.9" a="V"><vh>@asis ../doc/README.TXT</vh></v>
+<v t="EKR.20040519090846.9"><vh>@asis ../doc/README.TXT</vh></v>
 <v t="EKR.20040519082027.23"><vh>@thin createLeoDist.py</vh></v>
 <v t="EKR.20040519100230"><vh>In leo directory</vh>
 <v t="EKR.20040519090846.10"><vh>@asis ../manifest.in</vh></v>
@@ -4560,7 +4560,7 @@ Links:
 Leo:      http://webpages.charter.net/edreamleo/front.html
 Home:     http://sourceforge.net/projects/leo/
 Download: http://sourceforge.net/project/showfiles.php?group_id=3458
-CVS:      http://sourceforge.net/cvs/?group_id=3458
+CVS:      http://leo.tigris.org/source/browse/leo/
 Quotes:   http://webpages.charter.net/edreamleo/testimonials.html
 </t>
 </tnodes>
