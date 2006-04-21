@@ -516,6 +516,7 @@ plugins\UASearch.py
 plugins\UNL.py
 plugins\URLloader.py
 plugins\UniversalScrolling.py
+plugins\__init__.py
 plugins\__ipython.py
 plugins\__jEdit_colorizer__.py
 plugins\__outlineExperiments.py
