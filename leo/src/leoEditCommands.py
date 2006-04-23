@@ -7366,9 +7366,8 @@ class searchCommandsClass (baseEditCommandsClass):
         self.regexp = regexp
         
         old_i = w.index('insert')
-        old_color = w.tag_ranges('color')
         old_p = c.currentPosition()
-        self.stack = [g.Bunch(insert=old_i,p=old_p,color=old_color)]
+        self.stack = [g.Bunch(insert=old_i,p=old_p)]
     
         k.setLabelBlue('isearch: ',protect=True)
         k.setState('isearch',1,handler=self.iSearchStateHandler)
@@ -7381,19 +7380,18 @@ class searchCommandsClass (baseEditCommandsClass):
         c = self.c ; k = self.k ; w = self.w
         
         b = self.stack.pop()
-        if not self.stack:
-            # Always leave one entry on the stack.
-            self.stack.append(b)
-    
-        if 1:
-            s = k.getLabel(ignorePrompt=True)
-            g.trace(s,b.insert,b.color)
+        g.trace(b.insert)
     
         c.selectPosition(b.p)
         w.mark_set('insert',b.insert)
         w.see('insert')
         w.update_idletasks()
-        self.scolorizer(event=None)
+        
+        if self.stack:
+            self.scolorizer(event=None,pattern=b.pattern)
+        else:
+            self.stack.append(b)
+            w.tag_delete('color','color1')
     #@nonl
     #@-node:ekr.20060420144640:iSearchBackspace
     #@+node:ekr.20050920084036.264:iSearchStateHandler
@@ -7431,34 +7429,31 @@ class searchCommandsClass (baseEditCommandsClass):
             self.iSearchBackspace()
         elif ch:
             k.updateLabel(event)
-            s = k.getLabel(ignorePrompt=True)
-            i = w.search(s,'insert',stopindex='insert +%sc' % len(s))
-            if i:
-                self.searchString = s
-            else:
-               self.iSearchHelper(event,self.forward,self.regexp)
+            self.iSearchHelper(event)
             self.scolorizer(event)
     #@nonl
     #@-node:ekr.20050920084036.264:iSearchStateHandler
     #@+node:ekr.20050920084036.265:scolorizer
-    def scolorizer (self,event):
+    def scolorizer (self,event,pattern=None):
     
         k = self.k ; w = self.w
-        s = k.getLabel(ignorePrompt=True)
-        g.trace(repr(s))
+        s = pattern or k.getLabel(ignorePrompt=True)
+        # g.trace(repr(s))
         w.tag_delete('color','color1')
         if not s: return
         ind = '1.0'
+        index = w.index('insert')
+        index2 = w.index('%s+%dc' % (index,len(s)))
+        # g.trace(index,index2)
         while ind:
             try:
                 ind = w.search(s,ind,stopindex='end',regexp=self.regexp)
-            except:
-                break
+            except: break
             if ind:
                 i, d = ind.split('.')
                 d = str(int(d)+len(s))
-                index = w.index('insert')
-                if ind == index:
+                # g.trace(ind)
+                if ind in (index,index2):
                     w.tag_add('color1',ind,'%s.%s' % (i,d))
                 w.tag_add('color',ind,'%s.%s' % (i,d))
                 ind = i + '.' + d
@@ -7468,34 +7463,28 @@ class searchCommandsClass (baseEditCommandsClass):
     #@nonl
     #@-node:ekr.20050920084036.265:scolorizer
     #@+node:ekr.20050920084036.263:iSearchHelper
-    def iSearchHelper (self,event,forward,regexp):
+    def iSearchHelper (self,event):
     
         '''This method moves the insert spot to position that matches the pattern in the miniBuffer'''
         
         c = self.c ; k = self.k ; w = self.w
-        pattern = k.getLabel(ignorePrompt=True)
+        self.searchString = pattern = k.getLabel(ignorePrompt=True)
         if not pattern: return
-        
-        self.searchString = pattern
-        self.incremental = True
-        self.forward = forward
-        self.regexp = regexp
-        start = g.choose(forward,'insert+1c','insert')
-        stopindex = g.choose(forward,'end','1.0')
-        
+        stopindex = g.choose(self.forward,'end','1.0')
         p1 = c.currentPosition()
         p = p1.copy() ; old_p = p1.copy()
+        old_ins = w.index('insert') # This must *not* be changed in the loop.
         while 1:
             try:
-                i = None
-                old_i = w.index('insert')
                 old_color = w.tag_ranges('color')
-                i = w.search(pattern,start,backwards=not forward,stopindex=stopindex,regexp=regexp)
+                i = w.search(pattern,old_ins,backwards=not self.forward,stopindex=stopindex,regexp=self.regexp)
                 # Don't call endSearch here.  We'll do that when the user hits return.
+                # g.trace(repr(i))
                 if not i.isspace():
                     w.mark_set('insert',i)
                     w.see('insert')
-                    self.stack.append(g.Bunch(insert=old_i,p=old_p,color=old_color))
+                    self.stack.append(g.Bunch(insert=old_ins,p=old_p,pattern=pattern[:-1])) ### color=old_color,
+                    # g.trace('found',old_ins,i)
                     return   
             except: pass # g.es_exception()
             old_p = p.copy()
