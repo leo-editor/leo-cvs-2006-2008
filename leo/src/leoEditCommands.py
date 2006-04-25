@@ -7435,6 +7435,8 @@ class searchCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20050920084036.264:iSearchStateHandler
     #@+node:ekr.20050920084036.265:scolorizer
     def scolorizer (self,event,pattern=None):
+        
+        '''Colorizer for incremental searches.'''
     
         k = self.k ; w = self.w
         s = pattern or k.getLabel(ignorePrompt=True)
@@ -7445,6 +7447,7 @@ class searchCommandsClass (baseEditCommandsClass):
         index = w.index('insert')
         index2 = w.index('%s+%dc' % (index,len(s)))
         # g.trace(index,index2)
+        # Colorize in the forward direction, regardless of the kind of search.
         while ind:
             try:
                 ind = w.search(s,ind,stopindex='end',regexp=self.regexp)
@@ -7471,27 +7474,36 @@ class searchCommandsClass (baseEditCommandsClass):
         self.searchString = pattern = k.getLabel(ignorePrompt=True)
         if not pattern: return
         stopindex = g.choose(self.forward,'end','1.0')
-        p1 = c.currentPosition()
-        p = p1.copy() ; old_p = p1.copy()
+        startindex = g.choose(self.forward,'1.0','end')
+        p1 = c.currentPosition() ; p = p1.copy() ; old_p = p.copy()
         old_ins = w.index('insert') # This must *not* be changed in the loop.
+        w.mark_set('insert',startindex)
         while 1:
             try:
-                old_color = w.tag_ranges('color')
                 i = w.search(pattern,old_ins,backwards=not self.forward,stopindex=stopindex,regexp=self.regexp)
                 # Don't call endSearch here.  We'll do that when the user hits return.
-                # g.trace(repr(i))
+                g.trace(repr(i))
                 if not i.isspace():
                     w.mark_set('insert',i)
+                    # if self.forward:
+                        # w.mark_set('insert',i)
+                    # else:
+                        # w.mark_set('insert',i+'-%dc'%(len(pattern)))
                     w.see('insert')
-                    self.stack.append(g.Bunch(insert=old_ins,p=old_p,pattern=pattern[:-1])) ### color=old_color,
+                    self.stack.append(g.Bunch(insert=old_ins,p=old_p,pattern=pattern[:-1]))
                     # g.trace('found',old_ins,i)
                     return   
             except: pass # g.es_exception()
-            old_p = p.copy()
-            p.moveToThreadNext()
+            # old_p = p.copy()
+            if self.forward: p.moveToThreadNext()
+            else:            p.moveToThreadBack()
             if not p: break
-            g.es('searching',p.headString())
+            g.trace('searching',p.headString())
             c.selectPosition(p)
+            w.mark_set('insert','1.0')
+            w.update_idletasks()
+            # if not self.forward:
+                # w.mark_set('insert','end')
         c.selectPosition(p1)
     #@nonl
     #@-node:ekr.20050920084036.263:iSearchHelper
