@@ -24,7 +24,7 @@ configurable in the ini file.
 #@-node:gfunch.20041207100416.1:<< about this plugin >>
 #@nl
 
-__version__ = "0.3"
+__version__ = "0.4"
 #@<< version history >>
 #@+node:gfunch.20041207100416.2:<< version history >>
 #@+at
@@ -32,6 +32,7 @@ __version__ = "0.3"
 # 0.1: Initial version.
 # 0.2: Improved menu structure. Added ini file.
 # 0.3: Changed docstring slightly.
+# 0.4: Added event=None to insert_xxx_node.
 #@-at
 #@-node:gfunch.20041207100416.2:<< version history >>
 #@nl
@@ -105,6 +106,8 @@ class DateNodes:
     def _get_current_date(self):
         """Get the current date in tuple form (year, month, day)."""
         
+        g.trace(repr(datetime.date.today()))
+        
         date = datetime.date.today().timetuple()[:3]
     
         return date
@@ -139,14 +142,16 @@ class DateNodes:
     #@+node:gfunch.20041208074734:insert_day_node
     #@@c
     
-    def insert_day_node(self, date=None, day_fmt=None):
+    def insert_day_node(self, event=None, date=None, day_fmt=None):
         """Insert a date node into the outline as 
         a subnode of the current selection."""
             
         #@    << get settings >>
         #@+node:gfunch.20041209141737:<< get settings >>
         c = self.c
-            
+        
+        # g.trace(date,g.callers())
+        
         year, month, day = date or self._get_current_date()
         day_fmt = day_fmt or self.d_dfmt
         #@nonl
@@ -171,7 +176,7 @@ class DateNodes:
     #@+node:gfunch.20041207100416.11:insert_month_nodes
     #@@c
     
-    def insert_month_nodes(self, date=None, day_fmt=None, month_fmt=None):
+    def insert_month_nodes(self, event=None, date=None, day_fmt=None, month_fmt=None):
         """Insert a months-worth of date nodes into the outline as 
         subnodes of the current selection."""
     
@@ -219,7 +224,7 @@ class DateNodes:
     #@+node:gfunch.20041207100416.12:insert_year_nodes
     #@@c
     
-    def insert_year_nodes(self, date=None, day_fmt=None, month_fmt=None, year_fmt=None):
+    def insert_year_nodes(self, event=None,date=None, day_fmt=None, month_fmt=None, year_fmt=None):
         """Insert a years-worth of date nodes into the outline as 
         subnodes of the current selection."""
         
