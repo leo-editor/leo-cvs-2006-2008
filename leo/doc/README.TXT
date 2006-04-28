@@ -1,8 +1,6 @@
-Leo 4.4 beta 4                                             April 21, 2006
+Leo 4.4 release candidate 1                                 April 28, 2006
 
-This version fixes a long-standing MacOS bug.  It is likely to be the last beta release before 4.4 final.  This release also adds several new commands and contains a script for updating leoSettings.leo.
-
-Warning: The previous beta was not widely distributed. Please do some testing in your environment before recommending this version of Leo to others, (such as your students).
+This version fixes a few minor bug reported in 4.4b4 and adds 9 new commands. The open-outline-by-name command supports filename completion.
 
 Leo is a text editor, data organizer, project manager and much more. See:
 http://webpages.charter.net/edreamleo/intro.html
@@ -17,7 +15,7 @@ The highlights of Leo 4.4:
 
 - A tabbed log pane. The Find and Spell Check commands now use tabs instead of dialogs, making those commands much easier to use. Plugins or scripts can easily create new tabs. The Completion tab shows possible typing completions.
 
-- Autocompletion and calltips.
+- Autocompletion and calltips.  Autocompletion works much like tab completion.
 
 - Dozens of other new features and bug fixes since Leo 4.3.3.
 
@@ -26,5 +24,5 @@ Links:
 Leo:      http://webpages.charter.net/edreamleo/front.html
 Home:     http://sourceforge.net/projects/leo/
 Download: http://sourceforge.net/project/showfiles.php?group_id=3458
-CVS:      http://sourceforge.net/cvs/?group_id=3458
+CVS:      http://leo.tigris.org/source/browse/leo/
 Quotes:   http://webpages.charter.net/edreamleo/testimonials.html

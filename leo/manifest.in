@@ -91,6 +91,9 @@ include plugins/*.ini
 include plugins/*.txt
 include plugins/*.py
 
+include plugins/trees/*.py
+include plugins/trees/pluginsManager.txt
+
 include scripts/openLeoScript.sh
 include scripts/scripts.leo
 include scripts/leoScripts.txt

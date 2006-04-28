@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="6345" clone_windows="0"/>
 <globals body_outline_ratio="0.595562130178">
-	<global_window_position top="31" left="293" height="850" width="852"/>
+	<global_window_position top="30" left="389" height="850" width="852"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -71,8 +71,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060306151759"><vh>Chapters plugins</vh>
-<v t="ekr.20060306151759.1"><vh>@thin chapters2.py</vh></v>
+<v t="ekr.20060428072333"><vh>Chapters</vh>
 <v t="ekr.20060328125925"><vh>@thin chapter_hoist.py</vh></v>
 </v>
 <v t="edream.110203113231.667"><vh>Commands &amp; directives</vh>
@@ -142,10 +141,6 @@
 <v t="ekr.20041021120118"><vh>@thin pretty_print.py</vh></v>
 <v t="ekr.20040331153923"><vh>@thin scheduler.py</vh></v>
 <v t="mork.20041022090036.1"><vh>@thin templates.py</vh></v>
-<v t="ekr.20041215103252"><vh>datenodes</vh>
-<v t="gfunch.20041207100416"><vh>@thin datenodes.py</vh></v>
-<v t="gfunch.20041209063345.1"><vh>@thin datenodes.ini</vh></v>
-</v>
 <v t="edream.110203113231.722"><vh>mod_autosave</vh>
 <v t="edream.110203113231.723" tnodeList="edream.110203113231.723"><vh>@file-nosent mod_autosave.ini</vh></v>
 <v t="edream.110203113231.724"><vh>@thin mod_autosave.py</vh></v>
@@ -182,6 +177,7 @@
 <v t="ekr.20060110125615"><vh>@url http://rclick.netfirms.com/dyna_menu.py.html  (dyna plugin)</vh></v>
 </v>
 <v t="edream.110203113231.872"><vh>Enhanced nodes...</vh>
+<v t="gfunch.20041207100416"><vh>@thin datenodes.py</vh></v>
 <v t="edream.110203113231.873"><vh>@thin at_folder.py</vh></v>
 <v t="ekr.20040915085351"><vh>@thin at_produce.py</vh></v>
 <v t="ktenney.20041211072654.1"><vh>@thin at_view.py</vh></v>
@@ -422,8 +418,17 @@
 <v t="edream.110203113231.921"><vh>@thin redefine_put.py</vh></v>
 </v>
 <v t="ekr.20040722134535"><vh>Experimental/unfinished</vh>
+<v t="ekr.20060306151759"><vh>chapters2 plugin</vh>
+<v t="ekr.20060428071327"><vh>Fix chapters plugin</vh>
+<v t="ekr.20060428071631"><vh>Report</vh></v>
+</v>
+<v t="ekr.20060306151759.1"><vh>@thin chapters2.py</vh></v>
+</v>
 <v t="ekr.20050915064008"><vh>@thin __vnx__.py</vh></v>
 <v t="ekr.20050612074047"><vh>New colorizer</vh>
+<v t="ekr.20050601081132" a="M"><vh>&lt;&lt; to do &gt;&gt;</vh>
+<v t="ekr.20050603121815"><vh>&lt;&lt; later &gt;&gt;</vh></v>
+</v>
 <v t="ekr.20050529180421"><vh>jEdit docs...</vh>
 <v t="ekr.20050530065723"><vh>@url http://www.jedit.org/42docs/users-guide/writing-modes-part.html</vh></v>
 <v t="ekr.20050529180421.1"><vh>Rule ordering</vh></v>
@@ -481,7 +486,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20050529142847"><vh>@thin __jEdit_colorizer__.py</vh></v>
+<v t="ekr.20060425113823"><vh>Recent</vh>
 <v t="ekr.20050606214954"><vh>(state methods)</vh>
 <v t="ekr.20050529143413.30"><vh>colorize (Main entry point)</vh></v>
 <v t="ekr.20050529143413.31"><vh>colorizeAnyLanguage</vh></v>
@@ -502,6 +507,9 @@
 <v t="ekr.20050607212958"><vh>colorByDelegate</vh></v>
 <v t="ekr.20050602205810.4"><vh>colorRangeWithTag</vh></v>
 </v>
+</v>
+<v t="ekr.20050529142847"
+marks="ekr.20050601081132,"><vh>@thin __jEdit_colorizer__.py</vh></v>
 </v>
 <v t="ekr.20040717133342"><vh>Shadow files plugin</vh>
 <v t="ekr.20050126104457"><vh>Notes</vh></v>
@@ -785,6 +793,9 @@
 <v t="ekr.20051109021852"><vh>Tk Notebook</vh>
 <v t="leo4u.20040924131405.1"><vh>@thin Tknotebook.py</vh></v>
 <v t="leo4u.20040924130601.1"><vh>@thin TabWindow.py</vh></v>
+</v>
+<v t="ekr.20050830091910"><vh>Zodb</vh>
+<v t="ekr.20050825154553"><vh>@thin zodb.py</vh></v>
 </v>
 </v>
 <v t="EKR.20040517075715"><vh>External editors &amp; Open With</vh>
@@ -1107,9 +1118,6 @@
 <v t="ekr.20050805162550"
 marks="ekr.20050809082854.1,"><vh>@thin rst3.py</vh></v>
 </v>
-</v>
-<v t="ekr.20050830091910"><vh>Zodb</vh>
-<v t="ekr.20050825154553"><vh>@thin zodb.py</vh></v>
 </v>
 </v>
 </vnodes>
@@ -7371,7 +7379,7 @@ http://www.docbook.org[The official home page for DocBook: The Definitive Guide.
 
 @code</t>
 <t tx="ekr.20040717133342"></t>
-<t tx="ekr.20040722134535"></t>
+<t tx="ekr.20040722134535"># Warning: these plugins are not ready for prime time.</t>
 <t tx="ekr.20040722135402"></t>
 <t tx="ekr.20040722135402.1"></t>
 <t tx="ekr.20040722141148">@
@@ -8151,7 +8159,6 @@ your plugin.</t>
 just put @others in the root of your plugin as shown. Note that @others may be
 nested, as shown in class myClass.</t>
 <t tx="ekr.20041211035618"></t>
-<t tx="ekr.20041215103252"></t>
 <t tx="ekr.20050101090717">"""
 mnplugins.py
 
@@ -10186,7 +10193,7 @@ of each line affects highlighting.</t>
 <t tx="ekr.20050529220821"></t>
 <t tx="ekr.20050529220821.1"></t>
 <t tx="ekr.20050530065723"></t>
-<t tx="ekr.20050530065723.47">def parse_jEdit_file(self,fileName,verbose=False):
+<t tx="ekr.20050530065723.47">def parse_jEdit_file(self,fileName):
     
     if not fileName:
         return None
@@ -10209,7 +10216,7 @@ of each line affects highlighting.</t>
             # Do not include external general entities.
             # The actual feature name is "http://xml.org/sax/features/external-general-entities"
             parser.setFeature(xml.sax.handler.feature_external_ges,0)
-            handler = contentHandler(self.c,fileName,verbose=verbose)
+            handler = contentHandler(self.c,fileName)
             parser.setContentHandler(handler)
             parser.parse(f)
             # if verbose: handler.printSummary()
@@ -10220,6 +10227,25 @@ of each line affects highlighting.</t>
     finally:
         f.close()
         return mode</t>
+<t tx="ekr.20050601081132">@nocolor
+@
+
+- Handle c.xml:
+    - Make sure &lt;markup&gt; element in &lt;keywords&gt; element work in delegate.
+    - dump-colorizer command.
+- Support NO_WORD_SEP, IGNORE_CASE and DEFAULT attributes in rules element.
+    - Later: support DIGIT_RE and HIGHLIGHT_DIGITS attributes in rules element.
+
+- Finish all rules:
+    - mark_previous and mark_following.
+    - match_regexp_helper.
+- Test colorizing of hyperlinks.
+
+@c
+@color
+
+&lt;&lt; later &gt;&gt;
+</t>
 <t tx="ekr.20050601105358">def colorOneChunk(self,allowBreak=True):
     '''Colorize a fixed number of tokens.
     If not done, queue this method again to continue coloring later.'''
@@ -10267,7 +10293,7 @@ self.c.frame.top.after_idle(self.colorOneChunk)</t>
     else:
         self.mode = mode = self.parse_jEdit_file(language)
         if mode:
-            g.trace(language)
+            if self.trace: g.trace(language)
             # Handle only the main rulese here.
             rulesets = mode.getRulesets()
             self.present_ruleset = ruleset = rulesets[0]
@@ -10346,6 +10372,27 @@ self.c.frame.top.after_idle(self.colorOneChunk)</t>
         self.body.tag_add(tag,x1,x2)
 
     self.chunk_last_i = j</t>
+<t tx="ekr.20050603121815">@killcolor
+@
+- Support comment properties and self.comment_string:
+    - Conditionally add rules for comment ivars: single_comment_start,block_comment_start,block_comment_end
+    - commentEnd - the comment end string, used by the Range Comment command.
+    - commentStart - the comment start string, used by the Range Comment command.
+    - lineComment - the line comm
+
+- Support Show Invisibles.
+    Conditionally add rule for whitespace.
+
+- Handle cweb section references correctly.
+
+- Handle logic of setFirstLineState.
+    - Change match_doc_part: Start in doc mode for some @root's.
+
+- Make sure pictures get drawn properly.
+
+- Create forth.xml
+
+- php.xml does not parse correctly.</t>
 <t tx="ekr.20050605130806">self.chunk_s,self.chunk_i = s,i
 self.c.frame.top.after(50,self.colorOneChunk)</t>
 <t tx="ekr.20050606214954"></t>
@@ -11913,6 +11960,23 @@ Edward K. Ream:  Aug 22, 2005.</t>
 <t tx="ekr.20051109021852">@ Not ready for prime time yet.</t>
 <t tx="ekr.20060109114710">c.openLeoSettings()</t>
 <t tx="ekr.20060110125615"></t>
-<t tx="ekr.20060306151759"></t>
+<t tx="ekr.20060306151759"># Warning: the Chapters plugin may be unreliable.
+# I suggest using the chapter_hoist plugin instead.</t>
+<t tx="ekr.20060425113823"></t>
+<t tx="ekr.20060428071327"></t>
+<t tx="ekr.20060428071631">@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3705014
+
+I tried the new Chapters in 4.4b4 on my standard huge outline.
+
+Made a new chapter 2.
+
+Clicked on a node. Right click on chapter tab. Clone node to chapter 2.
+
+The wrong node gets cloned into the new chapter.
+</t>
+<t tx="ekr.20060428072333"># Important: the chapters2 plugin is not ready for prime time.
+# I recommend using the chapter_hoist plugin instead.</t>
 </tnodes>
 </leo_file>

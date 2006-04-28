@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="23738" clone_windows="0"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="24022" clone_windows="0"/>
 <globals body_outline_ratio="0.60175879397">
 	<global_window_position top="24" left="339" height="857" width="911"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
@@ -2567,10 +2567,7 @@
 <v t="ekr.20060328171518.246"><vh>Fixed problem with labels plugin</vh></v>
 </v>
 </v>
-</v>
-</v>
-<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20060417092536" a="EV"><vh>4.4 b4</vh>
+<v t="ekr.20060417092536"><vh>4.4 b4</vh>
 <v t="ekr.20060421070409.1"><vh>Bugs</vh>
 <v t="ekr.20060421070602"><vh>Fixed rename-buffer command</vh></v>
 <v t="ekr.20060421070409.2"><vh>Investigated problems with legacy bindings</vh></v>
@@ -2623,6 +2620,25 @@
 <v t="ekr.20060417092825.1"><vh>Added script to update new copies of leoSettting.leo from previous copies</vh></v>
 <v t="ekr.20060421070409.41" a="E"><vh>Added new commands</vh></v>
 <v t="ekr.20060421070409.40"><vh>Made all edit command undoable</vh></v>
+</v>
+</v>
+</v>
+</v>
+<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
+<v t="ekr.20060428084553" a="EV"><vh>4.4 rc1</vh>
+<v t="ekr.20060428084553.2"><vh>Bugs</vh>
+<v t="ekr.20060428084957"><vh>Fixed rename-buffer command</vh></v>
+<v t="ekr.20060428084553.4" a="E"><vh>Fixed bug when cutting text in headline</vh></v>
+<v t="ekr.20060428084553.10" a="E"><vh>Fixed crasher in open-find-dialog</vh></v>
+<v t="ekr.20060428084553.34" a="E"><vh>Suppressed typing completion for numbers</vh></v>
+<v t="ekr.20060428084553.37"><vh>Fixed crash in undo</vh></v>
+<v t="ekr.20060428084711"><vh>Fixed crash in datenodes plugin</vh></v>
+</v>
+<v t="ekr.20060428084553.38"><vh>New features</vh>
+<v t="ekr.20060428084553.39" a="E"><vh>Added clear-selection command</vh></v>
+<v t="ekr.20060428084553.41"><vh>Made all edit command undoable</vh></v>
+<v t="ekr.20060428084553.42" a="E"><vh>Added new commands</vh></v>
+<v t="ekr.20060428084553.273" a="E"><vh>Added filename completion</vh></v>
 </v>
 </v>
 </v>
@@ -25943,5 +25959,82 @@ open-outline-by-name (filename completion)
 remove-space-from-lines
 remove-tab-from-lines</t>
 <t tx="ekr.20060421070602"></t>
+<t tx="ekr.20060428084553">Leo 4.4 release candidate 1                                 April 28, 2006
+
+This version fixes a few minor bug reported in 4.4b4 and adds 9 new commands.
+The open-outline-by-name command supports filename completion.
+
+Leo is a text editor, data organizer, project manager and much more. See:
+http://webpages.charter.net/edreamleo/intro.html
+
+The highlights of Leo 4.4:
+--------------------------
+- An Emacs-like mini-buffer: you can now execute any command by typing its long
+name, with tab completion.
+
+- Many new commands, including cursor and screen movement, basic character, word
+and paragraph manipulation, and commands to manipulate buffers, the kill ring,
+regions and rectangles. You can use Leo without using a mouse.
+
+- Flexible key bindings and input modes. You can emulate the operation of Emacs,
+Vim, or any other editor.
+
+- A tabbed log pane. The Find and Spell Check commands now use tabs instead of
+dialogs, making those commands much easier to use. Plugins or scripts can easily
+create new tabs. The Completion tab shows possible typing completions.
+
+- Autocompletion and calltips.  Autocompletion works much like tab completion.
+
+- Dozens of other new features and bug fixes since Leo 4.3.3.
+
+Links:
+------
+Leo:      http://webpages.charter.net/edreamleo/front.html
+Home:     http://sourceforge.net/projects/leo/
+Download: http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:      http://leo.tigris.org/source/browse/leo/
+Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
+<t tx="ekr.20060428084553.2"></t>
+<t tx="ekr.20060428084553.4">http://sourceforge.net/forum/message.php?msg_id=3692247
+
+After cutting selection in the headline, headline area shrank too much.  </t>
+<t tx="ekr.20060428084553.10">http://sourceforge.net/forum/message.php?msg_id=3692247
+
+Find panel cannot be re-opened. Run open-find-dialog. Close it. Run open-find-dialog
+again -- crash.</t>
+<t tx="ekr.20060428084553.34"># getLeadinWord must clear self.membersList to disable completion.</t>
+<t tx="ekr.20060428084553.37">Traceback (most recent call last):
+
+  File "C:\prog\tigris-cvs\leo\src\leoCommands.py", line 264, in doCommand
+    val = command(event)
+
+  File "C:\prog\tigris-cvs\leo\src\leoCommands.py", line 2969, in pasteOutline
+    u.afterInsertNode(pasted,undoType,undoData)
+
+  File "C:\prog\tigris-cvs\leo\src\leoUndo.py", line 750, in afterInsertNode
+    u.pushBead(bunch)
+
+  File "C:\prog\tigris-cvs\leo\src\leoUndo.py", line 182, in pushBead
+    if bunch2 and bunch2.kind == 'beforeGroup':
+
+AttributeError: 'Bunch' object has no attribute 'kind'</t>
+<t tx="ekr.20060428084553.38"></t>
+<t tx="ekr.20060428084553.39">Useful, e.g., after a find.</t>
+<t tx="ekr.20060428084553.41">self.beginCommand(undoType='xxx')
+...
+self.endCommand(changed=True,setLabel=True)</t>
+<t tx="ekr.20060428084553.42">New commands:
+
+add-space-to-lines
+add-tab-to-lines
+clean-lines
+clear-selected-text
+goto-global-line
+help-for-command
+remove-space-from-lines
+remove-tab-from-lines</t>
+<t tx="ekr.20060428084553.273">At present, only the open-outline-by-name command supports filename completion.</t>
+<t tx="ekr.20060428084711">https://sourceforge.net/forum/message.php?msg_id=3699799</t>
+<t tx="ekr.20060428084957"></t>
 </tnodes>
 </leo_file>

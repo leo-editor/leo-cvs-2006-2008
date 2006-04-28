@@ -19,6 +19,7 @@
 
 # Plugin_manager.py needs plugins_menu.py
 plugins_menu.py
+#################
 #__jEdit_colorizer__.py
 #word_export.py
 #open_shell.py
@@ -28,7 +29,6 @@ plugins_menu.py
 #UniversalScrolling.py
 #mod_http.py
 #niceNosent.py
-#################
 #vim.py
 #chapters2.py
 #bibtex.py
@@ -49,6 +49,7 @@ rst3.py
 #FileActions.py
 #scripts_menu.py
 #chapter_hoist.py
+#datenodes.py
 plugin_manager.py
 
 # Icon area: order is important.

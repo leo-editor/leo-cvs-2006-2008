@@ -441,7 +441,7 @@ class Chapter:
         cc = self.cc ; c = cc.c
         
         if cc.currentChapter:
-            g.trace()
+            # g.trace()
             # We are creating a *second* or following chapter.
             t = leoNodes.tnode('','New Headline')
             v = leoNodes.vnode(c,t)
@@ -565,7 +565,7 @@ class chapterController:
     #@+node:ekr.20060306151759.33:constructTree
     def constructTree (self,frame,pageName):
         
-        g.trace(pageName)
+        # g.trace(pageName)
     
         cc = self ; c = self.c ; nb = self.nb
         canvas = treeBar = tree = None

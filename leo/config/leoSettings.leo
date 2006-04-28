@@ -53,6 +53,7 @@
 <v t="ekr.20060114073238"><vh>@bool trace_bindings = False</vh></v>
 <v t="ekr.20060301085047"><vh>@bool trace_chapters = False</vh></v>
 <v t="ekr.20060309022759"><vh>@bool trace_colorizer = False</vh></v>
+<v t="ekr.20060425124142"><vh>@bool trace_color_parser = True</vh></v>
 <v t="ekr.20060204093736"><vh>@bool trace_doCommand = False</vh></v>
 <v t="ekr.20060204102644"><vh>@bool trace_f.set_focus = False</vh></v>
 <v t="ekr.20060207142012"><vh>@bool trace_focus = False</vh></v>
@@ -76,6 +77,7 @@
 <v t="ekr.20060206161839"><vh>@bool trace_tree_edit = False</vh></v>
 <v t="ekr.20060114082205"><vh>@string trace_bindings_filter = </vh></v>
 <v t="ekr.20060114083009"><vh>@string trace_bindings_pane_filter =</vh></v>
+<v t="ekr.20060425125015"><vh>@bool verbose_trace_color_parser = True</vh></v>
 <v t="ekr.20060323131801"><vh>@bool warn_about_missing_settings = False</vh></v>
 <v t="ekr.20060325071916"><vh>For unit tests</vh>
 <v t="ekr.20060325071042"><vh>@ifplatform win32</vh>
@@ -409,7 +411,10 @@
 <v t="ekr.20060216145416"><vh>@bool trace_autocompleter = False</vh></v>
 <v t="ekr.20060131071612"><vh>@bool trace_masterKeyHandler = False</vh></v>
 <v t="ekr.20051126062525"><vh>@bool trace_masterCommand = False</vh></v>
-<v t="ekr.20060306031258" a="V"><vh>@bool trace_onBodyChanged = False</vh></v>
+<v t="ekr.20060306031258"><vh>@bool trace_onBodyChanged = False</vh></v>
+<v t="ekr.20060309022759"><vh>@bool trace_colorizer = False</vh></v>
+<v t="ekr.20060425125015" a="V"><vh>@bool verbose_trace_color_parser = True</vh></v>
+<v t="ekr.20060425124142"><vh>@bool trace_color_parser = True</vh></v>
 </v>
 </vnodes>
 <tnodes>
@@ -4661,5 +4666,7 @@ group-operations-mark-target        = Alt-Ctrl-Shift-t
 group-operations-operate-on-marked  = Alt-Ctrl-Shift-o
 group-operations-transfer           = Alt-Ctrl-Shift-d</t>
 <t tx="ekr.20060408090018"></t>
+<t tx="ekr.20060425124142"></t>
+<t tx="ekr.20060425125015"></t>
 </tnodes>
 </leo_file>

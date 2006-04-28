@@ -129,6 +129,7 @@ __version__ = '0.13'
 # 
 # - Handle c.xml:
 #     - Make sure <markup> element in <keywords> element work in delegate.
+#     - dump-colorizer command.
 # - Support NO_WORD_SEP, IGNORE_CASE and DEFAULT attributes in rules element.
 #     - Later: support DIGIT_RE and HIGHLIGHT_DIGITS attributes in rules 
 # element.
@@ -192,6 +193,7 @@ php_re = re.compile("<?(\s[pP][hH][pP])")
 #@-node:ekr.20050529142916.3:<< imports >>
 #@nl
 #@<< define leoKeywords >>
+#@+middle:ekr.20060425113823.1:module-level
 #@+node:ekr.20050529143413:<< define leoKeywords >>
 # leoKeywords is used by directivesKind, so it should be a module-level symbol.
 
@@ -209,8 +211,10 @@ leoKeywords = [
     "@unit","@verbose","@wrap", ]
 #@nonl
 #@-node:ekr.20050529143413:<< define leoKeywords >>
+#@-middle:ekr.20060425113823.1:module-level
 #@nl
 #@<< define default_colors_dict >>
+#@+middle:ekr.20060425113823.1:module-level
 #@+node:ekr.20050529143413.1:<< define default_colors_dict >>
 # These defaults are sure to exist.
 
@@ -248,9 +252,11 @@ default_colors_dict = {
     }
 #@nonl
 #@-node:ekr.20050529143413.1:<< define default_colors_dict >>
+#@-middle:ekr.20060425113823.1:module-level
 #@nl
 
 #@+others
+#@+node:ekr.20060425113823.1:module-level
 #@+node:ekr.20050529142916.4:init
 def init ():
 
@@ -263,6 +269,8 @@ def init ():
 #@+node:ekr.20050529142916.5:onStart1
 def onStart1 (tag, keywords):
     
+    '''Override Leo's core colorizer classes.'''
+    
     import leoColor
     
     leoColor.colorizer = baseColorizer
@@ -272,21 +280,22 @@ def onStart1 (tag, keywords):
     leoColor.nullColorizer = nullColorizer
 #@nonl
 #@-node:ekr.20050529142916.5:onStart1
+#@-node:ekr.20060425113823.1:module-level
 #@+node:ekr.20050530065723.58:class contentHandler (xml.sax.saxutils.XMLGenerator)
 class contentHandler (xml.sax.saxutils.XMLGenerator):
     
     '''A sax content handler class that handles jEdit language-description files.
     
-    Creates mode that can be retrieved using getMode method.'''
+    Creates mode that can be retrieved using the getMode method.'''
 
     #@    @+others
     #@+node:ekr.20050530065723.59: __init__ & helpers
-    def __init__ (self,c,fileName,trace=False,verbose=False):
+    def __init__ (self,c,fileName):
     
         self.c = c
         self.fileName = fileName
-        self.trace = trace
-        self.verbose = verbose
+        self.trace   = trace =   c.config.getBool('trace_color_parser')
+        self.verbose = verbose = c.config.getBool('verbose_trace_color_parser')
         
         # Init the base class.
         xml.sax.saxutils.XMLGenerator.__init__(self)
@@ -446,20 +455,12 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         content = content.replace('\r','').strip()
         content = self.clean(content)
     
-        elementName = self.elementStack and self.elementStack[-1]
-        elementName = elementName.lower()
+        elementName = self.elementStack and self.elementStack[-1].lower() or '<no element name>'
         
-        if 1: # new code
-            if self.printAllElements:
-                print content,
-            elif self.printCharacters and content and elementName not in self.suppressContent:
-                print 'content:',elementName,repr(content)
-        else:
-            if self.printCharacters and content and elementName not in self.suppressContent:
-                if self.printAllElements:
-                    print content,
-                else:
-                    print 'content:',elementName,repr(content)
+        if self.printAllElements:
+            print content,
+        elif self.printCharacters and content and elementName not in self.suppressContent:
+            print 'content:',elementName,repr(content)
                 
         if self.mode:
             self.mode.doContent(elementName,content)
@@ -915,6 +916,7 @@ class baseColorizer:
         self.prev_mode = None
         self.present_ruleset = None
         self.rulesDict = {}
+        self.trace = c.config.getBool('trace_colorizer')
         self.tags = [
             "blank","comment","cwebName","docPart","keyword","leoKeyword",
             "latexModeBackground","latexModeKeyword",
@@ -1123,7 +1125,7 @@ class baseColorizer:
         else:
             self.mode = mode = self.parse_jEdit_file(language)
             if mode:
-                g.trace(language)
+                if self.trace: g.trace(language)
                 # Handle only the main rulese here.
                 rulesets = mode.getRulesets()
                 self.present_ruleset = ruleset = rulesets[0]
@@ -1143,7 +1145,7 @@ class baseColorizer:
     #@nonl
     #@-node:ekr.20050602150619:init_mode
     #@+node:ekr.20050530065723.47:parse_jEdit_file
-    def parse_jEdit_file(self,fileName,verbose=False):
+    def parse_jEdit_file(self,fileName):
         
         if not fileName:
             return None
@@ -1166,7 +1168,7 @@ class baseColorizer:
                 # Do not include external general entities.
                 # The actual feature name is "http://xml.org/sax/features/external-general-entities"
                 parser.setFeature(xml.sax.handler.feature_external_ges,0)
-                handler = contentHandler(self.c,fileName,verbose=verbose)
+                handler = contentHandler(self.c,fileName)
                 parser.setContentHandler(handler)
                 parser.parse(f)
                 # if verbose: handler.printSummary()
@@ -1713,7 +1715,7 @@ class baseColorizer:
             self.colorByDelegate(delegate,s,i,j,token_type)
             self.prev = (i,j,token_type)
         else:
-            # g.trace('%3d %2d'%(i,j),state,repr(s[i:i+n]))
+            g.trace('%3d %2d'%(i,j),kind,repr(s[i:j]))
             self.doColor(s,i,j,token_type)
             self.prev = (i,j,token_type)
     #@nonl
@@ -1847,7 +1849,7 @@ class baseColorizer:
         
         for photo,image,line_index,i in self.image_references:
             try:
-                self.body.deleteCharacter(image) # 10/27/03
+                self.body.deleteCharacter(image)
             except:
                 pass # The image may have been deleted earlier.
         
@@ -2282,7 +2284,10 @@ class colorizer (baseColorizer):
     pass
 #@nonl
 #@-node:ekr.20050606214036:class colorizer (baseColorizer)
-#@+node:ekr.20050606213440:class nullColorizer (colorizer)
+#@-others
+
+#@<< class nullColorizer (colorizer) >>
+#@+node:ekr.20050606213440:<< class nullColorizer (colorizer) >>
 class nullColorizer (colorizer):
     
     """A do-nothing colorer class"""
@@ -2316,8 +2321,8 @@ class nullColorizer (colorizer):
     #@-node:ekr.20050606213440.2:entry points
     #@-others
 #@nonl
-#@-node:ekr.20050606213440:class nullColorizer (colorizer)
-#@-others
+#@-node:ekr.20050606213440:<< class nullColorizer (colorizer) >>
+#@nl
 #@nonl
 #@-node:ekr.20050529142847:@thin __jEdit_colorizer__.py
 #@-leo

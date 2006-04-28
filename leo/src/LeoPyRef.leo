@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="9386" clone_windows="0"/>
 <globals body_outline_ratio="0.575921908894">
-	<global_window_position top="10" left="209" height="922" width="974"/>
+	<global_window_position top="17" left="265" height="922" width="957"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -2110,7 +2110,7 @@ setSelectionRange = setTextSelection</t>
     return c.ver[10:-1] # Strip off "(dollar)Revision" and the trailing "$"</t>
 <t tx="ekr.20040629121554.1">def getSignOnLine (self):
     c = self
-    return "Leo 4.4 b4, build %s, April 21, 2006" % c.getBuildNumber()</t>
+    return "Leo 4.4 rc1, build %s, April 28, 2006" % c.getBuildNumber()</t>
 <t tx="ekr.20040629121554.2">def initVersion (self):
     c = self
     c.ver = "$Revision$" # CVS updates this.</t>
@@ -4004,48 +4004,50 @@ def isearchBackwardRegexp (self,event):
     self.regexp = regexp
     
     old_i = w.index('insert')
-    old_color = w.tag_ranges('color')
     old_p = c.currentPosition()
-    self.stack = [g.Bunch(insert=old_i,p=old_p,color=old_color)]
+    self.stack = [g.Bunch(insert=old_i,p=old_p)]
 
     k.setLabelBlue('isearch: ',protect=True)
     k.setState('isearch',1,handler=self.iSearchStateHandler)
     c.minibufferWantsFocusNow()</t>
-<t tx="ekr.20050920084036.263">def iSearchHelper (self,event,forward,regexp):
+<t tx="ekr.20050920084036.263">def iSearchHelper (self,event):
 
     '''This method moves the insert spot to position that matches the pattern in the miniBuffer'''
     
     c = self.c ; k = self.k ; w = self.w
-    pattern = k.getLabel(ignorePrompt=True)
+    self.searchString = pattern = k.getLabel(ignorePrompt=True)
     if not pattern: return
-    
-    self.searchString = pattern
-    self.incremental = True
-    self.forward = forward
-    self.regexp = regexp
-    start = g.choose(forward,'insert+1c','insert')
-    stopindex = g.choose(forward,'end','1.0')
-    
-    p1 = c.currentPosition()
-    p = p1.copy() ; old_p = p1.copy()
+    stopindex = g.choose(self.forward,'end','1.0')
+    startindex = g.choose(self.forward,'1.0','end')
+    p1 = c.currentPosition() ; p = p1.copy() ; old_p = p.copy()
+    old_ins = w.index('insert') # This must *not* be changed in the loop.
+    w.mark_set('insert',startindex)
     while 1:
         try:
-            i = None
-            old_i = w.index('insert')
-            old_color = w.tag_ranges('color')
-            i = w.search(pattern,start,backwards=not forward,stopindex=stopindex,regexp=regexp)
+            i = w.search(pattern,old_ins,backwards=not self.forward,stopindex=stopindex,regexp=self.regexp)
             # Don't call endSearch here.  We'll do that when the user hits return.
+            g.trace(repr(i))
             if not i.isspace():
                 w.mark_set('insert',i)
+                # if self.forward:
+                    # w.mark_set('insert',i)
+                # else:
+                    # w.mark_set('insert',i+'-%dc'%(len(pattern)))
                 w.see('insert')
-                self.stack.append(g.Bunch(insert=old_i,p=old_p,color=old_color))
+                self.stack.append(g.Bunch(insert=old_ins,p=old_p,pattern=pattern[:-1]))
+                # g.trace('found',old_ins,i)
                 return   
         except: pass # g.es_exception()
-        old_p = p.copy()
-        p.moveToThreadNext()
+        # old_p = p.copy()
+        if self.forward: p.moveToThreadNext()
+        else:            p.moveToThreadBack()
         if not p: break
-        g.es('searching',p.headString())
+        g.trace('searching',p.headString())
         c.selectPosition(p)
+        w.mark_set('insert','1.0')
+        w.update_idletasks()
+        # if not self.forward:
+            # w.mark_set('insert','end')
     c.selectPosition(p1)</t>
 <t tx="ekr.20050920084036.264"># Called when from the state manager when the state is 'isearch'
 
@@ -4081,31 +4083,31 @@ def iSearchStateHandler (self,event):
         self.iSearchBackspace()
     elif ch:
         k.updateLabel(event)
-        s = k.getLabel(ignorePrompt=True)
-        i = w.search(s,'insert',stopindex='insert +%sc' % len(s))
-        if i:
-            self.searchString = s
-        else:
-           self.iSearchHelper(event,self.forward,self.regexp)
+        self.iSearchHelper(event)
         self.scolorizer(event)</t>
-<t tx="ekr.20050920084036.265">def scolorizer (self,event):
+<t tx="ekr.20050920084036.265">def scolorizer (self,event,pattern=None):
+    
+    '''Colorizer for incremental searches.'''
 
     k = self.k ; w = self.w
-    s = k.getLabel(ignorePrompt=True)
-    g.trace(repr(s))
+    s = pattern or k.getLabel(ignorePrompt=True)
+    # g.trace(repr(s))
     w.tag_delete('color','color1')
     if not s: return
     ind = '1.0'
+    index = w.index('insert')
+    index2 = w.index('%s+%dc' % (index,len(s)))
+    # g.trace(index,index2)
+    # Colorize in the forward direction, regardless of the kind of search.
     while ind:
         try:
             ind = w.search(s,ind,stopindex='end',regexp=self.regexp)
-        except:
-            break
+        except: break
         if ind:
             i, d = ind.split('.')
             d = str(int(d)+len(s))
-            index = w.index('insert')
-            if ind == index:
+            # g.trace(ind)
+            if ind in (index,index2):
                 w.tag_add('color1',ind,'%s.%s' % (i,d))
             w.tag_add('color',ind,'%s.%s' % (i,d))
             ind = i + '.' + d
@@ -6243,8 +6245,8 @@ def toggleExtendMode (self,event):
 <t tx="ekr.20060116090428"></t>
 <t tx="ekr.20060122183544">@nocolor
 
-- Handle backspace for isearch: keep a stack of previous matches.
-- Allow cross-node isearches.
+- (done) Handle backspace for isearch: keep a stack of previous matches.
+- (done) Allow cross-node isearches.
 
 @color</t>
 <t tx="ekr.20060122194643"></t>
@@ -7527,18 +7529,17 @@ AttributeError: 'Bunch' object has no attribute 'kind'</t>
     c = self.c ; k = self.k ; w = self.w
     
     b = self.stack.pop()
-    if not self.stack:
-        # Always leave one entry on the stack.
-        self.stack.append(b)
-
-    if 1:
-        s = k.getLabel(ignorePrompt=True)
-        g.trace(s,b.insert,b.color)
+    g.trace(b.insert)
 
     c.selectPosition(b.p)
     w.mark_set('insert',b.insert)
     w.see('insert')
     w.update_idletasks()
-    self.scolorizer(event=None)</t>
+    
+    if self.stack:
+        self.scolorizer(event=None,pattern=b.pattern)
+    else:
+        self.stack.append(b)
+        w.tag_delete('color','color1')</t>
 </tnodes>
 </leo_file>
