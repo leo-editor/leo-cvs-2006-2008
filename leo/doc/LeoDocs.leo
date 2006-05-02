@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="24078" clone_windows="0"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="24148" clone_windows="0"/>
 <globals body_outline_ratio="0.584597432905">
-	<global_window_position top="7" left="217" height="857" width="952"/>
+	<global_window_position top="7" left="225" height="857" width="944"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -65,7 +65,7 @@
 </v>
 </v>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
-<v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
+<v t="ekr.20040414162124" a="E"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
 <v t="ekr.20040414163815"><vh>Table of Contents</vh></v>
 <v t="ekr.20050812134441.3"><vh>@rst-no-head end</vh></v>
@@ -453,8 +453,8 @@
 <v t="ekr.20050901092232.7"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20050912125144" a="E"><vh>Chapter 12: Plugins</vh>
-<v t="ekr.20050912125144.1"><vh>@rst html\plugins.html</vh>
+<v t="ekr.20050912125144"><vh>Chapter 12: Plugins</vh>
+<v t="ekr.20050912125144.1" a="E"><vh>@rst html\plugins.html</vh>
 <v t="ekr.20050912125735"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20050912125735.26"><vh>Commands &amp; directives</vh>
 <v t="ekr.20050912125735.82"><vh>add_directives.py</vh></v>
@@ -572,27 +572,70 @@
 </v>
 </v>
 <v t="ekr.20060430221745"><vh>Chapter 13: Controlling syntax coloring</vh>
+<v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
 <v t="ekr.20060502110000" a="E"><vh>Not yet</vh>
 <v t="ekr.20060502092033"><vh>Rules methods</vh></v>
 <v t="ekr.20060502084233.2"><vh>Switching between modes</vh></v>
 <v t="ekr.20060502112810"><vh>Change php.xml_properties to properties</vh></v>
 <v t="ekr.20060502084233.3"><vh>To do</vh></v>
+<v t="ekr.20060502122950.12"><vh>import</vh>
+<v t="ekr.20060502122950.8"><vh>DELEGATE</vh></v>
+</v>
+<v t="ekr.20060502122950.50"><vh>Attribute arguements to rule methods</vh>
+<v t="ekr.20060502122950.52"><vh>AT_CHAR (int)</vh></v>
+<v t="ekr.20060502122950.53"><vh>AT_xxx</vh>
+<v t="ekr.20060502122950.54"><vh>AT_LINE_START (bool)</vh></v>
+<v t="ekr.20060502122950.55"><vh>AT_WHITESPACE_END (bool)</vh></v>
+<v t="ekr.20060502122950.56"><vh>AT_WORD_START (bool)</vh></v>
+</v>
+<v t="ekr.20060502122950.57"><vh>DELEGATE</vh></v>
+<v t="ekr.20060502122950.58"><vh>EXCLUDE_MATCH (bool)</vh></v>
+<v t="ekr.20060502122950.59"><vh>For rules only</vh>
+<v t="ekr.20060502122950.60"><vh>DEFAULT (token type)</vh></v>
+<v t="ekr.20060502122950.61"><vh>HIGHLIGHT_DIGITS  &amp;DIGITS_RE (bool)</vh></v>
+<v t="ekr.20060502122950.62"><vh>IGNORE_CASE (bool)</vh></v>
+<v t="ekr.20060502122950.63"><vh>SET (string)</vh></v>
+<v t="ekr.20060502122950.64"><vh>NO_WORD_SEP</vh></v>
+</v>
+<v t="ekr.20060502122950.65"><vh>HASH_CHAR (char)</vh></v>
+<v t="ekr.20060502122950.66"><vh>NAME and VALUE</vh></v>
+<v t="ekr.20060502122950.67"><vh>NO_xxx</vh>
+<v t="ekr.20060502122950.68"><vh>NO_WORD_BREAK (bool)</vh></v>
+<v t="ekr.20060502122950.69"><vh>NO_LINE_BREAK (bool)</vh></v>
+<v t="ekr.20060502122950.70"><vh>NO_ESCAPE (bool)</vh></v>
+</v>
+<v t="ekr.20060502122950.71"><vh>TYPE (Token Types)</vh></v>
+</v>
 </v>
 <v t="ekr.20060430221745.1" a="E"><vh>@rst html\coloring.html</vh>
 <v t="ekr.20060430222753"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20060430220749"><vh>Files</vh></v>
 <v t="ekr.20060502084233"><vh>The inner loop</vh></v>
-<v t="ekr.20060502084233.1" a="E"><vh>Format of colorizer control files</vh>
+<v t="ekr.20060502084233.1"><vh>Format of colorizer control files</vh>
 <v t="ekr.20060502100550"><vh>Ruleset names</vh></v>
 <v t="ekr.20060502090516"><vh>x.properties</vh></v>
 <v t="ekr.20060502090516.1" a="E"><vh>Keyword dictionaries and x.keywordsDictDict</vh></v>
 <v t="ekr.20060502090516.2"><vh>Rules, rules lists and x.rulesDict</vh></v>
 </v>
+<v t="ekr.20060502122717" a="E"><vh>Rules methods and their attribute arguments</vh>
+<v t="ekr.20060502122950" a="E"><vh>Rule methods</vh>
+<v t="ekr.20060502122950.7" a="E"><vh>match_eol_span</vh></v>
+<v t="ekr.20060502122950.10" a="E"><vh>match_eol_span_regexp</vh></v>
+<v t="ekr.20060502122950.13"><vh>match_keywords</vh></v>
+<v t="ekr.20060502122950.14" a="E"><vh>match_mark_following</vh></v>
+<v t="ekr.20060502125223"><vh>match_mark_previous</vh></v>
+<v t="ekr.20060502122950.40" a="E"><vh>match_seq</vh></v>
+<v t="ekr.20060502122950.41" a="E"><vh>match_seq_regexp</vh></v>
+<v t="ekr.20060502122950.42" a="E"><vh>match_span</vh></v>
+<v t="ekr.20060502122950.47" a="E"><vh>match_span_regexp</vh></v>
+<v t="ekr.20060502122950.48" a="E"><vh>match_terminate</vh></v>
+</v>
+</v>
 <v t="ekr.20060430223116"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
 <v t="EKR.20040524104904.274"><vh>Appendices</vh>
-<v t="ekr.20050831231852"><vh>@rst html\appendices.html</vh>
+<v t="ekr.20050831231852" a="E"><vh>@rst html\appendices.html</vh>
 <v t="ekr.20050831232205"><vh>@rst-no-head links</vh></v>
 <v t="EKR.20040524104904.351"><vh>Bugs</vh></v>
 <v t="EKR.20040524104904.307"><vh>Errors while tangling</vh></v>
@@ -2810,21 +2853,64 @@
 </v>
 </v>
 <v t="ekr.20060430221745" a="E"><vh>Chapter 13: Controlling syntax coloring</vh>
+<v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
 <v t="ekr.20060502110000" a="E"><vh>Not yet</vh>
 <v t="ekr.20060502092033"><vh>Rules methods</vh></v>
 <v t="ekr.20060502084233.2"><vh>Switching between modes</vh></v>
 <v t="ekr.20060502112810"><vh>Change php.xml_properties to properties</vh></v>
 <v t="ekr.20060502084233.3"><vh>To do</vh></v>
+<v t="ekr.20060502122950.12"><vh>import</vh>
+<v t="ekr.20060502122950.8"><vh>DELEGATE</vh></v>
+</v>
+<v t="ekr.20060502122950.50"><vh>Attribute arguements to rule methods</vh>
+<v t="ekr.20060502122950.52"><vh>AT_CHAR (int)</vh></v>
+<v t="ekr.20060502122950.53"><vh>AT_xxx</vh>
+<v t="ekr.20060502122950.54"><vh>AT_LINE_START (bool)</vh></v>
+<v t="ekr.20060502122950.55"><vh>AT_WHITESPACE_END (bool)</vh></v>
+<v t="ekr.20060502122950.56"><vh>AT_WORD_START (bool)</vh></v>
+</v>
+<v t="ekr.20060502122950.57"><vh>DELEGATE</vh></v>
+<v t="ekr.20060502122950.58"><vh>EXCLUDE_MATCH (bool)</vh></v>
+<v t="ekr.20060502122950.59"><vh>For rules only</vh>
+<v t="ekr.20060502122950.60"><vh>DEFAULT (token type)</vh></v>
+<v t="ekr.20060502122950.61"><vh>HIGHLIGHT_DIGITS  &amp;DIGITS_RE (bool)</vh></v>
+<v t="ekr.20060502122950.62"><vh>IGNORE_CASE (bool)</vh></v>
+<v t="ekr.20060502122950.63"><vh>SET (string)</vh></v>
+<v t="ekr.20060502122950.64"><vh>NO_WORD_SEP</vh></v>
+</v>
+<v t="ekr.20060502122950.65"><vh>HASH_CHAR (char)</vh></v>
+<v t="ekr.20060502122950.66"><vh>NAME and VALUE</vh></v>
+<v t="ekr.20060502122950.67"><vh>NO_xxx</vh>
+<v t="ekr.20060502122950.68"><vh>NO_WORD_BREAK (bool)</vh></v>
+<v t="ekr.20060502122950.69"><vh>NO_LINE_BREAK (bool)</vh></v>
+<v t="ekr.20060502122950.70"><vh>NO_ESCAPE (bool)</vh></v>
+</v>
+<v t="ekr.20060502122950.71"><vh>TYPE (Token Types)</vh></v>
+</v>
 </v>
 <v t="ekr.20060430221745.1" a="E"><vh>@rst html\coloring.html</vh>
 <v t="ekr.20060430222753"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20060430220749"><vh>Files</vh></v>
 <v t="ekr.20060502084233"><vh>The inner loop</vh></v>
-<v t="ekr.20060502084233.1" a="E"><vh>Format of colorizer control files</vh>
-<v t="ekr.20060502100550" a="V"><vh>Ruleset names</vh></v>
+<v t="ekr.20060502084233.1"><vh>Format of colorizer control files</vh>
+<v t="ekr.20060502100550"><vh>Ruleset names</vh></v>
 <v t="ekr.20060502090516"><vh>x.properties</vh></v>
 <v t="ekr.20060502090516.1" a="E"><vh>Keyword dictionaries and x.keywordsDictDict</vh></v>
 <v t="ekr.20060502090516.2"><vh>Rules, rules lists and x.rulesDict</vh></v>
+</v>
+<v t="ekr.20060502122717" a="E"><vh>Rules methods and their attribute arguments</vh>
+<v t="ekr.20060502122950" a="E"><vh>Rule methods</vh>
+<v t="ekr.20060502122950.7" a="E"><vh>match_eol_span</vh></v>
+<v t="ekr.20060502122950.10" a="E"><vh>match_eol_span_regexp</vh></v>
+<v t="ekr.20060502122950.13"><vh>match_keywords</vh></v>
+<v t="ekr.20060502122950.14" a="E"><vh>match_mark_following</vh></v>
+<v t="ekr.20060502125223"><vh>match_mark_previous</vh></v>
+<v t="ekr.20060502122950.40" a="E"><vh>match_seq</vh></v>
+<v t="ekr.20060502122950.41" a="E"><vh>match_seq_regexp</vh></v>
+<v t="ekr.20060502122950.42" a="E"><vh>match_span</vh></v>
+<v t="ekr.20060502122950.47" a="E"><vh>match_span_regexp</vh></v>
+<v t="ekr.20060502122950.48" a="EV"><vh>match_terminate</vh></v>
+</v>
 </v>
 <v t="ekr.20060430223116"><vh>@rst-no-head end stuff</vh></v>
 </v>
@@ -10907,6 +10993,8 @@ Leo's Users Guide
 
 `Chapter 12: Plugins`_
 
+`Chapter 13: Controlling Syntax Coloring`_
+
 Appendices_
 
 Glossary_</t>
@@ -15676,6 +15764,7 @@ Just use ``@thin`` to create your `derived files`_.</t>
 .. _`Chapter 10\: Theory of Operation`:             theory.html
 .. _`Chapter 11\: White Papers`:                    whitepapers.html
 .. _`Chapter 12\: Plugins`:                         plugins.html
+.. _`Chapter 13\: Controlling Syntax Coloring`:     coloring.html
 .. _`Appendices`:                                   appendices.html
 .. _`Glossary`:                                     glossary.html
 
@@ -18010,7 +18099,7 @@ Appendices
 .. WARNING: image targets may not have upper case letters!
 
 .. |back| image:: arrow_lt.gif
-	:target: plugins.html
+	:target: coloring.html
 
 .. |next| image:: arrow_rt.gif
 	:target: glossary.html
@@ -20144,7 +20233,7 @@ These plugins are part of Leo's official distribution.
 
 .. _back:   whitepapers.html
 .. _home:   front.html
-.. _next:   appendices.html
+.. _next:   coloring.html
 
 .. |back| image:: arrow_lt.gif
     :target: back_
@@ -26666,7 +26755,7 @@ attribute. Here is an example:
 This rule is used in Patch mode, for example, because only the first character
 of each line affects highlighting.</t>
 <t tx="ekr.20060430220749">The jEdit_ editor drives its syntax colorer using xml **language description files.**
-`jEdit's docs`_ contain a complete description of these xml files.
+`jEdit's documentation`_ contain a complete description of these xml files.
 Each xml file describes one **colorizing mode**.
 A mode consists of one or more **rulesets**, and each ruleset consists of a list of **colorizing rules**.
 In addition, modes, rulesets and rules may have associated **properties** and **attributes**.
@@ -26731,8 +26820,8 @@ This chapter discusses how to control Leo's new syntax colorer using Python file
 </t>
 <t tx="ekr.20060430222753">.. External links...
 
-.. _jEdit:      http://www.jedit.org/
-.. _`jEdit's docs` : http://www.jedit.org/42docs/users-guide/writing-modes-part.html
+.. _jEdit:                      http://www.jedit.org/
+.. _`jEdit's documentation`:    http://www.jedit.org/42docs/users-guide/writing-modes-part.html
 
 .. Relative links...
 
@@ -26740,7 +26829,7 @@ This chapter discusses how to control Leo's new syntax colorer using Python file
 
 .. WARNING: image targets may not have upper case letters!
 
-.. _back:   whitepapers.html
+.. _back:   plugins.html
 .. _home:   front.html
 .. _next:   appendices.html
 
@@ -26942,5 +27031,322 @@ In fact, ruleset names (and ``x.rulesDict`` and ``x.keywordsDictDict``)
 are the **only** names that the colorizer needs to know in order to access all information in ``x.py``.</t>
 <t tx="ekr.20060502110000"></t>
 <t tx="ekr.20060502112810"></t>
+<t tx="ekr.20060502122717">This section briefly describes each rules method in Leo's new colorizer.
+Rules methods are called by rules functions in colorizer control file;
+they correspond directly to rules elements in jEdit's language description files.
+In fact, this documentation is a 'refactoring' of `jEdit's documentation`_.
+
+Following the discussion of the rules methods will be a discussion of the keyword arguments
+passed to rule methods.</t>
+<t tx="ekr.20060502122950">All rule methods attempt to match a pattern at a particular spot in a string.
+These methods all return True if the match succeeds.
+
+All rule methods take three required arguments and zero or more optional keyword arguments.
+The required arguments are ``self``, ``s`` and ``i``:
+
+- **self**: An instance of Leo's colorizer.
+
+- **s**: The entire string in which matches may be found.
+
+- **i**: The location within the string at which the rule method looks for a match.</t>
+<t tx="ekr.20060502122950.7">::
+
+    def match_eol_span (self,s,i,begin,
+        at_line_start = False,
+        at_whitespace_end = False,
+        at_word_start = False,
+        delegate = '',
+        exclude_match = False):
+
+``match_eol_span`` succeeds if ``s[i:].startswith(begin)`` and
+the ``at_line_start``, ``at_whitespace_end`` and ``at_word_start`` conditions are all satisfied.
+
+If successful, ``match_eol_span`` highlights from i to the end of the line.
+If the ``exclude_match`` argument is ``True``, only the text before the matched text will be colored.
+The ``delegate`` argument, if present, specifies the ruleset to color the colored text.</t>
+<t tx="ekr.20060502122950.8">EKR: This attribute is used in two completely different ways:
+
+1.  In spans:
+
+Text inside the span will be highlighted with the specified ruleset.
+
+EKR: this is essentially a 'recursive' coloring. The delegate ruleset is the
+only ruleset used.
+
+2.  In import rules:
+
+The imported ruleset is copied to the **end** of the containing ruleset,
+**not** to the location of the IMPORT rule. This has implications with
+rule-ordering; see the section called “Rule Ordering Requirements”.
+
+To delegate to a ruleset defined in the current mode, just specify its name. To
+delegate to a ruleset defined in another mode, specify a name of the form
+mode::ruleset. Note that the first (unnamed) ruleset in a mode is called
+“MAIN”.
+
+</t>
+<t tx="ekr.20060502122950.10">::
+
+    def match_eol_span_regexp (self,s,i,regex,hash_char,
+        at_line_start = False,
+        at_whitespace_end = False,
+        at_word_start = False,
+        delegate = '',
+        exclude_match = False,
+
+``match_eol_span_exp`` succeeds if:
+
+1. ``s[i] == hash_char`` and the regular expression ``regex`` matches at ``s[i:]``,
+
+2. The ``at_line_start``, ``at_whitespace_end`` and ``at_word_start`` conditions are all satisfied.
+
+If successful, ``match_eol_span_regexp``  highlights from i to the end of the line.
+If the ``exclude_match`` argument is ``True``, only the text before the matched text will be colored.
+The ``delegate`` argument, if present, specifies the ruleset to color the colored text.</t>
+<t tx="ekr.20060502122950.12">The IMPORT tag loads all rules defined in a given ruleset into the current
+ruleset; in other words, it has the same effect as copying and pasting the
+imported ruleset.
+
+Attriubtes: DELEGATE (required)
+
+An example from the PHP mode, which extends the inline JavaScript
+highlighting to support embedded PHP:
+
+&lt;RULES SET="JAVASCRIPT+PHP"&gt;
+
+   &lt;SPAN TYPE="MARKUP" DELEGATE="php::PHP"&gt;
+       &lt;BEGIN&gt;&amp;lt;?php&lt;/BEGIN&gt;
+       &lt;END&gt;?&amp;gt;&lt;/END&gt;
+   &lt;/SPAN&gt;
+   
+   &lt;SPAN TYPE="MARKUP" DELEGATE="php::PHP"&gt;
+       &lt;BEGIN&gt;&amp;lt;?&lt;/BEGIN&gt;
+       &lt;END&gt;?&amp;gt;&lt;/END&gt;
+   &lt;/SPAN&gt;
+   
+   &lt;SPAN TYPE="MARKUP" DELEGATE="php::PHP"&gt;
+       &lt;BEGIN&gt;&amp;lt;%=&lt;/BEGIN&gt;
+       &lt;END&gt;%&amp;gt;&lt;/END&gt;
+   &lt;/SPAN&gt;
+
+   &lt;IMPORT DELEGATE="javascript::MAIN"/&gt;
+&lt;/RULES&gt;</t>
+<t tx="ekr.20060502122950.13">::
+
+    def match_keywords (self,s,i):
+
+``match_keywords`` succeeds if ``s[i:]`` starts with an identifier contained in the mode's keywords dictionary ``d``.
+
+If successful, ``match_keywords`` colors the keyword as specified by the token type returned by ``d.get(theKeyword)``.</t>
+<t tx="ekr.20060502122950.14">::
+
+    def match_mark_following (self,s,i,pattern,
+        at_line_start = False,
+        at_whitespace_end = False,
+        at_word_start = False,
+        exclude_match = False)
+
+match_mark_following succeeds if s[i:].startswith(pattern), and
+the ``at_line_start``, ``at_whitespace_end`` and ``at_word_start`` conditions are all satisfied.
+
+If successful, ``match_mark_following`` colors from ``i`` to the start of the next token.
+If the ``exclude_match`` argument is ``True``, only the text after the matched text will be colored.</t>
+<t tx="ekr.20060502122950.40">::
+
+    def match_seq (self,s,i,seq,
+        at_line_start = False,
+        at_whitespace_end = False,
+        at_word_start = False,
+        delegate = ''):
+
+``match_seq`` succeeds if ``s[i:].startswith(seq)`` and
+the ``at_line_start``, ``at_whitespace_end`` and ``at_word_start`` conditions are all satisfied.
+
+If successful, ``match_seq`` highlights from ``i`` to the end of the sequence.
+The ``delegate`` argument, if present, specifies the ruleset to color the colored text.</t>
+<t tx="ekr.20060502122950.41">::
+
+    def match_seq_regexp (self,s,i,regex,hash_char,
+        at_line_start = False,
+        at_whitespace_end = False,
+        at_word_start = False,
+        delegate = ''):
+
+``match_seq`` succeeds if:
+
+1. ``s[i] == hash_char`` and the regular expression ``regex`` matches at ``s[i:]``,
+
+2. The ``at_line_start``, ``at_whitespace_end`` and ``at_word_start`` conditions are all satisfied.
+
+If successful, ``match_seq_regexp`` highlights from ``i`` to the end of the sequence.
+The ``delegate`` argument, if present, specifies the ruleset to color the colored text.</t>
+<t tx="ekr.20060502122950.42">::
+
+    def match_span (self,s,i,begin,end,
+        at_line_start = False,
+        at_whitespace_end = False,
+        at_word_start = False,
+        exclude_match = False,
+        delegate = ''
+        no_escape = False,
+        no_line_break = False,
+        no_word_break = False):
+
+``match_span`` succeeds if there is an index ``j &gt; i`` such that
+``s[:i].startswith(begin)`` and ``s[i:j].endswith(end)`` and the
+``at_line_start``, ``at_whitespace_end``, ``at_word_start``,
+``no_escape``, ``no_line_break`` and ``no_word_break`` conditions are all satisfied.
+
+If successful, ``match_span`` highlights from ``s[i:j``,
+but if the ``exclude_match`` argument is ``True``, the ``begin`` and ``end`` text are not colored.
+The ``delegate`` argument, if present, specifies the ruleset to color the colored text.</t>
+<t tx="ekr.20060502122950.47">::
+
+    def match_span (self,s,i,regex,hash_char,end,
+        at_line_start = False,
+        at_whitespace_end = False,
+        at_word_start = False,
+        exclude_match = False,
+        delegate = ''
+        no_escape = False,
+        no_line_break = False,
+        no_word_break = False):
+
+``match_span_regex`` succeeds if:
+
+1. ``s[i] == hash_char`` and the regular expression ``regex`` matches at ``s[i:]``,
+
+2. There is an index ``j &gt; i`` such that ``s[i:j].endswith(end)``,
+
+3. The ``at_line_start``, ``at_whitespace_end``, ``at_word_start``,
+   ``no_escape``, ``no_line_break`` and ``no_word_break`` conditions are all satisfied.
+
+If successful, ``match_span`` colors ``s[i:j``,
+but if the ``exclude_match`` argument is ``True``, the ``begin`` and ``end`` text are not colored.
+The ``delegate`` argument, if present, specifies the ruleset to color the colored text.</t>
+<t tx="ekr.20060502122950.48">::
+
+    def match_terminate (self,s,i,at_char):
+
+``match_terminate`` succeeds if ``s[i:]`` contains at least ``at_char`` more characters.
+
+If successful, ``match_terminate`` colors ``at_char`` characters.</t>
+<t tx="ekr.20060502122950.50"></t>
+<t tx="ekr.20060502122950.52">The number of characters to terminate after.
+
+For terminate only.</t>
+<t tx="ekr.20060502122950.53"></t>
+<t tx="ekr.20060502122950.54">If set to TRUE, the sequence will only be highlighted if it occurs at the beginning of a line.
+
+For 'seq', 'span', 'begin', 'end'</t>
+<t tx="ekr.20060502122950.55">If set to TRUE, the sequence will only be highlighted if it is the first non-whitespace text in the line.
+
+For 'seq', 'span', 'begin', 'end'
+</t>
+<t tx="ekr.20060502122950.56">If set to TRUE, the sequence will only be highlighted if it occurs at the beginning of a word.
+
+For 'seq', 'span', 'begin', 'end'
+</t>
+<t tx="ekr.20060502122950.57">EKR: This attribute is used in two completely different ways:
+
+1.  In spans:
+
+Text inside the span will be highlighted with the specified ruleset.
+
+EKR: this is essentially a 'recursive' coloring. The delegate ruleset is the
+only ruleset used.
+
+2.  In import rules:
+
+The imported ruleset is copied to the **end** of the containing ruleset,
+**not** to the location of the IMPORT rule. This has implications with
+rule-ordering; see the section called “Rule Ordering Requirements”.
+
+To delegate to a ruleset defined in the current mode, just specify its name. To
+delegate to a ruleset defined in another mode, specify a name of the form
+mode::ruleset. Note that the first (unnamed) ruleset in a mode is called
+“MAIN”.
+
+</t>
+<t tx="ekr.20060502122950.58">If set to TRUE, the match will not be highlighted, only the text before it will.</t>
+<t tx="ekr.20060502122950.59"></t>
+<t tx="ekr.20060502122950.60">The token type for text which doesn't match any specific rule. Default is NULL.
+See the section called “Token Types” for a list of token types.
+
+For 'rules' only.</t>
+<t tx="ekr.20060502122950.61">If the HIGHLIGHT_DIGITS attribute is set to TRUE, jEdit will attempt to highlight numbers in this ruleset.
+
+Any word consisting entirely of digits (0-9) will be highlighted with the DIGIT token type.
+
+A word that contains other letters in addition to digits will be highlighted with the DIGIT token type only if it matches the regular expression specified in the DIGIT_RE attribute. If this attribute is not specified, it will not be highlighted.
+
+For 'rules' only.
+
+Example: a DIGIT_RE regular expression that highlights Java-style
+numeric literals (normal numbers, hexadecimals prefixed with 0x, numbers
+suffixed with various type indicators, and floating point literals containing an
+exponent):
+
+DIGIT_RE="(0x[[:xdigit:]]+|[[:digit:]]+(e[[:digit:]]*)?)[lLdDfF]?"</t>
+<t tx="ekr.20060502122950.62">If set to FALSE, matches will be case sensitive.
+Otherwise, case will not matter. Default is TRUE.
+
+For 'rules' only.
+</t>
+<t tx="ekr.20060502122950.63">The name of this ruleset. All rulesets other than the first must have a name.
+
+For 'rules' only.</t>
+<t tx="ekr.20060502122950.64">Any non-alphanumeric character not in this list is treated as a word separator
+for the purposes of syntax highlighting.
+
+For 'rules' only.</t>
+<t tx="ekr.20060502122950.65">The first character that the regular expression matches.
+
+This rules out using regular expressions which can match more than one character
+at the start position. The regular expression match cannot span more than one
+line, either.
+
+Required for eol_span_regexp, span_regexp, seq_regexp.</t>
+<t tx="ekr.20060502122950.66">Each PROPERTY tag must have a NAME attribute set to the property's name, and a
+VALUE attribute with the property's value.
+
+For property only.</t>
+<t tx="ekr.20060502122950.67"></t>
+<t tx="ekr.20060502122950.68">If set to TRUE, the span will not cross word breaks.
+
+For 'span' only.</t>
+<t tx="ekr.20060502122950.69">If set to TRUE, the span will not cross line breaks.
+
+For 'span' only.</t>
+<t tx="ekr.20060502122950.70">If set to TRUE, the ruleset's escape character will have no effect before the
+span's end string. Otherwise, the presence of the escape character will cause
+that occurrence of the end string to be ignored.
+
+For 'span' only.</t>
+<t tx="ekr.20060502122950.71">The token type to highlight the text with.
+
+Parser rules can highlight tokens using any of the following token types:
+
+NULL - no special highlighting
+COMMENT1,COMMENT2,COMMENT3,COMMENT4
+FUNCTION
+KEYWORD1,KEYWORD2,KEYWORD3,KEYWORD4
+LABEL
+LITERAL1,LITERAL2,LITERAL3,LITERAL4
+MARKUP
+OPERATOR</t>
+<t tx="ekr.20060502125223">::
+
+    def match_mark_previous (self,s,i,pattern,
+        at_line_start = False,
+        at_whitespace_end = False,
+        at_word_start = False,
+        exclude_match = False)
+
+``match_mark_previous`` succeeds if s[i:].startswith(pattern),and
+the ``at_line_start``, ``at_whitespace_end`` and ``at_word_start`` conditions are all satisfied.
+
+If successful, ``match_mark_previous`` colors from the end of the previous token to ``i``.
+If the ``exclude_match`` argument is ``True``, only the text before the matched text will be colored.</t>
 </tnodes>
 </leo_file>
