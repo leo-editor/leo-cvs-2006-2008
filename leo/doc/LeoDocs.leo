@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="24148" clone_windows="0"/>
 <globals body_outline_ratio="0.584597432905">
-	<global_window_position top="7" left="225" height="857" width="944"/>
+	<global_window_position top="10" left="225" height="857" width="944"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -65,7 +65,7 @@
 </v>
 </v>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
-<v t="ekr.20040414162124" a="E"><vh>@rst html\leo_TOC.html</vh>
+<v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
 <v t="ekr.20040414163815"><vh>Table of Contents</vh></v>
 <v t="ekr.20050812134441.3"><vh>@rst-no-head end</vh></v>
@@ -454,7 +454,7 @@
 </v>
 </v>
 <v t="ekr.20050912125144"><vh>Chapter 12: Plugins</vh>
-<v t="ekr.20050912125144.1" a="E"><vh>@rst html\plugins.html</vh>
+<v t="ekr.20050912125144.1"><vh>@rst html\plugins.html</vh>
 <v t="ekr.20050912125735"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20050912125735.26"><vh>Commands &amp; directives</vh>
 <v t="ekr.20050912125735.82"><vh>add_directives.py</vh></v>
@@ -573,7 +573,7 @@
 </v>
 <v t="ekr.20060430221745"><vh>Chapter 13: Controlling syntax coloring</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
-<v t="ekr.20060502110000" a="E"><vh>Not yet</vh>
+<v t="ekr.20060502110000"><vh>Not yet</vh>
 <v t="ekr.20060502092033"><vh>Rules methods</vh></v>
 <v t="ekr.20060502084233.2"><vh>Switching between modes</vh></v>
 <v t="ekr.20060502112810"><vh>Change php.xml_properties to properties</vh></v>
@@ -607,35 +607,35 @@
 <v t="ekr.20060502122950.71"><vh>TYPE (Token Types)</vh></v>
 </v>
 </v>
-<v t="ekr.20060430221745.1" a="E"><vh>@rst html\coloring.html</vh>
+<v t="ekr.20060430221745.1"><vh>@rst html\coloring.html</vh>
 <v t="ekr.20060430222753"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20060430220749"><vh>Files</vh></v>
-<v t="ekr.20060502084233"><vh>The inner loop</vh></v>
+<v t="ekr.20060502084233"><vh>The colorizer's inner loop</vh></v>
 <v t="ekr.20060502084233.1"><vh>Format of colorizer control files</vh>
 <v t="ekr.20060502100550"><vh>Ruleset names</vh></v>
 <v t="ekr.20060502090516"><vh>x.properties</vh></v>
-<v t="ekr.20060502090516.1" a="E"><vh>Keyword dictionaries and x.keywordsDictDict</vh></v>
+<v t="ekr.20060502090516.1"><vh>Keyword dictionaries and x.keywordsDictDict</vh></v>
 <v t="ekr.20060502090516.2"><vh>Rules, rules lists and x.rulesDict</vh></v>
+<v t="ekr.20060503072213"><vh>x.importDict and imported versus delegated rulesets</vh></v>
 </v>
-<v t="ekr.20060502122717" a="E"><vh>Rules methods and their attribute arguments</vh>
-<v t="ekr.20060502122950" a="E"><vh>Rule methods</vh>
-<v t="ekr.20060502122950.7" a="E"><vh>match_eol_span</vh></v>
-<v t="ekr.20060502122950.10" a="E"><vh>match_eol_span_regexp</vh></v>
+<v t="ekr.20060502122950"><vh>Rule methods</vh>
+<v t="ekr.20060503064515"><vh>Arguments to rule methods</vh></v>
+<v t="ekr.20060502122950.7"><vh>match_eol_span</vh></v>
+<v t="ekr.20060502122950.10"><vh>match_eol_span_regexp</vh></v>
 <v t="ekr.20060502122950.13"><vh>match_keywords</vh></v>
-<v t="ekr.20060502122950.14" a="E"><vh>match_mark_following</vh></v>
+<v t="ekr.20060502122950.14"><vh>match_mark_following</vh></v>
 <v t="ekr.20060502125223"><vh>match_mark_previous</vh></v>
-<v t="ekr.20060502122950.40" a="E"><vh>match_seq</vh></v>
-<v t="ekr.20060502122950.41" a="E"><vh>match_seq_regexp</vh></v>
-<v t="ekr.20060502122950.42" a="E"><vh>match_span</vh></v>
-<v t="ekr.20060502122950.47" a="E"><vh>match_span_regexp</vh></v>
-<v t="ekr.20060502122950.48" a="E"><vh>match_terminate</vh></v>
-</v>
+<v t="ekr.20060502122950.40"><vh>match_seq</vh></v>
+<v t="ekr.20060502122950.41"><vh>match_seq_regexp</vh></v>
+<v t="ekr.20060502122950.42"><vh>match_span</vh></v>
+<v t="ekr.20060502122950.47"><vh>match_span_regexp</vh></v>
+<v t="ekr.20060502122950.48"><vh>match_terminate</vh></v>
 </v>
 <v t="ekr.20060430223116"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
 <v t="EKR.20040524104904.274"><vh>Appendices</vh>
-<v t="ekr.20050831231852" a="E"><vh>@rst html\appendices.html</vh>
+<v t="ekr.20050831231852"><vh>@rst html\appendices.html</vh>
 <v t="ekr.20050831232205"><vh>@rst-no-head links</vh></v>
 <v t="EKR.20040524104904.351"><vh>Bugs</vh></v>
 <v t="EKR.20040524104904.307"><vh>Errors while tangling</vh></v>
@@ -2852,9 +2852,9 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060430221745" a="E"><vh>Chapter 13: Controlling syntax coloring</vh>
+<v t="ekr.20060430221745" a="V"><vh>Chapter 13: Controlling syntax coloring</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
-<v t="ekr.20060502110000" a="E"><vh>Not yet</vh>
+<v t="ekr.20060502110000"><vh>Not yet</vh>
 <v t="ekr.20060502092033"><vh>Rules methods</vh></v>
 <v t="ekr.20060502084233.2"><vh>Switching between modes</vh></v>
 <v t="ekr.20060502112810"><vh>Change php.xml_properties to properties</vh></v>
@@ -2888,29 +2888,29 @@
 <v t="ekr.20060502122950.71"><vh>TYPE (Token Types)</vh></v>
 </v>
 </v>
-<v t="ekr.20060430221745.1" a="E"><vh>@rst html\coloring.html</vh>
+<v t="ekr.20060430221745.1"><vh>@rst html\coloring.html</vh>
 <v t="ekr.20060430222753"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20060430220749"><vh>Files</vh></v>
-<v t="ekr.20060502084233"><vh>The inner loop</vh></v>
+<v t="ekr.20060502084233"><vh>The colorizer's inner loop</vh></v>
 <v t="ekr.20060502084233.1"><vh>Format of colorizer control files</vh>
 <v t="ekr.20060502100550"><vh>Ruleset names</vh></v>
 <v t="ekr.20060502090516"><vh>x.properties</vh></v>
-<v t="ekr.20060502090516.1" a="E"><vh>Keyword dictionaries and x.keywordsDictDict</vh></v>
+<v t="ekr.20060502090516.1"><vh>Keyword dictionaries and x.keywordsDictDict</vh></v>
 <v t="ekr.20060502090516.2"><vh>Rules, rules lists and x.rulesDict</vh></v>
+<v t="ekr.20060503072213"><vh>x.importDict and imported versus delegated rulesets</vh></v>
 </v>
-<v t="ekr.20060502122717" a="E"><vh>Rules methods and their attribute arguments</vh>
-<v t="ekr.20060502122950" a="E"><vh>Rule methods</vh>
-<v t="ekr.20060502122950.7" a="E"><vh>match_eol_span</vh></v>
-<v t="ekr.20060502122950.10" a="E"><vh>match_eol_span_regexp</vh></v>
+<v t="ekr.20060502122950"><vh>Rule methods</vh>
+<v t="ekr.20060503064515"><vh>Arguments to rule methods</vh></v>
+<v t="ekr.20060502122950.7"><vh>match_eol_span</vh></v>
+<v t="ekr.20060502122950.10"><vh>match_eol_span_regexp</vh></v>
 <v t="ekr.20060502122950.13"><vh>match_keywords</vh></v>
-<v t="ekr.20060502122950.14" a="E"><vh>match_mark_following</vh></v>
+<v t="ekr.20060502122950.14"><vh>match_mark_following</vh></v>
 <v t="ekr.20060502125223"><vh>match_mark_previous</vh></v>
-<v t="ekr.20060502122950.40" a="E"><vh>match_seq</vh></v>
-<v t="ekr.20060502122950.41" a="E"><vh>match_seq_regexp</vh></v>
-<v t="ekr.20060502122950.42" a="E"><vh>match_span</vh></v>
-<v t="ekr.20060502122950.47" a="E"><vh>match_span_regexp</vh></v>
-<v t="ekr.20060502122950.48" a="EV"><vh>match_terminate</vh></v>
-</v>
+<v t="ekr.20060502122950.40"><vh>match_seq</vh></v>
+<v t="ekr.20060502122950.41"><vh>match_seq_regexp</vh></v>
+<v t="ekr.20060502122950.42"><vh>match_span</vh></v>
+<v t="ekr.20060502122950.47"><vh>match_span_regexp</vh></v>
+<v t="ekr.20060502122950.48"><vh>match_terminate</vh></v>
 </v>
 <v t="ekr.20060430223116"><vh>@rst-no-head end stuff</vh></v>
 </v>
@@ -26762,10 +26762,10 @@ In addition, modes, rulesets and rules may have associated **properties** and **
 Various rules may specify that the colorizer uses another ruleset (either in the same mode or another mode).
 
 **Important**: jEdit's xml language description files contain no explicit ``&lt;RULE&gt;`` elements
-Rules are simply subelements of an enclosing ``&lt;RULES&gt;`` element.
+Rules are simply sub-elements of an enclosing ``&lt;RULES&gt;`` element.
 The element indicates the kind of rule that is specified,
 for example, ``&lt;SPAN&gt;``, ``&lt;SEQ&gt;``, etc.
-By the term **rule element** we shall mean any subelement of the ``&lt;RULES&gt;`` element.
+By the term **rule element** we shall mean any sub-element of the ``&lt;RULES&gt;`` element.
 
 Rather than using the xml language description files directly,
 Leo uses Python **colorer control files**,
@@ -26788,7 +26788,7 @@ Using Python colorer control files has the following advantages:
   In particular, all the data in colorer control files is immediately accessible to Leo's colorer.
 
 - Colorer control files are easier for humans to understand and modify than the equivalent xml file.
-  Futhermore, it is easy to insert debugging information into Python colorer control files.
+  Furthermore, it is easy to insert debugging information into Python colorer control files.
 
 - It is easy to modify the Python colorer control files 'by hand' without changing the corresponding xml file.
   In particular, it would be easy to define entirely new kinds of pattern-matching rules in Python merely
@@ -26814,6 +26814,12 @@ verbose=True
 Chapter 13: Controlling Syntax Coloring
 #########################################
 
+**Note Note Note Note Note**
+
+This Chapter is preliminary.  The new colorizer will be release no earlier than Leo 4.4.1.
+
+**Note Note Note Note Note**
+
 This chapter discusses how to control Leo's new syntax colorer using Python files derived from jEdit_'s xml language description files.
 
 .. contents::
@@ -26825,7 +26831,7 @@ This chapter discusses how to control Leo's new syntax colorer using Python file
 
 .. Relative links...
 
-.. _`Chapter 8\: Customizing Leo`:  customizing.html
+.. _`Ruleset name`:      `Ruleset names`_
 
 .. WARNING: image targets may not have upper case letters!
 
@@ -27031,24 +27037,13 @@ In fact, ruleset names (and ``x.rulesDict`` and ``x.keywordsDictDict``)
 are the **only** names that the colorizer needs to know in order to access all information in ``x.py``.</t>
 <t tx="ekr.20060502110000"></t>
 <t tx="ekr.20060502112810"></t>
-<t tx="ekr.20060502122717">This section briefly describes each rules method in Leo's new colorizer.
+<t tx="ekr.20060502122950">This section describes each rules method in Leo's new colorizer.
 Rules methods are called by rules functions in colorizer control file;
 they correspond directly to rules elements in jEdit's language description files.
 In fact, this documentation is a 'refactoring' of `jEdit's documentation`_.
 
-Following the discussion of the rules methods will be a discussion of the keyword arguments
-passed to rule methods.</t>
-<t tx="ekr.20060502122950">All rule methods attempt to match a pattern at a particular spot in a string.
-These methods all return True if the match succeeds.
-
-All rule methods take three required arguments and zero or more optional keyword arguments.
-The required arguments are ``self``, ``s`` and ``i``:
-
-- **self**: An instance of Leo's colorizer.
-
-- **s**: The entire string in which matches may be found.
-
-- **i**: The location within the string at which the rule method looks for a match.</t>
+All rule methods attempt to match a pattern at a particular spot in a string.
+These methods all return True if the match succeeds.</t>
 <t tx="ekr.20060502122950.7">::
 
     def match_eol_span (self,s,i,begin,
@@ -27092,7 +27087,7 @@ mode::ruleset. Note that the first (unnamed) ruleset in a mode is called
         at_whitespace_end = False,
         at_word_start = False,
         delegate = '',
-        exclude_match = False,
+        exclude_match = False):
 
 ``match_eol_span_exp`` succeeds if:
 
@@ -27144,7 +27139,7 @@ If successful, ``match_keywords`` colors the keyword as specified by the token t
         at_line_start = False,
         at_whitespace_end = False,
         at_word_start = False,
-        exclude_match = False)
+        exclude_match = False):
 
 match_mark_following succeeds if s[i:].startswith(pattern), and
 the ``at_line_start``, ``at_whitespace_end`` and ``at_word_start`` conditions are all satisfied.
@@ -27221,7 +27216,7 @@ The ``delegate`` argument, if present, specifies the ruleset to color the colore
 3. The ``at_line_start``, ``at_whitespace_end``, ``at_word_start``,
    ``no_escape``, ``no_line_break`` and ``no_word_break`` conditions are all satisfied.
 
-If successful, ``match_span`` colors ``s[i:j``,
+If successful, ``match_span`` colors ``s[i:j]``,
 but if the ``exclude_match`` argument is ``True``, the ``begin`` and ``end`` text are not colored.
 The ``delegate`` argument, if present, specifies the ruleset to color the colored text.</t>
 <t tx="ekr.20060502122950.48">::
@@ -27341,12 +27336,86 @@ OPERATOR</t>
         at_line_start = False,
         at_whitespace_end = False,
         at_word_start = False,
-        exclude_match = False)
+        exclude_match = False):
 
 ``match_mark_previous`` succeeds if s[i:].startswith(pattern),and
 the ``at_line_start``, ``at_whitespace_end`` and ``at_word_start`` conditions are all satisfied.
 
 If successful, ``match_mark_previous`` colors from the end of the previous token to ``i``.
 If the ``exclude_match`` argument is ``True``, only the text before the matched text will be colored.</t>
+<t tx="ekr.20060503064515">All rule methods take three required arguments and zero or more optional keyword arguments.
+
+Here is a list of the required arguments and their meaning:
+
+- **self**: An instance of Leo's colorizer.
+
+- **s**: The string in which matches may be found.
+
+- **i**: The location within the string at which the rule method looks for a match.
+
+Here is a list of all optional keyword arguments and their meaning:
+
+- **at_line_start**:
+  If ``True``, a match will succeed only if ``i`` is at the start of a line.
+
+- **at_whitespace_end**:
+  If ``True``, the match will succeed only if ``i`` is at the first non-whitespace text in a line.
+
+- **at_word_start**:
+  If ``True``, the match will succeed only if ``i`` is at the beginning of a word.
+
+- **delegate**:
+  If non-empty, the value of this argument is a `ruleset name`_.
+  If the match succeeds, the matched text will be colored recursively with the indicate ruleset.
+
+- **exclude_match**:
+  If ``True``, the actual text that matched will not be colored.
+  The meaning of this argument varies slightly depending on whether one or two sequences are matched.
+  See the individual rule methods for details.
+
+- **no_escape**:
+  If ``True``, the ruleset's escape character will have no effect before the ``end`` argument to ``match_span``.
+  Otherwise, the presence of the escape character will cause that occurrence of the end string to be ignored.
+
+- **no_line_break**:
+  If ``True``, the match will not succeed across line breaks.
+
+- **no_word_break**:
+  If ``True``, the match will not cross word breaks.</t>
+<t tx="ekr.20060503072213">``x.importDict`` is a Python dictionary.
+Keys are ruleset names;
+values are a list of ruleset names.
+For any ruleset ``R`` whose ruleset name is ``N``, ``x.importDict.get(N)``
+is the list of rulesets names whose rulesets appear in
+a ``DELEGATE`` attribute of an ``&lt;IMPORT&gt;`` rule element in ``R's`` ruleset.
+Such **imported** ruleset are copied to the end of the ``R's`` rules list.
+Leo's colorizer does this copying only once, when loading ruleset ``R`` for the first time.
+
+**Note 1**: Loading imported rulesets must be done at 'run time'.
+It should definitely not be done by ``jEdit2Py`` at 'compile time';
+that would require running ``jEdit2Py`` on *all* .xml files whenever any such file changed.
+
+**Note 2**: ``jEdit's`` docs do not say so explicitly,
+but allowing multiple ``&lt;IMPORT&gt;`` rule elements in a single ruleset would be ambiguous:
+the order in which the delegated rules are copied to the end of ``N's`` rules list is unspecified.
+In fact, it is likely that only one ``&lt;IMPORT&gt;`` rule element ever appears in any ruleset.
+``jEdit2Py`` will issue a warning if more than one ``&lt;IMPORT&gt;`` is seen in any ruleset.
+
+**Note 3**: The ``DELEGATE`` attribute of ``&lt;IMPORT&gt;`` elements is, in fact,
+completely separate from the ``DELEGATE`` attributes of other rules as
+discussed in `Arguments to rule methods`_.
+Indeed, the ``DELEGATE`` attribute of ``&lt;IMPORT&gt;`` elements creates entries in
+``x.importDict``, which in turn causes the colorizer to append the rules of the imported ruleset
+to the end of the present rules list.
+In contrast, the ``DELEGATE`` attributes of other rules sets the ``delegate`` argument to rules methods,
+which in tern causes the colorizer to recursively color the matched text with the **delegated** ruleset.
+In short:
+
+- The rules of **imported** rulesets are appended to the end of another rules list;
+  the rules of **delegated** rulesets never are.
+
+- **Imported** ruleset names appear as the values of items in ``x.importDict``;
+  **delegated** ruleset names appear as ``delegate`` arguments to rule methods.
+</t>
 </tnodes>
 </leo_file>
