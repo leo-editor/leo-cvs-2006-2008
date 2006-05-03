@@ -6628,6 +6628,146 @@ def showFileNameTabList (self):
 #@-node:ekr.20060419124420:filename completion
 #@-node:ekr.20060414090519.1:New features
 #@-node:ekr.20060414090519:4.4 b4 projects
+#@+node:ekr.20060501103216:4.4 final projects
+#@+node:ekr.20060501102837:Scroll newly-cloned nodes into view
+#@+node:ekr.20060501102837.1:Report
+@noclor
+
+http://sourceforge.net/forum/message.php?msg_id=3708271
+By: nobody
+
+Ctrl+I to make a new node will very often scroll the view so that
+the new node is invisible.
+#@nonl
+#@-node:ekr.20060501102837.1:Report
+#@+node:ekr.20031218072017.1759:Insert, Delete & Clone (Commands)
+#@+node:ekr.20031218072017.1760:c.checkMoveWithParentWithWarning
+def checkMoveWithParentWithWarning (self,root,parent,warningFlag):
+    
+    """Return False if root or any of root's descedents is a clone of
+    parent or any of parents ancestors."""
+
+    message = "Illegal move or drag: no clone may contain a clone of itself"
+
+    # g.trace("root",root,"parent",parent)
+    clonedTnodes = {}
+    for ancestor in parent.self_and_parents_iter():
+        if ancestor.isCloned():
+            t = ancestor.v.t
+            clonedTnodes[t] = t
+
+    if not clonedTnodes:
+        return True
+
+    for p in root.self_and_subtree_iter():
+        if p.isCloned() and clonedTnodes.get(p.v.t):
+            if warningFlag:
+                g.alert(message)
+            return False
+    return True
+#@nonl
+#@-node:ekr.20031218072017.1760:c.checkMoveWithParentWithWarning
+#@+node:ekr.20031218072017.1193:c.deleteOutline
+def deleteOutline (self,event=None,op_name="Delete Node"):
+    
+    """Deletes the current position.
+    
+    Does nothing if the outline would become empty."""
+
+    c = self ; u = c.undoer ; p = c.currentPosition()
+    if not p: return
+
+    if p.hasVisBack(): newNode = p.visBack()
+    else: newNode = p.next() # _not_ p.visNext(): we are at the top level.
+    if not newNode: return
+
+    c.beginUpdate()
+    try:
+       c.endEditing() # Make sure we capture the headline for Undo.
+       undoData = u.beforeDeleteNode(p)
+       dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+       p.doDelete()
+       c.selectPosition(newNode)
+       c.setChanged(True)
+       u.afterDeleteNode(newNode,op_name,undoData,dirtyVnodeList=dirtyVnodeList)
+    finally:
+        c.endUpdate()
+
+    c.validateOutline()
+#@nonl
+#@-node:ekr.20031218072017.1193:c.deleteOutline
+#@+node:ekr.20031218072017.1761:c.insertHeadline
+def insertHeadline (self,event=None,op_name="Insert Node"):
+    
+    '''Insert a node after the presently selected node.'''
+
+    c = self ; u = c.undoer
+    current = c.currentPosition()
+    
+    if not current: return
+
+    c.beginUpdate()
+    try:
+        undoData = c.undoer.beforeInsertNode(current)
+        # Make sure the new node is visible when hoisting.
+        if ((current.hasChildren() and current.isExpanded()) or
+            (c.hoistStack and current == c.hoistStack[-1].p)):
+            p = current.insertAsNthChild(0)
+        else:
+            p = current.insertAfter()
+        dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+        c.setChanged(True)
+        u.afterInsertNode(p,op_name,undoData,dirtyVnodeList=dirtyVnodeList)
+    finally:
+        c.endUpdate(False,scroll=True)
+        c.editPosition(p)
+
+    return p # for mod_labels plugin.
+#@nonl
+#@-node:ekr.20031218072017.1761:c.insertHeadline
+#@+node:ekr.20031218072017.1762:c.clone
+def clone (self,event=None):
+
+    c = self ; u = c.undoer ; p = c.currentPosition()
+    if not p: return
+    
+    c.beginUpdate()
+    try: # In update...
+        undoData = c.undoer.beforeCloneNode(p)
+        clone = p.clone(p)
+        dirtyVnodeList = clone.setAllAncestorAtFileNodesDirty()
+        c.setChanged(True)
+        if c.validateOutline():
+            u.afterCloneNode(clone,'Clone Node',undoData,dirtyVnodeList=dirtyVnodeList)
+            c.selectPosition(clone)
+    finally:
+        c.endUpdate(scroll=True)
+
+    return clone # For mod_labels and chapters plugins.
+#@nonl
+#@-node:ekr.20031218072017.1762:c.clone
+#@+node:ekr.20031218072017.1765:c.validateOutline
+# Makes sure all nodes are valid.
+
+def validateOutline (self,event=None):
+
+    c = self
+    
+    if not g.app.debug:
+        return True
+
+    root = c.rootPosition()
+    parent = c.nullPosition()
+
+    if root:
+        return root.validateOutlineWithParent(parent)
+    else:
+        return True
+#@nonl
+#@-node:ekr.20031218072017.1765:c.validateOutline
+#@-node:ekr.20031218072017.1759:Insert, Delete & Clone (Commands)
+#@-node:ekr.20060501102837:Scroll newly-cloned nodes into view
+#@-node:ekr.20060501103216:4.4 final projects
 #@-node:ekr.20050924073836:4.4 projects
 #@-all
 #@nonl

@@ -33,7 +33,8 @@
 		</SPAN>
 
 		<!-- JavaScript -->
-		<SPAN_REGEXP HASH_CHAR="<" TYPE="MARKUP" DELEGATE="PHP">
+		<!-- EKR: was HASH_CHAR="<" -->
+		<SPAN_REGEXP HASH_CHAR="&lt; " TYPE="MARKUP" DELEGATE="PHP">
 			<BEGIN>&lt;SCRIPT\s+LANGUAGE="?PHP"?&gt;</BEGIN>
 			<END>&lt;/SCRIPT&gt;</END>
 		</SPAN_REGEXP>
@@ -149,7 +150,8 @@
 		<EOL_SPAN TYPE="COMMENT1">#</EOL_SPAN>
 
 		<!-- Readins -->
-		<SPAN_REGEXP HASH_CHAR="<" TYPE="LITERAL1" DELEGATE="PHP_LITERAL">
+		<!-- EKR: was HASH_CHAR="<" -->
+		<SPAN_REGEXP HASH_CHAR="&lt; " TYPE="LITERAL1" DELEGATE="PHP_LITERAL">
 			<BEGIN><![CDATA[<<<[[:space:]'"]*([[:alnum:]_]+)[[:space:]'"]*]]></BEGIN>
 			<END>$1</END>
 		</SPAN_REGEXP>

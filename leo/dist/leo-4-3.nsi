@@ -345,7 +345,7 @@ Section "Leo" SEC01
   SetOutPath "$INSTDIR\plugins\trees"
   
   File "..\plugins\trees\*.py"
-  File "..\plugins\pluginsManager.txt"
+  File "..\plugins\trees\pluginsManager.txt"
   ;@nonl
   ;@-node:ekr.20050118104901.7:<< install plugins >>
   ;@nl

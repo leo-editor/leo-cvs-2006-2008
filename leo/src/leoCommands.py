@@ -3119,7 +3119,7 @@ class baseCommands:
                 u.afterCloneNode(clone,'Clone Node',undoData,dirtyVnodeList=dirtyVnodeList)
                 c.selectPosition(clone)
         finally:
-            c.endUpdate()
+            c.endUpdate(scroll=True)
     
         return clone # For mod_labels and chapters plugins.
     #@nonl

@@ -119,7 +119,7 @@
 <v t="ekr.20040629180414"><vh>pycheckrc (reference)</vh></v>
 </v>
 <v t="ekr.20051205102401"><vh>Note: do search replace to update version numbers</vh></v>
-<v t="ekr.20050118095021" a="E"><vh>Leo 4.x installer  (update for each release)</vh>
+<v t="ekr.20050118095021" a="V"><vh>Leo 4.x installer  (update for each release)</vh>
 <v t="EKR.20040519082027.28"><vh>&lt;&lt; setup info for createLeoDist.py &gt;&gt;</vh></v>
 <v t="ekr.20050118124408"><vh>&lt;&lt; 4.3 nsi installer version &gt;&gt;</vh></v>
 <v t="ekr.20050118092706.4"><vh>&lt;&lt; Settings &gt;&gt;</vh></v>
@@ -172,8 +172,7 @@
 <v t="ekr.20050118103447.1"><vh>&lt;&lt; uninstall top-level files &gt;&gt;</vh></v>
 </v>
 </v>
-<v t="ekr.20050118092706" a="E"
-expanded="ekr.20050118092706.22,"><vh>@thin leo-4-3.nsi</vh></v>
+<v t="ekr.20050118092706"><vh>@thin leo-4-3.nsi</vh></v>
 </v>
 <v t="EKR.20040519090846"><vh>Distribution files (update for each release)</vh>
 <v t="EKR.20040519090846.2"><vh>@asis ../doc/INSTALL.TXT</vh>
@@ -3186,7 +3185,7 @@ File "..\plugins\*.py"
 SetOutPath "$INSTDIR\plugins\trees"
 
 File "..\plugins\trees\*.py"
-File "..\plugins\pluginsManager.txt"</t>
+File "..\plugins\trees\pluginsManager.txt"</t>
 <t tx="ekr.20050118104901.8">Delete "$INSTDIR\plugins\leoPlugins.leo"
 
 Delete "$INSTDIR\plugins\*.txt"
@@ -4579,8 +4578,6 @@ Leo 4.4 release candidate 1 is now available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
 
 This version fixes a few minor bug reported in 4.4b4 and adds 9 new commands. The open-outline-by-name command supports filename completion.
-
-Edward
 
 Leo is a text editor, data organizer, project manager and much more. See:
 http://webpages.charter.net/edreamleo/intro.html

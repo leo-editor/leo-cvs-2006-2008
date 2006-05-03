@@ -573,14 +573,9 @@
 </v>
 <v t="ekr.20060430221745"><vh>Chapter 13: Controlling syntax coloring</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
-<v t="ekr.20060502110000"><vh>Not yet</vh>
-<v t="ekr.20060502092033"><vh>Rules methods</vh></v>
+<v t="ekr.20060502110000" a="E"><vh>Not yet</vh>
 <v t="ekr.20060502084233.2"><vh>Switching between modes</vh></v>
 <v t="ekr.20060502112810"><vh>Change php.xml_properties to properties</vh></v>
-<v t="ekr.20060502084233.3"><vh>To do</vh></v>
-<v t="ekr.20060502122950.12"><vh>import</vh>
-<v t="ekr.20060502122950.8"><vh>DELEGATE</vh></v>
-</v>
 <v t="ekr.20060502122950.50"><vh>Attribute arguements to rule methods</vh>
 <v t="ekr.20060502122950.52"><vh>AT_CHAR (int)</vh></v>
 <v t="ekr.20060502122950.53"><vh>AT_xxx</vh>
@@ -607,7 +602,7 @@
 <v t="ekr.20060502122950.71"><vh>TYPE (Token Types)</vh></v>
 </v>
 </v>
-<v t="ekr.20060430221745.1"><vh>@rst html\coloring.html</vh>
+<v t="ekr.20060430221745.1" a="E"><vh>@rst html\coloring.html</vh>
 <v t="ekr.20060430222753"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20060430220749"><vh>Files</vh></v>
 <v t="ekr.20060502084233"><vh>The colorizer's inner loop</vh></v>
@@ -2852,16 +2847,11 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060430221745" a="V"><vh>Chapter 13: Controlling syntax coloring</vh>
+<v t="ekr.20060430221745" a="E"><vh>Chapter 13: Controlling syntax coloring</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
-<v t="ekr.20060502110000"><vh>Not yet</vh>
-<v t="ekr.20060502092033"><vh>Rules methods</vh></v>
+<v t="ekr.20060502110000" a="E"><vh>Not yet</vh>
 <v t="ekr.20060502084233.2"><vh>Switching between modes</vh></v>
 <v t="ekr.20060502112810"><vh>Change php.xml_properties to properties</vh></v>
-<v t="ekr.20060502084233.3"><vh>To do</vh></v>
-<v t="ekr.20060502122950.12"><vh>import</vh>
-<v t="ekr.20060502122950.8"><vh>DELEGATE</vh></v>
-</v>
 <v t="ekr.20060502122950.50"><vh>Attribute arguements to rule methods</vh>
 <v t="ekr.20060502122950.52"><vh>AT_CHAR (int)</vh></v>
 <v t="ekr.20060502122950.53"><vh>AT_xxx</vh>
@@ -2888,7 +2878,7 @@
 <v t="ekr.20060502122950.71"><vh>TYPE (Token Types)</vh></v>
 </v>
 </v>
-<v t="ekr.20060430221745.1"><vh>@rst html\coloring.html</vh>
+<v t="ekr.20060430221745.1" a="EV"><vh>@rst html\coloring.html</vh>
 <v t="ekr.20060430222753"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20060430220749"><vh>Files</vh></v>
 <v t="ekr.20060502084233"><vh>The colorizer's inner loop</vh></v>
@@ -26806,7 +26796,7 @@ write_intermediate_file = False
 verbose=True
 @c
 
-.. April 30, 2006
+.. May 2, 2006
 
 |back| |leo| |next|
 
@@ -26816,7 +26806,7 @@ Chapter 13: Controlling Syntax Coloring
 
 **Note Note Note Note Note**
 
-This Chapter is preliminary.  The new colorizer will be release no earlier than Leo 4.4.1.
+This Chapter is preliminary.  The new colorizer will be released no earlier than Leo 4.4.1.
 
 **Note Note Note Note Note**
 
@@ -26885,16 +26875,6 @@ If no rule matches the default rule always matches,
 and it colorizes the next character using the ``DEFAULT`` attribute of the ``&lt;MODE&gt;`` element.</t>
 <t tx="ekr.20060502084233.1">The following sections describe the top-level data in ``x.py``.</t>
 <t tx="ekr.20060502084233.2"></t>
-<t tx="ekr.20060502084233.3">Other postings will discuss the following important topics:
-
-- How the colorizer gets access to rules functions.  This will include documentation for all module-level data structures in the Python colorer control files.
-
-- How and when the colorizer switches from one ruleset to another.  It took quite a bit of 'reading between the lines' of the xml documentation to determine just how this must work.  
-
-- Documentation of all rules functions (in the colorer control files) and the corresponding rules methods (in the colorizer itself.)  This documentation will discuss the arguments (attributes) passed to the rules methods.  **Important**: this documentation is essentially a refactoring and rewriting of the equivalent documentation for the xml language description files, but cast as documentation for Python methods rather than xml elements and attributes.
-
-
-</t>
 <t tx="ekr.20060502090516">``x.properties`` is a Python dictionary corresponding to the &lt;PROPS&gt; element in ``x.xml``.
 Keys are property names; values are strings, namely the contents of ``&lt;PROPERTY&gt;`` elements in ``x.xml``.
 ``x.properties`` contains properties for the entire mode.
@@ -27014,7 +26994,6 @@ The ``jEdit2Py`` script creates 'friendly' names for rules lists *solely* as an 
 Leo's colorer uses only the name ``x.rulesDict``;
 Leo's colorer never uses the actual names of rules lists such as ``php_PHPDOC_rules``,
 and Leo's colorer never uses the actual names of rules functions such as ``rule64``.</t>
-<t tx="ekr.20060502092033"></t>
 <t tx="ekr.20060502100550">A **ruleset name** is a Python string having the form ``'x_setname'``,
 where ``setname`` is the value of the ``SET`` attribute of the ``&lt;RULES&gt;`` element in ``x.xml``.
 For example, the ruleset name of the ruleset whose ``SET`` attribute is ``JAVASCRIPT`` in ``php.xml`` is
@@ -27059,27 +27038,6 @@ the ``at_line_start``, ``at_whitespace_end`` and ``at_word_start`` conditions ar
 If successful, ``match_eol_span`` highlights from i to the end of the line.
 If the ``exclude_match`` argument is ``True``, only the text before the matched text will be colored.
 The ``delegate`` argument, if present, specifies the ruleset to color the colored text.</t>
-<t tx="ekr.20060502122950.8">EKR: This attribute is used in two completely different ways:
-
-1.  In spans:
-
-Text inside the span will be highlighted with the specified ruleset.
-
-EKR: this is essentially a 'recursive' coloring. The delegate ruleset is the
-only ruleset used.
-
-2.  In import rules:
-
-The imported ruleset is copied to the **end** of the containing ruleset,
-**not** to the location of the IMPORT rule. This has implications with
-rule-ordering; see the section called “Rule Ordering Requirements”.
-
-To delegate to a ruleset defined in the current mode, just specify its name. To
-delegate to a ruleset defined in another mode, specify a name of the form
-mode::ruleset. Note that the first (unnamed) ruleset in a mode is called
-“MAIN”.
-
-</t>
 <t tx="ekr.20060502122950.10">::
 
     def match_eol_span_regexp (self,s,i,regex,hash_char,
@@ -27098,34 +27056,6 @@ mode::ruleset. Note that the first (unnamed) ruleset in a mode is called
 If successful, ``match_eol_span_regexp``  highlights from i to the end of the line.
 If the ``exclude_match`` argument is ``True``, only the text before the matched text will be colored.
 The ``delegate`` argument, if present, specifies the ruleset to color the colored text.</t>
-<t tx="ekr.20060502122950.12">The IMPORT tag loads all rules defined in a given ruleset into the current
-ruleset; in other words, it has the same effect as copying and pasting the
-imported ruleset.
-
-Attriubtes: DELEGATE (required)
-
-An example from the PHP mode, which extends the inline JavaScript
-highlighting to support embedded PHP:
-
-&lt;RULES SET="JAVASCRIPT+PHP"&gt;
-
-   &lt;SPAN TYPE="MARKUP" DELEGATE="php::PHP"&gt;
-       &lt;BEGIN&gt;&amp;lt;?php&lt;/BEGIN&gt;
-       &lt;END&gt;?&amp;gt;&lt;/END&gt;
-   &lt;/SPAN&gt;
-   
-   &lt;SPAN TYPE="MARKUP" DELEGATE="php::PHP"&gt;
-       &lt;BEGIN&gt;&amp;lt;?&lt;/BEGIN&gt;
-       &lt;END&gt;?&amp;gt;&lt;/END&gt;
-   &lt;/SPAN&gt;
-   
-   &lt;SPAN TYPE="MARKUP" DELEGATE="php::PHP"&gt;
-       &lt;BEGIN&gt;&amp;lt;%=&lt;/BEGIN&gt;
-       &lt;END&gt;%&amp;gt;&lt;/END&gt;
-   &lt;/SPAN&gt;
-
-   &lt;IMPORT DELEGATE="javascript::MAIN"/&gt;
-&lt;/RULES&gt;</t>
 <t tx="ekr.20060502122950.13">::
 
     def match_keywords (self,s,i):
