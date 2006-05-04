@@ -15,19 +15,19 @@ __version__ = '0.20'
 #@+at
 # 
 # 0.1 EKR: Initial version:
-#     - Split large methods into smaller methods.
+# - Split large methods into smaller methods.
 # 0.2 EKR:
-#     - Moved contentHandler and modeClass into the plugin.
-#     - colorizer.__init__ reads python.xml, but does nothing with it.
+# - Moved contentHandler and modeClass into the plugin.
+# - colorizer.__init__ reads python.xml, but does nothing with it.
 # 0.3 EKR:
-#     - Wrote and tested createRuleMatchers.
+# - Wrote and tested createRuleMatchers.
 # 0.4 EKR:
-#     - Basic syntax coloring now works.
+# - Basic syntax coloring now works.
 # 0.5 EKR:
-#     - Giant step forward 1: colorOneChunk and interrupt allow very fast 
-# keyboard response.
-#     - Giant step forward 2: no need for incremental coloring!
-#     - Giant step forward 3: eliminated flashing & eliminated most calls to 
+# - Giant step forward 1: colorOneChunk and interrupt allow very fast keyboard 
+# response.
+# - Giant step forward 2: no need for incremental coloring!
+# - Giant step forward 3: eliminated flashing & eliminated most calls to 
 # removeAllTags.
 #@-at
 #@nonl
@@ -116,8 +116,8 @@ __version__ = '0.20'
 #@+node:ekr.20050607075752.1:0.20 up
 #@+at
 # 
-# 0.20 EKR: Begin transition to using x.py files rather than x.xml files.
-# - The colorizer now works on most text without crashing.
+# 0.20 EKR: Use x.py files rather than x.xml files.
+# - The colorizer now works on most text.
 #@-at
 #@-node:ekr.20050607075752.1:0.20 up
 #@-others
@@ -129,8 +129,10 @@ __version__ = '0.20'
 #@@nocolor
 #@+at
 # 
-# - Handle c.xml:
-#     - Make sure <markup> element in <keywords> element work in delegate.
+# Add Leo-specific rules to start of main ruleset.
+# 
+# Use all attributes in all rule matchers.
+# 
 # - Support NO_WORD_SEP, IGNORE_CASE and DEFAULT attributes in rules element.
 #     - Later: support DIGIT_RE and HIGHLIGHT_DIGITS attributes in rules 
 # element.
@@ -138,7 +140,13 @@ __version__ = '0.20'
 # - Finish all rules:
 #     - mark_previous and mark_following.
 #     - match_regexp_helper.
+# 
 # - Test colorizing of hyperlinks.
+# 
+# - Why do mode properties exist?
+# 
+# ** Possibly important optimization:
+#     - Create charDict:  Let ch be s[i].  Set rulesList = charDict.get(ch)
 # 
 #@-at
 #@@c
@@ -249,6 +257,7 @@ default_colors_dict = {
     'literal3'  :('keyword3_color', 'black'),
     'literal4'  :('keyword4_color', 'black'),
     'markup'    :('markup_color',   'orange'), # What is the reasonable default?
+    'null'      :('null_color',     'black'),
     'operator'  :('operator_color', 'black'),
     }
 #@nonl
@@ -281,6 +290,117 @@ def onStart1 (tag, keywords):
     leoColor.nullColorizer = nullColorizer
 #@nonl
 #@-node:ekr.20050529142916.5:onStart1
+#@+node:ekr.20060503153603:Leo rule functions
+#@+at
+# These rule functions recognize noweb syntactic constructions. These are 
+# treated
+# just like rule functions, so they are module-level objects whose first 
+# argument
+# is 'self'.
+#@-at
+#@nonl
+#@+node:ekr.20050603043840.1:match_at_color
+def match_at_color (self,s,i):
+
+    seq = '@color'
+    
+    if i != 0 and s[i-1] != '\n': return 0
+
+    if g.match_word(s,i,seq):
+        self.flag = True # Enable coloring.
+        j = i + len(seq)
+        self.colorRangeWithTag(s,i,j,'leoKeyword')
+        return len(seq)
+    else:
+        return 0
+#@nonl
+#@-node:ekr.20050603043840.1:match_at_color
+#@+node:ekr.20050603043840.2:match_at_nocolor
+def match_at_nocolor (self,s,i):
+    
+    seq = '@nocolor'
+    
+    if i != 0 and s[i-1] != '\n':
+        return 0
+
+    if g.match_word(s,i,seq):
+        j = i + len(seq)
+        self.flag = False # Disable coloring.
+        self.colorRangeWithTag(s,i,j,'leoKeyword')
+        return len(seq)
+    else:
+        return 0
+#@nonl
+#@-node:ekr.20050603043840.2:match_at_nocolor
+#@+node:ekr.20050602211253:match_doc_part
+def match_doc_part (self,s,i):
+    
+    if i >= len(s) or s[i] != '@':
+        return 0
+    elif i + 1 >= len(s):
+        j = i + 1
+        self.colorRangeWithTag(s,i,j,'docPart')
+        return 1
+    elif not g.match_word(s,i,'@doc') and not s[i+1] in (' ','\t','\n'):
+        return 0
+
+    j = i ; n = len(s)
+    while j < n:
+        k = s.find('@c',j)
+        if k == -1:
+            j = n - 1
+            self.colorRangeWithTag(s,i,j,'docPart')
+            return j - i
+        if s[k-1] == '\n' and (g.match_word(s,k,'@c') or g.match_word(s,k,'@code')):
+            j = k
+            self.colorRangeWithTag(s,i,j,'docPart')
+            return j - i
+        else:
+            j = k + 2
+    j = n - 1
+    return j - i
+#@nonl
+#@-node:ekr.20050602211253:match_doc_part
+#@+node:ekr.20050602211219:match_section_ref
+def match_section_ref (self,s,i):
+    
+    if not g.match(s,i,'<<'):
+        return 0
+    k = g.find_on_line(s,i+2,'>>')
+    if k is not None:
+        j = k + 2
+        self.colorRangeWithTag(s,i,i+2,'nameBrackets')
+        ref = g.findReference(s[i:j],self.p)
+        if ref:
+            if self.use_hyperlinks:
+                #@                << set the hyperlink >>
+                #@+node:ekr.20060504090341:<< set the hyperlink >>
+                # Set the bindings to vnode callbacks.
+                # Create the tag.
+                # Create the tag name.
+                tagName = "hyper" + str(self.hyperCount)
+                self.hyperCount += 1
+                self.body.tag_delete(tagName)
+                self.tag(tagName,i+2,j)
+                
+                ref.tagName = tagName
+                self.body.tag_bind(tagName,"<Control-1>",ref.OnHyperLinkControlClick)
+                self.body.tag_bind(tagName,"<Any-Enter>",ref.OnHyperLinkEnter)
+                self.body.tag_bind(tagName,"<Any-Leave>",ref.OnHyperLinkLeave)
+                #@nonl
+                #@-node:ekr.20060504090341:<< set the hyperlink >>
+                #@nl
+            else:
+                self.colorRangeWithTag(s,i+2,k,'link')
+        else:
+            self.colorRangeWithTag(s,i+2,k,'name')
+        self.colorRangeWithTag(s,k,j,'nameBrackets')
+        return j - i
+    else:
+        return 0
+#@nonl
+#@-node:ekr.20050602211219:match_section_ref
+#@-node:ekr.20060503153603:Leo rule functions
 #@-node:ekr.20060425113823.1:module-level
 #@+node:ekr.20050606214036:class colorizer (baseColorizer)
 class baseColorizer:
@@ -347,6 +467,47 @@ class baseColorizer:
             self.defineAndExtendForthWords()
     #@nonl
     #@-node:ekr.20050602150957:__init__
+    #@+node:ekr.20060504083828:addLeoRules
+    def addLeoRules (self,theList):
+    
+        '''Prepend Leo-specific rules to theList.'''
+    
+        # Order does not matter here.
+        for rule in (
+            match_at_color, match_at_nocolor, match_doc_part, match_section_ref
+        ):
+            theList.insert(0,rule)
+    #@nonl
+    #@-node:ekr.20060504083828:addLeoRules
+    #@+node:ekr.20060504081338:init_keywords
+    def init_keywords (self,d):
+        
+        '''Initialize the keywords for the present language.
+        
+         Set self.word_chars ivar to string.letters + string.digits
+         plus any other character appearing in any keyword.'''
+    
+        # Add any new user keywords to leoKeywords.
+        keys = d.keys()
+        for s in g.globalDirectiveList:
+            key = '@' + s
+            if key not in keys:
+                d [key] = 'leoKeyword'
+            
+        for key in leoKeywords:
+            d [ key ] = 'leoKeyword'
+    
+        # Create the word_chars list. 
+        self.word_chars = [ch for ch in (string.letters + string.digits)]
+        for key in d.keys():
+            for ch in key:
+                if ch not in self.word_chars:
+                    self.word_chars.append(ch)
+                    
+        # g.trace(''.join(self.word_chars))
+        g.trace(d.get('@unit'))
+    #@nonl
+    #@-node:ekr.20060504081338:init_keywords
     #@+node:ekr.20050529143413.33:configure_tags
     def configure_tags (self):
     
@@ -410,69 +571,6 @@ class baseColorizer:
             self.body.tag_configure(name,foreground=name)
     #@nonl
     #@-node:ekr.20050529143413.33:configure_tags
-    #@+node:ekr.20050529143413.27:defineAndExtendForthWords
-    def defineAndExtendForthWords(self):
-        
-        # Default forth keywords: extended by leo-forthwords.txt.
-        self.forth_keywords = [
-            "variable", "constant", "code", "end-code",
-            "dup", "2dup", "swap", "2swap", "drop", "2drop",
-            "r>", ">r", "2r>", "2>r",
-            "if", "else", "then",
-            "begin", "again", "until", "while", "repeat",
-            "v-for", "v-next", "exit",
-            "meta", "host", "target", "picasm", "macro",
-            "needs", "include",
-            "'", "[']",":", ";","@", "!", ",", "1+", "+", "-",
-            "<", "<=", "=", ">=", ">",
-            "invert", "and", "or",
-        ]
-        
-        # Forth words which define other words: extended by leo-forthdefwords.txt.
-        self.forth_definingwords = [":", "variable", "constant", "code",]
-        
-        # Forth words which start strings: extended by leo-forthstringwords.txt.
-        self.forth_stringwords = ['s"', '."', '"', '."','abort"',]
-        
-        # Forth words to be rendered in boldface: extended by leo-forthboldwords.txt.
-        self.forth_boldwords = []
-        
-        # Forth words to be rendered in italics: extended by leo-forthitalicwords.txt.
-        self.forth_italicwords = []
-        
-        # Forth bold-italics words: extemded leo-forthbolditalicwords.txt if present
-        # Note: on some boxen, bold italics may show in plain bold.
-        self.forth_bolditalicwords = []
-        
-        # Associate files with lists: probably no need to edit this.
-        forth_items = (
-            (self.forth_definingwords, "leo-forthdefwords.txt", "defining words"),
-            (self.forth_keywords, "leo-forthwords.txt", "words"),
-            (self.forth_stringwords, "leo-forthstringwords.txt", "string words"),
-            (self.forth_boldwords, "leo-forthboldwords.txt", "bold words"),
-            (self.forth_bolditalicwords, "leo-forthbolditalicwords.txt", "bold-italic words"),
-            (self.forth_italicwords, "leo-forthitalicwords.txt", "italic words"),
-        )
-        
-        # Add entries from files (if they exist) and to the corresponding wordlists.
-        for (lst, path, typ) in forth_items:
-            try:
-                extras = []
-                path = g.os_path_join(g.app.loadDir,"..","plugins",path)
-                for line in file(path).read().strip().split("\n"):
-                    line = line.strip()
-                    if line and line[0] != '\\':
-                        extras.append(line)
-                if extras:
-                    if 0: # I find this annoying.  YMMV.
-                        if not g.app.unitTesting and not g.app.batchMode:
-                            print "Found extra forth %s" % typ + ": " + " ".join(extras)
-                    lst.extend(extras)
-            except IOError:
-                # print "Not found",path
-                pass
-    #@nonl
-    #@-node:ekr.20050529143413.27:defineAndExtendForthWords
     #@+node:ekr.20050602150619:init_mode
     def init_mode (self,language):
         
@@ -487,12 +585,14 @@ class baseColorizer:
                 g.trace('loading mode for: ',language)
                 self.modes[language] = self.mode = mode
                 self.rulesetName = self.computeRulesetName(language)
-                self.keywordsDict = mode.keywordsDictDict.get(self.rulesetName,{})
-                g.trace(len(self.keywordsDict.keys()))
+                self.keywordsDict = d = mode.keywordsDictDict.get(self.rulesetName,{})
+                self.init_keywords(d)
+                # g.trace(len(self.keywordsDict.keys()))
                 self.rules = mode.rulesDict.get(self.rulesetName)
-                self.word_chars = string.letters + string.digits + '_'
+                self.addLeoRules(self.rules)
+                self.defaultColor = 'null'
                 ### To do: append imported rules.
-                g.trace(len(self.rules))
+                # g.trace(len(self.rules))
             else:
                 g.trace('No language description for %s' % language)
     
@@ -527,134 +627,9 @@ class baseColorizer:
                     g.trace('No language description for %s' % language)
     #@nonl
     #@-node:ekr.20050602150619:init_mode
-    #@+node:ekr.20050529143413.81:scanColorDirectives
-    def scanColorDirectives(self,p):
-        
-        """Scan position p and p's ancestors looking for @comment, @language and @root directives,
-        setting corresponding colorizer ivars.
-        """
-    
-        p = p.copy() ; c = self.c
-        if c == None: return # self.c may be None for testing.
-    
-        self.language = language = c.target_language
-        self.comment_string = None
-        self.rootMode = None # None, "code" or "doc"
-        
-        for p in p.self_and_parents_iter():
-            # g.trace(p)
-            s = p.v.t.bodyString
-            theDict = g.get_directives_dict(s)
-            #@        << Test for @comment or @language >>
-            #@+node:ekr.20050529143413.82:<< Test for @comment or @language >>
-            # @comment and @language may coexist in the same node.
-            
-            if theDict.has_key("comment"):
-                k = theDict["comment"]
-                self.comment_string = s[k:]
-            
-            if theDict.has_key("language"):
-                i = theDict["language"]
-                language,junk,junk,junk = g.set_language(s,i)
-                self.language = language
-            
-            if theDict.has_key("comment") or theDict.has_key("language"):
-                break
-            #@nonl
-            #@-node:ekr.20050529143413.82:<< Test for @comment or @language >>
-            #@nl
-            #@        << Test for @root, @root-doc or @root-code >>
-            #@+node:ekr.20050529143413.83:<< Test for @root, @root-doc or @root-code >>
-            if theDict.has_key("root") and not self.rootMode:
-            
-                k = theDict["root"]
-                if g.match_word(s,k,"@root-code"):
-                    self.rootMode = "code"
-                elif g.match_word(s,k,"@root-doc"):
-                    self.rootMode = "doc"
-                else:
-                    doc = c.config.at_root_bodies_start_in_doc_mode
-                    self.rootMode = g.choose(doc,"doc","code")
-            #@nonl
-            #@-node:ekr.20050529143413.83:<< Test for @root, @root-doc or @root-code >>
-            #@nl
-    
-        return self.language # For use by external routines.
-    #@nonl
-    #@-node:ekr.20050529143413.81:scanColorDirectives
-    #@+node:ekr.20050529143413.29:setFontFromConfig
-    def setFontFromConfig (self):
-        
-        c = self.c
-        
-        self.bold_font = c.config.getFontFromParams(
-            "body_text_font_family", "body_text_font_size",
-            "body_text_font_slant",  "body_text_font_weight",
-            c.config.defaultBodyFontSize) # , tag = "colorer bold")
-        
-        if self.bold_font:
-            self.bold_font.configure(weight="bold")
-        
-        self.italic_font = c.config.getFontFromParams(
-            "body_text_font_family", "body_text_font_size",
-            "body_text_font_slant",  "body_text_font_weight",
-            c.config.defaultBodyFontSize) # , tag = "colorer italic")
-            
-        if self.italic_font:
-            self.italic_font.configure(slant="italic",weight="normal")
-        
-        self.bolditalic_font = c.config.getFontFromParams(
-            "body_text_font_family", "body_text_font_size",
-            "body_text_font_slant",  "body_text_font_weight",
-            c.config.defaultBodyFontSize) # , tag = "colorer bold italic")
-            
-        if self.bolditalic_font:
-            self.bolditalic_font.configure(weight="bold",slant="italic")
-            
-        self.color_tags_list = []
-        self.image_references = []
-    #@nonl
-    #@-node:ekr.20050529143413.29:setFontFromConfig
-    #@+node:ekr.20050529143413.87:updateSyntaxColorer
-    def updateSyntaxColorer (self,p):
-    
-        p = p.copy()
-        # self.flag is True unless an unambiguous @nocolor is seen.
-        self.flag = self.useSyntaxColoring(p)
-        self.scanColorDirectives(p)
-    #@nonl
-    #@-node:ekr.20050529143413.87:updateSyntaxColorer
-    #@+node:ekr.20050529143413.88:useSyntaxColoring
-    def useSyntaxColoring (self,p):
-        
-        """Return True unless p is unambiguously under the control of @nocolor."""
-        
-        p = p.copy() ; first = p.copy()
-        val = True ; self.killcolorFlag = False
-        for p in p.self_and_parents_iter():
-            # g.trace(p)
-            s = p.v.t.bodyString
-            theDict = g.get_directives_dict(s)
-            no_color = theDict.has_key("nocolor")
-            color = theDict.has_key("color")
-            kill_color = theDict.has_key("killcolor")
-            # A killcolor anywhere disables coloring.
-            if kill_color:
-                val = False ; self.killcolorFlag = True ; break
-            # A color anywhere in the target enables coloring.
-            if color and p == first:
-                val = True ; break
-            # Otherwise, the @nocolor specification must be unambiguous.
-            elif no_color and not color:
-                val = False ; break
-            elif color and not no_color:
-                val = True ; break
-    
-        return val
-    #@-node:ekr.20050529143413.88:useSyntaxColoring
     #@-node:ekr.20050529143413.24:Birth and init
-    #@+node:ekr.20050529145203:Entry points
-    #@+node:ekr.20050529143413.30:colorize (Main entry point)
+    #@+node:ekr.20050529145203:Entry points & helpers
+    #@+node:ekr.20050529143413.30:colorize
     def colorize(self,p,incremental=False):
         
         '''The main colorizer entry point.'''
@@ -668,7 +643,7 @@ class baseColorizer:
         else:
             return "ok" # For unit testing.
     #@nonl
-    #@-node:ekr.20050529143413.30:colorize (Main entry point)
+    #@-node:ekr.20050529143413.30:colorize
     #@+node:ekr.20050529143413.28:disable
     def disable (self):
     
@@ -716,7 +691,44 @@ class baseColorizer:
                 self.colorize(p)
     #@nonl
     #@-node:ekr.20050529143413.84:schedule & idle_colorize
-    #@-node:ekr.20050529145203:Entry points
+    #@+node:ekr.20050529143413.88:useSyntaxColoring
+    def useSyntaxColoring (self,p):
+        
+        """Return True unless p is unambiguously under the control of @nocolor."""
+        
+        p = p.copy() ; first = p.copy()
+        val = True ; self.killcolorFlag = False
+        for p in p.self_and_parents_iter():
+            # g.trace(p)
+            s = p.v.t.bodyString
+            theDict = g.get_directives_dict(s)
+            no_color = theDict.has_key("nocolor")
+            color = theDict.has_key("color")
+            kill_color = theDict.has_key("killcolor")
+            # A killcolor anywhere disables coloring.
+            if kill_color:
+                val = False ; self.killcolorFlag = True ; break
+            # A color anywhere in the target enables coloring.
+            if color and p == first:
+                val = True ; break
+            # Otherwise, the @nocolor specification must be unambiguous.
+            elif no_color and not color:
+                val = False ; break
+            elif color and not no_color:
+                val = True ; break
+    
+        return val
+    #@-node:ekr.20050529143413.88:useSyntaxColoring
+    #@+node:ekr.20050529143413.87:updateSyntaxColorer
+    def updateSyntaxColorer (self,p):
+    
+        p = p.copy()
+        # self.flag is True unless an unambiguous @nocolor is seen.
+        self.flag = self.useSyntaxColoring(p)
+        self.scanColorDirectives(p)
+    #@nonl
+    #@-node:ekr.20050529143413.87:updateSyntaxColorer
+    #@-node:ekr.20050529145203:Entry points & helpers
     #@+node:ekr.20050529150436:Colorizer code
     #@+node:ekr.20050601042620:colorAll
     def colorAll(self,s):
@@ -796,61 +808,22 @@ class baseColorizer:
                         #@-node:ekr.20050601162452.1:<< queue up this method >>
                         #@nl
                         return
-            # for f,kind,token_type,delegate in self.rulesDict.get(s[i],self.defaultRulesList):
             for f in self.rules:
                 n = f(self,s,i)
                 if n > 0:
                     i += n
                     break
             else:
-                ### if self.present_ruleset.defaultColor:
-                ###    self.colorRangeWithTag(s,i,i+1,self.present_ruleset.defaultColor.lower())
-                # g.trace('no match')
+                self.colorRangeWithTag(s,i,i+1,self.defaultColor)
                 i += 1
     
         self.removeTagsFromRange(s,self.chunk_last_i,len(s))
     #@nonl
     #@-node:ekr.20050601105358:colorOneChunk
-    #@+node:ekr.20050601065451:doColor & helpers
-    def doColor(self,s,i,j,token_type):
-    
-        helpers = {
-            'doc_part':self.docPartColorHelper,
-            'section_ref':self.sectionRefColorHelper,
-            'keywords':self.keywordsColorHelper,
-            '@color':self.atColorColorHelper,
-            '@nocolor':self.atNocolorColorHelper,
-        }
-        
-        # not in range of @nocolor.
-        if self.flag:
-            # g.trace(i,j,token_type)
-            helper = helpers.get(token_type,self.defaultColorHelper)
-            helper(token_type,s,i,j)
-    #@nonl
-    #@+node:ekr.20050603051440:atColorColorHelper & atNocolorColorHelper
-    def atColorColorHelper (self,token_type,s,i,j):
-        
-        # Enable coloring.
-        self.flag = True
-    
-        # Color the Leo keyword.
-        self.keywordNumber = 0
-        self.keywordsColorHelper(token_type,s,i,j)
-        
-    def atNocolorColorHelper (self,token_type,s,i,j):
-        
-        if self.flag:
-            # Color the Leo keyword.
-            self.keywordNumber = 0
-            self.keywordsColorHelper(token_type,s,i,j)
-        
-        # Disable coloring until next @color
-        self.flag = False
-    #@nonl
-    #@-node:ekr.20050603051440:atColorColorHelper & atNocolorColorHelper
     #@+node:ekr.20050602205810.4:colorRangeWithTag
     def colorRangeWithTag (self,s,i,j,tag):
+        
+        if not self.flag: return
     
         if self.was_non_incremental:
             must_color = True
@@ -879,42 +852,6 @@ class baseColorizer:
         self.chunk_last_i = j
     #@nonl
     #@-node:ekr.20050602205810.4:colorRangeWithTag
-    #@+node:ekr.20050602205810.3:defaultColorHelper
-    def defaultColorHelper(self,token_type,s,i,j):
-    
-        d = {
-            'seq': None,
-            'literal1': 'string',
-            'literal2': 'string',
-            # 'keywords': 'keywords',
-            'comment1': 'comment',
-            'comment2': 'comment',
-            'comment3': 'comment',
-            'comment4': 'comment',
-            'operator': None,
-            # 'function': 'comment', # just for testing.
-        }
-        
-        tag = d.get(token_type)
-        if tag:
-            self.colorRangeWithTag(s,i,j,tag)
-    #@nonl
-    #@-node:ekr.20050602205810.3:defaultColorHelper
-    #@+node:ekr.20050602205810:docPartColorHelper
-    def docPartColorHelper (self,token_type,s,i,j):
-        
-        i2 = g.choose(s[i:i+4] == '@doc',i+4,i+1)
-        if   s[j-5:j] == '@code': j2 = j-5
-        elif s[j-2:j] == '@c': j2 = j-2
-        else: j2 = j
-        
-        # g.trace(i,i2,j2,j)
-    
-        self.colorRangeWithTag(s,i,i2,'leoKeyword')
-        self.colorRangeWithTag(s,i2,j2,'docPart')
-        self.colorRangeWithTag(s,j2,j,'leoKeyword')
-    #@nonl
-    #@-node:ekr.20050602205810:docPartColorHelper
     #@+node:ekr.20050603202319:invalidate_range
     def invalidate_range (self,i,j):
         
@@ -922,17 +859,6 @@ class baseColorizer:
             self.colored_ranges[k] = None
     #@nonl
     #@-node:ekr.20050603202319:invalidate_range
-    #@+node:ekr.20050602205810.2:keywordsColorHelper
-    def keywordsColorHelper (self,token_type,s,i,j):
-        
-        theList = ('leoKeyword','keyword1','keyword2','keyword3','keyword4',)
-    
-        tag = theList[self.keywordNumber]
-    
-        if tag:
-            self.colorRangeWithTag(s,i,j,tag)
-    #@nonl
-    #@-node:ekr.20050602205810.2:keywordsColorHelper
     #@+node:ekr.20050603190206:rangeColoredWithTag
     def rangeColoredWithTag(self,i,j,tag):
         
@@ -1006,44 +932,6 @@ class baseColorizer:
             self.body.tag_remove(tag,x1,x2)
     #@nonl
     #@-node:ekr.20050603174749:removeTagsFromRange
-    #@+node:ekr.20050602205810.1:sectionRefColorHelper
-    ## To do: this assumes the 2-character brackets.
-    
-    def sectionRefColorHelper (self,token_type,s,i,j):
-        
-        # g.trace(i,j,s[i:j])
-        
-        self.colorRangeWithTag(s,i,i+2,'nameBrackets')
-    
-        ref = g.findReference(s[i:j],self.p)
-        if ref:
-            if self.use_hyperlinks:
-                #@            << set the hyperlink >>
-                #@+node:ekr.20050607065634:<< set the hyperlink >>
-                # Set the bindings to vnode callbacks.
-                # Create the tag.
-                # Create the tag name.
-                tagName = "hyper" + str(self.hyperCount)
-                self.hyperCount += 1
-                self.body.tag_delete(tagName)
-                self.tag(tagName,i+2,j)
-                
-                ref.tagName = tagName
-                self.body.tag_bind(tagName,"<Control-1>",ref.OnHyperLinkControlClick)
-                self.body.tag_bind(tagName,"<Any-Enter>",ref.OnHyperLinkEnter)
-                self.body.tag_bind(tagName,"<Any-Leave>",ref.OnHyperLinkLeave)
-                #@nonl
-                #@-node:ekr.20050607065634:<< set the hyperlink >>
-                #@nl
-            else:
-                self.colorRangeWithTag(s,i+2,j-2,'link')
-        else:
-            self.colorRangeWithTag(s,i+2,j-2,'name')
-    
-        self.colorRangeWithTag(s,j-2,j,'nameBrackets')
-    #@nonl
-    #@-node:ekr.20050602205810.1:sectionRefColorHelper
-    #@-node:ekr.20050601065451:doColor & helpers
     #@+node:ekr.20050601162452.3:doRule & colorByDelegate
     def doRule (self,s,i,j,kind,token_type,delegate):
         
@@ -1228,242 +1116,134 @@ class baseColorizer:
             self.body.tag_remove(tag,self.index(0),self.index("end"))
     #@nonl
     #@-node:ekr.20050529143413.80:removeAllTags & removeTagsFromLines
+    #@+node:ekr.20050529143413.81:scanColorDirectives
+    def scanColorDirectives(self,p):
+        
+        """Scan position p and p's ancestors looking for @comment, @language and @root directives,
+        setting corresponding colorizer ivars.
+        """
+    
+        p = p.copy() ; c = self.c
+        if c == None: return # self.c may be None for testing.
+    
+        self.language = language = c.target_language
+        self.comment_string = None
+        self.rootMode = None # None, "code" or "doc"
+        
+        for p in p.self_and_parents_iter():
+            # g.trace(p)
+            s = p.v.t.bodyString
+            theDict = g.get_directives_dict(s)
+            #@        << Test for @comment or @language >>
+            #@+node:ekr.20050529143413.82:<< Test for @comment or @language >>
+            # @comment and @language may coexist in the same node.
+            
+            if theDict.has_key("comment"):
+                k = theDict["comment"]
+                self.comment_string = s[k:]
+            
+            if theDict.has_key("language"):
+                i = theDict["language"]
+                language,junk,junk,junk = g.set_language(s,i)
+                self.language = language
+            
+            if theDict.has_key("comment") or theDict.has_key("language"):
+                break
+            #@nonl
+            #@-node:ekr.20050529143413.82:<< Test for @comment or @language >>
+            #@nl
+            #@        << Test for @root, @root-doc or @root-code >>
+            #@+node:ekr.20050529143413.83:<< Test for @root, @root-doc or @root-code >>
+            if theDict.has_key("root") and not self.rootMode:
+            
+                k = theDict["root"]
+                if g.match_word(s,k,"@root-code"):
+                    self.rootMode = "code"
+                elif g.match_word(s,k,"@root-doc"):
+                    self.rootMode = "doc"
+                else:
+                    doc = c.config.at_root_bodies_start_in_doc_mode
+                    self.rootMode = g.choose(doc,"doc","code")
+            #@nonl
+            #@-node:ekr.20050529143413.83:<< Test for @root, @root-doc or @root-code >>
+            #@nl
+    
+        return self.language # For use by external routines.
+    #@nonl
+    #@-node:ekr.20050529143413.81:scanColorDirectives
+    #@+node:ekr.20050529143413.29:setFontFromConfig
+    def setFontFromConfig (self):
+        
+        c = self.c
+        
+        self.bold_font = c.config.getFontFromParams(
+            "body_text_font_family", "body_text_font_size",
+            "body_text_font_slant",  "body_text_font_weight",
+            c.config.defaultBodyFontSize) # , tag = "colorer bold")
+        
+        if self.bold_font:
+            self.bold_font.configure(weight="bold")
+        
+        self.italic_font = c.config.getFontFromParams(
+            "body_text_font_family", "body_text_font_size",
+            "body_text_font_slant",  "body_text_font_weight",
+            c.config.defaultBodyFontSize) # , tag = "colorer italic")
+            
+        if self.italic_font:
+            self.italic_font.configure(slant="italic",weight="normal")
+        
+        self.bolditalic_font = c.config.getFontFromParams(
+            "body_text_font_family", "body_text_font_size",
+            "body_text_font_slant",  "body_text_font_weight",
+            c.config.defaultBodyFontSize) # , tag = "colorer bold italic")
+            
+        if self.bolditalic_font:
+            self.bolditalic_font.configure(weight="bold",slant="italic")
+            
+        self.color_tags_list = []
+        self.image_references = []
+    #@nonl
+    #@-node:ekr.20050529143413.29:setFontFromConfig
     #@-node:ekr.20050529143413.89:Utils
     #@+node:ekr.20050529180421.47:Rule matching methods
-    #@+node:ekr.20060503153321.1:No longer used
-    if 0:
-        
-        #@    @+others
-        #@+node:ekr.20050530112849:createRuleMatchers
-        def createRuleMatchers (self,rules):
-            
-            self.defaultRulesList = []
-            self.rulesDict = {}
-        
-            # Put the Leo rules first on each list.
-            for key,createMatcher in (
-                ('@',self.createAtColorMatcher),
-                ('@',self.createAtNocolorMatcher),
-                ('@',self.createDocPartMatcher),
-                ('<',self.createSectionRefMatcher),
-            ):
-                f,name,token_type,delegate = createMatcher()
-                rulesList = self.rulesDict.get(key,[])
-                rulesList.append((f,name,token_type,delegate),)
-                self.rulesDict[key] = rulesList
-                
-            for rule in rules:
-                self.createRuleMatcher(rule)
-                
-            if 0:
-                total = 0 ; n = len(self.rulesDict.keys())
-                for key in self.rulesDict.keys():
-                    theList = self.rulesDict.get(key,[])
-                    total += len(theList)
-                total += len(self.defaultRulesList)
-                print 'mean length of rules list: %0.3f' % (float(total)/float(n+1))
-        #@nonl
-        #@-node:ekr.20050530112849:createRuleMatchers
-        #@+node:ekr.20050530112849.1:createRuleMatcher
-        def createRuleMatcher (self,rule):
-            
-            name = rule.name ; d = rule.attributes or {}
-            token_type    = d.get('type','<no type>').lower()
-            at_line_start = d.get('at_line_start',False)
-            at_ws_end     = d.get('at_ws_end',False)
-            at_word_start = d.get('at_word_start',False)
-            delegate      = d.get('delegate','')
-            no_line_break = d.get('no_line_break',False)
-            d2 = rule.get('contents',{})
-            seq     = d2.get(name,'')
-            begin   = d2.get('begin','')
-            end     = d2.get('end','')
-            
-            if name == 'eol_span':
-                keys = [seq[0]]
-                def f(self,s,i,seq=seq,
-                    at_line_start=at_line_start,at_ws_end=at_ws_end,at_word_start=at_word_start
-                ):
-                    return self.match_eol_span(s,i,seq,at_line_start,at_ws_end,at_word_start)
-            elif name == 'eol_span_regexp':
-                keys = [seq[0]]
-                def f(self,s,i,seq=seq,
-                    at_line_start=at_line_start,at_ws_end=at_ws_end,at_word_start=at_word_start
-                ):
-                    return self.match_eol_span_regexp(s,i,seq,
-                        at_line_start,at_ws_end,at_word_start)
-            elif name == 'keywords':
-                keys = self.word_chars
-                def f(self,s,i):
-                    return self.match_keywords(s,i)
-                token_type = 'keywords'
-            elif name in ('mark_following','mark_previous','seq'):
-                keys = [seq[0]]
-                def f(self,s,i,seq=seq,
-                    at_line_start=at_line_start,at_ws_end=at_ws_end,at_word_start=at_word_start
-                ):
-                    return self.match_seq(s,i,seq,at_line_start,at_ws_end,at_word_start)
-            elif name == 'seq_regexp':
-                keys = [hash_char]
-                def f(self,s,i,seq=seq,hash_char=hash_char,
-                    at_line_start=at_line_start,at_ws_end=at_ws_end,at_word_start=at_word_start
-                ):
-                    return self.match_seq_regexp(s,i,seq,hash_char,
-                        at_line_start,at_ws_end,at_word_start)
-            elif name == 'span':
-                keys = [begin[0]]
-                def f(self,s,i,begin=begin,end=end,
-                    at_line_start=at_line_start,at_ws_end=at_ws_end,
-                    at_word_start=at_word_start,no_line_break=no_line_break
-                ):
-                    return self.match_span(s,i,begin,end,
-                        at_line_start,at_ws_end,at_word_start,no_line_break)
-            elif name == 'span_regexp':
-                keys = [hash_char]
-                def f(self,s,i,begin=begin,end=end,hash_char=hash_char,
-                    at_line_start=at_line_start,at_ws_end=at_ws_end,
-                    at_word_start=at_word_start,no_line_break=no_line_break
-                ):
-                    return self.match_span_regexp(s,i,begin,end,hash_char,
-                        at_line_start,at_ws_end,at_word_start,no_line_break)
-            else:
-                keys = []
-                g.trace('no function for %s' % name)
-                def f(self,s,i):
-                    return 0
-        
-            # Put f,name,token_type,delegate in the rulesDict or defaultRulesList.
-            for key in keys:
-                if key in string.printable:
-                    rulesList = self.rulesDict.get(key,[])
-                    rulesList.append((f,name,token_type,delegate),)
-                    self.rulesDict[key] = rulesList
-                else:
-                    self.defaultRulesList.append((f,name,token_type,delegate),)
-        
-            # g.trace('%-25s'%(name+':'+token_type),at_line_start,at_ws_end,at_word_start,repr(seq),repr(begin),repr(end))
-        #@nonl
-        #@-node:ekr.20050530112849.1:createRuleMatcher
-        #@+node:ekr.20050602204708:createDocPartMatcher & createSectionRefMatcher
-        def createDocPartMatcher (self):
-            
-            def f(self,s,i):
-                return self.match_doc_part(s,i)
-        
-            name = token_type = 'doc_part'
-            delegate = ''
-            return f,name,token_type,delegate
-        
-        def createSectionRefMatcher (self):
-            
-            def f(self,s,i):
-                return self.match_section_ref(s,i)
-        
-            name = token_type = 'section_ref'
-            delegate = ''
-            return f,name,token_type,delegate
-        #@nonl
-        #@-node:ekr.20050602204708:createDocPartMatcher & createSectionRefMatcher
-        #@+node:ekr.20050603043840:createAtColorMatcher & createAtNocolorMatcher
-        def createAtColorMatcher (self):
-            
-            def f(self,s,i):
-                return self.match_at_color(s,i)
-        
-            name = token_type = '@color'
-            delegate = ''
-            return f,name,token_type,delegate
-        
-        def createAtNocolorMatcher (self):
-            
-            def f(self,s,i):
-                return self.match_at_nocolor(s,i)
-        
-            name = token_type = '@nocolor'
-            delegate = ''
-            return f,name,token_type,delegate
-        #@nonl
-        #@-node:ekr.20050603043840:createAtColorMatcher & createAtNocolorMatcher
-        #@-others
+    #@+node:ekr.20060503153603.1:jEdit matchers (todo: exclude_match)
+    #@@nocolor
+    #@+at
+    # 
+    # The following jEdit matcher methods return the length of the matched 
+    # text if the
+    # match succeeds, and zero otherwise.  In most cases, these methods 
+    # colorize all the matched text.
+    # 
+    # The following arguments affect matching:
+    # 
+    # - at_line_start         True: sequence must start the line.
+    # - at_whitespace_end     True: sequence must be first non-whitespace text 
+    # of the line.
+    # - at_word_start         True: sequence must start a word.
+    # - hash_char             The first character that must match in a regular 
+    # expression.
+    # - no_escape:            True: ignore an 'end' string if it is preceded 
+    # by the ruleset's escape character.
+    # - no_line_break         True: the match will not succeed across line 
+    # breaks.
+    # - no_word_break:        True: the match will not cross word breaks.
+    # 
+    # The following arguments affect coloring when a match succeeds.
+    # - delegate              A ruleset name. The matched text will be colored 
+    # recursively by the indicated ruleset.
+    # - exclude_match         If True, the actual text that matched will not 
+    # be colored.
+    # - kind                  The color tag to be applied to colored text.
+    # 
+    #@@color
+    #@-at
     #@nonl
-    #@-node:ekr.20060503153321.1:No longer used
-    #@+node:ekr.20060503153603:Leo matchers
-    #@+node:ekr.20050603043840.1:match_at_color
-    def match_at_color (self,s,i):
-    
-        seq = '@color'
-        
-        if i != 0 and s[i-1] != '\n': return 0
-    
-        if g.match_word(s,i,seq):
-            # g.trace(i)
-            self.flag = True # Enable coloring now so @color itself gets colored.
-            return len(seq)
-        else:
-            return 0
-    #@-node:ekr.20050603043840.1:match_at_color
-    #@+node:ekr.20050603043840.2:match_at_nocolor
-    def match_at_nocolor (self,s,i):
-        
-        seq = '@nocolor'
-        
-        if i != 0 and s[i-1] != '\n':
-            return 0
-    
-        if g.match_word(s,i,seq):
-            self.keywordNumber = 0
-            return len(seq)
-        else:
-            return 0
-    #@nonl
-    #@-node:ekr.20050603043840.2:match_at_nocolor
-    #@+node:ekr.20050602211253:match_doc_part
-    def match_doc_part (self,s,i):
-        
-        if i >= len(s) or s[i] != '@':
-            return 0
-    
-        if i + 1 >= len(s):
-            return 1
-            
-        if not g.match_word(s,i,'@doc') and not s[i+1] in (' ','\t','\n'):
-            return 0
-    
-        j = i
-        while 1:
-            k = s.find('@c',j)
-            if k == -1:
-                return len(s) - i
-            if s[k-1] != '\n' or (not g.match_word(s,k,'@c') and not g.match_word(s,k,'@code')):
-                j = j + k + 1
-                continue
-            elif g.match_word(s,k,'@c'):
-                return k + 2 - i
-            else:
-                return k + 5 - i
-    #@nonl
-    #@-node:ekr.20050602211253:match_doc_part
-    #@+node:ekr.20050602211219:match_section_ref
-    def match_section_ref (self,s,i):
-        
-        if not g.match(s,i,'<<'):
-            return 0
-            
-        val = g.find_on_line(s,i+2,'>>')
-        if val is not None:
-            return val + 2 - i
-        else:
-            return 0
-    #@nonl
-    #@-node:ekr.20050602211219:match_section_ref
-    #@-node:ekr.20060503153603:Leo matchers
-    #@+node:ekr.20060503153603.1:jEdit matchers
     #@+node:ekr.20050529190857:match_keywords
     # This is a time-critical method.
     def match_keywords (self,s,i):
         
-        '''Return the length of the keyword if present position matches any keyword.
-        Otherwise, return 0.'''
+        '''Succeed if s[i:] is a keyword.'''
         
         # We must be at the start of a word.
         if i > 0 and s[i-1] in self.word_chars:
@@ -1477,7 +1257,7 @@ class baseColorizer:
         word = s[i:j]
         kind = self.keywordsDict.get(s[i:j])
         if kind:
-            g.trace('%3d %10s %s' % (i,word,repr(kind)))
+            # g.trace('%3d %10s %s' % (i,word,repr(kind)))
             self.colorRangeWithTag(s,i,j,kind)
             self.prev = (i,j,kind)
             return j-i
@@ -1495,17 +1275,12 @@ class baseColorizer:
         return 0 ### Not ready yet.
     #@nonl
     #@-node:ekr.20050529182335:match_regexp_helper (TO DO)
-    #@+node:ekr.20050601045930:match_eol_span Todo: exclude_match
+    #@+node:ekr.20050601045930:match_eol_span
     def match_eol_span (self,s,i,kind,seq,
         at_line_start,at_whitespace_end,at_word_start,
         delegate,exclude_match):
         
-        '''Return the length of the rest of line if SEQ matches s[i:]
-        Return 0 if no match.
-    
-        'at_line_start':    True: sequence must start the line.
-        'at_whitespace_end':True: sequence must be first non-whitespace text of the line.
-        'at_word_start':    True: sequence must start a word.'''
+        '''Succeed if seq matches s[i:]'''
     
         if at_line_start and i != 0 and s[i-1] != '\n': return 0
         if at_whitespace_end and i != g.skip_ws(s,0): return 0
@@ -1520,19 +1295,13 @@ class baseColorizer:
             return j - i 
         else:
             return 0
-    #@-node:ekr.20050601045930:match_eol_span Todo: exclude_match
-    #@+node:ekr.20050601063317:match_eol_span_regexp Todo: exclude_match
+    #@-node:ekr.20050601045930:match_eol_span
+    #@+node:ekr.20050601063317:match_eol_span_regexp
     def match_eol_span_regexp (self,s,i,kind,regex,hash_char,
         at_line_start,at_whitespace_end,at_word_start,
         delegate,exclude_match):
         
-        '''Return the length of rest if the line if seq (a regx) matches s[i:]
-        Return 0 if no match.
-    
-        'at_line_start':    True: sequence must start the line.
-        'at_whitespace_end':True: sequence must be first non-whitespace text of the line.
-        'at_word_start':    True: sequence must start a word.
-        'hash_char':        The first character of the regexp (for speed).'''
+        '''Succeed if the regular expression regex matches s[i:].'''
     
         if at_line_start and i != 0 and s[i-1] != '\n': return 0
         if at_whitespace_end and i != g.skip_ws(s,0): return 0
@@ -1551,39 +1320,12 @@ class baseColorizer:
         else:
             return 0
     #@nonl
-    #@-node:ekr.20050601063317:match_eol_span_regexp Todo: exclude_match
-    #@+node:ekr.20050529182335.1:match_seq
-    def match_seq (self,s,i,kind,seq,
-        at_line_start,at_whitespace_end,at_word_start,delegate):
-        
-        '''Return the length of a matched SEQ or 0 if no match.
-    
-        'at_line_start':    True: sequence must start the line.
-        'at_whitespace_end':True: sequence must be first non-whitespace text of the line.
-        'at_word_start':    True: sequence must start a word.'''
-    
-        if at_line_start and i != 0 and s[i-1] != '\n': return 0
-        if at_whitespace_end and i != g.skip_ws(s,0): return 0
-        if at_word_start and i > 0 and s[i-1] not in self.word_chars: return 0
-    
-        if g.match(s,i,seq):
-            j = i + len(seq)
-            self.colorRangeWithTag(s,i,j,kind)
-            self.prev = (i,j,kind)
-            return j - i
-        else:
-            return 0
-    #@nonl
-    #@-node:ekr.20050529182335.1:match_seq
-    #@+node:ekr.20060503173247:match_mark_following Todo: exclude_match
+    #@-node:ekr.20050601063317:match_eol_span_regexp
+    #@+node:ekr.20060503173247:match_mark_following
     def match_mark_following (self,s,i,kind,pattern,
         at_line_start,at_whitespace_end,at_word_start,exclude_match):
         
-        '''Return the length of a matched SEQ or 0 if no match.
-    
-        'at_line_start':    True: sequence must start the line.
-        'at_whitespace_end':True: sequence must be first non-whitespace text of the line.
-        'at_word_start':    True: sequence must start a word.'''
+        '''Succeed if s[i:] matches pattern.'''
     
         if at_line_start and i != 0 and s[i-1] != '\n': return 0
         if at_whitespace_end and i != g.skip_ws(s,0): return 0
@@ -1596,8 +1338,8 @@ class baseColorizer:
             return j - i
         else:
             return 0
-    #@-node:ekr.20060503173247:match_mark_following Todo: exclude_match
-    #@+node:ekr.20060503173247.1:match_mark_previous Todo: exclude_match
+    #@-node:ekr.20060503173247:match_mark_following
+    #@+node:ekr.20060503173247.1:match_mark_previous
     def match_mark_previous (self,s,i,kind,pattern,
         at_line_start,at_whitespace_end,at_word_start,exclude_match):
         
@@ -1619,17 +1361,31 @@ class baseColorizer:
         else:
             return 0
     #@nonl
-    #@-node:ekr.20060503173247.1:match_mark_previous Todo: exclude_match
-    #@+node:ekr.20050529215620:match_seq_regexp
-    def match_seq_regexp (self,s,i,kind,seq,hash_char,
+    #@-node:ekr.20060503173247.1:match_mark_previous
+    #@+node:ekr.20050529182335.1:match_seq
+    def match_seq (self,s,i,kind,seq,
         at_line_start,at_whitespace_end,at_word_start,delegate):
         
-        '''Return the length of a matched SEQ_REGEXP or 0 if no match.
+        '''Succeed if s[:] mathces seq.'''
     
-        'at_line_start':    True: sequence must start the line.
-        'at_whitespace_end':True: sequence must be first non-whitespace text of the line.
-        'at_word_start':    True: sequence must start a word.
-        'hash_char':        The first character of the regexp (for speed).'''
+        if at_line_start and i != 0 and s[i-1] != '\n': return 0
+        if at_whitespace_end and i != g.skip_ws(s,0): return 0
+        if at_word_start and i > 0 and s[i-1] not in self.word_chars: return 0
+    
+        if g.match(s,i,seq):
+            j = i + len(seq)
+            self.colorRangeWithTag(s,i,j,kind)
+            self.prev = (i,j,kind)
+            return j - i
+        else:
+            return 0
+    #@nonl
+    #@-node:ekr.20050529182335.1:match_seq
+    #@+node:ekr.20050529215620:match_seq_regexp
+    def match_seq_regexp (self,s,i,kind,regexp,hash_char,
+        at_line_start,at_whitespace_end,at_word_start,delegate):
+        
+        '''Succeed if the regular expression regexp matches at s[i:].'''
     
         if at_line_start and i != 0 and s[i-1] != '\n': return 0
         if at_whitespace_end and i != g.skip_ws(s,0): return 0
@@ -1637,7 +1393,7 @@ class baseColorizer:
         
         # Test hash_char first to increase speed.
         if i < len(s) and s[i] == hash_char:
-            j = self.match_regexp_helper(s,i,seq)
+            j = self.match_regexp_helper(s,i,regexp)
             self.colorRangeWithTag(s,i,j,kind)
             self.prev = (i,j,kind)
         else:
@@ -1650,12 +1406,7 @@ class baseColorizer:
         delegate,exclude_match,
         no_escape,no_line_break,no_word_break):
     
-        '''Return the length of a matched SPAN or 0 if no match.
-    
-        'at_line_start':    True: sequence must start the line.
-        'at_whitespace_end':True: sequence must be first non-whitespace text of the line.
-        'at_word_start':    True: sequence must start a word.
-        'no_line_break':    True: sequence must not cross a line.'''
+        '''Succeed if s[i:] starts with 'begin' and contains a following 'end'.'''
         
         if at_line_start and i != 0 and s[i-1] != '\n': return 0
         if at_whitespace_end and i != g.skip_ws(s,0): return 0
@@ -1678,15 +1429,10 @@ class baseColorizer:
     #@-node:ekr.20050529185208.2:match_span
     #@+node:ekr.20050529215732:match_span_regexp
     def match_span_regexp (self,s,i,kind,begin,end,hash_char,
-        at_line_start,at_whitespace_end,at_word_start,no_line_break):
-        
-        '''Return the length of a matched SPAN_REGEXP or 0 if no match.
-    
-        'at_line_start':    True: sequence must start the line.
-        'at_whitespace_end':True: sequence must be first non-whitespace text of the line.
-        'at_word_start':    True: sequence must start a word.
-        'at_word_start':    True: sequence must start a word.
-        'hash_char':        The first character of the regexp (for speed).'''
+        at_line_start,at_whitespace_end,at_word_start,
+        delegate,exclude_match):
+            
+        '''Succeed if s[i:] starts with 'begin' ( a regular expression) and contains a following 'end'.'''
         
         if at_line_start and i != 0 and s[i-1] != '\n': return 0
         if at_whitespace_end and i != g.skip_ws(s,0): return 0
@@ -1704,7 +1450,7 @@ class baseColorizer:
             return 0
     #@nonl
     #@-node:ekr.20050529215732:match_span_regexp
-    #@-node:ekr.20060503153603.1:jEdit matchers
+    #@-node:ekr.20060503153603.1:jEdit matchers (todo: exclude_match)
     #@-node:ekr.20050529180421.47:Rule matching methods
     #@-others
 
