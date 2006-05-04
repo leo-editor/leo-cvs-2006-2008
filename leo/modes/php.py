@@ -2436,65 +2436,77 @@ php_phpdoc_keywords_dict = {
 	"@version": "label",
 }
 
+# Dictionary of keywords dictionaries for php mode.
+keywordsDictDict = {
+	"php_javascript": php_javascript_keywords_dict,
+	"php_javascript_php": php_javascript_php_keywords_dict,
+	"php_main": php_main_keywords_dict,
+	"php_php": php_php_keywords_dict,
+	"php_php_literal": php_php_literal_keywords_dict,
+	"php_phpdoc": php_phpdoc_keywords_dict,
+	"php_tags": php_tags_keywords_dict,
+	"php_tags_literal": php_tags_literal_keywords_dict,
+}
+
 # Rules for php_main ruleset.
 
 def rule0(colorer, s, i):
-    return colorer.match_span(s, i, kind='"markup"', begin="<?php", end="?>",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="markup", begin="<?php", end="?>",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="PHP",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind='"markup"', begin="<?", end="?>",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="markup", begin="<?", end="?>",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="PHP",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind='"markup"', begin="<%=", end="%>",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="markup", begin="<%=", end="%>",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="PHP",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule3(colorer, s, i):
-    return colorer.match_span(s, i, kind='"comment1"', begin="<!--", end="-->",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="comment1", begin="<!--", end="-->",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule4(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind='"markup"', begin="<SCRIPT\s+LANGUAGE=\"?PHP\"?>", end="</SCRIPT>",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span_regexp(s, i, kind="markup", begin="<SCRIPT\s+LANGUAGE=\"?PHP\"?>", end="</SCRIPT>",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="PHP",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule5(colorer, s, i):
-    return colorer.match_span(s, i, kind='"markup"', begin="<SCRIPT", end="</SCRIPT>",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="markup", begin="<SCRIPT", end="</SCRIPT>",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="JAVASCRIPT",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule6(colorer, s, i):
-    return colorer.match_span(s, i, kind='"markup"', begin="<STYLE", end="</STYLE>",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="markup", begin="<STYLE", end="</STYLE>",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="html::CSS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule7(colorer, s, i):
-    return colorer.match_span(s, i, kind='"keyword2"', begin="<!", end=">",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="keyword2", begin="<!", end=">",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="xml::DTD-TAGS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule8(colorer, s, i):
-    return colorer.match_span(s, i, kind='"markup"', begin="<", end=">",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="markup", begin="<", end=">",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="TAGS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule9(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal2"', begin="&", end=";",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal2", begin="&", end=";",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=True)
 
@@ -2506,38 +2518,38 @@ php_main_rules = [
 # Rules for php_tags ruleset.
 
 def rule10(colorer, s, i):
-    return colorer.match_span(s, i, kind='"markup"', begin="<?php", end="?>",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="markup", begin="<?php", end="?>",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="PHP",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule11(colorer, s, i):
-    return colorer.match_span(s, i, kind='"markup"', begin="<?", end="?>",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="markup", begin="<?", end="?>",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="PHP",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule12(colorer, s, i):
-    return colorer.match_span(s, i, kind='"markup"', begin="<%=", end="%>",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="markup", begin="<%=", end="%>",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="PHP",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule13(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="\"", end="\"",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="TAGS_LITERAL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule14(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="'", end="'",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="TAGS_LITERAL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules list for php_tags ruleset.
 php_tags_rules = [
@@ -2546,20 +2558,20 @@ php_tags_rules = [
 # Rules for php_tags_literal ruleset.
 
 def rule16(colorer, s, i):
-    return colorer.match_span(s, i, kind='"markup"', begin="<?php", end="?>",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="markup", begin="<?php", end="?>",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="PHP",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule17(colorer, s, i):
-    return colorer.match_span(s, i, kind='"markup"', begin="<?", end="?>",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="markup", begin="<?", end="?>",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="PHP",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule18(colorer, s, i):
-    return colorer.match_span(s, i, kind='"markup"', begin="<%=", end="%>",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="markup", begin="<%=", end="%>",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="PHP",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
@@ -2570,166 +2582,166 @@ php_tags_literal_rules = [
 # Rules for php_php ruleset.
 
 def rule19(colorer, s, i):
-    return colorer.match_span(s, i, kind='"comment3"', begin="/**", end="*/",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="comment3", begin="/**", end="*/",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="PHPDOC",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule20(colorer, s, i):
-    return colorer.match_span(s, i, kind='"comment1"', begin="/*", end="*/",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule21(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="\"", end="\"",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="PHP_LITERAL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule22(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="'", end="'",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule23(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="`", end="`",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="`", end="`",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="PHP_LITERAL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule24(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind='"comment2"', seq="//",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_eol_span(s, i, kind="comment2", seq="//",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
 def rule25(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind='"comment1"', seq="#",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_eol_span(s, i, kind="comment1", seq="#",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
 def rule26(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind='"literal1"', begin="<<<[[:space:]'\"]*([[:alnum:]_]+)[[:space:]'\"]*", end="$1",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span_regexp(s, i, kind="literal1", begin="<<<[[:space:]'\"]*([[:alnum:]_]+)[[:space:]'\"]*", end="$1",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="PHP_LITERAL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule27(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"keyword3"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="keyword3", pattern="$"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule28(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule29(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="->",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule30(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="!",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule31(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">=",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule32(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<=",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule33(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule34(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule35(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule36(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule37(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule38(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule39(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule40(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="%",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule41(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="&",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule42(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="|",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule43(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="^",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule44(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="~",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule45(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=".",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule46(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="}",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule47(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="{",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule48(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=",",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule49(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=";",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule50(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="]",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule51(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="[",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule52(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="?",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule53(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="@",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule54(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=":",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule55(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind='"function"',
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=True)
+    return colorer.match_mark_previous(s, i, kind="function", pattern="(",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
 def rule56(colorer, s, i):
     return colorer.match_keywords(s, i)
@@ -2744,8 +2756,8 @@ php_php_rules = [
 # Rules for php_php_literal ruleset.
 
 def rule57(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"keyword3"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="keyword3", pattern="$"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 # Rules list for php_php_literal ruleset.
 php_php_literal_rules = [
@@ -2755,11 +2767,11 @@ php_php_literal_rules = [
 
 def rule58(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq=">",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="JAVASCRIPT+PHP")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="JAVASCRIPT+PHP")
 
 def rule59(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq="SRC=",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="BACK_TO_HTML")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="BACK_TO_HTML")
 
 # Rules list for php_javascript ruleset.
 php_javascript_rules = [
@@ -2768,20 +2780,20 @@ php_javascript_rules = [
 # Rules for php_javascript_php ruleset.
 
 def rule60(colorer, s, i):
-    return colorer.match_span(s, i, kind='"markup"', begin="<?php", end="?>",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="markup", begin="<?php", end="?>",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="php::PHP",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule61(colorer, s, i):
-    return colorer.match_span(s, i, kind='"markup"', begin="<?", end="?>",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="markup", begin="<?", end="?>",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="php::PHP",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule62(colorer, s, i):
-    return colorer.match_span(s, i, kind='"markup"', begin="<%=", end="%>",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="markup", begin="<%=", end="%>",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="php::PHP",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
@@ -2794,33 +2806,33 @@ php_javascript_php_rules = [
 
 def rule63(colorer, s, i):
     return colorer.match_seq(s, i, kind="comment3", seq="{",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule64(colorer, s, i):
     return colorer.match_seq(s, i, kind="comment3", seq="*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule65(colorer, s, i):
-    return colorer.match_span(s, i, kind='"comment2"', begin="<!--", end="-->",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="comment2", begin="<!--", end="-->",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule66(colorer, s, i):
     return colorer.match_seq(s, i, kind="comment3", seq="<<",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule67(colorer, s, i):
     return colorer.match_seq(s, i, kind="comment3", seq="<=",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule68(colorer, s, i):
     return colorer.match_seq(s, i, kind="comment3", seq="<",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule69(colorer, s, i):
-    return colorer.match_span(s, i, kind='"markup"', begin="<", end=">",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="markup", begin="<", end=">",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="xml::TAGS",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
