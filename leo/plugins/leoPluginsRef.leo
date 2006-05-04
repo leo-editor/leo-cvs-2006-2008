@@ -513,7 +513,8 @@ marks="ekr.20050601081132,"><vh>@thin __jEdit_colorizer__.py</vh></v>
 </v>
 <v t="ekr.20040717133342"><vh>Shadow files plugin</vh>
 <v t="ekr.20050126104457"><vh>Notes</vh></v>
-<v t="bwmulder.20041017125718"><vh>@thin mod_shadow.py</vh></v>
+<v t="bwmulder.20060418131356.17"><vh>@thin mod_shadow.py</vh></v>
+<v t="bwmulder.20060418142633" a="E"><vh>@thin mod_shadow_core.py</vh></v>
 </v>
 <v t="ekr.20040918165427"><vh>To do</vh>
 <v t="EKR.20040611044600"><vh>Mulder undo</vh>
