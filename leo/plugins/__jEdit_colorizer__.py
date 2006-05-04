@@ -6,7 +6,7 @@
 #@@tabwidth -4
 #@@pagewidth 80
 
-__version__ = '0.13'
+__version__ = '0.20'
 #@<< version history >>
 #@+node:ekr.20050529142916.2:<< version history >>
 #@@killcolor
@@ -32,7 +32,7 @@ __version__ = '0.13'
 #@-at
 #@nonl
 #@-node:ekr.20050607075752:0.1 through 0.5
-#@+node:ekr.20050607080236:0.6 through 0.10
+#@+node:ekr.20050607080236:0.6 through 0.14
 #@+at
 # 
 # 0.6 EKR:
@@ -73,11 +73,6 @@ __version__ = '0.13'
 #     - This causes instant display and prompt coloring, even for large text.
 #     - Must call removeAllTags and removeAllImages when clearing the 
 # colored_ranges dict.
-#@-at
-#@nonl
-#@-node:ekr.20050607080236:0.6 through 0.10
-#@+node:ekr.20050607075752.1:0.11 up
-#@+at
 # 
 # 0.11 EKR:
 #     - Supported no_line_break in match_span.
@@ -117,7 +112,14 @@ __version__ = '0.13'
 #     - Handled delegated rulesets in colorByDelegate.
 #@-at
 #@nonl
-#@-node:ekr.20050607075752.1:0.11 up
+#@-node:ekr.20050607080236:0.6 through 0.14
+#@+node:ekr.20050607075752.1:0.20 up
+#@+at
+# 
+# 0.20 EKR: Begin transition to using x.py files rather than x.xml files.
+# - The colorizer now works on most text without crashing.
+#@-at
+#@-node:ekr.20050607075752.1:0.20 up
 #@-others
 #@nonl
 #@-node:ekr.20050529142916.2:<< version history >>
@@ -129,7 +131,6 @@ __version__ = '0.13'
 # 
 # - Handle c.xml:
 #     - Make sure <markup> element in <keywords> element work in delegate.
-#     - dump-colorizer command.
 # - Support NO_WORD_SEP, IGNORE_CASE and DEFAULT attributes in rules element.
 #     - Later: support DIGIT_RE and HIGHLIGHT_DIGITS attributes in rules 
 # element.
@@ -281,600 +282,6 @@ def onStart1 (tag, keywords):
 #@nonl
 #@-node:ekr.20050529142916.5:onStart1
 #@-node:ekr.20060425113823.1:module-level
-#@+node:ekr.20050530065723.58:class contentHandler (xml.sax.saxutils.XMLGenerator)
-class contentHandler (xml.sax.saxutils.XMLGenerator):
-    
-    '''A sax content handler class that handles jEdit language-description files.
-    
-    Creates mode that can be retrieved using the getMode method.'''
-
-    #@    @+others
-    #@+node:ekr.20050530065723.59: __init__ & helpers
-    def __init__ (self,c,fileName):
-    
-        self.c = c
-        self.fileName = fileName
-        self.trace   = trace =   c.config.getBool('trace_color_parser')
-        self.verbose = verbose = c.config.getBool('verbose_trace_color_parser')
-        
-        # Init the base class.
-        xml.sax.saxutils.XMLGenerator.__init__(self)
-        
-        # Non-mode statistics.
-        self.numberOfAttributes = 0
-        self.numberOfElements = 0
-        
-        # Options...
-        self.ignoreWs = True # True: don't print contents with only ws.
-        self.newLineAfterStartElement = [
-            'keywords','mode','props','property','rules','span','eol_span',
-            # 'seq',
-        ]
-        
-        # Printing options
-        if verbose:
-            self.printAllElements = True
-            self.printCharacters = False or self.printAllElements
-            self.printAttributes = False and not self.printAllElements
-            self.printElements = [
-                #'begin','end',
-                #'eol_span',
-                #'keyword1','keyword2','keyword3','keyword4',
-                #'mark_previous',
-                #'mode',
-                #'props',
-                #'property',
-                #'rules',
-                #'span',
-                #'seq',
-            ]
-            
-            if self.printAllElements:
-                self.suppressContent = []
-            else:
-                self.suppressContent = ['keyword1','keyword2','keyword3','keyword4']
-        else:
-            self.printAllElements = False
-            self.printCharacters = False
-            self.printAttributes = False
-            self.printElements = []
-      
-        # Semantics: most of these should be mode ivars.
-        self.elementStack = []
-        self.mode = None # The present mode, or None if outside all modes.
-        self.modes = [] # All modes defined here or by imports.
-    #@nonl
-    #@-node:ekr.20050530065723.59: __init__ & helpers
-    #@+node:ekr.20050530065723.60:helpers
-    #@+node:ekr.20050530065723.61:attrsToList
-    def attrsToList (self,attrs):
-        
-        '''Convert the attributes to a list of g.Bunches.
-        
-        attrs: an Attributes item passed to startElement.
-        
-        sep: the separator charater between attributes.'''
-        
-        return [
-            g.Bunch(name=name,val=attrs.getValue(name))
-            for name in attrs.getNames()
-        ]
-    #@nonl
-    #@-node:ekr.20050530065723.61:attrsToList
-    #@+node:ekr.20050530065723.62:attrsToString
-    def attrsToString (self,attrs,sep='\n'):
-        
-        '''Convert the attributes to a string.
-        
-        attrs: an Attributes item passed to startElement.
-        
-        sep: the separator charater between attributes.'''
-    
-        result = [
-            '%s="%s"' % (bunch.name,bunch.val)
-            for bunch in self.attrsToList(attrs)
-        ]
-    
-        return sep.join(result)
-    #@nonl
-    #@-node:ekr.20050530065723.62:attrsToString
-    #@+node:ekr.20050530065723.63:clean
-    def clean(self,s):
-    
-        return g.toEncodedString(s,"ascii")
-    #@nonl
-    #@-node:ekr.20050530065723.63:clean
-    #@+node:ekr.20050530065723.64:error
-    def error (self, message):
-        
-        print
-        print
-        print 'XML error: %s' % (message)
-        print
-    #@nonl
-    #@-node:ekr.20050530065723.64:error
-    #@+node:ekr.20050530065723.65:printStartElement
-    def printStartElement(self,name,attrs):
-    
-        if attrs.getLength() > 0:
-            print '<%s %s>' % (
-                self.clean(name).strip(),
-                self.attrsToString(attrs,sep=' ')),
-        else:
-            print '<%s>' % (self.clean(name).strip()),
-    
-        if name.lower() in self.newLineAfterStartElement:
-            print
-    #@nonl
-    #@-node:ekr.20050530065723.65:printStartElement
-    #@+node:ekr.20050530065723.66:printSummary
-    def printSummary (self):
-        
-        print '-' * 10, 'non- mode statistics'
-        print 'modes',len(self.modes)
-        print 'elements', self.numberOfElements
-    #@nonl
-    #@-node:ekr.20050530065723.66:printSummary
-    #@-node:ekr.20050530065723.60:helpers
-    #@+node:ekr.20050530065723.67:sax over-rides
-    #@+node:ekr.20050530065723.68: Do nothing...
-    #@+node:ekr.20050530065723.69:other methods
-    def ignorableWhitespace(self):
-        g.trace()
-    
-    def processingInstruction (self,target,data):
-        g.trace()
-    
-    def skippedEntity(self,name):
-        g.trace(name)
-    
-    def startElementNS(self,name,qname,attrs):
-        g.trace(name)
-    
-    def endElementNS(self,name,qname):
-        g.trace(name)
-    #@nonl
-    #@-node:ekr.20050530065723.69:other methods
-    #@+node:ekr.20050530065723.70:endDocument
-    def endDocument(self):
-    
-        pass
-    
-    
-    #@-node:ekr.20050530065723.70:endDocument
-    #@+node:ekr.20050530065723.71:startDocument
-    def startDocument(self):
-        
-        pass
-    #@nonl
-    #@-node:ekr.20050530065723.71:startDocument
-    #@-node:ekr.20050530065723.68: Do nothing...
-    #@+node:ekr.20050530065723.72:characters
-    def characters(self,content):
-        
-        content = content.replace('\r','').strip()
-        content = self.clean(content)
-    
-        elementName = self.elementStack and self.elementStack[-1].lower() or '<no element name>'
-        
-        if self.printAllElements:
-            print content,
-        elif self.printCharacters and content and elementName not in self.suppressContent:
-            print 'content:',elementName,repr(content)
-                
-        if self.mode:
-            self.mode.doContent(elementName,content)
-        else:
-            self.error('characters outside of mode')
-    #@nonl
-    #@-node:ekr.20050530065723.72:characters
-    #@+node:ekr.20050530065723.73:endElement
-    def endElement(self,name):
-    
-        self.doEndElement(name)
-    
-        name2 = self.elementStack.pop()
-        assert name == name2
-    #@nonl
-    #@-node:ekr.20050530065723.73:endElement
-    #@+node:ekr.20050530065723.74:startElement
-    def startElement(self,name,attrs):
-        
-        if self.mode:
-            self.mode.numberOfElements += 1
-        else:
-            self.numberOfElements += 1
-            
-        self.elementStack.append(name)
-        self.doStartElement(name,attrs)
-    #@nonl
-    #@-node:ekr.20050530065723.74:startElement
-    #@-node:ekr.20050530065723.67:sax over-rides
-    #@+node:ekr.20050530065723.75:doStartElement
-    def doStartElement (self,elementName,attrs):
-        
-        if self.printAllElements or elementName.lower() in self.printElements:
-            self.printStartElement(elementName,attrs)
-    
-        elementName = elementName.lower()
-        
-        if elementName == 'mode':
-            if self.mode:
-                self.error('Multiple modes')
-            else:
-                self.mode = modeClass(self,self.fileName)
-        elif self.mode:
-            self.mode.startElement(elementName)
-            for bunch in self.attrsToList(attrs):
-                if self.printAttributes:
-                    print 'attr:',elementName,bunch.name,'=',bunch.val
-                self.mode.doAttribute(bunch.name,bunch.val)
-        else:
-            self.error('Start element appears outside of Mode:%s' % elementName)
-            for bunch in self.attrsToList(attrs):
-                self.error('Attribute appears outside of Mode:%s' % bunch.name)
-    #@nonl
-    #@-node:ekr.20050530065723.75:doStartElement
-    #@+node:ekr.20050530065723.76:doEndElement
-    def doEndElement (self,elementName):
-        
-        if self.printAllElements or elementName.lower() in self.printElements:
-            print '</' + self.clean(elementName).strip() + '>'
-            
-        if elementName.lower() == 'mode':
-            if self.verbose:
-                self.mode.printSummary()
-        elif self.mode:
-            self.mode.endElement(elementName)
-        else:
-            self.error('End element appears outside of Mode:%s' % elementName)
-            for bunch in self.attrsToList(attrs):
-                self.error('Attribute appears outside of Mode:%s' %bunch.name)
-    #@nonl
-    #@-node:ekr.20050530065723.76:doEndElement
-    #@+node:ekr.20050530071955:getMode
-    def getMode (self):
-        
-        return self.mode
-    #@nonl
-    #@-node:ekr.20050530071955:getMode
-    #@-others
-#@nonl
-#@-node:ekr.20050530065723.58:class contentHandler (xml.sax.saxutils.XMLGenerator)
-#@+node:ekr.20050530065723.49:class modeClass
-class modeClass:
-    
-    '''A class representing one jEdit language-description mode.
-    
-    Use getters to access the attributes, properties and rules of this mode.'''
-    
-    #@    @+others
-    #@+node:ekr.20050530065723.50: mode.__init__
-    def __init__ (self,contentHandler,fileName):
-    
-        self.contentHandler = contentHandler
-        self.fileName = fileName # The file from which the mode was imported.
-        self.verbose = self.contentHandler.verbose
-    
-        # Mode statistics...
-        self.numberOfAttributes = 0
-        self.numberOfElements = 0
-        self.numberOfErrors = 0
-        self.numberOfPropertyAttributes = 0
-        self.numberOfRuleAttributes = 0
-        
-        # List of boolean attributes.
-        self.boolAttrs = [
-            'at_line_start','at_whitespace_end','at_word_start',
-            'exclude_match','highlight_digits','ignore_case',
-            'no_escape','no_line_break','no_word_break','no_word_sep',]
-    
-        # List of elements that start a rule.
-        self.ruleElements = [
-            'eol_span','eol_span_regexp','import','keywords',
-            'mark_following','mark_previous','seq','seq_regexp',
-            'span','span_regexp','terminate',]
-    
-        if 0: # Not used at present.
-            self.seqSpanElements = [
-                'eol_span','eol_span_regexp','seq','seq_regexp',
-                'span','span_regexp',]
-    
-        # Mode semantics.
-        self.attributes = {}
-        self.inProps = False
-        self.inRules = False
-        self.keywords = None
-        self.modeProperties = []
-        self.presentProperty = None # A bunch to be assigned to modeProperties or rulesetProperties.
-        self.rule = None
-        self.rulesets = []
-        self.rules = [] # The rules of the present rules element.
-        self.rulesetProperties = []
-        self.rulesetAttributes = {} # The attributes of the present rules element.
-    #@nonl
-    #@-node:ekr.20050530065723.50: mode.__init__
-    #@+node:ekr.20050530073825: mode.__str__ & __repr__
-    def __str__ (self):
-        
-        return '<modeClass for %s>' % self.fileName
-        
-    __repr__ = __str__
-    #@nonl
-    #@-node:ekr.20050530073825: mode.__str__ & __repr__
-    #@+node:ekr.20050530081700: Printing...
-    #@+node:ekr.20050530075602:printModeAttributes, printRulesetAttributes & printAttributesHelper
-    def printModeAttributes (self):
-        
-        self.printAttributesHelper('mode attributes',self.attributes)
-        
-    def printRulesetAttributes (self,ruleset,tag=None):
-    
-        if not tag: tag = 'main ruleset'
-        
-        self.printAttributesHelper(tag,ruleset.attributes)
-        
-    def printAttributesHelper (self,kind,attrs):
-        
-        print '%-20s' % (kind),'attrs:',attrs
-    #@nonl
-    #@-node:ekr.20050530075602:printModeAttributes, printRulesetAttributes & printAttributesHelper
-    #@+node:ekr.20050530080452:printProperty
-    def printProperty (self,theProperty):
-        
-        # A property is a bunch.
-        d = theProperty.attributes
-        if d:
-            self.printAttributesHelper('property',d)
-    #@nonl
-    #@-node:ekr.20050530080452:printProperty
-    #@+node:ekr.20050530075602.1:printRule
-    def printRule (self,rule):
-        
-        # A rule is a g.Bunch.
-        if rule.name == 'keywords':
-            print '%-20s' % ('rule:keywords'),
-            for key in ('keyword1','keyword2','keyword3','keyword4','markup',):
-                theList = rule.get(key,[])
-                print key,len(theList),
-            print
-        else:
-            d = rule.attributes
-            d2 = rule.get('contents')
-            if d or d2:
-                print '%-20s' % ('rule:'+rule.name),
-                if d and d2: print 'attrs:',d,'chars:',d2
-                elif d:  print 'attrs:',d
-                else:    print 'chars:',d2
-    #@nonl
-    #@-node:ekr.20050530075602.1:printRule
-    #@+node:ekr.20050607221915:printRuleset
-    def printRuleset (self,ruleset,tag):
-        
-        self.printRulesetAttributes(ruleset,tag)
-    
-        for rule in self.rulesets[0].rules:
-            self.printRule(rule)
-    #@nonl
-    #@-node:ekr.20050607221915:printRuleset
-    #@+node:ekr.20050530065723.56:printSummary
-    def printSummary (self,printStats=True):
-    
-        if printStats:
-            print '-' * 10, 'mode statistics'
-            print 'elements',self.numberOfElements
-            print 'errors',self.numberOfErrors
-            print 'mode attributes',self.numberOfAttributes
-            print 'property attributes',self.numberOfPropertyAttributes
-            print 'rule attributes',self.numberOfRuleAttributes
-    
-        self.printModeAttributes()
-        
-        for bunch in self.modeProperties:
-            self.printProperty(bunch)
-    
-        self.printRuleset(self.rulesets[0],tag='main ruleset')
-    #@nonl
-    #@-node:ekr.20050530065723.56:printSummary
-    #@-node:ekr.20050530081700: Printing...
-    #@+node:ekr.20050530065723.51:doAttribute
-    def doAttribute (self,name,val):
-        
-        name = str(name.lower())
-        
-        if name in self.boolAttrs:
-            val = g.choose(val.lower()=='true',True,False)
-        else:
-            val = str(val) # Do NOT lower this value!
-    
-        if self.rule:
-            d = self.rule.get('attributes')
-            d [name] = val
-            self.numberOfRuleAttributes += 1
-        elif self.presentProperty:
-            d = self.presentProperty.get('attributes')
-            d [name] = val
-            self.numberOfPropertyAttributes += 1
-        elif self.inRules:
-            self.rulesetAttributes[name] = val
-            self.numberOfAttributes += 1
-        else:
-            self.attributes[name] = val
-            self.numberOfAttributes += 1
-    #@nonl
-    #@-node:ekr.20050530065723.51:doAttribute
-    #@+node:ekr.20050530065723.52:doContent
-    def doContent (self,elementName,content):
-        
-        if not content:
-            return
-        
-        name = str(elementName.lower())
-    
-        if name in ('keyword1','keyword2','keyword3','keyword4','markup',):
-            if self.inRule('keywords'):
-                theList = self.rule.get(name,[])
-                theList.append(content)
-                self.rule[name] = theList
-            elif name != 'markup':
-                self.error('%d not in keywords' % name)
-    
-        elif self.rule:
-            d = self.rule.get('contents',{})
-            s = d.get(name,'')
-            d [name] = s + content
-            self.rule['contents'] = d
-    #@nonl
-    #@-node:ekr.20050530065723.52:doContent
-    #@+node:ekr.20050530065723.53:endElement
-    def endElement (self,elementName):
-    
-        name = elementName.lower()
-        
-        if name == 'props':
-            self.inProps = True
-        if name == 'rules':
-            self.inRules = False
-            ruleset = rulesetClass(self.rulesetAttributes,self.keywords,self.rulesetProperties,self.rules)
-            self.rulesets.append(ruleset)
-            #g.trace('rules...\n',g.listToString(self.rules))
-            #g.trace('ruleset attributes...\n',g.dictToString(self.rulesetAttributes))
-        if name == 'property':
-            bunch = self.presentProperty
-            if bunch:
-                if self.inRules:
-                    self.rulesetProperties.append(bunch)
-                else:
-                    self.modeProperties.append(bunch)
-            else:
-                self.error('end %s not matched by start %s' % (name,name))
-            self.presentProperty = None
-        if name in self.ruleElements:
-            if self.inRule(name):
-                self.rules.append(self.rule)
-                self.rule = None
-            else:
-                self.error('end %s not matched by start %s' % (name,name))
-    #@nonl
-    #@-node:ekr.20050530065723.53:endElement
-    #@+node:ekr.20050530065723.54:error
-    def error (self,message):
-        
-        self.numberOfErrors += 1
-    
-        self.contentHandler.error(message)
-    #@nonl
-    #@-node:ekr.20050530065723.54:error
-    #@+node:ekr.20050530074431:getters
-    def getAttributes (self):
-        return self.attributes
-        
-    def getAttributesForRuleset (self,ruleset):
-        bunch = ruleset
-        return bunch.attributes
-        
-    def getFileName (self):
-        return self.fileName
-        
-    def getKeywords (self,n,ruleset):
-        bunch = ruleset
-        keywords = bunch.keywords
-        if keywords:
-            return keywords.get('keyword%d'%(n),[])
-        return []
-    
-    def getLanguage (self):
-        path,name = g.os_path_split(self.fileName)
-        language,ext = g.os_path_splitext(name)
-        return language
-    
-    def getPropertiesForMode (self):
-        return self.props
-        
-    def getPropertiesForRuleset (self,name=''):
-        bunch = self.getRuleset(name)
-        if bunch:
-            return bunch.properties
-        else:
-            return []
-        
-    def getRuleset(self,name=''):
-        if not name:
-            return self.rulesets[0] # Return the main ruleset.
-        for ruleset in self.rulesets:
-            if ruleset.name.lower()==name.lower():
-                return ruleset
-        else: return None
-    
-    def getRulesets(self):
-        return self.rulesets
-        
-    def getRulesForRuleset (self,name=''):
-        bunch = self.getRuleset(name)
-        if bunch:
-            return bunch.rules
-        else:
-            return []
-    #@nonl
-    #@-node:ekr.20050530074431:getters
-    #@+node:ekr.20050530065723.55:inRule
-    def inRule (self,elementName):
-    
-        return self.rule and self.rule.get('name') == elementName
-    #@nonl
-    #@-node:ekr.20050530065723.55:inRule
-    #@+node:ekr.20050530065723.57:startElement
-    def startElement (self,elementName):
-    
-        name = elementName.lower()
-        
-        if name == 'props':
-            self.inProps = True
-        if name == 'rules':
-            self.inRules = True
-            self.attributes=[]
-            self.keywords=[]
-            self.rulesetProperties=[]
-            self.rules=[]
-        if name == 'property':
-            if self.inProps:
-                self.presentProperty = g.bunch(name=name,attributes={})
-            else:
-                self.error('property not in props element')
-        if name in self.ruleElements:
-            if self.inRules:
-                self.rule = g.bunch(name=name,attributes={})
-                if name == 'keywords':
-                    self.keywords = self.rule
-            else:
-                self.error('%s not in rules element' % name)
-    #@nonl
-    #@-node:ekr.20050530065723.57:startElement
-    #@-others
-#@nonl
-#@-node:ekr.20050530065723.49:class modeClass
-#@+node:ekr.20050607073917.1:class rulesetClass
-class rulesetClass:
-    
-    #@    @+others
-    #@+node:ekr.20050607073917.2:ctor
-    def __init__ (self,attributes,keywords,properties,rules):
-            
-        self.name=attributes.get('set','')
-        self.attributes=attributes.copy() # A dict.
-        self.properties=properties[:] # A list.
-        self.keywords=keywords # A bunch.
-        self.rules=rules[:] # A list.
-        
-        if self.name:
-            g.trace('ruleset',self.name)
-            
-        self.defaultColor = self.attributes.get('default')
-    #@nonl
-    #@-node:ekr.20050607073917.2:ctor
-    #@-others
-#@nonl
-#@-node:ekr.20050607073917.1:class rulesetClass
 #@+node:ekr.20050606214036:class colorizer (baseColorizer)
 class baseColorizer:
 
@@ -911,11 +318,11 @@ class baseColorizer:
         self.was_non_incremental = False # True: we are coloring as the result of a non-incremental call.
         # Data...
         self.keywords = {} # Keys are keywords, values are 0..5.
-        self.modes = {} # Keys are languages, values are bunches describing the mode.
+        self.modes = {} # Keys are languages, values are modes.
         self.mode = None # The mode object for the present language.
-        self.prev_mode = None
-        self.present_ruleset = None
-        self.rulesDict = {}
+        ###self.prev_mode = None
+        ###self.present_ruleset = None
+        ###self.rulesDict = {}
         self.trace = c.config.getBool('trace_colorizer')
         self.tags = [
             "blank","comment","cwebName","docPart","keyword","leoKeyword",
@@ -936,7 +343,8 @@ class baseColorizer:
         ]
         self.word_chars = {} # Inited by init_keywords().
         self.setFontFromConfig()
-        self.defineAndExtendForthWords()
+        if 0: ###
+            self.defineAndExtendForthWords()
     #@nonl
     #@-node:ekr.20050602150957:__init__
     #@+node:ekr.20050529143413.33:configure_tags
@@ -1065,122 +473,60 @@ class baseColorizer:
                 pass
     #@nonl
     #@-node:ekr.20050529143413.27:defineAndExtendForthWords
-    #@+node:ekr.20050602152743:init_keywords
-    def init_keywords (self,mode,ruleset):
-        
-        '''Initialize the keywords for the present language.
-        
-         Set word_chars to all non-alpha characters appearing in any keyword'''
-    
-        # Add any new user keywords to leoKeywords.
-        for d in g.globalDirectiveList:
-            name = '@' + d
-            if name not in leoKeywords:
-                leoKeywords.append(name)
-        # Create a single keywords dict.
-        keywords = {}
-        for key in leoKeywords:
-            keywords[key] = 0
-    
-        for i in (1,2,3,4):
-            keys = mode.getKeywords(i,ruleset)
-            for key in keys:
-                if keywords.get(key):
-                    print 'keyword %s defined in multiple places' % key
-                keywords[key] = i
-        # g.trace(len(keywords.keys()))
-        # Create the word_chars list. 
-        word_chars = {}
-        for ch in string.letters:
-            word_chars[ch] = None
-        for keys in keywords.keys():
-            for word in keys:
-                for ch in word:
-                    word_chars[ch] = None
-        if 0: # Testing.
-            #@        << compute extra_word_chars >>
-            #@+node:ekr.20050607073917:<< compute extra_word_chars >>
-            extra_word_chars = {}
-            for ch in word_chars:
-                if ch not in string.letters and ch not in extra_word_chars:
-                    extra_word_chars[ch] = None
-            #@nonl
-            #@-node:ekr.20050607073917:<< compute extra_word_chars >>
-            #@nl
-                
-        return keywords,word_chars
-    #@nonl
-    #@-node:ekr.20050602152743:init_keywords
     #@+node:ekr.20050602150619:init_mode
     def init_mode (self,language):
         
-        # bunch = self.modes.get(language)
-        bunch = self.modes.get(language)
-        if bunch:
-            self.mode = bunch.mode
-            self.defaultRulesList=bunch.defaultRulesList
-            self.keywords = bunch.keywords
-            self.rulesDict=bunch.rulesDict
-            self.word_chars = bunch.word_chars
+        if not language: return
+        mode = self.modes.get(language)
+        if mode:
+            self.mode = mode
         else:
-            self.mode = mode = self.parse_jEdit_file(language)
+            path = g.os_path_join(g.app.loadDir,'..','modes')
+            mode = g.importFromPath (language,path)
             if mode:
-                if self.trace: g.trace(language)
-                # Handle only the main rulese here.
-                rulesets = mode.getRulesets()
-                self.present_ruleset = ruleset = rulesets[0]
-                # mode.printSummary (printStats=False)
-                self.keywords,self.word_chars = self.init_keywords(mode,ruleset)
-                    # Sets self.word_chars: must be called before createRuleMatchers.
-                self.createRuleMatchers(ruleset.rules)
-                    # Sets self.defaultRulesList & self.rulesDict.
-                bunch = g.bunch(mode=mode,
-                    defaultRulesList=self.defaultRulesList,
-                    keywords=self.keywords,
-                    rulesDict=self.rulesDict,
-                    word_chars=self.word_chars)
-                self.modes[language] = bunch
-            elif language:
+                g.trace('loading mode for: ',language)
+                self.modes[language] = self.mode = mode
+                self.rulesetName = self.computeRulesetName(language)
+                self.keywordsDict = mode.keywordsDictDict.get(self.rulesetName,{})
+                g.trace(len(self.keywordsDict.keys()))
+                self.rules = mode.rulesDict.get(self.rulesetName)
+                self.word_chars = string.letters + string.digits + '_'
+                ### To do: append imported rules.
+                g.trace(len(self.rules))
+            else:
                 g.trace('No language description for %s' % language)
+    
+        if 0: # old code
+            bunch = self.modes.get(language)
+            if bunch:
+                self.mode = bunch.mode
+                self.defaultRulesList=bunch.defaultRulesList
+                self.keywords = bunch.keywords
+                self.rulesDict=bunch.rulesDict
+                self.word_chars = bunch.word_chars
+            else:
+                ### get the mode by parsing the file.
+                if mode:
+                    if self.trace: g.trace(language)
+                    if 0:
+                        # Handle only the main rulese here.
+                        rulesets = mode.getRulesets()
+                        self.present_ruleset = ruleset = rulesets[0]
+                        # mode.printSummary (printStats=False)
+                        self.keywords,self.word_chars = self.init_keywords(mode,ruleset)
+                            # Sets self.word_chars: must be called before createRuleMatchers.
+                        self.createRuleMatchers(ruleset.rules)
+                            # Sets self.defaultRulesList & self.rulesDict.
+                        bunch = g.bunch(mode=mode,
+                            defaultRulesList=self.defaultRulesList,
+                            keywords=self.keywords,
+                            rulesDict=self.rulesDict,
+                            word_chars=self.word_chars)
+                        self.modes[language] = bunch
+                elif language:
+                    g.trace('No language description for %s' % language)
     #@nonl
     #@-node:ekr.20050602150619:init_mode
-    #@+node:ekr.20050530065723.47:parse_jEdit_file
-    def parse_jEdit_file(self,fileName):
-        
-        if not fileName:
-            return None
-        
-        if not fileName.endswith('.xml'):
-            fileName = fileName + '.xml'
-    
-        path = os.path.join(g.app.loadDir,'../','modes',fileName)
-        path = os.path.normpath(path)
-        
-        try: f = open(path)
-        except IOError:
-            g.trace('can not open %s'%path)
-            return None
-    
-        try:
-            try:
-                mode = None
-                parser = xml.sax.make_parser()
-                # Do not include external general entities.
-                # The actual feature name is "http://xml.org/sax/features/external-general-entities"
-                parser.setFeature(xml.sax.handler.feature_external_ges,0)
-                handler = contentHandler(self.c,fileName)
-                parser.setContentHandler(handler)
-                parser.parse(f)
-                # if verbose: handler.printSummary()
-                mode = handler.getMode()
-            except:
-                g.es('unexpected exception parsing %s' % (fileName),color='red')
-                g.es_exception()
-        finally:
-            f.close()
-            return mode
-    #@nonl
-    #@-node:ekr.20050530065723.47:parse_jEdit_file
     #@+node:ekr.20050529143413.81:scanColorDirectives
     def scanColorDirectives(self,p):
         
@@ -1450,15 +796,15 @@ class baseColorizer:
                         #@-node:ekr.20050601162452.1:<< queue up this method >>
                         #@nl
                         return
-            for f,kind,token_type,delegate in self.rulesDict.get(s[i],self.defaultRulesList):
+            # for f,kind,token_type,delegate in self.rulesDict.get(s[i],self.defaultRulesList):
+            for f in self.rules:
                 n = f(self,s,i)
                 if n > 0:
-                    self.doRule(s,i,i+n,kind,token_type,delegate)
                     i += n
                     break
             else:
-                if self.present_ruleset.defaultColor:
-                    self.colorRangeWithTag(s,i,i+1,self.present_ruleset.defaultColor.lower())
+                ### if self.present_ruleset.defaultColor:
+                ###    self.colorRangeWithTag(s,i,i+1,self.present_ruleset.defaultColor.lower())
                 # g.trace('no match')
                 i += 1
     
@@ -1824,6 +1170,12 @@ class baseColorizer:
     # These methods are like the corresponding functions in leoGlobals.py 
     # except they issue no error messages.
     #@-at
+    #@+node:ekr.20060503171558:computeRulesetName
+    def computeRulesetName (self,language,name='main'):
+        
+        return '%s_%s' % (language,name)
+    #@nonl
+    #@-node:ekr.20060503171558:computeRulesetName
     #@+node:ekr.20050601044345:get_word (not used)
     def get_word(self,s,i):
     
@@ -1878,156 +1230,164 @@ class baseColorizer:
     #@-node:ekr.20050529143413.80:removeAllTags & removeTagsFromLines
     #@-node:ekr.20050529143413.89:Utils
     #@+node:ekr.20050529180421.47:Rule matching methods
-    #@+node:ekr.20050530112849:createRuleMatchers
-    def createRuleMatchers (self,rules):
+    #@+node:ekr.20060503153321.1:No longer used
+    if 0:
         
-        self.defaultRulesList = []
-        self.rulesDict = {}
-    
-        # Put the Leo rules first on each list.
-        for key,createMatcher in (
-            ('@',self.createAtColorMatcher),
-            ('@',self.createAtNocolorMatcher),
-            ('@',self.createDocPartMatcher),
-            ('<',self.createSectionRefMatcher),
-        ):
-            f,name,token_type,delegate = createMatcher()
-            rulesList = self.rulesDict.get(key,[])
-            rulesList.append((f,name,token_type,delegate),)
-            self.rulesDict[key] = rulesList
+        #@    @+others
+        #@+node:ekr.20050530112849:createRuleMatchers
+        def createRuleMatchers (self,rules):
             
-        for rule in rules:
-            self.createRuleMatcher(rule)
-            
-        if 0:
-            total = 0 ; n = len(self.rulesDict.keys())
-            for key in self.rulesDict.keys():
-                theList = self.rulesDict.get(key,[])
-                total += len(theList)
-            total += len(self.defaultRulesList)
-            print 'mean length of rules list: %0.3f' % (float(total)/float(n+1))
-    #@nonl
-    #@-node:ekr.20050530112849:createRuleMatchers
-    #@+node:ekr.20050530112849.1:createRuleMatcher
-    def createRuleMatcher (self,rule):
+            self.defaultRulesList = []
+            self.rulesDict = {}
         
-        name = rule.name ; d = rule.attributes or {}
-        token_type    = d.get('type','<no type>').lower()
-        at_line_start = d.get('at_line_start',False)
-        at_ws_end     = d.get('at_ws_end',False)
-        at_word_start = d.get('at_word_start',False)
-        delegate      = d.get('delegate','')
-        no_line_break = d.get('no_line_break',False)
-        d2 = rule.get('contents',{})
-        seq     = d2.get(name,'')
-        begin   = d2.get('begin','')
-        end     = d2.get('end','')
-        
-        if name == 'eol_span':
-            keys = [seq[0]]
-            def f(self,s,i,seq=seq,
-                at_line_start=at_line_start,at_ws_end=at_ws_end,at_word_start=at_word_start
+            # Put the Leo rules first on each list.
+            for key,createMatcher in (
+                ('@',self.createAtColorMatcher),
+                ('@',self.createAtNocolorMatcher),
+                ('@',self.createDocPartMatcher),
+                ('<',self.createSectionRefMatcher),
             ):
-                return self.match_eol_span(s,i,seq,at_line_start,at_ws_end,at_word_start)
-        elif name == 'eol_span_regexp':
-            keys = [seq[0]]
-            def f(self,s,i,seq=seq,
-                at_line_start=at_line_start,at_ws_end=at_ws_end,at_word_start=at_word_start
-            ):
-                return self.match_eol_span_regexp(s,i,seq,
-                    at_line_start,at_ws_end,at_word_start)
-        elif name == 'keywords':
-            keys = self.word_chars
-            def f(self,s,i):
-                return self.match_keywords(s,i)
-            token_type = 'keywords'
-        elif name in ('mark_following','mark_previous','seq'):
-            keys = [seq[0]]
-            def f(self,s,i,seq=seq,
-                at_line_start=at_line_start,at_ws_end=at_ws_end,at_word_start=at_word_start
-            ):
-                return self.match_seq(s,i,seq,at_line_start,at_ws_end,at_word_start)
-        elif name == 'seq_regexp':
-            keys = [hash_char]
-            def f(self,s,i,seq=seq,hash_char=hash_char,
-                at_line_start=at_line_start,at_ws_end=at_ws_end,at_word_start=at_word_start
-            ):
-                return self.match_seq_regexp(s,i,seq,hash_char,
-                    at_line_start,at_ws_end,at_word_start)
-        elif name == 'span':
-            keys = [begin[0]]
-            def f(self,s,i,begin=begin,end=end,
-                at_line_start=at_line_start,at_ws_end=at_ws_end,
-                at_word_start=at_word_start,no_line_break=no_line_break
-            ):
-                return self.match_span(s,i,begin,end,
-                    at_line_start,at_ws_end,at_word_start,no_line_break)
-        elif name == 'span_regexp':
-            keys = [hash_char]
-            def f(self,s,i,begin=begin,end=end,hash_char=hash_char,
-                at_line_start=at_line_start,at_ws_end=at_ws_end,
-                at_word_start=at_word_start,no_line_break=no_line_break
-            ):
-                return self.match_span_regexp(s,i,begin,end,hash_char,
-                    at_line_start,at_ws_end,at_word_start,no_line_break)
-        else:
-            keys = []
-            g.trace('no function for %s' % name)
-            def f(self,s,i):
-                return 0
-    
-        # Put f,name,token_type,delegate in the rulesDict or defaultRulesList.
-        for key in keys:
-            if key in string.printable:
+                f,name,token_type,delegate = createMatcher()
                 rulesList = self.rulesDict.get(key,[])
                 rulesList.append((f,name,token_type,delegate),)
                 self.rulesDict[key] = rulesList
+                
+            for rule in rules:
+                self.createRuleMatcher(rule)
+                
+            if 0:
+                total = 0 ; n = len(self.rulesDict.keys())
+                for key in self.rulesDict.keys():
+                    theList = self.rulesDict.get(key,[])
+                    total += len(theList)
+                total += len(self.defaultRulesList)
+                print 'mean length of rules list: %0.3f' % (float(total)/float(n+1))
+        #@nonl
+        #@-node:ekr.20050530112849:createRuleMatchers
+        #@+node:ekr.20050530112849.1:createRuleMatcher
+        def createRuleMatcher (self,rule):
+            
+            name = rule.name ; d = rule.attributes or {}
+            token_type    = d.get('type','<no type>').lower()
+            at_line_start = d.get('at_line_start',False)
+            at_ws_end     = d.get('at_ws_end',False)
+            at_word_start = d.get('at_word_start',False)
+            delegate      = d.get('delegate','')
+            no_line_break = d.get('no_line_break',False)
+            d2 = rule.get('contents',{})
+            seq     = d2.get(name,'')
+            begin   = d2.get('begin','')
+            end     = d2.get('end','')
+            
+            if name == 'eol_span':
+                keys = [seq[0]]
+                def f(self,s,i,seq=seq,
+                    at_line_start=at_line_start,at_ws_end=at_ws_end,at_word_start=at_word_start
+                ):
+                    return self.match_eol_span(s,i,seq,at_line_start,at_ws_end,at_word_start)
+            elif name == 'eol_span_regexp':
+                keys = [seq[0]]
+                def f(self,s,i,seq=seq,
+                    at_line_start=at_line_start,at_ws_end=at_ws_end,at_word_start=at_word_start
+                ):
+                    return self.match_eol_span_regexp(s,i,seq,
+                        at_line_start,at_ws_end,at_word_start)
+            elif name == 'keywords':
+                keys = self.word_chars
+                def f(self,s,i):
+                    return self.match_keywords(s,i)
+                token_type = 'keywords'
+            elif name in ('mark_following','mark_previous','seq'):
+                keys = [seq[0]]
+                def f(self,s,i,seq=seq,
+                    at_line_start=at_line_start,at_ws_end=at_ws_end,at_word_start=at_word_start
+                ):
+                    return self.match_seq(s,i,seq,at_line_start,at_ws_end,at_word_start)
+            elif name == 'seq_regexp':
+                keys = [hash_char]
+                def f(self,s,i,seq=seq,hash_char=hash_char,
+                    at_line_start=at_line_start,at_ws_end=at_ws_end,at_word_start=at_word_start
+                ):
+                    return self.match_seq_regexp(s,i,seq,hash_char,
+                        at_line_start,at_ws_end,at_word_start)
+            elif name == 'span':
+                keys = [begin[0]]
+                def f(self,s,i,begin=begin,end=end,
+                    at_line_start=at_line_start,at_ws_end=at_ws_end,
+                    at_word_start=at_word_start,no_line_break=no_line_break
+                ):
+                    return self.match_span(s,i,begin,end,
+                        at_line_start,at_ws_end,at_word_start,no_line_break)
+            elif name == 'span_regexp':
+                keys = [hash_char]
+                def f(self,s,i,begin=begin,end=end,hash_char=hash_char,
+                    at_line_start=at_line_start,at_ws_end=at_ws_end,
+                    at_word_start=at_word_start,no_line_break=no_line_break
+                ):
+                    return self.match_span_regexp(s,i,begin,end,hash_char,
+                        at_line_start,at_ws_end,at_word_start,no_line_break)
             else:
-                self.defaultRulesList.append((f,name,token_type,delegate),)
-    
-        # g.trace('%-25s'%(name+':'+token_type),at_line_start,at_ws_end,at_word_start,repr(seq),repr(begin),repr(end))
+                keys = []
+                g.trace('no function for %s' % name)
+                def f(self,s,i):
+                    return 0
+        
+            # Put f,name,token_type,delegate in the rulesDict or defaultRulesList.
+            for key in keys:
+                if key in string.printable:
+                    rulesList = self.rulesDict.get(key,[])
+                    rulesList.append((f,name,token_type,delegate),)
+                    self.rulesDict[key] = rulesList
+                else:
+                    self.defaultRulesList.append((f,name,token_type,delegate),)
+        
+            # g.trace('%-25s'%(name+':'+token_type),at_line_start,at_ws_end,at_word_start,repr(seq),repr(begin),repr(end))
+        #@nonl
+        #@-node:ekr.20050530112849.1:createRuleMatcher
+        #@+node:ekr.20050602204708:createDocPartMatcher & createSectionRefMatcher
+        def createDocPartMatcher (self):
+            
+            def f(self,s,i):
+                return self.match_doc_part(s,i)
+        
+            name = token_type = 'doc_part'
+            delegate = ''
+            return f,name,token_type,delegate
+        
+        def createSectionRefMatcher (self):
+            
+            def f(self,s,i):
+                return self.match_section_ref(s,i)
+        
+            name = token_type = 'section_ref'
+            delegate = ''
+            return f,name,token_type,delegate
+        #@nonl
+        #@-node:ekr.20050602204708:createDocPartMatcher & createSectionRefMatcher
+        #@+node:ekr.20050603043840:createAtColorMatcher & createAtNocolorMatcher
+        def createAtColorMatcher (self):
+            
+            def f(self,s,i):
+                return self.match_at_color(s,i)
+        
+            name = token_type = '@color'
+            delegate = ''
+            return f,name,token_type,delegate
+        
+        def createAtNocolorMatcher (self):
+            
+            def f(self,s,i):
+                return self.match_at_nocolor(s,i)
+        
+            name = token_type = '@nocolor'
+            delegate = ''
+            return f,name,token_type,delegate
+        #@nonl
+        #@-node:ekr.20050603043840:createAtColorMatcher & createAtNocolorMatcher
+        #@-others
     #@nonl
-    #@-node:ekr.20050530112849.1:createRuleMatcher
-    #@+node:ekr.20050602204708:createDocPartMatcher & createSectionRefMatcher
-    def createDocPartMatcher (self):
-        
-        def f(self,s,i):
-            return self.match_doc_part(s,i)
-    
-        name = token_type = 'doc_part'
-        delegate = ''
-        return f,name,token_type,delegate
-    
-    def createSectionRefMatcher (self):
-        
-        def f(self,s,i):
-            return self.match_section_ref(s,i)
-    
-        name = token_type = 'section_ref'
-        delegate = ''
-        return f,name,token_type,delegate
-    #@nonl
-    #@-node:ekr.20050602204708:createDocPartMatcher & createSectionRefMatcher
-    #@+node:ekr.20050603043840:createAtColorMatcher & createAtNocolorMatcher
-    def createAtColorMatcher (self):
-        
-        def f(self,s,i):
-            return self.match_at_color(s,i)
-    
-        name = token_type = '@color'
-        delegate = ''
-        return f,name,token_type,delegate
-    
-    def createAtNocolorMatcher (self):
-        
-        def f(self,s,i):
-            return self.match_at_nocolor(s,i)
-    
-        name = token_type = '@nocolor'
-        delegate = ''
-        return f,name,token_type,delegate
-    #@nonl
-    #@-node:ekr.20050603043840:createAtColorMatcher & createAtNocolorMatcher
+    #@-node:ekr.20060503153321.1:No longer used
+    #@+node:ekr.20060503153603:Leo matchers
     #@+node:ekr.20050603043840.1:match_at_color
     def match_at_color (self,s,i):
     
@@ -2057,124 +1417,6 @@ class baseColorizer:
             return 0
     #@nonl
     #@-node:ekr.20050603043840.2:match_at_nocolor
-    #@+node:ekr.20050529190857:match_keywords
-    # This is a time-critical method.
-    def match_keywords (self,s,i):
-        
-        '''Return the length of the keyword if present position matches any keyword.
-        Otherwise, return 0.'''
-        
-        # We must be at the start of a word.
-        if i > 0 and s[i-1] in self.word_chars:
-            return 0
-            
-        # Get the word as quickly as possible.
-        j = i ; n = len(s) ; w = self.word_chars
-        while j < n and s[j] in w:
-            j += 1
-       
-        k = self.keywords.get(s[i:j],-1)
-        if k > -1:
-            self.keywordNumber = k
-            # g.trace(i,s[i:j])
-            return j-i
-        else:
-            return 0
-    #@nonl
-    #@-node:ekr.20050529190857:match_keywords
-    #@+node:ekr.20050529182335:match_regexp_helper (TO DO)
-    def match_regexp_helper (self,s,i,seq):
-        
-        '''Return the length of the matching text if seq (a regular expression) matches the present position.'''
-        
-        ### We may want to return a match object too.
-        
-        return 0 ### Not ready yet.
-    #@nonl
-    #@-node:ekr.20050529182335:match_regexp_helper (TO DO)
-    #@+node:ekr.20050601045930:match_eol_span
-    def match_eol_span (self,s,i,seq,at_line_start,at_ws_end,at_word_start):
-        
-        '''Return the length of the rest of line if SEQ matches s[i:]
-        Return 0 if no match.
-    
-        'at_line_start':    True: sequence must start the line.
-        'at_ws_end':        True: sequence must be first non-whitespace text of the line.
-        'at_word_start':    True: sequence must start a word.'''
-    
-        if at_line_start and i != 0 and s[i-1] != '\n': return 0
-        if at_ws_end and i != g.skip_ws(s,0): return 0
-        if at_word_start and i > 0 and s[i-1] not in self.word_chars: return 0
-        
-        # g.trace(i,repr(s[i]),repr(seq))
-    
-        if g.match(s,i,seq):
-            j = g.skip_to_end_of_line(s,i)
-            return j - i 
-        else:
-            return 0
-    #@-node:ekr.20050601045930:match_eol_span
-    #@+node:ekr.20050601063317:match_eol_span_regexp
-    def match_eol_span_regexp (self,s,i,seq,at_line_start,at_ws_end,at_word_start,hash_char):
-        
-        '''Return the length of rest if the line if seq (a regx) matches s[i:]
-        Return 0 if no match.
-    
-        'at_line_start':    True: sequence must start the line.
-        'at_ws_end':        True: sequence must be first non-whitespace text of the line.
-        'at_word_start':    True: sequence must start a word.
-        'hash_char':        The first character of the regexp (for speed).'''
-    
-        if at_line_start and i != 0 and s[i-1] != '\n': return 0
-        if at_ws_end and i != g.skip_ws(s,0): return 0
-        if at_word_start and i > 0 and s[i-1] not in self.word_chars: return 0
-        
-        # Test hash_char first to increase speed.
-        if i < len(s) and s[i] == hash_char:
-            n = self.match_regexp_helper(s,i,seq)
-            if n > 0:
-                j = g.skip_to_end_of_line(s,i)
-                return j - i
-            else:
-                return 0
-        else:
-            return 0
-    #@nonl
-    #@-node:ekr.20050601063317:match_eol_span_regexp
-    #@+node:ekr.20050529182335.1:match_seq, match_mark_following/previous
-    def match_seq (self,s,i,seq,at_line_start,at_ws_end,at_word_start):
-        
-        '''Return the length of a matched SEQ or 0 if no match.
-    
-        'at_line_start':    True: sequence must start the line.
-        'at_ws_end':        True: sequence must be first non-whitespace text of the line.
-        'at_word_start':    True: sequence must start a word.'''
-    
-        if at_line_start and i != 0 and s[i-1] != '\n': return 0
-        if at_ws_end and i != g.skip_ws(s,0): return 0
-        if at_word_start and i > 0 and s[i-1] not in self.word_chars: return 0
-    
-        if g.match(s,i,seq): return len(seq)
-        else: return 0
-    
-    # For spans & marks, seq comes from the contents.
-    match_mark_following  = match_seq
-    match_mark_previous   = match_seq
-    #@nonl
-    #@-node:ekr.20050529182335.1:match_seq, match_mark_following/previous
-    #@+node:ekr.20050602211219:match_section_ref
-    def match_section_ref (self,s,i):
-        
-        if not g.match(s,i,'<<'):
-            return 0
-            
-        val = g.find_on_line(s,i+2,'>>')
-        if val is not None:
-            return val + 2 - i
-        else:
-            return 0
-    #@nonl
-    #@-node:ekr.20050602211219:match_section_ref
     #@+node:ekr.20050602211253:match_doc_part
     def match_doc_part (self,s,i):
         
@@ -2201,41 +1443,222 @@ class baseColorizer:
                 return k + 5 - i
     #@nonl
     #@-node:ekr.20050602211253:match_doc_part
-    #@+node:ekr.20050529215620:match_seq_regexp
-    def match_seq_regexp (self,s,i,seq,hash_char,
-        at_line_start,at_ws_end,at_word_start):
+    #@+node:ekr.20050602211219:match_section_ref
+    def match_section_ref (self,s,i):
         
-        '''Return the length of a matched SEQ_REGEXP or 0 if no match.
+        if not g.match(s,i,'<<'):
+            return 0
+            
+        val = g.find_on_line(s,i+2,'>>')
+        if val is not None:
+            return val + 2 - i
+        else:
+            return 0
+    #@nonl
+    #@-node:ekr.20050602211219:match_section_ref
+    #@-node:ekr.20060503153603:Leo matchers
+    #@+node:ekr.20060503153603.1:jEdit matchers
+    #@+node:ekr.20050529190857:match_keywords
+    # This is a time-critical method.
+    def match_keywords (self,s,i):
+        
+        '''Return the length of the keyword if present position matches any keyword.
+        Otherwise, return 0.'''
+        
+        # We must be at the start of a word.
+        if i > 0 and s[i-1] in self.word_chars:
+            return 0
+            
+        # Get the word as quickly as possible.
+        j = i ; n = len(s) ; w = self.word_chars
+        while j < n and s[j] in w:
+            j += 1
+            
+        word = s[i:j]
+        kind = self.keywordsDict.get(s[i:j])
+        if kind:
+            g.trace('%3d %10s %s' % (i,word,repr(kind)))
+            self.colorRangeWithTag(s,i,j,kind)
+            self.prev = (i,j,kind)
+            return j-i
+        else:
+            return 0
+    #@nonl
+    #@-node:ekr.20050529190857:match_keywords
+    #@+node:ekr.20050529182335:match_regexp_helper (TO DO)
+    def match_regexp_helper (self,s,i,seq):
+        
+        '''Return the length of the matching text if seq (a regular expression) matches the present position.'''
+        
+        ### We may want to return a match object too.
+        
+        return 0 ### Not ready yet.
+    #@nonl
+    #@-node:ekr.20050529182335:match_regexp_helper (TO DO)
+    #@+node:ekr.20050601045930:match_eol_span Todo: exclude_match
+    def match_eol_span (self,s,i,kind,seq,
+        at_line_start,at_whitespace_end,at_word_start,
+        delegate,exclude_match):
+        
+        '''Return the length of the rest of line if SEQ matches s[i:]
+        Return 0 if no match.
     
         'at_line_start':    True: sequence must start the line.
-        'at_ws_end':        True: sequence must be first non-whitespace text of the line.
+        'at_whitespace_end':True: sequence must be first non-whitespace text of the line.
+        'at_word_start':    True: sequence must start a word.'''
+    
+        if at_line_start and i != 0 and s[i-1] != '\n': return 0
+        if at_whitespace_end and i != g.skip_ws(s,0): return 0
+        if at_word_start and i > 0 and s[i-1] not in self.word_chars: return 0
+        
+        # g.trace(i,repr(s[i]),repr(seq))
+    
+        if g.match(s,i,seq):
+            j = g.skip_to_end_of_line(s,i)
+            self.colorRangeWithTag(s,i,j,kind)
+            self.prev = (i,j,kind)
+            return j - i 
+        else:
+            return 0
+    #@-node:ekr.20050601045930:match_eol_span Todo: exclude_match
+    #@+node:ekr.20050601063317:match_eol_span_regexp Todo: exclude_match
+    def match_eol_span_regexp (self,s,i,kind,regex,hash_char,
+        at_line_start,at_whitespace_end,at_word_start,
+        delegate,exclude_match):
+        
+        '''Return the length of rest if the line if seq (a regx) matches s[i:]
+        Return 0 if no match.
+    
+        'at_line_start':    True: sequence must start the line.
+        'at_whitespace_end':True: sequence must be first non-whitespace text of the line.
         'at_word_start':    True: sequence must start a word.
         'hash_char':        The first character of the regexp (for speed).'''
     
         if at_line_start and i != 0 and s[i-1] != '\n': return 0
-        if at_ws_end and i != g.skip_ws(s,0): return 0
+        if at_whitespace_end and i != g.skip_ws(s,0): return 0
         if at_word_start and i > 0 and s[i-1] not in self.word_chars: return 0
         
         # Test hash_char first to increase speed.
         if i < len(s) and s[i] == hash_char:
-            return self.match_regexp_helper(s,i,seq)
+            n = self.match_regexp_helper(s,i,regex)
+            if n > 0:
+                j = g.skip_to_end_of_line(s,i)
+                self.colorRangeWithTag(s,i,j,kind)
+                self.prev = (i,j,kind)
+                return j - i
+            else:
+                return 0
+        else:
+            return 0
+    #@nonl
+    #@-node:ekr.20050601063317:match_eol_span_regexp Todo: exclude_match
+    #@+node:ekr.20050529182335.1:match_seq
+    def match_seq (self,s,i,kind,seq,
+        at_line_start,at_whitespace_end,at_word_start,delegate):
+        
+        '''Return the length of a matched SEQ or 0 if no match.
+    
+        'at_line_start':    True: sequence must start the line.
+        'at_whitespace_end':True: sequence must be first non-whitespace text of the line.
+        'at_word_start':    True: sequence must start a word.'''
+    
+        if at_line_start and i != 0 and s[i-1] != '\n': return 0
+        if at_whitespace_end and i != g.skip_ws(s,0): return 0
+        if at_word_start and i > 0 and s[i-1] not in self.word_chars: return 0
+    
+        if g.match(s,i,seq):
+            j = i + len(seq)
+            self.colorRangeWithTag(s,i,j,kind)
+            self.prev = (i,j,kind)
+            return j - i
+        else:
+            return 0
+    #@nonl
+    #@-node:ekr.20050529182335.1:match_seq
+    #@+node:ekr.20060503173247:match_mark_following Todo: exclude_match
+    def match_mark_following (self,s,i,kind,pattern,
+        at_line_start,at_whitespace_end,at_word_start,exclude_match):
+        
+        '''Return the length of a matched SEQ or 0 if no match.
+    
+        'at_line_start':    True: sequence must start the line.
+        'at_whitespace_end':True: sequence must be first non-whitespace text of the line.
+        'at_word_start':    True: sequence must start a word.'''
+    
+        if at_line_start and i != 0 and s[i-1] != '\n': return 0
+        if at_whitespace_end and i != g.skip_ws(s,0): return 0
+        if at_word_start and i > 0 and s[i-1] not in self.word_chars: return 0
+    
+        if g.match(s,i,pattern):
+            j = i + len(pattern)
+            self.colorRangeWithTag(s,i,j,kind)
+            self.prev = (i,j,kind)
+            return j - i
+        else:
+            return 0
+    #@-node:ekr.20060503173247:match_mark_following Todo: exclude_match
+    #@+node:ekr.20060503173247.1:match_mark_previous Todo: exclude_match
+    def match_mark_previous (self,s,i,kind,pattern,
+        at_line_start,at_whitespace_end,at_word_start,exclude_match):
+        
+        '''Return the length of a matched SEQ or 0 if no match.
+    
+        'at_line_start':    True: sequence must start the line.
+        'at_whitespace_end':True: sequence must be first non-whitespace text of the line.
+        'at_word_start':    True: sequence must start a word.'''
+    
+        if at_line_start and i != 0 and s[i-1] != '\n': return 0
+        if at_whitespace_end and i != g.skip_ws(s,0): return 0
+        if at_word_start and i > 0 and s[i-1] not in self.word_chars: return 0
+    
+        if g.match(s,i,pattern):
+            j = i + len(pattern)
+            self.colorRangeWithTag(s,i,j,kind)
+            self.prev = (i,j,kind)
+            return j - i
+        else:
+            return 0
+    #@nonl
+    #@-node:ekr.20060503173247.1:match_mark_previous Todo: exclude_match
+    #@+node:ekr.20050529215620:match_seq_regexp
+    def match_seq_regexp (self,s,i,kind,seq,hash_char,
+        at_line_start,at_whitespace_end,at_word_start,delegate):
+        
+        '''Return the length of a matched SEQ_REGEXP or 0 if no match.
+    
+        'at_line_start':    True: sequence must start the line.
+        'at_whitespace_end':True: sequence must be first non-whitespace text of the line.
+        'at_word_start':    True: sequence must start a word.
+        'hash_char':        The first character of the regexp (for speed).'''
+    
+        if at_line_start and i != 0 and s[i-1] != '\n': return 0
+        if at_whitespace_end and i != g.skip_ws(s,0): return 0
+        if at_word_start and i > 0 and s[i-1] not in self.word_chars: return 0
+        
+        # Test hash_char first to increase speed.
+        if i < len(s) and s[i] == hash_char:
+            j = self.match_regexp_helper(s,i,seq)
+            self.colorRangeWithTag(s,i,j,kind)
+            self.prev = (i,j,kind)
         else:
             return 0
     #@nonl
     #@-node:ekr.20050529215620:match_seq_regexp
     #@+node:ekr.20050529185208.2:match_span
-    def match_span (self,s,i,begin,end,
-        at_line_start,at_ws_end,at_word_start,no_line_break):
-        
+    def match_span (self,s,i,kind,begin,end,
+        at_line_start,at_whitespace_end,at_word_start,
+        delegate,exclude_match,
+        no_escape,no_line_break,no_word_break):
+    
         '''Return the length of a matched SPAN or 0 if no match.
     
         'at_line_start':    True: sequence must start the line.
-        'at_ws_end':        True: sequence must be first non-whitespace text of the line.
+        'at_whitespace_end':True: sequence must be first non-whitespace text of the line.
         'at_word_start':    True: sequence must start a word.
         'no_line_break':    True: sequence must not cross a line.'''
         
         if at_line_start and i != 0 and s[i-1] != '\n': return 0
-        if at_ws_end and i != g.skip_ws(s,0): return 0
+        if at_whitespace_end and i != g.skip_ws(s,0): return 0
         if at_word_start and i > 0 and s[i-1] not in self.word_chars: return 0
     
         if g.match(s,i,begin):
@@ -2245,6 +1668,8 @@ class baseColorizer:
                 if no_line_break and '\n' in s[i:j]:
                     return 0
                 else:
+                    self.colorRangeWithTag(s,i,j,kind)
+                    self.prev = (i,j,kind)
                     return j + len(end) - i
             else:
                 return 0
@@ -2252,19 +1677,19 @@ class baseColorizer:
             return 0
     #@-node:ekr.20050529185208.2:match_span
     #@+node:ekr.20050529215732:match_span_regexp
-    def match_span_regexp (self,s,i,begin,end,hash_char,
-        at_line_start,at_ws_end,at_word_start,no_line_break):
+    def match_span_regexp (self,s,i,kind,begin,end,hash_char,
+        at_line_start,at_whitespace_end,at_word_start,no_line_break):
         
         '''Return the length of a matched SPAN_REGEXP or 0 if no match.
     
         'at_line_start':    True: sequence must start the line.
-        'at_ws_end':        True: sequence must be first non-whitespace text of the line.
+        'at_whitespace_end':True: sequence must be first non-whitespace text of the line.
         'at_word_start':    True: sequence must start a word.
         'at_word_start':    True: sequence must start a word.
         'hash_char':        The first character of the regexp (for speed).'''
         
         if at_line_start and i != 0 and s[i-1] != '\n': return 0
-        if at_ws_end and i != g.skip_ws(s,0): return 0
+        if at_whitespace_end and i != g.skip_ws(s,0): return 0
         if at_word_start and i > 0 and s[i-1] not in self.word_chars: return 0
         
         # Test hash_char first to increase speed.
@@ -2272,11 +1697,14 @@ class baseColorizer:
             n = self.match_regexp_helper(s,i,begin)
             # We may have to allow $n here, in which case we must use a regex object?
             if n > 0 and g.match(s,i+n,end):
+                self.colorRangeWithTag(s,i,j,kind)
+                self.prev = (i,j,kind)
                 return n + len(end)
         else:
             return 0
     #@nonl
     #@-node:ekr.20050529215732:match_span_regexp
+    #@-node:ekr.20060503153603.1:jEdit matchers
     #@-node:ekr.20050529180421.47:Rule matching methods
     #@-others
 
