@@ -129,7 +129,11 @@ __version__ = '0.20'
 #@@nocolor
 #@+at
 # 
-# Add Leo-specific rules to start of main ruleset.
+# - Strings, including triple strings, are not working.
+# 
+# - Harsh red used for comments.
+# 
+# ** Colorizing long text is too slow.
 # 
 # Use all attributes in all rule matchers.
 # 
@@ -140,8 +144,6 @@ __version__ = '0.20'
 # - Finish all rules:
 #     - mark_previous and mark_following.
 #     - match_regexp_helper.
-# 
-# - Test colorizing of hyperlinks.
 # 
 # - Why do mode properties exist?
 # 
@@ -176,8 +178,6 @@ __version__ = '0.20'
 # - Make sure pictures get drawn properly.
 # 
 # - Create forth.xml
-# 
-# - php.xml does not parse correctly.
 #@-at
 #@nonl
 #@-node:ekr.20050603121815:<< later >>
@@ -239,7 +239,7 @@ default_colors_dict = {
     'nameBrackets'   :('section_name_brackets_color', 'blue'),
     'string'         :('string_color',                '#00aa00'), # Used by IDLE.
     'name'           :('undefined_section_name_color','red'),
-    'latexBackground':('latex_background_color','white'),
+    'latexBackground':('latex_background_color',      'white'),
     
     # jEdit tags.
     'comment1'  :('comment1_color', 'red'),
@@ -252,11 +252,11 @@ default_colors_dict = {
     'keyword3'  :('keyword3_color', 'blue'),
     'keyword4'  :('keyword4_color', 'blue'),
     'label'     :('label_color',    'black'),
-    'literal1'  :('keyword1_color', 'black'),
-    'literal2'  :('keyword2_color', 'black'),
-    'literal3'  :('keyword3_color', 'black'),
-    'literal4'  :('keyword4_color', 'black'),
-    'markup'    :('markup_color',   'orange'), # What is the reasonable default?
+    'literal1'  :('literal1_color', '#00aa00'),
+    'literal2'  :('literal2_color', '#00aa00'),
+    'literal3'  :('literal3_color', '#00aa00'),
+    'literal4'  :('literal4_color', '#00aa00'),
+    'markup'    :('markup_color',   '#00aa00'),
     'null'      :('null_color',     'black'),
     'operator'  :('operator_color', 'black'),
     }
@@ -310,7 +310,7 @@ def match_at_color (self,s,i):
         self.flag = True # Enable coloring.
         j = i + len(seq)
         self.colorRangeWithTag(s,i,j,'leoKeyword')
-        return len(seq)
+        return j - i
     else:
         return 0
 #@nonl
@@ -440,10 +440,18 @@ class baseColorizer:
         self.keywords = {} # Keys are keywords, values are 0..5.
         self.modes = {} # Keys are languages, values are modes.
         self.mode = None # The mode object for the present language.
-        ###self.prev_mode = None
-        ###self.present_ruleset = None
-        ###self.rulesDict = {}
         self.trace = c.config.getBool('trace_colorizer')
+        if 0:
+            #@        << old ivars >>
+            #@+node:ekr.20060504131448:<< old ivars >>
+            self.prev_mode = None
+            self.present_ruleset = None
+            self.rulesDict = {}
+            #@-node:ekr.20060504131448:<< old ivars >>
+            #@nl
+            self.defineAndExtendForthWords()
+        self.word_chars = {} # Inited by init_keywords().
+        self.setFontFromConfig()
         self.tags = [
             "blank","comment","cwebName","docPart","keyword","leoKeyword",
             "latexModeBackground","latexModeKeyword",
@@ -456,15 +464,10 @@ class baseColorizer:
             'comment1','comment2','comment3','comment4',
             'function',
             'keyword1','keyword2','keyword3','keyword4',
-            'label',
-            'literal1','literal2','literal3','literal4',
-            'markup',
-            'operator',
+            'label','literal1','literal2','literal3','literal4',
+            'markup','operator',
         ]
-        self.word_chars = {} # Inited by init_keywords().
-        self.setFontFromConfig()
-        if 0: ###
-            self.defineAndExtendForthWords()
+        self.configure_tags()
     #@nonl
     #@-node:ekr.20050602150957:__init__
     #@+node:ekr.20060504083828:addLeoRules
@@ -503,9 +506,6 @@ class baseColorizer:
             for ch in key:
                 if ch not in self.word_chars:
                     self.word_chars.append(ch)
-                    
-        # g.trace(''.join(self.word_chars))
-        g.trace(d.get('@unit'))
     #@nonl
     #@-node:ekr.20060504081338:init_keywords
     #@+node:ekr.20050529143413.33:configure_tags
@@ -513,14 +513,17 @@ class baseColorizer:
     
         c = self.c
     
-        for name in default_colors_dict.keys(): # Python 2.1 support.
+        keys = default_colors_dict.keys() ; keys.sort()
+        for name in keys: # Python 2.1 support.
             option_name,default_color = default_colors_dict[name]
-            option_color = c.config.getColor(option_name)
-            color = g.choose(option_color,option_color,default_color)
+            color = c.config.getColor(option_name) or default_color
+            # g.trace(name,option_name,color)
+                
             # Must use foreground, not fg.
             try:
                 self.body.tag_configure(name, foreground=color)
             except: # Recover after a user error.
+                g.es_exception()
                 self.body.tag_configure(name, foreground=default_color)
         
         # underline=var doesn't seem to work.
@@ -630,11 +633,15 @@ class baseColorizer:
     #@-node:ekr.20050529143413.24:Birth and init
     #@+node:ekr.20050529145203:Entry points & helpers
     #@+node:ekr.20050529143413.30:colorize
+    colorize_count = 0
+    
     def colorize(self,p,incremental=False):
         
         '''The main colorizer entry point.'''
         
-        # g.trace(incremental)
+        if 1:
+            self.colorize_count += 1
+            g.trace(incremental,self.colorize_count)
     
         if self.enabled:
             self.incremental=incremental 
@@ -644,7 +651,7 @@ class baseColorizer:
             return "ok" # For unit testing.
     #@nonl
     #@-node:ekr.20050529143413.30:colorize
-    #@+node:ekr.20050529143413.28:disable
+    #@+node:ekr.20050529143413.28:enable & disable
     def disable (self):
     
         print "disabling all syntax coloring"
@@ -653,14 +660,14 @@ class baseColorizer:
     def enable (self):
         self.enabled=True
     #@nonl
-    #@-node:ekr.20050529143413.28:disable
+    #@-node:ekr.20050529143413.28:enable & disable
     #@+node:ekr.20050529145203.1:recolor_range
     def recolor_range(self,p,leading,trailing):
         
         '''An entry point for the colorer called from incremental undo code.
         Colorizes the lines between the leading and trailing lines.'''
         
-        # g.trace(leading,trailing)
+        g.trace(leading,trailing)
         
         if self.enabled:
             self.incremental=True
@@ -679,7 +686,8 @@ class baseColorizer:
     
         if self.enabled:
             self.incremental=incremental
-            g.app.gui.setIdleTimeHook(self.idle_colorize)
+            ### g.app.gui.setIdleTimeHook(self.idle_colorize)
+            self.idle_colorize()
             
     def idle_colorize(self):
     
@@ -699,7 +707,6 @@ class baseColorizer:
         p = p.copy() ; first = p.copy()
         val = True ; self.killcolorFlag = False
         for p in p.self_and_parents_iter():
-            # g.trace(p)
             s = p.v.t.bodyString
             theDict = g.get_directives_dict(s)
             no_color = theDict.has_key("nocolor")
@@ -717,7 +724,9 @@ class baseColorizer:
             elif color and not no_color:
                 val = True ; break
     
+        # g.trace(first.headString(),val)
         return val
+    #@nonl
     #@-node:ekr.20050529143413.88:useSyntaxColoring
     #@+node:ekr.20050529143413.87:updateSyntaxColorer
     def updateSyntaxColorer (self,p):
@@ -764,7 +773,6 @@ class baseColorizer:
                     self.removeAllTags()
                     self.removeAllImages()
                 self.colored_ranges = {}
-            self.configure_tags()
             g.doHook("init-color-markup",colorer=self,p=self.p,v=self.p)
             s = self.body.getAllText()
             self.colorAll(s)
@@ -795,19 +803,20 @@ class baseColorizer:
             return
         while i < len(s):
             count += 1
-            # Exit only after finishing the row.  This reduces flash.
-            if i == 0 or s[i-1] == '\n':
-                if self.kill_chunk: return
-                if self.incremental and allowBreak:
-                    if count >= 50:
-                        #@                    << queue up this method >>
-                        #@+node:ekr.20050601162452.1:<< queue up this method >>
-                        self.chunk_s,self.chunk_i = s,i
-                        self.c.frame.top.after_idle(self.colorOneChunk)
-                        #@nonl
-                        #@-node:ekr.20050601162452.1:<< queue up this method >>
-                        #@nl
-                        return
+            if 1: # Test: do everything immediately. This is way too slow.
+                # Exit only after finishing the row.  This reduces flash.
+                if i == 0 or s[i-1] == '\n':
+                    if self.kill_chunk: return
+                    if self.incremental and allowBreak:
+                        if count >= 50:
+                            #@                        << queue up this method >>
+                            #@+node:ekr.20050601162452.1:<< queue up this method >>
+                            self.chunk_s,self.chunk_i = s,i
+                            self.c.frame.top.after_idle(self.colorOneChunk)
+                            #@nonl
+                            #@-node:ekr.20050601162452.1:<< queue up this method >>
+                            #@nl
+                            return
             for f in self.rules:
                 n = f(self,s,i)
                 if n > 0:
@@ -823,7 +832,7 @@ class baseColorizer:
     #@+node:ekr.20050602205810.4:colorRangeWithTag
     def colorRangeWithTag (self,s,i,j,tag):
         
-        if not self.flag: return
+        if not self.flag or tag == 'null': return
     
         if self.was_non_incremental:
             must_color = True
@@ -838,6 +847,8 @@ class baseColorizer:
             self.removeTagsFromRange(s,self.chunk_last_i,j)
     
         if must_color:
+            # if tag != 'null': g.trace(i,j,repr(s[i:j]),tag)
+    
             # Remember the new tags.
             for k in xrange(i,j):
                 self.colored_ranges[k] = tag
@@ -868,29 +879,6 @@ class baseColorizer:
         return True
     #@nonl
     #@-node:ekr.20050603190206:rangeColoredWithTag
-    #@+node:ekr.20050605185452:removeOldTagsFromLine (not used)
-    #@+at 
-    #@nonl
-    # Line-by line processing does not work because some tokens span multiple 
-    # lines.
-    #@-at
-    #@@c
-    
-    def removeOldTagsFromLine(self,s,i):
-    
-        row,col = g.convertPythonIndexToRowCol(s,i)
-        x1 = '%d.0' % (row+1)
-        x2 = '%d.0' % (row+2)
-        
-        # g.trace('remove',x1,x2)
-        
-        for tag in self.tags:
-            self.body.tag_remove(tag,x1,x2)
-        
-        for tag in self.color_tags_list:
-            self.body.tag_remove(tag,x1,x2)
-    #@nonl
-    #@-node:ekr.20050605185452:removeOldTagsFromLine (not used)
     #@+node:ekr.20050605183244:removeOldTagsFromRange
     def removeOldTagsFromRange(self,s,i,j):
         
@@ -932,71 +920,6 @@ class baseColorizer:
             self.body.tag_remove(tag,x1,x2)
     #@nonl
     #@-node:ekr.20050603174749:removeTagsFromRange
-    #@+node:ekr.20050601162452.3:doRule & colorByDelegate
-    def doRule (self,s,i,j,kind,token_type,delegate):
-        
-        if kind == 'mark_following':
-            pass
-        
-        elif kind == 'mark_previous':
-            if 0: # This make no sense at all.
-                if prev:
-                    i2,j2,token_type2 = self.prev
-                    g.trace('mark_previous',i2,j2,token_type2)
-                    self.doColor(s,i2,j2,token_type) # Use the type specified in the mark_previous.
-                    self.prev = None
-        elif delegate:
-            self.colorByDelegate(delegate,s,i,j,token_type)
-            self.prev = (i,j,token_type)
-        else:
-            g.trace('%3d %2d'%(i,j),kind,repr(s[i:j]))
-            self.doColor(s,i,j,token_type)
-            self.prev = (i,j,token_type)
-    #@nonl
-    #@+node:ekr.20050607212958:colorByDelegate
-    def colorByDelegate(self,delegate,s,i,j,token_type):
-        
-        # g.trace(delegate,repr(s[i:j]))
-        
-        if -1 == delegate.find('::'):
-            # Use the ruleset in the present mode.
-            rulesetName = delegate
-        else:
-            # file::ruleset
-            file,rulesetName = delegate.split('::')
-            self.init_mode(file)
-            
-        ruleset = self.mode.getRuleset(name=rulesetName)
-        if ruleset:
-            # self.mode.printRuleset(ruleset,tag=delegate)
-            # Save ivars
-            ### Bug: this doesn't handle nested delegates.
-            ### Fix: don't save here:  move the ivars to the ruleset class and keep a stack of rulesets.
-            self.save_present_ruleset = self.present_ruleset
-            self.save_keywords = self.keywords # A bunch.
-            self.save_word_chars = self.word_chars.copy()
-            self.save_defaultRulesList = self.defaultRulesList[:]
-            self.save_rulesDict = self.rulesDict.copy()
-            # Set ivars for the delegated string only.
-            # Sart at the real zero so row/column numbers are computed properly.
-            self.chunk_s = s[0:j+1]
-            self.chunk_i = i # Required.
-            self.present_ruleset = ruleset
-            self.keywords,self.word_chars = self.init_keywords(self.mode,ruleset)
-            self.createRuleMatchers(ruleset.rules) # Sets self.defaultRulesList & self.rulesDict.
-            # Do the coloring with no break.
-            self.colorOneChunk(allowBreak=False) 
-            # Restore ivars.
-            self.chunk_s = s
-            self.chunk_i = j+1
-            self.present_ruleset = self.save_present_ruleset
-            self.keywords = self.save_keywords
-            self.word_chars = self.save_word_chars
-            self.defaultRulesList = self.save_defaultRulesList
-            self.rulesDict = self.save_rulesDict
-    #@nonl
-    #@-node:ekr.20050607212958:colorByDelegate
-    #@-node:ekr.20050601162452.3:doRule & colorByDelegate
     #@+node:ekr.20050602144940:interrupt
     # This is needed, even without threads.
     def interrupt(self):
@@ -1235,10 +1158,9 @@ class baseColorizer:
     # - exclude_match         If True, the actual text that matched will not 
     # be colored.
     # - kind                  The color tag to be applied to colored text.
-    # 
-    #@@color
     #@-at
-    #@nonl
+    #@@c
+    #@@color
     #@+node:ekr.20050529190857:match_keywords
     # This is a time-critical method.
     def match_keywords (self,s,i):
@@ -1248,7 +1170,7 @@ class baseColorizer:
         # We must be at the start of a word.
         if i > 0 and s[i-1] in self.word_chars:
             return 0
-            
+    
         # Get the word as quickly as possible.
         j = i ; n = len(s) ; w = self.word_chars
         while j < n and s[j] in w:
@@ -1414,18 +1336,17 @@ class baseColorizer:
     
         if g.match(s,i,begin):
             j = s.find(end,i+len(begin))
-            if j > -1:
-                # g.trace(no_line_break,i,j,repr(s[i:j]))
-                if no_line_break and '\n' in s[i:j]:
-                    return 0
-                else:
-                    self.colorRangeWithTag(s,i,j,kind)
-                    self.prev = (i,j,kind)
-                    return j + len(end) - i
-            else:
+            if j == -1 or no_line_break and '\n' in s[i:j]:
                 return 0
+            else:
+                j += len(end)
+                # g.trace(i,j,s[i:j],kind,no_line_break)
+                self.colorRangeWithTag(s,i,j,kind)
+                self.prev = (i,j,kind)
+                return j - i
         else:
             return 0
+    #@nonl
     #@-node:ekr.20050529185208.2:match_span
     #@+node:ekr.20050529215732:match_span_regexp
     def match_span_regexp (self,s,i,kind,begin,end,hash_char,
