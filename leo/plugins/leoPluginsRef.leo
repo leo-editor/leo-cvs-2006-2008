@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="6345" clone_windows="0"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="6368" clone_windows="0"/>
 <globals body_outline_ratio="0.595562130178">
-	<global_window_position top="30" left="389" height="850" width="852"/>
+	<global_window_position top="30" left="392" height="850" width="849"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -21,7 +21,7 @@
 </v>
 <v t="ekr.20050217093214"><vh>@settings</vh>
 <v t="ekr.20050328101812"><vh>@page http plugin</vh>
-<v t="ekr.20050328101812.1"><vh>@bool http_active = True</vh></v>
+<v t="ekr.20050328101812.1"><vh>@bool http_active = False</vh></v>
 <v t="ekr.20050328101812.2"><vh>@int  port = 8080</vh></v>
 <v t="ekr.20050328101812.3"><vh>@string rst_http_attributename = rst_http_attribute</vh></v>
 </v>
@@ -41,7 +41,7 @@
 <v t="ekr.20050819055746"><vh>@button Save</vh></v>
 <v t="ekr.20050722075812"><vh>Remove blank trailing lines</vh></v>
 </v>
-<v t="edream.110203113231.618" a="V"><vh>Plugins</vh>
+<v t="edream.110203113231.618" a="E"><vh>Plugins</vh>
 <v t="EKR.20040517090508"><vh>  Enable plugins by changing pluginsManager.txt or using plugin_manager plugin</vh>
 <v t="edream.120603093808"><vh>@thin pluginsManager.txt</vh></v>
 </v>
@@ -332,9 +332,11 @@
 </v>
 </v>
 </v>
-<v t="ekr.20040722135402.1"><vh>Enhancing the body pane</vh>
+<v t="ekr.20040722135402.1" a="V"><vh>Enhancing the body pane</vh>
+<v t="ekr.20060506070443.1"><vh>@thin detect_urls.py</vh></v>
 <v t="edream.110203113231.753"><vh>@thin image.py</vh></v>
 <v t="ekr.20040422072343"><vh>@thin rClick.py</vh></v>
+<v t="edream.110203113231.925"><vh>@thin script_io_to_body.py</vh></v>
 <v t="edream.110403140857"><vh>color_markup.py (requires add-directives plugin)</vh>
 <v t="edream.110403140857.1"><vh>Plugin documentation</vh>
 <v t="edream.110403140857.2"><vh>Installation</vh></v>
@@ -348,7 +350,6 @@
 </v>
 <v t="edream.110403140857.8"><vh>@thin color_markup.py</vh></v>
 </v>
-<v t="edream.110203113231.925"><vh>@thin script_io_to_body.py</vh></v>
 </v>
 <v t="ekr.20040722135402"><vh>Enhancing the icon and status areas</vh>
 <v t="edream.110203113231.758"><vh>@thin nav_buttons.py</vh></v>
@@ -429,92 +430,146 @@
 <v t="ekr.20050601081132" a="M"><vh>&lt;&lt; to do &gt;&gt;</vh>
 <v t="ekr.20050603121815"><vh>&lt;&lt; later &gt;&gt;</vh></v>
 </v>
-<v t="ekr.20050529180421"><vh>jEdit docs...</vh>
 <v t="ekr.20050530065723"><vh>@url http://www.jedit.org/42docs/users-guide/writing-modes-part.html</vh></v>
-<v t="ekr.20050529180421.1"><vh>Rule ordering</vh></v>
-<v t="ekr.20050529180421.2"><vh>Attributes</vh>
-<v t="ekr.20050529180421.3"><vh> Documentation of attributes</vh>
-<v t="ekr.20050529180421.4"><vh> For 'seq', 'span', 'begin', 'end'</vh>
-<v t="ekr.20050529180421.5"><vh>AT_LINE_START (bool)</vh></v>
-<v t="ekr.20050529180421.6"><vh>AT_WHITESPACE_END (bool)</vh></v>
-<v t="ekr.20050529180421.7"><vh>AT_WORD_START (bool)</vh></v>
-</v>
-<v t="ekr.20050529180421.8"><vh> For 'span' only</vh>
-<v t="ekr.20050529180421.9"><vh>NO_WORD_BREAK (bool)</vh></v>
-<v t="ekr.20050529180421.10"><vh>NO_LINE_BREAK (bool)</vh></v>
-<v t="ekr.20050529180421.11"><vh>NO_ESCAPE (bool)</vh></v>
-<v t="ekr.20050529180421.12"><vh>EXCLUDE_MATCH (bool)</vh></v>
-</v>
-<v t="ekr.20050529180421.13"><vh> For 'rules' only</vh>
-<v t="ekr.20050529180421.14"><vh>DEFAULT</vh></v>
-<v t="ekr.20050529180421.15"><vh>DIGIT_RE (re) &amp; HIGHLIGHT_DIGITS  (bool)</vh></v>
-<v t="ekr.20050529180421.16"><vh>IGNORE_CASE (bool)</vh></v>
-<v t="ekr.20050529180421.17"><vh>SET</vh></v>
-<v t="ekr.20050529180421.18"><vh>NO_WORD_SEP</vh></v>
-</v>
-<v t="ekr.20050529180421.19"><vh>AT_CHAR (int) for 'terminate'</vh></v>
-<v t="ekr.20050529180421.20"><vh>DELEGATE: for 'import', 'span' &amp; 'seq'</vh></v>
-<v t="ekr.20050529180421.21"><vh>HASH_CHAR (char) For 'regx'</vh></v>
-<v t="ekr.20050529180421.22"><vh>TYPE (Token Types)</vh></v>
-</v>
-<v t="ekr.20050529180421.23"><vh>Attributes for 'begin' &amp; 'end'</vh></v>
-<v t="ekr.20050529180421.24"><vh>Attributes for 'import': delegate</vh></v>
-<v t="ekr.20050529180421.25"><vh>Attributes for 'mark' </vh></v>
-<v t="ekr.20050529180421.26"><vh>Attributes for 'property': name, value</vh></v>
-<v t="ekr.20050529180421.27"><vh>Attributes for 'rules'</vh></v>
-<v t="ekr.20050529180421.28"><vh>Attributes for 'span'</vh></v>
-<v t="ekr.20050529180421.29"><vh>Attributes for 'seq' </vh></v>
-</v>
-<v t="ekr.20050529180421.30"><vh>Elements</vh>
-<v t="ekr.20050529220821"><vh>Spans and seqs...</vh>
-<v t="ekr.20050529180421.31"><vh>eol_span</vh></v>
-<v t="ekr.20050529180421.32"><vh>eol_span_regexp</vh></v>
-<v t="ekr.20050529180421.35"><vh>mark_following</vh></v>
-<v t="ekr.20050529180421.36"><vh>mark_previous</vh></v>
-<v t="ekr.20050529180421.40"><vh>seq</vh></v>
-<v t="ekr.20050529180421.41"><vh>seq_regexp</vh></v>
-<v t="ekr.20050529180421.42"><vh>span</vh></v>
-<v t="ekr.20050529180421.43"><vh>span_regexp</vh></v>
-</v>
-<v t="ekr.20050529220821.1"><vh>All others...</vh>
-<v t="ekr.20050529180421.33"><vh>import</vh></v>
-<v t="ekr.20050529180421.34"><vh>keywords</vh></v>
-<v t="ekr.20050529180421.37"><vh>mode</vh></v>
-<v t="ekr.20050529180421.38"><vh>props &amp; property  (for auto-indent)</vh></v>
-<v t="ekr.20050529180421.39"><vh>rules</vh></v>
-<v t="ekr.20050529180421.44"><vh>terminate</vh></v>
-</v>
-</v>
-</v>
 <v t="ekr.20060425113823"><vh>Recent</vh>
-<v t="ekr.20050606214954"><vh>(state methods)</vh>
-<v t="ekr.20050529143413.30"><vh>colorize (Main entry point)</vh></v>
-<v t="ekr.20050529143413.31"><vh>colorizeAnyLanguage</vh></v>
-<v t="ekr.20050602205810.4"><vh>colorRangeWithTag</vh></v>
-</v>
-<v t="ekr.20050606221357"><vh>(init)</vh>
 <v t="ekr.20050602150619"><vh>init_mode</vh></v>
-<v t="ekr.20050602152743"><vh>init_keywords</vh>
-<v t="ekr.20050607073917"><vh>&lt;&lt; compute extra_word_chars &gt;&gt;</vh></v>
+<v t="ekr.20060503153603.1" a="EM"><vh>jEdit matchers (todo: exclude_match)</vh>
+<v t="ekr.20050529190857"><vh>match_keywords</vh></v>
+<v t="ekr.20050529182335"><vh>match_regexp_helper (TO DO)</vh></v>
+<v t="ekr.20050601045930"><vh>match_eol_span</vh></v>
+<v t="ekr.20050601063317"><vh>match_eol_span_regexp</vh></v>
+<v t="ekr.20060503173247"><vh>match_mark_following</vh></v>
+<v t="ekr.20060503173247.1"><vh>match_mark_previous</vh></v>
+<v t="ekr.20050529182335.1"><vh>match_seq</vh></v>
+<v t="ekr.20050529215620"><vh>match_seq_regexp</vh></v>
+<v t="ekr.20050529185208.2"><vh>match_span</vh></v>
+<v t="ekr.20050529215732"><vh>match_span_regexp</vh></v>
 </v>
-<v t="ekr.20050530065723.47"><vh>parse_jEdit_file</vh></v>
-</v>
-<v t="ekr.20050607220512"><vh>(delegate)</vh>
 <v t="ekr.20050601105358"><vh>colorOneChunk</vh>
 <v t="ekr.20050605130806"><vh>&lt;&lt; queue up this method the first time &gt;&gt;</vh></v>
 <v t="ekr.20050601162452.1"><vh>&lt;&lt; queue up this method &gt;&gt;</vh></v>
 </v>
-<v t="ekr.20050607212958"><vh>colorByDelegate</vh></v>
-<v t="ekr.20050602205810.4"><vh>colorRangeWithTag</vh></v>
+<v t="ekr.20060503153603"><vh>Leo rule functions</vh>
+<v t="ekr.20050603043840.1"><vh>match_at_color</vh></v>
+<v t="ekr.20050603043840.2"><vh>match_at_nocolor</vh></v>
+<v t="ekr.20050602211253"><vh>match_doc_part</vh></v>
+<v t="ekr.20050602211219" a="E"><vh>match_section_ref</vh>
+<v t="ekr.20060504090341"><vh>&lt;&lt; set the hyperlink &gt;&gt;</vh></v>
 </v>
+</v>
+<v t="ekr.20050529180421.47"><vh>Rule matching methods</vh>
+<v t="ekr.20060503153603.1" a="EM"><vh>jEdit matchers (todo: exclude_match)</vh>
+<v t="ekr.20050529190857"><vh>match_keywords</vh></v>
+<v t="ekr.20050529182335"><vh>match_regexp_helper (TO DO)</vh></v>
+<v t="ekr.20050601045930"><vh>match_eol_span</vh></v>
+<v t="ekr.20050601063317"><vh>match_eol_span_regexp</vh></v>
+<v t="ekr.20060503173247"><vh>match_mark_following</vh></v>
+<v t="ekr.20060503173247.1"><vh>match_mark_previous</vh></v>
+<v t="ekr.20050529182335.1"><vh>match_seq</vh></v>
+<v t="ekr.20050529215620"><vh>match_seq_regexp</vh></v>
+<v t="ekr.20050529185208.2"><vh>match_span</vh></v>
+<v t="ekr.20050529215732"><vh>match_span_regexp</vh></v>
+</v>
+</v>
+<v t="ekr.20050602205810.4"><vh>colorRangeWithTag</vh></v>
+<v t="ekr.20060504130654"><vh>&lt;&lt; configure tags &gt;&gt; (from core)</vh></v>
+<v t="ekr.20050529143413.33"><vh>configure_tags</vh></v>
+</v>
+<v t="ekr.20050529180421.27" a="M"><vh>Attributes for 'rules'</vh></v>
+<v t="ekr.20060503171115"><vh>Not used</vh>
+<v t="ekr.20060503153321"><vh>Old parsing code, now done by jEdit2Py script</vh>
+<v t="ekr.20050530065723.58"><vh>class contentHandler (xml.sax.saxutils.XMLGenerator)</vh>
+<v t="ekr.20050530065723.59"><vh> __init__ &amp; helpers</vh></v>
+<v t="ekr.20050530065723.60"><vh>helpers</vh>
+<v t="ekr.20050530065723.61"><vh>attrsToList</vh></v>
+<v t="ekr.20050530065723.62"><vh>attrsToString</vh></v>
+<v t="ekr.20050530065723.63"><vh>clean</vh></v>
+<v t="ekr.20050530065723.64"><vh>error</vh></v>
+<v t="ekr.20050530065723.65"><vh>printStartElement</vh></v>
+<v t="ekr.20050530065723.66"><vh>printSummary</vh></v>
+</v>
+<v t="ekr.20050530065723.67"><vh>sax over-rides</vh>
+<v t="ekr.20050530065723.68"><vh> Do nothing...</vh>
+<v t="ekr.20050530065723.69"><vh>other methods</vh></v>
+<v t="ekr.20050530065723.70"><vh>endDocument</vh></v>
+<v t="ekr.20050530065723.71"><vh>startDocument</vh></v>
+</v>
+<v t="ekr.20050530065723.72"><vh>characters</vh></v>
+<v t="ekr.20050530065723.73"><vh>endElement</vh></v>
+<v t="ekr.20050530065723.74"><vh>startElement</vh></v>
+</v>
+<v t="ekr.20050530065723.75"><vh>doStartElement</vh></v>
+<v t="ekr.20050530065723.76"><vh>doEndElement</vh></v>
+<v t="ekr.20050530071955"><vh>getMode</vh></v>
+</v>
+<v t="ekr.20050530065723.49"><vh>class modeClass</vh>
+<v t="ekr.20050530065723.50"><vh> mode.__init__</vh></v>
+<v t="ekr.20050530073825"><vh> mode.__str__ &amp; __repr__</vh></v>
+<v t="ekr.20050530081700"><vh> Printing...</vh>
+<v t="ekr.20050530075602"><vh>printModeAttributes, printRulesetAttributes &amp; printAttributesHelper</vh></v>
+<v t="ekr.20050530080452"><vh>printProperty</vh></v>
+<v t="ekr.20050530075602.1"><vh>printRule</vh></v>
+<v t="ekr.20050607221915"><vh>printRuleset</vh></v>
+<v t="ekr.20050530065723.56"><vh>printSummary</vh></v>
+</v>
+<v t="ekr.20050530065723.51"><vh>doAttribute</vh></v>
+<v t="ekr.20050530065723.52"><vh>doContent</vh></v>
+<v t="ekr.20050530065723.53"><vh>endElement</vh></v>
+<v t="ekr.20050530065723.54"><vh>error</vh></v>
+<v t="ekr.20050530074431"><vh>getters</vh></v>
+<v t="ekr.20050530065723.55"><vh>inRule</vh></v>
+<v t="ekr.20050530065723.57"><vh>startElement</vh></v>
+</v>
+<v t="ekr.20050607073917.1"><vh>class rulesetClass</vh>
+<v t="ekr.20050607073917.2"><vh>ctor</vh></v>
+</v>
+<v t="ekr.20050530065723.47"><vh>parse_jEdit_file</vh></v>
+</v>
+<v t="ekr.20050602152743"><vh>init_keywords (OLD)</vh>
+<v t="ekr.20050607073917"><vh>&lt;&lt; compute extra_word_chars &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20060503153321.1"><vh>No longer used</vh>
+<v t="ekr.20050530112849"><vh>createRuleMatchers</vh></v>
+<v t="ekr.20050530112849.1"><vh>createRuleMatcher</vh></v>
+<v t="ekr.20050602204708"><vh>createDocPartMatcher &amp; createSectionRefMatcher</vh></v>
+<v t="ekr.20050603043840"><vh>createAtColorMatcher &amp; createAtNocolorMatcher</vh></v>
+</v>
+<v t="ekr.20050603051440"><vh>atColorColorHelper &amp; atNocolorColorHelper</vh></v>
+<v t="ekr.20050601065451" a="E"><vh>doColor</vh></v>
+<v t="ekr.20050602205810.3"><vh>defaultColorHelper</vh></v>
+<v t="ekr.20050602205810"><vh>docPartColorHelper</vh></v>
+<v t="ekr.20050602205810.2"><vh>keywordsColorHelper</vh></v>
+<v t="ekr.20050602205810.1"><vh>sectionRefColorHelper</vh>
+<v t="ekr.20050607065634"><vh>&lt;&lt; set the hyperlink &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20050529143413.27"><vh>defineAndExtendForthWords  (create forth.xml instead)</vh></v>
+<v t="ekr.20050605185452"><vh>removeOldTagsFromLine</vh></v>
+<v t="ekr.20050601162452.3" a="E"><vh>doRule</vh></v>
+<v t="ekr.20050607212958"><vh>colorByDelegate</vh></v>
+</v>
+<v t="ekr.20060504125630"><vh>Syntax colors &amp; options</vh>
+<v t="ekr.20060504125630.1"><vh>@color comment_color = firebrick3</vh></v>
+<v t="ekr.20060504125630.2"><vh>@color cweb_section_name_color = red</vh></v>
+<v t="ekr.20060504125630.3"><vh>@color directive_color = blue</vh></v>
+<v t="ekr.20060504125630.4"><vh>@color doc_part_color = firebrick3</vh></v>
+<v t="ekr.20060504125630.5"><vh>@color keyword_color = blue</vh></v>
+<v t="ekr.20060504125630.6"><vh>@color latex_background_color = None</vh></v>
+<v t="ekr.20060504125630.7"><vh>@color leo_keyword_color = #00aa00</vh></v>
+<v t="ekr.20060504125630.8"><vh>@color section_name_color = red</vh></v>
+<v t="ekr.20060504125630.9"><vh>@color section_name_brackets_color = blue</vh></v>
+<v t="ekr.20060504125630.10"><vh>@color show_invisibles_space_background_color = Gray90</vh></v>
+<v t="ekr.20060504125630.11"><vh>@color show_invisibles_tab_foreground_color = Gray80</vh></v>
+<v t="ekr.20060504125630.12"><vh>@color string_color = #00aa00</vh></v>
+<v t="ekr.20060504125630.13"><vh>@color undefined_section_name_color = red</vh></v>
+<v t="ekr.20060504125630.14"><vh>@bool color_cweb_doc_parts_with_latex = True</vh></v>
+<v t="ekr.20060504125630.15"><vh>@bool color_cweb_comments_with_latex = True</vh></v>
+<v t="ekr.20060504125630.16"><vh>@bool color_directives_in_plain_text = True</vh></v>
+<v t="ekr.20060504125630.17"><vh>@bool underline_undefined_section_names = True</vh></v>
+<v t="ekr.20060504125630.18"><vh>@bool use_hyperlinks = False</vh></v>
 </v>
 <v t="ekr.20050529142847"
-marks="ekr.20050601081132,"><vh>@thin __jEdit_colorizer__.py</vh></v>
-</v>
-<v t="ekr.20040717133342"><vh>Shadow files plugin</vh>
-<v t="ekr.20050126104457"><vh>Notes</vh></v>
-<v t="bwmulder.20060418131356.17"><vh>@thin mod_shadow.py</vh></v>
-<v t="bwmulder.20060418142633" a="E"><vh>@thin mod_shadow_core.py</vh></v>
+marks="ekr.20050601081132,ekr.20060503153603.1,"
+expanded="ekr.20050602211219,ekr.20050606214036,ekr.20050529150436,ekr.20060503153603.1,"><vh>@thin __jEdit_colorizer__.py</vh></v>
 </v>
 <v t="ekr.20040918165427"><vh>To do</vh>
 <v t="EKR.20040611044600"><vh>Mulder undo</vh>
@@ -7379,7 +7434,6 @@ http://www.docbook.org[The official home page for DocBook: The Definitive Guide.
 
 
 @code</t>
-<t tx="ekr.20040717133342"></t>
 <t tx="ekr.20040722134535"># Warning: these plugins are not ready for prime time.</t>
 <t tx="ekr.20040722135402"></t>
 <t tx="ekr.20040722135402.1"></t>
@@ -8184,71 +8238,6 @@ import time
 
 Tk = g.importExtension('Tkinter',pluginName=__name__,verbose=True)</t>
 <t tx="ekr.20050111122605"></t>
-<t tx="ekr.20050126104457">@nocolor
-
-https://sourceforge.net/forum/message.php?msg_id=2521345
-By: bwmulder
-
-I am working on a plugin which works with shadow files in a Leo subdirectory.
-
-This is really the same code posted integrated with Leo. New is that
-the goto linenumber command works properly as well.
-
-The new code only kicks in if:
-   - A leo subdirectory exists, and
-   - both directories contain the file in question.
-   
-To get things started, create a Leo subdirectory, move the source
-files there, and then create zero length strings instead of the moved
-files. Whenever you change something in the sourcefile, both files
-will be brought up to date automatically.
-
-In the future, I might provide a script which provides this initial
-setup automatically.
-
-Implementation notes (relative to 4.1):
-
-In order to use this mechanism to annotate foreign code, I am missing
-two pieces:
-   
-   - The import command should import the source *exactly*.
-   - I would like to add comments to the source which are *not* output into
-source,
-     and live in Leo only (or the shadowfile under Leo sentinel comments).
-     
-I changed the "message_comment" function to do nothing.
-
-I do not think that this function is a good idea, since Leo can not know
-if the line structure in a comment.
-
-There might be more to do in this area.
-
-It seems that I can get around the second limitation by writing "//@"
-at the beginning of the line in the code sections, since this is
-filtered away by the plugin.
-
-Is there some other way to put comments only in the Leo document, but
-not in the derived file?
-
-I had to copy quite a bit of source code for the gotolinenr
-command. It probably won't work for the next version of Leo
-
-It seems that Leo somewhat encourages a coding style with long
-routines, since complexity can be tugged away into subnodes rather
-than creating functions to structure the code.
-
-For the read and write command, I decided to inject a new "open"
-function into the global namespace of leoAtFile.py. This function
-checks if the caller is the read or write function of leoAtFile.py. In
-this case, some special processing for synchronization is done.
-
-I did this strange programming since I did not want to copy large
-amounts of code and just add a few lines.
-
-Currently the script works for C and python files. It looks at the
-file extension to determine if C or python type annotations are
-used. Maybe this information can be centralized.
-</t>
 <t tx="ekr.20050128070307"></t>
 <t tx="ekr.20050217093214">@nocolor</t>
 <t tx="ekr.20050227071948"></t>
@@ -9573,139 +9562,129 @@ Todo
 @language python
 
 </t>
-<t tx="ekr.20050529143413.30">def colorize(self,p,incremental=False):
+<t tx="ekr.20050529143413.27">def defineAndExtendForthWords(self):
     
-    '''The main colorizer entry point.'''
+    # Default forth keywords: extended by leo-forthwords.txt.
+    self.forth_keywords = [
+        "variable", "constant", "code", "end-code",
+        "dup", "2dup", "swap", "2swap", "drop", "2drop",
+        "r&gt;", "&gt;r", "2r&gt;", "2&gt;r",
+        "if", "else", "then",
+        "begin", "again", "until", "while", "repeat",
+        "v-for", "v-next", "exit",
+        "meta", "host", "target", "picasm", "macro",
+        "needs", "include",
+        "'", "[']",":", ";","@", "!", ",", "1+", "+", "-",
+        "&lt;", "&lt;=", "=", "&gt;=", "&gt;",
+        "invert", "and", "or",
+    ]
     
-    # g.trace(incremental)
+    # Forth words which define other words: extended by leo-forthdefwords.txt.
+    self.forth_definingwords = [":", "variable", "constant", "code",]
+    
+    # Forth words which start strings: extended by leo-forthstringwords.txt.
+    self.forth_stringwords = ['s"', '."', '"', '."','abort"',]
+    
+    # Forth words to be rendered in boldface: extended by leo-forthboldwords.txt.
+    self.forth_boldwords = []
+    
+    # Forth words to be rendered in italics: extended by leo-forthitalicwords.txt.
+    self.forth_italicwords = []
+    
+    # Forth bold-italics words: extemded leo-forthbolditalicwords.txt if present
+    # Note: on some boxen, bold italics may show in plain bold.
+    self.forth_bolditalicwords = []
+    
+    # Associate files with lists: probably no need to edit this.
+    forth_items = (
+        (self.forth_definingwords, "leo-forthdefwords.txt", "defining words"),
+        (self.forth_keywords, "leo-forthwords.txt", "words"),
+        (self.forth_stringwords, "leo-forthstringwords.txt", "string words"),
+        (self.forth_boldwords, "leo-forthboldwords.txt", "bold words"),
+        (self.forth_bolditalicwords, "leo-forthbolditalicwords.txt", "bold-italic words"),
+        (self.forth_italicwords, "leo-forthitalicwords.txt", "italic words"),
+    )
+    
+    # Add entries from files (if they exist) and to the corresponding wordlists.
+    for (lst, path, typ) in forth_items:
+        try:
+            extras = []
+            path = g.os_path_join(g.app.loadDir,"..","plugins",path)
+            for line in file(path).read().strip().split("\n"):
+                line = line.strip()
+                if line and line[0] != '\\':
+                    extras.append(line)
+            if extras:
+                if 0: # I find this annoying.  YMMV.
+                    if not g.app.unitTesting and not g.app.batchMode:
+                        print "Found extra forth %s" % typ + ": " + " ".join(extras)
+                lst.extend(extras)
+        except IOError:
+            # print "Not found",path
+            pass</t>
+<t tx="ekr.20050529143413.33">def configure_tags (self):
 
-    if self.enabled:
-        self.incremental=incremental 
-        self.updateSyntaxColorer(p)
-        return self.colorizeAnyLanguage(p)
+    c = self.c
+
+    keys = default_colors_dict.keys() ; keys.sort()
+    for name in keys: # Python 2.1 support.
+        option_name,default_color = default_colors_dict[name]
+        color = c.config.getColor(option_name) or default_color
+        # g.trace(name,option_name,color)
+            
+        # Must use foreground, not fg.
+        try:
+            self.body.tag_configure(name, foreground=color)
+        except: # Recover after a user error.
+            g.es_exception()
+            self.body.tag_configure(name, foreground=default_color)
+    
+    # underline=var doesn't seem to work.
+    if 0: # self.use_hyperlinks: # Use the same coloring, even when hyperlinks are in effect.
+        self.body.tag_configure("link",underline=1) # defined
+        self.body.tag_configure("name",underline=0) # undefined
     else:
-        return "ok" # For unit testing.</t>
-<t tx="ekr.20050529143413.31">def colorizeAnyLanguage (self,p,leading=None,trailing=None):
+        self.body.tag_configure("link",underline=0)
+        if self.underline_undefined:
+            self.body.tag_configure("name",underline=1)
+        else:
+            self.body.tag_configure("name",underline=0)
+            
+    # Only create tags for whitespace when showing invisibles.
+    if self.showInvisibles:
+        for name,option_name,default_color in (
+            ("blank","show_invisibles_space_background_color","Gray90"),
+            ("tab",  "show_invisibles_tab_background_color",  "Gray80")):
+            option_color = c.config.getColor(option_name)
+            color = g.choose(option_color,option_color,default_color)
+            try:
+                self.body.tag_configure(name,background=color)
+            except: # Recover after a user error.
+                self.body.tag_configure(name,background=default_color)
+        
+    # Colors for latex characters.  Should be user options...
     
-    '''Color the body pane.  All coloring starts here.'''
-    
-    self.init_mode(self.language)
-    if self.killcolorFlag or not self.mode:
-        self.removeAllTags() ; return
-    try:
-        c = self.c
-        self.p = p
-        self.redoColoring = False
-        self.redoingColoring = False
-        self.was_non_incremental = not self.incremental
-        # g.trace('was_non_incremental',self.was_non_incremental)
-        if not self.incremental:
-            # g.trace('removing tags')
-            if 0: # removing tags causes flash at idle time.
-                self.removeAllTags()
-                self.removeAllImages()
-            self.colored_ranges = {}
-        self.configure_tags()
-        g.doHook("init-color-markup",colorer=self,p=self.p,v=self.p)
-        s = self.body.getAllText()
-        self.colorAll(s)
-        if self.redoColoring: # Set only from plugins.
-            self.recolor_all()
-        return "ok" # for unit testing.
-    except Exception:
-        g.es_exception()
-        return "error" # for unit testing.</t>
-<t tx="ekr.20050529180421">@killcolor</t>
-<t tx="ekr.20050529180421.1">You might encounter this very common pitfall when writing your own modes.
-
-Since jEdit checks buffer text against parser rules in the order they appear in
-the ruleset, more specific rules must be placed before generalized ones,
-otherwise the generalized rules will catch everything.</t>
-<t tx="ekr.20050529180421.2"></t>
-<t tx="ekr.20050529180421.3"></t>
-<t tx="ekr.20050529180421.4"></t>
-<t tx="ekr.20050529180421.5">If set to TRUE, the sequence will only be highlighted if it occurs at the beginning of a line.</t>
-<t tx="ekr.20050529180421.6">If set to TRUE, the sequence will only be highlighted if it is the first non-whitespace text in the line.</t>
-<t tx="ekr.20050529180421.7">If set to TRUE, the sequence will only be highlighted if it occurs at the beginning of a word.</t>
-<t tx="ekr.20050529180421.8"></t>
-<t tx="ekr.20050529180421.9">If set to TRUE, the span will not cross word breaks.</t>
-<t tx="ekr.20050529180421.10">If set to TRUE, the span will not cross line breaks.</t>
-<t tx="ekr.20050529180421.11">If set to TRUE, the ruleset's escape character will have no effect before the span's end string. Otherwise, the presence of the escape character will cause that occurrence of the end string to be ignored.
-
-</t>
-<t tx="ekr.20050529180421.12">If set to TRUE, the match will not be highlighted, only the text before it will.</t>
-<t tx="ekr.20050529180421.13"></t>
-<t tx="ekr.20050529180421.14">The token type for text which doesn't match any specific rule. Default is NULL.
-See the section called “Token Types” for a list of token types.</t>
-<t tx="ekr.20050529180421.15">If the HIGHLIGHT_DIGITS attribute is set to TRUE, jEdit will attempt to highlight numbers in this ruleset.
-
-Any word consisting entirely of digits (0-9) will be highlighted with the DIGIT token type.
-
-A word that contains other letters in addition to digits will be highlighted with the DIGIT token type only if it matches the regular expression specified in the DIGIT_RE attribute. If this attribute is not specified, it will not be highlighted.
-
-Here is an example DIGIT_RE regular expression that highlights Java-style numeric literals (normal numbers, hexadecimals prefixed with 0x, numbers suffixed with various type indicators, and floating point literals containing an exponent):
-
-DIGIT_RE="(0x[[:xdigit:]]+|[[:digit:]]+(e[[:digit:]]*)?)[lLdDfF]?"</t>
-<t tx="ekr.20050529180421.16">If set to FALSE, matches will be case sensitive.
-Otherwise, case will not matter. Default is TRUE.</t>
-<t tx="ekr.20050529180421.17">The name of this ruleset. All rulesets other than the first must have a name.</t>
-<t tx="ekr.20050529180421.18">Any non-alphanumeric character not in this list is treated as a word separator for the purposes of syntax highlighting.
-</t>
-<t tx="ekr.20050529180421.19">The number of characters to terminate after.</t>
-<t tx="ekr.20050529180421.20">Text inside the span will be highlighted with the specified ruleset. To delegate
-to a ruleset defined in the current mode, just specify its name. To delegate to
-a ruleset defined in another mode, specify a name of the form mode::ruleset.
-Note that the first (unnamed) ruleset in a mode is called “MAIN”.
-
-One quirk is that the definition of the imported ruleset is not copied to the
-location of the IMPORT tag, but rather to the end of the containing ruleset.
-This has implications with rule-ordering; see the section called “Rule Ordering
-Requirements”.</t>
-<t tx="ekr.20050529180421.21">Atribute            Elements used in
---------            ----------------
-HASH_CHAR           EOL_SPAN_REGEXP,SPAN_REGEXP,SEQ_REGEXP
-
-It must be set to the first character that the regular expression matches. This
-rules out using regular expressions which can match more than one character at
-the start position. The regular expression match cannot span more than one line,
-either.</t>
-<t tx="ekr.20050529180421.22">The token type to highlight the text with.
-
-Parser rules can highlight tokens using any of the following token types:
-
-NULL - no special highlighting
-COMMENT1,COMMENT2,COMMENT3,COMMENT4
-FUNCTION
-KEYWORD1,KEYWORD2,KEYWORD3,KEYWORD4
-LABEL
-LITERAL1,LITERAL2,LITERAL3,LITERAL4
-MARKUP
-OPERATOR</t>
-<t tx="ekr.20050529180421.23">Atribute            Elements used in
---------            ----------------
-AT_LINE_START       BEGIN,END
-AT_WHITESPACE_END   BEGIN,END
-AT_WORD_START       BEGIN,END</t>
-<t tx="ekr.20050529180421.24">The only required attribute DELEGATE must be set to the name of a ruleset. To
-import a ruleset defined in the current mode, just specify its name. To import a
-ruleset defined in another mode, specify a name of the form mode::ruleset. Note
-that the first (unnamed) ruleset in a mode is called “MAIN”.
-
-One quirk is that the definition of the imported ruleset is not copied to the
-location of the IMPORT tag, but rather to the end of the containing ruleset.
-This has implications with rule-ordering; see the section called “Rule Ordering
-Requirements”.</t>
-<t tx="ekr.20050529180421.25">Atribute            Elements used in
---------            ----------------
-AT_LINE_START       MARK_FOLLOWING,MARK_PREVIOUS
-AT_WHITESPACE_END   MARK_FOLLOWING,MARK_PREVIOUS
-AT_WORD_START       MARK_FOLLOWING,MARK_PREVIOUS 
-EXCLUDE_MATCH       MARK_FOLLOWING,MARK_PREVIOUS
-TYPE                MARK_FOLLOWING,MARK_PREVIOUS</t>
-<t tx="ekr.20050529180421.26">Atribute            Elements used in
---------            ----------------
-NAME                PROPERTY
-VALUE               PROPERTY</t>
+    if 1: # Alas, the selection doesn't show if a background color is specified.
+        self.body.tag_configure("latexModeBackground",foreground="black")
+        self.body.tag_configure("latexModeKeyword",foreground="blue")
+        self.body.tag_configure("latexBackground",foreground="black")
+        self.body.tag_configure("latexKeyword",foreground="blue")
+    else: # Looks cool, and good for debugging.
+        self.body.tag_configure("latexModeBackground",foreground="black",background="seashell1")
+        self.body.tag_configure("latexModeKeyword",foreground="blue",background="seashell1")
+        self.body.tag_configure("latexBackground",foreground="black",background="white")
+        self.body.tag_configure("latexKeyword",foreground="blue",background="white")
+        
+    # Tags for wiki coloring.
+    if self.showInvisibles:
+        self.body.tag_configure("elide",background="yellow")
+    else:
+        self.body.tag_configure("elide",elide="1")
+    self.body.tag_configure("bold",font=self.bold_font)
+    self.body.tag_configure("italic",font=self.italic_font)
+    self.body.tag_configure("bolditalic",font=self.bolditalic_font)
+    for name in self.color_tags_list:
+        self.body.tag_configure(name,foreground=name)</t>
 <t tx="ekr.20050529180421.27">Atribute            Elements used in
 --------            ----------------
 DEFAULT             RULES
@@ -9715,7 +9694,7 @@ IGNORE_CASE         RULES
 SET                 RULES
 NO_WORD_SEP         RULES
 
-The RULES tag supports the following attributes, all of which are optional: 
+The RULES tag supports the following attributes, all of which are optional:
 
 SET the name of this ruleset. All rulesets other than the first must have a
 name.
@@ -9739,460 +9718,112 @@ token type. A word that contains other letters in addition to digits will be
 highlighted with the DIGIT token type only if it matches the regular expression
 specified in the DIGIT_RE attribute. If this attribute is not specified, it will
 not be highlighted.</t>
-<t tx="ekr.20050529180421.28">all_spans   = EOL_SPAN,EOL_SPAN_REGEXP,SPAN,SPAN_REGEXP
-plain_spans = SPAN,SPAN_REGEXP
-regx_spans  = EOL_SPAN_REGEXP,SPAN_REGEXP
-
-Atribute            Elements used in
---------            ----------------
-AT_LINE_START       all_spans
-AT_WHITESPACE_END   all_spans
-AT_WORD_START       all_spans
-DELEGATE            all_spans
-EXCLUDE_MATCH       all_spans
-HASH_CHAR           regx_spans  (must be specified)
-NO_ESCAPE           plain_spans
-NO_LINE_BREAK       plain_spans
-NO_WORD_BREAK       plain_spans
-TYPE                all_spans</t>
-<t tx="ekr.20050529180421.29">Atribute            Elements used in
---------            ----------------
-AT_LINE_START       SEQ,SEQ_REGEXP
-AT_WHITESPACE_END   SEQ,SEQ_REGEXP
-AT_WORD_START       SEQ,SEQ_REGEXP
-DELEGATE            SEQ,SEQ_REGEXP
-HASH_CHAR           SEQ_REGEXP (must be specified)
-TYPE                SEQ,SEQ_REGEXP</t>
-<t tx="ekr.20050529180421.30">@language html
-@color</t>
-<t tx="ekr.20050529180421.31">An EOL_SPAN is similar to a SPAN except that highlighting stops at the end of
-the line, and no end sequence needs to be specified. The text to match is
-specified between the opening and closing EOL_SPAN tags.
-
-The following attributes are supported:
-
-TYPE - The token type to highlight the span with. See the section called “Token
-Types” for a list of token types.
-
-AT_LINE_START - If set to TRUE, the span will only be highlighted if the start
-sequence occurs at the beginning of a line.
-
-AT_WHITESPACE_END - If set to TRUE, the span will only be highlighted if the
-sequence is the first non-whitespace text in the line.
-
-AT_WORD_START - If set to TRUE, the span will only be highlighted if the start
-sequence occurs at the beginning of a word.
-
-DELEGATE - text inside the span will be highlighted with the specified ruleset.
-To delegate to a ruleset defined in the current mode, just specify its name. To
-delegate to a ruleset defined in another mode, specify a name of the form
-mode::ruleset. Note that the first (unnamed) ruleset in a mode is called
-“MAIN”.
-
-EXCLUDE_MATCH - If set to TRUE, the start and end sequences will not be
-highlighted, only the text between them will.
-
-Here is an EOL_SPAN that highlights C++ comments:
-
-&lt;EOL_SPAN TYPE="COMMENT1"&gt;//&lt;/EOL_SPAN&gt;</t>
-<t tx="ekr.20050529180421.32">The EOL_SPAN_REGEXP rule is similar to the EOL_SPAN rule except the match
-sequence is taken to be a regular expression.
-
-In addition to the attributes supported by the EOL_SPAN tag, the HASH_CHAR
-attribute must be specified. It must be set to the first character that the
-regular expression matches. This rules out using regular expressions which can
-match more than one character at the start position. The regular expression
-match cannot span more than one line, either.
-
-Here is an EOL_SPAN_REGEXP that highlights MS-DOS batch file comments, which
-start with REM, followed by any whitespace character, and extend until the end
-of the line:
-
-&lt;EOL_SPAN_REGEXP AT_WHITESPACE_END="TRUE" HASH_CHAR="R" TYPE="COMMENT1"&gt;REM\s&lt;/EOL_SPAN_REGEXP&gt;</t>
-<t tx="ekr.20050529180421.33">The IMPORT tag, which must be placed inside a RULES tag, loads all rules defined
-in a given ruleset into the current ruleset; in other words, it has the same
-effect as copying and pasting the imported ruleset.
-
-The only required attribute DELEGATE must be set to the name of a ruleset. To
-import a ruleset defined in the current mode, just specify its name. To import a
-ruleset defined in another mode, specify a name of the form mode::ruleset. Note
-that the first (unnamed) ruleset in a mode is called “MAIN”.
-
-One quirk is that the definition of the imported ruleset is not copied to the
-location of the IMPORT tag, but rather to the end of the containing ruleset.
-This has implications with rule-ordering; see the section called “Rule Ordering
-Requirements”.
-
-Here is an example from the PHP mode, which extends the inline JavaScript
-highlighting to support embedded PHP:
-
-
-   &lt;RULES SET="JAVASCRIPT+PHP"&gt;
-
-   &lt;SPAN TYPE="MARKUP" DELEGATE="php::PHP"&gt;
-       &lt;BEGIN&gt;&amp;lt;?php&lt;/BEGIN&gt;
-       &lt;END&gt;?&amp;gt;&lt;/END&gt;
-   &lt;/SPAN&gt;
-   
-   &lt;SPAN TYPE="MARKUP" DELEGATE="php::PHP"&gt;
-       &lt;BEGIN&gt;&amp;lt;?&lt;/BEGIN&gt;
-       &lt;END&gt;?&amp;gt;&lt;/END&gt;
-   &lt;/SPAN&gt;
-   
-   &lt;SPAN TYPE="MARKUP" DELEGATE="php::PHP"&gt;
-       &lt;BEGIN&gt;&amp;lt;%=&lt;/BEGIN&gt;
-       &lt;END&gt;%&amp;gt;&lt;/END&gt;
-   &lt;/SPAN&gt;
-
-   &lt;IMPORT DELEGATE="javascript::MAIN"/&gt;
-&lt;/RULES&gt;</t>
-<t tx="ekr.20050529180421.34">The KEYWORDS tag, which must be placed inside a RULES tag and can only appear
-once, specifies a list of keywords to highlight. Keywords are similar to SEQs,
-except that SEQs match anywhere in the text, whereas keywords only match whole
-words. Words are considered to be runs of text separated by non-alphanumeric
-characters.
-
-The KEYWORDS tag does not define any attributes.
-
-Each child element of the KEYWORDS tag is an element whose name is a token type,
-and whose content is the keyword to highlight.
-
-&lt;KEYWORDS&gt;
-  &lt;KEYWORD1&gt;if&lt;/KEYWORD1&gt;
-  &lt;KEYWORD1&gt;else&lt;/KEYWORD1&gt;
-  &lt;KEYWORD3&gt;int&lt;/KEYWORD3&gt;
-  &lt;KEYWORD3&gt;void&lt;/KEYWORD3&gt;
-&lt;/KEYWORDS&gt;</t>
-<t tx="ekr.20050529180421.35">The MARK_FOLLOWING rule, which must be placed inside a RULES tag, highlights
-from the start of the match to the next syntax token. The text to match is
-specified between opening and closing MARK_FOLLOWING tags.
-
-The following attributes are supported:
-
-TYPE - The token type to highlight the text with. See the section called “Token
-Types” for a list of token types.
-
-AT_LINE_START - If set to TRUE, the sequence will only be highlighted if it
-occurs at the beginning of a line.
-
-AT_WHITESPACE_END - If set to TRUE, the sequence will only be highlighted if it
-is the first non-whitespace text in the line.
-
-AT_WORD_START - If set to TRUE, the sequence will only be highlighted if it
-occurs at the beginning of a word.
-
-EXCLUDE_MATCH - If set to TRUE, the match will not be highlighted, only the text
-after it will.
-
-Here is a rule that highlights variables in Unix shell scripts (“$CLASSPATH”,“$IFS”, etc):
-
-&lt;MARK_FOLLOWING TYPE="KEYWORD2"&gt;$&lt;/MARK_FOLLOWING&gt;</t>
-<t tx="ekr.20050529180421.36">The MARK_PREVIOUS rule, which must be placed inside a RULES tag, highlights from
-the end of the previous syntax token to the matched text. The text to match is
-specified between opening and closing MARK_PREVIOUS tags. The following
-attributes are supported:
-
-TYPE - The token type to highlight the text with. See the section called “Token
-Types” for a list of token types.
-
-AT_LINE_START - If set to TRUE, the sequence will only be highlighted if it
-occurs at the beginning of a line.
-
-AT_WHITESPACE_END - If set to TRUE, the sequence will only be highlighted if it
-is the first non-whitespace text in the line.
-
-AT_WORD_START - If set to TRUE, the sequence will only be highlighted if it
-occurs at the beginning of a word.
-
-EXCLUDE_MATCH - If set to TRUE, the match will not be highlighted, only the text
-before it will.
-
-Here is a rule that highlights labels in Java mode (for example, “XXX:”):
-
-&lt;MARK_PREVIOUS AT_WHITESPACE_END="TRUE" EXCLUDE_MATCH="TRUE"&gt;:&lt;/MARK_PREVIOUS&gt;</t>
-<t tx="ekr.20050529180421.37">Each mode definition must begin with the following:
-
-&lt;?xml version="1.0"?&gt;
-&lt;!DOCTYPE MODE SYSTEM "xmode.dtd"&gt;
-
-Each mode definition must also contain exactly one MODE tag. All other tags (PROPS, RULES) must be placed inside the MODE tag. The MODE tag does not have any defined attributes. Here is an example:
-
-&lt;MODE&gt;
-    ... mode definition goes here ...
-&lt;/MODE&gt;</t>
-<t tx="ekr.20050529180421.38">The PROPS tag and the PROPERTY tags inside it are used to define mode-specific
-properties. Each PROPERTY tag must have a NAME attribute set to the property's
-name, and a VALUE attribute with the property's value.
-
-All buffer-local properties listed in the section called “Buffer-Local
-Properties” may be given values in edit modes.
-
-The following mode properties specify commenting strings:
-
-* commentEnd - the comment end string, used by the Range Comment command.
-* commentStart - the comment start string, used by the Range Comment command.
-* lineComment - the line comment string, used by the Line Comment command. 
-
-When performing auto indent, a number of mode properties determine the resulting indent level:
-
-* The line and the one before it are scanned for brackets listed in the
-indentCloseBrackets and indentOpenBrackets properties. Opening brackets in the
-previous line increase indent.
-
-If lineUpClosingBracket is set to true, then closing brackets on the current
-line will line up with the line containing the matching opening bracket. For
-example, in Java mode lineUpClosingBracket is set to true, resulting in brackets
-being indented like so:
-
-{
-    // Code
-    {
-        // More code
-    }
-}
-
-If lineUpClosingBracket is set to false, the line after a closing bracket will
-be lined up with the line containing the matching opening bracket. For example,
-in Lisp mode lineUpClosingBracket is set to false, resulting in brackets being
-indented like so:
-
-(foo 'a-parameter
-    (crazy-p)
-    (bar baz ()))
-(print "hello world")
-
-* If the previous line contains no opening brackets, or if the
-doubleBracketIndent property is set to true, the previous line is checked
-against the regular expressions in the indentNextLine and indentNextLines
-properties. If the previous line matches the former, the indent of the current
-line is increased and the subsequent line is shifted back again. If the previous
-line matches the latter, the indent of the current and subsequent lines is
-increased.
-
-In Java mode, for example, the indentNextLine property is set to match control
-structures such as “if”, “else”, “while”, and so on.
-
-The doubleBracketIndent property, if set to the default of false, results in code indented like so:
-
-while(objects.hasNext())
-{
-    Object next = objects.hasNext();
-    if(next instanceof Paintable)
-        next.paint(g);
-}
-
-On the other hand, settings this property to “true” will give the following result:
-
-while(objects.hasNext())
-    {
-        Object next = objects.hasNext();
-        if(next instanceof Paintable)
-            next.paint(g);
-    }
-
-Here is the complete &lt;PROPS&gt; tag for Java mode:
-
-&lt;PROPS&gt;
-    &lt;PROPERTY NAME="commentStart" VALUE="/*" /&gt;
-    &lt;PROPERTY NAME="commentEnd" VALUE="*/" /&gt;
-    &lt;PROPERTY NAME="lineComment" VALUE="//" /&gt;
-    &lt;PROPERTY NAME="wordBreakChars" VALUE=",+-=&amp;lt;&amp;gt;/?^&amp;amp;*" /&gt;
-
-    &lt;!-- Auto indent --&gt;
-    &lt;PROPERTY NAME="indentOpenBrackets" VALUE="{" /&gt;
-    &lt;PROPERTY NAME="indentCloseBrackets" VALUE="}" /&gt;
-    &lt;PROPERTY NAME="indentNextLine"
-    	VALUE="\s*(((if|while)\s*\(|else\s*|else\s+if\s*\(|for\s*\(.*\))[^{;]*)" /&gt;
-    &lt;!-- set this to 'true' if you want to use GNU coding style --&gt;
-    &lt;PROPERTY NAME="doubleBracketIndent" VALUE="false" /&gt;
-    &lt;PROPERTY NAME="lineUpClosingBracket" VALUE="true" /&gt;
-&lt;/PROPS&gt;</t>
-<t tx="ekr.20050529180421.39">RULES tags must be placed inside the MODE tag. Each RULES tag defines a ruleset.
-A ruleset consists of a number of parser rules, with each parser rule specifying
-how to highlight a specific syntax token. There must be at least one ruleset in
-each edit mode. There can also be more than one, with different rulesets being
-used to highlight different parts of a buffer (for example, in HTML mode, one
-rule set highlights HTML tags, and another highlights inline JavaScript). For
-information about using more than one ruleset, see the section called “The SPAN
-Tag”.
-
-The RULES tag supports the following attributes, all of which are optional: 
-
-SET the name of this ruleset. All rulesets other than the first must have a
-name.
-
-IGNORE_CASE if set to FALSE, matches will be case sensitive. Otherwise, case
-will not matter. Default is TRUE.
-
-NO_WORD_SEP Any non-alphanumeric character not in this list is treated as a word
-separator for the purposes of syntax highlighting.
-
-DEFAULT The token type for text which doesn't match any specific rule. Default
-is NULL. See the section called “Token Types” for a list of token types.
-
-HIGHLIGHT_DIGITS DIGIT_RE
-
-If the HIGHLIGHT_DIGITS attribute is set to TRUE, jEdit will attempt to
-highlight numbers in this ruleset.
-
-Any word consisting entirely of digits (0-9) will be highlighted with the DIGIT
-token type. A word that contains other letters in addition to digits will be
-highlighted with the DIGIT token type only if it matches the regular expression
-specified in the DIGIT_RE attribute. If this attribute is not specified, it will
-not be highlighted.
-
-Here is an example DIGIT_RE regular expression that highlights Java-style
-numeric literals (normal numbers, hexadecimals prefixed with 0x, numbers
-suffixed with various type indicators, and floating point literals containing an
-exponent):
-
-DIGIT_RE="(0x[[:xdigit:]]+|[[:digit:]]+(e[[:digit:]]*)?)[lLdDfF]?"
-
-Here is an example RULES tag:
-
-&lt;RULES IGNORE_CASE="FALSE" HIGHLIGHT_DIGITS="TRUE"&gt;
-    ... parser rules go here ...
-&lt;/RULES&gt;</t>
-<t tx="ekr.20050529180421.40">The SEQ rule, which must be placed inside a RULES tag, highlights fixed
-sequences of text. The text to highlight is specified between opening and
-closing SEQ tags. The following attributes are supported:
-
-TYPE - the token type to highlight the sequence with. See the section called
-“Token Types” for a list of token types.
-
-AT_LINE_START - If set to TRUE, the sequence will only be highlighted if it
-occurs at the beginning of a line.
-
-AT_WHITESPACE_END - If set to TRUE, the sequence will only be highlighted if it
-is the first non-whitespace text in the line.
-
-AT_WORD_START - If set to TRUE, the sequence will only be highlighted if it
-occurs at the beginning of a word.
-
-DELEGATE - if this attribute is specified, all text after the sequence will be
-highlighted using this ruleset. To delegate to a ruleset defined in the current
-mode, just specify its name. To delegate to a ruleset defined in another mode,
-specify a name of the form mode::ruleset. Note that the first (unnamed) ruleset
-in a mode is called “MAIN”.
-
-The following rules highlight a few Java operators:
-
-&lt;SEQ TYPE="OPERATOR"&gt;+&lt;/SEQ&gt;
-&lt;SEQ TYPE="OPERATOR"&gt;-&lt;/SEQ&gt;
-&lt;SEQ TYPE="OPERATOR"&gt;*&lt;/SEQ&gt;
-&lt;SEQ TYPE="OPERATOR"&gt;/&lt;/SEQ&gt;</t>
-<t tx="ekr.20050529180421.41">The SEQ_REGEXP rule is similar to the SEQ rule except the match sequence is
-taken to be a regular expression.
-
-In addition to the attributes supported by the SEQ tag, the HASH_CHAR attribute
-must be specified. It must be set to the first character that the regular
-expression matches. This rules out using regular expressions which can match
-more than one character at the start position. The regular expression match
-cannot span more than one line, either.
-
-Here is an example of a SEQ_REGEXP rule that highlights Perl's matcher
-constructions such as m/(.+):(\d+):(.+)/:
-
-&lt;SEQ_REGEXP TYPE="MARKUP"
-    HASH_CHAR="m"
-    AT_WORD_START="TRUE"
-&gt;m([[:punct:]])(?:.*?[^\\])*?\1[sgiexom]*&lt;/SEQ_REGEXP&gt;</t>
-<t tx="ekr.20050529180421.42">The SPAN rule, which must be placed inside a RULES tag, highlights text between
-a start and end string. The start and end strings are specified inside child
-elements of the SPAN tag. The following attributes are supported:
-
-TYPE - The token type to highlight the span with. See the section called “Token
-Types” for a list of token types.
-
-AT_LINE_START - If set to TRUE, the span will only be highlighted if the start
-sequence occurs at the beginning of a line.
-
-AT_WHITESPACE_END - If set to TRUE, the span will only be highlighted if the
-start sequence is the first non-whitespace text in the line.
-
-AT_WORD_START - If set to TRUE, the span will only be highlighted if the start
-sequence occurs at the beginning of a word.
-
-DELEGATE - text inside the span will be highlighted with the specified ruleset.
-To delegate to a ruleset defined in the current mode, just specify its name. To
-delegate to a ruleset defined in another mode, specify a name of the form
-mode::ruleset. Note that the first (unnamed) ruleset in a mode is called
-“MAIN”.
-
-EXCLUDE_MATCH - If set to TRUE, the start and end sequences will not be
-highlighted, only the text between them will.
-
-NO_ESCAPE - If set to TRUE, the ruleset's escape character will have no effect
-before the span's end string. Otherwise, the presence of the escape character
-will cause that occurrence of the end string to be ignored.
-
-NO_LINE_BREAK - If set to TRUE, the span will not cross line breaks.
-
-NO_WORD_BREAK - If set to TRUE, the span will not cross word breaks.
-
-Note that the AT_LINE_START, AT_WHITESPACE_END and AT_WORD_START attributes can
-also be used on the BEGIN and END elements. Setting these attributes to the same
-value on both elements has the same effect as setting them on the SPAN element.
-
-Here is a SPAN that highlights Java string literals, which cannot include line breaks:
-
-&lt;SPAN TYPE="LITERAL1" NO_LINE_BREAK="TRUE"&gt;
-  &lt;BEGIN&gt;"&lt;/BEGIN&gt;
-  &lt;END&gt;"&lt;/END&gt;
-&lt;/SPAN&gt;
-
-Here is a SPAN that highlights Java documentation comments by delegating to the “JAVADOC” ruleset defined elsewhere in the current mode:
-
-&lt;SPAN TYPE="COMMENT2" DELEGATE="JAVADOC"&gt;
-  &lt;BEGIN&gt;/**&lt;/BEGIN&gt;
-  &lt;END&gt;*/&lt;/END&gt;
-&lt;/SPAN&gt;
-
-Here is a SPAN that highlights HTML cascading stylesheets inside &lt;STYLE&gt; tags by delegating to the main ruleset in the CSS edit mode:
-
-&lt;SPAN TYPE="MARKUP" DELEGATE="css::MAIN"&gt;
-  &lt;BEGIN&gt;&amp;lt;style&amp;gt;&lt;/BEGIN&gt;
-  &lt;END&gt;&amp;lt;/style&amp;gt;&lt;/END&gt;
-&lt;/SPAN&gt;</t>
-<t tx="ekr.20050529180421.43">The SPAN_REGEXP rule is similar to the SPAN rule except the start sequence is
-taken to be a regular expression.
-
-In addition to the attributes supported by the SPAN tag, the HASH_CHAR attribute
-must be specified. It must be set to the first character that the regular
-expression matches. This rules out using regular expressions which can match
-more than one character at the start position. The regular expression match
-cannot span more than one line, either.
-
-Any text matched by groups in the BEGIN regular expression is substituted in the
-END string. See below for an example of where this is useful. 
-
-Here is a SPAN_REGEXP rule that highlights “read-ins” in shell scripts:
-
-&lt;SPAN_REGEXP HASH_CHAR="&lt;" TYPE="LITERAL1" DELEGATE="LITERAL"&gt;
-    &lt;BEGIN&gt;&lt;![CDATA[&lt;&lt;[[:space:]'"]*([[:alnum:]_]+)[[:space:]'"]*]]&gt;&lt;/BEGIN&gt;
-    &lt;END&gt;$1&lt;/END&gt;
-&lt;/SPAN_REGEXP&gt;
-
-Here is a SPAN_REGEXP rule that highlights constructs placed between &lt;#ftl and
-&gt;, as long as the &lt;#ftl is followed by a word break:
-
-&lt;SPAN_REGEXP TYPE="KEYWORD1" HASH_CHAR="&amp;lt;" DELEGATE="EXPRESSION"&gt;
-    &lt;BEGIN&gt;&amp;lt;#ftl\&amp;gt;&lt;/BEGIN&gt;
-    &lt;END&gt;&amp;gt;&lt;/END&gt;
-&lt;/SPAN_REGEXP&gt;</t>
-<t tx="ekr.20050529180421.44">The TERMINATE rule, which must be placed inside a RULES tag, specifies that
-parsing should stop after the specified number of characters have been read from
-a line.
-
-The number of characters to terminate after should be specified with the AT_CHAR
-attribute. Here is an example:
-
-&lt;TERMINATE AT_CHAR="1" /&gt;
-
-This rule is used in Patch mode, for example, because only the first character
-of each line affects highlighting.</t>
-<t tx="ekr.20050529220821"></t>
-<t tx="ekr.20050529220821.1"></t>
+<t tx="ekr.20050529180421.47"></t>
+<t tx="ekr.20050529182335">def match_regexp_helper (self,s,i,seq):
+    
+    '''Return the length of the matching text if seq (a regular expression) matches the present position.'''
+    
+    ### We may want to return a match object too.
+    
+    return 0 ### Not ready yet.</t>
+<t tx="ekr.20050529182335.1">def match_seq (self,s,i,kind,seq,
+    at_line_start,at_whitespace_end,at_word_start,delegate):
+    
+    '''Succeed if s[:] mathces seq.'''
+
+    if at_line_start and i != 0 and s[i-1] != '\n': return 0
+    if at_whitespace_end and i != g.skip_ws(s,0): return 0
+    if at_word_start and i &gt; 0 and s[i-1] not in self.word_chars: return 0
+
+    if g.match(s,i,seq):
+        j = i + len(seq)
+        self.colorRangeWithTag(s,i,j,kind)
+        self.prev = (i,j,kind)
+        return j - i
+    else:
+        return 0</t>
+<t tx="ekr.20050529185208.2">def match_span (self,s,i,kind,begin,end,
+    at_line_start,at_whitespace_end,at_word_start,
+    delegate,exclude_match,
+    no_escape,no_line_break,no_word_break):
+
+    '''Succeed if s[i:] starts with 'begin' and contains a following 'end'.'''
+    
+    if at_line_start and i != 0 and s[i-1] != '\n': return 0
+    if at_whitespace_end and i != g.skip_ws(s,0): return 0
+    if at_word_start and i &gt; 0 and s[i-1] not in self.word_chars: return 0
+
+    if g.match(s,i,begin):
+        j = s.find(end,i+len(begin))
+        if j == -1 or no_line_break and '\n' in s[i:j]:
+            return 0
+        else:
+            j += len(end)
+            # g.trace(i,j,s[i:j],kind,no_line_break)
+            self.colorRangeWithTag(s,i,j,kind)
+            self.prev = (i,j,kind)
+            return j - i
+    else:
+        return 0</t>
+<t tx="ekr.20050529190857"># This is a time-critical method.
+def match_keywords (self,s,i):
+    
+    '''Succeed if s[i:] is a keyword.'''
+    
+    # We must be at the start of a word.
+    if i &gt; 0 and s[i-1] in self.word_chars:
+        return 0
+
+    # Get the word as quickly as possible.
+    j = i ; n = len(s) ; w = self.word_chars
+    while j &lt; n and s[j] in w:
+        j += 1
+        
+    word = s[i:j]
+    kind = self.keywordsDict.get(s[i:j])
+    if kind:
+        # g.trace('%3d %10s %s' % (i,word,repr(kind)))
+        self.colorRangeWithTag(s,i,j,kind)
+        self.prev = (i,j,kind)
+        return j-i
+    else:
+        return 0</t>
+<t tx="ekr.20050529215620">def match_seq_regexp (self,s,i,kind,regexp,hash_char,
+    at_line_start,at_whitespace_end,at_word_start,delegate):
+    
+    '''Succeed if the regular expression regexp matches at s[i:].'''
+
+    if at_line_start and i != 0 and s[i-1] != '\n': return 0
+    if at_whitespace_end and i != g.skip_ws(s,0): return 0
+    if at_word_start and i &gt; 0 and s[i-1] not in self.word_chars: return 0
+    
+    # Test hash_char first to increase speed.
+    if i &lt; len(s) and s[i] == hash_char:
+        j = self.match_regexp_helper(s,i,regexp)
+        self.colorRangeWithTag(s,i,j,kind)
+        self.prev = (i,j,kind)
+    else:
+        return 0</t>
+<t tx="ekr.20050529215732">def match_span_regexp (self,s,i,kind,begin,end,hash_char,
+    at_line_start,at_whitespace_end,at_word_start,
+    delegate,exclude_match):
+        
+    '''Succeed if s[i:] starts with 'begin' ( a regular expression) and contains a following 'end'.'''
+    
+    if at_line_start and i != 0 and s[i-1] != '\n': return 0
+    if at_whitespace_end and i != g.skip_ws(s,0): return 0
+    if at_word_start and i &gt; 0 and s[i-1] not in self.word_chars: return 0
+    
+    # Test hash_char first to increase speed.
+    if i &lt; len(s) and s[i] == hash_char:
+        n = self.match_regexp_helper(s,i,begin)
+        # We may have to allow $n here, in which case we must use a regex object?
+        if n &gt; 0 and g.match(s,i+n,end):
+            self.colorRangeWithTag(s,i,j,kind)
+            self.prev = (i,j,kind)
+            return n + len(end)
+    else:
+        return 0</t>
 <t tx="ekr.20050530065723"></t>
 <t tx="ekr.20050530065723.47">def parse_jEdit_file(self,fileName):
     
@@ -10228,19 +9859,655 @@ of each line affects highlighting.</t>
     finally:
         f.close()
         return mode</t>
+<t tx="ekr.20050530065723.49">class modeClass:
+    
+    '''A class representing one jEdit language-description mode.
+    
+    Use getters to access the attributes, properties and rules of this mode.'''
+    
+    @others</t>
+<t tx="ekr.20050530065723.50">def __init__ (self,contentHandler,fileName):
+
+    self.contentHandler = contentHandler
+    self.fileName = fileName # The file from which the mode was imported.
+    self.verbose = self.contentHandler.verbose
+
+    # Mode statistics...
+    self.numberOfAttributes = 0
+    self.numberOfElements = 0
+    self.numberOfErrors = 0
+    self.numberOfPropertyAttributes = 0
+    self.numberOfRuleAttributes = 0
+    
+    # List of boolean attributes.
+    self.boolAttrs = [
+        'at_line_start','at_whitespace_end','at_word_start',
+        'exclude_match','highlight_digits','ignore_case',
+        'no_escape','no_line_break','no_word_break','no_word_sep',]
+
+    # List of elements that start a rule.
+    self.ruleElements = [
+        'eol_span','eol_span_regexp','import','keywords',
+        'mark_following','mark_previous','seq','seq_regexp',
+        'span','span_regexp','terminate',]
+
+    if 0: # Not used at present.
+        self.seqSpanElements = [
+            'eol_span','eol_span_regexp','seq','seq_regexp',
+            'span','span_regexp',]
+
+    # Mode semantics.
+    self.attributes = {}
+    self.inProps = False
+    self.inRules = False
+    self.keywords = None
+    self.modeProperties = []
+    self.presentProperty = None # A bunch to be assigned to modeProperties or rulesetProperties.
+    self.rule = None
+    self.rulesets = []
+    self.rules = [] # The rules of the present rules element.
+    self.rulesetProperties = []
+    self.rulesetAttributes = {} # The attributes of the present rules element.</t>
+<t tx="ekr.20050530065723.51">def doAttribute (self,name,val):
+    
+    name = str(name.lower())
+    
+    if name in self.boolAttrs:
+        val = g.choose(val.lower()=='true',True,False)
+    else:
+        val = str(val) # Do NOT lower this value!
+
+    if self.rule:
+        d = self.rule.get('attributes')
+        d [name] = val
+        self.numberOfRuleAttributes += 1
+    elif self.presentProperty:
+        d = self.presentProperty.get('attributes')
+        d [name] = val
+        self.numberOfPropertyAttributes += 1
+    elif self.inRules:
+        self.rulesetAttributes[name] = val
+        self.numberOfAttributes += 1
+    else:
+        self.attributes[name] = val
+        self.numberOfAttributes += 1</t>
+<t tx="ekr.20050530065723.52">def doContent (self,elementName,content):
+    
+    if not content:
+        return
+    
+    name = str(elementName.lower())
+
+    if name in ('keyword1','keyword2','keyword3','keyword4','markup',):
+        if self.inRule('keywords'):
+            theList = self.rule.get(name,[])
+            theList.append(content)
+            self.rule[name] = theList
+        elif name != 'markup':
+            self.error('%d not in keywords' % name)
+
+    elif self.rule:
+        d = self.rule.get('contents',{})
+        s = d.get(name,'')
+        d [name] = s + content
+        self.rule['contents'] = d</t>
+<t tx="ekr.20050530065723.53">def endElement (self,elementName):
+
+    name = elementName.lower()
+    
+    if name == 'props':
+        self.inProps = True
+    if name == 'rules':
+        self.inRules = False
+        ruleset = rulesetClass(self.rulesetAttributes,self.keywords,self.rulesetProperties,self.rules)
+        self.rulesets.append(ruleset)
+        #g.trace('rules...\n',g.listToString(self.rules))
+        #g.trace('ruleset attributes...\n',g.dictToString(self.rulesetAttributes))
+    if name == 'property':
+        bunch = self.presentProperty
+        if bunch:
+            if self.inRules:
+                self.rulesetProperties.append(bunch)
+            else:
+                self.modeProperties.append(bunch)
+        else:
+            self.error('end %s not matched by start %s' % (name,name))
+        self.presentProperty = None
+    if name in self.ruleElements:
+        if self.inRule(name):
+            self.rules.append(self.rule)
+            self.rule = None
+        else:
+            self.error('end %s not matched by start %s' % (name,name))</t>
+<t tx="ekr.20050530065723.54">def error (self,message):
+    
+    self.numberOfErrors += 1
+
+    self.contentHandler.error(message)</t>
+<t tx="ekr.20050530065723.55">def inRule (self,elementName):
+
+    return self.rule and self.rule.get('name') == elementName</t>
+<t tx="ekr.20050530065723.56">def printSummary (self,printStats=True):
+
+    if printStats:
+        print '-' * 10, 'mode statistics'
+        print 'elements',self.numberOfElements
+        print 'errors',self.numberOfErrors
+        print 'mode attributes',self.numberOfAttributes
+        print 'property attributes',self.numberOfPropertyAttributes
+        print 'rule attributes',self.numberOfRuleAttributes
+
+    self.printModeAttributes()
+    
+    for bunch in self.modeProperties:
+        self.printProperty(bunch)
+
+    self.printRuleset(self.rulesets[0],tag='main ruleset')</t>
+<t tx="ekr.20050530065723.57">def startElement (self,elementName):
+
+    name = elementName.lower()
+    
+    if name == 'props':
+        self.inProps = True
+    if name == 'rules':
+        self.inRules = True
+        self.attributes=[]
+        self.keywords=[]
+        self.rulesetProperties=[]
+        self.rules=[]
+    if name == 'property':
+        if self.inProps:
+            self.presentProperty = g.bunch(name=name,attributes={})
+        else:
+            self.error('property not in props element')
+    if name in self.ruleElements:
+        if self.inRules:
+            self.rule = g.bunch(name=name,attributes={})
+            if name == 'keywords':
+                self.keywords = self.rule
+        else:
+            self.error('%s not in rules element' % name)</t>
+<t tx="ekr.20050530065723.58">class contentHandler (xml.sax.saxutils.XMLGenerator):
+    
+    '''A sax content handler class that handles jEdit language-description files.
+    
+    Creates mode that can be retrieved using the getMode method.'''
+
+    @others</t>
+<t tx="ekr.20050530065723.59">def __init__ (self,c,fileName):
+
+    self.c = c
+    self.fileName = fileName
+    self.trace   = trace =   c.config.getBool('trace_color_parser')
+    self.verbose = verbose = c.config.getBool('verbose_trace_color_parser')
+    
+    # Init the base class.
+    xml.sax.saxutils.XMLGenerator.__init__(self)
+    
+    # Non-mode statistics.
+    self.numberOfAttributes = 0
+    self.numberOfElements = 0
+    
+    # Options...
+    self.ignoreWs = True # True: don't print contents with only ws.
+    self.newLineAfterStartElement = [
+        'keywords','mode','props','property','rules','span','eol_span',
+        # 'seq',
+    ]
+    
+    # Printing options
+    if verbose:
+        self.printAllElements = True
+        self.printCharacters = False or self.printAllElements
+        self.printAttributes = False and not self.printAllElements
+        self.printElements = [
+            #'begin','end',
+            #'eol_span',
+            #'keyword1','keyword2','keyword3','keyword4',
+            #'mark_previous',
+            #'mode',
+            #'props',
+            #'property',
+            #'rules',
+            #'span',
+            #'seq',
+        ]
+        
+        if self.printAllElements:
+            self.suppressContent = []
+        else:
+            self.suppressContent = ['keyword1','keyword2','keyword3','keyword4']
+    else:
+        self.printAllElements = False
+        self.printCharacters = False
+        self.printAttributes = False
+        self.printElements = []
+  
+    # Semantics: most of these should be mode ivars.
+    self.elementStack = []
+    self.mode = None # The present mode, or None if outside all modes.
+    self.modes = [] # All modes defined here or by imports.</t>
+<t tx="ekr.20050530065723.60"></t>
+<t tx="ekr.20050530065723.61">def attrsToList (self,attrs):
+    
+    '''Convert the attributes to a list of g.Bunches.
+    
+    attrs: an Attributes item passed to startElement.
+    
+    sep: the separator charater between attributes.'''
+    
+    return [
+        g.Bunch(name=name,val=attrs.getValue(name))
+        for name in attrs.getNames()
+    ]</t>
+<t tx="ekr.20050530065723.62">def attrsToString (self,attrs,sep='\n'):
+    
+    '''Convert the attributes to a string.
+    
+    attrs: an Attributes item passed to startElement.
+    
+    sep: the separator charater between attributes.'''
+
+    result = [
+        '%s="%s"' % (bunch.name,bunch.val)
+        for bunch in self.attrsToList(attrs)
+    ]
+
+    return sep.join(result)</t>
+<t tx="ekr.20050530065723.63">def clean(self,s):
+
+    return g.toEncodedString(s,"ascii")</t>
+<t tx="ekr.20050530065723.64">def error (self, message):
+    
+    print
+    print
+    print 'XML error: %s' % (message)
+    print</t>
+<t tx="ekr.20050530065723.65">def printStartElement(self,name,attrs):
+
+    if attrs.getLength() &gt; 0:
+        print '&lt;%s %s&gt;' % (
+            self.clean(name).strip(),
+            self.attrsToString(attrs,sep=' ')),
+    else:
+        print '&lt;%s&gt;' % (self.clean(name).strip()),
+
+    if name.lower() in self.newLineAfterStartElement:
+        print</t>
+<t tx="ekr.20050530065723.66">def printSummary (self):
+    
+    print '-' * 10, 'non- mode statistics'
+    print 'modes',len(self.modes)
+    print 'elements', self.numberOfElements</t>
+<t tx="ekr.20050530065723.67"></t>
+<t tx="ekr.20050530065723.68"></t>
+<t tx="ekr.20050530065723.69">def ignorableWhitespace(self):
+    g.trace()
+
+def processingInstruction (self,target,data):
+    g.trace()
+
+def skippedEntity(self,name):
+    g.trace(name)
+
+def startElementNS(self,name,qname,attrs):
+    g.trace(name)
+
+def endElementNS(self,name,qname):
+    g.trace(name)</t>
+<t tx="ekr.20050530065723.70">def endDocument(self):
+
+    pass
+
+
+</t>
+<t tx="ekr.20050530065723.71">def startDocument(self):
+    
+    pass</t>
+<t tx="ekr.20050530065723.72">def characters(self,content):
+    
+    content = content.replace('\r','').strip()
+    content = self.clean(content)
+
+    elementName = self.elementStack and self.elementStack[-1].lower() or '&lt;no element name&gt;'
+    
+    if self.printAllElements:
+        print content,
+    elif self.printCharacters and content and elementName not in self.suppressContent:
+        print 'content:',elementName,repr(content)
+            
+    if self.mode:
+        self.mode.doContent(elementName,content)
+    else:
+        self.error('characters outside of mode')</t>
+<t tx="ekr.20050530065723.73">def endElement(self,name):
+
+    self.doEndElement(name)
+
+    name2 = self.elementStack.pop()
+    assert name == name2</t>
+<t tx="ekr.20050530065723.74">def startElement(self,name,attrs):
+    
+    if self.mode:
+        self.mode.numberOfElements += 1
+    else:
+        self.numberOfElements += 1
+        
+    self.elementStack.append(name)
+    self.doStartElement(name,attrs)</t>
+<t tx="ekr.20050530065723.75">def doStartElement (self,elementName,attrs):
+    
+    if self.printAllElements or elementName.lower() in self.printElements:
+        self.printStartElement(elementName,attrs)
+
+    elementName = elementName.lower()
+    
+    if elementName == 'mode':
+        if self.mode:
+            self.error('Multiple modes')
+        else:
+            self.mode = modeClass(self,self.fileName)
+    elif self.mode:
+        self.mode.startElement(elementName)
+        for bunch in self.attrsToList(attrs):
+            if self.printAttributes:
+                print 'attr:',elementName,bunch.name,'=',bunch.val
+            self.mode.doAttribute(bunch.name,bunch.val)
+    else:
+        self.error('Start element appears outside of Mode:%s' % elementName)
+        for bunch in self.attrsToList(attrs):
+            self.error('Attribute appears outside of Mode:%s' % bunch.name)</t>
+<t tx="ekr.20050530065723.76">def doEndElement (self,elementName):
+    
+    if self.printAllElements or elementName.lower() in self.printElements:
+        print '&lt;/' + self.clean(elementName).strip() + '&gt;'
+        
+    if elementName.lower() == 'mode':
+        if self.verbose:
+            self.mode.printSummary()
+    elif self.mode:
+        self.mode.endElement(elementName)
+    else:
+        self.error('End element appears outside of Mode:%s' % elementName)
+        for bunch in self.attrsToList(attrs):
+            self.error('Attribute appears outside of Mode:%s' %bunch.name)</t>
+<t tx="ekr.20050530071955">def getMode (self):
+    
+    return self.mode</t>
+<t tx="ekr.20050530073825">def __str__ (self):
+    
+    return '&lt;modeClass for %s&gt;' % self.fileName
+    
+__repr__ = __str__</t>
+<t tx="ekr.20050530074431">def getAttributes (self):
+    return self.attributes
+    
+def getAttributesForRuleset (self,ruleset):
+    bunch = ruleset
+    return bunch.attributes
+    
+def getFileName (self):
+    return self.fileName
+    
+def getKeywords (self,n,ruleset):
+    bunch = ruleset
+    keywords = bunch.keywords
+    if keywords:
+        return keywords.get('keyword%d'%(n),[])
+    return []
+
+def getLanguage (self):
+    path,name = g.os_path_split(self.fileName)
+    language,ext = g.os_path_splitext(name)
+    return language
+
+def getPropertiesForMode (self):
+    return self.props
+    
+def getPropertiesForRuleset (self,name=''):
+    bunch = self.getRuleset(name)
+    if bunch:
+        return bunch.properties
+    else:
+        return []
+    
+def getRuleset(self,name=''):
+    if not name:
+        return self.rulesets[0] # Return the main ruleset.
+    for ruleset in self.rulesets:
+        if ruleset.name.lower()==name.lower():
+            return ruleset
+    else: return None
+
+def getRulesets(self):
+    return self.rulesets
+    
+def getRulesForRuleset (self,name=''):
+    bunch = self.getRuleset(name)
+    if bunch:
+        return bunch.rules
+    else:
+        return []</t>
+<t tx="ekr.20050530075602">def printModeAttributes (self):
+    
+    self.printAttributesHelper('mode attributes',self.attributes)
+    
+def printRulesetAttributes (self,ruleset,tag=None):
+
+    if not tag: tag = 'main ruleset'
+    
+    self.printAttributesHelper(tag,ruleset.attributes)
+    
+def printAttributesHelper (self,kind,attrs):
+    
+    print '%-20s' % (kind),'attrs:',attrs</t>
+<t tx="ekr.20050530075602.1">def printRule (self,rule):
+    
+    # A rule is a g.Bunch.
+    if rule.name == 'keywords':
+        print '%-20s' % ('rule:keywords'),
+        for key in ('keyword1','keyword2','keyword3','keyword4','markup',):
+            theList = rule.get(key,[])
+            print key,len(theList),
+        print
+    else:
+        d = rule.attributes
+        d2 = rule.get('contents')
+        if d or d2:
+            print '%-20s' % ('rule:'+rule.name),
+            if d and d2: print 'attrs:',d,'chars:',d2
+            elif d:  print 'attrs:',d
+            else:    print 'chars:',d2</t>
+<t tx="ekr.20050530080452">def printProperty (self,theProperty):
+    
+    # A property is a bunch.
+    d = theProperty.attributes
+    if d:
+        self.printAttributesHelper('property',d)</t>
+<t tx="ekr.20050530081700"></t>
+<t tx="ekr.20050530112849">def createRuleMatchers (self,rules):
+    
+    self.defaultRulesList = []
+    self.rulesDict = {}
+
+    # Put the Leo rules first on each list.
+    for key,createMatcher in (
+        ('@',self.createAtColorMatcher),
+        ('@',self.createAtNocolorMatcher),
+        ('@',self.createDocPartMatcher),
+        ('&lt;',self.createSectionRefMatcher),
+    ):
+        f,name,token_type,delegate = createMatcher()
+        rulesList = self.rulesDict.get(key,[])
+        rulesList.append((f,name,token_type,delegate),)
+        self.rulesDict[key] = rulesList
+        
+    for rule in rules:
+        self.createRuleMatcher(rule)
+        
+    if 0:
+        total = 0 ; n = len(self.rulesDict.keys())
+        for key in self.rulesDict.keys():
+            theList = self.rulesDict.get(key,[])
+            total += len(theList)
+        total += len(self.defaultRulesList)
+        print 'mean length of rules list: %0.3f' % (float(total)/float(n+1))</t>
+<t tx="ekr.20050530112849.1">def createRuleMatcher (self,rule):
+    
+    name = rule.name ; d = rule.attributes or {}
+    token_type    = d.get('type','&lt;no type&gt;').lower()
+    at_line_start = d.get('at_line_start',False)
+    at_ws_end     = d.get('at_ws_end',False)
+    at_word_start = d.get('at_word_start',False)
+    delegate      = d.get('delegate','')
+    no_line_break = d.get('no_line_break',False)
+    d2 = rule.get('contents',{})
+    seq     = d2.get(name,'')
+    begin   = d2.get('begin','')
+    end     = d2.get('end','')
+    
+    if name == 'eol_span':
+        keys = [seq[0]]
+        def f(self,s,i,seq=seq,
+            at_line_start=at_line_start,at_ws_end=at_ws_end,at_word_start=at_word_start
+        ):
+            return self.match_eol_span(s,i,seq,at_line_start,at_ws_end,at_word_start)
+    elif name == 'eol_span_regexp':
+        keys = [seq[0]]
+        def f(self,s,i,seq=seq,
+            at_line_start=at_line_start,at_ws_end=at_ws_end,at_word_start=at_word_start
+        ):
+            return self.match_eol_span_regexp(s,i,seq,
+                at_line_start,at_ws_end,at_word_start)
+    elif name == 'keywords':
+        keys = self.word_chars
+        def f(self,s,i):
+            return self.match_keywords(s,i)
+        token_type = 'keywords'
+    elif name in ('mark_following','mark_previous','seq'):
+        keys = [seq[0]]
+        def f(self,s,i,seq=seq,
+            at_line_start=at_line_start,at_ws_end=at_ws_end,at_word_start=at_word_start
+        ):
+            return self.match_seq(s,i,seq,at_line_start,at_ws_end,at_word_start)
+    elif name == 'seq_regexp':
+        keys = [hash_char]
+        def f(self,s,i,seq=seq,hash_char=hash_char,
+            at_line_start=at_line_start,at_ws_end=at_ws_end,at_word_start=at_word_start
+        ):
+            return self.match_seq_regexp(s,i,seq,hash_char,
+                at_line_start,at_ws_end,at_word_start)
+    elif name == 'span':
+        keys = [begin[0]]
+        def f(self,s,i,begin=begin,end=end,
+            at_line_start=at_line_start,at_ws_end=at_ws_end,
+            at_word_start=at_word_start,no_line_break=no_line_break
+        ):
+            return self.match_span(s,i,begin,end,
+                at_line_start,at_ws_end,at_word_start,no_line_break)
+    elif name == 'span_regexp':
+        keys = [hash_char]
+        def f(self,s,i,begin=begin,end=end,hash_char=hash_char,
+            at_line_start=at_line_start,at_ws_end=at_ws_end,
+            at_word_start=at_word_start,no_line_break=no_line_break
+        ):
+            return self.match_span_regexp(s,i,begin,end,hash_char,
+                at_line_start,at_ws_end,at_word_start,no_line_break)
+    else:
+        keys = []
+        g.trace('no function for %s' % name)
+        def f(self,s,i):
+            return 0
+
+    # Put f,name,token_type,delegate in the rulesDict or defaultRulesList.
+    for key in keys:
+        if key in string.printable:
+            rulesList = self.rulesDict.get(key,[])
+            rulesList.append((f,name,token_type,delegate),)
+            self.rulesDict[key] = rulesList
+        else:
+            self.defaultRulesList.append((f,name,token_type,delegate),)
+
+    # g.trace('%-25s'%(name+':'+token_type),at_line_start,at_ws_end,at_word_start,repr(seq),repr(begin),repr(end))</t>
+<t tx="ekr.20050601045930">def match_eol_span (self,s,i,kind,seq,
+    at_line_start,at_whitespace_end,at_word_start,
+    delegate,exclude_match):
+    
+    '''Succeed if seq matches s[i:]'''
+
+    if at_line_start and i != 0 and s[i-1] != '\n': return 0
+    if at_whitespace_end and i != g.skip_ws(s,0): return 0
+    if at_word_start and i &gt; 0 and s[i-1] not in self.word_chars: return 0
+    
+    # g.trace(i,repr(s[i]),repr(seq))
+
+    if g.match(s,i,seq):
+        j = g.skip_to_end_of_line(s,i)
+        self.colorRangeWithTag(s,i,j,kind)
+        self.prev = (i,j,kind)
+        return j - i 
+    else:
+        return 0
+</t>
+<t tx="ekr.20050601063317">def match_eol_span_regexp (self,s,i,kind,regex,hash_char,
+    at_line_start,at_whitespace_end,at_word_start,
+    delegate,exclude_match):
+    
+    '''Succeed if the regular expression regex matches s[i:].'''
+
+    if at_line_start and i != 0 and s[i-1] != '\n': return 0
+    if at_whitespace_end and i != g.skip_ws(s,0): return 0
+    if at_word_start and i &gt; 0 and s[i-1] not in self.word_chars: return 0
+    
+    # Test hash_char first to increase speed.
+    if i &lt; len(s) and s[i] == hash_char:
+        n = self.match_regexp_helper(s,i,regex)
+        if n &gt; 0:
+            j = g.skip_to_end_of_line(s,i)
+            self.colorRangeWithTag(s,i,j,kind)
+            self.prev = (i,j,kind)
+            return j - i
+        else:
+            return 0
+    else:
+        return 0</t>
+<t tx="ekr.20050601065451">def doColor(self,s,i,j,token_type):
+
+    helpers = {
+        'doc_part':self.docPartColorHelper,
+        'section_ref':self.sectionRefColorHelper,
+        'keywords':self.keywordsColorHelper,
+        '@color':self.atColorColorHelper,
+        '@nocolor':self.atNocolorColorHelper,
+    }
+    
+    # not in range of @nocolor.
+    if self.flag:
+        # g.trace(i,j,token_type)
+        helper = helpers.get(token_type,self.defaultColorHelper)
+        helper(token_type,s,i,j)</t>
 <t tx="ekr.20050601081132">@nocolor
 @
 
-- Handle c.xml:
-    - Make sure &lt;markup&gt; element in &lt;keywords&gt; element work in delegate.
-    - dump-colorizer command.
+- Strings, including triple strings, are not working.
+
+- Harsh red used for comments.
+
+** Colorizing long text is too slow.
+
+Use all attributes in all rule matchers.
+
 - Support NO_WORD_SEP, IGNORE_CASE and DEFAULT attributes in rules element.
     - Later: support DIGIT_RE and HIGHLIGHT_DIGITS attributes in rules element.
 
 - Finish all rules:
     - mark_previous and mark_following.
     - match_regexp_helper.
-- Test colorizing of hyperlinks.
+
+- Why do mode properties exist?
+
+** Possibly important optimization:
+    - Create charDict:  Let ch be s[i].  Set rulesList = charDict.get(ch)
 
 @c
 @color
@@ -10259,58 +10526,98 @@ of each line affects highlighting.</t>
         return
     while i &lt; len(s):
         count += 1
-        # Exit only after finishing the row.  This reduces flash.
-        if i == 0 or s[i-1] == '\n':
-            if self.kill_chunk: return
-            if self.incremental and allowBreak:
-                if count &gt;= 50:
-                    &lt;&lt; queue up this method &gt;&gt;
-                    return
-        for f,kind,token_type,delegate in self.rulesDict.get(s[i],self.defaultRulesList):
+        if 1: # Test: do everything immediately. This is way too slow.
+            # Exit only after finishing the row.  This reduces flash.
+            if i == 0 or s[i-1] == '\n':
+                if self.kill_chunk: return
+                if self.incremental and allowBreak:
+                    if count &gt;= 50:
+                        &lt;&lt; queue up this method &gt;&gt;
+                        return
+        for f in self.rules:
             n = f(self,s,i)
             if n &gt; 0:
-                self.doRule(s,i,i+n,kind,token_type,delegate)
                 i += n
                 break
         else:
-            if self.present_ruleset.defaultColor:
-                self.colorRangeWithTag(s,i,i+1,self.present_ruleset.defaultColor.lower())
-            # g.trace('no match')
+            self.colorRangeWithTag(s,i,i+1,self.defaultColor)
             i += 1
 
     self.removeTagsFromRange(s,self.chunk_last_i,len(s))</t>
 <t tx="ekr.20050601162452.1">self.chunk_s,self.chunk_i = s,i
 self.c.frame.top.after_idle(self.colorOneChunk)</t>
+<t tx="ekr.20050601162452.3">def doRule (self,s,i,j,kind,token_type,delegate):
+    
+    if kind == 'mark_following':
+        pass
+    
+    elif kind == 'mark_previous':
+        if 0: # This make no sense at all.
+            if prev:
+                i2,j2,token_type2 = self.prev
+                g.trace('mark_previous',i2,j2,token_type2)
+                self.doColor(s,i2,j2,token_type) # Use the type specified in the mark_previous.
+                self.prev = None
+    elif delegate:
+        self.colorByDelegate(delegate,s,i,j,token_type)
+        self.prev = (i,j,token_type)
+    else:
+        g.trace('%3d %2d'%(i,j),kind,repr(s[i:j]))
+        self.doColor(s,i,j,token_type)
+        self.prev = (i,j,token_type)</t>
 <t tx="ekr.20050602150619">def init_mode (self,language):
     
-    # bunch = self.modes.get(language)
-    bunch = self.modes.get(language)
-    if bunch:
-        self.mode = bunch.mode
-        self.defaultRulesList=bunch.defaultRulesList
-        self.keywords = bunch.keywords
-        self.rulesDict=bunch.rulesDict
-        self.word_chars = bunch.word_chars
+    if not language: return
+    mode = self.modes.get(language)
+    if mode:
+        self.mode = mode
     else:
-        self.mode = mode = self.parse_jEdit_file(language)
+        path = g.os_path_join(g.app.loadDir,'..','modes')
+        mode = g.importFromPath (language,path)
         if mode:
-            if self.trace: g.trace(language)
-            # Handle only the main rulese here.
-            rulesets = mode.getRulesets()
-            self.present_ruleset = ruleset = rulesets[0]
-            # mode.printSummary (printStats=False)
-            self.keywords,self.word_chars = self.init_keywords(mode,ruleset)
-                # Sets self.word_chars: must be called before createRuleMatchers.
-            self.createRuleMatchers(ruleset.rules)
-                # Sets self.defaultRulesList &amp; self.rulesDict.
-            bunch = g.bunch(mode=mode,
-                defaultRulesList=self.defaultRulesList,
-                keywords=self.keywords,
-                rulesDict=self.rulesDict,
-                word_chars=self.word_chars)
-            self.modes[language] = bunch
-        elif language:
-            g.trace('No language description for %s' % language)</t>
+            g.trace('loading mode for: ',language)
+            self.modes[language] = self.mode = mode
+            self.rulesetName = self.computeRulesetName(language)
+            self.keywordsDict = d = mode.keywordsDictDict.get(self.rulesetName,{})
+            self.init_keywords(d)
+            # g.trace(len(self.keywordsDict.keys()))
+            self.rules = mode.rulesDict.get(self.rulesetName)
+            self.addLeoRules(self.rules)
+            self.defaultColor = 'null'
+            ### To do: append imported rules.
+            # g.trace(len(self.rules))
+        else:
+            g.trace('No language description for %s' % language)
+
+    if 0: # old code
+        bunch = self.modes.get(language)
+        if bunch:
+            self.mode = bunch.mode
+            self.defaultRulesList=bunch.defaultRulesList
+            self.keywords = bunch.keywords
+            self.rulesDict=bunch.rulesDict
+            self.word_chars = bunch.word_chars
+        else:
+            ### get the mode by parsing the file.
+            if mode:
+                if self.trace: g.trace(language)
+                if 0:
+                    # Handle only the main rulese here.
+                    rulesets = mode.getRulesets()
+                    self.present_ruleset = ruleset = rulesets[0]
+                    # mode.printSummary (printStats=False)
+                    self.keywords,self.word_chars = self.init_keywords(mode,ruleset)
+                        # Sets self.word_chars: must be called before createRuleMatchers.
+                    self.createRuleMatchers(ruleset.rules)
+                        # Sets self.defaultRulesList &amp; self.rulesDict.
+                    bunch = g.bunch(mode=mode,
+                        defaultRulesList=self.defaultRulesList,
+                        keywords=self.keywords,
+                        rulesDict=self.rulesDict,
+                        word_chars=self.word_chars)
+                    self.modes[language] = bunch
+            elif language:
+                g.trace('No language description for %s' % language)</t>
 <t tx="ekr.20050602152743">def init_keywords (self,mode,ruleset):
     
     '''Initialize the keywords for the present language.
@@ -10346,7 +10653,82 @@ self.c.frame.top.after_idle(self.colorOneChunk)</t>
         &lt;&lt; compute extra_word_chars &gt;&gt;
             
     return keywords,word_chars</t>
+<t tx="ekr.20050602204708">def createDocPartMatcher (self):
+    
+    def f(self,s,i):
+        return self.match_doc_part(s,i)
+
+    name = token_type = 'doc_part'
+    delegate = ''
+    return f,name,token_type,delegate
+
+def createSectionRefMatcher (self):
+    
+    def f(self,s,i):
+        return self.match_section_ref(s,i)
+
+    name = token_type = 'section_ref'
+    delegate = ''
+    return f,name,token_type,delegate</t>
+<t tx="ekr.20050602205810">def docPartColorHelper (self,token_type,s,i,j):
+    
+    i2 = g.choose(s[i:i+4] == '@doc',i+4,i+1)
+    if   s[j-5:j] == '@code': j2 = j-5
+    elif s[j-2:j] == '@c': j2 = j-2
+    else: j2 = j
+    
+    # g.trace(i,i2,j2,j)
+
+    self.colorRangeWithTag(s,i,i2,'leoKeyword')
+    self.colorRangeWithTag(s,i2,j2,'docPart')
+    self.colorRangeWithTag(s,j2,j,'leoKeyword')</t>
+<t tx="ekr.20050602205810.1">## To do: this assumes the 2-character brackets.
+
+def sectionRefColorHelper (self,token_type,s,i,j):
+    
+    # g.trace(i,j,s[i:j])
+    
+    self.colorRangeWithTag(s,i,i+2,'nameBrackets')
+
+    ref = g.findReference(s[i:j],self.p)
+    if ref:
+        if self.use_hyperlinks:
+            &lt;&lt; set the hyperlink &gt;&gt;
+        else:
+            self.colorRangeWithTag(s,i+2,j-2,'link')
+    else:
+        self.colorRangeWithTag(s,i+2,j-2,'name')
+
+    self.colorRangeWithTag(s,j-2,j,'nameBrackets')</t>
+<t tx="ekr.20050602205810.2">def keywordsColorHelper (self,token_type,s,i,j):
+    
+    theList = ('leoKeyword','keyword1','keyword2','keyword3','keyword4',)
+
+    tag = theList[self.keywordNumber]
+
+    if tag:
+        self.colorRangeWithTag(s,i,j,tag)</t>
+<t tx="ekr.20050602205810.3">def defaultColorHelper(self,token_type,s,i,j):
+
+    d = {
+        'seq': None,
+        'literal1': 'string',
+        'literal2': 'string',
+        # 'keywords': 'keywords',
+        'comment1': 'comment',
+        'comment2': 'comment',
+        'comment3': 'comment',
+        'comment4': 'comment',
+        'operator': None,
+        # 'function': 'comment', # just for testing.
+    }
+    
+    tag = d.get(token_type)
+    if tag:
+        self.colorRangeWithTag(s,i,j,tag)</t>
 <t tx="ekr.20050602205810.4">def colorRangeWithTag (self,s,i,j,tag):
+    
+    if not self.flag or tag == 'null': return
 
     if self.was_non_incremental:
         must_color = True
@@ -10361,6 +10743,8 @@ self.c.frame.top.after_idle(self.colorOneChunk)</t>
         self.removeTagsFromRange(s,self.chunk_last_i,j)
 
     if must_color:
+        # if tag != 'null': g.trace(i,j,repr(s[i:j]),tag)
+
         # Remember the new tags.
         for k in xrange(i,j):
             self.colored_ranges[k] = tag
@@ -10373,6 +10757,114 @@ self.c.frame.top.after_idle(self.colorOneChunk)</t>
         self.body.tag_add(tag,x1,x2)
 
     self.chunk_last_i = j</t>
+<t tx="ekr.20050602211219">def match_section_ref (self,s,i):
+    
+    if not g.match(s,i,'&lt;&lt;'):
+        return 0
+    k = g.find_on_line(s,i+2,'&gt;&gt;')
+    if k is not None:
+        j = k + 2
+        self.colorRangeWithTag(s,i,i+2,'nameBrackets')
+        ref = g.findReference(s[i:j],self.p)
+        if ref:
+            if self.use_hyperlinks:
+                &lt;&lt; set the hyperlink &gt;&gt;
+            else:
+                self.colorRangeWithTag(s,i+2,k,'link')
+        else:
+            self.colorRangeWithTag(s,i+2,k,'name')
+        self.colorRangeWithTag(s,k,j,'nameBrackets')
+        return j - i
+    else:
+        return 0</t>
+<t tx="ekr.20050602211253">def match_doc_part (self,s,i):
+    
+    if i &gt;= len(s) or s[i] != '@':
+        return 0
+    elif i + 1 &gt;= len(s):
+        j = i + 1
+        self.colorRangeWithTag(s,i,j,'docPart')
+        return 1
+    elif not g.match_word(s,i,'@doc') and not s[i+1] in (' ','\t','\n'):
+        return 0
+
+    j = i ; n = len(s)
+    while j &lt; n:
+        k = s.find('@c',j)
+        if k == -1:
+            j = n - 1
+            self.colorRangeWithTag(s,i,j,'docPart')
+            return j - i
+        if s[k-1] == '\n' and (g.match_word(s,k,'@c') or g.match_word(s,k,'@code')):
+            j = k
+            self.colorRangeWithTag(s,i,j,'docPart')
+            return j - i
+        else:
+            j = k + 2
+    j = n - 1
+    return j - i</t>
+<t tx="ekr.20050603043840">def createAtColorMatcher (self):
+    
+    def f(self,s,i):
+        return self.match_at_color(s,i)
+
+    name = token_type = '@color'
+    delegate = ''
+    return f,name,token_type,delegate
+
+def createAtNocolorMatcher (self):
+    
+    def f(self,s,i):
+        return self.match_at_nocolor(s,i)
+
+    name = token_type = '@nocolor'
+    delegate = ''
+    return f,name,token_type,delegate</t>
+<t tx="ekr.20050603043840.1">def match_at_color (self,s,i):
+
+    seq = '@color'
+    
+    if i != 0 and s[i-1] != '\n': return 0
+
+    if g.match_word(s,i,seq):
+        self.flag = True # Enable coloring.
+        j = i + len(seq)
+        self.colorRangeWithTag(s,i,j,'leoKeyword')
+        return j - i
+    else:
+        return 0</t>
+<t tx="ekr.20050603043840.2">def match_at_nocolor (self,s,i):
+    
+    seq = '@nocolor'
+    
+    if i != 0 and s[i-1] != '\n':
+        return 0
+
+    if g.match_word(s,i,seq):
+        j = i + len(seq)
+        self.flag = False # Disable coloring.
+        self.colorRangeWithTag(s,i,j,'leoKeyword')
+        return len(seq)
+    else:
+        return 0</t>
+<t tx="ekr.20050603051440">def atColorColorHelper (self,token_type,s,i,j):
+    
+    # Enable coloring.
+    self.flag = True
+
+    # Color the Leo keyword.
+    self.keywordNumber = 0
+    self.keywordsColorHelper(token_type,s,i,j)
+    
+def atNocolorColorHelper (self,token_type,s,i,j):
+    
+    if self.flag:
+        # Color the Leo keyword.
+        self.keywordNumber = 0
+        self.keywordsColorHelper(token_type,s,i,j)
+    
+    # Disable coloring until next @color
+    self.flag = False</t>
 <t tx="ekr.20050603121815">@killcolor
 @
 - Support comment properties and self.comment_string:
@@ -10391,17 +10883,56 @@ self.c.frame.top.after_idle(self.colorOneChunk)</t>
 
 - Make sure pictures get drawn properly.
 
-- Create forth.xml
-
-- php.xml does not parse correctly.</t>
+- Create forth.xml</t>
 <t tx="ekr.20050605130806">self.chunk_s,self.chunk_i = s,i
 self.c.frame.top.after(50,self.colorOneChunk)</t>
-<t tx="ekr.20050606214954"></t>
-<t tx="ekr.20050606221357"></t>
+<t tx="ekr.20050605185452">@ Line-by line processing does not work because some tokens span multiple lines.
+@c
+
+def removeOldTagsFromLine(self,s,i):
+
+    row,col = g.convertPythonIndexToRowCol(s,i)
+    x1 = '%d.0' % (row+1)
+    x2 = '%d.0' % (row+2)
+    
+    # g.trace('remove',x1,x2)
+    
+    for tag in self.tags:
+        self.body.tag_remove(tag,x1,x2)
+    
+    for tag in self.color_tags_list:
+        self.body.tag_remove(tag,x1,x2)</t>
+<t tx="ekr.20050607065634"># Set the bindings to vnode callbacks.
+# Create the tag.
+# Create the tag name.
+tagName = "hyper" + str(self.hyperCount)
+self.hyperCount += 1
+self.body.tag_delete(tagName)
+self.tag(tagName,i+2,j)
+
+ref.tagName = tagName
+self.body.tag_bind(tagName,"&lt;Control-1&gt;",ref.OnHyperLinkControlClick)
+self.body.tag_bind(tagName,"&lt;Any-Enter&gt;",ref.OnHyperLinkEnter)
+self.body.tag_bind(tagName,"&lt;Any-Leave&gt;",ref.OnHyperLinkLeave)</t>
 <t tx="ekr.20050607073917">extra_word_chars = {}
 for ch in word_chars:
     if ch not in string.letters and ch not in extra_word_chars:
         extra_word_chars[ch] = None</t>
+<t tx="ekr.20050607073917.1">class rulesetClass:
+    
+    @others</t>
+<t tx="ekr.20050607073917.2">def __init__ (self,attributes,keywords,properties,rules):
+        
+    self.name=attributes.get('set','')
+    self.attributes=attributes.copy() # A dict.
+    self.properties=properties[:] # A list.
+    self.keywords=keywords # A bunch.
+    self.rules=rules[:] # A list.
+    
+    if self.name:
+        g.trace('ruleset',self.name)
+        
+    self.defaultColor = self.attributes.get('default')</t>
 <t tx="ekr.20050607212958">def colorByDelegate(self,delegate,s,i,j,token_type):
     
     # g.trace(delegate,repr(s[i:j]))
@@ -10442,7 +10973,12 @@ for ch in word_chars:
         self.word_chars = self.save_word_chars
         self.defaultRulesList = self.save_defaultRulesList
         self.rulesDict = self.save_rulesDict</t>
-<t tx="ekr.20050607220512"># To do: honor default:comment3 attribute of ruleset.</t>
+<t tx="ekr.20050607221915">def printRuleset (self,ruleset,tag):
+    
+    self.printRulesetAttributes(ruleset,tag)
+
+    for rule in self.rulesets[0].rules:
+        self.printRule(rule)</t>
 <t tx="ekr.20050612074047"></t>
 <t tx="ekr.20050718142601"></t>
 <t tx="ekr.20050718142601.1">@nocolor
@@ -11979,5 +12515,190 @@ The wrong node gets cloned into the new chapter.
 </t>
 <t tx="ekr.20060428072333"># Important: the chapters2 plugin is not ready for prime time.
 # I recommend using the chapter_hoist plugin instead.</t>
+<t tx="ekr.20060503153321"></t>
+<t tx="ekr.20060503153321.1">if 0:
+    
+    @others</t>
+<t tx="ekr.20060503153603">@
+These rule functions recognize noweb syntactic constructions. These are treated
+just like rule functions, so they are module-level objects whose first argument
+is 'self'.</t>
+<t tx="ekr.20060503153603.1">@nocolor
+@
+
+The following jEdit matcher methods return the length of the matched text if the
+match succeeds, and zero otherwise.  In most cases, these methods colorize all the matched text.
+
+The following arguments affect matching:
+
+- at_line_start         True: sequence must start the line.
+- at_whitespace_end     True: sequence must be first non-whitespace text of the line.
+- at_word_start         True: sequence must start a word.
+- hash_char             The first character that must match in a regular expression.
+- no_escape:            True: ignore an 'end' string if it is preceded by the ruleset's escape character.
+- no_line_break         True: the match will not succeed across line breaks.
+- no_word_break:        True: the match will not cross word breaks.
+
+The following arguments affect coloring when a match succeeds.
+- delegate              A ruleset name. The matched text will be colored recursively by the indicated ruleset.
+- exclude_match         If True, the actual text that matched will not be colored.
+- kind                  The color tag to be applied to colored text.
+@c
+@color
+</t>
+<t tx="ekr.20060503171115"></t>
+<t tx="ekr.20060503173247">def match_mark_following (self,s,i,kind,pattern,
+    at_line_start,at_whitespace_end,at_word_start,exclude_match):
+    
+    '''Succeed if s[i:] matches pattern.'''
+
+    if at_line_start and i != 0 and s[i-1] != '\n': return 0
+    if at_whitespace_end and i != g.skip_ws(s,0): return 0
+    if at_word_start and i &gt; 0 and s[i-1] not in self.word_chars: return 0
+
+    if g.match(s,i,pattern):
+        j = i + len(pattern)
+        self.colorRangeWithTag(s,i,j,kind)
+        self.prev = (i,j,kind)
+        return j - i
+    else:
+        return 0
+</t>
+<t tx="ekr.20060503173247.1">def match_mark_previous (self,s,i,kind,pattern,
+    at_line_start,at_whitespace_end,at_word_start,exclude_match):
+    
+    '''Return the length of a matched SEQ or 0 if no match.
+
+    'at_line_start':    True: sequence must start the line.
+    'at_whitespace_end':True: sequence must be first non-whitespace text of the line.
+    'at_word_start':    True: sequence must start a word.'''
+
+    if at_line_start and i != 0 and s[i-1] != '\n': return 0
+    if at_whitespace_end and i != g.skip_ws(s,0): return 0
+    if at_word_start and i &gt; 0 and s[i-1] not in self.word_chars: return 0
+
+    if g.match(s,i,pattern):
+        j = i + len(pattern)
+        self.colorRangeWithTag(s,i,j,kind)
+        self.prev = (i,j,kind)
+        return j - i
+    else:
+        return 0</t>
+<t tx="ekr.20060504090341"># Set the bindings to vnode callbacks.
+# Create the tag.
+# Create the tag name.
+tagName = "hyper" + str(self.hyperCount)
+self.hyperCount += 1
+self.body.tag_delete(tagName)
+self.tag(tagName,i+2,j)
+
+ref.tagName = tagName
+self.body.tag_bind(tagName,"&lt;Control-1&gt;",ref.OnHyperLinkControlClick)
+self.body.tag_bind(tagName,"&lt;Any-Enter&gt;",ref.OnHyperLinkEnter)
+self.body.tag_bind(tagName,"&lt;Any-Leave&gt;",ref.OnHyperLinkLeave)</t>
+<t tx="ekr.20060504125630">@nocolor
+
+Syntax colors may be any valid Tk color name or color value.
+
+For example, "00aa00" is the dark green used by IDLE.
+
+See http://www.tcl.tk/man/tcl8.3/TkCmd/colors.htm for a list of valid color
+names. These names are case sensitive, for example: BlanchedAlmond.</t>
+<t tx="ekr.20060504125630.1">The color of comments in code parts.</t>
+<t tx="ekr.20060504125630.2">The color of name in @&lt;name@&gt;</t>
+<t tx="ekr.20060504125630.3">The color of C/C++ preprocessor directive lines.</t>
+<t tx="ekr.20060504125630.4">The color of text in doc parts.</t>
+<t tx="ekr.20060504125630.5">The color of keywords of the present language.
+
+For example, the color of "if", "try" and "except" in Python.</t>
+<t tx="ekr.20060504125630.6"></t>
+<t tx="ekr.20060504125630.7">The color of Leo keywords such as @ignore, @color, etc.</t>
+<t tx="ekr.20060504125630.8">The color of name in &lt; &lt; name &gt; &gt; when name is defined.</t>
+<t tx="ekr.20060504125630.9">The color of the double angle brackets in &lt;&lt; name &gt;&gt;
+
+</t>
+<t tx="ekr.20060504125630.10">The background color that represents spaces and tabs when Show Invisibles mode is in effect.</t>
+<t tx="ekr.20060504125630.11">The foreground color that represents spaces and tabs when Show Invisibles mode is in effect.</t>
+<t tx="ekr.20060504125630.12">The color of strings and their delimiters.
+
+</t>
+<t tx="ekr.20060504125630.13">The color of name in &lt;&lt; name &gt;&gt; when name is undefined.</t>
+<t tx="ekr.20060504125630.14">True:  Leo colors @space, @* and @** sections in cweb mode as black with LaTeX keywords highlighted.
+False: Leo colors @space, @* and @** sections in cweb mode as comments (default is red).
+
+Note: this setting does not affect how Leo colors noweb section references and defintions.</t>
+<t tx="ekr.20060504125630.15">True:  Leo colors C language comments in cweb mode as black with LaTeX keywords highlighted.
+Flase: Leo colors C language comments in cweb mode as comments (default red).
+
+Note: this setting does not affect how Leo colors noweb section references and defintions.</t>
+<t tx="ekr.20060504125630.16">True:  Leo colors @directives when @language plain is in effect.
+False: Leo colors everything black when @language plain is in effect.</t>
+<t tx="ekr.20060504125630.17">True: Underline undefined section names
+
+Only functional if use_hyperlinks = 0
+
+</t>
+<t tx="ekr.20060504125630.18">True:  underline "live" links.
+False: (recommended): Underline undefined section names.</t>
+<t tx="ekr.20060504130654">for name in default_colors_dict.keys(): # Python 2.1 support.
+    option_name,default_color = default_colors_dict[name]
+    option_color = c.config.getColor(option_name)
+    color = g.choose(option_color,option_color,default_color)
+    # Must use foreground, not fg.
+    try:
+        self.body.tag_configure(name, foreground=color)
+    except: # Recover after a user error.
+        self.body.tag_configure(name, foreground=default_color)
+
+underline_undefined = c.config.getBool("underline_undefined_section_names")
+use_hyperlinks      = c.config.getBool("use_hyperlinks")
+self.use_hyperlinks = use_hyperlinks
+
+# underline=var doesn't seem to work.
+if 0: # use_hyperlinks: # Use the same coloring, even when hyperlinks are in effect.
+    self.body.tag_configure("link",underline=1) # defined
+    self.body.tag_configure("name",underline=0) # undefined
+else:
+    self.body.tag_configure("link",underline=0)
+    if underline_undefined:
+        self.body.tag_configure("name",underline=1)
+    else:
+        self.body.tag_configure("name",underline=0)
+        
+# 8/4/02: we only create tags for whitespace when showing invisibles.
+if self.showInvisibles:
+    for name,option_name,default_color in (
+        ("blank","show_invisibles_space_background_color","Gray90"),
+        ("tab",  "show_invisibles_tab_background_color",  "Gray80")):
+        option_color = c.config.getColor(option_name)
+        color = g.choose(option_color,option_color,default_color)
+        try:
+            self.body.tag_configure(name,background=color)
+        except: # Recover after a user error.
+            self.body.tag_configure(name,background=default_color)
+    
+# 11/15/02: Colors for latex characters.  Should be user options...
+
+if 1: # Alas, the selection doesn't show if a background color is specified.
+    self.body.tag_configure("latexModeBackground",foreground="black")
+    self.body.tag_configure("latexModeKeyword",foreground="blue")
+    self.body.tag_configure("latexBackground",foreground="black")
+    self.body.tag_configure("latexKeyword",foreground="blue")
+else: # Looks cool, and good for debugging.
+    self.body.tag_configure("latexModeBackground",foreground="black",background="seashell1")
+    self.body.tag_configure("latexModeKeyword",foreground="blue",background="seashell1")
+    self.body.tag_configure("latexBackground",foreground="black",background="white")
+    self.body.tag_configure("latexKeyword",foreground="blue",background="white")
+    
+# Tags for wiki coloring.
+if self.showInvisibles:
+    self.body.tag_configure("elide",background="yellow")
+else:
+    self.body.tag_configure("elide",elide="1")
+self.body.tag_configure("bold",font=self.bold_font)
+self.body.tag_configure("italic",font=self.italic_font)
+self.body.tag_configure("bolditalic",font=self.bolditalic_font)
+for name in self.color_tags_list:
+    self.body.tag_configure(name,foreground=name)</t>
 </tnodes>
 </leo_file>
