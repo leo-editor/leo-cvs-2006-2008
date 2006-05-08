@@ -264,36 +264,42 @@ doxygen_doxygen_keywords_dict = {
 	"\~": "label",
 }
 
+# Dictionary of keywords dictionaries for doxygen mode.
+keywordsDictDict = {
+	"doxygen_doxygen": doxygen_doxygen_keywords_dict,
+	"doxygen_main": doxygen_main_keywords_dict,
+}
+
 # Rules for doxygen_main ruleset.
 
 def rule0(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind='"comment1"', seq="#",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_eol_span(s, i, kind="comment1", seq="#",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
 def rule1(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind='"keyword1"',
-        at_line_start=True, at_line_end=False, at_word_start=False, exclude_match=True)
+    return colorer.match_mark_previous(s, i, kind="keyword1", pattern="=",
+        at_line_start=True, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
 def rule2(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind='"keyword1"',
-        at_line_start=True, at_line_end=False, at_word_start=False, exclude_match=True)
+    return colorer.match_mark_previous(s, i, kind="keyword1", pattern="+=",
+        at_line_start=True, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
 def rule3(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="\"", end="\"",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rule4(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="'", end="'",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rule5(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="`", end="`",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="`", end="`",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
@@ -308,29 +314,29 @@ doxygen_main_rules = [
 
 def rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="comment3", seq="*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule8(colorer, s, i):
-    return colorer.match_span(s, i, kind='"comment1"', begin="<!--", end="-->",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="comment1", begin="<!--", end="-->",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule9(colorer, s, i):
     return colorer.match_seq(s, i, kind="comment3", seq="<<",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="comment3", seq="<=",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="comment3", seq="<",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule12(colorer, s, i):
-    return colorer.match_span(s, i, kind='"markup"', begin="<", end=">",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="markup", begin="<", end=">",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="xml::TAGS",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 

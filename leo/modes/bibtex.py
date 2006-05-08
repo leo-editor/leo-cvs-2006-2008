@@ -689,190 +689,212 @@ bibtex_textquoted_keywords_dict = {}
 # Keywords dict for bibtex_string ruleset.
 bibtex_string_keywords_dict = {}
 
+# Dictionary of keywords dictionaries for bibtex mode.
+keywordsDictDict = {
+	"bibtex_article": bibtex_article_keywords_dict,
+	"bibtex_book": bibtex_book_keywords_dict,
+	"bibtex_booklet": bibtex_booklet_keywords_dict,
+	"bibtex_conference": bibtex_conference_keywords_dict,
+	"bibtex_inbook": bibtex_inbook_keywords_dict,
+	"bibtex_incollection": bibtex_incollection_keywords_dict,
+	"bibtex_inproceedings": bibtex_inproceedings_keywords_dict,
+	"bibtex_main": bibtex_main_keywords_dict,
+	"bibtex_manual": bibtex_manual_keywords_dict,
+	"bibtex_mastersthesis": bibtex_mastersthesis_keywords_dict,
+	"bibtex_misc": bibtex_misc_keywords_dict,
+	"bibtex_phdthesis": bibtex_phdthesis_keywords_dict,
+	"bibtex_proceedings": bibtex_proceedings_keywords_dict,
+	"bibtex_string": bibtex_string_keywords_dict,
+	"bibtex_techreport": bibtex_techreport_keywords_dict,
+	"bibtex_textbraced": bibtex_textbraced_keywords_dict,
+	"bibtex_textquoted": bibtex_textquoted_keywords_dict,
+	"bibtex_unpublished": bibtex_unpublished_keywords_dict,
+}
+
 # Rules for bibtex_main ruleset.
 
 def rule0(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind='"comment1"', seq="%",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_eol_span(s, i, kind="comment1", seq="%",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
 def rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind='"function"', begin="@article{", end="}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="function", begin="@article{", end="}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="article",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind='"function"', begin="@article(", end=")",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="function", begin="@article(", end=")",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="article",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule3(colorer, s, i):
-    return colorer.match_span(s, i, kind='"function"', begin="@book{", end="}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="function", begin="@book{", end="}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="book",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule4(colorer, s, i):
-    return colorer.match_span(s, i, kind='"function"', begin="@book(", end=")",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="function", begin="@book(", end=")",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="book",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule5(colorer, s, i):
-    return colorer.match_span(s, i, kind='"function"', begin="@booklet{", end="}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="function", begin="@booklet{", end="}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="booklet",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule6(colorer, s, i):
-    return colorer.match_span(s, i, kind='"function"', begin="@booklet(", end=")",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="function", begin="@booklet(", end=")",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="booklet",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule7(colorer, s, i):
-    return colorer.match_span(s, i, kind='"function"', begin="@conference{", end="}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="function", begin="@conference{", end="}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="conference",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule8(colorer, s, i):
-    return colorer.match_span(s, i, kind='"function"', begin="@conference(", end=")",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="function", begin="@conference(", end=")",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="conference",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule9(colorer, s, i):
-    return colorer.match_span(s, i, kind='"function"', begin="@inbook{", end="}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="function", begin="@inbook{", end="}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="inbook",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule10(colorer, s, i):
-    return colorer.match_span(s, i, kind='"function"', begin="@inbook(", end=")",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="function", begin="@inbook(", end=")",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="inbook",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule11(colorer, s, i):
-    return colorer.match_span(s, i, kind='"function"', begin="@incollection{", end="}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="function", begin="@incollection{", end="}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="incollection",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule12(colorer, s, i):
-    return colorer.match_span(s, i, kind='"function"', begin="@incollection(", end=")",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="function", begin="@incollection(", end=")",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="incollection",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule13(colorer, s, i):
-    return colorer.match_span(s, i, kind='"function"', begin="@inproceedings{", end="}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="function", begin="@inproceedings{", end="}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="inproceedings",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule14(colorer, s, i):
-    return colorer.match_span(s, i, kind='"function"', begin="@inproceedings(", end=")",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="function", begin="@inproceedings(", end=")",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="inproceedings",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule15(colorer, s, i):
-    return colorer.match_span(s, i, kind='"function"', begin="@manual{", end="}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="function", begin="@manual{", end="}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="manual",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule16(colorer, s, i):
-    return colorer.match_span(s, i, kind='"function"', begin="@manual(", end=")",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="function", begin="@manual(", end=")",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="manual",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule17(colorer, s, i):
-    return colorer.match_span(s, i, kind='"function"', begin="@mastersthesis{", end="}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="function", begin="@mastersthesis{", end="}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="mastersthesis",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule18(colorer, s, i):
-    return colorer.match_span(s, i, kind='"function"', begin="@mastersthesis(", end=")",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="function", begin="@mastersthesis(", end=")",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="mastersthesis",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule19(colorer, s, i):
-    return colorer.match_span(s, i, kind='"function"', begin="@misc{", end="}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="function", begin="@misc{", end="}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="misc",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule20(colorer, s, i):
-    return colorer.match_span(s, i, kind='"function"', begin="@misc(", end=")",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="function", begin="@misc(", end=")",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="misc",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule21(colorer, s, i):
-    return colorer.match_span(s, i, kind='"function"', begin="@phdthesis{", end="}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="function", begin="@phdthesis{", end="}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="phdthesis",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule22(colorer, s, i):
-    return colorer.match_span(s, i, kind='"function"', begin="@phdthesis(", end=")",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="function", begin="@phdthesis(", end=")",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="phdthesis",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule23(colorer, s, i):
-    return colorer.match_span(s, i, kind='"function"', begin="@proceedings{", end="}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="function", begin="@proceedings{", end="}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="proceedings",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule24(colorer, s, i):
-    return colorer.match_span(s, i, kind='"function"', begin="@proceedings(", end=")",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="function", begin="@proceedings(", end=")",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="proceedings",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule25(colorer, s, i):
-    return colorer.match_span(s, i, kind='"function"', begin="@techreport{", end="}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="function", begin="@techreport{", end="}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="techreport",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule26(colorer, s, i):
-    return colorer.match_span(s, i, kind='"function"', begin="@techreport(", end=")",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="function", begin="@techreport(", end=")",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="techreport",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule27(colorer, s, i):
-    return colorer.match_span(s, i, kind='"function"', begin="@unpublished{", end="}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="function", begin="@unpublished{", end="}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="unpublished",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule28(colorer, s, i):
-    return colorer.match_span(s, i, kind='"function"', begin="@unpublished(", end=")",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="function", begin="@unpublished(", end=")",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="unpublished",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule29(colorer, s, i):
-    return colorer.match_span(s, i, kind='"function"', begin="@string{", end="}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="function", begin="@string{", end="}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="string",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule30(colorer, s, i):
-    return colorer.match_span(s, i, kind='"function"', begin="@string(", end=")",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="function", begin="@string(", end=")",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="string",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
@@ -886,60 +908,60 @@ bibtex_main_rules = [
 # Rules for bibtex_article ruleset.
 
 def rule31(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="\"", end="\"",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="textquoted",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule32(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal2"', begin="{", end="}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal2", begin="{", end="}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="textbraced",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule33(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule34(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=",",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule35(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="1[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="1[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule36(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="2[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="2[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule37(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="3[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="3[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule38(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="4[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="4[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule39(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="5[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="5[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule40(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="6[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="6[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule41(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="7[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="7[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule42(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="8[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="8[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule43(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="9[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="9[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule44(colorer, s, i):
     return colorer.match_keywords(s, i)
@@ -952,60 +974,60 @@ bibtex_article_rules = [
 # Rules for bibtex_book ruleset.
 
 def rule45(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="\"", end="\"",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="textquoted",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule46(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal2"', begin="{", end="}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal2", begin="{", end="}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="textbraced",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule47(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule48(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=",",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule49(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="1[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="1[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule50(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="2[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="2[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule51(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="3[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="3[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule52(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="4[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="4[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule53(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="5[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="5[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule54(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="6[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="6[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule55(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="7[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="7[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule56(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="8[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="8[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule57(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="9[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="9[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule58(colorer, s, i):
     return colorer.match_keywords(s, i)
@@ -1018,60 +1040,60 @@ bibtex_book_rules = [
 # Rules for bibtex_booklet ruleset.
 
 def rule59(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="\"", end="\"",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="textquoted",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule60(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal2"', begin="{", end="}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal2", begin="{", end="}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="textbraced",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule61(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule62(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=",",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule63(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="1[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="1[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule64(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="2[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="2[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule65(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="3[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="3[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule66(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="4[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="4[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule67(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="5[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="5[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule68(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="6[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="6[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule69(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="7[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="7[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule70(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="8[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="8[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule71(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="9[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="9[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule72(colorer, s, i):
     return colorer.match_keywords(s, i)
@@ -1084,60 +1106,60 @@ bibtex_booklet_rules = [
 # Rules for bibtex_conference ruleset.
 
 def rule73(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="\"", end="\"",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="textquoted",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule74(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal2"', begin="{", end="}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal2", begin="{", end="}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="textbraced",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule75(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule76(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=",",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule77(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="1[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="1[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule78(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="2[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="2[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule79(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="3[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="3[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule80(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="4[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="4[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule81(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="5[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="5[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule82(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="6[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="6[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule83(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="7[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="7[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule84(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="8[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="8[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule85(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="9[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="9[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule86(colorer, s, i):
     return colorer.match_keywords(s, i)
@@ -1150,60 +1172,60 @@ bibtex_conference_rules = [
 # Rules for bibtex_inbook ruleset.
 
 def rule87(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="\"", end="\"",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="textquoted",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule88(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal2"', begin="{", end="}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal2", begin="{", end="}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="textbraced",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule89(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule90(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=",",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule91(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="1[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="1[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule92(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="2[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="2[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule93(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="3[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="3[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule94(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="4[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="4[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule95(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="5[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="5[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule96(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="6[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="6[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule97(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="7[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="7[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule98(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="8[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="8[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule99(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="9[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="9[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule100(colorer, s, i):
     return colorer.match_keywords(s, i)
@@ -1216,60 +1238,60 @@ bibtex_inbook_rules = [
 # Rules for bibtex_incollection ruleset.
 
 def rule101(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="\"", end="\"",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="textquoted",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule102(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal2"', begin="{", end="}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal2", begin="{", end="}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="textbraced",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule103(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule104(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=",",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule105(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="1[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="1[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule106(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="2[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="2[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule107(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="3[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="3[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule108(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="4[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="4[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule109(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="5[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="5[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule110(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="6[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="6[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule111(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="7[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="7[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule112(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="8[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="8[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule113(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="9[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="9[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule114(colorer, s, i):
     return colorer.match_keywords(s, i)
@@ -1282,60 +1304,60 @@ bibtex_incollection_rules = [
 # Rules for bibtex_inproceedings ruleset.
 
 def rule115(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="\"", end="\"",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="textquoted",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule116(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal2"', begin="{", end="}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal2", begin="{", end="}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="textbraced",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule117(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule118(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=",",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule119(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="1[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="1[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule120(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="2[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="2[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule121(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="3[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="3[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule122(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="4[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="4[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule123(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="5[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="5[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule124(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="6[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="6[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule125(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="7[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="7[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule126(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="8[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="8[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule127(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="9[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="9[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule128(colorer, s, i):
     return colorer.match_keywords(s, i)
@@ -1348,60 +1370,60 @@ bibtex_inproceedings_rules = [
 # Rules for bibtex_manual ruleset.
 
 def rule129(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="\"", end="\"",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="textquoted",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule130(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal2"', begin="{", end="}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal2", begin="{", end="}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="textbraced",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule131(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule132(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=",",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule133(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="1[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="1[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule134(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="2[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="2[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule135(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="3[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="3[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule136(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="4[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="4[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule137(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="5[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="5[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule138(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="6[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="6[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule139(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="7[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="7[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule140(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="8[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="8[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule141(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="9[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="9[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule142(colorer, s, i):
     return colorer.match_keywords(s, i)
@@ -1414,60 +1436,60 @@ bibtex_manual_rules = [
 # Rules for bibtex_mastersthesis ruleset.
 
 def rule143(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="\"", end="\"",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="textquoted",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule144(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal2"', begin="{", end="}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal2", begin="{", end="}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="textbraced",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule145(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule146(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=",",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule147(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="1[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="1[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule148(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="2[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="2[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule149(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="3[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="3[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule150(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="4[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="4[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule151(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="5[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="5[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule152(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="6[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="6[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule153(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="7[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="7[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule154(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="8[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="8[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule155(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="9[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="9[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule156(colorer, s, i):
     return colorer.match_keywords(s, i)
@@ -1480,60 +1502,60 @@ bibtex_mastersthesis_rules = [
 # Rules for bibtex_misc ruleset.
 
 def rule157(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="\"", end="\"",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="textquoted",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule158(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal2"', begin="{", end="}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal2", begin="{", end="}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="textbraced",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule159(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule160(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=",",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule161(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="1[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="1[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule162(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="2[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="2[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule163(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="3[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="3[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule164(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="4[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="4[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule165(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="5[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="5[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule166(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="6[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="6[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule167(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="7[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="7[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule168(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="8[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="8[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule169(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="9[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="9[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule170(colorer, s, i):
     return colorer.match_keywords(s, i)
@@ -1546,60 +1568,60 @@ bibtex_misc_rules = [
 # Rules for bibtex_phdthesis ruleset.
 
 def rule171(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="\"", end="\"",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="textquoted",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule172(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal2"', begin="{", end="}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal2", begin="{", end="}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="textbraced",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule173(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule174(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=",",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule175(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="1[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="1[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule176(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="2[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="2[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule177(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="3[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="3[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule178(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="4[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="4[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule179(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="5[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="5[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule180(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="6[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="6[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule181(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="7[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="7[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule182(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="8[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="8[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule183(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="9[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="9[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule184(colorer, s, i):
     return colorer.match_keywords(s, i)
@@ -1612,60 +1634,60 @@ bibtex_phdthesis_rules = [
 # Rules for bibtex_proceedings ruleset.
 
 def rule185(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="\"", end="\"",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="textquoted",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule186(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal2"', begin="{", end="}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal2", begin="{", end="}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="textbraced",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule187(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule188(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=",",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule189(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="1[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="1[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule190(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="2[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="2[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule191(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="3[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="3[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule192(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="4[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="4[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule193(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="5[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="5[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule194(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="6[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="6[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule195(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="7[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="7[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule196(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="8[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="8[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule197(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="9[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="9[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule198(colorer, s, i):
     return colorer.match_keywords(s, i)
@@ -1678,60 +1700,60 @@ bibtex_proceedings_rules = [
 # Rules for bibtex_techreport ruleset.
 
 def rule199(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="\"", end="\"",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="textquoted",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule200(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal2"', begin="{", end="}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal2", begin="{", end="}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="textbraced",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule201(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule202(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=",",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule203(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="1[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="1[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule204(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="2[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="2[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule205(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="3[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="3[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule206(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="4[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="4[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule207(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="5[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="5[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule208(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="6[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="6[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule209(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="7[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="7[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule210(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="8[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="8[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule211(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="9[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="9[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule212(colorer, s, i):
     return colorer.match_keywords(s, i)
@@ -1744,60 +1766,60 @@ bibtex_techreport_rules = [
 # Rules for bibtex_unpublished ruleset.
 
 def rule213(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="\"", end="\"",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="textquoted",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule214(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal2"', begin="{", end="}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal2", begin="{", end="}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="textbraced",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule215(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule216(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=",",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule217(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="1[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="1[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule218(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="2[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="2[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule219(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="3[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="3[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule220(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="4[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="4[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule221(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="5[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="5[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule222(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="6[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="6[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule223(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="7[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="7[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule224(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="8[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="8[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule225(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"literal1"', seq="9[0-9]*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="9[0-9]*",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule226(colorer, s, i):
     return colorer.match_keywords(s, i)
@@ -1810,26 +1832,26 @@ bibtex_unpublished_rules = [
 # Rules for bibtex_textbraced ruleset.
 
 def rule227(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal3"', begin="\{", end="\}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal3", begin="\{", end="\}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule228(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal2"', begin="{", end="}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal2", begin="{", end="}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="textbraced",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule229(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="\"", end="\"",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="textquoted",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule230(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal3", seq="\\"",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules list for bibtex_textbraced ruleset.
 bibtex_textbraced_rules = [
@@ -1838,20 +1860,20 @@ bibtex_textbraced_rules = [
 # Rules for bibtex_textquoted ruleset.
 
 def rule231(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal3"', begin="\{", end="\}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal3", begin="\{", end="\}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="textbraced",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule232(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal2"', begin="{", end="}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal2", begin="{", end="}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="textbraced",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule233(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal3", seq="\\"",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules list for bibtex_textquoted ruleset.
 bibtex_textquoted_rules = [
@@ -1860,34 +1882,34 @@ bibtex_textquoted_rules = [
 # Rules for bibtex_string ruleset.
 
 def rule234(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="\"", end="\"",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="textquoted",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule235(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal2"', begin="{", end="}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal2", begin="{", end="}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="textbraced",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule236(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal3"', begin="\{", end="\}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal3", begin="\{", end="\}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule237(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule238(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=",",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule239(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal3", seq="\\"",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules list for bibtex_string ruleset.
 bibtex_string_rules = [

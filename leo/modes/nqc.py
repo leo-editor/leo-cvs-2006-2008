@@ -143,111 +143,116 @@ nqc_main_keywords_dict = {
 	"while": "keyword1",
 }
 
+# Dictionary of keywords dictionaries for nqc mode.
+keywordsDictDict = {
+	"nqc_main": nqc_main_keywords_dict,
+}
+
 # Rules for nqc_main ruleset.
 
 def rule0(colorer, s, i):
-    return colorer.match_span(s, i, kind='"comment1"', begin="/*", end="*/",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="\"", end="\"",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="'", end="'",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rule3(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind='"keyword2"', seq="#",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_eol_span(s, i, kind="keyword2", seq="#",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
 def rule4(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind='"comment2"', seq="//",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_eol_span(s, i, kind="comment2", seq="//",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
 def rule5(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="!",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">=",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule8(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<=",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule9(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="%",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule16(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="&",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule17(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="|",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule18(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="^",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule19(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="~",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule20(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="}",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule21(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="{",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule22(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind='"label"',
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=True)
+    return colorer.match_mark_previous(s, i, kind="label", pattern=":",
+        at_line_start=False, at_whitespace_end=True, at_word_start=False, exclude_match=True)
 
 def rule23(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind='"function"',
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=True)
+    return colorer.match_mark_previous(s, i, kind="function", pattern="(",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
 def rule24(colorer, s, i):
     return colorer.match_keywords(s, i)

@@ -211,50 +211,55 @@ scheme_main_keywords_dict = {
 	"zero?": "keyword3",
 }
 
+# Dictionary of keywords dictionaries for scheme mode.
+keywordsDictDict = {
+	"scheme_main": scheme_main_keywords_dict,
+}
+
 # Rules for scheme_main ruleset.
 
 def rule0(colorer, s, i):
-    return colorer.match_span(s, i, kind='"comment1"', begin="#|", end="|#",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="comment1", begin="#|", end="|#",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule1(colorer, s, i):
     return colorer.match_seq(s, i, kind="null", seq="'(",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule2(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"literal1"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="literal1", pattern="'"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule3(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"literal1"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="literal1", pattern="#\"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule4(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"literal1"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="literal1", pattern="#b"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule5(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"literal1"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="literal1", pattern="#d"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule6(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"literal1"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="literal1", pattern="#o"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule7(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"literal1"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="literal1", pattern="#x"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule8(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind='"comment1"', seq=";",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_eol_span(s, i, kind="comment1", seq=";",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
 def rule9(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="\"", end="\"",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 

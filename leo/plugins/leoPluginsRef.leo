@@ -332,7 +332,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20040722135402.1" a="V"><vh>Enhancing the body pane</vh>
+<v t="ekr.20040722135402.1"><vh>Enhancing the body pane</vh>
 <v t="ekr.20060506070443.1"><vh>@thin detect_urls.py</vh></v>
 <v t="edream.110203113231.753"><vh>@thin image.py</vh></v>
 <v t="ekr.20040422072343"><vh>@thin rClick.py</vh></v>
@@ -418,15 +418,14 @@
 <v t="edream.110203113231.919"><vh>@thin override_commands.py</vh></v>
 <v t="edream.110203113231.921"><vh>@thin redefine_put.py</vh></v>
 </v>
-<v t="ekr.20040722134535"><vh>Experimental/unfinished</vh>
+<v t="ekr.20040722134535" a="E"><vh>Experimental/unfinished</vh>
 <v t="ekr.20060306151759"><vh>chapters2 plugin</vh>
 <v t="ekr.20060428071327"><vh>Fix chapters plugin</vh>
 <v t="ekr.20060428071631"><vh>Report</vh></v>
 </v>
 <v t="ekr.20060306151759.1"><vh>@thin chapters2.py</vh></v>
 </v>
-<v t="ekr.20050915064008"><vh>@thin __vnx__.py</vh></v>
-<v t="ekr.20050612074047"><vh>New colorizer</vh>
+<v t="ekr.20050612074047" a="V"><vh>New colorizer</vh>
 <v t="ekr.20050601081132" a="M"><vh>&lt;&lt; to do &gt;&gt;</vh>
 <v t="ekr.20050603121815"><vh>&lt;&lt; later &gt;&gt;</vh></v>
 </v>
@@ -1175,6 +1174,151 @@ expanded="ekr.20050602211219,ekr.20050606214036,ekr.20050529150436,ekr.200605031
 marks="ekr.20050809082854.1,"><vh>@thin rst3.py</vh></v>
 </v>
 </v>
+</v>
+<v t="ekr.20050612074047" a="E"><vh>New colorizer</vh>
+<v t="ekr.20050601081132" a="M"><vh>&lt;&lt; to do &gt;&gt;</vh>
+<v t="ekr.20050603121815"><vh>&lt;&lt; later &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20050530065723"><vh>@url http://www.jedit.org/42docs/users-guide/writing-modes-part.html</vh></v>
+<v t="ekr.20060425113823"><vh>Recent</vh>
+<v t="ekr.20050602150619"><vh>init_mode</vh></v>
+<v t="ekr.20060503153603.1" a="EM"><vh>jEdit matchers (todo: exclude_match)</vh>
+<v t="ekr.20050529190857"><vh>match_keywords</vh></v>
+<v t="ekr.20050529182335"><vh>match_regexp_helper (TO DO)</vh></v>
+<v t="ekr.20050601045930"><vh>match_eol_span</vh></v>
+<v t="ekr.20050601063317"><vh>match_eol_span_regexp</vh></v>
+<v t="ekr.20060503173247"><vh>match_mark_following</vh></v>
+<v t="ekr.20060503173247.1"><vh>match_mark_previous</vh></v>
+<v t="ekr.20050529182335.1"><vh>match_seq</vh></v>
+<v t="ekr.20050529215620"><vh>match_seq_regexp</vh></v>
+<v t="ekr.20050529185208.2"><vh>match_span</vh></v>
+<v t="ekr.20050529215732"><vh>match_span_regexp</vh></v>
+</v>
+<v t="ekr.20050601105358"><vh>colorOneChunk</vh>
+<v t="ekr.20050605130806"><vh>&lt;&lt; queue up this method the first time &gt;&gt;</vh></v>
+<v t="ekr.20050601162452.1"><vh>&lt;&lt; queue up this method &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20060503153603"><vh>Leo rule functions</vh>
+<v t="ekr.20050603043840.1"><vh>match_at_color</vh></v>
+<v t="ekr.20050603043840.2"><vh>match_at_nocolor</vh></v>
+<v t="ekr.20050602211253"><vh>match_doc_part</vh></v>
+<v t="ekr.20050602211219" a="E"><vh>match_section_ref</vh>
+<v t="ekr.20060504090341"><vh>&lt;&lt; set the hyperlink &gt;&gt;</vh></v>
+</v>
+</v>
+<v t="ekr.20050529180421.47"><vh>Rule matching methods</vh>
+<v t="ekr.20060503153603.1" a="EM"><vh>jEdit matchers (todo: exclude_match)</vh>
+<v t="ekr.20050529190857"><vh>match_keywords</vh></v>
+<v t="ekr.20050529182335"><vh>match_regexp_helper (TO DO)</vh></v>
+<v t="ekr.20050601045930"><vh>match_eol_span</vh></v>
+<v t="ekr.20050601063317"><vh>match_eol_span_regexp</vh></v>
+<v t="ekr.20060503173247"><vh>match_mark_following</vh></v>
+<v t="ekr.20060503173247.1"><vh>match_mark_previous</vh></v>
+<v t="ekr.20050529182335.1"><vh>match_seq</vh></v>
+<v t="ekr.20050529215620"><vh>match_seq_regexp</vh></v>
+<v t="ekr.20050529185208.2"><vh>match_span</vh></v>
+<v t="ekr.20050529215732"><vh>match_span_regexp</vh></v>
+</v>
+</v>
+<v t="ekr.20050602205810.4"><vh>colorRangeWithTag</vh></v>
+<v t="ekr.20060504130654"><vh>&lt;&lt; configure tags &gt;&gt; (from core)</vh></v>
+<v t="ekr.20050529143413.33"><vh>configure_tags</vh></v>
+</v>
+<v t="ekr.20050529180421.27" a="M"><vh>Attributes for 'rules'</vh></v>
+<v t="ekr.20060503171115"><vh>Not used</vh>
+<v t="ekr.20060503153321"><vh>Old parsing code, now done by jEdit2Py script</vh>
+<v t="ekr.20050530065723.58"><vh>class contentHandler (xml.sax.saxutils.XMLGenerator)</vh>
+<v t="ekr.20050530065723.59"><vh> __init__ &amp; helpers</vh></v>
+<v t="ekr.20050530065723.60"><vh>helpers</vh>
+<v t="ekr.20050530065723.61"><vh>attrsToList</vh></v>
+<v t="ekr.20050530065723.62"><vh>attrsToString</vh></v>
+<v t="ekr.20050530065723.63"><vh>clean</vh></v>
+<v t="ekr.20050530065723.64"><vh>error</vh></v>
+<v t="ekr.20050530065723.65"><vh>printStartElement</vh></v>
+<v t="ekr.20050530065723.66"><vh>printSummary</vh></v>
+</v>
+<v t="ekr.20050530065723.67"><vh>sax over-rides</vh>
+<v t="ekr.20050530065723.68"><vh> Do nothing...</vh>
+<v t="ekr.20050530065723.69"><vh>other methods</vh></v>
+<v t="ekr.20050530065723.70"><vh>endDocument</vh></v>
+<v t="ekr.20050530065723.71"><vh>startDocument</vh></v>
+</v>
+<v t="ekr.20050530065723.72"><vh>characters</vh></v>
+<v t="ekr.20050530065723.73"><vh>endElement</vh></v>
+<v t="ekr.20050530065723.74"><vh>startElement</vh></v>
+</v>
+<v t="ekr.20050530065723.75"><vh>doStartElement</vh></v>
+<v t="ekr.20050530065723.76"><vh>doEndElement</vh></v>
+<v t="ekr.20050530071955"><vh>getMode</vh></v>
+</v>
+<v t="ekr.20050530065723.49"><vh>class modeClass</vh>
+<v t="ekr.20050530065723.50"><vh> mode.__init__</vh></v>
+<v t="ekr.20050530073825"><vh> mode.__str__ &amp; __repr__</vh></v>
+<v t="ekr.20050530081700"><vh> Printing...</vh>
+<v t="ekr.20050530075602"><vh>printModeAttributes, printRulesetAttributes &amp; printAttributesHelper</vh></v>
+<v t="ekr.20050530080452"><vh>printProperty</vh></v>
+<v t="ekr.20050530075602.1"><vh>printRule</vh></v>
+<v t="ekr.20050607221915"><vh>printRuleset</vh></v>
+<v t="ekr.20050530065723.56"><vh>printSummary</vh></v>
+</v>
+<v t="ekr.20050530065723.51"><vh>doAttribute</vh></v>
+<v t="ekr.20050530065723.52"><vh>doContent</vh></v>
+<v t="ekr.20050530065723.53"><vh>endElement</vh></v>
+<v t="ekr.20050530065723.54"><vh>error</vh></v>
+<v t="ekr.20050530074431"><vh>getters</vh></v>
+<v t="ekr.20050530065723.55"><vh>inRule</vh></v>
+<v t="ekr.20050530065723.57"><vh>startElement</vh></v>
+</v>
+<v t="ekr.20050607073917.1"><vh>class rulesetClass</vh>
+<v t="ekr.20050607073917.2"><vh>ctor</vh></v>
+</v>
+<v t="ekr.20050530065723.47"><vh>parse_jEdit_file</vh></v>
+</v>
+<v t="ekr.20050602152743"><vh>init_keywords (OLD)</vh>
+<v t="ekr.20050607073917"><vh>&lt;&lt; compute extra_word_chars &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20060503153321.1"><vh>No longer used</vh>
+<v t="ekr.20050530112849"><vh>createRuleMatchers</vh></v>
+<v t="ekr.20050530112849.1"><vh>createRuleMatcher</vh></v>
+<v t="ekr.20050602204708"><vh>createDocPartMatcher &amp; createSectionRefMatcher</vh></v>
+<v t="ekr.20050603043840"><vh>createAtColorMatcher &amp; createAtNocolorMatcher</vh></v>
+</v>
+<v t="ekr.20050603051440"><vh>atColorColorHelper &amp; atNocolorColorHelper</vh></v>
+<v t="ekr.20050601065451" a="E"><vh>doColor</vh></v>
+<v t="ekr.20050602205810.3"><vh>defaultColorHelper</vh></v>
+<v t="ekr.20050602205810"><vh>docPartColorHelper</vh></v>
+<v t="ekr.20050602205810.2"><vh>keywordsColorHelper</vh></v>
+<v t="ekr.20050602205810.1"><vh>sectionRefColorHelper</vh>
+<v t="ekr.20050607065634"><vh>&lt;&lt; set the hyperlink &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20050529143413.27"><vh>defineAndExtendForthWords  (create forth.xml instead)</vh></v>
+<v t="ekr.20050605185452"><vh>removeOldTagsFromLine</vh></v>
+<v t="ekr.20050601162452.3" a="E"><vh>doRule</vh></v>
+<v t="ekr.20050607212958"><vh>colorByDelegate</vh></v>
+</v>
+<v t="ekr.20060504125630"><vh>Syntax colors &amp; options</vh>
+<v t="ekr.20060504125630.1"><vh>@color comment_color = firebrick3</vh></v>
+<v t="ekr.20060504125630.2"><vh>@color cweb_section_name_color = red</vh></v>
+<v t="ekr.20060504125630.3"><vh>@color directive_color = blue</vh></v>
+<v t="ekr.20060504125630.4"><vh>@color doc_part_color = firebrick3</vh></v>
+<v t="ekr.20060504125630.5"><vh>@color keyword_color = blue</vh></v>
+<v t="ekr.20060504125630.6"><vh>@color latex_background_color = None</vh></v>
+<v t="ekr.20060504125630.7"><vh>@color leo_keyword_color = #00aa00</vh></v>
+<v t="ekr.20060504125630.8"><vh>@color section_name_color = red</vh></v>
+<v t="ekr.20060504125630.9"><vh>@color section_name_brackets_color = blue</vh></v>
+<v t="ekr.20060504125630.10"><vh>@color show_invisibles_space_background_color = Gray90</vh></v>
+<v t="ekr.20060504125630.11"><vh>@color show_invisibles_tab_foreground_color = Gray80</vh></v>
+<v t="ekr.20060504125630.12"><vh>@color string_color = #00aa00</vh></v>
+<v t="ekr.20060504125630.13"><vh>@color undefined_section_name_color = red</vh></v>
+<v t="ekr.20060504125630.14"><vh>@bool color_cweb_doc_parts_with_latex = True</vh></v>
+<v t="ekr.20060504125630.15"><vh>@bool color_cweb_comments_with_latex = True</vh></v>
+<v t="ekr.20060504125630.16"><vh>@bool color_directives_in_plain_text = True</vh></v>
+<v t="ekr.20060504125630.17"><vh>@bool underline_undefined_section_names = True</vh></v>
+<v t="ekr.20060504125630.18"><vh>@bool use_hyperlinks = False</vh></v>
+</v>
+<v t="ekr.20050529142847"
+marks="ekr.20050601081132,ekr.20060503153603.1,"
+expanded="ekr.20050602211219,ekr.20050606214036,ekr.20050529150436,ekr.20060503153603.1,"><vh>@thin __jEdit_colorizer__.py</vh></v>
 </v>
 </vnodes>
 <tnodes>

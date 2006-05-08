@@ -20,7 +20,7 @@
 # Plugin_manager.py needs plugins_menu.py
 plugins_menu.py
 #################
-#__jEdit_colorizer__.py
+__jEdit_colorizer__.py
 #word_export.py
 #open_shell.py
 #at_view.py
@@ -50,6 +50,7 @@ rst3.py
 #scripts_menu.py
 #chapter_hoist.py
 #datenodes.py
+#detect_urls.py
 plugin_manager.py
 
 # Icon area: order is important.

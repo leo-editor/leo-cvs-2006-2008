@@ -221,28 +221,33 @@ assembly_r2000_main_keywords_dict = {
 	"xori": "function",
 }
 
+# Dictionary of keywords dictionaries for assembly_r2000 mode.
+keywordsDictDict = {
+	"assembly_r2000_main": assembly_r2000_main_keywords_dict,
+}
+
 # Rules for assembly_r2000_main ruleset.
 
 def rule0(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind='"comment1"', seq="#",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_eol_span(s, i, kind="comment1", seq="#",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
 def rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="'", end="'",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="\"", end="\"",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rule3(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind='"label"',
-        at_line_start=True, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_previous(s, i, kind="label", pattern=":",
+        at_line_start=True, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule4(colorer, s, i):
     return colorer.match_keywords(s, i)

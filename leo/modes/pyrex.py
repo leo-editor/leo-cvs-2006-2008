@@ -29,6 +29,11 @@ pyrex_main_keywords_dict = {
 	"void": "keyword4",
 }
 
+# Dictionary of keywords dictionaries for pyrex mode.
+keywordsDictDict = {
+	"pyrex_main": pyrex_main_keywords_dict,
+}
+
 # Rules for pyrex_main ruleset.
 
 

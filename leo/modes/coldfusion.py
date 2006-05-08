@@ -446,70 +446,78 @@ coldfusion_cftags_keywords_dict = {
 	"YesNoFormat": "keyword2",
 }
 
+# Dictionary of keywords dictionaries for coldfusion mode.
+keywordsDictDict = {
+	"coldfusion_cfscript": coldfusion_cfscript_keywords_dict,
+	"coldfusion_cftags": coldfusion_cftags_keywords_dict,
+	"coldfusion_main": coldfusion_main_keywords_dict,
+	"coldfusion_tags": coldfusion_tags_keywords_dict,
+}
+
 # Rules for coldfusion_main ruleset.
 
 def rule0(colorer, s, i):
-    return colorer.match_span(s, i, kind='"comment4"', begin="<!---", end="--->",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="comment4", begin="<!---", end="--->",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind='"comment1"', begin="/*", end="*/",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule2(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind='"comment2"', seq="//",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_eol_span(s, i, kind="comment2", seq="//",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
 def rule3(colorer, s, i):
-    return colorer.match_span(s, i, kind='"comment3"', begin="<!--", end="-->",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="comment3", begin="<!--", end="-->",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule4(colorer, s, i):
-    return colorer.match_span(s, i, kind='"keyword3"', begin="<CFSCRIPT", end="</CFSCRIPT>",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="keyword3", begin="<CFSCRIPT", end="</CFSCRIPT>",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="CFSCRIPT",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule5(colorer, s, i):
-    return colorer.match_span(s, i, kind='"keyword3"', begin="<CF", end=">",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="keyword3", begin="<CF", end=">",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="CFTAGS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule6(colorer, s, i):
-    return colorer.match_span(s, i, kind='"keyword3"', begin="</CF", end=">",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="keyword3", begin="</CF", end=">",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="CFTAGS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule7(colorer, s, i):
-    return colorer.match_span(s, i, kind='"markup"', begin="<SCRIPT", end="</SCRIPT>",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="markup", begin="<SCRIPT", end="</SCRIPT>",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="html::JAVASCRIPT",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule8(colorer, s, i):
-    return colorer.match_span(s, i, kind='"markup"', begin="<STYLE", end="</STYLE>",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="markup", begin="<STYLE", end="</STYLE>",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="html::CSS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule9(colorer, s, i):
-    return colorer.match_span(s, i, kind='"markup"', begin="<", end=">",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="markup", begin="<", end=">",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="TAGS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule10(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal2"', begin="&", end=";",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal2", begin="&", end=";",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=True)
 
@@ -521,36 +529,36 @@ coldfusion_main_rules = [
 # Rules for coldfusion_tags ruleset.
 
 def rule11(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="\"", end="\"",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule12(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="'", end="'",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule14(colorer, s, i):
-    return colorer.match_span(s, i, kind='"keyword3"', begin="<CF", end=">",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="keyword3", begin="<CF", end=">",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="CFTAGS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule15(colorer, s, i):
-    return colorer.match_span(s, i, kind='"keyword3"', begin="</CF", end=">",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="keyword3", begin="</CF", end=">",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="CFTAGS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule16(colorer, s, i):
-    return colorer.match_span(s, i, kind='"keyword3"', begin="<CFSCRIPT", end="</CFSCRIPT>",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="keyword3", begin="<CFSCRIPT", end="</CFSCRIPT>",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="CFSCRIPT",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
@@ -561,75 +569,75 @@ coldfusion_tags_rules = [
 # Rules for coldfusion_cfscript ruleset.
 
 def rule17(colorer, s, i):
-    return colorer.match_span(s, i, kind='"comment1"', begin="/*", end="*/",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule18(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind='"comment2"', seq="//",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_eol_span(s, i, kind="comment2", seq="//",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
 def rule19(colorer, s, i):
-    return colorer.match_span(s, i, kind='"label"', begin="\"", end="\"",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="label", begin="\"", end="\"",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule20(colorer, s, i):
-    return colorer.match_span(s, i, kind='"label"', begin="'", end="'",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="label", begin="'", end="'",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule21(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal2", seq="(",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule22(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal2", seq=")",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule23(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule24(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule25(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule26(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule27(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">=",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule28(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<=",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule29(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="><",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule30(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule31(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="!!",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule32(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="&&",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule33(colorer, s, i):
     return colorer.match_keywords(s, i)
@@ -642,28 +650,28 @@ coldfusion_cfscript_rules = [
 # Rules for coldfusion_cftags ruleset.
 
 def rule34(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="\"", end="\"",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule35(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="'", end="'",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule36(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule37(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword3", seq="##",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule38(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal2"', begin="#", end="#",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal2", begin="#", end="#",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 

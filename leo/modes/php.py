@@ -2510,10 +2510,11 @@ def rule9(colorer, s, i):
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=True)
 
-# Rules list for php_main ruleset.
-php_main_rules = [
-	rule0, rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9,
-]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"&": [rule9,],
+	"<": [rule0,rule1,rule2,rule3,rule4,rule5,rule6,rule7,rule8,],
+}
 
 # Rules for php_tags ruleset.
 
@@ -2551,9 +2552,13 @@ def rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules list for php_tags ruleset.
-php_tags_rules = [
-	rule10, rule11, rule12, rule13, rule14, rule15, ]
+# Rules dict for tags ruleset.
+rulesDict1 = {
+	"\"": [rule13,],
+	"'": [rule14,],
+	"<": [rule10,rule11,rule12,],
+	"=": [rule15,],
+}
 
 # Rules for php_tags_literal ruleset.
 
@@ -2575,9 +2580,10 @@ def rule18(colorer, s, i):
         delegate="PHP",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules list for php_tags_literal ruleset.
-php_tags_literal_rules = [
-	rule16, rule17, rule18, ]
+# Rules dict for tags_literal ruleset.
+rulesDict1 = {
+	"<": [rule16,rule17,rule18,],
+}
 
 # Rules for php_php ruleset.
 
@@ -2746,12 +2752,101 @@ def rule55(colorer, s, i):
 def rule56(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules list for php_php ruleset.
-php_php_rules = [
-	rule19, rule20, rule21, rule22, rule23, rule24, rule25, rule26, rule27, rule28,
-	rule29, rule30, rule31, rule32, rule33, rule34, rule35, rule36, rule37, rule38,
-	rule39, rule40, rule41, rule42, rule43, rule44, rule45, rule46, rule47, rule48,
-	rule49, rule50, rule51, rule52, rule53, rule54, rule55, rule56, ]
+# Rules dict for php ruleset.
+rulesDict1 = {
+	"!": [rule30,],
+	"\"": [rule21,],
+	"#": [rule25,],
+	"$": [rule27,],
+	"%": [rule40,],
+	"&": [rule41,],
+	"'": [rule22,],
+	"(": [rule55,],
+	"*": [rule37,],
+	"+": [rule34,],
+	",": [rule48,],
+	"-": [rule29,rule35,],
+	".": [rule45,],
+	"/": [rule19,rule20,rule24,rule36,],
+	"0": [rule56,],
+	"1": [rule56,],
+	"2": [rule56,],
+	"3": [rule56,],
+	"4": [rule56,],
+	"5": [rule56,],
+	"6": [rule56,],
+	"7": [rule56,],
+	"8": [rule56,],
+	"9": [rule56,],
+	":": [rule54,],
+	";": [rule49,],
+	"<": [rule26,rule32,rule39,],
+	"=": [rule28,rule33,],
+	">": [rule31,rule38,],
+	"?": [rule52,],
+	"@": [rule53,],
+	"A": [rule56,],
+	"B": [rule56,],
+	"C": [rule56,],
+	"D": [rule56,],
+	"E": [rule56,],
+	"F": [rule56,],
+	"G": [rule56,],
+	"H": [rule56,],
+	"I": [rule56,],
+	"J": [rule56,],
+	"K": [rule56,],
+	"L": [rule56,],
+	"M": [rule56,],
+	"N": [rule56,],
+	"O": [rule56,],
+	"P": [rule56,],
+	"Q": [rule56,],
+	"R": [rule56,],
+	"S": [rule56,],
+	"T": [rule56,],
+	"U": [rule56,],
+	"V": [rule56,],
+	"W": [rule56,],
+	"X": [rule56,],
+	"Y": [rule56,],
+	"Z": [rule56,],
+	"[": [rule51,],
+	"]": [rule50,],
+	"^": [rule43,],
+	"_": [rule56,],
+	"`": [rule23,],
+	"a": [rule56,],
+	"b": [rule56,],
+	"c": [rule56,],
+	"d": [rule56,],
+	"e": [rule56,],
+	"f": [rule56,],
+	"g": [rule56,],
+	"h": [rule56,],
+	"i": [rule56,],
+	"j": [rule56,],
+	"k": [rule56,],
+	"l": [rule56,],
+	"m": [rule56,],
+	"n": [rule56,],
+	"o": [rule56,],
+	"p": [rule56,],
+	"q": [rule56,],
+	"r": [rule56,],
+	"s": [rule56,],
+	"t": [rule56,],
+	"u": [rule56,],
+	"v": [rule56,],
+	"w": [rule56,],
+	"x": [rule56,],
+	"y": [rule56,],
+	"z": [rule56,],
+	"{": [rule47,],
+	"|": [rule42,],
+	"}": [rule46,],
+	"~": [rule44,],
+}
 
 # Rules for php_php_literal ruleset.
 
@@ -2759,9 +2854,10 @@ def rule57(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword3", pattern="$"
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-# Rules list for php_php_literal ruleset.
-php_php_literal_rules = [
-	rule57, ]
+# Rules dict for php_literal ruleset.
+rulesDict1 = {
+	"$": [rule57,],
+}
 
 # Rules for php_javascript ruleset.
 
@@ -2773,9 +2869,11 @@ def rule59(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq="SRC=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="BACK_TO_HTML")
 
-# Rules list for php_javascript ruleset.
-php_javascript_rules = [
-	rule58, rule59, ]
+# Rules dict for javascript ruleset.
+rulesDict1 = {
+	">": [rule58,],
+	"S": [rule59,],
+}
 
 # Rules for php_javascript_php ruleset.
 
@@ -2798,9 +2896,10 @@ def rule62(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 
-# Rules list for php_javascript_php ruleset.
-php_javascript_php_rules = [
-	rule60, rule61, rule62, ]
+# Rules dict for javascript_php ruleset.
+rulesDict1 = {
+	"<": [rule60,rule61,rule62,],
+}
 
 # Rules for php_phpdoc ruleset.
 
@@ -2839,20 +2938,86 @@ def rule69(colorer, s, i):
 def rule70(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules list for php_phpdoc ruleset.
-php_phpdoc_rules = [
-	rule63, rule64, rule65, rule66, rule67, rule68, rule69, rule70, ]
+# Rules dict for phpdoc ruleset.
+rulesDict1 = {
+	"*": [rule64,],
+	"0": [rule70,],
+	"1": [rule70,],
+	"2": [rule70,],
+	"3": [rule70,],
+	"4": [rule70,],
+	"5": [rule70,],
+	"6": [rule70,],
+	"7": [rule70,],
+	"8": [rule70,],
+	"9": [rule70,],
+	"<": [rule65,rule66,rule67,rule68,rule69,],
+	"A": [rule70,],
+	"B": [rule70,],
+	"C": [rule70,],
+	"D": [rule70,],
+	"E": [rule70,],
+	"F": [rule70,],
+	"G": [rule70,],
+	"H": [rule70,],
+	"I": [rule70,],
+	"J": [rule70,],
+	"K": [rule70,],
+	"L": [rule70,],
+	"M": [rule70,],
+	"N": [rule70,],
+	"O": [rule70,],
+	"P": [rule70,],
+	"Q": [rule70,],
+	"R": [rule70,],
+	"S": [rule70,],
+	"T": [rule70,],
+	"U": [rule70,],
+	"V": [rule70,],
+	"W": [rule70,],
+	"X": [rule70,],
+	"Y": [rule70,],
+	"Z": [rule70,],
+	"_": [rule70,],
+	"a": [rule70,],
+	"b": [rule70,],
+	"c": [rule70,],
+	"d": [rule70,],
+	"e": [rule70,],
+	"f": [rule70,],
+	"g": [rule70,],
+	"h": [rule70,],
+	"i": [rule70,],
+	"j": [rule70,],
+	"k": [rule70,],
+	"l": [rule70,],
+	"m": [rule70,],
+	"n": [rule70,],
+	"o": [rule70,],
+	"p": [rule70,],
+	"q": [rule70,],
+	"r": [rule70,],
+	"s": [rule70,],
+	"t": [rule70,],
+	"u": [rule70,],
+	"v": [rule70,],
+	"w": [rule70,],
+	"x": [rule70,],
+	"y": [rule70,],
+	"z": [rule70,],
+	"{": [rule63,],
+}
 
-# Rules dict for php mode.
-rulesDict = {
-	"php_javascript": php_javascript_rules,
-	"php_javascript_php": php_javascript_php_rules,
-	"php_main": php_main_rules,
-	"php_php": php_php_rules,
-	"php_php_literal": php_php_literal_rules,
-	"php_phpdoc": php_phpdoc_rules,
-	"php_tags": php_tags_rules,
-	"php_tags_literal": php_tags_literal_rules,
+# x.rulesDictDict for php mode.
+rulesDictDict = {
+	"php_javascript": rulesDict1,
+	"php_javascript_php": rulesDict1,
+	"php_main": rulesDict1,
+	"php_php": rulesDict1,
+	"php_php_literal": rulesDict1,
+	"php_phpdoc": rulesDict1,
+	"php_tags": rulesDict1,
+	"php_tags_literal": rulesDict1,
 }
 
 # Import dict for php mode.

@@ -39,59 +39,66 @@ jhtml_jhtml_keywords_dict = {
 # Keywords dict for jhtml_attrvalue ruleset.
 jhtml_attrvalue_keywords_dict = {}
 
+# Dictionary of keywords dictionaries for jhtml mode.
+keywordsDictDict = {
+	"jhtml_attrvalue": jhtml_attrvalue_keywords_dict,
+	"jhtml_jhtml": jhtml_jhtml_keywords_dict,
+	"jhtml_main": jhtml_main_keywords_dict,
+}
+
 # Rules for jhtml_main ruleset.
 
 def rule0(colorer, s, i):
-    return colorer.match_span(s, i, kind='"null"', begin="<!--#", end="-->",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="null", begin="<!--#", end="-->",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind='"comment1"', begin="<!--", end="-->",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="comment1", begin="<!--", end="-->",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind='"markup"', begin="`", end="`",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="markup", begin="`", end="`",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="java::MAIN",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule3(colorer, s, i):
-    return colorer.match_span(s, i, kind='"markup"', begin="<java>", end="</java>",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="markup", begin="<java>", end="</java>",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="java::MAIN",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule4(colorer, s, i):
-    return colorer.match_span(s, i, kind='"markup"', begin="<SCRIPT", end="</SCRIPT>",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="markup", begin="<SCRIPT", end="</SCRIPT>",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="html::JAVASCRIPT",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule5(colorer, s, i):
-    return colorer.match_span(s, i, kind='"markup"', begin="<STYLE", end="</STYLE>",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="markup", begin="<STYLE", end="</STYLE>",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="html::CSS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule6(colorer, s, i):
-    return colorer.match_span(s, i, kind='"keyword2"', begin="<!", end=">",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="keyword2", begin="<!", end=">",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="xml::DTD-TAGS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule7(colorer, s, i):
-    return colorer.match_span(s, i, kind='"markup"', begin="<", end=">",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="markup", begin="<", end=">",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="JHTML",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule8(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal2"', begin="&", end=";",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal2", begin="&", end=";",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=True)
 
@@ -102,26 +109,26 @@ jhtml_main_rules = [
 # Rules for jhtml_jhtml ruleset.
 
 def rule9(colorer, s, i):
-    return colorer.match_span(s, i, kind='"comment1"', begin="<!--", end="-->",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="comment1", begin="<!--", end="-->",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule10(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="\"", end="\"",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="ATTRVALUE",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule11(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="'", end="'",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="ATTRVALUE",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq="/",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule13(colorer, s, i):
     return colorer.match_keywords(s, i)
@@ -133,18 +140,18 @@ jhtml_jhtml_rules = [
 # Rules for jhtml_attrvalue ruleset.
 
 def rule14(colorer, s, i):
-    return colorer.match_span(s, i, kind='"markup"', begin="`", end="`",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="markup", begin="`", end="`",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="java::MAIN",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="label", seq="param:",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule16(colorer, s, i):
     return colorer.match_seq(s, i, kind="label", seq="bean:",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules list for jhtml_attrvalue ruleset.
 jhtml_attrvalue_rules = [

@@ -419,45 +419,51 @@ nsis2_main_keywords_dict = {
 # Keywords dict for nsis2_nsis_literal ruleset.
 nsis2_nsis_literal_keywords_dict = {}
 
+# Dictionary of keywords dictionaries for nsis2 mode.
+keywordsDictDict = {
+	"nsis2_main": nsis2_main_keywords_dict,
+	"nsis2_nsis_literal": nsis2_nsis_literal_keywords_dict,
+}
+
 # Rules for nsis2_main ruleset.
 
 def rule0(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind='"comment1"', seq=";",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_eol_span(s, i, kind="comment1", seq=";",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
 def rule1(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind='"comment2"', seq="#",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_eol_span(s, i, kind="comment2", seq="#",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
 def rule2(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"keyword3"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="keyword3", pattern="$"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule3(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind='"function"',
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=True)
+    return colorer.match_mark_previous(s, i, kind="function", pattern="::",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
 def rule4(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind='"label"',
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=True)
+    return colorer.match_mark_previous(s, i, kind="label", pattern=":",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
 def rule5(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="\"", end="\"",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="NSIS_LITERAL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule6(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="'", end="'",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="NSIS_LITERAL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule7(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="`", end="`",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="`", end="`",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="NSIS_LITERAL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
@@ -471,8 +477,8 @@ nsis2_main_rules = [
 # Rules for nsis2_nsis_literal ruleset.
 
 def rule9(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"keyword3"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="keyword3", pattern="$"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 # Rules list for nsis2_nsis_literal ruleset.
 nsis2_nsis_literal_rules = [

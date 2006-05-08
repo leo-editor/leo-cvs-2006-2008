@@ -217,11 +217,16 @@ squidconf_main_keywords_dict = {
 	"wccp_version": "keyword1",
 }
 
+# Dictionary of keywords dictionaries for squidconf mode.
+keywordsDictDict = {
+	"squidconf_main": squidconf_main_keywords_dict,
+}
+
 # Rules for squidconf_main ruleset.
 
 def rule0(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind='"comment1"', seq="#",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_eol_span(s, i, kind="comment1", seq="#",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
 def rule1(colorer, s, i):

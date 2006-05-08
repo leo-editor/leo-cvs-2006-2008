@@ -2834,3205 +2834,3210 @@ progress_main_keywords_dict = {
 	"yes-no-cancel": "keyword1",
 }
 
+# Dictionary of keywords dictionaries for progress mode.
+keywordsDictDict = {
+	"progress_main": progress_main_keywords_dict,
+}
+
 # Rules for progress_main ruleset.
 
 def rule0(colorer, s, i):
-    return colorer.match_span(s, i, kind='"comment1"', begin="/*", end="*/",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="'", end="'",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="\"", end="\"",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule3(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"label"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="label", pattern="{&"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule4(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule5(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=",",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=".",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule8(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule9(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="?",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="@",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="[",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="]",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="^",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="(",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule16(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=")",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule17(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">=",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule18(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<=",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule19(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<>",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule20(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind='"label"',
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=True)
+    return colorer.match_mark_previous(s, i, kind="label", pattern=":",
+        at_line_start=False, at_whitespace_end=True, at_word_start=False, exclude_match=True)
 
 def rule21(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":accelerator"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule22(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":accept-changes"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule23(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":accept-row-changes"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule24(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":add-buffer"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule25(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":add-calc-column"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule26(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":add-columns-from"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule27(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":add-events-procedure"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule28(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":add-fields-from"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule29(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":add-first"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule30(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":add-index-field"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule31(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":add-last"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule32(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":add-like-column"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule33(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":add-like-field"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule34(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":add-like-index"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule35(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":add-new-field"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule36(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":add-new-index"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule37(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":add-super-procedure"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule38(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":adm-data"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule39(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":after-buffer"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule40(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":after-rowid"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule41(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":after-table"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule42(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":allow-column-searching"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule43(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":always-on-top"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule44(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":ambiguous"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule45(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":append-child"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule46(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":appl-alert-boxes"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule47(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":apply-callback"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule48(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":appserver-info"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule49(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":appserver-password"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule50(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":appserver-userid"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule51(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":async-request-count"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule52(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":async-request-handle"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule53(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":asynchronous"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule54(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":attach-data-source"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule55(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":attr-space"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule56(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":attribute-names"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule57(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":auto-completion"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule58(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":auto-delete"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule59(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":auto-delete-xml"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule60(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":auto-end-key"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule61(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":auto-go"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule62(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":auto-indent"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule63(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":auto-resize"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule64(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":auto-return"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule65(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":auto-validate"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule66(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":auto-zap"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule67(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":available"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule68(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":available-formats"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule69(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":background"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule70(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":base-ade"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule71(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":basic-logging"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule72(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":batch-mode"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule73(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":before-buffer"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule74(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":before-rowid"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule75(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":before-table"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule76(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":bgcolor"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule77(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":blank"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule78(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":block-iteration-display"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule79(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":border-bottom-chars"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule80(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":border-bottom-pixels"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule81(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":border-left-chars"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule82(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":border-left-pixels"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule83(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":border-right-chars"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule84(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":border-right-pixels"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule85(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":border-top-chars"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule86(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":border-top-pixels"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule87(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":box"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule88(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":box-selectable"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule89(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":browse-column-data-types"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule90(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":browse-column-formats"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule91(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":browse-column-labels"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule92(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":buffer-chars"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule93(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":buffer-compare"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule94(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":buffer-copy"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule95(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":buffer-create"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule96(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":buffer-delete"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule97(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":buffer-field"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule98(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":buffer-handle"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule99(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":buffer-lines"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule100(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":buffer-name"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule101(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":buffer-release"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule102(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":buffer-validate"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule103(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":buffer-value"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule104(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":bytes-read"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule105(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":bytes-written"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule106(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":cache"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule107(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":call-name"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule108(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":call-type"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule109(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":can-create"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule110(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":can-delete"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule111(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":can-read"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule112(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":can-write"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule113(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":cancel-break"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule114(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":cancel-button"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule115(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":cancel-requests"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule116(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":cancelled"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule117(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":careful-paint"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule118(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":case-sensitive"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule119(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":centered"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule120(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":character_length"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule121(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":charset"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule122(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":checked"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule123(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":child-num"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule124(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":clear"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule125(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":clear-selection"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule126(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":client-connection-id"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule127(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":client-type"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule128(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":clone-node"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule129(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":code"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule130(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":codepage"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule131(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":column-bgcolor"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule132(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":column-dcolor"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule133(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":column-fgcolor"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule134(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":column-font"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule135(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":column-label"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule136(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":column-movable"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule137(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":column-pfcolor"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule138(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":column-read-only"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule139(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":column-resizable"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule140(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":column-scrolling"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule141(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":columns"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule142(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":com-handle"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule143(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":complete"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule144(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":config-name"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule145(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":connect"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule146(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":connected"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule147(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":context-help"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule148(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":context-help-file"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule149(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":context-help-id"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule150(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":control-box"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule151(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":convert-3d-colors"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule152(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":convert-to-offset"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule153(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":coverage"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule154(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":cpcase"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule155(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":cpcoll"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule156(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":cplog"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule157(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":cpprint"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule158(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":cprcodein"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule159(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":cprcodeout"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule160(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":cpstream"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule161(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":cpterm"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule162(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":crc-value"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule163(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":create-like"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule164(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":create-node"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule165(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":create-node-namespace"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule166(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":create-on-add"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule167(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":create-result-list-entry"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule168(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":current-changed"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule169(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":current-column"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule170(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":current-environment"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule171(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":current-iteration"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule172(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":current-result-row"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule173(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":current-row-modified"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule174(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":current-window"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule175(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":cursor-char"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule176(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":cursor-line"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule177(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":cursor-offset"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule178(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":data-entry-return"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule179(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":data-source"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule180(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":data-type"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule181(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":dataset"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule182(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":date-format"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule183(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":db-references"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule184(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":dbname"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule185(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":dcolor"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule186(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":dde-error"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule187(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":dde-id"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule188(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":dde-item"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule189(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":dde-name"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule190(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":dde-topic"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule191(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":deblank"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule192(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":debug"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule193(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":debug-alert"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule194(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":decimals"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule195(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":default"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule196(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":default-buffer-handle"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule197(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":default-button"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule198(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":default-commit"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule199(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":default-string"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule200(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":delete"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule201(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":delete-current-row"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule202(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":delete-line"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule203(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":delete-node"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule204(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":delete-result-list-entry"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule205(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":delete-selected-row"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule206(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":delete-selected-rows"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule207(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":delimiter"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule208(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":description"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule209(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":deselect-focused-row"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule210(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":deselect-rows"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule211(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":deselect-selected-row"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule212(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":detach-data-source"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule213(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":directory"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule214(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":disable"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule215(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":disable-auto-zap"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule216(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":disable-connections"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule217(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":disable-dump-triggers"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule218(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":disable-load-triggers"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule219(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":disconnect"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule220(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":display-message"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule221(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":display-timezone"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule222(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":display-type"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule223(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":down"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule224(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":drag-enabled"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule225(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":drop-target"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule226(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":dump-logging-now"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule227(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":dynamic"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule228(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":edge-chars"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule229(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":edge-pixels"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule230(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":edit-can-paste"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule231(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":edit-can-undo"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule232(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":edit-clear"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule233(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":edit-copy"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule234(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":edit-cut"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule235(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":edit-paste"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule236(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":edit-undo"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule237(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":empty"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule238(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":empty-temp-table"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule239(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":enable"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule240(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":enable-connections"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule241(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":enabled"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule242(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":encoding"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule243(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":end-file-drop"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule244(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":end-user-prompt"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule245(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":error-column"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule246(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":error-object-detail"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule247(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":error-row"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule248(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":error-string"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule249(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":event-procedure"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule250(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":event-procedure-context"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule251(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":event-type"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule252(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":exclusive-id"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule253(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":execution-log"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule254(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":expand"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule255(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":expandable"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule256(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":export"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule257(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":extent"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule258(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":fetch-selected-row"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule259(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":fgcolor"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule260(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":file-create-date"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule261(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":file-create-time"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule262(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":file-mod-date"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule263(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":file-mod-time"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule264(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":file-name"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule265(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":file-offset"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule266(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":file-size"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule267(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":file-type"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule268(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":fill"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule269(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":fill-mode"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule270(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":filled"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule271(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":find-by-rowid"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule272(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":find-current"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule273(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":find-first"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule274(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":find-last"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule275(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":find-unique"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule276(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":first-async-request"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule277(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":first-buffer"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule278(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":first-child"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule279(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":first-column"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule280(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":first-data-source"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule281(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":first-dataset"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule282(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":first-procedure"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule283(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":first-query"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule284(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":first-server"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule285(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":first-server-socket"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule286(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":first-socket"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule287(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":first-tab-item"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule288(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":fit-last-column"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule289(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":flat-button"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule290(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":focused-row"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule291(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":focused-row-selected"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule292(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":font"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule293(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":font-based-layout"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule294(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":foreground"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule295(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":form-input"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule296(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":format"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule297(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":forward-only"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule298(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":frame"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule299(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":frame-col"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule300(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":frame-name"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule301(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":frame-row"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule302(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":frame-spacing"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule303(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":frame-x"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule304(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":frame-y"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule305(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":frequency"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule306(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":full-height-chars"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule307(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":full-height-pixels"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule308(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":full-pathname"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule309(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":full-width-chars"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule310(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":full-width-pixels"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule311(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":function"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule312(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":get-attribute"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule313(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":get-attribute-node"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule314(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":get-blue-value"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule315(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":get-browse-column"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule316(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":get-buffer-handle"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule317(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":get-bytes-available"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule318(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":get-cgi-list"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule319(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":get-cgi-value"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule320(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":get-changes"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule321(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":get-child"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule322(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":get-child-relation"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule323(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":get-config-value"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule324(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":get-current"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule325(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":get-document-element"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule326(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":get-dropped-file"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule327(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":get-dynamic"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule328(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":get-first"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule329(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":get-green-value"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule330(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":get-iteration"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule331(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":get-last"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule332(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":get-message"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule333(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":get-next"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule334(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":get-number"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule335(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":get-parent"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule336(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":get-prev"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule337(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":get-printers"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule338(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":get-red-value"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule339(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":get-repositioned-row"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule340(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":get-rgb-value"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule341(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":get-selected-widget"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule342(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":get-signature"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule343(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":get-socket-option"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule344(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":get-tab-item"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule345(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":get-text-height-chars"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule346(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":get-text-height-pixels"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule347(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":get-text-width-chars"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule348(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":get-text-width-pixels"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule349(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":get-wait-state"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule350(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":graphic-edge"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule351(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":grid-factor-horizontal"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule352(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":grid-factor-vertical"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule353(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":grid-snap"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule354(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":grid-unit-height-chars"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule355(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":grid-unit-height-pixels"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule356(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":grid-unit-width-chars"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule357(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":grid-unit-width-pixels"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule358(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":grid-visible"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule359(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":handle"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule360(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":handler"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule361(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":has-lobs"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule362(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":has-records"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule363(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":height-chars"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule364(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":height-pixels"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule365(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":hidden"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule366(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":horizontal"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule367(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":html-charset"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule368(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":html-end-of-line"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule369(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":html-end-of-page"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule370(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":html-frame-begin"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule371(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":html-frame-end"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule372(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":html-header-begin"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule373(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":html-header-end"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule374(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":html-title-begin"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule375(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":html-title-end"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule376(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":hwnd"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule377(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":icfparameter"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule378(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":icon"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule379(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":image"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule380(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":image-down"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule381(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":image-insensitive"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule382(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":image-up"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule383(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":immediate-display"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule384(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":import-node"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule385(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":in-handle"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule386(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":increment-exclusive-id"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule387(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":index"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule388(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":index-information"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule389(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":initial"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule390(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":initialize-document-type"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule391(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":initiate"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule392(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":inner-chars"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule393(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":inner-lines"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule394(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":input-value"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule395(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":insert"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule396(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":insert-backtab"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule397(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":insert-before"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule398(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":insert-file"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule399(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":insert-row"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule400(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":insert-string"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule401(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":insert-tab"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule402(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":instantiating-procedure"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule403(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":internal-entries"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule404(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":invoke"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule405(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":is-open"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule406(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":is-parameter-set"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule407(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":is-row-selected"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule408(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":is-selected"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule409(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":is-xml"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule410(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":items-per-row"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule411(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":keep-connection-open"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule412(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":keep-frame-z-order"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule413(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":keep-security-cache"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule414(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":key"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule415(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":label"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule416(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":label-bgcolor"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule417(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":label-dcolor"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule418(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":label-fgcolor"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule419(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":label-font"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule420(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":labels"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule421(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":languages"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule422(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":large"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule423(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":large-to-small"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule424(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":last-async-request"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule425(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":last-child"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule426(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":last-procedure"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule427(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":last-server"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule428(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":last-server-socket"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule429(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":last-socket"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule430(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":last-tab-item"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule431(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":line"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule432(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":list-item-pairs"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule433(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":list-items"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule434(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":listings"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule435(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":literal-question"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule436(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":load"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule437(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":load-icon"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule438(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":load-image"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule439(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":load-image-down"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule440(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":load-image-insensitive"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule441(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":load-image-up"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule442(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":load-mouse-pointer"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule443(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":load-small-icon"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule444(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":local-host"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule445(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":local-name"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule446(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":local-port"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule447(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":locator-column-number"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule448(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":locator-line-number"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule449(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":locator-public-id"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule450(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":locator-system-id"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule451(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":locator-type"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule452(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":locked"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule453(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":log-id"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule454(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":longchar-to-node-value"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule455(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":lookup"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule456(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":mandatory"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule457(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":manual-highlight"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule458(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":margin-height-chars"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule459(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":margin-height-pixels"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule460(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":margin-width-chars"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule461(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":margin-width-pixels"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule462(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":max-button"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule463(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":max-chars"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule464(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":max-data-guess"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule465(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":max-height-chars"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule466(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":max-height-pixels"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule467(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":max-value"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule468(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":max-width-chars"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule469(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":max-width-pixels"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule470(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":md5-value"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule471(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":memptr-to-node-value"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule472(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":menu-bar"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule473(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":menu-key"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule474(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":menu-mouse"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule475(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":merge-changes"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule476(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":merge-row-changes"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule477(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":message-area"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule478(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":message-area-font"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule479(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":min-button"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule480(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":min-column-width-chars"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule481(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":min-column-width-pixels"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule482(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":min-height-chars"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule483(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":min-height-pixels"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule484(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":min-schema-marshall"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule485(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":min-value"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule486(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":min-width-chars"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule487(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":min-width-pixels"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule488(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":modified"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule489(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":mouse-pointer"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule490(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":movable"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule491(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":move-after-tab-item"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule492(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":move-before-tab-item"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule493(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":move-column"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule494(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":move-to-bottom"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule495(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":move-to-eof"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule496(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":move-to-top"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule497(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":multiple"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule498(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":multitasking-interval"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule499(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":name"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule500(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":namespace-prefix"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule501(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":namespace-uri"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule502(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":needs-appserver-prompt"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule503(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":needs-prompt"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule504(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":new"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule505(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":new-row"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule506(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":next-column"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule507(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":next-sibling"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule508(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":next-tab-item"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule509(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":no-current-value"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule510(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":no-empty-space"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule511(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":no-focus"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule512(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":no-schema-marshall"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule513(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":no-validate"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule514(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":node-type"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule515(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":node-value"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule516(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":node-value-to-longchar"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule517(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":node-value-to-memptr"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule518(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":normalize"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule519(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":num-buffers"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule520(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":num-buttons"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule521(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":num-child-relations"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule522(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":num-children"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule523(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":num-columns"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule524(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":num-dropped-files"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule525(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":num-entries"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule526(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":num-fields"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule527(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":num-formats"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule528(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":num-items"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule529(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":num-iterations"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule530(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":num-lines"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule531(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":num-locked-columns"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule532(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":num-messages"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule533(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":num-parameters"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule534(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":num-replaced"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule535(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":num-results"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule536(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":num-selected-rows"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule537(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":num-selected-widgets"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule538(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":num-tabs"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule539(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":num-to-retain"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule540(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":num-visible-columns"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule541(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":numeric-decimal-point"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule542(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":numeric-format"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule543(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":numeric-separator"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule544(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":ole-invoke-locale"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule545(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":ole-names-locale"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule546(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":on-frame-border"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule547(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":origin-handle"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule548(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":origin-rowid"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule549(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":overlay"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule550(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":owner"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule551(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":owner-document"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule552(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":page-bottom"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule553(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":page-top"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule554(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":parameter"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule555(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":parent"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule556(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":parent-relation"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule557(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":parse-status"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule558(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":password-field"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule559(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":pathname"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule560(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":persistent"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule561(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":persistent-cache-disabled"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule562(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":persistent-procedure"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule563(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":pfcolor"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule564(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":pixels-per-column"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule565(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":pixels-per-row"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule566(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":popup-menu"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule567(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":popup-only"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule568(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":position"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule569(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":prepare-string"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule570(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":prepared"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule571(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":prev-column"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule572(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":prev-sibling"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule573(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":prev-tab-item"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule574(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":primary"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule575(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":printer-control-handle"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule576(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":printer-hdc"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule577(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":printer-name"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule578(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":printer-port"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule579(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":private-data"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule580(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":procedure-name"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule581(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":profiling"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule582(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":progress-source"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule583(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":proxy"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule584(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":proxy-password"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule585(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":proxy-userid"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule586(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":public-id"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule587(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":published-events"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule588(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":query"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule589(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":query-close"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule590(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":query-off-end"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule591(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":query-open"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule592(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":query-prepare"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule593(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":quit"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule594(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":radio-buttons"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule595(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":raw-transfer"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule596(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":read"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule597(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":read-file"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule598(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":read-only"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule599(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":recid"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule600(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":record-length"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule601(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":refresh"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule602(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":refreshable"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule603(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":reject-changes"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule604(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":reject-row-changes"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule605(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":rejected"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule606(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":remote"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule607(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":remote-host"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule608(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":remote-port"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule609(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":remove-attribute"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule610(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":remove-child"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule611(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":remove-events-procedure"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule612(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":remove-super-procedure"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule613(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":replace"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule614(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":replace-child"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule615(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":replace-selection-text"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule616(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":reposition-backwards"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule617(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":reposition-forwards"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule618(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":reposition-parent-relation"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule619(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":reposition-to-row"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule620(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":reposition-to-rowid"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule621(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":resizable"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule622(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":resize"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule623(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":retain-shape"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule624(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":return-inserted"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule625(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":return-value"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule626(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":return-value-data-type"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule627(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":row"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule628(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":row-height-chars"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule629(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":row-height-pixels"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule630(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":row-markers"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule631(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":row-resizable"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule632(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":row-state"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule633(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":rowid"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule634(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":rule-row"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule635(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":rule-y"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule636(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":save"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule637(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":save-file"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule638(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":save-row-changes"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule639(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":sax-parse"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule640(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":sax-parse-first"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule641(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":sax-parse-next"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule642(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":sax-xml"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule643(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":schema-change"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule644(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":schema-path"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule645(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":screen-lines"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule646(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":screen-value"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule647(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":scroll-bars"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule648(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":scroll-delta"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule649(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":scroll-offset"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule650(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":scroll-to-current-row"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule651(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":scroll-to-item"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule652(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":scroll-to-selected-row"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule653(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":scrollable"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule654(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":scrollbar-horizontal"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule655(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":scrollbar-vertical"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule656(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":search"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule657(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":select-all"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule658(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":select-focused-row"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule659(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":select-next-row"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule660(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":select-prev-row"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule661(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":select-row"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule662(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":selectable"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule663(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":selected"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule664(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":selection-end"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule665(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":selection-start"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule666(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":selection-text"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule667(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":sensitive"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule668(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":separator-fgcolor"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule669(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":separators"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule670(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":server"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule671(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":server-connection-bound"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule672(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":server-connection-bound-request"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule673(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":server-connection-context"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule674(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":server-connection-id"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule675(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":server-operating-mode"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule676(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":session-end"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule677(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":set-attribute"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule678(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":set-attribute-node"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule679(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":set-blue-value"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule680(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":set-break"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule681(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":set-buffers"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule682(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":set-callback-procedure"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule683(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":set-commit"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule684(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":set-connect-procedure"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule685(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":set-dynamic"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule686(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":set-green-value"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule687(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":set-input-source"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule688(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":set-numeric-format"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule689(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":set-parameter"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule690(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":set-read-response-procedure"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule691(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":set-red-value"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule692(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":set-repositioned-row"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule693(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":set-rgb-value"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule694(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":set-rollback"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule695(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":set-selection"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule696(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":set-socket-option"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule697(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":set-wait-state"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule698(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":show-in-taskbar"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule699(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":side-label-handle"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule700(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":side-labels"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule701(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":skip-deleted-record"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule702(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":small-icon"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule703(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":small-title"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule704(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":sort"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule705(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":startup-parameters"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule706(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":status-area"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule707(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":status-area-font"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule708(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":stop"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule709(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":stop-parsing"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule710(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":stopped"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule711(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":stretch-to-fit"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule712(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":string-value"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule713(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":sub-menu-help"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule714(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":subtype"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule715(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":super-procedures"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule716(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":suppress-namespace-processing"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule717(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":suppress-warnings"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule718(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":synchronize"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule719(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":system-alert-boxes"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule720(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":system-id"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule721(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":tab-position"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule722(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":tab-stop"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule723(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":table"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule724(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":table-crc-list"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule725(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":table-handle"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule726(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":table-list"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule727(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":table-number"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule728(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":temp-directory"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule729(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":temp-table-prepare"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule730(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":text-selected"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule731(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":three-d"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule732(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":tic-marks"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule733(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":time-source"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule734(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":title"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule735(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":title-bgcolor"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule736(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":title-dcolor"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule737(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":title-fgcolor"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule738(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":title-font"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule739(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":toggle-box"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule740(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":tooltip"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule741(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":tooltips"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule742(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":top-only"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule743(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":trace-filter"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule744(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":tracing"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule745(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":tracking-changes"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule746(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":trans-init-procedure"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule747(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":transaction"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule748(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":transparent"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule749(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":type"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule750(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":undo"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule751(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":unique-id"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule752(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":unique-match"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule753(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":url"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule754(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":url-decode"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule755(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":url-encode"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule756(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":url-password"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule757(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":url-userid"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule758(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":user-data"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule759(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":v6display"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule760(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":validate"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule761(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":validate-expression"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule762(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":validate-message"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule763(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":validate-xml"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule764(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":validation-enabled"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule765(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":value"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule766(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":view-first-column-on-reopen"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule767(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":virtual-height-chars"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule768(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":virtual-height-pixels"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule769(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":virtual-width-chars"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule770(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":virtual-width-pixels"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule771(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":visible"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule772(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":warning"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule773(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":widget-enter"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule774(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":widget-leave"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule775(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":width-chars"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule776(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":width-pixels"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule777(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":window"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule778(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":window-state"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule779(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":window-system"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule780(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":word-wrap"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule781(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":work-area-height-pixels"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule782(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":work-area-width-pixels"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule783(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":work-area-x"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule784(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":work-area-y"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule785(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":write"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule786(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":write-data"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule787(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":x"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule788(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":x-document"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule789(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":xml-schema-path"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule790(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":xml-suppress-namespace-processing"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule791(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":y"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule792(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":year-offset"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule793(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="function", pattern=":_dcm"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule794(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"invalid"', seq="put\s+screen",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="invalid", seq="put\s+screen",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule795(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"invalid"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="invalid", pattern=":WHERE-STRING"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule796(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"invalid"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="invalid", pattern=":REPOSITION-PARENT-RELATION"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule797(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind='"keyword3"', seq="choose\s+of",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+    return colorer.match_seq_regexp(s, i, kind="keyword3", seq="choose\s+of",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule798(colorer, s, i):
     return colorer.match_keywords(s, i)

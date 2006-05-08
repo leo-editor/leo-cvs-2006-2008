@@ -16,16 +16,21 @@ ptl_main_keywords_dict = {
 	"_q_resolve": "literal4",
 }
 
+# Dictionary of keywords dictionaries for ptl mode.
+keywordsDictDict = {
+	"ptl_main": ptl_main_keywords_dict,
+}
+
 # Rules for ptl_main ruleset.
 
 
 def rule0(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword4", seq="[html]",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule1(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword4", seq="[plain]",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule2(colorer, s, i):
     return colorer.match_keywords(s, i)

@@ -33,50 +33,56 @@ makefile_main_keywords_dict = {
 # Keywords dict for makefile_variable ruleset.
 makefile_variable_keywords_dict = {}
 
+# Dictionary of keywords dictionaries for makefile mode.
+keywordsDictDict = {
+	"makefile_main": makefile_main_keywords_dict,
+	"makefile_variable": makefile_variable_keywords_dict,
+}
+
 # Rules for makefile_main ruleset.
 
 def rule0(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind='"comment1"', seq="#",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_eol_span(s, i, kind="comment1", seq="#",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
 def rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind='"keyword2"', begin="$(", end=")",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="keyword2", begin="$(", end=")",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="VARIABLE",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind='"keyword2"', begin="${", end="}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="keyword2", begin="${", end="}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="VARIABLE",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rule3(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"keyword2"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule4(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="\"", end="\"",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rule5(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="'", end="'",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rule6(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="`", end="`",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="`", end="`",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rule7(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind='"label"',
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_previous(s, i, kind="label", pattern=":",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule8(colorer, s, i):
     return colorer.match_keywords(s, i)
@@ -88,19 +94,19 @@ makefile_main_rules = [
 # Rules for makefile_variable ruleset.
 
 def rule9(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind='"comment1"', seq="#",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_eol_span(s, i, kind="comment1", seq="#",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
 def rule10(colorer, s, i):
-    return colorer.match_span(s, i, kind='"keyword2"', begin="$(", end=")",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="keyword2", begin="$(", end=")",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="VARIABLE",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rule11(colorer, s, i):
-    return colorer.match_span(s, i, kind='"keyword2"', begin="${", end="}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="keyword2", begin="${", end="}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="VARIABLE",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 

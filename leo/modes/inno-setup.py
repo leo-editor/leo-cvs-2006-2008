@@ -287,216 +287,224 @@ inno_setup_directive_keywords_dict = {
 	"WriteIni": "function",
 }
 
+# Dictionary of keywords dictionaries for inno_setup mode.
+keywordsDictDict = {
+	"inno_setup_constant": inno_setup_constant_keywords_dict,
+	"inno_setup_directive": inno_setup_directive_keywords_dict,
+	"inno_setup_main": inno_setup_main_keywords_dict,
+	"inno_setup_string": inno_setup_string_keywords_dict,
+}
+
 # Rules for inno_setup_main ruleset.
 
 def rule0(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="[code]",
-        at_line_start=True, at_line_end=False, at_word_start=False, delegate="pascal::MAIN")
+        at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="pascal::MAIN")
 
 def rule1(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="[Setup]",
-        at_line_start=True, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule2(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="[Types]",
-        at_line_start=True, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule3(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="[Components]",
-        at_line_start=True, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule4(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="[Tasks]",
-        at_line_start=True, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule5(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="[Dirs]",
-        at_line_start=True, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="[Files]",
-        at_line_start=True, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="[Icons]",
-        at_line_start=True, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule8(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="[INI]",
-        at_line_start=True, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule9(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="[InstallDelete]",
-        at_line_start=True, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="[Languages]",
-        at_line_start=True, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="[Messages]",
-        at_line_start=True, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="[CustomMessages]",
-        at_line_start=True, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="[LangOptions]",
-        at_line_start=True, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="[Registry]",
-        at_line_start=True, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="[Run]",
-        at_line_start=True, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule16(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="[UninstallRun]",
-        at_line_start=True, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule17(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="[UninstallDelete]",
-        at_line_start=True, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule18(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind='"literal4"', seq="#define",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_eol_span(s, i, kind="literal4", seq="#define",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
 def rule19(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind='"literal4"', seq="#dim",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_eol_span(s, i, kind="literal4", seq="#dim",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
 def rule20(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind='"literal4"', seq="#undef",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_eol_span(s, i, kind="literal4", seq="#undef",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
 def rule21(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind='"literal4"', seq="#include",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_eol_span(s, i, kind="literal4", seq="#include",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
 def rule22(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind='"literal4"', seq="#emit",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_eol_span(s, i, kind="literal4", seq="#emit",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
 def rule23(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind='"literal4"', seq="#expr",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_eol_span(s, i, kind="literal4", seq="#expr",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
 def rule24(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind='"literal4"', seq="#insert",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_eol_span(s, i, kind="literal4", seq="#insert",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
 def rule25(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind='"literal4"', seq="#append",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_eol_span(s, i, kind="literal4", seq="#append",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
 def rule26(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind='"literal4"', seq="#if",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_eol_span(s, i, kind="literal4", seq="#if",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
 def rule27(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind='"literal4"', seq="#elif",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_eol_span(s, i, kind="literal4", seq="#elif",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
 def rule28(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind='"literal4"', seq="#else",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_eol_span(s, i, kind="literal4", seq="#else",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
 def rule29(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind='"literal4"', seq="#endif",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_eol_span(s, i, kind="literal4", seq="#endif",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
 def rule30(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind='"literal4"', seq="#ifexist",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_eol_span(s, i, kind="literal4", seq="#ifexist",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
 def rule31(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind='"literal4"', seq="#ifnexist",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_eol_span(s, i, kind="literal4", seq="#ifnexist",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
 def rule32(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind='"literal4"', seq="#ifdef",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_eol_span(s, i, kind="literal4", seq="#ifdef",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
 def rule33(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind='"literal4"', seq="#for",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_eol_span(s, i, kind="literal4", seq="#for",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
 def rule34(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind='"literal4"', seq="#sub",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_eol_span(s, i, kind="literal4", seq="#sub",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
 def rule35(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind='"literal4"', seq="#endsub",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_eol_span(s, i, kind="literal4", seq="#endsub",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
 def rule36(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind='"literal4"', seq="#pragma",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_eol_span(s, i, kind="literal4", seq="#pragma",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
 def rule37(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind='"literal4"', seq="#error",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_eol_span(s, i, kind="literal4", seq="#error",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
 def rule38(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal4"', begin="{#", end="}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal4", begin="{#", end="}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule39(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"literal2"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=False)
+    return colorer.match_mark_following(s, i, kind="literal2", pattern="%"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule40(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="\"", end="\"",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="STRING",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule41(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="'", end="'",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="STRING",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule42(colorer, s, i):
-    return colorer.match_span(s, i, kind='"keyword3"', begin="{", end="}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="keyword3", begin="{", end="}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule43(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind='"comment1"', seq=";",
-        at_line_start=True, at_line_end=False, at_word_start=False,
+    return colorer.match_eol_span(s, i, kind="comment1", seq=";",
+        at_line_start=True, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
 def rule44(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind='"comment1"', seq="#",
-        at_line_start=True, at_line_end=False, at_word_start=False,
+    return colorer.match_eol_span(s, i, kind="comment1", seq="#",
+        at_line_start=True, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
 def rule45(colorer, s, i):
@@ -513,14 +521,14 @@ inno_setup_main_rules = [
 # Rules for inno_setup_string ruleset.
 
 def rule46(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal4"', begin="{#", end="}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal4", begin="{#", end="}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule47(colorer, s, i):
-    return colorer.match_span(s, i, kind='"keyword3"', begin="{", end="}",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="keyword3", begin="{", end="}",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="CONSTANT",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
@@ -531,12 +539,12 @@ inno_setup_string_rules = [
 # Rules for inno_setup_constant ruleset.
 
 def rule48(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind='"function"', 
-        at_line_start=False, at_line_end=False, at_word_start=False, exclude_match=True)
+    return colorer.match_mark_following(s, i, kind="function", pattern="code:"
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
 def rule49(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="|",
-        at_line_start=False, at_line_end=False, at_word_start=False, delegate="")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules list for inno_setup_constant ruleset.
 inno_setup_constant_rules = [
@@ -545,19 +553,19 @@ inno_setup_constant_rules = [
 # Rules for inno_setup_directive ruleset.
 
 def rule50(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind='"comment1"', seq=";",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_eol_span(s, i, kind="comment1", seq=";",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
 def rule51(colorer, s, i):
-    return colorer.match_span(s, i, kind='"comment2"', begin="/*", end="*/",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="comment2", begin="/*", end="*/",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule52(colorer, s, i):
-    return colorer.match_span(s, i, kind='"literal1"', begin="\"", end="\"",
-        at_line_start=False, at_line_end=False, at_word_start=False,
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
+        at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
