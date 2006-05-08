@@ -219,12 +219,98 @@ def rule34(colorer, s, i):
 def rule35(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules list for ruby_main ruleset.
-ruby_main_rules = [
-	rule0, rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9,
-	rule10, rule11, rule12, rule13, rule14, rule15, rule16, rule17, rule18, rule19,
-	rule20, rule21, rule22, rule23, rule24, rule25, rule26, rule27, rule28, rule29,
-	rule30, rule31, rule32, rule33, rule34, rule35, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"!": [rule23,],
+	"\"": [rule2,],
+	"#": [rule1,rule4,],
+	"%": [rule20,],
+	"&": [rule21,],
+	"'": [rule3,],
+	"(": [rule7,],
+	")": [rule8,],
+	"*": [rule18,rule19,],
+	"+": [rule15,],
+	"-": [rule16,],
+	".": [rule28,rule29,],
+	"/": [rule17,],
+	"0": [rule35,],
+	"1": [rule35,],
+	"2": [rule35,],
+	"3": [rule35,],
+	"4": [rule35,],
+	"5": [rule35,],
+	"6": [rule35,],
+	"7": [rule35,],
+	"8": [rule35,],
+	"9": [rule35,],
+	":": [rule9,rule33,rule34,],
+	"<": [rule13,rule14,rule25,],
+	"=": [rule0,rule10,rule11,],
+	">": [rule12,rule24,],
+	"?": [rule32,],
+	"@": [rule35,],
+	"A": [rule35,],
+	"B": [rule35,],
+	"C": [rule35,],
+	"D": [rule35,],
+	"E": [rule35,],
+	"F": [rule35,],
+	"G": [rule35,],
+	"H": [rule35,],
+	"I": [rule35,],
+	"J": [rule35,],
+	"K": [rule35,],
+	"L": [rule35,],
+	"M": [rule35,],
+	"N": [rule35,],
+	"O": [rule35,],
+	"P": [rule35,],
+	"Q": [rule35,],
+	"R": [rule35,],
+	"S": [rule35,],
+	"T": [rule35,],
+	"U": [rule35,],
+	"V": [rule35,],
+	"W": [rule35,],
+	"X": [rule35,],
+	"Y": [rule35,],
+	"Z": [rule35,],
+	"[": [rule31,],
+	"]": [rule30,],
+	"^": [rule26,],
+	"_": [rule35,],
+	"a": [rule35,],
+	"b": [rule35,],
+	"c": [rule35,],
+	"d": [rule35,],
+	"e": [rule35,],
+	"f": [rule35,],
+	"g": [rule35,],
+	"h": [rule35,],
+	"i": [rule35,],
+	"j": [rule35,],
+	"k": [rule35,],
+	"l": [rule35,],
+	"m": [rule35,],
+	"n": [rule35,],
+	"o": [rule35,],
+	"p": [rule35,],
+	"q": [rule35,],
+	"r": [rule35,],
+	"s": [rule35,],
+	"t": [rule35,],
+	"u": [rule35,],
+	"v": [rule35,],
+	"w": [rule35,],
+	"x": [rule35,],
+	"y": [rule35,],
+	"z": [rule35,],
+	"{": [rule5,],
+	"|": [rule22,],
+	"}": [rule6,],
+	"~": [rule27,],
+}
 
 # Rules for ruby_doublequoteliteral ruleset.
 
@@ -234,14 +320,15 @@ def rule36(colorer, s, i):
         delegate="",exclude_match=True,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules list for ruby_doublequoteliteral ruleset.
-ruby_doublequoteliteral_rules = [
-	rule36, ]
+# Rules dict for doublequoteliteral ruleset.
+rulesDict1 = {
+	"#": [rule36,],
+}
 
-# Rules dict for ruby mode.
-rulesDict = {
-	"ruby_doublequoteliteral": ruby_doublequoteliteral_rules,
-	"ruby_main": ruby_main_rules,
+# x.rulesDictDict for ruby mode.
+rulesDictDict = {
+	"ruby_doublequoteliteral": rulesDict1,
+	"ruby_main": rulesDict1,
 }
 
 # Import dict for ruby mode.

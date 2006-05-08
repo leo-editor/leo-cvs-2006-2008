@@ -1781,51 +1781,26 @@ def rule427(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword4", pattern="\"
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-# Rules list for latex_main ruleset.
-latex_main_rules = [
-	rule0, rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9,
-	rule10, rule11, rule12, rule13, rule14, rule15, rule16, rule17, rule18, rule19,
-	rule20, rule21, rule22, rule23, rule24, rule25, rule26, rule27, rule28, rule29,
-	rule30, rule31, rule32, rule33, rule34, rule35, rule36, rule37, rule38, rule39,
-	rule40, rule41, rule42, rule43, rule44, rule45, rule46, rule47, rule48, rule49,
-	rule50, rule51, rule52, rule53, rule54, rule55, rule56, rule57, rule58, rule59,
-	rule60, rule61, rule62, rule63, rule64, rule65, rule66, rule67, rule68, rule69,
-	rule70, rule71, rule72, rule73, rule74, rule75, rule76, rule77, rule78, rule79,
-	rule80, rule81, rule82, rule83, rule84, rule85, rule86, rule87, rule88, rule89,
-	rule90, rule91, rule92, rule93, rule94, rule95, rule96, rule97, rule98, rule99,
-	rule100, rule101, rule102, rule103, rule104, rule105, rule106, rule107, rule108, rule109,
-	rule110, rule111, rule112, rule113, rule114, rule115, rule116, rule117, rule118, rule119,
-	rule120, rule121, rule122, rule123, rule124, rule125, rule126, rule127, rule128, rule129,
-	rule130, rule131, rule132, rule133, rule134, rule135, rule136, rule137, rule138, rule139,
-	rule140, rule141, rule142, rule143, rule144, rule145, rule146, rule147, rule148, rule149,
-	rule150, rule151, rule152, rule153, rule154, rule155, rule156, rule157, rule158, rule159,
-	rule160, rule161, rule162, rule163, rule164, rule165, rule166, rule167, rule168, rule169,
-	rule170, rule171, rule172, rule173, rule174, rule175, rule176, rule177, rule178, rule179,
-	rule180, rule181, rule182, rule183, rule184, rule185, rule186, rule187, rule188, rule189,
-	rule190, rule191, rule192, rule193, rule194, rule195, rule196, rule197, rule198, rule199,
-	rule200, rule201, rule202, rule203, rule204, rule205, rule206, rule207, rule208, rule209,
-	rule210, rule211, rule212, rule213, rule214, rule215, rule216, rule217, rule218, rule219,
-	rule220, rule221, rule222, rule223, rule224, rule225, rule226, rule227, rule228, rule229,
-	rule230, rule231, rule232, rule233, rule234, rule235, rule236, rule237, rule238, rule239,
-	rule240, rule241, rule242, rule243, rule244, rule245, rule246, rule247, rule248, rule249,
-	rule250, rule251, rule252, rule253, rule254, rule255, rule256, rule257, rule258, rule259,
-	rule260, rule261, rule262, rule263, rule264, rule265, rule266, rule267, rule268, rule269,
-	rule270, rule271, rule272, rule273, rule274, rule275, rule276, rule277, rule278, rule279,
-	rule280, rule281, rule282, rule283, rule284, rule285, rule286, rule287, rule288, rule289,
-	rule290, rule291, rule292, rule293, rule294, rule295, rule296, rule297, rule298, rule299,
-	rule300, rule301, rule302, rule303, rule304, rule305, rule306, rule307, rule308, rule309,
-	rule310, rule311, rule312, rule313, rule314, rule315, rule316, rule317, rule318, rule319,
-	rule320, rule321, rule322, rule323, rule324, rule325, rule326, rule327, rule328, rule329,
-	rule330, rule331, rule332, rule333, rule334, rule335, rule336, rule337, rule338, rule339,
-	rule340, rule341, rule342, rule343, rule344, rule345, rule346, rule347, rule348, rule349,
-	rule350, rule351, rule352, rule353, rule354, rule355, rule356, rule357, rule358, rule359,
-	rule360, rule361, rule362, rule363, rule364, rule365, rule366, rule367, rule368, rule369,
-	rule370, rule371, rule372, rule373, rule374, rule375, rule376, rule377, rule378, rule379,
-	rule380, rule381, rule382, rule383, rule384, rule385, rule386, rule387, rule388, rule389,
-	rule390, rule391, rule392, rule393, rule394, rule395, rule396, rule397, rule398, rule399,
-	rule400, rule401, rule402, rule403, rule404, rule405, rule406, rule407, rule408, rule409,
-	rule410, rule411, rule412, rule413, rule414, rule415, rule416, rule417, rule418, rule419,
-	rule420, rule421, rule422, rule423, rule424, rule425, rule426, rule427, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"\"": [rule4,rule5,],
+	"#": [rule7,rule8,rule9,rule10,rule11,rule12,rule13,rule14,rule15,rule59,],
+	"$": [rule55,rule63,],
+	"%": [rule1,],
+	"&": [rule60,],
+	"-": [rule424,rule425,rule426,],
+	"[": [rule423,],
+	"\": [rule16,rule17,rule18,rule19,rule20,rule21,rule22,rule23,rule24,rule25,rule26,rule27,rule28,rule29,rule30,rule31,rule32,rule33,rule34,rule35,rule36,rule37,rule38,rule39,rule40,rule41,rule42,rule43,rule44,rule45,rule46,rule47,rule48,rule49,rule50,rule51,rule52,rule53,rule54,rule56,rule57,rule58,rule62,rule64,rule65,rule66,rule67,rule68,rule69,rule70,rule71,rule72,rule73,rule74,rule75,rule85,rule86,rule87,rule88,rule89,rule90,rule91,rule92,rule93,rule94,rule95,rule96,rule97,rule98,rule99,rule100,rule101,rule102,rule103,rule104,rule105,rule106,rule107,rule108,rule109,rule110,rule111,rule112,rule113,rule114,rule115,rule116,rule117,rule118,rule119,rule120,rule121,rule122,rule123,rule124,rule125,rule126,rule127,rule128,rule129,rule130,rule131,rule132,rule133,rule134,rule135,rule136,rule137,rule138,rule139,rule140,rule141,rule142,rule143,rule144,rule145,rule146,rule147,rule148,rule149,rule150,rule151,rule152,rule153,rule154,rule155,rule156,rule157,rule158,rule159,rule160,rule161,rule162,rule163,rule164,rule165,rule166,rule167,rule168,rule169,rule170,rule171,rule172,rule173,rule174,rule175,rule176,rule177,rule178,rule179,rule180,rule181,rule182,rule183,rule184,rule185,rule186,rule187,rule188,rule189,rule190,rule191,rule192,rule193,rule194,rule195,rule196,rule197,rule198,rule199,rule200,rule201,rule202,rule203,rule204,rule205,rule206,rule207,rule208,rule209,rule210,rule211,rule212,rule213,rule214,rule215,rule216,rule217,rule218,rule219,rule220,rule221,rule222,rule223,rule224,rule225,rule226,rule227,rule228,rule229,rule230,rule231,rule232,rule233,rule234,rule235,rule236,rule237,rule238,rule239,rule240,rule241,rule242,rule243,rule244,rule245,rule246,rule247,rule248,rule249,rule250,rule251,rule252,rule253,rule254,rule255,rule256,rule257,rule258,rule259,rule260,rule261,rule262,rule263,rule264,rule265,rule266,rule267,rule268,rule269,rule270,rule271,rule272,rule273,rule274,rule275,rule276,rule277,rule278,rule279,rule280,rule281,rule282,rule283,rule284,rule285,rule286,rule287,rule288,rule289,rule290,rule291,rule292,rule293,rule294,rule295,rule296,rule297,rule298,rule299,rule300,rule301,rule302,rule303,rule304,rule305,rule306,rule307,rule308,rule309,rule310,rule311,rule312,rule313,rule314,rule315,rule316,rule317,rule318,rule319,rule320,rule321,rule322,rule323,rule324,rule325,rule326,rule327,rule328,rule329,rule330,rule331,rule332,rule333,rule334,rule335,rule336,rule337,rule338,rule339,rule340,rule341,rule342,rule343,rule344,rule345,rule346,rule347,rule348,rule349,rule350,rule351,rule352,rule353,rule354,rule355,rule356,rule357,rule358,rule359,rule360,rule361,rule362,rule363,rule364,rule365,rule366,rule367,rule368,rule369,rule370,rule371,rule372,rule373,rule374,rule375,rule376,rule377,rule378,rule379,rule380,rule381,rule382,rule383,rule384,rule385,rule386,rule387,rule388,rule389,rule390,rule391,rule392,rule393,rule394,rule395,rule396,rule397,rule398,rule399,rule400,rule401,rule402,rule403,rule404,rule405,rule406,rule407,rule408,rule409,rule410,rule411,rule412,rule413,rule414,rule415,rule416,rule417,rule418,rule419,rule420,rule421,rule422,rule427,],
+	"]": [rule84,],
+	"_": [rule0,rule61,],
+	"`": [rule2,rule3,rule6,],
+	"d": [rule83,],
+	"s": [rule82,],
+	"t": [rule79,rule80,rule81,],
+	"{": [rule78,],
+	"}": [rule77,],
+	"~": [rule76,],
+}
 
 # Rules for latex_mathmode ruleset.
 
@@ -3916,61 +3891,14 @@ def rule948(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword4", pattern="\"
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-# Rules list for latex_mathmode ruleset.
-latex_mathmode_rules = [
-	rule428, rule429, rule430, rule431, rule432, rule433, rule434, rule435, rule436, rule437,
-	rule438, rule439, rule440, rule441, rule442, rule443, rule444, rule445, rule446, rule447,
-	rule448, rule449, rule450, rule451, rule452, rule453, rule454, rule455, rule456, rule457,
-	rule458, rule459, rule460, rule461, rule462, rule463, rule464, rule465, rule466, rule467,
-	rule468, rule469, rule470, rule471, rule472, rule473, rule474, rule475, rule476, rule477,
-	rule478, rule479, rule480, rule481, rule482, rule483, rule484, rule485, rule486, rule487,
-	rule488, rule489, rule490, rule491, rule492, rule493, rule494, rule495, rule496, rule497,
-	rule498, rule499, rule500, rule501, rule502, rule503, rule504, rule505, rule506, rule507,
-	rule508, rule509, rule510, rule511, rule512, rule513, rule514, rule515, rule516, rule517,
-	rule518, rule519, rule520, rule521, rule522, rule523, rule524, rule525, rule526, rule527,
-	rule528, rule529, rule530, rule531, rule532, rule533, rule534, rule535, rule536, rule537,
-	rule538, rule539, rule540, rule541, rule542, rule543, rule544, rule545, rule546, rule547,
-	rule548, rule549, rule550, rule551, rule552, rule553, rule554, rule555, rule556, rule557,
-	rule558, rule559, rule560, rule561, rule562, rule563, rule564, rule565, rule566, rule567,
-	rule568, rule569, rule570, rule571, rule572, rule573, rule574, rule575, rule576, rule577,
-	rule578, rule579, rule580, rule581, rule582, rule583, rule584, rule585, rule586, rule587,
-	rule588, rule589, rule590, rule591, rule592, rule593, rule594, rule595, rule596, rule597,
-	rule598, rule599, rule600, rule601, rule602, rule603, rule604, rule605, rule606, rule607,
-	rule608, rule609, rule610, rule611, rule612, rule613, rule614, rule615, rule616, rule617,
-	rule618, rule619, rule620, rule621, rule622, rule623, rule624, rule625, rule626, rule627,
-	rule628, rule629, rule630, rule631, rule632, rule633, rule634, rule635, rule636, rule637,
-	rule638, rule639, rule640, rule641, rule642, rule643, rule644, rule645, rule646, rule647,
-	rule648, rule649, rule650, rule651, rule652, rule653, rule654, rule655, rule656, rule657,
-	rule658, rule659, rule660, rule661, rule662, rule663, rule664, rule665, rule666, rule667,
-	rule668, rule669, rule670, rule671, rule672, rule673, rule674, rule675, rule676, rule677,
-	rule678, rule679, rule680, rule681, rule682, rule683, rule684, rule685, rule686, rule687,
-	rule688, rule689, rule690, rule691, rule692, rule693, rule694, rule695, rule696, rule697,
-	rule698, rule699, rule700, rule701, rule702, rule703, rule704, rule705, rule706, rule707,
-	rule708, rule709, rule710, rule711, rule712, rule713, rule714, rule715, rule716, rule717,
-	rule718, rule719, rule720, rule721, rule722, rule723, rule724, rule725, rule726, rule727,
-	rule728, rule729, rule730, rule731, rule732, rule733, rule734, rule735, rule736, rule737,
-	rule738, rule739, rule740, rule741, rule742, rule743, rule744, rule745, rule746, rule747,
-	rule748, rule749, rule750, rule751, rule752, rule753, rule754, rule755, rule756, rule757,
-	rule758, rule759, rule760, rule761, rule762, rule763, rule764, rule765, rule766, rule767,
-	rule768, rule769, rule770, rule771, rule772, rule773, rule774, rule775, rule776, rule777,
-	rule778, rule779, rule780, rule781, rule782, rule783, rule784, rule785, rule786, rule787,
-	rule788, rule789, rule790, rule791, rule792, rule793, rule794, rule795, rule796, rule797,
-	rule798, rule799, rule800, rule801, rule802, rule803, rule804, rule805, rule806, rule807,
-	rule808, rule809, rule810, rule811, rule812, rule813, rule814, rule815, rule816, rule817,
-	rule818, rule819, rule820, rule821, rule822, rule823, rule824, rule825, rule826, rule827,
-	rule828, rule829, rule830, rule831, rule832, rule833, rule834, rule835, rule836, rule837,
-	rule838, rule839, rule840, rule841, rule842, rule843, rule844, rule845, rule846, rule847,
-	rule848, rule849, rule850, rule851, rule852, rule853, rule854, rule855, rule856, rule857,
-	rule858, rule859, rule860, rule861, rule862, rule863, rule864, rule865, rule866, rule867,
-	rule868, rule869, rule870, rule871, rule872, rule873, rule874, rule875, rule876, rule877,
-	rule878, rule879, rule880, rule881, rule882, rule883, rule884, rule885, rule886, rule887,
-	rule888, rule889, rule890, rule891, rule892, rule893, rule894, rule895, rule896, rule897,
-	rule898, rule899, rule900, rule901, rule902, rule903, rule904, rule905, rule906, rule907,
-	rule908, rule909, rule910, rule911, rule912, rule913, rule914, rule915, rule916, rule917,
-	rule918, rule919, rule920, rule921, rule922, rule923, rule924, rule925, rule926, rule927,
-	rule928, rule929, rule930, rule931, rule932, rule933, rule934, rule935, rule936, rule937,
-	rule938, rule939, rule940, rule941, rule942, rule943, rule944, rule945, rule946, rule947,
-	rule948, ]
+# Rules dict for mathmode ruleset.
+rulesDict1 = {
+	"%": [rule429,],
+	"'": [rule946,],
+	"\": [rule432,rule433,rule434,rule435,rule436,rule437,rule438,rule439,rule440,rule441,rule442,rule443,rule444,rule445,rule446,rule447,rule448,rule449,rule450,rule451,rule452,rule453,rule454,rule455,rule456,rule457,rule458,rule459,rule460,rule461,rule462,rule463,rule464,rule465,rule466,rule467,rule468,rule469,rule470,rule471,rule472,rule473,rule474,rule475,rule476,rule477,rule478,rule479,rule480,rule481,rule482,rule483,rule484,rule485,rule486,rule487,rule488,rule489,rule490,rule491,rule492,rule493,rule494,rule495,rule496,rule497,rule498,rule499,rule500,rule501,rule502,rule503,rule504,rule505,rule506,rule507,rule508,rule509,rule510,rule511,rule512,rule513,rule514,rule515,rule516,rule517,rule518,rule519,rule520,rule521,rule522,rule523,rule524,rule525,rule526,rule527,rule528,rule529,rule530,rule531,rule532,rule533,rule534,rule535,rule536,rule537,rule538,rule539,rule540,rule541,rule542,rule543,rule544,rule545,rule546,rule547,rule548,rule549,rule550,rule551,rule552,rule553,rule554,rule555,rule556,rule557,rule558,rule559,rule560,rule561,rule562,rule563,rule564,rule565,rule566,rule567,rule568,rule569,rule570,rule571,rule572,rule573,rule574,rule575,rule576,rule577,rule578,rule579,rule580,rule581,rule582,rule583,rule584,rule585,rule586,rule587,rule588,rule589,rule590,rule591,rule592,rule593,rule594,rule595,rule596,rule597,rule598,rule599,rule600,rule601,rule602,rule603,rule604,rule605,rule606,rule607,rule608,rule609,rule610,rule611,rule612,rule613,rule614,rule615,rule616,rule617,rule618,rule619,rule620,rule621,rule622,rule623,rule624,rule625,rule626,rule627,rule628,rule629,rule630,rule631,rule632,rule633,rule634,rule635,rule636,rule637,rule638,rule639,rule640,rule641,rule642,rule643,rule644,rule645,rule646,rule647,rule648,rule649,rule650,rule651,rule652,rule653,rule654,rule655,rule656,rule657,rule658,rule659,rule660,rule661,rule662,rule663,rule664,rule665,rule666,rule667,rule668,rule669,rule670,rule671,rule672,rule673,rule674,rule675,rule676,rule677,rule678,rule679,rule680,rule681,rule682,rule683,rule684,rule685,rule686,rule687,rule688,rule689,rule690,rule691,rule692,rule693,rule694,rule695,rule696,rule697,rule698,rule699,rule700,rule701,rule702,rule703,rule704,rule705,rule706,rule707,rule708,rule709,rule710,rule711,rule712,rule713,rule714,rule715,rule716,rule717,rule718,rule719,rule720,rule721,rule722,rule723,rule724,rule725,rule726,rule727,rule728,rule729,rule730,rule731,rule732,rule733,rule734,rule735,rule736,rule737,rule738,rule739,rule740,rule741,rule742,rule743,rule744,rule745,rule746,rule747,rule748,rule749,rule750,rule751,rule752,rule753,rule754,rule755,rule756,rule757,rule758,rule759,rule760,rule761,rule762,rule763,rule764,rule765,rule766,rule767,rule768,rule769,rule770,rule771,rule772,rule773,rule774,rule775,rule776,rule777,rule778,rule779,rule780,rule781,rule782,rule783,rule784,rule785,rule786,rule787,rule788,rule789,rule790,rule791,rule792,rule793,rule794,rule795,rule796,rule797,rule798,rule799,rule800,rule801,rule802,rule803,rule804,rule805,rule806,rule807,rule808,rule809,rule810,rule811,rule812,rule813,rule814,rule815,rule816,rule817,rule818,rule819,rule820,rule821,rule822,rule823,rule824,rule825,rule826,rule827,rule828,rule829,rule830,rule831,rule832,rule833,rule834,rule835,rule836,rule837,rule838,rule839,rule840,rule841,rule842,rule843,rule844,rule845,rule846,rule847,rule848,rule849,rule850,rule851,rule852,rule853,rule854,rule855,rule856,rule857,rule858,rule859,rule860,rule861,rule862,rule863,rule864,rule865,rule866,rule867,rule868,rule869,rule870,rule871,rule872,rule873,rule874,rule875,rule876,rule877,rule878,rule879,rule880,rule881,rule882,rule883,rule884,rule885,rule886,rule887,rule888,rule889,rule890,rule891,rule892,rule893,rule894,rule895,rule896,rule897,rule898,rule899,rule900,rule901,rule902,rule903,rule904,rule905,rule906,rule907,rule908,rule909,rule910,rule911,rule912,rule913,rule914,rule915,rule916,rule917,rule918,rule919,rule920,rule921,rule922,rule923,rule924,rule925,rule926,rule927,rule928,rule929,rule930,rule931,rule932,rule933,rule934,rule935,rule936,rule937,rule938,rule939,rule940,rule941,rule942,rule943,rule944,rule945,rule947,rule948,],
+	"^": [rule431,],
+	"_": [rule428,rule430,],
+}
 
 # Rules for latex_arraymode ruleset.
 
@@ -6075,61 +6003,15 @@ def rule1473(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword4", pattern="\"
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-# Rules list for latex_arraymode ruleset.
-latex_arraymode_rules = [
-	rule949, rule950, rule951, rule952, rule953, rule954, rule955, rule956, rule957, rule958,
-	rule959, rule960, rule961, rule962, rule963, rule964, rule965, rule966, rule967, rule968,
-	rule969, rule970, rule971, rule972, rule973, rule974, rule975, rule976, rule977, rule978,
-	rule979, rule980, rule981, rule982, rule983, rule984, rule985, rule986, rule987, rule988,
-	rule989, rule990, rule991, rule992, rule993, rule994, rule995, rule996, rule997, rule998,
-	rule999, rule1000, rule1001, rule1002, rule1003, rule1004, rule1005, rule1006, rule1007, rule1008,
-	rule1009, rule1010, rule1011, rule1012, rule1013, rule1014, rule1015, rule1016, rule1017, rule1018,
-	rule1019, rule1020, rule1021, rule1022, rule1023, rule1024, rule1025, rule1026, rule1027, rule1028,
-	rule1029, rule1030, rule1031, rule1032, rule1033, rule1034, rule1035, rule1036, rule1037, rule1038,
-	rule1039, rule1040, rule1041, rule1042, rule1043, rule1044, rule1045, rule1046, rule1047, rule1048,
-	rule1049, rule1050, rule1051, rule1052, rule1053, rule1054, rule1055, rule1056, rule1057, rule1058,
-	rule1059, rule1060, rule1061, rule1062, rule1063, rule1064, rule1065, rule1066, rule1067, rule1068,
-	rule1069, rule1070, rule1071, rule1072, rule1073, rule1074, rule1075, rule1076, rule1077, rule1078,
-	rule1079, rule1080, rule1081, rule1082, rule1083, rule1084, rule1085, rule1086, rule1087, rule1088,
-	rule1089, rule1090, rule1091, rule1092, rule1093, rule1094, rule1095, rule1096, rule1097, rule1098,
-	rule1099, rule1100, rule1101, rule1102, rule1103, rule1104, rule1105, rule1106, rule1107, rule1108,
-	rule1109, rule1110, rule1111, rule1112, rule1113, rule1114, rule1115, rule1116, rule1117, rule1118,
-	rule1119, rule1120, rule1121, rule1122, rule1123, rule1124, rule1125, rule1126, rule1127, rule1128,
-	rule1129, rule1130, rule1131, rule1132, rule1133, rule1134, rule1135, rule1136, rule1137, rule1138,
-	rule1139, rule1140, rule1141, rule1142, rule1143, rule1144, rule1145, rule1146, rule1147, rule1148,
-	rule1149, rule1150, rule1151, rule1152, rule1153, rule1154, rule1155, rule1156, rule1157, rule1158,
-	rule1159, rule1160, rule1161, rule1162, rule1163, rule1164, rule1165, rule1166, rule1167, rule1168,
-	rule1169, rule1170, rule1171, rule1172, rule1173, rule1174, rule1175, rule1176, rule1177, rule1178,
-	rule1179, rule1180, rule1181, rule1182, rule1183, rule1184, rule1185, rule1186, rule1187, rule1188,
-	rule1189, rule1190, rule1191, rule1192, rule1193, rule1194, rule1195, rule1196, rule1197, rule1198,
-	rule1199, rule1200, rule1201, rule1202, rule1203, rule1204, rule1205, rule1206, rule1207, rule1208,
-	rule1209, rule1210, rule1211, rule1212, rule1213, rule1214, rule1215, rule1216, rule1217, rule1218,
-	rule1219, rule1220, rule1221, rule1222, rule1223, rule1224, rule1225, rule1226, rule1227, rule1228,
-	rule1229, rule1230, rule1231, rule1232, rule1233, rule1234, rule1235, rule1236, rule1237, rule1238,
-	rule1239, rule1240, rule1241, rule1242, rule1243, rule1244, rule1245, rule1246, rule1247, rule1248,
-	rule1249, rule1250, rule1251, rule1252, rule1253, rule1254, rule1255, rule1256, rule1257, rule1258,
-	rule1259, rule1260, rule1261, rule1262, rule1263, rule1264, rule1265, rule1266, rule1267, rule1268,
-	rule1269, rule1270, rule1271, rule1272, rule1273, rule1274, rule1275, rule1276, rule1277, rule1278,
-	rule1279, rule1280, rule1281, rule1282, rule1283, rule1284, rule1285, rule1286, rule1287, rule1288,
-	rule1289, rule1290, rule1291, rule1292, rule1293, rule1294, rule1295, rule1296, rule1297, rule1298,
-	rule1299, rule1300, rule1301, rule1302, rule1303, rule1304, rule1305, rule1306, rule1307, rule1308,
-	rule1309, rule1310, rule1311, rule1312, rule1313, rule1314, rule1315, rule1316, rule1317, rule1318,
-	rule1319, rule1320, rule1321, rule1322, rule1323, rule1324, rule1325, rule1326, rule1327, rule1328,
-	rule1329, rule1330, rule1331, rule1332, rule1333, rule1334, rule1335, rule1336, rule1337, rule1338,
-	rule1339, rule1340, rule1341, rule1342, rule1343, rule1344, rule1345, rule1346, rule1347, rule1348,
-	rule1349, rule1350, rule1351, rule1352, rule1353, rule1354, rule1355, rule1356, rule1357, rule1358,
-	rule1359, rule1360, rule1361, rule1362, rule1363, rule1364, rule1365, rule1366, rule1367, rule1368,
-	rule1369, rule1370, rule1371, rule1372, rule1373, rule1374, rule1375, rule1376, rule1377, rule1378,
-	rule1379, rule1380, rule1381, rule1382, rule1383, rule1384, rule1385, rule1386, rule1387, rule1388,
-	rule1389, rule1390, rule1391, rule1392, rule1393, rule1394, rule1395, rule1396, rule1397, rule1398,
-	rule1399, rule1400, rule1401, rule1402, rule1403, rule1404, rule1405, rule1406, rule1407, rule1408,
-	rule1409, rule1410, rule1411, rule1412, rule1413, rule1414, rule1415, rule1416, rule1417, rule1418,
-	rule1419, rule1420, rule1421, rule1422, rule1423, rule1424, rule1425, rule1426, rule1427, rule1428,
-	rule1429, rule1430, rule1431, rule1432, rule1433, rule1434, rule1435, rule1436, rule1437, rule1438,
-	rule1439, rule1440, rule1441, rule1442, rule1443, rule1444, rule1445, rule1446, rule1447, rule1448,
-	rule1449, rule1450, rule1451, rule1452, rule1453, rule1454, rule1455, rule1456, rule1457, rule1458,
-	rule1459, rule1460, rule1461, rule1462, rule1463, rule1464, rule1465, rule1466, rule1467, rule1468,
-	rule1469, rule1470, rule1471, rule1472, rule1473, ]
+# Rules dict for arraymode ruleset.
+rulesDict1 = {
+	"%": [rule950,],
+	"&": [rule1472,],
+	"'": [rule1471,],
+	"\": [rule953,rule954,rule955,rule956,rule957,rule958,rule959,rule960,rule961,rule962,rule963,rule964,rule965,rule966,rule967,rule968,rule969,rule970,rule971,rule972,rule973,rule974,rule975,rule976,rule977,rule978,rule979,rule980,rule981,rule982,rule983,rule984,rule985,rule986,rule987,rule988,rule989,rule990,rule991,rule992,rule993,rule994,rule995,rule996,rule997,rule998,rule999,rule1000,rule1001,rule1002,rule1003,rule1004,rule1005,rule1006,rule1007,rule1008,rule1009,rule1010,rule1011,rule1012,rule1013,rule1014,rule1015,rule1016,rule1017,rule1018,rule1019,rule1020,rule1021,rule1022,rule1023,rule1024,rule1025,rule1026,rule1027,rule1028,rule1029,rule1030,rule1031,rule1032,rule1033,rule1034,rule1035,rule1036,rule1037,rule1038,rule1039,rule1040,rule1041,rule1042,rule1043,rule1044,rule1045,rule1046,rule1047,rule1048,rule1049,rule1050,rule1051,rule1052,rule1053,rule1054,rule1055,rule1056,rule1057,rule1058,rule1059,rule1060,rule1061,rule1062,rule1063,rule1064,rule1065,rule1066,rule1067,rule1068,rule1069,rule1070,rule1071,rule1072,rule1073,rule1074,rule1075,rule1076,rule1077,rule1078,rule1079,rule1080,rule1081,rule1082,rule1083,rule1084,rule1085,rule1086,rule1087,rule1088,rule1089,rule1090,rule1091,rule1092,rule1093,rule1094,rule1095,rule1096,rule1097,rule1098,rule1099,rule1100,rule1101,rule1102,rule1103,rule1104,rule1105,rule1106,rule1107,rule1108,rule1109,rule1110,rule1111,rule1112,rule1113,rule1114,rule1115,rule1116,rule1117,rule1118,rule1119,rule1120,rule1121,rule1122,rule1123,rule1124,rule1125,rule1126,rule1127,rule1128,rule1129,rule1130,rule1131,rule1132,rule1133,rule1134,rule1135,rule1136,rule1137,rule1138,rule1139,rule1140,rule1141,rule1142,rule1143,rule1144,rule1145,rule1146,rule1147,rule1148,rule1149,rule1150,rule1151,rule1152,rule1153,rule1154,rule1155,rule1156,rule1157,rule1158,rule1159,rule1160,rule1161,rule1162,rule1163,rule1164,rule1165,rule1166,rule1167,rule1168,rule1169,rule1170,rule1171,rule1172,rule1173,rule1174,rule1175,rule1176,rule1177,rule1178,rule1179,rule1180,rule1181,rule1182,rule1183,rule1184,rule1185,rule1186,rule1187,rule1188,rule1189,rule1190,rule1191,rule1192,rule1193,rule1194,rule1195,rule1196,rule1197,rule1198,rule1199,rule1200,rule1201,rule1202,rule1203,rule1204,rule1205,rule1206,rule1207,rule1208,rule1209,rule1210,rule1211,rule1212,rule1213,rule1214,rule1215,rule1216,rule1217,rule1218,rule1219,rule1220,rule1221,rule1222,rule1223,rule1224,rule1225,rule1226,rule1227,rule1228,rule1229,rule1230,rule1231,rule1232,rule1233,rule1234,rule1235,rule1236,rule1237,rule1238,rule1239,rule1240,rule1241,rule1242,rule1243,rule1244,rule1245,rule1246,rule1247,rule1248,rule1249,rule1250,rule1251,rule1252,rule1253,rule1254,rule1255,rule1256,rule1257,rule1258,rule1259,rule1260,rule1261,rule1262,rule1263,rule1264,rule1265,rule1266,rule1267,rule1268,rule1269,rule1270,rule1271,rule1272,rule1273,rule1274,rule1275,rule1276,rule1277,rule1278,rule1279,rule1280,rule1281,rule1282,rule1283,rule1284,rule1285,rule1286,rule1287,rule1288,rule1289,rule1290,rule1291,rule1292,rule1293,rule1294,rule1295,rule1296,rule1297,rule1298,rule1299,rule1300,rule1301,rule1302,rule1303,rule1304,rule1305,rule1306,rule1307,rule1308,rule1309,rule1310,rule1311,rule1312,rule1313,rule1314,rule1315,rule1316,rule1317,rule1318,rule1319,rule1320,rule1321,rule1322,rule1323,rule1324,rule1325,rule1326,rule1327,rule1328,rule1329,rule1330,rule1331,rule1332,rule1333,rule1334,rule1335,rule1336,rule1337,rule1338,rule1339,rule1340,rule1341,rule1342,rule1343,rule1344,rule1345,rule1346,rule1347,rule1348,rule1349,rule1350,rule1351,rule1352,rule1353,rule1354,rule1355,rule1356,rule1357,rule1358,rule1359,rule1360,rule1361,rule1362,rule1363,rule1364,rule1365,rule1366,rule1367,rule1368,rule1369,rule1370,rule1371,rule1372,rule1373,rule1374,rule1375,rule1376,rule1377,rule1378,rule1379,rule1380,rule1381,rule1382,rule1383,rule1384,rule1385,rule1386,rule1387,rule1388,rule1389,rule1390,rule1391,rule1392,rule1393,rule1394,rule1395,rule1396,rule1397,rule1398,rule1399,rule1400,rule1401,rule1402,rule1403,rule1404,rule1405,rule1406,rule1407,rule1408,rule1409,rule1410,rule1411,rule1412,rule1413,rule1414,rule1415,rule1416,rule1417,rule1418,rule1419,rule1420,rule1421,rule1422,rule1423,rule1424,rule1425,rule1426,rule1427,rule1428,rule1429,rule1430,rule1431,rule1432,rule1433,rule1434,rule1435,rule1436,rule1437,rule1438,rule1439,rule1440,rule1441,rule1442,rule1443,rule1444,rule1445,rule1446,rule1447,rule1448,rule1449,rule1450,rule1451,rule1452,rule1453,rule1454,rule1455,rule1456,rule1457,rule1458,rule1459,rule1460,rule1461,rule1462,rule1463,rule1464,rule1465,rule1466,rule1467,rule1468,rule1469,rule1470,rule1473,],
+	"^": [rule952,],
+	"_": [rule949,rule951,],
+}
 
 # Rules for latex_tabularmode ruleset.
 
@@ -7596,45 +7478,24 @@ def rule1837(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword4", pattern="\"
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-# Rules list for latex_tabularmode ruleset.
-latex_tabularmode_rules = [
-	rule1474, rule1475, rule1476, rule1477, rule1478, rule1479, rule1480, rule1481, rule1482, rule1483,
-	rule1484, rule1485, rule1486, rule1487, rule1488, rule1489, rule1490, rule1491, rule1492, rule1493,
-	rule1494, rule1495, rule1496, rule1497, rule1498, rule1499, rule1500, rule1501, rule1502, rule1503,
-	rule1504, rule1505, rule1506, rule1507, rule1508, rule1509, rule1510, rule1511, rule1512, rule1513,
-	rule1514, rule1515, rule1516, rule1517, rule1518, rule1519, rule1520, rule1521, rule1522, rule1523,
-	rule1524, rule1525, rule1526, rule1527, rule1528, rule1529, rule1530, rule1531, rule1532, rule1533,
-	rule1534, rule1535, rule1536, rule1537, rule1538, rule1539, rule1540, rule1541, rule1542, rule1543,
-	rule1544, rule1545, rule1546, rule1547, rule1548, rule1549, rule1550, rule1551, rule1552, rule1553,
-	rule1554, rule1555, rule1556, rule1557, rule1558, rule1559, rule1560, rule1561, rule1562, rule1563,
-	rule1564, rule1565, rule1566, rule1567, rule1568, rule1569, rule1570, rule1571, rule1572, rule1573,
-	rule1574, rule1575, rule1576, rule1577, rule1578, rule1579, rule1580, rule1581, rule1582, rule1583,
-	rule1584, rule1585, rule1586, rule1587, rule1588, rule1589, rule1590, rule1591, rule1592, rule1593,
-	rule1594, rule1595, rule1596, rule1597, rule1598, rule1599, rule1600, rule1601, rule1602, rule1603,
-	rule1604, rule1605, rule1606, rule1607, rule1608, rule1609, rule1610, rule1611, rule1612, rule1613,
-	rule1614, rule1615, rule1616, rule1617, rule1618, rule1619, rule1620, rule1621, rule1622, rule1623,
-	rule1624, rule1625, rule1626, rule1627, rule1628, rule1629, rule1630, rule1631, rule1632, rule1633,
-	rule1634, rule1635, rule1636, rule1637, rule1638, rule1639, rule1640, rule1641, rule1642, rule1643,
-	rule1644, rule1645, rule1646, rule1647, rule1648, rule1649, rule1650, rule1651, rule1652, rule1653,
-	rule1654, rule1655, rule1656, rule1657, rule1658, rule1659, rule1660, rule1661, rule1662, rule1663,
-	rule1664, rule1665, rule1666, rule1667, rule1668, rule1669, rule1670, rule1671, rule1672, rule1673,
-	rule1674, rule1675, rule1676, rule1677, rule1678, rule1679, rule1680, rule1681, rule1682, rule1683,
-	rule1684, rule1685, rule1686, rule1687, rule1688, rule1689, rule1690, rule1691, rule1692, rule1693,
-	rule1694, rule1695, rule1696, rule1697, rule1698, rule1699, rule1700, rule1701, rule1702, rule1703,
-	rule1704, rule1705, rule1706, rule1707, rule1708, rule1709, rule1710, rule1711, rule1712, rule1713,
-	rule1714, rule1715, rule1716, rule1717, rule1718, rule1719, rule1720, rule1721, rule1722, rule1723,
-	rule1724, rule1725, rule1726, rule1727, rule1728, rule1729, rule1730, rule1731, rule1732, rule1733,
-	rule1734, rule1735, rule1736, rule1737, rule1738, rule1739, rule1740, rule1741, rule1742, rule1743,
-	rule1744, rule1745, rule1746, rule1747, rule1748, rule1749, rule1750, rule1751, rule1752, rule1753,
-	rule1754, rule1755, rule1756, rule1757, rule1758, rule1759, rule1760, rule1761, rule1762, rule1763,
-	rule1764, rule1765, rule1766, rule1767, rule1768, rule1769, rule1770, rule1771, rule1772, rule1773,
-	rule1774, rule1775, rule1776, rule1777, rule1778, rule1779, rule1780, rule1781, rule1782, rule1783,
-	rule1784, rule1785, rule1786, rule1787, rule1788, rule1789, rule1790, rule1791, rule1792, rule1793,
-	rule1794, rule1795, rule1796, rule1797, rule1798, rule1799, rule1800, rule1801, rule1802, rule1803,
-	rule1804, rule1805, rule1806, rule1807, rule1808, rule1809, rule1810, rule1811, rule1812, rule1813,
-	rule1814, rule1815, rule1816, rule1817, rule1818, rule1819, rule1820, rule1821, rule1822, rule1823,
-	rule1824, rule1825, rule1826, rule1827, rule1828, rule1829, rule1830, rule1831, rule1832, rule1833,
-	rule1834, rule1835, rule1836, rule1837, ]
+# Rules dict for tabularmode ruleset.
+rulesDict1 = {
+	"\"": [rule1478,rule1479,],
+	"%": [rule1475,],
+	"&": [rule1836,],
+	"-": [rule1833,rule1834,rule1835,],
+	"[": [rule1832,],
+	"\": [rule1490,rule1491,rule1492,rule1493,rule1494,rule1495,rule1496,rule1497,rule1498,rule1499,rule1500,rule1501,rule1502,rule1503,rule1504,rule1505,rule1506,rule1507,rule1508,rule1509,rule1510,rule1511,rule1512,rule1513,rule1514,rule1515,rule1516,rule1517,rule1518,rule1519,rule1520,rule1521,rule1522,rule1523,rule1524,rule1525,rule1526,rule1527,rule1528,rule1529,rule1530,rule1531,rule1532,rule1533,rule1534,rule1535,rule1536,rule1537,rule1538,rule1539,rule1540,rule1541,rule1542,rule1543,rule1544,rule1545,rule1546,rule1547,rule1548,rule1549,rule1550,rule1551,rule1552,rule1553,rule1554,rule1555,rule1556,rule1557,rule1558,rule1559,rule1560,rule1561,rule1562,rule1563,rule1564,rule1565,rule1566,rule1567,rule1568,rule1569,rule1570,rule1571,rule1572,rule1573,rule1574,rule1575,rule1576,rule1577,rule1578,rule1579,rule1580,rule1581,rule1582,rule1583,rule1584,rule1585,rule1586,rule1587,rule1588,rule1589,rule1590,rule1591,rule1592,rule1593,rule1594,rule1595,rule1596,rule1597,rule1598,rule1599,rule1600,rule1601,rule1602,rule1603,rule1604,rule1605,rule1606,rule1607,rule1608,rule1609,rule1610,rule1611,rule1612,rule1613,rule1614,rule1615,rule1616,rule1617,rule1618,rule1619,rule1620,rule1621,rule1622,rule1623,rule1624,rule1625,rule1626,rule1627,rule1628,rule1629,rule1630,rule1631,rule1632,rule1633,rule1634,rule1635,rule1636,rule1637,rule1638,rule1639,rule1640,rule1641,rule1642,rule1643,rule1644,rule1645,rule1646,rule1647,rule1648,rule1649,rule1650,rule1651,rule1652,rule1653,rule1654,rule1655,rule1656,rule1657,rule1658,rule1659,rule1660,rule1661,rule1662,rule1663,rule1664,rule1665,rule1666,rule1667,rule1668,rule1669,rule1670,rule1671,rule1672,rule1673,rule1674,rule1675,rule1676,rule1677,rule1678,rule1679,rule1680,rule1681,rule1682,rule1683,rule1684,rule1685,rule1686,rule1687,rule1688,rule1689,rule1690,rule1691,rule1692,rule1693,rule1694,rule1695,rule1696,rule1697,rule1698,rule1699,rule1700,rule1701,rule1702,rule1703,rule1704,rule1705,rule1706,rule1707,rule1708,rule1709,rule1710,rule1711,rule1712,rule1713,rule1714,rule1715,rule1716,rule1717,rule1718,rule1719,rule1720,rule1721,rule1722,rule1723,rule1724,rule1725,rule1726,rule1727,rule1728,rule1729,rule1730,rule1731,rule1732,rule1733,rule1734,rule1735,rule1736,rule1737,rule1738,rule1739,rule1740,rule1741,rule1742,rule1743,rule1744,rule1745,rule1746,rule1747,rule1748,rule1749,rule1750,rule1751,rule1752,rule1753,rule1754,rule1755,rule1756,rule1757,rule1758,rule1759,rule1760,rule1761,rule1762,rule1763,rule1764,rule1765,rule1766,rule1767,rule1768,rule1769,rule1770,rule1771,rule1772,rule1773,rule1774,rule1775,rule1776,rule1777,rule1778,rule1779,rule1780,rule1781,rule1782,rule1783,rule1784,rule1785,rule1786,rule1787,rule1788,rule1789,rule1790,rule1791,rule1792,rule1793,rule1794,rule1795,rule1796,rule1797,rule1798,rule1799,rule1800,rule1801,rule1802,rule1803,rule1804,rule1805,rule1806,rule1807,rule1808,rule1809,rule1810,rule1811,rule1812,rule1813,rule1814,rule1815,rule1816,rule1817,rule1818,rule1819,rule1820,rule1821,rule1822,rule1823,rule1824,rule1825,rule1826,rule1827,rule1828,rule1829,rule1830,rule1831,rule1837,],
+	"]": [rule1489,],
+	"_": [rule1474,],
+	"`": [rule1476,rule1477,rule1480,],
+	"d": [rule1488,],
+	"s": [rule1487,],
+	"t": [rule1484,rule1485,rule1486,],
+	"{": [rule1483,],
+	"}": [rule1482,],
+	"~": [rule1481,],
+}
 
 # Rules for latex_tabbingmode ruleset.
 
@@ -9137,46 +8998,23 @@ def rule2210(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword4", pattern="\"
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-# Rules list for latex_tabbingmode ruleset.
-latex_tabbingmode_rules = [
-	rule1838, rule1839, rule1840, rule1841, rule1842, rule1843, rule1844, rule1845, rule1846, rule1847,
-	rule1848, rule1849, rule1850, rule1851, rule1852, rule1853, rule1854, rule1855, rule1856, rule1857,
-	rule1858, rule1859, rule1860, rule1861, rule1862, rule1863, rule1864, rule1865, rule1866, rule1867,
-	rule1868, rule1869, rule1870, rule1871, rule1872, rule1873, rule1874, rule1875, rule1876, rule1877,
-	rule1878, rule1879, rule1880, rule1881, rule1882, rule1883, rule1884, rule1885, rule1886, rule1887,
-	rule1888, rule1889, rule1890, rule1891, rule1892, rule1893, rule1894, rule1895, rule1896, rule1897,
-	rule1898, rule1899, rule1900, rule1901, rule1902, rule1903, rule1904, rule1905, rule1906, rule1907,
-	rule1908, rule1909, rule1910, rule1911, rule1912, rule1913, rule1914, rule1915, rule1916, rule1917,
-	rule1918, rule1919, rule1920, rule1921, rule1922, rule1923, rule1924, rule1925, rule1926, rule1927,
-	rule1928, rule1929, rule1930, rule1931, rule1932, rule1933, rule1934, rule1935, rule1936, rule1937,
-	rule1938, rule1939, rule1940, rule1941, rule1942, rule1943, rule1944, rule1945, rule1946, rule1947,
-	rule1948, rule1949, rule1950, rule1951, rule1952, rule1953, rule1954, rule1955, rule1956, rule1957,
-	rule1958, rule1959, rule1960, rule1961, rule1962, rule1963, rule1964, rule1965, rule1966, rule1967,
-	rule1968, rule1969, rule1970, rule1971, rule1972, rule1973, rule1974, rule1975, rule1976, rule1977,
-	rule1978, rule1979, rule1980, rule1981, rule1982, rule1983, rule1984, rule1985, rule1986, rule1987,
-	rule1988, rule1989, rule1990, rule1991, rule1992, rule1993, rule1994, rule1995, rule1996, rule1997,
-	rule1998, rule1999, rule2000, rule2001, rule2002, rule2003, rule2004, rule2005, rule2006, rule2007,
-	rule2008, rule2009, rule2010, rule2011, rule2012, rule2013, rule2014, rule2015, rule2016, rule2017,
-	rule2018, rule2019, rule2020, rule2021, rule2022, rule2023, rule2024, rule2025, rule2026, rule2027,
-	rule2028, rule2029, rule2030, rule2031, rule2032, rule2033, rule2034, rule2035, rule2036, rule2037,
-	rule2038, rule2039, rule2040, rule2041, rule2042, rule2043, rule2044, rule2045, rule2046, rule2047,
-	rule2048, rule2049, rule2050, rule2051, rule2052, rule2053, rule2054, rule2055, rule2056, rule2057,
-	rule2058, rule2059, rule2060, rule2061, rule2062, rule2063, rule2064, rule2065, rule2066, rule2067,
-	rule2068, rule2069, rule2070, rule2071, rule2072, rule2073, rule2074, rule2075, rule2076, rule2077,
-	rule2078, rule2079, rule2080, rule2081, rule2082, rule2083, rule2084, rule2085, rule2086, rule2087,
-	rule2088, rule2089, rule2090, rule2091, rule2092, rule2093, rule2094, rule2095, rule2096, rule2097,
-	rule2098, rule2099, rule2100, rule2101, rule2102, rule2103, rule2104, rule2105, rule2106, rule2107,
-	rule2108, rule2109, rule2110, rule2111, rule2112, rule2113, rule2114, rule2115, rule2116, rule2117,
-	rule2118, rule2119, rule2120, rule2121, rule2122, rule2123, rule2124, rule2125, rule2126, rule2127,
-	rule2128, rule2129, rule2130, rule2131, rule2132, rule2133, rule2134, rule2135, rule2136, rule2137,
-	rule2138, rule2139, rule2140, rule2141, rule2142, rule2143, rule2144, rule2145, rule2146, rule2147,
-	rule2148, rule2149, rule2150, rule2151, rule2152, rule2153, rule2154, rule2155, rule2156, rule2157,
-	rule2158, rule2159, rule2160, rule2161, rule2162, rule2163, rule2164, rule2165, rule2166, rule2167,
-	rule2168, rule2169, rule2170, rule2171, rule2172, rule2173, rule2174, rule2175, rule2176, rule2177,
-	rule2178, rule2179, rule2180, rule2181, rule2182, rule2183, rule2184, rule2185, rule2186, rule2187,
-	rule2188, rule2189, rule2190, rule2191, rule2192, rule2193, rule2194, rule2195, rule2196, rule2197,
-	rule2198, rule2199, rule2200, rule2201, rule2202, rule2203, rule2204, rule2205, rule2206, rule2207,
-	rule2208, rule2209, rule2210, ]
+# Rules dict for tabbingmode ruleset.
+rulesDict1 = {
+	"\"": [rule1842,rule1843,],
+	"%": [rule1839,],
+	"-": [rule2207,rule2208,rule2209,],
+	"[": [rule2206,],
+	"\": [rule1854,rule1855,rule1856,rule1857,rule1858,rule1859,rule1860,rule1861,rule1862,rule1863,rule1864,rule1865,rule1866,rule1867,rule1868,rule1869,rule1870,rule1871,rule1872,rule1873,rule1874,rule1875,rule1876,rule1877,rule1878,rule1879,rule1880,rule1881,rule1882,rule1883,rule1884,rule1885,rule1886,rule1887,rule1888,rule1889,rule1890,rule1891,rule1892,rule1893,rule1894,rule1895,rule1896,rule1897,rule1898,rule1899,rule1900,rule1901,rule1902,rule1903,rule1904,rule1905,rule1906,rule1907,rule1908,rule1909,rule1910,rule1911,rule1912,rule1913,rule1914,rule1915,rule1916,rule1917,rule1918,rule1919,rule1920,rule1921,rule1922,rule1923,rule1924,rule1925,rule1926,rule1927,rule1928,rule1929,rule1930,rule1931,rule1932,rule1933,rule1934,rule1935,rule1936,rule1937,rule1938,rule1939,rule1940,rule1941,rule1942,rule1943,rule1944,rule1945,rule1946,rule1947,rule1948,rule1949,rule1950,rule1951,rule1952,rule1953,rule1954,rule1955,rule1956,rule1957,rule1958,rule1959,rule1960,rule1961,rule1962,rule1963,rule1964,rule1965,rule1966,rule1967,rule1968,rule1969,rule1970,rule1971,rule1972,rule1973,rule1974,rule1975,rule1976,rule1977,rule1978,rule1979,rule1980,rule1981,rule1982,rule1983,rule1984,rule1985,rule1986,rule1987,rule1988,rule1989,rule1990,rule1991,rule1992,rule1993,rule1994,rule1995,rule1996,rule1997,rule1998,rule1999,rule2000,rule2001,rule2002,rule2003,rule2004,rule2005,rule2006,rule2007,rule2008,rule2009,rule2010,rule2011,rule2012,rule2013,rule2014,rule2015,rule2016,rule2017,rule2018,rule2019,rule2020,rule2021,rule2022,rule2023,rule2024,rule2025,rule2026,rule2027,rule2028,rule2029,rule2030,rule2031,rule2032,rule2033,rule2034,rule2035,rule2036,rule2037,rule2038,rule2039,rule2040,rule2041,rule2042,rule2043,rule2044,rule2045,rule2046,rule2047,rule2048,rule2049,rule2050,rule2051,rule2052,rule2053,rule2054,rule2055,rule2056,rule2057,rule2058,rule2059,rule2060,rule2061,rule2062,rule2063,rule2064,rule2065,rule2066,rule2067,rule2068,rule2069,rule2070,rule2071,rule2072,rule2073,rule2074,rule2075,rule2076,rule2077,rule2078,rule2079,rule2080,rule2081,rule2082,rule2083,rule2084,rule2085,rule2086,rule2087,rule2088,rule2089,rule2090,rule2091,rule2092,rule2093,rule2094,rule2095,rule2096,rule2097,rule2098,rule2099,rule2100,rule2101,rule2102,rule2103,rule2104,rule2105,rule2106,rule2107,rule2108,rule2109,rule2110,rule2111,rule2112,rule2113,rule2114,rule2115,rule2116,rule2117,rule2118,rule2119,rule2120,rule2121,rule2122,rule2123,rule2124,rule2125,rule2126,rule2127,rule2128,rule2129,rule2130,rule2131,rule2132,rule2133,rule2134,rule2135,rule2136,rule2137,rule2138,rule2139,rule2140,rule2141,rule2142,rule2143,rule2144,rule2145,rule2146,rule2147,rule2148,rule2149,rule2150,rule2151,rule2152,rule2153,rule2154,rule2155,rule2156,rule2157,rule2158,rule2159,rule2160,rule2161,rule2162,rule2163,rule2164,rule2165,rule2166,rule2167,rule2168,rule2169,rule2170,rule2171,rule2172,rule2173,rule2174,rule2175,rule2176,rule2177,rule2178,rule2179,rule2180,rule2181,rule2182,rule2183,rule2184,rule2185,rule2186,rule2187,rule2188,rule2189,rule2190,rule2191,rule2192,rule2193,rule2194,rule2195,rule2196,rule2197,rule2198,rule2199,rule2200,rule2201,rule2202,rule2203,rule2204,rule2205,rule2210,],
+	"]": [rule1853,],
+	"_": [rule1838,],
+	"`": [rule1840,rule1841,rule1844,],
+	"d": [rule1852,],
+	"s": [rule1851,],
+	"t": [rule1848,rule1849,rule1850,],
+	"{": [rule1847,],
+	"}": [rule1846,],
+	"~": [rule1845,],
+}
 
 # Rules for latex_picturemode ruleset.
 
@@ -9281,20 +9119,21 @@ def rule2235(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword4", pattern="\"
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-# Rules list for latex_picturemode ruleset.
-latex_picturemode_rules = [
-	rule2211, rule2212, rule2213, rule2214, rule2215, rule2216, rule2217, rule2218, rule2219, rule2220,
-	rule2221, rule2222, rule2223, rule2224, rule2225, rule2226, rule2227, rule2228, rule2229, rule2230,
-	rule2231, rule2232, rule2233, rule2234, rule2235, ]
+# Rules dict for picturemode ruleset.
+rulesDict1 = {
+	"%": [rule2212,],
+	"\": [rule2213,rule2214,rule2215,rule2216,rule2217,rule2218,rule2219,rule2220,rule2221,rule2222,rule2223,rule2224,rule2225,rule2226,rule2227,rule2228,rule2229,rule2230,rule2231,rule2232,rule2233,rule2234,rule2235,],
+	"_": [rule2211,],
+}
 
-# Rules dict for latex mode.
-rulesDict = {
-	"latex_arraymode": latex_arraymode_rules,
-	"latex_main": latex_main_rules,
-	"latex_mathmode": latex_mathmode_rules,
-	"latex_picturemode": latex_picturemode_rules,
-	"latex_tabbingmode": latex_tabbingmode_rules,
-	"latex_tabularmode": latex_tabularmode_rules,
+# x.rulesDictDict for latex mode.
+rulesDictDict = {
+	"latex_arraymode": rulesDict1,
+	"latex_main": rulesDict1,
+	"latex_mathmode": rulesDict1,
+	"latex_picturemode": rulesDict1,
+	"latex_tabbingmode": rulesDict1,
+	"latex_tabularmode": rulesDict1,
 }
 
 # Import dict for latex mode.

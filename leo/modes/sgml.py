@@ -52,13 +52,15 @@ def rule5(colorer, s, i):
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=True)
 
-# Rules list for sgml_main ruleset.
-sgml_main_rules = [
-	rule0, rule1, rule2, rule3, rule4, rule5, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"&": [rule5,],
+	"<": [rule0,rule1,rule2,rule3,rule4,],
+}
 
-# Rules dict for sgml mode.
-rulesDict = {
-	"sgml_main": sgml_main_rules,
+# x.rulesDictDict for sgml mode.
+rulesDictDict = {
+	"sgml_main": rulesDict1,
 }
 
 # Import dict for sgml mode.

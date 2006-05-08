@@ -13,12 +13,12 @@ keywordsDictDict = {
 
 # Rules for plain_main ruleset.
 
-# Rules list for plain_main ruleset.
-plain_main_rules = []
+# Rules dict for main ruleset.
+rulesDict1 = {}
 
-# Rules dict for plain mode.
-rulesDict = {
-	"plain_main": plain_main_rules,
+# x.rulesDictDict for plain mode.
+rulesDictDict = {
+	"plain_main": rulesDict1,
 }
 
 # Import dict for plain mode.

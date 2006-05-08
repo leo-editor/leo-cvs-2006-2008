@@ -1041,14 +1041,84 @@ def rule11(colorer, s, i):
 def rule12(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules list for lisp_main ruleset.
-lisp_main_rules = [
-	rule0, rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9,
-	rule10, rule11, rule12, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"\"": [rule11,],
+	"#": [rule0,],
+	"%": [rule6,],
+	"&": [rule3,],
+	"'": [rule1,rule2,],
+	"0": [rule12,],
+	"1": [rule12,],
+	"2": [rule12,],
+	"3": [rule12,],
+	"4": [rule12,],
+	"5": [rule12,],
+	"6": [rule12,],
+	"7": [rule12,],
+	"8": [rule12,],
+	"9": [rule12,],
+	";": [rule7,rule8,rule9,rule10,],
+	"@": [rule5,rule12,],
+	"A": [rule12,],
+	"B": [rule12,],
+	"C": [rule12,],
+	"D": [rule12,],
+	"E": [rule12,],
+	"F": [rule12,],
+	"G": [rule12,],
+	"H": [rule12,],
+	"I": [rule12,],
+	"J": [rule12,],
+	"K": [rule12,],
+	"L": [rule12,],
+	"M": [rule12,],
+	"N": [rule12,],
+	"O": [rule12,],
+	"P": [rule12,],
+	"Q": [rule12,],
+	"R": [rule12,],
+	"S": [rule12,],
+	"T": [rule12,],
+	"U": [rule12,],
+	"V": [rule12,],
+	"W": [rule12,],
+	"X": [rule12,],
+	"Y": [rule12,],
+	"Z": [rule12,],
+	"_": [rule12,],
+	"`": [rule4,],
+	"a": [rule12,],
+	"b": [rule12,],
+	"c": [rule12,],
+	"d": [rule12,],
+	"e": [rule12,],
+	"f": [rule12,],
+	"g": [rule12,],
+	"h": [rule12,],
+	"i": [rule12,],
+	"j": [rule12,],
+	"k": [rule12,],
+	"l": [rule12,],
+	"m": [rule12,],
+	"n": [rule12,],
+	"o": [rule12,],
+	"p": [rule12,],
+	"q": [rule12,],
+	"r": [rule12,],
+	"s": [rule12,],
+	"t": [rule12,],
+	"u": [rule12,],
+	"v": [rule12,],
+	"w": [rule12,],
+	"x": [rule12,],
+	"y": [rule12,],
+	"z": [rule12,],
+}
 
-# Rules dict for lisp mode.
-rulesDict = {
-	"lisp_main": lisp_main_rules,
+# x.rulesDictDict for lisp mode.
+rulesDictDict = {
+	"lisp_main": rulesDict1,
 }
 
 # Import dict for lisp mode.

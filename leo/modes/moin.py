@@ -178,16 +178,46 @@ def rule36(colorer, s, i):
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules list for moin_main ruleset.
-moin_main_rules = [
-	rule0, rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9,
-	rule10, rule11, rule12, rule13, rule14, rule15, rule16, rule17, rule18, rule19,
-	rule20, rule21, rule22, rule23, rule24, rule25, rule26, rule27, rule28, rule29,
-	rule30, rule31, rule32, rule33, rule34, rule35, rule36, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"#": [rule0,rule1,],
+	"(": [rule6,rule8,],
+	"-": [rule7,],
+	"A": [rule9,],
+	"B": [rule10,],
+	"C": [rule11,],
+	"D": [rule12,],
+	"E": [rule13,],
+	"F": [rule14,],
+	"G": [rule15,],
+	"H": [rule16,],
+	"I": [rule17,],
+	"J": [rule18,],
+	"K": [rule19,],
+	"L": [rule20,],
+	"M": [rule21,],
+	"N": [rule22,],
+	"O": [rule23,],
+	"P": [rule24,],
+	"Q": [rule25,],
+	"R": [rule26,],
+	"S": [rule27,],
+	"T": [rule28,],
+	"U": [rule29,],
+	"V": [rule30,],
+	"W": [rule31,],
+	"X": [rule32,],
+	"Y": [rule33,],
+	"Z": [rule34,],
+	"[": [rule2,rule35,rule36,],
+	"\": [rule3,],
+	"`": [rule5,],
+	"{": [rule4,],
+}
 
-# Rules dict for moin mode.
-rulesDict = {
-	"moin_main": moin_main_rules,
+# x.rulesDictDict for moin mode.
+rulesDictDict = {
+	"moin_main": rulesDict1,
 }
 
 # Import dict for moin mode.

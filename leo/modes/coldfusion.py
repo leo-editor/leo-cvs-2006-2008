@@ -521,10 +521,12 @@ def rule10(colorer, s, i):
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=True)
 
-# Rules list for coldfusion_main ruleset.
-coldfusion_main_rules = [
-	rule0, rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9,
-	rule10, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"&": [rule10,],
+	"/": [rule1,rule2,],
+	"<": [rule0,rule3,rule4,rule5,rule6,rule7,rule8,rule9,],
+}
 
 # Rules for coldfusion_tags ruleset.
 
@@ -562,9 +564,13 @@ def rule16(colorer, s, i):
         delegate="CFSCRIPT",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules list for coldfusion_tags ruleset.
-coldfusion_tags_rules = [
-	rule11, rule12, rule13, rule14, rule15, rule16, ]
+# Rules dict for tags ruleset.
+rulesDict1 = {
+	"\"": [rule11,],
+	"'": [rule12,],
+	"<": [rule14,rule15,rule16,],
+	"=": [rule13,],
+}
 
 # Rules for coldfusion_cfscript ruleset.
 
@@ -642,10 +648,86 @@ def rule32(colorer, s, i):
 def rule33(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules list for coldfusion_cfscript ruleset.
-coldfusion_cfscript_rules = [
-	rule17, rule18, rule19, rule20, rule21, rule22, rule23, rule24, rule25, rule26,
-	rule27, rule28, rule29, rule30, rule31, rule32, rule33, ]
+# Rules dict for cfscript ruleset.
+rulesDict1 = {
+	"!": [rule31,],
+	"\"": [rule19,],
+	"&": [rule32,],
+	"'": [rule20,],
+	"(": [rule21,],
+	")": [rule22,],
+	"*": [rule30,],
+	"+": [rule24,],
+	"-": [rule25,],
+	"/": [rule17,rule18,rule26,],
+	"0": [rule33,],
+	"1": [rule33,],
+	"2": [rule33,],
+	"3": [rule33,],
+	"4": [rule33,],
+	"5": [rule33,],
+	"6": [rule33,],
+	"7": [rule33,],
+	"8": [rule33,],
+	"9": [rule33,],
+	"<": [rule28,],
+	"=": [rule23,],
+	">": [rule27,rule29,],
+	"@": [rule33,],
+	"A": [rule33,],
+	"B": [rule33,],
+	"C": [rule33,],
+	"D": [rule33,],
+	"E": [rule33,],
+	"F": [rule33,],
+	"G": [rule33,],
+	"H": [rule33,],
+	"I": [rule33,],
+	"J": [rule33,],
+	"K": [rule33,],
+	"L": [rule33,],
+	"M": [rule33,],
+	"N": [rule33,],
+	"O": [rule33,],
+	"P": [rule33,],
+	"Q": [rule33,],
+	"R": [rule33,],
+	"S": [rule33,],
+	"T": [rule33,],
+	"U": [rule33,],
+	"V": [rule33,],
+	"W": [rule33,],
+	"X": [rule33,],
+	"Y": [rule33,],
+	"Z": [rule33,],
+	"_": [rule33,],
+	"a": [rule33,],
+	"b": [rule33,],
+	"c": [rule33,],
+	"d": [rule33,],
+	"e": [rule33,],
+	"f": [rule33,],
+	"g": [rule33,],
+	"h": [rule33,],
+	"i": [rule33,],
+	"j": [rule33,],
+	"k": [rule33,],
+	"l": [rule33,],
+	"m": [rule33,],
+	"n": [rule33,],
+	"o": [rule33,],
+	"p": [rule33,],
+	"q": [rule33,],
+	"r": [rule33,],
+	"s": [rule33,],
+	"t": [rule33,],
+	"u": [rule33,],
+	"v": [rule33,],
+	"w": [rule33,],
+	"x": [rule33,],
+	"y": [rule33,],
+	"z": [rule33,],
+}
 
 # Rules for coldfusion_cftags ruleset.
 
@@ -678,16 +760,84 @@ def rule38(colorer, s, i):
 def rule39(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules list for coldfusion_cftags ruleset.
-coldfusion_cftags_rules = [
-	rule34, rule35, rule36, rule37, rule38, rule39, ]
+# Rules dict for cftags ruleset.
+rulesDict1 = {
+	"\"": [rule34,],
+	"#": [rule37,rule38,],
+	"'": [rule35,],
+	"0": [rule39,],
+	"1": [rule39,],
+	"2": [rule39,],
+	"3": [rule39,],
+	"4": [rule39,],
+	"5": [rule39,],
+	"6": [rule39,],
+	"7": [rule39,],
+	"8": [rule39,],
+	"9": [rule39,],
+	"=": [rule36,],
+	"@": [rule39,],
+	"A": [rule39,],
+	"B": [rule39,],
+	"C": [rule39,],
+	"D": [rule39,],
+	"E": [rule39,],
+	"F": [rule39,],
+	"G": [rule39,],
+	"H": [rule39,],
+	"I": [rule39,],
+	"J": [rule39,],
+	"K": [rule39,],
+	"L": [rule39,],
+	"M": [rule39,],
+	"N": [rule39,],
+	"O": [rule39,],
+	"P": [rule39,],
+	"Q": [rule39,],
+	"R": [rule39,],
+	"S": [rule39,],
+	"T": [rule39,],
+	"U": [rule39,],
+	"V": [rule39,],
+	"W": [rule39,],
+	"X": [rule39,],
+	"Y": [rule39,],
+	"Z": [rule39,],
+	"_": [rule39,],
+	"a": [rule39,],
+	"b": [rule39,],
+	"c": [rule39,],
+	"d": [rule39,],
+	"e": [rule39,],
+	"f": [rule39,],
+	"g": [rule39,],
+	"h": [rule39,],
+	"i": [rule39,],
+	"j": [rule39,],
+	"k": [rule39,],
+	"l": [rule39,],
+	"m": [rule39,],
+	"n": [rule39,],
+	"o": [rule39,],
+	"p": [rule39,],
+	"q": [rule39,],
+	"r": [rule39,],
+	"s": [rule39,],
+	"t": [rule39,],
+	"u": [rule39,],
+	"v": [rule39,],
+	"w": [rule39,],
+	"x": [rule39,],
+	"y": [rule39,],
+	"z": [rule39,],
+}
 
-# Rules dict for coldfusion mode.
-rulesDict = {
-	"coldfusion_cfscript": coldfusion_cfscript_rules,
-	"coldfusion_cftags": coldfusion_cftags_rules,
-	"coldfusion_main": coldfusion_main_rules,
-	"coldfusion_tags": coldfusion_tags_rules,
+# x.rulesDictDict for coldfusion mode.
+rulesDictDict = {
+	"coldfusion_cfscript": rulesDict1,
+	"coldfusion_cftags": rulesDict1,
+	"coldfusion_main": rulesDict1,
+	"coldfusion_tags": rulesDict1,
 }
 
 # Import dict for coldfusion mode.

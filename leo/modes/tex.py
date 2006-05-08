@@ -96,10 +96,16 @@ def rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="]",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules list for tex_main ruleset.
-tex_main_rules = [
-	rule0, rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9,
-	rule10, rule11, rule12, rule13, rule14, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"$": [rule0,rule1,],
+	"%": [rule10,],
+	"[": [rule13,],
+	"\": [rule2,rule3,rule4,rule5,rule6,rule7,rule8,rule9,],
+	"]": [rule14,],
+	"{": [rule11,],
+	"}": [rule12,],
+}
 
 # Rules for tex_math ruleset.
 
@@ -228,23 +234,48 @@ def rule45(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-# Rules list for tex_math ruleset.
-tex_math_rules = [
-	rule15, rule16, rule17, rule18, rule19, rule20, rule21, rule22, rule23, rule24,
-	rule25, rule26, rule27, rule28, rule29, rule30, rule31, rule32, rule33, rule34,
-	rule35, rule36, rule37, rule38, rule39, rule40, rule41, rule42, rule43, rule44,
-	rule45, ]
+# Rules dict for math ruleset.
+rulesDict1 = {
+	"!": [rule26,],
+	"\"": [rule43,],
+	"%": [rule45,],
+	"&": [rule33,],
+	"'": [rule42,],
+	"(": [rule20,],
+	")": [rule19,],
+	"*": [rule30,],
+	"+": [rule27,],
+	",": [rule38,],
+	"-": [rule28,],
+	".": [rule37,],
+	"/": [rule29,],
+	":": [rule41,],
+	";": [rule39,],
+	"<": [rule32,],
+	"=": [rule25,],
+	">": [rule31,],
+	"?": [rule40,],
+	"[": [rule23,],
+	"\": [rule15,rule16,rule17,rule18,],
+	"]": [rule24,],
+	"^": [rule35,],
+	"`": [rule44,],
+	"{": [rule21,],
+	"|": [rule34,],
+	"}": [rule22,],
+	"~": [rule36,],
+}
 
 # Rules for tex_verbatim ruleset.
 
-# Rules list for tex_verbatim ruleset.
-tex_verbatim_rules = []
+# Rules dict for verbatim ruleset.
+rulesDict1 = {}
 
-# Rules dict for tex mode.
-rulesDict = {
-	"tex_main": tex_main_rules,
-	"tex_math": tex_math_rules,
-	"tex_verbatim": tex_verbatim_rules,
+# x.rulesDictDict for tex mode.
+rulesDictDict = {
+	"tex_main": rulesDict1,
+	"tex_math": rulesDict1,
+	"tex_verbatim": rulesDict1,
 }
 
 # Import dict for tex mode.

@@ -405,6 +405,7 @@ rulesDict1 = {
 	"<": [rule10,rule16,],
 	"=": [rule7,],
 	">": [rule9,rule15,],
+	"@": [rule23,],
 	"A": [rule23,],
 	"B": [rule23,],
 	"C": [rule23,],

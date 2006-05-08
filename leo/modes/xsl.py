@@ -186,18 +186,84 @@ def rule7(colorer, s, i):
         delegate="TAGS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules list for xsl_main ruleset.
-xsl_main_rules = [
-	rule0, rule1, rule2, rule3, rule4, rule5, rule6, rule7, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"&": [rule5,],
+	"<": [rule0,rule1,rule2,rule3,rule4,rule6,rule7,],
+}
 
 # Rules for xsl_tasks ruleset.
 
 def rule8(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules list for xsl_tasks ruleset.
-xsl_tasks_rules = [
-	rule8, ]
+# Rules dict for tasks ruleset.
+rulesDict1 = {
+	"0": [rule8,],
+	"1": [rule8,],
+	"2": [rule8,],
+	"3": [rule8,],
+	"4": [rule8,],
+	"5": [rule8,],
+	"6": [rule8,],
+	"7": [rule8,],
+	"8": [rule8,],
+	"9": [rule8,],
+	"@": [rule8,],
+	"A": [rule8,],
+	"B": [rule8,],
+	"C": [rule8,],
+	"D": [rule8,],
+	"E": [rule8,],
+	"F": [rule8,],
+	"G": [rule8,],
+	"H": [rule8,],
+	"I": [rule8,],
+	"J": [rule8,],
+	"K": [rule8,],
+	"L": [rule8,],
+	"M": [rule8,],
+	"N": [rule8,],
+	"O": [rule8,],
+	"P": [rule8,],
+	"Q": [rule8,],
+	"R": [rule8,],
+	"S": [rule8,],
+	"T": [rule8,],
+	"U": [rule8,],
+	"V": [rule8,],
+	"W": [rule8,],
+	"X": [rule8,],
+	"Y": [rule8,],
+	"Z": [rule8,],
+	"_": [rule8,],
+	"a": [rule8,],
+	"b": [rule8,],
+	"c": [rule8,],
+	"d": [rule8,],
+	"e": [rule8,],
+	"f": [rule8,],
+	"g": [rule8,],
+	"h": [rule8,],
+	"i": [rule8,],
+	"j": [rule8,],
+	"k": [rule8,],
+	"l": [rule8,],
+	"m": [rule8,],
+	"n": [rule8,],
+	"o": [rule8,],
+	"p": [rule8,],
+	"q": [rule8,],
+	"r": [rule8,],
+	"s": [rule8,],
+	"t": [rule8,],
+	"u": [rule8,],
+	"v": [rule8,],
+	"w": [rule8,],
+	"x": [rule8,],
+	"y": [rule8,],
+	"z": [rule8,],
+}
 
 # Rules for xsl_tags ruleset.
 
@@ -225,9 +291,13 @@ def rule13(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="label", pattern=":",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-# Rules list for xsl_tags ruleset.
-xsl_tags_rules = [
-	rule9, rule10, rule11, rule12, rule13, ]
+# Rules dict for tags ruleset.
+rulesDict1 = {
+	"\"": [rule9,],
+	"'": [rule10,],
+	":": [rule13,],
+	"x": [rule11,rule12,],
+}
 
 # Rules for xsl_avt ruleset.
 
@@ -251,9 +321,12 @@ def rule17(colorer, s, i):
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=True)
 
-# Rules list for xsl_avt ruleset.
-xsl_avt_rules = [
-	rule14, rule15, rule16, rule17, ]
+# Rules dict for avt ruleset.
+rulesDict1 = {
+	"&": [rule17,],
+	"{": [rule14,rule16,],
+	"}": [rule15,],
+}
 
 # Rules for xsl_xsltags ruleset.
 
@@ -404,11 +477,76 @@ def rule42(colorer, s, i):
 def rule43(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules list for xsl_xsltags ruleset.
-xsl_xsltags_rules = [
-	rule18, rule19, rule20, rule21, rule22, rule23, rule24, rule25, rule26, rule27,
-	rule28, rule29, rule30, rule31, rule32, rule33, rule34, rule35, rule36, rule37,
-	rule38, rule39, rule40, rule41, rule42, rule43, ]
+# Rules dict for xsltags ruleset.
+rulesDict1 = {
+	"\"": [rule18,],
+	"'": [rule19,],
+	"0": [rule43,],
+	"1": [rule43,],
+	"2": [rule43,],
+	"3": [rule43,],
+	"4": [rule43,],
+	"5": [rule43,],
+	"6": [rule43,],
+	"7": [rule43,],
+	"8": [rule43,],
+	"9": [rule43,],
+	":": [rule42,],
+	"@": [rule43,],
+	"A": [rule43,],
+	"B": [rule43,],
+	"C": [rule43,],
+	"D": [rule43,],
+	"E": [rule43,],
+	"F": [rule43,],
+	"G": [rule43,],
+	"H": [rule43,],
+	"I": [rule43,],
+	"J": [rule43,],
+	"K": [rule43,],
+	"L": [rule43,],
+	"M": [rule43,],
+	"N": [rule43,],
+	"O": [rule43,],
+	"P": [rule43,],
+	"Q": [rule43,],
+	"R": [rule43,],
+	"S": [rule43,],
+	"T": [rule43,],
+	"U": [rule43,],
+	"V": [rule43,],
+	"W": [rule43,],
+	"X": [rule43,],
+	"Y": [rule43,],
+	"Z": [rule43,],
+	"_": [rule43,],
+	"a": [rule43,],
+	"b": [rule43,],
+	"c": [rule20,rule21,rule43,],
+	"d": [rule43,],
+	"e": [rule43,],
+	"f": [rule22,rule23,rule43,],
+	"g": [rule24,rule25,rule26,rule27,rule28,rule29,rule30,rule31,rule43,],
+	"h": [rule43,],
+	"i": [rule43,],
+	"j": [rule43,],
+	"k": [rule43,],
+	"l": [rule43,],
+	"m": [rule32,rule33,rule43,],
+	"n": [rule43,],
+	"o": [rule43,],
+	"p": [rule43,],
+	"q": [rule43,],
+	"r": [rule43,],
+	"s": [rule34,rule35,rule43,],
+	"t": [rule36,rule37,rule43,],
+	"u": [rule38,rule39,rule43,],
+	"v": [rule43,],
+	"w": [rule43,],
+	"x": [rule40,rule41,rule43,],
+	"y": [rule43,],
+	"z": [rule43,],
+}
 
 # Rules for xsl_xpath ruleset.
 
@@ -509,11 +647,89 @@ def rule64(colorer, s, i):
 def rule65(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules list for xsl_xpath ruleset.
-xsl_xpath_rules = [
-	rule44, rule45, rule46, rule47, rule48, rule49, rule50, rule51, rule52, rule53,
-	rule54, rule55, rule56, rule57, rule58, rule59, rule60, rule61, rule62, rule63,
-	rule64, rule65, ]
+# Rules dict for xpath ruleset.
+rulesDict1 = {
+	"!": [rule50,],
+	"\"": [rule44,],
+	"$": [rule64,],
+	"&": [rule52,rule53,rule61,],
+	"'": [rule45,],
+	"(": [rule46,rule63,],
+	"*": [rule56,],
+	"+": [rule55,],
+	",": [rule59,],
+	"/": [rule57,],
+	"0": [rule65,],
+	"1": [rule65,],
+	"2": [rule65,],
+	"3": [rule65,],
+	"4": [rule65,],
+	"5": [rule65,],
+	"6": [rule65,],
+	"7": [rule65,],
+	"8": [rule65,],
+	"9": [rule65,],
+	":": [rule47,rule62,],
+	"=": [rule49,],
+	">": [rule51,],
+	"?": [rule54,],
+	"@": [rule48,rule65,],
+	"A": [rule65,],
+	"B": [rule65,],
+	"C": [rule65,],
+	"D": [rule65,],
+	"E": [rule65,],
+	"F": [rule65,],
+	"G": [rule65,],
+	"H": [rule65,],
+	"I": [rule65,],
+	"J": [rule65,],
+	"K": [rule65,],
+	"L": [rule65,],
+	"M": [rule65,],
+	"N": [rule65,],
+	"O": [rule65,],
+	"P": [rule65,],
+	"Q": [rule65,],
+	"R": [rule65,],
+	"S": [rule65,],
+	"T": [rule65,],
+	"U": [rule65,],
+	"V": [rule65,],
+	"W": [rule65,],
+	"X": [rule65,],
+	"Y": [rule65,],
+	"Z": [rule65,],
+	"[": [rule60,],
+	"_": [rule65,],
+	"a": [rule65,],
+	"b": [rule65,],
+	"c": [rule65,],
+	"d": [rule65,],
+	"e": [rule65,],
+	"f": [rule65,],
+	"g": [rule65,],
+	"h": [rule65,],
+	"i": [rule65,],
+	"j": [rule65,],
+	"k": [rule65,],
+	"l": [rule65,],
+	"m": [rule65,],
+	"n": [rule65,],
+	"o": [rule65,],
+	"p": [rule65,],
+	"q": [rule65,],
+	"r": [rule65,],
+	"s": [rule65,],
+	"t": [rule65,],
+	"u": [rule65,],
+	"v": [rule65,],
+	"w": [rule65,],
+	"x": [rule65,],
+	"y": [rule65,],
+	"z": [rule65,],
+	"|": [rule58,],
+}
 
 # Rules for xsl_xpathcomment2 ruleset.
 
@@ -523,9 +739,10 @@ def rule66(colorer, s, i):
         delegate="XPATHCOMMENT3",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules list for xsl_xpathcomment2 ruleset.
-xsl_xpathcomment2_rules = [
-	rule66, ]
+# Rules dict for xpathcomment2 ruleset.
+rulesDict1 = {
+	"(": [rule66,],
+}
 
 # Rules for xsl_xpathcomment3 ruleset.
 
@@ -535,20 +752,21 @@ def rule67(colorer, s, i):
         delegate="XPATHCOMMENT2",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules list for xsl_xpathcomment3 ruleset.
-xsl_xpathcomment3_rules = [
-	rule67, ]
+# Rules dict for xpathcomment3 ruleset.
+rulesDict1 = {
+	"(": [rule67,],
+}
 
-# Rules dict for xsl mode.
-rulesDict = {
-	"xsl_avt": xsl_avt_rules,
-	"xsl_main": xsl_main_rules,
-	"xsl_tags": xsl_tags_rules,
-	"xsl_tasks": xsl_tasks_rules,
-	"xsl_xpath": xsl_xpath_rules,
-	"xsl_xpathcomment2": xsl_xpathcomment2_rules,
-	"xsl_xpathcomment3": xsl_xpathcomment3_rules,
-	"xsl_xsltags": xsl_xsltags_rules,
+# x.rulesDictDict for xsl mode.
+rulesDictDict = {
+	"xsl_avt": rulesDict1,
+	"xsl_main": rulesDict1,
+	"xsl_tags": rulesDict1,
+	"xsl_tasks": rulesDict1,
+	"xsl_xpath": rulesDict1,
+	"xsl_xpathcomment2": rulesDict1,
+	"xsl_xpathcomment3": rulesDict1,
+	"xsl_xsltags": rulesDict1,
 }
 
 # Import dict for xsl mode.

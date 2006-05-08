@@ -108,13 +108,81 @@ def rule5(colorer, s, i):
 def rule6(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules list for antlr_main ruleset.
-antlr_main_rules = [
-	rule0, rule1, rule2, rule3, rule4, rule5, rule6, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"\"": [rule3,],
+	"/": [rule0,rule1,rule2,],
+	"0": [rule6,],
+	"1": [rule6,],
+	"2": [rule6,],
+	"3": [rule6,],
+	"4": [rule6,],
+	"5": [rule6,],
+	"6": [rule6,],
+	"7": [rule6,],
+	"8": [rule6,],
+	"9": [rule6,],
+	":": [rule5,],
+	"@": [rule6,],
+	"A": [rule6,],
+	"B": [rule6,],
+	"C": [rule6,],
+	"D": [rule6,],
+	"E": [rule6,],
+	"F": [rule6,],
+	"G": [rule6,],
+	"H": [rule6,],
+	"I": [rule6,],
+	"J": [rule6,],
+	"K": [rule6,],
+	"L": [rule6,],
+	"M": [rule6,],
+	"N": [rule6,],
+	"O": [rule6,],
+	"P": [rule6,],
+	"Q": [rule6,],
+	"R": [rule6,],
+	"S": [rule6,],
+	"T": [rule6,],
+	"U": [rule6,],
+	"V": [rule6,],
+	"W": [rule6,],
+	"X": [rule6,],
+	"Y": [rule6,],
+	"Z": [rule6,],
+	"_": [rule6,],
+	"a": [rule6,],
+	"b": [rule6,],
+	"c": [rule6,],
+	"d": [rule6,],
+	"e": [rule6,],
+	"f": [rule6,],
+	"g": [rule6,],
+	"h": [rule6,],
+	"i": [rule6,],
+	"j": [rule6,],
+	"k": [rule6,],
+	"l": [rule6,],
+	"m": [rule6,],
+	"n": [rule6,],
+	"o": [rule6,],
+	"p": [rule6,],
+	"q": [rule6,],
+	"r": [rule6,],
+	"s": [rule6,],
+	"t": [rule6,],
+	"u": [rule6,],
+	"v": [rule6,],
+	"w": [rule6,],
+	"x": [rule6,],
+	"y": [rule6,],
+	"z": [rule6,],
+	"|": [rule4,],
+}
 
-# Rules dict for antlr mode.
-rulesDict = {
-	"antlr_main": antlr_main_rules,
+# x.rulesDictDict for antlr mode.
+rulesDictDict = {
+	"antlr_main": rulesDict1,
 }
 
 # Import dict for antlr mode.

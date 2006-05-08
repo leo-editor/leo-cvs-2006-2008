@@ -16,13 +16,12 @@ keywordsDictDict = {
 def rule0(colorer, s, i):
     return colorer.match_terminate(s, i, kind="", at_char=0)
 
-# Rules list for text_main ruleset.
-text_main_rules = [
-	rule0, ]
+# Rules dict for main ruleset.
+rulesDict1 = {}
 
-# Rules dict for text mode.
-rulesDict = {
-	"text_main": text_main_rules,
+# x.rulesDictDict for text mode.
+rulesDictDict = {
+	"text_main": rulesDict1,
 }
 
 # Import dict for text mode.

@@ -164,11 +164,86 @@ def rule24(colorer, s, i):
 def rule25(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules list for shellscript_main ruleset.
-shellscript_main_rules = [
-	rule0, rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9,
-	rule10, rule11, rule12, rule13, rule14, rule15, rule16, rule17, rule18, rule19,
-	rule20, rule21, rule22, rule23, rule24, rule25, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"!": [rule20,],
+	"\"": [rule15,],
+	"#": [rule0,rule1,],
+	"$": [rule2,rule3,rule4,rule5,rule6,rule7,rule8,rule9,rule11,rule12,rule13,],
+	"%": [rule23,],
+	"&": [rule19,],
+	"'": [rule16,],
+	"(": [rule24,],
+	"0": [rule25,],
+	"1": [rule25,],
+	"2": [rule25,],
+	"3": [rule25,],
+	"4": [rule25,],
+	"5": [rule25,],
+	"6": [rule25,],
+	"7": [rule25,],
+	"8": [rule25,],
+	"9": [rule25,],
+	"<": [rule17,rule22,],
+	"=": [rule10,],
+	">": [rule21,],
+	"@": [rule25,],
+	"A": [rule25,],
+	"B": [rule25,],
+	"C": [rule25,],
+	"D": [rule25,],
+	"E": [rule25,],
+	"F": [rule25,],
+	"G": [rule25,],
+	"H": [rule25,],
+	"I": [rule25,],
+	"J": [rule25,],
+	"K": [rule25,],
+	"L": [rule25,],
+	"M": [rule25,],
+	"N": [rule25,],
+	"O": [rule25,],
+	"P": [rule25,],
+	"Q": [rule25,],
+	"R": [rule25,],
+	"S": [rule25,],
+	"T": [rule25,],
+	"U": [rule25,],
+	"V": [rule25,],
+	"W": [rule25,],
+	"X": [rule25,],
+	"Y": [rule25,],
+	"Z": [rule25,],
+	"_": [rule25,],
+	"`": [rule14,],
+	"a": [rule25,],
+	"b": [rule25,],
+	"c": [rule25,],
+	"d": [rule25,],
+	"e": [rule25,],
+	"f": [rule25,],
+	"g": [rule25,],
+	"h": [rule25,],
+	"i": [rule25,],
+	"j": [rule25,],
+	"k": [rule25,],
+	"l": [rule25,],
+	"m": [rule25,],
+	"n": [rule25,],
+	"o": [rule25,],
+	"p": [rule25,],
+	"q": [rule25,],
+	"r": [rule25,],
+	"s": [rule25,],
+	"t": [rule25,],
+	"u": [rule25,],
+	"v": [rule25,],
+	"w": [rule25,],
+	"x": [rule25,],
+	"y": [rule25,],
+	"z": [rule25,],
+	"|": [rule18,],
+}
 
 # Rules for shellscript_literal ruleset.
 
@@ -182,9 +257,10 @@ def rule27(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword2", pattern="$"
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-# Rules list for shellscript_literal ruleset.
-shellscript_literal_rules = [
-	rule26, rule27, ]
+# Rules dict for literal ruleset.
+rulesDict1 = {
+	"$": [rule26,rule27,],
+}
 
 # Rules for shellscript_exec ruleset.
 
@@ -236,16 +312,21 @@ def rule37(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules list for shellscript_exec ruleset.
-shellscript_exec_rules = [
-	rule28, rule29, rule30, rule31, rule32, rule33, rule34, rule35, rule36, rule37,
-]
+# Rules dict for exec ruleset.
+rulesDict1 = {
+	"!": [rule35,],
+	"$": [rule28,rule29,rule30,rule31,rule32,],
+	"&": [rule34,],
+	"<": [rule37,],
+	">": [rule36,],
+	"|": [rule33,],
+}
 
-# Rules dict for shellscript mode.
-rulesDict = {
-	"shellscript_exec": shellscript_exec_rules,
-	"shellscript_literal": shellscript_literal_rules,
-	"shellscript_main": shellscript_main_rules,
+# x.rulesDictDict for shellscript mode.
+rulesDictDict = {
+	"shellscript_exec": rulesDict1,
+	"shellscript_literal": rulesDict1,
+	"shellscript_main": rulesDict1,
 }
 
 # Import dict for shellscript mode.

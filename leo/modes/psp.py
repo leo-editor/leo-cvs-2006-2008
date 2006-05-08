@@ -93,10 +93,11 @@ def rule10(colorer, s, i):
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=True)
 
-# Rules list for psp_main ruleset.
-psp_main_rules = [
-	rule0, rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9,
-	rule10, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"&": [rule10,],
+	"<": [rule0,rule1,rule2,rule3,rule4,rule5,rule6,rule7,rule8,rule9,],
+}
 
 # Rules for psp_tags ruleset.
 
@@ -128,9 +129,13 @@ def rule15(colorer, s, i):
         delegate="python::MAIN",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules list for psp_tags ruleset.
-psp_tags_rules = [
-	rule11, rule12, rule13, rule14, rule15, ]
+# Rules dict for tags ruleset.
+rulesDict1 = {
+	"\"": [rule11,],
+	"'": [rule12,],
+	"<": [rule14,rule15,],
+	"=": [rule13,],
+}
 
 # Rules for psp_directive ruleset.
 
@@ -153,15 +158,82 @@ def rule18(colorer, s, i):
 def rule19(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules list for psp_directive ruleset.
-psp_directive_rules = [
-	rule16, rule17, rule18, rule19, ]
+# Rules dict for directive ruleset.
+rulesDict1 = {
+	"\"": [rule16,],
+	"'": [rule17,],
+	"0": [rule19,],
+	"1": [rule19,],
+	"2": [rule19,],
+	"3": [rule19,],
+	"4": [rule19,],
+	"5": [rule19,],
+	"6": [rule19,],
+	"7": [rule19,],
+	"8": [rule19,],
+	"9": [rule19,],
+	"=": [rule18,],
+	"@": [rule19,],
+	"A": [rule19,],
+	"B": [rule19,],
+	"C": [rule19,],
+	"D": [rule19,],
+	"E": [rule19,],
+	"F": [rule19,],
+	"G": [rule19,],
+	"H": [rule19,],
+	"I": [rule19,],
+	"J": [rule19,],
+	"K": [rule19,],
+	"L": [rule19,],
+	"M": [rule19,],
+	"N": [rule19,],
+	"O": [rule19,],
+	"P": [rule19,],
+	"Q": [rule19,],
+	"R": [rule19,],
+	"S": [rule19,],
+	"T": [rule19,],
+	"U": [rule19,],
+	"V": [rule19,],
+	"W": [rule19,],
+	"X": [rule19,],
+	"Y": [rule19,],
+	"Z": [rule19,],
+	"_": [rule19,],
+	"a": [rule19,],
+	"b": [rule19,],
+	"c": [rule19,],
+	"d": [rule19,],
+	"e": [rule19,],
+	"f": [rule19,],
+	"g": [rule19,],
+	"h": [rule19,],
+	"i": [rule19,],
+	"j": [rule19,],
+	"k": [rule19,],
+	"l": [rule19,],
+	"m": [rule19,],
+	"n": [rule19,],
+	"o": [rule19,],
+	"p": [rule19,],
+	"q": [rule19,],
+	"r": [rule19,],
+	"s": [rule19,],
+	"t": [rule19,],
+	"u": [rule19,],
+	"v": [rule19,],
+	"w": [rule19,],
+	"x": [rule19,],
+	"y": [rule19,],
+	"z": [rule19,],
+}
 
-# Rules dict for psp mode.
-rulesDict = {
-	"psp_directive": psp_directive_rules,
-	"psp_main": psp_main_rules,
-	"psp_tags": psp_tags_rules,
+# x.rulesDictDict for psp mode.
+rulesDictDict = {
+	"psp_directive": rulesDict1,
+	"psp_main": rulesDict1,
+	"psp_tags": rulesDict1,
 }
 
 # Import dict for psp mode.

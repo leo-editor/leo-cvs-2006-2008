@@ -37,13 +37,16 @@ def rule4(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules list for texinfo_main ruleset.
-texinfo_main_rules = [
-	rule0, rule1, rule2, rule3, rule4, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"@": [rule0,rule1,rule2,],
+	"{": [rule3,],
+	"}": [rule4,],
+}
 
-# Rules dict for texinfo mode.
-rulesDict = {
-	"texinfo_main": texinfo_main_rules,
+# x.rulesDictDict for texinfo mode.
+rulesDictDict = {
+	"texinfo_main": rulesDict1,
 }
 
 # Import dict for texinfo mode.

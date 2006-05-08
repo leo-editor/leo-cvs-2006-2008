@@ -510,13 +510,80 @@ def rule44(colorer, s, i):
 def rule45(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules list for inno_setup_main ruleset.
-inno_setup_main_rules = [
-	rule0, rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9,
-	rule10, rule11, rule12, rule13, rule14, rule15, rule16, rule17, rule18, rule19,
-	rule20, rule21, rule22, rule23, rule24, rule25, rule26, rule27, rule28, rule29,
-	rule30, rule31, rule32, rule33, rule34, rule35, rule36, rule37, rule38, rule39,
-	rule40, rule41, rule42, rule43, rule44, rule45, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"\"": [rule40,],
+	"#": [rule18,rule19,rule20,rule21,rule22,rule23,rule24,rule25,rule26,rule27,rule28,rule29,rule30,rule31,rule32,rule33,rule34,rule35,rule36,rule37,rule44,],
+	"%": [rule39,],
+	"'": [rule41,],
+	"0": [rule45,],
+	"1": [rule45,],
+	"2": [rule45,],
+	"3": [rule45,],
+	"4": [rule45,],
+	"5": [rule45,],
+	"6": [rule45,],
+	"7": [rule45,],
+	"8": [rule45,],
+	"9": [rule45,],
+	";": [rule43,],
+	"@": [rule45,],
+	"A": [rule45,],
+	"B": [rule45,],
+	"C": [rule45,],
+	"D": [rule45,],
+	"E": [rule45,],
+	"F": [rule45,],
+	"G": [rule45,],
+	"H": [rule45,],
+	"I": [rule45,],
+	"J": [rule45,],
+	"K": [rule45,],
+	"L": [rule45,],
+	"M": [rule45,],
+	"N": [rule45,],
+	"O": [rule45,],
+	"P": [rule45,],
+	"Q": [rule45,],
+	"R": [rule45,],
+	"S": [rule45,],
+	"T": [rule45,],
+	"U": [rule45,],
+	"V": [rule45,],
+	"W": [rule45,],
+	"X": [rule45,],
+	"Y": [rule45,],
+	"Z": [rule45,],
+	"[": [rule0,rule1,rule2,rule3,rule4,rule5,rule6,rule7,rule8,rule9,rule10,rule11,rule12,rule13,rule14,rule15,rule16,rule17,],
+	"_": [rule45,],
+	"a": [rule45,],
+	"b": [rule45,],
+	"c": [rule45,],
+	"d": [rule45,],
+	"e": [rule45,],
+	"f": [rule45,],
+	"g": [rule45,],
+	"h": [rule45,],
+	"i": [rule45,],
+	"j": [rule45,],
+	"k": [rule45,],
+	"l": [rule45,],
+	"m": [rule45,],
+	"n": [rule45,],
+	"o": [rule45,],
+	"p": [rule45,],
+	"q": [rule45,],
+	"r": [rule45,],
+	"s": [rule45,],
+	"t": [rule45,],
+	"u": [rule45,],
+	"v": [rule45,],
+	"w": [rule45,],
+	"x": [rule45,],
+	"y": [rule45,],
+	"z": [rule45,],
+	"{": [rule38,rule42,],
+}
 
 # Rules for inno_setup_string ruleset.
 
@@ -532,9 +599,10 @@ def rule47(colorer, s, i):
         delegate="CONSTANT",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules list for inno_setup_string ruleset.
-inno_setup_string_rules = [
-	rule46, rule47, ]
+# Rules dict for string ruleset.
+rulesDict1 = {
+	"{": [rule46,rule47,],
+}
 
 # Rules for inno_setup_constant ruleset.
 
@@ -546,9 +614,11 @@ def rule49(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="|",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules list for inno_setup_constant ruleset.
-inno_setup_constant_rules = [
-	rule48, rule49, ]
+# Rules dict for constant ruleset.
+rulesDict1 = {
+	"c": [rule48,],
+	"|": [rule49,],
+}
 
 # Rules for inno_setup_directive ruleset.
 
@@ -572,16 +642,83 @@ def rule52(colorer, s, i):
 def rule53(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules list for inno_setup_directive ruleset.
-inno_setup_directive_rules = [
-	rule50, rule51, rule52, rule53, ]
+# Rules dict for directive ruleset.
+rulesDict1 = {
+	"\"": [rule52,],
+	"/": [rule51,],
+	"0": [rule53,],
+	"1": [rule53,],
+	"2": [rule53,],
+	"3": [rule53,],
+	"4": [rule53,],
+	"5": [rule53,],
+	"6": [rule53,],
+	"7": [rule53,],
+	"8": [rule53,],
+	"9": [rule53,],
+	";": [rule50,],
+	"@": [rule53,],
+	"A": [rule53,],
+	"B": [rule53,],
+	"C": [rule53,],
+	"D": [rule53,],
+	"E": [rule53,],
+	"F": [rule53,],
+	"G": [rule53,],
+	"H": [rule53,],
+	"I": [rule53,],
+	"J": [rule53,],
+	"K": [rule53,],
+	"L": [rule53,],
+	"M": [rule53,],
+	"N": [rule53,],
+	"O": [rule53,],
+	"P": [rule53,],
+	"Q": [rule53,],
+	"R": [rule53,],
+	"S": [rule53,],
+	"T": [rule53,],
+	"U": [rule53,],
+	"V": [rule53,],
+	"W": [rule53,],
+	"X": [rule53,],
+	"Y": [rule53,],
+	"Z": [rule53,],
+	"_": [rule53,],
+	"a": [rule53,],
+	"b": [rule53,],
+	"c": [rule53,],
+	"d": [rule53,],
+	"e": [rule53,],
+	"f": [rule53,],
+	"g": [rule53,],
+	"h": [rule53,],
+	"i": [rule53,],
+	"j": [rule53,],
+	"k": [rule53,],
+	"l": [rule53,],
+	"m": [rule53,],
+	"n": [rule53,],
+	"o": [rule53,],
+	"p": [rule53,],
+	"q": [rule53,],
+	"r": [rule53,],
+	"s": [rule53,],
+	"t": [rule53,],
+	"u": [rule53,],
+	"v": [rule53,],
+	"w": [rule53,],
+	"x": [rule53,],
+	"y": [rule53,],
+	"z": [rule53,],
+}
 
-# Rules dict for inno_setup mode.
-rulesDict = {
-	"inno_setup_constant": inno_setup_constant_rules,
-	"inno_setup_directive": inno_setup_directive_rules,
-	"inno_setup_main": inno_setup_main_rules,
-	"inno_setup_string": inno_setup_string_rules,
+# x.rulesDictDict for inno_setup mode.
+rulesDictDict = {
+	"inno_setup_constant": rulesDict1,
+	"inno_setup_directive": rulesDict1,
+	"inno_setup_main": rulesDict1,
+	"inno_setup_string": rulesDict1,
 }
 
 # Import dict for inno_setup mode.

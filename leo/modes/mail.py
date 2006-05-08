@@ -89,15 +89,19 @@ def rule14(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="label", pattern=":",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-# Rules list for mail_main ruleset.
-mail_main_rules = [
-	rule0, rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9,
-	rule10, rule11, rule12, rule13, rule14, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"-": [rule5,],
+	":": [rule4,rule6,rule7,rule8,rule9,rule14,],
+	";": [rule10,rule11,rule12,rule13,],
+	">": [rule0,rule1,rule2,],
+	"|": [rule3,],
+}
 
 # Rules for mail_signature ruleset.
 
-# Rules list for mail_signature ruleset.
-mail_signature_rules = []
+# Rules dict for signature ruleset.
+rulesDict1 = {}
 
 # Rules for mail_header ruleset.
 
@@ -107,15 +111,16 @@ def rule15(colorer, s, i):
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-# Rules list for mail_header ruleset.
-mail_header_rules = [
-	rule15, ]
+# Rules dict for header ruleset.
+rulesDict1 = {
+	"<": [rule15,],
+}
 
-# Rules dict for mail mode.
-rulesDict = {
-	"mail_header": mail_header_rules,
-	"mail_main": mail_main_rules,
-	"mail_signature": mail_signature_rules,
+# x.rulesDictDict for mail mode.
+rulesDictDict = {
+	"mail_header": rulesDict1,
+	"mail_main": rulesDict1,
+	"mail_signature": rulesDict1,
 }
 
 # Import dict for mail mode.

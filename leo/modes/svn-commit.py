@@ -21,9 +21,10 @@ def rule0(colorer, s, i):
     return colorer.match_seq(s, i, kind="comment1", seq="--This line, and those below, will be ignored--",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="CHANGED")
 
-# Rules list for svn_commit_main ruleset.
-svn_commit_main_rules = [
-	rule0, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"-": [rule0,],
+}
 
 # Rules for svn_commit_changed ruleset.
 
@@ -47,14 +48,18 @@ def rule4(colorer, s, i):
         at_line_start=True, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-# Rules list for svn_commit_changed ruleset.
-svn_commit_changed_rules = [
-	rule1, rule2, rule3, rule4, ]
+# Rules dict for changed ruleset.
+rulesDict1 = {
+	"A": [rule1,],
+	"D": [rule2,],
+	"M": [rule3,],
+	"_": [rule4,],
+}
 
-# Rules dict for svn_commit mode.
-rulesDict = {
-	"svn_commit_changed": svn_commit_changed_rules,
-	"svn_commit_main": svn_commit_main_rules,
+# x.rulesDictDict for svn_commit mode.
+rulesDictDict = {
+	"svn_commit_changed": rulesDict1,
+	"svn_commit_main": rulesDict1,
 }
 
 # Import dict for svn_commit mode.

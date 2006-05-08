@@ -35,13 +35,17 @@ def rule3(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="keyword1", pattern="=",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-# Rules list for ini_main ruleset.
-ini_main_rules = [
-	rule0, rule1, rule2, rule3, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"#": [rule2,],
+	";": [rule1,],
+	"=": [rule3,],
+	"[": [rule0,],
+}
 
-# Rules dict for ini mode.
-rulesDict = {
-	"ini_main": ini_main_rules,
+# x.rulesDictDict for ini mode.
+rulesDictDict = {
+	"ini_main": rulesDict1,
 }
 
 # Import dict for ini mode.

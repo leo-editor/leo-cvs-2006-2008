@@ -158,10 +158,79 @@ def rule15(colorer, s, i):
 def rule16(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules list for rpmspec_main ruleset.
-rpmspec_main_rules = [
-	rule0, rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9,
-	rule10, rule11, rule12, rule13, rule14, rule15, rule16, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"#": [rule0,],
+	"$": [rule9,rule11,rule12,rule13,rule14,rule15,],
+	"%": [rule4,rule5,rule8,rule10,],
+	"0": [rule16,],
+	"1": [rule16,],
+	"2": [rule16,],
+	"3": [rule16,],
+	"4": [rule16,],
+	"5": [rule16,],
+	"6": [rule16,],
+	"7": [rule16,],
+	"8": [rule16,],
+	"9": [rule16,],
+	"<": [rule1,],
+	"=": [rule3,],
+	">": [rule2,],
+	"@": [rule16,],
+	"A": [rule16,],
+	"B": [rule16,],
+	"C": [rule16,],
+	"D": [rule16,],
+	"E": [rule16,],
+	"F": [rule16,],
+	"G": [rule16,],
+	"H": [rule16,],
+	"I": [rule16,],
+	"J": [rule16,],
+	"K": [rule16,],
+	"L": [rule16,],
+	"M": [rule16,],
+	"N": [rule16,],
+	"O": [rule16,],
+	"P": [rule7,rule16,],
+	"Q": [rule16,],
+	"R": [rule16,],
+	"S": [rule6,rule16,],
+	"T": [rule16,],
+	"U": [rule16,],
+	"V": [rule16,],
+	"W": [rule16,],
+	"X": [rule16,],
+	"Y": [rule16,],
+	"Z": [rule16,],
+	"_": [rule16,],
+	"a": [rule16,],
+	"b": [rule16,],
+	"c": [rule16,],
+	"d": [rule16,],
+	"e": [rule16,],
+	"f": [rule16,],
+	"g": [rule16,],
+	"h": [rule16,],
+	"i": [rule16,],
+	"j": [rule16,],
+	"k": [rule16,],
+	"l": [rule16,],
+	"m": [rule16,],
+	"n": [rule16,],
+	"o": [rule16,],
+	"p": [rule16,],
+	"q": [rule16,],
+	"r": [rule16,],
+	"s": [rule16,],
+	"t": [rule16,],
+	"u": [rule16,],
+	"v": [rule16,],
+	"w": [rule16,],
+	"x": [rule16,],
+	"y": [rule16,],
+	"z": [rule16,],
+}
 
 # Rules for rpmspec_attr ruleset.
 
@@ -173,24 +242,90 @@ def rule18(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules list for rpmspec_attr ruleset.
-rpmspec_attr_rules = [
-	rule17, rule18, ]
+# Rules dict for attr ruleset.
+rulesDict1 = {
+	",": [rule17,],
+	"-": [rule18,],
+}
 
 # Rules for rpmspec_verify ruleset.
 
 def rule19(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules list for rpmspec_verify ruleset.
-rpmspec_verify_rules = [
-	rule19, ]
+# Rules dict for verify ruleset.
+rulesDict1 = {
+	"0": [rule19,],
+	"1": [rule19,],
+	"2": [rule19,],
+	"3": [rule19,],
+	"4": [rule19,],
+	"5": [rule19,],
+	"6": [rule19,],
+	"7": [rule19,],
+	"8": [rule19,],
+	"9": [rule19,],
+	"@": [rule19,],
+	"A": [rule19,],
+	"B": [rule19,],
+	"C": [rule19,],
+	"D": [rule19,],
+	"E": [rule19,],
+	"F": [rule19,],
+	"G": [rule19,],
+	"H": [rule19,],
+	"I": [rule19,],
+	"J": [rule19,],
+	"K": [rule19,],
+	"L": [rule19,],
+	"M": [rule19,],
+	"N": [rule19,],
+	"O": [rule19,],
+	"P": [rule19,],
+	"Q": [rule19,],
+	"R": [rule19,],
+	"S": [rule19,],
+	"T": [rule19,],
+	"U": [rule19,],
+	"V": [rule19,],
+	"W": [rule19,],
+	"X": [rule19,],
+	"Y": [rule19,],
+	"Z": [rule19,],
+	"_": [rule19,],
+	"a": [rule19,],
+	"b": [rule19,],
+	"c": [rule19,],
+	"d": [rule19,],
+	"e": [rule19,],
+	"f": [rule19,],
+	"g": [rule19,],
+	"h": [rule19,],
+	"i": [rule19,],
+	"j": [rule19,],
+	"k": [rule19,],
+	"l": [rule19,],
+	"m": [rule19,],
+	"n": [rule19,],
+	"o": [rule19,],
+	"p": [rule19,],
+	"q": [rule19,],
+	"r": [rule19,],
+	"s": [rule19,],
+	"t": [rule19,],
+	"u": [rule19,],
+	"v": [rule19,],
+	"w": [rule19,],
+	"x": [rule19,],
+	"y": [rule19,],
+	"z": [rule19,],
+}
 
-# Rules dict for rpmspec mode.
-rulesDict = {
-	"rpmspec_attr": rpmspec_attr_rules,
-	"rpmspec_main": rpmspec_main_rules,
-	"rpmspec_verify": rpmspec_verify_rules,
+# x.rulesDictDict for rpmspec mode.
+rulesDictDict = {
+	"rpmspec_attr": rulesDict1,
+	"rpmspec_main": rulesDict1,
+	"rpmspec_verify": rulesDict1,
 }
 
 # Import dict for rpmspec mode.

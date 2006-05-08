@@ -169,11 +169,12 @@ def rule21(colorer, s, i):
         delegate="TAGS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules list for freemarker_main ruleset.
-freemarker_main_rules = [
-	rule0, rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9,
-	rule10, rule11, rule12, rule13, rule14, rule15, rule16, rule17, rule18, rule19,
-	rule20, rule21, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"#": [rule9,],
+	"$": [rule8,],
+	"<": [rule0,rule1,rule2,rule3,rule4,rule5,rule6,rule7,rule10,rule11,rule12,rule13,rule14,rule15,rule16,rule17,rule18,rule19,rule20,rule21,],
+}
 
 # Rules for freemarker_expression ruleset.
 
@@ -288,11 +289,94 @@ def rule46(colorer, s, i):
 def rule47(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules list for freemarker_expression ruleset.
-freemarker_expression_rules = [
-	rule22, rule23, rule24, rule25, rule26, rule27, rule28, rule29, rule30, rule31,
-	rule32, rule33, rule34, rule35, rule36, rule37, rule38, rule39, rule40, rule41,
-	rule42, rule43, rule44, rule45, rule46, rule47, ]
+# Rules dict for expression ruleset.
+rulesDict1 = {
+	"!": [rule27,],
+	"\"": [rule24,],
+	"%": [rule36,],
+	"&": [rule29,],
+	"(": [rule25,],
+	"*": [rule32,],
+	"+": [rule35,],
+	"-": [rule34,],
+	".": [rule37,rule39,rule40,],
+	"/": [rule33,],
+	"0": [rule47,],
+	"1": [rule47,],
+	"2": [rule47,],
+	"3": [rule47,],
+	"4": [rule47,],
+	"5": [rule47,],
+	"6": [rule47,],
+	"7": [rule47,],
+	"8": [rule47,],
+	"9": [rule47,],
+	":": [rule38,],
+	";": [rule45,],
+	"<": [rule22,rule23,rule30,],
+	"=": [rule26,],
+	">": [rule31,],
+	"?": [rule46,],
+	"@": [rule47,],
+	"A": [rule47,],
+	"B": [rule47,],
+	"C": [rule47,],
+	"D": [rule47,],
+	"E": [rule47,],
+	"F": [rule47,],
+	"G": [rule47,],
+	"H": [rule47,],
+	"I": [rule47,],
+	"J": [rule47,],
+	"K": [rule47,],
+	"L": [rule47,],
+	"M": [rule47,],
+	"N": [rule47,],
+	"O": [rule47,],
+	"P": [rule47,],
+	"Q": [rule47,],
+	"R": [rule47,],
+	"S": [rule47,],
+	"T": [rule47,],
+	"U": [rule47,],
+	"V": [rule47,],
+	"W": [rule47,],
+	"X": [rule47,],
+	"Y": [rule47,],
+	"Z": [rule47,],
+	"[": [rule41,],
+	"]": [rule42,],
+	"_": [rule47,],
+	"a": [rule47,],
+	"b": [rule47,],
+	"c": [rule47,],
+	"d": [rule47,],
+	"e": [rule47,],
+	"f": [rule47,],
+	"g": [rule47,],
+	"h": [rule47,],
+	"i": [rule47,],
+	"j": [rule47,],
+	"k": [rule47,],
+	"l": [rule47,],
+	"m": [rule47,],
+	"n": [rule47,],
+	"o": [rule47,],
+	"p": [rule47,],
+	"q": [rule47,],
+	"r": [rule47,],
+	"s": [rule47,],
+	"t": [rule47,],
+	"u": [rule47,],
+	"v": [rule47,],
+	"w": [rule47,],
+	"x": [rule47,],
+	"y": [rule47,],
+	"z": [rule47,],
+	"{": [rule43,],
+	"|": [rule28,],
+	"}": [rule44,],
+}
 
 # Rules for freemarker_tags ruleset.
 
@@ -312,9 +396,12 @@ def rule50(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules list for freemarker_tags ruleset.
-freemarker_tags_rules = [
-	rule48, rule49, rule50, ]
+# Rules dict for tags ruleset.
+rulesDict1 = {
+	"\"": [rule48,],
+	"'": [rule49,],
+	"=": [rule50,],
+}
 
 # Rules for freemarker_inquote ruleset.
 
@@ -330,22 +417,24 @@ def rule52(colorer, s, i):
         delegate="EXPRESSION",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules list for freemarker_inquote ruleset.
-freemarker_inquote_rules = [
-	rule51, rule52, ]
+# Rules dict for inquote ruleset.
+rulesDict1 = {
+	"#": [rule52,],
+	"$": [rule51,],
+}
 
 # Rules for freemarker_invalid ruleset.
 
-# Rules list for freemarker_invalid ruleset.
-freemarker_invalid_rules = []
+# Rules dict for invalid ruleset.
+rulesDict1 = {}
 
-# Rules dict for freemarker mode.
-rulesDict = {
-	"freemarker_expression": freemarker_expression_rules,
-	"freemarker_inquote": freemarker_inquote_rules,
-	"freemarker_invalid": freemarker_invalid_rules,
-	"freemarker_main": freemarker_main_rules,
-	"freemarker_tags": freemarker_tags_rules,
+# x.rulesDictDict for freemarker mode.
+rulesDictDict = {
+	"freemarker_expression": rulesDict1,
+	"freemarker_inquote": rulesDict1,
+	"freemarker_invalid": rulesDict1,
+	"freemarker_main": rulesDict1,
+	"freemarker_tags": rulesDict1,
 }
 
 # Import dict for freemarker mode.

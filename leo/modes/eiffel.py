@@ -94,13 +94,80 @@ def rule2(colorer, s, i):
 def rule3(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules list for eiffel_main ruleset.
-eiffel_main_rules = [
-	rule0, rule1, rule2, rule3, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"\"": [rule1,],
+	"'": [rule2,],
+	"-": [rule0,],
+	"0": [rule3,],
+	"1": [rule3,],
+	"2": [rule3,],
+	"3": [rule3,],
+	"4": [rule3,],
+	"5": [rule3,],
+	"6": [rule3,],
+	"7": [rule3,],
+	"8": [rule3,],
+	"9": [rule3,],
+	"@": [rule3,],
+	"A": [rule3,],
+	"B": [rule3,],
+	"C": [rule3,],
+	"D": [rule3,],
+	"E": [rule3,],
+	"F": [rule3,],
+	"G": [rule3,],
+	"H": [rule3,],
+	"I": [rule3,],
+	"J": [rule3,],
+	"K": [rule3,],
+	"L": [rule3,],
+	"M": [rule3,],
+	"N": [rule3,],
+	"O": [rule3,],
+	"P": [rule3,],
+	"Q": [rule3,],
+	"R": [rule3,],
+	"S": [rule3,],
+	"T": [rule3,],
+	"U": [rule3,],
+	"V": [rule3,],
+	"W": [rule3,],
+	"X": [rule3,],
+	"Y": [rule3,],
+	"Z": [rule3,],
+	"_": [rule3,],
+	"a": [rule3,],
+	"b": [rule3,],
+	"c": [rule3,],
+	"d": [rule3,],
+	"e": [rule3,],
+	"f": [rule3,],
+	"g": [rule3,],
+	"h": [rule3,],
+	"i": [rule3,],
+	"j": [rule3,],
+	"k": [rule3,],
+	"l": [rule3,],
+	"m": [rule3,],
+	"n": [rule3,],
+	"o": [rule3,],
+	"p": [rule3,],
+	"q": [rule3,],
+	"r": [rule3,],
+	"s": [rule3,],
+	"t": [rule3,],
+	"u": [rule3,],
+	"v": [rule3,],
+	"w": [rule3,],
+	"x": [rule3,],
+	"y": [rule3,],
+	"z": [rule3,],
+}
 
-# Rules dict for eiffel mode.
-rulesDict = {
-	"eiffel_main": eiffel_main_rules,
+# x.rulesDictDict for eiffel mode.
+rulesDictDict = {
+	"eiffel_main": rulesDict1,
 }
 
 # Import dict for eiffel mode.

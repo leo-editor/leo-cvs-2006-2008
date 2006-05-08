@@ -224,13 +224,80 @@ def rule3(colorer, s, i):
 def rule4(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules list for mqsc_main ruleset.
-mqsc_main_rules = [
-	rule0, rule1, rule2, rule3, rule4, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"(": [rule1,rule2,],
+	"*": [rule0,],
+	"+": [rule3,],
+	"0": [rule4,],
+	"1": [rule4,],
+	"2": [rule4,],
+	"3": [rule4,],
+	"4": [rule4,],
+	"5": [rule4,],
+	"6": [rule4,],
+	"7": [rule4,],
+	"8": [rule4,],
+	"9": [rule4,],
+	"@": [rule4,],
+	"A": [rule4,],
+	"B": [rule4,],
+	"C": [rule4,],
+	"D": [rule4,],
+	"E": [rule4,],
+	"F": [rule4,],
+	"G": [rule4,],
+	"H": [rule4,],
+	"I": [rule4,],
+	"J": [rule4,],
+	"K": [rule4,],
+	"L": [rule4,],
+	"M": [rule4,],
+	"N": [rule4,],
+	"O": [rule4,],
+	"P": [rule4,],
+	"Q": [rule4,],
+	"R": [rule4,],
+	"S": [rule4,],
+	"T": [rule4,],
+	"U": [rule4,],
+	"V": [rule4,],
+	"W": [rule4,],
+	"X": [rule4,],
+	"Y": [rule4,],
+	"Z": [rule4,],
+	"_": [rule4,],
+	"a": [rule4,],
+	"b": [rule4,],
+	"c": [rule4,],
+	"d": [rule4,],
+	"e": [rule4,],
+	"f": [rule4,],
+	"g": [rule4,],
+	"h": [rule4,],
+	"i": [rule4,],
+	"j": [rule4,],
+	"k": [rule4,],
+	"l": [rule4,],
+	"m": [rule4,],
+	"n": [rule4,],
+	"o": [rule4,],
+	"p": [rule4,],
+	"q": [rule4,],
+	"r": [rule4,],
+	"s": [rule4,],
+	"t": [rule4,],
+	"u": [rule4,],
+	"v": [rule4,],
+	"w": [rule4,],
+	"x": [rule4,],
+	"y": [rule4,],
+	"z": [rule4,],
+}
 
-# Rules dict for mqsc mode.
-rulesDict = {
-	"mqsc_main": mqsc_main_rules,
+# x.rulesDictDict for mqsc mode.
+rulesDictDict = {
+	"mqsc_main": rulesDict1,
 }
 
 # Import dict for mqsc mode.

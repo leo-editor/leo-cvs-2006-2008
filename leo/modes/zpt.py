@@ -120,9 +120,11 @@ def rule5(colorer, s, i):
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=True)
 
-# Rules list for zpt_main ruleset.
-zpt_main_rules = [
-	rule0, rule1, rule2, rule3, rule4, rule5, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"&": [rule5,],
+	"<": [rule0,rule1,rule2,rule3,rule4,],
+}
 
 # Rules for zpt_tags ruleset.
 
@@ -145,9 +147,76 @@ def rule8(colorer, s, i):
 def rule9(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules list for zpt_tags ruleset.
-zpt_tags_rules = [
-	rule6, rule7, rule8, rule9, ]
+# Rules dict for tags ruleset.
+rulesDict1 = {
+	"\"": [rule6,],
+	"'": [rule7,],
+	"0": [rule9,],
+	"1": [rule9,],
+	"2": [rule9,],
+	"3": [rule9,],
+	"4": [rule9,],
+	"5": [rule9,],
+	"6": [rule9,],
+	"7": [rule9,],
+	"8": [rule9,],
+	"9": [rule9,],
+	"=": [rule8,],
+	"@": [rule9,],
+	"A": [rule9,],
+	"B": [rule9,],
+	"C": [rule9,],
+	"D": [rule9,],
+	"E": [rule9,],
+	"F": [rule9,],
+	"G": [rule9,],
+	"H": [rule9,],
+	"I": [rule9,],
+	"J": [rule9,],
+	"K": [rule9,],
+	"L": [rule9,],
+	"M": [rule9,],
+	"N": [rule9,],
+	"O": [rule9,],
+	"P": [rule9,],
+	"Q": [rule9,],
+	"R": [rule9,],
+	"S": [rule9,],
+	"T": [rule9,],
+	"U": [rule9,],
+	"V": [rule9,],
+	"W": [rule9,],
+	"X": [rule9,],
+	"Y": [rule9,],
+	"Z": [rule9,],
+	"_": [rule9,],
+	"a": [rule9,],
+	"b": [rule9,],
+	"c": [rule9,],
+	"d": [rule9,],
+	"e": [rule9,],
+	"f": [rule9,],
+	"g": [rule9,],
+	"h": [rule9,],
+	"i": [rule9,],
+	"j": [rule9,],
+	"k": [rule9,],
+	"l": [rule9,],
+	"m": [rule9,],
+	"n": [rule9,],
+	"o": [rule9,],
+	"p": [rule9,],
+	"q": [rule9,],
+	"r": [rule9,],
+	"s": [rule9,],
+	"t": [rule9,],
+	"u": [rule9,],
+	"v": [rule9,],
+	"w": [rule9,],
+	"x": [rule9,],
+	"y": [rule9,],
+	"z": [rule9,],
+}
 
 # Rules for zpt_attribute ruleset.
 
@@ -184,9 +253,78 @@ def rule16(colorer, s, i):
 def rule17(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules list for zpt_attribute ruleset.
-zpt_attribute_rules = [
-	rule10, rule11, rule12, rule13, rule14, rule15, rule16, rule17, ]
+# Rules dict for attribute ruleset.
+rulesDict1 = {
+	"$": [rule14,rule15,rule16,],
+	"0": [rule17,],
+	"1": [rule17,],
+	"2": [rule17,],
+	"3": [rule17,],
+	"4": [rule17,],
+	"5": [rule17,],
+	"6": [rule17,],
+	"7": [rule17,],
+	"8": [rule17,],
+	"9": [rule17,],
+	":": [rule10,],
+	";": [rule11,],
+	"?": [rule12,],
+	"@": [rule17,],
+	"A": [rule17,],
+	"B": [rule17,],
+	"C": [rule17,],
+	"D": [rule17,],
+	"E": [rule17,],
+	"F": [rule17,],
+	"G": [rule17,],
+	"H": [rule17,],
+	"I": [rule17,],
+	"J": [rule17,],
+	"K": [rule17,],
+	"L": [rule17,],
+	"M": [rule17,],
+	"N": [rule17,],
+	"O": [rule17,],
+	"P": [rule17,],
+	"Q": [rule17,],
+	"R": [rule17,],
+	"S": [rule17,],
+	"T": [rule17,],
+	"U": [rule17,],
+	"V": [rule17,],
+	"W": [rule17,],
+	"X": [rule17,],
+	"Y": [rule17,],
+	"Z": [rule17,],
+	"_": [rule17,],
+	"a": [rule17,],
+	"b": [rule17,],
+	"c": [rule17,],
+	"d": [rule17,],
+	"e": [rule17,],
+	"f": [rule17,],
+	"g": [rule17,],
+	"h": [rule17,],
+	"i": [rule17,],
+	"j": [rule17,],
+	"k": [rule17,],
+	"l": [rule17,],
+	"m": [rule17,],
+	"n": [rule17,],
+	"o": [rule17,],
+	"p": [rule17,],
+	"q": [rule17,],
+	"r": [rule17,],
+	"s": [rule17,],
+	"t": [rule17,],
+	"u": [rule17,],
+	"v": [rule17,],
+	"w": [rule17,],
+	"x": [rule17,],
+	"y": [rule17,],
+	"z": [rule17,],
+	"|": [rule13,],
+}
 
 # Rules for zpt_javascript ruleset.
 
@@ -198,9 +336,11 @@ def rule19(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq="SRC=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="BACK_TO_HTML")
 
-# Rules list for zpt_javascript ruleset.
-zpt_javascript_rules = [
-	rule18, rule19, ]
+# Rules dict for javascript ruleset.
+rulesDict1 = {
+	">": [rule18,],
+	"S": [rule19,],
+}
 
 # Rules for zpt_back_to_html ruleset.
 
@@ -208,9 +348,10 @@ def rule20(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="zpt::MAIN")
 
-# Rules list for zpt_back_to_html ruleset.
-zpt_back_to_html_rules = [
-	rule20, ]
+# Rules dict for back_to_html ruleset.
+rulesDict1 = {
+	">": [rule20,],
+}
 
 # Rules for zpt_css ruleset.
 
@@ -218,18 +359,19 @@ def rule21(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="css::MAIN")
 
-# Rules list for zpt_css ruleset.
-zpt_css_rules = [
-	rule21, ]
+# Rules dict for css ruleset.
+rulesDict1 = {
+	">": [rule21,],
+}
 
-# Rules dict for zpt mode.
-rulesDict = {
-	"zpt_attribute": zpt_attribute_rules,
-	"zpt_back_to_html": zpt_back_to_html_rules,
-	"zpt_css": zpt_css_rules,
-	"zpt_javascript": zpt_javascript_rules,
-	"zpt_main": zpt_main_rules,
-	"zpt_tags": zpt_tags_rules,
+# x.rulesDictDict for zpt mode.
+rulesDictDict = {
+	"zpt_attribute": rulesDict1,
+	"zpt_back_to_html": rulesDict1,
+	"zpt_css": rulesDict1,
+	"zpt_javascript": rulesDict1,
+	"zpt_main": rulesDict1,
+	"zpt_tags": rulesDict1,
 }
 
 # Import dict for zpt mode.

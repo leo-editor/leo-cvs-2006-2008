@@ -152,10 +152,11 @@ def rule14(colorer, s, i):
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=True)
 
-# Rules list for jsp_main ruleset.
-jsp_main_rules = [
-	rule0, rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9,
-	rule10, rule11, rule12, rule13, rule14, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"&": [rule14,],
+	"<": [rule0,rule1,rule2,rule3,rule4,rule5,rule6,rule7,rule8,rule9,rule10,rule11,rule12,rule13,],
+}
 
 # Rules for jsp_comment ruleset.
 
@@ -177,9 +178,10 @@ def rule17(colorer, s, i):
         delegate="java::MAIN",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules list for jsp_comment ruleset.
-jsp_comment_rules = [
-	rule15, rule16, rule17, ]
+# Rules dict for comment ruleset.
+rulesDict1 = {
+	"<": [rule15,rule16,rule17,],
+}
 
 # Rules for jsp_directives ruleset.
 
@@ -216,9 +218,78 @@ def rule23(colorer, s, i):
 def rule24(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules list for jsp_directives ruleset.
-jsp_directives_rules = [
-	rule18, rule19, rule20, rule21, rule22, rule23, rule24, ]
+# Rules dict for directives ruleset.
+rulesDict1 = {
+	"\"": [rule19,],
+	"'": [rule20,],
+	"/": [rule21,],
+	"0": [rule24,],
+	"1": [rule24,],
+	"2": [rule24,],
+	"3": [rule24,],
+	"4": [rule24,],
+	"5": [rule24,],
+	"6": [rule24,],
+	"7": [rule24,],
+	"8": [rule24,],
+	"9": [rule24,],
+	":": [rule22,rule23,],
+	"<": [rule18,],
+	"@": [rule24,],
+	"A": [rule24,],
+	"B": [rule24,],
+	"C": [rule24,],
+	"D": [rule24,],
+	"E": [rule24,],
+	"F": [rule24,],
+	"G": [rule24,],
+	"H": [rule24,],
+	"I": [rule24,],
+	"J": [rule24,],
+	"K": [rule24,],
+	"L": [rule24,],
+	"M": [rule24,],
+	"N": [rule24,],
+	"O": [rule24,],
+	"P": [rule24,],
+	"Q": [rule24,],
+	"R": [rule24,],
+	"S": [rule24,],
+	"T": [rule24,],
+	"U": [rule24,],
+	"V": [rule24,],
+	"W": [rule24,],
+	"X": [rule24,],
+	"Y": [rule24,],
+	"Z": [rule24,],
+	"_": [rule24,],
+	"a": [rule24,],
+	"b": [rule24,],
+	"c": [rule24,],
+	"d": [rule24,],
+	"e": [rule24,],
+	"f": [rule24,],
+	"g": [rule24,],
+	"h": [rule24,],
+	"i": [rule24,],
+	"j": [rule24,],
+	"k": [rule24,],
+	"l": [rule24,],
+	"m": [rule24,],
+	"n": [rule24,],
+	"o": [rule24,],
+	"p": [rule24,],
+	"q": [rule24,],
+	"r": [rule24,],
+	"s": [rule24,],
+	"t": [rule24,],
+	"u": [rule24,],
+	"v": [rule24,],
+	"w": [rule24,],
+	"x": [rule24,],
+	"y": [rule24,],
+	"z": [rule24,],
+}
 
 # Rules for jsp_tags ruleset.
 
@@ -258,9 +329,14 @@ def rule31(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=":",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules list for jsp_tags ruleset.
-jsp_tags_rules = [
-	rule25, rule26, rule27, rule28, rule29, rule30, rule31, ]
+# Rules dict for tags ruleset.
+rulesDict1 = {
+	"\"": [rule27,],
+	"'": [rule28,],
+	"/": [rule29,],
+	":": [rule30,rule31,],
+	"<": [rule25,rule26,],
+}
 
 # Rules for jsp_attrvalue ruleset.
 
@@ -270,17 +346,18 @@ def rule32(colorer, s, i):
         delegate="java::MAIN",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules list for jsp_attrvalue ruleset.
-jsp_attrvalue_rules = [
-	rule32, ]
+# Rules dict for attrvalue ruleset.
+rulesDict1 = {
+	"<": [rule32,],
+}
 
-# Rules dict for jsp mode.
-rulesDict = {
-	"jsp_attrvalue": jsp_attrvalue_rules,
-	"jsp_comment": jsp_comment_rules,
-	"jsp_directives": jsp_directives_rules,
-	"jsp_main": jsp_main_rules,
-	"jsp_tags": jsp_tags_rules,
+# x.rulesDictDict for jsp mode.
+rulesDictDict = {
+	"jsp_attrvalue": rulesDict1,
+	"jsp_comment": rulesDict1,
+	"jsp_directives": rulesDict1,
+	"jsp_main": rulesDict1,
+	"jsp_tags": rulesDict1,
 }
 
 # Import dict for jsp mode.

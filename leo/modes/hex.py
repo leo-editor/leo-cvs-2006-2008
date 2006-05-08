@@ -22,13 +22,15 @@ def rule1(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-# Rules list for hex_main ruleset.
-hex_main_rules = [
-	rule0, rule1, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	":": [rule0,],
+	";": [rule1,],
+}
 
-# Rules dict for hex mode.
-rulesDict = {
-	"hex_main": hex_main_rules,
+# x.rulesDictDict for hex mode.
+rulesDictDict = {
+	"hex_main": rulesDict1,
 }
 
 # Import dict for hex mode.

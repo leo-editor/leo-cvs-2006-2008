@@ -137,13 +137,82 @@ def rule7(colorer, s, i):
 def rule8(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules list for smi_mib_main ruleset.
-smi_mib_main_rules = [
-	rule0, rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"\"": [rule1,],
+	"-": [rule0,],
+	"0": [rule8,],
+	"1": [rule8,],
+	"2": [rule8,],
+	"3": [rule8,],
+	"4": [rule8,],
+	"5": [rule8,],
+	"6": [rule8,],
+	"7": [rule8,],
+	"8": [rule8,],
+	"9": [rule8,],
+	":": [rule2,],
+	"@": [rule8,],
+	"A": [rule8,],
+	"B": [rule8,],
+	"C": [rule8,],
+	"D": [rule8,],
+	"E": [rule8,],
+	"F": [rule8,],
+	"G": [rule8,],
+	"H": [rule8,],
+	"I": [rule8,],
+	"J": [rule8,],
+	"K": [rule8,],
+	"L": [rule8,],
+	"M": [rule8,],
+	"N": [rule8,],
+	"O": [rule5,rule7,rule8,],
+	"P": [rule8,],
+	"Q": [rule8,],
+	"R": [rule8,],
+	"S": [rule6,rule8,],
+	"T": [rule8,],
+	"U": [rule8,],
+	"V": [rule8,],
+	"W": [rule8,],
+	"X": [rule8,],
+	"Y": [rule8,],
+	"Z": [rule8,],
+	"_": [rule8,],
+	"a": [rule8,],
+	"b": [rule8,],
+	"c": [rule8,],
+	"d": [rule8,],
+	"e": [rule8,],
+	"f": [rule8,],
+	"g": [rule8,],
+	"h": [rule8,],
+	"i": [rule8,],
+	"j": [rule8,],
+	"k": [rule8,],
+	"l": [rule8,],
+	"m": [rule8,],
+	"n": [rule8,],
+	"o": [rule8,],
+	"p": [rule8,],
+	"q": [rule8,],
+	"r": [rule8,],
+	"s": [rule8,],
+	"t": [rule8,],
+	"u": [rule8,],
+	"v": [rule8,],
+	"w": [rule8,],
+	"x": [rule8,],
+	"y": [rule8,],
+	"z": [rule8,],
+	"{": [rule4,],
+	"}": [rule3,],
+}
 
-# Rules dict for smi_mib mode.
-rulesDict = {
-	"smi_mib_main": smi_mib_main_rules,
+# x.rulesDictDict for smi_mib mode.
+rulesDictDict = {
+	"smi_mib_main": rulesDict1,
 }
 
 # Import dict for smi_mib mode.

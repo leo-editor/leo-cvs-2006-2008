@@ -376,11 +376,11 @@ def rule26(colorer, s, i):
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=True)
 
-# Rules list for powerdynamo_main ruleset.
-powerdynamo_main_rules = [
-	rule0, rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9,
-	rule10, rule11, rule12, rule13, rule14, rule15, rule16, rule17, rule18, rule19,
-	rule20, rule21, rule22, rule23, rule24, rule25, rule26, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"&": [rule26,],
+	"<": [rule0,rule1,rule2,rule3,rule4,rule5,rule6,rule7,rule8,rule9,rule10,rule11,rule12,rule13,rule14,rule15,rule16,rule17,rule18,rule19,rule20,rule21,rule22,rule23,rule24,rule25,],
+}
 
 # Rules for powerdynamo_tags ruleset.
 
@@ -406,9 +406,13 @@ def rule30(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules list for powerdynamo_tags ruleset.
-powerdynamo_tags_rules = [
-	rule27, rule28, rule29, rule30, ]
+# Rules dict for tags ruleset.
+rulesDict1 = {
+	"\"": [rule28,],
+	"'": [rule29,],
+	"<": [rule27,],
+	"=": [rule30,],
+}
 
 # Rules for powerdynamo_tags_literal ruleset.
 
@@ -418,9 +422,10 @@ def rule31(colorer, s, i):
         delegate="powerdynamo-script",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules list for powerdynamo_tags_literal ruleset.
-powerdynamo_tags_literal_rules = [
-	rule31, ]
+# Rules dict for tags_literal ruleset.
+rulesDict1 = {
+	"<": [rule31,],
+}
 
 # Rules for powerdynamo_powerdynamo_script ruleset.
 
@@ -558,12 +563,98 @@ def rule62(colorer, s, i):
 def rule63(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules list for powerdynamo_powerdynamo_script ruleset.
-powerdynamo_powerdynamo_script_rules = [
-	rule32, rule33, rule34, rule35, rule36, rule37, rule38, rule39, rule40, rule41,
-	rule42, rule43, rule44, rule45, rule46, rule47, rule48, rule49, rule50, rule51,
-	rule52, rule53, rule54, rule55, rule56, rule57, rule58, rule59, rule60, rule61,
-	rule62, rule63, ]
+# Rules dict for powerdynamo_script ruleset.
+rulesDict1 = {
+	"!": [rule37,],
+	"\"": [rule33,],
+	"%": [rule47,],
+	"&": [rule48,],
+	"'": [rule34,],
+	"(": [rule62,],
+	"*": [rule44,],
+	"+": [rule41,],
+	",": [rule55,],
+	"-": [rule42,],
+	".": [rule52,],
+	"/": [rule32,rule35,rule43,],
+	"0": [rule63,],
+	"1": [rule63,],
+	"2": [rule63,],
+	"3": [rule63,],
+	"4": [rule63,],
+	"5": [rule63,],
+	"6": [rule63,],
+	"7": [rule63,],
+	"8": [rule63,],
+	"9": [rule63,],
+	":": [rule61,],
+	";": [rule56,],
+	"<": [rule39,rule46,],
+	"=": [rule36,rule40,],
+	">": [rule38,rule45,],
+	"?": [rule59,],
+	"@": [rule60,rule63,],
+	"A": [rule63,],
+	"B": [rule63,],
+	"C": [rule63,],
+	"D": [rule63,],
+	"E": [rule63,],
+	"F": [rule63,],
+	"G": [rule63,],
+	"H": [rule63,],
+	"I": [rule63,],
+	"J": [rule63,],
+	"K": [rule63,],
+	"L": [rule63,],
+	"M": [rule63,],
+	"N": [rule63,],
+	"O": [rule63,],
+	"P": [rule63,],
+	"Q": [rule63,],
+	"R": [rule63,],
+	"S": [rule63,],
+	"T": [rule63,],
+	"U": [rule63,],
+	"V": [rule63,],
+	"W": [rule63,],
+	"X": [rule63,],
+	"Y": [rule63,],
+	"Z": [rule63,],
+	"[": [rule58,],
+	"]": [rule57,],
+	"^": [rule50,],
+	"_": [rule63,],
+	"a": [rule63,],
+	"b": [rule63,],
+	"c": [rule63,],
+	"d": [rule63,],
+	"e": [rule63,],
+	"f": [rule63,],
+	"g": [rule63,],
+	"h": [rule63,],
+	"i": [rule63,],
+	"j": [rule63,],
+	"k": [rule63,],
+	"l": [rule63,],
+	"m": [rule63,],
+	"n": [rule63,],
+	"o": [rule63,],
+	"p": [rule63,],
+	"q": [rule63,],
+	"r": [rule63,],
+	"s": [rule63,],
+	"t": [rule63,],
+	"u": [rule63,],
+	"v": [rule63,],
+	"w": [rule63,],
+	"x": [rule63,],
+	"y": [rule63,],
+	"z": [rule63,],
+	"{": [rule54,],
+	"|": [rule49,],
+	"}": [rule53,],
+	"~": [rule51,],
+}
 
 # Rules for powerdynamo_powerdynamo_tag_general ruleset.
 
@@ -582,9 +673,75 @@ def rule65(colorer, s, i):
 def rule66(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules list for powerdynamo_powerdynamo_tag_general ruleset.
-powerdynamo_powerdynamo_tag_general_rules = [
-	rule64, rule65, rule66, ]
+# Rules dict for powerdynamo_tag_general ruleset.
+rulesDict1 = {
+	"\"": [rule64,],
+	"'": [rule65,],
+	"0": [rule66,],
+	"1": [rule66,],
+	"2": [rule66,],
+	"3": [rule66,],
+	"4": [rule66,],
+	"5": [rule66,],
+	"6": [rule66,],
+	"7": [rule66,],
+	"8": [rule66,],
+	"9": [rule66,],
+	"@": [rule66,],
+	"A": [rule66,],
+	"B": [rule66,],
+	"C": [rule66,],
+	"D": [rule66,],
+	"E": [rule66,],
+	"F": [rule66,],
+	"G": [rule66,],
+	"H": [rule66,],
+	"I": [rule66,],
+	"J": [rule66,],
+	"K": [rule66,],
+	"L": [rule66,],
+	"M": [rule66,],
+	"N": [rule66,],
+	"O": [rule66,],
+	"P": [rule66,],
+	"Q": [rule66,],
+	"R": [rule66,],
+	"S": [rule66,],
+	"T": [rule66,],
+	"U": [rule66,],
+	"V": [rule66,],
+	"W": [rule66,],
+	"X": [rule66,],
+	"Y": [rule66,],
+	"Z": [rule66,],
+	"_": [rule66,],
+	"a": [rule66,],
+	"b": [rule66,],
+	"c": [rule66,],
+	"d": [rule66,],
+	"e": [rule66,],
+	"f": [rule66,],
+	"g": [rule66,],
+	"h": [rule66,],
+	"i": [rule66,],
+	"j": [rule66,],
+	"k": [rule66,],
+	"l": [rule66,],
+	"m": [rule66,],
+	"n": [rule66,],
+	"o": [rule66,],
+	"p": [rule66,],
+	"q": [rule66,],
+	"r": [rule66,],
+	"s": [rule66,],
+	"t": [rule66,],
+	"u": [rule66,],
+	"v": [rule66,],
+	"w": [rule66,],
+	"x": [rule66,],
+	"y": [rule66,],
+	"z": [rule66,],
+}
 
 # Rules for powerdynamo_powerdynamo_tag_data ruleset.
 
@@ -603,9 +760,75 @@ def rule68(colorer, s, i):
 def rule69(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules list for powerdynamo_powerdynamo_tag_data ruleset.
-powerdynamo_powerdynamo_tag_data_rules = [
-	rule67, rule68, rule69, ]
+# Rules dict for powerdynamo_tag_data ruleset.
+rulesDict1 = {
+	"\"": [rule67,],
+	"'": [rule68,],
+	"0": [rule69,],
+	"1": [rule69,],
+	"2": [rule69,],
+	"3": [rule69,],
+	"4": [rule69,],
+	"5": [rule69,],
+	"6": [rule69,],
+	"7": [rule69,],
+	"8": [rule69,],
+	"9": [rule69,],
+	"@": [rule69,],
+	"A": [rule69,],
+	"B": [rule69,],
+	"C": [rule69,],
+	"D": [rule69,],
+	"E": [rule69,],
+	"F": [rule69,],
+	"G": [rule69,],
+	"H": [rule69,],
+	"I": [rule69,],
+	"J": [rule69,],
+	"K": [rule69,],
+	"L": [rule69,],
+	"M": [rule69,],
+	"N": [rule69,],
+	"O": [rule69,],
+	"P": [rule69,],
+	"Q": [rule69,],
+	"R": [rule69,],
+	"S": [rule69,],
+	"T": [rule69,],
+	"U": [rule69,],
+	"V": [rule69,],
+	"W": [rule69,],
+	"X": [rule69,],
+	"Y": [rule69,],
+	"Z": [rule69,],
+	"_": [rule69,],
+	"a": [rule69,],
+	"b": [rule69,],
+	"c": [rule69,],
+	"d": [rule69,],
+	"e": [rule69,],
+	"f": [rule69,],
+	"g": [rule69,],
+	"h": [rule69,],
+	"i": [rule69,],
+	"j": [rule69,],
+	"k": [rule69,],
+	"l": [rule69,],
+	"m": [rule69,],
+	"n": [rule69,],
+	"o": [rule69,],
+	"p": [rule69,],
+	"q": [rule69,],
+	"r": [rule69,],
+	"s": [rule69,],
+	"t": [rule69,],
+	"u": [rule69,],
+	"v": [rule69,],
+	"w": [rule69,],
+	"x": [rule69,],
+	"y": [rule69,],
+	"z": [rule69,],
+}
 
 # Rules for powerdynamo_powerdynamo_tag_document ruleset.
 
@@ -624,19 +847,85 @@ def rule71(colorer, s, i):
 def rule72(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules list for powerdynamo_powerdynamo_tag_document ruleset.
-powerdynamo_powerdynamo_tag_document_rules = [
-	rule70, rule71, rule72, ]
+# Rules dict for powerdynamo_tag_document ruleset.
+rulesDict1 = {
+	"\"": [rule70,],
+	"'": [rule71,],
+	"0": [rule72,],
+	"1": [rule72,],
+	"2": [rule72,],
+	"3": [rule72,],
+	"4": [rule72,],
+	"5": [rule72,],
+	"6": [rule72,],
+	"7": [rule72,],
+	"8": [rule72,],
+	"9": [rule72,],
+	"@": [rule72,],
+	"A": [rule72,],
+	"B": [rule72,],
+	"C": [rule72,],
+	"D": [rule72,],
+	"E": [rule72,],
+	"F": [rule72,],
+	"G": [rule72,],
+	"H": [rule72,],
+	"I": [rule72,],
+	"J": [rule72,],
+	"K": [rule72,],
+	"L": [rule72,],
+	"M": [rule72,],
+	"N": [rule72,],
+	"O": [rule72,],
+	"P": [rule72,],
+	"Q": [rule72,],
+	"R": [rule72,],
+	"S": [rule72,],
+	"T": [rule72,],
+	"U": [rule72,],
+	"V": [rule72,],
+	"W": [rule72,],
+	"X": [rule72,],
+	"Y": [rule72,],
+	"Z": [rule72,],
+	"_": [rule72,],
+	"a": [rule72,],
+	"b": [rule72,],
+	"c": [rule72,],
+	"d": [rule72,],
+	"e": [rule72,],
+	"f": [rule72,],
+	"g": [rule72,],
+	"h": [rule72,],
+	"i": [rule72,],
+	"j": [rule72,],
+	"k": [rule72,],
+	"l": [rule72,],
+	"m": [rule72,],
+	"n": [rule72,],
+	"o": [rule72,],
+	"p": [rule72,],
+	"q": [rule72,],
+	"r": [rule72,],
+	"s": [rule72,],
+	"t": [rule72,],
+	"u": [rule72,],
+	"v": [rule72,],
+	"w": [rule72,],
+	"x": [rule72,],
+	"y": [rule72,],
+	"z": [rule72,],
+}
 
-# Rules dict for powerdynamo mode.
-rulesDict = {
-	"powerdynamo_main": powerdynamo_main_rules,
-	"powerdynamo_powerdynamo_script": powerdynamo_powerdynamo_script_rules,
-	"powerdynamo_powerdynamo_tag_data": powerdynamo_powerdynamo_tag_data_rules,
-	"powerdynamo_powerdynamo_tag_document": powerdynamo_powerdynamo_tag_document_rules,
-	"powerdynamo_powerdynamo_tag_general": powerdynamo_powerdynamo_tag_general_rules,
-	"powerdynamo_tags": powerdynamo_tags_rules,
-	"powerdynamo_tags_literal": powerdynamo_tags_literal_rules,
+# x.rulesDictDict for powerdynamo mode.
+rulesDictDict = {
+	"powerdynamo_main": rulesDict1,
+	"powerdynamo_powerdynamo_script": rulesDict1,
+	"powerdynamo_powerdynamo_tag_data": rulesDict1,
+	"powerdynamo_powerdynamo_tag_document": rulesDict1,
+	"powerdynamo_powerdynamo_tag_general": rulesDict1,
+	"powerdynamo_tags": rulesDict1,
+	"powerdynamo_tags_literal": rulesDict1,
 }
 
 # Import dict for powerdynamo mode.

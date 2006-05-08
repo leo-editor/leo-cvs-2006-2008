@@ -287,12 +287,95 @@ def rule31(colorer, s, i):
 def rule32(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules list for pop11_main ruleset.
-pop11_main_rules = [
-	rule0, rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9,
-	rule10, rule11, rule12, rule13, rule14, rule15, rule16, rule17, rule18, rule19,
-	rule20, rule21, rule22, rule23, rule24, rule25, rule26, rule27, rule28, rule29,
-	rule30, rule31, rule32, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"!": [rule7,],
+	"\"": [rule3,],
+	"#": [rule10,rule12,],
+	"'": [rule2,],
+	"(": [rule8,rule14,],
+	")": [rule13,],
+	"*": [rule31,],
+	"+": [rule28,],
+	",": [rule16,],
+	"-": [rule30,],
+	".": [rule15,],
+	"/": [rule0,rule29,],
+	"0": [rule32,],
+	"1": [rule32,],
+	"2": [rule32,],
+	"3": [rule32,],
+	"4": [rule32,],
+	"5": [rule32,],
+	"6": [rule32,],
+	"7": [rule32,],
+	"8": [rule32,],
+	"9": [rule32,],
+	":": [rule9,rule20,],
+	";": [rule1,rule17,],
+	"<": [rule24,rule25,rule27,],
+	"=": [rule22,],
+	">": [rule11,rule23,rule26,],
+	"@": [rule19,rule32,],
+	"A": [rule32,],
+	"B": [rule32,],
+	"C": [rule32,],
+	"D": [rule32,],
+	"E": [rule32,],
+	"F": [rule32,],
+	"G": [rule32,],
+	"H": [rule32,],
+	"I": [rule32,],
+	"J": [rule32,],
+	"K": [rule32,],
+	"L": [rule32,],
+	"M": [rule32,],
+	"N": [rule32,],
+	"O": [rule32,],
+	"P": [rule32,],
+	"Q": [rule32,],
+	"R": [rule32,],
+	"S": [rule32,],
+	"T": [rule32,],
+	"U": [rule32,],
+	"V": [rule32,],
+	"W": [rule32,],
+	"X": [rule32,],
+	"Y": [rule32,],
+	"Z": [rule32,],
+	"[": [rule5,],
+	"^": [rule18,],
+	"_": [rule32,],
+	"`": [rule4,],
+	"a": [rule32,],
+	"b": [rule32,],
+	"c": [rule32,],
+	"d": [rule32,],
+	"e": [rule32,],
+	"f": [rule32,],
+	"g": [rule32,],
+	"h": [rule32,],
+	"i": [rule32,],
+	"j": [rule32,],
+	"k": [rule32,],
+	"l": [rule32,],
+	"m": [rule32,],
+	"n": [rule32,],
+	"o": [rule32,],
+	"p": [rule32,],
+	"q": [rule32,],
+	"r": [rule32,],
+	"s": [rule32,],
+	"t": [rule32,],
+	"u": [rule32,],
+	"v": [rule32,],
+	"w": [rule32,],
+	"x": [rule32,],
+	"y": [rule32,],
+	"z": [rule32,],
+	"{": [rule6,],
+	"|": [rule21,],
+}
 
 # Rules for pop11_list ruleset.
 
@@ -359,15 +442,25 @@ def rule44(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="literal2", pattern="?"
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-# Rules list for pop11_list ruleset.
-pop11_list_rules = [
-	rule33, rule34, rule35, rule36, rule37, rule38, rule39, rule40, rule41, rule42,
-	rule43, rule44, ]
+# Rules dict for list ruleset.
+rulesDict1 = {
+	"!": [rule35,],
+	"\"": [rule37,],
+	"%": [rule38,],
+	"'": [rule36,],
+	"/": [rule39,],
+	";": [rule40,],
+	"=": [rule41,rule42,],
+	"?": [rule44,],
+	"[": [rule33,],
+	"^": [rule43,],
+	"{": [rule34,],
+}
 
 # Rules for pop11_string ruleset.
 
-# Rules list for pop11_string ruleset.
-pop11_string_rules = []
+# Rules dict for string ruleset.
+rulesDict1 = {}
 
 # Rules for pop11_comment ruleset.
 
@@ -379,16 +472,18 @@ def rule46(colorer, s, i):
     return colorer.match_seq(s, i, kind="comment1", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules list for pop11_comment ruleset.
-pop11_comment_rules = [
-	rule45, rule46, ]
+# Rules dict for comment ruleset.
+rulesDict1 = {
+	"*": [rule46,],
+	":": [rule45,],
+}
 
-# Rules dict for pop11 mode.
-rulesDict = {
-	"pop11_comment": pop11_comment_rules,
-	"pop11_list": pop11_list_rules,
-	"pop11_main": pop11_main_rules,
-	"pop11_string": pop11_string_rules,
+# x.rulesDictDict for pop11 mode.
+rulesDictDict = {
+	"pop11_comment": rulesDict1,
+	"pop11_list": rulesDict1,
+	"pop11_main": rulesDict1,
+	"pop11_string": rulesDict1,
 }
 
 # Import dict for pop11 mode.

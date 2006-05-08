@@ -518,14 +518,96 @@ def rule53(colorer, s, i):
 def rule54(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules list for perl_main ruleset.
-perl_main_rules = [
-	rule0, rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9,
-	rule10, rule11, rule12, rule13, rule14, rule15, rule16, rule17, rule18, rule19,
-	rule20, rule21, rule22, rule23, rule24, rule25, rule26, rule27, rule28, rule29,
-	rule30, rule31, rule32, rule33, rule34, rule35, rule36, rule37, rule38, rule39,
-	rule40, rule41, rule42, rule43, rule44, rule45, rule46, rule47, rule48, rule49,
-	rule50, rule51, rule52, rule53, rule54, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"!": [rule37,rule43,],
+	"\"": [rule21,],
+	"#": [rule0,],
+	"$": [rule12,rule13,rule14,rule15,],
+	"%": [rule18,rule20,],
+	"&": [rule36,],
+	"'": [rule22,],
+	"*": [rule47,],
+	"+": [rule44,],
+	"-": [rule45,],
+	"/": [rule26,rule34,rule46,],
+	"0": [rule54,],
+	"1": [rule54,],
+	"2": [rule54,],
+	"3": [rule54,],
+	"4": [rule54,],
+	"5": [rule54,],
+	"6": [rule54,],
+	"7": [rule54,],
+	"8": [rule54,],
+	"9": [rule54,],
+	":": [rule53,],
+	"<": [rule24,rule25,rule39,rule41,],
+	"=": [rule1,rule2,rule3,rule4,rule5,rule6,rule7,rule8,rule9,rule10,rule11,rule42,],
+	">": [rule38,rule40,],
+	"?": [rule52,],
+	"@": [rule17,rule19,rule54,],
+	"A": [rule54,],
+	"B": [rule54,],
+	"C": [rule54,],
+	"D": [rule54,],
+	"E": [rule54,],
+	"F": [rule54,],
+	"G": [rule54,],
+	"H": [rule54,],
+	"I": [rule54,],
+	"J": [rule54,],
+	"K": [rule54,],
+	"L": [rule54,],
+	"M": [rule54,],
+	"N": [rule54,],
+	"O": [rule54,],
+	"P": [rule54,],
+	"Q": [rule54,],
+	"R": [rule54,],
+	"S": [rule54,],
+	"T": [rule54,],
+	"U": [rule54,],
+	"V": [rule54,],
+	"W": [rule54,],
+	"X": [rule54,],
+	"Y": [rule54,],
+	"Z": [rule54,],
+	"\": [rule16,],
+	"^": [rule48,],
+	"_": [rule54,],
+	"`": [rule23,],
+	"a": [rule54,],
+	"b": [rule54,],
+	"c": [rule54,],
+	"d": [rule54,],
+	"e": [rule54,],
+	"f": [rule54,],
+	"g": [rule54,],
+	"h": [rule54,],
+	"i": [rule54,],
+	"j": [rule54,],
+	"k": [rule54,],
+	"l": [rule54,],
+	"m": [rule30,rule31,rule54,],
+	"n": [rule54,],
+	"o": [rule54,],
+	"p": [rule54,],
+	"q": [rule27,rule54,],
+	"r": [rule54,],
+	"s": [rule32,rule33,rule54,],
+	"t": [rule28,rule54,],
+	"u": [rule54,],
+	"v": [rule54,],
+	"w": [rule54,],
+	"x": [rule54,],
+	"y": [rule29,rule54,],
+	"z": [rule54,],
+	"{": [rule51,],
+	"|": [rule35,],
+	"}": [rule50,],
+	"~": [rule49,],
+}
 
 # Rules for perl_pod ruleset.
 
@@ -533,9 +615,10 @@ def rule55(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="label", pattern="="
         at_line_start=True, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-# Rules list for perl_pod ruleset.
-perl_pod_rules = [
-	rule55, ]
+# Rules dict for pod ruleset.
+rulesDict1 = {
+	"=": [rule55,],
+}
 
 # Rules for perl_literal ruleset.
 
@@ -669,12 +752,35 @@ def rule86(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal1", seq=":",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules list for perl_literal ruleset.
-perl_literal_rules = [
-	rule56, rule57, rule58, rule59, rule60, rule61, rule62, rule63, rule64, rule65,
-	rule66, rule67, rule68, rule69, rule70, rule71, rule72, rule73, rule74, rule75,
-	rule76, rule77, rule78, rule79, rule80, rule81, rule82, rule83, rule84, rule85,
-	rule86, ]
+# Rules dict for literal ruleset.
+rulesDict1 = {
+	"!": [rule65,rule71,],
+	"$": [rule56,rule57,rule58,],
+	"%": [rule61,rule62,],
+	"&": [rule64,],
+	"(": [rule69,],
+	")": [rule68,],
+	"*": [rule75,],
+	"+": [rule72,],
+	",": [rule81,],
+	"-": [rule73,],
+	".": [rule80,],
+	"/": [rule74,],
+	":": [rule86,],
+	";": [rule82,],
+	"<": [rule67,],
+	"=": [rule70,],
+	">": [rule66,],
+	"?": [rule85,],
+	"@": [rule59,rule60,],
+	"[": [rule84,],
+	"]": [rule83,],
+	"^": [rule76,],
+	"{": [rule79,],
+	"|": [rule63,],
+	"}": [rule78,],
+	"~": [rule77,],
+}
 
 # Rules for perl_exec ruleset.
 
@@ -717,9 +823,13 @@ def rule94(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword2", pattern="%"
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-# Rules list for perl_exec ruleset.
-perl_exec_rules = [
-	rule87, rule88, rule89, rule90, rule91, rule92, rule93, rule94, ]
+# Rules dict for exec ruleset.
+rulesDict1 = {
+	"#": [rule87,],
+	"$": [rule88,rule89,rule90,],
+	"%": [rule93,rule94,],
+	"@": [rule91,rule92,],
+}
 
 # Rules for perl_variable ruleset.
 
@@ -733,9 +843,11 @@ def rule96(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules list for perl_variable ruleset.
-perl_variable_rules = [
-	rule95, rule96, ]
+# Rules dict for variable ruleset.
+rulesDict1 = {
+	"-": [rule96,],
+	"{": [rule95,],
+}
 
 # Rules for perl_regexp ruleset.
 
@@ -793,19 +905,24 @@ def rule108(colorer, s, i):
         delegate="REGEXP",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules list for perl_regexp ruleset.
-perl_regexp_rules = [
-	rule97, rule98, rule99, rule100, rule101, rule102, rule103, rule104, rule105, rule106,
-	rule107, rule108, ]
+# Rules dict for regexp ruleset.
+rulesDict1 = {
+	"(": [rule106,],
+	")": [rule97,rule98,rule99,],
+	"[": [rule107,],
+	"]": [rule100,rule101,rule102,],
+	"{": [rule108,],
+	"}": [rule103,rule104,rule105,],
+}
 
-# Rules dict for perl mode.
-rulesDict = {
-	"perl_exec": perl_exec_rules,
-	"perl_literal": perl_literal_rules,
-	"perl_main": perl_main_rules,
-	"perl_pod": perl_pod_rules,
-	"perl_regexp": perl_regexp_rules,
-	"perl_variable": perl_variable_rules,
+# x.rulesDictDict for perl mode.
+rulesDictDict = {
+	"perl_exec": rulesDict1,
+	"perl_literal": rulesDict1,
+	"perl_main": rulesDict1,
+	"perl_pod": rulesDict1,
+	"perl_regexp": rulesDict1,
+	"perl_variable": rulesDict1,
 }
 
 # Import dict for perl mode.

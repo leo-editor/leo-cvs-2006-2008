@@ -261,11 +261,87 @@ def rule20(colorer, s, i):
 def rule21(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules list for groovy_main ruleset.
-groovy_main_rules = [
-	rule0, rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9,
-	rule10, rule11, rule12, rule13, rule14, rule15, rule16, rule17, rule18, rule19,
-	rule20, rule21, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"!": [rule9,],
+	"\"": [rule3,],
+	"&": [rule17,],
+	"'": [rule4,],
+	"(": [rule20,],
+	"+": [rule13,],
+	"-": [rule14,rule15,],
+	".": [rule18,],
+	"/": [rule0,rule1,rule2,rule19,],
+	"0": [rule21,],
+	"1": [rule21,],
+	"2": [rule21,],
+	"3": [rule21,],
+	"4": [rule21,],
+	"5": [rule21,],
+	"6": [rule21,],
+	"7": [rule21,],
+	"8": [rule21,],
+	"9": [rule21,],
+	"<": [rule5,rule10,rule12,],
+	"=": [rule6,rule7,],
+	">": [rule11,],
+	"?": [rule16,],
+	"@": [rule21,],
+	"A": [rule21,],
+	"B": [rule21,],
+	"C": [rule21,],
+	"D": [rule21,],
+	"E": [rule21,],
+	"F": [rule21,],
+	"G": [rule21,],
+	"H": [rule21,],
+	"I": [rule21,],
+	"J": [rule21,],
+	"K": [rule21,],
+	"L": [rule21,],
+	"M": [rule21,],
+	"N": [rule21,],
+	"O": [rule21,],
+	"P": [rule21,],
+	"Q": [rule21,],
+	"R": [rule21,],
+	"S": [rule21,],
+	"T": [rule21,],
+	"U": [rule21,],
+	"V": [rule21,],
+	"W": [rule21,],
+	"X": [rule21,],
+	"Y": [rule21,],
+	"Z": [rule21,],
+	"_": [rule21,],
+	"a": [rule21,],
+	"b": [rule21,],
+	"c": [rule21,],
+	"d": [rule21,],
+	"e": [rule21,],
+	"f": [rule21,],
+	"g": [rule21,],
+	"h": [rule21,],
+	"i": [rule21,],
+	"j": [rule21,],
+	"k": [rule21,],
+	"l": [rule21,],
+	"m": [rule21,],
+	"n": [rule21,],
+	"o": [rule21,],
+	"p": [rule21,],
+	"q": [rule21,],
+	"r": [rule21,],
+	"s": [rule21,],
+	"t": [rule21,],
+	"u": [rule21,],
+	"v": [rule21,],
+	"w": [rule21,],
+	"x": [rule21,],
+	"y": [rule21,],
+	"z": [rule21,],
+	"|": [rule8,],
+}
 
 # Rules for groovy_literal ruleset.
 
@@ -279,9 +355,10 @@ def rule23(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword2", pattern="$"
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-# Rules list for groovy_literal ruleset.
-groovy_literal_rules = [
-	rule22, rule23, ]
+# Rules dict for literal ruleset.
+rulesDict1 = {
+	"$": [rule22,rule23,],
+}
 
 # Rules for groovy_groovydoc ruleset.
 
@@ -321,15 +398,19 @@ def rule31(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="label", pattern="@"
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-# Rules list for groovy_groovydoc ruleset.
-groovy_groovydoc_rules = [
-	rule24, rule25, rule26, rule27, rule28, rule29, rule30, rule31, ]
+# Rules dict for groovydoc ruleset.
+rulesDict1 = {
+	"*": [rule25,],
+	"<": [rule26,rule27,rule28,rule29,rule30,],
+	"@": [rule31,],
+	"{": [rule24,],
+}
 
-# Rules dict for groovy mode.
-rulesDict = {
-	"groovy_groovydoc": groovy_groovydoc_rules,
-	"groovy_literal": groovy_literal_rules,
-	"groovy_main": groovy_main_rules,
+# x.rulesDictDict for groovy mode.
+rulesDictDict = {
+	"groovy_groovydoc": rulesDict1,
+	"groovy_literal": rulesDict1,
+	"groovy_main": rulesDict1,
 }
 
 # Import dict for groovy mode.

@@ -129,15 +129,23 @@ def rule26(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="label", seq="\+=[+=]+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules list for rest_main ruleset.
-rest_main_rules = [
-	rule0, rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9,
-	rule10, rule11, rule12, rule13, rule14, rule15, rule16, rule17, rule18, rule19,
-	rule20, rule21, rule22, rule23, rule24, rule25, rule26, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"\"": [rule7,],
+	"#": [rule6,],
+	"-": [rule3,],
+	".": [rule1,rule16,],
+	":": [rule24,],
+	"=": [rule2,],
+	"\": [rule8,rule9,rule10,rule11,rule12,rule13,rule14,rule15,rule18,rule19,rule20,rule21,rule25,rule26,],
+	"_": [rule0,],
+	"`": [rule5,rule17,rule22,rule23,],
+	"~": [rule4,],
+}
 
-# Rules dict for rest mode.
-rulesDict = {
-	"rest_main": rest_main_rules,
+# x.rulesDictDict for rest mode.
+rulesDictDict = {
+	"rest_main": rulesDict1,
 }
 
 # Import dict for rest mode.

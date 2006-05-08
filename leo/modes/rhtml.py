@@ -78,9 +78,11 @@ def rule8(colorer, s, i):
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=True)
 
-# Rules list for rhtml_main ruleset.
-rhtml_main_rules = [
-	rule0, rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"&": [rule8,],
+	"<": [rule0,rule1,rule2,rule3,rule4,rule5,rule6,rule7,],
+}
 
 # Rules for rhtml_tags ruleset.
 
@@ -112,9 +114,13 @@ def rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules list for rhtml_tags ruleset.
-rhtml_tags_rules = [
-	rule9, rule10, rule11, rule12, rule13, ]
+# Rules dict for tags ruleset.
+rulesDict1 = {
+	"\"": [rule11,],
+	"'": [rule12,],
+	"<": [rule9,rule10,],
+	"=": [rule13,],
+}
 
 # Rules for rhtml_tags_literal ruleset.
 
@@ -130,15 +136,16 @@ def rule15(colorer, s, i):
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules list for rhtml_tags_literal ruleset.
-rhtml_tags_literal_rules = [
-	rule14, rule15, ]
+# Rules dict for tags_literal ruleset.
+rulesDict1 = {
+	"<": [rule14,rule15,],
+}
 
-# Rules dict for rhtml mode.
-rulesDict = {
-	"rhtml_main": rhtml_main_rules,
-	"rhtml_tags": rhtml_tags_rules,
-	"rhtml_tags_literal": rhtml_tags_literal_rules,
+# x.rulesDictDict for rhtml mode.
+rulesDictDict = {
+	"rhtml_main": rulesDict1,
+	"rhtml_tags": rulesDict1,
+	"rhtml_tags_literal": rulesDict1,
 }
 
 # Import dict for rhtml mode.

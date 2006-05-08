@@ -68,9 +68,11 @@ def rule5(colorer, s, i):
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=True)
 
-# Rules list for html_main ruleset.
-html_main_rules = [
-	rule0, rule1, rule2, rule3, rule4, rule5, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"&": [rule5,],
+	"<": [rule0,rule1,rule2,rule3,rule4,],
+}
 
 # Rules for html_tags ruleset.
 
@@ -90,9 +92,12 @@ def rule8(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules list for html_tags ruleset.
-html_tags_rules = [
-	rule6, rule7, rule8, ]
+# Rules dict for tags ruleset.
+rulesDict1 = {
+	"\"": [rule6,],
+	"'": [rule7,],
+	"=": [rule8,],
+}
 
 # Rules for html_javascript ruleset.
 
@@ -104,9 +109,11 @@ def rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq="SRC=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="BACK_TO_HTML")
 
-# Rules list for html_javascript ruleset.
-html_javascript_rules = [
-	rule9, rule10, ]
+# Rules dict for javascript ruleset.
+rulesDict1 = {
+	">": [rule9,],
+	"S": [rule10,],
+}
 
 # Rules for html_back_to_html ruleset.
 
@@ -114,9 +121,10 @@ def rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="html::MAIN")
 
-# Rules list for html_back_to_html ruleset.
-html_back_to_html_rules = [
-	rule11, ]
+# Rules dict for back_to_html ruleset.
+rulesDict1 = {
+	">": [rule11,],
+}
 
 # Rules for html_css ruleset.
 
@@ -124,17 +132,18 @@ def rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="css::MAIN")
 
-# Rules list for html_css ruleset.
-html_css_rules = [
-	rule12, ]
+# Rules dict for css ruleset.
+rulesDict1 = {
+	">": [rule12,],
+}
 
-# Rules dict for html mode.
-rulesDict = {
-	"html_back_to_html": html_back_to_html_rules,
-	"html_css": html_css_rules,
-	"html_javascript": html_javascript_rules,
-	"html_main": html_main_rules,
-	"html_tags": html_tags_rules,
+# x.rulesDictDict for html mode.
+rulesDictDict = {
+	"html_back_to_html": rulesDict1,
+	"html_css": rulesDict1,
+	"html_javascript": rulesDict1,
+	"html_main": rulesDict1,
+	"html_tags": rulesDict1,
 }
 
 # Import dict for html mode.

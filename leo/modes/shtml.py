@@ -84,9 +84,11 @@ def rule6(colorer, s, i):
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=True)
 
-# Rules list for shtml_main ruleset.
-shtml_main_rules = [
-	rule0, rule1, rule2, rule3, rule4, rule5, rule6, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"&": [rule6,],
+	"<": [rule0,rule1,rule2,rule3,rule4,rule5,],
+}
 
 # Rules for shtml_tags ruleset.
 
@@ -106,9 +108,12 @@ def rule9(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules list for shtml_tags ruleset.
-shtml_tags_rules = [
-	rule7, rule8, rule9, ]
+# Rules dict for tags ruleset.
+rulesDict1 = {
+	"\"": [rule7,],
+	"'": [rule8,],
+	"=": [rule9,],
+}
 
 # Rules for shtml_ssi ruleset.
 
@@ -125,9 +130,75 @@ def rule11(colorer, s, i):
 def rule12(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules list for shtml_ssi ruleset.
-shtml_ssi_rules = [
-	rule10, rule11, rule12, ]
+# Rules dict for ssi ruleset.
+rulesDict1 = {
+	"\"": [rule10,],
+	"0": [rule12,],
+	"1": [rule12,],
+	"2": [rule12,],
+	"3": [rule12,],
+	"4": [rule12,],
+	"5": [rule12,],
+	"6": [rule12,],
+	"7": [rule12,],
+	"8": [rule12,],
+	"9": [rule12,],
+	"=": [rule11,],
+	"@": [rule12,],
+	"A": [rule12,],
+	"B": [rule12,],
+	"C": [rule12,],
+	"D": [rule12,],
+	"E": [rule12,],
+	"F": [rule12,],
+	"G": [rule12,],
+	"H": [rule12,],
+	"I": [rule12,],
+	"J": [rule12,],
+	"K": [rule12,],
+	"L": [rule12,],
+	"M": [rule12,],
+	"N": [rule12,],
+	"O": [rule12,],
+	"P": [rule12,],
+	"Q": [rule12,],
+	"R": [rule12,],
+	"S": [rule12,],
+	"T": [rule12,],
+	"U": [rule12,],
+	"V": [rule12,],
+	"W": [rule12,],
+	"X": [rule12,],
+	"Y": [rule12,],
+	"Z": [rule12,],
+	"_": [rule12,],
+	"a": [rule12,],
+	"b": [rule12,],
+	"c": [rule12,],
+	"d": [rule12,],
+	"e": [rule12,],
+	"f": [rule12,],
+	"g": [rule12,],
+	"h": [rule12,],
+	"i": [rule12,],
+	"j": [rule12,],
+	"k": [rule12,],
+	"l": [rule12,],
+	"m": [rule12,],
+	"n": [rule12,],
+	"o": [rule12,],
+	"p": [rule12,],
+	"q": [rule12,],
+	"r": [rule12,],
+	"s": [rule12,],
+	"t": [rule12,],
+	"u": [rule12,],
+	"v": [rule12,],
+	"w": [rule12,],
+	"x": [rule12,],
+	"y": [rule12,],
+	"z": [rule12,],
+}
 
 # Rules for shtml_ssi_expression ruleset.
 
@@ -167,16 +238,23 @@ def rule21(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="||",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules list for shtml_ssi_expression ruleset.
-shtml_ssi_expression_rules = [
-	rule13, rule14, rule15, rule16, rule17, rule18, rule19, rule20, rule21, ]
+# Rules dict for ssi_expression ruleset.
+rulesDict1 = {
+	"!": [rule15,],
+	"$": [rule13,],
+	"&": [rule20,],
+	"<": [rule16,rule17,],
+	"=": [rule14,],
+	">": [rule18,rule19,],
+	"|": [rule21,],
+}
 
-# Rules dict for shtml mode.
-rulesDict = {
-	"shtml_main": shtml_main_rules,
-	"shtml_ssi": shtml_ssi_rules,
-	"shtml_ssi_expression": shtml_ssi_expression_rules,
-	"shtml_tags": shtml_tags_rules,
+# x.rulesDictDict for shtml mode.
+rulesDictDict = {
+	"shtml_main": rulesDict1,
+	"shtml_ssi": rulesDict1,
+	"shtml_ssi_expression": rulesDict1,
+	"shtml_tags": rulesDict1,
 }
 
 # Import dict for shtml mode.

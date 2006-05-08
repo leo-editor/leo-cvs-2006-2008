@@ -295,13 +295,100 @@ def rule41(colorer, s, i):
 def rule42(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules list for csharp_main ruleset.
-csharp_main_rules = [
-	rule0, rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9,
-	rule10, rule11, rule12, rule13, rule14, rule15, rule16, rule17, rule18, rule19,
-	rule20, rule21, rule22, rule23, rule24, rule25, rule26, rule27, rule28, rule29,
-	rule30, rule31, rule32, rule33, rule34, rule35, rule36, rule37, rule38, rule39,
-	rule40, rule41, rule42, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"!": [rule18,rule25,],
+	"\"": [rule4,],
+	"#": [rule6,rule7,rule8,rule9,rule10,rule11,rule12,rule13,rule14,rule15,rule16,],
+	"%": [rule39,],
+	"&": [rule38,],
+	"'": [rule5,],
+	"(": [rule41,],
+	"*": [rule33,],
+	"+": [rule28,],
+	",": [rule23,],
+	"-": [rule29,],
+	".": [rule24,],
+	"/": [rule0,rule1,rule2,rule34,],
+	"0": [rule42,],
+	"1": [rule42,],
+	"2": [rule42,],
+	"3": [rule42,],
+	"4": [rule42,],
+	"5": [rule42,],
+	"6": [rule42,],
+	"7": [rule42,],
+	"8": [rule42,],
+	"9": [rule42,],
+	":": [rule19,],
+	";": [rule20,],
+	"<": [rule31,],
+	"=": [rule32,],
+	">": [rule30,],
+	"?": [rule40,],
+	"@": [rule3,rule42,],
+	"A": [rule42,],
+	"B": [rule42,],
+	"C": [rule42,],
+	"D": [rule42,],
+	"E": [rule42,],
+	"F": [rule42,],
+	"G": [rule42,],
+	"H": [rule42,],
+	"I": [rule42,],
+	"J": [rule42,],
+	"K": [rule42,],
+	"L": [rule42,],
+	"M": [rule42,],
+	"N": [rule42,],
+	"O": [rule42,],
+	"P": [rule42,],
+	"Q": [rule42,],
+	"R": [rule42,],
+	"S": [rule42,],
+	"T": [rule42,],
+	"U": [rule42,],
+	"V": [rule42,],
+	"W": [rule42,],
+	"X": [rule42,],
+	"Y": [rule42,],
+	"Z": [rule42,],
+	"[": [rule26,],
+	"\": [rule35,],
+	"]": [rule27,],
+	"^": [rule36,],
+	"_": [rule42,],
+	"a": [rule42,],
+	"b": [rule42,],
+	"c": [rule42,],
+	"d": [rule42,],
+	"e": [rule42,],
+	"f": [rule42,],
+	"g": [rule42,],
+	"h": [rule42,],
+	"i": [rule42,],
+	"j": [rule42,],
+	"k": [rule42,],
+	"l": [rule42,],
+	"m": [rule42,],
+	"n": [rule42,],
+	"o": [rule42,],
+	"p": [rule42,],
+	"q": [rule42,],
+	"r": [rule42,],
+	"s": [rule42,],
+	"t": [rule42,],
+	"u": [rule42,],
+	"v": [rule42,],
+	"w": [rule42,],
+	"x": [rule42,],
+	"y": [rule42,],
+	"z": [rule42,],
+	"{": [rule21,],
+	"|": [rule37,],
+	"}": [rule22,],
+	"~": [rule17,],
+}
 
 # Rules for csharp_doc_comment ruleset.
 
@@ -317,14 +404,15 @@ def rule44(colorer, s, i):
         delegate="xml::TAGS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules list for csharp_doc_comment ruleset.
-csharp_doc_comment_rules = [
-	rule43, rule44, ]
+# Rules dict for doc_comment ruleset.
+rulesDict1 = {
+	"<": [rule43,rule44,],
+}
 
-# Rules dict for csharp mode.
-rulesDict = {
-	"csharp_doc_comment": csharp_doc_comment_rules,
-	"csharp_main": csharp_main_rules,
+# x.rulesDictDict for csharp mode.
+rulesDictDict = {
+	"csharp_doc_comment": rulesDict1,
+	"csharp_main": rulesDict1,
 }
 
 # Import dict for csharp mode.

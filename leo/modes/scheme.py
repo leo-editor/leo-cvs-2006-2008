@@ -266,14 +266,81 @@ def rule9(colorer, s, i):
 def rule10(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules list for scheme_main ruleset.
-scheme_main_rules = [
-	rule0, rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9,
-	rule10, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"\"": [rule9,],
+	"#": [rule0,rule3,rule4,rule5,rule6,rule7,],
+	"'": [rule1,rule2,],
+	"0": [rule10,],
+	"1": [rule10,],
+	"2": [rule10,],
+	"3": [rule10,],
+	"4": [rule10,],
+	"5": [rule10,],
+	"6": [rule10,],
+	"7": [rule10,],
+	"8": [rule10,],
+	"9": [rule10,],
+	";": [rule8,],
+	"@": [rule10,],
+	"A": [rule10,],
+	"B": [rule10,],
+	"C": [rule10,],
+	"D": [rule10,],
+	"E": [rule10,],
+	"F": [rule10,],
+	"G": [rule10,],
+	"H": [rule10,],
+	"I": [rule10,],
+	"J": [rule10,],
+	"K": [rule10,],
+	"L": [rule10,],
+	"M": [rule10,],
+	"N": [rule10,],
+	"O": [rule10,],
+	"P": [rule10,],
+	"Q": [rule10,],
+	"R": [rule10,],
+	"S": [rule10,],
+	"T": [rule10,],
+	"U": [rule10,],
+	"V": [rule10,],
+	"W": [rule10,],
+	"X": [rule10,],
+	"Y": [rule10,],
+	"Z": [rule10,],
+	"_": [rule10,],
+	"a": [rule10,],
+	"b": [rule10,],
+	"c": [rule10,],
+	"d": [rule10,],
+	"e": [rule10,],
+	"f": [rule10,],
+	"g": [rule10,],
+	"h": [rule10,],
+	"i": [rule10,],
+	"j": [rule10,],
+	"k": [rule10,],
+	"l": [rule10,],
+	"m": [rule10,],
+	"n": [rule10,],
+	"o": [rule10,],
+	"p": [rule10,],
+	"q": [rule10,],
+	"r": [rule10,],
+	"s": [rule10,],
+	"t": [rule10,],
+	"u": [rule10,],
+	"v": [rule10,],
+	"w": [rule10,],
+	"x": [rule10,],
+	"y": [rule10,],
+	"z": [rule10,],
+}
 
-# Rules dict for scheme mode.
-rulesDict = {
-	"scheme_main": scheme_main_rules,
+# x.rulesDictDict for scheme mode.
+rulesDictDict = {
+	"scheme_main": rulesDict1,
 }
 
 # Import dict for scheme mode.

@@ -103,10 +103,78 @@ def rule12(colorer, s, i):
 def rule13(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules list for factor_main ruleset.
-factor_main_rules = [
-	rule0, rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9,
-	rule10, rule11, rule12, rule13, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"!": [rule1,],
+	"\"": [rule12,],
+	"#": [rule0,],
+	"(": [rule11,],
+	"0": [rule13,],
+	"1": [rule13,],
+	"2": [rule13,],
+	"3": [rule13,],
+	"4": [rule13,],
+	"5": [rule13,],
+	"6": [rule13,],
+	"7": [rule13,],
+	"8": [rule13,],
+	"9": [rule13,],
+	":": [rule2,],
+	"@": [rule13,],
+	"A": [rule13,],
+	"B": [rule8,rule13,],
+	"C": [rule7,rule13,],
+	"D": [rule5,rule13,],
+	"E": [rule13,],
+	"F": [rule13,],
+	"G": [rule13,],
+	"H": [rule10,rule13,],
+	"I": [rule3,rule13,],
+	"J": [rule13,],
+	"K": [rule13,],
+	"L": [rule13,],
+	"M": [rule13,],
+	"N": [rule13,],
+	"O": [rule9,rule13,],
+	"P": [rule6,rule13,],
+	"Q": [rule13,],
+	"R": [rule13,],
+	"S": [rule13,],
+	"T": [rule13,],
+	"U": [rule4,rule13,],
+	"V": [rule13,],
+	"W": [rule13,],
+	"X": [rule13,],
+	"Y": [rule13,],
+	"Z": [rule13,],
+	"_": [rule13,],
+	"a": [rule13,],
+	"b": [rule13,],
+	"c": [rule13,],
+	"d": [rule13,],
+	"e": [rule13,],
+	"f": [rule13,],
+	"g": [rule13,],
+	"h": [rule13,],
+	"i": [rule13,],
+	"j": [rule13,],
+	"k": [rule13,],
+	"l": [rule13,],
+	"m": [rule13,],
+	"n": [rule13,],
+	"o": [rule13,],
+	"p": [rule13,],
+	"q": [rule13,],
+	"r": [rule13,],
+	"s": [rule13,],
+	"t": [rule13,],
+	"u": [rule13,],
+	"v": [rule13,],
+	"w": [rule13,],
+	"x": [rule13,],
+	"y": [rule13,],
+	"z": [rule13,],
+}
 
 # Rules for factor_stack_effect ruleset.
 
@@ -114,14 +182,15 @@ def rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="comment3", seq="--",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules list for factor_stack_effect ruleset.
-factor_stack_effect_rules = [
-	rule14, ]
+# Rules dict for stack_effect ruleset.
+rulesDict1 = {
+	"-": [rule14,],
+}
 
-# Rules dict for factor mode.
-rulesDict = {
-	"factor_main": factor_main_rules,
-	"factor_stack_effect": factor_stack_effect_rules,
+# x.rulesDictDict for factor mode.
+rulesDictDict = {
+	"factor_main": rulesDict1,
+	"factor_stack_effect": rulesDict1,
 }
 
 # Import dict for factor mode.

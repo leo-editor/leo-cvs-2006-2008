@@ -33,13 +33,16 @@ def rule4(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword1", pattern="\"
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-# Rules list for rtf_main ruleset.
-rtf_main_rules = [
-	rule0, rule1, rule2, rule3, rule4, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"\": [rule2,rule3,rule4,],
+	"{": [rule0,],
+	"}": [rule1,],
+}
 
-# Rules dict for rtf mode.
-rulesDict = {
-	"rtf_main": rtf_main_rules,
+# x.rulesDictDict for rtf mode.
+rulesDictDict = {
+	"rtf_main": rulesDict1,
 }
 
 # Import dict for rtf mode.

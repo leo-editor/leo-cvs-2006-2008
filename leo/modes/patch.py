@@ -63,14 +63,21 @@ def rule9(colorer, s, i):
         at_line_start=True, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-# Rules list for patch_main ruleset.
-patch_main_rules = [
-	rule0, rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9,
-]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"!": [rule7,],
+	"*": [rule9,],
+	"+": [rule0,rule3,],
+	"-": [rule1,rule5,],
+	"<": [rule6,],
+	">": [rule4,],
+	"@": [rule8,],
+	"I": [rule2,],
+}
 
-# Rules dict for patch mode.
-rulesDict = {
-	"patch_main": patch_main_rules,
+# x.rulesDictDict for patch mode.
+rulesDictDict = {
+	"patch_main": rulesDict1,
 }
 
 # Import dict for patch mode.

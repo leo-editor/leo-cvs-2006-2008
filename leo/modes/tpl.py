@@ -65,9 +65,12 @@ def rule5(colorer, s, i):
         delegate="TPL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules list for tpl_main ruleset.
-tpl_main_rules = [
-	rule0, rule1, rule2, rule3, rule4, rule5, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"&": [rule4,],
+	"<": [rule0,rule1,rule2,rule3,],
+	"{": [rule5,],
+}
 
 # Rules for tpl_tpl ruleset.
 
@@ -90,9 +93,76 @@ def rule8(colorer, s, i):
 def rule9(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules list for tpl_tpl ruleset.
-tpl_tpl_rules = [
-	rule6, rule7, rule8, rule9, ]
+# Rules dict for tpl ruleset.
+rulesDict1 = {
+	"\"": [rule6,],
+	"'": [rule7,],
+	"*": [rule8,],
+	"0": [rule9,],
+	"1": [rule9,],
+	"2": [rule9,],
+	"3": [rule9,],
+	"4": [rule9,],
+	"5": [rule9,],
+	"6": [rule9,],
+	"7": [rule9,],
+	"8": [rule9,],
+	"9": [rule9,],
+	"@": [rule9,],
+	"A": [rule9,],
+	"B": [rule9,],
+	"C": [rule9,],
+	"D": [rule9,],
+	"E": [rule9,],
+	"F": [rule9,],
+	"G": [rule9,],
+	"H": [rule9,],
+	"I": [rule9,],
+	"J": [rule9,],
+	"K": [rule9,],
+	"L": [rule9,],
+	"M": [rule9,],
+	"N": [rule9,],
+	"O": [rule9,],
+	"P": [rule9,],
+	"Q": [rule9,],
+	"R": [rule9,],
+	"S": [rule9,],
+	"T": [rule9,],
+	"U": [rule9,],
+	"V": [rule9,],
+	"W": [rule9,],
+	"X": [rule9,],
+	"Y": [rule9,],
+	"Z": [rule9,],
+	"_": [rule9,],
+	"a": [rule9,],
+	"b": [rule9,],
+	"c": [rule9,],
+	"d": [rule9,],
+	"e": [rule9,],
+	"f": [rule9,],
+	"g": [rule9,],
+	"h": [rule9,],
+	"i": [rule9,],
+	"j": [rule9,],
+	"k": [rule9,],
+	"l": [rule9,],
+	"m": [rule9,],
+	"n": [rule9,],
+	"o": [rule9,],
+	"p": [rule9,],
+	"q": [rule9,],
+	"r": [rule9,],
+	"s": [rule9,],
+	"t": [rule9,],
+	"u": [rule9,],
+	"v": [rule9,],
+	"w": [rule9,],
+	"x": [rule9,],
+	"y": [rule9,],
+	"z": [rule9,],
+}
 
 # Rules for tpl_tags ruleset.
 
@@ -112,15 +182,18 @@ def rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules list for tpl_tags ruleset.
-tpl_tags_rules = [
-	rule10, rule11, rule12, ]
+# Rules dict for tags ruleset.
+rulesDict1 = {
+	"\"": [rule10,],
+	"'": [rule11,],
+	"=": [rule12,],
+}
 
-# Rules dict for tpl mode.
-rulesDict = {
-	"tpl_main": tpl_main_rules,
-	"tpl_tags": tpl_tags_rules,
-	"tpl_tpl": tpl_tpl_rules,
+# x.rulesDictDict for tpl mode.
+rulesDictDict = {
+	"tpl_main": rulesDict1,
+	"tpl_tags": rulesDict1,
+	"tpl_tpl": rulesDict1,
 }
 
 # Import dict for tpl mode.

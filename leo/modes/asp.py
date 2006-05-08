@@ -134,10 +134,11 @@ def rule16(colorer, s, i):
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=True)
 
-# Rules list for asp_main ruleset.
-asp_main_rules = [
-	rule0, rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9,
-	rule10, rule11, rule12, rule13, rule14, rule15, rule16, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"&": [rule16,],
+	"<": [rule0,rule1,rule2,rule3,rule4,rule5,rule6,rule7,rule8,rule9,rule10,rule11,rule12,rule13,rule14,rule15,],
+}
 
 # Rules for asp_aspvb ruleset.
 
@@ -225,10 +226,11 @@ def rule30(colorer, s, i):
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=True)
 
-# Rules list for asp_aspvb ruleset.
-asp_aspvb_rules = [
-	rule17, rule18, rule19, rule20, rule21, rule22, rule23, rule24, rule25, rule26,
-	rule27, rule28, rule29, rule30, ]
+# Rules dict for aspvb ruleset.
+rulesDict1 = {
+	"&": [rule30,],
+	"<": [rule17,rule18,rule19,rule20,rule21,rule22,rule23,rule24,rule25,rule26,rule27,rule28,rule29,],
+}
 
 # Rules for asp_aspjs ruleset.
 
@@ -316,10 +318,11 @@ def rule44(colorer, s, i):
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=True)
 
-# Rules list for asp_aspjs ruleset.
-asp_aspjs_rules = [
-	rule31, rule32, rule33, rule34, rule35, rule36, rule37, rule38, rule39, rule40,
-	rule41, rule42, rule43, rule44, ]
+# Rules dict for aspjs ruleset.
+rulesDict1 = {
+	"&": [rule44,],
+	"<": [rule31,rule32,rule33,rule34,rule35,rule36,rule37,rule38,rule39,rule40,rule41,rule42,rule43,],
+}
 
 # Rules for asp_asppl ruleset.
 
@@ -407,10 +410,11 @@ def rule58(colorer, s, i):
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=True)
 
-# Rules list for asp_asppl ruleset.
-asp_asppl_rules = [
-	rule45, rule46, rule47, rule48, rule49, rule50, rule51, rule52, rule53, rule54,
-	rule55, rule56, rule57, rule58, ]
+# Rules dict for asppl ruleset.
+rulesDict1 = {
+	"&": [rule58,],
+	"<": [rule45,rule46,rule47,rule48,rule49,rule50,rule51,rule52,rule53,rule54,rule55,rule56,rule57,],
+}
 
 # Rules for asp_aspvb_tags ruleset.
 
@@ -420,9 +424,10 @@ def rule59(colorer, s, i):
         delegate="vbscript::MAIN",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules list for asp_aspvb_tags ruleset.
-asp_aspvb_tags_rules = [
-	rule59, ]
+# Rules dict for aspvb_tags ruleset.
+rulesDict1 = {
+	"<": [rule59,],
+}
 
 # Rules for asp_aspjs_tags ruleset.
 
@@ -432,9 +437,10 @@ def rule60(colorer, s, i):
         delegate="javascript::MAIN",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules list for asp_aspjs_tags ruleset.
-asp_aspjs_tags_rules = [
-	rule60, ]
+# Rules dict for aspjs_tags ruleset.
+rulesDict1 = {
+	"<": [rule60,],
+}
 
 # Rules for asp_asppl_tags ruleset.
 
@@ -444,19 +450,20 @@ def rule61(colorer, s, i):
         delegate="perl::MAIN",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules list for asp_asppl_tags ruleset.
-asp_asppl_tags_rules = [
-	rule61, ]
+# Rules dict for asppl_tags ruleset.
+rulesDict1 = {
+	"<": [rule61,],
+}
 
-# Rules dict for asp mode.
-rulesDict = {
-	"asp_aspjs": asp_aspjs_rules,
-	"asp_aspjs_tags": asp_aspjs_tags_rules,
-	"asp_asppl": asp_asppl_rules,
-	"asp_asppl_tags": asp_asppl_tags_rules,
-	"asp_aspvb": asp_aspvb_rules,
-	"asp_aspvb_tags": asp_aspvb_tags_rules,
-	"asp_main": asp_main_rules,
+# x.rulesDictDict for asp mode.
+rulesDictDict = {
+	"asp_aspjs": rulesDict1,
+	"asp_aspjs_tags": rulesDict1,
+	"asp_asppl": rulesDict1,
+	"asp_asppl_tags": rulesDict1,
+	"asp_aspvb": rulesDict1,
+	"asp_aspvb_tags": rulesDict1,
+	"asp_main": rulesDict1,
 }
 
 # Import dict for asp mode.

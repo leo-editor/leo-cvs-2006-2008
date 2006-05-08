@@ -167,14 +167,85 @@ def rule17(colorer, s, i):
 def rule18(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules list for dsssl_main ruleset.
-dsssl_main_rules = [
-	rule0, rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9,
-	rule10, rule11, rule12, rule13, rule14, rule15, rule16, rule17, rule18, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"\"": [rule4,],
+	"#": [rule7,],
+	"$": [rule5,],
+	"%": [rule6,],
+	"&": [rule17,],
+	"'": [rule2,rule3,],
+	"0": [rule18,],
+	"1": [rule18,],
+	"2": [rule18,],
+	"3": [rule18,],
+	"4": [rule18,],
+	"5": [rule18,],
+	"6": [rule18,],
+	"7": [rule18,],
+	"8": [rule18,],
+	"9": [rule18,],
+	";": [rule0,],
+	"<": [rule1,rule8,rule9,rule10,rule11,rule12,rule13,rule14,rule15,rule16,],
+	"@": [rule18,],
+	"A": [rule18,],
+	"B": [rule18,],
+	"C": [rule18,],
+	"D": [rule18,],
+	"E": [rule18,],
+	"F": [rule18,],
+	"G": [rule18,],
+	"H": [rule18,],
+	"I": [rule18,],
+	"J": [rule18,],
+	"K": [rule18,],
+	"L": [rule18,],
+	"M": [rule18,],
+	"N": [rule18,],
+	"O": [rule18,],
+	"P": [rule18,],
+	"Q": [rule18,],
+	"R": [rule18,],
+	"S": [rule18,],
+	"T": [rule18,],
+	"U": [rule18,],
+	"V": [rule18,],
+	"W": [rule18,],
+	"X": [rule18,],
+	"Y": [rule18,],
+	"Z": [rule18,],
+	"_": [rule18,],
+	"a": [rule18,],
+	"b": [rule18,],
+	"c": [rule18,],
+	"d": [rule18,],
+	"e": [rule18,],
+	"f": [rule18,],
+	"g": [rule18,],
+	"h": [rule18,],
+	"i": [rule18,],
+	"j": [rule18,],
+	"k": [rule18,],
+	"l": [rule18,],
+	"m": [rule18,],
+	"n": [rule18,],
+	"o": [rule18,],
+	"p": [rule18,],
+	"q": [rule18,],
+	"r": [rule18,],
+	"s": [rule18,],
+	"t": [rule18,],
+	"u": [rule18,],
+	"v": [rule18,],
+	"w": [rule18,],
+	"x": [rule18,],
+	"y": [rule18,],
+	"z": [rule18,],
+}
 
-# Rules dict for dsssl mode.
-rulesDict = {
-	"dsssl_main": dsssl_main_rules,
+# x.rulesDictDict for dsssl mode.
+rulesDictDict = {
+	"dsssl_main": rulesDict1,
 }
 
 # Import dict for dsssl mode.

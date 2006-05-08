@@ -289,13 +289,95 @@ def rule43(colorer, s, i):
 def rule44(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules list for prolog_main ruleset.
-prolog_main_rules = [
-	rule0, rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9,
-	rule10, rule11, rule12, rule13, rule14, rule15, rule16, rule17, rule18, rule19,
-	rule20, rule21, rule22, rule23, rule24, rule25, rule26, rule27, rule28, rule29,
-	rule30, rule31, rule32, rule33, rule34, rule35, rule36, rule37, rule38, rule39,
-	rule40, rule41, rule42, rule43, rule44, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"\"": [rule3,],
+	"%": [rule0,],
+	"'": [rule2,],
+	"(": [rule40,],
+	")": [rule41,],
+	"*": [rule33,rule38,],
+	"+": [rule24,],
+	",": [rule10,],
+	"-": [rule5,rule9,rule25,],
+	".": [rule39,],
+	"/": [rule1,rule26,rule28,rule36,],
+	"0": [rule44,],
+	"1": [rule44,],
+	"2": [rule44,],
+	"3": [rule44,],
+	"4": [rule44,],
+	"5": [rule44,],
+	"6": [rule44,],
+	"7": [rule44,],
+	"8": [rule44,],
+	"9": [rule44,],
+	":": [rule6,],
+	";": [rule8,],
+	"<": [rule29,rule30,],
+	"=": [rule12,rule19,rule20,rule21,rule22,rule37,],
+	">": [rule23,rule31,rule32,],
+	"?": [rule7,],
+	"@": [rule15,rule16,rule17,rule18,rule44,],
+	"A": [rule44,],
+	"B": [rule44,],
+	"C": [rule44,],
+	"D": [rule44,],
+	"E": [rule44,],
+	"F": [rule44,],
+	"G": [rule44,],
+	"H": [rule44,],
+	"I": [rule44,],
+	"J": [rule44,],
+	"K": [rule44,],
+	"L": [rule44,],
+	"M": [rule44,],
+	"N": [rule44,],
+	"O": [rule44,],
+	"P": [rule44,],
+	"Q": [rule44,],
+	"R": [rule44,],
+	"S": [rule44,],
+	"T": [rule44,],
+	"U": [rule44,],
+	"V": [rule44,],
+	"W": [rule44,],
+	"X": [rule44,],
+	"Y": [rule44,],
+	"Z": [rule44,],
+	"[": [rule4,],
+	"\": [rule11,rule13,rule14,rule27,rule35,],
+	"^": [rule34,],
+	"_": [rule44,],
+	"a": [rule44,],
+	"b": [rule44,],
+	"c": [rule44,],
+	"d": [rule44,],
+	"e": [rule44,],
+	"f": [rule44,],
+	"g": [rule44,],
+	"h": [rule44,],
+	"i": [rule44,],
+	"j": [rule44,],
+	"k": [rule44,],
+	"l": [rule44,],
+	"m": [rule44,],
+	"n": [rule44,],
+	"o": [rule44,],
+	"p": [rule44,],
+	"q": [rule44,],
+	"r": [rule44,],
+	"s": [rule44,],
+	"t": [rule44,],
+	"u": [rule44,],
+	"v": [rule44,],
+	"w": [rule44,],
+	"x": [rule44,],
+	"y": [rule44,],
+	"z": [rule44,],
+	"{": [rule42,],
+	"}": [rule43,],
+}
 
 # Rules for prolog_list ruleset.
 
@@ -305,14 +387,15 @@ def rule45(colorer, s, i):
         delegate="LIST",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-# Rules list for prolog_list ruleset.
-prolog_list_rules = [
-	rule45, ]
+# Rules dict for list ruleset.
+rulesDict1 = {
+	"[": [rule45,],
+}
 
-# Rules dict for prolog mode.
-rulesDict = {
-	"prolog_list": prolog_list_rules,
-	"prolog_main": prolog_main_rules,
+# x.rulesDictDict for prolog mode.
+rulesDictDict = {
+	"prolog_list": rulesDict1,
+	"prolog_main": rulesDict1,
 }
 
 # Import dict for prolog mode.

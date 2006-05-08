@@ -232,13 +232,78 @@ def rule0(colorer, s, i):
 def rule1(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules list for squidconf_main ruleset.
-squidconf_main_rules = [
-	rule0, rule1, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"#": [rule0,],
+	"0": [rule1,],
+	"1": [rule1,],
+	"2": [rule1,],
+	"3": [rule1,],
+	"4": [rule1,],
+	"5": [rule1,],
+	"6": [rule1,],
+	"7": [rule1,],
+	"8": [rule1,],
+	"9": [rule1,],
+	"@": [rule1,],
+	"A": [rule1,],
+	"B": [rule1,],
+	"C": [rule1,],
+	"D": [rule1,],
+	"E": [rule1,],
+	"F": [rule1,],
+	"G": [rule1,],
+	"H": [rule1,],
+	"I": [rule1,],
+	"J": [rule1,],
+	"K": [rule1,],
+	"L": [rule1,],
+	"M": [rule1,],
+	"N": [rule1,],
+	"O": [rule1,],
+	"P": [rule1,],
+	"Q": [rule1,],
+	"R": [rule1,],
+	"S": [rule1,],
+	"T": [rule1,],
+	"U": [rule1,],
+	"V": [rule1,],
+	"W": [rule1,],
+	"X": [rule1,],
+	"Y": [rule1,],
+	"Z": [rule1,],
+	"_": [rule1,],
+	"a": [rule1,],
+	"b": [rule1,],
+	"c": [rule1,],
+	"d": [rule1,],
+	"e": [rule1,],
+	"f": [rule1,],
+	"g": [rule1,],
+	"h": [rule1,],
+	"i": [rule1,],
+	"j": [rule1,],
+	"k": [rule1,],
+	"l": [rule1,],
+	"m": [rule1,],
+	"n": [rule1,],
+	"o": [rule1,],
+	"p": [rule1,],
+	"q": [rule1,],
+	"r": [rule1,],
+	"s": [rule1,],
+	"t": [rule1,],
+	"u": [rule1,],
+	"v": [rule1,],
+	"w": [rule1,],
+	"x": [rule1,],
+	"y": [rule1,],
+	"z": [rule1,],
+}
 
-# Rules dict for squidconf mode.
-rulesDict = {
-	"squidconf_main": squidconf_main_rules,
+# x.rulesDictDict for squidconf mode.
+rulesDictDict = {
+	"squidconf_main": rulesDict1,
 }
 
 # Import dict for squidconf mode.
