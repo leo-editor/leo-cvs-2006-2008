@@ -129,11 +129,9 @@ __version__ = '0.20'
 #@@nocolor
 #@+at
 # 
-# - Strings, including triple strings, are not working.
+# * Don't call rules unless the first character matches the rule.
 # 
-# - Harsh red used for comments.
-# 
-# ** Colorizing long text is too slow.
+# - Triple strings are not working.
 # 
 # Use all attributes in all rule matchers.
 # 
@@ -471,15 +469,20 @@ class baseColorizer:
     #@nonl
     #@-node:ekr.20050602150957:__init__
     #@+node:ekr.20060504083828:addLeoRules
-    def addLeoRules (self,theList):
+    def addLeoRules (self,theDict):
     
         '''Prepend Leo-specific rules to theList.'''
     
         # Order does not matter here.
-        for rule in (
-            match_at_color, match_at_nocolor, match_doc_part, match_section_ref
+        for ch, rule in (
+            ('@',match_at_color),
+            ('@',match_at_nocolor),
+            ('@',match_doc_part),
+            ('<<',match_section_ref),
         ):
+            theList = theDict.get(ch,[])
             theList.insert(0,rule)
+            theDict [ch] = theList
     #@nonl
     #@-node:ekr.20060504083828:addLeoRules
     #@+node:ekr.20060504081338:init_keywords
@@ -591,47 +594,111 @@ class baseColorizer:
                 self.keywordsDict = d = mode.keywordsDictDict.get(self.rulesetName,{})
                 self.init_keywords(d)
                 # g.trace(len(self.keywordsDict.keys()))
-                self.rules = mode.rulesDict.get(self.rulesetName)
-                self.addLeoRules(self.rules)
+                self.rulesDict = mode.rulesDictDict.get(self.rulesetName)
+                self.addLeoRules(self.rulesDict)
                 self.defaultColor = 'null'
                 ### To do: append imported rules.
                 # g.trace(len(self.rules))
             else:
                 g.trace('No language description for %s' % language)
-    
-        if 0: # old code
-            bunch = self.modes.get(language)
-            if bunch:
-                self.mode = bunch.mode
-                self.defaultRulesList=bunch.defaultRulesList
-                self.keywords = bunch.keywords
-                self.rulesDict=bunch.rulesDict
-                self.word_chars = bunch.word_chars
-            else:
-                ### get the mode by parsing the file.
-                if mode:
-                    if self.trace: g.trace(language)
-                    if 0:
-                        # Handle only the main rulese here.
-                        rulesets = mode.getRulesets()
-                        self.present_ruleset = ruleset = rulesets[0]
-                        # mode.printSummary (printStats=False)
-                        self.keywords,self.word_chars = self.init_keywords(mode,ruleset)
-                            # Sets self.word_chars: must be called before createRuleMatchers.
-                        self.createRuleMatchers(ruleset.rules)
-                            # Sets self.defaultRulesList & self.rulesDict.
-                        bunch = g.bunch(mode=mode,
-                            defaultRulesList=self.defaultRulesList,
-                            keywords=self.keywords,
-                            rulesDict=self.rulesDict,
-                            word_chars=self.word_chars)
-                        self.modes[language] = bunch
-                elif language:
-                    g.trace('No language description for %s' % language)
     #@nonl
     #@-node:ekr.20050602150619:init_mode
     #@-node:ekr.20050529143413.24:Birth and init
-    #@+node:ekr.20050529145203:Entry points & helpers
+    #@+node:ekr.20060507182617:NO LONGER USED
+    if 0:
+        #@    @+others
+        #@+node:ekr.20050601044345:get_word
+        def get_word(self,s,i):
+        
+            j = i
+            while j < len(s) and s[j] in self.word_chars:
+                j += 1
+        
+            return s[i:j]
+        #@nonl
+        #@-node:ekr.20050601044345:get_word
+        #@+node:ekr.20060507182617.1:removeTagsFromLine
+        def removeTagsFromLine (self):
+            
+            # print "removeTagsFromLine",self.line_index
+            for tag in self.tags:
+                self.body.tag_remove(tag,self.index(0),self.index("end"))
+                
+            for tag in self.color_tags_list:
+                self.body.tag_remove(tag,self.index(0),self.index("end"))
+        #@nonl
+        #@-node:ekr.20060507182617.1:removeTagsFromLine
+        #@+node:ekr.20050603202319:invalidate_range
+        def invalidate_range (self,i,j):
+        
+            return
+            
+            # for k in xrange(i,j):
+                # self.colored_ranges[k] = None
+        #@nonl
+        #@-node:ekr.20050603202319:invalidate_range
+        #@+node:ekr.20050603190206:rangeColoredWithTag
+        def rangeColoredWithTag(self,i,j,tag):
+            
+            g.trace()
+            
+            for k in xrange(i,j):
+                if tag != self.colored_ranges.get(k):
+                    return False
+            return True
+        #@nonl
+        #@-node:ekr.20050603190206:rangeColoredWithTag
+        #@+node:ekr.20050603174749:removeTagsFromRange
+        def removeTagsFromRange (self,s,i,j):
+            
+            tags = {}
+            for k in xrange(i,j):
+                tag = self.colored_ranges.get(k)
+                if tag: # Must remove the tag, even if it will be reapplied (to a possibly different range).
+                    tags[tag] = None
+                    self.colored_ranges[k] = None
+        
+            row,col = g.convertPythonIndexToRowCol(s,i)
+            x1 = '%d.%d' % (row+1,col)
+            row,col = g.convertPythonIndexToRowCol(s,j)
+            x2 = '%d.%d' % (row+1,col)
+            
+            # g.trace('row',row+1)
+        
+            for tag in tags.keys():
+                # g.trace(tag,x1,x2)
+                self.body.tag_remove(tag,x1,x2)
+        #@nonl
+        #@-node:ekr.20050603174749:removeTagsFromRange
+        #@+node:ekr.20060507182708:tag
+        def tag (self,name,i,j):
+        
+            self.body.tag_add(name,self.index(i),self.index(j))
+        #@nonl
+        #@-node:ekr.20060507182708:tag
+        #@+node:ekr.20050605183244:removeOldTagsFromRange
+        def removeOldTagsFromRange(self,s,i,j):
+            
+            '''Remove all tags from range without using the colored_ranges dict.
+            
+            This is executed when a non-incremental redraw clears the colored_ranges dict.'''
+        
+            row,col = g.convertPythonIndexToRowCol(s,i)
+            x1 = '%d.%d' % (row+1,col)
+            row,col = g.convertPythonIndexToRowCol(s,j)
+            x2 = '%d.%d' % (row+1,col)
+                    
+            for tag in self.tags:
+                self.body.tag_remove(tag,x1,x2)
+            
+            for tag in self.color_tags_list:
+                self.body.tag_remove(tag,x1,x2)
+        #@nonl
+        #@-node:ekr.20050605183244:removeOldTagsFromRange
+        #@-others
+    #@nonl
+    #@-node:ekr.20060507182617:NO LONGER USED
+    #@+node:ekr.20050529145203:Entry points
     #@+node:ekr.20050529143413.30:colorize
     colorize_count = 0
     
@@ -639,12 +706,11 @@ class baseColorizer:
         
         '''The main colorizer entry point.'''
         
-        if 1:
+        if 0:
             self.colorize_count += 1
             g.trace(incremental,self.colorize_count)
     
         if self.enabled:
-            self.incremental=incremental 
             self.updateSyntaxColorer(p)
             return self.colorizeAnyLanguage(p)
         else:
@@ -661,274 +727,37 @@ class baseColorizer:
         self.enabled=True
     #@nonl
     #@-node:ekr.20050529143413.28:enable & disable
-    #@+node:ekr.20050529145203.1:recolor_range
+    #@+node:ekr.20050602144940:interrupt
+    # This is needed, even without threads.
+    
+    def interrupt(self):
+        '''Interrupt colorOneChunk'''
+        self.chunk_i = 0
+        self.tagList = []
+        # g.trace('%3d %3d' % (self.chunk_count,self.queue_count))
+    #@nonl
+    #@-node:ekr.20050602144940:interrupt
+    #@+node:ekr.20050529145203.1:recolor_range  (TO BE DELETED)
     def recolor_range(self,p,leading,trailing):
         
         '''An entry point for the colorer called from incremental undo code.
         Colorizes the lines between the leading and trailing lines.'''
         
-        g.trace(leading,trailing)
-        
-        if self.enabled:
-            self.incremental=True
-            self.invalidate_range(leading,trailing)
-            self.updateSyntaxColorer(p)
-            return self.colorizeAnyLanguage(p,leading=leading,trailing=trailing)
-        else:
-            return "ok" # For unit testing.
+        return self.colorize(p)
+    
+        # if self.enabled:
+            # self.incremental=True
+            # self.invalidate_range(leading,trailing)
+            # self.updateSyntaxColorer(p)
+            # return self.colorizeAnyLanguage(p,leading=leading,trailing=trailing)
+        # else:
+            # return "ok" # For unit testing.
     #@nonl
-    #@-node:ekr.20050529145203.1:recolor_range
-    #@+node:ekr.20050529143413.84:schedule & idle_colorize
-    def schedule(self,p,incremental=0):
-        
-        __pychecker__ = '--no-argsused'
-        # p not used, but it is difficult to remove.
-    
-        if self.enabled:
-            self.incremental=incremental
-            ### g.app.gui.setIdleTimeHook(self.idle_colorize)
-            self.idle_colorize()
-            
-    def idle_colorize(self):
-    
-        # New in 4.3b1: make sure the colorizer still exists!
-        if hasattr(self,'enabled') and self.enabled:
-            p = self.c.currentPosition()
-            if p:
-                self.incremental=False
-                self.colorize(p)
-    #@nonl
-    #@-node:ekr.20050529143413.84:schedule & idle_colorize
-    #@+node:ekr.20050529143413.88:useSyntaxColoring
-    def useSyntaxColoring (self,p):
-        
-        """Return True unless p is unambiguously under the control of @nocolor."""
-        
-        p = p.copy() ; first = p.copy()
-        val = True ; self.killcolorFlag = False
-        for p in p.self_and_parents_iter():
-            s = p.v.t.bodyString
-            theDict = g.get_directives_dict(s)
-            no_color = theDict.has_key("nocolor")
-            color = theDict.has_key("color")
-            kill_color = theDict.has_key("killcolor")
-            # A killcolor anywhere disables coloring.
-            if kill_color:
-                val = False ; self.killcolorFlag = True ; break
-            # A color anywhere in the target enables coloring.
-            if color and p == first:
-                val = True ; break
-            # Otherwise, the @nocolor specification must be unambiguous.
-            elif no_color and not color:
-                val = False ; break
-            elif color and not no_color:
-                val = True ; break
-    
-        # g.trace(first.headString(),val)
-        return val
-    #@nonl
-    #@-node:ekr.20050529143413.88:useSyntaxColoring
-    #@+node:ekr.20050529143413.87:updateSyntaxColorer
-    def updateSyntaxColorer (self,p):
-    
-        p = p.copy()
-        # self.flag is True unless an unambiguous @nocolor is seen.
-        self.flag = self.useSyntaxColoring(p)
-        self.scanColorDirectives(p)
-    #@nonl
-    #@-node:ekr.20050529143413.87:updateSyntaxColorer
-    #@-node:ekr.20050529145203:Entry points & helpers
-    #@+node:ekr.20050529150436:Colorizer code
-    #@+node:ekr.20050601042620:colorAll
-    def colorAll(self,s):
-        
-        '''Colorize all of s.'''
-    
-        # Init ivars used by colorOneChunk.
-        self.chunk_s = s
-        self.chunk_i = 0
-        self.chunk_last_i = 0
-        self.kill_chunk = False
-    
-        self.colorOneChunk()
-    #@-node:ekr.20050601042620:colorAll
-    #@+node:ekr.20050529143413.31:colorizeAnyLanguage
-    def colorizeAnyLanguage (self,p,leading=None,trailing=None):
-        
-        '''Color the body pane.  All coloring starts here.'''
-        
-        self.init_mode(self.language)
-        if self.killcolorFlag or not self.mode:
-            self.removeAllTags() ; return
-        try:
-            c = self.c
-            self.p = p
-            self.redoColoring = False
-            self.redoingColoring = False
-            self.was_non_incremental = not self.incremental
-            # g.trace('was_non_incremental',self.was_non_incremental)
-            if not self.incremental:
-                # g.trace('removing tags')
-                if 0: # removing tags causes flash at idle time.
-                    self.removeAllTags()
-                    self.removeAllImages()
-                self.colored_ranges = {}
-            g.doHook("init-color-markup",colorer=self,p=self.p,v=self.p)
-            s = self.body.getAllText()
-            self.colorAll(s)
-            if self.redoColoring: # Set only from plugins.
-                self.recolor_all()
-            return "ok" # for unit testing.
-        except Exception:
-            g.es_exception()
-            return "error" # for unit testing.
-    #@nonl
-    #@-node:ekr.20050529143413.31:colorizeAnyLanguage
-    #@+node:ekr.20050601105358:colorOneChunk
-    def colorOneChunk(self,allowBreak=True):
-        '''Colorize a fixed number of tokens.
-        If not done, queue this method again to continue coloring later.'''
-        s,i = self.chunk_s,self.chunk_i
-        count = 0 ; self.chunk_count += 1
-        # g.trace('%3d'%(self.chunk_count),self.incremental)
-        if not self.incremental:
-            self.incremental = True
-            #@        << queue up this method the first time >>
-            #@+node:ekr.20050605130806:<< queue up this method the first time >>
-            self.chunk_s,self.chunk_i = s,i
-            self.c.frame.top.after(50,self.colorOneChunk)
-            #@nonl
-            #@-node:ekr.20050605130806:<< queue up this method the first time >>
-            #@nl
-            return
-        while i < len(s):
-            count += 1
-            if 1: # Test: do everything immediately. This is way too slow.
-                # Exit only after finishing the row.  This reduces flash.
-                if i == 0 or s[i-1] == '\n':
-                    if self.kill_chunk: return
-                    if self.incremental and allowBreak:
-                        if count >= 50:
-                            #@                        << queue up this method >>
-                            #@+node:ekr.20050601162452.1:<< queue up this method >>
-                            self.chunk_s,self.chunk_i = s,i
-                            self.c.frame.top.after_idle(self.colorOneChunk)
-                            #@nonl
-                            #@-node:ekr.20050601162452.1:<< queue up this method >>
-                            #@nl
-                            return
-            for f in self.rules:
-                n = f(self,s,i)
-                if n > 0:
-                    i += n
-                    break
-            else:
-                self.colorRangeWithTag(s,i,i+1,self.defaultColor)
-                i += 1
-    
-        self.removeTagsFromRange(s,self.chunk_last_i,len(s))
-    #@nonl
-    #@-node:ekr.20050601105358:colorOneChunk
-    #@+node:ekr.20050602205810.4:colorRangeWithTag
-    def colorRangeWithTag (self,s,i,j,tag):
-        
-        if not self.flag or tag == 'null': return
-    
-        if self.was_non_incremental:
-            must_color = True
-            self.removeOldTagsFromRange(s,self.chunk_last_i,j)
-        elif self.rangeColoredWithTag(i,j,tag):
-            must_color = False
-            # Remove the old tags to i.
-            self.removeTagsFromRange(s,self.chunk_last_i,i)
-        else:
-            must_color = True
-            # Remove the old tags to j.
-            self.removeTagsFromRange(s,self.chunk_last_i,j)
-    
-        if must_color:
-            # if tag != 'null': g.trace(i,j,repr(s[i:j]),tag)
-    
-            # Remember the new tags.
-            for k in xrange(i,j):
-                self.colored_ranges[k] = tag
-    
-            # Do the real coloring.
-            row,col = g.convertPythonIndexToRowCol(s,i)
-            x1 = '%d.%d' % (row+1,col)
-            row,col = g.convertPythonIndexToRowCol(s,j)
-            x2 = '%d.%d' % (row+1,col)
-            self.body.tag_add(tag,x1,x2)
-    
-        self.chunk_last_i = j
-    #@nonl
-    #@-node:ekr.20050602205810.4:colorRangeWithTag
-    #@+node:ekr.20050603202319:invalidate_range
-    def invalidate_range (self,i,j):
-        
-        for k in xrange(i,j):
-            self.colored_ranges[k] = None
-    #@nonl
-    #@-node:ekr.20050603202319:invalidate_range
-    #@+node:ekr.20050603190206:rangeColoredWithTag
-    def rangeColoredWithTag(self,i,j,tag):
-        
-        for k in xrange(i,j):
-            if tag != self.colored_ranges.get(k):
-                return False
-        return True
-    #@nonl
-    #@-node:ekr.20050603190206:rangeColoredWithTag
-    #@+node:ekr.20050605183244:removeOldTagsFromRange
-    def removeOldTagsFromRange(self,s,i,j):
-        
-        '''Remove all tags from range without using the colored_ranges dict.
-        
-        This is executed when a non-incremental redraw clears the colored_ranges dict.'''
-    
-        row,col = g.convertPythonIndexToRowCol(s,i)
-        x1 = '%d.%d' % (row+1,col)
-        row,col = g.convertPythonIndexToRowCol(s,j)
-        x2 = '%d.%d' % (row+1,col)
-                
-        for tag in self.tags:
-            self.body.tag_remove(tag,x1,x2)
-        
-        for tag in self.color_tags_list:
-            self.body.tag_remove(tag,x1,x2)
-    #@nonl
-    #@-node:ekr.20050605183244:removeOldTagsFromRange
-    #@+node:ekr.20050603174749:removeTagsFromRange
-    def removeTagsFromRange (self,s,i,j):
-        
-        tags = {}
-        for k in xrange(i,j):
-            tag = self.colored_ranges.get(k)
-            if tag: # Must remove the tag, even if it will be reapplied (to a possibly different range).
-                tags[tag] = None
-                self.colored_ranges[k] = None
-    
-        row,col = g.convertPythonIndexToRowCol(s,i)
-        x1 = '%d.%d' % (row+1,col)
-        row,col = g.convertPythonIndexToRowCol(s,j)
-        x2 = '%d.%d' % (row+1,col)
-        
-        # g.trace('row',row+1)
-    
-        for tag in tags.keys():
-            # g.trace(tag,x1,x2)
-            self.body.tag_remove(tag,x1,x2)
-    #@nonl
-    #@-node:ekr.20050603174749:removeTagsFromRange
-    #@+node:ekr.20050602144940:interrupt
-    # This is needed, even without threads.
-    def interrupt(self):
-        '''Interrupt colorOneChunk'''
-        self.kill_chunk = True
-    #@nonl
-    #@-node:ekr.20050602144940:interrupt
-    #@+node:ekr.20050529143413.42:recolor_all
+    #@-node:ekr.20050529145203.1:recolor_range  (TO BE DELETED)
+    #@+node:ekr.20050529143413.42:recolor_all (MUST BE REWRITTEN)
     def recolor_all (self):
+        
+        g.trace()
     
         # This code is executed only if graphics characters will be inserted by user markup code.
         
@@ -973,7 +802,159 @@ class baseColorizer:
             state = self.colorizeLine(s,state)
             self.line_index += 1
     #@nonl
-    #@-node:ekr.20050529143413.42:recolor_all
+    #@-node:ekr.20050529143413.42:recolor_all (MUST BE REWRITTEN)
+    #@+node:ekr.20050529143413.84:schedule & idle_colorize (TO BE DELETED)
+    def schedule(self,p,incremental=0):
+        
+        __pychecker__ = '--no-argsused'
+        # p not used, but it is difficult to remove.
+    
+        if self.enabled:
+            g.app.gui.setIdleTimeHook(self.idle_colorize)
+            self.idle_colorize()
+            
+    def idle_colorize(self):
+    
+        # New in 4.3b1: make sure the colorizer still exists!
+        if hasattr(self,'enabled') and self.enabled:
+            p = self.c.currentPosition()
+            p and self.colorize(p)
+    #@nonl
+    #@-node:ekr.20050529143413.84:schedule & idle_colorize (TO BE DELETED)
+    #@+node:ekr.20050529143413.88:useSyntaxColoring
+    def useSyntaxColoring (self,p):
+        
+        """Return True unless p is unambiguously under the control of @nocolor."""
+        
+        p = p.copy() ; first = p.copy()
+        val = True ; self.killcolorFlag = False
+        for p in p.self_and_parents_iter():
+            s = p.v.t.bodyString
+            theDict = g.get_directives_dict(s)
+            no_color = theDict.has_key("nocolor")
+            color = theDict.has_key("color")
+            kill_color = theDict.has_key("killcolor")
+            # A killcolor anywhere disables coloring.
+            if kill_color:
+                val = False ; self.killcolorFlag = True ; break
+            # A color anywhere in the target enables coloring.
+            if color and p == first:
+                val = True ; break
+            # Otherwise, the @nocolor specification must be unambiguous.
+            elif no_color and not color:
+                val = False ; break
+            elif color and not no_color:
+                val = True ; break
+    
+        # g.trace(first.headString(),val)
+        return val
+    #@nonl
+    #@-node:ekr.20050529143413.88:useSyntaxColoring
+    #@+node:ekr.20050529143413.87:updateSyntaxColorer
+    def updateSyntaxColorer (self,p):
+    
+        p = p.copy()
+        # self.flag is True unless an unambiguous @nocolor is seen.
+        self.flag = self.useSyntaxColoring(p)
+        self.scanColorDirectives(p)
+    #@nonl
+    #@-node:ekr.20050529143413.87:updateSyntaxColorer
+    #@-node:ekr.20050529145203:Entry points
+    #@+node:ekr.20050529150436:Colorizer code
+    #@+node:ekr.20050601042620:colorAll
+    def colorAll(self,s):
+        
+        '''Colorize all of s.'''
+    
+        # Init ivars used by colorOneChunk.
+        self.chunk_s = s
+        self.chunk_i = 0
+        self.tagList = []
+        self.queue_count = 0
+        self.chunk_count = 0
+        self.chunks_done = False
+        self.quickColor()
+        self.colorOneChunk()
+    #@-node:ekr.20050601042620:colorAll
+    #@+node:ekr.20050529143413.31:colorizeAnyLanguage
+    def colorizeAnyLanguage (self,p,leading=None,trailing=None):
+        
+        '''Color the body pane.  All coloring starts here.'''
+        
+        self.init_mode(self.language)
+        if self.killcolorFlag or not self.mode:
+            self.removeAllTags() ; return
+        try:
+            c = self.c ; self.p = p
+            self.redoColoring = False
+            self.redoingColoring = False
+            g.doHook("init-color-markup",colorer=self,p=self.p,v=self.p)
+            s = self.body.getAllText()
+            self.colorAll(s)
+            if self.redoColoring: # Set only from plugins.
+                self.recolor_all()
+            return "ok" # for unit testing.
+        except Exception:
+            g.es_exception()
+            return "error" # for unit testing.
+    #@nonl
+    #@-node:ekr.20050529143413.31:colorizeAnyLanguage
+    #@+node:ekr.20050601105358:colorOneChunk
+    def colorOneChunk(self,allowBreak=True):
+        '''Colorize a fixed number of tokens.
+        If not done, queue this method again to continue coloring later.'''
+        if self.chunks_done: return
+        s,i = self.chunk_s,self.chunk_i
+        count = 0 ; self.chunk_count += 1
+        limit = 10
+        while i < len(s):
+            count += 1
+            if count >= limit:
+                self.chunk_s, self.chunk_i = s,i
+                self.queue_count += 1
+                self.c.frame.top.after_idle(self.colorOneChunk)
+                return
+            for f in self.rulesDict.get(s[i],[]):
+                n = f(self,s,i)
+                if n > 0:
+                    i += n ; break
+            else: i += 1
+    
+        # g.trace('%3d %3d' % (self.chunk_count,self.queue_count))
+        self.removeAllTags()
+        self.tagAll()
+        self.tagList = []
+        self.chunks_done = True # Prohibit any more queued calls.
+    #@nonl
+    #@-node:ekr.20050601105358:colorOneChunk
+    #@+node:ekr.20050602205810.4:colorRangeWithTag
+    def colorRangeWithTag (self,s,i,j,tag):
+    
+        '''Add an item to the tagList.'''
+        
+        # g.convertPythonIndexToRowCol could be slow for large s.
+        row,col = g.convertPythonIndexToRowCol(s,i)
+        x1 = '%d.%d' % (row+1,col)
+        row,col = g.convertPythonIndexToRowCol(s,j)
+        x2 = '%d.%d' % (row+1,col)
+        self.tagList.append((tag,x1,x2),)
+    #@nonl
+    #@-node:ekr.20050602205810.4:colorRangeWithTag
+    #@+node:ekr.20060507192431:quickColor
+    def quickColor (self):
+        
+        '''Give the inserted character the previous color tag by default.'''
+        
+        w = self.c.frame.body.bodyCtrl
+        i = w.index('insert-1c')
+        if i == '1.0': return # No previous character.
+        if w.tag_names(i): return # The character already has a color.
+        j = w.index('insert-2c')
+        theList = w.tag_names(j)
+        if theList:
+            w.tag_add(theList[0],i)
+    #@nonl
+    #@-node:ekr.20060507192431:quickColor
     #@-node:ekr.20050529150436:Colorizer code
     #@+node:ekr.20050529143413.89:Utils
     #@+at 
@@ -987,26 +968,13 @@ class baseColorizer:
         return '%s_%s' % (language,name)
     #@nonl
     #@-node:ekr.20060503171558:computeRulesetName
-    #@+node:ekr.20050601044345:get_word (not used)
-    def get_word(self,s,i):
-    
-        j = i
-        while j < len(s) and s[j] in self.word_chars:
-            j += 1
-    
-        return s[i:j]
-    #@nonl
-    #@-node:ekr.20050601044345:get_word (not used)
-    #@+node:ekr.20050529143413.90:index & tag
+    #@+node:ekr.20050529143413.90:index
     def index (self,i):
         
         return self.body.convertRowColumnToIndex(self.line_index,i)
-            
-    def tag (self,name,i,j):
-    
-        self.body.tag_add(name,self.index(i),self.index(j))
+        
     #@nonl
-    #@-node:ekr.20050529143413.90:index & tag
+    #@-node:ekr.20050529143413.90:index
     #@+node:ekr.20050529143413.86:removeAllImages
     def removeAllImages (self):
         
@@ -1019,26 +987,22 @@ class baseColorizer:
         self.image_references = []
     #@nonl
     #@-node:ekr.20050529143413.86:removeAllImages
-    #@+node:ekr.20050529143413.80:removeAllTags & removeTagsFromLines
+    #@+node:ekr.20050529143413.80:removeAllTags
     def removeAllTags (self):
         
-        # Warning: the following DOES NOT WORK: self.body.tag_delete(self.tags)
-        for tag in self.tags:
-            self.body.tag_delete(tag)
-    
-        for tag in self.color_tags_list:
-            self.body.tag_delete(tag)
+        # g.trace(g.callers())
         
-    def removeTagsFromLine (self):
-        
-        # print "removeTagsFromLine",self.line_index
-        for tag in self.tags:
-            self.body.tag_remove(tag,self.index(0),self.index("end"))
-            
-        for tag in self.color_tags_list:
-            self.body.tag_remove(tag,self.index(0),self.index("end"))
+        w = self.c.frame.body.bodyCtrl
+        names = w.tag_names()
+        for name in names:
+            theList = w.tag_ranges(name)
+            if theList:
+                n = len(theList) ; i = 0
+                while i < n:
+                    w.tag_remove(name,theList[i],theList[i+1])
+                    i += 2
     #@nonl
-    #@-node:ekr.20050529143413.80:removeAllTags & removeTagsFromLines
+    #@-node:ekr.20050529143413.80:removeAllTags
     #@+node:ekr.20050529143413.81:scanColorDirectives
     def scanColorDirectives(self,p):
         
@@ -1127,6 +1091,13 @@ class baseColorizer:
         self.image_references = []
     #@nonl
     #@-node:ekr.20050529143413.29:setFontFromConfig
+    #@+node:ekr.20060507175312:tagAll
+    def tagAll (self):
+        
+        for tag,x1,x2 in self.tagList:
+            self.body.tag_add(tag,x1,x2)
+    #@nonl
+    #@-node:ekr.20060507175312:tagAll
     #@-node:ekr.20050529143413.89:Utils
     #@+node:ekr.20050529180421.47:Rule matching methods
     #@+node:ekr.20060503153603.1:jEdit matchers (todo: exclude_match)
