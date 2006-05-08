@@ -7,6 +7,10 @@ properties = {
 
 # Keywords dict for makefile_main ruleset.
 makefile_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"addprefix": "keyword1",
 	"addsuffix": "keyword1",
 	"basename": "keyword1",

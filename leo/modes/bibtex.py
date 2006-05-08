@@ -10,6 +10,10 @@ bibtex_main_keywords_dict = {}
 
 # Keywords dict for bibtex_article ruleset.
 bibtex_article_keywords_dict = {
+	"
+": "keywords",
+	"    ": "keywords",
+	"      ": "keywords",
 	"abstract": "keyword1",
 	"address": "keyword2",
 	"annotation": "keyword1",
@@ -58,6 +62,10 @@ bibtex_article_keywords_dict = {
 
 # Keywords dict for bibtex_book ruleset.
 bibtex_book_keywords_dict = {
+	"
+": "keywords",
+	"    ": "keywords",
+	"      ": "keywords",
 	"abstract": "keyword1",
 	"address": "keyword3",
 	"annotation": "keyword1",
@@ -106,6 +114,10 @@ bibtex_book_keywords_dict = {
 
 # Keywords dict for bibtex_booklet ruleset.
 bibtex_booklet_keywords_dict = {
+	"
+": "keywords",
+	"    ": "keywords",
+	"      ": "keywords",
 	"abstract": "keyword1",
 	"address": "keyword3",
 	"annotation": "keyword1",
@@ -154,6 +166,10 @@ bibtex_booklet_keywords_dict = {
 
 # Keywords dict for bibtex_conference ruleset.
 bibtex_conference_keywords_dict = {
+	"
+": "keywords",
+	"    ": "keywords",
+	"      ": "keywords",
 	"abstract": "keyword1",
 	"address": "keyword3",
 	"annotation": "keyword1",
@@ -202,6 +218,10 @@ bibtex_conference_keywords_dict = {
 
 # Keywords dict for bibtex_inbook ruleset.
 bibtex_inbook_keywords_dict = {
+	"
+": "keywords",
+	"    ": "keywords",
+	"      ": "keywords",
 	"abstract": "keyword1",
 	"address": "keyword3",
 	"annotation": "keyword1",
@@ -250,6 +270,10 @@ bibtex_inbook_keywords_dict = {
 
 # Keywords dict for bibtex_incollection ruleset.
 bibtex_incollection_keywords_dict = {
+	"
+": "keywords",
+	"    ": "keywords",
+	"      ": "keywords",
 	"abstract": "keyword1",
 	"address": "keyword3",
 	"annotation": "keyword1",
@@ -298,6 +322,10 @@ bibtex_incollection_keywords_dict = {
 
 # Keywords dict for bibtex_inproceedings ruleset.
 bibtex_inproceedings_keywords_dict = {
+	"
+": "keywords",
+	"    ": "keywords",
+	"      ": "keywords",
 	"abstract": "keyword1",
 	"address": "keyword3",
 	"annotation": "keyword1",
@@ -346,6 +374,10 @@ bibtex_inproceedings_keywords_dict = {
 
 # Keywords dict for bibtex_manual ruleset.
 bibtex_manual_keywords_dict = {
+	"
+": "keywords",
+	"    ": "keywords",
+	"      ": "keywords",
 	"abstract": "keyword1",
 	"address": "keyword3",
 	"annotation": "keyword1",
@@ -394,6 +426,10 @@ bibtex_manual_keywords_dict = {
 
 # Keywords dict for bibtex_mastersthesis ruleset.
 bibtex_mastersthesis_keywords_dict = {
+	"
+": "keywords",
+	"    ": "keywords",
+	"      ": "keywords",
 	"abstract": "keyword1",
 	"address": "keyword3",
 	"annotation": "keyword1",
@@ -442,6 +478,10 @@ bibtex_mastersthesis_keywords_dict = {
 
 # Keywords dict for bibtex_misc ruleset.
 bibtex_misc_keywords_dict = {
+	"
+": "keywords",
+	"    ": "keywords",
+	"      ": "keywords",
 	"abstract": "keyword1",
 	"address": "keyword2",
 	"annotation": "keyword1",
@@ -490,6 +530,10 @@ bibtex_misc_keywords_dict = {
 
 # Keywords dict for bibtex_phdthesis ruleset.
 bibtex_phdthesis_keywords_dict = {
+	"
+": "keywords",
+	"    ": "keywords",
+	"      ": "keywords",
 	"abstract": "keyword1",
 	"address": "keyword3",
 	"annotation": "keyword1",
@@ -538,6 +582,10 @@ bibtex_phdthesis_keywords_dict = {
 
 # Keywords dict for bibtex_proceedings ruleset.
 bibtex_proceedings_keywords_dict = {
+	"
+": "keywords",
+	"    ": "keywords",
+	"      ": "keywords",
 	"abstract": "keyword1",
 	"address": "keyword3",
 	"annotation": "keyword1",
@@ -586,6 +634,10 @@ bibtex_proceedings_keywords_dict = {
 
 # Keywords dict for bibtex_techreport ruleset.
 bibtex_techreport_keywords_dict = {
+	"
+": "keywords",
+	"    ": "keywords",
+	"      ": "keywords",
 	"abstract": "keyword1",
 	"address": "keyword3",
 	"annotation": "keyword1",
@@ -634,6 +686,10 @@ bibtex_techreport_keywords_dict = {
 
 # Keywords dict for bibtex_unpublished ruleset.
 bibtex_unpublished_keywords_dict = {
+	"
+": "keywords",
+	"    ": "keywords",
+	"      ": "keywords",
 	"abstract": "keyword1",
 	"address": "keyword2",
 	"annotation": "keyword1",

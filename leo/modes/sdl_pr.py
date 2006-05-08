@@ -9,6 +9,10 @@ properties = {
 
 # Keywords dict for sdl_pr_main ruleset.
 sdl_pr_main_keywords_dict = {
+	"
+": "keywords",
+	"    ": "keywords",
+	"      ": "keywords",
 	"Array": "keyword3",
 	"Boolean": "keyword2",
 	"Character": "keyword2",

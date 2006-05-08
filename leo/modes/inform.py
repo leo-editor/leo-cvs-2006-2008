@@ -14,6 +14,11 @@ properties = {
 
 # Keywords dict for inform_main ruleset.
 inform_main_keywords_dict = {
+	"
+": "keywords",
+	"        ": "keywords",
+	"            ": "keywords",
+	"                ": "keywords",
 	"Abbreviate": "keyword3",
 	"Array": "keyword3",
 	"Attribute": "keyword3",

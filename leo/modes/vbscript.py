@@ -7,6 +7,11 @@ properties = {
 
 # Keywords dict for vbscript_main ruleset.
 vbscript_main_keywords_dict = {
+	"	": "keywords",
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"Err": "keyword2",
 	"abs": "keyword2",
 	"adAsyncExecute": "literal2",

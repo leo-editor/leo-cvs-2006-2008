@@ -9,6 +9,10 @@ properties = {
 
 # Keywords dict for tsql_main ruleset.
 tsql_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"@@CONNECTIONS": "keyword2",
 	"@@CPU_BUSY": "keyword2",
 	"@@CURSOR_ROWS": "keyword2",

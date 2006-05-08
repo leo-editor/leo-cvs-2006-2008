@@ -9,6 +9,10 @@ properties = {
 
 # Keywords dict for bcel_main ruleset.
 bcel_main_keywords_dict = {
+	"
+": "keywords",
+	"        ": "keywords",
+	"            ": "keywords",
 	"aaload": "keyword1",
 	"aastore": "keyword1",
 	"abstract": "keyword1",

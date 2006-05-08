@@ -7,6 +7,10 @@ properties = {
 
 # Keywords dict for cobol_main ruleset.
 cobol_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"ACCEPT": "keyword1",
 	"ACCESS": "keyword1",
 	"ACOS": "keyword2",
@@ -670,11 +674,11 @@ def rule3(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule4(colorer, s, i):
-    return colorer.match_seq(s, i, kind="operator", seq=">=",
+    return colorer.match_seq(s, i, kind="operator", seq=" >=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule5(colorer, s, i):
-    return colorer.match_seq(s, i, kind="operator", seq="<=",
+    return colorer.match_seq(s, i, kind="operator", seq=" <=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule6(colorer, s, i):
@@ -698,11 +702,11 @@ def rule10(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule11(colorer, s, i):
-    return colorer.match_seq(s, i, kind="operator", seq=">",
+    return colorer.match_seq(s, i, kind="operator", seq=" > ",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule12(colorer, s, i):
-    return colorer.match_seq(s, i, kind="operator", seq="<",
+    return colorer.match_seq(s, i, kind="operator", seq=" < ",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule13(colorer, s, i):
@@ -710,7 +714,7 @@ def rule13(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule14(colorer, s, i):
-    return colorer.match_seq(s, i, kind="operator", seq="&",
+    return colorer.match_seq(s, i, kind="operator", seq=" & ",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule15(colorer, s, i):
@@ -736,9 +740,9 @@ def rule19(colorer, s, i):
 
 # Rules dict for main ruleset.
 rulesDict1 = {
+	" ": [rule4,rule5,rule11,rule12,rule14,],
 	"\"": [rule1,],
 	"%": [rule13,],
-	"&": [rule14,],
 	"'": [rule2,],
 	"*": [rule0,rule9,rule10,],
 	"+": [rule6,],
@@ -754,9 +758,7 @@ rulesDict1 = {
 	"7": [rule19,],
 	"8": [rule19,],
 	"9": [rule19,],
-	"<": [rule5,rule12,],
 	"=": [rule3,],
-	">": [rule4,rule11,],
 	"@": [rule19,],
 	"A": [rule19,],
 	"B": [rule19,],

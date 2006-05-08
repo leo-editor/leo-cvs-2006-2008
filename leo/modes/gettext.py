@@ -7,6 +7,10 @@ properties = {
 
 # Keywords dict for gettext_main ruleset.
 gettext_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"c-format": "keyword2",
 	"fuzzy": "keyword2",
 	"msgid": "keyword1",

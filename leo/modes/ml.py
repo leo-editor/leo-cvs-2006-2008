@@ -8,6 +8,10 @@ properties = {
 
 # Keywords dict for ml_main ruleset.
 ml_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"ANTIQUOTE": "literal2",
 	"Bind": "keyword2",
 	"Chr": "keyword2",

@@ -11,6 +11,11 @@ tpl_main_keywords_dict = {}
 
 # Keywords dict for tpl_tpl ruleset.
 tpl_tpl_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
+	"            ": "keywords",
 	"=": "operator",
 	"END": "keyword2",
 	"START": "keyword2",

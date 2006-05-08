@@ -7,6 +7,10 @@ properties = {
 
 # Keywords dict for rpmspec_main ruleset.
 rpmspec_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"%build": "label",
 	"%clean": "label",
 	"%config": "markup",
@@ -61,6 +65,10 @@ rpmspec_attr_keywords_dict = {}
 
 # Keywords dict for rpmspec_verify ruleset.
 rpmspec_verify_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"group": "keyword2",
 	"maj": "keyword2",
 	"md5": "keyword2",

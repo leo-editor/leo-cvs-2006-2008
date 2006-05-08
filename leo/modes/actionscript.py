@@ -15,6 +15,13 @@ properties = {
 
 # Keywords dict for actionscript_main ruleset.
 actionscript_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"			 ": "keywords",
+	"			              ": "keywords",
+	"
+": "keywords",
+	"   ": "keywords",
 	"#endinitclip": "keyword1",
 	"#include": "literal2",
 	"#initclip": "keyword1",

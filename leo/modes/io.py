@@ -11,6 +11,10 @@ properties = {
 
 # Keywords dict for io_main ruleset.
 io_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"Block": "keyword1",
 	"Buffer": "keyword1",
 	"CFunction": "keyword1",

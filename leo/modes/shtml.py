@@ -14,6 +14,10 @@ shtml_tags_keywords_dict = {}
 
 # Keywords dict for shtml_ssi ruleset.
 shtml_ssi_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"cgi": "keyword2",
 	"cmd": "keyword2",
 	"config": "keyword1",

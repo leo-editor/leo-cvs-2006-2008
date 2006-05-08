@@ -7,6 +7,10 @@ properties = {
 
 # Keywords dict for postscript_main ruleset.
 postscript_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"NULL": "literal2",
 	"abs": "operator",
 	"add": "operator",

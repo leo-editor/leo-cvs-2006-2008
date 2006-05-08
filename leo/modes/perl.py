@@ -10,6 +10,10 @@ properties = {
 
 # Keywords dict for perl_main ruleset.
 perl_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"BEGIN": "keyword1",
 	"END": "keyword1",
 	"abs": "keyword3",

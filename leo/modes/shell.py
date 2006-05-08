@@ -10,6 +10,10 @@ properties = {
 
 # Keywords dict for shell_main ruleset.
 shell_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	";;": "operator",
 	"case": "keyword1",
 	"continue": "keyword1",

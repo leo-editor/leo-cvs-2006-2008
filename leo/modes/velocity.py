@@ -12,6 +12,10 @@ velocity_main_keywords_dict = {}
 
 # Keywords dict for velocity_velocity ruleset.
 velocity_velocity_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"#else": "keyword1",
 	"#elseif": "keyword1",
 	"#end": "keyword1",

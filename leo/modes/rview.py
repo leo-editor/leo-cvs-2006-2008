@@ -12,6 +12,10 @@ properties = {
 
 # Keywords dict for rview_main ruleset.
 rview_main_keywords_dict = {
+	"
+": "keywords",
+	"                ": "keywords",
+	"                        ": "keywords",
 	"BIGINT": "keyword3",
 	"BINARY": "keyword3",
 	"BIT": "keyword3",
@@ -69,6 +73,10 @@ rview_main_keywords_dict = {
 
 # Keywords dict for rview_rviewstmt ruleset.
 rview_rviewstmt_keywords_dict = {
+	"
+": "keywords",
+	"                ": "keywords",
+	"                        ": "keywords",
 	"AND": "keyword1",
 	"BETWEEN": "keyword1",
 	"BIGINT": "keyword3",

@@ -12,6 +12,10 @@ properties = {
 
 # Keywords dict for smi_mib_main ruleset.
 smi_mib_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"ACCESS": "keyword1",
 	"AGENT-CAPABILITIES": "function",
 	"AUGMENTS": "keyword1",

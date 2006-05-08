@@ -10,6 +10,11 @@ properties = {
 
 # Keywords dict for b_main ruleset.
 b_main_keywords_dict = {
+	"	": "keywords",
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"ABSTRACT_CONSTANTS": "keyword2",
 	"ABSTRACT_VARIABLES": "keyword2",
 	"ANY": "keyword2",

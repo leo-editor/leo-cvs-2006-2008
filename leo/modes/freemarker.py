@@ -8,6 +8,10 @@ freemarker_main_keywords_dict = {}
 
 # Keywords dict for freemarker_expression ruleset.
 freemarker_expression_keywords_dict = {
+	"
+": "keywords",
+	"    ": "keywords",
+	"      ": "keywords",
 	"as": "keyword1",
 	"false": "keyword1",
 	"gt": "operator",

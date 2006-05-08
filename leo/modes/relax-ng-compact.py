@@ -11,6 +11,10 @@ properties = {
 
 # Keywords dict for relax_ng_compact_main ruleset.
 relax_ng_compact_main_keywords_dict = {
+	"
+": "keywords",
+	"        ": "keywords",
+	"            ": "keywords",
 	"attribute": "keyword1",
 	"datatypes": "keyword1",
 	"default": "keyword1",

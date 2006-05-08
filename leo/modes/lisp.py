@@ -13,6 +13,10 @@ properties = {
 
 # Keywords dict for lisp_main ruleset.
 lisp_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"*": "keyword3",
 	"**": "keyword3",
 	"***": "keyword3",

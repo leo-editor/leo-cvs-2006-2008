@@ -9,6 +9,13 @@ properties = {
 
 # Keywords dict for pop11_main ruleset.
 pop11_main_keywords_dict = {
+	"		": "keywords",
+	"		    ": "keywords",
+	"
+": "keywords",
+	" ": "keywords",
+	"        ": "keywords",
+	"            ": "keywords",
 	"add": "literal2",
 	"alladd": "literal2",
 	"and": "keyword2",

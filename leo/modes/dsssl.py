@@ -9,6 +9,10 @@ properties = {
 
 # Keywords dict for dsssl_main ruleset.
 dsssl_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"and": "keyword1",
 	"append": "keyword1",
 	"attribute-string": "function",

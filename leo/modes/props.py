@@ -35,18 +35,23 @@ def rule2(colorer, s, i):
         delegate="PROP_VALUE", exclude_match=False)
 
 def rule3(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="null", seq="",
+    return colorer.match_eol_span(s, i, kind="null", seq=" ",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="PROP_VALUE", exclude_match=False)
 
 def rule4(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="null", seq="",
+    return colorer.match_eol_span(s, i, kind="null", seq="	",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="PROP_VALUE", exclude_match=False)
 
-# Rules list for props_main ruleset.
-props_main_rules = [
-	rule0, rule1, rule2, rule3, rule4, ]
+# Rules dict for main ruleset.
+rulesDict1 = {
+	"	": [rule4,],
+	" ": [rule3,],
+	"#": [rule0,],
+	":": [rule2,],
+	"=": [rule1,],
+}
 
 # Rules for props_prop_value ruleset.
 
@@ -60,14 +65,16 @@ def rule6(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="digit", pattern="#"
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-# Rules list for props_prop_value ruleset.
-props_prop_value_rules = [
-	rule5, rule6, ]
+# Rules dict for prop_value ruleset.
+rulesDict1 = {
+	"#": [rule6,],
+	"{": [rule5,],
+}
 
-# Rules dict for props mode.
-rulesDict = {
-	"props_main": props_main_rules,
-	"props_prop_value": props_prop_value_rules,
+# x.rulesDictDict for props mode.
+rulesDictDict = {
+	"props_main": rulesDict1,
+	"props_prop_value": rulesDict1,
 }
 
 # Import dict for props mode.

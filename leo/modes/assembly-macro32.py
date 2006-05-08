@@ -7,6 +7,10 @@ properties = {
 
 # Keywords dict for assembly_macro32_main ruleset.
 assembly_macro32_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	".ADDRESS": "keyword1",
 	".ALIGN": "keyword1",
 	".ASCIC": "keyword1",

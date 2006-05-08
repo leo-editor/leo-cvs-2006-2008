@@ -7,6 +7,10 @@ properties = {
 
 # Keywords dict for assembly_parrot_main ruleset.
 assembly_parrot_main_keywords_dict = {
+	"
+": "keywords",
+	"                ": "keywords",
+	"                        ": "keywords",
 	"abs": "keyword1",
 	"acos": "keyword1",
 	"add": "keyword1",

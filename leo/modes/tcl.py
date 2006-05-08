@@ -10,6 +10,10 @@ properties = {
 
 # Keywords dict for tcl_main ruleset.
 tcl_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"$argc": "keyword3",
 	"$argv": "keyword3",
 	"$argv0": "keyword3",

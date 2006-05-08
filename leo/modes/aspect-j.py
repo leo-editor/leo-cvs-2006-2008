@@ -14,6 +14,11 @@ properties = {
 
 # Keywords dict for aspect_j_main ruleset.
 aspect_j_main_keywords_dict = {
+	"						": "keywords",
+	"
+": "keywords",
+	"                ": "keywords",
+	"                        ": "keywords",
 	"..": "keyword4",
 	"abstract": "keyword1",
 	"adviceexecution": "keyword4",

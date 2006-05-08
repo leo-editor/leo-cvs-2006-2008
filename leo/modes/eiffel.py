@@ -7,6 +7,10 @@ properties = {
 
 # Keywords dict for eiffel_main ruleset.
 eiffel_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"alias": "keyword1",
 	"all": "keyword1",
 	"and": "keyword1",

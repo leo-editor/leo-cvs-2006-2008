@@ -14,6 +14,11 @@ properties = {
 
 # Keywords dict for progress_main ruleset.
 progress_main_keywords_dict = {
+	"
+": "keywords",
+	"    ": "keywords",
+	"      ": "keywords",
+	"        ": "keywords",
 	"&": "comment2",
 	"ADM-CONTAINER": "comment2",
 	"ADM-SUPPORTED-LINKS": "comment2",

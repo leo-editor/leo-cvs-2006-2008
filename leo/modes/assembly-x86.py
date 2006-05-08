@@ -7,6 +7,10 @@ properties = {
 
 # Keywords dict for assembly_x86_main ruleset.
 assembly_x86_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	".186": "keyword1",
 	".286": "keyword1",
 	".286P": "keyword1",

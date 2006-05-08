@@ -11,6 +11,10 @@ zpt_main_keywords_dict = {}
 
 # Keywords dict for zpt_tags ruleset.
 zpt_tags_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"attributes": "keyword3",
 	"condition": "keyword3",
 	"content": "keyword3",
@@ -29,6 +33,10 @@ zpt_tags_keywords_dict = {
 
 # Keywords dict for zpt_attribute ruleset.
 zpt_attribute_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"CONTEXTS": "literal3",
 	"Letter": "literal3",
 	"Roman": "literal3",

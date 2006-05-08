@@ -7,6 +7,10 @@ properties = {
 
 # Keywords dict for assembly_mcs51_main ruleset.
 assembly_mcs51_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"$CASE": "keyword2",
 	"$ELSE": "keyword2",
 	"$ELSEIF": "keyword2",

@@ -11,6 +11,10 @@ properties = {
 
 # Keywords dict for netrexx_main ruleset.
 netrexx_main_keywords_dict = {
+	"
+": "keywords",
+	"    ": "keywords",
+	"      ": "keywords",
 	"ArithmeticException": "markup",
 	"ArrayIndexOutOfBoundsException": "markup",
 	"ArrayList": "label",

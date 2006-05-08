@@ -14,6 +14,10 @@ properties = {
 
 # Keywords dict for rebol_main ruleset.
 rebol_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"?": "keyword2",
 	"??": "keyword2",
 	"Usage": "keyword1",

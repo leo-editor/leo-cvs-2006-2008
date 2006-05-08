@@ -11,6 +11,10 @@ properties = {
 
 # Keywords dict for objectrexx_main ruleset.
 objectrexx_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"Abbrev": "keyword2",
 	"Abs": "keyword2",
 	"Address": "keyword2",

@@ -12,6 +12,10 @@ jhtml_main_keywords_dict = {}
 
 # Keywords dict for jhtml_jhtml ruleset.
 jhtml_jhtml_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"bean": "keyword2",
 	"converter": "keyword2",
 	"currency": "keyword2",

@@ -11,6 +11,10 @@ properties = {
 
 # Keywords dict for applescript_main ruleset.
 applescript_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"after": "keyword2",
 	"and": "operator",
 	"anything": "literal2",

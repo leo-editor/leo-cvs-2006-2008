@@ -12,6 +12,10 @@ properties = {
 
 # Keywords dict for povray_main ruleset.
 povray_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"#break": "keyword1",
 	"#case": "keyword1",
 	"#debug": "keyword1",

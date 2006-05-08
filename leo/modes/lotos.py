@@ -9,6 +9,10 @@ properties = {
 
 # Keywords dict for lotos_main ruleset.
 lotos_main_keywords_dict = {
+	"
+": "keywords",
+	"    ": "keywords",
+	"      ": "keywords",
 	"BasicNaturalNumber": "keyword2",
 	"BasicNonEmptyString": "keyword2",
 	"Bit": "keyword2",

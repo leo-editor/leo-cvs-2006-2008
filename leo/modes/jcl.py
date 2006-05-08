@@ -7,6 +7,9 @@ properties = {
 
 # Keywords dict for jcl_main ruleset.
 jcl_main_keywords_dict = {
+	"
+": "keywords",
+	"  ": "keywords",
 	"CNTL": "keyword2",
 	"COMMAND": "keyword2",
 	"DD": "keyword2",

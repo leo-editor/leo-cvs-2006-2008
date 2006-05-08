@@ -15,6 +15,10 @@ properties = {
 
 # Keywords dict for factor_main ruleset.
 factor_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"#{": "operator",
 	"--": "label",
 	";": "markup",

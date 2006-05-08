@@ -7,6 +7,10 @@ properties = {
 
 # Keywords dict for erlang_main ruleset.
 erlang_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"-behaviour": "keyword3",
 	"-compile": "keyword3",
 	"-define": "keyword3",

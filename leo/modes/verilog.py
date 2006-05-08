@@ -12,6 +12,10 @@ properties = {
 
 # Keywords dict for verilog_main ruleset.
 verilog_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"$cleartrace": "function",
 	"$finish": "function",
 	"$monitoroff": "function",

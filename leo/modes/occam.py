@@ -10,6 +10,11 @@ properties = {
 
 # Keywords dict for occam_main ruleset.
 occam_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
+	"                        ": "keywords",
 	"ABS": "keyword3",
 	"AFTER": "keyword2",
 	"ALOG": "keyword3",

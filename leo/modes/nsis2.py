@@ -8,6 +8,11 @@ properties = {
 
 # Keywords dict for nsis2_main ruleset.
 nsis2_main_keywords_dict = {
+	"						": "keywords",
+	"
+": "keywords",
+	"                ": "keywords",
+	"                        ": "keywords",
 	"!addincludedir": "keyword2",
 	"!addplugindir": "keyword2",
 	"!cd": "keyword2",

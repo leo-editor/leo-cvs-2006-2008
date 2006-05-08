@@ -7,6 +7,10 @@ properties = {
 
 # Keywords dict for mqsc_main ruleset.
 mqsc_main_keywords_dict = {
+	"
+": "keywords",
+	"    ": "keywords",
+	"      ": "keywords",
 	"all": "keyword1",
 	"alt": "keyword1",
 	"altdate": "markup",

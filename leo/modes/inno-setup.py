@@ -7,6 +7,11 @@ properties = {
 
 # Keywords dict for inno_setup_main ruleset.
 inno_setup_main_keywords_dict = {
+	"	": "keywords",
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"AfterInstall": "keyword4",
 	"AllowCancelDuringInstall": "keyword1",
 	"AllowNoIcons": "keyword1",
@@ -251,6 +256,10 @@ inno_setup_constant_keywords_dict = {}
 
 # Keywords dict for inno_setup_directive ruleset.
 inno_setup_directive_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"Copy": "function",
 	"CopyFile": "function",
 	"Defined": "function",

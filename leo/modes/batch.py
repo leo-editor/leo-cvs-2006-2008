@@ -7,6 +7,10 @@ properties = {
 
 # Keywords dict for batch_main ruleset.
 batch_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"APPEND": "function",
 	"ATTRIB": "function",
 	"AUX": "keyword2",

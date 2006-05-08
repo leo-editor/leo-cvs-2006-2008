@@ -14,6 +14,10 @@ properties = {
 
 # Keywords dict for csharp_main ruleset.
 csharp_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"abstract": "keyword1",
 	"as": "keyword1",
 	"base": "keyword1",

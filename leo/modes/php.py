@@ -20,6 +20,10 @@ php_tags_literal_keywords_dict = {}
 
 # Keywords dict for php_php ruleset.
 php_php_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"COM_invoke": "keyword2",
 	"COM_load": "keyword2",
 	"__CLASS__": "keyword3",
@@ -2402,6 +2406,10 @@ php_javascript_php_keywords_dict = {}
 
 # Keywords dict for php_phpdoc ruleset.
 php_phpdoc_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"@abstract": "label",
 	"@access": "label",
 	"@author": "label",
@@ -2926,7 +2934,7 @@ def rule67(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule68(colorer, s, i):
-    return colorer.match_seq(s, i, kind="comment3", seq="<",
+    return colorer.match_seq(s, i, kind="comment3", seq="< ",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule69(colorer, s, i):

@@ -22,6 +22,10 @@ powerdynamo_tags_literal_keywords_dict = {}
 
 # Keywords dict for powerdynamo_powerdynamo_script ruleset.
 powerdynamo_powerdynamo_script_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"AskQuestion": "keyword3",
 	"Close": "keyword3",
 	"Commit": "keyword3",
@@ -184,17 +188,29 @@ powerdynamo_powerdynamo_script_keywords_dict = {
 
 # Keywords dict for powerdynamo_powerdynamo_tag_general ruleset.
 powerdynamo_powerdynamo_tag_general_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"NAME": "keyword2",
 }
 
 # Keywords dict for powerdynamo_powerdynamo_tag_data ruleset.
 powerdynamo_powerdynamo_tag_data_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"NAME": "keyword2",
 	"QUERY": "keyword2",
 }
 
 # Keywords dict for powerdynamo_powerdynamo_tag_document ruleset.
 powerdynamo_powerdynamo_tag_document_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"CACHED_OUTPUT_TIMEOUT": "keyword2",
 	"CONTENT_TYPE": "keyword2",
 	"REDIRECT": "keyword2",

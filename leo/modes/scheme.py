@@ -13,6 +13,10 @@ properties = {
 
 # Keywords dict for scheme_main ruleset.
 scheme_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"#f": "literal2",
 	"#t": "literal2",
 	"<": "keyword3",

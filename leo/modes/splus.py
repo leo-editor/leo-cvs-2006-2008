@@ -13,6 +13,10 @@ properties = {
 
 # Keywords dict for splus_main ruleset.
 splus_main_keywords_dict = {
+	"
+": "keywords",
+	"        ": "keywords",
+	"            ": "keywords",
 	"F": "literal2",
 	"T": "literal2",
 	"break": "keyword1",

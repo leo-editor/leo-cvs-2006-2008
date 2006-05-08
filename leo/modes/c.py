@@ -15,6 +15,10 @@ properties = {
 
 # Keywords dict for c_main ruleset.
 c_main_keywords_dict = {
+	"
+": "keywords",
+	"        ": "keywords",
+	"            ": "keywords",
 	"NULL": "literal2",
 	"asm": "keyword2",
 	"asmlinkage": "keyword2",
@@ -61,6 +65,10 @@ c_main_keywords_dict = {
 
 # Keywords dict for c_cpp ruleset.
 c_cpp_keywords_dict = {
+	"
+": "keywords",
+	"        ": "keywords",
+	"            ": "keywords",
 	"assert": "markup",
 	"define": "markup",
 	"elif": "markup",

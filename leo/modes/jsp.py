@@ -14,6 +14,10 @@ jsp_comment_keywords_dict = {}
 
 # Keywords dict for jsp_directives ruleset.
 jsp_directives_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"autoflush": "keyword2",
 	"buffer": "keyword2",
 	"charset": "keyword2",

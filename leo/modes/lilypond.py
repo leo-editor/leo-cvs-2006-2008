@@ -14,6 +14,9 @@ properties = {
 
 # Keywords dict for lilypond_main ruleset.
 lilypond_main_keywords_dict = {
+	"	": "keywords",
+	"
+": "keywords",
 	"Accidental_engraver": "keyword3",
 	"Arpeggio_engraver": "keyword3",
 	"Auto_beam_engraver": "keyword3",

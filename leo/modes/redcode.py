@@ -7,6 +7,11 @@ properties = {
 
 # Keywords dict for redcode_main ruleset.
 redcode_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
+	" ": "keywords",
 	"ADD": "keyword1",
 	"CMP": "keyword1",
 	"CORESIZE": "keyword2",

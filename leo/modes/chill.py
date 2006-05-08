@@ -8,6 +8,10 @@ properties = {
 
 # Keywords dict for chill_main ruleset.
 chill_main_keywords_dict = {
+	"
+": "keywords",
+	"        ": "keywords",
+	"            ": "keywords",
 	"AND": "keyword1",
 	"ARRAY": "keyword2",
 	"BEGIN": "keyword1",

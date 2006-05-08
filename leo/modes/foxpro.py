@@ -9,6 +9,10 @@ properties = {
 
 # Keywords dict for foxpro_main ruleset.
 foxpro_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"?": "operator",
 	"ADOCKTIP": "keyword3",
 	"ADirtip": "keyword3",

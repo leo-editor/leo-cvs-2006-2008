@@ -14,6 +14,10 @@ properties = {
 
 # Keywords dict for lua_main ruleset.
 lua_main_keywords_dict = {
+	"
+": "keywords",
+	"    ": "keywords",
+	"      ": "keywords",
 	"...": "keyword2",
 	"LUA_PATH": "keyword2",
 	"_ALERT": "keyword2",

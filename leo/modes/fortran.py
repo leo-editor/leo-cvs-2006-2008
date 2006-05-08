@@ -9,6 +9,8 @@ properties = {
 
 # Keywords dict for fortran_main ruleset.
 fortran_main_keywords_dict = {
+	"
+": "keywords",
 	".false.": "keyword1",
 	".true.": "keyword1",
 	"ABS": "keyword1",

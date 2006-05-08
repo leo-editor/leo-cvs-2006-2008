@@ -11,6 +11,10 @@ xsl_main_keywords_dict = {}
 
 # Keywords dict for xsl_tasks ruleset.
 xsl_tasks_keywords_dict = {
+	"
+": "keywords",
+	"    ": "keywords",
+	"      ": "keywords",
 	"???": "comment4",
 	"DEBUG:": "comment4",
 	"DONE:": "comment4",
@@ -30,6 +34,10 @@ xsl_avt_keywords_dict = {}
 
 # Keywords dict for xsl_xsltags ruleset.
 xsl_xsltags_keywords_dict = {
+	"
+": "keywords",
+	"    ": "keywords",
+	"      ": "keywords",
 	"analyze-string": "keyword1",
 	"apply-imports": "keyword1",
 	"apply-templates": "keyword1",
@@ -83,6 +91,10 @@ xsl_xsltags_keywords_dict = {
 
 # Keywords dict for xsl_xpath ruleset.
 xsl_xpath_keywords_dict = {
+	"
+": "keywords",
+	"    ": "keywords",
+	"      ": "keywords",
 	"-": "operator",
 	"and": "operator",
 	"as": "operator",

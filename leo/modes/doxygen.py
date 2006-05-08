@@ -7,12 +7,20 @@ properties = {
 
 # Keywords dict for doxygen_main ruleset.
 doxygen_main_keywords_dict = {
+	"
+": "keywords",
+	"        ": "keywords",
+	"            ": "keywords",
 	"NO": "keyword3",
 	"YES": "keyword2",
 }
 
 # Keywords dict for doxygen_doxygen ruleset.
 doxygen_doxygen_keywords_dict = {
+	"
+": "keywords",
+	"        ": "keywords",
+	"            ": "keywords",
 	"&": "label",
 	"<": "label",
 	">": "label",
@@ -401,7 +409,7 @@ def rule10(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule11(colorer, s, i):
-    return colorer.match_seq(s, i, kind="comment3", seq="<",
+    return colorer.match_seq(s, i, kind="comment3", seq="< ",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule12(colorer, s, i):

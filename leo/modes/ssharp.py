@@ -12,6 +12,14 @@ properties = {
 
 # Keywords dict for ssharp_main ruleset.
 ssharp_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"	  ": "keywords",
+	"
+": "keywords",
+	" ": "keyword2",
+	"            ": "keywords",
+	"            			": "keywords",
 	"?": "keyword2",
 	"Application": "literal3",
 	"Array": "literal2",
@@ -101,7 +109,7 @@ def rule3(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule4(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal2", begin="?", end="?",
+    return colorer.match_span(s, i, kind="literal2", begin="? ", end="? ",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)

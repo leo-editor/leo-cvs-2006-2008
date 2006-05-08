@@ -7,6 +7,13 @@ properties = {
 
 # Keywords dict for sqr_main ruleset.
 sqr_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
+	" ": "keywords",
+	" 			": "keywords",
+	" 			 ": "keywords",
 	"add": "keyword2",
 	"and": "keyword3",
 	"array-add": "keyword2",

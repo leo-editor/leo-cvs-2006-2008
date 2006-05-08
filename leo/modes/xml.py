@@ -14,6 +14,10 @@ xml_tags_keywords_dict = {}
 
 # Keywords dict for xml_dtd_tags ruleset.
 xml_dtd_tags_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"#IMPLIED": "keyword1",
 	"#PCDATA": "keyword1",
 	"#REQUIRED": "keyword1",
@@ -26,6 +30,10 @@ xml_dtd_tags_keywords_dict = {
 
 # Keywords dict for xml_entity_tags ruleset.
 xml_entity_tags_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"SYSTEM": "keyword1",
 }
 

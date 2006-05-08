@@ -11,6 +11,10 @@ properties = {
 
 # Keywords dict for awk_main ruleset.
 awk_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"$0": "keyword3",
 	"ARGC": "keyword3",
 	"ARGIND": "keyword3",

@@ -14,6 +14,10 @@ coldfusion_tags_keywords_dict = {}
 
 # Keywords dict for coldfusion_cfscript ruleset.
 coldfusion_cfscript_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"Abs": "function",
 	"ArrayAppend": "function",
 	"ArrayAvg": "function",
@@ -229,6 +233,10 @@ coldfusion_cfscript_keywords_dict = {
 
 # Keywords dict for coldfusion_cftags ruleset.
 coldfusion_cftags_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"AND": "operator",
 	"Abs": "keyword2",
 	"ArrayAppend": "keyword2",

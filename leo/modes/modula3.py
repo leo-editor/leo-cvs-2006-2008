@@ -8,6 +8,10 @@ properties = {
 
 # Keywords dict for modula3_main ruleset.
 modula3_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"ABS": "literal2",
 	"ADDRESS": "literal2",
 	"ADR": "literal2",

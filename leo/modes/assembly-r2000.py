@@ -8,6 +8,10 @@ properties = {
 
 # Keywords dict for assembly_r2000_main ruleset.
 assembly_r2000_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"$a0": "keyword2",
 	"$a1": "keyword2",
 	"$a2": "keyword2",

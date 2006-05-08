@@ -15,6 +15,10 @@ properties = {
 
 # Keywords dict for d_main ruleset.
 d_main_keywords_dict = {
+	"
+": "keywords",
+	"        ": "keywords",
+	"            ": "keywords",
 	"abstract": "keyword1",
 	"alias": "keyword3",
 	"align": "keyword4",

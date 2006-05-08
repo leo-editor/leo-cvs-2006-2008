@@ -11,6 +11,10 @@ properties = {
 
 # Keywords dict for smalltalk_main ruleset.
 smalltalk_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"Array": "literal2",
 	"Boolean": "literal2",
 	"Character": "literal2",

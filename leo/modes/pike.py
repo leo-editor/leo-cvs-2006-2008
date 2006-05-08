@@ -15,6 +15,10 @@ properties = {
 
 # Keywords dict for pike_main ruleset.
 pike_main_keywords_dict = {
+	"
+": "keywords",
+	"    ": "keywords",
+	"      ": "keywords",
 	"array": "keyword3",
 	"break": "keyword1",
 	"case": "keyword1",
@@ -61,12 +65,20 @@ pike_main_keywords_dict = {
 
 # Keywords dict for pike_comment ruleset.
 pike_comment_keywords_dict = {
+	"
+": "keywords",
+	"    ": "keywords",
+	"      ": "keywords",
 	"FIXME": "comment2",
 	"XXX": "comment2",
 }
 
 # Keywords dict for pike_autodoc ruleset.
 pike_autodoc_keywords_dict = {
+	"		": "keywords",
+	"		  ": "keywords",
+	"
+": "keywords",
 	"@appears": "label",
 	"@array": "label",
 	"@belongs": "label",

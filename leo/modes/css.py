@@ -12,6 +12,10 @@ properties = {
 
 # Keywords dict for css_main ruleset.
 css_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	":after": "keyword3",
 	":before": "keyword3",
 	"@font-face": "keyword2",

@@ -15,6 +15,11 @@ properties = {
 
 # Keywords dict for uscript_main ruleset.
 uscript_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
+	"            ": "keywords",
 	"abstract": "keyword1",
 	"array": "keyword1",
 	"auto": "keyword1",

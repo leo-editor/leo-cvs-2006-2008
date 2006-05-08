@@ -9,6 +9,10 @@ properties = {
 
 # Keywords dict for omnimark_main ruleset.
 omnimark_main_keywords_dict = {
+	"
+": "keywords",
+	"        ": "keywords",
+	"            ": "keywords",
 	"#!": "keyword2",
 	"#additional-info": "keyword2",
 	"#appinfo": "keyword2",

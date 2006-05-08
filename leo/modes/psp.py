@@ -14,6 +14,10 @@ psp_tags_keywords_dict = {}
 
 # Keywords dict for psp_directive ruleset.
 psp_directive_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"file": "keyword4",
 	"include": "keyword4",
 }

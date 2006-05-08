@@ -9,6 +9,11 @@ properties = {
 
 # Keywords dict for prolog_main ruleset.
 prolog_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
+	" ": "keywords",
 	"!": "keyword1",
 	"_": "keyword3",
 	"abolish": "function",

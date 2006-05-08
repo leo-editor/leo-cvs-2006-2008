@@ -7,6 +7,10 @@ properties = {
 
 # Keywords dict for apacheconf_main ruleset.
 apacheconf_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"AcceptMutex": "keyword1",
 	"AcceptPathInfo": "keyword1",
 	"AccessFileName": "keyword1",
@@ -287,6 +291,10 @@ apacheconf_main_keywords_dict = {
 
 # Keywords dict for apacheconf_directive ruleset.
 apacheconf_directive_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"AcceptMutex": "keyword2",
 	"AcceptPathInfo": "keyword2",
 	"AccessFileName": "keyword2",
@@ -624,6 +632,10 @@ apacheconf_directive_keywords_dict = {
 
 # Keywords dict for apacheconf_vhost ruleset.
 apacheconf_vhost_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"AcceptMutex": "keyword2",
 	"AcceptPathInfo": "keyword2",
 	"AccessFileName": "keyword2",

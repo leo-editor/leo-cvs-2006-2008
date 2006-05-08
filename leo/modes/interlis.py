@@ -9,6 +9,10 @@ properties = {
 
 # Keywords dict for interlis_main ruleset.
 interlis_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"ABSTRACT": "keyword1",
 	"ACCORDING": "keyword1",
 	"AGGREGATES": "keyword1",

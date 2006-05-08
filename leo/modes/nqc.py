@@ -15,6 +15,10 @@ properties = {
 
 # Keywords dict for nqc_main ruleset.
 nqc_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"ACQUIRE_OUT_A": "literal2",
 	"ACQUIRE_OUT_B": "literal2",
 	"ACQUIRE_OUT_C": "literal2",

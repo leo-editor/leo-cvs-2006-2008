@@ -15,6 +15,10 @@ properties = {
 
 # Keywords dict for objective_c_main ruleset.
 objective_c_main_keywords_dict = {
+	"
+": "keywords",
+	"        ": "keywords",
+	"            ": "keywords",
 	"@class": "keyword1",
 	"@defs": "keyword1",
 	"@end": "keyword1",

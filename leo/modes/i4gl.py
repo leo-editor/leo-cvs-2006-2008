@@ -11,6 +11,10 @@ properties = {
 
 # Keywords dict for i4gl_main ruleset.
 i4gl_main_keywords_dict = {
+	"
+": "keywords",
+	"      ": "keywords",
+	"        ": "keywords",
 	"ABORT": "keyword1",
 	"ABS": "keyword1",
 	"ABSOLUTE": "keyword1",

@@ -10,6 +10,10 @@ properties = {
 
 # Keywords dict for rib_main ruleset.
 rib_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"ArchiveRecord": "keyword4",
 	"AreaLightSource": "keyword2",
 	"Atmosphere": "keyword2",
@@ -136,6 +140,10 @@ rib_main_keywords_dict = {
 
 # Keywords dict for rib_literals ruleset.
 rib_literals_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"Cs": "literal2",
 	"N": "literal2",
 	"NDC": "literal2",

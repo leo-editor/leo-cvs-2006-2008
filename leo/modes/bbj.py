@@ -9,6 +9,10 @@ properties = {
 
 # Keywords dict for bbj_main ruleset.
 bbj_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	"ABS": "keyword1",
 	"ADDR": "keyword3",
 	"ADJN": "keyword1",

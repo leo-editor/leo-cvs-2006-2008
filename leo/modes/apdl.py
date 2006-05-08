@@ -7,6 +7,10 @@ properties = {
 
 # Keywords dict for apdl_main ruleset.
 apdl_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
 	",a": "keyword3",
 	",asel": "keyword3",
 	",bf": "keyword3",

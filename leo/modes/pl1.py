@@ -9,6 +9,12 @@ properties = {
 
 # Keywords dict for pl1_main ruleset.
 pl1_main_keywords_dict = {
+	"		": "keywords",
+	"			": "keywords",
+	"
+": "keywords",
+	" 			": "keywords",
+	"      ": "keywords",
 	"%include": "keyword1",
 	"A": "keyword2",
 	"C": "keyword2",
