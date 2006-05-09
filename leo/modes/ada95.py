@@ -7,10 +7,6 @@ properties = {
 
 # Keywords dict for ada95_main ruleset.
 ada95_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"abort": "keyword2",
 	"abs": "keyword2",
 	"abstract": "keyword2",

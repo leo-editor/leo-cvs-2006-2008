@@ -9,10 +9,6 @@ properties = {
 
 # Keywords dict for pascal_main ruleset.
 pascal_main_keywords_dict = {
-	"
-": "keywords",
-	"        ": "keywords",
-	"            ": "keywords",
 	"absolute": "keyword2",
 	"abstract": "keyword2",
 	"and": "keyword1",

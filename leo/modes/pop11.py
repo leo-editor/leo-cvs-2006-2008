@@ -9,13 +9,6 @@ properties = {
 
 # Keywords dict for pop11_main ruleset.
 pop11_main_keywords_dict = {
-	"		": "keywords",
-	"		    ": "keywords",
-	"
-": "keywords",
-	" ": "keywords",
-	"        ": "keywords",
-	"            ": "keywords",
 	"add": "literal2",
 	"alladd": "literal2",
 	"and": "keyword2",
@@ -212,7 +205,7 @@ def rule11(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule12(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="label", pattern="#_"
+    return colorer.match_mark_following(s, i, kind="label", pattern="#_",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule13(colorer, s, i):
@@ -442,15 +435,15 @@ def rule42(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule43(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="literal2", pattern="^"
+    return colorer.match_mark_following(s, i, kind="literal2", pattern="^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule44(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="literal2", pattern="?"
+    return colorer.match_mark_following(s, i, kind="literal2", pattern="?",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 # Rules dict for list ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	"!": [rule35,],
 	"\"": [rule37,],
 	"%": [rule38,],
@@ -467,7 +460,7 @@ rulesDict1 = {
 # Rules for pop11_string ruleset.
 
 # Rules dict for string ruleset.
-rulesDict1 = {}
+rulesDict3 = {}
 
 # Rules for pop11_comment ruleset.
 
@@ -480,17 +473,17 @@ def rule46(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules dict for comment ruleset.
-rulesDict1 = {
+rulesDict4 = {
 	"*": [rule46,],
 	":": [rule45,],
 }
 
 # x.rulesDictDict for pop11 mode.
 rulesDictDict = {
-	"pop11_comment": rulesDict1,
-	"pop11_list": rulesDict1,
+	"pop11_comment": rulesDict4,
+	"pop11_list": rulesDict2,
 	"pop11_main": rulesDict1,
-	"pop11_string": rulesDict1,
+	"pop11_string": rulesDict3,
 }
 
 # Import dict for pop11 mode.

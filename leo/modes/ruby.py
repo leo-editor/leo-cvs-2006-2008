@@ -12,10 +12,6 @@ properties = {
 
 # Keywords dict for ruby_main ruleset.
 ruby_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"BEGIN": "keyword1",
 	"END": "keyword1",
 	"__FILE__": "literal2",
@@ -325,13 +321,13 @@ def rule36(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 # Rules dict for doublequoteliteral ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	"#": [rule36,],
 }
 
 # x.rulesDictDict for ruby mode.
 rulesDictDict = {
-	"ruby_doublequoteliteral": rulesDict1,
+	"ruby_doublequoteliteral": rulesDict2,
 	"ruby_main": rulesDict1,
 }
 

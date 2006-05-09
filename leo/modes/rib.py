@@ -10,10 +10,6 @@ properties = {
 
 # Keywords dict for rib_main ruleset.
 rib_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"ArchiveRecord": "keyword4",
 	"AreaLightSource": "keyword2",
 	"Atmosphere": "keyword2",
@@ -140,10 +136,6 @@ rib_main_keywords_dict = {
 
 # Keywords dict for rib_literals ruleset.
 rib_literals_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"Cs": "literal2",
 	"N": "literal2",
 	"NDC": "literal2",
@@ -323,7 +315,7 @@ def rule8(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for literals ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	"0": [rule8,],
 	"1": [rule8,],
 	"2": [rule8,],
@@ -392,7 +384,7 @@ rulesDict1 = {
 
 # x.rulesDictDict for rib mode.
 rulesDictDict = {
-	"rib_literals": rulesDict1,
+	"rib_literals": rulesDict2,
 	"rib_main": rulesDict1,
 }
 

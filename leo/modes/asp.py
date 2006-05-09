@@ -227,7 +227,7 @@ def rule30(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=True)
 
 # Rules dict for aspvb ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	"&": [rule30,],
 	"<": [rule17,rule18,rule19,rule20,rule21,rule22,rule23,rule24,rule25,rule26,rule27,rule28,rule29,],
 }
@@ -319,7 +319,7 @@ def rule44(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=True)
 
 # Rules dict for aspjs ruleset.
-rulesDict1 = {
+rulesDict3 = {
 	"&": [rule44,],
 	"<": [rule31,rule32,rule33,rule34,rule35,rule36,rule37,rule38,rule39,rule40,rule41,rule42,rule43,],
 }
@@ -411,7 +411,7 @@ def rule58(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=True)
 
 # Rules dict for asppl ruleset.
-rulesDict1 = {
+rulesDict4 = {
 	"&": [rule58,],
 	"<": [rule45,rule46,rule47,rule48,rule49,rule50,rule51,rule52,rule53,rule54,rule55,rule56,rule57,],
 }
@@ -425,7 +425,7 @@ def rule59(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 # Rules dict for aspvb_tags ruleset.
-rulesDict1 = {
+rulesDict5 = {
 	"<": [rule59,],
 }
 
@@ -438,7 +438,7 @@ def rule60(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 # Rules dict for aspjs_tags ruleset.
-rulesDict1 = {
+rulesDict6 = {
 	"<": [rule60,],
 }
 
@@ -451,18 +451,18 @@ def rule61(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 # Rules dict for asppl_tags ruleset.
-rulesDict1 = {
+rulesDict7 = {
 	"<": [rule61,],
 }
 
 # x.rulesDictDict for asp mode.
 rulesDictDict = {
-	"asp_aspjs": rulesDict1,
-	"asp_aspjs_tags": rulesDict1,
-	"asp_asppl": rulesDict1,
-	"asp_asppl_tags": rulesDict1,
-	"asp_aspvb": rulesDict1,
-	"asp_aspvb_tags": rulesDict1,
+	"asp_aspjs": rulesDict3,
+	"asp_aspjs_tags": rulesDict6,
+	"asp_asppl": rulesDict4,
+	"asp_asppl_tags": rulesDict7,
+	"asp_aspvb": rulesDict2,
+	"asp_aspvb_tags": rulesDict5,
 	"asp_main": rulesDict1,
 }
 

@@ -51,35 +51,35 @@ def rule7(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule8(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="label", seq="\^{3,}",
+    return colorer.match_seq_regexp(s, i, kind="label", seq="\\^{3,}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule9(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="label", seq="\+{3,}",
+    return colorer.match_seq_regexp(s, i, kind="label", seq="\\+{3,}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule10(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="label", seq="\*{3,}",
+    return colorer.match_seq_regexp(s, i, kind="label", seq="\\*{3,}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule11(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal3", seq="\.\.\s\|[^|]+\|",
+    return colorer.match_seq_regexp(s, i, kind="literal3", seq="\\.\\.\\s\\|[^|]+\\|",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule12(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal4", seq="\|[^|]+\|",
+    return colorer.match_seq_regexp(s, i, kind="literal4", seq="\\|[^|]+\\|",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule13(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal2", seq="\.\.\s[A-z][A-z0-9-_]+::",
+    return colorer.match_seq_regexp(s, i, kind="literal2", seq="\\.\\.\\s[A-z][A-z0-9-_]+::",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule14(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", seq="\*\*[^*]+\*\*",
+    return colorer.match_seq_regexp(s, i, kind="keyword2", seq="\\*\\*[^*]+\\*\\*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule15(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword4", seq="\*[^\s*][^*]*\*",
+    return colorer.match_seq_regexp(s, i, kind="keyword4", seq="\\*[^\\s*][^*]*\\*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule16(colorer, s, i):
@@ -92,19 +92,19 @@ def rule17(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule18(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="label", seq="\[[0-9]+\]_",
+    return colorer.match_seq_regexp(s, i, kind="label", seq="\\[[0-9]+\\]_",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule19(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="label", seq="\[#[A-z0-9_]*\]_",
+    return colorer.match_seq_regexp(s, i, kind="label", seq="\\[#[A-z0-9_]*\\]_",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule20(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="label", seq="\[*\]_",
+    return colorer.match_seq_regexp(s, i, kind="label", seq="\\[*\\]_",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule21(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="label", seq="\[[A-z][A-z0-9_-]*\]_",
+    return colorer.match_seq_regexp(s, i, kind="label", seq="\\[[A-z][A-z0-9_-]*\\]_",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule22(colorer, s, i):
@@ -118,15 +118,15 @@ def rule23(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule24(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword1", seq=":[A-z][A-z0-9 	=\s\t_]*:",
+    return colorer.match_seq_regexp(s, i, kind="keyword1", seq=":[A-z][A-z0-9 \t=\\s\\t_]*:",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule25(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="label", seq="\+-[+-]+",
+    return colorer.match_seq_regexp(s, i, kind="label", seq="\\+-[+-]+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule26(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="label", seq="\+=[+=]+",
+    return colorer.match_seq_regexp(s, i, kind="label", seq="\\+=[+=]+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules dict for main ruleset.
@@ -137,7 +137,7 @@ rulesDict1 = {
 	".": [rule1,rule16,],
 	":": [rule24,],
 	"=": [rule2,],
-	"\": [rule8,rule9,rule10,rule11,rule12,rule13,rule14,rule15,rule18,rule19,rule20,rule21,rule25,rule26,],
+	"\\": [rule8,rule9,rule10,rule11,rule12,rule13,rule14,rule15,rule18,rule19,rule20,rule21,rule25,rule26,],
 	"_": [rule0,],
 	"`": [rule5,rule17,rule22,rule23,],
 	"~": [rule4,],

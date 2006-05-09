@@ -7,11 +7,6 @@ properties = {
 
 # Keywords dict for vbscript_main ruleset.
 vbscript_main_keywords_dict = {
-	"	": "keywords",
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"Err": "keyword2",
 	"abs": "keyword2",
 	"adAsyncExecute": "literal2",
@@ -401,7 +396,7 @@ def rule16(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule17(colorer, s, i):
-    return colorer.match_seq(s, i, kind="operator", seq="\",
+    return colorer.match_seq(s, i, kind="operator", seq="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule18(colorer, s, i):
@@ -471,7 +466,7 @@ rulesDict1 = {
 	"X": [rule21,],
 	"Y": [rule21,],
 	"Z": [rule21,],
-	"\": [rule17,],
+	"\\": [rule17,],
 	"^": [rule18,],
 	"_": [rule21,],
 	"a": [rule21,],

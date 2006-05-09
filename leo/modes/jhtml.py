@@ -4,7 +4,7 @@
 properties = {
 	"commentEnd": "-->",
 	"commentStart": "<!--",
-	"indentNextLines": "\s*(<\s*(droplet|oparam))\s+.*",
+	"indentNextLines": "\\s*(<\\s*(droplet|oparam))\\s+.*",
 }
 
 # Keywords dict for jhtml_main ruleset.
@@ -12,10 +12,6 @@ jhtml_main_keywords_dict = {}
 
 # Keywords dict for jhtml_jhtml ruleset.
 jhtml_jhtml_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"bean": "keyword2",
 	"converter": "keyword2",
 	"currency": "keyword2",
@@ -141,7 +137,7 @@ def rule13(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for jhtml ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	"\"": [rule10,],
 	"'": [rule11,],
 	"/": [rule12,],
@@ -229,7 +225,7 @@ def rule16(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules dict for attrvalue ruleset.
-rulesDict1 = {
+rulesDict3 = {
 	"`": [rule14,],
 	"b": [rule16,],
 	"p": [rule15,],
@@ -237,8 +233,8 @@ rulesDict1 = {
 
 # x.rulesDictDict for jhtml mode.
 rulesDictDict = {
-	"jhtml_attrvalue": rulesDict1,
-	"jhtml_jhtml": rulesDict1,
+	"jhtml_attrvalue": rulesDict3,
+	"jhtml_jhtml": rulesDict2,
 	"jhtml_main": rulesDict1,
 }
 

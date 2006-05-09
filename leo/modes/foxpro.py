@@ -3,16 +3,12 @@
 # Properties for foxpro mode.
 properties = {
 	"blockComment": "&&",
-	"indentNextLine": "\s*(((if|do\swhile|do\scase|try)\s*\(|else\s*|elseif\s*\|case|catch(|for\s*\(.*\))[^{;]*)",
+	"indentNextLine": "\\s*(((if|do\\swhile|do\\scase|try)\\s*\\(|else\\s*|elseif\\s*\\|case|catch(|for\\s*\\(.*\\))[^{;]*)",
 	"lineComment": "&&",
 }
 
 # Keywords dict for foxpro_main ruleset.
 foxpro_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"?": "operator",
 	"ADOCKTIP": "keyword3",
 	"ADirtip": "keyword3",
@@ -1887,7 +1883,7 @@ def rule29(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule30(colorer, s, i):
-    return colorer.match_seq(s, i, kind="operator", seq="\",
+    return colorer.match_seq(s, i, kind="operator", seq="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule31(colorer, s, i):
@@ -1957,7 +1953,7 @@ rulesDict1 = {
 	"X": [rule34,],
 	"Y": [rule34,],
 	"Z": [rule34,],
-	"\": [rule30,],
+	"\\": [rule30,],
 	"^": [rule31,],
 	"_": [rule34,],
 	"a": [rule34,],

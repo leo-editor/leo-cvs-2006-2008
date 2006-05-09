@@ -33,7 +33,7 @@ def rule2(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule3(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="label", seq="\s+\w[[:alnum:][:blank:]]+::",
+    return colorer.match_seq_regexp(s, i, kind="label", seq="\\s+\\w[[:alnum:][:blank:]]+::",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule4(colorer, s, i):
@@ -49,7 +49,7 @@ def rule5(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule6(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="('{2,5})[^']+\1[^']",
+    return colorer.match_seq_regexp(s, i, kind="literal1", seq="('{2,5})[^']+\\1[^']",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule7(colorer, s, i):
@@ -210,7 +210,7 @@ rulesDict1 = {
 	"Y": [rule33,],
 	"Z": [rule34,],
 	"[": [rule2,rule35,rule36,],
-	"\": [rule3,],
+	"\\": [rule3,],
 	"`": [rule5,],
 	"{": [rule4,],
 }

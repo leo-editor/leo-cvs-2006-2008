@@ -2,16 +2,12 @@
 
 # Properties for ptl mode.
 properties = {
-	"indentNextLines": "\s*[^#]{3,}:\s*(#.*)?",
+	"indentNextLines": "\\s*[^#]{3,}:\\s*(#.*)?",
 	"lineComment": "#",
 }
 
 # Keywords dict for ptl_main ruleset.
 ptl_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"_q_access": "literal4",
 	"_q_exception_handler": "literal4",
 	"_q_exports": "literal4",

@@ -6,7 +6,7 @@ properties = {
 	"commentStart": "/*",
 	"doubleBracketIndent": "false",
 	"indentCloseBrackets": "}",
-	"indentNextLine": "\s*(((if|while)\s*\(|else\s*|else\s+if\s*\(|for\s*\(.*\))[^{;]*)",
+	"indentNextLine": "\\s*(((if|while)\\s*\\(|else\\s*|else\\s+if\\s*\\(|for\\s*\\(.*\\))[^{;]*)",
 	"indentOpenBrackets": "{",
 	"lineComment": "//",
 	"lineUpClosingBracket": "true",
@@ -30,7 +30,7 @@ def rule0(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule1(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword4", pattern="%"
+    return colorer.match_mark_following(s, i, kind="keyword4", pattern="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 

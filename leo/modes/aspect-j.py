@@ -7,18 +7,13 @@ properties = {
 	"doubleBracketIndent": "false",
 	"indentCloseBrackets": "}",
 	"indentOpenBrackets": "{",
-	"indentPrevLine": "\s*(((if|while)\s*\(|else\s*|else\s+if\s*\(|for\s*\(.*\))[^{;]*)",
+	"indentPrevLine": "\\s*(((if|while)\\s*\\(|else\\s*|else\\s+if\\s*\\(|for\\s*\\(.*\\))[^{;]*)",
 	"lineComment": "//",
 	"wordBreakChars": ",+-=<>/?^&*",
 }
 
 # Keywords dict for aspect_j_main ruleset.
 aspect_j_main_keywords_dict = {
-	"						": "keywords",
-	"
-": "keywords",
-	"                ": "keywords",
-	"                        ": "keywords",
 	"..": "keyword4",
 	"abstract": "keyword1",
 	"adviceexecution": "keyword4",

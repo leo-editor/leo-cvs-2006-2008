@@ -10,11 +10,6 @@ properties = {
 
 # Keywords dict for occam_main ruleset.
 occam_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
-	"                        ": "keywords",
 	"ABS": "keyword3",
 	"AFTER": "keyword2",
 	"ALOG": "keyword3",
@@ -283,7 +278,7 @@ def rule16(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule17(colorer, s, i):
-    return colorer.match_seq(s, i, kind="operator", seq="\",
+    return colorer.match_seq(s, i, kind="operator", seq="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule18(colorer, s, i):
@@ -299,11 +294,11 @@ def rule20(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule21(colorer, s, i):
-    return colorer.match_seq(s, i, kind="operator", seq="/\",
+    return colorer.match_seq(s, i, kind="operator", seq="/\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule22(colorer, s, i):
-    return colorer.match_seq(s, i, kind="operator", seq="\/",
+    return colorer.match_seq(s, i, kind="operator", seq="\\/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule23(colorer, s, i):
@@ -365,7 +360,7 @@ rulesDict1 = {
 	"X": [rule24,],
 	"Y": [rule24,],
 	"Z": [rule24,],
-	"\": [rule17,rule22,],
+	"\\": [rule17,rule22,],
 	"_": [rule24,],
 	"a": [rule24,],
 	"b": [rule24,],

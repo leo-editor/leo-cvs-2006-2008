@@ -2,16 +2,12 @@
 
 # Properties for python mode.
 properties = {
-	"indentNextLines": "\s*[^#]{3,}:\s*(#.*)?",
+	"indentNextLines": "\\s*[^#]{3,}:\\s*(#.*)?",
 	"lineComment": "#",
 }
 
 # Keywords dict for python_main ruleset.
 python_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"ArithmeticError": "keyword3",
 	"AssertionError": "keyword3",
 	"AttributeError": "keyword3",

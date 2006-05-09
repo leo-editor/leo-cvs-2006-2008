@@ -10,10 +10,6 @@ properties = {
 
 # Keywords dict for jmk_main ruleset.
 jmk_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"%": "keyword2",
 	"<": "keyword2",
 	"?": "keyword2",

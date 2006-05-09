@@ -4,15 +4,11 @@
 properties = {
 	"commentEnd": "*/",
 	"commentStart": "/*",
-	"indentNextLines": "\s*(block|channel|connection|decision|generator|input|macro|newtype|operator|package|procedure|process|refinement|service|start|state|substructure|syntype|system).*|\s*(signal)\s*",
+	"indentNextLines": "\\s*(block|channel|connection|decision|generator|input|macro|newtype|operator|package|procedure|process|refinement|service|start|state|substructure|syntype|system).*|\\s*(signal)\\s*",
 }
 
 # Keywords dict for sdl_pr_main ruleset.
 sdl_pr_main_keywords_dict = {
-	"
-": "keywords",
-	"    ": "keywords",
-	"      ": "keywords",
 	"Array": "keyword3",
 	"Boolean": "keyword2",
 	"Character": "keyword2",

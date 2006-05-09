@@ -12,10 +12,6 @@ properties = {
 
 # Keywords dict for css_main ruleset.
 css_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	":after": "keyword3",
 	":before": "keyword3",
 	"@font-face": "keyword2",
@@ -534,7 +530,7 @@ def rule7(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule8(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="literal2", pattern="#"
+    return colorer.match_mark_following(s, i, kind="literal2", pattern="#",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule9(colorer, s, i):
@@ -627,11 +623,11 @@ rulesDict1 = {
 # Rules for css_literal ruleset.
 
 # Rules dict for literal ruleset.
-rulesDict1 = {}
+rulesDict2 = {}
 
 # x.rulesDictDict for css mode.
 rulesDictDict = {
-	"css_literal": rulesDict1,
+	"css_literal": rulesDict2,
 	"css_main": rulesDict1,
 }
 

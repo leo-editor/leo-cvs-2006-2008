@@ -6,17 +6,11 @@ properties = {
 	"indentOpenBrackets": "{",
 	"lineComment": "#",
 	"lineUpClosingBracket": "true",
-	"wordBreakChars": "|.\\:,+-*/=?^!@%<>&",
+	"wordBreakChars": "|.\\\\:,+-*/=?^!@%<>&",
 }
 
 # Keywords dict for icon_main ruleset.
 icon_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"						": "keywords",
-	"
-": "keywords",
-	" ": "keywords",
 	"$define": "keyword3",
 	"$else": "keyword3",
 	"$endif": "keyword3",

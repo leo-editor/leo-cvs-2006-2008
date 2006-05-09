@@ -7,10 +7,6 @@ properties = {
 
 # Keywords dict for gettext_main ruleset.
 gettext_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"c-format": "keyword2",
 	"fuzzy": "keyword2",
 	"msgid": "keyword1",
@@ -51,19 +47,19 @@ def rule3(colorer, s, i):
         delegate="", exclude_match=False)
 
 def rule4(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="comment2", pattern="#,"
+    return colorer.match_mark_following(s, i, kind="comment2", pattern="#,",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule5(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword3", pattern="%"
+    return colorer.match_mark_following(s, i, kind="keyword3", pattern="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule6(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword3", pattern="$"
+    return colorer.match_mark_following(s, i, kind="keyword3", pattern="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule7(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword3", pattern="@"
+    return colorer.match_mark_following(s, i, kind="keyword3", pattern="@",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule8(colorer, s, i):
@@ -150,35 +146,35 @@ rulesDict1 = {
 # Rules for gettext_quoted ruleset.
 
 def rule10(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal2", begin="\\"", end="\\"",
+    return colorer.match_span(s, i, kind="literal2", begin="\\\"", end="\\\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rule11(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword3", pattern="%"
+    return colorer.match_mark_following(s, i, kind="keyword3", pattern="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule12(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword3", pattern="$"
+    return colorer.match_mark_following(s, i, kind="keyword3", pattern="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule13(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword3", pattern="@"
+    return colorer.match_mark_following(s, i, kind="keyword3", pattern="@",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 # Rules dict for quoted ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	"$": [rule12,],
 	"%": [rule11,],
 	"@": [rule13,],
-	"\": [rule10,],
+	"\\": [rule10,],
 }
 
 # x.rulesDictDict for gettext mode.
 rulesDictDict = {
 	"gettext_main": rulesDict1,
-	"gettext_quoted": rulesDict1,
+	"gettext_quoted": rulesDict2,
 }
 
 # Import dict for gettext mode.

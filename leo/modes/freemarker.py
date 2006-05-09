@@ -8,10 +8,6 @@ freemarker_main_keywords_dict = {}
 
 # Keywords dict for freemarker_expression ruleset.
 freemarker_expression_keywords_dict = {
-	"
-": "keywords",
-	"    ": "keywords",
-	"      ": "keywords",
 	"as": "keyword1",
 	"false": "keyword1",
 	"gt": "operator",
@@ -104,37 +100,37 @@ def rule9(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule10(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword1", begin="<#ftl\>", end=">",
+    return colorer.match_span_regexp(s, i, kind="keyword1", begin="<#ftl\\>", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="EXPRESSION",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule11(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword1", begin="<#?(if|elseif|switch|foreach|list|case|assign|local|global|setting|include|import|stop|escape|macro|function|transform|call|visit|recurse)(\s|/|$)", end=">",
+    return colorer.match_span_regexp(s, i, kind="keyword1", begin="<#?(if|elseif|switch|foreach|list|case|assign|local|global|setting|include|import|stop|escape|macro|function|transform|call|visit|recurse)(\\s|/|$)", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="EXPRESSION",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule12(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword1", begin="</#?(assign|local|global|if|switch|foreach|list|escape|macro|function|transform|compress|noescape)\>", end=">",
+    return colorer.match_span_regexp(s, i, kind="keyword1", begin="</#?(assign|local|global|if|switch|foreach|list|escape|macro|function|transform|compress|noescape)\\>", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="INVALID",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule13(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword1", begin="<#?(else|compress|noescape|default|break|flush|nested|t|rt|lt|return|recurse)\>", end=">",
+    return colorer.match_span_regexp(s, i, kind="keyword1", begin="<#?(else|compress|noescape|default|break|flush|nested|t|rt|lt|return|recurse)\\>", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="INVALID",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule14(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword1", begin="</@(([_@[:alpha:]][_@[:alnum:]]*)(\.[_@[:alpha:]][_@[:alnum:]]*)*)?", end=">",
+    return colorer.match_span_regexp(s, i, kind="keyword1", begin="</@(([_@[:alpha:]][_@[:alnum:]]*)(\\.[_@[:alpha:]][_@[:alnum:]]*)*)?", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="INVALID",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule15(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword1", begin="<@([_@[:alpha:]][_@[:alnum:]]*)(\.[_@[:alpha:]][_@[:alnum:]]*)*", end=">",
+    return colorer.match_span_regexp(s, i, kind="keyword1", begin="<@([_@[:alpha:]][_@[:alnum:]]*)(\\.[_@[:alpha:]][_@[:alnum:]]*)*", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="EXPRESSION",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
@@ -287,14 +283,14 @@ def rule45(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule46(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="function", pattern="?"
+    return colorer.match_mark_following(s, i, kind="function", pattern="?",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule47(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for expression ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	"!": [rule27,],
 	"\"": [rule24,],
 	"%": [rule36,],
@@ -401,7 +397,7 @@ def rule50(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules dict for tags ruleset.
-rulesDict1 = {
+rulesDict3 = {
 	"\"": [rule48,],
 	"'": [rule49,],
 	"=": [rule50,],
@@ -422,7 +418,7 @@ def rule52(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 # Rules dict for inquote ruleset.
-rulesDict1 = {
+rulesDict4 = {
 	"#": [rule52,],
 	"$": [rule51,],
 }
@@ -430,15 +426,15 @@ rulesDict1 = {
 # Rules for freemarker_invalid ruleset.
 
 # Rules dict for invalid ruleset.
-rulesDict1 = {}
+rulesDict5 = {}
 
 # x.rulesDictDict for freemarker mode.
 rulesDictDict = {
-	"freemarker_expression": rulesDict1,
-	"freemarker_inquote": rulesDict1,
-	"freemarker_invalid": rulesDict1,
+	"freemarker_expression": rulesDict2,
+	"freemarker_inquote": rulesDict4,
+	"freemarker_invalid": rulesDict5,
 	"freemarker_main": rulesDict1,
-	"freemarker_tags": rulesDict1,
+	"freemarker_tags": rulesDict3,
 }
 
 # Import dict for freemarker mode.

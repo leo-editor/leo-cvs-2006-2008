@@ -6,7 +6,7 @@ properties = {
 	"commentStart": "/*",
 	"doubleBracketIndent": "false",
 	"indentCloseBrackets": "}",
-	"indentNextLine": "\s*(((if|while)\s*\(|else\s*|else\s+if\s*\(|for\s*\(.*\))[^{;]*)",
+	"indentNextLine": "\\s*(((if|while)\\s*\\(|else\\s*|else\\s+if\\s*\\(|for\\s*\\(.*\\))[^{;]*)",
 	"indentOpenBrackets": "{",
 	"lineComment": "//",
 	"lineUpClosingBracket": "true",
@@ -15,11 +15,6 @@ properties = {
 
 # Keywords dict for uscript_main ruleset.
 uscript_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
-	"            ": "keywords",
 	"abstract": "keyword1",
 	"array": "keyword1",
 	"auto": "keyword1",
@@ -187,7 +182,7 @@ def rule16(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule17(colorer, s, i):
-    return colorer.match_seq(s, i, kind="operator", seq="\\",
+    return colorer.match_seq(s, i, kind="operator", seq="\\\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule18(colorer, s, i):
@@ -280,7 +275,7 @@ rulesDict1 = {
 	"X": [rule26,],
 	"Y": [rule26,],
 	"Z": [rule26,],
-	"\": [rule17,],
+	"\\": [rule17,],
 	"^": [rule10,],
 	"_": [rule26,],
 	"`": [rule23,],

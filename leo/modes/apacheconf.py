@@ -7,10 +7,6 @@ properties = {
 
 # Keywords dict for apacheconf_main ruleset.
 apacheconf_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"AcceptMutex": "keyword1",
 	"AcceptPathInfo": "keyword1",
 	"AccessFileName": "keyword1",
@@ -291,10 +287,6 @@ apacheconf_main_keywords_dict = {
 
 # Keywords dict for apacheconf_directive ruleset.
 apacheconf_directive_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"AcceptMutex": "keyword2",
 	"AcceptPathInfo": "keyword2",
 	"AccessFileName": "keyword2",
@@ -632,10 +624,6 @@ apacheconf_directive_keywords_dict = {
 
 # Keywords dict for apacheconf_vhost ruleset.
 apacheconf_vhost_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"AcceptMutex": "keyword2",
 	"AcceptPathInfo": "keyword2",
 	"AccessFileName": "keyword2",
@@ -947,7 +935,7 @@ def rule2(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule3(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="markup", begin="<(\w+)[^>]*>", end="</$1>",
+    return colorer.match_span_regexp(s, i, kind="markup", begin="<(\\w+)[^>]*>", end="</$1>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
@@ -1046,7 +1034,7 @@ def rule7(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule8(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="markup", begin="<(\w+)[^>]*>", end="</$1>",
+    return colorer.match_span_regexp(s, i, kind="markup", begin="<(\\w+)[^>]*>", end="</$1>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
@@ -1055,7 +1043,7 @@ def rule9(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for directive ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	"\"": [rule6,],
 	"#": [rule5,],
 	"0": [rule9,],
@@ -1142,7 +1130,7 @@ def rule12(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for vhost ruleset.
-rulesDict1 = {
+rulesDict3 = {
 	"\"": [rule11,],
 	"#": [rule10,],
 	"0": [rule12,],
@@ -1213,9 +1201,9 @@ rulesDict1 = {
 
 # x.rulesDictDict for apacheconf mode.
 rulesDictDict = {
-	"apacheconf_directive": rulesDict1,
+	"apacheconf_directive": rulesDict2,
 	"apacheconf_main": rulesDict1,
-	"apacheconf_vhost": rulesDict1,
+	"apacheconf_vhost": rulesDict3,
 }
 
 # Import dict for apacheconf mode.

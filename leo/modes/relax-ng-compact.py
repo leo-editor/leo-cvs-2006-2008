@@ -11,10 +11,6 @@ properties = {
 
 # Keywords dict for relax_ng_compact_main ruleset.
 relax_ng_compact_main_keywords_dict = {
-	"
-": "keywords",
-	"        ": "keywords",
-	"            ": "keywords",
 	"attribute": "keyword1",
 	"datatypes": "keyword1",
 	"default": "keyword1",
@@ -109,7 +105,7 @@ def rule13(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule14(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="null", pattern="\"
+    return colorer.match_mark_following(s, i, kind="null", pattern="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule15(colorer, s, i):
@@ -163,7 +159,7 @@ rulesDict1 = {
 	"X": [rule15,],
 	"Y": [rule15,],
 	"Z": [rule15,],
-	"\": [rule14,],
+	"\\": [rule14,],
 	"_": [rule15,],
 	"a": [rule15,],
 	"b": [rule15,],

@@ -6,7 +6,7 @@ properties = {
 	"commentStart": "(",
 	"doubleBracketIndent": "true",
 	"indentCloseBrackets": "]",
-	"indentNextLines": "^(\*<<|:).*",
+	"indentNextLines": "^(\\*<<|:).*",
 	"indentOpenBrackets": "[",
 	"lineComment": "!",
 	"lineUpClosingBracket": "true",
@@ -15,10 +15,6 @@ properties = {
 
 # Keywords dict for factor_main ruleset.
 factor_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"#{": "operator",
 	"--": "label",
 	";": "markup",
@@ -57,39 +53,39 @@ def rule1(colorer, s, i):
         delegate="", exclude_match=False)
 
 def rule2(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="markup", seq=":\s+(\S+)",
+    return colorer.match_seq_regexp(s, i, kind="markup", seq=":\\s+(\\S+)",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule3(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="markup", seq="IN:\s+(\S+)",
+    return colorer.match_seq_regexp(s, i, kind="markup", seq="IN:\\s+(\\S+)",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule4(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="markup", seq="USE:\s+(\S+)",
+    return colorer.match_seq_regexp(s, i, kind="markup", seq="USE:\\s+(\\S+)",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule5(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="markup", seq="DEFER:\s+(\S+)",
+    return colorer.match_seq_regexp(s, i, kind="markup", seq="DEFER:\\s+(\\S+)",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule6(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="markup", seq="POSTPONE:\s+(\S+)",
+    return colorer.match_seq_regexp(s, i, kind="markup", seq="POSTPONE:\\s+(\\S+)",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule7(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal2", seq="CHAR:\s+(\S+)",
+    return colorer.match_seq_regexp(s, i, kind="literal2", seq="CHAR:\\s+(\\S+)",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule8(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal2", seq="BIN:\s+(\S+)",
+    return colorer.match_seq_regexp(s, i, kind="literal2", seq="BIN:\\s+(\\S+)",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule9(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal2", seq="OCT:\s+(\S+)",
+    return colorer.match_seq_regexp(s, i, kind="literal2", seq="OCT:\\s+(\\S+)",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule10(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal2", seq="HEX:\s+(\S+)",
+    return colorer.match_seq_regexp(s, i, kind="literal2", seq="HEX:\\s+(\\S+)",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule11(colorer, s, i):
@@ -187,14 +183,14 @@ def rule14(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules dict for stack_effect ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	"-": [rule14,],
 }
 
 # x.rulesDictDict for factor mode.
 rulesDictDict = {
 	"factor_main": rulesDict1,
-	"factor_stack_effect": rulesDict1,
+	"factor_stack_effect": rulesDict2,
 }
 
 # Import dict for factor mode.

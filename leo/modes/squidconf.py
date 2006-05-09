@@ -7,10 +7,6 @@ properties = {
 
 # Keywords dict for squidconf_main ruleset.
 squidconf_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"acl": "keyword1",
 	"allow": "literal2",
 	"always_direct": "keyword1",

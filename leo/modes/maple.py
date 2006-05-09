@@ -7,10 +7,6 @@ properties = {
 
 # Keywords dict for maple_main ruleset.
 maple_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"AFactor": "function",
 	"AFactors": "function",
 	"AIrreduc": "function",

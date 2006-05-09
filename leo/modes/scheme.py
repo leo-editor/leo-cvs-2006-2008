@@ -13,10 +13,6 @@ properties = {
 
 # Keywords dict for scheme_main ruleset.
 scheme_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"#f": "literal2",
 	"#t": "literal2",
 	"<": "keyword3",
@@ -233,27 +229,27 @@ def rule1(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule2(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="literal1", pattern="'"
+    return colorer.match_mark_following(s, i, kind="literal1", pattern="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule3(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="literal1", pattern="#\"
+    return colorer.match_mark_following(s, i, kind="literal1", pattern="#\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule4(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="literal1", pattern="#b"
+    return colorer.match_mark_following(s, i, kind="literal1", pattern="#b",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule5(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="literal1", pattern="#d"
+    return colorer.match_mark_following(s, i, kind="literal1", pattern="#d",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule6(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="literal1", pattern="#o"
+    return colorer.match_mark_following(s, i, kind="literal1", pattern="#o",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule7(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="literal1", pattern="#x"
+    return colorer.match_mark_following(s, i, kind="literal1", pattern="#x",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule8(colorer, s, i):

@@ -12,10 +12,6 @@ velocity_main_keywords_dict = {}
 
 # Keywords dict for velocity_velocity ruleset.
 velocity_velocity_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"#else": "keyword1",
 	"#elseif": "keyword1",
 	"#end": "keyword1",
@@ -119,18 +115,18 @@ def rule8(colorer, s, i):
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rule9(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword3", pattern="$!"
+    return colorer.match_mark_following(s, i, kind="keyword3", pattern="$!",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule10(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword3", pattern="$"
+    return colorer.match_mark_following(s, i, kind="keyword3", pattern="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule11(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for velocity ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	"#": [rule6,rule7,],
 	"$": [rule8,rule9,rule10,],
 	"0": [rule11,],
@@ -210,7 +206,7 @@ def rule13(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="BACK_TO_HTML")
 
 # Rules dict for javascript ruleset.
-rulesDict1 = {
+rulesDict3 = {
 	">": [rule12,],
 	"S": [rule13,],
 }
@@ -220,7 +216,7 @@ rulesDict1 = {
 
 
 # Rules dict for javascript2 ruleset.
-rulesDict1 = {}
+rulesDict4 = {}
 
 # Rules for velocity_back_to_html ruleset.
 
@@ -229,7 +225,7 @@ def rule14(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="MAIN")
 
 # Rules dict for back_to_html ruleset.
-rulesDict1 = {
+rulesDict5 = {
 	">": [rule14,],
 }
 
@@ -240,7 +236,7 @@ def rule15(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="CSS2")
 
 # Rules dict for css ruleset.
-rulesDict1 = {
+rulesDict6 = {
 	">": [rule15,],
 }
 
@@ -249,17 +245,17 @@ rulesDict1 = {
 
 
 # Rules dict for css2 ruleset.
-rulesDict1 = {}
+rulesDict7 = {}
 
 # x.rulesDictDict for velocity mode.
 rulesDictDict = {
-	"velocity_back_to_html": rulesDict1,
-	"velocity_css": rulesDict1,
-	"velocity_css2": rulesDict1,
-	"velocity_javascript": rulesDict1,
-	"velocity_javascript2": rulesDict1,
+	"velocity_back_to_html": rulesDict5,
+	"velocity_css": rulesDict6,
+	"velocity_css2": rulesDict7,
+	"velocity_javascript": rulesDict3,
+	"velocity_javascript2": rulesDict4,
 	"velocity_main": rulesDict1,
-	"velocity_velocity": rulesDict1,
+	"velocity_velocity": rulesDict2,
 }
 
 # Import dict for velocity mode.

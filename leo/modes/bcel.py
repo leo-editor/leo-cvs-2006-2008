@@ -9,10 +9,6 @@ properties = {
 
 # Keywords dict for bcel_main ruleset.
 bcel_main_keywords_dict = {
-	"
-": "keywords",
-	"        ": "keywords",
-	"            ": "keywords",
 	"aaload": "keyword1",
 	"aastore": "keyword1",
 	"abstract": "keyword1",
@@ -287,11 +283,11 @@ def rule5(colorer, s, i):
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rule6(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword2", pattern="%"
+    return colorer.match_mark_following(s, i, kind="keyword2", pattern="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule7(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword2", pattern="#"
+    return colorer.match_mark_following(s, i, kind="keyword2", pattern="#",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule8(colorer, s, i):

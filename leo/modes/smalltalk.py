@@ -11,10 +11,6 @@ properties = {
 
 # Keywords dict for smalltalk_main ruleset.
 smalltalk_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"Array": "literal2",
 	"Boolean": "literal2",
 	"Character": "literal2",
@@ -109,11 +105,11 @@ def rule14(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
 def rule15(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="label", pattern="#"
+    return colorer.match_mark_following(s, i, kind="label", pattern="#",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
 def rule16(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="literal1", pattern="$"
+    return colorer.match_mark_following(s, i, kind="literal1", pattern="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
 def rule17(colorer, s, i):

@@ -7,10 +7,6 @@ properties = {
 
 # Keywords dict for pvwave_main ruleset.
 pvwave_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"WgAnimateTool": "keyword3",
 	"WgCbarTool": "keyword3",
 	"WgCtTool": "keyword3",

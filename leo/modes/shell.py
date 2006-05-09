@@ -10,10 +10,6 @@ properties = {
 
 # Keywords dict for shell_main ruleset.
 shell_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	";;": "operator",
 	"case": "keyword1",
 	"continue": "keyword1",
@@ -64,31 +60,31 @@ def rule2(colorer, s, i):
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rule3(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$#"
+    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$#",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule4(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$?"
+    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$?",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule5(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$*"
+    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule6(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$@"
+    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$@",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule7(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$$"
+    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule8(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$<"
+    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule9(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$"
+    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule10(colorer, s, i):
@@ -158,7 +154,7 @@ def rule22(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule23(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword2", pattern="%"
+    return colorer.match_mark_following(s, i, kind="keyword2", pattern="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule24(colorer, s, i):
@@ -258,11 +254,11 @@ def rule26(colorer, s, i):
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rule27(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$"
+    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 # Rules dict for literal ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	"$": [rule26,rule27,],
 }
 
@@ -293,7 +289,7 @@ def rule31(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule32(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$"
+    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule33(colorer, s, i):
@@ -317,7 +313,7 @@ def rule37(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules dict for exec ruleset.
-rulesDict1 = {
+rulesDict3 = {
 	"!": [rule35,],
 	"$": [rule28,rule29,rule30,rule31,rule32,],
 	"&": [rule34,],
@@ -328,8 +324,8 @@ rulesDict1 = {
 
 # x.rulesDictDict for shell mode.
 rulesDictDict = {
-	"shell_exec": rulesDict1,
-	"shell_literal": rulesDict1,
+	"shell_exec": rulesDict3,
+	"shell_literal": rulesDict2,
 	"shell_main": rulesDict1,
 }
 

@@ -11,10 +11,6 @@ xsl_main_keywords_dict = {}
 
 # Keywords dict for xsl_tasks ruleset.
 xsl_tasks_keywords_dict = {
-	"
-": "keywords",
-	"    ": "keywords",
-	"      ": "keywords",
 	"???": "comment4",
 	"DEBUG:": "comment4",
 	"DONE:": "comment4",
@@ -34,10 +30,6 @@ xsl_avt_keywords_dict = {}
 
 # Keywords dict for xsl_xsltags ruleset.
 xsl_xsltags_keywords_dict = {
-	"
-": "keywords",
-	"    ": "keywords",
-	"      ": "keywords",
 	"analyze-string": "keyword1",
 	"apply-imports": "keyword1",
 	"apply-templates": "keyword1",
@@ -91,10 +83,6 @@ xsl_xsltags_keywords_dict = {
 
 # Keywords dict for xsl_xpath ruleset.
 xsl_xpath_keywords_dict = {
-	"
-": "keywords",
-	"    ": "keywords",
-	"      ": "keywords",
 	"-": "operator",
 	"and": "operator",
 	"as": "operator",
@@ -210,7 +198,7 @@ def rule8(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for tasks ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	"0": [rule8,],
 	"1": [rule8,],
 	"2": [rule8,],
@@ -304,7 +292,7 @@ def rule13(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 # Rules dict for tags ruleset.
-rulesDict1 = {
+rulesDict3 = {
 	"\"": [rule9,],
 	"'": [rule10,],
 	":": [rule13,],
@@ -334,7 +322,7 @@ def rule17(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=True)
 
 # Rules dict for avt ruleset.
-rulesDict1 = {
+rulesDict4 = {
 	"&": [rule17,],
 	"{": [rule14,rule16,],
 	"}": [rule15,],
@@ -490,7 +478,7 @@ def rule43(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for xsltags ruleset.
-rulesDict1 = {
+rulesDict5 = {
 	"\"": [rule18,],
 	"'": [rule19,],
 	"0": [rule43,],
@@ -653,14 +641,14 @@ def rule63(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
 def rule64(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="literal2", pattern="$"
+    return colorer.match_mark_following(s, i, kind="literal2", pattern="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule65(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for xpath ruleset.
-rulesDict1 = {
+rulesDict6 = {
 	"!": [rule50,],
 	"\"": [rule44,],
 	"$": [rule64,],
@@ -752,7 +740,7 @@ def rule66(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 # Rules dict for xpathcomment2 ruleset.
-rulesDict1 = {
+rulesDict7 = {
 	"(": [rule66,],
 }
 
@@ -765,20 +753,20 @@ def rule67(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 # Rules dict for xpathcomment3 ruleset.
-rulesDict1 = {
+rulesDict8 = {
 	"(": [rule67,],
 }
 
 # x.rulesDictDict for xsl mode.
 rulesDictDict = {
-	"xsl_avt": rulesDict1,
+	"xsl_avt": rulesDict4,
 	"xsl_main": rulesDict1,
-	"xsl_tags": rulesDict1,
-	"xsl_tasks": rulesDict1,
-	"xsl_xpath": rulesDict1,
-	"xsl_xpathcomment2": rulesDict1,
-	"xsl_xpathcomment3": rulesDict1,
-	"xsl_xsltags": rulesDict1,
+	"xsl_tags": rulesDict3,
+	"xsl_tasks": rulesDict2,
+	"xsl_xpath": rulesDict6,
+	"xsl_xpathcomment2": rulesDict7,
+	"xsl_xpathcomment3": rulesDict8,
+	"xsl_xsltags": rulesDict5,
 }
 
 # Import dict for xsl mode.

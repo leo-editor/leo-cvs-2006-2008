@@ -7,10 +7,6 @@ properties = {
 
 # Keywords dict for cobol_main ruleset.
 cobol_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"ACCEPT": "keyword1",
 	"ACCESS": "keyword1",
 	"ACOS": "keyword2",

@@ -9,11 +9,6 @@ properties = {
 
 # Keywords dict for prolog_main ruleset.
 prolog_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
-	" ": "keywords",
 	"!": "keyword1",
 	"_": "keyword3",
 	"abolish": "function",
@@ -160,7 +155,7 @@ def rule10(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule11(colorer, s, i):
-    return colorer.match_seq(s, i, kind="operator", seq="\+",
+    return colorer.match_seq(s, i, kind="operator", seq="\\+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule12(colorer, s, i):
@@ -168,11 +163,11 @@ def rule12(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule13(colorer, s, i):
-    return colorer.match_seq(s, i, kind="operator", seq="\==",
+    return colorer.match_seq(s, i, kind="operator", seq="\\==",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule14(colorer, s, i):
-    return colorer.match_seq(s, i, kind="operator", seq="\=",
+    return colorer.match_seq(s, i, kind="operator", seq="\\=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule15(colorer, s, i):
@@ -200,7 +195,7 @@ def rule20(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule21(colorer, s, i):
-    return colorer.match_seq(s, i, kind="operator", seq="=\=",
+    return colorer.match_seq(s, i, kind="operator", seq="=\\=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule22(colorer, s, i):
@@ -220,11 +215,11 @@ def rule25(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule26(colorer, s, i):
-    return colorer.match_seq(s, i, kind="operator", seq="/\",
+    return colorer.match_seq(s, i, kind="operator", seq="/\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule27(colorer, s, i):
-    return colorer.match_seq(s, i, kind="operator", seq="\/",
+    return colorer.match_seq(s, i, kind="operator", seq="\\/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule28(colorer, s, i):
@@ -256,7 +251,7 @@ def rule34(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule35(colorer, s, i):
-    return colorer.match_seq(s, i, kind="operator", seq="\",
+    return colorer.match_seq(s, i, kind="operator", seq="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule36(colorer, s, i):
@@ -351,7 +346,7 @@ rulesDict1 = {
 	"Y": [rule44,],
 	"Z": [rule44,],
 	"[": [rule4,],
-	"\": [rule11,rule13,rule14,rule27,rule35,],
+	"\\": [rule11,rule13,rule14,rule27,rule35,],
 	"^": [rule34,],
 	"_": [rule44,],
 	"a": [rule44,],
@@ -393,13 +388,13 @@ def rule45(colorer, s, i):
         no_escape=False, no_line_break=True, no_word_break=False)
 
 # Rules dict for list ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	"[": [rule45,],
 }
 
 # x.rulesDictDict for prolog mode.
 rulesDictDict = {
-	"prolog_list": rulesDict1,
+	"prolog_list": rulesDict2,
 	"prolog_main": rulesDict1,
 }
 

@@ -6,7 +6,7 @@ properties = {
 	"commentStart": "/*",
 	"doubleBracketIndent": "false",
 	"indentCloseBrackets": "}",
-	"indentNextLine": "\s*(((if|while)\s*\(|else\s*|else\s+if\s*\(|for\s*\(.*\))[^{;]*)",
+	"indentNextLine": "\\s*(((if|while)\\s*\\(|else\\s*|else\\s+if\\s*\\(|for\\s*\\(.*\\))[^{;]*)",
 	"indentOpenBrackets": "{",
 	"lineComment": "//",
 	"lineUpClosingBracket": "true",
@@ -15,10 +15,6 @@ properties = {
 
 # Keywords dict for d_main ruleset.
 d_main_keywords_dict = {
-	"
-": "keywords",
-	"        ": "keywords",
-	"            ": "keywords",
 	"abstract": "keyword1",
 	"alias": "keyword3",
 	"align": "keyword4",
@@ -235,7 +231,7 @@ def rule25(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
 def rule26(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword4", pattern="@"
+    return colorer.match_mark_following(s, i, kind="keyword4", pattern="@",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule27(colorer, s, i):

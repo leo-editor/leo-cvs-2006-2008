@@ -7,10 +7,6 @@ properties = {
 
 # Keywords dict for rpmspec_main ruleset.
 rpmspec_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"%build": "label",
 	"%clean": "label",
 	"%config": "markup",
@@ -65,10 +61,6 @@ rpmspec_attr_keywords_dict = {}
 
 # Keywords dict for rpmspec_verify ruleset.
 rpmspec_verify_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"group": "keyword2",
 	"maj": "keyword2",
 	"md5": "keyword2",
@@ -120,15 +112,15 @@ def rule5(colorer, s, i):
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rule6(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword1", pattern="Source"
+    return colorer.match_mark_following(s, i, kind="keyword1", pattern="Source",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule7(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword1", pattern="Patch"
+    return colorer.match_mark_following(s, i, kind="keyword1", pattern="Patch",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule8(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="function", pattern="%patch"
+    return colorer.match_mark_following(s, i, kind="function", pattern="%patch",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule9(colorer, s, i):
@@ -144,23 +136,23 @@ def rule10(colorer, s, i):
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rule11(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$#"
+    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$#",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule12(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$?"
+    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$?",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule13(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$*"
+    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule14(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$<"
+    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule15(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$"
+    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule16(colorer, s, i):
@@ -251,7 +243,7 @@ def rule18(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules dict for attr ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	",": [rule17,],
 	"-": [rule18,],
 }
@@ -262,7 +254,7 @@ def rule19(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for verify ruleset.
-rulesDict1 = {
+rulesDict3 = {
 	"0": [rule19,],
 	"1": [rule19,],
 	"2": [rule19,],
@@ -331,9 +323,9 @@ rulesDict1 = {
 
 # x.rulesDictDict for rpmspec mode.
 rulesDictDict = {
-	"rpmspec_attr": rulesDict1,
+	"rpmspec_attr": rulesDict2,
 	"rpmspec_main": rulesDict1,
-	"rpmspec_verify": rulesDict1,
+	"rpmspec_verify": rulesDict3,
 }
 
 # Import dict for rpmspec mode.

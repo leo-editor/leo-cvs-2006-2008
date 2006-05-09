@@ -5,7 +5,7 @@ properties = {
 	"doubleBracketIndent": "false",
 	"filenameGlob": "*.(inf|h)",
 	"indentCloseBrackets": "}]",
-	"indentNextLine": "\s*(((if|while)\s*\(|else\s*|else\s+if\s*\(|for\s*\(.*\))[^{;]*)",
+	"indentNextLine": "\\s*(((if|while)\\s*\\(|else\\s*|else\\s+if\\s*\\(|for\\s*\\(.*\\))[^{;]*)",
 	"indentOpenBrackets": "{[",
 	"lineComment": "!",
 	"lineUpClosingBracket": "true",
@@ -14,11 +14,6 @@ properties = {
 
 # Keywords dict for inform_main ruleset.
 inform_main_keywords_dict = {
-	"
-": "keywords",
-	"        ": "keywords",
-	"            ": "keywords",
-	"                ": "keywords",
 	"Abbreviate": "keyword3",
 	"Array": "keyword3",
 	"Attribute": "keyword3",
@@ -369,7 +364,7 @@ def rule35(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule36(colorer, s, i):
-    return colorer.match_seq(s, i, kind="operator", seq="\",
+    return colorer.match_seq(s, i, kind="operator", seq="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule37(colorer, s, i):
@@ -377,16 +372,16 @@ def rule37(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules dict for informinnertext ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	"@": [rule35,rule37,],
-	"\": [rule36,],
+	"\\": [rule36,],
 	"^": [rule33,],
 	"~": [rule34,],
 }
 
 # x.rulesDictDict for inform mode.
 rulesDictDict = {
-	"inform_informinnertext": rulesDict1,
+	"inform_informinnertext": rulesDict2,
 	"inform_main": rulesDict1,
 }
 

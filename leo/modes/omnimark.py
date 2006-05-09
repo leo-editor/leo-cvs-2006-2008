@@ -2,17 +2,13 @@
 
 # Properties for omnimark mode.
 properties = {
-	"indentNextLines": "\s*((PROCESS|MARKUP|EXTERNAL|DOCUMENT|DTD|ELEMENT|FIND|TRANSLATE)((-|\s).*|\s*)|(DO|ELSE|REPEAT|MATCH|CASE|USING|GROUP|DEFINE|MACRO)(\s+.*|\s*))",
+	"indentNextLines": "\\s*((PROCESS|MARKUP|EXTERNAL|DOCUMENT|DTD|ELEMENT|FIND|TRANSLATE)((-|\\s).*|\\s*)|(DO|ELSE|REPEAT|MATCH|CASE|USING|GROUP|DEFINE|MACRO)(\\s+.*|\\s*))",
 	"lineComment": ";",
 	"noWordSep": ".-_",
 }
 
 # Keywords dict for omnimark_main ruleset.
 omnimark_main_keywords_dict = {
-	"
-": "keywords",
-	"        ": "keywords",
-	"            ": "keywords",
 	"#!": "keyword2",
 	"#additional-info": "keyword2",
 	"#appinfo": "keyword2",

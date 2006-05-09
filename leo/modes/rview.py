@@ -12,10 +12,6 @@ properties = {
 
 # Keywords dict for rview_main ruleset.
 rview_main_keywords_dict = {
-	"
-": "keywords",
-	"                ": "keywords",
-	"                        ": "keywords",
 	"BIGINT": "keyword3",
 	"BINARY": "keyword3",
 	"BIT": "keyword3",
@@ -73,10 +69,6 @@ rview_main_keywords_dict = {
 
 # Keywords dict for rview_rviewstmt ruleset.
 rview_rviewstmt_keywords_dict = {
-	"
-": "keywords",
-	"                ": "keywords",
-	"                        ": "keywords",
 	"AND": "keyword1",
 	"BETWEEN": "keyword1",
 	"BIGINT": "keyword3",
@@ -294,7 +286,7 @@ def rule22(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule23(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="label", pattern=":"
+    return colorer.match_mark_following(s, i, kind="label", pattern=":",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule24(colorer, s, i):
@@ -305,7 +297,7 @@ def rule25(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for rviewstmt ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	"'": [rule10,],
 	"(": [rule24,],
 	"*": [rule14,],
@@ -387,7 +379,7 @@ rulesDict1 = {
 # x.rulesDictDict for rview mode.
 rulesDictDict = {
 	"rview_main": rulesDict1,
-	"rview_rviewstmt": rulesDict1,
+	"rview_rviewstmt": rulesDict2,
 }
 
 # Import dict for rview mode.

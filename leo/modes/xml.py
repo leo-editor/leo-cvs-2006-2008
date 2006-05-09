@@ -14,10 +14,6 @@ xml_tags_keywords_dict = {}
 
 # Keywords dict for xml_dtd_tags ruleset.
 xml_dtd_tags_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"#IMPLIED": "keyword1",
 	"#PCDATA": "keyword1",
 	"#REQUIRED": "keyword1",
@@ -30,10 +26,6 @@ xml_dtd_tags_keywords_dict = {
 
 # Keywords dict for xml_entity_tags ruleset.
 xml_entity_tags_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"SYSTEM": "keyword1",
 }
 
@@ -132,7 +124,7 @@ def rule12(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules dict for tags ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	"\"": [rule8,],
 	"'": [rule9,],
 	"/": [rule10,],
@@ -210,7 +202,7 @@ def rule26(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for dtd_tags ruleset.
-rulesDict1 = {
+rulesDict3 = {
 	"\"": [rule16,],
 	"%": [rule15,],
 	"'": [rule17,],
@@ -328,7 +320,7 @@ def rule33(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for entity_tags ruleset.
-rulesDict1 = {
+rulesDict4 = {
 	"\"": [rule29,],
 	"%": [rule32,],
 	"'": [rule30,],
@@ -404,15 +396,15 @@ rulesDict1 = {
 # Rules for xml_cdata ruleset.
 
 # Rules dict for cdata ruleset.
-rulesDict1 = {}
+rulesDict5 = {}
 
 # x.rulesDictDict for xml mode.
 rulesDictDict = {
-	"xml_cdata": rulesDict1,
-	"xml_dtd_tags": rulesDict1,
-	"xml_entity_tags": rulesDict1,
+	"xml_cdata": rulesDict5,
+	"xml_dtd_tags": rulesDict3,
+	"xml_entity_tags": rulesDict4,
 	"xml_main": rulesDict1,
-	"xml_tags": rulesDict1,
+	"xml_tags": rulesDict2,
 }
 
 # Import dict for xml mode.

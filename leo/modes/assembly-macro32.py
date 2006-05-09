@@ -7,10 +7,6 @@ properties = {
 
 # Keywords dict for assembly_macro32_main ruleset.
 assembly_macro32_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	".ADDRESS": "keyword1",
 	".ALIGN": "keyword1",
 	".ASCIC": "keyword1",
@@ -535,11 +531,11 @@ def rule2(colorer, s, i):
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rule3(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="label", pattern="%%"
+    return colorer.match_mark_following(s, i, kind="label", pattern="%%",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
 def rule4(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword2", pattern="%"
+    return colorer.match_mark_following(s, i, kind="keyword2", pattern="%",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule5(colorer, s, i):
@@ -623,7 +619,7 @@ def rule24(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule25(colorer, s, i):
-    return colorer.match_seq(s, i, kind="operator", seq="\",
+    return colorer.match_seq(s, i, kind="operator", seq="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule26(colorer, s, i):
@@ -680,7 +676,7 @@ rulesDict1 = {
 	"X": [rule9,rule26,],
 	"Y": [rule26,],
 	"Z": [rule26,],
-	"\": [rule25,],
+	"\\": [rule25,],
 	"^": [rule16,],
 	"_": [rule26,],
 	"a": [rule26,],

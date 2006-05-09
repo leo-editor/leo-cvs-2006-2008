@@ -7,10 +7,6 @@ properties = {
 
 # Keywords dict for makefile_main ruleset.
 makefile_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"addprefix": "keyword1",
 	"addsuffix": "keyword1",
 	"basename": "keyword1",
@@ -63,7 +59,7 @@ def rule2(colorer, s, i):
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rule3(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$"
+    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule4(colorer, s, i):
@@ -185,7 +181,7 @@ def rule11(colorer, s, i):
         no_escape=False, no_line_break=True, no_word_break=False)
 
 # Rules dict for variable ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	"#": [rule9,],
 	"$": [rule10,rule11,],
 }
@@ -193,7 +189,7 @@ rulesDict1 = {
 # x.rulesDictDict for makefile mode.
 rulesDictDict = {
 	"makefile_main": rulesDict1,
-	"makefile_variable": rulesDict1,
+	"makefile_variable": rulesDict2,
 }
 
 # Import dict for makefile mode.

@@ -10,10 +10,6 @@ bibtex_main_keywords_dict = {}
 
 # Keywords dict for bibtex_article ruleset.
 bibtex_article_keywords_dict = {
-	"
-": "keywords",
-	"    ": "keywords",
-	"      ": "keywords",
 	"abstract": "keyword1",
 	"address": "keyword2",
 	"annotation": "keyword1",
@@ -62,10 +58,6 @@ bibtex_article_keywords_dict = {
 
 # Keywords dict for bibtex_book ruleset.
 bibtex_book_keywords_dict = {
-	"
-": "keywords",
-	"    ": "keywords",
-	"      ": "keywords",
 	"abstract": "keyword1",
 	"address": "keyword3",
 	"annotation": "keyword1",
@@ -114,10 +106,6 @@ bibtex_book_keywords_dict = {
 
 # Keywords dict for bibtex_booklet ruleset.
 bibtex_booklet_keywords_dict = {
-	"
-": "keywords",
-	"    ": "keywords",
-	"      ": "keywords",
 	"abstract": "keyword1",
 	"address": "keyword3",
 	"annotation": "keyword1",
@@ -166,10 +154,6 @@ bibtex_booklet_keywords_dict = {
 
 # Keywords dict for bibtex_conference ruleset.
 bibtex_conference_keywords_dict = {
-	"
-": "keywords",
-	"    ": "keywords",
-	"      ": "keywords",
 	"abstract": "keyword1",
 	"address": "keyword3",
 	"annotation": "keyword1",
@@ -218,10 +202,6 @@ bibtex_conference_keywords_dict = {
 
 # Keywords dict for bibtex_inbook ruleset.
 bibtex_inbook_keywords_dict = {
-	"
-": "keywords",
-	"    ": "keywords",
-	"      ": "keywords",
 	"abstract": "keyword1",
 	"address": "keyword3",
 	"annotation": "keyword1",
@@ -270,10 +250,6 @@ bibtex_inbook_keywords_dict = {
 
 # Keywords dict for bibtex_incollection ruleset.
 bibtex_incollection_keywords_dict = {
-	"
-": "keywords",
-	"    ": "keywords",
-	"      ": "keywords",
 	"abstract": "keyword1",
 	"address": "keyword3",
 	"annotation": "keyword1",
@@ -322,10 +298,6 @@ bibtex_incollection_keywords_dict = {
 
 # Keywords dict for bibtex_inproceedings ruleset.
 bibtex_inproceedings_keywords_dict = {
-	"
-": "keywords",
-	"    ": "keywords",
-	"      ": "keywords",
 	"abstract": "keyword1",
 	"address": "keyword3",
 	"annotation": "keyword1",
@@ -374,10 +346,6 @@ bibtex_inproceedings_keywords_dict = {
 
 # Keywords dict for bibtex_manual ruleset.
 bibtex_manual_keywords_dict = {
-	"
-": "keywords",
-	"    ": "keywords",
-	"      ": "keywords",
 	"abstract": "keyword1",
 	"address": "keyword3",
 	"annotation": "keyword1",
@@ -426,10 +394,6 @@ bibtex_manual_keywords_dict = {
 
 # Keywords dict for bibtex_mastersthesis ruleset.
 bibtex_mastersthesis_keywords_dict = {
-	"
-": "keywords",
-	"    ": "keywords",
-	"      ": "keywords",
 	"abstract": "keyword1",
 	"address": "keyword3",
 	"annotation": "keyword1",
@@ -478,10 +442,6 @@ bibtex_mastersthesis_keywords_dict = {
 
 # Keywords dict for bibtex_misc ruleset.
 bibtex_misc_keywords_dict = {
-	"
-": "keywords",
-	"    ": "keywords",
-	"      ": "keywords",
 	"abstract": "keyword1",
 	"address": "keyword2",
 	"annotation": "keyword1",
@@ -530,10 +490,6 @@ bibtex_misc_keywords_dict = {
 
 # Keywords dict for bibtex_phdthesis ruleset.
 bibtex_phdthesis_keywords_dict = {
-	"
-": "keywords",
-	"    ": "keywords",
-	"      ": "keywords",
 	"abstract": "keyword1",
 	"address": "keyword3",
 	"annotation": "keyword1",
@@ -582,10 +538,6 @@ bibtex_phdthesis_keywords_dict = {
 
 # Keywords dict for bibtex_proceedings ruleset.
 bibtex_proceedings_keywords_dict = {
-	"
-": "keywords",
-	"    ": "keywords",
-	"      ": "keywords",
 	"abstract": "keyword1",
 	"address": "keyword3",
 	"annotation": "keyword1",
@@ -634,10 +586,6 @@ bibtex_proceedings_keywords_dict = {
 
 # Keywords dict for bibtex_techreport ruleset.
 bibtex_techreport_keywords_dict = {
-	"
-": "keywords",
-	"    ": "keywords",
-	"      ": "keywords",
 	"abstract": "keyword1",
 	"address": "keyword3",
 	"annotation": "keyword1",
@@ -686,10 +634,6 @@ bibtex_techreport_keywords_dict = {
 
 # Keywords dict for bibtex_unpublished ruleset.
 bibtex_unpublished_keywords_dict = {
-	"
-": "keywords",
-	"    ": "keywords",
-	"      ": "keywords",
 	"abstract": "keyword1",
 	"address": "keyword2",
 	"annotation": "keyword1",
@@ -1022,7 +966,7 @@ def rule44(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for article ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	"\"": [rule31,],
 	",": [rule34,],
 	"0": [rule44,],
@@ -1155,7 +1099,7 @@ def rule58(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for book ruleset.
-rulesDict1 = {
+rulesDict3 = {
 	"\"": [rule45,],
 	",": [rule48,],
 	"0": [rule58,],
@@ -1288,7 +1232,7 @@ def rule72(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for booklet ruleset.
-rulesDict1 = {
+rulesDict4 = {
 	"\"": [rule59,],
 	",": [rule62,],
 	"0": [rule72,],
@@ -1421,7 +1365,7 @@ def rule86(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for conference ruleset.
-rulesDict1 = {
+rulesDict5 = {
 	"\"": [rule73,],
 	",": [rule76,],
 	"0": [rule86,],
@@ -1554,7 +1498,7 @@ def rule100(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for inbook ruleset.
-rulesDict1 = {
+rulesDict6 = {
 	"\"": [rule87,],
 	",": [rule90,],
 	"0": [rule100,],
@@ -1687,7 +1631,7 @@ def rule114(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for incollection ruleset.
-rulesDict1 = {
+rulesDict7 = {
 	"\"": [rule101,],
 	",": [rule104,],
 	"0": [rule114,],
@@ -1820,7 +1764,7 @@ def rule128(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for inproceedings ruleset.
-rulesDict1 = {
+rulesDict8 = {
 	"\"": [rule115,],
 	",": [rule118,],
 	"0": [rule128,],
@@ -1953,7 +1897,7 @@ def rule142(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for manual ruleset.
-rulesDict1 = {
+rulesDict9 = {
 	"\"": [rule129,],
 	",": [rule132,],
 	"0": [rule142,],
@@ -2086,7 +2030,7 @@ def rule156(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for mastersthesis ruleset.
-rulesDict1 = {
+rulesDict10 = {
 	"\"": [rule143,],
 	",": [rule146,],
 	"0": [rule156,],
@@ -2219,7 +2163,7 @@ def rule170(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for misc ruleset.
-rulesDict1 = {
+rulesDict11 = {
 	"\"": [rule157,],
 	",": [rule160,],
 	"0": [rule170,],
@@ -2352,7 +2296,7 @@ def rule184(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for phdthesis ruleset.
-rulesDict1 = {
+rulesDict12 = {
 	"\"": [rule171,],
 	",": [rule174,],
 	"0": [rule184,],
@@ -2485,7 +2429,7 @@ def rule198(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for proceedings ruleset.
-rulesDict1 = {
+rulesDict13 = {
 	"\"": [rule185,],
 	",": [rule188,],
 	"0": [rule198,],
@@ -2618,7 +2562,7 @@ def rule212(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for techreport ruleset.
-rulesDict1 = {
+rulesDict14 = {
 	"\"": [rule199,],
 	",": [rule202,],
 	"0": [rule212,],
@@ -2751,7 +2695,7 @@ def rule226(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for unpublished ruleset.
-rulesDict1 = {
+rulesDict15 = {
 	"\"": [rule213,],
 	",": [rule216,],
 	"0": [rule226,],
@@ -2825,7 +2769,7 @@ rulesDict1 = {
 # Rules for bibtex_textbraced ruleset.
 
 def rule227(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal3", begin="\{", end="\}",
+    return colorer.match_span(s, i, kind="literal3", begin="\\{", end="\\}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
@@ -2843,20 +2787,20 @@ def rule229(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule230(colorer, s, i):
-    return colorer.match_seq(s, i, kind="literal3", seq="\\"",
+    return colorer.match_seq(s, i, kind="literal3", seq="\\\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules dict for textbraced ruleset.
-rulesDict1 = {
+rulesDict16 = {
 	"\"": [rule229,],
-	"\": [rule227,rule230,],
+	"\\": [rule227,rule230,],
 	"{": [rule228,],
 }
 
 # Rules for bibtex_textquoted ruleset.
 
 def rule231(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal3", begin="\{", end="\}",
+    return colorer.match_span(s, i, kind="literal3", begin="\\{", end="\\}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="textbraced",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
@@ -2868,12 +2812,12 @@ def rule232(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule233(colorer, s, i):
-    return colorer.match_seq(s, i, kind="literal3", seq="\\"",
+    return colorer.match_seq(s, i, kind="literal3", seq="\\\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules dict for textquoted ruleset.
-rulesDict1 = {
-	"\": [rule231,rule233,],
+rulesDict17 = {
+	"\\": [rule231,rule233,],
 	"{": [rule232,],
 }
 
@@ -2892,7 +2836,7 @@ def rule235(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule236(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal3", begin="\{", end="\}",
+    return colorer.match_span(s, i, kind="literal3", begin="\\{", end="\\}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
@@ -2906,38 +2850,38 @@ def rule238(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule239(colorer, s, i):
-    return colorer.match_seq(s, i, kind="literal3", seq="\\"",
+    return colorer.match_seq(s, i, kind="literal3", seq="\\\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules dict for string ruleset.
-rulesDict1 = {
+rulesDict18 = {
 	"\"": [rule234,],
 	",": [rule238,],
 	"=": [rule237,],
-	"\": [rule236,rule239,],
+	"\\": [rule236,rule239,],
 	"{": [rule235,],
 }
 
 # x.rulesDictDict for bibtex mode.
 rulesDictDict = {
-	"bibtex_article": rulesDict1,
-	"bibtex_book": rulesDict1,
-	"bibtex_booklet": rulesDict1,
-	"bibtex_conference": rulesDict1,
-	"bibtex_inbook": rulesDict1,
-	"bibtex_incollection": rulesDict1,
-	"bibtex_inproceedings": rulesDict1,
+	"bibtex_article": rulesDict2,
+	"bibtex_book": rulesDict3,
+	"bibtex_booklet": rulesDict4,
+	"bibtex_conference": rulesDict5,
+	"bibtex_inbook": rulesDict6,
+	"bibtex_incollection": rulesDict7,
+	"bibtex_inproceedings": rulesDict8,
 	"bibtex_main": rulesDict1,
-	"bibtex_manual": rulesDict1,
-	"bibtex_mastersthesis": rulesDict1,
-	"bibtex_misc": rulesDict1,
-	"bibtex_phdthesis": rulesDict1,
-	"bibtex_proceedings": rulesDict1,
-	"bibtex_string": rulesDict1,
-	"bibtex_techreport": rulesDict1,
-	"bibtex_textbraced": rulesDict1,
-	"bibtex_textquoted": rulesDict1,
-	"bibtex_unpublished": rulesDict1,
+	"bibtex_manual": rulesDict9,
+	"bibtex_mastersthesis": rulesDict10,
+	"bibtex_misc": rulesDict11,
+	"bibtex_phdthesis": rulesDict12,
+	"bibtex_proceedings": rulesDict13,
+	"bibtex_string": rulesDict18,
+	"bibtex_techreport": rulesDict14,
+	"bibtex_textbraced": rulesDict16,
+	"bibtex_textquoted": rulesDict17,
+	"bibtex_unpublished": rulesDict15,
 }
 
 # Import dict for bibtex mode.

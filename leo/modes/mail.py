@@ -101,7 +101,7 @@ rulesDict1 = {
 # Rules for mail_signature ruleset.
 
 # Rules dict for signature ruleset.
-rulesDict1 = {}
+rulesDict2 = {}
 
 # Rules for mail_header ruleset.
 
@@ -112,15 +112,15 @@ def rule15(colorer, s, i):
         no_escape=False, no_line_break=True, no_word_break=False)
 
 # Rules dict for header ruleset.
-rulesDict1 = {
+rulesDict3 = {
 	"<": [rule15,],
 }
 
 # x.rulesDictDict for mail mode.
 rulesDictDict = {
-	"mail_header": rulesDict1,
+	"mail_header": rulesDict3,
 	"mail_main": rulesDict1,
-	"mail_signature": rulesDict1,
+	"mail_signature": rulesDict2,
 }
 
 # Import dict for mail mode.

@@ -49,7 +49,7 @@ def rule4(colorer, s, i):
         delegate="", exclude_match=False)
 
 # Rules dict for changed ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	"A": [rule1,],
 	"D": [rule2,],
 	"M": [rule3,],
@@ -58,7 +58,7 @@ rulesDict1 = {
 
 # x.rulesDictDict for svn_commit mode.
 rulesDictDict = {
-	"svn_commit_changed": rulesDict1,
+	"svn_commit_changed": rulesDict2,
 	"svn_commit_main": rulesDict1,
 }
 

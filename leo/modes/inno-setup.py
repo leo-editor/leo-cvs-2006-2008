@@ -7,11 +7,6 @@ properties = {
 
 # Keywords dict for inno_setup_main ruleset.
 inno_setup_main_keywords_dict = {
-	"	": "keywords",
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"AfterInstall": "keyword4",
 	"AllowCancelDuringInstall": "keyword1",
 	"AllowNoIcons": "keyword1",
@@ -256,10 +251,6 @@ inno_setup_constant_keywords_dict = {}
 
 # Keywords dict for inno_setup_directive ruleset.
 inno_setup_directive_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"Copy": "function",
 	"CopyFile": "function",
 	"Defined": "function",
@@ -485,7 +476,7 @@ def rule38(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule39(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="literal2", pattern="%"
+    return colorer.match_mark_following(s, i, kind="literal2", pattern="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule40(colorer, s, i):
@@ -609,14 +600,14 @@ def rule47(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 # Rules dict for string ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	"{": [rule46,rule47,],
 }
 
 # Rules for inno_setup_constant ruleset.
 
 def rule48(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="function", pattern="code:"
+    return colorer.match_mark_following(s, i, kind="function", pattern="code:",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
 def rule49(colorer, s, i):
@@ -624,7 +615,7 @@ def rule49(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules dict for constant ruleset.
-rulesDict1 = {
+rulesDict3 = {
 	"c": [rule48,],
 	"|": [rule49,],
 }
@@ -652,7 +643,7 @@ def rule53(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for directive ruleset.
-rulesDict1 = {
+rulesDict4 = {
 	"\"": [rule52,],
 	"/": [rule51,],
 	"0": [rule53,],
@@ -724,10 +715,10 @@ rulesDict1 = {
 
 # x.rulesDictDict for inno_setup mode.
 rulesDictDict = {
-	"inno_setup_constant": rulesDict1,
-	"inno_setup_directive": rulesDict1,
+	"inno_setup_constant": rulesDict3,
+	"inno_setup_directive": rulesDict4,
 	"inno_setup_main": rulesDict1,
-	"inno_setup_string": rulesDict1,
+	"inno_setup_string": rulesDict2,
 }
 
 # Import dict for inno_setup mode.

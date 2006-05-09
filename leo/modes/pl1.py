@@ -9,12 +9,6 @@ properties = {
 
 # Keywords dict for pl1_main ruleset.
 pl1_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
-	" 			": "keywords",
-	"      ": "keywords",
 	"%include": "keyword1",
 	"A": "keyword2",
 	"C": "keyword2",
@@ -561,7 +555,7 @@ def rule2(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule3(colorer, s, i):
-    return colorer.match_eol_span_regexp(s, i, kind="keyword2", seq="\* *process",
+    return colorer.match_eol_span_regexp(s, i, kind="keyword2", seq="\\* *process",
         at_line_start=True, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
@@ -691,7 +685,7 @@ rulesDict1 = {
 	"X": [rule21,],
 	"Y": [rule21,],
 	"Z": [rule21,],
-	"\": [rule3,],
+	"\\": [rule3,],
 	"^": [rule11,],
 	"_": [rule21,],
 	"a": [rule21,],

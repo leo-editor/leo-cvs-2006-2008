@@ -7,10 +7,6 @@ properties = {
 
 # Keywords dict for batch_main ruleset.
 batch_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"APPEND": "function",
 	"ATTRIB": "function",
 	"AUX": "keyword2",
@@ -123,11 +119,11 @@ def rule6(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule7(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="label", pattern=":"
+    return colorer.match_mark_following(s, i, kind="label", pattern=":",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule8(colorer, s, i):
-    return colorer.match_eol_span_regexp(s, i, kind="comment1", seq="REM\s",
+    return colorer.match_eol_span_regexp(s, i, kind="comment1", seq="REM\\s",
         at_line_start=False, at_whitespace_end=True, at_word_start=False,
         delegate="", exclude_match=False)
 

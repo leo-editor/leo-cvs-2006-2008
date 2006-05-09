@@ -11,10 +11,6 @@ zpt_main_keywords_dict = {}
 
 # Keywords dict for zpt_tags ruleset.
 zpt_tags_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"attributes": "keyword3",
 	"condition": "keyword3",
 	"content": "keyword3",
@@ -33,10 +29,6 @@ zpt_tags_keywords_dict = {
 
 # Keywords dict for zpt_attribute ruleset.
 zpt_attribute_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"CONTEXTS": "literal3",
 	"Letter": "literal3",
 	"Roman": "literal3",
@@ -156,7 +148,7 @@ def rule9(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for tags ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	"\"": [rule6,],
 	"'": [rule7,],
 	"0": [rule9,],
@@ -255,14 +247,14 @@ def rule15(colorer, s, i):
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rule16(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$"
+    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule17(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for attribute ruleset.
-rulesDict1 = {
+rulesDict3 = {
 	"$": [rule14,rule15,rule16,],
 	"0": [rule17,],
 	"1": [rule17,],
@@ -345,7 +337,7 @@ def rule19(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="BACK_TO_HTML")
 
 # Rules dict for javascript ruleset.
-rulesDict1 = {
+rulesDict4 = {
 	">": [rule18,],
 	"S": [rule19,],
 }
@@ -357,7 +349,7 @@ def rule20(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="zpt::MAIN")
 
 # Rules dict for back_to_html ruleset.
-rulesDict1 = {
+rulesDict5 = {
 	">": [rule20,],
 }
 
@@ -368,18 +360,18 @@ def rule21(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="css::MAIN")
 
 # Rules dict for css ruleset.
-rulesDict1 = {
+rulesDict6 = {
 	">": [rule21,],
 }
 
 # x.rulesDictDict for zpt mode.
 rulesDictDict = {
-	"zpt_attribute": rulesDict1,
-	"zpt_back_to_html": rulesDict1,
-	"zpt_css": rulesDict1,
-	"zpt_javascript": rulesDict1,
+	"zpt_attribute": rulesDict3,
+	"zpt_back_to_html": rulesDict5,
+	"zpt_css": rulesDict6,
+	"zpt_javascript": rulesDict4,
 	"zpt_main": rulesDict1,
-	"zpt_tags": rulesDict1,
+	"zpt_tags": rulesDict2,
 }
 
 # Import dict for zpt mode.

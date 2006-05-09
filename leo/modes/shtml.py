@@ -14,10 +14,6 @@ shtml_tags_keywords_dict = {}
 
 # Keywords dict for shtml_ssi ruleset.
 shtml_ssi_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"cgi": "keyword2",
 	"cmd": "keyword2",
 	"config": "keyword1",
@@ -113,7 +109,7 @@ def rule9(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules dict for tags ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	"\"": [rule7,],
 	"'": [rule8,],
 	"=": [rule9,],
@@ -135,7 +131,7 @@ def rule12(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for ssi ruleset.
-rulesDict1 = {
+rulesDict3 = {
 	"\"": [rule10,],
 	"0": [rule12,],
 	"1": [rule12,],
@@ -207,7 +203,7 @@ rulesDict1 = {
 # Rules for shtml_ssi_expression ruleset.
 
 def rule13(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$"
+    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule14(colorer, s, i):
@@ -243,7 +239,7 @@ def rule21(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules dict for ssi_expression ruleset.
-rulesDict1 = {
+rulesDict4 = {
 	"!": [rule15,],
 	"$": [rule13,],
 	"&": [rule20,],
@@ -256,9 +252,9 @@ rulesDict1 = {
 # x.rulesDictDict for shtml mode.
 rulesDictDict = {
 	"shtml_main": rulesDict1,
-	"shtml_ssi": rulesDict1,
-	"shtml_ssi_expression": rulesDict1,
-	"shtml_tags": rulesDict1,
+	"shtml_ssi": rulesDict3,
+	"shtml_ssi_expression": rulesDict4,
+	"shtml_tags": rulesDict2,
 }
 
 # Import dict for shtml mode.

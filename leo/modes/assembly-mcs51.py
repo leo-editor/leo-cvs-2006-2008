@@ -7,10 +7,6 @@ properties = {
 
 # Keywords dict for assembly_mcs51_main ruleset.
 assembly_mcs51_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"$CASE": "keyword2",
 	"$ELSE": "keyword2",
 	"$ELSEIF": "keyword2",
@@ -199,11 +195,11 @@ def rule2(colorer, s, i):
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rule3(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="label", pattern="%%"
+    return colorer.match_mark_following(s, i, kind="label", pattern="%%",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
 def rule4(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$"
+    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule5(colorer, s, i):

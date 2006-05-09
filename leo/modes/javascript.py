@@ -6,7 +6,7 @@ properties = {
 	"commentStart": "/*",
 	"doubleBracketIndent": "false",
 	"indentCloseBrackets": "}",
-	"indentNextLine": "\s*(((if|while)\s*\(|else\s*|else\s+if\s*\(|for\s*\(.*\))[^{;]*)",
+	"indentNextLine": "\\s*(((if|while)\\s*\\(|else\\s*|else\\s+if\\s*\\(|for\\s*\\(.*\\))[^{;]*)",
 	"indentOpenBrackets": "{",
 	"lineComment": "//",
 	"lineUpClosingBracket": "true",
@@ -15,10 +15,6 @@ properties = {
 
 # Keywords dict for javascript_main ruleset.
 javascript_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"Array": "keyword3",
 	"Boolean": "keyword3",
 	"Date": "keyword3",

@@ -2,17 +2,12 @@
 
 # Properties for nsis2 mode.
 properties = {
-	"indentNextLine": "\s*(.*:|(function\s+.*)|(section\s+.*)|(subsection\s+.*))",
+	"indentNextLine": "\\s*(.*:|(function\\s+.*)|(section\\s+.*)|(subsection\\s+.*))",
 	"lineComment": ";",
 }
 
 # Keywords dict for nsis2_main ruleset.
 nsis2_main_keywords_dict = {
-	"						": "keywords",
-	"
-": "keywords",
-	"                ": "keywords",
-	"                        ": "keywords",
 	"!addincludedir": "keyword2",
 	"!addplugindir": "keyword2",
 	"!cd": "keyword2",
@@ -69,8 +64,8 @@ nsis2_main_keywords_dict = {
 	"$SYSDIR": "literal3",
 	"$TEMP": "literal3",
 	"$WINDIR": "literal3",
-	"$\n": "literal3",
-	"$\r": "literal3",
+	"$\\n": "literal3",
+	"$\\r": "literal3",
 	"${NSISDIR}": "literal3",
 	".onguiinit": "keyword3",
 	".oninit": "keyword3",
@@ -443,7 +438,7 @@ def rule1(colorer, s, i):
         delegate="", exclude_match=False)
 
 def rule2(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword3", pattern="$"
+    return colorer.match_mark_following(s, i, kind="keyword3", pattern="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule3(colorer, s, i):
@@ -553,18 +548,18 @@ rulesDict1 = {
 # Rules for nsis2_nsis_literal ruleset.
 
 def rule9(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword3", pattern="$"
+    return colorer.match_mark_following(s, i, kind="keyword3", pattern="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 # Rules dict for nsis_literal ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	"$": [rule9,],
 }
 
 # x.rulesDictDict for nsis2 mode.
 rulesDictDict = {
 	"nsis2_main": rulesDict1,
-	"nsis2_nsis_literal": rulesDict1,
+	"nsis2_nsis_literal": rulesDict2,
 }
 
 # Import dict for nsis2 mode.

@@ -7,10 +7,6 @@ properties = {
 
 # Keywords dict for postscript_main ruleset.
 postscript_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"NULL": "literal2",
 	"abs": "operator",
 	"add": "operator",
@@ -105,7 +101,7 @@ def rule5(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule6(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="label", pattern="/"
+    return colorer.match_mark_following(s, i, kind="label", pattern="/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule7(colorer, s, i):
@@ -212,13 +208,13 @@ def rule12(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 # Rules dict for literal ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	"(": [rule12,],
 }
 
 # x.rulesDictDict for postscript mode.
 rulesDictDict = {
-	"postscript_literal": rulesDict1,
+	"postscript_literal": rulesDict2,
 	"postscript_main": rulesDict1,
 }
 

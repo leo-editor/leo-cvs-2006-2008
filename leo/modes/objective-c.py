@@ -6,7 +6,7 @@ properties = {
 	"commentStart": "/*",
 	"doubleBracketIndent": "false",
 	"indentCloseBrackets": "}",
-	"indentNextLine": "\s*(((if|while)\s*\(|else\s*|else\s+if\s*\(|for\s*\(.*\))[^{;]*)",
+	"indentNextLine": "\\s*(((if|while)\\s*\\(|else\\s*|else\\s+if\\s*\\(|for\\s*\\(.*\\))[^{;]*)",
 	"indentOpenBrackets": "{",
 	"lineComment": "//",
 	"lineUpClosingBracket": "true",
@@ -15,10 +15,6 @@ properties = {
 
 # Keywords dict for objective_c_main ruleset.
 objective_c_main_keywords_dict = {
-	"
-": "keywords",
-	"        ": "keywords",
-	"            ": "keywords",
 	"@class": "keyword1",
 	"@defs": "keyword1",
 	"@end": "keyword1",

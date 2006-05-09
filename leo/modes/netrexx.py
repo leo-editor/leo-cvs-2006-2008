@@ -4,17 +4,13 @@
 properties = {
 	"commentEnd": "*/",
 	"commentStart": "/*",
-	"indentNextLines": "\s*(if|loop|do|else|select|otherwise|catch|finally|class|method|properties)(.*)",
+	"indentNextLines": "\\s*(if|loop|do|else|select|otherwise|catch|finally|class|method|properties)(.*)",
 	"lineComment": "--",
 	"wordBreakChars": ",+-=<>/?^&*",
 }
 
 # Keywords dict for netrexx_main ruleset.
 netrexx_main_keywords_dict = {
-	"
-": "keywords",
-	"    ": "keywords",
-	"      ": "keywords",
 	"ArithmeticException": "markup",
 	"ArrayIndexOutOfBoundsException": "markup",
 	"ArrayList": "label",

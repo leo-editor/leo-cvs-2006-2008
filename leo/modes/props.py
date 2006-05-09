@@ -40,13 +40,13 @@ def rule3(colorer, s, i):
         delegate="PROP_VALUE", exclude_match=False)
 
 def rule4(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="null", seq="	",
+    return colorer.match_eol_span(s, i, kind="null", seq="\t",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="PROP_VALUE", exclude_match=False)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"	": [rule4,],
+	"\t": [rule4,],
 	" ": [rule3,],
 	"#": [rule0,],
 	":": [rule2,],
@@ -62,11 +62,11 @@ def rule5(colorer, s, i):
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rule6(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="digit", pattern="#"
+    return colorer.match_mark_following(s, i, kind="digit", pattern="#",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 # Rules dict for prop_value ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	"#": [rule6,],
 	"{": [rule5,],
 }
@@ -74,7 +74,7 @@ rulesDict1 = {
 # x.rulesDictDict for props mode.
 rulesDictDict = {
 	"props_main": rulesDict1,
-	"props_prop_value": rulesDict1,
+	"props_prop_value": rulesDict2,
 }
 
 # Import dict for props mode.

@@ -11,10 +11,6 @@ properties = {
 
 # Keywords dict for io_main ruleset.
 io_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"Block": "keyword1",
 	"Buffer": "keyword1",
 	"CFunction": "keyword1",
@@ -159,7 +155,7 @@ def rule22(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule23(colorer, s, i):
-    return colorer.match_seq(s, i, kind="operator", seq="\",
+    return colorer.match_seq(s, i, kind="operator", seq="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule24(colorer, s, i):
@@ -230,7 +226,7 @@ rulesDict1 = {
 	"Y": [rule27,],
 	"Z": [rule27,],
 	"[": [rule20,],
-	"\": [rule23,],
+	"\\": [rule23,],
 	"]": [rule21,],
 	"^": [rule11,],
 	"_": [rule27,],

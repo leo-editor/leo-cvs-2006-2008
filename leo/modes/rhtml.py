@@ -115,7 +115,7 @@ def rule13(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules dict for tags ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	"\"": [rule11,],
 	"'": [rule12,],
 	"<": [rule9,rule10,],
@@ -137,15 +137,15 @@ def rule15(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 # Rules dict for tags_literal ruleset.
-rulesDict1 = {
+rulesDict3 = {
 	"<": [rule14,rule15,],
 }
 
 # x.rulesDictDict for rhtml mode.
 rulesDictDict = {
 	"rhtml_main": rulesDict1,
-	"rhtml_tags": rulesDict1,
-	"rhtml_tags_literal": rulesDict1,
+	"rhtml_tags": rulesDict2,
+	"rhtml_tags_literal": rulesDict3,
 }
 
 # Import dict for rhtml mode.

@@ -10,10 +10,6 @@ properties = {
 
 # Keywords dict for perl_main ruleset.
 perl_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"BEGIN": "keyword1",
 	"END": "keyword1",
 	"abs": "keyword3",
@@ -354,15 +350,15 @@ def rule15(colorer, s, i):
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rule16(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", seq="\$(?:#|\w)+",
+    return colorer.match_seq_regexp(s, i, kind="keyword2", seq="\\$(?:#|\\w)+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule17(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", seq="@(?:#|\w)+",
+    return colorer.match_seq_regexp(s, i, kind="keyword2", seq="@(?:#|\\w)+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule18(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", seq="%(?:#|\w)+",
+    return colorer.match_seq_regexp(s, i, kind="keyword2", seq="%(?:#|\\w)+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule19(colorer, s, i):
@@ -396,47 +392,47 @@ def rule23(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule24(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="literal2", begin="<<[:space:]*(['\"])([[:space:][:alnum:]_]*)\1;?\s*", end="$2",
+    return colorer.match_span_regexp(s, i, kind="literal2", begin="<<[:space:]*(['\"])([[:space:][:alnum:]_]*)\\1;?\\s*", end="$2",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="LITERAL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule25(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="literal2", begin="<<([[:alpha:]_][[:alnum:]_]*);?\s*", end="$1",
+    return colorer.match_span_regexp(s, i, kind="literal2", begin="<<([[:alpha:]_][[:alnum:]_]*);?\\s*", end="$1",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="LITERAL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule26(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="markup", seq="/[^[:blank:]]*?[^\\]/",
+    return colorer.match_seq_regexp(s, i, kind="markup", seq="/[^[:blank:]]*?[^\\\\]/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule27(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="markup", seq="q(?:|[qrx])\{(?:.*?[^\\])*?\}",
+    return colorer.match_seq_regexp(s, i, kind="markup", seq="q(?:|[qrx])\\{(?:.*?[^\\\\])*?\\}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule28(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="markup", seq="tr([[:punct:]])(?:.*?[^\\])*?\1(?:.*?[^\\])*?\1",
+    return colorer.match_seq_regexp(s, i, kind="markup", seq="tr([[:punct:]])(?:.*?[^\\\\])*?\\1(?:.*?[^\\\\])*?\\1",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule29(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="markup", seq="y([[:punct:]])(?:.*?[^\\])*?\1(?:.*?[^\\])*?\1",
+    return colorer.match_seq_regexp(s, i, kind="markup", seq="y([[:punct:]])(?:.*?[^\\\\])*?\\1(?:.*?[^\\\\])*?\\1",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule30(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="markup", seq="m\{(?:.*?[^\\])*?\}[sgiexom]*",
+    return colorer.match_seq_regexp(s, i, kind="markup", seq="m\\{(?:.*?[^\\\\])*?\\}[sgiexom]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule31(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="markup", seq="m([[:punct:]])(?:.*?[^\\])*?\1[sgiexom]*",
+    return colorer.match_seq_regexp(s, i, kind="markup", seq="m([[:punct:]])(?:.*?[^\\\\])*?\\1[sgiexom]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule32(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="markup", seq="s\s*\{(?:.*?[^\\])*?\}\s*\{(?:.*?[^\\])*?\}[sgiexom]*",
+    return colorer.match_seq_regexp(s, i, kind="markup", seq="s\\s*\\{(?:.*?[^\\\\])*?\\}\\s*\\{(?:.*?[^\\\\])*?\\}[sgiexom]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule33(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="markup", seq="s([[:punct:]])(?:.*?[^\\])*?\1(?:.*?[^\\])*?\1[sgiexom]*",
+    return colorer.match_seq_regexp(s, i, kind="markup", seq="s([[:punct:]])(?:.*?[^\\\\])*?\\1(?:.*?[^\\\\])*?\\1[sgiexom]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule34(colorer, s, i):
@@ -577,7 +573,7 @@ rulesDict1 = {
 	"X": [rule54,],
 	"Y": [rule54,],
 	"Z": [rule54,],
-	"\": [rule16,],
+	"\\": [rule16,],
 	"^": [rule48,],
 	"_": [rule54,],
 	"`": [rule23,],
@@ -616,11 +612,11 @@ rulesDict1 = {
 # Rules for perl_pod ruleset.
 
 def rule55(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="label", pattern="="
+    return colorer.match_mark_following(s, i, kind="label", pattern="=",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 # Rules dict for pod ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	"=": [rule55,],
 }
 
@@ -633,11 +629,11 @@ def rule56(colorer, s, i):
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rule57(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$#"
+    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$#",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule58(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$"
+    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule59(colorer, s, i):
@@ -647,7 +643,7 @@ def rule59(colorer, s, i):
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rule60(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword2", pattern="@"
+    return colorer.match_mark_following(s, i, kind="keyword2", pattern="@",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule61(colorer, s, i):
@@ -657,7 +653,7 @@ def rule61(colorer, s, i):
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rule62(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword2", pattern="%"
+    return colorer.match_mark_following(s, i, kind="keyword2", pattern="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule63(colorer, s, i):
@@ -757,7 +753,7 @@ def rule86(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules dict for literal ruleset.
-rulesDict1 = {
+rulesDict3 = {
 	"!": [rule65,rule71,],
 	"$": [rule56,rule57,rule58,],
 	"%": [rule61,rule62,],
@@ -800,11 +796,11 @@ def rule88(colorer, s, i):
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rule89(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$#"
+    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$#",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule90(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$"
+    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule91(colorer, s, i):
@@ -814,7 +810,7 @@ def rule91(colorer, s, i):
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rule92(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword2", pattern="@"
+    return colorer.match_mark_following(s, i, kind="keyword2", pattern="@",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule93(colorer, s, i):
@@ -824,11 +820,11 @@ def rule93(colorer, s, i):
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rule94(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword2", pattern="%"
+    return colorer.match_mark_following(s, i, kind="keyword2", pattern="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 # Rules dict for exec ruleset.
-rulesDict1 = {
+rulesDict4 = {
 	"#": [rule87,],
 	"$": [rule88,rule89,rule90,],
 	"%": [rule93,rule94,],
@@ -848,7 +844,7 @@ def rule96(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules dict for variable ruleset.
-rulesDict1 = {
+rulesDict5 = {
 	"-": [rule96,],
 	"{": [rule95,],
 }
@@ -910,7 +906,7 @@ def rule108(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 # Rules dict for regexp ruleset.
-rulesDict1 = {
+rulesDict6 = {
 	"(": [rule106,],
 	")": [rule97,rule98,rule99,],
 	"[": [rule107,],
@@ -921,12 +917,12 @@ rulesDict1 = {
 
 # x.rulesDictDict for perl mode.
 rulesDictDict = {
-	"perl_exec": rulesDict1,
-	"perl_literal": rulesDict1,
+	"perl_exec": rulesDict4,
+	"perl_literal": rulesDict3,
 	"perl_main": rulesDict1,
-	"perl_pod": rulesDict1,
-	"perl_regexp": rulesDict1,
-	"perl_variable": rulesDict1,
+	"perl_pod": rulesDict2,
+	"perl_regexp": rulesDict6,
+	"perl_variable": rulesDict5,
 }
 
 # Import dict for perl mode.

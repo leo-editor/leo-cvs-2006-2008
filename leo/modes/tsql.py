@@ -9,10 +9,6 @@ properties = {
 
 # Keywords dict for tsql_main ruleset.
 tsql_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"@@CONNECTIONS": "keyword2",
 	"@@CPU_BUSY": "keyword2",
 	"@@CURSOR_ROWS": "keyword2",
@@ -1058,7 +1054,7 @@ def rule22(colorer, s, i):
         at_line_start=True, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule23(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="literal2", pattern="@"
+    return colorer.match_mark_following(s, i, kind="literal2", pattern="@",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule24(colorer, s, i):

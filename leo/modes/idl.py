@@ -13,10 +13,6 @@ properties = {
 
 # Keywords dict for idl_main ruleset.
 idl_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"FALSE": "literal2",
 	"Object": "keyword3",
 	"TRUE": "literal2",

@@ -8,7 +8,7 @@ properties = {
 	"indentOpenBrackets": "{",
 	"lineComment": "//",
 	"lineUpClosingBracket": "true",
-	"wordBreakChars": " @ %^*()+=|\{}[]:;,.?$&",
+	"wordBreakChars": " @ %^*()+=|\\{}[]:;,.?$&",
 }
 
 # Keywords dict for powerdynamo_main ruleset.
@@ -22,10 +22,6 @@ powerdynamo_tags_literal_keywords_dict = {}
 
 # Keywords dict for powerdynamo_powerdynamo_script ruleset.
 powerdynamo_powerdynamo_script_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"AskQuestion": "keyword3",
 	"Close": "keyword3",
 	"Commit": "keyword3",
@@ -188,29 +184,17 @@ powerdynamo_powerdynamo_script_keywords_dict = {
 
 # Keywords dict for powerdynamo_powerdynamo_tag_general ruleset.
 powerdynamo_powerdynamo_tag_general_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"NAME": "keyword2",
 }
 
 # Keywords dict for powerdynamo_powerdynamo_tag_data ruleset.
 powerdynamo_powerdynamo_tag_data_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"NAME": "keyword2",
 	"QUERY": "keyword2",
 }
 
 # Keywords dict for powerdynamo_powerdynamo_tag_document ruleset.
 powerdynamo_powerdynamo_tag_document_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"CACHED_OUTPUT_TIMEOUT": "keyword2",
 	"CONTENT_TYPE": "keyword2",
 	"REDIRECT": "keyword2",
@@ -423,7 +407,7 @@ def rule30(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules dict for tags ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	"\"": [rule28,],
 	"'": [rule29,],
 	"<": [rule27,],
@@ -439,7 +423,7 @@ def rule31(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 # Rules dict for tags_literal ruleset.
-rulesDict1 = {
+rulesDict3 = {
 	"<": [rule31,],
 }
 
@@ -580,7 +564,7 @@ def rule63(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for powerdynamo_script ruleset.
-rulesDict1 = {
+rulesDict4 = {
 	"!": [rule37,],
 	"\"": [rule33,],
 	"%": [rule47,],
@@ -690,7 +674,7 @@ def rule66(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for powerdynamo_tag_general ruleset.
-rulesDict1 = {
+rulesDict5 = {
 	"\"": [rule64,],
 	"'": [rule65,],
 	"0": [rule66,],
@@ -777,7 +761,7 @@ def rule69(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for powerdynamo_tag_data ruleset.
-rulesDict1 = {
+rulesDict6 = {
 	"\"": [rule67,],
 	"'": [rule68,],
 	"0": [rule69,],
@@ -864,7 +848,7 @@ def rule72(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for powerdynamo_tag_document ruleset.
-rulesDict1 = {
+rulesDict7 = {
 	"\"": [rule70,],
 	"'": [rule71,],
 	"0": [rule72,],
@@ -936,12 +920,12 @@ rulesDict1 = {
 # x.rulesDictDict for powerdynamo mode.
 rulesDictDict = {
 	"powerdynamo_main": rulesDict1,
-	"powerdynamo_powerdynamo_script": rulesDict1,
-	"powerdynamo_powerdynamo_tag_data": rulesDict1,
-	"powerdynamo_powerdynamo_tag_document": rulesDict1,
-	"powerdynamo_powerdynamo_tag_general": rulesDict1,
-	"powerdynamo_tags": rulesDict1,
-	"powerdynamo_tags_literal": rulesDict1,
+	"powerdynamo_powerdynamo_script": rulesDict4,
+	"powerdynamo_powerdynamo_tag_data": rulesDict6,
+	"powerdynamo_powerdynamo_tag_document": rulesDict7,
+	"powerdynamo_powerdynamo_tag_general": rulesDict5,
+	"powerdynamo_tags": rulesDict2,
+	"powerdynamo_tags_literal": rulesDict3,
 }
 
 # Import dict for powerdynamo mode.

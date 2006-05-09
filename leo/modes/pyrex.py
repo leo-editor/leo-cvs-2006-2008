@@ -2,16 +2,12 @@
 
 # Properties for pyrex mode.
 properties = {
-	"indentNextLines": "\s*[^#]{3,}:\s*(#.*)?",
+	"indentNextLines": "\\s*[^#]{3,}:\\s*(#.*)?",
 	"lineComment": "#",
 }
 
 # Keywords dict for pyrex_main ruleset.
 pyrex_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"NULL": "literal3",
 	"cdef": "keyword4",
 	"char": "keyword4",

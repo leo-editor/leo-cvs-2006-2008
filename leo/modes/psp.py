@@ -14,10 +14,6 @@ psp_tags_keywords_dict = {}
 
 # Keywords dict for psp_directive ruleset.
 psp_directive_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"file": "keyword4",
 	"include": "keyword4",
 }
@@ -134,7 +130,7 @@ def rule15(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 # Rules dict for tags ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	"\"": [rule11,],
 	"'": [rule12,],
 	"<": [rule14,rule15,],
@@ -163,7 +159,7 @@ def rule19(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for directive ruleset.
-rulesDict1 = {
+rulesDict3 = {
 	"\"": [rule16,],
 	"'": [rule17,],
 	"0": [rule19,],
@@ -235,9 +231,9 @@ rulesDict1 = {
 
 # x.rulesDictDict for psp mode.
 rulesDictDict = {
-	"psp_directive": rulesDict1,
+	"psp_directive": rulesDict3,
 	"psp_main": rulesDict1,
-	"psp_tags": rulesDict1,
+	"psp_tags": rulesDict2,
 }
 
 # Import dict for psp mode.

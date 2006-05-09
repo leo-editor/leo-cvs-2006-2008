@@ -93,7 +93,7 @@ def rule8(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules dict for tags ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	"\"": [rule6,],
 	"'": [rule7,],
 	"=": [rule8,],
@@ -110,7 +110,7 @@ def rule10(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="BACK_TO_HTML")
 
 # Rules dict for javascript ruleset.
-rulesDict1 = {
+rulesDict3 = {
 	">": [rule9,],
 	"S": [rule10,],
 }
@@ -122,7 +122,7 @@ def rule11(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="html::MAIN")
 
 # Rules dict for back_to_html ruleset.
-rulesDict1 = {
+rulesDict4 = {
 	">": [rule11,],
 }
 
@@ -133,17 +133,17 @@ def rule12(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="css::MAIN")
 
 # Rules dict for css ruleset.
-rulesDict1 = {
+rulesDict5 = {
 	">": [rule12,],
 }
 
 # x.rulesDictDict for html mode.
 rulesDictDict = {
-	"html_back_to_html": rulesDict1,
-	"html_css": rulesDict1,
-	"html_javascript": rulesDict1,
+	"html_back_to_html": rulesDict4,
+	"html_css": rulesDict5,
+	"html_javascript": rulesDict3,
 	"html_main": rulesDict1,
-	"html_tags": rulesDict1,
+	"html_tags": rulesDict2,
 }
 
 # Import dict for html mode.

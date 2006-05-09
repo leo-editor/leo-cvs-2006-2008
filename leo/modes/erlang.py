@@ -7,10 +7,6 @@ properties = {
 
 # Keywords dict for erlang_main ruleset.
 erlang_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"-behaviour": "keyword3",
 	"-compile": "keyword3",
 	"-define": "keyword3",
@@ -175,7 +171,7 @@ def rule4(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
 def rule5(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal3", seq="\$.\w*",
+    return colorer.match_seq_regexp(s, i, kind="literal3", seq="\\$.\\w*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule6(colorer, s, i):
@@ -267,51 +263,51 @@ def rule27(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule28(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="operator", seq="\bdiv\b",
+    return colorer.match_seq_regexp(s, i, kind="operator", seq="\\bdiv\\b",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule29(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="operator", seq="\brem\b",
+    return colorer.match_seq_regexp(s, i, kind="operator", seq="\\brem\\b",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule30(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="operator", seq="\bor\b",
+    return colorer.match_seq_regexp(s, i, kind="operator", seq="\\bor\\b",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule31(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="operator", seq="\bxor\b",
+    return colorer.match_seq_regexp(s, i, kind="operator", seq="\\bxor\\b",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule32(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="operator", seq="\bbor\b",
+    return colorer.match_seq_regexp(s, i, kind="operator", seq="\\bbor\\b",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule33(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="operator", seq="\bbxor\b",
+    return colorer.match_seq_regexp(s, i, kind="operator", seq="\\bbxor\\b",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule34(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="operator", seq="\bbsl\b",
+    return colorer.match_seq_regexp(s, i, kind="operator", seq="\\bbsl\\b",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule35(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="operator", seq="\bbsr\b",
+    return colorer.match_seq_regexp(s, i, kind="operator", seq="\\bbsr\\b",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule36(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="operator", seq="\band\b",
+    return colorer.match_seq_regexp(s, i, kind="operator", seq="\\band\\b",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule37(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="operator", seq="\bband\b",
+    return colorer.match_seq_regexp(s, i, kind="operator", seq="\\bband\\b",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule38(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="operator", seq="\bnot\b",
+    return colorer.match_seq_regexp(s, i, kind="operator", seq="\\bnot\\b",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule39(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="operator", seq="\bbnot\b",
+    return colorer.match_seq_regexp(s, i, kind="operator", seq="\\bbnot\\b",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule40(colorer, s, i):
@@ -374,7 +370,7 @@ rulesDict1 = {
 	"Y": [rule40,],
 	"Z": [rule40,],
 	"[": [rule23,],
-	"\": [rule5,rule28,rule29,rule30,rule31,rule32,rule33,rule34,rule35,rule36,rule37,rule38,rule39,],
+	"\\": [rule5,rule28,rule29,rule30,rule31,rule32,rule33,rule34,rule35,rule36,rule37,rule38,rule39,],
 	"]": [rule24,],
 	"_": [rule40,],
 	"a": [rule40,],

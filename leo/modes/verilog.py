@@ -4,7 +4,7 @@
 properties = {
 	"commentEnd": "*/",
 	"commentStart": "/*",
-	"indentNextLines": "(.*:\s*)|(\s*(begin|fork|task|table|specify|primitive|module|generate|function|case[xz]?)\>.*)|(\s*(always|if|else|for|forever|initial|repeat|while)\>[^;]*)",
+	"indentNextLines": "(.*:\\s*)|(\\s*(begin|fork|task|table|specify|primitive|module|generate|function|case[xz]?)\\>.*)|(\\s*(always|if|else|for|forever|initial|repeat|while)\\>[^;]*)",
 	"lineComment": "//",
 	"noWordSep": "_'",
 	"wordBreakChars": ",+-=<>/?^&*",
@@ -12,10 +12,6 @@ properties = {
 
 # Keywords dict for verilog_main ruleset.
 verilog_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"$cleartrace": "function",
 	"$finish": "function",
 	"$monitoroff": "function",

@@ -11,10 +11,6 @@ properties = {
 
 # Keywords dict for haskell_main ruleset.
 haskell_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	":": "literal2",
 	"Addr": "keyword3",
 	"Bool": "keyword3",

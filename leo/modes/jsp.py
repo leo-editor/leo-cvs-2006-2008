@@ -14,10 +14,6 @@ jsp_comment_keywords_dict = {}
 
 # Keywords dict for jsp_directives ruleset.
 jsp_directives_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"autoflush": "keyword2",
 	"buffer": "keyword2",
 	"charset": "keyword2",
@@ -183,7 +179,7 @@ def rule17(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 # Rules dict for comment ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	"<": [rule15,rule16,rule17,],
 }
 
@@ -223,7 +219,7 @@ def rule24(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for directives ruleset.
-rulesDict1 = {
+rulesDict3 = {
 	"\"": [rule19,],
 	"'": [rule20,],
 	"/": [rule21,],
@@ -326,7 +322,7 @@ def rule29(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule30(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="function", pattern=":"
+    return colorer.match_mark_following(s, i, kind="function", pattern=":",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
 def rule31(colorer, s, i):
@@ -334,7 +330,7 @@ def rule31(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules dict for tags ruleset.
-rulesDict1 = {
+rulesDict4 = {
 	"\"": [rule27,],
 	"'": [rule28,],
 	"/": [rule29,],
@@ -351,17 +347,17 @@ def rule32(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 # Rules dict for attrvalue ruleset.
-rulesDict1 = {
+rulesDict5 = {
 	"<": [rule32,],
 }
 
 # x.rulesDictDict for jsp mode.
 rulesDictDict = {
-	"jsp_attrvalue": rulesDict1,
-	"jsp_comment": rulesDict1,
-	"jsp_directives": rulesDict1,
+	"jsp_attrvalue": rulesDict5,
+	"jsp_comment": rulesDict2,
+	"jsp_directives": rulesDict3,
 	"jsp_main": rulesDict1,
-	"jsp_tags": rulesDict1,
+	"jsp_tags": rulesDict4,
 }
 
 # Import dict for jsp mode.

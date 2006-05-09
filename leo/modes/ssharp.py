@@ -12,14 +12,6 @@ properties = {
 
 # Keywords dict for ssharp_main ruleset.
 ssharp_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"	  ": "keywords",
-	"
-": "keywords",
-	" ": "keyword2",
-	"            ": "keywords",
-	"            			": "keywords",
 	"?": "keyword2",
 	"Application": "literal3",
 	"Array": "literal2",
@@ -179,7 +171,7 @@ def rule20(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule21(colorer, s, i):
-    return colorer.match_seq(s, i, kind="operator", seq="\\",
+    return colorer.match_seq(s, i, kind="operator", seq="\\\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule22(colorer, s, i):
@@ -247,11 +239,11 @@ def rule37(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
 def rule38(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="label", pattern="#"
+    return colorer.match_mark_following(s, i, kind="label", pattern="#",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
 def rule39(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="literal1", pattern="$"
+    return colorer.match_mark_following(s, i, kind="literal1", pattern="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
 def rule40(colorer, s, i):
@@ -315,7 +307,7 @@ rulesDict1 = {
 	"X": [rule40,],
 	"Y": [rule40,],
 	"Z": [rule40,],
-	"\": [rule21,],
+	"\\": [rule21,],
 	"^": [rule25,rule26,rule32,],
 	"_": [rule10,rule40,],
 	"a": [rule40,],

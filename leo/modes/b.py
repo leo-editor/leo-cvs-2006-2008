@@ -4,17 +4,12 @@
 properties = {
 	"commentEnd": "*/",
 	"commentStart": "/*",
-	"indentNextLine": "\s*(((ANY|ASSERT|CASE|CHOICE|IF|LET|PRE|SELECT|VAR|WHILE|WHEN)\s*\(|ELSE|ELSEIF|EITHER|OR|VARIANT|INVARIANT)[^;]*|for\s*\(.*)",
+	"indentNextLine": "\\s*(((ANY|ASSERT|CASE|CHOICE|IF|LET|PRE|SELECT|VAR|WHILE|WHEN)\\s*\\(|ELSE|ELSEIF|EITHER|OR|VARIANT|INVARIANT)[^;]*|for\\s*\\(.*)",
 	"lineComment": "//",
 }
 
 # Keywords dict for b_main ruleset.
 b_main_keywords_dict = {
-	"	": "keywords",
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"ABSTRACT_CONSTANTS": "keyword2",
 	"ABSTRACT_VARIABLES": "keyword2",
 	"ANY": "keyword2",
@@ -219,7 +214,7 @@ def rule15(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule16(colorer, s, i):
-    return colorer.match_seq(s, i, kind="operator", seq="\",
+    return colorer.match_seq(s, i, kind="operator", seq="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule17(colorer, s, i):
@@ -341,7 +336,7 @@ rulesDict1 = {
 	"Y": [rule31,],
 	"Z": [rule31,],
 	"[": [rule30,],
-	"\": [rule16,],
+	"\\": [rule16,],
 	"]": [rule29,],
 	"^": [rule22,],
 	"_": [rule31,],

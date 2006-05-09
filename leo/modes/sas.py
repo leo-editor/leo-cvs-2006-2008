@@ -5,10 +5,6 @@ properties = {}
 
 # Keywords dict for sas_main ruleset.
 sas_main_keywords_dict = {
-	"
-": "keywords",
-	"    ": "keywords",
-	"      ": "keywords",
 	"$ASCII": "keyword2",
 	"$BINARY": "keyword2",
 	"$CB": "keyword2",

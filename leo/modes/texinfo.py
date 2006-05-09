@@ -26,7 +26,7 @@ def rule1(colorer, s, i):
         delegate="", exclude_match=False)
 
 def rule2(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword1", pattern="@"
+    return colorer.match_mark_following(s, i, kind="keyword1", pattern="@",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule3(colorer, s, i):

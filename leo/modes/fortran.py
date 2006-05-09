@@ -3,14 +3,12 @@
 # Properties for fortran mode.
 properties = {
 	"blockComment": "C",
-	"indentNextLine": "\s*((if\s*\(.*\)\s*then|else\s*|do\s*)*)",
+	"indentNextLine": "\\s*((if\\s*\\(.*\\)\\s*then|else\\s*|do\\s*)*)",
 	"wordBreakChars": ",+-=<>/?^&*",
 }
 
 # Keywords dict for fortran_main ruleset.
 fortran_main_keywords_dict = {
-	"
-": "keywords",
 	".false.": "keyword1",
 	".true.": "keyword1",
 	"ABS": "keyword1",

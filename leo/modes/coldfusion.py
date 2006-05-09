@@ -14,10 +14,6 @@ coldfusion_tags_keywords_dict = {}
 
 # Keywords dict for coldfusion_cfscript ruleset.
 coldfusion_cfscript_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"Abs": "function",
 	"ArrayAppend": "function",
 	"ArrayAvg": "function",
@@ -233,10 +229,6 @@ coldfusion_cfscript_keywords_dict = {
 
 # Keywords dict for coldfusion_cftags ruleset.
 coldfusion_cftags_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"AND": "operator",
 	"Abs": "keyword2",
 	"ArrayAppend": "keyword2",
@@ -573,7 +565,7 @@ def rule16(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 # Rules dict for tags ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	"\"": [rule11,],
 	"'": [rule12,],
 	"<": [rule14,rule15,rule16,],
@@ -657,7 +649,7 @@ def rule33(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for cfscript ruleset.
-rulesDict1 = {
+rulesDict3 = {
 	"!": [rule31,],
 	"\"": [rule19,],
 	"&": [rule32,],
@@ -769,7 +761,7 @@ def rule39(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for cftags ruleset.
-rulesDict1 = {
+rulesDict4 = {
 	"\"": [rule34,],
 	"#": [rule37,rule38,],
 	"'": [rule35,],
@@ -842,10 +834,10 @@ rulesDict1 = {
 
 # x.rulesDictDict for coldfusion mode.
 rulesDictDict = {
-	"coldfusion_cfscript": rulesDict1,
-	"coldfusion_cftags": rulesDict1,
+	"coldfusion_cfscript": rulesDict3,
+	"coldfusion_cftags": rulesDict4,
 	"coldfusion_main": rulesDict1,
-	"coldfusion_tags": rulesDict1,
+	"coldfusion_tags": rulesDict2,
 }
 
 # Import dict for coldfusion mode.

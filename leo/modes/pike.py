@@ -6,7 +6,7 @@ properties = {
 	"commentStart": "/*",
 	"doubleBracketIndent": "false",
 	"indentCloseBrackets": "}",
-	"indentNextLine": "\s*(((if|(for(each)?)|while|catch|gauge)\s*\(|(do|else)\s*|else\s+if\s*\()[^{;]*)",
+	"indentNextLine": "\\s*(((if|(for(each)?)|while|catch|gauge)\\s*\\(|(do|else)\\s*|else\\s+if\\s*\\()[^{;]*)",
 	"indentOpenBrackets": "{",
 	"lineComment": "//",
 	"lineUpClosingBracket": "true",
@@ -15,10 +15,6 @@ properties = {
 
 # Keywords dict for pike_main ruleset.
 pike_main_keywords_dict = {
-	"
-": "keywords",
-	"    ": "keywords",
-	"      ": "keywords",
 	"array": "keyword3",
 	"break": "keyword1",
 	"case": "keyword1",
@@ -65,20 +61,12 @@ pike_main_keywords_dict = {
 
 # Keywords dict for pike_comment ruleset.
 pike_comment_keywords_dict = {
-	"
-": "keywords",
-	"    ": "keywords",
-	"      ": "keywords",
 	"FIXME": "comment2",
 	"XXX": "comment2",
 }
 
 # Keywords dict for pike_autodoc ruleset.
 pike_autodoc_keywords_dict = {
-	"		": "keywords",
-	"		  ": "keywords",
-	"
-": "keywords",
 	"@appears": "label",
 	"@array": "label",
 	"@belongs": "label",
@@ -177,7 +165,7 @@ def rule6(colorer, s, i):
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rule7(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", seq="#.*?(?=($|/\*|//))",
+    return colorer.match_seq_regexp(s, i, kind="keyword2", seq="#.*?(?=($|/\\*|//))",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule8(colorer, s, i):
@@ -370,7 +358,7 @@ def rule32(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for comment ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	"0": [rule32,],
 	"1": [rule32,],
 	"2": [rule32,],
@@ -457,7 +445,7 @@ def rule35(colorer, s, i):
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rule36(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="function", seq="@(b|i|u|tt|url|pre|ref|code|expr|image)?(\{.*@\})",
+    return colorer.match_seq_regexp(s, i, kind="function", seq="@(b|i|u|tt|url|pre|ref|code|expr|image)?(\\{.*@\\})",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule37(colorer, s, i):
@@ -469,7 +457,7 @@ def rule38(colorer, s, i):
         delegate="MAIN", exclude_match=False)
 
 # Rules dict for autodoc ruleset.
-rulesDict1 = {
+rulesDict3 = {
 	"0": [rule37,],
 	"1": [rule37,],
 	"2": [rule37,],
@@ -539,7 +527,7 @@ rulesDict1 = {
 # Rules for pike_string_literal ruleset.
 
 def rule39(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal2", seq="%([^ a-z]*[a-z]|\[[^\]]*\])",
+    return colorer.match_seq_regexp(s, i, kind="literal2", seq="%([^ a-z]*[a-z]|\\[[^\\]]*\\])",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule40(colorer, s, i):
@@ -547,17 +535,17 @@ def rule40(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules dict for string_literal ruleset.
-rulesDict1 = {
+rulesDict4 = {
 	"%": [rule39,],
 	"D": [rule40,],
 }
 
 # x.rulesDictDict for pike mode.
 rulesDictDict = {
-	"pike_autodoc": rulesDict1,
-	"pike_comment": rulesDict1,
+	"pike_autodoc": rulesDict3,
+	"pike_comment": rulesDict2,
 	"pike_main": rulesDict1,
-	"pike_string_literal": rulesDict1,
+	"pike_string_literal": rulesDict4,
 }
 
 # Import dict for pike mode.

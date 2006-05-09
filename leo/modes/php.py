@@ -20,10 +20,6 @@ php_tags_literal_keywords_dict = {}
 
 # Keywords dict for php_php ruleset.
 php_php_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"COM_invoke": "keyword2",
 	"COM_load": "keyword2",
 	"__CLASS__": "keyword3",
@@ -2406,10 +2402,6 @@ php_javascript_php_keywords_dict = {}
 
 # Keywords dict for php_phpdoc ruleset.
 php_phpdoc_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"@abstract": "label",
 	"@access": "label",
 	"@author": "label",
@@ -2483,7 +2475,7 @@ def rule3(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule4(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="markup", begin="<SCRIPT\s+LANGUAGE=\"?PHP\"?>", end="</SCRIPT>",
+    return colorer.match_span_regexp(s, i, kind="markup", begin="<SCRIPT\\s+LANGUAGE=\"?PHP\"?>", end="</SCRIPT>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="PHP",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
@@ -2561,7 +2553,7 @@ def rule15(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules dict for tags ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	"\"": [rule13,],
 	"'": [rule14,],
 	"<": [rule10,rule11,rule12,],
@@ -2589,7 +2581,7 @@ def rule18(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 # Rules dict for tags_literal ruleset.
-rulesDict1 = {
+rulesDict3 = {
 	"<": [rule16,rule17,rule18,],
 }
 
@@ -2642,7 +2634,7 @@ def rule26(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule27(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword3", pattern="$"
+    return colorer.match_mark_following(s, i, kind="keyword3", pattern="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule28(colorer, s, i):
@@ -2761,7 +2753,7 @@ def rule56(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for php ruleset.
-rulesDict1 = {
+rulesDict4 = {
 	"!": [rule30,],
 	"\"": [rule21,],
 	"#": [rule25,],
@@ -2859,11 +2851,11 @@ rulesDict1 = {
 # Rules for php_php_literal ruleset.
 
 def rule57(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword3", pattern="$"
+    return colorer.match_mark_following(s, i, kind="keyword3", pattern="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 # Rules dict for php_literal ruleset.
-rulesDict1 = {
+rulesDict5 = {
 	"$": [rule57,],
 }
 
@@ -2878,7 +2870,7 @@ def rule59(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="BACK_TO_HTML")
 
 # Rules dict for javascript ruleset.
-rulesDict1 = {
+rulesDict6 = {
 	">": [rule58,],
 	"S": [rule59,],
 }
@@ -2905,7 +2897,7 @@ def rule62(colorer, s, i):
 
 
 # Rules dict for javascript_php ruleset.
-rulesDict1 = {
+rulesDict7 = {
 	"<": [rule60,rule61,rule62,],
 }
 
@@ -2947,7 +2939,7 @@ def rule70(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for phpdoc ruleset.
-rulesDict1 = {
+rulesDict8 = {
 	"*": [rule64,],
 	"0": [rule70,],
 	"1": [rule70,],
@@ -3019,14 +3011,14 @@ rulesDict1 = {
 
 # x.rulesDictDict for php mode.
 rulesDictDict = {
-	"php_javascript": rulesDict1,
-	"php_javascript_php": rulesDict1,
+	"php_javascript": rulesDict6,
+	"php_javascript_php": rulesDict7,
 	"php_main": rulesDict1,
-	"php_php": rulesDict1,
-	"php_php_literal": rulesDict1,
-	"php_phpdoc": rulesDict1,
-	"php_tags": rulesDict1,
-	"php_tags_literal": rulesDict1,
+	"php_php": rulesDict4,
+	"php_php_literal": rulesDict5,
+	"php_phpdoc": rulesDict8,
+	"php_tags": rulesDict2,
+	"php_tags_literal": rulesDict3,
 }
 
 # Import dict for php mode.

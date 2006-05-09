@@ -10,11 +10,6 @@ properties = {
 
 # Keywords dict for antlr_main ruleset.
 antlr_main_keywords_dict = {
-	"			": "keywords",
-	"
-": "keywords",
-	"                ": "keywords",
-	"                        ": "keywords",
 	"abstract": "keyword1",
 	"assert": "function",
 	"boolean": "keyword2",

@@ -8,12 +8,6 @@ properties = {
 
 # Keywords dict for vhdl_main ruleset.
 vhdl_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
-	" 			": "keywords",
-	"      ": "keywords",
 	"ACTIVE": "keyword3",
 	"ASCENDING": "keyword3",
 	"BASE": "keyword3",

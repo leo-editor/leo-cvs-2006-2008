@@ -11,11 +11,6 @@ tpl_main_keywords_dict = {}
 
 # Keywords dict for tpl_tpl ruleset.
 tpl_tpl_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
-	"            ": "keywords",
 	"=": "operator",
 	"END": "keyword2",
 	"START": "keyword2",
@@ -99,7 +94,7 @@ def rule9(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for tpl ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	"\"": [rule6,],
 	"'": [rule7,],
 	"*": [rule8,],
@@ -188,7 +183,7 @@ def rule12(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules dict for tags ruleset.
-rulesDict1 = {
+rulesDict3 = {
 	"\"": [rule10,],
 	"'": [rule11,],
 	"=": [rule12,],
@@ -197,8 +192,8 @@ rulesDict1 = {
 # x.rulesDictDict for tpl mode.
 rulesDictDict = {
 	"tpl_main": rulesDict1,
-	"tpl_tags": rulesDict1,
-	"tpl_tpl": rulesDict1,
+	"tpl_tags": rulesDict3,
+	"tpl_tpl": rulesDict2,
 }
 
 # Import dict for tpl mode.

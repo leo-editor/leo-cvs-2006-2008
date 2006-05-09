@@ -14,10 +14,6 @@ properties = {
 
 # Keywords dict for rebol_main ruleset.
 rebol_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"?": "keyword2",
 	"??": "keyword2",
 	"Usage": "keyword1",
@@ -581,7 +577,7 @@ def rule13(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule14(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="literal2", pattern="'"
+    return colorer.match_mark_following(s, i, kind="literal2", pattern="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
 def rule15(colorer, s, i):

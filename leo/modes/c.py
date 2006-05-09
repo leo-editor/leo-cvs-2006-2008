@@ -6,7 +6,7 @@ properties = {
 	"commentStart": "/*",
 	"doubleBracketIndent": "false",
 	"indentCloseBrackets": "}",
-	"indentNextLine": "\s*(((if|while)\s*\(|else\s*|else\s+if\s*\(|for\s*\(.*\))[^{;]*)",
+	"indentNextLine": "\\s*(((if|while)\\s*\\(|else\\s*|else\\s+if\\s*\\(|for\\s*\\(.*\\))[^{;]*)",
 	"indentOpenBrackets": "{",
 	"lineComment": "//",
 	"lineUpClosingBracket": "true",
@@ -15,10 +15,6 @@ properties = {
 
 # Keywords dict for c_main ruleset.
 c_main_keywords_dict = {
-	"
-": "keywords",
-	"        ": "keywords",
-	"            ": "keywords",
 	"NULL": "literal2",
 	"asm": "keyword2",
 	"asmlinkage": "keyword2",
@@ -65,10 +61,6 @@ c_main_keywords_dict = {
 
 # Keywords dict for c_cpp ruleset.
 c_cpp_keywords_dict = {
-	"
-": "keywords",
-	"        ": "keywords",
-	"            ": "keywords",
 	"assert": "markup",
 	"define": "markup",
 	"elif": "markup",
@@ -330,7 +322,7 @@ def rule30(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for cpp ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	"/": [rule28,],
 	"0": [rule30,],
 	"1": [rule30,],
@@ -401,12 +393,12 @@ rulesDict1 = {
 # Rules for c_include ruleset.
 
 # Rules dict for include ruleset.
-rulesDict1 = {}
+rulesDict3 = {}
 
 # x.rulesDictDict for c mode.
 rulesDictDict = {
-	"c_cpp": rulesDict1,
-	"c_include": rulesDict1,
+	"c_cpp": rulesDict2,
+	"c_include": rulesDict3,
 	"c_main": rulesDict1,
 }
 

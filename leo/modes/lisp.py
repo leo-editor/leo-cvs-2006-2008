@@ -13,10 +13,6 @@ properties = {
 
 # Keywords dict for lisp_main ruleset.
 lisp_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"*": "keyword3",
 	"**": "keyword3",
 	"***": "keyword3",
@@ -997,11 +993,11 @@ def rule1(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule2(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="literal1", pattern="'"
+    return colorer.match_mark_following(s, i, kind="literal1", pattern="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule3(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword4", pattern="&"
+    return colorer.match_mark_following(s, i, kind="keyword4", pattern="&",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule4(colorer, s, i):

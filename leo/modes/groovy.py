@@ -5,7 +5,7 @@ properties = {
 	"commentEnd": "*/",
 	"commentStart": "/*",
 	"indentCloseBrackets": "}",
-	"indentNextLine": "\s*(((if|while)\s*\(|else\s*|else\s+if\s*\(|for\s*\(.*\))[^{;]*)",
+	"indentNextLine": "\\s*(((if|while)\\s*\\(|else\\s*|else\\s+if\\s*\\(|for\\s*\\(.*\\))[^{;]*)",
 	"indentOpenBrackets": "{",
 	"lineComment": "//",
 	"lineUpClosingBracket": "true",
@@ -13,10 +13,6 @@ properties = {
 
 # Keywords dict for groovy_main ruleset.
 groovy_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"abs": "keyword4",
 	"abstract": "keyword1",
 	"any": "keyword4",
@@ -196,7 +192,7 @@ def rule4(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule5(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="literal1", begin="<<<([[:alpha:]_][[:alnum:]_]*)\s*", end="$1",
+    return colorer.match_span_regexp(s, i, kind="literal1", begin="<<<([[:alpha:]_][[:alnum:]_]*)\\s*", end="$1",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="LITERAL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
@@ -356,11 +352,11 @@ def rule22(colorer, s, i):
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rule23(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$"
+    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 # Rules dict for literal ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	"$": [rule22,rule23,],
 }
 
@@ -399,11 +395,11 @@ def rule30(colorer, s, i):
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rule31(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="label", pattern="@"
+    return colorer.match_mark_following(s, i, kind="label", pattern="@",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 # Rules dict for groovydoc ruleset.
-rulesDict1 = {
+rulesDict3 = {
 	"*": [rule25,],
 	"<": [rule26,rule27,rule28,rule29,rule30,],
 	"@": [rule31,],
@@ -412,8 +408,8 @@ rulesDict1 = {
 
 # x.rulesDictDict for groovy mode.
 rulesDictDict = {
-	"groovy_groovydoc": rulesDict1,
-	"groovy_literal": rulesDict1,
+	"groovy_groovydoc": rulesDict3,
+	"groovy_literal": rulesDict2,
 	"groovy_main": rulesDict1,
 }
 

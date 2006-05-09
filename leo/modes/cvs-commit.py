@@ -50,7 +50,7 @@ def rule5(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules dict for changed ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	"A": [rule3,],
 	"C": [rule1,rule2,],
 	"M": [rule4,],
@@ -59,7 +59,7 @@ rulesDict1 = {
 
 # x.rulesDictDict for cvs_commit mode.
 rulesDictDict = {
-	"cvs_commit_changed": rulesDict1,
+	"cvs_commit_changed": rulesDict2,
 	"cvs_commit_main": rulesDict1,
 }
 

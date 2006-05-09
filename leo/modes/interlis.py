@@ -9,10 +9,6 @@ properties = {
 
 # Keywords dict for interlis_main ruleset.
 interlis_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"ABSTRACT": "keyword1",
 	"ACCORDING": "keyword1",
 	"AGGREGATES": "keyword1",
@@ -337,7 +333,7 @@ def rule42(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule43(colorer, s, i):
-    return colorer.match_seq(s, i, kind="operator", seq="\",
+    return colorer.match_seq(s, i, kind="operator", seq="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule44(colorer, s, i):
@@ -415,7 +411,7 @@ rulesDict1 = {
 	"Y": [rule48,],
 	"Z": [rule48,],
 	"[": [rule13,rule42,],
-	"\": [rule43,],
+	"\\": [rule43,],
 	"]": [rule14,rule44,],
 	"_": [rule48,],
 	"a": [rule48,],

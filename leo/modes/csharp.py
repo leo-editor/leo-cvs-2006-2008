@@ -6,7 +6,7 @@ properties = {
 	"commentStart": "/*",
 	"doubleBracketIndent": "false",
 	"indentCloseBrackets": "}",
-	"indentNextLine": "\s*(((if|while)\s*\(|else\s*|else\s+if\s*\(|for\s*\(.*\))[^{;]*)",
+	"indentNextLine": "\\s*(((if|while)\\s*\\(|else\\s*|else\\s+if\\s*\\(|for\\s*\\(.*\\))[^{;]*)",
 	"indentOpenBrackets": "{",
 	"lineComment": "//",
 	"lineUpClosingBracket": "true",
@@ -14,10 +14,6 @@ properties = {
 
 # Keywords dict for csharp_main ruleset.
 csharp_main_keywords_dict = {
-	"		": "keywords",
-	"			": "keywords",
-	"
-": "keywords",
 	"abstract": "keyword1",
 	"as": "keyword1",
 	"base": "keyword1",
@@ -269,7 +265,7 @@ def rule34(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule35(colorer, s, i):
-    return colorer.match_seq(s, i, kind="operator", seq="\",
+    return colorer.match_seq(s, i, kind="operator", seq="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule36(colorer, s, i):
@@ -358,7 +354,7 @@ rulesDict1 = {
 	"Y": [rule42,],
 	"Z": [rule42,],
 	"[": [rule26,],
-	"\": [rule35,],
+	"\\": [rule35,],
 	"]": [rule27,],
 	"^": [rule36,],
 	"_": [rule42,],
@@ -409,13 +405,13 @@ def rule44(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 # Rules dict for doc_comment ruleset.
-rulesDict1 = {
+rulesDict2 = {
 	"<": [rule43,rule44,],
 }
 
 # x.rulesDictDict for csharp mode.
 rulesDictDict = {
-	"csharp_doc_comment": rulesDict1,
+	"csharp_doc_comment": rulesDict2,
 	"csharp_main": rulesDict1,
 }
 
