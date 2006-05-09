@@ -129,8 +129,6 @@ __version__ = '0.20'
 #@@nocolor
 #@+at
 # 
-# * Don't call rules unless the first character matches the rule.
-# 
 # - Triple strings are not working.
 # 
 # Use all attributes in all rule matchers.
@@ -478,7 +476,7 @@ class baseColorizer:
             ('@',match_at_color),
             ('@',match_at_nocolor),
             ('@',match_doc_part),
-            ('<<',match_section_ref),
+            ('<',match_section_ref),
         ):
             theList = theDict.get(ch,[])
             theList.insert(0,rule)
@@ -604,100 +602,6 @@ class baseColorizer:
     #@nonl
     #@-node:ekr.20050602150619:init_mode
     #@-node:ekr.20050529143413.24:Birth and init
-    #@+node:ekr.20060507182617:NO LONGER USED
-    if 0:
-        #@    @+others
-        #@+node:ekr.20050601044345:get_word
-        def get_word(self,s,i):
-        
-            j = i
-            while j < len(s) and s[j] in self.word_chars:
-                j += 1
-        
-            return s[i:j]
-        #@nonl
-        #@-node:ekr.20050601044345:get_word
-        #@+node:ekr.20060507182617.1:removeTagsFromLine
-        def removeTagsFromLine (self):
-            
-            # print "removeTagsFromLine",self.line_index
-            for tag in self.tags:
-                self.body.tag_remove(tag,self.index(0),self.index("end"))
-                
-            for tag in self.color_tags_list:
-                self.body.tag_remove(tag,self.index(0),self.index("end"))
-        #@nonl
-        #@-node:ekr.20060507182617.1:removeTagsFromLine
-        #@+node:ekr.20050603202319:invalidate_range
-        def invalidate_range (self,i,j):
-        
-            return
-            
-            # for k in xrange(i,j):
-                # self.colored_ranges[k] = None
-        #@nonl
-        #@-node:ekr.20050603202319:invalidate_range
-        #@+node:ekr.20050603190206:rangeColoredWithTag
-        def rangeColoredWithTag(self,i,j,tag):
-            
-            g.trace()
-            
-            for k in xrange(i,j):
-                if tag != self.colored_ranges.get(k):
-                    return False
-            return True
-        #@nonl
-        #@-node:ekr.20050603190206:rangeColoredWithTag
-        #@+node:ekr.20050603174749:removeTagsFromRange
-        def removeTagsFromRange (self,s,i,j):
-            
-            tags = {}
-            for k in xrange(i,j):
-                tag = self.colored_ranges.get(k)
-                if tag: # Must remove the tag, even if it will be reapplied (to a possibly different range).
-                    tags[tag] = None
-                    self.colored_ranges[k] = None
-        
-            row,col = g.convertPythonIndexToRowCol(s,i)
-            x1 = '%d.%d' % (row+1,col)
-            row,col = g.convertPythonIndexToRowCol(s,j)
-            x2 = '%d.%d' % (row+1,col)
-            
-            # g.trace('row',row+1)
-        
-            for tag in tags.keys():
-                # g.trace(tag,x1,x2)
-                self.body.tag_remove(tag,x1,x2)
-        #@nonl
-        #@-node:ekr.20050603174749:removeTagsFromRange
-        #@+node:ekr.20060507182708:tag
-        def tag (self,name,i,j):
-        
-            self.body.tag_add(name,self.index(i),self.index(j))
-        #@nonl
-        #@-node:ekr.20060507182708:tag
-        #@+node:ekr.20050605183244:removeOldTagsFromRange
-        def removeOldTagsFromRange(self,s,i,j):
-            
-            '''Remove all tags from range without using the colored_ranges dict.
-            
-            This is executed when a non-incremental redraw clears the colored_ranges dict.'''
-        
-            row,col = g.convertPythonIndexToRowCol(s,i)
-            x1 = '%d.%d' % (row+1,col)
-            row,col = g.convertPythonIndexToRowCol(s,j)
-            x2 = '%d.%d' % (row+1,col)
-                    
-            for tag in self.tags:
-                self.body.tag_remove(tag,x1,x2)
-            
-            for tag in self.color_tags_list:
-                self.body.tag_remove(tag,x1,x2)
-        #@nonl
-        #@-node:ekr.20050605183244:removeOldTagsFromRange
-        #@-others
-    #@nonl
-    #@-node:ekr.20060507182617:NO LONGER USED
     #@+node:ekr.20050529145203:Entry points
     #@+node:ekr.20050529143413.30:colorize
     colorize_count = 0
@@ -930,14 +834,15 @@ class baseColorizer:
     #@+node:ekr.20050602205810.4:colorRangeWithTag
     def colorRangeWithTag (self,s,i,j,tag):
     
-        '''Add an item to the tagList.'''
+        '''Add an item to the tagList if colorizing is enabled.'''
         
         # g.convertPythonIndexToRowCol could be slow for large s.
-        row,col = g.convertPythonIndexToRowCol(s,i)
-        x1 = '%d.%d' % (row+1,col)
-        row,col = g.convertPythonIndexToRowCol(s,j)
-        x2 = '%d.%d' % (row+1,col)
-        self.tagList.append((tag,x1,x2),)
+        if self.flag:
+            row,col = g.convertPythonIndexToRowCol(s,i)
+            x1 = '%d.%d' % (row+1,col)
+            row,col = g.convertPythonIndexToRowCol(s,j)
+            x2 = '%d.%d' % (row+1,col)
+            self.tagList.append((tag,x1,x2),)
     #@nonl
     #@-node:ekr.20050602205810.4:colorRangeWithTag
     #@+node:ekr.20060507192431:quickColor
@@ -956,150 +861,6 @@ class baseColorizer:
     #@nonl
     #@-node:ekr.20060507192431:quickColor
     #@-node:ekr.20050529150436:Colorizer code
-    #@+node:ekr.20050529143413.89:Utils
-    #@+at 
-    #@nonl
-    # These methods are like the corresponding functions in leoGlobals.py 
-    # except they issue no error messages.
-    #@-at
-    #@+node:ekr.20060503171558:computeRulesetName
-    def computeRulesetName (self,language,name='main'):
-        
-        return '%s_%s' % (language,name)
-    #@nonl
-    #@-node:ekr.20060503171558:computeRulesetName
-    #@+node:ekr.20050529143413.90:index
-    def index (self,i):
-        
-        return self.body.convertRowColumnToIndex(self.line_index,i)
-        
-    #@nonl
-    #@-node:ekr.20050529143413.90:index
-    #@+node:ekr.20050529143413.86:removeAllImages
-    def removeAllImages (self):
-        
-        for photo,image,line_index,i in self.image_references:
-            try:
-                self.body.deleteCharacter(image)
-            except:
-                pass # The image may have been deleted earlier.
-        
-        self.image_references = []
-    #@nonl
-    #@-node:ekr.20050529143413.86:removeAllImages
-    #@+node:ekr.20050529143413.80:removeAllTags
-    def removeAllTags (self):
-        
-        # g.trace(g.callers())
-        
-        w = self.c.frame.body.bodyCtrl
-        names = w.tag_names()
-        for name in names:
-            theList = w.tag_ranges(name)
-            if theList:
-                n = len(theList) ; i = 0
-                while i < n:
-                    w.tag_remove(name,theList[i],theList[i+1])
-                    i += 2
-    #@nonl
-    #@-node:ekr.20050529143413.80:removeAllTags
-    #@+node:ekr.20050529143413.81:scanColorDirectives
-    def scanColorDirectives(self,p):
-        
-        """Scan position p and p's ancestors looking for @comment, @language and @root directives,
-        setting corresponding colorizer ivars.
-        """
-    
-        p = p.copy() ; c = self.c
-        if c == None: return # self.c may be None for testing.
-    
-        self.language = language = c.target_language
-        self.comment_string = None
-        self.rootMode = None # None, "code" or "doc"
-        
-        for p in p.self_and_parents_iter():
-            # g.trace(p)
-            s = p.v.t.bodyString
-            theDict = g.get_directives_dict(s)
-            #@        << Test for @comment or @language >>
-            #@+node:ekr.20050529143413.82:<< Test for @comment or @language >>
-            # @comment and @language may coexist in the same node.
-            
-            if theDict.has_key("comment"):
-                k = theDict["comment"]
-                self.comment_string = s[k:]
-            
-            if theDict.has_key("language"):
-                i = theDict["language"]
-                language,junk,junk,junk = g.set_language(s,i)
-                self.language = language
-            
-            if theDict.has_key("comment") or theDict.has_key("language"):
-                break
-            #@nonl
-            #@-node:ekr.20050529143413.82:<< Test for @comment or @language >>
-            #@nl
-            #@        << Test for @root, @root-doc or @root-code >>
-            #@+node:ekr.20050529143413.83:<< Test for @root, @root-doc or @root-code >>
-            if theDict.has_key("root") and not self.rootMode:
-            
-                k = theDict["root"]
-                if g.match_word(s,k,"@root-code"):
-                    self.rootMode = "code"
-                elif g.match_word(s,k,"@root-doc"):
-                    self.rootMode = "doc"
-                else:
-                    doc = c.config.at_root_bodies_start_in_doc_mode
-                    self.rootMode = g.choose(doc,"doc","code")
-            #@nonl
-            #@-node:ekr.20050529143413.83:<< Test for @root, @root-doc or @root-code >>
-            #@nl
-    
-        return self.language # For use by external routines.
-    #@nonl
-    #@-node:ekr.20050529143413.81:scanColorDirectives
-    #@+node:ekr.20050529143413.29:setFontFromConfig
-    def setFontFromConfig (self):
-        
-        c = self.c
-        
-        self.bold_font = c.config.getFontFromParams(
-            "body_text_font_family", "body_text_font_size",
-            "body_text_font_slant",  "body_text_font_weight",
-            c.config.defaultBodyFontSize) # , tag = "colorer bold")
-        
-        if self.bold_font:
-            self.bold_font.configure(weight="bold")
-        
-        self.italic_font = c.config.getFontFromParams(
-            "body_text_font_family", "body_text_font_size",
-            "body_text_font_slant",  "body_text_font_weight",
-            c.config.defaultBodyFontSize) # , tag = "colorer italic")
-            
-        if self.italic_font:
-            self.italic_font.configure(slant="italic",weight="normal")
-        
-        self.bolditalic_font = c.config.getFontFromParams(
-            "body_text_font_family", "body_text_font_size",
-            "body_text_font_slant",  "body_text_font_weight",
-            c.config.defaultBodyFontSize) # , tag = "colorer bold italic")
-            
-        if self.bolditalic_font:
-            self.bolditalic_font.configure(weight="bold",slant="italic")
-            
-        self.color_tags_list = []
-        self.image_references = []
-    #@nonl
-    #@-node:ekr.20050529143413.29:setFontFromConfig
-    #@+node:ekr.20060507175312:tagAll
-    def tagAll (self):
-        
-        for tag,x1,x2 in self.tagList:
-            self.body.tag_add(tag,x1,x2)
-    #@nonl
-    #@-node:ekr.20060507175312:tagAll
-    #@-node:ekr.20050529143413.89:Utils
-    #@+node:ekr.20050529180421.47:Rule matching methods
     #@+node:ekr.20060503153603.1:jEdit matchers (todo: exclude_match)
     #@@nocolor
     #@+at
@@ -1343,7 +1104,149 @@ class baseColorizer:
     #@nonl
     #@-node:ekr.20050529215732:match_span_regexp
     #@-node:ekr.20060503153603.1:jEdit matchers (todo: exclude_match)
-    #@-node:ekr.20050529180421.47:Rule matching methods
+    #@+node:ekr.20050529143413.89:Utils
+    #@+at 
+    #@nonl
+    # These methods are like the corresponding functions in leoGlobals.py 
+    # except they issue no error messages.
+    #@-at
+    #@+node:ekr.20060503171558:computeRulesetName
+    def computeRulesetName (self,language,name='main'):
+        
+        return '%s_%s' % (language,name)
+    #@nonl
+    #@-node:ekr.20060503171558:computeRulesetName
+    #@+node:ekr.20050529143413.90:index
+    def index (self,i):
+        
+        return self.body.convertRowColumnToIndex(self.line_index,i)
+        
+    #@nonl
+    #@-node:ekr.20050529143413.90:index
+    #@+node:ekr.20050529143413.86:removeAllImages
+    def removeAllImages (self):
+        
+        for photo,image,line_index,i in self.image_references:
+            try:
+                self.body.deleteCharacter(image)
+            except:
+                pass # The image may have been deleted earlier.
+        
+        self.image_references = []
+    #@nonl
+    #@-node:ekr.20050529143413.86:removeAllImages
+    #@+node:ekr.20050529143413.80:removeAllTags
+    def removeAllTags (self):
+        
+        # g.trace(g.callers())
+        
+        w = self.c.frame.body.bodyCtrl
+        names = w.tag_names()
+        for name in names:
+            theList = w.tag_ranges(name)
+            if theList:
+                n = len(theList) ; i = 0
+                while i < n:
+                    w.tag_remove(name,theList[i],theList[i+1])
+                    i += 2
+    #@nonl
+    #@-node:ekr.20050529143413.80:removeAllTags
+    #@+node:ekr.20050529143413.81:scanColorDirectives
+    def scanColorDirectives(self,p):
+        
+        """Scan position p and p's ancestors looking for @comment, @language and @root directives,
+        setting corresponding colorizer ivars.
+        """
+    
+        p = p.copy() ; c = self.c
+        if c == None: return # self.c may be None for testing.
+    
+        self.language = language = c.target_language
+        self.comment_string = None
+        self.rootMode = None # None, "code" or "doc"
+        
+        for p in p.self_and_parents_iter():
+            # g.trace(p)
+            s = p.v.t.bodyString
+            theDict = g.get_directives_dict(s)
+            #@        << Test for @comment or @language >>
+            #@+node:ekr.20050529143413.82:<< Test for @comment or @language >>
+            # @comment and @language may coexist in the same node.
+            
+            if theDict.has_key("comment"):
+                k = theDict["comment"]
+                self.comment_string = s[k:]
+            
+            if theDict.has_key("language"):
+                i = theDict["language"]
+                language,junk,junk,junk = g.set_language(s,i)
+                self.language = language
+            
+            if theDict.has_key("comment") or theDict.has_key("language"):
+                break
+            #@nonl
+            #@-node:ekr.20050529143413.82:<< Test for @comment or @language >>
+            #@nl
+            #@        << Test for @root, @root-doc or @root-code >>
+            #@+node:ekr.20050529143413.83:<< Test for @root, @root-doc or @root-code >>
+            if theDict.has_key("root") and not self.rootMode:
+            
+                k = theDict["root"]
+                if g.match_word(s,k,"@root-code"):
+                    self.rootMode = "code"
+                elif g.match_word(s,k,"@root-doc"):
+                    self.rootMode = "doc"
+                else:
+                    doc = c.config.at_root_bodies_start_in_doc_mode
+                    self.rootMode = g.choose(doc,"doc","code")
+            #@nonl
+            #@-node:ekr.20050529143413.83:<< Test for @root, @root-doc or @root-code >>
+            #@nl
+    
+        return self.language # For use by external routines.
+    #@nonl
+    #@-node:ekr.20050529143413.81:scanColorDirectives
+    #@+node:ekr.20050529143413.29:setFontFromConfig
+    def setFontFromConfig (self):
+        
+        c = self.c
+        
+        self.bold_font = c.config.getFontFromParams(
+            "body_text_font_family", "body_text_font_size",
+            "body_text_font_slant",  "body_text_font_weight",
+            c.config.defaultBodyFontSize) # , tag = "colorer bold")
+        
+        if self.bold_font:
+            self.bold_font.configure(weight="bold")
+        
+        self.italic_font = c.config.getFontFromParams(
+            "body_text_font_family", "body_text_font_size",
+            "body_text_font_slant",  "body_text_font_weight",
+            c.config.defaultBodyFontSize) # , tag = "colorer italic")
+            
+        if self.italic_font:
+            self.italic_font.configure(slant="italic",weight="normal")
+        
+        self.bolditalic_font = c.config.getFontFromParams(
+            "body_text_font_family", "body_text_font_size",
+            "body_text_font_slant",  "body_text_font_weight",
+            c.config.defaultBodyFontSize) # , tag = "colorer bold italic")
+            
+        if self.bolditalic_font:
+            self.bolditalic_font.configure(weight="bold",slant="italic")
+            
+        self.color_tags_list = []
+        self.image_references = []
+    #@nonl
+    #@-node:ekr.20050529143413.29:setFontFromConfig
+    #@+node:ekr.20060507175312:tagAll
+    def tagAll (self):
+        
+        for tag,x1,x2 in self.tagList:
+            self.body.tag_add(tag,x1,x2)
+    #@nonl
+    #@-node:ekr.20060507175312:tagAll
+    #@-node:ekr.20050529143413.89:Utils
     #@-others
 
 class colorizer (baseColorizer):
