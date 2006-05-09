@@ -1,4 +1,5 @@
 # Leo colorizer control file for lisp mode.
+# This file is in the public domain.
 
 # Properties for lisp mode.
 properties = {

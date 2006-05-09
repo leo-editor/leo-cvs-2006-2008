@@ -1,4 +1,5 @@
 # Leo colorizer control file for sqr mode.
+# This file is in the public domain.
 
 # Properties for sqr mode.
 properties = {

@@ -1,4 +1,5 @@
 # Leo colorizer control file for vhdl mode.
+# This file is in the public domain.
 
 # Properties for vhdl mode.
 properties = {

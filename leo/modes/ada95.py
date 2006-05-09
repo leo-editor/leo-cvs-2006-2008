@@ -1,4 +1,5 @@
 # Leo colorizer control file for ada95 mode.
+# This file is in the public domain.
 
 # Properties for ada95 mode.
 properties = {

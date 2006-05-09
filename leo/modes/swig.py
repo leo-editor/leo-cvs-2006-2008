@@ -1,4 +1,5 @@
 # Leo colorizer control file for swig mode.
+# This file is in the public domain.
 
 # Properties for swig mode.
 properties = {

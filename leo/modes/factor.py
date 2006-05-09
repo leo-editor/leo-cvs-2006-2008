@@ -1,4 +1,5 @@
 # Leo colorizer control file for factor mode.
+# This file is in the public domain.
 
 # Properties for factor mode.
 properties = {

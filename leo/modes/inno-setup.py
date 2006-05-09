@@ -1,4 +1,5 @@
 # Leo colorizer control file for inno-setup mode.
+# This file is in the public domain.
 
 # Properties for inno-setup mode.
 properties = {

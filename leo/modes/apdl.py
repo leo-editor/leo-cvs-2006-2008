@@ -1,4 +1,5 @@
 # Leo colorizer control file for apdl mode.
+# This file is in the public domain.
 
 # Properties for apdl mode.
 properties = {

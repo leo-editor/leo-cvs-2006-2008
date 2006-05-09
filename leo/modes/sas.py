@@ -1,4 +1,5 @@
 # Leo colorizer control file for sas mode.
+# This file is in the public domain.
 
 # Properties for sas mode.
 properties = {}

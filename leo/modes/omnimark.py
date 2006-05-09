@@ -1,4 +1,5 @@
 # Leo colorizer control file for omnimark mode.
+# This file is in the public domain.
 
 # Properties for omnimark mode.
 properties = {

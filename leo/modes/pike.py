@@ -1,4 +1,5 @@
 # Leo colorizer control file for pike mode.
+# This file is in the public domain.
 
 # Properties for pike mode.
 properties = {

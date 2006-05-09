@@ -1,4 +1,5 @@
 # Leo colorizer control file for bbj mode.
+# This file is in the public domain.
 
 # Properties for bbj mode.
 properties = {

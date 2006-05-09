@@ -1,4 +1,5 @@
 # Leo colorizer control file for lua mode.
+# This file is in the public domain.
 
 # Properties for lua mode.
 properties = {

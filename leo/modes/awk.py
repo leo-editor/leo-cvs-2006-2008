@@ -1,4 +1,5 @@
 # Leo colorizer control file for awk mode.
+# This file is in the public domain.
 
 # Properties for awk mode.
 properties = {

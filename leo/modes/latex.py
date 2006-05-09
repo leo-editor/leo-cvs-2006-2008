@@ -1,4 +1,5 @@
 # Leo colorizer control file for latex mode.
+# This file is in the public domain.
 
 # Properties for latex mode.
 properties = {

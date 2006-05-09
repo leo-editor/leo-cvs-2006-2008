@@ -1,4 +1,5 @@
 # Leo colorizer control file for modula3 mode.
+# This file is in the public domain.
 
 # Properties for modula3 mode.
 properties = {

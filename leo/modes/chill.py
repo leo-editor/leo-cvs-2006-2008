@@ -1,4 +1,5 @@
 # Leo colorizer control file for chill mode.
+# This file is in the public domain.
 
 # Properties for chill mode.
 properties = {

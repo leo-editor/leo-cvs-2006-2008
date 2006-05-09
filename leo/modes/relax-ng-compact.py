@@ -1,4 +1,5 @@
 # Leo colorizer control file for relax-ng-compact mode.
+# This file is in the public domain.
 
 # Properties for relax-ng-compact mode.
 properties = {

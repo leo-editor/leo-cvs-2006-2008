@@ -1,4 +1,5 @@
 # Leo colorizer control file for d mode.
+# This file is in the public domain.
 
 # Properties for d mode.
 properties = {

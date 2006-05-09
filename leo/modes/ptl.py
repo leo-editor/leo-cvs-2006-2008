@@ -1,4 +1,5 @@
 # Leo colorizer control file for ptl mode.
+# This file is in the public domain.
 
 # Properties for ptl mode.
 properties = {

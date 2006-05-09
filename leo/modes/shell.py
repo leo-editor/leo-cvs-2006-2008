@@ -1,4 +1,5 @@
 # Leo colorizer control file for shell mode.
+# This file is in the public domain.
 
 # Properties for shell mode.
 properties = {

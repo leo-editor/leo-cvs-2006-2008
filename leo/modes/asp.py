@@ -1,4 +1,5 @@
 # Leo colorizer control file for asp mode.
+# This file is in the public domain.
 
 # Properties for asp mode.
 properties = {

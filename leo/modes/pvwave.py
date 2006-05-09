@@ -1,4 +1,5 @@
 # Leo colorizer control file for pvwave mode.
+# This file is in the public domain.
 
 # Properties for pvwave mode.
 properties = {

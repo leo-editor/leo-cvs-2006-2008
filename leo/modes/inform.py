@@ -1,4 +1,5 @@
 # Leo colorizer control file for inform mode.
+# This file is in the public domain.
 
 # Properties for inform mode.
 properties = {

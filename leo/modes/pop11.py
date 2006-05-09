@@ -1,4 +1,5 @@
 # Leo colorizer control file for pop11 mode.
+# This file is in the public domain.
 
 # Properties for pop11 mode.
 properties = {

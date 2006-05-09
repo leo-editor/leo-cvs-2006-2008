@@ -1,4 +1,5 @@
 # Leo colorizer control file for dsssl mode.
+# This file is in the public domain.
 
 # Properties for dsssl mode.
 properties = {

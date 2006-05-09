@@ -1,4 +1,5 @@
 # Leo colorizer control file for foxpro mode.
+# This file is in the public domain.
 
 # Properties for foxpro mode.
 properties = {

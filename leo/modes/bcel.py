@@ -1,4 +1,5 @@
 # Leo colorizer control file for bcel mode.
+# This file is in the public domain.
 
 # Properties for bcel mode.
 properties = {

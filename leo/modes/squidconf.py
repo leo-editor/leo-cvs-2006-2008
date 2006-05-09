@@ -1,4 +1,5 @@
 # Leo colorizer control file for squidconf mode.
+# This file is in the public domain.
 
 # Properties for squidconf mode.
 properties = {

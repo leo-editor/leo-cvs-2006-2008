@@ -1,4 +1,5 @@
 # Leo colorizer control file for assembly-parrot mode.
+# This file is in the public domain.
 
 # Properties for assembly-parrot mode.
 properties = {

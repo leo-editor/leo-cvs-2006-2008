@@ -1,4 +1,5 @@
 # Leo colorizer control file for icon mode.
+# This file is in the public domain.
 
 # Properties for icon mode.
 properties = {

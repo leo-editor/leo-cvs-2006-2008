@@ -1,4 +1,5 @@
 # Leo colorizer control file for b mode.
+# This file is in the public domain.
 
 # Properties for b mode.
 properties = {

@@ -1,4 +1,5 @@
 # Leo colorizer control file for idl mode.
+# This file is in the public domain.
 
 # Properties for idl mode.
 properties = {

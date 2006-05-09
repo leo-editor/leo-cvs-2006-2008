@@ -1,4 +1,5 @@
 # Leo colorizer control file for mail mode.
+# This file is in the public domain.
 
 # Properties for mail mode.
 properties = {

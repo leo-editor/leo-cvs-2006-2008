@@ -1,4 +1,5 @@
 # Leo colorizer control file for uscript mode.
+# This file is in the public domain.
 
 # Properties for uscript mode.
 properties = {

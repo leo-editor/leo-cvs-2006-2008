@@ -1,4 +1,5 @@
 # Leo colorizer control file for netrexx mode.
+# This file is in the public domain.
 
 # Properties for netrexx mode.
 properties = {

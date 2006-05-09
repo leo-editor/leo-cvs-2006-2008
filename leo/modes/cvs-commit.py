@@ -1,4 +1,5 @@
 # Leo colorizer control file for cvs-commit mode.
+# This file is in the public domain.
 
 # Properties for cvs-commit mode.
 properties = {}

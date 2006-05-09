@@ -1,4 +1,5 @@
 # Leo colorizer control file for rview mode.
+# This file is in the public domain.
 
 # Properties for rview mode.
 properties = {

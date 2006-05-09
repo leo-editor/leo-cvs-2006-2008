@@ -1,4 +1,5 @@
 # Leo colorizer control file for io mode.
+# This file is in the public domain.
 
 # Properties for io mode.
 properties = {

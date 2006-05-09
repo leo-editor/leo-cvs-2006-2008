@@ -1,4 +1,5 @@
 # Leo colorizer control file for povray mode.
+# This file is in the public domain.
 
 # Properties for povray mode.
 properties = {

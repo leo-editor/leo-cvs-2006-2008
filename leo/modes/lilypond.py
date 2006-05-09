@@ -1,4 +1,5 @@
 # Leo colorizer control file for lilypond mode.
+# This file is in the public domain.
 
 # Properties for lilypond mode.
 properties = {

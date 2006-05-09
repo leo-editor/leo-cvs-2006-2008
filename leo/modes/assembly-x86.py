@@ -1,4 +1,5 @@
 # Leo colorizer control file for assembly-x86 mode.
+# This file is in the public domain.
 
 # Properties for assembly-x86 mode.
 properties = {

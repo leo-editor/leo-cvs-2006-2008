@@ -1,4 +1,5 @@
 # Leo colorizer control file for rtf mode.
+# This file is in the public domain.
 
 # Properties for rtf mode.
 properties = {}

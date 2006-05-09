@@ -1,4 +1,5 @@
 # Leo colorizer control file for hex mode.
+# This file is in the public domain.
 
 # Properties for hex mode.
 properties = {}

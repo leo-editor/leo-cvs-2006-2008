@@ -1,4 +1,5 @@
 # Leo colorizer control file for embperl mode.
+# This file is in the public domain.
 
 # Properties for embperl mode.
 properties = {

@@ -1,4 +1,5 @@
 # Leo colorizer control file for antlr mode.
+# This file is in the public domain.
 
 # Properties for antlr mode.
 properties = {

@@ -1,4 +1,5 @@
 # Leo colorizer control file for jmk mode.
+# This file is in the public domain.
 
 # Properties for jmk mode.
 properties = {

@@ -1,4 +1,5 @@
 # Leo colorizer control file for java mode.
+# This file is in the public domain.
 
 # Properties for java mode.
 properties = {

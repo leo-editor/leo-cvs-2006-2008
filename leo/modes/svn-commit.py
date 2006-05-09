@@ -1,4 +1,5 @@
 # Leo colorizer control file for svn-commit mode.
+# This file is in the public domain.
 
 # Properties for svn-commit mode.
 properties = {}

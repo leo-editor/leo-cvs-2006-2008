@@ -1,4 +1,5 @@
 # Leo colorizer control file for i4gl mode.
+# This file is in the public domain.
 
 # Properties for i4gl mode.
 properties = {

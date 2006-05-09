@@ -1,4 +1,5 @@
 # Leo colorizer control file for php mode.
+# This file is in the public domain.
 
 # Properties for php mode.
 properties = {

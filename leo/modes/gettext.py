@@ -1,4 +1,5 @@
 # Leo colorizer control file for gettext mode.
+# This file is in the public domain.
 
 # Properties for gettext mode.
 properties = {

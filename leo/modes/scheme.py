@@ -1,4 +1,5 @@
 # Leo colorizer control file for scheme mode.
+# This file is in the public domain.
 
 # Properties for scheme mode.
 properties = {

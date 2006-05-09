@@ -1,4 +1,5 @@
 # Leo colorizer control file for pl1 mode.
+# This file is in the public domain.
 
 # Properties for pl1 mode.
 properties = {

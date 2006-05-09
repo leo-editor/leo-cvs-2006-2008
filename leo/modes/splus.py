@@ -1,4 +1,5 @@
 # Leo colorizer control file for splus mode.
+# This file is in the public domain.
 
 # Properties for splus mode.
 properties = {

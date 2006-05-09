@@ -1,4 +1,5 @@
 # Leo colorizer control file for ini mode.
+# This file is in the public domain.
 
 # Properties for ini mode.
 properties = {

@@ -1,4 +1,5 @@
 # Leo colorizer control file for nsis2 mode.
+# This file is in the public domain.
 
 # Properties for nsis2 mode.
 properties = {

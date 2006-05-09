@@ -1,4 +1,5 @@
 # Leo colorizer control file for xml mode.
+# This file is in the public domain.
 
 # Properties for xml mode.
 properties = {

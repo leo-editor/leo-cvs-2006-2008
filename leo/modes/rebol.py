@@ -1,4 +1,5 @@
 # Leo colorizer control file for rebol mode.
+# This file is in the public domain.
 
 # Properties for rebol mode.
 properties = {

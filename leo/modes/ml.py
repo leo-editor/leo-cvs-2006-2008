@@ -1,4 +1,5 @@
 # Leo colorizer control file for ml mode.
+# This file is in the public domain.
 
 # Properties for ml mode.
 properties = {

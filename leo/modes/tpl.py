@@ -1,4 +1,5 @@
 # Leo colorizer control file for tpl mode.
+# This file is in the public domain.
 
 # Properties for tpl mode.
 properties = {

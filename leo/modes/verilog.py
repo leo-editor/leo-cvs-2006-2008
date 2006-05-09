@@ -1,4 +1,5 @@
 # Leo colorizer control file for verilog mode.
+# This file is in the public domain.
 
 # Properties for verilog mode.
 properties = {

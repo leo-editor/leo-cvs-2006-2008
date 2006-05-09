@@ -1,4 +1,5 @@
 # Leo colorizer control file for assembly-r2000 mode.
+# This file is in the public domain.
 
 # Properties for assembly-r2000 mode.
 properties = {

@@ -1,4 +1,5 @@
 # Leo colorizer control file for assembly-macro32 mode.
+# This file is in the public domain.
 
 # Properties for assembly-macro32 mode.
 properties = {

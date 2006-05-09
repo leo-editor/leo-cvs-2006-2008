@@ -1,4 +1,5 @@
 # Leo colorizer control file for powerdynamo mode.
+# This file is in the public domain.
 
 # Properties for powerdynamo mode.
 properties = {

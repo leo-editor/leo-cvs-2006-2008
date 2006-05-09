@@ -1,4 +1,5 @@
 # Leo colorizer control file for pl-sql mode.
+# This file is in the public domain.
 
 # Properties for pl-sql mode.
 properties = {

@@ -1,4 +1,5 @@
 # Leo colorizer control file for freemarker mode.
+# This file is in the public domain.
 
 # Properties for freemarker mode.
 properties = {}

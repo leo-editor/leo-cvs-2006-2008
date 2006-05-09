@@ -1,4 +1,5 @@
 # Leo colorizer control file for moin mode.
+# This file is in the public domain.
 
 # Properties for moin mode.
 properties = {

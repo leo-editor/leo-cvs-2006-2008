@@ -1,4 +1,5 @@
 # Leo colorizer control file for python mode.
+# This file is in the public domain.
 
 # Properties for python mode.
 properties = {

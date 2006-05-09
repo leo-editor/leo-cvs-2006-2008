@@ -1,4 +1,5 @@
 # Leo colorizer control file for assembly-mcs51 mode.
+# This file is in the public domain.
 
 # Properties for assembly-mcs51 mode.
 properties = {

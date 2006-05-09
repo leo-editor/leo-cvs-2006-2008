@@ -1,4 +1,5 @@
 # Leo colorizer control file for text mode.
+# This file is in the public domain.
 
 # Properties for text mode.
 properties = {}

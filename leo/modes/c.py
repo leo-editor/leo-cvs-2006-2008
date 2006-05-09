@@ -1,4 +1,5 @@
 # Leo colorizer control file for c mode.
+# This file is in the public domain.
 
 # Properties for c mode.
 properties = {

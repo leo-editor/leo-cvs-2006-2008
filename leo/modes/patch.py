@@ -1,4 +1,5 @@
 # Leo colorizer control file for patch mode.
+# This file is in the public domain.
 
 # Properties for patch mode.
 properties = {}

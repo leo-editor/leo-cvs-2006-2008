@@ -1,4 +1,5 @@
 # Leo colorizer control file for sgml mode.
+# This file is in the public domain.
 
 # Properties for sgml mode.
 properties = {

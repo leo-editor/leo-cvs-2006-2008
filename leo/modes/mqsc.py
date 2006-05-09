@@ -1,4 +1,5 @@
 # Leo colorizer control file for mqsc mode.
+# This file is in the public domain.
 
 # Properties for mqsc mode.
 properties = {
