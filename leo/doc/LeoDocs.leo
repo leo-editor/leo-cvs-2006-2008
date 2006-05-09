@@ -572,36 +572,6 @@
 </v>
 </v>
 <v t="ekr.20060430221745"><vh>Chapter 13: Controlling syntax coloring</vh>
-<v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
-<v t="ekr.20060502110000" a="E"><vh>Not yet</vh>
-<v t="ekr.20060502084233.2"><vh>Switching between modes</vh></v>
-<v t="ekr.20060502112810"><vh>Change php.xml_properties to properties</vh></v>
-<v t="ekr.20060502122950.50"><vh>Attribute arguements to rule methods</vh>
-<v t="ekr.20060502122950.52"><vh>AT_CHAR (int)</vh></v>
-<v t="ekr.20060502122950.53"><vh>AT_xxx</vh>
-<v t="ekr.20060502122950.54"><vh>AT_LINE_START (bool)</vh></v>
-<v t="ekr.20060502122950.55"><vh>AT_WHITESPACE_END (bool)</vh></v>
-<v t="ekr.20060502122950.56"><vh>AT_WORD_START (bool)</vh></v>
-</v>
-<v t="ekr.20060502122950.57"><vh>DELEGATE</vh></v>
-<v t="ekr.20060502122950.58"><vh>EXCLUDE_MATCH (bool)</vh></v>
-<v t="ekr.20060502122950.59"><vh>For rules only</vh>
-<v t="ekr.20060502122950.60"><vh>DEFAULT (token type)</vh></v>
-<v t="ekr.20060502122950.61"><vh>HIGHLIGHT_DIGITS  &amp;DIGITS_RE (bool)</vh></v>
-<v t="ekr.20060502122950.62"><vh>IGNORE_CASE (bool)</vh></v>
-<v t="ekr.20060502122950.63"><vh>SET (string)</vh></v>
-<v t="ekr.20060502122950.64"><vh>NO_WORD_SEP</vh></v>
-</v>
-<v t="ekr.20060502122950.65"><vh>HASH_CHAR (char)</vh></v>
-<v t="ekr.20060502122950.66"><vh>NAME and VALUE</vh></v>
-<v t="ekr.20060502122950.67"><vh>NO_xxx</vh>
-<v t="ekr.20060502122950.68"><vh>NO_WORD_BREAK (bool)</vh></v>
-<v t="ekr.20060502122950.69"><vh>NO_LINE_BREAK (bool)</vh></v>
-<v t="ekr.20060502122950.70"><vh>NO_ESCAPE (bool)</vh></v>
-</v>
-<v t="ekr.20060502122950.71"><vh>TYPE (Token Types)</vh></v>
-</v>
-</v>
 <v t="ekr.20060430221745.1" a="E"><vh>@rst html\coloring.html</vh>
 <v t="ekr.20060430222753"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20060430220749"><vh>Files</vh></v>
@@ -625,6 +595,13 @@
 <v t="ekr.20060502122950.42"><vh>match_span</vh></v>
 <v t="ekr.20060502122950.47"><vh>match_span_regexp</vh></v>
 <v t="ekr.20060502122950.48"><vh>match_terminate</vh></v>
+</v>
+<v t="ekr.20060509104553" a="E"><vh>Code design notes</vh>
+<v t="ekr.20060509104553.1"><vh>Aha 1:  Suppress redraws until the end of coloring</vh></v>
+<v t="ekr.20060509104553.2"><vh>Aha 2:  Always recolor at the beginning</vh></v>
+<v t="ekr.20060509104553.3"><vh>Aha 3: Use quick coloring to eliminate flash</vh></v>
+<v t="ekr.20060509104553.4"><vh>Aha 4: Use character-specific rules lists to speed coloring</vh></v>
+<v t="ekr.20060509104553.5"><vh>Conclusion</vh></v>
 </v>
 <v t="ekr.20060430223116"><vh>@rst-no-head end stuff</vh></v>
 </v>
@@ -2847,38 +2824,8 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060430221745" a="E"><vh>Chapter 13: Controlling syntax coloring</vh>
-<v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
-<v t="ekr.20060502110000" a="E"><vh>Not yet</vh>
-<v t="ekr.20060502084233.2"><vh>Switching between modes</vh></v>
-<v t="ekr.20060502112810"><vh>Change php.xml_properties to properties</vh></v>
-<v t="ekr.20060502122950.50"><vh>Attribute arguements to rule methods</vh>
-<v t="ekr.20060502122950.52"><vh>AT_CHAR (int)</vh></v>
-<v t="ekr.20060502122950.53"><vh>AT_xxx</vh>
-<v t="ekr.20060502122950.54"><vh>AT_LINE_START (bool)</vh></v>
-<v t="ekr.20060502122950.55"><vh>AT_WHITESPACE_END (bool)</vh></v>
-<v t="ekr.20060502122950.56"><vh>AT_WORD_START (bool)</vh></v>
-</v>
-<v t="ekr.20060502122950.57"><vh>DELEGATE</vh></v>
-<v t="ekr.20060502122950.58"><vh>EXCLUDE_MATCH (bool)</vh></v>
-<v t="ekr.20060502122950.59"><vh>For rules only</vh>
-<v t="ekr.20060502122950.60"><vh>DEFAULT (token type)</vh></v>
-<v t="ekr.20060502122950.61"><vh>HIGHLIGHT_DIGITS  &amp;DIGITS_RE (bool)</vh></v>
-<v t="ekr.20060502122950.62"><vh>IGNORE_CASE (bool)</vh></v>
-<v t="ekr.20060502122950.63"><vh>SET (string)</vh></v>
-<v t="ekr.20060502122950.64"><vh>NO_WORD_SEP</vh></v>
-</v>
-<v t="ekr.20060502122950.65"><vh>HASH_CHAR (char)</vh></v>
-<v t="ekr.20060502122950.66"><vh>NAME and VALUE</vh></v>
-<v t="ekr.20060502122950.67"><vh>NO_xxx</vh>
-<v t="ekr.20060502122950.68"><vh>NO_WORD_BREAK (bool)</vh></v>
-<v t="ekr.20060502122950.69"><vh>NO_LINE_BREAK (bool)</vh></v>
-<v t="ekr.20060502122950.70"><vh>NO_ESCAPE (bool)</vh></v>
-</v>
-<v t="ekr.20060502122950.71"><vh>TYPE (Token Types)</vh></v>
-</v>
-</v>
-<v t="ekr.20060430221745.1" a="EV"><vh>@rst html\coloring.html</vh>
+<v t="ekr.20060430221745" a="V"><vh>Chapter 13: Controlling syntax coloring</vh>
+<v t="ekr.20060430221745.1" a="E"><vh>@rst html\coloring.html</vh>
 <v t="ekr.20060430222753"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20060430220749"><vh>Files</vh></v>
 <v t="ekr.20060502084233"><vh>The colorizer's inner loop</vh></v>
@@ -2901,6 +2848,13 @@
 <v t="ekr.20060502122950.42"><vh>match_span</vh></v>
 <v t="ekr.20060502122950.47"><vh>match_span_regexp</vh></v>
 <v t="ekr.20060502122950.48"><vh>match_terminate</vh></v>
+</v>
+<v t="ekr.20060509104553" a="E"><vh>Code design notes</vh>
+<v t="ekr.20060509104553.1"><vh>Aha 1:  Suppress redraws until the end of coloring</vh></v>
+<v t="ekr.20060509104553.2"><vh>Aha 2:  Always recolor at the beginning</vh></v>
+<v t="ekr.20060509104553.3"><vh>Aha 3: Use quick coloring to eliminate flash</vh></v>
+<v t="ekr.20060509104553.4"><vh>Aha 4: Use character-specific rules lists to speed coloring</vh></v>
+<v t="ekr.20060509104553.5"><vh>Conclusion</vh></v>
 </v>
 <v t="ekr.20060430223116"><vh>@rst-no-head end stuff</vh></v>
 </v>
@@ -26855,26 +26809,23 @@ Indeed, rules functions are simply a way of binding values to keyword arguments 
 These keywords arguments correspond to the xml attributes of rule elements in x.xml.
 
 The colorizer calls rules functions until one matches, at which point a range of text gets colored and the process repeats.
-The inner loop of the colorizer looks something like this::
+The inner loop of the colorizer is this code::
 
-    for rule in rules:
-        if rule(self,s,i):
-            break
-    else:
-        self.defaultRule(s,i)
+    for f in self.rulesDict.get(s[i],[]):
+        n = f(self,s,i)
+        if n &gt; 0:
+            i += n ; break
+        else: i += 1
 
-- rules is a list of rules for a particular ruleset.
+- rulesDict is a dictionary whose keys are rulesets and whose values are ruleset dictionaries.
+Ruleset dictionaries have keys that are single characters and whose values are the list of rules that can start with that character. 
 
 - s is the full text to be colorized.
 
 - i is the position within s is to be colorized.
 
-Rules methods (and functions) return True if they match,
-and as a side effect cause a range of text to be colored.
-If no rule matches the default rule always matches,
-and it colorizes the next character using the ``DEFAULT`` attribute of the ``&lt;MODE&gt;`` element.</t>
+Rules methods (and functions) return n &gt; 0 if they match,</t>
 <t tx="ekr.20060502084233.1">The following sections describe the top-level data in ``x.py``.</t>
-<t tx="ekr.20060502084233.2"></t>
 <t tx="ekr.20060502090516">``x.properties`` is a Python dictionary corresponding to the &lt;PROPS&gt; element in ``x.xml``.
 Keys are property names; values are strings, namely the contents of ``&lt;PROPERTY&gt;`` elements in ``x.xml``.
 ``x.properties`` contains properties for the entire mode.
@@ -27014,8 +26965,6 @@ from which the colorizer can get all other information in ``x.py``::
 
 In fact, ruleset names (and ``x.rulesDict`` and ``x.keywordsDictDict``)
 are the **only** names that the colorizer needs to know in order to access all information in ``x.py``.</t>
-<t tx="ekr.20060502110000"></t>
-<t tx="ekr.20060502112810"></t>
 <t tx="ekr.20060502122950">This section describes each rules method in Leo's new colorizer.
 Rules methods are called by rules functions in colorizer control file;
 they correspond directly to rules elements in jEdit's language description files.
@@ -27025,7 +26974,7 @@ All rule methods attempt to match a pattern at a particular spot in a string.
 These methods all return True if the match succeeds.</t>
 <t tx="ekr.20060502122950.7">::
 
-    def match_eol_span (self,s,i,begin,
+    def match_eol_span (self,s,i,kind,begin,
         at_line_start = False,
         at_whitespace_end = False,
         at_word_start = False,
@@ -27035,12 +26984,13 @@ These methods all return True if the match succeeds.</t>
 ``match_eol_span`` succeeds if ``s[i:].startswith(begin)`` and
 the ``at_line_start``, ``at_whitespace_end`` and ``at_word_start`` conditions are all satisfied.
 
-If successful, ``match_eol_span`` highlights from i to the end of the line.
+If successful, ``match_eol_span`` highlights from i to the end of the line
+with the color specified by ``kind``.
 If the ``exclude_match`` argument is ``True``, only the text before the matched text will be colored.
 The ``delegate`` argument, if present, specifies the ruleset to color the colored text.</t>
 <t tx="ekr.20060502122950.10">::
 
-    def match_eol_span_regexp (self,s,i,regex,hash_char,
+    def match_eol_span_regexp (self,s,i,kind,regex,hash_char,
         at_line_start = False,
         at_whitespace_end = False,
         at_word_start = False,
@@ -27062,10 +27012,12 @@ The ``delegate`` argument, if present, specifies the ruleset to color the colore
 
 ``match_keywords`` succeeds if ``s[i:]`` starts with an identifier contained in the mode's keywords dictionary ``d``.
 
-If successful, ``match_keywords`` colors the keyword as specified by the token type returned by ``d.get(theKeyword)``.</t>
+If successful, ``match_keywords`` colors the keyword.
+``match_keywords`` does not take a ``kind`` keyword argument.
+Instead, the keyword is colored as specified by ``d.get(theKeyword)``.</t>
 <t tx="ekr.20060502122950.14">::
 
-    def match_mark_following (self,s,i,pattern,
+    def match_mark_following (self,s,i,kind,pattern,
         at_line_start = False,
         at_whitespace_end = False,
         at_word_start = False,
@@ -27074,11 +27026,12 @@ If successful, ``match_keywords`` colors the keyword as specified by the token t
 match_mark_following succeeds if s[i:].startswith(pattern), and
 the ``at_line_start``, ``at_whitespace_end`` and ``at_word_start`` conditions are all satisfied.
 
-If successful, ``match_mark_following`` colors from ``i`` to the start of the next token.
+If successful, ``match_mark_following`` colors from ``i`` to the start of the next token
+with the color specified by ``kind``.
 If the ``exclude_match`` argument is ``True``, only the text after the matched text will be colored.</t>
 <t tx="ekr.20060502122950.40">::
 
-    def match_seq (self,s,i,seq,
+    def match_seq (self,s,i,kind,seq,
         at_line_start = False,
         at_whitespace_end = False,
         at_word_start = False,
@@ -27087,11 +27040,12 @@ If the ``exclude_match`` argument is ``True``, only the text after the matched t
 ``match_seq`` succeeds if ``s[i:].startswith(seq)`` and
 the ``at_line_start``, ``at_whitespace_end`` and ``at_word_start`` conditions are all satisfied.
 
-If successful, ``match_seq`` highlights from ``i`` to the end of the sequence.
+If successful, ``match_seq`` highlights from ``i`` to the end of the sequence
+with the color specified by ``kind``.
 The ``delegate`` argument, if present, specifies the ruleset to color the colored text.</t>
 <t tx="ekr.20060502122950.41">::
 
-    def match_seq_regexp (self,s,i,regex,hash_char,
+    def match_seq_regexp (self,s,i,kind,regex,hash_char,
         at_line_start = False,
         at_whitespace_end = False,
         at_word_start = False,
@@ -27103,11 +27057,12 @@ The ``delegate`` argument, if present, specifies the ruleset to color the colore
 
 2. The ``at_line_start``, ``at_whitespace_end`` and ``at_word_start`` conditions are all satisfied.
 
-If successful, ``match_seq_regexp`` highlights from ``i`` to the end of the sequence.
+If successful, ``match_seq_regexp`` highlights from ``i`` to the end of the sequence
+with the color specified by ``kind``.
 The ``delegate`` argument, if present, specifies the ruleset to color the colored text.</t>
 <t tx="ekr.20060502122950.42">::
 
-    def match_span (self,s,i,begin,end,
+    def match_span (self,s,i,kind,begin,end,
         at_line_start = False,
         at_whitespace_end = False,
         at_word_start = False,
@@ -27122,12 +27077,13 @@ The ``delegate`` argument, if present, specifies the ruleset to color the colore
 ``at_line_start``, ``at_whitespace_end``, ``at_word_start``,
 ``no_escape``, ``no_line_break`` and ``no_word_break`` conditions are all satisfied.
 
-If successful, ``match_span`` highlights from ``s[i:j``,
+If successful, ``match_span`` highlights from ``s[i:j``
+with the color specified by ``kind``;
 but if the ``exclude_match`` argument is ``True``, the ``begin`` and ``end`` text are not colored.
 The ``delegate`` argument, if present, specifies the ruleset to color the colored text.</t>
 <t tx="ekr.20060502122950.47">::
 
-    def match_span (self,s,i,regex,hash_char,end,
+    def match_span (self,s,i,kind,regex,hash_char,end,
         at_line_start = False,
         at_whitespace_end = False,
         at_word_start = False,
@@ -27147,122 +27103,20 @@ The ``delegate`` argument, if present, specifies the ruleset to color the colore
    ``no_escape``, ``no_line_break`` and ``no_word_break`` conditions are all satisfied.
 
 If successful, ``match_span`` colors ``s[i:j]``,
+with the color specified by ``kind``;
 but if the ``exclude_match`` argument is ``True``, the ``begin`` and ``end`` text are not colored.
 The ``delegate`` argument, if present, specifies the ruleset to color the colored text.</t>
 <t tx="ekr.20060502122950.48">::
 
-    def match_terminate (self,s,i,at_char):
+    def match_terminate (self,s,i,kind,at_char):
 
 ``match_terminate`` succeeds if ``s[i:]`` contains at least ``at_char`` more characters.
 
-If successful, ``match_terminate`` colors ``at_char`` characters.</t>
-<t tx="ekr.20060502122950.50"></t>
-<t tx="ekr.20060502122950.52">The number of characters to terminate after.
-
-For terminate only.</t>
-<t tx="ekr.20060502122950.53"></t>
-<t tx="ekr.20060502122950.54">If set to TRUE, the sequence will only be highlighted if it occurs at the beginning of a line.
-
-For 'seq', 'span', 'begin', 'end'</t>
-<t tx="ekr.20060502122950.55">If set to TRUE, the sequence will only be highlighted if it is the first non-whitespace text in the line.
-
-For 'seq', 'span', 'begin', 'end'
-</t>
-<t tx="ekr.20060502122950.56">If set to TRUE, the sequence will only be highlighted if it occurs at the beginning of a word.
-
-For 'seq', 'span', 'begin', 'end'
-</t>
-<t tx="ekr.20060502122950.57">EKR: This attribute is used in two completely different ways:
-
-1.  In spans:
-
-Text inside the span will be highlighted with the specified ruleset.
-
-EKR: this is essentially a 'recursive' coloring. The delegate ruleset is the
-only ruleset used.
-
-2.  In import rules:
-
-The imported ruleset is copied to the **end** of the containing ruleset,
-**not** to the location of the IMPORT rule. This has implications with
-rule-ordering; see the section called “Rule Ordering Requirements”.
-
-To delegate to a ruleset defined in the current mode, just specify its name. To
-delegate to a ruleset defined in another mode, specify a name of the form
-mode::ruleset. Note that the first (unnamed) ruleset in a mode is called
-“MAIN”.
-
-</t>
-<t tx="ekr.20060502122950.58">If set to TRUE, the match will not be highlighted, only the text before it will.</t>
-<t tx="ekr.20060502122950.59"></t>
-<t tx="ekr.20060502122950.60">The token type for text which doesn't match any specific rule. Default is NULL.
-See the section called “Token Types” for a list of token types.
-
-For 'rules' only.</t>
-<t tx="ekr.20060502122950.61">If the HIGHLIGHT_DIGITS attribute is set to TRUE, jEdit will attempt to highlight numbers in this ruleset.
-
-Any word consisting entirely of digits (0-9) will be highlighted with the DIGIT token type.
-
-A word that contains other letters in addition to digits will be highlighted with the DIGIT token type only if it matches the regular expression specified in the DIGIT_RE attribute. If this attribute is not specified, it will not be highlighted.
-
-For 'rules' only.
-
-Example: a DIGIT_RE regular expression that highlights Java-style
-numeric literals (normal numbers, hexadecimals prefixed with 0x, numbers
-suffixed with various type indicators, and floating point literals containing an
-exponent):
-
-DIGIT_RE="(0x[[:xdigit:]]+|[[:digit:]]+(e[[:digit:]]*)?)[lLdDfF]?"</t>
-<t tx="ekr.20060502122950.62">If set to FALSE, matches will be case sensitive.
-Otherwise, case will not matter. Default is TRUE.
-
-For 'rules' only.
-</t>
-<t tx="ekr.20060502122950.63">The name of this ruleset. All rulesets other than the first must have a name.
-
-For 'rules' only.</t>
-<t tx="ekr.20060502122950.64">Any non-alphanumeric character not in this list is treated as a word separator
-for the purposes of syntax highlighting.
-
-For 'rules' only.</t>
-<t tx="ekr.20060502122950.65">The first character that the regular expression matches.
-
-This rules out using regular expressions which can match more than one character
-at the start position. The regular expression match cannot span more than one
-line, either.
-
-Required for eol_span_regexp, span_regexp, seq_regexp.</t>
-<t tx="ekr.20060502122950.66">Each PROPERTY tag must have a NAME attribute set to the property's name, and a
-VALUE attribute with the property's value.
-
-For property only.</t>
-<t tx="ekr.20060502122950.67"></t>
-<t tx="ekr.20060502122950.68">If set to TRUE, the span will not cross word breaks.
-
-For 'span' only.</t>
-<t tx="ekr.20060502122950.69">If set to TRUE, the span will not cross line breaks.
-
-For 'span' only.</t>
-<t tx="ekr.20060502122950.70">If set to TRUE, the ruleset's escape character will have no effect before the
-span's end string. Otherwise, the presence of the escape character will cause
-that occurrence of the end string to be ignored.
-
-For 'span' only.</t>
-<t tx="ekr.20060502122950.71">The token type to highlight the text with.
-
-Parser rules can highlight tokens using any of the following token types:
-
-NULL - no special highlighting
-COMMENT1,COMMENT2,COMMENT3,COMMENT4
-FUNCTION
-KEYWORD1,KEYWORD2,KEYWORD3,KEYWORD4
-LABEL
-LITERAL1,LITERAL2,LITERAL3,LITERAL4
-MARKUP
-OPERATOR</t>
+If successful, ``match_terminate`` colors ``at_char`` characters
+with the color specified by ``kind``.</t>
 <t tx="ekr.20060502125223">::
 
-    def match_mark_previous (self,s,i,pattern,
+    def match_mark_previous (self,s,i,kind,pattern,
         at_line_start = False,
         at_whitespace_end = False,
         at_word_start = False,
@@ -27271,7 +27125,8 @@ OPERATOR</t>
 ``match_mark_previous`` succeeds if s[i:].startswith(pattern),and
 the ``at_line_start``, ``at_whitespace_end`` and ``at_word_start`` conditions are all satisfied.
 
-If successful, ``match_mark_previous`` colors from the end of the previous token to ``i``.
+If successful, ``match_mark_previous`` colors from the end of the previous token to ``i``
+with the color specified by ``kind``.
 If the ``exclude_match`` argument is ``True``, only the text before the matched text will be colored.</t>
 <t tx="ekr.20060503064515">All rule methods take three required arguments and zero or more optional keyword arguments.
 
@@ -27302,6 +27157,12 @@ Here is a list of all optional keyword arguments and their meaning:
   If ``True``, the actual text that matched will not be colored.
   The meaning of this argument varies slightly depending on whether one or two sequences are matched.
   See the individual rule methods for details.
+
+- **kind**: A string representing a class of tokens, i.e., one of:
+  ``'comment1'``, ``'comment2'``, ``'comment3'``, ``'comment4'``, ``'function'``,
+  ``'keyword1'``, ``'keyword2'``, ``'keyword3'``, ``'keyword4'``,
+  ``'label'``, ``'literal1'``, ``'literal2'``, ``'literal3'``, ``'literal4'``,
+  ``'markup'``, ``'null'`` and ``'operator'``.
 
 - **no_escape**:
   If ``True``, the ruleset's escape character will have no effect before the ``end`` argument to ``match_span``.
@@ -27347,5 +27208,67 @@ In short:
 - **Imported** ruleset names appear as the values of items in ``x.importDict``;
   **delegated** ruleset names appear as ``delegate`` arguments to rule methods.
 </t>
+<t tx="ekr.20060509104553">This rest of this chapter tells how the new colorizer works in detail.
+It is organized around several design principles.
+I call them aha's because that was what they were at the time.</t>
+<t tx="ekr.20060509104553.1">This was the big breakthrough because it provided a clear, direct, predictable way of controlling the colorizing process.
+
+Tk doesn't provide a high-level way of discovering whether events are pending, so to provide good key-handling response the colorizer must pause regularly.  The colorizer pauses by queuing itself as an idle-time event. **Drawing must not happen during this idle time**.  In that case, idle time will happen 'quickly' and the colorizer will resume without perceptible delay. Tests show that colorizing can be interrupted hundreds of times without noticeable delay *provided* that nothing major happens during idle time.
+
+Suppressing redraws is easy.  Rather than calling Tk's tag_remove and tag_add methods directly during coloring, the colorizer simply adds the range of text to be colored to a list.  When colorizing is complete, the colorizer simply removes all tags en masse and then calls tag_add.
+
+We can now begin to see now why using separate threads would just confuse matters.  Pausing regularly is a simple, explicit way of giving up control.  Threads can not do better.  You might want to consider how the following discussions would be complicated if multiple threads were involved.</t>
+<t tx="ekr.20060509104553.2">Leo's old colorizer was a marvel of effort designed to reduce the number of time spent in the colorizer.  Alas, this code was complex and error prone.  Worse, bugs caused text to be incorrectly colored.  It turns out that this effort was not needed.
+
+Aha 1 tells us that the main colorizer loop will be very fast *until* another event happens.  Whenever the text to be colored changes (for whatever reason) a request to recolor the text will be issued.  When that happens the new colorizer always **aborts** any previous colorizing and restarts colorizing at the beginning.
+
+The aha is, in effect, that 'throwing away' the previous colorizing work is *not* a wasteful strategy.  Indeed, because of Aha 1, restarting at the beginning has no effect on response time.  The colorizer pauses regularly regardless of how much colorizing happens. So any 'wasted' effort could only effect the *total* time to colorize the text, not the response time.  But in the typical, most important case, the only character that actually has to be colored is the characters just typed, and in that case *it doesn't matter* how long it takes to recolor the other characters because (usually) their colors won't change!
+
+Ok you say, but what about the characters just typed?  Won't restarting the colorizing at the beginning slow down the colorizing of the characters being typed?  Yes, it would, without the next Aha.</t>
+<t tx="ekr.20060509104553.3">Restarting coloring at the beginning is an optimal strategy, *provided* that the character just typed (call it **ch**) can be colored quickly.  And make no mistake, colorizing ch is important, otherwise it flashes: first ch is colored black, and a few tenths of a second later ch turns to its final color.  Such flash is most annoying, and we want to eliminate it as much as possible.
+
+The Aha is that flash doesn't matter if it happens infrequently.  That is, the colorizer does *not* have to do a perfect job of colorizing the character just typed.  Instead, the colorizer can 'guess' what the proper color for ch should be, and if that guess turns out to be incorrect the main colorizer loop will color ch correctly later.  If, once in a great while, the colorizer guesses wrong the flash will be largely unnoticed.
+
+Quick coloring is a prepass, independent of the colorizer's main loop.  Quick coloring makes its best guess about what the color ch should be.  This guess could be wrong, but to repeat, mistakes will be corrected later by the main colorizing loop.
+
+Quick coloring uses heuristics to make guesses.  The simplest heuristic is to give ch the color of the previous character.  This guess will be correct except at the boundaries of tokens, for example, if ch follows the end of a string or comment.  Note that we can ignore mistakes caused by large-scale text changes, such as cutting and pasting text, because such operations happen infrequently and because so much else is changing that temporarily incorrect colors don't matter.
+
+So we need better heuristics only for changes to a single character, ch. In that case, mistakes can happen only at the boundaries of tokens.  Here is the plan: the main coloring loop will create a dict whose keys are locations in the (previous) text and whose values are the starting location of the token that caused each location to be colored.  Quick coloring will then do a 'trial' coloring starting at the start of the token that *previously* caused ch to be colored.  The correct color for ch will be known for certain if the trial coloring includes ch.  I have not implemented this heuristic yet, but I am reasonably confident that it will eliminate all (or almost all) mistakes when typing single characters.
+
+Quick coloring is sweet.  It gives almost all the advantages of incremental coloring with no significant impact on the rest of the colorizer.  Quick coloring does not have to be perfect to be supremely useful because the main colorizing loop will always (eventually, in its brute-force way) color every single character correctly.</t>
+<t tx="ekr.20060509104553.4">The first draft of the main colorizer loop tried every rule for every character.
+We can do much better than that because the jEdit rules require that each rule can only match patterns that start with a single character.
+Using Python mode as an example, rather than searching through a list of 23 rules,
+the character-specific rules lists have one or two items, and many rule lists are empty.
+
+jEdit2Py now creates x.rulesDictDict in every x.py file.
+Keys are rulesets.  Values are ruleset dictionaries.
+Ruleset dictionaries have keys that are single characters and whose values are the list of rules that can start with that character. So the colorizer's inner loop is now::
+
+    for f in self.rulesDict.get(s[i],[]):
+        n = f(self,s,i)
+        if n &gt; 0:
+            i += n ; break
+        else: i += 1
+
+This is as good as it gets.
+It is significantly, noticeably, faster than using a single rules list for each ruleset.</t>
+<t tx="ekr.20060509104553.5">The new colorizer is a great success:
+
+- It is simple where it must be perfect, and complex only where mistakes are harmless.
+
+- It guarantees excellent response time without using threads.
+
+- It colors text essentially as fast as possible.
+
+- It eliminates flash almost all the time.
+
+- It is self contained and is almost completely independent of Leo.
+
+- It is largely independent of Tk, and might be even simpler in other environments.
+
+- The distinction between incremental and non-incremental coloring no longer exists.
+
+- Client code need do nothing special to support the colorizer, a major simplification.</t>
 </tnodes>
 </leo_file>
