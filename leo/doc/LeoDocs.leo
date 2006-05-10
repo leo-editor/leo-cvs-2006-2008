@@ -572,7 +572,7 @@
 </v>
 </v>
 <v t="ekr.20060430221745"><vh>Chapter 13: Controlling syntax coloring</vh>
-<v t="ekr.20060430221745.1" a="E"><vh>@rst html\coloring.html</vh>
+<v t="ekr.20060430221745.1"><vh>@rst html\coloring.html</vh>
 <v t="ekr.20060430222753"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20060430220749"><vh>Files</vh></v>
 <v t="ekr.20060502084233"><vh>The colorizer's inner loop</vh></v>
@@ -580,7 +580,7 @@
 <v t="ekr.20060502100550"><vh>Ruleset names</vh></v>
 <v t="ekr.20060502090516"><vh>x.properties</vh></v>
 <v t="ekr.20060502090516.1"><vh>Keyword dictionaries and x.keywordsDictDict</vh></v>
-<v t="ekr.20060502090516.2"><vh>Rules, rules lists and x.rulesDict</vh></v>
+<v t="ekr.20060502090516.2"><vh>Rules, rules dictionaries and x.rulesDictDict</vh></v>
 <v t="ekr.20060503072213"><vh>x.importDict and imported versus delegated rulesets</vh></v>
 </v>
 <v t="ekr.20060502122950"><vh>Rule methods</vh>
@@ -2824,8 +2824,8 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060430221745" a="V"><vh>Chapter 13: Controlling syntax coloring</vh>
-<v t="ekr.20060430221745.1" a="E"><vh>@rst html\coloring.html</vh>
+<v t="ekr.20060430221745" a="E"><vh>Chapter 13: Controlling syntax coloring</vh>
+<v t="ekr.20060430221745.1" a="V"><vh>@rst html\coloring.html</vh>
 <v t="ekr.20060430222753"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20060430220749"><vh>Files</vh></v>
 <v t="ekr.20060502084233"><vh>The colorizer's inner loop</vh></v>
@@ -2833,7 +2833,7 @@
 <v t="ekr.20060502100550"><vh>Ruleset names</vh></v>
 <v t="ekr.20060502090516"><vh>x.properties</vh></v>
 <v t="ekr.20060502090516.1"><vh>Keyword dictionaries and x.keywordsDictDict</vh></v>
-<v t="ekr.20060502090516.2"><vh>Rules, rules lists and x.rulesDict</vh></v>
+<v t="ekr.20060502090516.2"><vh>Rules, rules dictionaries and x.rulesDictDict</vh></v>
 <v t="ekr.20060503072213"><vh>x.importDict and imported versus delegated rulesets</vh></v>
 </v>
 <v t="ekr.20060502122950"><vh>Rule methods</vh>
@@ -26724,7 +26724,7 @@ and **x.xml** will refer to the corresponding xml language-description file.
 
 Using Python colorer control files has the following advantages:
 
-- Running ``jEdit2Py`` need only be done x.xml changes,
+- Running ``jEdit2Py`` need only be done when x.xml changes,
   and the speed of the xml parser in jEdit2Py does not affect the speed of Leo's colorizer in any way.
   Moreover, the ``jEdit2Py`` script can contain debugging traces and checks.
 
@@ -26818,7 +26818,8 @@ The inner loop of the colorizer is this code::
         else: i += 1
 
 - rulesDict is a dictionary whose keys are rulesets and whose values are ruleset dictionaries.
-Ruleset dictionaries have keys that are single characters and whose values are the list of rules that can start with that character. 
+  Ruleset dictionaries have keys that are single characters and whose values are
+  the list of rules that can start with that character. 
 
 - s is the full text to be colorized.
 
@@ -26904,46 +26905,79 @@ For example, the first rule in php.xml is::
 and the corresponding rule function is::
 
     def rule0(colorer, s, i):
-        return colorer.match_span(s, i, begin="&lt;?php", end="?&gt;",
-            at_line_start=False, at_line_end=False, at_word_start=False,
+        return colorer.match_span(s, i, kind="markup", begin="&lt;?php", end="?&gt;",
+            at_line_start=False, at_whitespace_end=False, at_word_start=False,
             delegate="PHP",exclude_match=False,
             no_escape=False, no_line_break=False, no_word_break=False)
+    
 
 ``rule0`` calls ``colorer.match_span`` because the corresponding xml rule is a ``&lt;SPAN&gt;`` element.
 
-For each ruleset, ``x.py`` also contains a **rules list**, a Python list of all rules functions for that ruleset.
+For each ruleset, ``x.py`` also contains a **rules dictionary**,
+a Python dictionary whose keys are characters and whose values are all lists
+of rules functions that that can match the key.
 For example::
 
-    php_PHPDOC_rules = [
-	    rule64, rule65, rule66, rule67, rule68, rule69, rule70, rule71, ]
+    # Rules dict for phpdoc ruleset.
+    rulesDict8 = {
+        "*": [rule64,],
+        "0": [rule70,],
+        "1": [rule70,],
+        "2": [rule70,],
+        "3": [rule70,],
+        "4": [rule70,],
+        "5": [rule70,],
+        "6": [rule70,],
+        "7": [rule70,],
+        "8": [rule70,],
+        "9": [rule70,],
+        "&lt;": [rule65,rule66,rule67,rule68,rule69,],
+        "@": [rule70,],
+        "A": [rule70,],
+        "B": [rule70,],
+        ...
+        "X": [rule70,],
+        "Y": [rule70,],
+        "Z": [rule70,],
+        "_": [rule70,],
+        "a": [rule70,],
+        "b": [rule70,],
+       ...
+        "x": [rule70,],
+        "y": [rule70,],
+        "z": [rule70,],
+        "{": [rule63,],
+    }
 
 **Note**: The order of rules in each rules list is important;
 it should be the same as rules element in ``x.xml``.
 
-Finally, ``x.py`` contains a single **rules dictionary**, ``x.rulesDict``.
-Keys are ruleset names, values are rules lists.
-The colorer can get the rules list for a ruleset as follows::
+Finally, ``x.py`` contains a single **rules dictionary dictionary**, ``x.rulesDictDict``.
+Keys are ruleset names, values are rules dictionaries.
+The colorer can get the rules list for character ch as follows::
 
-    rules = x.rulesDict.get(rulesetName)
+    self.rulesDict = x.rulesDictDict.get(rulesetName) # When a mode is inited.
+    ...
+    rules = sellf.rulesDict.get(ch,[]) # In the main loop.
 
 For example, here is the rules dictionary for php.py::
 
-    # rules dict for mode php
-    rulesDict = {
-        "php_JAVASCRIPT": php_JAVASCRIPT_rules,
-        "php_JAVASCRIPT_PHP": php_JAVASCRIPT_PHP_rules,
-        "php_PHP": php_PHP_rules,
-        "php_PHPDOC": php_PHPDOC_rules,
-        "php_PHP_LITERAL": php_PHP_LITERAL_rules,
-        "php_TAGS": php_TAGS_rules,
-        "php_TAGS_LITERAL": php_TAGS_LITERAL_rules,
-        "php_main": php_main_rules,
+    # x.rulesDictDict for php mode.
+    rulesDictDict = {
+        "php_javascript": rulesDict6,
+        "php_javascript_php": rulesDict7,
+        "php_main": rulesDict1,
+        "php_php": rulesDict4,
+        "php_php_literal": rulesDict5,
+        "php_phpdoc": rulesDict8,
+        "php_tags": rulesDict2,
+        "php_tags_literal": rulesDict3,
     }
 
 **Note**:
 The ``jEdit2Py`` script creates 'friendly' names for rules lists *solely* as an aid for people reading the code.
-Leo's colorer uses only the name ``x.rulesDict``;
-Leo's colorer never uses the actual names of rules lists such as ``php_PHPDOC_rules``,
+Leo's colorer uses only the name ``x.rulesDictDict``;
+Leo's colorer never uses the actual names of rules lists such as ``rulesDict8``,
 and Leo's colorer never uses the actual names of rules functions such as ``rule64``.</t>
 <t tx="ekr.20060502100550">A **ruleset name** is a Python string having the form ``'x_setname'``,
 where ``setname`` is the value of the ``SET`` attribute of the ``&lt;RULES&gt;`` element in ``x.xml``.
@@ -27174,8 +27208,14 @@ Here is a list of all optional keyword arguments and their meaning:
 - **no_word_break**:
   If ``True``, the match will not cross word breaks.</t>
 <t tx="ekr.20060503072213">``x.importDict`` is a Python dictionary.
-Keys are ruleset names;
-values are a list of ruleset names.
+Keys are ruleset names; values are a list of ruleset names.
+For example::
+
+    # Import dict for php mode.
+    importDict = {
+        "php_javascript_php": "javascript_main",
+    }
+
 For any ruleset ``R`` whose ruleset name is ``N``, ``x.importDict.get(N)``
 is the list of rulesets names whose rulesets appear in
 a ``DELEGATE`` attribute of an ``&lt;IMPORT&gt;`` rule element in ``R's`` ruleset.
@@ -27186,11 +27226,8 @@ Leo's colorizer does this copying only once, when loading ruleset ``R`` for the 
 It should definitely not be done by ``jEdit2Py`` at 'compile time';
 that would require running ``jEdit2Py`` on *all* .xml files whenever any such file changed.
 
-**Note 2**: ``jEdit's`` docs do not say so explicitly,
-but allowing multiple ``&lt;IMPORT&gt;`` rule elements in a single ruleset would be ambiguous:
-the order in which the delegated rules are copied to the end of ``N's`` rules list is unspecified.
-In fact, it is likely that only one ``&lt;IMPORT&gt;`` rule element ever appears in any ruleset.
-``jEdit2Py`` will issue a warning if more than one ``&lt;IMPORT&gt;`` is seen in any ruleset.
+**Note 2**:  Multiple ``&lt;IMPORT&gt;`` rule elements in a single ruleset are allowed:
+delegated rules are copied to the end of ``N's`` rules list in the order they appear in the ruleset.
 
 **Note 3**: The ``DELEGATE`` attribute of ``&lt;IMPORT&gt;`` elements is, in fact,
 completely separate from the ``DELEGATE`` attributes of other rules as
@@ -27206,8 +27243,7 @@ In short:
   the rules of **delegated** rulesets never are.
 
 - **Imported** ruleset names appear as the values of items in ``x.importDict``;
-  **delegated** ruleset names appear as ``delegate`` arguments to rule methods.
-</t>
+  **delegated** ruleset names appear as ``delegate`` arguments to rule methods.</t>
 <t tx="ekr.20060509104553">This rest of this chapter tells how the new colorizer works in detail.
 It is organized around several design principles.
 I call them aha's because that was what they were at the time.</t>
