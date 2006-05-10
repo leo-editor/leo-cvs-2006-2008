@@ -7,6 +7,40 @@ properties = {
 	"noWordSep": "-_",
 }
 
+# Attributes dict for mail_main ruleset.
+mail_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "false",
+	"ignore_case": "true",
+	"no_word_sep": "-_:)",
+}
+
+# Attributes dict for mail_signature ruleset.
+mail_signature_attributes_dict = {
+	"default": "COMMENT2",
+	"digit_re": "",
+	"highlight_digits": "false",
+	"ignore_case": "true",
+	"no_word_sep": "-_:)",
+}
+
+# Attributes dict for mail_header ruleset.
+mail_header_attributes_dict = {
+	"default": "MARKUP",
+	"digit_re": "",
+	"highlight_digits": "false",
+	"ignore_case": "true",
+	"no_word_sep": "-_:)",
+}
+
+# Dictionary of attributes dictionaries for mail mode.
+attributesDictDict = {
+	"mail_header": mail_header_attributes_dict,
+	"mail_main": mail_main_attributes_dict,
+	"mail_signature": mail_signature_attributes_dict,
+}
+
 # Keywords dict for mail_main ruleset.
 mail_main_keywords_dict = {}
 

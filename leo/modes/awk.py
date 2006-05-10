@@ -10,6 +10,20 @@ properties = {
 	"wordBreakChars": ",+-=<>/?^&*",
 }
 
+# Attributes dict for awk_main ruleset.
+awk_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for awk mode.
+attributesDictDict = {
+	"awk_main": awk_main_attributes_dict,
+}
+
 # Keywords dict for awk_main ruleset.
 awk_main_keywords_dict = {
 	"$0": "keyword3",

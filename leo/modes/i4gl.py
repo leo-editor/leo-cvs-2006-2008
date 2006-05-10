@@ -10,6 +10,20 @@ properties = {
 	"wordBreakChars": ",+-=<>/?^&*",
 }
 
+# Attributes dict for i4gl_main ruleset.
+i4gl_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for i4gl mode.
+attributesDictDict = {
+	"i4gl_main": i4gl_main_attributes_dict,
+}
+
 # Keywords dict for i4gl_main ruleset.
 i4gl_main_keywords_dict = {
 	"ABORT": "keyword1",

@@ -6,6 +6,20 @@ properties = {
 	"lineComment": "--",
 }
 
+# Attributes dict for ada95_main ruleset.
+ada95_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for ada95 mode.
+attributesDictDict = {
+	"ada95_main": ada95_main_attributes_dict,
+}
+
 # Keywords dict for ada95_main ruleset.
 ada95_main_keywords_dict = {
 	"abort": "keyword2",

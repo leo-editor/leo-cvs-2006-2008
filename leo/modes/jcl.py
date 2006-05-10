@@ -6,6 +6,20 @@ properties = {
 	"wordBreakChars": ",+-=<>/?^&*",
 }
 
+# Attributes dict for jcl_main ruleset.
+jcl_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "false",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for jcl mode.
+attributesDictDict = {
+	"jcl_main": jcl_main_attributes_dict,
+}
+
 # Keywords dict for jcl_main ruleset.
 jcl_main_keywords_dict = {
 	"CNTL": "keyword2",

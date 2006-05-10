@@ -14,6 +14,20 @@ properties = {
 	"wordBreakChars": ",+-=<>/?^&*",
 }
 
+# Attributes dict for uscript_main ruleset.
+uscript_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "(0x[[:xdigit:]]+[lL]?|[[:digit:]]+(e[[:digit:]]*)?[lLdDfF]?)",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for uscript mode.
+attributesDictDict = {
+	"uscript_main": uscript_main_attributes_dict,
+}
+
 # Keywords dict for uscript_main ruleset.
 uscript_main_keywords_dict = {
 	"abstract": "keyword1",

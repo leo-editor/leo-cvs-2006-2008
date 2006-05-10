@@ -9,6 +9,40 @@ properties = {
 	"lineUpClosingBracket": "true",
 }
 
+# Attributes dict for shell_main ruleset.
+shell_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for shell_literal ruleset.
+shell_literal_attributes_dict = {
+	"default": "LITERAL1",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for shell_exec ruleset.
+shell_exec_attributes_dict = {
+	"default": "KEYWORD3",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for shell mode.
+attributesDictDict = {
+	"shell_exec": shell_exec_attributes_dict,
+	"shell_literal": shell_literal_attributes_dict,
+	"shell_main": shell_main_attributes_dict,
+}
+
 # Keywords dict for shell_main ruleset.
 shell_main_keywords_dict = {
 	";;": "operator",

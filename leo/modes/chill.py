@@ -7,6 +7,20 @@ properties = {
 	"commentStart": "/*",
 }
 
+# Attributes dict for chill_main ruleset.
+chill_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for chill mode.
+attributesDictDict = {
+	"chill_main": chill_main_attributes_dict,
+}
+
 # Keywords dict for chill_main ruleset.
 chill_main_keywords_dict = {
 	"AND": "keyword1",

@@ -11,6 +11,30 @@ properties = {
 	"noWordSep": "_",
 }
 
+# Attributes dict for css_main ruleset.
+css_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "-?[[:digit:]]+(pt|pc|in|mm|cm|em|ex|px|ms|s|%)",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "-_%",
+}
+
+# Attributes dict for css_literal ruleset.
+css_literal_attributes_dict = {
+	"default": "LITERAL1",
+	"digit_re": "-?[[:digit:]]+(pt|pc|in|mm|cm|em|ex|px|ms|s|%)",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "-_%",
+}
+
+# Dictionary of attributes dictionaries for css mode.
+attributesDictDict = {
+	"css_literal": css_literal_attributes_dict,
+	"css_main": css_main_attributes_dict,
+}
+
 # Keywords dict for css_main ruleset.
 css_main_keywords_dict = {
 	":after": "keyword3",

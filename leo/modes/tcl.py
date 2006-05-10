@@ -9,6 +9,20 @@ properties = {
 	"lineUpClosingBracket": "true",
 }
 
+# Attributes dict for tcl_main ruleset.
+tcl_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for tcl mode.
+attributesDictDict = {
+	"tcl_main": tcl_main_attributes_dict,
+}
+
 # Keywords dict for tcl_main ruleset.
 tcl_main_keywords_dict = {
 	"$argc": "keyword3",

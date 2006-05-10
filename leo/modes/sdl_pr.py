@@ -8,6 +8,20 @@ properties = {
 	"indentNextLines": "\\s*(block|channel|connection|decision|generator|input|macro|newtype|operator|package|procedure|process|refinement|service|start|state|substructure|syntype|system).*|\\s*(signal)\\s*",
 }
 
+# Attributes dict for sdl_pr_main ruleset.
+sdl_pr_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for sdl_pr mode.
+attributesDictDict = {
+	"sdl_pr_main": sdl_pr_main_attributes_dict,
+}
+
 # Keywords dict for sdl_pr_main ruleset.
 sdl_pr_main_keywords_dict = {
 	"Array": "keyword3",

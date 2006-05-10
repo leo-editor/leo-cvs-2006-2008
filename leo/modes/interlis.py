@@ -8,6 +8,20 @@ properties = {
 	"commentStart": "/*",
 }
 
+# Attributes dict for interlis_main ruleset.
+interlis_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "false",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for interlis mode.
+attributesDictDict = {
+	"interlis_main": interlis_main_attributes_dict,
+}
+
 # Keywords dict for interlis_main ruleset.
 interlis_main_keywords_dict = {
 	"ABSTRACT": "keyword1",

@@ -6,6 +6,40 @@ properties = {
 	"lineComment": "#",
 }
 
+# Attributes dict for apacheconf_main ruleset.
+apacheconf_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "false",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for apacheconf_directive ruleset.
+apacheconf_directive_attributes_dict = {
+	"default": "NULL",
+	"digit_re": "",
+	"highlight_digits": "false",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for apacheconf_vhost ruleset.
+apacheconf_vhost_attributes_dict = {
+	"default": "NULL",
+	"digit_re": "",
+	"highlight_digits": "false",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for apacheconf mode.
+attributesDictDict = {
+	"apacheconf_directive": apacheconf_directive_attributes_dict,
+	"apacheconf_main": apacheconf_main_attributes_dict,
+	"apacheconf_vhost": apacheconf_vhost_attributes_dict,
+}
+
 # Keywords dict for apacheconf_main ruleset.
 apacheconf_main_keywords_dict = {
 	"AcceptMutex": "keyword1",

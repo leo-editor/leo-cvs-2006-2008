@@ -12,6 +12,40 @@ properties = {
 	"lineUpClosingBracket": "true",
 }
 
+# Attributes dict for groovy_main ruleset.
+groovy_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Attributes dict for groovy_literal ruleset.
+groovy_literal_attributes_dict = {
+	"default": "LITERAL1",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Attributes dict for groovy_groovydoc ruleset.
+groovy_groovydoc_attributes_dict = {
+	"default": "COMMENT3",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for groovy mode.
+attributesDictDict = {
+	"groovy_groovydoc": groovy_groovydoc_attributes_dict,
+	"groovy_literal": groovy_literal_attributes_dict,
+	"groovy_main": groovy_main_attributes_dict,
+}
+
 # Keywords dict for groovy_main ruleset.
 groovy_main_keywords_dict = {
 	"abs": "keyword4",

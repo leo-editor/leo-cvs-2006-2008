@@ -14,6 +14,50 @@ properties = {
 	"wordBreakChars": ",+-=<>/?^&*`",
 }
 
+# Attributes dict for pike_main ruleset.
+pike_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "(0x[[:xdigit:]]+|[[:digit]]+|0[bB][01]+)[lLdDfF]?",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Attributes dict for pike_comment ruleset.
+pike_comment_attributes_dict = {
+	"default": "COMMENT1",
+	"digit_re": "(0x[[:xdigit:]]+|[[:digit]]+|0[bB][01]+)[lLdDfF]?",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Attributes dict for pike_autodoc ruleset.
+pike_autodoc_attributes_dict = {
+	"default": "COMMENT1",
+	"digit_re": "(0x[[:xdigit:]]+|[[:digit]]+|0[bB][01]+)[lLdDfF]?",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for pike_string_literal ruleset.
+pike_string_literal_attributes_dict = {
+	"default": "LITERAL1",
+	"digit_re": "(0x[[:xdigit:]]+|[[:digit]]+|0[bB][01]+)[lLdDfF]?",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for pike mode.
+attributesDictDict = {
+	"pike_autodoc": pike_autodoc_attributes_dict,
+	"pike_comment": pike_comment_attributes_dict,
+	"pike_main": pike_main_attributes_dict,
+	"pike_string_literal": pike_string_literal_attributes_dict,
+}
+
 # Keywords dict for pike_main ruleset.
 pike_main_keywords_dict = {
 	"array": "keyword3",

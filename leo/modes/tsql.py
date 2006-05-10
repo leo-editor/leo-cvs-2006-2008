@@ -8,6 +8,20 @@ properties = {
 	"lineComment": "--",
 }
 
+# Attributes dict for tsql_main ruleset.
+tsql_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for tsql mode.
+attributesDictDict = {
+	"tsql_main": tsql_main_attributes_dict,
+}
+
 # Keywords dict for tsql_main ruleset.
 tsql_main_keywords_dict = {
 	"@@CONNECTIONS": "keyword2",

@@ -6,6 +6,20 @@ properties = {
 	"lineComment": "rem",
 }
 
+# Attributes dict for batch_main ruleset.
+batch_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "false",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for batch mode.
+attributesDictDict = {
+	"batch_main": batch_main_attributes_dict,
+}
+
 # Keywords dict for batch_main ruleset.
 batch_main_keywords_dict = {
 	"APPEND": "function",

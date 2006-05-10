@@ -10,6 +10,20 @@ properties = {
 	"lineUpClosingBracket": "true",
 }
 
+# Attributes dict for io_main ruleset.
+io_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for io mode.
+attributesDictDict = {
+	"io_main": io_main_attributes_dict,
+}
+
 # Keywords dict for io_main ruleset.
 io_main_keywords_dict = {
 	"Block": "keyword1",

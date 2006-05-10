@@ -10,6 +10,20 @@ properties = {
 	"wordBreakChars": ",+-=<>/?^&*",
 }
 
+# Attributes dict for applescript_main ruleset.
+applescript_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for applescript mode.
+attributesDictDict = {
+	"applescript_main": applescript_main_attributes_dict,
+}
+
 # Keywords dict for applescript_main ruleset.
 applescript_main_keywords_dict = {
 	"after": "keyword2",

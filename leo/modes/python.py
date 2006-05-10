@@ -7,6 +7,20 @@ properties = {
 	"lineComment": "#",
 }
 
+# Attributes dict for python_main ruleset.
+python_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for python mode.
+attributesDictDict = {
+	"python_main": python_main_attributes_dict,
+}
+
 # Keywords dict for python_main ruleset.
 python_main_keywords_dict = {
 	"ArithmeticError": "keyword3",

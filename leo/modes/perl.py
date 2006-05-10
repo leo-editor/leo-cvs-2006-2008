@@ -9,6 +9,70 @@ properties = {
 	"lineUpClosingBracket": "true",
 }
 
+# Attributes dict for perl_main ruleset.
+perl_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Attributes dict for perl_pod ruleset.
+perl_pod_attributes_dict = {
+	"default": "COMMENT2",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Attributes dict for perl_literal ruleset.
+perl_literal_attributes_dict = {
+	"default": "LITERAL1",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Attributes dict for perl_exec ruleset.
+perl_exec_attributes_dict = {
+	"default": "KEYWORD3",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Attributes dict for perl_variable ruleset.
+perl_variable_attributes_dict = {
+	"default": "KEYWORD2",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Attributes dict for perl_regexp ruleset.
+perl_regexp_attributes_dict = {
+	"default": "MARKUP",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for perl mode.
+attributesDictDict = {
+	"perl_exec": perl_exec_attributes_dict,
+	"perl_literal": perl_literal_attributes_dict,
+	"perl_main": perl_main_attributes_dict,
+	"perl_pod": perl_pod_attributes_dict,
+	"perl_regexp": perl_regexp_attributes_dict,
+	"perl_variable": perl_variable_attributes_dict,
+}
+
 # Keywords dict for perl_main ruleset.
 perl_main_keywords_dict = {
 	"BEGIN": "keyword1",

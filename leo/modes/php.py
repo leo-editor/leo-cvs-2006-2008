@@ -10,6 +10,90 @@ properties = {
 	"lineUpClosingBracket": "true",
 }
 
+# Attributes dict for php_main ruleset.
+php_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for php_tags ruleset.
+php_tags_attributes_dict = {
+	"default": "MARKUP",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for php_tags_literal ruleset.
+php_tags_literal_attributes_dict = {
+	"default": "LITERAL1",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for php_php ruleset.
+php_php_attributes_dict = {
+	"default": "LITERAL1",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for php_php_literal ruleset.
+php_php_literal_attributes_dict = {
+	"default": "LITERAL1",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for php_javascript ruleset.
+php_javascript_attributes_dict = {
+	"default": "MARKUP",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for php_javascript_php ruleset.
+php_javascript_php_attributes_dict = {
+	"default": "MARKUP",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for php_phpdoc ruleset.
+php_phpdoc_attributes_dict = {
+	"default": "COMMENT3",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for php mode.
+attributesDictDict = {
+	"php_javascript": php_javascript_attributes_dict,
+	"php_javascript_php": php_javascript_php_attributes_dict,
+	"php_main": php_main_attributes_dict,
+	"php_php": php_php_attributes_dict,
+	"php_php_literal": php_php_literal_attributes_dict,
+	"php_phpdoc": php_phpdoc_attributes_dict,
+	"php_tags": php_tags_attributes_dict,
+	"php_tags_literal": php_tags_literal_attributes_dict,
+}
+
 # Keywords dict for php_main ruleset.
 php_main_keywords_dict = {}
 

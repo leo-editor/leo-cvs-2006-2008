@@ -14,6 +14,30 @@ properties = {
 	"wordBreakChars": ",+-=<>/?^&*",
 }
 
+# Attributes dict for java_main ruleset.
+java_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "(0x[[:xdigit:]]+[lL]?|[[:digit:]]+(e[[:digit:]]*)?[lLdDfF]?)",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Attributes dict for java_javadoc ruleset.
+java_javadoc_attributes_dict = {
+	"default": "COMMENT3",
+	"digit_re": "(0x[[:xdigit:]]+[lL]?|[[:digit:]]+(e[[:digit:]]*)?[lLdDfF]?)",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for java mode.
+attributesDictDict = {
+	"java_javadoc": java_javadoc_attributes_dict,
+	"java_main": java_main_attributes_dict,
+}
+
 # Keywords dict for java_main ruleset.
 java_main_keywords_dict = {
 	"abstract": "keyword1",

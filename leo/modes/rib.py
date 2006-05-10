@@ -9,6 +9,30 @@ properties = {
 	"lineUpClosingBracket": "true",
 }
 
+# Attributes dict for rib_main ruleset.
+rib_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "([[:digit:]]+(e[[:digit:]]*)?)",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Attributes dict for rib_literals ruleset.
+rib_literals_attributes_dict = {
+	"default": "LITERAL1",
+	"digit_re": "([[:digit:]]+(e[[:digit:]]*)?)",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for rib mode.
+attributesDictDict = {
+	"rib_literals": rib_literals_attributes_dict,
+	"rib_main": rib_main_attributes_dict,
+}
+
 # Keywords dict for rib_main ruleset.
 rib_main_keywords_dict = {
 	"ArchiveRecord": "keyword4",

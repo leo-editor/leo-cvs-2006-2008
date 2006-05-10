@@ -7,6 +7,60 @@ properties = {
 	"commentStart": "<!--",
 }
 
+# Attributes dict for html_main ruleset.
+html_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for html_tags ruleset.
+html_tags_attributes_dict = {
+	"default": "MARKUP",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for html_javascript ruleset.
+html_javascript_attributes_dict = {
+	"default": "MARKUP",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for html_back_to_html ruleset.
+html_back_to_html_attributes_dict = {
+	"default": "MARKUP",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for html_css ruleset.
+html_css_attributes_dict = {
+	"default": "MARKUP",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for html mode.
+attributesDictDict = {
+	"html_back_to_html": html_back_to_html_attributes_dict,
+	"html_css": html_css_attributes_dict,
+	"html_javascript": html_javascript_attributes_dict,
+	"html_main": html_main_attributes_dict,
+	"html_tags": html_tags_attributes_dict,
+}
+
 # Keywords dict for html_main ruleset.
 html_main_keywords_dict = {}
 

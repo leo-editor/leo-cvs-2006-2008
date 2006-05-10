@@ -12,6 +12,20 @@ properties = {
 	"lineUpClosingBracket": "true",
 }
 
+# Attributes dict for idl_main ruleset.
+idl_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for idl mode.
+attributesDictDict = {
+	"idl_main": idl_main_attributes_dict,
+}
+
 # Keywords dict for idl_main ruleset.
 idl_main_keywords_dict = {
 	"FALSE": "literal2",

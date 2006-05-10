@@ -12,6 +12,80 @@ properties = {
 	"wordBreakChars": " @ %^*()+=|\\{}[]:;,.?$&",
 }
 
+# Attributes dict for powerdynamo_main ruleset.
+powerdynamo_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for powerdynamo_tags ruleset.
+powerdynamo_tags_attributes_dict = {
+	"default": "MARKUP",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for powerdynamo_tags_literal ruleset.
+powerdynamo_tags_literal_attributes_dict = {
+	"default": "LITERAL1",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for powerdynamo_powerdynamo_script ruleset.
+powerdynamo_powerdynamo_script_attributes_dict = {
+	"default": "LITERAL1",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for powerdynamo_powerdynamo_tag_general ruleset.
+powerdynamo_powerdynamo_tag_general_attributes_dict = {
+	"default": "LITERAL1",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for powerdynamo_powerdynamo_tag_data ruleset.
+powerdynamo_powerdynamo_tag_data_attributes_dict = {
+	"default": "LITERAL1",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for powerdynamo_powerdynamo_tag_document ruleset.
+powerdynamo_powerdynamo_tag_document_attributes_dict = {
+	"default": "LITERAL1",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for powerdynamo mode.
+attributesDictDict = {
+	"powerdynamo_main": powerdynamo_main_attributes_dict,
+	"powerdynamo_powerdynamo_script": powerdynamo_powerdynamo_script_attributes_dict,
+	"powerdynamo_powerdynamo_tag_data": powerdynamo_powerdynamo_tag_data_attributes_dict,
+	"powerdynamo_powerdynamo_tag_document": powerdynamo_powerdynamo_tag_document_attributes_dict,
+	"powerdynamo_powerdynamo_tag_general": powerdynamo_powerdynamo_tag_general_attributes_dict,
+	"powerdynamo_tags": powerdynamo_tags_attributes_dict,
+	"powerdynamo_tags_literal": powerdynamo_tags_literal_attributes_dict,
+}
+
 # Keywords dict for powerdynamo_main ruleset.
 powerdynamo_main_keywords_dict = {}
 

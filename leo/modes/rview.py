@@ -11,6 +11,30 @@ properties = {
 	"lineUpClosingBracket": "true",
 }
 
+# Attributes dict for rview_main ruleset.
+rview_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Attributes dict for rview_rviewstmt ruleset.
+rview_rviewstmt_attributes_dict = {
+	"default": "LITERAL1",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for rview mode.
+attributesDictDict = {
+	"rview_main": rview_main_attributes_dict,
+	"rview_rviewstmt": rview_rviewstmt_attributes_dict,
+}
+
 # Keywords dict for rview_main ruleset.
 rview_main_keywords_dict = {
 	"BIGINT": "keyword3",

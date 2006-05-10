@@ -7,6 +7,50 @@ properties = {
 	"commentStart": "<!--",
 }
 
+# Attributes dict for coldfusion_main ruleset.
+coldfusion_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for coldfusion_tags ruleset.
+coldfusion_tags_attributes_dict = {
+	"default": "MARKUP",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for coldfusion_cfscript ruleset.
+coldfusion_cfscript_attributes_dict = {
+	"default": "KEYWORD1",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for coldfusion_cftags ruleset.
+coldfusion_cftags_attributes_dict = {
+	"default": "KEYWORD3",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for coldfusion mode.
+attributesDictDict = {
+	"coldfusion_cfscript": coldfusion_cfscript_attributes_dict,
+	"coldfusion_cftags": coldfusion_cftags_attributes_dict,
+	"coldfusion_main": coldfusion_main_attributes_dict,
+	"coldfusion_tags": coldfusion_tags_attributes_dict,
+}
+
 # Keywords dict for coldfusion_main ruleset.
 coldfusion_main_keywords_dict = {}
 

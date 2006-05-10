@@ -14,6 +14,20 @@ properties = {
 	"wordBreakChars": ",+-=<>/?^&*",
 }
 
+# Attributes dict for actionscript_main ruleset.
+actionscript_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for actionscript mode.
+attributesDictDict = {
+	"actionscript_main": actionscript_main_attributes_dict,
+}
+
 # Keywords dict for actionscript_main ruleset.
 actionscript_main_keywords_dict = {
 	"#endinitclip": "keyword1",

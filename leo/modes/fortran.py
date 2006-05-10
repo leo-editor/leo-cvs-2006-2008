@@ -8,6 +8,20 @@ properties = {
 	"wordBreakChars": ",+-=<>/?^&*",
 }
 
+# Attributes dict for fortran_main ruleset.
+fortran_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "false",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for fortran mode.
+attributesDictDict = {
+	"fortran_main": fortran_main_attributes_dict,
+}
+
 # Keywords dict for fortran_main ruleset.
 fortran_main_keywords_dict = {
 	".false.": "keyword1",

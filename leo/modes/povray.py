@@ -11,6 +11,20 @@ properties = {
 	"lineUpClosingBracket": "true",
 }
 
+# Attributes dict for povray_main ruleset.
+povray_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for povray mode.
+attributesDictDict = {
+	"povray_main": povray_main_attributes_dict,
+}
+
 # Keywords dict for povray_main ruleset.
 povray_main_keywords_dict = {
 	"#break": "keyword1",

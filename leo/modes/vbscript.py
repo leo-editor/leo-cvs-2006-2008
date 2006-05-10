@@ -6,6 +6,20 @@ properties = {
 	"lineComment": "'",
 }
 
+# Attributes dict for vbscript_main ruleset.
+vbscript_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for vbscript mode.
+attributesDictDict = {
+	"vbscript_main": vbscript_main_attributes_dict,
+}
+
 # Keywords dict for vbscript_main ruleset.
 vbscript_main_keywords_dict = {
 	"Err": "keyword2",

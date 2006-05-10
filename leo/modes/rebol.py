@@ -13,6 +13,20 @@ properties = {
 	"wordBreakChars": ",+-=<>/?^&*",
 }
 
+# Attributes dict for rebol_main ruleset.
+rebol_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "false",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for rebol mode.
+attributesDictDict = {
+	"rebol_main": rebol_main_attributes_dict,
+}
+
 # Keywords dict for rebol_main ruleset.
 rebol_main_keywords_dict = {
 	"?": "keyword2",

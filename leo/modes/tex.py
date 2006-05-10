@@ -6,6 +6,40 @@ properties = {
 	"lineComment": "%",
 }
 
+# Attributes dict for tex_main ruleset.
+tex_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for tex_math ruleset.
+tex_math_attributes_dict = {
+	"default": "MARKUP",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for tex_verbatim ruleset.
+tex_verbatim_attributes_dict = {
+	"default": "NULL",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for tex mode.
+attributesDictDict = {
+	"tex_main": tex_main_attributes_dict,
+	"tex_math": tex_math_attributes_dict,
+	"tex_verbatim": tex_verbatim_attributes_dict,
+}
+
 # Keywords dict for tex_main ruleset.
 tex_main_keywords_dict = {}
 

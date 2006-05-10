@@ -8,6 +8,50 @@ properties = {
 	"lineComment": ";;;",
 }
 
+# Attributes dict for pop11_main ruleset.
+pop11_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Attributes dict for pop11_list ruleset.
+pop11_list_attributes_dict = {
+	"default": "LITERAL1",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Attributes dict for pop11_string ruleset.
+pop11_string_attributes_dict = {
+	"default": "LITERAL1",
+	"digit_re": "",
+	"highlight_digits": "false",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Attributes dict for pop11_comment ruleset.
+pop11_comment_attributes_dict = {
+	"default": "COMMENT1",
+	"digit_re": "",
+	"highlight_digits": "false",
+	"ignore_case": "false",
+	"no_word_sep": ".",
+}
+
+# Dictionary of attributes dictionaries for pop11 mode.
+attributesDictDict = {
+	"pop11_comment": pop11_comment_attributes_dict,
+	"pop11_list": pop11_list_attributes_dict,
+	"pop11_main": pop11_main_attributes_dict,
+	"pop11_string": pop11_string_attributes_dict,
+}
+
 # Keywords dict for pop11_main ruleset.
 pop11_main_keywords_dict = {
 	"add": "literal2",

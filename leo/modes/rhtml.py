@@ -7,6 +7,40 @@ properties = {
 	"commentStart": "<%#",
 }
 
+# Attributes dict for rhtml_main ruleset.
+rhtml_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for rhtml_tags ruleset.
+rhtml_tags_attributes_dict = {
+	"default": "MARKUP",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for rhtml_tags_literal ruleset.
+rhtml_tags_literal_attributes_dict = {
+	"default": "LITERAL1",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for rhtml mode.
+attributesDictDict = {
+	"rhtml_main": rhtml_main_attributes_dict,
+	"rhtml_tags": rhtml_tags_attributes_dict,
+	"rhtml_tags_literal": rhtml_tags_literal_attributes_dict,
+}
+
 # Keywords dict for rhtml_main ruleset.
 rhtml_main_keywords_dict = {}
 

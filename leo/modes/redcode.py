@@ -6,6 +6,20 @@ properties = {
 	"lineComment": ";",
 }
 
+# Attributes dict for redcode_main ruleset.
+redcode_main_attributes_dict = {
+	"default": "MARKUP",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for redcode mode.
+attributesDictDict = {
+	"redcode_main": redcode_main_attributes_dict,
+}
+
 # Keywords dict for redcode_main ruleset.
 redcode_main_keywords_dict = {
 	"ADD": "keyword1",

@@ -7,6 +7,20 @@ properties = {
 	"lineComment": "--",
 }
 
+# Attributes dict for vhdl_main ruleset.
+vhdl_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for vhdl mode.
+attributesDictDict = {
+	"vhdl_main": vhdl_main_attributes_dict,
+}
+
 # Keywords dict for vhdl_main ruleset.
 vhdl_main_keywords_dict = {
 	"ACTIVE": "keyword3",

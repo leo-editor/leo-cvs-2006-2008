@@ -6,6 +6,30 @@ properties = {
 	"lineComment": "#",
 }
 
+# Attributes dict for props_main ruleset.
+props_main_attributes_dict = {
+	"default": "KEYWORD1",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for props_prop_value ruleset.
+props_prop_value_attributes_dict = {
+	"default": "KEYWORD1",
+	"digit_re": "([[:digit:]]+|#[[:xdigit:]]+)",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "#",
+}
+
+# Dictionary of attributes dictionaries for props mode.
+attributesDictDict = {
+	"props_main": props_main_attributes_dict,
+	"props_prop_value": props_prop_value_attributes_dict,
+}
+
 # Keywords dict for props_main ruleset.
 props_main_keywords_dict = {}
 

@@ -7,6 +7,50 @@ properties = {
 	"commentStart": "<!--",
 }
 
+# Attributes dict for shtml_main ruleset.
+shtml_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for shtml_tags ruleset.
+shtml_tags_attributes_dict = {
+	"default": "MARKUP",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for shtml_ssi ruleset.
+shtml_ssi_attributes_dict = {
+	"default": "KEYWORD3",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for shtml_ssi_expression ruleset.
+shtml_ssi_expression_attributes_dict = {
+	"default": "LITERAL1",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for shtml mode.
+attributesDictDict = {
+	"shtml_main": shtml_main_attributes_dict,
+	"shtml_ssi": shtml_ssi_attributes_dict,
+	"shtml_ssi_expression": shtml_ssi_expression_attributes_dict,
+	"shtml_tags": shtml_tags_attributes_dict,
+}
+
 # Keywords dict for shtml_main ruleset.
 shtml_main_keywords_dict = {}
 

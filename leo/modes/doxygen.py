@@ -6,6 +6,30 @@ properties = {
 	"lineComment": "#",
 }
 
+# Attributes dict for doxygen_main ruleset.
+doxygen_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Attributes dict for doxygen_doxygen ruleset.
+doxygen_doxygen_attributes_dict = {
+	"default": "COMMENT3",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for doxygen mode.
+attributesDictDict = {
+	"doxygen_doxygen": doxygen_doxygen_attributes_dict,
+	"doxygen_main": doxygen_main_attributes_dict,
+}
+
 # Keywords dict for doxygen_main ruleset.
 doxygen_main_keywords_dict = {
 	"NO": "keyword3",

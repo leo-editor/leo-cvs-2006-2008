@@ -7,6 +7,20 @@ properties = {
 	"commentStart": "(*",
 }
 
+# Attributes dict for ml_main ruleset.
+ml_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for ml mode.
+attributesDictDict = {
+	"ml_main": ml_main_attributes_dict,
+}
+
 # Keywords dict for ml_main ruleset.
 ml_main_keywords_dict = {
 	"ANTIQUOTE": "literal2",

@@ -4,6 +4,30 @@
 # Properties for svn-commit mode.
 properties = {}
 
+# Attributes dict for svn_commit_main ruleset.
+svn_commit_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "false",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for svn_commit_changed ruleset.
+svn_commit_changed_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "false",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for svn_commit mode.
+attributesDictDict = {
+	"svn_commit_changed": svn_commit_changed_attributes_dict,
+	"svn_commit_main": svn_commit_main_attributes_dict,
+}
+
 # Keywords dict for svn_commit_main ruleset.
 svn_commit_main_keywords_dict = {}
 

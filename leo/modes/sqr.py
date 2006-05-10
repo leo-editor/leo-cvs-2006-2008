@@ -6,6 +6,20 @@ properties = {
 	"lineComment": "!",
 }
 
+# Attributes dict for sqr_main ruleset.
+sqr_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for sqr mode.
+attributesDictDict = {
+	"sqr_main": sqr_main_attributes_dict,
+}
+
 # Keywords dict for sqr_main ruleset.
 sqr_main_keywords_dict = {
 	"add": "keyword2",

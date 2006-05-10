@@ -12,6 +12,20 @@ properties = {
 	"wordBreakChars": "_,+-=<>/?^&*",
 }
 
+# Attributes dict for splus_main ruleset.
+splus_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "(0x[[:xdigit:]]+[lL]?|[[:digit:]]+(e[[:digit:]]*)?[lLdDfF]?)",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for splus mode.
+attributesDictDict = {
+	"splus_main": splus_main_attributes_dict,
+}
+
 # Keywords dict for splus_main ruleset.
 splus_main_keywords_dict = {
 	"F": "literal2",

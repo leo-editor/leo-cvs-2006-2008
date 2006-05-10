@@ -7,6 +7,20 @@ properties = {
 	"lineComment": "#",
 }
 
+# Attributes dict for pyrex_main ruleset.
+pyrex_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for pyrex mode.
+attributesDictDict = {
+	"pyrex_main": pyrex_main_attributes_dict,
+}
+
 # Keywords dict for pyrex_main ruleset.
 pyrex_main_keywords_dict = {
 	"NULL": "literal3",

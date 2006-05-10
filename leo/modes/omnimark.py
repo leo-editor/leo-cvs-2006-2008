@@ -8,6 +8,20 @@ properties = {
 	"noWordSep": ".-_",
 }
 
+# Attributes dict for omnimark_main ruleset.
+omnimark_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for omnimark mode.
+attributesDictDict = {
+	"omnimark_main": omnimark_main_attributes_dict,
+}
+
 # Keywords dict for omnimark_main ruleset.
 omnimark_main_keywords_dict = {
 	"#!": "keyword2",

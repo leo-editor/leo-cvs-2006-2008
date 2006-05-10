@@ -10,6 +10,20 @@ properties = {
 	"wordBreakChars": ",+-=<>/?^&*",
 }
 
+# Attributes dict for relax_ng_compact_main ruleset.
+relax_ng_compact_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for relax_ng_compact mode.
+attributesDictDict = {
+	"relax_ng_compact_main": relax_ng_compact_main_attributes_dict,
+}
+
 # Keywords dict for relax_ng_compact_main ruleset.
 relax_ng_compact_main_keywords_dict = {
 	"attribute": "keyword1",

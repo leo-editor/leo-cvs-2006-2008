@@ -7,6 +7,90 @@ properties = {
 	"commentStart": "<!--",
 }
 
+# Attributes dict for xsl_main ruleset.
+xsl_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "false",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Attributes dict for xsl_tasks ruleset.
+xsl_tasks_attributes_dict = {
+	"default": "COMMENT1",
+	"digit_re": "",
+	"highlight_digits": "false",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Attributes dict for xsl_tags ruleset.
+xsl_tags_attributes_dict = {
+	"default": "MARKUP",
+	"digit_re": "",
+	"highlight_digits": "false",
+	"ignore_case": "false",
+	"no_word_sep": ".-_:",
+}
+
+# Attributes dict for xsl_avt ruleset.
+xsl_avt_attributes_dict = {
+	"default": "KEYWORD3",
+	"digit_re": "",
+	"highlight_digits": "false",
+	"ignore_case": "false",
+	"no_word_sep": ".-_:",
+}
+
+# Attributes dict for xsl_xsltags ruleset.
+xsl_xsltags_attributes_dict = {
+	"default": "KEYWORD2",
+	"digit_re": "",
+	"highlight_digits": "false",
+	"ignore_case": "false",
+	"no_word_sep": ".-_:",
+}
+
+# Attributes dict for xsl_xpath ruleset.
+xsl_xpath_attributes_dict = {
+	"default": "KEYWORD3",
+	"digit_re": "[[:digit:]]+([[:punct:]][[:digit:]]+)?",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": ".-_",
+}
+
+# Attributes dict for xsl_xpathcomment2 ruleset.
+xsl_xpathcomment2_attributes_dict = {
+	"default": "COMMENT2",
+	"digit_re": "[[:digit:]]+([[:punct:]][[:digit:]]+)?",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": ".-_",
+}
+
+# Attributes dict for xsl_xpathcomment3 ruleset.
+xsl_xpathcomment3_attributes_dict = {
+	"default": "COMMENT3",
+	"digit_re": "[[:digit:]]+([[:punct:]][[:digit:]]+)?",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": ".-_",
+}
+
+# Dictionary of attributes dictionaries for xsl mode.
+attributesDictDict = {
+	"xsl_avt": xsl_avt_attributes_dict,
+	"xsl_main": xsl_main_attributes_dict,
+	"xsl_tags": xsl_tags_attributes_dict,
+	"xsl_tasks": xsl_tasks_attributes_dict,
+	"xsl_xpath": xsl_xpath_attributes_dict,
+	"xsl_xpathcomment2": xsl_xpathcomment2_attributes_dict,
+	"xsl_xpathcomment3": xsl_xpathcomment3_attributes_dict,
+	"xsl_xsltags": xsl_xsltags_attributes_dict,
+}
+
 # Keywords dict for xsl_main ruleset.
 xsl_main_keywords_dict = {}
 

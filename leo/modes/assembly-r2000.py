@@ -7,6 +7,20 @@ properties = {
 	"wordBreakChars": ",()",
 }
 
+# Attributes dict for assembly_r2000_main ruleset.
+assembly_r2000_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for assembly_r2000 mode.
+attributesDictDict = {
+	"assembly_r2000_main": assembly_r2000_main_attributes_dict,
+}
+
 # Keywords dict for assembly_r2000_main ruleset.
 assembly_r2000_main_keywords_dict = {
 	"$a0": "keyword2",

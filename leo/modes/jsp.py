@@ -7,6 +7,60 @@ properties = {
 	"commentStart": "<%--",
 }
 
+# Attributes dict for jsp_main ruleset.
+jsp_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for jsp_comment ruleset.
+jsp_comment_attributes_dict = {
+	"default": "COMMENT1",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for jsp_directives ruleset.
+jsp_directives_attributes_dict = {
+	"default": "MARKUP",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for jsp_tags ruleset.
+jsp_tags_attributes_dict = {
+	"default": "MARKUP",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for jsp_attrvalue ruleset.
+jsp_attrvalue_attributes_dict = {
+	"default": "LITERAL1",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for jsp mode.
+attributesDictDict = {
+	"jsp_attrvalue": jsp_attrvalue_attributes_dict,
+	"jsp_comment": jsp_comment_attributes_dict,
+	"jsp_directives": jsp_directives_attributes_dict,
+	"jsp_main": jsp_main_attributes_dict,
+	"jsp_tags": jsp_tags_attributes_dict,
+}
+
 # Keywords dict for jsp_main ruleset.
 jsp_main_keywords_dict = {}
 

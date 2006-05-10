@@ -8,6 +8,20 @@ properties = {
 	"lineComment": "//",
 }
 
+# Attributes dict for pascal_main ruleset.
+pascal_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for pascal mode.
+attributesDictDict = {
+	"pascal_main": pascal_main_attributes_dict,
+}
+
 # Keywords dict for pascal_main ruleset.
 pascal_main_keywords_dict = {
 	"absolute": "keyword2",

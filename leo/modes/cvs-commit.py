@@ -4,6 +4,30 @@
 # Properties for cvs-commit mode.
 properties = {}
 
+# Attributes dict for cvs_commit_main ruleset.
+cvs_commit_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "false",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for cvs_commit_changed ruleset.
+cvs_commit_changed_attributes_dict = {
+	"default": "COMMENT2",
+	"digit_re": "",
+	"highlight_digits": "false",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for cvs_commit mode.
+attributesDictDict = {
+	"cvs_commit_changed": cvs_commit_changed_attributes_dict,
+	"cvs_commit_main": cvs_commit_main_attributes_dict,
+}
+
 # Keywords dict for cvs_commit_main ruleset.
 cvs_commit_main_keywords_dict = {}
 

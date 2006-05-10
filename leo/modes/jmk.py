@@ -9,6 +9,20 @@ properties = {
 	"lineUpClosingBracket": "true",
 }
 
+# Attributes dict for jmk_main ruleset.
+jmk_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for jmk mode.
+attributesDictDict = {
+	"jmk_main": jmk_main_attributes_dict,
+}
+
 # Keywords dict for jmk_main ruleset.
 jmk_main_keywords_dict = {
 	"%": "keyword2",

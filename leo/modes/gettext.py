@@ -6,6 +6,30 @@ properties = {
 	"lineComment": "# ",
 }
 
+# Attributes dict for gettext_main ruleset.
+gettext_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for gettext_quoted ruleset.
+gettext_quoted_attributes_dict = {
+	"default": "LITERAL1",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for gettext mode.
+attributesDictDict = {
+	"gettext_main": gettext_main_attributes_dict,
+	"gettext_quoted": gettext_quoted_attributes_dict,
+}
+
 # Keywords dict for gettext_main ruleset.
 gettext_main_keywords_dict = {
 	"c-format": "keyword2",

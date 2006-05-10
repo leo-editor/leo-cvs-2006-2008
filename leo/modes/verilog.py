@@ -11,6 +11,20 @@ properties = {
 	"wordBreakChars": ",+-=<>/?^&*",
 }
 
+# Attributes dict for verilog_main ruleset.
+verilog_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "([[:digit:]]|_)+",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "'",
+}
+
+# Dictionary of attributes dictionaries for verilog mode.
+attributesDictDict = {
+	"verilog_main": verilog_main_attributes_dict,
+}
+
 # Keywords dict for verilog_main ruleset.
 verilog_main_keywords_dict = {
 	"$cleartrace": "function",

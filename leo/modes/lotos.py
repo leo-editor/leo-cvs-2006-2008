@@ -8,6 +8,20 @@ properties = {
 	"indentNextLines": "\\s*(let|library|process|specification|type|>>).*|\\s*(\\(|\\[\\]|\\[>|\\|\\||\\|\\|\\||\\|\\[.*\\]\\||\\[.*\\]\\s*->)\\s*",
 }
 
+# Attributes dict for lotos_main ruleset.
+lotos_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "false",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for lotos mode.
+attributesDictDict = {
+	"lotos_main": lotos_main_attributes_dict,
+}
+
 # Keywords dict for lotos_main ruleset.
 lotos_main_keywords_dict = {
 	"BasicNaturalNumber": "keyword2",

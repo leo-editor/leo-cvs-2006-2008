@@ -7,6 +7,60 @@ properties = {
 	"commentStart": "<!--",
 }
 
+# Attributes dict for xml_main ruleset.
+xml_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for xml_tags ruleset.
+xml_tags_attributes_dict = {
+	"default": "MARKUP",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "-_",
+}
+
+# Attributes dict for xml_dtd_tags ruleset.
+xml_dtd_tags_attributes_dict = {
+	"default": "KEYWORD2",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "-_",
+}
+
+# Attributes dict for xml_entity_tags ruleset.
+xml_entity_tags_attributes_dict = {
+	"default": "KEYWORD2",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "-_",
+}
+
+# Attributes dict for xml_cdata ruleset.
+xml_cdata_attributes_dict = {
+	"default": "COMMENT2",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "-_",
+}
+
+# Dictionary of attributes dictionaries for xml mode.
+attributesDictDict = {
+	"xml_cdata": xml_cdata_attributes_dict,
+	"xml_dtd_tags": xml_dtd_tags_attributes_dict,
+	"xml_entity_tags": xml_entity_tags_attributes_dict,
+	"xml_main": xml_main_attributes_dict,
+	"xml_tags": xml_tags_attributes_dict,
+}
+
 # Keywords dict for xml_main ruleset.
 xml_main_keywords_dict = {}
 

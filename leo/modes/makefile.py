@@ -6,6 +6,30 @@ properties = {
 	"lineComment": "#",
 }
 
+# Attributes dict for makefile_main ruleset.
+makefile_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Attributes dict for makefile_variable ruleset.
+makefile_variable_attributes_dict = {
+	"default": "KEYWORD2",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for makefile mode.
+attributesDictDict = {
+	"makefile_main": makefile_main_attributes_dict,
+	"makefile_variable": makefile_variable_attributes_dict,
+}
+
 # Keywords dict for makefile_main ruleset.
 makefile_main_keywords_dict = {
 	"addprefix": "keyword1",

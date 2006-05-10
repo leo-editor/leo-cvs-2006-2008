@@ -6,6 +6,20 @@ properties = {
 	"lineComment": "--",
 }
 
+# Attributes dict for eiffel_main ruleset.
+eiffel_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for eiffel mode.
+attributesDictDict = {
+	"eiffel_main": eiffel_main_attributes_dict,
+}
+
 # Keywords dict for eiffel_main ruleset.
 eiffel_main_keywords_dict = {
 	"alias": "keyword1",

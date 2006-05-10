@@ -8,6 +8,30 @@ properties = {
 	"lineComment": "%",
 }
 
+# Attributes dict for prolog_main ruleset.
+prolog_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Attributes dict for prolog_list ruleset.
+prolog_list_attributes_dict = {
+	"default": "LITERAL2",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for prolog mode.
+attributesDictDict = {
+	"prolog_list": prolog_list_attributes_dict,
+	"prolog_main": prolog_main_attributes_dict,
+}
+
 # Keywords dict for prolog_main ruleset.
 prolog_main_keywords_dict = {
 	"!": "keyword1",

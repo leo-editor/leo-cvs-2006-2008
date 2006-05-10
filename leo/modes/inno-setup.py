@@ -6,6 +6,50 @@ properties = {
 	"lineComment": ";",
 }
 
+# Attributes dict for inno_setup_main ruleset.
+inno_setup_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "false",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for inno_setup_string ruleset.
+inno_setup_string_attributes_dict = {
+	"default": "LITERAL1",
+	"digit_re": "",
+	"highlight_digits": "false",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for inno_setup_constant ruleset.
+inno_setup_constant_attributes_dict = {
+	"default": "KEYWORD3",
+	"digit_re": "",
+	"highlight_digits": "false",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for inno_setup_directive ruleset.
+inno_setup_directive_attributes_dict = {
+	"default": "LITERAL4",
+	"digit_re": "",
+	"highlight_digits": "false",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for inno_setup mode.
+attributesDictDict = {
+	"inno_setup_constant": inno_setup_constant_attributes_dict,
+	"inno_setup_directive": inno_setup_directive_attributes_dict,
+	"inno_setup_main": inno_setup_main_attributes_dict,
+	"inno_setup_string": inno_setup_string_attributes_dict,
+}
+
 # Keywords dict for inno_setup_main ruleset.
 inno_setup_main_keywords_dict = {
 	"AfterInstall": "keyword4",

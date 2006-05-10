@@ -13,6 +13,30 @@ properties = {
 	"wordBreakChars": ",+-=<>/?^&*",
 }
 
+# Attributes dict for inform_main ruleset.
+inform_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "(\\$[[:xdigit:]]|[[:digit:]])",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Attributes dict for inform_informinnertext ruleset.
+inform_informinnertext_attributes_dict = {
+	"default": "LITERAL1",
+	"digit_re": "(\\$[[:xdigit:]]|[[:digit:]])",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for inform mode.
+attributesDictDict = {
+	"inform_informinnertext": inform_informinnertext_attributes_dict,
+	"inform_main": inform_main_attributes_dict,
+}
+
 # Keywords dict for inform_main ruleset.
 inform_main_keywords_dict = {
 	"Abbreviate": "keyword3",

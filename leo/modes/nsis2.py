@@ -7,6 +7,30 @@ properties = {
 	"lineComment": ";",
 }
 
+# Attributes dict for nsis2_main ruleset.
+nsis2_main_attributes_dict = {
+	"default": "NULL",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for nsis2_nsis_literal ruleset.
+nsis2_nsis_literal_attributes_dict = {
+	"default": "LITERAL1",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "-{}_",
+}
+
+# Dictionary of attributes dictionaries for nsis2 mode.
+attributesDictDict = {
+	"nsis2_main": nsis2_main_attributes_dict,
+	"nsis2_nsis_literal": nsis2_nsis_literal_attributes_dict,
+}
+
 # Keywords dict for nsis2_main ruleset.
 nsis2_main_keywords_dict = {
 	"!addincludedir": "keyword2",

@@ -9,6 +9,20 @@ properties = {
 	"wordBreakChars": "",
 }
 
+# Attributes dict for antlr_main ruleset.
+antlr_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for antlr mode.
+attributesDictDict = {
+	"antlr_main": antlr_main_attributes_dict,
+}
+
 # Keywords dict for antlr_main ruleset.
 antlr_main_keywords_dict = {
 	"abstract": "keyword1",

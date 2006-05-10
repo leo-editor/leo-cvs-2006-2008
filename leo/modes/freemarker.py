@@ -4,6 +4,60 @@
 # Properties for freemarker mode.
 properties = {}
 
+# Attributes dict for freemarker_main ruleset.
+freemarker_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Attributes dict for freemarker_expression ruleset.
+freemarker_expression_attributes_dict = {
+	"default": "KEYWORD2",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Attributes dict for freemarker_tags ruleset.
+freemarker_tags_attributes_dict = {
+	"default": "MARKUP",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Attributes dict for freemarker_inquote ruleset.
+freemarker_inquote_attributes_dict = {
+	"default": "MARKUP",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Attributes dict for freemarker_invalid ruleset.
+freemarker_invalid_attributes_dict = {
+	"default": "INVALID",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for freemarker mode.
+attributesDictDict = {
+	"freemarker_expression": freemarker_expression_attributes_dict,
+	"freemarker_inquote": freemarker_inquote_attributes_dict,
+	"freemarker_invalid": freemarker_invalid_attributes_dict,
+	"freemarker_main": freemarker_main_attributes_dict,
+	"freemarker_tags": freemarker_tags_attributes_dict,
+}
+
 # Keywords dict for freemarker_main ruleset.
 freemarker_main_keywords_dict = {}
 

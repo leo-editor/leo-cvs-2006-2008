@@ -4,6 +4,20 @@
 # Properties for rtf mode.
 properties = {}
 
+# Attributes dict for rtf_main ruleset.
+rtf_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for rtf mode.
+attributesDictDict = {
+	"rtf_main": rtf_main_attributes_dict,
+}
+
 # Keywords dict for rtf_main ruleset.
 rtf_main_keywords_dict = {}
 

@@ -7,6 +7,80 @@ properties = {
 	"commentStart": "<!--",
 }
 
+# Attributes dict for asp_main ruleset.
+asp_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for asp_aspvb ruleset.
+asp_aspvb_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for asp_aspjs ruleset.
+asp_aspjs_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for asp_asppl ruleset.
+asp_asppl_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for asp_aspvb_tags ruleset.
+asp_aspvb_tags_attributes_dict = {
+	"default": "MARKUP",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for asp_aspjs_tags ruleset.
+asp_aspjs_tags_attributes_dict = {
+	"default": "MARKUP",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for asp_asppl_tags ruleset.
+asp_asppl_tags_attributes_dict = {
+	"default": "MARKUP",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for asp mode.
+attributesDictDict = {
+	"asp_aspjs": asp_aspjs_attributes_dict,
+	"asp_aspjs_tags": asp_aspjs_tags_attributes_dict,
+	"asp_asppl": asp_asppl_attributes_dict,
+	"asp_asppl_tags": asp_asppl_tags_attributes_dict,
+	"asp_aspvb": asp_aspvb_attributes_dict,
+	"asp_aspvb_tags": asp_aspvb_tags_attributes_dict,
+	"asp_main": asp_main_attributes_dict,
+}
+
 # Keywords dict for asp_main ruleset.
 asp_main_keywords_dict = {}
 

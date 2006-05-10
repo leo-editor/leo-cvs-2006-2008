@@ -13,6 +13,20 @@ properties = {
 	"wordBreakChars": ",+-=<>/?^&*",
 }
 
+# Attributes dict for lua_main ruleset.
+lua_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "[[:digit:]]*(\\.[[:digit:]]*)?([eE][+-]?[[:digit:]]*)?",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "_:.",
+}
+
+# Dictionary of attributes dictionaries for lua mode.
+attributesDictDict = {
+	"lua_main": lua_main_attributes_dict,
+}
+
 # Keywords dict for lua_main ruleset.
 lua_main_keywords_dict = {
 	"...": "keyword2",

@@ -8,6 +8,20 @@ properties = {
 	"lineComment": "&&",
 }
 
+# Attributes dict for foxpro_main ruleset.
+foxpro_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for foxpro mode.
+attributesDictDict = {
+	"foxpro_main": foxpro_main_attributes_dict,
+}
+
 # Keywords dict for foxpro_main ruleset.
 foxpro_main_keywords_dict = {
 	"?": "operator",

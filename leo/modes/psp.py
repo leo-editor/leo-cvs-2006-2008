@@ -7,6 +7,40 @@ properties = {
 	"commentStart": "<!--",
 }
 
+# Attributes dict for psp_main ruleset.
+psp_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for psp_tags ruleset.
+psp_tags_attributes_dict = {
+	"default": "MARKUP",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for psp_directive ruleset.
+psp_directive_attributes_dict = {
+	"default": "LITERAL4",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for psp mode.
+attributesDictDict = {
+	"psp_directive": psp_directive_attributes_dict,
+	"psp_main": psp_main_attributes_dict,
+	"psp_tags": psp_tags_attributes_dict,
+}
+
 # Keywords dict for psp_main ruleset.
 psp_main_keywords_dict = {}
 

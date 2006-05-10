@@ -6,6 +6,20 @@ properties = {
 	"lineComment": "@c",
 }
 
+# Attributes dict for texinfo_main ruleset.
+texinfo_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for texinfo mode.
+attributesDictDict = {
+	"texinfo_main": texinfo_main_attributes_dict,
+}
+
 # Keywords dict for texinfo_main ruleset.
 texinfo_main_keywords_dict = {}
 

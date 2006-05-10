@@ -14,6 +14,20 @@ properties = {
 	"wordBreakChars": ",+-=<>/?^&*",
 }
 
+# Attributes dict for javascript_main ruleset.
+javascript_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "(0x[[:xdigit:]]+[lL]?|[[:digit:]]+(e[[:digit:]]*)?[lLdDfF]?)",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for javascript mode.
+attributesDictDict = {
+	"javascript_main": javascript_main_attributes_dict,
+}
+
 # Keywords dict for javascript_main ruleset.
 javascript_main_keywords_dict = {
 	"Array": "keyword3",

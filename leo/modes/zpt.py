@@ -7,6 +7,70 @@ properties = {
 	"commentStart": "<!--",
 }
 
+# Attributes dict for zpt_main ruleset.
+zpt_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for zpt_tags ruleset.
+zpt_tags_attributes_dict = {
+	"default": "MARKUP",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for zpt_attribute ruleset.
+zpt_attribute_attributes_dict = {
+	"default": "LITERAL1",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for zpt_javascript ruleset.
+zpt_javascript_attributes_dict = {
+	"default": "MARKUP",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for zpt_back_to_html ruleset.
+zpt_back_to_html_attributes_dict = {
+	"default": "MARKUP",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for zpt_css ruleset.
+zpt_css_attributes_dict = {
+	"default": "MARKUP",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for zpt mode.
+attributesDictDict = {
+	"zpt_attribute": zpt_attribute_attributes_dict,
+	"zpt_back_to_html": zpt_back_to_html_attributes_dict,
+	"zpt_css": zpt_css_attributes_dict,
+	"zpt_javascript": zpt_javascript_attributes_dict,
+	"zpt_main": zpt_main_attributes_dict,
+	"zpt_tags": zpt_tags_attributes_dict,
+}
+
 # Keywords dict for zpt_main ruleset.
 zpt_main_keywords_dict = {}
 

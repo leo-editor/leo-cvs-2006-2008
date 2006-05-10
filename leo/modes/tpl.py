@@ -7,6 +7,40 @@ properties = {
 	"commentStart": "<!--",
 }
 
+# Attributes dict for tpl_main ruleset.
+tpl_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for tpl_tpl ruleset.
+tpl_tpl_attributes_dict = {
+	"default": "KEYWORD1",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for tpl_tags ruleset.
+tpl_tags_attributes_dict = {
+	"default": "MARKUP",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for tpl mode.
+attributesDictDict = {
+	"tpl_main": tpl_main_attributes_dict,
+	"tpl_tags": tpl_tags_attributes_dict,
+	"tpl_tpl": tpl_tpl_attributes_dict,
+}
+
 # Keywords dict for tpl_main ruleset.
 tpl_main_keywords_dict = {}
 

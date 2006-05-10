@@ -6,6 +6,20 @@ properties = {
 	"lineComment": "#",
 }
 
+# Attributes dict for assembly_parrot_main ruleset.
+assembly_parrot_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "(0x[[:xdigit:]]+|[[:digit:]]+)",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for assembly_parrot mode.
+attributesDictDict = {
+	"assembly_parrot_main": assembly_parrot_main_attributes_dict,
+}
+
 # Keywords dict for assembly_parrot_main ruleset.
 assembly_parrot_main_keywords_dict = {
 	"abs": "keyword1",

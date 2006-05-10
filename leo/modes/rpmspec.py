@@ -6,6 +6,40 @@ properties = {
 	"lineComment": "#",
 }
 
+# Attributes dict for rpmspec_main ruleset.
+rpmspec_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for rpmspec_attr ruleset.
+rpmspec_attr_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for rpmspec_verify ruleset.
+rpmspec_verify_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for rpmspec mode.
+attributesDictDict = {
+	"rpmspec_attr": rpmspec_attr_attributes_dict,
+	"rpmspec_main": rpmspec_main_attributes_dict,
+	"rpmspec_verify": rpmspec_verify_attributes_dict,
+}
+
 # Keywords dict for rpmspec_main ruleset.
 rpmspec_main_keywords_dict = {
 	"%build": "label",

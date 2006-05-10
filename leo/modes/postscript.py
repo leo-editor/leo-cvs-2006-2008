@@ -6,6 +6,30 @@ properties = {
 	"lineComment": "%",
 }
 
+# Attributes dict for postscript_main ruleset.
+postscript_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Attributes dict for postscript_literal ruleset.
+postscript_literal_attributes_dict = {
+	"default": "LITERAL1",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for postscript mode.
+attributesDictDict = {
+	"postscript_literal": postscript_literal_attributes_dict,
+	"postscript_main": postscript_main_attributes_dict,
+}
+
 # Keywords dict for postscript_main ruleset.
 postscript_main_keywords_dict = {
 	"NULL": "literal2",

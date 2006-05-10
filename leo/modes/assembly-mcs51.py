@@ -6,6 +6,20 @@ properties = {
 	"lineComment": ";",
 }
 
+# Attributes dict for assembly_mcs51_main ruleset.
+assembly_mcs51_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for assembly_mcs51 mode.
+attributesDictDict = {
+	"assembly_mcs51_main": assembly_mcs51_main_attributes_dict,
+}
+
 # Keywords dict for assembly_mcs51_main ruleset.
 assembly_mcs51_main_keywords_dict = {
 	"$CASE": "keyword2",

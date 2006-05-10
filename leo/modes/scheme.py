@@ -12,6 +12,20 @@ properties = {
 	"noWordSep": "_-+?:*/!",
 }
 
+# Attributes dict for scheme_main ruleset.
+scheme_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "_-+?:*/!",
+}
+
+# Dictionary of attributes dictionaries for scheme mode.
+attributesDictDict = {
+	"scheme_main": scheme_main_attributes_dict,
+}
+
 # Keywords dict for scheme_main ruleset.
 scheme_main_keywords_dict = {
 	"#f": "literal2",

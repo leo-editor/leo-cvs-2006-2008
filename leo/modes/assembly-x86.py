@@ -6,6 +6,20 @@ properties = {
 	"lineComment": ";",
 }
 
+# Attributes dict for assembly_x86_main ruleset.
+assembly_x86_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for assembly_x86 mode.
+attributesDictDict = {
+	"assembly_x86_main": assembly_x86_main_attributes_dict,
+}
+
 # Keywords dict for assembly_x86_main ruleset.
 assembly_x86_main_keywords_dict = {
 	".186": "keyword1",

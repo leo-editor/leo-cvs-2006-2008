@@ -7,6 +7,70 @@ properties = {
 	"noWordSep": "\\",
 }
 
+# Attributes dict for latex_main ruleset.
+latex_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Attributes dict for latex_mathmode ruleset.
+latex_mathmode_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Attributes dict for latex_arraymode ruleset.
+latex_arraymode_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Attributes dict for latex_tabularmode ruleset.
+latex_tabularmode_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Attributes dict for latex_tabbingmode ruleset.
+latex_tabbingmode_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Attributes dict for latex_picturemode ruleset.
+latex_picturemode_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for latex mode.
+attributesDictDict = {
+	"latex_arraymode": latex_arraymode_attributes_dict,
+	"latex_main": latex_main_attributes_dict,
+	"latex_mathmode": latex_mathmode_attributes_dict,
+	"latex_picturemode": latex_picturemode_attributes_dict,
+	"latex_tabbingmode": latex_tabbingmode_attributes_dict,
+	"latex_tabularmode": latex_tabularmode_attributes_dict,
+}
+
 # Keywords dict for latex_main ruleset.
 latex_main_keywords_dict = {}
 

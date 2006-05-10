@@ -9,6 +9,20 @@ properties = {
 	"noWordSep": ".",
 }
 
+# Attributes dict for occam_main ruleset.
+occam_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for occam mode.
+attributesDictDict = {
+	"occam_main": occam_main_attributes_dict,
+}
+
 # Keywords dict for occam_main ruleset.
 occam_main_keywords_dict = {
 	"ABS": "keyword3",

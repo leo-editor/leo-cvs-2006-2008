@@ -6,6 +6,20 @@ properties = {
 	"lineComment": ";",
 }
 
+# Attributes dict for assembly_macro32_main ruleset.
+assembly_macro32_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for assembly_macro32 mode.
+attributesDictDict = {
+	"assembly_macro32_main": assembly_macro32_main_attributes_dict,
+}
+
 # Keywords dict for assembly_macro32_main ruleset.
 assembly_macro32_main_keywords_dict = {
 	".ADDRESS": "keyword1",

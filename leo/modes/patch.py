@@ -4,6 +4,20 @@
 # Properties for patch mode.
 properties = {}
 
+# Attributes dict for patch_main ruleset.
+patch_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for patch mode.
+attributesDictDict = {
+	"patch_main": patch_main_attributes_dict,
+}
+
 # Keywords dict for patch_main ruleset.
 patch_main_keywords_dict = {}
 

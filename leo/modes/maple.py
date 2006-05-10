@@ -6,6 +6,20 @@ properties = {
 	"lineComment": "//",
 }
 
+# Attributes dict for maple_main ruleset.
+maple_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for maple mode.
+attributesDictDict = {
+	"maple_main": maple_main_attributes_dict,
+}
+
 # Keywords dict for maple_main ruleset.
 maple_main_keywords_dict = {
 	"AFactor": "function",

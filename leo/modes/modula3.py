@@ -7,6 +7,20 @@ properties = {
 	"commentStart": "(*",
 }
 
+# Attributes dict for modula3_main ruleset.
+modula3_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for modula3 mode.
+attributesDictDict = {
+	"modula3_main": modula3_main_attributes_dict,
+}
+
 # Keywords dict for modula3_main ruleset.
 modula3_main_keywords_dict = {
 	"ABS": "literal2",

@@ -10,6 +10,20 @@ properties = {
 	"wordBreakChars": ",+-=<>/?^&*",
 }
 
+# Attributes dict for netrexx_main ruleset.
+netrexx_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for netrexx mode.
+attributesDictDict = {
+	"netrexx_main": netrexx_main_attributes_dict,
+}
+
 # Keywords dict for netrexx_main ruleset.
 netrexx_main_keywords_dict = {
 	"ArithmeticException": "markup",

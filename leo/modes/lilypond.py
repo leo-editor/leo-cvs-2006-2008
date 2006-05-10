@@ -13,6 +13,20 @@ properties = {
 	"wordBreakChars": "=",
 }
 
+# Attributes dict for lilypond_main ruleset.
+lilypond_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "false",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for lilypond mode.
+attributesDictDict = {
+	"lilypond_main": lilypond_main_attributes_dict,
+}
+
 # Keywords dict for lilypond_main ruleset.
 lilypond_main_keywords_dict = {
 	"Accidental_engraver": "keyword3",

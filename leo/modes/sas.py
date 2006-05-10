@@ -4,6 +4,20 @@
 # Properties for sas mode.
 properties = {}
 
+# Attributes dict for sas_main ruleset.
+sas_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "false",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for sas mode.
+attributesDictDict = {
+	"sas_main": sas_main_attributes_dict,
+}
+
 # Keywords dict for sas_main ruleset.
 sas_main_keywords_dict = {
 	"$ASCII": "keyword2",

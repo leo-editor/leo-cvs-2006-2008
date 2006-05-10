@@ -11,6 +11,20 @@ properties = {
 	"noWordSep": "-",
 }
 
+# Attributes dict for smi_mib_main ruleset.
+smi_mib_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for smi_mib mode.
+attributesDictDict = {
+	"smi_mib_main": smi_mib_main_attributes_dict,
+}
+
 # Keywords dict for smi_mib_main ruleset.
 smi_mib_main_keywords_dict = {
 	"ACCESS": "keyword1",

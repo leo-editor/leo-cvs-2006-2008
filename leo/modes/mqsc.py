@@ -6,6 +6,20 @@ properties = {
 	"lineComment": "*",
 }
 
+# Attributes dict for mqsc_main ruleset.
+mqsc_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for mqsc mode.
+attributesDictDict = {
+	"mqsc_main": mqsc_main_attributes_dict,
+}
+
 # Keywords dict for mqsc_main ruleset.
 mqsc_main_keywords_dict = {
 	"all": "keyword1",

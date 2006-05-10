@@ -7,6 +7,20 @@ properties = {
 	"commentStart": "<!--",
 }
 
+# Attributes dict for sgml_main ruleset.
+sgml_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for sgml mode.
+attributesDictDict = {
+	"sgml_main": sgml_main_attributes_dict,
+}
+
 # Keywords dict for sgml_main ruleset.
 sgml_main_keywords_dict = {}
 

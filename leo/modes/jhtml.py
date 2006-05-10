@@ -8,6 +8,40 @@ properties = {
 	"indentNextLines": "\\s*(<\\s*(droplet|oparam))\\s+.*",
 }
 
+# Attributes dict for jhtml_main ruleset.
+jhtml_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for jhtml_jhtml ruleset.
+jhtml_jhtml_attributes_dict = {
+	"default": "MARKUP",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for jhtml_attrvalue ruleset.
+jhtml_attrvalue_attributes_dict = {
+	"default": "LITERAL1",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for jhtml mode.
+attributesDictDict = {
+	"jhtml_attrvalue": jhtml_attrvalue_attributes_dict,
+	"jhtml_jhtml": jhtml_jhtml_attributes_dict,
+	"jhtml_main": jhtml_main_attributes_dict,
+}
+
 # Keywords dict for jhtml_main ruleset.
 jhtml_main_keywords_dict = {}
 

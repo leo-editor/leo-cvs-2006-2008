@@ -12,6 +12,20 @@ properties = {
 	"noWordSep": "_-+?:",
 }
 
+# Attributes dict for lisp_main ruleset.
+lisp_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "_-+?:",
+}
+
+# Dictionary of attributes dictionaries for lisp mode.
+attributesDictDict = {
+	"lisp_main": lisp_main_attributes_dict,
+}
+
 # Keywords dict for lisp_main ruleset.
 lisp_main_keywords_dict = {
 	"*": "keyword3",

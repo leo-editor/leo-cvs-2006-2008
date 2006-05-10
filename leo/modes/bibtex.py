@@ -6,6 +6,190 @@ properties = {
 	"lineComment": "%",
 }
 
+# Attributes dict for bibtex_main ruleset.
+bibtex_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for bibtex_article ruleset.
+bibtex_article_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for bibtex_book ruleset.
+bibtex_book_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for bibtex_booklet ruleset.
+bibtex_booklet_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for bibtex_conference ruleset.
+bibtex_conference_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for bibtex_inbook ruleset.
+bibtex_inbook_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for bibtex_incollection ruleset.
+bibtex_incollection_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for bibtex_inproceedings ruleset.
+bibtex_inproceedings_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for bibtex_manual ruleset.
+bibtex_manual_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for bibtex_mastersthesis ruleset.
+bibtex_mastersthesis_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for bibtex_misc ruleset.
+bibtex_misc_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for bibtex_phdthesis ruleset.
+bibtex_phdthesis_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for bibtex_proceedings ruleset.
+bibtex_proceedings_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for bibtex_techreport ruleset.
+bibtex_techreport_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for bibtex_unpublished ruleset.
+bibtex_unpublished_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for bibtex_textbraced ruleset.
+bibtex_textbraced_attributes_dict = {
+	"default": "LITERAL2",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for bibtex_textquoted ruleset.
+bibtex_textquoted_attributes_dict = {
+	"default": "LITERAL1",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for bibtex_string ruleset.
+bibtex_string_attributes_dict = {
+	"default": "LITERAL1",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for bibtex mode.
+attributesDictDict = {
+	"bibtex_article": bibtex_article_attributes_dict,
+	"bibtex_book": bibtex_book_attributes_dict,
+	"bibtex_booklet": bibtex_booklet_attributes_dict,
+	"bibtex_conference": bibtex_conference_attributes_dict,
+	"bibtex_inbook": bibtex_inbook_attributes_dict,
+	"bibtex_incollection": bibtex_incollection_attributes_dict,
+	"bibtex_inproceedings": bibtex_inproceedings_attributes_dict,
+	"bibtex_main": bibtex_main_attributes_dict,
+	"bibtex_manual": bibtex_manual_attributes_dict,
+	"bibtex_mastersthesis": bibtex_mastersthesis_attributes_dict,
+	"bibtex_misc": bibtex_misc_attributes_dict,
+	"bibtex_phdthesis": bibtex_phdthesis_attributes_dict,
+	"bibtex_proceedings": bibtex_proceedings_attributes_dict,
+	"bibtex_string": bibtex_string_attributes_dict,
+	"bibtex_techreport": bibtex_techreport_attributes_dict,
+	"bibtex_textbraced": bibtex_textbraced_attributes_dict,
+	"bibtex_textquoted": bibtex_textquoted_attributes_dict,
+	"bibtex_unpublished": bibtex_unpublished_attributes_dict,
+}
+
 # Keywords dict for bibtex_main ruleset.
 bibtex_main_keywords_dict = {}
 

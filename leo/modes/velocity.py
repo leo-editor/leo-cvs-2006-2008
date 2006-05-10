@@ -8,6 +8,80 @@ properties = {
 	"lineComment": "##",
 }
 
+# Attributes dict for velocity_main ruleset.
+velocity_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for velocity_velocity ruleset.
+velocity_velocity_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for velocity_javascript ruleset.
+velocity_javascript_attributes_dict = {
+	"default": "MARKUP",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for velocity_javascript2 ruleset.
+velocity_javascript2_attributes_dict = {
+	"default": "MARKUP",
+	"digit_re": "(0x[[:xdigit:]]+[lL]?|[[:digit:]]+(e[[:digit:]]*)?[lLdDfF]?)",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Attributes dict for velocity_back_to_html ruleset.
+velocity_back_to_html_attributes_dict = {
+	"default": "MARKUP",
+	"digit_re": "(0x[[:xdigit:]]+[lL]?|[[:digit:]]+(e[[:digit:]]*)?[lLdDfF]?)",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Attributes dict for velocity_css ruleset.
+velocity_css_attributes_dict = {
+	"default": "MARKUP",
+	"digit_re": "(0x[[:xdigit:]]+[lL]?|[[:digit:]]+(e[[:digit:]]*)?[lLdDfF]?)",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Attributes dict for velocity_css2 ruleset.
+velocity_css2_attributes_dict = {
+	"default": "MARKUP",
+	"digit_re": "[[:digit:]]+(pt|pc|in|mm|cm|em|ex|px|ms|s|%)",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "-_",
+}
+
+# Dictionary of attributes dictionaries for velocity mode.
+attributesDictDict = {
+	"velocity_back_to_html": velocity_back_to_html_attributes_dict,
+	"velocity_css": velocity_css_attributes_dict,
+	"velocity_css2": velocity_css2_attributes_dict,
+	"velocity_javascript": velocity_javascript_attributes_dict,
+	"velocity_javascript2": velocity_javascript2_attributes_dict,
+	"velocity_main": velocity_main_attributes_dict,
+	"velocity_velocity": velocity_velocity_attributes_dict,
+}
+
 # Keywords dict for velocity_main ruleset.
 velocity_main_keywords_dict = {}
 

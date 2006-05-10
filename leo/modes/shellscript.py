@@ -9,6 +9,40 @@ properties = {
 	"lineUpClosingBracket": "true",
 }
 
+# Attributes dict for shellscript_main ruleset.
+shellscript_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for shellscript_literal ruleset.
+shellscript_literal_attributes_dict = {
+	"default": "LITERAL1",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Attributes dict for shellscript_exec ruleset.
+shellscript_exec_attributes_dict = {
+	"default": "KEYWORD3",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for shellscript mode.
+attributesDictDict = {
+	"shellscript_exec": shellscript_exec_attributes_dict,
+	"shellscript_literal": shellscript_literal_attributes_dict,
+	"shellscript_main": shellscript_main_attributes_dict,
+}
+
 # Keywords dict for shellscript_main ruleset.
 shellscript_main_keywords_dict = {
 	";;": "operator",

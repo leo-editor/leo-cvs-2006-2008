@@ -4,6 +4,20 @@
 # Properties for hex mode.
 properties = {}
 
+# Attributes dict for hex_main ruleset.
+hex_main_attributes_dict = {
+	"default": "LITERAL1",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for hex mode.
+attributesDictDict = {
+	"hex_main": hex_main_attributes_dict,
+}
+
 # Keywords dict for hex_main ruleset.
 hex_main_keywords_dict = {}
 

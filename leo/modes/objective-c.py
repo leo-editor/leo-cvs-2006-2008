@@ -14,6 +14,20 @@ properties = {
 	"wordBreakChars": ",+-=<>/?^&*",
 }
 
+# Attributes dict for objective_c_main ruleset.
+objective_c_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for objective_c mode.
+attributesDictDict = {
+	"objective_c_main": objective_c_main_attributes_dict,
+}
+
 # Keywords dict for objective_c_main ruleset.
 objective_c_main_keywords_dict = {
 	"@class": "keyword1",

@@ -11,6 +11,30 @@ properties = {
 	"lineUpClosingBracket": "true",
 }
 
+# Attributes dict for ruby_main ruleset.
+ruby_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Attributes dict for ruby_doublequoteliteral ruleset.
+ruby_doublequoteliteral_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for ruby mode.
+attributesDictDict = {
+	"ruby_doublequoteliteral": ruby_doublequoteliteral_attributes_dict,
+	"ruby_main": ruby_main_attributes_dict,
+}
+
 # Keywords dict for ruby_main ruleset.
 ruby_main_keywords_dict = {
 	"BEGIN": "keyword1",

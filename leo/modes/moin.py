@@ -7,6 +7,20 @@ properties = {
 	"wrap": "soft",
 }
 
+# Attributes dict for moin_main ruleset.
+moin_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "false",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for moin mode.
+attributesDictDict = {
+	"moin_main": moin_main_attributes_dict,
+}
+
 # Keywords dict for moin_main ruleset.
 moin_main_keywords_dict = {}
 

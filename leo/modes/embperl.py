@@ -7,6 +7,20 @@ properties = {
 	"commentStart": "<!--",
 }
 
+# Attributes dict for embperl_main ruleset.
+embperl_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "false",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for embperl mode.
+attributesDictDict = {
+	"embperl_main": embperl_main_attributes_dict,
+}
+
 # Keywords dict for embperl_main ruleset.
 embperl_main_keywords_dict = {}
 

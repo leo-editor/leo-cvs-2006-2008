@@ -6,6 +6,20 @@ properties = {
 	"lineComment": "#",
 }
 
+# Attributes dict for squidconf_main ruleset.
+squidconf_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for squidconf mode.
+attributesDictDict = {
+	"squidconf_main": squidconf_main_attributes_dict,
+}
+
 # Keywords dict for squidconf_main ruleset.
 squidconf_main_keywords_dict = {
 	"acl": "keyword1",

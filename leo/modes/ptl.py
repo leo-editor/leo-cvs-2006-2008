@@ -7,6 +7,20 @@ properties = {
 	"lineComment": "#",
 }
 
+# Attributes dict for ptl_main ruleset.
+ptl_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for ptl mode.
+attributesDictDict = {
+	"ptl_main": ptl_main_attributes_dict,
+}
+
 # Keywords dict for ptl_main ruleset.
 ptl_main_keywords_dict = {
 	"_q_access": "literal4",

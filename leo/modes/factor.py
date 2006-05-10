@@ -14,6 +14,30 @@ properties = {
 	"noWordSep": "+-*=><;.?/'",
 }
 
+# Attributes dict for factor_main ruleset.
+factor_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "-?\\d+([./]\\d+)?",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "+-*=><;.?/'",
+}
+
+# Attributes dict for factor_stack_effect ruleset.
+factor_stack_effect_attributes_dict = {
+	"default": "COMMENT4",
+	"digit_re": "-?\\d+([./]\\d+)?",
+	"highlight_digits": "true",
+	"ignore_case": "false",
+	"no_word_sep": "+-*=><;.?/'",
+}
+
+# Dictionary of attributes dictionaries for factor mode.
+attributesDictDict = {
+	"factor_main": factor_main_attributes_dict,
+	"factor_stack_effect": factor_stack_effect_attributes_dict,
+}
+
 # Keywords dict for factor_main ruleset.
 factor_main_keywords_dict = {
 	"#{": "operator",

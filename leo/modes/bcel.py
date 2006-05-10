@@ -8,6 +8,20 @@ properties = {
 	"lineComment": "//",
 }
 
+# Attributes dict for bcel_main ruleset.
+bcel_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "true",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for bcel mode.
+attributesDictDict = {
+	"bcel_main": bcel_main_attributes_dict,
+}
+
 # Keywords dict for bcel_main ruleset.
 bcel_main_keywords_dict = {
 	"aaload": "keyword1",

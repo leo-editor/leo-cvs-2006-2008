@@ -8,6 +8,20 @@ properties = {
 	"wordBreakChars": ",+-=<>/?^&*",
 }
 
+# Attributes dict for pl1_main ruleset.
+pl1_main_attributes_dict = {
+	"default": "null",
+	"digit_re": "",
+	"highlight_digits": "false",
+	"ignore_case": "true",
+	"no_word_sep": "",
+}
+
+# Dictionary of attributes dictionaries for pl1 mode.
+attributesDictDict = {
+	"pl1_main": pl1_main_attributes_dict,
+}
+
 # Keywords dict for pl1_main ruleset.
 pl1_main_keywords_dict = {
 	"%include": "keyword1",
