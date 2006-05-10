@@ -116,6 +116,6 @@ rulesDictDict = {
 
 # Import dict for pyrex mode.
 importDict = {
-	"pyrex_main": "python_main",
+	"pyrex_main": ["python_main",],
 }
 

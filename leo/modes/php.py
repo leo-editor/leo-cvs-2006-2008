@@ -3024,6 +3024,6 @@ rulesDictDict = {
 
 # Import dict for php mode.
 importDict = {
-	"php_javascript_php": "javascript_main",
+	"php_javascript_php": ["javascript_main",],
 }
 

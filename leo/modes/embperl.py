@@ -60,6 +60,6 @@ rulesDictDict = {
 
 # Import dict for embperl mode.
 importDict = {
-	"embperl_main": "html_main",
+	"embperl_main": ["html_main",],
 }
 

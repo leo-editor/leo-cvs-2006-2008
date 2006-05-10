@@ -261,8 +261,8 @@ rulesDictDict = {
 
 # Import dict for velocity mode.
 importDict = {
-	"velocity_css2": "velocity_css2_velocitycss_main",
-	"velocity_javascript2": "velocity_javascript2_velocityjavascript_main",
-	"velocity_main": "velocity_main_velocity",
+	"velocity_css2": ["velocity_css2_velocity","css_main",],
+	"velocity_javascript2": ["velocity_javascript2_velocity","javascript_main",],
+	"velocity_main": ["velocity_main_velocity",],
 }
 

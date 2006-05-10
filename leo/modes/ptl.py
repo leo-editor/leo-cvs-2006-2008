@@ -112,6 +112,6 @@ rulesDictDict = {
 
 # Import dict for ptl mode.
 importDict = {
-	"ptl_main": "python_main",
+	"ptl_main": ["python_main",],
 }
 
