@@ -6,7 +6,7 @@
 #@@tabwidth -4
 #@@pagewidth 80
 
-__version__ = '0.20'
+__version__ = '0.21'
 #@<< imports >>
 #@+node:ekr.20050529142916.3:<< imports >>
 import leoGlobals as g
@@ -31,7 +31,12 @@ php_re = re.compile("<?(\s[pP][hH][pP])")
 # 
 # 0.20 EKR: Use x.py files rather than x.xml files.
 # - The colorizer now works on most text.
+# 
+# 0.21 EKR: No known crashers or serious problems.
+# - The colorizer now switches modes properly.
+# - Possible fix for unicode crasher.
 #@-at
+#@nonl
 #@-node:ekr.20050529142916.2:<< version history >>
 #@nl
 #@<< to do >>
@@ -392,7 +397,7 @@ class baseColorizer:
         for key in d.keys():
             for ch in key:
                 if ch not in self.word_chars:
-                    self.word_chars.append(ch)
+                    self.word_chars.append(g.toUnicode(ch,encoding='UTF-8'))
     #@nonl
     #@-node:ekr.20060504081338:init_keywords
     #@+node:ekr.20050529143413.33:configure_tags
