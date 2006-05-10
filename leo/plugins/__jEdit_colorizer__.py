@@ -7,121 +7,31 @@
 #@@pagewidth 80
 
 __version__ = '0.20'
+#@<< imports >>
+#@+node:ekr.20050529142916.3:<< imports >>
+import leoGlobals as g
+import leoPlugins
+
+import os
+import re
+import string
+import threading
+import xml.sax
+import xml.sax.saxutils
+
+# php_re = re.compile("<?(\s|=|[pP][hH][pP])")
+php_re = re.compile("<?(\s[pP][hH][pP])")
+#@nonl
+#@-node:ekr.20050529142916.3:<< imports >>
+#@nl
 #@<< version history >>
 #@+node:ekr.20050529142916.2:<< version history >>
 #@@killcolor
-#@+others
-#@+node:ekr.20050607075752:0.1 through 0.5
-#@+at
-# 
-# 0.1 EKR: Initial version:
-# - Split large methods into smaller methods.
-# 0.2 EKR:
-# - Moved contentHandler and modeClass into the plugin.
-# - colorizer.__init__ reads python.xml, but does nothing with it.
-# 0.3 EKR:
-# - Wrote and tested createRuleMatchers.
-# 0.4 EKR:
-# - Basic syntax coloring now works.
-# 0.5 EKR:
-# - Giant step forward 1: colorOneChunk and interrupt allow very fast keyboard 
-# response.
-# - Giant step forward 2: no need for incremental coloring!
-# - Giant step forward 3: eliminated flashing & eliminated most calls to 
-# removeAllTags.
-#@-at
-#@nonl
-#@-node:ekr.20050607075752:0.1 through 0.5
-#@+node:ekr.20050607080236:0.6 through 0.14
-#@+at
-# 
-# 0.6 EKR:
-#     - Removed unused code and ivars.
-#     - Added support for keywords, including Leo keywords and expanded 
-# word_chars.
-#     - Added special rules for doc parts and section references.
-#     - Most (all?) Python now is colored properly.
-#     - Discovered a performance bug: it can take a long time on big text for 
-# the cursor to appear.
-# 0.7 EKR:
-#     - Colorized start of @doc sections properly.
-#     - Fixed bug involving at_line_start: must test i == 0 OR s[i-1] == '\n'.
-#     - Added rules for @color and @nocolor.
-#     - Added more entries to to-do list for Leo special cases.
-# 0.8 EKR:
-#     - Use a single dict for all keywords--an important speedup.
-#     - Call init_keywords exactly once per mode.
-#     - Defined tags for jEdit types.
-#     - Fixed bug in exception handling in parse_jEdit_file: exceptions now 
-# reported properly.
-#     - Turned off inclusion of external general entities so dtd line gets 
-# ignored.
-# 0.9 EKR:
-#     - Added colored_ranges dict, colorRangeWithTag & removeTagsFromRange.
-#         - This keeps track of tags much more effectively than Tk does.
-#     - A compromise looks best for eliminating flash with good performance:
-#         - Don't interrupt colorOneChunk for non-incremental redraws.
-#             - Doesn't really hurt performance: the cursor didn't blink in 
-# the old way.
-#         - Do interrupt colorOneChunk for incremental redraws.
-#             - Key performance is optimal.
-#             - There is no flash because no tags get needlessly destroyed.
-#         - recolor_range calls invalidate_range so undo works properly.
-# 0.10 EKR:
-#     - use self.c.frame.top.after(50,self.colorOneChunk) to queue 
-# non-incremental coloring.
-#     - This causes instant display and prompt coloring, even for large text.
-#     - Must call removeAllTags and removeAllImages when clearing the 
-# colored_ranges dict.
-# 
-# 0.11 EKR:
-#     - Supported no_line_break in match_span.
-#     - Fixed bug in doAttribute so that "TRUE" is recognized correctly.
-#     - Added span_eol rules to python.xml to handle non-terminated ' and " 
-# strings.
-#     - Added was_non_incremental state var and related logic.
-#         - Never clear tags in colorizeAnyLanguage: it cause flash after 
-# colorOneChunk exits.
-#         - Instead, clear by hand was_non_incremental is True.
-# 0.12 EKR:
-#     - Only look up the rules which appear in 
-# self.rulesDict.get(s[i],self.defaultRulesList)
-#     - This should typically reduce the number of rules examined by a factor 
-# of about 10.
-# 0.13 EKR:
-#     - Duplicated nullColorizer in this file so it derives from proper base 
-# class.
-#       This fixes the crash in the settings panel.
-#     - colorRangeWithTag now always sets colored_ranges when doing any real 
-# coloring.
-#       This fixes a bug in which old tags weren't always cleared.
-#     - Colorized hyperlinks and undefined sections correctly.
-#     - Changed contentHandler so and parse_jEdit_file so parse_jEdit_file 
-# returns a single mode.
-#         - It is now an error for more than one mode to appear in an xml 
-# file.
-#     - Many changes to handle multiple rulesets properly:
-#         - Added logic to initMode and initKeywords to handle multiple 
-# rulesets.
-#         - created rulesetClass.
-#         - created following mode ivars:
-#             - modeProperties, 
-# rulesetProperties,presentProperty,rulesetAttributes.
-# 0.14 EKR:
-#     - Added support for delegated rulesets in modeClass, etc.
-#     - Handled delegated rulesets in colorByDelegate.
-#@-at
-#@nonl
-#@-node:ekr.20050607080236:0.6 through 0.14
-#@+node:ekr.20050607075752.1:0.20 up
 #@+at
 # 
 # 0.20 EKR: Use x.py files rather than x.xml files.
 # - The colorizer now works on most text.
 #@-at
-#@-node:ekr.20050607075752.1:0.20 up
-#@-others
-#@nonl
 #@-node:ekr.20050529142916.2:<< version history >>
 #@nl
 #@<< to do >>
@@ -129,22 +39,24 @@ __version__ = '0.20'
 #@@nocolor
 #@+at
 # 
-# - Triple strings are not working.
+# Fix bugs:
+#     - Retain insert and sel tags when removing all tags.
 # 
-# Use all attributes in all rule matchers.
+# 1. Improve quick coloring.
 # 
-# - Support NO_WORD_SEP, IGNORE_CASE and DEFAULT attributes in rules element.
+# 2. Handle (and then delete) import rules when first loading a mode.
+# 
+# 3. Handle the delegate attribute, i.e., recursive coloring.
+# 
+# 4. Finish all rules: mark_previous, mark_following, match_regexp_helper.
+# 
+# 5. Compute word_chars correctly.
+# 
+# 6.  Use all attributes in all rule matchers.
+#     - Support NO_WORD_SEP, IGNORE_CASE and DEFAULT attributes in rules 
+# element.
 #     - Later: support DIGIT_RE and HIGHLIGHT_DIGITS attributes in rules 
 # element.
-# 
-# - Finish all rules:
-#     - mark_previous and mark_following.
-#     - match_regexp_helper.
-# 
-# - Why do mode properties exist?
-# 
-# ** Possibly important optimization:
-#     - Create charDict:  Let ch be s[i].  Set rulesList = charDict.get(ch)
 # 
 #@-at
 #@@c
@@ -180,23 +92,7 @@ __version__ = '0.20'
 #@nl
 #@-node:ekr.20050601081132:<< to do >>
 #@nl
-#@<< imports >>
-#@+node:ekr.20050529142916.3:<< imports >>
-import leoGlobals as g
-import leoPlugins
 
-import os
-import re
-import string
-import threading
-import xml.sax
-import xml.sax.saxutils
-
-# php_re = re.compile("<?(\s|=|[pP][hH][pP])")
-php_re = re.compile("<?(\s[pP][hH][pP])")
-#@nonl
-#@-node:ekr.20050529142916.3:<< imports >>
-#@nl
 #@<< define leoKeywords >>
 #@+middle:ekr.20060425113823.1:module-level
 #@+node:ekr.20050529143413:<< define leoKeywords >>
@@ -438,13 +334,6 @@ class baseColorizer:
         self.mode = None # The mode object for the present language.
         self.trace = c.config.getBool('trace_colorizer')
         if 0:
-            #@        << old ivars >>
-            #@+node:ekr.20060504131448:<< old ivars >>
-            self.prev_mode = None
-            self.present_ruleset = None
-            self.rulesDict = {}
-            #@-node:ekr.20060504131448:<< old ivars >>
-            #@nl
             self.defineAndExtendForthWords()
         self.word_chars = {} # Inited by init_keywords().
         self.setFontFromConfig()
@@ -515,7 +404,7 @@ class baseColorizer:
         c = self.c
     
         keys = default_colors_dict.keys() ; keys.sort()
-        for name in keys: # Python 2.1 support.
+        for name in keys:
             option_name,default_color = default_colors_dict[name]
             color = c.config.getColor(option_name) or default_color
             # g.trace(name,option_name,color)
@@ -579,15 +468,18 @@ class baseColorizer:
     def init_mode (self,language):
         
         if not language: return
-        mode = self.modes.get(language)
-        if mode:
-            self.mode = mode
+        bunch = self.modes.get(language)
+        if bunch:
+            self.defaultColor = bunch.defaultColor
+            self.keywordsDict = bunch.keywordsDict
+            self.mode         = bunch.mode
+            self.rulesDict    = bunch.rulesDict
+            self.rulesetName  = bunch.rulesetName
         else:
             path = g.os_path_join(g.app.loadDir,'..','modes')
             mode = g.importFromPath (language,path)
             if mode:
                 g.trace('loading mode for: ',language)
-                self.modes[language] = self.mode = mode
                 self.rulesetName = self.computeRulesetName(language)
                 self.keywordsDict = d = mode.keywordsDictDict.get(self.rulesetName,{})
                 self.init_keywords(d)
@@ -597,12 +489,19 @@ class baseColorizer:
                 self.defaultColor = 'null'
                 ### To do: append imported rules.
                 # g.trace(len(self.rules))
+                self.mode = mode
+                self.modes [language] = g.Bunch(
+                    defaultColor = self.defaultColor,
+                    keywordsDict = self.keywordsDict,
+                    mode         = self.mode,
+                    rulesDict    = self.rulesDict,
+                    rulesetName  = self.rulesetName)
             else:
                 g.trace('No language description for %s' % language)
     #@nonl
     #@-node:ekr.20050602150619:init_mode
     #@-node:ekr.20050529143413.24:Birth and init
-    #@+node:ekr.20050529145203:Entry points
+    #@+node:ekr.20050529145203:Entry points (3 to be REWRITTEN)
     #@+node:ekr.20050529143413.30:colorize
     colorize_count = 0
     
@@ -763,7 +662,7 @@ class baseColorizer:
         self.scanColorDirectives(p)
     #@nonl
     #@-node:ekr.20050529143413.87:updateSyntaxColorer
-    #@-node:ekr.20050529145203:Entry points
+    #@-node:ekr.20050529145203:Entry points (3 to be REWRITTEN)
     #@+node:ekr.20050529150436:Colorizer code
     #@+node:ekr.20050601042620:colorAll
     def colorAll(self,s):
