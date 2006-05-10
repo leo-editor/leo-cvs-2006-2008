@@ -39,9 +39,6 @@ php_re = re.compile("<?(\s[pP][hH][pP])")
 #@@nocolor
 #@+at
 # 
-# Fix bugs:
-#     - Retain insert and sel tags when removing all tags.
-# 
 # 1. Improve quick coloring.
 # 
 # 2. Handle (and then delete) import rules when first loading a mode.
@@ -1042,12 +1039,13 @@ class baseColorizer:
         w = self.c.frame.body.bodyCtrl
         names = w.tag_names()
         for name in names:
-            theList = w.tag_ranges(name)
-            if theList:
-                n = len(theList) ; i = 0
-                while i < n:
-                    w.tag_remove(name,theList[i],theList[i+1])
-                    i += 2
+            if name not in ('sel','insert'):
+                theList = w.tag_ranges(name)
+                if theList:
+                    n = len(theList) ; i = 0
+                    while i < n:
+                        w.tag_remove(name,theList[i],theList[i+1])
+                        i += 2
     #@nonl
     #@-node:ekr.20050529143413.80:removeAllTags
     #@+node:ekr.20050529143413.81:scanColorDirectives
