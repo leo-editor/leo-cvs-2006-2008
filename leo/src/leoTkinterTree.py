@@ -2552,6 +2552,7 @@ class leoTkinterTree (leoFrame.leoTree):
             self.setText(0,body,s)
             
             # We must do a full recoloring: we may be changing context!
+            # self.frame.body.colorizer.interrupt()
             self.frame.body.recolor_now(p) # recolor now uses p.copy(), so this is safe.
             
             if p.v and p.v.t.scrollBarSpot != None:

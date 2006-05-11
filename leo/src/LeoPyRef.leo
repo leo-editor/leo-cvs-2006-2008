@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="9386" clone_windows="0"/>
 <globals body_outline_ratio="0.575921908894">
-	<global_window_position top="17" left="265" height="922" width="957"/>
+	<global_window_position top="10" left="205" height="922" width="957"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -465,6 +465,18 @@
 </v>
 </v>
 </v>
+<v t="ekr.20060501103216"><vh>4.4 final projects</vh>
+<v t="ekr.20060501102837"><vh>Scroll newly-cloned nodes into view</vh>
+<v t="ekr.20060501102837.1"><vh>Report</vh></v>
+<v t="ekr.20031218072017.1759"><vh>Insert, Delete &amp; Clone (Commands)</vh>
+<v t="ekr.20031218072017.1760"><vh>c.checkMoveWithParentWithWarning</vh></v>
+<v t="ekr.20031218072017.1193"><vh>c.deleteOutline</vh></v>
+<v t="ekr.20031218072017.1761"><vh>c.insertHeadline</vh></v>
+<v t="ekr.20031218072017.1762"><vh>c.clone</vh></v>
+<v t="ekr.20031218072017.1765"><vh>c.validateOutline</vh></v>
+</v>
+</v>
+</v>
 </v>
 <v t="ekr.20060226131603"><vh>To do 4.4</vh>
 <v t="ekr.20060413065803"><vh>searches 5</vh>
@@ -587,7 +599,7 @@
 <v t="ekr.20060211093935"><vh>Support for @list and on-enter-mode</vh></v>
 </v>
 </v>
-<v t="ekr.20031218072017.2406" a="V"><vh>Code</vh>
+<v t="ekr.20031218072017.2406" a="EV"><vh>Code</vh>
 <v t="ekr.20031218072017.2606"><vh>&lt;&lt; Import pychecker &gt;&gt;</vh></v>
 <v t="ekr.20031218072017.2582"><vh> version &amp; signon stuff</vh>
 <v t="ekr.20040629121554"><vh>getBuildNumber</vh></v>
@@ -737,6 +749,32 @@ def yviewCallback (self,*args,**keys):
         self.tree.allocateNodesBeforeScrolling(args)
 
     apply(self.canvas.yview,args,keys)</t>
+<t tx="ekr.20031218072017.1193">def deleteOutline (self,event=None,op_name="Delete Node"):
+    
+    """Deletes the current position.
+    
+    Does nothing if the outline would become empty."""
+
+    c = self ; u = c.undoer ; p = c.currentPosition()
+    if not p: return
+
+    if p.hasVisBack(): newNode = p.visBack()
+    else: newNode = p.next() # _not_ p.visNext(): we are at the top level.
+    if not newNode: return
+
+    c.beginUpdate()
+    try:
+       c.endEditing() # Make sure we capture the headline for Undo.
+       undoData = u.beforeDeleteNode(p)
+       dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+       p.doDelete()
+       c.selectPosition(newNode)
+       c.setChanged(True)
+       u.afterDeleteNode(newNode,op_name,undoData,dirtyVnodeList=dirtyVnodeList)
+    finally:
+        c.endUpdate()
+
+    c.validateOutline()</t>
 <t tx="ekr.20031218072017.1460">def update_ivars (self):
     
     """Called just before doing a find to update ivars from the find panel."""
@@ -771,6 +809,90 @@ def yviewCallback (self,*args,**keys):
         s = s[:-1]
     s = g.toUnicode(s,g.app.tkEncoding)
     self.change_text = s</t>
+<t tx="ekr.20031218072017.1759"></t>
+<t tx="ekr.20031218072017.1760">def checkMoveWithParentWithWarning (self,root,parent,warningFlag):
+    
+    """Return False if root or any of root's descedents is a clone of
+    parent or any of parents ancestors."""
+
+    message = "Illegal move or drag: no clone may contain a clone of itself"
+
+    # g.trace("root",root,"parent",parent)
+    clonedTnodes = {}
+    for ancestor in parent.self_and_parents_iter():
+        if ancestor.isCloned():
+            t = ancestor.v.t
+            clonedTnodes[t] = t
+
+    if not clonedTnodes:
+        return True
+
+    for p in root.self_and_subtree_iter():
+        if p.isCloned() and clonedTnodes.get(p.v.t):
+            if warningFlag:
+                g.alert(message)
+            return False
+    return True</t>
+<t tx="ekr.20031218072017.1761">def insertHeadline (self,event=None,op_name="Insert Node"):
+    
+    '''Insert a node after the presently selected node.'''
+
+    c = self ; u = c.undoer
+    current = c.currentPosition()
+    
+    if not current: return
+
+    c.beginUpdate()
+    try:
+        undoData = c.undoer.beforeInsertNode(current)
+        # Make sure the new node is visible when hoisting.
+        if ((current.hasChildren() and current.isExpanded()) or
+            (c.hoistStack and current == c.hoistStack[-1].p)):
+            p = current.insertAsNthChild(0)
+        else:
+            p = current.insertAfter()
+        dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+        c.setChanged(True)
+        u.afterInsertNode(p,op_name,undoData,dirtyVnodeList=dirtyVnodeList)
+    finally:
+        c.endUpdate(False,scroll=True)
+        c.editPosition(p)
+
+    return p # for mod_labels plugin.</t>
+<t tx="ekr.20031218072017.1762">def clone (self,event=None):
+
+    c = self ; u = c.undoer ; p = c.currentPosition()
+    if not p: return
+    
+    c.beginUpdate()
+    try: # In update...
+        undoData = c.undoer.beforeCloneNode(p)
+        clone = p.clone(p)
+        dirtyVnodeList = clone.setAllAncestorAtFileNodesDirty()
+        c.setChanged(True)
+        if c.validateOutline():
+            u.afterCloneNode(clone,'Clone Node',undoData,dirtyVnodeList=dirtyVnodeList)
+            c.selectPosition(clone)
+    finally:
+        c.endUpdate(scroll=True)
+
+    return clone # For mod_labels and chapters plugins.</t>
+<t tx="ekr.20031218072017.1765"># Makes sure all nodes are valid.
+
+def validateOutline (self,event=None):
+
+    c = self
+    
+    if not g.app.debug:
+        return True
+
+    root = c.rootPosition()
+    parent = c.nullPosition()
+
+    if root:
+        return root.validateOutlineWithParent(parent)
+    else:
+        return True</t>
 <t tx="ekr.20031218072017.1801">def __init__(self,title,gui):
 
     # Init the base class.
@@ -2110,7 +2232,7 @@ setSelectionRange = setTextSelection</t>
     return c.ver[10:-1] # Strip off "(dollar)Revision" and the trailing "$"</t>
 <t tx="ekr.20040629121554.1">def getSignOnLine (self):
     c = self
-    return "Leo 4.4 rc1, build %s, April 28, 2006" % c.getBuildNumber()</t>
+    return "Leo 4.4 final, build %s, May 11, 2006" % c.getBuildNumber()</t>
 <t tx="ekr.20040629121554.2">def initVersion (self):
     c = self
     c.ver = "$Revision$" # CVS updates this.</t>
@@ -7240,9 +7362,8 @@ remove-tab-from lines   Removes a tab (or equivalent spaces) from start of all s
         k.setLabelBlue('Find character: ')
         k.getArg(event,tag,1,self.findCharacter,oneCharacter=True)
     else:
-        w = self.widget
         ch = k.arg
-        g.trace(repr(ch))
+        # g.trace(repr(ch))
         k.resetLabel()
         k.clearState()</t>
 <t tx="ekr.20060417194232.2">def findWord (self,event):
@@ -7256,9 +7377,8 @@ remove-tab-from lines   Removes a tab (or equivalent spaces) from start of all s
         k.setLabelBlue('Find word: ')
         k.getArg(event,tag,1,self.findWord,oneCharacter=True)
     else:
-        w = self.widget
         ch = k.arg
-        g.trace(repr(ch))
+        # g.trace(repr(ch))
         k.resetLabel()
         k.clearState()</t>
 <t tx="ekr.20060417203717">def helpForCommand (self,event):
@@ -7541,5 +7661,14 @@ AttributeError: 'Bunch' object has no attribute 'kind'</t>
     else:
         self.stack.append(b)
         w.tag_delete('color','color1')</t>
+<t tx="ekr.20060501102837"></t>
+<t tx="ekr.20060501102837.1">@noclor
+
+http://sourceforge.net/forum/message.php?msg_id=3708271
+By: nobody
+
+Ctrl+I to make a new node will very often scroll the view so that
+the new node is invisible.</t>
+<t tx="ekr.20060501103216"></t>
 </tnodes>
 </leo_file>

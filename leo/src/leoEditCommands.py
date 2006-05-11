@@ -2101,9 +2101,8 @@ class editCommandsClass (baseEditCommandsClass):
             k.setLabelBlue('Find character: ')
             k.getArg(event,tag,1,self.findCharacter,oneCharacter=True)
         else:
-            w = self.widget
             ch = k.arg
-            g.trace(repr(ch))
+            # g.trace(repr(ch))
             k.resetLabel()
             k.clearState()
     #@nonl
@@ -2120,9 +2119,8 @@ class editCommandsClass (baseEditCommandsClass):
             k.setLabelBlue('Find word: ')
             k.getArg(event,tag,1,self.findWord,oneCharacter=True)
         else:
-            w = self.widget
             ch = k.arg
-            g.trace(repr(ch))
+            # g.trace(repr(ch))
             k.resetLabel()
             k.clearState()
     #@nonl

@@ -572,13 +572,14 @@
 </v>
 </v>
 <v t="ekr.20060430221745"><vh>Chapter 13: Controlling syntax coloring</vh>
-<v t="ekr.20060430221745.1"><vh>@rst html\coloring.html</vh>
+<v t="ekr.20060430221745.1" a="E"><vh>@rst html\coloring.html</vh>
 <v t="ekr.20060430222753"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20060430220749"><vh>Files</vh></v>
 <v t="ekr.20060502084233"><vh>The colorizer's inner loop</vh></v>
-<v t="ekr.20060502084233.1"><vh>Format of colorizer control files</vh>
+<v t="ekr.20060502084233.1" a="E"><vh>Format of colorizer control files</vh>
 <v t="ekr.20060502100550"><vh>Ruleset names</vh></v>
 <v t="ekr.20060502090516"><vh>x.properties</vh></v>
+<v t="ekr.20060510085547"><vh>Attribute dictionaries and x.attributesDictDict</vh></v>
 <v t="ekr.20060502090516.1"><vh>Keyword dictionaries and x.keywordsDictDict</vh></v>
 <v t="ekr.20060502090516.2"><vh>Rules, rules dictionaries and x.rulesDictDict</vh></v>
 <v t="ekr.20060503072213"><vh>x.importDict and imported versus delegated rulesets</vh></v>
@@ -596,7 +597,7 @@
 <v t="ekr.20060502122950.47"><vh>match_span_regexp</vh></v>
 <v t="ekr.20060502122950.48"><vh>match_terminate</vh></v>
 </v>
-<v t="ekr.20060509104553" a="E"><vh>Code design notes</vh>
+<v t="ekr.20060509104553"><vh>Code design notes</vh>
 <v t="ekr.20060509104553.1"><vh>Aha 1:  Suppress redraws until the end of coloring</vh></v>
 <v t="ekr.20060509104553.2"><vh>Aha 2:  Always recolor at the beginning</vh></v>
 <v t="ekr.20060509104553.3"><vh>Aha 3: Use quick coloring to eliminate flash</vh></v>
@@ -961,7 +962,7 @@
 </v>
 <v t="ekr.20060430215657.3"><vh>Rule ordering</vh></v>
 </v>
-<v t="edream.110203163054.46"><vh>Release Notes</vh>
+<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
 <v t="edream.110203163054.117"><vh>Previous versions...</vh>
 <v t="ekr.20060206111717"><vh>Ancient...</vh>
 <v t="edream.110203163054.118"><vh>3.x...</vh>
@@ -2388,7 +2389,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060206111717.1"><vh>4.4 minibuffer, keys</vh>
+<v t="ekr.20060206111717.1"><vh>4.4 minibuffer, keys, autocompletion, multiple log panes</vh>
 <v t="ekr.20051219150602"><vh>4.4 alpha 5</vh>
 <v t="ekr.20051219150602.2"><vh>Fixed bugs</vh>
 <v t="ekr.20051219150602.3"><vh>Made sure focus doesn't go to log during tab completion or after writes to log</vh></v>
@@ -2803,9 +2804,6 @@
 <v t="ekr.20060421070409.40"><vh>Made all edit command undoable</vh></v>
 </v>
 </v>
-</v>
-</v>
-<v t="edream.110203163054.63"><vh>Latest version</vh>
 <v t="ekr.20060428084553"><vh>4.4 rc1</vh>
 <v t="ekr.20060428084553.2"><vh>Bugs</vh>
 <v t="ekr.20060428084957"><vh>Fixed rename-buffer command</vh></v>
@@ -2822,41 +2820,11 @@
 <v t="ekr.20060428084553.273"><vh>Added filename completion</vh></v>
 </v>
 </v>
+<v t="ekr.20060511074853"><vh>4.4 final</vh></v>
 </v>
 </v>
-<v t="ekr.20060430221745" a="E"><vh>Chapter 13: Controlling syntax coloring</vh>
-<v t="ekr.20060430221745.1" a="V"><vh>@rst html\coloring.html</vh>
-<v t="ekr.20060430222753"><vh>@rst-no-head links</vh></v>
-<v t="ekr.20060430220749"><vh>Files</vh></v>
-<v t="ekr.20060502084233"><vh>The colorizer's inner loop</vh></v>
-<v t="ekr.20060502084233.1"><vh>Format of colorizer control files</vh>
-<v t="ekr.20060502100550"><vh>Ruleset names</vh></v>
-<v t="ekr.20060502090516"><vh>x.properties</vh></v>
-<v t="ekr.20060502090516.1"><vh>Keyword dictionaries and x.keywordsDictDict</vh></v>
-<v t="ekr.20060502090516.2"><vh>Rules, rules dictionaries and x.rulesDictDict</vh></v>
-<v t="ekr.20060503072213"><vh>x.importDict and imported versus delegated rulesets</vh></v>
-</v>
-<v t="ekr.20060502122950"><vh>Rule methods</vh>
-<v t="ekr.20060503064515"><vh>Arguments to rule methods</vh></v>
-<v t="ekr.20060502122950.7"><vh>match_eol_span</vh></v>
-<v t="ekr.20060502122950.10"><vh>match_eol_span_regexp</vh></v>
-<v t="ekr.20060502122950.13"><vh>match_keywords</vh></v>
-<v t="ekr.20060502122950.14"><vh>match_mark_following</vh></v>
-<v t="ekr.20060502125223"><vh>match_mark_previous</vh></v>
-<v t="ekr.20060502122950.40"><vh>match_seq</vh></v>
-<v t="ekr.20060502122950.41"><vh>match_seq_regexp</vh></v>
-<v t="ekr.20060502122950.42"><vh>match_span</vh></v>
-<v t="ekr.20060502122950.47"><vh>match_span_regexp</vh></v>
-<v t="ekr.20060502122950.48"><vh>match_terminate</vh></v>
-</v>
-<v t="ekr.20060509104553" a="E"><vh>Code design notes</vh>
-<v t="ekr.20060509104553.1"><vh>Aha 1:  Suppress redraws until the end of coloring</vh></v>
-<v t="ekr.20060509104553.2"><vh>Aha 2:  Always recolor at the beginning</vh></v>
-<v t="ekr.20060509104553.3"><vh>Aha 3: Use quick coloring to eliminate flash</vh></v>
-<v t="ekr.20060509104553.4"><vh>Aha 4: Use character-specific rules lists to speed coloring</vh></v>
-<v t="ekr.20060509104553.5"><vh>Conclusion</vh></v>
-</v>
-<v t="ekr.20060430223116"><vh>@rst-no-head end stuff</vh></v>
+<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
+<v t="ekr.20060511074853" a="V"><vh>4.4 final</vh></v>
 </v>
 </v>
 </vnodes>
@@ -26827,7 +26795,7 @@ The inner loop of the colorizer is this code::
 
 Rules methods (and functions) return n &gt; 0 if they match,</t>
 <t tx="ekr.20060502084233.1">The following sections describe the top-level data in ``x.py``.</t>
-<t tx="ekr.20060502090516">``x.properties`` is a Python dictionary corresponding to the &lt;PROPS&gt; element in ``x.xml``.
+<t tx="ekr.20060502090516">**x.properties** is a Python dictionary corresponding to the &lt;PROPS&gt; element in ``x.xml``.
 Keys are property names; values are strings, namely the contents of ``&lt;PROPERTY&gt;`` elements in ``x.xml``.
 ``x.properties`` contains properties for the entire mode.
 That is, only modes have ``&lt;PROPS&gt;`` elements.
@@ -26880,7 +26848,22 @@ For example, here (parts of) some keyword dictionaries in php.py::
         "@version": "label",
     }
 
-``x.py`` also contains ``x.keywordsDictDict``.
+``x.py`` also contains **x.keywordsDictDict**.
+Keys are ruleset names, values are keywords dictionaries.
+Here is ``keywordsDictDict`` for php.py::
+
+    # Dictionary of keywords dictionaries for php mode.
+    keywordsDictDict = {
+        "php_javascript": php_javascript_keywords_dict,
+        "php_javascript_php": php_javascript_php_keywords_dict,
+        "php_main": php_main_keywords_dict,
+        "php_php": php_php_keywords_dict,
+        "php_php_literal": php_php_literal_keywords_dict,
+        "php_phpdoc": php_phpdoc_keywords_dict,
+        "php_tags": php_tags_keywords_dict,
+        "php_tags_literal": php_tags_literal_keywords_dict,
+    }
+    
 The colorizer can get the keywords dictionary for a ruleset as follows::
 
     keywordsDict = x.keywordsDictDict(rulesetName)
@@ -26952,7 +26935,7 @@ For example::
 **Note**: The order of rules in each rules list is important;
 it should be the same as rules element in ``x.xml``.
 
-Finally, ``x.py`` contains a single **rules dictionary dictionary**, ``x.rulesDictDict``.
+Finally, ``x.py`` contains **x.rulesDictDict**.
 Keys are ruleset names, values are rules dictionaries.
 The colorer can get the rules list for character ch as follows::
 
@@ -27306,5 +27289,88 @@ It is significantly, noticeably, faster than using a single rules list for each 
 - The distinction between incremental and non-incremental coloring no longer exists.
 
 - Client code need do nothing special to support the colorizer, a major simplification.</t>
+<t tx="ekr.20060510085547">``x.py`` contains a **attribute dictionary** for each ruleset in ``x.xml``.
+Keys are attribute names, values strings representing the values of the attributes.
+This dictionary is empty if a ruleset contains no attributes.
+The valid keys are:
+
+- ``'default'``: the default token type.  ``'null'`` is the default.
+
+- ``'digit_re'``: a regular expession.
+  Words matching this regular expression are colored with the ``digit`` token type.
+
+- ``'ignore_case'``: ``'true'`` or ``'false'``.  Default is ``'true'``.
+
+- ```highlight_digits'``: ``'true'`` or ``'false'``.  Default is ``'true'``.
+
+- ``'no_word_sep'``: A list of characters treated as 'alphabetic' characters when matching keywords.
+
+For example, here is one attribute dictionary in php.py::
+
+    # Attributes dict for php_javascript ruleset.
+    php_javascript_attributes_dict = {
+        "default": "MARKUP",
+        "digit_re": "",
+        "highlight_digits": "true",
+        "ignore_case": "true",
+        "no_word_sep": "",
+    }
+
+``x.py`` also contains **x.attributesDictDict**.
+Keys are ruleset names, values are attribute dictionaries.
+Here is ``attributesDictDict`` for php.py::
+
+    # Dictionary of attributes dictionaries for php mode.
+    attributesDictDict = {
+        "php_javascript": php_javascript_attributes_dict,
+        "php_javascript_php": php_javascript_php_attributes_dict,
+        "php_main": php_main_attributes_dict,
+        "php_php": php_php_attributes_dict,
+        "php_php_literal": php_php_literal_attributes_dict,
+        "php_phpdoc": php_phpdoc_attributes_dict,
+        "php_tags": php_tags_attributes_dict,
+        "php_tags_literal": php_tags_literal_attributes_dict,
+    }
+
+**Note**:
+The ``jEdit2Py`` script creates 'friendly' names for attribute dictionaries *solely* as an aid for people reading the code.
+Leo's colorer uses only the name ``x.attributeDictDict``;
+Leo's colorer never uses the actual names of attribute dictionaries.</t>
+<t tx="ekr.20060511074853">Leo 4.4 Final                                                     May 11, 2006
+
+Leo 4.4 Final is available at:
+http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+
+Leo is a text editor, data organizer, project manager and much more. See:
+http://webpages.charter.net/edreamleo/intro.html
+
+The highlights of Leo 4.4:
+--------------------------
+- An Emacs-like mini-buffer: you can now execute any command by typing its long
+name, with tab completion.
+
+- Many new commands, including cursor and screen movement, basic character, word
+and paragraph manipulation, and commands to manipulate buffers, the kill ring,
+regions and rectangles. You can use Leo without using a mouse.
+
+- Flexible key bindings and input modes. You can emulate the operation of Emacs,
+Vim, or any other editor.
+
+- A tabbed log pane. The Find and Spell Check commands now use tabs instead of
+dialogs, making those commands much easier to use. Plugins or scripts can easily
+create new tabs. The Completion tab shows possible typing completions.
+
+- Autocompletion and calltips.  Autocompletion works much like tab completion.
+  To enable autocompletion, bind a key to the auto-complete command.
+
+- Dozens of other new features and bug fixes since Leo 4.3.3.
+
+Links:
+------
+Leo:      http://webpages.charter.net/edreamleo/front.html
+Home:     http://sourceforge.net/projects/leo/
+Download: http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:      http://leo.tigris.org/source/browse/leo/
+Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
 </tnodes>
 </leo_file>

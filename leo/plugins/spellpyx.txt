@@ -1930,6 +1930,7 @@ thinFile
 threadBack
 threadNext
 thread_id
+tigris
 time1
 time2
 timeit

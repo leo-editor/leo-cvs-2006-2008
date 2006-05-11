@@ -87,6 +87,7 @@ doc\html\PythonPowered.gif
 doc\html\appendices.html
 doc\html\arrow_lt.gif
 doc\html\arrow_rt.gif
+doc\html\coloring.html
 doc\html\commands.html
 doc\html\customizing.html
 doc\html\default.css
@@ -539,6 +540,7 @@ plugins\cleo.py
 plugins\color_markup.py
 plugins\datenodes.ini
 plugins\datenodes.py
+plugins\detect_urls.py
 plugins\dump_globals.py
 plugins\dyna.txt
 plugins\dyna_menu.ini
@@ -574,6 +576,7 @@ plugins\mod_read_dir_outline.py
 plugins\mod_scripting.py
 plugins\mod_shadow.ini
 plugins\mod_shadow.py
+plugins\mod_shadow_core.py
 plugins\mod_tempfname.py
 plugins\mod_timestamp.py
 plugins\multifile.py

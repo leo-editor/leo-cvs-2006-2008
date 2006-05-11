@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="261" clone_windows="0"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="267" clone_windows="0"/>
 <globals body_outline_ratio="0.549828178694">
-	<global_window_position top="83" left="337" height="789" width="892"/>
+	<global_window_position top="45" left="330" height="789" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -44,7 +44,7 @@
 <v t="ekr.20060112104823"><vh>main</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" a="ETV" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20051126062243" annotate="7d71002e"><vh>Debugging options</vh>
 <v t="ekr.20060201110016"><vh>@bool allow_idle_time_hook = False</vh></v>
 <v t="ekr.20060212101234"><vh>@bool gc_before_redraw = False</vh></v>
@@ -77,8 +77,9 @@
 <v t="ekr.20060206161839"><vh>@bool trace_tree_edit = False</vh></v>
 <v t="ekr.20060114082205"><vh>@string trace_bindings_filter = </vh></v>
 <v t="ekr.20060114083009"><vh>@string trace_bindings_pane_filter =</vh></v>
-<v t="ekr.20060425125015"><vh>@bool verbose_trace_color_parser = True</vh></v>
+<v t="ekr.20060425125015"><vh>@bool verbose_trace_color_parser = False</vh></v>
 <v t="ekr.20060323131801"><vh>@bool warn_about_missing_settings = False</vh></v>
+<v t="ekr.20060408090018"><vh>@bool added_setting = True</vh></v>
 <v t="ekr.20060325071916"><vh>For unit tests</vh>
 <v t="ekr.20060325071042"><vh>@ifplatform win32</vh>
 <v t="ekr.20060325071042.1"><vh>@bool test_win32_setting = True</vh></v>
@@ -88,7 +89,6 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060201111002"><vh>@bool use_syntax_coloring = True</vh></v>
 <v t="ekr.20060113182439"><vh>Other options</vh>
 <v t="ekr.20041119034357.10" annotate="7d71002e"><vh>Command options</vh>
 <v t="ekr.20041119034357.14"><vh>@bool at_root_bodies_start_in_doc_mode = True</vh></v>
@@ -203,6 +203,7 @@
 <v t="ekr.20041119050749.12"><vh>@color outline_pane_background_color = #ffffec</vh></v>
 </v>
 <v t="ekr.20041119034357.70"><vh>Syntax colors &amp; options</vh>
+<v t="ekr.20060201111002"><vh>@bool use_syntax_coloring = True</vh></v>
 <v t="ekr.20041119034357.78"><vh>@color comment_color = firebrick3</vh></v>
 <v t="ekr.20041119034357.79"><vh>@color cweb_section_name_color = red</vh></v>
 <v t="ekr.20041119034357.80"><vh>@color directive_color = blue</vh></v>
@@ -221,6 +222,17 @@
 <v t="ekr.20041119034357.74"><vh>@bool color_directives_in_plain_text = True</vh></v>
 <v t="ekr.20041119034357.75"><vh>@bool underline_undefined_section_names = True</vh></v>
 <v t="ekr.20041119034357.76"><vh>@bool use_hyperlinks = False</vh></v>
+<v t="ekr.20060504131831"><vh>Options for jEdit colorer</vh>
+<v t="ekr.20060504131831.1"><vh>@color keyword1_color = blue</vh></v>
+<v t="ekr.20060504131831.2"><vh>@color literal1_color = #00aa00</vh></v>
+<v t="ekr.20060504134056"><vh>@color literal2_color = #00aa00</vh></v>
+<v t="ekr.20060504134056.1"><vh>@color literal3_color = #00aa00</vh></v>
+<v t="ekr.20060504134056.2"><vh>@color literal4_color = #00aa00</vh></v>
+<v t="ekr.20060504140351"><vh>@color comment1_color = firebrick3</vh></v>
+<v t="ekr.20060504140408"><vh>@color comment2_color = firebrick3</vh></v>
+<v t="ekr.20060504140408.1"><vh>@color comment3_color = firebrick3</vh></v>
+<v t="ekr.20060504140408.2"><vh>@color comment4_color = firebrick3</vh></v>
+</v>
 </v>
 <v t="ekr.20041119034357.67"><vh>@color split_bar_color = LightSteelBlue2</vh></v>
 </v>
@@ -309,7 +321,7 @@
 </v>
 <v t="ekr.20060122105527.3"><vh>Keyboard and minibuffer Options</vh>
 <v t="ekr.20060215094146"><vh>@@bool ignore_caps_lock = True</vh></v>
-<v t="ekr.20060216170801"><vh>@bool enable_calltips = True</vh></v>
+<v t="ekr.20060216170801"><vh>@bool enable_calltips = False</vh></v>
 <v t="ekr.20060215102141"><vh>@bool ignore_unbound_non_ascii_keys = False</vh></v>
 <v t="ekr.20060122105527.8"><vh>@bool showHelpWhenEnteringModes = False</vh></v>
 <v t="ekr.20060122105527.7" annotate="7d71002e"><vh>@bool stayInTreeAfterSelect = True</vh></v>
@@ -398,23 +410,6 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060408090018"><vh>@bool added_setting = True</vh></v>
-</v>
-<v t="ekr.20060219103020" a="E"><vh>Recent settings</vh>
-<v t="ekr.20051126062830"><vh>@bool trace_g.app.gui.set_focus = False</vh></v>
-<v t="ekr.20060301085047"><vh>@bool trace_chapters = False</vh></v>
-<v t="ekr.20051126062243.1"><vh>@bool trace_redraw_now = False</vh></v>
-<v t="ekr.20060131071947"><vh>@bool trace_masterClickHandler = False</vh></v>
-<v t="ekr.20060121102627"><vh>@bool trace_modes = False</vh></v>
-<v t="ekr.20060323131801"><vh>@bool warn_about_missing_settings = False</vh></v>
-<v t="ekr.20060114073238"><vh>@bool trace_bindings = False</vh></v>
-<v t="ekr.20060216145416"><vh>@bool trace_autocompleter = False</vh></v>
-<v t="ekr.20060131071612"><vh>@bool trace_masterKeyHandler = False</vh></v>
-<v t="ekr.20051126062525"><vh>@bool trace_masterCommand = False</vh></v>
-<v t="ekr.20060306031258"><vh>@bool trace_onBodyChanged = False</vh></v>
-<v t="ekr.20060309022759"><vh>@bool trace_colorizer = False</vh></v>
-<v t="ekr.20060425125015" a="V"><vh>@bool verbose_trace_color_parser = True</vh></v>
-<v t="ekr.20060425124142"><vh>@bool trace_color_parser = True</vh></v>
 </v>
 </vnodes>
 <tnodes>
@@ -3967,7 +3962,7 @@ enter-quick-command-mode    = Alt-C</t>
 abort-edit-headline                 = Esc
 add-comments                        = Ctrl-(
 auto-complete-force                 = Ctrl-Tab
-auto-complete                       = period
+auto-complete                       = None # period
 back-char                           ! text = LtArrow
 back-char-extend-selection          ! text = Shift-LtArrow
 back-word                           ! text = Alt-b  
@@ -4451,7 +4446,6 @@ False (recommended):  No translation.</t>
 <t tx="ekr.20060216135834"></t>
 <t tx="ekr.20060216145416"></t>
 <t tx="ekr.20060216170801"></t>
-<t tx="ekr.20060219103020">@nocolor</t>
 <t tx="ekr.20060301085047"></t>
 <t tx="ekr.20060303075452">The following commands are will be useful for operating Leo without a mouse.
 
@@ -4668,5 +4662,15 @@ group-operations-transfer           = Alt-Ctrl-Shift-d</t>
 <t tx="ekr.20060408090018"></t>
 <t tx="ekr.20060425124142"></t>
 <t tx="ekr.20060425125015"></t>
+<t tx="ekr.20060504131831"></t>
+<t tx="ekr.20060504131831.1"></t>
+<t tx="ekr.20060504131831.2"></t>
+<t tx="ekr.20060504134056"></t>
+<t tx="ekr.20060504134056.1"></t>
+<t tx="ekr.20060504134056.2"></t>
+<t tx="ekr.20060504140351"></t>
+<t tx="ekr.20060504140408"></t>
+<t tx="ekr.20060504140408.1"></t>
+<t tx="ekr.20060504140408.2"></t>
 </tnodes>
 </leo_file>

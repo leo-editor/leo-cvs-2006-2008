@@ -44,21 +44,26 @@ php_re = re.compile("<?(\s[pP][hH][pP])")
 #@@nocolor
 #@+at
 # 
-# 1. Improve quick coloring.
+# - Use attributes in attributes dicts:
+#     - Add all characters in 'no_word_sep' attribute to word_chars.
+#     - Use 'ignore_case' attribute in match_keywords.
 # 
-# 2. Handle (and then delete) import rules when first loading a mode.
+# - Improve quick coloring.
 # 
-# 3. Handle the delegate attribute, i.e., recursive coloring.
+# - Handle (and then delete) import rules when first loading a mode.
 # 
-# 4. Finish all rules: mark_previous, mark_following, match_regexp_helper.
+# - Handle the delegate attribute, i.e., recursive coloring.
 # 
-# 5. Compute word_chars correctly.
+# - Finish all rules: mark_previous, mark_following, match_regexp_helper.
 # 
-# 6.  Use all attributes in all rule matchers.
-#     - Support NO_WORD_SEP, IGNORE_CASE and DEFAULT attributes in rules 
+# - Support coloring of digits.
+#     ?? Create a match_digits rule matcher??
+#     Use 'default_digit_re' and 'highlight_digits' attributes in rules 
 # element.
-#     - Later: support DIGIT_RE and HIGHLIGHT_DIGITS attributes in rules 
-# element.
+# 
+# - Document all properties.
+# 
+# - Tell how to use custom rule matchers.
 # 
 #@-at
 #@@c
@@ -326,6 +331,7 @@ class baseColorizer:
         self.keywordNumber = 0 # The kind of keyword for keywordsColorHelper.
         self.kill_chunk = False
         self.language = 'python' # set by scanColorDirectives.
+        self.queue_count = 0
         self.ranges = 0
         self.redoColoring = False # May be set by plugins.
         self.redoingColoring = False
@@ -537,9 +543,11 @@ class baseColorizer:
     
     def interrupt(self):
         '''Interrupt colorOneChunk'''
+        self.chunk_s = ''
         self.chunk_i = 0
         self.tagList = []
-        # g.trace('%3d %3d' % (self.chunk_count,self.queue_count))
+        self.chunks_done = True
+        g.trace('%3d %3d' % (self.chunk_count,self.queue_count))
     #@nonl
     #@-node:ekr.20050602144940:interrupt
     #@+node:ekr.20050529145203.1:recolor_range  (TO BE DELETED)
@@ -677,15 +685,17 @@ class baseColorizer:
         self.tagList = []
         self.queue_count = 0
         self.chunk_count = 0
+        self.recolor_count = 0 # Number of times through the loop before a recolor.
         self.chunks_done = False
         self.quickColor()
         self.colorOneChunk()
+    #@nonl
     #@-node:ekr.20050601042620:colorAll
     #@+node:ekr.20050529143413.31:colorizeAnyLanguage
     def colorizeAnyLanguage (self,p,leading=None,trailing=None):
         
         '''Color the body pane.  All coloring starts here.'''
-        
+    
         self.init_mode(self.language)
         if self.killcolorFlag or not self.mode:
             self.removeAllTags() ; return
@@ -708,17 +718,27 @@ class baseColorizer:
     def colorOneChunk(self,allowBreak=True):
         '''Colorize a fixed number of tokens.
         If not done, queue this method again to continue coloring later.'''
-        if self.chunks_done: return
+        if self.chunks_done:
+            return
         s,i = self.chunk_s,self.chunk_i
         count = 0 ; self.chunk_count += 1
-        limit = 10
+        limit = 10 # Number of times through the loop before a pause.
+        limit2 = 5000 # Number of times throught the loop before a recolor.
         while i < len(s):
             count += 1
+            self.recolor_count += 1
+            # This apparently interferes with event handling.
+            # if limit2 > 0 and self.recolor_count > limit2:
+                # g.trace('coloring',self.chunk_count)
+                # self.recolor_count = 0
+                # self.tagAll()
+                # self.pause(s,i)
+                # return
             if count >= limit:
                 self.chunk_s, self.chunk_i = s,i
                 self.queue_count += 1
                 self.c.frame.top.after_idle(self.colorOneChunk)
-                return
+                return 'break'
             for f in self.rulesDict.get(s[i],[]):
                 n = f(self,s,i)
                 if n > 0:
@@ -746,6 +766,16 @@ class baseColorizer:
             self.tagList.append((tag,x1,x2),)
     #@nonl
     #@-node:ekr.20050602205810.4:colorRangeWithTag
+    #@+node:ekr.20060510154647:pause
+    def pause (self,s,i):
+        
+        '''Pause the colorOneChunk method by queuing it up at idle time.'''
+        self.chunk_s, self.chunk_i = s,i
+        self.queue_count += 1
+        self.c.frame.top.after_idle(self.colorOneChunk)
+        # g.trace(self.queue_count)
+    #@nonl
+    #@-node:ekr.20060510154647:pause
     #@+node:ekr.20060507192431:quickColor
     def quickColor (self):
         

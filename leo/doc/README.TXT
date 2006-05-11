@@ -1,6 +1,7 @@
-Leo 4.4 release candidate 1                                 April 28, 2006
+Leo 4.4 Final                                                 May 11, 2006
 
-This version fixes a few minor bug reported in 4.4b4 and adds 9 new commands. The open-outline-by-name command supports filename completion.
+Leo 4.4 release Final is now available at:
+http://sourceforge.net/project/showfiles.php?group_id=3458&package_id=29106
 
 Leo is a text editor, data organizer, project manager and much more. See:
 http://webpages.charter.net/edreamleo/intro.html
@@ -15,7 +16,7 @@ The highlights of Leo 4.4:
 
 - A tabbed log pane. The Find and Spell Check commands now use tabs instead of dialogs, making those commands much easier to use. Plugins or scripts can easily create new tabs. The Completion tab shows possible typing completions.
 
-- Autocompletion and calltips.  Autocompletion works much like tab completion.
+- Autocompletion and calltips. To enable autocompletion, bind a key to the auto-complete command.
 
 - Dozens of other new features and bug fixes since Leo 4.3.3.
 
