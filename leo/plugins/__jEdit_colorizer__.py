@@ -517,13 +517,15 @@ class baseColorizer:
         
         '''The main colorizer entry point.'''
         
-        if 0:
+        if self.trace:
             self.colorize_count += 1
-            g.trace(incremental,self.colorize_count)
+            g.trace(self.colorize_count,g.callers())
     
         if self.enabled:
             self.updateSyntaxColorer(p)
-            return self.colorizeAnyLanguage(p)
+            val = self.colorizeAnyLanguage(p)
+            if self.trace: g.trace('done')
+            return val
         else:
             return "ok" # For unit testing.
     #@nonl
@@ -547,7 +549,7 @@ class baseColorizer:
         self.chunk_i = 0
         self.tagList = []
         self.chunks_done = True
-        g.trace('%3d %3d' % (self.chunk_count,self.queue_count))
+        if self.trace: g.trace('%3d %3d' % (self.chunk_count,self.queue_count))
     #@nonl
     #@-node:ekr.20050602144940:interrupt
     #@+node:ekr.20050529145203.1:recolor_range  (TO BE DELETED)
@@ -687,6 +689,7 @@ class baseColorizer:
         self.chunk_count = 0
         self.recolor_count = 0 # Number of times through the loop before a recolor.
         self.chunks_done = False
+        # self.pause(s,0)
         self.quickColor()
         self.colorOneChunk()
     #@nonl
@@ -706,8 +709,9 @@ class baseColorizer:
             g.doHook("init-color-markup",colorer=self,p=self.p,v=self.p)
             s = self.body.getAllText()
             self.colorAll(s)
-            if self.redoColoring: # Set only from plugins.
-                self.recolor_all()
+            if 0:
+                if self.redoColoring: # Set only from plugins.
+                    self.recolor_all()
             return "ok" # for unit testing.
         except Exception:
             g.es_exception()
@@ -724,16 +728,15 @@ class baseColorizer:
         count = 0 ; self.chunk_count += 1
         limit = 10 # Number of times through the loop before a pause.
         limit2 = 5000 # Number of times throught the loop before a recolor.
+        # if self.trace: g.trace(self.chunk_count,g.callers())
         while i < len(s):
             count += 1
             self.recolor_count += 1
-            # This apparently interferes with event handling.
-            # if limit2 > 0 and self.recolor_count > limit2:
-                # g.trace('coloring',self.chunk_count)
-                # self.recolor_count = 0
-                # self.tagAll()
-                # self.pause(s,i)
-                # return
+            if limit2 > 0 and self.recolor_count > limit2:
+                self.recolor_count = 0
+                self.tagAll()
+                self.pause(s,i)
+                return
             if count >= limit:
                 self.chunk_s, self.chunk_i = s,i
                 self.queue_count += 1
@@ -772,8 +775,15 @@ class baseColorizer:
         '''Pause the colorOneChunk method by queuing it up at idle time.'''
         self.chunk_s, self.chunk_i = s,i
         self.queue_count += 1
-        self.c.frame.top.after_idle(self.colorOneChunk)
-        # g.trace(self.queue_count)
+        w = self.c.frame.body.bodyCtrl
+    
+        if 1:
+            # Essential, apparently, to give Tk time to recognize pending events.
+            # It appears that about 50 msec are needed to recognize events!
+            w.after(50,self.colorOneChunk)
+        else:
+            # ** Does not work ** Tk does not recognize pending events!
+            w.after_idle(self.colorOneChunk)
     #@nonl
     #@-node:ekr.20060510154647:pause
     #@+node:ekr.20060507192431:quickColor
@@ -1069,7 +1079,7 @@ class baseColorizer:
     #@+node:ekr.20050529143413.80:removeAllTags
     def removeAllTags (self):
         
-        # g.trace(g.callers())
+        if self.trace: g.trace()
         
         w = self.c.frame.body.bodyCtrl
         names = w.tag_names()
@@ -1173,6 +1183,8 @@ class baseColorizer:
     #@-node:ekr.20050529143413.29:setFontFromConfig
     #@+node:ekr.20060507175312:tagAll
     def tagAll (self):
+        
+        if self.trace: g.trace(len(self.tagList)/3)
         
         for tag,x1,x2 in self.tagList:
             self.body.tag_add(tag,x1,x2)

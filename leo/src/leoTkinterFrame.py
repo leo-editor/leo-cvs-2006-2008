@@ -1003,7 +1003,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
                 t.insert("end",s)
             
             t.configure(state="disabled")
-            t.update_idletasks()
+            ##### t.update_idletasks() # interferes with coloring.
         #@nonl
         #@-node:ekr.20031218072017.3963:put (leoTkinterFrame:statusLineClass)
         #@+node:ekr.20041223111916.1:unpack & hide

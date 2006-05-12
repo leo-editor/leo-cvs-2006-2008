@@ -5519,7 +5519,8 @@ class baseCommands:
             return # nullFrame's do not have a top frame.
     
         c.frame.tree.redraw_now()
-        c.frame.top.update_idletasks()
+        if 0: # Interferes with new colorizer.
+            c.frame.top.update_idletasks()
         
         if c.frame.requestRecolorFlag:
             c.frame.requestRecolorFlag = False

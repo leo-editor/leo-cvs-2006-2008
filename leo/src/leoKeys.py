@@ -2933,21 +2933,23 @@ class keyHandlerClass:
         '''This is the handler for almost all key bindings.'''
         
         k = self ; c = k.c
-        val = self.masterKeyHandlerHelper(event,stroke)
+        trace = c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
+    
+        val = self.masterKeyHandlerHelper(event,stroke,trace)
         if val and c and c.exists: # Ignore special keys.
             c.frame.updateStatusLine()
             c.masterFocusHandler()
+        if trace: g.trace('done:',repr(val))
         return val
     #@nonl
     #@+node:ekr.20060205221734:masterKeyHandlerHelper
-    def masterKeyHandlerHelper (self,event,stroke):
+    def masterKeyHandlerHelper (self,event,stroke,trace):
         
         #@    << define vars >>
         #@+node:ekr.20060321105403:<< define vars >>
         k = self ; c = k.c
         w = event and event.widget
         w_name = c.widget_name(w)
-        trace = c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
         keysym = event.keysym or ''
         state = k.state.kind
         special_keys = (
@@ -2967,7 +2969,7 @@ class keyHandlerClass:
         if trace:
             if (self.master_key_count % 100) == 0:
                 g.printGcSummary(trace=True)
-            g.trace(repr(stroke),'state',state)
+            g.trace('keysym',repr(event.keysym or ''),'state',state)
         #@nonl
         #@-node:ekr.20060321105403.1:<< do key traces >>
         #@nl
@@ -3087,6 +3089,7 @@ class keyHandlerClass:
         trace = c.config.getBool('trace_masterClickHandler') and not g.app.unitTesting
     
         if trace: g.trace(wname,func and func.__name__)
+        # c.frame.body.colorizer.interrupt() # New in 4.4.1
             
         # A click outside the minibuffer terminates any state.
         if k.inState() and c.useTextMinibuffer and w != c.frame.miniBufferWidget:
@@ -3094,6 +3097,7 @@ class keyHandlerClass:
                 k.keyboardQuit(event,hideTabs=False)
                 # k.endMode(event) # Less drastic than keyboard-quit.
                 w and c.widgetWantsFocusNow(w)
+                if trace: g.trace('inState: break')
                 return 'break'
     
         # Update the selection point immediately for updateStatusLine.
@@ -3111,18 +3115,22 @@ class keyHandlerClass:
             # g.trace(xcol,icol,jcol,icol <= xcol <= jcol)
             if icol <= xcol <= jcol:
                 g.app.gui.setTextSelection(w,x,x,insert=x)
-            else: return 'break'
+            else:
+                if trace: g.trace('2: break')
+                return 'break'
     
         if event and func:
             # Don't even *think* of overriding this.
             val = func(event)
             c.masterFocusHandler()
+            if trace: g.trace('val:',val)
             return val
         else:
             # All tree callbacks have a func, so we can't be in the tree.
             # g.trace('*'*20,'auto-deactivate tree: %s' % wname)
             c.frame.tree.OnDeactivate()
             c.widgetWantsFocusNow(w)
+            g.trace('end: None')
             return None
     
     masterClick3Handler = masterClickHandler

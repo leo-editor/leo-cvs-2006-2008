@@ -2572,8 +2572,13 @@ class leoTkinterTree (leoFrame.leoTree):
             if p and p != old_p: # Suppress duplicate call.
                 try: # may fail during initialization.
                     # p is NOT c.currentPosition() here!
-                    self.canvas.update_idletasks() # Essential.
-                    self.scrollTo(p)
+                    if 0: # Interferes with new colorizer.
+                        self.canvas.update_idletasks()
+                        self.scrollTo(p)
+                    else:
+                        def scrollCallback(self=self,p=p):
+                            self.scrollTo(p)
+                        self.after(100,scrollCallback)
                 except Exception: pass
             #@        << update c.beadList or c.beadPointer >>
             #@+node:ekr.20040803072955.131:<< update c.beadList or c.beadPointer >>
