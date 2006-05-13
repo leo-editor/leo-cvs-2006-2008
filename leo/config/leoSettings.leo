@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="267" clone_windows="0"/>
 <globals body_outline_ratio="0.549828178694">
-	<global_window_position top="45" left="330" height="789" width="892"/>
+	<global_window_position top="45" left="330" height="751" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -44,7 +44,7 @@
 <v t="ekr.20060112104823"><vh>main</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" a="ETV" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" a="V" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20051126062243" annotate="7d71002e"><vh>Debugging options</vh>
 <v t="ekr.20060201110016"><vh>@bool allow_idle_time_hook = False</vh></v>
 <v t="ekr.20060212101234"><vh>@bool gc_before_redraw = False</vh></v>
@@ -173,7 +173,7 @@
 <v t="ekr.20051025085144"><vh>@string aspell_dir = c:\aspell</vh></v>
 <v t="ekr.20051025085144.1"><vh>@string aspell_bin_dir = c:\aspell\bin</vh></v>
 </v>
-<v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
+<v t="ekr.20041213105007.1" a="E" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
 <v t="ekr.20041119052015.2"><vh>@color log_text_foreground_color = None</vh></v>
@@ -202,7 +202,9 @@
 <v t="ekr.20041119051901.1"><vh>@color headline_text_editing_selection_background_color = None</vh></v>
 <v t="ekr.20041119050749.12"><vh>@color outline_pane_background_color = #ffffec</vh></v>
 </v>
-<v t="ekr.20041119034357.70"><vh>Syntax colors &amp; options</vh>
+<v t="ekr.20041119034357.70" a="E"><vh>Syntax colors &amp; options</vh>
+<v t="ekr.20060513100933"><vh>@int colorizer_interrupt_count1 = 10</vh></v>
+<v t="ekr.20060513100933.1"><vh>@int colorizer_interrupt_count2 = 5000</vh></v>
 <v t="ekr.20060201111002"><vh>@bool use_syntax_coloring = True</vh></v>
 <v t="ekr.20041119034357.78"><vh>@color comment_color = firebrick3</vh></v>
 <v t="ekr.20041119034357.79"><vh>@color cweb_section_name_color = red</vh></v>
@@ -410,6 +412,11 @@
 </v>
 </v>
 </v>
+</v>
+<v t="ekr.20060512084639"><vh>Recent</vh>
+<v t="ekr.20060131071612"><vh>@bool trace_masterKeyHandler = False</vh></v>
+<v t="ekr.20060309022759"><vh>@bool trace_colorizer = False</vh></v>
+<v t="ekr.20060131071947"><vh>@bool trace_masterClickHandler = False</vh></v>
 </v>
 </vnodes>
 <tnodes>
@@ -4672,5 +4679,10 @@ group-operations-transfer           = Alt-Ctrl-Shift-d</t>
 <t tx="ekr.20060504140408"></t>
 <t tx="ekr.20060504140408.1"></t>
 <t tx="ekr.20060504140408.2"></t>
+<t tx="ekr.20060512084639"></t>
+<t tx="ekr.20060513100933">The number of times the colorizer's main loop in colorOneChunk executes before pausing to check for events.
+A reasonable value is 10.</t>
+<t tx="ekr.20060513100933.1">The number of times the colorizer's main loop in colorOneChunk executes before actually colorizing text.
+A reasonable value is 5000.</t>
 </tnodes>
 </leo_file>
