@@ -840,7 +840,7 @@ class leoTkinterTree (leoFrame.leoTree):
                 g.trace("Can't happen: negative updateCount",g.callers())
     #@nonl
     #@-node:ekr.20051216155728:tree.begin/endUpdate
-    #@+node:ekr.20040803072955.58:redraw_now & helper
+    #@+node:ekr.20040803072955.58:tree.redraw_now & helper
     # Redraws immediately: used by Find so a redraw doesn't mess up selections in headlines.
     
     # New in 4.4b2: suppress scrolling by default.
@@ -875,7 +875,8 @@ class leoTkinterTree (leoFrame.leoTree):
         # Do the actual redraw.
         self.expandAllAncestors(c.currentPosition())
         self.redrawHelper(scroll=scroll)
-        self.canvas.update_idletasks() # Important for unit tests.
+        if g.app.unitTesting:
+            self.canvas.update_idletasks() # Important for unit tests.
         c.masterFocusHandler()
         
     redraw = redraw_now # Compatibility
@@ -903,7 +904,7 @@ class leoTkinterTree (leoFrame.leoTree):
         self.canvas['cursor'] = oldcursor
     #@nonl
     #@-node:ekr.20040803072955.59:redrawHelper
-    #@-node:ekr.20040803072955.58:redraw_now & helper
+    #@-node:ekr.20040803072955.58:tree.redraw_now & helper
     #@+node:ekr.20040803072955.61:idle_second_redraw
     def idle_second_redraw (self):
         
@@ -2552,7 +2553,6 @@ class leoTkinterTree (leoFrame.leoTree):
             self.setText(0,body,s)
             
             # We must do a full recoloring: we may be changing context!
-            # self.frame.body.colorizer.interrupt()
             self.frame.body.recolor_now(p) # recolor now uses p.copy(), so this is safe.
             
             if p.v and p.v.t.scrollBarSpot != None:
