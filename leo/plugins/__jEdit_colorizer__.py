@@ -520,6 +520,8 @@ class baseColorizer:
         if self.trace:
             self.colorize_count += 1
             g.trace(self.colorize_count,g.callers())
+            
+        self.interrupt() # New in 4.4.1
     
         if self.enabled:
             self.updateSyntaxColorer(p)
@@ -689,7 +691,6 @@ class baseColorizer:
         self.chunk_count = 0
         self.recolor_count = 0 # Number of times through the loop before a recolor.
         self.chunks_done = False
-        # self.pause(s,0)
         self.quickColor()
         self.colorOneChunk()
     #@nonl
@@ -728,19 +729,23 @@ class baseColorizer:
         count = 0 ; self.chunk_count += 1
         limit = 10 # Number of times through the loop before a pause.
         limit2 = 5000 # Number of times throught the loop before a recolor.
-        # if self.trace: g.trace(self.chunk_count,g.callers())
+        w = self.c.frame.body.bodyCtrl
+        if 0 and (self.chunk_count % 100) == 0:
+            print self.chunk_count,g.callers() # Do not use g.trace here!
         while i < len(s):
             count += 1
             self.recolor_count += 1
             if limit2 > 0 and self.recolor_count > limit2:
                 self.recolor_count = 0
+                self.chunk_s, self.chunk_i = s,i
+                self.queue_count += 1
                 self.tagAll()
-                self.pause(s,i)
-                return
+                w.after(50,self.colorOneChunk)
+                return 'break'
             if count >= limit:
                 self.chunk_s, self.chunk_i = s,i
                 self.queue_count += 1
-                self.c.frame.top.after_idle(self.colorOneChunk)
+                w.after_idle(self.colorOneChunk)
                 return 'break'
             for f in self.rulesDict.get(s[i],[]):
                 n = f(self,s,i)
@@ -753,6 +758,7 @@ class baseColorizer:
         self.tagAll()
         self.tagList = []
         self.chunks_done = True # Prohibit any more queued calls.
+        return 'break'
     #@nonl
     #@-node:ekr.20050601105358:colorOneChunk
     #@+node:ekr.20050602205810.4:colorRangeWithTag
@@ -769,23 +775,6 @@ class baseColorizer:
             self.tagList.append((tag,x1,x2),)
     #@nonl
     #@-node:ekr.20050602205810.4:colorRangeWithTag
-    #@+node:ekr.20060510154647:pause
-    def pause (self,s,i):
-        
-        '''Pause the colorOneChunk method by queuing it up at idle time.'''
-        self.chunk_s, self.chunk_i = s,i
-        self.queue_count += 1
-        w = self.c.frame.body.bodyCtrl
-    
-        if 1:
-            # Essential, apparently, to give Tk time to recognize pending events.
-            # It appears that about 50 msec are needed to recognize events!
-            w.after(50,self.colorOneChunk)
-        else:
-            # ** Does not work ** Tk does not recognize pending events!
-            w.after_idle(self.colorOneChunk)
-    #@nonl
-    #@-node:ekr.20060510154647:pause
     #@+node:ekr.20060507192431:quickColor
     def quickColor (self):
         
