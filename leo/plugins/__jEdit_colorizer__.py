@@ -6,7 +6,7 @@
 #@@tabwidth -4
 #@@pagewidth 80
 
-__version__ = '0.21'
+__version__ = '0.22'
 #@<< imports >>
 #@+node:ekr.20050529142916.3:<< imports >>
 import leoGlobals as g
@@ -35,8 +35,9 @@ php_re = re.compile("<?(\s[pP][hH][pP])")
 # 0.21 EKR: No known crashers or serious problems.
 # - The colorizer now switches modes properly.
 # - Possible fix for unicode crasher.
+# 
+# 0.22 EKR: colorOneChunk now allows for good response to key events.
 #@-at
-#@nonl
 #@-node:ekr.20050529142916.2:<< version history >>
 #@nl
 #@<< to do >>
@@ -317,6 +318,8 @@ class baseColorizer:
         # Config settings.
         self.comment_string = None # Set by scanColorDirectives on @comment
         self.showInvisibles = False # True: show "invisible" characters.
+        self.interrupt_count1 = c.config.getInt("colorizer_interrupt_count1") or 10
+        self.interrupt_count2 = c.config.getInt("colorizer_interrupt_count2") or 5000
         self.underline_undefined = c.config.getBool("underline_undefined_section_names")
         self.use_hyperlinks = c.config.getBool("use_hyperlinks")
         # State ivars...
@@ -324,6 +327,7 @@ class baseColorizer:
             # Keys are indices, values are tags.
         self.chunk_count = 0
         self.color_pass = 0
+        self.count = 0
         self.comment_string = None # Can be set by @comment directive.
         self.defaultRulesList = []
         self.enabled = True # Set to False by unit tests.
@@ -331,7 +335,6 @@ class baseColorizer:
         self.keywordNumber = 0 # The kind of keyword for keywordsColorHelper.
         self.kill_chunk = False
         self.language = 'python' # set by scanColorDirectives.
-        self.queue_count = 0
         self.ranges = 0
         self.redoColoring = False # May be set by plugins.
         self.redoingColoring = False
@@ -511,15 +514,14 @@ class baseColorizer:
     #@-node:ekr.20050529143413.24:Birth and init
     #@+node:ekr.20050529145203:Entry points (3 to be REWRITTEN)
     #@+node:ekr.20050529143413.30:colorize
-    colorize_count = 0
-    
     def colorize(self,p,incremental=False):
         
         '''The main colorizer entry point.'''
         
+        self.count += 1 # For unit testing.
+        
         if self.trace:
-            self.colorize_count += 1
-            g.trace(self.colorize_count,g.callers())
+            g.trace(self.count,g.callers())
             
         self.interrupt() # New in 4.4.1
     
@@ -551,7 +553,7 @@ class baseColorizer:
         self.chunk_i = 0
         self.tagList = []
         self.chunks_done = True
-        if self.trace: g.trace('%3d %3d' % (self.chunk_count,self.queue_count))
+        if self.trace: g.trace('%3d' % (self.chunk_count))
     #@nonl
     #@-node:ekr.20050602144940:interrupt
     #@+node:ekr.20050529145203.1:recolor_range  (TO BE DELETED)
@@ -687,7 +689,6 @@ class baseColorizer:
         self.chunk_s = s
         self.chunk_i = 0
         self.tagList = []
-        self.queue_count = 0
         self.chunk_count = 0
         self.recolor_count = 0 # Number of times through the loop before a recolor.
         self.chunks_done = False
@@ -720,31 +721,25 @@ class baseColorizer:
     #@nonl
     #@-node:ekr.20050529143413.31:colorizeAnyLanguage
     #@+node:ekr.20050601105358:colorOneChunk
-    def colorOneChunk(self,allowBreak=True):
-        '''Colorize a fixed number of tokens.
+    def colorOneChunk (self):
+        '''Colorize a limited number of tokens.
         If not done, queue this method again to continue coloring later.'''
-        if self.chunks_done:
-            return
-        s,i = self.chunk_s,self.chunk_i
-        count = 0 ; self.chunk_count += 1
-        limit = 10 # Number of times through the loop before a pause.
-        limit2 = 5000 # Number of times throught the loop before a recolor.
+        if self.chunks_done: return
+        s, i = self.chunk_s, self.chunk_i
+        limit = self.interrupt_count1 # Number of times through the loop before a pause. 10 is reasonable.
+        limit2 = self.interrupt_count2 # Number of times throught the loop before a recolor. 5000 is reasonable.
         w = self.c.frame.body.bodyCtrl
-        if 0 and (self.chunk_count % 100) == 0:
-            print self.chunk_count,g.callers() # Do not use g.trace here!
+        count = 0 ; self.chunk_count += 1
+        # if (self.chunk_count % 100) == 0: print self.chunk_count,g.callers() # Don't use g.trace!
         while i < len(s):
-            count += 1
-            self.recolor_count += 1
+            count += 1 ; self.recolor_count += 1
             if limit2 > 0 and self.recolor_count > limit2:
-                self.recolor_count = 0
-                self.chunk_s, self.chunk_i = s,i
-                self.queue_count += 1
+                self.recolor_count, self.chunk_s, self.chunk_i = 0, s, i
                 self.tagAll()
                 w.after(50,self.colorOneChunk)
                 return 'break'
             if count >= limit:
-                self.chunk_s, self.chunk_i = s,i
-                self.queue_count += 1
+                self.chunk_s, self.chunk_i = s, i
                 w.after_idle(self.colorOneChunk)
                 return 'break'
             for f in self.rulesDict.get(s[i],[]):
@@ -753,7 +748,7 @@ class baseColorizer:
                     i += n ; break
             else: i += 1
     
-        # g.trace('%3d %3d' % (self.chunk_count,self.queue_count))
+        # g.trace('%3d' % (self.chunk_count))
         self.removeAllTags()
         self.tagAll()
         self.tagList = []
