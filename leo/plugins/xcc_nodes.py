@@ -4,6 +4,7 @@
 """Integrate C/C++ compiler and debugger in a node."""
 
 #@<< About this plugin >>
+#@+middle:ekr.20060513153648:Documentation
 #@+node:ekr.20060513122450.1:<< About this plugin >>
 #@@nocolor
 #@+at 			
@@ -125,8 +126,10 @@
 #@-at
 #@nonl
 #@-node:ekr.20060513122450.1:<< About this plugin >>
+#@-middle:ekr.20060513153648:Documentation
 #@nl
 #@<< version history >>
+#@+middle:ekr.20060513153648:Documentation
 #@+node:ekr.20060513183934:<< version history >>
 #@@nocolor
 #@+at
@@ -135,14 +138,120 @@
 # 
 # v 0.2 EKR:
 # - Add per-node controller class.  This required many changes.
-# - Many stylistic changes.  Many more are coming.
+# - Many stylistic changes.  More are coming.
 # 
 # v 0.3 EKR:
 # - Fixed a large number of crashers due to the reorganized code.
 # - The major panels now appear to work.
+# 
+# v 0.4 EKR:
+# - Added a ``what I did`` section.
+# - Made UpdateProcess a cc method.
+# - It appears that cc.OPTS is not set properly in PageClass.LoadObjects.
+#   This prevents the compiler from working.
 #@-at
 #@nonl
 #@-node:ekr.20060513183934:<< version history >>
+#@-middle:ekr.20060513153648:Documentation
+#@nl
+#@<< what I did >>
+#@+middle:ekr.20060513153648:Documentation
+#@+node:ekr.20060514121335:<< what I did >>
+#@@nocolor
+#@+at
+# 
+# **Important**: I have spent 8 or more hours making the following changes.
+# Without doubt I have introduced some bugs while doing so. However, it was
+# important to make these changes, for the following reasons:
+# 
+# 1. This is very important code, and deserves the best packaging.
+# 
+# 2. This code may form the basis of a Python-oriented debugger, so I wanted
+#    to make the code base as solid as possible.
+# 
+# 3. Working and debugging code is the best way for me to really understand 
+# it.
+# 
+# Here is what I have done in detail:
+# 
+# - Eliminated * imports:
+#     ``* imports`` are bad style in complex code.
+#     Replaced ``from leoPlugins import *`` by ``import leoPlugins``
+#     Replaced ``from leoGlobals import *`` by ``import leoGlobals as g``
+#     Replaced ``from Tkinter import *`` by import Tkinter as Tk.
+#         Replaced Tk constants like END, FLAT, NW, etc. by 'end','flat','nw', 
+# etc.
+# 
+# - Created the module-level init function that registers all hooks.
+#   This is the recommended style: it shows in one place where all the hooks 
+# are.
+# 
+# - Removed most try/except handling.
+#     - Such handling is *usually* unnecessary, especially since Leo does a 
+# good job
+#       of recovering from crashes. However, try/except blocks might be 
+# important
+#       when executing user code, so perhaps it will be necessary to put some 
+# back in.
+#     - Replaced ``x = aDict[key]`` by ``x = aDict.get(key)`` to avoid 
+# exceptions.
+# 
+# *** Eliminated *all* global variables (except commanders) as follows:
+# 
+# - Created per-commander controller class instances.
+#     - The controllers dictionary is the only global variable.
+#     - The new OnCreate event handler creates controller instances.
+#     - Replaced all global variables by ivars of the controller class.
+#     - Global constants still exist.
+#     - Most former global functions now are methods of the controller class.
+#     - By convention, cc refers to the proper controller, i.e., the 
+# controller for the proper commander c.
+#     - cc gets passed to the constructor of almost all classes.
+#     - Replaced init logic (start2 hook) by logic in the ctor for the 
+# controller class.
+# 
+# - Simplified module-level event handlers.
+#     - They simply call the corresponding event handler in the proper 
+# controller instance.
+# 
+# - Renamed most classes from XXX to XxxClass.
+# 
+# - Eliminated the Parser global.
+#     - All Rule classes now get a Parser argument and define self.Parser.
+# 
+# - Disabled some weird code in OnIdle.  I'm not sure what this is supposed to 
+# do.
+# 
+# - Create a new pause module-level function that calls winPause or linPause 
+# as appropriate.
+# 
+# - Used more Pythonic or Leonic ideoms in many places:
+#     - Replaced ``if x == True:`` by ``if x:``.
+#     - Replaced ``if x == False:`` by ``if not x:``.
+#     - Replaced ``if x != '':`` by ``if not x:``
+#     etc.
+#     *** Warning: these simplifications might cause problems.
+#         For example, the re module uses None as a sentinal, and can also 
+# return 0,
+#         so tests like ``if result:`` are not correct in such cases.  I have 
+# tried
+#         not to simplify the code "too much" but I may have made mistakes.
+#     *** if p is a node, ``if p == None:`` *must* be replaced by ``if not 
+# p:``.
+#     - cc.VERBOSE and cc.FILTER_OUTPUT now have values True/False instead of 
+# 'true'/'false'.
+#     - Defined TraceBack as g.es_exception.
+#     - Changed ``Error(x) ; return`` to ``return Error(x)``, and similarly 
+# for Warning, etc.
+# 
+# - Simplified the code wherever possible.
+#     - Sometimes the change can be dramatic, as in cc.cGetDict.
+# 
+# * There does not seem to be any definition of ExtractLines.
+#@-at
+#@nonl
+#@-node:ekr.20060514121335:<< what I did >>
+#@-middle:ekr.20060513153648:Documentation
 #@nl
 #@<< imports >>
 #@+node:ekr.20060513122450.4:<< imports >>
@@ -247,7 +356,7 @@ if 1: # To be replaced by ivars
 #@@language python
 #@@tabwidth -4
 
-__version__ = "0.3"
+__version__ = "0.4"
 
 #@+others
 #@+node:ekr.20060513153648:Documentation
@@ -435,17 +544,6 @@ def linPause(pid):	# theorical way to do it, untested!
 #@-node:ekr.20060513122450.29:linPause
 #@-node:ekr.20060513160819:pause & helpers
 #@+node:ekr.20060513142641.1:Helpers
-#@+node:ekr.20060513122450.32:GetNodePath
-def GetNodePath(node,as="->"):
-
-	path = []
-	for p in node.parents_iter():
-		path.insert(0,p.headString()+as)
-
-	path.append(node.headString())
-	return ''.join(path)
-#@nonl
-#@-node:ekr.20060513122450.32:GetNodePath
 #@+node:ekr.20060513122450.33:AddText
 def AddText(text,node):
 
@@ -454,70 +552,6 @@ def AddText(text,node):
 	LeoBody.see(l+".0")
 #@nonl
 #@-node:ekr.20060513122450.33:AddText
-#@+node:ekr.20060513122450.34:Error
-def Error(module,error):
-	g.es(module,newline = False,color = "blue")
-	g.es(error,color = "red")
-#@-node:ekr.20060513122450.34:Error
-#@+node:ekr.20060513122450.35:Warning
-def Warning(module,warning):
-
-	g.es(module,newline = False,color = "blue")
-	g.es(warning,color = "orange")
-#@nonl
-#@-node:ekr.20060513122450.35:Warning
-#@+node:ekr.20060513122450.36:Message
-def Message(module,warning):
-
-	g.es(module,newline = False,color = "blue")
-	g.es(warning)
-#@-node:ekr.20060513122450.36:Message
-#@+node:ekr.20060513122450.37:GetUnknownAttributes
-def GetUnknownAttributes(vnode,create = False):
-
-	if hasattr(vnode,"unknownAttributes") != True:
-		if create == True:
-			vnode.unknownAttributes = {}
-		else:
-			return None
-	return vnode.unknownAttributes
-#@nonl
-#@-node:ekr.20060513122450.37:GetUnknownAttributes
-#@+node:ekr.20060513122450.38:GetDictKey (not used)
-if 0:
-    def GetDictKey(dic,key,create=False,init=""):
-        if key in dic:
-            return dic[key]
-        else:
-            if create == True:
-                dic[key] = init
-                return dic[key]
-            else:
-                return None
-#@nonl
-#@-node:ekr.20060513122450.38:GetDictKey (not used)
-#@+node:ekr.20060513122450.39:TraceBack
-if 0:
-    def TraceBack():
-        typ,val,tb = sys.exc_info()
-        lines = traceback.format_exception(typ,val,tb)
-        for line in lines:
-            # g.es(line,color = "red")
-            print line
-            
-TraceBack = g.es_exception
-#@nonl
-#@-node:ekr.20060513122450.39:TraceBack
-#@+node:ekr.20060513122450.40:DecompressIcon
-def DecompressIcon(data):
-	try:
-		#unpickle
-		zdata = pickle.loads(data)	
-		#unzip
-		return zlib.decompress(zdata)	#return a base64
-	except Excetion:
-		Traceback()
-#@-node:ekr.20060513122450.40:DecompressIcon
 #@+node:ekr.20060513122450.41:CompressIcon
 #@+at
 # # Encode to base64, zip the data in a string and finally pickle it to be 
@@ -566,8 +600,56 @@ def DecompressIcon(data):
 #@-at
 #@nonl
 #@-node:ekr.20060513122450.41:CompressIcon
-#@-node:ekr.20060513142641.1:Helpers
-#@+node:ekr.20060513122450.388:Xcc Funcs
+#@+node:ekr.20060513122450.40:DecompressIcon
+def DecompressIcon(data):
+	try:
+		#unpickle
+		zdata = pickle.loads(data)	
+		#unzip
+		return zlib.decompress(zdata)	#return a base64
+	except Excetion:
+		Traceback()
+#@-node:ekr.20060513122450.40:DecompressIcon
+#@+node:ekr.20060513122450.34:Error
+def Error(module,error):
+	g.es(module,newline = False,color = "blue")
+	g.es(error,color = "red")
+#@-node:ekr.20060513122450.34:Error
+#@+node:ekr.20060513122450.38:GetDictKey (not used)
+if 0:
+    def GetDictKey(dic,key,create=False,init=""):
+        if key in dic:
+            return dic[key]
+        else:
+            if create == True:
+                dic[key] = init
+                return dic[key]
+            else:
+                return None
+#@nonl
+#@-node:ekr.20060513122450.38:GetDictKey (not used)
+#@+node:ekr.20060513122450.32:GetNodePath
+def GetNodePath(node,as="->"):
+
+	path = []
+	for p in node.parents_iter():
+		path.insert(0,p.headString()+as)
+
+	path.append(node.headString())
+	return ''.join(path)
+#@nonl
+#@-node:ekr.20060513122450.32:GetNodePath
+#@+node:ekr.20060513122450.37:GetUnknownAttributes
+def GetUnknownAttributes(vnode,create = False):
+
+	if hasattr(vnode,"unknownAttributes") != True:
+		if create == True:
+			vnode.unknownAttributes = {}
+		else:
+			return None
+	return vnode.unknownAttributes
+#@nonl
+#@-node:ekr.20060513122450.37:GetUnknownAttributes
 #@+node:ekr.20060513122450.389:GetXccNode
 def GetXccNode(node):
 
@@ -578,6 +660,12 @@ def GetXccNode(node):
 	
 	return None
 #@-node:ekr.20060513122450.389:GetXccNode
+#@+node:ekr.20060513122450.394:ImportFiles
+def ImportFiles():
+
+	Warning("TODO: ","Add import code in ImportFiles function!")
+#@nonl
+#@-node:ekr.20060513122450.394:ImportFiles
 #@+node:ekr.20060513122450.390:IsXcc
 def IsXcc(node):
 
@@ -586,22 +674,12 @@ def IsXcc(node):
 	else:
 		return False
 #@-node:ekr.20060513122450.390:IsXcc
-#@+node:ekr.20060513122450.392:UpdateProcess
-def UpdateProcess():
-	global ProcessList
-	if len(ProcessList) != 0:
-		p = ProcessList[0]
-		if p.Update() == True:
-			return
-		else:
-			if p.Close():
-				ProcessList = []		#reset 
-			else:
-				ProcessList.pop(0)
-				if len(ProcessList) != 0:					
-					if ProcessList[0].Open() != True:	#load next
-						ProcessList = []		#reset
-#@-node:ekr.20060513122450.392:UpdateProcess
+#@+node:ekr.20060513122450.36:Message
+def Message(module,warning):
+
+	g.es(module,newline = False,color = "blue")
+	g.es(warning)
+#@-node:ekr.20060513122450.36:Message
 #@+node:ekr.20060513122450.393:ReplaceVars
 def ReplaceVars(exp):
 	exp = exp.replace("_NAME_",NAME)
@@ -614,13 +692,26 @@ def ReplaceVars(exp):
 	
 #@nonl
 #@-node:ekr.20060513122450.393:ReplaceVars
-#@+node:ekr.20060513122450.394:ImportFiles
-def ImportFiles():
-
-	Warning("TODO: ","Add import code in ImportFiles function!")
+#@+node:ekr.20060513122450.39:TraceBack
+if 0:
+    def TraceBack():
+        typ,val,tb = sys.exc_info()
+        lines = traceback.format_exception(typ,val,tb)
+        for line in lines:
+            # g.es(line,color = "red")
+            print line
+            
+TraceBack = g.es_exception
 #@nonl
-#@-node:ekr.20060513122450.394:ImportFiles
-#@-node:ekr.20060513122450.388:Xcc Funcs
+#@-node:ekr.20060513122450.39:TraceBack
+#@+node:ekr.20060513122450.35:Warning
+def Warning(module,warning):
+
+	g.es(module,newline = False,color = "blue")
+	g.es(warning,color = "orange")
+#@nonl
+#@-node:ekr.20060513122450.35:Warning
+#@-node:ekr.20060513142641.1:Helpers
 #@-node:ekr.20060513142641:Module level
 #@+node:ekr.20060513122450.42:Classes
 #@+node:ekr.20060513141418:class controllerClass
@@ -665,7 +756,7 @@ class controllerClass:
         #@-node:ekr.20060513122450.8:Browse Info
         #@+node:ekr.20060513122450.10:Compile Info
         self.FIRST_ERROR = False
-        self.CPL = None
+        self.CPL = {}
         #@nonl
         #@-node:ekr.20060513122450.10:Compile Info
         #@+node:ekr.20060513122450.11:Debug Info
@@ -827,30 +918,7 @@ class controllerClass:
     #@nonl
     #@-node:ekr.20060513152032.9:onQuit
     #@-node:ekr.20060513152023:controller event handlers
-    #@+node:ekr.20060513122450.31:GoToNode
-    def GoToNode(self,node,index=None,tagcolor=None):
-        
-        if not node: return
-        cc = self ; c = cc.c ; w = cc.LeoBodyText
-    	
-        c.beginUpdate()
-        if not node.isVisible():
-            for p in node.parents_iter():
-                p.expand()
-        c.selectPosition(node)
-        c.endUpdate()
-    
-        if index is None: return
-        w.mark_set("insert",index)
-        w.see(index)
-    
-        if tagcolor is None: return 
-        l,c = w.index("insert").split(".")
-        w.tag_add("xcc_error",l+".0",l+".end")
-        w.tag_config("xcc_error",background=tagcolor)
-        w.tag_raise("xcc_error")
-    #@nonl
-    #@-node:ekr.20060513122450.31:GoToNode
+    #@+node:ekr.20060514122829:Utility
     #@+node:ekr.20060513122450.322:Child Node Funcs
     #@+node:ekr.20060513122450.323:cIs
     def cIs(self,node):
@@ -923,15 +991,61 @@ class controllerClass:
     #@nonl
     #@-node:ekr.20060513122450.327:cGetDict
     #@-node:ekr.20060513122450.322:Child Node Funcs
+    #@+node:ekr.20060513122450.31:GoToNode
+    def GoToNode(self,node,index=None,tagcolor=None):
+        
+        if not node: return
+        cc = self ; c = cc.c ; w = cc.LeoBodyText
+        
+        c.beginUpdate()
+        if not node.isVisible():
+            for p in node.parents_iter():
+                p.expand()
+        c.selectPosition(node)
+        c.endUpdate()
+    
+        if index is None: return
+        w.mark_set("insert",index)
+        w.see(index)
+    
+        if tagcolor is None: return 
+        l,c = w.index("insert").split(".")
+        w.tag_add("xcc_error",l+".0",l+".end")
+        w.tag_config("xcc_error",background=tagcolor)
+        w.tag_raise("xcc_error")
+    #@nonl
+    #@-node:ekr.20060513122450.31:GoToNode
+    #@+node:ekr.20060513122450.392:UpdateProcess
+    def UpdateProcess():
+        
+        g.trace(cc.ProcessList)
+        
+        cc = self
+        if cc.ProcessList:
+            process = cc.ProcessList[0]
+            if process.Update():
+                return
+            if process.Close():
+                cc.ProcessList = [] 
+            else:
+                cc.ProcessList.pop(0)
+                if cc.ProcessList:
+                    if not cc.ProcessList[0].Open():
+                        cc.ProcessList = []
+    #@nonl
+    #@-node:ekr.20060513122450.392:UpdateProcess
+    #@-node:ekr.20060514122829:Utility
     #@+node:ekr.20060513122450.295:Selected Node Funcs
-    #@+node:ekr.20060513122450.296:sGatherInfo
+    #@+node:ekr.20060513122450.296:sGatherInfo NOT CALLED
     def sGatherInfo(self):
         
         cc = self
+        
+        g.trace(cc.SELECTED_NODE)
     
         if cc.SELECTED_NODE:
             cc.sExtractHeadInfo()
-            
+    
             #@        @+others
             #@+node:ekr.20060513122450.297:Head
             cc.NAME = cc.sGet("NAME")
@@ -1002,7 +1116,7 @@ class controllerClass:
     
         return False
     #@nonl
-    #@-node:ekr.20060513122450.296:sGatherInfo
+    #@-node:ekr.20060513122450.296:sGatherInfo NOT CALLED
     #@+node:ekr.20060513122450.303:sExtractHeadInfo
     def sExtractHeadInfo (self):
         
@@ -1081,8 +1195,9 @@ class controllerClass:
     def sGetCompileInfo(self):
         
         cc = self
-    
         cc.CPL = cc.sGet("Compiler")
+        
+        g.trace(cc.CPL)
     
         if not cc.CPL.get("Compiler"):
             return Error("xcc: ","No compiler defined!")
@@ -1127,7 +1242,7 @@ class controllerClass:
             e = lines[row-1]
             e=e.replace("/","\\")
             
-        edexp = cc.CPL["Error detection"]
+        edexp = cc.CPL.get("Error detection")
         m = re.search(edexp,e,re.IGNORECASE)
         if m != None:
             try:
@@ -1181,7 +1296,8 @@ class controllerClass:
         cc = self
         
         if name not in cc.SELECTED_DICT:
-            cc.sSet(name,init)	
+            cc.sSet(name,init)
+    
         return cc.SELECTED_DICT[name]
     #@nonl
     #@-node:ekr.20060513122450.312:sGet
@@ -1521,9 +1637,9 @@ class controllerClass:
     #@+node:ekr.20060513122450.329:CreateFiles
     def CreateFiles(self):
         
-        g.trace()
-        
         cc = self
+        
+        g.trace(cc.OPTS)
         
         if cc.OPTS.get("Create files"):
             return cc.sGetWriteInfo() and WriterClass(cc).Result
@@ -1681,6 +1797,8 @@ class controllerClass:
     #@+node:ekr.20060513122450.339:Compiler Events
     #@+node:ekr.20060513122450.340:CplStart
     def CplStart(self):
+        
+        g.trace()
     
         cc = self
         cc.OutBuff = ""
@@ -1700,6 +1818,8 @@ class controllerClass:
     #@-node:ekr.20060513122450.340:CplStart
     #@+node:ekr.20060513122450.341:CplOut
     def CplOut(self,text):
+        
+        g.trace(repr(text))
         
         cc = self
         cc.OutBuff += text
@@ -1727,6 +1847,8 @@ class controllerClass:
     #@+node:ekr.20060513122450.342:CplErr
     def CplErr(self,text):
         
+        g.trace(repr(text))
+        
         cc = self
         
         cc.ErrBuff += text
@@ -1746,13 +1868,15 @@ class controllerClass:
     #@+node:ekr.20060513122450.343:CplEnd
     def CplEnd(self,exitcode):
         
+        g.trace(repr(exitcode))
+        
         cc = self
         
         text = "\""+("="*60)+"\n"
         if exitcode == None:
             text += "\" Build process successful!\n"
         else:
-            text += "// Build process aborted!\n"		
+            text += "// Build process aborted!\n"
         text += "\""+("-"*60)+"\n"
     
         cc.aAddText(text)
@@ -2539,7 +2663,50 @@ class ProcessClass:
 #@+node:ekr.20060513122450.53:class ConfigClass
 class ConfigClass:
     #@    @+others
-    #@+node:ekr.20060513122450.54:class PageClass
+    #@+node:ekr.20060513122450.82:  __init__
+    def __init__(self,cc):
+        
+        self.cc = cc
+        self.Pages = []
+        self.Buttons = []
+        self.ActivePage = None
+    
+        #switch frame
+        self.SwitchFrame = Tk.Frame(
+            cc.LeoFrame.split1Pane2,relief='groove',bd=2,height=40,width=100)
+        
+        #title
+        self.Title = Tk.Entry(self.SwitchFrame,justify='center')
+        self.Title.pack(side="top",fill="x",expand=1)	
+        
+        self.AddPages()	
+        #add pages switches
+        for page in self.Pages:
+            if page:
+                b = Tk.Button(self.SwitchFrame,text=page.name,width=10,command=page.Show,relief='groove')
+                self.Buttons.append(b)
+                b.pack(side="left")
+                if not self.ActivePage:
+                    self.ActivePage = page
+            
+        if 0: #Cancel button
+            # Not needed.
+            b = Tk.Button(self.SwitchFrame,text="Cancel",command=lambda: self.Hide(False))
+            b.pack(side="right")
+    
+        #Load button
+        b = Tk.Button(self.SwitchFrame,text="Load...",command=self.LoadFromFile)
+        b.pack(side="right")
+        
+        #Save button
+        b = Tk.Button(self.SwitchFrame,text="Save...",command=self.SaveToFile)
+        b.pack(side="right")	
+        
+        self.BreakTags = {}
+        self.visible = False
+    #@nonl
+    #@-node:ekr.20060513122450.82:  __init__
+    #@+node:ekr.20060513122450.54:  class PageClass
     class PageClass(Tk.Canvas):
         #@    @+others
         #@+node:ekr.20060513122450.55:class CHECK
@@ -2725,6 +2892,8 @@ class ConfigClass:
             cc = self.cc
             if pd == None:
                 pd = cc.sGet(self.name,{})
+                
+            g.trace(self.name,pd)
             
             for o in self.Objects:
                 if o.Name not in pd:				
@@ -2773,311 +2942,48 @@ class ConfigClass:
         #@nonl
         #@-node:ekr.20060513122450.81:Show
         #@-others
-    #@-node:ekr.20060513122450.54:class PageClass
-    #@+node:ekr.20060513122450.82:__init__
-    def __init__(self,cc):
-        
-        self.cc = cc
-        self.Pages = []
-        self.Buttons = []
-        self.ActivePage = None
-    
-        #switch frame
-        self.SwitchFrame = Tk.Frame(
-            cc.LeoFrame.split1Pane2,relief='groove',bd=2,height=40,width=100)
-        
-        #title
-        self.Title = Tk.Entry(self.SwitchFrame,justify='center')
-        self.Title.pack(side="top",fill="x",expand=1)	
-        
-        self.AddPages()	
-        #add pages switches
-        for page in self.Pages:
-            if page:
-                b = Tk.Button(self.SwitchFrame,text=page.name,width=10,command=page.Show,relief='groove')
-                self.Buttons.append(b)
-                b.pack(side="left")
-                if not self.ActivePage:
-                    self.ActivePage = page
-            
-        if 0: #Cancel button
-            # Not needed.
-            b = Tk.Button(self.SwitchFrame,text="Cancel",command=lambda: self.Hide(False))
-            b.pack(side="right")
-    
-        #Load button
-        b = Tk.Button(self.SwitchFrame,text="Load...",command=self.LoadFromFile)
-        b.pack(side="right")
-        
-        #Save button
-        b = Tk.Button(self.SwitchFrame,text="Save...",command=self.SaveToFile)
-        b.pack(side="right")	
-        
-        self.BreakTags = {}
-        self.visible = False
-    #@nonl
-    #@-node:ekr.20060513122450.82:__init__
-    #@+node:ekr.20060513122450.83:GetPage
-    def GetPage(self,name):
-        
-        for p in self.Pages:
-            if p and p.name == name:
-                return p
-    #@nonl
-    #@-node:ekr.20060513122450.83:GetPage
-    #@+node:ekr.20060513122450.84:GetButton
-    def GetButton(self,name):
-    
-        for b in self.Buttons:
-            if b and b["text"] == name:
-                return b
-    #@nonl
-    #@-node:ekr.20060513122450.84:GetButton
-    #@+node:ekr.20060513122450.85:Hide
-    def Hide(self,save=True):
-        
-        cc = self.cc
-        
-        if self.visible == True:
-            self.ActivePage.Hide()	
-            self.SwitchFrame.pack_forget()
-            cc.LeoYBodyBar.config(command=cc.LeoBodyText.yview)
-            cc.LeoBodyText.config(yscrollcommand=cc.LeoYBodyBar.set)
-            cc.LeoXBodyBar.pack(side = "bottom",fill="x")
-            if cc.CHILD_NODE:
-                cc.BreakBar.Show()
-            cc.LeoBodyText.pack(expand=1, fill="both")
-            
-            if save == True:
-                self.SaveToNode()
-            cc.ToolBar.ConfigButton.config(command=self.Show,relief='raised')
-            cc.ToolBar.DisplayFrame.pack(side="top",fill="x",expand=1)
-            self.visible = False
-    #@nonl
-    #@-node:ekr.20060513122450.85:Hide
-    #@+node:ekr.20060513122450.86:Show
-    def Show(self):
-        
-        cc = self.cc
-        if cc.Watcher.visible:
-            cc.Watcher.Hide()			
-        if cc.BreakBar.visible:
-            cc.BreakBar.Hide()
-        cc.ToolBar.DisplayFrame.pack_forget()
-        cc.LeoBodyText.pack_forget()
-        cc.LeoXBodyBar.pack_forget()
-        cc.LeoYBodyBar.pack_forget()
-        
-        self.SwitchFrame.pack(side="top", fill="x")
-        self.LoadFromNode()
-        self.ActivePage.Show()
-        cc.ToolBar.ConfigButton.config(command=self.Hide,relief='sunken')
-        self.visible = True
-        cc.c.redraw()
-    #@nonl
-    #@-node:ekr.20060513122450.86:Show
-    #@+node:ekr.20060513122450.87:ClearConfig
-    def ClearConfig(self):
-        for p in self.Pages:
-            if p.name == "Options":
-                p.ClearObjects("False")
-            else:
-                p.ClearObjects()
-    #@-node:ekr.20060513122450.87:ClearConfig
-    #@+node:ekr.20060513122450.88:LoadFromNode
-    def LoadFromNode(self):
-    
-        cc = self.cc
-        self.Title.delete(0,'end')
-        self.Title.insert('end',cc.sGet("Title"))
-            
-        for p in self.Pages:
-            if p:
-                p.LoadObjects()
-    #@nonl
-    #@-node:ekr.20060513122450.88:LoadFromNode
-    #@+node:ekr.20060513122450.89:SaveToNode
-    def SaveToNode(self):
-        
-        cc = self.cc
-        
-        cc.sSet("Title",self.Title.get())
-        
-        for p in self.Pages:
-            p and p.SaveObjects()
-    #@nonl
-    #@-node:ekr.20060513122450.89:SaveToNode
-    #@+node:ekr.20060513122450.90:LoadFromFile
-    def LoadFromFile(self):
-        try:
-            ft = ('XCC Config files', '.xcc'),
-            s = tkFileDialog.askopenfilename(filetypes=ft,title="Open xcc connfiguration file...")
-        
-            if s == "":
-                Error("xcc: ","Load action canceled by user!")
-                return
-            
-            #read file and compose code
-            f = file(s,"r")
-            td = None
-            code = "td ="+f.readline()
-            f.close()
-            
-            # load in temp dict
-            try:
-                exec code
-            except Exception:
-                TraceBack()
-                Error("xcc: ","File content is invalid!")
-                return
-            
-            #	load each pages
-            for p in self.Pages:
-                if p.name in td:
-                    p.LoadObjects(td[p.name])
-                    
-            #set title to file name
-            name,ext = os.path.splitext(s)
-            path,name = os.path.split(name)		
-            self.Title.delete(0,'end')
-            self.Title.insert('end',name)		
-            
-            #save to node to ensure integrity
-            self.SaveToNode()
-            
-        except Exception:
-            TraceBack()
-    
-    
-    
-    
-    #@-node:ekr.20060513122450.90:LoadFromFile
-    #@+node:ekr.20060513122450.91:SaveToFile
-    def SaveToFile(self):
-        try:
-            
-        
-            ft = ('XCC Config files', '.xcc'),
-            s = tkFileDialog.asksaveasfilename(
-            filetypes=ft,
-            title="Save xcc connfiguration file...",
-            initialfile = self.Title.get()
-            )
-            
-            if s == "":
-                Error("xcc: ","Save action canceled by user!")
-                return		
-            
-            name,ext = os.path.splitext(s)
-                    
-            td = {}
-            
-            # save each pages
-            for p in self.Pages:
-                td[p.name] = {}
-                p.SaveObjects(td[p.name])	
-            
-            #write the dict to file
-            f = file(name+".xcc","w+")
-            Message("xcc: ","Writing config in "+name+".xcc")
-            f.write(str(td))
-            f.close()
-            
-            # reset title to file name
-            path,name = os.path.split(name)		
-            self.Title.delete(0,'end')
-            self.Title.insert('end',name)
-            
-            # save to node
-            self.SaveToNode()
-        except Exception:
-            TraceBack()
-    
-    
-    
-    
-    
-    
-    
-    #@-node:ekr.20060513122450.91:SaveToFile
-    #@+node:ekr.20060513122450.92:Apply
-    def Apply(self):
-        self.SaveToNode()
-        self.Hide()
-    #@-node:ekr.20060513122450.92:Apply
-    #@+node:ekr.20060513122450.93:AddPages
-    def AddPages(self):
-        
-        cc = self.cc
-        self.Pages.append(self.OptPageClass(cc))
-        self.Pages.append(self.CplPageClass(cc))
-        self.Pages.append(self.DbgPageClass(cc))
-        self.Pages.append(self.ExePageClass(cc))
-        #self.Pages.append(self.CodePageClass(cc))
-    #@nonl
-    #@-node:ekr.20060513122450.93:AddPages
-    #@+node:ekr.20060513122450.94:class OptPageClass
-    class OptPageClass(PageClass):
-    
+    #@-node:ekr.20060513122450.54:  class PageClass
+    #@+node:ekr.20060513122450.126: class CodePageClass
+    class CodePageClass(PageClass):
         #@    @+others
-        #@+node:ekr.20060513122450.95:__init__
+        #@+node:ekr.20060513122450.127:__init__
         def __init__(self,cc):
-            
+        
             self.cc = cc
-            ConfigClass.PageClass.__init__(self,cc,"Options")
-        #@-node:ekr.20060513122450.95:__init__
-        #@+node:ekr.20060513122450.96:CreateObjects
-        def CreateObjects(self,master): # must overide
-        
+            ConfigClass.PageClass.__init__(self,"Code")
+        #@-node:ekr.20060513122450.127:__init__
+        #@+node:ekr.20060513122450.128:CreateObjects
+        def CreateObjects(self,master):#must overide
+            bd=self["background"]
+            x=10
+            y=10
+            text_w = 350
+            text_h = 80
             #@    @+others
-            #@+node:ekr.20060513122450.97:Actions Switches
-            s1 = self.CHECK(master,"Create files",x=5,y=5)
-            s2 = self.CHECK(master,"Auto include header",x=100,y=5)
-            self.AddObject(s1)
-            self.AddObject(s2)
-            
-            self.AddSep(length=self.W)
-            s1 = self.CHECK(master,"Compile",x=5,y=self.H)
-            s2 = self.CHECK(master,"Seek first error",x=100,y=self.H)
-            self.AddObject(s1)
-            self.AddObject(s2)
-            
-            self.AddSep(length=self.W)
-            s1 = self.CHECK(master,"Execute",x=5,y=self.H)
-            s2 = self.CHECK(master,"Connect to pipe",x=100,y=self.H)
-            self.AddObject(s1)
-            self.AddObject(s2)
-            
-            self.AddSep(length=self.W)
-            s1 = self.CHECK(master,"Debug",x=5,y=self.H)
-            s2 = self.CHECK(master,"Seek breakpoints",x=100,y=self.H)
-            self.AddObject(s1)
-            self.AddObject(s2)
-            
-            #-------------------------------------------------------------
-            self.AddSep(self.W)
-            self.AddObject(self.CHECK(master,"Xcc verbose",x=5,y=self.H))
-            self.AddObject(self.CHECK(master,"Filter output",x=5,y=self.H))
+            #@+node:ekr.20060513122450.129:Entries
+            self.AddObject(self.TEXT(master,"File header",x=5,y=5,w=350,h=80))
+            self.AddSep()
+            self.AddObject(self.ENTRY(master,"Class opening",x=5,y=self.H,w=350,h=20))
+            self.AddObject(self.ENTRY(master,"Class closing",x=5,y=self.H,w=350,h=20))
+            self.AddObject(self.ENTRY(master,"Class header",x=5,y=self.H,w=350,h=20))
+            self.AddObject(self.ENTRY(master,"Class footer",x=5,y=self.H,w=350,h=20))
+            self.AddSep()
+            self.AddObject(self.ENTRY(master,"Function header",x=5,y=self.H,w=350,h=20))
+            self.AddObject(self.ENTRY(master,"Function footer",x=5,y=self.H,w=350,h=20))
+            self.AddObject(self.ENTRY(master,"Function opening",x=5,y=self.H,w=350,h=20))
+            self.AddObject(self.ENTRY(master,"Function closing",x=5,y=self.H,w=350,h=20))
+            self.AddSep()
+            self.AddObject(self.TEXT(master,"File footer",x=5,y=self.H,w=350,h=80))
             #@nonl
-            #@-node:ekr.20060513122450.97:Actions Switches
-            #@+node:ekr.20060513122450.98:Import
-            #self.AddSep(self.W)
-            #b = Tk.Button(master,text="Import...",width=10,default='disabled',command = ImportFiles)
-            #master.create_window(self.X+5,self.H,width=60,height=20,anchor='nw',window=b)
-            #c1 = self.CHECK(master,"Merge",x=80,y=self.H)
-            #c2 = self.CHECK(master,"Use corresponding source/header",x=150,y=self.H)
-            #self.AddObject(c1)
-            #self.AddObject(c2)
-            #@nonl
-            #@-node:ekr.20060513122450.98:Import
+            #@-node:ekr.20060513122450.129:Entries
             #@-others
-        
-            self.AddSep(length=self.W)
+            self.AddSep()
         #@nonl
-        #@-node:ekr.20060513122450.96:CreateObjects
+        #@-node:ekr.20060513122450.128:CreateObjects
         #@-others
-    #@-node:ekr.20060513122450.94:class OptPageClass
-    #@+node:ekr.20060513122450.99:class CplPageClass
+    #@nonl
+    #@-node:ekr.20060513122450.126: class CodePageClass
+    #@+node:ekr.20060513122450.99: class CplPageClass
     class CplPageClass(PageClass):
         #@    @+others
         #@+node:ekr.20060513122450.100:__init__
@@ -3233,8 +3139,8 @@ class ConfigClass:
         
         #@-node:ekr.20060513122450.103:CreateObjects
         #@-others
-    #@-node:ekr.20060513122450.99:class CplPageClass
-    #@+node:ekr.20060513122450.109:class DbgPageClass
+    #@-node:ekr.20060513122450.99: class CplPageClass
+    #@+node:ekr.20060513122450.109: class DbgPageClass
     class DbgPageClass(PageClass):
         #@    @+others
         #@+node:ekr.20060513122450.110:__init__
@@ -3388,8 +3294,8 @@ class ConfigClass:
             #@-others
         #@-node:ekr.20060513122450.112:CreateObjects
         #@-others
-    #@-node:ekr.20060513122450.109:class DbgPageClass
-    #@+node:ekr.20060513122450.121:class ExePageClass
+    #@-node:ekr.20060513122450.109: class DbgPageClass
+    #@+node:ekr.20060513122450.121: class ExePageClass
     class ExePageClass(PageClass):
         #@    @+others
         #@+node:ekr.20060513122450.122:__init__
@@ -3422,47 +3328,267 @@ class ConfigClass:
         #@nonl
         #@-node:ekr.20060513122450.123:CreateObjects
         #@-others
-    #@-node:ekr.20060513122450.121:class ExePageClass
-    #@+node:ekr.20060513122450.126:class CodePageClass
-    class CodePageClass(PageClass):
+    #@-node:ekr.20060513122450.121: class ExePageClass
+    #@+node:ekr.20060513122450.94: class OptPageClass
+    class OptPageClass(PageClass):
+    
         #@    @+others
-        #@+node:ekr.20060513122450.127:__init__
+        #@+node:ekr.20060513122450.95:__init__
         def __init__(self,cc):
-        
+            
             self.cc = cc
-            ConfigClass.PageClass.__init__(self,"Code")
-        #@-node:ekr.20060513122450.127:__init__
-        #@+node:ekr.20060513122450.128:CreateObjects
-        def CreateObjects(self,master):#must overide
-            bd=self["background"]
-            x=10
-            y=10
-            text_w = 350
-            text_h = 80
+            ConfigClass.PageClass.__init__(self,cc,"Options")
+        #@-node:ekr.20060513122450.95:__init__
+        #@+node:ekr.20060513122450.96:CreateObjects
+        def CreateObjects(self,master): # must overide
+        
             #@    @+others
-            #@+node:ekr.20060513122450.129:Entries
-            self.AddObject(self.TEXT(master,"File header",x=5,y=5,w=350,h=80))
-            self.AddSep()
-            self.AddObject(self.ENTRY(master,"Class opening",x=5,y=self.H,w=350,h=20))
-            self.AddObject(self.ENTRY(master,"Class closing",x=5,y=self.H,w=350,h=20))
-            self.AddObject(self.ENTRY(master,"Class header",x=5,y=self.H,w=350,h=20))
-            self.AddObject(self.ENTRY(master,"Class footer",x=5,y=self.H,w=350,h=20))
-            self.AddSep()
-            self.AddObject(self.ENTRY(master,"Function header",x=5,y=self.H,w=350,h=20))
-            self.AddObject(self.ENTRY(master,"Function footer",x=5,y=self.H,w=350,h=20))
-            self.AddObject(self.ENTRY(master,"Function opening",x=5,y=self.H,w=350,h=20))
-            self.AddObject(self.ENTRY(master,"Function closing",x=5,y=self.H,w=350,h=20))
-            self.AddSep()
-            self.AddObject(self.TEXT(master,"File footer",x=5,y=self.H,w=350,h=80))
+            #@+node:ekr.20060513122450.97:Actions Switches
+            s1 = self.CHECK(master,"Create files",x=5,y=5)
+            s2 = self.CHECK(master,"Auto include header",x=100,y=5)
+            self.AddObject(s1)
+            self.AddObject(s2)
+            
+            self.AddSep(length=self.W)
+            s1 = self.CHECK(master,"Compile",x=5,y=self.H)
+            s2 = self.CHECK(master,"Seek first error",x=100,y=self.H)
+            self.AddObject(s1)
+            self.AddObject(s2)
+            
+            self.AddSep(length=self.W)
+            s1 = self.CHECK(master,"Execute",x=5,y=self.H)
+            s2 = self.CHECK(master,"Connect to pipe",x=100,y=self.H)
+            self.AddObject(s1)
+            self.AddObject(s2)
+            
+            self.AddSep(length=self.W)
+            s1 = self.CHECK(master,"Debug",x=5,y=self.H)
+            s2 = self.CHECK(master,"Seek breakpoints",x=100,y=self.H)
+            self.AddObject(s1)
+            self.AddObject(s2)
+            
+            #-------------------------------------------------------------
+            self.AddSep(self.W)
+            self.AddObject(self.CHECK(master,"Xcc verbose",x=5,y=self.H))
+            self.AddObject(self.CHECK(master,"Filter output",x=5,y=self.H))
             #@nonl
-            #@-node:ekr.20060513122450.129:Entries
+            #@-node:ekr.20060513122450.97:Actions Switches
+            #@+node:ekr.20060513122450.98:Import
+            #self.AddSep(self.W)
+            #b = Tk.Button(master,text="Import...",width=10,default='disabled',command = ImportFiles)
+            #master.create_window(self.X+5,self.H,width=60,height=20,anchor='nw',window=b)
+            #c1 = self.CHECK(master,"Merge",x=80,y=self.H)
+            #c2 = self.CHECK(master,"Use corresponding source/header",x=150,y=self.H)
+            #self.AddObject(c1)
+            #self.AddObject(c2)
+            #@nonl
+            #@-node:ekr.20060513122450.98:Import
             #@-others
-            self.AddSep()
+        
+            self.AddSep(length=self.W)
         #@nonl
-        #@-node:ekr.20060513122450.128:CreateObjects
+        #@-node:ekr.20060513122450.96:CreateObjects
         #@-others
+    #@-node:ekr.20060513122450.94: class OptPageClass
+    #@+node:ekr.20060513122450.93:AddPages
+    def AddPages(self):
+        
+        cc = self.cc
+        self.Pages.append(self.OptPageClass(cc))
+        self.Pages.append(self.CplPageClass(cc))
+        self.Pages.append(self.DbgPageClass(cc))
+        self.Pages.append(self.ExePageClass(cc))
+        #self.Pages.append(self.CodePageClass(cc))
     #@nonl
-    #@-node:ekr.20060513122450.126:class CodePageClass
+    #@-node:ekr.20060513122450.93:AddPages
+    #@+node:ekr.20060513122450.92:Apply
+    def Apply(self):
+        self.SaveToNode()
+        self.Hide()
+    #@-node:ekr.20060513122450.92:Apply
+    #@+node:ekr.20060513122450.87:ClearConfig
+    def ClearConfig(self):
+        for p in self.Pages:
+            if p.name == "Options":
+                p.ClearObjects("False")
+            else:
+                p.ClearObjects()
+    #@-node:ekr.20060513122450.87:ClearConfig
+    #@+node:ekr.20060513122450.84:GetButton
+    def GetButton(self,name):
+    
+        for b in self.Buttons:
+            if b and b["text"] == name:
+                return b
+    #@nonl
+    #@-node:ekr.20060513122450.84:GetButton
+    #@+node:ekr.20060513122450.83:GetPage
+    def GetPage(self,name):
+        
+        for p in self.Pages:
+            if p and p.name == name:
+                return p
+    #@nonl
+    #@-node:ekr.20060513122450.83:GetPage
+    #@+node:ekr.20060513122450.85:Hide
+    def Hide(self,save=True):
+        
+        cc = self.cc
+        
+        if self.visible == True:
+            self.ActivePage.Hide()	
+            self.SwitchFrame.pack_forget()
+            cc.LeoYBodyBar.config(command=cc.LeoBodyText.yview)
+            cc.LeoBodyText.config(yscrollcommand=cc.LeoYBodyBar.set)
+            cc.LeoXBodyBar.pack(side = "bottom",fill="x")
+            if cc.CHILD_NODE:
+                cc.BreakBar.Show()
+            cc.LeoBodyText.pack(expand=1, fill="both")
+            
+            if save == True:
+                self.SaveToNode()
+            cc.ToolBar.ConfigButton.config(command=self.Show,relief='raised')
+            cc.ToolBar.DisplayFrame.pack(side="top",fill="x",expand=1)
+            self.visible = False
+    #@nonl
+    #@-node:ekr.20060513122450.85:Hide
+    #@+node:ekr.20060513122450.90:LoadFromFile
+    def LoadFromFile(self):
+        try:
+            ft = ('XCC Config files', '.xcc'),
+            s = tkFileDialog.askopenfilename(filetypes=ft,title="Open xcc connfiguration file...")
+        
+            if s == "":
+                Error("xcc: ","Load action canceled by user!")
+                return
+            
+            #read file and compose code
+            f = file(s,"r")
+            td = None
+            code = "td ="+f.readline()
+            f.close()
+            
+            # load in temp dict
+            try:
+                exec code
+            except Exception:
+                TraceBack()
+                Error("xcc: ","File content is invalid!")
+                return
+            
+            #	load each pages
+            for p in self.Pages:
+                if p.name in td:
+                    p.LoadObjects(td[p.name])
+                    
+            #set title to file name
+            name,ext = os.path.splitext(s)
+            path,name = os.path.split(name)		
+            self.Title.delete(0,'end')
+            self.Title.insert('end',name)		
+            
+            #save to node to ensure integrity
+            self.SaveToNode()
+            
+        except Exception:
+            TraceBack()
+    
+    
+    
+    
+    #@-node:ekr.20060513122450.90:LoadFromFile
+    #@+node:ekr.20060513122450.88:LoadFromNode
+    def LoadFromNode(self):
+    
+        cc = self.cc
+        self.Title.delete(0,'end')
+        self.Title.insert('end',cc.sGet("Title"))
+            
+        for p in self.Pages:
+            if p:
+                p.LoadObjects()
+    #@nonl
+    #@-node:ekr.20060513122450.88:LoadFromNode
+    #@+node:ekr.20060513122450.91:SaveToFile
+    def SaveToFile(self):
+        try:
+            
+        
+            ft = ('XCC Config files', '.xcc'),
+            s = tkFileDialog.asksaveasfilename(
+            filetypes=ft,
+            title="Save xcc connfiguration file...",
+            initialfile = self.Title.get()
+            )
+            
+            if s == "":
+                Error("xcc: ","Save action canceled by user!")
+                return		
+            
+            name,ext = os.path.splitext(s)
+                    
+            td = {}
+            
+            # save each pages
+            for p in self.Pages:
+                td[p.name] = {}
+                p.SaveObjects(td[p.name])	
+            
+            #write the dict to file
+            f = file(name+".xcc","w+")
+            Message("xcc: ","Writing config in "+name+".xcc")
+            f.write(str(td))
+            f.close()
+            
+            # reset title to file name
+            path,name = os.path.split(name)		
+            self.Title.delete(0,'end')
+            self.Title.insert('end',name)
+            
+            # save to node
+            self.SaveToNode()
+        except Exception:
+            TraceBack()
+    
+    
+    
+    
+    
+    
+    
+    #@-node:ekr.20060513122450.91:SaveToFile
+    #@+node:ekr.20060513122450.89:SaveToNode
+    def SaveToNode(self):
+        
+        cc = self.cc
+        
+        cc.sSet("Title",self.Title.get())
+        
+        for p in self.Pages:
+            p and p.SaveObjects()
+    #@nonl
+    #@-node:ekr.20060513122450.89:SaveToNode
+    #@+node:ekr.20060513122450.86:Show
+    def Show(self):
+        
+        cc = self.cc
+        if cc.Watcher.visible:
+            cc.Watcher.Hide()			
+        if cc.BreakBar.visible:
+            cc.BreakBar.Hide()
+        cc.ToolBar.DisplayFrame.pack_forget()
+        cc.LeoBodyText.pack_forget()
+        cc.LeoXBodyBar.pack_forget()
+        cc.LeoYBodyBar.pack_forget()
+        
+        self.SwitchFrame.pack(side="top", fill="x")
+        self.LoadFromNode()
+        self.ActivePage.Show()
+        cc.ToolBar.ConfigButton.config(command=self.Hide,relief='sunken')
+        self.visible = True
+        cc.c.redraw()
+    #@nonl
+    #@-node:ekr.20060513122450.86:Show
     #@-others
 #@nonl
 #@-node:ekr.20060513122450.53:class ConfigClass
@@ -5537,6 +5663,8 @@ class WriterClass(CppParserClass):
         self.OnEnd = self.OnWriteEnd
         
         self.Result = self.CppParse(cc.SELECTED_NODE,cc.EXT)
+        g.trace('WriteClass.Result',self.Result)
+    #@nonl
     #@-node:ekr.20060513122450.260:__init__
     #@+node:ekr.20060513122450.261:OnWriteStart
     def OnWriteStart(self):
@@ -5602,8 +5730,7 @@ class WriterClass(CppParserClass):
             self.SRC_FILE.write("\n")
             self.SRC_FILE.close()
             self.SRC_FILE = None
-    
-    
+    #@nonl
     #@-node:ekr.20060513122450.262:OnWriteEnd
     #@-others
 #@-node:ekr.20060513122450.259:class WriterClass (CppParserClass)
