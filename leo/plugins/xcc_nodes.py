@@ -10,84 +10,99 @@
 #@nonl
 # X C++ Compiler nodes----
 # PLEASE SEE http://xccnode.sourceforge.net/
-#  The xcc_nodes.py plugins simplify the c++ syntaxe and integrate compiling
-#  and debuging tools.
-#  creation:
-#  	The name of the headline is set to:
-#  	@xcc projectname
-#  	or
-#  	@xcc projectname.ext
-#  	As soon as "@xcc" is written in the headline a blank configuration is
-#  written in the node.
-#  	The optional extension (*.ext) set the kind of project the node will 
-# build.
-#  	Empty extension is equivalent to the "exe" extension.
-#  		if ext == cpp,
-#  			inflate name.cpp
-#  			the node will attempt to build an executable
-#  		if ext == h,
-#  			inflate name.h
-#  			the node will attempt to check the syntaxe of the header
-#  		if ext == exe,
-#  			this is equivalent to no ext at all
-#  			inflate name.h and name.cpp
-#  			the node will attempt to build an executable
-#  		if ext == dll,
-#  			inflate name.h and name.cpp
-#  			the node will attempt to build a dynamic link library
-#  		if ext == lib,
-#  			inflate name.h and name.cpp
+#  The xcc_nodes.py plugins simplify c++ syntax and integrate compiling and 
+# debuging tools.
+# 
+# To start debugging, create a node whose headline is::
+# 
+#     @xcc projectname
+# 
+# or::
+# 
+#     @xcc projectname.ext
+# 
+# The optional extension (*.ext) set the kind of project the node will build.
+# An empty extension is equivalent to the '.exe' extension.
+# 
+# As soon as "@xcc" is written in the headline the plugin creates an empty 
+# configuration.
+# 
+#     if ext == cpp,
+#         inflate name.cpp
+#         the node will attempt to build an executable
+#     if ext == h,
+#         inflate name.h
+#         the node will attempt to check the syntax of the header
+#     if ext == exe,
+#         this is equivalent to no ext at all
+#         inflate name.h and name.cpp
+#         the node will attempt to build an executable
+#     if ext == dll,
+#         inflate name.h and name.cpp
+#         the node will attempt to build a dynamic link library
+#     if ext == lib,
+#         inflate name.h and name.cpp
 #  			the node will attempt to build a static link library
-#  usage:
-#  	The "@xcc" node support Leo's @others syntax but _NOT_ the sections
-#  reference.
-#  	The actual code is written in the childs of the main node and the code 
+# 
+# Creating programs
+# 
+# The "@xcc" node support Leo's @others syntax but **not**  section 
+# references.
+#  	The actual code is written in the children of the main node and the code 
 # generation is
 #  	affected by headlines.
-#  	Here are the rules:             (see examples for good understanding)
-#  	- The "At" rule:
-#  		if headline start with "@", the node and its childs are ignored.
-#  	- The "Semicolon" rule:
-#  		if a headline end with ";" and an other compatible rule is trigered in 
-# the
-#  same headline,
-#  		the rule will be written in the source if there is one.
-#  	- The "Comment" rule:
-#  		if a headline start with "//", all its body and childs are commented out
-#  in the form:
-#  			/*headline
-#  				body text
-#  				and
-#  				childs
-#  				*/
-#  		This rule is compatible with the semicolon rule
-#  	- The "Function" rule:
-#  		if a headline end with ")", the headline is used as funtion prototype, 
-# the body and childs are encased automatically in the opening and closing 
+# 
+#  	Here are the rules: (see examples for good understanding)
+# - The '@' rule: If a headline starts with "@", the node and its children are 
+# ignored.
+# 
+# - The semicolon rule: If a headline ends with ";" and another compatible 
+# rule is trigered in the
+#  same headline, the rule will be written in the source if there is one.
+# 
+# **//**: If a headline start with "//", all its body and children are 
+# commented out as follows::
+#     /*headline
+#         body text
+#         and
+#         childs
+#         */
+# 
+# This rule is compatible with the ';' rule.
+# 
+# - The function rule: If a headline ends with ")", the headline is used as 
+# funtion prototype.
+#   The body and children are encased automatically in the opening and closing 
 # curly brace.
-#  		"Class" and "Function" rules are disabled while in a "Function" rule. 
-# This rule is compatible with the semicolon rule, except that if there is a
-#  header
-#  		in the project the function will always be declared in the header and
-#  defined in the	source,appending "!" prevent declaration in header for 
-# global function.
-#  	- The "Class" rule:
-#  		if a headline start with "class", a class is declared and opening and
-#  closing curly brace
-#  		automatically written, all the childs from this node are class members,
-#  the functions are
-#  		correctly dispatched between header and source (access specifier is
-#  appended if it need to).
-#  	- The "Default" rule:
-#  		if a headline doesnt triger any of the preceeding rules, its headline is
-#  written as a comment
-#  		and the body and childs written "as is" in the form:
-#  			//headline
-#  				body text
-#  				and
-#  				childs
-#  		This rule is compatible with the semicolon rule
-# -> Config Panel reference :
+# 
+#   The class and function rules are disabled while in a function rule.
+#   The function rule is compatible with the semicolon rule, except that if 
+# there is a
+#   header in the project the function will always be declared in the header 
+# and
+#   defined in the	source, appending "!" prevents declaration in header for 
+# global functions.
+# 
+# - The class rule: If a headline starts with "class", a class is declared and 
+# opening and
+#   closing curly brace are automatically written, all the children of this 
+# node are class members,
+#   the functions are correctly dispatched between header and source (access 
+# specifier is
+#    appended if needed).
+# 
+# - The "Default" rule: If a headline doesn't match any of the preceeding 
+# rules,
+#   its headline is written as a comment and the body and childs written "as 
+# is" as follows::
+# 
+#     //headline
+#         body text
+#         and all children.
+# 
+# This rule is compatible with the semicolon rule.
+# 
+# -> Config Panel reference:
 # 	-> options : generally the most used options.
 # 		-> Create files : Request that files should be inflated.
 # 		-> Compile : Request that the project should be built using the configured 
@@ -105,6 +120,7 @@
 # and warning
 # 		-> Colorize log : Colorize the output if checked, allowing easyer 
 # browsing.
+# 
 # - by Alexis Gendron Paquette
 #@-at
 #@nonl
@@ -120,6 +136,10 @@
 # v 0.2 EKR:
 # - Add per-node controller class.  This required many changes.
 # - Many stylistic changes.  Many more are coming.
+# 
+# v 0.3 EKR:
+# - Fixed a large number of crashers due to the reorganized code.
+# - The major panels now appear to work.
 #@-at
 #@nonl
 #@-node:ekr.20060513183934:<< version history >>
@@ -227,7 +247,7 @@ if 1: # To be replaced by ivars
 #@@language python
 #@@tabwidth -4
 
-__version__ = "0.2"
+__version__ = "0.3"
 
 #@+others
 #@+node:ekr.20060513153648:Documentation
@@ -301,8 +321,7 @@ def init ():
 #@+node:ekr.20060513122450.395:Module-level event handlers
 #@+node:ekr.20060513122450.397:OnCreate
 def OnCreate(tag,keywords):
-    
-    g.trace(keywords)
+
     c = keywords.get("c")
     if c:
         controllers [c] = controllerClass(c)
@@ -327,8 +346,8 @@ def OnSelect2(tag,keywords):
     
     global controllers
     c = keywords.get("c")
-    controller = controllers.get(c)
-    controller and controller.onSelect()
+    cc = controllers.get(c)
+    cc and cc.onSelect()
 #@nonl
 #@-node:ekr.20060513122450.398:OnSelect2
 #@+node:ekr.20060513122450.399:OnIdle
@@ -336,8 +355,8 @@ def OnIdle(tag,keywords):
     
     global controllers
     c = keywords.get("c")
-    controller = controllers.get(c)
-    controller and controller.onIdle()
+    cc = controllers.get(c)
+    cc and cc.onIdle()
 #@nonl
 #@-node:ekr.20060513122450.399:OnIdle
 #@+node:ekr.20060513122450.400:OnCommand2
@@ -345,8 +364,8 @@ def OnCommand2(tag,keywords):
     
     global controllers
     c = keywords.get("c")
-    controller = controllers.get(c)
-    controller and controller.onCommand2(keywords)
+    cc = controllers.get(c)
+    cc and cc.onCommand2(keywords)
 #@nonl
 #@-node:ekr.20060513122450.400:OnCommand2
 #@+node:ekr.20060513122450.401:OnBodyDoubleClick
@@ -354,8 +373,8 @@ def OnBodyDoubleClick(tag,keywords):
     
     global controllers
     c = keywords.get("c")
-    controller = controllers.get(c)
-    controller and controller.onBodyDoubleClick()
+    cc = controllers.get(c)
+    cc and cc.onBodyDoubleClick()
 #@nonl
 #@-node:ekr.20060513122450.401:OnBodyDoubleClick
 #@+node:ekr.20060513122450.402:OnBodyKey2
@@ -363,8 +382,8 @@ def OnBodyKey2(tag,keywords):
     
     global controllers
     c = keywords.get("c")
-    controller = controllers.get(c)
-    controller and controller.onBodyKey2(keywords)
+    cc = controllers.get(c)
+    cc and cc.onBodyKey2(keywords)
 #@nonl
 #@-node:ekr.20060513122450.402:OnBodyKey2
 #@+node:ekr.20060513122450.403:OnHeadKey2
@@ -372,8 +391,8 @@ def OnHeadKey2(tag,keywords):
     
     global controllers
     c = keywords.get("c")
-    controller = controllers.get(c)
-    controller and controller.onHeadKey2(keywords)
+    cc = controllers.get(c)
+    cc and cc.onHeadKey2(keywords)
 #@nonl
 #@-node:ekr.20060513122450.403:OnHeadKey2
 #@+node:ekr.20060513122450.404:OnQuit
@@ -381,12 +400,19 @@ def OnQuit(tag,keywords):
     
     global controllers
     for key in controllers.keys():
-        controller = controllers.get(key)
-        controller.onQuit()
+        cc = controllers.get(key)
+        cc.onQuit()
 #@nonl
 #@-node:ekr.20060513122450.404:OnQuit
 #@-node:ekr.20060513122450.395:Module-level event handlers
-#@+node:ekr.20060513122450.27:OS Specific Funcs
+#@+node:ekr.20060513160819:pause & helpers
+def pause (self,pid):
+    
+    if os.name == "nt":
+        winPause(pid)
+    else:
+        linPause(pid)
+#@nonl
 #@+node:ekr.20060513122450.28:winPause
 def winPause(pid):
     
@@ -394,12 +420,10 @@ def winPause(pid):
 
 	hp = ctypes.windll.Kernel32.OpenProcess(0x1F0FFF,0,int(pid))
 	if hp == 0:
-		Error("xcc: ","can't open process: "+str(long(ctypes.windll.Kernel32.GetLastError())))
-		return
+		return Error("xcc: ","can't open process: "+str(long(ctypes.windll.Kernel32.GetLastError())))
 	
 	if ctypes.windll.Kernel32.DebugBreakProcess(hp) == 0:
-		Warning("xcc: ","Unable to break into the target!")
-		return
+		return Warning("xcc: ","Unable to break into the target!")
 #@nonl
 #@-node:ekr.20060513122450.28:winPause
 #@+node:ekr.20060513122450.29:linPause
@@ -409,7 +433,7 @@ def linPause(pid):	# theorical way to do it, untested!
 	os.kill(pid,signal.SIGINT)
 #@nonl
 #@-node:ekr.20060513122450.29:linPause
-#@-node:ekr.20060513122450.27:OS Specific Funcs
+#@-node:ekr.20060513160819:pause & helpers
 #@+node:ekr.20060513142641.1:Helpers
 #@+node:ekr.20060513122450.32:GetNodePath
 def GetNodePath(node,as="->"):
@@ -522,7 +546,7 @@ def DecompressIcon(data):
 # 	ft = ('All Files', '.*'),
 # 	s = tkFileDialog.askopenfilename(filetypes=ft,title="Select file to 
 # convert...")
-# 	if s != None and s != "":
+# 	if s:
 # 		f = file(s,"rb")
 # 		data = f.read()
 # 		f.close()
@@ -570,7 +594,7 @@ def UpdateProcess():
 		if p.Update() == True:
 			return
 		else:
-			if p.Close() != None:
+			if p.Close():
 				ProcessList = []		#reset 
 			else:
 				ProcessList.pop(0)
@@ -621,7 +645,7 @@ class controllerClass:
         
         self.LOCATE_CHILD = True
         self.CHILD_NODE = None
-        self.CHILD_DICT = None
+        self.CHILD_DICT = {}
         self.CHILD_LINE = None
         self.CHILD_EXT = None
         
@@ -671,8 +695,8 @@ class controllerClass:
         #@nonl
         #@-node:ekr.20060513122450.12:Execute Info
         #@+node:ekr.20060513122450.13:Options
-        self.FILTER_OUTPUT = "False"
-        self.VERBOSE = "False"
+        self.FILTER_OUTPUT = False
+        self.VERBOSE = False
         self.OPTS = {}
         #@nonl
         #@-node:ekr.20060513122450.13:Options
@@ -690,53 +714,54 @@ class controllerClass:
     #@-node:ekr.20060513142641.2:controller.ctor
     #@+node:ekr.20060513122450.391:initXcc
     def initXcc(self,c):
-    
-        self.CWD = os.getcwd()
-        self.LeoTop = c
-        self.LeoFrame = c.frame	
-    
-        self.LeoBodyText = self.LeoFrame.body.bodyCtrl
-        self.LeoYBodyBar = self.LeoFrame.body.bodyBar
-        self.LeoXBodyBar = self.LeoFrame.body.bodyXBar
         
-        g.trace(c,self.LeoBodyText)
+        cc = self
+        
+        cc.CWD = os.getcwd()
+        cc.LeoTop = c
+        cc.LeoFrame = c.frame	
     
-        self.LeoFont = self.LeoBodyText["font"]
-        self.LeoWrap = self.LeoBodyText["wrap"]
+        cc.LeoBodyText = cc.LeoFrame.body.bodyCtrl
+        cc.LeoYBodyBar = cc.LeoFrame.body.bodyBar
+        cc.LeoXBodyBar = cc.LeoFrame.body.bodyXBar
     
-        self.Config = ConfigClass(self)
-        self.BreakBar = BreakbarClass(self)
-        self.Watcher = WatcherClass(self)
-        self.ToolBar = ToolbarClass(self) # must init after breakbar cos use bg color
-    #@nonl
+        cc.LeoFont = cc.LeoBodyText["font"]
+        cc.LeoWrap = cc.LeoBodyText["wrap"]
+    
+        cc.Config = ConfigClass(cc)
+        cc.BreakBar = BreakbarClass(cc)
+        cc.Watcher = WatcherClass(cc)
+        cc.ToolBar = ToolbarClass(cc) # must be created after BreakBar.
     #@-node:ekr.20060513122450.391:initXcc
     #@+node:ekr.20060513152023:controller event handlers
     #@+node:ekr.20060513152032.3:onSelect
     def onSelect(self):
         
-        c = self.c ; p = c.currentPosition()
-        
+        cc = self ; p = cc.c.currentPosition()
+    
         if IsXcc(p):
-            self.sSelect(p)
-            self.cSelect()
+            cc.sSelect(p)
+            cc.cSelect()
         else:
             p2 = GetXccNode(p)
             if p2:
-                if p2 != self.SELECTED_NODE:
-                    self.sSelect(p2)
-                self.cSelect(p)			
+                if p2 != cc.SELECTED_NODE:
+                    cc.sSelect(p2)
+                cc.cSelect(p)			
             else:
-                self.sSelect()
-                self.cSelect()
+                cc.sSelect()
+                cc.cSelect()
     #@nonl
     #@-node:ekr.20060513152032.3:onSelect
     #@+node:ekr.20060513152032.4:onIdle
     def onIdle(self):
     
+        cc = self
         crash = None
+    
         try:
-            self.UpdateProcess()
-            self.BreakBar.IdleUpdate()
+            cc.UpdateProcess()
+            cc.BreakBar.IdleUpdate()
         except Exception:
             if crash:
                 TraceBack()
@@ -746,73 +771,67 @@ class controllerClass:
     #@+node:ekr.20060513152032.5:onCommand2
     def onCommand2(self,keywords):
     
+        cc = self
+    
         if keywords.get("label") in ["undo","redo"]:
-            if self.SELECTED_NODE != None:
-                self.BreakBar.bodychanged = True
+            if cc.SELECTED_NODE:
+                cc.BreakBar.bodychanged = True
     #@nonl
     #@-node:ekr.20060513152032.5:onCommand2
     #@+node:ekr.20060513152032.6:onBodyDoubleClick
     def onBodyDoubleClick(self):
-        
-        c = self.c ; p = c.currentPosition()
     
-        if self.SELECTED_NODE == p:
-            self.sGoToError()
+        cc = self
+    
+        if cc.SELECTED_NODE == cc.c.currentPosition():
+            cc.sGoToError()
     #@nonl
     #@-node:ekr.20060513152032.6:onBodyDoubleClick
     #@+node:ekr.20060513152032.7:onBodyKey2
     def onBodyKey2(self,keywords):
        
-        ch = keywords.get("ch")
-        self.LeoBodyText.tag_delete("xcc_error")
-        if self.CHILD_NODE != None and ch in ["\r","",str(chr(8))]:
-            self.BreakBar.BreaksFromTags()
+        cc = self ; ch = keywords.get("ch")
+        
+        cc.LeoBodyText.tag_delete("xcc_error")
+        if cc.CHILD_NODE and ch in ["\r","",str(chr(8))]:
+            cc.BreakBar.BreaksFromTags()
     #@nonl
     #@-node:ekr.20060513152032.7:onBodyKey2
     #@+node:ekr.20060513152032.8:onHeadKey2
     def onHeadKey2(self,keywords):
-       
-        # g.trace(keywords,g.callers())
-        
-        c = self.c ; p = c.currentPosition()
+    
+        cc = self ; p = cc.c.currentPosition()
         
         if IsXcc(p):
-            if self.SELECTED_NODE == None:
-                self.sSelect(p)
-                self.sInitDict()
+            if not cc.SELECTED_NODE:
+                cc.sSelect(p)
+                cc.sInitDict()
             else:
-                self.sGetBrowseInfo()
+                cc.sGetBrowseInfo()
         else:
             ch = keywords.get("ch")
-            if self.CHILD_NODE != None and ch == "\r":
-                self.cSelect(self.CHILD_NODE)
+            if cc.CHILD_NODE and ch == "\r":
+                cc.cSelect(cc.CHILD_NODE)
     #@nonl
     #@-node:ekr.20060513152032.8:onHeadKey2
     #@+node:ekr.20060513152032.9:onQuit
     def onQuit(self):
+        
+        cc = self
       
-        if self.ACTIVE_NODE != None:
-            self.GoToNode(self.ACTIVE_NODE)
-            self.aStop()
-            while self.ACTIVE_NODE != None:
-                self.UpdateProcess()
+        if cc.ACTIVE_NODE:
+            cc.GoToNode(cc.ACTIVE_NODE)
+            cc.aStop()
+            while cc.ACTIVE_NODE:
+                cc.UpdateProcess()
     #@nonl
     #@-node:ekr.20060513152032.9:onQuit
     #@-node:ekr.20060513152023:controller event handlers
-    #@+node:ekr.20060513160819:pause
-    def pause (self,pid):
-        
-        if os.name == "nt":
-            winPause(pid)
-        else:
-            linPause(pid)
-    #@nonl
-    #@-node:ekr.20060513160819:pause
     #@+node:ekr.20060513122450.31:GoToNode
     def GoToNode(self,node,index=None,tagcolor=None):
         
         if not node: return
-        c = self.c ; w = self.LeoBodyText
+        cc = self ; c = cc.c ; w = cc.LeoBodyText
     	
         c.beginUpdate()
         if not node.isVisible():
@@ -835,150 +854,150 @@ class controllerClass:
     #@+node:ekr.20060513122450.322:Child Node Funcs
     #@+node:ekr.20060513122450.323:cIs
     def cIs(self,node):
+    
         for p in node.parents_iter():
             if p.headString()[0:5] == "@xcc ":
                 return True	
         return False
+    #@nonl
     #@-node:ekr.20060513122450.323:cIs
     #@+node:ekr.20060513122450.324:cSet
     def cSet(self,name,value):
-        self.CHILD_DICT[name] = value
+        
+        cc = self
+        cc.CHILD_DICT[name] = value
     #@-node:ekr.20060513122450.324:cSet
     #@+node:ekr.20060513122450.325:cGet
     def cGet(self,name,init=""):
-        if name not in self.CHILD_DICT:
-            self.cSet(name,init)	
-        return self.CHILD_DICT[name]
+        
+        cc = self
+        
+        if name not in cc.CHILD_DICT:
+            cc.cSet(name,init)
+    
+        return cc.CHILD_DICT[name]
+    #@nonl
     #@-node:ekr.20060513122450.325:cGet
     #@+node:ekr.20060513122450.326:cSelect
     def cSelect(self,node=None):
-        # global CHILD_NODE,CHILD_DICT,CHILD_LINE,CHILD_EXT
-        # try:
-        if node != None:
-            self.Config.Hide()
-            #if CHILD_NODE != None:
-            #	BreakBar.Hide()
-            self.CHILD_NODE = node
-            self.CHILD_DICT = self.cGetDict()
-            if self.LOCATE_CHILD == True:
-                loc = LOCATOR(CHILD_NODE,1)
-                self.CHILD_EXT = loc.FOUND_FILE_EXT
-                self.CHILD_LINE = loc.FOUND_FILE_LINE								
-                self.BreakBar.Show()
-                if loc.FOUND_FILE_EXT != None:
-                    self.ToolBar.SyncDisplayToChild(loc)
+        
+        cc = self
+    
+        if node:
+            cc.Config.Hide()
+            cc.CHILD_NODE = node
+            cc.CHILD_DICT = cc.cGetDict()
+            if cc.LOCATE_CHILD:
+                loc = LocatorClass(cc,cc.CHILD_NODE,1)
+                cc.CHILD_EXT = loc.FOUND_FILE_EXT
+                cc.CHILD_LINE = loc.FOUND_FILE_LINE								
+                cc.BreakBar.Show()
+                if loc.FOUND_FILE_EXT:
+                    cc.ToolBar.SyncDisplayToChild(loc)
                 else:
-                    self.ToolBar.SyncDisplayToError()
-        elif self.CHILD_NODE != None:
-            self.BreakBar.Hide()
-            self.CHILD_NODE = None
-            self.CHILD_DICT = None
-            self.CHILD_LINE = None
-            self.CHILD_EXT = None
-        # except Exception:
-            # TraceBack()
+                    cc.ToolBar.SyncDisplayToError()
+        elif cc.CHILD_NODE:
+            cc.BreakBar.Hide()
+            cc.CHILD_NODE = None
+            cc.CHILD_DICT = {}
+            cc.CHILD_LINE = None
+            cc.CHILD_EXT = None
     #@nonl
     #@-node:ekr.20060513122450.326:cSelect
     #@+node:ekr.20060513122450.327:cGetDict
     def cGetDict(self,node=None):#Get xcc child dict alias "xcc_child_cfg" in ua	
     
-        if node == None:
-            node =	self.CHILD_NODE
-        if node == None:
-            return None
+        cc = self
+    
+        if node: node =	cc.CHILD_NODE
+        if not node: return {}
             
         v = node.v
-        if hasattr(v,"unknownAttributes") != True:
+        if not hasattr(v,"unknownAttributes"):
             v.unknownAttributes = {}		
         
         if "xcc_child_cfg" not in v.unknownAttributes:
-            v.unknownAttributes["xcc_child_cfg"] = d = {}
-            return d		
-        else:
-            return v.unknownAttributes["xcc_child_cfg"]
+            v.unknownAttributes["xcc_child_cfg"] = {}
+        
+        return v.unknownAttributes.get("xcc_child_cfg")
     #@nonl
     #@-node:ekr.20060513122450.327:cGetDict
     #@-node:ekr.20060513122450.322:Child Node Funcs
     #@+node:ekr.20060513122450.295:Selected Node Funcs
     #@+node:ekr.20060513122450.296:sGatherInfo
     def sGatherInfo(self):
+        
+        cc = self
     
-        if self.SELECTED_NODE:
-            self.sExtractHeadInfo()
+        if cc.SELECTED_NODE:
+            cc.sExtractHeadInfo()
             
             #@        @+others
             #@+node:ekr.20060513122450.297:Head
-            # global REL_PATH,NAME,EXT,REL_PATH,ABS_PATH,CWD
-            
-            self.NAME = sGet("NAME")
-            self.EXT = sGet("EXT")
-            self.REL_PATH = sGet("REL_PATH")
-            self.ABS_PATH = sGet("ABS_PATH")
-            self.CWD = os.getcwd()
+            cc.NAME = cc.sGet("NAME")
+            cc.EXT = cc.sGet("EXT")
+            cc.REL_PATH = cc.sGet("REL_PATH")
+            cc.ABS_PATH = cc.sGet("ABS_PATH")
+            cc.CWD = os.getcwd()
                 
-            if self.NAME == "":
-                Error("xcc: ","Node have no name!")
-                return False
+            if not cc.NAME:
+                return Error("xcc: ","Node have no name!")
             #@-node:ekr.20060513122450.297:Head
             #@+node:ekr.20060513122450.298:Dicts
-            self.OPTS = self.sGet("Options")
-            self.CPL = self.sGet("Compiler")
-            self.DBG = self.sGet("Debugger")
-            self.EXE = self.sGet("Executable")
+            cc.OPTS = cc.sGet("Options")
+            cc.CPL = cc.sGet("Compiler")
+            cc.DBG = cc.sGet("Debugger")
+            cc.EXE = cc.sGet("Executable")
             #@nonl
             #@-node:ekr.20060513122450.298:Dicts
             #@+node:ekr.20060513122450.299:File Creation
-            # global CREATE_FILES,SRC_EXT
-            self.CREATE_FILES = self.OPTS.get("Create files")
+            cc.CREATE_FILES = cc.OPTS.get("Create files")
             
-            if self.CREATE_FILES == "True":
+            if cc.CREATE_FILES:
             
-                if self.REL_PATH != "" and os.access(self.REL_PATH,os.F_OK) != 1:
-                    os.makedirs(self.REL_PATH)
+                if cc.REL_PATH and os.access(cc.REL_PATH,os.F_OK) != 1:
+                    os.makedirs(cc.REL_PATH)
                     
-                if self.EXT == "h": self.SRC_EXT = EXT
+                if cc.EXT == "h": cc.SRC_EXT = cc.EXT
                 
-                if self.EXT == "exe": self.SRC_EXT = "cpp"
+                if cc.EXT == "exe": cc.SRC_EXT = "cpp"
                 
-                if self.EXT == "cpp" or self.EXT == "c":
-                    self.SRC_EXT = self.EXT
+                if cc.EXT == "cpp" or cc.EXT == "c":
+                    cc.SRC_EXT = cc.EXT
                         
-                if self.EXT == "dll": self.SRC_EXT = "cpp"
+                if cc.EXT == "dll": cc.SRC_EXT = "cpp"
             #@nonl
             #@-node:ekr.20060513122450.299:File Creation
             #@+node:ekr.20060513122450.300:Compilation
-            self.COMPILE = self.OPTS.get("Compile")
+            cc.COMPILE = cc.OPTS.get("Compile")
             
-            if self.COMPILE == "True":
-                self.COMPILER = self.CPL.get("Compiler")
-                if not self.COMPILER:
-                    Error("xcc: ","Compiler is undefined!")
-                    return False
+            if cc.COMPILE:
+                cc.COMPILER = cc.CPL.get("Compiler")
+                if not cc.COMPILER:
+                    return Error("xcc: ","Compiler is undefined!")
             #@nonl
             #@-node:ekr.20060513122450.300:Compilation
             #@+node:ekr.20060513122450.301:Execution
-            self.EXECUTE = self.OPTS.get("Execute")
+            cc.EXECUTE = cc.OPTS.get("Execute")
             #@nonl
             #@-node:ekr.20060513122450.301:Execution
             #@+node:ekr.20060513122450.302:Debugging
-            self.DEBUG = OPTS.get("Debug")
+            cc.DEBUG = cc.OPTS.get("Debug")
             
-            if self.DEBUG == "TRUE":
-                self.DEBUGGER = self.DBG.get("Debugger")
-                if not self.DEBUGGER:
-                    Error("xcc: ","Debugger is undefined!")
-                    return False
+            if cc.DEBUG:
+                cc.DEBUGGER = cc.DBG.get("Debugger")
+                if not cc.DEBUGGER:
+                    return Error("xcc: ","Debugger is undefined!")
                     
-                if self.OPTS.get("Seek breapoints")== "True":
-                    if self.DBG.get("Breaks start index") == "":
-                        Warning("xcc: ","Breaks start index is undefined, using 0")
-                        self.DBG["Breaks start index"] = "0"
+                if cc.OPTS.get("Seek breapoints") and not cc.DBG.get("Breaks start index"):
+                    Warning("xcc: ","Breaks start index is undefined, using 0")
+                    cc.DBG["Breaks start index"] = "0"
             #@nonl
             #@-node:ekr.20060513122450.302:Debugging
             #@-others
         
-            self.VERBOSE = self.OPTS.get("Xcc verbose")
-            self.FILTER_OUTPUT = self.OPTS.get("Filter output")
+            cc.VERBOSE = cc.OPTS.get("Xcc verbose")
+            cc.FILTER_OUTPUT = cc.OPTS.get("Filter output")
             return True
     
         return False
@@ -986,8 +1005,10 @@ class controllerClass:
     #@-node:ekr.20060513122450.296:sGatherInfo
     #@+node:ekr.20060513122450.303:sExtractHeadInfo
     def sExtractHeadInfo (self):
+        
+        cc = self
     
-        w = self.SELECTED_NODE.headString() [5:]
+        w = cc.SELECTED_NODE.headString() [5:]
         if w:
             path, name = os.path.split(w)
             name, ext = os.path.splitext(name)
@@ -995,122 +1016,118 @@ class controllerClass:
         else:
             path, name, ext = '', '', ''
     
-        self.sSet("REL_PATH",path)
-        self.sSet("NAME",name)
-        self.sSet("EXT",ext)
-        theDir = g.choose(path,self.CWD+"\\"+path,self.CWD)
-        self.sSet("ABS_PATH",theDir)
+        cc.sSet("REL_PATH",path)
+        cc.sSet("NAME",name)
+        cc.sSet("EXT",ext)
+        theDir = g.choose(path,cc.CWD+"\\"+path,cc.CWD)
+        cc.sSet("ABS_PATH",theDir)
     #@nonl
     #@-node:ekr.20060513122450.303:sExtractHeadInfo
     #@+node:ekr.20060513122450.304:sGetBrowseInfo
-    def sGetBrowseInfo(self):
-          
-        w = self.SELECTED_NODE.headString()[5:]
-        if w:		
-            self.REL_PATH,self.NAME = os.path.split(w)
-            self.NAME,EXT = os.path.splitext(self.NAME)		
-            self.EXT = EXT.lower().replace(".","") or 'exe'
+    def sGetBrowseInfo (self):
+    
+        cc = self
+    
+        w = cc.SELECTED_NODE.headString() [5:]
+        if w:
+            cc.REL_PATH, cc.NAME = os.path.split(w)
+            cc.NAME, EXT = os.path.splitext(cc.NAME)
+            cc.EXT = EXT.lower().replace(".","") or 'exe'
         else:
-            self.REL_PATH = ""
-            self.NAME = ""
-            self.EXT = "exe"
-        
-        self.CWD = os.getcwd()
-        
-        if self.REL_PATH != "":		
-            self.ABS_PATH = self.CWD+"\\"+self.REL_PATH
-        else:
-            self.ABS_PATH = self.CWD
-            
-        if EXT == "h":
-            self.SRC_EXT = self.EXT	
-        if EXT == "exe":
-            self.SRC_EXT = "cpp"	
-        if EXT == "cpp" or self.EXT == "c":
-            self.SRC_EXT = self.EXT			
-        if EXT == "dll":
-            self.SRC_EXT = "cpp"
-            
-        self.PTS = self.sGet("Options",{})
-        
-        
-    #@nonl
+            cc.REL_PATH, cc.NAME, cc.EXT = '', '', 'exe'
+    
+        cc.CWD = cc.ABS_PATH = os.getcwd()
+    
+        if cc.REL_PATH: cc.ABS_PATH = cc.ABS_PATH + "\\" + cc.REL_PATH
+    
+        if cc.EXT == "h": cc.SRC_EXT = cc.EXT
+        if cc.EXT == "exe": cc.SRC_EXT = "cpp"
+        if cc.EXT in ('c','cpp'): cc.SRC_EXT = cc.EXT
+        if cc.EXT == "dll": cc.SRC_EXT = "cpp"
+    
+        cc.PTS = cc.sGet("Options",{})
+    
     #@-node:ekr.20060513122450.304:sGetBrowseInfo
     #@+node:ekr.20060513122450.305:sGetWriteInfo
-    def sGetWriteInfo():
+    def sGetWriteInfo(self):
         
-        if self.NAME == "":
-            Error("xcc: ","Node have no name!")
-            return False
+        cc = self
         
-        if self.REL_PATH != "" and os.access(self.REL_PATH,os.F_OK) != 1:
-            os.makedirs(self.REL_PATH)
+        if cc.NAME == "":
+            return Error("xcc: ","Node have no name!")
         
-        self.COD = self.sGet("Code")	
+        if cc.REL_PATH != "" and os.access(cc.REL_PATH,os.F_OK) != 1:
+            os.makedirs(cc.REL_PATH)
+        
+        cc.COD = cc.sGet("Code")	
         #FILE_HDR = COD["File header"]
         #FILE_FTR = COD["File footer"]
         #CLASS_HDR = COD["Class header"]
         #CLASS_FTR = COD["Class footer"]
         #CLASS_OPN = COD["Class opening"]
         #CLASS_END = COD["Class closing"]
-        if not self.CLASS_OPN: self.CLASS_OPN = "{\n"	
-        if not self.CLASS_END: self.CLASS_END = "};\n"
+        if not cc.CLASS_OPN: cc.CLASS_OPN = "{\n"	
+        if not cc.CLASS_END: cc.CLASS_END = "};\n"
         #FUNC_HDR = COD["Function header"]
         #FUNC_FTR = COD["Function footer"]
         #FUNC_OPN = COD["Function opening"]
         #FUNC_END = COD["Function closing"]
-        if not self.FUNC_OPN: self.FUNC_OPN = "{\n"	
-        if not self.FUNC_END: self.FUNC_END = "}\n"
+        if not cc.FUNC_OPN: cc.FUNC_OPN = "{\n"	
+        if not cc.FUNC_END: cc.FUNC_END = "}\n"
         return True
     #@nonl
     #@-node:ekr.20060513122450.305:sGetWriteInfo
     #@+node:ekr.20060513122450.306:sGetCompileInfo
-    def sGetCompileInfo():
+    def sGetCompileInfo(self):
+        
+        cc = self
     
-        self.CPL = self.sGet("Compiler")
+        cc.CPL = cc.sGet("Compiler")
     
-        if not self.CPL.get("Compiler"):
-            Error("xcc: ","No compiler defined!")
-            return False
+        if not cc.CPL.get("Compiler"):
+            return Error("xcc: ","No compiler defined!")
             
-        self.VERBOSE = self.OPTS.get("Xcc verbose")
-            
+        cc.VERBOSE = cc.OPTS.get("Xcc verbose")
         return True
     
     #@-node:ekr.20060513122450.306:sGetCompileInfo
     #@+node:ekr.20060513122450.307:sGetDebugInfo
-    def sGetDebugInfo():
+    def sGetDebugInfo(self):
+        
+        cc = self
        
-        self.DBG = self.sGet("Debugger")
-        if not self.DBG["Debugger"] == "":
-            Error("xcc: ","No debugger defined!")
-            return False
-        
-        self.VERBOSE = self.OPTS.get("Xcc verbose")
-        
-        return True
+        cc.DBG = cc.sGet("Debugger")
+        if cc.DBG["Debugger"]:
+            cc.VERBOSE = cc.OPTS.get("Xcc verbose")
+            return True
+        else:
+            return Error("xcc: ","No debugger defined!")
     #@nonl
     #@-node:ekr.20060513122450.307:sGetDebugInfo
     #@+node:ekr.20060513122450.308:sGetExecInfo
     def sGetExecInfo():
+        
+        cc = self
     
-        self.EXE = self.sGet("Executable")		
+        cc.EXE = cc.sGet("Executable")		
         return True
     #@nonl
     #@-node:ekr.20060513122450.308:sGetExecInfo
     #@+node:ekr.20060513122450.309:sGoToError
     def sGoToError(self,e=None):
         
+        cc = self
+        
         mask = [" ",":","(",")"]
         if e == None:
-            row,col = self.LeoBodyText.index("insert").split(".")
+            row,col = cc.LeoBodyText.index("insert").split(".")
             row = int(row)
             col = int(col)
-            lines = self.SELECTED_NODE.bodyString().splitlines()
+            lines = cc.SELECTED_NODE.bodyString().splitlines()
             e = lines[row-1]
             e=e.replace("/","\\")
             
-        edexp = self.CPL["Error detection"]
+        edexp = cc.CPL["Error detection"]
         m = re.search(edexp,e,re.IGNORECASE)
         if m != None:
             try:
@@ -1126,51 +1143,57 @@ class controllerClass:
                 return
             
             name,ext = os.path.splitext(file)
-            if name == self.NAME:
-                SeekErrorClass(self,int(line),ext.replace(".",""),color=ErrorColor)
+            if name == cc.NAME:
+                SeekErrorClass(cc,int(line),ext.replace(".",""),color=ErrorColor)
     #@nonl
     #@-node:ekr.20060513122450.309:sGoToError
     #@+node:ekr.20060513122450.310:sGo
     def sGo(self):	#this is where the selected node also become the active node
+    
+        cc = self
       
-        if self.NAME == "":
-            Error("xcc: ","Node have no name!")
-            return False
-        self.sSetText("@language c++\n")
+        if not cc.NAME:
+            return Error("xcc: ","Node has no name!")
+    
+        cc.sSetText("@language c++\n")
         
-        if self.CreateFiles() == False:
+        if not cc.CreateFiles() or not cc.Compile():
             return False
-        if self.Compile() == False:
-            return False
-        if self.OPTS.get("Execute") == "True" and self.OPTS.get("Debug") == "False":
-            if self.Execute() == False:
+        if cc.OPTS.get("Execute") == "True" and cc.OPTS.get("Debug") == "False":
+            if not cc.Execute():
                 return False
-        if self.OPTS.get("Debug") == "True":
-            if self.Debug() == False:
+        if cc.OPTS.get("Debug") == "True":
+            if not cc.Debug():
                 return False
         return True
     #@nonl
     #@-node:ekr.20060513122450.310:sGo
     #@+node:ekr.20060513122450.311:sSet
     def sSet (self,name,value):
+        
+        cc = self
     
-        self.SELECTED_DICT [name] = value
+        cc.SELECTED_DICT [name] = value
     #@-node:ekr.20060513122450.311:sSet
     #@+node:ekr.20060513122450.312:sGet
     def sGet(self,name,init=""):
         
-        if name not in self.SELECTED_DICT:
-            self.sSet(name,init)	
-        return self.SELECTED_DICT[name]
+        cc = self
+        
+        if name not in cc.SELECTED_DICT:
+            cc.sSet(name,init)	
+        return cc.SELECTED_DICT[name]
     #@nonl
     #@-node:ekr.20060513122450.312:sGet
     #@+node:ekr.20060513122450.313:sIsDict
     def sIsDict(self):
+        
+        cc = self
     
-        if not self.SELECTED_NODE:
+        if not cc.SELECTED_NODE:
             return False
         
-        v = self.SELECTED_NODE.v	
+        v = cc.SELECTED_NODE.v	
         
         return hasattr(v,"unknownAttributes") and "xcc_cfg" in v.unknownAttributes
     #@nonl
@@ -1178,10 +1201,12 @@ class controllerClass:
     #@+node:ekr.20060513122450.314:sGetDict
     def sGetDict(self): # Get xcc parent dict alias "xcc_cfg" in ua
     
-        if not self.SELECTED_NODE:
+        cc = self
+    
+        if not cc.SELECTED_NODE:
             return None
         
-        v = self.SELECTED_NODE.v
+        v = cc.SELECTED_NODE.v
     
         if not hasattr(v,"unknownAttributes"):
             v.unknownAttributes = {}
@@ -1196,11 +1221,13 @@ class controllerClass:
     #@+node:ekr.20060513122450.315:sInitDict
     def sInitDict(self):
         
+        cc = self
+        
         Warning("xcc: ","Writing blank configuration!")
-        self.sSetText("@language c++")
-        self.Config.ClearConfig()
-        self.Config.SaveToNode()
-        self.sSet("INITED","True")
+        cc.sSetText("@language c++")
+        cc.Config.ClearConfig()
+        cc.Config.SaveToNode()
+        cc.sSet("INITED","True")
     
     
     
@@ -1208,85 +1235,96 @@ class controllerClass:
     #@+node:ekr.20060513122450.316:sSelect
     def sSelect(self,node=None):
         
-        c = self.c
+        cc = self ; c = cc.c
+    
         if node:
-            if self.SELECTED_NODE:
-                self.Config.Hide()
-                if self.SELECTED_NODE:
-                    self.SELECTED_NODE = node		
+            if cc.SELECTED_NODE:
+                cc.Config.Hide()
+                if cc.SELECTED_NODE:
+                    cc.SELECTED_NODE = node		
             else:
-                self.SELECTED_NODE = node
+                cc.SELECTED_NODE = node
             
-            self.SELECTED_DICT = self.sGetDict()
+            cc.SELECTED_DICT = cc.sGetDict()
             
-            if self.SELECTED_NODE != self.ACTIVE_NODE and self.SELECTED_NODE.isMarked():
-                self.SELECTED_NODE.clearMarked()
+            if cc.SELECTED_NODE != cc.ACTIVE_NODE and cc.SELECTED_NODE.isMarked():
+                cc.SELECTED_NODE.clearMarked()
                 c.redraw()
             
-            self.sGetBrowseInfo()
-            self.sShow()
-        elif self.SELECTED_NODE:
-            self.Config.Hide()
-            self.sHide()
-            self.SELECTED_NODE = None
-            self.SELECTED_DICT = self.sGetDict()
+            cc.sGetBrowseInfo()
+            cc.sShow()
+        elif cc.SELECTED_NODE:
+            cc.Config.Hide()
+            cc.sHide()
+            cc.SELECTED_NODE = None
+            cc.SELECTED_DICT = cc.sGetDict()
     #@nonl
     #@-node:ekr.20060513122450.316:sSelect
     #@+node:ekr.20060513122450.317:sSync
     def sSync(self):
         
-        self.SELECTED_DICT = self.sGetDict()
-        if self.SELECTED_DICT:
-            self.sExtractHeadInfo()
+        cc = self
         
-        self.CHILD_DICT = self.cGetDict()
+        cc.SELECTED_DICT = cc.sGetDict()
+        if cc.SELECTED_DICT:
+            cc.sExtractHeadInfo()
+        
+        cc.CHILD_DICT = cc.cGetDict()
     #@nonl
     #@-node:ekr.20060513122450.317:sSync
     #@+node:ekr.20060513122450.318:sShow
     def sShow(self):
         
-        self.LeoBodyText.pack_forget()
-        self.LeoYBodyBar.pack_forget()
+        cc = self
         
-        self.ToolBar.Show()
-        self.LeoXBodyBar.pack(side="bottom",fill="x")
-        self.LeoYBodyBar.pack(side="right",fill="y")
-        self.LeoBodyText.pack(fill="both",expand=1)
-        self.LeoBodyText["wrap"] = 'none'
+        cc.LeoBodyText.pack_forget()
+        cc.LeoYBodyBar.pack_forget()
         
-        self.ToolBar.Spacer["state"] = 'normal'
-        self.ToolBar.Spacer.delete('1.0','end')
-        self.ToolBar.Spacer.insert("insert","."+self.EXT)
-        self.ToolBar.Spacer["state"] = 'disabled'
+        cc.ToolBar.Show()
+        cc.LeoXBodyBar.pack(side="bottom",fill="x")
+        cc.LeoYBodyBar.pack(side="right",fill="y")
+        cc.LeoBodyText.pack(fill="both",expand=1)
+        cc.LeoBodyText["wrap"] = 'none'
         
-        self.ToolBar.Display["state"] = 'normal'
-        self.ToolBar.Display.delete('1.0','end')
-        self.ToolBar.Display["state"] = 'disabled'
+        cc.ToolBar.Spacer["state"] = 'normal'
+        cc.ToolBar.Spacer.delete('1.0','end')
+        cc.ToolBar.Spacer.insert("insert","."+cc.EXT)
+        cc.ToolBar.Spacer["state"] = 'disabled'
+        
+        cc.ToolBar.Display["state"] = 'normal'
+        cc.ToolBar.Display.delete('1.0','end')
+        cc.ToolBar.Display["state"] = 'disabled'
     
-        self.Watcher.Sync()
+        cc.Watcher.Sync()
     #@nonl
     #@-node:ekr.20060513122450.318:sShow
     #@+node:ekr.20060513122450.319:sHide
     def sHide(self):
+        
+        cc = self
     
-        self.LeoXBodyBar.pack_forget()
-        self.ToolBar.Hide()
-        self.LeoBodyText["wrap"]=self.LeoWrap
+        cc.LeoXBodyBar.pack_forget()
+        cc.ToolBar.Hide()
+        cc.LeoBodyText["wrap"]=cc.LeoWrap
     #@nonl
     #@-node:ekr.20060513122450.319:sHide
     #@+node:ekr.20060513122450.320:sSetText
     def sSetText(self,text=""):
         
-        self.SELECTED_NODE.setBodyTextOrPane(text)
+        cc = self
+        
+        cc.SELECTED_NODE.setBodyTextOrPane(text)
     #@-node:ekr.20060513122450.320:sSetText
     #@+node:ekr.20060513122450.321:sAddText
     def sAddText(self,text):
         
-        self.SELECTED_NODE.setBodyTextOrPane(self.SELECTED_NODE.bodyString()+text)
+        cc = self
+        
+        cc.SELECTED_NODE.setBodyTextOrPane(cc.SELECTED_NODE.bodyString()+text)
     
-        if self.CHILD_NODE == None:
-            l,c = self.LeoBodyText.index("end").split(".")
-            self.LeoBodyText.see(l+".0")
+        if not cc.CHILD_NODE:
+            l,c = cc.LeoBodyText.index("end").split(".")
+            cc.LeoBodyText.see(l+".0")
     #@nonl
     #@-node:ekr.20060513122450.321:sAddText
     #@-node:ekr.20060513122450.295:Selected Node Funcs
@@ -1294,154 +1332,188 @@ class controllerClass:
     #@+node:ekr.20060513122450.282:aSet
     def aSet(self,name,value):
         
-        self.ACTIVE_DICT[name] = value
+        cc = self
+        
+        cc.ACTIVE_DICT[name] = value
     #@-node:ekr.20060513122450.282:aSet
     #@+node:ekr.20060513122450.283:aGet
     def aGet(self,name,init=""):
         
-        if name not in self.ACTIVE_DICT:
-            self.aSet(name,init)
+        cc = self
+        
+        if name not in cc.ACTIVE_DICT:
+            cc.aSet(name,init)
     
-        return self.ACTIVE_DICT[name]
+        return cc.ACTIVE_DICT[name]
     #@-node:ekr.20060513122450.283:aGet
     #@+node:ekr.20060513122450.284:aGetDict
-    def aGetDict(self): # Get xcc parent dict alias "xcc_cfg" in ua
+    def aGetDict(self):
+        
+        '''Get xcc parent dict alias "xcc_cfg" in uA.'''
+        
+        cc = self
     
-        if not self.ACTIVE_NODE:
+        if not cc.ACTIVE_NODE:
             return None
         
-        v = self.ACTIVE_NODE.v	
-        if hasattr(v,"unknownAttributes") != True:
+        v = cc.ACTIVE_NODE.v	
+        if not hasattr(v,"unknownAttributes"):
             v.unknownAttributes = {}
         
-        if "xcc_cfg" in v.unknownAttributes:
-            return v.unknownAttributes["xcc_cfg"]
-        else:
-            v.unknownAttributes["xcc_cfg"] = d = {}
-            return d
+        if "xcc_cfg" not in v.unknownAttributes:
+            v.unknownAttributes["xcc_cfg"] = {}
+        
+        return v.unknownAttributes.get("xcc_cfg")
+    #@nonl
     #@-node:ekr.20060513122450.284:aGetDict
     #@+node:ekr.20060513122450.285:aGo
     def aGo(self):
         
-        if self.ACTIVE_NODE and self.DBG["Continue"]:
-            self.aWrite(DBG["Continue"])
-            self.LeoBodyText.tag_delete("xcc_error")
-            self.ToolBar.DisableStep()
+        g.trace()
+        
+        cc = self
+        
+        if cc.ACTIVE_NODE:
+            s = cc.DBG.get("Continue")
+            if s:
+                cc.aWrite(s)
+                cc.LeoBodyText.tag_delete("xcc_error")
+                cc.ToolBar.DisableStep()
     #@nonl
     #@-node:ekr.20060513122450.285:aGo
     #@+node:ekr.20060513122450.286:aStop
     def aStop(self):
+        
+        cc = self
        
-        if not self.ACTIVE_NODE or not self.ACTIVE_PROCESS:
+        if not cc.ACTIVE_NODE or not cc.ACTIVE_PROCESS:
             return Error("xcc: ","Current xcc node is not active!")
     
-        if self.ACTIVE_NODE == self.SELECTED_NODE and self.TARGET_PID:
-            stop = self.DBG["Stop"]
-            if self.DBG_PROMPT != True:
-                self.pause(self.TARGET_PID)
-                if stop: self.DBG_TASK.append(DBGTASK(self,stop))					
+        if cc.ACTIVE_NODE == cc.SELECTED_NODE and cc.TARGET_PID:
+            stop = cc.DBG.get("Stop")
+            if cc.DBG_PROMPT:
+                if stop: cc.aWrite(stop)
             else:
-                if stop: self.aWrite(stop)
-            self.LeoBodyText.tag_delete("xcc_error")
-            if self.WATCH_TASK: self.WATCH_TASK.Cancel()
+                pause(cc.TARGET_PID)
+                if stop: cc.DBG_TASK.append(DBGTASK(cc,stop))					
+                
+            cc.LeoBodyText.tag_delete("xcc_error")
+            if cc.WATCH_TASK: cc.WATCH_TASK.Cancel()
     #@nonl
     #@-node:ekr.20060513122450.286:aStop
     #@+node:ekr.20060513122450.287:aStepIn
     def aStepIn(self):
+        
+        cc = self
        
         if (
-            self.ACTIVE_NODE and self.ACTIVE_PROCESS and
-            self.ACTIVE_NODE == self.SELECTED_NODE and
-            self.DBG["Step in"] != "" and self.DBG_PROMPT
+            cc.ACTIVE_NODE and cc.ACTIVE_PROCESS and
+            cc.ACTIVE_NODE == cc.SELECTED_NODE and
+            cc.DBG["Step in"] != "" and cc.DBG_PROMPT
         ):
-            self.DBG_STEPPING = True
-            self.aWrite(DBG["Step in"])
-            self.ToolBar.DisableStep()
-            self.LeoBodyText.tag_delete("xcc_error")
-            self.DBG_TASK.append(QUERYGOTASK(self))
+            cc.DBG_STEPPING = True
+            cc.aWrite(DBG["Step in"])
+            cc.ToolBar.DisableStep()
+            cc.LeoBodyText.tag_delete("xcc_error")
+            cc.DBG_TASK.append(QUERYGOTASK(cc))
     #@nonl
     #@-node:ekr.20060513122450.287:aStepIn
     #@+node:ekr.20060513122450.288:aStepOver
     def aStepOver(self):
         
+        cc = self
+        
         if (
-            self.ACTIVE_NODE and self.ACTIVE_PROCESS and
-            self.ACTIVE_NODE == self.SELECTED_NODE and
-            self.DBG["Step in"] != "" and self.DBG_PROMPT
+            cc.ACTIVE_NODE and cc.ACTIVE_PROCESS and
+            cc.ACTIVE_NODE == cc.SELECTED_NODE and
+            cc.DBG.get("Step in") and cc.DBG_PROMPT
         ):
-            self.DBG_STEPPING = True			
-            self.aWrite(DBG["Step over"])
-            self.ToolBar.DisableStep()
-            self.LeoBodyText.tag_delete("xcc_error")
-            self.DBG_TASK.append(QUERYGOTASK(self))
+            cc.DBG_STEPPING = True			
+            cc.aWrite(DBG["Step over"])
+            cc.ToolBar.DisableStep()
+            cc.LeoBodyText.tag_delete("xcc_error")
+            cc.DBG_TASK.append(QUERYGOTASK(cc))
     #@-node:ekr.20060513122450.288:aStepOver
     #@+node:ekr.20060513122450.289:aStepOut
     def aStepOut(self):
+        
+        cc = self
     
         if (
-            self.ACTIVE_NODE and self.ACTIVE_PROCESS and
-            self.ACTIVE_NODE == self.SELECTED_NODE and
-            self.DBG["Step in"] != "" and self.DBG_PROMPT
+            cc.ACTIVE_NODE and cc.ACTIVE_PROCESS and
+            cc.ACTIVE_NODE == cc.SELECTED_NODE and
+            cc.DBG.get("Step in") and cc.DBG_PROMPT
         ):
-            self.DBG_STEPPING = True
-            self.aWrite(DBG["Step out"])
-            self.ToolBar.DisableStep()
-            self.LeoBodyText.tag_delete("xcc_error")
-            self.DBG_TASK.append(QUERYGOTASK(self))
+            cc.DBG_STEPPING = True
+            cc.aWrite(DBG["Step out"])
+            cc.ToolBar.DisableStep()
+            cc.LeoBodyText.tag_delete("xcc_error")
+            cc.DBG_TASK.append(QUERYGOTASK(cc))
     #@nonl
     #@-node:ekr.20060513122450.289:aStepOut
     #@+node:ekr.20060513122450.290:aPause
     def aPause(self):
         
-        if not self.ACTIVE_NODE or not self.ACTIVE_PROCESS:
+        cc = self
+        
+        if not cc.ACTIVE_NODE or not cc.ACTIVE_PROCESS:
             Error("xcc: ","Current xcc node is not active!")
     
-        elif self.ACTIVE_NODE == self.SELECTED_NODE and self.TARGET_PID:
-            self.pause(self.TARGET_PID)
+        elif cc.ACTIVE_NODE == cc.SELECTED_NODE and cc.TARGET_PID:
+            pause(cc.TARGET_PID)
     #@nonl
     #@-node:ekr.20060513122450.290:aPause
     #@+node:ekr.20060513122450.291:aWrite
     def aWrite(self,text):
+        
+        cc = self
     
-        if self.FILTER_OUTPUT == "False":
-            self.aAddText(text+"\n")
+        if not cc.FILTER_OUTPUT:
+            cc.aAddText(text+"\n")
             
-        eol = "" ; code = "eol = \""+DBG["Pipe eol"]+"\""
+        eol = "" ; code = "eol = \""+cc.DBG["Pipe eol"]+"\""
         try:
             exec code
         except:
             TraceBack()
         if eol == "": eol = "\n"
         
-        self.ACTIVE_PROCESS.In.write(text+eol)
-        self.ACTIVE_PROCESS.In.flush()
-        self.DBG_PROMPT = False
-        self.ToolBar.PauseButton["state"] = 'normal'
-        self.ToolBar.HideInput()
+        cc.ACTIVE_PROCESS.In.write(text+eol)
+        cc.ACTIVE_PROCESS.In.flush()
+        cc.DBG_PROMPT = False
+        cc.ToolBar.PauseButton["state"] = 'normal'
+        cc.ToolBar.HideInput()
     #@nonl
     #@-node:ekr.20060513122450.291:aWrite
     #@+node:ekr.20060513122450.292:aSelect
     def aSelect(self,node=None):
+        
+        cc = self
     
-        self.ACTIVE_NODE = node
-        self.ACTIVE_DICT = self.aGetDict()
+        cc.ACTIVE_NODE = node
+        cc.ACTIVE_DICT = cc.aGetDict()
     #@nonl
     #@-node:ekr.20060513122450.292:aSelect
     #@+node:ekr.20060513122450.293:aSetText
     def aSetText(self,text=""):
         
-        if self.ACTIVE_NODE:
-            self.ACTIVE_NODE.setBodyTextOrPane(text)
+        cc = self
+        
+        if cc.ACTIVE_NODE:
+            cc.ACTIVE_NODE.setBodyTextOrPane(text)
     #@nonl
     #@-node:ekr.20060513122450.293:aSetText
     #@+node:ekr.20060513122450.294:aAddText
     def aAddText(self,text):
         
-        if self.ACTIVE_NOD:
-            self.ACTIVE_NODE.setBodyTextOrPane(self.ACTIVE_NODE.bodyString()+text)
-            if self.SELECTED_NODE == self.ACTIVE_NODE and self.CHILD_NODE:
+        cc = self
+        
+        if cc.ACTIVE_NOD:
+            cc.ACTIVE_NODE.setBodyTextOrPane(cc.ACTIVE_NODE.bodyString()+text)
+        
+            if cc.SELECTED_NODE == cc.ACTIVE_NODE and cc.CHILD_NODE:
                 l,c = LeoBodyText.index("end").split(".")
-                self.LeoBodyText.see(l+".0")
+                cc.LeoBodyText.see(l+".0")
     #@nonl
     #@-node:ekr.20060513122450.294:aAddText
     #@-node:ekr.20060513122450.281:Active Node Funcs
@@ -1449,203 +1521,232 @@ class controllerClass:
     #@+node:ekr.20060513122450.329:CreateFiles
     def CreateFiles(self):
         
-        if self.OPTS.get("Create files") == "True":
-            return self.sGetWriteInfo() and WriterClass(self).Result
+        g.trace()
+        
+        cc = self
+        
+        if cc.OPTS.get("Create files"):
+            return cc.sGetWriteInfo() and WriterClass(cc).Result
         else:
             return None
     #@nonl
     #@-node:ekr.20060513122450.329:CreateFiles
     #@+node:ekr.20060513122450.330:Compile
     def Compile(self):
-       
-        if not self.OPTS.get("Compile"):
+        
+        cc = self
+        g.trace(cc.OPTS.get("Compile"))
+    
+        if not cc.OPTS.get("Compile"):
             return None
-        if not sGetCompileInfo():
+        if not cc.sGetCompileInfo():
             return False
         if len(ProcessList) > 1:
-            Error("xcc: ","already running!")
-            return False
+            return Error("xcc: ","already running!")
             
-        process = self.ProcessClass(
-            self,
-            self.SELECTED_NODE,
-            self.CPL["Compiler"],
-            self.CplCmd(),
-            start=self.CplStart,out=self.CplOut,err=self.CplErr,end=self.CplEnd)
+        process = cc.ProcessClass(cc,
+            cc.SELECTED_NODE,
+            cc.CPL.get("Compiler"),
+            cc.CplCmd(),
+            start=cc.CplStart,out=cc.CplOut,err=cc.CplErr,end=cc.CplEnd)
             
         ok = process.Open()
-        if ok: self.ProcessList.append(process)
+        if ok: cc.ProcessList.append(process)
         return ok
     #@nonl
     #@-node:ekr.20060513122450.330:Compile
     #@+node:ekr.20060513122450.331:CplCmd
     def CplCmd(self):
         
+        g.trace()
+        
+        cc = self
         cwd = os.getcwd()
     
-        if self.OPTS.get("Debug"):
-            cmd = self.CPL["Debug arguments"]
+        if cc.OPTS.get("Debug"):
+            cmd = cc.CPL["Debug arguments"]
         else:
-            cmd = self.CPL["Arguments"]
+            cmd = cc.CPL["Arguments"]
         
-        cmd = self.ReplaceVars(cmd.replace("\n"," ").strip())
+        cmd = cc.ReplaceVars(cmd.replace("\n"," ").strip())
         
         #@    @+others
         #@+node:ekr.20060513122450.332:_INCPATHS_
-        if CPL["Include path"] != "":
-            sym = CPL["Include path"]
-            paths = CPL["Include search paths"].splitlines()
-            INCPATHS = ""
+        s = cc.CPL.get("Include path")
+        if s:
+            sym = s
+            paths = cc.CPL.get("Include search paths",'').splitlines()
+            cc.INCPATHS = ""
             for p in paths:
                 if p != "":
-                    INCPATHS += " "+sym+"\""+p+"\""
-            cmd = cmd.replace("_INCPATHS_",INCPATHS.strip())
+                    cc.INCPATHS += " "+sym+"\""+p+"\""
+            cmd = cmd.replace("_INCPATHS_",cc.INCPATHS.strip())
         #@nonl
         #@-node:ekr.20060513122450.332:_INCPATHS_
         #@+node:ekr.20060513122450.333:_LIBPATHS_
-        if CPL["Library path"] != "":
-            sym = CPL["Library path"]
-            paths = CPL["Library search paths"].splitlines()
-            LIBPATHS = ""
+        s = cc.CPL.get("Library path")
+        if s:
+            sym = s
+            paths = cc.CPL.get("Library search paths",'').splitlines()
+            cc.LIBPATHS = ""
             for p in paths:
                 if p != "":
-                    LIBPATHS += " "+sym+"\""+p+"\""
-            cmd = cmd.replace("_LIBPATHS_",LIBPATHS.strip())
+                    cc.LIBPATHS += " "+sym+"\""+p+"\""
+            cmd = cmd.replace("_LIBPATHS_",cc.LIBPATHS.strip())
         #@nonl
         #@-node:ekr.20060513122450.333:_LIBPATHS_
         #@+node:ekr.20060513122450.334:_LIBRARIES_
-        if CPL["Use library"] != "":
-            sym = CPL["Use library"]
-            libs = CPL["Used libraries"].split()
-            LIBRARIES = ""
+        s = cc.CPL.get("Use library")
+        if s:
+            sym = s
+            libs = cc.CPL.get("Used libraries",'').split()
+            cc.LIBRARIES = ""
             for l in libs:
                 if l != "":
-                    LIBRARIES += " "+sym+"\""+l+"\""
-            cmd = cmd.replace("_LIBRARIES_",LIBRARIES.strip())
+                    cc.LIBRARIES += " "+sym+"\""+l+"\""
+            cmd = cmd.replace("_LIBRARIES_",cc.LIBRARIES.strip())
         #@nonl
         #@-node:ekr.20060513122450.334:_LIBRARIES_
         #@+node:ekr.20060513122450.335:_BUILD_
-        if EXT == "exe":
-            if CPL["Build exe"] != "":
-                cmd = cmd.replace("_BUILD_",CPL["Build exe"])
+        if cc.EXT == "exe":
+            s = cc.CPL.get("Build exe")
+            if s: cmd = cmd.replace("_BUILD_",s)
         
-        if EXT == "dll":
-            if CPL["Build dll"] != "":
-                cmd = cmd.replace("_BUILD_",CPL["Build dll"])
+        if cc.EXT == "dll":
+            s = CPL.get("Build dll")
+            if s:
+                cmd = cmd.replace("_BUILD_",s)
             else:
                 Warning("xcc: ","Build dll requested but compiler build dll symbol is undefined!")
         #@nonl
         #@-node:ekr.20060513122450.335:_BUILD_
         #@-others
-        
+    
         return cmd
     
     
     #@-node:ekr.20060513122450.331:CplCmd
     #@+node:ekr.20060513122450.336:Debug
     def Debug(self):
+        
+        g.trace()
+        
+        cc = self
     
-        if GetDebugInfo() and self.EXT == "exe":
-            p = ProcessClass(self,
-                self.SELECTED_NODE,
-                self.DBG["Debugger"],
-                self.DbgCmd(),
-                start=self.DbgStart,
-                out=self.DbgOut,
-                err=self.DbgErr,
-                end=self.DbgEnd)
-            self.ProcessList.append(p)
+        if cc.GetDebugInfo() and cc.EXT == "exe":
+            p = ProcessClass(cc,
+                cc.SELECTED_NODE,
+                cc.DBG.get("Debugger"),
+                cc.DbgCmd(),
+                start=cc.DbgStart,
+                out=cc.DbgOut,
+                err=cc.DbgErr,
+                end=cc.DbgEnd)
+            cc.ProcessList.append(p)
     #@nonl
     #@-node:ekr.20060513122450.336:Debug
     #@+node:ekr.20060513122450.337:DbgCmd
     def DbgCmd(self):
         
-        cmd = self.DBG["Arguments"].replace("\n"," ").strip()
-        cmd = self.ReplaceVars(cmd)		
+        cc = self
+        
+        cmd = cc.DBG.get("Arguments").replace("\n"," ").strip()
+        cmd = cc.ReplaceVars(cmd)
+        
+        g.trace(repr(cmd))
         return cmd
     #@nonl
     #@-node:ekr.20060513122450.337:DbgCmd
     #@+node:ekr.20060513122450.338:Execute
     def Execute(self):
         
-        self.sGetExecInfo()
-        cmd = ABS_PATH+"\\"+NAME+"."+EXT
-        args = self.EXE["Execution arguments"]
+        g.trace()
+        
+        cc = self
+        cc.sGetExecInfo()
+        cmd = cc.ABS_PATH+"\\"+cc.NAME+"."+cc.EXT
+        args = cc.EXE.get("Execution arguments")
             
-        if self.OPTS.get("Connect to pipe"):
-            process = ProcessClass(self,
-                self.SELECTED_NODE,cmd,args,
-                start=self.ProgStart,out=self.ProgOut,
-                err=self.ProgErr,end=self.ProgEnd)
+        if cc.OPTS.get("Connect to pipe"):
+            process = ProcessClass(cc,
+                cc.SELECTED_NODE,cmd,args,
+                start=cc.ProgStart,out=cc.ProgOut,
+                err=cc.ProgErr,end=cc.ProgEnd)
         else:
-            process = ProcessClass(self,self.SELECTED_NODE,cmd,args,spawn=True)
+            process = ProcessClass(cc,cc.SELECTED_NODE,cmd,args,spawn=True)
     
-        self.ProcessList.append(process)
+        cc.ProcessList.append(process)
     #@-node:ekr.20060513122450.338:Execute
     #@-node:ekr.20060513122450.328:Action Funcs
     #@+node:ekr.20060513122450.339:Compiler Events
     #@+node:ekr.20060513122450.340:CplStart
     def CplStart(self):
     
-        self.OutBuff = ""
-        self.ErrBuff = ""
-        self.FIRST_ERROR = False
-        self.aSelect(self.SELECTED_NODE)
-        process = self.VProcessList[0]
+        cc = self
+        cc.OutBuff = ""
+        cc.ErrBuff = ""
+        cc.FIRST_ERROR = False
+        cc.aSelect(cc.SELECTED_NODE)
+        process = cc.VProcessList[0]
         
         text = ""	
-        if self.VERBOSE == "True":
+        if cc.VERBOSE:
             text += "\" Starting "+process.FileName+"...\n"
             text += "\" using arguments: "+process.Arguments+"\n"		
         text += "\""+("="*60)+"\n"
         
-        self.aAddText(text)
+        cc.aAddText(text)
     
     #@-node:ekr.20060513122450.340:CplStart
     #@+node:ekr.20060513122450.341:CplOut
     def CplOut(self,text):
         
-        self.OutBuff += text
-        lines = self.OutBuff.splitlines(True)
+        cc = self
+        cc.OutBuff += text
+        lines = cc.OutBuff.splitlines(True)
         if lines[-1][-1] != "\n":
-            self.OutBuff = lines.pop()
+            cc.OutBuff = lines.pop()
         else:
-            self.OutBuff = ""
+            cc.OutBuff = ""
         
         text = ""	
         for l in lines:
             if l != "":
                 if l.lower().find("error") > -1:
                     text += "// "+l
-                    if self.OPTS.get("Seek first error") and self.FIRST_ERROR == False:
-                        self.FIRST_ERROR = True
-                        self.sGoToError(l)
+                    if cc.OPTS.get("Seek first error") and cc.FIRST_ERROR == False:
+                        cc.FIRST_ERROR = True
+                        cc.sGoToError(l)
                 else:
-                    if self.FILTER_OUTPUT == False:
+                    if not cc.FILTER_OUTPUT:
                         text += "# "+l
                 
-        self.aAddText(text)
+        cc.aAddText(text)
     
     #@-node:ekr.20060513122450.341:CplOut
     #@+node:ekr.20060513122450.342:CplErr
     def CplErr(self,text):
         
-        self.ErrBuff += text
-        lines = self.ErrBuff.splitlines(True)
+        cc = self
+        
+        cc.ErrBuff += text
+        lines = cc.ErrBuff.splitlines(True)
         if lines[-1][-1] != "\n":
-            self.ErrBuff = lines.pop()
+            cc.ErrBuff = lines.pop()
         else:
-            self.ErrBuff = ""
+            cc.ErrBuff = ""
         
         text = ""	
         for l in lines:
             text += "// "+l+"\n"
                         
-        self.aAddText(text)
+        cc.aAddText(text)
     #@nonl
     #@-node:ekr.20060513122450.342:CplErr
     #@+node:ekr.20060513122450.343:CplEnd
     def CplEnd(self,exitcode):
+        
+        cc = self
         
         text = "\""+("="*60)+"\n"
         if exitcode == None:
@@ -1654,8 +1755,8 @@ class controllerClass:
             text += "// Build process aborted!\n"		
         text += "\""+("-"*60)+"\n"
     
-        self.aAddText(text)
-        self.aSelect()
+        cc.aAddText(text)
+        cc.aSelect()
     #@nonl
     #@-node:ekr.20060513122450.343:CplEnd
     #@-node:ekr.20060513122450.339:Compiler Events
@@ -1664,100 +1765,105 @@ class controllerClass:
     def DbgStart(self):
     
         g.trace()
-        self.OutBuff = ""
-        self.ErrBuff = ""
-        self.ACTIVE_PROCESS=self.ProcessList[0]
-        self.PROMPT_RD = []
-        self.DBG_STEPPING = False
-        self.DBG_PROMPT = False
-        self.TARGET_PID = ""
-        self.aSelect(self.SELECTED_NODE)
+        cc = self
+        cc.OutBuff = ""
+        cc.ErrBuff = ""
+        cc.ACTIVE_PROCESS=cc.ProcessList[0]
+        cc.PROMPT_RD = []
+        cc.DBG_STEPPING = False
+        cc.DBG_PROMPT = False
+        cc.TARGET_PID = ""
+        cc.aSelect(cc.SELECTED_NODE)
         # set buttons
-        self.ToolBar.PauseButton["state"] = 'normal'
-        self.ToolBar.StopButton["state"] = 'normal'
+        cc.ToolBar.PauseButton["state"] = 'normal'
+        cc.ToolBar.StopButton["state"] = 'normal'
         # startup banner
         text = ""	
-        if self.VERBOSE == "True":
-            text += "\" Starting "+self.ACTIVE_PROCESS.FileName+"...\n"
-            text += "\" using arguments: "+self.ACTIVE_PROCESS.Arguments+"\n"
+        if cc.VERBOSE:
+            text += "\" Starting "+cc.ACTIVE_PROCESS.FileName+"...\n"
+            text += "\" using arguments: "+cc.ACTIVE_PROCESS.Arguments+"\n"
         text += "\""+("="*60)+"\n"
-        self.aAddText(text)
-        self.DBG_TASK = []
-        self.DBG_SD = []
-        self.DBG_RD = []
-        OUTPUTTASK(self)
+        cc.aAddText(text)
+        cc.DBG_TASK = []
+        cc.DBG_SD = []
+        cc.DBG_RD = []
+        OUTPUTTASK(cc)
         st = ReplaceVars(DBG["Startup task"]).splitlines()
         for t in st:
             DBGTASK(t)
-        TARGETPIDTASK(self)
-        REGEXPTASK(self)
+        TARGETPIDTASK(cc)
+        REGEXPTASK(cc)
         
-        BREAKTASK(self)
-        DBGTASK(self,DBG["Continue"])
+        BREAKTASK(cc)
+        DBGTASK(cc,DBG["Continue"])
     #@nonl
     #@-node:ekr.20060513122450.379:DbgStart
     #@+node:ekr.20060513122450.380:DbgOut
     def DbgOut(text):
         
         g.trace(repr(text))
+        
+        cc = self
        
         #Extract output lines and prompt
-        if text != "":
-            OutBuff += text
+        if text:
+            cc.OutBuff += text
             lines = OutBuff.splitlines(True)
             if lines[-1][-1] != "\n":
-                OutBuff = lines.pop()
+                cc.OutBuff = lines.pop()
             else:
-                OutBuff = ""
-        
-        
+                cc.OutBuff = ""
+    
             # sending output to SENT tasks
             for l in lines:
-                for r in DBG_RD:
+                for r in cc.DBG_RD:
                     r(l)		
-        
+    
         # detect the prompt
-        if OutBuff != "" and re.search(DBG["Prompt pattern"],OutBuff) != None:
-            ToolBar.PauseButton["state"] = 'disabled'
-            for prd in PROMPT_RD:
+        if cc.OutBuff and re.search(cc.DBG.get("Prompt pattern"),cc.OutBuff) != None:
+            cc.ToolBar.PauseButton["state"] = 'disabled'
+            for prd in cc.PROMPT_RD:
                 prd()
-            DBG_PROMPT = True
-            if DBG_STEPPING == True:
-                DBG_STEPPING = False
-                ToolBar.EnableStep()
-            if FILTER_OUTPUT == "False":
-                aAddText("# "+OutBuff)
-            OutBuff = ""
-            
-            
+            cc.DBG_PROMPT = True
+            if cc.DBG_STEPPING:
+                cc.DBG_STEPPING = False
+                cc.ToolBar.EnableStep()
+            if not cc.FILTER_OUTPUT:
+                cc.AddText("# "+cc.OutBuff)
+            cc.OutBuff = ""
+    
         # send task to the debugger
-        while DBG_PROMPT == True and len(DBG_SD) > 0:
-            DBG_SD[0]()
+        while cc.DBG_PROMPT and len(cc.DBG_SD) > 0:
+            cc.DBG_SD[0]()
         
-        if DBG_PROMPT == True:
-            ToolBar.ShowInput()
+        if cc.DBG_PROMPT:
+            cc.ToolBar.ShowInput()
     #@nonl
     #@-node:ekr.20060513122450.380:DbgOut
     #@+node:ekr.20060513122450.381:DbgErr
-    def DbgErr(text):
-        global ErrBuff
+    def DbgErr(self,text):
         
-        ErrBuff += text
-        lines = ErrBuff.splitlines(True)
+        g.trace(repr(text))
+        
+        cc = self
+        cc.ErrBuff += text
+        lines = cc.ErrBuff.splitlines(True)
         if lines[-1][-1] != "\n":
-            ErrBuff = lines.pop()
+            cc.ErrBuff = lines.pop()
         else:
-            ErrBuff = ""
+            cc.ErrBuff = ""
         
         text = ""	
         for l in lines:
             text += "//err: "+l
                         
-        aAddText(text)
+        cc.aAddText(text)
+    #@nonl
     #@-node:ekr.20060513122450.381:DbgErr
     #@+node:ekr.20060513122450.382:DbgEnd
     def DbgEnd(self,exitcode):
-        # global ACTIVE_PROCESS,DBG_TASK,TARGET_PID
+    
+        cc = self
         text = "\""+("="*60)+"\n"
         if exitcode == None:
             text += "\" Debug session ended successfully!\n"
@@ -1765,19 +1871,17 @@ class controllerClass:
             text += "// Debug session aborted!\n"
         
         text += "\""+("-"*60)+"\n"
-        self.aAddText(text)
-        
-        self.ToolBar.PauseButton["state"] = 'disabled'
-        self.ToolBar.StopButton["state"] = 'disabled'
-        
-        self.ACTIVE_PROCESS = None
-        self.DBG_TASK = []
-        
-        self.ToolBar.DisableStep()
-        self.LeoBodyText.tag_delete("xcc_error")	
-        self.TARGET_PID = ""
-        
-        self.aSelect()
+    
+        cc.aAddText(text)
+        cc.ToolBar.PauseButton["state"] = 'disabled'
+        cc.ToolBar.StopButton["state"] = 'disabled'
+        cc.ACTIVE_PROCESS = None
+        cc.DBG_TASK = []
+        cc.ToolBar.DisableStep()
+        cc.LeoBodyText.tag_delete("xcc_error")	
+        cc.TARGET_PID = ""
+        cc.aSelect()
+    #@nonl
     #@-node:ekr.20060513122450.382:DbgEnd
     #@-node:ekr.20060513122450.344:Debugger Events
     #@+node:ekr.20060513122450.383:Program Events
@@ -1786,17 +1890,18 @@ class controllerClass:
         
         g.trace()
     
-        self.OutBuff = ""
-        self.ErrBuff = ""
-        self.aSelect(self.SELECTED_NODE)
-        self.ACTIVE_PROCESS=self.ProcessList[0]
+        cc = self
+        cc.OutBuff = ""
+        cc.ErrBuff = ""
+        cc.aSelect(cc.SELECTED_NODE)
+        cc.ACTIVE_PROCESS=cc.ProcessList[0]
     
         text = ""	
-        if self.VERBOSE:
-            text += "\" Starting "+self.ACTIVE_PROCESS.FileName+"...\n"
-            text += "\" using arguments: "+self.ACTIVE_PROCESS.Arguments+"\n"		
+        if cc.VERBOSE:
+            text += "\" Starting "+cc.ACTIVE_PROCESS.FileName+"...\n"
+            text += "\" using arguments: "+cc.ACTIVE_PROCESS.Arguments+"\n"		
         text += "\""+("="*60)+"\n"
-        self.aAddText(text)
+        cc.aAddText(text)
     #@nonl
     #@-node:ekr.20060513122450.384:ProgStart
     #@+node:ekr.20060513122450.385:ProgOut
@@ -1804,17 +1909,18 @@ class controllerClass:
         
         g.trace(repr(text))
         
-        self.OutBuff += text
-        lines,self.OutBuff = ExtractLines(OutBuff)
+        cc = self
+        cc.OutBuff += text
+        lines,cc.OutBuff = ExtractLines(OutBuff)
         
         text = ""	
         for l in lines:
             if l != "":
                 text += "# "+l+"\n"			
         
-        text += "# "+self.OutBuff
-        self.OutBuff = ""
-        self.aAddText(text)
+        text += "# "+cc.OutBuff
+        cc.OutBuff = ""
+        cc.aAddText(text)
     #@nonl
     #@-node:ekr.20060513122450.385:ProgOut
     #@+node:ekr.20060513122450.386:ProgErr
@@ -1822,15 +1928,16 @@ class controllerClass:
         
         g.trace(repr(text))
         
-        self.ErrBuff += text
-        lines,self.ErrBuff = ExtractLines(ErrBuff)
+        cc = self
+        cc.ErrBuff += text
+        lines,cc.ErrBuff = ExtractLines(ErrBuff)
         
         text = ""	
         for l in lines:
             text += "// "+l+"\n"
-        text += "# "+self.ErrBuff
-        self.ErrBuff = ""
-        self.aAddText(text)
+        text += "# "+cc.ErrBuff
+        cc.ErrBuff = ""
+        cc.aAddText(text)
     #@nonl
     #@-node:ekr.20060513122450.386:ProgErr
     #@+node:ekr.20060513122450.387:ProgEnd
@@ -1838,6 +1945,7 @@ class controllerClass:
         
         g.trace(exitcode)
         
+        cc = self
         text = "\n\""+("="*60)+"\n"
         if exitcode == None:
             text += "\" Program exited normally!\n"
@@ -1845,9 +1953,9 @@ class controllerClass:
             text += "// Program exited with code: "+str(exitcode)+"\n"		
         text += "\""+("-"*60)+"\n"
     
-        self.aAddText(text)
-        self.ACTIVE_PROCESS = None
-        self.aSelect()
+        cc.aAddText(text)
+        cc.ACTIVE_PROCESS = None
+        cc.aSelect()
     #@nonl
     #@-node:ekr.20060513122450.387:ProgEnd
     #@-node:ekr.20060513122450.383:Program Events
@@ -1859,20 +1967,25 @@ class controllerClass:
 class DBGTASK:
     #@    @+others
     #@+node:ekr.20060513122450.347:__init__
-    def __init__(self,cmd,index=None):
-        self.Command = cmd
+    def __init__(self,cc,cmd,index=None):
         
-        if index != None:
-            DBG_SD.insert(index,self.Send)
+        self.cc = cc
+        cc.Command = cmd
+        
+        if index:
+            DBG_SD.insert(index,cc.Send)
         else:
-            DBG_SD.append(self.Send)
+            DBG_SD.append(cc.Send)
     #@nonl
     #@-node:ekr.20060513122450.347:__init__
     #@+node:ekr.20060513122450.348:Send
     def Send(self):
-        if self.Command != None:
-            aWrite(self.Command)
-        DBG_SD.remove(self.Send)
+        
+        cc = self
+    
+        if cc.Command:
+            aWrite(cc.Command)
+        cc.DBG_SD.remove(cc.Send)
     #@nonl
     #@-node:ekr.20060513122450.348:Send
     #@-others
@@ -1882,10 +1995,10 @@ class DBGTASK:
 class OUTPUTTASK(DBGTASK):
     #@    @+others
     #@+node:ekr.20060513122450.350:__init__
-    def __init__(self,controller):
+    def __init__(self,cc):
     
-        self.controller = controller
-        controller.DBG_RD.append(self.Receive)
+        self.cc = cc
+        cc.DBG_RD.append(self.Receive)
     #@nonl
     #@-node:ekr.20060513122450.350:__init__
     #@+node:ekr.20060513122450.351:Send
@@ -1895,15 +2008,15 @@ class OUTPUTTASK(DBGTASK):
     #@+node:ekr.20060513122450.352:Receive
     def Receive(self,line):
         
-        controller = self.controller
+        cc = self.cc
         
-        if controller.DBG_PROMPT == False and line != "":
+        if cc.DBG_PROMPT == False and line != "":
             lower = line.lower()
             if lower.find("error") > -1 or lower.find("warning") > -1:
                 aAddText("//"+line)
             else:
-                if controller.OPTS["Filter output"] == "False":
-                    controller.aAddText("# "+line)
+                if cc.OPTS["Filter output"] == "False":
+                    cc.aAddText("# "+line)
     #@nonl
     #@-node:ekr.20060513122450.352:Receive
     #@-others
@@ -1914,13 +2027,13 @@ class OUTPUTTASK(DBGTASK):
 class TARGETPIDTASK(DBGTASK):
     #@    @+others
     #@+node:ekr.20060513122450.354:__init__
-    def __init__(self,controller):
+    def __init__(self,cc):
         
-        self.controller = controller
-        controller.DBG_SD.append(self.Send)
+        self.cc = cc
+        cc.DBG_SD.append(self.Send)
         
-        self.PidTask = ReplaceVars(controller.DBG["Target pid task"])
-        self.FindPid = ReplaceVars(controller.DBG["Find pid"])
+        self.PidTask = ReplaceVars(cc.DBG.get("Target pid task"))
+        self.FindPid = ReplaceVars(cc.DBG.get("Find pid"))
     #@nonl
     #@-node:ekr.20060513122450.354:__init__
     #@+node:ekr.20060513122450.355:Send
@@ -1937,19 +2050,20 @@ class TARGETPIDTASK(DBGTASK):
     #@-node:ekr.20060513122450.355:Send
     #@+node:ekr.20060513122450.356:Receive
     def Receive(self,line):
-        global TARGET_PID
-        if self.FindPid != "":
-            if DBG_PROMPT == False:
+       
+        cc = self.cc
+        if self.FindPid:
+            if not cc.DBG_PROMPT:
                 if line != "":
                     m = re.search(self.FindPid,line)
                     if m != None:
-                        TARGET_PID = int(m.group("PID"))		
-                        if VERBOSE == "True":					
-                            aAddText("\" Target pid is: "+str(TARGET_PID)+" \n")
-                        DBG_RD.remove(self.Receive)
+                        cc.TARGET_PID = int(m.group("PID"))		
+                        if cc.VERBOSE:					
+                            cc.aAddText("\" Target pid is: "+str(cc.TARGET_PID)+" \n")
+                        cc.DBG_RD.remove(self.Receive)
                     
         else:
-            DBG_RD.remove(self.Receive)
+            cc.DBG_RD.remove(self.Receive)
     #@nonl
     #@-node:ekr.20060513122450.356:Receive
     #@-others
@@ -1960,10 +2074,11 @@ class TARGETPIDTASK(DBGTASK):
 class BREAKTASK(DBGTASK):
     #@    @+others
     #@+node:ekr.20060513122450.358:__init__
-    def __init__(self):
+    def __init__(self,cc):
         
+        self.cc = cc
         #gathering breaks
-        bf = BREAKFINDER()
+        bf = BreakFinderClass()
         self.Breaks = aGet("Breakpoints").copy()
         if len(self.Breaks) != 0:
             self.bpsym = DBG["Set break"]
@@ -1971,7 +2086,7 @@ class BREAKTASK(DBGTASK):
                 Waning("xcc: ","Set break symbol is undefined!")
             else:
                 self.bpsym = ReplaceVars(self.bpsym)
-                DBG_SD.append(self.Send)
+                cc.DBG_SD.append(self.Send)
         
         regexp = DBG["Break detection"]
         if regexp != "":		
@@ -1998,22 +2113,24 @@ class BREAKTASK(DBGTASK):
     #@-node:ekr.20060513122450.359:Send
     #@+node:ekr.20060513122450.360:Receive
     def Receive(self,line):
+        
+        cc = self.cc
+    
         for r in self.RegExp:
             if r.search(line) != None:
-                if OPTS["Seek breakpoints"] == "True":
-                    QUERYGOTASK(0)
-                if VERBOSE == "True":
+                if cc.OPTS.get("Seek breakpoints"):
+                    QUERYGOTASK(cc,0)
+                if cc.VERBOSE:
                     aAddText("\" Break detected!\n")
                 
-                if Watcher.visible == True and ACTIVE_PROCESS != None:
-                    if SELECTED_NODE == ACTIVE_NODE:
-                        WATCHTASK()
-                        if DBG_PROMPT == True:
-                            DbgOut("")
-                            
-                            
-                ToolBar.EnableStep()						
+                if cc.Watcher.visible and cc.ACTIVE_PROCESS and cc.SELECTED_NODE == cc.ACTIVE_NODE:
+                    WATCHTASK(cc)
+                    if cc.DBG_PROMPT:
+                        cc.DbgOut("")
+                             
+                cc.ToolBar.EnableStep()						
                 return
+    #@nonl
     #@-node:ekr.20060513122450.360:Receive
     #@-others
     
@@ -2023,12 +2140,15 @@ class BREAKTASK(DBGTASK):
 class REGEXPTASK(DBGTASK):
     #@    @+others
     #@+node:ekr.20060513122450.362:__init__
-    def __init__(self):
-        DBG_RD.append(self.Receive)
+    def __init__(self,cc):
         
-        self.Exps = ReplaceVars(DBG["Regular expression"]).splitlines()
-        self.Task = ReplaceVars(DBG["Task"]).splitlines()
+        self.cc = cc
+        cc.DBG_RD.append(self.Receive)
+        
+        self.Exps = ReplaceVars(cc.DBG.get("Regular expression",'')).splitlines()
+        self.Task = ReplaceVars(cc.DBG.get("Task",'')).splitlines()
         self.on = False	
+    #@nonl
     #@-node:ekr.20060513122450.362:__init__
     #@+node:ekr.20060513122450.363:Send
     def Send(self):
@@ -2039,24 +2159,22 @@ class REGEXPTASK(DBGTASK):
     #@-node:ekr.20060513122450.363:Send
     #@+node:ekr.20060513122450.364:Receive
     def Receive(self,line):
-        try:
-            if self.on == False:
-                self.on = True
-                return
-            i=1
-            for e in self.Exps:
-                if e != "" and re.search(e,line) != None:
-                    if len(self.Task) >= i:
-                        t = self.Task[i-1]
-                    else:
-                        t = ""
-                    DBGTASK(t,0)
-                    self.on = False
-                i += 1
-                            
-        except Exception:
-            TraceBack()
+        
+        cc = self.cc
     
+        if not self.on:
+            self.on = True ; return
+        i=1
+        for e in self.Exps:
+            if e != "" and re.search(e,line) != None:
+                if len(self.Task) >= i:
+                    t = self.Task[i-1]
+                else:
+                    t = ""
+                DBGTASK(cc,t,0)
+                self.on = False
+            i += 1
+    #@nonl
     #@-node:ekr.20060513122450.364:Receive
     #@-others
     
@@ -2067,14 +2185,15 @@ class WATCHTASK(DBGTASK):
     #@    @+others
     #@+node:ekr.20060513122450.366:__init__
     def __init__(self,index=0):
-        global WATCH_TASK
+        
+        self.cc = cc
         self.Index = index
-        WATCH_TASK = self
+        cc.WATCH_TASK = self
         self.Buffer = ""
         self.Count = 0
         
-        Watcher.OutBox.tag_delete("changed")
-        self.Lines = Watcher.InBox.get(1.0,'end').strip().splitlines()	
+        cc.Watcher.OutBox.tag_delete("changed")
+        self.Lines = ccWatcher.InBox.get(1.0,'end').strip().splitlines()	
         
         if len(self.Lines) != 0:
             d=DBG_SD.append(self.Send)
@@ -2082,10 +2201,6 @@ class WATCHTASK(DBGTASK):
         for l in self.Lines:
             if l == "":
                 del l
-                
-        #Watcher.OutBox["state"] = 'normal'
-        #Watcher.OutBox.delete(1.0,'end')
-        #Watcher.OutBox["state"] = 'disabled'
         
         self.nl = ""
         self.Inited = False
@@ -2166,54 +2281,54 @@ class QUERYGOTASK(DBGTASK):
 
     #@    @+others
     #@+node:ekr.20060513122450.372:__init__
-    def __init__(self,controller,index=None):
+    def __init__(self,cc,index=None):
         
-        self.controller = controller
-        self.Query = DBG["Query location"]
-        self.Find = controller.ReplaceVars(DBG["Find location"])
-        if self.Query == "":
-            controller.DBG_TASK.remove(self)
+        self.cc = cc
+        self.Query = cc.DBG.get("Query location")
+        self.Find = cc.ReplaceVars(cc.DBG.get("Find location"))
+        if not self.Query:
+            cc.DBG_TASK.remove(self)
             Warning("xcc: ","Query location task is undefined!")
-        elif index != None:
-            controller.DBG_SD.insert(index,self.Send)
+        elif index:
+            cc.DBG_SD.insert(index,self.Send)
         else:
-            controller.DBG_SD.append(self.Send)
+            cc.DBG_SD.append(self.Send)
     #@nonl
     #@-node:ekr.20060513122450.372:__init__
     #@+node:ekr.20060513122450.373:Send
     def Send(self):
         
-        controller = self.controller
-        controller.aWrite(self.Query)
-        controller.DBG_SD.remove(self.Send)
-        controller.DBG_RD.append(self.Receive)
+        cc = self.cc
+        cc.aWrite(self.Query)
+        cc.DBG_SD.remove(self.Send)
+        cc.DBG_RD.append(self.Receive)
     #@nonl
     #@-node:ekr.20060513122450.373:Send
     #@+node:ekr.20060513122450.374:Receive
     def Receive(self,line):
     
-        controller = self.controller
-        if controller.DBG_PROMPT == False:
+        cc = self.cc
+        if cc.DBG_PROMPT == False:
             if line != "":
                 m = re.search(self.Find,line,re.IGNORECASE)
                 if m != None:
                     bline = m.group("LINE")
                     bext = m.group("EXT")
                         
-                    if bline != None and bext != None:
-                        if controller.VERBOSE == "True":					
-                            controller.aAddText("\" Current location is: "+bline+" in "+bext+" file!\n")
+                    if bline and bext:
+                        if cc.VERBOSE:					
+                            cc.aAddText("\" Current location is: "+bline+" in "+bext+" file!\n")
                         bline = int(bline)	
-                        SeekErrorClass(self.controller,bline,bext,color=BreakColor)
-                    controller.DBG_RD.remove(self.Receive)
+                        SeekErrorClass(self.cc,bline,bext,color=BreakColor)
+                    cc.DBG_RD.remove(self.Receive)
                     
-                    if Watcher.visible and controller.ACTIVE_PROCESS:
-                        if controller.SELECTED_NODE == controller.ACTIVE_NODE:
-                            WATCHTASK(controller)
-                        if controller.DBG_PROMPT:
-                            controller.DbgOut("")
+                    if cc.Watcher.visible and cc.ACTIVE_PROCESS:
+                        if cc.SELECTED_NODE == cc.ACTIVE_NODE:
+                            WATCHTASK(cc)
+                        if cc.DBG_PROMPT:
+                            cc.DbgOut("")
         else:
-            controller.DBG_RD.remove(self.Receive)
+            cc.DBG_RD.remove(self.Receive)
                 
     #@nonl
     #@-node:ekr.20060513122450.374:Receive
@@ -2227,16 +2342,18 @@ class BREAKIDTASK(DBGTASK):
     #@+node:ekr.20060513122450.376:__init__
     def __init__(self,b,index=0):
         
+        cc = self.cc
+        
         if len(b) >0:
             self.Break = b
-            self.ListBreaks = DBG["List breaks"]
-            self.IdentifyBreak = ReplaceVars(DBG["Identify break"])
+            self.ListBreaks = cc.DBG["List breaks"]
+            self.IdentifyBreak = ReplaceVars(cc.DBG["Identify break"])
             
-            if self.ListBreaks != "" and self.IdentifyBreak != "":
-                if index != None:
-                    DBG_SD.insert(index,self.Send)
+            if self.ListBreaks and self.IdentifyBreak:
+                if index:
+                    cc.DBG_SD.insert(index,self.Send)
                 else:
-                    DBG_SD.append(self.Send)
+                    cc.DBG_SD.append(self.Send)
             else:
                 Warning("xcc: ","Break Identification task is undefined!")
     #@nonl
@@ -2250,9 +2367,10 @@ class BREAKIDTASK(DBGTASK):
     #@-node:ekr.20060513122450.377:Send
     #@+node:ekr.20060513122450.378:Receive
     def Receive(self,line):
-        global TARGET_PID
-        if DBG_PROMPT == False:
-            if line != "":
+        
+        cc = self.cc
+        if not cc.DBG_PROMPT:
+            if line:
                 idb = ReplaceVars(self.IdentifyBreak)
                             
                 idb = idb.replace("_FILE_",self.Break[0]).replace("_LINE_",self.Break[1])
@@ -2260,12 +2378,12 @@ class BREAKIDTASK(DBGTASK):
                 if m != None:
                     bid = m.group("ID")					
                     if bid != None:
-                        if VERBOSE == "True":					
-                            aAddText("\" Break id at line "+self.Break[1]+" in "+self.Break[0]+" is "+bid+"\n")
-                        DBGTASK(ReplaceVars(DBG["Clear break"]).replace("_ID_",bid))
+                        if cc.VERBOSE:					
+                            cc.aAddText("\" Break id at line "+self.Break[1]+" in "+self.Break[0]+" is "+bid+"\n")
+                        DBGTASK(cc,ReplaceVars(DBG["Clear break"]).replace("_ID_",bid))
                         
         else:
-            DBG_RD.remove(self.Receive)
+            cc.DBG_RD.remove(self.Receive)
                 
     #@nonl
     #@-node:ekr.20060513122450.378:Receive
@@ -2278,22 +2396,24 @@ class BREAKIDTASK(DBGTASK):
 class ProcessClass:
 
     #@    @+others
-    #@+node:ekr.20060513122450.44:class READINGTHREAD
-    class READINGTHREAD(threading.Thread):
+    #@+node:ekr.20060513122450.44:class ReadingThreadClass
+    class ReadingThreadClass(threading.Thread):
+    
         #@    @+others
         #@+node:ekr.20060513122450.45:__init__
         def __init__(self):
+        
             threading.Thread.__init__(self)
             self.File = None
             self.Lock = thread.allocate_lock()
             self.Buffer = ""
-        
-            
         #@nonl
         #@-node:ekr.20060513122450.45:__init__
         #@+node:ekr.20060513122450.46:run
         def run(self):
+        
             global Encoding
+        
             try:
                 s=self.File.read(1)	
                 while s:
@@ -2304,13 +2424,14 @@ class ProcessClass:
                     
             except IOError, ioerr:
                 self.Buffer = self.Buffer +"\n"+ "[@run] ioerror :"+str(ioerr)
-        
+        #@nonl
         #@-node:ekr.20060513122450.46:run
         #@+node:ekr.20060513122450.47:Update
         def Update(self,func):
+        
             ret = True	
             if self.Lock.acquire(0) == 1:
-                if self.Buffer and func != None:
+                if self.Buffer and func:
                     func(self.Buffer)
                     self.Buffer=""
                 else:
@@ -2319,15 +2440,14 @@ class ProcessClass:
             return ret
         
         
-        
-        
         #@-node:ekr.20060513122450.47:Update
         #@-others
-    #@-node:ekr.20060513122450.44:class READINGTHREAD
+    #@nonl
+    #@-node:ekr.20060513122450.44:class ReadingThreadClass
     #@+node:ekr.20060513122450.48:__init__
-    def __init__(self,controller,node,filename,args,start=None,out=None,err=None,end=None,spawn=False):
+    def __init__(self,cc,node,filename,args,start=None,out=None,err=None,end=None,spawn=False):
     
-        self.controller = controller
+        self.cc = cc
         self.Node = node	
         self.Spawn = spawn	
         self.FileName = filename
@@ -2346,111 +2466,81 @@ class ProcessClass:
     #@-node:ekr.20060513122450.48:__init__
     #@+node:ekr.20060513122450.49:Open
     def Open(self):
-        #getting file path and name
-        try:
-            if self.Spawn == True:
-                os.spawnl(os.P_NOWAIT,self.FileName,self.Arguments)
-                ProcessList.remove(self)
-                return True
-            
-            
-            path,fname = os.path.split(self.FileName)
         
-            #check file validity
-            if fname == "" or os.access(self.FileName,os.F_OK) != 1:		
-                Error("xcc: ","PROCESS: "+self.FileName+" is invalid!")
-                return	False
-        
-            #set the working directory
-            oldwdir=os.getcwd()
-            os.chdir(path)	
-        
-            #create the threads and open the pipe
-            self.OutThread = self.READINGTHREAD()
-            self.ErrThread = self.READINGTHREAD()
-            self.In,self.OutThread.File,self.ErrThread.File	= os.popen3(fname+" "+self.Arguments)
-            
-            #reset the working dir
-            os.chdir(oldwdir)
-            
-            if self.In == None or self.OutThread.File == None or self.ErrThread.File == None:
-                Error("xcc: ","PROCESS: Can't open file!")
-                return	False		
-                                    
-            #starting the thread
-            self.OutThread.start()
-            self.ErrThread.start()	
-            
-            #set the node marked and selected	
-            self.Node.setMarked()	
-        
-            #self.Node.c.selectVnode(self.Node)
-            LeoTop.redraw()
-            
+        cc = self.cc
+        if self.Spawn:
+            os.spawnl(os.P_NOWAIT,self.FileName,self.Arguments)
+            ProcessList.remove(self)
             return True
-            
-        except Exception:
-            TraceBack()
     
+        path,fname = os.path.split(self.FileName)
+        if fname == "" or os.access(self.FileName,os.F_OK) != 1:		
+            return Error("xcc: ","PROCESS: "+self.FileName+" is invalid!")
     
+        # Create the threads and open the pipe, saving and restoring the working directory.
+        oldwdir=os.getcwd() ; os.chdir(path)	
+        self.OutThread = self.ReadingThreadClass()
+        self.ErrThread = self.ReadingThreadClass()
+        self.In,self.OutThread.File,self.ErrThread.File	= os.popen3(
+            fname+" "+self.Arguments)
+        os.chdir(oldwdir)
+        
+        if not self.In or not self.OutThread.File or not self.ErrThread.File:
+            return Error("xcc: ","PROCESS: Can't open file!")
+                                
+        # Start the threads.
+        self.OutThread.start()
+        self.ErrThread.start()	
     
-    
+        self.Node.setMarked()	
+        cc.LeoTop.redraw()
+        return True
+    #@nonl
     #@-node:ekr.20060513122450.49:Open
     #@+node:ekr.20060513122450.50:Close
     def Close(self):
         
-        # close file and get error code
-        if self.In != None:
-            self.In.close()	
+        cc = self.cc
         
-        if self.OutThread.File != None:
-            self.OutThread.File.close()
-            
-        if self.ErrThread.File != None:
-            exitcode = self.ErrThread.File.close()
-        else:
-            exitcode = None
+        self.In and self.In.close()
         
-        # set the node unmarked
+        self.OutThread.File and self.OutThread.File.close()
+    
+        exitcode = self.ErrThread.File and self.ErrThread.File.close()
+        
         self.Node.clearMarked()
         self.Node = None	
             
-        #process exit code with OnEnd
-        if self.OnEnd != None:
-            self.OnEnd(exitcode)	
-        
-        # redraw the stuff
-        LeoTop.redraw()
+        self.OnEnd and self.OnEnd(exitcode)	
+    
+        cc.LeoTop.redraw()
         
         return exitcode
-    
-    
+    #@nonl
     #@-node:ekr.20060513122450.50:Close
     #@+node:ekr.20060513122450.51:Update
     def Update(self):
     
-        if self.OutThread == None or self.ErrThread == None:
+        if not self.OutThread or not self.ErrThread:
             return False
             
-        #writing intro to console
-        if self.OnStart != None:
+        # writing intro to console
+        if self.OnStart:
             self.OnStart()
             self.OnStart = None
         
-        if self.OutThread.Update(self.Output) != True and self.ErrThread.Update(self.Error) != True:
-            return False
-            
-        return True
+        return self.OutThread.Update(self.Output) or self.ErrThread.Update(self.Error)
+    #@nonl
     #@-node:ekr.20060513122450.51:Update
     #@-others
 
 #@-node:ekr.20060513122450.43:class ProcessClass
-#@+node:ekr.20060513122450.52:widget classes
+#@+node:ekr.20060513122450.52:Widget classes
 #@+node:ekr.20060513122450.53:class ConfigClass
 class ConfigClass:
     #@    @+others
-    #@+node:ekr.20060513122450.54:class PAGE
-    class PAGE(Tk.Canvas):
+    #@+node:ekr.20060513122450.54:class PageClass
+    class PageClass(Tk.Canvas):
         #@    @+others
         #@+node:ekr.20060513122450.55:class CHECK
         class CHECK:
@@ -2566,7 +2656,7 @@ class ConfigClass:
         class HELP(Tk.Button):
             #@    @+others
             #@+node:ekr.20060513122450.70:__init__
-            def __init__(self,c,buttontext="<?",boxtitle="Help",msg="!",x=5,y=0):
+            def __init__(self,c,buttontext="Help",boxtitle="Help",msg="!",x=5,y=0):
                 
                 self.Title = boxtitle
                 self.Message = msg
@@ -2583,18 +2673,19 @@ class ConfigClass:
         #@nonl
         #@-node:ekr.20060513122450.69:class HELP
         #@+node:ekr.20060513122450.72:__init__
-        def __init__(self,controller,name):
+        def __init__(self,cc,name):
             
-            self.controller = controller
+            self.cc = cc
             self.name = name
             self.Objects = []
-            Tk.Canvas.__init__(self,controller.LeoFrame.split1Pane2)
+            Tk.Canvas.__init__(self,cc.LeoFrame.split1Pane2)
             self.X=self.Y=self.W=self.H = 0
             self.CreateObjects(self)
         #@nonl
         #@-node:ekr.20060513122450.72:__init__
         #@+node:ekr.20060513122450.73:AddObject
         def AddObject(self,o):
+        
             if o != None:
                 self.Objects.append(o)
                 self.X,self.Y,self.W,self.H = self.bbox('all')
@@ -2605,6 +2696,7 @@ class ConfigClass:
         #@-node:ekr.20060513122450.74:BBox
         #@+node:ekr.20060513122450.75:AddSep
         def AddSep(self,length=380,color="black"):
+        
             if length != None:
                 l = length
             else:
@@ -2619,18 +2711,20 @@ class ConfigClass:
         #@+node:ekr.20060513122450.77:SaveObjects
         def SaveObjects(self,pd=None):
             
-            controller = self.controller
+            cc = self.cc
         
             if pd == None:
-                pd = controller.sGet(self.name,init={})
+                pd = cc.sGet(self.name,init={})
             
             for o in self.Objects:
                 pd[o.Name] = o.Get()
         #@-node:ekr.20060513122450.77:SaveObjects
         #@+node:ekr.20060513122450.78:LoadObjects
         def LoadObjects(self,pd=None):	
+        
+            cc = self.cc
             if pd == None:
-                pd = sGet(self.name,{})
+                pd = cc.sGet(self.name,{})
             
             for o in self.Objects:
                 if o.Name not in pd:				
@@ -2648,48 +2742,49 @@ class ConfigClass:
         #@+node:ekr.20060513122450.80:Hide
         def Hide(self):
             
-            controller = self.controller
+            cc = self.cc
             self.pack_forget()
             
-            b = controller.Config.GetButton(self.name)
+            b = cc.Config.GetButton(self.name)
             b.config(relief='groove',fg="black")
             
-            controller.LeoYBodyBar.config(command=controller.LeoBodyText.yview)
-            controller.LeoBodyText.config(yscrollcommand=controller.LeoYBodyBar.set)
+            cc.LeoYBodyBar.config(command=cc.LeoBodyText.yview)
+            cc.LeoBodyText.config(yscrollcommand=cc.LeoYBodyBar.set)
         #@nonl
         #@-node:ekr.20060513122450.80:Hide
         #@+node:ekr.20060513122450.81:Show
         def Show(self):
             
-            if Config.ActivePage != None:
-                Config.ActivePage.Hide()
+            cc = self.cc
+            
+            if cc.Config.ActivePage:
+                cc.Config.ActivePage.Hide()
                 
-            Config.ActivePage = self
-            b = Config.GetButton(self.name)
+            cc.Config.ActivePage = self
+            b = cc.Config.GetButton(self.name)
             b.config(relief='sunken',fg="blue")	
             
             self.config(scrollregion=self.bbox('all'))
-            self.config(yscrollcommand=LeoYBodyBar.set)
+            self.config(yscrollcommand=cc.LeoYBodyBar.set)
             
-            LeoYBodyBar.config(command=self.yview)
-            LeoYBodyBar.pack(side="right",fill="y")
-            
+            cc.LeoYBodyBar.config(command=self.yview)
+            cc.LeoYBodyBar.pack(side="right",fill="y")
             self.pack(expand=1,fill="both")
-            
+        #@nonl
         #@-node:ekr.20060513122450.81:Show
         #@-others
-    #@-node:ekr.20060513122450.54:class PAGE
+    #@-node:ekr.20060513122450.54:class PageClass
     #@+node:ekr.20060513122450.82:__init__
-    def __init__(self,controller):
+    def __init__(self,cc):
         
-        self.controller = controller
+        self.cc = cc
         self.Pages = []
         self.Buttons = []
         self.ActivePage = None
     
         #switch frame
         self.SwitchFrame = Tk.Frame(
-            controller.LeoFrame.split1Pane2,relief='groove',bd=2,height=40,width=100)
+            cc.LeoFrame.split1Pane2,relief='groove',bd=2,height=40,width=100)
         
         #title
         self.Title = Tk.Entry(self.SwitchFrame,justify='center')
@@ -2697,18 +2792,19 @@ class ConfigClass:
         
         self.AddPages()	
         #add pages switches
-        for p in self.Pages:
-            if p:
-                b = Tk.Button(self.SwitchFrame,text=p.name,width=10,command=p.Show,relief='groove')
+        for page in self.Pages:
+            if page:
+                b = Tk.Button(self.SwitchFrame,text=page.name,width=10,command=page.Show,relief='groove')
                 self.Buttons.append(b)
                 b.pack(side="left")
-                if self.ActivePage == None:
-                    self.ActivePage = p
+                if not self.ActivePage:
+                    self.ActivePage = page
             
-        #Cancel button
-        b = Tk.Button(self.SwitchFrame,text="Cancel",command=lambda: self.Hide(False))
-        b.pack(side="right")
-                
+        if 0: #Cancel button
+            # Not needed.
+            b = Tk.Button(self.SwitchFrame,text="Cancel",command=lambda: self.Hide(False))
+            b.pack(side="right")
+    
         #Load button
         b = Tk.Button(self.SwitchFrame,text="Load...",command=self.LoadFromFile)
         b.pack(side="right")
@@ -2723,58 +2819,61 @@ class ConfigClass:
     #@-node:ekr.20060513122450.82:__init__
     #@+node:ekr.20060513122450.83:GetPage
     def GetPage(self,name):
+        
         for p in self.Pages:
-            if p != None and p.name == name:
+            if p and p.name == name:
                 return p
     #@nonl
     #@-node:ekr.20060513122450.83:GetPage
     #@+node:ekr.20060513122450.84:GetButton
     def GetButton(self,name):
+    
         for b in self.Buttons:
-            if b != None and b["text"] == name:
+            if b and b["text"] == name:
                 return b
+    #@nonl
     #@-node:ekr.20060513122450.84:GetButton
     #@+node:ekr.20060513122450.85:Hide
     def Hide(self,save=True):
         
-        controller = self.controller
+        cc = self.cc
         
         if self.visible == True:
             self.ActivePage.Hide()	
             self.SwitchFrame.pack_forget()
-            controller.LeoYBodyBar.config(command=controller.LeoBodyText.yview)
-            controller.LeoBodyText.config(yscrollcommand=controller.LeoYBodyBar.set)
-            controller.LeoXBodyBar.pack(side = "bottom",fill="x")
-            if controller.CHILD_NODE != None:
-                controller.BreakBar.Show()
-            controller.LeoBodyText.pack(expand=1, fill="both")
+            cc.LeoYBodyBar.config(command=cc.LeoBodyText.yview)
+            cc.LeoBodyText.config(yscrollcommand=cc.LeoYBodyBar.set)
+            cc.LeoXBodyBar.pack(side = "bottom",fill="x")
+            if cc.CHILD_NODE:
+                cc.BreakBar.Show()
+            cc.LeoBodyText.pack(expand=1, fill="both")
             
             if save == True:
                 self.SaveToNode()
-            controller.ToolBar.ConfigButton.config(command=self.Show,relief=RAISED)
-            controller.ToolBar.DisplayFrame.pack(side="top",fill="x",expand=1)
+            cc.ToolBar.ConfigButton.config(command=self.Show,relief='raised')
+            cc.ToolBar.DisplayFrame.pack(side="top",fill="x",expand=1)
             self.visible = False
     #@nonl
     #@-node:ekr.20060513122450.85:Hide
     #@+node:ekr.20060513122450.86:Show
     def Show(self):
         
-        controller = self.controller
-        if controller.Watcher.visible:
-            controller.Watcher.Hide()			
-        if controller.BreakBar.visible:
-            controller.BreakBar.Hide()
-        controller.ToolBar.DisplayFrame.pack_forget()
-        controller.LeoBodyText.pack_forget()
-        controller.LeoXBodyBar.pack_forget()
-        controller.LeoYBodyBar.pack_forget()
+        cc = self.cc
+        if cc.Watcher.visible:
+            cc.Watcher.Hide()			
+        if cc.BreakBar.visible:
+            cc.BreakBar.Hide()
+        cc.ToolBar.DisplayFrame.pack_forget()
+        cc.LeoBodyText.pack_forget()
+        cc.LeoXBodyBar.pack_forget()
+        cc.LeoYBodyBar.pack_forget()
         
         self.SwitchFrame.pack(side="top", fill="x")
         self.LoadFromNode()
         self.ActivePage.Show()
-        controller.ToolBar.ConfigButton.config(command=self.Hide,relief='sunken')
+        cc.ToolBar.ConfigButton.config(command=self.Hide,relief='sunken')
         self.visible = True
-        controller.c.redraw()
+        cc.c.redraw()
     #@nonl
     #@-node:ekr.20060513122450.86:Show
     #@+node:ekr.20060513122450.87:ClearConfig
@@ -2788,19 +2887,21 @@ class ConfigClass:
     #@+node:ekr.20060513122450.88:LoadFromNode
     def LoadFromNode(self):
     
+        cc = self.cc
         self.Title.delete(0,'end')
-        self.Title.insert('end',sGet("Title"))
+        self.Title.insert('end',cc.sGet("Title"))
             
         for p in self.Pages:
-            if p != None:
+            if p:
                 p.LoadObjects()
+    #@nonl
     #@-node:ekr.20060513122450.88:LoadFromNode
     #@+node:ekr.20060513122450.89:SaveToNode
     def SaveToNode(self):
         
-        controller = self.controller
+        cc = self.cc
         
-        controller.sSet("Title",self.Title.get())
+        cc.sSet("Title",self.Title.get())
         
         for p in self.Pages:
             p and p.SaveObjects()
@@ -2907,22 +3008,23 @@ class ConfigClass:
     #@+node:ekr.20060513122450.93:AddPages
     def AddPages(self):
         
-        controller = self.controller
-        self.Pages.append(self.OPTPAGE(controller))
-        self.Pages.append(self.CPLPAGE(controller))
-        self.Pages.append(self.DBGPAGE(controller))
-        self.Pages.append(self.EXEPAGE(controller))
-        #self.Pages.append(self.CODPAGE(controller))
+        cc = self.cc
+        self.Pages.append(self.OptPageClass(cc))
+        self.Pages.append(self.CplPageClass(cc))
+        self.Pages.append(self.DbgPageClass(cc))
+        self.Pages.append(self.ExePageClass(cc))
+        #self.Pages.append(self.CodePageClass(cc))
     #@nonl
     #@-node:ekr.20060513122450.93:AddPages
-    #@+node:ekr.20060513122450.94:class OPTPAGE
-    class OPTPAGE(PAGE):
+    #@+node:ekr.20060513122450.94:class OptPageClass
+    class OptPageClass(PageClass):
+    
         #@    @+others
         #@+node:ekr.20060513122450.95:__init__
-        def __init__(self,controller):
+        def __init__(self,cc):
             
-            self.controller = controller
-            ConfigClass.PAGE.__init__(self,controller,"Options")
+            self.cc = cc
+            ConfigClass.PageClass.__init__(self,cc,"Options")
         #@-node:ekr.20060513122450.95:__init__
         #@+node:ekr.20060513122450.96:CreateObjects
         def CreateObjects(self,master): # must overide
@@ -2974,40 +3076,34 @@ class ConfigClass:
         #@nonl
         #@-node:ekr.20060513122450.96:CreateObjects
         #@-others
-    #@-node:ekr.20060513122450.94:class OPTPAGE
-    #@+node:ekr.20060513122450.99:class CPLPAGE
-    class CPLPAGE(PAGE):
+    #@-node:ekr.20060513122450.94:class OptPageClass
+    #@+node:ekr.20060513122450.99:class CplPageClass
+    class CplPageClass(PageClass):
         #@    @+others
         #@+node:ekr.20060513122450.100:__init__
-        def __init__(self,controller):
+        def __init__(self,cc):
             
-            self.controller = controller
-            ConfigClass.PAGE.__init__(self,controller,"Compiler")
+            self.cc = cc
+            ConfigClass.PageClass.__init__(self,cc,"Compiler")
         #@nonl
         #@-node:ekr.20060513122450.100:__init__
         #@+node:ekr.20060513122450.101:Browse
         def Browse(self):
-            e = None
-            
+        
             for o in self.Objects:
-                if o != None and o.Name == "Compiler":
-                    e=o
+                if o and o.Name == "Compiler":
                     break
-            
-            if e != None:
-                ft = ('Executables', '.exe;.bin'),
-                s = tkFileDialog.askopenfilename(filetypes=ft,title="Locate Compiler...")
-                
-                if s == None:
-                    Error("xcc: ","Action canceled by user!")
-                    return
-            
-                if s == "":
-                    Error("xcc: ","Empty path returned!")
-                    return
-            
-                s = os.path.normpath(s)
-                e.Set(s)
+            else: return
+        
+            ft = ('Executables', '.exe;.bin'),
+            s = tkFileDialog.askopenfilename(filetypes=ft,title="Locate Compiler...")
+            if s == None:
+                return Error("xcc: ","Action canceled by user!")
+            elif s == "":
+                return Error("xcc: ","Empty path returned!")
+        
+            e.Set(os.path.normpath(s))
+        #@nonl
         #@-node:ekr.20060513122450.101:Browse
         #@+node:ekr.20060513122450.102:AddPath
         def AddPath(self,name):
@@ -3030,7 +3126,8 @@ class ConfigClass:
         #@nonl
         #@-node:ekr.20060513122450.102:AddPath
         #@+node:ekr.20060513122450.103:CreateObjects
-        def CreateObjects(self,master):#must overide
+        def CreateObjects(self,master): #must overide
+        
             #@    @+others
             #@+node:ekr.20060513122450.104:Executable
             x=10
@@ -3048,7 +3145,6 @@ class ConfigClass:
             self.AddSep()
             #-------------------------------------------------
             
-            
             t1 = self.TEXT(master,"Arguments",x=5,y=self.H,vs=True)
             self.HELP(master,boxtitle="Arguments info",msg=CplArgumentsHelp,x=360,y=self.H+20)
             self.AddObject(t1)
@@ -3062,14 +3158,14 @@ class ConfigClass:
             #@+node:ekr.20060513122450.106:Paths
             self.AddSep()
             #-------------------------------------------------------------
-            b = Tk.Button(master,text="+..",command=lambda:self.AddPath("Include search paths"))
+            b = Tk.Button(master,text="Browse",command=lambda:self.AddPath("Include search paths"))
             master.create_window(360,self.H+58,anchor='nw',window=b)
             t1 = self.TEXT(master,"Include search paths",x=5,y=self.H)
             self.HELP(master,boxtitle="Include search paths info",msg=IncludeSearchPathsHelp,x=360,y=self.H+20)
             self.AddObject(t1)
             
             #-------------------------------------------------------------
-            b = Tk.Button(master,text="+..",command=lambda:self.AddPath("Library search paths"))
+            b = Tk.Button(master,text="Browse",command=lambda:self.AddPath("Library search paths"))
             master.create_window(360,self.H+58,anchor='nw',window=b)
             t1 = self.TEXT(master,"Library search paths",x=5,y=self.H)
             self.HELP(master,boxtitle="Library search paths info",msg=LibrarySearchPathsHelp,x=360,y=self.H+20)
@@ -3079,7 +3175,7 @@ class ConfigClass:
             t1 = self.TEXT(master,"Used libraries",x=5,y=self.H)
             self.HELP(master,boxtitle="Used libraries info",msg=UsedLibrariesHelp,x=360,y=self.H+20)
             self.AddObject(t1)
-            
+            #@nonl
             #@-node:ekr.20060513122450.106:Paths
             #@+node:ekr.20060513122450.107:Symbols
             ww =19
@@ -3137,38 +3233,34 @@ class ConfigClass:
         
         #@-node:ekr.20060513122450.103:CreateObjects
         #@-others
-    #@-node:ekr.20060513122450.99:class CPLPAGE
-    #@+node:ekr.20060513122450.109:class DBGPAGE
-    class DBGPAGE(PAGE):
+    #@-node:ekr.20060513122450.99:class CplPageClass
+    #@+node:ekr.20060513122450.109:class DbgPageClass
+    class DbgPageClass(PageClass):
         #@    @+others
         #@+node:ekr.20060513122450.110:__init__
-        def __init__(self,controller):
+        def __init__(self,cc):
             
-            self.controller = controller
-            ConfigClass.PAGE.__init__(self,controller,"Debugger")
+            self.cc = cc
+            ConfigClass.PageClass.__init__(self,cc,"Debugger")
         #@-node:ekr.20060513122450.110:__init__
         #@+node:ekr.20060513122450.111:Browse
         def Browse(self):
-            e = None
+        
             for o in self.Objects:
                 if o != None and o.Name == "Debugger":
-                    e=o
                     break
-            if e != None:
-                ft = ('Executables', '.exe;.bin'),
-                s = tkFileDialog.askopenfilename(filetypes=ft,title="Locate Debugger...")
-                
-                if s == None:
-                    Error("xcc: ","Action canceled by user!")
-                    return
+            else: return
+        
+            ft = ('Executables', '.exe;.bin'),
+            s = tkFileDialog.askopenfilename(filetypes=ft,title="Locate Debugger...")
             
-                if s == "":
-                    Error("xcc: ","Empty path returned!")
-                    return
-            
-                s = os.path.normpath(s)
-                #s = s.replace("\\","\\\\")
-                e.Set(s)
+            if s == None:
+                return Error("xcc: ","Action canceled by user!")
+            elif s == "":
+                return Error("xcc: ","Empty path returned!")
+        
+            e.Set(os.path.normpath(s))
+        #@nonl
         #@-node:ekr.20060513122450.111:Browse
         #@+node:ekr.20060513122450.112:CreateObjects
         def CreateObjects(self,master):#must overide
@@ -3296,15 +3388,15 @@ class ConfigClass:
             #@-others
         #@-node:ekr.20060513122450.112:CreateObjects
         #@-others
-    #@-node:ekr.20060513122450.109:class DBGPAGE
-    #@+node:ekr.20060513122450.121:class EXEPAGE
-    class EXEPAGE(PAGE):
+    #@-node:ekr.20060513122450.109:class DbgPageClass
+    #@+node:ekr.20060513122450.121:class ExePageClass
+    class ExePageClass(PageClass):
         #@    @+others
         #@+node:ekr.20060513122450.122:__init__
-        def __init__(self,controller):
+        def __init__(self,cc):
             
-            self.controller = controller
-            ConfigClass.PAGE.__init__(self,controller,"Executable")
+            self.cc = cc
+            ConfigClass.PageClass.__init__(self,cc,"Executable")
         #@-node:ekr.20060513122450.122:__init__
         #@+node:ekr.20060513122450.123:CreateObjects
         def CreateObjects(self,master):#must overide
@@ -3330,14 +3422,15 @@ class ConfigClass:
         #@nonl
         #@-node:ekr.20060513122450.123:CreateObjects
         #@-others
-    #@-node:ekr.20060513122450.121:class EXEPAGE
-    #@+node:ekr.20060513122450.126:class CODPAGE
-    class CODPAGE(PAGE):
+    #@-node:ekr.20060513122450.121:class ExePageClass
+    #@+node:ekr.20060513122450.126:class CodePageClass
+    class CodePageClass(PageClass):
         #@    @+others
         #@+node:ekr.20060513122450.127:__init__
-        def __init__(self):
+        def __init__(self,cc):
         
-            ConfigClass.PAGE.__init__(self,"Code")
+            self.cc = cc
+            ConfigClass.PageClass.__init__(self,"Code")
         #@-node:ekr.20060513122450.127:__init__
         #@+node:ekr.20060513122450.128:CreateObjects
         def CreateObjects(self,master):#must overide
@@ -3368,7 +3461,8 @@ class ConfigClass:
         #@nonl
         #@-node:ekr.20060513122450.128:CreateObjects
         #@-others
-    #@-node:ekr.20060513122450.126:class CODPAGE
+    #@nonl
+    #@-node:ekr.20060513122450.126:class CodePageClass
     #@-others
 #@nonl
 #@-node:ekr.20060513122450.53:class ConfigClass
@@ -3699,11 +3793,11 @@ class ToolbarClass(Tk.Frame):
     
     #@    @+others
     #@+node:ekr.20060513122450.152:__init__
-    def __init__(self,controller):
+    def __init__(self,cc):
         
-        self.controller = controller
+        self.cc = cc
             
-        Tk.Frame.__init__(self,controller.LeoFrame.split1Pane2)
+        Tk.Frame.__init__(self,cc.LeoFrame.split1Pane2)
         f = Tk.Frame(self)
         f.pack(side="top",fill="x",expand=1)
         
@@ -3712,23 +3806,23 @@ class ToolbarClass(Tk.Frame):
         self.GoButton.pack(side="left")
         
         self.Pause_e=Tk.PhotoImage(data=DecompressIcon(Pause_e))
-        self.PauseButton = Tk.Button(f,image=self.Pause_e,command=controller.aPause,state='disabled')
+        self.PauseButton = Tk.Button(f,image=self.Pause_e,command=cc.aPause,state='disabled')
         self.PauseButton.pack(side="left")
         
         self.Stop_e=Tk.PhotoImage(data=DecompressIcon(Stop_e))
-        self.StopButton = Tk.Button(f,image=self.Stop_e,command=controller.aStop,state='disabled')
+        self.StopButton = Tk.Button(f,image=self.Stop_e,command=cc.aStop,state='disabled')
         self.StopButton.pack(side="left")
         
         self.StepIn_e=Tk.PhotoImage(data=DecompressIcon(StepIn_e))
-        self.StepButton = Tk.Button(f,image=self.StepIn_e,state='disabled',command=controller.aStepIn)
+        self.StepButton = Tk.Button(f,image=self.StepIn_e,state='disabled',command=cc.aStepIn)
         self.StepButton.pack(side="left")
         
         self.StepOver_e=Tk.PhotoImage(data=DecompressIcon(StepOver_e))
-        self.StepInButton = Tk.Button(f,image=self.StepOver_e,state='disabled',command=controller.aStepOver)
+        self.StepInButton = Tk.Button(f,image=self.StepOver_e,state='disabled',command=cc.aStepOver)
         self.StepInButton.pack(side="left")
         
         self.StepOut_e=Tk.PhotoImage(data=DecompressIcon(StepOut_e))
-        self.StepOutButton = Tk.Button(f,image=self.StepOut_e,state='disabled',command=controller.aStepOut)
+        self.StepOutButton = Tk.Button(f,image=self.StepOut_e,state='disabled',command=cc.aStepOut)
         self.StepOutButton.pack(side="left")	
         
         self.Prompt_e=Tk.PhotoImage(data=DecompressIcon(Prompt_e))
@@ -3739,15 +3833,14 @@ class ToolbarClass(Tk.Frame):
         # command entry
         self.DbgEntry = Tk.Entry(f)
         self.DbgEntry.bind("<Key>",self.OnKey)
-        #self.DbgEntry.pack(side="left",fill="x",expand=1)
         
         #---------------------------------------------------
         self.ConfigGif=Tk.PhotoImage(data=DecompressIcon(ConfigData))
-        self.ConfigButton = Tk.Button(f,image=self.ConfigGif,command=controller.Config.Show)
+        self.ConfigButton = Tk.Button(f,image=self.ConfigGif,command=cc.Config.Show)
         self.ConfigButton.pack(side="right")
         
         self.WatchGif=Tk.PhotoImage(data=DecompressIcon(WatchData))
-        self.WatchButton = Tk.Button(f,image=self.WatchGif,command=controller.Watcher.Show)
+        self.WatchButton = Tk.Button(f,image=self.WatchGif,command=cc.Watcher.Show)
         self.WatchButton.pack(side="right")
         
         self.DisplayFrame = Tk.Frame(self)
@@ -3756,54 +3849,56 @@ class ToolbarClass(Tk.Frame):
         fgcolor = "#808080"#BreakBar.fgcolor
         self.Spacer = Tk.Text(
             self.DisplayFrame,height=1,fg=fgcolor,relief='flat',
-            font=controller.LeoFont,width=4,state='disabled')
+            font=cc.LeoFont,width=4,state='disabled')
         self.Spacer.pack(side="left")
         
         self.Display = Tk.Text(
-            self.DisplayFrame,height=1,relief='flat',fg=fgcolor,bg=controller.BreakBar["bg"],
-            font=controller.LeoFont,state='disabled')
+            self.DisplayFrame,height=1,relief='flat',fg=fgcolor,bg=cc.BreakBar["bg"],
+            font=cc.LeoFont,state='disabled')
         self.Display.pack(side="left",fill="x",expand=1)
     #@-node:ekr.20060513122450.152:__init__
     #@+node:ekr.20060513122450.153:Go
     def Go(self):
         
-        controller = self.controller
+        cc = self.cc
       
-        if not controller.ACTIVE_NODE:
-            controller.sGo()
-        elif controllerACTIVE_NODE == controllerSELECTED_NODE:
-            controller.aGo()
+        if not cc.ACTIVE_NODE:
+            cc.sGo()
+        elif cc.ACTIVE_NODE == controllerSELECTED_NODE:
+            cc.aGo()
         else:
-            Error("xcc: ",str(controller.ACTIVE_NODE)+" is already active!")
+            Error("xcc: ",str(cc.ACTIVE_NODE)+" is already active!")
     #@nonl
     #@-node:ekr.20060513122450.153:Go
     #@+node:ekr.20060513122450.154:Hide
     def Hide (self):
     
-        controller = self.controller
+        cc = self.cc
         self.pack_forget()
-        controller.LeoBodyText.config(wrap=controller.LeoWrap)
-        if controller.Watcher.visible:
-            controller.Watcher.Hide()
+        cc.LeoBodyText.config(wrap=cc.LeoWrap)
+        if cc.Watcher.visible:
+            cc.Watcher.Hide()
     #@nonl
     #@-node:ekr.20060513122450.154:Hide
     #@+node:ekr.20060513122450.155:Show
     def Show (self):
     
-        controller = self.controller
+        cc = self.cc
         self.pack(side="top",fill="x")
-        controller.LeoBodyText.config(wrap='none')
+        cc.LeoBodyText.config(wrap='none')
     
-        if controller.Watcher.visible:
-            controller.Watcher.Show()
+        if cc.Watcher.visible:
+            cc.Watcher.Show()
     #@nonl
     #@-node:ekr.20060513122450.155:Show
     #@+node:ekr.20060513122450.156:OnKey
     def OnKey(self,event=None):
         
-        if ACTIVE_NODE != None:
+        cc = self.cc
+        
+        if cc.ACTIVE_NODE:
             if len(event.char)==1 and ord(event.char) == 13:
-                aWrite(self.DbgEntry.get().replace("\n",""))
+                cc.aWrite(self.DbgEntry.get().replace("\n",""))
                 self.DbgEntry.delete(0,'end')
     #@nonl
     #@-node:ekr.20060513122450.156:OnKey
@@ -3831,17 +3926,18 @@ class ToolbarClass(Tk.Frame):
     #@+node:ekr.20060513122450.159:SyncDisplayToChild
     def SyncDisplayToChild(self,loc):
         
+        cc = self.cc
         self.Display["cursor"] = ""
         self.Display.unbind("<Button-1>")
         self.Spacer["state"] = 'normal'
         self.Spacer.pack(side="left")
-        if BreakBar.visible:
-            self.Spacer["width"] = int(BreakBar["width"])+1
+        if cc.BreakBar.visible:
+            self.Spacer["width"] = int(cc.BreakBar["width"])+1
         else:
             self.Spacer["width"] = 4
         
         self.Spacer.delete(1.0,'end')
-        self.Spacer.insert(INSERT,"."+loc.FOUND_FILE_EXT)
+        self.Spacer.insert('insert',"."+loc.FOUND_FILE_EXT)
         self.Spacer["state"] = 'disabled'
         
         disp = ":: " ; as = ""
@@ -3849,9 +3945,9 @@ class ToolbarClass(Tk.Frame):
             as += c+" :: "
         disp += as	
         off = 0
-        if loc.CURRENT_RULE != None and loc.CURRENT_RULE != "class":
+        if loc.CURRENT_RULE and loc.CURRENT_RULE != "class":
             off = len(disp)
-            disp += CHILD_NODE.headString()	
+            disp += cc.CHILD_NODE.headString()	
         
         self.Display["state"] = 'normal'
         self.Display.delete(1.0,'end')
@@ -3920,7 +4016,7 @@ class ToolbarClass(Tk.Frame):
     #@+node:ekr.20060513122450.162:OnErrorLeftClick
     def OnErrorLeftClick(self,event):
         
-        self.controller.GoToNode(PARSE_ERROR_NODE)
+        self.cc.GoToNode(PARSE_ERROR_NODE)
     #@nonl
     #@-node:ekr.20060513122450.162:OnErrorLeftClick
     #@+node:ekr.20060513122450.163:HideInput
@@ -3944,15 +4040,15 @@ class ToolbarClass(Tk.Frame):
     #@+node:ekr.20060513122450.165:Refresh
     def Refresh(self):
         
-        controller = self.controller
+        cc = self.cc
     
         if (
-            controller.ACTIVE_NODE and controller.DBG_PROMPT and
-            controller.ACTIVE_NODE != controller.SELECTED_NODE
+            cc.ACTIVE_NODE and cc.DBG_PROMPT and
+            cc.ACTIVE_NODE != cc.SELECTED_NODE
         ):
-            controller.GoToNode(ACTIVE_NODE)
-            QUERYGOTASK(controller)
-            controller.DbgOut("")
+            cc.GoToNode(ACTIVE_NODE)
+            QUERYGOTASK(cc)
+            cc.DbgOut("")
     #@nonl
     #@-node:ekr.20060513122450.165:Refresh
     #@-others
@@ -3960,15 +4056,16 @@ class ToolbarClass(Tk.Frame):
 #@-node:ekr.20060513122450.151:class ToolbarClass
 #@+node:ekr.20060513122450.166:class WatcherClass
 class WatcherClass(Tk.Frame):
+
     #@    @+others
     #@+node:ekr.20060513122450.167:__init__
-    def __init__(self,controller):
+    def __init__(self,cc):
        
-        self.conroller = controller
+        self.cc = cc
         self.Watching = False
         self.visible = False
         
-        Tk.Frame.__init__(self,controller.LeoFrame.split1Pane2,relief='groove')
+        Tk.Frame.__init__(self,cc.LeoFrame.split1Pane2,relief='groove')
         
         self.EditFrame = Tk.Frame(self,relief='groove')
         self.VarEntry = Tk.Entry(self.EditFrame)
@@ -3980,7 +4077,7 @@ class WatcherClass(Tk.Frame):
         self.BoxBar = Tk.Scrollbar(self.BoxFrame,command=self.yview)
         self.InBox = Tk.Text(
             self.BoxFrame,
-                yscrollcommand=self.BoxBar.set,font=controller.LeoFont,
+                yscrollcommand=self.BoxBar.set,font=cc.LeoFont,
                 state='disabled',width=20,wrap='none',height=10,
                 selectbackground="white",selectforeground="black")
         self.InBox.pack(side="left",fill="both",expand=1)
@@ -3988,7 +4085,7 @@ class WatcherClass(Tk.Frame):
         
         self.OutBox = Tk.Text(
             self.BoxFrame,yscrollcommand=self.BoxBar.set,
-            font=controller.LeoFont,state='disabled',width=20,wrap='none',height=10,
+            font=cc.LeoFont,state='disabled',width=20,wrap='none',height=10,
             selectbackground="white",selectforeground="black")
         self.OutBox.pack(side="left",fill="both",expand=1)
     
@@ -4001,122 +4098,116 @@ class WatcherClass(Tk.Frame):
     #@-node:ekr.20060513122450.167:__init__
     #@+node:ekr.20060513122450.168:OnEditKey
     def OnEditKey(self,event):
-        try:
-            if self.Watching == False and len(event.char)==1 and ord(event.char) == 13:
-                self.InBox.config(state='normal')
-                self.OutBox.config(state='normal')
-                
-                var = self.VarEntry.get()
-                sGet("Watch",[]).append(var)
-                
-                self.InBox.mark_set("insert",'end')			
-                self.InBox.insert("insert",var+"\n")
-                
-                self.OutBox.mark_set("insert",'end')
-                self.OutBox.insert("insert","- ?? -\n")
-                
-                self.InBox.config(state='disabled')
-                self.OutBox.config(state='disabled')
-                self.VarEntry.delete(0, 'end')
-                
-                if ACTIVE_PROCESS != None and DBG_PROMPT == True:
-                    if SELECTED_NODE == ACTIVE_NODE:
-                        WATCHTASK()
-                        DbgOut("")
-                #TODO: send a WATCHTASK if breaked
-                
-        except Exception:
-            TraceBack()
+        
+        cc = self.cc
+    
+        if not self.Watching and len(event.char)==1 and ord(event.char) == 13:
+            self.InBox.config(state='normal')
+            self.OutBox.config(state='normal')
+            
+            var = self.VarEntry.get()
+            cc.sGet("Watch",[]).append(var)
+            
+            self.InBox.mark_set("insert",'end')			
+            self.InBox.insert("insert",var+"\n")
+            
+            self.OutBox.mark_set("insert",'end')
+            self.OutBox.insert("insert","- ?? -\n")
+            
+            self.InBox.config(state='disabled')
+            self.OutBox.config(state='disabled')
+            self.VarEntry.delete(0, 'end')
+            
+            if cc.ACTIVE_PROCESS and cc.DBG_PROMPT and cc.SELECTED_NODE == cc.ACTIVE_NODE:
+                WATCHTASK(cc)
+                cc.DbgOut("")
+            #TODO: send a WATCHTASK if breaked
+    #@nonl
     #@-node:ekr.20060513122450.168:OnEditKey
     #@+node:ekr.20060513122450.169:OnLeftClick
     def OnLeftClick(self,event):
-        try:
-            if self.InBox.get(1.0,'end').replace("\n","") != "":
-                w = event.widget
-                w.mark_set("insert","@0,"+str(event.y))
-                l,c = w.index("insert").split(".")
-            
-                self.InBox.tag_delete("current")
-                self.InBox.tag_add("current",l+".0",l+".end")
-                self.InBox.tag_config("current",background=BreakColor)
-            
-                self.OutBox.tag_delete("current")
-                self.OutBox.tag_add("current",l+".0",l+".end")
-                self.OutBox.tag_config("current",background=BreakColor)
-        except Exception:
-            TraceBack()
-    
+       
+        if self.InBox.get(1.0,'end').replace("\n",""):
+            w = event.widget
+            w.mark_set("insert","@0,"+str(event.y))
+            l,c = w.index("insert").split(".")
+        
+            self.InBox.tag_delete("current")
+            self.InBox.tag_add("current",l+".0",l+".end")
+            self.InBox.tag_config("current",background=BreakColor)
+        
+            self.OutBox.tag_delete("current")
+            self.OutBox.tag_add("current",l+".0",l+".end")
+            self.OutBox.tag_config("current",background=BreakColor)
+    #@nonl
     #@-node:ekr.20060513122450.169:OnLeftClick
     #@+node:ekr.20060513122450.170:OnDelete
     def OnDelete(self,event):
         if "current" in self.InBox.tag_names():
-            ib = self.InBox
-            ob = self.OutBox
-            
+            ib = self.InBox ; ob = self.OutBox
             ib.config(state='normal')
             ob.config(state='normal')
-            
             s,e = ib.tag_nextrange("current","1.0")
-            
             var = ib.get(s,e)	
             watchs = sGet("Watch",[])
             if var in watchs:
                 watchs.remove(var)		
-            
             ib.delete(s,e+"+1c")
             ib.tag_delete("current")
                 
             s,e = ob.tag_nextrange("current","1.0")
             ob.delete(s,e+"+1c")
             ob.tag_delete("current")
-            
             ib.config(state='disabled')
             ob.config(state='disabled')
-            
-    
+    #@nonl
     #@-node:ekr.20060513122450.170:OnDelete
     #@+node:ekr.20060513122450.171:yview
     def yview(self, *args):
+    
         apply(self.InBox.yview,args)
         apply(self.OutBox.yview,args)
+    #@nonl
     #@-node:ekr.20060513122450.171:yview
     #@+node:ekr.20060513122450.172:Hide
     def Hide(self):
+        
+        cc = self.cc
         self.pack_forget()
         self.visible = False
-        ToolBar.WatchButton.config(command=self.Show,relief=RAISED)
+        cc.ToolBar.WatchButton.config(
+            command=self.Show,relief='raised')
+    #@nonl
     #@-node:ekr.20060513122450.172:Hide
     #@+node:ekr.20060513122450.173:Show
     def Show(self):
         
-        controller = self.controller
-       
-        if controller.Config.visible == True:
-            controller.Config.Hide()
-        controller.LeoBodyText.pack_forget()
-        controller.LeoXBodyBar.pack_forget()
-        controller.LeoYBodyBar.pack_forget()
+        cc = self.cc
+        if cc.Config.visible:
+            cc.Config.Hide()
+        cc.LeoBodyText.pack_forget()
+        cc.LeoXBodyBar.pack_forget()
+        cc.LeoYBodyBar.pack_forget()
         self.pack(side = "bottom",fill="x")
-        controller.LeoXBodyBar.pack(side = "bottom",fill="x")
-        controller.LeoYBodyBar.pack(side="right",fill="y")
-        if controller.BreakBar.visible == True:
-            controller.BreakBar.Hide()
-            controller.BreakBar.Show()
-        controller.LeoBodyText.pack(fill="both",expand=1)
-        controller.ToolBar.WatchButton.config(command=self.Hide,relief='sunken')
+        cc.LeoXBodyBar.pack(side = "bottom",fill="x")
+        cc.LeoYBodyBar.pack(side="right",fill="y")
+        if cc.BreakBar.visible:
+            cc.BreakBar.Hide()
+            cc.BreakBar.Show()
+        cc.LeoBodyText.pack(fill="both",expand=1)
+        cc.ToolBar.WatchButton.config(command=self.Hide,relief='sunken')
         self.visible = True
         self.Sync()
-                
-        if (
-            controller.ACTIVE_PROCESS and controller.DBG_PROMPT and
-            controller.SELECTED_NODE == controller.ACTIVE_NODE
-        ):
-            WATCHTASK(conroller)
-            controller.DbgOut("")
+        if cc.ACTIVE_PROCESS and cc.DBG_PROMPT and cc.SELECTED_NODE == cc.ACTIVE_NODE:
+            WATCHTASK(cc)
+            cc.DbgOut("")
     #@nonl
     #@-node:ekr.20060513122450.173:Show
     #@+node:ekr.20060513122450.174:Sync
     def Sync(self):
+        
+        cc = self.cc
+    
         if self.visible == True:
             self.InBox.config(state='normal')
             self.OutBox.config(state='normal')
@@ -4124,7 +4215,7 @@ class WatcherClass(Tk.Frame):
             self.InBox.delete(1.0,'end')
             self.OutBox.delete(1.0,'end')
             
-            for v in sGet("Watch",[]):
+            for v in cc.sGet("Watch",[]):
                 self.InBox.mark_set("insert",'end')			
                 self.InBox.insert("insert",v+"\n")
                 
@@ -4133,7 +4224,7 @@ class WatcherClass(Tk.Frame):
         
             self.InBox.config(state='disabled')
             self.OutBox.config(state='disabled')
-    
+    #@nonl
     #@-node:ekr.20060513122450.174:Sync
     #@-others
 #@-node:ekr.20060513122450.166:class WatcherClass
@@ -4142,13 +4233,13 @@ class BreakbarClass(Tk.Text):
 
     #@    @+others
     #@+node:ekr.20060513122450.176:__init__
-    def __init__(self,controller):
+    def __init__(self,cc):
         
-        self.controller = controller
+        self.cc = cc
         self.bodychanged = False	
         self.visible = False
         coffset = 10
-        c = controller.LeoBodyText.winfo_rgb(controller.LeoBodyText["bg"])	
+        c = cc.LeoBodyText.winfo_rgb(cc.LeoBodyText["bg"])	
         red, green, blue = c[0]/256, c[1]/256, c[2]/256
         red -= coffset ; green -= coffset ; blue -= coffset	
         self.bgcolor = "#%02x%02x%02x" % (red,green,blue)
@@ -4156,37 +4247,36 @@ class BreakbarClass(Tk.Text):
         self.fgcolor = "#%02x%02x%02x" % (red,green,blue)
         
         Tk.Text.__init__(self,
-            controller.LeoFrame.split1Pane2,
+            cc.LeoFrame.split1Pane2,
             name='sidebar',
             width=2,
-            bd=controller.LeoBodyText["bd"],
+            bd=cc.LeoBodyText["bd"],
             bg = self.bgcolor,
             relief='flat',
             setgrid=0,
             selectbackground = self.bgcolor,
             selectforeground = self.fgcolor,
             foreground = self.fgcolor,
-            font=controller.LeoFont,
-            pady=controller.LeoBodyText["pady"],
+            font=cc.LeoFont,
+            pady=cc.LeoBodyText["pady"],
             cursor="hand2",
             wrap='none'
         )
         
-        self.leowrap = controller.LeoBodyText["wrap"]
+        self.leowrap = cc.LeoBodyText["wrap"]
         self.bind("<Button-1>",self.OnLeftClick)
         self.bind("<Button-3>",self.OnRightClick)
         self["state"]='disabled'
-        controller.LeoBodyText.pack_forget()
-        controller.LeoXBodyBar.pack(side="bottom", fill="x")
-        controller.LeoBodyText.pack(expand=1, fill="both")
+        cc.LeoBodyText.pack_forget()
+        cc.LeoXBodyBar.pack(side="bottom", fill="x")
+        cc.LeoBodyText.pack(expand=1, fill="both")
     #@nonl
     #@-node:ekr.20060513122450.176:__init__
     #@+node:ekr.20060513122450.177:Scrollbar funcs
     #@+node:ekr.20060513122450.178:yview
     def yview(self,cmd=None,arg1=None,arg2=None):
         
-        controller = self.controller
-        w = controller.LeoBodyText
+        cc = self.cc ; w = cc.LeoBodyText
       
         if cmd:
             if arg1 != None:
@@ -4202,41 +4292,41 @@ class BreakbarClass(Tk.Text):
     #@+node:ekr.20060513122450.179:setForBody
     def setForBody(self,lo, hi):
         
-        controller = self.controller
+        cc = self.cc
        
         Tk.Text.yview(self,'moveto',lo)	
-        controller.LeoYBodyBar.set(lo,hi)	
+        cc.LeoYBodyBar.set(lo,hi)	
     #@nonl
     #@-node:ekr.20060513122450.179:setForBody
     #@+node:ekr.20060513122450.180:setForBar
     def setForBar(self,lo, hi):
         
-        controller = self.controller
-        controller.LeoBodyText.yview('moveto',lo)	
-        controller.LeoYBodyBar.set(lo,hi)
+        cc = self.cc
+        cc.LeoBodyText.yview('moveto',lo)	
+        cc.LeoYBodyBar.set(lo,hi)
     #@nonl
     #@-node:ekr.20060513122450.180:setForBar
     #@+node:ekr.20060513122450.181:Plug
     def Plug(self):
         
-        controller = self.controller
+        cc = self.cc
         
-        controller.LeoBodyText.bind(g.angleBrackets("Cut"),self.OnCut)
-        controller.LeoBodyText.bind(g.angleBrackets("Paste"),self.OnPaste)
-        controller.LeoYBodyBar.config(command=self.yview)
-        controller.LeoBodyText["yscrollcommand"] = self.setForBody
+        cc.LeoBodyText.bind(g.angleBrackets("Cut"),self.OnCut)
+        cc.LeoBodyText.bind(g.angleBrackets("Paste"),self.OnPaste)
+        cc.LeoYBodyBar.config(command=self.yview)
+        cc.LeoBodyText["yscrollcommand"] = self.setForBody
         self["yscrollcommand"] = self.setForBar
     #@nonl
     #@-node:ekr.20060513122450.181:Plug
     #@+node:ekr.20060513122450.182:UnPlug
     def UnPlug(self):
         
-        controller = self.controller
+        cc = self.cc
         
-        controller.LeoBodyText.bind(g.angleBrackets("Cut"),LeoFrame.OnCut)
-        controller.LeoBodyText.bind(g.angleBrackets("Paste"),LeoFrame.OnPaste)
-        controller.LeoYBodyBar.config(command=controller.LeoBodyText.yview)
-        controller.LeoBodyText["yscrollcommand"] = controller.LeoYBodyBar.set
+        cc.LeoBodyText.bind(g.angleBrackets("Cut"),cc.LeoFrame.OnCut)
+        cc.LeoBodyText.bind(g.angleBrackets("Paste"),cc.LeoFrame.OnPaste)
+        cc.LeoYBodyBar.config(command=cc.LeoBodyText.yview)
+        cc.LeoBodyText["yscrollcommand"] = cc.LeoYBodyBar.set
         self["yscrollcommand"] = None
     #@nonl
     #@-node:ekr.20060513122450.182:UnPlug
@@ -4267,15 +4357,15 @@ class BreakbarClass(Tk.Text):
     #@-node:ekr.20060513122450.186:OnRightClick
     #@+node:ekr.20060513122450.187:OnLeftClick
     def OnLeftClick(self,event):
-        
-        controller = self.controller
+    
+        cc = self.cc
         self["state"] = 'normal'	
         self.mark_set("insert","@0,"+str(event.y))
         self["state"] = 'disabled'
         l,c = self.index("insert").split(".")
         breaks = cGet("BreakPoints")
         
-        loc = LOCATOR(CHILD_NODE,l)
+        loc = LocatorClass(cc,CHILD_NODE,l)
         if loc.FOUND_FILE_LINE == None:
             return
         
@@ -4284,7 +4374,7 @@ class BreakbarClass(Tk.Text):
         if l in breaks:
             self.DeleteBreak(filext,loc.FOUND_FILE_LINE,l)
         else:
-            t = controller.LeoBodyText.get(str(l)+".0",str(l)+".end")
+            t = cc.LeoBodyText.get(str(l)+".0",str(l)+".end")
             if t != "\n" and t != "" and t.strip() != "@others":
                 self.AddBreak(filext,loc.FOUND_FILE_LINE,l)
         
@@ -4310,10 +4400,11 @@ class BreakbarClass(Tk.Text):
     #@+node:ekr.20060513122450.192:BreaksFromNode
     def BreaksFromNode(self):
         
+        cc = self.cc
         self.ClearBreakTags()
         self.Sync()
         
-        breaks = cGet("BreakPoints",{})
+        breaks = cc.cGet("BreakPoints",{})
         for l,s in breaks.iteritems():
             self.AddBarBreak(l,s)
             self.AddBreakTag(l)
@@ -4354,12 +4445,14 @@ class BreakbarClass(Tk.Text):
     #@-node:ekr.20060513122450.195:DeleteBarBreak
     #@+node:ekr.20060513122450.196:ClearBarBreaks
     def ClearBarBreaks(self):
+        
+        cc = self.cc
         self["state"] = 'normal'
         self.delete(1.0,'end')	
         #----------------------------------------
-        if CHILD_LINE != None and CHILD_LINE != -1:
-            fl = CHILD_LINE
-            lines = CHILD_NODE.bodyString().splitlines()
+        if cc.CHILD_LINE and cc.CHILD_LINE != -1:
+            fl = cc.CHILD_LINE
+            lines = cc.CHILD_NODE.bodyString().splitlines()
             
             while len(lines) > 0:
                 l = lines.pop(0)
@@ -4372,7 +4465,7 @@ class BreakbarClass(Tk.Text):
             if len(lines) > 0 and l.strip() == "@others":
                 self.insert("end","\n")
                 
-                loc = LOCATOR(CHILD_NODE,fl-CHILD_LINE+2)
+                loc = LocatorClass(cc,cc.CHILD_NODE,fl-cc.CHILD_LINE+2)
                 fl = loc.FOUND_FILE_LINE
                 
                 if fl != None:
@@ -4390,7 +4483,7 @@ class BreakbarClass(Tk.Text):
     #@+node:ekr.20060513122450.198:AddBreakTag
     def AddBreakTag(self,l):
         
-        w = self.controller.LeoBodyText
+        w = self.cc.LeoBodyText
         
         w.tag_add("xcc_break",l+".0",l+".end")
     #@nonl
@@ -4398,7 +4491,7 @@ class BreakbarClass(Tk.Text):
     #@+node:ekr.20060513122450.199:DeleteBreakTag
     def DeleteBreakTag(self,s,e=None):
         
-        w = self.controller.LeoBodyText
+        w = self.cc.LeoBodyText
         
         if e == None:
             w.tag_remove("xcc_break",s+".0",s+".end")
@@ -4409,7 +4502,7 @@ class BreakbarClass(Tk.Text):
     #@+node:ekr.20060513122450.200:ClearBreakTags
     def ClearBreakTags(self):
         
-        w = self.controller.LeoBodyText
+        w = self.cc.LeoBodyText
         w.tag_delete("xcc_break")
         w.tag_config("xcc_break",background=self.bgcolor)
     #@nonl
@@ -4417,7 +4510,7 @@ class BreakbarClass(Tk.Text):
     #@+node:ekr.20060513122450.201:BreaksFromTags
     def BreaksFromTags(self):
         
-        w = self.controller.LeoBodyText
+        w = self.cc.LeoBodyText
         self.ClearNodeBreaks()
         self.ClearBarBreaks()
         range = w.tag_nextrange("xcc_break","1.0")
@@ -4432,6 +4525,8 @@ class BreakbarClass(Tk.Text):
     #@-node:ekr.20060513122450.197:tag breaks
     #@+node:ekr.20060513122450.202:AddBreak
     def AddBreak(self,filext,fileline,bodyline,state="Enabled"):
+        
+        cc = self.cc
         breaks = sGet("BreakPoints",{})
         
         breaks[filext+":"+str(fileline)] = state
@@ -4439,17 +4534,19 @@ class BreakbarClass(Tk.Text):
         self.AddBarBreak(bodyline,state)
         self.AddBreakTag(bodyline)
         
-        if ACTIVE_PROCESS != None:
-            bpat = DBG["Set break"]
-            bpat = bpat.replace("_FILE_",NAME+"."+filext).replace("_LINE_",str(fileline))
-            DBGTASK(bpat)
-            if DBG_PROMPT == True:
-                DbgOut("")
+        if cc.ACTIVE_PROCESS:
+            bpat = cc.DBG.get("Set break")
+            bpat = bpat.replace("_FILE_",cc.NAME+"."+filext).replace("_LINE_",str(fileline))
+            DBGTASK(cc,bpat)
+            if cc.DBG_PROMPT:
+                cc.DbgOut("")
     
     #@-node:ekr.20060513122450.202:AddBreak
     #@+node:ekr.20060513122450.203:DeleteBreak
     def DeleteBreak(self,filext,fileline,bodyline):
-        breaks = sGet("BreakPoints",{})
+        
+        cc = self.cc
+        breaks = cc.sGet("BreakPoints",{})
         
         if filext+":"+str(fileline) in breaks:
             del breaks[filext+":"+str(fileline)]	
@@ -4458,53 +4555,51 @@ class BreakbarClass(Tk.Text):
         self.DeleteBarBreak(bodyline)
         self.DeleteBreakTag(bodyline)
         
-        if ACTIVE_PROCESS != None:
-            if DBG["Clear break"].find("_ID_") != -1:
-                BREAKIDTASK([filext,str(fileline)])
+        if cc.ACTIVE_PROCESS:
+            if cc.DBG.get("Clear break",'').find("_ID_") != -1:
+                BREAKIDTASK(cc,[filext,str(fileline)])
             else:
-                DBGTASK(ReplaceVars(DBG["Clear break"]).replace("_FILE_",filext).replace("_LINE_",str(fileline)))
+                DBGTASK(cc,
+                    ReplaceVars(cc.DBG["Clear break"]).replace("_FILE_",filext).replace("_LINE_",str(fileline)))
             
-            if DBG_PROMPT == True:
-                DbgOut("")
-    #@nonl
+            if cc.DBG_PROMPT:
+                cc.DbgOut("")
     #@-node:ekr.20060513122450.203:DeleteBreak
     #@+node:ekr.20060513122450.204:DeleteNodeBreaks
     def DeleteNodeBreaks(self):
-        try:
-            breaks = cGet("BreakPoints",{})
-            
-            if CHILD_LINE != None and CHILD_EXT != None and ACTIVE_PROCESS != None:
-                for bp in breaks.keys():				
-                    self.DeleteBreak(CHILD_EXT,CHILD_LINE+int(bp),int(bp))
-                    if ACTIVE_PROCESS != None:
-                        
-                        
-                        self.DeleteDbgBreaks()
-            
-            cSelect(CHILD_NODE)
-        except Exception:
-            TraceBack()
-    
+        
+        cc = self.cc
+      
+        breaks = cGet("BreakPoints",{})
+        
+        if cc.CHILD_LINE and cc.CHILD_EXT and cc.ACTIVE_PROCESS:
+            for bp in breaks.keys():				
+                self.DeleteBreak(CHILD_EXT,CHILD_LINE+int(bp),int(bp))
+                if cc.ACTIVE_PROCESS:
+                    self.DeleteDbgBreaks()
+        
+        cSelect(cc.CHILD_NODE)
+    #@nonl
     #@-node:ekr.20060513122450.204:DeleteNodeBreaks
     #@+node:ekr.20060513122450.205:DeleteProjectBreaks
     def DeleteProjectBreaks(self):
-        try:		
-            if SELECTED_NODE != None:
-                for c in SELECTED_NODE.subtree_iter():
-                    ua = GetUnknownAttributes(c.v)
-                    if ua != None and "xcc_child_cfg" in ua.keys():
-                        if "BreakPoints" in ua["xcc_child_cfg"].keys():
-                            ua["xcc_child_cfg"]["BreakPoints"] = {}
-            
-                cSelect(CHILD_NODE)
-        except Exception:
-            TraceBack()
+        
+        cc = self.cc
+       
+        if cc.SELECTED_NODE:
+            for c in cc.SELECTED_NODE.subtree_iter():
+                ua = cc.GetUnknownAttributes(c.v)
+                if ua and "xcc_child_cfg" in ua.keys():
+                    if "BreakPoints" in ua["xcc_child_cfg"].keys():
+                        ua["xcc_child_cfg"]["BreakPoints"] = {}
+        
+            cc.cSelect(cc.CHILD_NODE)
     #@nonl
     #@-node:ekr.20060513122450.205:DeleteProjectBreaks
     #@+node:ekr.20060513122450.206:Hide
     def Hide(self,erase = False):
         
-        w = self.controller.LeoBodyText
+        w = self.cc.LeoBodyText
         self.UnPlug()
         self.pack_forget()
         w.pack(expand=1, fill="both")
@@ -4513,31 +4608,32 @@ class BreakbarClass(Tk.Text):
     #@nonl
     #@-node:ekr.20060513122450.206:Hide
     #@+node:ekr.20060513122450.207:Show
-    def Show(self):
-        
-        controller = self.controller
+    def Show (self):
     
+        cc = self.cc ; w = cc.LeoBodyText
         self.Plug()
         w.pack_forget()
         if self.leowrap != 'none':
-            controller.LeoXBodyBar.pack(side="bottom", fill="x")
-        border = controller.LeoBodyText["bd"]
-        self.config(pady=LeoBodyText["pady"],bd=border)
-        self.pack(side='left', fill="y")
-        LeoBodyText.pack(expand=1, fill="both")
+            cc.LeoXBodyBar.pack(side="bottom",fill="x")
+        border = cc.LeoBodyText ["bd"]
+        self.config(pady=cc.LeoBodyText["pady"],bd=border)
+        self.pack(side='left',fill="y")
+        cc.LeoBodyText.pack(expand=1,fill="both")
         self.BreaksFromNode()
         self.visible = True
     #@nonl
     #@-node:ekr.20060513122450.207:Show
     #@+node:ekr.20060513122450.208:Sync
     def Sync(self):
+        
+        cc = self.cc
         self["state"] = 'normal'
         self.delete(1.0,'end')	
         #----------------------------------------
         w=4
-        if CHILD_LINE != None and CHILD_LINE != -1:
-            fl = CHILD_LINE
-            lines = CHILD_NODE.bodyString().splitlines()
+        if cc.CHILD_LINE and cc.CHILD_LINE != -1:
+            fl = cc.CHILD_LINE
+            lines = cc.CHILD_NODE.bodyString().splitlines()
             
             while len(lines) > 0:
                 l = lines.pop(0)
@@ -4550,7 +4646,7 @@ class BreakbarClass(Tk.Text):
             if len(lines) > 0 and l.strip() == "@others":
                 self.insert("end","\n")
                 
-                loc = LOCATOR(CHILD_NODE,fl-CHILD_LINE+2)
+                loc = LocatorClass(cc,cc.CHILD_NODE,fl-cc.CHILD_LINE+2)
                 fl = loc.FOUND_FILE_LINE
                 
                 if fl != None:
@@ -4565,6 +4661,7 @@ class BreakbarClass(Tk.Text):
         self.config(width = w)
         #-----------------------------------------
         self["state"] = 'disabled'
+    #@nonl
     #@-node:ekr.20060513122450.208:Sync
     #@+node:ekr.20060513122450.209:IdleUpdate
     def IdleUpdate(self):
@@ -4580,36 +4677,48 @@ class BreakbarClass(Tk.Text):
     #@-node:ekr.20060513122450.210:Cancel
     #@-others
 #@-node:ekr.20060513122450.175:class BreakbarClass
-#@-node:ekr.20060513122450.52:widget classes
-#@+node:ekr.20060513122450.211:class Parsing
-#@+node:ekr.20060513122450.212:CPPPARSER
-class CPPPARSER:
+#@-node:ekr.20060513122450.52:Widget classes
+#@+node:ekr.20060513122450.211:Parsing classes
+#@+node:ekr.20060513122450.212:class CppParserClass
+class CppParserClass:
+    
     #@    @+others
     #@+node:ekr.20060513122450.213:Rules
     #@+node:ekr.20060513122450.214:LoadCppRules
     def LoadCppRules(self):
+        
+        parser = self
+    
         self.OUTFUNC_RULES = [
-        self.DOCRULE(),
-        self.COMMENTRULE(),	#placed fisrt to allow functions and class to be commented out
-        self.FUNCRULE(),
-        self.CLASSRULE(),	#must be after CppFuncRule or it will catch template funcs
-        self.DEFAULTRULE()	#must be the last rule cos it always proceed
+            self.DocRuleClass(parser),
+            self.COMMENTRULE(parser),	#placed fisrt to allow functions and class to be commented out
+            self.FUNCRULE(parser),
+            self.CLASSRULE(parser),	#must be after CppFuncRule or it will catch template funcs
+            self.DEFAULTRULE(parser)	#must be the last rule cos it always proceed
         ]
         
         self.RULES = self.OUTFUNC_RULES
         
         self.INFUNC_RULES = [
-        self.DOCRULE(),
-        self.FUNCCOMMENTRULE(),	#placed fisrt to allow functions and class to be commented out
-        self.FUNCDEFAULTRULE()	#must be the last rule cos it always proceed
+            self.DocRuleClass(parser),
+            self.FUNCCOMMENTRULE(parser),	#placed fisrt to allow functions and class to be commented out
+            self.FUNCDEFAULTRULE(parser)	#must be the last rule cos it always proceed
         ]
     #@nonl
     #@-node:ekr.20060513122450.214:LoadCppRules
-    #@+node:ekr.20060513122450.215:ATRULE
-    class DOCRULE:
+    #@+node:ekr.20060513122450.215:class DocRuleClass
+    class DocRuleClass:
+    
         #@    @+others
+        #@+node:ekr.20060513225027:ctor
+        def __init__ (self,Parser):
+            
+            self.Parser = Parser
+        #@nonl
+        #@-node:ekr.20060513225027:ctor
         #@+node:ekr.20060513122450.216:Match
         def Match(self,head):
+        
             if head.startswith("@"):
                 return head
             else:
@@ -4617,15 +4726,22 @@ class CPPPARSER:
         #@-node:ekr.20060513122450.216:Match
         #@+node:ekr.20060513122450.217:OnMatch
         def OnMatch(self,mo,node):
-            Parser.SetRealBodyDestination()	
+        
+            self.Parser.SetRealBodyDestination()	
             return True
         #@-node:ekr.20060513122450.217:OnMatch
         #@-others
     #@nonl
-    #@-node:ekr.20060513122450.215:ATRULE
+    #@-node:ekr.20060513122450.215:class DocRuleClass
     #@+node:ekr.20060513122450.218:COMMENTRULE
     class COMMENTRULE:
         #@    @+others
+        #@+node:ekr.20060513225814:ctor
+        def __init__ (self,Parser):
+            
+            self.Parser = Parser
+        #@nonl
+        #@-node:ekr.20060513225814:ctor
         #@+node:ekr.20060513122450.219:Match
         def Match(self,head):
             if head.startswith("//"):
@@ -4640,14 +4756,9 @@ class CPPPARSER:
         #@+node:ekr.20060513122450.220:OnMatch
         def OnMatch(self,mo,node):
             
-            if Parser.CLASS_WRITER != None:
-                w = Parser.CLASS_WRITER
-            else:	
-                if mo == True:
-                    w = Parser.Define
-                else:
-                    w = Parser.Declare
+            Parser = self.Parser
             
+            w = Parser.CLASS_WRITER or (mo and Parser.Define) or Parser.Declare
             Parser.SetRealBodyDestination(w)
             Parser.CURRENT_LOCATION = "head"
             w(Parser.TAB_STRING+"/*"+node.headString()[2:]+"\n")
@@ -4668,6 +4779,12 @@ class CPPPARSER:
     #@+node:ekr.20060513122450.221:FUNCRULE
     class FUNCRULE:
         #@    @+others
+        #@+node:ekr.20060513225814.1:ctor
+        def __init__ (self,Parser):
+            
+            self.Parser = Parser
+        #@nonl
+        #@-node:ekr.20060513225814.1:ctor
         #@+node:ekr.20060513122450.222:Match
         def Match(self,head):	
             params_e = head.rfind(")")
@@ -4732,17 +4849,21 @@ class CPPPARSER:
         #@-node:ekr.20060513122450.222:Match
         #@+node:ekr.20060513122450.223:OnMatch
         def OnMatch(self,mo,node):
+            
+            Parser = self.Parser
             Parser.CURRENT_RULE = "func"
             
-            spec,ret,name,params,pure,dest,ctors = self.Groups = mo	
+            spec,ret,name,params,pure,dest,ctors = self.Groups = mo
+            
+            wf = Parser.CLASS_WRITER or (dest[0] == "" and Parser.Declare) or Parser.Define
                 
-            if Parser.CLASS_WRITER != None:
-                wf = Parser.CLASS_WRITER
-            else:	
-                if dest[0] == "":
-                    wf = Parser.Declare#in hdr if EXT != cpp or EXT != c
-                else:
-                    wf = Parser.Define#in src if EXT != h	
+            # if Parser.CLASS_WRITER:
+                # wf = Parser.CLASS_WRITER
+            # else:	
+                # if dest[0] == "":
+                    # wf = Parser.Declare#in hdr if EXT != cpp or EXT != c
+                # else:
+                    # wf = Parser.Define#in src if EXT != h	
             
             if pure[0] == "":#define the func, possibly splitted
                 
@@ -4779,7 +4900,8 @@ class CPPPARSER:
         #@-node:ekr.20060513122450.223:OnMatch
         #@+node:ekr.20060513122450.224:DeclareFunc
         def DeclareFunc(self,wf):
-            global LOCATE_CHILD,PARSE_ERROR
+            
+            Parser = self.Parser
             spec,ret,name,params,pure,dest,ctors = self.Groups
             
             if name[0] == "":
@@ -4799,7 +4921,8 @@ class CPPPARSER:
         #@-node:ekr.20060513122450.224:DeclareFunc
         #@+node:ekr.20060513122450.225:DefineFunc
         def DefineFunc(self,wf,node,full=False,push=False):
-            global LOCATE_CHILD,PARSE_ERROR
+            # global LOCATE_CHILD,PARSE_ERROR
+            Parser = self.Parser
             spec,ret,name,params,pure,dest,ctors = self.Groups
             if name[0] == "":
                 ToolBar.SetError("No function name in : "+GetNodePath(Parser.CURRENT_NODE),Parser.CURRENT_NODE)
@@ -4831,9 +4954,7 @@ class CPPPARSER:
             proto += ret[0]+" "+as+name[0]+"("+params+")"+ctors
             proto = proto.strip()
             
-            if push == True:
-                Parser.PushTab()
-            
+            push and Parser.PushTab()
             
             Parser.SetRealBodyDestination(wf)
             Parser.CURRENT_LOCATION = "head"
@@ -4855,11 +4976,9 @@ class CPPPARSER:
             if FUNC_FTR != "":
                 wf(Parser.TAB_STRING+FUNC_FTR)
             
-            if push == True:
-                Parser.PopTab()
+            push and Parser.PopTab()
                 
             return True
-        
         #@-node:ekr.20060513122450.225:DefineFunc
         #@-others
     #@nonl
@@ -4867,6 +4986,12 @@ class CPPPARSER:
     #@+node:ekr.20060513122450.226:CLASSRULE
     class CLASSRULE:
         #@    @+others
+        #@+node:ekr.20060513225814.2:ctor
+        def __init__ (self,Parser):
+            
+            self.Parser = Parser
+        #@nonl
+        #@-node:ekr.20060513225814.2:ctor
         #@+node:ekr.20060513122450.227:Match
         #"^(?P<SPEC>.*) *class +(?P<NAME>[^;:!]+)* *(?P<BASE>:[^;!]+)* *(?P<INST>![^;]+)* *(?P<DEST>;$)*"
         #spec class name base inst dest
@@ -4917,8 +5042,9 @@ class CPPPARSER:
         #@-node:ekr.20060513122450.227:Match
         #@+node:ekr.20060513122450.228:OnMatch
         def OnMatch(self,mo,node):
-            global LOCATE_CHILD
+            # global LOCATE_CHILD
             
+            Parser = self.Parser
             Parser.CURRENT_RULE = "class"
             
             spec,name,base,inst,dest = mo
@@ -4970,9 +5096,8 @@ class CPPPARSER:
                 cw(Parser.TAB_STRING+CLASS_FTR)	
             Parser.CLASS_LIST.pop()
             
-            if push == True:
-                Parser.PopTab()
-            
+            push and Parser.PopTab()
+        
             if len(Parser.CLASS_LIST) == 0:
                 Parser.CLASS_WRITER = None		
             
@@ -4985,9 +5110,10 @@ class CPPPARSER:
     class DEFAULTRULE:
         #@    @+others
         #@+node:ekr.20060513122450.230:__init__
-        def __init__(self):	
-            self.Matcher = re.compile("(?P<HEAD>[^;]*)(?P<DEST>;$)*")
+        def __init__(self,Parser):
             
+            self.Parser = Parser
+            self.Matcher = re.compile("(?P<HEAD>[^;]*)(?P<DEST>;$)*")
         #@nonl
         #@-node:ekr.20060513122450.230:__init__
         #@+node:ekr.20060513122450.231:Match
@@ -4998,15 +5124,19 @@ class CPPPARSER:
         #@-node:ekr.20060513122450.231:Match
         #@+node:ekr.20060513122450.232:OnMatch
         def OnMatch(self,mo,node):
-            if Parser.CLASS_WRITER != None:
-                w = Parser.CLASS_WRITER
-            else:
-                if mo == True:
-                    w = Parser.Define			
-                else:
-                    w = Parser.Declare
+            
+            Parser = self.Parser
+            w = Parser.CLASS_WRITER or (mo and Parser.Define) or Parser.Declare
+            
+            # if Parser.CLASS_WRITER:
+                # w = Parser.CLASS_WRITER
+            # else:
+                # if mo == True:
+                    # w = Parser.Define			
+                # else:
+                    # w = Parser.Declare
                                 
-            if mo == True:
+            if mo:
                 head = node.headString()[:-1]
             else:
                 head = node.headString()
@@ -5023,6 +5153,7 @@ class CPPPARSER:
             Parser.CURRENT_LOCATION = "tail"	
             w("\n")
             return True
+        #@nonl
         #@-node:ekr.20060513122450.232:OnMatch
         #@-others
     #@nonl
@@ -5031,7 +5162,9 @@ class CPPPARSER:
     class FUNCCOMMENTRULE:
         #@    @+others
         #@+node:ekr.20060513122450.234:__init__
-        def __init__(self):	
+        def __init__(self,Parser):
+            
+            self.Parser = Parser	
             self.Matcher = re.compile("^//(?P<HEAD>.*)")
             
         #@nonl
@@ -5041,7 +5174,9 @@ class CPPPARSER:
             return self.Matcher.search(head)
         #@-node:ekr.20060513122450.235:Match
         #@+node:ekr.20060513122450.236:OnMatch
-        def OnMatch(self,mo,node):	
+        def OnMatch(self,mo,node):
+            
+            Parser = self.Parser
             w = Parser.FUNC_WRITER
             groups = mo.groupdict()
             
@@ -5069,21 +5204,24 @@ class CPPPARSER:
     class FUNCDEFAULTRULE:
         #@    @+others
         #@+node:ekr.20060513122450.238:__init__
-        def __init__(self):	
-            self.Matcher = re.compile("(?P<HEAD>.*)")
+        def __init__(self,Parser):
             
+            self.Parser = Parser
+            self.Matcher = re.compile("(?P<HEAD>.*)")
         #@nonl
         #@-node:ekr.20060513122450.238:__init__
         #@+node:ekr.20060513122450.239:Match
         def Match(self,head):
+        
             return self.Matcher.search(head)
         #@-node:ekr.20060513122450.239:Match
         #@+node:ekr.20060513122450.240:OnMatch
         def OnMatch(self,mo,node):
             
+            Parser = self.Parser
             w = Parser.FUNC_WRITER
             groups = mo.groupdict()
-            
+        
             head = groups["HEAD"]
             if head == None:
                 head = ""
@@ -5106,9 +5244,11 @@ class CPPPARSER:
     #@-node:ekr.20060513122450.213:Rules
     #@+node:ekr.20060513122450.241:__init__
     def __init__(self):
-        global Parser
-        Parser = self
+    
+        # global Parser
+        # Parser = self
         self.InitData()
+    #@nonl
     #@-node:ekr.20060513122450.241:__init__
     #@+node:ekr.20060513122450.242:Declare
     def Declare(self,text):
@@ -5165,6 +5305,8 @@ class CPPPARSER:
     #@-node:ekr.20060513122450.246:PopBodyLine
     #@+node:ekr.20060513122450.247:SetRealBodyDestination
     def SetRealBodyDestination(self,func=None):
+        
+        Parser = self
         if func == None:
             self.CURRENT_BODY_DEST = "VOID"
             return self.CURRENT_BODY_DEST
@@ -5252,6 +5394,8 @@ class CPPPARSER:
     #@-node:ekr.20060513122450.254:WriteOthers
     #@+node:ekr.20060513122450.255:CppParse
     def CppParse(self,node,ext):
+        
+        cc = self.cc
         self.LoadCppRules()	
             
         #----------------------------------------------
@@ -5277,23 +5421,22 @@ class CPPPARSER:
             self.NOW_PARSING = True	
         
         #------------------------------------------------------
-        if self.OnStart != None:
+        if self.OnStart:
             if self.OnStart() == False:
                 return False
         time.clock()
         start = time.clock()
         
         if self.DEFINE_IN_SRC == True and self.DECLARE_IN_HDR == True:
-            if OPTS.get("Auto include header") == "True":
+            if cc.OPTS.get("Auto include header") == "True":
                 self.Define("#include \""+NAME+".h\"\n")
                 
         #------------------------------------------------------		
         res = self.ParseNode(node,reset=True)	
         #------------------------------------------------------	
         self.PARSE_TIME = time.clock()-start
-        if self.OnEnd != None:
-            self.OnEnd()	
-        
+        self.OnEnd and self.OnEnd()	
+    
         return res
     #@-node:ekr.20060513122450.255:CppParse
     #@+node:ekr.20060513122450.256:OnParseNode
@@ -5306,6 +5449,8 @@ class CPPPARSER:
     #@-node:ekr.20060513122450.256:OnParseNode
     #@+node:ekr.20060513122450.257:ParseNode
     def ParseNode(self,node,reset=False):
+        
+        cc = self.cc
         
         if self.DO_PARSE == False:
             return False
@@ -5322,13 +5467,12 @@ class CPPPARSER:
                     if r.OnMatch(result,cn) == False or self.DO_PARSE == False:
                         return False
                     break
-                
-                    
-        if node != SELECTED_NODE:
+    
+        if node != cc.SELECTED_NODE:
             self.OnParseNode(node,True)
         
-        return True	
-    
+        return True
+    #@nonl
     #@-node:ekr.20060513122450.257:ParseNode
     #@+node:ekr.20060513122450.258:InitData
     def InitData(self):
@@ -5376,21 +5520,23 @@ class CPPPARSER:
     #@nonl
     #@-node:ekr.20060513122450.258:InitData
     #@-others
-#@-node:ekr.20060513122450.212:CPPPARSER
-#@+node:ekr.20060513122450.259:WRITER
-class WriterClass(CPPPARSER):
+
+#@-node:ekr.20060513122450.212:class CppParserClass
+#@+node:ekr.20060513122450.259:class WriterClass (CppParserClass)
+class WriterClass(CppParserClass):
+
     #@    @+others
     #@+node:ekr.20060513122450.260:__init__
-    def __init__(self,controller):
+    def __init__(self,cc):
         
-        self.controller = controller
+        self.cc = cc
         self.Result = False
         
-        CPPPARSER.__init__(self)
+        CppParserClass.__init__(self)
         self.OnStart = self.OnWriteStart
         self.OnEnd = self.OnWriteEnd
         
-        self.Result = self.CppParse(controller.SELECTED_NODE,controller.EXT)
+        self.Result = self.CppParse(cc.SELECTED_NODE,cc.EXT)
     #@-node:ekr.20060513122450.260:__init__
     #@+node:ekr.20060513122450.261:OnWriteStart
     def OnWriteStart(self):
@@ -5447,12 +5593,12 @@ class WriterClass(CPPPARSER):
     #@+node:ekr.20060513122450.262:OnWriteEnd
     def OnWriteEnd(self):
         
-        if self.HDR_FILE != None:
+        if self.HDR_FILE:
             self.HDR_FILE.write("\n")
             self.HDR_FILE.close()
             self.HDR_FILE = None
             
-        if self.SRC_FILE != None:
+        if self.SRC_FILE:
             self.SRC_FILE.write("\n")
             self.SRC_FILE.close()
             self.SRC_FILE = None
@@ -5460,19 +5606,20 @@ class WriterClass(CPPPARSER):
     
     #@-node:ekr.20060513122450.262:OnWriteEnd
     #@-others
-#@-node:ekr.20060513122450.259:WRITER
-#@+node:ekr.20060513122450.263:BREAKFINDER
-class BREAKFINDER(CPPPARSER):
+#@-node:ekr.20060513122450.259:class WriterClass (CppParserClass)
+#@+node:ekr.20060513122450.263:class BreakFinderClass (CppParserClass)
+class BreakFinderClass(CppParserClass):
+
     #@    @+others
     #@+node:ekr.20060513122450.264:__init__
-    def __init__(self):
-        self.Result = False
+    def __init__(self,cc):
         
-        CPPPARSER.__init__(self)
+        self.cc = cc
+        self.Result = False
+        CppParserClass.__init__(self)
         self.OnStart = self.OnFindStart
         self.OnEnd = self.OnFindEnd
-        
-        self.Result = self.CppParse(SELECTED_NODE,EXT)
+        self.Result = self.CppParse(controllerSELECTED_NODE,controllerEXT)
     #@-node:ekr.20060513122450.264:__init__
     #@+node:ekr.20060513122450.265:OnFindStart
     def OnFindStart(self):
@@ -5507,8 +5654,9 @@ class BREAKFINDER(CPPPARSER):
         cb = self.CURRENT_BREAKS	
         
         #cGetDict(self.CURRENT_NODE)["BodyDestination"] = "HEADER"
-        if cb != None and str(cbl) in cb:
+        if cb and str(cbl) in cb:
             self.GLOBAL_BREAKS["h:"+str(self.CURRENT_HDR_LINE)] = cb[str(cbl)]
+    #@nonl
     #@-node:ekr.20060513122450.267:BreakDec
     #@+node:ekr.20060513122450.268:BreakDef
     def BreakDef(self,text):
@@ -5517,32 +5665,29 @@ class BREAKFINDER(CPPPARSER):
         cb = self.CURRENT_BREAKS
         
         #cGetDict(self.CURRENT_NODE)["BodyDestination"] = "Source"
-        if cb != None and str(cbl) in cb:
+        if cb and str(cbl) in cb:
             self.GLOBAL_BREAKS[SRC_EXT+":"+str(self.CURRENT_SRC_LINE)] = cb[str(cbl)]
     #@-node:ekr.20060513122450.268:BreakDef
     #@+node:ekr.20060513122450.269:BreakOPN
     def BreakOPN(self,node,back=False):
         
-        txcd = cGetDict(node)
-        if txcd != None:
-            if "BreakPoints" in txcd:
-                self.CURRENT_BREAKS = txcd["BreakPoints"]
-            else:
-                self.CURRENT_BREAKS = None
-        else:
-            self.CURRENT_BREAKS = None
+        cc = self.cc
+        
+        txcd = cc.cGetDict(node)
+       
+        self.CURRENT_BREAKS = txcd and txcd.get("BreakPoints")
+    #@nonl
     #@-node:ekr.20060513122450.269:BreakOPN
     #@-others
-#@-node:ekr.20060513122450.263:BREAKFINDER
-#@+node:ekr.20060513122450.270:SeekErrorClass
-class SeekErrorClass(CPPPARSER):
+#@-node:ekr.20060513122450.263:class BreakFinderClass (CppParserClass)
+#@+node:ekr.20060513122450.270:class SeekErrorClass (CppParserClass)
+class SeekErrorClass(CppParserClass):
     #@    @+others
     #@+node:ekr.20060513122450.271:__init__
-    def __init__(self,controller,line,ext,col="0",color="red"):
-        
-        self.controller = controller
-        CPPPARSER.__init__(self)		
-            
+    def __init__(self,cc,line,ext,col="0",color="red"):
+    
+        self.cc = cc
+        CppParserClass.__init__(self)		
         self.SEEK_LINE = line
         self.SEEK_COL = col
         self.SEEK_EXT = ext
@@ -5550,8 +5695,8 @@ class SeekErrorClass(CPPPARSER):
         self.FOUND_INDEX = "1."+col
         self.OnStart = self.OnStartSeek
         
-        if self.CppParse(controller.SELECTED_NODE,controller.EXT) == False and self.FOUND_NODE:
-            controller.GoToNode(self.FOUND_NODE,self.FOUND_INDEX,tagcolor=color)
+        if self.CppParse(cc.SELECTED_NODE,cc.EXT) == False and self.FOUND_NODE:
+            cc.GoToNode(self.FOUND_NODE,self.FOUND_INDEX,tagcolor=color)
         else:
             Error("xcc: ","Unable to find line: "+str(line))
     #@nonl
@@ -5611,30 +5756,29 @@ class SeekErrorClass(CPPPARSER):
     #@-node:ekr.20060513122450.274:SeekDef
     #@-others
 #@nonl
-#@-node:ekr.20060513122450.270:SeekErrorClass
-#@+node:ekr.20060513122450.275:LOCATOR
-class LOCATOR(CPPPARSER):
+#@-node:ekr.20060513122450.270:class SeekErrorClass (CppParserClass)
+#@+node:ekr.20060513122450.275:class LocatorClass (CppParserClass)
+class LocatorClass(CppParserClass):
     #@    @+others
     #@+node:ekr.20060513122450.276:__init__
-    def __init__(self,node,line):
+    def __init__(self,cc,node,line):
         
-        CPPPARSER.__init__(self)		
+        self.cc = cc
+        
+        CppParserClass.__init__(self)		
             
         self.LOCATE_NODE = node
         self.LOCATE_BODY_LINE = int(line)
-        
         self.FOUND_FILE_LINE = None
         self.FOUND_FILE_EXT = None
-        
+    
         self.OnStart = self.OnStartLocate
         
-        if self.CppParse(SELECTED_NODE,EXT) == False and self.FOUND_FILE_LINE != None:
+        if not self.CppParse(cc.SELECTED_NODE,cc.EXT) and self.FOUND_FILE_LINE != None:
             pass
         else:
             #Error("xcc: ","Unable to locate line "+str(line)+" in "+str(node))
             pass
-        
-        
     #@nonl
     #@-node:ekr.20060513122450.276:__init__
     #@+node:ekr.20060513122450.277:OnStartLocate
@@ -5669,17 +5813,20 @@ class LOCATOR(CPPPARSER):
     #@-node:ekr.20060513122450.278:LocateDec
     #@+node:ekr.20060513122450.279:LocateDef
     def LocateDef(self,text):
+        
+        cc = self.cc
+        
         if self.DO_PARSE == True:
             if self.CURRENT_NODE == self.LOCATE_NODE:
                 if self.CURRENT_BODY_LINE == self.LOCATE_BODY_LINE:
                     self.FOUND_FILE_LINE = self.CURRENT_SRC_LINE
-                    self.FOUND_FILE_EXT = SRC_EXT
+                    self.FOUND_FILE_EXT = cc.SRC_EXT
                     self.DO_PARSE = False
     #@nonl
     #@-node:ekr.20060513122450.279:LocateDef
     #@-others
-#@-node:ekr.20060513122450.275:LOCATOR
-#@-node:ekr.20060513122450.211:class Parsing
+#@-node:ekr.20060513122450.275:class LocatorClass (CppParserClass)
+#@-node:ekr.20060513122450.211:Parsing classes
 #@-node:ekr.20060513122450.42:Classes
 #@-others
 
