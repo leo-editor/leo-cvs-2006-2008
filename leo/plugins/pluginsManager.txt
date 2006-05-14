@@ -20,6 +20,8 @@
 # Plugin_manager.py needs plugins_menu.py
 plugins_menu.py
 #################
+#xcc_nodes_old.py
+#xcc_nodes.py
 #__jEdit_colorizer__.py
 #word_export.py
 #open_shell.py
@@ -63,7 +65,6 @@ open_with.py
 #nav_buttons.py
 #base64Packager.py
 #EditAttributes.py
-################
 #groupOperations.py
 #multifile.py
 #xsltWithNodes.py

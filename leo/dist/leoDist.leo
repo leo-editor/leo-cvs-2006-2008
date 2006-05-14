@@ -120,7 +120,7 @@
 <v t="ekr.20040629180414"><vh>pycheckrc (reference)</vh></v>
 </v>
 <v t="ekr.20051205102401"><vh>Note: do search replace to update version numbers</vh></v>
-<v t="ekr.20050118095021" a="V"><vh>Leo 4.x installer  (update for each release)</vh>
+<v t="ekr.20050118095021" a="TV"><vh>Leo 4.x installer  (update for each release)</vh>
 <v t="EKR.20040519082027.28"><vh>&lt;&lt; setup info for createLeoDist.py &gt;&gt;</vh></v>
 <v t="ekr.20050118124408"><vh>&lt;&lt; 4.3 nsi installer version &gt;&gt;</vh></v>
 <v t="ekr.20050118092706.4"><vh>&lt;&lt; Settings &gt;&gt;</vh></v>
@@ -4608,7 +4608,7 @@ Quotes:   http://webpages.charter.net/edreamleo/testimonials.html
 </t>
 <t tx="ekr.20060511075451">[ANN: Leo 4.4 Final released]
 
-Leo 4.4 release Final is now available at:
+Leo 4.4 Final is now available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
 
 Leo is a text editor, data organizer, project manager and much more. See:

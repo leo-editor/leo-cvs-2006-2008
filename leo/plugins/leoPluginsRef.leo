@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="6368" clone_windows="0"/>
-<globals body_outline_ratio="0.595562130178">
-	<global_window_position top="26" left="399" height="850" width="849"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="7217" clone_windows="0"/>
+<globals body_outline_ratio="0.578823529412">
+	<global_window_position top="19" left="311" height="850" width="849"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -41,7 +41,7 @@
 <v t="ekr.20050819055746"><vh>@button Save</vh></v>
 <v t="ekr.20050722075812"><vh>Remove blank trailing lines</vh></v>
 </v>
-<v t="edream.110203113231.618" a="V"><vh>Plugins</vh>
+<v t="edream.110203113231.618"><vh>Plugins</vh>
 <v t="EKR.20040517090508"><vh>  Enable plugins by changing pluginsManager.txt or using plugin_manager plugin</vh>
 <v t="edream.120603093808"><vh>@thin pluginsManager.txt</vh></v>
 </v>
@@ -352,9 +352,9 @@
 </v>
 </v>
 <v t="ekr.20040722135402"><vh>Enhancing the icon and status areas</vh>
+<v t="ekr.20040331072607"><vh>@thin hoist.py</vh></v>
 <v t="edream.110203113231.758"><vh>@thin nav_buttons.py</vh></v>
 <v t="pap.20051010170720"><vh>@thin newButtons.py</vh></v>
-<v t="ekr.20040331072607"><vh>@thin hoist.py</vh></v>
 <v t="ekr.20040108062655"><vh>@thin nodenavigator.py</vh></v>
 <v t="ekr.20040108095351"><vh>@thin rowcol.py</vh></v>
 <v t="ekr.20040107092135.2"><vh>@thin searchbox.py</vh></v>
@@ -424,27 +424,6 @@
 <v t="ekr.20060428071631"><vh>Report</vh></v>
 </v>
 <v t="ekr.20060306151759.1"><vh>@thin chapters2.py</vh></v>
-</v>
-<v t="ekr.20050612074047"><vh>New colorizer</vh>
-<v t="ekr.20060510082931"><vh>docs</vh>
-<v t="ekr.20050530065723"><vh>@url http://www.jedit.org/42docs/users-guide/writing-modes-part.html</vh></v>
-<v t="ekr.20050529180421.27"><vh>Attributes for 'rules'</vh></v>
-</v>
-<v t="ekr.20050529142847"
-marks="ekr.20050601081132,"><vh>@thin __jEdit_colorizer__.py</vh></v>
-<v t="ekr.20060510074556" a="E"><vh>(Recent)</vh>
-<v t="ekr.20050601081132" a="M"><vh>&lt;&lt; to do &gt;&gt;</vh>
-<v t="ekr.20050603121815"><vh>&lt;&lt; later &gt;&gt;</vh></v>
-</v>
-<v t="ekr.20050602150619"><vh>init_mode</vh></v>
-<v t="ekr.20050601105358"><vh>colorOneChunk</vh></v>
-<v t="ekr.20060507192431"><vh>quickColor</vh></v>
-<v t="ekr.20060510081658"><vh>Fixed crasher</vh>
-<v t="ekr.20060510081658.1"><vh>Report</vh></v>
-<v t="ekr.20050529190857"><vh>match_keywords</vh></v>
-<v t="ekr.20060504081338"><vh>init_keywords</vh></v>
-</v>
-</v>
 </v>
 <v t="ekr.20040918165427"><vh>To do</vh>
 <v t="EKR.20040611044600"><vh>Mulder undo</vh>
@@ -1048,6 +1027,198 @@ marks="ekr.20050601081132,"><vh>@thin __jEdit_colorizer__.py</vh></v>
 </v>
 <v t="ekr.20050805162550"
 marks="ekr.20050809082854.1,"><vh>@thin rst3.py</vh></v>
+</v>
+</v>
+</v>
+<v t="ekr.20050612074047"><vh>New colorizer</vh>
+<v t="ekr.20060510082931"><vh>docs</vh>
+<v t="ekr.20050530065723"><vh>@url http://www.jedit.org/42docs/users-guide/writing-modes-part.html</vh></v>
+<v t="ekr.20050529180421.27"><vh>Attributes for 'rules'</vh></v>
+</v>
+<v t="ekr.20050529142847"><vh>@thin __jEdit_colorizer__.py</vh></v>
+<v t="ekr.20060510074556"><vh>(Recent)</vh>
+<v t="ekr.20050601081132"><vh>&lt;&lt; to do &gt;&gt;</vh>
+<v t="ekr.20050603121815"><vh>&lt;&lt; later &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20050602150957"><vh>__init__</vh></v>
+<v t="ekr.20050602150619"><vh>init_mode</vh></v>
+<v t="ekr.20050602144940"><vh>interrupt</vh></v>
+<v t="ekr.20050529143413.30"><vh>colorize</vh></v>
+<v t="ekr.20050601042620"><vh>colorAll</vh></v>
+<v t="ekr.20050601105358"><vh>colorOneChunk</vh></v>
+<v t="ekr.20060507192431"><vh>quickColor</vh></v>
+<v t="ekr.20060510081658"><vh>Fixed crasher</vh>
+<v t="ekr.20060510081658.1"><vh>Report</vh></v>
+<v t="ekr.20050529190857"><vh>match_keywords</vh></v>
+<v t="ekr.20060504081338"><vh>init_keywords</vh></v>
+</v>
+<v t="ekr.20060507175312"><vh>tagAll</vh></v>
+</v>
+</v>
+<v t="ekr.20060513122613" a="V"><vh>xcc plugin</vh>
+<v t="ekr.20060513122613.1"><vh>Examples</vh>
+<v t="ekr.20060513122613.2" xcc_cfg="7d710028550a45786563757461626c6571017d710228550a446c6c2063616c6c65727103550071045513457865637574696f6e20617267756d656e747371056804755504436f64657106680455074144445f4c4f477107680455055469746c65710868045508446562756767657271097d710a28550e4964656e7469667920627265616b710b6804550f54617267657420706964207461736b710c680455085069706520656f6c710d68045509417267756d656e7473710e6804550e50726f6d7074207061747465726e710f6804550e5175657279206c6f636174696f6e71106804550846696e642070696471116804550b436c65617220627265616b7112680455084576616c7561746571136804550453746f707114680455045374657071156804550b4c69737420627265616b737116680455045461736b71176804550f427265616b20646574656374696f6e71186804550853746570206f757471196804550953657420627265616b711a6804550d46696e64206c6f636174696f6e711b680455075374657020696e711c6804680968045512526567756c61722065787072657373696f6e711d68045508436f6e74696e7565711e68045502476f711f6804550c53746172747570207461736b71206804550953746570206f766572712155046e65787471227555075345545f4c4f47712368045506494e495445447124550454727565712555074f7074696f6e7371267d712728550b58636320766572626f73657128550546616c73657129550745786563757465712a550546616c7365712b550c4372656174652066696c6573712c550454727565712d55105365656b20627265616b706f696e7473712e550546616c7365712f550f436f6e6e65637420746f20706970657130550546616c736571315507436f6d70696c657132550546616c73657133550d46696c746572206f75747075747134550546616c7365713555134175746f20696e636c756465206865616465727136550546616c73657137550544656275677138550546616c7365713955105365656b206669727374206572726f72713a550546616c7365713b550c436f6c6f72697a65206c6f67713c550546616c7365713d755508436f6d70696c6572713e7d713f285514496e636c7564652073656172636820706174687371406804550f4572726f7220646574656374696f6e71416804550b557365206c69627261727971426804550e55736564206c696272617269657371436804550f446562756720617267756d656e747371446804550d436865636b2073796e7461786571456804550c4c696272617279207061746871466804680e680455094275696c6420646c6c714768045507557365207063687148680455094275696c64206578657149680455144c69627261727920736561726368207061746873714a6804550c496e636c7564652070617468714b6804550b436f6d70696c6520706368714c6804683e680475752e"><vh>@xcc OpenGl.h</vh>
+<v t="ekr.20060513122613.3" xcc_child_cfg="7d7100550b427265616b506f696e747371017d7102732e"><vh>USE_OPENGL</vh></v>
+<v t="ekr.20060513122613.4" xcc_child_cfg="7d7100550b427265616b506f696e747371017d7102732e"><vh>Data Types</vh></v>
+<v t="ekr.20060513122613.5" xcc_child_cfg="7d7100550b427265616b506f696e747371017d7102732e"><vh>1.1</vh>
+<v t="ekr.20060513122613.6" xcc_child_cfg="7d7100550b427265616b506f696e747371017d7102732e"><vh>Defs</vh></v>
+<v t="ekr.20060513122613.7" xcc_child_cfg="7d7100550b427265616b506f696e747371017d7102732e"><vh>Procs</vh></v>
+</v>
+<v t="ekr.20060513122613.8" xcc_child_cfg="7d7100550b427265616b506f696e747371017d7102732e"><vh>1.2</vh>
+<v t="ekr.20060513122613.9"><vh>Defs</vh></v>
+<v t="ekr.20060513122613.10"><vh>Procs</vh></v>
+</v>
+<v t="ekr.20060513122613.11"><vh>1.3</vh>
+<v t="ekr.20060513122613.12"><vh>Defs</vh></v>
+<v t="ekr.20060513122613.13"><vh>Procs</vh></v>
+</v>
+<v t="ekr.20060513122613.14"><vh>1.4</vh>
+<v t="ekr.20060513122613.15"><vh>Defs</vh></v>
+<v t="ekr.20060513122613.16"><vh>Procs</vh></v>
+</v>
+<v t="ekr.20060513122613.17" xcc_child_cfg="7d7100550b427265616b506f696e747371017d7102732e"><vh>1.5</vh>
+<v t="ekr.20060513122613.18" xcc_child_cfg="7d7100550b427265616b506f696e747371017d7102732e"><vh>Defs</vh></v>
+<v t="ekr.20060513122613.19" xcc_child_cfg="7d7100550b427265616b506f696e747371017d7102732e"><vh>Procs</vh></v>
+</v>
+<v t="ekr.20060513122613.20" xcc_child_cfg="7d7100550b427265616b506f696e747371017d7102732e"><vh>WGL</vh></v>
+</v>
+<v t="ekr.20060513122613.21" xcc_cfg="7d710028550a45786563757461626c6571017d710228550a446c6c2063616c6c65727103550071045513457865637574696f6e20617267756d656e747371056804755504436f64657106680455074144445f4c4f477107680455055469746c6571085510636c5f6364625f77696e33325f657865710955055761746368710a5d710b550161710c61550b427265616b706f696e7473710d7d710e2855056370703a38710f5507456e61626c6564711055066370703a3138711168107555075345545f4c4f47711268045506494e4954454471135504547275657114550b427265616b506f696e747371157d71162855066370703a313571175507456e61626c6564711855066370703a313371195507456e61626c6564711a7555074f7074696f6e73711b7d711c28550b58636320766572626f7365711d550454727565711e550745786563757465711f550546616c73657120550c4372656174652066696c65737121550454727565712255105365656b20627265616b706f696e747371235504547275657124550f436f6e6e65637420746f2070697065712568045507436f6d70696c6571265504547275657127550d46696c746572206f75747075747128550546616c7365712955134175746f20696e636c75646520686561646572712a550454727565712b55054465627567712c550454727565712d55105365656b206669727374206572726f72712e550546616c7365712f755508446562756767657271307d713128550e4964656e7469667920627265616b7132552720283f503c49443e5b302d395d2b29202e2b5f46494c455f282040207c3a295f4c494e455f2e2b7133550f54617267657420706964207461736b713455092e746c697374202d63713555085069706520656f6c713655045c6e5c7271375509417267756d656e74737138555c2d6c696e6573202d47202d320a2d7372637061746820225f414253504154485f220a2d7920227372762a5f414253504154485f220a2d6920225f414253504154485f220a225f414253504154485f5c5c5f4e414d455f2e657865220a7139550e50726f6d7074207061747465726e713a55013e713b550e5175657279206c6f636174696f6e713c55096c732e203b206c7363713d550846696e6420706964713e5521306e283f503c5049443e5b302d395d2b29202e2a5f4e414d455f5c2e5f4558545f713f550b436c65617220627265616b714055076263205f49445f714155084576616c75617465714255023f3f7143550453746f707144550171714555045374657071465501707147550b4c69737420627265616b7371485502626c714955045461736b714a6804550f427265616b20646574656374696f6e714b5516427265616b706f696e74205b302d395d2b206869740a714c550853746570206f7574714d55026775714e550953657420627265616b714f5512627020605f46494c455f3a5f4c494e455f607150550d46696e64206c6f636174696f6e7151553243757272656e743a202e2a5f4e414d455f5c2e283f503c4558543e2e2b295c28283f503c4c494e453e5b302d395d2b295c29715255075374657020696e715355017471546830551e433a5c53444b5c437573746f6d33325c77696e6462675c6364622e65786571555512526567756c61722065787072657373696f6e7156550c507265737320454e5445520a71575508436f6e74696e7565715855016771595502476f715a6859550c53746172747570207461736b715b552b7371653b6c2b2a3b206c7370202d61203120303b206c737020303b2062702077696e6d61696e3b2020670a715c550953746570206f766572715d55046e657874715e755508436f6d70696c6572715f7d7160285514496e636c7564652073656172636820706174687371615532433a5c53444b5c437573746f6d33325c696e636c7564650a433a5c53444b5c437573746f6d33325c696e636c75646533320a7162550f4572726f7220646574656374696f6e71635549283f503c46494c453e5b5e5c5c5d2b295c28283f503c4c494e453e5b302d395d2b295c29203a206572726f7220283f503c49443e435b302d395d2b293a20283f503c4445463e2e2b297164550b557365206c6962726172797165550c2f44454641554c544c49423a7166550e55736564206c69627261726965737167550b7573657233322e6c69620a7168550f446562756720617267756d656e7473716955a5225f414253504154485f5c5f4e414d455f2e5f5352434558545f220a2f4665225f414253504154485f5c5f4e414d455f2e5f4558545f220a2f466f225f414253504154485f5c5f4e414d455f2e6f626a220a2f4664225f414253504154485f5c5f4e414d455f220a5f494e4350415448535f0a5f4255494c445f640a2f6e6f6c6f676f0a2f5a690a2f6c696e6b0a5f4c494250415448535f0a5f4c49425241524945535f0a716a550d436865636b2073796e74617865716b55032f5a73716c550c4c6962726172792070617468716d55092f4c4942504154483a716e6838558a225f414253504154485f5c5f4e414d455f2e5f5352434558545f220a2f4665225f414253504154485f5c5f4e414d455f2e5f4558545f220a2f466f225f414253504154485f5c5f4e414d455f2e6f626a220a5f494e4350415448535f0a5f4255494c445f0a2f6e6f6c6f676f0a2f6c696e6b0a5f4c494250415448535f0a5f4c49425241524945535f0a716f55094275696c6420646c6c717055032f4c447171550755736520706368717255032f5975717355094275696c6420657865717455032f4d4c717555144c696272617279207365617263682070617468737176552a433a5c53444b5c437573746f6d33325c6c69620a433a5c53444b5c437573746f6d33325c6c696233320a7177550c496e636c7564652070617468717855022f497179550b436f6d70696c6520706368717a55032f5963717b685f5516433a5c53444b5c437573746f6d33325c636c2e657865717c75752e"><vh>@xcc cltest\testprog</vh>
+<v t="ekr.20060513122613.22" xcc_child_cfg="7d7100550b427265616b506f696e747371017d7102732e"><vh>program</vh>
+<v t="ekr.20060513122613.23" xcc_child_cfg="7d71002855104865616465724c696e654e756d626572710155013071025510536f757263654c696e654e756d62657271036802550b427265616b506f696e747371047d7105752e"><vh>Header Directives</vh></v>
+<v t="ekr.20060513122613.24" xcc_child_cfg="7d71002855104865616465724c696e654e756d626572710155013571025510536f757263654c696e654e756d62657271035501347104550b427265616b506f696e747371057d71062855013171075507456e61626c65647108550231317109680875752e"><vh>int WINAPI WinMain(HINSTANCE hinstance,HINSTANCE hprevinstance,LPSTR lpcmdline,int ncmdshow);!</vh></v>
+</v>
+</v>
+<v t="ekr.20060513122613.25" xcc_cfg="7d710028550a45786563757461626c6571017d710228550a446c6c2063616c6c65727103550071045513457865637574696f6e20617267756d656e747371056804755504436f64657106680455074144445f4c4f477107680455055469746c657108550b6763635f6764625f657865710955055761746368710a5d710b550161710c61550b427265616b706f696e7473710d7d710e2855056370703a38710f5507456e61626c6564711055066370703a3138711168107555075345545f4c4f4771125511406c616e677561676520632b2b0a20430a71135506494e4954454471145504547275657115550b427265616b506f696e747371167d71172855056370703a3871185507456e61626c6564711955066370703a3135711a5507456e61626c6564711b55066370703a3132711c5507456e61626c6564711d7555074f7074696f6e73711e7d711f28550b58636320766572626f7365712055045472756571215507457865637574657122550546616c73657123550c4372656174652066696c65737124550454727565712555105365656b20627265616b706f696e747371265504547275657127550f436f6e6e65637420746f2070697065712868045507436f6d70696c657129550454727565712a550d46696c746572206f7574707574712b550546616c7365712c55134175746f20696e636c75646520686561646572712d550454727565712e55054465627567712f550454727565713055105365656b206669727374206572726f7271315504547275657132755508446562756767657271337d713428550e4964656e7469667920627265616b71356804550f54617267657420706964207461736b713655327368656c6c207461736b6c697374202f6e68202f66692022494d4147454e414d45206571205f4e414d455f2e5f4558545f22713755085069706520656f6c713855025c6e71395509417267756d656e7473713a5519225f414253504154485f5c5c5f4e414d455f2e65786522200a713b550e50726f6d7074207061747465726e713c55035b295d713d550e5175657279206c6f636174696f6e713e550166713f550846696e6420706964714055215f4e414d455f5c2e5f4558545f202b283f503c5049443e5b302d395d2b29202e2b7141550b436c65617220627265616b71425513636c656172205f46494c455f3a5f4c494e455f714355084576616c75617465714455067072696e74207145550453746f707146550171714755045374657071485504737465707149550b4c69737420627265616b73714a680455045461736b714b5502710a714c550f427265616b20646574656374696f6e714d5516427265616b706f696e74205b302d395d2b2c202e2b0a714e550853746570206f7574714f550666696e6973687150550953657420627265616b71515513627265616b205f46494c455f3a5f4c494e455f7152550d46696e64206c6f636174696f6e7153552861742e2b5f4e414d455f5c2e283f503c4558543e2e2b293a283f503c4c494e453e5b302d395d2b29715455075374657020696e7155550473746570715668335518433a5c53444b5c4d696e47575c62696e5c6764622e65786571575512526567756c61722065787072657373696f6e7158550f50726f6772616d206578697465640a71595508436f6e74696e7565715a5508636f6e74696e7565715b5502476f715c550372756e715d550c53746172747570207461736b715e552e627265616b206d61696e0a736574206c69737473697a6520310a73657420636f6e6669726d206f66660a72756e0a715f550953746570206f766572716055046e6578747161755508436f6d70696c657271627d7163285514496e636c7564652073656172636820706174687371645515433a5c53444b5c4d696e47575c696e636c7564650a7165550f4572726f7220646574656374696f6e71665549283f503c46494c453e5b5e5c5c5d2b295c28283f503c4c494e453e5b302d395d2b295c29203a206572726f7220283f503c49443e435b302d395d2b293a20283f503c4445463e2e2b297167550b557365206c696272617279716855022d6c7169550e55736564206c6962726172696573716a6804550f446562756720617267756d656e7473716b555c225f414253504154485f5c5f4e414d455f2e5f5352434558545f220a2d6f225f414253504154485f5c5f4e414d455f2e5f4558545f220a5f494e4350415448535f0a2d670a5f4c494250415448535f0a5f4c49425241524945535f0a716c550d436865636b2073796e74617865716d55032f5a73716e550c4c6962726172792070617468716f55022d4c7170683a5559225f414253504154485f5c5f4e414d455f2e5f5352434558545f220a2d6f225f414253504154485f5c5f4e414d455f2e5f4558545f220a5f494e4350415448535f0a5f4c494250415448535f0a5f4c49425241524945535f0a717155094275696c6420646c6c717255032f4c447173550755736520706368717455032f5975717555094275696c6420657865717655032f4d4c717755144c6962726172792073656172636820706174687371785511433a5c53444b5c4d696e47575c6c69620a7179550c496e636c7564652070617468717a55022d49717b550b436f6d70696c6520706368717c55032f5963717d68625518433a5c53444b5c4d696e47575c62696e5c6763632e657865717e75752e"><vh>@xcc gcctest\testprog</vh>
+<v t="ekr.20060513122613.22" xcc_child_cfg="7d7100550b427265616b506f696e747371017d7102732e"><vh>program</vh>
+<v t="ekr.20060513122613.23" xcc_child_cfg="7d71002855104865616465724c696e654e756d626572710155013071025510536f757263654c696e654e756d62657271036802550b427265616b506f696e747371047d7105752e"><vh>Header Directives</vh></v>
+<v t="ekr.20060513122613.24" xcc_child_cfg="7d71002855104865616465724c696e654e756d626572710155013571025510536f757263654c696e654e756d62657271035501347104550b427265616b506f696e747371057d71062855013171075507456e61626c65647108550231317109680875752e"><vh>int WINAPI WinMain(HINSTANCE hinstance,HINSTANCE hprevinstance,LPSTR lpcmdline,int ncmdshow);!</vh></v>
+</v>
+</v>
+</v>
+<v t="ekr.20060513122450"><vh>@thin xcc_nodes.py</vh></v>
+<v t="ekr.20060514125256"><vh>Recent</vh>
+<v t="ekr.20060513122450.295"><vh>Selected Node Funcs</vh>
+<v t="ekr.20060513122450.296"><vh>sGatherInfo NOT CALLED</vh>
+<v t="ekr.20060513122450.297"><vh>Head</vh></v>
+<v t="ekr.20060513122450.298"><vh>Dicts</vh></v>
+<v t="ekr.20060513122450.299"><vh>File Creation</vh></v>
+<v t="ekr.20060513122450.300"><vh>Compilation</vh></v>
+<v t="ekr.20060513122450.301"><vh>Execution</vh></v>
+<v t="ekr.20060513122450.302"><vh>Debugging</vh></v>
+</v>
+<v t="ekr.20060513122450.303"><vh>sExtractHeadInfo</vh></v>
+<v t="ekr.20060513122450.304"><vh>sGetBrowseInfo</vh></v>
+<v t="ekr.20060513122450.305"><vh>sGetWriteInfo</vh></v>
+<v t="ekr.20060513122450.306"><vh>sGetCompileInfo</vh></v>
+<v t="ekr.20060513122450.307"><vh>sGetDebugInfo</vh></v>
+<v t="ekr.20060513122450.308"><vh>sGetExecInfo</vh></v>
+<v t="ekr.20060513122450.309"><vh>sGoToError</vh></v>
+<v t="ekr.20060513122450.310"><vh>sGo</vh></v>
+<v t="ekr.20060513122450.311"><vh>sSet</vh></v>
+<v t="ekr.20060513122450.312"><vh>sGet</vh></v>
+<v t="ekr.20060513122450.313"><vh>sIsDict</vh></v>
+<v t="ekr.20060513122450.314"><vh>sGetDict</vh></v>
+<v t="ekr.20060513122450.315"><vh>sInitDict</vh></v>
+<v t="ekr.20060513122450.316"><vh>sSelect</vh></v>
+<v t="ekr.20060513122450.317"><vh>sSync</vh></v>
+<v t="ekr.20060513122450.318"><vh>sShow</vh></v>
+<v t="ekr.20060513122450.319"><vh>sHide</vh></v>
+<v t="ekr.20060513122450.320"><vh>sSetText</vh></v>
+<v t="ekr.20060513122450.321"><vh>sAddText</vh></v>
+</v>
+<v t="ekr.20060513122450.53"><vh>class ConfigClass</vh>
+<v t="ekr.20060513122450.82"><vh>  __init__</vh></v>
+<v t="ekr.20060513122450.54"><vh>  class PageClass</vh>
+<v t="ekr.20060513122450.55"><vh>class CHECK</vh>
+<v t="ekr.20060513122450.56"><vh>__init__</vh></v>
+<v t="ekr.20060513122450.57"><vh>Get</vh></v>
+<v t="ekr.20060513122450.58"><vh>Set</vh></v>
+</v>
+<v t="ekr.20060513122450.59"><vh>class ENTRY</vh>
+<v t="ekr.20060513122450.60"><vh>__init__</vh></v>
+<v t="ekr.20060513122450.61"><vh>Get</vh></v>
+<v t="ekr.20060513122450.62"><vh>Set</vh></v>
+</v>
+<v t="ekr.20060513122450.63"><vh>class TEXT</vh>
+<v t="ekr.20060513122450.64"><vh>__init__</vh></v>
+<v t="ekr.20060513122450.65"><vh>Get</vh></v>
+<v t="ekr.20060513122450.66"><vh>Set</vh></v>
+</v>
+<v t="ekr.20060513122450.67"><vh>class LABEL</vh>
+<v t="ekr.20060513122450.68"><vh>__init__</vh></v>
+</v>
+<v t="ekr.20060513122450.69"><vh>class HELP</vh>
+<v t="ekr.20060513122450.70"><vh>__init__</vh></v>
+<v t="ekr.20060513122450.71"><vh>Help</vh></v>
+</v>
+<v t="ekr.20060513122450.72"><vh>__init__</vh></v>
+<v t="ekr.20060513122450.73"><vh>AddObject</vh></v>
+<v t="ekr.20060513122450.74"><vh>BBox</vh></v>
+<v t="ekr.20060513122450.75"><vh>AddSep</vh></v>
+<v t="ekr.20060513122450.76"><vh>CreateObjects</vh></v>
+<v t="ekr.20060513122450.77"><vh>SaveObjects</vh></v>
+<v t="ekr.20060513122450.78"><vh>LoadObjects</vh></v>
+<v t="ekr.20060513122450.79"><vh>ClearObjects</vh></v>
+<v t="ekr.20060513122450.80"><vh>Hide</vh></v>
+<v t="ekr.20060513122450.81"><vh>Show</vh></v>
+</v>
+<v t="ekr.20060513122450.126"><vh> class CodePageClass</vh>
+<v t="ekr.20060513122450.127"><vh>__init__</vh></v>
+<v t="ekr.20060513122450.128"><vh>CreateObjects</vh>
+<v t="ekr.20060513122450.129"><vh>Entries</vh></v>
+</v>
+</v>
+<v t="ekr.20060513122450.99"><vh> class CplPageClass</vh>
+<v t="ekr.20060513122450.100"><vh>__init__</vh></v>
+<v t="ekr.20060513122450.101"><vh>Browse</vh></v>
+<v t="ekr.20060513122450.102"><vh>AddPath</vh></v>
+<v t="ekr.20060513122450.103"><vh>CreateObjects</vh>
+<v t="ekr.20060513122450.104"><vh>Executable</vh></v>
+<v t="ekr.20060513122450.105"><vh>Arguments</vh></v>
+<v t="ekr.20060513122450.106"><vh>Paths</vh></v>
+<v t="ekr.20060513122450.107"><vh>Symbols</vh></v>
+<v t="ekr.20060513122450.108"><vh>Error Detection</vh></v>
+</v>
+</v>
+<v t="ekr.20060513122450.109"><vh> class DbgPageClass</vh>
+<v t="ekr.20060513122450.110"><vh>__init__</vh></v>
+<v t="ekr.20060513122450.111"><vh>Browse</vh></v>
+<v t="ekr.20060513122450.112"><vh>CreateObjects</vh>
+<v t="ekr.20060513122450.113"><vh>Executable</vh></v>
+<v t="ekr.20060513122450.114"><vh>Arguments</vh></v>
+<v t="ekr.20060513122450.115"><vh>Piping</vh></v>
+<v t="ekr.20060513122450.116"><vh>Symbols</vh></v>
+<v t="ekr.20060513122450.117"><vh>Startup Task</vh></v>
+<v t="ekr.20060513122450.118"><vh>Target PID</vh></v>
+<v t="ekr.20060513122450.119"><vh>Break info</vh></v>
+<v t="ekr.20060513122450.120"><vh>Misc RE</vh></v>
+</v>
+</v>
+<v t="ekr.20060513122450.121"><vh> class ExePageClass</vh>
+<v t="ekr.20060513122450.122"><vh>__init__</vh></v>
+<v t="ekr.20060513122450.123"><vh>CreateObjects</vh>
+<v t="ekr.20060513122450.124"><vh>Args</vh></v>
+<v t="ekr.20060513122450.125"><vh>Dll Caller</vh></v>
+</v>
+</v>
+<v t="ekr.20060513122450.94"><vh> class OptPageClass</vh>
+<v t="ekr.20060513122450.95"><vh>__init__</vh></v>
+<v t="ekr.20060513122450.96"><vh>CreateObjects</vh>
+<v t="ekr.20060513122450.97"><vh>Actions Switches</vh></v>
+<v t="ekr.20060513122450.98"><vh>Import</vh></v>
+</v>
+</v>
+<v t="ekr.20060513122450.93"><vh>AddPages</vh></v>
+<v t="ekr.20060513122450.92"><vh>Apply</vh></v>
+<v t="ekr.20060513122450.87"><vh>ClearConfig</vh></v>
+<v t="ekr.20060513122450.84"><vh>GetButton</vh></v>
+<v t="ekr.20060513122450.83"><vh>GetPage</vh></v>
+<v t="ekr.20060513122450.85"><vh>Hide</vh></v>
+<v t="ekr.20060513122450.90"><vh>LoadFromFile</vh></v>
+<v t="ekr.20060513122450.88"><vh>LoadFromNode</vh></v>
+<v t="ekr.20060513122450.91"><vh>SaveToFile</vh></v>
+<v t="ekr.20060513122450.89"><vh>SaveToNode</vh></v>
+<v t="ekr.20060513122450.86"><vh>Show</vh></v>
 </v>
 </v>
 </v>
@@ -9437,6 +9608,24 @@ Todo
 @language python
 
 </t>
+<t tx="ekr.20050529143413.30">def colorize(self,p,incremental=False):
+    
+    '''The main colorizer entry point.'''
+    
+    self.count += 1 # For unit testing.
+    
+    if self.trace:
+        g.trace(self.count,g.callers())
+        
+    self.interrupt() # New in 4.4.1
+
+    if self.enabled:
+        self.updateSyntaxColorer(p)
+        val = self.colorizeAnyLanguage(p)
+        if self.trace: g.trace('done')
+        return val
+    else:
+        return "ok" # For unit testing.</t>
 <t tx="ekr.20050529180421.27">Atribute            Elements used in
 --------            ----------------
 DEFAULT             RULES
@@ -9494,6 +9683,20 @@ def match_keywords (self,s,i):
     else:
         return 0</t>
 <t tx="ekr.20050530065723"></t>
+<t tx="ekr.20050601042620">def colorAll(self,s):
+    
+    '''Colorize all of s.'''
+
+    # Init ivars used by colorOneChunk.
+    self.chunk_s = s
+    self.chunk_i = 0
+    self.tagList = []
+    self.chunk_count = 0
+    self.recolor_count = 0 # Number of times through the loop before a recolor.
+    self.chunks_done = False
+    self.quickColor()
+    self.colorOneChunk()
+    return 'break'</t>
 <t tx="ekr.20050601081132">@nocolor
 @
 
@@ -9522,29 +9725,26 @@ def match_keywords (self,s,i):
 
 &lt;&lt; later &gt;&gt;
 </t>
-<t tx="ekr.20050601105358">def colorOneChunk(self,allowBreak=True):
-    '''Colorize a fixed number of tokens.
+<t tx="ekr.20050601105358">def colorOneChunk (self):
+    '''Colorize a limited number of tokens.
     If not done, queue this method again to continue coloring later.'''
-    if self.chunks_done:
-        return
-    s,i = self.chunk_s,self.chunk_i
+    if self.chunks_done: return
+    s, i = self.chunk_s, self.chunk_i
+    limit = self.interrupt_count1 # Number of times through the loop before a pause. 10 is reasonable.
+    limit2 = self.interrupt_count2 # Number of times throught the loop before a recolor. 5000 is reasonable.
+    w = self.c.frame.body.bodyCtrl
     count = 0 ; self.chunk_count += 1
-    limit = 10 # Number of times through the loop before a pause.
-    limit2 = 5000 # Number of times throught the loop before a recolor.
+    # if (self.chunk_count % 100) == 0: print self.chunk_count,g.callers() # Don't use g.trace!
     while i &lt; len(s):
-        count += 1
-        self.recolor_count += 1
-        # This apparently interferes with event handling.
-        # if limit2 &gt; 0 and self.recolor_count &gt; limit2:
-            # g.trace('coloring',self.chunk_count)
-            # self.recolor_count = 0
-            # self.tagAll()
-            # self.pause(s,i)
-            # return
+        count += 1 ; self.recolor_count += 1
+        if self.recolor_count &gt; limit2 &gt; 0:
+            self.recolor_count, self.chunk_s, self.chunk_i = 0, s, i
+            self.tagAll()
+            w.after(50,self.colorOneChunk)
+            return 'break'
         if count &gt;= limit:
-            self.chunk_s, self.chunk_i = s,i
-            self.queue_count += 1
-            self.c.frame.top.after_idle(self.colorOneChunk)
+            self.chunk_s, self.chunk_i = s, i
+            w.after_idle(self.colorOneChunk)
             return 'break'
         for f in self.rulesDict.get(s[i],[]):
             n = f(self,s,i)
@@ -9552,11 +9752,22 @@ def match_keywords (self,s,i):
                 i += n ; break
         else: i += 1
 
-    # g.trace('%3d %3d' % (self.chunk_count,self.queue_count))
+    # g.trace('%3d' % (self.chunk_count))
     self.removeAllTags()
     self.tagAll()
     self.tagList = []
-    self.chunks_done = True # Prohibit any more queued calls.</t>
+    self.chunks_done = True # Prohibit any more queued calls.
+    return 'break'
+</t>
+<t tx="ekr.20050602144940"># This is needed, even without threads.
+
+def interrupt(self):
+    '''Interrupt colorOneChunk'''
+    self.chunk_s = ''
+    self.chunk_i = 0
+    self.tagList = []
+    self.chunks_done = True
+    if self.trace: g.trace('%3d' % (self.chunk_count))</t>
 <t tx="ekr.20050602150619">def init_mode (self,language):
     
     if not language: return
@@ -9590,6 +9801,61 @@ def match_keywords (self,s,i):
                 rulesetName  = self.rulesetName)
         else:
             g.trace('No language description for %s' % language)</t>
+<t tx="ekr.20050602150957">def __init__(self,c):
+    # Copies of ivars.
+    self.c = c
+    self.frame = c.frame
+    self.body = c.frame.body
+    self.p = None
+    # Config settings.
+    self.comment_string = None # Set by scanColorDirectives on @comment
+    self.showInvisibles = False # True: show "invisible" characters.
+    self.interrupt_count1 = c.config.getInt("colorizer_interrupt_count1") or 10
+    self.interrupt_count2 = c.config.getInt("colorizer_interrupt_count2") or 5000
+    self.underline_undefined = c.config.getBool("underline_undefined_section_names")
+    self.use_hyperlinks = c.config.getBool("use_hyperlinks")
+    # State ivars...
+    self.colored_ranges = {}
+        # Keys are indices, values are tags.
+    self.chunk_count = 0
+    self.color_pass = 0
+    self.count = 0
+    self.comment_string = None # Can be set by @comment directive.
+    self.defaultRulesList = []
+    self.enabled = True # Set to False by unit tests.
+    self.flag = True # True unless in range of @nocolor
+    self.keywordNumber = 0 # The kind of keyword for keywordsColorHelper.
+    self.kill_chunk = False
+    self.language = 'python' # set by scanColorDirectives.
+    self.ranges = 0
+    self.redoColoring = False # May be set by plugins.
+    self.redoingColoring = False
+    self.was_non_incremental = False # True: we are coloring as the result of a non-incremental call.
+    # Data...
+    self.keywords = {} # Keys are keywords, values are 0..5.
+    self.modes = {} # Keys are languages, values are modes.
+    self.mode = None # The mode object for the present language.
+    self.trace = c.config.getBool('trace_colorizer')
+    if 0:
+        self.defineAndExtendForthWords()
+    self.word_chars = {} # Inited by init_keywords().
+    self.setFontFromConfig()
+    self.tags = [
+        "blank","comment","cwebName","docPart","keyword","leoKeyword",
+        "latexModeBackground","latexModeKeyword",
+        "latexBackground","latexKeyword",
+        "link","name","nameBrackets","pp","string","tab",
+        "elide","bold","bolditalic","italic", # new for wiki styling.
+        # Leo jEdit tags...
+        '@color', '@nocolor', 'doc_part', 'section_ref',
+        # jEdit tags.
+        'comment1','comment2','comment3','comment4',
+        'function',
+        'keyword1','keyword2','keyword3','keyword4',
+        'label','literal1','literal2','literal3','literal4',
+        'markup','operator',
+    ]
+    self.configure_tags()</t>
 <t tx="ekr.20050603121815">@killcolor
 @
 - Support comment properties and self.comment_string:
@@ -11167,6 +11433,12 @@ The wrong node gets cloned into the new chapter.
         for ch in key:
             if ch not in self.word_chars:
                 self.word_chars.append(g.toUnicode(ch,encoding='UTF-8'))</t>
+<t tx="ekr.20060507175312">def tagAll (self):
+    
+    if self.trace: g.trace(len(self.tagList)/3)
+    
+    for tag,x1,x2 in self.tagList:
+        self.body.tag_add(tag,x1,x2)</t>
 <t tx="ekr.20060507192431">def quickColor (self):
     
     '''Give the inserted character the previous color tag by default.'''
@@ -11206,5 +11478,2452 @@ if i &gt; 0 and s[i-1] in self.word_chars:
 UnicodeDecodeError: 'ascii' codec can't decode byte 0xa6 in position 0: ordinal not in range(128) 
 </t>
 <t tx="ekr.20060510082931"></t>
+<t tx="ekr.20060513122450.53">class ConfigClass:
+    @others</t>
+<t tx="ekr.20060513122450.54">class PageClass(Tk.Canvas):
+    @others
+</t>
+<t tx="ekr.20060513122450.55">class CHECK:
+    @others
+</t>
+<t tx="ekr.20060513122450.56">def __init__(self,master,n,x=0,y=0):
+
+    self.Check = Tk.StringVar()
+    self.Name = n
+    c = Tk.Checkbutton(master,text=n,onvalue="True",offvalue="False",variable=self.Check)
+    master.create_window(x,y,anchor='nw',window=c)</t>
+<t tx="ekr.20060513122450.57">def Get(self):
+    return self.Check.get()
+</t>
+<t tx="ekr.20060513122450.58">def Set(self,value):
+    self.Check.set(value)
+</t>
+<t tx="ekr.20060513122450.59">class ENTRY:
+    @others
+</t>
+<t tx="ekr.20060513122450.60">def __init__(self,c,n,w=175,h=22,e=1,a='nw',x=0,y=0,re=False,vs=False):
+    self.Name = n
+    
+    if re != False: fg = RegExpFgColor
+    else: fg = "black"
+        
+    if vs != False: bg = VarSupBgColor
+    else: bg = "white"
+    
+    self.MasterFrame = mf = Tk.Frame(c,relief='groove',height=h,width=w)
+    self.ID = c.create_window(x,y,anchor=a,window=mf,height=h,width=w)	
+    
+    self.Entry = Tk.Entry(mf,width=1,bg=bg)
+    self.Entry.pack(side="right",fill="x",expand=e)
+    l = Tk.Label(mf,text=n+":",fg=fg).pack(side="right")
+</t>
+<t tx="ekr.20060513122450.61">def Get(self):
+    return self.Entry.get()
+</t>
+<t tx="ekr.20060513122450.62">def Set(self,text):
+    self.Entry.delete(0,'end')
+    self.Entry.insert('end',text)
+</t>
+<t tx="ekr.20060513122450.63">class TEXT:
+    @others
+</t>
+<t tx="ekr.20060513122450.64">def __init__(self,c,n,w=350,h=80,a='nw',x=0,y=0,re=False,vs=False):#text are 3 column wide
+    
+    self.Name = n
+    
+    if re != False: fg = RegExpFgColor
+    else: fg = "black"
+        
+    if vs != False: bg = VarSupBgColor
+    else: bg = "white"
+    
+    self.MasterFrame = mf = Tk.Frame(c,relief='groove')
+    self.ID = c.create_window(x,y+1,anchor=a,window=mf,width=w,height=h)
+    
+    lf = Tk.Frame(mf,relief='flat')
+    lf.pack(side="top",fill="x",expand=1)			
+    Tk.Label(lf,text=n+":",fg=fg).pack(side="left")
+    
+    self.Text = Tk.Text(mf,bg=bg)
+    self.Text.pack(side="top",fill="x",expand=1)
+</t>
+<t tx="ekr.20060513122450.65">def Get(self):
+    s = self.Text.get(1.0,'end')
+    lines = s.splitlines()
+    res = ""
+    for l in lines:
+        if l != "":
+            res += l+"\n"
+    return res
+</t>
+<t tx="ekr.20060513122450.66">def Set(self,text):
+    self.Text.delete(1.0,'end')
+    self.Text.insert('end',text)
+</t>
+<t tx="ekr.20060513122450.67">class LABEL:
+    @others
+</t>
+<t tx="ekr.20060513122450.68">def __init__(self,c,text,w=175,h=22,e=1,a='nw',x=0,y=0,color="#%02x%02x%02x" % (150,150,150)):
+    
+    self.MasterFrame = mf = Tk.Frame(c,relief='groove',height=h,width=w)
+    self.ID = c.create_window(x,y,anchor=a,window=mf,height=h,width=w)	
+    
+    self.Label = Tk.Label(c,text=text,justify='left',fg=color)
+    self.ID = c.create_window(x,y,anchor=a,window=self.Label)
+    </t>
+<t tx="ekr.20060513122450.69">class HELP(Tk.Button):
+    @others</t>
+<t tx="ekr.20060513122450.70">def __init__(self,c,buttontext="Help",boxtitle="Help",msg="!",x=5,y=0):
+    
+    self.Title = boxtitle
+    self.Message = msg
+    Tk.Button.__init__(self,c,text=buttontext,command=self.Help)
+    self.ID = c.create_window(x,y,anchor='nw',window=self)</t>
+<t tx="ekr.20060513122450.71">def Help(self):
+    tkMessageBox.showinfo(self.Title,self.Message)</t>
+<t tx="ekr.20060513122450.72">def __init__(self,cc,name):
+    
+    self.cc = cc
+    self.name = name
+    self.Objects = []
+    Tk.Canvas.__init__(self,cc.LeoFrame.split1Pane2)
+    self.X=self.Y=self.W=self.H = 0
+    self.CreateObjects(self)</t>
+<t tx="ekr.20060513122450.73">def AddObject(self,o):
+
+    if o != None:
+        self.Objects.append(o)
+        self.X,self.Y,self.W,self.H = self.bbox('all')
+</t>
+<t tx="ekr.20060513122450.74">def BBox(self):
+    self.X,self.Y,self.W,self.H = self.bbox('all')
+</t>
+<t tx="ekr.20060513122450.75">def AddSep(self,length=380,color="black"):
+
+    if length != None:
+        l = length
+    else:
+        l = self.W
+    self.create_line(5,self.H+4,l+5,self.H+4,fill=color)
+    self.H += 10
+</t>
+<t tx="ekr.20060513122450.76">def CreateObjects(self,master):#must overide
+    pass
+</t>
+<t tx="ekr.20060513122450.77">def SaveObjects(self,pd=None):
+    
+    cc = self.cc
+
+    if pd == None:
+        pd = cc.sGet(self.name,init={})
+    
+    for o in self.Objects:
+        pd[o.Name] = o.Get()
+</t>
+<t tx="ekr.20060513122450.78">def LoadObjects(self,pd=None):	
+
+    cc = self.cc
+    if pd == None:
+        pd = cc.sGet(self.name,{})
+        
+    g.trace(self.name,pd)
+    
+    for o in self.Objects:
+        if o.Name not in pd:				
+            pd[o.Name] = o.Get()
+        else:
+            o.Set(pd[o.Name])</t>
+<t tx="ekr.20060513122450.79">def ClearObjects(self,value=""):
+    for o in self.Objects:
+        o.Set(value)</t>
+<t tx="ekr.20060513122450.80">def Hide(self):
+    
+    cc = self.cc
+    self.pack_forget()
+    
+    b = cc.Config.GetButton(self.name)
+    b.config(relief='groove',fg="black")
+    
+    cc.LeoYBodyBar.config(command=cc.LeoBodyText.yview)
+    cc.LeoBodyText.config(yscrollcommand=cc.LeoYBodyBar.set)</t>
+<t tx="ekr.20060513122450.81">def Show(self):
+    
+    cc = self.cc
+    
+    if cc.Config.ActivePage:
+        cc.Config.ActivePage.Hide()
+        
+    cc.Config.ActivePage = self
+    b = cc.Config.GetButton(self.name)
+    b.config(relief='sunken',fg="blue")	
+    
+    self.config(scrollregion=self.bbox('all'))
+    self.config(yscrollcommand=cc.LeoYBodyBar.set)
+    
+    cc.LeoYBodyBar.config(command=self.yview)
+    cc.LeoYBodyBar.pack(side="right",fill="y")
+    self.pack(expand=1,fill="both")</t>
+<t tx="ekr.20060513122450.82">def __init__(self,cc):
+    
+    self.cc = cc
+    self.Pages = []
+    self.Buttons = []
+    self.ActivePage = None
+
+    #switch frame
+    self.SwitchFrame = Tk.Frame(
+        cc.LeoFrame.split1Pane2,relief='groove',bd=2,height=40,width=100)
+    
+    #title
+    self.Title = Tk.Entry(self.SwitchFrame,justify='center')
+    self.Title.pack(side="top",fill="x",expand=1)	
+    
+    self.AddPages()	
+    #add pages switches
+    for page in self.Pages:
+        if page:
+            b = Tk.Button(self.SwitchFrame,text=page.name,width=10,command=page.Show,relief='groove')
+            self.Buttons.append(b)
+            b.pack(side="left")
+            if not self.ActivePage:
+                self.ActivePage = page
+        
+    if 0: #Cancel button
+        # Not needed.
+        b = Tk.Button(self.SwitchFrame,text="Cancel",command=lambda: self.Hide(False))
+        b.pack(side="right")
+
+    #Load button
+    b = Tk.Button(self.SwitchFrame,text="Load...",command=self.LoadFromFile)
+    b.pack(side="right")
+    
+    #Save button
+    b = Tk.Button(self.SwitchFrame,text="Save...",command=self.SaveToFile)
+    b.pack(side="right")	
+    
+    self.BreakTags = {}
+    self.visible = False</t>
+<t tx="ekr.20060513122450.83">def GetPage(self,name):
+    
+    for p in self.Pages:
+        if p and p.name == name:
+            return p</t>
+<t tx="ekr.20060513122450.84">def GetButton(self,name):
+
+    for b in self.Buttons:
+        if b and b["text"] == name:
+            return b</t>
+<t tx="ekr.20060513122450.85">def Hide(self,save=True):
+    
+    cc = self.cc
+    
+    if self.visible == True:
+        self.ActivePage.Hide()	
+        self.SwitchFrame.pack_forget()
+        cc.LeoYBodyBar.config(command=cc.LeoBodyText.yview)
+        cc.LeoBodyText.config(yscrollcommand=cc.LeoYBodyBar.set)
+        cc.LeoXBodyBar.pack(side = "bottom",fill="x")
+        if cc.CHILD_NODE:
+            cc.BreakBar.Show()
+        cc.LeoBodyText.pack(expand=1, fill="both")
+        
+        if save == True:
+            self.SaveToNode()
+        cc.ToolBar.ConfigButton.config(command=self.Show,relief='raised')
+        cc.ToolBar.DisplayFrame.pack(side="top",fill="x",expand=1)
+        self.visible = False</t>
+<t tx="ekr.20060513122450.86">def Show(self):
+    
+    cc = self.cc
+    if cc.Watcher.visible:
+        cc.Watcher.Hide()			
+    if cc.BreakBar.visible:
+        cc.BreakBar.Hide()
+    cc.ToolBar.DisplayFrame.pack_forget()
+    cc.LeoBodyText.pack_forget()
+    cc.LeoXBodyBar.pack_forget()
+    cc.LeoYBodyBar.pack_forget()
+    
+    self.SwitchFrame.pack(side="top", fill="x")
+    self.LoadFromNode()
+    self.ActivePage.Show()
+    cc.ToolBar.ConfigButton.config(command=self.Hide,relief='sunken')
+    self.visible = True
+    cc.c.redraw()</t>
+<t tx="ekr.20060513122450.87">def ClearConfig(self):
+    for p in self.Pages:
+        if p.name == "Options":
+            p.ClearObjects("False")
+        else:
+            p.ClearObjects()
+</t>
+<t tx="ekr.20060513122450.88">def LoadFromNode(self):
+
+    cc = self.cc
+    self.Title.delete(0,'end')
+    self.Title.insert('end',cc.sGet("Title"))
+        
+    for p in self.Pages:
+        if p:
+            p.LoadObjects()</t>
+<t tx="ekr.20060513122450.89">def SaveToNode(self):
+    
+    cc = self.cc
+    
+    cc.sSet("Title",self.Title.get())
+    
+    for p in self.Pages:
+        p and p.SaveObjects()</t>
+<t tx="ekr.20060513122450.90">def LoadFromFile(self):
+    try:
+        ft = ('XCC Config files', '.xcc'),
+        s = tkFileDialog.askopenfilename(filetypes=ft,title="Open xcc connfiguration file...")
+    
+        if s == "":
+            Error("xcc: ","Load action canceled by user!")
+            return
+        
+        #read file and compose code
+        f = file(s,"r")
+        td = None
+        code = "td ="+f.readline()
+        f.close()
+        
+        # load in temp dict
+        try:
+            exec code
+        except Exception:
+            TraceBack()
+            Error("xcc: ","File content is invalid!")
+            return
+        
+        #	load each pages
+        for p in self.Pages:
+            if p.name in td:
+                p.LoadObjects(td[p.name])
+                
+        #set title to file name
+        name,ext = os.path.splitext(s)
+        path,name = os.path.split(name)		
+        self.Title.delete(0,'end')
+        self.Title.insert('end',name)		
+        
+        #save to node to ensure integrity
+        self.SaveToNode()
+        
+    except Exception:
+        TraceBack()
+
+
+
+
+</t>
+<t tx="ekr.20060513122450.91">def SaveToFile(self):
+    try:
+        
+    
+        ft = ('XCC Config files', '.xcc'),
+        s = tkFileDialog.asksaveasfilename(
+        filetypes=ft,
+        title="Save xcc connfiguration file...",
+        initialfile = self.Title.get()
+        )
+        
+        if s == "":
+            Error("xcc: ","Save action canceled by user!")
+            return		
+        
+        name,ext = os.path.splitext(s)
+                
+        td = {}
+        
+        # save each pages
+        for p in self.Pages:
+            td[p.name] = {}
+            p.SaveObjects(td[p.name])	
+        
+        #write the dict to file
+        f = file(name+".xcc","w+")
+        Message("xcc: ","Writing config in "+name+".xcc")
+        f.write(str(td))
+        f.close()
+        
+        # reset title to file name
+        path,name = os.path.split(name)		
+        self.Title.delete(0,'end')
+        self.Title.insert('end',name)
+        
+        # save to node
+        self.SaveToNode()
+    except Exception:
+        TraceBack()
+
+
+
+
+
+
+
+</t>
+<t tx="ekr.20060513122450.92">def Apply(self):
+    self.SaveToNode()
+    self.Hide()
+</t>
+<t tx="ekr.20060513122450.93">def AddPages(self):
+    
+    cc = self.cc
+    self.Pages.append(self.OptPageClass(cc))
+    self.Pages.append(self.CplPageClass(cc))
+    self.Pages.append(self.DbgPageClass(cc))
+    self.Pages.append(self.ExePageClass(cc))
+    #self.Pages.append(self.CodePageClass(cc))</t>
+<t tx="ekr.20060513122450.94">class OptPageClass(PageClass):
+
+    @others
+</t>
+<t tx="ekr.20060513122450.95">def __init__(self,cc):
+    
+    self.cc = cc
+    ConfigClass.PageClass.__init__(self,cc,"Options")
+</t>
+<t tx="ekr.20060513122450.96">def CreateObjects(self,master): # must overide
+
+    @others
+
+    self.AddSep(length=self.W)</t>
+<t tx="ekr.20060513122450.97">s1 = self.CHECK(master,"Create files",x=5,y=5)
+s2 = self.CHECK(master,"Auto include header",x=100,y=5)
+self.AddObject(s1)
+self.AddObject(s2)
+
+self.AddSep(length=self.W)
+s1 = self.CHECK(master,"Compile",x=5,y=self.H)
+s2 = self.CHECK(master,"Seek first error",x=100,y=self.H)
+self.AddObject(s1)
+self.AddObject(s2)
+
+self.AddSep(length=self.W)
+s1 = self.CHECK(master,"Execute",x=5,y=self.H)
+s2 = self.CHECK(master,"Connect to pipe",x=100,y=self.H)
+self.AddObject(s1)
+self.AddObject(s2)
+
+self.AddSep(length=self.W)
+s1 = self.CHECK(master,"Debug",x=5,y=self.H)
+s2 = self.CHECK(master,"Seek breakpoints",x=100,y=self.H)
+self.AddObject(s1)
+self.AddObject(s2)
+
+#-------------------------------------------------------------
+self.AddSep(self.W)
+self.AddObject(self.CHECK(master,"Xcc verbose",x=5,y=self.H))
+self.AddObject(self.CHECK(master,"Filter output",x=5,y=self.H))</t>
+<t tx="ekr.20060513122450.98">#self.AddSep(self.W)
+#b = Tk.Button(master,text="Import...",width=10,default='disabled',command = ImportFiles)
+#master.create_window(self.X+5,self.H,width=60,height=20,anchor='nw',window=b)
+#c1 = self.CHECK(master,"Merge",x=80,y=self.H)
+#c2 = self.CHECK(master,"Use corresponding source/header",x=150,y=self.H)
+#self.AddObject(c1)
+#self.AddObject(c2)</t>
+<t tx="ekr.20060513122450.99">class CplPageClass(PageClass):
+    @others
+</t>
+<t tx="ekr.20060513122450.100">def __init__(self,cc):
+    
+    self.cc = cc
+    ConfigClass.PageClass.__init__(self,cc,"Compiler")</t>
+<t tx="ekr.20060513122450.101">def Browse(self):
+
+    for o in self.Objects:
+        if o and o.Name == "Compiler":
+            break
+    else: return
+
+    ft = ('Executables', '.exe;.bin'),
+    s = tkFileDialog.askopenfilename(filetypes=ft,title="Locate Compiler...")
+    if s == None:
+        return Error("xcc: ","Action canceled by user!")
+    elif s == "":
+        return Error("xcc: ","Empty path returned!")
+
+    e.Set(os.path.normpath(s))</t>
+<t tx="ekr.20060513122450.102">def AddPath(self,name):
+    d = tkFileDialog.askdirectory()
+    if d != "":
+        d = d.replace("/","\\")
+        for o in self.Objects:
+            if o.Name == name:
+                opaths = o.Get().splitlines()
+                npaths = []
+                
+                for p in opaths:
+                    p = p.strip()
+                    if p != "":
+                        npaths.append(p)
+                        
+                npaths.append(d)
+                
+                o.Set(string.join(npaths,"\n"))</t>
+<t tx="ekr.20060513122450.103">def CreateObjects(self,master): #must overide
+
+    @others
+
+
+
+</t>
+<t tx="ekr.20060513122450.104">x=10
+y=10
+text_w = 350
+text_h = 80
+
+# compiler entry -
+self.AddObject(self.ENTRY(master,"Compiler",x=5,y=5,w=350,h=20))
+b = Tk.Button(master,text=" ...",command=self.Browse)
+master.create_window(360,self.Y-2,anchor='nw',window=b)</t>
+<t tx="ekr.20060513122450.105">self.AddSep()
+#-------------------------------------------------
+
+t1 = self.TEXT(master,"Arguments",x=5,y=self.H,vs=True)
+self.HELP(master,boxtitle="Arguments info",msg=CplArgumentsHelp,x=360,y=self.H+20)
+self.AddObject(t1)
+
+#------------------------------------------
+t1 = self.TEXT(master,"Debug arguments",x=5,y=self.H,vs=True)
+self.HELP(master,boxtitle="Debug arguments info",msg=CplDebugArgumentsHelp,x=360,y=self.H+20)
+self.AddObject(t1)</t>
+<t tx="ekr.20060513122450.106">self.AddSep()
+#-------------------------------------------------------------
+b = Tk.Button(master,text="Browse",command=lambda:self.AddPath("Include search paths"))
+master.create_window(360,self.H+58,anchor='nw',window=b)
+t1 = self.TEXT(master,"Include search paths",x=5,y=self.H)
+self.HELP(master,boxtitle="Include search paths info",msg=IncludeSearchPathsHelp,x=360,y=self.H+20)
+self.AddObject(t1)
+
+#-------------------------------------------------------------
+b = Tk.Button(master,text="Browse",command=lambda:self.AddPath("Library search paths"))
+master.create_window(360,self.H+58,anchor='nw',window=b)
+t1 = self.TEXT(master,"Library search paths",x=5,y=self.H)
+self.HELP(master,boxtitle="Library search paths info",msg=LibrarySearchPathsHelp,x=360,y=self.H+20)
+self.AddObject(t1)
+
+#-------------------------------------------------------------
+t1 = self.TEXT(master,"Used libraries",x=5,y=self.H)
+self.HELP(master,boxtitle="Used libraries info",msg=UsedLibrariesHelp,x=360,y=self.H+20)
+self.AddObject(t1)</t>
+<t tx="ekr.20060513122450.107">ww =19
+self.AddSep()
+#------------------------------------------------------
+lf = Tk.Frame(master,relief='flat',bd=2)
+master.create_window(self.X,self.H+2,width=text_w,height=20,anchor='nw',window=lf)
+Tk.Label(lf,text="Compiler symbols:").pack(side="left")
+self.H += 22
+
+self.HELP(master,boxtitle="Include path and Library path info",msg=IncludePathAndLibraryPathHelp,x=360,y=self.H)
+#Include path
+e1 = self.ENTRY(master,"Include path",x=5,y=self.H)
+#Library path
+e2 = self.ENTRY(master,"Library path",x=180,y=self.H)
+self.AddObject(e1)
+self.AddObject(e2)
+
+self.HELP(master,boxtitle="Use library and Check syntaxe info",msg=UseLibraryAndCheckSyntaxeHelp,x=360,y=self.H)
+#Use library
+e1 = self.ENTRY(master,"Use library",x=5,y=self.H)
+#Check syntaxe
+e2 = self.ENTRY(master,"Check syntaxe",x=180,y=self.H)
+self.AddObject(e1)
+self.AddObject(e2)
+
+self.HELP(master,boxtitle="Build exe and Build dll info",msg=BuildExeAndBuildDllHelp,x=360,y=self.H)
+#Build exe
+e1 = self.ENTRY(master,"Build exe",x=5,y=self.H)
+#Build dll
+e2 = self.ENTRY(master,"Build dll",x=180,y=self.H)
+self.AddObject(e1)
+self.AddObject(e2)
+
+self.HELP(master,boxtitle="Compile pch and Use pch info",msg=CompilePchAndUsePchHelp,x=360,y=self.H)
+#Compile pch
+e1 = self.ENTRY(master,"Compile pch",x=5,y=self.H)
+#Use pch
+e2 = self.ENTRY(master,"Use pch",x=180,y=self.H)
+self.AddObject(e1)
+self.AddObject(e2)</t>
+<t tx="ekr.20060513122450.108"># ------------------
+self.AddSep()
+e = self.ENTRY(master,"Error detection",x=5,y=self.H,w=350,re=True)
+self.HELP(master,boxtitle="Error detection info",msg=CplArgumentsHelp,x=360,y=self.H)
+self.AddObject(e)</t>
+<t tx="ekr.20060513122450.109">class DbgPageClass(PageClass):
+    @others
+</t>
+<t tx="ekr.20060513122450.110">def __init__(self,cc):
+    
+    self.cc = cc
+    ConfigClass.PageClass.__init__(self,cc,"Debugger")
+</t>
+<t tx="ekr.20060513122450.111">def Browse(self):
+
+    for o in self.Objects:
+        if o != None and o.Name == "Debugger":
+            break
+    else: return
+
+    ft = ('Executables', '.exe;.bin'),
+    s = tkFileDialog.askopenfilename(filetypes=ft,title="Locate Debugger...")
+    
+    if s == None:
+        return Error("xcc: ","Action canceled by user!")
+    elif s == "":
+        return Error("xcc: ","Empty path returned!")
+
+    e.Set(os.path.normpath(s))</t>
+<t tx="ekr.20060513122450.112">def CreateObjects(self,master):#must overide
+    @others
+</t>
+<t tx="ekr.20060513122450.113">x=10
+y=10
+text_w = 350
+text_h = 80
+    
+# compiler entry
+self.AddObject(self.ENTRY(master,"Debugger",x=5,y=5,w=350,h=20))
+b = Tk.Button(master,text=" ...",command=self.Browse)
+master.create_window(360,self.Y-2,anchor='nw',window=b)	
+</t>
+<t tx="ekr.20060513122450.114">self.AddSep()
+t1 = self.TEXT(master,"Arguments",x=5,y=self.H,vs=True)
+self.HELP(master,boxtitle="Arguments info",msg=DbgArgumentsHelp,x=360,y=self.H+20)
+self.AddObject(t1)</t>
+<t tx="ekr.20060513122450.115">self.AddSep()
+e1 = self.ENTRY(master,"Prompt pattern",x=5,y=self.H,re=True) 
+e2 = self.ENTRY(master,"Pipe eol",x=180,y=self.H)
+
+self.HELP(master,boxtitle="Prompt pattern and Pipe eol info",msg=DbgPipingHelp,x=360,y=self.H)
+self.AddObject(e1)
+self.AddObject(e2)</t>
+<t tx="ekr.20060513122450.116">ww =19
+    
+self.AddSep()
+    
+lf = Tk.Frame(master,relief='flat',bd=2)
+master.create_window(5,self.H+2,width=text_w,height=20,anchor='nw',window=lf)
+Tk.Label(lf,text="Debugger commands symbols:").pack(side="left")
+self.H += 22
+    
+# ------------------
+e1 = self.ENTRY(master,"Go",x=5,y=self.H)
+e2 = self.ENTRY(master,"Step in",x=180,y=self.H)
+self.AddObject(e1)
+self.AddObject(e2)
+
+# ------------------
+e1 = self.ENTRY(master,"Continue",x=5,y=self.H)
+e2 = self.ENTRY(master,"Step over",x=180,y=self.H)
+self.AddObject(e1)
+self.AddObject(e2)
+    
+# ------------------
+e1 = self.ENTRY(master,"Stop",x=5,y=self.H)
+e2 = self.ENTRY(master,"Step out",x=180,y=self.H)
+self.AddObject(e1)
+self.AddObject(e2)
+    
+# ------------------
+e1 = self.ENTRY(master,"Evaluate",x=5,y=self.H)
+self.AddObject(e1)</t>
+<t tx="ekr.20060513122450.117">#------------------------------------------------------
+self.AddSep()
+t1 = self.TEXT(master,"Startup task",x=5,y=self.H,vs=True)
+
+self.HELP(master,boxtitle="Startup task info",msg=DbgStartupTaskHelp,x=360,y=self.H+20)
+
+self.AddObject(t1)</t>
+<t tx="ekr.20060513122450.118"># ------------------
+self.AddSep()
+e = self.ENTRY(master,"Target pid task",x=5,y=self.H,w=350,vs=True)
+
+self.HELP(master,boxtitle="Target pid task and Find pid info",msg=DbgTargetPidHelp,x=360,y=self.H)
+self.AddObject(e)
+
+e = self.ENTRY(master,"Find pid",x=5,y=self.H,w=350,re=True,vs=True)
+self.AddObject(e)</t>
+<t tx="ekr.20060513122450.119">#------------------------------------------------------
+self.AddSep()
+self.HELP(master,boxtitle="Break detection info",msg=DbgBreakDetectionHelp,x=360,y=self.H+20)
+self.AddObject(self.TEXT(master,"Break detection",x=5,y=self.H,w=text_w,h=text_h,re=True))
+
+self.AddSep()
+e1 = self.ENTRY(master,"Set break",x=5,y=self.H,vs=True)
+e2 = self.ENTRY(master,"Clear break",x=180,y=self.H,vs=True)
+self.HELP(master,boxtitle="Set break and Clear break info",msg=DbgSetClearBreakHelp,x=360,y=self.H)
+self.AddObject(e1)
+self.AddObject(e2)
+
+self.AddSep()
+self.HELP(master,boxtitle="List breaks and Identify break info",msg=DbgBreakIdHelp,x=360,y=self.H)
+self.AddObject(self.ENTRY(master,"List breaks",x=5,y=self.H,w=350))
+e = self.ENTRY(master,"Identify break",x=5,y=self.H,w=350,re=True)
+self.AddObject(e)
+
+# ------------------
+self.AddSep()
+self.HELP(master,boxtitle="Query location and Find location info",msg=DbgLocationHelp,x=360,y=self.H)
+self.AddObject(self.ENTRY(master,"Query location",x=5,y=self.H,w=350))
+e = self.ENTRY(master,"Find location",x=5,y=self.H,w=350,re=True,vs=True)
+self.AddObject(e)</t>
+<t tx="ekr.20060513122450.120">#-------------------------------------------------------------
+self.AddSep()
+t1 = self.TEXT(master,"Regular expression",x=4,y=self.H,w=173,re=True,vs=True)
+t2 = self.TEXT(master,"Task",x=180,y=self.H,w=173,vs=True)
+self.HELP(master,boxtitle="Regular expression and Task info",msg=DbgMiscExpHelp,x=360,y=self.H+20)
+self.AddObject(t1)
+self.AddObject(t2)</t>
+<t tx="ekr.20060513122450.121">class ExePageClass(PageClass):
+    @others
+</t>
+<t tx="ekr.20060513122450.122">def __init__(self,cc):
+    
+    self.cc = cc
+    ConfigClass.PageClass.__init__(self,cc,"Executable")
+</t>
+<t tx="ekr.20060513122450.123">def CreateObjects(self,master):#must overide
+    bd=self["background"]
+    x=10
+    y=10
+    text_w = 350
+    text_h = 80
+    @others
+    self.create_line(0,self.H+5,self.W+1,self.H+5)</t>
+<t tx="ekr.20060513122450.124">self.AddObject(self.TEXT(master,"Execution arguments",x=5,y=5))
+</t>
+<t tx="ekr.20060513122450.125">self.AddSep()
+e1 = self.ENTRY(master,"Dll caller",x=5,y=self.H,w=280,h=20)
+b = Tk.Button(master,text="Browse...",width=10,default='disabled')
+master.create_window(self.X+285,self.H,width=60,height=20,anchor='nw',window=b)
+self.AddObject(e1)</t>
+<t tx="ekr.20060513122450.126">class CodePageClass(PageClass):
+    @others</t>
+<t tx="ekr.20060513122450.127">def __init__(self,cc):
+
+    self.cc = cc
+    ConfigClass.PageClass.__init__(self,"Code")
+</t>
+<t tx="ekr.20060513122450.128">def CreateObjects(self,master):#must overide
+    bd=self["background"]
+    x=10
+    y=10
+    text_w = 350
+    text_h = 80
+    @others
+    self.AddSep()</t>
+<t tx="ekr.20060513122450.129">self.AddObject(self.TEXT(master,"File header",x=5,y=5,w=350,h=80))
+self.AddSep()
+self.AddObject(self.ENTRY(master,"Class opening",x=5,y=self.H,w=350,h=20))
+self.AddObject(self.ENTRY(master,"Class closing",x=5,y=self.H,w=350,h=20))
+self.AddObject(self.ENTRY(master,"Class header",x=5,y=self.H,w=350,h=20))
+self.AddObject(self.ENTRY(master,"Class footer",x=5,y=self.H,w=350,h=20))
+self.AddSep()
+self.AddObject(self.ENTRY(master,"Function header",x=5,y=self.H,w=350,h=20))
+self.AddObject(self.ENTRY(master,"Function footer",x=5,y=self.H,w=350,h=20))
+self.AddObject(self.ENTRY(master,"Function opening",x=5,y=self.H,w=350,h=20))
+self.AddObject(self.ENTRY(master,"Function closing",x=5,y=self.H,w=350,h=20))
+self.AddSep()
+self.AddObject(self.TEXT(master,"File footer",x=5,y=self.H,w=350,h=80))</t>
+<t tx="ekr.20060513122450.295"></t>
+<t tx="ekr.20060513122450.296">def sGatherInfo(self):
+    
+    cc = self
+    
+    g.trace(cc.SELECTED_NODE)
+
+    if cc.SELECTED_NODE:
+        cc.sExtractHeadInfo()
+
+        @others
+    
+        cc.VERBOSE = cc.OPTS.get("Xcc verbose")
+        cc.FILTER_OUTPUT = cc.OPTS.get("Filter output")
+        return True
+
+    return False</t>
+<t tx="ekr.20060513122450.297">cc.NAME = cc.sGet("NAME")
+cc.EXT = cc.sGet("EXT")
+cc.REL_PATH = cc.sGet("REL_PATH")
+cc.ABS_PATH = cc.sGet("ABS_PATH")
+cc.CWD = os.getcwd()
+    
+if not cc.NAME:
+    return Error("xcc: ","Node have no name!")
+</t>
+<t tx="ekr.20060513122450.298">cc.OPTS = cc.sGet("Options")
+cc.CPL = cc.sGet("Compiler")
+cc.DBG = cc.sGet("Debugger")
+cc.EXE = cc.sGet("Executable")</t>
+<t tx="ekr.20060513122450.299">cc.CREATE_FILES = cc.OPTS.get("Create files")
+
+if cc.CREATE_FILES:
+
+    if cc.REL_PATH and os.access(cc.REL_PATH,os.F_OK) != 1:
+        os.makedirs(cc.REL_PATH)
+        
+    if cc.EXT == "h": cc.SRC_EXT = cc.EXT
+    
+    if cc.EXT == "exe": cc.SRC_EXT = "cpp"
+    
+    if cc.EXT == "cpp" or cc.EXT == "c":
+        cc.SRC_EXT = cc.EXT
+            
+    if cc.EXT == "dll": cc.SRC_EXT = "cpp"</t>
+<t tx="ekr.20060513122450.300">cc.COMPILE = cc.OPTS.get("Compile")
+
+if cc.COMPILE:
+    cc.COMPILER = cc.CPL.get("Compiler")
+    if not cc.COMPILER:
+        return Error("xcc: ","Compiler is undefined!")</t>
+<t tx="ekr.20060513122450.301">cc.EXECUTE = cc.OPTS.get("Execute")</t>
+<t tx="ekr.20060513122450.302">cc.DEBUG = cc.OPTS.get("Debug")
+
+if cc.DEBUG:
+    cc.DEBUGGER = cc.DBG.get("Debugger")
+    if not cc.DEBUGGER:
+        return Error("xcc: ","Debugger is undefined!")
+        
+    if cc.OPTS.get("Seek breapoints") and not cc.DBG.get("Breaks start index"):
+        Warning("xcc: ","Breaks start index is undefined, using 0")
+        cc.DBG["Breaks start index"] = "0"</t>
+<t tx="ekr.20060513122450.303">def sExtractHeadInfo (self):
+    
+    cc = self
+
+    w = cc.SELECTED_NODE.headString() [5:]
+    if w:
+        path, name = os.path.split(w)
+        name, ext = os.path.splitext(name)
+        ext = ext.lower().replace(".","") or 'exe'
+    else:
+        path, name, ext = '', '', ''
+
+    cc.sSet("REL_PATH",path)
+    cc.sSet("NAME",name)
+    cc.sSet("EXT",ext)
+    theDir = g.choose(path,cc.CWD+"\\"+path,cc.CWD)
+    cc.sSet("ABS_PATH",theDir)</t>
+<t tx="ekr.20060513122450.304">def sGetBrowseInfo (self):
+
+    cc = self
+
+    w = cc.SELECTED_NODE.headString() [5:]
+    if w:
+        cc.REL_PATH, cc.NAME = os.path.split(w)
+        cc.NAME, EXT = os.path.splitext(cc.NAME)
+        cc.EXT = EXT.lower().replace(".","") or 'exe'
+    else:
+        cc.REL_PATH, cc.NAME, cc.EXT = '', '', 'exe'
+
+    cc.CWD = cc.ABS_PATH = os.getcwd()
+
+    if cc.REL_PATH: cc.ABS_PATH = cc.ABS_PATH + "\\" + cc.REL_PATH
+
+    if cc.EXT == "h": cc.SRC_EXT = cc.EXT
+    if cc.EXT == "exe": cc.SRC_EXT = "cpp"
+    if cc.EXT in ('c','cpp'): cc.SRC_EXT = cc.EXT
+    if cc.EXT == "dll": cc.SRC_EXT = "cpp"
+
+    cc.PTS = cc.sGet("Options",{})
+
+</t>
+<t tx="ekr.20060513122450.305">def sGetWriteInfo(self):
+    
+    cc = self
+    
+    if cc.NAME == "":
+        return Error("xcc: ","Node have no name!")
+    
+    if cc.REL_PATH != "" and os.access(cc.REL_PATH,os.F_OK) != 1:
+        os.makedirs(cc.REL_PATH)
+    
+    cc.COD = cc.sGet("Code")	
+    #FILE_HDR = COD["File header"]
+    #FILE_FTR = COD["File footer"]
+    #CLASS_HDR = COD["Class header"]
+    #CLASS_FTR = COD["Class footer"]
+    #CLASS_OPN = COD["Class opening"]
+    #CLASS_END = COD["Class closing"]
+    if not cc.CLASS_OPN: cc.CLASS_OPN = "{\n"	
+    if not cc.CLASS_END: cc.CLASS_END = "};\n"
+    #FUNC_HDR = COD["Function header"]
+    #FUNC_FTR = COD["Function footer"]
+    #FUNC_OPN = COD["Function opening"]
+    #FUNC_END = COD["Function closing"]
+    if not cc.FUNC_OPN: cc.FUNC_OPN = "{\n"	
+    if not cc.FUNC_END: cc.FUNC_END = "}\n"
+    return True</t>
+<t tx="ekr.20060513122450.306">def sGetCompileInfo(self):
+    
+    cc = self
+    cc.CPL = cc.sGet("Compiler")
+    
+    g.trace(cc.CPL)
+
+    if not cc.CPL.get("Compiler"):
+        return Error("xcc: ","No compiler defined!")
+        
+    cc.VERBOSE = cc.OPTS.get("Xcc verbose")
+    return True
+
+</t>
+<t tx="ekr.20060513122450.307">def sGetDebugInfo(self):
+    
+    cc = self
+   
+    cc.DBG = cc.sGet("Debugger")
+    if cc.DBG["Debugger"]:
+        cc.VERBOSE = cc.OPTS.get("Xcc verbose")
+        return True
+    else:
+        return Error("xcc: ","No debugger defined!")</t>
+<t tx="ekr.20060513122450.308">def sGetExecInfo():
+    
+    cc = self
+
+    cc.EXE = cc.sGet("Executable")		
+    return True</t>
+<t tx="ekr.20060513122450.309">def sGoToError(self,e=None):
+    
+    cc = self
+    
+    mask = [" ",":","(",")"]
+    if e == None:
+        row,col = cc.LeoBodyText.index("insert").split(".")
+        row = int(row)
+        col = int(col)
+        lines = cc.SELECTED_NODE.bodyString().splitlines()
+        e = lines[row-1]
+        e=e.replace("/","\\")
+        
+    edexp = cc.CPL.get("Error detection")
+    m = re.search(edexp,e,re.IGNORECASE)
+    if m != None:
+        try:
+            file = m.group("FILE")
+            line = m.group("LINE")
+            id = m.group("ID")
+            edef = m.group("DEF")
+            path,name = os.path.split(CPL["Compiler"])
+            Error(name+" : ","Error: "+id+" in "+file+" line "+line+" : "+edef)
+    
+        except Exception:
+            Warning("xcc: ","Unable to process error detection!")
+            return
+        
+        name,ext = os.path.splitext(file)
+        if name == cc.NAME:
+            SeekErrorClass(cc,int(line),ext.replace(".",""),color=ErrorColor)</t>
+<t tx="ekr.20060513122450.310">def sGo(self):	#this is where the selected node also become the active node
+
+    cc = self
+  
+    if not cc.NAME:
+        return Error("xcc: ","Node has no name!")
+
+    cc.sSetText("@language c++\n")
+    
+    if not cc.CreateFiles() or not cc.Compile():
+        return False
+    if cc.OPTS.get("Execute") == "True" and cc.OPTS.get("Debug") == "False":
+        if not cc.Execute():
+            return False
+    if cc.OPTS.get("Debug") == "True":
+        if not cc.Debug():
+            return False
+    return True</t>
+<t tx="ekr.20060513122450.311">def sSet (self,name,value):
+    
+    cc = self
+
+    cc.SELECTED_DICT [name] = value
+</t>
+<t tx="ekr.20060513122450.312">def sGet(self,name,init=""):
+    
+    cc = self
+    
+    if name not in cc.SELECTED_DICT:
+        cc.sSet(name,init)
+
+    return cc.SELECTED_DICT[name]</t>
+<t tx="ekr.20060513122450.313">def sIsDict(self):
+    
+    cc = self
+
+    if not cc.SELECTED_NODE:
+        return False
+    
+    v = cc.SELECTED_NODE.v	
+    
+    return hasattr(v,"unknownAttributes") and "xcc_cfg" in v.unknownAttributes</t>
+<t tx="ekr.20060513122450.314">def sGetDict(self): # Get xcc parent dict alias "xcc_cfg" in ua
+
+    cc = self
+
+    if not cc.SELECTED_NODE:
+        return None
+    
+    v = cc.SELECTED_NODE.v
+
+    if not hasattr(v,"unknownAttributes"):
+        v.unknownAttributes = {}
+    
+    if "xcc_cfg" in v.unknownAttributes:
+        return v.unknownAttributes["xcc_cfg"]
+    else:
+        v.unknownAttributes["xcc_cfg"] = d = {}
+        return d</t>
+<t tx="ekr.20060513122450.315">def sInitDict(self):
+    
+    cc = self
+    
+    Warning("xcc: ","Writing blank configuration!")
+    cc.sSetText("@language c++")
+    cc.Config.ClearConfig()
+    cc.Config.SaveToNode()
+    cc.sSet("INITED","True")
+
+
+
+</t>
+<t tx="ekr.20060513122450.316">def sSelect(self,node=None):
+    
+    cc = self ; c = cc.c
+
+    if node:
+        if cc.SELECTED_NODE:
+            cc.Config.Hide()
+            if cc.SELECTED_NODE:
+                cc.SELECTED_NODE = node		
+        else:
+            cc.SELECTED_NODE = node
+        
+        cc.SELECTED_DICT = cc.sGetDict()
+        
+        if cc.SELECTED_NODE != cc.ACTIVE_NODE and cc.SELECTED_NODE.isMarked():
+            cc.SELECTED_NODE.clearMarked()
+            c.redraw()
+        
+        cc.sGetBrowseInfo()
+        cc.sShow()
+    elif cc.SELECTED_NODE:
+        cc.Config.Hide()
+        cc.sHide()
+        cc.SELECTED_NODE = None
+        cc.SELECTED_DICT = cc.sGetDict()</t>
+<t tx="ekr.20060513122450.317">def sSync(self):
+    
+    cc = self
+    
+    cc.SELECTED_DICT = cc.sGetDict()
+    if cc.SELECTED_DICT:
+        cc.sExtractHeadInfo()
+    
+    cc.CHILD_DICT = cc.cGetDict()</t>
+<t tx="ekr.20060513122450.318">def sShow(self):
+    
+    cc = self
+    
+    cc.LeoBodyText.pack_forget()
+    cc.LeoYBodyBar.pack_forget()
+    
+    cc.ToolBar.Show()
+    cc.LeoXBodyBar.pack(side="bottom",fill="x")
+    cc.LeoYBodyBar.pack(side="right",fill="y")
+    cc.LeoBodyText.pack(fill="both",expand=1)
+    cc.LeoBodyText["wrap"] = 'none'
+    
+    cc.ToolBar.Spacer["state"] = 'normal'
+    cc.ToolBar.Spacer.delete('1.0','end')
+    cc.ToolBar.Spacer.insert("insert","."+cc.EXT)
+    cc.ToolBar.Spacer["state"] = 'disabled'
+    
+    cc.ToolBar.Display["state"] = 'normal'
+    cc.ToolBar.Display.delete('1.0','end')
+    cc.ToolBar.Display["state"] = 'disabled'
+
+    cc.Watcher.Sync()</t>
+<t tx="ekr.20060513122450.319">def sHide(self):
+    
+    cc = self
+
+    cc.LeoXBodyBar.pack_forget()
+    cc.ToolBar.Hide()
+    cc.LeoBodyText["wrap"]=cc.LeoWrap</t>
+<t tx="ekr.20060513122450.320">def sSetText(self,text=""):
+    
+    cc = self
+    
+    cc.SELECTED_NODE.setBodyTextOrPane(text)
+</t>
+<t tx="ekr.20060513122450.321">def sAddText(self,text):
+    
+    cc = self
+    
+    cc.SELECTED_NODE.setBodyTextOrPane(cc.SELECTED_NODE.bodyString()+text)
+
+    if not cc.CHILD_NODE:
+        l,c = cc.LeoBodyText.index("end").split(".")
+        cc.LeoBodyText.see(l+".0")</t>
+<t tx="ekr.20060513122613"></t>
+<t tx="ekr.20060513122613.1">@
+opengl.h is just a test for long files
+cltest\testprog is an xcc project to test functionality under win32 compile env, with it's gcc equivalent underneath.
+
+no plugin conflicts detected with core plugins, read-only nodes, unl or linecol plugin.
+should work with most plugins...
+</t>
+<t tx="ekr.20060513122613.2">@language c++
+
+</t>
+<t tx="ekr.20060513122613.3">#ifndef USE_OPENGL
+	#define USE_OPENGL 1
+#endif</t>
+<t tx="ekr.20060513122613.4">#ifdef GL_DEFS
+typedef unsigned int GLenum;
+typedef unsigned char GLboolean;
+typedef unsigned int GLbitfield;
+typedef signed char GLbyte;
+typedef short GLshort;
+typedef int GLint;
+typedef int GLsizei;
+typedef unsigned char GLubyte;
+typedef unsigned short GLushort;
+typedef unsigned int GLuint;
+typedef float GLfloat;
+typedef float GLclampf;
+typedef double GLdouble;
+typedef double GLclampd;
+typedef void GLvoid;
+typedef unsigned int GLintptr;
+typedef unsigned int GLsizeiptr;
+#endif</t>
+<t tx="ekr.20060513122613.5">#if USE_OPENGL &gt;= 1
+	@others
+#endif</t>
+<t tx="ekr.20060513122613.6">#ifdef GL_DEFS
+#define GL_VERSION_1_1                    1
+#define GL_ACCUM                          0x0100
+#define GL_LOAD                           0x0101
+#define GL_RETURN                         0x0102
+#define GL_MULT                           0x0103
+#define GL_ADD                            0x0104
+#define GL_NEVER                          0x0200
+#define GL_LESS                           0x0201
+#define GL_EQUAL                          0x0202
+#define GL_LEQUAL                         0x0203
+#define GL_GREATER                        0x0204
+#define GL_NOTEQUAL                       0x0205
+#define GL_GEQUAL                         0x0206
+#define GL_ALWAYS                         0x0207
+#define GL_CURRENT_BIT                    0x00000001
+#define GL_POINT_BIT                      0x00000002
+#define GL_LINE_BIT                       0x00000004
+#define GL_POLYGON_BIT                    0x00000008
+#define GL_POLYGON_STIPPLE_BIT            0x00000010
+#define GL_PIXEL_MODE_BIT                 0x00000020
+#define GL_LIGHTING_BIT                   0x00000040
+#define GL_FOG_BIT                        0x00000080
+#define GL_DEPTH_BUFFER_BIT               0x00000100
+#define GL_ACCUM_BUFFER_BIT               0x00000200
+#define GL_STENCIL_BUFFER_BIT             0x00000400
+#define GL_VIEWPORT_BIT                   0x00000800
+#define GL_TRANSFORM_BIT                  0x00001000
+#define GL_ENABLE_BIT                     0x00002000
+#define GL_COLOR_BUFFER_BIT               0x00004000
+#define GL_HINT_BIT                       0x00008000
+#define GL_EVAL_BIT                       0x00010000
+#define GL_LIST_BIT                       0x00020000
+#define GL_TEXTURE_BIT                    0x00040000
+#define GL_SCISSOR_BIT                    0x00080000
+#define GL_ALL_ATTRIB_BITS                0x000fffff
+#define GL_POINTS                         0x0000
+#define GL_LINES                          0x0001
+#define GL_LINE_LOOP                      0x0002
+#define GL_LINE_STRIP                     0x0003
+#define GL_TRIANGLES                      0x0004
+#define GL_TRIANGLE_STRIP                 0x0005
+#define GL_TRIANGLE_FAN                   0x0006
+#define GL_QUADS                          0x0007
+#define GL_QUAD_STRIP                     0x0008
+#define GL_POLYGON                        0x0009
+#define GL_ZERO                           0
+#define GL_ONE                            1
+#define GL_SRC_COLOR                      0x0300
+#define GL_ONE_MINUS_SRC_COLOR            0x0301
+#define GL_SRC_ALPHA                      0x0302
+#define GL_ONE_MINUS_SRC_ALPHA            0x0303
+#define GL_DST_ALPHA                      0x0304
+#define GL_ONE_MINUS_DST_ALPHA            0x0305
+#define GL_DST_COLOR                      0x0306
+#define GL_ONE_MINUS_DST_COLOR            0x0307
+#define GL_SRC_ALPHA_SATURATE             0x0308
+#define GL_TRUE                           1
+#define GL_FALSE                          0
+#define GL_CLIP_PLANE0                    0x3000
+#define GL_CLIP_PLANE1                    0x3001
+#define GL_CLIP_PLANE2                    0x3002
+#define GL_CLIP_PLANE3                    0x3003
+#define GL_CLIP_PLANE4                    0x3004
+#define GL_CLIP_PLANE5                    0x3005
+#define GL_BYTE                           0x1400
+#define GL_UNSIGNED_BYTE                  0x1401
+#define GL_SHORT                          0x1402
+#define GL_UNSIGNED_SHORT                 0x1403
+#define GL_INT                            0x1404
+#define GL_UNSIGNED_INT                   0x1405
+#define GL_FLOAT                          0x1406
+#define GL_2_BYTES                        0x1407
+#define GL_3_BYTES                        0x1408
+#define GL_4_BYTES                        0x1409
+#define GL_DOUBLE                         0x140A
+#define GL_NONE                           0
+#define GL_FRONT_LEFT                     0x0400
+#define GL_FRONT_RIGHT                    0x0401
+#define GL_BACK_LEFT                      0x0402
+#define GL_BACK_RIGHT                     0x0403
+#define GL_FRONT                          0x0404
+#define GL_BACK                           0x0405
+#define GL_LEFT                           0x0406
+#define GL_RIGHT                          0x0407
+#define GL_FRONT_AND_BACK                 0x0408
+#define GL_AUX0                           0x0409
+#define GL_AUX1                           0x040A
+#define GL_AUX2                           0x040B
+#define GL_AUX3                           0x040C
+#define GL_NO_ERROR                       0
+#define GL_INVALID_ENUM                   0x0500
+#define GL_INVALID_VALUE                  0x0501
+#define GL_INVALID_OPERATION              0x0502
+#define GL_STACK_OVERFLOW                 0x0503
+#define GL_STACK_UNDERFLOW                0x0504
+#define GL_OUT_OF_MEMORY                  0x0505
+#define GL_2D                             0x0600
+#define GL_3D                             0x0601
+#define GL_3D_COLOR                       0x0602
+#define GL_3D_COLOR_TEXTURE               0x0603
+#define GL_4D_COLOR_TEXTURE               0x0604
+#define GL_PASS_THROUGH_TOKEN             0x0700
+#define GL_POINT_TOKEN                    0x0701
+#define GL_LINE_TOKEN                     0x0702
+#define GL_POLYGON_TOKEN                  0x0703
+#define GL_BITMAP_TOKEN                   0x0704
+#define GL_DRAW_PIXEL_TOKEN               0x0705
+#define GL_COPY_PIXEL_TOKEN               0x0706
+#define GL_LINE_RESET_TOKEN               0x0707
+#define GL_EXP                            0x0800
+#define GL_EXP2                           0x0801
+#define GL_CW                             0x0900
+#define GL_CCW                            0x0901
+#define GL_COEFF                          0x0A00
+#define GL_ORDER                          0x0A01
+#define GL_DOMAIN                         0x0A02
+#define GL_CURRENT_COLOR                  0x0B00
+#define GL_CURRENT_INDEX                  0x0B01
+#define GL_CURRENT_NORMAL                 0x0B02
+#define GL_CURRENT_TEXTURE_COORDS         0x0B03
+#define GL_CURRENT_RASTER_COLOR           0x0B04
+#define GL_CURRENT_RASTER_INDEX           0x0B05
+#define GL_CURRENT_RASTER_TEXTURE_COORDS  0x0B06
+#define GL_CURRENT_RASTER_POSITION        0x0B07
+#define GL_CURRENT_RASTER_POSITION_VALID  0x0B08
+#define GL_CURRENT_RASTER_DISTANCE        0x0B09
+#define GL_POINT_SMOOTH                   0x0B10
+#define GL_POINT_SIZE                     0x0B11
+#define GL_POINT_SIZE_RANGE               0x0B12
+#define GL_POINT_SIZE_GRANULARITY         0x0B13
+#define GL_LINE_SMOOTH                    0x0B20
+#define GL_LINE_WIDTH                     0x0B21
+#define GL_LINE_WIDTH_RANGE               0x0B22
+#define GL_LINE_WIDTH_GRANULARITY         0x0B23
+#define GL_LINE_STIPPLE                   0x0B24
+#define GL_LINE_STIPPLE_PATTERN           0x0B25
+#define GL_LINE_STIPPLE_REPEAT            0x0B26
+#define GL_LIST_MODE                      0x0B30
+#define GL_MAX_LIST_NESTING               0x0B31
+#define GL_LIST_BASE                      0x0B32
+#define GL_LIST_INDEX                     0x0B33
+#define GL_POLYGON_MODE                   0x0B40
+#define GL_POLYGON_SMOOTH                 0x0B41
+#define GL_POLYGON_STIPPLE                0x0B42
+#define GL_EDGE_FLAG                      0x0B43
+#define GL_CULL_FACE                      0x0B44
+#define GL_CULL_FACE_MODE                 0x0B45
+#define GL_FRONT_FACE                     0x0B46
+#define GL_LIGHTING                       0x0B50
+#define GL_LIGHT_MODEL_LOCAL_VIEWER       0x0B51
+#define GL_LIGHT_MODEL_TWO_SIDE           0x0B52
+#define GL_LIGHT_MODEL_AMBIENT            0x0B53
+#define GL_SHADE_MODEL                    0x0B54
+#define GL_COLOR_MATERIAL_FACE            0x0B55
+#define GL_COLOR_MATERIAL_PARAMETER       0x0B56
+#define GL_COLOR_MATERIAL                 0x0B57
+#define GL_FOG                            0x0B60
+#define GL_FOG_INDEX                      0x0B61
+#define GL_FOG_DENSITY                    0x0B62
+#define GL_FOG_START                      0x0B63
+#define GL_FOG_END                        0x0B64
+#define GL_FOG_MODE                       0x0B65
+#define GL_FOG_COLOR                      0x0B66
+#define GL_DEPTH_RANGE                    0x0B70
+#define GL_DEPTH_TEST                     0x0B71
+#define GL_DEPTH_WRITEMASK                0x0B72
+#define GL_DEPTH_CLEAR_VALUE              0x0B73
+#define GL_DEPTH_FUNC                     0x0B74
+#define GL_ACCUM_CLEAR_VALUE              0x0B80
+#define GL_STENCIL_TEST                   0x0B90
+#define GL_STENCIL_CLEAR_VALUE            0x0B91
+#define GL_STENCIL_FUNC                   0x0B92
+#define GL_STENCIL_VALUE_MASK             0x0B93
+#define GL_STENCIL_FAIL                   0x0B94
+#define GL_STENCIL_PASS_DEPTH_FAIL        0x0B95
+#define GL_STENCIL_PASS_DEPTH_PASS        0x0B96
+#define GL_STENCIL_REF                    0x0B97
+#define GL_STENCIL_WRITEMASK              0x0B98
+#define GL_MATRIX_MODE                    0x0BA0
+#define GL_NORMALIZE                      0x0BA1
+#define GL_VIEWPORT                       0x0BA2
+#define GL_MODELVIEW_STACK_DEPTH          0x0BA3
+#define GL_PROJECTION_STACK_DEPTH         0x0BA4
+#define GL_TEXTURE_STACK_DEPTH            0x0BA5
+#define GL_MODELVIEW_MATRIX               0x0BA6
+#define GL_PROJECTION_MATRIX              0x0BA7
+#define GL_TEXTURE_MATRIX                 0x0BA8
+#define GL_ATTRIB_STACK_DEPTH             0x0BB0
+#define GL_CLIENT_ATTRIB_STACK_DEPTH      0x0BB1
+#define GL_ALPHA_TEST                     0x0BC0
+#define GL_ALPHA_TEST_FUNC                0x0BC1
+#define GL_ALPHA_TEST_REF                 0x0BC2
+#define GL_DITHER                         0x0BD0
+#define GL_BLEND_DST                      0x0BE0
+#define GL_BLEND_SRC                      0x0BE1
+#define GL_BLEND                          0x0BE2
+#define GL_LOGIC_OP_MODE                  0x0BF0
+#define GL_INDEX_LOGIC_OP                 0x0BF1
+#define GL_COLOR_LOGIC_OP                 0x0BF2
+#define GL_AUX_BUFFERS                    0x0C00
+#define GL_DRAW_BUFFER                    0x0C01
+#define GL_READ_BUFFER                    0x0C02
+#define GL_SCISSOR_BOX                    0x0C10
+#define GL_SCISSOR_TEST                   0x0C11
+#define GL_INDEX_CLEAR_VALUE              0x0C20
+#define GL_INDEX_WRITEMASK                0x0C21
+#define GL_COLOR_CLEAR_VALUE              0x0C22
+#define GL_COLOR_WRITEMASK                0x0C23
+#define GL_INDEX_MODE                     0x0C30
+#define GL_RGBA_MODE                      0x0C31
+#define GL_DOUBLEBUFFER                   0x0C32
+#define GL_STEREO                         0x0C33
+#define GL_RENDER_MODE                    0x0C40
+#define GL_PERSPECTIVE_CORRECTION_HINT    0x0C50
+#define GL_POINT_SMOOTH_HINT              0x0C51
+#define GL_LINE_SMOOTH_HINT               0x0C52
+#define GL_POLYGON_SMOOTH_HINT            0x0C53
+#define GL_FOG_HINT                       0x0C54
+#define GL_TEXTURE_GEN_S                  0x0C60
+#define GL_TEXTURE_GEN_T                  0x0C61
+#define GL_TEXTURE_GEN_R                  0x0C62
+#define GL_TEXTURE_GEN_Q                  0x0C63
+#define GL_PIXEL_MAP_I_TO_I               0x0C70
+#define GL_PIXEL_MAP_S_TO_S               0x0C71
+#define GL_PIXEL_MAP_I_TO_R               0x0C72
+#define GL_PIXEL_MAP_I_TO_G               0x0C73
+#define GL_PIXEL_MAP_I_TO_B               0x0C74
+#define GL_PIXEL_MAP_I_TO_A               0x0C75
+#define GL_PIXEL_MAP_R_TO_R               0x0C76
+#define GL_PIXEL_MAP_G_TO_G               0x0C77
+#define GL_PIXEL_MAP_B_TO_B               0x0C78
+#define GL_PIXEL_MAP_A_TO_A               0x0C79
+#define GL_PIXEL_MAP_I_TO_I_SIZE          0x0CB0
+#define GL_PIXEL_MAP_S_TO_S_SIZE          0x0CB1
+#define GL_PIXEL_MAP_I_TO_R_SIZE          0x0CB2
+#define GL_PIXEL_MAP_I_TO_G_SIZE          0x0CB3
+#define GL_PIXEL_MAP_I_TO_B_SIZE          0x0CB4
+#define GL_PIXEL_MAP_I_TO_A_SIZE          0x0CB5
+#define GL_PIXEL_MAP_R_TO_R_SIZE          0x0CB6
+#define GL_PIXEL_MAP_G_TO_G_SIZE          0x0CB7
+#define GL_PIXEL_MAP_B_TO_B_SIZE          0x0CB8
+#define GL_PIXEL_MAP_A_TO_A_SIZE          0x0CB9
+#define GL_UNPACK_SWAP_BYTES              0x0CF0
+#define GL_UNPACK_LSB_FIRST               0x0CF1
+#define GL_UNPACK_ROW_LENGTH              0x0CF2
+#define GL_UNPACK_SKIP_ROWS               0x0CF3
+#define GL_UNPACK_SKIP_PIXELS             0x0CF4
+#define GL_UNPACK_ALIGNMENT               0x0CF5
+#define GL_PACK_SWAP_BYTES                0x0D00
+#define GL_PACK_LSB_FIRST                 0x0D01
+#define GL_PACK_ROW_LENGTH                0x0D02
+#define GL_PACK_SKIP_ROWS                 0x0D03
+#define GL_PACK_SKIP_PIXELS               0x0D04
+#define GL_PACK_ALIGNMENT                 0x0D05
+#define GL_MAP_COLOR                      0x0D10
+#define GL_MAP_STENCIL                    0x0D11
+#define GL_INDEX_SHIFT                    0x0D12
+#define GL_INDEX_OFFSET                   0x0D13
+#define GL_RED_SCALE                      0x0D14
+#define GL_RED_BIAS                       0x0D15
+#define GL_ZOOM_X                         0x0D16
+#define GL_ZOOM_Y                         0x0D17
+#define GL_GREEN_SCALE                    0x0D18
+#define GL_GREEN_BIAS                     0x0D19
+#define GL_BLUE_SCALE                     0x0D1A
+#define GL_BLUE_BIAS                      0x0D1B
+#define GL_ALPHA_SCALE                    0x0D1C
+#define GL_ALPHA_BIAS                     0x0D1D
+#define GL_DEPTH_SCALE                    0x0D1E
+#define GL_DEPTH_BIAS                     0x0D1F
+#define GL_MAX_EVAL_ORDER                 0x0D30
+#define GL_MAX_LIGHTS                     0x0D31
+#define GL_MAX_CLIP_PLANES                0x0D32
+#define GL_MAX_TEXTURE_SIZE               0x0D33
+#define GL_MAX_PIXEL_MAP_TABLE            0x0D34
+#define GL_MAX_ATTRIB_STACK_DEPTH         0x0D35
+#define GL_MAX_MODELVIEW_STACK_DEPTH      0x0D36
+#define GL_MAX_NAME_STACK_DEPTH           0x0D37
+#define GL_MAX_PROJECTION_STACK_DEPTH     0x0D38
+#define GL_MAX_TEXTURE_STACK_DEPTH        0x0D39
+#define GL_MAX_VIEWPORT_DIMS              0x0D3A
+#define GL_MAX_CLIENT_ATTRIB_STACK_DEPTH  0x0D3B
+#define GL_SUBPIXEL_BITS                  0x0D50
+#define GL_INDEX_BITS                     0x0D51
+#define GL_RED_BITS                       0x0D52
+#define GL_GREEN_BITS                     0x0D53
+#define GL_BLUE_BITS                      0x0D54
+#define GL_ALPHA_BITS                     0x0D55
+#define GL_DEPTH_BITS                     0x0D56
+#define GL_STENCIL_BITS                   0x0D57
+#define GL_ACCUM_RED_BITS                 0x0D58
+#define GL_ACCUM_GREEN_BITS               0x0D59
+#define GL_ACCUM_BLUE_BITS                0x0D5A
+#define GL_ACCUM_ALPHA_BITS               0x0D5B
+#define GL_NAME_STACK_DEPTH               0x0D70
+#define GL_AUTO_NORMAL                    0x0D80
+#define GL_MAP1_COLOR_4                   0x0D90
+#define GL_MAP1_INDEX                     0x0D91
+#define GL_MAP1_NORMAL                    0x0D92
+#define GL_MAP1_TEXTURE_COORD_1           0x0D93
+#define GL_MAP1_TEXTURE_COORD_2           0x0D94
+#define GL_MAP1_TEXTURE_COORD_3           0x0D95
+#define GL_MAP1_TEXTURE_COORD_4           0x0D96
+#define GL_MAP1_VERTEX_3                  0x0D97
+#define GL_MAP1_VERTEX_4                  0x0D98
+#define GL_MAP2_COLOR_4                   0x0DB0
+#define GL_MAP2_INDEX                     0x0DB1
+#define GL_MAP2_NORMAL                    0x0DB2
+#define GL_MAP2_TEXTURE_COORD_1           0x0DB3
+#define GL_MAP2_TEXTURE_COORD_2           0x0DB4
+#define GL_MAP2_TEXTURE_COORD_3           0x0DB5
+#define GL_MAP2_TEXTURE_COORD_4           0x0DB6
+#define GL_MAP2_VERTEX_3                  0x0DB7
+#define GL_MAP2_VERTEX_4                  0x0DB8
+#define GL_MAP1_GRID_DOMAIN               0x0DD0
+#define GL_MAP1_GRID_SEGMENTS             0x0DD1
+#define GL_MAP2_GRID_DOMAIN               0x0DD2
+#define GL_MAP2_GRID_SEGMENTS             0x0DD3
+#define GL_TEXTURE_1D                     0x0DE0
+#define GL_TEXTURE_2D                     0x0DE1
+#define GL_FEEDBACK_BUFFER_POINTER        0x0DF0
+#define GL_FEEDBACK_BUFFER_SIZE           0x0DF1
+#define GL_FEEDBACK_BUFFER_TYPE           0x0DF2
+#define GL_SELECTION_BUFFER_POINTER       0x0DF3
+#define GL_SELECTION_BUFFER_SIZE          0x0DF4
+#define GL_TEXTURE_WIDTH                  0x1000
+#define GL_TEXTURE_HEIGHT                 0x1001
+#define GL_TEXTURE_INTERNAL_FORMAT        0x1003
+#define GL_TEXTURE_BORDER_COLOR           0x1004
+#define GL_TEXTURE_BORDER                 0x1005
+#define GL_DONT_CARE                      0x1100
+#define GL_FASTEST                        0x1101
+#define GL_NICEST                         0x1102
+#define GL_LIGHT0                         0x4000
+#define GL_LIGHT1                         0x4001
+#define GL_LIGHT2                         0x4002
+#define GL_LIGHT3                         0x4003
+#define GL_LIGHT4                         0x4004
+#define GL_LIGHT5                         0x4005
+#define GL_LIGHT6                         0x4006
+#define GL_LIGHT7                         0x4007
+#define GL_AMBIENT                        0x1200
+#define GL_DIFFUSE                        0x1201
+#define GL_SPECULAR                       0x1202
+#define GL_POSITION                       0x1203
+#define GL_SPOT_DIRECTION                 0x1204
+#define GL_SPOT_EXPONENT                  0x1205
+#define GL_SPOT_CUTOFF                    0x1206
+#define GL_CONSTANT_ATTENUATION           0x1207
+#define GL_LINEAR_ATTENUATION             0x1208
+#define GL_QUADRATIC_ATTENUATION          0x1209
+#define GL_COMPILE                        0x1300
+#define GL_COMPILE_AND_EXECUTE            0x1301
+#define GL_CLEAR                          0x1500
+#define GL_AND                            0x1501
+#define GL_AND_REVERSE                    0x1502
+#define GL_COPY                           0x1503
+#define GL_AND_INVERTED                   0x1504
+#define GL_NOOP                           0x1505
+#define GL_XOR                            0x1506
+#define GL_OR                             0x1507
+#define GL_NOR                            0x1508
+#define GL_EQUIV                          0x1509
+#define GL_INVERT                         0x150A
+#define GL_OR_REVERSE                     0x150B
+#define GL_COPY_INVERTED                  0x150C
+#define GL_OR_INVERTED                    0x150D
+#define GL_NAND                           0x150E
+#define GL_SET                            0x150F
+#define GL_EMISSION                       0x1600
+#define GL_SHININESS                      0x1601
+#define GL_AMBIENT_AND_DIFFUSE            0x1602
+#define GL_COLOR_INDEXES                  0x1603
+#define GL_MODELVIEW                      0x1700
+#define GL_PROJECTION                     0x1701
+#define GL_TEXTURE                        0x1702
+#define GL_COLOR                          0x1800
+#define GL_DEPTH                          0x1801
+#define GL_STENCIL                        0x1802
+#define GL_COLOR_INDEX                    0x1900
+#define GL_STENCIL_INDEX                  0x1901
+#define GL_DEPTH_COMPONENT                0x1902
+#define GL_RED                            0x1903
+#define GL_GREEN                          0x1904
+#define GL_BLUE                           0x1905
+#define GL_ALPHA                          0x1906
+#define GL_RGB                            0x1907
+#define GL_RGBA                           0x1908
+#define GL_LUMINANCE                      0x1909
+#define GL_LUMINANCE_ALPHA                0x190A
+#define GL_BITMAP                         0x1A00
+#define GL_POINT                          0x1B00
+#define GL_LINE                           0x1B01
+#define GL_FILL                           0x1B02
+#define GL_RENDER                         0x1C00
+#define GL_FEEDBACK                       0x1C01
+#define GL_SELECT                         0x1C02
+#define GL_FLAT                           0x1D00
+#define GL_SMOOTH                         0x1D01
+#define GL_KEEP                           0x1E00
+#define GL_REPLACE                        0x1E01
+#define GL_INCR                           0x1E02
+#define GL_DECR                           0x1E03
+#define GL_VENDOR                         0x1F00
+#define GL_RENDERER                       0x1F01
+#define GL_VERSION                        0x1F02
+#define GL_EXTENSIONS                     0x1F03
+#define GL_S                              0x2000
+#define GL_T                              0x2001
+#define GL_R                              0x2002
+#define GL_Q                              0x2003
+#define GL_MODULATE                       0x2100
+#define GL_DECAL                          0x2101
+#define GL_TEXTURE_ENV_MODE               0x2200
+#define GL_TEXTURE_ENV_COLOR              0x2201
+#define GL_TEXTURE_ENV                    0x2300
+#define GL_EYE_LINEAR                     0x2400
+#define GL_OBJECT_LINEAR                  0x2401
+#define GL_SPHERE_MAP                     0x2402
+#define GL_TEXTURE_GEN_MODE               0x2500
+#define GL_OBJECT_PLANE                   0x2501
+#define GL_EYE_PLANE                      0x2502
+#define GL_NEAREST                        0x2600
+#define GL_LINEAR                         0x2601
+#define GL_NEAREST_MIPMAP_NEAREST         0x2700
+#define GL_LINEAR_MIPMAP_NEAREST          0x2701
+#define GL_NEAREST_MIPMAP_LINEAR          0x2702
+#define GL_LINEAR_MIPMAP_LINEAR           0x2703
+#define GL_TEXTURE_MAG_FILTER             0x2800
+#define GL_TEXTURE_MIN_FILTER             0x2801
+#define GL_TEXTURE_WRAP_S                 0x2802
+#define GL_TEXTURE_WRAP_T                 0x2803
+#define GL_CLAMP                          0x2900
+#define GL_REPEAT                         0x2901
+#define GL_CLIENT_PIXEL_STORE_BIT         0x00000001
+#define GL_CLIENT_VERTEX_ARRAY_BIT        0x00000002
+#define GL_CLIENT_ALL_ATTRIB_BITS         0xffffffff
+#define GL_POLYGON_OFFSET_FACTOR          0x8038
+#define GL_POLYGON_OFFSET_UNITS           0x2A00
+#define GL_POLYGON_OFFSET_POINT           0x2A01
+#define GL_POLYGON_OFFSET_LINE            0x2A02
+#define GL_POLYGON_OFFSET_FILL            0x8037
+#define GL_ALPHA4                         0x803B
+#define GL_ALPHA8                         0x803C
+#define GL_ALPHA12                        0x803D
+#define GL_ALPHA16                        0x803E
+#define GL_LUMINANCE4                     0x803F
+#define GL_LUMINANCE8                     0x8040
+#define GL_LUMINANCE12                    0x8041
+#define GL_LUMINANCE16                    0x8042
+#define GL_LUMINANCE4_ALPHA4              0x8043
+#define GL_LUMINANCE6_ALPHA2              0x8044
+#define GL_LUMINANCE8_ALPHA8              0x8045
+#define GL_LUMINANCE12_ALPHA4             0x8046
+#define GL_LUMINANCE12_ALPHA12            0x8047
+#define GL_LUMINANCE16_ALPHA16            0x8048
+#define GL_INTENSITY                      0x8049
+#define GL_INTENSITY4                     0x804A
+#define GL_INTENSITY8                     0x804B
+#define GL_INTENSITY12                    0x804C
+#define GL_INTENSITY16                    0x804D
+#define GL_R3_G3_B2                       0x2A10
+#define GL_RGB4                           0x804F
+#define GL_RGB5                           0x8050
+#define GL_RGB8                           0x8051
+#define GL_RGB10                          0x8052
+#define GL_RGB12                          0x8053
+#define GL_RGB16                          0x8054
+#define GL_RGBA2                          0x8055
+#define GL_RGBA4                          0x8056
+#define GL_RGB5_A1                        0x8057
+#define GL_RGBA8                          0x8058
+#define GL_RGB10_A2                       0x8059
+#define GL_RGBA12                         0x805A
+#define GL_RGBA16                         0x805B
+#define GL_TEXTURE_RED_SIZE               0x805C
+#define GL_TEXTURE_GREEN_SIZE             0x805D
+#define GL_TEXTURE_BLUE_SIZE              0x805E
+#define GL_TEXTURE_ALPHA_SIZE             0x805F
+#define GL_TEXTURE_LUMINANCE_SIZE         0x8060
+#define GL_TEXTURE_INTENSITY_SIZE         0x8061
+#define GL_PROXY_TEXTURE_1D               0x8063
+#define GL_PROXY_TEXTURE_2D               0x8064
+#define GL_TEXTURE_PRIORITY               0x8066
+#define GL_TEXTURE_RESIDENT               0x8067
+#define GL_TEXTURE_BINDING_1D             0x8068
+#define GL_TEXTURE_BINDING_2D             0x8069
+#define GL_VERTEX_ARRAY                   0x8074
+#define GL_NORMAL_ARRAY                   0x8075
+#define GL_COLOR_ARRAY                    0x8076
+#define GL_INDEX_ARRAY                    0x8077
+#define GL_TEXTURE_COORD_ARRAY            0x8078
+#define GL_EDGE_FLAG_ARRAY                0x8079
+#define GL_VERTEX_ARRAY_SIZE              0x807A
+#define GL_VERTEX_ARRAY_TYPE              0x807B
+#define GL_VERTEX_ARRAY_STRIDE            0x807C
+#define GL_NORMAL_ARRAY_TYPE              0x807E
+#define GL_NORMAL_ARRAY_STRIDE            0x807F
+#define GL_COLOR_ARRAY_SIZE               0x8081
+#define GL_COLOR_ARRAY_TYPE               0x8082
+#define GL_COLOR_ARRAY_STRIDE             0x8083
+#define GL_INDEX_ARRAY_TYPE               0x8085
+#define GL_INDEX_ARRAY_STRIDE             0x8086
+#define GL_TEXTURE_COORD_ARRAY_SIZE       0x8088
+#define GL_TEXTURE_COORD_ARRAY_TYPE       0x8089
+#define GL_TEXTURE_COORD_ARRAY_STRIDE     0x808A
+#define GL_EDGE_FLAG_ARRAY_STRIDE         0x808C
+#define GL_VERTEX_ARRAY_POINTER           0x808E
+#define GL_NORMAL_ARRAY_POINTER           0x808F
+#define GL_COLOR_ARRAY_POINTER            0x8090
+#define GL_INDEX_ARRAY_POINTER            0x8091
+#define GL_TEXTURE_COORD_ARRAY_POINTER    0x8092
+#define GL_EDGE_FLAG_ARRAY_POINTER        0x8093
+#define GL_V2F                            0x2A20
+#define GL_V3F                            0x2A21
+#define GL_C4UB_V2F                       0x2A22
+#define GL_C4UB_V3F                       0x2A23
+#define GL_C3F_V3F                        0x2A24
+#define GL_N3F_V3F                        0x2A25
+#define GL_C4F_N3F_V3F                    0x2A26
+#define GL_T2F_V3F                        0x2A27
+#define GL_T4F_V4F                        0x2A28
+#define GL_T2F_C4UB_V3F                   0x2A29
+#define GL_T2F_C3F_V3F                    0x2A2A
+#define GL_T2F_N3F_V3F                    0x2A2B
+#define GL_T2F_C4F_N3F_V3F                0x2A2C
+#define GL_T4F_C4F_N3F_V4F                0x2A2D
+#endif</t>
+<t tx="ekr.20060513122613.7">#ifndef GL_DEFS
+GL_PROC(void,glAccum,(GLenum op, GLfloat value))
+GL_PROC(void,glAlphaFunc,(GLenum func, GLclampf ref))
+GL_PROC(GLboolean,glAreTexturesResident,(GLsizei n, const GLuint *textures, GLboolean *residences))
+GL_PROC(void,glArrayElement,(GLint i))
+GL_PROC(void,glBegin,(GLenum mode))
+GL_PROC(void,glBindTexture,(GLenum target, GLuint texture))
+GL_PROC(void,glBitmap,(GLsizei width, GLsizei height, GLfloat xorig, GLfloat yorig, GLfloat xmove, GLfloat ymove, const GLubyte *bitmap))
+GL_PROC(void,glBlendFunc,(GLenum sfactor, GLenum dfactor))
+GL_PROC(void,glCallList,(GLuint list))
+GL_PROC(void,glCallLists,(GLsizei n, GLenum type, const GLvoid *lists))
+GL_PROC(void,glClear,(GLbitfield mask))
+GL_PROC(void,glClearAccum,(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha))
+GL_PROC(void,glClearColor,(GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha))
+GL_PROC(void,glClearDepth,(GLclampd depth))
+GL_PROC(void,glClearIndex,(GLfloat c))
+GL_PROC(void,glClearStencil,(GLint s))
+GL_PROC(void,glClipPlane,(GLenum plane, const GLdouble *equation))
+GL_PROC(void,glColor3b,(GLbyte red, GLbyte green, GLbyte blue))
+GL_PROC(void,glColor3bv,(const GLbyte *v))
+GL_PROC(void,glColor3d,(GLdouble red, GLdouble green, GLdouble blue))
+GL_PROC(void,glColor3dv,(const GLdouble *v))
+GL_PROC(void,glColor3f,(GLfloat red, GLfloat green, GLfloat blue))
+GL_PROC(void,glColor3fv,(const GLfloat *v))
+GL_PROC(void,glColor3i,(GLint red, GLint green, GLint blue))
+GL_PROC(void,glColor3iv,(const GLint *v))
+GL_PROC(void,glColor3s,(GLshort red, GLshort green, GLshort blue))
+GL_PROC(void,glColor3sv,(const GLshort *v))
+GL_PROC(void,glColor3ub,(GLubyte red, GLubyte green, GLubyte blue))
+GL_PROC(void,glColor3ubv,(const GLubyte *v))
+GL_PROC(void,glColor3ui,(GLuint red, GLuint green, GLuint blue))
+GL_PROC(void,glColor3uiv,(const GLuint *v))
+GL_PROC(void,glColor3us,(GLushort red, GLushort green, GLushort blue))
+GL_PROC(void,glColor3usv,(const GLushort *v))
+GL_PROC(void,glColor4b,(GLbyte red, GLbyte green, GLbyte blue, GLbyte alpha))
+GL_PROC(void,glColor4bv,(const GLbyte *v))
+GL_PROC(void,glColor4d,(GLdouble red, GLdouble green, GLdouble blue, GLdouble alpha))
+GL_PROC(void,glColor4dv,(const GLdouble *v))
+GL_PROC(void,glColor4f,(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha))
+GL_PROC(void,glColor4fv,(const GLfloat *v))
+GL_PROC(void,glColor4i,(GLint red, GLint green, GLint blue, GLint alpha))
+GL_PROC(void,glColor4iv,(const GLint *v))
+GL_PROC(void,glColor4s,(GLshort red, GLshort green, GLshort blue, GLshort alpha))
+GL_PROC(void,glColor4sv,(const GLshort *v))
+GL_PROC(void,glColor4ub,(GLubyte red, GLubyte green, GLubyte blue, GLubyte alpha))
+GL_PROC(void,glColor4ubv,(const GLubyte *v))
+GL_PROC(void,glColor4ui,(GLuint red, GLuint green, GLuint blue, GLuint alpha))
+GL_PROC(void,glColor4uiv,(const GLuint *v))
+GL_PROC(void,glColor4us,(GLushort red, GLushort green, GLushort blue, GLushort alpha))
+GL_PROC(void,glColor4usv,(const GLushort *v))
+GL_PROC(void,glColorMask,(GLboolean red, GLboolean green, GLboolean blue, GLboolean alpha))
+GL_PROC(void,glColorMaterial,(GLenum face, GLenum mode))
+GL_PROC(void,glColorPointer,(GLint size, GLenum type, GLsizei stride, const GLvoid *pointer))
+GL_PROC(void,glCopyPixels,(GLint x, GLint y, GLsizei width, GLsizei height, GLenum type))
+GL_PROC(void,glCopyTexImage1D,(GLenum target, GLint level, GLenum internalFormat, GLint x, GLint y, GLsizei width, GLint border))
+GL_PROC(void,glCopyTexImage2D,(GLenum target, GLint level, GLenum internalFormat, GLint x, GLint y, GLsizei width, GLsizei height, GLint border))
+GL_PROC(void,glCopyTexSubImage1D,(GLenum target, GLint level, GLint xoffset, GLint x, GLint y, GLsizei width))
+GL_PROC(void,glCopyTexSubImage2D,(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint x, GLint y, GLsizei width, GLsizei height))
+GL_PROC(void,glCullFace,(GLenum mode))
+GL_PROC(void,glDeleteLists,(GLuint list, GLsizei range))
+GL_PROC(void,glDeleteTextures,(GLsizei n, const GLuint *textures))
+GL_PROC(void,glDepthFunc,(GLenum func))
+GL_PROC(void,glDepthMask,(GLboolean flag))
+GL_PROC(void,glDepthRange,(GLclampd zNear, GLclampd zFar))
+GL_PROC(void,glDisable,(GLenum cap))
+GL_PROC(void,glDisableClientState,(GLenum array))
+GL_PROC(void,glDrawArrays,(GLenum mode, GLint first, GLsizei count))
+GL_PROC(void,glDrawBuffer,(GLenum mode))
+GL_PROC(void,glDrawElements,(GLenum mode, GLsizei count, GLenum type, const GLvoid *indices))
+GL_PROC(void,glDrawPixels,(GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid *pixels))
+GL_PROC(void,glEdgeFlag,(GLboolean flag))
+GL_PROC(void,glEdgeFlagPointer,(GLsizei stride, const GLvoid *pointer))
+GL_PROC(void,glEdgeFlagv,(const GLboolean *flag))
+GL_PROC(void,glEnable,(GLenum cap))
+GL_PROC(void,glEnableClientState,(GLenum array))
+GL_PROC(void,glEnd,(void))
+GL_PROC(void,glEndList,(void))
+GL_PROC(void,glEvalCoord1d,(GLdouble u))
+GL_PROC(void,glEvalCoord1dv,(const GLdouble *u))
+GL_PROC(void,glEvalCoord1f,(GLfloat u))
+GL_PROC(void,glEvalCoord1fv,(const GLfloat *u))
+GL_PROC(void,glEvalCoord2d,(GLdouble u, GLdouble v))
+GL_PROC(void,glEvalCoord2dv,(const GLdouble *u))
+GL_PROC(void,glEvalCoord2f,(GLfloat u, GLfloat v))
+GL_PROC(void,glEvalCoord2fv,(const GLfloat *u))
+GL_PROC(void,glEvalMesh1,(GLenum mode, GLint i1, GLint i2))
+GL_PROC(void,glEvalMesh2,(GLenum mode, GLint i1, GLint i2, GLint j1, GLint j2))
+GL_PROC(void,glEvalPoint1,(GLint i))
+GL_PROC(void,glEvalPoint2,(GLint i, GLint j))
+GL_PROC(void,glFeedbackBuffer,(GLsizei size, GLenum type, GLfloat *buffer))
+GL_PROC(void,glFinish,(void))
+GL_PROC(void,glFlush,(void))
+GL_PROC(void,glFogf,(GLenum pname, GLfloat param))
+GL_PROC(void,glFogfv,(GLenum pname, const GLfloat *params))
+GL_PROC(void,glFogi,(GLenum pname, GLint param))
+GL_PROC(void,glFogiv,(GLenum pname, const GLint *params))
+GL_PROC(void,glFrontFace,(GLenum mode))
+GL_PROC(void,glFrustum,(GLdouble left, GLdouble right, GLdouble bottom, GLdouble top, GLdouble zNear, GLdouble zFar))
+GL_PROC(GLuint,glGenLists,(GLsizei range))
+GL_PROC(void,glGenTextures,(GLsizei n, GLuint *textures))
+GL_PROC(void,glGetBooleanv,(GLenum pname, GLboolean *params))
+GL_PROC(void,glGetClipPlane,(GLenum plane, GLdouble *equation))
+GL_PROC(void,glGetDoublev,(GLenum pname, GLdouble *params))
+GL_PROC(GLenum,glGetError,(void))
+GL_PROC(void,glGetFloatv,(GLenum pname, GLfloat *params))
+GL_PROC(void,glGetIntegerv,(GLenum pname, GLint *params))
+GL_PROC(void,glGetLightfv,(GLenum light, GLenum pname, GLfloat *params))
+GL_PROC(void,glGetLightiv,(GLenum light, GLenum pname, GLint *params))
+GL_PROC(void,glGetMapdv,(GLenum target, GLenum query, GLdouble *v))
+GL_PROC(void,glGetMapfv,(GLenum target, GLenum query, GLfloat *v))
+GL_PROC(void,glGetMapiv,(GLenum target, GLenum query, GLint *v))
+GL_PROC(void,glGetMaterialfv,(GLenum face, GLenum pname, GLfloat *params))
+GL_PROC(void,glGetMaterialiv,(GLenum face, GLenum pname, GLint *params))
+GL_PROC(void,glGetPixelMapfv,(GLenum map, GLfloat *values))
+GL_PROC(void,glGetPixelMapuiv,(GLenum map, GLuint *values))
+GL_PROC(void,glGetPixelMapusv,(GLenum map, GLushort *values))
+GL_PROC(void,glGetPointerv,(GLenum pname, GLvoid* *params))
+GL_PROC(void,glGetPolygonStipple,(GLubyte *mask))
+GL_PROC(const GLubyte *,glGetString,(GLenum name))
+GL_PROC(void,glGetTexEnvfv,(GLenum target, GLenum pname, GLfloat *params))
+GL_PROC(void,glGetTexEnviv,(GLenum target, GLenum pname, GLint *params))
+GL_PROC(void,glGetTexGendv,(GLenum coord, GLenum pname, GLdouble *params))
+GL_PROC(void,glGetTexGenfv,(GLenum coord, GLenum pname, GLfloat *params))
+GL_PROC(void,glGetTexGeniv,(GLenum coord, GLenum pname, GLint *params))
+GL_PROC(void,glGetTexImage,(GLenum target, GLint level, GLenum format, GLenum type, GLvoid *pixels))
+GL_PROC(void,glGetTexLevelParameterfv,(GLenum target, GLint level, GLenum pname, GLfloat *params))
+GL_PROC(void,glGetTexLevelParameteriv,(GLenum target, GLint level, GLenum pname, GLint *params))
+GL_PROC(void,glGetTexParameterfv,(GLenum target, GLenum pname, GLfloat *params))
+GL_PROC(void,glGetTexParameteriv,(GLenum target, GLenum pname, GLint *params))
+GL_PROC(void,glHint,(GLenum target, GLenum mode))
+GL_PROC(void,glIndexMask,(GLuint mask))
+GL_PROC(void,glIndexPointer,(GLenum type, GLsizei stride, const GLvoid *pointer))
+GL_PROC(void,glIndexd,(GLdouble c))
+GL_PROC(void,glIndexdv,(const GLdouble *c))
+GL_PROC(void,glIndexf,(GLfloat c))
+GL_PROC(void,glIndexfv,(const GLfloat *c))
+GL_PROC(void,glIndexi,(GLint c))
+GL_PROC(void,glIndexiv,(const GLint *c))
+GL_PROC(void,glIndexs,(GLshort c))
+GL_PROC(void,glIndexsv,(const GLshort *c))
+GL_PROC(void,glIndexub,(GLubyte c))
+GL_PROC(void,glIndexubv,(const GLubyte *c))
+GL_PROC(void,glInitNames,(void))
+GL_PROC(void,glInterleavedArrays,(GLenum format, GLsizei stride, const GLvoid *pointer))
+GL_PROC(GLboolean,glIsEnabled,(GLenum cap))
+GL_PROC(GLboolean,glIsList,(GLuint list))
+GL_PROC(GLboolean,glIsTexture,(GLuint texture))
+GL_PROC(void,glLightModelf,(GLenum pname, GLfloat param))
+GL_PROC(void,glLightModelfv,(GLenum pname, const GLfloat *params))
+GL_PROC(void,glLightModeli,(GLenum pname, GLint param))
+GL_PROC(void,glLightModeliv,(GLenum pname, const GLint *params))
+GL_PROC(void,glLightf,(GLenum light, GLenum pname, GLfloat param))
+GL_PROC(void,glLightfv,(GLenum light, GLenum pname, const GLfloat *params))
+GL_PROC(void,glLighti,(GLenum light, GLenum pname, GLint param))
+GL_PROC(void,glLightiv,(GLenum light, GLenum pname, const GLint *params))
+GL_PROC(void,glLineStipple,(GLint factor, GLushort pattern))
+GL_PROC(void,glLineWidth,(GLfloat width))
+GL_PROC(void,glListBase,(GLuint base))
+GL_PROC(void,glLoadIdentity,(void))
+GL_PROC(void,glLoadMatrixd,(const GLdouble *m))
+GL_PROC(void,glLoadMatrixf,(const GLfloat *m))
+GL_PROC(void,glLoadName,(GLuint name))
+GL_PROC(void,glLogicOp,(GLenum opcode))
+GL_PROC(void,glMap1d,(GLenum target, GLdouble u1, GLdouble u2, GLint stride, GLint order, const GLdouble *points))
+GL_PROC(void,glMap1f,(GLenum target, GLfloat u1, GLfloat u2, GLint stride, GLint order, const GLfloat *points))
+GL_PROC(void,glMap2d,(GLenum target, GLdouble u1, GLdouble u2, GLint ustride, GLint uorder, GLdouble v1, GLdouble v2, GLint vstride, GLint vorder, const GLdouble *points))
+GL_PROC(void,glMap2f,(GLenum target, GLfloat u1, GLfloat u2, GLint ustride, GLint uorder, GLfloat v1, GLfloat v2, GLint vstride, GLint vorder, const GLfloat *points))
+GL_PROC(void,glMapGrid1d,(GLint un, GLdouble u1, GLdouble u2))
+GL_PROC(void,glMapGrid1f,(GLint un, GLfloat u1, GLfloat u2))
+GL_PROC(void,glMapGrid2d,(GLint un, GLdouble u1, GLdouble u2, GLint vn, GLdouble v1, GLdouble v2))
+GL_PROC(void,glMapGrid2f,(GLint un, GLfloat u1, GLfloat u2, GLint vn, GLfloat v1, GLfloat v2))
+GL_PROC(void,glMaterialf,(GLenum face, GLenum pname, GLfloat param))
+GL_PROC(void,glMaterialfv,(GLenum face, GLenum pname, const GLfloat *params))
+GL_PROC(void,glMateriali,(GLenum face, GLenum pname, GLint param))
+GL_PROC(void,glMaterialiv,(GLenum face, GLenum pname, const GLint *params))
+GL_PROC(void,glMatrixMode,(GLenum mode))
+GL_PROC(void,glMultMatrixd,(const GLdouble *m))
+GL_PROC(void,glMultMatrixf,(const GLfloat *m))
+GL_PROC(void,glNewList,(GLuint list, GLenum mode))
+GL_PROC(void,glNormal3b,(GLbyte nx, GLbyte ny, GLbyte nz))
+GL_PROC(void,glNormal3bv,(const GLbyte *v))
+GL_PROC(void,glNormal3d,(GLdouble nx, GLdouble ny, GLdouble nz))
+GL_PROC(void,glNormal3dv,(const GLdouble *v))
+GL_PROC(void,glNormal3f,(GLfloat nx, GLfloat ny, GLfloat nz))
+GL_PROC(void,glNormal3fv,(const GLfloat *v))
+GL_PROC(void,glNormal3i,(GLint nx, GLint ny, GLint nz))
+GL_PROC(void,glNormal3iv,(const GLint *v))
+GL_PROC(void,glNormal3s,(GLshort nx, GLshort ny, GLshort nz))
+GL_PROC(void,glNormal3sv,(const GLshort *v))
+GL_PROC(void,glNormalPointer,(GLenum type, GLsizei stride, const GLvoid *pointer))
+GL_PROC(void,glOrtho,(GLdouble left, GLdouble right, GLdouble bottom, GLdouble top, GLdouble zNear, GLdouble zFar))
+GL_PROC(void,glPassThrough,(GLfloat token))
+GL_PROC(void,glPixelMapfv,(GLenum map, GLsizei mapsize, const GLfloat *values))
+GL_PROC(void,glPixelMapuiv,(GLenum map, GLsizei mapsize, const GLuint *values))
+GL_PROC(void,glPixelMapusv,(GLenum map, GLsizei mapsize, const GLushort *values))
+GL_PROC(void,glPixelStoref,(GLenum pname, GLfloat param))
+GL_PROC(void,glPixelStorei,(GLenum pname, GLint param))
+GL_PROC(void,glPixelTransferf,(GLenum pname, GLfloat param))
+GL_PROC(void,glPixelTransferi,(GLenum pname, GLint param))
+GL_PROC(void,glPixelZoom,(GLfloat xfactor, GLfloat yfactor))
+GL_PROC(void,glPointSize,(GLfloat size))
+GL_PROC(void,glPolygonMode,(GLenum face, GLenum mode))
+GL_PROC(void,glPolygonOffset,(GLfloat factor, GLfloat units))
+GL_PROC(void,glPolygonStipple,(const GLubyte *mask))
+GL_PROC(void,glPopAttrib,(void))
+GL_PROC(void,glPopClientAttrib,(void))
+GL_PROC(void,glPopMatrix,(void))
+GL_PROC(void,glPopName,(void))
+GL_PROC(void,glPrioritizeTextures,(GLsizei n, const GLuint *textures, const GLclampf *priorities))
+GL_PROC(void,glPushAttrib,(GLbitfield mask))
+GL_PROC(void,glPushClientAttrib,(GLbitfield mask))
+GL_PROC(void,glPushMatrix,(void))
+GL_PROC(void,glPushName,(GLuint name))
+GL_PROC(void,glRasterPos2d,(GLdouble x, GLdouble y))
+GL_PROC(void,glRasterPos2dv,(const GLdouble *v))
+GL_PROC(void,glRasterPos2f,(GLfloat x, GLfloat y))
+GL_PROC(void,glRasterPos2fv,(const GLfloat *v))
+GL_PROC(void,glRasterPos2i,(GLint x, GLint y))
+GL_PROC(void,glRasterPos2iv,(const GLint *v))
+GL_PROC(void,glRasterPos2s,(GLshort x, GLshort y))
+GL_PROC(void,glRasterPos2sv,(const GLshort *v))
+GL_PROC(void,glRasterPos3d,(GLdouble x, GLdouble y, GLdouble z))
+GL_PROC(void,glRasterPos3dv,(const GLdouble *v))
+GL_PROC(void,glRasterPos3f,(GLfloat x, GLfloat y, GLfloat z))
+GL_PROC(void,glRasterPos3fv,(const GLfloat *v))
+GL_PROC(void,glRasterPos3i,(GLint x, GLint y, GLint z))
+GL_PROC(void,glRasterPos3iv,(const GLint *v))
+GL_PROC(void,glRasterPos3s,(GLshort x, GLshort y, GLshort z))
+GL_PROC(void,glRasterPos3sv,(const GLshort *v))
+GL_PROC(void,glRasterPos4d,(GLdouble x, GLdouble y, GLdouble z, GLdouble w))
+GL_PROC(void,glRasterPos4dv,(const GLdouble *v))
+GL_PROC(void,glRasterPos4f,(GLfloat x, GLfloat y, GLfloat z, GLfloat w))
+GL_PROC(void,glRasterPos4fv,(const GLfloat *v))
+GL_PROC(void,glRasterPos4i,(GLint x, GLint y, GLint z, GLint w))
+GL_PROC(void,glRasterPos4iv,(const GLint *v))
+GL_PROC(void,glRasterPos4s,(GLshort x, GLshort y, GLshort z, GLshort w))
+GL_PROC(void,glRasterPos4sv,(const GLshort *v))
+GL_PROC(void,glReadBuffer,(GLenum mode))
+GL_PROC(void,glReadPixels,(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid *pixels))
+GL_PROC(void,glRectd,(GLdouble x1, GLdouble y1, GLdouble x2, GLdouble y2))
+GL_PROC(void,glRectdv,(const GLdouble *v1, const GLdouble *v2))
+GL_PROC(void,glRectf,(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2))
+GL_PROC(void,glRectfv,(const GLfloat *v1, const GLfloat *v2))
+GL_PROC(void,glRecti,(GLint x1, GLint y1, GLint x2, GLint y2))
+GL_PROC(void,glRectiv,(const GLint *v1, const GLint *v2))
+GL_PROC(void,glRects,(GLshort x1, GLshort y1, GLshort x2, GLshort y2))
+GL_PROC(void,glRectsv,(const GLshort *v1, const GLshort *v2))
+GL_PROC(GLint,glRenderMode,(GLenum mode))
+GL_PROC(void,glRotated,(GLdouble angle, GLdouble x, GLdouble y, GLdouble z))
+GL_PROC(void,glRotatef,(GLfloat angle, GLfloat x, GLfloat y, GLfloat z))
+GL_PROC(void,glScaled,(GLdouble x, GLdouble y, GLdouble z))
+GL_PROC(void,glScalef,(GLfloat x, GLfloat y, GLfloat z))
+GL_PROC(void,glScissor,(GLint x, GLint y, GLsizei width, GLsizei height))
+GL_PROC(void,glSelectBuffer,(GLsizei size, GLuint *buffer))
+GL_PROC(void,glShadeModel,(GLenum mode))
+GL_PROC(void,glStencilFunc,(GLenum func, GLint ref, GLuint mask))
+GL_PROC(void,glStencilMask,(GLuint mask))
+GL_PROC(void,glStencilOp,(GLenum fail, GLenum zfail, GLenum zpass))
+GL_PROC(void,glTexCoord1d,(GLdouble s))
+GL_PROC(void,glTexCoord1dv,(const GLdouble *v))
+GL_PROC(void,glTexCoord1f,(GLfloat s))
+GL_PROC(void,glTexCoord1fv,(const GLfloat *v))
+GL_PROC(void,glTexCoord1i,(GLint s))
+GL_PROC(void,glTexCoord1iv,(const GLint *v))
+GL_PROC(void,glTexCoord1s,(GLshort s))
+GL_PROC(void,glTexCoord1sv,(const GLshort *v))
+GL_PROC(void,glTexCoord2d,(GLdouble s, GLdouble t))
+GL_PROC(void,glTexCoord2dv,(const GLdouble *v))
+GL_PROC(void,glTexCoord2f,(GLfloat s, GLfloat t))
+GL_PROC(void,glTexCoord2fv,(const GLfloat *v))
+GL_PROC(void,glTexCoord2i,(GLint s, GLint t))
+GL_PROC(void,glTexCoord2iv,(const GLint *v))
+GL_PROC(void,glTexCoord2s,(GLshort s, GLshort t))
+GL_PROC(void,glTexCoord2sv,(const GLshort *v))
+GL_PROC(void,glTexCoord3d,(GLdouble s, GLdouble t, GLdouble r))
+GL_PROC(void,glTexCoord3dv,(const GLdouble *v))
+GL_PROC(void,glTexCoord3f,(GLfloat s, GLfloat t, GLfloat r))
+GL_PROC(void,glTexCoord3fv,(const GLfloat *v))
+GL_PROC(void,glTexCoord3i,(GLint s, GLint t, GLint r))
+GL_PROC(void,glTexCoord3iv,(const GLint *v))
+GL_PROC(void,glTexCoord3s,(GLshort s, GLshort t, GLshort r))
+GL_PROC(void,glTexCoord3sv,(const GLshort *v))
+GL_PROC(void,glTexCoord4d,(GLdouble s, GLdouble t, GLdouble r, GLdouble q))
+GL_PROC(void,glTexCoord4dv,(const GLdouble *v))
+GL_PROC(void,glTexCoord4f,(GLfloat s, GLfloat t, GLfloat r, GLfloat q))
+GL_PROC(void,glTexCoord4fv,(const GLfloat *v))
+GL_PROC(void,glTexCoord4i,(GLint s, GLint t, GLint r, GLint q))
+GL_PROC(void,glTexCoord4iv,(const GLint *v))
+GL_PROC(void,glTexCoord4s,(GLshort s, GLshort t, GLshort r, GLshort q))
+GL_PROC(void,glTexCoord4sv,(const GLshort *v))
+GL_PROC(void,glTexCoordPointer,(GLint size, GLenum type, GLsizei stride, const GLvoid *pointer))
+GL_PROC(void,glTexEnvf,(GLenum target, GLenum pname, GLfloat param))
+GL_PROC(void,glTexEnvfv,(GLenum target, GLenum pname, const GLfloat *params))
+GL_PROC(void,glTexEnvi,(GLenum target, GLenum pname, GLint param))
+GL_PROC(void,glTexEnviv,(GLenum target, GLenum pname, const GLint *params))
+GL_PROC(void,glTexGend,(GLenum coord, GLenum pname, GLdouble param))
+GL_PROC(void,glTexGendv,(GLenum coord, GLenum pname, const GLdouble *params))
+GL_PROC(void,glTexGenf,(GLenum coord, GLenum pname, GLfloat param))
+GL_PROC(void,glTexGenfv,(GLenum coord, GLenum pname, const GLfloat *params))
+GL_PROC(void,glTexGeni,(GLenum coord, GLenum pname, GLint param))
+GL_PROC(void,glTexGeniv,(GLenum coord, GLenum pname, const GLint *params))
+GL_PROC(void,glTexImage1D,(GLenum target, GLint level, GLint internalformat, GLsizei width, GLint border, GLenum format, GLenum type, const GLvoid *pixels))
+GL_PROC(void,glTexImage2D,(GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid *pixels))
+GL_PROC(void,glTexParameterf,(GLenum target, GLenum pname, GLfloat param))
+GL_PROC(void,glTexParameterfv,(GLenum target, GLenum pname, const GLfloat *params))
+GL_PROC(void,glTexParameteri,(GLenum target, GLenum pname, GLint param))
+GL_PROC(void,glTexParameteriv,(GLenum target, GLenum pname, const GLint *params))
+GL_PROC(void,glTexSubImage1D,(GLenum target, GLint level, GLint xoffset, GLsizei width, GLenum format, GLenum type, const GLvoid *pixels))
+GL_PROC(void,glTexSubImage2D,(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid *pixels))
+GL_PROC(void,glTranslated,(GLdouble x, GLdouble y, GLdouble z))
+GL_PROC(void,glTranslatef,(GLfloat x, GLfloat y, GLfloat z))
+GL_PROC(void,glVertex2d,(GLdouble x, GLdouble y))
+GL_PROC(void,glVertex2dv,(const GLdouble *v))
+GL_PROC(void,glVertex2f,(GLfloat x, GLfloat y))
+GL_PROC(void,glVertex2fv,(const GLfloat *v))
+GL_PROC(void,glVertex2i,(GLint x, GLint y))
+GL_PROC(void,glVertex2iv,(const GLint *v))
+GL_PROC(void,glVertex2s,(GLshort x, GLshort y))
+GL_PROC(void,glVertex2sv,(const GLshort *v))
+GL_PROC(void,glVertex3d,(GLdouble x, GLdouble y, GLdouble z))
+GL_PROC(void,glVertex3dv,(const GLdouble *v))
+GL_PROC(void,glVertex3f,(GLfloat x, GLfloat y, GLfloat z))
+GL_PROC(void,glVertex3fv,(const GLfloat *v))
+GL_PROC(void,glVertex3i,(GLint x, GLint y, GLint z))
+GL_PROC(void,glVertex3iv,(const GLint *v))
+GL_PROC(void,glVertex3s,(GLshort x, GLshort y, GLshort z))
+GL_PROC(void,glVertex3sv,(const GLshort *v))
+GL_PROC(void,glVertex4d,(GLdouble x, GLdouble y, GLdouble z, GLdouble w))
+GL_PROC(void,glVertex4dv,(const GLdouble *v))
+GL_PROC(void,glVertex4f,(GLfloat x, GLfloat y, GLfloat z, GLfloat w))
+GL_PROC(void,glVertex4fv,(const GLfloat *v))
+GL_PROC(void,glVertex4i,(GLint x, GLint y, GLint z, GLint w))
+GL_PROC(void,glVertex4iv,(const GLint *v))
+GL_PROC(void,glVertex4s,(GLshort x, GLshort y, GLshort z, GLshort w))
+GL_PROC(void,glVertex4sv,(const GLshort *v))
+GL_PROC(void,glVertexPointer,(GLint size, GLenum type, GLsizei stride, const GLvoid *pointer))
+GL_PROC(void,glViewport,(GLint x, GLint y, GLsizei width, GLsizei height))
+#endif</t>
+<t tx="ekr.20060513122613.8">#if USE_OPENGL &gt;= 2
+	@others
+#endif</t>
+<t tx="ekr.20060513122613.9">#ifdef GL_DEFS
+#define GL_UNSIGNED_BYTE_3_3_2            0x8032
+#define GL_UNSIGNED_SHORT_4_4_4_4         0x8033
+#define GL_UNSIGNED_SHORT_5_5_5_1         0x8034
+#define GL_UNSIGNED_INT_8_8_8_8           0x8035
+#define GL_UNSIGNED_INT_10_10_10_2        0x8036
+#define GL_RESCALE_NORMAL                 0x803A
+#define GL_TEXTURE_BINDING_3D             0x806A
+#define GL_PACK_SKIP_IMAGES               0x806B
+#define GL_PACK_IMAGE_HEIGHT              0x806C
+#define GL_UNPACK_SKIP_IMAGES             0x806D
+#define GL_UNPACK_IMAGE_HEIGHT            0x806E
+#define GL_TEXTURE_3D                     0x806F
+#define GL_PROXY_TEXTURE_3D               0x8070
+#define GL_TEXTURE_DEPTH                  0x8071
+#define GL_TEXTURE_WRAP_R                 0x8072
+#define GL_MAX_3D_TEXTURE_SIZE            0x8073
+#define GL_UNSIGNED_BYTE_2_3_3_REV        0x8362
+#define GL_UNSIGNED_SHORT_5_6_5           0x8363
+#define GL_UNSIGNED_SHORT_5_6_5_REV       0x8364
+#define GL_UNSIGNED_SHORT_4_4_4_4_REV     0x8365
+#define GL_UNSIGNED_SHORT_1_5_5_5_REV     0x8366
+#define GL_UNSIGNED_INT_8_8_8_8_REV       0x8367
+#define GL_UNSIGNED_INT_2_10_10_10_REV    0x8368
+#define GL_BGR                            0x80E0
+#define GL_BGRA                           0x80E1
+#define GL_MAX_ELEMENTS_VERTICES          0x80E8
+#define GL_MAX_ELEMENTS_INDICES           0x80E9
+#define GL_CLAMP_TO_EDGE                  0x812F
+#define GL_TEXTURE_MIN_LOD                0x813A
+#define GL_TEXTURE_MAX_LOD                0x813B
+#define GL_TEXTURE_BASE_LEVEL             0x813C
+#define GL_TEXTURE_MAX_LEVEL              0x813D
+#define GL_LIGHT_MODEL_COLOR_CONTROL      0x81F8
+#define GL_SINGLE_COLOR                   0x81F9
+#define GL_SEPARATE_SPECULAR_COLOR        0x81FA
+#define GL_SMOOTH_POINT_SIZE_RANGE        0x0B12
+#define GL_SMOOTH_POINT_SIZE_GRANULARITY  0x0B13
+#define GL_SMOOTH_LINE_WIDTH_RANGE        0x0B22
+#define GL_SMOOTH_LINE_WIDTH_GRANULARITY  0x0B23
+#define GL_ALIASED_POINT_SIZE_RANGE       0x846D
+#define GL_ALIASED_LINE_WIDTH_RANGE       0x846E
+#endif</t>
+<t tx="ekr.20060513122613.10">#ifndef GL_DEFS
+GL_EXT(void,glBlendColor,(GLclampf, GLclampf, GLclampf, GLclampf))
+GL_EXT(void,glBlendEquation,(GLenum))
+GL_EXT(void,glDrawRangeElements,(GLenum, GLuint, GLuint, GLsizei, GLenum, const GLvoid *))
+GL_EXT(void,glColorTable,(GLenum, GLenum, GLsizei, GLenum, GLenum, const GLvoid *))
+GL_EXT(void,glColorTableParameterfv,(GLenum, GLenum, const GLfloat *))
+GL_EXT(void,glColorTableParameteriv,(GLenum, GLenum, const GLint *))
+GL_EXT(void,glCopyColorTable,(GLenum, GLenum, GLint, GLint, GLsizei))
+GL_EXT(void,glGetColorTable,(GLenum, GLenum, GLenum, GLvoid *))
+GL_EXT(void,glGetColorTableParameterfv,(GLenum, GLenum, GLfloat *))
+GL_EXT(void,glGetColorTableParameteriv,(GLenum, GLenum, GLint *))
+GL_EXT(void,glColorSubTable,(GLenum, GLsizei, GLsizei, GLenum, GLenum, const GLvoid *))
+GL_EXT(void,glCopyColorSubTable,(GLenum, GLsizei, GLint, GLint, GLsizei))
+GL_EXT(void,glConvolutionFilter1D,(GLenum, GLenum, GLsizei, GLenum, GLenum, const GLvoid *))
+GL_EXT(void,glConvolutionFilter2D,(GLenum, GLenum, GLsizei, GLsizei, GLenum, GLenum, const GLvoid *))
+GL_EXT(void,glConvolutionParameterf,(GLenum, GLenum, GLfloat))
+GL_EXT(void,glConvolutionParameterfv,(GLenum, GLenum, const GLfloat *))
+GL_EXT(void,glConvolutionParameteri,(GLenum, GLenum, GLint))
+GL_EXT(void,glConvolutionParameteriv,(GLenum, GLenum, const GLint *))
+GL_EXT(void,glCopyConvolutionFilter1D,(GLenum, GLenum, GLint, GLint, GLsizei))
+GL_EXT(void,glCopyConvolutionFilter2D,(GLenum, GLenum, GLint, GLint, GLsizei, GLsizei))
+GL_EXT(void,glGetConvolutionFilter,(GLenum, GLenum, GLenum, GLvoid *))
+GL_EXT(void,glGetConvolutionParameterfv,(GLenum, GLenum, GLfloat *))
+GL_EXT(void,glGetConvolutionParameteriv,(GLenum, GLenum, GLint *))
+GL_EXT(void,glGetSeparableFilter,(GLenum, GLenum, GLenum, GLvoid *, GLvoid *, GLvoid *))
+GL_EXT(void,glSeparableFilter2D,(GLenum, GLenum, GLsizei, GLsizei, GLenum, GLenum, const GLvoid *, const GLvoid *))
+GL_EXT(void,glGetHistogram,(GLenum, GLboolean, GLenum, GLenum, GLvoid *))
+GL_EXT(void,glGetHistogramParameterfv,(GLenum, GLenum, GLfloat *))
+GL_EXT(void,glGetHistogramParameteriv,(GLenum, GLenum, GLint *))
+GL_EXT(void,glGetMinmax,(GLenum, GLboolean, GLenum, GLenum, GLvoid *))
+GL_EXT(void,glGetMinmaxParameterfv,(GLenum, GLenum, GLfloat *))
+GL_EXT(void,glGetMinmaxParameteriv,(GLenum, GLenum, GLint *))
+GL_EXT(void,glHistogram,(GLenum, GLsizei, GLenum, GLboolean))
+GL_EXT(void,glMinmax,(GLenum, GLenum, GLboolean))
+GL_EXT(void,glResetHistogram,(GLenum))
+GL_EXT(void,glResetMinmax,(GLenum))
+GL_EXT(void,glTexImage3D,(GLenum, GLint, GLint, GLsizei, GLsizei, GLsizei, GLint, GLenum, GLenum, const GLvoid *))
+GL_EXT(void,glTexSubImage3D,(GLenum, GLint, GLint, GLint, GLint, GLsizei, GLsizei, GLsizei, GLenum, GLenum, const GLvoid *))
+GL_EXT(void,glCopyTexSubImage3D,(GLenum, GLint, GLint, GLint, GLint, GLint, GLint, GLsizei, GLsizei))
+#endif</t>
+<t tx="ekr.20060513122613.11">#if USE_OPENGL &gt;= 3
+	@others
+#endif</t>
+<t tx="ekr.20060513122613.12">#ifdef GL_DEFS
+#define GL_TEXTURE0                       0x84C0
+#define GL_TEXTURE1                       0x84C1
+#define GL_TEXTURE2                       0x84C2
+#define GL_TEXTURE3                       0x84C3
+#define GL_TEXTURE4                       0x84C4
+#define GL_TEXTURE5                       0x84C5
+#define GL_TEXTURE6                       0x84C6
+#define GL_TEXTURE7                       0x84C7
+#define GL_TEXTURE8                       0x84C8
+#define GL_TEXTURE9                       0x84C9
+#define GL_TEXTURE10                      0x84CA
+#define GL_TEXTURE11                      0x84CB
+#define GL_TEXTURE12                      0x84CC
+#define GL_TEXTURE13                      0x84CD
+#define GL_TEXTURE14                      0x84CE
+#define GL_TEXTURE15                      0x84CF
+#define GL_TEXTURE16                      0x84D0
+#define GL_TEXTURE17                      0x84D1
+#define GL_TEXTURE18                      0x84D2
+#define GL_TEXTURE19                      0x84D3
+#define GL_TEXTURE20                      0x84D4
+#define GL_TEXTURE21                      0x84D5
+#define GL_TEXTURE22                      0x84D6
+#define GL_TEXTURE23                      0x84D7
+#define GL_TEXTURE24                      0x84D8
+#define GL_TEXTURE25                      0x84D9
+#define GL_TEXTURE26                      0x84DA
+#define GL_TEXTURE27                      0x84DB
+#define GL_TEXTURE28                      0x84DC
+#define GL_TEXTURE29                      0x84DD
+#define GL_TEXTURE30                      0x84DE
+#define GL_TEXTURE31                      0x84DF
+#define GL_ACTIVE_TEXTURE                 0x84E0
+#define GL_CLIENT_ACTIVE_TEXTURE          0x84E1
+#define GL_MAX_TEXTURE_UNITS              0x84E2
+#define GL_TRANSPOSE_MODELVIEW_MATRIX     0x84E3
+#define GL_TRANSPOSE_PROJECTION_MATRIX    0x84E4
+#define GL_TRANSPOSE_TEXTURE_MATRIX       0x84E5
+#define GL_TRANSPOSE_COLOR_MATRIX         0x84E6
+#define GL_MULTISAMPLE                    0x809D
+#define GL_SAMPLE_ALPHA_TO_COVERAGE       0x809E
+#define GL_SAMPLE_ALPHA_TO_ONE            0x809F
+#define GL_SAMPLE_COVERAGE                0x80A0
+#define GL_SAMPLE_BUFFERS                 0x80A8
+#define GL_SAMPLES                        0x80A9
+#define GL_SAMPLE_COVERAGE_VALUE          0x80AA
+#define GL_SAMPLE_COVERAGE_INVERT         0x80AB
+#define GL_MULTISAMPLE_BIT                0x20000000
+#define GL_NORMAL_MAP                     0x8511
+#define GL_REFLECTION_MAP                 0x8512
+#define GL_TEXTURE_CUBE_MAP               0x8513
+#define GL_TEXTURE_BINDING_CUBE_MAP       0x8514
+#define GL_TEXTURE_CUBE_MAP_POSITIVE_X    0x8515
+#define GL_TEXTURE_CUBE_MAP_NEGATIVE_X    0x8516
+#define GL_TEXTURE_CUBE_MAP_POSITIVE_Y    0x8517
+#define GL_TEXTURE_CUBE_MAP_NEGATIVE_Y    0x8518
+#define GL_TEXTURE_CUBE_MAP_POSITIVE_Z    0x8519
+#define GL_TEXTURE_CUBE_MAP_NEGATIVE_Z    0x851A
+#define GL_PROXY_TEXTURE_CUBE_MAP         0x851B
+#define GL_MAX_CUBE_MAP_TEXTURE_SIZE      0x851C
+#define GL_COMPRESSED_ALPHA               0x84E9
+#define GL_COMPRESSED_LUMINANCE           0x84EA
+#define GL_COMPRESSED_LUMINANCE_ALPHA     0x84EB
+#define GL_COMPRESSED_INTENSITY           0x84EC
+#define GL_COMPRESSED_RGB                 0x84ED
+#define GL_COMPRESSED_RGBA                0x84EE
+#define GL_TEXTURE_COMPRESSION_HINT       0x84EF
+#define GL_TEXTURE_COMPRESSED_IMAGE_SIZE  0x86A0
+#define GL_TEXTURE_COMPRESSED             0x86A1
+#define GL_NUM_COMPRESSED_TEXTURE_FORMATS 0x86A2
+#define GL_COMPRESSED_TEXTURE_FORMATS     0x86A3
+#define GL_CLAMP_TO_BORDER                0x812D
+#define GL_CLAMP_TO_BORDER_SGIS           0x812D
+#define GL_COMBINE                        0x8570
+#define GL_COMBINE_RGB                    0x8571
+#define GL_COMBINE_ALPHA                  0x8572
+#define GL_SOURCE0_RGB                    0x8580
+#define GL_SOURCE1_RGB                    0x8581
+#define GL_SOURCE2_RGB                    0x8582
+#define GL_SOURCE0_ALPHA                  0x8588
+#define GL_SOURCE1_ALPHA                  0x8589
+#define GL_SOURCE2_ALPHA                  0x858A
+#define GL_OPERAND0_RGB                   0x8590
+#define GL_OPERAND1_RGB                   0x8591
+#define GL_OPERAND2_RGB                   0x8592
+#define GL_OPERAND0_ALPHA                 0x8598
+#define GL_OPERAND1_ALPHA                 0x8599
+#define GL_OPERAND2_ALPHA                 0x859A
+#define GL_RGB_SCALE                      0x8573
+#define GL_ADD_SIGNED                     0x8574
+#define GL_INTERPOLATE                    0x8575
+#define GL_SUBTRACT                       0x84E7
+#define GL_CONSTANT                       0x8576
+#define GL_PRIMARY_COLOR                  0x8577
+#define GL_PREVIOUS                       0x8578
+#define GL_DOT3_RGB                       0x86AE
+#define GL_DOT3_RGBA                      0x86AF
+#endif
+</t>
+<t tx="ekr.20060513122613.13">#ifndef GL_DEFS
+GL_EXT(void,glActiveTexture,(GLenum))
+GL_EXT(void,glClientActiveTexture,(GLenum))
+GL_EXT(void,glMultiTexCoord1d,(GLenum,GLdouble))
+GL_EXT(void,glMultiTexCoord1dv,(GLenum,const GLdouble *))
+GL_EXT(void,glMultiTexCoord1f,(GLenum,GLfloat))
+GL_EXT(void,glMultiTexCoord1fv,(GLenum,const GLfloat *))
+GL_EXT(void,glMultiTexCoord1i,(GLenum,GLint))
+GL_EXT(void,glMultiTexCoord1iv,(GLenum,const GLint*))
+GL_EXT(void,glMultiTexCoord1s,(GLenum,GLshort))
+GL_EXT(void,glMultiTexCoord1sv,(GLenum,const GLshort*))
+GL_EXT(void,glMultiTexCoord2d,(GLenum,GLdouble,GLdouble))
+GL_EXT(void,glMultiTexCoord2dv,(GLenum,const GLdouble*))
+GL_EXT(void,glMultiTexCoord2f,(GLenum,GLfloat,GLfloat))
+GL_EXT(void,glMultiTexCoord2fv,(GLenum,const GLfloat*))
+GL_EXT(void,glMultiTexCoord2i,(GLenum,GLint,GLint))
+GL_EXT(void,glMultiTexCoord2iv,(GLenum,const GLint*))
+GL_EXT(void,glMultiTexCoord2s,(GLenum,GLshort,GLshort))
+GL_EXT(void,glMultiTexCoord2sv,(GLenum,const GLshort*))
+GL_EXT(void,glMultiTexCoord3d,(GLenum,GLdouble,GLdouble,GLdouble))
+GL_EXT(void,glMultiTexCoord3dv,(GLenum,const GLdouble*))
+GL_EXT(void,glMultiTexCoord3f,(GLenum,GLfloat,GLfloat,GLfloat))
+GL_EXT(void,glMultiTexCoord3fv,(GLenum,const GLfloat*))
+GL_EXT(void,glMultiTexCoord3i,(GLenum,GLint,GLint,GLint))
+GL_EXT(void,glMultiTexCoord3iv,(GLenum,const GLint*))
+GL_EXT(void,glMultiTexCoord3s,(GLenum,GLshort,GLshort,GLshort))
+GL_EXT(void,glMultiTexCoord3sv,(GLenum,const GLshort*))
+GL_EXT(void,glMultiTexCoord4d,(GLenum,GLdouble,GLdouble,GLdouble,GLdouble))
+GL_EXT(void,glMultiTexCoord4dv,(GLenum,const GLdouble *))
+GL_EXT(void,glMultiTexCoord4f,(GLenum,GLfloat,GLfloat,GLfloat,GLfloat))
+GL_EXT(void,glMultiTexCoord4fv,(GLenum,const GLfloat *))
+GL_EXT(void,glMultiTexCoord4i,(GLenum,GLint,GLint,GLint,GLint))
+GL_EXT(void,glMultiTexCoord4iv,(GLenum,const GLint *))
+GL_EXT(void,glMultiTexCoord4s,(GLenum,GLshort,GLshort,GLshort,GLshort))
+GL_EXT(void,glMultiTexCoord4sv,(GLenum,const GLshort *))
+GL_EXT(void,glLoadTransposeMatrixf,(const GLfloat *))
+GL_EXT(void,glLoadTransposeMatrixd,(const GLdouble *))
+GL_EXT(void,glMultTransposeMatrixf,(const GLfloat *))
+GL_EXT(void,glMultTransposeMatrixd,(const GLdouble *))
+GL_EXT(void,glSampleCoverage,(GLclampf,GLboolean))
+GL_EXT(void,glCompressedTexImage3D,(GLenum,GLint,GLenum,GLsizei,GLsizei,GLsizei,GLint,GLsizei,const GLvoid *))
+GL_EXT(void,glCompressedTexImage2D,(GLenum,GLint,GLenum,GLsizei,GLsizei,GLint,GLsizei,const GLvoid *))
+GL_EXT(void,glCompressedTexImage1D,(GLenum,GLint,GLenum,GLsizei,GLint,GLsizei,const GLvoid *))
+GL_EXT(void,glCompressedTexSubImage3D,(GLenum,GLint,GLint,GLint,GLint,GLsizei,GLsizei,GLsizei,GLenum,GLsizei,const GLvoid *))
+GL_EXT(void,glCompressedTexSubImage2D,(GLenum,GLint,GLint,GLint,GLsizei,GLsizei,GLenum,GLsizei,const GLvoid *))
+GL_EXT(void,glCompressedTexSubImage1D,(GLenum,GLint,GLint,GLsizei,GLenum,GLsizei,const GLvoid *))
+GL_EXT(void,glGetCompressedTexImage,(GLenum,GLint,GLvoid *))
+#endif</t>
+<t tx="ekr.20060513122613.14">#if USE_OPENGL &gt;= 4
+	@others
+#endif</t>
+<t tx="ekr.20060513122613.15">#ifdef GL_DEFS
+#define GL_BLEND_DST_RGB                  0x80C8
+#define GL_BLEND_SRC_RGB                  0x80C9
+#define GL_BLEND_DST_ALPHA                0x80CA
+#define GL_BLEND_SRC_ALPHA                0x80CB
+#define GL_POINT_SIZE_MIN                 0x8126
+#define GL_POINT_SIZE_MAX                 0x8127
+#define GL_POINT_FADE_THRESHOLD_SIZE      0x8128
+#define GL_POINT_DISTANCE_ATTENUATION     0x8129
+#define GL_GENERATE_MIPMAP                0x8191
+#define GL_GENERATE_MIPMAP_HINT           0x8192
+#define GL_DEPTH_COMPONENT16              0x81A5
+#define GL_DEPTH_COMPONENT24              0x81A6
+#define GL_DEPTH_COMPONENT32              0x81A7
+#define GL_MIRRORED_REPEAT                0x8370
+#define GL_FOG_COORDINATE_SOURCE          0x8450
+#define GL_FOG_COORDINATE                 0x8451
+#define GL_FRAGMENT_DEPTH                 0x8452
+#define GL_CURRENT_FOG_COORDINATE         0x8453
+#define GL_FOG_COORDINATE_ARRAY_TYPE      0x8454
+#define GL_FOG_COORDINATE_ARRAY_STRIDE    0x8455
+#define GL_FOG_COORDINATE_ARRAY_POINTER   0x8456
+#define GL_FOG_COORDINATE_ARRAY           0x8457
+#define GL_COLOR_SUM                      0x8458
+#define GL_CURRENT_SECONDARY_COLOR        0x8459
+#define GL_SECONDARY_COLOR_ARRAY_SIZE     0x845A
+#define GL_SECONDARY_COLOR_ARRAY_TYPE     0x845B
+#define GL_SECONDARY_COLOR_ARRAY_STRIDE   0x845C
+#define GL_SECONDARY_COLOR_ARRAY_POINTER  0x845D
+#define GL_SECONDARY_COLOR_ARRAY          0x845E
+#define GL_MAX_TEXTURE_LOD_BIAS           0x84FD
+#define GL_TEXTURE_FILTER_CONTROL         0x8500
+#define GL_TEXTURE_LOD_BIAS               0x8501
+#define GL_INCR_WRAP                      0x8507
+#define GL_DECR_WRAP                      0x8508
+#define GL_TEXTURE_DEPTH_SIZE             0x884A
+#define GL_DEPTH_TEXTURE_MODE             0x884B
+#define GL_TEXTURE_COMPARE_MODE           0x884C
+#define GL_TEXTURE_COMPARE_FUNC           0x884D
+#define GL_COMPARE_R_TO_TEXTURE           0x884E
+#endif</t>
+<t tx="ekr.20060513122613.16">#ifndef GL_DEFS
+GL_EXT(void,glBlendFuncSeparate,(GLenum,GLenum,GLenum,GLenum))
+GL_EXT(void,glFogCoordf,(GLfloat))
+GL_EXT(void,glFogCoordfv,(const GLfloat *))
+GL_EXT(void,glFogCoordd,(GLdouble))
+GL_EXT(void,glFogCoorddv,(const GLdouble *))
+GL_EXT(void,glFogCoordPointer,(GLenum,GLsizei,const GLvoid *))
+GL_EXT(void,glMultiDrawArrays,(GLenum,GLint *,GLsizei *,GLsizei))
+GL_EXT(void,glMultiDrawElements,(GLenum,const GLsizei *,GLenum,const GLvoid* *,GLsizei))
+GL_EXT(void,glPointParameterf,(GLenum,GLfloat))
+GL_EXT(void,glPointParameterfv,(GLenum,const GLfloat *))
+GL_EXT(void,glPointParameteri,(GLenum,GLint))
+GL_EXT(void,glPointParameteriv,(GLenum,const GLint *))
+GL_EXT(void,glSecondaryColor3b,(GLbyte,GLbyte,GLbyte))
+GL_EXT(void,glSecondaryColor3bv,(const GLbyte *))
+GL_EXT(void,glSecondaryColor3d,(GLdouble,GLdouble,GLdouble))
+GL_EXT(void,glSecondaryColor3dv,(const GLdouble *))
+GL_EXT(void,glSecondaryColor3f,(GLfloat,GLfloat,GLfloat))
+GL_EXT(void,glSecondaryColor3fv,(const GLfloat *))
+GL_EXT(void,glSecondaryColor3i,(GLint,GLint,GLint))
+GL_EXT(void,glSecondaryColor3iv,(const GLint *))
+GL_EXT(void,glSecondaryColor3s,(GLshort,GLshort,GLshort))
+GL_EXT(void,glSecondaryColor3sv,(const GLshort *))
+GL_EXT(void,glSecondaryColor3ub,(GLubyte,GLubyte,GLubyte))
+GL_EXT(void,glSecondaryColor3ubv,(const GLubyte *))
+GL_EXT(void,glSecondaryColor3ui,(GLuint,GLuint,GLuint))
+GL_EXT(void,glSecondaryColor3uiv,(const GLuint *))
+GL_EXT(void,glSecondaryColor3us,(GLushort,GLushort,GLushort))
+GL_EXT(void,glSecondaryColor3usv,(const GLushort *))
+GL_EXT(void,glSecondaryColorPointer,(GLint,GLenum,GLsizei,const GLvoid *))
+GL_EXT(void,glWindowPos2d,(GLdouble,GLdouble))
+GL_EXT(void,glWindowPos2dv,(const GLdouble *))
+GL_EXT(void,glWindowPos2f,(GLfloat,GLfloat))
+GL_EXT(void,glWindowPos2fv,(const GLfloat *))
+GL_EXT(void,glWindowPos2i,(GLint,GLint))
+GL_EXT(void,glWindowPos2iv,(const GLint *))
+GL_EXT(void,glWindowPos2s,(GLshort,GLshort))
+GL_EXT(void,glWindowPos2sv,(const GLshort *))
+GL_EXT(void,glWindowPos3d,(GLdouble,GLdouble,GLdouble))
+GL_EXT(void,glWindowPos3dv,(const GLdouble *))
+GL_EXT(void,glWindowPos3f,(GLfloat,GLfloat,GLfloat))
+GL_EXT(void,glWindowPos3fv,(const GLfloat *))
+GL_EXT(void,glWindowPos3i,(GLint,GLint,GLint))
+GL_EXT(void,glWindowPos3iv,(const GLint *))
+GL_EXT(void,glWindowPos3s,(GLshort,GLshort,GLshort))
+GL_EXT(void,glWindowPos3sv,(const GLshort *))
+#endif</t>
+<t tx="ekr.20060513122613.17">#if USE_OPENGL &gt;= 5
+	@others
+#endif</t>
+<t tx="ekr.20060513122613.18">#ifdef GL_DEFS
+#define GL_BUFFER_SIZE                    0x8764
+#define GL_BUFFER_USAGE                   0x8765
+#define GL_QUERY_COUNTER_BITS             0x8864
+#define GL_CURRENT_QUERY                  0x8865
+#define GL_QUERY_RESULT                   0x8866
+#define GL_QUERY_RESULT_AVAILABLE         0x8867
+#define GL_ARRAY_BUFFER                   0x8892
+#define GL_ELEMENT_ARRAY_BUFFER           0x8893
+#define GL_ARRAY_BUFFER_BINDING           0x8894
+#define GL_ELEMENT_ARRAY_BUFFER_BINDING   0x8895
+#define GL_VERTEX_ARRAY_BUFFER_BINDING    0x8896
+#define GL_NORMAL_ARRAY_BUFFER_BINDING    0x8897
+#define GL_COLOR_ARRAY_BUFFER_BINDING     0x8898
+#define GL_INDEX_ARRAY_BUFFER_BINDING     0x8899
+#define GL_TEXTURE_COORD_ARRAY_BUFFER_BINDING 0x889A
+#define GL_EDGE_FLAG_ARRAY_BUFFER_BINDING 0x889B
+#define GL_SECONDARY_COLOR_ARRAY_BUFFER_BINDING 0x889C
+#define GL_FOG_COORDINATE_ARRAY_BUFFER_BINDING 0x889D
+#define GL_WEIGHT_ARRAY_BUFFER_BINDING    0x889E
+#define GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING 0x889F
+#define GL_READ_ONLY                      0x88B8
+#define GL_WRITE_ONLY                     0x88B9
+#define GL_READ_WRITE                     0x88BA
+#define GL_BUFFER_ACCESS                  0x88BB
+#define GL_BUFFER_MAPPED                  0x88BC
+#define GL_BUFFER_MAP_POINTER             0x88BD
+#define GL_STREAM_DRAW                    0x88E0
+#define GL_STREAM_READ                    0x88E1
+#define GL_STREAM_COPY                    0x88E2
+#define GL_STATIC_DRAW                    0x88E4
+#define GL_STATIC_READ                    0x88E5
+#define GL_STATIC_COPY                    0x88E6
+#define GL_DYNAMIC_DRAW                   0x88E8
+#define GL_DYNAMIC_READ                   0x88E9
+#define GL_DYNAMIC_COPY                   0x88EA
+#define GL_SAMPLES_PASSED                 0x8914
+#define GL_FOG_COORD_SOURCE               GL_FOG_COORDINATE_SOURCE
+#define GL_FOG_COORD                      GL_FOG_COORDINATE
+#define GL_CURRENT_FOG_COORD              GL_CURRENT_FOG_COORDINATE
+#define GL_FOG_COORD_ARRAY_TYPE           GL_FOG_COORDINATE_ARRAY_TYPE
+#define GL_FOG_COORD_ARRAY_STRIDE         GL_FOG_COORDINATE_ARRAY_STRIDE
+#define GL_FOG_COORD_ARRAY_POINTER        GL_FOG_COORDINATE_ARRAY_POINTER
+#define GL_FOG_COORD_ARRAY                GL_FOG_COORDINATE_ARRAY
+#define GL_FOG_COORD_ARRAY_BUFFER_BINDING GL_FOG_COORDINATE_ARRAY_BUFFER_BINDING
+#define GL_SRC0_RGB                       GL_SOURCE0_RGB
+#define GL_SRC1_RGB                       GL_SOURCE1_RGB
+#define GL_SRC2_RGB                       GL_SOURCE2_RGB
+#define GL_SRC0_ALPHA                     GL_SOURCE0_ALPHA
+#define GL_SRC1_ALPHA                     GL_SOURCE1_ALPHA
+#define GL_SRC2_ALPHA                     GL_SOURCE2_ALPHA
+#endif</t>
+<t tx="ekr.20060513122613.19">#ifndef GL_DEFS
+GL_EXT(void,glGenQueries,(GLsizei,GLuint *))
+GL_EXT(void,glDeleteQueries,(GLsizei,const GLuint *))
+GL_EXT(GLboolean,glIsQuery,(GLuint))
+GL_EXT(void,glBeginQuery,(GLenum,GLuint))
+GL_EXT(void,glEndQuery,(GLenum))
+GL_EXT(void,glGetQueryiv,(GLenum,GLenum,GLint *))
+GL_EXT(void,glGetQueryObjectiv,(GLuint,GLenum,GLint *))
+GL_EXT(void,glGetQueryObjectuiv,(GLuint,GLenum,GLuint *))
+GL_EXT(void,glBindBuffer,(GLenum,GLuint))
+GL_EXT(void,glDeleteBuffers,(GLsizei,const GLuint *))
+GL_EXT(void,glGenBuffers,(GLsizei,GLuint *))
+GL_EXT(GLboolean,glIsBuffer,(GLuint))
+GL_EXT(void,glBufferData,(GLenum,GLsizeiptr,const GLvoid *,GLenum))
+GL_EXT(void,glBufferSubData,(GLenum,GLintptr,GLsizeiptr,const GLvoid *))
+GL_EXT(void,glGetBufferSubData,(GLenum,GLintptr,GLsizeiptr,GLvoid *))
+GL_EXT(GLvoid*,glMapBuffer,(GLenum,GLenum))
+GL_EXT(GLboolean,glUnmapBuffer,(GLenum))
+GL_EXT(void,glGetBufferParameteriv,(GLenum,GLenum,GLint *))
+GL_EXT(void,glGetBufferPointerv,(GLenum,GLenum,GLvoid* *))
+#endif</t>
+<t tx="ekr.20060513122613.20">#ifndef GL_DEFS
+WGL_PROC(BOOL,wglCopyContext,(HGLRC,HGLRC,UINT))
+WGL_PROC(HGLRC,wglCreateContext,(HDC))
+WGL_PROC(HGLRC,wglCreateLayerContext,(HDC,int))
+WGL_PROC(BOOL,wglDeleteContext,(HGLRC))
+WGL_PROC(HGLRC,wglGetCurrentContext,(VOID))
+WGL_PROC(HDC,wglGetCurrentDC,(VOID))
+WGL_PROC(PROC,wglGetProcAddress,(LPCSTR))
+WGL_PROC(BOOL,wglMakeCurrent,(HDC,HGLRC))
+WGL_PROC(BOOL,wglShareLists,(HGLRC,HGLRC))
+WGL_PROC(BOOL,wglUseFontBitmapsA,(HDC,DWORD,DWORD,DWORD))
+WGL_PROC(BOOL,wglUseFontBitmapsW,(HDC,DWORD,DWORD,DWORD))
+WGL_PROC(BOOL,wglSwapBuffers,(HDC))
+WGL_PROC(BOOL,wglUseFontOutlinesA,(HDC,DWORD,DWORD,DWORD,FLOAT,FLOAT,int,LPGLYPHMETRICSFLOAT))
+WGL_PROC(BOOL,wglUseFontOutlinesW,(HDC,DWORD,DWORD,DWORD,FLOAT,FLOAT,int,LPGLYPHMETRICSFLOAT))
+WGL_PROC(BOOL,wglDescribeLayerPlane,(HDC,int,int,UINT,LPLAYERPLANEDESCRIPTOR))
+WGL_PROC(int,wglSetLayerPaletteEntries,(HDC,int,int,int,CONST COLORREF *))
+WGL_PROC(int,wglGetLayerPaletteEntries,(HDC,int,int,int,COLORREF *))
+WGL_PROC(BOOL,wglRealizeLayerPalette,(HDC,int,BOOL))
+WGL_PROC(BOOL,wglSwapLayerBuffers,(HDC,UINT))
+#if (WINVER &gt;= 0x0500)
+	WGL_PROC(DWORD,SwapMultipleBuffers,(UINT,CONST WGLSWAP *))
+#endif
+#endif
+</t>
+<t tx="ekr.20060513122613.21">@language c++
+</t>
+<t tx="ekr.20060513122613.22"></t>
+<t tx="ekr.20060513122613.23">#define WIN32_LEAN_AND_MEAN
+#include &lt;windows.h&gt; // the main windows headers
+#include &lt;windowsx.h&gt; // a lot of cool macros</t>
+<t tx="ekr.20060513122613.24">char* a ="allo";
+// call message box api with NULL for parent window handle
+MessageBox(NULL, "THERE CAN BE ONLY ONE!!!",
+"MY FIRST WINDOWS PROGRAM",
+MB_OK | MB_ICONEXCLAMATION);
+a="salut";
+a="jean";
+a="pierre";
+a="pierre";
+// exit program
+return(0);
+
+</t>
+<t tx="ekr.20060513122613.25">@language c++
+</t>
+<t tx="ekr.20060514125256"></t>
 </tnodes>
 </leo_file>

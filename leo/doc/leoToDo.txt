@@ -8,7 +8,7 @@
 - Put complete slide show on Leo's web site.
 #@nonl
 #@-node:ekr.20060227163911.1:Leo's web site
-#@+node:ekr.20060226131603:To do 4.4
+#@+node:ekr.20060226131603:To do 4.4.1
 #@+node:ekr.20060413065803:searches 5
 #@+node:ekr.20060122183544:Improve isearch
 @nocolor
@@ -75,14 +75,17 @@ def masterKeyHandler (self,event,stroke=None):
     '''This is the handler for almost all key bindings.'''
     
     k = self ; c = k.c
-    val = self.masterKeyHandlerHelper(event,stroke)
+    trace = c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
+
+    val = self.masterKeyHandlerHelper(event,stroke,trace)
     if val and c and c.exists: # Ignore special keys.
         c.frame.updateStatusLine()
         c.masterFocusHandler()
+    if trace: g.trace('done:',repr(val))
     return val
 #@nonl
 #@+node:ekr.20060205221734:masterKeyHandlerHelper
-def masterKeyHandlerHelper (self,event,stroke):
+def masterKeyHandlerHelper (self,event,stroke,trace):
     
     << define vars >>
 
@@ -105,7 +108,6 @@ def masterKeyHandlerHelper (self,event,stroke):
 k = self ; c = k.c
 w = event and event.widget
 w_name = c.widget_name(w)
-trace = c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
 keysym = event.keysym or ''
 state = k.state.kind
 special_keys = (
@@ -119,7 +121,7 @@ self.master_key_count += 1
 if trace:
     if (self.master_key_count % 100) == 0:
         g.printGcSummary(trace=True)
-    g.trace(repr(stroke),'state',state)
+    g.trace('keysym',repr(event.keysym or ''),'state',state)
 #@nonl
 #@-node:ekr.20060321105403.1:<< do key traces >>
 #@+node:ekr.20060321105403.2:<< handle mode bindings >>
@@ -1735,7 +1737,7 @@ def findWord (self,event):
 #@+node:ekr.20060211093935:Support for @list and on-enter-mode
 #@-node:ekr.20060211093935:Support for @list and on-enter-mode
 #@-node:ekr.20060419123128.1:Maybe
-#@-node:ekr.20060226131603:To do 4.4
+#@-node:ekr.20060226131603:To do 4.4.1
 #@-all
 #@nonl
 #@-node:ekr.20040117181936:@thin ../doc/leoToDo.txt
