@@ -30,7 +30,7 @@ Still to do:
 #@@language python
 #@@tabwidth -4
 
-__version__ = "0.6"
+__version__ = "0.7"
 
 #@<< version history >>
 #@+node:ekr.20040908094021.3:<< version history >>
@@ -38,18 +38,19 @@ __version__ = "0.6"
 # 0.4 EKR: Don't mess with button width on MacOS/darwin.
 # 
 # 0.5 EKR: Create a separate SearchBox instance for each open window.
-#     This eliminates problems when multiple windows are open.
+# - This eliminates problems when multiple windows are open.
 # 0.6 EKR: Changes required by revisions of leoFind.leoFind class in Leo 4.3:
-#     - Removed '_flag' suffixes in OPTION_LIST.
-#     - Added c arg to QuickFind ctor.
-#         - We now have per-commander find panels.
-#     - update_ivars
-#         - Changed name from set_ivars.
-#         - Call setattr(self,key,0), not setattr(c,key+'_flag',0)
-#         - No more _flag hack.
-#         - Set self ivars, not c ivars.
-#     - Changed init_s_text to init_s_ctrl.
-#         - Changed s_text to s_ctrl.
+# - Removed '_flag' suffixes in OPTION_LIST.
+# - Added c arg to QuickFind ctor.
+#     - We now have per-commander find panels.
+# - update_ivars
+#     - Changed name from set_ivars.
+#     - Call setattr(self,key,0), not setattr(c,key+'_flag',0)
+#     - No more _flag hack.
+#     - Set self ivars, not c ivars.
+# - Changed init_s_text to init_s_ctrl.
+#     - Changed s_text to s_ctrl.
+# 0.7 EKR: Fixed crasher in Leo 4.4 by initing self.p in Quickfind ctor.
 #@-at
 #@nonl
 #@-node:ekr.20040908094021.3:<< version history >>
@@ -164,18 +165,14 @@ class SearchBox:
         # Remove the old find frame so its options don't compete with ours.
         search_mode = self.option_value.get() 
         new_find = QuickFind(c,text,search_mode)
-        
-        if 1:
-            old_find, c.frame.findPanel = c.frame.findPanel, new_find
-        else: # Global find frame.
-            old_find, g.app.findFrame = g.app.findFrame, new_find
+        old_find, c.frame.findPanel = c.frame.findPanel, new_find
+    
         # Do the search.
         c.findNext()
+    
         # Restore the find frame.
-        if 1:
-            c.frame.findPanel = old_find
-        else:
-            g.app.findFrame = old_find
+        c.frame.findPanel = old_find
+        
         # Remember this list 
         self.updateRecentList(text, search_mode) 
         if 0: # This doesn't work yet: the user can't see the match.
@@ -190,7 +187,7 @@ class SearchBox:
     def onKey (self,event=None): 
         """Called when the user presses Return in the text entry box"""
         self.search.after_idle(self.doSearch)
-    
+    #@nonl
     #@-node:ekr.20040108054555.5:onKey
     #@+node:ekr.20040108054555.8:searchRecent
     def searchRecent(self, *args, **kw):
@@ -249,6 +246,7 @@ class QuickFind(leoFind.leoFind):
         leoFind.leoFind.__init__(self,c)
         
         self.c = c
+        self.p = c.currentPosition() # Bug fix: 5/14/06
         self.s_ctrl = Tk.Text() # Used by find.search()
         self.__find_text = text
         self.search_option = search_option
