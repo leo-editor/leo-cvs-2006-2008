@@ -43,7 +43,7 @@ http://webpages.charter.net/edreamleo/rstplugin3.html
 
 from __future__ import generators # To make this plugin work with Python 2.2.
 
-__version__ = '1.10'
+__version__ = '1.11'
 
 #@<< imports >>
 #@+node:ekr.20050805162550.2:<< imports >>
@@ -370,19 +370,15 @@ except ImportError:
 # 1.0 EKR:
 # Write output files to the directory containing the .leo file by default.
 # This is c.frame.openDirectory, *not* g.app.loadDir.
-# 1.1 EKR:
-# By default, look for stylesheet in output directory.
-# 1.2 EKR:
-# Make sure code doesn't crash if docutils can not be imported.
-# 1.3 EKR:
-# Make the stylesheet path relative to the directory containing the output 
-# file.
+# 1.1 EKR: By default, look for stylesheet in output directory.
+# 1.2 EKR: Make sure code doesn't crash if docutils can not be imported.
+# 1.3 EKR: Make the stylesheet path relative to the directory containing the 
+# output file.
 # 1.4 EKR:
 # - Allow relative paths.
 # - Added processTopTree.  This has the same functionality as found in 
 # previous @button rst3 nodes.
-# 1.5 EKR:
-# Removed used recomputation of sytlesheet_path
+# 1.5 EKR: Removed used recomputation of sytlesheet_path
 # 1.6 EKR:
 # - Added support for default_path
 # - Removed duplicate messages about Silver City.
@@ -390,12 +386,11 @@ except ImportError:
 # - Fixed bug: preprocess ancestors as well as descendants in preprocessTree.
 # - Fixed bug: use the same path for the intermediate file as for the output 
 # file.
-# 1.8 EKR:
-# - Added event=None to arg list of rst3PluginCallback.
-# 1.9 EKR:
-# - Added from __future__ import generators to suppress warning in Python 2.2.
-# 1.10 EKR:
-# - Created self.source ivar to support work by Kent Tenney.
+# 1.8 EKR: Added event=None to arg list of rst3PluginCallback.
+# 1.9 EKR: Added from __future__ import generators to suppress warning in 
+# Python 2.2.
+# 1.10 EKR: Created self.source ivar to support work by Kent Tenney.
+# 1.11 EKR: Create the output directory if it does not exist.
 #@-at
 #@nonl
 #@-node:ekr.20050908120111:v 1.x
@@ -1153,6 +1148,11 @@ class rstClass:
         
         # Bug fix 12/4/05: Compute this here for use by intermediate file.
         self.outputFileName = self.computeOutputFileName(self.outputFileName)
+        
+        # Bug fix 5/15/06: Create the directory if it doesn't exist.
+        dir, junk = g.os_path_split(self.outputFileName)
+        if not os.access(dir,os.F_OK):
+            os.mkdir(dir)
     
         if self.getOption('write_intermediate_file'):
             name = self.outputFileName + '.txt'
