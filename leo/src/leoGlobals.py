@@ -930,38 +930,44 @@ def alert(message):
     tkMessageBox.showwarning("Alert", message)
 #@-node:ekr.20031218072017.3105:alert
 #@+node:ekr.20051023083258:callers
-def callers (n=8,excludeCaller=True):
+def callers (n=8,excludeCaller=True,files=False):
     
     '''Return a list containing the callers of the function that called g.callerList.
     
     By default, the function that called g.callerList is not on the list,
     which is what is wanted when using g.trace.'''
     
-    result = []
+    result = [] ; first = True
     while n > 0:
-        s = g._callerName(n)
-        if s == 'callers':
+        s = g._callerName(n,files=files)
+        if s.endswith('callers'):
             if excludeCaller and result:
                 del result [-1]
             break
         elif s:
+            if first:
+                first = False ; s = '\n' + s
             result.append(s)
         n -= 1
         
-    return ','.join(result)
+    sep = g.choose(files,'\n',',')
+    return sep.join(result)
 #@-node:ekr.20051023083258:callers
-#@+node:ekr.20031218072017.3107:callerName
-def _callerName (n=1):
+#@+node:ekr.20031218072017.3107:_callerName
+def _callerName (n=1,files=False):
 
     try: # get the function name from the call stack.
         f1 = sys._getframe(n) # The stack frame, n levels up.
         code1 = f1.f_code # The code object
-        return code1.co_name # The code name
+        if files:
+            return '%s:%s' % (g.shortFilename(code1.co_filename),code1.co_name)
+        else:
+            return code1.co_name # The code name
     except:
-        # g.es_exception()
+        g.es_exception()
         return '' # "<no caller name>"
 #@nonl
-#@-node:ekr.20031218072017.3107:callerName
+#@-node:ekr.20031218072017.3107:_callerName
 #@+node:ekr.20041105091148:g.pdb & test
 def pdb ():
     

@@ -1,9 +1,13 @@
 #@+leo-ver=4-thin
-#@+node:ekr.20060516124302:@thin ../src/leo_Debugger.py
+#@+node:ekr.20060516135654.94:@thin leo_Debugger.py
 #@<< imports >>
-#@+node:ekr.20060516080527.1:<< imports >>
+#@+node:ekr.20060516135654.95:<< imports >>
 import leoGlobals as g
 
+import sys
+sys.path.append(r'c:\prog\tigris-cvs\leo\src')
+
+import leo_run
 import leo_RemoteDebugger
 
 import idlelib.rpc as rpc
@@ -18,19 +22,16 @@ import sys
 import time
 import types
 
-# Not needed: the Remote debugger now accesses the Debugger class directly.
-# import Debugger 
-
 #from Tkinter import *
 import Tkinter as Tk
-# import tkMessageBox
+import tkMessageBox
 
 import __main__
 
 ### from WindowList import ListedToplevel
 ## from ScrolledList import ScrolledList
 #@nonl
-#@-node:ekr.20060516080527.1:<< imports >>
+#@-node:ekr.20060516135654.95:<< imports >>
 #@nl
 
 srcFile = r'c:\prog\tigris-cvs\leo\src\leo.py'  ###
@@ -38,12 +39,70 @@ srcFile = r'c:\prog\tigris-cvs\leo\src\leo.py'  ###
 LOCALHOST = '127.0.0.1'
 
 #@+others
-#@+node:ekr.20060516083841:From Pyshell.py
-#@+node:ekr.20060516090218:class ModifiedInterpreter
+#@+node:ekr.20060516142615.2:imports
+if 0:
+    import leoGlobals as g
+    import sys
+    
+    import leo_run
+    import leo_RemoteDebugger
+    import leo_Debugger
+    
+    import Tkinter as Tk
+#@nonl
+#@-node:ekr.20060516142615.2:imports
+#@+node:ekr.20060516142615.4:go
+def go (c):
+    
+    # From Pyshell.ctor
+    interp = ModifiedInterpreter(dummyShell(c))
+    
+    # From Pyshell.begin:
+    client = interp.start_subprocess()
+    g.trace('client',client,'interp',interp)
+    open_debugger(interp.rpcclt,interp)
+#@nonl
+#@-node:ekr.20060516142615.4:go
+#@+node:ekr.20060516142615.5:open_debugger
+def open_debugger(rpcClient,interp):
+
+    dbg_gui = leo_RemoteDebugger.start_remote_debugger(rpcClient,interp)
+    interp.setdebugger(dbg_gui)
+    dbg_gui.load_breakpoints()
+
+    if 0: ### old code
+        if self.interp.rpcclt:
+            dbg_gui = RemoteDebugger.start_remote_debugger(self.interp.rpcclt,self)
+        else:
+            dbg_gui = Debugger.Debugger(self)
+        self.interp.setdebugger(dbg_gui)
+        dbg_gui.load_breakpoints()
+        sys.ps1 = "[DEBUG ON]\n>>> "
+        self.showprompt()
+        self.set_debugger_indicator()
+#@nonl
+#@-node:ekr.20060516142615.5:open_debugger
+#@+node:ekr.20060516142615.6:class dummyShell
+class dummyShell:
+    
+    def __init__ (self,c):
+        self.c = c
+        self.stdout = sys.__stdout__
+        self.stderr = sys.__stderr__
+        self.flist = []
+        self.closing = False
+        self.executing = False
+        self.text = Tk.Text() # Ignored completely
+        self.pollinterval = 50  # millisec
+        # g.trace('dummyShell')
+#@nonl
+#@-node:ekr.20060516142615.6:class dummyShell
+#@+node:ekr.20060516135654.96:From Pyshell.py
+#@+node:ekr.20060516135654.97:class ModifiedInterpreter
 class ModifiedInterpreter(InteractiveInterpreter):
 
     #@	@+others
-    #@+node:ekr.20060516090218.1:__init__
+    #@+node:ekr.20060516135654.98:__init__
     def __init__(self, tkconsole):
     
         self.tkconsole = tkconsole # Required by later rpc registrations.
@@ -60,17 +119,23 @@ class ModifiedInterpreter(InteractiveInterpreter):
     
         self.subprocess_arglist = self.build_subprocess_arglist()
     #@nonl
-    #@-node:ekr.20060516090218.1:__init__
-    #@+node:ekr.20060516090218.2:spawn_subprocess (sets self.rpcpid)
+    #@-node:ekr.20060516135654.98:__init__
+    #@+node:ekr.20060516135654.99:spawn_subprocess (sets self.rpcpid)
     def spawn_subprocess(self):
     
         args = self.subprocess_arglist
+        
+        if 1:
+            # sys.path.append(r'c:\prog\tigris-cvs\leo\src')
+            g.trace(args)
+            # for s in sys.path: print s
+    
         self.rpcpid = os.spawnv(os.P_NOWAIT, sys.executable, args)
         
         g.trace('rpcpid',self.rpcpid)
     #@nonl
-    #@-node:ekr.20060516090218.2:spawn_subprocess (sets self.rpcpid)
-    #@+node:ekr.20060516090218.3:build_subprocess_arglist (now calls leo_run.main)
+    #@-node:ekr.20060516135654.99:spawn_subprocess (sets self.rpcpid)
+    #@+node:ekr.20060516135654.100:leo_Debugger.build_subprocess_arglist
     def build_subprocess_arglist(self):
         
         w = ['-W' + s for s in sys.warnoptions]
@@ -86,9 +151,10 @@ class ModifiedInterpreter(InteractiveInterpreter):
                 default=False, type='bool')
         
         ###if __name__ == 'idlelib.PyShell':
-        if 1:
+        if 1: # Works only if leo_run is in the same directory as the script.
+              # Perhaps this is a script problem
             command = "__import__('leo_run').main(%r)" % (del_exitf,)
-        elif 1: # EKR: Works, sorta, but uses idle code.  We don't want that.
+        elif 1: # EKR: Works using idlelib.run.  
             command = "__import__('idlelib.run').run.main(%r)" % (del_exitf,)
         else:
             command = "__import__('run').main(%r)" % (del_exitf,)
@@ -100,8 +166,8 @@ class ModifiedInterpreter(InteractiveInterpreter):
         
         return [decorated_exec] + w + ["-c", command, str(self.port)]
     #@nonl
-    #@-node:ekr.20060516090218.3:build_subprocess_arglist (now calls leo_run.main)
-    #@+node:ekr.20060516090218.4:start_subprocess
+    #@-node:ekr.20060516135654.100:leo_Debugger.build_subprocess_arglist
+    #@+node:ekr.20060516135654.101:start_subprocess
     def start_subprocess(self):
         # spawning first avoids passing a listening socket to the subprocess
         self.spawn_subprocess()
@@ -135,8 +201,8 @@ class ModifiedInterpreter(InteractiveInterpreter):
         self.transfer_path()
         self.poll_subprocess()
         return self.rpcclt
-    #@-node:ekr.20060516090218.4:start_subprocess
-    #@+node:ekr.20060516090218.5:restart_subprocess
+    #@-node:ekr.20060516135654.101:start_subprocess
+    #@+node:ekr.20060516135654.102:restart_subprocess
     def restart_subprocess(self):
         if self.restarting:
             return self.rpcclt
@@ -180,17 +246,17 @@ class ModifiedInterpreter(InteractiveInterpreter):
             debug.load_breakpoints()
         self.restarting = False
         return self.rpcclt
-    #@-node:ekr.20060516090218.5:restart_subprocess
-    #@+node:ekr.20060516090218.6:__request_interrupt
+    #@-node:ekr.20060516135654.102:restart_subprocess
+    #@+node:ekr.20060516135654.103:__request_interrupt
     def __request_interrupt(self):
     
         self.rpcclt.remotecall("exec", "interrupt_the_server", (), {})
-    #@-node:ekr.20060516090218.6:__request_interrupt
-    #@+node:ekr.20060516090218.7:interrupt_subprocess
+    #@-node:ekr.20060516135654.103:__request_interrupt
+    #@+node:ekr.20060516135654.104:interrupt_subprocess
     def interrupt_subprocess(self):
         threading.Thread(target=self.__request_interrupt).start()
-    #@-node:ekr.20060516090218.7:interrupt_subprocess
-    #@+node:ekr.20060516090218.8:kill_subprocess
+    #@-node:ekr.20060516135654.104:interrupt_subprocess
+    #@+node:ekr.20060516135654.105:kill_subprocess
     def kill_subprocess(self):
         
         try:
@@ -201,8 +267,8 @@ class ModifiedInterpreter(InteractiveInterpreter):
         self.tkconsole.executing = False
         self.rpcclt = None
     
-    #@-node:ekr.20060516090218.8:kill_subprocess
-    #@+node:ekr.20060516090218.9:unix_terminate
+    #@-node:ekr.20060516135654.105:kill_subprocess
+    #@+node:ekr.20060516135654.106:unix_terminate
     def unix_terminate(self):
         "UNIX: make sure subprocess is terminated and collect status"
         if hasattr(os, 'kill'):
@@ -216,19 +282,19 @@ class ModifiedInterpreter(InteractiveInterpreter):
                     os.waitpid(self.rpcpid, 0)
                 except OSError:
                     return
-    #@-node:ekr.20060516090218.9:unix_terminate
-    #@+node:ekr.20060516090218.10:transfer_path
+    #@-node:ekr.20060516135654.106:unix_terminate
+    #@+node:ekr.20060516135654.107:transfer_path
     def transfer_path(self):
         self.runcommand("""if 1:
         import sys as _sys
         _sys.path = %r
         del _sys
-        _msg = 'Use File/Exit or your end-of-file key to quit IDLE'
+        _msg = 'Use File/Exit or your end-of-file key to quit Leo'
         __builtins__.quit = __builtins__.exit = _msg
         del _msg
         \n""" % (sys.path,))
-    #@-node:ekr.20060516090218.10:transfer_path
-    #@+node:ekr.20060516090218.11:poll_subprocess
+    #@-node:ekr.20060516135654.107:transfer_path
+    #@+node:ekr.20060516135654.108:poll_subprocess
     def poll_subprocess(self):
         clt = self.rpcclt
         if clt is None:
@@ -263,18 +329,18 @@ class ModifiedInterpreter(InteractiveInterpreter):
         if not self.tkconsole.closing:
             self.tkconsole.text.after(self.tkconsole.pollinterval,
                                       self.poll_subprocess)
-    #@-node:ekr.20060516090218.11:poll_subprocess
-    #@+node:ekr.20060516090218.12:setdebugger
+    #@-node:ekr.20060516135654.108:poll_subprocess
+    #@+node:ekr.20060516135654.109:setdebugger
     debugger = None
     
     def setdebugger(self, debugger):
         self.debugger = debugger
-    #@-node:ekr.20060516090218.12:setdebugger
-    #@+node:ekr.20060516090218.13:getdebugger
+    #@-node:ekr.20060516135654.109:setdebugger
+    #@+node:ekr.20060516135654.110:getdebugger
     def getdebugger(self):
         return self.debugger
-    #@-node:ekr.20060516090218.13:getdebugger
-    #@+node:ekr.20060516090218.14:open_remote_stack_viewer
+    #@-node:ekr.20060516135654.110:getdebugger
+    #@+node:ekr.20060516135654.111:open_remote_stack_viewer
     def open_remote_stack_viewer(self):
         """Initiate the remote stack viewer from a separate thread.
     
@@ -287,8 +353,8 @@ class ModifiedInterpreter(InteractiveInterpreter):
         """
         self.tkconsole.text.after(300, self.remote_stack_viewer)
         return
-    #@-node:ekr.20060516090218.14:open_remote_stack_viewer
-    #@+node:ekr.20060516090218.15:remote_stack_viewer
+    #@-node:ekr.20060516135654.111:open_remote_stack_viewer
+    #@+node:ekr.20060516135654.112:remote_stack_viewer
     def remote_stack_viewer(self):
         import RemoteObjectBrowser
         oid = self.rpcclt.remotequeue("exec", "stackviewer", ("flist",), {})
@@ -304,8 +370,8 @@ class ModifiedInterpreter(InteractiveInterpreter):
         sc.frame.pack(expand=1, fill="both")
         node = TreeNode(sc.canvas, None, item)
         node.expand()
-    #@-node:ekr.20060516090218.15:remote_stack_viewer
-    #@+node:ekr.20060516090218.16:execsource
+    #@-node:ekr.20060516135654.112:remote_stack_viewer
+    #@+node:ekr.20060516135654.113:execsource
         # XXX Should GC the remote tree when closing the window
     
     gid = 0
@@ -314,8 +380,8 @@ class ModifiedInterpreter(InteractiveInterpreter):
         "Like runsource() but assumes complete exec source"
         filename = self.stuffsource(source)
         self.execfile(filename, source)
-    #@-node:ekr.20060516090218.16:execsource
-    #@+node:ekr.20060516090218.17:execfile
+    #@-node:ekr.20060516135654.113:execsource
+    #@+node:ekr.20060516135654.114:execfile
     def execfile(self, filename, source=None):
         
         g.trace(filename)
@@ -334,8 +400,8 @@ class ModifiedInterpreter(InteractiveInterpreter):
             self.tkconsole.showprompt()
         else:
             self.runcode(code)
-    #@-node:ekr.20060516090218.17:execfile
-    #@+node:ekr.20060516090218.18:runsource
+    #@-node:ekr.20060516135654.114:execfile
+    #@+node:ekr.20060516135654.115:runsource
     def runsource(self, source):
         "Extend base class method: Stuff the source in the line cache first"
         filename = self.stuffsource(source)
@@ -356,8 +422,8 @@ class ModifiedInterpreter(InteractiveInterpreter):
             if self.save_warnings_filters is not None:
                 warnings.filters[:] = self.save_warnings_filters
                 self.save_warnings_filters = None
-    #@-node:ekr.20060516090218.18:runsource
-    #@+node:ekr.20060516090218.19:stuffsource
+    #@-node:ekr.20060516135654.115:runsource
+    #@+node:ekr.20060516135654.116:stuffsource
     def stuffsource(self, source):
         "Stuff source in the filename cache"
         filename = "<pyshell#%d>" % self.gid
@@ -365,8 +431,8 @@ class ModifiedInterpreter(InteractiveInterpreter):
         lines = source.split("\n")
         linecache.cache[filename] = len(source)+1, 0, lines, filename
         return filename
-    #@-node:ekr.20060516090218.19:stuffsource
-    #@+node:ekr.20060516090218.20:prepend_syspath
+    #@-node:ekr.20060516135654.116:stuffsource
+    #@+node:ekr.20060516135654.117:prepend_syspath
     def prepend_syspath(self, filename):
         "Prepend sys.path with file's directory if not already included"
         self.runcommand("""if 1:
@@ -378,8 +444,8 @@ class ModifiedInterpreter(InteractiveInterpreter):
                 _sys.path.insert(0, _dir)
             del _filename, _sys, _dirname, _dir
             \n""" % (filename,))
-    #@-node:ekr.20060516090218.20:prepend_syspath
-    #@+node:ekr.20060516090218.21:showsyntaxerror
+    #@-node:ekr.20060516135654.117:prepend_syspath
+    #@+node:ekr.20060516135654.118:showsyntaxerror
     def showsyntaxerror(self, filename=None):
         """Extend base class method: Add Colorizing
     
@@ -407,8 +473,8 @@ class ModifiedInterpreter(InteractiveInterpreter):
             self.tkconsole.resetoutput()
             InteractiveInterpreter.showsyntaxerror(self, filename)
         self.tkconsole.showprompt()
-    #@-node:ekr.20060516090218.21:showsyntaxerror
-    #@+node:ekr.20060516090218.22:unpackerror
+    #@-node:ekr.20060516135654.118:showsyntaxerror
+    #@+node:ekr.20060516135654.119:unpackerror
     def unpackerror(self):
         type, value, tb = sys.exc_info()
         ok = type is SyntaxError
@@ -423,8 +489,8 @@ class ModifiedInterpreter(InteractiveInterpreter):
             return msg, lineno, offset, line
         else:
             return None
-    #@-node:ekr.20060516090218.22:unpackerror
-    #@+node:ekr.20060516090218.23:showtraceback
+    #@-node:ekr.20060516135654.119:unpackerror
+    #@+node:ekr.20060516135654.120:showtraceback
     def showtraceback(self):
     
         "Extend base class method to reset output properly"
@@ -434,15 +500,15 @@ class ModifiedInterpreter(InteractiveInterpreter):
         if self.tkconsole.getvar(g.virtual_event_name('toggle-jit-stack-viewer')):
             self.tkconsole.open_stack_viewer()
     #@nonl
-    #@-node:ekr.20060516090218.23:showtraceback
-    #@+node:ekr.20060516090218.24:checklinecache
+    #@-node:ekr.20060516135654.120:showtraceback
+    #@+node:ekr.20060516135654.121:checklinecache
     def checklinecache(self):
         c = linecache.cache
         for key in c.keys():
             if key[:1] + key[-1:] != "<>":
                 del c[key]
-    #@-node:ekr.20060516090218.24:checklinecache
-    #@+node:ekr.20060516090218.25:runcommand
+    #@-node:ekr.20060516135654.121:checklinecache
+    #@+node:ekr.20060516135654.122:runcommand
     def runcommand(self, code):
         "Run the code without invoking the debugger"
         # The code better not raise an exception!
@@ -454,8 +520,8 @@ class ModifiedInterpreter(InteractiveInterpreter):
         else:
             exec code in self.locals
         return 1
-    #@-node:ekr.20060516090218.25:runcommand
-    #@+node:ekr.20060516090218.26:runcode
+    #@-node:ekr.20060516135654.122:runcommand
+    #@+node:ekr.20060516135654.123:runcode
     def runcode(self, code):
         "Override base class method"
         if self.tkconsole.executing:
@@ -489,35 +555,35 @@ class ModifiedInterpreter(InteractiveInterpreter):
         finally:
             if not use_subprocess:
                 self.tkconsole.endexecuting()
-    #@-node:ekr.20060516090218.26:runcode
-    #@+node:ekr.20060516090218.27:write
+    #@-node:ekr.20060516135654.123:runcode
+    #@+node:ekr.20060516135654.124:write
     def write(self, s):
         "Override base class method"
         self.tkconsole.stderr.write(s)
-    #@-node:ekr.20060516090218.27:write
-    #@+node:ekr.20060516090218.28:display_port_binding_error
+    #@-node:ekr.20060516135654.124:write
+    #@+node:ekr.20060516135654.125:display_port_binding_error
     def display_port_binding_error(self):
         tkMessageBox.showerror(
             "Port Binding Error",
-            "IDLE can't bind TCP/IP port 8833, which is necessary to "
+            "Leo can't bind TCP/IP port 8833, which is necessary to "
             "communicate with its Python execution server.  Either "
             "no networking is installed on this computer or another "
-            "process (another IDLE?) is using the port.  Run IDLE with the -n "
+            "process (another Leo?) is using the port.  Run Leo with the -n "
             "command line switch to start without a subprocess and refer to "
-            "Help/IDLE Help 'Running without a subprocess' for further "
+            "Help/Leo Help 'Running without a subprocess' for further "
             "details.",
             master=self.tkconsole.text)
-    #@-node:ekr.20060516090218.28:display_port_binding_error
-    #@+node:ekr.20060516090218.29:display_no_subprocess_error
+    #@-node:ekr.20060516135654.125:display_port_binding_error
+    #@+node:ekr.20060516135654.126:display_no_subprocess_error
     def display_no_subprocess_error(self):
         tkMessageBox.showerror(
             "Subprocess Startup Error",
-            "IDLE's subprocess didn't make connection.  Either IDLE can't "
+            "Leo's subprocess didn't make connection.  Either Leo can't "
             "start a subprocess or personal firewall software is blocking "
             "the connection.",
             master=self.tkconsole.text)
-    #@-node:ekr.20060516090218.29:display_no_subprocess_error
-    #@+node:ekr.20060516090218.30:display_executing_dialog
+    #@-node:ekr.20060516135654.126:display_no_subprocess_error
+    #@+node:ekr.20060516135654.127:display_executing_dialog
     def display_executing_dialog(self):
         
         if 1: ### EKR
@@ -529,8 +595,8 @@ class ModifiedInterpreter(InteractiveInterpreter):
                 "please wait until it is finished.",
                 master=self.tkconsole.text)
     #@nonl
-    #@-node:ekr.20060516090218.30:display_executing_dialog
-    #@+node:ekr.20060516083841.10:close_debugger OVERRIDE
+    #@-node:ekr.20060516135654.127:display_executing_dialog
+    #@+node:ekr.20060516135654.128:close_debugger OVERRIDE
     def close_debugger(self):
         
         interp = self
@@ -555,26 +621,26 @@ class ModifiedInterpreter(InteractiveInterpreter):
                 self.showprompt()
             self.set_debugger_indicator()
     #@nonl
-    #@-node:ekr.20060516083841.10:close_debugger OVERRIDE
+    #@-node:ekr.20060516135654.128:close_debugger OVERRIDE
     #@-others
 #@nonl
-#@-node:ekr.20060516090218:class ModifiedInterpreter
-#@+node:ekr.20060516100753:class MyRPCClient
+#@-node:ekr.20060516135654.97:class ModifiedInterpreter
+#@+node:ekr.20060516135654.129:class MyRPCClient
 class MyRPCClient(rpc.RPCClient):
 
     #@	@+others
-    #@+node:ekr.20060516100753.1:handle_EOF
+    #@+node:ekr.20060516135654.130:handle_EOF
     def handle_EOF(self):
     
         "Override the base class - just re-raise EOFError"
         raise EOFError
     #@nonl
-    #@-node:ekr.20060516100753.1:handle_EOF
+    #@-node:ekr.20060516135654.130:handle_EOF
     #@-others
 #@nonl
-#@-node:ekr.20060516100753:class MyRPCClient
-#@+node:ekr.20060516084128:Not used from Pyshell
-#@+node:ekr.20060516083841.3:__init__
+#@-node:ekr.20060516135654.129:class MyRPCClient
+#@+node:ekr.20060516135654.131:Not used from Pyshell
+#@+node:ekr.20060516135654.132:__init__
 def __init__(self, flist=None):
     if use_subprocess:
         ms = self.menu_specs
@@ -623,12 +689,12 @@ def __init__(self, flist=None):
     self.history = self.History(self.text)
     #
     self.pollinterval = 50  # millisec
-#@-node:ekr.20060516083841.3:__init__
-#@+node:ekr.20060516083841.4:get_standard_extension_names
+#@-node:ekr.20060516135654.132:__init__
+#@+node:ekr.20060516135654.133:get_standard_extension_names
 def get_standard_extension_names(self):
     return idleConf.GetExtensions(shell_only=True)
-#@-node:ekr.20060516083841.4:get_standard_extension_names
-#@+node:ekr.20060516083841.5:set_warning_stream
+#@-node:ekr.20060516135654.133:get_standard_extension_names
+#@+node:ekr.20060516135654.134:set_warning_stream
 reading = False
 executing = False
 canceled = False
@@ -638,12 +704,12 @@ closing = False
 def set_warning_stream(self, stream):
     global warning_stream
     warning_stream = stream
-#@-node:ekr.20060516083841.5:set_warning_stream
-#@+node:ekr.20060516083841.6:get_warning_stream
+#@-node:ekr.20060516135654.134:set_warning_stream
+#@+node:ekr.20060516135654.135:get_warning_stream
 def get_warning_stream(self):
     return warning_stream
-#@-node:ekr.20060516083841.6:get_warning_stream
-#@+node:ekr.20060516083841.7:toggle_debugger
+#@-node:ekr.20060516135654.135:get_warning_stream
+#@+node:ekr.20060516135654.136:toggle_debugger
 def toggle_debugger(self, event=None):
     if self.executing:
         tkMessageBox.showerror("Don't debug now",
@@ -657,30 +723,30 @@ def toggle_debugger(self, event=None):
             self.close_debugger()
         else:
             self.open_debugger()
-#@-node:ekr.20060516083841.7:toggle_debugger
-#@+node:ekr.20060516083841.8:set_debugger_indicator
+#@-node:ekr.20060516135654.136:toggle_debugger
+#@+node:ekr.20060516135654.137:set_debugger_indicator
 def set_debugger_indicator(self):
     db = self.interp.getdebugger()
     self.setvar(virtual_event_name('toggle-debugger'), not not db)
-#@-node:ekr.20060516083841.8:set_debugger_indicator
-#@+node:ekr.20060516083841.9:toggle_jit_stack_viewer
+#@-node:ekr.20060516135654.137:set_debugger_indicator
+#@+node:ekr.20060516135654.138:toggle_jit_stack_viewer
 def toggle_jit_stack_viewer(self, event=None):
     pass # All we need is the variable
-#@-node:ekr.20060516083841.9:toggle_jit_stack_viewer
-#@+node:ekr.20060516083841.12:beginexecuting
+#@-node:ekr.20060516135654.138:toggle_jit_stack_viewer
+#@+node:ekr.20060516135654.139:beginexecuting
 def beginexecuting(self):
     "Helper for ModifiedInterpreter"
     self.resetoutput()
     self.executing = 1
-#@-node:ekr.20060516083841.12:beginexecuting
-#@+node:ekr.20060516083841.13:endexecuting
+#@-node:ekr.20060516135654.139:beginexecuting
+#@+node:ekr.20060516135654.140:endexecuting
 def endexecuting(self):
     "Helper for ModifiedInterpreter"
     self.executing = 0
     self.canceled = 0
     self.showprompt()
-#@-node:ekr.20060516083841.13:endexecuting
-#@+node:ekr.20060516083841.14:close
+#@-node:ekr.20060516135654.140:endexecuting
+#@+node:ekr.20060516135654.141:close
 def close(self):
     "Extend EditorWindow.close()"
     if self.executing:
@@ -694,12 +760,12 @@ def close(self):
     self.closing = True
     # Wait for poll_subprocess() rescheduling to stop
     self.text.after(2 * self.pollinterval, self.close2)
-#@-node:ekr.20060516083841.14:close
-#@+node:ekr.20060516083841.15:close2
+#@-node:ekr.20060516135654.141:close
+#@+node:ekr.20060516135654.142:close2
 def close2(self):
     return EditorWindow.close(self)
-#@-node:ekr.20060516083841.15:close2
-#@+node:ekr.20060516083841.16:_close
+#@-node:ekr.20060516135654.142:close2
+#@+node:ekr.20060516135654.143:_close
 def _close(self):
     "Extend EditorWindow._close(), shut down debugger and execution server"
     self.close_debugger()
@@ -715,23 +781,23 @@ def _close(self):
     self.flist.pyshell = None
     self.history = None
     EditorWindow._close(self)
-#@-node:ekr.20060516083841.16:_close
-#@+node:ekr.20060516083841.17:ispythonsource
+#@-node:ekr.20060516135654.143:_close
+#@+node:ekr.20060516135654.144:ispythonsource
 def ispythonsource(self, filename):
     "Override EditorWindow method: never remove the colorizer"
     return True
-#@-node:ekr.20060516083841.17:ispythonsource
-#@+node:ekr.20060516083841.18:short_title
+#@-node:ekr.20060516135654.144:ispythonsource
+#@+node:ekr.20060516135654.145:short_title
 def short_title(self):
     return self.shell_title
-#@-node:ekr.20060516083841.18:short_title
-#@+node:ekr.20060516083841.19:begin
+#@-node:ekr.20060516135654.145:short_title
+#@+node:ekr.20060516135654.146:begin
 COPYRIGHT = \
       'Type "copyright", "credits" or "license()" for more information.'
 
 firewallmessage = """
 ****************************************************************
-Personal firewall software may warn about the connection IDLE
+Personal firewall software may warn about the connection Leo
 makes to its subprocess using this computer's internal loopback
 interface.  This connection is not visible on any external
 interface and no data is sent to or received from the Internet.
@@ -755,8 +821,8 @@ def begin(self):
     import Tkinter
     Tkinter._default_root = None # 03Jan04 KBK What's this?
     return True
-#@-node:ekr.20060516083841.19:begin
-#@+node:ekr.20060516083841.20:readline
+#@-node:ekr.20060516135654.146:begin
+#@+node:ekr.20060516135654.147:readline
 def readline(self):
     save = self.reading
     try:
@@ -779,12 +845,12 @@ def readline(self):
         self.endoffile = 0
         return ""
     return line
-#@-node:ekr.20060516083841.20:readline
-#@+node:ekr.20060516083841.21:isatty
+#@-node:ekr.20060516135654.147:readline
+#@+node:ekr.20060516135654.148:isatty
 def isatty(self):
     return True
-#@-node:ekr.20060516083841.21:isatty
-#@+node:ekr.20060516083841.22:cancel_callback
+#@-node:ekr.20060516135654.148:isatty
+#@+node:ekr.20060516135654.149:cancel_callback
 def cancel_callback(self, event=None):
     try:
         if self.text.compare("sel.first", "!=", "sel.last"):
@@ -806,8 +872,8 @@ def cancel_callback(self, event=None):
         else:
             self.interp.interrupt_subprocess()
     return "break"
-#@-node:ekr.20060516083841.22:cancel_callback
-#@+node:ekr.20060516083841.23:eof_callback
+#@-node:ekr.20060516135654.149:cancel_callback
+#@+node:ekr.20060516135654.150:eof_callback
 def eof_callback(self, event):
     if self.executing and not self.reading:
         return # Let the default binding (delete next char) take over
@@ -822,8 +888,8 @@ def eof_callback(self, event):
         self.endoffile = 1
         self.top.quit()
     return "break"
-#@-node:ekr.20060516083841.23:eof_callback
-#@+node:ekr.20060516083841.24:home_callback
+#@-node:ekr.20060516135654.150:eof_callback
+#@+node:ekr.20060516135654.151:home_callback
 def home_callback(self, event):
     if event.state != 0 and event.keysym == "Home":
         return # <Modifier-Home>; fall back to class binding
@@ -833,8 +899,8 @@ def home_callback(self, event):
         self.text.tag_remove("sel", "1.0", "end")
         self.text.see("insert")
         return "break"
-#@-node:ekr.20060516083841.24:home_callback
-#@+node:ekr.20060516083841.25:linefeed_callback
+#@-node:ekr.20060516135654.151:home_callback
+#@+node:ekr.20060516135654.152:linefeed_callback
 def linefeed_callback(self, event):
     # Insert a linefeed without entering anything (still autoindented)
     if self.reading:
@@ -843,8 +909,8 @@ def linefeed_callback(self, event):
     else:
         self.newline_and_indent_event(event)
     return "break"
-#@-node:ekr.20060516083841.25:linefeed_callback
-#@+node:ekr.20060516083841.26:enter_callback
+#@-node:ekr.20060516135654.152:linefeed_callback
+#@+node:ekr.20060516135654.153:enter_callback
 def enter_callback(self, event):
     if self.executing and not self.reading:
         return # Let the default binding (insert '\n') take over
@@ -906,13 +972,13 @@ def enter_callback(self, event):
     else:
         self.runit()
     return "break"
-#@-node:ekr.20060516083841.26:enter_callback
-#@+node:ekr.20060516083841.27:recall
+#@-node:ekr.20060516135654.153:enter_callback
+#@+node:ekr.20060516135654.154:recall
 def recall(self, s):
     if self.history:
         self.history.recall(s)
-#@-node:ekr.20060516083841.27:recall
-#@+node:ekr.20060516083841.28:runit
+#@-node:ekr.20060516135654.154:recall
+#@+node:ekr.20060516135654.155:runit
 def runit(self):
     line = self.text.get("iomark", "end-1c")
     # Strip off last newline and surrounding whitespace.
@@ -926,8 +992,8 @@ def runit(self):
         i = i-1
     line = line[:i]
     more = self.interp.runsource(line)
-#@-node:ekr.20060516083841.28:runit
-#@+node:ekr.20060516083841.29:open_stack_viewer
+#@-node:ekr.20060516135654.155:runit
+#@+node:ekr.20060516135654.156:open_stack_viewer
 def open_stack_viewer(self, event=None):
     if self.interp.rpcclt:
         return self.interp.remote_stack_viewer()
@@ -941,17 +1007,17 @@ def open_stack_viewer(self, event=None):
         return
     from StackViewer import StackBrowser
     sv = StackBrowser(self.root, self.flist)
-#@-node:ekr.20060516083841.29:open_stack_viewer
-#@+node:ekr.20060516083841.30:view_restart_mark
+#@-node:ekr.20060516135654.156:open_stack_viewer
+#@+node:ekr.20060516135654.157:view_restart_mark
 def view_restart_mark(self, event=None):
     self.text.see("iomark")
     self.text.see("restart")
-#@-node:ekr.20060516083841.30:view_restart_mark
-#@+node:ekr.20060516083841.31:restart_shell
+#@-node:ekr.20060516135654.157:view_restart_mark
+#@+node:ekr.20060516135654.158:restart_shell
 def restart_shell(self, event=None):
     self.interp.restart_subprocess()
-#@-node:ekr.20060516083841.31:restart_shell
-#@+node:ekr.20060516083841.32:showprompt
+#@-node:ekr.20060516135654.158:restart_shell
+#@+node:ekr.20060516135654.159:showprompt
 def showprompt(self):
     self.resetoutput()
     try:
@@ -962,8 +1028,8 @@ def showprompt(self):
     self.text.mark_set("insert", "end-1c")
     self.set_line_and_column()
     self.io.reset_undo()
-#@-node:ekr.20060516083841.32:showprompt
-#@+node:ekr.20060516083841.33:resetoutput
+#@-node:ekr.20060516135654.159:showprompt
+#@+node:ekr.20060516135654.160:resetoutput
 def resetoutput(self):
     source = self.text.get("iomark", "end-1c")
     if self.history:
@@ -973,8 +1039,8 @@ def resetoutput(self):
     self.text.mark_set("iomark", "end-1c")
     self.set_line_and_column()
     sys.stdout.softspace = 0
-#@-node:ekr.20060516083841.33:resetoutput
-#@+node:ekr.20060516083841.34:write
+#@-node:ekr.20060516135654.160:resetoutput
+#@+node:ekr.20060516135654.161:write
 def write(self, s, tags=()):
     try:
         self.text.mark_gravity("iomark", "right")
@@ -986,24 +1052,24 @@ def write(self, s, tags=()):
         self.canceled = 0
         if not use_subprocess:
             raise KeyboardInterrupt
-#@-node:ekr.20060516083841.34:write
-#@-node:ekr.20060516084128:Not used from Pyshell
-#@-node:ekr.20060516083841:From Pyshell.py
-#@+node:ekr.20060516081509.2:From Debugger.py
-#@+node:ekr.20060516080527.3:class Idb (used by remote debugger code)
+#@-node:ekr.20060516135654.161:write
+#@-node:ekr.20060516135654.131:Not used from Pyshell
+#@-node:ekr.20060516135654.96:From Pyshell.py
+#@+node:ekr.20060516135654.162:From Debugger.py
+#@+node:ekr.20060516135654.163:class Idb (used by remote debugger code)
 # Important: this class is used by the remote debugger code.
 
 class Idb(bdb.Bdb):
     
     #@	@+others
-    #@+node:ekr.20060516080527.4:__init__
+    #@+node:ekr.20060516135654.164:__init__
     def __init__(self, gui):
     
         self.gui = gui
         bdb.Bdb.__init__(self)
     #@nonl
-    #@-node:ekr.20060516080527.4:__init__
-    #@+node:ekr.20060516080527.5:user_line
+    #@-node:ekr.20060516135654.164:__init__
+    #@+node:ekr.20060516135654.165:user_line
     def user_line(self, frame):
         
         if self.in_rpc_code(frame):
@@ -1012,8 +1078,8 @@ class Idb(bdb.Bdb):
             message = self.__frame2message(frame)
             self.gui.interaction(message, frame)
     #@nonl
-    #@-node:ekr.20060516080527.5:user_line
-    #@+node:ekr.20060516080527.6:user_exception
+    #@-node:ekr.20060516135654.165:user_line
+    #@+node:ekr.20060516135654.166:user_exception
     def user_exception(self, frame, info):
         
         if self.in_rpc_code(frame):
@@ -1022,8 +1088,8 @@ class Idb(bdb.Bdb):
             message = self.__frame2message(frame)
             self.gui.interaction(message, frame, info)
     #@nonl
-    #@-node:ekr.20060516080527.6:user_exception
-    #@+node:ekr.20060516080527.7:in_rpc_code
+    #@-node:ekr.20060516135654.166:user_exception
+    #@+node:ekr.20060516135654.167:in_rpc_code
     def in_rpc_code(self, frame):
     
         if frame.f_code.co_filename.count('rpc.py'):
@@ -1034,8 +1100,8 @@ class Idb(bdb.Bdb):
                 # (that test will catch both Debugger.py and RemoteDebugger.py)
                 return False
             return self.in_rpc_code(prev_frame)
-    #@-node:ekr.20060516080527.7:in_rpc_code
-    #@+node:ekr.20060516080527.8:__frame2message
+    #@-node:ekr.20060516135654.167:in_rpc_code
+    #@+node:ekr.20060516135654.168:__frame2message
     def __frame2message(self, frame):
     
         code = frame.f_code
@@ -1047,13 +1113,13 @@ class Idb(bdb.Bdb):
             message = "%s: %s()" % (message, code.co_name)
         return message
     #@nonl
-    #@-node:ekr.20060516080527.8:__frame2message
+    #@-node:ekr.20060516135654.168:__frame2message
     #@-others
-#@-node:ekr.20060516080527.3:class Idb (used by remote debugger code)
-#@+node:ekr.20060516080527.32:class StackViewer
+#@-node:ekr.20060516135654.163:class Idb (used by remote debugger code)
+#@+node:ekr.20060516135654.169:class StackViewer
 class StackViewer(ScrolledList.ScrolledList):
     #@	@+others
-    #@+node:ekr.20060516080527.33:__init__
+    #@+node:ekr.20060516135654.170:__init__
     def __init__(self, master, flist, gui):
         
         ScrolledList.ScrolledList.__init__(self, master, width=80)
@@ -1061,8 +1127,8 @@ class StackViewer(ScrolledList.ScrolledList):
         self.gui = gui
         self.stack = []
     
-    #@-node:ekr.20060516080527.33:__init__
-    #@+node:ekr.20060516080527.34:load_stack
+    #@-node:ekr.20060516135654.170:__init__
+    #@+node:ekr.20060516135654.171:load_stack
     def load_stack(self, stack, index=None):
         self.stack = stack
         self.clear()
@@ -1089,14 +1155,14 @@ class StackViewer(ScrolledList.ScrolledList):
             self.append(item)
         if index is not None:
             self.select(index)
-    #@-node:ekr.20060516080527.34:load_stack
-    #@+node:ekr.20060516080527.35:popup_event
+    #@-node:ekr.20060516135654.171:load_stack
+    #@+node:ekr.20060516135654.172:popup_event
     def popup_event(self, event):
         "override base method"
         if self.stack:
             return ScrolledList.ScrolledList.popup_event(self, event)
-    #@-node:ekr.20060516080527.35:popup_event
-    #@+node:ekr.20060516080527.36:fill_menu
+    #@-node:ekr.20060516135654.172:popup_event
+    #@+node:ekr.20060516135654.173:fill_menu
     def fill_menu(self):
         "override base method"
         menu = self.menu
@@ -1104,31 +1170,31 @@ class StackViewer(ScrolledList.ScrolledList):
                          command=self.goto_source_line)
         menu.add_command(label="Show stack frame",
                          command=self.show_stack_frame)
-    #@-node:ekr.20060516080527.36:fill_menu
-    #@+node:ekr.20060516080527.37:on_select
+    #@-node:ekr.20060516135654.173:fill_menu
+    #@+node:ekr.20060516135654.174:on_select
     def on_select(self, index):
         "override base method"
         if 0 <= index < len(self.stack):
             self.gui.show_frame(self.stack[index])
-    #@-node:ekr.20060516080527.37:on_select
-    #@+node:ekr.20060516080527.38:on_double
+    #@-node:ekr.20060516135654.174:on_select
+    #@+node:ekr.20060516135654.175:on_double
     def on_double(self, index):
         "override base method"
         self.show_source(index)
-    #@-node:ekr.20060516080527.38:on_double
-    #@+node:ekr.20060516080527.39:goto_source_line
+    #@-node:ekr.20060516135654.175:on_double
+    #@+node:ekr.20060516135654.176:goto_source_line
     def goto_source_line(self):
     
         index = self.listbox.index("active")
         self.show_source(index)
-    #@-node:ekr.20060516080527.39:goto_source_line
-    #@+node:ekr.20060516080527.40:show_stack_frame
+    #@-node:ekr.20060516135654.176:goto_source_line
+    #@+node:ekr.20060516135654.177:show_stack_frame
     def show_stack_frame(self):
         index = self.listbox.index("active")
         if 0 <= index < len(self.stack):
             self.gui.show_frame(self.stack[index])
-    #@-node:ekr.20060516080527.40:show_stack_frame
-    #@+node:ekr.20060516080527.41:show_source
+    #@-node:ekr.20060516135654.177:show_stack_frame
+    #@+node:ekr.20060516135654.178:show_source
     def show_source(self, index):
         if not (0 <= index < len(self.stack)):
             return
@@ -1139,15 +1205,15 @@ class StackViewer(ScrolledList.ScrolledList):
             edit = self.flist.open(filename)
             if edit:
                 edit.gotoline(lineno)
-    #@-node:ekr.20060516080527.41:show_source
+    #@-node:ekr.20060516135654.178:show_source
     #@-others
-#@-node:ekr.20060516080527.32:class StackViewer
-#@+node:ekr.20060516080527.42:class NamespaceViewer
+#@-node:ekr.20060516135654.169:class StackViewer
+#@+node:ekr.20060516135654.179:class NamespaceViewer
 
 
 class NamespaceViewer:
     #@	@+others
-    #@+node:ekr.20060516080527.43:__init__
+    #@+node:ekr.20060516135654.180:__init__
     def __init__(self, master, title, dict=None):
         width = 0
         height = 40
@@ -1174,8 +1240,8 @@ class NamespaceViewer:
         self.subframe = subframe = Tk.Frame(canvas)
         self.sfid = canvas.create_window(0, 0, window=subframe, anchor="nw")
         self.load_dict(dict)
-    #@-node:ekr.20060516080527.43:__init__
-    #@+node:ekr.20060516080527.44:load_dict
+    #@-node:ekr.20060516135654.180:__init__
+    #@+node:ekr.20060516135654.181:load_dict
     dict = -1
     
     def load_dict(self, dict, force=0, rpc_client=None):
@@ -1220,21 +1286,21 @@ class NamespaceViewer:
             canvas["height"] = height
             frame.pack(expand=0)
     
-    #@-node:ekr.20060516080527.44:load_dict
-    #@+node:ekr.20060516080527.45:close
+    #@-node:ekr.20060516135654.181:load_dict
+    #@+node:ekr.20060516135654.182:close
     def close(self):
         self.frame.destroy()
-    #@-node:ekr.20060516080527.45:close
+    #@-node:ekr.20060516135654.182:close
     #@-others
-#@-node:ekr.20060516080527.42:class NamespaceViewer
-#@+node:ekr.20060516080527.9:class Debugger
+#@-node:ekr.20060516135654.179:class NamespaceViewer
+#@+node:ekr.20060516135654.183:class Debugger
 class Debugger:
 
     vstack = vsource = vlocals = vglobals = None
 
     #@    @+others
-    #@+node:ekr.20060516111847:Birth
-    #@+node:ekr.20060516080527.10:__init__
+    #@+node:ekr.20060516135654.184:Birth
+    #@+node:ekr.20060516135654.185:__init__
     def __init__(self, interp, idb=None):
         
         # Were inited as needed.
@@ -1252,12 +1318,12 @@ class Debugger:
         
         g.trace('Debugger',interp,self.idb)
     #@nonl
-    #@-node:ekr.20060516080527.10:__init__
-    #@+node:ekr.20060516080527.13:make_gui
+    #@-node:ekr.20060516135654.185:__init__
+    #@+node:ekr.20060516135654.186:make_gui
     def make_gui(self):
         
         #@    << create the top level frame >>
-        #@+node:ekr.20060516111602:<< create the top level frame >>
+        #@+node:ekr.20060516135654.187:<< create the top level frame >>
         ### self.flist = pyshell.flist
         self.flist = [srcFile]
         
@@ -1268,10 +1334,10 @@ class Debugger:
         top.wm_protocol("WM_DELETE_WINDOW", self.close)
         # self.top.bind("<Escape>", self.close)
         #@nonl
-        #@-node:ekr.20060516111602:<< create the top level frame >>
+        #@-node:ekr.20060516135654.187:<< create the top level frame >>
         #@nl
         #@    << create the control buttons >>
-        #@+node:ekr.20060516104706:<< create the control buttons >>
+        #@+node:ekr.20060516135654.188:<< create the control buttons >>
         self.bframe = bframe = Tk.Frame(top)
         self.bframe.pack(anchor="w")
         self.buttons = bl = []
@@ -1291,10 +1357,10 @@ class Debugger:
             b.configure(state="disabled")
             b.pack(side="left")
         #@nonl
-        #@-node:ekr.20060516104706:<< create the control buttons >>
+        #@-node:ekr.20060516135654.188:<< create the control buttons >>
         #@nl
         #@    << create the check boxes >>
-        #@+node:ekr.20060516105630:<< create the check boxes >>
+        #@+node:ekr.20060516135654.189:<< create the check boxes >>
         self.cframe = cframe = Tk.Frame(bframe)
         self.cframe.pack(side="left")
         
@@ -1324,7 +1390,7 @@ class Debugger:
             command = self.show_globals, variable = self.vglobals)
         self.bglobals.grid(row=1,column=1)
         #@nonl
-        #@-node:ekr.20060516105630:<< create the check boxes >>
+        #@-node:ekr.20060516135654.189:<< create the check boxes >>
         #@nl
         #
         self.status = Tk.Label(top, anchor="w")
@@ -1346,9 +1412,9 @@ class Debugger:
             self.show_locals()
         if self.vglobals.get():
             self.show_globals()
-    #@-node:ekr.20060516080527.13:make_gui
-    #@-node:ekr.20060516111847:Birth
-    #@+node:ekr.20060516080527.11:run
+    #@-node:ekr.20060516135654.186:make_gui
+    #@-node:ekr.20060516135654.184:Birth
+    #@+node:ekr.20060516135654.190:run
     def run(self, *args):
         
         g.trace('Debugger',args)
@@ -1359,8 +1425,8 @@ class Debugger:
         finally:
             self.interacting = 0
     #@nonl
-    #@-node:ekr.20060516080527.11:run
-    #@+node:ekr.20060516080527.12:close
+    #@-node:ekr.20060516135654.190:run
+    #@+node:ekr.20060516135654.191:close
     def close(self, event=None):
     
         if self.interacting:
@@ -1379,8 +1445,8 @@ class Debugger:
             # Now close the debugger control window....
             self.top.destroy()
     #@nonl
-    #@-node:ekr.20060516080527.12:close
-    #@+node:ekr.20060516080527.14:interaction
+    #@-node:ekr.20060516135654.191:close
+    #@+node:ekr.20060516135654.192:interaction
     def interaction(self, message, frame, info=None):
         
         g.trace('Debugger',message)
@@ -1427,8 +1493,8 @@ class Debugger:
         self.error.configure(text="", background=self.errorbg)
         self.frame = None
     #@nonl
-    #@-node:ekr.20060516080527.14:interaction
-    #@+node:ekr.20060516080527.15:sync_source_line (used flist)
+    #@-node:ekr.20060516135654.192:interaction
+    #@+node:ekr.20060516135654.193:sync_source_line (used flist)
     def sync_source_line(self):
         
         frame = self.frame
@@ -1440,45 +1506,45 @@ class Debugger:
             if 0: ### Not yet
                 self.flist.gotofileline(filename, lineno)
     #@nonl
-    #@-node:ekr.20060516080527.15:sync_source_line (used flist)
-    #@+node:ekr.20060516080527.16:__frame2fileline
+    #@-node:ekr.20060516135654.193:sync_source_line (used flist)
+    #@+node:ekr.20060516135654.194:__frame2fileline
     def __frame2fileline(self, frame):
         code = frame.f_code
         filename = code.co_filename
         lineno = frame.f_lineno
         return filename, lineno
-    #@-node:ekr.20060516080527.16:__frame2fileline
-    #@+node:ekr.20060516111847.1:Callbacks
-    #@+node:ekr.20060516080527.17:cont
+    #@-node:ekr.20060516135654.194:__frame2fileline
+    #@+node:ekr.20060516135654.195:Callbacks
+    #@+node:ekr.20060516135654.196:cont
     def cont(self):
         self.idb.set_continue()
         self.root.quit()
-    #@-node:ekr.20060516080527.17:cont
-    #@+node:ekr.20060516080527.18:step
+    #@-node:ekr.20060516135654.196:cont
+    #@+node:ekr.20060516135654.197:step
     def step(self):
         self.idb.set_step()
         self.root.quit()
-    #@-node:ekr.20060516080527.18:step
-    #@+node:ekr.20060516080527.19:next
+    #@-node:ekr.20060516135654.197:step
+    #@+node:ekr.20060516135654.198:next
     def next(self):
         self.idb.set_next(self.frame)
         self.root.quit()
-    #@-node:ekr.20060516080527.19:next
-    #@+node:ekr.20060516080527.20:ret
+    #@-node:ekr.20060516135654.198:next
+    #@+node:ekr.20060516135654.199:ret
     def ret(self):
         self.idb.set_return(self.frame)
         self.root.quit()
-    #@-node:ekr.20060516080527.20:ret
-    #@+node:ekr.20060516080527.21:quit
+    #@-node:ekr.20060516135654.199:ret
+    #@+node:ekr.20060516135654.200:quit
     def quit(self):
     
         self.idb.set_quit()
         self.root.quit()
     #@nonl
-    #@-node:ekr.20060516080527.21:quit
-    #@-node:ekr.20060516111847.1:Callbacks
-    #@+node:ekr.20060516111847.2:refresh
-    #@+node:ekr.20060516080527.22:show_stack
+    #@-node:ekr.20060516135654.200:quit
+    #@-node:ekr.20060516135654.195:Callbacks
+    #@+node:ekr.20060516135654.201:refresh
+    #@+node:ekr.20060516135654.202:show_stack
     def show_stack(self):
         
         g.trace(self.stackviewer)
@@ -1494,20 +1560,20 @@ class Debugger:
                 self.stackviewer = None
                 sv.close()
             self.fstack['height'] = 1
-    #@-node:ekr.20060516080527.22:show_stack
-    #@+node:ekr.20060516080527.23:show_source
+    #@-node:ekr.20060516135654.202:show_stack
+    #@+node:ekr.20060516135654.203:show_source
     def show_source(self):
     
         if self.vsource.get():
             self.sync_source_line()
-    #@-node:ekr.20060516080527.23:show_source
-    #@+node:ekr.20060516080527.24:show_frame
+    #@-node:ekr.20060516135654.203:show_source
+    #@+node:ekr.20060516135654.204:show_frame
     def show_frame(self, (frame, lineno)):
     
         self.frame = frame
         self.show_variables()
-    #@-node:ekr.20060516080527.24:show_frame
-    #@+node:ekr.20060516080527.25:show_locals
+    #@-node:ekr.20060516135654.204:show_frame
+    #@+node:ekr.20060516135654.205:show_locals
     def show_locals(self):
     
         lv = self.localsviewer
@@ -1520,8 +1586,8 @@ class Debugger:
                 lv.close()
                 self.flocals['height'] = 1
         self.show_variables()
-    #@-node:ekr.20060516080527.25:show_locals
-    #@+node:ekr.20060516080527.26:show_globals
+    #@-node:ekr.20060516135654.205:show_locals
+    #@+node:ekr.20060516135654.206:show_globals
     def show_globals(self):
         
         gv = self.globalsviewer
@@ -1535,8 +1601,8 @@ class Debugger:
                 self.fglobals['height'] = 1
         self.show_variables()
     
-    #@-node:ekr.20060516080527.26:show_globals
-    #@+node:ekr.20060516080527.27:show_variables
+    #@-node:ekr.20060516135654.206:show_globals
+    #@+node:ekr.20060516135654.207:show_variables
     def show_variables(self, force=0):
     
         lv = self.localsviewer
@@ -1557,27 +1623,27 @@ class Debugger:
             if gv:
                 ### gv.load_dict(gdict, force, self.pyshell.interp.rpcclt)
                 gv.load_dict(gdict, force, self.interp.rpcclt)
-    #@-node:ekr.20060516080527.27:show_variables
-    #@-node:ekr.20060516111847.2:refresh
-    #@+node:ekr.20060516111847.3:breakpoints
-    #@+node:ekr.20060516080527.28:set_breakpoint_here
+    #@-node:ekr.20060516135654.207:show_variables
+    #@-node:ekr.20060516135654.201:refresh
+    #@+node:ekr.20060516135654.208:breakpoints
+    #@+node:ekr.20060516135654.209:set_breakpoint_here
     def set_breakpoint_here(self, filename, lineno):
     
         self.idb.set_break(filename, lineno)
     #@nonl
-    #@-node:ekr.20060516080527.28:set_breakpoint_here
-    #@+node:ekr.20060516080527.29:clear_breakpoint_here
+    #@-node:ekr.20060516135654.209:set_breakpoint_here
+    #@+node:ekr.20060516135654.210:clear_breakpoint_here
     def clear_breakpoint_here(self, filename, lineno):
     
         self.idb.clear_break(filename, lineno)
-    #@-node:ekr.20060516080527.29:clear_breakpoint_here
-    #@+node:ekr.20060516080527.30:clear_file_breaks
+    #@-node:ekr.20060516135654.210:clear_breakpoint_here
+    #@+node:ekr.20060516135654.211:clear_file_breaks
     def clear_file_breaks(self, filename):
         
         self.idb.clear_all_file_breaks(filename)
     
-    #@-node:ekr.20060516080527.30:clear_file_breaks
-    #@+node:ekr.20060516080527.31:load_breakpoints
+    #@-node:ekr.20060516135654.211:clear_file_breaks
+    #@+node:ekr.20060516135654.212:load_breakpoints
     def load_breakpoints(self):
         
         if 0: # "Load PyShellEditorWindow breakpoints into subprocess debugger"
@@ -1590,13 +1656,13 @@ class Debugger:
                 except AttributeError:
                     continue
     #@nonl
-    #@-node:ekr.20060516080527.31:load_breakpoints
-    #@-node:ekr.20060516111847.3:breakpoints
+    #@-node:ekr.20060516135654.212:load_breakpoints
+    #@-node:ekr.20060516135654.208:breakpoints
     #@-others
 #@nonl
-#@-node:ekr.20060516080527.9:class Debugger
-#@-node:ekr.20060516081509.2:From Debugger.py
+#@-node:ekr.20060516135654.183:class Debugger
+#@-node:ekr.20060516135654.162:From Debugger.py
 #@-others
 #@nonl
-#@-node:ekr.20060516124302:@thin ../src/leo_Debugger.py
+#@-node:ekr.20060516135654.94:@thin leo_Debugger.py
 #@-leo
