@@ -27,7 +27,6 @@ barrier, in particular frame and traceback objects.
 #@-node:ekr.20060516135654.27:<< RemoteDebugger docstring >>
 #@nl
 
-import leo_run
 import leo_Debugger
 
 # This probably can not access Leo directly.
@@ -255,6 +254,7 @@ class FrameProxy:
     #@	@+others
     #@+node:ekr.20060516135654.60:__init__
     def __init__(self, conn, fid):
+    
         self._conn = conn
         self._fid = fid
         self._oid = "idb_adapter"
@@ -305,6 +305,7 @@ class CodeProxy:
     #@	@+others
     #@+node:ekr.20060516135654.67:__init__
     def __init__(self, conn, oid, cid):
+    
         self._conn = conn
         self._oid = oid
         self._cid = cid
@@ -325,6 +326,7 @@ class DictProxy:
     #@	@+others
     #@+node:ekr.20060516135654.70:__init__
     def __init__(self, conn, oid, did):
+    
         self._conn = conn
         self._oid = oid
         self._did = did
@@ -350,6 +352,7 @@ class GUIAdapter:
     #@	@+others
     #@+node:ekr.20060516135654.75:__init__
     def __init__(self, conn, gui):
+    
         self.conn = conn
         self.gui = gui
     #@-node:ekr.20060516135654.75:__init__
@@ -370,6 +373,7 @@ class IdbProxy:
     ### def __init__(self, conn, shell, oid):
         
     def __init__(self, conn, interp, oid):
+    
         self.oid = oid
         self.conn = conn
         ###self.shell = shell
@@ -435,7 +439,7 @@ class IdbProxy:
 #@nonl
 #@-node:ekr.20060516135654.77:class IdbProxy
 #@+node:ekr.20060516135654.90:start_remote_debugger
-def start_remote_debugger (rpcclt,interp): ###, pyshell):
+def start_remote_debugger (c,rpcclt,interp): ###, pyshell):
     """Start the subprocess debugger, initialize the debugger GUI and RPC link
 
     Request the RPCServer start the Python subprocess debugger and link.  Set
@@ -459,7 +463,7 @@ def start_remote_debugger (rpcclt,interp): ###, pyshell):
     # idb_proxy = IdbProxy(rpcclt, pyshell, idb_adap_oid)
     idb_proxy = IdbProxy(rpcclt,interp,idb_adap_oid)
     # gui = Debugger.Debugger(pyshell, idb_proxy)
-    gui = leo_Debugger.Debugger(interp,idb_proxy)
+    gui = leo_Debugger.Debugger(c,interp,idb_proxy)
     gui_adap = GUIAdapter(rpcclt,gui)
     rpcclt.register(gui_adap_oid,gui_adap)
     return gui

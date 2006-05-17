@@ -945,7 +945,7 @@ def callers (n=8,excludeCaller=True,files=False):
                 del result [-1]
             break
         elif s:
-            if first:
+            if first and files:
                 first = False ; s = '\n' + s
             result.append(s)
         n -= 1

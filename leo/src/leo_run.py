@@ -16,7 +16,6 @@ import thread
 import threading
 import Queue
 
-### import CallTips
 import idlelib.CallTips as CallTips
 import leo_RemoteDebugger as RemoteDebugger
 import idlelib.RemoteObjectBrowser as RemoteObjectBrowser
@@ -249,12 +248,12 @@ def exit():
 #@nonl
 #@-node:ekr.20060516135654.10:exit
 #@+node:ekr.20060516135654.11:class MyRPCServer
-
 class MyRPCServer(rpc.RPCServer):
+    
     #@	@+others
     #@+node:ekr.20060516135654.12:handle_error
     def handle_error(self, request, client_address):
-        """Override RPCServer method for Leo
+        """Override RPCServer method for Leo.
     
         Interrupt the MainThread and exit server if link is dropped.
     
@@ -282,6 +281,7 @@ class MyRPCServer(rpc.RPCServer):
             thread.interrupt_main()
     #@-node:ekr.20060516135654.12:handle_error
     #@-others
+#@nonl
 #@-node:ekr.20060516135654.11:class MyRPCServer
 #@+node:ekr.20060516135654.13:class MyHandler
 class MyHandler(rpc.RPCHandler):
@@ -329,6 +329,7 @@ class Executive:
     #@	@+others
     #@+node:ekr.20060516135654.19:__init__
     def __init__(self, rpchandler):
+    
         self.rpchandler = rpchandler
         self.locals = __main__.__dict__
         self.calltip = CallTips.CallTips()
@@ -355,17 +356,23 @@ class Executive:
     #@-node:ekr.20060516135654.20:runcode
     #@+node:ekr.20060516135654.21:interrupt_the_server
     def interrupt_the_server(self):
+        
         thread.interrupt_main()
+    
     #@-node:ekr.20060516135654.21:interrupt_the_server
-    #@+node:ekr.20060516135654.22:start_the_debugger
+    #@+node:ekr.20060516135654.22:leo_run.Executive.start_the_debugger
     def start_the_debugger(self, gui_adap_oid):
+        
+        g.trace()
     
         return RemoteDebugger.start_debugger(self.rpchandler, gui_adap_oid)
-    #@-node:ekr.20060516135654.22:start_the_debugger
+    #@-node:ekr.20060516135654.22:leo_run.Executive.start_the_debugger
     #@+node:ekr.20060516135654.23:stop_the_debugger
     def stop_the_debugger(self, idb_adap_oid):
+        
         "Unregister the Idb Adapter.  Link objects and Idb then subject to GC"
         self.rpchandler.unregister(idb_adap_oid)
+    
     #@-node:ekr.20060516135654.23:stop_the_debugger
     #@+node:ekr.20060516135654.24:get_the_calltip
     def get_the_calltip(self, name):

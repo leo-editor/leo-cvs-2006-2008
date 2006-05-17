@@ -5,8 +5,7 @@
 import leoGlobals as g
 
 import sys
-sys.path.append(r'c:\prog\tigris-cvs\leo\src')
-
+import leo_FileList
 import leo_run
 import leo_RemoteDebugger
 
@@ -34,23 +33,9 @@ import __main__
 #@-node:ekr.20060516135654.95:<< imports >>
 #@nl
 
-srcFile = r'c:\prog\tigris-cvs\leo\src\leo.py'  ###
-
 LOCALHOST = '127.0.0.1'
 
 #@+others
-#@+node:ekr.20060516142615.2:imports
-if 0:
-    import leoGlobals as g
-    import sys
-    
-    import leo_run
-    import leo_RemoteDebugger
-    import leo_Debugger
-    
-    import Tkinter as Tk
-#@nonl
-#@-node:ekr.20060516142615.2:imports
 #@+node:ekr.20060516142615.4:go
 def go (c):
     
@@ -60,13 +45,13 @@ def go (c):
     # From Pyshell.begin:
     client = interp.start_subprocess()
     g.trace('client',client,'interp',interp)
-    open_debugger(interp.rpcclt,interp)
+    open_debugger(c,interp.rpcclt,interp)
 #@nonl
 #@-node:ekr.20060516142615.4:go
 #@+node:ekr.20060516142615.5:open_debugger
-def open_debugger(rpcClient,interp):
+def open_debugger(c,rpcClient,interp):
 
-    dbg_gui = leo_RemoteDebugger.start_remote_debugger(rpcClient,interp)
+    dbg_gui = leo_RemoteDebugger.start_remote_debugger(c,rpcClient,interp)
     interp.setdebugger(dbg_gui)
     dbg_gui.load_breakpoints()
 
@@ -124,15 +109,10 @@ class ModifiedInterpreter(InteractiveInterpreter):
     def spawn_subprocess(self):
     
         args = self.subprocess_arglist
-        
-        if 1:
-            # sys.path.append(r'c:\prog\tigris-cvs\leo\src')
-            g.trace(args)
-            # for s in sys.path: print s
     
         self.rpcpid = os.spawnv(os.P_NOWAIT, sys.executable, args)
         
-        g.trace('rpcpid',self.rpcpid)
+        g.trace('os.spawnv returns rpcpid',self.rpcpid)
     #@nonl
     #@-node:ekr.20060516135654.99:spawn_subprocess (sets self.rpcpid)
     #@+node:ekr.20060516135654.100:leo_Debugger.build_subprocess_arglist
@@ -151,8 +131,7 @@ class ModifiedInterpreter(InteractiveInterpreter):
                 default=False, type='bool')
         
         ###if __name__ == 'idlelib.PyShell':
-        if 1: # Works only if leo_run is in the same directory as the script.
-              # Perhaps this is a script problem
+        if 1: # Works only if leo/src is put in sys.path in sitecustomize or in the Python PATH variable.
             command = "__import__('leo_run').main(%r)" % (del_exitf,)
         elif 1: # EKR: Works using idlelib.run.  
             command = "__import__('idlelib.run').run.main(%r)" % (del_exitf,)
@@ -639,421 +618,6 @@ class MyRPCClient(rpc.RPCClient):
     #@-others
 #@nonl
 #@-node:ekr.20060516135654.129:class MyRPCClient
-#@+node:ekr.20060516135654.131:Not used from Pyshell
-#@+node:ekr.20060516135654.132:__init__
-def __init__(self, flist=None):
-    if use_subprocess:
-        ms = self.menu_specs
-        if ms[2][0] != "shell":
-            ms.insert(2, ("shell", "_Shell"))
-    self.interp = ModifiedInterpreter(self)
-    if flist is None:
-        root = Tk()
-        fixwordbreaks(root)
-        root.withdraw()
-        flist = PyShellFileList(root)
-    #
-    OutputWindow.__init__(self, flist, None, None)
-    #
-    import __builtin__
-    __builtin__.quit = __builtin__.exit = "To exit, type Ctrl-D."
-    #
-    self.config(usetabs=1, indentwidth=8, context_use_ps1=1)
-    #
-    text = self.text
-    text.configure(wrap="char")
-    text.bind(virtual_event_name('newline-and-indent'), self.enter_callback)
-    text.bind(virtual_event_name('plain-newline-and-indent'), self.linefeed_callback)
-    text.bind(virtual_event_name('interrupt-execution'), self.cancel_callback)
-    text.bind(virtual_event_name('beginning-of-line'), self.home_callback)
-    text.bind(virtual_event_name('end-of-file'), self.eof_callback)
-    text.bind(virtual_event_name('open-stack-viewer'), self.open_stack_viewer)
-    text.bind(virtual_event_name('toggle-debugger'), self.toggle_debugger)
-    text.bind(virtual_event_name('toggle-jit-stack-viewer'), self.toggle_jit_stack_viewer)
-    if use_subprocess:
-        text.bind(virtual_event_name('view-restart'), self.view_restart_mark)
-        text.bind(virtual_event_name('restart-shell'), self.restart_shell)
-    #
-    self.save_stdout = sys.stdout
-    self.save_stderr = sys.stderr
-    self.save_stdin = sys.stdin
-    import IOBinding
-    self.stdout = PseudoFile(self, "stdout", IOBinding.encoding)
-    self.stderr = PseudoFile(self, "stderr", IOBinding.encoding)
-    self.console = PseudoFile(self, "console", IOBinding.encoding)
-    if not use_subprocess:
-        sys.stdout = self.stdout
-        sys.stderr = self.stderr
-        sys.stdin = self
-    #
-    self.history = self.History(self.text)
-    #
-    self.pollinterval = 50  # millisec
-#@-node:ekr.20060516135654.132:__init__
-#@+node:ekr.20060516135654.133:get_standard_extension_names
-def get_standard_extension_names(self):
-    return idleConf.GetExtensions(shell_only=True)
-#@-node:ekr.20060516135654.133:get_standard_extension_names
-#@+node:ekr.20060516135654.134:set_warning_stream
-reading = False
-executing = False
-canceled = False
-endoffile = False
-closing = False
-
-def set_warning_stream(self, stream):
-    global warning_stream
-    warning_stream = stream
-#@-node:ekr.20060516135654.134:set_warning_stream
-#@+node:ekr.20060516135654.135:get_warning_stream
-def get_warning_stream(self):
-    return warning_stream
-#@-node:ekr.20060516135654.135:get_warning_stream
-#@+node:ekr.20060516135654.136:toggle_debugger
-def toggle_debugger(self, event=None):
-    if self.executing:
-        tkMessageBox.showerror("Don't debug now",
-            "You can only toggle the debugger when idle",
-            master=self.text)
-        self.set_debugger_indicator()
-        return "break"
-    else:
-        db = self.interp.getdebugger()
-        if db:
-            self.close_debugger()
-        else:
-            self.open_debugger()
-#@-node:ekr.20060516135654.136:toggle_debugger
-#@+node:ekr.20060516135654.137:set_debugger_indicator
-def set_debugger_indicator(self):
-    db = self.interp.getdebugger()
-    self.setvar(virtual_event_name('toggle-debugger'), not not db)
-#@-node:ekr.20060516135654.137:set_debugger_indicator
-#@+node:ekr.20060516135654.138:toggle_jit_stack_viewer
-def toggle_jit_stack_viewer(self, event=None):
-    pass # All we need is the variable
-#@-node:ekr.20060516135654.138:toggle_jit_stack_viewer
-#@+node:ekr.20060516135654.139:beginexecuting
-def beginexecuting(self):
-    "Helper for ModifiedInterpreter"
-    self.resetoutput()
-    self.executing = 1
-#@-node:ekr.20060516135654.139:beginexecuting
-#@+node:ekr.20060516135654.140:endexecuting
-def endexecuting(self):
-    "Helper for ModifiedInterpreter"
-    self.executing = 0
-    self.canceled = 0
-    self.showprompt()
-#@-node:ekr.20060516135654.140:endexecuting
-#@+node:ekr.20060516135654.141:close
-def close(self):
-    "Extend EditorWindow.close()"
-    if self.executing:
-        response = tkMessageBox.askokcancel(
-            "Kill?",
-            "The program is still running!\n Do you want to kill it?",
-            default="ok",
-            parent=self.text)
-        if response == False:
-            return "cancel"
-    self.closing = True
-    # Wait for poll_subprocess() rescheduling to stop
-    self.text.after(2 * self.pollinterval, self.close2)
-#@-node:ekr.20060516135654.141:close
-#@+node:ekr.20060516135654.142:close2
-def close2(self):
-    return EditorWindow.close(self)
-#@-node:ekr.20060516135654.142:close2
-#@+node:ekr.20060516135654.143:_close
-def _close(self):
-    "Extend EditorWindow._close(), shut down debugger and execution server"
-    self.close_debugger()
-    if use_subprocess:
-        self.interp.kill_subprocess()
-    # Restore std streams
-    sys.stdout = self.save_stdout
-    sys.stderr = self.save_stderr
-    sys.stdin = self.save_stdin
-    # Break cycles
-    self.interp = None
-    self.console = None
-    self.flist.pyshell = None
-    self.history = None
-    EditorWindow._close(self)
-#@-node:ekr.20060516135654.143:_close
-#@+node:ekr.20060516135654.144:ispythonsource
-def ispythonsource(self, filename):
-    "Override EditorWindow method: never remove the colorizer"
-    return True
-#@-node:ekr.20060516135654.144:ispythonsource
-#@+node:ekr.20060516135654.145:short_title
-def short_title(self):
-    return self.shell_title
-#@-node:ekr.20060516135654.145:short_title
-#@+node:ekr.20060516135654.146:begin
-COPYRIGHT = \
-      'Type "copyright", "credits" or "license()" for more information.'
-
-firewallmessage = """
-****************************************************************
-Personal firewall software may warn about the connection Leo
-makes to its subprocess using this computer's internal loopback
-interface.  This connection is not visible on any external
-interface and no data is sent to or received from the Internet.
-****************************************************************
-"""
-
-def begin(self):
-    self.resetoutput()
-    if use_subprocess:
-        nosub = ''
-        client = self.interp.start_subprocess()
-        if not client:
-            self.close()
-            return False
-    else:
-        nosub = "==== No Subprocess ===="
-    self.write("Python %s on %s\n%s\n%s\nIDLE %s      %s\n" %
-               (sys.version, sys.platform, self.COPYRIGHT,
-                self.firewallmessage, idlever.IDLE_VERSION, nosub))
-    self.showprompt()
-    import Tkinter
-    Tkinter._default_root = None # 03Jan04 KBK What's this?
-    return True
-#@-node:ekr.20060516135654.146:begin
-#@+node:ekr.20060516135654.147:readline
-def readline(self):
-    save = self.reading
-    try:
-        self.reading = 1
-        self.top.mainloop()
-    finally:
-        self.reading = save
-    line = self.text.get("iomark", "end-1c")
-    if isinstance(line, unicode):
-        import IOBinding
-        try:
-            line = line.encode(IOBinding.encoding)
-        except UnicodeError:
-            pass
-    self.resetoutput()
-    if self.canceled:
-        self.canceled = 0
-        raise KeyboardInterrupt
-    if self.endoffile:
-        self.endoffile = 0
-        return ""
-    return line
-#@-node:ekr.20060516135654.147:readline
-#@+node:ekr.20060516135654.148:isatty
-def isatty(self):
-    return True
-#@-node:ekr.20060516135654.148:isatty
-#@+node:ekr.20060516135654.149:cancel_callback
-def cancel_callback(self, event=None):
-    try:
-        if self.text.compare("sel.first", "!=", "sel.last"):
-            return # Active selection -- always use default binding
-    except:
-        pass
-    if not (self.executing or self.reading):
-        self.resetoutput()
-        self.interp.write("KeyboardInterrupt\n")
-        self.showprompt()
-        return "break"
-    self.endoffile = 0
-    self.canceled = 1
-    if self.reading:
-        self.top.quit()
-    elif (self.executing and self.interp.rpcclt):
-        if self.interp.getdebugger():
-            self.interp.restart_subprocess()
-        else:
-            self.interp.interrupt_subprocess()
-    return "break"
-#@-node:ekr.20060516135654.149:cancel_callback
-#@+node:ekr.20060516135654.150:eof_callback
-def eof_callback(self, event):
-    if self.executing and not self.reading:
-        return # Let the default binding (delete next char) take over
-    if not (self.text.compare("iomark", "==", "insert") and
-            self.text.compare("insert", "==", "end-1c")):
-        return # Let the default binding (delete next char) take over
-    if not self.executing:
-        self.resetoutput()
-        self.close()
-    else:
-        self.canceled = 0
-        self.endoffile = 1
-        self.top.quit()
-    return "break"
-#@-node:ekr.20060516135654.150:eof_callback
-#@+node:ekr.20060516135654.151:home_callback
-def home_callback(self, event):
-    if event.state != 0 and event.keysym == "Home":
-        return # <Modifier-Home>; fall back to class binding
-    if self.text.compare("iomark", "<=", "insert") and \
-       self.text.compare("insert linestart", "<=", "iomark"):
-        self.text.mark_set("insert", "iomark")
-        self.text.tag_remove("sel", "1.0", "end")
-        self.text.see("insert")
-        return "break"
-#@-node:ekr.20060516135654.151:home_callback
-#@+node:ekr.20060516135654.152:linefeed_callback
-def linefeed_callback(self, event):
-    # Insert a linefeed without entering anything (still autoindented)
-    if self.reading:
-        self.text.insert("insert", "\n")
-        self.text.see("insert")
-    else:
-        self.newline_and_indent_event(event)
-    return "break"
-#@-node:ekr.20060516135654.152:linefeed_callback
-#@+node:ekr.20060516135654.153:enter_callback
-def enter_callback(self, event):
-    if self.executing and not self.reading:
-        return # Let the default binding (insert '\n') take over
-    # If some text is selected, recall the selection
-    # (but only if this before the I/O mark)
-    try:
-        sel = self.text.get("sel.first", "sel.last")
-        if sel:
-            if self.text.compare("sel.last", "<=", "iomark"):
-                self.recall(sel)
-                return "break"
-    except:
-        pass
-    # If we're strictly before the line containing iomark, recall
-    # the current line, less a leading prompt, less leading or
-    # trailing whitespace
-    if self.text.compare("insert", "<", "iomark linestart"):
-        # Check if there's a relevant stdin range -- if so, use it
-        prev = self.text.tag_prevrange("stdin", "insert")
-        if prev and self.text.compare("insert", "<", prev[1]):
-            self.recall(self.text.get(prev[0], prev[1]))
-            return "break"
-        next = self.text.tag_nextrange("stdin", "insert")
-        if next and self.text.compare("insert lineend", ">=", next[0]):
-            self.recall(self.text.get(next[0], next[1]))
-            return "break"
-        # No stdin mark -- just get the current line, less any prompt
-        line = self.text.get("insert linestart", "insert lineend")
-        last_line_of_prompt = sys.ps1.split('\n')[-1]
-        if line.startswith(last_line_of_prompt):
-            line = line[len(last_line_of_prompt):]
-        self.recall(line)
-        return "break"
-    # If we're between the beginning of the line and the iomark, i.e.
-    # in the prompt area, move to the end of the prompt
-    if self.text.compare("insert", "<", "iomark"):
-        self.text.mark_set("insert", "iomark")
-    # If we're in the current input and there's only whitespace
-    # beyond the cursor, erase that whitespace first
-    s = self.text.get("insert", "end-1c")
-    if s and not s.strip():
-        self.text.delete("insert", "end-1c")
-    # If we're in the current input before its last line,
-    # insert a newline right at the insert point
-    if self.text.compare("insert", "<", "end-1c linestart"):
-        self.newline_and_indent_event(event)
-        return "break"
-    # We're in the last line; append a newline and submit it
-    self.text.mark_set("insert", "end-1c")
-    if self.reading:
-        self.text.insert("insert", "\n")
-        self.text.see("insert")
-    else:
-        self.newline_and_indent_event(event)
-    self.text.tag_add("stdin", "iomark", "end-1c")
-    self.text.update_idletasks()
-    if self.reading:
-        self.top.quit() # Break out of recursive mainloop() in raw_input()
-    else:
-        self.runit()
-    return "break"
-#@-node:ekr.20060516135654.153:enter_callback
-#@+node:ekr.20060516135654.154:recall
-def recall(self, s):
-    if self.history:
-        self.history.recall(s)
-#@-node:ekr.20060516135654.154:recall
-#@+node:ekr.20060516135654.155:runit
-def runit(self):
-    line = self.text.get("iomark", "end-1c")
-    # Strip off last newline and surrounding whitespace.
-    # (To allow you to hit return twice to end a statement.)
-    i = len(line)
-    while i > 0 and line[i-1] in " \t":
-        i = i-1
-    if i > 0 and line[i-1] == "\n":
-        i = i-1
-    while i > 0 and line[i-1] in " \t":
-        i = i-1
-    line = line[:i]
-    more = self.interp.runsource(line)
-#@-node:ekr.20060516135654.155:runit
-#@+node:ekr.20060516135654.156:open_stack_viewer
-def open_stack_viewer(self, event=None):
-    if self.interp.rpcclt:
-        return self.interp.remote_stack_viewer()
-    try:
-        sys.last_traceback
-    except:
-        tkMessageBox.showerror("No stack trace",
-            "There is no stack trace yet.\n"
-            "(sys.last_traceback is not defined)",
-            master=self.text)
-        return
-    from StackViewer import StackBrowser
-    sv = StackBrowser(self.root, self.flist)
-#@-node:ekr.20060516135654.156:open_stack_viewer
-#@+node:ekr.20060516135654.157:view_restart_mark
-def view_restart_mark(self, event=None):
-    self.text.see("iomark")
-    self.text.see("restart")
-#@-node:ekr.20060516135654.157:view_restart_mark
-#@+node:ekr.20060516135654.158:restart_shell
-def restart_shell(self, event=None):
-    self.interp.restart_subprocess()
-#@-node:ekr.20060516135654.158:restart_shell
-#@+node:ekr.20060516135654.159:showprompt
-def showprompt(self):
-    self.resetoutput()
-    try:
-        s = str(sys.ps1)
-    except:
-        s = ""
-    self.console.write(s)
-    self.text.mark_set("insert", "end-1c")
-    self.set_line_and_column()
-    self.io.reset_undo()
-#@-node:ekr.20060516135654.159:showprompt
-#@+node:ekr.20060516135654.160:resetoutput
-def resetoutput(self):
-    source = self.text.get("iomark", "end-1c")
-    if self.history:
-        self.history.history_store(source)
-    if self.text.get("end-2c") != "\n":
-        self.text.insert("end-1c", "\n")
-    self.text.mark_set("iomark", "end-1c")
-    self.set_line_and_column()
-    sys.stdout.softspace = 0
-#@-node:ekr.20060516135654.160:resetoutput
-#@+node:ekr.20060516135654.161:write
-def write(self, s, tags=()):
-    try:
-        self.text.mark_gravity("iomark", "right")
-        OutputWindow.write(self, s, tags, "iomark")
-        self.text.mark_gravity("iomark", "left")
-    except:
-        pass
-    if self.canceled:
-        self.canceled = 0
-        if not use_subprocess:
-            raise KeyboardInterrupt
-#@-node:ekr.20060516135654.161:write
-#@-node:ekr.20060516135654.131:Not used from Pyshell
 #@-node:ekr.20060516135654.96:From Pyshell.py
 #@+node:ekr.20060516135654.162:From Debugger.py
 #@+node:ekr.20060516135654.163:class Idb (used by remote debugger code)
@@ -1122,11 +686,13 @@ class StackViewer(ScrolledList.ScrolledList):
     #@+node:ekr.20060516135654.170:__init__
     def __init__(self, master, flist, gui):
         
+        g.trace('StackViewer: flist',flist,g.callers())
+        
         ScrolledList.ScrolledList.__init__(self, master, width=80)
         self.flist = flist
         self.gui = gui
         self.stack = []
-    
+    #@nonl
     #@-node:ekr.20060516135654.170:__init__
     #@+node:ekr.20060516135654.171:load_stack
     def load_stack(self, stack, index=None):
@@ -1215,6 +781,9 @@ class NamespaceViewer:
     #@	@+others
     #@+node:ekr.20060516135654.180:__init__
     def __init__(self, master, title, dict=None):
+        
+        g.trace('NamespaceViewer','dict',dict,g.callers())
+    
         width = 0
         height = 40
         if dict:
@@ -1240,6 +809,7 @@ class NamespaceViewer:
         self.subframe = subframe = Tk.Frame(canvas)
         self.sfid = canvas.create_window(0, 0, window=subframe, anchor="nw")
         self.load_dict(dict)
+    #@nonl
     #@-node:ekr.20060516135654.180:__init__
     #@+node:ekr.20060516135654.181:load_dict
     dict = -1
@@ -1301,7 +871,9 @@ class Debugger:
     #@    @+others
     #@+node:ekr.20060516135654.184:Birth
     #@+node:ekr.20060516135654.185:__init__
-    def __init__(self, interp, idb=None):
+    def __init__(self, c, interp, idb=None):
+        
+        self.c = c
         
         # Were inited as needed.
         self.globalsviewer = None
@@ -1313,7 +885,9 @@ class Debugger:
         self.interp = interp
         self.idb = idb or Idb(self)
         self.frame = None
-    
+        
+        ### self.flist = pyshell.flist
+        self.flist = leo_FileList.FileList(c)
         self.make_gui()
         
         g.trace('Debugger',interp,self.idb)
@@ -1324,9 +898,6 @@ class Debugger:
         
         #@    << create the top level frame >>
         #@+node:ekr.20060516135654.187:<< create the top level frame >>
-        ### self.flist = pyshell.flist
-        self.flist = [srcFile]
-        
         self.root = root = g.app.root
         self.top = top = Tk.Toplevel(self.root)
         top.title("Leo Debug Control")
@@ -1504,7 +1075,8 @@ class Debugger:
         if filename[:1] + filename[-1:] != "<>" and os.path.exists(filename):
             g.trace(filename,lineno)
             if 0: ### Not yet
-                self.flist.gotofileline(filename, lineno)
+                f.gotoline(filename,lineno)
+                # self.flist.gotofileline(filename, lineno)
     #@nonl
     #@-node:ekr.20060516135654.193:sync_source_line (used flist)
     #@+node:ekr.20060516135654.194:__frame2fileline
@@ -1645,6 +1217,8 @@ class Debugger:
     #@-node:ekr.20060516135654.211:clear_file_breaks
     #@+node:ekr.20060516135654.212:load_breakpoints
     def load_breakpoints(self):
+        
+        g.trace()
         
         if 0: # "Load PyShellEditorWindow breakpoints into subprocess debugger"
             pyshell_edit_windows = self.pyshell.flist.inversedict.keys()
