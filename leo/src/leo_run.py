@@ -2,6 +2,9 @@
 #@+node:ekr.20060516135654.1:@thin leo_run.py
 # Leo analog of idlelib/run.py
 
+#@@language python
+#@@tabwidth -4
+
 #@<< imports >>
 #@+node:ekr.20060516135654.2:<< imports >>
 import leoGlobals as g

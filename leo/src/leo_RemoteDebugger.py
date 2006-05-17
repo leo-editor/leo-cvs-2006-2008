@@ -27,6 +27,9 @@ barrier, in particular frame and traceback objects.
 #@-node:ekr.20060516135654.27:<< RemoteDebugger docstring >>
 #@nl
 
+#@@language python
+#@@tabwidth -4
+
 import leo_Debugger
 
 # This probably can not access Leo directly.
