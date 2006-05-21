@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="267" clone_windows="0"/>
 <globals body_outline_ratio="0.549828178694">
-	<global_window_position top="45" left="330" height="751" width="892"/>
+	<global_window_position top="45" left="330" height="656" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -44,9 +44,12 @@
 <v t="ekr.20060112104823"><vh>main</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" a="V" annotate="7d71002e"><vh>@settings</vh>
-<v t="ekr.20051126062243" annotate="7d71002e"><vh>Debugging options</vh>
+<v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20051126062243" a="EV" annotate="7d71002e"><vh>Debugging options</vh>
 <v t="ekr.20060201110016"><vh>@bool allow_idle_time_hook = False</vh></v>
+<v t="ekr.20060521132401"><vh>@string debugger_path = None</vh></v>
+<v t="ekr.20060521134125"><vh>@string debugger_default_target = None</vh></v>
+<v t="ekr.20060521134125.1"><vh>@string debugger_force_taget = None</vh></v>
 <v t="ekr.20060212101234"><vh>@bool gc_before_redraw = False</vh></v>
 <v t="ekr.20060202113731"><vh>@bool show_tree_stats = False</vh></v>
 <v t="ekr.20060216145416"><vh>@bool trace_autocompleter = False</vh></v>
@@ -402,7 +405,7 @@
 </v>
 <v t="ekr.20060122105527.15"><vh>@mode Quick-command (Alt-C)</vh></v>
 </v>
-<v t="ekr.20060122105527.18"><vh>Shortcuts</vh>
+<v t="ekr.20060122105527.18" a="E"><vh>Shortcuts</vh>
 <v t="ekr.20060122105527.19" annotate="7d71002e"><vh>@shortcuts EKR: mode-changing commands</vh></v>
 <v t="ekr.20060124070546"><vh>@shortcuts Find Commands</vh></v>
 <v t="ekr.20060203131942"><vh>@shortcuts Minibuffer bindings</vh></v>
@@ -3998,6 +4001,7 @@ copy-node                           = Shift-Ctrl-c
 copy-text                           = Ctrl-c        # Conflicts with Emacs ctrl-c
 cut-node                            = Shift-Ctrl-x
 cut-text                            = Ctrl-x
+debug                               = Alt-Shift-d
 delete-char                         = Delete
 delete-comments                     = Ctrl-)
 delete-node                         = Shift-Ctrl-BkSp
@@ -4684,5 +4688,11 @@ group-operations-transfer           = Alt-Ctrl-Shift-d</t>
 A reasonable value is 10.</t>
 <t tx="ekr.20060513100933.1">The number of times the colorizer's main loop in colorOneChunk executes before actually colorizing text.
 A reasonable value is 5000.</t>
+<t tx="ekr.20060521132401">c:\Python24\Scripts\_winpdb.py</t>
+<t tx="ekr.20060521134125">The debug target to use if no target is specified otherwise.
+
+c:\prog\tigris-cvs\leo\src\leo.py
+</t>
+<t tx="ekr.20060521134125.1">The debug target to use regardless of the selected node or other settings.</t>
 </tnodes>
 </leo_file>
