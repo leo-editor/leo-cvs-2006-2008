@@ -694,6 +694,7 @@ class baseColorizer:
         self.chunks_done = False
         self.quickColor()
         self.colorOneChunk()
+        return 'break'
     #@nonl
     #@-node:ekr.20050601042620:colorAll
     #@+node:ekr.20050529143413.31:colorizeAnyLanguage
@@ -733,7 +734,7 @@ class baseColorizer:
         # if (self.chunk_count % 100) == 0: print self.chunk_count,g.callers() # Don't use g.trace!
         while i < len(s):
             count += 1 ; self.recolor_count += 1
-            if limit2 > 0 and self.recolor_count > limit2:
+            if self.recolor_count > limit2 > 0:
                 self.recolor_count, self.chunk_s, self.chunk_i = 0, s, i
                 self.tagAll()
                 w.after(50,self.colorOneChunk)
@@ -754,7 +755,6 @@ class baseColorizer:
         self.tagList = []
         self.chunks_done = True # Prohibit any more queued calls.
         return 'break'
-    #@nonl
     #@-node:ekr.20050601105358:colorOneChunk
     #@+node:ekr.20050602205810.4:colorRangeWithTag
     def colorRangeWithTag (self,s,i,j,tag):

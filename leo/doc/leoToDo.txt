@@ -9,6 +9,20 @@
 #@nonl
 #@-node:ekr.20060227163911.1:Leo's web site
 #@+node:ekr.20060226131603:To do 4.4.1
+#@+node:ekr.20060515060803:Is it possible to allow idle-time redraw?
+#@+node:ekr.20060515060803.1:Report
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3729823
+By: nobody
+
+I am running Ubuntu 5.10 and have the same (I think) problem - this is with
+the 4.4 final release.
+
+When I move through nodes using the alt-XXX short cuts, there is a lot of flicker
+as nodes are redrawn etc. I had no problem with this in 4.3.
+#@nonl
+#@-node:ekr.20060515060803.1:Report
+#@-node:ekr.20060515060803:Is it possible to allow idle-time redraw?
 #@+node:ekr.20060413065803:searches 5
 #@+node:ekr.20060122183544:Improve isearch
 @nocolor

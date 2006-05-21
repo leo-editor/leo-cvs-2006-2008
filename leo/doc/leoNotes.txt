@@ -4650,6 +4650,172 @@ def doFileNameTabCompletion (self):
     c.minibufferWantsFocusNow()
 #@nonl
 #@-node:ekr.20060419125432:k.doFileNameTabCompletion
+#@+node:ekr.20060519004824:leo_main
+def leo_main(self):
+    
+    import getopt
+    import rpdb2
+    
+    StartClient_func = rpdb2.StartClient
+
+    #global g_fScreen
+    #global g_fDebug
+    
+    rpdb2.create_rpdb_settings_folder()
+
+    try:
+        options, args = getopt.getopt(
+            sys.argv[1:], 
+            'hdao:rtp:sc', 
+            ['help', 'debugee', 'attach', 'host=', 'remote', 'plaintext', 'pwd=', 'rid=', 'screen', 'chdir', 'debug']
+        )
+
+    except getopt.GetoptError, e:
+        print e
+        return 2
+        
+    fWrap = False
+    fAttach = False
+    fSpawn = False
+    fStart = False
+    
+    secret = None
+    host = None
+    pwd = None
+    fchdir = False
+    fRemote = False
+    fAllowUnencrypted = True ### EKR: was False
+    
+    for o, a in options:
+        if o in ['-h', '--help']:
+            PrintUsage()
+            return 0
+        if o in ['--debug']:
+            rpdb2.g_fDebug = True 
+        if o in ['-d', '--debugee']:
+            fWrap = True
+        if o in ['-a', '--attach']:
+            fAttach = True
+        if o in ['-o', '--host']:
+            host = a
+        if o in ['-r', '--remote']:
+            fRemote = True
+        if o in ['-t', '--plaintext']:
+            fAllowUnencrypted = True
+        if o in ['-p', '--pwd']:
+            pwd = a
+        if o in ['--rid']:
+            secret = a
+        if o in ['-s', '--screen']:
+            rpdb2.g_fScreen = True # EKR
+        if o in ['-c', '--chdir']:
+            fchdir = True
+    
+    if (pwd != None) and (os.name != 'nt'):
+        print rpdb2.STR_PASSWORD_NOT_SUPPORTED
+        return 2
+
+    if fWrap and (len(args) == 0):
+        print "--debuggee option requires a script name with optional <script-arg> arguments"
+        return 2
+        
+    if fWrap and fAttach:
+        print "--debuggee and --attach can not be used together."
+        return 2
+        
+    if fAttach and (len(args) == 0):
+        print "--attach option requires a script name to attach to."
+        return 2
+        
+    if fAttach and (len(args) > 1):
+        print "--attach option does not accept <script-arg> arguments."
+        return 2
+
+    if fAttach and fRemote:
+        print "--attach and --remote can not be used together."
+        return 2
+        
+    if (host != None) and not fAttach:
+        print "--host can only be used together with --attach."
+        return 2
+
+    if host == None:
+        host = rpdb2.LOCAL_HOST    
+        
+    ### args = [] ##### EKR: adding this hangs.
+    args = ['leo.py'] # Failed to communicate with debugged script.
+
+    fSpawn = (len(args) != 0) and (not fWrap) and (not fAttach)
+    fStart = (len(args) == 0)
+    
+    if fchdir and not (fWrap or fSpawn):
+        print "-c can only be used when launching or starting a script from command line."
+        return 2
+
+    assert (fWrap + fAttach + fSpawn + fStart) == 1
+
+    if fAttach and (os.name == 'posix'):
+        try:
+            int(args[0])
+
+            pwd = rpdb2.read_pwd_file(args[0])
+            rpdb2.delete_pwd_file(args[0])
+
+        except (ValueError, IOError):
+            pass
+            
+    if (secret != None) and (os.name == 'posix'):
+        pwd = rpdb2.read_pwd_file(secret)
+        
+    if (fWrap or fAttach) and (pwd in [None, '']):
+        print rpdb2.STR_PASSWORD_MUST_BE_SET
+        
+        while True:
+            _pwd = raw_input(rpdb2.STR_PASSWORD_INPUT)
+            pwd = _pwd.rstrip('\n')
+            if pwd != '':
+                break
+
+        print rpdb2.STR_PASSWORD_CONFIRM      
+        
+    g.trace(fWrap,fAttach,fStart,args)
+                
+    if fWrap or fSpawn:
+        # Prevent rpdb from trying to debug itself, so it doesn't blow up :)
+        if os.path.basename(args[0]) in [rpdb2.DEBUGGER_FILENAME]:
+            print 'Cannot debug self.'
+            return 2
+
+        try:
+            rpdb2.FindFile(args[0])
+        except IOError:
+            print rpdb2.STR_FILE_NOT_FOUND % (args[0], )
+            return 2
+            
+    if fWrap:
+        if (not fAllowUnencrypted) and not is_encryption_supported():
+            print rpdb2.STR_ENCRYPTION_SUPPORT_ERROR
+            return 2
+
+        rpdb2.StartServer(args, fchdir, pwd, fAllowUnencrypted, fRemote, secret)
+        
+    elif fAttach:
+        StartClient_func(args[0], fAttach, fchdir, pwd, fAllowUnencrypted, fRemote, host)
+        
+    elif fStart:
+        StartClient_func('', fAttach, fchdir, pwd, fAllowUnencrypted, fRemote, host)
+        
+    else:
+        if len(args) == 0:
+            _args = ''
+        else:
+            _args = '"' + string.join(args, '" "') + '"'
+
+        StartClient_func(_args, fAttach, fchdir, pwd, fAllowUnencrypted, fRemote, host)
+   
+    return 0
+#@nonl
+#@-node:ekr.20060519004824:leo_main
 #@-node:ekr.20031218072017.434:Unused code
 #@-all
 #@nonl
