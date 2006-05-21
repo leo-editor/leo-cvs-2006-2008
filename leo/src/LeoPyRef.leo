@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="9386" clone_windows="0"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="9611" clone_windows="0"/>
 <globals body_outline_ratio="0.575921908894">
-	<global_window_position top="1" left="236" height="922" width="957"/>
+	<global_window_position top="12" left="154" height="922" width="1043"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -129,9 +129,18 @@
 <v t="ekr.20040803072955.59"><vh>redrawHelper</vh></v>
 </v>
 </v>
+<v t="ekr.20060519003651.1"><vh>Added debug command</vh>
+<v t="ekr.20060519003651"><vh>debug</vh>
+<v t="ekr.20060521140213"><vh>&lt;&lt; find a debugger or return &gt;&gt;</vh></v>
+<v t="ekr.20060521140213.1"><vh>&lt;&lt; find the target file &gt;&gt;</vh></v>
+</v>
+</v>
 </v>
 </v>
 <v t="ekr.20060226131603"><vh>To do 4.4.1</vh>
+<v t="ekr.20060515060803"><vh>Is it possible to allow idle-time redraw?</vh>
+<v t="ekr.20060515060803.1"><vh>Report</vh></v>
+</v>
 <v t="ekr.20060413065803"><vh>searches 5</vh>
 <v t="ekr.20060122183544"><vh>Improve isearch</vh>
 <v t="ekr.20051023132350"><vh>getLabel</vh></v>
@@ -3232,5 +3241,63 @@ ejoy
 </t>
 <t tx="ekr.20060514170725"></t>
 <t tx="ekr.20060514170854"></t>
+<t tx="ekr.20060515060803"></t>
+<t tx="ekr.20060515060803.1">@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3729823
+By: nobody
+
+I am running Ubuntu 5.10 and have the same (I think) problem - this is with
+the 4.4 final release.
+
+When I move through nodes using the alt-XXX short cuts, there is a lot of flicker
+as nodes are redrawn etc. I had no problem with this in 4.3.</t>
+<t tx="ekr.20060519003651">def debug (self,event=None,target = None):
+    
+    '''Start the debugger in another process.'''
+
+    c = self.c ; p = c.currentPosition()
+    pythonDir = g.os_path_dirname(sys.executable)
+    
+    &lt;&lt; find a debugger or return &gt;&gt;
+    &lt;&lt; find the target file &gt;&gt;
+    
+    if target:
+        args = [sys.executable, debugger, '-t', target]
+    else:
+        args = [sys.executable, debugger, '-t']
+    
+    if 1: # Use present environment.
+        os.spawnv(os.P_NOWAIT, sys.executable, args)
+    else: # Use a pristine environment.
+        os.spawnve(os.P_NOWAIT, sys.executable, args, os.environ)</t>
+<t tx="ekr.20060519003651.1"></t>
+<t tx="ekr.20060521140213">debuggers = (
+    c.config.getString('debugger_path'),
+    g.os_path_join(pythonDir,'scripts','_winpdb.py'),
+)
+
+for debugger in debuggers:
+    if debugger:
+        debugger = g.os_path_abspath(debugger)
+        if g.os_path_exists(debugger):
+            break
+        else:
+            g.es('Debugger does not exist: %s' % (debugger),color='blue')
+else:
+    return g.es('No debugger found.')</t>
+<t tx="ekr.20060521140213.1">targets = (
+    target,
+    c.config.getString('debugger_force_taget'),
+    p.copy().anyAtFileNodeName(),
+    c.config.getString('debugger_default_target'),
+)
+
+for target in targets:
+    if target:
+        target = g.os_path_abspath(target)
+        if g.os_path_exists(target):
+            break
+        else:
+            g.es('Debug target does not exist: %s' % (target),color='blue')</t>
 </tnodes>
 </leo_file>

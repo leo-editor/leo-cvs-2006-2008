@@ -1730,6 +1730,64 @@ def redrawHelper (self,scroll=True):
 #@-node:ekr.20040803072955.59:redrawHelper
 #@-node:ekr.20040803072955.58:tree.redraw_now & helper
 #@-node:ekr.20060512101324:(Support for new colorizer)
+#@+node:ekr.20060519003651.1:Added debug command
+#@+node:ekr.20060519003651:debug
+def debug (self,event=None,target = None):
+    
+    '''Start the debugger in another process.'''
+
+    c = self.c ; p = c.currentPosition()
+    pythonDir = g.os_path_dirname(sys.executable)
+    
+    << find a debugger or return >>
+    << find the target file >>
+    
+    if target:
+        args = [sys.executable, debugger, '-t', target]
+    else:
+        args = [sys.executable, debugger, '-t']
+    
+    if 1: # Use present environment.
+        os.spawnv(os.P_NOWAIT, sys.executable, args)
+    else: # Use a pristine environment.
+        os.spawnve(os.P_NOWAIT, sys.executable, args, os.environ)
+#@nonl
+#@+node:ekr.20060521140213:<< find a debugger or return >>
+debuggers = (
+    c.config.getString('debugger_path'),
+    g.os_path_join(pythonDir,'scripts','_winpdb.py'),
+)
+
+for debugger in debuggers:
+    if debugger:
+        debugger = g.os_path_abspath(debugger)
+        if g.os_path_exists(debugger):
+            break
+        else:
+            g.es('Debugger does not exist: %s' % (debugger),color='blue')
+else:
+    return g.es('No debugger found.')
+#@nonl
+#@-node:ekr.20060521140213:<< find a debugger or return >>
+#@+node:ekr.20060521140213.1:<< find the target file >>
+targets = (
+    target,
+    c.config.getString('debugger_force_taget'),
+    p.copy().anyAtFileNodeName(),
+    c.config.getString('debugger_default_target'),
+)
+
+for target in targets:
+    if target:
+        target = g.os_path_abspath(target)
+        if g.os_path_exists(target):
+            break
+        else:
+            g.es('Debug target does not exist: %s' % (target),color='blue')
+#@nonl
+#@-node:ekr.20060521140213.1:<< find the target file >>
+#@-node:ekr.20060519003651:debug
+#@-node:ekr.20060519003651.1:Added debug command
 #@-node:ekr.20060514170725:4.4.1 projects
 #@-node:ekr.20050924073836:4.4 projects
 #@-all
