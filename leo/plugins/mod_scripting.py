@@ -60,12 +60,13 @@ import leoPlugins
 
 Tk = g.importExtension('Tkinter',pluginName=__name__,verbose=True)
 
+import os
 import sys
 #@nonl
 #@-node:ekr.20060328125248.2:<< imports >>
 #@nl
 
-__version__ = "0.20"
+__version__ = "0.21"
 #@<< version history >>
 #@+node:ekr.20060328125248.3:<< version history >>
 #@+at
@@ -106,6 +107,7 @@ __version__ = "0.20"
 # 0.19 btheado: Refactored the code in scriptingController to remove 
 # duplication.
 # 0.20 EKR: converted to @thin.
+# 0.21 EKR: Added Debug button & balloons.
 #@-at
 #@nonl
 #@-node:ekr.20060328125248.3:<< version history >>
@@ -119,6 +121,8 @@ atPluginNodes = False
     # True: dynamically loads plugins in @plugins nodes when a window is created.
 atScriptNodes = False
     # True: dynamically executes script in @script nodes when a window is created.  DANGEROUS!
+useBaloons = True
+    # True: add Pmw baloons.
 maxButtonSize = 18
     # Maximum length of button names.
 
@@ -181,6 +185,7 @@ class scriptingController:
             self.scanned = True
             self.createRunScriptIconButton()
             self.createScriptButtonIconButton()
+            self.createDebugIconButton()
     
             # scan for user-defined nodes.
             for p in c.allNodes_iter():
@@ -361,7 +366,68 @@ class scriptingController:
         return b
     #@nonl
     #@-node:ekr.20060328125248.17:createIconButton
-    #@+node:ekr.20060328125248.19:Default buttons
+    #@+node:ekr.20060522105937:createDebugIconButton
+    def createDebugIconButton (self):
+        
+        b = self.createIconButton('Debug Script', 'Run script in current node', bg='MistyRose1')
+     
+        #@    << define runDebugScriptCommand >>
+        #@+node:ekr.20060522105937.1:<< define runDebugScriptCommand >>
+        def runDebugScriptCommand (event=None):
+            
+            '''Called when user presses the 'Debug Script' button.'''
+        
+            c = self.c ; p = c.currentPosition()
+            
+            script = g.getScript(c,p,useSelectedText=True)
+            if script:
+                #@        << find the debugger or return >>
+                #@+node:ekr.20060522105937.2:<< find the debugger or return >>
+                pythonDir = g.os_path_dirname(sys.executable)
+                debuggers = (
+                    c.config.getString('debugger_path'),
+                    g.os_path_join(pythonDir,'scripts','_winpdb.py'),
+                )
+                
+                for debugger in debuggers:
+                    if debugger:
+                        debugger = g.os_path_abspath(debugger)
+                        if g.os_path_exists(debugger):
+                            break
+                        else:
+                            g.es('Debugger does not exist: %s' % (debugger),color='blue')
+                else:
+                    return g.es('No debugger found.')
+                #@nonl
+                #@-node:ekr.20060522105937.2:<< find the debugger or return >>
+                #@nl
+                #@        << create a temporary target file containing the script >>
+                #@+node:ekr.20060522105937.3:<< create a temporary target file containing the script >>
+                target = g.os_path_join(g.app.loadDir,'..','scripts','tempLeoDebugFile')
+                f = None
+                try:
+                    f = file(target,'w')
+                    f.write('# A temporary file created from the script for use by the debugger\n')
+                    f.write(script + '\n')
+                finally:
+                    if f: f.close()
+                #@nonl
+                #@-node:ekr.20060522105937.3:<< create a temporary target file containing the script >>
+                #@nl
+                args = [sys.executable, debugger, '-t', target]
+                if 1: # Use present environment.
+                    os.spawnv(os.P_NOWAIT, sys.executable, args)
+                else: # Use a pristine environment.
+                    os.spawnve(os.P_NOWAIT, sys.executable, args, os.environ)
+            
+            c.frame.bodyWantsFocus()
+        #@nonl
+        #@-node:ekr.20060522105937.1:<< define runDebugScriptCommand >>
+        #@nl
+        b.configure(command=runDebugScriptCommand)
+        return b
+    #@nonl
+    #@-node:ekr.20060522105937:createDebugIconButton
     #@+node:ekr.20060328125248.20:createRunScriptIconButton
     def createRunScriptIconButton (self):
         b = self.createIconButton('Run Script', 'Run script in current node', bg='MistyRose1')
@@ -405,7 +471,6 @@ class scriptingController:
         return b
     #@nonl
     #@-node:ekr.20060328125248.22:createScriptButtonIconButton
-    #@-node:ekr.20060328125248.19:Default buttons
     #@+node:ekr.20060328125248.24:createAtButtonIconButton
     def createAtButtonIconButton (self,p,buttonText,statusLine,shortcut,bg='LightSteelBlue1'):
         b = self.createIconButton(text=buttonText,statusLine=statusLine,bg=bg)
