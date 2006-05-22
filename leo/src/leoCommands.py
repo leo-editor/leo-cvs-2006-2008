@@ -5024,99 +5024,114 @@ class baseCommands:
     #@-node:ekr.20031218072017.2092:openCompareWindow
     #@+node:ekr.20031218072017.2932:openPythonWindow (Dave Hein)
     def openPythonWindow (self,event=None):
-    
-        if sys.platform == "linux2":
-            #@        << open idle in Linux >>
-            #@+node:ekr.20031218072017.2933:<< open idle in Linux >>
-            # 09-SEP-2002 DHEIN: Open Python window under linux
+        
+        if 1:
+            #@        << open idle in a separate process >>
+            #@+node:ekr.20060522102610:<< open idle in a separate process >>
+            pythonDir = g.os_path_dirname(sys.executable)
+            idle = g.os_path_join(pythonDir,'Lib','idlelib','idle.py')
+            args = [sys.executable, idle ]
             
-            try:
-                pathToLeo = g.os_path_join(g.app.loadDir,"leo.py")
-                sys.argv = [pathToLeo]
-                from idlelib import idle
-                if g.app.idle_imported:
-                    reload(idle)
-                g.app.idle_imported = True
-            except:
-                try:
-                    g.es("idlelib could not be imported.")
-                    g.es("Probably IDLE is not installed.")
-                    g.es("Run Tools/idle/setup.py to build idlelib.")
-                    g.es("Can not import idle")
-                    g.es_exception() # This can fail!!
-                except: pass
-            #@-node:ekr.20031218072017.2933:<< open idle in Linux >>
+            if 1: # Use present environment.
+                os.spawnv(os.P_NOWAIT, sys.executable, args)
+            else: # Use a pristine environment.
+                os.spawnve(os.P_NOWAIT, sys.executable, args, os.environ)
+            #@-node:ekr.20060522102610:<< open idle in a separate process >>
             #@nl
         else:
-            #@        << open idle in Windows >>
-            #@+node:ekr.20031218072017.2934:<< open idle in Windows >>
-            # Initialize argv: the -t option sets the title of the Idle interp window.
-            sys.argv = ["leo"] # ,"-t","Leo"]
-            
-            ok = False
-            if g.CheckVersion(sys.version,"2.3"):
-                #@    << Try to open idle in Python 2.3 systems >>
-                #@+node:ekr.20031218072017.2936:<< Try to open idle in Python 2.3 systems >>
-                try:
-                    idle_dir = None
-                    
-                    import idlelib.PyShell
+            if sys.platform == "linux2":
+                #@            << open idle in Linux >>
+                #@+node:ekr.20031218072017.2933:<< open idle in Linux >>
+                # 09-SEP-2002 DHEIN: Open Python window under linux
                 
+                try:
+                    pathToLeo = g.os_path_join(g.app.loadDir,"leo.py")
+                    sys.argv = [pathToLeo]
+                    from idlelib import idle
                     if g.app.idle_imported:
                         reload(idle)
-                        g.app.idle_imported = True
-                        
-                    idlelib.PyShell.main()
-                    ok = True
-                
+                    g.app.idle_imported = True
                 except:
-                    ok = False
-                    g.es_exception()
-                #@nonl
-                #@-node:ekr.20031218072017.2936:<< Try to open idle in Python 2.3 systems >>
+                    try:
+                        g.es("idlelib could not be imported.")
+                        g.es("Probably IDLE is not installed.")
+                        g.es("Run Tools/idle/setup.py to build idlelib.")
+                        g.es("Can not import idle")
+                        g.es_exception() # This can fail!!
+                    except: pass
+                #@-node:ekr.20031218072017.2933:<< open idle in Linux >>
                 #@nl
             else:
-                #@    << Try to open idle in Python 2.2 systems >>
-                #@+node:ekr.20031218072017.2935:<< Try to open idle in Python 2.2 systems>>
-                try:
-                    executable_dir = g.os_path_dirname(sys.executable)
-                    idle_dir = g.os_path_join(executable_dir,"Tools","idle")
+                #@            << open idle in Windows >>
+                #@+node:ekr.20031218072017.2934:<< open idle in Windows >>
+                # Initialize argv: the -t option sets the title of the Idle interp window.
+                sys.argv = ["leo"] # ,"-t","Leo"]
                 
-                    # 1/29/04: sys.path doesn't handle unicode in 2.2.
-                    idle_dir = str(idle_dir) # May throw an exception.
-                
-                    # 1/29/04: must add idle_dir to sys.path even when using importFromPath.
-                    if idle_dir not in sys.path:
-                        sys.path.insert(0,idle_dir)
-                
-                    if 1:
-                        import PyShell
-                    else: # Works, but is not better than import.
-                        PyShell = g.importFromPath("PyShell",idle_dir)
-                
-                    if g.app.idle_imported:
-                        reload(idle)
-                        g.app.idle_imported = True
+                ok = False
+                if g.CheckVersion(sys.version,"2.3"):
+                    #@    << Try to open idle in Python 2.3 systems >>
+                    #@+node:ekr.20031218072017.2936:<< Try to open idle in Python 2.3 systems >>
+                    try:
+                        idle_dir = None
                         
-                    if 1: # Mostly works, but causes problems when opening other .leo files.
-                        PyShell.main()
-                    else: # Doesn't work: destroys all of Leo when Idle closes.
-                        self.leoPyShellMain()
-                    ok = True
-                except ImportError:
-                    ok = False
-                    g.es_exception()
+                        import idlelib.PyShell
+                    
+                        if g.app.idle_imported:
+                            reload(idle)
+                            g.app.idle_imported = True
+                            
+                        idlelib.PyShell.main()
+                        ok = True
+                    
+                    except:
+                        ok = False
+                        g.es_exception()
+                    #@nonl
+                    #@-node:ekr.20031218072017.2936:<< Try to open idle in Python 2.3 systems >>
+                    #@nl
+                else:
+                    #@    << Try to open idle in Python 2.2 systems >>
+                    #@+node:ekr.20031218072017.2935:<< Try to open idle in Python 2.2 systems>>
+                    try:
+                        executable_dir = g.os_path_dirname(sys.executable)
+                        idle_dir = g.os_path_join(executable_dir,"Tools","idle")
+                    
+                        # 1/29/04: sys.path doesn't handle unicode in 2.2.
+                        idle_dir = str(idle_dir) # May throw an exception.
+                    
+                        # 1/29/04: must add idle_dir to sys.path even when using importFromPath.
+                        if idle_dir not in sys.path:
+                            sys.path.insert(0,idle_dir)
+                    
+                        if 1:
+                            import PyShell
+                        else: # Works, but is not better than import.
+                            PyShell = g.importFromPath("PyShell",idle_dir)
+                    
+                        if g.app.idle_imported:
+                            reload(idle)
+                            g.app.idle_imported = True
+                            
+                        if 1: # Mostly works, but causes problems when opening other .leo files.
+                            PyShell.main()
+                        else: # Doesn't work: destroys all of Leo when Idle closes.
+                            self.leoPyShellMain()
+                        ok = True
+                    except ImportError:
+                        ok = False
+                        g.es_exception()
+                    #@nonl
+                    #@-node:ekr.20031218072017.2935:<< Try to open idle in Python 2.2 systems>>
+                    #@nl
+                
+                if not ok:
+                    g.es("Can not import idle")
+                    if idle_dir and idle_dir not in sys.path:
+                        g.es("Please add '%s' to sys.path" % idle_dir)
                 #@nonl
-                #@-node:ekr.20031218072017.2935:<< Try to open idle in Python 2.2 systems>>
+                #@-node:ekr.20031218072017.2934:<< open idle in Windows >>
                 #@nl
-            
-            if not ok:
-                g.es("Can not import idle")
-                if idle_dir and idle_dir not in sys.path:
-                    g.es("Please add '%s' to sys.path" % idle_dir)
-            #@nonl
-            #@-node:ekr.20031218072017.2934:<< open idle in Windows >>
-            #@nl
+    #@nonl
     #@+node:ekr.20031218072017.2937:leoPyShellMain
     #@+at 
     #@nonl
@@ -5128,15 +5143,17 @@ class baseCommands:
     #@-at
     #@@c
     
-    def leoPyShellMain(self):
-        
-        import PyShell
-        root = g.app.root
-        PyShell.fixwordbreaks(root)
-        flist = PyShell.PyShellFileList(root)
-        shell = PyShell.PyShell(flist)
-        flist.pyshell = shell
-        shell.begin()
+    if 0:
+    
+        def leoPyShellMain(self):
+            
+            import PyShell
+            root = g.app.root
+            PyShell.fixwordbreaks(root)
+            flist = PyShell.PyShellFileList(root)
+            shell = PyShell.PyShell(flist)
+            flist.pyshell = shell
+            shell.begin()
     #@nonl
     #@-node:ekr.20031218072017.2937:leoPyShellMain
     #@-node:ekr.20031218072017.2932:openPythonWindow (Dave Hein)
