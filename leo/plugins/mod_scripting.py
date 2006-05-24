@@ -58,7 +58,8 @@ This plugin is based on ideas from e's dynabutton plugin.
 import leoGlobals as g
 import leoPlugins
 
-Tk = g.importExtension('Tkinter',pluginName=__name__,verbose=True)
+Tk  = g.importExtension('Tkinter',pluginName=__name__,verbose=True)
+Pmw = g.importExtension('Pmw',pluginName=__name__,verbose=True)
 
 import os
 import sys
@@ -66,7 +67,7 @@ import sys
 #@-node:ekr.20060328125248.2:<< imports >>
 #@nl
 
-__version__ = "0.21"
+__version__ = "0.22"
 #@<< version history >>
 #@+node:ekr.20060328125248.3:<< version history >>
 #@+at
@@ -108,6 +109,8 @@ __version__ = "0.21"
 # duplication.
 # 0.20 EKR: converted to @thin.
 # 0.21 EKR: Added Debug button & balloons.
+# 0.22 EKR: Created leoScriptModule for use by the debugger and Debug Script 
+# button.
 #@-at
 #@nonl
 #@-node:ekr.20060328125248.3:<< version history >>
@@ -248,9 +251,15 @@ class scriptingController:
         c = self.c ; h = p.headString()
         buttonText = self.getButtonText(h)
         shortcut = self.getShortcut(h)
-        statusLine = "Script button: %s" % buttonText
+        
         if shortcut:
-            statusLine = statusLine + " @key=" + shortcut
+            if 1:
+                statusLine = " @key=" + shortcut
+            else:
+                statusLine = "Script button: %s" % buttonText
+                statusLine = statusLine + " @key=" + shortcut
+        else:
+            statusLine = 'Script button'
         b = self.createAtButtonIconButton(p,buttonText,statusLine,shortcut)
     #@-node:ekr.20060328125248.12:createAtButtonButton (Improved for 4.4)
     #@+node:ekr.20060328125248.13:loadPlugin
@@ -348,29 +357,42 @@ class scriptingController:
     #@+node:ekr.20060328125248.17:createIconButton
     def createIconButton (self,text,statusLine,bg):
         b = self.iconBar.add(text=text)
+        if statusLine and statusLine != text:
+            self.createBalloon(b,statusLine)
+    
         if sys.platform == "win32":
             width = int(len(text) * 0.9)
             b.configure(width=width,font=('verdana',7,'bold'),bg=bg)
-        #@    << define enter/leave callbacks >>
-        #@+node:ekr.20060328125248.18:<< define enter/leave callbacks >>
-        def mouseEnterCallback(event=None,self=self,statusLine=statusLine):
-            self.mouseEnter(statusLine)
-        
-        def mouseLeaveCallback(event=None,self=self):
-            self.mouseLeave()
-        #@nonl
-        #@-node:ekr.20060328125248.18:<< define enter/leave callbacks >>
-        #@nl
-        b.bind('<Enter>', mouseEnterCallback)
-        b.bind('<Leave>', mouseLeaveCallback)
+    
+        if 0:
+            #@        << define enter/leave callbacks >>
+            #@+node:ekr.20060328125248.18:<< define enter/leave callbacks >>
+            def mouseEnterCallback(event=None,self=self,statusLine=statusLine):
+                self.mouseEnter(statusLine)
+            
+            def mouseLeaveCallback(event=None,self=self):
+                self.mouseLeave()
+            #@nonl
+            #@-node:ekr.20060328125248.18:<< define enter/leave callbacks >>
+            #@nl
+            b.bind('<Enter>', mouseEnterCallback)
+            b.bind('<Leave>', mouseLeaveCallback)
         return b
     #@nonl
     #@-node:ekr.20060328125248.17:createIconButton
+    #@+node:ekr.20060522104419.1:createBalloon
+    def createBalloon (self,w,label):
+    
+        'Create a balloon for a widget.'
+    
+        balloon = Pmw.Balloon(w,initwait=100)
+        balloon.bind(w,label)
+    #@nonl
+    #@-node:ekr.20060522104419.1:createBalloon
     #@+node:ekr.20060522105937:createDebugIconButton
     def createDebugIconButton (self):
         
-        b = self.createIconButton('Debug Script', 'Run script in current node', bg='MistyRose1')
-     
+        b = self.createIconButton('Debug Script', 'Debug script in selected node', bg='MistyRose1')
         #@    << define runDebugScriptCommand >>
         #@+node:ekr.20060522105937.1:<< define runDebugScriptCommand >>
         def runDebugScriptCommand (event=None):
@@ -379,46 +401,48 @@ class scriptingController:
         
             c = self.c ; p = c.currentPosition()
             
-            script = g.getScript(c,p,useSelectedText=True)
+            script = g.getScript(c,p,useSelectedText=True,useSentinels=False)
             if script:
-                #@        << find the debugger or return >>
-                #@+node:ekr.20060522105937.2:<< find the debugger or return >>
-                pythonDir = g.os_path_dirname(sys.executable)
-                debuggers = (
-                    c.config.getString('debugger_path'),
-                    g.os_path_join(pythonDir,'scripts','_winpdb.py'),
-                )
-                
-                for debugger in debuggers:
-                    if debugger:
-                        debugger = g.os_path_abspath(debugger)
-                        if g.os_path_exists(debugger):
-                            break
-                        else:
-                            g.es('Debugger does not exist: %s' % (debugger),color='blue')
-                else:
-                    return g.es('No debugger found.')
-                #@nonl
-                #@-node:ekr.20060522105937.2:<< find the debugger or return >>
-                #@nl
-                #@        << create a temporary target file containing the script >>
-                #@+node:ekr.20060522105937.3:<< create a temporary target file containing the script >>
-                target = g.os_path_join(g.app.loadDir,'..','scripts','tempLeoDebugFile')
-                f = None
+                #@        << set debugging if winpdb is active >>
+                #@+node:ekr.20060523084441:<< set debugging if winpdb is active >>
                 try:
-                    f = file(target,'w')
-                    f.write('# A temporary file created from the script for use by the debugger\n')
-                    f.write(script + '\n')
-                finally:
-                    if f: f.close()
+                    import rpdb2
+                    debugging = rpdb2.g_debugger is not None
+                except ImportError:
+                    debugging = False
                 #@nonl
-                #@-node:ekr.20060522105937.3:<< create a temporary target file containing the script >>
+                #@-node:ekr.20060523084441:<< set debugging if winpdb is active >>
                 #@nl
-                args = [sys.executable, debugger, '-t', target]
-                if 1: # Use present environment.
-                    os.spawnv(os.P_NOWAIT, sys.executable, args)
-                else: # Use a pristine environment.
-                    os.spawnve(os.P_NOWAIT, sys.executable, args, os.environ)
+                if debugging:
+                    #@            << create leoScriptModule >>
+                    #@+node:ekr.20060524073716:<< create leoScriptModule >>
+                    target = g.os_path_join(g.app.loadDir,'leoScriptModule.py')
+                    f = None
+                    try:
+                        f = file(target,'w')
+                        f.write('# A module holding the script to be debugged.\n')
+                        f.write('import rpdb2\n')
+                        f.write('if rpdb2.g_debugger is not None: # don\'t hang if the debugger isn\'t running.\n')
+                        f.write('  rpdb2.start_embedded_debugger(pwd="",fAllowUnencrypted=True) # Hard breakpoint.\n')
+                        # f.write('# Remove all previous variables.\n')
+                        f.write('# Predefine c, g and p.\n')
+                        f.write('import leoGlobals as g\n')
+                        f.write('c = g.app.scriptDict.get("c")\n')
+                        f.write('p = c.currentPosition()\n')
+                        f.write('# Actual script starts here.\n')
+                        f.write(script + '\n')
+                    finally:
+                        if f: f.close()
+                    #@nonl
+                    #@-node:ekr.20060524073716:<< create leoScriptModule >>
+                    #@nl
+                    g.app.scriptDict ['c'] = c
+                    try:
+                        reload(leoScriptModule)
+                    except:
+                        import leoScriptModule
+                else:
+                    g.es('No debugger active',color='blue')
             
             c.frame.bodyWantsFocus()
         #@nonl
@@ -430,7 +454,7 @@ class scriptingController:
     #@-node:ekr.20060522105937:createDebugIconButton
     #@+node:ekr.20060328125248.20:createRunScriptIconButton
     def createRunScriptIconButton (self):
-        b = self.createIconButton('Run Script', 'Run script in current node', bg='MistyRose1')
+        b = self.createIconButton('Run Script', 'Run script in selected node', bg='MistyRose1')
         #@    << define runScriptCommand >>
         #@+node:ekr.20060328125248.21:<< define runScriptCommand >>
         def runScriptCommand (event=None):
@@ -452,7 +476,7 @@ class scriptingController:
     #@-node:ekr.20060328125248.20:createRunScriptIconButton
     #@+node:ekr.20060328125248.22:createScriptButtonIconButton
     def createScriptButtonIconButton (self):
-        b = self.createIconButton('Script Button', 'Make script button current node', bg="#ffffcc")
+        b = self.createIconButton('Script Button', 'Make script button from selected node', bg="#ffffcc")
         #@    << define addScriptButtonCommand >>
         #@+node:ekr.20060328125248.23:<< define addScriptButtonCommand >>
         def addScriptButtonCommand (event=None,self=self):
