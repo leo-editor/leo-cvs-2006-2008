@@ -5038,7 +5038,7 @@ def funcToMethod(f,theClass,name=None):
 #@nonl
 #@-node:ekr.20031218072017.3126:g.funcToMethod
 #@+node:EKR.20040614071102.1:g.getScript & tests
-def getScript (c,p,useSelectedText=True,forcePythonSentinels=True):
+def getScript (c,p,useSelectedText=True,forcePythonSentinels=True,useSentinels=True):
     
     '''Return the expansion of the selected text of node p.
     Return the expansion of all of node p's body text if there
@@ -5062,7 +5062,8 @@ def getScript (c,p,useSelectedText=True,forcePythonSentinels=True):
         if s.strip():
             g.app.scriptDict["script1"]=s
             script = at.writeFromString(p.copy(),s,
-                forcePythonSentinels=forcePythonSentinels)
+                forcePythonSentinels=forcePythonSentinels,
+                useSentinels=useSentinels)
             script = script.replace("\r\n","\n") # Use brute force.
             g.app.scriptDict["script2"]=script
         else: script = ''

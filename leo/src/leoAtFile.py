@@ -2943,7 +2943,7 @@ class atFile:
     #@+node:ekr.20050506084734:writeFromString
     # This is at.write specialized for scripting.
     
-    def writeFromString(self,root,s,forcePythonSentinels=True):
+    def writeFromString(self,root,s,forcePythonSentinels=True,useSentinels=True):
         
         """Write a 4.x derived file from a string.
         
@@ -2953,13 +2953,13 @@ class atFile:
         c.endEditing() # Capture the current headline, but don't change the focus!
     
         at.initWriteIvars(root,"<string-file>",
-            nosentinels=False,thinFile=False,scriptWrite=True,toString=True,
+            nosentinels=not useSentinels,thinFile=False,scriptWrite=True,toString=True,
             forcePythonSentinels=forcePythonSentinels)
     
         try:
             at.openFileForWriting(root,at.targetFileName,toString=True)
             # Simulate writing the entire file so error recovery works.
-            at.writeOpenFile(root,nosentinels=False,toString=True,fromString=s)
+            at.writeOpenFile(root,nosentinels=not useSentinels,toString=True,fromString=s)
             at.closeWriteFile()
             # Major bug: failure to clear this wipes out headlines!
             # Minor bug: sometimes this causes slight problems...
