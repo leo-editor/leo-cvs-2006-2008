@@ -43,7 +43,7 @@ http://webpages.charter.net/edreamleo/rstplugin3.html
 
 from __future__ import generators # To make this plugin work with Python 2.2.
 
-__version__ = '1.12'
+__version__ = '1.13'
 
 #@<< imports >>
 #@+node:ekr.20050805162550.2:<< imports >>
@@ -394,6 +394,10 @@ except ImportError:
 # 1.12 EKR:
 # - Created writeNodeToString.
 # - Added toString logic to processTree, writeNormalTree and writeSpecialTree.
+# 1.13 EKR:
+# - Added p argument to writeNodeToString (defaults to current position)
+# - writeNodeToString now returns p,s.
+# - Better docstring for writeNodeToString.
 #@-at
 #@nonl
 #@-node:ekr.20050908120111:v 1.x
@@ -1106,7 +1110,7 @@ class rstClass:
                         self.writeNormalTree(p,toString=toString)
                     self.scanAllOptions(p) # Restore the top-level verbose setting.
                     if toString:
-                        return self.stringOutput
+                        return p.copy(),self.stringOutput
                     else:
                         self.report(self.outputFileName)
                     p.moveToNodeAfterTree()
@@ -1223,9 +1227,19 @@ class rstClass:
     #@nonl
     #@-node:ekr.20050809082854.1:writeToDocutils (sets argv)
     #@+node:ekr.20060525102337:writeNodeToString (New in 4.4.1)
-    def writeNodeToString (self,ext=None):
+    def writeNodeToString (self,p=None,ext=None):
         
-        c = self.c ; current = c.currentPosition()
+        '''Scan p's tree (defaults to presently selected tree) looking for @rst nodes.
+        Convert the first node found to an ouput of the type specified by ext.
+        
+        The @rst may or may not be followed by a filename; the filename is *ignored*,
+        and its type does not affect ext Or the output generated in any way.
+        
+        ext should start with a period:  .html, .tex or None (specifies rst output).
+        
+        Returns p, s, where p is the position of the @rst node and s is the converted text.'''
+        
+        c = self.c ; current = p or c.currentPosition()
         
         for p in current.self_and_parents_iter():
             if p.headString().startswith('@rst'):
