@@ -9,7 +9,7 @@
 <preferences/>
 <find_panel_settings/>
 <vnodes>
-<v t="ekr.20050404094627"><vh>Settings and buttons</vh>
+<v t="ekr.20050404094627" a="E"><vh>Settings and buttons</vh>
 <v t="ekr.20041226081019"><vh>@button Spell</vh></v>
 <v t="ekr.20050812090111"><vh>@button rst3</vh></v>
 <v t="ekr.20050407144417"><vh>@settings</vh>
@@ -42,8 +42,8 @@
 <v t="ekr.20050902080416"><vh>@@button reformat-paragraph</vh></v>
 <v t="ekr.20060525104232"><vh>@button rst-&gt;html</vh></v>
 <v t="ekr.20060525110135"><vh>@@button rst-&gt;pdf</vh></v>
-<v t="ekr.20060525110135.1"><vh>@button rst -&gt; tex</vh></v>
-<v t="ekr.20060525110217"><vh>@button rst -&gt; rst</vh></v>
+<v t="ekr.20060525110135.1"><vh>@button rst-&gt;tex</vh></v>
+<v t="ekr.20060525110217" a="V"><vh>@button rst-&gt;rst</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
 <v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
@@ -164,7 +164,7 @@
 <v t="ekr.20050830080545"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20050831195331.2" a="V"><vh>Chapter 1: Installing Leo</vh>
+<v t="ekr.20050831195331.2"><vh>Chapter 1: Installing Leo</vh>
 <v t="edream.110203163054.48"><vh>@rst html\install.html</vh>
 <v t="ekr.20050901110110"><vh>@rst-no-head links</vh></v>
 <v t="edream.110203163054.49"><vh>System requirements</vh></v>
@@ -27383,8 +27383,8 @@ rst3 = leoPlugins.getPluginModule('rst3')
 if rst3:
     controller = rst3.controllers.get(c)
     if controller:
-        s = controller.writeNodeToString('.html')
-        print '*' * 40
+        p,s = controller.writeNodeToString(ext='.html')
+        print '*' * 40,p
         print s
 else:
     rst3 = leoPlugins.loadOnePlugin('rst3',verbose=True)
@@ -27403,8 +27403,8 @@ rst3 = leoPlugins.getPluginModule('rst3')
 if rst3:
     controller = rst3.controllers.get(c)
     if controller:
-        s = controller.writeNodeToString('.pdf')
-        print '*' * 40
+        p,s = controller.writeNodeToString(ext='.pdf')
+        print '*' * 40,p
         print s
 else:
     rst3 = leoPlugins.loadOnePlugin('rst3',verbose=True)
@@ -27421,8 +27421,8 @@ rst3 = leoPlugins.getPluginModule('rst3')
 if rst3:
     controller = rst3.controllers.get(c)
     if controller:
-        s = controller.writeNodeToString('.tex')
-        print '*' * 40
+        p,s = controller.writeNodeToString(ext='.tex')
+        print '*' * 40,p
         print s
 else:
     rst3 = leoPlugins.loadOnePlugin('rst3',verbose=True)
@@ -27439,8 +27439,8 @@ rst3 = leoPlugins.getPluginModule('rst3')
 if rst3:
     controller = rst3.controllers.get(c)
     if controller:
-        s = controller.writeNodeToString(None)
-        print '*' * 40
+        p,s = controller.writeNodeToString(ext=None) # Convert rst nodes to rst text.
+        print '*' * 40,p
         print s
 else:
     rst3 = leoPlugins.loadOnePlugin('rst3',verbose=True)
