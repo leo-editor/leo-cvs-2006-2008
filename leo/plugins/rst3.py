@@ -1093,10 +1093,13 @@ class rstClass:
                     (self.outputFileName and self.outputFileName[0] != '-') or
                     (toString and not self.outputFileName)
                 ):
-                    # g.trace('ext',ext,repr(self.outputFileName))
                     found = True
                     self.toplevel = p.level() # Define toplevel separately for each rst file.
-                    self.ext = ext or g.os_path_splitext(self.outputFileName)[1].lower()
+                    if toString:
+                        self.ext = ext
+                    else:
+                        self.ext = g.os_path_splitext(self.outputFileName)[1].lower()
+                    # g.trace('ext',self.ext,self.outputFileName)
                     if self.ext in ('.htm','.html','.tex','.pdf'):
                         ok = self.writeSpecialTree(p,toString=toString)
                     else:
