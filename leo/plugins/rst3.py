@@ -43,7 +43,7 @@ http://webpages.charter.net/edreamleo/rstplugin3.html
 
 from __future__ import generators # To make this plugin work with Python 2.2.
 
-__version__ = '1.11'
+__version__ = '1.12'
 
 #@<< imports >>
 #@+node:ekr.20050805162550.2:<< imports >>
@@ -391,6 +391,9 @@ except ImportError:
 # Python 2.2.
 # 1.10 EKR: Created self.source ivar to support work by Kent Tenney.
 # 1.11 EKR: Create the output directory if it does not exist.
+# 1.12 EKR:
+# - Created writeNodeToString.
+# - Added toString logic to processTree, writeNormalTree and writeSpecialTree.
 #@-at
 #@nonl
 #@-node:ekr.20050908120111:v 1.x
@@ -1043,15 +1046,20 @@ class rstClass:
     #@nonl
     #@-node:ekr.20050809075309:initWrite
     #@+node:ekr.20050809080925:writeNormalTree
-    def writeNormalTree (self,p):
+    def writeNormalTree (self,p,toString=False):
     
         self.initWrite(p)
         
-        # Write the file to the directory containing the .leo file.
-        self.outputFileName = self.computeOutputFileName(self.outputFileName)
-        self.outputFile = file(self.outputFileName,'w')
-        self.writeTree(p)
-        self.outputFile.close()
+        if toString:
+            self.outputFile = StringIO.StringIO()
+            self.writeTree(p)
+            self.source = self.stringOutput = self.outputFile.getvalue()
+        else:
+            # Write the file to the directory containing the .leo file.
+            self.outputFileName = self.computeOutputFileName(self.outputFileName)
+            self.outputFile = file(self.outputFileName,'w')
+            self.writeTree(p)
+            self.outputFile.close()
     #@nonl
     #@-node:ekr.20050809080925:writeNormalTree
     #@+node:ekr.20051121102358:processTopTree
@@ -1060,7 +1068,7 @@ class rstClass:
         c = self.c ; current = p.copy()
         
         for p in current.self_and_parents_iter():
-            if p.headString().startswith('@rst '):
+            if p.headString().startswith('@rst'):
                 self.processTree(p)
                 break
         else:
@@ -1070,69 +1078,44 @@ class rstClass:
     #@nonl
     #@-node:ekr.20051121102358:processTopTree
     #@+node:ekr.20050805162550.17:processTree
-    def processTree(self,p):
+    def processTree(self,p,ext=None,toString=False):
         
         '''Process all @rst nodes in a tree.'''
     
         self.preprocessTree(p)
-        found = False
+        found = False ; self.stringOutput = ''
         p = p.copy() ; after= p.nodeAfterTree()
         while p and p != after:
             h = p.headString().strip()
             if g.match_word(h,0,"@rst"):
                 self.outputFileName = h[4:].strip()
-                if self.outputFileName and self.outputFileName[0] != '-':
-                    #@                << set ignore if we should ignore this @rst node >>
-                    #@+node:ekr.20050917091412:<< set ignore if we should ignore this @rst node >>
-                    #@+at 
-                    #@nonl
-                    # The @rst plugin almost certainly should ignore the 
-                    # @ignore directive. Indeed,
-                    # we often want to put @rst nodes in the range of @ignore 
-                    # directives so that
-                    # discussions of @root, etc. do not create derived files!
-                    # 
-                    # An easy way to cause the rst3 plugin to ignore an @rst 
-                    # tree is to change
-                    # @rst to @@rst.
-                    #@-at
-                    #@@c
-                    
-                    if 1:
-                        # Ignore @ignore directives.
-                        ignore = False
+                if (
+                    (self.outputFileName and self.outputFileName[0] != '-') or
+                    (toString and not self.outputFileName)
+                ):
+                    # g.trace('ext',ext,repr(self.outputFileName))
+                    found = True
+                    self.toplevel = p.level() # Define toplevel separately for each rst file.
+                    self.ext = ext or g.os_path_splitext(self.outputFileName)[1].lower()
+                    if self.ext in ('.htm','.html','.tex','.pdf'):
+                        ok = self.writeSpecialTree(p,toString=toString)
                     else:
-                        # Honor @ignore in p or any ancestor.
-                        for p2 in p.self_and_parents_iter():
-                            if p2.isAtIgnoreNode():
-                                g.es('ignoring %s' % (h))
-                                ignore = True ; break
-                        else: ignore = False
-                    #@nonl
-                    #@-node:ekr.20050917091412:<< set ignore if we should ignore this @rst node >>
-                    #@nl
-                    if not ignore:
-                        # g.trace(p.headString())
-                        found = True
-                        # Bug fix 12/4/05: define toplevel separately for each rst file.
-                        self.toplevel = p.level()
-                        self.ext = ext = g.os_path_splitext(self.outputFileName)[1].lower()
-                        if ext in ('.htm','.html','.tex','.pdf'):
-                            ok = self.writeSpecialTree(p)
-                        else:
-                            self.writeNormalTree(p)
-                        self.scanAllOptions(p) # Restore the top-level verbose setting.
+                        self.writeNormalTree(p,toString=toString)
+                    self.scanAllOptions(p) # Restore the top-level verbose setting.
+                    if toString:
+                        return self.stringOutput
+                    else:
                         self.report(self.outputFileName)
                     p.moveToNodeAfterTree()
                 else:
-                    p.moveToThreadNext()
+                   p.moveToThreadNext()
             else: p.moveToThreadNext()
         if not found:
             g.es('No @rst nodes in selected tree',color='blue')
-    #@nonl
+        return None,None
     #@-node:ekr.20050805162550.17:processTree
     #@+node:ekr.20050805162550.21:writeSpecialTree
-    def writeSpecialTree (self,p):
+    def writeSpecialTree (self,p,toString=False):
         
         isHtml = self.ext in ('.html','.htm')
         if isHtml and not SilverCity:
@@ -1146,20 +1129,21 @@ class rstClass:
         self.source = self.outputFile.getvalue()
         self.outputFile = None
         
-        # Bug fix 12/4/05: Compute this here for use by intermediate file.
-        self.outputFileName = self.computeOutputFileName(self.outputFileName)
+        if not toString:
+            # Compute this here for use by intermediate file.
+            self.outputFileName = self.computeOutputFileName(self.outputFileName)
+            
+            # Create the directory if it doesn't exist.
+            dir, junk = g.os_path_split(self.outputFileName)
+            if not os.access(dir,os.F_OK):
+                os.mkdir(dir)
         
-        # Bug fix 5/15/06: Create the directory if it doesn't exist.
-        dir, junk = g.os_path_split(self.outputFileName)
-        if not os.access(dir,os.F_OK):
-            os.mkdir(dir)
-    
-        if self.getOption('write_intermediate_file'):
-            name = self.outputFileName + '.txt'
-            f = file(name,'w')
-            f.write(self.source)
-            f.close()
-            self.report(name)
+            if self.getOption('write_intermediate_file'):
+                name = self.outputFileName + '.txt'
+                f = file(name,'w')
+                f.write(self.source)
+                f.close()
+                self.report(name)
             
         try:
             output = self.writeToDocutils(self.source)
@@ -1170,11 +1154,14 @@ class rstClass:
             ok = False
             
         if ok:
-            # Write the file to the directory containing the .leo file.
-            f = file(self.outputFileName,'w')
-            f.write(output)
-            f.close()
-            self.http_endTree(self.outputFileName)
+            if toString:
+                self.stringOutput = output
+            else:
+                # Write the file to the directory containing the .leo file.
+                f = file(self.outputFileName,'w')
+                f.write(output)
+                f.close()
+                self.http_endTree(self.outputFileName)
     
         return ok
     #@nonl
@@ -1232,6 +1219,18 @@ class rstClass:
             return pub.publish(argv=[])
     #@nonl
     #@-node:ekr.20050809082854.1:writeToDocutils (sets argv)
+    #@+node:ekr.20060525102337:writeNodeToString (New in 4.4.1)
+    def writeNodeToString (self,ext=None):
+        
+        c = self.c ; current = c.currentPosition()
+        
+        for p in current.self_and_parents_iter():
+            if p.headString().startswith('@rst'):
+                return self.processTree(p,ext=ext,toString=True)
+        else:
+            return self.processTree(current,ext=ext,toString=True)
+    #@nonl
+    #@-node:ekr.20060525102337:writeNodeToString (New in 4.4.1)
     #@-node:ekr.20050809082854: Top-level write code
     #@+node:ekr.20050805162550.23:writeTree
     def writeTree(self,p):
