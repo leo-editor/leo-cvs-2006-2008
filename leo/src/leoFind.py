@@ -516,8 +516,20 @@ class leoFind:
     
         # Replace the selection in _both_ controls.
         start,end = oldSel
-        gui.replaceSelectionRangeWithText(t,          start,end,self.change_text)
-        gui.replaceSelectionRangeWithText(self.s_ctrl,start,end,self.change_text)
+        change_text = self.change_text
+        
+        # Perform regex substitutions of \1, \2, ...\9 in the change text.
+        if self.pattern_match and self.match_obj:
+            groups = self.match_obj.groups()
+            if groups:
+                n = 1
+                for group in groups:
+                    # This isn't quite correct if groups can contain backslashes.
+                    change_text = change_text.replace('\\%d' % (n),group)
+                    n += 1
+                    
+        gui.replaceSelectionRangeWithText(t,          start,end,change_text)
+        gui.replaceSelectionRangeWithText(self.s_ctrl,start,end,change_text)
     
         # Update the selection for the next match.
         gui.setSelectionRangeWithLength(t,start,len(self.change_text))
@@ -816,6 +828,7 @@ class leoFind:
             k  = mo.start()
             k2 = mo.end()
             # g.trace(i,j,k,k2,s[k:k2])
+            # g.trace('groups',mo.groups())
             return k, k2
     #@nonl
     #@-node:ekr.20060526092203:regexHelper
