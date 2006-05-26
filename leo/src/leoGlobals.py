@@ -4139,9 +4139,11 @@ def convertRowColToPythonIndex (s,row,col):
     
     lines = g.splitLines(s)
 
-    if row > len(lines) or col > len(lines[row]):
-        raise IndexError
-    
+    if row >= len(lines):
+        return len(s)
+        
+    col = min(col, len(lines[row]))
+
     prev = 0
     for line in lines[:row]:
         prev += len(line)
