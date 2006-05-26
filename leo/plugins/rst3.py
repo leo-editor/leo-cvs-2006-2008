@@ -1233,7 +1233,7 @@ class rstClass:
         Convert the first node found to an ouput of the type specified by ext.
         
         The @rst may or may not be followed by a filename; the filename is *ignored*,
-        and its type does not affect ext Or the output generated in any way.
+        and its type does not affect ext or the output generated in any way.
         
         ext should start with a period:  .html, .tex or None (specifies rst output).
         

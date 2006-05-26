@@ -9,7 +9,7 @@
 <preferences/>
 <find_panel_settings/>
 <vnodes>
-<v t="ekr.20050404094627" a="E"><vh>Settings and buttons</vh>
+<v t="ekr.20050404094627"><vh>Settings and buttons</vh>
 <v t="ekr.20041226081019"><vh>@button Spell</vh></v>
 <v t="ekr.20050812090111"><vh>@button rst3</vh></v>
 <v t="ekr.20050407144417"><vh>@settings</vh>
@@ -43,10 +43,10 @@
 <v t="ekr.20060525104232"><vh>@button rst-&gt;html</vh></v>
 <v t="ekr.20060525110135"><vh>@@button rst-&gt;pdf</vh></v>
 <v t="ekr.20060525110135.1"><vh>@button rst-&gt;tex</vh></v>
-<v t="ekr.20060525110217" a="V"><vh>@button rst-&gt;rst</vh></v>
+<v t="ekr.20060525110217"><vh>@button rst-&gt;rst</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
+<v t="ekr.20040414161647"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.1"><vh>Documentation for rst3 plugin</vh>
 <v t="ekr.20050818163826"><vh>@rst html\rstplugin3.html</vh>
 <v t="ekr.20050818163826.1"><vh>@rst-no-head links</vh></v>
@@ -966,7 +966,7 @@
 </v>
 <v t="ekr.20060430215657.3"><vh>Rule ordering</vh></v>
 </v>
-<v t="edream.110203163054.46"><vh>Release Notes</vh>
+<v t="edream.110203163054.46" a="V"><vh>Release Notes</vh>
 <v t="edream.110203163054.117"><vh>Previous versions...</vh>
 <v t="ekr.20060206111717"><vh>Ancient...</vh>
 <v t="edream.110203163054.118"><vh>3.x...</vh>

@@ -138,9 +138,9 @@ def addUThreading (tkFrame,parentFrame):
     t.start()
 
     # Replace the canvas bindings.
-    canvas.bind( '<Button-1>', scrollDown)
+    canvas.bind( '<Button-1>', scrollDown) # You might also want to bind to <Button-2>
     canvas.bind( '<Button-3>', scrollUp)
-    canvas.bind( '<ButtonRelease-1>', stopScrolling)
+    canvas.bind( '<ButtonRelease-1>', stopScrolling) # You might also want to bind to <ButtonRelease-2>
     canvas.bind( '<ButtonRelease-3>', stopScrolling)
     return canvas
 #@nonl

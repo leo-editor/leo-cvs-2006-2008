@@ -171,6 +171,9 @@ class scriptingController:
         
         self.c = c
         self.scanned = False
+        kind = c.config.getString('debugger_kind') or 'idle'
+        self.debuggerKind = kind.lower()
+    
         if not iconBar:
             self.iconBar = c.frame.getIconBarObject()
         else:
@@ -403,15 +406,24 @@ class scriptingController:
             
             script = g.getScript(c,p,useSelectedText=True,useSentinels=False)
             if script:
-                #@        << set debugging if winpdb is active >>
-                #@+node:ekr.20060523084441:<< set debugging if winpdb is active >>
-                try:
-                    import rpdb2
-                    debugging = rpdb2.g_debugger is not None
-                except ImportError:
+                #@        << set debugging if debugger is active >>
+                #@+node:ekr.20060523084441:<< set debugging if debugger is active >>
+                g.trace(self.debuggerKind)
+                
+                if self.debuggerKind == 'winpdb':
+                    try:
+                        import rpdb2
+                        debugging = rpdb2.g_debugger is not None
+                    except ImportError:
+                        debugging = False
+                elif self.debuggerKind == 'idle':
+                    # import idlelib.Debugger.py as Debugger
+                    # debugging = Debugger.interacting
+                    debugging = True #######
+                else:
                     debugging = False
                 #@nonl
-                #@-node:ekr.20060523084441:<< set debugging if winpdb is active >>
+                #@-node:ekr.20060523084441:<< set debugging if debugger is active >>
                 #@nl
                 if debugging:
                     #@            << create leoScriptModule >>
@@ -421,9 +433,14 @@ class scriptingController:
                     try:
                         f = file(target,'w')
                         f.write('# A module holding the script to be debugged.\n')
-                        f.write('import rpdb2\n')
-                        f.write('if rpdb2.g_debugger is not None: # don\'t hang if the debugger isn\'t running.\n')
-                        f.write('  rpdb2.start_embedded_debugger(pwd="",fAllowUnencrypted=True) # Hard breakpoint.\n')
+                        if self.debuggerKind == 'idle':
+                            # This works, but uses the lame pdb debugger.
+                            f.write('import pdb\n')
+                            f.write('pdb.set_trace() # Hard breakpoint.\n')
+                        elif self.debuggerKind == 'winpdb':
+                            f.write('import rpdb2\n')
+                            f.write('if rpdb2.g_debugger is not None: # don\'t hang if the debugger isn\'t running.\n')
+                            f.write('  rpdb2.start_embedded_debugger(pwd="",fAllowUnencrypted=True) # Hard breakpoint.\n')
                         # f.write('# Remove all previous variables.\n')
                         f.write('# Predefine c, g and p.\n')
                         f.write('import leoGlobals as g\n')
@@ -437,10 +454,9 @@ class scriptingController:
                     #@-node:ekr.20060524073716:<< create leoScriptModule >>
                     #@nl
                     g.app.scriptDict ['c'] = c
-                    try:
-                        reload(leoScriptModule)
-                    except:
-                        import leoScriptModule
+                    if 'leoScriptModule' in sys.modules.keys():
+                        del sys.modules ['leoScriptModule'] # Essential.
+                    import leoScriptModule      
                 else:
                     g.es('No debugger active',color='blue')
             

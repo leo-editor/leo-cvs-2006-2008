@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="267" clone_windows="0"/>
 <globals body_outline_ratio="0.549828178694">
-	<global_window_position top="45" left="330" height="656" width="892"/>
+	<global_window_position top="45" left="330" height="542" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -45,11 +45,14 @@
 </v>
 </v>
 <v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
-<v t="ekr.20051126062243" a="EV" annotate="7d71002e"><vh>Debugging options</vh>
-<v t="ekr.20060201110016"><vh>@bool allow_idle_time_hook = False</vh></v>
+<v t="ekr.20060524151415" a="E"><vh>Debugger options</vh>
+<v t="ekr.20060524151415.1" a="V"><vh>@string debugger_kind = winpdb</vh></v>
 <v t="ekr.20060521132401"><vh>@string debugger_path = None</vh></v>
+</v>
+<v t="ekr.20051126062243" a="E" annotate="7d71002e"><vh>Debugging options</vh>
+<v t="ekr.20060201110016"><vh>@bool allow_idle_time_hook = False</vh></v>
 <v t="ekr.20060521134125"><vh>@string debugger_default_target = None</vh></v>
-<v t="ekr.20060521134125.1"><vh>@string debugger_force_taget = None</vh></v>
+<v t="ekr.20060521134125.1"><vh>@string debugger_force_target = None</vh></v>
 <v t="ekr.20060212101234"><vh>@bool gc_before_redraw = False</vh></v>
 <v t="ekr.20060202113731"><vh>@bool show_tree_stats = False</vh></v>
 <v t="ekr.20060216145416"><vh>@bool trace_autocompleter = False</vh></v>
@@ -176,7 +179,7 @@
 <v t="ekr.20051025085144"><vh>@string aspell_dir = c:\aspell</vh></v>
 <v t="ekr.20051025085144.1"><vh>@string aspell_bin_dir = c:\aspell\bin</vh></v>
 </v>
-<v t="ekr.20041213105007.1" a="E" annotate="7d71002e"><vh>Colors</vh>
+<v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
 <v t="ekr.20041119052015.2"><vh>@color log_text_foreground_color = None</vh></v>
@@ -326,7 +329,7 @@
 </v>
 <v t="ekr.20060122105527.3"><vh>Keyboard and minibuffer Options</vh>
 <v t="ekr.20060215094146"><vh>@@bool ignore_caps_lock = True</vh></v>
-<v t="ekr.20060216170801"><vh>@bool enable_calltips = False</vh></v>
+<v t="ekr.20060216170801"><vh>@bool enable_calltips = True</vh></v>
 <v t="ekr.20060215102141"><vh>@bool ignore_unbound_non_ascii_keys = False</vh></v>
 <v t="ekr.20060122105527.8"><vh>@bool showHelpWhenEnteringModes = False</vh></v>
 <v t="ekr.20060122105527.7" annotate="7d71002e"><vh>@bool stayInTreeAfterSelect = True</vh></v>
@@ -387,7 +390,7 @@
 <v t="ekr.20060112093227.1"><vh>@shortcuts No bindings: E-M</vh></v>
 <v t="ekr.20060112093227.2"><vh>@shortcuts No bindings: N-Z</vh></v>
 </v>
-<v t="ekr.20060122105527"><vh>EKR bindings: Mode-oriented bindings + Emacs bindings</vh>
+<v t="ekr.20060122105527" a="E"><vh>EKR bindings: Mode-oriented bindings + Emacs bindings</vh>
 <v t="ekr.20060122105527.2"><vh>Summary of Ctrl bindings</vh></v>
 <v t="ekr.20060122105527.9"><vh>Modes</vh>
 <v t="ekr.20060122113439"><vh>@mode Edit (Control-space)</vh>
@@ -3696,8 +3699,8 @@ isearch-forward-regexp  = x
 search-forward          = f
 word-search-forward     = w
 re-search-forward       = Shift-R</t>
-<t tx="ekr.20060120123529">True:  Clicking an unselected node selects the node and *also* expands or contracts it.
-False: Clicking an unselected node just selects the node.</t>
+<t tx="ekr.20060120123529">True:  Clicking anywhere in an unselected node selects the node and *also* expands or contracts it.
+False: Clicking an unselected node just selects the node, unless the click happens in the expand/contract box.</t>
 <t tx="ekr.20060121102627"></t>
 <t tx="ekr.20060121131041.2"># Boilerplate for all modes.
 keyboard-quit           = Return
@@ -3972,7 +3975,7 @@ enter-quick-command-mode    = Alt-C</t>
 abort-edit-headline                 = Esc
 add-comments                        = Ctrl-(
 auto-complete-force                 = Ctrl-Tab
-auto-complete                       = None # period
+auto-complete                       = period
 back-char                           ! text = LtArrow
 back-char-extend-selection          ! text = Shift-LtArrow
 back-word                           ! text = Alt-b  
@@ -4694,5 +4697,8 @@ A reasonable value is 5000.</t>
 c:\prog\tigris-cvs\leo\src\leo.py
 </t>
 <t tx="ekr.20060521134125.1">The debug target to use regardless of the selected node or other settings.</t>
+<t tx="ekr.20060524151415"></t>
+<t tx="ekr.20060524151415.1">idle: use Python's standard idle debugger.
+winpdb: use winpdb debugger.</t>
 </tnodes>
 </leo_file>
