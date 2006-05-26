@@ -5,6 +5,8 @@
 #@@pagewidth 80
 
 import leoGlobals as g
+import re
+import string
 
 #@<< Theory of operation of find/change >>
 #@+node:ekr.20031218072017.2414:<< Theory of operation of find/change >>
@@ -135,6 +137,9 @@ class leoFind:
         ]
         
         self.newStringKeys = ["radio-find-type", "radio-search-scope"]
+        
+        # To do: this should depend on language.
+        self.word_chars = string.letters + string.digits + '_'
         
         # Ivars containing internal state...
         self.c = None # The commander for this search.
@@ -713,77 +718,166 @@ class leoFind:
         self.onlyPosition = None
     #@nonl
     #@-node:ekr.20031218072017.3076:resetWrap
-    #@+node:ekr.20031218072017.3077:search
+    #@+node:ekr.20031218072017.3077:search & helpers
     def search (self):
     
-        """Searches the present headline or body text for self.find_text and returns True if found.
+        """Search s_ctrl for self.find_text under the control of the
+        whole_word, ignore_case, and pattern_match ivars.
+        
+        Returns (pos, newpos) or (None,None)."""
     
-        self.whole_word, self.ignore_case, and self.pattern_match control the search."""
-    
-        c = self.c ; p = self.p ; t = self.s_ctrl ; gui = g.app.gui
-        assert(c and t and p)
-        if self.selection_only:
-            index,stopindex = self.selStart, self.selEnd
-            if index == stopindex:
-                return None, None
-        else:
-            index = gui.getInsertPoint(t)
-            stopindex = g.choose(self.reverse,gui.firstIndex(),gui.lastIndex())
+        c = self.c ; p = self.p ; w = self.s_ctrl ; gui = g.app.gui
+        index = gui.getInsertPoint(w)
+        s = w.get('1.0','end') # Keep the extra trailing newline!
+        #@    << convert index to python index >>
+        #@+node:ekr.20060526084217:<< convert index to python index >>
+        i1 = w.index(index)
+        row, col = i1.split('.') ; row, col = int(row), int(col)
+        index = g.convertRowColToPythonIndex (s,row-1,col)
+        #@nonl
+        #@-node:ekr.20060526084217:<< convert index to python index >>
+        #@nl
+        stopindex = g.choose(self.reverse,0,len(s))
         while 1:
-            try:
-                pos = self.gui_search(t,self.find_text,index,
-                    stopindex=stopindex,backwards=self.reverse,
-                    regexp=self.pattern_match,nocase=self.ignore_case)
-            except Exception:
-                g.es_exception(full=False)
-                self.errors += 1 ; break
-            if not pos: break
-            if self.find_text == '\n':
-                newpos = gui.moveIndexToNextLine(t,pos)
-            else:
-                newpos = gui.moveIndexForward(t,pos,len(self.find_text))
-            if newpos is None: break
-            #@        << break if we are passed the wrap point >>
-            #@+node:ekr.20031218072017.3079:<< break if we are passed the wrap point >>
+            pos,newpos = self.searchHelper(s,index,stopindex,self.find_text,
+                backwards=self.reverse,nocase=self.ignore_case,
+                regexp=self.pattern_match,word=self.whole_word)
+            if pos == -1: return None,None
+            #@        << convert pos and newpos to gui indices >>
+            #@+node:ekr.20060526085605:<< convert pos and newpos to gui indices >>
+            row,col = g.convertPythonIndexToRowCol (s,pos)
+            pos = w.index('%s.%s' % (row+1,col))
+            
+            row,col = g.convertPythonIndexToRowCol (s,newpos)
+            newpos = w.index('%s.%s' % (row+1,col))
+            #@nonl
+            #@-node:ekr.20060526085605:<< convert pos and newpos to gui indices >>
+            #@nl
+            #@        << fail if we are passed the wrap point >>
+            #@+node:ekr.20060526140328:<< fail if we are passed the wrap point >>
             if self.wrapping and self.wrapPos and self.wrapPosition and self.p == self.wrapPosition:
             
-                if self.reverse and gui.compareIndices(t,pos, "<", self.wrapPos):
+                if self.reverse and gui.compareIndices(w,pos, "<", self.wrapPos):
                     # g.trace("wrap done")
-                    break
+                    return None, None
             
-                if not self.reverse and gui.compareIndices(t,newpos, ">", self.wrapPos):
-                    break
+                if not self.reverse and gui.compareIndices(w,newpos, ">", self.wrapPos):
+                    return None, None
             #@nonl
-            #@-node:ekr.20031218072017.3079:<< break if we are passed the wrap point >>
+            #@-node:ekr.20060526140328:<< fail if we are passed the wrap point >>
             #@nl
-            if self.whole_word:
-                index = t.index(g.choose(self.reverse,pos,newpos))
-                #@            << continue if not whole word match >>
-                #@+node:ekr.20031218072017.3080:<< continue if not whole word match >>
-                # Set pos to None if word characters preceed or follow the selection.
-                before = gui.getCharBeforeIndex(t,pos)
-                first  = gui.getCharAtIndex    (t,pos)
-                last   = gui.getCharBeforeIndex(t,newpos)
-                after  = gui.getCharAtIndex    (t,newpos)
-                
-                #g.trace("before,first",before,first,g.is_c_id(before),g.is_c_id(first))
-                #g.trace("after,last",  after,last,  g.is_c_id(after), g.is_c_id(last))
-                
-                if g.is_c_id(before) and g.is_c_id(first):
-                    continue
-                
-                if g.is_c_id(after) and g.is_c_id(last):
-                    continue
-                #@nonl
-                #@-node:ekr.20031218072017.3080:<< continue if not whole word match >>
-                #@nl
-            #g.trace("found:",pos,newpos,p)
-            gui.setTextSelection(t,pos,newpos)
+            gui.setTextSelection(w,pos,newpos,insert=newpos)
             return pos, newpos
-        # g.trace('not found',p.headString())
-        return None,None
     #@nonl
-    #@-node:ekr.20031218072017.3077:search
+    #@+node:ekr.20060526081931:Search helpers...
+    def searchHelper (self,s,i,j,pattern,backwards,nocase,regexp,word):
+        
+        if backwards: i,j = j,i
+            
+        # g.trace(backwards,i,j,repr(s[i:i+20]))
+    
+        if not s[i:j] or not pattern:
+            g.trace('empty',i,j)
+            return -1,-1
+            
+        if regexp:
+            pos,newpos = self.regexHelper(s,i,j,pattern,backwards,nocase)
+        elif backwards:
+            pos,newpos = self.backwardsHelper(s,i,j,pattern,backwards,nocase,word)
+        else:
+            pos,newpos = self.plainHelper(s,i,j,pattern,backwards,nocase,word)
+    
+        return pos,newpos
+    #@+node:ekr.20060526092203:regexHelper
+    def regexHelper (self,s,i,j,pattern,backwards,nocase):
+       
+        try:
+            flags = re.MULTILINE
+            if nocase: flags |= re.IGNORECASE
+            re_obj = re.compile(pattern,flags)
+        except Exception:
+            g.es('Invalid regular expression: %s' % (pattern),color='blue')
+            return -1, -1
+            
+        if backwards: # Scan to the last match.
+            last_mo = None
+            while 1:
+                mo = re_obj.search(s,i,j)
+                if mo is None: break
+                i = mo.end()
+                last_mo = mo
+            self.match_obj = mo = last_mo
+        else:
+            self.match_obj = mo = re_obj.search(s,i,j)
+            
+        if mo is None:
+            return -1, -1
+        else:
+            k  = mo.start()
+            k2 = mo.end()
+            # g.trace(i,j,k,k2,s[k:k2])
+            return k, k2
+    #@nonl
+    #@-node:ekr.20060526092203:regexHelper
+    #@+node:ekr.20060526140744:backwardsHelper
+    def backwardsHelper (self,s,i,j,pattern,backwards,nocase,word):
+    
+        g.trace(repr(s[i-20: i]))
+    
+        if nocase:
+            s = s.lower() ; pattern.lower()
+    
+        if word:
+            n = len(pattern)
+            while 1:
+                k = s.rfind(pattern,i,j)
+                g.trace(i,j,k)
+                if k == -1: return -1, -1
+                if self.matchWord(s,k,pattern):
+                    return max(0,k-n+1),k+1, 
+                else:
+                    j = max(0,k-n)
+        else:
+            k = s.rfind(pattern,i,j)
+            if k == -1:
+                return -1, -1
+            else:
+                return max(0,k-n+1),k+1, 
+    #@nonl
+    #@-node:ekr.20060526140744:backwardsHelper
+    #@+node:ekr.20060526093531:plainHelper
+    def plainHelper (self,s,i,j,pattern,backwards,nocase,word):
+        
+        g.trace(repr(s[i:i+20]))
+        
+        n = len(pattern)
+        if nocase:
+            s = s.lower() ; pattern.lower()
+    
+        if word:
+            while 1:
+                k = s.find(pattern,i,j)
+                g.trace(k,n)
+                if k == -1: return -1, -1
+                elif self.matchWord(s,k,pattern):
+                    return k, k + n
+                else: i = k + n
+        else:
+            k = s.find(pattern,i,j)
+            if k == -1:
+                return -1, -1
+            else:
+                return k, k + n
+    #@nonl
+    #@-node:ekr.20060526093531:plainHelper
+    #@+node:ekr.20060526140744.1:matchWord
+    def matchWord(self,s,i,pattern):
+        
+        return g.match_word(s,i,pattern) and (i == 0 or s[i-1] not in self.word_chars)
+    #@nonl
+    #@-node:ekr.20060526140744.1:matchWord
+    #@-node:ekr.20060526081931:Search helpers...
+    #@-node:ekr.20031218072017.3077:search & helpers
     #@+node:ekr.20031218072017.3081:selectNextPosition
     # Selects the next node to be searched.
     
