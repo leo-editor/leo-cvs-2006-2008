@@ -6164,11 +6164,17 @@ class minibufferFind:
     def __init__(self,c,finder):
     
         self.c = c
-        self.k = c.k
+        self.k = k = c.k
         self.w = None
         self.finder = finder
         self.findTextList = []
         self.changeTextList = []
+        
+        commandName = 'replace-string'
+        s = k.getShortcutForCommandName(commandName)
+        s = k.prettyPrintKey(s)
+        s = k.shortcutFromSetting(s)
+        self.replaceStringShortcut = s
     #@nonl
     #@-node:ekr.20060123125317.2: ctor (minibufferFind)
     #@+node:ekr.20060124140114: Options
@@ -6458,7 +6464,13 @@ class minibufferFind:
         
         if state == 0:
             self.setupArgs(forward=False,regexp=True,word=None)
-            self.stateZeroHelper(event,tag,'Regexp Search Backward:',self.reSearchBackward)
+            self.stateZeroHelper(
+                event,tag,'Regexp Search Backward:',self.reSearchBackward,
+                escapes=[self.replaceStringShortcut])
+        elif k.getArgEscape:
+            # Switch to the replace command.
+            k.setState('replace-string',1,self.replaceString)
+            self.replaceString(event=None)
         else:
             self.updateFindList(k.arg)
             self.lastStateHelper()
@@ -6469,7 +6481,13 @@ class minibufferFind:
         k = self.k ; tag = 're-search-forward' ; state = k.getState(tag)
         if state == 0:
             self.setupArgs(forward=True,regexp=True,word=None)
-            self.stateZeroHelper(event,tag,'Regexp Search:',self.reSearchForward)
+            self.stateZeroHelper(
+                event,tag,'Regexp Search:',self.reSearchForward,
+                escapes=[self.replaceStringShortcut])
+        elif k.getArgEscape:
+            # Switch to the replace command.
+            k.setState('replace-string',1,self.replaceString)
+            self.replaceString(event=None)
         else:
             self.updateFindList(k.arg)
             self.lastStateHelper()
@@ -6483,7 +6501,13 @@ class minibufferFind:
     
         if state == 0:
             self.setupArgs(forward=False,regexp=False,word=False)
-            self.stateZeroHelper(event,tag,'Search Backward: ',self.searchBackward)
+            self.stateZeroHelper(
+                event,tag,'Search Backward: ',self.searchBackward,
+                escapes=[self.replaceStringShortcut])
+        elif k.getArgEscape:
+            # Switch to the replace command.
+            k.setState('replace-string',1,self.replaceString)
+            self.replaceString(event=None)
         else:
             self.updateFindList(k.arg)
             self.lastStateHelper()
@@ -6495,7 +6519,13 @@ class minibufferFind:
     
         if state == 0:
             self.setupArgs(forward=True,regexp=False,word=False)
-            self.stateZeroHelper(event,tag,'Search: ',self.searchForward)
+            self.stateZeroHelper(
+                event,tag,'Search: ',self.searchForward,
+                escapes=[self.replaceStringShortcut])
+        elif k.getArgEscape:
+            # Switch to the replace command.
+            k.setState('replace-string',1,self.replaceString)
+            self.replaceString(event=None)
         else:
             self.updateFindList(k.arg)
             self.lastStateHelper()
@@ -6510,7 +6540,13 @@ class minibufferFind:
     
         if state == 0:
             self.setupArgs(forward=None,regexp=None,word=None)
-            self.stateZeroHelper(event,tag,'Search: ',self.searchWithPresentOptions)
+            self.stateZeroHelper(
+                event,tag,'Search: ',self.searchWithPresentOptions,
+                escapes=[self.replaceStringShortcut])
+        elif k.getArgEscape:
+            # Switch to the replace command.
+            k.setState('replace-string',1,self.replaceString)
+            self.replaceString(event=None)
         else:
             self.updateFindList(k.arg)
             k.clearState()
@@ -6544,14 +6580,17 @@ class minibufferFind:
     #@nonl
     #@-node:ekr.20060124134356:setupArgs
     #@+node:ekr.20060210173041:stateZeroHelper
-    def stateZeroHelper (self,event,tag,prefix,handler):
+    def stateZeroHelper (self,event,tag,prefix,handler,escapes=[]):
     
         k = self.k
         self.w = event and event.widget
         k.setLabelBlue(prefix,protect=True)
         self.addFindStringToLabel(protect=False)
         
-        k.getArg(event,tag,1,handler,
+        # g.trace(escapes,g.callers())
+        k.getArgEscapes = escapes
+        k.getArgEscape = None # k.getArg may set this.
+        k.getArg(event,tag,1,handler, # enter state 1
             tabList=self.findTextList,completion=True,prefix=prefix)
     #@nonl
     #@-node:ekr.20060210173041:stateZeroHelper
@@ -7009,9 +7048,9 @@ class findTab (leoFind.leoFind):
     #@+node:ekr.20060204120158.1:findAgainCommand
     def findAgainCommand (self):
         
-        s = self.find_ctrl.get("1.0","end")
+        s = self.find_ctrl.get("1.0","end-1c")
         s = g.toUnicode(s,g.app.tkEncoding)
-        if s.endswith('\n'): s = s[:-1]
+        # if s.endswith('\n'): s = s[:-1]
         
         if s and s != '<find pattern here>':
             self.findNextCommand()

@@ -1717,6 +1717,7 @@ class keyHandlerClass:
         self.arg = '' # The value returned by k.getArg.
         self.commandName = None # The name of the command being executed.
         self.funcReturn = None # For k.simulateCommand
+        self.getArgEscape = None # A signal that the user escaped getArg in an unusual way.
         self.inputModeBindings = {}
         self.inputModeName = '' # The name of the input mode, or None.
         self.inverseCommandsDict = {}
@@ -1776,6 +1777,7 @@ class keyHandlerClass:
         self.afterGetArgState = None
         self.argTabList = []
         self.modeBindingsDict = {}
+        self.getArgEscapes = []
         #@nonl
         #@-node:ekr.20050923213858:<< define internal ivars >>
         #@nl
@@ -2588,7 +2590,9 @@ class keyHandlerClass:
     #@+node:ekr.20050920085536.62:getArg
     def getArg (self,event,
         returnKind=None,returnState=None,handler=None,
-        prefix=None,tabList=[],completion=True,oneCharacter=False):
+        prefix=None,tabList=[],completion=True,oneCharacter=False,
+        stroke=None, # New in 4.4.1.
+    ):
         
         '''Accumulate an argument until the user hits return (or control-g).
         Enter the given return state when done.
@@ -2597,9 +2601,9 @@ class keyHandlerClass:
     
         k = self ; c = k.c ; state = k.getState('getArg')
         keysym = (event and event.keysym) or ''
-        trace = c.config.getBool('trace_modes') and not g.app.unitTesting
+        trace = 0 or c.config.getBool('trace_modes') and not g.app.unitTesting
         if trace: g.trace(
-            'state',state,'keysym',keysym,
+            'state',state,'keysym',keysym,'stroke',stroke,'escapes',k.getArgEscapes,
             'completion', state==0 and completion or state!=0 and k.arg_completion)
         if state == 0:
             k.arg = ''
@@ -2625,7 +2629,8 @@ class keyHandlerClass:
             k.setState('getArg',1,k.getArg)
             k.afterArgWidget = event and event.widget or c.frame.body.bodyCtrl
             if k.useTextWidget: c.minibufferWantsFocus()
-        elif keysym == 'Return' or k.oneCharacterArg:
+        elif keysym == 'Return' or k.oneCharacterArg or stroke in k.getArgEscapes:
+            if stroke in k.getArgEscapes: k.getArgEscape = stroke
             if k.oneCharacterArg:
                 k.arg = event.char
             else:
@@ -2932,6 +2937,8 @@ class keyHandlerClass:
         
         '''This is the handler for almost all key bindings.'''
         
+        # g.trace(stroke,g.callers())
+        
         k = self ; c = k.c
         trace = c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
     
@@ -2990,7 +2997,7 @@ class keyHandlerClass:
             
             # Second, honor general modes.
             if state == 'getArg':
-                return k.getArg(event)
+                return k.getArg(event,stroke=stroke)
             elif state == 'getFileName':
                 return k.getFileName(event)
             elif state in ('full-command','auto-complete'):
@@ -3732,7 +3739,7 @@ class keyHandlerClass:
         if not setting:
             return None
     
-        s = setting.strip()
+        s = setting.strip().lstrip('<').rstrip('>')
         #@    << define cmd, ctrl, alt, shift >>
         #@+node:ekr.20060201065809:<< define cmd, ctrl, alt, shift >>
         s2 = s.lower()
@@ -3778,6 +3785,7 @@ class keyHandlerClass:
         
         if len(last) == 1:
             last2 = k.tkBindNamesDict.get(last) # Fix new bug introduced in 4.4b2.
+            # g.trace(last,last2)
             if last2:
                 last = last2 ; shift = False # Ignore the shift state for these special chars.
             else:
@@ -3809,6 +3817,7 @@ class keyHandlerClass:
         #@nonl
         #@-node:ekr.20060128103640.4:<< compute shortcut >>
         #@nl
+        # g.trace(setting,shortcut)
         return shortcut
         
     canonicalizeShortcut = shortcutFromSetting # For compatibility.

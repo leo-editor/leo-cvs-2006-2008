@@ -492,9 +492,6 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
     #@nonl
     #@-node:EKR.20040603221140:selectAllFindText
     #@+node:ekr.20031218072017.3908:Tkinter wrappers (leoTkinterFind)
-    def gui_search (self,t,*args,**keys):
-        return t.search(*args,**keys)
-    
     def init_s_ctrl (self,s):
         t = self.s_ctrl
         t.delete("1.0","end")

@@ -548,6 +548,9 @@ class leoFind:
     #@+node:ekr.20060526201951:makeRegexSubs
     def makeRegexSubs(self,s,groups):
         
+        '''Carefully substitute group[i-1] for \i strings in s.
+        The group strings may contain \i strings: they are *not* substituted.'''
+        
         digits = '123456789'
         result = [] ; n = len(s)
         i = j = 0 # s[i:j] is the text between \i markers.
@@ -855,7 +858,7 @@ class leoFind:
     #@+node:ekr.20060526140744:backwardsHelper
     def backwardsHelper (self,s,i,j,pattern,backwards,nocase,word):
     
-        g.trace(repr(s[i-20: i]))
+        # g.trace(repr(s[i-20: i]))
     
         if nocase:
             s = s.lower() ; pattern.lower()
@@ -881,11 +884,12 @@ class leoFind:
     #@+node:ekr.20060526093531:plainHelper
     def plainHelper (self,s,i,j,pattern,backwards,nocase,word):
         
-        g.trace(repr(s[i:i+20]))
+        # g.trace(repr(s[i:i+20]))
         
         n = len(pattern)
         if nocase:
             s = s.lower() ; pattern.lower()
+            pattern = pattern.replace('\\n','\n').replace('\\t','\t')
     
         if word:
             while 1:
@@ -1192,10 +1196,6 @@ class leoFind:
         self.oops()
     
     def bringToFront (self):
-        self.oops()
-    
-    def gui_search (self,t,*args,**keys):
-        __pychecker__ = '--no-argsused'
         self.oops()
        
     # New in 4.3: allows base class to adjust controls. 

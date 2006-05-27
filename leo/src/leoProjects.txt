@@ -1052,6 +1052,7 @@ self.abbrevOn = False # True: abbreviations are on.
 self.arg = '' # The value returned by k.getArg.
 self.commandName = None # The name of the command being executed.
 self.funcReturn = None # For k.simulateCommand
+self.getArgEscape = None # A signal that the user escaped getArg in an unusual way.
 self.inputModeBindings = {}
 self.inputModeName = '' # The name of the input mode, or None.
 self.inverseCommandsDict = {}
@@ -1109,6 +1110,7 @@ self.idleCount = 0
 self.afterGetArgState = None
 self.argTabList = []
 self.modeBindingsDict = {}
+self.getArgEscapes = []
 #@nonl
 #@-node:ekr.20050923213858:<< define internal ivars >>
 #@-node:ekr.20050920085536.2: ctor (keyHandler)
@@ -1245,6 +1247,8 @@ def masterKeyHandler (self,event,stroke=None):
     
     '''This is the handler for almost all key bindings.'''
     
+    # g.trace(stroke,g.callers())
+    
     k = self ; c = k.c
     trace = c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
 
@@ -1303,7 +1307,7 @@ if state in ('getArg','getFileName','full-command','auto-complete'):
 
 # Second, honor general modes.
 if state == 'getArg':
-    return k.getArg(event)
+    return k.getArg(event,stroke=stroke)
 elif state == 'getFileName':
     return k.getFileName(event)
 elif state in ('full-command','auto-complete'):
@@ -1916,6 +1920,323 @@ if 0:
 #@-node:ekr.20031218072017.2937:leoPyShellMain
 #@-node:ekr.20031218072017.2932:openPythonWindow (Dave Hein)
 #@-node:ekr.20060522083716:Run Idle in a separate process
+#@+node:ekr.20060522082833:Added Debug button to scripting plugin
+#@+node:ekr.20060519003651:debug
+def debug (self,event=None,target = None):
+    
+    '''Start the debugger in another process.'''
+
+    c = self.c ; p = c.currentPosition()
+    pythonDir = g.os_path_dirname(sys.executable)
+    
+    << find a debugger or return >>
+    << find the target file >>
+    
+    if target:
+        args = [sys.executable, debugger, '-t', target]
+    else:
+        args = [sys.executable, debugger, '-t']
+    
+    if 1: # Use present environment.
+        os.spawnv(os.P_NOWAIT, sys.executable, args)
+    else: # Use a pristine environment.
+        os.spawnve(os.P_NOWAIT, sys.executable, args, os.environ)
+#@nonl
+#@+node:ekr.20060521140213:<< find a debugger or return >>
+debuggers = (
+    c.config.getString('debugger_path'),
+    g.os_path_join(pythonDir,'scripts','_winpdb.py'),
+)
+
+for debugger in debuggers:
+    if debugger:
+        debugger = g.os_path_abspath(debugger)
+        if g.os_path_exists(debugger):
+            break
+        else:
+            g.es('Debugger does not exist: %s' % (debugger),color='blue')
+else:
+    return g.es('No debugger found.')
+#@nonl
+#@-node:ekr.20060521140213:<< find a debugger or return >>
+#@+node:ekr.20060521140213.1:<< find the target file >>
+targets = (
+    target,
+    c.config.getString('debugger_force_taget'),
+    p.copy().anyAtFileNodeName(),
+    c.config.getString('debugger_default_target'),
+)
+
+for target in targets:
+    if target:
+        target = g.os_path_abspath(target)
+        if g.os_path_exists(target):
+            break
+        else:
+            g.es('Debug target does not exist: %s' % (target),color='blue')
+#@nonl
+#@-node:ekr.20060521140213.1:<< find the target file >>
+#@-node:ekr.20060519003651:debug
+#@+node:ekr.20031218072017.2140:c.executeScript
+def executeScript(self,event=None,p=None,script=None,
+    useSelectedText=True,define_g=True,define_name='__main__',silent=False):
+
+    """This executes body text as a Python script.
+    
+    We execute the selected text, or the entire body text if no text is selected."""
+    
+    c = self ; script1 = script
+    if not script:
+        script = g.getScript(c,p,useSelectedText=useSelectedText)
+    << redirect output >>
+    try:
+        if script.strip():
+            sys.path.insert(0,c.frame.openDirectory)
+            script += '\n' # Make sure we end the script properly.
+            try:
+                p = c.currentPosition()
+                d = g.choose(define_g,{'c':c,'g':g,'p':p},{})
+                if define_name: d['__name__'] = define_name
+                # g.trace(script)
+                exec script in d
+                if not script1 and not silent:
+                    g.es("end of script",color="purple")
+            except Exception:
+                << handle an exception in the script >>
+            del sys.path[0]
+        else:
+            g.es("no script selected",color="blue")
+    finally: # New in 4.3 beta 2: unredirect output last.
+        << unredirect output >>
+#@nonl
+#@+node:ekr.20031218072017.2143:<< redirect output >>
+if c.config.redirect_execute_script_output_to_log_pane:
+
+    g.redirectStdout() # Redirect stdout
+    g.redirectStderr() # Redirect stderr
+#@nonl
+#@-node:ekr.20031218072017.2143:<< redirect output >>
+#@+node:ekr.20050505104140:<< handle an exception in the script >>
+g.es("exception executing script",color='blue')
+
+if 0:
+    print 'script...'
+    for line in g.splitLines(script):
+        print repr(line)
+
+fileName,n = g.es_exception(full=True,c=c)
+if p and not script1 and fileName == "<string>":
+    c.goToScriptLineNumber(p,script,n)
+
+<< dump the lines near the error >>
+#@nonl
+#@+node:EKR.20040612215018:<< dump the lines near the error >>
+if g.os_path_exists(fileName):
+    f = file(fileName)
+    lines = f.readlines()
+    f.close()
+else:
+    lines = g.splitLines(script)
+
+s = '-' * 20
+g.es_print(s)
+
+if 0:
+    # Just print the error line.
+    try:
+        s = "%s line %d: %s" % (fileName,n,lines[n-1])
+        g.es(s,newline=False)
+    except IndexError:
+        s = "%s line %d" % (fileName,n)
+        g.es(s,newline=False)
+else: # Print surrounding lines.
+    i = max(0,n-2)
+    j = min(n+2,len(lines))
+    # g.trace(n,i,j)
+    while i < j:
+        ch = g.choose(i==n-1,'*',' ')
+        s = "%s line %d: %s" % (ch,i+1,lines[i])
+        g.es(s,newline=False)
+        i += 1
+#@nonl
+#@-node:EKR.20040612215018:<< dump the lines near the error >>
+#@-node:ekr.20050505104140:<< handle an exception in the script >>
+#@+node:EKR.20040627100424:<< unredirect output >>
+if c.exists and c.config.redirect_execute_script_output_to_log_pane:
+
+    g.restoreStderr()
+    g.restoreStdout()
+#@nonl
+#@-node:EKR.20040627100424:<< unredirect output >>
+#@-node:ekr.20031218072017.2140:c.executeScript
+#@+node:EKR.20040614071102.1:g.getScript & tests
+def getScript (c,p,useSelectedText=True,forcePythonSentinels=True,useSentinels=True):
+    
+    '''Return the expansion of the selected text of node p.
+    Return the expansion of all of node p's body text if there
+    is p is not the current node or if there is no text selection.'''
+
+    at = c.atFileCommands
+    if not p:
+        p = c.currentPosition()
+    try:
+        if g.app.batchMode:
+            s = p.bodyString()
+        elif p == c.currentPosition():
+            if useSelectedText and c.frame.body.hasTextSelection():
+                s = c.frame.body.getSelectedText()
+            else:
+                s = c.frame.body.getAllText()
+        else:
+            s = p.bodyString()
+        # Remove extra leading whitespace so the user may execute indented code.
+        s = g.removeExtraLws(s,c.tab_width)
+        if s.strip():
+            g.app.scriptDict["script1"]=s
+            script = at.writeFromString(p.copy(),s,
+                forcePythonSentinels=forcePythonSentinels,
+                useSentinels=useSentinels)
+            script = script.replace("\r\n","\n") # Use brute force.
+            g.app.scriptDict["script2"]=script
+        else: script = ''
+    except Exception:
+        s = "unexpected exception in g.getScript"
+        g.es_print(s)
+        g.es_exception()
+        script = ''
+
+    return script
+#@nonl
+#@+node:ekr.20050211100535:test_g_getScript_strips_crlf
+def test_g_getScript_strips_crlf():
+
+    script = g.getScript(c,p) # This will get the text of this node.
+    assert script.find('\r\n') == -1, repr(script)
+#@nonl
+#@-node:ekr.20050211100535:test_g_getScript_strips_crlf
+#@-node:EKR.20040614071102.1:g.getScript & tests
+#@+node:ekr.20050506084734:writeFromString
+# This is at.write specialized for scripting.
+
+def writeFromString(self,root,s,forcePythonSentinels=True,useSentinels=True):
+    
+    """Write a 4.x derived file from a string.
+    
+    This is used by the scripting logic."""
+    
+    at = self ; c = at.c
+    c.endEditing() # Capture the current headline, but don't change the focus!
+
+    at.initWriteIvars(root,"<string-file>",
+        nosentinels=not useSentinels,thinFile=False,scriptWrite=True,toString=True,
+        forcePythonSentinels=forcePythonSentinels)
+
+    try:
+        at.openFileForWriting(root,at.targetFileName,toString=True)
+        # Simulate writing the entire file so error recovery works.
+        at.writeOpenFile(root,nosentinels=not useSentinels,toString=True,fromString=s)
+        at.closeWriteFile()
+        # Major bug: failure to clear this wipes out headlines!
+        # Minor bug: sometimes this causes slight problems...
+        if root: root.v.t.tnodeList = [] 
+    except:
+        at.exception("exception preprocessing script")
+
+    return at.stringOutput
+#@nonl
+#@-node:ekr.20050506084734:writeFromString
+#@+node:ekr.20041005105605.15:initWriteIvars
+def initWriteIvars(self,root,targetFileName,
+    nosentinels=False,
+    thinFile=False,
+    scriptWrite=False,
+    toString=False,
+    forcePythonSentinels=None):
+
+    self.initCommonIvars()
+    << init ivars for writing >>
+    
+    if forcePythonSentinels is None:
+        forcePythonSentinels = scriptWrite
+
+    if root:
+        self.scanAllDirectives(root,
+            scripting=scriptWrite,
+            forcePythonSentinels=forcePythonSentinels)
+    
+    # g.trace(forcePythonSentinels,self.startSentinelComment,self.endSentinelComment)
+    
+    if forcePythonSentinels:
+        # Force Python comment delims for g.getScript.
+        self.startSentinelComment = "#"
+        self.endSentinelComment = None
+
+    # Init state from arguments.
+    self.targetFileName = targetFileName
+    self.sentinels = not nosentinels
+    self.thinFile = thinFile
+    self.toString = toString
+    self.root = root
+    
+    # Ignore config settings for unit testing.
+    if toString and g.app.unitTesting: self.output_newline = '\n'
+    
+    # Init all other ivars even if there is an error.
+    if not self.errors and self.root:
+        self.root.v.t.tnodeList = []
+#@nonl
+#@+node:ekr.20041005105605.16:<< init ivars for writing >>>
+@
+When tangling, we first write to a temporary output file. After tangling is
+temporary file. Otherwise we delete the old target file and rename the temporary
+file to be the target file.
+@c
+
+self.docKind = None
+self.explicitLineEnding = False # True: an @lineending directive specifies the ending.
+self.fileChangedFlag = False # True: the file has actually been updated.
+self.shortFileName = "" # short version of file name used for messages.
+self.thinFile = False
+
+if toString:
+    self.outputFile = g.fileLikeObject()
+    self.stringOutput = ""
+    self.targetFileName = self.outputFileName = "<string-file>"
+else:
+    self.outputFile = None # The temporary output file.
+    self.stringOutput = None
+    self.targetFileName = self.outputFileName = u""
+#@nonl
+#@-node:ekr.20041005105605.16:<< init ivars for writing >>>
+#@-node:ekr.20041005105605.15:initWriteIvars
+#@+node:ekr.20041005105605.157:writeOpenFile
+# New in 4.3: must be inited before calling this method.
+# New in 4.3 b2: support for writing from a string.
+
+def writeOpenFile(self,root,nosentinels=False,toString=False,fromString=''):
+
+    """Do all writes except asis writes."""
+    
+    at = self ; s = g.choose(fromString,fromString,root.v.t.bodyString)
+
+    root.clearAllVisitedInTree() # Clear both vnode and tnode bits.
+    root.clearVisitedInTree()
+
+    at.putAtFirstLines(s)
+    at.putOpenLeoSentinel("@+leo-ver=4")
+    at.putInitialComment()
+    at.putOpenNodeSentinel(root)
+    at.putBody(root,fromString=fromString)
+    at.putCloseNodeSentinel(root)
+    at.putSentinel("@-leo")
+    root.setVisited()
+    at.putAtLastLines(s)
+
+    if not toString and not nosentinels:
+        at.warnAboutOrphandAndIgnoredNodes()
+#@nonl
+#@-node:ekr.20041005105605.157:writeOpenFile
+#@-node:ekr.20060522082833:Added Debug button to scripting plugin
 #@-node:ekr.20060522103446:New features
 #@-node:ekr.20060514170725:4.4.1 projects
 #@-node:ekr.20050924073836:4.4 projects
