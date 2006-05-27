@@ -522,11 +522,7 @@ class leoFind:
         if self.pattern_match and self.match_obj:
             groups = self.match_obj.groups()
             if groups:
-                n = 1
-                for group in groups:
-                    # This isn't quite correct if groups can contain backslashes.
-                    change_text = change_text.replace('\\%d' % (n),group)
-                    n += 1
+                change_text = self.makeRegexSubs(change_text,groups)
                     
         gui.replaceSelectionRangeWithText(t,          start,end,change_text)
         gui.replaceSelectionRangeWithText(self.s_ctrl,start,end,change_text)
@@ -549,6 +545,30 @@ class leoFind:
             c.frame.tree.drawIcon(p) # redraw only the icon.
          
         return True
+    #@+node:ekr.20060526201951:makeRegexSubs
+    def makeRegexSubs(self,s,groups):
+        
+        digits = '123456789'
+        result = [] ; n = len(s)
+        i = j = 0 # s[i:j] is the text between \i markers.
+        while j < n:
+            k = s.find('\\',j)
+            if k == -1 or k + 1 >= n:
+                break
+            j = k + 1 ; ch = s[j]
+            if ch in digits:
+                j += 1
+                result.append(s[i:k]) # Append up to \i
+                i = j
+                gn = int(ch)-1
+                if gn < len(groups):
+                    result.append(groups[gn]) # Append groups[i-1]
+                else:
+                    result.append('\\%s' % ch) # Append raw '\i'
+        result.append(s[i:])
+        return ''.join(result)
+    #@nonl
+    #@-node:ekr.20060526201951:makeRegexSubs
     #@-node:ekr.20031218072017.3070:changeSelection
     #@+node:ekr.20031218072017.3071:changeThenFind
     def changeThenFind(self):
