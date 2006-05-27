@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="24151" clone_windows="0"/>
 <globals body_outline_ratio="0.584597432905">
-	<global_window_position top="10" left="225" height="838" width="944"/>
+	<global_window_position top="14" left="336" height="819" width="944"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -40,10 +40,10 @@
 <v t="ekr.20050901121617.1"><vh>splitSentences</vh></v>
 </v>
 <v t="ekr.20050902080416"><vh>@@button reformat-paragraph</vh></v>
-<v t="ekr.20060525104232"><vh>@button rst-&gt;html</vh></v>
+<v t="ekr.20060525104232"><vh>@@button rst-&gt;html</vh></v>
 <v t="ekr.20060525110135"><vh>@@button rst-&gt;pdf</vh></v>
-<v t="ekr.20060525110135.1"><vh>@button rst-&gt;tex</vh></v>
-<v t="ekr.20060525110217"><vh>@button rst-&gt;rst</vh></v>
+<v t="ekr.20060525110135.1"><vh>@@button rst-&gt;tex</vh></v>
+<v t="ekr.20060525110217"><vh>@@button rst-&gt;rst</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
 <v t="ekr.20040414161647"><vh>Users Guide</vh>
@@ -576,11 +576,11 @@
 </v>
 </v>
 <v t="ekr.20060430221745"><vh>Chapter 13: Controlling syntax coloring</vh>
-<v t="ekr.20060430221745.1" a="E"><vh>@rst html\coloring.html</vh>
+<v t="ekr.20060430221745.1"><vh>@rst html\coloring.html</vh>
 <v t="ekr.20060430222753"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20060430220749"><vh>Files</vh></v>
 <v t="ekr.20060502084233"><vh>The colorizer's inner loop</vh></v>
-<v t="ekr.20060502084233.1" a="E"><vh>Format of colorizer control files</vh>
+<v t="ekr.20060502084233.1"><vh>Format of colorizer control files</vh>
 <v t="ekr.20060502100550"><vh>Ruleset names</vh></v>
 <v t="ekr.20060502090516"><vh>x.properties</vh></v>
 <v t="ekr.20060510085547"><vh>Attribute dictionaries and x.attributesDictDict</vh></v>
@@ -820,153 +820,7 @@
 <v t="ekr.20050916065715"><vh>suggestions for tutorial</vh></v>
 </v>
 </v>
-<v t="ekr.20060430223053"><vh>Referencees</vh>
-<v t="ekr.20060430215657.4"><vh>Attributes</vh>
-<v t="ekr.20060430215657.5"><vh>AT_CHAR (int)</vh></v>
-<v t="ekr.20060430215657.6"><vh>AT_xxx</vh>
-<v t="ekr.20060430215657.7"><vh>AT_LINE_START (bool)</vh></v>
-<v t="ekr.20060430215657.8"><vh>AT_WHITESPACE_END (bool)</vh></v>
-<v t="ekr.20060430215657.9"><vh>AT_WORD_START (bool)</vh></v>
-</v>
-<v t="ekr.20060430215657.10"><vh>DELEGATE</vh></v>
-<v t="ekr.20060430215657.11"><vh>EXCLUDE_MATCH (bool)</vh></v>
-<v t="ekr.20060430215657.12"><vh>For rules only</vh>
-<v t="ekr.20060430215657.13"><vh>DEFAULT (token type)</vh></v>
-<v t="ekr.20060430215657.14"><vh>HIGHLIGHT_DIGITS  &amp;DIGITS_RE (bool)</vh></v>
-<v t="ekr.20060430215657.15"><vh>IGNORE_CASE (bool)</vh></v>
-<v t="ekr.20060430215657.16"><vh>SET (string)</vh></v>
-<v t="ekr.20060430215657.17"><vh>NO_WORD_SEP</vh></v>
-</v>
-<v t="ekr.20060430215657.18"><vh>HASH_CHAR (char)</vh></v>
-<v t="ekr.20060430215657.19"><vh>NAME and VALUE</vh></v>
-<v t="ekr.20060430215657.20"><vh>NO_xxx</vh>
-<v t="ekr.20060430215657.21"><vh>NO_WORD_BREAK (bool)</vh></v>
-<v t="ekr.20060430215657.22"><vh>NO_LINE_BREAK (bool)</vh></v>
-<v t="ekr.20060430215657.23"><vh>NO_ESCAPE (bool)</vh></v>
-</v>
-<v t="ekr.20060430215657.24"><vh>TYPE (Token Types)</vh></v>
-</v>
-<v t="ekr.20060430215657.25"><vh>Elements (children are attributes)</vh>
-<v t="ekr.20060430215657.26"><vh>begin &amp; end</vh>
-<v t="ekr.20060430215657.6"><vh>AT_xxx</vh>
-<v t="ekr.20060430215657.7"><vh>AT_LINE_START (bool)</vh></v>
-<v t="ekr.20060430215657.8"><vh>AT_WHITESPACE_END (bool)</vh></v>
-<v t="ekr.20060430215657.9"><vh>AT_WORD_START (bool)</vh></v>
-</v>
-</v>
-<v t="ekr.20060430215657.27"><vh>eol_span (can use DELEGATE)</vh>
-<v t="ekr.20060430215657.6"><vh>AT_xxx</vh>
-<v t="ekr.20060430215657.7"><vh>AT_LINE_START (bool)</vh></v>
-<v t="ekr.20060430215657.8"><vh>AT_WHITESPACE_END (bool)</vh></v>
-<v t="ekr.20060430215657.9"><vh>AT_WORD_START (bool)</vh></v>
-</v>
-<v t="ekr.20060430215657.10"><vh>DELEGATE</vh></v>
-<v t="ekr.20060430215657.11"><vh>EXCLUDE_MATCH (bool)</vh></v>
-</v>
-<v t="ekr.20060430215657.28"><vh>eol_span_regexp (can use DELEGATE)</vh>
-<v t="ekr.20060430215657.6"><vh>AT_xxx</vh>
-<v t="ekr.20060430215657.7"><vh>AT_LINE_START (bool)</vh></v>
-<v t="ekr.20060430215657.8"><vh>AT_WHITESPACE_END (bool)</vh></v>
-<v t="ekr.20060430215657.9"><vh>AT_WORD_START (bool)</vh></v>
-</v>
-<v t="ekr.20060430215657.10"><vh>DELEGATE</vh></v>
-<v t="ekr.20060430215657.11"><vh>EXCLUDE_MATCH (bool)</vh></v>
-<v t="ekr.20060430215657.18"><vh>HASH_CHAR (char)</vh></v>
-</v>
-<v t="ekr.20060430215657.29"><vh>import</vh>
-<v t="ekr.20060430215657.10"><vh>DELEGATE</vh></v>
-</v>
-<v t="ekr.20060430215657.30"><vh>keywords</vh></v>
-<v t="ekr.20060430215657.31"><vh>mark_following &amp; mark_previous</vh>
-<v t="ekr.20060430215657.6"><vh>AT_xxx</vh>
-<v t="ekr.20060430215657.7"><vh>AT_LINE_START (bool)</vh></v>
-<v t="ekr.20060430215657.8"><vh>AT_WHITESPACE_END (bool)</vh></v>
-<v t="ekr.20060430215657.9"><vh>AT_WORD_START (bool)</vh></v>
-</v>
-<v t="ekr.20060430215657.11"><vh>EXCLUDE_MATCH (bool)</vh></v>
-</v>
-<v t="ekr.20060430215657.32"><vh>mode</vh></v>
-<v t="ekr.20060430215657.33"><vh>props &amp; property</vh>
-<v t="ekr.20060430215657.19"><vh>NAME and VALUE</vh></v>
-<v t="ekr.20060430215657.34"><vh>Properties for comment strings</vh></v>
-<v t="ekr.20060430215657.35"><vh>Properties for auto-indent</vh>
-<v t="ekr.20060430215657.36"><vh>indentCloseBrackets and indentOpenBrackets</vh></v>
-<v t="ekr.20060430215657.37"><vh>doubleBracketIndent</vh></v>
-</v>
-<v t="ekr.20060430215657.38"><vh>Buffer-Local Properties</vh>
-<v t="ekr.20060430215657.39"><vh>collapseFolds</vh></v>
-<v t="ekr.20060430215657.40"><vh>deepIndent</vh></v>
-<v t="ekr.20060430215657.41"><vh>folding</vh></v>
-<v t="ekr.20060430215657.42"><vh>indentSize</vh></v>
-<v t="ekr.20060430215657.43"><vh>maxLineLen</vh></v>
-<v t="ekr.20060430215657.44"><vh>mode</vh></v>
-<v t="ekr.20060430215657.45"><vh>noTabs</vh></v>
-<v t="ekr.20060430215657.46"><vh>noWordSep</vh></v>
-<v t="ekr.20060430215657.47"><vh>wordBreakChars</vh></v>
-<v t="ekr.20060430215657.48"><vh>wrap</vh></v>
-</v>
-</v>
-<v t="ekr.20060430215657.49"><vh>rules</vh>
-<v t="ekr.20060430215657.12"><vh>For rules only</vh>
-<v t="ekr.20060430215657.13"><vh>DEFAULT (token type)</vh></v>
-<v t="ekr.20060430215657.14"><vh>HIGHLIGHT_DIGITS  &amp;DIGITS_RE (bool)</vh></v>
-<v t="ekr.20060430215657.15"><vh>IGNORE_CASE (bool)</vh></v>
-<v t="ekr.20060430215657.16"><vh>SET (string)</vh></v>
-<v t="ekr.20060430215657.17"><vh>NO_WORD_SEP</vh></v>
-</v>
-</v>
-<v t="ekr.20060430215657.50"><vh>seq (can use DELEGATE)</vh>
-<v t="ekr.20060430215657.6"><vh>AT_xxx</vh>
-<v t="ekr.20060430215657.7"><vh>AT_LINE_START (bool)</vh></v>
-<v t="ekr.20060430215657.8"><vh>AT_WHITESPACE_END (bool)</vh></v>
-<v t="ekr.20060430215657.9"><vh>AT_WORD_START (bool)</vh></v>
-</v>
-<v t="ekr.20060430215657.10"><vh>DELEGATE</vh></v>
-</v>
-<v t="ekr.20060430215657.51"><vh>seq_regexp (can use DELEGATE)</vh>
-<v t="ekr.20060430215657.6"><vh>AT_xxx</vh>
-<v t="ekr.20060430215657.7"><vh>AT_LINE_START (bool)</vh></v>
-<v t="ekr.20060430215657.8"><vh>AT_WHITESPACE_END (bool)</vh></v>
-<v t="ekr.20060430215657.9"><vh>AT_WORD_START (bool)</vh></v>
-</v>
-<v t="ekr.20060430215657.10"><vh>DELEGATE</vh></v>
-</v>
-<v t="ekr.20060430215657.52"><vh>span  (can use DELEGATE)</vh>
-<v t="ekr.20060430215657.6"><vh>AT_xxx</vh>
-<v t="ekr.20060430215657.7"><vh>AT_LINE_START (bool)</vh></v>
-<v t="ekr.20060430215657.8"><vh>AT_WHITESPACE_END (bool)</vh></v>
-<v t="ekr.20060430215657.9"><vh>AT_WORD_START (bool)</vh></v>
-</v>
-<v t="ekr.20060430215657.10"><vh>DELEGATE</vh></v>
-<v t="ekr.20060430215657.11"><vh>EXCLUDE_MATCH (bool)</vh></v>
-<v t="ekr.20060430215657.20"><vh>NO_xxx</vh>
-<v t="ekr.20060430215657.21"><vh>NO_WORD_BREAK (bool)</vh></v>
-<v t="ekr.20060430215657.22"><vh>NO_LINE_BREAK (bool)</vh></v>
-<v t="ekr.20060430215657.23"><vh>NO_ESCAPE (bool)</vh></v>
-</v>
-</v>
-<v t="ekr.20060430215657.53"><vh>span_regexp  (can use DELEGATE)</vh>
-<v t="ekr.20060430215657.6"><vh>AT_xxx</vh>
-<v t="ekr.20060430215657.7"><vh>AT_LINE_START (bool)</vh></v>
-<v t="ekr.20060430215657.8"><vh>AT_WHITESPACE_END (bool)</vh></v>
-<v t="ekr.20060430215657.9"><vh>AT_WORD_START (bool)</vh></v>
-</v>
-<v t="ekr.20060430215657.10"><vh>DELEGATE</vh></v>
-<v t="ekr.20060430215657.11"><vh>EXCLUDE_MATCH (bool)</vh></v>
-<v t="ekr.20060430215657.20"><vh>NO_xxx</vh>
-<v t="ekr.20060430215657.21"><vh>NO_WORD_BREAK (bool)</vh></v>
-<v t="ekr.20060430215657.22"><vh>NO_LINE_BREAK (bool)</vh></v>
-<v t="ekr.20060430215657.23"><vh>NO_ESCAPE (bool)</vh></v>
-</v>
-<v t="ekr.20060430215657.18"><vh>HASH_CHAR (char)</vh></v>
-</v>
-<v t="ekr.20060430215657.54"><vh>terminate</vh>
-<v t="ekr.20060430215657.5"><vh>AT_CHAR (int)</vh></v>
-</v>
-</v>
-<v t="ekr.20060430215657.3"><vh>Rule ordering</vh></v>
-</v>
-<v t="edream.110203163054.46" a="V"><vh>Release Notes</vh>
+<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
 <v t="edream.110203163054.117"><vh>Previous versions...</vh>
 <v t="ekr.20060206111717"><vh>Ancient...</vh>
 <v t="edream.110203163054.118"><vh>3.x...</vh>
@@ -2828,7 +2682,7 @@
 </v>
 </v>
 <v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20060511074853"><vh>4.4 final</vh></v>
+<v t="ekr.20060511074853" a="V"><vh>4.4 final</vh></v>
 </v>
 </v>
 </vnodes>
@@ -20979,7 +20833,54 @@ This plugin sends .htm, .html or .tex files to the docutils module for further
 processing. Docutils generates HTML files or LaTeX files depending on the file's
 extension. HTML files generated by docutils refer to three .css (cascading style
 sheet) files that should exist in the same directory as the generated HTML file.
-You can control the formatting of the HTML file by altering these .css files.</t>
+You can control the formatting of the HTML file by altering these .css files.
+
+**New in Leo 4.4.1**:
+A new method has been added to the rst3 plugin to make it more easily to drive
+the plugin from scripts::
+
+    def writeNodeToString (self,p=None,ext=None)
+
+writeNodeToString scans p's tree (p defaults to presently selected node) looking for @rst nodes.
+When the first @rst node is found, writeNodeToString processes the node as usual, with the following changes:
+
+- @rst need not be followed by a filename; any filename and its extension are *ignored*.
+
+- Only the ``ext`` argument to writeNodeToString determines the type of output produced.
+  The valid values for the ``ext`` argument are None (for rst output), '.html', '.pdf', and '.tex'.
+
+- Instead of writing the result to a file, writeNodeToString returns the tuple (p,s),
+  where p is the node whose tree produced the output, and s is the output itself.
+
+- writeNodeToString returns after processing at most one @rst node.
+
+Scripts can easily use writeNodeToString to convert @rst trees into various kinds of output.
+For example, here is the body of @button rst-&gt;html in LeoDocs.leo::
+
+    import leoPlugins
+    rst3 = leoPlugins.getPluginModule('rst3')
+    if rst3:
+        controller = rst3.controllers.get(c)
+        if controller:
+            p,s = controller.writeNodeToString(ext='.html')
+            print '*' * 40,p
+            print s
+
+Notes:
+
+- This script scans the presently selected tree for @rst nodes, just like the @button rst script does.
+  In particular, if the presently selected tree does not contain an @rst node the search continues in parent trees.
+  When an @rst node is found, it converts the node (and descendants) to html and returns p,
+  the found @rst node and s, the html itself.
+
+- The script shown above merely prints the output, but many other actions could be taken.
+  In particular, because writeNodeToString returns p it would be possible to write a script that
+  would scan multiple @rst nodes.
+
+- None and '.tex' are also valid values for the ext argument to writeNodeToString.
+  None converts the @rst tree to a single reStructuredText string, as shown in @button rst-&gt;rst.
+
+- There is some support for ext='.pdf', but this is experimental code.  Expect crashes.</t>
 <t tx="ekr.20050912125735.3944"></t>
 <t tx="ekr.20050912125735.3945">An experimental plugin that stores all Leo outline data in a single zodb
 database. This plugin replaces the Open, Save and Revert commands with methods
@@ -26227,449 +26128,6 @@ remove-tab-from-lines</t>
 <t tx="ekr.20060428084553.273">At present, only the open-outline-by-name command supports filename completion.</t>
 <t tx="ekr.20060428084711">https://sourceforge.net/forum/message.php?msg_id=3699799</t>
 <t tx="ekr.20060428084957"></t>
-<t tx="ekr.20060430215657.3">You might encounter this very common pitfall when writing your own modes.
-
-Since jEdit checks buffer text against parser rules in the order they appear in
-the ruleset, more specific rules must be placed before generalized ones,
-otherwise the generalized rules will catch everything.</t>
-<t tx="ekr.20060430215657.4"></t>
-<t tx="ekr.20060430215657.5">The number of characters to terminate after.
-
-For terminate only.</t>
-<t tx="ekr.20060430215657.6"></t>
-<t tx="ekr.20060430215657.7">If set to TRUE, the sequence will only be highlighted if it occurs at the beginning of a line.
-
-For 'seq', 'span', 'begin', 'end'</t>
-<t tx="ekr.20060430215657.8">If set to TRUE, the sequence will only be highlighted if it is the first non-whitespace text in the line.
-
-For 'seq', 'span', 'begin', 'end'
-</t>
-<t tx="ekr.20060430215657.9">If set to TRUE, the sequence will only be highlighted if it occurs at the beginning of a word.
-
-For 'seq', 'span', 'begin', 'end'
-</t>
-<t tx="ekr.20060430215657.10">EKR: This attribute is used in two completely different ways:
-
-1.  In spans:
-
-Text inside the span will be highlighted with the specified ruleset.
-
-EKR: this is essentially a 'recursive' coloring. The delegate ruleset is the
-only ruleset used.
-
-2.  In import rules:
-
-The imported ruleset is copied to the **end** of the containing ruleset,
-**not** to the location of the IMPORT rule. This has implications with
-rule-ordering; see the section called “Rule Ordering Requirements”.
-
-To delegate to a ruleset defined in the current mode, just specify its name. To
-delegate to a ruleset defined in another mode, specify a name of the form
-mode::ruleset. Note that the first (unnamed) ruleset in a mode is called
-“MAIN”.
-
-</t>
-<t tx="ekr.20060430215657.11">If set to TRUE, the match will not be highlighted, only the text before it will.</t>
-<t tx="ekr.20060430215657.12"></t>
-<t tx="ekr.20060430215657.13">The token type for text which doesn't match any specific rule. Default is NULL.
-See the section called “Token Types” for a list of token types.
-
-For 'rules' only.</t>
-<t tx="ekr.20060430215657.14">If the HIGHLIGHT_DIGITS attribute is set to TRUE, jEdit will attempt to highlight numbers in this ruleset.
-
-Any word consisting entirely of digits (0-9) will be highlighted with the DIGIT token type.
-
-A word that contains other letters in addition to digits will be highlighted with the DIGIT token type only if it matches the regular expression specified in the DIGIT_RE attribute. If this attribute is not specified, it will not be highlighted.
-
-For 'rules' only.
-
-Example: a DIGIT_RE regular expression that highlights Java-style
-numeric literals (normal numbers, hexadecimals prefixed with 0x, numbers
-suffixed with various type indicators, and floating point literals containing an
-exponent):
-
-DIGIT_RE="(0x[[:xdigit:]]+|[[:digit:]]+(e[[:digit:]]*)?)[lLdDfF]?"</t>
-<t tx="ekr.20060430215657.15">If set to FALSE, matches will be case sensitive.
-Otherwise, case will not matter. Default is TRUE.
-
-For 'rules' only.
-</t>
-<t tx="ekr.20060430215657.16">The name of this ruleset. All rulesets other than the first must have a name.
-
-For 'rules' only.</t>
-<t tx="ekr.20060430215657.17">Any non-alphanumeric character not in this list is treated as a word separator
-for the purposes of syntax highlighting.
-
-For 'rules' only.</t>
-<t tx="ekr.20060430215657.18">The first character that the regular expression matches.
-
-This rules out using regular expressions which can match more than one character
-at the start position. The regular expression match cannot span more than one
-line, either.
-
-Required for eol_span_regexp, span_regexp, seq_regexp.</t>
-<t tx="ekr.20060430215657.19">Each PROPERTY tag must have a NAME attribute set to the property's name, and a
-VALUE attribute with the property's value.
-
-For property only.</t>
-<t tx="ekr.20060430215657.20"></t>
-<t tx="ekr.20060430215657.21">If set to TRUE, the span will not cross word breaks.
-
-For 'span' only.</t>
-<t tx="ekr.20060430215657.22">If set to TRUE, the span will not cross line breaks.
-
-For 'span' only.</t>
-<t tx="ekr.20060430215657.23">If set to TRUE, the ruleset's escape character will have no effect before the
-span's end string. Otherwise, the presence of the escape character will cause
-that occurrence of the end string to be ignored.
-
-For 'span' only.</t>
-<t tx="ekr.20060430215657.24">The token type to highlight the text with.
-
-Parser rules can highlight tokens using any of the following token types:
-
-NULL - no special highlighting
-COMMENT1,COMMENT2,COMMENT3,COMMENT4
-FUNCTION
-KEYWORD1,KEYWORD2,KEYWORD3,KEYWORD4
-LABEL
-LITERAL1,LITERAL2,LITERAL3,LITERAL4
-MARKUP
-OPERATOR</t>
-<t tx="ekr.20060430215657.25">@language html
-@color
-
-All rules must be contained in the RULES element.</t>
-<t tx="ekr.20060430215657.26"></t>
-<t tx="ekr.20060430215657.27">An EOL_SPAN is similar to a SPAN except that highlighting stops at the end of
-the line, and no end sequence needs to be specified. The text to match is
-specified between the opening and closing EOL_SPAN tags.
-
-Attributes: TYPE, AT_xxx, DELEGATE, EXCLUDE_MATCH
-
-Here is an EOL_SPAN that highlights C++ comments:
-
-&lt;EOL_SPAN TYPE="COMMENT1"&gt;//&lt;/EOL_SPAN&gt;</t>
-<t tx="ekr.20060430215657.28">The EOL_SPAN_REGEXP rule is similar to the EOL_SPAN rule except the match
-sequence is taken to be a regular expression.
-
-Attributes: TYPE, AT_xxx, DELEGATE, EXCLUDE_MATCH, HASH_CHAR(required)
-
-An EOL_SPAN_REGEXP that highlights MS-DOS batch file comments, which
-start with REM, followed by any whitespace character, and extend until the end
-of the line:
-
-&lt;EOL_SPAN_REGEXP AT_WHITESPACE_END="TRUE" HASH_CHAR="R" TYPE="COMMENT1"&gt;REM\s&lt;/EOL_SPAN_REGEXP&gt;</t>
-<t tx="ekr.20060430215657.29">The IMPORT tag loads all rules defined in a given ruleset into the current
-ruleset; in other words, it has the same effect as copying and pasting the
-imported ruleset.
-
-Attriubtes: DELEGATE (required)
-
-An example from the PHP mode, which extends the inline JavaScript
-highlighting to support embedded PHP:
-
-&lt;RULES SET="JAVASCRIPT+PHP"&gt;
-
-   &lt;SPAN TYPE="MARKUP" DELEGATE="php::PHP"&gt;
-       &lt;BEGIN&gt;&amp;lt;?php&lt;/BEGIN&gt;
-       &lt;END&gt;?&amp;gt;&lt;/END&gt;
-   &lt;/SPAN&gt;
-   
-   &lt;SPAN TYPE="MARKUP" DELEGATE="php::PHP"&gt;
-       &lt;BEGIN&gt;&amp;lt;?&lt;/BEGIN&gt;
-       &lt;END&gt;?&amp;gt;&lt;/END&gt;
-   &lt;/SPAN&gt;
-   
-   &lt;SPAN TYPE="MARKUP" DELEGATE="php::PHP"&gt;
-       &lt;BEGIN&gt;&amp;lt;%=&lt;/BEGIN&gt;
-       &lt;END&gt;%&amp;gt;&lt;/END&gt;
-   &lt;/SPAN&gt;
-
-   &lt;IMPORT DELEGATE="javascript::MAIN"/&gt;
-&lt;/RULES&gt;</t>
-<t tx="ekr.20060430215657.30">The KEYWORDS tag can only appear once. It specifies a list of keywords to
-highlight.
-
-Keywords are similar to SEQs, except that SEQs match anywhere in the
-text, whereas keywords only match whole words. Words are considered to be runs
-of text separated by non-alphanumeric characters.
-
-Attributes:  None.
-
-Each child element of the KEYWORDS tag is an element whose name is a token type,
-and whose content is the keyword to highlight.
-
-Example:
-
-&lt;KEYWORDS&gt;
-  &lt;KEYWORD1&gt;if&lt;/KEYWORD1&gt;
-  &lt;KEYWORD1&gt;else&lt;/KEYWORD1&gt;
-  &lt;KEYWORD3&gt;int&lt;/KEYWORD3&gt;
-  &lt;KEYWORD3&gt;void&lt;/KEYWORD3&gt;
-&lt;/KEYWORDS&gt;</t>
-<t tx="ekr.20060430215657.31">The MARK_FOLLOWING rule ighlights from the start of the match to the next syntax
-token. The text to match is specified between opening and closing MARK_FOLLOWING
-tags.
-
-The MARK_PREVIOUS rule highlights from the end of the previous syntax token to
-the matched text. The text to match is specified between opening and closing
-MARK_PREVIOUS tags.
-
-Attributes: TYPE, AT_xxx, EXCLUDE_MATCH
-
-Example:
-
-&lt;MARK_FOLLOWING TYPE="KEYWORD2"&gt;$&lt;/MARK_FOLLOWING&gt;</t>
-<t tx="ekr.20060430215657.32">Each mode definition must begin with the following:
-
-&lt;?xml version="1.0"?&gt;
-&lt;!DOCTYPE MODE SYSTEM "xmode.dtd"&gt;
-
-Each mode definition must also contain exactly one MODE tag.  All other tags (PROPS, RULES) must be placed inside the MODE tag.
-
-Attributes: None
-
-&lt;MODE&gt;
-    ... mode definition goes here ...
-&lt;/MODE&gt;</t>
-<t tx="ekr.20060430215657.33">The PROPS tag and the PROPERTY tags define mode-specific properties.
-
-Attributes: NAME, VALUE
-
-All buffer-local properties may be given values in edit modes.
-
-EKR: must support at least commentStart, commentEnd, lineComment, and wordBreakChars attributes.
-
-Here is the complete &lt;PROPS&gt; tag for Java mode:
-
-&lt;PROPS&gt;
-    &lt;PROPERTY NAME="commentStart" VALUE="/*" /&gt;
-    &lt;PROPERTY NAME="commentEnd" VALUE="*/" /&gt;
-    &lt;PROPERTY NAME="lineComment" VALUE="//" /&gt;
-    &lt;PROPERTY NAME="wordBreakChars" VALUE=",+-=&amp;lt;&amp;gt;/?^&amp;amp;*" /&gt;
-
-    &lt;!-- Auto indent --&gt;
-    &lt;PROPERTY NAME="indentOpenBrackets" VALUE="{" /&gt;
-    &lt;PROPERTY NAME="indentCloseBrackets" VALUE="}" /&gt;
-    &lt;PROPERTY NAME="indentNextLine"
-    	VALUE="\s*(((if|while)\s*\(|else\s*|else\s+if\s*\(|for\s*\(.*\))[^{;]*)" /&gt;
-    &lt;!-- set this to 'true' if you want to use GNU coding style --&gt;
-    &lt;PROPERTY NAME="doubleBracketIndent" VALUE="false" /&gt;
-    &lt;PROPERTY NAME="lineUpClosingBracket" VALUE="true" /&gt;
-&lt;/PROPS&gt;</t>
-<t tx="ekr.20060430215657.34">The following mode properties specify commenting strings:
-
-commentEnd - the comment end string, used by the Range Comment command.
-
-commentStart - the comment start string, used by the Range Comment command.
-
-lineComment - the line comment string, used by the Line Comment command. </t>
-<t tx="ekr.20060430215657.35">When performing auto indent, a number of mode properties determine the resulting indent level:
-
-
-
-</t>
-<t tx="ekr.20060430215657.36">The line and the one before it are scanned for brackets listed in the
-indentCloseBrackets and indentOpenBrackets properties. Opening brackets in the
-previous line increase indent.
-
-If lineUpClosingBracket is set to true, then closing brackets on the current
-line will line up with the line containing the matching opening bracket. For
-example, in Java mode lineUpClosingBracket is set to true, resulting in brackets
-being indented like so:
-
-{
-    // Code
-    {
-        // More code
-    }
-}
-
-If lineUpClosingBracket is set to false, the line after a closing bracket will
-be lined up with the line containing the matching opening bracket. For example,
-in Lisp mode lineUpClosingBracket is set to false, resulting in brackets being
-indented like so:
-
-(foo 'a-parameter
-    (crazy-p)
-    (bar baz ()))
-(print "hello world")</t>
-<t tx="ekr.20060430215657.37">If the previous line contains no opening brackets, or if the
-doubleBracketIndent property is set to true, the previous line is checked
-against the regular expressions in the indentNextLine and indentNextLines
-properties. If the previous line matches the former, the indent of the current
-line is increased and the subsequent line is shifted back again. If the previous
-line matches the latter, the indent of the current and subsequent lines is
-increased.
-
-In Java mode, for example, the indentNextLine property is set to match control
-structures such as “if”, “else”, “while”, and so on.
-
-The doubleBracketIndent property, if set to the default of false, results in code indented like so::
-
-    while(objects.hasNext())
-    {
-        Object next = objects.hasNext();
-        if(next instanceof Paintable)
-            next.paint(g);
-    }
-
-On the other hand, settings this property to “true” will give the following result::
-
-    while(objects.hasNext())
-        {
-            Object next = objects.hasNext();
-            if(next instanceof Paintable)
-                next.paint(g);
-        }</t>
-<t tx="ekr.20060430215657.38">Buffer-local properties provide an alternate way to change editor settings on a
-per-buffer basis. While changes made in the Buffer Options dialog box are lost
-after the buffer is closed, buffer-local properties take effect each time the
-file is opened, because they are embedded in the file itself. 
-
-When jEdit loads a file, it checks the first and last 10 lines for
-colon-enclosed name/value pairs. For example, placing the following in a buffer
-changes the indent width to 4 characters, enables soft tabs, and activates the
-Perl edit mode: 
-
-:indentSize=4:noTabs=true:mode=perl:
-
-Adding buffer-local properties to a buffer takes effect after the next time the
-buffer is saved. </t>
-<t tx="ekr.20060430215657.39">Folds with a level of this or higher will be collapsed when the buffer is
-opened. If set to zero, all folds will be expanded initially. See the section
-called “Folding”.
-
-</t>
-<t tx="ekr.20060430215657.40">When set to “true”, multiple-line expressions delimited by parentheses are aligned like so::
-
-    retVal.x = (int)(horizontalOffset
-        + Chunk.offsetToX(info.chunks,
-                          offset));
- 
-With this setting disabled, the text would look like so::
-
-    retVal.x = (int)(horizontalOffset
-        + Chunk.offsetToX(info.chunks,
-        offset));</t>
-<t tx="ekr.20060430215657.41">The fold mode; one of “none”, “indent”, “explicit”, or the name of a plugin
-folding mode. See the section called “Folding”.</t>
-<t tx="ekr.20060430215657.42">The width, in characters, of one indent. Must be an integer greater than 0. See
-the section called “Tabbing and Indentation”.</t>
-<t tx="ekr.20060430215657.43">The maximum line length and wrap column position. Inserting text beyond this
-column will automatically insert a line break at the appropriate position. See
-the section called “Inserting and Deleting Text”.
-
-</t>
-<t tx="ekr.20060430215657.44">The default edit mode for the buffer. See the section called “Edit Modes”. 
-
-</t>
-<t tx="ekr.20060430215657.45">If set to “true”, soft tabs (multiple space characters) will be used instead of
-“real” tabs. See the section called “Tabbing and Indentation”.
-
-</t>
-<t tx="ekr.20060430215657.46">A list of non-alphanumeric characters that are not to be treated as word
-separators. Global default is “_”. tabSize The tab width. Must be an integer
-greater than 0. See the section called “Tabbing and Indentation”.
-
-</t>
-<t tx="ekr.20060430215657.47">Characters, in addition to spaces and tabs, at which lines may be split when
-word wrapping. See the section called “Inserting and Deleting Text”.
-
-</t>
-<t tx="ekr.20060430215657.48">The word wrap mode; one of “none”, “soft”, or “hard”. See the section called
-“Wrapping Long Lines”.</t>
-<t tx="ekr.20060430215657.49">For information about using more than one ruleset, see the section called “The SPAN Tag”.
-
-Attributes: SET, IGNORE_CASE, NO_WORD_SEP, DEFAULT, HIGHLIGHT_DIGITS DIGIT_RE
-
-&lt;RULES IGNORE_CASE="FALSE" HIGHLIGHT_DIGITS="TRUE"&gt;
-    ... parser rules go here ...
-&lt;/RULES&gt;</t>
-<t tx="ekr.20060430215657.50">The SEQ rule highlights fixed sequences of text. The text to highlight is
-specified between opening and closing SEQ tags. The following attributes are
-supported:
-
-Attributes: TYPE, AT_xxx, DELEGATE
-
-Examples:
-
-&lt;SEQ TYPE="OPERATOR"&gt;+&lt;/SEQ&gt;
-&lt;SEQ TYPE="OPERATOR"&gt;-&lt;/SEQ&gt;
-&lt;SEQ TYPE="OPERATOR"&gt;*&lt;/SEQ&gt;
-&lt;SEQ TYPE="OPERATOR"&gt;/&lt;/SEQ&gt;</t>
-<t tx="ekr.20060430215657.51">The SEQ_REGEXP rule is similar to the SEQ rule except the match sequence is
-taken to be a regular expression.
-
-Attributes: TYPE, AT_xxx, DELEGATE, HASH_CHAR(required)
-
-Example: a SEQ_REGEXP rule that highlights Perl's matcher
-constructions such as m/(.+):(\d+):(.+)/:
-
-&lt;SEQ_REGEXP TYPE="MARKUP"
-    HASH_CHAR="m"
-    AT_WORD_START="TRUE"
-&gt;m([[:punct:]])(?:.*?[^\\])*?\1[sgiexom]*&lt;/SEQ_REGEXP&gt;</t>
-<t tx="ekr.20060430215657.52">The SPAN rule highlights text between a start and end string. The start and end
-strings are specified inside child elements of the SPAN tag.
-
-Attributes: TYPE, AT_xxx, DELEGATE, EXCLUDE_MATCH, NO_xxx,
-
-Example: a SPAN that highlights Java string literals, which cannot include line breaks:
-
-&lt;SPAN TYPE="LITERAL1" NO_LINE_BREAK="TRUE"&gt;
-  &lt;BEGIN&gt;"&lt;/BEGIN&gt;
-  &lt;END&gt;"&lt;/END&gt;
-&lt;/SPAN&gt;
-
-Example: a SPAN that highlights Java documentation comments by delegating to the
-“JAVADOC” ruleset defined elsewhere in the current mode:
-
-&lt;SPAN TYPE="COMMENT2" DELEGATE="JAVADOC"&gt;
-  &lt;BEGIN&gt;/**&lt;/BEGIN&gt;
-  &lt;END&gt;*/&lt;/END&gt;
-&lt;/SPAN&gt;
-
-Example: a SPAN that highlights HTML cascading stylesheets inside &lt;STYLE&gt; tags by
-delegating to the main ruleset in the CSS edit mode:
-
-&lt;SPAN TYPE="MARKUP" DELEGATE="css::MAIN"&gt;
-  &lt;BEGIN&gt;&amp;lt;style&amp;gt;&lt;/BEGIN&gt;
-  &lt;END&gt;&amp;lt;/style&amp;gt;&lt;/END&gt;
-&lt;/SPAN&gt;</t>
-<t tx="ekr.20060430215657.53">The SPAN_REGEXP rule is similar to the SPAN rule except the start sequence is
-a regular expression.
-
-Attributes: TYPE, AT_xxx, DELEGATE, EXCLUDE_MATCH, NO_xxx, HASH_CHAR (required).
-
-Any text matched by groups in the BEGIN regular expression is substituted in the
-END string. See below for an example of where this is useful. 
-
-Example: a SPAN_REGEXP rule that highlights “read-ins” in shell scripts:
-
-&lt;SPAN_REGEXP HASH_CHAR="&lt;" TYPE="LITERAL1" DELEGATE="LITERAL"&gt;
-    &lt;BEGIN&gt;&lt;![CDATA[&lt;&lt;[[:space:]'"]*([[:alnum:]_]+)[[:space:]'"]*]]&gt;&lt;/BEGIN&gt;
-    &lt;END&gt;$1&lt;/END&gt;
-&lt;/SPAN_REGEXP&gt;
-
-Example: a SPAN_REGEXP rule that highlights constructs placed between &lt;#ftl and
-&gt;, as long as the &lt;#ftl is followed by a word break:
-
-&lt;SPAN_REGEXP TYPE="KEYWORD1" HASH_CHAR="&amp;lt;" DELEGATE="EXPRESSION"&gt;
-    &lt;BEGIN&gt;&amp;lt;#ftl\&amp;gt;&lt;/BEGIN&gt;
-    &lt;END&gt;&amp;gt;&lt;/END&gt;
-&lt;/SPAN_REGEXP&gt;</t>
-<t tx="ekr.20060430215657.54">The TERMINATE rule specifies that parsing should stop after the specified number
-of characters have been read from a line.
-
-The number of characters to terminate after should be specified with the AT_CHAR
-attribute. Here is an example:
-
-&lt;TERMINATE AT_CHAR="1" /&gt;
-
-This rule is used in Patch mode, for example, because only the first character
-of each line affects highlighting.</t>
 <t tx="ekr.20060430220749">The jEdit_ editor drives its syntax colorer using xml **language description files.**
 `jEdit's documentation`_ contain a complete description of these xml files.
 Each xml file describes one **colorizing mode**.
@@ -26763,7 +26221,6 @@ This chapter discusses how to control Leo's new syntax colorer using Python file
 
 .. |next| image:: arrow_rt.gif
     :target: next_</t>
-<t tx="ekr.20060430223053"></t>
 <t tx="ekr.20060430223116">-----------------------
 
 |back| |leo| |next|</t>
