@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="267" clone_windows="0"/>
 <globals body_outline_ratio="0.549828178694">
-	<global_window_position top="45" left="330" height="542" width="892"/>
+	<global_window_position top="45" left="330" height="691" width="882"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -45,11 +45,11 @@
 </v>
 </v>
 <v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
-<v t="ekr.20060524151415" a="E"><vh>Debugger options</vh>
-<v t="ekr.20060524151415.1" a="V"><vh>@string debugger_kind = winpdb</vh></v>
+<v t="ekr.20060524151415"><vh>Debugger options</vh>
+<v t="ekr.20060524151415.1"><vh>@string debugger_kind = winpdb</vh></v>
 <v t="ekr.20060521132401"><vh>@string debugger_path = None</vh></v>
 </v>
-<v t="ekr.20051126062243" a="E" annotate="7d71002e"><vh>Debugging options</vh>
+<v t="ekr.20051126062243" annotate="7d71002e"><vh>Debugging options</vh>
 <v t="ekr.20060201110016"><vh>@bool allow_idle_time_hook = False</vh></v>
 <v t="ekr.20060521134125"><vh>@string debugger_default_target = None</vh></v>
 <v t="ekr.20060521134125.1"><vh>@string debugger_force_target = None</vh></v>
@@ -305,23 +305,23 @@
 <v t="ekr.20051123100536.3"><vh>@string vim_exe = c:\Program Files\vim\vim63\gvim</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.20" annotate="7d71002e"><vh>Find/Change panel options</vh>
+<v t="ekr.20041119034357.20" a="EV" annotate="7d71002e"><vh>Find/Change panel options</vh>
 <v t="ekr.20060125104049"><vh>@bool show_only_find_tab_options = True</vh></v>
 <v t="ekr.20060204124608"><vh>@bool minibufferSearchesShowFindTab = True</vh></v>
 <v t="ekr.20041119050105.1"><vh>@string change_text = None</vh></v>
 <v t="ekr.20041119050105.2"><vh>@string find_text = None</vh></v>
 <v t="ekr.20041119050105.3"><vh>Checkboxes</vh>
 <v t="ekr.20041119050105.4"><vh>@bool batch = False</vh></v>
-<v t="ekr.20041119050105.5"><vh>@bool ignore_case = False</vh></v>
+<v t="ekr.20041119050105.5"><vh>@bool ignore_case = True</vh></v>
 <v t="ekr.20041119050105.6"><vh>@bool mark_changes = False</vh></v>
 <v t="ekr.20041119050105.7"><vh>@bool mark_finds = False</vh></v>
 <v t="ekr.20041119050105.12"><vh>@bool node_only = False</vh></v>
 <v t="ekr.20041119050105.9"><vh>@bool reverse = False</vh></v>
-<v t="ekr.20041119050105.8"><vh>@bool pattern_match = False</vh></v>
+<v t="ekr.20041119050105.8"><vh>@bool pattern_match = True</vh></v>
 <v t="ekr.20041120152657"><vh>@bool script_change = None</vh></v>
 <v t="ekr.20041119050105.14"><vh>@bool search_body = True</vh></v>
 <v t="ekr.20041119050105.15"><vh>@bool search_headline = False</vh></v>
-<v t="ekr.20041119050105.10"><vh>@bool whole_word = True</vh></v>
+<v t="ekr.20041119050105.10"><vh>@bool whole_word = False</vh></v>
 <v t="ekr.20041119050105.11"><vh>@bool wrap = False</vh></v>
 </v>
 <v t="ekr.20041120152900.2"><vh>@bool script_search = None</vh></v>

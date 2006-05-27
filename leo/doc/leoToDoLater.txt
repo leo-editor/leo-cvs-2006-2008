@@ -18,141 +18,6 @@ By: James
 A lot of people are now using Wink for demonstrations
 (http://www.debugmode.com/wink/), it's is free and seems to work well.
 #@-node:ekr.20060306194040:More screen shots or video tutorial on Leo's web site
-#@+node:ekr.20060224104109:Improve searches 1-day
-@nocolor
-
-The following are very annoying and limit what Leo can do with searches:
-
-- \1 does not work in the replacement text for regex searches.
-
-- Searches do not work across lines.
-
-@color
-#@nonl
-#@+node:ekr.20031218072017.3070:changeSelection
-# Replace selection with self.change_text.
-# If no selection, insert self.change_text at the cursor.
-
-def changeSelection(self):
-
-    c = self.c ; p = self.p ; gui = g.app.gui
-    # g.trace(self.in_headline)
-    t = g.choose(self.in_headline,p.edit_widget(),c.frame.bodyCtrl)
-    oldSel = sel = gui.getTextSelection(t)
-    if sel and len(sel) == 2:
-        start,end = sel
-        if start == end:
-            sel = None
-    if not sel or len(sel) != 2:
-        g.es("No text selected")
-        return False
-
-    # Replace the selection in _both_ controls.
-    start,end = oldSel
-    gui.replaceSelectionRangeWithText(t,          start,end,self.change_text)
-    gui.replaceSelectionRangeWithText(self.s_ctrl,start,end,self.change_text)
-
-    # Update the selection for the next match.
-    gui.setSelectionRangeWithLength(t,start,len(self.change_text))
-    c.widgetWantsFocus(t)
-
-    # No redraws here: they would destroy the headline selection.
-    c.beginUpdate()
-    try:
-        if self.mark_changes:
-            p.setMarked()
-        if self.in_headline:
-            c.frame.tree.onHeadChanged(p,'Change')
-        else:
-            c.frame.body.onBodyChanged('Change',oldSel=oldSel)
-    finally:
-        c.endUpdate(False)
-        c.frame.tree.drawIcon(p) # redraw only the icon.
-     
-    return True
-#@-node:ekr.20031218072017.3070:changeSelection
-#@+node:ekr.20031218072017.3908:Tkinter wrappers (leoTkinterFind)
-def gui_search (self,t,*args,**keys):
-    return t.search(*args,**keys)
-
-def init_s_ctrl (self,s):
-    t = self.s_ctrl
-    t.delete("1.0","end")
-    t.insert("end",s)
-    t.mark_set("insert",g.choose(self.reverse,"end","1.0"))
-    return t
-#@nonl
-#@-node:ekr.20031218072017.3908:Tkinter wrappers (leoTkinterFind)
-#@+node:ekr.20031218072017.3077:search
-def search (self):
-
-    """Searches the present headline or body text for self.find_text and returns True if found.
-
-    self.whole_word, self.ignore_case, and self.pattern_match control the search."""
-
-    c = self.c ; p = self.p ; t = self.s_ctrl ; gui = g.app.gui
-    assert(c and t and p)
-    if self.selection_only:
-        index,stopindex = self.selStart, self.selEnd
-        if index == stopindex:
-            return None, None
-    else:
-        index = gui.getInsertPoint(t)
-        stopindex = g.choose(self.reverse,gui.firstIndex(),gui.lastIndex())
-    while 1:
-        try:
-            pos = self.gui_search(t,self.find_text,index,
-                stopindex=stopindex,backwards=self.reverse,
-                regexp=self.pattern_match,nocase=self.ignore_case)
-        except Exception:
-            g.es_exception(full=False)
-            self.errors += 1 ; break
-        if not pos: break
-        if self.find_text == '\n':
-            newpos = gui.moveIndexToNextLine(t,pos)
-        else:
-            newpos = gui.moveIndexForward(t,pos,len(self.find_text))
-        if newpos is None: break
-        << break if we are passed the wrap point >>
-        if self.whole_word:
-            index = t.index(g.choose(self.reverse,pos,newpos))
-            << continue if not whole word match >>
-        #g.trace("found:",pos,newpos,p)
-        gui.setTextSelection(t,pos,newpos)
-        return pos, newpos
-    # g.trace('not found',p.headString())
-    return None,None
-#@nonl
-#@+node:ekr.20031218072017.3079:<< break if we are passed the wrap point >>
-if self.wrapping and self.wrapPos and self.wrapPosition and self.p == self.wrapPosition:
-
-    if self.reverse and gui.compareIndices(t,pos, "<", self.wrapPos):
-        # g.trace("wrap done")
-        break
-
-    if not self.reverse and gui.compareIndices(t,newpos, ">", self.wrapPos):
-        break
-#@nonl
-#@-node:ekr.20031218072017.3079:<< break if we are passed the wrap point >>
-#@+node:ekr.20031218072017.3080:<< continue if not whole word match >>
-# Set pos to None if word characters preceed or follow the selection.
-before = gui.getCharBeforeIndex(t,pos)
-first  = gui.getCharAtIndex    (t,pos)
-last   = gui.getCharBeforeIndex(t,newpos)
-after  = gui.getCharAtIndex    (t,newpos)
-
-#g.trace("before,first",before,first,g.is_c_id(before),g.is_c_id(first))
-#g.trace("after,last",  after,last,  g.is_c_id(after), g.is_c_id(last))
-
-if g.is_c_id(before) and g.is_c_id(first):
-    continue
-
-if g.is_c_id(after) and g.is_c_id(last):
-    continue
-#@nonl
-#@-node:ekr.20031218072017.3080:<< continue if not whole word match >>
-#@-node:ekr.20031218072017.3077:search
-#@-node:ekr.20060224104109:Improve searches 1-day
 #@+node:ekr.20050419060645:Alternate lead-in characters 1-day
 @nocolor
 
@@ -1171,14 +1036,22 @@ Gil
 #@-node:ekr.20060209104733:Big and overdue
 #@+node:ekr.20060116073229:To do 4.4.1
 #@+node:ekr.20060522101421:To Do 4.4.1 b1
-#@+node:ekr.20060522105404:Create some global functions to make using debuggers easier
-#@-node:ekr.20060522105404:Create some global functions to make using debuggers easier
-#@+node:ekr.20060522084039:Create a customize_debugger plugin
-@nocolor
+#@+node:ekr.20060527062603:To-do first
+- Posting about new find improvements.
+    
+- Finish rst3 work.
+    - Document new rst3 method.
+    - Remove rst3 request page from wiki.
 
-- define a debugger1 hook so the plugin can override the standard debug code.
+- Chapter 14: How to use debuggers with Leo.
+
+- Add gui.toPythonIndex(s,index) and gui.toGuiIndex(s,index)
+
+** Complete transition to 'end-1c'
+
+- Make all unit tests pass.
 #@nonl
-#@-node:ekr.20060522084039:Create a customize_debugger plugin
+#@-node:ekr.20060527062603:To-do first
 #@+node:ekr.20060522101202:Improve reports of binding problems
 @nocolor
 
@@ -1612,141 +1485,6 @@ def updateTab (self,p,w):
 #@-node:ekr.20051125080855:selfInsertCommand
 #@-node:ekr.20060419101401.1:Found: gui.getAllText
 #@-node:ekr.20060419101401:have gui.getAllText use 'end-1c'
-#@+node:ekr.20060224104109:Improve searches 1-day
-@nocolor
-
-The following are very annoying and limit what Leo can do with searches:
-
-- \1 does not work in the replacement text for regex searches.
-
-- Searches do not work across lines.
-
-@color
-#@nonl
-#@+node:ekr.20031218072017.3070:changeSelection
-# Replace selection with self.change_text.
-# If no selection, insert self.change_text at the cursor.
-
-def changeSelection(self):
-
-    c = self.c ; p = self.p ; gui = g.app.gui
-    # g.trace(self.in_headline)
-    t = g.choose(self.in_headline,p.edit_widget(),c.frame.bodyCtrl)
-    oldSel = sel = gui.getTextSelection(t)
-    if sel and len(sel) == 2:
-        start,end = sel
-        if start == end:
-            sel = None
-    if not sel or len(sel) != 2:
-        g.es("No text selected")
-        return False
-
-    # Replace the selection in _both_ controls.
-    start,end = oldSel
-    gui.replaceSelectionRangeWithText(t,          start,end,self.change_text)
-    gui.replaceSelectionRangeWithText(self.s_ctrl,start,end,self.change_text)
-
-    # Update the selection for the next match.
-    gui.setSelectionRangeWithLength(t,start,len(self.change_text))
-    c.widgetWantsFocus(t)
-
-    # No redraws here: they would destroy the headline selection.
-    c.beginUpdate()
-    try:
-        if self.mark_changes:
-            p.setMarked()
-        if self.in_headline:
-            c.frame.tree.onHeadChanged(p,'Change')
-        else:
-            c.frame.body.onBodyChanged('Change',oldSel=oldSel)
-    finally:
-        c.endUpdate(False)
-        c.frame.tree.drawIcon(p) # redraw only the icon.
-     
-    return True
-#@-node:ekr.20031218072017.3070:changeSelection
-#@+node:ekr.20031218072017.3908:Tkinter wrappers (leoTkinterFind)
-def gui_search (self,t,*args,**keys):
-    return t.search(*args,**keys)
-
-def init_s_ctrl (self,s):
-    t = self.s_ctrl
-    t.delete("1.0","end")
-    t.insert("end",s)
-    t.mark_set("insert",g.choose(self.reverse,"end","1.0"))
-    return t
-#@nonl
-#@-node:ekr.20031218072017.3908:Tkinter wrappers (leoTkinterFind)
-#@+node:ekr.20031218072017.3077:search
-def search (self):
-
-    """Searches the present headline or body text for self.find_text and returns True if found.
-
-    self.whole_word, self.ignore_case, and self.pattern_match control the search."""
-
-    c = self.c ; p = self.p ; t = self.s_ctrl ; gui = g.app.gui
-    assert(c and t and p)
-    if self.selection_only:
-        index,stopindex = self.selStart, self.selEnd
-        if index == stopindex:
-            return None, None
-    else:
-        index = gui.getInsertPoint(t)
-        stopindex = g.choose(self.reverse,gui.firstIndex(),gui.lastIndex())
-    while 1:
-        try:
-            pos = self.gui_search(t,self.find_text,index,
-                stopindex=stopindex,backwards=self.reverse,
-                regexp=self.pattern_match,nocase=self.ignore_case)
-        except Exception:
-            g.es_exception(full=False)
-            self.errors += 1 ; break
-        if not pos: break
-        if self.find_text == '\n':
-            newpos = gui.moveIndexToNextLine(t,pos)
-        else:
-            newpos = gui.moveIndexForward(t,pos,len(self.find_text))
-        if newpos is None: break
-        << break if we are passed the wrap point >>
-        if self.whole_word:
-            index = t.index(g.choose(self.reverse,pos,newpos))
-            << continue if not whole word match >>
-        #g.trace("found:",pos,newpos,p)
-        gui.setTextSelection(t,pos,newpos)
-        return pos, newpos
-    # g.trace('not found',p.headString())
-    return None,None
-#@nonl
-#@+node:ekr.20031218072017.3079:<< break if we are passed the wrap point >>
-if self.wrapping and self.wrapPos and self.wrapPosition and self.p == self.wrapPosition:
-
-    if self.reverse and gui.compareIndices(t,pos, "<", self.wrapPos):
-        # g.trace("wrap done")
-        break
-
-    if not self.reverse and gui.compareIndices(t,newpos, ">", self.wrapPos):
-        break
-#@nonl
-#@-node:ekr.20031218072017.3079:<< break if we are passed the wrap point >>
-#@+node:ekr.20031218072017.3080:<< continue if not whole word match >>
-# Set pos to None if word characters preceed or follow the selection.
-before = gui.getCharBeforeIndex(t,pos)
-first  = gui.getCharAtIndex    (t,pos)
-last   = gui.getCharBeforeIndex(t,newpos)
-after  = gui.getCharAtIndex    (t,newpos)
-
-#g.trace("before,first",before,first,g.is_c_id(before),g.is_c_id(first))
-#g.trace("after,last",  after,last,  g.is_c_id(after), g.is_c_id(last))
-
-if g.is_c_id(before) and g.is_c_id(first):
-    continue
-
-if g.is_c_id(after) and g.is_c_id(last):
-    continue
-#@nonl
-#@-node:ekr.20031218072017.3080:<< continue if not whole word match >>
-#@-node:ekr.20031218072017.3077:search
-#@-node:ekr.20060224104109:Improve searches 1-day
 #@+node:ekr.20060214072931:Improve unit testing
 @nocolor
 
@@ -1764,6 +1502,12 @@ It goes to sys.stderr, iirc.  Perhaps run-unit-test should support this setting:
 @bool unit_test_output_to_log_pane = True
 #@nonl
 #@-node:ekr.20060214072931:Improve unit testing
+#@+node:ekr.20060522084039:Create a customize_debugger plugin
+@nocolor
+
+- define a debugger1 hook so the plugin can override the standard debug code.
+#@nonl
+#@-node:ekr.20060522084039:Create a customize_debugger plugin
 #@-node:ekr.20060522101421:To Do 4.4.1 b1
 #@+node:ekr.20060227163215:Bugs (minor)
 #@+node:ekr.20060116083043:Use special Help menu on the Mac
@@ -10337,9 +10081,11 @@ def convertRowColToPythonIndex (s,row,col):
     
     lines = g.splitLines(s)
 
-    if row > len(lines) or col > len(lines[row]):
-        raise IndexError
-    
+    if row >= len(lines):
+        return len(s)
+        
+    col = min(col, len(lines[row]))
+
     prev = 0
     for line in lines[:row]:
         prev += len(line)
@@ -11268,75 +11014,165 @@ def updateBodyPane (self,head,middle,tail,undoType,oldSel,oldYview,setSel=True):
 #@-node:ekr.20031218072017.2884:Edit Body submenu
 #@-node:ekr.20050313174347.4:In commands...
 #@+node:ekr.20050313175009:In leoFind...
-#@+node:ekr.20031218072017.3077:search
+#@+node:ekr.20031218072017.3077:search & helpers
 def search (self):
 
-    """Searches the present headline or body text for self.find_text and returns True if found.
+    """Search s_ctrl for self.find_text under the control of the
+    whole_word, ignore_case, and pattern_match ivars.
+    
+    Returns (pos, newpos) or (None,None)."""
 
-    self.whole_word, self.ignore_case, and self.pattern_match control the search."""
-
-    c = self.c ; p = self.p ; t = self.s_ctrl ; gui = g.app.gui
-    assert(c and t and p)
-    if self.selection_only:
-        index,stopindex = self.selStart, self.selEnd
-        if index == stopindex:
-            return None, None
-    else:
-        index = gui.getInsertPoint(t)
-        stopindex = g.choose(self.reverse,gui.firstIndex(),gui.lastIndex())
+    c = self.c ; p = self.p ; w = self.s_ctrl ; gui = g.app.gui
+    index = gui.getInsertPoint(w)
+    s = w.get('1.0','end') # Keep the extra trailing newline!
+    << convert index to python index >>
+    stopindex = g.choose(self.reverse,0,len(s))
     while 1:
-        try:
-            pos = self.gui_search(t,self.find_text,index,
-                stopindex=stopindex,backwards=self.reverse,
-                regexp=self.pattern_match,nocase=self.ignore_case)
-        except Exception:
-            g.es_exception(full=False)
-            self.errors += 1 ; break
-        if not pos: break
-        if self.find_text == '\n':
-            newpos = gui.moveIndexToNextLine(t,pos)
-        else:
-            newpos = gui.moveIndexForward(t,pos,len(self.find_text))
-        if newpos is None: break
-        << break if we are passed the wrap point >>
-        if self.whole_word:
-            index = t.index(g.choose(self.reverse,pos,newpos))
-            << continue if not whole word match >>
-        #g.trace("found:",pos,newpos,p)
-        gui.setTextSelection(t,pos,newpos)
+        pos,newpos = self.searchHelper(s,index,stopindex,self.find_text,
+            backwards=self.reverse,nocase=self.ignore_case,
+            regexp=self.pattern_match,word=self.whole_word)
+        if pos == -1: return None,None
+        << convert pos and newpos to gui indices >>
+        << fail if we are passed the wrap point >>
+        gui.setTextSelection(w,pos,newpos,insert=newpos)
         return pos, newpos
-    # g.trace('not found',p.headString())
-    return None,None
 #@nonl
-#@+node:ekr.20031218072017.3079:<< break if we are passed the wrap point >>
+#@+node:ekr.20060526084217:<< convert index to python index >>
+i1 = w.index(index)
+row, col = i1.split('.') ; row, col = int(row), int(col)
+index = g.convertRowColToPythonIndex (s,row-1,col)
+#@nonl
+#@-node:ekr.20060526084217:<< convert index to python index >>
+#@+node:ekr.20060526140328:<< fail if we are passed the wrap point >>
 if self.wrapping and self.wrapPos and self.wrapPosition and self.p == self.wrapPosition:
 
-    if self.reverse and gui.compareIndices(t,pos, "<", self.wrapPos):
+    if self.reverse and gui.compareIndices(w,pos, "<", self.wrapPos):
         # g.trace("wrap done")
-        break
+        return None, None
 
-    if not self.reverse and gui.compareIndices(t,newpos, ">", self.wrapPos):
-        break
+    if not self.reverse and gui.compareIndices(w,newpos, ">", self.wrapPos):
+        return None, None
 #@nonl
-#@-node:ekr.20031218072017.3079:<< break if we are passed the wrap point >>
-#@+node:ekr.20031218072017.3080:<< continue if not whole word match >>
-# Set pos to None if word characters preceed or follow the selection.
-before = gui.getCharBeforeIndex(t,pos)
-first  = gui.getCharAtIndex    (t,pos)
-last   = gui.getCharBeforeIndex(t,newpos)
-after  = gui.getCharAtIndex    (t,newpos)
+#@-node:ekr.20060526140328:<< fail if we are passed the wrap point >>
+#@+node:ekr.20060526085605:<< convert pos and newpos to gui indices >>
+row,col = g.convertPythonIndexToRowCol (s,pos)
+pos = w.index('%s.%s' % (row+1,col))
 
-#g.trace("before,first",before,first,g.is_c_id(before),g.is_c_id(first))
-#g.trace("after,last",  after,last,  g.is_c_id(after), g.is_c_id(last))
-
-if g.is_c_id(before) and g.is_c_id(first):
-    continue
-
-if g.is_c_id(after) and g.is_c_id(last):
-    continue
+row,col = g.convertPythonIndexToRowCol (s,newpos)
+newpos = w.index('%s.%s' % (row+1,col))
 #@nonl
-#@-node:ekr.20031218072017.3080:<< continue if not whole word match >>
-#@-node:ekr.20031218072017.3077:search
+#@-node:ekr.20060526085605:<< convert pos and newpos to gui indices >>
+#@+node:ekr.20060526081931:Search helpers...
+def searchHelper (self,s,i,j,pattern,backwards,nocase,regexp,word):
+    
+    if backwards: i,j = j,i
+        
+    # g.trace(backwards,i,j,repr(s[i:i+20]))
+
+    if not s[i:j] or not pattern:
+        g.trace('empty',i,j)
+        return -1,-1
+        
+    if regexp:
+        pos,newpos = self.regexHelper(s,i,j,pattern,backwards,nocase)
+    elif backwards:
+        pos,newpos = self.backwardsHelper(s,i,j,pattern,backwards,nocase,word)
+    else:
+        pos,newpos = self.plainHelper(s,i,j,pattern,backwards,nocase,word)
+
+    return pos,newpos
+#@+node:ekr.20060526092203:regexHelper
+def regexHelper (self,s,i,j,pattern,backwards,nocase):
+   
+    try:
+        flags = re.MULTILINE
+        if nocase: flags |= re.IGNORECASE
+        re_obj = re.compile(pattern,flags)
+    except Exception:
+        g.es('Invalid regular expression: %s' % (pattern),color='blue')
+        return -1, -1
+        
+    if backwards: # Scan to the last match.
+        last_mo = None
+        while 1:
+            mo = re_obj.search(s,i,j)
+            if mo is None: break
+            i = mo.end()
+            last_mo = mo
+        self.match_obj = mo = last_mo
+    else:
+        self.match_obj = mo = re_obj.search(s,i,j)
+        
+    if mo is None:
+        return -1, -1
+    else:
+        k  = mo.start()
+        k2 = mo.end()
+        # g.trace(i,j,k,k2,s[k:k2])
+        # g.trace('groups',mo.groups())
+        return k, k2
+#@nonl
+#@-node:ekr.20060526092203:regexHelper
+#@+node:ekr.20060526140744:backwardsHelper
+def backwardsHelper (self,s,i,j,pattern,backwards,nocase,word):
+
+    # g.trace(repr(s[i-20: i]))
+
+    if nocase:
+        s = s.lower() ; pattern.lower()
+
+    if word:
+        n = len(pattern)
+        while 1:
+            k = s.rfind(pattern,i,j)
+            g.trace(i,j,k)
+            if k == -1: return -1, -1
+            if self.matchWord(s,k,pattern):
+                return max(0,k-n+1),k+1, 
+            else:
+                j = max(0,k-n)
+    else:
+        k = s.rfind(pattern,i,j)
+        if k == -1:
+            return -1, -1
+        else:
+            return max(0,k-n+1),k+1, 
+#@nonl
+#@-node:ekr.20060526140744:backwardsHelper
+#@+node:ekr.20060526093531:plainHelper
+def plainHelper (self,s,i,j,pattern,backwards,nocase,word):
+    
+    # g.trace(repr(s[i:i+20]))
+    
+    n = len(pattern)
+    if nocase:
+        s = s.lower() ; pattern.lower()
+        pattern = pattern.replace('\\n','\n').replace('\\t','\t')
+
+    if word:
+        while 1:
+            k = s.find(pattern,i,j)
+            g.trace(k,n)
+            if k == -1: return -1, -1
+            elif self.matchWord(s,k,pattern):
+                return k, k + n
+            else: i = k + n
+    else:
+        k = s.find(pattern,i,j)
+        if k == -1:
+            return -1, -1
+        else:
+            return k, k + n
+#@nonl
+#@-node:ekr.20060526093531:plainHelper
+#@+node:ekr.20060526140744.1:matchWord
+def matchWord(self,s,i,pattern):
+    
+    return g.match_word(s,i,pattern) and (i == 0 or s[i-1] not in self.word_chars)
+#@nonl
+#@-node:ekr.20060526140744.1:matchWord
+#@-node:ekr.20060526081931:Search helpers...
+#@-node:ekr.20031218072017.3077:search & helpers
 #@-node:ekr.20050313175009:In leoFind...
 #@-node:ekr.20050313174347:Code that uses Tk indices (outside of Tkinter classes)
 #@-node:ekr.20040130073846:Use Python indices instead of Tk indices (Done except for leoFind!!)
