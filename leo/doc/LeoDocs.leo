@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="24151" clone_windows="0"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="24152" clone_windows="0"/>
 <globals body_outline_ratio="0.584597432905">
-	<global_window_position top="14" left="336" height="800" width="944"/>
+	<global_window_position top="49" left="249" height="743" width="944"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -590,6 +590,15 @@
 <v t="ekr.20060430223116"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
+<v t="ekr.20060527105211" a="E"><vh>Chapter 14: External debuggers</vh>
+<v t="ekr.20060527105617"><vh>@rst html\debuggers.html</vh>
+<v t="ekr.20060527105804"><vh>@rst-no-head links</vh></v>
+<v t="ekr.20060527105617.2"><vh>Leo's debug command and 'the big debugger Aha'</vh></v>
+<v t="ekr.20060527112801"><vh>Settings</vh></v>
+<v t="ekr.20060527105617.1"><vh>Debugging scripts so that c, g and p are predefined</vh></v>
+<v t="ekr.20060527112934"><vh>Remaining problems</vh></v>
+</v>
+</v>
 <v t="EKR.20040524104904.274"><vh>Appendices</vh>
 <v t="ekr.20050831231852"><vh>@rst html\appendices.html</vh>
 <v t="ekr.20050831232205"><vh>@rst-no-head links</vh></v>
@@ -628,7 +637,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20050914132220" a="E"><vh>Other docs</vh>
+<v t="ekr.20050914132220"><vh>Other docs</vh>
 <v t="ekr.20050831184021.1"><vh>Documentation for rst3 plugin</vh>
 <v t="ekr.20050818163826"><vh>@rst html\rstplugin3.html</vh>
 <v t="ekr.20050818163826.1"><vh>@rst-no-head links</vh></v>
@@ -10766,6 +10775,8 @@ Leo's Users Guide
 
 `Chapter 13: Controlling Syntax Coloring`_
 
+`Chapter 14: Using External Debuggers with Leo`_
+
 Appendices_
 
 Glossary_</t>
@@ -15536,6 +15547,7 @@ Just use ``@thin`` to create your `derived files`_.</t>
 .. _`Chapter 11\: White Papers`:                    whitepapers.html
 .. _`Chapter 12\: Plugins`:                         plugins.html
 .. _`Chapter 13\: Controlling Syntax Coloring`:     coloring.html
+.. _`Chapter 14\: Using External Debuggers with Leo`: debuggers.html
 .. _`Appendices`:                                   appendices.html
 .. _`Glossary`:                                     glossary.html
 
@@ -17870,7 +17882,7 @@ Appendices
 .. WARNING: image targets may not have upper case letters!
 
 .. |back| image:: arrow_lt.gif
-	:target: coloring.html
+	:target: debuggers.html
 
 .. |next| image:: arrow_rt.gif
 	:target: glossary.html
@@ -26214,7 +26226,7 @@ This chapter discusses how to control Leo's new syntax colorer using Python file
 
 .. _back:   plugins.html
 .. _home:   front.html
-.. _next:   appendices.html
+.. _next:   debuggers.html
 
 .. |back| image:: arrow_lt.gif
     :target: back_
@@ -26956,5 +26968,164 @@ Notes:
   None converts the @rst tree to a single reStructuredText string, as shown in @button rst-&gt;rst.
 
 - There is some support for ext='.pdf', but this is experimental code.  Expect crashes.</t>
+<t tx="ekr.20060527105211"></t>
+<t tx="ekr.20060527105617">@ @rst-options
+code_mode=False
+generate_rst=True
+http_server_support = False
+show_organizer_nodes=True
+show_headlines=True
+show_leo_directives=True
+stylesheet_path=..\doc
+write_intermediate_file = False
+verbose=True
+@c
+
+.. May 27, 2006
+
+|back| |leo| |next|
+
+###############################################
+Chapter 14: Using External Debuggers with Leo
+###############################################
+
+**Important**: Support for external debuggers is a work in progress.
+The following information is preliminary and may not be completely accurate.
+Please feel free to ask questions on `Leo's forums`_.
+
+
+This chapter discusses debug Leo programs with external debuggers such as winpdb_ or Idle_.
+
+.. contents::
+</t>
+<t tx="ekr.20060527105617.1">Leo's Execute Script commands predefines the c, g and p symbols.
+That is, Leo scripts can, and often do, refer to data *within the outline in which the script resides*.
+Thus, it would be *useless* to try to run such scripts in a debugger when Leo is not running.
+
+Thus, to use a debugger to debug a Leo script, **you must run Leo itself** from the debugger.
+The easy way is to use a batch file that starts the debugger *and* starts Leo.
+Here is the batch file (called dt.bat) to run test.leo using winpdb::
+
+    cd c:\prog\tigris-cvs\leo\test
+    c:\python24\python.exe c:\python24\Scripts\_winpdb.py -t ..\src\leo.py test.leo
+
+And here is the version of dt.bat that runs test.leo using Idle::
+
+    cd c:\prog\tigris-cvs\leo\test
+    c:\python24\python.exe c:\python24\Lib\idlelib\idle.py -d -r c:\python24\Scripts\runLeoTest.py
+
+This invokes Idle and tells it to run runLeoTest.py.  runLeoTest.py contains::
+
+    import os, import sys
+    sys.path.append(r'c:\prog\tigris-cvs\leo\src')
+    import leo
+    leo.run( os.path.join(src,'..','test','test.leo'))
+
+After starting the debugger, you simply use the debuggers 'Run' command to run Leo.
+Now that Leo is running in the debugger, you can use 'Debug Script' script button to single-step through your script.
+**Note**: you must enable the Scripting plugin to use the 'Debug Script' button.
+
+In order to provide access to the c, g and p variables the 'Debug Script' button creates
+a helper Python module called leoScriptModule.py.
+It is *this* module that the debugger uses to debug your scripts.
+The module contains setup code, followed by the script you want to debug.
+For example, suppose your script is::
+
+    print 'hi'
+    print c
+
+The 'Debug Script' button puts the following in leoScriptModule.py::
+
+    # A module holding the script to be debugged.
+    import rpdb2
+    if rpdb2.g_debugger is not None: # don't hang if the debugger isn't running.
+      rpdb2.start_embedded_debugger(pwd="",fAllowUnencrypted=True) # Hard breakpoint.
+    # Predefine c, g and p.
+    import leoGlobals as g
+    c = g.app.scriptDict.get("c")
+    p = c.currentPosition()
+    # Actual script starts here.
+    print 'hi'
+    print c
+
+It is *this* code that you will see in the winpdb source window after you hit the 'Debug Script' button.
+The present line will be just after the line::
+
+    rpdb2.start_embedded_debugger(pwd="",fAllowUnencrypted=True) # Hard breakpoint.
+
+This line is the line that caused a hard breakpoint in the debugger so that you can single-step through your script.
+The next lines set up the g, c and p variables::
+
+    import leoGlobals as g
+    c = g.app.scriptDict.get("c")
+    p = c.currentPosition()
+
+After you single step past these lines you are ready to debug your script.
+
+**Summary**: All this may sound complicated, but in practice debugging scripts is easy:
+
+- Just run test.leo using dt.bat (instead of t.bat as usual).
+
+- Hit the 'Debug Script' script button.
+
+That's *all*.</t>
+<t tx="ekr.20060527105617.2">There is a super simple way of embedding winpdb (or any other debugger) into any editor.
+Just run winpdb in another process, something like this::
+ 
+    import os,sys
+    pythonDir = g.os_path_dirname(sys.executable)
+    winPdb = g.os_path_join(pythonDir,'scripts','_winpdb.py')
+    args = [sys.executable, winPdb, '-t', 'leo.py'] # here leo.py is the program to be debugged.
+    os.spawnv(os.P_NOWAIT, sys.executable, args)
+
+This is so easy it seems almost like a cheat.  But it solves many problems:
+ 
+- No need to commit to any one debugger: substitute your favorite debugger for '_winpdb.py', and modify args as needed.
+ 
+- No need to worry about the interactions between the editor and the debugger: there are none after the debugger starts.  In particular, the debugger can use a separate event loop (or even a different gui) from the editor.
+ 
+- No need (typically) to modify the editor or debugger in *any* way.  And no need to understand the debugger's code at all.
+ 
+Leo's new debug command generalizes the code above so it passes an arbitrary file (instead of 'leo.py') to an arbitrary debugger.  That's the only debugging code Leo needs, and gives Leo 90% of what I have ever wanted from a debugger.
+Furthermore, it allows editing to proceed independently of debugging.
+Indeed, even if I were to adapt winpdb so it shows files like Leo does (with an outline and body pane),
+I would *still* want to run the modified winpdb in a separate process.</t>
+<t tx="ekr.20060527105804">.. External links...
+
+.. _winpdb:             http://www.digitalpeers.com/pythondebugger/
+.. _Idle:               http://www.python.org/idle/
+.. _`Leo's forums`:     http://sourceforge.net/forum/?group_id=3458
+
+.. Relative links...
+
+.. _`Chapter 8\: Customizing Leo`:  customizing.html
+
+.. WARNING: image targets may not have upper case letters!
+
+.. _back:   coloring.html
+.. _home:   front.html
+.. _next:   appendices.html
+
+.. |back| image:: arrow_lt.gif
+    :target: back_
+
+.. |leo|  image:: leo.gif
+    :target: home_
+
+.. |next| image:: arrow_rt.gif
+    :target: next_</t>
+<t tx="ekr.20060527112801">The @string debugger_kind setting controls what debugger the 'Debug Script' script button uses.
+Eventually this setting will control what debugger the debug command uses.
+At present the only valid values are 'winpdb' and 'idle'.
+Support for idle isn't complete yet.</t>
+<t tx="ekr.20060527112934">A few problems remain:
+
+- The code shown above in leoScriptModule.py works only for winpdb.
+  I haven't figured out how to do this for Idle.
+
+- The leoScriptModule hack has exposed a bug in winpdb.
+  winpdb doesn't update the source listing when leoScriptModule.py changes.
+  So if you change the script being debugged, winpdb will show you the *old* version of the script.
+  It's a strange experience: the debugger will execute the *correct* code but will show you the *incorrect* code.</t>
 </tnodes>
 </leo_file>
