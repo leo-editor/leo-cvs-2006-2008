@@ -523,6 +523,7 @@ class leoFind:
             groups = self.match_obj.groups()
             if groups:
                 change_text = self.makeRegexSubs(change_text,groups)
+        change_text = change_text.replace('\\n','\n').replace('\\t','\t')
                     
         gui.replaceSelectionRangeWithText(t,          start,end,change_text)
         gui.replaceSelectionRangeWithText(self.s_ctrl,start,end,change_text)
