@@ -813,7 +813,7 @@ class leoFind:
         # g.trace(backwards,i,j,repr(s[i:i+20]))
     
         if not s[i:j] or not pattern:
-            g.trace('empty',i,j)
+            # g.trace('empty',i,j)
             return -1,-1
             
         if regexp:
