@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="9611" clone_windows="0"/>
-<globals body_outline_ratio="0.575921908894">
-	<global_window_position top="12" left="154" height="922" width="1043"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="9614" clone_windows="0"/>
+<globals body_outline_ratio="0.557436517533">
+	<global_window_position top="25" left="385" height="827" width="779"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -13,86 +13,8 @@
 <v t="ekr.20031218072017.329"><vh>@thin ../doc/leoNotes.txt</vh></v>
 </v>
 <v t="EKR.20040519090151.3"><vh>Projects</vh>
-<v t="EKR.20040429143933"><vh>@thin leoProjects.txt</vh></v>
-</v>
-<v t="EKR.20040519090151.2"><vh>To do</vh>
-<v t="ekr.20040117181936"><vh>@thin ../doc/leoToDo.txt</vh></v>
-<v t="ekr.20060207133601"><vh>@thin ../doc/leoToDoLater.txt</vh></v>
-</v>
-<v t="ekr.20050924073836" a="V"><vh>4.4 projects</vh>
-<v t="ekr.20031218072017.2606"><vh>&lt;&lt; Import pychecker &gt;&gt;</vh></v>
-<v t="ekr.20051029070945"><vh>Pychecker report</vh></v>
-<v t="ekr.20060203112912.1"><vh>Initing</vh>
-<v t="ekr.20031218072017.2811"><vh> c.Birth &amp; death</vh>
-<v t="ekr.20031218072017.2812"><vh>c.__init__</vh></v>
-<v t="ekr.20040731071037"><vh>c.initIvars</vh>
-<v t="ekr.20031218072017.2813"><vh>&lt;&lt; initialize ivars &gt;&gt; (commands)</vh></v>
-</v>
-<v t="ekr.20031218072017.2814"><vh>c.__repr__ &amp; __str__</vh></v>
-<v t="ekr.20041130173135"><vh>c.hash</vh></v>
-<v t="ekr.20050920093543"><vh>c.finishCreate &amp; helper</vh>
-<v t="ekr.20051007143620"><vh>printCommandsDict</vh></v>
-</v>
-</v>
-<v t="ekr.20031218072017.3941"><vh> Birth &amp; Death (tkFrame)</vh>
-<v t="ekr.20031218072017.1801"><vh>__init__ (tkFrame)</vh>
-<v t="ekr.20031218072017.1802"><vh>&lt;&lt; set the leoTkinterFrame ivars &gt;&gt;</vh></v>
-</v>
-<v t="ekr.20031218072017.3942"><vh>__repr__ (tkFrame)</vh></v>
-<v t="ekr.20041221122440"><vh>f.component &amp; components</vh></v>
-<v t="ekr.20031218072017.2176"><vh>f.finishCreate &amp; helpers</vh>
-<v t="ekr.20051009044751"><vh>createOuterFrames</vh></v>
-<v t="ekr.20051009044920"><vh>createIconBarComponents</vh></v>
-<v t="ekr.20051009045208"><vh>createSplitterComponents</vh></v>
-<v t="ekr.20051009045300"><vh>createStatusLineComponents</vh></v>
-<v t="ekr.20051009045404"><vh>createFirstTreeNode</vh></v>
-<v t="ekr.20051121092320"><vh>f.enableTclTraces</vh></v>
-</v>
-<v t="ekr.20031218072017.3944"><vh>f.createCanvas &amp; helpers</vh>
-<v t="ekr.20041221071131.1"><vh>createTkTreeCanvas</vh>
-<v t="ekr.20050119210541"><vh>&lt;&lt; workaround for mouse-wheel problems &gt;&gt;</vh></v>
-<v t="ekr.20040709081208"><vh>&lt;&lt; do scrolling by hand in a separate thread &gt;&gt;</vh></v>
-</v>
-<v t="ekr.20041221071131"><vh>createPmwTreeCanvas (not used)</vh></v>
-</v>
-<v t="ekr.20041221123325"><vh>createLeoSplitters &amp; helpers</vh>
-<v t="ekr.20041223130032"><vh>&lt;&lt; create Pmw splitters and their components &gt;&gt;</vh></v>
-<v t="ekr.20041221195402"><vh>Pmw...</vh>
-<v t="ekr.20041221073427"><vh>createLeoPmwSplitter</vh></v>
-<v t="ekr.20031218072017.3946"><vh>resizePanesToRatio</vh>
-<v t="ekr.20050104084531"><vh>&lt;&lt; resize the Pmw panes &gt;&gt;</vh></v>
-</v>
-<v t="ekr.20041221075743"><vh>onPmwResizeSplitter1/2</vh></v>
-</v>
-<v t="ekr.20041221185246"><vh>Tk...</vh>
-<v t="ekr.20041221073427.1"><vh>createLeoTkSplitter</vh></v>
-<v t="ekr.20031218072017.3947"><vh>bindBar</vh></v>
-<v t="ekr.20031218072017.3949"><vh>divideAnySplitter</vh></v>
-<v t="ekr.20031218072017.3950"><vh>divideLeoSplitter</vh></v>
-<v t="ekr.20031218072017.3951"><vh>onDrag...</vh></v>
-<v t="ekr.20031218072017.3952"><vh>placeSplitter</vh></v>
-<v t="ekr.20031218072017.998"><vh>Scrolling callbacks (frame)</vh></v>
-</v>
-</v>
-<v t="ekr.20031218072017.3964"><vh>Destroying the frame</vh>
-<v t="ekr.20031218072017.1975"><vh>destroyAllObjects</vh>
-<v t="ekr.20031218072017.1976"><vh>&lt;&lt; clear all vnodes and tnodes in the tree&gt;&gt;</vh></v>
-</v>
-<v t="ekr.20031218072017.3965"><vh>destroyAllPanels</vh></v>
-<v t="ekr.20031218072017.1974"><vh>destroySelf (tkFrame)</vh></v>
-</v>
-</v>
-<v t="ekr.20050920085536.1"><vh> Birth (keyHandler)</vh>
-<v t="ekr.20050920085536.2"><vh> ctor (keyHandler)</vh>
-<v t="ekr.20051006092617"><vh>&lt;&lt; define Tk ivars &gt;&gt;</vh></v>
-<v t="ekr.20051006092617.1"><vh>&lt;&lt; define externally visible ivars &gt;&gt;</vh></v>
-<v t="ekr.20050923213858"><vh>&lt;&lt; define internal ivars &gt;&gt;</vh></v>
-</v>
-<v t="ekr.20050920094633"><vh>k.finishCreate &amp; helpers</vh>
-<v t="ekr.20051008082929"><vh>createInverseCommandsDict</vh></v>
-</v>
-<v t="ekr.20060115195302"><vh>setDefaultUnboundKeyAction</vh></v>
-</v>
+<v t="EKR.20040429143933"
+expanded="ekr.20050314140957,ekr.20050315071727,ekr.20031218072017.3070,ekr.20060123125256,ekr.20060124140114,ekr.20031218072017.3077,ekr.20060526081931,"><vh>@thin leoProjects.txt</vh></v>
 </v>
 <v t="ekr.20060514170725"><vh>4.4.1 projects</vh>
 <v t="ekr.20060514170854"><vh>Fixed bugs</vh>
@@ -100,6 +22,7 @@
 <v t="ekr.20060514164817.1"><vh>Report</vh></v>
 </v>
 </v>
+<v t="ekr.20060522103446"><vh>New features</vh>
 <v t="ekr.20060512101324"><vh>(Support for new colorizer)</vh>
 <v t="ekr.20060512101324.1"><vh>What I did</vh></v>
 <v t="ekr.20060129052538.1"><vh>Master event handlers (keyHandler)</vh>
@@ -135,30 +58,55 @@
 <v t="ekr.20060521140213.1"><vh>&lt;&lt; find the target file &gt;&gt;</vh></v>
 </v>
 </v>
+<v t="ekr.20060522083716"><vh>Run Idle in a separate process</vh>
+<v t="ekr.20031218072017.2932"><vh>openPythonWindow (Dave Hein)</vh>
+<v t="ekr.20060522102610"><vh>&lt;&lt; open idle in a separate process &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2933"><vh>&lt;&lt; open idle in Linux &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2934"><vh>&lt;&lt; open idle in Windows &gt;&gt;</vh>
+<v t="ekr.20031218072017.2936"><vh>&lt;&lt; Try to open idle in Python 2.3 systems &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2935"><vh>&lt;&lt; Try to open idle in Python 2.2 systems&gt;&gt;</vh></v>
+</v>
+<v t="ekr.20031218072017.2937"><vh>leoPyShellMain</vh></v>
 </v>
 </v>
-<v t="ekr.20060226131603"><vh>To do 4.4.1</vh>
-<v t="ekr.20060515060803"><vh>Is it possible to allow idle-time redraw?</vh>
-<v t="ekr.20060515060803.1"><vh>Report</vh></v>
+<v t="ekr.20060522082833"><vh>Added Debug button to scripting plugin</vh>
+<v t="ekr.20060519003651"><vh>debug</vh>
+<v t="ekr.20060521140213"><vh>&lt;&lt; find a debugger or return &gt;&gt;</vh></v>
+<v t="ekr.20060521140213.1"><vh>&lt;&lt; find the target file &gt;&gt;</vh></v>
 </v>
-<v t="ekr.20060413065803"><vh>searches 5</vh>
-<v t="ekr.20060122183544"><vh>Improve isearch</vh>
-<v t="ekr.20051023132350"><vh>getLabel</vh></v>
-<v t="ekr.20050920085536.38"><vh>updateLabel</vh></v>
-<v t="ekr.20060127183752"><vh>masterKeyHandler &amp; helper</vh>
-<v t="ekr.20060205221734"><vh>masterKeyHandlerHelper</vh>
-<v t="ekr.20060321105403"><vh>&lt;&lt; define vars &gt;&gt;</vh></v>
-<v t="ekr.20060321105403.1"><vh>&lt;&lt; do key traces &gt;&gt;</vh></v>
-<v t="ekr.20060321105403.2"><vh>&lt;&lt; handle mode bindings &gt;&gt;</vh></v>
-<v t="ekr.20060321105403.3"><vh>&lt;&lt; handle per-pane bindings &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2140"><vh>c.executeScript</vh>
+<v t="ekr.20031218072017.2143"><vh>&lt;&lt; redirect output &gt;&gt;</vh></v>
+<v t="ekr.20050505104140"><vh>&lt;&lt; handle an exception in the script &gt;&gt;</vh>
+<v t="EKR.20040612215018"><vh>&lt;&lt; dump the lines near the error &gt;&gt;</vh></v>
 </v>
-<v t="ekr.20060309065445"><vh>handleMiniBindings</vh></v>
+<v t="EKR.20040627100424"><vh>&lt;&lt; unredirect output &gt;&gt;</vh></v>
 </v>
-<v t="ekr.20060104110233"><vh>generalModeHandler</vh></v>
+<v t="EKR.20040614071102.1"><vh>g.getScript &amp; tests</vh>
+<v t="ekr.20050211100535"><vh>test_g_getScript_strips_crlf</vh></v>
+</v>
+<v t="ekr.20050506084734"><vh>writeFromString</vh></v>
+<v t="ekr.20041005105605.15"><vh>initWriteIvars</vh>
+<v t="ekr.20041005105605.16"><vh>&lt;&lt; init ivars for writing &gt;&gt;&gt;</vh></v>
+</v>
+<v t="ekr.20041005105605.157"><vh>writeOpenFile</vh></v>
+</v>
+<v t="ekr.20060224104109"><vh>Improved searches</vh>
+<v t="ekr.20050315073003"><vh> Index utilities...</vh>
+<v t="ekr.20050314140957" a="E"><vh>g.convertPythonIndexToRowCol  &amp; test</vh>
+<v t="ekr.20050314140957.1"><vh>bruteForceConvertPythonIndexToRowCol</vh></v>
+<v t="ekr.20050314140957.2"><vh>test_g_convertPythonIndexToRowCol</vh></v>
+</v>
+<v t="ekr.20050315071727" a="E"><vh>g.convertRowColToPythonIndex &amp; test</vh>
+<v t="ekr.20050315072239"><vh>test_g_convertPythonIndexToRowCol</vh></v>
+</v>
+</v>
+<v t="ekr.20031218072017.3070" a="E"><vh>changeSelection</vh>
+<v t="ekr.20060526201951"><vh>makeRegexSubs</vh></v>
+</v>
 <v t="ekr.20051023094009"><vh>Search classes</vh>
-<v t="ekr.20060123125256"><vh>class minibufferFind (the findHandler)</vh>
+<v t="ekr.20060123125256" a="E"><vh>class minibufferFind (the findHandler)</vh>
 <v t="ekr.20060123125317.2"><vh> ctor (minibufferFind)</vh></v>
-<v t="ekr.20060124140114"><vh> Options</vh>
+<v t="ekr.20060124140114" a="E"><vh> Options</vh>
 <v t="ekr.20060124123133"><vh>setFindScope</vh></v>
 <v t="ekr.20060124122844"><vh>setOption</vh></v>
 <v t="ekr.20060125082510"><vh>getOption</vh></v>
@@ -247,20 +195,56 @@
 </v>
 </v>
 </v>
+<v t="ekr.20060527065935"><vh>Switching finds to changes</vh>
+<v t="ekr.20060527065935.1"><vh>From minibuffer find handler</vh>
+<v t="ekr.20060123125317.2"><vh> ctor (minibufferFind)</vh></v>
+<v t="ekr.20060124134356"><vh>setupArgs</vh></v>
+<v t="ekr.20060124140224.1"><vh>seachForward/Backward</vh></v>
+<v t="ekr.20060124140224.3"><vh>reSearchBackward/Forward</vh></v>
+<v t="ekr.20060125093807"><vh>searchWithPresentOptions</vh></v>
+<v t="ekr.20060210173041"><vh>stateZeroHelper</vh></v>
+<v t="ekr.20050920084036.113"><vh>replaceString</vh></v>
 </v>
-<v t="ekr.20060417194232"><vh>find (quick)</vh>
-<v t="ekr.20060417194232.1"><vh>findCharacter</vh></v>
-<v t="ekr.20060417194232.2"><vh>findWord</vh></v>
+<v t="ekr.20050920085536.62"><vh>getArg</vh>
+<v t="ekr.20050928092516"><vh>&lt;&lt; init altX vars &gt;&gt;</vh></v>
 </v>
-<v t="ekr.20060307074302.1"><vh>set-change-text command should work when entering find text.</vh></v>
-<v t="ekr.20060122194643"><vh>isearch-headline (forward &amp; backward)</vh></v>
-<v t="ekr.20060123091352"><vh>Incremental search in switch-to-buffer</vh></v>
+<v t="ekr.20060127183752"><vh>masterKeyHandler &amp; helper</vh>
+<v t="ekr.20060205221734"><vh>masterKeyHandlerHelper</vh>
+<v t="ekr.20060321105403"><vh>&lt;&lt; define vars &gt;&gt;</vh></v>
+<v t="ekr.20060321105403.1"><vh>&lt;&lt; do key traces &gt;&gt;</vh></v>
+<v t="ekr.20060321105403.2"><vh>&lt;&lt; handle mode bindings &gt;&gt;</vh></v>
+<v t="ekr.20060321105403.3"><vh>&lt;&lt; handle per-pane bindings &gt;&gt;</vh></v>
 </v>
-<v t="ekr.20060419123128.1"><vh>Maybe</vh>
-<v t="ekr.20060116090428"><vh>Expand 'point' so it indicates node as well as text location</vh></v>
-<v t="ekr.20060211093935"><vh>Support for @list and on-enter-mode</vh></v>
+<v t="ekr.20060309065445"><vh>handleMiniBindings</vh></v>
+</v>
+<v t="ekr.20060128081317"><vh>shortcutFromSetting</vh>
+<v t="ekr.20060201065809"><vh>&lt;&lt; define cmd, ctrl, alt, shift &gt;&gt;</vh></v>
+<v t="ekr.20060215104239"><vh>&lt;&lt; swap cmd and ctrl keys &gt;&gt;</vh></v>
+<v t="ekr.20060128103640.1"><vh>&lt;&lt; convert minus signs to plus signs &gt;&gt;</vh></v>
+<v t="ekr.20060128103640.2"><vh>&lt;&lt; compute the last field &gt;&gt;</vh></v>
+<v t="ekr.20060128103640.4"><vh>&lt;&lt; compute shortcut &gt;&gt;</vh></v>
 </v>
 </v>
+<v t="ekr.20031218072017.3077" a="E"><vh>search &amp; helpers</vh>
+<v t="ekr.20060526084217"><vh>&lt;&lt; convert index to python index &gt;&gt;</vh></v>
+<v t="ekr.20060526140328"><vh>&lt;&lt; fail if we are passed the wrap point &gt;&gt;</vh></v>
+<v t="ekr.20060526085605"><vh>&lt;&lt; convert pos and newpos to gui indices &gt;&gt;</vh></v>
+<v t="ekr.20060526081931" a="E"><vh>Search helpers...</vh>
+<v t="ekr.20060526092203"><vh>regexHelper</vh></v>
+<v t="ekr.20060526140744"><vh>backwardsHelper</vh></v>
+<v t="ekr.20060526093531"><vh>plainHelper</vh></v>
+<v t="ekr.20060526140744.1"><vh>matchWord</vh></v>
+</v>
+</v>
+</v>
+</v>
+</v>
+<v t="EKR.20040519090151.2" a="V"><vh>To do</vh>
+<v t="ekr.20040117181936"><vh>@thin ../doc/leoToDo.txt</vh></v>
+<v t="ekr.20060207133601"
+expanded="ekr.20060123125256,ekr.20060124140114,ekr.20060526081931,"><vh>@thin ../doc/leoToDoLater.txt</vh></v>
+</v>
+<v t="ekr.20060527062603"><vh>To-do first</vh></v>
 <v t="ekr.20031218072017.2406"><vh>Code</vh>
 <v t="ekr.20031218072017.2606"><vh>&lt;&lt; Import pychecker &gt;&gt;</vh></v>
 <v t="ekr.20031218072017.2582"><vh> version &amp; signon stuff</vh>
@@ -286,7 +270,8 @@
 marks="ekr.20040629121554.2,"><vh>@thin leoCommands.py</vh></v>
 <v t="ekr.20041117062700"><vh>@thin leoConfig.py</vh></v>
 <v t="ekr.20031218072017.3018"><vh>@thin leoFileCommands.py</vh></v>
-<v t="ekr.20031218072017.3093"><vh>@thin leoGlobals.py</vh></v>
+<v t="ekr.20031218072017.3093"
+expanded="ekr.20050314140957,ekr.20050315071727,"><vh>@thin leoGlobals.py</vh></v>
 <v t="ekr.20031218072017.3206"><vh>@thin leoImport.py</vh></v>
 <v t="ekr.20031218072017.3320"><vh>@thin leoNodes.py</vh></v>
 <v t="ekr.20031218072017.3439"><vh>@thin leoPlugins.py</vh></v>
@@ -297,7 +282,8 @@ marks="ekr.20040629121554.2,"><vh>@thin leoCommands.py</vh></v>
 <v t="ekr.20031218072017.3625"><vh>Gui Base classes</vh>
 <v t="ekr.20050721093241"><vh>&lt;&lt; about gui classes and gui plugins &gt;&gt;</vh></v>
 <v t="ekr.20031218072017.3630"><vh>@thin leoCompare.py</vh></v>
-<v t="ekr.20060123151617"><vh>@thin leoFind.py</vh></v>
+<v t="ekr.20060123151617"
+expanded="ekr.20060526081931,"><vh>@thin leoFind.py</vh></v>
 <v t="ekr.20031218072017.3655"><vh>@thin leoFrame.py</vh></v>
 <v t="ekr.20031218072017.3719"><vh>@thin leoGui.py</vh></v>
 <v t="ekr.20031218072017.3749"><vh>@thin leoMenu.py</vh></v>
@@ -313,159 +299,115 @@ marks="ekr.20040629121554.2,"><vh>@thin leoCommands.py</vh></v>
 <v t="ekr.20040803072955"><vh>@thin leoTkinterTree.py</vh></v>
 </v>
 <v t="ekr.20031218072017.3748"><vh>@thin leoKeys.py</vh></v>
-<v t="ekr.20050710142719"><vh>@thin leoEditCommands.py</vh></v>
+<v t="ekr.20050710142719"
+expanded="ekr.20060123125256,ekr.20060124140114,"><vh>@thin leoEditCommands.py</vh></v>
 </v>
 </vnodes>
 <tnodes>
 <t tx="EKR.20040430162943"></t>
 <t tx="EKR.20040519090151.2"></t>
 <t tx="EKR.20040519090151.3"></t>
-<t tx="ekr.20031218072017.998">def setCallback (self,*args,**keys):
+<t tx="EKR.20040612215018">if g.os_path_exists(fileName):
+    f = file(fileName)
+    lines = f.readlines()
+    f.close()
+else:
+    lines = g.splitLines(script)
+
+s = '-' * 20
+g.es_print(s)
+
+if 0:
+    # Just print the error line.
+    try:
+        s = "%s line %d: %s" % (fileName,n,lines[n-1])
+        g.es(s,newline=False)
+    except IndexError:
+        s = "%s line %d" % (fileName,n)
+        g.es(s,newline=False)
+else: # Print surrounding lines.
+    i = max(0,n-2)
+    j = min(n+2,len(lines))
+    # g.trace(n,i,j)
+    while i &lt; j:
+        ch = g.choose(i==n-1,'*',' ')
+        s = "%s line %d: %s" % (ch,i+1,lines[i])
+        g.es(s,newline=False)
+        i += 1</t>
+<t tx="EKR.20040614071102.1">def getScript (c,p,useSelectedText=True,forcePythonSentinels=True,useSentinels=True):
     
-    """Callback to adjust the scrollbar.
+    '''Return the expansion of the selected text of node p.
+    Return the expansion of all of node p's body text if there
+    is p is not the current node or if there is no text selection.'''
+
+    at = c.atFileCommands
+    if not p:
+        p = c.currentPosition()
+    try:
+        if g.app.batchMode:
+            s = p.bodyString()
+        elif p == c.currentPosition():
+            if useSelectedText and c.frame.body.hasTextSelection():
+                s = c.frame.body.getSelectedText()
+            else:
+                s = c.frame.body.getAllText()
+        else:
+            s = p.bodyString()
+        # Remove extra leading whitespace so the user may execute indented code.
+        s = g.removeExtraLws(s,c.tab_width)
+        if s.strip():
+            g.app.scriptDict["script1"]=s
+            script = at.writeFromString(p.copy(),s,
+                forcePythonSentinels=forcePythonSentinels,
+                useSentinels=useSentinels)
+            script = script.replace("\r\n","\n") # Use brute force.
+            g.app.scriptDict["script2"]=script
+        else: script = ''
+    except Exception:
+        s = "unexpected exception in g.getScript"
+        g.es_print(s)
+        g.es_exception()
+        script = ''
+
+    return script</t>
+<t tx="EKR.20040627100424">if c.exists and c.config.redirect_execute_script_output_to_log_pane:
+
+    g.restoreStderr()
+    g.restoreStdout()</t>
+<t tx="ekr.20031218072017.2140">def executeScript(self,event=None,p=None,script=None,
+    useSelectedText=True,define_g=True,define_name='__main__',silent=False):
+
+    """This executes body text as a Python script.
     
-    Args is a tuple of two floats describing the fraction of the visible area."""
-
-    # g.trace(self.tree.redrawCount,args)
-
-    apply(self.treeBar.set,args,keys)
-
-    if self.tree.allocateOnlyVisibleNodes:
-        self.tree.setVisibleArea(args)
-        
-def yviewCallback (self,*args,**keys):
+    We execute the selected text, or the entire body text if no text is selected."""
     
-    """Tell the canvas to scroll"""
-    
-    # g.trace(vyiewCallback",args,keys)
+    c = self ; script1 = script
+    if not script:
+        script = g.getScript(c,p,useSelectedText=useSelectedText)
+    &lt;&lt; redirect output &gt;&gt;
+    try:
+        if script.strip():
+            sys.path.insert(0,c.frame.openDirectory)
+            script += '\n' # Make sure we end the script properly.
+            try:
+                p = c.currentPosition()
+                d = g.choose(define_g,{'c':c,'g':g,'p':p},{})
+                if define_name: d['__name__'] = define_name
+                # g.trace(script)
+                exec script in d
+                if not script1 and not silent:
+                    g.es("end of script",color="purple")
+            except Exception:
+                &lt;&lt; handle an exception in the script &gt;&gt;
+            del sys.path[0]
+        else:
+            g.es("no script selected",color="blue")
+    finally: # New in 4.3 beta 2: unredirect output last.
+        &lt;&lt; unredirect output &gt;&gt;</t>
+<t tx="ekr.20031218072017.2143">if c.config.redirect_execute_script_output_to_log_pane:
 
-    if self.tree.allocateOnlyVisibleNodes:
-        self.tree.allocateNodesBeforeScrolling(args)
-
-    apply(self.canvas.yview,args,keys)</t>
-<t tx="ekr.20031218072017.1801">def __init__(self,title,gui):
-
-    # Init the base class.
-    leoFrame.leoFrame.__init__(self,gui)
-
-    self.title = title
-
-    leoTkinterFrame.instances += 1
-
-    self.c = None # Set in finishCreate.
-    self.iconBar = None
-
-    self.trace_status_line = None # Set in finishCreate.
-    &lt;&lt; set the leoTkinterFrame ivars &gt;&gt;</t>
-<t tx="ekr.20031218072017.1802"># "Official ivars created in createLeoFrame and its allies.
-self.bar1 = None
-self.bar2 = None
-self.body = None
-self.bodyBar = None
-self.bodyCtrl = None
-self.bodyXBar = None
-self.f1 = self.f2 = None
-self.findPanel = None # Inited when first opened.
-self.iconBarComponentName = 'iconBar'
-self.iconFrame = None 
-self.log = None
-self.canvas = None
-self.outerFrame = None
-self.statusFrame = None
-self.statusLineComponentName = 'statusLine'
-self.statusText = None 
-self.statusLabel = None 
-self.top = None
-self.tree = None
-self.treeBar = None
-
-# Used by event handlers...
-self.controlKeyIsDown = False # For control-drags
-self.draggedItem = None
-self.isActive = True
-self.redrawCount = 0
-self.wantedWidget = None
-self.wantedCallbackScheduled = False
-self.scrollWay = None</t>
-<t tx="ekr.20031218072017.1974">def destroySelf (self):
-    
-    # Remember these: we are about to destroy all of our ivars!
-    top = self.top 
-    c = self.c
-    
-    # Indicate that the commander is no longer valid.
-    c.exists = False 
-    
-    # g.trace(self)
-
-    # Important: this destroys all the object of the commander too.
-    self.destroyAllObjects()
-    
-    c.exists = False # Make sure this one ivar has not been destroyed.
-
-    top.destroy()</t>
-<t tx="ekr.20031218072017.1975">def destroyAllObjects (self):
-
-    """Clear all links to objects in a Leo window."""
-
-    frame = self ; c = self.c ; tree = frame.tree ; body = self.body
-
-    # Do this first.
-    &lt;&lt; clear all vnodes and tnodes in the tree &gt;&gt;
-
-    # Destroy all ivars in subcommanders.
-    g.clearAllIvars(c.atFileCommands)
-    g.clearAllIvars(c.fileCommands)
-    g.clearAllIvars(c.importCommands)
-    g.clearAllIvars(c.tangleCommands)
-    g.clearAllIvars(c.undoer)
-    g.clearAllIvars(c)
-    g.clearAllIvars(body.colorizer)
-    g.clearAllIvars(body)
-    g.clearAllIvars(tree)
-
-    # This must be done last.
-    frame.destroyAllPanels()
-    g.clearAllIvars(frame)</t>
-<t tx="ekr.20031218072017.1976"># Using a dict here is essential for adequate speed.
-vList = [] ; tDict = {}
-
-for p in c.allNodes_iter():
-    vList.append(p.v)
-    if p.v.t:
-        key = id(p.v.t)
-        if not tDict.has_key(key):
-            tDict[key] = p.v.t
-
-for key in tDict.keys():
-    g.clearAllIvars(tDict[key])
-
-for v in vList:
-    g.clearAllIvars(v)
-
-vList = [] ; tDict = {} # Remove these references immediately.</t>
-<t tx="ekr.20031218072017.2176">def finishCreate (self,c):
-    
-    f = self ; f.c = c
-    # g.trace('tkFrame')
-    
-    # This must be done after creating the commander.
-    f.splitVerticalFlag,f.ratio,f.secondary_ratio = f.initialRatios()
-    f.createOuterFrames()
-    f.createIconBarComponents()
-    f.createSplitterComponents()
-    f.createStatusLineComponents()
-    f.createFirstTreeNode()
-    f.menu = leoTkinterMenu.leoTkinterMenu(f)
-        # c.finishCreate calls f.createMenuBar later.
-    c.setLog()
-    g.app.windowList.append(f)
-    c.initVersion()
-    c.signOnWithVersion()
-    f.miniBufferWidget = f.createMiniBufferWidget()
-    c.bodyWantsFocusNow()
-    self.trace_status_line = c.config.getBool('trace_status_line')
-    # f.enableTclTraces()</t>
+    g.redirectStdout() # Redirect stdout
+    g.redirectStderr() # Redirect stderr</t>
 <t tx="ekr.20031218072017.2406">@tabwidth -4
 @pagewidth 80
 
@@ -503,106 +445,105 @@ if 0: # Set to 1 for lint-like testing.
         print ; print "Warning (in leo.py): pychecker.checker running..." ; print
     except:
         print ; print 'Can not import pychecker' ; print</t>
-<t tx="ekr.20031218072017.2811"></t>
-<t tx="ekr.20031218072017.2812">def __init__(self,frame,fileName):
-
-    c = self
+<t tx="ekr.20031218072017.2932">def openPythonWindow (self,event=None):
     
-    # g.trace('Commands')
-    
-    c.exists = True # Indicate that this class exists and has not been destroyed.
-        # Do this early in the startup process so we can call hooks.
-    
-    # Init ivars with self.x instead of c.x to keep Pychecker happy
-    self.frame = frame
-    self.mFileName = fileName
-        # Do _not_ use os_path_norm: it converts an empty path to '.' (!!)
-
-    # g.trace(c) # Do this after setting c.mFileName.
-    c.initIvars()
-
-    self.useTextMinibuffer = c.config.getBool('useTextMinibuffer')
-    self.showMinibuffer = c.config.getBool('useMinibuffer')
-    self.stayInTree = c.config.getBool('stayInTreeAfterSelect')
-
-    # initialize the sub-commanders.
-    # c.finishCreate creates the sub-commanders for edit commands.
-    self.fileCommands   = leoFileCommands.fileCommands(c)
-    self.atFileCommands = leoAtFile.atFile(c)
-    self.importCommands = leoImport.leoImportCommands(c)
-    self.tangleCommands = leoTangle.tangleCommands(c)
-    leoEditCommands.createEditCommanders(c)
-
-    if 0 and g.debugGC:
-        print ; print "*** using Null undoer ***" ; print
-        self.undoer = leoUndo.nullUndoer(self)
+    if 1:
+        &lt;&lt; open idle in a separate process &gt;&gt;
     else:
-        self.undoer = leoUndo.undoer(self)</t>
-<t tx="ekr.20031218072017.2813">self._currentPosition = self.nullPosition()
-self._rootPosition    = self.nullPosition()
-self._topPosition     = self.nullPosition()
+        if sys.platform == "linux2":
+            &lt;&lt; open idle in Linux &gt;&gt;
+        else:
+            &lt;&lt; open idle in Windows &gt;&gt;</t>
+<t tx="ekr.20031218072017.2933"># 09-SEP-2002 DHEIN: Open Python window under linux
 
-# Delayed focus.
-self.hasFocusWidget = None
-self.requestedFocusWidget = None
-
-# Official ivars.
-self.gui = g.app.gui
-
-# Interlocks to prevent premature closing of a window.
-self.inCommand = False
-self.requestCloseWindow = False
-
-# For emacs/vim key handling.
-self.commandsDict = None
-self.keyHandler = self.k = None
-self.miniBufferWidget = None
-
-# per-document info...
-self.disableCommandsMessage = ''
-    # The presence of this message disables all commands.
-self.hookFunction = None
-self.openDirectory = None
-
-self.expansionLevel = 0  # The expansion level of this outline.
-self.expansionNode = None # The last node we expanded or contracted.
-self.changed = False # True if any data has been changed since the last save.
-self.loading = False # True if we are loading a file: disables c.setChanged()
-self.outlineToNowebDefaultFileName = "noweb.nw" # For Outline To Noweb dialog.
-self.promptingForClose = False # To lock out additional closing dialogs.
-
-# For tangle/untangle
-self.tangle_errors = 0
-
-# Global options
-self.page_width = 132
-self.tab_width = -4
-self.tangle_batch_flag = False
-self.untangle_batch_flag = False
-# Default Tangle options
-self.tangle_directory = ""
-self.use_header_flag = False
-self.output_doc_flag = False
-# Default Target Language
-self.target_language = "python" # Required if leoConfig.txt does not exist.
-
-# These are defined here, and updated by the tree.select()
-self.beadList = [] # list of vnodes for the Back and Forward commands.
-self.beadPointer = -1 # present item in the list.
-self.visitedList = [] # list of positions for the Nodes dialog.
-
-# For hoist/dehoist commands.
-self.hoistStack = []
-    # Stack of nodes to be root of drawn tree.
-    # Affects drawing routines and find commands.
-self.recentFiles = [] # List of recent files</t>
-<t tx="ekr.20031218072017.2814">def __repr__ (self):
-    
-    return "Commander %d: %s" % (id(self),repr(self.mFileName))
-        
-__str__ = __repr__
-
+try:
+    pathToLeo = g.os_path_join(g.app.loadDir,"leo.py")
+    sys.argv = [pathToLeo]
+    from idlelib import idle
+    if g.app.idle_imported:
+        reload(idle)
+    g.app.idle_imported = True
+except:
+    try:
+        g.es("idlelib could not be imported.")
+        g.es("Probably IDLE is not installed.")
+        g.es("Run Tools/idle/setup.py to build idlelib.")
+        g.es("Can not import idle")
+        g.es_exception() # This can fail!!
+    except: pass
 </t>
+<t tx="ekr.20031218072017.2934"># Initialize argv: the -t option sets the title of the Idle interp window.
+sys.argv = ["leo"] # ,"-t","Leo"]
+
+ok = False
+if g.CheckVersion(sys.version,"2.3"):
+    &lt;&lt; Try to open idle in Python 2.3 systems &gt;&gt;
+else:
+    &lt;&lt; Try to open idle in Python 2.2 systems &gt;&gt;
+
+if not ok:
+    g.es("Can not import idle")
+    if idle_dir and idle_dir not in sys.path:
+        g.es("Please add '%s' to sys.path" % idle_dir)</t>
+<t tx="ekr.20031218072017.2935">try:
+    executable_dir = g.os_path_dirname(sys.executable)
+    idle_dir = g.os_path_join(executable_dir,"Tools","idle")
+
+    # 1/29/04: sys.path doesn't handle unicode in 2.2.
+    idle_dir = str(idle_dir) # May throw an exception.
+
+    # 1/29/04: must add idle_dir to sys.path even when using importFromPath.
+    if idle_dir not in sys.path:
+        sys.path.insert(0,idle_dir)
+
+    if 1:
+        import PyShell
+    else: # Works, but is not better than import.
+        PyShell = g.importFromPath("PyShell",idle_dir)
+
+    if g.app.idle_imported:
+        reload(idle)
+        g.app.idle_imported = True
+        
+    if 1: # Mostly works, but causes problems when opening other .leo files.
+        PyShell.main()
+    else: # Doesn't work: destroys all of Leo when Idle closes.
+        self.leoPyShellMain()
+    ok = True
+except ImportError:
+    ok = False
+    g.es_exception()</t>
+<t tx="ekr.20031218072017.2936">try:
+    idle_dir = None
+    
+    import idlelib.PyShell
+
+    if g.app.idle_imported:
+        reload(idle)
+        g.app.idle_imported = True
+        
+    idlelib.PyShell.main()
+    ok = True
+
+except:
+    ok = False
+    g.es_exception()</t>
+<t tx="ekr.20031218072017.2937">@ The key parts of Pyshell.main(), but using Leo's root window instead of a new Tk root window.
+
+This does _not_ work well.  Using Leo's root window means that Idle will shut down Leo without warning when the Idle window is closed!
+@c
+
+if 0:
+
+    def leoPyShellMain(self):
+        
+        import PyShell
+        root = g.app.root
+        PyShell.fixwordbreaks(root)
+        flist = PyShell.PyShellFileList(root)
+        shell = PyShell.PyShell(flist)
+        flist.pyshell = shell
+        shell.begin()</t>
 <t tx="ekr.20031218072017.2954">def redraw (self):
     c = self
     c.beginUpdate()
@@ -625,129 +566,79 @@ def redraw_now (self):
 
 # Compatibility with old scripts
 force_redraw = redraw_now</t>
+<t tx="ekr.20031218072017.3070"># Replace selection with self.change_text.
+# If no selection, insert self.change_text at the cursor.
+
+def changeSelection(self):
+
+    c = self.c ; p = self.p ; gui = g.app.gui
+    # g.trace(self.in_headline)
+    t = g.choose(self.in_headline,p.edit_widget(),c.frame.bodyCtrl)
+    oldSel = sel = gui.getTextSelection(t)
+    if sel and len(sel) == 2:
+        start,end = sel
+        if start == end:
+            sel = None
+    if not sel or len(sel) != 2:
+        g.es("No text selected")
+        return False
+
+    # Replace the selection in _both_ controls.
+    start,end = oldSel
+    change_text = self.change_text
+    
+    # Perform regex substitutions of \1, \2, ...\9 in the change text.
+    if self.pattern_match and self.match_obj:
+        groups = self.match_obj.groups()
+        if groups:
+            change_text = self.makeRegexSubs(change_text,groups)
+    change_text = change_text.replace('\\n','\n').replace('\\t','\t')
+                
+    gui.replaceSelectionRangeWithText(t,          start,end,change_text)
+    gui.replaceSelectionRangeWithText(self.s_ctrl,start,end,change_text)
+
+    # Update the selection for the next match.
+    gui.setSelectionRangeWithLength(t,start,len(self.change_text))
+    c.widgetWantsFocus(t)
+
+    # No redraws here: they would destroy the headline selection.
+    c.beginUpdate()
+    try:
+        if self.mark_changes:
+            p.setMarked()
+        if self.in_headline:
+            c.frame.tree.onHeadChanged(p,'Change')
+        else:
+            c.frame.body.onBodyChanged('Change',oldSel=oldSel)
+    finally:
+        c.endUpdate(False)
+        c.frame.tree.drawIcon(p) # redraw only the icon.
+     
+    return True
+</t>
+<t tx="ekr.20031218072017.3077">def search (self):
+
+    """Search s_ctrl for self.find_text under the control of the
+    whole_word, ignore_case, and pattern_match ivars.
+    
+    Returns (pos, newpos) or (None,None)."""
+
+    c = self.c ; p = self.p ; w = self.s_ctrl ; gui = g.app.gui
+    index = gui.getInsertPoint(w)
+    s = w.get('1.0','end') # Keep the extra trailing newline!
+    &lt;&lt; convert index to python index &gt;&gt;
+    stopindex = g.choose(self.reverse,0,len(s))
+    while 1:
+        pos,newpos = self.searchHelper(s,index,stopindex,self.find_text,
+            backwards=self.reverse,nocase=self.ignore_case,
+            regexp=self.pattern_match,word=self.whole_word)
+        if pos == -1: return None,None
+        &lt;&lt; convert pos and newpos to gui indices &gt;&gt;
+        &lt;&lt; fail if we are passed the wrap point &gt;&gt;
+        gui.setTextSelection(w,pos,newpos,insert=newpos)
+        return pos, newpos</t>
 <t tx="ekr.20031218072017.3625">&lt;&lt; about gui classes and gui plugins &gt;&gt;</t>
 <t tx="ekr.20031218072017.3821"></t>
-<t tx="ekr.20031218072017.3941"></t>
-<t tx="ekr.20031218072017.3942">def __repr__ (self):
-
-    return "&lt;leoTkinterFrame: %s&gt;" % self.title
-</t>
-<t tx="ekr.20031218072017.3944">def createCanvas (self,parentFrame,pack=True):
-
-    # pageName is not used here: it is used for compatibility with the Chapters plugin.
-
-    c = self.c
-
-    scrolls = c.config.getBool('outline_pane_scrolls_horizontally')
-    scrolls = g.choose(scrolls,1,0)
-
-    if use_Pmw and Pmw:
-        canvas = self.createPmwTreeCanvas(parentFrame,scrolls,pack)
-    else:
-        canvas = self.createTkTreeCanvas(parentFrame,scrolls,pack)
-
-    return canvas</t>
-<t tx="ekr.20031218072017.3946">def resizePanesToRatio(self,ratio,ratio2):
-    
-    # g.trace(ratio,ratio2,g.callers())
-    
-    if use_Pmw and Pmw:
-        &lt;&lt; resize the Pmw panes &gt;&gt;
-    else:
-        self.divideLeoSplitter(self.splitVerticalFlag,ratio)
-        self.divideLeoSplitter(not self.splitVerticalFlag,ratio2)</t>
-<t tx="ekr.20031218072017.3947">def bindBar (self, bar, verticalFlag):
-
-    if verticalFlag == self.splitVerticalFlag:
-        bar.bind("&lt;B1-Motion&gt;", self.onDragMainSplitBar)
-
-    else:
-        bar.bind("&lt;B1-Motion&gt;", self.onDragSecondarySplitBar)</t>
-<t tx="ekr.20031218072017.3949"># This is the general-purpose placer for splitters.
-# It is the only general-purpose splitter code in Leo.
-
-def divideAnySplitter (self, frac, verticalFlag, bar, pane1, pane2):
-
-    if verticalFlag:
-        # Panes arranged vertically; horizontal splitter bar
-        bar.place(rely=frac)
-        pane1.place(relheight=frac)
-        pane2.place(relheight=1-frac)
-    else:
-        # Panes arranged horizontally; vertical splitter bar
-        bar.place(relx=frac)
-        pane1.place(relwidth=frac)
-        pane2.place(relwidth=1-frac)</t>
-<t tx="ekr.20031218072017.3950"># Divides the main or secondary splitter, using the key invariant.
-def divideLeoSplitter (self, verticalFlag, frac):
-
-    if self.splitVerticalFlag == verticalFlag:
-        self.divideLeoSplitter1(frac,verticalFlag)
-        self.ratio = frac # Ratio of body pane to tree pane.
-    else:
-        self.divideLeoSplitter2(frac,verticalFlag)
-        self.secondary_ratio = frac # Ratio of tree pane to log pane.
-
-# Divides the main splitter.
-def divideLeoSplitter1 (self, frac, verticalFlag): 
-    self.divideAnySplitter(frac, verticalFlag,
-        self.bar1, self.split1Pane1, self.split1Pane2)
-
-# Divides the secondary splitter.
-def divideLeoSplitter2 (self, frac, verticalFlag): 
-    self.divideAnySplitter (frac, verticalFlag,
-        self.bar2, self.split2Pane1, self.split2Pane2)</t>
-<t tx="ekr.20031218072017.3951">def onDragMainSplitBar (self, event):
-    self.onDragSplitterBar(event,self.splitVerticalFlag)
-
-def onDragSecondarySplitBar (self, event):
-    self.onDragSplitterBar(event,not self.splitVerticalFlag)
-
-def onDragSplitterBar (self, event, verticalFlag):
-
-    # x and y are the coordinates of the cursor relative to the bar, not the main window.
-    bar = event.widget
-    x = event.x
-    y = event.y
-    top = bar.winfo_toplevel()
-
-    if verticalFlag:
-        # Panes arranged vertically; horizontal splitter bar
-        wRoot = top.winfo_rooty()
-        barRoot = bar.winfo_rooty()
-        wMax = top.winfo_height()
-        offset = float(barRoot) + y - wRoot
-    else:
-        # Panes arranged horizontally; vertical splitter bar
-        wRoot = top.winfo_rootx()
-        barRoot = bar.winfo_rootx()
-        wMax = top.winfo_width()
-        offset = float(barRoot) + x - wRoot
-
-    # Adjust the pixels, not the frac.
-    if offset &lt; 3: offset = 3
-    if offset &gt; wMax - 2: offset = wMax - 2
-    # Redraw the splitter as the drag is occuring.
-    frac = float(offset) / wMax
-    # g.trace(frac)
-    self.divideLeoSplitter(verticalFlag, frac)</t>
-<t tx="ekr.20031218072017.3952">def placeSplitter (self,bar,pane1,pane2,verticalFlag):
-
-    if use_Pmw and Pmw:
-        return
-
-    if verticalFlag:
-        # Panes arranged vertically; horizontal splitter bar
-        pane1.place(relx=0.5, rely =   0, anchor="n", relwidth=1.0, relheight=0.5)
-        pane2.place(relx=0.5, rely = 1.0, anchor="s", relwidth=1.0, relheight=0.5)
-        bar.place  (relx=0.5, rely = 0.5, anchor="c", relwidth=1.0)
-    else:
-        # Panes arranged horizontally; vertical splitter bar
-        # adj gives tree pane more room when tiling vertically.
-        adj = g.choose(verticalFlag != self.splitVerticalFlag,0.65,0.5)
-        pane1.place(rely=0.5, relx =   0, anchor="w", relheight=1.0, relwidth=adj)
-        pane2.place(rely=0.5, relx = 1.0, anchor="e", relheight=1.0, relwidth=1.0-adj)
-        bar.place  (rely=0.5, relx = adj, anchor="c", relheight=1.0)</t>
 <t tx="ekr.20031218072017.3963">def put(self,s,color=None):
     
     t = self.textWidget
@@ -772,16 +663,6 @@ def onDragSplitterBar (self, event, verticalFlag):
     
     t.configure(state="disabled")
     ##### t.update_idletasks() # interferes with coloring.</t>
-<t tx="ekr.20031218072017.3964"></t>
-<t tx="ekr.20031218072017.3965">def destroyAllPanels (self):
-
-    """Destroy all panels attached to this frame."""
-    
-    panels = (self.comparePanel, self.colorPanel, self.findPanel, self.fontPanel, self.prefsPanel)
-
-    for panel in panels:
-        if panel:
-            panel.top.destroy()</t>
 <t tx="ekr.20040629121554">def getBuildNumber(self):
     c = self
     return c.ver[10:-1] # Strip off "(dollar)Revision" and the trailing "$"</t>
@@ -813,52 +694,6 @@ def onDragSplitterBar (self, event, verticalFlag):
     g.es(signon)
     g.es("Python %d.%d.%d, Tk %s, Pmw %s\n%s" % (n1,n2,n3,tkLevel,Pmw.version(),version))
     g.enl()</t>
-<t tx="ekr.20040709081208"># New in 4.3: replaced global way with scrollWay ivar.
-ev = threading.Event()
-
-def run(self=self,canvas=canvas,ev=ev):
-
-    while 1:
-        ev.wait()
-        if self.scrollWay =='Down': canvas.yview("scroll", 1,"units")
-        else:                       canvas.yview("scroll",-1,"units")
-        time.sleep(.1)
-
-t = threading.Thread(target = run)
-t.setDaemon(True)
-t.start()
-
-def scrollUp(event): scrollUpOrDown(event,'Down')
-def scrollDn(event): scrollUpOrDown(event,'Up')
-    
-def scrollUpOrDown(event,theWay):
-    if event.widget!=canvas: return
-    if 0: # This seems to interfere with scrolling.
-        if canvas.find_overlapping(event.x,event.y,event.x,event.y): return
-    ev.set()
-    self.scrollWay = theWay
-        
-def off(event,ev=ev,canvas=canvas):
-    if event.widget!=canvas: return
-    ev.clear()
-
-if 1: # Use shift-click
-    # Shift-button-1 scrolls up, Shift-button-2 scrolls down
-    canvas.bind_all('&lt;Shift Button-3&gt;',scrollDn)
-    canvas.bind_all('&lt;Shift Button-1&gt;',scrollUp)
-    canvas.bind_all('&lt;Shift ButtonRelease-1&gt;',off)
-    canvas.bind_all('&lt;Shift ButtonRelease-3&gt;',off)
-else: # Use plain click.
-    canvas.bind_all( '&lt;Button-3&gt;',scrollDn)
-    canvas.bind_all( '&lt;Button-1&gt;',scrollUp)
-    canvas.bind_all( '&lt;ButtonRelease-1&gt;',off)
-    canvas.bind_all( '&lt;ButtonRelease-3&gt;',off)</t>
-<t tx="ekr.20040731071037">def initIvars(self):
-
-    c = self
-    &lt;&lt; initialize ivars &gt;&gt;
-    self.config = configSettings(c)
-    g.app.config.setIvarsFromSettings(c)</t>
 <t tx="ekr.20040803072955.58"># Redraws immediately: used by Find so a redraw doesn't mess up selections in headlines.
 
 # New in 4.4b2: suppress scrolling by default.
@@ -1034,6 +869,88 @@ if self.stayInTree:
     c.treeWantsFocus()
 else:
     c.bodyWantsFocus()</t>
+<t tx="ekr.20041005105605.15">def initWriteIvars(self,root,targetFileName,
+    nosentinels=False,
+    thinFile=False,
+    scriptWrite=False,
+    toString=False,
+    forcePythonSentinels=None):
+
+    self.initCommonIvars()
+    &lt;&lt; init ivars for writing &gt;&gt;
+    
+    if forcePythonSentinels is None:
+        forcePythonSentinels = scriptWrite
+
+    if root:
+        self.scanAllDirectives(root,
+            scripting=scriptWrite,
+            forcePythonSentinels=forcePythonSentinels)
+    
+    # g.trace(forcePythonSentinels,self.startSentinelComment,self.endSentinelComment)
+    
+    if forcePythonSentinels:
+        # Force Python comment delims for g.getScript.
+        self.startSentinelComment = "#"
+        self.endSentinelComment = None
+
+    # Init state from arguments.
+    self.targetFileName = targetFileName
+    self.sentinels = not nosentinels
+    self.thinFile = thinFile
+    self.toString = toString
+    self.root = root
+    
+    # Ignore config settings for unit testing.
+    if toString and g.app.unitTesting: self.output_newline = '\n'
+    
+    # Init all other ivars even if there is an error.
+    if not self.errors and self.root:
+        self.root.v.t.tnodeList = []</t>
+<t tx="ekr.20041005105605.16">@
+When tangling, we first write to a temporary output file. After tangling is
+temporary file. Otherwise we delete the old target file and rename the temporary
+file to be the target file.
+@c
+
+self.docKind = None
+self.explicitLineEnding = False # True: an @lineending directive specifies the ending.
+self.fileChangedFlag = False # True: the file has actually been updated.
+self.shortFileName = "" # short version of file name used for messages.
+self.thinFile = False
+
+if toString:
+    self.outputFile = g.fileLikeObject()
+    self.stringOutput = ""
+    self.targetFileName = self.outputFileName = "&lt;string-file&gt;"
+else:
+    self.outputFile = None # The temporary output file.
+    self.stringOutput = None
+    self.targetFileName = self.outputFileName = u""</t>
+<t tx="ekr.20041005105605.157"># New in 4.3: must be inited before calling this method.
+# New in 4.3 b2: support for writing from a string.
+
+def writeOpenFile(self,root,nosentinels=False,toString=False,fromString=''):
+
+    """Do all writes except asis writes."""
+    
+    at = self ; s = g.choose(fromString,fromString,root.v.t.bodyString)
+
+    root.clearAllVisitedInTree() # Clear both vnode and tnode bits.
+    root.clearVisitedInTree()
+
+    at.putAtFirstLines(s)
+    at.putOpenLeoSentinel("@+leo-ver=4")
+    at.putInitialComment()
+    at.putOpenNodeSentinel(root)
+    at.putBody(root,fromString=fromString)
+    at.putCloseNodeSentinel(root)
+    at.putSentinel("@-leo")
+    root.setVisited()
+    at.putAtLastLines(s)
+
+    if not toString and not nosentinels:
+        at.warnAboutOrphandAndIgnoredNodes()</t>
 <t tx="ekr.20041119040438">@nocolor
 
 This tree contains settings unique to this outline.</t>
@@ -1041,231 +958,126 @@ This tree contains settings unique to this outline.</t>
 
 Warning: Naive or hostile hooks may execute HOSTILE CODE contained in .leo files. See further warnings in LeoDocs.leo.
 </t>
-<t tx="ekr.20041130173135">def hash (self):
-
-    c = self
-    if c.mFileName:
-        return g.os_path_abspath(c.mFileName).lower()
-    else:
-        return 0</t>
 <t tx="ekr.20041211042119"></t>
-<t tx="ekr.20041221071131">def createPmwTreeCanvas (self,parentFrame,hScrollMode,pack):
- 
-    hscrollmode = g.choose(hScrollMode,'dynamic','none')
-    
-    self.scrolledCanvas = scrolledCanvas = Pmw.ScrolledCanvas(
-        parentFrame,
-        hscrollmode=hscrollmode,
-        vscrollmode='dynamic')
+<t tx="ekr.20050211100535">def test_g_getScript_strips_crlf():
 
-    if pack:
-        scrolledCanvas.pack(side='top',expand=1,fill="both")
-
-    self.treeBar = scrolledCanvas.component('vertscrollbar')
+    script = g.getScript(c,p) # This will get the text of this node.
+    assert script.find('\r\n') == -1, repr(script)</t>
+<t tx="ekr.20050314140957">def convertPythonIndexToRowCol (s,i):
     
-    canvas = scrolledCanvas.component('canvas')
-    canvas.configure(background='white')
+    '''Convert index i into string s into zero-based row/col indices.'''
     
-    return canvas</t>
-<t tx="ekr.20041221071131.1">def createTkTreeCanvas (self,parentFrame,scrolls,pack):
-    
-    frame = self
-    
-    canvas = Tk.Canvas(parentFrame,name="canvas",
-        bd=0,bg="white",relief="flat")
-        
-    trace = self.c.config.getBool('trace_chapters') and not g.app.unitTesting
-    if trace: g.trace(canvas)
-        
-    # g.trace('canvas',repr(canvas),'name',frame.c.widget_name(canvas))
-
-    frame.treeBar = treeBar = Tk.Scrollbar(parentFrame,name="treeBar")
-    
-    # Bind mouse wheel event to canvas
-    if sys.platform != "win32": # Works on 98, crashes on XP.
-        canvas.bind("&lt;MouseWheel&gt;", frame.OnMouseWheel)
-        if 1: # New in 4.3.
-            &lt;&lt; workaround for mouse-wheel problems &gt;&gt;
-        
-    canvas['yscrollcommand'] = self.setCallback
-    treeBar['command']     = self.yviewCallback
-    treeBar.pack(side="right", fill="y")
-    if scrolls: 
-        treeXBar = Tk.Scrollbar( 
-            parentFrame,name='treeXBar',orient="horizontal") 
-        canvas['xscrollcommand'] = treeXBar.set 
-        treeXBar['command'] = canvas.xview 
-        treeXBar.pack(side="bottom", fill="x")
-    
-    if pack:
-        canvas.pack(expand=1,fill="both")
-
-    canvas.bind("&lt;Button-1&gt;", frame.OnActivateTree)
-
-    # Handle mouse wheel in the outline pane.
-    if sys.platform == "linux2": # This crashes tcl83.dll
-        canvas.bind("&lt;MouseWheel&gt;", frame.OnMouseWheel)
-    if 0:
-        &lt;&lt; do scrolling by hand in a separate thread &gt;&gt;
-    
-    # g.print_bindings("canvas",canvas)
-    return canvas</t>
-<t tx="ekr.20041221073427">def createLeoPmwSplitter (self,parent,verticalFlag,name):
-    
-    c = self.c
-    
-    orient = g.choose(verticalFlag,'vertical','horizontal')
-    command = g.choose(name=='splitter1',
-        self.onPmwResizeSplitter1,self.onPmwResizeSplitter2)
-
-    panedFrame = Pmw.PanedWidget(parent,
-        orient=orient,
-        separatorthickness = 6, # default is 2
-        handlesize = 8,         # default is 8
-        command = command)
-
-    panedFrame.pack(expand=1,fill='both')
-    
-    self.componentClass(c,name,panedFrame,panedFrame)
-
-    return panedFrame</t>
-<t tx="ekr.20041221073427.1">def createLeoTkSplitter (self,parent,verticalFlag,componentName):
-    
-    c = self.c
-
-    # Create the frames.
-    f = Tk.Frame(parent,bd=0,relief="flat")
-    f.pack(expand=1,fill="both",pady=1)
-    
-    f1 = Tk.Frame(f)
-    f2 = Tk.Frame(f)
-    bar = Tk.Frame(f,bd=2,relief="raised",bg="LightSteelBlue2")
-
-    # Configure and place the frames.
-    self.configureBar(bar,verticalFlag)
-    self.bindBar(bar,verticalFlag)
-    self.placeSplitter(bar,f1,f2,verticalFlag)
-    
-    # Define the splitter, bar and outer frame components.
-    # It would be useless to define placed components here.
-    # N.B. All frames managed by the placer must descend from splitterFrame1 or splitterFrame2
-    self.componentClass(self.c,componentName,f)
-    if componentName == 'splitter1':
-        self.componentClass(c,'splitter1Frame',f)
-        self.componentClass(c,'splitBar1',bar)
+    if not s or i == 0:
+        return 0,0
     else:
-        self.componentClass(c,'splitter2Frame',f)
-        self.componentClass(c,'splitBar2',bar)
-
-    return f, bar, f1, f2</t>
-<t tx="ekr.20041221075743">@ These methods cause problems because Pmw.PanedWidget's calls these methods way too often.
-
-We don't need to remember changes to pane sizes, for several reasons:
-1. The initial secondary ratio is always set by leoFrame.initialRatios().
-    - Remembering this ratio implies a change to the file format and is not worth the cost.
-    - The user can set these initial ratios with user options.
-2. The only benefit of remembering the secondary ratio is when using the Equal Sized Panes command.
-    - But resetting the secondary ratio to the default secondary ratio is good enough.
-3. Not remembering these ratios simplifies the code enough to be worth doing.
-@c
-
-def onPmwResizeSplitter1 (self,sizes):
-    if 0: # Don't try to remember size changes.
-        if not self.initing:
-            n1,n2 = sizes
-            n1,n2 = float(n1),float(n2)
-            self.ratio = n1/(n1+n2)
-            # g.trace(self.ratio)
+        i = min(i,len(s)-1)
+        # works regardless of what s[i] is
+        row = s.count('\n',0,i) # Don't include i
+        if row == 0:
+            return row,i
+        else:
+            prevNl = s.rfind('\n',0,i) # Don't include i
+            # assert prevNl &gt; -1
+            return row,i-prevNl-1</t>
+<t tx="ekr.20050314140957.1">def bruteForceConvertPythonIndexToRowCol (s,i):
+        
+    lines = g.splitLines(s)
+    row,total = 0,0
+    for line in lines:
+        n = len(line)
+        if i &lt; total + n:
+            break
+        else:
+            total += n
+            row += 1
+    return row, i-total</t>
+<t tx="ekr.20050314140957.2">def test_g_convertPythonIndexToRowCol ():
     
-def onPmwResizeSplitter2 (self,sizes):
-    if 0: # Don't try to remember size changes.
-        if not self.initing:
-            n1,n2 = sizes
-            n1,n2 = float(n1),float(n2)
-            self.secondary_ratio = n1/(n1+n2)
-            # g.trace(self.secondary_ratio)</t>
-<t tx="ekr.20041221122440">def component (self,name):
+    s = '\nabc\n\npdq\nxy'
+
+    for i in xrange(len(s)+1): # Test one-too-large case.
+        try: ch = s[i]
+        except IndexError: ch = '**'
+        rowCol_1 = g.convertPythonIndexToRowCol(s,i)
+        rowCol_2 = g.bruteForceConvertPythonIndexToRowCol(s,i)
+        if g.app.unitTesting:
+            assert i == len(s) or rowCol_1 == rowCol_2
+        else:
+            print '%2d %4s %5s' % (i,repr(ch),rowCol_1==rowCol_2),
+            print rowCol_1,rowCol_2</t>
+<t tx="ekr.20050315071727">def convertRowColToPythonIndex (s,row,col):
     
-    return self.componentsDict.get(name)
-    
-def components (self):
+    lines = g.splitLines(s)
 
-    return self.componentsDict.keys()</t>
-<t tx="ekr.20041221123325">def createLeoSplitters (self,parentFrame):
-    
-    if use_Pmw and Pmw:
-        &lt;&lt; create Pmw splitters and their components &gt;&gt;
-    else:
-        # Splitter 1 is the main splitter containing splitter2 and the body pane.
-        f1,bar1,split1Pane1,split1Pane2 = self.createLeoTkSplitter(
-            parentFrame,self.splitVerticalFlag,'splitter1')
+    if row &gt;= len(lines):
+        return len(s)
+        
+    col = min(col, len(lines[row]))
 
-        self.f1,self.bar1 = f1,bar1
-        self.split1Pane1,self.split1Pane2 = split1Pane1,split1Pane2
+    prev = 0
+    for line in lines[:row]:
+        prev += len(line)
+        
+    return prev + col</t>
+<t tx="ekr.20050315072239">def test_g_convertRowColToPythonIndex ():
 
-        # Splitter 2 is the secondary splitter containing the tree and log panes.
-        f2,bar2,split2Pane1,split2Pane2 = self.createLeoTkSplitter(
-            split1Pane1,not self.splitVerticalFlag,'splitter2')
-
-        self.f2,self.bar2 = f2,bar2
-        self.split2Pane1,self.split2Pane2 = split2Pane1,split2Pane2</t>
-<t tx="ekr.20041221185246">@ The key invariants used throughout this code:
-
-1. self.splitVerticalFlag tells the alignment of the main splitter and
-2. not self.splitVerticalFlag tells the alignment of the secondary splitter.
-
-Only the general-purpose divideAnySplitter routine doesn't know about these invariants.  So most of this code is specialized for Leo's window.  OTOH, creating a single splitter window would be much easier than this code.</t>
-<t tx="ekr.20041221195402"></t>
-<t tx="ekr.20041223130032"># Create splitter1 and its components.
-splitter1 = self.createLeoPmwSplitter(parentFrame,self.splitVerticalFlag,'splitter1')
-self.split1Pane1 = splitter2Frame = splitter1.add('splitter2Frame',min=50,size=300)
-self.split1Pane2 = splitter1.add('body',min=50,size=300)
-
-# Create splitter2 and its components.
-splitter2 = self.createLeoPmwSplitter(splitter2Frame,not self.splitVerticalFlag,'splitter2')
-self.split2Pane1 = splitter2.add('outline',min=50,size=300)
-self.split2Pane2 = splitter2.add('log',min=50,size=50)
-
-# Set the colors of the separator and handle after adding the dynamic frames.
-for splitter in (splitter1,splitter2):
-    bar = splitter.component('separator-1')
-    bar.configure(background='LightSteelBlue2')
-    handle = splitter.component('handle-1')
-    handle.configure(background='SteelBlue2')</t>
-<t tx="ekr.20050104084531">self.ratio = ratio
-self.secondary_ratio = ratio2
-splitter1 = self.component('splitter1').getObject()
-splitter2 = self.component('splitter2').getObject()
-
-if self.splitVerticalFlag:
-    # Use ratio to set splitter2 height.
-    size = ratio * float(splitter1.winfo_height())
-    splitter1.configurepane('splitter2Frame',size=int(size))
-    # Use ratio2 to set outline width.
-    size = ratio2 * float(splitter2.winfo_width())
-    splitter2.configurepane('outline',size=int(size))
-else:
-    # Use ratio to set splitter2 width.
-    size = ratio * float(splitter1.winfo_width())
-    splitter1.configurepane('splitter2Frame',size=int(size))
-    # Use ratio2 to set outline height.
-    size = ratio2 * float(splitter2.winfo_height())
-    splitter2.configurepane('outline',size=int(size))</t>
-<t tx="ekr.20050119210541"># Handle mapping of mouse-wheel to buttons 4 and 5.
-
-def mapWheel(e):
-    if e.num == 4: # Button 4
-        e.delta = 120
-        return frame.OnMouseWheel(e)
-    elif e.num == 5: # Button 5
-        e.delta = -120
-        return frame.OnMouseWheel(e)
-
-canvas.bind("&lt;ButtonPress&gt;",mapWheel,add=1)</t>
+    s = '\nabc\n\npdq\nxy'
+    lines = g.splitLines(s)
+    row = 0 ; prev = -1
+    for line in lines:
+        col = 0
+        for ch in line:
+            i = g.convertRowColToPythonIndex(s,row,col)
+            assert i == prev + 1,'i %d prev %d' % (i,prev)
+            if not g.app.unitTesting:
+                print '%4s %2d %2d %2d' % (repr(ch),row,col,i)
+            prev = i
+            col += 1
+        row += 1</t>
+<t tx="ekr.20050315073003"></t>
 <t tx="ekr.20050420073615">c:\prog\leoCVS\leo\doc\LeoDocs.leo
 LeoPy.leo
 C:\Documents and Settings\Ed\My Documents\ekr.leo
 c:\prog\leoCVS\leo\config\leoSettings.leo</t>
+<t tx="ekr.20050505104140">g.es("exception executing script",color='blue')
+
+if 0:
+    print 'script...'
+    for line in g.splitLines(script):
+        print repr(line)
+
+fileName,n = g.es_exception(full=True,c=c)
+if p and not script1 and fileName == "&lt;string&gt;":
+    c.goToScriptLineNumber(p,script,n)
+
+&lt;&lt; dump the lines near the error &gt;&gt;</t>
+<t tx="ekr.20050506084734"># This is at.write specialized for scripting.
+
+def writeFromString(self,root,s,forcePythonSentinels=True,useSentinels=True):
+    
+    """Write a 4.x derived file from a string.
+    
+    This is used by the scripting logic."""
+    
+    at = self ; c = at.c
+    c.endEditing() # Capture the current headline, but don't change the focus!
+
+    at.initWriteIvars(root,"&lt;string-file&gt;",
+        nosentinels=not useSentinels,thinFile=False,scriptWrite=True,toString=True,
+        forcePythonSentinels=forcePythonSentinels)
+
+    try:
+        at.openFileForWriting(root,at.targetFileName,toString=True)
+        # Simulate writing the entire file so error recovery works.
+        at.writeOpenFile(root,nosentinels=not useSentinels,toString=True,fromString=s)
+        at.closeWriteFile()
+        # Major bug: failure to clear this wipes out headlines!
+        # Minor bug: sometimes this causes slight problems...
+        if root: root.v.t.tnodeList = [] 
+    except:
+        at.exception("exception preprocessing script")
+
+    return at.stringOutput</t>
 <t tx="ekr.20050721093241">@nocolor
 
 The following are notes for anyone who is interested in writing alternate gui's for Leo.
@@ -1529,302 +1341,65 @@ def iSearchStateHandler (self,event):
 
     w.tag_config('color',foreground='red')
     w.tag_config('color1',background='lightblue')</t>
-<t tx="ekr.20050920085536.1"></t>
-<t tx="ekr.20050920085536.2">def __init__ (self,c,useGlobalKillbuffer=False,useGlobalRegisters=False):
+<t tx="ekr.20050920085536.62">def getArg (self,event,
+    returnKind=None,returnState=None,handler=None,
+    prefix=None,tabList=[],completion=True,oneCharacter=False,
+    stroke=None, # New in 4.4.1.
+):
     
-    '''Create a key handler for c.
-    c.frame.miniBufferWidget is a Tk.Label.
-    
-    useGlobalRegisters and useGlobalKillbuffer indicate whether to use
-    global (class vars) or per-instance (ivars) for kill buffers and registers.'''
-    
-    self.c = c
-    self.widget = c.frame.miniBufferWidget
-    self.useTextWidget = c.useTextMinibuffer
-        # A Tk Label or Text widget.
-        # Exists even if c.showMinibuffer is False.
-    self.useGlobalKillbuffer = useGlobalKillbuffer
-    self.useGlobalRegisters = useGlobalRegisters
-
-    # Generalize...
-    self.x_hasNumeric = ['sort-lines','sort-fields']
-
-    self.altX_prompt = 'full-command: '
-    
-    self.enable_autocompleter           = c.config.getBool('enable_autocompleter')
-    self.enable_calltips                = c.config.getBool('enable_calltips')
-    self.ignore_caps_lock               = c.config.getBool('ignore_caps_lock')
-    self.ignore_unbound_non_ascii_keys  = c.config.getBool('ignore_unbound_non_ascii_keys')
-    self.swap_mac_keys                  = c.config.getBool('swap_mac_keys')
-    self.trace_key_event                = c.config.getBool('trace_key_event')
-    self.trace_minibuffer               = c.config.getBool('trace_minibuffer')
-    &lt;&lt; define Tk ivars &gt;&gt;
-    &lt;&lt; define externally visible ivars &gt;&gt;
-    &lt;&lt; define internal ivars &gt;&gt;
-    
-    self.autoCompleter = autoCompleterClass(self)</t>
-<t tx="ekr.20050920085536.38">def updateLabel (self,event):
-
-    '''Mimic what would happen with the keyboard and a Text editor
-    instead of plain accumalation.'''
-    
-    k = self ; c = k.c ; w = self.widget
-    ch = (event and event.char) or ''
-    keysym = (event and event.keysym) or ''
-    trace = self.trace_minibuffer and not g.app.unitTesting
-
-    trace and g.trace('ch',ch,'keysym',keysym,'k.stroke',k.stroke)
-    
-    if ch and ch not in ('\n','\r'):
-        if self.useTextWidget:
-            c.widgetWantsFocusNow(w)
-            i,j = g.app.gui.getTextSelection(w)
-            if i != j:
-                w.delete(i,j)
-            if ch == '\b':
-                s = w.get('1.0','end-1c')
-                if len(s) &gt; len(k.mb_prefix):
-                    w.delete(i+'-1c')
-            else:
-                w.insert('insert',ch)
-            # g.trace(k.mb_prefix)       
-        else:
-            # Just add the character.
-            k.setLabel(k.getLabel() + ch)</t>
-<t tx="ekr.20050920093543">def finishCreate (self):  # New in 4.4.
-    
-    '''Finish creating the commander after frame.finishCreate.
-    
-    Important: this is the last step in the startup process.'''
-    
-    c = self ; p = c.currentPosition()
-    c.miniBufferWidget = c.frame.miniBufferWidget
-    # g.trace('Commands',c.fileName()) # g.callers())
-    
-    # Create a keyHandler even if there is no miniBuffer.
-    c.keyHandler = c.k = k = leoKeys.keyHandlerClass(c,
-        useGlobalKillbuffer=True,
-        useGlobalRegisters=True)
-
-    if g.app.config and g.app.config.inited:
-        # A 'real' .leo file.
-        c.commandsDict = leoEditCommands.finishCreateEditCommanders(c)
-        k.finishCreate()
-    else:
-        # A leoSettings.leo file.
-        c.commandsDict = {}
-
-    # Create the menu last so that we can use the key handler for shortcuts.
-    if not g.doHook("menu1",c=c,p=p,v=p):
-        c.frame.menu.createMenuBar(c.frame)
-        
-    c.bodyWantsFocusNow()</t>
-<t tx="ekr.20050920094633">def finishCreate (self):
-    
-    '''Complete the construction of the keyHandler class.
-    c.commandsDict has been created when this is called.'''
-    
-    k = self ; c = k.c
-    
-    # g.trace('keyHandler')
-   
-    k.createInverseCommandsDict()
-    
-    if not c.miniBufferWidget:
-        # Does not exist for leoSettings.leo files.
-        return
-
-    # Important: bindings exist even if c.showMiniBuffer is False.
-    k.makeAllBindings()
-
-    k.setInputState(self.unboundKeyAction)</t>
-<t tx="ekr.20050923213858">self.abbreviationsDict = {} # Abbreviations created by @alias nodes.
-
-# Previously defined bindings.
-self.bindingsDict = {}
-    # Keys are Tk key names, values are lists of g.bunch(pane,func,commandName)
-# Previously defined binding tags.
-self.bindtagsDict = {}
-    # Keys are strings (the tag), values are 'True'
-    
-self.masterBindingsDict = {}
-    # keys are scope names: 'all','text',etc. or mode names.
-    # Values are dicts: keys are strokes, values are g.bunch(commandName,func,pane,stroke)
-
-# Special bindings for k.fullCommand.
-self.mb_copyKey = None
-self.mb_pasteKey = None
-self.mb_cutKey = None
-self.mb_help = False
-
-self.abortAllModesKey = None
-self.fullCommandKey = None
-self.universalArgKey = None
-
-# Keepting track of the characters in the mini-buffer.
-self.arg_completion = True
-self.mb_event = None
-self.mb_history = []
-self.mb_prefix = ''
-self.mb_tabListPrefix = ''
-self.mb_tabList = []
-self.mb_tabListIndex = -1
-self.mb_prompt = ''
-
-self.func = None
-self.keysymHistory = []
-self.previous = []
-self.stroke = None
-
-# For onIdleTime
-self.idleCount = 0
-
-# For modes
-self.afterGetArgState = None
-self.argTabList = []
-self.modeBindingsDict = {}</t>
-<t tx="ekr.20050924073836"></t>
-<t tx="ekr.20051006092617">if self.useTextWidget:
-    self.svar = None
-else:
-    if self.widget:
-        self.svar = Tk.StringVar()
-        self.widget.configure(textvariable=self.svar)
-        
-    else:
-        self.svar = None</t>
-<t tx="ekr.20051006092617.1">self.abbrevOn = False # True: abbreviations are on.
-self.arg = '' # The value returned by k.getArg.
-self.commandName = None # The name of the command being executed.
-self.funcReturn = None # For k.simulateCommand
-self.inputModeBindings = {}
-self.inputModeName = '' # The name of the input mode, or None.
-self.inverseCommandsDict = {}
-    # Completed in k.finishCreate, but leoCommands.getPublicCommands adds entries first.
-self.negativeArg = False
-self.regx = g.bunch(iter=None,key=None)
-self.repeatCount = None
-self.state = g.bunch(kind=None,n=None,handler=None)
-self.setDefaultUnboundKeyAction()</t>
-<t tx="ekr.20051007143620">def printCommandsDict (self):
-    
-    c = self
-    
-    print 'Commands...'
-    keys = c.commandsDict.keys()
-    keys.sort()
-    for key in keys:
-        command = c.commandsDict.get(key)
-        print '%30s = %s' % (key,g.choose(command,command.__name__,'&lt;None&gt;'))
-    print</t>
-<t tx="ekr.20051008082929">def createInverseCommandsDict (self):
-    
-    '''Add entries to k.inverseCommandsDict using c.commandDict.
-    
-    c.commandsDict:        keys are command names, values are funcions f.
-    k.inverseCommandsDict: keys are f.__name__, values are minibuffer command names.
+    '''Accumulate an argument until the user hits return (or control-g).
+    Enter the given return state when done.
+    The prefix is does not form the arg.  The prefix defaults to the k.getLabel().
     '''
 
-    k = self ; c = k.c
+    k = self ; c = k.c ; state = k.getState('getArg')
+    keysym = (event and event.keysym) or ''
+    trace = 0 or c.config.getBool('trace_modes') and not g.app.unitTesting
+    if trace: g.trace(
+        'state',state,'keysym',keysym,'stroke',stroke,'escapes',k.getArgEscapes,
+        'completion', state==0 and completion or state!=0 and k.arg_completion)
+    if state == 0:
+        k.arg = ''
+        &lt;&lt; init altX vars &gt;&gt;
+        # Set the states.
+        bodyCtrl = c.frame.body.bodyCtrl
+        c.widgetWantsFocus(bodyCtrl)
+        k.afterGetArgState=returnKind,returnState,handler
+        k.setState('getArg',1,k.getArg)
+        k.afterArgWidget = event and event.widget or c.frame.body.bodyCtrl
+        if k.useTextWidget: c.minibufferWantsFocus()
+    elif keysym == 'Return' or k.oneCharacterArg or stroke in k.getArgEscapes:
+        if stroke in k.getArgEscapes: k.getArgEscape = stroke
+        if k.oneCharacterArg:
+            k.arg = event.char
+        else:
+            k.arg = k.getLabel(ignorePrompt=True)
+        kind,n,handler = k.afterGetArgState
+        if kind: k.setState(kind,n,handler)
+        c.frame.log.deleteTab('Completion')
+        trace and g.trace('kind',kind,'n',n,'handler',handler and handler.__name__)
+        if handler: handler(event)
+    elif keysym == 'Tab':
+        k.doTabCompletion(k.argTabList,k.arg_completion)
+    elif keysym == 'BackSpace':
+        k.doBackSpace(k.argTabList,k.arg_completion)
+        c.minibufferWantsFocus()
+    else:
+        # Clear the list, any other character besides tab indicates that a new prefix is in effect.
+        k.mb_tabList = []
+        k.updateLabel(event)
+        k.mb_tabListPrefix = k.getLabel()
+    return 'break'</t>
+<t tx="ekr.20050928092516">k.argTabList = tabList and tabList[:] or []
+k.arg_completion = completion
 
-    for name in c.commandsDict.keys():
-        f = c.commandsDict.get(name)
-        try:
-            k.inverseCommandsDict [f.__name__] = name
-            # g.trace('%24s = %s' % (f.__name__,name))
-                
-        except Exception:
-            g.es_exception()
-            g.trace(repr(name),repr(f),g.callers())</t>
-<t tx="ekr.20051009044751">def createOuterFrames (self):
+k.mb_prefix = prefix or k.getLabel()
+k.mb_prompt = prefix or ''
+k.mb_tabList = []
 
-    f = self ; c = f.c
-    f.top = top = Tk.Toplevel()
-    g.app.gui.attachLeoIcon(top)
-    top.title(f.title)
-    top.minsize(30,10) # In grid units.
-    
-    if g.os_path_exists(g.app.user_xresources_path):
-        f.top.option_readfile(g.app.user_xresources_path)
-    
-    f.top.protocol("WM_DELETE_WINDOW", f.OnCloseLeoEvent)
-    f.top.bind("&lt;Button-1&gt;", f.OnActivateLeoEvent)
-    
-    # These don't work on Windows. Because of bugs in window managers,
-    # there is NO WAY to know which window is on top!
-    if 0:
-        f.top.bind("&lt;Activate&gt;",f.OnActivateLeoEvent)
-        f.top.bind("&lt;Deactivate&gt;",f.OnDeactivateLeoEvent)
-        f.top.bind("&lt;Control-KeyPress&gt;",f.OnControlKeyDown)
-        f.top.bind("&lt;Control-KeyRelease&gt;",f.OnControlKeyUp)
-    
-    # Create the outer frame, the 'hull' component.
-    f.outerFrame = Tk.Frame(top)
-    f.outerFrame.pack(expand=1,fill="both")
-    f.componentClass(c,'hull',f.outerFrame)</t>
-<t tx="ekr.20051009044920"># Warning: there is also a method called createIconBar.
-
-def createIconBarComponents (self):
-
-    f = self ; c = f.c
-
-    iconBar = f.iconBarClass(c,f.outerFrame)
-    f.iconFrame = iconBar.iconFrame
-    f.iconBar = f.componentClass(c,
-        f.iconBarComponentName,iconBar.iconFrame,
-        iconBar,iconBar.pack,iconBar.unpack)
-    f.iconBar.show()</t>
-<t tx="ekr.20051009045208">def createSplitterComponents (self):
-
-    f = self ; c = f.c
-
-    f.createLeoSplitters(f.outerFrame)
-    
-    # Create the canvas, tree, log and body.
-    f.canvas = f.createCanvas(f.split2Pane1)
-    f.tree   = leoTkinterTree.leoTkinterTree(c,f,f.canvas)
-    f.log    = leoTkinterLog(f,f.split2Pane2)
-    f.body   = leoTkinterBody(f,f.split1Pane2)
-    
-    f.componentClass(c,'tree',f.split2Pane1, f.tree, f.packTree, f.unpackTree)
-    f.componentClass(c,'log', f.split2Pane2, f.log,  f.packLog,  f.unpackLog)
-    f.componentClass(c,'body',f.split1Pane2, f.body, f.packBody, f.unpackBody)
-    
-    # Yes, this an "official" ivar: this is a kludge.
-    f.bodyCtrl = f.body.bodyCtrl
-    
-    # Configure.
-    f.setTabWidth(c.tab_width)
-    f.tree.setColorFromConfig()
-    f.reconfigurePanes()
-    f.body.setFontFromConfig()
-    f.body.setColorFromConfig()</t>
-<t tx="ekr.20051009045300"># Warning: there is also a method called createStatusLine.
-
-def createStatusLineComponents (self):
-    
-    f = self ; c = f.c
-    statusLine = f.statusLineClass(c,f.outerFrame)
-    
-    # Create offical ivars in the frame class.
-    f.statusFrame = statusLine.statusFrame
-    f.statusLabel = statusLine.labelWidget
-    f.statusText  = statusLine.textWidget
-    
-    f.statusLine = f.componentClass(c,
-        f.statusLineComponentName,
-        statusLine.statusFrame,statusLine,statusLine.pack,statusLine.unpack)
-    f.statusLine.show() # Show status line by default.</t>
-<t tx="ekr.20051009045404">def createFirstTreeNode (self):
-    
-    f = self ; c = f.c
-
-    t = leoNodes.tnode()
-    v = leoNodes.vnode(c,t)
-    p = leoNodes.position(c,v,[])
-    v.initHeadString("NewHeadline")
-    p.moveToRoot()
-    c.editPosition(p)</t>
+# Clear the list: any non-tab indicates that a new prefix is in effect.
+k.mb_tabListPrefix = k.getLabel()
+k.oneCharacterArg = oneCharacter</t>
 <t tx="ekr.20051020120306">def openFindTab (self,event=None,show=True):
 
     c = self.c ; log = c.frame.log ; tabName = 'Find'
@@ -2297,21 +1872,6 @@ def hideFindTab (self,event=None):
     if self.findTabHandler:
         self.c.frame.log.selectTab('Log')</t>
 <t tx="ekr.20051023094009"></t>
-<t tx="ekr.20051023132350">def getLabel (self,ignorePrompt=False):
-    
-    k = self ; w = self.widget
-    if not w: return ''
-    
-    if self.useTextWidget:
-        w.update_idletasks()
-        s = w.get('1.0','end-1c')
-    else:
-        s = k.svar and k.svar.get()
-
-    if ignorePrompt:
-        return s[len(k.mb_prefix):]
-    else:
-        return s or ''</t>
 <t tx="ekr.20051023181449">def createBindings (self):
     
     c = self.c ; k = c.k
@@ -2370,118 +1930,7 @@ def changeThenFindCommand(self,event=None):
     
     self.setup_command()
     self.changeThenFind()</t>
-<t tx="ekr.20051029070945"># None of the following are correct.
-
-leoGlobals.py:1417: Setting aList to itself has no effect
-leoGlobals.py:1433: Setting aList to itself has no effect
-
-leoKeys.py:803:  Redefining attribute (keyCallback) original line (792)
-leoKeys.py:1315: No module attribute (initAllEditCommanders) found
-
-C:\prog\leoCVS\leo\src\leoImport.py:158: No class attribute (_forcedGnxPositionList) found</t>
 <t tx="ekr.20051031040240"></t>
-<t tx="ekr.20051121092320">def enableTclTraces (self):
-    
-    c = self.c
-
-    def tracewidget(event):
-        g.trace('enabling widget trace')
-        Pmw.tracetk(event.widget, 1)
-    
-    def untracewidget(event):
-        g.trace('disabling widget trace')
-        Pmw.tracetk(event.widget,0)
-        
-    def focusIn (event):
-        print("Focus in  %s (%s)" % (
-            event.widget,event.widget.winfo_class()))
-        
-    def focusOut (event):
-        print("Focus out %s (%s)" % (
-            event.widget,event.widget.winfo_class()))
-
-    # Put this in unit tests before the assert:
-    # c.frame.bar1.unbind_all("&lt;FocusIn&gt;")
-    # c.frame.bar1.unbind_all("&lt;FocusOut&gt;")
-
-    # Any widget would do:
-    w = c.frame.bar1
-    if 1:
-        w.bind_all("&lt;FocusIn&gt;", focusIn)
-        w.bind_all("&lt;FocusOut&gt;", focusOut)
-    else:
-        w.bind_all("&lt;Control-1&gt;", tracewidget)
-        w.bind_all("&lt;Control-Shift-1&gt;", untracewidget)</t>
-<t tx="ekr.20060104110233">def generalModeHandler (self,event,
-    commandName=None,func=None,modeName=None,nextMode=None):
-    
-    '''Handle a mode defined by an @mode node in leoSettings.leo.'''
-
-    k = self ; c = k.c
-    state = k.getState(modeName)
-    trace = c.config.getBool('trace_modes')
-    
-    if trace: g.trace(modeName,state)
-   
-    if state == 0:
-        self.initMode(event,modeName)
-        k.inputModeName = modeName
-        k.setState(modeName,1,handler=k.generalModeHandler)
-        if c.config.getBool('showHelpWhenEnteringModes'):
-            k.modeHelp(event)
-        else:
-            c.frame.log.hideTab('Mode')
-        if k.useTextWidget:
-            c.minibufferWantsFocus()
-        else:
-            c.restoreRequestedFocus()
-    elif not func:
-        g.trace('No func: improper key binding')
-        return 'break'
-    else:
-        if trace: g.trace(modeName,state,commandName)
-        if commandName == 'mode-help':
-            func(event)
-        else:
-            savedModeName = k.inputModeName # Remember this: it may be cleared.
-            # nextMode = bunch.nextMode
-            self.endMode(event)
-            if c.config.getBool('trace_doCommand'):
-                g.trace(func.__name__)
-            func(event)
-            if nextMode in (None,'none'):
-                # Do *not* clear k.inputModeName or the focus here.
-                # func may have put us in *another* mode.
-                pass
-            elif nextMode == 'same':
-                self.reinitMode(modeName) # Re-enter this mode.
-                k.setState(modeName,1,handler=k.generalModeHandler)
-            else:
-                self.initMode(event,nextMode) # Enter another mode.
-
-    return 'break'</t>
-<t tx="ekr.20060115195302">def setDefaultUnboundKeyAction (self):
-    
-    k = self ; c = k.c
-
-    defaultAction = c.config.getString('top_level_unbound_key_action') or 'insert'
-    defaultAction.lower()
-    if defaultAction in ('ignore','insert','overwrite'):
-        self.unboundKeyAction = defaultAction
-    else:
-        g.trace('ignoring top_level_unbound_key_action setting: %s' % defaultAction)
-        self.unboundKeyAction = 'insert'
-        
-    k.setInputState(self.unboundKeyAction)</t>
-<t tx="ekr.20060116090428"></t>
-<t tx="ekr.20060122183544">@nocolor
-
-- (done) Handle backspace for isearch: keep a stack of previous matches.
-- (done) Allow cross-node isearches.
-
-@color</t>
-<t tx="ekr.20060122194643"></t>
-<t tx="ekr.20060123091352"></t>
 <t tx="ekr.20060123115459">def setFindScopeEveryWhere     (self, event): return self.setFindScope('entire-outline')
 def setFindScopeNodeOnly       (self, event): return self.setFindScope('node-only')
 def setFindScopeSuboutlineOnly (self, event): return self.setFindScope('suboutline-only')
@@ -2509,11 +1958,17 @@ def toggleOption (self, ivar): self.getHandler().toggleOption(ivar)</t>
 <t tx="ekr.20060123125317.2">def __init__(self,c,finder):
 
     self.c = c
-    self.k = c.k
+    self.k = k = c.k
     self.w = None
     self.finder = finder
     self.findTextList = []
-    self.changeTextList = []</t>
+    self.changeTextList = []
+    
+    commandName = 'replace-string'
+    s = k.getShortcutForCommandName(commandName)
+    s = k.prettyPrintKey(s)
+    s = k.shortcutFromSetting(s)
+    self.replaceStringShortcut = s</t>
 <t tx="ekr.20060123131421"></t>
 <t tx="ekr.20060124093828">def cloneFindAll       (self,event): self.getHandler().cloneFindAll(event)
 def findAll            (self,event): self.getHandler().findAll(event)
@@ -2607,7 +2062,13 @@ def searchWithPresentOptions (self,event):
 
     if state == 0:
         self.setupArgs(forward=False,regexp=False,word=False)
-        self.stateZeroHelper(event,tag,'Search Backward: ',self.searchBackward)
+        self.stateZeroHelper(
+            event,tag,'Search Backward: ',self.searchBackward,
+            escapes=[self.replaceStringShortcut])
+    elif k.getArgEscape:
+        # Switch to the replace command.
+        k.setState('replace-string',1,self.replaceString)
+        self.replaceString(event=None)
     else:
         self.updateFindList(k.arg)
         self.lastStateHelper()
@@ -2619,7 +2080,13 @@ def searchForward (self,event):
 
     if state == 0:
         self.setupArgs(forward=True,regexp=False,word=False)
-        self.stateZeroHelper(event,tag,'Search: ',self.searchForward)
+        self.stateZeroHelper(
+            event,tag,'Search: ',self.searchForward,
+            escapes=[self.replaceStringShortcut])
+    elif k.getArgEscape:
+        # Switch to the replace command.
+        k.setState('replace-string',1,self.replaceString)
+        self.replaceString(event=None)
     else:
         self.updateFindList(k.arg)
         self.lastStateHelper()
@@ -2651,7 +2118,13 @@ def wordSearchForward (self,event):
     
     if state == 0:
         self.setupArgs(forward=False,regexp=True,word=None)
-        self.stateZeroHelper(event,tag,'Regexp Search Backward:',self.reSearchBackward)
+        self.stateZeroHelper(
+            event,tag,'Regexp Search Backward:',self.reSearchBackward,
+            escapes=[self.replaceStringShortcut])
+    elif k.getArgEscape:
+        # Switch to the replace command.
+        k.setState('replace-string',1,self.replaceString)
+        self.replaceString(event=None)
     else:
         self.updateFindList(k.arg)
         self.lastStateHelper()
@@ -2662,7 +2135,13 @@ def reSearchForward (self,event):
     k = self.k ; tag = 're-search-forward' ; state = k.getState(tag)
     if state == 0:
         self.setupArgs(forward=True,regexp=True,word=None)
-        self.stateZeroHelper(event,tag,'Regexp Search:',self.reSearchForward)
+        self.stateZeroHelper(
+            event,tag,'Regexp Search:',self.reSearchForward,
+            escapes=[self.replaceStringShortcut])
+    elif k.getArgEscape:
+        # Switch to the replace command.
+        k.setState('replace-string',1,self.replaceString)
+        self.replaceString(event=None)
     else:
         self.updateFindList(k.arg)
         self.lastStateHelper()
@@ -2756,7 +2235,13 @@ def reSearchForward (self,event):
 
     if state == 0:
         self.setupArgs(forward=None,regexp=None,word=None)
-        self.stateZeroHelper(event,tag,'Search: ',self.searchWithPresentOptions)
+        self.stateZeroHelper(
+            event,tag,'Search: ',self.searchWithPresentOptions,
+            escapes=[self.replaceStringShortcut])
+    elif k.getArgEscape:
+        # Switch to the replace command.
+        k.setState('replace-string',1,self.replaceString)
+        self.replaceString(event=None)
     else:
         self.updateFindList(k.arg)
         k.clearState()
@@ -2768,6 +2253,8 @@ def reSearchForward (self,event):
 def masterKeyHandler (self,event,stroke=None):
     
     '''This is the handler for almost all key bindings.'''
+    
+    # g.trace(stroke,g.callers())
     
     k = self ; c = k.c
     trace = c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
@@ -2800,6 +2287,25 @@ def masterKeyHandler (self,event,stroke=None):
         k.resetLabel()
         k.showStateAndMode()
         self.generalSearchHelper(k.arg,cloneFindAll=True)</t>
+<t tx="ekr.20060128081317">def shortcutFromSetting (self,setting):
+    
+    k = self
+
+    if not setting:
+        return None
+
+    s = setting.strip().lstrip('&lt;').rstrip('&gt;')
+    &lt;&lt; define cmd, ctrl, alt, shift &gt;&gt;
+    if k.swap_mac_keys and sys.platform == "darwin":
+        &lt;&lt; swap cmd and ctrl keys &gt;&gt;
+    &lt;&lt; convert minus signs to plus signs &gt;&gt;
+    &lt;&lt; compute the last field &gt;&gt;
+    &lt;&lt; compute shortcut &gt;&gt;
+    # g.trace(setting,shortcut)
+    return shortcut
+    
+canonicalizeShortcut = shortcutFromSetting # For compatibility.
+strokeFromSetting    = shortcutFromSetting</t>
 <t tx="ekr.20060128090219">def masterMenuHandler (self,stroke,func,commandName):
     
     k = self ; c = k.c ; w = c.frame.getFocus()
@@ -2812,6 +2318,47 @@ def masterKeyHandler (self,event,stroke=None):
         return k.masterKeyHandler(event,stroke=stroke)
     else:
         return k.masterCommand(event,func,stroke,commandName)</t>
+<t tx="ekr.20060128103640.1"># Replace all minus signs by plus signs, except a trailing minus:
+if s.endswith('-'):
+    s = s[:-1].replace('-','+') + '-'
+else:
+    s = s.replace('-','+')</t>
+<t tx="ekr.20060128103640.2">if s.endswith('+'):
+    last = '+'
+else:
+    fields = s.split('+') # Don't lower this field.
+    last = fields and fields[-1]
+    if not last:
+        if not g.app.menuWarningsGiven:
+            print "bad shortcut specifier:", s
+        return None
+
+if len(last) == 1:
+    last2 = k.tkBindNamesDict.get(last) # Fix new bug introduced in 4.4b2.
+    # g.trace(last,last2)
+    if last2:
+        last = last2 ; shift = False # Ignore the shift state for these special chars.
+    else:
+        if shift:
+            last = last.upper()
+            shift = False
+        else:
+            last = last.lower()
+else:
+    # Translate from a made-up (or lowercase) name to 'official' Tk binding name.
+    # This is a *one-way* translation, done only here.
+    d = self.settingsNameDict
+    last = d.get(last.lower(),last)</t>
+<t tx="ekr.20060128103640.4">table = (
+    (alt, 'Alt+'),
+    (ctrl,'Ctrl+'),
+    (cmd, 'Command+'),
+    (shift,'Shift+'),
+    (True, last),
+)
+    
+# new in 4.4b3: convert all characters to unicode first.
+shortcut = ''.join([g.toUnicode(val,g.app.tkEncoding) for flag,val in table if flag])</t>
 <t tx="ekr.20060129052538.1"></t>
 <t tx="ekr.20060129052538.2">def masterClickHandler (self,event,func=None):
 
@@ -2881,13 +2428,18 @@ masterDoubleClick3Handler = masterClickHandler</t>
         i = w.index("@%d,%d" % (event.x,event.y))
         g.app.gui.setTextSelection(w,i+' wordstart',i+' wordend')
         return 'break'</t>
+<t tx="ekr.20060201065809">s2 = s.lower()
+
+cmd   = s2.find("cmd") &gt;= 0     or s2.find("command") &gt;= 0
+ctrl  = s2.find("control") &gt;= 0 or s2.find("ctrl") &gt;= 0
+alt   = s2.find("alt") &gt;= 0
+shift = s2.find("shift") &gt;= 0   or s2.find("shft") &gt;= 0</t>
 <t tx="ekr.20060203072636">def endSearch (self,i,j):
 
     w = self.w
     w.tag_delete('color','color1')
     g.app.gui.setTextSelection (self.w,i,j,insert='sel.end')
     self.k.keyboardQuit(event=None)</t>
-<t tx="ekr.20060203112912.1"></t>
 <t tx="ekr.20060204120158">def findAgain (self,event):
 
     f = self.finder
@@ -2900,9 +2452,9 @@ masterDoubleClick3Handler = masterClickHandler</t>
         </t>
 <t tx="ekr.20060204120158.1">def findAgainCommand (self):
     
-    s = self.find_ctrl.get("1.0","end")
+    s = self.find_ctrl.get("1.0","end-1c")
     s = g.toUnicode(s,g.app.tkEncoding)
-    if s.endswith('\n'): s = s[:-1]
+    # if s.endswith('\n'): s = s[:-1]
     
     if s and s != '&lt;find pattern here&gt;':
         self.findNextCommand()
@@ -2994,14 +2546,17 @@ masterDoubleClick3Handler = masterClickHandler</t>
 
     k.extendLabel(s,select=True,protect=protect)
 </t>
-<t tx="ekr.20060210173041">def stateZeroHelper (self,event,tag,prefix,handler):
+<t tx="ekr.20060210173041">def stateZeroHelper (self,event,tag,prefix,handler,escapes=[]):
 
     k = self.k
     self.w = event and event.widget
     k.setLabelBlue(prefix,protect=True)
     self.addFindStringToLabel(protect=False)
     
-    k.getArg(event,tag,1,handler,
+    # g.trace(escapes,g.callers())
+    k.getArgEscapes = escapes
+    k.getArgEscape = None # k.getArg may set this.
+    k.getArg(event,tag,1,handler, # enter state 1
         tabList=self.findTextList,completion=True,prefix=prefix)</t>
 <t tx="ekr.20060210174441">def lastStateHelper (self):
     
@@ -3023,12 +2578,26 @@ masterDoubleClick3Handler = masterClickHandler</t>
 
     k.extendLabel(s,select=True,protect=protect)
 </t>
-<t tx="ekr.20060211093935"></t>
+<t tx="ekr.20060215104239">if ctrl and not cmd:
+    cmd = True ; ctrl = False
+if alt and not ctrl:
+    ctrl = True ; alt = False</t>
 <t tx="ekr.20060221074900"></t>
 <t tx="ekr.20060221074900.1">def findButtonCallback(self,event=None):
     
     self.findButton()
     return 'break'</t>
+<t tx="ekr.20060224104109">@nocolor
+
+What I did:
+    
+- Used Python search code instead of Tkinter search.
+- Allow \1, \2, etc. replacements in re searches.
+- Allow \n and \t in plain searches.
+- The shortcut for the replace-string command now changes from the find command to the replace command.
+
+
+@color</t>
 <t tx="ekr.20060224171851">def updateChangeList (self,s):
 
     if s not in self.changeTextList:
@@ -3038,8 +2607,6 @@ def updateFindList (self,s):
 
     if s not in self.findTextList:
         self.findTextList.append(s)</t>
-<t tx="ekr.20060226131603"></t>
-<t tx="ekr.20060307074302.1"># It's not clear how to do this.</t>
 <t tx="ekr.20060309065445">def handleMiniBindings (self,event,state,stroke):
     
     k = self ; c = k.c
@@ -3077,7 +2644,7 @@ if state in ('getArg','getFileName','full-command','auto-complete'):
 
 # Second, honor general modes.
 if state == 'getArg':
-    return k.getArg(event)
+    return k.getArg(event,stroke=stroke)
 elif state == 'getFileName':
     return k.getFileName(event)
 elif state in ('full-command','auto-complete'):
@@ -3137,39 +2704,6 @@ if k.ignore_unbound_non_ascii_keys and len(event.char) &gt; 1:
 else:
     if trace: g.trace(repr(stroke),'no func')
     return k.masterCommand(event,func=None,stroke=stroke,commandName=None)</t>
-<t tx="ekr.20060413065803"></t>
-<t tx="ekr.20060417194232"># To do: extend selection.</t>
-<t tx="ekr.20060417194232.1">def findCharacter (self,event):
-    
-    '''Put the cursor at the next occurance of a character on a line.'''
-
-    k = self.k ; tag = 'find-char' ; state = k.getState(tag)
-    
-    if state == 0:
-        self.widget = event.widget
-        k.setLabelBlue('Find character: ')
-        k.getArg(event,tag,1,self.findCharacter,oneCharacter=True)
-    else:
-        ch = k.arg
-        # g.trace(repr(ch))
-        k.resetLabel()
-        k.clearState()</t>
-<t tx="ekr.20060417194232.2">def findWord (self,event):
-    
-    '''Put the cursor at the next word (on a line) that starts with a character.'''
-
-    k = self.k ; tag = 'find-word-on-line' ; state = k.getState(tag)
-    
-    if state == 0:
-        self.widget = event.widget
-        k.setLabelBlue('Find word: ')
-        k.getArg(event,tag,1,self.findWord,oneCharacter=True)
-    else:
-        ch = k.arg
-        # g.trace(repr(ch))
-        k.resetLabel()
-        k.clearState()</t>
-<t tx="ekr.20060419123128.1"></t>
 <t tx="ekr.20060420144640">def iSearchBackspace (self):
     
     c = self.c ; k = self.k ; w = self.w
@@ -3241,16 +2775,6 @@ ejoy
 </t>
 <t tx="ekr.20060514170725"></t>
 <t tx="ekr.20060514170854"></t>
-<t tx="ekr.20060515060803"></t>
-<t tx="ekr.20060515060803.1">@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3729823
-By: nobody
-
-I am running Ubuntu 5.10 and have the same (I think) problem - this is with
-the 4.4 final release.
-
-When I move through nodes using the alt-XXX short cuts, there is a lot of flicker
-as nodes are redrawn etc. I had no problem with this in 4.3.</t>
 <t tx="ekr.20060519003651">def debug (self,event=None,target = None):
     
     '''Start the debugger in another process.'''
@@ -3299,5 +2823,169 @@ for target in targets:
             break
         else:
             g.es('Debug target does not exist: %s' % (target),color='blue')</t>
+<t tx="ekr.20060522082833"></t>
+<t tx="ekr.20060522083716"></t>
+<t tx="ekr.20060522102610">pythonDir = g.os_path_dirname(sys.executable)
+idle = g.os_path_join(pythonDir,'Lib','idlelib','idle.py')
+args = [sys.executable, idle ]
+
+if 1: # Use present environment.
+    os.spawnv(os.P_NOWAIT, sys.executable, args)
+else: # Use a pristine environment.
+    os.spawnve(os.P_NOWAIT, sys.executable, args, os.environ)
+</t>
+<t tx="ekr.20060522103446"></t>
+<t tx="ekr.20060526081931">def searchHelper (self,s,i,j,pattern,backwards,nocase,regexp,word):
+    
+    if backwards: i,j = j,i
+        
+    # g.trace(backwards,i,j,repr(s[i:i+20]))
+
+    if not s[i:j] or not pattern:
+        g.trace('empty',i,j)
+        return -1,-1
+        
+    if regexp:
+        pos,newpos = self.regexHelper(s,i,j,pattern,backwards,nocase)
+    elif backwards:
+        pos,newpos = self.backwardsHelper(s,i,j,pattern,backwards,nocase,word)
+    else:
+        pos,newpos = self.plainHelper(s,i,j,pattern,backwards,nocase,word)
+
+    return pos,newpos
+</t>
+<t tx="ekr.20060526084217">i1 = w.index(index)
+row, col = i1.split('.') ; row, col = int(row), int(col)
+index = g.convertRowColToPythonIndex (s,row-1,col)</t>
+<t tx="ekr.20060526085605">row,col = g.convertPythonIndexToRowCol (s,pos)
+pos = w.index('%s.%s' % (row+1,col))
+
+row,col = g.convertPythonIndexToRowCol (s,newpos)
+newpos = w.index('%s.%s' % (row+1,col))</t>
+<t tx="ekr.20060526092203">def regexHelper (self,s,i,j,pattern,backwards,nocase):
+   
+    try:
+        flags = re.MULTILINE
+        if nocase: flags |= re.IGNORECASE
+        re_obj = re.compile(pattern,flags)
+    except Exception:
+        g.es('Invalid regular expression: %s' % (pattern),color='blue')
+        return -1, -1
+        
+    if backwards: # Scan to the last match.
+        last_mo = None
+        while 1:
+            mo = re_obj.search(s,i,j)
+            if mo is None: break
+            i = mo.end()
+            last_mo = mo
+        self.match_obj = mo = last_mo
+    else:
+        self.match_obj = mo = re_obj.search(s,i,j)
+        
+    if mo is None:
+        return -1, -1
+    else:
+        k  = mo.start()
+        k2 = mo.end()
+        # g.trace(i,j,k,k2,s[k:k2])
+        # g.trace('groups',mo.groups())
+        return k, k2</t>
+<t tx="ekr.20060526093531">def plainHelper (self,s,i,j,pattern,backwards,nocase,word):
+    
+    # g.trace(repr(s[i:i+20]))
+    
+    n = len(pattern)
+    if nocase:
+        s = s.lower() ; pattern.lower()
+        pattern = pattern.replace('\\n','\n').replace('\\t','\t')
+
+    if word:
+        while 1:
+            k = s.find(pattern,i,j)
+            g.trace(k,n)
+            if k == -1: return -1, -1
+            elif self.matchWord(s,k,pattern):
+                return k, k + n
+            else: i = k + n
+    else:
+        k = s.find(pattern,i,j)
+        if k == -1:
+            return -1, -1
+        else:
+            return k, k + n</t>
+<t tx="ekr.20060526140328">if self.wrapping and self.wrapPos and self.wrapPosition and self.p == self.wrapPosition:
+
+    if self.reverse and gui.compareIndices(w,pos, "&lt;", self.wrapPos):
+        # g.trace("wrap done")
+        return None, None
+
+    if not self.reverse and gui.compareIndices(w,newpos, "&gt;", self.wrapPos):
+        return None, None</t>
+<t tx="ekr.20060526140744">def backwardsHelper (self,s,i,j,pattern,backwards,nocase,word):
+
+    # g.trace(repr(s[i-20: i]))
+
+    if nocase:
+        s = s.lower() ; pattern.lower()
+
+    if word:
+        n = len(pattern)
+        while 1:
+            k = s.rfind(pattern,i,j)
+            g.trace(i,j,k)
+            if k == -1: return -1, -1
+            if self.matchWord(s,k,pattern):
+                return max(0,k-n+1),k+1, 
+            else:
+                j = max(0,k-n)
+    else:
+        k = s.rfind(pattern,i,j)
+        if k == -1:
+            return -1, -1
+        else:
+            return max(0,k-n+1),k+1, </t>
+<t tx="ekr.20060526140744.1">def matchWord(self,s,i,pattern):
+    
+    return g.match_word(s,i,pattern) and (i == 0 or s[i-1] not in self.word_chars)</t>
+<t tx="ekr.20060526201951">def makeRegexSubs(self,s,groups):
+    
+    '''Carefully substitute group[i-1] for \i strings in s.
+    The group strings may contain \i strings: they are *not* substituted.'''
+    
+    digits = '123456789'
+    result = [] ; n = len(s)
+    i = j = 0 # s[i:j] is the text between \i markers.
+    while j &lt; n:
+        k = s.find('\\',j)
+        if k == -1 or k + 1 &gt;= n:
+            break
+        j = k + 1 ; ch = s[j]
+        if ch in digits:
+            j += 1
+            result.append(s[i:k]) # Append up to \i
+            i = j
+            gn = int(ch)-1
+            if gn &lt; len(groups):
+                result.append(groups[gn]) # Append groups[i-1]
+            else:
+                result.append('\\%s' % ch) # Append raw '\i'
+    result.append(s[i:])
+    return ''.join(result)</t>
+<t tx="ekr.20060527062603">@nocolor
+
+- Finish rst3 work.
+    - Document new rst3 method.
+    - Remove rst3 request page from wiki.
+
+- Chapter 14: How to use debuggers with Leo.
+
+- Add gui.toPythonIndex(s,index) and gui.toGuiIndex(s,index)
+
+** Complete transition to 'end-1c'
+
+- Make all unit tests pass.</t>
+<t tx="ekr.20060527065935"></t>
+<t tx="ekr.20060527065935.1"></t>
 </tnodes>
 </leo_file>

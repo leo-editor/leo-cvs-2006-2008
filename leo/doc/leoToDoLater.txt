@@ -2,29 +2,6 @@
 #@+node:ekr.20060207133601:@thin ../doc/leoToDoLater.txt
 #@+all
 #@+node:ekr.20060209104733:Big and overdue
-#@+node:ekr.20060306194040:More screen shots or video tutorial on Leo's web site
-
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3615177
-By: ktenney
-
-High on my ToLearn list is vnc2swf
-http://www.unixuser.org/~euske/vnc2swf/
-
-
-http://sourceforge.net/forum/message.php?msg_id=3615278
-By: James
-
-A lot of people are now using Wink for demonstrations
-(http://www.debugmode.com/wink/), it's is free and seems to work well.
-#@-node:ekr.20060306194040:More screen shots or video tutorial on Leo's web site
-#@+node:ekr.20050419060645:Alternate lead-in characters 1-day
-@nocolor
-
-An @decorator setting might be good. This would be a list of all Python
-decorators. Leo would create @verbatim sentinels for these.
-#@nonl
-#@-node:ekr.20050419060645:Alternate lead-in characters 1-day
 #@+node:ekr.20041228084018.5:Finish zodb plugin - 1 week
 @ New notes:
 
@@ -1033,482 +1010,969 @@ Gil
 #@-node:ekr.20031218072017.662:Gil 2
 #@-node:ekr.20031218072017.658:Resolve CVS Conflicts command (Stepen Schaefer)
 #@-node:ekr.20051202094427:Resolve cvs conflicts 1-2 weeks
-#@-node:ekr.20060209104733:Big and overdue
-#@+node:ekr.20060116073229:To do 4.4.1
-#@+node:ekr.20060522101421:To Do 4.4.1 b1
-#@+node:ekr.20060527062603:To-do first
-- Posting about new find improvements.
-    
-- Finish rst3 work.
-    - Document new rst3 method.
-    - Remove rst3 request page from wiki.
+#@+node:ekr.20060116173818:Fix vampire nodes
+#@-node:ekr.20060116173818:Fix vampire nodes
+#@+node:ekr.20040919182750.1:Better handling of whitespace (cvs fiendly)
+#@+node:ekr.20060227121512:Comments from Bernhard
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3578166
+By: bwmulder
 
-- Chapter 14: How to use debuggers with Leo.
+[quote]It turns out that munging whitespace can be extremely time consuming.
+I once tried to do a user setting that would end all non-empty body text with
+exactly one newline. That effectively hung Leo. I'm not sure if there was a
+blunder in the code that caused this, but it may well have been that mass changes
+like this are inherently expensive. So we should not assume that 'innocent'
+whitespace changes are in fact easy to do.
+[quote]
 
-- Add gui.toPythonIndex(s,index) and gui.toGuiIndex(s,index)
+CVS stores files in the RCS format. The latest version is stored directly, the
+other versions are stored as line differences (delete lines x-y, insert 3 lines
+at z) relative to the latest version. If you change the empty line convention,
+you might create lots of differences of the above form which might be expensive
+to compute.
 
-** Complete transition to 'end-1c'
+This should be a onetime cost, however, which, if you will, you could do one
+file at a time.
 
-- Make all unit tests pass.
+I woudn't let a tool like CVS determine if I would  change the convention.
+
+As for white space differences: TortoiseSVN (I have not used TortoiseCVS) allows
+you to specify external programs. There should be some out there which allow
+you to ignore white space differences when comparing files.
+
+On a related note: I read that subversion is in Beta on SourceForge. You might
+want to think about switching to subversion once it is officially supported.
+One example of a project which has switched from CVS to subversion is the project
+which maintains the Python sources itself (see, for example,
+http://www.python.org/dev/devfaq.html#subversion-svn)
 #@nonl
-#@-node:ekr.20060527062603:To-do first
-#@+node:ekr.20060522101202:Improve reports of binding problems
+#@-node:ekr.20060227121512:Comments from Bernhard
+#@+node:ekr.20040721094203:Make sure Leo uses "verbatim" whitespace
 @nocolor
 
-http://sourceforge.net/forum/message.php?msg_id=3737879
-By: nobody
+http://sourceforge.net/forum/message.php?msg_id=2674828
+By: bwmulder
 
-From: Rich
+If I understand correctly, there are two different problems:
 
-I moved the "No bindings" and "EKR bindings: Mode-oriented bindings + Emacs
-bindings" nodes to the "@ignore Unused key bindings" node, and replaced them
-with a copy of "Legacy Leo bindings".
-I then fiddled the key bindings to the way I like them (today, anyway! :D ),
-and noticed the "Check Bindings" button. Cool! thought I, and pressed it. I
-got the following messages in the Log Pane:
+- Trailing whitespaces
+- Left indented comments
 
--------------------------------------------------
-No bindings is missing run-unit-test                       = None
-Undefined command name: add-spaces-to-lines
-Undefined command name: clean-line
-Undefined command name: remove-spaces-from-lines
-Undefined command name: remove-tab-from-lines
-Undefined command name: run-unit-test
-Check Bindings done
--------------------------------------------------
+1. Before commenting on these, a question:
+
+If I write something like
+    a=b
+    if a:
+        @others
+
+[four spaces indentation]
+
+I sometimes see tab characters before the lines inserted for '@others'.
+
+It seems that Leo remembers 'two levels of indentation', and then
+fabricates this indentation using tab characters.
+
+I think it might be more robust if Leo remembered the actual
+characters in front of @others and would use them for indentation.
+
+I suspect that many indentation errors I had with Leo could have been
+avoided had not Leo had its own ideas on how to do indentation.
+
+Maybe Leo could use the exact sequence of characters in front of
+@others for all inserted lines?
+
+2. I do not care much about trailing whitespaces. Most of the time
+they are invisible, but sometimes they are very misleading (trailing in python or C).
+
+As far as I am concerned, Leo need never produce trailing whitespaces.
+
+Maybe we need special machinerie if sources have trailing whitespaces
+and the sources are not under our control. 
+
+Not sure if everybody would be happy if we essentially ban all trailing
+whitespaces.
+
+3. Unindented commentlines could be dealt with by using indentation to
+indicate structure.
+
+Of course, this might break the correspondance Leo structure / Python
+structure, which is very ugly.
+
+4. One possible alternative might be a new directive which indicates outindent:
+
+@outindent <number>.
+
+This would apply to the next comment block.
+
+To me, 4. looks a little bit less ugly than 3.
+
+5. As indicated in a different post, I suspect that Leo has a problem
+if almost every node in an outline is changed. Profiling should point
+to the culprit.
+
+> 2. Have Leo strip whitespace from otherwise blank lines, and hope
+that that solves all problems in Perfect Import. This is solving the
+problem in the atFile code. The problem is that if we apply settings
+in general we will get massive changes to derived files. In most
+programming settings these changes might be welcome, but the problem
+is actually making these changes. My first few attempts met with
+abject failure.
+
+Are you saying that you could not remove trailing blanks? What kind of
+problems did you run into?
+
+Summary:
+- Use actual characters in front of @others or <<>> for indentation.
+- Don't write trailing whitespaces
+- Introduce directive for left-indendet comments.
+- Profile to find out what slows Leo down if many nodes change.
 #@nonl
-#@-node:ekr.20060522101202:Improve reports of binding problems
-#@+node:ekr.20060419101401:have gui.getAllText use 'end-1c'
-#@+node:ekr.20060419101401.1:Found: gui.getAllText
-#@+node:ekr.20031218072017.2293:batchChange (sets start of change-all group)
-@ This routine performs a single batch change operation, updating the head or body string of p and leaving the result in s_ctrl.  We update the body if we are changing the body text of c.currentVnode().
+#@-node:ekr.20040721094203:Make sure Leo uses "verbatim" whitespace
+#@+node:ekr.20040930075920:Whitespace options
+#@+node:ekr.20040720103642.1:Script to remove trailing body newlines VERY DANGEROUS
+current = c.currentPosition()
+count = 0
 
-s_ctrl contains the found text on entry and contains the changed text on exit.  pos and pos2 indicate the selection.  The selection will never be empty. NB: we can not assume that self.p is visible.
-@c
+for p in c.all_positions_iter():
+    s = p.bodyString().rstrip()
+    if s:
+        s = p.bodyString().rstrip() + '\n'
+        if s != p.bodyString():
+            # Do NOT set anything dirty here!
+            ## p.v.t.setTnodeText(s)
+            count += 1
 
-def batchChange (self,pos1,pos2):
-
-    c = self.c ; u = c.undoer
-    p = self.p ; st = self.s_ctrl ; gui = g.app.gui
-    # Replace the selection with self.change_text
-    if gui.compareIndices(st,pos1, ">", pos2):
-        pos1,pos2=pos2,pos1
-    gui.replaceSelectionRangeWithText(st,pos1,pos2,self.change_text)
-    s = gui.getAllText(st)
-    # Update the selection.
-    insert=g.choose(self.reverse,pos1,pos1+'+'+str(len(self.change_text))+'c')
-    gui.setSelectionRange(st,insert,insert)
-    gui.setInsertPoint(st,insert)
-    # Update the node
-    if self.in_headline:
-        << change headline >>
-    else:
-        << change body >>
+print "%d nodes converted" % count
+print "You MUST do Write All Nodes AND Save this file to complete the conversion"
 #@nonl
-#@+node:ekr.20031218072017.2294:<< change headline >>
-if len(s) > 0 and s[-1]=='\n': s = s[:-1]
+#@-node:ekr.20040720103642.1:Script to remove trailing body newlines VERY DANGEROUS
+#@+node:EKR.20040603092958.1:Add new options for handling newlines in body text
+@nocolor
 
-if s != p.headString():
-    
-    undoData = u.beforeChangeNodeContents(p)
+Alas, this really does not solve problems with Import.
 
-    p.initHeadString(s)
-    if self.mark_changes:
-        p.setMarked()
-    p.setDirty()
-    if not c.isChanged():
-        c.setChanged(True)
-    
-    u.afterChangeNodeContents(p,'Change Headline',undoData)
+- "asis":  ideal, maybe not possible?
+- "zero": no trailing newlines.
+- "one": exactly one trailing newline.
+
+Special case code is required so empty nodes stay empty with "one" option.
 #@nonl
-#@-node:ekr.20031218072017.2294:<< change headline >>
-#@+node:ekr.20031218072017.2295:<< change body >>
-if len(s) > 0 and s[-1]=='\n': s = s[:-1]
-
-if s != p.bodyString():
-    
-    undoData = u.beforeChangeNodeContents(p)
-
-    p.setBodyStringOrPane(s)
-    if self.mark_changes:
-        p.setMarked()
-    p.setDirty()
-    if not c.isChanged():
-        c.setChanged(True)
-     
-    u.afterChangeNodeContents(p,'Change Body',undoData)
+#@+node:ekr.20040802063546.1:(Made sure body text changes reported properly)
+# This may have to change when mass whitespace changes happen)
 #@nonl
-#@-node:ekr.20031218072017.2295:<< change body >>
-#@-node:ekr.20031218072017.2293:batchChange (sets start of change-all group)
-#@+node:ekr.20051011072049.2:cutText
-def cutText (self,event=None):
-    
-    '''Invoked from the mini-buffer and from shortcuts.'''
-    
-    f = self ; c = f.c ; w = event and event.widget
-    if not w or not g.app.gui.isTextWidget(w): return
+#@+node:ekr.20031218072017.1812:top_df.read
+# The caller has enclosed this code in beginUpdate/endUpdate.
 
-    name = c.widget_name(w)
-    oldSel = g.app.gui.getTextSelection(w)
-    oldText = w.get('1.0','end')
-    i,j = g.app.gui.getTextSelection(w)
+def read(self,root,importFileName=None,thinFile=False):
     
-    # Update the widget and set the clipboard text.
-    s = w.get(i,j)
-    if i != j:
-        w.delete(i,j)
-        g.app.gui.replaceClipboardWith(s)
-
-    if name.startswith('body'):
-        c.frame.body.onBodyChanged('Cut',oldSel=oldSel,oldText=oldText)
-    elif name.startswith('head'):
-        # The headline is not officially changed yet.
-        # p.initHeadString(s)
-        s=g.app.gui.getAllText(w)
-        w.configure(width=f.tree.headWidth(s=s))
-    else: pass
-
-OnCutFromMenu = cutText
+    """Common read logic for any derived file."""
+    
+    at = self ; c = at.c
+    at.errors = 0
+    importing = importFileName is not None
+    << set fileName from root and importFileName >>
+    << open file or return False >>
+    g.es("reading: " + root.headString())
+    firstLines,read_new,derivedFileIsThin = at.scanHeader(theFile,fileName)
+    df = g.choose(read_new,at.new_df,at.old_df)
+    # g.trace(g.choose(df==at.new_df,"new","old"))
+    << copy ivars to df >>
+    root.clearVisitedInTree()
+    try:
+        # 1/28/04: Don't set comment delims when importing.
+        # 1/28/04: Call scanAllDirectives here, not in readOpenFile.
+        importing = importFileName is not None
+        df.scanAllDirectives(root,importing=importing,reading=True)
+        df.readOpenFile(root,theFile,firstLines)
+    except:
+        at.error("Unexpected exception while reading derived file")
+        g.es_exception()
+    theFile.close()
+    root.clearDirty() # May be set dirty below.
+    after = root.nodeAfterTree()
+    << warn about non-empty unvisited nodes >>
+    if df.errors == 0:
+        if not df.importing:
+            << copy all tempBodyStrings to tnodes >>
+    << delete all tempBodyStrings >>
+    return df.errors == 0
 #@nonl
-#@-node:ekr.20051011072049.2:cutText
-#@+node:ekr.20031218072017.1329:onBodyChanged (tkBody) & removeTrailingNewlines
-# This is the only key handler for the body pane.
-def onBodyChanged (self,undoType,
-    oldSel=None,oldText=None,oldYview=None,removeTrailing=None):
-    
-    '''Update Leo after the body has been changed.'''
-    
-    body = self ; c = self.c ; bodyCtrl = body.bodyCtrl
-    trace = self.trace_onBodyChanged
-    p = c.currentPosition()
-    insert = bodyCtrl.index('insert')
-    ch = g.choose(insert=='1.0','',bodyCtrl.get('insert-1c'))
-    ch = g.toUnicode(ch,g.app.tkEncoding) # New in 4.4b3.
-    newText = g.app.gui.getAllText(bodyCtrl) # New in 4.4b3: converts to unicode.
-    # g.trace('newText',repr(newText))
-    newSel = g.app.gui.getTextSelection(bodyCtrl)
-    if oldText is None: oldText = p.bodyString()
-    if removeTrailing is None:
-        removeTrailing = self.removeTrailingNewlines(oldText,newText,ch)
-    if removeTrailing and newText:
-        newText = newText[:-1]
-    changed = oldText != newText
-    if trace:
-        g.trace(repr(ch),'changed:',changed)
-        # g.trace('removeTrailing:',removeTrailing)
-        g.trace('newText:',repr(newText))
-        #g.trace('oldText:',repr(oldText))
-    if changed:
-        c.undoer.setUndoTypingParams(p,undoType,
-            oldText=oldText,newText=newText,oldSel=oldSel,newSel=newSel,oldYview=oldYview)
-        p.v.setTnodeText(newText)
-        p.v.t.insertSpot = body.getInsertionPoint()
-        << recolor the body >>
-        if not c.changed: c.setChanged(True)
-        << redraw the screen if necessary >>
-#@nonl
-#@+node:ekr.20051026083733.6:<< recolor the body >>
-body.colorizer.interrupt()
-c.frame.scanForTabWidth(p)
-body.recolor_now(p,incremental=not self.forceFullRecolorFlag)
-self.forceFullRecolorFlag = False
-#@nonl
-#@-node:ekr.20051026083733.6:<< recolor the body >>
-#@+node:ekr.20051026083733.7:<< redraw the screen if necessary >>
-c.beginUpdate()
-try:
-    redraw_flag = False
-    # Update dirty bits.
-    # p.setDirty() sets all cloned and @file dirty bits.
-    if not p.isDirty() and p.setDirty():
-        redraw_flag = True
-        
-    # Update icons. p.v.iconVal may not exist during unit tests.
-    val = p.computeIcon()
-    if not hasattr(p.v,"iconVal") or val != p.v.iconVal:
-        p.v.iconVal = val
-        redraw_flag = True
-finally:
-    c.endUpdate(redraw_flag)
-#@nonl
-#@-node:ekr.20051026083733.7:<< redraw the screen if necessary >>
-#@+node:ekr.20051026143009:removeTrailingNewlines
-@ Tk will add a newline only if:
-1. A real change has been made to the Tk.Text widget, and
-2. the change did _not_ result in the widget already containing a newline.
+#@+node:ekr.20031218072017.1813:<< set fileName from root and importFileName >>
+at.scanDefaultDirectory(root,importing=importing)
+if at.errors: return
 
-It's not possible to tell, given the information available, what Tk has actually
-done. We need only make a reasonable guess here. setUndoTypingParams stores the
-number of trailing newlines in each undo bead, so whatever we do here can be
-faithfully undone and redone.
-@c
-
-def removeTrailingNewlines (self,old,new,ch):
-
-    '''Return True if a Tk has erroneously added a trailing newline.'''
-    
-    return True
-
-    if not new.endswith('\n'):
-        # There is no newline to remove.  Probably will never happen.
-        return False
-    elif not old:
-        # Ambigous case.  Formerly always returned False.
-        if new == "\n\n":
-            return True # Handle a very strange special case.
-        else:
-            return ch not in ('\r','\n')
-    elif old == new[:-1]:
-        # A single trailing character has been added.
-        return ch not in ('\r','\n') # Was False.
-    else:
-        # The text didn't have a newline, and now it does.
-        # Moveover, some other change has been made to the text,
-        # So at worst we have misrepresented the user's intentions slightly.
-        return True
-#@nonl
-#@-node:ekr.20051026143009:removeTrailingNewlines
-#@-node:ekr.20031218072017.1329:onBodyChanged (tkBody) & removeTrailingNewlines
-#@+node:ekr.20060417172056:addRemoveHelper
-def addRemoveHelper(self,event,ch,add,undoType):
-
-    c = self.c ; k = self.k ; w = event.widget
-    if g.app.gui.hasSelection(w):
-        s = g.app.gui.getSelectedText(w)
-    else:
-        s = g.app.gui.getAllText(w)
-    if not s: return
-    
-    # Insert or delete spaces instead of tabs when negative tab width is in effect.
-    d = g.scanDirectives(c) ; width = d.get('tabwidth')
-    if ch == '\t' and width < 0: ch = ' ' * abs(width)
-    self.beginCommand(undoType=undoType)
-    if add:
-        result = [ch + line for line in g.splitLines(s)]
-    else:
-        result = [g.choose(line.startswith(ch),line[len(ch):],line) for line in g.splitLines(s)]
-    result = ''.join(result)
-    if g.app.gui.hasSelection(w):
-        i,j = g.app.gui.getSelectionRange(w)
-        w.delete(i,j)
-        w.insert(i,result)
-        g.app.gui.setSelectionRange(w, i, j + '%dc' %(len(result)))
-    else:
-        w.delete('1.0','end')
-        w.insert('1.0',result)
-    self.endCommand(changed=True,setLabel=True)
-#@nonl
-#@-node:ekr.20060417172056:addRemoveHelper
-#@+node:ekr.20060415112257:clean-lines
-def cleanLines (self,event):
-    
-    '''Removes leading whitespace from otherwise blanks lines.'''
-
-    k = self.k ; w = event.widget
-    
-    if g.app.gui.hasSelection(w):
-        s = g.app.gui.getSelectedText(w)
-    else:
-        s = g.app.gui.getAllText(w)
-
-    lines = [] ; changed = False
-    for line in g.splitlines(s):
-        if line.strip():
-            lines.append(line)
-        else:
-            if line.endswith('\n'):
-                lines.append('\n')
-            changed = '\n' != line
-
-    if changed:
-        self.beginCommand(undoType='clean-lines')
-        result = ''.join(lines)
-        if g.app.gui.hasSelection(w):
-            i,j = g.app.gui.getSelectionRange(w)
-            w.delete(i,j)
-            w.insert(i,result)
-            g.app.gui.setSelectionRange(w, i, j + '%dc' %(len(result)))
-        else:
-            w.delete('1.0','end')
-            w.insert('1.0',result)
-        self.endCommand(changed=changed,setLabel=True)
-#@-node:ekr.20060415112257:clean-lines
-#@+node:ekr.20051125080855:selfInsertCommand
-def selfInsertCommand(self,event,action='insert'):
-    
-    '''Insert a character in the body pane.
-    
-    This is the default binding for all keys in the body pane.'''
-    
-    c = self.c ; p = c.currentPosition()
-    # g.trace('event',event,g.callers())
-    ch = event and event.char or ''
-    if event and event.keysym == 'Return': ch = '\n' # This fixes the MacOS return bug.
-    w = event and event.widget
-    name = c.widget_name(w)
-    oldSel =  name.startswith('body') and g.app.gui.getTextSelection(w)
-    oldText = name.startswith('body') and p.bodyString()
-    removeTrailing = None # A signal to compute it later.
-    undoType = 'Typing'
-    trace = c.config.getBool('trace_masterCommand')
-    
-    if trace: g.trace(name,repr(ch))
-    
-    if g.doHook("bodykey1",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType):
-        return "break" # The hook claims to have handled the event.
-        
-    if ch == '\t':
-        removeTrailing = self.updateTab(p,w)
-    elif ch == '\b':
-        # This is correct: we only come here if there no bindngs for this key. 
-        self.backwardDeleteCharacter(event)
-    elif ch in ('\r','\n'):
-        ch = '\n'
-        << handle newline >>
-    elif ch in ('(',')','[',']','{','}') and c.config.getBool('autocomplete-brackets'):
-        self.updateAutomatchBracket(p,w,ch,oldSel)
-    elif ch: # Null chars must not delete the selection.
-        i,j = oldSel
-        if i != j:                  w.delete(i,j)
-        elif action == 'overwrite': w.delete(i,'%s+1c' % i)
-        w.insert(i,ch)                     
-    else:
-        return 'break' # New in 4.4a5: this method *always* returns 'break'
-
-    # Update the text and handle undo.
-    newText = g.app.gui.getAllText(w) # New in 4.4b3: converts to unicode.
-    # g.trace(repr(newText))
-    w.see(w.index('insert'))
-    if newText != oldText:
-        c.frame.body.onBodyChanged(undoType=undoType,
-            oldSel=oldSel,oldText=oldText,oldYview=None,removeTrailing=removeTrailing)
-            
-    g.doHook("bodykey2",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType)
-    return 'break'
-#@nonl
-#@+node:ekr.20051026171121:<< handle newline >>
-i,j = oldSel
-
-if i != j:
-    # No auto-indent if there is selected text.
-    w.delete(i,j)
-    w.insert(i,ch)
+if importFileName:
+    fileName = importFileName
+elif root.isAnyAtFileNode():
+    fileName = root.anyAtFileNodeName()
 else:
-    w.insert(i,ch)
-    if c.frame.body.colorizer.useSyntaxColoring(p) and undoType != "Change":
-        # No auto-indent if in @nocolor mode or after a Change command.
-        removeTrailing = self.updateAutoIndent(p)
-        # g.trace(removeTrailing)
+    fileName = None
+
+if not fileName:
+    at.error("Missing file name.  Restoring @file tree from .leo file.")
+    return False
 #@nonl
-#@-node:ekr.20051026171121:<< handle newline >>
-#@+node:ekr.20051027172949:updateAutomatchBracket
-def updateAutomatchBracket (self,p,w,ch,oldSel):
-    
-    # assert ch in ('(',')','[',']','{','}')
-    
-    c = self.c ; d = g.scanDirectives(c,p) ; i,j = oldSel
-    language = d.get('language')
-    
-    if ch in ('(','[','{',):
-        automatch = language not in ('plain',)
-        if automatch:
-            ch = ch + {'(':')','[':']','{':'}'}.get(ch)
-        if i != j:
-            w.delete(i,j)
-        w.insert(i,ch)
-        if automatch:
-            w.mark_set('insert','insert-1c')
-    else:
-        ch2 = w.get('insert')
-        if ch2 in (')',']','}'):
-            w.mark_set('insert','insert+1c')
+#@-node:ekr.20031218072017.1813:<< set fileName from root and importFileName >>
+#@+node:ekr.20031218072017.1814:<< open file or return false >>
+fn = g.os_path_join(at.default_directory,fileName)
+fn = g.os_path_normpath(fn)
+
+try:
+    # 11/4/03: open the file in binary mode to allow 0x1a in bodies & headlines.
+    theFile = open(fn,'rb')
+    if theFile:
+        << warn on read-only file >>
+    else: return False
+except:
+    at.error("Can not open: " + '"@file ' + fn + '"')
+    root.setDirty()
+    return False
+#@nonl
+#@+node:ekr.20031218072017.1815:<< warn on read-only file >>
+try:
+    read_only = not os.access(fn,os.W_OK)
+    if read_only:
+        g.es("read only: " + fn,color="red")
+except:
+    pass # os.access() may not exist on all platforms.
+#@nonl
+#@-node:ekr.20031218072017.1815:<< warn on read-only file >>
+#@-node:ekr.20031218072017.1814:<< open file or return false >>
+#@+node:ekr.20031218072017.1816:<< copy ivars to df >>
+# Telling what kind of file we are reading.
+df.importing = importFileName != None
+df.raw = False
+if importing and df == at.new_df:
+    thinFile = True
+df.thinFile = thinFile
+
+# Set by scanHeader.
+df.encoding = at.encoding
+df.endSentinelComment = at.endSentinelComment
+df.startSentinelComment = at.startSentinelComment
+
+# Set other common ivars.
+df.errors = 0
+df.file = theFile
+df.importRootSeen = False
+df.indent = 0
+df.targetFileName = fileName
+df.root = root
+df.root_seen = False
+df.perfectImportRoot = None # Set only in readOpenFile.
+#@nonl
+#@-node:ekr.20031218072017.1816:<< copy ivars to df >>
+#@+node:ekr.20031218072017.1817:<< warn about non-empty unvisited nodes >>
+for p in root.self_and_subtree_iter():
+
+    # g.trace(p)
+    try: s = p.v.t.tempBodyString
+    except: s = ""
+    if s and not p.v.t.isVisited():
+        at.error("Not in derived file:" + p.headString())
+        p.v.t.setVisited() # One message is enough.
+#@nonl
+#@-node:ekr.20031218072017.1817:<< warn about non-empty unvisited nodes >>
+#@+node:ekr.20031218072017.1818:<< copy all tempBodyStrings to tnodes >>
+for p in root.self_and_subtree_iter():
+    try: s = p.v.t.tempBodyString
+    except: s = ""
+    if s != p.bodyString():
+        if 0: # For debugging.
+            print ; print "changed: " + p.headString()
+            print ; print "new:",s
+            print ; print "old:",p.bodyString()
+        if thinFile:
+            p.v.setTnodeText(s)
+            if p.v.isDirty():
+                p.setAllAncestorAtFileNodesDirty()
         else:
-            if i != j:
-                w.delete(i,j)
-            w.insert(i,ch)
+            p.setBodyStringOrPane(s) # Sets v and v.c dirty.
+            
+        if not thinFile or (thinFile and p.v.isDirty()):
+            g.es("changed: " + p.headString(),color="blue")
+            p.setMarked()
 #@nonl
-#@-node:ekr.20051027172949:updateAutomatchBracket
-#@+node:ekr.20051026171121.1:udpateAutoIndent
-# By David McNab:
-def updateAutoIndent (self,p):
-
-    c = self.c ; d = g.scanDirectives(c,p)
-    tab_width = d.get("tabwidth",c.tab_width) # Get the previous line.
-    s = c.frame.bodyCtrl.get("insert linestart - 1 lines","insert linestart -1c")
-    # Add the leading whitespace to the present line.
-    junk, width = g.skip_leading_ws_with_indent(s,0,tab_width)
-    if s and len(s) > 0 and s [ -1] == ':':
-        # For Python: increase auto-indent after colons.
-        if c.frame.body.colorizer.scanColorDirectives(p) == "python":
-            width += abs(tab_width)
-    if c.config.getBool("smart_auto_indent"):
-        # Determine if prev line has unclosed parens/brackets/braces
-        brackets = [width] ; tabex = 0
-        for i in range(0,len(s)):
-            if s [i] == '\t':
-                tabex += tab_width-1
-            if s [i] in '([{':
-                brackets.append(i+tabex+1)
-            elif s [i] in '}])' and len(brackets) > 1:
-                brackets.pop()
-        width = brackets.pop()
-    ws = g.computeLeadingWhitespace(width,tab_width)
-    if ws:
-        c.frame.bodyCtrl.insert("insert",ws)
-        removeTrailing = False
-    else:
-        removeTrailing = None
-    return removeTrailing
-#@nonl
-#@-node:ekr.20051026171121.1:udpateAutoIndent
-#@+node:ekr.20051026092433:updateTab
-def updateTab (self,p,w):
-
-    c = self.c ; d = g.scanDirectives(c,p)
-    tab_width = d.get("tabwidth",c.tab_width)
+#@-node:ekr.20031218072017.1818:<< copy all tempBodyStrings to tnodes >>
+#@+node:ekr.20031218072017.1819:<< delete all tempBodyStrings >>
+for p in c.allNodes_iter():
     
-    i,j = g.app.gui.getTextSelection(w)
-    if i != j:
-        w.delete(i,j)
-    if tab_width > 0:
-        w.insert("insert",'\t')
-    else:
-        # Get the preceeding characters.
-        s = w.get("insert linestart","insert")
-    
-        # Compute n, the number of spaces to insert.
-        width = g.computeWidth(s,tab_width)
-        n = abs(tab_width) - (width % abs(tab_width))
-        w.insert("insert",' ' * n)
+    if hasattr(p.v.t,"tempBodyString"):
+        delattr(p.v.t,"tempBodyString")
 #@nonl
-#@-node:ekr.20051026092433:updateTab
-#@-node:ekr.20051125080855:selfInsertCommand
-#@-node:ekr.20060419101401.1:Found: gui.getAllText
-#@-node:ekr.20060419101401:have gui.getAllText use 'end-1c'
-#@+node:ekr.20060214072931:Improve unit testing
+#@-node:ekr.20031218072017.1819:<< delete all tempBodyStrings >>
+#@-node:ekr.20031218072017.1812:top_df.read
+#@-node:ekr.20040802063546.1:(Made sure body text changes reported properly)
+#@+node:ekr.20040930075920.1:Common to both options
+#@+node:ekr.20031218072017.2404:<< define defaultsDict >>
+@ This contains only the "interesting" defaults.
+Ints and bools default to 0, floats to 0.0 and strings to "".
+@c
+
+defaultBodyFontSize = g.choose(sys.platform=="win32",9,12)
+defaultLogFontSize  = g.choose(sys.platform=="win32",8,12)
+defaultTreeFontSize = g.choose(sys.platform=="win32",9,12)
+
+# Defaults for ivars are specified in the ctor, _not_ here.
+
+defaultsDict = {
+    # compare options...
+    "ignore_blank_lines" : 1,
+    "limit_count" : 9,
+    "print_mismatching_lines" : 1,
+    "print_trailing_lines" : 1,
+    # find/change options...
+    "search_body" : 1,
+    "whole_word" : 1,
+    # Prefs panel.
+    "default_target_language" : "Python",
+    "tab_width" : -4,
+    "page_width" : 132,
+    "output_doc_chunks" : 1,
+    "tangle_outputs_header" : 1,
+    # Syntax coloring options...
+    # Defaults for colors are handled by leoColor.py.
+    "color_directives_in_plain_text" : 1,
+    "underline_undefined_section_names" : 1,
+    # Window options...
+    "allow_clone_drags" : 1,
+    "body_pane_wraps" : 1,
+    "body_text_font_family" : "Courier",
+    "body_text_font_size" : defaultBodyFontSize,
+    "body_text_font_slant" : "roman",
+    "body_text_font_weight" : "normal",
+    "enable_drag_messages" : 1,
+    "headline_text_font_size" : defaultTreeFontSize,
+    "headline_text_font_slant" : "roman",
+    "headline_text_font_weight" : "normal",
+    "log_text_font_size" : defaultLogFontSize,
+    "log_text_font_slant" : "roman",
+    "log_text_font_weight" : "normal",
+    "initial_window_height" : 600, # 7/24/03: In pixels.
+    "initial_window_width" :  800, # 7/24/03: In pixels.
+    "initial_window_left" : 10,
+    "initial_window_top" : 10,
+    "initial_splitter_orientation" : "vertical",
+    "initial_vertical_ratio" : 0.5,
+    "initial_horizontal_ratio" : 0.3,
+    "initial_horizontal_secondary_ratio" : 0.5,
+    "initial_vertical_secondary_ratio" : 0.7,
+    "outline_pane_scrolls_horizontally" : 0,
+    "split_bar_color" : "LightSteelBlue2",
+    "split_bar_relief" : "groove",
+    "split_bar_width" : 7 }
+#@nonl
+#@-node:ekr.20031218072017.2404:<< define defaultsDict >>
+#@+node:ekr.20031218072017.3004:<< initialize ivars that may be set by config options >>
+# Defaults for these ivaars are specified here, _not_ in defaultsDict.
+
+self.at_root_bodies_start_in_doc_mode = True # For compatibility with previous versions.
+self.config = None # The current instance of ConfigParser
+self.config_encoding = "utf-8" # Encoding used for leoConfig.txt.
+self.create_nonexistent_directories = False
+self.default_derived_file_encoding = "utf-8"
+self.new_leo_file_encoding = "UTF-8" # Upper case for compatibility with previous versions.
+self.output_initial_comment = "" # "" or None for compatibility with previous versions.
+self.output_newline = "nl"
+self.read_only = True # Make sure we don't alter an illegal leoConfig.txt file!
+self.redirect_execute_script_output_to_log_pane = False
+self.relative_path_base_directory = "!"
+self.remove_sentinels_extension = ".txt"
+self.save_clears_undo_buffer = False
+self.stylesheet = None
+self.tkEncoding = None # Defaults to None so it doesn't override better defaults.
+self.trailing_body_newlines = "asis"
+self.use_plugins = False # Should never be True here!
+self.use_psyco = False
+self.undo_granularity = "word" # "char","word","line","node"
+self.write_strips_blank_lines = False
+#@nonl
+#@-node:ekr.20031218072017.3004:<< initialize ivars that may be set by config options >>
+#@+node:ekr.20031218072017.1421:<< get config options >>
+@ Rewritten 10/11/02 as follows:
+
+1. We call initConfigParam and initBooleanConfigParam to get the values.
+
+The general purpose code will enter all these values into configDict.  This allows update() to write the configuration section without special case code.  configDict is not accessible by the user.  Rather, for greater speed the user access these values via the ivars of this class.
+
+2. We pass the ivars themselves as params so that default initialization is done in the ctor, as would normally be expected.
+@c
+
+self.at_root_bodies_start_in_doc_mode = self.initBooleanConfigParam(
+    "at_root_bodies_start_in_doc_mode",self.at_root_bodies_start_in_doc_mode)
+    
+encoding = self.initConfigParam(
+    "config_encoding",self.config_encoding)
+    
+if g.isValidEncoding(encoding):
+    self.config_encoding = encoding
+else:
+    g.es("bad config_encoding: " + encoding)
+    
+self.create_nonexistent_directories = self.initBooleanConfigParam(
+    "create_nonexistent_directories",self.create_nonexistent_directories)
+    
+encoding = self.initConfigParam(
+    "default_derived_file_encoding",self.default_derived_file_encoding)
+
+if g.isValidEncoding(encoding):
+    self.default_derived_file_encoding = encoding
+else:
+    g.es("bad default_derived_file_encoding: " + encoding)
+    
+encoding = self.initConfigParam(
+    "new_leo_file_encoding",
+    self.new_leo_file_encoding)
+
+if g.isValidEncoding(encoding):
+    self.new_leo_file_encoding = encoding
+else:
+    g.es("bad new_leo_file_encoding: " + encoding)
+
+self.output_initial_comment = self.initConfigParam(
+    "output_initial_comment",self.output_initial_comment)
+
+self.output_newline = self.initConfigParam(
+    "output_newline",self.output_newline)
+
+self.read_only = self.initBooleanConfigParam(
+    "read_only",self.read_only)
+
+self.relative_path_base_directory = self.initConfigParam(
+    "relative_path_base_directory",self.relative_path_base_directory)
+    
+self.redirect_execute_script_output_to_log_pane = self.initBooleanConfigParam(
+    "redirect_execute_script_output_to_log_pane",
+    self.redirect_execute_script_output_to_log_pane)
+    
+self.remove_sentinels_extension = self.initConfigParam(
+    "remove_sentinels_extension",self.remove_sentinels_extension)
+
+self.save_clears_undo_buffer = self.initBooleanConfigParam(
+    "save_clears_undo_buffer",self.save_clears_undo_buffer)
+    
+self.stylesheet = self.initConfigParam(
+    "stylesheet",self.stylesheet)
+    
+encoding = self.initConfigParam(
+    "tk_encoding",self.tkEncoding)
+    
+if encoding and len(encoding) > 0: # May be None.
+    if g.isValidEncoding(encoding):
+        self.tkEncoding = encoding
+    else:
+        g.es("bad tk_encoding: " + encoding)
+        
+# New in 4.2
+self.trailing_body_newlines = self.initConfigParam(
+    "trailing_body_newlines",self.trailing_body_newlines)
+    
+self.use_plugins = self.initBooleanConfigParam(
+    "use_plugins",self.use_plugins)
+
+self.use_psyco = self.initBooleanConfigParam(
+    "use_psyco",self.use_psyco)
+    
+self.undo_granularity = self.initConfigParam(
+    "undo_granularity",self.undo_granularity)
+
+# New in 4.2
+self.write_strips_blank_lines = self.initBooleanConfigParam(
+    "write_strips_blank_lines",self.write_strips_blank_lines)
+    
+#g.trace("write_strips_blank_lines",self.write_strips_blank_lines)
+#g.trace("trailing_body_newlines",self.trailing_body_newlines)
+#@nonl
+#@-node:ekr.20031218072017.1421:<< get config options >>
+#@-node:ekr.20040930075920.1:Common to both options
+#@+node:ekr.20040718050922:(trailing_body_newlines option)
+@color
+#@nonl
+#@+node:ekr.20040720105309:Notes
+@killcolor
+
+My first idea was to do this in the body text setters.  However, this converts everything when reading any .leo file, and that is _very_ slow.  It also appears to be very dangerous.
+#@nonl
+#@-node:ekr.20040720105309:Notes
+#@-node:ekr.20040718050922:(trailing_body_newlines option)
+#@+node:ekr.20040720075446.1:(write_strips_blank_lines option)
+#@+node:ekr.20031218072017.2134:putCodeLine
+def putCodeLine (self,s,i):
+    
+    """Put a normal code line."""
+    
+    at = self
+    
+    # Put @verbatim sentinel if required.
+    k = g.skip_ws(s,i)
+    if g.match(s,k,self.startSentinelComment + '@'):
+        self.putSentinel("@verbatim")
+
+    j = g.skip_line(s,i)
+    line = s[i:j]
+
+    # g.app.config.write_strips_blank_lines
+    if 0: # 7/22/04: Don't put any whitespace in otherwise blank lines.
+        if line.strip(): # The line has non-empty content.
+            if not at.raw:
+                at.putIndent(at.indent)
+        
+            if line[-1:]=="\n":
+                at.os(line[:-1])
+                at.onl()
+            else:
+                at.os(line)
+        elif line and line[-1] == '\n':
+            at.onl()
+        else:
+            g.trace("Can't happen: completely empty line")
+    else:
+        # 1/29/04: Don't put leading indent if the line is empty!
+        if line and not at.raw:
+            at.putIndent(at.indent)
+    
+        if line[-1:]=="\n":
+            at.os(line[:-1])
+            at.onl()
+        else:
+            at.os(line)
+#@nonl
+#@-node:ekr.20031218072017.2134:putCodeLine
+#@-node:ekr.20040720075446.1:(write_strips_blank_lines option)
+#@-node:EKR.20040603092958.1:Add new options for handling newlines in body text
+#@-node:ekr.20040930075920:Whitespace options
+#@+node:ekr.20041022083005.8:Script to catch mixed tab & space in derived files
+import glob
+
+@others
+
+dir = c.frame.openDirectory
+files = glob.glob('%s\*.py' % dir)
+
+n = 0
+for name in files:
+    f = file(name)
+    lines = f.readlines()
+    # print '%5d %s' % (len(lines),name)
+    f.close()
+    check(name,lines)
+    n += 1
+print 'done.  checked %d files' % (n)
+#@nonl
+#@+node:ekr.20050917133402:check
+def check(name,lines):
+    
+    n = 0
+    for line in lines:
+        n += 1
+        i = g.skip_ws(line,0)
+        lws = line[0:i]
+        if lws:
+            if lws.find(' ') > -1 and lws.find('\t') > -1:
+                print '%20s %5d %s' % (name,n,repr(line))
+#@nonl
+#@-node:ekr.20050917133402:check
+#@-node:ekr.20041022083005.8:Script to catch mixed tab & space in derived files
+#@-node:ekr.20040919182750.1:Better handling of whitespace (cvs fiendly)
+#@+node:ekr.20050831131028:opml
+#@+node:ekr.20050831131452:Original post
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3280949
+By: billp9619
+
+>>Making Leo a friendly part of the opml world has the potential to be very
+important to Leo. <<
+
+This is probably point 5. and covers the implementation of opml features as
+exposed in Leo.
+
+Because Leo is highly scripted there may be many requests... currently out on
+the OPML list... that are solveable....such as how to see their outlines as
+HTML without passing thru the OPML web server /host. BTW...all this new opml
+stuff is only a week or two in production. The first message on
+http://groups.yahoo.com/group/opml-newbies/
+is July 25.
+
+>> The question of whether to duplicate body text in <outline> elements
+is minor<<
+
+Good. 
+
+Really, the opml tools are pretty much raw text/xml  and I was thinking the
+default fallback is ... all clone text is "duplicate". If you want clones then
+you will take care to only edit them in Leo. But if opml users all know and
+use clones routinely in other editors,  then this is good news for opml
+as technology.
+
+>>more complicated than it needs to be<<
+
+Well, both Leo and opml have only a few elements and each primarilly uses one
+which recusively nests to make up the outline portion. I suppose body nodes
+could be included more directly in headlines ... allowing un-numbered headlines
+basically, ... but I am not sure that the current way is inferior
+or complicated.
+
+ A simpler (forgiving?) format might make it easier to create with external
+apps and encourage transforming other xml to Leo via XSLT. It would have to
+just "work".
+
+(One thing about Leo's bias towards elements to contain markup, versus attributes,
+is that ...you can cheat a little on escaping &quot; in vh or t nodes ?...which
+makes code blocks smaller in the Leo xml.)
+
+Your list above is pretty much how I see it as well.
+
+regards,
+
+bill p
+
+#@-node:ekr.20050831131452:Original post
+#@+node:ekr.20050831131452.1:opml attributes v elements
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3282460
+By: billp9619
+
+Looking at some discussion of outline formats there was a remark that because
+opml places all text in attributes it is limited in not being able to contan
+other elements. On xml-dev I also saw some advice about opml followed by the
+comment that it is not a good format.
+
+opml is crippled in this regard but  Leo only restricts itself as a choice in
+order to  discern leo xml from content.(out of necessity we know).
+
+Of course with xml you can mix vocabularies based on the use of namespaces.
+By becoming namespace aware Leo could be adapted for non-escaped markup. The
+purpose then is xml parsing of leo as a standard container of other xml. I do
+not believe this is unthinkable  for some future capabilities... especially
+if such nodes would contain exclusively xml from another namespace.
+
+Just interesting that leo's format is more versatile than opml, 
+but, ...by choice for its own purposes, ...
+ is in this part "backward" compatible with opml. :)  
+
+regards,
+
+bill p
+#@-node:ekr.20050831131452.1:opml attributes v elements
+#@+node:ekr.20050912063133:@url http://sourceforge.net/forum/message.php?msg_id=3273977
+#@-node:ekr.20050912063133:@url http://sourceforge.net/forum/message.php?msg_id=3273977
+#@+node:ekr.20050912065811:@url http://sourceforge.net/forum/message.php?msg_id=3279900 (summary)
+#@-node:ekr.20050912065811:@url http://sourceforge.net/forum/message.php?msg_id=3279900 (summary)
+#@+node:ekr.20050915062404:My post
 @nocolor
 
-http://sourceforge.net/forum/message.php?msg_id=3575014
-By: ktenney
+Hi,
 
-> it seems my Leo file must have a @button Unit Test  
+I am the author of Leo http://webpages.charter.net/edreamleo/front.html an outline editor supporting clones http://webpages.charter.net/edreamleo/intro.html#clones-views.
 
-Good point. I'll add a run-unit-test command soon.
+I am interested in having Leo be able to read and write opml files.  My understanding is that applications are free to use attributes of <outline> elements as they please, but I am wondering whether there are guidelines or existing conventions for representing clones.  Have any namespaces been defined for that purpose?
 
-> the @test output goes to the console.
+Thanks.
 
-It goes to sys.stderr, iirc.  Perhaps run-unit-test should support this setting:
-
-@bool unit_test_output_to_log_pane = True
+Edward
+#@-node:ekr.20050915062404:My post
+#@-node:ekr.20050831131028:opml
+#@+node:ekr.20041022091645.4:Pymacs
+#@+node:ekr.20040125121407:Postings
+@nocolor
 #@nonl
-#@-node:ekr.20060214072931:Improve unit testing
-#@+node:ekr.20060522084039:Create a customize_debugger plugin
+#@+node:ekr.20040125121407.1:randomandy
+http://sourceforge.net/forum/message.php?msg_id=2389876
+By: randomandy
+
+Is it only me who sees this as a question on how to reinvent the wheel? (or
+in the case of emacs, how to reinvent the <i>everything</i>.)
+
+Leo and Python both seem so well suited as wonderful hierarchal glue programs.
+And both are so elegant in the way their simple functionality brings such power
+and order to the cause. It just seems it would be a shame to take something
+so novel and unique and try to turn it into <i>yet another</i> huge text editor.
+
+I'm with <A HREF="http://sourceforge.net/forum/message.php?msg_id=2345873">Danny
+</A> on this one. The ideal solution is to find the most elegant and seamless
+way to splice one's own beloved text editor (or multipurpose editor/OS) in with
+the Leo paradigm. Have Leo hand off the text duties to the editor, or have the
+editor deliver heirarchy commands to Leo.
+
+I'm also quite curious if this makes a good tie in with SciTE. SciTE produces
+stunningly readible language highlighting/formatting. Could it be employed for
+basic cell text display, and then for heavier editing, a keystroke or button
+could open the cell text in one's preferred weapons grade text editor?
+
+Scintilla also has a similarly beautiful code-to-html and code-to-pdf capability
+that seems very suited to the literary part of the Leo paradigm: publication.
+It would be nice if that code could be exploited as well.
+
+This Leo is really a marvelous work. It's transforming the way I think (i.e.
+making it possible again). Nice work, Edward.
+#@-node:ekr.20040125121407.1:randomandy
+#@+node:ekr.20040125121407.2:dannyobrien
+By: dannyobrien ( danny o'brien ) 
+ RE: What would it take to turn Leo into Emacs   
+2003-12-23 09:18  
+
+ I agree with the embedding; I've used the vim plugin and it works well, but actually embedding the editor directly into the text field of leo (and allowing a range of keyboard shortcuts for eg headline editing) would be perfect.
+
+There is some support for this in gvim, the GUI version of vim that comes as standard. This can be run so as its GUI is "embedded" in another GTK widget, using that library's GtkSocket/GtkPlug system. A quick demo of that (and how to do it in python) is here:
+
+http://www.daa.com.au/pipermail/pygtk/2003-October/006185.html
+
+To see this working with gvim, run the second (socket.py) program on that page then type
+
+gvim --socketid <number generated by socket.py>
+
+I'm not sure how you could do this in other widget libraries - I don't know much about X Windows, but I suppose it would need support in vim as well as the widget set.
+ 
+#@-node:ekr.20040125121407.2:dannyobrien
+#@+node:ekr.20040125121407.3:mdawson
+http://sourceforge.net/forum/message.php?msg_id=2388448
+By: mdawson
+
+I use XEmacs as my text editor.  The first thing I did when
+evaluating Leo was to set up "open with" to use XEmacs for editing
+Leo body text.
+
+My progress so far:
+
+- my Open_With Plugin opens a Leo node as a foreground buffer in
+XEmacs, or a background (invisible) buffer in XEmacs.
+
+- my Open_Tree Plugin opens a sub-tree of Leo nodes as background
+buffers in XEmacs.
+
+- my filename modification plugin changes the temporary file names
+used by Leo so that they can be spotted more easily in an XEmacs
+buffer listing (e.g. ibuffer).
+
+- an elisp function to kill all XEmacs Leo buffers at once.
+
+- another elisp function to indent and unindent the Leo comments in
+derived Python source, which improves the readability of code.
+
+- my setup of the elisp Multiple-Major-Modes XEmacs package, so that
+XEmacs is in text-mode in Leo @doc sections, and the correct
+language mode in @code sections.
+
+Any of these might be able to be adapted for your own use. They
+should all work with Emacs as well as XEmacs, but I've not tested
+that.
+
+These are all outlined in Appendix "C. XEmacs Text Editor" of the
+document at:
+    http://devguide.leo.marshallresearch.ca
+
+and the Leo outline that contains them is available
+at:
+    http://leo.marshallresearch.ca
+
+
+    ----------------------------------------
+    Michael Dawson
+
+ 
+#@-node:ekr.20040125121407.3:mdawson
+#@-node:ekr.20040125121407:Postings
+#@+node:ekr.20041022144159:Q: Pymacs bridge
+I'm trying to use the Pymacs bridge to add a symbol completion facility to
+Emacs's python-mode.  Neither the Python nor Emacs Lisp portions are all
+that complex, but I'm having trouble passing a list of strings from Emacs
+Lisp into Python.  On the Emacs Lisp side it looks like this:
+
+    (pymacs-load "pycomplete")
+
+    (defun py-complete ()
+      (interactive)
+      (pycomplete-pycomplete (py-symbol-near-point)
+                             (py-find-global-imports)))
+
+(py-find-global-imports) returns a (Lisp) list of strings, e.g.:
+
+    ("import time", "import sys")
+
+On the Python side I have this function:
+
+    def pycomplete(s, imports=None):
+        completions = get_all_completions(s, imports)
+        dots = s.split(".")
+        return os.path.commonprefix([k[len(dots[-1]):] for k in completions])
+
+Unfortunately, the imports arg does not come across as a Python list of
+strings (s does come across the bridge as a normal Python string).  Its
+repr() prints out like this:
+
+    lisp('("import time")')
+
+What do I need to do to convert that object into a true Python list of
+strings?  I'm afraid I don't quite understand the description of the lisp
+object in the Pymacs docs.  I tried imports.value() but that just gave me
+
+    (aref pymacs-lisp 0)
+
+Any help appreciated...
+
+Skip
+#@nonl
+#@-node:ekr.20041022144159:Q: Pymacs bridge
+#@+node:ekr.20041022144159.1:A: pymacs-forget-mutability
+"""
+Proper Emacs Lisp lists, those for which the cdr of last cell is nil, are
+normally transmitted opaquely to Python. If pymacs-forget-mutability is
+set, or if Python later asks for these to be expanded, proper Emacs Lisp
+lists get converted into Python lists, if we except the empty list, which
+is always converted as Python None. In the other direction, Python lists
+are always converted into proper Emacs Lisp lists.
+"""
+
+So, maybe try
+
+    (defun py-complete ()
+      (interactive)
+      (let ((pymacs-forget-mutability t)) 
+	(pycomplete-pycomplete (py-symbol-near-point)
+                               (py-find-global-imports))))
+#@-node:ekr.20041022144159.1:A: pymacs-forget-mutability
+#@-node:ekr.20041022091645.4:Pymacs
+#@+node:ekr.20031218072017.801:Zipped .leo files
+#@+node:ekr.20050428062312:Request 1
 @nocolor
 
-- define a debugger1 hook so the plugin can override the standard debug code.
+By: samcollett ( Sam Collett ) 
+ Compressed LEO files   
+2003-01-07 16:57
+
+
+Would it be possible to have a new file format that was basically a compressed
+version of LEO files? Maybe using the gzip compression method. You could then
+save a lot of space when you do large files. Not being a professional
+programmer myself (I mainly dabble in web design - HTML and Active Server
+Pages) how difficult would this be to implement? You would just output using a
+different file extension so users of the older versions can still use files
+with the LEO extension.
+#@-node:ekr.20050428062312:Request 1
+#@+node:ekr.20040226092546:Request 2
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=2442772
+By: ejoy
+
+I made an experiment last night. I replaced the call to open()in leofilecommand.py
+with a call to gzip.open().
+
+The LeoPy.leo file saved this way is only 600K! And there is no significant
+speed down in saving.
+
+I think it is a good idea to add compression support for load/save .leo files.
+When reading or writing file with name ending with ".leo.gz", leo can call gzip
+module to uncompress/compress the file, saving a lot of disk space.
+
+What do you think of this?
 #@nonl
-#@-node:ekr.20060522084039:Create a customize_debugger plugin
-#@-node:ekr.20060522101421:To Do 4.4.1 b1
+#@-node:ekr.20040226092546:Request 2
+#@+node:ekr.20031218072017.2297:open (leoFileCommands)
+def open(self,theFile,fileName,readAtFileNodesFlag=True,silent=False):
+
+    c = self.c ; frame = c.frame
+    # Read the entire file into the buffer
+    self.fileBuffer = theFile.read() ; theFile.close()
+    self.fileIndex = 0
+    << Set the default directory >>
+    self.topPosition = None
+    ok, ratio = self.getLeoFile(
+        fileName,
+        readAtFileNodesFlag=readAtFileNodesFlag,
+        silent=silent)
+    frame.resizePanesToRatio(ratio,frame.secondary_ratio)
+    if 0: # 1/30/04: this is useless.
+        if self.topPosition: 
+            c.setTopVnode(self.topPosition)
+    # Delete the file buffer
+    self.fileBuffer = ""
+    return ok
+#@nonl
+#@+node:ekr.20031218072017.2298:<< Set the default directory >>
+@ The most natural default directory is the directory containing the .leo file that we are about to open.  If the user has specified the "Default Directory" preference that will over-ride what we are about to set.
+@c
+
+theDir = g.os_path_dirname(fileName)
+
+if len(theDir) > 0:
+    c.openDirectory = theDir
+#@nonl
+#@-node:ekr.20031218072017.2298:<< Set the default directory >>
+#@-node:ekr.20031218072017.2297:open (leoFileCommands)
+#@+node:ekr.20050428063105:newOpen (From chapters.py)
+oldOpen = leoFileCommands.fileCommands.open
+
+def newOpen( self,file,fileName,readAtFileNodesFlag=True,silent=False):
+
+    global iscStringIO
+    c = self.c
+    
+    if zipfile.is_zipfile( fileName ):
+        iscStringIO = True
+        chapters = openChaptersFile( fileName )
+        g.es( str( len( chapters ) ) + " Chapters To Read", color = 'blue' )
+        insertChapters( chapters, c.frame, c )
+        g.es( "Finished Reading Chapters", color = 'blue' )
+        iscStringIO = False
+        return True
+
+    return oldOpen(self,file,fileName,readAtFileNodesFlag,silent)
+#@nonl
+#@-node:ekr.20050428063105:newOpen (From chapters.py)
+#@-node:ekr.20031218072017.801:Zipped .leo files
+#@+node:ekr.20060329102951:@ref
+@nocolor
+#@nonl
+#@+node:ekr.20060329102951.1:My summary post
+http://sourceforge.net/forum/message.php?msg_id=3598136
+
+> It appears that @ref nodes introduce a flexibility that can not be simulated (at all?) with clones.  
+ 
+Now that something like @ref appears necessary, it is so much easier to see how @ref is useful :-) 
+ 
+1. @ref is an explicit link (arc) that creates the links of a general graph structure explictily. 
+ 
+The simplest cycle is: 
+ 
+- root 
+..- a 
+.... - @ref b 
+..- b 
+.... - @ref a 
+ 
+This is not possible with clones! No more mumbling about being able to represent such links in uA's! 
+ 
+2. @ref allows users to compose documents from 'atomic' pieces of text properly. That is, adding a 'virtual' child to a piece of text does not add it to all other uses of that text in (possibly unrelated) documents. This vastly increases the flexibility of rst3 plugin. 
+ 
+I suspect other essential uses of @ref will appear. I am sure we can declare the 'post-leo LP tool' project a great success already :-) 
+ 
+Edward 
+#@-node:ekr.20060329102951.1:My summary post
+#@+node:ekr.20060329102951.2:Reply
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3650005
+By: itsme213
+
+Imho ...
+
+There will not be any "arbitrary graph" from @ref. Instead there is a forest
+of trees, and across trees, some nodes are same_as some other nodes (caused
+by @ref). same_as is transitive. Quite likely the roots of all trees are same_as.
+There may need to be some rules to ensure things make structural sense. Children
+of a node are just that -- children of that node.
+
+There will be a totally separate Merge node whose children will be the union
+of the children of all the nodes it merges. A Merge node is, itself, the ordinary child of some
+node.
+
+Tree traversals will be tree traversals.
+
+Hope that did not muddy the waters even more ... 
+#@-node:ekr.20060329102951.2:Reply
+#@-node:ekr.20060329102951:@ref
+#@-node:ekr.20060209104733:Big and overdue
+#@+node:ekr.20060116073229:To do 4.4.x
 #@+node:ekr.20060227163215:Bugs (minor)
 #@+node:ekr.20060116083043:Use special Help menu on the Mac
 # http://sourceforge.net/forum/message.php?msg_id=3237845
@@ -1741,6 +2205,1767 @@ IndentationError: unindent does not match any outer indentation level (line
 #@+node:ekr.20060325091249:@shortcut does not work
 #@-node:ekr.20060325091249:@shortcut does not work
 #@-node:ekr.20060227163215:Bugs (minor)
+#@+node:ekr.20060211093935:Support for @list and on-enter-mode
+#@-node:ekr.20060211093935:Support for @list and on-enter-mode
+#@+node:ekr.20060413065803:searches 4
+#@+node:ekr.20060122183544:Improve isearch
+@nocolor
+
+- (done) Handle backspace for isearch: keep a stack of previous matches.
+- (done) Allow cross-node isearches.
+
+@color
+#@nonl
+#@+node:ekr.20051023132350:getLabel
+def getLabel (self,ignorePrompt=False):
+    
+    k = self ; w = self.widget
+    if not w: return ''
+    
+    if self.useTextWidget:
+        w.update_idletasks()
+        s = w.get('1.0','end-1c')
+    else:
+        s = k.svar and k.svar.get()
+
+    if ignorePrompt:
+        return s[len(k.mb_prefix):]
+    else:
+        return s or ''
+#@nonl
+#@-node:ekr.20051023132350:getLabel
+#@+node:ekr.20050920085536.38:updateLabel
+def updateLabel (self,event):
+
+    '''Mimic what would happen with the keyboard and a Text editor
+    instead of plain accumalation.'''
+    
+    k = self ; c = k.c ; w = self.widget
+    ch = (event and event.char) or ''
+    keysym = (event and event.keysym) or ''
+    trace = self.trace_minibuffer and not g.app.unitTesting
+
+    trace and g.trace('ch',ch,'keysym',keysym,'k.stroke',k.stroke)
+    
+    if ch and ch not in ('\n','\r'):
+        if self.useTextWidget:
+            c.widgetWantsFocusNow(w)
+            i,j = g.app.gui.getTextSelection(w)
+            if i != j:
+                w.delete(i,j)
+            if ch == '\b':
+                s = w.get('1.0','end-1c')
+                if len(s) > len(k.mb_prefix):
+                    w.delete(i+'-1c')
+            else:
+                w.insert('insert',ch)
+            # g.trace(k.mb_prefix)       
+        else:
+            # Just add the character.
+            k.setLabel(k.getLabel() + ch)
+#@nonl
+#@-node:ekr.20050920085536.38:updateLabel
+#@+node:ekr.20060127183752:masterKeyHandler & helper
+master_key_count = 0
+
+def masterKeyHandler (self,event,stroke=None):
+    
+    '''This is the handler for almost all key bindings.'''
+    
+    # g.trace(stroke,g.callers())
+    
+    k = self ; c = k.c
+    trace = c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
+
+    val = self.masterKeyHandlerHelper(event,stroke,trace)
+    if val and c and c.exists: # Ignore special keys.
+        c.frame.updateStatusLine()
+        c.masterFocusHandler()
+    if trace: g.trace('done:',repr(val))
+    return val
+#@nonl
+#@+node:ekr.20060205221734:masterKeyHandlerHelper
+def masterKeyHandlerHelper (self,event,stroke,trace):
+    
+    << define vars >>
+
+    if keysym in special_keys:
+        return None
+
+    << do key traces >>
+
+    # Handle keyboard-quit first.
+    if k.abortAllModesKey and stroke == k.abortAllModesKey:
+        return k.masterCommand(event,k.keyboardQuit,stroke,'keyboard-quit')
+
+    if k.inState():
+        # This will return unless k.autoCompleterStateHandler
+        # (called from k.callStateFunction) returns 'do-standard-keys'
+        << handle mode bindings >>
+
+    << handle per-pane bindings >>
+#@+node:ekr.20060321105403:<< define vars >>
+k = self ; c = k.c
+w = event and event.widget
+w_name = c.widget_name(w)
+keysym = event.keysym or ''
+state = k.state.kind
+special_keys = (
+    'Caps_Lock', 'Num_Lock', 'Control_L', 'Alt_L',
+    'Shift_L', 'Control_R', 'Alt_R','Shift_R','Win_L','Win_R')
+#@nonl
+#@-node:ekr.20060321105403:<< define vars >>
+#@+node:ekr.20060321105403.1:<< do key traces >>
+self.master_key_count += 1
+
+if trace:
+    if (self.master_key_count % 100) == 0:
+        g.printGcSummary(trace=True)
+    g.trace('keysym',repr(event.keysym or ''),'state',state)
+#@nonl
+#@-node:ekr.20060321105403.1:<< do key traces >>
+#@+node:ekr.20060321105403.2:<< handle mode bindings >>
+# First, honor minibuffer bindings for all except user modes.
+if state in ('getArg','getFileName','full-command','auto-complete'):
+    if k.handleMiniBindings(event,state,stroke):
+        return 'break'
+
+# Second, honor general modes.
+if state == 'getArg':
+    return k.getArg(event,stroke=stroke)
+elif state == 'getFileName':
+    return k.getFileName(event)
+elif state in ('full-command','auto-complete'):
+    # Do the default state action.
+    if trace: g.trace('calling state function')
+    val = k.callStateFunction(event) # Calls end-command.
+    if val != 'do-standard-keys': return 'break'
+        
+# Third, pass keys to user modes.
+else:
+    d =  k.masterBindingsDict.get(state)
+    if d:
+        b = d.get(stroke)
+        if b:
+            if trace: g.trace('calling generalModeHandler')
+            k.generalModeHandler (event,
+                commandName=b.commandName,func=b.func,
+                modeName=state,nextMode=b.nextMode)
+        elif not k.handleMiniBindings(event,state,stroke):
+            if trace: g.trace('calling modeHelp')
+            k.modeHelp(event)
+    else:
+        # New in 4.4b4.
+        handler = k.getStateHandler()
+        if handler:
+            handler(event)
+        else:
+            g.trace('No state handler for %s' % state)
+    return 'break'
+#@nonl
+#@-node:ekr.20060321105403.2:<< handle mode bindings >>
+#@+node:ekr.20060321105403.3:<< handle per-pane bindings >>
+for key,name in (
+    # Order here is similar to bindtags order.
+    ('body','body'),
+    ('text','head'), # Important: text bindings in head before tree bindings.
+    ('tree','head'),
+    ('tree','canvas'),
+    ('log', 'log'),
+    ('text','log'),
+    ('text',None), ('all',None),
+):
+    if (
+        name and w_name.startswith(name) or
+        key == 'text' and g.app.gui.isTextWidget(w) or
+        key == 'all'
+    ):
+        d = k.masterBindingsDict.get(key)
+        # g.trace(key,name,d and len(d.keys()))
+        if d:
+            b = d.get(stroke)
+            if b:
+                if trace: g.trace('%s found %s = %s' % (key,b.stroke,b.commandName))
+                return k.masterCommand(event,b.func,b.stroke,b.commandName)
+
+if k.ignore_unbound_non_ascii_keys and len(event.char) > 1:
+    # (stroke.find('Alt+') > -1 or stroke.find('Ctrl+') > -1)):
+    if trace: g.trace('ignoring unbound non-ascii key')
+    return 'break'
+else:
+    if trace: g.trace(repr(stroke),'no func')
+    return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
+#@nonl
+#@-node:ekr.20060321105403.3:<< handle per-pane bindings >>
+#@-node:ekr.20060205221734:masterKeyHandlerHelper
+#@+node:ekr.20060309065445:handleMiniBindings
+def handleMiniBindings (self,event,state,stroke):
+    
+    k = self ; c = k.c
+    trace = c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
+    
+    if not state.startswith('auto-'):
+        d = k.masterBindingsDict.get('mini')
+        b = d.get(stroke)
+        if b:
+            if trace: g.trace(repr(stroke),'mini binding',b.commandName)
+            # Pass this on for macro recording.
+            k.masterCommand(event,b.func,stroke,b.commandName)
+            c.minibufferWantsFocus()
+            return True
+        
+    return False
+#@nonl
+#@-node:ekr.20060309065445:handleMiniBindings
+#@-node:ekr.20060127183752:masterKeyHandler & helper
+#@+node:ekr.20060104110233:generalModeHandler
+def generalModeHandler (self,event,
+    commandName=None,func=None,modeName=None,nextMode=None):
+    
+    '''Handle a mode defined by an @mode node in leoSettings.leo.'''
+
+    k = self ; c = k.c
+    state = k.getState(modeName)
+    trace = c.config.getBool('trace_modes')
+    
+    if trace: g.trace(modeName,state)
+   
+    if state == 0:
+        self.initMode(event,modeName)
+        k.inputModeName = modeName
+        k.setState(modeName,1,handler=k.generalModeHandler)
+        if c.config.getBool('showHelpWhenEnteringModes'):
+            k.modeHelp(event)
+        else:
+            c.frame.log.hideTab('Mode')
+        if k.useTextWidget:
+            c.minibufferWantsFocus()
+        else:
+            c.restoreRequestedFocus()
+    elif not func:
+        g.trace('No func: improper key binding')
+        return 'break'
+    else:
+        if trace: g.trace(modeName,state,commandName)
+        if commandName == 'mode-help':
+            func(event)
+        else:
+            savedModeName = k.inputModeName # Remember this: it may be cleared.
+            # nextMode = bunch.nextMode
+            self.endMode(event)
+            if c.config.getBool('trace_doCommand'):
+                g.trace(func.__name__)
+            func(event)
+            if nextMode in (None,'none'):
+                # Do *not* clear k.inputModeName or the focus here.
+                # func may have put us in *another* mode.
+                pass
+            elif nextMode == 'same':
+                self.reinitMode(modeName) # Re-enter this mode.
+                k.setState(modeName,1,handler=k.generalModeHandler)
+            else:
+                self.initMode(event,nextMode) # Enter another mode.
+
+    return 'break'
+#@nonl
+#@-node:ekr.20060104110233:generalModeHandler
+#@+node:ekr.20051023094009:Search classes
+#@+node:ekr.20060123125256:class minibufferFind (the findHandler)
+class minibufferFind:
+
+    '''An adapter class that implements minibuffer find commands using the (hidden) Find Tab.'''
+
+    @others
+#@nonl
+#@+node:ekr.20060123125317.2: ctor (minibufferFind)
+def __init__(self,c,finder):
+
+    self.c = c
+    self.k = k = c.k
+    self.w = None
+    self.finder = finder
+    self.findTextList = []
+    self.changeTextList = []
+    
+    commandName = 'replace-string'
+    s = k.getShortcutForCommandName(commandName)
+    s = k.prettyPrintKey(s)
+    s = k.shortcutFromSetting(s)
+    self.replaceStringShortcut = s
+#@nonl
+#@-node:ekr.20060123125317.2: ctor (minibufferFind)
+#@+node:ekr.20060124140114: Options
+#@+node:ekr.20060124123133:setFindScope
+def setFindScope(self,where):
+    
+    '''Set the find-scope radio buttons.
+    
+    `where` must be in ('node-only','entire-outline','suboutline-only'). '''
+    
+    h = self.finder
+    
+    if where in ('node-only','entire-outline','suboutline-only'):
+        var = h.dict['radio-search-scope'].get()
+        if var:
+            h.dict["radio-search-scope"].set(where)
+    else:
+        g.trace('oops: bad `where` value: %s' % where)
+#@nonl
+#@-node:ekr.20060124123133:setFindScope
+#@+node:ekr.20060124122844:setOption
+def setOption (self, ivar, val):
+    
+    h = self.finder
+
+    if ivar in h.intKeys:
+        if val is not None:
+            var = h.dict.get(ivar)
+            var.set(val)
+            # g.trace('%s = %s' % (ivar,val))
+
+    elif not g.app.unitTesting:
+        g.trace('oops: bad find ivar %s' % ivar)
+#@nonl
+#@-node:ekr.20060124122844:setOption
+#@+node:ekr.20060125082510:getOption
+def getOption (self,ivar,verbose=False):
+    
+    h = self.finder
+    
+    var = h.dict.get(ivar)
+    if var:
+        val = var.get()
+        verbose and g.trace('%s = %s' % (ivar,val))
+        return val
+    else:
+        g.trace('bad ivar name: %s' % ivar)
+        return None
+#@nonl
+#@-node:ekr.20060125082510:getOption
+#@+node:ekr.20060125074939:showFindOptions
+def showFindOptions (self):
+    
+    '''Show the present find options in the status line.'''
+    
+    frame = self.c.frame ; z = []
+    # Set the scope field.
+    head  = self.getOption('search_headline')
+    body  = self.getOption('search_body')
+    scope = self.getOption('radio-search-scope')
+    d = {'entire-outline':'all','suboutline-only':'tree','node-only':'node'}
+    scope = d.get(scope) or ''
+    head = g.choose(head,'head','')
+    body = g.choose(body,'body','')
+    sep = g.choose(head and body,'+','')
+
+    frame.clearStatusLine()
+    s = '%s%s%s %s  ' % (head,sep,body,scope)
+    frame.putStatusLine(s,color='blue')
+
+    # Set the type field.
+    script = self.getOption('script_search')
+    regex  = self.getOption('pattern_match')
+    change = self.getOption('script_change')
+    if script:
+        s1 = '*Script-find'
+        s2 = g.choose(change,'-change*','*')
+        z.append(s1+s2)
+    elif regex: z.append('regex')
+    
+    table = (
+        ('reverse',         'reverse'),
+        ('ignore_case',     'noCase'),
+        ('whole_word',      'word'),
+        ('wrap',            'wrap'),
+        ('mark_changes',    'markChg'),
+        ('mark_finds',      'markFnd'),
+    )
+        
+    for ivar,s in table:
+        val = self.getOption(ivar)
+        if val: z.append(s)
+
+    frame.putStatusLine(' '.join(z))
+#@nonl
+#@-node:ekr.20060125074939:showFindOptions
+#@+node:ekr.20060124135401:toggleOption
+def toggleOption (self, ivar):
+    
+    h = self.finder
+
+    if ivar in h.intKeys:
+        var = h.dict.get(ivar)
+        val = not var.get()
+        var.set(val)
+        # g.trace('%s = %s' % (ivar,val),var)
+    else:
+        g.trace('oops: bad find ivar %s' % ivar)
+#@nonl
+#@-node:ekr.20060124135401:toggleOption
+#@+node:ekr.20060205105950:setupChangePattern
+def setupChangePattern (self,pattern):
+    
+    h = self.finder ; t = h.change_ctrl
+    
+    s = g.toUnicode(pattern,g.app.tkEncoding)
+    
+    t.delete('1.0','end')
+    t.insert('1.0',s)
+    
+    h.update_ivars()
+#@nonl
+#@-node:ekr.20060205105950:setupChangePattern
+#@+node:ekr.20060125091234:setupSearchPattern
+def setupSearchPattern (self,pattern):
+    
+    h = self.finder ; t = h.find_ctrl
+    
+    s = g.toUnicode(pattern,g.app.tkEncoding)
+    
+    t.delete('1.0','end')
+    t.insert('1.0',s)
+    
+    h.update_ivars()
+#@nonl
+#@-node:ekr.20060125091234:setupSearchPattern
+#@-node:ekr.20060124140114: Options
+#@+node:ekr.20060210180352:addChangeStringToLabel
+def addChangeStringToLabel (self,protect=True):
+    
+    c = self.c ; k = c.k ; h = self.finder ; t = h.change_ctrl
+    
+    c.frame.log.selectTab('Find')
+    c.minibufferWantsFocusNow()
+    
+    s = t.get('1.0','end')
+
+    while s.endswith('\n') or s.endswith('\r'):
+        s = s[:-1]
+
+    k.extendLabel(s,select=True,protect=protect)
+#@-node:ekr.20060210180352:addChangeStringToLabel
+#@+node:ekr.20060210164421:addFindStringToLabel
+def addFindStringToLabel (self,protect=True):
+    
+    c = self.c ; k = c.k ; h = self.finder ; t = h.find_ctrl
+    
+    c.frame.log.selectTab('Find')
+    c.minibufferWantsFocusNow()
+
+    s = t.get('1.0','end')
+    while s.endswith('\n') or s.endswith('\r'):
+        s = s[:-1]
+
+    k.extendLabel(s,select=True,protect=protect)
+#@-node:ekr.20060210164421:addFindStringToLabel
+#@+node:ekr.20060128080201:cloneFindAll
+def cloneFindAll (self,event):
+
+    k = self.k ; tag = 'clone-find-all'
+    state = k.getState(tag)
+
+    if state == 0:
+        self.w = event and event.widget
+        self.setupArgs(forward=None,regexp=None,word=None)
+        k.setLabelBlue('Clone Find All: ',protect=True)
+        k.getArg(event,tag,1,self.cloneFindAll)
+    else:
+        k.clearState()
+        k.resetLabel()
+        k.showStateAndMode()
+        self.generalSearchHelper(k.arg,cloneFindAll=True)
+#@nonl
+#@-node:ekr.20060128080201:cloneFindAll
+#@+node:ekr.20060204120158:findAgain
+def findAgain (self,event):
+
+    f = self.finder
+    
+    f.p = self.c.currentPosition()
+    f.v = self.finder.p.v
+
+    # This handles the reverse option.
+    return f.findAgainCommand()
+        
+#@nonl
+#@-node:ekr.20060204120158:findAgain
+#@+node:ekr.20060209064140:findAll
+def findAll (self,event):
+
+    k = self.k ; state = k.getState('find-all')
+    if state == 0:
+        self.w = event and event.widget
+        self.setupArgs(forward=True,regexp=False,word=True)
+        k.setLabelBlue('Find All: ',protect=True)
+        k.getArg(event,'find-all',1,self.findAll)
+    else:
+        k.clearState()
+        k.resetLabel()
+        k.showStateAndMode()
+        self.generalSearchHelper(k.arg,findAll=True)
+#@nonl
+#@-node:ekr.20060209064140:findAll
+#@+node:ekr.20060205105950.1:generalChangeHelper
+def generalChangeHelper (self,find_pattern,change_pattern):
+    
+    # g.trace(repr(change_pattern))
+    
+    c = self.c
+
+    self.setupSearchPattern(find_pattern)
+    self.setupChangePattern(change_pattern)
+    c.widgetWantsFocusNow(self.w)
+
+    self.finder.p = self.c.currentPosition()
+    self.finder.v = self.finder.p.v
+
+    # This handles the reverse option.
+    self.finder.findNextCommand()
+#@nonl
+#@-node:ekr.20060205105950.1:generalChangeHelper
+#@+node:ekr.20060124181213.4:generalSearchHelper
+def generalSearchHelper (self,pattern,cloneFindAll=False,findAll=False):
+    
+    c = self.c
+    
+    self.setupSearchPattern(pattern)
+    c.widgetWantsFocusNow(self.w)
+
+    self.finder.p = self.c.currentPosition()
+    self.finder.v = self.finder.p.v
+
+    if findAll:
+         self.finder.findAllCommand()
+    elif cloneFindAll:
+         self.finder.cloneFindAllCommand()
+    else:
+        # This handles the reverse option.
+        self.finder.findNextCommand()
+#@nonl
+#@-node:ekr.20060124181213.4:generalSearchHelper
+#@+node:ekr.20060210174441:lastStateHelper
+def lastStateHelper (self):
+    
+    k = self.k
+    k.clearState()
+    k.resetLabel()
+    k.showStateAndMode()
+#@nonl
+#@-node:ekr.20060210174441:lastStateHelper
+#@+node:ekr.20050920084036.113:replaceString
+def replaceString (self,event):
+
+    k = self.k ; tag = 'replace-string' ; state = k.getState(tag)
+    pattern_match = self.getOption ('pattern_match')
+    prompt = 'Replace ' + g.choose(pattern_match,'Regex','String')
+    if state == 0:
+        self.setupArgs(forward=None,regexp=None,word=None)
+        prefix = '%s: ' % prompt
+        self.stateZeroHelper(event,tag,prefix,self.replaceString)
+    elif state == 1:
+        self._sString = k.arg
+        self.updateFindList(k.arg)
+        s = '%s: %s With: ' % (prompt,self._sString)
+        k.setLabelBlue(s,protect=True)
+        self.addChangeStringToLabel()
+        k.getArg(event,'replace-string',2,self.replaceString,completion=False,prefix=s)
+    elif state == 2:
+        self.updateChangeList(k.arg)
+        self.lastStateHelper()
+        self.generalChangeHelper(self._sString,k.arg)
+#@-node:ekr.20050920084036.113:replaceString
+#@+node:ekr.20060124140224.3:reSearchBackward/Forward
+def reSearchBackward (self,event):
+
+    k = self.k ; tag = 're-search-backward' ; state = k.getState(tag)
+    
+    if state == 0:
+        self.setupArgs(forward=False,regexp=True,word=None)
+        self.stateZeroHelper(
+            event,tag,'Regexp Search Backward:',self.reSearchBackward,
+            escapes=[self.replaceStringShortcut])
+    elif k.getArgEscape:
+        # Switch to the replace command.
+        k.setState('replace-string',1,self.replaceString)
+        self.replaceString(event=None)
+    else:
+        self.updateFindList(k.arg)
+        self.lastStateHelper()
+        self.generalSearchHelper(k.arg)
+
+def reSearchForward (self,event):
+
+    k = self.k ; tag = 're-search-forward' ; state = k.getState(tag)
+    if state == 0:
+        self.setupArgs(forward=True,regexp=True,word=None)
+        self.stateZeroHelper(
+            event,tag,'Regexp Search:',self.reSearchForward,
+            escapes=[self.replaceStringShortcut])
+    elif k.getArgEscape:
+        # Switch to the replace command.
+        k.setState('replace-string',1,self.replaceString)
+        self.replaceString(event=None)
+    else:
+        self.updateFindList(k.arg)
+        self.lastStateHelper()
+        self.generalSearchHelper(k.arg)
+#@nonl
+#@-node:ekr.20060124140224.3:reSearchBackward/Forward
+#@+node:ekr.20060124140224.1:seachForward/Backward
+def searchBackward (self,event):
+
+    k = self.k ; tag = 'search-backward' ; state = k.getState(tag)
+
+    if state == 0:
+        self.setupArgs(forward=False,regexp=False,word=False)
+        self.stateZeroHelper(
+            event,tag,'Search Backward: ',self.searchBackward,
+            escapes=[self.replaceStringShortcut])
+    elif k.getArgEscape:
+        # Switch to the replace command.
+        k.setState('replace-string',1,self.replaceString)
+        self.replaceString(event=None)
+    else:
+        self.updateFindList(k.arg)
+        self.lastStateHelper()
+        self.generalSearchHelper(k.arg)
+
+def searchForward (self,event):
+
+    k = self.k ; tag = 'search-forward' ; state = k.getState(tag)
+
+    if state == 0:
+        self.setupArgs(forward=True,regexp=False,word=False)
+        self.stateZeroHelper(
+            event,tag,'Search: ',self.searchForward,
+            escapes=[self.replaceStringShortcut])
+    elif k.getArgEscape:
+        # Switch to the replace command.
+        k.setState('replace-string',1,self.replaceString)
+        self.replaceString(event=None)
+    else:
+        self.updateFindList(k.arg)
+        self.lastStateHelper()
+        self.generalSearchHelper(k.arg)
+#@nonl
+#@-node:ekr.20060124140224.1:seachForward/Backward
+#@+node:ekr.20060125093807:searchWithPresentOptions
+def searchWithPresentOptions (self,event):
+
+    k = self.k ; tag = 'search-with-present-options'
+    state = k.getState(tag)
+
+    if state == 0:
+        self.setupArgs(forward=None,regexp=None,word=None)
+        self.stateZeroHelper(
+            event,tag,'Search: ',self.searchWithPresentOptions,
+            escapes=[self.replaceStringShortcut])
+    elif k.getArgEscape:
+        # Switch to the replace command.
+        k.setState('replace-string',1,self.replaceString)
+        self.replaceString(event=None)
+    else:
+        self.updateFindList(k.arg)
+        k.clearState()
+        k.resetLabel()
+        k.showStateAndMode()
+        self.generalSearchHelper(k.arg)
+#@nonl
+#@-node:ekr.20060125093807:searchWithPresentOptions
+#@+node:ekr.20060124134356:setupArgs
+def setupArgs (self,forward=False,regexp=False,word=False):
+    
+    h = self.finder ; k = self.k
+    
+    if forward is None:
+        reverse = None
+    else:
+        reverse = not forward
+
+    for ivar,val,in (
+        ('reverse', reverse),
+        ('pattern_match',regexp),
+        ('whole_word',word),
+    ):
+        if val is not None:
+            self.setOption(ivar,val)
+            
+    h.p = p = self.c.currentPosition()
+    h.v = p.v
+    h.update_ivars()
+    self.showFindOptions()
+#@nonl
+#@-node:ekr.20060124134356:setupArgs
+#@+node:ekr.20060210173041:stateZeroHelper
+def stateZeroHelper (self,event,tag,prefix,handler,escapes=[]):
+
+    k = self.k
+    self.w = event and event.widget
+    k.setLabelBlue(prefix,protect=True)
+    self.addFindStringToLabel(protect=False)
+    
+    # g.trace(escapes,g.callers())
+    k.getArgEscapes = escapes
+    k.getArgEscape = None # k.getArg may set this.
+    k.getArg(event,tag,1,handler, # enter state 1
+        tabList=self.findTextList,completion=True,prefix=prefix)
+#@nonl
+#@-node:ekr.20060210173041:stateZeroHelper
+#@+node:ekr.20060224171851:updateChange/FindList
+def updateChangeList (self,s):
+
+    if s not in self.changeTextList:
+        self.changeTextList.append(s)
+        
+def updateFindList (self,s):
+
+    if s not in self.findTextList:
+        self.findTextList.append(s)
+#@nonl
+#@-node:ekr.20060224171851:updateChange/FindList
+#@+node:ekr.20060124140224.2:wordSearchBackward/Forward
+def wordSearchBackward (self,event):
+
+    k = self.k ; tag = 'word-search-backward' ; state = k.getState(tag)
+
+    if state == 0:
+        self.setupArgs(forward=False,regexp=False,word=True)
+        self.stateZeroHelper(event,tag,'Word Search Backward: ',self.wordSearchBackward)
+    else:
+        self.lastStateHelper()
+        self.generalSearchHelper(k.arg)
+
+def wordSearchForward (self,event):
+
+    k = self.k ; tag = 'word-search-forward' ; state = k.getState(tag)
+    
+    if state == 0:
+        self.setupArgs(forward=True,regexp=False,word=True)
+        self.stateZeroHelper(event,tag,'Word Search: ',self.wordSearchForward)
+    else:
+        self.lastStateHelper()
+        self.generalSearchHelper(k.arg)
+#@nonl
+#@-node:ekr.20060124140224.2:wordSearchBackward/Forward
+#@-node:ekr.20060123125256:class minibufferFind (the findHandler)
+#@+node:ekr.20051020120306.6:class findTab (leoFind.leoFind)
+class findTab (leoFind.leoFind):
+    
+    '''An adapter class that implements Leo's Find tab.'''
+
+    @others
+#@nonl
+#@+node:ekr.20051020120306.10:Birth & death
+#@+node:ekr.20051020120306.11:__init__
+def __init__(self,c,parentFrame):
+    
+    # g.trace('findTab')
+
+    # Init the base class...
+    leoFind.leoFind.__init__(self,c,title='Find Tab')
+    self.c = c
+    self.frame = self.outerFrame = self.top = None
+    
+    << create the tkinter intVars >>
+    
+    self.optionsOnly = c.config.getBool('show_only_find_tab_options')
+    
+    # These are created later.
+    self.find_ctrl = None
+    self.change_ctrl = None 
+    self.outerScrolledFrame = None
+
+    self.createFrame(parentFrame)
+    self.createBindings()
+    
+    self.init(c) # New in 4.3: init only once.
+#@nonl
+#@+node:ekr.20051020120306.12:<< create the tkinter intVars >>
+self.dict = {}
+
+for key in self.intKeys:
+    self.dict[key] = Tk.IntVar()
+
+for key in self.newStringKeys:
+    self.dict[key] = Tk.StringVar()
+    
+self.s_ctrl = Tk.Text() # Used by find.search()
+#@nonl
+#@-node:ekr.20051020120306.12:<< create the tkinter intVars >>
+#@-node:ekr.20051020120306.11:__init__
+#@+node:ekr.20051023181449:createBindings (findTab)
+def createBindings (self):
+    
+    c = self.c ; k = c.k
+    
+    def resetWrapCallback(event,self=self,k=k):
+        self.resetWrap(event)
+        return k.masterKeyHandler(event)
+        
+    def findButtonBindingCallback(event=None,self=self):
+        self.findButton()
+        return 'break'
+        
+    if 0: # No longer needed.
+        def findTabClickCallback(event,self=self):
+            c = self.c ; k = c.k ; w = event.widget
+            k.keyboardQuit(event)
+            w and c.widgetWantsFocusNow(w)
+            return k.masterClickHandler(event)
+
+    table = (
+        ('<Button-1>',  k.masterClickHandler),
+        ('<Double-1>',  k.masterClickHandler),
+        ('<Button-3>',  k.masterClickHandler),
+        ('<Double-3>',  k.masterClickHandler),
+        ('<Key>',       resetWrapCallback),
+        ('<Return>',    findButtonBindingCallback),
+        ("<Escape>",    self.hideTab),
+    )
+
+    for w in (self.find_ctrl,self.change_ctrl):
+        for event, callback in table:
+            w.bind(event,callback)
+#@nonl
+#@-node:ekr.20051023181449:createBindings (findTab)
+#@+node:ekr.20051020120306.13:createFrame (findTab)
+def createFrame (self,parentFrame):
+    
+    c = self.c
+    
+    # g.trace('findTab')
+    
+    << Create the outer frames >>
+    << Create the Find and Change panes >>
+    << Create two columns of radio and checkboxes >>
+    
+    if  self.optionsOnly:
+        buttons = []
+    else:
+        << Create two columns of buttons >>
+    
+    # Pack this last so buttons don't get squashed when frame is resized.
+    self.outerScrolledFrame.pack(side='top',expand=1,fill='both',padx=2,pady=2)
+    
+    if 0: # These dont work in the new binding scheme.  Use shortcuts or mode bindings instead.
+        for w in buttons:
+            w.bindHotKey(ftxt)
+            w.bindHotKey(ctxt)
+#@nonl
+#@+node:ekr.20051020120306.14:<< Create the outer frames >>
+configName = 'log_pane_Find_tab_background_color'
+bg = c.config.getColor(configName) or 'MistyRose1'
+
+parentFrame.configure(background=bg)
+
+self.top = Tk.Frame(parentFrame,background=bg)
+self.top.pack(side='top',expand=0,fill='both',pady=5)
+    # Don't expand, so the frame goes to the top.
+
+self.outerScrolledFrame = Pmw.ScrolledFrame(
+    parentFrame,usehullsize = 1)
+
+self.outerFrame = outer = self.outerScrolledFrame.component('frame')
+self.outerFrame.configure(background=bg)
+
+for z in ('borderframe','clipper','frame','hull'):
+    self.outerScrolledFrame.component(z).configure(relief='flat',background=bg)
+#@nonl
+#@-node:ekr.20051020120306.14:<< Create the outer frames >>
+#@+node:ekr.20051020120306.15:<< Create the Find and Change panes >>
+fc = Tk.Frame(outer, bd="1m",background=bg)
+fc.pack(anchor="n", fill="x", expand=1)
+
+# Removed unused height/width params: using fractions causes problems in some locales!
+fpane = Tk.Frame(fc, bd=1,background=bg)
+cpane = Tk.Frame(fc, bd=1,background=bg)
+
+fpane.pack(anchor="n", expand=1, fill="x")
+cpane.pack(anchor="s", expand=1, fill="x")
+
+# Create the labels and text fields...
+flab = Tk.Label(fpane, width=8, text="Find:",background=bg)
+clab = Tk.Label(cpane, width=8, text="Change:",background=bg)
+
+if self.optionsOnly:
+    # Use one-line boxes.
+    self.find_ctrl = ftxt = Tk.Text(
+        fpane,bd=1,relief="groove",height=1,width=25,name='find-text')
+    self.change_ctrl = ctxt = Tk.Text(
+        cpane,bd=1,relief="groove",height=1,width=25,name='change-text')
+else:
+    # Use bigger boxes for scripts.
+    self.find_ctrl = ftxt = Tk.Text(
+        fpane,bd=1,relief="groove",height=3,width=15,name='find-text')
+    self.change_ctrl = ctxt = Tk.Text(
+        cpane,bd=1,relief="groove",height=3,width=15,name='change-text')
+<< Bind Tab and control-tab >>
+
+if 0: # Add scrollbars.
+    fBar = Tk.Scrollbar(fpane,name='findBar')
+    cBar = Tk.Scrollbar(cpane,name='changeBar')
+    
+    for bar,txt in ((fBar,ftxt),(cBar,ctxt)):
+        txt['yscrollcommand'] = bar.set
+        bar['command'] = txt.yview
+        bar.pack(side="right", fill="y")
+        
+if self.optionsOnly:
+    flab.pack(side="left") ; ftxt.pack(side="left")
+    clab.pack(side="left") ; ctxt.pack(side="left")
+else:
+    flab.pack(side="left") ; ftxt.pack(side="right", expand=1, fill="x")
+    clab.pack(side="left") ; ctxt.pack(side="right", expand=1, fill="x")
+#@nonl
+#@+node:ekr.20051020120306.16:<< Bind Tab and control-tab >>
+def setFocus(w):
+    c = self.c
+    c.widgetWantsFocus(w)
+    g.app.gui.setSelectionRange(w,"1.0","1.0")
+    return "break"
+    
+def toFind(event,w=ftxt): return setFocus(w)
+def toChange(event,w=ctxt): return setFocus(w)
+    
+def insertTab(w):
+    data = g.app.gui.getSelectionRange(w)
+    if data: start,end = data
+    else: start = end = g.app.gui.getInsertPoint(w)
+    g.app.gui.replaceSelectionRangeWithText(w,start,end,"\t")
+    return "break"
+
+def insertFindTab(event,w=ftxt): return insertTab(w)
+def insertChangeTab(event,w=ctxt): return insertTab(w)
+
+ftxt.bind("<Tab>",toChange)
+ctxt.bind("<Tab>",toFind)
+ftxt.bind("<Control-Tab>",insertFindTab)
+ctxt.bind("<Control-Tab>",insertChangeTab)
+#@nonl
+#@-node:ekr.20051020120306.16:<< Bind Tab and control-tab >>
+#@-node:ekr.20051020120306.15:<< Create the Find and Change panes >>
+#@+node:ekr.20051020120306.17:<< Create two columns of radio and checkboxes >>
+columnsFrame = Tk.Frame(outer,relief="groove",bd=2,background=bg)
+
+columnsFrame.pack(expand=0,padx="7p",pady="2p")
+
+numberOfColumns = 2 # Number of columns
+columns = [] ; radioLists = [] ; checkLists = []
+for i in xrange(numberOfColumns):
+    columns.append(Tk.Frame(columnsFrame,bd=1))
+    radioLists.append([])
+    checkLists.append([])
+
+for i in xrange(numberOfColumns):
+    columns[i].pack(side="left",padx="1p") # fill="y" Aligns to top. padx expands columns.
+
+radioLists[0] = []
+
+checkLists[0] = [
+    # ("Scrip&t Change",self.dict["script_change"]),
+    ("Whole &Word", self.dict["whole_word"]),
+    ("&Ignore Case",self.dict["ignore_case"]),
+    ("Wrap &Around",self.dict["wrap"]),
+    ("&Reverse",    self.dict["reverse"]),
+    ('Rege&xp',     self.dict['pattern_match']),
+    ("Mark &Finds", self.dict["mark_finds"]),
+]
+
+radioLists[1] = [
+    (self.dict["radio-search-scope"],"&Entire Outline","entire-outline"),
+    (self.dict["radio-search-scope"],"&Suboutline Only","suboutline-only"),  
+    (self.dict["radio-search-scope"],"&Node Only","node-only"),
+]
+
+checkLists[1] = [
+    ("Search &Headline", self.dict["search_headline"]),
+    ("Search &Body",     self.dict["search_body"]),
+    ("Mark &Changes",    self.dict["mark_changes"]),
+]
+
+for i in xrange(numberOfColumns):
+    for var,name,val in radioLists[i]:
+        box = self.underlinedTkButton(
+            "radio",columns[i],anchor="w",text=name,variable=var,value=val,background=bg)
+        box.button.pack(fill="x")
+        box.button.bind("<Button-1>", self.resetWrap)
+        if val == None: box.button.configure(state="disabled")
+        box.bindHotKey(ftxt)
+        box.bindHotKey(ctxt)
+    for name,var in checkLists[i]:
+        box = self.underlinedTkButton(
+            "check",columns[i],anchor="w",text=name,variable=var,background=bg)
+        box.button.pack(fill="x")
+        box.button.bind("<Button-1>", self.resetWrap)
+        box.bindHotKey(ftxt)
+        box.bindHotKey(ctxt)
+        if var is None: box.button.configure(state="disabled")
+#@nonl
+#@-node:ekr.20051020120306.17:<< Create two columns of radio and checkboxes >>
+#@+node:ekr.20051020120306.18:<< Create two columns of buttons >>
+# Create the alignment panes.
+buttons  = Tk.Frame(outer,background=bg)
+buttons1 = Tk.Frame(buttons,bd=1,background=bg)
+buttons2 = Tk.Frame(buttons,bd=1,background=bg)
+buttons.pack(side='top',expand=1)
+buttons1.pack(side='left')
+buttons2.pack(side='right')
+
+width = 15 ; defaultText = 'Find' ; buttons = []
+
+for text,boxKind,frame,callback in (
+    # Column 1...
+    ('Find','button',buttons1,self.findButtonCallback),
+    # ('Incremental','check', buttons1,None),
+        ## variable=self.dict['incremental'])
+        ## May affect the file format.
+    ('Find All','button',buttons1,self.findAllButton),
+    # Column 2...
+    ('Change','button',buttons2,self.changeButton),
+    ('Change, Then Find','button',buttons2,self.changeThenFindButton),
+    ('Change All','button',buttons2,self.changeAllButton),
+):
+    w = self.underlinedTkButton(boxKind,frame,
+        text=text,command=callback)
+    buttons.append(w)
+    if text == defaultText:
+        w.button.configure(width=width-1,bd=4)
+    elif boxKind != 'check':
+        w.button.configure(width=width)
+    w.button.pack(side='top',anchor='w',pady=2,padx=2)
+#@nonl
+#@-node:ekr.20051020120306.18:<< Create two columns of buttons >>
+#@-node:ekr.20051020120306.13:createFrame (findTab)
+#@+node:ekr.20051020120306.19:find.init
+def init (self,c):
+    
+    # g.trace('Find Tab')
+
+    # N.B.: separate c.ivars are much more convenient than a dict.
+    for key in self.intKeys:
+        # New in 4.3: get ivars from @settings.
+        val = c.config.getBool(key)
+        setattr(self,key,val)
+        val = g.choose(val,1,0) # Work around major Tk problem.
+        self.dict[key].set(val)
+        # g.trace(key,val)
+
+    << set find/change widgets >>
+    << set radio buttons from ivars >>
+#@nonl
+#@+node:ekr.20051020120306.20:<< set find/change widgets >>
+self.find_ctrl.delete("1.0","end")
+self.change_ctrl.delete("1.0","end")
+
+# New in 4.3: Get setting from @settings.
+for w,setting,defaultText in (
+    (self.find_ctrl,"find_text",'<find pattern here>'),
+    (self.change_ctrl,"change_text",''),
+):
+    s = c.config.getString(setting)
+    if not s: s = defaultText
+    w.insert("end",s)
+#@nonl
+#@-node:ekr.20051020120306.20:<< set find/change widgets >>
+#@+node:ekr.20051020120306.21:<< set radio buttons from ivars >>
+found = False
+for var,setting in (
+    ("pattern_match","pattern-search"),
+    #("script_search","script-search")
+):
+    val = self.dict[var].get()
+    if val:
+        self.dict["radio-find-type"].set(setting)
+        found = True ; break
+if not found:
+    self.dict["radio-find-type"].set("plain-search")
+    
+found = False
+for var,setting in (
+    ("suboutline_only","suboutline-only"),
+    ("node_only","node-only"),
+    # ("selection_only","selection-only")
+):
+    val = self.dict[var].get()
+    if val:
+        self.dict["radio-search-scope"].set(setting)
+        found = True ; break
+if not found:
+    self.dict["radio-search-scope"].set("entire-outline")
+#@nonl
+#@-node:ekr.20051020120306.21:<< set radio buttons from ivars >>
+#@-node:ekr.20051020120306.19:find.init
+#@-node:ekr.20051020120306.10:Birth & death
+#@+node:ekr.20051020120306.22:find.update_ivars
+def update_ivars (self):
+    
+    """Called just before doing a find to update ivars from the find panel."""
+
+    self.p = self.c.currentPosition()
+    self.v = self.p.v
+
+    for key in self.intKeys:
+        val = self.dict[key].get()
+        setattr(self, key, val)
+        # g.trace(key,val)
+
+    search_scope = self.dict["radio-search-scope"].get()
+    self.suboutline_only = g.choose(search_scope == "suboutline-only",1,0)
+    self.node_only       = g.choose(search_scope == "node-only",1,0)
+
+    # The caller is responsible for removing most trailing cruft.
+    # Among other things, this allows Leo to search for a single trailing space.
+    s = self.find_ctrl.get("1.0","end")
+    s = g.toUnicode(s,g.app.tkEncoding)
+    if s and s[-1] in ('\r','\n'):
+        s = s[:-1]
+    self.find_text = s
+
+    s = self.change_ctrl.get("1.0","end")
+    if s and s[-1] in ('\r','\n'):
+        s = s[:-1]
+    s = g.toUnicode(s,g.app.tkEncoding)
+    self.change_text = s
+#@nonl
+#@-node:ekr.20051020120306.22:find.update_ivars
+#@+node:ekr.20060221074900:Callbacks
+#@+node:ekr.20060221074900.1:findButtonCallback
+def findButtonCallback(self,event=None):
+    
+    self.findButton()
+    return 'break'
+#@nonl
+#@-node:ekr.20060221074900.1:findButtonCallback
+#@+node:ekr.20051020120306.25:hideTab
+def hideTab (self,event=None):
+    
+    c = self.c
+    c.frame.log.selectTab('Log')
+    c.bodyWantsFocus()
+#@nonl
+#@-node:ekr.20051020120306.25:hideTab
+#@-node:ekr.20060221074900:Callbacks
+#@+node:ekr.20051024192602: Top level
+#@+node:ekr.20060209064832:findAllCommand
+def findAllCommand (self,event=None):
+
+    self.setup_command()
+    self.findAll()
+#@nonl
+#@-node:ekr.20060209064832:findAllCommand
+#@+node:ekr.20060204120158.1:findAgainCommand
+def findAgainCommand (self):
+    
+    s = self.find_ctrl.get("1.0","end-1c")
+    s = g.toUnicode(s,g.app.tkEncoding)
+    # if s.endswith('\n'): s = s[:-1]
+    
+    if s and s != '<find pattern here>':
+        self.findNextCommand()
+        return True
+    else:
+        # Tell the caller that to get the find args.
+        return False
+#@-node:ekr.20060204120158.1:findAgainCommand
+#@+node:ekr.20060128075225:cloneFindAllCommand
+def cloneFindAllCommand (self,event=None):
+    
+    self.setup_command()
+    self.clone_find_all = True
+    self.findAll()
+    self.clone_find_all = False
+#@-node:ekr.20060128075225:cloneFindAllCommand
+#@+node:ekr.20051024192642.2:findNext/PrefCommand
+def findNextCommand (self,event=None):
+
+    self.setup_command()
+    self.findNext()
+    
+def findPrevCommand (self,event=None):
+    
+    self.setup_command()
+    self.reverse = not self.reverse
+    self.findNext()
+    self.reverse = not self.reverse
+#@nonl
+#@-node:ekr.20051024192642.2:findNext/PrefCommand
+#@+node:ekr.20051024192642.3:change/ThenFindCommand
+def changeCommand (self,event=None):
+
+    self.setup_command()
+    self.change()
+    
+def changeAllCommand (self,event=None):
+
+    self.setup_command()
+    self.changeAll()
+    
+def changeThenFindCommand(self,event=None):
+    
+    self.setup_command()
+    self.changeThenFind()
+#@nonl
+#@-node:ekr.20051024192642.3:change/ThenFindCommand
+#@-node:ekr.20051024192602: Top level
+#@+node:ekr.20051020120306.26:bringToFront
+def bringToFront (self):
+
+    """Bring the Find Tab to the front and select the entire find text."""
+
+    c = self.c ; t = self.find_ctrl
+        
+    # The widget must have focus before we can adjust the text.
+    c.widgetWantsFocus(t)
+    
+    # Delete one trailing newline.
+    s = t.get('1.0','end')
+    if s and s[-1] in ('\n','\r'):
+        t.delete('end-1c','end')
+
+    # Don't highlight the added trailing newline!
+    g.app.gui.setTextSelection (t,"1.0","end-1c") # Thanks Rich.
+    
+    # This is also needed.
+    c.widgetWantsFocus(t)
+#@nonl
+#@-node:ekr.20051020120306.26:bringToFront
+#@+node:ekr.20051020120306.27:selectAllFindText
+def selectAllFindText (self,event=None):
+    
+    __pychecker__ = '--no-argsused' # event
+
+    w = self.frame.focus_get()
+    if g.app.gui.isTextWidget(w):
+        g.app.gui.setTextSelection(w,"1.0","end")
+
+    return "break"
+#@nonl
+#@-node:ekr.20051020120306.27:selectAllFindText
+#@+node:ekr.20051020120306.28:Tkinter wrappers (leoTkinterFind)
+def gui_search (self,t,*args,**keys):
+    return t.search(*args,**keys)
+
+def init_s_ctrl (self,s):
+    t = self.s_ctrl
+    t.delete("1.0","end")
+    t.insert("end",s)
+    t.mark_set("insert",g.choose(self.reverse,"end","1.0"))
+    return t
+#@nonl
+#@-node:ekr.20051020120306.28:Tkinter wrappers (leoTkinterFind)
+#@+node:ekr.20051020120306.1:class underlinedTkButton
+class underlinedTkButton:
+    
+    @others
+#@nonl
+#@+node:ekr.20051020120306.2:__init__
+def __init__(self,buttonType,parent_widget,**keywords):
+
+    self.buttonType = buttonType
+    self.parent_widget = parent_widget
+    self.hotKey = None
+    text = keywords['text']
+
+    << set self.hotKey if '&' is in the string >>
+
+    # Create the button...
+    if self.hotKey:
+        keywords['text'] = text
+        keywords['underline'] = index
+
+    if buttonType.lower() == "button":
+        self.button = Tk.Button(parent_widget,keywords)
+    elif buttonType.lower() == "check":
+        self.button = Tk.Checkbutton(parent_widget,keywords)
+    elif buttonType.lower() == "radio":
+        self.button = Tk.Radiobutton(parent_widget,keywords)
+    else:
+        g.trace("bad buttonType")
+    
+    self.text = text # for traces
+#@nonl
+#@+node:ekr.20051020120306.3:<< set self.hotKey if '&' is in the string >>
+index = text.find('&')
+
+if index > -1:
+
+    if index == len(text)-1:
+        # The word ends in an ampersand.  Ignore it; there is no hot key.
+        text = text[:-1]
+    else:
+        self.hotKey = text [index + 1]
+        text = text[:index] + text[index+1:]
+#@nonl
+#@-node:ekr.20051020120306.3:<< set self.hotKey if '&' is in the string >>
+#@-node:ekr.20051020120306.2:__init__
+#@+node:ekr.20051020120306.4:bindHotKey
+def bindHotKey (self,widget):
+    
+    if self.hotKey:
+        for key in (self.hotKey.lower(),self.hotKey.upper()):
+            widget.bind("<Alt-%s>" % key,self.buttonCallback)
+#@nonl
+#@-node:ekr.20051020120306.4:bindHotKey
+#@+node:ekr.20051020120306.5:buttonCallback
+# The hot key has been hit.  Call the button's command.
+
+def buttonCallback (self, event=None):
+    
+    __pychecker__ = '--no-argsused' # the event param must be present.
+
+    # g.trace(self.text)
+
+    self.button.invoke ()
+    
+    # See if this helps.
+    return 'break'
+#@-node:ekr.20051020120306.5:buttonCallback
+#@-node:ekr.20051020120306.1:class underlinedTkButton
+#@-node:ekr.20051020120306.6:class findTab (leoFind.leoFind)
+#@+node:ekr.20050920084036.257:class searchCommandsClass
+class searchCommandsClass (baseEditCommandsClass):
+    
+    '''Implements many kinds of searches.'''
+
+    @others
+#@nonl
+#@+node:ekr.20050920084036.258: ctor
+def __init__ (self,c):
+    
+    # g.trace('searchCommandsClass')
+
+    baseEditCommandsClass.__init__(self,c) # init the base class.
+    
+    self.findTabHandler = None
+    self.minibufferFindHandler = None
+    self.stack = [] # A stack of previous matches.
+    
+    try:
+        self.w = c.frame.body.bodyCtrl
+    except AttributeError:
+        self.w = None
+#@nonl
+#@-node:ekr.20050920084036.258: ctor
+#@+node:ekr.20050920084036.259:getPublicCommands (searchCommandsClass)
+def getPublicCommands (self):
+    
+    return {
+        'clone-find-all':                       self.cloneFindAll,
+        'find-tab-find-all':                    self.findAll,
+        
+        # Thin wrappers on Find tab
+        'find-tab-find':                        self.findTabFindNext,
+        'find-tab-find-prev':                   self.findTabFindPrev,
+        'find-tab-change':                      self.findTabChange,
+        'find-tab-change-all':                  self.findTabChangeAll,
+        'find-tab-change-then-find':            self.findTabChangeThenFind,
+                    
+        'hide-find-tab':                        self.hideFindTab,
+            
+        'isearch-forward':                      self.isearchForward,
+        'isearch-backward':                     self.isearchBackward,
+        'isearch-forward-regexp':               self.isearchForwardRegexp,
+        'isearch-backward-regexp':              self.isearchBackwardRegexp,
+                    
+        'open-find-tab':                        self.openFindTab,
+    
+        'replace-string':                       self.replaceString,
+                    
+        're-search-forward':                    self.reSearchForward,
+        're-search-backward':                   self.reSearchBackward,
+
+        'search-again':                         self.findAgain,
+        # Uses existing search pattern.
+        
+        'search-forward':                       self.searchForward,
+        'search-backward':                      self.searchBackward,
+        'search-with-present-options':          self.searchWithPresentOptions,
+        # Prompts for search pattern.
+
+        'set-find-everywhere':                  self.setFindScopeEveryWhere,
+        'set-find-node-only':                   self.setFindScopeNodeOnly,
+        'set-find-suboutline-only':             self.setFindScopeSuboutlineOnly,
+        
+        'show-find-options':                    self.showFindOptions,
+
+        'toggle-find-ignore-case-option':       self.toggleIgnoreCaseOption,
+        'toggle-find-in-body-option':           self.toggleSearchBodyOption,
+        'toggle-find-in-headline-option':       self.toggleSearchHeadlineOption,
+        'toggle-find-mark-changes-option':      self.toggleMarkChangesOption,
+        'toggle-find-mark-finds-option':        self.toggleMarkFindsOption,
+        'toggle-find-regex-option':             self.toggleRegexOption,
+        'toggle-find-reverse-option':           self.toggleReverseOption,
+        'toggle-find-word-option':              self.toggleWholeWordOption,
+        'toggle-find-wrap-around-option':       self.toggleWrapSearchOption,
+        
+        'word-search-forward':                  self.wordSearchForward,
+        'word-search-backward':                 self.wordSearchBackward,
+    }
+#@nonl
+#@-node:ekr.20050920084036.259:getPublicCommands (searchCommandsClass)
+#@+node:ekr.20060123131421:Top-level methods
+#@+node:ekr.20051020120306:openFindTab
+def openFindTab (self,event=None,show=True):
+
+    c = self.c ; log = c.frame.log ; tabName = 'Find'
+    
+    wasOpen = log.frameDict.get(tabName)
+
+    if wasOpen:
+        log.selectTab(tabName)
+    else:
+        log.selectTab(tabName)
+        f = log.frameDict.get(tabName)
+        t = log.textDict.get(tabName)
+        t.pack_forget()
+        self.findTabHandler = findTab(c,f)
+
+    if show or wasOpen or c.config.getBool('minibufferSearchesShowFindTab'):
+        pass # self.findTabHandler.bringToFront()
+    else:
+        log.hideTab(tabName)
+#@nonl
+#@-node:ekr.20051020120306:openFindTab
+#@+node:ekr.20051022212004:Find Tab commands
+# Just open the Find tab if it has never been opened.
+# For minibuffer commands, it would be good to force the Find tab to be visible.
+# However, this leads to unfortunate confusion when executed from a shortcut.
+
+def findTabChange(self,event=None):
+
+    if self.findTabHandler:
+        self.findTabHandler.changeCommand()
+    else:
+        self.openFindTab()
+        
+def findTabChangeAll(self,event=None):
+
+    if self.findTabHandler:
+        self.findTabHandler.changeAllCommand()
+    else:
+        self.openFindTab()
+
+def findTabChangeThenFind(self,event=None):
+
+    if self.findTabHandler:
+        self.findTabHandler.changeThenFindCommand()
+    else:
+        self.openFindTab()
+        
+def findTabFindAll(self,event=None):
+
+    if self.findTabHandler:
+        self.findTabHandler.findAllCommand()
+    else:
+        self.openFindTab()
+
+def findTabFindNext (self,event=None):
+    
+    if self.findTabHandler:
+        self.findTabHandler.findNextCommand()
+    else:
+        self.openFindTab()
+
+def findTabFindPrev (self,event=None):
+    
+    if self.findTabHandler:
+        self.findTabHandler.findPrevCommand()
+    else:
+        self.openFindTab()
+        
+def hideFindTab (self,event=None):
+    if self.findTabHandler:
+        self.c.frame.log.selectTab('Log')
+#@nonl
+#@-node:ekr.20051022212004:Find Tab commands
+#@+node:ekr.20060124115801:getHandler
+def getHandler(self,show=False):
+    
+    '''Return the minibuffer handler, creating it if necessary.'''
+    
+    c = self.c
+    
+    self.openFindTab(show=show)
+        # sets self.findTabHandler,
+        # but *not* minibufferFindHandler.
+    
+    if not self.minibufferFindHandler:
+        self.minibufferFindHandler = minibufferFind(c,self.findTabHandler)
+
+    return self.minibufferFindHandler
+#@nonl
+#@-node:ekr.20060124115801:getHandler
+#@+node:ekr.20060123115459:Find options wrappers
+def setFindScopeEveryWhere     (self, event): return self.setFindScope('entire-outline')
+def setFindScopeNodeOnly       (self, event): return self.setFindScope('node-only')
+def setFindScopeSuboutlineOnly (self, event): return self.setFindScope('suboutline-only')
+
+def setFindScope (self, where): self.getHandler().setFindScope(where)
+
+def showFindOptions      (self,event): self.getHandler().showFindOptions()
+
+def toggleIgnoreCaseOption     (self, event): return self.toggleOption('ignore_case')
+def toggleMarkChangesOption    (self, event): return self.toggleOption('mark_changes')
+def toggleMarkFindsOption      (self, event): return self.toggleOption('mark_finds')
+def toggleRegexOption          (self, event): return self.toggleOption('pattern_match')
+def toggleReverseOption        (self, event): return self.toggleOption('reverse')
+def toggleSearchBodyOption     (self, event): return self.toggleOption('search_body')
+def toggleSearchHeadlineOption (self, event): return self.toggleOption('search_headline')
+def toggleWholeWordOption      (self, event): return self.toggleOption('whole_word')
+def toggleWrapSearchOption     (self, event): return self.toggleOption('wrap')
+
+def toggleOption (self, ivar): self.getHandler().toggleOption(ivar)
+#@nonl
+#@-node:ekr.20060123115459:Find options wrappers
+#@+node:ekr.20060124093828:Find wrappers
+def cloneFindAll       (self,event): self.getHandler().cloneFindAll(event)
+def findAll            (self,event): self.getHandler().findAll(event)
+
+def replaceString      (self,event): self.getHandler().replaceString(event)
+def reSearchBackward   (self,event): self.getHandler().reSearchBackward(event)
+def reSearchForward    (self,event): self.getHandler().reSearchForward(event)
+def searchBackward     (self,event): self.getHandler().searchBackward(event)
+def searchForward      (self,event): self.getHandler().searchForward(event)
+def wordSearchBackward (self,event): self.getHandler().wordSearchBackward(event)
+def wordSearchForward  (self,event): self.getHandler().wordSearchForward(event)
+
+def searchWithPresentOptions (self,event):
+    self.getHandler().searchWithPresentOptions(event)
+#@nonl
+#@-node:ekr.20060124093828:Find wrappers
+#@+node:ekr.20060204120158.2:findAgain
+def findAgain (self,event):
+    
+    h = self.getHandler()
+    
+    # h.findAgain returns False if there is no search pattern.
+    # In that case, we revert to find-with-present-options.
+    if not h.findAgain(event):
+        h.searchWithPresentOptions(event)
+#@nonl
+#@-node:ekr.20060204120158.2:findAgain
+#@-node:ekr.20060123131421:Top-level methods
+#@+node:ekr.20050920084036.261:incremental search...
+def isearchForward (self,event):
+    self.startIncremental(event,forward=True,regexp=False)
+    
+def isearchBackward (self,event):
+    self.startIncremental(event,forward=False,regexp=False)
+    
+def isearchForwardRegexp (self,event):
+    self.startIncremental(event,forward=True,regexp=True)
+    
+def isearchBackwardRegexp (self,event):
+    self.startIncremental(event,forward=False,regexp=True)
+#@nonl
+#@+node:ekr.20050920084036.262:startIncremental
+def startIncremental (self,event,forward,regexp):
+
+    c = self.c ; k = self.k ; w = self.w
+    
+    self.forward = forward
+    self.regexp = regexp
+    
+    old_i = w.index('insert')
+    old_p = c.currentPosition()
+    self.stack = [g.Bunch(insert=old_i,p=old_p)]
+
+    k.setLabelBlue('isearch: ',protect=True)
+    k.setState('isearch',1,handler=self.iSearchStateHandler)
+    c.minibufferWantsFocusNow()
+#@nonl
+#@-node:ekr.20050920084036.262:startIncremental
+#@+node:ekr.20060420144640:iSearchBackspace
+def iSearchBackspace (self):
+    
+    c = self.c ; k = self.k ; w = self.w
+    
+    b = self.stack.pop()
+    g.trace(b.insert)
+
+    c.selectPosition(b.p)
+    w.mark_set('insert',b.insert)
+    w.see('insert')
+    w.update_idletasks()
+    
+    if self.stack:
+        self.scolorizer(event=None,pattern=b.pattern)
+    else:
+        self.stack.append(b)
+        w.tag_delete('color','color1')
+#@nonl
+#@-node:ekr.20060420144640:iSearchBackspace
+#@+node:ekr.20050920084036.264:iSearchStateHandler
+# Called when from the state manager when the state is 'isearch'
+
+def iSearchStateHandler (self,event):
+
+    c = self.c ; k = self.k ; w = self.w
+    
+    if not event:
+        g.trace('no event',g.callers())
+        return
+    keysym = event.keysym
+    ch = event.char
+    if keysym == 'Control_L': return
+    
+    c.bodyWantsFocus()
+    
+    # g.trace('keysym',keysym)
+    
+    if 0: # Useful, but presently conflicts with other bindings.
+        if k.stroke == '<Control-s>':
+            self.startIncremental(event,forward=True,regexp=False)
+        elif k.stroke == '<Control-r>':
+            self.startIncremental(event,forward=False,regexp=False)
+
+    if keysym == 'Return':
+        s = self.searchString
+        i = w.index('insert')
+        j = w.index('insert +%sc' % len(s))
+        if not self.forward: i,j = j,i
+        self.endSearch(i,j)
+    elif keysym == 'BackSpace':
+        k.updateLabel(event)
+        self.iSearchBackspace()
+    elif ch:
+        k.updateLabel(event)
+        self.iSearchHelper(event)
+        self.scolorizer(event)
+#@nonl
+#@-node:ekr.20050920084036.264:iSearchStateHandler
+#@+node:ekr.20050920084036.265:scolorizer
+def scolorizer (self,event,pattern=None):
+    
+    '''Colorizer for incremental searches.'''
+
+    k = self.k ; w = self.w
+    s = pattern or k.getLabel(ignorePrompt=True)
+    # g.trace(repr(s))
+    w.tag_delete('color','color1')
+    if not s: return
+    ind = '1.0'
+    index = w.index('insert')
+    index2 = w.index('%s+%dc' % (index,len(s)))
+    # g.trace(index,index2)
+    # Colorize in the forward direction, regardless of the kind of search.
+    while ind:
+        try:
+            ind = w.search(s,ind,stopindex='end',regexp=self.regexp)
+        except: break
+        if ind:
+            i, d = ind.split('.')
+            d = str(int(d)+len(s))
+            # g.trace(ind)
+            if ind in (index,index2):
+                w.tag_add('color1',ind,'%s.%s' % (i,d))
+            w.tag_add('color',ind,'%s.%s' % (i,d))
+            ind = i + '.' + d
+
+    w.tag_config('color',foreground='red')
+    w.tag_config('color1',background='lightblue')
+#@nonl
+#@-node:ekr.20050920084036.265:scolorizer
+#@+node:ekr.20050920084036.263:iSearchHelper
+def iSearchHelper (self,event):
+
+    '''This method moves the insert spot to position that matches the pattern in the miniBuffer'''
+    
+    c = self.c ; k = self.k ; w = self.w
+    self.searchString = pattern = k.getLabel(ignorePrompt=True)
+    if not pattern: return
+    stopindex = g.choose(self.forward,'end','1.0')
+    startindex = g.choose(self.forward,'1.0','end')
+    p1 = c.currentPosition() ; p = p1.copy() ; old_p = p.copy()
+    old_ins = w.index('insert') # This must *not* be changed in the loop.
+    w.mark_set('insert',startindex)
+    while 1:
+        try:
+            i = w.search(pattern,old_ins,backwards=not self.forward,stopindex=stopindex,regexp=self.regexp)
+            # Don't call endSearch here.  We'll do that when the user hits return.
+            g.trace(repr(i))
+            if not i.isspace():
+                w.mark_set('insert',i)
+                # if self.forward:
+                    # w.mark_set('insert',i)
+                # else:
+                    # w.mark_set('insert',i+'-%dc'%(len(pattern)))
+                w.see('insert')
+                self.stack.append(g.Bunch(insert=old_ins,p=old_p,pattern=pattern[:-1]))
+                # g.trace('found',old_ins,i)
+                return   
+        except: pass # g.es_exception()
+        # old_p = p.copy()
+        if self.forward: p.moveToThreadNext()
+        else:            p.moveToThreadBack()
+        if not p: break
+        g.trace('searching',p.headString())
+        c.selectPosition(p)
+        w.mark_set('insert','1.0')
+        w.update_idletasks()
+        # if not self.forward:
+            # w.mark_set('insert','end')
+    c.selectPosition(p1)
+#@nonl
+#@-node:ekr.20050920084036.263:iSearchHelper
+#@+node:ekr.20060203072636:endSearch
+def endSearch (self,i,j):
+
+    w = self.w
+    w.tag_delete('color','color1')
+    g.app.gui.setTextSelection (self.w,i,j,insert='sel.end')
+    self.k.keyboardQuit(event=None)
+#@nonl
+#@-node:ekr.20060203072636:endSearch
+#@-node:ekr.20050920084036.261:incremental search...
+#@-node:ekr.20050920084036.257:class searchCommandsClass
+#@-node:ekr.20051023094009:Search classes
+#@-node:ekr.20060122183544:Improve isearch
+#@+node:ekr.20060417194232:find (quick)
+# To do: extend selection.
+#@nonl
+#@+node:ekr.20060417194232.1:findCharacter
+def findCharacter (self,event):
+    
+    '''Put the cursor at the next occurance of a character on a line.'''
+
+    k = self.k ; tag = 'find-char' ; state = k.getState(tag)
+    
+    if state == 0:
+        self.widget = event.widget
+        k.setLabelBlue('Find character: ')
+        k.getArg(event,tag,1,self.findCharacter,oneCharacter=True)
+    else:
+        ch = k.arg
+        # g.trace(repr(ch))
+        k.resetLabel()
+        k.clearState()
+#@nonl
+#@-node:ekr.20060417194232.1:findCharacter
+#@+node:ekr.20060417194232.2:findWord
+def findWord (self,event):
+    
+    '''Put the cursor at the next word (on a line) that starts with a character.'''
+
+    k = self.k ; tag = 'find-word-on-line' ; state = k.getState(tag)
+    
+    if state == 0:
+        self.widget = event.widget
+        k.setLabelBlue('Find word: ')
+        k.getArg(event,tag,1,self.findWord,oneCharacter=True)
+    else:
+        ch = k.arg
+        # g.trace(repr(ch))
+        k.resetLabel()
+        k.clearState()
+#@nonl
+#@-node:ekr.20060417194232.2:findWord
+#@-node:ekr.20060417194232:find (quick)
+#@+node:ekr.20060122194643:isearch-headline (forward & backward)
+#@-node:ekr.20060122194643:isearch-headline (forward & backward)
+#@+node:ekr.20060123091352:Incremental search in switch-to-buffer
+#@-node:ekr.20060123091352:Incremental search in switch-to-buffer
+#@-node:ekr.20060413065803:searches 4
 #@+node:ekr.20060116073938.2:Other
 #@+node:ekr.20060110102039:--script option
 @nocolor
@@ -5252,6 +7477,8 @@ def defineCmdsMenuSpellCheckTable (self):
 #@-node:ekr.20051121070552:Finish Cmds menu
 #@-node:ekr.20060122185507:New commands
 #@+node:ekr.20060206104841:New features
+#@+node:ekr.20060116090428:Expand 'point' so it indicates node as well as text location
+#@-node:ekr.20060116090428:Expand 'point' so it indicates node as well as text location
 #@+node:ekr.20060416113131:Allow imports such as leo.plugins (not ready yet)
 #@+node:ekr.20031218072017.1934:run & allies
 def run(fileName=None,*args,**keywords):
@@ -6845,923 +9072,8 @@ class UndoableCompoundEvent3:
 #@-node:ekr.20060201152349.15:<<UndoableCompoundEvent>>
 #@-node:ekr.20060201152349:NodeUndoer.py
 #@-node:ekr.20060228072202:New undoer
-#@+node:ekr.20060116173818:*** Fix vampire nodes
-#@-node:ekr.20060116173818:*** Fix vampire nodes
-#@-node:ekr.20060116073229:To do 4.4.1
-#@+node:ekr.20050816165305:Important
-#@+node:ekr.20031218072017.801:Zipped .leo files
-#@+node:ekr.20050428062312:Request 1
-@nocolor
-
-By: samcollett ( Sam Collett ) 
- Compressed LEO files   
-2003-01-07 16:57
-
-
-Would it be possible to have a new file format that was basically a compressed
-version of LEO files? Maybe using the gzip compression method. You could then
-save a lot of space when you do large files. Not being a professional
-programmer myself (I mainly dabble in web design - HTML and Active Server
-Pages) how difficult would this be to implement? You would just output using a
-different file extension so users of the older versions can still use files
-with the LEO extension.
-#@-node:ekr.20050428062312:Request 1
-#@+node:ekr.20040226092546:Request 2
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=2442772
-By: ejoy
-
-I made an experiment last night. I replaced the call to open()in leofilecommand.py
-with a call to gzip.open().
-
-The LeoPy.leo file saved this way is only 600K! And there is no significant
-speed down in saving.
-
-I think it is a good idea to add compression support for load/save .leo files.
-When reading or writing file with name ending with ".leo.gz", leo can call gzip
-module to uncompress/compress the file, saving a lot of disk space.
-
-What do you think of this?
-#@nonl
-#@-node:ekr.20040226092546:Request 2
-#@+node:ekr.20031218072017.2297:open (leoFileCommands)
-def open(self,theFile,fileName,readAtFileNodesFlag=True,silent=False):
-
-    c = self.c ; frame = c.frame
-    # Read the entire file into the buffer
-    self.fileBuffer = theFile.read() ; theFile.close()
-    self.fileIndex = 0
-    << Set the default directory >>
-    self.topPosition = None
-    ok, ratio = self.getLeoFile(
-        fileName,
-        readAtFileNodesFlag=readAtFileNodesFlag,
-        silent=silent)
-    frame.resizePanesToRatio(ratio,frame.secondary_ratio)
-    if 0: # 1/30/04: this is useless.
-        if self.topPosition: 
-            c.setTopVnode(self.topPosition)
-    # Delete the file buffer
-    self.fileBuffer = ""
-    return ok
-#@nonl
-#@+node:ekr.20031218072017.2298:<< Set the default directory >>
-@ The most natural default directory is the directory containing the .leo file that we are about to open.  If the user has specified the "Default Directory" preference that will over-ride what we are about to set.
-@c
-
-theDir = g.os_path_dirname(fileName)
-
-if len(theDir) > 0:
-    c.openDirectory = theDir
-#@nonl
-#@-node:ekr.20031218072017.2298:<< Set the default directory >>
-#@-node:ekr.20031218072017.2297:open (leoFileCommands)
-#@+node:ekr.20050428063105:newOpen (From chapters.py)
-oldOpen = leoFileCommands.fileCommands.open
-
-def newOpen( self,file,fileName,readAtFileNodesFlag=True,silent=False):
-
-    global iscStringIO
-    c = self.c
-    
-    if zipfile.is_zipfile( fileName ):
-        iscStringIO = True
-        chapters = openChaptersFile( fileName )
-        g.es( str( len( chapters ) ) + " Chapters To Read", color = 'blue' )
-        insertChapters( chapters, c.frame, c )
-        g.es( "Finished Reading Chapters", color = 'blue' )
-        iscStringIO = False
-        return True
-
-    return oldOpen(self,file,fileName,readAtFileNodesFlag,silent)
-#@nonl
-#@-node:ekr.20050428063105:newOpen (From chapters.py)
-#@-node:ekr.20031218072017.801:Zipped .leo files
-#@+node:ekr.20050831131028:opml
-#@+node:ekr.20050831131452:Original post
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3280949
-By: billp9619
-
->>Making Leo a friendly part of the opml world has the potential to be very
-important to Leo. <<
-
-This is probably point 5. and covers the implementation of opml features as
-exposed in Leo.
-
-Because Leo is highly scripted there may be many requests... currently out on
-the OPML list... that are solveable....such as how to see their outlines as
-HTML without passing thru the OPML web server /host. BTW...all this new opml
-stuff is only a week or two in production. The first message on
-http://groups.yahoo.com/group/opml-newbies/
-is July 25.
-
->> The question of whether to duplicate body text in <outline> elements
-is minor<<
-
-Good. 
-
-Really, the opml tools are pretty much raw text/xml  and I was thinking the
-default fallback is ... all clone text is "duplicate". If you want clones then
-you will take care to only edit them in Leo. But if opml users all know and
-use clones routinely in other editors,  then this is good news for opml
-as technology.
-
->>more complicated than it needs to be<<
-
-Well, both Leo and opml have only a few elements and each primarilly uses one
-which recusively nests to make up the outline portion. I suppose body nodes
-could be included more directly in headlines ... allowing un-numbered headlines
-basically, ... but I am not sure that the current way is inferior
-or complicated.
-
- A simpler (forgiving?) format might make it easier to create with external
-apps and encourage transforming other xml to Leo via XSLT. It would have to
-just "work".
-
-(One thing about Leo's bias towards elements to contain markup, versus attributes,
-is that ...you can cheat a little on escaping &quot; in vh or t nodes ?...which
-makes code blocks smaller in the Leo xml.)
-
-Your list above is pretty much how I see it as well.
-
-regards,
-
-bill p
-
-#@-node:ekr.20050831131452:Original post
-#@+node:ekr.20050831131452.1:opml attributes v elements
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3282460
-By: billp9619
-
-Looking at some discussion of outline formats there was a remark that because
-opml places all text in attributes it is limited in not being able to contan
-other elements. On xml-dev I also saw some advice about opml followed by the
-comment that it is not a good format.
-
-opml is crippled in this regard but  Leo only restricts itself as a choice in
-order to  discern leo xml from content.(out of necessity we know).
-
-Of course with xml you can mix vocabularies based on the use of namespaces.
-By becoming namespace aware Leo could be adapted for non-escaped markup. The
-purpose then is xml parsing of leo as a standard container of other xml. I do
-not believe this is unthinkable  for some future capabilities... especially
-if such nodes would contain exclusively xml from another namespace.
-
-Just interesting that leo's format is more versatile than opml, 
-but, ...by choice for its own purposes, ...
- is in this part "backward" compatible with opml. :)  
-
-regards,
-
-bill p
-#@-node:ekr.20050831131452.1:opml attributes v elements
-#@+node:ekr.20050912063133:@url http://sourceforge.net/forum/message.php?msg_id=3273977
-#@-node:ekr.20050912063133:@url http://sourceforge.net/forum/message.php?msg_id=3273977
-#@+node:ekr.20050912065811:@url http://sourceforge.net/forum/message.php?msg_id=3279900 (summary)
-#@-node:ekr.20050912065811:@url http://sourceforge.net/forum/message.php?msg_id=3279900 (summary)
-#@+node:ekr.20050915062404:My post
-@nocolor
-
-Hi,
-
-I am the author of Leo http://webpages.charter.net/edreamleo/front.html an outline editor supporting clones http://webpages.charter.net/edreamleo/intro.html#clones-views.
-
-I am interested in having Leo be able to read and write opml files.  My understanding is that applications are free to use attributes of <outline> elements as they please, but I am wondering whether there are guidelines or existing conventions for representing clones.  Have any namespaces been defined for that purpose?
-
-Thanks.
-
-Edward
-#@-node:ekr.20050915062404:My post
-#@-node:ekr.20050831131028:opml
-#@+node:ekr.20040919182750.1:Better handling of whitespace (cvs fiendly)
-#@+node:ekr.20060227121512:Comments from Bernhard
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3578166
-By: bwmulder
-
-[quote]It turns out that munging whitespace can be extremely time consuming.
-I once tried to do a user setting that would end all non-empty body text with
-exactly one newline. That effectively hung Leo. I'm not sure if there was a
-blunder in the code that caused this, but it may well have been that mass changes
-like this are inherently expensive. So we should not assume that 'innocent'
-whitespace changes are in fact easy to do.
-[quote]
-
-CVS stores files in the RCS format. The latest version is stored directly, the
-other versions are stored as line differences (delete lines x-y, insert 3 lines
-at z) relative to the latest version. If you change the empty line convention,
-you might create lots of differences of the above form which might be expensive
-to compute.
-
-This should be a onetime cost, however, which, if you will, you could do one
-file at a time.
-
-I woudn't let a tool like CVS determine if I would  change the convention.
-
-As for white space differences: TortoiseSVN (I have not used TortoiseCVS) allows
-you to specify external programs. There should be some out there which allow
-you to ignore white space differences when comparing files.
-
-On a related note: I read that subversion is in Beta on SourceForge. You might
-want to think about switching to subversion once it is officially supported.
-One example of a project which has switched from CVS to subversion is the project
-which maintains the Python sources itself (see, for example,
-http://www.python.org/dev/devfaq.html#subversion-svn)
-#@nonl
-#@-node:ekr.20060227121512:Comments from Bernhard
-#@+node:ekr.20040721094203:Make sure Leo uses "verbatim" whitespace
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=2674828
-By: bwmulder
-
-If I understand correctly, there are two different problems:
-
-- Trailing whitespaces
-- Left indented comments
-
-1. Before commenting on these, a question:
-
-If I write something like
-    a=b
-    if a:
-        @others
-
-[four spaces indentation]
-
-I sometimes see tab characters before the lines inserted for '@others'.
-
-It seems that Leo remembers 'two levels of indentation', and then
-fabricates this indentation using tab characters.
-
-I think it might be more robust if Leo remembered the actual
-characters in front of @others and would use them for indentation.
-
-I suspect that many indentation errors I had with Leo could have been
-avoided had not Leo had its own ideas on how to do indentation.
-
-Maybe Leo could use the exact sequence of characters in front of
-@others for all inserted lines?
-
-2. I do not care much about trailing whitespaces. Most of the time
-they are invisible, but sometimes they are very misleading (trailing in python or C).
-
-As far as I am concerned, Leo need never produce trailing whitespaces.
-
-Maybe we need special machinerie if sources have trailing whitespaces
-and the sources are not under our control. 
-
-Not sure if everybody would be happy if we essentially ban all trailing
-whitespaces.
-
-3. Unindented commentlines could be dealt with by using indentation to
-indicate structure.
-
-Of course, this might break the correspondance Leo structure / Python
-structure, which is very ugly.
-
-4. One possible alternative might be a new directive which indicates outindent:
-
-@outindent <number>.
-
-This would apply to the next comment block.
-
-To me, 4. looks a little bit less ugly than 3.
-
-5. As indicated in a different post, I suspect that Leo has a problem
-if almost every node in an outline is changed. Profiling should point
-to the culprit.
-
-> 2. Have Leo strip whitespace from otherwise blank lines, and hope
-that that solves all problems in Perfect Import. This is solving the
-problem in the atFile code. The problem is that if we apply settings
-in general we will get massive changes to derived files. In most
-programming settings these changes might be welcome, but the problem
-is actually making these changes. My first few attempts met with
-abject failure.
-
-Are you saying that you could not remove trailing blanks? What kind of
-problems did you run into?
-
-Summary:
-- Use actual characters in front of @others or <<>> for indentation.
-- Don't write trailing whitespaces
-- Introduce directive for left-indendet comments.
-- Profile to find out what slows Leo down if many nodes change.
-#@nonl
-#@-node:ekr.20040721094203:Make sure Leo uses "verbatim" whitespace
-#@+node:ekr.20040930075920:Whitespace options
-#@+node:ekr.20040720103642.1:Script to remove trailing body newlines VERY DANGEROUS
-current = c.currentPosition()
-count = 0
-
-for p in c.all_positions_iter():
-    s = p.bodyString().rstrip()
-    if s:
-        s = p.bodyString().rstrip() + '\n'
-        if s != p.bodyString():
-            # Do NOT set anything dirty here!
-            ## p.v.t.setTnodeText(s)
-            count += 1
-
-print "%d nodes converted" % count
-print "You MUST do Write All Nodes AND Save this file to complete the conversion"
-#@nonl
-#@-node:ekr.20040720103642.1:Script to remove trailing body newlines VERY DANGEROUS
-#@+node:EKR.20040603092958.1:Add new options for handling newlines in body text
-@nocolor
-
-Alas, this really does not solve problems with Import.
-
-- "asis":  ideal, maybe not possible?
-- "zero": no trailing newlines.
-- "one": exactly one trailing newline.
-
-Special case code is required so empty nodes stay empty with "one" option.
-#@nonl
-#@+node:ekr.20040802063546.1:(Made sure body text changes reported properly)
-# This may have to change when mass whitespace changes happen)
-#@nonl
-#@+node:ekr.20031218072017.1812:top_df.read
-# The caller has enclosed this code in beginUpdate/endUpdate.
-
-def read(self,root,importFileName=None,thinFile=False):
-    
-    """Common read logic for any derived file."""
-    
-    at = self ; c = at.c
-    at.errors = 0
-    importing = importFileName is not None
-    << set fileName from root and importFileName >>
-    << open file or return False >>
-    g.es("reading: " + root.headString())
-    firstLines,read_new,derivedFileIsThin = at.scanHeader(theFile,fileName)
-    df = g.choose(read_new,at.new_df,at.old_df)
-    # g.trace(g.choose(df==at.new_df,"new","old"))
-    << copy ivars to df >>
-    root.clearVisitedInTree()
-    try:
-        # 1/28/04: Don't set comment delims when importing.
-        # 1/28/04: Call scanAllDirectives here, not in readOpenFile.
-        importing = importFileName is not None
-        df.scanAllDirectives(root,importing=importing,reading=True)
-        df.readOpenFile(root,theFile,firstLines)
-    except:
-        at.error("Unexpected exception while reading derived file")
-        g.es_exception()
-    theFile.close()
-    root.clearDirty() # May be set dirty below.
-    after = root.nodeAfterTree()
-    << warn about non-empty unvisited nodes >>
-    if df.errors == 0:
-        if not df.importing:
-            << copy all tempBodyStrings to tnodes >>
-    << delete all tempBodyStrings >>
-    return df.errors == 0
-#@nonl
-#@+node:ekr.20031218072017.1813:<< set fileName from root and importFileName >>
-at.scanDefaultDirectory(root,importing=importing)
-if at.errors: return
-
-if importFileName:
-    fileName = importFileName
-elif root.isAnyAtFileNode():
-    fileName = root.anyAtFileNodeName()
-else:
-    fileName = None
-
-if not fileName:
-    at.error("Missing file name.  Restoring @file tree from .leo file.")
-    return False
-#@nonl
-#@-node:ekr.20031218072017.1813:<< set fileName from root and importFileName >>
-#@+node:ekr.20031218072017.1814:<< open file or return false >>
-fn = g.os_path_join(at.default_directory,fileName)
-fn = g.os_path_normpath(fn)
-
-try:
-    # 11/4/03: open the file in binary mode to allow 0x1a in bodies & headlines.
-    theFile = open(fn,'rb')
-    if theFile:
-        << warn on read-only file >>
-    else: return False
-except:
-    at.error("Can not open: " + '"@file ' + fn + '"')
-    root.setDirty()
-    return False
-#@nonl
-#@+node:ekr.20031218072017.1815:<< warn on read-only file >>
-try:
-    read_only = not os.access(fn,os.W_OK)
-    if read_only:
-        g.es("read only: " + fn,color="red")
-except:
-    pass # os.access() may not exist on all platforms.
-#@nonl
-#@-node:ekr.20031218072017.1815:<< warn on read-only file >>
-#@-node:ekr.20031218072017.1814:<< open file or return false >>
-#@+node:ekr.20031218072017.1816:<< copy ivars to df >>
-# Telling what kind of file we are reading.
-df.importing = importFileName != None
-df.raw = False
-if importing and df == at.new_df:
-    thinFile = True
-df.thinFile = thinFile
-
-# Set by scanHeader.
-df.encoding = at.encoding
-df.endSentinelComment = at.endSentinelComment
-df.startSentinelComment = at.startSentinelComment
-
-# Set other common ivars.
-df.errors = 0
-df.file = theFile
-df.importRootSeen = False
-df.indent = 0
-df.targetFileName = fileName
-df.root = root
-df.root_seen = False
-df.perfectImportRoot = None # Set only in readOpenFile.
-#@nonl
-#@-node:ekr.20031218072017.1816:<< copy ivars to df >>
-#@+node:ekr.20031218072017.1817:<< warn about non-empty unvisited nodes >>
-for p in root.self_and_subtree_iter():
-
-    # g.trace(p)
-    try: s = p.v.t.tempBodyString
-    except: s = ""
-    if s and not p.v.t.isVisited():
-        at.error("Not in derived file:" + p.headString())
-        p.v.t.setVisited() # One message is enough.
-#@nonl
-#@-node:ekr.20031218072017.1817:<< warn about non-empty unvisited nodes >>
-#@+node:ekr.20031218072017.1818:<< copy all tempBodyStrings to tnodes >>
-for p in root.self_and_subtree_iter():
-    try: s = p.v.t.tempBodyString
-    except: s = ""
-    if s != p.bodyString():
-        if 0: # For debugging.
-            print ; print "changed: " + p.headString()
-            print ; print "new:",s
-            print ; print "old:",p.bodyString()
-        if thinFile:
-            p.v.setTnodeText(s)
-            if p.v.isDirty():
-                p.setAllAncestorAtFileNodesDirty()
-        else:
-            p.setBodyStringOrPane(s) # Sets v and v.c dirty.
-            
-        if not thinFile or (thinFile and p.v.isDirty()):
-            g.es("changed: " + p.headString(),color="blue")
-            p.setMarked()
-#@nonl
-#@-node:ekr.20031218072017.1818:<< copy all tempBodyStrings to tnodes >>
-#@+node:ekr.20031218072017.1819:<< delete all tempBodyStrings >>
-for p in c.allNodes_iter():
-    
-    if hasattr(p.v.t,"tempBodyString"):
-        delattr(p.v.t,"tempBodyString")
-#@nonl
-#@-node:ekr.20031218072017.1819:<< delete all tempBodyStrings >>
-#@-node:ekr.20031218072017.1812:top_df.read
-#@-node:ekr.20040802063546.1:(Made sure body text changes reported properly)
-#@+node:ekr.20040930075920.1:Common to both options
-#@+node:ekr.20031218072017.2404:<< define defaultsDict >>
-@ This contains only the "interesting" defaults.
-Ints and bools default to 0, floats to 0.0 and strings to "".
-@c
-
-defaultBodyFontSize = g.choose(sys.platform=="win32",9,12)
-defaultLogFontSize  = g.choose(sys.platform=="win32",8,12)
-defaultTreeFontSize = g.choose(sys.platform=="win32",9,12)
-
-# Defaults for ivars are specified in the ctor, _not_ here.
-
-defaultsDict = {
-    # compare options...
-    "ignore_blank_lines" : 1,
-    "limit_count" : 9,
-    "print_mismatching_lines" : 1,
-    "print_trailing_lines" : 1,
-    # find/change options...
-    "search_body" : 1,
-    "whole_word" : 1,
-    # Prefs panel.
-    "default_target_language" : "Python",
-    "tab_width" : -4,
-    "page_width" : 132,
-    "output_doc_chunks" : 1,
-    "tangle_outputs_header" : 1,
-    # Syntax coloring options...
-    # Defaults for colors are handled by leoColor.py.
-    "color_directives_in_plain_text" : 1,
-    "underline_undefined_section_names" : 1,
-    # Window options...
-    "allow_clone_drags" : 1,
-    "body_pane_wraps" : 1,
-    "body_text_font_family" : "Courier",
-    "body_text_font_size" : defaultBodyFontSize,
-    "body_text_font_slant" : "roman",
-    "body_text_font_weight" : "normal",
-    "enable_drag_messages" : 1,
-    "headline_text_font_size" : defaultTreeFontSize,
-    "headline_text_font_slant" : "roman",
-    "headline_text_font_weight" : "normal",
-    "log_text_font_size" : defaultLogFontSize,
-    "log_text_font_slant" : "roman",
-    "log_text_font_weight" : "normal",
-    "initial_window_height" : 600, # 7/24/03: In pixels.
-    "initial_window_width" :  800, # 7/24/03: In pixels.
-    "initial_window_left" : 10,
-    "initial_window_top" : 10,
-    "initial_splitter_orientation" : "vertical",
-    "initial_vertical_ratio" : 0.5,
-    "initial_horizontal_ratio" : 0.3,
-    "initial_horizontal_secondary_ratio" : 0.5,
-    "initial_vertical_secondary_ratio" : 0.7,
-    "outline_pane_scrolls_horizontally" : 0,
-    "split_bar_color" : "LightSteelBlue2",
-    "split_bar_relief" : "groove",
-    "split_bar_width" : 7 }
-#@nonl
-#@-node:ekr.20031218072017.2404:<< define defaultsDict >>
-#@+node:ekr.20031218072017.3004:<< initialize ivars that may be set by config options >>
-# Defaults for these ivaars are specified here, _not_ in defaultsDict.
-
-self.at_root_bodies_start_in_doc_mode = True # For compatibility with previous versions.
-self.config = None # The current instance of ConfigParser
-self.config_encoding = "utf-8" # Encoding used for leoConfig.txt.
-self.create_nonexistent_directories = False
-self.default_derived_file_encoding = "utf-8"
-self.new_leo_file_encoding = "UTF-8" # Upper case for compatibility with previous versions.
-self.output_initial_comment = "" # "" or None for compatibility with previous versions.
-self.output_newline = "nl"
-self.read_only = True # Make sure we don't alter an illegal leoConfig.txt file!
-self.redirect_execute_script_output_to_log_pane = False
-self.relative_path_base_directory = "!"
-self.remove_sentinels_extension = ".txt"
-self.save_clears_undo_buffer = False
-self.stylesheet = None
-self.tkEncoding = None # Defaults to None so it doesn't override better defaults.
-self.trailing_body_newlines = "asis"
-self.use_plugins = False # Should never be True here!
-self.use_psyco = False
-self.undo_granularity = "word" # "char","word","line","node"
-self.write_strips_blank_lines = False
-#@nonl
-#@-node:ekr.20031218072017.3004:<< initialize ivars that may be set by config options >>
-#@+node:ekr.20031218072017.1421:<< get config options >>
-@ Rewritten 10/11/02 as follows:
-
-1. We call initConfigParam and initBooleanConfigParam to get the values.
-
-The general purpose code will enter all these values into configDict.  This allows update() to write the configuration section without special case code.  configDict is not accessible by the user.  Rather, for greater speed the user access these values via the ivars of this class.
-
-2. We pass the ivars themselves as params so that default initialization is done in the ctor, as would normally be expected.
-@c
-
-self.at_root_bodies_start_in_doc_mode = self.initBooleanConfigParam(
-    "at_root_bodies_start_in_doc_mode",self.at_root_bodies_start_in_doc_mode)
-    
-encoding = self.initConfigParam(
-    "config_encoding",self.config_encoding)
-    
-if g.isValidEncoding(encoding):
-    self.config_encoding = encoding
-else:
-    g.es("bad config_encoding: " + encoding)
-    
-self.create_nonexistent_directories = self.initBooleanConfigParam(
-    "create_nonexistent_directories",self.create_nonexistent_directories)
-    
-encoding = self.initConfigParam(
-    "default_derived_file_encoding",self.default_derived_file_encoding)
-
-if g.isValidEncoding(encoding):
-    self.default_derived_file_encoding = encoding
-else:
-    g.es("bad default_derived_file_encoding: " + encoding)
-    
-encoding = self.initConfigParam(
-    "new_leo_file_encoding",
-    self.new_leo_file_encoding)
-
-if g.isValidEncoding(encoding):
-    self.new_leo_file_encoding = encoding
-else:
-    g.es("bad new_leo_file_encoding: " + encoding)
-
-self.output_initial_comment = self.initConfigParam(
-    "output_initial_comment",self.output_initial_comment)
-
-self.output_newline = self.initConfigParam(
-    "output_newline",self.output_newline)
-
-self.read_only = self.initBooleanConfigParam(
-    "read_only",self.read_only)
-
-self.relative_path_base_directory = self.initConfigParam(
-    "relative_path_base_directory",self.relative_path_base_directory)
-    
-self.redirect_execute_script_output_to_log_pane = self.initBooleanConfigParam(
-    "redirect_execute_script_output_to_log_pane",
-    self.redirect_execute_script_output_to_log_pane)
-    
-self.remove_sentinels_extension = self.initConfigParam(
-    "remove_sentinels_extension",self.remove_sentinels_extension)
-
-self.save_clears_undo_buffer = self.initBooleanConfigParam(
-    "save_clears_undo_buffer",self.save_clears_undo_buffer)
-    
-self.stylesheet = self.initConfigParam(
-    "stylesheet",self.stylesheet)
-    
-encoding = self.initConfigParam(
-    "tk_encoding",self.tkEncoding)
-    
-if encoding and len(encoding) > 0: # May be None.
-    if g.isValidEncoding(encoding):
-        self.tkEncoding = encoding
-    else:
-        g.es("bad tk_encoding: " + encoding)
-        
-# New in 4.2
-self.trailing_body_newlines = self.initConfigParam(
-    "trailing_body_newlines",self.trailing_body_newlines)
-    
-self.use_plugins = self.initBooleanConfigParam(
-    "use_plugins",self.use_plugins)
-
-self.use_psyco = self.initBooleanConfigParam(
-    "use_psyco",self.use_psyco)
-    
-self.undo_granularity = self.initConfigParam(
-    "undo_granularity",self.undo_granularity)
-
-# New in 4.2
-self.write_strips_blank_lines = self.initBooleanConfigParam(
-    "write_strips_blank_lines",self.write_strips_blank_lines)
-    
-#g.trace("write_strips_blank_lines",self.write_strips_blank_lines)
-#g.trace("trailing_body_newlines",self.trailing_body_newlines)
-#@nonl
-#@-node:ekr.20031218072017.1421:<< get config options >>
-#@-node:ekr.20040930075920.1:Common to both options
-#@+node:ekr.20040718050922:(trailing_body_newlines option)
-@color
-#@nonl
-#@+node:ekr.20040720105309:Notes
-@killcolor
-
-My first idea was to do this in the body text setters.  However, this converts everything when reading any .leo file, and that is _very_ slow.  It also appears to be very dangerous.
-#@nonl
-#@-node:ekr.20040720105309:Notes
-#@-node:ekr.20040718050922:(trailing_body_newlines option)
-#@+node:ekr.20040720075446.1:(write_strips_blank_lines option)
-#@+node:ekr.20031218072017.2134:putCodeLine
-def putCodeLine (self,s,i):
-    
-    """Put a normal code line."""
-    
-    at = self
-    
-    # Put @verbatim sentinel if required.
-    k = g.skip_ws(s,i)
-    if g.match(s,k,self.startSentinelComment + '@'):
-        self.putSentinel("@verbatim")
-
-    j = g.skip_line(s,i)
-    line = s[i:j]
-
-    # g.app.config.write_strips_blank_lines
-    if 0: # 7/22/04: Don't put any whitespace in otherwise blank lines.
-        if line.strip(): # The line has non-empty content.
-            if not at.raw:
-                at.putIndent(at.indent)
-        
-            if line[-1:]=="\n":
-                at.os(line[:-1])
-                at.onl()
-            else:
-                at.os(line)
-        elif line and line[-1] == '\n':
-            at.onl()
-        else:
-            g.trace("Can't happen: completely empty line")
-    else:
-        # 1/29/04: Don't put leading indent if the line is empty!
-        if line and not at.raw:
-            at.putIndent(at.indent)
-    
-        if line[-1:]=="\n":
-            at.os(line[:-1])
-            at.onl()
-        else:
-            at.os(line)
-#@nonl
-#@-node:ekr.20031218072017.2134:putCodeLine
-#@-node:ekr.20040720075446.1:(write_strips_blank_lines option)
-#@-node:EKR.20040603092958.1:Add new options for handling newlines in body text
-#@-node:ekr.20040930075920:Whitespace options
-#@+node:ekr.20041022083005.8:Script to catch mixed tab & space in derived files
-import glob
-
-@others
-
-dir = c.frame.openDirectory
-files = glob.glob('%s\*.py' % dir)
-
-n = 0
-for name in files:
-    f = file(name)
-    lines = f.readlines()
-    # print '%5d %s' % (len(lines),name)
-    f.close()
-    check(name,lines)
-    n += 1
-print 'done.  checked %d files' % (n)
-#@nonl
-#@+node:ekr.20050917133402:check
-def check(name,lines):
-    
-    n = 0
-    for line in lines:
-        n += 1
-        i = g.skip_ws(line,0)
-        lws = line[0:i]
-        if lws:
-            if lws.find(' ') > -1 and lws.find('\t') > -1:
-                print '%20s %5d %s' % (name,n,repr(line))
-#@nonl
-#@-node:ekr.20050917133402:check
-#@-node:ekr.20041022083005.8:Script to catch mixed tab & space in derived files
-#@-node:ekr.20040919182750.1:Better handling of whitespace (cvs fiendly)
-#@+node:EKR.20040628085831:@import, @shadow
-@directory-import (Generalization of @import)
-#@nonl
-#@-node:EKR.20040628085831:@import, @shadow
-#@+node:ekr.20041022091645.4: Pymacs
-#@+node:ekr.20040125121407:Postings
-@nocolor
-#@nonl
-#@+node:ekr.20040125121407.1:randomandy
-http://sourceforge.net/forum/message.php?msg_id=2389876
-By: randomandy
-
-Is it only me who sees this as a question on how to reinvent the wheel? (or
-in the case of emacs, how to reinvent the <i>everything</i>.)
-
-Leo and Python both seem so well suited as wonderful hierarchal glue programs.
-And both are so elegant in the way their simple functionality brings such power
-and order to the cause. It just seems it would be a shame to take something
-so novel and unique and try to turn it into <i>yet another</i> huge text editor.
-
-I'm with <A HREF="http://sourceforge.net/forum/message.php?msg_id=2345873">Danny
-</A> on this one. The ideal solution is to find the most elegant and seamless
-way to splice one's own beloved text editor (or multipurpose editor/OS) in with
-the Leo paradigm. Have Leo hand off the text duties to the editor, or have the
-editor deliver heirarchy commands to Leo.
-
-I'm also quite curious if this makes a good tie in with SciTE. SciTE produces
-stunningly readible language highlighting/formatting. Could it be employed for
-basic cell text display, and then for heavier editing, a keystroke or button
-could open the cell text in one's preferred weapons grade text editor?
-
-Scintilla also has a similarly beautiful code-to-html and code-to-pdf capability
-that seems very suited to the literary part of the Leo paradigm: publication.
-It would be nice if that code could be exploited as well.
-
-This Leo is really a marvelous work. It's transforming the way I think (i.e.
-making it possible again). Nice work, Edward.
-#@-node:ekr.20040125121407.1:randomandy
-#@+node:ekr.20040125121407.2:dannyobrien
-By: dannyobrien ( danny o'brien ) 
- RE: What would it take to turn Leo into Emacs   
-2003-12-23 09:18  
-
- I agree with the embedding; I've used the vim plugin and it works well, but actually embedding the editor directly into the text field of leo (and allowing a range of keyboard shortcuts for eg headline editing) would be perfect.
-
-There is some support for this in gvim, the GUI version of vim that comes as standard. This can be run so as its GUI is "embedded" in another GTK widget, using that library's GtkSocket/GtkPlug system. A quick demo of that (and how to do it in python) is here:
-
-http://www.daa.com.au/pipermail/pygtk/2003-October/006185.html
-
-To see this working with gvim, run the second (socket.py) program on that page then type
-
-gvim --socketid <number generated by socket.py>
-
-I'm not sure how you could do this in other widget libraries - I don't know much about X Windows, but I suppose it would need support in vim as well as the widget set.
- 
-#@-node:ekr.20040125121407.2:dannyobrien
-#@+node:ekr.20040125121407.3:mdawson
-http://sourceforge.net/forum/message.php?msg_id=2388448
-By: mdawson
-
-I use XEmacs as my text editor.  The first thing I did when
-evaluating Leo was to set up "open with" to use XEmacs for editing
-Leo body text.
-
-My progress so far:
-
-- my Open_With Plugin opens a Leo node as a foreground buffer in
-XEmacs, or a background (invisible) buffer in XEmacs.
-
-- my Open_Tree Plugin opens a sub-tree of Leo nodes as background
-buffers in XEmacs.
-
-- my filename modification plugin changes the temporary file names
-used by Leo so that they can be spotted more easily in an XEmacs
-buffer listing (e.g. ibuffer).
-
-- an elisp function to kill all XEmacs Leo buffers at once.
-
-- another elisp function to indent and unindent the Leo comments in
-derived Python source, which improves the readability of code.
-
-- my setup of the elisp Multiple-Major-Modes XEmacs package, so that
-XEmacs is in text-mode in Leo @doc sections, and the correct
-language mode in @code sections.
-
-Any of these might be able to be adapted for your own use. They
-should all work with Emacs as well as XEmacs, but I've not tested
-that.
-
-These are all outlined in Appendix "C. XEmacs Text Editor" of the
-document at:
-    http://devguide.leo.marshallresearch.ca
-
-and the Leo outline that contains them is available
-at:
-    http://leo.marshallresearch.ca
-
-
-    ----------------------------------------
-    Michael Dawson
-
- 
-#@-node:ekr.20040125121407.3:mdawson
-#@-node:ekr.20040125121407:Postings
-#@+node:ekr.20041022144159:Q: Pymacs bridge
-I'm trying to use the Pymacs bridge to add a symbol completion facility to
-Emacs's python-mode.  Neither the Python nor Emacs Lisp portions are all
-that complex, but I'm having trouble passing a list of strings from Emacs
-Lisp into Python.  On the Emacs Lisp side it looks like this:
-
-    (pymacs-load "pycomplete")
-
-    (defun py-complete ()
-      (interactive)
-      (pycomplete-pycomplete (py-symbol-near-point)
-                             (py-find-global-imports)))
-
-(py-find-global-imports) returns a (Lisp) list of strings, e.g.:
-
-    ("import time", "import sys")
-
-On the Python side I have this function:
-
-    def pycomplete(s, imports=None):
-        completions = get_all_completions(s, imports)
-        dots = s.split(".")
-        return os.path.commonprefix([k[len(dots[-1]):] for k in completions])
-
-Unfortunately, the imports arg does not come across as a Python list of
-strings (s does come across the bridge as a normal Python string).  Its
-repr() prints out like this:
-
-    lisp('("import time")')
-
-What do I need to do to convert that object into a true Python list of
-strings?  I'm afraid I don't quite understand the description of the lisp
-object in the Pymacs docs.  I tried imports.value() but that just gave me
-
-    (aref pymacs-lisp 0)
-
-Any help appreciated...
-
-Skip
-#@nonl
-#@-node:ekr.20041022144159:Q: Pymacs bridge
-#@+node:ekr.20041022144159.1:A: pymacs-forget-mutability
-"""
-Proper Emacs Lisp lists, those for which the cdr of last cell is nil, are
-normally transmitted opaquely to Python. If pymacs-forget-mutability is
-set, or if Python later asks for these to be expanded, proper Emacs Lisp
-lists get converted into Python lists, if we except the empty list, which
-is always converted as Python None. In the other direction, Python lists
-are always converted into proper Emacs Lisp lists.
-"""
-
-So, maybe try
-
-    (defun py-complete ()
-      (interactive)
-      (let ((pymacs-forget-mutability t)) 
-	(pycomplete-pycomplete (py-symbol-near-point)
-                               (py-find-global-imports))))
-#@-node:ekr.20041022144159.1:A: pymacs-forget-mutability
-#@-node:ekr.20041022091645.4: Pymacs
+#@-node:ekr.20060116073229:To do 4.4.x
+#@+node:ekr.20041228090855.3:Others
 #@+node:ekr.20060227123536:Tiddlywiki and related comments about rendering body text
 @nocolor
 http://sourceforge.net/forum/message.php?msg_id=3578252
@@ -7797,58 +9109,6 @@ As an intermediate step, maybe we could allow mixing RST processing with regular
 program text.  Leo would produce two documents out of a source file: a version
 for the compiler in plain ascii, and an HTML file for reading the source.
 #@-node:ekr.20060227123536:Tiddlywiki and related comments about rendering body text
-#@+node:ekr.20060329102951:@ref
-@nocolor
-#@nonl
-#@+node:ekr.20060329102951.1:My summary post
-http://sourceforge.net/forum/message.php?msg_id=3598136
-
-> It appears that @ref nodes introduce a flexibility that can not be simulated (at all?) with clones.  
- 
-Now that something like @ref appears necessary, it is so much easier to see how @ref is useful :-) 
- 
-1. @ref is an explicit link (arc) that creates the links of a general graph structure explictily. 
- 
-The simplest cycle is: 
- 
-- root 
-..- a 
-.... - @ref b 
-..- b 
-.... - @ref a 
- 
-This is not possible with clones! No more mumbling about being able to represent such links in uA's! 
- 
-2. @ref allows users to compose documents from 'atomic' pieces of text properly. That is, adding a 'virtual' child to a piece of text does not add it to all other uses of that text in (possibly unrelated) documents. This vastly increases the flexibility of rst3 plugin. 
- 
-I suspect other essential uses of @ref will appear. I am sure we can declare the 'post-leo LP tool' project a great success already :-) 
- 
-Edward 
-#@-node:ekr.20060329102951.1:My summary post
-#@+node:ekr.20060329102951.2:Reply
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3650005
-By: itsme213
-
-Imho ...
-
-There will not be any "arbitrary graph" from @ref. Instead there is a forest
-of trees, and across trees, some nodes are same_as some other nodes (caused
-by @ref). same_as is transitive. Quite likely the roots of all trees are same_as.
-There may need to be some rules to ensure things make structural sense. Children
-of a node are just that -- children of that node.
-
-There will be a totally separate Merge node whose children will be the union
-of the children of all the nodes it merges. A Merge node is, itself, the ordinary child of some
-node.
-
-Tree traversals will be tree traversals.
-
-Hope that did not muddy the waters even more ... 
-#@-node:ekr.20060329102951.2:Reply
-#@-node:ekr.20060329102951:@ref
-#@-node:ekr.20050816165305:Important
-#@+node:ekr.20041228090855.3:Others
 #@+node:ekr.20060120084705:Overwrite mode doesn't work in headllines
 #@-node:ekr.20060120084705:Overwrite mode doesn't work in headllines
 #@+node:ekr.20060209201859.1:Trap AttributeErrors in dummy base classes
