@@ -868,7 +868,7 @@ class leoFind:
             n = len(pattern)
             while 1:
                 k = s.rfind(pattern,i,j)
-                g.trace(i,j,k)
+                # g.trace(i,j,k)
                 if k == -1: return -1, -1
                 if self.matchWord(s,k,pattern):
                     return max(0,k-n+1),k+1, 
@@ -895,7 +895,7 @@ class leoFind:
         if word:
             while 1:
                 k = s.find(pattern,i,j)
-                g.trace(k,n)
+                # g.trace(k,n)
                 if k == -1: return -1, -1
                 elif self.matchWord(s,k,pattern):
                     return k, k + n
