@@ -4513,6 +4513,15 @@ def matchWord(self,s,i,pattern):
 #@-node:ekr.20060526081931:Search helpers...
 #@-node:ekr.20031218072017.3077:search & helpers
 #@-node:ekr.20060224104109:Improved searches
+#@+node:ekr.20060214072931:Added run-unit-test command
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3575014
+
+Actually, the run-unit-tests command first appeared in Leo 4.4, but it never got
+properly announced.
+#@nonl
+#@-node:ekr.20060214072931:Added run-unit-test command
 #@-node:ekr.20060522103446:New features
 #@-node:ekr.20060514170725:4.4.1 projects
 #@-node:ekr.20050924073836:4.4 projects

@@ -13,8 +13,7 @@
 <v t="ekr.20031218072017.329"><vh>@thin ../doc/leoNotes.txt</vh></v>
 </v>
 <v t="EKR.20040519090151.3"><vh>Projects</vh>
-<v t="EKR.20040429143933"
-expanded="ekr.20050314140957,ekr.20050315071727,ekr.20031218072017.3070,ekr.20060123125256,ekr.20060124140114,ekr.20031218072017.3077,ekr.20060526081931,"><vh>@thin leoProjects.txt</vh></v>
+<v t="EKR.20040429143933"><vh>@thin leoProjects.txt</vh></v>
 </v>
 <v t="ekr.20060514170725"><vh>4.4.1 projects</vh>
 <v t="ekr.20060514170854"><vh>Fixed bugs</vh>
@@ -92,21 +91,21 @@ expanded="ekr.20050314140957,ekr.20050315071727,ekr.20031218072017.3070,ekr.2006
 </v>
 <v t="ekr.20060224104109"><vh>Improved searches</vh>
 <v t="ekr.20050315073003"><vh> Index utilities...</vh>
-<v t="ekr.20050314140957" a="E"><vh>g.convertPythonIndexToRowCol  &amp; test</vh>
+<v t="ekr.20050314140957"><vh>g.convertPythonIndexToRowCol  &amp; test</vh>
 <v t="ekr.20050314140957.1"><vh>bruteForceConvertPythonIndexToRowCol</vh></v>
 <v t="ekr.20050314140957.2"><vh>test_g_convertPythonIndexToRowCol</vh></v>
 </v>
-<v t="ekr.20050315071727" a="E"><vh>g.convertRowColToPythonIndex &amp; test</vh>
+<v t="ekr.20050315071727"><vh>g.convertRowColToPythonIndex &amp; test</vh>
 <v t="ekr.20050315072239"><vh>test_g_convertPythonIndexToRowCol</vh></v>
 </v>
 </v>
-<v t="ekr.20031218072017.3070" a="E"><vh>changeSelection</vh>
+<v t="ekr.20031218072017.3070"><vh>changeSelection</vh>
 <v t="ekr.20060526201951"><vh>makeRegexSubs</vh></v>
 </v>
 <v t="ekr.20051023094009"><vh>Search classes</vh>
-<v t="ekr.20060123125256" a="E"><vh>class minibufferFind (the findHandler)</vh>
+<v t="ekr.20060123125256"><vh>class minibufferFind (the findHandler)</vh>
 <v t="ekr.20060123125317.2"><vh> ctor (minibufferFind)</vh></v>
-<v t="ekr.20060124140114" a="E"><vh> Options</vh>
+<v t="ekr.20060124140114"><vh> Options</vh>
 <v t="ekr.20060124123133"><vh>setFindScope</vh></v>
 <v t="ekr.20060124122844"><vh>setOption</vh></v>
 <v t="ekr.20060125082510"><vh>getOption</vh></v>
@@ -225,11 +224,11 @@ expanded="ekr.20050314140957,ekr.20050315071727,ekr.20031218072017.3070,ekr.2006
 <v t="ekr.20060128103640.4"><vh>&lt;&lt; compute shortcut &gt;&gt;</vh></v>
 </v>
 </v>
-<v t="ekr.20031218072017.3077" a="E"><vh>search &amp; helpers</vh>
+<v t="ekr.20031218072017.3077"><vh>search &amp; helpers</vh>
 <v t="ekr.20060526084217"><vh>&lt;&lt; convert index to python index &gt;&gt;</vh></v>
 <v t="ekr.20060526140328"><vh>&lt;&lt; fail if we are passed the wrap point &gt;&gt;</vh></v>
 <v t="ekr.20060526085605"><vh>&lt;&lt; convert pos and newpos to gui indices &gt;&gt;</vh></v>
-<v t="ekr.20060526081931" a="E"><vh>Search helpers...</vh>
+<v t="ekr.20060526081931"><vh>Search helpers...</vh>
 <v t="ekr.20060526092203"><vh>regexHelper</vh></v>
 <v t="ekr.20060526140744"><vh>backwardsHelper</vh></v>
 <v t="ekr.20060526093531"><vh>plainHelper</vh></v>
@@ -237,15 +236,14 @@ expanded="ekr.20050314140957,ekr.20050315071727,ekr.20031218072017.3070,ekr.2006
 </v>
 </v>
 </v>
+<v t="ekr.20060214072931"><vh>Added run-unit-test command</vh></v>
 </v>
 </v>
-<v t="EKR.20040519090151.2" a="V"><vh>To do</vh>
+<v t="EKR.20040519090151.2"><vh>To do</vh>
 <v t="ekr.20040117181936"><vh>@thin ../doc/leoToDo.txt</vh></v>
-<v t="ekr.20060207133601"
-expanded="ekr.20060123125256,ekr.20060124140114,ekr.20060526081931,"><vh>@thin ../doc/leoToDoLater.txt</vh></v>
+<v t="ekr.20060207133601"><vh>@thin ../doc/leoToDoLater.txt</vh></v>
 </v>
-<v t="ekr.20060527062603"><vh>To-do first</vh></v>
-<v t="ekr.20031218072017.2406"><vh>Code</vh>
+<v t="ekr.20031218072017.2406" a="V"><vh>Code</vh>
 <v t="ekr.20031218072017.2606"><vh>&lt;&lt; Import pychecker &gt;&gt;</vh></v>
 <v t="ekr.20031218072017.2582"><vh> version &amp; signon stuff</vh>
 <v t="ekr.20040629121554"><vh>getBuildNumber</vh></v>
@@ -270,8 +268,7 @@ expanded="ekr.20060123125256,ekr.20060124140114,ekr.20060526081931,"><vh>@thin .
 marks="ekr.20040629121554.2,"><vh>@thin leoCommands.py</vh></v>
 <v t="ekr.20041117062700"><vh>@thin leoConfig.py</vh></v>
 <v t="ekr.20031218072017.3018"><vh>@thin leoFileCommands.py</vh></v>
-<v t="ekr.20031218072017.3093"
-expanded="ekr.20050314140957,ekr.20050315071727,"><vh>@thin leoGlobals.py</vh></v>
+<v t="ekr.20031218072017.3093"><vh>@thin leoGlobals.py</vh></v>
 <v t="ekr.20031218072017.3206"><vh>@thin leoImport.py</vh></v>
 <v t="ekr.20031218072017.3320"><vh>@thin leoNodes.py</vh></v>
 <v t="ekr.20031218072017.3439"><vh>@thin leoPlugins.py</vh></v>
@@ -282,8 +279,7 @@ expanded="ekr.20050314140957,ekr.20050315071727,"><vh>@thin leoGlobals.py</vh></
 <v t="ekr.20031218072017.3625"><vh>Gui Base classes</vh>
 <v t="ekr.20050721093241"><vh>&lt;&lt; about gui classes and gui plugins &gt;&gt;</vh></v>
 <v t="ekr.20031218072017.3630"><vh>@thin leoCompare.py</vh></v>
-<v t="ekr.20060123151617"
-expanded="ekr.20060526081931,"><vh>@thin leoFind.py</vh></v>
+<v t="ekr.20060123151617"><vh>@thin leoFind.py</vh></v>
 <v t="ekr.20031218072017.3655"><vh>@thin leoFrame.py</vh></v>
 <v t="ekr.20031218072017.3719"><vh>@thin leoGui.py</vh></v>
 <v t="ekr.20031218072017.3749"><vh>@thin leoMenu.py</vh></v>
@@ -299,8 +295,7 @@ expanded="ekr.20060526081931,"><vh>@thin leoFind.py</vh></v>
 <v t="ekr.20040803072955"><vh>@thin leoTkinterTree.py</vh></v>
 </v>
 <v t="ekr.20031218072017.3748"><vh>@thin leoKeys.py</vh></v>
-<v t="ekr.20050710142719"
-expanded="ekr.20060123125256,ekr.20060124140114,"><vh>@thin leoEditCommands.py</vh></v>
+<v t="ekr.20050710142719"><vh>@thin leoEditCommands.py</vh></v>
 </v>
 </vnodes>
 <tnodes>
@@ -2578,6 +2573,12 @@ shift = s2.find("shift") &gt;= 0   or s2.find("shft") &gt;= 0</t>
 
     k.extendLabel(s,select=True,protect=protect)
 </t>
+<t tx="ekr.20060214072931">@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3575014
+
+Actually, the run-unit-tests command first appeared in Leo 4.4, but it never got
+properly announced.</t>
 <t tx="ekr.20060215104239">if ctrl and not cmd:
     cmd = True ; ctrl = False
 if alt and not ctrl:
@@ -2842,7 +2843,7 @@ else: # Use a pristine environment.
     # g.trace(backwards,i,j,repr(s[i:i+20]))
 
     if not s[i:j] or not pattern:
-        g.trace('empty',i,j)
+        # g.trace('empty',i,j)
         return -1,-1
         
     if regexp:
@@ -2972,19 +2973,6 @@ newpos = w.index('%s.%s' % (row+1,col))</t>
                 result.append('\\%s' % ch) # Append raw '\i'
     result.append(s[i:])
     return ''.join(result)</t>
-<t tx="ekr.20060527062603">@nocolor
-
-- Finish rst3 work.
-    - Document new rst3 method.
-    - Remove rst3 request page from wiki.
-
-- Chapter 14: How to use debuggers with Leo.
-
-- Add gui.toPythonIndex(s,index) and gui.toGuiIndex(s,index)
-
-** Complete transition to 'end-1c'
-
-- Make all unit tests pass.</t>
 <t tx="ekr.20060527065935"></t>
 <t tx="ekr.20060527065935.1"></t>
 </tnodes>
