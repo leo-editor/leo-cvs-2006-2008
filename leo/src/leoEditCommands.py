@@ -1219,7 +1219,7 @@ class editCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20050920084036.55: getPublicCommands (editCommandsClass)
     def getPublicCommands (self):        
     
-        c = self.c ; k = self.k
+        c = self.c ; k = self.k 
     
         return {
             'activate-cmds-menu':                   self.activateCmdsMenu,
@@ -1229,6 +1229,7 @@ class editCommandsClass (baseEditCommandsClass):
             'activate-outline-menu':                self.activateOutlineMenu,
             'activate-plugins-menu':                self.activatePluginsMenu,
             'activate-window-menu':                 self.activateWindowMenu,
+            'add-editor':                           c.frame.body.addEditor,
             'add-space-to-lines':                   self.addSpaceToLines,
             'add-tab-to-lines':                     self.addTabToLines, 
             'back-to-indentation':                  self.backToIndentation,
@@ -1261,9 +1262,11 @@ class editCommandsClass (baseEditCommandsClass):
             'contract-pane':                        c.frame.contractPane,
             'count-region':                         self.countRegion,
             'cycle-focus':                          self.cycleFocus,
+            'cycle-editor-focus':                   c.frame.body.cycleFocus,
             'dabbrev-completion':                   self.dynamicExpansion2,
             'dabbrev-expands':                      self.dynamicExpansion,
             'delete-char':                          self.deleteNextChar,
+            'delete-editor':                        c.frame.body.deleteEditor,
             'delete-indentation':                   self.deleteIndentation,
             'delete-spaces':                        self.deleteSpaces,
             'downcase-region':                      self.downCaseRegion,

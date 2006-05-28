@@ -4466,7 +4466,7 @@ def backwardsHelper (self,s,i,j,pattern,backwards,nocase,word):
         n = len(pattern)
         while 1:
             k = s.rfind(pattern,i,j)
-            g.trace(i,j,k)
+            # g.trace(i,j,k)
             if k == -1: return -1, -1
             if self.matchWord(s,k,pattern):
                 return max(0,k-n+1),k+1, 
@@ -4493,7 +4493,7 @@ def plainHelper (self,s,i,j,pattern,backwards,nocase,word):
     if word:
         while 1:
             k = s.find(pattern,i,j)
-            g.trace(k,n)
+            # g.trace(k,n)
             if k == -1: return -1, -1
             elif self.matchWord(s,k,pattern):
                 return k, k + n
@@ -4525,6 +4525,8 @@ properly announced.
 #@nonl
 #@-node:ekr.20060214072931:Added run-unit-test command
 #@+node:ekr.20060527182907:Support multiple editors in the body pane
+# Created add-editor, delete-editor and cycle-editor-focus commands.
+#@nonl
 #@+node:ekr.20031218072017.2182:tkBody. __init__
 def __init__ (self,frame,parentFrame):
     
@@ -4609,7 +4611,7 @@ def createTextWidget (self,frame,parentFrame,name,p):
 #@-node:ekr.20060528100747.3:tkBody.createTextWidget
 #@+node:ekr.20060528100747:Editors
 #@+node:ekr.20060528100747.1:addEditor
-def addEditor (self):
+def addEditor (self,event=None):
     
     c = self.c ; p = c.currentPosition()
     self.numberOfEditors += 1
@@ -4644,6 +4646,7 @@ w.insert('end',p.bodyString())
 self.setFontFromConfig(w=w)
 self.setColorFromConfig(w=w)
 self.createBindings(w=w)
+c.k.completeAllBindingsForWidget(w)
 
 # Temporarily make this the 'real' text widget so we can color it.
 old_w = self.bodyCtrl
@@ -4657,8 +4660,26 @@ self.bodyCtrl = old_w
 #@nonl
 #@-node:ekr.20060528110922:<< create label and text widgets >>
 #@-node:ekr.20060528100747.1:addEditor
+#@+node:ekr.20060528170438:cycleFocus
+def cycleFocus (self,event=None):
+    
+    c = self.c ; d = self.editorWidgets
+    keys = d.keys() ; n = len(keys)
+    if n < 2: return # There is only the main widget. 
+
+    i = 0
+    for key in d.keys():
+        i += 1
+        w = d.get(key)
+        if w == self.bodyCtrl:
+            if i >= n: i = 0
+            self.bodyCtrl = w = d.get(keys[i])
+            g.app.gui.set_focus(c, w)
+            return
+#@nonl
+#@-node:ekr.20060528170438:cycleFocus
 #@+node:ekr.20060528113806:deleteEditor
-def deleteEditor (self):
+def deleteEditor (self,event=None):
     
     name = self.editor_name
 

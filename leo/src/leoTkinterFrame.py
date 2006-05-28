@@ -2474,7 +2474,7 @@ class leoTkinterBody (leoFrame.leoBody):
     #@-node:ekr.20031218072017.3997: Birth & death
     #@+node:ekr.20060528100747:Editors
     #@+node:ekr.20060528100747.1:addEditor
-    def addEditor (self):
+    def addEditor (self,event=None):
         
         c = self.c ; p = c.currentPosition()
         self.numberOfEditors += 1
@@ -2501,6 +2501,7 @@ class leoTkinterBody (leoFrame.leoBody):
         self.setFontFromConfig(w=w)
         self.setColorFromConfig(w=w)
         self.createBindings(w=w)
+        c.k.completeAllBindingsForWidget(w)
         
         # Temporarily make this the 'real' text widget so we can color it.
         old_w = self.bodyCtrl
@@ -2523,8 +2524,26 @@ class leoTkinterBody (leoFrame.leoBody):
         self.pb.updatelayout()
     #@nonl
     #@-node:ekr.20060528100747.1:addEditor
+    #@+node:ekr.20060528170438:cycleFocus
+    def cycleFocus (self,event=None):
+        
+        c = self.c ; d = self.editorWidgets
+        keys = d.keys() ; n = len(keys)
+        if n < 2: return # There is only the main widget. 
+    
+        i = 0
+        for key in d.keys():
+            i += 1
+            w = d.get(key)
+            if w == self.bodyCtrl:
+                if i >= n: i = 0
+                self.bodyCtrl = w = d.get(keys[i])
+                g.app.gui.set_focus(c, w)
+                return
+    #@nonl
+    #@-node:ekr.20060528170438:cycleFocus
     #@+node:ekr.20060528113806:deleteEditor
-    def deleteEditor (self):
+    def deleteEditor (self,event=None):
         
         name = self.editor_name
     
