@@ -195,6 +195,7 @@ class leoTkinterTree (leoFrame.leoTree):
         # Configuration and debugging settings.
         self.expanded_click_area    = c.config.getBool('expanded_click_area')
         self.gc_before_redraw       = c.config.getBool('gc_before_redraw')
+        self.idle_redraw            = c.config.getBool('idle_redraw')
         self.stayInTree             = c.config.getBool('stayInTreeAfterSelect')
     
         self.trace                  = c.config.getBool('trace_tree')
@@ -874,7 +875,12 @@ class leoTkinterTree (leoFrame.leoTree):
     
         # Do the actual redraw.
         self.expandAllAncestors(c.currentPosition())
-        self.redrawHelper(scroll=scroll)
+        if self.idle_redraw:
+            def idleRedrawCallback(event=None,self=self,scroll=scroll):
+                self.redrawHelper(scroll=scroll)
+            self.canvas.after_idle(idleRedrawCallback)
+        else:
+            self.redrawHelper(scroll=scroll)
         if g.app.unitTesting:
             self.canvas.update_idletasks() # Important for unit tests.
         c.masterFocusHandler()
