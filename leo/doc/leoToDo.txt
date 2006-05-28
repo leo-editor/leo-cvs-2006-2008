@@ -2,8 +2,14 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20060527190049:Before 4.4.1b1 (1 week)
-#@+node:ekr.20060528082017:First
 #@+node:ekr.20060419101401:Complete transition to 'end-1c'
+@nocolor
+
+** Problem:  gui.getAllText should return 'extra' newline for leoFind.search.
+    - Why is the trailing newline needed ???
+
+@color
+#@nonl
 #@+node:ekr.20060419101401.1:Found: gui.getAllText
 #@+node:ekr.20031218072017.2293:batchChange (sets start of change-all group)
 @ This routine performs a single batch change operation, updating the head or body string of p and leaving the result in s_ctrl.  We update the body if we are changing the body text of c.currentVnode().
@@ -411,21 +417,6 @@ def updateTab (self,p,w):
 #@-node:ekr.20051125080855:selfInsertCommand
 #@-node:ekr.20060419101401.1:Found: gui.getAllText
 #@-node:ekr.20060419101401:Complete transition to 'end-1c'
-#@+node:ekr.20060515060803:Allow idle-time redraw?
-#@+node:ekr.20060515060803.1:Report
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3729823
-By: nobody
-
-I am running Ubuntu 5.10 and have the same (I think) problem - this is with
-the 4.4 final release.
-
-When I move through nodes using the alt-XXX short cuts, there is a lot of flicker
-as nodes are redrawn etc. I had no problem with this in 4.3.
-#@nonl
-#@-node:ekr.20060515060803.1:Report
-#@-node:ekr.20060515060803:Allow idle-time redraw?
-#@-node:ekr.20060528082017:First
 #@+node:ekr.20060528082017.1:Important (2-4 days)
 #@+node:ekr.20060527204444:Finish new colorizer plugin
 #@-node:ekr.20060527204444:Finish new colorizer plugin
@@ -438,7 +429,7 @@ Add support for @list
 #@-node:ekr.20060122184114:Support the execution of a command when entering a mode
 #@-node:ekr.20060211093935:Support for on-enter-mode in mode declarations
 #@-node:ekr.20060528082017.1:Important (2-4 days)
-#@+node:ekr.20060528082017.2:Last (1-2 days)
+#@+node:ekr.20060528082017.2:Last (1 day)
 #@+node:ekr.20060522101202:Improve reports of binding problems
 @nocolor
 
@@ -1953,7 +1944,7 @@ def defineCmdsMenuSpellCheckTable (self):
 - define a debugger1 hook so the plugin can override the standard debug code.
 #@nonl
 #@-node:ekr.20060522084039:Finish the debugger
-#@-node:ekr.20060528082017.2:Last (1-2 days)
+#@-node:ekr.20060528082017.2:Last (1 day)
 #@-node:ekr.20060527190049:Before 4.4.1b1 (1 week)
 #@+node:ekr.20051202094427:Urgent: Resolve cvs conflicts
 Investigate meld:  http://meld.sourceforge.net/

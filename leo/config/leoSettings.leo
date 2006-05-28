@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="267" clone_windows="0"/>
 <globals body_outline_ratio="0.549828178694">
-	<global_window_position top="45" left="330" height="653" width="882"/>
+	<global_window_position top="45" left="330" height="634" width="882"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -54,6 +54,7 @@
 <v t="ekr.20060521134125"><vh>@string debugger_default_target = None</vh></v>
 <v t="ekr.20060521134125.1"><vh>@string debugger_force_target = None</vh></v>
 <v t="ekr.20060212101234"><vh>@bool gc_before_redraw = False</vh></v>
+<v t="ekr.20060528175513"><vh>@bool idle_redraw = False</vh></v>
 <v t="ekr.20060202113731"><vh>@bool show_tree_stats = False</vh></v>
 <v t="ekr.20060216145416"><vh>@bool trace_autocompleter = False</vh></v>
 <v t="ekr.20060114073238"><vh>@bool trace_bindings = False</vh></v>
@@ -4700,5 +4701,6 @@ c:\prog\tigris-cvs\leo\src\leo.py
 <t tx="ekr.20060524151415"></t>
 <t tx="ekr.20060524151415.1">idle: use Python's standard idle debugger.
 winpdb: use winpdb debugger.</t>
+<t tx="ekr.20060528175513"></t>
 </tnodes>
 </leo_file>
