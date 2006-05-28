@@ -6256,7 +6256,7 @@ class baseCommands:
         if p:
             c._topPosition = p.copy()
         else:
-            c._topPosition = None
+            c._topPosition = c.nullPosition()
         
     # Define these for compatibiility with old scripts.
     topVnode = topPosition

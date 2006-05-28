@@ -5162,12 +5162,8 @@ def importModule (moduleName,pluginName=None,verbose=False):
                 data = imp.find_module(moduleName) # This can open the file.
                 theFile,pathname,description = data
                 module = imp.load_module(moduleName,theFile,pathname,description)
-            except ImportError:
+            except Exception: # Importing a module can throw exceptions other than ImportError.
                 g.cantImport(moduleName,pluginName=pluginName,verbose=verbose)
-            except Exception:
-                g.es("unexpected exception in g.import",color='blue')
-                g.es_exception()
-        # Put no return statements before here!
         finally:
             if theFile: theFile.close()
     return module

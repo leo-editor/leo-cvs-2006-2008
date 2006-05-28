@@ -3137,7 +3137,7 @@ class keyHandlerClass:
             # g.trace('*'*20,'auto-deactivate tree: %s' % wname)
             c.frame.tree.OnDeactivate()
             c.widgetWantsFocusNow(w)
-            g.trace('end: None')
+            if trace: g.trace('end: None')
             return None
     
     masterClick3Handler = masterClickHandler
