@@ -2371,22 +2371,25 @@ class leoTkinterBody (leoFrame.leoBody):
         leoFrame.leoBody.__init__(self,frame,parentFrame)
         
         c = self.c
-        
+        self.editor_name = None
+        self.editor_v = None
+        self.editorWidgets = {} # keys are pane names, values are Tk.Text widgets
+    
         self.trace_onBodyChanged = c.config.getBool('trace_onBodyChanged')
-    
         self.bodyCtrl = self.createControl(frame,parentFrame)
-    
         self.colorizer = leoColor.colorizer(c)
+    #@nonl
     #@-node:ekr.20031218072017.2182:tkBody. __init__
     #@+node:ekr.20031218072017.838:tkBody.createBindings
-    def createBindings (self):
+    def createBindings (self,w=None):
     
         '''(tkBody) Create gui-dependent bindings.
         These are *not* made in nullBody instances.'''
         
-        frame = self.frame ; c = self.c ; k = c.k ; t = self.bodyCtrl
+        frame = self.frame ; c = self.c ; k = c.k
+        if not w: w = self.bodyCtrl
         
-        t.bind('<Key>', k.masterKeyHandler)
+        w.bind('<Key>', k.masterKeyHandler)
     
         for kind,func,handler in (
             ('<Button-1>',  frame.OnBodyClick,          k.masterClickHandler),
@@ -2397,15 +2400,32 @@ class leoTkinterBody (leoFrame.leoBody):
             def bodyClickCallback(event,handler=handler,func=func):
                 return handler(event,func)
     
-            t.bind(kind,bodyClickCallback)
+            w.bind(kind,bodyClickCallback)
                 
         if sys.platform.startswith('win'):
             # Support Linux middle-button paste easter egg.
-            t.bind("<Button-2>",frame.OnPaste)
+            w.bind("<Button-2>",frame.OnPaste)
     #@nonl
     #@-node:ekr.20031218072017.838:tkBody.createBindings
     #@+node:ekr.20031218072017.3998:tkBody.createControl
     def createControl (self,frame,parentFrame):
+        
+        c = self.c
+        
+        # New in 4.4.1: make the parent frame a Pmw.PanedWidget.
+        self.numberOfEditors = 1
+       
+        self.pb = pb = Pmw.PanedWidget(parentFrame,orient='horizontal')
+        parentFrame = pb.add('1')
+        pb.pack(expand=1,fill='both') # Must be done after the first page created.
+       
+        w = self.createTextWidget(frame,parentFrame,name=None,p=None)
+        self.editorWidgets[None] = w
+        return w
+    #@nonl
+    #@-node:ekr.20031218072017.3998:tkBody.createControl
+    #@+node:ekr.20060528100747.3:tkBody.createTextWidget
+    def createTextWidget (self,frame,parentFrame,name,p):
         
         c = self.c
     
@@ -2415,9 +2435,6 @@ class leoTkinterBody (leoFrame.leoBody):
         # Setgrid=1 cause severe problems with the font panel.
         body = Tk.Text(parentFrame,name='body-pane',
             bd=2,bg="white",relief="flat",setgrid=0,wrap=wrap)
-            
-        trace = c.config.getBool('trace_chapters') and not g.app.unitTesting
-        if trace: g.trace('tkBody',body)
         
         bodyBar = Tk.Scrollbar(parentFrame,name='bodyBar')
         frame.bodyBar = self.bodyBar = bodyBar
@@ -2443,42 +2460,184 @@ class leoTkinterBody (leoFrame.leoBody):
         if 0: # Causes the cursor not to blink.
             body.configure(insertofftime=0)
             
+        # Inject ivars
+        body.leo_pane_name = name
+        body.leo_v = p and p.v
+            
+        def focusInCallback(event,self=self,w=body):
+            self.onFocusIn(w)
+        body.bind('<FocusIn>',focusInCallback)
+    
         return body
     #@nonl
-    #@-node:ekr.20031218072017.3998:tkBody.createControl
+    #@-node:ekr.20060528100747.3:tkBody.createTextWidget
     #@-node:ekr.20031218072017.3997: Birth & death
-    #@+node:ekr.20041217135735.1:tkBody.setColorFromConfig
-    def setColorFromConfig (self):
+    #@+node:ekr.20060528100747:Editors
+    #@+node:ekr.20060528100747.1:addEditor
+    def addEditor (self):
         
-        c = self.c ; body = self.bodyCtrl
+        c = self.c ; p = c.currentPosition()
+        self.numberOfEditors += 1
+        name = '%d' % self.numberOfEditors
+        pane = self.pb.add(name)
+        panes = self.pb.panes()
+        minSize = float(1.0/float(len(panes)))
+        
+        #@    << create label and text widgets >>
+        #@+node:ekr.20060528110922:<< create label and text widgets >>
+        f = Tk.Frame(pane)
+        f.pack(side='top',expand=1,fill='both')
+        
+        label = Tk.Label(f,text= p.headString(),bg='LightSteelBlue1')
+        label.pack(side='top')
+        
+        text = Tk.Frame(f)
+        text.pack(side='top',expand=1,fill='both')
+        
+        w = self.createTextWidget(self.frame,text,name=name,p=p)
+        
+        w.delete('1.0','end')
+        w.insert('end',p.bodyString())
+        self.setFontFromConfig(w=w)
+        self.setColorFromConfig(w=w)
+        self.createBindings(w=w)
+        
+        # Temporarily make this the 'real' text widget so we can color it.
+        old_w = self.bodyCtrl
+        self.bodyCtrl = w
+        c.recolor_now()
+        self.bodyCtrl = old_w
+        
+        # Disable this editor.
+        # Eventually, we should allow edits here.
+        # w.configure(state='disabled')
+        #@nonl
+        #@-node:ekr.20060528110922:<< create label and text widgets >>
+        #@nl
+        
+        self.editorWidgets[name] = w
+        
+        for pane in panes:
+            self.pb.configurepane(pane,size=minSize)
+        
+        self.pb.updatelayout()
+    #@nonl
+    #@-node:ekr.20060528100747.1:addEditor
+    #@+node:ekr.20060528113806:deleteEditor
+    def deleteEditor (self):
+        
+        name = self.editor_name
+    
+        if not name:
+            g.es('Can not delete the main body editor',color='blue')
+            return
+            
+        del self.editorWidgets [name]
+    
+        self.pb.delete(name)
+        panes = self.pb.panes()
+        minSize = float(1.0/float(len(panes)))
+        
+        for pane in panes:
+            self.pb.configurepane(pane,size=minSize)
+            
+        self.selectMainEditor()
+    #@nonl
+    #@-node:ekr.20060528113806:deleteEditor
+    #@+node:ekr.20060528104554:onFocusIn
+    def onFocusIn(self,w):
+        
+        c = self.c ; p = None
+    
+        # Get the ivars from the ivars injected into w.
+        self.editor_name = hasattr(w,'leo_pane_name') and w.leo_pane_name or None
+        self.editor_v = v = hasattr(w,'leo_v')         and w.leo_v         or None
+        # g.trace(w,v)
+        
+        if not v:
+            # We are selecting the main editor, so nothing actually changes.
+            self.bodyCtrl = w
+            c.frame.bodyWantsFocus()
+            return
+        
+        for p in c.allNodes_iter():
+            if p.v == v:
+                c.selectPosition(p, updateBeadList=True)
+                self.bodyCtrl = w # This may be changed by c.selectPosition
+                c.frame.bodyWantsFocus()
+                break
+        else:
+            g.trace("Can't happen",p)
+    #@nonl
+    #@-node:ekr.20060528104554:onFocusIn
+    #@+node:ekr.20060528132829:selectMainEditor
+    def selectMainEditor (self):
+        
+        c = self.c
+    
+        w = self.editorWidgets.get(None)
+        self.bodyCtrl = w
+        c.recolor_now()
+    #@nonl
+    #@-node:ekr.20060528132829:selectMainEditor
+    #@+node:ekr.20060528131618:updateEditors
+    def updateEditors (self):
+        
+        c = self.c ; p = c.currentPosition()
+        d = self.editorWidgets
+        if len(d.keys()) < 2: return # There is only the main widget.
+        w_main = d.get(None)
+    
+        for key in d.keys():
+            w = d.get(key)
+            if w == self.bodyCtrl: continue
+            v = w.leo_v
+            if v == p.v or w == w_main:
+                # g.trace('update',v,w)
+                # Temporarily make this the 'real' text widget so we can color it.
+                old_w = self.bodyCtrl
+                self.bodyCtrl = w
+                w.delete('1.0','end')
+                w.insert('end',p.bodyString())
+                c.recolor_now()
+                self.bodyCtrl = old_w
+        c.frame.bodyWantsFocus()
+    #@nonl
+    #@-node:ekr.20060528131618:updateEditors
+    #@-node:ekr.20060528100747:Editors
+    #@+node:ekr.20041217135735.1:tkBody.setColorFromConfig
+    def setColorFromConfig (self,w=None):
+        
+        c = self.c
+        if not w: w = self.bodyCtrl
             
         bg = c.config.getColor("body_text_background_color") or 'white'
-        try: body.configure(bg=bg)
+        try: w.configure(bg=bg)
         except:
             g.es("exception setting body text background color")
             g.es_exception()
         
         fg = c.config.getColor("body_text_foreground_color") or 'black'
-        try: body.configure(fg=fg)
+        try: w.configure(fg=fg)
         except:
             g.es("exception setting body textforeground color")
             g.es_exception()
     
         bg = c.config.getColor("body_insertion_cursor_color")
         if bg:
-            try: body.configure(insertbackground=bg)
+            try: w.configure(insertbackground=bg)
             except:
                 g.es("exception setting body pane cursor color")
                 g.es_exception()
             
         sel_bg = c.config.getColor('body_text_selection_background_color') or 'Gray80'
-        try: body.configure(selectbackground=sel_bg)
+        try: w.configure(selectbackground=sel_bg)
         except Exception:
             g.es("exception setting body pane text selection background color")
             g.es_exception()
     
         sel_fg = c.config.getColor('body_text_selection_foreground_color') or 'white'
-        try: body.configure(selectforeground=sel_fg)
+        try: w.configure(selectforeground=sel_fg)
         except Exception:
             g.es("exception setting body pane text selection foreground color")
             g.es_exception()
@@ -2488,15 +2647,17 @@ class leoTkinterBody (leoFrame.leoBody):
             bg = c.config.getColor("body_cursor_background_color")
             if fg and bg:
                 cursor="xterm" + " " + fg + " " + bg
-                try: body.configure(cursor=cursor)
+                try: w.configure(cursor=cursor)
                 except:
                     import traceback ; traceback.print_exc()
     #@nonl
     #@-node:ekr.20041217135735.1:tkBody.setColorFromConfig
     #@+node:ekr.20031218072017.2183:tkBody.setFontFromConfig
-    def setFontFromConfig (self):
+    def setFontFromConfig (self,w=None):
     
-        c = self.c ; body = self.bodyCtrl
+        c = self.c
+        
+        if not w: w = self.bodyCtrl
         
         font = c.config.getFontFromParams(
             "body_text_font_family", "body_text_font_size",
@@ -2504,7 +2665,7 @@ class leoTkinterBody (leoFrame.leoBody):
             c.config.defaultBodyFontSize)
         
         self.fontRef = font # ESSENTIAL: retain a link to font.
-        body.configure(font=font)
+        w.configure(font=font)
     
         # g.trace("BODY",body.cget("font"),font.cget("family"),font.cget("weight"))
     #@nonl
@@ -2551,6 +2712,7 @@ class leoTkinterBody (leoFrame.leoBody):
             #@-node:ekr.20051026083733.6:<< recolor the body >>
             #@nl
             if not c.changed: c.setChanged(True)
+            self.updateEditors()
             #@        << redraw the screen if necessary >>
             #@+node:ekr.20051026083733.7:<< redraw the screen if necessary >>
             c.beginUpdate()
