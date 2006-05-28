@@ -1,7 +1,8 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
-#@+node:ekr.20060527190049:Before 4.4.1b1--5
+#@+node:ekr.20060527190049:Before 4.4.1b1 (1 week)
+#@+node:ekr.20060528082017:First
 #@+node:ekr.20060419101401:Complete transition to 'end-1c'
 #@+node:ekr.20060419101401.1:Found: gui.getAllText
 #@+node:ekr.20031218072017.2293:batchChange (sets start of change-all group)
@@ -129,6 +130,7 @@ def onBodyChanged (self,undoType,
         p.v.t.insertSpot = body.getInsertionPoint()
         << recolor the body >>
         if not c.changed: c.setChanged(True)
+        self.updateEditors()
         << redraw the screen if necessary >>
 #@nonl
 #@+node:ekr.20051026083733.6:<< recolor the body >>
@@ -409,6 +411,34 @@ def updateTab (self,p,w):
 #@-node:ekr.20051125080855:selfInsertCommand
 #@-node:ekr.20060419101401.1:Found: gui.getAllText
 #@-node:ekr.20060419101401:Complete transition to 'end-1c'
+#@+node:ekr.20060515060803:Allow idle-time redraw?
+#@+node:ekr.20060515060803.1:Report
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3729823
+By: nobody
+
+I am running Ubuntu 5.10 and have the same (I think) problem - this is with
+the 4.4 final release.
+
+When I move through nodes using the alt-XXX short cuts, there is a lot of flicker
+as nodes are redrawn etc. I had no problem with this in 4.3.
+#@nonl
+#@-node:ekr.20060515060803.1:Report
+#@-node:ekr.20060515060803:Allow idle-time redraw?
+#@-node:ekr.20060528082017:First
+#@+node:ekr.20060528082017.1:Important (2-4 days)
+#@+node:ekr.20060527204444:Finish new colorizer plugin
+#@-node:ekr.20060527204444:Finish new colorizer plugin
+#@+node:ekr.20060211093935:Support for on-enter-mode in mode declarations
+Add support for @list
+#@nonl
+#@+node:ekr.20060122184114:Support the execution of a command when entering a mode
+- Entering outline mode should call c.endEditing.
+- Entering edit mode shouldn't call c.endEditing!
+#@-node:ekr.20060122184114:Support the execution of a command when entering a mode
+#@-node:ekr.20060211093935:Support for on-enter-mode in mode declarations
+#@-node:ekr.20060528082017.1:Important (2-4 days)
+#@+node:ekr.20060528082017.2:Last (1-2 days)
 #@+node:ekr.20060522101202:Improve reports of binding problems
 @nocolor
 
@@ -435,20 +465,6 @@ Check Bindings done
 -------------------------------------------------
 #@nonl
 #@-node:ekr.20060522101202:Improve reports of binding problems
-#@+node:ekr.20060515060803:Is it possible to allow idle-time redraw?
-#@+node:ekr.20060515060803.1:Report
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3729823
-By: nobody
-
-I am running Ubuntu 5.10 and have the same (I think) problem - this is with
-the 4.4 final release.
-
-When I move through nodes using the alt-XXX short cuts, there is a lot of flicker
-as nodes are redrawn etc. I had no problem with this in 4.3.
-#@nonl
-#@-node:ekr.20060515060803.1:Report
-#@-node:ekr.20060515060803:Is it possible to allow idle-time redraw?
 #@+node:ekr.20051121070552:Finish Cmds menu
 #@+node:ekr.20060117112444:What I did
 @nocolor
@@ -1937,353 +1953,381 @@ def defineCmdsMenuSpellCheckTable (self):
 - define a debugger1 hook so the plugin can override the standard debug code.
 #@nonl
 #@-node:ekr.20060522084039:Finish the debugger
-#@-node:ekr.20060527190049:Before 4.4.1b1--5
-#@+node:ekr.20060227163215:Bugs (minor, overdue)
-#@+node:ekr.20060227123644:There are still problems with focus: remove the optimizations?
-@ It's much better to call g.app.gui.set_focus a few extra times than to mess up the focus!
+#@-node:ekr.20060528082017.2:Last (1-2 days)
+#@-node:ekr.20060527190049:Before 4.4.1b1 (1 week)
+#@+node:ekr.20051202094427:Urgent: Resolve cvs conflicts
+Investigate meld:  http://meld.sourceforge.net/
 
-- Make c.invalidateFocus a do-nothing method.
+Create a 'generate cvs conflicst' script for testing.
 #@nonl
-#@-node:ekr.20060227123644:There are still problems with focus: remove the optimizations?
-#@+node:ekr.20051104152338:Fix bug in Remove Sentinels command
-#@+node:ekr.20051104152338.1:Report
+#@+node:ekr.20031218072017.658:Resolve CVS Conflicts command (Stepen Schaefer)
 @nocolor
 
-http://sourceforge.net/forum/message.php?msg_id=3413805
-By: nobody
+There have been a couple different suggestions on how to obtain a .leo file
+that presents the conflicts for resolution.  My initial thought was to have
+some sort of external file containing only the structure information of interest.
+Edward has suggested that we could process the CVS created .leo file with all
+its conflict indicators.
 
-I thought this might be for 4.4a2, but I see the same effect w/ 
-Leo 4.3.3, build  1.282 , September 17, 2005
-Python 2.3.5, Tk 8.4.7, win32
+I'd like to offer another alternative: based on the ad-hoc procedure that Edward
+is currently using, i.e.,
 
-I haven't used Leo for code, but just started to try to re-organize some Perl
-I inherited.
+* Save your work to foo.leo file.
+* copy your foo.leo file to fooCvsTmp.leo
+* cvs ci
+* if there are no conflicts (hurray)
+*    remove fooCvsTmp.leo; finished
+* otherwise
+*    remove foo.leo
+*    cvs up foo.leo
+*    read foo.leo into an internal directed acyclic graph (DAG)
+*    generate the conflict resolution DAG from the proposed new leo internal
+DAG (which Leo already has as a matter of course) and the CVS derived DAG
+*    present for editting
+*    when you are satisfied and want to try to check in again, repeat.
 
-Leo apears to remove sentinels, AND preceding newlines, so the effect is something
-like this:
+From the user's point of view, a CVS check in either succeeds or requires that
+the conflicts be resolved, after which another check in may be attempted.  If
+we're somehow interrupted in the middle of the process, the fooCvsTmp.leo file
+preserves the users work.
+#@+node:ekr.20050501111900:Stephen Schaefer
+@killcolor
+https://sourceforge.net/forum/message.php?msg_id=3125092
+By: thyrsus
 
-.... some code....
+About a month ago, I posted a screed on how @thin was inadequate to address
+my needs; that what I needed to collaborate on via version control was exactly
+the essence of Leo's value: the multiple expressions of structure, which by
+their nature must exist outside of @thin.  I said I was going to live the pain
+to discover a modus vivendi.
 
-   next line;
-}
-#@verbatim
-#@ leo sentinel here...
-#
+Having done that, let me now say:
 
-    If  ( something ) {
-      more code;
-......
+AAAAAAAAAAAAGGGGGGGGHHHHHHHHHH!
 
-becomes:
+But the exercise has led me to a vision, which I will implement to the extent
+my nonexistent spare time and paltry programming talents permit.
 
-.... some code....
+The essence of the pain is "conflicts", which become more  certain to occur
+as the leo file encompases ever more related files.  As I work on a change to
+the Linux configuration, my colleague works on a change to the Solaris configuration,
+and one of us checks in our version of the leo file documenting the site
+configuration first, and the other cannot check in his version of that file.
+The conflict must be resolved by the human.  Using the "diff" tool on the .leo
+XML is not an answer (though thank Heaven and Ed for gnxs).  The resolution
+needs two levels of support: outline and node.
 
-   next line;
-} If  ( something ) {
-      more code;
-......
+With the .leo file declared binary, in the event of a conflict CVS leaves you
+with the most recent CVS version and your rejected version, and you're responsible
+for performing a reconciliation and then resubmitting that.  Leo will recognize
+the problem, and present both versions of the project, side by side, splitting
+the outline pane.  The parallel trees will scroll/expand/contract in unison.
+Outline branches present in CVS and not yours will display as blank space in
+your version; nodes present in your version and not CVS will display as blank
+space in the CVS version. The CVS version will be read only, your version editable.
+The same node with differences in its text or in its children will be highlighted.
+You will be able to drag nodes from the CVS version into your version. If the
+text of a selected node has conflicts, the text area will split in two, showing
+the CVS version and your version, with differences highlighted, both sides of
+the pane scrolling in unison, the CVS side read-only, and you can copy from
+that side to your side.  I intend to take as many ideas as I can from tkdiff
+(http://sourceforge.net/projects/tkdiff/ - see also
+http://freshmeat.net/screenshots/10602/ ).  (I have begun translating tkdiff
+from from tcl to python - nearly 9000 lines and I'm still learning both languages,
+so draw your own timeline.)  You edit your nodes, you edit your tree, you hit
+the "reconcile" button, and your reconciliation of the conflict goes into CVS.
+If, meanwhile, another one of your over-achieving colleages has again updated
+CVS, the process repeats with the most current CVS version.  Or you can hit
+the "abandon" button to give up on your changes.
 
-Now, that may be annoying, but mildly so - it still runs.
-When this:
-
-#
-#@verbatim
-#@ sentinel
-if () {
-
-turns to this:
-
-# if() {
-
-code just breaks.
+As the Hebrews say at Passover: "Next year in Jerusalem."
 #@nonl
-#@-node:ekr.20051104152338.1:Report
-#@-node:ekr.20051104152338:Fix bug in Remove Sentinels command
-#@+node:ekr.20051014152256:Fix long-standing bug in import code
-Improve import code so it handles stufff like this from Ipyton/iplib
+#@-node:ekr.20050501111900:Stephen Schaefer
+#@+node:ekr.20031218072017.659:Jonathon 1
+https://sourceforge.net/forum/message.php?msg_id=1803722
+By: jmgilligan
 
-### This should *not* terminate the function!
-
-    self.LOGHEAD = Itpl(
-"""#log# Automatic Logger file. *** THIS MUST BE THE FIRST LINE ***
-#log# DO NOT CHANGE THIS LINE OR THE TWO BELOW
-#log# opts = $self.rc.opts
-#log# args = $self.rc.args
-#log# It is safe to make manual edits below here.
-#log#-----------------------------------------------------------------------
-""")
-
-- Handle blanks better in imports:
-    - Add tab_width keyword arg to import command.
-    - Convert tabs to blanks if tab width < 0.
-- Ignore position of blank lines wrt sentinels.
-- Ignore (optionally?) underindented blank lines.
-- Use pyclbr to parse Python imports?
-#@nonl
-#@+node:ekr.20040930075711:Handle underindented lines
-@nocolor
-
-Leo can't represent some files using nodes!
-
-I call this the "underindented blank line" problem.
+What is the intended behavior when foo.leo has a cloned node that appears several
+times in a derived (or multiple derived files) and the user edits this file
+or files to change two or more instances of the cloned node in different ways.
 
 Example:
 
-@color
+@file foo.py
+****begin tnode
+@others
+****end tnode
+...definition of procedure a
+***begin tnode
+def a:
+...print "a:", <<bar>>
+***end tnode
+...<<bar>>
+****begin tnode
+"bar"
+****end tnode
 
-class aClass:
-    def spam(): pass
-# comment line
-    def eggs(): pass
-    
-@nocolor
+...definition of procedure b
+***begin tnode
+def b:
+...print "b:", <<bar>>
+***end tnode
+...<<bar>>
+****begin tnode
+"bar"
+****end tnode
 
-Leo's import code can't handle this:
-    
-- If the import code puts the comment line in a node, the line won't be output with the proper indentation!!
+...definition of procedure c
+***begin tnode
+def c:
+...print "a:", <<bar>>
+***end tnode
+...<<bar>>
+****begin tnode
+"bar"
+****end tnode
 
-- Having the comment line stop the scanning of aClass is even worse.
+In the .leo, if I edit <<bar>>, it will change simultaneously in each place,
+always in synch. However, suppose I edit foo.py in a text editor and change
+foo.py to read:
 
-- This usually shows up with an unindented blank line instead of the comment line.
-#@nonl
-#@-node:ekr.20040930075711:Handle underindented lines
-#@+node:ekr.20040722132104:Write script to report underindented lines
-#@-node:ekr.20040722132104:Write script to report underindented lines
-#@-node:ekr.20051014152256:Fix long-standing bug in import code
-#@+node:ekr.20060107082929:Fix problem reporting indentation errors
-@nocolor
+#@verbatim
+#@+leo
+#@verbatim
+#@+node:0::@file foo.py
+#@verbatim
+#@+body
+#@verbatim
+#@+others
+#@verbatim
+#@+node:1::definition of a
+#@verbatim
+#@+body
+print "a:", 
+#@verbatim
+#@<<bar>>
+#@verbatim
+#@+node:1::<<bar>>
+#@verbatim
+#@+body
+"bar"
+#@verbatim
+#@-body
+#@verbatim
+#@-node:1::<<bar>>
+#@verbatim
+#@-body
+#@verbatim
+#@-node:1::definition of a
+#@verbatim
+#@+node:2::definition of b
+#@verbatim
+#@+body
+print "b:", 
+#@verbatim
+#@<<bar>>
+#@verbatim
+#@+node:1::<<bar>>
+#@verbatim
+#@+body
+"variation b"
+#@verbatim
+#@-body
+#@verbatim
+#@-node:1::<<bar>>
+#@verbatim
+#@-body
+#@verbatim
+#@-node:2::definition of b
+#@verbatim
+#@+node:3::definition of c
+#@verbatim
+#@+body
+print "c:", 
+#@verbatim
+#@<<bar>>
+#@verbatim
+#@+node:1::<<bar>>
+#@verbatim
+#@+body
+"variation c"
+#@verbatim
+#@-body
+#@verbatim
+#@-node:1::<<bar>>
+#@verbatim
+#@-body
+#@verbatim
+#@-node:3::definition of c
+#@verbatim
+#@-others
+#@verbatim
+#@-body
+#@verbatim
+#@-node:0::@file foo.py
+#@verbatim
+#@-leo
 
-https://sourceforge.net/forum/message.php?msg_id=3510448
-By: ktenney
+Now what is supposed to happen when leo tries to read foo.py back in? It seems
+that there are three possible behaviors:
 
-Howdy,
+1) leo reports a conflict that the user needs to resolve.
+2) leo breaks the clone: the three nodes become separate vnodes, not clones
+of the same one.
+3) leo arbitrarily takes one of the tnodes to be the new tnode for all of the
+clones. This is currently what happens. It creates something like a race condition,
+where the last node in the derived file determines what the final result will
+be. In this case, all three tnodes get text "variation c".
 
-I'm executing a script in a Leo node which has
-an indentation error. I get the following report,
-which doesn't help locate the error.
+This general question of how Leo should deal with conflicts in clone nodes seems
+to me that it needs to be addressed, particularly with respect to trying to
+avoid cvs conflicts via thick/thin modes.
 
-Pardon me if this is well known issue, I don't
-remember discussion of it.
+Note that this can become quite a subtle question because the same node can
+be cloned across several different derived files, in which case a serious race
+condition may pertain.
 
-Thanks,
-Kent
+At the least, I would like to see leo perform consistency checking on cloned
+nodes when it reads a derived file back in and warn the user if cloned nodes
+are inconsistent.
 
-################################################
-exception executing script
-Traceback (most recent call last):
-  File "C:\python24\lib\site-packages\leo\src\leoCommands.py", line 1277, in
-executeScript
-    exec script in d
-IndentationError: unindent does not match any outer indentation level (line
-103)
---------------------
-  line 1276:                     # g.trace(script)
-* line 1277:                     exec script in d
-  line 1278:                     if not script1 and not silent:
-  line 1279:                         g.es("end of script",color="purple")
+Note that the issue also occurs with OpenWith: I can open each instance of a
+cloned node as a separate file in the external text editor. Which version is
+read back into leo depends on the order in which I save them from the external
+editor.
+#@-node:ekr.20031218072017.659:Jonathon 1
+#@+node:ekr.20031218072017.660:Jonathan 2
+By: jmgilligan ( Jonathan M. Gilligan ) 
+ Possible solution   
+2003-01-13 20:55  
+One possible solution for the conflicting clones problem is to have Leo, when it detects a conflicting clone, generate a text file (perhaps named LeoConflict_NNNN.leo, where NNNN is the gid of the node in question), which contains all the different versions of the node in question, output in leo XML format. 
 
-#@-node:ekr.20060107082929:Fix problem reporting indentation errors
-#@+node:ekr.20060325091249:@shortcut does not work
-#@-node:ekr.20060325091249:@shortcut does not work
-#@+node:ekr.20041130103128:(killcolor also kills autoindenting )
-By: Roger Erens - rogererens
-@
-2004-11-25 09:14
-On leo4.2, winXP, my default language is Python and smart_auto_indent=0. 
-Normally, after ending a line with a colon, the next line gets indented by 1 tab, also in comment-sections. 
-When using an @killcolor directive in a node, the line following one that ends with a colon starts at column zero.
+The vnode would then be marked with a "conflict" flag that would prevent the user from opening it in Leo until the conflict is resolved. See below for how the user resolves the conflict. 
 
-I think it is unreasonable for @killcolor to interfere with indenting.
-#@-node:ekr.20041130103128:(killcolor also kills autoindenting )
-#@+node:ekr.20041029083459:Remember Import directory
-By: Kent Tenney - ktenney
-Import to @file request  
-2004-10-28 11:27
-Howdy, 
+What I have in mind is something similar to the CVS conflict file, where a conflict between two versions is marked 
+
+<<<<<<< 
+blah blah blah? 
+======= 
+blah blah blah! 
+>>>>>>> 
+
+Except that we would output this file in Leo XML format. The reason for XML format would be to avoid problems of how to generically delimit the different sections (different versions of the cloned node). Here leo's XML tags can unambiguously delimit the sections. 
+
+The user would then edit the conflict file and delete all but the desired version. Then he would tell leo to resolve the conflict by reading the corrected file in and replacing the contents of the conflicting node with the contents of the LeoConflict_NNNN.leo file. 
+
+On the down side, this may well be too baroque a fix for a problem that most users may never encounter. If so, perhaps it's best left alone until more pressing problems are solved. I know what I am doing with Leo and am always careful NOT to generate conflicting clones when I edit in an external text editor, so I don't absolutely need a resolution to this problem. I raised it because it's good for a program to have well-defined behavior when presented with anomalous input. 
+
+In this sense, perhaps the best thing is to allow users to generate code from clones (what Allan Holub referred to as "enough rope to shoot yourself in the foot"), but to tell them that this practice is frowned upon.  
+
  
-Please ignore if this is a difficult feature to implement. 
- 
-File->Import->Import to @file  
-always starts in .../leo/src 
- 
-I would prefer if it opened to the last directory from 
-which a file was imported. 
- 
-I often find myself importing several files from the same area of the directory tree, and repeatedly navigating there from leo/src gets tiresome. 
- 
-Thanks, 
-Kent
-#@-node:ekr.20041029083459:Remember Import directory
-#@-node:ekr.20060227163215:Bugs (minor, overdue)
-#@+node:ekr.20060527164612:Important 1-2 day projects
-#@+node:ekr.20060527204444:Finish new colorizer plugin
-#@-node:ekr.20060527204444:Finish new colorizer plugin
-#@+node:ekr.20060211093935:Support for on-enter-mode in mode declarations
-Add support for @list
-#@nonl
-#@+node:ekr.20060122184114:Support the execution of a command when entering a mode
-- Entering outline mode should call c.endEditing.
-- Entering edit mode shouldn't call c.endEditing!
-#@-node:ekr.20060122184114:Support the execution of a command when entering a mode
-#@-node:ekr.20060211093935:Support for on-enter-mode in mode declarations
-#@+node:ekr.20041022091645.4:Pymacs
-#@+node:ekr.20040125121407:Postings
-@nocolor
-#@nonl
-#@+node:ekr.20040125121407.1:randomandy
-http://sourceforge.net/forum/message.php?msg_id=2389876
-By: randomandy
+#@-node:ekr.20031218072017.660:Jonathan 2
+#@+node:ekr.20031218072017.661:Gil 1
+Read and respond to this message at: 
+https://sourceforge.net/forum/message.php?msg_id=1836117
+By: gilshwartz
 
-Is it only me who sees this as a question on how to reinvent the wheel? (or
-in the case of emacs, how to reinvent the <i>everything</i>.)
+Edward, now that conflicting clones may not be the result of bad style, I would
+like to propose yet another solution that I have been thinking of for a while.
 
-Leo and Python both seem so well suited as wonderful hierarchal glue programs.
-And both are so elegant in the way their simple functionality brings such power
-and order to the cause. It just seems it would be a shame to take something
-so novel and unique and try to turn it into <i>yet another</i> huge text editor.
+My basic approach is that cloning is not just a convenience tool, it may also
+reflect some of the properties of the code/code set. Therefore my goal is for
+clone links to remain even if they are conflicting, and let the user resolve
+them at any convenient time. I also think that Leo's user interface is the best
+tool to resolve such conflicts.
 
-I'm with <A HREF="http://sourceforge.net/forum/message.php?msg_id=2345873">Danny
-</A> on this one. The ideal solution is to find the most elegant and seamless
-way to splice one's own beloved text editor (or multipurpose editor/OS) in with
-the Leo paradigm. Have Leo hand off the text duties to the editor, or have the
-editor deliver heirarchy commands to Leo.
+Thus here is my view of clone management and resolution inside Leo. Anytime
+content is loaded into Leo, if a clone set agrees (i.e. have the same content)
+all clone copies are marked "green". When one green clone is edited, all green
+clones are changed. This is Leo as it is now.
 
-I'm also quite curious if this makes a good tie in with SciTE. SciTE produces
-stunningly readible language highlighting/formatting. Could it be employed for
-basic cell text display, and then for heavier editing, a keystroke or button
-could open the cell text in one's preferred weapons grade text editor?
+If at some point conflicting clones are loaded, Leo decides on some representing
+content (may be based on policies like most occurring content, or latest timestamp,
+etc.) and provides visual clues for the conflict. The visual clue is give by
+a double node box, e.g.
 
-Scintilla also has a similarly beautiful code-to-html and code-to-pdf capability
-that seems very suited to the literary part of the Leo paradigm: publication.
-It would be nice if that code could be exploited as well.
++---------------+
++ clone org +
++---------------+
++ resolution +
++---------------+
 
-This Leo is really a marvelous work. It's transforming the way I think (i.e.
-making it possible again). Nice work, Edward.
-#@-node:ekr.20040125121407.1:randomandy
-#@+node:ekr.20040125121407.2:dannyobrien
-By: dannyobrien ( danny o'brien ) 
- RE: What would it take to turn Leo into Emacs   
-2003-12-23 09:18  
+such that it is a single node in the tree, but has two content node, the original
+text, and the possibly arbitrary resolution.
 
- I agree with the embedding; I've used the vim plugin and it works well, but actually embedding the editor directly into the text field of leo (and allowing a range of keyboard shortcuts for eg headline editing) would be perfect.
+The resolution pseudo node is marked "blue", while the original text is either
+"green", if it is identical to the blue node, or "red", if it is not. To emphasis,
+the red/green nodes contain the specific (possibly) unique code associated with
+the derived file, while the pseudo blue node contains the shared clone content.
+During save to derived files, only the red/green content is saved, so effectively
+the file is not changed and the conflict is not resolved until the user chooses
+to do so. However, the clone relationship (via the gti) remains.
 
-There is some support for this in gvim, the GUI version of vim that comes as standard. This can be run so as its GUI is "embedded" in another GTK widget, using that library's GtkSocket/GtkPlug system. A quick demo of that (and how to do it in python) is here:
+During editing, changes to red/green clones are local and do not propagate to
+other clone copies (actually any change to a green node would turn it red).
+Changes to the blue nodes do propagate since it is a single view of the clone.
+A node pair may be converted to a regular node, effectively getting a new gti
+and eliminating the blue copy. Or, it may be converted to the shared copy,
+effectively forgetting its original content (leaving only the blue node). Once
+there are no more red nodes in a clone set, all its nodes become green again
+and the conflict is resolved.
 
-http://www.daa.com.au/pipermail/pygtk/2003-October/006185.html
+Some additional clone actions I think are useful are:
 
-To see this working with gvim, run the second (socket.py) program on that page then type
+1. Go to next/prev clone.
+2. Go to next/prev green clone (useful when there are red ones).
+3. Convert all green copies to a new clone group (useful when some clone copies
+needs to remain clones, but break from the original clone set, thus getting
+a new clone gti)
 
-gvim --socketid <number generated by socket.py>
+Action 3 enables the user to partition its clone set to several clone groups
+by copying a clone's original content to its blue copy and finding matching
+(green) clones.
 
-I'm not sure how you could do this in other widget libraries - I don't know much about X Windows, but I suppose it would need support in vim as well as the widget set.
- 
-#@-node:ekr.20040125121407.2:dannyobrien
-#@+node:ekr.20040125121407.3:mdawson
-http://sourceforge.net/forum/message.php?msg_id=2388448
-By: mdawson
+What do we gain by all this?
 
-I use XEmacs as my text editor.  The first thing I did when
-evaluating Leo was to set up "open with" to use XEmacs for editing
-Leo body text.
+1. We can have conflicting clones without catastrophes.
+2. We get tools to handle conflicts and resolve them.
+3. We keep on working is Leo's environment, which is the most supportive one
+we can expect.
 
-My progress so far:
+Gil
 
-- my Open_With Plugin opens a Leo node as a foreground buffer in
-XEmacs, or a background (invisible) buffer in XEmacs.
+(By the way, I have a feeling that it would be useful to include along with
+the gti a hash of its node content, which could tell Leo is a node was changed
+outside of it. Also, including a timestamp in the opening sentinel, indicating
+when Leo last saved it. These may help having intelligent decisions by Leo in
+cases like conflicting clones.)
+#@-node:ekr.20031218072017.661:Gil 1
+#@+node:ekr.20031218072017.662:Gil 2
+Read and respond to this message at: 
+https://sourceforge.net/forum/message.php?msg_id=1804169
+By: gilshwartz
 
-- my Open_Tree Plugin opens a sub-tree of Leo nodes as background
-buffers in XEmacs.
+Another thing to think about is what should happen when close heading is changing.
+Right now, if you are inside Leo, all headings will be changed, and if you try
+to change by hand it in the derived file, clone links are removed (after some
+error reporting). This is quite reasonable in the current scheme of things,
+where one is not really expected to mess up with Leo sentinels.
 
-- my filename modification plugin changes the temporary file names
-used by Leo so that they can be spotted more easily in an XEmacs
-buffer listing (e.g. ibuffer).
+However, if/when @include is implemented, one would probably edit some files
+with clones that may extend to other files and changing the clone node name
+(via Leo) is quite feasible. Note that the gti for the cloned node would probably
+not change. So
 
-- an elisp function to kill all XEmacs Leo buffers at once.
+1. Do Leo resync the clone content based on the gti?
+2. Does it break cloning and allocates a new gti for one (arbitrary?) clone
+set?
+3. Let the user resolve manually, offer undoable auto-resolution with reporting,
+other?
 
-- another elisp function to indent and unindent the Leo comments in
-derived Python source, which improves the readability of code.
+More things to think about.
 
-- my setup of the elisp Multiple-Major-Modes XEmacs package, so that
-XEmacs is in text-mode in Leo @doc sections, and the correct
-language mode in @code sections.
-
-Any of these might be able to be adapted for your own use. They
-should all work with Emacs as well as XEmacs, but I've not tested
-that.
-
-These are all outlined in Appendix "C. XEmacs Text Editor" of the
-document at:
-    http://devguide.leo.marshallresearch.ca
-
-and the Leo outline that contains them is available at:
-    http://leo.marshallresearch.ca
-
-
-    ----------------------------------------
-    Michael Dawson
-#@nonl
-#@-node:ekr.20040125121407.3:mdawson
-#@-node:ekr.20040125121407:Postings
-#@+node:ekr.20041022144159:Q: Pymacs bridge
-I'm trying to use the Pymacs bridge to add a symbol completion facility to
-Emacs's python-mode.  Neither the Python nor Emacs Lisp portions are all
-that complex, but I'm having trouble passing a list of strings from Emacs
-Lisp into Python.  On the Emacs Lisp side it looks like this:
-
-    (pymacs-load "pycomplete")
-
-    (defun py-complete ()
-      (interactive)
-      (pycomplete-pycomplete (py-symbol-near-point)
-                             (py-find-global-imports)))
-
-(py-find-global-imports) returns a (Lisp) list of strings, e.g.:
-
-    ("import time", "import sys")
-
-On the Python side I have this function:
-
-    def pycomplete(s, imports=None):
-        completions = get_all_completions(s, imports)
-        dots = s.split(".")
-        return os.path.commonprefix([k[len(dots[-1]):] for k in completions])
-
-Unfortunately, the imports arg does not come across as a Python list of
-strings (s does come across the bridge as a normal Python string).  Its
-repr() prints out like this:
-
-    lisp('("import time")')
-
-What do I need to do to convert that object into a true Python list of
-strings?  I'm afraid I don't quite understand the description of the lisp
-object in the Pymacs docs.  I tried imports.value() but that just gave me
-
-    (aref pymacs-lisp 0)
-
-Any help appreciated...
-
-Skip
-#@nonl
-#@-node:ekr.20041022144159:Q: Pymacs bridge
-#@+node:ekr.20041022144159.1:A: pymacs-forget-mutability
-"""
-Proper Emacs Lisp lists, those for which the cdr of last cell is nil, are
-normally transmitted opaquely to Python. If pymacs-forget-mutability is
-set, or if Python later asks for these to be expanded, proper Emacs Lisp
-lists get converted into Python lists, if we except the empty list, which
-is always converted as Python None. In the other direction, Python lists
-are always converted into proper Emacs Lisp lists.
-"""
-
-So, maybe try
-
-    (defun py-complete ()
-      (interactive)
-      (let ((pymacs-forget-mutability t)) 
-	(pycomplete-pycomplete (py-symbol-near-point)
-                               (py-find-global-imports))))
-#@-node:ekr.20041022144159.1:A: pymacs-forget-mutability
-#@-node:ekr.20041022091645.4:Pymacs
+Gil
+#@-node:ekr.20031218072017.662:Gil 2
+#@-node:ekr.20031218072017.658:Resolve CVS Conflicts command (Stepen Schaefer)
+#@-node:ekr.20051202094427:Urgent: Resolve cvs conflicts
+#@+node:ekr.20060527164612:Important 1-2 day projects (1-2 weeks)
 #@+node:ekr.20050419060645:Alternate lead-in characters
 @nocolor
 
@@ -2870,380 +2914,6 @@ By: James
 A lot of people are now using Wink for demonstrations
 (http://www.debugmode.com/wink/), it's is free and seems to work well.
 #@-node:ekr.20060306194040:More screen shots or video tutorial on Leo's web site
-#@+node:ekr.20060527182907:Plugin to support multiple editors in the body pane
-#@-node:ekr.20060527182907:Plugin to support multiple editors in the body pane
-#@+node:ekr.20051202094427:Resolve cvs conflicts
-Investigate meld:  http://meld.sourceforge.net/
-
-Create a 'generate cvs conflicst' script for testing.
-#@nonl
-#@+node:ekr.20031218072017.658:Resolve CVS Conflicts command (Stepen Schaefer)
-@nocolor
-
-There have been a couple different suggestions on how to obtain a .leo file
-that presents the conflicts for resolution.  My initial thought was to have
-some sort of external file containing only the structure information of interest.
-Edward has suggested that we could process the CVS created .leo file with all
-its conflict indicators.
-
-I'd like to offer another alternative: based on the ad-hoc procedure that Edward
-is currently using, i.e.,
-
-* Save your work to foo.leo file.
-* copy your foo.leo file to fooCvsTmp.leo
-* cvs ci
-* if there are no conflicts (hurray)
-*    remove fooCvsTmp.leo; finished
-* otherwise
-*    remove foo.leo
-*    cvs up foo.leo
-*    read foo.leo into an internal directed acyclic graph (DAG)
-*    generate the conflict resolution DAG from the proposed new leo internal
-DAG (which Leo already has as a matter of course) and the CVS derived DAG
-*    present for editting
-*    when you are satisfied and want to try to check in again, repeat.
-
-From the user's point of view, a CVS check in either succeeds or requires that
-the conflicts be resolved, after which another check in may be attempted.  If
-we're somehow interrupted in the middle of the process, the fooCvsTmp.leo file
-preserves the users work.
-#@+node:ekr.20050501111900:Stephen Schaefer
-@killcolor
-https://sourceforge.net/forum/message.php?msg_id=3125092
-By: thyrsus
-
-About a month ago, I posted a screed on how @thin was inadequate to address
-my needs; that what I needed to collaborate on via version control was exactly
-the essence of Leo's value: the multiple expressions of structure, which by
-their nature must exist outside of @thin.  I said I was going to live the pain
-to discover a modus vivendi.
-
-Having done that, let me now say:
-
-AAAAAAAAAAAAGGGGGGGGHHHHHHHHHH!
-
-But the exercise has led me to a vision, which I will implement to the extent
-my nonexistent spare time and paltry programming talents permit.
-
-The essence of the pain is "conflicts", which become more  certain to occur
-as the leo file encompases ever more related files.  As I work on a change to
-the Linux configuration, my colleague works on a change to the Solaris configuration,
-and one of us checks in our version of the leo file documenting the site
-configuration first, and the other cannot check in his version of that file.
-The conflict must be resolved by the human.  Using the "diff" tool on the .leo
-XML is not an answer (though thank Heaven and Ed for gnxs).  The resolution
-needs two levels of support: outline and node.
-
-With the .leo file declared binary, in the event of a conflict CVS leaves you
-with the most recent CVS version and your rejected version, and you're responsible
-for performing a reconciliation and then resubmitting that.  Leo will recognize
-the problem, and present both versions of the project, side by side, splitting
-the outline pane.  The parallel trees will scroll/expand/contract in unison.
-Outline branches present in CVS and not yours will display as blank space in
-your version; nodes present in your version and not CVS will display as blank
-space in the CVS version. The CVS version will be read only, your version editable.
-The same node with differences in its text or in its children will be highlighted.
-You will be able to drag nodes from the CVS version into your version. If the
-text of a selected node has conflicts, the text area will split in two, showing
-the CVS version and your version, with differences highlighted, both sides of
-the pane scrolling in unison, the CVS side read-only, and you can copy from
-that side to your side.  I intend to take as many ideas as I can from tkdiff
-(http://sourceforge.net/projects/tkdiff/ - see also
-http://freshmeat.net/screenshots/10602/ ).  (I have begun translating tkdiff
-from from tcl to python - nearly 9000 lines and I'm still learning both languages,
-so draw your own timeline.)  You edit your nodes, you edit your tree, you hit
-the "reconcile" button, and your reconciliation of the conflict goes into CVS.
-If, meanwhile, another one of your over-achieving colleages has again updated
-CVS, the process repeats with the most current CVS version.  Or you can hit
-the "abandon" button to give up on your changes.
-
-As the Hebrews say at Passover: "Next year in Jerusalem."
-#@nonl
-#@-node:ekr.20050501111900:Stephen Schaefer
-#@+node:ekr.20031218072017.659:Jonathon 1
-https://sourceforge.net/forum/message.php?msg_id=1803722
-By: jmgilligan
-
-What is the intended behavior when foo.leo has a cloned node that appears several
-times in a derived (or multiple derived files) and the user edits this file
-or files to change two or more instances of the cloned node in different ways.
-
-Example:
-
-@file foo.py
-****begin tnode
-@others
-****end tnode
-...definition of procedure a
-***begin tnode
-def a:
-...print "a:", <<bar>>
-***end tnode
-...<<bar>>
-****begin tnode
-"bar"
-****end tnode
-
-...definition of procedure b
-***begin tnode
-def b:
-...print "b:", <<bar>>
-***end tnode
-...<<bar>>
-****begin tnode
-"bar"
-****end tnode
-
-...definition of procedure c
-***begin tnode
-def c:
-...print "a:", <<bar>>
-***end tnode
-...<<bar>>
-****begin tnode
-"bar"
-****end tnode
-
-In the .leo, if I edit <<bar>>, it will change simultaneously in each place,
-always in synch. However, suppose I edit foo.py in a text editor and change
-foo.py to read:
-
-#@verbatim
-#@+leo
-#@verbatim
-#@+node:0::@file foo.py
-#@verbatim
-#@+body
-#@verbatim
-#@+others
-#@verbatim
-#@+node:1::definition of a
-#@verbatim
-#@+body
-print "a:", 
-#@verbatim
-#@<<bar>>
-#@verbatim
-#@+node:1::<<bar>>
-#@verbatim
-#@+body
-"bar"
-#@verbatim
-#@-body
-#@verbatim
-#@-node:1::<<bar>>
-#@verbatim
-#@-body
-#@verbatim
-#@-node:1::definition of a
-#@verbatim
-#@+node:2::definition of b
-#@verbatim
-#@+body
-print "b:", 
-#@verbatim
-#@<<bar>>
-#@verbatim
-#@+node:1::<<bar>>
-#@verbatim
-#@+body
-"variation b"
-#@verbatim
-#@-body
-#@verbatim
-#@-node:1::<<bar>>
-#@verbatim
-#@-body
-#@verbatim
-#@-node:2::definition of b
-#@verbatim
-#@+node:3::definition of c
-#@verbatim
-#@+body
-print "c:", 
-#@verbatim
-#@<<bar>>
-#@verbatim
-#@+node:1::<<bar>>
-#@verbatim
-#@+body
-"variation c"
-#@verbatim
-#@-body
-#@verbatim
-#@-node:1::<<bar>>
-#@verbatim
-#@-body
-#@verbatim
-#@-node:3::definition of c
-#@verbatim
-#@-others
-#@verbatim
-#@-body
-#@verbatim
-#@-node:0::@file foo.py
-#@verbatim
-#@-leo
-
-Now what is supposed to happen when leo tries to read foo.py back in? It seems
-that there are three possible behaviors:
-
-1) leo reports a conflict that the user needs to resolve.
-2) leo breaks the clone: the three nodes become separate vnodes, not clones
-of the same one.
-3) leo arbitrarily takes one of the tnodes to be the new tnode for all of the
-clones. This is currently what happens. It creates something like a race condition,
-where the last node in the derived file determines what the final result will
-be. In this case, all three tnodes get text "variation c".
-
-This general question of how Leo should deal with conflicts in clone nodes seems
-to me that it needs to be addressed, particularly with respect to trying to
-avoid cvs conflicts via thick/thin modes.
-
-Note that this can become quite a subtle question because the same node can
-be cloned across several different derived files, in which case a serious race
-condition may pertain.
-
-At the least, I would like to see leo perform consistency checking on cloned
-nodes when it reads a derived file back in and warn the user if cloned nodes
-are inconsistent.
-
-Note that the issue also occurs with OpenWith: I can open each instance of a
-cloned node as a separate file in the external text editor. Which version is
-read back into leo depends on the order in which I save them from the external
-editor.
-#@-node:ekr.20031218072017.659:Jonathon 1
-#@+node:ekr.20031218072017.660:Jonathan 2
-By: jmgilligan ( Jonathan M. Gilligan ) 
- Possible solution   
-2003-01-13 20:55  
-One possible solution for the conflicting clones problem is to have Leo, when it detects a conflicting clone, generate a text file (perhaps named LeoConflict_NNNN.leo, where NNNN is the gid of the node in question), which contains all the different versions of the node in question, output in leo XML format. 
-
-The vnode would then be marked with a "conflict" flag that would prevent the user from opening it in Leo until the conflict is resolved. See below for how the user resolves the conflict. 
-
-What I have in mind is something similar to the CVS conflict file, where a conflict between two versions is marked 
-
-<<<<<<< 
-blah blah blah? 
-======= 
-blah blah blah! 
->>>>>>> 
-
-Except that we would output this file in Leo XML format. The reason for XML format would be to avoid problems of how to generically delimit the different sections (different versions of the cloned node). Here leo's XML tags can unambiguously delimit the sections. 
-
-The user would then edit the conflict file and delete all but the desired version. Then he would tell leo to resolve the conflict by reading the corrected file in and replacing the contents of the conflicting node with the contents of the LeoConflict_NNNN.leo file. 
-
-On the down side, this may well be too baroque a fix for a problem that most users may never encounter. If so, perhaps it's best left alone until more pressing problems are solved. I know what I am doing with Leo and am always careful NOT to generate conflicting clones when I edit in an external text editor, so I don't absolutely need a resolution to this problem. I raised it because it's good for a program to have well-defined behavior when presented with anomalous input. 
-
-In this sense, perhaps the best thing is to allow users to generate code from clones (what Allan Holub referred to as "enough rope to shoot yourself in the foot"), but to tell them that this practice is frowned upon.  
-
- 
-#@-node:ekr.20031218072017.660:Jonathan 2
-#@+node:ekr.20031218072017.661:Gil 1
-Read and respond to this message at: 
-https://sourceforge.net/forum/message.php?msg_id=1836117
-By: gilshwartz
-
-Edward, now that conflicting clones may not be the result of bad style, I would
-like to propose yet another solution that I have been thinking of for a while.
-
-My basic approach is that cloning is not just a convenience tool, it may also
-reflect some of the properties of the code/code set. Therefore my goal is for
-clone links to remain even if they are conflicting, and let the user resolve
-them at any convenient time. I also think that Leo's user interface is the best
-tool to resolve such conflicts.
-
-Thus here is my view of clone management and resolution inside Leo. Anytime
-content is loaded into Leo, if a clone set agrees (i.e. have the same content)
-all clone copies are marked "green". When one green clone is edited, all green
-clones are changed. This is Leo as it is now.
-
-If at some point conflicting clones are loaded, Leo decides on some representing
-content (may be based on policies like most occurring content, or latest timestamp,
-etc.) and provides visual clues for the conflict. The visual clue is give by
-a double node box, e.g.
-
-+---------------+
-+ clone org +
-+---------------+
-+ resolution +
-+---------------+
-
-such that it is a single node in the tree, but has two content node, the original
-text, and the possibly arbitrary resolution.
-
-The resolution pseudo node is marked "blue", while the original text is either
-"green", if it is identical to the blue node, or "red", if it is not. To emphasis,
-the red/green nodes contain the specific (possibly) unique code associated with
-the derived file, while the pseudo blue node contains the shared clone content.
-During save to derived files, only the red/green content is saved, so effectively
-the file is not changed and the conflict is not resolved until the user chooses
-to do so. However, the clone relationship (via the gti) remains.
-
-During editing, changes to red/green clones are local and do not propagate to
-other clone copies (actually any change to a green node would turn it red).
-Changes to the blue nodes do propagate since it is a single view of the clone.
-A node pair may be converted to a regular node, effectively getting a new gti
-and eliminating the blue copy. Or, it may be converted to the shared copy,
-effectively forgetting its original content (leaving only the blue node). Once
-there are no more red nodes in a clone set, all its nodes become green again
-and the conflict is resolved.
-
-Some additional clone actions I think are useful are:
-
-1. Go to next/prev clone.
-2. Go to next/prev green clone (useful when there are red ones).
-3. Convert all green copies to a new clone group (useful when some clone copies
-needs to remain clones, but break from the original clone set, thus getting
-a new clone gti)
-
-Action 3 enables the user to partition its clone set to several clone groups
-by copying a clone's original content to its blue copy and finding matching
-(green) clones.
-
-What do we gain by all this?
-
-1. We can have conflicting clones without catastrophes.
-2. We get tools to handle conflicts and resolve them.
-3. We keep on working is Leo's environment, which is the most supportive one
-we can expect.
-
-Gil
-
-(By the way, I have a feeling that it would be useful to include along with
-the gti a hash of its node content, which could tell Leo is a node was changed
-outside of it. Also, including a timestamp in the opening sentinel, indicating
-when Leo last saved it. These may help having intelligent decisions by Leo in
-cases like conflicting clones.)
-#@-node:ekr.20031218072017.661:Gil 1
-#@+node:ekr.20031218072017.662:Gil 2
-Read and respond to this message at: 
-https://sourceforge.net/forum/message.php?msg_id=1804169
-By: gilshwartz
-
-Another thing to think about is what should happen when close heading is changing.
-Right now, if you are inside Leo, all headings will be changed, and if you try
-to change by hand it in the derived file, clone links are removed (after some
-error reporting). This is quite reasonable in the current scheme of things,
-where one is not really expected to mess up with Leo sentinels.
-
-However, if/when @include is implemented, one would probably edit some files
-with clones that may extend to other files and changing the clone node name
-(via Leo) is quite feasible. Note that the gti for the cloned node would probably
-not change. So
-
-1. Do Leo resync the clone content based on the gti?
-2. Does it break cloning and allocates a new gti for one (arbitrary?) clone
-set?
-3. Let the user resolve manually, offer undoable auto-resolution with reporting,
-other?
-
-More things to think about.
-
-Gil
-#@-node:ekr.20031218072017.662:Gil 2
-#@-node:ekr.20031218072017.658:Resolve CVS Conflicts command (Stepen Schaefer)
-#@-node:ekr.20051202094427:Resolve cvs conflicts
 #@+node:ekr.20031218072017.801:Support .leo.gz or .leo.zip files
 #@+node:ekr.20050428062312:Request 1
 @nocolor
@@ -5093,8 +4763,166 @@ def findWord (self,event):
 #@+node:ekr.20060206104205:Finish query-replace
 #@-node:ekr.20060206104205:Finish query-replace
 #@-node:ekr.20060413065803:Improve searches 4
-#@-node:ekr.20060527164612:Important 1-2 day projects
-#@+node:ekr.20060527182117:Important 1-2 week projects 6
+#@+node:ekr.20041022091645.4:Pymacs
+#@+node:ekr.20040125121407:Postings
+@nocolor
+#@nonl
+#@+node:ekr.20040125121407.1:randomandy
+http://sourceforge.net/forum/message.php?msg_id=2389876
+By: randomandy
+
+Is it only me who sees this as a question on how to reinvent the wheel? (or
+in the case of emacs, how to reinvent the <i>everything</i>.)
+
+Leo and Python both seem so well suited as wonderful hierarchal glue programs.
+And both are so elegant in the way their simple functionality brings such power
+and order to the cause. It just seems it would be a shame to take something
+so novel and unique and try to turn it into <i>yet another</i> huge text editor.
+
+I'm with <A HREF="http://sourceforge.net/forum/message.php?msg_id=2345873">Danny
+</A> on this one. The ideal solution is to find the most elegant and seamless
+way to splice one's own beloved text editor (or multipurpose editor/OS) in with
+the Leo paradigm. Have Leo hand off the text duties to the editor, or have the
+editor deliver heirarchy commands to Leo.
+
+I'm also quite curious if this makes a good tie in with SciTE. SciTE produces
+stunningly readible language highlighting/formatting. Could it be employed for
+basic cell text display, and then for heavier editing, a keystroke or button
+could open the cell text in one's preferred weapons grade text editor?
+
+Scintilla also has a similarly beautiful code-to-html and code-to-pdf capability
+that seems very suited to the literary part of the Leo paradigm: publication.
+It would be nice if that code could be exploited as well.
+
+This Leo is really a marvelous work. It's transforming the way I think (i.e.
+making it possible again). Nice work, Edward.
+#@-node:ekr.20040125121407.1:randomandy
+#@+node:ekr.20040125121407.2:dannyobrien
+By: dannyobrien ( danny o'brien ) 
+ RE: What would it take to turn Leo into Emacs   
+2003-12-23 09:18  
+
+ I agree with the embedding; I've used the vim plugin and it works well, but actually embedding the editor directly into the text field of leo (and allowing a range of keyboard shortcuts for eg headline editing) would be perfect.
+
+There is some support for this in gvim, the GUI version of vim that comes as standard. This can be run so as its GUI is "embedded" in another GTK widget, using that library's GtkSocket/GtkPlug system. A quick demo of that (and how to do it in python) is here:
+
+http://www.daa.com.au/pipermail/pygtk/2003-October/006185.html
+
+To see this working with gvim, run the second (socket.py) program on that page then type
+
+gvim --socketid <number generated by socket.py>
+
+I'm not sure how you could do this in other widget libraries - I don't know much about X Windows, but I suppose it would need support in vim as well as the widget set.
+ 
+#@-node:ekr.20040125121407.2:dannyobrien
+#@+node:ekr.20040125121407.3:mdawson
+http://sourceforge.net/forum/message.php?msg_id=2388448
+By: mdawson
+
+I use XEmacs as my text editor.  The first thing I did when
+evaluating Leo was to set up "open with" to use XEmacs for editing
+Leo body text.
+
+My progress so far:
+
+- my Open_With Plugin opens a Leo node as a foreground buffer in
+XEmacs, or a background (invisible) buffer in XEmacs.
+
+- my Open_Tree Plugin opens a sub-tree of Leo nodes as background
+buffers in XEmacs.
+
+- my filename modification plugin changes the temporary file names
+used by Leo so that they can be spotted more easily in an XEmacs
+buffer listing (e.g. ibuffer).
+
+- an elisp function to kill all XEmacs Leo buffers at once.
+
+- another elisp function to indent and unindent the Leo comments in
+derived Python source, which improves the readability of code.
+
+- my setup of the elisp Multiple-Major-Modes XEmacs package, so that
+XEmacs is in text-mode in Leo @doc sections, and the correct
+language mode in @code sections.
+
+Any of these might be able to be adapted for your own use. They
+should all work with Emacs as well as XEmacs, but I've not tested
+that.
+
+These are all outlined in Appendix "C. XEmacs Text Editor" of the
+document at:
+    http://devguide.leo.marshallresearch.ca
+
+and the Leo outline that contains them is available at:
+    http://leo.marshallresearch.ca
+
+
+    ----------------------------------------
+    Michael Dawson
+#@nonl
+#@-node:ekr.20040125121407.3:mdawson
+#@-node:ekr.20040125121407:Postings
+#@+node:ekr.20041022144159:Q: Pymacs bridge
+I'm trying to use the Pymacs bridge to add a symbol completion facility to
+Emacs's python-mode.  Neither the Python nor Emacs Lisp portions are all
+that complex, but I'm having trouble passing a list of strings from Emacs
+Lisp into Python.  On the Emacs Lisp side it looks like this:
+
+    (pymacs-load "pycomplete")
+
+    (defun py-complete ()
+      (interactive)
+      (pycomplete-pycomplete (py-symbol-near-point)
+                             (py-find-global-imports)))
+
+(py-find-global-imports) returns a (Lisp) list of strings, e.g.:
+
+    ("import time", "import sys")
+
+On the Python side I have this function:
+
+    def pycomplete(s, imports=None):
+        completions = get_all_completions(s, imports)
+        dots = s.split(".")
+        return os.path.commonprefix([k[len(dots[-1]):] for k in completions])
+
+Unfortunately, the imports arg does not come across as a Python list of
+strings (s does come across the bridge as a normal Python string).  Its
+repr() prints out like this:
+
+    lisp('("import time")')
+
+What do I need to do to convert that object into a true Python list of
+strings?  I'm afraid I don't quite understand the description of the lisp
+object in the Pymacs docs.  I tried imports.value() but that just gave me
+
+    (aref pymacs-lisp 0)
+
+Any help appreciated...
+
+Skip
+#@nonl
+#@-node:ekr.20041022144159:Q: Pymacs bridge
+#@+node:ekr.20041022144159.1:A: pymacs-forget-mutability
+"""
+Proper Emacs Lisp lists, those for which the cdr of last cell is nil, are
+normally transmitted opaquely to Python. If pymacs-forget-mutability is
+set, or if Python later asks for these to be expanded, proper Emacs Lisp
+lists get converted into Python lists, if we except the empty list, which
+is always converted as Python None. In the other direction, Python lists
+are always converted into proper Emacs Lisp lists.
+"""
+
+So, maybe try
+
+    (defun py-complete ()
+      (interactive)
+      (let ((pymacs-forget-mutability t)) 
+	(pycomplete-pycomplete (py-symbol-near-point)
+                               (py-find-global-imports))))
+#@-node:ekr.20041022144159.1:A: pymacs-forget-mutability
+#@-node:ekr.20041022091645.4:Pymacs
+#@-node:ekr.20060527164612:Important 1-2 day projects (1-2 weeks)
+#@+node:ekr.20060527182117:Important 1-2 week projects (2-3 weeks)
 #@+node:ekr.20041228084830.3:Finish wxWindows plugin
 #@+node:ekr.20060527190832.1:Add gui index conversion methods
 Add gui.toPythonIndex(s,index) and gui.toGuiIndex(s,index)
@@ -6646,59 +6474,178 @@ class UndoableCompoundEvent3:
 #@-node:ekr.20060201152349.15:<<UndoableCompoundEvent>>
 #@-node:ekr.20060201152349:NodeUndoer.py
 #@-node:ekr.20060228072202:New undoer
-#@+node:ekr.20060116173818:Fix vampire nodes
-#@-node:ekr.20060116173818:Fix vampire nodes
-#@+node:ekr.20060329102951:@ref (hmm)
+#@-node:ekr.20060527182117:Important 1-2 week projects (2-3 weeks)
+#@+node:ekr.20060227163215:Bugs (minor, overdue) (1 week)
+#@+node:ekr.20051104152338:Fix bug in Remove Sentinels command
+#@+node:ekr.20051104152338.1:Report
 @nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3413805
+By: nobody
+
+I thought this might be for 4.4a2, but I see the same effect w/ 
+Leo 4.3.3, build  1.282 , September 17, 2005
+Python 2.3.5, Tk 8.4.7, win32
+
+I haven't used Leo for code, but just started to try to re-organize some Perl
+I inherited.
+
+Leo apears to remove sentinels, AND preceding newlines, so the effect is something
+like this:
+
+.... some code....
+
+   next line;
+}
+#@verbatim
+#@ leo sentinel here...
+#
+
+    If  ( something ) {
+      more code;
+......
+
+becomes:
+
+.... some code....
+
+   next line;
+} If  ( something ) {
+      more code;
+......
+
+Now, that may be annoying, but mildly so - it still runs.
+When this:
+
+#
+#@verbatim
+#@ sentinel
+if () {
+
+turns to this:
+
+# if() {
+
+code just breaks.
 #@nonl
-#@+node:ekr.20060329102951.1:My summary post
-http://sourceforge.net/forum/message.php?msg_id=3598136
+#@-node:ekr.20051104152338.1:Report
+#@-node:ekr.20051104152338:Fix bug in Remove Sentinels command
+#@+node:ekr.20051014152256:Fix long-standing bug in import code
+Improve import code so it handles stufff like this from Ipyton/iplib
 
-> It appears that @ref nodes introduce a flexibility that can not be simulated (at all?) with clones.  
- 
-Now that something like @ref appears necessary, it is so much easier to see how @ref is useful :-) 
- 
-1. @ref is an explicit link (arc) that creates the links of a general graph structure explictily. 
- 
-The simplest cycle is: 
- 
-- root 
-..- a 
-.... - @ref b 
-..- b 
-.... - @ref a 
- 
-This is not possible with clones! No more mumbling about being able to represent such links in uA's! 
- 
-2. @ref allows users to compose documents from 'atomic' pieces of text properly. That is, adding a 'virtual' child to a piece of text does not add it to all other uses of that text in (possibly unrelated) documents. This vastly increases the flexibility of rst3 plugin. 
- 
-I suspect other essential uses of @ref will appear. I am sure we can declare the 'post-leo LP tool' project a great success already :-) 
- 
-Edward 
-#@-node:ekr.20060329102951.1:My summary post
-#@+node:ekr.20060329102951.2:Reply
+### This should *not* terminate the function!
+
+    self.LOGHEAD = Itpl(
+"""#log# Automatic Logger file. *** THIS MUST BE THE FIRST LINE ***
+#log# DO NOT CHANGE THIS LINE OR THE TWO BELOW
+#log# opts = $self.rc.opts
+#log# args = $self.rc.args
+#log# It is safe to make manual edits below here.
+#log#-----------------------------------------------------------------------
+""")
+
+- Handle blanks better in imports:
+    - Add tab_width keyword arg to import command.
+    - Convert tabs to blanks if tab width < 0.
+- Ignore position of blank lines wrt sentinels.
+- Ignore (optionally?) underindented blank lines.
+- Use pyclbr to parse Python imports?
+#@nonl
+#@+node:ekr.20040930075711:Handle underindented lines
 @nocolor
-http://sourceforge.net/forum/message.php?msg_id=3650005
-By: itsme213
 
-Imho ...
+Leo can't represent some files using nodes!
 
-There will not be any "arbitrary graph" from @ref. Instead there is a forest
-of trees, and across trees, some nodes are same_as some other nodes (caused
-by @ref). same_as is transitive. Quite likely the roots of all trees are same_as.
-There may need to be some rules to ensure things make structural sense. Children
-of a node are just that -- children of that node.
+I call this the "underindented blank line" problem.
 
-There will be a totally separate Merge node whose children will be the union
-of the children of all the nodes it merges. A Merge node is, itself, the ordinary child of some
-node.
+Example:
 
-Tree traversals will be tree traversals.
+@color
 
-Hope that did not muddy the waters even more ... 
-#@-node:ekr.20060329102951.2:Reply
-#@-node:ekr.20060329102951:@ref (hmm)
-#@-node:ekr.20060527182117:Important 1-2 week projects 6
+class aClass:
+    def spam(): pass
+# comment line
+    def eggs(): pass
+    
+@nocolor
+
+Leo's import code can't handle this:
+    
+- If the import code puts the comment line in a node, the line won't be output with the proper indentation!!
+
+- Having the comment line stop the scanning of aClass is even worse.
+
+- This usually shows up with an unindented blank line instead of the comment line.
+#@nonl
+#@-node:ekr.20040930075711:Handle underindented lines
+#@+node:ekr.20040722132104:Write script to report underindented lines
+#@-node:ekr.20040722132104:Write script to report underindented lines
+#@-node:ekr.20051014152256:Fix long-standing bug in import code
+#@+node:ekr.20060107082929:Fix problem reporting indentation errors
+@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=3510448
+By: ktenney
+
+Howdy,
+
+I'm executing a script in a Leo node which has
+an indentation error. I get the following report,
+which doesn't help locate the error.
+
+Pardon me if this is well known issue, I don't
+remember discussion of it.
+
+Thanks,
+Kent
+
+################################################
+exception executing script
+Traceback (most recent call last):
+  File "C:\python24\lib\site-packages\leo\src\leoCommands.py", line 1277, in
+executeScript
+    exec script in d
+IndentationError: unindent does not match any outer indentation level (line
+103)
+--------------------
+  line 1276:                     # g.trace(script)
+* line 1277:                     exec script in d
+  line 1278:                     if not script1 and not silent:
+  line 1279:                         g.es("end of script",color="purple")
+
+#@-node:ekr.20060107082929:Fix problem reporting indentation errors
+#@+node:ekr.20060325091249:@shortcut does not work
+#@-node:ekr.20060325091249:@shortcut does not work
+#@+node:ekr.20041130103128:(killcolor also kills autoindenting )
+By: Roger Erens - rogererens
+@
+2004-11-25 09:14
+On leo4.2, winXP, my default language is Python and smart_auto_indent=0. 
+Normally, after ending a line with a colon, the next line gets indented by 1 tab, also in comment-sections. 
+When using an @killcolor directive in a node, the line following one that ends with a colon starts at column zero.
+
+I think it is unreasonable for @killcolor to interfere with indenting.
+#@-node:ekr.20041130103128:(killcolor also kills autoindenting )
+#@+node:ekr.20041029083459:Remember Import directory
+By: Kent Tenney - ktenney
+Import to @file request  
+2004-10-28 11:27
+Howdy, 
+ 
+Please ignore if this is a difficult feature to implement. 
+ 
+File->Import->Import to @file  
+always starts in .../leo/src 
+ 
+I would prefer if it opened to the last directory from 
+which a file was imported. 
+ 
+I often find myself importing several files from the same area of the directory tree, and repeatedly navigating there from leo/src gets tiresome. 
+ 
+Thanks, 
+Kent
+#@-node:ekr.20041029083459:Remember Import directory
+#@-node:ekr.20060227163215:Bugs (minor, overdue) (1 week)
 #@-all
 #@nonl
 #@-node:ekr.20040117181936:@thin ../doc/leoToDo.txt
