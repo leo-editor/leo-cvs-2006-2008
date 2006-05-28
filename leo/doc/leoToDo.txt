@@ -1929,12 +1929,14 @@ def defineCmdsMenuSpellCheckTable (self):
 #@-node:ekr.20060117095212.7:defineCmdsMenuSpellCheckTable
 #@-node:ekr.20050921103230:defineCmdsMenuTables & helpers
 #@-node:ekr.20051121070552:Finish Cmds menu
-#@+node:ekr.20060522084039:Create a customize_debugger plugin
+#@+node:ekr.20060522084039:Finish the debugger
 @nocolor
+
+? Create a customize_debugger plugin?
 
 - define a debugger1 hook so the plugin can override the standard debug code.
 #@nonl
-#@-node:ekr.20060522084039:Create a customize_debugger plugin
+#@-node:ekr.20060522084039:Finish the debugger
 #@-node:ekr.20060527190049:Before 4.4.1b1--5
 #@+node:ekr.20060227163215:Bugs (minor, overdue)
 #@+node:ekr.20060227123644:There are still problems with focus: remove the optimizations?

@@ -1670,7 +1670,7 @@ def safeImportModule (fileName):
     if ext == ".py":
         try:
             return __import__(moduleName)
-        except ImportError:
+        except Exception: # leoScriptModule.py, for example, can throw other exceptions.
             return None
     else:
         print "Not a .py file:",fileName
