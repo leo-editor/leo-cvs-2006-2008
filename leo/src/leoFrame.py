@@ -210,6 +210,23 @@ class leoBody:
         self.oops()
     #@nonl
     #@-node:ekr.20031218072017.3663:Configuration (Tk spelling)
+    #@+node:ekr.20060528174558:Editors
+    def addEditor (self,event=None):
+        pass
+        
+    def cycleFocus (self,event=None):
+        pass
+        
+    def deleteEditor (self,event=None):
+        pass
+        
+    def selectMainEditor (self):
+        pass
+        
+    def updateEditors (self):
+        pass
+    #@nonl
+    #@-node:ekr.20060528174558:Editors
     #@+node:ekr.20031218072017.3664:Focus
     def hasFocus (self):
         
