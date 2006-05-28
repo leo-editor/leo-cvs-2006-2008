@@ -607,6 +607,21 @@ class tkinterGui(leoGui.leoGui):
     #@-node:ekr.20031218072017.4073:setIdleTimeHookAfterDelay
     #@-node:ekr.20031218072017.4071:Idle Time
     #@+node:ekr.20031218072017.4074:Indices (Tk)
+    #@+node:ekr.20060528172956:toGuiIndex & toPythonIndex
+    def toGuiIndex (self,s,w,index):
+    
+        row,col = g.convertPythonIndexToRowCol (s,index)
+        index = w.index('%s.%s' % (row+1,col))
+        return index
+        
+    def toPythonIndex (self,s,w,index):
+        
+        index = w.index(index)
+        row, col = index.split('.') ; row, col = int(row), int(col)
+        index = g.convertRowColToPythonIndex (s,row-1,col)
+        return index
+    #@nonl
+    #@-node:ekr.20060528172956:toGuiIndex & toPythonIndex
     #@+node:ekr.20031218072017.4075:firstIndex
     def firstIndex (self):
     
