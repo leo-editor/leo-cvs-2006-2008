@@ -764,31 +764,16 @@ class leoFind:
     
         c = self.c ; p = self.p ; w = self.s_ctrl ; gui = g.app.gui
         index = gui.getInsertPoint(w)
-        s = w.get('1.0','end') # Keep the extra trailing newline!
-        #@    << convert index to python index >>
-        #@+node:ekr.20060526084217:<< convert index to python index >>
-        i1 = w.index(index)
-        row, col = i1.split('.') ; row, col = int(row), int(col)
-        index = g.convertRowColToPythonIndex (s,row-1,col)
-        #@nonl
-        #@-node:ekr.20060526084217:<< convert index to python index >>
-        #@nl
+        s = gui.getAllText(w)
+        index = gui.toPythonIndex(s,w,index)
         stopindex = g.choose(self.reverse,0,len(s))
         while 1:
             pos,newpos = self.searchHelper(s,index,stopindex,self.find_text,
                 backwards=self.reverse,nocase=self.ignore_case,
                 regexp=self.pattern_match,word=self.whole_word)
             if pos == -1: return None,None
-            #@        << convert pos and newpos to gui indices >>
-            #@+node:ekr.20060526085605:<< convert pos and newpos to gui indices >>
-            row,col = g.convertPythonIndexToRowCol (s,pos)
-            pos = w.index('%s.%s' % (row+1,col))
-            
-            row,col = g.convertPythonIndexToRowCol (s,newpos)
-            newpos = w.index('%s.%s' % (row+1,col))
-            #@nonl
-            #@-node:ekr.20060526085605:<< convert pos and newpos to gui indices >>
-            #@nl
+            pos    = gui.toGuiIndex(s,w,pos)
+            newpos = gui.toGuiIndex(s,w,newpos)
             #@        << fail if we are passed the wrap point >>
             #@+node:ekr.20060526140328:<< fail if we are passed the wrap point >>
             if self.wrapping and self.wrapPos and self.wrapPosition and self.p == self.wrapPosition:
