@@ -1164,8 +1164,6 @@ class leoMenu:
     def defineCmdsMenuHelpTable (self):
     
         c = self.c
-        
-        g.trace()
     
         self.cmdsMenuHelpTable = [
             ('&Getting Started',         'help'),
