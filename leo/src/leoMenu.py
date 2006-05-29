@@ -431,16 +431,17 @@ class leoMenu:
         self.createMenuEntries(cmdsMenu,self.cmdsMenuTopTable)
     
         for name,table in (
-            ('Abbrev...',       self.cmdsMenuAbbrevTable),
-            ('Buffers...',      self.cmdsMenuBuffersTable),
-            ('Center...',       self.cmdsMenuCenterTable),
-            ('Change Case...',  self.cmdsMenuChangeCaseTable),
-            ('Indent...',       self.cmdsMenuIndentTable),
-            ('Macro...',        self.cmdsMenuMacroTable),
-            ('Rectangles...',   self.cmdsMenuRectanglesTable),
-            ('Registers...',    self.cmdsMenuRegistersTable),
-            ('Sort...',         self.cmdsMenuSortTable),
-            ('Spell Check...',  self.cmdsMenuSpellCheckTable),
+            ('&Abbrev...',          self.cmdsMenuAbbrevTable),
+            ('&Buffers...',         self.cmdsMenuBuffersTable),
+            ('&Center...',          self.cmdsMenuCenterTable),
+            ('C&hange Case...',     self.cmdsMenuChangeCaseTable),
+            ('&Help For Commands...',self.cmdsMenuHelpTable),
+            ('&Indent...',          self.cmdsMenuIndentTable),
+            ('&Macro...',           self.cmdsMenuMacroTable),
+            ('&Rectangles...',      self.cmdsMenuRectanglesTable),
+            ('Re&gisters...',       self.cmdsMenuRegistersTable),
+            ('&Sort...',            self.cmdsMenuSortTable),
+            ('S&pell Check...',     self.cmdsMenuSpellCheckTable),
         ):
             menu = self.createNewMenu(name,'Cmds')
             self.createMenuEntries(menu,table)
@@ -1077,10 +1078,12 @@ class leoMenu:
     def defineCmdsMenuTables (self):
         
         self.defineCmdsMenuTopTable()
+    
         self.defineCmdsMenuAbbrevTable()
         self.defineCmdsMenuBuffersTable()
         self.defineCmdsMenuCenterTable()
         self.defineCmdsMenuChangeCaseTable()
+        self.defineCmdsMenuHelpTable()
         self.defineCmdsMenuIndentTable()
         self.defineCmdsMenuMacroTable()
         self.defineCmdsMenuRectanglesTable()
@@ -1091,8 +1094,9 @@ class leoMenu:
     def defineCmdsMenuTopTable (self):
         
         self.cmdsMenuTopTable = [
-            ('Repeat Last Complex Command','repeat-complex-command'),
-            ('Execute Named Command','full-command'),
+            ('Repeat &Last Complex Command',    'repeat-complex-command'),
+            ('&Execute Named Command',          'full-command'),
+            ('Keyboard &Quit',                  'keyboard-quit'),
             ('-', None),
         ]
     #@-node:ekr.20060117094955: defineCmdsMenuTopTable
@@ -1102,18 +1106,18 @@ class leoMenu:
         c = self.c
         
         self.cmdsMenuAbbrevTable = [
-            ('Toggle Abbreviation Mode',    'abbrev-mode'),
+            ('&Toggle Abbreviation Mode',    'abbrev-mode'),
             ('-', None),
-            ('List Abbrevs',                'list-abbrevs'),
-            ('Read Abbrevs',                'read-abbrev-file'),
-            ('Write Abbrevs',               'write-abbrev-file'),
+            ('&List Abbrevs',                'list-abbrevs'),
+            ('&Read Abbrevs',                'read-abbrev-file'),
+            ('&Write Abbrevs',               'write-abbrev-file'),
             ('-', None),
-            ('Add Global Abbrev',           'add-global-abbrev'),
-            ('Inverse Add Global Abbrev',   'inverse-add-global-abbrev'),
-            ('Kill All Abbrevs',            'kill-all-abbrevs'),
+            ('&Add Global Abbrev',           'add-global-abbrev'),
+            ('&Inverse Add Global Abbrev',   'inverse-add-global-abbrev'),
+            ('&Kill All Abbrevs',            'kill-all-abbrevs'),
             ('-', None),
-            ('Expand Abbrev',               'expand-abbrev'),
-            ('Expand Abbrev in Region',     'expand-region-abbrevs'),
+            # ('&Expand Abbrev',             'expand-abbrev'), # Not a command
+            ('&Expand Abbrev in Region',     'expand-region-abbrevs'),
         ]
     #@nonl
     #@-node:ekr.20060117094955.1:defineCmdsMenuAbbrevTable
@@ -1121,13 +1125,13 @@ class leoMenu:
     def defineCmdsMenuBuffersTable (self):
     
         self.cmdsMenuBuffersTable = [
-            ('Append To Buffer',             'append-to-buffer'),
-            ('Kill Buffer',                  'kill-buffer'),
-            ('List Buffers',                 'list-buffers'),
-            ('List Buffers Alphbetically',   'list-buffers-alphabetically'),
-            ('Prepend To Buffer',            'prepend-to-buffer'),
-            ('Rename Buffer',                'rename-buffer'),
-            ('Switch To Buffer',             'switch-to-buffer'),
+            ('&Append To Buffer',             'append-to-buffer'),
+            ('&Kill Buffer',                  'kill-buffer'),
+            ('List &Buffers',                 'list-buffers'),
+            ('&List Buffers Alphbetically',   'list-buffers-alphabetically'),
+            ('&Prepend To Buffer',            'prepend-to-buffer'),
+            ('&Rename Buffer',                'rename-buffer'),
+            ('&Switch To Buffer',             'switch-to-buffer'),
         ]
     #@nonl
     #@-node:ekr.20060117095212:defineCmdsMenuBufferTable
@@ -1137,8 +1141,8 @@ class leoMenu:
         c = self.c
     
         self.cmdsMenuCenterTable = [
-            ('Center Line',     'center-line'),
-            ('Center Region',   'center-region'),
+            ('Center &Line',     'center-line'),
+            ('Center &Region',   'center-region'),
         ]
     #@nonl
     #@-node:ekr.20060117095212.5:defineCmdsMenuCenterTable
@@ -1148,26 +1152,41 @@ class leoMenu:
         c = self.c
     
         self.cmdsMenuChangeCaseTable = [
-            ('Capitalize Word', 'capitalize-word'),
-            ('Downcase Word',   'downcase-word'),
-            ('Upcase Word',     'upcase-word'),
+            ('&Capitalize Word', 'capitalize-word'),
+            ('&Downcase Word',   'downcase-word'),
+            ('&Upcase Word',     'upcase-word'),
             ('-', None),
-            ('Downcase Region', 'downcase-region'),
-            ('Upcase Region',   'upcase-region'),
+            ('D&owncase Region', 'downcase-region'),
+            ('U&pcase Region',   'upcase-region'),
         ]
-        
-    #@nonl
     #@-node:ekr.20060117095212.4:defineCmdsMenuChangeCaseTable
+    #@+node:ekr.20060529170949:defineCmdsMenuHelpTable
+    def defineCmdsMenuHelpTable (self):
+    
+        c = self.c
+        
+        g.trace()
+    
+        self.cmdsMenuHelpTable = [
+            ('&Getting Started',         'help'),
+            ('&Help For Command',        'help-for-command'),
+            ('-', None),
+            ('Apropos &Autocompletion',  'apropos-autocompletion'),
+            ('Apropos &Bindings',        'apropos-bindings'),
+            ('Apropos &Find Commands',   'apropos-find-commands'),
+        ]
+    #@nonl
+    #@-node:ekr.20060529170949:defineCmdsMenuHelpTable
     #@+node:ekr.20060117095212.6:defineCmdsMenuIndentTable
     def defineCmdsMenuIndentTable (self):
     
         c = self.c
     
         self.cmdsMenuIndentTable = [
-            ('Indent Region',   'indent-region'),
-            ('Indent Relative', 'indent-relative'),
-            ('Indent Rigidly',  'indent-rigidly'),
-            ('Unindent Region', 'unindent-region'),
+            ('&Indent Region',   'indent-region'),
+            ('Indent R&elative', 'indent-relative'),
+            ('Indent Ri&gidly',  'indent-rigidly'),
+            ('&Unindent Region', 'unindent-region'),
         ]
     #@nonl
     #@-node:ekr.20060117095212.6:defineCmdsMenuIndentTable
@@ -1177,14 +1196,14 @@ class leoMenu:
         c = self.c
     
         self.cmdsMenuMacroTable = [
-            ('Load Macro File',     'load-file'),
+            ('&Load Macro File',     'load-file'),
             ("-", None),
-            ('Start Macro',         'start-kbd-macro'),
-            ('End Macro',           'end-kbd-macro'),
-            ('Name Last Macro',     'name-last-kbd-macro'),
+            ('&Start Macro',         'start-kbd-macro'),
+            ('&End Macro',           'end-kbd-macro'),
+            ('&Name Last Macro',     'name-last-kbd-macro'),
             ("-", None),
-            ('Call Last Macro',     'call-last-keyboard-macro'),
-            ('Insert Macro',        'insert-keyboard-macro'),
+            ('&Call Last Macro',     'call-last-keyboard-macro'),
+            ('&Insert Macro',        'insert-keyboard-macro'),
         ]
     #@nonl
     #@-node:ekr.20060117114315:defineCmdsMenuMacroTable
@@ -1194,13 +1213,13 @@ class leoMenu:
         c = self.c
     
         self.cmdsMenuRectanglesTable = [
-            ('Clear Rect',  'clear-rectangle'),
-            ('Close Rect',  'close-rectangle'),
-            ('Delete Rect', 'delete-rectangle'),
-            ('Kill Rect',   'kill-rectangle'),
-            ('Open Rect',   'open-rectangle'),
-            ('String Rect', 'string-rectangle'),
-            ('Yank Rect',   'yank-rectangle'),
+            ('&Clear Rect',  'clear-rectangle'),
+            ('C&lose Rect',  'close-rectangle'),
+            ('&Delete Rect', 'delete-rectangle'),
+            ('&Kill Rect',   'kill-rectangle'),
+            ('&Open Rect',   'open-rectangle'),
+            ('&String Rect', 'string-rectangle'),
+            ('&Yank Rect',   'yank-rectangle'),
         ]
     #@nonl
     #@-node:ekr.20060117095212.2:defineCmdsMenuRectanglesTable
@@ -1210,16 +1229,16 @@ class leoMenu:
         c = self.c
     
         self.cmdsMenuRegistersTable = [
-            ('Append To Reg',   'append-to-register'),
-            ('Copy Rect To Reg','copy-rectangle-to-register'),
-            ('Copy To Reg',     'copy-to-register'),
-            ('Inc Reg',         'increment-register'),
-            ('Insert Reg',      'insert-register'),
-            ('Jump To Reg',     'jump-to-register'),
+            ('&Append To Reg',   'append-to-register'),
+            ('Copy R&ect To Reg','copy-rectangle-to-register'),
+            ('&Copy To Reg',     'copy-to-register'),
+            ('I&nc Reg',         'increment-register'),
+            ('&Insert Reg',      'insert-register'),
+            ('&Jump To Reg',     'jump-to-register'),
             # ('xxx',           'number-to-register'),
-            ('Point to Reg',    'point-to-register'),
-            ('Prepend To Reg',  'prepend-to-register'),
-            ('View Reg',        'view-register'),
+            ('&Point to Reg',    'point-to-register'),
+            ('P&repend To Reg',  'prepend-to-register'),
+            ('&View Reg',        'view-register'),
         ]
     #@nonl
     #@-node:ekr.20060117095212.1:defineCmdsMenuRegistersTable
@@ -1229,9 +1248,9 @@ class leoMenu:
         c = self.c
     
         self.cmdsMenuSortTable = [
-            ('Sort Columns',    'sort-columns'),
-            ('Sort Fields',     'sort-fields'),
-            ('Sort Lines',      'sort-lines'),
+            ('Sort &Columns',    'sort-columns'),
+            ('Sort &Fields',     'sort-fields'),
+            ('Sort &Lines',      'sort-lines'),
         ]
     #@nonl
     #@-node:ekr.20060117095212.3:defineCmdsMenuSortTable
@@ -1241,11 +1260,11 @@ class leoMenu:
         c = self.c
     
         self.cmdsMenuSpellCheckTable = [
-            ('Check Spelling',      'open-spell-tab'),
-            ('Change',              'spell-change'),
-            ('Change, Then Find',   'spell-change-then-find'),
-            ('Find',                'spell-find'),
-            ('Ignore',              'spell-ignore'),
+            ('Check &Spelling',      'open-spell-tab'),
+            ('&Change',              'spell-change'),
+            ('Change, &Then Find',   'spell-change-then-find'),
+            ('&Find',                'spell-find'),
+            ('&Ignore',              'spell-ignore'),
         ]
     #@nonl
     #@-node:ekr.20060117095212.7:defineCmdsMenuSpellCheckTable

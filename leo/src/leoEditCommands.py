@@ -414,7 +414,7 @@ class abbrevCommandsClass (baseEditCommandsClass):
         return {
             'abbrev-mode':                  self.toggleAbbrevMode,
             'add-global-abbrev':            self.addAbbreviation,
-            'expand-abbrev':                self.expandAbbrev,
+            # 'expand-abbrev':              self.expandAbbrev, # Not a command.
             'expand-region-abbrevs':        self.regionalExpandAbbrev,
             'inverse-add-global-abbrev':    self.addInverseAbbreviation,
             'kill-all-abbrevs':             self.killAllAbbrevs,
@@ -427,14 +427,16 @@ class abbrevCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20050920084036.25:addAbbreviation
     def addAbbreviation (self,event):
         
-        '''A small new feature: also sets abbreviations on.'''
+        '''Add an abbreviation:
+        The selected text is the abbreviation;
+        the minibuffer prompts you for the name of the abbreviation.
+        Also sets abbreviations on.'''
                 
         k = self.k ; state = k.getState('add-abbr')
     
         if state == 0:
             k.setLabelBlue('Add Abbreviation: ',protect=True)
             k.getArg(event,'add-abbr',1,self.addAbbreviation)
-            
         else:
             w = event.widget
             k.clearState()
@@ -450,6 +452,10 @@ class abbrevCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20050920084036.25:addAbbreviation
     #@+node:ekr.20051004080550:addInverseAbbreviation
     def addInverseAbbreviation (self,event):
+        
+        '''Add an inverse abbreviation:
+        The selected text is the abbreviation name;
+        the minibuffer prompts you for the value of the abbreviation.'''
         
         k = self.k ; state = k.getState('add-inverse-abbr')
     
@@ -492,22 +498,28 @@ class abbrevCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20050920084036.27:expandAbbrev
     #@+node:ekr.20050920084036.18:killAllAbbrevs
     def killAllAbbrevs (self,event):
+        
+        '''Delete all abbreviations.'''
     
         self.abbrevs = {}
     #@nonl
     #@-node:ekr.20050920084036.18:killAllAbbrevs
     #@+node:ekr.20050920084036.19:listAbbrevs
     def listAbbrevs (self,event):
+        
+        '''List all abbreviations.'''
     
         k = self.k
         
         if self.abbrevs:
-            k.setLabelGrey('\n'.join(
-                ['%s=%s' % (z,self.abbrevs[z]) for z in self.abbrevs]))
+            for z in self.abbrevs:
+                g.es('%s=%s' % (z,self.abbrevs[z]))
     #@nonl
     #@-node:ekr.20050920084036.19:listAbbrevs
     #@+node:ekr.20050920084036.20:readAbbreviations
     def readAbbreviations (self,event):
+        
+        '''Read abbreviations from a file.'''
     
         f = tkFileDialog and tkFileDialog.askopenfile()
         if not f: return
@@ -521,6 +533,8 @@ class abbrevCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20050920084036.20:readAbbreviations
     #@+node:ekr.20050920084036.21:regionalExpandAbbrev
     def regionalExpandAbbrev (self,event):
+        
+        '''Exapand abbreviations throughout a region.'''
     
         if not self._chckSel(event):
             return
@@ -575,6 +589,8 @@ class abbrevCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20050920084036.21:regionalExpandAbbrev
     #@+node:ekr.20050920084036.23:toggleAbbrevMode
     def toggleAbbrevMode (self,event):
+        
+        '''Toggle abbreviation mode.'''
      
         k = self.k
         k.abbrevOn = not k.abbrevOn
@@ -584,6 +600,8 @@ class abbrevCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20050920084036.23:toggleAbbrevMode
     #@+node:ekr.20050920084036.24:writeAbbreviations
     def writeAbbreviations (self,event):
+        
+        '''Write abbreviations to a file.'''
     
         f = tkFileDialog and tkFileDialog.asksaveasfile()
         if not f: return
@@ -4379,7 +4397,10 @@ class helpCommandsClass (baseEditCommandsClass):
     unfinished.
     
     keyboard-quit (default shortcut: Ctrl-g) Exits any minibuffer mode and puts
-    the focus in the body pane.'''
+    the focus in the body pane.
+    
+    Use the help-for-command command to see documentation for a particular command.
+    '''
     
         s = g.adjustTripleString(s,c.tab_width)
             # Remove indentation from indentation of this function.
