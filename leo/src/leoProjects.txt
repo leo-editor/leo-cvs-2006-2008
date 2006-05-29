@@ -1769,7 +1769,7 @@ def redrawHelper (self,scroll=True):
 #@+node:ekr.20060519003651:debug
 def debug (self,event=None,target = None):
     
-    '''Start the debugger in another process.'''
+    '''Start an external debugger in another process.'''
 
     c = self.c ; p = c.currentPosition()
     pythonDir = g.os_path_dirname(sys.executable)
@@ -1954,7 +1954,7 @@ if 0:
 #@+node:ekr.20060519003651:debug
 def debug (self,event=None,target = None):
     
-    '''Start the debugger in another process.'''
+    '''Start an external debugger in another process.'''
 
     c = self.c ; p = c.currentPosition()
     pythonDir = g.os_path_dirname(sys.executable)
@@ -6109,8 +6109,6 @@ def defineCmdsMenuChangeCaseTable (self):
 def defineCmdsMenuHelpTable (self):
 
     c = self.c
-    
-    g.trace()
 
     self.cmdsMenuHelpTable = [
         ('&Getting Started',         'help'),
