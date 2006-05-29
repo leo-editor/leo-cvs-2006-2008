@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="9726" clone_windows="0"/>
 <globals body_outline_ratio="0.539298669891">
-	<global_window_position top="24" left="264" height="827" width="819"/>
+	<global_window_position top="31" left="358" height="827" width="819"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -14,13 +14,15 @@
 </v>
 <v t="EKR.20040519090151.3"><vh>Projects</vh>
 <v t="EKR.20040429143933"
-marks="ekr.20040803072955.58,"
-expanded="ekr.20060514170725,"><vh>@thin leoProjects.txt</vh></v>
+marks="ekr.20040803072955.58,ekr.20031218072017.3077,ekr.20040803072955.58,"><vh>@thin leoProjects.txt</vh></v>
 </v>
 <v t="ekr.20060514170725"><vh>4.4.1 projects</vh>
 <v t="ekr.20060514170854"><vh>Fixed bugs</vh>
 <v t="ekr.20060514164817"><vh>Fixed crasher in searchbox plugin</vh>
 <v t="ekr.20060514164817.1"><vh>Report</vh></v>
+</v>
+<v t="ekr.20060529083409"><vh>Fixed bug in toGuiIndex</vh>
+<v t="ekr.20060528172956"><vh>toGuiIndex &amp; toPythonIndex</vh></v>
 </v>
 </v>
 <v t="ekr.20060522103446"><vh>New features</vh>
@@ -235,7 +237,7 @@ expanded="ekr.20060514170725,"><vh>@thin leoProjects.txt</vh></v>
 <v t="ekr.20060128103640.4"><vh>&lt;&lt; compute shortcut &gt;&gt;</vh></v>
 </v>
 </v>
-<v t="ekr.20031218072017.3077"><vh>search &amp; helpers</vh>
+<v t="ekr.20031218072017.3077" a="M"><vh>search &amp; helpers</vh>
 <v t="ekr.20060526140328"><vh>&lt;&lt; fail if we are passed the wrap point &gt;&gt;</vh></v>
 <v t="ekr.20060526081931"><vh>Search helpers...</vh>
 <v t="ekr.20060526092203"><vh>regexHelper</vh></v>
@@ -254,7 +256,7 @@ expanded="ekr.20060514170725,"><vh>@thin leoProjects.txt</vh></v>
 <v t="ekr.20060528100747.1"><vh>addEditor</vh>
 <v t="ekr.20060528110922"><vh>&lt;&lt; create label and text widgets &gt;&gt;</vh></v>
 </v>
-<v t="ekr.20060528170438"><vh>cycleFocus</vh></v>
+<v t="ekr.20060528170438"><vh>cycleEditorFocus</vh></v>
 <v t="ekr.20060528113806"><vh>deleteEditor</vh></v>
 <v t="ekr.20060528104554"><vh>onFocusIn</vh></v>
 <v t="ekr.20060528132829"><vh>selectMainEditor</vh></v>
@@ -267,10 +269,9 @@ expanded="ekr.20060514170725,"><vh>@thin leoProjects.txt</vh></v>
 <v t="ekr.20040803072955.132"><vh>&lt;&lt; update c.visitedList &gt;&gt;</vh></v>
 <v t="ekr.20040803072955.133"><vh>&lt;&lt; set the current node &gt;&gt;</vh></v>
 </v>
-<v t="ekr.20031218072017.1329"><vh>onBodyChanged (tkBody) &amp; removeTrailingNewlines</vh>
+<v t="ekr.20031218072017.1329"><vh>onBodyChanged (tkBody)</vh>
 <v t="ekr.20051026083733.6"><vh>&lt;&lt; recolor the body &gt;&gt;</vh></v>
 <v t="ekr.20051026083733.7"><vh>&lt;&lt; redraw the screen if necessary &gt;&gt;</vh></v>
-<v t="ekr.20051026143009"><vh>removeTrailingNewlines</vh></v>
 </v>
 </v>
 <v t="ekr.20060528173539"><vh>Created gui.toPythonIndex &amp; gui.toGuiIndex</vh></v>
@@ -283,7 +284,7 @@ expanded="ekr.20060514170725,"><vh>@thin leoProjects.txt</vh></v>
 </v>
 <v t="ekr.20040803072955.35"><vh>Drawing... (tkTree)</vh>
 <v t="ekr.20051216155728"><vh>tree.begin/endUpdate</vh></v>
-<v t="ekr.20040803072955.58"><vh>tree.redraw_now &amp; helper</vh>
+<v t="ekr.20040803072955.58" a="M"><vh>tree.redraw_now &amp; helper</vh>
 <v t="ekr.20040803072955.59"><vh>redrawHelper</vh></v>
 </v>
 <v t="ekr.20040803072955.61"><vh>idle_second_redraw</vh></v>
@@ -320,92 +321,29 @@ expanded="ekr.20060514170725,"><vh>@thin leoProjects.txt</vh></v>
 </v>
 </v>
 </v>
+<v t="ekr.20060419101401"><vh>Completed transition to 'end-1c'</vh>
+<v t="ekr.20060529091202.1"><vh>Changes</vh>
+<v t="ekr.20031218072017.4028"><vh>tkBody.getAllText</vh></v>
+<v t="ekr.20031218072017.4091"><vh>g.app.gui.getAllText</vh></v>
+<v t="ekr.20051023132350"><vh>getLabel</vh></v>
+<v t="ekr.20050920085536.38"><vh>updateLabel</vh></v>
+<v t="ekr.20060417183606.1"><vh>moveLinesUp (works, except for selection point when last line selected)</vh></v>
+<v t="ekr.20060204120158.1"><vh>findAgainCommand</vh></v>
+<v t="ekr.20051020120306.26"><vh>bringToFront</vh></v>
+</v>
+<v t="ekr.20060529091202"><vh>Replaced gui.setTextSelection (t,"1.0","end-1c") by gui.selectAllText</vh>
+<v t="ekr.20060529092645"><vh>selectAllText (new in 4.4.1)</vh></v>
+<v t="ekr.20031218072017.3907"><vh>bringToFront</vh></v>
+<v t="ekr.20051020120306.26"><vh>bringToFront</vh></v>
+</v>
+</v>
 </v>
 </v>
 <v t="EKR.20040519090151.2"><vh>To do</vh>
 <v t="ekr.20040117181936"><vh>@thin ../doc/leoToDo.txt</vh></v>
 <v t="ekr.20060207133601"><vh>@thin ../doc/leoToDoLater.txt</vh></v>
 </v>
-<v t="ekr.20031218072017.2406"><vh>Code</vh>
-<v t="ekr.20031218072017.2606"><vh>&lt;&lt; Import pychecker &gt;&gt;</vh></v>
-<v t="ekr.20031218072017.2582"><vh> version &amp; signon stuff</vh>
-<v t="ekr.20040629121554"><vh>getBuildNumber</vh></v>
-<v t="ekr.20040629121554.1"><vh>getSignOnLine (Contains hard-coded version info)</vh></v>
-<v t="ekr.20040629121554.2" a="M" labels="540801000032383634373033303061353332373632363536363666373236353230363336383631366536373635336132373061373033313061353636343635363632303639366536393734353636353732373336393666366532303238373336353663363632393361356337353330333033303631323032303230323036333230336432303733363536633636356337353330333033303631323032303230323036333265373636353732323033643230323232343532363537363639373336393666366533613230333132653332333233353230323432323230323332303433353635333230373537303634363137343635373332303734363836393733326530613730333230613733326571002e"><vh>initVersion</vh></v>
-<v t="ekr.20040629121554.3"><vh>c.signOnWithVersion</vh></v>
-</v>
-<v t="ekr.20051031040240"><vh>Buttons and settings</vh>
-<v t="ekr.20051027111215"><vh>@thin buttons.txt</vh></v>
-<v t="ekr.20041119040438"><vh>@settings</vh>
-<v t="ekr.20050420073615"><vh>@recent-files</vh></v>
-<v t="ekr.20041119042418"><vh>@bool use_plugins = True</vh></v>
-<v t="ekr.20041211042119"><vh>@int page_width = 80</vh></v>
-</v>
-</v>
-<v t="ekr.20031218072017.2604"><vh>Core classes...</vh>
-<v t="ekr.20031218072017.2605"><vh>@thin leo.py </vh></v>
-<v t="ekr.20031218072017.2608"><vh>@thin leoApp.py</vh></v>
-<v t="ekr.20041005105605.1"><vh>@thin leoAtFile.py</vh></v>
-<v t="ekr.20031218072017.2794"><vh>@thin leoColor.py</vh></v>
-<v t="ekr.20031218072017.2810"
-marks="ekr.20040629121554.2,"><vh>@thin leoCommands.py</vh></v>
-<v t="ekr.20041117062700"><vh>@thin leoConfig.py</vh></v>
-<v t="ekr.20031218072017.3018"><vh>@thin leoFileCommands.py</vh></v>
-<v t="ekr.20031218072017.3093"><vh>@thin leoGlobals.py</vh></v>
-<v t="ekr.20031218072017.3206"><vh>@thin leoImport.py</vh></v>
-<v t="ekr.20031218072017.3320"><vh>@thin leoNodes.py</vh></v>
-<v t="ekr.20031218072017.3439"><vh>@thin leoPlugins.py</vh></v>
-<v t="ekr.20031218072017.3446"><vh>@thin leoTangle.py</vh></v>
-<v t="ekr.20051104075904" annotate="7d71002e"><vh>@thin leoTest.py</vh></v>
-<v t="ekr.20031218072017.3603"><vh>@thin leoUndo.py</vh></v>
-</v>
-<v t="ekr.20031218072017.3625"><vh>Gui Base classes</vh>
-<v t="ekr.20050721093241"><vh>&lt;&lt; about gui classes and gui plugins &gt;&gt;</vh></v>
-<v t="ekr.20031218072017.3630"><vh>@thin leoCompare.py</vh></v>
-<v t="ekr.20060123151617"
-marks="ekr.20031218072017.3077,"><vh>@thin leoFind.py</vh></v>
-<v t="ekr.20031218072017.3655"><vh>@thin leoFrame.py</vh></v>
-<v t="ekr.20031218072017.3719"><vh>@thin leoGui.py</vh></v>
-<v t="ekr.20031218072017.3749"><vh>@thin leoMenu.py</vh></v>
-</v>
-<v t="ekr.20031218072017.3821"><vh>Gui Tkinter classes</vh>
-<v t="ekr.20031218072017.3838"><vh>@thin leoTkinterComparePanel.py</vh></v>
-<v t="ekr.20031218072017.3858"><vh>@thin leoTkinterDialog.py</vh></v>
-<v t="ekr.20031218072017.3897"><vh>@thin leoTkinterFind.py</vh></v>
-<v t="ekr.20031218072017.3939"><vh>@thin leoTkinterFrame.py</vh></v>
-<v t="ekr.20031218072017.4047"
-expanded="ekr.20031218072017.4059,ekr.20031218072017.4074,"><vh>@thin leoTkinterGui.py</vh></v>
-<v t="ekr.20031218072017.4099"><vh>@thin leoTkinterKeys.py</vh></v>
-<v t="ekr.20031218072017.4100"><vh>@thin leoTkinterMenu.py</vh></v>
-<v t="ekr.20040803072955"
-expanded="ekr.20040803072955.15,"><vh>@thin leoTkinterTree.py</vh></v>
-</v>
-<v t="ekr.20031218072017.3748"><vh>@thin leoKeys.py</vh></v>
-<v t="ekr.20050710142719"><vh>@thin leoEditCommands.py</vh></v>
-</v>
-<v t="ekr.20060527190049" a="EV"><vh>Before 4.4.1b1 (1 week)</vh>
-<v t="ekr.20060419101401"><vh>Complete transition to 'end-1c'</vh>
-<v t="ekr.20060419101401.1"><vh>Found: gui.getAllText</vh>
-<v t="ekr.20031218072017.2293"><vh>batchChange (sets start of change-all group)</vh>
-<v t="ekr.20031218072017.2294"><vh>&lt;&lt; change headline &gt;&gt;</vh></v>
-<v t="ekr.20031218072017.2295"><vh>&lt;&lt; change body &gt;&gt;</vh></v>
-</v>
-<v t="ekr.20051011072049.2"><vh>cutText</vh></v>
-<v t="ekr.20031218072017.1329"><vh>onBodyChanged (tkBody) &amp; removeTrailingNewlines</vh>
-<v t="ekr.20051026083733.6"><vh>&lt;&lt; recolor the body &gt;&gt;</vh></v>
-<v t="ekr.20051026083733.7"><vh>&lt;&lt; redraw the screen if necessary &gt;&gt;</vh></v>
-<v t="ekr.20051026143009"><vh>removeTrailingNewlines</vh></v>
-</v>
-<v t="ekr.20060417172056"><vh>addRemoveHelper</vh></v>
-<v t="ekr.20060415112257"><vh>clean-lines</vh></v>
-<v t="ekr.20051125080855"><vh>selfInsertCommand</vh>
-<v t="ekr.20051026171121"><vh>&lt;&lt; handle newline &gt;&gt;</vh></v>
-<v t="ekr.20051027172949"><vh>updateAutomatchBracket</vh></v>
-<v t="ekr.20051026171121.1"><vh>udpateAutoIndent</vh></v>
-<v t="ekr.20051026092433"><vh>updateTab</vh></v>
-</v>
-</v>
-</v>
+<v t="ekr.20060527190049" a="V"><vh>Before 4.4.1b1 (3-5 days)</vh>
 <v t="ekr.20060528082017.1"><vh>Important (2-4 days)</vh>
 <v t="ekr.20060527204444"><vh>Finish new colorizer plugin</vh></v>
 <v t="ekr.20060211093935"><vh>Support for on-enter-mode in mode declarations</vh>
@@ -520,7 +458,64 @@ expanded="ekr.20040803072955.15,"><vh>@thin leoTkinterTree.py</vh></v>
 </v>
 </v>
 <v t="ekr.20060522084039"><vh>Finish the debugger</vh></v>
+<v t="ekr.20060529083234"><vh>Add docstrings for all commands</vh></v>
 </v>
+</v>
+<v t="ekr.20031218072017.2406"><vh>Code</vh>
+<v t="ekr.20031218072017.2606"><vh>&lt;&lt; Import pychecker &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2582"><vh> version &amp; signon stuff</vh>
+<v t="ekr.20040629121554"><vh>getBuildNumber</vh></v>
+<v t="ekr.20040629121554.1"><vh>getSignOnLine (Contains hard-coded version info)</vh></v>
+<v t="ekr.20040629121554.2" a="M" labels="540801000032383634373033303061353332373632363536363666373236353230363336383631366536373635336132373061373033313061353636343635363632303639366536393734353636353732373336393666366532303238373336353663363632393361356337353330333033303631323032303230323036333230336432303733363536633636356337353330333033303631323032303230323036333265373636353732323033643230323232343532363537363639373336393666366533613230333132653332333233353230323432323230323332303433353635333230373537303634363137343635373332303734363836393733326530613730333230613733326571002e"><vh>initVersion</vh></v>
+<v t="ekr.20040629121554.3"><vh>c.signOnWithVersion</vh></v>
+</v>
+<v t="ekr.20051031040240"><vh>Buttons and settings</vh>
+<v t="ekr.20051027111215"><vh>@thin buttons.txt</vh></v>
+<v t="ekr.20041119040438"><vh>@settings</vh>
+<v t="ekr.20050420073615"><vh>@recent-files</vh></v>
+<v t="ekr.20041119042418"><vh>@bool use_plugins = True</vh></v>
+<v t="ekr.20041211042119"><vh>@int page_width = 80</vh></v>
+</v>
+</v>
+<v t="ekr.20031218072017.2604"><vh>Core classes...</vh>
+<v t="ekr.20031218072017.2605"><vh>@thin leo.py </vh></v>
+<v t="ekr.20031218072017.2608"><vh>@thin leoApp.py</vh></v>
+<v t="ekr.20041005105605.1"><vh>@thin leoAtFile.py</vh></v>
+<v t="ekr.20031218072017.2794"><vh>@thin leoColor.py</vh></v>
+<v t="ekr.20031218072017.2810"
+marks="ekr.20040629121554.2,"><vh>@thin leoCommands.py</vh></v>
+<v t="ekr.20041117062700"><vh>@thin leoConfig.py</vh></v>
+<v t="ekr.20031218072017.3018"><vh>@thin leoFileCommands.py</vh></v>
+<v t="ekr.20031218072017.3093"><vh>@thin leoGlobals.py</vh></v>
+<v t="ekr.20031218072017.3206"><vh>@thin leoImport.py</vh></v>
+<v t="ekr.20031218072017.3320"><vh>@thin leoNodes.py</vh></v>
+<v t="ekr.20031218072017.3439"><vh>@thin leoPlugins.py</vh></v>
+<v t="ekr.20031218072017.3446"><vh>@thin leoTangle.py</vh></v>
+<v t="ekr.20051104075904" annotate="7d71002e"><vh>@thin leoTest.py</vh></v>
+<v t="ekr.20031218072017.3603"><vh>@thin leoUndo.py</vh></v>
+</v>
+<v t="ekr.20031218072017.3625"><vh>Gui Base classes</vh>
+<v t="ekr.20050721093241"><vh>&lt;&lt; about gui classes and gui plugins &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.3630"><vh>@thin leoCompare.py</vh></v>
+<v t="ekr.20060123151617"
+marks="ekr.20031218072017.3077,"><vh>@thin leoFind.py</vh></v>
+<v t="ekr.20031218072017.3655"><vh>@thin leoFrame.py</vh></v>
+<v t="ekr.20031218072017.3719"><vh>@thin leoGui.py</vh></v>
+<v t="ekr.20031218072017.3749"><vh>@thin leoMenu.py</vh></v>
+</v>
+<v t="ekr.20031218072017.3821"><vh>Gui Tkinter classes</vh>
+<v t="ekr.20031218072017.3838"><vh>@thin leoTkinterComparePanel.py</vh></v>
+<v t="ekr.20031218072017.3858"><vh>@thin leoTkinterDialog.py</vh></v>
+<v t="ekr.20031218072017.3897"><vh>@thin leoTkinterFind.py</vh></v>
+<v t="ekr.20031218072017.3939"><vh>@thin leoTkinterFrame.py</vh></v>
+<v t="ekr.20031218072017.4047"><vh>@thin leoTkinterGui.py</vh></v>
+<v t="ekr.20031218072017.4099"><vh>@thin leoTkinterKeys.py</vh></v>
+<v t="ekr.20031218072017.4100"><vh>@thin leoTkinterMenu.py</vh></v>
+<v t="ekr.20040803072955"
+marks="ekr.20040803072955.58,"><vh>@thin leoTkinterTree.py</vh></v>
+</v>
+<v t="ekr.20031218072017.3748"><vh>@thin leoKeys.py</vh></v>
+<v t="ekr.20050710142719"><vh>@thin leoEditCommands.py</vh></v>
 </v>
 </vnodes>
 <tnodes>
@@ -625,21 +620,15 @@ def onBodyChanged (self,undoType,
     p = c.currentPosition()
     insert = bodyCtrl.index('insert')
     ch = g.choose(insert=='1.0','',bodyCtrl.get('insert-1c'))
-    ch = g.toUnicode(ch,g.app.tkEncoding) # New in 4.4b3.
-    newText = g.app.gui.getAllText(bodyCtrl) # New in 4.4b3: converts to unicode.
+    ch = g.toUnicode(ch,g.app.tkEncoding)
+    newText = g.app.gui.getAllText(bodyCtrl) # Note: getAllText converts to unicode.
     # g.trace('newText',repr(newText))
     newSel = g.app.gui.getTextSelection(bodyCtrl)
     if oldText is None: oldText = p.bodyString()
-    if removeTrailing is None:
-        removeTrailing = self.removeTrailingNewlines(oldText,newText,ch)
-    if removeTrailing and newText:
-        newText = newText[:-1]
     changed = oldText != newText
     if trace:
         g.trace(repr(ch),'changed:',changed)
-        # g.trace('removeTrailing:',removeTrailing)
         g.trace('newText:',repr(newText))
-        #g.trace('oldText:',repr(oldText))
     if changed:
         c.undoer.setUndoTypingParams(p,undoType,
             oldText=oldText,newText=newText,oldSel=oldSel,newSel=newSel,oldYview=oldYview)
@@ -763,57 +752,6 @@ else:
     self.trace_onBodyChanged = c.config.getBool('trace_onBodyChanged')
     self.bodyCtrl = self.createControl(frame,parentFrame)
     self.colorizer = leoColor.colorizer(c)</t>
-<t tx="ekr.20031218072017.2293">@ This routine performs a single batch change operation, updating the head or body string of p and leaving the result in s_ctrl.  We update the body if we are changing the body text of c.currentVnode().
-
-s_ctrl contains the found text on entry and contains the changed text on exit.  pos and pos2 indicate the selection.  The selection will never be empty. NB: we can not assume that self.p is visible.
-@c
-
-def batchChange (self,pos1,pos2):
-
-    c = self.c ; u = c.undoer
-    p = self.p ; st = self.s_ctrl ; gui = g.app.gui
-    # Replace the selection with self.change_text
-    if gui.compareIndices(st,pos1, "&gt;", pos2):
-        pos1,pos2=pos2,pos1
-    gui.replaceSelectionRangeWithText(st,pos1,pos2,self.change_text)
-    s = gui.getAllText(st)
-    # Update the selection.
-    insert=g.choose(self.reverse,pos1,pos1+'+'+str(len(self.change_text))+'c')
-    gui.setSelectionRange(st,insert,insert)
-    gui.setInsertPoint(st,insert)
-    # Update the node
-    if self.in_headline:
-        &lt;&lt; change headline &gt;&gt;
-    else:
-        &lt;&lt; change body &gt;&gt;</t>
-<t tx="ekr.20031218072017.2294">if len(s) &gt; 0 and s[-1]=='\n': s = s[:-1]
-
-if s != p.headString():
-    
-    undoData = u.beforeChangeNodeContents(p)
-
-    p.initHeadString(s)
-    if self.mark_changes:
-        p.setMarked()
-    p.setDirty()
-    if not c.isChanged():
-        c.setChanged(True)
-    
-    u.afterChangeNodeContents(p,'Change Headline',undoData)</t>
-<t tx="ekr.20031218072017.2295">if len(s) &gt; 0 and s[-1]=='\n': s = s[:-1]
-
-if s != p.bodyString():
-    
-    undoData = u.beforeChangeNodeContents(p)
-
-    p.setBodyStringOrPane(s)
-    if self.mark_changes:
-        p.setMarked()
-    p.setDirty()
-    if not c.isChanged():
-        c.setChanged(True)
-     
-    u.afterChangeNodeContents(p,'Change Body',undoData)</t>
 <t tx="ekr.20031218072017.2406">@tabwidth -4
 @pagewidth 80
 
@@ -1521,6 +1459,18 @@ self.createMenuEntries(gotoMenu,self.outlineMenuGoToMenuTable)</t>
     
     self.createMenuEntries(helpMenu,self.helpMenuTop3Table)</t>
 <t tx="ekr.20031218072017.3821"></t>
+<t tx="ekr.20031218072017.3907">def bringToFront (self):
+    
+    """Bring the tkinter Find Panel to the front."""
+    
+    c = self.c ; t = self.find_ctrl ; gui = g.app.gui
+            
+    self.top.withdraw() # Helps bring the window to the front.
+    self.top.deiconify()
+    self.top.lift()
+
+    c.widgetWantsFocusNow(t)
+    gui.selectAllText(t)</t>
 <t tx="ekr.20031218072017.3963">def put(self,s,color=None):
     
     t = self.textWidget
@@ -1559,6 +1509,16 @@ self.createMenuEntries(gotoMenu,self.outlineMenuGoToMenuTable)</t>
     w = self.createTextWidget(frame,parentFrame,name=None,p=None)
     self.editorWidgets[None] = w
     return w</t>
+<t tx="ekr.20031218072017.4028">def getAllText (self):
+    
+    """Return all the body text, converted to unicode."""
+    
+    s = self.bodyCtrl.get("1.0","end-1c") # New in 4.4.1: use end-1c.
+
+    if s is None:
+        return u""
+    else:
+        return g.toUnicode(s,g.app.tkEncoding)</t>
 <t tx="ekr.20031218072017.4074"></t>
 <t tx="ekr.20031218072017.4075">def firstIndex (self):
 
@@ -1592,6 +1552,16 @@ def moveIndexToNextLine(self,t,index):
     """Convert string index of the form line.col into a tuple of two ints."""
     
     return tuple(map(int,string.split(text.index(index), ".")))</t>
+<t tx="ekr.20031218072017.4091">def getAllText (self,t):
+    
+    """Return all the text of Tk.Text widget t converted to unicode."""
+
+    s = t.get("1.0","end-1c") # New in 4.4.1: use end-1c.
+
+    if s is None:
+        return u""
+    else:
+        return g.toUnicode(s,g.app.tkEncoding)</t>
 <t tx="ekr.20031218072017.4117">def defineMenuCallback(self,command,name,minibufferCommand):
     
     if minibufferCommand:
@@ -2906,6 +2876,34 @@ def iSearchStateHandler (self,event):
 
     w.tag_config('color',foreground='red')
     w.tag_config('color1',background='lightblue')</t>
+<t tx="ekr.20050920085536.38">def updateLabel (self,event):
+
+    '''Mimic what would happen with the keyboard and a Text editor
+    instead of plain accumalation.'''
+    
+    k = self ; c = k.c ; w = self.widget
+    ch = (event and event.char) or ''
+    keysym = (event and event.keysym) or ''
+    trace = self.trace_minibuffer and not g.app.unitTesting
+
+    trace and g.trace('ch',ch,'keysym',keysym,'k.stroke',k.stroke)
+    
+    if ch and ch not in ('\n','\r'):
+        if self.useTextWidget:
+            c.widgetWantsFocusNow(w)
+            i,j = g.app.gui.getTextSelection(w)
+            if i != j:
+                w.delete(i,j)
+            if ch == '\b':
+                s = g.app.gui.getAllText(w)
+                if len(s) &gt; len(k.mb_prefix):
+                    w.delete(i+'-1c')
+            else:
+                w.insert('insert',ch)
+            # g.trace(k.mb_prefix)       
+        else:
+            # Just add the character.
+            k.setLabel(k.getLabel() + ch)</t>
 <t tx="ekr.20050920085536.62">def getArg (self,event,
     returnKind=None,returnState=None,handler=None,
     prefix=None,tabList=[],completion=True,oneCharacter=False,
@@ -3165,34 +3163,6 @@ k.oneCharacterArg = oneCharacter</t>
         command = c.commandsDict.get(key)
         print '%30s = %s' % (key,g.choose(command,command.__name__,'&lt;None&gt;'))
     print</t>
-<t tx="ekr.20051011072049.2">def cutText (self,event=None):
-    
-    '''Invoked from the mini-buffer and from shortcuts.'''
-    
-    f = self ; c = f.c ; w = event and event.widget
-    if not w or not g.app.gui.isTextWidget(w): return
-
-    name = c.widget_name(w)
-    oldSel = g.app.gui.getTextSelection(w)
-    oldText = w.get('1.0','end')
-    i,j = g.app.gui.getTextSelection(w)
-    
-    # Update the widget and set the clipboard text.
-    s = w.get(i,j)
-    if i != j:
-        w.delete(i,j)
-        g.app.gui.replaceClipboardWith(s)
-
-    if name.startswith('body'):
-        c.frame.body.onBodyChanged('Cut',oldSel=oldSel,oldText=oldText)
-    elif name.startswith('head'):
-        # The headline is not officially changed yet.
-        # p.initHeadString(s)
-        s=g.app.gui.getAllText(w)
-        w.configure(width=f.tree.headWidth(s=s))
-    else: pass
-
-OnCutFromMenu = cutText</t>
 <t tx="ekr.20051020120306">def openFindTab (self,event=None,show=True):
 
     c = self.c ; log = c.frame.log ; tabName = 'Find'
@@ -3584,18 +3554,8 @@ if not found:
 
     c = self.c ; t = self.find_ctrl
         
-    # The widget must have focus before we can adjust the text.
     c.widgetWantsFocus(t)
-    
-    # Delete one trailing newline.
-    s = t.get('1.0','end')
-    if s and s[-1] in ('\n','\r'):
-        t.delete('end-1c','end')
-
-    # Don't highlight the added trailing newline!
-    g.app.gui.setTextSelection (t,"1.0","end-1c") # Thanks Rich.
-    
-    # This is also needed.
+    g.app.gui.selectAllText(t)
     c.widgetWantsFocus(t)</t>
 <t tx="ekr.20051020120306.27">def selectAllFindText (self,event=None):
     
@@ -3699,6 +3659,21 @@ def hideFindTab (self,event=None):
     if self.findTabHandler:
         self.c.frame.log.selectTab('Log')</t>
 <t tx="ekr.20051023094009"></t>
+<t tx="ekr.20051023132350">def getLabel (self,ignorePrompt=False):
+    
+    k = self ; w = self.widget
+    if not w: return ''
+    
+    if self.useTextWidget:
+        w.update_idletasks()
+        s = g.app.gui.getAllText(w)
+    else:
+        s = k.svar and k.svar.get()
+
+    if ignorePrompt:
+        return s[len(k.mb_prefix):]
+    else:
+        return s or ''</t>
 <t tx="ekr.20051023181449">def createBindings (self):
     
     c = self.c ; k = c.k
@@ -3796,177 +3771,9 @@ try:
         redraw_flag = True
 finally:
     c.endUpdate(redraw_flag)</t>
-<t tx="ekr.20051026092433">def updateTab (self,p,w):
-
-    c = self.c ; d = g.scanDirectives(c,p)
-    tab_width = d.get("tabwidth",c.tab_width)
-    
-    i,j = g.app.gui.getTextSelection(w)
-    if i != j:
-        w.delete(i,j)
-    if tab_width &gt; 0:
-        w.insert("insert",'\t')
-    else:
-        # Get the preceeding characters.
-        s = w.get("insert linestart","insert")
-    
-        # Compute n, the number of spaces to insert.
-        width = g.computeWidth(s,tab_width)
-        n = abs(tab_width) - (width % abs(tab_width))
-        w.insert("insert",' ' * n)</t>
-<t tx="ekr.20051026143009">@ Tk will add a newline only if:
-1. A real change has been made to the Tk.Text widget, and
-2. the change did _not_ result in the widget already containing a newline.
-
-It's not possible to tell, given the information available, what Tk has actually
-done. We need only make a reasonable guess here. setUndoTypingParams stores the
-number of trailing newlines in each undo bead, so whatever we do here can be
-faithfully undone and redone.
-@c
-
-def removeTrailingNewlines (self,old,new,ch):
-
-    '''Return True if a Tk has erroneously added a trailing newline.'''
-    
-    return True
-
-    if not new.endswith('\n'):
-        # There is no newline to remove.  Probably will never happen.
-        return False
-    elif not old:
-        # Ambigous case.  Formerly always returned False.
-        if new == "\n\n":
-            return True # Handle a very strange special case.
-        else:
-            return ch not in ('\r','\n')
-    elif old == new[:-1]:
-        # A single trailing character has been added.
-        return ch not in ('\r','\n') # Was False.
-    else:
-        # The text didn't have a newline, and now it does.
-        # Moveover, some other change has been made to the text,
-        # So at worst we have misrepresented the user's intentions slightly.
-        return True</t>
-<t tx="ekr.20051026171121">i,j = oldSel
-
-if i != j:
-    # No auto-indent if there is selected text.
-    w.delete(i,j)
-    w.insert(i,ch)
-else:
-    w.insert(i,ch)
-    if c.frame.body.colorizer.useSyntaxColoring(p) and undoType != "Change":
-        # No auto-indent if in @nocolor mode or after a Change command.
-        removeTrailing = self.updateAutoIndent(p)
-        # g.trace(removeTrailing)</t>
-<t tx="ekr.20051026171121.1"># By David McNab:
-def updateAutoIndent (self,p):
-
-    c = self.c ; d = g.scanDirectives(c,p)
-    tab_width = d.get("tabwidth",c.tab_width) # Get the previous line.
-    s = c.frame.bodyCtrl.get("insert linestart - 1 lines","insert linestart -1c")
-    # Add the leading whitespace to the present line.
-    junk, width = g.skip_leading_ws_with_indent(s,0,tab_width)
-    if s and len(s) &gt; 0 and s [ -1] == ':':
-        # For Python: increase auto-indent after colons.
-        if c.frame.body.colorizer.scanColorDirectives(p) == "python":
-            width += abs(tab_width)
-    if c.config.getBool("smart_auto_indent"):
-        # Determine if prev line has unclosed parens/brackets/braces
-        brackets = [width] ; tabex = 0
-        for i in range(0,len(s)):
-            if s [i] == '\t':
-                tabex += tab_width-1
-            if s [i] in '([{':
-                brackets.append(i+tabex+1)
-            elif s [i] in '}])' and len(brackets) &gt; 1:
-                brackets.pop()
-        width = brackets.pop()
-    ws = g.computeLeadingWhitespace(width,tab_width)
-    if ws:
-        c.frame.bodyCtrl.insert("insert",ws)
-        removeTrailing = False
-    else:
-        removeTrailing = None
-    return removeTrailing</t>
-<t tx="ekr.20051027172949">def updateAutomatchBracket (self,p,w,ch,oldSel):
-    
-    # assert ch in ('(',')','[',']','{','}')
-    
-    c = self.c ; d = g.scanDirectives(c,p) ; i,j = oldSel
-    language = d.get('language')
-    
-    if ch in ('(','[','{',):
-        automatch = language not in ('plain',)
-        if automatch:
-            ch = ch + {'(':')','[':']','{':'}'}.get(ch)
-        if i != j:
-            w.delete(i,j)
-        w.insert(i,ch)
-        if automatch:
-            w.mark_set('insert','insert-1c')
-    else:
-        ch2 = w.get('insert')
-        if ch2 in (')',']','}'):
-            w.mark_set('insert','insert+1c')
-        else:
-            if i != j:
-                w.delete(i,j)
-            w.insert(i,ch)</t>
 <t tx="ekr.20051031040240"></t>
 <t tx="ekr.20051105073850"></t>
 <t tx="ekr.20051121070552"></t>
-<t tx="ekr.20051125080855">def selfInsertCommand(self,event,action='insert'):
-    
-    '''Insert a character in the body pane.
-    
-    This is the default binding for all keys in the body pane.'''
-    
-    c = self.c ; p = c.currentPosition()
-    # g.trace('event',event,g.callers())
-    ch = event and event.char or ''
-    if event and event.keysym == 'Return': ch = '\n' # This fixes the MacOS return bug.
-    w = event and event.widget
-    name = c.widget_name(w)
-    oldSel =  name.startswith('body') and g.app.gui.getTextSelection(w)
-    oldText = name.startswith('body') and p.bodyString()
-    removeTrailing = None # A signal to compute it later.
-    undoType = 'Typing'
-    trace = c.config.getBool('trace_masterCommand')
-    
-    if trace: g.trace(name,repr(ch))
-    
-    if g.doHook("bodykey1",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType):
-        return "break" # The hook claims to have handled the event.
-        
-    if ch == '\t':
-        removeTrailing = self.updateTab(p,w)
-    elif ch == '\b':
-        # This is correct: we only come here if there no bindngs for this key. 
-        self.backwardDeleteCharacter(event)
-    elif ch in ('\r','\n'):
-        ch = '\n'
-        &lt;&lt; handle newline &gt;&gt;
-    elif ch in ('(',')','[',']','{','}') and c.config.getBool('autocomplete-brackets'):
-        self.updateAutomatchBracket(p,w,ch,oldSel)
-    elif ch: # Null chars must not delete the selection.
-        i,j = oldSel
-        if i != j:                  w.delete(i,j)
-        elif action == 'overwrite': w.delete(i,'%s+1c' % i)
-        w.insert(i,ch)                     
-    else:
-        return 'break' # New in 4.4a5: this method *always* returns 'break'
-
-    # Update the text and handle undo.
-    newText = g.app.gui.getAllText(w) # New in 4.4b3: converts to unicode.
-    # g.trace(repr(newText))
-    w.see(w.index('insert'))
-    if newText != oldText:
-        c.frame.body.onBodyChanged(undoType=undoType,
-            oldSel=oldSel,oldText=oldText,oldYview=None,removeTrailing=removeTrailing)
-            
-    g.doHook("bodykey2",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType)
-    return 'break'</t>
 <t tx="ekr.20051216155728">def beginUpdate (self):
     
     self.updateCount += 1
@@ -4710,17 +4517,14 @@ shift = s2.find("shift") &gt;= 0   or s2.find("shft") &gt;= 0</t>
         </t>
 <t tx="ekr.20060204120158.1">def findAgainCommand (self):
     
-    s = self.find_ctrl.get("1.0","end-1c")
-    s = g.toUnicode(s,g.app.tkEncoding)
-    # if s.endswith('\n'): s = s[:-1]
+    s = g.app.gui.getAllText(self.find_ctrl)
     
     if s and s != '&lt;find pattern here&gt;':
         self.findNextCommand()
         return True
     else:
         # Tell the caller that to get the find args.
-        return False
-</t>
+        return False</t>
 <t tx="ekr.20060204120158.2">def findAgain (self,event):
     
     h = self.getHandler()
@@ -4974,73 +4778,58 @@ if k.ignore_unbound_non_ascii_keys and len(event.char) &gt; 1:
 else:
     if trace: g.trace(repr(stroke),'no func')
     return k.masterCommand(event,func=None,stroke=stroke,commandName=None)</t>
-<t tx="ekr.20060415112257">def cleanLines (self,event):
+<t tx="ekr.20060417183606.1">def moveLinesUp (self,event):
     
-    '''Removes leading whitespace from otherwise blanks lines.'''
+    '''Move all lines containing any selected text up one line,
+    moving to the previous node as needed.'''
 
-    k = self.k ; w = event.widget
+    c = self.c ; w = event.widget
+
+    if not g.app.gui.hasSelection(w): return
     
-    if g.app.gui.hasSelection(w):
-        s = g.app.gui.getSelectedText(w)
-    else:
-        s = g.app.gui.getAllText(w)
+    self.beginCommand(undoType='move-lines-up')
+    
+    i,j = g.app.gui.getSelectionRange(w)
+    i = w.index(i+' linestart')
+    j = w.index(j+' lineend+1c')
+    i2 = w.index(i+'-1c linestart')
+    selected = w.get(i,j) # ; g.trace('selected',repr(selected))
+    moved = w.get(i2,i)   # ; g.trace('moved',repr(moved))
 
-    lines = [] ; changed = False
-    for line in g.splitlines(s):
-        if line.strip():
-            lines.append(line)
+    if moved:
+        w.mark_set('i',i)
+        w.mark_set('j',j)
+        w.delete(i2,i)
+        if w.compare('j','==','end'):
+            if moved.endswith('\n'): moved = moved[:-1]
+            w.insert('j','\n' + moved)
         else:
-            if line.endswith('\n'):
-                lines.append('\n')
-            changed = '\n' != line
-
-    if changed:
-        self.beginCommand(undoType='clean-lines')
-        result = ''.join(lines)
-        if g.app.gui.hasSelection(w):
-            i,j = g.app.gui.getSelectionRange(w)
-            w.delete(i,j)
-            w.insert(i,result)
-            g.app.gui.setSelectionRange(w, i, j + '%dc' %(len(result)))
-        else:
-            w.delete('1.0','end')
-            w.insert('1.0',result)
-        self.endCommand(changed=changed,setLabel=True)
-</t>
-<t tx="ekr.20060417172056">def addRemoveHelper(self,event,ch,add,undoType):
-
-    c = self.c ; k = self.k ; w = event.widget
-    if g.app.gui.hasSelection(w):
-        s = g.app.gui.getSelectedText(w)
-    else:
+            w.insert('j',moved)
+        w.mark_unset('sel')
+        w.mark_set('sel.start','i')
+        w.mark_set('sel.end','j')
+        w.mark_unset('i')
+        w.mark_unset('j')
+    elif g.app.gui.widget_name(w).startswith('body'):
+        p = c.currentPosition()
+        if not p.hasThreadBack(): return
+        w.delete(i,j+'+1c')
+        p.setBodyString(w.get('1.0','end'))
+        p = p.threadBack()
+        c.beginUpdate()
+        c.selectPosition(p)
+        c.endUpdate()
+        w.focus_force()
         s = g.app.gui.getAllText(w)
-    if not s: return
-    
-    # Insert or delete spaces instead of tabs when negative tab width is in effect.
-    d = g.scanDirectives(c) ; width = d.get('tabwidth')
-    if ch == '\t' and width &lt; 0: ch = ' ' * abs(width)
-    self.beginCommand(undoType=undoType)
-    if add:
-        result = [ch + line for line in g.splitLines(s)]
-    else:
-        result = [g.choose(line.startswith(ch),line[len(ch):],line) for line in g.splitLines(s)]
-    result = ''.join(result)
-    if g.app.gui.hasSelection(w):
-        i,j = g.app.gui.getSelectionRange(w)
-        w.delete(i,j)
-        w.insert(i,result)
-        g.app.gui.setSelectionRange(w, i, j + '%dc' %(len(result)))
-    else:
-        w.delete('1.0','end')
-        w.insert('1.0',result)
+        if s.endswith('\n'):
+            w.insert('end',selected)
+        else:
+            if selected.endswith('\n'): selected = selected[:-1]
+            w.insert('end','\n'+selected)
+        g.app.gui.setSelectionRange(w,'end-%dc' % (len(selected)+1),'end-1c') # works
+
     self.endCommand(changed=True,setLabel=True)</t>
-<t tx="ekr.20060419101401">@nocolor
-
-** Problem:  gui.getAllText should return 'extra' newline for leoFind.search.
-    - Why is the trailing newline needed ???
-
-@color</t>
-<t tx="ekr.20060419101401.1"></t>
+<t tx="ekr.20060419101401"></t>
 <t tx="ekr.20060420144640">def iSearchBackspace (self):
     
     c = self.c ; k = self.k ; w = self.w
@@ -5255,7 +5044,9 @@ else: # Use a pristine environment.
     else:
         k  = mo.start()
         k2 = mo.end()
-        # g.trace(i,j,k,k2,s[k:k2])
+        if 0:
+            g.trace('i: %d, j: %d k: %d, k2: %d, s[k:k2]: %s, len(s): %d, s[-1]: %s,' % (
+                i,j,k,k2,repr(s[k:k2]),len(s),repr(s[-1])))
         # g.trace('groups',mo.groups())
         return k, k2</t>
 <t tx="ekr.20060526093531">def plainHelper (self,s,i,j,pattern,backwards,nocase,word):
@@ -5341,9 +5132,24 @@ else: # Use a pristine environment.
     return ''.join(result)</t>
 <t tx="ekr.20060527065935"></t>
 <t tx="ekr.20060527065935.1"></t>
-<t tx="ekr.20060527182907"># Created add-editor, delete-editor and cycle-editor-focus commands.</t>
+<t tx="ekr.20060527182907">@nocolor
+
+The add-editor command adds a new editor, the delete-editor command deletes the presently selected editor, and the cycle-editor-focus command cycles focus between editors in the body text.
+
+The leftmost editor has no label: it always shows the body text of the presently selected node.  All other editors have a label showing the node to which it applies.
+
+All editors are 'live' at all times: changing an editor changes the corresponding node. All editors are syntax colored properly at all times.
+
+A small quirk.  Selecting an editor will not show the corresponding node if the node is not visible in a hoist.  This is probably different from how the chapters plugin worked.  It would be easy enough to change the code to de-hoist as necessary, but I'm not sure that is really what is desired.  Tell me if you care one way or another.
+
+@color</t>
 <t tx="ekr.20060527190049"></t>
-<t tx="ekr.20060527204444"></t>
+<t tx="ekr.20060527204444">1.  Fix all problems with Python coloring.
+    - Support show/hide invisibles.
+    
+2.  Add all features used by Php.
+
+3.  Add all other features.</t>
 <t tx="ekr.20060528082017.1"></t>
 <t tx="ekr.20060528082017.2"></t>
 <t tx="ekr.20060528100747"></t>
@@ -5504,7 +5310,7 @@ self.bodyCtrl = old_w
     w = self.editorWidgets.get(None)
     self.bodyCtrl = w
     c.recolor_now()</t>
-<t tx="ekr.20060528170438">def cycleFocus (self,event=None):
+<t tx="ekr.20060528170438">def cycleEditorFocus (self,event=None):
     
     c = self.c ; d = self.editorWidgets
     keys = d.keys() ; n = len(keys)
@@ -5520,17 +5326,32 @@ self.bodyCtrl = old_w
             g.app.gui.set_focus(c, w)
             return</t>
 <t tx="ekr.20060528172956">def toGuiIndex (self,s,w,index):
+    
+    '''Convert a python index in string s into a Tk index in Tk.Text widget w.'''
+    
+    # A subtle point: s typically does not have Tk's trailing newline, so add it.
 
-    row,col = g.convertPythonIndexToRowCol (s,index)
+    row,col = g.convertPythonIndexToRowCol (s+'\n',index)
     index = w.index('%s.%s' % (row+1,col))
     return index
     
 def toPythonIndex (self,s,w,index):
+    
+    '''Convert a Tk index in Tk.Text widget w into a python index in string s.'''
     
     index = w.index(index)
     row, col = index.split('.') ; row, col = int(row), int(col)
     index = g.convertRowColToPythonIndex (s,row-1,col)
     return index</t>
 <t tx="ekr.20060528173539"></t>
+<t tx="ekr.20060529083234"></t>
+<t tx="ekr.20060529083409"></t>
+<t tx="ekr.20060529091202"></t>
+<t tx="ekr.20060529091202.1"></t>
+<t tx="ekr.20060529092645">def selectAllText (self,w,insert='end-1c'):
+    
+    '''Select all text of the widget, *not* including the extra newline.'''
+    
+    self.setTextSelection(w,'1.0','end-1c',insert=insert)</t>
 </tnodes>
 </leo_file>
