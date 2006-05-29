@@ -1958,7 +1958,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
     
         name = c.widget_name(w)
         oldSel = g.app.gui.getTextSelection(w)
-        oldText = w.get('1.0','end')
+        oldText = g.app.gui.getAllText(w)
         i,j = g.app.gui.getTextSelection(w)
         
         # Update the widget and set the clipboard text.
@@ -2524,8 +2524,8 @@ class leoTkinterBody (leoFrame.leoBody):
         self.pb.updatelayout()
     #@nonl
     #@-node:ekr.20060528100747.1:addEditor
-    #@+node:ekr.20060528170438:cycleFocus
-    def cycleFocus (self,event=None):
+    #@+node:ekr.20060528170438:cycleEditorFocus
+    def cycleEditorFocus (self,event=None):
         
         c = self.c ; d = self.editorWidgets
         keys = d.keys() ; n = len(keys)
@@ -2541,7 +2541,7 @@ class leoTkinterBody (leoFrame.leoBody):
                 g.app.gui.set_focus(c, w)
                 return
     #@nonl
-    #@-node:ekr.20060528170438:cycleFocus
+    #@-node:ekr.20060528170438:cycleEditorFocus
     #@+node:ekr.20060528113806:deleteEditor
     def deleteEditor (self,event=None):
         
@@ -2689,7 +2689,7 @@ class leoTkinterBody (leoFrame.leoBody):
         # g.trace("BODY",body.cget("font"),font.cget("family"),font.cget("weight"))
     #@nonl
     #@-node:ekr.20031218072017.2183:tkBody.setFontFromConfig
-    #@+node:ekr.20031218072017.1329:onBodyChanged (tkBody) & removeTrailingNewlines
+    #@+node:ekr.20031218072017.1329:onBodyChanged (tkBody)
     # This is the only key handler for the body pane.
     def onBodyChanged (self,undoType,
         oldSel=None,oldText=None,oldYview=None,removeTrailing=None):
@@ -2701,21 +2701,15 @@ class leoTkinterBody (leoFrame.leoBody):
         p = c.currentPosition()
         insert = bodyCtrl.index('insert')
         ch = g.choose(insert=='1.0','',bodyCtrl.get('insert-1c'))
-        ch = g.toUnicode(ch,g.app.tkEncoding) # New in 4.4b3.
-        newText = g.app.gui.getAllText(bodyCtrl) # New in 4.4b3: converts to unicode.
+        ch = g.toUnicode(ch,g.app.tkEncoding)
+        newText = g.app.gui.getAllText(bodyCtrl) # Note: getAllText converts to unicode.
         # g.trace('newText',repr(newText))
         newSel = g.app.gui.getTextSelection(bodyCtrl)
         if oldText is None: oldText = p.bodyString()
-        if removeTrailing is None:
-            removeTrailing = self.removeTrailingNewlines(oldText,newText,ch)
-        if removeTrailing and newText:
-            newText = newText[:-1]
         changed = oldText != newText
         if trace:
             g.trace(repr(ch),'changed:',changed)
-            # g.trace('removeTrailing:',removeTrailing)
             g.trace('newText:',repr(newText))
-            #g.trace('oldText:',repr(oldText))
         if changed:
             c.undoer.setUndoTypingParams(p,undoType,
                 oldText=oldText,newText=newText,oldSel=oldSel,newSel=newSel,oldYview=oldYview)
@@ -2753,50 +2747,7 @@ class leoTkinterBody (leoFrame.leoBody):
             #@-node:ekr.20051026083733.7:<< redraw the screen if necessary >>
             #@nl
     #@nonl
-    #@+node:ekr.20051026143009:removeTrailingNewlines
-    #@+at 
-    #@nonl
-    # Tk will add a newline only if:
-    # 1. A real change has been made to the Tk.Text widget, and
-    # 2. the change did _not_ result in the widget already containing a 
-    # newline.
-    # 
-    # It's not possible to tell, given the information available, what Tk has 
-    # actually
-    # done. We need only make a reasonable guess here. setUndoTypingParams 
-    # stores the
-    # number of trailing newlines in each undo bead, so whatever we do here 
-    # can be
-    # faithfully undone and redone.
-    #@-at
-    #@@c
-    
-    def removeTrailingNewlines (self,old,new,ch):
-    
-        '''Return True if a Tk has erroneously added a trailing newline.'''
-        
-        return True
-    
-        if not new.endswith('\n'):
-            # There is no newline to remove.  Probably will never happen.
-            return False
-        elif not old:
-            # Ambigous case.  Formerly always returned False.
-            if new == "\n\n":
-                return True # Handle a very strange special case.
-            else:
-                return ch not in ('\r','\n')
-        elif old == new[:-1]:
-            # A single trailing character has been added.
-            return ch not in ('\r','\n') # Was False.
-        else:
-            # The text didn't have a newline, and now it does.
-            # Moveover, some other change has been made to the text,
-            # So at worst we have misrepresented the user's intentions slightly.
-            return True
-    #@nonl
-    #@-node:ekr.20051026143009:removeTrailingNewlines
-    #@-node:ekr.20031218072017.1329:onBodyChanged (tkBody) & removeTrailingNewlines
+    #@-node:ekr.20031218072017.1329:onBodyChanged (tkBody)
     #@+node:ekr.20031218072017.4003:Focus (tkBody)
     def hasFocus (self):
         
@@ -3166,7 +3117,8 @@ class leoTkinterBody (leoFrame.leoBody):
         
         """Return all the body text, converted to unicode."""
         
-        s = self.bodyCtrl.get("1.0","end")
+        s = self.bodyCtrl.get("1.0","end-1c") # New in 4.4.1: use end-1c.
+    
         if s is None:
             return u""
         else:

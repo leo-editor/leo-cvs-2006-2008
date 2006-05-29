@@ -1262,7 +1262,7 @@ class editCommandsClass (baseEditCommandsClass):
             'contract-pane':                        c.frame.contractPane,
             'count-region':                         self.countRegion,
             'cycle-focus':                          self.cycleFocus,
-            'cycle-editor-focus':                   c.frame.body.cycleFocus,
+            'cycle-editor-focus':                   c.frame.body.cycleEditorFocus,
             'dabbrev-completion':                   self.dynamicExpansion2,
             'dabbrev-expands':                      self.dynamicExpansion,
             'delete-char':                          self.deleteNextChar,
@@ -2510,7 +2510,6 @@ class editCommandsClass (baseEditCommandsClass):
     
         i,j = g.app.gui.getTextSelection(w)
         end = w.index('end-1c')
-        # g.trace(i,j,'end',w.index('end-1c'))
         
         self.beginCommand(undoType='delete-char')
     
@@ -3756,7 +3755,7 @@ class editCommandsClass (baseEditCommandsClass):
             c.selectPosition(p)
             c.endUpdate()
             w.focus_force()
-            s = w.get('1.0','end-1c')
+            s = g.app.gui.getAllText(w)
             if s.endswith('\n'):
                 w.insert('end',selected)
             else:
@@ -7051,9 +7050,7 @@ class findTab (leoFind.leoFind):
     #@+node:ekr.20060204120158.1:findAgainCommand
     def findAgainCommand (self):
         
-        s = self.find_ctrl.get("1.0","end-1c")
-        s = g.toUnicode(s,g.app.tkEncoding)
-        # if s.endswith('\n'): s = s[:-1]
+        s = g.app.gui.getAllText(self.find_ctrl)
         
         if s and s != '<find pattern here>':
             self.findNextCommand()
@@ -7061,6 +7058,7 @@ class findTab (leoFind.leoFind):
         else:
             # Tell the caller that to get the find args.
             return False
+    #@nonl
     #@-node:ekr.20060204120158.1:findAgainCommand
     #@+node:ekr.20060128075225:cloneFindAllCommand
     def cloneFindAllCommand (self,event=None):
@@ -7109,18 +7107,8 @@ class findTab (leoFind.leoFind):
     
         c = self.c ; t = self.find_ctrl
             
-        # The widget must have focus before we can adjust the text.
         c.widgetWantsFocus(t)
-        
-        # Delete one trailing newline.
-        s = t.get('1.0','end')
-        if s and s[-1] in ('\n','\r'):
-            t.delete('end-1c','end')
-    
-        # Don't highlight the added trailing newline!
-        g.app.gui.setTextSelection (t,"1.0","end-1c") # Thanks Rich.
-        
-        # This is also needed.
+        g.app.gui.selectAllText(t)
         c.widgetWantsFocus(t)
     #@nonl
     #@-node:ekr.20051020120306.26:bringToFront
