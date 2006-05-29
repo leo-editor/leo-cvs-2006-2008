@@ -469,15 +469,9 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
         self.top.withdraw() # Helps bring the window to the front.
         self.top.deiconify()
         self.top.lift()
-        c.widgetWantsFocusNow(t)
-        
-        # Apparently, the text can not be adjusted unless the widget has focus...
-        s = t.get('1.0','end')
-        if s and s[-1] in ('\n','\r'):
-            t.delete('end-1c','end')
     
-        # New in 4.3: don't highlight the stupid added trailing newline!
-        gui.setTextSelection (t,"1.0","end-1c") # Thanks Rich.
+        c.widgetWantsFocusNow(t)
+        gui.selectAllText(t)
     #@nonl
     #@-node:ekr.20031218072017.3907:bringToFront
     #@+node:EKR.20040603221140:selectAllFindText

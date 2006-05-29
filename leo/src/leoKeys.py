@@ -2785,7 +2785,7 @@ class keyHandlerClass:
         
         if self.useTextWidget:
             w.update_idletasks()
-            s = w.get('1.0','end-1c')
+            s = g.app.gui.getAllText(w)
         else:
             s = k.svar and k.svar.get()
     
@@ -2901,7 +2901,7 @@ class keyHandlerClass:
                 if i != j:
                     w.delete(i,j)
                 if ch == '\b':
-                    s = w.get('1.0','end-1c')
+                    s = g.app.gui.getAllText(w)
                     if len(s) > len(k.mb_prefix):
                         w.delete(i+'-1c')
                 else:

@@ -836,7 +836,9 @@ class leoFind:
         else:
             k  = mo.start()
             k2 = mo.end()
-            # g.trace(i,j,k,k2,s[k:k2])
+            if 0:
+                g.trace('i: %d, j: %d k: %d, k2: %d, s[k:k2]: %s, len(s): %d, s[-1]: %s,' % (
+                    i,j,k,k2,repr(s[k:k2]),len(s),repr(s[-1])))
             # g.trace('groups',mo.groups())
             return k, k2
     #@nonl
