@@ -5983,6 +5983,219 @@ def bringToFront (self):
 #@-node:ekr.20051020120306.26:bringToFront
 #@-node:ekr.20060529091202:Replaced gui.setTextSelection (t,"1.0","end-1c") by gui.selectAllText
 #@-node:ekr.20060419101401:Completed transition to 'end-1c'
+#@+node:ekr.20051121070552:Finished Cmds menu
+#@+node:ekr.20060529161541:regex patterns
+('.*'):(.*)(self.*),
+(\1,\2\3),
+
+
+ '
+('xxx',    '
+
+':.*
+'),
+#@nonl
+#@-node:ekr.20060529161541:regex patterns
+#@+node:ekr.20050921103736:createCmndsMenuFromTable
+def createCmndsMenuFromTable (self):
+    
+    cmdsMenu = self.createNewMenu('C&mds')
+    self.createMenuEntries(cmdsMenu,self.cmdsMenuTopTable)
+
+    for name,table in (
+        ('Abbrev...',       self.cmdsMenuAbbrevTable),
+        ('Buffers...',      self.cmdsMenuBuffersTable),
+        ('Center...',       self.cmdsMenuCenterTable),
+        ('Change Case...',  self.cmdsMenuChangeCaseTable),
+        ('Indent...',       self.cmdsMenuIndentTable),
+        ('Macro...',        self.cmdsMenuMacroTable),
+        ('Rectangles...',   self.cmdsMenuRectanglesTable),
+        ('Registers...',    self.cmdsMenuRegistersTable),
+        ('Sort...',         self.cmdsMenuSortTable),
+        ('Spell Check...',  self.cmdsMenuSpellCheckTable),
+    ):
+        menu = self.createNewMenu(name,'Cmds')
+        self.createMenuEntries(menu,table)
+#@nonl
+#@-node:ekr.20050921103736:createCmndsMenuFromTable
+#@+node:ekr.20050921103230:defineCmdsMenuTables & helpers
+def defineCmdsMenuTables (self):
+    
+    self.defineCmdsMenuTopTable()
+    self.defineCmdsMenuAbbrevTable()
+    self.defineCmdsMenuBuffersTable()
+    self.defineCmdsMenuCenterTable()
+    self.defineCmdsMenuChangeCaseTable()
+    self.defineCmdsMenuIndentTable()
+    self.defineCmdsMenuMacroTable()
+    self.defineCmdsMenuRectanglesTable()
+    self.defineCmdsMenuRegistersTable()
+    self.defineCmdsMenuSortTable()
+    self.defineCmdsMenuSpellCheckTable()
+#@+node:ekr.20060117094955: defineCmdsMenuTopTable
+def defineCmdsMenuTopTable (self):
+    
+    self.cmdsMenuTopTable = [
+        ('Repeat Last Complex Command','repeat-complex-command'),
+        ('Execute Named Command','full-command'),
+        ('-', None),
+    ]
+#@-node:ekr.20060117094955: defineCmdsMenuTopTable
+#@+node:ekr.20060117094955.1:defineCmdsMenuAbbrevTable
+def defineCmdsMenuAbbrevTable (self):
+    
+    c = self.c
+    
+    self.cmdsMenuAbbrevTable = [
+        ('Toggle Abbreviation Mode',    'abbrev-mode'),
+        ('-', None),
+        ('List Abbrevs',                'list-abbrevs'),
+        ('Read Abbrevs',                'read-abbrev-file'),
+        ('Write Abbrevs',               'write-abbrev-file'),
+        ('-', None),
+        ('Add Global Abbrev',           'add-global-abbrev'),
+        ('Inverse Add Global Abbrev',   'inverse-add-global-abbrev'),
+        ('Kill All Abbrevs',            'kill-all-abbrevs'),
+        ('-', None),
+        ('Expand Abbrev',               'expand-abbrev'),
+        ('Expand Abbrev in Region',     'expand-region-abbrevs'),
+    ]
+#@nonl
+#@-node:ekr.20060117094955.1:defineCmdsMenuAbbrevTable
+#@+node:ekr.20060117095212:defineCmdsMenuBufferTable
+def defineCmdsMenuBuffersTable (self):
+
+    self.cmdsMenuBuffersTable = [
+        ('Append To Buffer',             'append-to-buffer'),
+        ('Kill Buffer',                  'kill-buffer'),
+        ('List Buffers',                 'list-buffers'),
+        ('List Buffers Alphbetically',   'list-buffers-alphabetically'),
+        ('Prepend To Buffer',            'prepend-to-buffer'),
+        ('Rename Buffer',                'rename-buffer'),
+        ('Switch To Buffer',             'switch-to-buffer'),
+    ]
+#@nonl
+#@-node:ekr.20060117095212:defineCmdsMenuBufferTable
+#@+node:ekr.20060117095212.5:defineCmdsMenuCenterTable
+def defineCmdsMenuCenterTable (self):
+
+    c = self.c
+
+    self.cmdsMenuCenterTable = [
+        ('Center Line',     'center-line'),
+        ('Center Region',   'center-region'),
+    ]
+#@nonl
+#@-node:ekr.20060117095212.5:defineCmdsMenuCenterTable
+#@+node:ekr.20060117095212.4:defineCmdsMenuChangeCaseTable
+def defineCmdsMenuChangeCaseTable (self):
+
+    c = self.c
+
+    self.cmdsMenuChangeCaseTable = [
+        ('Capitalize Word', 'capitalize-word'),
+        ('Downcase Word',   'downcase-word'),
+        ('Upcase Word',     'upcase-word'),
+        ('-', None),
+        ('Downcase Region', 'downcase-region'),
+        ('Upcase Region',   'upcase-region'),
+    ]
+    
+#@nonl
+#@-node:ekr.20060117095212.4:defineCmdsMenuChangeCaseTable
+#@+node:ekr.20060117095212.6:defineCmdsMenuIndentTable
+def defineCmdsMenuIndentTable (self):
+
+    c = self.c
+
+    self.cmdsMenuIndentTable = [
+        ('Indent Region',   'indent-region'),
+        ('Indent Relative', 'indent-relative'),
+        ('Indent Rigidly',  'indent-rigidly'),
+        ('Unindent Region', 'unindent-region'),
+    ]
+#@nonl
+#@-node:ekr.20060117095212.6:defineCmdsMenuIndentTable
+#@+node:ekr.20060117114315:defineCmdsMenuMacroTable
+def defineCmdsMenuMacroTable (self):
+
+    c = self.c
+
+    self.cmdsMenuMacroTable = [
+        ('Load Macro File',     'load-file'),
+        ("-", None),
+        ('Start Macro',         'start-kbd-macro'),
+        ('End Macro',           'end-kbd-macro'),
+        ('Name Last Macro',     'name-last-kbd-macro'),
+        ("-", None),
+        ('Call Last Macro',     'call-last-keyboard-macro'),
+        ('Insert Macro',        'insert-keyboard-macro'),
+    ]
+#@nonl
+#@-node:ekr.20060117114315:defineCmdsMenuMacroTable
+#@+node:ekr.20060117095212.2:defineCmdsMenuRectanglesTable
+def defineCmdsMenuRectanglesTable (self):
+
+    c = self.c
+
+    self.cmdsMenuRectanglesTable = [
+        ('Clear Rect',  'clear-rectangle'),
+        ('Close Rect',  'close-rectangle'),
+        ('Delete Rect', 'delete-rectangle'),
+        ('Kill Rect',   'kill-rectangle'),
+        ('Open Rect',   'open-rectangle'),
+        ('String Rect', 'string-rectangle'),
+        ('Yank Rect',   'yank-rectangle'),
+    ]
+#@nonl
+#@-node:ekr.20060117095212.2:defineCmdsMenuRectanglesTable
+#@+node:ekr.20060117095212.1:defineCmdsMenuRegistersTable
+def defineCmdsMenuRegistersTable (self):
+
+    c = self.c
+
+    self.cmdsMenuRegistersTable = [
+        ('Append To Reg',   'append-to-register'),
+        ('Copy Rect To Reg','copy-rectangle-to-register'),
+        ('Copy To Reg',     'copy-to-register'),
+        ('Inc Reg',         'increment-register'),
+        ('Insert Reg',      'insert-register'),
+        ('Jump To Reg',     'jump-to-register'),
+        # ('xxx',           'number-to-register'),
+        ('Point to Reg',    'point-to-register'),
+        ('Prepend To Reg',  'prepend-to-register'),
+        ('View Reg',        'view-register'),
+    ]
+#@nonl
+#@-node:ekr.20060117095212.1:defineCmdsMenuRegistersTable
+#@+node:ekr.20060117095212.3:defineCmdsMenuSortTable
+def defineCmdsMenuSortTable (self):
+
+    c = self.c
+
+    self.cmdsMenuSortTable = [
+        ('Sort Columns',    'sort-columns'),
+        ('Sort Fields',     'sort-fields'),
+        ('Sort Lines',      'sort-lines'),
+    ]
+#@nonl
+#@-node:ekr.20060117095212.3:defineCmdsMenuSortTable
+#@+node:ekr.20060117095212.7:defineCmdsMenuSpellCheckTable
+def defineCmdsMenuSpellCheckTable (self):
+
+    c = self.c
+
+    self.cmdsMenuSpellCheckTable = [
+        ('Check Spelling',      'open-spell-tab'),
+        ('Change',              'spell-change'),
+        ('Change, Then Find',   'spell-change-then-find'),
+        ('Find',                'spell-find'),
+        ('Ignore',              'spell-ignore'),
+    ]
+#@nonl
+#@-node:ekr.20060117095212.7:defineCmdsMenuSpellCheckTable
+#@-node:ekr.20050921103230:defineCmdsMenuTables & helpers
+#@-node:ekr.20051121070552:Finished Cmds menu
 #@-node:ekr.20060522103446:New features
 #@-node:ekr.20060514170725:4.4.1 projects
 #@-node:ekr.20050924073836:4.4 projects

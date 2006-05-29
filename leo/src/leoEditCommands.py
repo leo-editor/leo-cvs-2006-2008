@@ -5192,12 +5192,12 @@ class macroCommandsClass (baseEditCommandsClass):
     def getPublicCommands (self):
     
         return {
-            # 'call-last-keyboard-macro': self.callLastKeyboardMacro,
-            # 'end-kbd-macro':            self.endKbdMacro,
-            # 'name-last-kbd-macro':      self.nameLastKbdMacro,
-            # 'load-file':                self.loadFile,
-            # 'insert-keyboard-macro' :   self.insertKeyboardMacro,
-            # 'start-kbd-macro':          self.startKbdMacro,
+            'call-last-keyboard-macro': self.callLastKeyboardMacro,
+            'end-kbd-macro':            self.endKbdMacro,
+            'name-last-kbd-macro':      self.nameLastKbdMacro,
+            'load-file':                self.loadFile,
+            'insert-keyboard-macro' :   self.insertKeyboardMacro,
+            'start-kbd-macro':          self.startKbdMacro,
         }
     #@nonl
     #@-node:ekr.20050920084036.192: getPublicCommands

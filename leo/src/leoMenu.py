@@ -430,21 +430,20 @@ class leoMenu:
         cmdsMenu = self.createNewMenu('C&mds')
         self.createMenuEntries(cmdsMenu,self.cmdsMenuTopTable)
     
-        for name,table,sep in (
-            ('Abbrev...',       self.cmdsMenuAbbrevTable,       False),
-            ('Buffers...',      self.cmdsMenuBuffersTable,      False),
-            ('Center...',       self.cmdsMenuCenterTable,       False),
-            ('Change Case...',  self.cmdsMenuChangeCaseTable,   False),
-            ('Indent...',       self.cmdsMenuIndentTable,       False),
-            ('Macro...',        self.cmdsMenuMacroTable,        False),
-            ('Rectangles...',   self.cmdsMenuRectanglesTable,   False),
-            ('Registers...',    self.cmdsMenuRegistersTable,    False),
-            ('Sort...',         self.cmdsMenuSortTable,         False),
-            ('Spell Check...',  self.cmdsMenuSpellCheckTable,   False),
+        for name,table in (
+            ('Abbrev...',       self.cmdsMenuAbbrevTable),
+            ('Buffers...',      self.cmdsMenuBuffersTable),
+            ('Center...',       self.cmdsMenuCenterTable),
+            ('Change Case...',  self.cmdsMenuChangeCaseTable),
+            ('Indent...',       self.cmdsMenuIndentTable),
+            ('Macro...',        self.cmdsMenuMacroTable),
+            ('Rectangles...',   self.cmdsMenuRectanglesTable),
+            ('Registers...',    self.cmdsMenuRegistersTable),
+            ('Sort...',         self.cmdsMenuSortTable),
+            ('Spell Check...',  self.cmdsMenuSpellCheckTable),
         ):
             menu = self.createNewMenu(name,'Cmds')
             self.createMenuEntries(menu,table)
-            if sep: self.add_separator(cmdsMenu)
     #@nonl
     #@-node:ekr.20050921103736:createCmndsMenuFromTable
     #@+node:ekr.20031218072017.3802:createWindowMenuFromTable
@@ -1094,19 +1093,30 @@ class leoMenu:
         self.cmdsMenuTopTable = [
             ('Repeat Last Complex Command','repeat-complex-command'),
             ('Execute Named Command','full-command'),
-            ("-",None),
+            ('-', None),
         ]
     #@-node:ekr.20060117094955: defineCmdsMenuTopTable
-    #@+node:ekr.20060117094955.1:defineCmdsMenuAbbrevTable (to do)
+    #@+node:ekr.20060117094955.1:defineCmdsMenuAbbrevTable
     def defineCmdsMenuAbbrevTable (self):
         
         c = self.c
         
         self.cmdsMenuAbbrevTable = [
-            ("-",None),
+            ('Toggle Abbreviation Mode',    'abbrev-mode'),
+            ('-', None),
+            ('List Abbrevs',                'list-abbrevs'),
+            ('Read Abbrevs',                'read-abbrev-file'),
+            ('Write Abbrevs',               'write-abbrev-file'),
+            ('-', None),
+            ('Add Global Abbrev',           'add-global-abbrev'),
+            ('Inverse Add Global Abbrev',   'inverse-add-global-abbrev'),
+            ('Kill All Abbrevs',            'kill-all-abbrevs'),
+            ('-', None),
+            ('Expand Abbrev',               'expand-abbrev'),
+            ('Expand Abbrev in Region',     'expand-region-abbrevs'),
         ]
     #@nonl
-    #@-node:ekr.20060117094955.1:defineCmdsMenuAbbrevTable (to do)
+    #@-node:ekr.20060117094955.1:defineCmdsMenuAbbrevTable
     #@+node:ekr.20060117095212:defineCmdsMenuBufferTable
     def defineCmdsMenuBuffersTable (self):
     
@@ -1139,10 +1149,11 @@ class leoMenu:
     
         self.cmdsMenuChangeCaseTable = [
             ('Capitalize Word', 'capitalize-word'),
-            ('Downcase Region', 'downcase-region'),
             ('Downcase Word',   'downcase-word'),
-            ('Upcase Region',   'upcase-region'), # Crashes.
             ('Upcase Word',     'upcase-word'),
+            ('-', None),
+            ('Downcase Region', 'downcase-region'),
+            ('Upcase Region',   'upcase-region'),
         ]
         
     #@nonl
@@ -1160,36 +1171,58 @@ class leoMenu:
         ]
     #@nonl
     #@-node:ekr.20060117095212.6:defineCmdsMenuIndentTable
-    #@+node:ekr.20060117114315:defineCmdsMenuMacroTable(to do)
+    #@+node:ekr.20060117114315:defineCmdsMenuMacroTable
     def defineCmdsMenuMacroTable (self):
     
         c = self.c
     
         self.cmdsMenuMacroTable = [
-            ("-",None),
+            ('Load Macro File',     'load-file'),
+            ("-", None),
+            ('Start Macro',         'start-kbd-macro'),
+            ('End Macro',           'end-kbd-macro'),
+            ('Name Last Macro',     'name-last-kbd-macro'),
+            ("-", None),
+            ('Call Last Macro',     'call-last-keyboard-macro'),
+            ('Insert Macro',        'insert-keyboard-macro'),
         ]
     #@nonl
-    #@-node:ekr.20060117114315:defineCmdsMenuMacroTable(to do)
-    #@+node:ekr.20060117095212.2:defineCmdsMenuRectanglesTable(to do)
+    #@-node:ekr.20060117114315:defineCmdsMenuMacroTable
+    #@+node:ekr.20060117095212.2:defineCmdsMenuRectanglesTable
     def defineCmdsMenuRectanglesTable (self):
     
         c = self.c
     
         self.cmdsMenuRectanglesTable = [
-            ("-",None),
+            ('Clear Rect',  'clear-rectangle'),
+            ('Close Rect',  'close-rectangle'),
+            ('Delete Rect', 'delete-rectangle'),
+            ('Kill Rect',   'kill-rectangle'),
+            ('Open Rect',   'open-rectangle'),
+            ('String Rect', 'string-rectangle'),
+            ('Yank Rect',   'yank-rectangle'),
         ]
     #@nonl
-    #@-node:ekr.20060117095212.2:defineCmdsMenuRectanglesTable(to do)
-    #@+node:ekr.20060117095212.1:defineCmdsMenuRegistersTable(to do)
+    #@-node:ekr.20060117095212.2:defineCmdsMenuRectanglesTable
+    #@+node:ekr.20060117095212.1:defineCmdsMenuRegistersTable
     def defineCmdsMenuRegistersTable (self):
     
         c = self.c
     
         self.cmdsMenuRegistersTable = [
-            ("-",None),
+            ('Append To Reg',   'append-to-register'),
+            ('Copy Rect To Reg','copy-rectangle-to-register'),
+            ('Copy To Reg',     'copy-to-register'),
+            ('Inc Reg',         'increment-register'),
+            ('Insert Reg',      'insert-register'),
+            ('Jump To Reg',     'jump-to-register'),
+            # ('xxx',           'number-to-register'),
+            ('Point to Reg',    'point-to-register'),
+            ('Prepend To Reg',  'prepend-to-register'),
+            ('View Reg',        'view-register'),
         ]
     #@nonl
-    #@-node:ekr.20060117095212.1:defineCmdsMenuRegistersTable(to do)
+    #@-node:ekr.20060117095212.1:defineCmdsMenuRegistersTable
     #@+node:ekr.20060117095212.3:defineCmdsMenuSortTable
     def defineCmdsMenuSortTable (self):
     
