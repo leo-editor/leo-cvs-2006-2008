@@ -4433,7 +4433,7 @@ def cutText (self,event=None):
 
     name = c.widget_name(w)
     oldSel = g.app.gui.getTextSelection(w)
-    oldText = w.get('1.0','end')
+    oldText = g.app.gui.getAllText(w)
     i,j = g.app.gui.getTextSelection(w)
     
     # Update the widget and set the clipboard text.
@@ -7704,7 +7704,7 @@ def cutText (self,event=None):
 
     name = c.widget_name(w)
     oldSel = g.app.gui.getTextSelection(w)
-    oldText = w.get('1.0','end')
+    oldText = g.app.gui.getAllText(w)
     i,j = g.app.gui.getTextSelection(w)
     
     # Update the widget and set the clipboard text.

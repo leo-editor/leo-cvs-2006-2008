@@ -1,424 +1,16 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
-#@+node:ekr.20060527190049:Before 4.4.1b1 (1 week)
-#@+node:ekr.20060419101401:Complete transition to 'end-1c'
-@nocolor
-
-** Problem:  gui.getAllText should return 'extra' newline for leoFind.search.
-    - Why is the trailing newline needed ???
-
-@color
-#@nonl
-#@+node:ekr.20060419101401.1:Found: gui.getAllText
-#@+node:ekr.20031218072017.2293:batchChange (sets start of change-all group)
-@ This routine performs a single batch change operation, updating the head or body string of p and leaving the result in s_ctrl.  We update the body if we are changing the body text of c.currentVnode().
-
-s_ctrl contains the found text on entry and contains the changed text on exit.  pos and pos2 indicate the selection.  The selection will never be empty. NB: we can not assume that self.p is visible.
-@c
-
-def batchChange (self,pos1,pos2):
-
-    c = self.c ; u = c.undoer
-    p = self.p ; st = self.s_ctrl ; gui = g.app.gui
-    # Replace the selection with self.change_text
-    if gui.compareIndices(st,pos1, ">", pos2):
-        pos1,pos2=pos2,pos1
-    gui.replaceSelectionRangeWithText(st,pos1,pos2,self.change_text)
-    s = gui.getAllText(st)
-    # Update the selection.
-    insert=g.choose(self.reverse,pos1,pos1+'+'+str(len(self.change_text))+'c')
-    gui.setSelectionRange(st,insert,insert)
-    gui.setInsertPoint(st,insert)
-    # Update the node
-    if self.in_headline:
-        << change headline >>
-    else:
-        << change body >>
-#@nonl
-#@+node:ekr.20031218072017.2294:<< change headline >>
-if len(s) > 0 and s[-1]=='\n': s = s[:-1]
-
-if s != p.headString():
-    
-    undoData = u.beforeChangeNodeContents(p)
-
-    p.initHeadString(s)
-    if self.mark_changes:
-        p.setMarked()
-    p.setDirty()
-    if not c.isChanged():
-        c.setChanged(True)
-    
-    u.afterChangeNodeContents(p,'Change Headline',undoData)
-#@nonl
-#@-node:ekr.20031218072017.2294:<< change headline >>
-#@+node:ekr.20031218072017.2295:<< change body >>
-if len(s) > 0 and s[-1]=='\n': s = s[:-1]
-
-if s != p.bodyString():
-    
-    undoData = u.beforeChangeNodeContents(p)
-
-    p.setBodyStringOrPane(s)
-    if self.mark_changes:
-        p.setMarked()
-    p.setDirty()
-    if not c.isChanged():
-        c.setChanged(True)
-     
-    u.afterChangeNodeContents(p,'Change Body',undoData)
-#@nonl
-#@-node:ekr.20031218072017.2295:<< change body >>
-#@-node:ekr.20031218072017.2293:batchChange (sets start of change-all group)
-#@+node:ekr.20051011072049.2:cutText
-def cutText (self,event=None):
-    
-    '''Invoked from the mini-buffer and from shortcuts.'''
-    
-    f = self ; c = f.c ; w = event and event.widget
-    if not w or not g.app.gui.isTextWidget(w): return
-
-    name = c.widget_name(w)
-    oldSel = g.app.gui.getTextSelection(w)
-    oldText = w.get('1.0','end')
-    i,j = g.app.gui.getTextSelection(w)
-    
-    # Update the widget and set the clipboard text.
-    s = w.get(i,j)
-    if i != j:
-        w.delete(i,j)
-        g.app.gui.replaceClipboardWith(s)
-
-    if name.startswith('body'):
-        c.frame.body.onBodyChanged('Cut',oldSel=oldSel,oldText=oldText)
-    elif name.startswith('head'):
-        # The headline is not officially changed yet.
-        # p.initHeadString(s)
-        s=g.app.gui.getAllText(w)
-        w.configure(width=f.tree.headWidth(s=s))
-    else: pass
-
-OnCutFromMenu = cutText
-#@nonl
-#@-node:ekr.20051011072049.2:cutText
-#@+node:ekr.20031218072017.1329:onBodyChanged (tkBody) & removeTrailingNewlines
-# This is the only key handler for the body pane.
-def onBodyChanged (self,undoType,
-    oldSel=None,oldText=None,oldYview=None,removeTrailing=None):
-    
-    '''Update Leo after the body has been changed.'''
-    
-    body = self ; c = self.c ; bodyCtrl = body.bodyCtrl
-    trace = self.trace_onBodyChanged
-    p = c.currentPosition()
-    insert = bodyCtrl.index('insert')
-    ch = g.choose(insert=='1.0','',bodyCtrl.get('insert-1c'))
-    ch = g.toUnicode(ch,g.app.tkEncoding) # New in 4.4b3.
-    newText = g.app.gui.getAllText(bodyCtrl) # New in 4.4b3: converts to unicode.
-    # g.trace('newText',repr(newText))
-    newSel = g.app.gui.getTextSelection(bodyCtrl)
-    if oldText is None: oldText = p.bodyString()
-    if removeTrailing is None:
-        removeTrailing = self.removeTrailingNewlines(oldText,newText,ch)
-    if removeTrailing and newText:
-        newText = newText[:-1]
-    changed = oldText != newText
-    if trace:
-        g.trace(repr(ch),'changed:',changed)
-        # g.trace('removeTrailing:',removeTrailing)
-        g.trace('newText:',repr(newText))
-        #g.trace('oldText:',repr(oldText))
-    if changed:
-        c.undoer.setUndoTypingParams(p,undoType,
-            oldText=oldText,newText=newText,oldSel=oldSel,newSel=newSel,oldYview=oldYview)
-        p.v.setTnodeText(newText)
-        p.v.t.insertSpot = body.getInsertionPoint()
-        << recolor the body >>
-        if not c.changed: c.setChanged(True)
-        self.updateEditors()
-        << redraw the screen if necessary >>
-#@nonl
-#@+node:ekr.20051026083733.6:<< recolor the body >>
-body.colorizer.interrupt()
-c.frame.scanForTabWidth(p)
-body.recolor_now(p,incremental=not self.forceFullRecolorFlag)
-self.forceFullRecolorFlag = False
-#@nonl
-#@-node:ekr.20051026083733.6:<< recolor the body >>
-#@+node:ekr.20051026083733.7:<< redraw the screen if necessary >>
-c.beginUpdate()
-try:
-    redraw_flag = False
-    # Update dirty bits.
-    # p.setDirty() sets all cloned and @file dirty bits.
-    if not p.isDirty() and p.setDirty():
-        redraw_flag = True
-        
-    # Update icons. p.v.iconVal may not exist during unit tests.
-    val = p.computeIcon()
-    if not hasattr(p.v,"iconVal") or val != p.v.iconVal:
-        p.v.iconVal = val
-        redraw_flag = True
-finally:
-    c.endUpdate(redraw_flag)
-#@nonl
-#@-node:ekr.20051026083733.7:<< redraw the screen if necessary >>
-#@+node:ekr.20051026143009:removeTrailingNewlines
-@ Tk will add a newline only if:
-1. A real change has been made to the Tk.Text widget, and
-2. the change did _not_ result in the widget already containing a newline.
-
-It's not possible to tell, given the information available, what Tk has actually
-done. We need only make a reasonable guess here. setUndoTypingParams stores the
-number of trailing newlines in each undo bead, so whatever we do here can be
-faithfully undone and redone.
-@c
-
-def removeTrailingNewlines (self,old,new,ch):
-
-    '''Return True if a Tk has erroneously added a trailing newline.'''
-    
-    return True
-
-    if not new.endswith('\n'):
-        # There is no newline to remove.  Probably will never happen.
-        return False
-    elif not old:
-        # Ambigous case.  Formerly always returned False.
-        if new == "\n\n":
-            return True # Handle a very strange special case.
-        else:
-            return ch not in ('\r','\n')
-    elif old == new[:-1]:
-        # A single trailing character has been added.
-        return ch not in ('\r','\n') # Was False.
-    else:
-        # The text didn't have a newline, and now it does.
-        # Moveover, some other change has been made to the text,
-        # So at worst we have misrepresented the user's intentions slightly.
-        return True
-#@nonl
-#@-node:ekr.20051026143009:removeTrailingNewlines
-#@-node:ekr.20031218072017.1329:onBodyChanged (tkBody) & removeTrailingNewlines
-#@+node:ekr.20060417172056:addRemoveHelper
-def addRemoveHelper(self,event,ch,add,undoType):
-
-    c = self.c ; k = self.k ; w = event.widget
-    if g.app.gui.hasSelection(w):
-        s = g.app.gui.getSelectedText(w)
-    else:
-        s = g.app.gui.getAllText(w)
-    if not s: return
-    
-    # Insert or delete spaces instead of tabs when negative tab width is in effect.
-    d = g.scanDirectives(c) ; width = d.get('tabwidth')
-    if ch == '\t' and width < 0: ch = ' ' * abs(width)
-    self.beginCommand(undoType=undoType)
-    if add:
-        result = [ch + line for line in g.splitLines(s)]
-    else:
-        result = [g.choose(line.startswith(ch),line[len(ch):],line) for line in g.splitLines(s)]
-    result = ''.join(result)
-    if g.app.gui.hasSelection(w):
-        i,j = g.app.gui.getSelectionRange(w)
-        w.delete(i,j)
-        w.insert(i,result)
-        g.app.gui.setSelectionRange(w, i, j + '%dc' %(len(result)))
-    else:
-        w.delete('1.0','end')
-        w.insert('1.0',result)
-    self.endCommand(changed=True,setLabel=True)
-#@nonl
-#@-node:ekr.20060417172056:addRemoveHelper
-#@+node:ekr.20060415112257:clean-lines
-def cleanLines (self,event):
-    
-    '''Removes leading whitespace from otherwise blanks lines.'''
-
-    k = self.k ; w = event.widget
-    
-    if g.app.gui.hasSelection(w):
-        s = g.app.gui.getSelectedText(w)
-    else:
-        s = g.app.gui.getAllText(w)
-
-    lines = [] ; changed = False
-    for line in g.splitlines(s):
-        if line.strip():
-            lines.append(line)
-        else:
-            if line.endswith('\n'):
-                lines.append('\n')
-            changed = '\n' != line
-
-    if changed:
-        self.beginCommand(undoType='clean-lines')
-        result = ''.join(lines)
-        if g.app.gui.hasSelection(w):
-            i,j = g.app.gui.getSelectionRange(w)
-            w.delete(i,j)
-            w.insert(i,result)
-            g.app.gui.setSelectionRange(w, i, j + '%dc' %(len(result)))
-        else:
-            w.delete('1.0','end')
-            w.insert('1.0',result)
-        self.endCommand(changed=changed,setLabel=True)
-#@-node:ekr.20060415112257:clean-lines
-#@+node:ekr.20051125080855:selfInsertCommand
-def selfInsertCommand(self,event,action='insert'):
-    
-    '''Insert a character in the body pane.
-    
-    This is the default binding for all keys in the body pane.'''
-    
-    c = self.c ; p = c.currentPosition()
-    # g.trace('event',event,g.callers())
-    ch = event and event.char or ''
-    if event and event.keysym == 'Return': ch = '\n' # This fixes the MacOS return bug.
-    w = event and event.widget
-    name = c.widget_name(w)
-    oldSel =  name.startswith('body') and g.app.gui.getTextSelection(w)
-    oldText = name.startswith('body') and p.bodyString()
-    removeTrailing = None # A signal to compute it later.
-    undoType = 'Typing'
-    trace = c.config.getBool('trace_masterCommand')
-    
-    if trace: g.trace(name,repr(ch))
-    
-    if g.doHook("bodykey1",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType):
-        return "break" # The hook claims to have handled the event.
-        
-    if ch == '\t':
-        removeTrailing = self.updateTab(p,w)
-    elif ch == '\b':
-        # This is correct: we only come here if there no bindngs for this key. 
-        self.backwardDeleteCharacter(event)
-    elif ch in ('\r','\n'):
-        ch = '\n'
-        << handle newline >>
-    elif ch in ('(',')','[',']','{','}') and c.config.getBool('autocomplete-brackets'):
-        self.updateAutomatchBracket(p,w,ch,oldSel)
-    elif ch: # Null chars must not delete the selection.
-        i,j = oldSel
-        if i != j:                  w.delete(i,j)
-        elif action == 'overwrite': w.delete(i,'%s+1c' % i)
-        w.insert(i,ch)                     
-    else:
-        return 'break' # New in 4.4a5: this method *always* returns 'break'
-
-    # Update the text and handle undo.
-    newText = g.app.gui.getAllText(w) # New in 4.4b3: converts to unicode.
-    # g.trace(repr(newText))
-    w.see(w.index('insert'))
-    if newText != oldText:
-        c.frame.body.onBodyChanged(undoType=undoType,
-            oldSel=oldSel,oldText=oldText,oldYview=None,removeTrailing=removeTrailing)
-            
-    g.doHook("bodykey2",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType)
-    return 'break'
-#@nonl
-#@+node:ekr.20051026171121:<< handle newline >>
-i,j = oldSel
-
-if i != j:
-    # No auto-indent if there is selected text.
-    w.delete(i,j)
-    w.insert(i,ch)
-else:
-    w.insert(i,ch)
-    if c.frame.body.colorizer.useSyntaxColoring(p) and undoType != "Change":
-        # No auto-indent if in @nocolor mode or after a Change command.
-        removeTrailing = self.updateAutoIndent(p)
-        # g.trace(removeTrailing)
-#@nonl
-#@-node:ekr.20051026171121:<< handle newline >>
-#@+node:ekr.20051027172949:updateAutomatchBracket
-def updateAutomatchBracket (self,p,w,ch,oldSel):
-    
-    # assert ch in ('(',')','[',']','{','}')
-    
-    c = self.c ; d = g.scanDirectives(c,p) ; i,j = oldSel
-    language = d.get('language')
-    
-    if ch in ('(','[','{',):
-        automatch = language not in ('plain',)
-        if automatch:
-            ch = ch + {'(':')','[':']','{':'}'}.get(ch)
-        if i != j:
-            w.delete(i,j)
-        w.insert(i,ch)
-        if automatch:
-            w.mark_set('insert','insert-1c')
-    else:
-        ch2 = w.get('insert')
-        if ch2 in (')',']','}'):
-            w.mark_set('insert','insert+1c')
-        else:
-            if i != j:
-                w.delete(i,j)
-            w.insert(i,ch)
-#@nonl
-#@-node:ekr.20051027172949:updateAutomatchBracket
-#@+node:ekr.20051026171121.1:udpateAutoIndent
-# By David McNab:
-def updateAutoIndent (self,p):
-
-    c = self.c ; d = g.scanDirectives(c,p)
-    tab_width = d.get("tabwidth",c.tab_width) # Get the previous line.
-    s = c.frame.bodyCtrl.get("insert linestart - 1 lines","insert linestart -1c")
-    # Add the leading whitespace to the present line.
-    junk, width = g.skip_leading_ws_with_indent(s,0,tab_width)
-    if s and len(s) > 0 and s [ -1] == ':':
-        # For Python: increase auto-indent after colons.
-        if c.frame.body.colorizer.scanColorDirectives(p) == "python":
-            width += abs(tab_width)
-    if c.config.getBool("smart_auto_indent"):
-        # Determine if prev line has unclosed parens/brackets/braces
-        brackets = [width] ; tabex = 0
-        for i in range(0,len(s)):
-            if s [i] == '\t':
-                tabex += tab_width-1
-            if s [i] in '([{':
-                brackets.append(i+tabex+1)
-            elif s [i] in '}])' and len(brackets) > 1:
-                brackets.pop()
-        width = brackets.pop()
-    ws = g.computeLeadingWhitespace(width,tab_width)
-    if ws:
-        c.frame.bodyCtrl.insert("insert",ws)
-        removeTrailing = False
-    else:
-        removeTrailing = None
-    return removeTrailing
-#@nonl
-#@-node:ekr.20051026171121.1:udpateAutoIndent
-#@+node:ekr.20051026092433:updateTab
-def updateTab (self,p,w):
-
-    c = self.c ; d = g.scanDirectives(c,p)
-    tab_width = d.get("tabwidth",c.tab_width)
-    
-    i,j = g.app.gui.getTextSelection(w)
-    if i != j:
-        w.delete(i,j)
-    if tab_width > 0:
-        w.insert("insert",'\t')
-    else:
-        # Get the preceeding characters.
-        s = w.get("insert linestart","insert")
-    
-        # Compute n, the number of spaces to insert.
-        width = g.computeWidth(s,tab_width)
-        n = abs(tab_width) - (width % abs(tab_width))
-        w.insert("insert",' ' * n)
-#@nonl
-#@-node:ekr.20051026092433:updateTab
-#@-node:ekr.20051125080855:selfInsertCommand
-#@-node:ekr.20060419101401.1:Found: gui.getAllText
-#@-node:ekr.20060419101401:Complete transition to 'end-1c'
+#@+node:ekr.20060527190049:Before 4.4.1b1 (3-5 days)
 #@+node:ekr.20060528082017.1:Important (2-4 days)
 #@+node:ekr.20060527204444:Finish new colorizer plugin
+1.  Fix all problems with Python coloring.
+    - Support show/hide invisibles.
+    
+2.  Add all features used by Php.
+
+3.  Add all other features.
+#@nonl
 #@-node:ekr.20060527204444:Finish new colorizer plugin
 #@+node:ekr.20060211093935:Support for on-enter-mode in mode declarations
 Add support for @list
@@ -1944,8 +1536,10 @@ def defineCmdsMenuSpellCheckTable (self):
 - define a debugger1 hook so the plugin can override the standard debug code.
 #@nonl
 #@-node:ekr.20060522084039:Finish the debugger
+#@+node:ekr.20060529083234:Add docstrings for all commands
+#@-node:ekr.20060529083234:Add docstrings for all commands
 #@-node:ekr.20060528082017.2:Last (1 day)
-#@-node:ekr.20060527190049:Before 4.4.1b1 (1 week)
+#@-node:ekr.20060527190049:Before 4.4.1b1 (3-5 days)
 #@+node:ekr.20051202094427:Urgent: Resolve cvs conflicts
 Investigate meld:  http://meld.sourceforge.net/
 
@@ -3010,7 +2604,7 @@ def getLabel (self,ignorePrompt=False):
     
     if self.useTextWidget:
         w.update_idletasks()
-        s = w.get('1.0','end-1c')
+        s = g.app.gui.getAllText(w)
     else:
         s = k.svar and k.svar.get()
 
@@ -3040,7 +2634,7 @@ def updateLabel (self,event):
             if i != j:
                 w.delete(i,j)
             if ch == '\b':
-                s = w.get('1.0','end-1c')
+                s = g.app.gui.getAllText(w)
                 if len(s) > len(k.mb_prefix):
                     w.delete(i+'-1c')
             else:
@@ -4142,9 +3736,7 @@ def findAllCommand (self,event=None):
 #@+node:ekr.20060204120158.1:findAgainCommand
 def findAgainCommand (self):
     
-    s = self.find_ctrl.get("1.0","end-1c")
-    s = g.toUnicode(s,g.app.tkEncoding)
-    # if s.endswith('\n'): s = s[:-1]
+    s = g.app.gui.getAllText(self.find_ctrl)
     
     if s and s != '<find pattern here>':
         self.findNextCommand()
@@ -4152,6 +3744,7 @@ def findAgainCommand (self):
     else:
         # Tell the caller that to get the find args.
         return False
+#@nonl
 #@-node:ekr.20060204120158.1:findAgainCommand
 #@+node:ekr.20060128075225:cloneFindAllCommand
 def cloneFindAllCommand (self,event=None):
@@ -4200,18 +3793,8 @@ def bringToFront (self):
 
     c = self.c ; t = self.find_ctrl
         
-    # The widget must have focus before we can adjust the text.
     c.widgetWantsFocus(t)
-    
-    # Delete one trailing newline.
-    s = t.get('1.0','end')
-    if s and s[-1] in ('\n','\r'):
-        t.delete('end-1c','end')
-
-    # Don't highlight the added trailing newline!
-    g.app.gui.setTextSelection (t,"1.0","end-1c") # Thanks Rich.
-    
-    # This is also needed.
+    g.app.gui.selectAllText(t)
     c.widgetWantsFocus(t)
 #@nonl
 #@-node:ekr.20051020120306.26:bringToFront

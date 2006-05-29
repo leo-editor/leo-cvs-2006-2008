@@ -340,7 +340,7 @@ class baseTnode (object):
         
         self.bodyString = s
         
-        # g.trace(g.callers(5))
+        # g.trace(repr(s))
     #@nonl
     #@-node:ekr.20031218072017.1485:setTnodeText
     #@+node:ekr.20031218072017.1486:setSelection

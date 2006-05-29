@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="24152" clone_windows="0"/>
 <globals body_outline_ratio="0.584597432905">
-	<global_window_position top="49" left="249" height="743" width="944"/>
+	<global_window_position top="49" left="249" height="724" width="944"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -88,6 +88,7 @@
 <v t="ekr.20050830115714.22"><vh>How do I use Leo to create CWEB files?</vh></v>
 <v t="ekr.20050830115714.24"><vh>Can @file trees contain material not in the derived file?</vh></v>
 <v t="ekr.20050830115714.25"><vh>How can I use Leo with older C compilers</vh></v>
+<v t="ekr.20060529053407"><vh>Why can't I use @ignore directives in @thin and @file trees?</vh></v>
 </v>
 <v t="ekr.20050830115714.26"><vh>Customizing Leo</vh>
 <v t="ekr.20050830115714.29"><vh>How can I add support for a new language?</vh></v>
@@ -144,7 +145,7 @@
 </v>
 </v>
 <v t="ekr.20050831195331.2"><vh>Chapter 1: Installing Leo</vh>
-<v t="edream.110203163054.48"><vh>@rst html\install.html</vh>
+<v t="edream.110203163054.48" a="E"><vh>@rst html\install.html</vh>
 <v t="ekr.20050901110110"><vh>@rst-no-head links</vh></v>
 <v t="edream.110203163054.49"><vh>System requirements</vh></v>
 <v t="edream.110203163054.50"><vh>How to install Leo on Linux</vh></v>
@@ -590,7 +591,7 @@
 <v t="ekr.20060430223116"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20060527105211" a="E"><vh>Chapter 14: External debuggers</vh>
+<v t="ekr.20060527105211"><vh>Chapter 14: External debuggers</vh>
 <v t="ekr.20060527105617"><vh>@rst html\debuggers.html</vh>
 <v t="ekr.20060527105804"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20060527105617.2"><vh>Leo's debug command and 'the big debugger Aha'</vh></v>
@@ -17727,15 +17728,16 @@ Flash file gets mapped to an &lt;embed&gt; tag, etc).</t>
 .. _`Associating Leo with .leo Files`:  install.html#how-to-associate-leo-with-leo-files-on-windows
 .. _`How to install Leo on Windows`:    install.html#how-to-install-leo-on-windows
 
-.. _`CWEB mode`:                    directives.html#cweb-mode
-.. _command:                        commands.html
-.. _commands:                       commands.html
-.. _`quick start for programmers`:  intro.html#quick-start-for-programmers
-.. _`rst3 plugin`:                  rstplugin3.html
-.. _`Run Leo from a console window`: `How can I run Leo from a console window?`_
-.. _`Tangle and Untangle`:          commands.html#tangling-an-outline-producing-derived-files
-.. _tutorial:                       intro.html
-
+.. _`CWEB mode`:                                directives.html#cweb-mode
+.. _command:                                    commands.html
+.. _commands:                                   commands.html
+.. _`quick start for programmers`:              intro.html#quick-start-for-programmers
+.. _`rst3 plugin`:                              rstplugin3.html
+.. _`Run Leo from a console window`:            `How can I run Leo from a console window?`_
+.. _`Tangle and Untangle`:                      commands.html#tangling-an-outline-producing-derived-files
+.. _tutorial:                                   intro.html
+.. _`Leo 4.0: Eliminating error 'recovery'`:    history.html#leo-4-0-eliminating-error-recovery
+.. _`Chapter 9: History of Leo`:                history.html
 
 .. ----- References to the glossary: the glossary now contains references to the tutorial.
 .. _`@asis`:                glossary.html#asis-trees
@@ -18733,7 +18735,7 @@ Chapter 9: History of Leo
 This chapter discusses the history of Leo and tells the essential features of each version.
 Here are the most important dates in Leo's history:
 
-</t>
+.. contents::</t>
 <t tx="ekr.20050901101608.6">@ @rst-options
 code_mode=False
 generate_rst=True
@@ -27127,5 +27129,17 @@ Support for idle isn't complete yet.</t>
   winpdb doesn't update the source listing when leoScriptModule.py changes.
   So if you change the script being debugged, winpdb will show you the *old* version of the script.
   It's a strange experience: the debugger will execute the *correct* code but will show you the *incorrect* code.</t>
+<t tx="ekr.20060529053407">@ignore can only be used in the root node of @file trees.  It tells Leo to ignore the tree.
+
+The @ignore directive can not be used elsewhere in @thin trees and @file trees
+because of the way Leo recreates outlines from derived files. This is an
+absolutely crucial restriction and will never go away.
+For a few more details, see `Leo 4.0: Eliminating error 'recovery'`_ in `Chapter 9: History of Leo`_.
+
+There are several workaround, as shown in LeoPy.leo:
+
+- keep notes in the outline outside of any derived file.
+
+- Use @all to gather notes in a derived file, as in done in @thin leoProjects.txt.</t>
 </tnodes>
 </leo_file>

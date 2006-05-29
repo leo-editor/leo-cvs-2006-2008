@@ -214,7 +214,7 @@ class leoBody:
     def addEditor (self,event=None):
         pass
         
-    def cycleFocus (self,event=None):
+    def cycleEditorFocus (self,event=None):
         pass
         
     def deleteEditor (self,event=None):
