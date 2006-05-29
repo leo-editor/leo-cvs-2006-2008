@@ -609,12 +609,18 @@ class tkinterGui(leoGui.leoGui):
     #@+node:ekr.20031218072017.4074:Indices (Tk)
     #@+node:ekr.20060528172956:toGuiIndex & toPythonIndex
     def toGuiIndex (self,s,w,index):
+        
+        '''Convert a python index in string s into a Tk index in Tk.Text widget w.'''
+        
+        # A subtle point: s typically does not have Tk's trailing newline, so add it.
     
-        row,col = g.convertPythonIndexToRowCol (s,index)
+        row,col = g.convertPythonIndexToRowCol (s+'\n',index)
         index = w.index('%s.%s' % (row+1,col))
         return index
         
     def toPythonIndex (self,s,w,index):
+        
+        '''Convert a Tk index in Tk.Text widget w into a python index in string s.'''
         
         index = w.index(index)
         row, col = index.split('.') ; row, col = int(row), int(col)
@@ -748,6 +754,14 @@ class tkinterGui(leoGui.leoGui):
         return i and j and i != j
     #@nonl
     #@-node:ekr.20051126171929:hasSelection
+    #@+node:ekr.20060529092645:selectAllText (new in 4.4.1)
+    def selectAllText (self,w,insert='end-1c'):
+        
+        '''Select all text of the widget, *not* including the extra newline.'''
+        
+        self.setTextSelection(w,'1.0','end-1c',insert=insert)
+    #@nonl
+    #@-node:ekr.20060529092645:selectAllText (new in 4.4.1)
     #@+node:ekr.20031218072017.4088:setSelectionRangeWithLength
     def setSelectionRangeWithLength(self,t,start,length,insert='sel.end'):
         
@@ -788,7 +802,8 @@ class tkinterGui(leoGui.leoGui):
         
         """Return all the text of Tk.Text widget t converted to unicode."""
     
-        s = t.get("1.0","end")
+        s = t.get("1.0","end-1c") # New in 4.4.1: use end-1c.
+    
         if s is None:
             return u""
         else:
