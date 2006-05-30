@@ -43,6 +43,8 @@ php_re = re.compile("<?(\s[pP][hH][pP])")
 # 
 # 0.24 EKR: Fixed unicode crasher.  All unit tests now pass with the new 
 # colorizer enabled.
+# 
+# 0.25 EKR: Fixed bug in match_doc_part.
 #@-at
 #@-node:ekr.20060530091119.22:<< version history >>
 #@nl
@@ -194,7 +196,8 @@ def match_doc_part (self,s,i):
     while j < n:
         k = s.find('@c',j)
         if k == -1:
-            j = n - 1
+            # g.trace('i,len(s)',i,len(s))
+            j = n
             self.colorRangeWithTag(s,i,j,'docPart')
             return j - i
         if s[k-1] == '\n' and (g.match_word(s,k,'@c') or g.match_word(s,k,'@code')):
