@@ -4625,7 +4625,10 @@ class helpCommandsClass (baseEditCommandsClass):
         c = self.c
         func = c.commandsDict.get(commandName)
         if func and func.__doc__:
-            g.es('%s:\n%s\n' % (commandName,func.__doc__),color='blue')
+            s = ''.join([
+                g.choose(line.strip(),line.lstrip(),'\n')
+                    for line in g.splitLines(func.__doc__)])
+            g.es('%s:\n%s\n' % (commandName,s),color='blue')
         else:
             g.es('No help available for %s' % (commandName),color='blue')
     #@nonl
@@ -7399,8 +7402,8 @@ class findTab (leoFind.leoFind):
     #@nonl
     #@-node:ekr.20051020120306.27:selectAllFindText
     #@+node:ekr.20051020120306.28:Tkinter wrappers (leoTkinterFind)
-    def gui_search (self,t,*args,**keys):
-        return t.search(*args,**keys)
+    # def gui_search (self,t,*args,**keys):
+        # return t.search(*args,**keys)
     
     def init_s_ctrl (self,s):
         t = self.s_ctrl
