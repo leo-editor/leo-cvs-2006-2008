@@ -1302,6 +1302,8 @@ class leoTkinterFrame (leoFrame.leoFrame):
     #@+node:ekr.20060203115311:showMinibuffer
     def showMinibuffer (self):
         
+        '''Make the minibuffer visible.'''
+        
         frame = self
         
         if not frame.minibufferVisible:
@@ -1311,6 +1313,8 @@ class leoTkinterFrame (leoFrame.leoFrame):
     #@-node:ekr.20060203115311:showMinibuffer
     #@+node:ekr.20060203115311.1:hideMinibuffer
     def hideMinibuffer (self):
+        
+        '''Hide the minibuffer.'''
         
         frame = self
         if frame.minibufferVisible:
@@ -1775,6 +1779,8 @@ class leoTkinterFrame (leoFrame.leoFrame):
     #@+node:ekr.20060209110128.1:contractPane
     def contractPane (self,event=None):
         
+        '''Contract the selected pane.'''
+        
         f = self ; c = f.c
         w = c.get_requested_focus()
         wname = c.widget_name(w)
@@ -1792,6 +1798,8 @@ class leoTkinterFrame (leoFrame.leoFrame):
     #@-node:ekr.20060209110128.1:contractPane
     #@+node:ekr.20060209110128.2:expandPane
     def expandPane (self,event=None):
+        
+        '''Expand the selected pane.'''
     
         f = self ; c = f.c
             
@@ -1811,6 +1819,8 @@ class leoTkinterFrame (leoFrame.leoFrame):
     #@-node:ekr.20060209110128.2:expandPane
     #@+node:ekr.20060210123852:fullyExpandPane
     def fullyExpandPane (self,event=None):
+        
+        '''Fully expand the selected pane.'''
     
         f = self ; c = f.c
             
@@ -1830,6 +1840,8 @@ class leoTkinterFrame (leoFrame.leoFrame):
     #@-node:ekr.20060210123852:fullyExpandPane
     #@+node:ekr.20060209143933:hidePane
     def hidePane (self,event=None):
+        
+        '''Completely contract the selected pane.'''
     
         f = self ; c = f.c
             
@@ -1861,45 +1873,57 @@ class leoTkinterFrame (leoFrame.leoFrame):
     #@@c
     
     def contractBodyPane (self,event=None):
+        '''Contract the body pane.'''
         f = self ; r = min(1.0,f.ratio+0.1)
         f.divideLeoSplitter(f.splitVerticalFlag,r)
     
     def contractLogPane (self,event=None):
+        '''Contract the log pane.'''
         f = self ; r = min(1.0,f.ratio+0.1)
         f.divideLeoSplitter(not f.splitVerticalFlag,r)
     
     def contractOutlinePane (self,event=None):
+        '''Contract the outline pane.'''
         f = self ; r = max(0.0,f.ratio-0.1)
         f.divideLeoSplitter(f.splitVerticalFlag,r)
         
     def expandBodyPane (self,event=None):
+        '''Expand the body pane.'''
         self.contractOutlinePane()
     
     def expandLogPane(self,event=None):
+        '''Expand the log pane.'''
         f = self ; r = max(0.0,f.ratio-0.1)
         f.divideLeoSplitter(not f.splitVerticalFlag,r)
         
     def expandOutlinePane (self,event=None):
+        '''Expand the outline pane.'''
         self.contractBodyPane()
     #@nonl
     #@-node:ekr.20060209110936:expand/contract/hide...Pane
     #@+node:ekr.20060210123852.1:fullyExpand/hide...Pane
     def fullyExpandBodyPane (self,event=None):
+        '''Fully expand the body pane.'''
         f = self ; f.divideLeoSplitter(f.splitVerticalFlag,0.0)
     
     def fullyExpandLogPane (self,event=None):
+        '''Fully expand the log pane.'''
         f = self ; f.divideLeoSplitter(not f.splitVerticalFlag,0.0)
     
     def fullyExpandOutlinePane (self,event=None):
+        '''Fully expand the outline pane.'''
         f = self ; f.divideLeoSplitter(f.splitVerticalFlag,1.0)
         
     def hideBodyPane (self,event=None):
+        '''Completely contract the body pane.'''
         f = self ; f.divideLeoSplitter(f.splitVerticalFlag,1.0)
     
     def hideLogPane (self,event=None):
+        '''Completely contract the log pane.'''
         f = self ; f.divideLeoSplitter(not f.splitVerticalFlag,1.0)
     
     def hideOutlinePane (self,event=None):
+        '''Completely contract the outline pane.'''
         f = self ; f.divideLeoSplitter(f.splitVerticalFlag,0.0)
     #@nonl
     #@-node:ekr.20060210123852.1:fullyExpand/hide...Pane
@@ -1907,6 +1931,8 @@ class leoTkinterFrame (leoFrame.leoFrame):
     #@+node:ekr.20031218072017.3980:Edit Menu...
     #@+node:ekr.20031218072017.3981:abortEditLabelCommand
     def abortEditLabelCommand (self,event=None):
+        
+        '''End editing of a headline and revert to its previous value.'''
         
         frame = self ; c = frame.c ; tree = frame.tree
         p = c.currentPosition() ; w = p.edit_widget()
@@ -2043,6 +2069,8 @@ class leoTkinterFrame (leoFrame.leoFrame):
     #@-node:ekr.20031218072017.3982:endEditLabelCommand
     #@+node:ekr.20031218072017.3983:insertHeadlineTime
     def insertHeadlineTime (self,event=None):
+        
+        '''Insert a date/time stamp in the headline of the selected node.'''
     
         frame = self ; c = frame.c ; p = c.currentPosition()
         
@@ -2084,6 +2112,8 @@ class leoTkinterFrame (leoFrame.leoFrame):
     #@-node:ekr.20031218072017.3985:toggleActivePane
     #@+node:ekr.20031218072017.3986:cascade
     def cascade (self,event=None):
+        
+        '''Cascade all Leo windows.'''
     
         x,y,delta = 10,10,10
         for frame in g.app.windowList:
@@ -2107,6 +2137,8 @@ class leoTkinterFrame (leoFrame.leoFrame):
     #@-node:ekr.20031218072017.3986:cascade
     #@+node:ekr.20031218072017.3987:equalSizedPanes
     def equalSizedPanes (self,event=None):
+        
+        '''Make the outline and body panes have the same size.'''
     
         frame = self
         frame.resizePanesToRatio(0.5,frame.secondary_ratio)
@@ -2121,6 +2153,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
     #@+node:ekr.20031218072017.3989:minimizeAll
     def minimizeAll (self,event=None):
     
+        '''Minimize all Leo's windows.'''
         
         self.minimize(g.app.pythonFrame)
         for frame in g.app.windowList:
@@ -2137,6 +2170,8 @@ class leoTkinterFrame (leoFrame.leoFrame):
     # The key invariant: self.splitVerticalFlag tells the alignment of the main splitter.
     
     def toggleSplitDirection (self,event=None):
+        
+        '''Toggle the split direction in the present Leo window.'''
         
         # Switch directions.
         c = self.c
@@ -2226,6 +2261,8 @@ class leoTkinterFrame (leoFrame.leoFrame):
     #@+node:EKR.20040422130619:resizeToScreen
     def resizeToScreen (self,event=None):
         
+        '''Resize the Leo window so it fill the entire screen.'''
+        
         top = self.top
         
         w = top.winfo_screenwidth()
@@ -2246,6 +2283,8 @@ class leoTkinterFrame (leoFrame.leoFrame):
     #@+node:ekr.20031218072017.3991:Help Menu...
     #@+node:ekr.20031218072017.3992:leoHelp
     def leoHelp (self,event=None):
+        
+        '''Open Leo's offline tutorial.'''
         
         frame = self ; c = frame.c
         
@@ -2476,6 +2515,8 @@ class leoTkinterBody (leoFrame.leoBody):
     #@+node:ekr.20060528100747.1:addEditor
     def addEditor (self,event=None):
         
+        '''Add another editor to the body pane.'''
+        
         c = self.c ; p = c.currentPosition()
         self.numberOfEditors += 1
         name = '%d' % self.numberOfEditors
@@ -2527,6 +2568,8 @@ class leoTkinterBody (leoFrame.leoBody):
     #@+node:ekr.20060528170438:cycleEditorFocus
     def cycleEditorFocus (self,event=None):
         
+        '''Cycle keyboard focus between the body text editors.'''
+        
         c = self.c ; d = self.editorWidgets
         keys = d.keys() ; n = len(keys)
         if n < 2: return # There is only the main widget. 
@@ -2544,6 +2587,8 @@ class leoTkinterBody (leoFrame.leoBody):
     #@-node:ekr.20060528170438:cycleEditorFocus
     #@+node:ekr.20060528113806:deleteEditor
     def deleteEditor (self,event=None):
+        
+        '''Delete the presently selected body text editor.'''
         
         name = self.editor_name
     
@@ -3054,6 +3099,8 @@ class leoTkinterBody (leoFrame.leoBody):
     #@-node:ekr.20031218072017.4022:hasTextSelection
     #@+node:ekr.20031218072017.4023:selectAllText
     def selectAllText (self,event=None):
+        
+        '''Select all text in the presently selected pane.'''
         
         c = self.c ; k = c.k
     

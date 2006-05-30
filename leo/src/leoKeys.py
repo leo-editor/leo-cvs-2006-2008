@@ -262,25 +262,33 @@ class autoCompleterClass:
     #@+node:ekr.20060219103822:autoCompleteForce
     def autoCompleteForce (self,event=None):
         
+        '''Show autocompletion, even if autocompletion is not presently enabled.'''
+        
         return self.autoComplete(event,force=True)
     #@nonl
     #@-node:ekr.20060219103822:autoCompleteForce
     #@+node:ekr.20060219170612:enable/disableAutocompleter/Calltips
     def disableAutocompleter (self,event=None):
+        '''Disable the autocompleter.'''
         self.k.enable_autocompleter = False
         
     def disableCalltips (self,event=None):
+        '''Disable calltips.'''
         self.k.enable_calltips = False
         
     def enableAutocompleter (self,event=None):
+        '''Enable the autocompleter.'''
         self.k.enable_autocompleter = True
         
     def enableCalltips (self,event=None):
+        '''Enable calltips.'''
         self.k.enable_calltips = True
     #@nonl
     #@-node:ekr.20060219170612:enable/disableAutocompleter/Calltips
     #@+node:ekr.20060219103046.1:showCalltips
     def showCalltips (self,event=None,force=False):
+        
+        '''Show the calltips at the cursor.'''
         
         c = self.c ; k = c.k
         
@@ -306,6 +314,8 @@ class autoCompleterClass:
     #@-node:ekr.20060219103046.1:showCalltips
     #@+node:ekr.20060219170043:showCalltipsForce
     def showCalltipsForce (self,event=None):
+        
+        '''Show the calltips at the cursor, even if calltips are not presently enabled.'''
         
         return self.showCalltips(event,force=True)
     #@nonl
@@ -2396,29 +2406,23 @@ class keyHandlerClass:
     #@-node:ekr.20050930080419:digitArgument & universalArgument
     #@+node:ekr.20051014155551:k.show/hide/toggleMinibuffer
     def hideMinibuffer (self,event):
-        
+        '''Hide the minibuffer.'''
         k = self ; c = k.c
-        
         c.frame.hideMinibuffer()
-        
         g.es('Minibuffer hidden',color='red')
-    
         for commandName in ('show-mini-buffer','toggle-mini-buffer'):
             shortcut = k.getShortcutForCommandName(commandName)
             if shortcut:
                 g.es('%s is bound to: %s' % (commandName,shortcut))
         
-        
     def showMinibuffer (self,event):
-        
+        '''Show the minibuffer.'''
         k = self ; c = k.c
-        
         c.frame.showMinibuffer()
-        
+    
     def toggleMinibuffer (self,event):
-        
+        '''Show or hide the minibuffer.'''
         k = self ; c = k.c
-        
         if c.frame.minibufferVisible:
             k.hideMinibuffer(event)
         else:
@@ -3429,17 +3433,17 @@ class keyHandlerClass:
     #@-node:ekr.20060104164523:modeHelp
     #@+node:ekr.20060105132013:set-xxx-State
     def setIgnoreState (self,event):
-    
+        '''Enter the 'ignore' editing state.'''
         self.setInputState('ignore',showState=True)
     
     def setInsertState (self,event):
-    
+        '''Enter the 'insert' editing state.'''
         self.setInputState('insert',showState=True)
     
     def setOverwriteState (self,event):
-    
+        '''Enter the 'override' editing state.'''
         self.setInputState('overwrite',showState=True)
-    
+    #@nonl
     #@-node:ekr.20060105132013:set-xxx-State
     #@+node:ekr.20060120200818:setInputState
     def setInputState (self,state,showState=False):

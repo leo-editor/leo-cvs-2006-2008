@@ -3863,15 +3863,19 @@ def findAgain (self,event):
 #@-node:ekr.20060123131421:Top-level methods
 #@+node:ekr.20050920084036.261:incremental search...
 def isearchForward (self,event):
+    '''Begin a forward incremental search.'''
     self.startIncremental(event,forward=True,regexp=False)
     
 def isearchBackward (self,event):
+    '''Begin a backward incremental search.'''
     self.startIncremental(event,forward=False,regexp=False)
     
 def isearchForwardRegexp (self,event):
+    '''Begin a forward incremental regexp search.'''
     self.startIncremental(event,forward=True,regexp=True)
     
 def isearchBackwardRegexp (self,event):
+    '''Begin a backard incremental regexp search.'''
     self.startIncremental(event,forward=False,regexp=True)
 #@nonl
 #@+node:ekr.20050920084036.262:startIncremental
@@ -4779,6 +4783,8 @@ def createTextWidget (self,frame,parentFrame,name,p):
 #@+node:ekr.20060528100747.1:addEditor
 def addEditor (self,event=None):
     
+    '''Add another editor to the body pane.'''
+    
     c = self.c ; p = c.currentPosition()
     self.numberOfEditors += 1
     name = '%d' % self.numberOfEditors
@@ -4829,6 +4835,8 @@ self.bodyCtrl = old_w
 #@+node:ekr.20060528170438:cycleEditorFocus
 def cycleEditorFocus (self,event=None):
     
+    '''Cycle keyboard focus between the body text editors.'''
+    
     c = self.c ; d = self.editorWidgets
     keys = d.keys() ; n = len(keys)
     if n < 2: return # There is only the main widget. 
@@ -4846,6 +4854,8 @@ def cycleEditorFocus (self,event=None):
 #@-node:ekr.20060528170438:cycleEditorFocus
 #@+node:ekr.20060528113806:deleteEditor
 def deleteEditor (self,event=None):
+    
+    '''Delete the presently selected body text editor.'''
     
     name = self.editor_name
 
@@ -6293,7 +6303,12 @@ def defineCmdsMenuSpellCheckTable (self):
 #@-node:ekr.20050921103230:defineCmdsMenuTables & helpers
 #@-node:ekr.20051121070552:Finished Cmds menu
 #@+node:ekr.20060529195042:Added docstrings for all commands
-# This is useful for the help-for-command command.
+# No docstring yet...
+            dabbrev-completion dynamicExpansion2
+               dabbrev-expands dynamicExpansion
+                        escape watchEscape
+                number-command numberCommand
+              set-mark-command setRegion
 #@nonl
 #@-node:ekr.20060529195042:Added docstrings for all commands
 #@-node:ekr.20060522103446:New features

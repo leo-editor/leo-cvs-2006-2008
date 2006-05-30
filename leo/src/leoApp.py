@@ -364,6 +364,8 @@ class LeoApp:
     #@+node:ekr.20031218072017.2617:app.onQuit
     def onQuit (self,event=None):
         
+        '''Exit Leo, prompting to save unsaved outlines first.'''
+        
         g.app.quitting = True
         
         while g.app.windowList:

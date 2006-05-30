@@ -1316,6 +1316,8 @@ class baseUndoer:
     #@-node:ekr.20031218072017.3608:Externally visible entries
     #@+node:ekr.20031218072017.2030:redo & helpers...
     def redo (self,event=None):
+        
+        '''Redo the operation undone by the last undo.'''
     
         u = self ; c = u.c
         # g.trace(g.callers(7))
@@ -1580,7 +1582,7 @@ class baseUndoer:
     #@+node:ekr.20031218072017.2039:undo & helpers...
     def undo (self,event=None):
     
-        """Undo the operation described by the undo parmaters."""
+        """Undo the operation described by the undo parameters."""
         
         u = self ; c = u.c
         # g.trace(g.callers(7))

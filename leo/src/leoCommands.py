@@ -1326,6 +1326,8 @@ class baseCommands:
     #@+node:ekr.20031218072017.2860:weave
     def weave (self,event=None):
         
+        '''Simulate a literate-programming weave operation by writing the outline to a text file.'''
+        
         c = self
     
         filetypes = [("Text files", "*.txt"),("All files", "*")]
@@ -1442,6 +1444,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.2140:c.executeScript
     #@+node:ekr.20031218072017.2864:goToLineNumber & allies
     def goToLineNumber (self,event=None,root=None,lines=None,n=None,scriptFind=False):
+        
+        '''Place the cursor on the n'th line of a derived file or script.'''
         
         __pychecker__ = 'maxlines=400'
     
@@ -1913,6 +1917,8 @@ class baseCommands:
     #@+node:ekr.20031218072017.2088:fontPanel
     def fontPanel (self,event=None):
         
+        '''Open the font dialog.'''
+        
         c = self ; frame = c.frame
     
         if not frame.fontPanel:
@@ -1924,6 +1930,8 @@ class baseCommands:
     #@+node:ekr.20031218072017.2090:colorPanel
     def colorPanel (self,event=None):
         
+        '''Open the color dialog.'''
+        
         c = self ; frame = c.frame
     
         if not frame.colorPanel:
@@ -1934,6 +1942,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.2090:colorPanel
     #@+node:ekr.20031218072017.2883:viewAllCharacters
     def viewAllCharacters (self,event=None):
+        
+        '''Shor or hide whitespace characters in the body pane.'''
     
         c = self ; frame = c.frame
         p = c.currentPosition()
@@ -1964,6 +1974,8 @@ class baseCommands:
     #@+node:ekr.20031218072017.2884:Edit Body submenu
     #@+node:ekr.20031218072017.1704:convertAllBlanks
     def convertAllBlanks (self,event=None):
+        
+        '''Convert all blanks to tabs in the selected outline.'''
         
         c = self ; u = c.undoer ; undoType = 'Convert All Blanks'
         current = c.currentPosition()
@@ -2011,6 +2023,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.1704:convertAllBlanks
     #@+node:ekr.20031218072017.1705:convertAllTabs
     def convertAllTabs (self,event=None):
+        
+        '''Convert all tabs to blanks in the selected outline.'''
     
         c = self ; u = c.undoer ; undoType = 'Convert All Tabs'
         current = c.currentPosition()
@@ -2056,6 +2070,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.1705:convertAllTabs
     #@+node:ekr.20031218072017.1821:convertBlanks
     def convertBlanks (self,event=None):
+        
+        '''Convert all blanks to tabs in the selected node.'''
     
         c = self ; undoType = 'Convert Blanks'
         
@@ -2087,6 +2103,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.1821:convertBlanks
     #@+node:ekr.20031218072017.1822:convertTabs
     def convertTabs (self,event=None):
+        
+        '''Convert all tabs to blanks in the selected node.'''
     
         c = self ; undoType = 'Convert Tabs'
         
@@ -2140,6 +2158,8 @@ class baseCommands:
     #@+node:ekr.20031218072017.1824:dedentBody
     def dedentBody (self,event=None):
         
+        '''Remove one tab's worth of indentation from all presently selected lines.'''
+        
         c = self ; undoType = 'Unindent' ; current = c.currentPosition()
         
         if g.app.batchMode:
@@ -2164,6 +2184,10 @@ class baseCommands:
     #@-node:ekr.20031218072017.1824:dedentBody
     #@+node:ekr.20031218072017.1706:extract
     def extract (self,event=None):
+        
+        '''Create child node from the elected body text, deleting all selected text.
+        The text must start with a section reference.  This becomes the new child's headline.
+        The body text of the new child node contains all selected lines that follow the section reference line.'''
     
         c = self ; u = c.undoer ; undoType = 'Extract'
         current = c.currentPosition()
@@ -2202,6 +2226,10 @@ class baseCommands:
     #@-node:ekr.20031218072017.1706:extract
     #@+node:ekr.20031218072017.1708:extractSection
     def extractSection (self,event=None):
+        
+        '''Create a section definition node from the selected body text.
+        The text must start with a section reference.  This becomes the new child's headline.
+        The body text of the new child node contains all selected lines that follow the section reference line.'''
     
         c = self ; u = c.undoer ; undoType = 'Extract Section'
         current = c.currentPosition()
@@ -2258,6 +2286,10 @@ class baseCommands:
     #@-node:ekr.20031218072017.1708:extractSection
     #@+node:ekr.20031218072017.1710:extractSectionNames
     def extractSectionNames(self,event=None):
+        
+        '''Create child nodes for every section reference in the selected text.
+        The headline of each new child node is the section reference.
+        The body of each child node is empty.'''
     
         c = self ; u = c.undoer ; undoType = 'Extract Section Names'
         body = c.frame.body ; current = c.currentPosition()
@@ -2375,6 +2407,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.1825:findBoundParagraph
     #@+node:ekr.20031218072017.1827:findMatchingBracket
     def findMatchingBracket (self,event=None):
+        
+        '''Selecte the text between matching brackets.'''
         
         c = self ; body = c.frame.body
         
@@ -2507,6 +2541,8 @@ class baseCommands:
     #@+node:ekr.20031218072017.1831:insertBodyTime & allies
     def insertBodyTime (self,event=None):
         
+        '''Insert a time/date stamp at the cursor.'''
+        
         c = self ; undoType = 'Insert Body Time'
         
         if g.app.batchMode:
@@ -2555,6 +2591,8 @@ class baseCommands:
     #@+node:ekr.20050312114529:insert/removeComments
     #@+node:ekr.20050312114529.1:addComments
     def addComments (self,event=None):
+        
+        '''Convert all selected lines in the body text to comment lines.'''
     
         c = self ; undoType = 'Add Comments' ; p = c.currentPosition()
         
@@ -2592,6 +2630,8 @@ class baseCommands:
     #@-node:ekr.20050312114529.1:addComments
     #@+node:ekr.20050312114529.2:deleteComments
     def deleteComments (self,event=None):
+        
+        '''Remove one level of comment delimiters from all selected lines in the body text.'''
     
         c = self ; undoType = 'Delete Comments' ; p = c.currentPosition()
         
@@ -2790,6 +2830,8 @@ class baseCommands:
     #@+node:ekr.20031218072017.2886:editHeadline
     def editHeadline (self,event=None):
         
+        '''Begin editing the headline of the selected node.'''
+        
         c = self ; k = c.k ; tree = c.frame.tree
         
         if g.app.batchMode:
@@ -2805,6 +2847,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.2886:editHeadline
     #@+node:ekr.20031218072017.2290:toggleAngleBrackets
     def toggleAngleBrackets (self,event=None):
+        
+        '''Add or remove double angle brackets from the headline of the selected node.'''
         
         c = self ; v = c.currentVnode()
         
@@ -2845,6 +2889,8 @@ class baseCommands:
     #@+node:ekr.20031218072017.2888:showFindPanel
     def showFindPanel (self,event=None):
     
+        '''Open Leo's legacy Find dialog.'''
+        
         c = self
         
         if not c.frame.findPanel:
@@ -2915,6 +2961,8 @@ class baseCommands:
     #@+node:ekr.20031218072017.1548:Cut & Paste Outlines
     #@+node:ekr.20031218072017.1549:cutOutline
     def cutOutline (self,event=None):
+        
+        '''Delete the selected outline and send it to the clipboard.'''
     
         c = self
         if c.canDeleteHeadline():
@@ -2925,6 +2973,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.1549:cutOutline
     #@+node:ekr.20031218072017.1550:copyOutline
     def copyOutline (self,event=None):
+        
+        '''Copy the selected outline to the clipboard.'''
     
         # Copying an outline has no undo consequences.
         c = self
@@ -2938,6 +2988,9 @@ class baseCommands:
     # To cut and paste between apps, just copy into an empty body first, then copy to Leo's clipboard.
     
     def pasteOutline(self,event=None,reassignIndices=True):
+        
+        '''Paste an outline into the present outline from the clipboard.
+        Nodes do *not* retain their original identify.'''
     
         c = self ; u = c.undoer ; current = c.currentPosition()
         s = g.app.gui.getTextFromClipboard()
@@ -3027,6 +3080,9 @@ class baseCommands:
     #@+node:EKR.20040610130943:pasteOutlineRetainingClones
     def pasteOutlineRetainingClones (self,event=None):
         
+        '''Paste an outline into the present outline from the clipboard.
+        Nodes *retain* their original identify.'''
+        
         c = self
     
         return c.pasteOutline(reassignIndices=False)
@@ -3035,6 +3091,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.1548:Cut & Paste Outlines
     #@+node:ekr.20031218072017.2028:Hoist & dehoist
     def dehoist (self,event=None):
+        
+        '''Undo a previous hoist of an outline.'''
     
         c = self ; p = c.currentPosition()
         if p and c.canDehoist():
@@ -3054,6 +3112,8 @@ class baseCommands:
             c.undoer.afterDehoist(p,'DeHoist')
     
     def hoist (self,event=None):
+        
+        '''Make only the selected outline visible.'''
     
         c = self ; p = c.currentPosition()
         if p and c.canHoist():
@@ -3100,9 +3160,7 @@ class baseCommands:
     #@+node:ekr.20031218072017.1193:c.deleteOutline
     def deleteOutline (self,event=None,op_name="Delete Node"):
         
-        """Deletes the current position.
-        
-        Does nothing if the outline would become empty."""
+        """Deletes the selected outline."""
     
         c = self ; u = c.undoer ; p = c.currentPosition()
         if not p: return
@@ -3157,6 +3215,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.1761:c.insertHeadline
     #@+node:ekr.20031218072017.1762:c.clone
     def clone (self,event=None):
+        
+        '''Create a clone of the selected outline.'''
     
         c = self ; u = c.undoer ; p = c.currentPosition()
         if not p: return
@@ -3198,6 +3258,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.1759:Insert, Delete & Clone (Commands)
     #@+node:ekr.20050415134809:c.sortChildren
     def sortChildren (self,event=None):
+        
+        '''Sort the children of a node.'''
     
         c = self ; u = c.undoer ; undoType = 'Sort Children'
         p = c.currentPosition()
@@ -3236,6 +3298,8 @@ class baseCommands:
     #@+node:ekr.20050415134809.1:c.sortSiblings
     def sortSiblings (self,event=None):
         
+        '''Sort the siblings of a node.'''
+        
         c = self ; u = c.undoer ; undoType = 'Sort Siblings'
         p = c.currentPosition()
         if not p: return
@@ -3258,6 +3322,8 @@ class baseCommands:
     #@-node:ekr.20050415134809.1:c.sortSiblings
     #@+node:ekr.20031218072017.2896:c.sortTopLevel
     def sortTopLevel (self,event=None):
+        
+        '''Sort the top-level nodes of an outline.'''
     
         c = self ; u = c.undoer ; undoType = 'Sort Siblings'
         root = c.rootPosition()
@@ -3496,6 +3562,8 @@ class baseCommands:
     #@+node:ekr.20040723094220.1:checkAllPythonCode
     def checkAllPythonCode(self,event=None,unittest=False,ignoreAtIgnore=True):
         
+        '''Check all nodes in the selected tree for syntax and tab errors.'''
+        
         c = self ; count = 0 ; result = "ok"
     
         for p in c.all_positions_iter():
@@ -3534,6 +3602,8 @@ class baseCommands:
     #@-node:ekr.20040723094220.1:checkAllPythonCode
     #@+node:ekr.20040723094220.3:checkPythonCode
     def checkPythonCode (self,event=None,unittest=False,ignoreAtIgnore=True,suppressErrors=False):
+        
+        '''Check the selected tree for syntax and tab errors.'''
         
         c = self ; count = 0 ; result = "ok"
         
@@ -3595,7 +3665,6 @@ class baseCommands:
                 p.setMarked()
     
         c.tabNannyNode(p,h,body,unittest,suppressErrors)
-    #@nonl
     #@-node:ekr.20040723094220.5:checkPythonNode
     #@+node:ekr.20040723094220.6:tabNannyNode
     # This code is based on tabnanny.check.
@@ -3652,6 +3721,8 @@ class baseCommands:
     #@+node:ekr.20040711135959.1:Pretty Print commands
     #@+node:ekr.20040712053025:prettyPrintAllPythonCode
     def prettyPrintAllPythonCode (self,event=None,dump=False):
+        
+        '''Reformat all Python code in the outline to make it look more beautiful.'''
     
         c = self ; pp = c.prettyPrinter(c)
     
@@ -3667,6 +3738,8 @@ class baseCommands:
     #@-node:ekr.20040712053025:prettyPrintAllPythonCode
     #@+node:ekr.20040712053025.1:prettyPrintPythonCode
     def prettyPrintPythonCode (self,event=None,p=None,dump=False):
+        
+        '''Reformat all Python code in the selected tree to make it look more beautiful.'''
     
         c = self
         
@@ -4109,6 +4182,8 @@ class baseCommands:
     #@+node:ekr.20031218072017.2899:Commands
     #@+node:ekr.20031218072017.2900:contractAllHeadlines
     def contractAllHeadlines (self,event=None):
+        
+        '''Contract all nodes in the outline.'''
     
         c = self
         
@@ -4129,6 +4204,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.2900:contractAllHeadlines
     #@+node:ekr.20031218072017.2901:contractNode
     def contractNode (self,event=None):
+        
+        '''Contract the presently selected node.'''
         
         c = self ; v = c.currentVnode()
         
@@ -4154,6 +4231,8 @@ class baseCommands:
     #@+node:ekr.20031218072017.2902:contractParent
     def contractParent (self,event=None):
         
+        '''Contract the parent of the presently selected node.'''
+        
         c = self ; v = c.currentVnode()
         parent = v.parent()
         if not parent: return
@@ -4168,6 +4247,9 @@ class baseCommands:
     #@-node:ekr.20031218072017.2902:contractParent
     #@+node:ekr.20031218072017.2903:expandAllHeadlines
     def expandAllHeadlines (self,event=None):
+        
+        '''Expand all headlines.
+        Warning: this can take a long time for large outlines.'''
     
         c = self ; v = root = c.rootVnode()
         c.beginUpdate()
@@ -4183,6 +4265,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.2903:expandAllHeadlines
     #@+node:ekr.20031218072017.2904:expandAllSubheads
     def expandAllSubheads (self,event=None):
+        
+        '''Expand all children of the presently selected node.'''
     
         c = self ; v = c.currentVnode()
         if not v: return
@@ -4200,18 +4284,48 @@ class baseCommands:
     #@nonl
     #@-node:ekr.20031218072017.2904:expandAllSubheads
     #@+node:ekr.20031218072017.2905:expandLevel1..9
-    def expandLevel1 (self,event=None): self.expandToLevel(1)
-    def expandLevel2 (self,event=None): self.expandToLevel(2)
-    def expandLevel3 (self,event=None): self.expandToLevel(3)
-    def expandLevel4 (self,event=None): self.expandToLevel(4)
-    def expandLevel5 (self,event=None): self.expandToLevel(5)
-    def expandLevel6 (self,event=None): self.expandToLevel(6)
-    def expandLevel7 (self,event=None): self.expandToLevel(7)
-    def expandLevel8 (self,event=None): self.expandToLevel(8)
-    def expandLevel9 (self,event=None): self.expandToLevel(9)
+    def expandLevel1 (self,event=None):
+        '''Expand the outline to level 1'''
+        self.expandToLevel(1)
+    
+    def expandLevel2 (self,event=None):
+        '''Expand the outline to level 2'''
+        self.expandToLevel(2)
+    
+    def expandLevel3 (self,event=None):
+        '''Expand the outline to level 3'''
+        self.expandToLevel(3)
+    
+    def expandLevel4 (self,event=None):
+        '''Expand the outline to level 4'''
+        self.expandToLevel(4)
+    
+    def expandLevel5 (self,event=None):
+        '''Expand the outline to level 5'''
+        self.expandToLevel(5)
+    
+    def expandLevel6 (self,event=None):
+        '''Expand the outline to level 6'''
+        self.expandToLevel(6)
+    
+    def expandLevel7 (self,event=None):
+        '''Expand the outline to level 7'''
+        self.expandToLevel(7)
+    
+    def expandLevel8 (self,event=None):
+        '''Expand the outline to level 8'''
+        self.expandToLevel(8)
+    
+    def expandLevel9 (self,event=None):
+        '''Expand the outline to level 9'''
+        self.expandToLevel(9)
+    
     #@-node:ekr.20031218072017.2905:expandLevel1..9
     #@+node:ekr.20031218072017.2906:expandNextLevel
     def expandNextLevel (self,event=None):
+        
+        '''Increase the expansion level of the outline and
+        Expand all nodes at that level or lower.'''
     
         c = self ; v = c.currentVnode()
         
@@ -4224,6 +4338,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.2906:expandNextLevel
     #@+node:ekr.20031218072017.2907:expandNode
     def expandNode (self,event=None):
+        
+        '''Expand the presently selected node.'''
         
         c = self ; v = c.currentVnode()
         
@@ -4271,6 +4387,9 @@ class baseCommands:
     #@-node:ekr.20040930064232.1:expandNodeAnd/OrGoToFirstChild
     #@+node:ekr.20031218072017.2908:expandPrevLevel
     def expandPrevLevel (self,event=None):
+        
+        '''Decrease the expansion level of the outline and
+        Expand all nodes at that level or lower.'''
     
         c = self ; v = c.currentVnode()
         
@@ -4330,6 +4449,8 @@ class baseCommands:
     #@+node:ekr.20031218072017.1628:goNextVisitedNode
     def goNextVisitedNode (self,event=None):
         
+        '''Select the next visited node.'''
+        
         c = self
     
         while c.beadPointer + 1 < len(c.beadList):
@@ -4348,6 +4469,8 @@ class baseCommands:
     #@+node:ekr.20031218072017.1627:goPrevVisitedNode
     def goPrevVisitedNode (self,event=None):
         
+        '''Select the previously visited node.'''
+        
         c = self
     
         while c.beadPointer > 0:
@@ -4365,6 +4488,8 @@ class baseCommands:
     #@+node:ekr.20031218072017.2914:goToFirstNode
     def goToFirstNode (self,event=None):
         
+        '''Select the first node of the entire outline.'''
+        
         c = self
         p = c.rootPosition()
         if p:
@@ -4377,6 +4502,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.2914:goToFirstNode
     #@+node:ekr.20051012092453:goToFirstSibling (New in 4.4)
     def goToFirstSibling (self,event=None):
+        
+        '''Select the first sibling of the selected node.'''
         
         c = self ; p = c.currentPosition()
         
@@ -4394,6 +4521,8 @@ class baseCommands:
     #@+node:ekr.20031218072017.2915:goToLastNode (Bug fix in 4.4)
     def goToLastNode (self,event=None):
         
+        '''Select the last node in the selected tree.'''
+        
         c = self ; p = c.rootPosition()
         while p and p.hasThreadNext(): # Bug fix: 10/12/05: was p.hasNext.
             p.moveToThreadNext()
@@ -4410,6 +4539,8 @@ class baseCommands:
     #@+node:ekr.20051012092847.1:goToLastSibling (New in 4.4)
     def goToLastSibling (self,event=None):
         
+        '''Select the last sibling of the selected node.'''
+        
         c = self ; p = c.currentPosition()
         
         if p.hasNext():
@@ -4425,6 +4556,8 @@ class baseCommands:
     #@-node:ekr.20051012092847.1:goToLastSibling (New in 4.4)
     #@+node:ekr.20050711153537:goToLastVisibleNode
     def goToLastVisibleNode (self,event=None):
+        
+        '''Select the last visible node of the entire outline.'''
         
         c = self ; p = c.rootPosition()
         
@@ -4445,6 +4578,8 @@ class baseCommands:
     #@-node:ekr.20050711153537:goToLastVisibleNode
     #@+node:ekr.20031218072017.2916:goToNextClone
     def goToNextClone (self,event=None):
+        
+        '''Select the next node that is a clone of the selected node.'''
     
         c = self ; current = c.currentVnode()
         if not current: return
@@ -4471,6 +4606,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.2916:goToNextClone
     #@+node:ekr.20031218072017.2917:goToNextDirtyHeadline
     def goToNextDirtyHeadline (self,event=None):
+        
+        '''Select the node that is marked as changed.'''
     
         c = self ; p = c.currentPosition()
         if not p: return
@@ -4498,6 +4635,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.2917:goToNextDirtyHeadline
     #@+node:ekr.20031218072017.2918:goToNextMarkedHeadline
     def goToNextMarkedHeadline (self,event=None):
+        
+        '''Select the next marked node.'''
     
         c = self ; p = c.currentPosition()
         if not p: return
@@ -4520,6 +4659,8 @@ class baseCommands:
     #@+node:ekr.20031218072017.2919:goToNextSibling
     def goToNextSibling (self,event=None):
         
+        '''Select the next sibling of the selected node.'''
+        
         c = self
         v = c.currentVnode()
         if not v: return
@@ -4534,6 +4675,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.2919:goToNextSibling
     #@+node:ekr.20031218072017.2920:goToParent
     def goToParent (self,event=None):
+        
+        '''Select the parent of the selected node.'''
         
         c = self
         v = c.currentVnode()
@@ -4550,6 +4693,8 @@ class baseCommands:
     #@+node:ekr.20031218072017.2921:goToPrevSibling
     def goToPrevSibling (self,event=None):
         
+        '''Select the previous sibling of the selected node.'''
+        
         c = self
         v = c.currentVnode()
         if not v: return
@@ -4564,6 +4709,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.2921:goToPrevSibling
     #@+node:ekr.20031218072017.2994:selectThreadNext
     def selectThreadNext (self,event=None):
+        
+        '''Select the node following the selected node in outline order.'''
     
         c = self ; current = c.currentPosition()
         if not current: return
@@ -4580,6 +4727,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.2994:selectThreadNext
     #@+node:ekr.20031218072017.2993:selectThreadBack
     def selectThreadBack (self,event=None):
+        
+        '''Select the node preceding the selected node in outline order.'''
     
         c = self ; current = c.currentVnode()
         if not current: return
@@ -4596,6 +4745,8 @@ class baseCommands:
     # This has an up arrow for a control key.
     
     def selectVisBack (self,event=None):
+        
+        '''Select the visible node preceding the presently selected node.'''
     
         c = self ; current = c.currentVnode()
         if not current: return
@@ -4611,6 +4762,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.2995:selectVisBack
     #@+node:ekr.20031218072017.2996:selectVisNext
     def selectVisNext (self,event=None):
+        
+        '''Select the visible node following the presently selected node.'''
     
         c = self ; current = c.currentVnode()
         if not current: return
@@ -4626,7 +4779,9 @@ class baseCommands:
     #@-node:ekr.20031218072017.2913:Goto
     #@+node:ekr.20031218072017.2922:Mark...
     #@+node:ekr.20031218072017.2923:markChangedHeadlines
-    def markChangedHeadlines (self,event=None): 
+    def markChangedHeadlines (self,event=None):
+        
+        '''Mark all nodes that have been changed.'''
     
         c = self ; u = c.undoer ; undoType = 'Mark Changed'
         current = c.currentPosition()
@@ -4648,6 +4803,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.2923:markChangedHeadlines
     #@+node:ekr.20031218072017.2924:markChangedRoots
     def markChangedRoots (self,event=None):
+        
+        '''Mark all changed @root nodes.'''
     
         c = self ; u = c.undoer ; undoType = 'Mark Changed'
         current = c.currentPosition()
@@ -4672,6 +4829,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.2924:markChangedRoots
     #@+node:ekr.20031218072017.2925:markAllAtFileNodesDirty (not used)
     def markAllAtFileNodesDirty (self,event=None):
+        
+        '''Mark all @file nodes as changed.'''
     
         c = self ; p = c.rootPosition()
     
@@ -4690,6 +4849,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.2925:markAllAtFileNodesDirty (not used)
     #@+node:ekr.20031218072017.2926:markAtFileNodesDirty (not used)
     def markAtFileNodesDirty (self,event=None):
+        
+        '''Mark all @file nodes in the selected tree as changed.'''
     
         c = self
         p = c.currentPosition()
@@ -4711,6 +4872,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.2926:markAtFileNodesDirty (not used)
     #@+node:ekr.20031218072017.2927:markClones
     def markClones (self,event=None):
+        
+        '''Mark all clones of the selected node.'''
     
         c = self ; u = c.undoer ; undoType = 'Mark Clones'
         current = c.currentPosition()
@@ -4737,6 +4900,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.2927:markClones
     #@+node:ekr.20031218072017.2928:markHeadline
     def markHeadline (self,event=None):
+        
+        '''Toggle the mark of the selected node.'''
     
         c = self ; u = c.undoer ; p = c.currentPosition()
         if not p: return
@@ -4758,6 +4923,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.2928:markHeadline
     #@+node:ekr.20031218072017.2929:markSubheads
     def markSubheads (self,event=None):
+        
+        '''Mark all children of the selected node as changed.'''
     
         c = self ; u = c.undoer ; undoType = 'Mark Subheads'
         current = c.currentPosition()
@@ -4782,6 +4949,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.2929:markSubheads
     #@+node:ekr.20031218072017.2930:unmarkAll
     def unmarkAll (self,event=None):
+        
+        '''Unmark all nodes in the entire outline.'''
     
         c = self ; u = c.undoer ; undoType = 'Unmark All'
         current = c.currentPosition()
@@ -4808,6 +4977,8 @@ class baseCommands:
     #@+node:ekr.20031218072017.1766:Move... (Commands)
     #@+node:ekr.20031218072017.1767:demote
     def demote (self,event=None):
+        
+        '''Make all following siblings children of the selected node.'''
     
         c = self ; u = c.undoer
         current = c.currentPosition()
@@ -4850,6 +5021,8 @@ class baseCommands:
     #@@c
     
     def moveOutlineDown (self,event=None):
+        
+        '''Move the selected node down.'''
     
         c = self ; u = c.undoer ; p = c.currentPosition()
         if not p: return
@@ -4904,6 +5077,8 @@ class baseCommands:
     #@+node:ekr.20031218072017.1770:moveOutlineLeft
     def moveOutlineLeft (self,event=None):
         
+        '''Move the selected node left if possible.'''
+        
         c = self ; u = c.undoer ; p = c.currentPosition()
         if not p: return
         if not c.canMoveOutlineLeft(): # 11/4/03: Support for hoist.
@@ -4936,6 +5111,8 @@ class baseCommands:
     #@+node:ekr.20031218072017.1771:moveOutlineRight
     def moveOutlineRight (self,event=None):
         
+        '''Move the selected node right if possible.'''
+        
         c = self ; u = c.undoer ; p = c.currentPosition()
         if not p: return
         if not c.canMoveOutlineRight(): # 11/4/03: Support for hoist.
@@ -4966,6 +5143,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.1771:moveOutlineRight
     #@+node:ekr.20031218072017.1772:moveOutlineUp
     def moveOutlineUp (self,event=None):
+        
+        '''Move the selected node up if possible.'''
     
         c = self ; u = c.undoer ; p = c.currentPosition()
         if not p: return
@@ -5029,6 +5208,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.1772:moveOutlineUp
     #@+node:ekr.20031218072017.1774:promote
     def promote (self,event=None):
+        
+        '''Make all children of the selected nodes siblings of the selected node.'''
     
         c = self ; u = c.undoer ; p = c.currentPosition()
         command = 'Promote'

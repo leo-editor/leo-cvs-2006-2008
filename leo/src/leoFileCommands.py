@@ -2211,6 +2211,8 @@ class baseFileCommands:
     #@+node:ekr.20031218072017.2012:writeAtFileNodes
     def writeAtFileNodes (self,event=None):
         
+        '''Write all @file nodes in the selected outline.'''
+    
         c = self.c
     
         self.assignFileIndices()
@@ -2224,7 +2226,7 @@ class baseFileCommands:
     #@+node:ekr.20031218072017.1666:writeDirtyAtFileNodes
     def writeDirtyAtFileNodes (self,event=None):
     
-        """The Write Dirty @file Nodes command"""
+        '''Write all changed @file Nodes.'''
         
         c = self.c
     
@@ -2237,6 +2239,8 @@ class baseFileCommands:
     #@-node:ekr.20031218072017.1666:writeDirtyAtFileNodes
     #@+node:ekr.20031218072017.2013:writeMissingAtFileNodes
     def writeMissingAtFileNodes (self,event=None):
+        
+        '''Write all missing @file nodes.'''
     
         c = self.c ; v = c.currentVnode()
     
@@ -2252,6 +2256,8 @@ class baseFileCommands:
     #@-node:ekr.20031218072017.2013:writeMissingAtFileNodes
     #@+node:ekr.20031218072017.3050:writeOutlineOnly
     def writeOutlineOnly (self,event=None):
+        
+        '''Write the entire outline without writing any derived files.'''
     
         c = self.c
         c.endEditing()

@@ -245,6 +245,8 @@ class baseEditCommandsClass:
     #@+node:ekr.20051002090441:keyboardQuit
     def keyboardQuit (self,event):
         
+        '''Clear the state and the minibuffer label.'''
+        
         return self.k.keyboardQuit(event)
     #@nonl
     #@-node:ekr.20051002090441:keyboardQuit
@@ -1012,6 +1014,8 @@ class controlCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20050920084036.158:shellCommand
     #@+node:ekr.20050930112126:shellCommandOnRegion
     def shellCommandOnRegion (self,event):
+        
+        '''Execute a command taken from the selected text in a separate process.'''
     
         if subprocess:
             k = self.k ; is1,is2 = None,None ; w = event.widget
@@ -1217,6 +1221,8 @@ class debugCommandsClass (baseEditCommandsClass):
     # Doesn't work if the focus isn't in a pane with bindings!
     
     def printFocus (self,event=None):
+        
+        '''Print information about the requested focus (for debugging).'''
         
         c = self.c
         
@@ -1953,6 +1959,8 @@ class editCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20050920084036.133:setCommentColumn
     #@+node:ekr.20050920084036.134:indentToCommentColumn
     def indentToCommentColumn (self,event):
+    
+        '''Insert whitespace to indent to the comment column.'''
     
         k = self.k ; w = event.widget
         
@@ -3383,65 +3391,65 @@ class editCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20051218141237:lines
     #@+node:ekr.20050920084036.140:movePastClose (test)
     def movePastClose (self,event):
-        
+        '''Move the cursor past the closing parenthesis.'''
         self.movePastCloseHelper(event,extend=False)
         
     def movePastCloseExtendSelection (self,event):
-        
+        '''Extend the selection by moving the cursor past the closing parenthesis.'''
         self.movePastCloseHelper(event,extend=True)
     #@nonl
     #@-node:ekr.20050920084036.140:movePastClose (test)
     #@+node:ekr.20050920084036.102:paragraphs
     def backwardParagraph (self,event):
-        
+        '''Move the cursor to the previous paragraph.'''
         self.backwardParagraphHelper (event,extend=False)
         
     def backwardParagraphExtendSelection (self,event):
-        
+        '''Extend the selection by moving the cursor to the previous paragraph.'''
         self.backwardParagraphHelper (event,extend=True)
         
     def forwardParagraph (self,event):
-    
+        '''Move the cursor to the next paragraph.'''
         self.forwardParagraphHelper(event,extend=False)
         
     def forwardParagraphExtendSelection (self,event):
-        
+        '''Extend the selection by moving the cursor to the next paragraph.'''
         self.forwardParagraphHelper(event,extend=True)
     #@nonl
     #@-node:ekr.20050920084036.102:paragraphs
     #@+node:ekr.20050920084036.131:sentences
     def backSentence (self,event):
-        
+        '''Move the cursor to the previous sentence.'''
         self.backSentenceHelper(event,extend=False)
         
     def backSentenceExtendSelection (self,event):
-        
+        '''Extend the selection by moving the cursor to the previous sentence.'''
         self.backSentenceHelper(event,extend=True)
         
     def forwardSentence (self,event):
-        
+        '''Move the cursor to the next sentence.'''
         self.forwardSentenceHelper(event,extend=False)
         
     def forwardSentenceExtendSelection (self,event):
-        
+        '''Extend the selection by moving the cursor to the next sentence.'''
         self.forwardSentenceHelper(event,extend=True)
     #@nonl
     #@-node:ekr.20050920084036.131:sentences
     #@+node:ekr.20050920084036.149:words
     def backwardWord (self,event):
-        
+        '''Move the cursor to the previous word.'''
         self.moveWordHelper(event,extend=False,forward=False)
         
     def backwardWordExtendSelection (self,event):
-        
+        '''Extend the selection by moving the cursor to the next word.'''
         self.moveWordHelper(event,extend=True,forward=False)
     
     def forwardWord (self,event):
-        
+        '''Move the cursor to the next word.'''
         self.moveWordHelper(event,extend=False,forward=True)
         
     def forwardWordExtendSelection (self,event):
-        
+        '''Extend the selection by moving the cursor to the previous word.'''
         self.moveWordHelper(event,extend=True,forward=True)
     #@-node:ekr.20050920084036.149:words
     #@-node:ekr.20050929114218:move cursor... (leoEditCommands)
@@ -3577,6 +3585,8 @@ class editCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20050920084036.98:killParagraph (Test)
     #@+node:ekr.20050920084036.96:selectParagraph & helper
     def selectParagraph (self,event):
+        
+        '''Select the paragraph surrounding the cursor.'''
     
         k = self.k ; w = event.widget
         txt = w.get('insert linestart','insert lineend')
@@ -4015,15 +4025,19 @@ class editCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20050920084036.116:scrollUp/Down/extendSelection
     #@+node:ekr.20060309060654.1:scrollOutlineUp/Down/Line/Page
     def scrollOutlineDownLine (self,event=None):
+        '''Scroll the outline pane down one line.'''
         self.c.frame.tree.canvas.yview_scroll(1,"unit")
         
     def scrollOutlineDownPage (self,event=None):
+        '''Scroll the outline pane down one page.'''
         self.c.frame.tree.canvas.yview_scroll(1,"page")
     
     def scrollOutlineUpLine (self,event=None):
+        '''Scroll the outline pane up one line.'''
         self.c.frame.tree.canvas.yview_scroll(-1,"unit")
     
     def scrollOutlineUpPage (self,event=None):
+        '''Scroll the outline pane up one page.'''
         self.c.frame.tree.canvas.yview_scroll(-1,"page")
     
     
@@ -4280,6 +4294,8 @@ class editCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20050920084036.122:transposeLines
     #@+node:ekr.20050920084036.123:swapWords
     def swapWords (self,event,swapspots):
+        
+        '''Transpose the word at the cursor with the preceding word.'''
     
         w = event.widget
         txt = w.get('insert wordstart','insert wordend')
@@ -7767,15 +7783,19 @@ class searchCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20060123131421:Top-level methods
     #@+node:ekr.20050920084036.261:incremental search...
     def isearchForward (self,event):
+        '''Begin a forward incremental search.'''
         self.startIncremental(event,forward=True,regexp=False)
         
     def isearchBackward (self,event):
+        '''Begin a backward incremental search.'''
         self.startIncremental(event,forward=False,regexp=False)
         
     def isearchForwardRegexp (self,event):
+        '''Begin a forward incremental regexp search.'''
         self.startIncremental(event,forward=True,regexp=True)
         
     def isearchBackwardRegexp (self,event):
+        '''Begin a backard incremental regexp search.'''
         self.startIncremental(event,forward=False,regexp=True)
     #@nonl
     #@+node:ekr.20050920084036.262:startIncremental
