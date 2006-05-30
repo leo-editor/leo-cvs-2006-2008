@@ -1869,6 +1869,17 @@ class keyHandlerClass:
         if not shortcut:
             # g.trace('No shortcut for %s' % commandName)
             return False
+        #@    << give warning and return if we try to bind to Enter or Leave >>
+        #@+node:ekr.20060530084936:<< give warning and return if we try to bind to Enter or Leave >>
+        if shortcut:
+            for s in ('enter','leave'):
+                if -1 != shortcut.lower().find(s):
+                    g.es_print('Ignoring invalid key binding: %s = %s' % (
+                        commandName,shortcut),color='blue')
+                    return
+        #@nonl
+        #@-node:ekr.20060530084936:<< give warning and return if we try to bind to Enter or Leave >>
+        #@nl
         if pane.endswith('-mode'):
             g.trace('oops: ignoring mode binding',shortcut,commandName,g.callers())
             return False
@@ -1876,6 +1887,7 @@ class keyHandlerClass:
         #@    << give warning and return if there is a serious redefinition >>
         #@+node:ekr.20060114115648:<< give warning and return if there is a serious redefinition >>
         for bunch in bunchList:
+        
             if ( bunch and
                 # (not bunch.pane.endswith('-mode') and not pane.endswith('-mode')) and
                 bunch.pane != 'mini' and # Minibuffer bindings are completely separate.
