@@ -3,21 +3,20 @@
 """
 Creates new nodes containing parameterized section references.
 """
-__version__ = "1.4"
+__version__ = "1.5"
 #@<< version history >>
 #@+node:ekr.20040916091520:<< version history >>
 #@+at
 # 
 # 1.2 EKR:
-#     - Converted to outline.
-#     - Use g.angleBrackets to enclose lines with < < and > >.
-#     - Use new instead of start2 hook.
-#     - onCreate creates a new class for each commander.
-#     - Removed all globals.
-# 1.3 EKR:
-#     - Changed 'new_c' logic to 'c' logic.
-# 1.4 EKR:
-#     - Replaced tree.begin/endUpdate by c.beginEndUpdate.
+# - Converted to outline.
+# - Use g.angleBrackets to enclose lines with < < and > >.
+# - Use new instead of start2 hook.
+# - onCreate creates a new class for each commander.
+# - Removed all globals.
+# 1.3 EKR: Changed 'new_c' logic to 'c' logic.
+# 1.4 EKR: Replaced tree.begin/endUpdate by c.beginEndUpdate.
+# 1.5 EKR: Added event param to parameterize.
 #@-at
 #@nonl
 #@-node:ekr.20040916091520:<< version history >>
@@ -53,7 +52,7 @@ class paramClass:
     #@nonl
     #@-node:ekr.20040916091520.3:__init__
     #@+node:ekr.20040916084945.1:parameterize
-    def parameterize(self):
+    def parameterize(self,event=None):
     
         c = self.c
         tree = c.frame.tree
