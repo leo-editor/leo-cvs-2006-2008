@@ -58,7 +58,7 @@ navigate to the nodes 'by hand' by following the arrows in the UNL.
 #@@language python
 #@@tabwidth -4
 
-__version__ = "0.3"
+__version__ = "0.4"
 #@<< version history >>
 #@+node:rogererens.20041014104353:<< version history >>
 #@+at
@@ -71,8 +71,10 @@ __version__ = "0.3"
 # 
 # 0.3 ekr: Added support for url keyword in '@url1' hook.
 # As a result, this plugin now support single and double quoted urls.
+# 
+# 0.4 ekr: Fixed crasher by adding c argument to g.findTopLevelNode and 
+# g.findNodeInTree.
 #@-at
-#@nonl
 #@-node:rogererens.20041014104353:<< version history >>
 #@nl
 #@<< imports >>
@@ -189,13 +191,12 @@ def onUrl1 (tag,keywords):
                 #@+node:rogererens.20041125015212.1:<<go to the node>>
                 c2 = frame.c
                 
-                if urlTuple[4]: # we have a UNL!
-                    nodeList = urlTuple[4].split("-->")
-                    p = g.findTopLevelNode(nodeList[0])
-                    for headline in nodeList[1:]:
-                        p = g.findNodeInTree(p, headline)
+                if urlTuple [4]: # we have a UNL!
+                    nodeList = urlTuple [4].split("-->")
+                    p = g.findTopLevelNode(c2,nodeList[0])
+                    for headline in nodeList [1:]:
+                        p = g.findNodeInTree(c2,p,headline)
                     c2.selectPosition(p)
-                    
                 #@+at
                 # 
                 # EKR: The reason there are problems with selection is that 
