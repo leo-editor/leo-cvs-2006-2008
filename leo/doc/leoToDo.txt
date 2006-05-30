@@ -1,16 +1,11 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
-#@+node:ekr.20060527190049:Before 4.4.1b1 (2-3 days)
-#@+node:ekr.20060530100259:Auto-indent doesn't work in multiple editors
-@nocolor
-
-https://sourceforge.net/forum/message.php?msg_id=3756402
-By: ktenney
-
-auto-indent doesn't work in the extra editors.
+#@+node:ekr.20060527190049:Before 4.4.1b1
+#@+node:ekr.20060522084039:Finish the debugger
+Improve docs in leoSettings.leo
 #@nonl
-#@-node:ekr.20060530100259:Auto-indent doesn't work in multiple editors
+#@-node:ekr.20060522084039:Finish the debugger
 #@+node:ekr.20060211093935:Support for on-enter-mode in mode declarations
 Add support for @list
 #@nonl
@@ -19,15 +14,6 @@ Add support for @list
 - Entering edit mode shouldn't call c.endEditing!
 #@-node:ekr.20060122184114:Support the execution of a command when entering a mode
 #@-node:ekr.20060211093935:Support for on-enter-mode in mode declarations
-#@+node:ekr.20060530084159:Later
-#@+node:ekr.20060522084039:Finish the debugger
-@nocolor
-
-? Create a customize_debugger plugin?
-
-- define a debugger1 hook so the plugin can override the standard debug code.
-#@nonl
-#@-node:ekr.20060522084039:Finish the debugger
 #@+node:ekr.20060529130603:Fix all reported problems with plugins
 #@+node:ekr.20060529130603.1:Reports
 @nocolor
@@ -184,8 +170,37 @@ Suggestion: All untested Plugins should be marked as such in the Plugin Manager,
 ESPECIALLY if Leo is to go "Big Time."
 #@-node:ekr.20060529130603.1:Reports
 #@-node:ekr.20060529130603:Fix all reported problems with plugins
-#@-node:ekr.20060530084159:Later
-#@-node:ekr.20060527190049:Before 4.4.1b1 (2-3 days)
+#@+node:ekr.20041029083459:Remember Import directory
+By: Kent Tenney - ktenney
+Import to @file request  
+2004-10-28 11:27
+Howdy, 
+ 
+Please ignore if this is a difficult feature to implement. 
+ 
+File->Import->Import to @file  
+always starts in .../leo/src 
+ 
+I would prefer if it opened to the last directory from 
+which a file was imported. 
+ 
+I often find myself importing several files from the same area of the directory tree, and repeatedly navigating there from leo/src gets tiresome. 
+ 
+Thanks, 
+Kent
+#@-node:ekr.20041029083459:Remember Import directory
+#@+node:ekr.20041130103128:killcolor also kills autoindenting
+By: Roger Erens - rogererens
+@
+2004-11-25 09:14
+On leo4.2, winXP, my default language is Python and smart_auto_indent=0. 
+Normally, after ending a line with a colon, the next line gets indented by 1 tab, also in comment-sections. 
+When using an @killcolor directive in a node, the line following one that ends with a colon starts at column zero.
+
+I think it is unreasonable for @killcolor to interfere with indenting.
+#@nonl
+#@-node:ekr.20041130103128:killcolor also kills autoindenting
+#@-node:ekr.20060527190049:Before 4.4.1b1
 #@+node:ekr.20051202094427:Urgent: Resolve cvs conflicts
 Investigate meld:  http://meld.sourceforge.net/
 
@@ -4775,177 +4790,6 @@ class UndoableCompoundEvent3:
 #@-node:ekr.20060201152349:NodeUndoer.py
 #@-node:ekr.20060228072202:New undoer
 #@-node:ekr.20060527182117:Important 1-2 week projects (2-3 weeks)
-#@+node:ekr.20060227163215:Bugs (minor, overdue) (1 week)
-#@+node:ekr.20051104152338:Fix bug in Remove Sentinels command
-#@+node:ekr.20051104152338.1:Report
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3413805
-By: nobody
-
-I thought this might be for 4.4a2, but I see the same effect w/ 
-Leo 4.3.3, build  1.282 , September 17, 2005
-Python 2.3.5, Tk 8.4.7, win32
-
-I haven't used Leo for code, but just started to try to re-organize some Perl
-I inherited.
-
-Leo apears to remove sentinels, AND preceding newlines, so the effect is something
-like this:
-
-.... some code....
-
-   next line;
-}
-#@verbatim
-#@ leo sentinel here...
-#
-
-    If  ( something ) {
-      more code;
-......
-
-becomes:
-
-.... some code....
-
-   next line;
-} If  ( something ) {
-      more code;
-......
-
-Now, that may be annoying, but mildly so - it still runs.
-When this:
-
-#
-#@verbatim
-#@ sentinel
-if () {
-
-turns to this:
-
-# if() {
-
-code just breaks.
-#@nonl
-#@-node:ekr.20051104152338.1:Report
-#@-node:ekr.20051104152338:Fix bug in Remove Sentinels command
-#@+node:ekr.20051014152256:Fix long-standing bug in import code
-Improve import code so it handles stufff like this from Ipyton/iplib
-
-### This should *not* terminate the function!
-
-    self.LOGHEAD = Itpl(
-"""#log# Automatic Logger file. *** THIS MUST BE THE FIRST LINE ***
-#log# DO NOT CHANGE THIS LINE OR THE TWO BELOW
-#log# opts = $self.rc.opts
-#log# args = $self.rc.args
-#log# It is safe to make manual edits below here.
-#log#-----------------------------------------------------------------------
-""")
-
-- Handle blanks better in imports:
-    - Add tab_width keyword arg to import command.
-    - Convert tabs to blanks if tab width < 0.
-- Ignore position of blank lines wrt sentinels.
-- Ignore (optionally?) underindented blank lines.
-- Use pyclbr to parse Python imports?
-#@nonl
-#@+node:ekr.20040930075711:Handle underindented lines
-@nocolor
-
-Leo can't represent some files using nodes!
-
-I call this the "underindented blank line" problem.
-
-Example:
-
-@color
-
-class aClass:
-    def spam(): pass
-# comment line
-    def eggs(): pass
-    
-@nocolor
-
-Leo's import code can't handle this:
-    
-- If the import code puts the comment line in a node, the line won't be output with the proper indentation!!
-
-- Having the comment line stop the scanning of aClass is even worse.
-
-- This usually shows up with an unindented blank line instead of the comment line.
-#@nonl
-#@-node:ekr.20040930075711:Handle underindented lines
-#@+node:ekr.20040722132104:Write script to report underindented lines
-#@-node:ekr.20040722132104:Write script to report underindented lines
-#@-node:ekr.20051014152256:Fix long-standing bug in import code
-#@+node:ekr.20060107082929:Fix problem reporting indentation errors
-@nocolor
-
-https://sourceforge.net/forum/message.php?msg_id=3510448
-By: ktenney
-
-Howdy,
-
-I'm executing a script in a Leo node which has
-an indentation error. I get the following report,
-which doesn't help locate the error.
-
-Pardon me if this is well known issue, I don't
-remember discussion of it.
-
-Thanks,
-Kent
-
-################################################
-exception executing script
-Traceback (most recent call last):
-  File "C:\python24\lib\site-packages\leo\src\leoCommands.py", line 1277, in
-executeScript
-    exec script in d
-IndentationError: unindent does not match any outer indentation level (line
-103)
---------------------
-  line 1276:                     # g.trace(script)
-* line 1277:                     exec script in d
-  line 1278:                     if not script1 and not silent:
-  line 1279:                         g.es("end of script",color="purple")
-
-#@-node:ekr.20060107082929:Fix problem reporting indentation errors
-#@+node:ekr.20060325091249:@shortcut does not work
-#@-node:ekr.20060325091249:@shortcut does not work
-#@+node:ekr.20041130103128:(killcolor also kills autoindenting )
-By: Roger Erens - rogererens
-@
-2004-11-25 09:14
-On leo4.2, winXP, my default language is Python and smart_auto_indent=0. 
-Normally, after ending a line with a colon, the next line gets indented by 1 tab, also in comment-sections. 
-When using an @killcolor directive in a node, the line following one that ends with a colon starts at column zero.
-
-I think it is unreasonable for @killcolor to interfere with indenting.
-#@-node:ekr.20041130103128:(killcolor also kills autoindenting )
-#@+node:ekr.20041029083459:Remember Import directory
-By: Kent Tenney - ktenney
-Import to @file request  
-2004-10-28 11:27
-Howdy, 
- 
-Please ignore if this is a difficult feature to implement. 
- 
-File->Import->Import to @file  
-always starts in .../leo/src 
- 
-I would prefer if it opened to the last directory from 
-which a file was imported. 
- 
-I often find myself importing several files from the same area of the directory tree, and repeatedly navigating there from leo/src gets tiresome. 
- 
-Thanks, 
-Kent
-#@-node:ekr.20041029083459:Remember Import directory
-#@-node:ekr.20060227163215:Bugs (minor, overdue) (1 week)
 #@-all
 #@nonl
 #@-node:ekr.20040117181936:@thin ../doc/leoToDo.txt

@@ -1,9 +1,9 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20060207133601:@thin ../doc/leoToDoLater.txt
 #@+all
+#@+node:ekr.20060530072008:For 4.4.1 b2
 #@+node:ekr.20060530085844:Important: improve autocompletion
 #@-node:ekr.20060530085844:Important: improve autocompletion
-#@+node:ekr.20060530072008:For 4.4.1 b2
 #@+node:ekr.20060527204444:Finish new colorizer plugin
 - Add all features used by Php.
 
@@ -21,7 +21,15 @@
 #@nonl
 #@-node:ekr.20060529195042.1:The last character of a python comment is not colored.
 #@-node:ekr.20060527204444:Finish new colorizer plugin
-#@+node:ekr.20060527182907.1:Bugs (minor)
+#@+node:ekr.20060530110450:Test major Emacs commands
+@nocolor
+
+- print-lossage doesn't work.
+- Test yank/kill
+- Test macro recording, etc.
+#@nonl
+#@-node:ekr.20060530110450:Test major Emacs commands
+#@+node:ekr.20060227163215:Fix *all* bugs
 #@+node:ekr.20060120084705:Overwrite mode doesn't work in headllines
 #@-node:ekr.20060120084705:Overwrite mode doesn't work in headllines
 #@+node:ekr.20060117074259:Handle Mac issues
@@ -179,7 +187,147 @@ def getDescendentUnknownAttributes (self,s):
 c.insertHeadlineTime uses the edit widget.  It shouldn't.
 #@nonl
 #@-node:ekr.20060207085518:Improve c.insertHeadline (minor)
-#@-node:ekr.20060527182907.1:Bugs (minor)
+#@+node:ekr.20051104152338:Fix bug in Remove Sentinels command
+#@+node:ekr.20051104152338.1:Report
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3413805
+By: nobody
+
+I thought this might be for 4.4a2, but I see the same effect w/ 
+Leo 4.3.3, build  1.282 , September 17, 2005
+Python 2.3.5, Tk 8.4.7, win32
+
+I haven't used Leo for code, but just started to try to re-organize some Perl
+I inherited.
+
+Leo apears to remove sentinels, AND preceding newlines, so the effect is something
+like this:
+
+.... some code....
+
+   next line;
+}
+#@verbatim
+#@ leo sentinel here...
+#
+
+    If  ( something ) {
+      more code;
+......
+
+becomes:
+
+.... some code....
+
+   next line;
+} If  ( something ) {
+      more code;
+......
+
+Now, that may be annoying, but mildly so - it still runs.
+When this:
+
+#
+#@verbatim
+#@ sentinel
+if () {
+
+turns to this:
+
+# if() {
+
+code just breaks.
+#@nonl
+#@-node:ekr.20051104152338.1:Report
+#@-node:ekr.20051104152338:Fix bug in Remove Sentinels command
+#@+node:ekr.20051014152256:Fix long-standing bug in import code
+Improve import code so it handles stufff like this from Ipyton/iplib
+
+### This should *not* terminate the function!
+
+    self.LOGHEAD = Itpl(
+"""#log# Automatic Logger file. *** THIS MUST BE THE FIRST LINE ***
+#log# DO NOT CHANGE THIS LINE OR THE TWO BELOW
+#log# opts = $self.rc.opts
+#log# args = $self.rc.args
+#log# It is safe to make manual edits below here.
+#log#-----------------------------------------------------------------------
+""")
+
+- Handle blanks better in imports:
+    - Add tab_width keyword arg to import command.
+    - Convert tabs to blanks if tab width < 0.
+- Ignore position of blank lines wrt sentinels.
+- Ignore (optionally?) underindented blank lines.
+- Use pyclbr to parse Python imports?
+#@nonl
+#@+node:ekr.20040930075711:Handle underindented lines
+@nocolor
+
+Leo can't represent some files using nodes!
+
+I call this the "underindented blank line" problem.
+
+Example:
+
+@color
+
+class aClass:
+    def spam(): pass
+# comment line
+    def eggs(): pass
+    
+@nocolor
+
+Leo's import code can't handle this:
+    
+- If the import code puts the comment line in a node, the line won't be output with the proper indentation!!
+
+- Having the comment line stop the scanning of aClass is even worse.
+
+- This usually shows up with an unindented blank line instead of the comment line.
+#@nonl
+#@-node:ekr.20040930075711:Handle underindented lines
+#@+node:ekr.20040722132104:Write script to report underindented lines
+#@-node:ekr.20040722132104:Write script to report underindented lines
+#@-node:ekr.20051014152256:Fix long-standing bug in import code
+#@+node:ekr.20060107082929:Fix problem reporting indentation errors
+@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=3510448
+By: ktenney
+
+Howdy,
+
+I'm executing a script in a Leo node which has
+an indentation error. I get the following report,
+which doesn't help locate the error.
+
+Pardon me if this is well known issue, I don't
+remember discussion of it.
+
+Thanks,
+Kent
+
+################################################
+exception executing script
+Traceback (most recent call last):
+  File "C:\python24\lib\site-packages\leo\src\leoCommands.py", line 1277, in
+executeScript
+    exec script in d
+IndentationError: unindent does not match any outer indentation level (line
+103)
+--------------------
+  line 1276:                     # g.trace(script)
+* line 1277:                     exec script in d
+  line 1278:                     if not script1 and not silent:
+  line 1279:                         g.es("end of script",color="purple")
+
+#@-node:ekr.20060107082929:Fix problem reporting indentation errors
+#@+node:ekr.20060325091249:@shortcut does not work: remove it?
+#@-node:ekr.20060325091249:@shortcut does not work: remove it?
+#@-node:ekr.20060227163215:Fix *all* bugs
 #@-node:ekr.20060530072008:For 4.4.1 b2
 #@+node:ekr.20060528155800:Big, not so important
 #@+node:ekr.20060116173818:Fix vampire nodes (maybe)
