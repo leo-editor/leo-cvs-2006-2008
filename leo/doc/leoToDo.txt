@@ -2,8 +2,15 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20060527190049:Before 4.4.1b1 (2-3 days)
-#@+node:ekr.20060530072008.1:Fix all bugs in new colorizer for @language python
-#@-node:ekr.20060530072008.1:Fix all bugs in new colorizer for @language python
+#@+node:ekr.20060530100259:Auto-indent doesn't work in multiple editors
+@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=3756402
+By: ktenney
+
+auto-indent doesn't work in the extra editors.
+#@nonl
+#@-node:ekr.20060530100259:Auto-indent doesn't work in multiple editors
 #@+node:ekr.20060211093935:Support for on-enter-mode in mode declarations
 Add support for @list
 #@nonl

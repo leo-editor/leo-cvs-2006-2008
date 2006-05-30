@@ -6012,6 +6012,28 @@ def valIsPossible (self,val):
 #@-node:sudoku puzzle
 #@-node:Fun...
 #@+node:Important
+#@+node:Print missing docstrings
+# Print all commands that do not have a docstring.
+d = c.commandsDict
+keys = d.keys() ; keys.sort
+
+missing = []
+
+for key in keys:
+    f = d.get(key)
+    if (not f.__doc__ and
+        not key.endswith('-mode') and
+        not key.startswith('open-with-')
+    ):
+        missing.append((key,f.__name__),)
+        
+missing.sort()
+print '-' * 20
+for data in missing:
+    a,b = data
+    print '%30s %s' % (a,b)
+#@nonl
+#@-node:Print missing docstrings
 #@+node:updateSettings
 << docstring >>
 

@@ -1,6 +1,8 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20060207133601:@thin ../doc/leoToDoLater.txt
 #@+all
+#@+node:ekr.20060530085844:Important: improve autocompletion
+#@-node:ekr.20060530085844:Important: improve autocompletion
 #@+node:ekr.20060530072008:For 4.4.1 b2
 #@+node:ekr.20060527204444:Finish new colorizer plugin
 - Add all features used by Php.

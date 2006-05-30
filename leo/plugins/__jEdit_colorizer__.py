@@ -1,14 +1,14 @@
 #@+leo-ver=4-thin
-#@+node:ekr.20050529142847:@thin __jEdit_colorizer__.py
+#@+node:ekr.20060530091119.20:@thin __jEdit_colorizer__.py
 '''Replace colorizer with colorizer using jEdit language description files'''
 
 #@@language python
 #@@tabwidth -4
 #@@pagewidth 80
 
-__version__ = '0.22'
+__version__ = '0.23'
 #@<< imports >>
-#@+node:ekr.20050529142916.3:<< imports >>
+#@+node:ekr.20060530091119.21:<< imports >>
 import leoGlobals as g
 import leoPlugins
 
@@ -22,10 +22,10 @@ import xml.sax.saxutils
 # php_re = re.compile("<?(\s|=|[pP][hH][pP])")
 php_re = re.compile("<?(\s[pP][hH][pP])")
 #@nonl
-#@-node:ekr.20050529142916.3:<< imports >>
+#@-node:ekr.20060530091119.21:<< imports >>
 #@nl
 #@<< version history >>
-#@+node:ekr.20050529142916.2:<< version history >>
+#@+node:ekr.20060530091119.22:<< version history >>
 #@@killcolor
 #@+at
 # 
@@ -37,73 +37,16 @@ php_re = re.compile("<?(\s[pP][hH][pP])")
 # - Possible fix for unicode crasher.
 # 
 # 0.22 EKR: colorOneChunk now allows for good response to key events.
+# 
+# 0.23 EKR: use g.app.gui.toGuiIndex in colorRangeWithTag.  Fixes a bug and is 
+# simpler.
 #@-at
-#@-node:ekr.20050529142916.2:<< version history >>
-#@nl
-#@<< to do >>
-#@+node:ekr.20050601081132:<< to do >>
-#@@nocolor
-#@+at
-# 
-# - Use attributes in attributes dicts:
-#     - Add all characters in 'no_word_sep' attribute to word_chars.
-#     - Use 'ignore_case' attribute in match_keywords.
-# 
-# - Improve quick coloring.
-# 
-# - Handle (and then delete) import rules when first loading a mode.
-# 
-# - Handle the delegate attribute, i.e., recursive coloring.
-# 
-# - Finish all rules: mark_previous, mark_following, match_regexp_helper.
-# 
-# - Support coloring of digits.
-#     ?? Create a match_digits rule matcher??
-#     Use 'default_digit_re' and 'highlight_digits' attributes in rules 
-# element.
-# 
-# - Document all properties.
-# 
-# - Tell how to use custom rule matchers.
-# 
-#@-at
-#@@c
-#@@color
-
-#@<< later >>
-#@+node:ekr.20050603121815:<< later >>
-#@@killcolor
-#@+at
-# - Support comment properties and self.comment_string:
-#     - Conditionally add rules for comment ivars: 
-# single_comment_start,block_comment_start,block_comment_end
-#     - commentEnd - the comment end string, used by the Range Comment 
-# command.
-#     - commentStart - the comment start string, used by the Range Comment 
-# command.
-#     - lineComment - the line comm
-# 
-# - Support Show Invisibles.
-#     Conditionally add rule for whitespace.
-# 
-# - Handle cweb section references correctly.
-# 
-# - Handle logic of setFirstLineState.
-#     - Change match_doc_part: Start in doc mode for some @root's.
-# 
-# - Make sure pictures get drawn properly.
-# 
-# - Create forth.xml
-#@-at
-#@nonl
-#@-node:ekr.20050603121815:<< later >>
-#@nl
-#@-node:ekr.20050601081132:<< to do >>
+#@-node:ekr.20060530091119.22:<< version history >>
 #@nl
 
 #@<< define leoKeywords >>
-#@+middle:ekr.20060425113823.1:module-level
-#@+node:ekr.20050529143413:<< define leoKeywords >>
+#@+middle:ekr.20060530091119.23:module-level
+#@+node:ekr.20060530091119.24:<< define leoKeywords >>
 # leoKeywords is used by directivesKind, so it should be a module-level symbol.
 
 # leoKeywords must be a list so that plugins may alter it.
@@ -119,12 +62,12 @@ leoKeywords = [
     "@silent","@tabwidth","@terse",
     "@unit","@verbose","@wrap", ]
 #@nonl
-#@-node:ekr.20050529143413:<< define leoKeywords >>
-#@-middle:ekr.20060425113823.1:module-level
+#@-node:ekr.20060530091119.24:<< define leoKeywords >>
+#@-middle:ekr.20060530091119.23:module-level
 #@nl
 #@<< define default_colors_dict >>
-#@+middle:ekr.20060425113823.1:module-level
-#@+node:ekr.20050529143413.1:<< define default_colors_dict >>
+#@+middle:ekr.20060530091119.23:module-level
+#@+node:ekr.20060530091119.25:<< define default_colors_dict >>
 # These defaults are sure to exist.
 
 default_colors_dict = {
@@ -161,13 +104,13 @@ default_colors_dict = {
     'operator'  :('operator_color', 'black'),
     }
 #@nonl
-#@-node:ekr.20050529143413.1:<< define default_colors_dict >>
-#@-middle:ekr.20060425113823.1:module-level
+#@-node:ekr.20060530091119.25:<< define default_colors_dict >>
+#@-middle:ekr.20060530091119.23:module-level
 #@nl
 
 #@+others
-#@+node:ekr.20060425113823.1:module-level
-#@+node:ekr.20050529142916.4:init
+#@+node:ekr.20060530091119.23:module-level
+#@+node:ekr.20060530091119.26:init
 def init ():
 
     leoPlugins.registerHandler('start1',onStart1)
@@ -175,8 +118,8 @@ def init ():
 
     return True
 #@nonl
-#@-node:ekr.20050529142916.4:init
-#@+node:ekr.20050529142916.5:onStart1
+#@-node:ekr.20060530091119.26:init
+#@+node:ekr.20060530091119.27:onStart1
 def onStart1 (tag, keywords):
     
     '''Override Leo's core colorizer classes.'''
@@ -189,8 +132,8 @@ def onStart1 (tag, keywords):
     
     leoColor.nullColorizer = nullColorizer
 #@nonl
-#@-node:ekr.20050529142916.5:onStart1
-#@+node:ekr.20060503153603:Leo rule functions
+#@-node:ekr.20060530091119.27:onStart1
+#@+node:ekr.20060530091119.28:Leo rule functions
 #@+at
 # These rule functions recognize noweb syntactic constructions. These are 
 # treated
@@ -199,7 +142,7 @@ def onStart1 (tag, keywords):
 # is 'self'.
 #@-at
 #@nonl
-#@+node:ekr.20050603043840.1:match_at_color
+#@+node:ekr.20060530091119.29:match_at_color
 def match_at_color (self,s,i):
 
     seq = '@color'
@@ -214,8 +157,8 @@ def match_at_color (self,s,i):
     else:
         return 0
 #@nonl
-#@-node:ekr.20050603043840.1:match_at_color
-#@+node:ekr.20050603043840.2:match_at_nocolor
+#@-node:ekr.20060530091119.29:match_at_color
+#@+node:ekr.20060530091119.30:match_at_nocolor
 def match_at_nocolor (self,s,i):
     
     seq = '@nocolor'
@@ -231,8 +174,8 @@ def match_at_nocolor (self,s,i):
     else:
         return 0
 #@nonl
-#@-node:ekr.20050603043840.2:match_at_nocolor
-#@+node:ekr.20050602211253:match_doc_part
+#@-node:ekr.20060530091119.30:match_at_nocolor
+#@+node:ekr.20060530091119.31:match_doc_part
 def match_doc_part (self,s,i):
     
     if i >= len(s) or s[i] != '@':
@@ -260,8 +203,8 @@ def match_doc_part (self,s,i):
     j = n - 1
     return j - i
 #@nonl
-#@-node:ekr.20050602211253:match_doc_part
-#@+node:ekr.20050602211219:match_section_ref
+#@-node:ekr.20060530091119.31:match_doc_part
+#@+node:ekr.20060530091119.32:match_section_ref
 def match_section_ref (self,s,i):
     
     if not g.match(s,i,'<<'):
@@ -274,7 +217,7 @@ def match_section_ref (self,s,i):
         if ref:
             if self.use_hyperlinks:
                 #@                << set the hyperlink >>
-                #@+node:ekr.20060504090341:<< set the hyperlink >>
+                #@+node:ekr.20060530091119.33:<< set the hyperlink >>
                 # Set the bindings to vnode callbacks.
                 # Create the tag.
                 # Create the tag name.
@@ -288,7 +231,7 @@ def match_section_ref (self,s,i):
                 self.body.tag_bind(tagName,"<Any-Enter>",ref.OnHyperLinkEnter)
                 self.body.tag_bind(tagName,"<Any-Leave>",ref.OnHyperLinkLeave)
                 #@nonl
-                #@-node:ekr.20060504090341:<< set the hyperlink >>
+                #@-node:ekr.20060530091119.33:<< set the hyperlink >>
                 #@nl
             else:
                 self.colorRangeWithTag(s,i+2,k,'link')
@@ -299,16 +242,16 @@ def match_section_ref (self,s,i):
     else:
         return 0
 #@nonl
-#@-node:ekr.20050602211219:match_section_ref
-#@-node:ekr.20060503153603:Leo rule functions
-#@-node:ekr.20060425113823.1:module-level
-#@+node:ekr.20050606214036:class colorizer (baseColorizer)
+#@-node:ekr.20060530091119.32:match_section_ref
+#@-node:ekr.20060530091119.28:Leo rule functions
+#@-node:ekr.20060530091119.23:module-level
+#@+node:ekr.20060530091119.34:class colorizer (baseColorizer)
 class baseColorizer:
 
     '''New colorizer using jEdit language description files'''
     #@    @+others
-    #@+node:ekr.20050529143413.24:Birth and init
-    #@+node:ekr.20050602150957:__init__
+    #@+node:ekr.20060530091119.35:Birth and init
+    #@+node:ekr.20060530091119.8:__init__
     def __init__(self,c):
         # Copies of ivars.
         self.c = c
@@ -365,8 +308,8 @@ class baseColorizer:
         ]
         self.configure_tags()
     #@nonl
-    #@-node:ekr.20050602150957:__init__
-    #@+node:ekr.20060504083828:addLeoRules
+    #@-node:ekr.20060530091119.8:__init__
+    #@+node:ekr.20060530091119.36:addLeoRules
     def addLeoRules (self,theDict):
     
         '''Prepend Leo-specific rules to theList.'''
@@ -382,8 +325,8 @@ class baseColorizer:
             theList.insert(0,rule)
             theDict [ch] = theList
     #@nonl
-    #@-node:ekr.20060504083828:addLeoRules
-    #@+node:ekr.20060504081338:init_keywords
+    #@-node:ekr.20060530091119.36:addLeoRules
+    #@+node:ekr.20060530091119.18:init_keywords
     def init_keywords (self,d):
         
         '''Initialize the keywords for the present language.
@@ -408,8 +351,8 @@ class baseColorizer:
                 if ch not in self.word_chars:
                     self.word_chars.append(g.toUnicode(ch,encoding='UTF-8'))
     #@nonl
-    #@-node:ekr.20060504081338:init_keywords
-    #@+node:ekr.20050529143413.33:configure_tags
+    #@-node:ekr.20060530091119.18:init_keywords
+    #@+node:ekr.20060530091119.37:configure_tags
     def configure_tags (self):
     
         c = self.c
@@ -474,8 +417,8 @@ class baseColorizer:
         for name in self.color_tags_list:
             self.body.tag_configure(name,foreground=name)
     #@nonl
-    #@-node:ekr.20050529143413.33:configure_tags
-    #@+node:ekr.20050602150619:init_mode
+    #@-node:ekr.20060530091119.37:configure_tags
+    #@+node:ekr.20060530091119.9:init_mode
     def init_mode (self,language):
         
         if not language: return
@@ -490,7 +433,7 @@ class baseColorizer:
             path = g.os_path_join(g.app.loadDir,'..','modes')
             mode = g.importFromPath (language,path)
             if mode:
-                g.trace('loading mode for: ',language)
+                if self.trace: g.trace('loading mode for: ',language)
                 self.rulesetName = self.computeRulesetName(language)
                 self.keywordsDict = d = mode.keywordsDictDict.get(self.rulesetName,{})
                 self.init_keywords(d)
@@ -510,10 +453,10 @@ class baseColorizer:
             else:
                 g.trace('No language description for %s' % language)
     #@nonl
-    #@-node:ekr.20050602150619:init_mode
-    #@-node:ekr.20050529143413.24:Birth and init
-    #@+node:ekr.20050529145203:Entry points (3 to be REWRITTEN)
-    #@+node:ekr.20050529143413.30:colorize
+    #@-node:ekr.20060530091119.9:init_mode
+    #@-node:ekr.20060530091119.35:Birth and init
+    #@+node:ekr.20060530091119.38:Entry points (3 to be REWRITTEN)
+    #@+node:ekr.20060530091119.11:colorize
     def colorize(self,p,incremental=False):
         
         '''The main colorizer entry point.'''
@@ -533,8 +476,8 @@ class baseColorizer:
         else:
             return "ok" # For unit testing.
     #@nonl
-    #@-node:ekr.20050529143413.30:colorize
-    #@+node:ekr.20050529143413.28:enable & disable
+    #@-node:ekr.20060530091119.11:colorize
+    #@+node:ekr.20060530091119.39:enable & disable
     def disable (self):
     
         print "disabling all syntax coloring"
@@ -543,8 +486,8 @@ class baseColorizer:
     def enable (self):
         self.enabled=True
     #@nonl
-    #@-node:ekr.20050529143413.28:enable & disable
-    #@+node:ekr.20050602144940:interrupt
+    #@-node:ekr.20060530091119.39:enable & disable
+    #@+node:ekr.20060530091119.10:interrupt
     # This is needed, even without threads.
     
     def interrupt(self):
@@ -555,8 +498,8 @@ class baseColorizer:
         self.chunks_done = True
         if self.trace: g.trace('%3d' % (self.chunk_count))
     #@nonl
-    #@-node:ekr.20050602144940:interrupt
-    #@+node:ekr.20050529145203.1:recolor_range  (TO BE DELETED)
+    #@-node:ekr.20060530091119.10:interrupt
+    #@+node:ekr.20060530091119.40:recolor_range  (TO BE DELETED)
     def recolor_range(self,p,leading,trailing):
         
         '''An entry point for the colorer called from incremental undo code.
@@ -572,8 +515,8 @@ class baseColorizer:
         # else:
             # return "ok" # For unit testing.
     #@nonl
-    #@-node:ekr.20050529145203.1:recolor_range  (TO BE DELETED)
-    #@+node:ekr.20050529143413.42:recolor_all (MUST BE REWRITTEN)
+    #@-node:ekr.20060530091119.40:recolor_range  (TO BE DELETED)
+    #@+node:ekr.20060530091119.41:recolor_all (MUST BE REWRITTEN)
     def recolor_all (self):
         
         g.trace()
@@ -598,7 +541,7 @@ class baseColorizer:
         state = self.setFirstLineState()
         for s in lines:
             #@        << kludge: insert a blank in s for every image in the line >>
-            #@+node:ekr.20050529143413.43:<< kludge: insert a blank in s for every image in the line >>
+            #@+node:ekr.20060530091119.42:<< kludge: insert a blank in s for every image in the line >>
             #@+at 
             #@nonl
             # A spectacular kludge.
@@ -616,13 +559,13 @@ class baseColorizer:
                 if self.line_index == line_index:
                     n = i+inserted ; 	inserted += 1
                     s = s[:n] + ' ' + s[n:]
-            #@-node:ekr.20050529143413.43:<< kludge: insert a blank in s for every image in the line >>
+            #@-node:ekr.20060530091119.42:<< kludge: insert a blank in s for every image in the line >>
             #@nl
             state = self.colorizeLine(s,state)
             self.line_index += 1
     #@nonl
-    #@-node:ekr.20050529143413.42:recolor_all (MUST BE REWRITTEN)
-    #@+node:ekr.20050529143413.84:schedule & idle_colorize (TO BE DELETED)
+    #@-node:ekr.20060530091119.41:recolor_all (MUST BE REWRITTEN)
+    #@+node:ekr.20060530091119.43:schedule & idle_colorize (TO BE DELETED)
     def schedule(self,p,incremental=0):
         
         __pychecker__ = '--no-argsused'
@@ -639,8 +582,8 @@ class baseColorizer:
             p = self.c.currentPosition()
             p and self.colorize(p)
     #@nonl
-    #@-node:ekr.20050529143413.84:schedule & idle_colorize (TO BE DELETED)
-    #@+node:ekr.20050529143413.88:useSyntaxColoring
+    #@-node:ekr.20060530091119.43:schedule & idle_colorize (TO BE DELETED)
+    #@+node:ekr.20060530091119.44:useSyntaxColoring
     def useSyntaxColoring (self,p):
         
         """Return True unless p is unambiguously under the control of @nocolor."""
@@ -668,8 +611,8 @@ class baseColorizer:
         # g.trace(first.headString(),val)
         return val
     #@nonl
-    #@-node:ekr.20050529143413.88:useSyntaxColoring
-    #@+node:ekr.20050529143413.87:updateSyntaxColorer
+    #@-node:ekr.20060530091119.44:useSyntaxColoring
+    #@+node:ekr.20060530091119.45:updateSyntaxColorer
     def updateSyntaxColorer (self,p):
     
         p = p.copy()
@@ -677,10 +620,10 @@ class baseColorizer:
         self.flag = self.useSyntaxColoring(p)
         self.scanColorDirectives(p)
     #@nonl
-    #@-node:ekr.20050529143413.87:updateSyntaxColorer
-    #@-node:ekr.20050529145203:Entry points (3 to be REWRITTEN)
-    #@+node:ekr.20050529150436:Colorizer code
-    #@+node:ekr.20050601042620:colorAll
+    #@-node:ekr.20060530091119.45:updateSyntaxColorer
+    #@-node:ekr.20060530091119.38:Entry points (3 to be REWRITTEN)
+    #@+node:ekr.20060530091119.46:Colorizer code
+    #@+node:ekr.20060530091119.12:colorAll
     def colorAll(self,s):
         
         '''Colorize all of s.'''
@@ -696,8 +639,8 @@ class baseColorizer:
         self.colorOneChunk()
         return 'break'
     #@nonl
-    #@-node:ekr.20050601042620:colorAll
-    #@+node:ekr.20050529143413.31:colorizeAnyLanguage
+    #@-node:ekr.20060530091119.12:colorAll
+    #@+node:ekr.20060530091119.47:colorizeAnyLanguage
     def colorizeAnyLanguage (self,p,leading=None,trailing=None):
         
         '''Color the body pane.  All coloring starts here.'''
@@ -720,8 +663,8 @@ class baseColorizer:
             g.es_exception()
             return "error" # for unit testing.
     #@nonl
-    #@-node:ekr.20050529143413.31:colorizeAnyLanguage
-    #@+node:ekr.20050601105358:colorOneChunk
+    #@-node:ekr.20060530091119.47:colorizeAnyLanguage
+    #@+node:ekr.20060530091119.13:colorOneChunk
     def colorOneChunk (self):
         '''Colorize a limited number of tokens.
         If not done, queue this method again to continue coloring later.'''
@@ -755,22 +698,21 @@ class baseColorizer:
         self.tagList = []
         self.chunks_done = True # Prohibit any more queued calls.
         return 'break'
-    #@-node:ekr.20050601105358:colorOneChunk
-    #@+node:ekr.20050602205810.4:colorRangeWithTag
+    #@-node:ekr.20060530091119.13:colorOneChunk
+    #@+node:ekr.20060530091119.48:colorRangeWithTag
     def colorRangeWithTag (self,s,i,j,tag):
     
         '''Add an item to the tagList if colorizing is enabled.'''
         
-        # g.convertPythonIndexToRowCol could be slow for large s.
+        # toGuiIndex could be slow for large s.
         if self.flag:
-            row,col = g.convertPythonIndexToRowCol(s,i)
-            x1 = '%d.%d' % (row+1,col)
-            row,col = g.convertPythonIndexToRowCol(s,j)
-            x2 = '%d.%d' % (row+1,col)
+            w = self.body.bodyCtrl
+            x1 = g.app.gui.toGuiIndex(s,w,i)
+            x2 = g.app.gui.toGuiIndex(s,w,j)
             self.tagList.append((tag,x1,x2),)
     #@nonl
-    #@-node:ekr.20050602205810.4:colorRangeWithTag
-    #@+node:ekr.20060507192431:quickColor
+    #@-node:ekr.20060530091119.48:colorRangeWithTag
+    #@+node:ekr.20060530091119.14:quickColor
     def quickColor (self):
         
         '''Give the inserted character the previous color tag by default.'''
@@ -784,9 +726,9 @@ class baseColorizer:
         if theList:
             w.tag_add(theList[0],i)
     #@nonl
-    #@-node:ekr.20060507192431:quickColor
-    #@-node:ekr.20050529150436:Colorizer code
-    #@+node:ekr.20060503153603.1:jEdit matchers (todo: exclude_match)
+    #@-node:ekr.20060530091119.14:quickColor
+    #@-node:ekr.20060530091119.46:Colorizer code
+    #@+node:ekr.20060530091119.49:jEdit matchers (todo: exclude_match)
     #@@nocolor
     #@+at
     # 
@@ -818,7 +760,7 @@ class baseColorizer:
     #@-at
     #@@c
     #@@color
-    #@+node:ekr.20050529190857:match_keywords
+    #@+node:ekr.20060530091119.17:match_keywords
     # This is a time-critical method.
     def match_keywords (self,s,i):
         
@@ -843,8 +785,8 @@ class baseColorizer:
         else:
             return 0
     #@nonl
-    #@-node:ekr.20050529190857:match_keywords
-    #@+node:ekr.20050529182335:match_regexp_helper (TO DO)
+    #@-node:ekr.20060530091119.17:match_keywords
+    #@+node:ekr.20060530091119.50:match_regexp_helper (TO DO)
     def match_regexp_helper (self,s,i,seq):
         
         '''Return the length of the matching text if seq (a regular expression) matches the present position.'''
@@ -853,8 +795,8 @@ class baseColorizer:
         
         return 0 ### Not ready yet.
     #@nonl
-    #@-node:ekr.20050529182335:match_regexp_helper (TO DO)
-    #@+node:ekr.20050601045930:match_eol_span
+    #@-node:ekr.20060530091119.50:match_regexp_helper (TO DO)
+    #@+node:ekr.20060530091119.51:match_eol_span
     def match_eol_span (self,s,i,kind,seq,
         at_line_start,at_whitespace_end,at_word_start,
         delegate,exclude_match):
@@ -874,8 +816,8 @@ class baseColorizer:
             return j - i 
         else:
             return 0
-    #@-node:ekr.20050601045930:match_eol_span
-    #@+node:ekr.20050601063317:match_eol_span_regexp
+    #@-node:ekr.20060530091119.51:match_eol_span
+    #@+node:ekr.20060530091119.52:match_eol_span_regexp
     def match_eol_span_regexp (self,s,i,kind,regex,hash_char,
         at_line_start,at_whitespace_end,at_word_start,
         delegate,exclude_match):
@@ -899,8 +841,8 @@ class baseColorizer:
         else:
             return 0
     #@nonl
-    #@-node:ekr.20050601063317:match_eol_span_regexp
-    #@+node:ekr.20060503173247:match_mark_following
+    #@-node:ekr.20060530091119.52:match_eol_span_regexp
+    #@+node:ekr.20060530091119.53:match_mark_following
     def match_mark_following (self,s,i,kind,pattern,
         at_line_start,at_whitespace_end,at_word_start,exclude_match):
         
@@ -917,8 +859,8 @@ class baseColorizer:
             return j - i
         else:
             return 0
-    #@-node:ekr.20060503173247:match_mark_following
-    #@+node:ekr.20060503173247.1:match_mark_previous
+    #@-node:ekr.20060530091119.53:match_mark_following
+    #@+node:ekr.20060530091119.54:match_mark_previous
     def match_mark_previous (self,s,i,kind,pattern,
         at_line_start,at_whitespace_end,at_word_start,exclude_match):
         
@@ -940,8 +882,8 @@ class baseColorizer:
         else:
             return 0
     #@nonl
-    #@-node:ekr.20060503173247.1:match_mark_previous
-    #@+node:ekr.20050529182335.1:match_seq
+    #@-node:ekr.20060530091119.54:match_mark_previous
+    #@+node:ekr.20060530091119.55:match_seq
     def match_seq (self,s,i,kind,seq,
         at_line_start,at_whitespace_end,at_word_start,delegate):
         
@@ -959,8 +901,8 @@ class baseColorizer:
         else:
             return 0
     #@nonl
-    #@-node:ekr.20050529182335.1:match_seq
-    #@+node:ekr.20050529215620:match_seq_regexp
+    #@-node:ekr.20060530091119.55:match_seq
+    #@+node:ekr.20060530091119.56:match_seq_regexp
     def match_seq_regexp (self,s,i,kind,regexp,hash_char,
         at_line_start,at_whitespace_end,at_word_start,delegate):
         
@@ -978,8 +920,8 @@ class baseColorizer:
         else:
             return 0
     #@nonl
-    #@-node:ekr.20050529215620:match_seq_regexp
-    #@+node:ekr.20050529185208.2:match_span
+    #@-node:ekr.20060530091119.56:match_seq_regexp
+    #@+node:ekr.20060530091119.57:match_span
     def match_span (self,s,i,kind,begin,end,
         at_line_start,at_whitespace_end,at_word_start,
         delegate,exclude_match,
@@ -1004,8 +946,8 @@ class baseColorizer:
         else:
             return 0
     #@nonl
-    #@-node:ekr.20050529185208.2:match_span
-    #@+node:ekr.20050529215732:match_span_regexp
+    #@-node:ekr.20060530091119.57:match_span
+    #@+node:ekr.20060530091119.58:match_span_regexp
     def match_span_regexp (self,s,i,kind,begin,end,hash_char,
         at_line_start,at_whitespace_end,at_word_start,
         delegate,exclude_match):
@@ -1027,28 +969,28 @@ class baseColorizer:
         else:
             return 0
     #@nonl
-    #@-node:ekr.20050529215732:match_span_regexp
-    #@-node:ekr.20060503153603.1:jEdit matchers (todo: exclude_match)
-    #@+node:ekr.20050529143413.89:Utils
+    #@-node:ekr.20060530091119.58:match_span_regexp
+    #@-node:ekr.20060530091119.49:jEdit matchers (todo: exclude_match)
+    #@+node:ekr.20060530091119.59:Utils
     #@+at 
     #@nonl
     # These methods are like the corresponding functions in leoGlobals.py 
     # except they issue no error messages.
     #@-at
-    #@+node:ekr.20060503171558:computeRulesetName
+    #@+node:ekr.20060530091119.60:computeRulesetName
     def computeRulesetName (self,language,name='main'):
         
         return '%s_%s' % (language,name)
     #@nonl
-    #@-node:ekr.20060503171558:computeRulesetName
-    #@+node:ekr.20050529143413.90:index
+    #@-node:ekr.20060530091119.60:computeRulesetName
+    #@+node:ekr.20060530091119.61:index
     def index (self,i):
         
         return self.body.convertRowColumnToIndex(self.line_index,i)
         
     #@nonl
-    #@-node:ekr.20050529143413.90:index
-    #@+node:ekr.20050529143413.86:removeAllImages
+    #@-node:ekr.20060530091119.61:index
+    #@+node:ekr.20060530091119.62:removeAllImages
     def removeAllImages (self):
         
         for photo,image,line_index,i in self.image_references:
@@ -1059,8 +1001,8 @@ class baseColorizer:
         
         self.image_references = []
     #@nonl
-    #@-node:ekr.20050529143413.86:removeAllImages
-    #@+node:ekr.20050529143413.80:removeAllTags
+    #@-node:ekr.20060530091119.62:removeAllImages
+    #@+node:ekr.20060530091119.63:removeAllTags
     def removeAllTags (self):
         
         if self.trace: g.trace()
@@ -1076,8 +1018,8 @@ class baseColorizer:
                         w.tag_remove(name,theList[i],theList[i+1])
                         i += 2
     #@nonl
-    #@-node:ekr.20050529143413.80:removeAllTags
-    #@+node:ekr.20050529143413.81:scanColorDirectives
+    #@-node:ekr.20060530091119.63:removeAllTags
+    #@+node:ekr.20060530091119.64:scanColorDirectives
     def scanColorDirectives(self,p):
         
         """Scan position p and p's ancestors looking for @comment, @language and @root directives,
@@ -1096,7 +1038,7 @@ class baseColorizer:
             s = p.v.t.bodyString
             theDict = g.get_directives_dict(s)
             #@        << Test for @comment or @language >>
-            #@+node:ekr.20050529143413.82:<< Test for @comment or @language >>
+            #@+node:ekr.20060530091119.65:<< Test for @comment or @language >>
             # @comment and @language may coexist in the same node.
             
             if theDict.has_key("comment"):
@@ -1111,10 +1053,10 @@ class baseColorizer:
             if theDict.has_key("comment") or theDict.has_key("language"):
                 break
             #@nonl
-            #@-node:ekr.20050529143413.82:<< Test for @comment or @language >>
+            #@-node:ekr.20060530091119.65:<< Test for @comment or @language >>
             #@nl
             #@        << Test for @root, @root-doc or @root-code >>
-            #@+node:ekr.20050529143413.83:<< Test for @root, @root-doc or @root-code >>
+            #@+node:ekr.20060530091119.66:<< Test for @root, @root-doc or @root-code >>
             if theDict.has_key("root") and not self.rootMode:
             
                 k = theDict["root"]
@@ -1126,13 +1068,13 @@ class baseColorizer:
                     doc = c.config.at_root_bodies_start_in_doc_mode
                     self.rootMode = g.choose(doc,"doc","code")
             #@nonl
-            #@-node:ekr.20050529143413.83:<< Test for @root, @root-doc or @root-code >>
+            #@-node:ekr.20060530091119.66:<< Test for @root, @root-doc or @root-code >>
             #@nl
     
         return self.language # For use by external routines.
     #@nonl
-    #@-node:ekr.20050529143413.81:scanColorDirectives
-    #@+node:ekr.20050529143413.29:setFontFromConfig
+    #@-node:ekr.20060530091119.64:scanColorDirectives
+    #@+node:ekr.20060530091119.67:setFontFromConfig
     def setFontFromConfig (self):
         
         c = self.c
@@ -1164,8 +1106,8 @@ class baseColorizer:
         self.color_tags_list = []
         self.image_references = []
     #@nonl
-    #@-node:ekr.20050529143413.29:setFontFromConfig
-    #@+node:ekr.20060507175312:tagAll
+    #@-node:ekr.20060530091119.67:setFontFromConfig
+    #@+node:ekr.20060530091119.19:tagAll
     def tagAll (self):
         
         if self.trace: g.trace(len(self.tagList)/3)
@@ -1173,32 +1115,32 @@ class baseColorizer:
         for tag,x1,x2 in self.tagList:
             self.body.tag_add(tag,x1,x2)
     #@nonl
-    #@-node:ekr.20060507175312:tagAll
-    #@-node:ekr.20050529143413.89:Utils
+    #@-node:ekr.20060530091119.19:tagAll
+    #@-node:ekr.20060530091119.59:Utils
     #@-others
 
 class colorizer (baseColorizer):
     pass
 #@nonl
-#@-node:ekr.20050606214036:class colorizer (baseColorizer)
+#@-node:ekr.20060530091119.34:class colorizer (baseColorizer)
 #@-others
 
 #@<< class nullColorizer (colorizer) >>
-#@+node:ekr.20050606213440:<< class nullColorizer (colorizer) >>
+#@+node:ekr.20060530091119.68:<< class nullColorizer (colorizer) >>
 class nullColorizer (colorizer):
     
     """A do-nothing colorer class"""
     
     #@    @+others
-    #@+node:ekr.20050606213440.1:__init__
+    #@+node:ekr.20060530091119.69:__init__
     def __init__ (self,c):
         
         colorizer.__init__(self,c) # init the base class.
     
         self.c = c
         self.enabled = False
-    #@-node:ekr.20050606213440.1:__init__
-    #@+node:ekr.20050606213440.2:entry points
+    #@-node:ekr.20060530091119.69:__init__
+    #@+node:ekr.20060530091119.70:entry points
     def colorize(self,p,incremental=False): pass
     
     def disable(self): pass
@@ -1215,11 +1157,11 @@ class nullColorizer (colorizer):
     
     def updateSyntaxColorer (self,p): pass
     #@nonl
-    #@-node:ekr.20050606213440.2:entry points
+    #@-node:ekr.20060530091119.70:entry points
     #@-others
 #@nonl
-#@-node:ekr.20050606213440:<< class nullColorizer (colorizer) >>
+#@-node:ekr.20060530091119.68:<< class nullColorizer (colorizer) >>
 #@nl
 #@nonl
-#@-node:ekr.20050529142847:@thin __jEdit_colorizer__.py
+#@-node:ekr.20060530091119.20:@thin __jEdit_colorizer__.py
 #@-leo
