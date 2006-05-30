@@ -1,65 +1,25 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20060207133601:@thin ../doc/leoToDoLater.txt
 #@+all
-#@+node:ekr.20060528155800:Big
-#@+node:ekr.20060116173818:Fix vampire nodes (maybe)
-#@-node:ekr.20060116173818:Fix vampire nodes (maybe)
-#@+node:ekr.20060329102951:@ref (maybe)
-@nocolor
+#@+node:ekr.20060530072008:For 4.4.1 b2
+#@+node:ekr.20060527204444:Finish new colorizer plugin
+- Add all features used by Php.
+
+- Add all other features.
 #@nonl
-#@+node:ekr.20060329102951.1:My summary post
-http://sourceforge.net/forum/message.php?msg_id=3598136
+#@+node:ekr.20060529180622:@others not colored properly by the new colorizer
+@ whatever
+@c
 
-> It appears that @ref nodes introduce a flexibility that can not be simulated (at all?) with clones.  
- 
-Now that something like @ref appears necessary, it is so much easier to see how @ref is useful :-) 
- 
-1. @ref is an explicit link (arc) that creates the links of a general graph structure explictily. 
- 
-The simplest cycle is: 
- 
-- root 
-..- a 
-.... - @ref b 
-..- b 
-.... - @ref a 
- 
-This is not possible with clones! No more mumbling about being able to represent such links in uA's! 
- 
-2. @ref allows users to compose documents from 'atomic' pieces of text properly. That is, adding a 'virtual' child to a piece of text does not add it to all other uses of that text in (possibly unrelated) documents. This vastly increases the flexibility of rst3 plugin. 
- 
-I suspect other essential uses of @ref will appear. I am sure we can declare the 'post-leo LP tool' project a great success already :-) 
- 
-Edward 
-#@-node:ekr.20060329102951.1:My summary post
-#@+node:ekr.20060329102951.2:Reply
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3650005
-By: itsme213
-
-Imho ...
-
-There will not be any "arbitrary graph" from @ref. Instead there is a forest
-of trees, and across trees, some nodes are same_as some other nodes (caused
-by @ref). same_as is transitive. Quite likely the roots of all trees are same_as.
-There may need to be some rules to ensure things make structural sense. Children
-of a node are just that -- children of that node.
-
-There will be a totally separate Merge node whose children will be the union
-of the children of all the nodes it merges. A Merge node is, itself, the ordinary child of some
-node.
-
-Tree traversals will be tree traversals.
-
-Hope that did not muddy the waters even more ... 
-#@-node:ekr.20060329102951.2:Reply
-#@-node:ekr.20060329102951:@ref (maybe)
-#@-node:ekr.20060528155800:Big
+@others
+#@nonl
+#@-node:ekr.20060529180622:@others not colored properly by the new colorizer
+#@+node:ekr.20060529195042.1:The last character of a python comment is not colored.
+# test
+#@nonl
+#@-node:ekr.20060529195042.1:The last character of a python comment is not colored.
+#@-node:ekr.20060527204444:Finish new colorizer plugin
 #@+node:ekr.20060527182907.1:Bugs (minor)
-#@+node:ekr.20060202235215.1:Make sure the user doesn't specify Enter and Leave bindings by mistake
-#@-node:ekr.20060202235215.1:Make sure the user doesn't specify Enter and Leave bindings by mistake
-#@+node:ekr.20051012062458.1:Strip quotes from color, font settings.
-#@-node:ekr.20051012062458.1:Strip quotes from color, font settings.
 #@+node:ekr.20060120084705:Overwrite mode doesn't work in headllines
 #@-node:ekr.20060120084705:Overwrite mode doesn't work in headllines
 #@+node:ekr.20060117074259:Handle Mac issues
@@ -218,6 +178,61 @@ c.insertHeadlineTime uses the edit widget.  It shouldn't.
 #@nonl
 #@-node:ekr.20060207085518:Improve c.insertHeadline (minor)
 #@-node:ekr.20060527182907.1:Bugs (minor)
+#@-node:ekr.20060530072008:For 4.4.1 b2
+#@+node:ekr.20060528155800:Big, not so important
+#@+node:ekr.20060116173818:Fix vampire nodes (maybe)
+#@-node:ekr.20060116173818:Fix vampire nodes (maybe)
+#@+node:ekr.20060329102951:@ref (maybe)
+@nocolor
+#@nonl
+#@+node:ekr.20060329102951.1:My summary post
+http://sourceforge.net/forum/message.php?msg_id=3598136
+
+> It appears that @ref nodes introduce a flexibility that can not be simulated (at all?) with clones.  
+ 
+Now that something like @ref appears necessary, it is so much easier to see how @ref is useful :-) 
+ 
+1. @ref is an explicit link (arc) that creates the links of a general graph structure explictily. 
+ 
+The simplest cycle is: 
+ 
+- root 
+..- a 
+.... - @ref b 
+..- b 
+.... - @ref a 
+ 
+This is not possible with clones! No more mumbling about being able to represent such links in uA's! 
+ 
+2. @ref allows users to compose documents from 'atomic' pieces of text properly. That is, adding a 'virtual' child to a piece of text does not add it to all other uses of that text in (possibly unrelated) documents. This vastly increases the flexibility of rst3 plugin. 
+ 
+I suspect other essential uses of @ref will appear. I am sure we can declare the 'post-leo LP tool' project a great success already :-) 
+ 
+Edward 
+#@-node:ekr.20060329102951.1:My summary post
+#@+node:ekr.20060329102951.2:Reply
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3650005
+By: itsme213
+
+Imho ...
+
+There will not be any "arbitrary graph" from @ref. Instead there is a forest
+of trees, and across trees, some nodes are same_as some other nodes (caused
+by @ref). same_as is transitive. Quite likely the roots of all trees are same_as.
+There may need to be some rules to ensure things make structural sense. Children
+of a node are just that -- children of that node.
+
+There will be a totally separate Merge node whose children will be the union
+of the children of all the nodes it merges. A Merge node is, itself, the ordinary child of some
+node.
+
+Tree traversals will be tree traversals.
+
+Hope that did not muddy the waters even more ... 
+#@-node:ekr.20060329102951.2:Reply
+#@-node:ekr.20060329102951:@ref (maybe)
+#@-node:ekr.20060528155800:Big, not so important
 #@+node:ekr.20060527184335.1:Command-line options
 #@+node:ekr.20060103101524:Improve command-line handling
 @nocolor
@@ -1490,7 +1505,7 @@ spell-ignore
 
 @color
 #@nonl
-#@+node:ekr.20051025071455:Spell classes (ok)
+#@+node:ekr.20051025071455:Spell classes
 @others
 #@+node:ekr.20051025071455.6:class Aspell
 class Aspell:
@@ -1598,6 +1613,8 @@ def getPublicCommands (self):
 #@-node:ekr.20051025080420:getPublicCommands (searchCommandsClass)
 #@+node:ekr.20051025080633:openSpellTab
 def openSpellTab (self,event=None):
+    
+    '''Open the Spell Checker tab in the log pane.'''
 
     c = self.c ; log = c.frame.log ; tabName = 'Spell'
 
@@ -1621,7 +1638,7 @@ def openSpellTab (self,event=None):
 # For minibuffer commands, we must also force the Spell tab to be visible.
 
 def find (self,event=None):
-
+    '''Simulate pressing the 'Find' button in the Spell tab.'''
     if self.handler:
         self.openSpellTab()
         self.handler.find()
@@ -1629,7 +1646,7 @@ def find (self,event=None):
         self.openSpellTab()
 
 def change(self,event=None):
-
+    '''Simulate pressing the 'Change' button in the Spell tab.'''
     if self.handler:
         self.openSpellTab()
         self.handler.change()
@@ -1645,7 +1662,7 @@ def changeAll(self,event=None):
         self.openSpellTab()
 
 def changeThenFind (self,event=None):
-    
+    '''Simulate pressing the 'Change, Find' button in the Spell tab.'''
     if self.handler:
         self.openSpellTab()
         self.handler.changeThenFind()
@@ -1653,13 +1670,13 @@ def changeThenFind (self,event=None):
         self.openSpellTab()
         
 def hide (self,event=None):
-    
+    '''Hide the Spell tab.'''
     if self.handler:
         self.c.frame.log.selectTab('Log')
         self.c.bodyWantsFocus()
 
 def ignore (self,event=None):
-    
+    '''Simulate pressing the 'Ignore' button in the Spell tab.'''
     if self.handler:
         self.openSpellTab()
         self.handler.ignore()
@@ -2228,7 +2245,7 @@ def updateButtons (self):
 #@-node:ekr.20051025071455.52:updateButtons
 #@-node:ekr.20051025071455.42:Helpers
 #@-node:ekr.20051025071455.18:class spellTab (leoFind.leoFind)
-#@-node:ekr.20051025071455:Spell classes (ok)
+#@-node:ekr.20051025071455:Spell classes
 #@-node:ekr.20051110155735.1:Improve Spell tab
 #@+node:ekr.20041022083833.1:Easy
 #@+node:ekr.20060209105218.2:contract-all-except-present-tree
