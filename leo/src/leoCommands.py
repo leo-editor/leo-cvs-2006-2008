@@ -406,6 +406,8 @@ class baseCommands:
     #@+node:ekr.20031218072017.2820:top level
     #@+node:ekr.20031218072017.1623:new
     def new (self,event=None):
+        
+        '''Create a new Leo window.'''
     
         c,frame = g.app.newLeoCommanderAndFrame(fileName=None)
         
@@ -432,6 +434,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.1623:new
     #@+node:ekr.20031218072017.2821:open
     def open (self,event=None):
+        
+        '''Open a Leo window containing the contents of a .leo file.'''
     
         c = self
         #@    << Set closeFlag if the only open window is empty >>
@@ -740,13 +744,15 @@ class baseCommands:
     #@+node:ekr.20031218072017.2833:close
     def close (self,event=None):
         
-        """Handle the File-Close command."""
+        '''Close the Leo window, prompting to save it if it has been changed.'''
     
         g.app.closeLeoWindow(self.frame)
     #@nonl
     #@-node:ekr.20031218072017.2833:close
     #@+node:ekr.20031218072017.2834:save
     def save (self,event=None):
+        
+        '''Save a Leo outline to a file.'''
     
         c = self
         
@@ -781,6 +787,8 @@ class baseCommands:
     #@+node:ekr.20031218072017.2835:saveAs
     def saveAs (self,event=None):
         
+        '''Save a Leo outline to a file with a new filename.'''
+        
         c = self
         
         if g.app.disableSave:
@@ -811,6 +819,8 @@ class baseCommands:
     #@+node:ekr.20031218072017.2836:saveTo
     def saveTo (self,event=None):
         
+        '''Save a Leo outline to a file, leaving the file associated with the Leo outline unchanged.'''
+        
         c = self
         
         if g.app.disableSave:
@@ -836,6 +846,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.2836:saveTo
     #@+node:ekr.20031218072017.2837:revert
     def revert (self,event=None):
+        
+        '''Revert the contents of a Leo outline to last saved contents.'''
         
         c = self
     
@@ -953,6 +965,8 @@ class baseCommands:
     #@+node:ekr.20031218072017.2838:Read/Write submenu
     #@+node:ekr.20031218072017.2839:readOutlineOnly
     def readOutlineOnly (self,event=None):
+        
+        '''Open a Leo outline from a .leo file, but do not read any derived files.'''
     
         fileName = g.app.gui.runOpenFileDialog(
             title="Read Outline Only",
@@ -975,6 +989,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.2839:readOutlineOnly
     #@+node:ekr.20031218072017.1839:readAtFileNodes (commands)
     def readAtFileNodes (self,event=None):
+        
+        '''Read all @file nodes in the presently selected outline.'''
     
         c = self ; u = c.undoer ; p = c.currentPosition()
     
@@ -1020,17 +1036,23 @@ class baseCommands:
     #@+node:ekr.20031218072017.2842:tangleAll
     def tangleAll (self,event=None):
         
+        '''Tangle all @root nodes in the entire outline.'''
+        
         c = self
         c.tangleCommands.tangleAll()
     #@-node:ekr.20031218072017.2842:tangleAll
     #@+node:ekr.20031218072017.2843:tangleMarked
     def tangleMarked (self,event=None):
+        
+        '''Tangle all marked @root nodes in the entire outline.'''
     
         c = self
         c.tangleCommands.tangleMarked()
     #@-node:ekr.20031218072017.2843:tangleMarked
     #@+node:ekr.20031218072017.2844:tangle
     def tangle (self,event=None):
+        
+        '''Tangle all @root nodes in the selected outline.'''
     
         c = self
         c.tangleCommands.tangle()
@@ -1040,6 +1062,8 @@ class baseCommands:
     #@+node:ekr.20031218072017.2845:Untangle submenu
     #@+node:ekr.20031218072017.2846:untangleAll
     def untangleAll (self,event=None):
+        
+        '''Untangle all @root nodes in the entire outline.'''
     
         c = self
         c.tangleCommands.untangleAll()
@@ -1047,6 +1071,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.2846:untangleAll
     #@+node:ekr.20031218072017.2847:untangleMarked
     def untangleMarked (self,event=None):
+        
+        '''Untangle all marked @root nodes in the entire outline.'''
     
         c = self
         c.tangleCommands.untangleMarked()
@@ -1054,15 +1080,20 @@ class baseCommands:
     #@-node:ekr.20031218072017.2847:untangleMarked
     #@+node:ekr.20031218072017.2848:untangle
     def untangle (self,event=None):
+        
+        '''Untangle all @root nodes in the selected outline.'''
     
         c = self
         c.tangleCommands.untangle()
         c.undoer.clearUndoState()
+    #@nonl
     #@-node:ekr.20031218072017.2848:untangle
     #@-node:ekr.20031218072017.2845:Untangle submenu
     #@+node:ekr.20031218072017.2849:Import&Export submenu
     #@+node:ekr.20031218072017.2850:exportHeadlines
     def exportHeadlines (self,event=None):
+        
+        '''Export all headlines to an external file.'''
         
         c = self
     
@@ -1082,6 +1113,9 @@ class baseCommands:
     #@+node:ekr.20031218072017.2851:flattenOutline
     def flattenOutline (self,event=None):
         
+        '''Export the selected outline to an external file.
+        The outline is represented in MORE format.'''
+        
         c = self
     
         filetypes = [("Text files", "*.txt"),("All files", "*")]
@@ -1099,6 +1133,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.2851:flattenOutline
     #@+node:ekr.20031218072017.2852:importAtRoot
     def importAtRoot (self,event=None):
+        
+        '''Import one or more external files, creating @root trees.'''
         
         c = self
         
@@ -1124,6 +1160,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.2852:importAtRoot
     #@+node:ekr.20031218072017.2853:importAtFile
     def importAtFile (self,event=None):
+        
+        '''Import one or more external files, creating @file trees.'''
         
         c = self
     
@@ -1151,6 +1189,8 @@ class baseCommands:
     #@+node:ekr.20031218072017.2854:importCWEBFiles
     def importCWEBFiles (self,event=None):
         
+        '''Import one or more external CWEB files, creating @file trees.'''
+        
         c = self
         
         filetypes = [
@@ -1170,6 +1210,8 @@ class baseCommands:
     #@+node:ekr.20031218072017.2855:importFlattenedOutline
     def importFlattenedOutline (self,event=None):
         
+        '''Import an external created by the flatten-outline command.'''
+        
         c = self
         
         types = [("Text files","*.txt"), ("All files","*")]
@@ -1185,6 +1227,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.2855:importFlattenedOutline
     #@+node:ekr.20031218072017.2856:importNowebFiles
     def importNowebFiles (self,event=None):
+        
+        '''Import one or more external noweb files, creating @file trees.'''
         
         c = self
     
@@ -1204,6 +1248,9 @@ class baseCommands:
     #@-node:ekr.20031218072017.2856:importNowebFiles
     #@+node:ekr.20031218072017.2857:outlineToCWEB
     def outlineToCWEB (self,event=None):
+        
+        '''Export the selected outline to an external file.
+        The outline is represented in CWEB format.'''
         
         c = self
     
@@ -1226,6 +1273,9 @@ class baseCommands:
     #@+node:ekr.20031218072017.2858:outlineToNoweb
     def outlineToNoweb (self,event=None):
         
+        '''Export the selected outline to an external file.
+        The outline is represented in noweb format.'''
+        
         c = self
         
         filetypes=[
@@ -1243,10 +1293,12 @@ class baseCommands:
             g.setGlobalOpenDir(fileName)
             c.importCommands.outlineToWeb(fileName,"noweb")
             c.outlineToNowebDefaultFileName = fileName
-    
+    #@nonl
     #@-node:ekr.20031218072017.2858:outlineToNoweb
     #@+node:ekr.20031218072017.2859:removeSentinels
     def removeSentinels (self,event=None):
+        
+        '''Import one or more files, removing any sentinels.'''
         
         c = self
         
@@ -5014,6 +5066,8 @@ class baseCommands:
     #@+node:ekr.20031218072017.2092:openCompareWindow
     def openCompareWindow (self,event=None):
         
+        '''Open a dialog for comparing files and directories.'''
+        
         c = self ; frame = c.frame
         
         if not frame.comparePanel:
@@ -5024,6 +5078,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.2092:openCompareWindow
     #@+node:ekr.20031218072017.2932:openPythonWindow (Dave Hein)
     def openPythonWindow (self,event=None):
+        
+        '''Open Python's Idle debugger in a separate process.'''
         
         if 1:
             #@        << open idle in a separate process >>
@@ -5162,6 +5218,8 @@ class baseCommands:
     #@+node:ekr.20031218072017.2939:about (version number & date)
     def about (self,event=None):
         
+        '''Bring up an About Leo Dialog.'''
+        
         c = self
         
         # Don't use triple-quoted strings or continued strings here.
@@ -5179,6 +5237,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.2939:about (version number & date)
     #@+node:ekr.20031218072017.2943:leoConfig
     def openLeoSettings (self,event=None):
+        
+        '''Open leoSettings.leo in a new Leo window.'''
     
         c = self
         name = 'leoSettings.leo'
@@ -5204,6 +5264,8 @@ class baseCommands:
     #@+node:ekr.20031218072017.2940:leoDocumentation
     def leoDocumentation (self,event=None):
         
+        '''Open LeoDocs.leo in a new Leo window.'''
+        
         c = self ; name = "LeoDocs.leo"
     
         fileName = g.os_path_join(g.app.loadDir,"..","doc",name)
@@ -5213,6 +5275,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.2940:leoDocumentation
     #@+node:ekr.20031218072017.2941:leoHome
     def leoHome (self,event=None):
+        
+        '''Open Leo's Home page in a web browser.'''
         
         import webbrowser
     
@@ -5226,6 +5290,8 @@ class baseCommands:
     #@+node:ekr.20050130152008:leoPlugins
     def openLeoPlugins (self,event=None):
         
+        '''Open leoPlugins.leo in a new Leo window.'''
+        
         c = self ; name = "leoPlugins.leo"
         fileName = g.os_path_join(g.app.loadDir,"..","plugins",name)
         ok,frame = g.openWithFileName(fileName,c)
@@ -5235,6 +5301,8 @@ class baseCommands:
     #@-node:ekr.20050130152008:leoPlugins
     #@+node:ekr.20031218072017.2942:leoTutorial (version number)
     def leoTutorial (self,event=None):
+        
+        '''Open Leo's online tutorial in a web browser.'''
         
         import webbrowser
     

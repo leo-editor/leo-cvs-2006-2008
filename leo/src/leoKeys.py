@@ -2381,14 +2381,14 @@ class keyHandlerClass:
     #@+node:ekr.20050930080419:digitArgument & universalArgument
     def universalArgument (self,event):
         
-        '''Begin a numeric argument for the following command.'''
-        
+        '''Prompt for a universal argument.'''
         k = self
         k.setLabelBlue('Universal Argument: ',protect=True)
         k.universalDispatcher(event)
         
     def digitArgument (self,event):
     
+        '''Prompt for a digit argument.'''
         k = self
         k.setLabelBlue('Digit Argument: ',protect=True)
         k.universalDispatcher(event)
@@ -2427,6 +2427,8 @@ class keyHandlerClass:
     #@-node:ekr.20051014155551:k.show/hide/toggleMinibuffer
     #@+node:ekr.20050920085536.68:negativeArgument (redo?)
     def negativeArgument (self,event):
+        
+        '''Prompt for a negative digit argument.'''
     
         k = self ; state = k.getState('neg-arg')
     
@@ -2447,22 +2449,49 @@ class keyHandlerClass:
     def numberCommand (self,event,stroke,number):
     
         k = self ; k.stroke = stroke ; w = event.widget
-    
         k.universalDispatcher(event)
         w.event_generate('<Key>',keysym=number)
-    
         return 'break'
     
-    def numberCommand0 (self,event): return self.numberCommand (event,None,0)
-    def numberCommand1 (self,event): return self.numberCommand (event,None,1)
-    def numberCommand2 (self,event): return self.numberCommand (event,None,2)
-    def numberCommand3 (self,event): return self.numberCommand (event,None,3)
-    def numberCommand4 (self,event): return self.numberCommand (event,None,4)
-    def numberCommand5 (self,event): return self.numberCommand (event,None,5)
-    def numberCommand6 (self,event): return self.numberCommand (event,None,6)
-    def numberCommand7 (self,event): return self.numberCommand (event,None,7)
-    def numberCommand8 (self,event): return self.numberCommand (event,None,8)
-    def numberCommand9 (self,event): return self.numberCommand (event,None,9)
+    def numberCommand0 (self,event):
+        '''Execute command number 0.'''
+        return self.numberCommand (event,None,0)
+    
+    def numberCommand1 (self,event):
+        '''Execute command number 1.'''
+        return self.numberCommand (event,None,1)
+    
+    def numberCommand2 (self,event):
+        '''Execute command number 2.'''
+        return self.numberCommand (event,None,2)
+    
+    def numberCommand3 (self,event):
+        '''Execute command number 3.'''
+        return self.numberCommand (event,None,3)
+    
+    def numberCommand4 (self,event):
+        '''Execute command number 4.'''
+        return self.numberCommand (event,None,4)
+        
+    def numberCommand5 (self,event):
+        '''Execute command number 5.'''
+        return self.numberCommand (event,None,5)
+    
+    def numberCommand6 (self,event):
+        '''Execute command number 6.'''
+        return self.numberCommand (event,None,6)
+    
+    def numberCommand7 (self,event):
+        '''Execute command number 7.'''
+        return self.numberCommand (event,None,7)
+    
+    def numberCommand8 (self,event):
+        '''Execute command number 8.'''
+        return self.numberCommand (event,None,8)
+    
+    def numberCommand9 (self,event):
+        '''Execute command number 9.'''
+        return self.numberCommand (event,None,9)
     #@nonl
     #@-node:ekr.20050920085536.77:numberCommand
     #@+node:ekr.20051012201831:printBindings
@@ -2525,9 +2554,9 @@ class keyHandlerClass:
     #@-node:ekr.20051014061332:printCommands
     #@+node:ekr.20050920085536.48:repeatComplexCommand & helper
     def repeatComplexCommand (self,event):
-    
+        
+        '''Repeat the previously executed minibuffer command.'''
         k = self
-    
         if k.mb_history:
             k.setState('last-full-command',1,handler=k.doLastAltX)
             k.setLabelBlue("Redo: %s" % k.mb_history[0])
@@ -2536,7 +2565,6 @@ class keyHandlerClass:
     def doLastAltX (self,event):
         
         k = self ; c = k.c
-    
         if event.keysym == 'Return' and k.mb_history:
             last = k.mb_history [0]
             c.commandsDict [last](event)

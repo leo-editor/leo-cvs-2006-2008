@@ -1827,6 +1827,8 @@ for target in targets:
 #@+node:ekr.20031218072017.2932:openPythonWindow (Dave Hein)
 def openPythonWindow (self,event=None):
     
+    '''Open Python's Idle debugger in a separate process.'''
+    
     if 1:
         << open idle in a separate process >>
     else:
@@ -3643,6 +3645,8 @@ def getPublicCommands (self):
 #@+node:ekr.20060123131421:Top-level methods
 #@+node:ekr.20051020120306:openFindTab
 def openFindTab (self,event=None,show=True):
+    
+    '''Open the Find tab in the log pane.'''
 
     c = self.c ; log = c.frame.log ; tabName = 'Find'
     
@@ -3669,48 +3673,49 @@ def openFindTab (self,event=None,show=True):
 # However, this leads to unfortunate confusion when executed from a shortcut.
 
 def findTabChange(self,event=None):
-
+    '''Execute the 'Change' command with the settings shown in the Find tab.'''
     if self.findTabHandler:
         self.findTabHandler.changeCommand()
     else:
         self.openFindTab()
         
 def findTabChangeAll(self,event=None):
-
+    '''Execute the 'Change All' command with the settings shown in the Find tab.'''
     if self.findTabHandler:
         self.findTabHandler.changeAllCommand()
     else:
         self.openFindTab()
 
 def findTabChangeThenFind(self,event=None):
-
+    '''Execute the 'Replace, Find' command with the settings shown in the Find tab.'''
     if self.findTabHandler:
         self.findTabHandler.changeThenFindCommand()
     else:
         self.openFindTab()
         
 def findTabFindAll(self,event=None):
-
+    '''Execute the 'Find All' command with the settings shown in the Find tab.'''
     if self.findTabHandler:
         self.findTabHandler.findAllCommand()
     else:
         self.openFindTab()
 
 def findTabFindNext (self,event=None):
-    
+    '''Execute the 'Find Next' command with the settings shown in the Find tab.'''
     if self.findTabHandler:
         self.findTabHandler.findNextCommand()
     else:
         self.openFindTab()
 
 def findTabFindPrev (self,event=None):
-    
+    '''Execute the 'Find Previous' command with the settings shown in the Find tab.'''
     if self.findTabHandler:
         self.findTabHandler.findPrevCommand()
     else:
         self.openFindTab()
         
 def hideFindTab (self,event=None):
+    '''Hide the Find tab.'''
     if self.findTabHandler:
         self.c.frame.log.selectTab('Log')
 #@nonl
@@ -3733,45 +3738,119 @@ def getHandler(self,show=False):
 #@nonl
 #@-node:ekr.20060124115801:getHandler
 #@+node:ekr.20060123115459:Find options wrappers
-def setFindScopeEveryWhere     (self, event): return self.setFindScope('entire-outline')
-def setFindScopeNodeOnly       (self, event): return self.setFindScope('node-only')
-def setFindScopeSuboutlineOnly (self, event): return self.setFindScope('suboutline-only')
+def setFindScopeEveryWhere (self, event):
+    '''Set the 'Entire Outline' radio button in the Find tab.'''
+    return self.setFindScope('entire-outline')
 
-def setFindScope (self, where): self.getHandler().setFindScope(where)
+def setFindScopeNodeOnly  (self, event):
+    '''Set the 'Node Only' radio button in the Find tab.'''
+    return self.setFindScope('node-only')
 
-def showFindOptions      (self,event): self.getHandler().showFindOptions()
+def setFindScopeSuboutlineOnly (self, event):
+    '''Set the 'Suboutline Only' radio button in the Find tab.'''
+    return self.setFindScope('suboutline-only')
+    
+def showFindOptions (self,event):
+    '''Show all Find options in the minibuffer label area.'''
+    self.getHandler().showFindOptions()
 
-def toggleIgnoreCaseOption     (self, event): return self.toggleOption('ignore_case')
-def toggleMarkChangesOption    (self, event): return self.toggleOption('mark_changes')
-def toggleMarkFindsOption      (self, event): return self.toggleOption('mark_finds')
-def toggleRegexOption          (self, event): return self.toggleOption('pattern_match')
-def toggleReverseOption        (self, event): return self.toggleOption('reverse')
-def toggleSearchBodyOption     (self, event): return self.toggleOption('search_body')
-def toggleSearchHeadlineOption (self, event): return self.toggleOption('search_headline')
-def toggleWholeWordOption      (self, event): return self.toggleOption('whole_word')
-def toggleWrapSearchOption     (self, event): return self.toggleOption('wrap')
+def toggleIgnoreCaseOption     (self, event):
+    '''Toggle the 'Ignore Case' checkbox in the Find tab.'''
+    return self.toggleOption('ignore_case')
 
-def toggleOption (self, ivar): self.getHandler().toggleOption(ivar)
+def toggleMarkChangesOption (self, event):
+    '''Toggle the 'Mark Changes' checkbox in the Find tab.'''
+    return self.toggleOption('mark_changes')
+def toggleMarkFindsOption (self, event):
+    '''Toggle the 'Mark Finds' checkbox in the Find tab.'''
+    return self.toggleOption('mark_finds')
+def toggleRegexOption (self, event):
+    '''Toggle the 'Regexp' checkbox in the Find tab.'''
+    return self.toggleOption('pattern_match')
+def toggleReverseOption        (self, event):
+    '''Toggle the 'Reverse' checkbox in the Find tab.'''
+    return self.toggleOption('reverse')
+
+def toggleSearchBodyOption (self, event):
+    '''Set the 'Search Body' checkbox in the Find tab.'''
+    return self.toggleOption('search_body')
+
+def toggleSearchHeadlineOption (self, event):
+    '''Toggle the 'Search Headline' checkbox in the Find tab.'''
+    return self.toggleOption('search_headline')
+
+def toggleWholeWordOption (self, event):
+    '''Toggle the 'Whole Word' checkbox in the Find tab.'''
+    return self.toggleOption('whole_word')
+
+def toggleWrapSearchOption (self, event):
+    '''Toggle the 'Wrap Around' checkbox in the Find tab.'''
+    return self.toggleOption('wrap')
+    
+def setFindScope (self, where):  self.getHandler().setFindScope(where)
+def toggleOption (self, ivar):   self.getHandler().toggleOption(ivar)
 #@nonl
 #@-node:ekr.20060123115459:Find options wrappers
 #@+node:ekr.20060124093828:Find wrappers
-def cloneFindAll       (self,event): self.getHandler().cloneFindAll(event)
-def findAll            (self,event): self.getHandler().findAll(event)
+def cloneFindAll (self,event):
+    '''Do search-with-present-options and print all matches in the log pane. It
+    also creates a node at the beginning of the outline containing clones of all
+    nodes containing the 'find' string. Only one clone is made of each node,
+    regardless of how many clones the node has, or of how many matches are found
+    in each node.'''
+    self.getHandler().cloneFindAll(event)
 
-def replaceString      (self,event): self.getHandler().replaceString(event)
-def reSearchBackward   (self,event): self.getHandler().reSearchBackward(event)
-def reSearchForward    (self,event): self.getHandler().reSearchForward(event)
-def searchBackward     (self,event): self.getHandler().searchBackward(event)
-def searchForward      (self,event): self.getHandler().searchForward(event)
-def wordSearchBackward (self,event): self.getHandler().wordSearchBackward(event)
-def wordSearchForward  (self,event): self.getHandler().wordSearchForward(event)
+def findAll            (self,event):
+    '''Do search-with-present-options and print all matches in the log pane.'''
+    self.getHandler().findAll(event)
+
+def replaceString      (self,event):
+    '''Prompts for a search string. Type <Return> to end the search string. The
+    command will then prompt for the replacement string. Typing a second
+    <Return> key will place both strings in the Find tab and executes a **find**
+    command, that is, the search-with-present-options command.'''
+    self.getHandler().replaceString(event)
+
+def reSearchBackward   (self,event):
+    '''Set the 'Regexp' checkbox to True and the 'Reverse' checkbox to True,
+    then do search-with-present-options.'''
+    self.getHandler().reSearchBackward(event)
+
+def reSearchForward    (self,event):
+    '''Set the 'Regexp' checkbox to True, then do search-with-present-options.'''
+    self.getHandler().reSearchForward(event)
+
+def searchBackward     (self,event):
+    '''Set the 'Word Search' checkbox to False and the 'Reverse' checkbox to True,
+    then do search-with-present-options.'''
+    self.getHandler().searchBackward(event)
+
+def searchForward      (self,event):
+    '''Set the 'Word Search' checkbox to False, then do search-with-present-options.'''
+    self.getHandler().searchForward(event)
+
+def wordSearchBackward (self,event):
+    '''Set the 'Word Search' checkbox to True, then do search-with-present-options.'''
+    self.getHandler().wordSearchBackward(event)
+
+def wordSearchForward  (self,event):
+    '''Set the Word Search' checkbox to True and the 'Reverse' checkbox to True,
+    then do search-with-present-options.'''
+    self.getHandler().wordSearchForward(event)
 
 def searchWithPresentOptions (self,event):
+    '''Prompts for a search string. Typing the <Return> key puts the search
+    string in the Find tab and executes a search based on all the settings in
+    the Find tab. Recommended as the default search command.'''
     self.getHandler().searchWithPresentOptions(event)
 #@nonl
 #@-node:ekr.20060124093828:Find wrappers
 #@+node:ekr.20060204120158.2:findAgain
 def findAgain (self,event):
+
+    '''The find-again command is the same as the find-tab-find command
+    if the search pattern in the Find tab is not '<find pattern here>'
+    Otherwise, the find-again is the same as the search-with-present-options command.'''
     
     h = self.getHandler()
     
@@ -6213,6 +6292,10 @@ def defineCmdsMenuSpellCheckTable (self):
 #@-node:ekr.20060117095212.7:defineCmdsMenuSpellCheckTable
 #@-node:ekr.20050921103230:defineCmdsMenuTables & helpers
 #@-node:ekr.20051121070552:Finished Cmds menu
+#@+node:ekr.20060529195042:Added docstrings for all commands
+# This is useful for the help-for-command command.
+#@nonl
+#@-node:ekr.20060529195042:Added docstrings for all commands
 #@-node:ekr.20060522103446:New features
 #@-node:ekr.20060514170725:4.4.1 projects
 #@-node:ekr.20050924073836:4.4 projects
