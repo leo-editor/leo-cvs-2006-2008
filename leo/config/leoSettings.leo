@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="267" clone_windows="0"/>
 <globals body_outline_ratio="0.549828178694">
-	<global_window_position top="45" left="330" height="661" width="798"/>
+	<global_window_position top="45" left="330" height="642" width="798"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -44,7 +44,7 @@
 <v t="ekr.20060112104823"><vh>main</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" a="V" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20060524151415"><vh>Debugger options</vh>
 <v t="ekr.20060524151415.1"><vh>@string debugger_kind = winpdb</vh></v>
 <v t="ekr.20060521132401"><vh>@string debugger_path = None</vh></v>
@@ -419,9 +419,9 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060512084639" a="E"><vh>Recent</vh>
+<v t="ekr.20060512084639"><vh>Recent</vh>
 <v t="ekr.20060131071612"><vh>@bool trace_masterKeyHandler = False</vh></v>
-<v t="ekr.20060309022759" a="V"><vh>@bool trace_colorizer = False</vh></v>
+<v t="ekr.20060309022759"><vh>@bool trace_colorizer = False</vh></v>
 <v t="ekr.20060131071947"><vh>@bool trace_masterClickHandler = False</vh></v>
 </v>
 </vnodes>
@@ -4695,8 +4695,15 @@ c:\prog\tigris-cvs\leo\src\leo.py
 </t>
 <t tx="ekr.20060521134125.1">The debug target to use regardless of the selected node or other settings.</t>
 <t tx="ekr.20060524151415"></t>
-<t tx="ekr.20060524151415.1">idle: use Python's standard idle debugger.
-winpdb: use winpdb debugger.</t>
+<t tx="ekr.20060524151415.1">idle: use Python's standard Idle debugger.
+
+winpdb: (recommended) use winpdb debugger.
+
+To use winpdb you must download and install winpdb from:
+http://www.digitalpeers.com/pythondebugger/
+
+There is no special support for Idle, so you may as well open Idle using Leo's
+open-python-window command.</t>
 <t tx="ekr.20060528175513"></t>
 </tnodes>
 </leo_file>
