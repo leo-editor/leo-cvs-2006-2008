@@ -6,7 +6,7 @@
 #@@tabwidth -4
 #@@pagewidth 80
 
-__version__ = '0.23'
+__version__ = '0.24'
 #@<< imports >>
 #@+node:ekr.20060530091119.21:<< imports >>
 import leoGlobals as g
@@ -40,6 +40,9 @@ php_re = re.compile("<?(\s[pP][hH][pP])")
 # 
 # 0.23 EKR: use g.app.gui.toGuiIndex in colorRangeWithTag.  Fixes a bug and is 
 # simpler.
+# 
+# 0.24 EKR: Fixed unicode crasher.  All unit tests now pass with the new 
+# colorizer enabled.
 #@-at
 #@-node:ekr.20060530091119.22:<< version history >>
 #@nl
@@ -345,7 +348,7 @@ class baseColorizer:
             d [ key ] = 'leoKeyword'
     
         # Create the word_chars list. 
-        self.word_chars = [ch for ch in (string.letters + string.digits)]
+        self.word_chars = [g.toUnicode(ch,encoding='UTF-8') for ch in (string.letters + string.digits)]
         for key in d.keys():
             for ch in key:
                 if ch not in self.word_chars:
@@ -451,7 +454,7 @@ class baseColorizer:
                     rulesDict    = self.rulesDict,
                     rulesetName  = self.rulesetName)
             else:
-                g.trace('No language description for %s' % language)
+                if self.trace: g.trace('No language description for %s' % language)
     #@nonl
     #@-node:ekr.20060530091119.9:init_mode
     #@-node:ekr.20060530091119.35:Birth and init
