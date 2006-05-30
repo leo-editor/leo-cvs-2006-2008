@@ -2736,6 +2736,7 @@ class editCommandsClass (baseEditCommandsClass):
         if event and event.keysym == 'Return': ch = '\n' # This fixes the MacOS return bug.
         w = event and event.widget
         name = c.widget_name(w)
+        # g.trace(name)
         oldSel =  name.startswith('body') and g.app.gui.getTextSelection(w)
         oldText = name.startswith('body') and p.bodyString()
         removeTrailing = None # A signal to compute it later.
@@ -2766,7 +2767,7 @@ class editCommandsClass (baseEditCommandsClass):
                 w.insert(i,ch)
                 if c.frame.body.colorizer.useSyntaxColoring(p) and undoType != "Change":
                     # No auto-indent if in @nocolor mode or after a Change command.
-                    removeTrailing = self.updateAutoIndent(p)
+                    removeTrailing = self.updateAutoIndent(p,w)
                     # g.trace(removeTrailing)
             #@nonl
             #@-node:ekr.20051026171121:<< handle newline >>
@@ -2821,11 +2822,11 @@ class editCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20051027172949:updateAutomatchBracket
     #@+node:ekr.20051026171121.1:udpateAutoIndent
     # By David McNab:
-    def updateAutoIndent (self,p):
+    def updateAutoIndent (self,p,w):
     
         c = self.c ; d = g.scanDirectives(c,p)
         tab_width = d.get("tabwidth",c.tab_width) # Get the previous line.
-        s = c.frame.bodyCtrl.get("insert linestart - 1 lines","insert linestart -1c")
+        s = w.get("insert linestart - 1 lines","insert linestart -1c")
         # Add the leading whitespace to the present line.
         junk, width = g.skip_leading_ws_with_indent(s,0,tab_width)
         if s and len(s) > 0 and s [ -1] == ':':
@@ -2845,7 +2846,7 @@ class editCommandsClass (baseEditCommandsClass):
             width = brackets.pop()
         ws = g.computeLeadingWhitespace(width,tab_width)
         if ws:
-            c.frame.bodyCtrl.insert("insert",ws)
+            w.insert("insert",ws)
             removeTrailing = False
         else:
             removeTrailing = None
