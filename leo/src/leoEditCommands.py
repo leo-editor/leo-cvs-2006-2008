@@ -1852,7 +1852,8 @@ class editCommandsClass (baseEditCommandsClass):
         #@+node:ekr.20051019201809.3:<< create the size entry >>
         Tk.Label(f2,text="Size:",width=10,background=bg).pack(side="left")
         
-        sizeEntry = Tk.Entry(f2,width=4) ##,textvariable=sv)
+        sizeEntry = Tk.Entry(f2,width=4)
+        sizeEntry.insert(0,'12')
         sizeEntry.pack(side="left",padx=2,pady=2)
         #@-node:ekr.20051019201809.3:<< create the size entry >>
         #@nl
@@ -1862,7 +1863,7 @@ class editCommandsClass (baseEditCommandsClass):
             labelpos="we",label_text="Weight:",label_width=10,
             label_background=bg,
             arrowbutton_background=bg,
-            scrolledlist_items=['<None>','normal','bold'])
+            scrolledlist_items=['normal','bold'])
         
         weightBox.selectitem(0)
         weightBox.pack(side="left",padx=2,pady=2)
@@ -1875,7 +1876,7 @@ class editCommandsClass (baseEditCommandsClass):
             labelpos="we",label_text="Slant:",label_width=10,
             label_background=bg,
             arrowbutton_background=bg,
-            scrolledlist_items=['<None>','roman','italic'])
+            scrolledlist_items=['roman','italic'])
         
         slantBox.selectitem(0)
         slantBox.pack(side="left",padx=2,pady=2)
