@@ -7401,10 +7401,7 @@ class findTab (leoFind.leoFind):
         return "break"
     #@nonl
     #@-node:ekr.20051020120306.27:selectAllFindText
-    #@+node:ekr.20051020120306.28:Tkinter wrappers (leoTkinterFind)
-    # def gui_search (self,t,*args,**keys):
-        # return t.search(*args,**keys)
-    
+    #@+node:ekr.20051020120306.28:Tkinter wrappers
     def init_s_ctrl (self,s):
         t = self.s_ctrl
         t.delete("1.0","end")
@@ -7412,7 +7409,7 @@ class findTab (leoFind.leoFind):
         t.mark_set("insert",g.choose(self.reverse,"end","1.0"))
         return t
     #@nonl
-    #@-node:ekr.20051020120306.28:Tkinter wrappers (leoTkinterFind)
+    #@-node:ekr.20051020120306.28:Tkinter wrappers
     #@+node:ekr.20051020120306.1:class underlinedTkButton
     class underlinedTkButton:
         
