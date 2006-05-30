@@ -113,6 +113,9 @@ class parserBaseClass:
     def doColor (self,p,kind,name,val):
         
         # At present no checking is done.
+        val = val.lstrip('"').rstrip('"')
+        val = val.lstrip("'").rstrip("'")
+    
         self.set(p,kind,name,val)
     #@nonl
     #@-node:ekr.20041120094940.2:doColor
@@ -456,7 +459,10 @@ class parserBaseClass:
             if i == -1:
                 name = s ; val = None
             else:
-                name = s[:i].strip() ; val = s[i+1:].strip()
+                name = s[:i].strip()
+                val = s[i+1:].strip()
+                val = val.lstrip('"').rstrip('"')
+                val = val.lstrip("'").rstrip("'")
     
             fontKind = self.fontSettingNameToFontKind(name)
             if fontKind:
