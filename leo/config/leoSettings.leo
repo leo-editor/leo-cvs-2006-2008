@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="267" clone_windows="0"/>
 <globals body_outline_ratio="0.549828178694">
-	<global_window_position top="45" left="330" height="604" width="798"/>
+	<global_window_position top="45" left="330" height="585" width="798"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -95,7 +95,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060113182439" a="V"><vh>Other options</vh>
+<v t="ekr.20060113182439" a="E"><vh>Other options</vh>
 <v t="ekr.20041119034357.10" annotate="7d71002e"><vh>Command options</vh>
 <v t="ekr.20041119034357.14"><vh>@bool at_root_bodies_start_in_doc_mode = True</vh></v>
 <v t="ekr.20041119041019"><vh>@bool redirect_execute_script_output_to_log_pane = False</vh></v>
@@ -244,8 +244,9 @@
 </v>
 <v t="ekr.20041119034357.67"><vh>@color split_bar_color = LightSteelBlue2</vh></v>
 </v>
-<v t="ekr.20041213105954" annotate="7d71002e"><vh>Window options</vh>
-<v t="ekr.20041119034357.38"><vh>Body pane options</vh>
+<v t="ekr.20041213105954" a="E" annotate="7d71002e"><vh>Window options</vh>
+<v t="ekr.20041119034357.38" a="E"><vh>Body pane options</vh>
+<v t="ekr.20060531094310" a="V"><vh>@bool disable_autoindent_in_nocolor_mode = False</vh></v>
 <v t="ekr.20041119034357.43"><vh>@bool body_gmt_time = False</vh></v>
 <v t="ekr.20041119034357.39"><vh>@bool body_pane_wraps = True</vh></v>
 <v t="ekr.20060216135834"><vh>@bool enable_autocompleter = True</vh></v>
@@ -4680,5 +4681,7 @@ http://www.digitalpeers.com/pythondebugger/
 There is no special support for Idle, so you may as well open Idle using Leo's
 open-python-window command.</t>
 <t tx="ekr.20060528175513"></t>
+<t tx="ekr.20060531094310">True:  disable auto-indenting if in range @nocolor or @kill.
+False: enable auto-indenting regardless of how text is colored.</t>
 </tnodes>
 </leo_file>
