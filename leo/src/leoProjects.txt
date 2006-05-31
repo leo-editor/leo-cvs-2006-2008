@@ -1330,9 +1330,9 @@ if i != j:
     w.insert(i,ch)
 else:
     w.insert(i,ch)
-    limit = c.config.getBool('disable_autoindent_in_nocolor_mode')
+    allow_in_nocolor = c.config.getBool('autoindent_in_nocolor_mode')
     if (
-        (not limit or c.frame.body.colorizer.useSyntaxColoring(p)) and
+        (allow_in_nocolor or c.frame.body.colorizer.useSyntaxColoring(p)) and
         undoType != "Change"
     ):
         # No auto-indent if in @nocolor mode or after a Change command.
@@ -1445,6 +1445,215 @@ The fix was to add a c argument to g.findTopLevelNode and g.findNodeInTree.
 #@-node:ekr.20060530152612:Fixed crasher in  UNL plugin
 #@+node:ekr.20060530152900:Last character of @doc parts are now colored properly by new colorizer
 #@-node:ekr.20060530152900:Last character of @doc parts are now colored properly by new colorizer
+#@+node:ekr.20060531141736:Suppressed traceback in g.callers
+@nocolor
+
+Happens in tree.endUpdate.
+
+Traceback (most recent call last):
+  File "C:\prog\tigris-cvs\leo\src\leoGlobals.py", line 960, in _callerName
+    f1 = sys._getframe(n) # The stack frame, n levels up.
+ValueError: call stack is not deep enough
+
+@color
+#@nonl
+#@+node:ekr.20031218072017.3107:_callerName
+def _callerName (n=1,files=False):
+
+    try: # get the function name from the call stack.
+        f1 = sys._getframe(n) # The stack frame, n levels up.
+        code1 = f1.f_code # The code object
+        if files:
+            return '%s:%s' % (g.shortFilename(code1.co_filename),code1.co_name)
+        else:
+            return code1.co_name # The code name
+    except ValueError:
+        return '' # The stack is not deep enough.
+    except:
+        g.es_exception()
+        return '' # "<no caller name>"
+#@nonl
+#@-node:ekr.20031218072017.3107:_callerName
+#@-node:ekr.20060531141736:Suppressed traceback in g.callers
+#@+node:ekr.20060531142304.1:Invalid regex's no longer hang Leo
+#@+node:ekr.20031218072017.3074:findNext
+def findNext(self,initFlag=True):
+
+    c = self.c
+    if not self.checkArgs():
+        return
+
+    if initFlag:
+        self.initInHeadline()
+        data = self.save()
+        self.initInteractiveCommands()
+    else:
+        data = self.save()
+
+    pos, newpos = self.findNextMatch()
+
+    if pos:
+        self.showSuccess(pos,newpos)
+    else:
+        if self.wrapping:
+            g.es("end of wrapped search")
+        else:
+            g.es("not found: " + "'" + self.find_text + "'")
+        self.restore(data)
+#@nonl
+#@-node:ekr.20031218072017.3074:findNext
+#@+node:ekr.20031218072017.3077:search & helpers
+def search (self):
+
+    """Search s_ctrl for self.find_text under the control of the
+    whole_word, ignore_case, and pattern_match ivars.
+    
+    Returns (pos, newpos) or (None,None)."""
+
+    c = self.c ; p = self.p ; w = self.s_ctrl ; gui = g.app.gui
+    index = gui.getInsertPoint(w)
+    s = gui.getAllText(w)
+    index = gui.toPythonIndex(s,w,index)
+    stopindex = g.choose(self.reverse,0,len(s))
+    while 1:
+        pos,newpos = self.searchHelper(s,index,stopindex,self.find_text,
+            backwards=self.reverse,nocase=self.ignore_case,
+            regexp=self.pattern_match,word=self.whole_word)
+        if pos == -1: return None,None
+        pos    = gui.toGuiIndex(s,w,pos)
+        newpos = gui.toGuiIndex(s,w,newpos)
+        << fail if we are passed the wrap point >>
+        gui.setTextSelection(w,pos,newpos,insert=newpos)
+        return pos, newpos
+#@nonl
+#@+node:ekr.20060526140328:<< fail if we are passed the wrap point >>
+if self.wrapping and self.wrapPos and self.wrapPosition and self.p == self.wrapPosition:
+
+    if self.reverse and gui.compareIndices(w,pos, "<", self.wrapPos):
+        # g.trace("wrap done")
+        return None, None
+
+    if not self.reverse and gui.compareIndices(w,newpos, ">", self.wrapPos):
+        return None, None
+#@nonl
+#@-node:ekr.20060526140328:<< fail if we are passed the wrap point >>
+#@+node:ekr.20060526081931:Search helpers...
+def searchHelper (self,s,i,j,pattern,backwards,nocase,regexp,word):
+    
+    if backwards: i,j = j,i
+        
+    # g.trace(backwards,i,j,repr(s[i:i+20]))
+
+    if not s[i:j] or not pattern:
+        # g.trace('empty',i,j)
+        return -1,-1
+        
+    if regexp:
+        pos,newpos = self.regexHelper(s,i,j,pattern,backwards,nocase)
+    elif backwards:
+        pos,newpos = self.backwardsHelper(s,i,j,pattern,backwards,nocase,word)
+    else:
+        pos,newpos = self.plainHelper(s,i,j,pattern,backwards,nocase,word)
+
+    return pos,newpos
+#@+node:ekr.20060526092203:regexHelper
+def regexHelper (self,s,i,j,pattern,backwards,nocase):
+   
+    try:
+        flags = re.MULTILINE
+        if nocase: flags |= re.IGNORECASE
+        re_obj = re.compile(pattern,flags)
+    except Exception:
+        g.es('Invalid regular expression: %s' % (pattern),color='blue')
+        self.errors += 1 # Abort the search.
+        return -1, -1
+        
+    if backwards: # Scan to the last match.
+        last_mo = None
+        while 1:
+            mo = re_obj.search(s,i,j)
+            if mo is None: break
+            i = mo.end()
+            last_mo = mo
+        self.match_obj = mo = last_mo
+    else:
+        self.match_obj = mo = re_obj.search(s,i,j)
+        
+    if mo is None:
+        return -1, -1
+    else:
+        k  = mo.start()
+        k2 = mo.end()
+        if 0:
+            g.trace('i: %d, j: %d k: %d, k2: %d, s[k:k2]: %s, len(s): %d, s[-1]: %s,' % (
+                i,j,k,k2,repr(s[k:k2]),len(s),repr(s[-1])))
+        # g.trace('groups',mo.groups())
+        return k, k2
+#@nonl
+#@-node:ekr.20060526092203:regexHelper
+#@+node:ekr.20060526140744:backwardsHelper
+def backwardsHelper (self,s,i,j,pattern,backwards,nocase,word):
+
+    # g.trace(repr(s[i-20: i]))
+
+    if nocase:
+        s = s.lower() ; pattern.lower()
+
+    if word:
+        n = len(pattern)
+        while 1:
+            k = s.rfind(pattern,i,j)
+            # g.trace(i,j,k)
+            if k == -1: return -1, -1
+            if self.matchWord(s,k,pattern):
+                return max(0,k-n+1),k+1, 
+            else:
+                j = max(0,k-n)
+    else:
+        k = s.rfind(pattern,i,j)
+        if k == -1:
+            return -1, -1
+        else:
+            return max(0,k-n+1),k+1, 
+#@nonl
+#@-node:ekr.20060526140744:backwardsHelper
+#@+node:ekr.20060526093531:plainHelper
+def plainHelper (self,s,i,j,pattern,backwards,nocase,word):
+    
+    # g.trace(repr(s[i:i+20]))
+    
+    n = len(pattern)
+    if nocase:
+        s = s.lower() ; pattern.lower()
+        pattern = pattern.replace('\\n','\n').replace('\\t','\t')
+
+    if word:
+        while 1:
+            k = s.find(pattern,i,j)
+            # g.trace(k,n)
+            if k == -1: return -1, -1
+            elif self.matchWord(s,k,pattern):
+                return k, k + n
+            else: i = k + n
+    else:
+        k = s.find(pattern,i,j)
+        if k == -1:
+            return -1, -1
+        else:
+            return k, k + n
+#@nonl
+#@-node:ekr.20060526093531:plainHelper
+#@+node:ekr.20060526140744.1:matchWord
+def matchWord(self,s,i,pattern):
+    
+    ok = g.match_word(s,i,pattern) and (i == 0 or s[i-1] not in self.word_chars)
+    # g.trace(ok,repr(s),i)
+    return ok
+#@nonl
+#@-node:ekr.20060526140744.1:matchWord
+#@-node:ekr.20060526081931:Search helpers...
+#@-node:ekr.20031218072017.3077:search & helpers
+#@-node:ekr.20060531142304.1:Invalid regex's no longer hang Leo
 #@-node:ekr.20060514170854:Fixed bugs
 #@+node:ekr.20060522103446:New features
 #@+node:ekr.20060512101324:(Support for new colorizer)
@@ -4790,6 +4999,7 @@ def regexHelper (self,s,i,j,pattern,backwards,nocase):
         re_obj = re.compile(pattern,flags)
     except Exception:
         g.es('Invalid regular expression: %s' % (pattern),color='blue')
+        self.errors += 1 # Abort the search.
         return -1, -1
         
     if backwards: # Scan to the last match.
@@ -4871,9 +5081,7 @@ def plainHelper (self,s,i,j,pattern,backwards,nocase,word):
 def matchWord(self,s,i,pattern):
     
     ok = g.match_word(s,i,pattern) and (i == 0 or s[i-1] not in self.word_chars)
-    
-    g.trace(ok,repr(s),i)
-    
+    # g.trace(ok,repr(s),i)
     return ok
 #@nonl
 #@-node:ekr.20060526140744.1:matchWord
@@ -5036,7 +5244,7 @@ def beginUpdate (self):
 def endUpdate (self,flag,scroll=False):
     
     self.updateCount -= 1
-    # g.trace('  tree',id(self),self.updateCount,g.callers())
+    # g.trace(self.updateCount,'scroll',scroll,g.callers())
     
     if self.updateCount <= 0:
         if flag:
@@ -6721,15 +6929,16 @@ finally:
 #@-node:ekr.20051026083733.7:<< redraw the screen if necessary >>
 #@-node:ekr.20031218072017.1329:onBodyChanged (tkBody)
 #@-node:ekr.20060527182907:Support multiple editors in the body pane
-#@+node:ekr.20041130103128:Added disable_autoindent_in_nocolor_mode setting
+#@+node:ekr.20041130103128:Added autoindent_in_nocolor_mode setting
 @nocolor
 
 leoSettings.leo now contains the following setting, with default as shown:
 
-@bool disable_autoindent_in_nocolor_mode = False
+@bool autoindent_in_nocolor_mode = True
 
-True:  disable auto-indenting if in range @nocolor or @kill.
-False: enable auto-indenting regardless of how text is colored.
+
+True:  auto-indent regardless of how text is colored.
+False: disable auto-indenting if in range @nocolor or @kill.
 
 This will make the default action work as Roger Erens requested, and will allow
 you to make Leo work exactly as before if you want.
@@ -6796,9 +7005,9 @@ if i != j:
     w.insert(i,ch)
 else:
     w.insert(i,ch)
-    limit = c.config.getBool('disable_autoindent_in_nocolor_mode')
+    allow_in_nocolor = c.config.getBool('autoindent_in_nocolor_mode')
     if (
-        (not limit or c.frame.body.colorizer.useSyntaxColoring(p)) and
+        (allow_in_nocolor or c.frame.body.colorizer.useSyntaxColoring(p)) and
         undoType != "Change"
     ):
         # No auto-indent if in @nocolor mode or after a Change command.
@@ -6888,7 +7097,7 @@ def updateTab (self,p,w):
 #@nonl
 #@-node:ekr.20051026092433:updateTab
 #@-node:ekr.20051125080855:selfInsertCommand
-#@-node:ekr.20041130103128:Added disable_autoindent_in_nocolor_mode setting
+#@-node:ekr.20041130103128:Added autoindent_in_nocolor_mode setting
 #@-node:ekr.20060522103446:New features
 #@-node:ekr.20060514170725:4.4.1 projects
 #@-node:ekr.20050924073836:4.4 projects

@@ -1,59 +1,6 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
-#@+node:ekr.20060527190049:To do before 4.4.1b1
-#@+node:ekr.20060211093935:Support for on-enter-mode in mode declarations
-Add support for @list
-#@nonl
-#@+node:ekr.20060122184114:Support the execution of a command when entering a mode
-- Entering outline mode should call c.endEditing.
-- Entering edit mode shouldn't call c.endEditing!
-#@-node:ekr.20060122184114:Support the execution of a command when entering a mode
-#@-node:ekr.20060211093935:Support for on-enter-mode in mode declarations
-#@+node:ekr.20060530162147:Easy
-#@+node:ekr.20041029083459:Remember Import directory
-By: Kent Tenney - ktenney
-Import to @file request  
-2004-10-28 11:27
-Howdy, 
- 
-Please ignore if this is a difficult feature to implement. 
- 
-File->Import->Import to @file  
-always starts in .../leo/src 
- 
-I would prefer if it opened to the last directory from 
-which a file was imported. 
- 
-I often find myself importing several files from the same area of the directory tree, and repeatedly navigating there from leo/src gets tiresome. 
- 
-Thanks, 
-Kent
-#@-node:ekr.20041029083459:Remember Import directory
-#@+node:ekr.20060530112134:Posting: Leo v Emacs
-@nocolor
-
-Leo is superior:
-    
-- Specifying settings, including key bindings and modes.
-
-- Python scripting.
-
-- Leo works much better with Emacs than vice versa.
-
-- Outlining.
-
-Emacs is superior:
-
-- Editor functionality (Leo is still buggy)
-
-- Editor tools.
-
-But Leo's users can easily use Emacs for what it is good at.
-
-#@-node:ekr.20060530112134:Posting: Leo v Emacs
-#@-node:ekr.20060530162147:Easy
-#@-node:ekr.20060527190049:To do before 4.4.1b1
 #@+node:ekr.20051202094427:Urgent: Resolve cvs conflicts
 Investigate meld:  http://meld.sourceforge.net/
 
@@ -427,680 +374,17 @@ Gil
 #@-node:ekr.20031218072017.658:Resolve CVS Conflicts command (Stepen Schaefer)
 #@-node:ekr.20051202094427:Urgent: Resolve cvs conflicts
 #@+node:ekr.20060527164612:Important 1-2 day projects (1-2 weeks)
-#@+node:ekr.20050419060645:Alternate lead-in characters
-@nocolor
+#@+node:ekr.20060531144607:Finish the new colorizer!
+#@-node:ekr.20060531144607:Finish the new colorizer!
+#@+node:ekr.20060531135634.1:Test and fix *important* Emacs commands
+- Macros
+- Lossage
+- History
+- Yank & Kill
+- Insert newline (look up proper behavior).
 
-An @decorator setting might be good. This would be a list of all Python
-decorators. Leo would create @verbatim sentinels for these.
+** Put away the mouse and make sure everything works.
 #@nonl
-#@-node:ekr.20050419060645:Alternate lead-in characters
-#@+node:ekr.20040919182750.1:Better handling of whitespace (cvs fiendly)
-#@+node:ekr.20060227121512:Comments from Bernhard
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3578166
-By: bwmulder
-
-[quote]It turns out that munging whitespace can be extremely time consuming.
-I once tried to do a user setting that would end all non-empty body text with
-exactly one newline. That effectively hung Leo. I'm not sure if there was a
-blunder in the code that caused this, but it may well have been that mass changes
-like this are inherently expensive. So we should not assume that 'innocent'
-whitespace changes are in fact easy to do.
-[quote]
-
-CVS stores files in the RCS format. The latest version is stored directly, the
-other versions are stored as line differences (delete lines x-y, insert 3 lines
-at z) relative to the latest version. If you change the empty line convention,
-you might create lots of differences of the above form which might be expensive
-to compute.
-
-This should be a onetime cost, however, which, if you will, you could do one
-file at a time.
-
-I woudn't let a tool like CVS determine if I would  change the convention.
-
-As for white space differences: TortoiseSVN (I have not used TortoiseCVS) allows
-you to specify external programs. There should be some out there which allow
-you to ignore white space differences when comparing files.
-
-On a related note: I read that subversion is in Beta on SourceForge. You might
-want to think about switching to subversion once it is officially supported.
-One example of a project which has switched from CVS to subversion is the project
-which maintains the Python sources itself (see, for example,
-http://www.python.org/dev/devfaq.html#subversion-svn)
-#@nonl
-#@-node:ekr.20060227121512:Comments from Bernhard
-#@+node:ekr.20040721094203:Make sure Leo uses "verbatim" whitespace
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=2674828
-By: bwmulder
-
-If I understand correctly, there are two different problems:
-
-- Trailing whitespaces
-- Left indented comments
-
-1. Before commenting on these, a question:
-
-If I write something like
-    a=b
-    if a:
-        @others
-
-[four spaces indentation]
-
-I sometimes see tab characters before the lines inserted for '@others'.
-
-It seems that Leo remembers 'two levels of indentation', and then
-fabricates this indentation using tab characters.
-
-I think it might be more robust if Leo remembered the actual
-characters in front of @others and would use them for indentation.
-
-I suspect that many indentation errors I had with Leo could have been
-avoided had not Leo had its own ideas on how to do indentation.
-
-Maybe Leo could use the exact sequence of characters in front of
-@others for all inserted lines?
-
-2. I do not care much about trailing whitespaces. Most of the time
-they are invisible, but sometimes they are very misleading (trailing in python or C).
-
-As far as I am concerned, Leo need never produce trailing whitespaces.
-
-Maybe we need special machinerie if sources have trailing whitespaces
-and the sources are not under our control. 
-
-Not sure if everybody would be happy if we essentially ban all trailing
-whitespaces.
-
-3. Unindented commentlines could be dealt with by using indentation to
-indicate structure.
-
-Of course, this might break the correspondance Leo structure / Python
-structure, which is very ugly.
-
-4. One possible alternative might be a new directive which indicates outindent:
-
-@outindent <number>.
-
-This would apply to the next comment block.
-
-To me, 4. looks a little bit less ugly than 3.
-
-5. As indicated in a different post, I suspect that Leo has a problem
-if almost every node in an outline is changed. Profiling should point
-to the culprit.
-
-> 2. Have Leo strip whitespace from otherwise blank lines, and hope
-that that solves all problems in Perfect Import. This is solving the
-problem in the atFile code. The problem is that if we apply settings
-in general we will get massive changes to derived files. In most
-programming settings these changes might be welcome, but the problem
-is actually making these changes. My first few attempts met with
-abject failure.
-
-Are you saying that you could not remove trailing blanks? What kind of
-problems did you run into?
-
-Summary:
-- Use actual characters in front of @others or <<>> for indentation.
-- Don't write trailing whitespaces
-- Introduce directive for left-indendet comments.
-- Profile to find out what slows Leo down if many nodes change.
-#@nonl
-#@-node:ekr.20040721094203:Make sure Leo uses "verbatim" whitespace
-#@+node:ekr.20040930075920:Whitespace options
-#@+node:ekr.20040720103642.1:Script to remove trailing body newlines VERY DANGEROUS
-current = c.currentPosition()
-count = 0
-
-for p in c.all_positions_iter():
-    s = p.bodyString().rstrip()
-    if s:
-        s = p.bodyString().rstrip() + '\n'
-        if s != p.bodyString():
-            # Do NOT set anything dirty here!
-            ## p.v.t.setTnodeText(s)
-            count += 1
-
-print "%d nodes converted" % count
-print "You MUST do Write All Nodes AND Save this file to complete the conversion"
-#@nonl
-#@-node:ekr.20040720103642.1:Script to remove trailing body newlines VERY DANGEROUS
-#@+node:EKR.20040603092958.1:Add new options for handling newlines in body text
-@nocolor
-
-Alas, this really does not solve problems with Import.
-
-- "asis":  ideal, maybe not possible?
-- "zero": no trailing newlines.
-- "one": exactly one trailing newline.
-
-Special case code is required so empty nodes stay empty with "one" option.
-#@nonl
-#@+node:ekr.20040802063546.1:(Made sure body text changes reported properly)
-# This may have to change when mass whitespace changes happen)
-#@nonl
-#@+node:ekr.20031218072017.1812:top_df.read
-# The caller has enclosed this code in beginUpdate/endUpdate.
-
-def read(self,root,importFileName=None,thinFile=False):
-    
-    """Common read logic for any derived file."""
-    
-    at = self ; c = at.c
-    at.errors = 0
-    importing = importFileName is not None
-    << set fileName from root and importFileName >>
-    << open file or return False >>
-    g.es("reading: " + root.headString())
-    firstLines,read_new,derivedFileIsThin = at.scanHeader(theFile,fileName)
-    df = g.choose(read_new,at.new_df,at.old_df)
-    # g.trace(g.choose(df==at.new_df,"new","old"))
-    << copy ivars to df >>
-    root.clearVisitedInTree()
-    try:
-        # 1/28/04: Don't set comment delims when importing.
-        # 1/28/04: Call scanAllDirectives here, not in readOpenFile.
-        importing = importFileName is not None
-        df.scanAllDirectives(root,importing=importing,reading=True)
-        df.readOpenFile(root,theFile,firstLines)
-    except:
-        at.error("Unexpected exception while reading derived file")
-        g.es_exception()
-    theFile.close()
-    root.clearDirty() # May be set dirty below.
-    after = root.nodeAfterTree()
-    << warn about non-empty unvisited nodes >>
-    if df.errors == 0:
-        if not df.importing:
-            << copy all tempBodyStrings to tnodes >>
-    << delete all tempBodyStrings >>
-    return df.errors == 0
-#@nonl
-#@+node:ekr.20031218072017.1813:<< set fileName from root and importFileName >>
-at.scanDefaultDirectory(root,importing=importing)
-if at.errors: return
-
-if importFileName:
-    fileName = importFileName
-elif root.isAnyAtFileNode():
-    fileName = root.anyAtFileNodeName()
-else:
-    fileName = None
-
-if not fileName:
-    at.error("Missing file name.  Restoring @file tree from .leo file.")
-    return False
-#@nonl
-#@-node:ekr.20031218072017.1813:<< set fileName from root and importFileName >>
-#@+node:ekr.20031218072017.1814:<< open file or return false >>
-fn = g.os_path_join(at.default_directory,fileName)
-fn = g.os_path_normpath(fn)
-
-try:
-    # 11/4/03: open the file in binary mode to allow 0x1a in bodies & headlines.
-    theFile = open(fn,'rb')
-    if theFile:
-        << warn on read-only file >>
-    else: return False
-except:
-    at.error("Can not open: " + '"@file ' + fn + '"')
-    root.setDirty()
-    return False
-#@nonl
-#@+node:ekr.20031218072017.1815:<< warn on read-only file >>
-try:
-    read_only = not os.access(fn,os.W_OK)
-    if read_only:
-        g.es("read only: " + fn,color="red")
-except:
-    pass # os.access() may not exist on all platforms.
-#@nonl
-#@-node:ekr.20031218072017.1815:<< warn on read-only file >>
-#@-node:ekr.20031218072017.1814:<< open file or return false >>
-#@+node:ekr.20031218072017.1816:<< copy ivars to df >>
-# Telling what kind of file we are reading.
-df.importing = importFileName != None
-df.raw = False
-if importing and df == at.new_df:
-    thinFile = True
-df.thinFile = thinFile
-
-# Set by scanHeader.
-df.encoding = at.encoding
-df.endSentinelComment = at.endSentinelComment
-df.startSentinelComment = at.startSentinelComment
-
-# Set other common ivars.
-df.errors = 0
-df.file = theFile
-df.importRootSeen = False
-df.indent = 0
-df.targetFileName = fileName
-df.root = root
-df.root_seen = False
-df.perfectImportRoot = None # Set only in readOpenFile.
-#@nonl
-#@-node:ekr.20031218072017.1816:<< copy ivars to df >>
-#@+node:ekr.20031218072017.1817:<< warn about non-empty unvisited nodes >>
-for p in root.self_and_subtree_iter():
-
-    # g.trace(p)
-    try: s = p.v.t.tempBodyString
-    except: s = ""
-    if s and not p.v.t.isVisited():
-        at.error("Not in derived file:" + p.headString())
-        p.v.t.setVisited() # One message is enough.
-#@nonl
-#@-node:ekr.20031218072017.1817:<< warn about non-empty unvisited nodes >>
-#@+node:ekr.20031218072017.1818:<< copy all tempBodyStrings to tnodes >>
-for p in root.self_and_subtree_iter():
-    try: s = p.v.t.tempBodyString
-    except: s = ""
-    if s != p.bodyString():
-        if 0: # For debugging.
-            print ; print "changed: " + p.headString()
-            print ; print "new:",s
-            print ; print "old:",p.bodyString()
-        if thinFile:
-            p.v.setTnodeText(s)
-            if p.v.isDirty():
-                p.setAllAncestorAtFileNodesDirty()
-        else:
-            p.setBodyStringOrPane(s) # Sets v and v.c dirty.
-            
-        if not thinFile or (thinFile and p.v.isDirty()):
-            g.es("changed: " + p.headString(),color="blue")
-            p.setMarked()
-#@nonl
-#@-node:ekr.20031218072017.1818:<< copy all tempBodyStrings to tnodes >>
-#@+node:ekr.20031218072017.1819:<< delete all tempBodyStrings >>
-for p in c.allNodes_iter():
-    
-    if hasattr(p.v.t,"tempBodyString"):
-        delattr(p.v.t,"tempBodyString")
-#@nonl
-#@-node:ekr.20031218072017.1819:<< delete all tempBodyStrings >>
-#@-node:ekr.20031218072017.1812:top_df.read
-#@-node:ekr.20040802063546.1:(Made sure body text changes reported properly)
-#@+node:ekr.20040930075920.1:Common to both options
-#@+node:ekr.20031218072017.2404:<< define defaultsDict >>
-@ This contains only the "interesting" defaults.
-Ints and bools default to 0, floats to 0.0 and strings to "".
-@c
-
-defaultBodyFontSize = g.choose(sys.platform=="win32",9,12)
-defaultLogFontSize  = g.choose(sys.platform=="win32",8,12)
-defaultTreeFontSize = g.choose(sys.platform=="win32",9,12)
-
-# Defaults for ivars are specified in the ctor, _not_ here.
-
-defaultsDict = {
-    # compare options...
-    "ignore_blank_lines" : 1,
-    "limit_count" : 9,
-    "print_mismatching_lines" : 1,
-    "print_trailing_lines" : 1,
-    # find/change options...
-    "search_body" : 1,
-    "whole_word" : 1,
-    # Prefs panel.
-    "default_target_language" : "Python",
-    "tab_width" : -4,
-    "page_width" : 132,
-    "output_doc_chunks" : 1,
-    "tangle_outputs_header" : 1,
-    # Syntax coloring options...
-    # Defaults for colors are handled by leoColor.py.
-    "color_directives_in_plain_text" : 1,
-    "underline_undefined_section_names" : 1,
-    # Window options...
-    "allow_clone_drags" : 1,
-    "body_pane_wraps" : 1,
-    "body_text_font_family" : "Courier",
-    "body_text_font_size" : defaultBodyFontSize,
-    "body_text_font_slant" : "roman",
-    "body_text_font_weight" : "normal",
-    "enable_drag_messages" : 1,
-    "headline_text_font_size" : defaultTreeFontSize,
-    "headline_text_font_slant" : "roman",
-    "headline_text_font_weight" : "normal",
-    "log_text_font_size" : defaultLogFontSize,
-    "log_text_font_slant" : "roman",
-    "log_text_font_weight" : "normal",
-    "initial_window_height" : 600, # 7/24/03: In pixels.
-    "initial_window_width" :  800, # 7/24/03: In pixels.
-    "initial_window_left" : 10,
-    "initial_window_top" : 10,
-    "initial_splitter_orientation" : "vertical",
-    "initial_vertical_ratio" : 0.5,
-    "initial_horizontal_ratio" : 0.3,
-    "initial_horizontal_secondary_ratio" : 0.5,
-    "initial_vertical_secondary_ratio" : 0.7,
-    "outline_pane_scrolls_horizontally" : 0,
-    "split_bar_color" : "LightSteelBlue2",
-    "split_bar_relief" : "groove",
-    "split_bar_width" : 7 }
-#@nonl
-#@-node:ekr.20031218072017.2404:<< define defaultsDict >>
-#@+node:ekr.20031218072017.3004:<< initialize ivars that may be set by config options >>
-# Defaults for these ivaars are specified here, _not_ in defaultsDict.
-
-self.at_root_bodies_start_in_doc_mode = True # For compatibility with previous versions.
-self.config = None # The current instance of ConfigParser
-self.config_encoding = "utf-8" # Encoding used for leoConfig.txt.
-self.create_nonexistent_directories = False
-self.default_derived_file_encoding = "utf-8"
-self.new_leo_file_encoding = "UTF-8" # Upper case for compatibility with previous versions.
-self.output_initial_comment = "" # "" or None for compatibility with previous versions.
-self.output_newline = "nl"
-self.read_only = True # Make sure we don't alter an illegal leoConfig.txt file!
-self.redirect_execute_script_output_to_log_pane = False
-self.relative_path_base_directory = "!"
-self.remove_sentinels_extension = ".txt"
-self.save_clears_undo_buffer = False
-self.stylesheet = None
-self.tkEncoding = None # Defaults to None so it doesn't override better defaults.
-self.trailing_body_newlines = "asis"
-self.use_plugins = False # Should never be True here!
-self.use_psyco = False
-self.undo_granularity = "word" # "char","word","line","node"
-self.write_strips_blank_lines = False
-#@nonl
-#@-node:ekr.20031218072017.3004:<< initialize ivars that may be set by config options >>
-#@+node:ekr.20031218072017.1421:<< get config options >>
-@ Rewritten 10/11/02 as follows:
-
-1. We call initConfigParam and initBooleanConfigParam to get the values.
-
-The general purpose code will enter all these values into configDict.  This allows update() to write the configuration section without special case code.  configDict is not accessible by the user.  Rather, for greater speed the user access these values via the ivars of this class.
-
-2. We pass the ivars themselves as params so that default initialization is done in the ctor, as would normally be expected.
-@c
-
-self.at_root_bodies_start_in_doc_mode = self.initBooleanConfigParam(
-    "at_root_bodies_start_in_doc_mode",self.at_root_bodies_start_in_doc_mode)
-    
-encoding = self.initConfigParam(
-    "config_encoding",self.config_encoding)
-    
-if g.isValidEncoding(encoding):
-    self.config_encoding = encoding
-else:
-    g.es("bad config_encoding: " + encoding)
-    
-self.create_nonexistent_directories = self.initBooleanConfigParam(
-    "create_nonexistent_directories",self.create_nonexistent_directories)
-    
-encoding = self.initConfigParam(
-    "default_derived_file_encoding",self.default_derived_file_encoding)
-
-if g.isValidEncoding(encoding):
-    self.default_derived_file_encoding = encoding
-else:
-    g.es("bad default_derived_file_encoding: " + encoding)
-    
-encoding = self.initConfigParam(
-    "new_leo_file_encoding",
-    self.new_leo_file_encoding)
-
-if g.isValidEncoding(encoding):
-    self.new_leo_file_encoding = encoding
-else:
-    g.es("bad new_leo_file_encoding: " + encoding)
-
-self.output_initial_comment = self.initConfigParam(
-    "output_initial_comment",self.output_initial_comment)
-
-self.output_newline = self.initConfigParam(
-    "output_newline",self.output_newline)
-
-self.read_only = self.initBooleanConfigParam(
-    "read_only",self.read_only)
-
-self.relative_path_base_directory = self.initConfigParam(
-    "relative_path_base_directory",self.relative_path_base_directory)
-    
-self.redirect_execute_script_output_to_log_pane = self.initBooleanConfigParam(
-    "redirect_execute_script_output_to_log_pane",
-    self.redirect_execute_script_output_to_log_pane)
-    
-self.remove_sentinels_extension = self.initConfigParam(
-    "remove_sentinels_extension",self.remove_sentinels_extension)
-
-self.save_clears_undo_buffer = self.initBooleanConfigParam(
-    "save_clears_undo_buffer",self.save_clears_undo_buffer)
-    
-self.stylesheet = self.initConfigParam(
-    "stylesheet",self.stylesheet)
-    
-encoding = self.initConfigParam(
-    "tk_encoding",self.tkEncoding)
-    
-if encoding and len(encoding) > 0: # May be None.
-    if g.isValidEncoding(encoding):
-        self.tkEncoding = encoding
-    else:
-        g.es("bad tk_encoding: " + encoding)
-        
-# New in 4.2
-self.trailing_body_newlines = self.initConfigParam(
-    "trailing_body_newlines",self.trailing_body_newlines)
-    
-self.use_plugins = self.initBooleanConfigParam(
-    "use_plugins",self.use_plugins)
-
-self.use_psyco = self.initBooleanConfigParam(
-    "use_psyco",self.use_psyco)
-    
-self.undo_granularity = self.initConfigParam(
-    "undo_granularity",self.undo_granularity)
-
-# New in 4.2
-self.write_strips_blank_lines = self.initBooleanConfigParam(
-    "write_strips_blank_lines",self.write_strips_blank_lines)
-    
-#g.trace("write_strips_blank_lines",self.write_strips_blank_lines)
-#g.trace("trailing_body_newlines",self.trailing_body_newlines)
-#@nonl
-#@-node:ekr.20031218072017.1421:<< get config options >>
-#@-node:ekr.20040930075920.1:Common to both options
-#@+node:ekr.20040718050922:(trailing_body_newlines option)
-@color
-#@nonl
-#@+node:ekr.20040720105309:Notes
-@killcolor
-
-My first idea was to do this in the body text setters.  However, this converts everything when reading any .leo file, and that is _very_ slow.  It also appears to be very dangerous.
-#@nonl
-#@-node:ekr.20040720105309:Notes
-#@-node:ekr.20040718050922:(trailing_body_newlines option)
-#@+node:ekr.20040720075446.1:(write_strips_blank_lines option)
-#@+node:ekr.20031218072017.2134:putCodeLine
-def putCodeLine (self,s,i):
-    
-    """Put a normal code line."""
-    
-    at = self
-    
-    # Put @verbatim sentinel if required.
-    k = g.skip_ws(s,i)
-    if g.match(s,k,self.startSentinelComment + '@'):
-        self.putSentinel("@verbatim")
-
-    j = g.skip_line(s,i)
-    line = s[i:j]
-
-    # g.app.config.write_strips_blank_lines
-    if 0: # 7/22/04: Don't put any whitespace in otherwise blank lines.
-        if line.strip(): # The line has non-empty content.
-            if not at.raw:
-                at.putIndent(at.indent)
-        
-            if line[-1:]=="\n":
-                at.os(line[:-1])
-                at.onl()
-            else:
-                at.os(line)
-        elif line and line[-1] == '\n':
-            at.onl()
-        else:
-            g.trace("Can't happen: completely empty line")
-    else:
-        # 1/29/04: Don't put leading indent if the line is empty!
-        if line and not at.raw:
-            at.putIndent(at.indent)
-    
-        if line[-1:]=="\n":
-            at.os(line[:-1])
-            at.onl()
-        else:
-            at.os(line)
-#@nonl
-#@-node:ekr.20031218072017.2134:putCodeLine
-#@-node:ekr.20040720075446.1:(write_strips_blank_lines option)
-#@-node:EKR.20040603092958.1:Add new options for handling newlines in body text
-#@-node:ekr.20040930075920:Whitespace options
-#@+node:ekr.20041022083005.8:Script to catch mixed tab & space in derived files
-import glob
-
-@others
-
-dir = c.frame.openDirectory
-files = glob.glob('%s\*.py' % dir)
-
-n = 0
-for name in files:
-    f = file(name)
-    lines = f.readlines()
-    # print '%5d %s' % (len(lines),name)
-    f.close()
-    check(name,lines)
-    n += 1
-print 'done.  checked %d files' % (n)
-#@nonl
-#@+node:ekr.20050917133402:check
-def check(name,lines):
-    
-    n = 0
-    for line in lines:
-        n += 1
-        i = g.skip_ws(line,0)
-        lws = line[0:i]
-        if lws:
-            if lws.find(' ') > -1 and lws.find('\t') > -1:
-                print '%20s %5d %s' % (name,n,repr(line))
-#@nonl
-#@-node:ekr.20050917133402:check
-#@-node:ekr.20041022083005.8:Script to catch mixed tab & space in derived files
-#@-node:ekr.20040919182750.1:Better handling of whitespace (cvs fiendly)
-#@+node:ekr.20060306194040:More screen shots or video tutorial on Leo's web site
-
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3615177
-By: ktenney
-
-High on my ToLearn list is vnc2swf
-http://www.unixuser.org/~euske/vnc2swf/
-
-
-http://sourceforge.net/forum/message.php?msg_id=3615278
-By: James
-
-A lot of people are now using Wink for demonstrations
-(http://www.debugmode.com/wink/), it's is free and seems to work well.
-#@-node:ekr.20060306194040:More screen shots or video tutorial on Leo's web site
-#@+node:ekr.20031218072017.801:Support .leo.gz or .leo.zip files
-#@+node:ekr.20050428062312:Request 1
-@nocolor
-
-By: samcollett ( Sam Collett ) 
- Compressed LEO files   
-2003-01-07 16:57
-
-
-Would it be possible to have a new file format that was basically a compressed
-version of LEO files? Maybe using the gzip compression method. You could then
-save a lot of space when you do large files. Not being a professional
-programmer myself (I mainly dabble in web design - HTML and Active Server
-Pages) how difficult would this be to implement? You would just output using a
-different file extension so users of the older versions can still use files
-with the LEO extension.
-#@-node:ekr.20050428062312:Request 1
-#@+node:ekr.20040226092546:Request 2
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=2442772
-By: ejoy
-
-I made an experiment last night. I replaced the call to open()in leofilecommand.py
-with a call to gzip.open().
-
-The LeoPy.leo file saved this way is only 600K! And there is no significant
-speed down in saving.
-
-I think it is a good idea to add compression support for load/save .leo files.
-When reading or writing file with name ending with ".leo.gz", leo can call gzip
-module to uncompress/compress the file, saving a lot of disk space.
-
-What do you think of this?
-#@nonl
-#@-node:ekr.20040226092546:Request 2
-#@+node:ekr.20031218072017.2297:open (leoFileCommands)
-def open(self,theFile,fileName,readAtFileNodesFlag=True,silent=False):
-
-    c = self.c ; frame = c.frame
-    # Read the entire file into the buffer
-    self.fileBuffer = theFile.read() ; theFile.close()
-    self.fileIndex = 0
-    << Set the default directory >>
-    self.topPosition = None
-    ok, ratio = self.getLeoFile(
-        fileName,
-        readAtFileNodesFlag=readAtFileNodesFlag,
-        silent=silent)
-    frame.resizePanesToRatio(ratio,frame.secondary_ratio)
-    if 0: # 1/30/04: this is useless.
-        if self.topPosition: 
-            c.setTopVnode(self.topPosition)
-    # Delete the file buffer
-    self.fileBuffer = ""
-    return ok
-#@nonl
-#@+node:ekr.20031218072017.2298:<< Set the default directory >>
-@ The most natural default directory is the directory containing the .leo file that we are about to open.  If the user has specified the "Default Directory" preference that will over-ride what we are about to set.
-@c
-
-theDir = g.os_path_dirname(fileName)
-
-if len(theDir) > 0:
-    c.openDirectory = theDir
-#@nonl
-#@-node:ekr.20031218072017.2298:<< Set the default directory >>
-#@-node:ekr.20031218072017.2297:open (leoFileCommands)
-#@+node:ekr.20050428063105:newOpen (From chapters.py)
-oldOpen = leoFileCommands.fileCommands.open
-
-def newOpen( self,file,fileName,readAtFileNodesFlag=True,silent=False):
-
-    global iscStringIO
-    c = self.c
-    
-    if zipfile.is_zipfile( fileName ):
-        iscStringIO = True
-        chapters = openChaptersFile( fileName )
-        g.es( str( len( chapters ) ) + " Chapters To Read", color = 'blue' )
-        insertChapters( chapters, c.frame, c )
-        g.es( "Finished Reading Chapters", color = 'blue' )
-        iscStringIO = False
-        return True
-
-    return oldOpen(self,file,fileName,readAtFileNodesFlag,silent)
-#@nonl
-#@-node:ekr.20050428063105:newOpen (From chapters.py)
-#@-node:ekr.20031218072017.801:Support .leo.gz or .leo.zip files
 #@+node:ekr.20060413065803:Improve searches 4
 #@+node:ekr.20060122183544:Improve isearch
 @nocolor
@@ -2929,6 +2213,718 @@ def findWord (self,event):
 #@+node:ekr.20060206104205:Finish query-replace
 #@-node:ekr.20060206104205:Finish query-replace
 #@-node:ekr.20060413065803:Improve searches 4
+#@-node:ekr.20060531135634.1:Test and fix *important* Emacs commands
+#@+node:ekr.20050419060645:Alternate lead-in characters
+@nocolor
+
+An @decorator setting might be good. This would be a list of all Python
+decorators. Leo would create @verbatim sentinels for these.
+#@nonl
+#@-node:ekr.20050419060645:Alternate lead-in characters
+#@+node:ekr.20040919182750.1:Better handling of whitespace (cvs fiendly)
+#@+node:ekr.20060227121512:Comments from Bernhard
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3578166
+By: bwmulder
+
+[quote]It turns out that munging whitespace can be extremely time consuming.
+I once tried to do a user setting that would end all non-empty body text with
+exactly one newline. That effectively hung Leo. I'm not sure if there was a
+blunder in the code that caused this, but it may well have been that mass changes
+like this are inherently expensive. So we should not assume that 'innocent'
+whitespace changes are in fact easy to do.
+[quote]
+
+CVS stores files in the RCS format. The latest version is stored directly, the
+other versions are stored as line differences (delete lines x-y, insert 3 lines
+at z) relative to the latest version. If you change the empty line convention,
+you might create lots of differences of the above form which might be expensive
+to compute.
+
+This should be a onetime cost, however, which, if you will, you could do one
+file at a time.
+
+I woudn't let a tool like CVS determine if I would  change the convention.
+
+As for white space differences: TortoiseSVN (I have not used TortoiseCVS) allows
+you to specify external programs. There should be some out there which allow
+you to ignore white space differences when comparing files.
+
+On a related note: I read that subversion is in Beta on SourceForge. You might
+want to think about switching to subversion once it is officially supported.
+One example of a project which has switched from CVS to subversion is the project
+which maintains the Python sources itself (see, for example,
+http://www.python.org/dev/devfaq.html#subversion-svn)
+#@nonl
+#@-node:ekr.20060227121512:Comments from Bernhard
+#@+node:ekr.20040721094203:Make sure Leo uses "verbatim" whitespace
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=2674828
+By: bwmulder
+
+If I understand correctly, there are two different problems:
+
+- Trailing whitespaces
+- Left indented comments
+
+1. Before commenting on these, a question:
+
+If I write something like
+    a=b
+    if a:
+        @others
+
+[four spaces indentation]
+
+I sometimes see tab characters before the lines inserted for '@others'.
+
+It seems that Leo remembers 'two levels of indentation', and then
+fabricates this indentation using tab characters.
+
+I think it might be more robust if Leo remembered the actual
+characters in front of @others and would use them for indentation.
+
+I suspect that many indentation errors I had with Leo could have been
+avoided had not Leo had its own ideas on how to do indentation.
+
+Maybe Leo could use the exact sequence of characters in front of
+@others for all inserted lines?
+
+2. I do not care much about trailing whitespaces. Most of the time
+they are invisible, but sometimes they are very misleading (trailing in python or C).
+
+As far as I am concerned, Leo need never produce trailing whitespaces.
+
+Maybe we need special machinerie if sources have trailing whitespaces
+and the sources are not under our control. 
+
+Not sure if everybody would be happy if we essentially ban all trailing
+whitespaces.
+
+3. Unindented commentlines could be dealt with by using indentation to
+indicate structure.
+
+Of course, this might break the correspondance Leo structure / Python
+structure, which is very ugly.
+
+4. One possible alternative might be a new directive which indicates outindent:
+
+@outindent <number>.
+
+This would apply to the next comment block.
+
+To me, 4. looks a little bit less ugly than 3.
+
+5. As indicated in a different post, I suspect that Leo has a problem
+if almost every node in an outline is changed. Profiling should point
+to the culprit.
+
+> 2. Have Leo strip whitespace from otherwise blank lines, and hope
+that that solves all problems in Perfect Import. This is solving the
+problem in the atFile code. The problem is that if we apply settings
+in general we will get massive changes to derived files. In most
+programming settings these changes might be welcome, but the problem
+is actually making these changes. My first few attempts met with
+abject failure.
+
+Are you saying that you could not remove trailing blanks? What kind of
+problems did you run into?
+
+Summary:
+- Use actual characters in front of @others or <<>> for indentation.
+- Don't write trailing whitespaces
+- Introduce directive for left-indendet comments.
+- Profile to find out what slows Leo down if many nodes change.
+#@nonl
+#@-node:ekr.20040721094203:Make sure Leo uses "verbatim" whitespace
+#@+node:ekr.20040930075920:Whitespace options
+#@+node:ekr.20040720103642.1:Script to remove trailing body newlines VERY DANGEROUS
+current = c.currentPosition()
+count = 0
+
+for p in c.all_positions_iter():
+    s = p.bodyString().rstrip()
+    if s:
+        s = p.bodyString().rstrip() + '\n'
+        if s != p.bodyString():
+            # Do NOT set anything dirty here!
+            ## p.v.t.setTnodeText(s)
+            count += 1
+
+print "%d nodes converted" % count
+print "You MUST do Write All Nodes AND Save this file to complete the conversion"
+#@nonl
+#@-node:ekr.20040720103642.1:Script to remove trailing body newlines VERY DANGEROUS
+#@+node:EKR.20040603092958.1:Add new options for handling newlines in body text
+@nocolor
+
+Alas, this really does not solve problems with Import.
+
+- "asis":  ideal, maybe not possible?
+- "zero": no trailing newlines.
+- "one": exactly one trailing newline.
+
+Special case code is required so empty nodes stay empty with "one" option.
+#@nonl
+#@+node:ekr.20040802063546.1:(Made sure body text changes reported properly)
+# This may have to change when mass whitespace changes happen)
+#@nonl
+#@+node:ekr.20031218072017.1812:top_df.read
+# The caller has enclosed this code in beginUpdate/endUpdate.
+
+def read(self,root,importFileName=None,thinFile=False):
+    
+    """Common read logic for any derived file."""
+    
+    at = self ; c = at.c
+    at.errors = 0
+    importing = importFileName is not None
+    << set fileName from root and importFileName >>
+    << open file or return False >>
+    g.es("reading: " + root.headString())
+    firstLines,read_new,derivedFileIsThin = at.scanHeader(theFile,fileName)
+    df = g.choose(read_new,at.new_df,at.old_df)
+    # g.trace(g.choose(df==at.new_df,"new","old"))
+    << copy ivars to df >>
+    root.clearVisitedInTree()
+    try:
+        # 1/28/04: Don't set comment delims when importing.
+        # 1/28/04: Call scanAllDirectives here, not in readOpenFile.
+        importing = importFileName is not None
+        df.scanAllDirectives(root,importing=importing,reading=True)
+        df.readOpenFile(root,theFile,firstLines)
+    except:
+        at.error("Unexpected exception while reading derived file")
+        g.es_exception()
+    theFile.close()
+    root.clearDirty() # May be set dirty below.
+    after = root.nodeAfterTree()
+    << warn about non-empty unvisited nodes >>
+    if df.errors == 0:
+        if not df.importing:
+            << copy all tempBodyStrings to tnodes >>
+    << delete all tempBodyStrings >>
+    return df.errors == 0
+#@nonl
+#@+node:ekr.20031218072017.1813:<< set fileName from root and importFileName >>
+at.scanDefaultDirectory(root,importing=importing)
+if at.errors: return
+
+if importFileName:
+    fileName = importFileName
+elif root.isAnyAtFileNode():
+    fileName = root.anyAtFileNodeName()
+else:
+    fileName = None
+
+if not fileName:
+    at.error("Missing file name.  Restoring @file tree from .leo file.")
+    return False
+#@nonl
+#@-node:ekr.20031218072017.1813:<< set fileName from root and importFileName >>
+#@+node:ekr.20031218072017.1814:<< open file or return false >>
+fn = g.os_path_join(at.default_directory,fileName)
+fn = g.os_path_normpath(fn)
+
+try:
+    # 11/4/03: open the file in binary mode to allow 0x1a in bodies & headlines.
+    theFile = open(fn,'rb')
+    if theFile:
+        << warn on read-only file >>
+    else: return False
+except:
+    at.error("Can not open: " + '"@file ' + fn + '"')
+    root.setDirty()
+    return False
+#@nonl
+#@+node:ekr.20031218072017.1815:<< warn on read-only file >>
+try:
+    read_only = not os.access(fn,os.W_OK)
+    if read_only:
+        g.es("read only: " + fn,color="red")
+except:
+    pass # os.access() may not exist on all platforms.
+#@nonl
+#@-node:ekr.20031218072017.1815:<< warn on read-only file >>
+#@-node:ekr.20031218072017.1814:<< open file or return false >>
+#@+node:ekr.20031218072017.1816:<< copy ivars to df >>
+# Telling what kind of file we are reading.
+df.importing = importFileName != None
+df.raw = False
+if importing and df == at.new_df:
+    thinFile = True
+df.thinFile = thinFile
+
+# Set by scanHeader.
+df.encoding = at.encoding
+df.endSentinelComment = at.endSentinelComment
+df.startSentinelComment = at.startSentinelComment
+
+# Set other common ivars.
+df.errors = 0
+df.file = theFile
+df.importRootSeen = False
+df.indent = 0
+df.targetFileName = fileName
+df.root = root
+df.root_seen = False
+df.perfectImportRoot = None # Set only in readOpenFile.
+#@nonl
+#@-node:ekr.20031218072017.1816:<< copy ivars to df >>
+#@+node:ekr.20031218072017.1817:<< warn about non-empty unvisited nodes >>
+for p in root.self_and_subtree_iter():
+
+    # g.trace(p)
+    try: s = p.v.t.tempBodyString
+    except: s = ""
+    if s and not p.v.t.isVisited():
+        at.error("Not in derived file:" + p.headString())
+        p.v.t.setVisited() # One message is enough.
+#@nonl
+#@-node:ekr.20031218072017.1817:<< warn about non-empty unvisited nodes >>
+#@+node:ekr.20031218072017.1818:<< copy all tempBodyStrings to tnodes >>
+for p in root.self_and_subtree_iter():
+    try: s = p.v.t.tempBodyString
+    except: s = ""
+    if s != p.bodyString():
+        if 0: # For debugging.
+            print ; print "changed: " + p.headString()
+            print ; print "new:",s
+            print ; print "old:",p.bodyString()
+        if thinFile:
+            p.v.setTnodeText(s)
+            if p.v.isDirty():
+                p.setAllAncestorAtFileNodesDirty()
+        else:
+            p.setBodyStringOrPane(s) # Sets v and v.c dirty.
+            
+        if not thinFile or (thinFile and p.v.isDirty()):
+            g.es("changed: " + p.headString(),color="blue")
+            p.setMarked()
+#@nonl
+#@-node:ekr.20031218072017.1818:<< copy all tempBodyStrings to tnodes >>
+#@+node:ekr.20031218072017.1819:<< delete all tempBodyStrings >>
+for p in c.allNodes_iter():
+    
+    if hasattr(p.v.t,"tempBodyString"):
+        delattr(p.v.t,"tempBodyString")
+#@nonl
+#@-node:ekr.20031218072017.1819:<< delete all tempBodyStrings >>
+#@-node:ekr.20031218072017.1812:top_df.read
+#@-node:ekr.20040802063546.1:(Made sure body text changes reported properly)
+#@+node:ekr.20040930075920.1:Common to both options
+#@+node:ekr.20031218072017.2404:<< define defaultsDict >>
+@ This contains only the "interesting" defaults.
+Ints and bools default to 0, floats to 0.0 and strings to "".
+@c
+
+defaultBodyFontSize = g.choose(sys.platform=="win32",9,12)
+defaultLogFontSize  = g.choose(sys.platform=="win32",8,12)
+defaultTreeFontSize = g.choose(sys.platform=="win32",9,12)
+
+# Defaults for ivars are specified in the ctor, _not_ here.
+
+defaultsDict = {
+    # compare options...
+    "ignore_blank_lines" : 1,
+    "limit_count" : 9,
+    "print_mismatching_lines" : 1,
+    "print_trailing_lines" : 1,
+    # find/change options...
+    "search_body" : 1,
+    "whole_word" : 1,
+    # Prefs panel.
+    "default_target_language" : "Python",
+    "tab_width" : -4,
+    "page_width" : 132,
+    "output_doc_chunks" : 1,
+    "tangle_outputs_header" : 1,
+    # Syntax coloring options...
+    # Defaults for colors are handled by leoColor.py.
+    "color_directives_in_plain_text" : 1,
+    "underline_undefined_section_names" : 1,
+    # Window options...
+    "allow_clone_drags" : 1,
+    "body_pane_wraps" : 1,
+    "body_text_font_family" : "Courier",
+    "body_text_font_size" : defaultBodyFontSize,
+    "body_text_font_slant" : "roman",
+    "body_text_font_weight" : "normal",
+    "enable_drag_messages" : 1,
+    "headline_text_font_size" : defaultTreeFontSize,
+    "headline_text_font_slant" : "roman",
+    "headline_text_font_weight" : "normal",
+    "log_text_font_size" : defaultLogFontSize,
+    "log_text_font_slant" : "roman",
+    "log_text_font_weight" : "normal",
+    "initial_window_height" : 600, # 7/24/03: In pixels.
+    "initial_window_width" :  800, # 7/24/03: In pixels.
+    "initial_window_left" : 10,
+    "initial_window_top" : 10,
+    "initial_splitter_orientation" : "vertical",
+    "initial_vertical_ratio" : 0.5,
+    "initial_horizontal_ratio" : 0.3,
+    "initial_horizontal_secondary_ratio" : 0.5,
+    "initial_vertical_secondary_ratio" : 0.7,
+    "outline_pane_scrolls_horizontally" : 0,
+    "split_bar_color" : "LightSteelBlue2",
+    "split_bar_relief" : "groove",
+    "split_bar_width" : 7 }
+#@nonl
+#@-node:ekr.20031218072017.2404:<< define defaultsDict >>
+#@+node:ekr.20031218072017.3004:<< initialize ivars that may be set by config options >>
+# Defaults for these ivaars are specified here, _not_ in defaultsDict.
+
+self.at_root_bodies_start_in_doc_mode = True # For compatibility with previous versions.
+self.config = None # The current instance of ConfigParser
+self.config_encoding = "utf-8" # Encoding used for leoConfig.txt.
+self.create_nonexistent_directories = False
+self.default_derived_file_encoding = "utf-8"
+self.new_leo_file_encoding = "UTF-8" # Upper case for compatibility with previous versions.
+self.output_initial_comment = "" # "" or None for compatibility with previous versions.
+self.output_newline = "nl"
+self.read_only = True # Make sure we don't alter an illegal leoConfig.txt file!
+self.redirect_execute_script_output_to_log_pane = False
+self.relative_path_base_directory = "!"
+self.remove_sentinels_extension = ".txt"
+self.save_clears_undo_buffer = False
+self.stylesheet = None
+self.tkEncoding = None # Defaults to None so it doesn't override better defaults.
+self.trailing_body_newlines = "asis"
+self.use_plugins = False # Should never be True here!
+self.use_psyco = False
+self.undo_granularity = "word" # "char","word","line","node"
+self.write_strips_blank_lines = False
+#@nonl
+#@-node:ekr.20031218072017.3004:<< initialize ivars that may be set by config options >>
+#@+node:ekr.20031218072017.1421:<< get config options >>
+@ Rewritten 10/11/02 as follows:
+
+1. We call initConfigParam and initBooleanConfigParam to get the values.
+
+The general purpose code will enter all these values into configDict.  This allows update() to write the configuration section without special case code.  configDict is not accessible by the user.  Rather, for greater speed the user access these values via the ivars of this class.
+
+2. We pass the ivars themselves as params so that default initialization is done in the ctor, as would normally be expected.
+@c
+
+self.at_root_bodies_start_in_doc_mode = self.initBooleanConfigParam(
+    "at_root_bodies_start_in_doc_mode",self.at_root_bodies_start_in_doc_mode)
+    
+encoding = self.initConfigParam(
+    "config_encoding",self.config_encoding)
+    
+if g.isValidEncoding(encoding):
+    self.config_encoding = encoding
+else:
+    g.es("bad config_encoding: " + encoding)
+    
+self.create_nonexistent_directories = self.initBooleanConfigParam(
+    "create_nonexistent_directories",self.create_nonexistent_directories)
+    
+encoding = self.initConfigParam(
+    "default_derived_file_encoding",self.default_derived_file_encoding)
+
+if g.isValidEncoding(encoding):
+    self.default_derived_file_encoding = encoding
+else:
+    g.es("bad default_derived_file_encoding: " + encoding)
+    
+encoding = self.initConfigParam(
+    "new_leo_file_encoding",
+    self.new_leo_file_encoding)
+
+if g.isValidEncoding(encoding):
+    self.new_leo_file_encoding = encoding
+else:
+    g.es("bad new_leo_file_encoding: " + encoding)
+
+self.output_initial_comment = self.initConfigParam(
+    "output_initial_comment",self.output_initial_comment)
+
+self.output_newline = self.initConfigParam(
+    "output_newline",self.output_newline)
+
+self.read_only = self.initBooleanConfigParam(
+    "read_only",self.read_only)
+
+self.relative_path_base_directory = self.initConfigParam(
+    "relative_path_base_directory",self.relative_path_base_directory)
+    
+self.redirect_execute_script_output_to_log_pane = self.initBooleanConfigParam(
+    "redirect_execute_script_output_to_log_pane",
+    self.redirect_execute_script_output_to_log_pane)
+    
+self.remove_sentinels_extension = self.initConfigParam(
+    "remove_sentinels_extension",self.remove_sentinels_extension)
+
+self.save_clears_undo_buffer = self.initBooleanConfigParam(
+    "save_clears_undo_buffer",self.save_clears_undo_buffer)
+    
+self.stylesheet = self.initConfigParam(
+    "stylesheet",self.stylesheet)
+    
+encoding = self.initConfigParam(
+    "tk_encoding",self.tkEncoding)
+    
+if encoding and len(encoding) > 0: # May be None.
+    if g.isValidEncoding(encoding):
+        self.tkEncoding = encoding
+    else:
+        g.es("bad tk_encoding: " + encoding)
+        
+# New in 4.2
+self.trailing_body_newlines = self.initConfigParam(
+    "trailing_body_newlines",self.trailing_body_newlines)
+    
+self.use_plugins = self.initBooleanConfigParam(
+    "use_plugins",self.use_plugins)
+
+self.use_psyco = self.initBooleanConfigParam(
+    "use_psyco",self.use_psyco)
+    
+self.undo_granularity = self.initConfigParam(
+    "undo_granularity",self.undo_granularity)
+
+# New in 4.2
+self.write_strips_blank_lines = self.initBooleanConfigParam(
+    "write_strips_blank_lines",self.write_strips_blank_lines)
+    
+#g.trace("write_strips_blank_lines",self.write_strips_blank_lines)
+#g.trace("trailing_body_newlines",self.trailing_body_newlines)
+#@nonl
+#@-node:ekr.20031218072017.1421:<< get config options >>
+#@-node:ekr.20040930075920.1:Common to both options
+#@+node:ekr.20040718050922:(trailing_body_newlines option)
+@color
+#@nonl
+#@+node:ekr.20040720105309:Notes
+@killcolor
+
+My first idea was to do this in the body text setters.  However, this converts everything when reading any .leo file, and that is _very_ slow.  It also appears to be very dangerous.
+#@nonl
+#@-node:ekr.20040720105309:Notes
+#@-node:ekr.20040718050922:(trailing_body_newlines option)
+#@+node:ekr.20040720075446.1:(write_strips_blank_lines option)
+#@+node:ekr.20031218072017.2134:putCodeLine
+def putCodeLine (self,s,i):
+    
+    """Put a normal code line."""
+    
+    at = self
+    
+    # Put @verbatim sentinel if required.
+    k = g.skip_ws(s,i)
+    if g.match(s,k,self.startSentinelComment + '@'):
+        self.putSentinel("@verbatim")
+
+    j = g.skip_line(s,i)
+    line = s[i:j]
+
+    # g.app.config.write_strips_blank_lines
+    if 0: # 7/22/04: Don't put any whitespace in otherwise blank lines.
+        if line.strip(): # The line has non-empty content.
+            if not at.raw:
+                at.putIndent(at.indent)
+        
+            if line[-1:]=="\n":
+                at.os(line[:-1])
+                at.onl()
+            else:
+                at.os(line)
+        elif line and line[-1] == '\n':
+            at.onl()
+        else:
+            g.trace("Can't happen: completely empty line")
+    else:
+        # 1/29/04: Don't put leading indent if the line is empty!
+        if line and not at.raw:
+            at.putIndent(at.indent)
+    
+        if line[-1:]=="\n":
+            at.os(line[:-1])
+            at.onl()
+        else:
+            at.os(line)
+#@nonl
+#@-node:ekr.20031218072017.2134:putCodeLine
+#@-node:ekr.20040720075446.1:(write_strips_blank_lines option)
+#@-node:EKR.20040603092958.1:Add new options for handling newlines in body text
+#@-node:ekr.20040930075920:Whitespace options
+#@+node:ekr.20041022083005.8:Script to catch mixed tab & space in derived files
+import glob
+
+@others
+
+dir = c.frame.openDirectory
+files = glob.glob('%s\*.py' % dir)
+
+n = 0
+for name in files:
+    f = file(name)
+    lines = f.readlines()
+    # print '%5d %s' % (len(lines),name)
+    f.close()
+    check(name,lines)
+    n += 1
+print 'done.  checked %d files' % (n)
+#@nonl
+#@+node:ekr.20050917133402:check
+def check(name,lines):
+    
+    n = 0
+    for line in lines:
+        n += 1
+        i = g.skip_ws(line,0)
+        lws = line[0:i]
+        if lws:
+            if lws.find(' ') > -1 and lws.find('\t') > -1:
+                print '%20s %5d %s' % (name,n,repr(line))
+#@nonl
+#@-node:ekr.20050917133402:check
+#@-node:ekr.20041022083005.8:Script to catch mixed tab & space in derived files
+#@-node:ekr.20040919182750.1:Better handling of whitespace (cvs fiendly)
+#@+node:ekr.20060306194040:More screen shots or video tutorial on Leo's web site
+
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3615177
+By: ktenney
+
+High on my ToLearn list is vnc2swf
+http://www.unixuser.org/~euske/vnc2swf/
+
+
+http://sourceforge.net/forum/message.php?msg_id=3615278
+By: James
+
+A lot of people are now using Wink for demonstrations
+(http://www.debugmode.com/wink/), it's is free and seems to work well.
+#@+node:ekr.20060531134434:Tutorials
+http://sourceforge.net/forum/message.php?msg_id=3758271
+
+From: Rich
+
+Tutorials would be great. I use Liberty BASIC, (http://libertybasic.conforums.com)
+and it has a very good tutorial -- leads the beginner by the hand through much
+of the language. Also the help file has working code snippets
+to cut-n-paste-n-play-with. I'd like to see something like:
+
+[Buttons]
+...[What are Buttons good for?]
+...[How do I make my own buttons?]
+......[Some commands you can use with buttons]
+......[Where to find button commands]
+#@nonl
+#@-node:ekr.20060531134434:Tutorials
+#@+node:ekr.20060531134434.1:Screencasts
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3758303
+By: ktenney
+
+My sense is that documentation/screencasts has the
+greatest potential for expanding Leo's mindshare.
+
+I really like those produced by the good folks
+at Dabo;
+http://leafe.com/screencasts/
+http://leafe.com/screencasts/populategrid.html
+
+The TurboGears people have taken this to the extreme;
+http://www.turbogears.org/ultimate.html
+
+Leo is different enough that it warrants a 
+demonstration of it's advantages.
+#@nonl
+#@-node:ekr.20060531134434.1:Screencasts
+#@-node:ekr.20060306194040:More screen shots or video tutorial on Leo's web site
+#@+node:ekr.20031218072017.801:Support .leo.gz or .leo.zip files
+#@+node:ekr.20050428062312:Request 1
+@nocolor
+
+By: samcollett ( Sam Collett ) 
+ Compressed LEO files   
+2003-01-07 16:57
+
+
+Would it be possible to have a new file format that was basically a compressed
+version of LEO files? Maybe using the gzip compression method. You could then
+save a lot of space when you do large files. Not being a professional
+programmer myself (I mainly dabble in web design - HTML and Active Server
+Pages) how difficult would this be to implement? You would just output using a
+different file extension so users of the older versions can still use files
+with the LEO extension.
+#@-node:ekr.20050428062312:Request 1
+#@+node:ekr.20040226092546:Request 2
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=2442772
+By: ejoy
+
+I made an experiment last night. I replaced the call to open()in leofilecommand.py
+with a call to gzip.open().
+
+The LeoPy.leo file saved this way is only 600K! And there is no significant
+speed down in saving.
+
+I think it is a good idea to add compression support for load/save .leo files.
+When reading or writing file with name ending with ".leo.gz", leo can call gzip
+module to uncompress/compress the file, saving a lot of disk space.
+
+What do you think of this?
+#@nonl
+#@-node:ekr.20040226092546:Request 2
+#@+node:ekr.20031218072017.2297:open (leoFileCommands)
+def open(self,theFile,fileName,readAtFileNodesFlag=True,silent=False):
+
+    c = self.c ; frame = c.frame
+    # Read the entire file into the buffer
+    self.fileBuffer = theFile.read() ; theFile.close()
+    self.fileIndex = 0
+    << Set the default directory >>
+    self.topPosition = None
+    ok, ratio = self.getLeoFile(
+        fileName,
+        readAtFileNodesFlag=readAtFileNodesFlag,
+        silent=silent)
+    frame.resizePanesToRatio(ratio,frame.secondary_ratio)
+    if 0: # 1/30/04: this is useless.
+        if self.topPosition: 
+            c.setTopVnode(self.topPosition)
+    # Delete the file buffer
+    self.fileBuffer = ""
+    return ok
+#@nonl
+#@+node:ekr.20031218072017.2298:<< Set the default directory >>
+@ The most natural default directory is the directory containing the .leo file that we are about to open.  If the user has specified the "Default Directory" preference that will over-ride what we are about to set.
+@c
+
+theDir = g.os_path_dirname(fileName)
+
+if len(theDir) > 0:
+    c.openDirectory = theDir
+#@nonl
+#@-node:ekr.20031218072017.2298:<< Set the default directory >>
+#@-node:ekr.20031218072017.2297:open (leoFileCommands)
+#@+node:ekr.20050428063105:newOpen (From chapters.py)
+oldOpen = leoFileCommands.fileCommands.open
+
+def newOpen( self,file,fileName,readAtFileNodesFlag=True,silent=False):
+
+    global iscStringIO
+    c = self.c
+    
+    if zipfile.is_zipfile( fileName ):
+        iscStringIO = True
+        chapters = openChaptersFile( fileName )
+        g.es( str( len( chapters ) ) + " Chapters To Read", color = 'blue' )
+        insertChapters( chapters, c.frame, c )
+        g.es( "Finished Reading Chapters", color = 'blue' )
+        iscStringIO = False
+        return True
+
+    return oldOpen(self,file,fileName,readAtFileNodesFlag,silent)
+#@nonl
+#@-node:ekr.20050428063105:newOpen (From chapters.py)
+#@-node:ekr.20031218072017.801:Support .leo.gz or .leo.zip files
 #@+node:ekr.20041022091645.4:Pymacs
 #@+node:ekr.20040125121407:Postings
 @nocolor
