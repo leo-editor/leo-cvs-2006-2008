@@ -15,6 +15,9 @@ necessary to deserialise Button Press and Button Release. Without a Thread
 there apparently was no way to split the two apart. Exterior processes were
 not considered as serious pieces of the mechanism, threading kept things
 simple.
+
+Important: this plugin requires @bool expanded_click_area = False
+in leoSettings.leo.
 '''
 #@nonl
 #@-node:ekr.20050913084245:<< docstring >>
@@ -31,22 +34,21 @@ import time
 #@nonl
 #@-node:ekr.20050101090207.5:<< imports >>
 #@nl
-__version__ = "0.2"
+__version__ = "0.3"
 #@<< version history >>
 #@+node:ekr.20050526121340:<< version history >>
 #@@nocolor
-
 #@+at
 # 
-# 0.2 EKR:
-#     - Added init method.
-#     - Simplified the code.
+# 0.2 EKR: Added init method and implified the code.
 # 
 # Note: This code appears to work. At present it suffers from re-binding 
 # Button-1.
 # The solution is to pick another binding :-)
+# 
+# 0.3 EKR: Added warning in docstring that @bool expanded_click_area must be 
+# False.
 #@-at
-#@nonl
 #@-node:ekr.20050526121340:<< version history >>
 #@nl
 
