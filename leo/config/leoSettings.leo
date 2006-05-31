@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="267" clone_windows="0"/>
 <globals body_outline_ratio="0.549828178694">
-	<global_window_position top="45" left="330" height="585" width="798"/>
+	<global_window_position top="45" left="330" height="760" width="798"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -44,141 +44,7 @@
 <v t="ekr.20060112104823"><vh>main</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
-<v t="ekr.20060524151415"><vh>Debugger options</vh>
-<v t="ekr.20060524151415.1"><vh>@string debugger_kind = winpdb</vh></v>
-<v t="ekr.20060521132401"><vh>@string debugger_path = None</vh></v>
-</v>
-<v t="ekr.20051126062243" annotate="7d71002e"><vh>Debugging options</vh>
-<v t="ekr.20060201110016"><vh>@bool allow_idle_time_hook = False</vh></v>
-<v t="ekr.20060521134125"><vh>@string debugger_default_target = None</vh></v>
-<v t="ekr.20060521134125.1"><vh>@string debugger_force_target = None</vh></v>
-<v t="ekr.20060212101234"><vh>@bool gc_before_redraw = False</vh></v>
-<v t="ekr.20060528175513"><vh>@bool idle_redraw = False</vh></v>
-<v t="ekr.20060202113731"><vh>@bool show_tree_stats = False</vh></v>
-<v t="ekr.20060216145416"><vh>@bool trace_autocompleter = False</vh></v>
-<v t="ekr.20060114073238"><vh>@bool trace_bindings = False</vh></v>
-<v t="ekr.20060309022759"><vh>@bool trace_colorizer = False</vh></v>
-<v t="ekr.20060425124142"><vh>@bool trace_color_parser = True</vh></v>
-<v t="ekr.20060204093736"><vh>@bool trace_doCommand = False</vh></v>
-<v t="ekr.20060204102644"><vh>@bool trace_f.set_focus = False</vh></v>
-<v t="ekr.20060207142012"><vh>@bool trace_focus = False</vh></v>
-<v t="ekr.20051126062830"><vh>@bool trace_g.app.gui.set_focus = False</vh></v>
-<v t="ekr.20060126075152"><vh>@bool trace_gc = False</vh></v>
-<v t="ekr.20060212103826"><vh>@bool trace_gc_calls = False</vh></v>
-<v t="ekr.20060126083715"><vh>@bool trace_gc_verbose = False</vh></v>
-<v t="ekr.20060215054710"><vh>@bool trace_key_event= False</vh></v>
-<v t="ekr.20060131071947"><vh>@bool trace_masterClickHandler = False</vh></v>
-<v t="ekr.20051126062525"><vh>@bool trace_masterCommand = False</vh></v>
-<v t="ekr.20060209045356"><vh>@bool trace_masterFocusHandler = False</vh></v>
-<v t="ekr.20060131071612"><vh>@bool trace_masterKeyHandler = False</vh></v>
-<v t="ekr.20060216091239"><vh>@bool trace_minibuffer = False</vh></v>
-<v t="ekr.20060121102627"><vh>@bool trace_modes = False</vh></v>
-<v t="ekr.20060306031258"><vh>@bool trace_onBodyChanged = False</vh></v>
-<v t="ekr.20051126062243.1"><vh>@bool trace_redraw_now = False</vh></v>
-<v t="ekr.20060210105437"><vh>@bool trace_select = False</vh></v>
-<v t="ekr.20060216130607"><vh>@bool trace_status_line = False</vh></v>
-<v t="ekr.20060202092911"><vh>@bool trace_tree = False</vh></v>
-<v t="ekr.20060206155101"><vh>@bool trace_tree_alloc = False</vh></v>
-<v t="ekr.20060206161839"><vh>@bool trace_tree_edit = False</vh></v>
-<v t="ekr.20060114082205"><vh>@string trace_bindings_filter = </vh></v>
-<v t="ekr.20060114083009"><vh>@string trace_bindings_pane_filter =</vh></v>
-<v t="ekr.20060425125015"><vh>@bool verbose_trace_color_parser = False</vh></v>
-<v t="ekr.20060323131801"><vh>@bool warn_about_missing_settings = False</vh></v>
-<v t="ekr.20060408090018"><vh>@bool added_setting = True</vh></v>
-<v t="ekr.20060325071916"><vh>For unit tests</vh>
-<v t="ekr.20060325071042"><vh>@ifplatform win32</vh>
-<v t="ekr.20060325071042.1"><vh>@bool test_win32_setting = True</vh></v>
-</v>
-<v t="ekr.20060325071042.2"><vh>@ifplatform darwin</vh>
-<v t="ekr.20060325071042.3"><vh>@bool test_darwin_setting = True</vh></v>
-</v>
-</v>
-</v>
-<v t="ekr.20060113182439" a="E"><vh>Other options</vh>
-<v t="ekr.20041119034357.10" annotate="7d71002e"><vh>Command options</vh>
-<v t="ekr.20041119034357.14"><vh>@bool at_root_bodies_start_in_doc_mode = True</vh></v>
-<v t="ekr.20041119041019"><vh>@bool redirect_execute_script_output_to_log_pane = False</vh></v>
-<v t="ekr.20041119041019.1"><vh>@string remove_sentinels_extension = .txt</vh></v>
-<v t="ekr.20041119041019.2"><vh>@bool save_clears_undo_buffer = False</vh></v>
-<v t="ekr.20041119050749.10"><vh>@string headline_time_format_string = %m/%d</vh></v>
-<v t="ekr.20041119050749.11"><vh>@string headline_gmt_time = None</vh></v>
-<v t="ekr.20050126083026"><vh>@string undo_granularity = None</vh></v>
-<v t="ekr.20051027175030"><vh>@bool autocomplete-brackets = False</vh></v>
-</v>
-<v t="ekr.20041119034357.16" annotate="7d71002e"><vh>Compare panel options</vh>
-<v t="ekr.20041119034357.17"><vh>files &amp; directories</vh>
-<v t="ekr.20041119043902"><vh>@string compare_file_1 = None</vh></v>
-<v t="ekr.20041119043902.1"><vh>@string compare_file_2 = None</vh></v>
-<v t="ekr.20041119043902.2"><vh>@string output_file = None</vh></v>
-<v t="ekr.20041119043902.3"><vh>@bool append_output_to_output_file = False</vh></v>
-<v t="ekr.20041119034357.18"><vh>@string limit_directory_search_extension = .py</vh></v>
-</v>
-<v t="ekr.20041119034357.19"><vh>file compare options</vh>
-<v t="ekr.20041119043902.4"><vh>@bool ignore_blank_lines = True</vh></v>
-<v t="ekr.20041119043902.5"><vh>@bool ignore_first_line_of_file_1 = False</vh></v>
-<v t="ekr.20041119043902.6"><vh>@bool ignore_first_line_of_file_2 = False</vh></v>
-<v t="ekr.20041119043902.7"><vh>@bool ignore_interior_whitespace = False</vh></v>
-<v t="ekr.20041119043902.8"><vh>@bool ignore_leading_whitespace = False</vh></v>
-<v t="ekr.20041119043902.9"><vh>@bool ignore_sentinel_lines = False</vh></v>
-</v>
-<v t="ekr.20041119050105"><vh>output options</vh>
-<v t="ekr.20041119043902.10"><vh>@int limit_count = 9</vh></v>
-<v t="ekr.20041119043902.11"><vh>@bool make_whitespace_visible = False</vh></v>
-<v t="ekr.20041119043902.12"><vh>@bool print_both_lines_for_matches = False</vh></v>
-<v t="ekr.20041119043902.13"><vh>@bool print_matching_lines = False</vh></v>
-<v t="ekr.20041119043902.14"><vh>@bool print_mismatching_lines = True</vh></v>
-<v t="ekr.20041119043902.15"><vh>@bool print_trailing_lines = True</vh></v>
-</v>
-</v>
-<v t="ekr.20041213105007" annotate="7d71002e"><vh>Fonts</vh>
-<v t="ekr.20041213105508"><vh>@font log font</vh></v>
-<v t="ekr.20041119034357.45"><vh>@font body text font</vh></v>
-<v t="ekr.20041119051246.4"><vh>@font outline font</vh></v>
-</v>
-<v t="ekr.20050203090810" annotate="7d71002e"><vh>For unit tests</vh>
-<v t="ekr.20050203085250"><vh>@int global_setting_for_unit_tests = 132</vh></v>
-</v>
-<v t="ekr.20041119034357.3" annotate="7d71002e"><vh>General configuration options</vh>
-<v t="ekr.20041119034357.5"><vh>@bool read_only = False</vh></v>
-<v t="ekr.20041119034357.13"><vh>@bool use_plugins = True</vh></v>
-<v t="ekr.20041119034357.7"><vh>.leo file options</vh>
-<v t="ekr.20041119034357.8"><vh>@string output_initial_comment = None</vh></v>
-<v t="ekr.20041119034357.9"><vh>@string stylesheet = None</vh></v>
-</v>
-<v t="ekr.20041119034357.11"><vh>directory options</vh>
-<v t="ekr.20041119041304"><vh>@bool create_nonexistent_directories = False</vh></v>
-<v t="ekr.20041119041304.1"><vh>@string relative_path_base_directory = .</vh></v>
-</v>
-<v t="ekr.20041119034357.12"><vh>derived files options</vh>
-<v t="ekr.20041119041747"><vh>@string output_newline = nl</vh></v>
-<v t="ekr.20041119041747.1"><vh>@string trailing_body_newlines = one</vh></v>
-<v t="ekr.20041119041747.4"><vh>@bool write_strips_blank_lines = True</vh></v>
-</v>
-<v t="ekr.20041119034357.15"><vh>unicode encoding options</vh>
-<v t="ekr.20041119042929.9"><vh>@string default_derived_file_encoding = UTF-8</vh></v>
-<v t="ekr.20041119042929.10"><vh>@string new_leo_file_encoding = UTF-8</vh></v>
-<v t="ekr.20041119042929.11"><vh>@string tk_encoding = None</vh></v>
-</v>
-<v t="ekr.20060127050605"><vh>@int max_undo_stack_size = 50</vh></v>
-</v>
-<v t="ekr.20041119034357.28" annotate="7d71002e"><vh>Preferences panel options</vh>
-<v t="ekr.20041119034357.29"><vh>@directory default_tangle_directory = None</vh></v>
-<v t="ekr.20041119034357.30"><vh>@language default_target_language = python</vh></v>
-<v t="ekr.20050620083647"><vh>@language target_language = python</vh></v>
-<v t="ekr.20041119034357.31"><vh>@int tab_width = -4</vh></v>
-<v t="ekr.20041119034357.32"><vh>@int page_width = 80</vh></v>
-<v t="ekr.20041119034357.33"><vh>@bool output_doc_chunks = True</vh></v>
-<v t="ekr.20041119034357.34"><vh>@bool tangle_outputs_header = True</vh></v>
-<v t="ekr.20041119034357.35"><vh>@bool run_tangle_done.py = False</vh></v>
-<v t="ekr.20041119034357.36"><vh>@bool run_untangle_done.py = False</vh></v>
-</v>
-<v t="ekr.20051025084017" annotate="7d71002e"><vh>Spell tab</vh>
-<v t="ekr.20051025084017.1"><vh>@string aspell_local_language_code = en</vh></v>
-<v t="ekr.20051025084017.2"><vh>@string aspell_local_dictionary = None</vh></v>
-<v t="ekr.20051025085144"><vh>@string aspell_dir = c:\aspell</vh></v>
-<v t="ekr.20051025085144.1"><vh>@string aspell_bin_dir = c:\aspell\bin</vh></v>
-</v>
+<v t="ekr.20041119034357.1" a="TV" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
@@ -244,61 +110,91 @@
 </v>
 <v t="ekr.20041119034357.67"><vh>@color split_bar_color = LightSteelBlue2</vh></v>
 </v>
-<v t="ekr.20041213105954" a="E" annotate="7d71002e"><vh>Window options</vh>
-<v t="ekr.20041119034357.38" a="E"><vh>Body pane options</vh>
-<v t="ekr.20060531094310" a="V"><vh>@bool disable_autoindent_in_nocolor_mode = False</vh></v>
-<v t="ekr.20041119034357.43"><vh>@bool body_gmt_time = False</vh></v>
-<v t="ekr.20041119034357.39"><vh>@bool body_pane_wraps = True</vh></v>
-<v t="ekr.20060216135834"><vh>@bool enable_autocompleter = True</vh></v>
-<v t="ekr.20041119034357.44"><vh>@bool smart_auto_indent = False</vh></v>
-<v t="ekr.20041119034357.53"><vh>@int additional_body_text_border = 0</vh></v>
-<v t="ekr.20041119034357.42"><vh>@string body_time_format_string = %m/%d/%Y %H:%M:%S</vh></v>
+<v t="ekr.20041119034357.10" annotate="7d71002e"><vh>Command options</vh>
+<v t="ekr.20041119034357.14"><vh>@bool at_root_bodies_start_in_doc_mode = True</vh></v>
+<v t="ekr.20041119041019"><vh>@bool redirect_execute_script_output_to_log_pane = False</vh></v>
+<v t="ekr.20041119041019.1"><vh>@string remove_sentinels_extension = .txt</vh></v>
+<v t="ekr.20041119041019.2"><vh>@bool save_clears_undo_buffer = False</vh></v>
+<v t="ekr.20041119050749.10"><vh>@string headline_time_format_string = %m/%d</vh></v>
+<v t="ekr.20041119050749.11"><vh>@string headline_gmt_time = None</vh></v>
+<v t="ekr.20050126083026"><vh>@string undo_granularity = None</vh></v>
+<v t="ekr.20051027175030"><vh>@bool autocomplete-brackets = False</vh></v>
 </v>
-<v t="ekr.20041213105954.1"><vh>Log pane options</vh>
-<v t="ekr.20041119052015.1"><vh>@bool log_pane_wraps = False</vh></v>
+<v t="ekr.20041119034357.16" annotate="7d71002e"><vh>Compare panel</vh>
+<v t="ekr.20041119034357.17"><vh>files &amp; directories</vh>
+<v t="ekr.20041119043902"><vh>@string compare_file_1 = None</vh></v>
+<v t="ekr.20041119043902.1"><vh>@string compare_file_2 = None</vh></v>
+<v t="ekr.20041119043902.2"><vh>@string output_file = None</vh></v>
+<v t="ekr.20041119043902.3"><vh>@bool append_output_to_output_file = False</vh></v>
+<v t="ekr.20041119034357.18"><vh>@string limit_directory_search_extension = .py</vh></v>
 </v>
-<v t="ekr.20041119034357.56"><vh>Options for new windows</vh>
-<v t="ekr.20041119034357.59"><vh>@strings[vertical,horizontal] initial_splitter_orientation = vertical</vh></v>
-<v t="ekr.20041119034357.57"><vh>@ratio initial_horizontal_ratio = 0.4</vh></v>
-<v t="ekr.20041119034357.58"><vh>@ratio initial_horizontal_secondary_ratio = 0.8</vh></v>
-<v t="ekr.20041119034357.60"><vh>@ratio initial_vertical_ratio = 0.5</vh></v>
-<v t="ekr.20041119034357.61"><vh>@ratio initial_vertical_secondary_ratio = 0.65</vh></v>
-<v t="ekr.20041119034357.62"><vh>@int initial_window_height = 600</vh></v>
-<v t="ekr.20041119034357.63"><vh>@int initial_window_left = 20</vh></v>
-<v t="ekr.20041119034357.64"><vh>@int initial_window_top = 20</vh></v>
-<v t="ekr.20041119034357.65"><vh>@int initial_window_width = 800</vh></v>
+<v t="ekr.20041119034357.19"><vh>file compare options</vh>
+<v t="ekr.20041119043902.4"><vh>@bool ignore_blank_lines = True</vh></v>
+<v t="ekr.20041119043902.5"><vh>@bool ignore_first_line_of_file_1 = False</vh></v>
+<v t="ekr.20041119043902.6"><vh>@bool ignore_first_line_of_file_2 = False</vh></v>
+<v t="ekr.20041119043902.7"><vh>@bool ignore_interior_whitespace = False</vh></v>
+<v t="ekr.20041119043902.8"><vh>@bool ignore_leading_whitespace = False</vh></v>
+<v t="ekr.20041119043902.9"><vh>@bool ignore_sentinel_lines = False</vh></v>
 </v>
-<v t="ekr.20041119034357.54"><vh>Outline pane options</vh>
-<v t="ekr.20041119050749.3"><vh>@bool allow_clone_drags = False</vh></v>
-<v t="ekr.20041119050749.4"><vh>@bool enable_drag_messages = False</vh></v>
-<v t="ekr.20041119050749.5"><vh>@bool expanded_click_area = True</vh></v>
-<v t="ekr.20060120123529"><vh>@bool initialClickExpandsOrContractsNode = True</vh></v>
-<v t="ekr.20041119050749.17"><vh>@bool look_for_control_drag_on_mouse_down = True</vh></v>
-<v t="ekr.20041119050749.18"><vh>@bool outline_pane_scrolls_horizontally = False</vh></v>
-</v>
-<v t="ekr.20041213105954.2"><vh>Splitter options</vh>
-<v t="ekr.20041119034357.68"><vh>@string split_bar_relief = groove</vh></v>
-<v t="ekr.20041119034357.69"><vh>@int split_bar_width = 6</vh></v>
+<v t="ekr.20041119050105"><vh>output options</vh>
+<v t="ekr.20041119043902.10"><vh>@int limit_count = 9</vh></v>
+<v t="ekr.20041119043902.11"><vh>@bool make_whitespace_visible = False</vh></v>
+<v t="ekr.20041119043902.12"><vh>@bool print_both_lines_for_matches = False</vh></v>
+<v t="ekr.20041119043902.13"><vh>@bool print_matching_lines = False</vh></v>
+<v t="ekr.20041119043902.14"><vh>@bool print_mismatching_lines = True</vh></v>
+<v t="ekr.20041119043902.15"><vh>@bool print_trailing_lines = True</vh></v>
 </v>
 </v>
+<v t="ekr.20060524151415"><vh>Debugger</vh>
+<v t="ekr.20060524151415.1"><vh>@string debugger_kind = winpdb</vh></v>
+<v t="ekr.20060521132401"><vh>@string debugger_path = None</vh></v>
 </v>
-<v t="ekr.20051123100536" annotate="7d71002e"><vh>Plugins settings</vh>
-<v t="ekr.20060111091324"><vh>fastgotonode plugin</vh>
-<v t="ekr.20060111091324.1"><vh>@bool fastgotonode_useKeyBinding = True</vh></v>
-<v t="ekr.20060111091324.2"><vh>@string fastgotonode_binding =  Shift-space</vh></v>
+<v t="ekr.20051126062243" annotate="7d71002e"><vh>Debugging</vh>
+<v t="ekr.20060201110016"><vh>@bool allow_idle_time_hook = False</vh></v>
+<v t="ekr.20060521134125"><vh>@string debugger_default_target = None</vh></v>
+<v t="ekr.20060521134125.1"><vh>@string debugger_force_target = None</vh></v>
+<v t="ekr.20060212101234"><vh>@bool gc_before_redraw = False</vh></v>
+<v t="ekr.20060202113731"><vh>@bool show_tree_stats = False</vh></v>
+<v t="ekr.20060216145416"><vh>@bool trace_autocompleter = False</vh></v>
+<v t="ekr.20060114073238"><vh>@bool trace_bindings = False</vh></v>
+<v t="ekr.20060309022759"><vh>@bool trace_colorizer = False</vh></v>
+<v t="ekr.20060425124142"><vh>@bool trace_color_parser = True</vh></v>
+<v t="ekr.20060204093736"><vh>@bool trace_doCommand = False</vh></v>
+<v t="ekr.20060204102644"><vh>@bool trace_f.set_focus = False</vh></v>
+<v t="ekr.20060207142012"><vh>@bool trace_focus = False</vh></v>
+<v t="ekr.20051126062830"><vh>@bool trace_g.app.gui.set_focus = False</vh></v>
+<v t="ekr.20060126075152"><vh>@bool trace_gc = False</vh></v>
+<v t="ekr.20060212103826"><vh>@bool trace_gc_calls = False</vh></v>
+<v t="ekr.20060126083715"><vh>@bool trace_gc_verbose = False</vh></v>
+<v t="ekr.20060215054710"><vh>@bool trace_key_event= False</vh></v>
+<v t="ekr.20060131071947"><vh>@bool trace_masterClickHandler = False</vh></v>
+<v t="ekr.20051126062525"><vh>@bool trace_masterCommand = False</vh></v>
+<v t="ekr.20060209045356"><vh>@bool trace_masterFocusHandler = False</vh></v>
+<v t="ekr.20060131071612"><vh>@bool trace_masterKeyHandler = False</vh></v>
+<v t="ekr.20060216091239"><vh>@bool trace_minibuffer = False</vh></v>
+<v t="ekr.20060121102627"><vh>@bool trace_modes = False</vh></v>
+<v t="ekr.20060306031258"><vh>@bool trace_onBodyChanged = False</vh></v>
+<v t="ekr.20051126062243.1"><vh>@bool trace_redraw_now = False</vh></v>
+<v t="ekr.20060210105437"><vh>@bool trace_select = False</vh></v>
+<v t="ekr.20060216130607"><vh>@bool trace_status_line = False</vh></v>
+<v t="ekr.20060202092911"><vh>@bool trace_tree = False</vh></v>
+<v t="ekr.20060206155101"><vh>@bool trace_tree_alloc = False</vh></v>
+<v t="ekr.20060206161839"><vh>@bool trace_tree_edit = False</vh></v>
+<v t="ekr.20060114082205"><vh>@string trace_bindings_filter = </vh></v>
+<v t="ekr.20060114083009"><vh>@string trace_bindings_pane_filter =</vh></v>
+<v t="ekr.20060425125015"><vh>@bool verbose_trace_color_parser = False</vh></v>
+<v t="ekr.20060323131801"><vh>@bool warn_about_missing_settings = False</vh></v>
+<v t="ekr.20060408090018"><vh>@bool added_setting = True</vh></v>
+<v t="ekr.20060325071916"><vh>For unit tests</vh>
+<v t="ekr.20060325071042"><vh>@ifplatform win32</vh>
+<v t="ekr.20060325071042.1"><vh>@bool test_win32_setting = True</vh></v>
 </v>
-<v t="ekr.20060109115046"><vh>library plugin</vh>
-<v t="ekr.20060109115046.1"><vh>@bool library_verbose = True</vh></v>
-<v t="ekr.20060109115046.2"><vh>@string library_lib = default</vh></v>
-<v t="ekr.20060109115046.3"><vh>@string library_lib0 = default/library.dbm</vh></v>
-<v t="ekr.20060109121753"><vh>@string library_lib1 = default/libraryS.dbm</vh></v>
-</v>
-<v t="ekr.20051123100536.1"><vh>vim plugin</vh>
-<v t="ekr.20051123100536.2"><vh>@string vim_cmd = c:\Program Files\vim\vim63\gvim --servername LEO</vh></v>
-<v t="ekr.20051123100536.3"><vh>@string vim_exe = c:\Program Files\vim\vim63\gvim</vh></v>
+<v t="ekr.20060325071042.2"><vh>@ifplatform darwin</vh>
+<v t="ekr.20060325071042.3"><vh>@bool test_darwin_setting = True</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.20" annotate="7d71002e"><vh>Find/Change panel options</vh>
+</v>
+<v t="ekr.20041119034357.20" annotate="7d71002e"><vh>Find/Change panel</vh>
 <v t="ekr.20060125104049"><vh>@bool show_only_find_tab_options = True</vh></v>
 <v t="ekr.20060204124608"><vh>@bool minibufferSearchesShowFindTab = True</vh></v>
 <v t="ekr.20041119050105.1"><vh>@string change_text = None</vh></v>
@@ -320,7 +216,35 @@
 <v t="ekr.20041120152900.2"><vh>@bool script_search = None</vh></v>
 <v t="ekr.20041119050105.16"><vh>@bool suboutline_only = False</vh></v>
 </v>
-<v t="ekr.20060122105527.3"><vh>Keyboard and minibuffer Options</vh>
+<v t="ekr.20041213105007" annotate="7d71002e"><vh>Fonts</vh>
+<v t="ekr.20041213105508"><vh>@font log font</vh></v>
+<v t="ekr.20041119034357.45"><vh>@font body text font</vh></v>
+<v t="ekr.20041119051246.4"><vh>@font outline font</vh></v>
+</v>
+<v t="ekr.20041119034357.3" annotate="7d71002e"><vh>General options</vh>
+<v t="ekr.20041119034357.5"><vh>@bool read_only = False</vh></v>
+<v t="ekr.20041119034357.13"><vh>@bool use_plugins = True</vh></v>
+<v t="ekr.20041119034357.7"><vh>.leo file options</vh>
+<v t="ekr.20041119034357.8"><vh>@string output_initial_comment = None</vh></v>
+<v t="ekr.20041119034357.9"><vh>@string stylesheet = None</vh></v>
+</v>
+<v t="ekr.20041119034357.11"><vh>directory options</vh>
+<v t="ekr.20041119041304"><vh>@bool create_nonexistent_directories = False</vh></v>
+<v t="ekr.20041119041304.1"><vh>@string relative_path_base_directory = .</vh></v>
+</v>
+<v t="ekr.20041119034357.12"><vh>derived files options</vh>
+<v t="ekr.20041119041747"><vh>@string output_newline = nl</vh></v>
+<v t="ekr.20041119041747.1"><vh>@string trailing_body_newlines = one</vh></v>
+<v t="ekr.20041119041747.4"><vh>@bool write_strips_blank_lines = True</vh></v>
+</v>
+<v t="ekr.20041119034357.15"><vh>unicode encoding options</vh>
+<v t="ekr.20041119042929.9"><vh>@string default_derived_file_encoding = UTF-8</vh></v>
+<v t="ekr.20041119042929.10"><vh>@string new_leo_file_encoding = UTF-8</vh></v>
+<v t="ekr.20041119042929.11"><vh>@string tk_encoding = None</vh></v>
+</v>
+<v t="ekr.20060127050605"><vh>@int max_undo_stack_size = 50</vh></v>
+</v>
+<v t="ekr.20060122105527.3"><vh>Keyboard and minibuffer options</vh>
 <v t="ekr.20060215094146"><vh>@@bool ignore_caps_lock = True</vh></v>
 <v t="ekr.20060216170801"><vh>@bool enable_calltips = True</vh></v>
 <v t="ekr.20060215102141"><vh>@bool ignore_unbound_non_ascii_keys = False</vh></v>
@@ -370,7 +294,7 @@
 <v t="ekr.20060115160004"><vh>@mode Register</vh></v>
 <v t="ekr.20060115160004.1"><vh>@mode Rect</vh></v>
 </v>
-<v t="ekr.20060115162748.1" a="E"><vh>Shortcuts</vh>
+<v t="ekr.20060115162748.1"><vh>Shortcuts</vh>
 <v t="ekr.20060103103812.1" annotate="7d71002e"><vh>@shortcuts EKR: mode-changing commands</vh></v>
 <v t="ekr.20060102102958" annotate="7d71002e"><vh>@shortcuts EKR: A-E</vh></v>
 <v t="ekr.20060112085325"><vh>@shortcuts EKR: F-M</vh></v>
@@ -401,7 +325,7 @@
 </v>
 <v t="ekr.20060122105527.15"><vh>@mode Quick-command (Alt-C)</vh></v>
 </v>
-<v t="ekr.20060122105527.18" a="E"><vh>Shortcuts</vh>
+<v t="ekr.20060122105527.18"><vh>Shortcuts</vh>
 <v t="ekr.20060122105527.19" annotate="7d71002e"><vh>@shortcuts EKR: mode-changing commands</vh></v>
 <v t="ekr.20060124070546"><vh>@shortcuts Find Commands</vh></v>
 <v t="ekr.20060203131942"><vh>@shortcuts Minibuffer bindings</vh></v>
@@ -409,6 +333,80 @@
 <v t="ekr.20060122105527.21"><vh>@shortcuts EKR: F-M</vh></v>
 <v t="ekr.20060122105527.22" annotate="7d71002e"><vh>@shortcuts EKR: N-Z</vh></v>
 </v>
+</v>
+</v>
+<v t="ekr.20051123100536" annotate="7d71002e"><vh>Plugins</vh>
+<v t="ekr.20060111091324"><vh>fastgotonode plugin</vh>
+<v t="ekr.20060111091324.1"><vh>@bool fastgotonode_useKeyBinding = True</vh></v>
+<v t="ekr.20060111091324.2"><vh>@string fastgotonode_binding =  Shift-space</vh></v>
+</v>
+<v t="ekr.20060109115046"><vh>library plugin</vh>
+<v t="ekr.20060109115046.1"><vh>@bool library_verbose = True</vh></v>
+<v t="ekr.20060109115046.2"><vh>@string library_lib = default</vh></v>
+<v t="ekr.20060109115046.3"><vh>@string library_lib0 = default/library.dbm</vh></v>
+<v t="ekr.20060109121753"><vh>@string library_lib1 = default/libraryS.dbm</vh></v>
+</v>
+<v t="ekr.20051123100536.1"><vh>vim plugin</vh>
+<v t="ekr.20051123100536.2"><vh>@string vim_cmd = c:\Program Files\vim\vim63\gvim --servername LEO</vh></v>
+<v t="ekr.20051123100536.3"><vh>@string vim_exe = c:\Program Files\vim\vim63\gvim</vh></v>
+</v>
+</v>
+<v t="ekr.20041119034357.28" annotate="7d71002e"><vh>Preferences panel</vh>
+<v t="ekr.20041119034357.29"><vh>@directory default_tangle_directory = None</vh></v>
+<v t="ekr.20041119034357.30"><vh>@language default_target_language = python</vh></v>
+<v t="ekr.20050620083647"><vh>@language target_language = python</vh></v>
+<v t="ekr.20041119034357.31"><vh>@int tab_width = -4</vh></v>
+<v t="ekr.20041119034357.32"><vh>@int page_width = 80</vh></v>
+<v t="ekr.20041119034357.33"><vh>@bool output_doc_chunks = True</vh></v>
+<v t="ekr.20041119034357.34"><vh>@bool tangle_outputs_header = True</vh></v>
+<v t="ekr.20041119034357.35"><vh>@bool run_tangle_done.py = False</vh></v>
+<v t="ekr.20041119034357.36"><vh>@bool run_untangle_done.py = False</vh></v>
+</v>
+<v t="ekr.20051025084017" annotate="7d71002e"><vh>Spell tab</vh>
+<v t="ekr.20051025084017.1"><vh>@string aspell_local_language_code = en</vh></v>
+<v t="ekr.20051025084017.2"><vh>@string aspell_local_dictionary = None</vh></v>
+<v t="ekr.20051025085144"><vh>@string aspell_dir = c:\aspell</vh></v>
+<v t="ekr.20051025085144.1"><vh>@string aspell_bin_dir = c:\aspell\bin</vh></v>
+</v>
+<v t="ekr.20050203090810" annotate="7d71002e"><vh>Unit test</vh>
+<v t="ekr.20050203085250"><vh>@int global_setting_for_unit_tests = 132</vh></v>
+</v>
+<v t="ekr.20041213105954" annotate="7d71002e"><vh>Window</vh>
+<v t="ekr.20041119034357.38"><vh>Body pane options</vh>
+<v t="ekr.20060531094310"><vh>@bool autoindent_in_nocolor_mode = True</vh></v>
+<v t="ekr.20041119034357.43"><vh>@bool body_gmt_time = False</vh></v>
+<v t="ekr.20041119034357.39"><vh>@bool body_pane_wraps = True</vh></v>
+<v t="ekr.20060216135834"><vh>@bool enable_autocompleter = True</vh></v>
+<v t="ekr.20041119034357.44"><vh>@bool smart_auto_indent = False</vh></v>
+<v t="ekr.20041119034357.53"><vh>@int additional_body_text_border = 0</vh></v>
+<v t="ekr.20041119034357.42"><vh>@string body_time_format_string = %m/%d/%Y %H:%M:%S</vh></v>
+</v>
+<v t="ekr.20041213105954.1"><vh>Log pane options</vh>
+<v t="ekr.20041119052015.1"><vh>@bool log_pane_wraps = False</vh></v>
+</v>
+<v t="ekr.20041119034357.56"><vh>Options for new windows</vh>
+<v t="ekr.20041119034357.59"><vh>@strings[vertical,horizontal] initial_splitter_orientation = vertical</vh></v>
+<v t="ekr.20041119034357.57"><vh>@ratio initial_horizontal_ratio = 0.4</vh></v>
+<v t="ekr.20041119034357.58"><vh>@ratio initial_horizontal_secondary_ratio = 0.8</vh></v>
+<v t="ekr.20041119034357.60"><vh>@ratio initial_vertical_ratio = 0.5</vh></v>
+<v t="ekr.20041119034357.61"><vh>@ratio initial_vertical_secondary_ratio = 0.65</vh></v>
+<v t="ekr.20041119034357.62"><vh>@int initial_window_height = 600</vh></v>
+<v t="ekr.20041119034357.63"><vh>@int initial_window_left = 20</vh></v>
+<v t="ekr.20041119034357.64"><vh>@int initial_window_top = 20</vh></v>
+<v t="ekr.20041119034357.65"><vh>@int initial_window_width = 800</vh></v>
+</v>
+<v t="ekr.20041119034357.54"><vh>Outline pane options</vh>
+<v t="ekr.20041119050749.3"><vh>@bool allow_clone_drags = False</vh></v>
+<v t="ekr.20041119050749.4"><vh>@bool enable_drag_messages = False</vh></v>
+<v t="ekr.20041119050749.5"><vh>@bool expanded_click_area = True</vh></v>
+<v t="ekr.20060528175513"><vh>@bool idle_redraw = False</vh></v>
+<v t="ekr.20060120123529"><vh>@bool initialClickExpandsOrContractsNode = True</vh></v>
+<v t="ekr.20041119050749.17"><vh>@bool look_for_control_drag_on_mouse_down = True</vh></v>
+<v t="ekr.20041119050749.18"><vh>@bool outline_pane_scrolls_horizontally = False</vh></v>
+</v>
+<v t="ekr.20041213105954.2"><vh>Splitter options</vh>
+<v t="ekr.20041119034357.68"><vh>@string split_bar_relief = groove</vh></v>
+<v t="ekr.20041119034357.69"><vh>@int split_bar_width = 6</vh></v>
 </v>
 </v>
 </v>
@@ -3518,7 +3516,6 @@ setNames.sort()</t>
     setsDict[setName] = d</t>
 <t tx="ekr.20060112110750"></t>
 <t tx="ekr.20060112112006"></t>
-<t tx="ekr.20060113182439"></t>
 <t tx="ekr.20060114073238">If True, Leo will report to the console which bindings have been created.
 
 Thus, you must be running from a console window for this setting to be useful.</t>
@@ -4681,7 +4678,7 @@ http://www.digitalpeers.com/pythondebugger/
 There is no special support for Idle, so you may as well open Idle using Leo's
 open-python-window command.</t>
 <t tx="ekr.20060528175513"></t>
-<t tx="ekr.20060531094310">True:  disable auto-indenting if in range @nocolor or @kill.
-False: enable auto-indenting regardless of how text is colored.</t>
+<t tx="ekr.20060531094310">True:  auto-indent regardless of how text is colored.
+False: suppress auto-indenting if in range @nocolor or @kill.</t>
 </tnodes>
 </leo_file>

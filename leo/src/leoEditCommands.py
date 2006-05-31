@@ -2765,9 +2765,9 @@ class editCommandsClass (baseEditCommandsClass):
                 w.insert(i,ch)
             else:
                 w.insert(i,ch)
-                limit = c.config.getBool('disable_autoindent_in_nocolor_mode')
+                allow_in_nocolor = c.config.getBool('autoindent_in_nocolor_mode')
                 if (
-                    (not limit or c.frame.body.colorizer.useSyntaxColoring(p)) and
+                    (allow_in_nocolor or c.frame.body.colorizer.useSyntaxColoring(p)) and
                     undoType != "Change"
                 ):
                     # No auto-indent if in @nocolor mode or after a Change command.
