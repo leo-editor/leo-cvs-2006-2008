@@ -2765,7 +2765,11 @@ class editCommandsClass (baseEditCommandsClass):
                 w.insert(i,ch)
             else:
                 w.insert(i,ch)
-                if c.frame.body.colorizer.useSyntaxColoring(p) and undoType != "Change":
+                limit = c.config.getBool('disable_autoindent_in_nocolor_mode')
+                if (
+                    (not limit or c.frame.body.colorizer.useSyntaxColoring(p)) and
+                    undoType != "Change"
+                ):
                     # No auto-indent if in @nocolor mode or after a Change command.
                     removeTrailing = self.updateAutoIndent(p,w)
                     # g.trace(removeTrailing)
