@@ -767,28 +767,27 @@ class leoFind:
         s = gui.getAllText(w)
         index = gui.toPythonIndex(s,w,index)
         stopindex = g.choose(self.reverse,0,len(s))
-        while 1:
-            pos,newpos = self.searchHelper(s,index,stopindex,self.find_text,
-                backwards=self.reverse,nocase=self.ignore_case,
-                regexp=self.pattern_match,word=self.whole_word)
-            if pos == -1: return None,None
-            pos    = gui.toGuiIndex(s,w,pos)
-            newpos = gui.toGuiIndex(s,w,newpos)
-            #@        << fail if we are passed the wrap point >>
-            #@+node:ekr.20060526140328:<< fail if we are passed the wrap point >>
-            if self.wrapping and self.wrapPos and self.wrapPosition and self.p == self.wrapPosition:
-            
-                if self.reverse and gui.compareIndices(w,pos, "<", self.wrapPos):
-                    # g.trace("wrap done")
-                    return None, None
-            
-                if not self.reverse and gui.compareIndices(w,newpos, ">", self.wrapPos):
-                    return None, None
-            #@nonl
-            #@-node:ekr.20060526140328:<< fail if we are passed the wrap point >>
-            #@nl
-            gui.setTextSelection(w,pos,newpos,insert=newpos)
-            return pos, newpos
+        pos,newpos = self.searchHelper(s,index,stopindex,self.find_text,
+            backwards=self.reverse,nocase=self.ignore_case,
+            regexp=self.pattern_match,word=self.whole_word)
+        if pos == -1: return None,None
+        pos    = gui.toGuiIndex(s,w,pos)
+        newpos = gui.toGuiIndex(s,w,newpos)
+        #@    << fail if we are passed the wrap point >>
+        #@+node:ekr.20060526140328:<< fail if we are passed the wrap point >>
+        if self.wrapping and self.wrapPos and self.wrapPosition and p == self.wrapPosition:
+        
+            if self.reverse and gui.compareIndices(w,pos, "<", self.wrapPos):
+                # g.trace("wrap done")
+                return None, None
+        
+            if not self.reverse and gui.compareIndices(w,newpos, ">", self.wrapPos):
+                return None, None
+        #@nonl
+        #@-node:ekr.20060526140328:<< fail if we are passed the wrap point >>
+        #@nl
+        gui.setTextSelection(w,pos,newpos,insert=newpos)
+        return pos, newpos
     #@nonl
     #@+node:ekr.20060526081931:Search helpers...
     def searchHelper (self,s,i,j,pattern,backwards,nocase,regexp,word):
@@ -804,9 +803,9 @@ class leoFind:
         if regexp:
             pos,newpos = self.regexHelper(s,i,j,pattern,backwards,nocase)
         elif backwards:
-            pos,newpos = self.backwardsHelper(s,i,j,pattern,backwards,nocase,word)
+            pos,newpos = self.backwardsHelper(s,i,j,pattern,nocase,word)
         else:
-            pos,newpos = self.plainHelper(s,i,j,pattern,backwards,nocase,word)
+            pos,newpos = self.plainHelper(s,i,j,pattern,nocase,word)
     
         return pos,newpos
     #@+node:ekr.20060526092203:regexHelper
@@ -845,7 +844,7 @@ class leoFind:
     #@nonl
     #@-node:ekr.20060526092203:regexHelper
     #@+node:ekr.20060526140744:backwardsHelper
-    def backwardsHelper (self,s,i,j,pattern,backwards,nocase,word):
+    def backwardsHelper (self,s,i,j,pattern,nocase,word):
     
         # g.trace(repr(s[i-20: i]))
     
@@ -871,7 +870,7 @@ class leoFind:
     #@nonl
     #@-node:ekr.20060526140744:backwardsHelper
     #@+node:ekr.20060526093531:plainHelper
-    def plainHelper (self,s,i,j,pattern,backwards,nocase,word):
+    def plainHelper (self,s,i,j,pattern,nocase,word):
         
         # g.trace(repr(s[i:i+20]))
         

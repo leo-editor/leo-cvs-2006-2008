@@ -152,22 +152,22 @@ class leoBody:
     #@nonl
     #@-node:ekr.20031218072017.3658:oops
     #@+node:ekr.20031218072017.3659:leoBody.setFontFromConfig
-    def setFontFromConfig (self):
+    def setFontFromConfig (self,w=None):
         
         self.oops()
     #@nonl
     #@-node:ekr.20031218072017.3659:leoBody.setFontFromConfig
     #@+node:ekr.20031218072017.3660:Must be overriden in subclasses
-    def createBindings (self):
+    def createBindings (self,w=None):
         self.oops()
     
-    def createControl (self,frame,parentFrame):
+    def createControl (self,frame,parentFrame,p):
         self.oops()
         
     def initialRatios (self):
         self.oops()
         
-    def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None,removeTrailing=None):
+    def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None):
         self.oops()
         
     def setBodyFontFromConfig (self):
@@ -220,7 +220,7 @@ class leoBody:
     def deleteEditor (self,event=None):
         pass
         
-    def selectMainEditor (self):
+    def selectMainEditor (self,p):
         pass
         
     def updateEditors (self):
@@ -1093,7 +1093,7 @@ class nullBody (leoBody):
     #@-node:ekr.20031218072017.2196:scanToEndOfLine
     #@-node:ekr.20031218072017.2193:Utils (internal use)
     #@+node:ekr.20031218072017.2197:Must be overriden in subclasses
-    def createBindings (self):
+    def createBindings (self,w=None):
         self.oops()
     
     def createControl (self,frame,parentFrame):
@@ -1102,7 +1102,7 @@ class nullBody (leoBody):
     def initialRatios (self):
         self.oops()
         
-    def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None,removeTrailing=None):
+    def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None):
         self.oops()
         
     def setBodyFontFromConfig (self):

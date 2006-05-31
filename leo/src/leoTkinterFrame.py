@@ -2619,7 +2619,7 @@ class leoTkinterBody (leoFrame.leoBody):
         
         c = self.c ; d = self.editorWidgets
         keys = d.keys() ; n = len(keys)
-        if n < 2: return # There is only one widget. 
+        if n < 2: return 'break' # There is only one widget. 
     
         i = 0
         for key in d.keys():
@@ -2632,6 +2632,8 @@ class leoTkinterBody (leoFrame.leoBody):
                 self.onFocusIn(w)
                 # g.app.gui.set_focus(c,w)
                 return 'break'
+                
+        return 'break'
     #@nonl
     #@-node:ekr.20060528170438:cycleEditorFocus
     #@+node:ekr.20060528113806:deleteEditor
@@ -2681,7 +2683,8 @@ class leoTkinterBody (leoFrame.leoBody):
                 if p2.v == w.leo_v:
                     w.leo_p = p2.copy()
                     break
-            else: return g.trace("Can't happen")
+            else:
+                g.trace("Can't happen") ; return
     
         # g.trace(w.leo_name,w.leo_p.headString())
         self.frame.bodyCtrl = self.bodyCtrl = w # Must change both ivars!
@@ -2792,8 +2795,7 @@ class leoTkinterBody (leoFrame.leoBody):
     #@-node:ekr.20031218072017.2183:tkBody.setFontFromConfig
     #@+node:ekr.20031218072017.1329:onBodyChanged (tkBody)
     # This is the only key handler for the body pane.
-    def onBodyChanged (self,undoType,
-        oldSel=None,oldText=None,oldYview=None,removeTrailing=None):
+    def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None):
         
         '''Update Leo after the body has been changed.'''
         

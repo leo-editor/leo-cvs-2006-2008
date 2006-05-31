@@ -2584,7 +2584,7 @@ class leoTkinterTree (leoFrame.leoTree):
                     else:
                         def scrollCallback(self=self,p=p):
                             self.scrollTo(p)
-                        self.after(100,scrollCallback)
+                        self.canvas.after(100,scrollCallback)
                 except Exception: pass
             #@        << update c.beadList or c.beadPointer >>
             #@+node:ekr.20040803072955.131:<< update c.beadList or c.beadPointer >>

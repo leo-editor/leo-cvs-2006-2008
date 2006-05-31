@@ -1283,7 +1283,6 @@ def selfInsertCommand(self,event,action='insert'):
     # g.trace(name)
     oldSel =  name.startswith('body') and g.app.gui.getTextSelection(w)
     oldText = name.startswith('body') and p.bodyString()
-    removeTrailing = None # A signal to compute it later.
     undoType = 'Typing'
     trace = c.config.getBool('trace_masterCommand')
     
@@ -1293,7 +1292,7 @@ def selfInsertCommand(self,event,action='insert'):
         return "break" # The hook claims to have handled the event.
         
     if ch == '\t':
-        removeTrailing = self.updateTab(p,w)
+        self.updateTab(p,w)
     elif ch == '\b':
         # This is correct: we only come here if there no bindngs for this key. 
         self.backwardDeleteCharacter(event)
@@ -1316,7 +1315,7 @@ def selfInsertCommand(self,event,action='insert'):
     w.see(w.index('insert'))
     if newText != oldText:
         c.frame.body.onBodyChanged(undoType=undoType,
-            oldSel=oldSel,oldText=oldText,oldYview=None,removeTrailing=removeTrailing)
+            oldSel=oldSel,oldText=oldText,oldYview=None)
             
     g.doHook("bodykey2",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType)
     return 'break'
@@ -1336,8 +1335,7 @@ else:
         undoType != "Change"
     ):
         # No auto-indent if in @nocolor mode or after a Change command.
-        removeTrailing = self.updateAutoIndent(p,w)
-        # g.trace(removeTrailing)
+        self.updateAutoIndent(p,w)
 #@nonl
 #@-node:ekr.20051026171121:<< handle newline >>
 #@+node:ekr.20051027172949:updateAutomatchBracket
@@ -1394,10 +1392,6 @@ def updateAutoIndent (self,p,w):
     ws = g.computeLeadingWhitespace(width,tab_width)
     if ws:
         w.insert("insert",ws)
-        removeTrailing = False
-    else:
-        removeTrailing = None
-    return removeTrailing
 #@nonl
 #@-node:ekr.20051026171121.1:udpateAutoIndent
 #@+node:ekr.20051026092433:updateTab
@@ -1515,19 +1509,18 @@ def search (self):
     s = gui.getAllText(w)
     index = gui.toPythonIndex(s,w,index)
     stopindex = g.choose(self.reverse,0,len(s))
-    while 1:
-        pos,newpos = self.searchHelper(s,index,stopindex,self.find_text,
-            backwards=self.reverse,nocase=self.ignore_case,
-            regexp=self.pattern_match,word=self.whole_word)
-        if pos == -1: return None,None
-        pos    = gui.toGuiIndex(s,w,pos)
-        newpos = gui.toGuiIndex(s,w,newpos)
-        << fail if we are passed the wrap point >>
-        gui.setTextSelection(w,pos,newpos,insert=newpos)
-        return pos, newpos
+    pos,newpos = self.searchHelper(s,index,stopindex,self.find_text,
+        backwards=self.reverse,nocase=self.ignore_case,
+        regexp=self.pattern_match,word=self.whole_word)
+    if pos == -1: return None,None
+    pos    = gui.toGuiIndex(s,w,pos)
+    newpos = gui.toGuiIndex(s,w,newpos)
+    << fail if we are passed the wrap point >>
+    gui.setTextSelection(w,pos,newpos,insert=newpos)
+    return pos, newpos
 #@nonl
 #@+node:ekr.20060526140328:<< fail if we are passed the wrap point >>
-if self.wrapping and self.wrapPos and self.wrapPosition and self.p == self.wrapPosition:
+if self.wrapping and self.wrapPos and self.wrapPosition and p == self.wrapPosition:
 
     if self.reverse and gui.compareIndices(w,pos, "<", self.wrapPos):
         # g.trace("wrap done")
@@ -1551,9 +1544,9 @@ def searchHelper (self,s,i,j,pattern,backwards,nocase,regexp,word):
     if regexp:
         pos,newpos = self.regexHelper(s,i,j,pattern,backwards,nocase)
     elif backwards:
-        pos,newpos = self.backwardsHelper(s,i,j,pattern,backwards,nocase,word)
+        pos,newpos = self.backwardsHelper(s,i,j,pattern,nocase,word)
     else:
-        pos,newpos = self.plainHelper(s,i,j,pattern,backwards,nocase,word)
+        pos,newpos = self.plainHelper(s,i,j,pattern,nocase,word)
 
     return pos,newpos
 #@+node:ekr.20060526092203:regexHelper
@@ -1592,7 +1585,7 @@ def regexHelper (self,s,i,j,pattern,backwards,nocase):
 #@nonl
 #@-node:ekr.20060526092203:regexHelper
 #@+node:ekr.20060526140744:backwardsHelper
-def backwardsHelper (self,s,i,j,pattern,backwards,nocase,word):
+def backwardsHelper (self,s,i,j,pattern,nocase,word):
 
     # g.trace(repr(s[i-20: i]))
 
@@ -1618,7 +1611,7 @@ def backwardsHelper (self,s,i,j,pattern,backwards,nocase,word):
 #@nonl
 #@-node:ekr.20060526140744:backwardsHelper
 #@+node:ekr.20060526093531:plainHelper
-def plainHelper (self,s,i,j,pattern,backwards,nocase,word):
+def plainHelper (self,s,i,j,pattern,nocase,word):
     
     # g.trace(repr(s[i:i+20]))
     
@@ -1654,6 +1647,8 @@ def matchWord(self,s,i,pattern):
 #@-node:ekr.20060526081931:Search helpers...
 #@-node:ekr.20031218072017.3077:search & helpers
 #@-node:ekr.20060531142304.1:Invalid regex's no longer hang Leo
+#@+node:ekr.20060531152913:Fix ed several minor Pychecker problems
+#@-node:ekr.20060531152913:Fix ed several minor Pychecker problems
 #@-node:ekr.20060514170854:Fixed bugs
 #@+node:ekr.20060522103446:New features
 #@+node:ekr.20060512101324:(Support for new colorizer)
@@ -1952,7 +1947,7 @@ def select (self,p,updateBeadList=True):
                 else:
                     def scrollCallback(self=self,p=p):
                         self.scrollTo(p)
-                    self.after(100,scrollCallback)
+                    self.canvas.after(100,scrollCallback)
             except Exception: pass
         << update c.beadList or c.beadPointer >>
         << update c.visitedList >>
@@ -2214,7 +2209,8 @@ for debugger in debuggers:
         else:
             g.es('Debugger does not exist: %s' % (debugger),color='blue')
 else:
-    return g.es('No debugger found.')
+    g.es('No debugger found.')
+    return
 #@nonl
 #@-node:ekr.20060521140213:<< find a debugger or return >>
 #@+node:ekr.20060521140213.1:<< find the target file >>
@@ -2237,133 +2233,21 @@ for target in targets:
 #@-node:ekr.20060519003651:debug
 #@-node:ekr.20060519003651.1:Added debug command
 #@+node:ekr.20060522083716:Run Idle in a separate process
-#@+node:ekr.20031218072017.2932:openPythonWindow (Dave Hein)
+#@+node:ekr.20031218072017.2932:openPythonWindow
 def openPythonWindow (self,event=None):
     
     '''Open Python's Idle debugger in a separate process.'''
     
-    if 1:
-        << open idle in a separate process >>
-    else:
-        if sys.platform == "linux2":
-            << open idle in Linux >>
-        else:
-            << open idle in Windows >>
-#@nonl
-#@+node:ekr.20060522102610:<< open idle in a separate process >>
-pythonDir = g.os_path_dirname(sys.executable)
-idle = g.os_path_join(pythonDir,'Lib','idlelib','idle.py')
-args = [sys.executable, idle ]
-
-if 1: # Use present environment.
-    os.spawnv(os.P_NOWAIT, sys.executable, args)
-else: # Use a pristine environment.
-    os.spawnve(os.P_NOWAIT, sys.executable, args, os.environ)
-#@-node:ekr.20060522102610:<< open idle in a separate process >>
-#@+node:ekr.20031218072017.2933:<< open idle in Linux >>
-# 09-SEP-2002 DHEIN: Open Python window under linux
-
-try:
-    pathToLeo = g.os_path_join(g.app.loadDir,"leo.py")
-    sys.argv = [pathToLeo]
-    from idlelib import idle
-    if g.app.idle_imported:
-        reload(idle)
-    g.app.idle_imported = True
-except:
-    try:
-        g.es("idlelib could not be imported.")
-        g.es("Probably IDLE is not installed.")
-        g.es("Run Tools/idle/setup.py to build idlelib.")
-        g.es("Can not import idle")
-        g.es_exception() # This can fail!!
-    except: pass
-#@-node:ekr.20031218072017.2933:<< open idle in Linux >>
-#@+node:ekr.20031218072017.2934:<< open idle in Windows >>
-# Initialize argv: the -t option sets the title of the Idle interp window.
-sys.argv = ["leo"] # ,"-t","Leo"]
-
-ok = False
-if g.CheckVersion(sys.version,"2.3"):
-    << Try to open idle in Python 2.3 systems >>
-else:
-    << Try to open idle in Python 2.2 systems >>
-
-if not ok:
-    g.es("Can not import idle")
-    if idle_dir and idle_dir not in sys.path:
-        g.es("Please add '%s' to sys.path" % idle_dir)
-#@nonl
-#@+node:ekr.20031218072017.2936:<< Try to open idle in Python 2.3 systems >>
-try:
-    idle_dir = None
+    pythonDir = g.os_path_dirname(sys.executable)
+    idle = g.os_path_join(pythonDir,'Lib','idlelib','idle.py')
+    args = [sys.executable, idle ]
     
-    import idlelib.PyShell
-
-    if g.app.idle_imported:
-        reload(idle)
-        g.app.idle_imported = True
-        
-    idlelib.PyShell.main()
-    ok = True
-
-except:
-    ok = False
-    g.es_exception()
+    if 1: # Use present environment.
+        os.spawnv(os.P_NOWAIT, sys.executable, args)
+    else: # Use a pristine environment.
+        os.spawnve(os.P_NOWAIT, sys.executable, args, os.environ)
 #@nonl
-#@-node:ekr.20031218072017.2936:<< Try to open idle in Python 2.3 systems >>
-#@+node:ekr.20031218072017.2935:<< Try to open idle in Python 2.2 systems>>
-try:
-    executable_dir = g.os_path_dirname(sys.executable)
-    idle_dir = g.os_path_join(executable_dir,"Tools","idle")
-
-    # 1/29/04: sys.path doesn't handle unicode in 2.2.
-    idle_dir = str(idle_dir) # May throw an exception.
-
-    # 1/29/04: must add idle_dir to sys.path even when using importFromPath.
-    if idle_dir not in sys.path:
-        sys.path.insert(0,idle_dir)
-
-    if 1:
-        import PyShell
-    else: # Works, but is not better than import.
-        PyShell = g.importFromPath("PyShell",idle_dir)
-
-    if g.app.idle_imported:
-        reload(idle)
-        g.app.idle_imported = True
-        
-    if 1: # Mostly works, but causes problems when opening other .leo files.
-        PyShell.main()
-    else: # Doesn't work: destroys all of Leo when Idle closes.
-        self.leoPyShellMain()
-    ok = True
-except ImportError:
-    ok = False
-    g.es_exception()
-#@nonl
-#@-node:ekr.20031218072017.2935:<< Try to open idle in Python 2.2 systems>>
-#@-node:ekr.20031218072017.2934:<< open idle in Windows >>
-#@+node:ekr.20031218072017.2937:leoPyShellMain
-@ The key parts of Pyshell.main(), but using Leo's root window instead of a new Tk root window.
-
-This does _not_ work well.  Using Leo's root window means that Idle will shut down Leo without warning when the Idle window is closed!
-@c
-
-if 0:
-
-    def leoPyShellMain(self):
-        
-        import PyShell
-        root = g.app.root
-        PyShell.fixwordbreaks(root)
-        flist = PyShell.PyShellFileList(root)
-        shell = PyShell.PyShell(flist)
-        flist.pyshell = shell
-        shell.begin()
-#@nonl
-#@-node:ekr.20031218072017.2937:leoPyShellMain
-#@-node:ekr.20031218072017.2932:openPythonWindow (Dave Hein)
+#@-node:ekr.20031218072017.2932:openPythonWindow
 #@-node:ekr.20060522083716:Run Idle in a separate process
 #@+node:ekr.20060522082833:Added Debug button to scripting plugin
 #@+node:ekr.20060519003651:debug
@@ -2401,7 +2285,8 @@ for debugger in debuggers:
         else:
             g.es('Debugger does not exist: %s' % (debugger),color='blue')
 else:
-    return g.es('No debugger found.')
+    g.es('No debugger found.')
+    return
 #@nonl
 #@-node:ekr.20060521140213:<< find a debugger or return >>
 #@+node:ekr.20060521140213.1:<< find the target file >>
@@ -4643,7 +4528,7 @@ def getArg (self,event,
 
     k = self ; c = k.c ; state = k.getState('getArg')
     keysym = (event and event.keysym) or ''
-    trace = 0 or c.config.getBool('trace_modes') and not g.app.unitTesting
+    trace = c.config.getBool('trace_modes') and not g.app.unitTesting
     if trace: g.trace(
         'state',state,'keysym',keysym,'stroke',stroke,'escapes',k.getArgEscapes,
         'completion', state==0 and completion or state!=0 and k.arg_completion)
@@ -4949,19 +4834,18 @@ def search (self):
     s = gui.getAllText(w)
     index = gui.toPythonIndex(s,w,index)
     stopindex = g.choose(self.reverse,0,len(s))
-    while 1:
-        pos,newpos = self.searchHelper(s,index,stopindex,self.find_text,
-            backwards=self.reverse,nocase=self.ignore_case,
-            regexp=self.pattern_match,word=self.whole_word)
-        if pos == -1: return None,None
-        pos    = gui.toGuiIndex(s,w,pos)
-        newpos = gui.toGuiIndex(s,w,newpos)
-        << fail if we are passed the wrap point >>
-        gui.setTextSelection(w,pos,newpos,insert=newpos)
-        return pos, newpos
+    pos,newpos = self.searchHelper(s,index,stopindex,self.find_text,
+        backwards=self.reverse,nocase=self.ignore_case,
+        regexp=self.pattern_match,word=self.whole_word)
+    if pos == -1: return None,None
+    pos    = gui.toGuiIndex(s,w,pos)
+    newpos = gui.toGuiIndex(s,w,newpos)
+    << fail if we are passed the wrap point >>
+    gui.setTextSelection(w,pos,newpos,insert=newpos)
+    return pos, newpos
 #@nonl
 #@+node:ekr.20060526140328:<< fail if we are passed the wrap point >>
-if self.wrapping and self.wrapPos and self.wrapPosition and self.p == self.wrapPosition:
+if self.wrapping and self.wrapPos and self.wrapPosition and p == self.wrapPosition:
 
     if self.reverse and gui.compareIndices(w,pos, "<", self.wrapPos):
         # g.trace("wrap done")
@@ -4985,9 +4869,9 @@ def searchHelper (self,s,i,j,pattern,backwards,nocase,regexp,word):
     if regexp:
         pos,newpos = self.regexHelper(s,i,j,pattern,backwards,nocase)
     elif backwards:
-        pos,newpos = self.backwardsHelper(s,i,j,pattern,backwards,nocase,word)
+        pos,newpos = self.backwardsHelper(s,i,j,pattern,nocase,word)
     else:
-        pos,newpos = self.plainHelper(s,i,j,pattern,backwards,nocase,word)
+        pos,newpos = self.plainHelper(s,i,j,pattern,nocase,word)
 
     return pos,newpos
 #@+node:ekr.20060526092203:regexHelper
@@ -5026,7 +4910,7 @@ def regexHelper (self,s,i,j,pattern,backwards,nocase):
 #@nonl
 #@-node:ekr.20060526092203:regexHelper
 #@+node:ekr.20060526140744:backwardsHelper
-def backwardsHelper (self,s,i,j,pattern,backwards,nocase,word):
+def backwardsHelper (self,s,i,j,pattern,nocase,word):
 
     # g.trace(repr(s[i-20: i]))
 
@@ -5052,7 +4936,7 @@ def backwardsHelper (self,s,i,j,pattern,backwards,nocase,word):
 #@nonl
 #@-node:ekr.20060526140744:backwardsHelper
 #@+node:ekr.20060526093531:plainHelper
-def plainHelper (self,s,i,j,pattern,backwards,nocase,word):
+def plainHelper (self,s,i,j,pattern,nocase,word):
     
     # g.trace(repr(s[i:i+20]))
     
@@ -6630,7 +6514,7 @@ def cycleEditorFocus (self,event=None):
     
     c = self.c ; d = self.editorWidgets
     keys = d.keys() ; n = len(keys)
-    if n < 2: return # There is only one widget. 
+    if n < 2: return 'break' # There is only one widget. 
 
     i = 0
     for key in d.keys():
@@ -6643,6 +6527,8 @@ def cycleEditorFocus (self,event=None):
             self.onFocusIn(w)
             # g.app.gui.set_focus(c,w)
             return 'break'
+            
+    return 'break'
 #@nonl
 #@-node:ekr.20060528170438:cycleEditorFocus
 #@+node:ekr.20060528113806:deleteEditor
@@ -6692,7 +6578,8 @@ def onFocusIn(self,w):
             if p2.v == w.leo_v:
                 w.leo_p = p2.copy()
                 break
-        else: return g.trace("Can't happen")
+        else:
+            g.trace("Can't happen") ; return
 
     # g.trace(w.leo_name,w.leo_p.headString())
     self.frame.bodyCtrl = self.bodyCtrl = w # Must change both ivars!
@@ -6768,7 +6655,7 @@ def select (self,p,updateBeadList=True):
                 else:
                     def scrollCallback(self=self,p=p):
                         self.scrollTo(p)
-                    self.after(100,scrollCallback)
+                    self.canvas.after(100,scrollCallback)
             except Exception: pass
         << update c.beadList or c.beadPointer >>
         << update c.visitedList >>
@@ -6873,8 +6760,7 @@ else:
 #@-node:ekr.20040803072955.128:tree.select
 #@+node:ekr.20031218072017.1329:onBodyChanged (tkBody)
 # This is the only key handler for the body pane.
-def onBodyChanged (self,undoType,
-    oldSel=None,oldText=None,oldYview=None,removeTrailing=None):
+def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None):
     
     '''Update Leo after the body has been changed.'''
     
@@ -6958,7 +6844,6 @@ def selfInsertCommand(self,event,action='insert'):
     # g.trace(name)
     oldSel =  name.startswith('body') and g.app.gui.getTextSelection(w)
     oldText = name.startswith('body') and p.bodyString()
-    removeTrailing = None # A signal to compute it later.
     undoType = 'Typing'
     trace = c.config.getBool('trace_masterCommand')
     
@@ -6968,7 +6853,7 @@ def selfInsertCommand(self,event,action='insert'):
         return "break" # The hook claims to have handled the event.
         
     if ch == '\t':
-        removeTrailing = self.updateTab(p,w)
+        self.updateTab(p,w)
     elif ch == '\b':
         # This is correct: we only come here if there no bindngs for this key. 
         self.backwardDeleteCharacter(event)
@@ -6991,7 +6876,7 @@ def selfInsertCommand(self,event,action='insert'):
     w.see(w.index('insert'))
     if newText != oldText:
         c.frame.body.onBodyChanged(undoType=undoType,
-            oldSel=oldSel,oldText=oldText,oldYview=None,removeTrailing=removeTrailing)
+            oldSel=oldSel,oldText=oldText,oldYview=None)
             
     g.doHook("bodykey2",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType)
     return 'break'
@@ -7011,8 +6896,7 @@ else:
         undoType != "Change"
     ):
         # No auto-indent if in @nocolor mode or after a Change command.
-        removeTrailing = self.updateAutoIndent(p,w)
-        # g.trace(removeTrailing)
+        self.updateAutoIndent(p,w)
 #@nonl
 #@-node:ekr.20051026171121:<< handle newline >>
 #@+node:ekr.20051027172949:updateAutomatchBracket
@@ -7069,10 +6953,6 @@ def updateAutoIndent (self,p,w):
     ws = g.computeLeadingWhitespace(width,tab_width)
     if ws:
         w.insert("insert",ws)
-        removeTrailing = False
-    else:
-        removeTrailing = None
-    return removeTrailing
 #@nonl
 #@-node:ekr.20051026171121.1:udpateAutoIndent
 #@+node:ekr.20051026092433:updateTab

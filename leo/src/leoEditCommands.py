@@ -1126,7 +1126,8 @@ class debugCommandsClass (baseEditCommandsClass):
                 else:
                     g.es('Debugger does not exist: %s' % (debugger),color='blue')
         else:
-            return g.es('No debugger found.')
+            g.es('No debugger found.')
+            return
         #@nonl
         #@-node:ekr.20060521140213:<< find a debugger or return >>
         #@nl
@@ -2739,7 +2740,6 @@ class editCommandsClass (baseEditCommandsClass):
         # g.trace(name)
         oldSel =  name.startswith('body') and g.app.gui.getTextSelection(w)
         oldText = name.startswith('body') and p.bodyString()
-        removeTrailing = None # A signal to compute it later.
         undoType = 'Typing'
         trace = c.config.getBool('trace_masterCommand')
         
@@ -2749,7 +2749,7 @@ class editCommandsClass (baseEditCommandsClass):
             return "break" # The hook claims to have handled the event.
             
         if ch == '\t':
-            removeTrailing = self.updateTab(p,w)
+            self.updateTab(p,w)
         elif ch == '\b':
             # This is correct: we only come here if there no bindngs for this key. 
             self.backwardDeleteCharacter(event)
@@ -2771,8 +2771,7 @@ class editCommandsClass (baseEditCommandsClass):
                     undoType != "Change"
                 ):
                     # No auto-indent if in @nocolor mode or after a Change command.
-                    removeTrailing = self.updateAutoIndent(p,w)
-                    # g.trace(removeTrailing)
+                    self.updateAutoIndent(p,w)
             #@nonl
             #@-node:ekr.20051026171121:<< handle newline >>
             #@nl
@@ -2792,7 +2791,7 @@ class editCommandsClass (baseEditCommandsClass):
         w.see(w.index('insert'))
         if newText != oldText:
             c.frame.body.onBodyChanged(undoType=undoType,
-                oldSel=oldSel,oldText=oldText,oldYview=None,removeTrailing=removeTrailing)
+                oldSel=oldSel,oldText=oldText,oldYview=None)
                 
         g.doHook("bodykey2",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType)
         return 'break'
@@ -2851,10 +2850,6 @@ class editCommandsClass (baseEditCommandsClass):
         ws = g.computeLeadingWhitespace(width,tab_width)
         if ws:
             w.insert("insert",ws)
-            removeTrailing = False
-        else:
-            removeTrailing = None
-        return removeTrailing
     #@nonl
     #@-node:ekr.20051026171121.1:udpateAutoIndent
     #@+node:ekr.20051026092433:updateTab

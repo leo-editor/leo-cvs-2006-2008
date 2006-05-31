@@ -1063,6 +1063,8 @@ class autoCompleterClass:
     #@+node:ekr.20060216155558.1:scan
     def scan (self,event=None,verbose=True,thread=True):
         
+        __pychecker__ = '--no-argsused' # thread arg not used at present.
+        
         c = self.c
         if not c or not c.exists or c.frame.isNullFrame: return
         if g.app.unitTesting: return
@@ -2645,7 +2647,7 @@ class keyHandlerClass:
     
         k = self ; c = k.c ; state = k.getState('getArg')
         keysym = (event and event.keysym) or ''
-        trace = 0 or c.config.getBool('trace_modes') and not g.app.unitTesting
+        trace = c.config.getBool('trace_modes') and not g.app.unitTesting
         if trace: g.trace(
             'state',state,'keysym',keysym,'stroke',stroke,'escapes',k.getArgEscapes,
             'completion', state==0 and completion or state!=0 and k.arg_completion)
