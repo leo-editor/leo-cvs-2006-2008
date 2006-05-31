@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="267" clone_windows="0"/>
 <globals body_outline_ratio="0.549828178694">
-	<global_window_position top="45" left="330" height="642" width="798"/>
+	<global_window_position top="45" left="330" height="604" width="798"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -44,7 +44,7 @@
 <v t="ekr.20060112104823"><vh>main</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" a="V" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20060524151415"><vh>Debugger options</vh>
 <v t="ekr.20060524151415.1"><vh>@string debugger_kind = winpdb</vh></v>
 <v t="ekr.20060521132401"><vh>@string debugger_path = None</vh></v>
@@ -95,7 +95,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060113182439"><vh>Other options</vh>
+<v t="ekr.20060113182439" a="V"><vh>Other options</vh>
 <v t="ekr.20041119034357.10" annotate="7d71002e"><vh>Command options</vh>
 <v t="ekr.20041119034357.14"><vh>@bool at_root_bodies_start_in_doc_mode = True</vh></v>
 <v t="ekr.20041119041019"><vh>@bool redirect_execute_script_output_to_log_pane = False</vh></v>
@@ -282,14 +282,6 @@
 </v>
 </v>
 <v t="ekr.20051123100536" annotate="7d71002e"><vh>Plugins settings</vh>
-<v t="ekr.20060305100614"><vh>chapter plugin</vh>
-<v t="ekr.20060305100614.1"><vh>@color selected_chapter_tab_background_color = LightSteelBlue2</vh></v>
-<v t="ekr.20060306001441"><vh>@color selected_chapter_tab_foreground_color = black</vh></v>
-<v t="ekr.20060306001504"><vh>@color unselected_chapter_tab_background_color = lightgrey</vh></v>
-<v t="ekr.20060306001630"><vh>@color unselected_chapter_tab_foreground_color = black</vh></v>
-<v t="ekr.20060306124427"><vh>@color editor_label_background_color = wheat1</vh></v>
-<v t="ekr.20060306124427.1"><vh>@color editor_label_foreground_color = black</vh></v>
-</v>
 <v t="ekr.20060111091324"><vh>fastgotonode plugin</vh>
 <v t="ekr.20060111091324.1"><vh>@bool fastgotonode_useKeyBinding = True</vh></v>
 <v t="ekr.20060111091324.2"><vh>@string fastgotonode_binding =  Shift-space</vh></v>
@@ -908,11 +900,10 @@ Setting this setting to False allows Leo to be used on Aqua.</t>
 False: Don't issue such messages.
 
 </t>
-<t tx="ekr.20041119050749.5">
-1: Click near a node expands or contracts the node.
+<t tx="ekr.20041119050749.5">1: Click near a node expands or contracts the node.
 0: Only clicks in a node's plus/minus box expands or contracts the node.
 
-</t>
+Note:  @bool expanded_click_area = True conflicts with the UniversalScrolling plugin.</t>
 <t tx="ekr.20041119050749.6">Foreground color of unselected headline text.</t>
 <t tx="ekr.20041119050749.7">Foreground color of selected headline text that is not being edited.
 
@@ -4639,23 +4630,7 @@ toggle-find-word-option
 toggle-find-wrap-around-option
 word-search-backward
 word-search-forward</t>
-<t tx="ekr.20060305100614"></t>
-<t tx="ekr.20060305100614.1">LightSteelBlue2
-SteelBlue2</t>
-<t tx="ekr.20060306001441">black</t>
-<t tx="ekr.20060306001504">lightgrey</t>
-<t tx="ekr.20060306001630">black</t>
 <t tx="ekr.20060306031258"></t>
-<t tx="ekr.20060306124427">MistyRose1
-LightSteelBlue2
-#ffffec
-lightgrey
-gray90
-LavenderBlush2
-wheat1
-pink1
-thistle2</t>
-<t tx="ekr.20060306124427.1"></t>
 <t tx="ekr.20060309022759"></t>
 <t tx="ekr.20060323131801">True: warn if a command has no setting.</t>
 <t tx="ekr.20060325071042"></t>
