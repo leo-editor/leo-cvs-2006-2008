@@ -1164,7 +1164,7 @@ class leoFind:
         try:
             c.selectPosition(p)
         finally:
-            c.endUpdate(scroll=True)
+            c.endUpdate()
         if self.in_headline:
             c.editPosition(p)
         # Set the focus and selection after the redraw.

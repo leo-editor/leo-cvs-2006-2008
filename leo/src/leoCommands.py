@@ -3073,7 +3073,7 @@ class baseCommands:
                 pasted.moveToNthChildOf(back,0)
             u.afterInsertNode(pasted,undoType,undoData)
         finally:
-            c.endUpdate(scroll=True)
+            c.endUpdate()
             c.recolor()
     #@nonl
     #@-node:ekr.20031218072017.1551:pasteOutline
@@ -3207,7 +3207,7 @@ class baseCommands:
             c.setChanged(True)
             u.afterInsertNode(p,op_name,undoData,dirtyVnodeList=dirtyVnodeList)
         finally:
-            c.endUpdate(False,scroll=True)
+            c.endUpdate()
             c.editPosition(p)
     
         return p # for mod_labels plugin.
@@ -3231,7 +3231,7 @@ class baseCommands:
                 u.afterCloneNode(clone,'Clone Node',undoData,dirtyVnodeList=dirtyVnodeList)
                 c.selectPosition(clone)
         finally:
-            c.endUpdate(scroll=True)
+            c.endUpdate()
     
         return clone # For mod_labels and chapters plugins.
     #@nonl
@@ -5006,7 +5006,7 @@ class baseCommands:
             u.afterChangeGroup(current,command,dirtyVnodeList=dirtyVnodeList)
             c.selectPosition(current)
         finally:
-            c.endUpdate(scroll=True)
+            c.endUpdate()
         c.updateSyntaxColorer(current) # Moving can change syntax coloring.
     #@nonl
     #@-node:ekr.20031218072017.1767:demote
@@ -5070,7 +5070,7 @@ class baseCommands:
                 u.afterMoveNode(p,'Move Down',undoData,dirtyVnodeList)
                 c.selectPosition(p)
         finally:
-            c.endUpdate(scroll=True)
+            c.endUpdate()
         c.updateSyntaxColorer(p) # Moving can change syntax coloring.
     #@nonl
     #@-node:ekr.20031218072017.1768:moveOutlineDown
@@ -5104,7 +5104,7 @@ class baseCommands:
             u.afterMoveNode(p,'Move Left',undoData,dirtyVnodeList)
             c.selectPosition(p)
         finally:
-            c.endUpdate(scroll=True)
+            c.endUpdate()
         c.updateSyntaxColorer(p) # Moving can change syntax coloring.
     #@nonl
     #@-node:ekr.20031218072017.1770:moveOutlineLeft
@@ -5137,7 +5137,7 @@ class baseCommands:
             u.afterMoveNode(p,'Move Right',undoData,dirtyVnodeList)
             c.selectPosition(p)
         finally:
-            c.endUpdate(scroll=True)
+            c.endUpdate()
         c.updateSyntaxColorer(p) # Moving can change syntax coloring.
     #@nonl
     #@-node:ekr.20031218072017.1771:moveOutlineRight
@@ -5202,7 +5202,7 @@ class baseCommands:
                 u.afterMoveNode(p,'Move Right',undoData,dirtyVnodeList)
                 c.selectPosition(p)
         finally:
-            c.endUpdate(scroll=True)
+            c.endUpdate()
         c.updateSyntaxColorer(p) # Moving can change syntax coloring.
     #@nonl
     #@-node:ekr.20031218072017.1772:moveOutlineUp
@@ -5237,7 +5237,7 @@ class baseCommands:
             u.afterChangeGroup(p,command,dirtyVnodeList=dirtyVnodeList)
             c.selectPosition(p)
         finally:
-            c.endUpdate(scroll=True)
+            c.endUpdate()
         c.updateSyntaxColorer(p) # Moving can change syntax coloring.
     #@nonl
     #@-node:ekr.20031218072017.1774:promote
