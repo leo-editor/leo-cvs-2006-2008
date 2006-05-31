@@ -5659,7 +5659,7 @@ class baseCommands:
         c = self
         c.frame.tree.beginUpdate()
         
-    def endUpdate(self,flag=True,scroll=False):
+    def endUpdate(self,flag=True,scroll=True):
         
         '''Redraw the screen if flag is True.'''
     
