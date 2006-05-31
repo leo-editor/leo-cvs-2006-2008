@@ -818,6 +818,7 @@ class leoFind:
             re_obj = re.compile(pattern,flags)
         except Exception:
             g.es('Invalid regular expression: %s' % (pattern),color='blue')
+            self.errors += 1 # Abort the search.
             return -1, -1
             
         if backwards: # Scan to the last match.
