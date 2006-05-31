@@ -832,7 +832,7 @@ class leoTkinterTree (leoFrame.leoTree):
     def endUpdate (self,flag,scroll=False):
         
         self.updateCount -= 1
-        # g.trace('  tree',id(self),self.updateCount,g.callers())
+        # g.trace(self.updateCount,'scroll',scroll,g.callers())
         
         if self.updateCount <= 0:
             if flag:
@@ -1898,7 +1898,7 @@ class leoTkinterTree (leoFrame.leoTree):
                 u.afterChangeNodeContents(p,undoType,undoData,
                     dirtyVnodeList=dirtyVnodeList)
         finally:
-            c.endUpdate()
+            c.endUpdate(scroll=False) # New in 4.4.1
             if changed:
                 if self.stayInTree:
                     c.treeWantsFocus()
