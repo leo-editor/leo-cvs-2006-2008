@@ -2635,8 +2635,6 @@ class leoTkinterTree (leoFrame.leoTree):
         
         frame.scanForTabWidth(p) #GS I believe this should also get into the select1 hook
         
-        c.frame.body.selectMainEditor() # New in Leo 4.4.1.
-        
         if self.stayInTree:
             c.treeWantsFocus()
         else:
@@ -2644,6 +2642,7 @@ class leoTkinterTree (leoFrame.leoTree):
         #@nonl
         #@-node:ekr.20040803072955.133:<< set the current node >>
         #@nl
+        c.frame.body.selectMainEditor(p) # New in Leo 4.4.1.
         
         g.doHook("select2",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
         g.doHook("select3",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)

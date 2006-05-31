@@ -2409,13 +2409,13 @@ class leoTkinterBody (leoFrame.leoBody):
         # Call the base class constructor.
         leoFrame.leoBody.__init__(self,frame,parentFrame)
         
-        c = self.c
+        c = self.c ; p = c.currentPosition()
         self.editor_name = None
         self.editor_v = None
         self.editorWidgets = {} # keys are pane names, values are Tk.Text widgets
     
         self.trace_onBodyChanged = c.config.getBool('trace_onBodyChanged')
-        self.bodyCtrl = self.createControl(frame,parentFrame)
+        self.bodyCtrl = self.createControl(frame,parentFrame,p)
         self.colorizer = leoColor.colorizer(c)
     #@nonl
     #@-node:ekr.20031218072017.2182:tkBody. __init__
@@ -2447,32 +2447,35 @@ class leoTkinterBody (leoFrame.leoBody):
     #@nonl
     #@-node:ekr.20031218072017.838:tkBody.createBindings
     #@+node:ekr.20031218072017.3998:tkBody.createControl
-    def createControl (self,frame,parentFrame):
+    def createControl (self,frame,parentFrame,p):
         
         c = self.c
         
         # New in 4.4.1: make the parent frame a Pmw.PanedWidget.
-        self.numberOfEditors = 1
+        self.numberOfEditors = 1 ; name = '1'
        
         self.pb = pb = Pmw.PanedWidget(parentFrame,orient='horizontal')
-        parentFrame = pb.add('1')
+        parentFrame = pb.add(name)
         pb.pack(expand=1,fill='both') # Must be done after the first page created.
        
-        w = self.createTextWidget(frame,parentFrame,name=None,p=None)
-        self.editorWidgets[None] = w
+        w = self.createTextWidget(frame,parentFrame,p,name)
+        self.editorWidgets[name] = w
+    
         return w
     #@nonl
     #@-node:ekr.20031218072017.3998:tkBody.createControl
     #@+node:ekr.20060528100747.3:tkBody.createTextWidget
-    def createTextWidget (self,frame,parentFrame,name,p):
+    def createTextWidget (self,frame,parentFrame,p,name):
         
         c = self.c
+        
+        parentFrame.configure(bg='LightSteelBlue1')
     
         wrap = c.config.getBool('body_pane_wraps')
         wrap = g.choose(wrap,"word","none")
         
         # Setgrid=1 cause severe problems with the font panel.
-        body = Tk.Text(parentFrame,name='body-pane',
+        body = w = Tk.Text(parentFrame,name='body-pane',
             bd=2,bg="white",relief="flat",setgrid=0,wrap=wrap)
         
         bodyBar = Tk.Scrollbar(parentFrame,name='bodyBar')
@@ -2500,24 +2503,80 @@ class leoTkinterBody (leoFrame.leoBody):
             body.configure(insertofftime=0)
             
         # Inject ivars
-        body.leo_pane_name = name
-        body.leo_v = p and p.v
-            
-        def focusInCallback(event,self=self,w=body):
-            self.onFocusIn(w)
-        body.bind('<FocusIn>',focusInCallback)
+        if name == '1':
+            w.leo_p = w.leo_v = None # Will be set when the second editor is created.
+        else:
+            w.leo_p = p.copy()
+            w.leo_v = body.leo_p.v
+        w.leo_active = True
+        w.leo_frame = parentFrame
+        w.leo_name = name
+        w.leo_label = None
+        w.leo_label_s = None
     
-        return body
+        def focusInCallback(event,self=self,w=w):
+            self.onFocusIn(w)
+        w.bind('<FocusIn>',focusInCallback)
+    
+        return w
     #@nonl
     #@-node:ekr.20060528100747.3:tkBody.createTextWidget
     #@-node:ekr.20031218072017.3997: Birth & death
     #@+node:ekr.20060528100747:Editors
+    #@+at 
+    #@nonl
+    # **Important**: body.bodyCtrl and body.frame.bodyCtrl must always be the 
+    # same.
+    #@-at
+    #@+node:ekr.20060530204135:recolorWidget
+    def recolorWidget (self,w):
+        
+        c = self.c ; old_w = self.bodyCtrl
+        
+        # Save.
+        self.bodyCtrl = self.frame.bodyCtrl = w
+        
+        c.recolor_now()
+        
+        # Restore.
+        self.bodyCtrl = self.frame.bodyCtrl = old_w
+    #@nonl
+    #@-node:ekr.20060530204135:recolorWidget
+    #@+node:ekr.20060530210057:create/select/unselect/Label
+    def unselectLabel (self,w):
+        
+        # g.trace(w.leo_name,w.leo_label_s)
+        if not w.leo_label: self.createLabel(w)
+        w.leo_label.configure(text=w.leo_label_s,bg='LightSteelBlue1')
+            
+    def selectLabel (self,w):
+        
+        # g.trace(w.leo_name,w.leo_label_s)
+        if not w.leo_label: self.createLabel(w)
+        w.leo_label.configure(text=w.leo_label_s,bg='white')
+            
+    def createLabel (self,w):
+    
+        w.leo_label = Tk.Label(w.leo_frame)
+        w.pack_forget()
+        w.leo_label.pack(side='top')
+        w.pack(expand=1,fill='both')
+    #@nonl
+    #@-node:ekr.20060530210057:create/select/unselect/Label
     #@+node:ekr.20060528100747.1:addEditor
     def addEditor (self,event=None):
         
         '''Add another editor to the body pane.'''
         
         c = self.c ; p = c.currentPosition()
+        
+        if self.numberOfEditors == 1:
+            # Inject the ivars into the first editor.
+            w = self.editorWidgets.get('1')
+            w.leo_p = p.copy()
+            w.leo_v = w.leo_p.v
+            w.leo_label_s = p.headString()
+    
         self.numberOfEditors += 1
         name = '%d' % self.numberOfEditors
         pane = self.pb.add(name)
@@ -2529,13 +2588,7 @@ class leoTkinterBody (leoFrame.leoBody):
         f = Tk.Frame(pane)
         f.pack(side='top',expand=1,fill='both')
         
-        label = Tk.Label(f,text= p.headString(),bg='LightSteelBlue1')
-        label.pack(side='top')
-        
-        text = Tk.Frame(f)
-        text.pack(side='top',expand=1,fill='both')
-        
-        w = self.createTextWidget(self.frame,text,name=name,p=p)
+        w = self.createTextWidget(self.frame,f,name=name,p=p)
         
         w.delete('1.0','end')
         w.insert('end',p.bodyString())
@@ -2544,25 +2597,19 @@ class leoTkinterBody (leoFrame.leoBody):
         self.createBindings(w=w)
         c.k.completeAllBindingsForWidget(w)
         
-        # Temporarily make this the 'real' text widget so we can color it.
-        old_w = self.bodyCtrl
-        self.bodyCtrl = w
-        c.recolor_now()
-        self.bodyCtrl = old_w
-        
-        # Disable this editor.
-        # Eventually, we should allow edits here.
-        # w.configure(state='disabled')
+        self.recolorWidget(w)
         #@nonl
         #@-node:ekr.20060528110922:<< create label and text widgets >>
         #@nl
-        
         self.editorWidgets[name] = w
-        
+    
         for pane in panes:
             self.pb.configurepane(pane,size=minSize)
         
         self.pb.updatelayout()
+        
+        self.bodyCtrl = self.frame.bodyCtrl = w
+        self.onFocusIn(w)
     #@nonl
     #@-node:ekr.20060528100747.1:addEditor
     #@+node:ekr.20060528170438:cycleEditorFocus
@@ -2572,7 +2619,7 @@ class leoTkinterBody (leoFrame.leoBody):
         
         c = self.c ; d = self.editorWidgets
         keys = d.keys() ; n = len(keys)
-        if n < 2: return # There is only the main widget. 
+        if n < 2: return # There is only one widget. 
     
         i = 0
         for key in d.keys():
@@ -2580,9 +2627,11 @@ class leoTkinterBody (leoFrame.leoBody):
             w = d.get(key)
             if w == self.bodyCtrl:
                 if i >= n: i = 0
-                self.bodyCtrl = w = d.get(keys[i])
-                g.app.gui.set_focus(c, w)
-                return
+                w = d.get(keys[i])
+                self.bodyCtrl = self.frame.bodyCtrl = w
+                self.onFocusIn(w)
+                # g.app.gui.set_focus(c,w)
+                return 'break'
     #@nonl
     #@-node:ekr.20060528170438:cycleEditorFocus
     #@+node:ekr.20060528113806:deleteEditor
@@ -2590,14 +2639,13 @@ class leoTkinterBody (leoFrame.leoBody):
         
         '''Delete the presently selected body text editor.'''
         
-        name = self.editor_name
-    
-        if not name:
-            g.es('Can not delete the main body editor',color='blue')
-            return
-            
-        del self.editorWidgets [name]
-    
+        w = self.bodyCtrl ; d = self.editorWidgets
+        
+        if len(d.keys()) == 1: return
+        
+        name = w.leo_name
+        
+        del d [name]
         self.pb.delete(name)
         panes = self.pb.panes()
         minSize = float(1.0/float(len(panes)))
@@ -2605,43 +2653,57 @@ class leoTkinterBody (leoFrame.leoBody):
         for pane in panes:
             self.pb.configurepane(pane,size=minSize)
             
-        self.selectMainEditor()
+        # Select another editor.
+        w = d.values()[0]
+        self.onFocusIn(w)
+        # self.frame.bodyCtrl = self.bodyCtrl = w # Must change both ivars!
+        # self.selectMainEditor()
     #@nonl
     #@-node:ekr.20060528113806:deleteEditor
     #@+node:ekr.20060528104554:onFocusIn
     def onFocusIn(self,w):
-        
-        c = self.c ; p = None
     
-        # Get the ivars from the ivars injected into w.
-        self.editor_name = hasattr(w,'leo_pane_name') and w.leo_pane_name or None
-        self.editor_v = v = hasattr(w,'leo_v')         and w.leo_v         or None
-        # g.trace(w,v)
-        
-        if not v:
-            # We are selecting the main editor, so nothing actually changes.
-            self.bodyCtrl = w
-            c.frame.bodyWantsFocus()
-            return
-        
-        for p in c.allNodes_iter():
-            if p.v == v:
-                c.selectPosition(p, updateBeadList=True)
-                self.bodyCtrl = w # This may be changed by c.selectPosition
-                c.frame.bodyWantsFocus()
-                break
-        else:
-            g.trace("Can't happen",p)
+        c = self.c ; d = self.editorWidgets
+        if w.leo_p is None: return
+    
+        # Inactivate the previously active editor.
+        # Don't capture ivars here! selectMainEditor keeps them up-to-date.
+        for key in d.keys():
+            w2 = d.get(key)
+            if w2 != w and w2.leo_active:
+                w2.leo_active = False
+                self.unselectLabel(w2)
+    
+        # Careful, leo_p may not exist.
+        if not w.leo_p.exists(c):
+            g.trace('does not exist',w.leo_name)
+            for p2 in c.allNodes_iter():
+                if p2.v == w.leo_v:
+                    w.leo_p = p2.copy()
+                    break
+            else: return g.trace("Can't happen")
+    
+        # g.trace(w.leo_name,w.leo_p.headString())
+        self.frame.bodyCtrl = self.bodyCtrl = w # Must change both ivars!
+        w.leo_active = True
+        c.selectPosition(w.leo_p,updateBeadList=True) # Calls selectMainEditor.
+        c.recolor_now()
+        c.frame.bodyWantsFocus()
     #@nonl
     #@-node:ekr.20060528104554:onFocusIn
     #@+node:ekr.20060528132829:selectMainEditor
-    def selectMainEditor (self):
-        
-        c = self.c
+    def selectMainEditor (self,p):
     
-        w = self.editorWidgets.get(None)
-        self.bodyCtrl = w
-        c.recolor_now()
+        c = self.c ; p = c.currentPosition() ; w = self.bodyCtrl
+    
+        # Don't inject ivars if there is only one editor.
+        if w.leo_p is not None:
+            # Keep w's ivars up-to-date.
+            w.leo_p = p.copy()
+            w.leo_v = p.v
+            w.leo_label_s = p.headString()
+            self.selectLabel(w)
+            # g.trace(w.leo_name,p.headString())
     #@nonl
     #@-node:ekr.20060528132829:selectMainEditor
     #@+node:ekr.20060528131618:updateEditors
@@ -2650,21 +2712,15 @@ class leoTkinterBody (leoFrame.leoBody):
         c = self.c ; p = c.currentPosition()
         d = self.editorWidgets
         if len(d.keys()) < 2: return # There is only the main widget.
-        w_main = d.get(None)
     
         for key in d.keys():
             w = d.get(key)
-            if w == self.bodyCtrl: continue
             v = w.leo_v
-            if v == p.v or w == w_main:
-                # g.trace('update',v,w)
-                # Temporarily make this the 'real' text widget so we can color it.
-                old_w = self.bodyCtrl
-                self.bodyCtrl = w
+            if v and v == p.v and w != self.bodyCtrl:
                 w.delete('1.0','end')
                 w.insert('end',p.bodyString())
-                c.recolor_now()
-                self.bodyCtrl = old_w
+                g.trace('update',w,v)
+                self.recolorWidget(w)
         c.frame.bodyWantsFocus()
     #@nonl
     #@-node:ekr.20060528131618:updateEditors
