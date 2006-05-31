@@ -2719,7 +2719,7 @@ class leoTkinterBody (leoFrame.leoBody):
             if v and v == p.v and w != self.bodyCtrl:
                 w.delete('1.0','end')
                 w.insert('end',p.bodyString())
-                g.trace('update',w,v)
+                # g.trace('update',w,v)
                 self.recolorWidget(w)
         c.frame.bodyWantsFocus()
     #@nonl
