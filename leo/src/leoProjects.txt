@@ -7098,6 +7098,285 @@ def updateTab (self,p,w):
 #@-node:ekr.20051026092433:updateTab
 #@-node:ekr.20051125080855:selfInsertCommand
 #@-node:ekr.20041130103128:Added autoindent_in_nocolor_mode setting
+#@+node:ekr.20060531135634:Made scroll=True the default for calls to c.endUpdate
+@nocolor
+
+What I did:
+    
+- Changed default for c.endUpdate's scroll argument to True.
+  This causes unwelcome jump when manually clicking a headline.
+  There is *no change* to the default for tree.endUpdate.
+  
+- Set scroll=False in onHeadChanged.
+  This eliminates unwanted screen jump.
+  
+- Eliminated all explicit scroll=True in calls to c.endUpdate.
+
+@color
+#@nonl
+#@+node:ekr.20031218072017.2991:c.editPosition
+# Selects v: sets the focus to p and edits p.
+
+def editPosition(self,p):
+
+    c = self ; k = c.k
+
+    if p:
+        c.selectPosition(p)
+        c.frame.tree.editLabel(p)
+        
+        if k:
+            k.setDefaultUnboundKeyAction()
+            k.showStateAndMode()
+#@nonl
+#@-node:ekr.20031218072017.2991:c.editPosition
+#@+node:ekr.20031218072017.2950:c.begin/endUpdate
+@
+**Important** These methods ensure that exactly zero or one (depending on the
+argument to endUpdate) redraws exist within the section of code bounded by
+c.beginUpdate and c.endUpdate. This greatly simplifies and clarifies the code.
+
+Callers should ensure that every beginUpdate is matched with an endUpdate by
+using the following pattern:
+    c.beginUpdate()
+    try:
+        << whatever >>
+    finally:
+        c.endUpdate()
+@c
+
+def beginUpdate(self):
+    
+    '''Suppress redraws of the tree (except for explict calls to c.redraw_now)
+    until the matching call to endUpdate.'''
+    
+    c = self
+    c.frame.tree.beginUpdate()
+    
+def endUpdate(self,flag=True,scroll=True):
+    
+    '''Redraw the screen if flag is True.'''
+
+    c = self
+    c.frame.tree.endUpdate(flag,scroll=scroll)
+
+BeginUpdate = beginUpdate # Compatibility with old scripts
+EndUpdate = endUpdate # Compatibility with old scripts
+#@-node:ekr.20031218072017.2950:c.begin/endUpdate
+#@+node:ekr.20040803072955.91:onHeadChanged
+# Tricky code: do not change without careful thought and testing.
+
+def onHeadChanged (self,p,undoType='Typing'):
+    
+    '''Officially change a headline.
+    Set the old undo text to the previous revert point.'''
+    
+    c = self.c ; u = c.undoer ; w = self.edit_widget(p)
+    if not w: return
+    
+    ch = '\r' # New in 4.4: we only report the final keystroke.
+    if g.doHook("headkey1",c=c,p=p,v=p,ch=ch):
+        return # The hook claims to have handled the event.
+
+    s = w.get('1.0','end')
+    << truncate s if it has multiple lines >>
+    c.beginUpdate()
+    try:
+        # Make the change official, but undo to the *old* revert point.
+        oldRevert = self.revertHeadline
+        changed = s != oldRevert
+        self.revertHeadline = s
+        p.initHeadString(s)
+        if self.trace_edit and not g.app.unitTesting:
+            if changed:
+                g.trace('changed: old',repr(oldRevert),'new',repr(s))
+        if changed:
+            undoData = u.beforeChangeNodeContents(p,oldHead=oldRevert)
+            if not c.changed: c.setChanged(True)
+            dirtyVnodeList = p.setDirty()
+            u.afterChangeNodeContents(p,undoType,undoData,
+                dirtyVnodeList=dirtyVnodeList)
+    finally:
+        c.endUpdate(scroll=False) # New in 4.4.1
+        if changed:
+            if self.stayInTree:
+                c.treeWantsFocus()
+            else:
+                c.bodyWantsFocus()
+   
+    g.doHook("headkey2",c=c,p=p,v=p,ch=ch)
+#@+node:ekr.20040803072955.94:<< truncate s if it has multiple lines >>
+# Remove one or two trailing newlines before warning of truncation.
+for i in (0,1):
+    if s and s[-1] == '\n':
+        if len(s) > 1: s = s[:-1]
+        else: s = ''
+
+# Warn if there are multiple lines.
+i = s.find('\n')
+if i > -1:
+    # g.trace(i,len(s),repr(s))
+    g.es("Truncating headline to one line",color="blue")
+    s = s[:i]
+
+limit = 1000
+if len(s) > limit:
+    g.es("Truncating headline to %d characters" % (limit),color="blue")
+    s = s[:limit]
+
+s = g.toUnicode(s or '',g.app.tkEncoding)
+#@nonl
+#@-node:ekr.20040803072955.94:<< truncate s if it has multiple lines >>
+#@-node:ekr.20040803072955.91:onHeadChanged
+#@+node:ekr.20051216155728:tree.begin/endUpdate
+def beginUpdate (self):
+    
+    self.updateCount += 1
+    # g.trace('tree',id(self),self.updateCount,g.callers())
+    
+def endUpdate (self,flag,scroll=False):
+    
+    self.updateCount -= 1
+    # g.trace(self.updateCount,'scroll',scroll,g.callers())
+    
+    if self.updateCount <= 0:
+        if flag:
+            self.redraw_now(scroll=scroll)
+        if self.updateCount < 0:
+            g.trace("Can't happen: negative updateCount",g.callers())
+#@nonl
+#@-node:ekr.20051216155728:tree.begin/endUpdate
+#@+node:ekr.20031218072017.1759:Insert, Delete & Clone (Commands)
+#@+node:ekr.20031218072017.1760:c.checkMoveWithParentWithWarning
+def checkMoveWithParentWithWarning (self,root,parent,warningFlag):
+    
+    """Return False if root or any of root's descedents is a clone of
+    parent or any of parents ancestors."""
+
+    message = "Illegal move or drag: no clone may contain a clone of itself"
+
+    # g.trace("root",root,"parent",parent)
+    clonedTnodes = {}
+    for ancestor in parent.self_and_parents_iter():
+        if ancestor.isCloned():
+            t = ancestor.v.t
+            clonedTnodes[t] = t
+
+    if not clonedTnodes:
+        return True
+
+    for p in root.self_and_subtree_iter():
+        if p.isCloned() and clonedTnodes.get(p.v.t):
+            if warningFlag:
+                g.alert(message)
+            return False
+    return True
+#@nonl
+#@-node:ekr.20031218072017.1760:c.checkMoveWithParentWithWarning
+#@+node:ekr.20031218072017.1193:c.deleteOutline
+def deleteOutline (self,event=None,op_name="Delete Node"):
+    
+    """Deletes the selected outline."""
+
+    c = self ; u = c.undoer ; p = c.currentPosition()
+    if not p: return
+
+    if p.hasVisBack(): newNode = p.visBack()
+    else: newNode = p.next() # _not_ p.visNext(): we are at the top level.
+    if not newNode: return
+
+    c.beginUpdate()
+    try:
+       c.endEditing() # Make sure we capture the headline for Undo.
+       undoData = u.beforeDeleteNode(p)
+       dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+       p.doDelete()
+       c.selectPosition(newNode)
+       c.setChanged(True)
+       u.afterDeleteNode(newNode,op_name,undoData,dirtyVnodeList=dirtyVnodeList)
+    finally:
+        c.endUpdate()
+
+    c.validateOutline()
+#@nonl
+#@-node:ekr.20031218072017.1193:c.deleteOutline
+#@+node:ekr.20031218072017.1761:c.insertHeadline
+def insertHeadline (self,event=None,op_name="Insert Node"):
+    
+    '''Insert a node after the presently selected node.'''
+
+    c = self ; u = c.undoer
+    current = c.currentPosition()
+    
+    if not current: return
+
+    c.beginUpdate()
+    try:
+        undoData = c.undoer.beforeInsertNode(current)
+        # Make sure the new node is visible when hoisting.
+        if ((current.hasChildren() and current.isExpanded()) or
+            (c.hoistStack and current == c.hoistStack[-1].p)):
+            p = current.insertAsNthChild(0)
+        else:
+            p = current.insertAfter()
+        dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+        c.setChanged(True)
+        u.afterInsertNode(p,op_name,undoData,dirtyVnodeList=dirtyVnodeList)
+    finally:
+        c.endUpdate()
+    c.beginUpdate()
+    try:
+        c.editPosition(p)
+    finally:
+        c.endUpdate(False)
+
+    return p # for mod_labels plugin.
+#@nonl
+#@-node:ekr.20031218072017.1761:c.insertHeadline
+#@+node:ekr.20031218072017.1762:c.clone
+def clone (self,event=None):
+    
+    '''Create a clone of the selected outline.'''
+
+    c = self ; u = c.undoer ; p = c.currentPosition()
+    if not p: return
+    
+    c.beginUpdate()
+    try: # In update...
+        undoData = c.undoer.beforeCloneNode(p)
+        clone = p.clone(p)
+        dirtyVnodeList = clone.setAllAncestorAtFileNodesDirty()
+        c.setChanged(True)
+        if c.validateOutline():
+            u.afterCloneNode(clone,'Clone Node',undoData,dirtyVnodeList=dirtyVnodeList)
+            c.selectPosition(clone)
+    finally:
+        c.endUpdate()
+
+    return clone # For mod_labels and chapters plugins.
+#@nonl
+#@-node:ekr.20031218072017.1762:c.clone
+#@+node:ekr.20031218072017.1765:c.validateOutline
+# Makes sure all nodes are valid.
+
+def validateOutline (self,event=None):
+
+    c = self
+    
+    if not g.app.debug:
+        return True
+
+    root = c.rootPosition()
+    parent = c.nullPosition()
+
+    if root:
+        return root.validateOutlineWithParent(parent)
+    else:
+        return True
+#@nonl
+#@-node:ekr.20031218072017.1765:c.validateOutline
+#@-node:ekr.20031218072017.1759:Insert, Delete & Clone (Commands)
+#@-node:ekr.20060531135634:Made scroll=True the default for calls to c.endUpdate
 #@-node:ekr.20060522103446:New features
 #@-node:ekr.20060514170725:4.4.1 projects
 #@-node:ekr.20050924073836:4.4 projects
