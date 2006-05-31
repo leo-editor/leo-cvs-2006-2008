@@ -328,6 +328,12 @@ IndentationError: unindent does not match any outer indentation level (line
 #@+node:ekr.20060325091249:@shortcut does not work: remove it?
 #@-node:ekr.20060325091249:@shortcut does not work: remove it?
 #@-node:ekr.20060227163215:Fix *all* bugs
+#@+node:ekr.20060530130736.2:Customize Open With menu without writing code
+http://sourceforge.net/forum/message.php?msg_id=3737745
+
+Desparately needs a way to modify the Open-With menu other than going
+in and changing the code.
+#@-node:ekr.20060530130736.2:Customize Open With menu without writing code
 #@-node:ekr.20060530072008:For 4.4.1 b2
 #@+node:ekr.20060528155800:Big, not so important
 #@+node:ekr.20060116173818:Fix vampire nodes (maybe)

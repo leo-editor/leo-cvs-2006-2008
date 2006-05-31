@@ -1330,7 +1330,11 @@ if i != j:
     w.insert(i,ch)
 else:
     w.insert(i,ch)
-    if c.frame.body.colorizer.useSyntaxColoring(p) and undoType != "Change":
+    limit = c.config.getBool('disable_autoindent_in_nocolor_mode')
+    if (
+        (not limit or c.frame.body.colorizer.useSyntaxColoring(p)) and
+        undoType != "Change"
+    ):
         # No auto-indent if in @nocolor mode or after a Change command.
         removeTrailing = self.updateAutoIndent(p,w)
         # g.trace(removeTrailing)
@@ -1419,6 +1423,28 @@ def updateTab (self,p,w):
 #@-node:ekr.20051026092433:updateTab
 #@-node:ekr.20051125080855:selfInsertCommand
 #@-node:ekr.20060530100259:Auto-indent now words with multiple editors
+#@+node:ekr.20060530130736:Fixed crasher in macros plugin
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3737745
+
+- Added event keyword argument to parameterize function.
+#@nonl
+#@-node:ekr.20060530130736:Fixed crasher in macros plugin
+#@+node:ekr.20060530152612:Fixed crasher in  UNL plugin
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3737745
+
+Traceback (most recent call last):
+  File "C:\prog\tigris-cvs\leo\plugins\UNL.py", line 194, in onUrl1
+    p = g.findTopLevelNode(nodeList[0])
+TypeError: findTopLevelNode() takes exactly 2 arguments (1 given)
+
+The fix was to add a c argument to g.findTopLevelNode and g.findNodeInTree.
+#@-node:ekr.20060530152612:Fixed crasher in  UNL plugin
+#@+node:ekr.20060530152900:Last character of @doc parts are now colored properly by new colorizer
+#@-node:ekr.20060530152900:Last character of @doc parts are now colored properly by new colorizer
 #@-node:ekr.20060514170854:Fixed bugs
 #@+node:ekr.20060522103446:New features
 #@+node:ekr.20060512101324:(Support for new colorizer)
@@ -1724,6 +1750,7 @@ def select (self,p,updateBeadList=True):
 
     c.setCurrentPosition(p)
     << set the current node >>
+    c.frame.body.selectMainEditor(p) # New in Leo 4.4.1.
     
     g.doHook("select2",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
     g.doHook("select3",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
@@ -1811,8 +1838,6 @@ c.visitedList.insert(0,p.copy())
 self.setSelectedLabelState(p)
 
 frame.scanForTabWidth(p) #GS I believe this should also get into the select1 hook
-
-c.frame.body.selectMainEditor() # New in Leo 4.4.1.
 
 if self.stayInTree:
     c.treeWantsFocus()
@@ -4845,7 +4870,11 @@ def plainHelper (self,s,i,j,pattern,backwards,nocase,word):
 #@+node:ekr.20060526140744.1:matchWord
 def matchWord(self,s,i,pattern):
     
-    return g.match_word(s,i,pattern) and (i == 0 or s[i-1] not in self.word_chars)
+    ok = g.match_word(s,i,pattern) and (i == 0 or s[i-1] not in self.word_chars)
+    
+    g.trace(ok,repr(s),i)
+    
+    return ok
 #@nonl
 #@-node:ekr.20060526140744.1:matchWord
 #@-node:ekr.20060526081931:Search helpers...
@@ -4860,452 +4889,6 @@ Actually, the run-unit-tests command first appeared in Leo 4.4, but it never got
 properly announced.
 #@nonl
 #@-node:ekr.20060214072931:Added run-unit-test command
-#@+node:ekr.20060527182907:Support multiple editors in the body pane
-@nocolor
-
-The add-editor command adds a new editor, the delete-editor command deletes the presently selected editor, and the cycle-editor-focus command cycles focus between editors in the body text.
-
-The leftmost editor has no label: it always shows the body text of the presently selected node.  All other editors have a label showing the node to which it applies.
-
-All editors are 'live' at all times: changing an editor changes the corresponding node. All editors are syntax colored properly at all times.
-
-A small quirk.  Selecting an editor will not show the corresponding node if the node is not visible in a hoist.  This is probably different from how the chapters plugin worked.  It would be easy enough to change the code to de-hoist as necessary, but I'm not sure that is really what is desired.  Tell me if you care one way or another.
-
-@color
-#@nonl
-#@+node:ekr.20031218072017.2182:tkBody. __init__
-def __init__ (self,frame,parentFrame):
-    
-    # g.trace("leoTkinterBody")
-    
-    # Call the base class constructor.
-    leoFrame.leoBody.__init__(self,frame,parentFrame)
-    
-    c = self.c
-    self.editor_name = None
-    self.editor_v = None
-    self.editorWidgets = {} # keys are pane names, values are Tk.Text widgets
-
-    self.trace_onBodyChanged = c.config.getBool('trace_onBodyChanged')
-    self.bodyCtrl = self.createControl(frame,parentFrame)
-    self.colorizer = leoColor.colorizer(c)
-#@nonl
-#@-node:ekr.20031218072017.2182:tkBody. __init__
-#@+node:ekr.20031218072017.3998:tkBody.createControl
-def createControl (self,frame,parentFrame):
-    
-    c = self.c
-    
-    # New in 4.4.1: make the parent frame a Pmw.PanedWidget.
-    self.numberOfEditors = 1
-   
-    self.pb = pb = Pmw.PanedWidget(parentFrame,orient='horizontal')
-    parentFrame = pb.add('1')
-    pb.pack(expand=1,fill='both') # Must be done after the first page created.
-   
-    w = self.createTextWidget(frame,parentFrame,name=None,p=None)
-    self.editorWidgets[None] = w
-    return w
-#@nonl
-#@-node:ekr.20031218072017.3998:tkBody.createControl
-#@+node:ekr.20060528100747.3:tkBody.createTextWidget
-def createTextWidget (self,frame,parentFrame,name,p):
-    
-    c = self.c
-
-    wrap = c.config.getBool('body_pane_wraps')
-    wrap = g.choose(wrap,"word","none")
-    
-    # Setgrid=1 cause severe problems with the font panel.
-    body = Tk.Text(parentFrame,name='body-pane',
-        bd=2,bg="white",relief="flat",setgrid=0,wrap=wrap)
-    
-    bodyBar = Tk.Scrollbar(parentFrame,name='bodyBar')
-    frame.bodyBar = self.bodyBar = bodyBar
-    body['yscrollcommand'] = bodyBar.set
-    bodyBar['command'] = body.yview
-    bodyBar.pack(side="right", fill="y")
-    
-    # Always create the horizontal bar.
-    frame.bodyXBar = self.bodyXBar = bodyXBar = Tk.Scrollbar(
-        parentFrame,name='bodyXBar',orient="horizontal")
-    body['xscrollcommand'] = bodyXBar.set
-    bodyXBar['command'] = body.xview
-    self.bodyXbar = frame.bodyXBar = bodyXBar
-    
-    if wrap == "none":
-        # g.trace(parentFrame)
-        bodyXBar.pack(side="bottom", fill="x")
-        
-    body.pack(expand=1,fill="both")
-
-    self.wrapState = wrap
-
-    if 0: # Causes the cursor not to blink.
-        body.configure(insertofftime=0)
-        
-    # Inject ivars
-    body.leo_pane_name = name
-    body.leo_v = p and p.v
-        
-    def focusInCallback(event,self=self,w=body):
-        self.onFocusIn(w)
-    body.bind('<FocusIn>',focusInCallback)
-
-    return body
-#@nonl
-#@-node:ekr.20060528100747.3:tkBody.createTextWidget
-#@+node:ekr.20060528100747:Editors
-#@+node:ekr.20060528100747.1:addEditor
-def addEditor (self,event=None):
-    
-    '''Add another editor to the body pane.'''
-    
-    c = self.c ; p = c.currentPosition()
-    self.numberOfEditors += 1
-    name = '%d' % self.numberOfEditors
-    pane = self.pb.add(name)
-    panes = self.pb.panes()
-    minSize = float(1.0/float(len(panes)))
-    
-    << create label and text widgets >>
-    
-    self.editorWidgets[name] = w
-    
-    for pane in panes:
-        self.pb.configurepane(pane,size=minSize)
-    
-    self.pb.updatelayout()
-#@nonl
-#@+node:ekr.20060528110922:<< create label and text widgets >>
-f = Tk.Frame(pane)
-f.pack(side='top',expand=1,fill='both')
-
-label = Tk.Label(f,text= p.headString(),bg='LightSteelBlue1')
-label.pack(side='top')
-
-text = Tk.Frame(f)
-text.pack(side='top',expand=1,fill='both')
-
-w = self.createTextWidget(self.frame,text,name=name,p=p)
-
-w.delete('1.0','end')
-w.insert('end',p.bodyString())
-self.setFontFromConfig(w=w)
-self.setColorFromConfig(w=w)
-self.createBindings(w=w)
-c.k.completeAllBindingsForWidget(w)
-
-# Temporarily make this the 'real' text widget so we can color it.
-old_w = self.bodyCtrl
-self.bodyCtrl = w
-c.recolor_now()
-self.bodyCtrl = old_w
-
-# Disable this editor.
-# Eventually, we should allow edits here.
-# w.configure(state='disabled')
-#@nonl
-#@-node:ekr.20060528110922:<< create label and text widgets >>
-#@-node:ekr.20060528100747.1:addEditor
-#@+node:ekr.20060528170438:cycleEditorFocus
-def cycleEditorFocus (self,event=None):
-    
-    '''Cycle keyboard focus between the body text editors.'''
-    
-    c = self.c ; d = self.editorWidgets
-    keys = d.keys() ; n = len(keys)
-    if n < 2: return # There is only the main widget. 
-
-    i = 0
-    for key in d.keys():
-        i += 1
-        w = d.get(key)
-        if w == self.bodyCtrl:
-            if i >= n: i = 0
-            self.bodyCtrl = w = d.get(keys[i])
-            g.app.gui.set_focus(c, w)
-            return
-#@nonl
-#@-node:ekr.20060528170438:cycleEditorFocus
-#@+node:ekr.20060528113806:deleteEditor
-def deleteEditor (self,event=None):
-    
-    '''Delete the presently selected body text editor.'''
-    
-    name = self.editor_name
-
-    if not name:
-        g.es('Can not delete the main body editor',color='blue')
-        return
-        
-    del self.editorWidgets [name]
-
-    self.pb.delete(name)
-    panes = self.pb.panes()
-    minSize = float(1.0/float(len(panes)))
-    
-    for pane in panes:
-        self.pb.configurepane(pane,size=minSize)
-        
-    self.selectMainEditor()
-#@nonl
-#@-node:ekr.20060528113806:deleteEditor
-#@+node:ekr.20060528104554:onFocusIn
-def onFocusIn(self,w):
-    
-    c = self.c ; p = None
-
-    # Get the ivars from the ivars injected into w.
-    self.editor_name = hasattr(w,'leo_pane_name') and w.leo_pane_name or None
-    self.editor_v = v = hasattr(w,'leo_v')         and w.leo_v         or None
-    # g.trace(w,v)
-    
-    if not v:
-        # We are selecting the main editor, so nothing actually changes.
-        self.bodyCtrl = w
-        c.frame.bodyWantsFocus()
-        return
-    
-    for p in c.allNodes_iter():
-        if p.v == v:
-            c.selectPosition(p, updateBeadList=True)
-            self.bodyCtrl = w # This may be changed by c.selectPosition
-            c.frame.bodyWantsFocus()
-            break
-    else:
-        g.trace("Can't happen",p)
-#@nonl
-#@-node:ekr.20060528104554:onFocusIn
-#@+node:ekr.20060528132829:selectMainEditor
-def selectMainEditor (self):
-    
-    c = self.c
-
-    w = self.editorWidgets.get(None)
-    self.bodyCtrl = w
-    c.recolor_now()
-#@nonl
-#@-node:ekr.20060528132829:selectMainEditor
-#@+node:ekr.20060528131618:updateEditors
-def updateEditors (self):
-    
-    c = self.c ; p = c.currentPosition()
-    d = self.editorWidgets
-    if len(d.keys()) < 2: return # There is only the main widget.
-    w_main = d.get(None)
-
-    for key in d.keys():
-        w = d.get(key)
-        if w == self.bodyCtrl: continue
-        v = w.leo_v
-        if v == p.v or w == w_main:
-            # g.trace('update',v,w)
-            # Temporarily make this the 'real' text widget so we can color it.
-            old_w = self.bodyCtrl
-            self.bodyCtrl = w
-            w.delete('1.0','end')
-            w.insert('end',p.bodyString())
-            c.recolor_now()
-            self.bodyCtrl = old_w
-    c.frame.bodyWantsFocus()
-#@nonl
-#@-node:ekr.20060528131618:updateEditors
-#@-node:ekr.20060528100747:Editors
-#@+node:ekr.20040803072955.128:tree.select
-#  Do **not** try to "optimize" this by returning if p==tree.currentPosition.
-
-def select (self,p,updateBeadList=True):
-    
-    '''Select a node.  Never redraws outline, but may change coloring of individual headlines.'''
-    
-    c = self.c ; frame = c.frame ; body = frame.bodyCtrl
-    old_p = c.currentPosition()
-    if not p or not p.exists(c):
-        # g.trace('does not exist',p.headString())
-        return # Not an error.
-    
-    if self.trace_select and not g.app.unitTesting: g.trace(g.callers())
-
-    if not g.doHook("unselect1",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p):
-        if old_p:
-            << unselect the old node >>
-
-    g.doHook("unselect2",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
-    
-    if not g.doHook("select1",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p):
-        << select the new node >>
-        if p and p != old_p: # Suppress duplicate call.
-            try: # may fail during initialization.
-                # p is NOT c.currentPosition() here!
-                if 0: # Interferes with new colorizer.
-                    self.canvas.update_idletasks()
-                    self.scrollTo(p)
-                else:
-                    def scrollCallback(self=self,p=p):
-                        self.scrollTo(p)
-                    self.after(100,scrollCallback)
-            except Exception: pass
-        << update c.beadList or c.beadPointer >>
-        << update c.visitedList >>
-
-    c.setCurrentPosition(p)
-    << set the current node >>
-    
-    g.doHook("select2",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
-    g.doHook("select3",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
-    
-    return 'break' # Supresses unwanted selection.
-#@nonl
-#@+node:ekr.20040803072955.129:<< unselect the old node >>
-# Remember the position of the scrollbar before making any changes.
-yview=body.yview()
-insertSpot = c.frame.body.getInsertionPoint()
-
-if old_p != p:
-    self.endEditLabel() # sets editPosition = None
-    self.setUnselectedLabelState(old_p) # 12/17/04
-
-if old_p.edit_widget():
-    old_p.v.t.scrollBarSpot = yview
-    old_p.v.t.insertSpot = insertSpot
-#@nonl
-#@-node:ekr.20040803072955.129:<< unselect the old node >>
-#@+node:ekr.20040803072955.130:<< select the new node >>
-# Bug fix: we must always set this, even if we never edit the node.
-self.revertHeadline = p.headString()
-
-frame.setWrap(p)
-    
-# Always do this.  Otherwise there can be problems with trailing hewlines.
-s = g.toUnicode(p.v.t.bodyString,"utf-8")
-self.setText(0,body,s)
-
-# We must do a full recoloring: we may be changing context!
-self.frame.body.recolor_now(p) # recolor now uses p.copy(), so this is safe.
-
-if p.v and p.v.t.scrollBarSpot != None:
-    first,last = p.v.t.scrollBarSpot
-    body.yview("moveto",first)
-
-if p.v and p.v.t.insertSpot != None:
-    c.frame.bodyCtrl.mark_set("insert",p.v.t.insertSpot)
-    c.frame.bodyCtrl.see(p.v.t.insertSpot)
-else:
-    c.frame.bodyCtrl.mark_set("insert","1.0")
-    
-# g.trace("select:",p.headString())
-#@nonl
-#@-node:ekr.20040803072955.130:<< select the new node >>
-#@+node:ekr.20040803072955.131:<< update c.beadList or c.beadPointer >>
-# c.beadList is the list of nodes for the back and forward commands.
-
-if updateBeadList:
-    
-    if c.beadPointer > -1:
-        present_p = c.beadList[c.beadPointer]
-    else:
-        present_p = c.nullPosition()
-    
-    if p != present_p:
-        # Replace the tail of c.beadList by p and make p the present node.
-        c.beadPointer += 1
-        c.beadList[c.beadPointer:] = []
-        c.beadList.append(p.copy())
-        
-        # New in Leo 4.4: limit this list to 100 items.
-        if 0: # Doesn't work yet.
-            c.beadList = c.beadList [-100:]
-            g.trace('len(c.beadList)',len(c.beadList))
-        
-    # g.trace(c.beadPointer,p,present_p)
-#@nonl
-#@-node:ekr.20040803072955.131:<< update c.beadList or c.beadPointer >>
-#@+node:ekr.20040803072955.132:<< update c.visitedList >>
-# The test 'p in c.visitedList' calls p.__cmp__, so this code *is* valid.
-
-# Make p the most recently visited position on the list.
-if p in c.visitedList:
-    c.visitedList.remove(p)
-
-c.visitedList.insert(0,p.copy())
-
-# g.trace('len(c.visitedList)',len(c.visitedList))
-# g.trace([z.headString()[:10] for z in c.visitedList]) # don't assign to p!
-#@nonl
-#@-node:ekr.20040803072955.132:<< update c.visitedList >>
-#@+node:ekr.20040803072955.133:<< set the current node >>
-self.setSelectedLabelState(p)
-
-frame.scanForTabWidth(p) #GS I believe this should also get into the select1 hook
-
-c.frame.body.selectMainEditor() # New in Leo 4.4.1.
-
-if self.stayInTree:
-    c.treeWantsFocus()
-else:
-    c.bodyWantsFocus()
-#@nonl
-#@-node:ekr.20040803072955.133:<< set the current node >>
-#@-node:ekr.20040803072955.128:tree.select
-#@+node:ekr.20031218072017.1329:onBodyChanged (tkBody)
-# This is the only key handler for the body pane.
-def onBodyChanged (self,undoType,
-    oldSel=None,oldText=None,oldYview=None,removeTrailing=None):
-    
-    '''Update Leo after the body has been changed.'''
-    
-    body = self ; c = self.c ; bodyCtrl = body.bodyCtrl
-    trace = self.trace_onBodyChanged
-    p = c.currentPosition()
-    insert = bodyCtrl.index('insert')
-    ch = g.choose(insert=='1.0','',bodyCtrl.get('insert-1c'))
-    ch = g.toUnicode(ch,g.app.tkEncoding)
-    newText = g.app.gui.getAllText(bodyCtrl) # Note: getAllText converts to unicode.
-    # g.trace('newText',repr(newText))
-    newSel = g.app.gui.getTextSelection(bodyCtrl)
-    if oldText is None: oldText = p.bodyString()
-    changed = oldText != newText
-    if trace:
-        g.trace(repr(ch),'changed:',changed)
-        g.trace('newText:',repr(newText))
-    if changed:
-        c.undoer.setUndoTypingParams(p,undoType,
-            oldText=oldText,newText=newText,oldSel=oldSel,newSel=newSel,oldYview=oldYview)
-        p.v.setTnodeText(newText)
-        p.v.t.insertSpot = body.getInsertionPoint()
-        << recolor the body >>
-        if not c.changed: c.setChanged(True)
-        self.updateEditors()
-        << redraw the screen if necessary >>
-#@nonl
-#@+node:ekr.20051026083733.6:<< recolor the body >>
-body.colorizer.interrupt()
-c.frame.scanForTabWidth(p)
-body.recolor_now(p,incremental=not self.forceFullRecolorFlag)
-self.forceFullRecolorFlag = False
-#@nonl
-#@-node:ekr.20051026083733.6:<< recolor the body >>
-#@+node:ekr.20051026083733.7:<< redraw the screen if necessary >>
-c.beginUpdate()
-try:
-    redraw_flag = False
-    # Update dirty bits.
-    # p.setDirty() sets all cloned and @file dirty bits.
-    if not p.isDirty() and p.setDirty():
-        redraw_flag = True
-        
-    # Update icons. p.v.iconVal may not exist during unit tests.
-    val = p.computeIcon()
-    if not hasattr(p.v,"iconVal") or val != p.v.iconVal:
-        p.v.iconVal = val
-        redraw_flag = True
-finally:
-    c.endUpdate(redraw_flag)
-#@nonl
-#@-node:ekr.20051026083733.7:<< redraw the screen if necessary >>
-#@-node:ekr.20031218072017.1329:onBodyChanged (tkBody)
-#@-node:ekr.20060527182907:Support multiple editors in the body pane
 #@+node:ekr.20060528173539:Created gui.toPythonIndex & gui.toGuiIndex
 #@-node:ekr.20060528173539:Created gui.toPythonIndex & gui.toGuiIndex
 #@+node:ekr.20060515060803:Allow idle-time redraw
@@ -6590,6 +6173,722 @@ if c.config.getBool('trace_bindings'):
 #@-node:ekr.20060114110141:<< trace bindings if enabled in leoSettings.leo >>
 #@-node:ekr.20050920085536.16:bindKey
 #@-node:ekr.20060202235215.1:Warn about invalid Enter and Leave key bindings
+#@+node:ekr.20060530130736.4:Improved docs for Universal Scrolling plugin
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3737745
+
+There's a conflict with a Config setting which should be mentioned in the info
+box for Universal Scrollling.
+
+@bool expanded_click_area = True
+#@nonl
+#@-node:ekr.20060530130736.4:Improved docs for Universal Scrolling plugin
+#@+node:ekr.20060527182907:Support multiple editors in the body pane
+#@+node:ekr.20060530163626:Posting 1
+@nocolor
+
+The add-editor command adds a new editor, the delete-editor command deletes the presently selected editor, and the cycle-editor-focus command cycles focus between editors in the body text.
+
+The leftmost editor has no label: it always shows the body text of the presently selected node.  All other editors have a label showing the node to which it applies.
+
+All editors are 'live' at all times: changing an editor changes the corresponding node. All editors are syntax colored properly at all times.
+
+A small quirk.  Selecting an editor will not show the corresponding node if the node is not visible in a hoist.  This is probably different from how the chapters plugin worked.  It would be easy enough to change the code to de-hoist as necessary, but I'm not sure that is really what is desired.  Tell me if you care one way or another.
+
+@color
+#@nonl
+#@-node:ekr.20060530163626:Posting 1
+#@+node:ekr.20060530163626.1:Posting 2
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3756917
+By: ktenney
+
+My inclination is to use extra editor windows to view nodes related to the
+content I'm writing in the main editor pane.
+
+I'd like to click on an extra editor window, check that node and return to
+editing in the main window. 
+
+Unfortunately, when I click on an extra editor the tree focus goes to that node.
+Since the main editor tracks tree focus, it now contains the same node as the
+extra editor I clicked on.
+
+Would it be possible for the main window to not switch focus when an extra
+editor was selected?
+
+My initial experience with extra editors makes me wish for a tabbed edit window,
+I seem to recall this being discussed before...
+
+Response
+
+On second (or is it third?) thought, I think you are right:
+
+- There is no reason to create a redundant copy of any editor.
+
+- There is no reason not have have any editor be the editor 'anchored' to the outline.
+
+- There is no reason to switch editors when switching nodes:  Alt-up should leave the focus in the presently selected editor.
+
+I changed my mind because of this picture:  the 'anchored' editor (whichever it is) will have no label: the outline itself acts as the label.  All other editors must have labels to avoid confusion.
+
+Doing this may be a bit tricky, but it clearly can be done and I think it is worth doing.
+
+Edward
+#@nonl
+#@-node:ekr.20060530163626.1:Posting 2
+#@+node:ekr.20031218072017.2182:tkBody. __init__
+def __init__ (self,frame,parentFrame):
+    
+    # g.trace("leoTkinterBody")
+    
+    # Call the base class constructor.
+    leoFrame.leoBody.__init__(self,frame,parentFrame)
+    
+    c = self.c ; p = c.currentPosition()
+    self.editor_name = None
+    self.editor_v = None
+    self.editorWidgets = {} # keys are pane names, values are Tk.Text widgets
+
+    self.trace_onBodyChanged = c.config.getBool('trace_onBodyChanged')
+    self.bodyCtrl = self.createControl(frame,parentFrame,p)
+    self.colorizer = leoColor.colorizer(c)
+#@nonl
+#@-node:ekr.20031218072017.2182:tkBody. __init__
+#@+node:ekr.20031218072017.3998:tkBody.createControl
+def createControl (self,frame,parentFrame,p):
+    
+    c = self.c
+    
+    # New in 4.4.1: make the parent frame a Pmw.PanedWidget.
+    self.numberOfEditors = 1 ; name = '1'
+   
+    self.pb = pb = Pmw.PanedWidget(parentFrame,orient='horizontal')
+    parentFrame = pb.add(name)
+    pb.pack(expand=1,fill='both') # Must be done after the first page created.
+   
+    w = self.createTextWidget(frame,parentFrame,p,name)
+    self.editorWidgets[name] = w
+
+    return w
+#@nonl
+#@-node:ekr.20031218072017.3998:tkBody.createControl
+#@+node:ekr.20060528100747.3:tkBody.createTextWidget
+def createTextWidget (self,frame,parentFrame,p,name):
+    
+    c = self.c
+    
+    parentFrame.configure(bg='LightSteelBlue1')
+
+    wrap = c.config.getBool('body_pane_wraps')
+    wrap = g.choose(wrap,"word","none")
+    
+    # Setgrid=1 cause severe problems with the font panel.
+    body = w = Tk.Text(parentFrame,name='body-pane',
+        bd=2,bg="white",relief="flat",setgrid=0,wrap=wrap)
+    
+    bodyBar = Tk.Scrollbar(parentFrame,name='bodyBar')
+    frame.bodyBar = self.bodyBar = bodyBar
+    body['yscrollcommand'] = bodyBar.set
+    bodyBar['command'] = body.yview
+    bodyBar.pack(side="right", fill="y")
+    
+    # Always create the horizontal bar.
+    frame.bodyXBar = self.bodyXBar = bodyXBar = Tk.Scrollbar(
+        parentFrame,name='bodyXBar',orient="horizontal")
+    body['xscrollcommand'] = bodyXBar.set
+    bodyXBar['command'] = body.xview
+    self.bodyXbar = frame.bodyXBar = bodyXBar
+    
+    if wrap == "none":
+        # g.trace(parentFrame)
+        bodyXBar.pack(side="bottom", fill="x")
+        
+    body.pack(expand=1,fill="both")
+
+    self.wrapState = wrap
+
+    if 0: # Causes the cursor not to blink.
+        body.configure(insertofftime=0)
+        
+    # Inject ivars
+    if name == '1':
+        w.leo_p = w.leo_v = None # Will be set when the second editor is created.
+    else:
+        w.leo_p = p.copy()
+        w.leo_v = body.leo_p.v
+    w.leo_active = True
+    w.leo_frame = parentFrame
+    w.leo_name = name
+    w.leo_label = None
+    w.leo_label_s = None
+
+    def focusInCallback(event,self=self,w=w):
+        self.onFocusIn(w)
+    w.bind('<FocusIn>',focusInCallback)
+
+    return w
+#@nonl
+#@-node:ekr.20060528100747.3:tkBody.createTextWidget
+#@+node:ekr.20060528100747:Editors
+@ **Important**: body.bodyCtrl and body.frame.bodyCtrl must always be the same.
+#@+node:ekr.20060530204135:recolorWidget
+def recolorWidget (self,w):
+    
+    c = self.c ; old_w = self.bodyCtrl
+    
+    # Save.
+    self.bodyCtrl = self.frame.bodyCtrl = w
+    
+    c.recolor_now()
+    
+    # Restore.
+    self.bodyCtrl = self.frame.bodyCtrl = old_w
+#@nonl
+#@-node:ekr.20060530204135:recolorWidget
+#@+node:ekr.20060530210057:create/select/unselect/Label
+def unselectLabel (self,w):
+    
+    # g.trace(w.leo_name,w.leo_label_s)
+    if not w.leo_label: self.createLabel(w)
+    w.leo_label.configure(text=w.leo_label_s,bg='LightSteelBlue1')
+        
+def selectLabel (self,w):
+    
+    # g.trace(w.leo_name,w.leo_label_s)
+    if not w.leo_label: self.createLabel(w)
+    w.leo_label.configure(text=w.leo_label_s,bg='white')
+        
+def createLabel (self,w):
+
+    w.leo_label = Tk.Label(w.leo_frame)
+    w.pack_forget()
+    w.leo_label.pack(side='top')
+    w.pack(expand=1,fill='both')
+#@nonl
+#@-node:ekr.20060530210057:create/select/unselect/Label
+#@+node:ekr.20060528100747.1:addEditor
+def addEditor (self,event=None):
+    
+    '''Add another editor to the body pane.'''
+    
+    c = self.c ; p = c.currentPosition()
+    
+    if self.numberOfEditors == 1:
+        # Inject the ivars into the first editor.
+        w = self.editorWidgets.get('1')
+        w.leo_p = p.copy()
+        w.leo_v = w.leo_p.v
+        w.leo_label_s = p.headString()
+
+    self.numberOfEditors += 1
+    name = '%d' % self.numberOfEditors
+    pane = self.pb.add(name)
+    panes = self.pb.panes()
+    minSize = float(1.0/float(len(panes)))
+    
+    << create label and text widgets >>
+    self.editorWidgets[name] = w
+
+    for pane in panes:
+        self.pb.configurepane(pane,size=minSize)
+    
+    self.pb.updatelayout()
+    
+    self.bodyCtrl = self.frame.bodyCtrl = w
+    self.onFocusIn(w)
+#@nonl
+#@+node:ekr.20060528110922:<< create label and text widgets >>
+f = Tk.Frame(pane)
+f.pack(side='top',expand=1,fill='both')
+
+w = self.createTextWidget(self.frame,f,name=name,p=p)
+
+w.delete('1.0','end')
+w.insert('end',p.bodyString())
+self.setFontFromConfig(w=w)
+self.setColorFromConfig(w=w)
+self.createBindings(w=w)
+c.k.completeAllBindingsForWidget(w)
+
+self.recolorWidget(w)
+#@nonl
+#@-node:ekr.20060528110922:<< create label and text widgets >>
+#@-node:ekr.20060528100747.1:addEditor
+#@+node:ekr.20060528170438:cycleEditorFocus
+def cycleEditorFocus (self,event=None):
+    
+    '''Cycle keyboard focus between the body text editors.'''
+    
+    c = self.c ; d = self.editorWidgets
+    keys = d.keys() ; n = len(keys)
+    if n < 2: return # There is only one widget. 
+
+    i = 0
+    for key in d.keys():
+        i += 1
+        w = d.get(key)
+        if w == self.bodyCtrl:
+            if i >= n: i = 0
+            w = d.get(keys[i])
+            self.bodyCtrl = self.frame.bodyCtrl = w
+            self.onFocusIn(w)
+            # g.app.gui.set_focus(c,w)
+            return 'break'
+#@nonl
+#@-node:ekr.20060528170438:cycleEditorFocus
+#@+node:ekr.20060528113806:deleteEditor
+def deleteEditor (self,event=None):
+    
+    '''Delete the presently selected body text editor.'''
+    
+    w = self.bodyCtrl ; d = self.editorWidgets
+    
+    if len(d.keys()) == 1: return
+    
+    name = w.leo_name
+    
+    del d [name]
+    self.pb.delete(name)
+    panes = self.pb.panes()
+    minSize = float(1.0/float(len(panes)))
+    
+    for pane in panes:
+        self.pb.configurepane(pane,size=minSize)
+        
+    # Select another editor.
+    w = d.values()[0]
+    self.onFocusIn(w)
+    # self.frame.bodyCtrl = self.bodyCtrl = w # Must change both ivars!
+    # self.selectMainEditor()
+#@nonl
+#@-node:ekr.20060528113806:deleteEditor
+#@+node:ekr.20060528104554:onFocusIn
+def onFocusIn(self,w):
+
+    c = self.c ; d = self.editorWidgets
+    if w.leo_p is None: return
+
+    # Inactivate the previously active editor.
+    # Don't capture ivars here! selectMainEditor keeps them up-to-date.
+    for key in d.keys():
+        w2 = d.get(key)
+        if w2 != w and w2.leo_active:
+            w2.leo_active = False
+            self.unselectLabel(w2)
+
+    # Careful, leo_p may not exist.
+    if not w.leo_p.exists(c):
+        g.trace('does not exist',w.leo_name)
+        for p2 in c.allNodes_iter():
+            if p2.v == w.leo_v:
+                w.leo_p = p2.copy()
+                break
+        else: return g.trace("Can't happen")
+
+    # g.trace(w.leo_name,w.leo_p.headString())
+    self.frame.bodyCtrl = self.bodyCtrl = w # Must change both ivars!
+    w.leo_active = True
+    c.selectPosition(w.leo_p,updateBeadList=True) # Calls selectMainEditor.
+    c.recolor_now()
+    c.frame.bodyWantsFocus()
+#@nonl
+#@-node:ekr.20060528104554:onFocusIn
+#@+node:ekr.20060528132829:selectMainEditor
+def selectMainEditor (self,p):
+
+    c = self.c ; p = c.currentPosition() ; w = self.bodyCtrl
+
+    # Don't inject ivars if there is only one editor.
+    if w.leo_p is not None:
+        # Keep w's ivars up-to-date.
+        w.leo_p = p.copy()
+        w.leo_v = p.v
+        w.leo_label_s = p.headString()
+        self.selectLabel(w)
+        # g.trace(w.leo_name,p.headString())
+#@nonl
+#@-node:ekr.20060528132829:selectMainEditor
+#@+node:ekr.20060528131618:updateEditors
+def updateEditors (self):
+    
+    c = self.c ; p = c.currentPosition()
+    d = self.editorWidgets
+    if len(d.keys()) < 2: return # There is only the main widget.
+
+    for key in d.keys():
+        w = d.get(key)
+        v = w.leo_v
+        if v and v == p.v and w != self.bodyCtrl:
+            w.delete('1.0','end')
+            w.insert('end',p.bodyString())
+            # g.trace('update',w,v)
+            self.recolorWidget(w)
+    c.frame.bodyWantsFocus()
+#@nonl
+#@-node:ekr.20060528131618:updateEditors
+#@-node:ekr.20060528100747:Editors
+#@+node:ekr.20040803072955.128:tree.select
+#  Do **not** try to "optimize" this by returning if p==tree.currentPosition.
+
+def select (self,p,updateBeadList=True):
+    
+    '''Select a node.  Never redraws outline, but may change coloring of individual headlines.'''
+    
+    c = self.c ; frame = c.frame ; body = frame.bodyCtrl
+    old_p = c.currentPosition()
+    if not p or not p.exists(c):
+        # g.trace('does not exist',p.headString())
+        return # Not an error.
+    
+    if self.trace_select and not g.app.unitTesting: g.trace(g.callers())
+
+    if not g.doHook("unselect1",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p):
+        if old_p:
+            << unselect the old node >>
+
+    g.doHook("unselect2",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
+    
+    if not g.doHook("select1",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p):
+        << select the new node >>
+        if p and p != old_p: # Suppress duplicate call.
+            try: # may fail during initialization.
+                # p is NOT c.currentPosition() here!
+                if 0: # Interferes with new colorizer.
+                    self.canvas.update_idletasks()
+                    self.scrollTo(p)
+                else:
+                    def scrollCallback(self=self,p=p):
+                        self.scrollTo(p)
+                    self.after(100,scrollCallback)
+            except Exception: pass
+        << update c.beadList or c.beadPointer >>
+        << update c.visitedList >>
+
+    c.setCurrentPosition(p)
+    << set the current node >>
+    c.frame.body.selectMainEditor(p) # New in Leo 4.4.1.
+    
+    g.doHook("select2",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
+    g.doHook("select3",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
+    
+    return 'break' # Supresses unwanted selection.
+#@nonl
+#@+node:ekr.20040803072955.129:<< unselect the old node >>
+# Remember the position of the scrollbar before making any changes.
+yview=body.yview()
+insertSpot = c.frame.body.getInsertionPoint()
+
+if old_p != p:
+    self.endEditLabel() # sets editPosition = None
+    self.setUnselectedLabelState(old_p) # 12/17/04
+
+if old_p.edit_widget():
+    old_p.v.t.scrollBarSpot = yview
+    old_p.v.t.insertSpot = insertSpot
+#@nonl
+#@-node:ekr.20040803072955.129:<< unselect the old node >>
+#@+node:ekr.20040803072955.130:<< select the new node >>
+# Bug fix: we must always set this, even if we never edit the node.
+self.revertHeadline = p.headString()
+
+frame.setWrap(p)
+    
+# Always do this.  Otherwise there can be problems with trailing hewlines.
+s = g.toUnicode(p.v.t.bodyString,"utf-8")
+self.setText(0,body,s)
+
+# We must do a full recoloring: we may be changing context!
+self.frame.body.recolor_now(p) # recolor now uses p.copy(), so this is safe.
+
+if p.v and p.v.t.scrollBarSpot != None:
+    first,last = p.v.t.scrollBarSpot
+    body.yview("moveto",first)
+
+if p.v and p.v.t.insertSpot != None:
+    c.frame.bodyCtrl.mark_set("insert",p.v.t.insertSpot)
+    c.frame.bodyCtrl.see(p.v.t.insertSpot)
+else:
+    c.frame.bodyCtrl.mark_set("insert","1.0")
+    
+# g.trace("select:",p.headString())
+#@nonl
+#@-node:ekr.20040803072955.130:<< select the new node >>
+#@+node:ekr.20040803072955.131:<< update c.beadList or c.beadPointer >>
+# c.beadList is the list of nodes for the back and forward commands.
+
+if updateBeadList:
+    
+    if c.beadPointer > -1:
+        present_p = c.beadList[c.beadPointer]
+    else:
+        present_p = c.nullPosition()
+    
+    if p != present_p:
+        # Replace the tail of c.beadList by p and make p the present node.
+        c.beadPointer += 1
+        c.beadList[c.beadPointer:] = []
+        c.beadList.append(p.copy())
+        
+        # New in Leo 4.4: limit this list to 100 items.
+        if 0: # Doesn't work yet.
+            c.beadList = c.beadList [-100:]
+            g.trace('len(c.beadList)',len(c.beadList))
+        
+    # g.trace(c.beadPointer,p,present_p)
+#@nonl
+#@-node:ekr.20040803072955.131:<< update c.beadList or c.beadPointer >>
+#@+node:ekr.20040803072955.132:<< update c.visitedList >>
+# The test 'p in c.visitedList' calls p.__cmp__, so this code *is* valid.
+
+# Make p the most recently visited position on the list.
+if p in c.visitedList:
+    c.visitedList.remove(p)
+
+c.visitedList.insert(0,p.copy())
+
+# g.trace('len(c.visitedList)',len(c.visitedList))
+# g.trace([z.headString()[:10] for z in c.visitedList]) # don't assign to p!
+#@nonl
+#@-node:ekr.20040803072955.132:<< update c.visitedList >>
+#@+node:ekr.20040803072955.133:<< set the current node >>
+self.setSelectedLabelState(p)
+
+frame.scanForTabWidth(p) #GS I believe this should also get into the select1 hook
+
+if self.stayInTree:
+    c.treeWantsFocus()
+else:
+    c.bodyWantsFocus()
+#@nonl
+#@-node:ekr.20040803072955.133:<< set the current node >>
+#@-node:ekr.20040803072955.128:tree.select
+#@+node:ekr.20031218072017.1329:onBodyChanged (tkBody)
+# This is the only key handler for the body pane.
+def onBodyChanged (self,undoType,
+    oldSel=None,oldText=None,oldYview=None,removeTrailing=None):
+    
+    '''Update Leo after the body has been changed.'''
+    
+    body = self ; c = self.c ; bodyCtrl = body.bodyCtrl
+    trace = self.trace_onBodyChanged
+    p = c.currentPosition()
+    insert = bodyCtrl.index('insert')
+    ch = g.choose(insert=='1.0','',bodyCtrl.get('insert-1c'))
+    ch = g.toUnicode(ch,g.app.tkEncoding)
+    newText = g.app.gui.getAllText(bodyCtrl) # Note: getAllText converts to unicode.
+    # g.trace('newText',repr(newText))
+    newSel = g.app.gui.getTextSelection(bodyCtrl)
+    if oldText is None: oldText = p.bodyString()
+    changed = oldText != newText
+    if trace:
+        g.trace(repr(ch),'changed:',changed)
+        g.trace('newText:',repr(newText))
+    if changed:
+        c.undoer.setUndoTypingParams(p,undoType,
+            oldText=oldText,newText=newText,oldSel=oldSel,newSel=newSel,oldYview=oldYview)
+        p.v.setTnodeText(newText)
+        p.v.t.insertSpot = body.getInsertionPoint()
+        << recolor the body >>
+        if not c.changed: c.setChanged(True)
+        self.updateEditors()
+        << redraw the screen if necessary >>
+#@nonl
+#@+node:ekr.20051026083733.6:<< recolor the body >>
+body.colorizer.interrupt()
+c.frame.scanForTabWidth(p)
+body.recolor_now(p,incremental=not self.forceFullRecolorFlag)
+self.forceFullRecolorFlag = False
+#@nonl
+#@-node:ekr.20051026083733.6:<< recolor the body >>
+#@+node:ekr.20051026083733.7:<< redraw the screen if necessary >>
+c.beginUpdate()
+try:
+    redraw_flag = False
+    # Update dirty bits.
+    # p.setDirty() sets all cloned and @file dirty bits.
+    if not p.isDirty() and p.setDirty():
+        redraw_flag = True
+        
+    # Update icons. p.v.iconVal may not exist during unit tests.
+    val = p.computeIcon()
+    if not hasattr(p.v,"iconVal") or val != p.v.iconVal:
+        p.v.iconVal = val
+        redraw_flag = True
+finally:
+    c.endUpdate(redraw_flag)
+#@nonl
+#@-node:ekr.20051026083733.7:<< redraw the screen if necessary >>
+#@-node:ekr.20031218072017.1329:onBodyChanged (tkBody)
+#@-node:ekr.20060527182907:Support multiple editors in the body pane
+#@+node:ekr.20041130103128:Added disable_autoindent_in_nocolor_mode setting
+@nocolor
+
+leoSettings.leo now contains the following setting, with default as shown:
+
+@bool disable_autoindent_in_nocolor_mode = False
+
+True:  disable auto-indenting if in range @nocolor or @kill.
+False: enable auto-indenting regardless of how text is colored.
+
+This will make the default action work as Roger Erens requested, and will allow
+you to make Leo work exactly as before if you want.
+#@nonl
+#@+node:ekr.20051125080855:selfInsertCommand
+def selfInsertCommand(self,event,action='insert'):
+    
+    '''Insert a character in the body pane.
+    This is the default binding for all keys in the body pane.'''
+    
+    c = self.c ; p = c.currentPosition()
+    # g.trace('event',event,g.callers())
+    ch = event and event.char or ''
+    if event and event.keysym == 'Return': ch = '\n' # This fixes the MacOS return bug.
+    w = event and event.widget
+    name = c.widget_name(w)
+    # g.trace(name)
+    oldSel =  name.startswith('body') and g.app.gui.getTextSelection(w)
+    oldText = name.startswith('body') and p.bodyString()
+    removeTrailing = None # A signal to compute it later.
+    undoType = 'Typing'
+    trace = c.config.getBool('trace_masterCommand')
+    
+    if trace: g.trace(name,repr(ch))
+    
+    if g.doHook("bodykey1",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType):
+        return "break" # The hook claims to have handled the event.
+        
+    if ch == '\t':
+        removeTrailing = self.updateTab(p,w)
+    elif ch == '\b':
+        # This is correct: we only come here if there no bindngs for this key. 
+        self.backwardDeleteCharacter(event)
+    elif ch in ('\r','\n'):
+        ch = '\n'
+        << handle newline >>
+    elif ch in ('(',')','[',']','{','}') and c.config.getBool('autocomplete-brackets'):
+        self.updateAutomatchBracket(p,w,ch,oldSel)
+    elif ch: # Null chars must not delete the selection.
+        i,j = oldSel
+        if i != j:                  w.delete(i,j)
+        elif action == 'overwrite': w.delete(i,'%s+1c' % i)
+        w.insert(i,ch)                     
+    else:
+        return 'break' # New in 4.4a5: this method *always* returns 'break'
+
+    # Update the text and handle undo.
+    newText = g.app.gui.getAllText(w) # New in 4.4b3: converts to unicode.
+    # g.trace(repr(newText))
+    w.see(w.index('insert'))
+    if newText != oldText:
+        c.frame.body.onBodyChanged(undoType=undoType,
+            oldSel=oldSel,oldText=oldText,oldYview=None,removeTrailing=removeTrailing)
+            
+    g.doHook("bodykey2",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType)
+    return 'break'
+#@nonl
+#@+node:ekr.20051026171121:<< handle newline >>
+i,j = oldSel
+
+if i != j:
+    # No auto-indent if there is selected text.
+    w.delete(i,j)
+    w.insert(i,ch)
+else:
+    w.insert(i,ch)
+    limit = c.config.getBool('disable_autoindent_in_nocolor_mode')
+    if (
+        (not limit or c.frame.body.colorizer.useSyntaxColoring(p)) and
+        undoType != "Change"
+    ):
+        # No auto-indent if in @nocolor mode or after a Change command.
+        removeTrailing = self.updateAutoIndent(p,w)
+        # g.trace(removeTrailing)
+#@nonl
+#@-node:ekr.20051026171121:<< handle newline >>
+#@+node:ekr.20051027172949:updateAutomatchBracket
+def updateAutomatchBracket (self,p,w,ch,oldSel):
+    
+    # assert ch in ('(',')','[',']','{','}')
+    
+    c = self.c ; d = g.scanDirectives(c,p) ; i,j = oldSel
+    language = d.get('language')
+    
+    if ch in ('(','[','{',):
+        automatch = language not in ('plain',)
+        if automatch:
+            ch = ch + {'(':')','[':']','{':'}'}.get(ch)
+        if i != j:
+            w.delete(i,j)
+        w.insert(i,ch)
+        if automatch:
+            w.mark_set('insert','insert-1c')
+    else:
+        ch2 = w.get('insert')
+        if ch2 in (')',']','}'):
+            w.mark_set('insert','insert+1c')
+        else:
+            if i != j:
+                w.delete(i,j)
+            w.insert(i,ch)
+#@nonl
+#@-node:ekr.20051027172949:updateAutomatchBracket
+#@+node:ekr.20051026171121.1:udpateAutoIndent
+# By David McNab:
+def updateAutoIndent (self,p,w):
+
+    c = self.c ; d = g.scanDirectives(c,p)
+    tab_width = d.get("tabwidth",c.tab_width) # Get the previous line.
+    s = w.get("insert linestart - 1 lines","insert linestart -1c")
+    # Add the leading whitespace to the present line.
+    junk, width = g.skip_leading_ws_with_indent(s,0,tab_width)
+    if s and len(s) > 0 and s [ -1] == ':':
+        # For Python: increase auto-indent after colons.
+        if c.frame.body.colorizer.scanColorDirectives(p) == "python":
+            width += abs(tab_width)
+    if c.config.getBool("smart_auto_indent"):
+        # Determine if prev line has unclosed parens/brackets/braces
+        brackets = [width] ; tabex = 0
+        for i in range(0,len(s)):
+            if s [i] == '\t':
+                tabex += tab_width-1
+            if s [i] in '([{':
+                brackets.append(i+tabex+1)
+            elif s [i] in '}])' and len(brackets) > 1:
+                brackets.pop()
+        width = brackets.pop()
+    ws = g.computeLeadingWhitespace(width,tab_width)
+    if ws:
+        w.insert("insert",ws)
+        removeTrailing = False
+    else:
+        removeTrailing = None
+    return removeTrailing
+#@nonl
+#@-node:ekr.20051026171121.1:udpateAutoIndent
+#@+node:ekr.20051026092433:updateTab
+def updateTab (self,p,w):
+
+    c = self.c ; d = g.scanDirectives(c,p)
+    tab_width = d.get("tabwidth",c.tab_width)
+    
+    i,j = g.app.gui.getTextSelection(w)
+    if i != j:
+        w.delete(i,j)
+    if tab_width > 0:
+        w.insert("insert",'\t')
+    else:
+        # Get the preceeding characters.
+        s = w.get("insert linestart","insert")
+    
+        # Compute n, the number of spaces to insert.
+        width = g.computeWidth(s,tab_width)
+        n = abs(tab_width) - (width % abs(tab_width))
+        w.insert("insert",' ' * n)
+#@nonl
+#@-node:ekr.20051026092433:updateTab
+#@-node:ekr.20051125080855:selfInsertCommand
+#@-node:ekr.20041130103128:Added disable_autoindent_in_nocolor_mode setting
 #@-node:ekr.20060522103446:New features
 #@-node:ekr.20060514170725:4.4.1 projects
 #@-node:ekr.20050924073836:4.4 projects

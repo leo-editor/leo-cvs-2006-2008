@@ -3,6 +3,108 @@
 # We use this file to make it easier to use cvs.
 
 #@+all
+#@+node:Contributed @button nodes
+#@+node:@@button Show other clones
+@
+Ever have a clone that is difficult to understand outside the context of its
+original parent? Here's some code to help. It displays the headline of the
+current node plus the headlines of all the parents of all the clones of the
+current node. Selecting a displayed parent headline moves the current node to
+the corresponding clone in the outline.
+
+The idea is to be able to quickly see the context of all the clones of the
+current node and to be able to easily navigate from one clone instance to the
+next.
+@c
+
+@others
+c.cn = cloneNavigator(c)
+c.cn.displayClones(c)
+#@+node:class cloneNavigator
+class cloneNavigator:
+    '''
+       Displays the headline of the current node plus the headlines of
+       all the parents of all the clones of the current node.  Selecting
+       a displayed parent headline moves the current node to the
+       corresponding clone in the outline.
+       
+       The idea is to be able to quickly see the context of all the clones
+       of the current node and to be able to easily navigate from one clone
+       instance to the next.
+    '''
+    @others
+#@nonl
+#@+node:init
+def __init__ (self,c):
+    self.c = c
+    import Tkinter as Tk
+    if 0:
+        f = Tk.Toplevel()
+    else:
+        log = c.frame.log
+        log.selectTab('Clones')
+        f = log.tabFrame
+        for w in f.winfo_children():
+            w.destroy()
+    
+    # Create and pack empty label and listbox
+    self.title = Tk.Label(f)
+    self.title.pack(anchor="nw")
+    self.lb = Tk.Listbox(f)
+    self.lb.pack(expand=1,fill="both")
+#@nonl
+#@-node:init
+#@+node:getAllClones
+def getAllClones(self,p):
+    c = self.c
+    def clonesOf(p,p1=p):
+        return p.v.t == p1.v.t
+    return filter(clonesOf, c.allNodes_iter(copy=True))
+#@nonl
+#@-node:getAllClones
+#@+node:displayClones
+def displayClones(self,c):
+    '''Displays the parent headline for all the clones of the current position'''
+    cp = c.currentPosition()
+    
+    # "Title" is the headline of the current node
+    self.title.configure(text=cp.headString())
+    
+    # Initialize listbox and clone list
+    clones = self.getAllClones(cp)
+    self.lb.delete(0,self.lb.size()-1)
+    
+    <<Fill listbox with clone parent headlines>>    
+    <<Goto selected position when listbox selection changes>>
+#@+node:<<Fill listbox with clone parent headlines>>
+# Add the headlines of all the clone parents to the listbox
+for p in clones:
+    if p.parent():
+        text = p.parent().headString()
+    else:
+        text = "<root>"
+    self.lb.insert(self.lb.size(),text)
+    
+    # Initial listbox selection corresponds to current position
+    if p.v == cp.v:
+        self.lb.selection_set(self.lb.size()-1)
+#@nonl
+#@-node:<<Fill listbox with clone parent headlines>>
+#@+node:<<Goto selected position when listbox selection changes>>
+# Callback for when a listbox entry is selected            
+def gotoSelectedPosition(event,lb=self.lb,c=c,positions=clones):
+    idx = int(lb.curselection()[0])
+    p = positions[idx]
+    c.frame.tree.expandAllAncestors(p)
+    c.selectPosition(p)
+    return
+self.lb.bind(g.angleBrackets("ListboxSelect"), gotoSelectedPosition)
+#@nonl
+#@-node:<<Goto selected position when listbox selection changes>>
+#@-node:displayClones
+#@-node:class cloneNavigator
+#@-node:@@button Show other clones
+#@-node:Contributed @button nodes
 #@+node:Text editing scripts
 #@+node:delete from ':' to end (script)
 @color

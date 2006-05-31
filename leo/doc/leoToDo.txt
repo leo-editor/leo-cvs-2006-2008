@@ -1,11 +1,7 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
-#@+node:ekr.20060527190049:Before 4.4.1b1
-#@+node:ekr.20060522084039:Finish the debugger
-Improve docs in leoSettings.leo
-#@nonl
-#@-node:ekr.20060522084039:Finish the debugger
+#@+node:ekr.20060527190049:To do before 4.4.1b1
 #@+node:ekr.20060211093935:Support for on-enter-mode in mode declarations
 Add support for @list
 #@nonl
@@ -14,162 +10,7 @@ Add support for @list
 - Entering edit mode shouldn't call c.endEditing!
 #@-node:ekr.20060122184114:Support the execution of a command when entering a mode
 #@-node:ekr.20060211093935:Support for on-enter-mode in mode declarations
-#@+node:ekr.20060529130603:Fix all reported problems with plugins
-#@+node:ekr.20060529130603.1:Reports
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3737745
-By: nobody
-
-From: Rich
-Installed Leo 4.4 final using Windows Installer (exe)
-Ran using a Command Window
--------------------------------------------------
-Setup:
-Leo Log Window...
-Leo 4.4 final, build  1.10 , May 11, 2006
-Python 2.3.4, Tk 8.4.3, Pmw 1.2
-Windows 5, 1, 2600, 2, Service Pack 1
-
-leoID = xxxx (in C:\Software Engineering\Leo\config)
-global config dir: C:\Software Engineering\Leo\config
-home dir: None
-reading settings in C:\Software Engineering\Leo\config\leoSettings.leo
-6 plugins loaded
--------------------------------------------------
-Plugins Activated:
-Add_directives
-Chapter Hoist
-Cleo 
-Color_markup
-GroupOps
-Labels
-Macros
-Nav_buttons
-NewButtons
-NodeNavigator
-OpenWith
-RClick
-Scripting
-TimeStamp
-UniversalScrolling
-UNL
--------------------------------------------------
-Log Window Messages after exiting Plugiin Mgr.:
-Sending 'start1' to 'add_directives'
-Sending 'scan-directives' to 'add_directives'
-Failed to dynamically enable 'add_directives': 'NoneType' object has no attribute
-'has_key'
-Sending 'new' to 'chapter_hoist'
-Failed to dynamically enable 'chapter_hoist': 'Bunch' object has no attribute
-'frame'
-Sending 'new' to 'cleo'
-Failed to dynamically enable 'cleo': 'Bunch' object has no attribute 'frame'
-Sending 'init-color-markup' to 'color_markup'
-Failed to dynamically enable 'color_markup': 'NoneType' object has no attribute
-'c'
-Sending 'new' to 'groupOperations'
-Failed to dynamically enable 'groupOperations': 'Bunch' object has no attribute
-'exists'
-Sending 'before-create-leo-frame' to 'mod_labels'
-Failed to dynamically enable 'mod_labels': 'Bunch' object has no attribute
-'frame'
-Sending 'after-create-leo-frame' to 'leoupdate'
-Failed to dynamically enable 'leoupdate': 'Bunch' object has no attribute
-'frame'
-Sending 'new' to 'macros'
-Failed to dynamically enable 'macros': 'Bunch' object has no attribute 'frame'
-Sending 'after-create-leo-frame' to 'nav_buttons'
-Failed to dynamically enable 'nav_buttons': 'Bunch' object has no attribute
-'mFileName'
-Sending 'after-create-leo-frame' to 'newButtons'
-Failed to dynamically enable 'newButtons': 'Bunch' object has no attribute
-'frame'
-Sending 'new' to 'nodenavigator'
-Failed to dynamically enable 'nodenavigator': 'Bunch' object has no attribute
-'frame'
-Sending 'after-create-leo-frame' to 'rClick'
-Failed to dynamically enable 'rClick': 'Bunch' object has no attribute 'exists'
-Failed to dynamically enable 'mod_timestamp': 'Bunch' object has no attribute
-'frame'
-Failed to dynamically enable 'UniversalScrolling': 'Bunch' object has no attribute
-'frame'
--------------------------------------------------
-
-Exited Leo, re-entered.
-
--------------------------------------------------
-Leo Log Window:
-Leo Log Window...
-Leo 4.4 final, build  1.10 , May 11, 2006
-Python 2.3.4, Tk 8.4.3, Pmw 1.2
-Windows 5, 1, 2600, 2, Service Pack 1
-
-leoID = xxxx (in C:\Software Engineering\Leo\config)
-global config dir: C:\Software Engineering\Leo\config
-home dir: None
-reading settings in C:\Software Engineering\Leo\config\leoSettings.leo
-can not load enabled chapter_hoist plugin
-18 plugins loaded
-
--------------------------------------------------
-Tested Plugins:
-Chapter Hoist: Not loaded. (Needs mod_scripting 0.19 ??)
-
-Cleo: Collapsing a Cleo'd node leaves the colored priority arrows - may need
-to add the Wipe-out trick used to remove arrows? (Node coloring works OK.
-
-Color Markup (wiki): Works as advertised.
-
-Group Operations: Works as expected. I still prefer the older key-based method,
-or some way to mark a number of nodes with just a couple of mouse clicks. This
-one-at-a-tiime-deal is a PITA! (I know Group Ops aren't really being supported,
-but I'll  still make my comments!)
-
-Labels: Works OK. A way to see (a) labelled nodes and (b) the node's labels
-without going through the menu would be "wunnerful, wunnerful."
-
-Macros: Instructions for use??
-I tried selecting a node and Outline--> Parameterize Section Reference
-
-Log Window Showed:
--------------------------------------------------
-exception executing command
-Traceback (most recent call last):
-  File "C:\Software Engineering\Leo\src\leoCommands.py", line 264, in doCommand
-    val = command(event)
-TypeError: parameterize() takes exactly 1 argument (2 given)
--------------------------------------------------
-
-Nav Buttons: Still work. (I still prefer Up-and-Down rather than Left-and-Right
-buttons.)
-
-New Buttons: Works as guessed-at. More info would be nice.
-
-Node Navigator: This should be marked as being already built into Leo.
-
-Open With: Desparately needs a way to modify the Open-With menu other than going
-in and changing the code.
-
-RClick: OK, but I use a different command set. See comment for Open-With
-
-Time Stamp: "Timestamp all save operations to show when they occur" gave me
-the impression that a file would be created with a timestamp. Having it just
-pop up in the Log window (when I can look at my watch) is rather useless.
-
-Universal Scrolling: There's a conflict with a Config setting which should be
-mentioned in the U.S. info box.
-
-UNL: I followed the directions, but all clickiing on "@url Test UNL-->Test UNL
-Node" got me was a DOS box that had tried to open "Test". Trying '@url
-file:"c:\Software Engineering\Test\Test My Plugins.leo#Test UNL-->Test UNL Node"'
-didn't work, either.
-=================================================
-
-Suggestion: All untested Plugins should be marked as such in the Plugin Manager,
-ESPECIALLY if Leo is to go "Big Time."
-#@-node:ekr.20060529130603.1:Reports
-#@-node:ekr.20060529130603:Fix all reported problems with plugins
+#@+node:ekr.20060530162147:Easy
 #@+node:ekr.20041029083459:Remember Import directory
 By: Kent Tenney - ktenney
 Import to @file request  
@@ -189,18 +30,30 @@ I often find myself importing several files from the same area of the directory 
 Thanks, 
 Kent
 #@-node:ekr.20041029083459:Remember Import directory
-#@+node:ekr.20041130103128:killcolor also kills autoindenting
-By: Roger Erens - rogererens
-@
-2004-11-25 09:14
-On leo4.2, winXP, my default language is Python and smart_auto_indent=0. 
-Normally, after ending a line with a colon, the next line gets indented by 1 tab, also in comment-sections. 
-When using an @killcolor directive in a node, the line following one that ends with a colon starts at column zero.
+#@+node:ekr.20060530112134:Posting: Leo v Emacs
+@nocolor
 
-I think it is unreasonable for @killcolor to interfere with indenting.
-#@nonl
-#@-node:ekr.20041130103128:killcolor also kills autoindenting
-#@-node:ekr.20060527190049:Before 4.4.1b1
+Leo is superior:
+    
+- Specifying settings, including key bindings and modes.
+
+- Python scripting.
+
+- Leo works much better with Emacs than vice versa.
+
+- Outlining.
+
+Emacs is superior:
+
+- Editor functionality (Leo is still buggy)
+
+- Editor tools.
+
+But Leo's users can easily use Emacs for what it is good at.
+
+#@-node:ekr.20060530112134:Posting: Leo v Emacs
+#@-node:ekr.20060530162147:Easy
+#@-node:ekr.20060527190049:To do before 4.4.1b1
 #@+node:ekr.20051202094427:Urgent: Resolve cvs conflicts
 Investigate meld:  http://meld.sourceforge.net/
 

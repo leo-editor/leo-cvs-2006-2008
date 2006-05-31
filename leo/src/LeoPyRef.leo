@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="9726" clone_windows="0"/>
-<globals body_outline_ratio="0.539298669891">
-	<global_window_position top="31" left="358" height="827" width="819"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="9728" clone_windows="0"/>
+<globals body_outline_ratio="0.513905683192">
+	<global_window_position top="61" left="348" height="827" width="819"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -23,6 +23,15 @@ marks="ekr.20040803072955.58,ekr.20031218072017.3077,ekr.20040803072955.58,"><vh
 </v>
 <v t="ekr.20060529083409"><vh>Fixed bug in toGuiIndex</vh>
 <v t="ekr.20060528172956"><vh>toGuiIndex &amp; toPythonIndex</vh></v>
+</v>
+<v t="ekr.20060522101202"><vh>Fixed problems reported by Check bindings script.</vh></v>
+<v t="ekr.20060530100259"><vh>Auto-indent now words with multiple editors</vh>
+<v t="ekr.20051125080855"><vh>selfInsertCommand</vh>
+<v t="ekr.20051026171121"><vh>&lt;&lt; handle newline &gt;&gt;</vh></v>
+<v t="ekr.20051027172949"><vh>updateAutomatchBracket</vh></v>
+<v t="ekr.20051026171121.1"><vh>udpateAutoIndent</vh></v>
+<v t="ekr.20051026092433"><vh>updateTab</vh></v>
+</v>
 </v>
 </v>
 <v t="ekr.20060522103446"><vh>New features</vh>
@@ -177,7 +186,7 @@ marks="ekr.20040803072955.58,ekr.20031218072017.3077,ekr.20040803072955.58,"><vh
 </v>
 <v t="ekr.20051020120306.26"><vh>bringToFront</vh></v>
 <v t="ekr.20051020120306.27"><vh>selectAllFindText</vh></v>
-<v t="ekr.20051020120306.28"><vh>Tkinter wrappers (leoTkinterFind)</vh></v>
+<v t="ekr.20051020120306.28"><vh>Tkinter wrappers</vh></v>
 <v t="ekr.20051020120306.1"><vh>class underlinedTkButton</vh>
 <v t="ekr.20051020120306.2"><vh>__init__</vh>
 <v t="ekr.20051020120306.3"><vh>&lt;&lt; set self.hotKey if '&amp;' is in the string &gt;&gt;</vh></v>
@@ -337,128 +346,51 @@ marks="ekr.20040803072955.58,ekr.20031218072017.3077,ekr.20040803072955.58,"><vh
 <v t="ekr.20051020120306.26"><vh>bringToFront</vh></v>
 </v>
 </v>
+<v t="ekr.20051121070552"><vh>Finished Cmds menu</vh>
+<v t="ekr.20060529161541"><vh>regex patterns</vh></v>
+<v t="ekr.20050921103736"><vh>createCmndsMenuFromTable</vh></v>
+<v t="ekr.20050921103230"><vh>defineCmdsMenuTables &amp; helpers</vh>
+<v t="ekr.20060117094955"><vh> defineCmdsMenuTopTable</vh></v>
+<v t="ekr.20060117094955.1"><vh>defineCmdsMenuAbbrevTable</vh></v>
+<v t="ekr.20060117095212"><vh>defineCmdsMenuBufferTable</vh></v>
+<v t="ekr.20060117095212.5"><vh>defineCmdsMenuCenterTable</vh></v>
+<v t="ekr.20060117095212.4"><vh>defineCmdsMenuChangeCaseTable</vh></v>
+<v t="ekr.20060529170949"><vh>defineCmdsMenuHelpTable</vh></v>
+<v t="ekr.20060117095212.6"><vh>defineCmdsMenuIndentTable</vh></v>
+<v t="ekr.20060117114315"><vh>defineCmdsMenuMacroTable</vh></v>
+<v t="ekr.20060117095212.2"><vh>defineCmdsMenuRectanglesTable</vh></v>
+<v t="ekr.20060117095212.1"><vh>defineCmdsMenuRegistersTable</vh></v>
+<v t="ekr.20060117095212.3"><vh>defineCmdsMenuSortTable</vh></v>
+<v t="ekr.20060117095212.7"><vh>defineCmdsMenuSpellCheckTable</vh></v>
+</v>
+</v>
+<v t="ekr.20060529195042"><vh>Added docstrings for all commands</vh></v>
+<v t="ekr.20060529175453"><vh>Improved show-fonts command</vh></v>
+<v t="ekr.20060529230636"><vh>Improved formatting of output of the help-for-command command</vh>
+<v t="ekr.20060417203717"><vh>helpForCommand</vh></v>
+</v>
+<v t="ekr.20051012062458.1"><vh>Strip quotes from color, font settings.</vh></v>
+<v t="ekr.20060202235215.1"><vh>Warn about invalid Enter and Leave key bindings</vh>
+<v t="ekr.20050920085536.16"><vh>bindKey</vh>
+<v t="ekr.20060530084936"><vh>&lt;&lt; give warning and return if we try to bind to Enter or Leave &gt;&gt;</vh></v>
+<v t="ekr.20060114115648"><vh>&lt;&lt; give warning and return if there is a serious redefinition &gt;&gt;</vh></v>
+<v t="ekr.20060114110141"><vh>&lt;&lt; trace bindings if enabled in leoSettings.leo &gt;&gt;</vh></v>
+</v>
+</v>
 </v>
 </v>
 <v t="EKR.20040519090151.2"><vh>To do</vh>
 <v t="ekr.20040117181936"><vh>@thin ../doc/leoToDo.txt</vh></v>
 <v t="ekr.20060207133601"><vh>@thin ../doc/leoToDoLater.txt</vh></v>
 </v>
-<v t="ekr.20060527190049" a="V"><vh>Before 4.4.1b1 (3-5 days)</vh>
-<v t="ekr.20060528082017.1"><vh>Important (2-4 days)</vh>
-<v t="ekr.20060527204444"><vh>Finish new colorizer plugin</vh></v>
+<v t="ekr.20060527190049" a="V"><vh>Before 4.4.1b1</vh>
 <v t="ekr.20060211093935"><vh>Support for on-enter-mode in mode declarations</vh>
 <v t="ekr.20060122184114"><vh>Support the execution of a command when entering a mode</vh></v>
 </v>
-</v>
-<v t="ekr.20060528082017.2"><vh>Last (1 day)</vh>
-<v t="ekr.20060522101202"><vh>Improve reports of binding problems</vh></v>
-<v t="ekr.20051121070552"><vh>Finish Cmds menu</vh>
-<v t="ekr.20060117112444"><vh>What I did</vh></v>
-<v t="ekr.20060117114903"><vh>Others</vh>
-<v t="ekr.20050920085536.65"><vh>masterCommand &amp; helpers</vh>
-<v t="ekr.20050920085536.67"><vh>&lt;&lt; add character to history &gt;&gt;</vh></v>
-<v t="ekr.20050923172809.1"><vh>callStateFunction</vh></v>
-<v t="ekr.20050923174229.3"><vh>callKeystrokeFunction (not used)</vh></v>
-<v t="ekr.20051026083544"><vh>handleDefaultChar</vh></v>
-</v>
-<v t="ekr.20031218072017.4117"><vh>defineMenuCallback</vh></v>
-<v t="ekr.20050920093543"><vh>c.finishCreate &amp; helper</vh>
-<v t="ekr.20051007143620"><vh>printCommandsDict</vh></v>
-</v>
-<v t="ekr.20031218072017.3752"><vh>defineMenuTables &amp; helpers</vh>
-<v t="ekr.20031218072017.3753"><vh>defineEditMenuTables &amp; helpers</vh>
-<v t="ekr.20031218072017.839"><vh>defineEditMenuTopTable</vh></v>
-<v t="ekr.20050711091931"><vh>defineEditMenuEditCursorTable</vh></v>
-<v t="ekr.20031218072017.3754"><vh>defineEditMenuEditBodyTable</vh></v>
-<v t="ekr.20031218072017.3755"><vh>defineEditMenuEditHeadlineTable</vh></v>
-<v t="ekr.20031218072017.3756"><vh>defineEditMenuFindMenuTable</vh></v>
-<v t="ekr.20031218072017.3757"><vh>defineEditMenuTop2Table</vh></v>
-</v>
-<v t="ekr.20031218072017.3758"><vh>defineFileMenuTables &amp; helpers</vh>
-<v t="ekr.20031218072017.3759"><vh>defineFileMenuTopTable</vh></v>
-<v t="ekr.20031218072017.3760"><vh>defineFileMenuTop2Table</vh></v>
-<v t="ekr.20031218072017.3761"><vh>defineFileMenuReadWriteMenuTable</vh></v>
-<v t="ekr.20031218072017.3762"><vh>defineFileMenuTangleMenuTable</vh></v>
-<v t="ekr.20031218072017.3763"><vh>defineFileMenuUntangleMenuTable</vh></v>
-<v t="ekr.20031218072017.3764"><vh>defineFileMenuImportMenuTable</vh></v>
-<v t="ekr.20031218072017.3765"><vh>defineFileMenuExportMenuTable</vh></v>
-<v t="ekr.20031218072017.3766"><vh>defineFileMenuTop3MenuTable</vh></v>
-</v>
-<v t="ekr.20031218072017.3767"><vh>defineOutlineMenuTables &amp; helpers</vh>
-<v t="ekr.20031218072017.3768"><vh>defineOutlineMenuTopMenuTable</vh></v>
-<v t="ekr.20040711140738"><vh>defineOutlineMenuCheckOutlineMenuTable</vh></v>
-<v t="ekr.20031218072017.3769"><vh>defineOutlineMenuExpandContractMenuTable</vh></v>
-<v t="ekr.20031218072017.3770"><vh>defineOutlineMenuMoveMenuTable</vh></v>
-<v t="ekr.20031218072017.3771"><vh>defineOutlineMenuMarkMenuTable</vh></v>
-<v t="ekr.20031218072017.3772"><vh>defineOutlineMenuGoToMenuTable</vh></v>
-</v>
-<v t="ekr.20050921103230"><vh>defineCmdsMenuTables &amp; helpers</vh>
-<v t="ekr.20060117094955"><vh> defineCmdsMenuTopTable</vh></v>
-<v t="ekr.20060117094955.1"><vh>defineCmdsMenuAbbrevTable (to do)</vh></v>
-<v t="ekr.20060117095212"><vh>defineCmdsMenuBufferTable</vh></v>
-<v t="ekr.20060117095212.5"><vh>defineCmdsMenuCenterTable</vh></v>
-<v t="ekr.20060117095212.4"><vh>defineCmdsMenuChangeCaseTable</vh></v>
-<v t="ekr.20060117095212.6"><vh>defineCmdsMenuIndentTable</vh></v>
-<v t="ekr.20060117114315"><vh>defineCmdsMenuMacroTable(to do)</vh></v>
-<v t="ekr.20060117095212.2"><vh>defineCmdsMenuRectanglesTable(to do)</vh></v>
-<v t="ekr.20060117095212.1"><vh>defineCmdsMenuRegistersTable(to do)</vh></v>
-<v t="ekr.20060117095212.3"><vh>defineCmdsMenuSortTable</vh></v>
-<v t="ekr.20060117095212.7"><vh>defineCmdsMenuSpellCheckTable</vh></v>
-</v>
-<v t="ekr.20031218072017.3773"><vh>defineWindowMenuTables</vh></v>
-<v t="ekr.20031218072017.3774"><vh>defineHelpMenuTables</vh></v>
-</v>
-<v t="ekr.20031218072017.3785"><vh>createMenusFromTables &amp; helpers</vh>
-<v t="ekr.20031218072017.3790"><vh>createFileMenuFromTable</vh>
-<v t="ekr.20031218072017.3791"><vh>&lt;&lt; create the recent files submenu &gt;&gt;</vh></v>
-<v t="ekr.20031218072017.3792"><vh>&lt;&lt; create the read/write submenu &gt;&gt;</vh></v>
-<v t="ekr.20031218072017.3793"><vh>&lt;&lt; create the tangle submenu &gt;&gt;</vh></v>
-<v t="ekr.20031218072017.3794"><vh>&lt;&lt; create the untangle submenu &gt;&gt;</vh></v>
-<v t="ekr.20031218072017.3795"><vh>&lt;&lt; create the import submenu &gt;&gt;</vh></v>
-<v t="ekr.20031218072017.3796"><vh>&lt;&lt; create the export submenu &gt;&gt;</vh></v>
-</v>
-<v t="ekr.20031218072017.3786"><vh>createEditMenuFromTable</vh>
-<v t="ekr.20031218072017.3787"><vh>&lt;&lt; create the edit body submenu &gt;&gt;</vh></v>
-<v t="ekr.20031218072017.3788"><vh>&lt;&lt; create the edit headline submenu &gt;&gt;</vh></v>
-<v t="ekr.20031218072017.3789"><vh>&lt;&lt; create the find submenu &gt;&gt;</vh></v>
-</v>
-<v t="ekr.20031218072017.3797"><vh>createOutlineMenuFromTable</vh>
-<v t="ekr.20040711140738.1"><vh>&lt;&lt; create check submenu &gt;&gt;</vh></v>
-<v t="ekr.20031218072017.3798"><vh>&lt;&lt; create expand/contract submenu &gt;&gt;</vh></v>
-<v t="ekr.20031218072017.3799"><vh>&lt;&lt; create move submenu &gt;&gt;</vh></v>
-<v t="ekr.20031218072017.3800"><vh>&lt;&lt; create mark submenu &gt;&gt;</vh></v>
-<v t="ekr.20031218072017.3801"><vh>&lt;&lt; create goto submenu &gt;&gt;</vh></v>
-</v>
-<v t="ekr.20050921103736"><vh>createCmndsMenuFromTable</vh></v>
-<v t="ekr.20031218072017.3802"><vh>createWindowMenuFromTable</vh></v>
-<v t="ekr.20031218072017.3803"><vh>createHelpMenuFromTable</vh></v>
-</v>
-<v t="ekr.20050921103736"><vh>createCmndsMenuFromTable</vh></v>
-<v t="ekr.20031218072017.1723"><vh>createMenuEntries</vh>
-<v t="ekr.20051021091958"><vh>&lt;&lt; get label &amp; command or continue &gt;&gt;</vh></v>
-<v t="ekr.20031218072017.1725"><vh>&lt;&lt; compute commandName &amp; accel from label &amp; command &gt;&gt;</vh>
-<v t="ekr.20051021100806.1"><vh>&lt;&lt; compute emacs_name &gt;&gt;</vh></v>
-</v>
-<v t="ekr.20060216110502"><vh>&lt;&lt; clear accelerator if it is a plain key &gt;&gt;</vh></v>
-</v>
-</v>
-<v t="ekr.20060117123143"><vh>editing commands</vh></v>
-<v t="ekr.20050921103230"><vh>defineCmdsMenuTables &amp; helpers</vh>
-<v t="ekr.20060117094955"><vh> defineCmdsMenuTopTable</vh></v>
-<v t="ekr.20060117094955.1"><vh>defineCmdsMenuAbbrevTable (to do)</vh></v>
-<v t="ekr.20060117095212"><vh>defineCmdsMenuBufferTable</vh></v>
-<v t="ekr.20060117095212.5"><vh>defineCmdsMenuCenterTable</vh></v>
-<v t="ekr.20060117095212.4"><vh>defineCmdsMenuChangeCaseTable</vh></v>
-<v t="ekr.20060117095212.6"><vh>defineCmdsMenuIndentTable</vh></v>
-<v t="ekr.20060117114315"><vh>defineCmdsMenuMacroTable(to do)</vh></v>
-<v t="ekr.20060117095212.2"><vh>defineCmdsMenuRectanglesTable(to do)</vh></v>
-<v t="ekr.20060117095212.1"><vh>defineCmdsMenuRegistersTable(to do)</vh></v>
-<v t="ekr.20060117095212.3"><vh>defineCmdsMenuSortTable</vh></v>
-<v t="ekr.20060117095212.7"><vh>defineCmdsMenuSpellCheckTable</vh></v>
-</v>
-</v>
-<v t="ekr.20060522084039"><vh>Finish the debugger</vh></v>
-<v t="ekr.20060529083234"><vh>Add docstrings for all commands</vh></v>
+<v t="ekr.20041029083459"><vh>Remember Import directory</vh></v>
+<v t="ekr.20041130103128"><vh>killcolor also kills autoindenting</vh></v>
+<v t="ekr.20060529130603"><vh>Fix all reported problems with plugins</vh>
+<v t="ekr.20060529130603.1"><vh>Reports</vh></v>
 </v>
 </v>
 <v t="ekr.20031218072017.2406"><vh>Code</vh>
@@ -589,26 +521,6 @@ else: # Print surrounding lines.
 
     g.restoreStderr()
     g.restoreStdout()</t>
-<t tx="ekr.20031218072017.839">def defineEditMenuTopTable (self):
-    
-    __pychecker__ = 'no-unusednames=[f]' # We define 'f' just in case.
-
-    c = self.c ; f = self.frame
-    
-    self.editMenuTopTable = [
-        ("Can't Undo",c.undoer.undo), # &amp;U reserved for Undo
-        ("Can't Redo",c.undoer.redo), # &amp;R reserved for Redo
-        ("-",None),
-        ("Cu&amp;t",f.OnCutFromMenu), 
-        ("Cop&amp;y",f.OnCopyFromMenu),
-        ("&amp;Paste",f.OnPasteFromMenu),
-        ("&amp;Delete",c.editCommands.backwardDeleteCharacter),
-        ("Select &amp;All",f.body.selectAllText),
-        ("-",None),
-    ]
-
-    # Top-level shortcuts here:  a,d,p,t,u,y,z
-    # Top-level shortcuts later: e,g,n,v</t>
 <t tx="ekr.20031218072017.1329"># This is the only key handler for the body pane.
 def onBodyChanged (self,undoType,
     oldSel=None,oldText=None,oldYview=None,removeTrailing=None):
@@ -638,71 +550,6 @@ def onBodyChanged (self,undoType,
         if not c.changed: c.setChanged(True)
         self.updateEditors()
         &lt;&lt; redraw the screen if necessary &gt;&gt;</t>
-<t tx="ekr.20031218072017.1723">def createMenuEntries (self,menu,table,dynamicMenu=False):
-        
-    '''Create a menu entry from the table.
-    New in 4.4: this method shows the shortcut in the menu,
-    but this method **never** binds any shortcuts.'''
-    
-    c = self.c ; f = c.frame ; k = c.k
-    if g.app.unitTesting: return
-    for data in table:
-        &lt;&lt; get label &amp; command or continue &gt;&gt;
-        &lt;&lt; compute commandName &amp; accel from label &amp; command &gt;&gt;
-        accelerator = stroke = k.shortcutFromSetting(accel) or ''
-        accelerator = accelerator and g.stripBrackets(k.prettyPrintKey(accelerator))
-        def masterMenuCallback (k=k,stroke=stroke,command=command,commandName=commandName):
-            return k.masterMenuHandler(stroke,command,commandName)
-        realLabel = self.getRealMenuName(label)
-        amp_index = realLabel.find("&amp;")
-        realLabel = realLabel.replace("&amp;","")
-        if sys.platform == 'darwin':
-            &lt;&lt; clear accelerator if it is a plain key &gt;&gt;
-        self.add_command(menu,label=realLabel,
-            accelerator=accelerator,
-            command=masterMenuCallback,
-            underline=amp_index)</t>
-<t tx="ekr.20031218072017.1725"># New in 4.4b2: command can be a minibuffer-command name (a string)
-minibufferCommand = type(command) == type('')
-accel = None
-if minibufferCommand:
-    commandName = command 
-    command = c.commandsDict.get(commandName)
-    if command:
-        rawKey,bunchList = c.config.getShortcut(commandName)
-        # Pick the first entry that is not a mode.
-        for bunch in bunchList:
-            if not bunch.pane.endswith('-mode'):
-                # g.trace('1',bunch)
-                accel = bunch and bunch.val ; break
-    else:
-        if not g.app.unitTesting and not not dynamicMenu:
-            # Don't warn during unit testing.
-            # This may come from a plugin that normally isn't enabled.
-            g.trace('No inverse for %s' % commandName)
-        continue # There is no way to make this menu entry.
-else:
-    # First, get the old-style name.
-    commandName = self.computeOldStyleShortcutKey(label)
-    rawKey,bunchList = c.config.getShortcut(commandName)
-    for bunch in bunchList:
-        if not bunch.pane.endswith('-mode'):
-            # g.trace('2',bunch)
-            accel = bunch and bunch.val ; break
-    # Second, get new-style name.
-    if not accel:
-        &lt;&lt; compute emacs_name &gt;&gt;
-            # Contains the not-so-horrible kludge.
-        if emacs_name:
-            commandName = emacs_name
-            rawKey,bunchList = c.config.getShortcut(emacs_name)
-            # Pick the first entry that is not a mode.
-            for bunch in bunchList:
-                if not bunch.pane.endswith('-mode'):
-                    accel = bunch.val ; break
-                    # g.trace('2',bunch)
-        elif not dynamicMenu:
-            g.trace('No inverse for %s' % commandName)</t>
 <t tx="ekr.20031218072017.2140">def executeScript(self,event=None,p=None,script=None,
     useSelectedText=True,define_g=True,define_name='__main__',silent=False):
 
@@ -790,6 +637,8 @@ if 0: # Set to 1 for lint-like testing.
     except:
         print ; print 'Can not import pychecker' ; print</t>
 <t tx="ekr.20031218072017.2932">def openPythonWindow (self,event=None):
+    
+    '''Open Python's Idle debugger in a separate process.'''
     
     if 1:
         &lt;&lt; open idle in a separate process &gt;&gt;
@@ -983,481 +832,6 @@ def changeSelection(self):
         gui.setTextSelection(w,pos,newpos,insert=newpos)
         return pos, newpos</t>
 <t tx="ekr.20031218072017.3625">&lt;&lt; about gui classes and gui plugins &gt;&gt;</t>
-<t tx="ekr.20031218072017.3752">def defineMenuTables (self):
-    
-    c = self.c
-    
-    self.defineEditMenuTables()
-    self.defineFileMenuTables()
-    self.defineOutlineMenuTables()
-    self.defineWindowMenuTables()
-
-    if self.useCmdMenu:
-        self.defineCmdsMenuTables()
-
-    self.defineHelpMenuTables()</t>
-<t tx="ekr.20031218072017.3753">def defineEditMenuTables (self):
-
-    self.defineEditMenuTopTable()
-    self.defineEditMenuEditCursorTable()
-    self.defineEditMenuEditBodyTable()
-    self.defineEditMenuEditHeadlineTable()
-    self.defineEditMenuFindMenuTable()
-    self.defineEditMenuTop2Table()</t>
-<t tx="ekr.20031218072017.3754">def defineEditMenuEditBodyTable (self):
-    
-    __pychecker__ = 'no-unusednames=c,f'
-    
-    c = self.c ; f = self.frame
-
-    self.editMenuEditBodyTable = [
-        ("Extract &amp;Section",c.extractSection),
-        ("Extract &amp;Names",c.extractSectionNames),
-        ("&amp;Extract",c.extract),
-        ("-",None,None),
-        ("Convert All B&amp;lanks",c.convertAllBlanks),
-        ("Convert All T&amp;abs",c.convertAllTabs),
-        ("Convert &amp;Blanks",c.convertBlanks),
-        ("Convert &amp;Tabs",c.convertTabs),
-        ("Insert Body Time/&amp;Date",c.insertBodyTime),
-        ("&amp;Reformat Paragraph",c.reformatParagraph),
-        ("-",None,None),
-        ("&amp;Indent",c.indentBody),
-        ("&amp;Unindent",c.dedentBody),
-        ("&amp;Match Brackets",c.findMatchingBracket),
-        ("Add Comments",c.addComments),
-        ("Delete Comments",c.deleteComments),
-    ]
-    # Shortcuts a,b,d,e,i,l,m,n,r,s,t,u</t>
-<t tx="ekr.20031218072017.3755">def defineEditMenuEditHeadlineTable (self):
-    
-    __pychecker__ = 'no-unusednames=c,f'
-    
-    c = self.c ; f = self.frame
-    
-    self.editMenuEditHeadlineTable = [
-        ("Edit &amp;Headline",c.editHeadline),
-        ("&amp;End Edit Headline",f.endEditLabelCommand),
-        ("&amp;Abort Edit Headline",f.abortEditLabelCommand),
-        ("Insert Headline Time/&amp;Date",f.insertHeadlineTime),
-        ("Toggle Angle Brackets",c.toggleAngleBrackets),
-    ]</t>
-<t tx="ekr.20031218072017.3756">def defineEditMenuFindMenuTable (self):
-    
-    __pychecker__ = 'no-unusednames=c,f'
-    
-    c = self.c ; f = self.frame
-    
-    # Bind to the Find tab.
-    sc = c.searchCommands
-    self.editMenuFindMenuTable = [
-        ("&amp;Show Find Tab",  sc.openFindTab),
-        ("&amp;Hide Find Tab",  sc.hideFindTab),
-        ("-",None),
-        ("Find &amp;Next",          sc.findTabFindNext),
-        ("Find &amp;Previous",      sc.findTabFindPrev),
-        ("&amp;Replace",            sc.findTabChange),
-        ("Replace, &amp;Then Find", sc.findTabChangeThenFind),
-    ]</t>
-<t tx="ekr.20031218072017.3757">def defineEditMenuTop2Table (self):
-    
-    __pychecker__ = 'no-unusednames=c,f'
-
-    c = self.c ; f = self.frame
-
-    try:        show = c.frame.body.getColorizer().showInvisibles
-    except:     show = False
-    label = g.choose(show,"Hide In&amp;visibles","Show In&amp;visibles")
-        
-    self.editMenuTop2Table = [
-        ("&amp;Go To Line Number",c.goToLineNumber),
-        ("&amp;Execute Script",c.executeScript),
-        (label,c.viewAllCharacters),
-        ("Setti&amp;ngs",c.preferences),
-    ]
-
-    # Top-level shortcuts earlier: a,d,p,t,u,y,z
-    # Top-level shortcuts here: e,g,n,v</t>
-<t tx="ekr.20031218072017.3758">def defineFileMenuTables (self):
-
-    self.defineFileMenuTopTable()
-    self.defineFileMenuTop2Table()
-    self.defineFileMenuReadWriteMenuTable()
-    self.defineFileMenuTangleMenuTable()
-    self.defineFileMenuUntangleMenuTable()
-    self.defineFileMenuImportMenuTable()
-    self.defineFileMenuExportMenuTable()
-    self.defineFileMenuTop3MenuTable()</t>
-<t tx="ekr.20031218072017.3759">def defineFileMenuTopTable (self):
-    
-    __pychecker__ = 'no-unusednames=c,f'
-    
-    c = self.c ; f = self.frame
-
-    self.fileMenuTopTable = [
-        ("&amp;New",c.new),
-        ("&amp;Open...",c.open),
-    ]</t>
-<t tx="ekr.20031218072017.3760">def defineFileMenuTop2Table (self):
-    
-    __pychecker__ = 'no-unusednames=c,f'
-    
-    c = self.c ; f = self.frame
-
-    self.fileMenuTop2Table = [
-        ("-",None),
-        ("&amp;Close",c.close),
-        ("&amp;Save",c.save),
-        ("Save &amp;As",c.saveAs),
-        ("Save To",c.saveTo), # &amp;Tangle
-        ("Re&amp;vert To Saved",c.revert), # &amp;Read/Write
-    ]</t>
-<t tx="ekr.20031218072017.3761">def defineFileMenuReadWriteMenuTable (self):
-    
-    __pychecker__ = 'no-unusednames=c,f'
-    
-    c = self.c ; f = self.frame ; fc = c.fileCommands
-
-    self.fileMenuReadWriteMenuTable = [
-        ("&amp;Read Outline Only",c.readOutlineOnly),
-        ("Read @file &amp;Nodes",c.readAtFileNodes),
-        ("-",None),
-        ("Write &amp;Dirty @file Nodes",fc.writeDirtyAtFileNodes),
-        ("Write &amp;Missing @file Nodes",fc.writeMissingAtFileNodes),
-        ("Write &amp;Outline Only",fc.writeOutlineOnly),
-        ("&amp;Write @file Nodes",fc.writeAtFileNodes),
-    ]</t>
-<t tx="ekr.20031218072017.3762">def defineFileMenuTangleMenuTable (self):
-    
-    __pychecker__ = 'no-unusednames=c,f'
-    
-    c = self.c ; f = self.frame
-
-    self.fileMenuTangleMenuTable = [
-        ("Tangle &amp;All",c.tangleAll),
-        ("Tangle &amp;Marked",c.tangleMarked),
-        ("&amp;Tangle",c.tangle),
-    ]</t>
-<t tx="ekr.20031218072017.3763">def defineFileMenuUntangleMenuTable (self):
-    
-    __pychecker__ = 'no-unusednames=c,f'
-    
-    c = self.c ; f = self.frame
-
-    self.fileMenuUntangleMenuTable = [
-        ("Untangle &amp;All",c.untangleAll),
-        ("Untangle &amp;Marked",c.untangleMarked),
-        ("&amp;Untangle",c.untangle),
-    ]</t>
-<t tx="ekr.20031218072017.3764">def defineFileMenuImportMenuTable (self):
-    
-    __pychecker__ = 'no-unusednames=c,f'
-    
-    c = self.c ; f = self.frame
-
-    self.fileMenuImportMenuTable = [
-        ("Import Derived File",c.importDerivedFile),
-        ("Import To @&amp;file",c.importAtFile),
-        ("Import To @&amp;root",c.importAtRoot),
-        ("Import &amp;CWEB Files",c.importCWEBFiles),
-        ("Import &amp;noweb Files",c.importNowebFiles),
-        ("Import Flattened &amp;Outline",c.importFlattenedOutline),
-    ]</t>
-<t tx="ekr.20031218072017.3765">def defineFileMenuExportMenuTable (self):
-    
-    __pychecker__ = 'no-unusednames=c,f'
-    
-    c = self.c ; f = self.frame
-
-    self.fileMenuExportMenuTable = [
-        ("Export &amp;Headlines",c.exportHeadlines),
-        ("Outline To &amp;CWEB",c.outlineToCWEB),
-        ("Outline To &amp;Noweb",c.outlineToNoweb),
-        ("&amp;Flatten Outline",c.flattenOutline),
-        ("&amp;Remove Sentinels",c.removeSentinels),
-        ("&amp;Weave",c.weave),
-    ]</t>
-<t tx="ekr.20031218072017.3766">def defineFileMenuTop3MenuTable (self):
-    
-    __pychecker__ = 'no-unusednames=c,f'
-    
-    c = self.c ; f = self.frame
-
-    self.fileMenuTop3MenuTable = [
-        ("E&amp;xit",g.app.onQuit),
-    ]</t>
-<t tx="ekr.20031218072017.3767">def defineOutlineMenuTables (self):
-
-    self.defineOutlineMenuTopMenuTable()
-    self.defineOutlineMenuCheckOutlineMenuTable()
-    self.defineOutlineMenuExpandContractMenuTable()
-    self.defineOutlineMenuMoveMenuTable()
-    self.defineOutlineMenuMarkMenuTable()
-    self.defineOutlineMenuGoToMenuTable()</t>
-<t tx="ekr.20031218072017.3768">def defineOutlineMenuTopMenuTable (self):
-    
-    __pychecker__ = 'no-unusednames=c,f'
-    
-    c = self.c ; f = self.frame
-
-    self.outlineMenuTopMenuTable = [
-        ("C&amp;ut Node",c.cutOutline),
-        ("C&amp;opy Node",c.copyOutline),
-        ("&amp;Paste Node",c.pasteOutline),
-        ("Pas&amp;te Node As Clone",c.pasteOutlineRetainingClones),
-        ("&amp;Delete Node",c.deleteOutline),
-        ("-",None,None),
-        ("&amp;Insert Node",c.insertHeadline),
-        ("&amp;Clone Node",c.clone),
-        ("Sort Childre&amp;n",c.sortChildren), # Conflicted with Hoist.
-        ("&amp;Sort Siblings",c.sortSiblings),
-        ("-",None),
-        ("&amp;Hoist",c.hoist),
-        ("D&amp;e-Hoist",f.c.dehoist),
-        ("-",None),
-    ]
-    # Ampersand bindings:  a,c,d,e,h,i,n,o,p,t,s,
-    # Bindings for entries that go to submenus: a,g,k,m,x</t>
-<t tx="ekr.20031218072017.3769">def defineOutlineMenuExpandContractMenuTable (self):
-    
-    __pychecker__ = 'no-unusednames=c,f'
-    
-    c = self.c ; f = self.frame
-
-    self.outlineMenuExpandContractMenuTable = [
-        ("&amp;Contract All",c.contractAllHeadlines),
-        ("Contract &amp;Node",c.contractNode),
-        ("Contract &amp;Parent",c.contractParent),
-        ("Contract Or Go Left",c.contractNodeOrGoToParent),
-        ("-",None),
-        ("Expand P&amp;rev Level",c.expandPrevLevel),
-        ("Expand N&amp;ext Level",c.expandNextLevel),
-        ("Expand And Go Right",c.expandNodeAndGoToFirstChild),
-        ("Expand Or Go Right",c.expandNodeOrGoToFirstChild),
-        ("-",None),
-        ("Expand To Level &amp;1",c.expandLevel1),
-        ("Expand To Level &amp;2",c.expandLevel2),
-        ("Expand To Level &amp;3",c.expandLevel3),
-        ("Expand To Level &amp;4",c.expandLevel4),
-        ("Expand To Level &amp;5",c.expandLevel5),
-        ("Expand To Level &amp;6",c.expandLevel6),
-        ("Expand To Level &amp;7",c.expandLevel7),
-        ("Expand To Level &amp;8",c.expandLevel8),
-        ("-",None),
-        ("Expand &amp;All",c.expandAllHeadlines),
-        ("Expand N&amp;ode",c.expandNode),
-    ]</t>
-<t tx="ekr.20031218072017.3770">def defineOutlineMenuMoveMenuTable (self):
-    
-    __pychecker__ = 'no-unusednames=c,f'
-    
-    c = self.c ; f = self.frame
-
-    self.outlineMenuMoveMenuTable = [
-        ("Move &amp;Down",c.moveOutlineDown),
-        ("Move &amp;Left",c.moveOutlineLeft),
-        ("Move &amp;Right",c.moveOutlineRight),
-        ("Move &amp;Up",c.moveOutlineUp),
-        ("-",None),
-        ("&amp;Promote",c.promote),
-        ("&amp;Demote",c.demote),
-    ]</t>
-<t tx="ekr.20031218072017.3771">def defineOutlineMenuMarkMenuTable (self):
-    
-    __pychecker__ = 'no-unusednames=c,f'
-    
-    c = self.c ; f = self.frame
-
-    self.outlineMenuMarkMenuTable = [
-        ("&amp;Mark",c.markHeadline),
-        ("Mark &amp;Subheads",c.markSubheads),
-        ("Mark Changed &amp;Items",c.markChangedHeadlines),
-        ("Mark Changed &amp;Roots",c.markChangedRoots),
-        ("Mark &amp;Clones",c.markClones),
-        ("&amp;Unmark All",c.unmarkAll),
-    ]</t>
-<t tx="ekr.20031218072017.3772">def defineOutlineMenuGoToMenuTable (self):
-    
-    __pychecker__ = 'no-unusednames=c,f'
-    
-    c = self.c ; f = self.frame
-
-    self.outlineMenuGoToMenuTable = [
-        ("Go Prev Visited",c.goPrevVisitedNode), # Usually use buttons for this.
-        ("Go Next Visited",c.goNextVisitedNode),
-        ("Go To Prev Node",c.selectThreadBack),
-        ("Go To Next Node",c.selectThreadNext),
-        ("-",None),
-        ("Go To Next Marked",c.goToNextMarkedHeadline),
-        ("Go To Next Changed",c.goToNextDirtyHeadline),
-        ("Go To Next Clone",c.goToNextClone),
-        ("-",None),
-        ("Go To First Node",c.goToFirstNode),
-        ("Go To Prev Visible",c.selectVisBack),
-        ("Go To Next Visible",c.selectVisNext),
-        ("Go To Last Node",c.goToLastNode),
-        ('Go To Last Visible',c.goToLastVisibleNode),
-        ("-",None),
-        ("Go To Parent",c.goToParent),
-        ('Go To First Sibling',c.goToFirstSibling),
-        ('Go To Last Sibling',c.goToLastSibling),
-        ("Go To Prev Sibling",c.goToPrevSibling),
-        ("Go To Next Sibling",c.goToNextSibling),
-    ]</t>
-<t tx="ekr.20031218072017.3773">def defineWindowMenuTables (self):
-    
-    __pychecker__ = 'no-unusednames=c,f'
-    
-    c = self.c ; f = self.frame
-
-    self.windowMenuTopTable = [
-        ("&amp;Equal Sized Panes",f.equalSizedPanes),
-        ("Toggle &amp;Active Pane",f.toggleActivePane),
-        ("Toggle &amp;Split Direction",f.toggleSplitDirection),
-        ("-",None),
-        ("Resize To Screen",f.resizeToScreen),
-        ("Casca&amp;de",f.cascade),
-        ("&amp;Minimize All",f.minimizeAll),
-        ("-",None),
-        ("Open &amp;Compare Window",c.openCompareWindow),
-        ("Open &amp;Python Window",c.openPythonWindow),
-    ]</t>
-<t tx="ekr.20031218072017.3774">def defineHelpMenuTables (self):
-    
-    __pychecker__ = 'no-unusednames=c,f'
-    
-    c = self.c ; f = self.frame
-
-    self.helpMenuTopTable = [
-        ("&amp;About Leo...",c.about),
-        ("Online &amp;Home Page",c.leoHome),
-        ("Open Online &amp;Tutorial",c.leoTutorial),
-    ]
-
-    self.helpMenuTop2Table = [
-        ("Open &amp;Offline Tutorial",f.leoHelp),
-    ]
-
-    self.helpMenuTop3Table = [
-        ("-",None,None),
-        ("Open Leo&amp;Docs.leo",c.leoDocumentation),
-        ("Open Leo&amp;Plugins.leo",c.openLeoPlugins),
-        ("Open Leo&amp;Settings.leo",c.openLeoSettings),
-    ]</t>
-<t tx="ekr.20031218072017.3785">def createMenusFromTables (self):
-    
-    c = self.c
-    
-    self.defineMenuTables()
-    
-    self.createFileMenuFromTable()
-    self.createEditMenuFromTable()
-    self.createOutlineMenuFromTable()
-    
-    g.doHook("create-optional-menus",c=c)
-    
-    if self.useCmdMenu:
-        self.createCmndsMenuFromTable()
-
-    self.createWindowMenuFromTable()
-    self.createHelpMenuFromTable()</t>
-<t tx="ekr.20031218072017.3786">def createEditMenuFromTable (self):
-
-    editMenu = self.createNewMenu("&amp;Edit")
-    self.createMenuEntries(editMenu,self.editMenuTopTable)
-
-    &lt;&lt; create the edit body submenu &gt;&gt;
-    &lt;&lt; create the edit headline submenu &gt;&gt;
-    &lt;&lt; create the find submenu &gt;&gt;
-    
-    self.createMenuEntries(editMenu,self.editMenuTop2Table)</t>
-<t tx="ekr.20031218072017.3787">editBodyMenu = self.createNewMenu("Edit &amp;Body...","Edit")
-
-self.createMenuEntries(editBodyMenu,self.editMenuEditBodyTable)</t>
-<t tx="ekr.20031218072017.3788">editHeadlineMenu = self.createNewMenu("Edit &amp;Headline...","Edit")
-
-self.createMenuEntries(editHeadlineMenu,self.editMenuEditHeadlineTable)</t>
-<t tx="ekr.20031218072017.3789">findMenu = self.createNewMenu("&amp;Find...","Edit")
-
-self.createMenuEntries(findMenu,self.editMenuFindMenuTable)</t>
-<t tx="ekr.20031218072017.3790">def createFileMenuFromTable (self):
-    
-    c = self.c
-    fileMenu = self.createNewMenu("&amp;File")
-    self.createMenuEntries(fileMenu,self.fileMenuTopTable)
-    self.createNewMenu("Open &amp;With...","File")
-    self.createMenuEntries(fileMenu,self.fileMenuTop2Table)
-    &lt;&lt; create the recent files submenu &gt;&gt;
-    self.add_separator(fileMenu)
-    &lt;&lt; create the read/write submenu &gt;&gt;
-    &lt;&lt; create the tangle submenu &gt;&gt;
-    &lt;&lt; create the untangle submenu &gt;&gt;
-    &lt;&lt; create the import submenu &gt;&gt;
-    &lt;&lt; create the export submenu &gt;&gt;
-    self.add_separator(fileMenu)
-    self.createMenuEntries(fileMenu,self.fileMenuTop3MenuTable)</t>
-<t tx="ekr.20031218072017.3791">self.createNewMenu("Recent &amp;Files...","File")
-c.recentFiles = c.config.getRecentFiles()
-
-if 0: # Not needed, and causes problems in wxWindows...
-    self.createRecentFilesMenuItems()</t>
-<t tx="ekr.20031218072017.3792">readWriteMenu = self.createNewMenu("&amp;Read/Write...","File")
-
-self.createMenuEntries(readWriteMenu,self.fileMenuReadWriteMenuTable)</t>
-<t tx="ekr.20031218072017.3793">tangleMenu = self.createNewMenu("&amp;Tangle...","File")
-
-self.createMenuEntries(tangleMenu,self.fileMenuTangleMenuTable)</t>
-<t tx="ekr.20031218072017.3794">untangleMenu = self.createNewMenu("&amp;Untangle...","File")
-
-self.createMenuEntries(untangleMenu,self.fileMenuUntangleMenuTable)</t>
-<t tx="ekr.20031218072017.3795">importMenu = self.createNewMenu("&amp;Import...","File")
-
-self.createMenuEntries(importMenu,self.fileMenuImportMenuTable)</t>
-<t tx="ekr.20031218072017.3796">exportMenu = self.createNewMenu("&amp;Export...","File")
-
-self.createMenuEntries(exportMenu,self.fileMenuExportMenuTable)</t>
-<t tx="ekr.20031218072017.3797">def createOutlineMenuFromTable (self):
-
-    outlineMenu = self.createNewMenu("&amp;Outline")
-    
-    self.createMenuEntries(outlineMenu,self.outlineMenuTopMenuTable)
-    
-    &lt;&lt; create check submenu &gt;&gt;
-    &lt;&lt; create expand/contract submenu &gt;&gt;
-    &lt;&lt; create move submenu &gt;&gt;
-    &lt;&lt; create mark submenu &gt;&gt;
-    &lt;&lt; create goto submenu &gt;&gt;</t>
-<t tx="ekr.20031218072017.3798">expandMenu = self.createNewMenu("E&amp;xpand/Contract...","Outline")
-
-self.createMenuEntries(expandMenu,self.outlineMenuExpandContractMenuTable)</t>
-<t tx="ekr.20031218072017.3799">moveSelectMenu = self.createNewMenu("&amp;Move...","Outline")
-
-self.createMenuEntries(moveSelectMenu,self.outlineMenuMoveMenuTable)</t>
-<t tx="ekr.20031218072017.3800">markMenu = self.createNewMenu("M&amp;ark/Unmark...","Outline")
-
-self.createMenuEntries(markMenu,self.outlineMenuMarkMenuTable)</t>
-<t tx="ekr.20031218072017.3801">gotoMenu = self.createNewMenu("&amp;Go To...","Outline")
-
-self.createMenuEntries(gotoMenu,self.outlineMenuGoToMenuTable)</t>
-<t tx="ekr.20031218072017.3802">def createWindowMenuFromTable (self):
-
-    windowMenu = self.createNewMenu("&amp;Window")
-    
-    self.createMenuEntries(windowMenu,self.windowMenuTopTable)</t>
-<t tx="ekr.20031218072017.3803">def createHelpMenuFromTable (self):
-
-    if 0: ## sys.platform == 'darwin':
-        helpMenu = self.getMacHelpMenu()
-        if not helpMenu: return
-    else:
-        helpMenu = self.createNewMenu("&amp;Help")
-    
-    self.createMenuEntries(helpMenu,self.helpMenuTopTable)
-    
-    if sys.platform=="win32":
-        self.createMenuEntries(helpMenu,self.helpMenuTop2Table)
-    
-    self.createMenuEntries(helpMenu,self.helpMenuTop3Table)</t>
 <t tx="ekr.20031218072017.3821"></t>
 <t tx="ekr.20031218072017.3907">def bringToFront (self):
     
@@ -1562,32 +936,6 @@ def moveIndexToNextLine(self,t,index):
         return u""
     else:
         return g.toUnicode(s,g.app.tkEncoding)</t>
-<t tx="ekr.20031218072017.4117">def defineMenuCallback(self,command,name,minibufferCommand):
-    
-    if minibufferCommand:
-        
-        # Create a dummy event as a signal to doCommand.
-        event = g.Bunch(keysym='',char='',widget='')
-        
-        # The first parameter must be event, and it must default to None.
-        def minibufferMenuCallback(event=event,self=self,command=command,label=name):
-            __pychecker__ = '--no-argsused' # event not used, and must be present.
-            
-            c = self.c
-            return c.doCommand(command,label,event)
-    
-        return minibufferMenuCallback
-        
-    else:
-    
-        # The first parameter must be event, and it must default to None.
-        def legacyMenuCallback(event=None,self=self,command=command,label=name):
-            __pychecker__ = '--no-argsused' # event not used, and must be present.
-            
-            c = self.c
-            return c.doCommand(command,label)
-    
-        return legacyMenuCallback</t>
 <t tx="ekr.20040629121554">def getBuildNumber(self):
     c = self
     return c.ver[10:-1] # Strip off "(dollar)Revision" and the trailing "$"</t>
@@ -1619,26 +967,6 @@ def moveIndexToNextLine(self,t,index):
     g.es(signon)
     g.es("Python %d.%d.%d, Tk %s, Pmw %s\n%s" % (n1,n2,n3,tkLevel,Pmw.version(),version))
     g.enl()</t>
-<t tx="ekr.20040711140738">def defineOutlineMenuCheckOutlineMenuTable (self):
-    
-    __pychecker__ = 'no-unusednames=c,f'
-    
-    c = self.c ; f = self.frame
-
-    self.outlineMenuCheckOutlineMenuTable = [
-        ("Check &amp;Outline",c.checkOutline),
-        ("&amp;Dump Outline",c.dumpOutline),
-        ("-",None),
-        ("Check &amp;All Python Code",c.checkAllPythonCode),
-        ("&amp;Check Python &amp;Code",c.checkPythonCode),
-        ("-",None),
-        ("Pretty P&amp;rint All Python Code",c.prettyPrintAllPythonCode),
-        ("&amp;Pretty Print Python Code",c.prettyPrintPythonCode),
-    ]
-    # shortcuts used: a,c,d,o,p,r</t>
-<t tx="ekr.20040711140738.1">checkOutlineMenu = self.createNewMenu("Chec&amp;k...","Outline")
-
-self.createMenuEntries(checkOutlineMenu,self.outlineMenuCheckOutlineMenuTable)</t>
 <t tx="ekr.20040803072955.16">def __init__(self,c,frame,canvas):
     
     # Init the base class.
@@ -2460,6 +1788,24 @@ def writeOpenFile(self,root,nosentinels=False,toString=False,fromString=''):
 
     if not toString and not nosentinels:
         at.warnAboutOrphandAndIgnoredNodes()</t>
+<t tx="ekr.20041029083459">By: Kent Tenney - ktenney
+Import to @file request  
+2004-10-28 11:27
+Howdy, 
+ 
+Please ignore if this is a difficult feature to implement. 
+ 
+File-&gt;Import-&gt;Import to @file  
+always starts in .../leo/src 
+ 
+I would prefer if it opened to the last directory from 
+which a file was imported. 
+ 
+I often find myself importing several files from the same area of the directory tree, and repeatedly navigating there from leo/src gets tiresome. 
+ 
+Thanks, 
+Kent
+</t>
 <t tx="ekr.20041119040438">@nocolor
 
 This tree contains settings unique to this outline.</t>
@@ -2467,6 +1813,14 @@ This tree contains settings unique to this outline.</t>
 
 Warning: Naive or hostile hooks may execute HOSTILE CODE contained in .leo files. See further warnings in LeoDocs.leo.
 </t>
+<t tx="ekr.20041130103128">By: Roger Erens - rogererens
+@
+2004-11-25 09:14
+On leo4.2, winXP, my default language is Python and smart_auto_indent=0. 
+Normally, after ending a line with a colon, the next line gets indented by 1 tab, also in comment-sections. 
+When using an @killcolor directive in a node, the line following one that ends with a colon starts at column zero.
+
+I think it is unreasonable for @killcolor to interfere with indenting.</t>
 <t tx="ekr.20041211042119"></t>
 <t tx="ekr.20050211100535">def test_g_getScript_strips_crlf():
 
@@ -2587,32 +1941,6 @@ def writeFromString(self,root,s,forcePythonSentinels=True,useSentinels=True):
         at.exception("exception preprocessing script")
 
     return at.stringOutput</t>
-<t tx="ekr.20050711091931">def defineEditMenuEditCursorTable (self):
-    
-    __pychecker__ = 'no-unusednames=c,f'
-    
-    c = self.c ; f = self.frame
-
-    if 0: ### Not ready yet.
-        # These should have Emacs names...
-        self.editMenuEditCursorTable = [
-            ('Delete Right',c.deleteRightChar), 
-            ('Delete Left',c.deleteLeftChar), 
-            # Moving the cursor.
-            ('Start of Line',c.moveToStartOfLine), 
-            ('End of Line',c.moveToEndOfLine), 
-            ('Start of Node',c.moveToStartOfNode),
-            ('End of Node',c.moveToEndOfNode), 
-            ('-',None,None),
-            # Extending the selection...
-            ('Select Line',c.selectEntireLine),
-            ('Extend To Start of Word',c.extendToStartOfWord),
-            ('Extend To End of Word',c.extendToEndOfWord),
-            ('Extend To Start Of Line',c.extendToStartOfLine), 
-            ('Extend To End Of Line',c.extendToEndOfLine), 
-            ('Extend To End of Node',c.extendToEndOfNode),
-            # The mark...
-        ]</t>
 <t tx="ekr.20050721093241">@nocolor
 
 The following are notes for anyone who is interested in writing alternate gui's for Leo.
@@ -2748,15 +2076,19 @@ Important:  the first Tkinter index is '1.0', not '0.0', but the row returned by
         'word-search-backward':                 self.wordSearchBackward,
     }</t>
 <t tx="ekr.20050920084036.261">def isearchForward (self,event):
+    '''Begin a forward incremental search.'''
     self.startIncremental(event,forward=True,regexp=False)
     
 def isearchBackward (self,event):
+    '''Begin a backward incremental search.'''
     self.startIncremental(event,forward=False,regexp=False)
     
 def isearchForwardRegexp (self,event):
+    '''Begin a forward incremental regexp search.'''
     self.startIncremental(event,forward=True,regexp=True)
     
 def isearchBackwardRegexp (self,event):
+    '''Begin a backard incremental regexp search.'''
     self.startIncremental(event,forward=False,regexp=True)</t>
 <t tx="ekr.20050920084036.262">def startIncremental (self,event,forward,regexp):
 
@@ -2876,6 +2208,40 @@ def iSearchStateHandler (self,event):
 
     w.tag_config('color',foreground='red')
     w.tag_config('color1',background='lightblue')</t>
+<t tx="ekr.20050920085536.16">def bindKey (self,pane,shortcut,callback,commandName):
+
+    '''Bind the indicated shortcut (a Tk keystroke) to the callback.
+    callback calls commandName (for error messages).'''
+    
+    k = self ; c = k.c
+
+    # g.trace(pane,shortcut,commandName)
+    if not shortcut:
+        # g.trace('No shortcut for %s' % commandName)
+        return False
+    &lt;&lt; give warning and return if we try to bind to Enter or Leave &gt;&gt;
+    if pane.endswith('-mode'):
+        g.trace('oops: ignoring mode binding',shortcut,commandName,g.callers())
+        return False
+    bunchList = k.bindingsDict.get(shortcut,[])
+    &lt;&lt; give warning and return if there is a serious redefinition &gt;&gt;
+    &lt;&lt; trace bindings if enabled in leoSettings.leo &gt;&gt;
+    try:
+        k.bindKeyToDict(pane,shortcut,callback,commandName)
+        bunchList.append(
+            g.bunch(pane=pane,func=callback,commandName=commandName))
+        shortcut = g.stripBrackets(shortcut.strip())
+        # if shortcut.startswith('&lt;Shift'): g.trace('ooops',shortcut,g.callers())
+        k.bindingsDict [shortcut] = bunchList
+        return True
+    except Exception: # Could be a user error.
+        if not g.app.menuWarningsGiven:
+            g.es_print('Exception binding %s to %s' % (shortcut,commandName))
+            g.es_exception()
+            g.app.menuWarningsGiven = True
+        return False
+        
+bindShortcut = bindKey # For compatibility</t>
 <t tx="ekr.20050920085536.38">def updateLabel (self,event):
 
     '''Mimic what would happen with the keyboard and a Text editor
@@ -2953,139 +2319,15 @@ def iSearchStateHandler (self,event):
         k.updateLabel(event)
         k.mb_tabListPrefix = k.getLabel()
     return 'break'</t>
-<t tx="ekr.20050920085536.65">def masterCommand (self,event,func,stroke,commandName=None):
-
-    '''This is the central dispatching method.
-    All commands and keystrokes pass through here.'''
-
-    k = self ; c = k.c
-    c.setLog()
-    trace = c.config.getBool('trace_masterCommand')
-  
-    c.startRedrawCount = c.frame.tree.redrawCount
-    k.stroke = stroke # Set this global for general use.
-    keysym = event and event.keysym or ''
-    ch = event and event.char or ''
-    w = event and event.widget
-    state = event and hasattr(event,'state') and event.state or 0
-    k.func = func
-    k.funcReturn = None # For unit testing.
-    commandName = commandName or func and func.__name__ or '&lt;no function&gt;'
-    special = keysym in (
-        'Caps_Lock','Num_Lock','Control_L','Alt_L','Shift_L','Control_R','Alt_R','Shift_R')
-    interesting = func is not None
-
-    if trace and interesting:
-        g.trace(
-            # 'stroke: ',stroke,'state:','%x' % state,'ch:',repr(ch),'keysym:',repr(keysym),
-            'w:',w and c.widget_name(w),'func:',func and func.__name__
-        )
-
-    # if interesting: g.trace(stroke,commandName,k.getStateKind())
-
-    inserted = not special or (
-        stroke != '&lt;Key&gt;' and (len(k.keysymHistory)==0 or k.keysymHistory[0]!=keysym))
-
-    if inserted:
-        # g.trace(stroke,keysym)
-        &lt;&lt; add character to history &gt;&gt;
-        
-    # We *must not* interfere with the global state in the macro class.
-    if c.macroCommands.recordingMacro:
-        done = c.macroCommands.startKbdMacro(event)
-        if done: return 'break'
-        
-    # g.trace(stroke,k.abortAllModesKey)
-
-    if k.abortAllModesKey and stroke == k.abortAllModesKey: # 'Control-g'
-        k.keyboardQuit(event)
-        k.endCommand(event,commandName)
-        return 'break'
-        
-    if special: # Don't pass these on.
-        return 'break' 
-
-    if 0: # *** This is now handled by k.masterKeyHandler.
-        if k.inState():
-            val = k.callStateFunction(event) # Calls end-command.
-            if val != 'do-func': return 'break'
-            g.trace('Executing key outside of mode')
-
-    if k.regx.iter:
-        try:
-            k.regXKey = keysym
-            k.regx.iter.next() # EKR: next() may throw StopIteration.
-        finally:
-            return 'break'
-
-    if k.abbrevOn:
-        expanded = c.abbrevCommands.expandAbbrev(event)
-        if expanded: return 'break'
-
-    if func: # Func is an argument.
-        if trace: g.trace('command',commandName)
-        if commandName.startswith('specialCallback'):
-            # The callback function will call c.doCommand
-            val = func(event)
-            # k.simulateCommand uses k.funcReturn.
-            k.funcReturn = k.funcReturn or val # For unit tests.
-        else:
-            # Call c.doCommand directly
-            c.doCommand(func,commandName,event=event)
-        k.endCommand(event,commandName)
-        return 'break'
-    elif k.inState():
-        return 'break' # New in 4.4b2: ignore unbound keys in a state.
-    else:
-        val = k.handleDefaultChar(event)
-        return val</t>
-<t tx="ekr.20050920085536.67"># Don't add multiple special characters to history.
-k.keysymHistory.insert(0,keysym)
-
-if len(ch) &gt; 0:
-    if len(keyHandlerClass.lossage) &gt; 99:
-        keyHandlerClass.lossage.pop()
-    keyHandlerClass.lossage.insert(0,ch)
-
-if 0: # traces
-    g.trace(keysym,stroke)
-    g.trace(k.keysymHistory)
-    g.trace(keyHandlerClass.lossage)</t>
-<t tx="ekr.20050920093543">def finishCreate (self):  # New in 4.4.
-    
-    '''Finish creating the commander after frame.finishCreate.
-    
-    Important: this is the last step in the startup process.'''
-    
-    c = self ; p = c.currentPosition()
-    c.miniBufferWidget = c.frame.miniBufferWidget
-    # g.trace('Commands',c.fileName()) # g.callers())
-    
-    # Create a keyHandler even if there is no miniBuffer.
-    c.keyHandler = c.k = k = leoKeys.keyHandlerClass(c,
-        useGlobalKillbuffer=True,
-        useGlobalRegisters=True)
-
-    if g.app.config and g.app.config.inited:
-        # A 'real' .leo file.
-        c.commandsDict = leoEditCommands.finishCreateEditCommanders(c)
-        k.finishCreate()
-    else:
-        # A leoSettings.leo file.
-        c.commandsDict = {}
-
-    # Create the menu last so that we can use the key handler for shortcuts.
-    if not g.doHook("menu1",c=c,p=p,v=p):
-        c.frame.menu.createMenuBar(c.frame)
-        
-    c.bodyWantsFocusNow()</t>
 <t tx="ekr.20050921103230">def defineCmdsMenuTables (self):
     
     self.defineCmdsMenuTopTable()
+
     self.defineCmdsMenuAbbrevTable()
     self.defineCmdsMenuBuffersTable()
     self.defineCmdsMenuCenterTable()
     self.defineCmdsMenuChangeCaseTable()
+    self.defineCmdsMenuHelpTable()
     self.defineCmdsMenuIndentTable()
     self.defineCmdsMenuMacroTable()
     self.defineCmdsMenuRectanglesTable()
@@ -3098,50 +2340,21 @@ if 0: # traces
     cmdsMenu = self.createNewMenu('C&amp;mds')
     self.createMenuEntries(cmdsMenu,self.cmdsMenuTopTable)
 
-    for name,table,sep in (
-        ('Abbrev...',       self.cmdsMenuAbbrevTable,       False),
-        ('Buffers...',      self.cmdsMenuBuffersTable,      False),
-        ('Center...',       self.cmdsMenuCenterTable,       False),
-        ('Change Case...',  self.cmdsMenuChangeCaseTable,   False),
-        ('Indent...',       self.cmdsMenuIndentTable,       False),
-        ('Macro...',        self.cmdsMenuMacroTable,        False),
-        ('Rectangles...',   self.cmdsMenuRectanglesTable,   False),
-        ('Registers...',    self.cmdsMenuRegistersTable,    False),
-        ('Sort...',         self.cmdsMenuSortTable,         False),
-        ('Spell Check...',  self.cmdsMenuSpellCheckTable,   False),
+    for name,table in (
+        ('&amp;Abbrev...',          self.cmdsMenuAbbrevTable),
+        ('&amp;Buffers...',         self.cmdsMenuBuffersTable),
+        ('&amp;Center...',          self.cmdsMenuCenterTable),
+        ('C&amp;hange Case...',     self.cmdsMenuChangeCaseTable),
+        ('&amp;Help For Commands...',self.cmdsMenuHelpTable),
+        ('&amp;Indent...',          self.cmdsMenuIndentTable),
+        ('&amp;Macro...',           self.cmdsMenuMacroTable),
+        ('&amp;Rectangles...',      self.cmdsMenuRectanglesTable),
+        ('Re&amp;gisters...',       self.cmdsMenuRegistersTable),
+        ('&amp;Sort...',            self.cmdsMenuSortTable),
+        ('S&amp;pell Check...',     self.cmdsMenuSpellCheckTable),
     ):
         menu = self.createNewMenu(name,'Cmds')
-        self.createMenuEntries(menu,table)
-        if sep: self.add_separator(cmdsMenu)</t>
-<t tx="ekr.20050923172809.1">def callStateFunction (self,event):
-    
-    k = self ; val = None
-    
-    # g.trace(k.state.kind)
-    
-    if k.state.kind:
-        if k.state.handler:
-            val = k.state.handler(event)
-            if val != 'continue':
-                k.endCommand(event,k.commandName)
-        else:
-            g.es_print('no state function for %s' % (k.state.kind),color='red')
-            
-    return val</t>
-<t tx="ekr.20050923174229.3">def callKeystrokeFunction (self,event):
-    
-    '''Handle a quick keystroke function.
-    Return the function or None.'''
-    
-    k = self
-    numberOfArgs, func = k.keystrokeFunctionDict [k.stroke]
-
-    if func:
-        func(event)
-        commandName = k.inverseCommandsDict.get(func) # Get the emacs command name.
-        k.endCommand(event,commandName)
-    
-    return func</t>
+        self.createMenuEntries(menu,table)</t>
 <t tx="ekr.20050928092516">k.argTabList = tabList and tabList[:] or []
 k.arg_completion = completion
 
@@ -3152,18 +2365,10 @@ k.mb_tabList = []
 # Clear the list: any non-tab indicates that a new prefix is in effect.
 k.mb_tabListPrefix = k.getLabel()
 k.oneCharacterArg = oneCharacter</t>
-<t tx="ekr.20051007143620">def printCommandsDict (self):
-    
-    c = self
-    
-    print 'Commands...'
-    keys = c.commandsDict.keys()
-    keys.sort()
-    for key in keys:
-        command = c.commandsDict.get(key)
-        print '%30s = %s' % (key,g.choose(command,command.__name__,'&lt;None&gt;'))
-    print</t>
+<t tx="ekr.20051012062458.1"></t>
 <t tx="ekr.20051020120306">def openFindTab (self,event=None,show=True):
+    
+    '''Open the Find tab in the log pane.'''
 
     c = self.c ; log = c.frame.log ; tabName = 'Find'
     
@@ -3566,96 +2771,60 @@ if not found:
         g.app.gui.setTextSelection(w,"1.0","end")
 
     return "break"</t>
-<t tx="ekr.20051020120306.28">def gui_search (self,t,*args,**keys):
-    return t.search(*args,**keys)
-
-def init_s_ctrl (self,s):
+<t tx="ekr.20051020120306.28">def init_s_ctrl (self,s):
     t = self.s_ctrl
     t.delete("1.0","end")
     t.insert("end",s)
     t.mark_set("insert",g.choose(self.reverse,"end","1.0"))
     return t</t>
-<t tx="ekr.20051021091958">ok = (
-    type(data) in (type(()), type([])) and
-    len(data) in (2,3)
-)
-    
-if ok:
-    if len(data) == 2:
-        # New in 4.4b2: command can be a minibuffer-command name (a string)
-        label,command = data
-    else:
-        # New in 4.4: we ignore shortcuts bound in menu tables.
-        label,junk,command = data
-else:
-    g.trace('bad data in menu table: %s' % repr(data))
-    continue # Ignore bad data
-     
-if ok and label in (None,'-'):
-    self.add_separator(menu)
-    continue # That's all.</t>
-<t tx="ekr.20051021100806.1">@ One not-so-horrible kludge remains.
-
-The cut/copy/paste commands in the menu tables are not the same as the methods
-actually bound to cut/copy/paste-text minibuffer commands, so we must do a bit
-of extra translation to discover whether the user has overridden their
-bindings.
-@c
-
-if command in (f.OnCutFromMenu,f.OnCopyFromMenu,f.OnPasteFromMenu):
-    emacs_name = '%s-text' % commandName
-else:
-    try: # User errors in the table can cause this.
-        emacs_name = k.inverseCommandsDict.get(command.__name__)
-    except Exception:
-        emacs_name = None</t>
 <t tx="ekr.20051022212004"># Just open the Find tab if it has never been opened.
 # For minibuffer commands, it would be good to force the Find tab to be visible.
 # However, this leads to unfortunate confusion when executed from a shortcut.
 
 def findTabChange(self,event=None):
-
+    '''Execute the 'Change' command with the settings shown in the Find tab.'''
     if self.findTabHandler:
         self.findTabHandler.changeCommand()
     else:
         self.openFindTab()
         
 def findTabChangeAll(self,event=None):
-
+    '''Execute the 'Change All' command with the settings shown in the Find tab.'''
     if self.findTabHandler:
         self.findTabHandler.changeAllCommand()
     else:
         self.openFindTab()
 
 def findTabChangeThenFind(self,event=None):
-
+    '''Execute the 'Replace, Find' command with the settings shown in the Find tab.'''
     if self.findTabHandler:
         self.findTabHandler.changeThenFindCommand()
     else:
         self.openFindTab()
         
 def findTabFindAll(self,event=None):
-
+    '''Execute the 'Find All' command with the settings shown in the Find tab.'''
     if self.findTabHandler:
         self.findTabHandler.findAllCommand()
     else:
         self.openFindTab()
 
 def findTabFindNext (self,event=None):
-    
+    '''Execute the 'Find Next' command with the settings shown in the Find tab.'''
     if self.findTabHandler:
         self.findTabHandler.findNextCommand()
     else:
         self.openFindTab()
 
 def findTabFindPrev (self,event=None):
-    
+    '''Execute the 'Find Previous' command with the settings shown in the Find tab.'''
     if self.findTabHandler:
         self.findTabHandler.findPrevCommand()
     else:
         self.openFindTab()
         
 def hideFindTab (self,event=None):
+    '''Hide the Find tab.'''
     if self.findTabHandler:
         self.c.frame.log.selectTab('Log')</t>
 <t tx="ekr.20051023094009"></t>
@@ -3732,26 +2901,6 @@ def changeThenFindCommand(self,event=None):
     
     self.setup_command()
     self.changeThenFind()</t>
-<t tx="ekr.20051026083544">def handleDefaultChar(self,event):
-    
-    k = self ; c = k.c
-    w = event and event.widget
-    name = c.widget_name(w)
-
-    if name.startswith('body'):
-        action = k.unboundKeyAction
-        if action in ('insert','overwrite'):
-            c.editCommands.selfInsertCommand(event,action=action)
-        else:
-            pass ; g.trace('ignoring key')
-        return 'break'
-    elif name.startswith('head'):
-        c.frame.tree.onHeadlineKey(event)
-        return 'break'
-    else:
-        # Let tkinter handle the event.
-        # ch = event and event.char ; g.trace('to tk:',name,repr(ch))
-        return None</t>
 <t tx="ekr.20051026083733.6">body.colorizer.interrupt()
 c.frame.scanForTabWidth(p)
 body.recolor_now(p,incremental=not self.forceFullRecolorFlag)
@@ -3771,9 +2920,144 @@ try:
         redraw_flag = True
 finally:
     c.endUpdate(redraw_flag)</t>
+<t tx="ekr.20051026092433">def updateTab (self,p,w):
+
+    c = self.c ; d = g.scanDirectives(c,p)
+    tab_width = d.get("tabwidth",c.tab_width)
+    
+    i,j = g.app.gui.getTextSelection(w)
+    if i != j:
+        w.delete(i,j)
+    if tab_width &gt; 0:
+        w.insert("insert",'\t')
+    else:
+        # Get the preceeding characters.
+        s = w.get("insert linestart","insert")
+    
+        # Compute n, the number of spaces to insert.
+        width = g.computeWidth(s,tab_width)
+        n = abs(tab_width) - (width % abs(tab_width))
+        w.insert("insert",' ' * n)</t>
+<t tx="ekr.20051026171121">i,j = oldSel
+
+if i != j:
+    # No auto-indent if there is selected text.
+    w.delete(i,j)
+    w.insert(i,ch)
+else:
+    w.insert(i,ch)
+    if c.frame.body.colorizer.useSyntaxColoring(p) and undoType != "Change":
+        # No auto-indent if in @nocolor mode or after a Change command.
+        removeTrailing = self.updateAutoIndent(p,w)
+        # g.trace(removeTrailing)</t>
+<t tx="ekr.20051026171121.1"># By David McNab:
+def updateAutoIndent (self,p,w):
+
+    c = self.c ; d = g.scanDirectives(c,p)
+    tab_width = d.get("tabwidth",c.tab_width) # Get the previous line.
+    s = w.get("insert linestart - 1 lines","insert linestart -1c")
+    # Add the leading whitespace to the present line.
+    junk, width = g.skip_leading_ws_with_indent(s,0,tab_width)
+    if s and len(s) &gt; 0 and s [ -1] == ':':
+        # For Python: increase auto-indent after colons.
+        if c.frame.body.colorizer.scanColorDirectives(p) == "python":
+            width += abs(tab_width)
+    if c.config.getBool("smart_auto_indent"):
+        # Determine if prev line has unclosed parens/brackets/braces
+        brackets = [width] ; tabex = 0
+        for i in range(0,len(s)):
+            if s [i] == '\t':
+                tabex += tab_width-1
+            if s [i] in '([{':
+                brackets.append(i+tabex+1)
+            elif s [i] in '}])' and len(brackets) &gt; 1:
+                brackets.pop()
+        width = brackets.pop()
+    ws = g.computeLeadingWhitespace(width,tab_width)
+    if ws:
+        w.insert("insert",ws)
+        removeTrailing = False
+    else:
+        removeTrailing = None
+    return removeTrailing</t>
+<t tx="ekr.20051027172949">def updateAutomatchBracket (self,p,w,ch,oldSel):
+    
+    # assert ch in ('(',')','[',']','{','}')
+    
+    c = self.c ; d = g.scanDirectives(c,p) ; i,j = oldSel
+    language = d.get('language')
+    
+    if ch in ('(','[','{',):
+        automatch = language not in ('plain',)
+        if automatch:
+            ch = ch + {'(':')','[':']','{':'}'}.get(ch)
+        if i != j:
+            w.delete(i,j)
+        w.insert(i,ch)
+        if automatch:
+            w.mark_set('insert','insert-1c')
+    else:
+        ch2 = w.get('insert')
+        if ch2 in (')',']','}'):
+            w.mark_set('insert','insert+1c')
+        else:
+            if i != j:
+                w.delete(i,j)
+            w.insert(i,ch)</t>
 <t tx="ekr.20051031040240"></t>
 <t tx="ekr.20051105073850"></t>
 <t tx="ekr.20051121070552"></t>
+<t tx="ekr.20051125080855">def selfInsertCommand(self,event,action='insert'):
+    
+    '''Insert a character in the body pane.
+    This is the default binding for all keys in the body pane.'''
+    
+    c = self.c ; p = c.currentPosition()
+    # g.trace('event',event,g.callers())
+    ch = event and event.char or ''
+    if event and event.keysym == 'Return': ch = '\n' # This fixes the MacOS return bug.
+    w = event and event.widget
+    name = c.widget_name(w)
+    # g.trace(name)
+    oldSel =  name.startswith('body') and g.app.gui.getTextSelection(w)
+    oldText = name.startswith('body') and p.bodyString()
+    removeTrailing = None # A signal to compute it later.
+    undoType = 'Typing'
+    trace = c.config.getBool('trace_masterCommand')
+    
+    if trace: g.trace(name,repr(ch))
+    
+    if g.doHook("bodykey1",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType):
+        return "break" # The hook claims to have handled the event.
+        
+    if ch == '\t':
+        removeTrailing = self.updateTab(p,w)
+    elif ch == '\b':
+        # This is correct: we only come here if there no bindngs for this key. 
+        self.backwardDeleteCharacter(event)
+    elif ch in ('\r','\n'):
+        ch = '\n'
+        &lt;&lt; handle newline &gt;&gt;
+    elif ch in ('(',')','[',']','{','}') and c.config.getBool('autocomplete-brackets'):
+        self.updateAutomatchBracket(p,w,ch,oldSel)
+    elif ch: # Null chars must not delete the selection.
+        i,j = oldSel
+        if i != j:                  w.delete(i,j)
+        elif action == 'overwrite': w.delete(i,'%s+1c' % i)
+        w.insert(i,ch)                     
+    else:
+        return 'break' # New in 4.4a5: this method *always* returns 'break'
+
+    # Update the text and handle undo.
+    newText = g.app.gui.getAllText(w) # New in 4.4b3: converts to unicode.
+    # g.trace(repr(newText))
+    w.see(w.index('insert'))
+    if newText != oldText:
+        c.frame.body.onBodyChanged(undoType=undoType,
+            oldSel=oldSel,oldText=oldText,oldYview=None,removeTrailing=removeTrailing)
+            
+    g.doHook("bodykey2",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType)
+    return 'break'</t>
 <t tx="ekr.20051216155728">def beginUpdate (self):
     
     self.updateCount += 1
@@ -3789,12 +3073,33 @@ def endUpdate (self,flag,scroll=False):
             self.redraw_now(scroll=scroll)
         if self.updateCount &lt; 0:
             g.trace("Can't happen: negative updateCount",g.callers())</t>
+<t tx="ekr.20060114110141">if c.config.getBool('trace_bindings'):
+    theFilter = c.config.getString('trace_bindings_filter') or ''
+    # g.trace(repr(theFilter))
+    if not theFilter or shortcut.find(theFilter) != -1:
+        pane_filter = c.config.getString('trace_bindings_pane_filter')
+        if not pane_filter or pane_filter.lower() == pane:
+            g.trace(pane,shortcut,commandName)</t>
+<t tx="ekr.20060114115648">for bunch in bunchList:
+
+    if ( bunch and
+        # (not bunch.pane.endswith('-mode') and not pane.endswith('-mode')) and
+        bunch.pane != 'mini' and # Minibuffer bindings are completely separate.
+        (bunch.pane == pane or pane == 'all' or bunch.pane == 'all') and
+        commandName != bunch.commandName
+    ):
+        g.es_print('Ignoring redefinition of %s from %s to %s in %s' % (
+            k.prettyPrintKey(shortcut),
+            bunch.commandName,commandName,pane),
+            color='blue')
+        return</t>
 <t tx="ekr.20060117094955">def defineCmdsMenuTopTable (self):
     
     self.cmdsMenuTopTable = [
-        ('Repeat Last Complex Command','repeat-complex-command'),
-        ('Execute Named Command','full-command'),
-        ("-",None),
+        ('Repeat &amp;Last Complex Command',    'repeat-complex-command'),
+        ('&amp;Execute Named Command',          'full-command'),
+        ('Keyboard &amp;Quit',                  'keyboard-quit'),
+        ('-', None),
     ]
 </t>
 <t tx="ekr.20060117094955.1">def defineCmdsMenuAbbrevTable (self):
@@ -3802,219 +3107,178 @@ def endUpdate (self,flag,scroll=False):
     c = self.c
     
     self.cmdsMenuAbbrevTable = [
-        ("-",None),
+        ('&amp;Toggle Abbreviation Mode',    'abbrev-mode'),
+        ('-', None),
+        ('&amp;List Abbrevs',                'list-abbrevs'),
+        ('&amp;Read Abbrevs',                'read-abbrev-file'),
+        ('&amp;Write Abbrevs',               'write-abbrev-file'),
+        ('-', None),
+        ('&amp;Add Global Abbrev',           'add-global-abbrev'),
+        ('&amp;Inverse Add Global Abbrev',   'inverse-add-global-abbrev'),
+        ('&amp;Kill All Abbrevs',            'kill-all-abbrevs'),
+        ('-', None),
+        # ('&amp;Expand Abbrev',             'expand-abbrev'), # Not a command
+        ('&amp;Expand Abbrev in Region',     'expand-region-abbrevs'),
     ]</t>
 <t tx="ekr.20060117095212">def defineCmdsMenuBuffersTable (self):
 
     self.cmdsMenuBuffersTable = [
-        ('Append To Buffer',             'append-to-buffer'),
-        ('Kill Buffer',                  'kill-buffer'),
-        ('List Buffers',                 'list-buffers'),
-        ('List Buffers Alphbetically',   'list-buffers-alphabetically'),
-        ('Prepend To Buffer',            'prepend-to-buffer'),
-        ('Rename Buffer',                'rename-buffer'),
-        ('Switch To Buffer',             'switch-to-buffer'),
+        ('&amp;Append To Buffer',             'append-to-buffer'),
+        ('&amp;Kill Buffer',                  'kill-buffer'),
+        ('List &amp;Buffers',                 'list-buffers'),
+        ('&amp;List Buffers Alphbetically',   'list-buffers-alphabetically'),
+        ('&amp;Prepend To Buffer',            'prepend-to-buffer'),
+        ('&amp;Rename Buffer',                'rename-buffer'),
+        ('&amp;Switch To Buffer',             'switch-to-buffer'),
     ]</t>
 <t tx="ekr.20060117095212.1">def defineCmdsMenuRegistersTable (self):
 
     c = self.c
 
     self.cmdsMenuRegistersTable = [
-        ("-",None),
+        ('&amp;Append To Reg',   'append-to-register'),
+        ('Copy R&amp;ect To Reg','copy-rectangle-to-register'),
+        ('&amp;Copy To Reg',     'copy-to-register'),
+        ('I&amp;nc Reg',         'increment-register'),
+        ('&amp;Insert Reg',      'insert-register'),
+        ('&amp;Jump To Reg',     'jump-to-register'),
+        # ('xxx',           'number-to-register'),
+        ('&amp;Point to Reg',    'point-to-register'),
+        ('P&amp;repend To Reg',  'prepend-to-register'),
+        ('&amp;View Reg',        'view-register'),
     ]</t>
 <t tx="ekr.20060117095212.2">def defineCmdsMenuRectanglesTable (self):
 
     c = self.c
 
     self.cmdsMenuRectanglesTable = [
-        ("-",None),
+        ('&amp;Clear Rect',  'clear-rectangle'),
+        ('C&amp;lose Rect',  'close-rectangle'),
+        ('&amp;Delete Rect', 'delete-rectangle'),
+        ('&amp;Kill Rect',   'kill-rectangle'),
+        ('&amp;Open Rect',   'open-rectangle'),
+        ('&amp;String Rect', 'string-rectangle'),
+        ('&amp;Yank Rect',   'yank-rectangle'),
     ]</t>
 <t tx="ekr.20060117095212.3">def defineCmdsMenuSortTable (self):
 
     c = self.c
 
     self.cmdsMenuSortTable = [
-        ('Sort Columns',    'sort-columns'),
-        ('Sort Fields',     'sort-fields'),
-        ('Sort Lines',      'sort-lines'),
+        ('Sort &amp;Columns',    'sort-columns'),
+        ('Sort &amp;Fields',     'sort-fields'),
+        ('Sort &amp;Lines',      'sort-lines'),
     ]</t>
 <t tx="ekr.20060117095212.4">def defineCmdsMenuChangeCaseTable (self):
 
     c = self.c
 
     self.cmdsMenuChangeCaseTable = [
-        ('Capitalize Word', 'capitalize-word'),
-        ('Downcase Region', 'downcase-region'),
-        ('Downcase Word',   'downcase-word'),
-        ('Upcase Region',   'upcase-region'), # Crashes.
-        ('Upcase Word',     'upcase-word'),
+        ('&amp;Capitalize Word', 'capitalize-word'),
+        ('&amp;Downcase Word',   'downcase-word'),
+        ('&amp;Upcase Word',     'upcase-word'),
+        ('-', None),
+        ('D&amp;owncase Region', 'downcase-region'),
+        ('U&amp;pcase Region',   'upcase-region'),
     ]
-    </t>
+</t>
 <t tx="ekr.20060117095212.5">def defineCmdsMenuCenterTable (self):
 
     c = self.c
 
     self.cmdsMenuCenterTable = [
-        ('Center Line',     'center-line'),
-        ('Center Region',   'center-region'),
+        ('Center &amp;Line',     'center-line'),
+        ('Center &amp;Region',   'center-region'),
     ]</t>
 <t tx="ekr.20060117095212.6">def defineCmdsMenuIndentTable (self):
 
     c = self.c
 
     self.cmdsMenuIndentTable = [
-        ('Indent Region',   'indent-region'),
-        ('Indent Relative', 'indent-relative'),
-        ('Indent Rigidly',  'indent-rigidly'),
-        ('Unindent Region', 'unindent-region'),
+        ('&amp;Indent Region',   'indent-region'),
+        ('Indent R&amp;elative', 'indent-relative'),
+        ('Indent Ri&amp;gidly',  'indent-rigidly'),
+        ('&amp;Unindent Region', 'unindent-region'),
     ]</t>
 <t tx="ekr.20060117095212.7">def defineCmdsMenuSpellCheckTable (self):
 
     c = self.c
 
     self.cmdsMenuSpellCheckTable = [
-        ('Check Spelling',      'open-spell-tab'),
-        ('Change',              'spell-change'),
-        ('Change, Then Find',   'spell-change-then-find'),
-        ('Find',                'spell-find'),
-        ('Ignore',              'spell-ignore'),
+        ('Check &amp;Spelling',      'open-spell-tab'),
+        ('&amp;Change',              'spell-change'),
+        ('Change, &amp;Then Find',   'spell-change-then-find'),
+        ('&amp;Find',                'spell-find'),
+        ('&amp;Ignore',              'spell-ignore'),
     ]</t>
-<t tx="ekr.20060117112444">@nocolor
-
-- Call menu.defineMenuTables from menu.createMenusFromTables.
-  This ensures the keyHandler class has been created.
-
-- Added support for using minibuffer command names instead of command in menu
-tables. This is a signal that the command is a new-style minibuffer command
-rather than a legacy command. This required minor changes in createMenu entries
-and defineMenuCallback.</t>
 <t tx="ekr.20060117114315">def defineCmdsMenuMacroTable (self):
 
     c = self.c
 
     self.cmdsMenuMacroTable = [
-        ("-",None),
+        ('&amp;Load Macro File',     'load-file'),
+        ("-", None),
+        ('&amp;Start Macro',         'start-kbd-macro'),
+        ('&amp;End Macro',           'end-kbd-macro'),
+        ('&amp;Name Last Macro',     'name-last-kbd-macro'),
+        ("-", None),
+        ('&amp;Call Last Macro',     'call-last-keyboard-macro'),
+        ('&amp;Insert Macro',        'insert-keyboard-macro'),
     ]</t>
-<t tx="ekr.20060117114903"></t>
-<t tx="ekr.20060117123143">        'back-to-indentation':                  self.backToIndentation,
-        'back-char':                            self.backCharacter,
-        'back-char-extend-selection':           self.backCharacterExtendSelection,
-        'back-paragraph':                       self.backwardParagraph,
-        'back-paragraph-extend-selection':      self.backwardParagraphExtendSelection,
-        'back-sentence':                        self.backSentence,
-        'back-sentence-extend-selection':       self.backSentenceExtendSelection,
-        'back-word':                            self.backwardWord,
-        'back-word-extend-selection':           self.backwardWordExtendSelection,
-        'backward-delete-char':                 self.backwardDeleteCharacter,
-        'backward-kill-paragraph':              self.backwardKillParagraph,
-        'beginning-of-buffer':                  self.beginningOfBuffer,
-        'beginning-of-buffer-extend-selection': self.beginningOfBufferExtendSelection,
-        'beginning-of-line':                    self.beginningOfLine,
-        'beginning-of-line-extend-selection':   self.beginningOfLineExtendSelection,
-       
-        'clear-extend-mode':                    self.clearExtendMode,
-        'count-region':                         self.countRegion,
-        'cycle-focus':                          self.cycleFocus,
-        'dabbrev-completion':                   self.dynamicExpansion2,
-        'dabbrev-expands':                      self.dynamicExpansion,
-        'delete-char':                          self.deleteNextChar,
-        'delete-indentation':                   self.deleteIndentation,
-        'delete-spaces':                        self.deleteSpaces,
-        'downcase-region':                      self.downCaseRegion,
-        'downcase-word':                        self.downCaseWord,
-        'end-of-buffer':                        self.endOfBuffer,
-        'end-of-buffer-extend-selection':       self.endOfBufferExtendSelection,
-        'end-of-line':                          self.endOfLine,
-        'end-of-line-extend-selection':         self.endOfLineExtendSelection,
-        'escape':                               self.watchEscape,
-        'eval-expression':                      self.evalExpression,
-        'exchange-point-mark':                  self.exchangePointMark,
-        'fill-paragraph':                       self.fillParagraph,
-        'fill-region':                          self.fillRegion,
-        'fill-region-as-paragraph':             self.fillRegionAsParagraph,
-        'flush-lines':                          self.flushLines,
-        'focus-to-body':                        self.focusToBody,
-        'focus-to-log':                         self.focusToLog,
-        'focus-to-minibuffer':                  self.focusToMinibuffer,
-        'focus-to-tree':                        self.focusToTree,
-        'forward-char':                         self.forwardCharacter,
-        'forward-char-extend-selection':        self.forwardCharacterExtendSelection,
-        'forward-paragraph':                    self.forwardParagraph,
-        'forward-paragraph-extend-selection':   self.forwardParagraphExtendSelection,
-        'forward-sentence':                     self.forwardSentence,
-        'forward-sentence-extend-selection':    self.forwardSentenceExtendSelection,
-        'forward-word':                         self.forwardWord,
-        'forward-word-extend-selection':        self.forwardWordExtendSelection,
-        'goto-char':                            self.gotoCharacter,
-        'goto-line':                            self.gotoLine,
-        'how-many':                             self.howMany,
-        # Use indentBody in leoCommands.py
-        #'indent-region':                       self.indentRegion,
-        'indent-relative':                      self.indentRelative,
-        'indent-rigidly':                       self.tabIndentRegion,
-        'indent-to-comment-column':             self.indentToCommentColumn,
-        'insert-newline':                       self.insertNewline,
-        'insert-parentheses':                   self.insertParentheses,
-        'keep-lines':                           self.keepLines,
-        'kill-paragraph':                       self.killParagraph,
-        'line-number':                          self.lineNumber,
-        'move-past-close':                      self.movePastClose,
-        'move-past-close-extend-selection':     self.movePastCloseExtendSelection,
-        'newline-and-indent':                   self.insertNewLineAndTab,
-        'next-line':                            self.nextLine,
-        'next-line-extend-selection':           self.nextLineExtendSelection,
-        'previous-line':                        self.prevLine,
-        'previous-line-extend-selection':       self.prevLineExtendSelection,
-        'remove-blank-lines':                   self.removeBlankLines,
-        'replace-regex':                        self.activateReplaceRegex,
-        'replace-string':                       self.replaceString,
-        'reverse-region':                       self.reverseRegion,
-        'scroll-down':                          self.scrollDown,
-        'scroll-down-extend-selection':         self.scrollDownExtendSelection,
-        'scroll-up':                            self.scrollUp,
-        'scroll-up-extend-selection':           self.scrollUpExtendSelection,
-        'select-paragraph':                     self.selectParagraph,
-        # Exists, but can not be executed via the minibuffer.
-        # 'self-insert-command':                self.selfInsertCommand,
-        'set-comment-column':                   self.setCommentColumn,
-        'set-extend-mode':                      self.setExtendMode,
-        'set-fill-column':                      self.setFillColumn,
-        'set-fill-prefix':                      self.setFillPrefix,
-        'set-mark-command':                     self.setRegion,
-        'show-colors':                          self.showColors,
-        'show-fonts':                           self.showFonts,
-        # 'save-buffer':                        self.saveFile,
-        'split-line':                           self.insertNewLineIndent,
-        'tabify':                               self.tabify,
-        'toggle-extend-mode':                   self.toggleExtendMode,
-        'transpose-chars':                      self.transposeCharacters,
-        'transpose-lines':                      self.transposeLines,
-        'transpose-words':                      self.transposeWords,
-        'untabify':                             self.untabify,
-      
-</t>
 <t tx="ekr.20060122184114">- Entering outline mode should call c.endEditing.
 - Entering edit mode shouldn't call c.endEditing!
 </t>
-<t tx="ekr.20060123115459">def setFindScopeEveryWhere     (self, event): return self.setFindScope('entire-outline')
-def setFindScopeNodeOnly       (self, event): return self.setFindScope('node-only')
-def setFindScopeSuboutlineOnly (self, event): return self.setFindScope('suboutline-only')
+<t tx="ekr.20060123115459">def setFindScopeEveryWhere (self, event):
+    '''Set the 'Entire Outline' radio button in the Find tab.'''
+    return self.setFindScope('entire-outline')
 
-def setFindScope (self, where): self.getHandler().setFindScope(where)
+def setFindScopeNodeOnly  (self, event):
+    '''Set the 'Node Only' radio button in the Find tab.'''
+    return self.setFindScope('node-only')
 
-def showFindOptions      (self,event): self.getHandler().showFindOptions()
+def setFindScopeSuboutlineOnly (self, event):
+    '''Set the 'Suboutline Only' radio button in the Find tab.'''
+    return self.setFindScope('suboutline-only')
+    
+def showFindOptions (self,event):
+    '''Show all Find options in the minibuffer label area.'''
+    self.getHandler().showFindOptions()
 
-def toggleIgnoreCaseOption     (self, event): return self.toggleOption('ignore_case')
-def toggleMarkChangesOption    (self, event): return self.toggleOption('mark_changes')
-def toggleMarkFindsOption      (self, event): return self.toggleOption('mark_finds')
-def toggleRegexOption          (self, event): return self.toggleOption('pattern_match')
-def toggleReverseOption        (self, event): return self.toggleOption('reverse')
-def toggleSearchBodyOption     (self, event): return self.toggleOption('search_body')
-def toggleSearchHeadlineOption (self, event): return self.toggleOption('search_headline')
-def toggleWholeWordOption      (self, event): return self.toggleOption('whole_word')
-def toggleWrapSearchOption     (self, event): return self.toggleOption('wrap')
+def toggleIgnoreCaseOption     (self, event):
+    '''Toggle the 'Ignore Case' checkbox in the Find tab.'''
+    return self.toggleOption('ignore_case')
 
-def toggleOption (self, ivar): self.getHandler().toggleOption(ivar)</t>
+def toggleMarkChangesOption (self, event):
+    '''Toggle the 'Mark Changes' checkbox in the Find tab.'''
+    return self.toggleOption('mark_changes')
+def toggleMarkFindsOption (self, event):
+    '''Toggle the 'Mark Finds' checkbox in the Find tab.'''
+    return self.toggleOption('mark_finds')
+def toggleRegexOption (self, event):
+    '''Toggle the 'Regexp' checkbox in the Find tab.'''
+    return self.toggleOption('pattern_match')
+def toggleReverseOption        (self, event):
+    '''Toggle the 'Reverse' checkbox in the Find tab.'''
+    return self.toggleOption('reverse')
+
+def toggleSearchBodyOption (self, event):
+    '''Set the 'Search Body' checkbox in the Find tab.'''
+    return self.toggleOption('search_body')
+
+def toggleSearchHeadlineOption (self, event):
+    '''Toggle the 'Search Headline' checkbox in the Find tab.'''
+    return self.toggleOption('search_headline')
+
+def toggleWholeWordOption (self, event):
+    '''Toggle the 'Whole Word' checkbox in the Find tab.'''
+    return self.toggleOption('whole_word')
+
+def toggleWrapSearchOption (self, event):
+    '''Toggle the 'Wrap Around' checkbox in the Find tab.'''
+    return self.toggleOption('wrap')
+    
+def setFindScope (self, where):  self.getHandler().setFindScope(where)
+def toggleOption (self, ivar):   self.getHandler().toggleOption(ivar)</t>
 <t tx="ekr.20060123125256">class minibufferFind:
 
     '''An adapter class that implements minibuffer find commands using the (hidden) Find Tab.'''
@@ -4035,18 +3299,56 @@ def toggleOption (self, ivar): self.getHandler().toggleOption(ivar)</t>
     s = k.shortcutFromSetting(s)
     self.replaceStringShortcut = s</t>
 <t tx="ekr.20060123131421"></t>
-<t tx="ekr.20060124093828">def cloneFindAll       (self,event): self.getHandler().cloneFindAll(event)
-def findAll            (self,event): self.getHandler().findAll(event)
+<t tx="ekr.20060124093828">def cloneFindAll (self,event):
+    '''Do search-with-present-options and print all matches in the log pane. It
+    also creates a node at the beginning of the outline containing clones of all
+    nodes containing the 'find' string. Only one clone is made of each node,
+    regardless of how many clones the node has, or of how many matches are found
+    in each node.'''
+    self.getHandler().cloneFindAll(event)
 
-def replaceString      (self,event): self.getHandler().replaceString(event)
-def reSearchBackward   (self,event): self.getHandler().reSearchBackward(event)
-def reSearchForward    (self,event): self.getHandler().reSearchForward(event)
-def searchBackward     (self,event): self.getHandler().searchBackward(event)
-def searchForward      (self,event): self.getHandler().searchForward(event)
-def wordSearchBackward (self,event): self.getHandler().wordSearchBackward(event)
-def wordSearchForward  (self,event): self.getHandler().wordSearchForward(event)
+def findAll            (self,event):
+    '''Do search-with-present-options and print all matches in the log pane.'''
+    self.getHandler().findAll(event)
+
+def replaceString      (self,event):
+    '''Prompts for a search string. Type &lt;Return&gt; to end the search string. The
+    command will then prompt for the replacement string. Typing a second
+    &lt;Return&gt; key will place both strings in the Find tab and executes a **find**
+    command, that is, the search-with-present-options command.'''
+    self.getHandler().replaceString(event)
+
+def reSearchBackward   (self,event):
+    '''Set the 'Regexp' checkbox to True and the 'Reverse' checkbox to True,
+    then do search-with-present-options.'''
+    self.getHandler().reSearchBackward(event)
+
+def reSearchForward    (self,event):
+    '''Set the 'Regexp' checkbox to True, then do search-with-present-options.'''
+    self.getHandler().reSearchForward(event)
+
+def searchBackward     (self,event):
+    '''Set the 'Word Search' checkbox to False and the 'Reverse' checkbox to True,
+    then do search-with-present-options.'''
+    self.getHandler().searchBackward(event)
+
+def searchForward      (self,event):
+    '''Set the 'Word Search' checkbox to False, then do search-with-present-options.'''
+    self.getHandler().searchForward(event)
+
+def wordSearchBackward (self,event):
+    '''Set the 'Word Search' checkbox to True, then do search-with-present-options.'''
+    self.getHandler().wordSearchBackward(event)
+
+def wordSearchForward  (self,event):
+    '''Set the Word Search' checkbox to True and the 'Reverse' checkbox to True,
+    then do search-with-present-options.'''
+    self.getHandler().wordSearchForward(event)
 
 def searchWithPresentOptions (self,event):
+    '''Prompts for a search string. Typing the &lt;Return&gt; key puts the search
+    string in the Find tab and executes a search based on all the settings in
+    the Find tab. Recommended as the default search command.'''
     self.getHandler().searchWithPresentOptions(event)</t>
 <t tx="ekr.20060124115801">def getHandler(self,show=False):
     
@@ -4499,6 +3801,7 @@ cmd   = s2.find("cmd") &gt;= 0     or s2.find("command") &gt;= 0
 ctrl  = s2.find("control") &gt;= 0 or s2.find("ctrl") &gt;= 0
 alt   = s2.find("alt") &gt;= 0
 shift = s2.find("shift") &gt;= 0   or s2.find("shft") &gt;= 0</t>
+<t tx="ekr.20060202235215.1"></t>
 <t tx="ekr.20060203072636">def endSearch (self,i,j):
 
     w = self.w
@@ -4526,6 +3829,10 @@ shift = s2.find("shift") &gt;= 0   or s2.find("shft") &gt;= 0</t>
         # Tell the caller that to get the find args.
         return False</t>
 <t tx="ekr.20060204120158.2">def findAgain (self,event):
+
+    '''The find-again command is the same as the find-tab-find command
+    if the search pattern in the Find tab is not '&lt;find pattern here&gt;'
+    Otherwise, the find-again is the same as the search-with-present-options command.'''
     
     h = self.getHandler()
     
@@ -4651,11 +3958,6 @@ properly announced.</t>
     cmd = True ; ctrl = False
 if alt and not ctrl:
     ctrl = True ; alt = False</t>
-<t tx="ekr.20060216110502">for z in ('Alt','Ctrl','Command'):
-    if accelerator.find(z) != -1:
-        break # Found.
-else:
-    accelerator = ''</t>
 <t tx="ekr.20060221074900"></t>
 <t tx="ekr.20060221074900.1">def findButtonCallback(self,event=None):
     
@@ -4829,6 +4131,24 @@ else:
         g.app.gui.setSelectionRange(w,'end-%dc' % (len(selected)+1),'end-1c') # works
 
     self.endCommand(changed=True,setLabel=True)</t>
+<t tx="ekr.20060417203717">def helpForCommand (self,event):
+    
+    '''Prompts for a command name and prints the help message for that command.'''
+    
+    k = self.k
+    k.fullCommand(event,help=True,helpHandler=self.helpForCommandFinisher)
+    
+def helpForCommandFinisher (self,commandName):
+
+    c = self.c
+    func = c.commandsDict.get(commandName)
+    if func and func.__doc__:
+        s = ''.join([
+            g.choose(line.strip(),line.lstrip(),'\n')
+                for line in g.splitLines(func.__doc__)])
+        g.es('%s:\n%s\n' % (commandName,s),color='blue')
+    else:
+        g.es('No help available for %s' % (commandName),color='blue')</t>
 <t tx="ekr.20060419101401"></t>
 <t tx="ekr.20060420144640">def iSearchBackspace (self):
     
@@ -4913,7 +4233,7 @@ When I move through nodes using the alt-XXX short cuts, there is a lot of flicke
 as nodes are redrawn etc. I had no problem with this in 4.3.</t>
 <t tx="ekr.20060519003651">def debug (self,event=None,target = None):
     
-    '''Start the debugger in another process.'''
+    '''Start an external debugger in another process.'''
 
     c = self.c ; p = c.currentPosition()
     pythonDir = g.os_path_dirname(sys.executable)
@@ -4961,24 +4281,11 @@ for target in targets:
             g.es('Debug target does not exist: %s' % (target),color='blue')</t>
 <t tx="ekr.20060522082833"></t>
 <t tx="ekr.20060522083716"></t>
-<t tx="ekr.20060522084039">@nocolor
-
-? Create a customize_debugger plugin?
-
-- define a debugger1 hook so the plugin can override the standard debug code.</t>
 <t tx="ekr.20060522101202">@nocolor
 
 http://sourceforge.net/forum/message.php?msg_id=3737879
-By: nobody
 
-From: Rich
-
-I moved the "No bindings" and "EKR bindings: Mode-oriented bindings + Emacs
-bindings" nodes to the "@ignore Unused key bindings" node, and replaced them
-with a copy of "Legacy Leo bindings".
-I then fiddled the key bindings to the way I like them (today, anyway! :D ),
-and noticed the "Check Bindings" button. Cool! thought I, and pressed it. I
-got the following messages in the Log Pane:
+The "Check Bindings" button gave the following report.
 
 -------------------------------------------------
 No bindings is missing run-unit-test                       = None
@@ -5144,16 +4451,10 @@ A small quirk.  Selecting an editor will not show the corresponding node if the 
 
 @color</t>
 <t tx="ekr.20060527190049"></t>
-<t tx="ekr.20060527204444">1.  Fix all problems with Python coloring.
-    - Support show/hide invisibles.
-    
-2.  Add all features used by Php.
-
-3.  Add all other features.</t>
-<t tx="ekr.20060528082017.1"></t>
-<t tx="ekr.20060528082017.2"></t>
 <t tx="ekr.20060528100747"></t>
 <t tx="ekr.20060528100747.1">def addEditor (self,event=None):
+    
+    '''Add another editor to the body pane.'''
     
     c = self.c ; p = c.currentPosition()
     self.numberOfEditors += 1
@@ -5266,6 +4567,8 @@ self.bodyCtrl = old_w
 # w.configure(state='disabled')</t>
 <t tx="ekr.20060528113806">def deleteEditor (self,event=None):
     
+    '''Delete the presently selected body text editor.'''
+    
     name = self.editor_name
 
     if not name:
@@ -5312,6 +4615,8 @@ self.bodyCtrl = old_w
     c.recolor_now()</t>
 <t tx="ekr.20060528170438">def cycleEditorFocus (self,event=None):
     
+    '''Cycle keyboard focus between the body text editors.'''
+    
     c = self.c ; d = self.editorWidgets
     keys = d.keys() ; n = len(keys)
     if n &lt; 2: return # There is only the main widget. 
@@ -5344,7 +4649,6 @@ def toPythonIndex (self,s,w,index):
     index = g.convertRowColToPythonIndex (s,row-1,col)
     return index</t>
 <t tx="ekr.20060528173539"></t>
-<t tx="ekr.20060529083234"></t>
 <t tx="ekr.20060529083409"></t>
 <t tx="ekr.20060529091202"></t>
 <t tx="ekr.20060529091202.1"></t>
@@ -5353,5 +4657,202 @@ def toPythonIndex (self,s,w,index):
     '''Select all text of the widget, *not* including the extra newline.'''
     
     self.setTextSelection(w,'1.0','end-1c',insert=insert)</t>
+<t tx="ekr.20060529130603"></t>
+<t tx="ekr.20060529130603.1">@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3737745
+By: nobody
+
+From: Rich
+Installed Leo 4.4 final using Windows Installer (exe)
+Ran using a Command Window
+-------------------------------------------------
+Setup:
+Leo Log Window...
+Leo 4.4 final, build  1.10 , May 11, 2006
+Python 2.3.4, Tk 8.4.3, Pmw 1.2
+Windows 5, 1, 2600, 2, Service Pack 1
+
+leoID = xxxx (in C:\Software Engineering\Leo\config)
+global config dir: C:\Software Engineering\Leo\config
+home dir: None
+reading settings in C:\Software Engineering\Leo\config\leoSettings.leo
+6 plugins loaded
+-------------------------------------------------
+Plugins Activated:
+Add_directives
+Chapter Hoist
+Cleo 
+Color_markup
+GroupOps
+Labels
+Macros
+Nav_buttons
+NewButtons
+NodeNavigator
+OpenWith
+RClick
+Scripting
+TimeStamp
+UniversalScrolling
+UNL
+-------------------------------------------------
+Log Window Messages after exiting Plugiin Mgr.:
+Sending 'start1' to 'add_directives'
+Sending 'scan-directives' to 'add_directives'
+Failed to dynamically enable 'add_directives': 'NoneType' object has no attribute
+'has_key'
+Sending 'new' to 'chapter_hoist'
+Failed to dynamically enable 'chapter_hoist': 'Bunch' object has no attribute
+'frame'
+Sending 'new' to 'cleo'
+Failed to dynamically enable 'cleo': 'Bunch' object has no attribute 'frame'
+Sending 'init-color-markup' to 'color_markup'
+Failed to dynamically enable 'color_markup': 'NoneType' object has no attribute
+'c'
+Sending 'new' to 'groupOperations'
+Failed to dynamically enable 'groupOperations': 'Bunch' object has no attribute
+'exists'
+Sending 'before-create-leo-frame' to 'mod_labels'
+Failed to dynamically enable 'mod_labels': 'Bunch' object has no attribute
+'frame'
+Sending 'after-create-leo-frame' to 'leoupdate'
+Failed to dynamically enable 'leoupdate': 'Bunch' object has no attribute
+'frame'
+Sending 'new' to 'macros'
+Failed to dynamically enable 'macros': 'Bunch' object has no attribute 'frame'
+Sending 'after-create-leo-frame' to 'nav_buttons'
+Failed to dynamically enable 'nav_buttons': 'Bunch' object has no attribute
+'mFileName'
+Sending 'after-create-leo-frame' to 'newButtons'
+Failed to dynamically enable 'newButtons': 'Bunch' object has no attribute
+'frame'
+Sending 'new' to 'nodenavigator'
+Failed to dynamically enable 'nodenavigator': 'Bunch' object has no attribute
+'frame'
+Sending 'after-create-leo-frame' to 'rClick'
+Failed to dynamically enable 'rClick': 'Bunch' object has no attribute 'exists'
+Failed to dynamically enable 'mod_timestamp': 'Bunch' object has no attribute
+'frame'
+Failed to dynamically enable 'UniversalScrolling': 'Bunch' object has no attribute
+'frame'
+-------------------------------------------------
+
+Exited Leo, re-entered.
+
+-------------------------------------------------
+Leo Log Window:
+Leo Log Window...
+Leo 4.4 final, build  1.10 , May 11, 2006
+Python 2.3.4, Tk 8.4.3, Pmw 1.2
+Windows 5, 1, 2600, 2, Service Pack 1
+
+leoID = xxxx (in C:\Software Engineering\Leo\config)
+global config dir: C:\Software Engineering\Leo\config
+home dir: None
+reading settings in C:\Software Engineering\Leo\config\leoSettings.leo
+can not load enabled chapter_hoist plugin
+18 plugins loaded
+
+-------------------------------------------------
+Tested Plugins:
+Chapter Hoist: Not loaded. (Needs mod_scripting 0.19 ??)
+
+Cleo: Collapsing a Cleo'd node leaves the colored priority arrows - may need
+to add the Wipe-out trick used to remove arrows? (Node coloring works OK.
+
+Color Markup (wiki): Works as advertised.
+
+Group Operations: Works as expected. I still prefer the older key-based method,
+or some way to mark a number of nodes with just a couple of mouse clicks. This
+one-at-a-tiime-deal is a PITA! (I know Group Ops aren't really being supported,
+but I'll  still make my comments!)
+
+Labels: Works OK. A way to see (a) labelled nodes and (b) the node's labels
+without going through the menu would be "wunnerful, wunnerful."
+
+Macros: Instructions for use??
+I tried selecting a node and Outline--&gt; Parameterize Section Reference
+
+Log Window Showed:
+-------------------------------------------------
+exception executing command
+Traceback (most recent call last):
+  File "C:\Software Engineering\Leo\src\leoCommands.py", line 264, in doCommand
+    val = command(event)
+TypeError: parameterize() takes exactly 1 argument (2 given)
+-------------------------------------------------
+
+Nav Buttons: Still work. (I still prefer Up-and-Down rather than Left-and-Right
+buttons.)
+
+New Buttons: Works as guessed-at. More info would be nice.
+
+Node Navigator: This should be marked as being already built into Leo.
+
+Open With: Desparately needs a way to modify the Open-With menu other than going
+in and changing the code.
+
+RClick: OK, but I use a different command set. See comment for Open-With
+
+Time Stamp: "Timestamp all save operations to show when they occur" gave me
+the impression that a file would be created with a timestamp. Having it just
+pop up in the Log window (when I can look at my watch) is rather useless.
+
+Universal Scrolling: There's a conflict with a Config setting which should be
+mentioned in the U.S. info box.
+
+UNL: I followed the directions, but all clickiing on "@url Test UNL--&gt;Test UNL
+Node" got me was a DOS box that had tried to open "Test". Trying '@url
+file:"c:\Software Engineering\Test\Test My Plugins.leo#Test UNL--&gt;Test UNL Node"'
+didn't work, either.
+=================================================
+
+Suggestion: All untested Plugins should be marked as such in the Plugin Manager,
+ESPECIALLY if Leo is to go "Big Time."
+</t>
+<t tx="ekr.20060529161541">('.*'):(.*)(self.*),
+(\1,\2\3),
+
+
+ '
+('xxx',    '
+
+':.*
+'),</t>
+<t tx="ekr.20060529170949">def defineCmdsMenuHelpTable (self):
+
+    c = self.c
+
+    self.cmdsMenuHelpTable = [
+        ('&amp;Getting Started',         'help'),
+        ('&amp;Help For Command',        'help-for-command'),
+        ('-', None),
+        ('Apropos &amp;Autocompletion',  'apropos-autocompletion'),
+        ('Apropos &amp;Bindings',        'apropos-bindings'),
+        ('Apropos &amp;Find Commands',   'apropos-find-commands'),
+    ]</t>
+<t tx="ekr.20060529175453">It is now clearer what the selected values are.</t>
+<t tx="ekr.20060529195042"># No docstring yet...
+            dabbrev-completion dynamicExpansion2
+               dabbrev-expands dynamicExpansion
+                        escape watchEscape
+                number-command numberCommand
+              set-mark-command setRegion</t>
+<t tx="ekr.20060529230636"></t>
+<t tx="ekr.20060530084936">if shortcut:
+    for s in ('enter','leave'):
+        if -1 != shortcut.lower().find(s):
+            g.es_print('Ignoring invalid key binding: %s = %s' % (
+                commandName,shortcut),color='blue')
+            return</t>
+<t tx="ekr.20060530100259">@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=3756402
+By: ktenney
+
+auto-indent doesn't work in the extra editors.
+
+@color</t>
 </tnodes>
 </leo_file>
