@@ -963,6 +963,8 @@ def _callerName (n=1,files=False):
             return '%s:%s' % (g.shortFilename(code1.co_filename),code1.co_name)
         else:
             return code1.co_name # The code name
+    except ValueError:
+        return '' # The stack is not deep enough.
     except:
         g.es_exception()
         return '' # "<no caller name>"
