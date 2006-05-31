@@ -3208,7 +3208,11 @@ class baseCommands:
             u.afterInsertNode(p,op_name,undoData,dirtyVnodeList=dirtyVnodeList)
         finally:
             c.endUpdate()
+        c.beginUpdate()
+        try:
             c.editPosition(p)
+        finally:
+            c.endUpdate(False)
     
         return p # for mod_labels plugin.
     #@nonl
