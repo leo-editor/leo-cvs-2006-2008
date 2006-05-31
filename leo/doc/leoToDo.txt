@@ -373,7 +373,9 @@ Gil
 #@-node:ekr.20031218072017.662:Gil 2
 #@-node:ekr.20031218072017.658:Resolve CVS Conflicts command (Stepen Schaefer)
 #@-node:ekr.20051202094427:Urgent: Resolve cvs conflicts
-#@+node:ekr.20060527164612:Important 1-2 day projects (1-2 weeks)
+#@+node:ekr.20060531161030:B2
+#@+node:ekr.20060531161030.1:Make body editors persistant
+#@-node:ekr.20060531161030.1:Make body editors persistant
 #@+node:ekr.20060531144607:Finish the new colorizer!
 #@-node:ekr.20060531144607:Finish the new colorizer!
 #@+node:ekr.20060531135634.1:Test and fix *important* Emacs commands
@@ -2214,6 +2216,8 @@ def findWord (self,event):
 #@-node:ekr.20060206104205:Finish query-replace
 #@-node:ekr.20060413065803:Improve searches 4
 #@-node:ekr.20060531135634.1:Test and fix *important* Emacs commands
+#@-node:ekr.20060531161030:B2
+#@+node:ekr.20060527164612:Important 1-2 day projects (1-2 weeks)
 #@+node:ekr.20050419060645:Alternate lead-in characters
 @nocolor
 
