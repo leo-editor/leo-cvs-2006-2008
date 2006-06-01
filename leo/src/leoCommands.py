@@ -1940,27 +1940,31 @@ class baseCommands:
         frame.colorPanel.bringToFront()
     #@nonl
     #@-node:ekr.20031218072017.2090:colorPanel
-    #@+node:ekr.20031218072017.2883:viewAllCharacters
-    def viewAllCharacters (self,event=None):
+    #@+node:ekr.20031218072017.2883:show/hide/toggleInvisibles
+    def hideInvisibles (self,event=None):
+        c = self ; c.showInvisiblesHelper(False)
+    
+    def showInvisibles (self,event=None):
+        c = self ; c.showInvisiblesHelper(True)
+    
+    def toggleShowInvisibles (self,event=None):
+        c = self ; colorizer = c.frame.body.getColorizer()
+        val = g.choose(colorizer.showInvisibles,0,1)
+        c.showInvisiblesHelper(val)
         
-        '''Shor or hide whitespace characters in the body pane.'''
-    
-        c = self ; frame = c.frame
-        p = c.currentPosition()
+    def showInvisiblesHelper (self,val):
+        c = self ; frame = c.frame ; p = c.currentPosition()
         colorizer = frame.body.getColorizer()
-    
-        colorizer.showInvisibles = g.choose(colorizer.showInvisibles,0,1)
-    
-        # It is much easier to change the menu name here than in the menu updater.
+        colorizer.showInvisibles = val
+       
+         # It is much easier to change the menu name here than in the menu updater.
         menu = frame.menu.getMenu("Edit")
-        if colorizer.showInvisibles:
-            frame.menu.setMenuLabel(menu,"Show Invisibles","Hide Invisibles")
-        else:
-            frame.menu.setMenuLabel(menu,"Hide Invisibles","Show Invisibles")
+        if val: frame.menu.setMenuLabel(menu,"Show Invisibles","Hide Invisibles")
+        else:   frame.menu.setMenuLabel(menu,"Hide Invisibles","Show Invisibles")
     
         c.frame.body.recolor_now(p)
     #@nonl
-    #@-node:ekr.20031218072017.2883:viewAllCharacters
+    #@-node:ekr.20031218072017.2883:show/hide/toggleInvisibles
     #@+node:ekr.20031218072017.2086:preferences
     def preferences (self,event=None):
         

@@ -774,7 +774,7 @@ class leoMenu:
         self.editMenuTop2Table = [
             ("&Go To Line Number",c.goToLineNumber),
             ("&Execute Script",c.executeScript),
-            (label,c.viewAllCharacters),
+            (label,c.toggleShowInvisibles),
             ("Setti&ngs",c.preferences),
         ]
     
