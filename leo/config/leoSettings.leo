@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="267" clone_windows="0"/>
 <globals body_outline_ratio="0.549828178694">
-	<global_window_position top="45" left="330" height="760" width="798"/>
+	<global_window_position top="24" left="282" height="703" width="955"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -44,7 +44,7 @@
 <v t="ekr.20060112104823"><vh>main</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" a="TV" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
@@ -256,7 +256,7 @@
 <v t="ekr.20060125165241"><vh>@bool useTextMinibuffer = True</vh></v>
 <v t="ekr.20060122105527.4" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
 </v>
-<v t="ekr.20051007200824" annotate="7d71002e"><vh>Keyboard shortcuts</vh>
+<v t="ekr.20051007200824" a="E" annotate="7d71002e"><vh>Keyboard shortcuts</vh>
 <v t="ekr.20051101160257" annotate="7d71002e"><vh>About keyboard shortcuts</vh>
 <v t="ekr.20051007200824.1" annotate="7d71002e"><vh>About shortcut specifiers</vh></v>
 <v t="ekr.20060116090646"><vh>Reference for function keys</vh></v>
@@ -307,10 +307,10 @@
 <v t="ekr.20060112093227.1"><vh>@shortcuts No bindings: E-M</vh></v>
 <v t="ekr.20060112093227.2"><vh>@shortcuts No bindings: N-Z</vh></v>
 </v>
-<v t="ekr.20060122105527"><vh>EKR bindings: Mode-oriented bindings + Emacs bindings</vh>
+<v t="ekr.20060122105527" a="E"><vh>EKR bindings: Mode-oriented bindings + Emacs bindings</vh>
 <v t="ekr.20060122105527.2"><vh>Summary of Ctrl bindings</vh></v>
-<v t="ekr.20060122105527.9"><vh>Modes</vh>
-<v t="ekr.20060122113439"><vh>@mode Edit (Alt-Control-space)</vh>
+<v t="ekr.20060122105527.9" a="E"><vh>Modes</vh>
+<v t="ekr.20060122113439"><vh>@@mode Edit (Alt-Control-space)</vh>
 <v t="ekr.20060122122150"><vh>@mode Edit-extend</vh></v>
 </v>
 <v t="ekr.20060122105527.11" annotate="7d71002e"><vh>@@mode File</vh>
@@ -319,7 +319,7 @@
 <v t="ekr.20060122105527.12"><vh>@@mode Find </vh>
 <v t="ekr.20060122105527.13"><vh>@@mode Find-reverse</vh></v>
 </v>
-<v t="ekr.20060122105527.14"><vh>@@mode Find-options</vh></v>
+<v t="ekr.20060122105527.14" a="V"><vh>@@mode Find-options</vh></v>
 <v t="ekr.20060122105732" annotate="7d71002e"><vh>@mode Outline (Control-Shift-O)</vh>
 <v t="ekr.20060122130002"><vh>@mode Outline-move</vh></v>
 </v>
@@ -376,7 +376,7 @@
 <v t="ekr.20060531094310"><vh>@bool autoindent_in_nocolor_mode = True</vh></v>
 <v t="ekr.20041119034357.43"><vh>@bool body_gmt_time = False</vh></v>
 <v t="ekr.20041119034357.39"><vh>@bool body_pane_wraps = True</vh></v>
-<v t="ekr.20060216135834"><vh>@bool enable_autocompleter = True</vh></v>
+<v t="ekr.20060216135834"><vh>@bool enable_autocompleter = False</vh></v>
 <v t="ekr.20041119034357.44"><vh>@bool smart_auto_indent = False</vh></v>
 <v t="ekr.20041119034357.53"><vh>@int additional_body_text_border = 0</vh></v>
 <v t="ekr.20041119034357.42"><vh>@string body_time_format_string = %m/%d/%Y %H:%M:%S</vh></v>
@@ -3642,14 +3642,20 @@ set-insert-state and set-overwrite-state commands affect only the top-level mode
 - The mode-help command (recommend binding is Tab) lists all bound keystrokes in
 a mode.
 
-- Shortcut specifier lines in @mode nodes of the form:
+- ** New in 4.4.1: In @mode nodes, shortcut specifier lines of the form::
 
-command-name -&gt; mode-name = binding
+    --&gt; command-name
+    
+Specify that the named command will be executed before entering the mode. More
+than one such **mode-entry commands may appear. - In @mode nodes, shortcut
+specifier lines of the form:
+
+    command-name -&gt; mode-name = binding
 
 specify that Leo will enter the named mode after executing the command. As a
 special case,
 
-command-name -&gt; same = binding
+    command-name -&gt; same = binding
 
 will cause the command to be executed without changing mode.</t>
 <t tx="ekr.20060117130936"># Boilerplate for most modes.
@@ -3829,13 +3835,17 @@ save-file               = s
 save-file-to            = t
 close-window            = w
 </t>
-<t tx="ekr.20060122105527.12"># Boilerplate for most modes.
+<t tx="ekr.20060122105527.12"># Entry commands...
+--&gt; open-find-tab
+--&gt; show-find-options
+
+# Boilerplate for most modes.
 exit-named-mode     -&gt; same = Return
 exit-named-mode     -&gt; same = BackSpace
 keyboard-quit       -&gt; same = Ctrl-g
 mode-help           -&gt; same = Tab
 
-enter-options-mode  = Ctrl-Y
+enter-find-options-mode  = Ctrl-Y
 
 search-again                 = a
 switch-to-buffer             = h
@@ -3861,7 +3871,11 @@ isearch-backward-regexp = x
 search-backward         = f
 word-search-backward    = w
 re-search-backward      = Shift-R</t>
-<t tx="ekr.20060122105527.14"># Boilerplate for most modes.
+<t tx="ekr.20060122105527.14"># Entry commands...
+--&gt; open-find-tab
+--&gt; show-find-options
+
+# Boilerplate for most modes.
 exit-named-mode     = Return
 keyboard-quit       = Ctrl-g
 mode-help           = Tab
@@ -4444,7 +4458,11 @@ False: (Recommended):   allow unicode characters in Leo's text.</t>
 False (recommended):  No translation.</t>
 <t tx="ekr.20060216091239">True: trace all changes to the minibuffer</t>
 <t tx="ekr.20060216130607">True: trace all changes to the status line.</t>
-<t tx="ekr.20060216135834"></t>
+<t tx="ekr.20060216135834">True:  enable autocompletion initially.
+False: disable autocomopletion initially.
+
+You can use the enable-auto-completer-command and disable-auto-completer-command
+commands to enable or disable autocompletion at any time.</t>
 <t tx="ekr.20060216145416"></t>
 <t tx="ekr.20060216170801"></t>
 <t tx="ekr.20060303075452">The following commands are will be useful for operating Leo without a mouse.

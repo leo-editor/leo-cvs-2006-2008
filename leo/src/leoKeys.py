@@ -146,7 +146,7 @@ class autoCompleterClass:
         self.verbose = False # True: print all members.
         self.watchwords = {} # Keys are ids, values are lists of ids that can follow a id dot.
         self.widget = None # The widget that should get focus after autocomplete is done.
-    
+    #@nonl
     #@+node:ekr.20060223085549:defineClassesDict
     def defineClassesDict (self):
         
@@ -2060,7 +2060,7 @@ class keyHandlerClass:
         k.checkBindings()
     #@nonl
     #@-node:ekr.20051007080058:k.makeAllBindings
-    #@+node:ekr.20060104154937:addModeCommands
+    #@+node:ekr.20060104154937:addModeCommands (enterModeCallback)
     def addModeCommands (self):
         
         '''Add commands created by @mode settings to c.commandsDict and k.inverseCommandsDict.'''
@@ -2078,7 +2078,7 @@ class keyHandlerClass:
             k.inverseCommandsDict [f.__name__] = key
             # g.trace('leoCommands %24s = %s' % (f.__name__,key))
     #@nonl
-    #@-node:ekr.20060104154937:addModeCommands
+    #@-node:ekr.20060104154937:addModeCommands (enterModeCallback)
     #@+node:ekr.20051008152134:initSpecialIvars
     def initSpecialIvars (self):
         
@@ -3240,9 +3240,12 @@ class keyHandlerClass:
         k = self ; c = k.c
     
         for commandName in d.keys():
+            if commandName == '*entry-commands*': continue
             func = c.commandsDict.get(commandName)
             if not func:
-                g.trace('No such command: %s' % commandName) ; continue
+                g.es_print('No such command: %s. Referenced from %s' % (
+                    commandName,modeName))
+                continue
             bunchList = d.get(commandName,[])
             for bunch in bunchList:
                 stroke = bunch.val
@@ -3283,6 +3286,7 @@ class keyHandlerClass:
         
         k = self ; c = k.c
         modeName = commandName[6:]
+        # g.trace(modeName)
         
         k.generalModeHandler(event,modeName=modeName)
     #@-node:ekr.20060102135349.2:enterNamedMode
@@ -3367,6 +3371,13 @@ class keyHandlerClass:
         
         if k.masterBindingsDict.get(modeName) is None:
             k.createModeBindings(modeName,d)
+    
+        entryCommands = d.get('*entry-commands*',[])
+        if entryCommands:
+            # g.trace('entryCommands',entryCommands)
+            for commandName in entryCommands:
+                g.trace('entry command:',commandName)
+                k.simulateCommand(commandName)
        
         k.setLabelBlue(modeName+': ',protect=True)
         k.showStateAndMode()
@@ -3427,13 +3438,14 @@ class keyHandlerClass:
     
         data = [] ; n = 20
         for key in keys:
-            bunchList = d.get(key)
-            for bunch in bunchList:
-                shortcut = bunch.val
-                if shortcut not in (None,'None'):
-                    s1 = key ; s2 = k.prettyPrintKey(shortcut)
-                    n = max(n,len(s1))
-                    data.append((s1,s2),)
+            if key != '*entry-commands*':
+                bunchList = d.get(key)
+                for bunch in bunchList:
+                    shortcut = bunch.val
+                    if shortcut not in (None,'None'):
+                        s1 = key ; s2 = k.prettyPrintKey(shortcut)
+                        n = max(n,len(s1))
+                        data.append((s1,s2),)
                     
         data.sort()
         

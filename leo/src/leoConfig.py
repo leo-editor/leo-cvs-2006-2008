@@ -76,13 +76,14 @@ class parserBaseClass:
     
         commandName = 'enter-' + name
         commandName = commandName.replace(' ','-')
+        # g.trace(name,commandName)
             
         # Save the info for k.finishCreate and k.makeAllBindings.
         d = g.app.config.modeCommandsDict
         
         # g.trace(modeDict.keys())
     
-        if d.get(name):
+        if d.get(commandName):
             g.trace('Ignoring duplicate mode: %s' % commandName)
         else:
             d [commandName] = modeDict
@@ -276,7 +277,7 @@ class parserBaseClass:
         if name.endswith('-'):
             name = name[:-1]
         name = name + '-mode'
-        # g.trace(name)
+        # g.trace('name',name)
         
         # Check for duplicate mode names.
         if g.app.config.modeCommandsDict.get(name):
@@ -297,11 +298,12 @@ class parserBaseClass:
         # Change the pane of all entries to 'mode-name'.
         # This will disable warnings about duplicate bindings.
         for key in d2.keys():
-            bunchList = d2.get(key,[])
-            for bunch in bunchList:
-                bunch.pane = name
-                bunch.val = k.strokeFromSetting(bunch.val)
-                # g.trace(name,bunch.val)
+            if key != '*entry-commands*':
+                bunchList = d2.get(key,[])
+                for bunch in bunchList:
+                    bunch.pane = name
+                    bunch.val = k.strokeFromSetting(bunch.val)
+                    # g.trace(name,bunch.val)
         
         # Create the command, but not any bindings to it.
         self.createModeCommand(name,d2)
@@ -336,21 +338,27 @@ class parserBaseClass:
     #@nonl
     #@-node:ekr.20041120113848:doShortcut
     #@+node:ekr.20041120105609:doShortcuts
-    def doShortcuts(self,p,kind,name,val):
+    def doShortcuts(self,p,kind,name,val,s=None):
         
         __pychecker__ = '--no-argsused' # kind,val.
         
         # g.trace(self.c.fileName(),name)
         
         d = self.shortcutsDict # To detect duplicates.
-        s = p.bodyString()
+        if s is None: s = p.bodyString()
         lines = g.splitLines(s)
         for line in lines:
             line = line.strip()
             if line and not g.match(line,0,'#'):
                 name,bunch = self.parseShortcutLine(line)
-                # g.trace(name,bunch)
-                if bunch is not None:
+                if not name:
+                    # An entry command: put it in the special *entry-commands* key.
+                    aList = d.get('*entry-commands*',[])
+                    aList.append(bunch.entryCommandName)
+                    d ['*entry-commands*'] = aList
+                elif bunch is not None:
+                    # A regular shortcut.
+                    # g.trace(name,bunch)
                     # New in 4.4a5:
                     bunchList = d.get(name,[])
                     bunchList.append(bunch)
@@ -499,11 +507,23 @@ class parserBaseClass:
         
         '''Parse a shortcut line.  Valid forms:
             
+        --> entry-command
         settingName = shortcut
-        settingName ! paneName = shortcut'''
+        settingName ! paneName = shortcut
+        command-name -> mode-name = binding
+        command-name -> same = binding
+        '''
         
-        name = val = nextMode = None
-        j = g.skip_ws(s,0)
+        name = val = nextMode = None ; nextMode = 'none'
+        i = g.skip_ws(s,0)
+       
+        if g.match(s,i,'-->'): # New in 4.4.1 b1: allow mode-entry commands.
+            j = g.skip_ws(s,i+3)
+            i = g.skip_id(s,j,'-')
+            entryCommandName = s[j:i]
+            return None,g.Bunch(entryCommandName=entryCommandName)
+        
+        j = i
         i = g.skip_id(s,j,'-') # New in 4.4: allow Emacs-style shortcut names.
         name = s[j:i]
         if not name: return None,None
@@ -514,8 +534,6 @@ class parserBaseClass:
             j = g.skip_ws(s,i+2)
             i = g.skip_id(s,j)
             nextMode = s[j:i]
-            if not nextMode.strip(): nextMode = 'none'
-        else: nextMode = 'none'
             
         i = g.skip_ws(s,i)
         if g.match(s,i,'!'): # New in 4.4: allow pane-specific shortcuts.
@@ -765,7 +783,7 @@ class configClass:
     #@nl
     #@    @+others
     #@+node:ekr.20041117083202:Birth... (g.app.config)
-    #@+node:ekr.20041117062717.2:ctor
+    #@+node:ekr.20041117062717.2:ctor (configClass)
     def __init__ (self):
         
         self.configsExist = False # True when we successfully open a setting file.
@@ -774,7 +792,7 @@ class configClass:
         self.globalConfigFile = None # Set in initSettingsFiles
         self.homeFile = None # Set in initSettingsFiles
         self.inited = False
-        self.modeCommandsDict = {} # For use by @mode logic.
+        self.modeCommandsDict = {} # For use by @mode logic. Keys are command names, values are g.Bunches.
         self.recentFilesFiles = [] # List of g.Bunches describing .leoRecentFiles.txt files.
         
         # Inited later...
@@ -787,7 +805,7 @@ class configClass:
         self.initSettingsFiles()
         self.initRecentFiles()
     #@nonl
-    #@-node:ekr.20041117062717.2:ctor
+    #@-node:ekr.20041117062717.2:ctor (configClass)
     #@+node:ekr.20041227063801.2:initDicts
     def initDicts (self):
         
