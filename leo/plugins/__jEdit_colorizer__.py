@@ -6,7 +6,7 @@
 #@@tabwidth -4
 #@@pagewidth 80
 
-__version__ = '0.24'
+__version__ = '0.26'
 #@<< imports >>
 #@+node:ekr.20060530091119.21:<< imports >>
 import leoGlobals as g
@@ -31,21 +31,18 @@ php_re = re.compile("<?(\s[pP][hH][pP])")
 # 
 # 0.20 EKR: Use x.py files rather than x.xml files.
 # - The colorizer now works on most text.
-# 
 # 0.21 EKR: No known crashers or serious problems.
 # - The colorizer now switches modes properly.
 # - Possible fix for unicode crasher.
-# 
 # 0.22 EKR: colorOneChunk now allows for good response to key events.
-# 
 # 0.23 EKR: use g.app.gui.toGuiIndex in colorRangeWithTag.  Fixes a bug and is 
 # simpler.
-# 
 # 0.24 EKR: Fixed unicode crasher.  All unit tests now pass with the new 
 # colorizer enabled.
-# 
 # 0.25 EKR: Fixed bug in match_doc_part.
+# 0.26 EKR: Added support for show/hide-invisibles commands.
 #@-at
+#@nonl
 #@-node:ekr.20060530091119.22:<< version history >>
 #@nl
 
@@ -249,6 +246,38 @@ def match_section_ref (self,s,i):
         return 0
 #@nonl
 #@-node:ekr.20060530091119.32:match_section_ref
+#@+node:ekr.20060601083619:match_blanks
+def match_blanks (self,s,i):
+    
+    j = i ; n = len(s)
+    
+    while j < n and s[j] == ' ':
+        j += 1
+        
+    if j > i:
+        # g.trace(i,j)
+        self.colorRangeWithTag(s,i,j,'blank')
+        return j - i
+    else:
+        return 0
+#@nonl
+#@-node:ekr.20060601083619:match_blanks
+#@+node:ekr.20060601083619.1:match_tabs
+def match_tabs (self,s,i):
+    
+    j = i ; n = len(s)
+    
+    while j < n and s[j] == '\t':
+        j += 1
+        
+    if j > i:
+        # g.trace(i,j)
+        self.colorRangeWithTag(s,i,j,'tab')
+        return j - i
+    else:
+        return 0
+#@nonl
+#@-node:ekr.20060601083619.1:match_tabs
 #@-node:ekr.20060530091119.28:Leo rule functions
 #@-node:ekr.20060530091119.23:module-level
 #@+node:ekr.20060530091119.34:class colorizer (baseColorizer)
@@ -301,8 +330,9 @@ class baseColorizer:
             "blank","comment","cwebName","docPart","keyword","leoKeyword",
             "latexModeBackground","latexModeKeyword",
             "latexBackground","latexKeyword",
-            "link","name","nameBrackets","pp","string","tab",
+            "link","name","nameBrackets","pp","string",
             "elide","bold","bolditalic","italic", # new for wiki styling.
+            "tab",
             # Leo jEdit tags...
             '@color', '@nocolor', 'doc_part', 'section_ref',
             # jEdit tags.
@@ -318,17 +348,21 @@ class baseColorizer:
     #@+node:ekr.20060530091119.36:addLeoRules
     def addLeoRules (self,theDict):
     
-        '''Prepend Leo-specific rules to theList.'''
+        '''Put Leo-specific rules to theList.'''
     
-        # Order does not matter here.
-        for ch, rule in (
-            ('@',match_at_color),
-            ('@',match_at_nocolor),
-            ('@',match_doc_part),
-            ('<',match_section_ref),
+        for ch, rule, atFront, in (
+            ('@',  match_at_color,    True),
+            ('@',  match_at_nocolor,  True),
+            ('@',  match_doc_part,    True),
+            ('<',  match_section_ref, True),
+            (' ',  match_blanks,      False),
+            ('\t', match_tabs,        False),
         ):
             theList = theDict.get(ch,[])
-            theList.insert(0,rule)
+            if atFront:
+                theList.insert(0,rule)
+            else:
+                theList.append(rule)
             theDict [ch] = theList
     #@nonl
     #@-node:ekr.20060530091119.36:addLeoRules
@@ -387,17 +421,7 @@ class baseColorizer:
             else:
                 self.body.tag_configure("name",underline=0)
                 
-        # Only create tags for whitespace when showing invisibles.
-        if self.showInvisibles:
-            for name,option_name,default_color in (
-                ("blank","show_invisibles_space_background_color","Gray90"),
-                ("tab",  "show_invisibles_tab_background_color",  "Gray80")):
-                option_color = c.config.getColor(option_name)
-                color = g.choose(option_color,option_color,default_color)
-                try:
-                    self.body.tag_configure(name,background=color)
-                except: # Recover after a user error.
-                    self.body.tag_configure(name,background=default_color)
+        self.configure_variable_tags()
             
         # Colors for latex characters.  Should be user options...
         
@@ -413,10 +437,6 @@ class baseColorizer:
             self.body.tag_configure("latexKeyword",foreground="blue",background="white")
             
         # Tags for wiki coloring.
-        if self.showInvisibles:
-            self.body.tag_configure("elide",background="yellow")
-        else:
-            self.body.tag_configure("elide",elide="1")
         self.body.tag_configure("bold",font=self.bold_font)
         self.body.tag_configure("italic",font=self.italic_font)
         self.body.tag_configure("bolditalic",font=self.bolditalic_font)
@@ -424,6 +444,31 @@ class baseColorizer:
             self.body.tag_configure(name,foreground=name)
     #@nonl
     #@-node:ekr.20060530091119.37:configure_tags
+    #@+node:ekr.20060601085857:configure_variable_tags
+    def configure_variable_tags (self):
+        
+        c = self.c
+    
+        for name,option_name,default_color in (
+            ("blank","show_invisibles_space_background_color","Gray90"),
+            ("tab",  "show_invisibles_tab_background_color",  "Gray80"),
+            ("elide", None,                                   "yellow"),
+        ):
+            if self.showInvisibles:
+                color = option_name and c.config.getColor(option_name) or default_color
+            else:
+                option_name,default_color = default_colors_dict.get(name,(None,None),)
+                color = option_name and c.config.getColor(option_name) or ''
+            try:
+                self.body.tag_configure(name,background=color)
+            except: # A user error.
+                self.body.tag_configure(name,background=default_color)
+    
+        # Special case:
+        if not self.showInvisibles:
+            self.body.tag_configure("elide",elide="1")
+    #@nonl
+    #@-node:ekr.20060601085857:configure_variable_tags
     #@+node:ekr.20060530091119.9:init_mode
     def init_mode (self,language):
         
@@ -652,6 +697,7 @@ class baseColorizer:
         '''Color the body pane.  All coloring starts here.'''
     
         self.init_mode(self.language)
+        self.configure_variable_tags()
         if self.killcolorFlag or not self.mode:
             self.removeAllTags() ; return
         try:
