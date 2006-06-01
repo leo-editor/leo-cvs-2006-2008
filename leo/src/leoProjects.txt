@@ -7257,6 +7257,37 @@ def validateOutline (self,event=None):
 #@-node:ekr.20031218072017.1765:c.validateOutline
 #@-node:ekr.20031218072017.1759:Insert, Delete & Clone (Commands)
 #@-node:ekr.20060531135634:Made scroll=True the default for calls to c.endUpdate
+#@+node:ekr.20060531192407.1:Removed support for @shortcut (@shortcuts remains)
+# @shortcut nodes never worked.
+#@nonl
+#@-node:ekr.20060531192407.1:Removed support for @shortcut (@shortcuts remains)
+#@+node:ekr.20060601092248:Added toggle-invisibles and hide-invisibles commands
+#@+node:ekr.20031218072017.2883:show/hide/toggleInvisibles
+def hideInvisibles (self,event=None):
+    c = self ; c.showInvisiblesHelper(False)
+
+def showInvisibles (self,event=None):
+    c = self ; c.showInvisiblesHelper(True)
+
+def toggleShowInvisibles (self,event=None):
+    c = self ; colorizer = c.frame.body.getColorizer()
+    val = g.choose(colorizer.showInvisibles,0,1)
+    c.showInvisiblesHelper(val)
+    
+def showInvisiblesHelper (self,val):
+    c = self ; frame = c.frame ; p = c.currentPosition()
+    colorizer = frame.body.getColorizer()
+    colorizer.showInvisibles = val
+   
+     # It is much easier to change the menu name here than in the menu updater.
+    menu = frame.menu.getMenu("Edit")
+    if val: frame.menu.setMenuLabel(menu,"Show Invisibles","Hide Invisibles")
+    else:   frame.menu.setMenuLabel(menu,"Hide Invisibles","Show Invisibles")
+
+    c.frame.body.recolor_now(p)
+#@nonl
+#@-node:ekr.20031218072017.2883:show/hide/toggleInvisibles
+#@-node:ekr.20060601092248:Added toggle-invisibles and hide-invisibles commands
 #@-node:ekr.20060522103446:New features
 #@-node:ekr.20060514170725:4.4.1 projects
 #@-node:ekr.20050924073836:4.4 projects

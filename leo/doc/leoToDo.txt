@@ -3,10 +3,11 @@
 #@+all
 #@+node:ekr.20051202094427:Urgent: Resolve cvs conflicts
 Investigate meld:  http://meld.sourceforge.net/
-
-Create a 'generate cvs conflicst' script for testing.
 #@nonl
-#@+node:ekr.20031218072017.658:Resolve CVS Conflicts command (Stepen Schaefer)
+#@+node:ekr.20060601073503:Postings
+@nocolor
+#@nonl
+#@+node:ekr.20031218072017.658:Stepen Schaefer 1
 @nocolor
 
 There have been a couple different suggestions on how to obtain a .leo file
@@ -36,7 +37,8 @@ From the user's point of view, a CVS check in either succeeds or requires that
 the conflicts be resolved, after which another check in may be attempted.  If
 we're somehow interrupted in the middle of the process, the fooCvsTmp.leo file
 preserves the users work.
-#@+node:ekr.20050501111900:Stephen Schaefer
+#@-node:ekr.20031218072017.658:Stepen Schaefer 1
+#@+node:ekr.20050501111900:Stephen Schaefer 2
 @killcolor
 https://sourceforge.net/forum/message.php?msg_id=3125092
 By: thyrsus
@@ -88,9 +90,11 @@ the "abandon" button to give up on your changes.
 
 As the Hebrews say at Passover: "Next year in Jerusalem."
 #@nonl
-#@-node:ekr.20050501111900:Stephen Schaefer
+#@-node:ekr.20050501111900:Stephen Schaefer 2
 #@+node:ekr.20031218072017.659:Jonathon 1
-https://sourceforge.net/forum/message.php?msg_id=1803722
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=1803722
 By: jmgilligan
 
 What is the intended behavior when foo.leo has a cloned node that appears several
@@ -243,6 +247,8 @@ read back into leo depends on the order in which I save them from the external
 editor.
 #@-node:ekr.20031218072017.659:Jonathon 1
 #@+node:ekr.20031218072017.660:Jonathan 2
+@nocolor
+
 By: jmgilligan ( Jonathan M. Gilligan ) 
  Possible solution   
 2003-01-13 20:55  
@@ -265,12 +271,9 @@ The user would then edit the conflict file and delete all but the desired versio
 On the down side, this may well be too baroque a fix for a problem that most users may never encounter. If so, perhaps it's best left alone until more pressing problems are solved. I know what I am doing with Leo and am always careful NOT to generate conflicting clones when I edit in an external text editor, so I don't absolutely need a resolution to this problem. I raised it because it's good for a program to have well-defined behavior when presented with anomalous input. 
 
 In this sense, perhaps the best thing is to allow users to generate code from clones (what Allan Holub referred to as "enough rope to shoot yourself in the foot"), but to tell them that this practice is frowned upon.  
-
- 
 #@-node:ekr.20031218072017.660:Jonathan 2
 #@+node:ekr.20031218072017.661:Gil 1
-Read and respond to this message at: 
-https://sourceforge.net/forum/message.php?msg_id=1836117
+http://sourceforge.net/forum/message.php?msg_id=1836117
 By: gilshwartz
 
 Edward, now that conflicting clones may not be the result of bad style, I would
@@ -346,8 +349,7 @@ when Leo last saved it. These may help having intelligent decisions by Leo in
 cases like conflicting clones.)
 #@-node:ekr.20031218072017.661:Gil 1
 #@+node:ekr.20031218072017.662:Gil 2
-Read and respond to this message at: 
-https://sourceforge.net/forum/message.php?msg_id=1804169
+http://sourceforge.net/forum/message.php?msg_id=1804169
 By: gilshwartz
 
 Another thing to think about is what should happen when close heading is changing.
@@ -366,14 +368,408 @@ not change. So
 set?
 3. Let the user resolve manually, offer undoable auto-resolution with reporting,
 other?
-
-More things to think about.
-
-Gil
+#@nonl
 #@-node:ekr.20031218072017.662:Gil 2
-#@-node:ekr.20031218072017.658:Resolve CVS Conflicts command (Stepen Schaefer)
+#@-node:ekr.20060601073503:Postings
 #@-node:ekr.20051202094427:Urgent: Resolve cvs conflicts
 #@+node:ekr.20060531161030:B2
+#@+node:ekr.20060211093935:Support for on-enter-mode in mode declarations
+@nocolor
+
+To do:
+    
+- keys are not handled properly in modes.
+
+Oooops: For vim-like operation the focus must never go to the minibuffer!
+
+Modes don't make sense the way they are being implemented: modes should not
+affect the minibuffer at all: instead, they are simply temporary bindings.
+    
+@color
+#@nonl
+#@+node:ekr.20041117062717.2:ctor (configClass)
+def __init__ (self):
+    
+    self.configsExist = False # True when we successfully open a setting file.
+    self.defaultFont = None # Set in gui.getDefaultConfigFont.
+    self.defaultFontFamily = None # Set in gui.getDefaultConfigFont.
+    self.globalConfigFile = None # Set in initSettingsFiles
+    self.homeFile = None # Set in initSettingsFiles
+    self.inited = False
+    self.modeCommandsDict = {} # For use by @mode logic. Keys are command names, values are g.Bunches.
+    self.recentFilesFiles = [] # List of g.Bunches describing .leoRecentFiles.txt files.
+    
+    # Inited later...
+    self.panes = None
+    self.sc = None
+    self.tree = None
+
+    self.initDicts()
+    self.initIvarsFromSettings()
+    self.initSettingsFiles()
+    self.initRecentFiles()
+#@nonl
+#@-node:ekr.20041117062717.2:ctor (configClass)
+#@+node:ekr.20060531180657:Creating the mode
+#@+node:ekr.20041119205148:parseHeadline
+def parseHeadline (self,s):
+    
+    """Parse a headline of the form @kind:name=val
+    Return (kind,name,val)."""
+
+    kind = name = val = None
+
+    if g.match(s,0,'@'):
+        i = g.skip_id(s,1,chars='-')
+        kind = s[1:i].strip()
+        if kind:
+            # name is everything up to '='
+            j = s.find('=',i)
+            if j == -1:
+                name = s[i:].strip()
+            else:
+                name = s[i:j].strip()
+                # val is everything after the '='
+                val = s[j+1:].strip()
+
+    # g.trace("%50s %10s %s" %(name,kind,val))
+    return kind,name,val
+#@nonl
+#@-node:ekr.20041119205148:parseHeadline
+#@+node:ekr.20060102103625.1:doMode
+def doMode(self,p,kind,name,val):
+    
+    '''Parse an @mode node and create the enter-<name>-mode command.'''
+    
+    c = self.c ; k = c.k
+
+    # Compute the mode name.
+    name = name.strip().lower()
+    j = name.find(' ')
+    if j > -1: name = name[:j]
+    if name.endswith('mode'):
+        name = name[:-4].strip()
+    if name.endswith('-'):
+        name = name[:-1]
+    name = name + '-mode'
+    # g.trace('name',name)
+    
+    # Check for duplicate mode names.
+    if g.app.config.modeCommandsDict.get(name):
+        g.trace('Ignoring duplicate @mode setting: %s' % name)
+        return
+    
+    # Call doShortcuts with a temp dict.
+    d = self.shortcutsDict
+    self.shortcutsDict = {}
+    self.doShortcuts(p,kind,name,val)
+    
+    # Remember the mode dict.
+    d2 = self.shortcutsDict
+    
+    # Restore the global dict.
+    self.shortcutsDict = d
+    
+    # Change the pane of all entries to 'mode-name'.
+    # This will disable warnings about duplicate bindings.
+    for key in d2.keys():
+        if key != '*entry-commands*':
+            bunchList = d2.get(key,[])
+            for bunch in bunchList:
+                bunch.pane = name
+                bunch.val = k.strokeFromSetting(bunch.val)
+                # g.trace(name,bunch.val)
+    
+    # Create the command, but not any bindings to it.
+    self.createModeCommand(name,d2)
+#@nonl
+#@-node:ekr.20060102103625.1:doMode
+#@+node:ekr.20060102103625:createModeCommand
+def createModeCommand (self,name,modeDict):
+
+    commandName = 'enter-' + name
+    commandName = commandName.replace(' ','-')
+    # g.trace(name,commandName)
+        
+    # Save the info for k.finishCreate and k.makeAllBindings.
+    d = g.app.config.modeCommandsDict
+    
+    # g.trace(modeDict.keys())
+
+    if d.get(commandName):
+        g.trace('Ignoring duplicate mode: %s' % commandName)
+    else:
+        d [commandName] = modeDict
+#@nonl
+#@-node:ekr.20060102103625:createModeCommand
+#@+node:ekr.20041120112043:parseShortcutLine (g.app.config)
+def parseShortcutLine (self,s):
+    
+    '''Parse a shortcut line.  Valid forms:
+        
+    --> entry-command
+    settingName = shortcut
+    settingName ! paneName = shortcut
+    command-name -> mode-name = binding
+    command-name -> same = binding
+    '''
+    
+    name = val = nextMode = None ; nextMode = 'none'
+    i = g.skip_ws(s,0)
+   
+    if g.match(s,i,'-->'): # New in 4.4.1 b1: allow mode-entry commands.
+        j = g.skip_ws(s,i+3)
+        i = g.skip_id(s,j,'-')
+        entryCommandName = s[j:i]
+        return None,g.Bunch(entryCommandName=entryCommandName)
+    
+    j = i
+    i = g.skip_id(s,j,'-') # New in 4.4: allow Emacs-style shortcut names.
+    name = s[j:i]
+    if not name: return None,None
+    
+    # New in Leo 4.4b2.
+    i = g.skip_ws(s,i)
+    if g.match(s,i,'->'): # New in 4.4: allow pane-specific shortcuts.
+        j = g.skip_ws(s,i+2)
+        i = g.skip_id(s,j)
+        nextMode = s[j:i]
+        
+    i = g.skip_ws(s,i)
+    if g.match(s,i,'!'): # New in 4.4: allow pane-specific shortcuts.
+        j = g.skip_ws(s,i+1)
+        i = g.skip_id(s,j)
+        pane = s[j:i]
+        if not pane.strip(): pane = 'all'
+    else: pane = 'all'
+
+    i = g.skip_ws(s,i)
+    if g.match(s,i,'='):
+        i = g.skip_ws(s,i+1)
+        val = s[i:]
+           
+    # New in 4.4: Allow comments after the shortcut.
+    # Comments must be preceded by whitespace.
+    comment = ''
+    if val:
+        i = val.find('#')
+        if i > 0 and val[i-1] in (' ','\t'):
+            # comment = val[i:].strip()
+            val = val[:i].strip()
+
+    # g.trace(pane,name,val,s)
+    return name,g.bunch(nextMode=nextMode,pane=pane,val=val)
+#@nonl
+#@-node:ekr.20041120112043:parseShortcutLine (g.app.config)
+#@+node:ekr.20041120105609:doShortcuts
+def doShortcuts(self,p,kind,name,val,s=None):
+    
+    __pychecker__ = '--no-argsused' # kind,val.
+    
+    # g.trace(self.c.fileName(),name)
+    
+    d = self.shortcutsDict # To detect duplicates.
+    if s is None: s = p.bodyString()
+    lines = g.splitLines(s)
+    for line in lines:
+        line = line.strip()
+        if line and not g.match(line,0,'#'):
+            name,bunch = self.parseShortcutLine(line)
+            if not name:
+                # An entry command: put it in the special *entry-commands* key.
+                aList = d.get('*entry-commands*',[])
+                aList.append(bunch.entryCommandName)
+                d ['*entry-commands*'] = aList
+            elif bunch is not None:
+                # A regular shortcut.
+                # g.trace(name,bunch)
+                # New in 4.4a5:
+                bunchList = d.get(name,[])
+                bunchList.append(bunch)
+                d [name] = bunchList
+                self.set(p,"shortcut",name,bunchList)
+                self.setShortcut(name,bunchList)
+#@nonl
+#@-node:ekr.20041120105609:doShortcuts
+#@+node:ekr.20060104154937:addModeCommands (enterModeCallback)
+def addModeCommands (self):
+    
+    '''Add commands created by @mode settings to c.commandsDict and k.inverseCommandsDict.'''
+
+    k = self ; c = k.c
+    d = g.app.config.modeCommandsDict
+    
+    # Create the callback functions and update c.commandsDict and k.inverseCommandsDict.
+    for key in d.keys():
+
+        def enterModeCallback (event=None,name=key):
+            k.enterNamedMode(event,name)
+
+        c.commandsDict[key] = f = enterModeCallback
+        k.inverseCommandsDict [f.__name__] = key
+        # g.trace('leoCommands %24s = %s' % (f.__name__,key))
+#@nonl
+#@-node:ekr.20060104154937:addModeCommands (enterModeCallback)
+#@-node:ekr.20060531180657:Creating the mode
+#@+node:ekr.20060531180657.1:Executed code
+#@+node:ekr.20060102135349.2:enterNamedMode
+def enterNamedMode (self,event,commandName):
+    
+    k = self ; c = k.c
+    modeName = commandName[6:]
+    # g.trace(modeName)
+    
+    k.generalModeHandler(event,modeName=modeName)
+#@-node:ekr.20060102135349.2:enterNamedMode
+#@+node:ekr.20060119150624:createModeBindings
+def createModeBindings (self,modeName,d):
+    
+    k = self ; c = k.c
+
+    for commandName in d.keys():
+        if commandName == '*entry-commands*': continue
+        func = c.commandsDict.get(commandName)
+        if not func:
+            g.es_print('No such command: %s. Referenced from %s' % (
+                commandName,modeName))
+            continue
+        bunchList = d.get(commandName,[])
+        for bunch in bunchList:
+            stroke = bunch.val
+            # Important: bunch.val is a stroke returned from k.strokeFromSetting.
+            # Do not call k.strokeFromSetting again here!
+            if stroke and stroke not in ('None','none',None):
+                if 0:
+                    g.trace(
+                        modeName,
+                        '%10s' % (stroke),
+                        '%20s' % (commandName),
+                        bunch.nextMode)
+                d2 = k.masterBindingsDict.get(modeName,{})
+                d2 [stroke] = g.Bunch(
+                    commandName=commandName,
+                    func=func,
+                    nextMode=bunch.nextMode,
+                    stroke=stroke)
+                k.masterBindingsDict [ modeName ] = d2
+#@nonl
+#@-node:ekr.20060119150624:createModeBindings
+#@+node:ekr.20060104110233:generalModeHandler
+def generalModeHandler (self,event,
+    commandName=None,func=None,modeName=None,nextMode=None):
+    
+    '''Handle a mode defined by an @mode node in leoSettings.leo.'''
+
+    k = self ; c = k.c
+    state = k.getState(modeName)
+    trace = c.config.getBool('trace_modes')
+    
+    if trace: g.trace(modeName,state)
+   
+    if state == 0:
+        self.initMode(event,modeName)
+        k.inputModeName = modeName
+        k.setState(modeName,1,handler=k.generalModeHandler)
+        if c.config.getBool('showHelpWhenEnteringModes'):
+            k.modeHelp(event)
+        else:
+            c.frame.log.hideTab('Mode')
+        if k.useTextWidget:
+            c.minibufferWantsFocus()
+        else:
+            c.restoreRequestedFocus()
+    elif not func:
+        g.trace('No func: improper key binding')
+        return 'break'
+    else:
+        if trace: g.trace(modeName,state,commandName)
+        if commandName == 'mode-help':
+            func(event)
+        else:
+            savedModeName = k.inputModeName # Remember this: it may be cleared.
+            # nextMode = bunch.nextMode
+            self.endMode(event)
+            if c.config.getBool('trace_doCommand'):
+                g.trace(func.__name__)
+            func(event)
+            if nextMode in (None,'none'):
+                # Do *not* clear k.inputModeName or the focus here.
+                # func may have put us in *another* mode.
+                pass
+            elif nextMode == 'same':
+                self.reinitMode(modeName) # Re-enter this mode.
+                k.setState(modeName,1,handler=k.generalModeHandler)
+            else:
+                self.initMode(event,nextMode) # Enter another mode.
+
+    return 'break'
+#@nonl
+#@-node:ekr.20060104110233:generalModeHandler
+#@+node:ekr.20060117202916.1:initMode
+def initMode (self,event,modeName):
+
+    k = self ; c = k.c
+
+    if not modeName:
+        g.trace('oops: no modeName')
+        return
+
+    d = g.app.config.modeCommandsDict.get('enter-'+modeName)
+    if not d:
+        self.badMode(modeName)
+        return
+    else:
+        k.modeBindingsDict = d
+        
+    k.inputModeName = modeName
+    
+    if k.masterBindingsDict.get(modeName) is None:
+        k.createModeBindings(modeName,d)
+
+    entryCommands = d.get('*entry-commands*',[])
+    if entryCommands:
+        # g.trace('entryCommands',entryCommands)
+        for commandName in entryCommands:
+            g.trace('entry command:',commandName)
+            k.simulateCommand(commandName)
+   
+    k.setLabelBlue(modeName+': ',protect=True)
+    k.showStateAndMode()
+    if k.useTextWidget:
+        c.minibufferWantsFocus()
+    else:
+        pass # Do *not* change the focus here!
+#@nonl
+#@-node:ekr.20060117202916.1:initMode
+#@+node:ekr.20060104125946:modeHelpHelper
+def modeHelpHelper (self,d):
+    
+    k = self ; c = k.c ; tabName = 'Mode'
+    c.frame.log.clearTab(tabName)
+    keys = d.keys() ; keys.sort()
+
+    data = [] ; n = 20
+    for key in keys:
+        if key != '*entry-commands*':
+            bunchList = d.get(key)
+            for bunch in bunchList:
+                shortcut = bunch.val
+                if shortcut not in (None,'None'):
+                    s1 = key ; s2 = k.prettyPrintKey(shortcut)
+                    n = max(n,len(s1))
+                    data.append((s1,s2),)
+                
+    data.sort()
+    
+    # g.es('%s\n\n' % (k.inputModeName),tabName=tabName)
+        
+    # This isn't perfect in variable-width fonts.
+    for s1,s2 in data:
+        g.es('%*s %s' % (n,s1,s2),tabName=tabName)
+#@nonl
+#@-node:ekr.20060104125946:modeHelpHelper
+#@-node:ekr.20060531180657.1:Executed code
+#@-node:ekr.20060211093935:Support for on-enter-mode in mode declarations
 #@+node:ekr.20060531161030.1:Make body editors persistant
 #@-node:ekr.20060531161030.1:Make body editors persistant
 #@+node:ekr.20060531144607:Finish the new colorizer!
@@ -2218,13 +2614,94 @@ def findWord (self,event):
 #@-node:ekr.20060531135634.1:Test and fix *important* Emacs commands
 #@-node:ekr.20060531161030:B2
 #@+node:ekr.20060527164612:Important 1-2 day projects (1-2 weeks)
-#@+node:ekr.20050419060645:Alternate lead-in characters
+#@+node:ekr.20031218072017.801:Support .leo.gz or .leo.zip files
+#@+node:ekr.20050428062312:Request 1
 @nocolor
 
-An @decorator setting might be good. This would be a list of all Python
-decorators. Leo would create @verbatim sentinels for these.
+By: samcollett ( Sam Collett ) 
+ Compressed LEO files   
+2003-01-07 16:57
+
+
+Would it be possible to have a new file format that was basically a compressed
+version of LEO files? Maybe using the gzip compression method. You could then
+save a lot of space when you do large files. Not being a professional
+programmer myself (I mainly dabble in web design - HTML and Active Server
+Pages) how difficult would this be to implement? You would just output using a
+different file extension so users of the older versions can still use files
+with the LEO extension.
+#@-node:ekr.20050428062312:Request 1
+#@+node:ekr.20040226092546:Request 2
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=2442772
+By: ejoy
+
+I made an experiment last night. I replaced the call to open()in leofilecommand.py
+with a call to gzip.open().
+
+The LeoPy.leo file saved this way is only 600K! And there is no significant
+speed down in saving.
+
+I think it is a good idea to add compression support for load/save .leo files.
+When reading or writing file with name ending with ".leo.gz", leo can call gzip
+module to uncompress/compress the file, saving a lot of disk space.
+
+What do you think of this?
 #@nonl
-#@-node:ekr.20050419060645:Alternate lead-in characters
+#@-node:ekr.20040226092546:Request 2
+#@+node:ekr.20031218072017.2297:open (leoFileCommands)
+def open(self,theFile,fileName,readAtFileNodesFlag=True,silent=False):
+
+    c = self.c ; frame = c.frame
+    # Read the entire file into the buffer
+    self.fileBuffer = theFile.read() ; theFile.close()
+    self.fileIndex = 0
+    << Set the default directory >>
+    self.topPosition = None
+    ok, ratio = self.getLeoFile(
+        fileName,
+        readAtFileNodesFlag=readAtFileNodesFlag,
+        silent=silent)
+    frame.resizePanesToRatio(ratio,frame.secondary_ratio)
+    if 0: # 1/30/04: this is useless.
+        if self.topPosition: 
+            c.setTopVnode(self.topPosition)
+    # Delete the file buffer
+    self.fileBuffer = ""
+    return ok
+#@nonl
+#@+node:ekr.20031218072017.2298:<< Set the default directory >>
+@ The most natural default directory is the directory containing the .leo file that we are about to open.  If the user has specified the "Default Directory" preference that will over-ride what we are about to set.
+@c
+
+theDir = g.os_path_dirname(fileName)
+
+if len(theDir) > 0:
+    c.openDirectory = theDir
+#@nonl
+#@-node:ekr.20031218072017.2298:<< Set the default directory >>
+#@-node:ekr.20031218072017.2297:open (leoFileCommands)
+#@+node:ekr.20050428063105:newOpen (From chapters.py)
+oldOpen = leoFileCommands.fileCommands.open
+
+def newOpen( self,file,fileName,readAtFileNodesFlag=True,silent=False):
+
+    global iscStringIO
+    c = self.c
+    
+    if zipfile.is_zipfile( fileName ):
+        iscStringIO = True
+        chapters = openChaptersFile( fileName )
+        g.es( str( len( chapters ) ) + " Chapters To Read", color = 'blue' )
+        insertChapters( chapters, c.frame, c )
+        g.es( "Finished Reading Chapters", color = 'blue' )
+        iscStringIO = False
+        return True
+
+    return oldOpen(self,file,fileName,readAtFileNodesFlag,silent)
+#@nonl
+#@-node:ekr.20050428063105:newOpen (From chapters.py)
+#@-node:ekr.20031218072017.801:Support .leo.gz or .leo.zip files
 #@+node:ekr.20040919182750.1:Better handling of whitespace (cvs fiendly)
 #@+node:ekr.20060227121512:Comments from Bernhard
 @nocolor
@@ -2788,6 +3265,13 @@ def check(name,lines):
 #@-node:ekr.20050917133402:check
 #@-node:ekr.20041022083005.8:Script to catch mixed tab & space in derived files
 #@-node:ekr.20040919182750.1:Better handling of whitespace (cvs fiendly)
+#@+node:ekr.20050419060645:Alternate lead-in characters
+@nocolor
+
+An @decorator setting might be good. This would be a list of all Python
+decorators. Leo would create @verbatim sentinels for these.
+#@nonl
+#@-node:ekr.20050419060645:Alternate lead-in characters
 #@+node:ekr.20060306194040:More screen shots or video tutorial on Leo's web site
 
 @nocolor
@@ -2841,94 +3325,8 @@ demonstration of it's advantages.
 #@nonl
 #@-node:ekr.20060531134434.1:Screencasts
 #@-node:ekr.20060306194040:More screen shots or video tutorial on Leo's web site
-#@+node:ekr.20031218072017.801:Support .leo.gz or .leo.zip files
-#@+node:ekr.20050428062312:Request 1
-@nocolor
-
-By: samcollett ( Sam Collett ) 
- Compressed LEO files   
-2003-01-07 16:57
-
-
-Would it be possible to have a new file format that was basically a compressed
-version of LEO files? Maybe using the gzip compression method. You could then
-save a lot of space when you do large files. Not being a professional
-programmer myself (I mainly dabble in web design - HTML and Active Server
-Pages) how difficult would this be to implement? You would just output using a
-different file extension so users of the older versions can still use files
-with the LEO extension.
-#@-node:ekr.20050428062312:Request 1
-#@+node:ekr.20040226092546:Request 2
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=2442772
-By: ejoy
-
-I made an experiment last night. I replaced the call to open()in leofilecommand.py
-with a call to gzip.open().
-
-The LeoPy.leo file saved this way is only 600K! And there is no significant
-speed down in saving.
-
-I think it is a good idea to add compression support for load/save .leo files.
-When reading or writing file with name ending with ".leo.gz", leo can call gzip
-module to uncompress/compress the file, saving a lot of disk space.
-
-What do you think of this?
-#@nonl
-#@-node:ekr.20040226092546:Request 2
-#@+node:ekr.20031218072017.2297:open (leoFileCommands)
-def open(self,theFile,fileName,readAtFileNodesFlag=True,silent=False):
-
-    c = self.c ; frame = c.frame
-    # Read the entire file into the buffer
-    self.fileBuffer = theFile.read() ; theFile.close()
-    self.fileIndex = 0
-    << Set the default directory >>
-    self.topPosition = None
-    ok, ratio = self.getLeoFile(
-        fileName,
-        readAtFileNodesFlag=readAtFileNodesFlag,
-        silent=silent)
-    frame.resizePanesToRatio(ratio,frame.secondary_ratio)
-    if 0: # 1/30/04: this is useless.
-        if self.topPosition: 
-            c.setTopVnode(self.topPosition)
-    # Delete the file buffer
-    self.fileBuffer = ""
-    return ok
-#@nonl
-#@+node:ekr.20031218072017.2298:<< Set the default directory >>
-@ The most natural default directory is the directory containing the .leo file that we are about to open.  If the user has specified the "Default Directory" preference that will over-ride what we are about to set.
-@c
-
-theDir = g.os_path_dirname(fileName)
-
-if len(theDir) > 0:
-    c.openDirectory = theDir
-#@nonl
-#@-node:ekr.20031218072017.2298:<< Set the default directory >>
-#@-node:ekr.20031218072017.2297:open (leoFileCommands)
-#@+node:ekr.20050428063105:newOpen (From chapters.py)
-oldOpen = leoFileCommands.fileCommands.open
-
-def newOpen( self,file,fileName,readAtFileNodesFlag=True,silent=False):
-
-    global iscStringIO
-    c = self.c
-    
-    if zipfile.is_zipfile( fileName ):
-        iscStringIO = True
-        chapters = openChaptersFile( fileName )
-        g.es( str( len( chapters ) ) + " Chapters To Read", color = 'blue' )
-        insertChapters( chapters, c.frame, c )
-        g.es( "Finished Reading Chapters", color = 'blue' )
-        iscStringIO = False
-        return True
-
-    return oldOpen(self,file,fileName,readAtFileNodesFlag,silent)
-#@nonl
-#@-node:ekr.20050428063105:newOpen (From chapters.py)
-#@-node:ekr.20031218072017.801:Support .leo.gz or .leo.zip files
+#@+node:ekr.20060530085844:Improve autocompletion
+#@-node:ekr.20060530085844:Improve autocompletion
 #@+node:ekr.20041022091645.4:Pymacs
 #@+node:ekr.20040125121407:Postings
 @nocolor
@@ -4642,6 +5040,8 @@ class UndoableCompoundEvent3:
 #@-node:ekr.20060201152349.15:<<UndoableCompoundEvent>>
 #@-node:ekr.20060201152349:NodeUndoer.py
 #@-node:ekr.20060228072202:New undoer
+#@+node:ekr.20060531192407:IPython
+#@-node:ekr.20060531192407:IPython
 #@-node:ekr.20060527182117:Important 1-2 week projects (2-3 weeks)
 #@-all
 #@nonl
