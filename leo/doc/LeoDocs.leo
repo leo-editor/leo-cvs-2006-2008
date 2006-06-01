@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="24152" clone_windows="0"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="24431" clone_windows="0"/>
 <globals body_outline_ratio="0.584597432905">
-	<global_window_position top="49" left="249" height="724" width="944"/>
+	<global_window_position top="49" left="249" height="686" width="944"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -46,7 +46,7 @@
 <v t="ekr.20060525110217"><vh>@@button rst-&gt;rst</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647" a="V"><vh>Users Guide</vh>
+<v t="ekr.20040414161647"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -145,7 +145,7 @@
 </v>
 </v>
 <v t="ekr.20050831195331.2"><vh>Chapter 1: Installing Leo</vh>
-<v t="edream.110203163054.48" a="E"><vh>@rst html\install.html</vh>
+<v t="edream.110203163054.48"><vh>@rst html\install.html</vh>
 <v t="ekr.20050901110110"><vh>@rst-no-head links</vh></v>
 <v t="edream.110203163054.49"><vh>System requirements</vh></v>
 <v t="edream.110203163054.50"><vh>How to install Leo on Linux</vh></v>
@@ -831,7 +831,7 @@
 <v t="ekr.20050916065715"><vh>suggestions for tutorial</vh></v>
 </v>
 </v>
-<v t="edream.110203163054.46"><vh>Release Notes</vh>
+<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
 <v t="edream.110203163054.117"><vh>Previous versions...</vh>
 <v t="ekr.20060206111717"><vh>Ancient...</vh>
 <v t="edream.110203163054.118"><vh>3.x...</vh>
@@ -2692,8 +2692,38 @@
 <v t="ekr.20060511074853"><vh>4.4 final</vh></v>
 </v>
 </v>
-<v t="edream.110203163054.63"><vh>Latest version</vh>
-<v t="ekr.20060511074853"><vh>4.4 final</vh></v>
+<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
+<v t="ekr.20060601101643" a="TV"><vh>4.4.1 b1</vh>
+<v t="ekr.20060601101958.1"><vh>Fixed bugs</vh>
+<v t="ekr.20060601101958.56" a="E"><vh>The Open Python Window command runs Idle in a separate process</vh></v>
+<v t="ekr.20060601101958.2" a="E"><vh>Fixed crasher in searchbox plugin</vh></v>
+<v t="ekr.20060601101958.6"><vh>Fixed binding problems in leoSettings.leo reported by Check bindings script.</vh></v>
+<v t="ekr.20060601101958.13"><vh>Fixed crasher in macros plugin</vh></v>
+<v t="ekr.20060601101958.14"><vh>Fixed crasher in  UNL plugin</vh></v>
+<v t="ekr.20060601101958.16" a="E"><vh>Suppressed traceback in g.callers when the call stack isn't deep enough</vh></v>
+</v>
+<v t="ekr.20060601102802"><vh>New features and commands</vh>
+<v t="ekr.20060601101958.245" a="E"><vh>Support for multiple editors in the body pane</vh></v>
+<v t="ekr.20060601101958.70" a="E"><vh>Improved searches</vh></v>
+<v t="ekr.20060601101958.52" a="E"><vh>Added debug command</vh></v>
+<v t="ekr.20060601101958.58" a="E"><vh>Added Debug button to scripting plugin</vh></v>
+<v t="ekr.20060601101958.277" a="E"><vh>Added toggle-invisibles and hide-invisibles commands</vh></v>
+<v t="ekr.20060601101958.172"><vh>Added run-unit-test command</vh></v>
+<v t="ekr.20060601101958.234"><vh>The help-for-command command now works for almost all commands</vh></v>
+</v>
+<v t="ekr.20060601102802.2"><vh>New and improved settings</vh>
+<v t="ekr.20060601101958.174" a="E"><vh>Added @bool idle_redraw setting</vh></v>
+<v t="ekr.20060601101958.264" a="E"><vh>Added autoindent_in_nocolor_mode setting</vh></v>
+<v t="ekr.20060601101958.244"><vh>Added warnings about the expanded_click_area setting</vh></v>
+<v t="ekr.20060601101958.276"><vh>Removed support for @shortcut (@shortcuts remains)</vh></v>
+</v>
+<v t="ekr.20060601101958.28"><vh>Minor improvements</vh>
+<v t="ekr.20060601101958.218" a="E"><vh>Finished Cmds menu</vh></v>
+<v t="ekr.20060601101958.235"><vh>Improved show-fonts command</vh></v>
+<v t="ekr.20060601101958.238"><vh>Strip quotes from color, font settings.</vh></v>
+<v t="ekr.20060601101958.239" a="E"><vh>Warn about invalid Enter and Leave key bindings</vh></v>
+</v>
+</v>
 </v>
 </v>
 </vnodes>
@@ -3410,7 +3440,6 @@ set the value of ``name`` to ``val``, with the indicated type.
                  Example: @ints meaningOfLife[0,42,666]=42
 \@path           A path to a directory or file
 \@ratio          A floating point number between 0.0 and 1.0, inclusive.
-\@shortcut       A valid shortcut specifier.
 \@string         A string
 \@strings[list]  A string (must be one of the strings in the list).
                  Example: @strings tk_relief['flat','groove','raised']='groove'
@@ -11260,7 +11289,6 @@ For a list of Tk color specifiers see:
                  Example: @ints meaningOfLife[0,42,666]=42
 \@path           A path to a directory or file
 \@ratio          A floating point number between 0.0 and 1.0, inclusive.
-\@shortcut       A valid shortcut specifier.
 \@string         A string
 \@strings[list]  A string (must be one of the strings in the list).
                  Example: @strings tk_relief['flat','groove','raised']='groove'
@@ -21472,7 +21500,7 @@ keyboard.
 
 - Support for Vim and other 'plain-key' input modes.</t>
 <t tx="ekr.20051028051444.1">Here are the default bindings relating to the minibuffer. Any of
-these may be changed by changing the @shortcut node in leoSettings.leo.
+these may be changed by changing @shortcuts nodes in leoSettings.leo.
 
 Alt-x: Just like Emacs: starts minibuffer. The prompt is 'full-command' Type a
 full command name, then hit &lt;Return&gt; to execute the command. Tab completion
@@ -22512,7 +22540,7 @@ Notes:
 - You can exit any mode using the ``keyboard-quit`` (Control-g) command. This is the
   **only** binding that is automatically created in each mode. All other bindings
   must be specified in the ``@mode`` node. In particular, the bindings specified in
-  @shortcut nodes are **not** in effect in mode (again, except for the
+  @shortcuts nodes are **not** in effect in mode (again, except for the
   keyboard-quit binding).
 
 - Leo supports something akin to tab completion within modes: if you type a key
@@ -23860,7 +23888,7 @@ while still using the same selection.
 <t tx="ekr.20060211104746.346">select-all-text, move back/forward line/char, start/end-of-line.</t>
 <t tx="ekr.20060212102459.4">All minibuffer search commands, with the exception of the isearch (incremental) commands, simply provide a minibuffer interface to Leo's legacy find commands.  This means that all the powerful features of Leo's legacy commands are available to the minibuffer search commands.
 
-Note: all bindings shown are the default bindings for these commands.  You may change any of these bindings using @shortcut nodes in leoSettings.leo.
+Note: all bindings shown are the default bindings for these commands.  You may change any of these bindings using @shortcuts nodes in leoSettings.leo.
 
 Settings
 
@@ -27141,5 +27169,97 @@ There are several workaround, as shown in LeoPy.leo:
 - keep notes in the outline outside of any derived file.
 
 - Use @all to gather notes in a derived file, as in done in @thin leoProjects.txt.</t>
+<t tx="ekr.20060601101643">Leo 4.4.1 beta 1                                            June 1, 2006
+
+Leo 4.4.1 beta  is available at:
+http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+
+Leo is a text editor, data organizer, project manager and much more. See:
+http://webpages.charter.net/edreamleo/intro.html
+
+The highlights of Leo 4.4.1:
+----------------------------
+
+- Multiple editors in Leo's body pane: add-editor, delete-editor and cycle-editor focus commands.
+- Leo's search commands now support regex replace patterns: \1, \2, etc.
+- Support for external debuggers: see http://webpages.charter.net/edreamleo/debuggers.html
+- Fixed the usual assortment of minor bugs.
+
+Links:
+------
+Leo:      http://webpages.charter.net/edreamleo/front.html
+Home:     http://sourceforge.net/projects/leo/
+Download: http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:      http://leo.tigris.org/source/browse/leo/
+Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
+<t tx="ekr.20060601101958.1"></t>
+<t tx="ekr.20060601101958.2">http://sourceforge.net/forum/message.php?msg_id=3729858
+
+Fixed crasher in Leo 4.4 by initing self.p in Quickfind ctor.</t>
+<t tx="ekr.20060601101958.6">http://sourceforge.net/forum/message.php?msg_id=3737879</t>
+<t tx="ekr.20060601101958.13">http://sourceforge.net/forum/message.php?msg_id=3737745
+
+- Added event keyword argument to parameterize function.</t>
+<t tx="ekr.20060601101958.14">http://sourceforge.net/forum/message.php?msg_id=3737745
+
+The fix was to add a c argument to g.findTopLevelNode and g.findNodeInTree.
+</t>
+<t tx="ekr.20060601101958.16"></t>
+<t tx="ekr.20060601101958.28"></t>
+<t tx="ekr.20060601101958.52">This runs the winpdb debugger in a separate process.
+
+The winpdb debugger must be installed for this command to work.
+
+For more details, see: http://webpages.charter.net/edreamleo/debuggers.html</t>
+<t tx="ekr.20060601101958.56">This fixes all conflicts between Leo and Idle.</t>
+<t tx="ekr.20060601101958.58"></t>
+<t tx="ekr.20060601101958.70">- Allow \1, \2, etc. replacements in re searches.
+
+- Allow \n and \t in plain searches.
+
+- The shortcut for the replace-string command now changes from the find command
+to the replace command.</t>
+<t tx="ekr.20060601101958.172">@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3575014
+
+Actually, the run-unit-tests command first appeared in Leo 4.4, but it never got
+properly announced.</t>
+<t tx="ekr.20060601101958.174">http://sourceforge.net/forum/message.php?msg_id=3729823
+
+This is intended to help with redraw problems on Linux.</t>
+<t tx="ekr.20060601101958.218"></t>
+<t tx="ekr.20060601101958.234"></t>
+<t tx="ekr.20060601101958.235">It is now clearer what the selected values are.</t>
+<t tx="ekr.20060601101958.238"></t>
+<t tx="ekr.20060601101958.239"></t>
+<t tx="ekr.20060601101958.244">@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3737745
+
+Added warnings in various places that the setting:
+
+@bool expanded_click_area = True
+
+interferes with the  Universal Scrollling plugin.</t>
+<t tx="ekr.20060601101958.245">The add-editor command adds a new editor, the delete-editor command deletes the
+presently selected editor, and the cycle-editor-focus command cycles focus
+between editors in the body text.</t>
+<t tx="ekr.20060601101958.264">@nocolor
+
+leoSettings.leo now contains the following setting, with default as shown:
+
+@bool autoindent_in_nocolor_mode = True
+
+
+True:  auto-indent regardless of how text is colored.
+False: disable auto-indenting if in range @nocolor or @kill.
+
+This will make the default action work as Roger Erens requested, and will allow
+you to make Leo work exactly as before if you want.</t>
+<t tx="ekr.20060601101958.276">@shortcut nodes never worked and apparently nobody ever used them.</t>
+<t tx="ekr.20060601101958.277"></t>
+<t tx="ekr.20060601102802"></t>
+<t tx="ekr.20060601102802.2"></t>
 </tnodes>
 </leo_file>
