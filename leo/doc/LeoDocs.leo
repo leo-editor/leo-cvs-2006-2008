@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="24431" clone_windows="0"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="24432" clone_windows="0"/>
 <globals body_outline_ratio="0.584597432905">
-	<global_window_position top="49" left="249" height="686" width="944"/>
+	<global_window_position top="49" left="249" height="648" width="944"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -429,9 +429,8 @@
 <v t="ekr.20060218085144.5"><vh>5. Leo is the ultimate platform for unit testing</vh></v>
 <v t="ekr.20060218085144.6"><vh>6. Leo is the ultimate platform for finding and changing text.</vh></v>
 <v t="ekr.20060218085144.7"><vh>7. Leo outlines are the ultimate filing cabinet</vh></v>
-<v t="ekr.20060218095651"><vh>To do: script buttons</vh></v>
-<v t="ekr.20060218092654"><vh>To do @button, @script, @test, @suite, @timer nodes</vh></v>
-<v t="ekr.20060218092725"><vh>To do @rst3 plugin</vh></v>
+<v t="ekr.20060218095651"><vh>8: Script buttons</vh></v>
+<v t="ekr.20060218092725"><vh>9: The rst3 plugin</vh></v>
 <v t="ekr.20060218085144.8"><vh>Conclusion</vh></v>
 </v>
 <v t="ekr.20050901092232.7"><vh>@rst-no-head end stuff</vh></v>
@@ -440,6 +439,14 @@
 <v t="ekr.20050912125144"><vh>Chapter 12: Plugins</vh>
 <v t="ekr.20050912125144.1"><vh>@rst html\plugins.html</vh>
 <v t="ekr.20050912125735"><vh>@rst-no-head links</vh></v>
+<v t="ekr.20050912125735.868"><vh>Body pane</vh>
+<v t="ekr.20050912125735.869"><vh>arrows.py</vh></v>
+<v t="ekr.20050912125735.874"><vh>image.py</vh></v>
+<v t="ekr.20050912125735.880"><vh>rClick.py</vh></v>
+<v t="ekr.20050912125735.904"><vh>autocompleter.py</vh></v>
+<v t="ekr.20050912125735.942"><vh>color_markup.py</vh></v>
+<v t="ekr.20050912125735.974"><vh>script_io_to_body.py</vh></v>
+</v>
 <v t="ekr.20050912125735.26"><vh>Commands &amp; directives</vh>
 <v t="ekr.20050912125735.82"><vh>add_directives.py</vh></v>
 <v t="ekr.20050912125735.85"><vh>bibtex.py</vh></v>
@@ -467,47 +474,6 @@
 <v t="ekr.20050912125735.344"><vh>trace_keys.py</vh></v>
 <v t="ekr.20050912125735.346"><vh>trace_tags.py</vh></v>
 </v>
-<v t="ekr.20050912125735.525"><vh>Enhanced nodes</vh>
-<v t="ekr.20050912125735.526"><vh>at_folder.py</vh></v>
-<v t="ekr.20050912125735.529"><vh>at_produce.py</vh></v>
-<v t="ekr.20050912125735.540"><vh>at_view.py</vh></v>
-<v t="ekr.20050912125735.699"><vh>autotrees.py</vh></v>
-<v t="ekr.20050912125735.556"><vh>base64Packager.py</vh></v>
-<v t="ekr.20050912125735.565"><vh>fastGotoNode.py</vh></v>
-<v t="ekr.20050912125735.597"><vh>mod_labels.py</vh></v>
-<v t="ekr.20050912125735.647"><vh>read_only_nodes.py</vh></v>
-<v t="ekr.20050912125735.674"><vh>run_nodes.py</vh></v>
-<v t="ekr.20050912125735.694"><vh>startfile.py</vh></v>
-</v>
-<v t="ekr.20050912125735.868"><vh>Enhancing the body pane</vh>
-<v t="ekr.20050912125735.869"><vh>arrows.py</vh></v>
-<v t="ekr.20050912125735.874"><vh>image.py</vh></v>
-<v t="ekr.20050912125735.880"><vh>rClick.py</vh></v>
-<v t="ekr.20050912125735.904"><vh>autocompleter.py</vh></v>
-<v t="ekr.20050912125735.942"><vh>color_markup.py</vh></v>
-<v t="ekr.20050912125735.974"><vh>script_io_to_body.py</vh></v>
-</v>
-<v t="ekr.20050912125735.980"><vh>Enhancing the icon and status areas</vh>
-<v t="ekr.20050912125735.981"><vh>nav_buttons.py</vh></v>
-<v t="ekr.20050912125735.1008"><vh>newButtons.py</vh></v>
-<v t="ekr.20050912125735.1041"><vh>hoist.py</vh></v>
-<v t="ekr.20050912125735.1050"><vh>nodenavigator.py</vh></v>
-<v t="ekr.20050912125735.1072"><vh>searchbox.py</vh></v>
-<v t="ekr.20050912125735.1092"><vh>UNL.py</vh></v>
-</v>
-<v t="ekr.20050912125735.1105"><vh>Enhancing windows</vh>
-<v t="ekr.20050912125735.1135" annotate="540c0100003764373130303238353530383730373236393666373236393734373937313031323836333631366536653666373436313734363530613534366235303639363336623663363535363631373230613731303236663731303334643066323736323535303436653666363436353731303532383638303236663731303635353034363636393663363537313037363235353032363236373731303832383638303236663731303935353030373130613632353530393631373236333638363537343739373036353731306232383638303236663731306335353035346637343638363537323731306436323535303236363637373130653238363830323666373130663638306136323735326571002e"><vh>cleo.py</vh></v>
-<v t="ekr.20050912125735.1187"><vh>footprints.py</vh></v>
-<v t="ekr.20050912125735.1205"><vh>chapters.py</vh></v>
-<v t="ekr.20050912125735.1285"><vh>EditAttributes.py</vh></v>
-<v t="ekr.20050912125735.1299"><vh>maximizeNewWindows.py</vh></v>
-<v t="ekr.20050912125735.1301"><vh>nodebar.py</vh></v>
-<v t="ekr.20050912125735.1316"><vh>redirect_to_log.py</vh></v>
-<v t="ekr.20050912125735.1317"><vh>TabbedLog.py</vh></v>
-<v t="ekr.20050912125735.1323"><vh>UASearch.py</vh></v>
-<v t="ekr.20050912125735.1333"><vh>UniversalScrolling.py</vh></v>
-<v t="ekr.20050912125735.1342"><vh>URLloader.py</vh></v>
-</v>
 <v t="ekr.20050912125735.2712"><vh>External editors &amp; Open With</vh>
 <v t="ekr.20050912125735.2713"><vh>mod_tempfname.py</vh></v>
 <v t="ekr.20050912125735.2716"><vh>open_shell.py</vh></v>
@@ -523,20 +489,41 @@
 <v t="ekr.20050912125735.2768"><vh>multifile.py</vh></v>
 <v t="ekr.20050912125735.2779"><vh>niceNosent.py</vh></v>
 </v>
+<v t="ekr.20050912125735.980"><vh>Icon and status areas</vh>
+<v t="ekr.20060601112502"><vh>chapter_hoist.py</vh></v>
+<v t="ekr.20050912125735.981"><vh>nav_buttons.py</vh></v>
+<v t="ekr.20050912125735.1008"><vh>newButtons.py</vh></v>
+<v t="ekr.20050912125735.1041"><vh>hoist.py</vh></v>
+<v t="ekr.20050912125735.1050"><vh>nodenavigator.py</vh></v>
+<v t="ekr.20050912125735.1072"><vh>searchbox.py</vh></v>
+<v t="ekr.20050912125735.1092"><vh>UNL.py</vh></v>
+</v>
 <v t="ekr.20050912125735.2786"><vh>LeoN</vh></v>
 <v t="ekr.20050912125735.2826"><vh>Menus &amp; translations</vh>
 <v t="ekr.20050912125735.2828"><vh>chinese_menu.py</vh></v>
 <v t="ekr.20050912125735.2836"><vh>french_fm.py</vh></v>
 <v t="ekr.20050912125735.2844"><vh>pie_menus.py</vh></v>
 </v>
-<v t="ekr.20050912125735.2867"><vh>Plugins manager, updater &amp; menu</vh>
+<v t="ekr.20050912125735.525"><vh>Nodes</vh>
+<v t="ekr.20050912125735.526"><vh>at_folder.py</vh></v>
+<v t="ekr.20050912125735.529"><vh>at_produce.py</vh></v>
+<v t="ekr.20050912125735.540"><vh>at_view.py</vh></v>
+<v t="ekr.20050912125735.699"><vh>autotrees.py</vh></v>
+<v t="ekr.20050912125735.556"><vh>base64Packager.py</vh></v>
+<v t="ekr.20050912125735.565"><vh>fastGotoNode.py</vh></v>
+<v t="ekr.20050912125735.597"><vh>mod_labels.py</vh></v>
+<v t="ekr.20050912125735.647"><vh>read_only_nodes.py</vh></v>
+<v t="ekr.20050912125735.674"><vh>run_nodes.py</vh></v>
+<v t="ekr.20050912125735.694"><vh>startfile.py</vh></v>
+</v>
+<v t="ekr.20050912125735.2867"><vh>Plugins manager &amp; menu</vh>
 <v t="ekr.20050912125735.3040"><vh>leoupdate.py</vh></v>
 <v t="ekr.20050912125735.2918"><vh>plugin_manager.py</vh></v>
 <v t="ekr.20050912125735.2869"><vh>plugins_menu.py</vh></v>
 </v>
 <v t="ekr.20050912125735.3056"><vh>Scripting</vh>
 <v t="ekr.20050912125735.363"><vh>dyna_menu</vh></v>
-<v t="ekr.20050912125735.3057"><vh>mod_scripting.py</vh></v>
+<v t="ekr.20050912125735.3057"><vh>mod_scripting</vh></v>
 </v>
 <v t="ekr.20050912125735.3077"><vh>Servers</vh>
 <v t="ekr.20050912125735.3078"><vh>mod_http.py</vh></v>
@@ -548,6 +535,18 @@
 <v t="ekr.20050912125735.3642"><vh>Leo to AsciiDoc</vh></v>
 <v t="ekr.20050912125735.3832"><vh>rst3.py</vh></v>
 <v t="ekr.20050912125735.3621"><vh>xsltWithNodes.py</vh></v>
+</v>
+<v t="ekr.20050912125735.1105"><vh>Windows</vh>
+<v t="ekr.20050912125735.1135" annotate="540c0100003764373130303238353530383730373236393666373236393734373937313031323836333631366536653666373436313734363530613534366235303639363336623663363535363631373230613731303236663731303334643066323736323535303436653666363436353731303532383638303236663731303635353034363636393663363537313037363235353032363236373731303832383638303236663731303935353030373130613632353530393631373236333638363537343739373036353731306232383638303236663731306335353035346637343638363537323731306436323535303236363637373130653238363830323666373130663638306136323735326571002e"><vh>cleo.py</vh></v>
+<v t="ekr.20050912125735.1187"><vh>footprints.py</vh></v>
+<v t="ekr.20050912125735.1285"><vh>EditAttributes.py</vh></v>
+<v t="ekr.20050912125735.1299"><vh>maximizeNewWindows.py</vh></v>
+<v t="ekr.20050912125735.1301"><vh>nodebar.py</vh></v>
+<v t="ekr.20050912125735.1316"><vh>redirect_to_log.py</vh></v>
+<v t="ekr.20050912125735.1317"><vh>TabbedLog.py</vh></v>
+<v t="ekr.20050912125735.1323"><vh>UASearch.py</vh></v>
+<v t="ekr.20050912125735.1333"><vh>UniversalScrolling.py</vh></v>
+<v t="ekr.20050912125735.1342"><vh>URLloader.py</vh></v>
 </v>
 <v t="ekr.20050912125735.3944"><vh>Zope and zodb</vh>
 <v t="ekr.20050912125735.3945"><vh>zodb.py</vh></v>
@@ -598,6 +597,7 @@
 <v t="ekr.20060527112801"><vh>Settings</vh></v>
 <v t="ekr.20060527105617.1"><vh>Debugging scripts so that c, g and p are predefined</vh></v>
 <v t="ekr.20060527112934"><vh>Remaining problems</vh></v>
+<v t="ekr.20060601104756"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
 <v t="EKR.20040524104904.274"><vh>Appendices</vh>
@@ -2693,35 +2693,35 @@
 </v>
 </v>
 <v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20060601101643" a="TV"><vh>4.4.1 b1</vh>
+<v t="ekr.20060601101643" a="V"><vh>4.4.1 b1</vh>
 <v t="ekr.20060601101958.1"><vh>Fixed bugs</vh>
-<v t="ekr.20060601101958.56" a="E"><vh>The Open Python Window command runs Idle in a separate process</vh></v>
-<v t="ekr.20060601101958.2" a="E"><vh>Fixed crasher in searchbox plugin</vh></v>
+<v t="ekr.20060601101958.56"><vh>The Open Python Window command runs Idle in a separate process</vh></v>
+<v t="ekr.20060601101958.2"><vh>Fixed crasher in searchbox plugin</vh></v>
 <v t="ekr.20060601101958.6"><vh>Fixed binding problems in leoSettings.leo reported by Check bindings script.</vh></v>
 <v t="ekr.20060601101958.13"><vh>Fixed crasher in macros plugin</vh></v>
 <v t="ekr.20060601101958.14"><vh>Fixed crasher in  UNL plugin</vh></v>
-<v t="ekr.20060601101958.16" a="E"><vh>Suppressed traceback in g.callers when the call stack isn't deep enough</vh></v>
+<v t="ekr.20060601101958.16"><vh>Suppressed traceback in g.callers when the call stack isn't deep enough</vh></v>
 </v>
 <v t="ekr.20060601102802"><vh>New features and commands</vh>
-<v t="ekr.20060601101958.245" a="E"><vh>Support for multiple editors in the body pane</vh></v>
-<v t="ekr.20060601101958.70" a="E"><vh>Improved searches</vh></v>
-<v t="ekr.20060601101958.52" a="E"><vh>Added debug command</vh></v>
-<v t="ekr.20060601101958.58" a="E"><vh>Added Debug button to scripting plugin</vh></v>
-<v t="ekr.20060601101958.277" a="E"><vh>Added toggle-invisibles and hide-invisibles commands</vh></v>
+<v t="ekr.20060601101958.245"><vh>Support for multiple editors in the body pane</vh></v>
+<v t="ekr.20060601101958.70"><vh>Improved searches</vh></v>
+<v t="ekr.20060601101958.52"><vh>Added debug command</vh></v>
+<v t="ekr.20060601101958.58"><vh>Added Debug button to scripting plugin</vh></v>
+<v t="ekr.20060601101958.277"><vh>Added toggle-invisibles and hide-invisibles commands</vh></v>
 <v t="ekr.20060601101958.172"><vh>Added run-unit-test command</vh></v>
 <v t="ekr.20060601101958.234"><vh>The help-for-command command now works for almost all commands</vh></v>
 </v>
 <v t="ekr.20060601102802.2"><vh>New and improved settings</vh>
-<v t="ekr.20060601101958.174" a="E"><vh>Added @bool idle_redraw setting</vh></v>
-<v t="ekr.20060601101958.264" a="E"><vh>Added autoindent_in_nocolor_mode setting</vh></v>
+<v t="ekr.20060601101958.174"><vh>Added @bool idle_redraw setting</vh></v>
+<v t="ekr.20060601101958.264"><vh>Added autoindent_in_nocolor_mode setting</vh></v>
 <v t="ekr.20060601101958.244"><vh>Added warnings about the expanded_click_area setting</vh></v>
 <v t="ekr.20060601101958.276"><vh>Removed support for @shortcut (@shortcuts remains)</vh></v>
 </v>
 <v t="ekr.20060601101958.28"><vh>Minor improvements</vh>
-<v t="ekr.20060601101958.218" a="E"><vh>Finished Cmds menu</vh></v>
+<v t="ekr.20060601101958.218"><vh>Finished Cmds menu</vh></v>
 <v t="ekr.20060601101958.235"><vh>Improved show-fonts command</vh></v>
 <v t="ekr.20060601101958.238"><vh>Strip quotes from color, font settings.</vh></v>
-<v t="ekr.20060601101958.239" a="E"><vh>Warn about invalid Enter and Leave key bindings</vh></v>
+<v t="ekr.20060601101958.239"><vh>Warn about invalid Enter and Leave key bindings</vh></v>
 </v>
 </v>
 </v>
@@ -18536,8 +18536,11 @@ I wrote the third in November 2004, and rewrote it in February 2006.
 
 .. Relative links...
 
-.. _chapter10:      theory.html
-.. _appendices:     appendices.html
+.. _chapter10:              theory.html
+.. _appendices:             appendices.html
+.. _`Rst3 plugin`:          rstplugin3.html
+.. _`Scripting plugin`:     plugins.html#mod-scripting
+.. _`test buttons`:         customizing.html#test-and-suite-nodes
 
 .. WARNING: image targets may not have upper case letters!
 
@@ -20601,27 +20604,6 @@ coding can play a similar role like that of syntax highlighting. Right-click on
 the icon area to popup its menu to play with it.</t>
 <t tx="ekr.20050912125735.1187">A plugin to leave footprints! This colours the Leo nodes so that the ones you
 have visited most and most recently will stand out.</t>
-<t tx="ekr.20050912125735.1205">This plugin creates separate outlines called "chapters" within a single .leo
-file. Clones work between Chapters. **Warning**: This plugin must be considered
-**buggy** and **unsafe**. Use with extreme caution.
-
-Numbered tabs at the top of the body pane represent each chapter. Right clicking
-the tab will show a popup menu containing commands. These commands allow you
-to:
-    
-- insert and delete chapters.
-- add names to chapters.
-- split the body pane to create multiple "editors".
-- create a "trash barrel that hold all deleted nodes.
-- import and export outlines and chapters.
-- create a pdf file from your chapters (requires reportlab toolkit at http://www.reportlab.org).
-- and more...
- 
-**Warnings**:
-
-- This plugin must be considered **buggy** and **unsafe**. Use with extreme caution.
-- This plugin makes substantial changes to Leo's core.
-- Outlines containing multiple chapters are stored as a zipped file that can only be read when this plugin has been enabled.</t>
 <t tx="ekr.20050912125735.1285">A plugin that lets the user to associate text with a specific node.
 Summon it by pressing button-2 or button-3 on an icon Box in the outline. This
 will create an attribute editor where the user can add, remove and edit
@@ -20927,7 +20909,7 @@ Notes:
 
 - There is some support for ext='.pdf', but this is experimental code.  Expect crashes.</t>
 <t tx="ekr.20050912125735.3944"></t>
-<t tx="ekr.20050912125735.3945">An experimental plugin that stores all Leo outline data in a single zodb
+<t tx="ekr.20050912125735.3945">An **experimental** plugin that stores all Leo outline data in a single zodb
 database. This plugin replaces the Open, Save and Revert commands with methods
 that access the zodb database.</t>
 <t tx="ekr.20050912133515">-----------------------
@@ -24639,9 +24621,12 @@ an important new dimension, literally and figuratively, to Python.
 Moreover, Leo's Find/Change dialog creates a new environment from which to
 run Python scripts. At long last the full power of the unification of code
 and data is becoming apparent.</t>
-<t tx="ekr.20060218092654"></t>
-<t tx="ekr.20060218092725"></t>
-<t tx="ekr.20060218095651"></t>
+<t tx="ekr.20060218092725">See the documentation for the `Rst3 plugin`_ for details.</t>
+<t tx="ekr.20060218095651">Script buttons are a quick way of automating any task.  Extremely useful.
+See the `Scripting plugin`_ for details.
+
+Leo's core provides additional support for @test, @suite, @timer nodes.
+For details, see the documentation for `test buttons`_.</t>
 <t tx="ekr.20060227102028">Leo 4.4 alpha 7                                             February 28, 2006
 
 This version fixes some minor problems with Leo 4.4a6 and adds autocompletion
@@ -27261,5 +27246,14 @@ you to make Leo work exactly as before if you want.</t>
 <t tx="ekr.20060601101958.277"></t>
 <t tx="ekr.20060601102802"></t>
 <t tx="ekr.20060601102802.2"></t>
+<t tx="ekr.20060601104756">-----------------------
+
+|back| |leo| |next|</t>
+<t tx="ekr.20060601112502">This plugin puts two buttons in the icon area.
+The 'Save Hoist' button hoists the presently selected node and creates a button
+which can later rehoist the same node.
+The 'Dehoist' button performs one level of dehoisting.
+
+This plugin replaces the old chapters plugin.</t>
 </tnodes>
 </leo_file>
