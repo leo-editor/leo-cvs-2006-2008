@@ -503,6 +503,12 @@ class unitTestGui(leoGui):
         
     def getTextSelection (self,t,sort=True):
         return 0,0
+        
+    def toGuiIndex (self,s,w,index):
+        return 0
+        
+    def toPythonIndex (self,s,w,index):
+        return 0
     #@nonl
     #@-node:ekr.20031218072017.3745:dummy routines
     #@+node:ekr.20031218072017.3746:oops
