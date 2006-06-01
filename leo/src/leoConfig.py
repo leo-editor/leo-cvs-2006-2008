@@ -54,7 +54,7 @@ class parserBaseClass:
             'directory':    self.doDirectory,
             'font':         self.doFont,
             'if':           self.doIf,
-            # 'ifgui':        self.doIfGui,  # Removed in 4.4b3.
+            # 'ifgui':        self.doIfGui,  # Removed in 4.4 b3.
             'ifplatform':   self.doIfPlatform,
             'ignore':       self.doIgnore,
             'int':          self.doInt,
@@ -64,7 +64,7 @@ class parserBaseClass:
             'path':         self.doPath,
             'page':         self.doPage,
             'ratio':        self.doRatio,
-            'shortcut':     self.doShortcut,
+            # 'shortcut':     self.doShortcut, # Removed in 4.4.1 b1.
             'shortcuts':    self.doShortcuts,
             'string':       self.doString,
             'strings':      self.doStrings,
@@ -328,15 +328,6 @@ class parserBaseClass:
             self.valueError(p,kind,name,val)
     #@nonl
     #@-node:ekr.20041121125741:doRatio
-    #@+node:ekr.20041120113848:doShortcut
-    def doShortcut(self,p,kind,name,val):
-        
-        # Note:  kind,name,val are as returned from self.parseHeadline(p.headString())
-    
-        self.set(p,kind,name,val)
-        self.setShortcut(name,val)
-    #@nonl
-    #@-node:ekr.20041120113848:doShortcut
     #@+node:ekr.20041120105609:doShortcuts
     def doShortcuts(self,p,kind,name,val,s=None):
         
