@@ -21,7 +21,7 @@
 plugins_menu.py
 #################
 #xcc_nodes.py
-#__jEdit_colorizer__.py
+__jEdit_colorizer__.py
 #word_export.py
 #open_shell.py
 #at_view.py
@@ -31,7 +31,6 @@ plugins_menu.py
 #mod_http.py
 #niceNosent.py
 #vim.py
-#chapters2.py
 #bibtex.py
 #autotrees.py
 #mod_autosave.py
@@ -49,13 +48,15 @@ rst3.py
 #run_nodes.py
 #FileActions.py
 #scripts_menu.py
-#chapter_hoist.py
+
 #datenodes.py
 #detect_urls.py
 plugin_manager.py
 
-# Icon area: order is important.
+########### Icon area: order is important.
 mod_scripting.py
+#chapter_hoist.py
+#shortcut_button.py
 #hoist.py
 #nodenavigator.py
 #searchbox.py

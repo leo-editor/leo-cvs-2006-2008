@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="24432" clone_windows="0"/>
 <globals body_outline_ratio="0.584597432905">
-	<global_window_position top="49" left="249" height="648" width="944"/>
+	<global_window_position top="49" left="249" height="629" width="944"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -46,7 +46,7 @@
 <v t="ekr.20060525110217"><vh>@@button rst-&gt;rst</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -394,8 +394,8 @@
 <v t="ekr.20050901102400.5"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="EKR.20040524104904.261"><vh>Chapter 10: Theory of Operation</vh>
-<v t="ekr.20050901101608.6"><vh>@rst html\theory.html</vh>
+<v t="EKR.20040524104904.261" a="E"><vh>Chapter 10: Theory of Operation</vh>
+<v t="ekr.20050901101608.6" a="E"><vh>@rst html\theory.html</vh>
 <v t="ekr.20050901102300"><vh>@rst-no-head links</vh></v>
 <v t="EKR.20040524104904.262"><vh>Overview</vh></v>
 <v t="EKR.20040524104904.263"><vh>Nodes</vh></v>
@@ -407,6 +407,7 @@
 <v t="EKR.20040524104904.267"><vh>Tangle and untangle commands</vh></v>
 <v t="EKR.20040524104904.268"><vh>Unicode theory of operation</vh></v>
 <v t="EKR.20040524104904.269"><vh>Unlimited undo</vh></v>
+<v t="ekr.20060602142732" a="V"><vh>Key bindings</vh></v>
 <v t="ekr.20050901102400.6"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
@@ -831,7 +832,7 @@
 <v t="ekr.20050916065715"><vh>suggestions for tutorial</vh></v>
 </v>
 </v>
-<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
+<v t="edream.110203163054.46"><vh>Release Notes</vh>
 <v t="edream.110203163054.117"><vh>Previous versions...</vh>
 <v t="ekr.20060206111717"><vh>Ancient...</vh>
 <v t="edream.110203163054.118"><vh>3.x...</vh>
@@ -2693,7 +2694,7 @@
 </v>
 </v>
 <v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20060601101643" a="V"><vh>4.4.1 b1</vh>
+<v t="ekr.20060601101643" a="E"><vh>4.4.1 b1</vh>
 <v t="ekr.20060601101958.1"><vh>Fixed bugs</vh>
 <v t="ekr.20060601101958.56"><vh>The Open Python Window command runs Idle in a separate process</vh></v>
 <v t="ekr.20060601101958.2"><vh>Fixed crasher in searchbox plugin</vh></v>
@@ -27154,7 +27155,7 @@ There are several workaround, as shown in LeoPy.leo:
 - keep notes in the outline outside of any derived file.
 
 - Use @all to gather notes in a derived file, as in done in @thin leoProjects.txt.</t>
-<t tx="ekr.20060601101643">Leo 4.4.1 beta 1                                            June 1, 2006
+<t tx="ekr.20060601101643">Leo 4.4.1 beta 1                                            June 3, 2006
 
 Leo 4.4.1 beta  is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
@@ -27164,11 +27165,11 @@ http://webpages.charter.net/edreamleo/intro.html
 
 The highlights of Leo 4.4.1:
 ----------------------------
-
-- Multiple editors in Leo's body pane: add-editor, delete-editor and cycle-editor focus commands.
-- Leo's search commands now support regex replace patterns: \1, \2, etc.
+- A new colorizer plugin controlled by jEdit language description files.
+  At present this plugin only reliably colors @language python code.
+- Multiple editors in Leo's body pane.
+- Search commands now support regex replace patterns: \1, \2, etc.
 - Support for external debuggers: see http://webpages.charter.net/edreamleo/debuggers.html
-- Fixed the usual assortment of minor bugs.
 
 Links:
 ------
@@ -27255,5 +27256,43 @@ which can later rehoist the same node.
 The 'Dehoist' button performs one level of dehoisting.
 
 This plugin replaces the old chapters plugin.</t>
+<t tx="ekr.20060602142732">Much of the complications in leoKeys.py arises because Tkinter key events
+provide insufficient enough information to tell what key actually caused the key
+event.  So instead of just creating one &lt;Key&gt; binding that calls k.masterKeyHandler,
+Leo is forced to create one key binding for every key that is bound somewhere.
+
+Presently there are several places where such callbacks are created.
+They all have the form::
+    
+     def callback(event=None,k=k,stroke=stroke):
+        return k.masterKeyHandler(event,stroke)
+        
+Notes:
+
+- Each callback calls k.masterKeyHander with the stroke parameter.
+  This parameter tells k.masterKeyHandler what key was pressed.
+  
+- Notice that no function if passed to k.masterKeyHandler.
+  Instead, k.masterKeyHandler uses various dictionaries to determine
+  what function (Leo command) to associate with the stroke
+  *in a particular context*.
+  
+- It's a bit ugly to define this callback in several places,
+  but it doesn't hurt.
+  
+It might be good to simplify and clarify the code by creating
+a single method for creating bindings::
+      
+    define createKeyboarkBinding (self,stroke):
+        k = self ; d = k.actualBindingsDict
+        
+        def masterKeyBinding (event,k=k,stroke=stroke):
+            return k.masterKeyHandler(event,stroke)
+
+        if not d.get(stroke):
+            &lt;&lt; create the actual tk binding to masterKeyBinding &gt;&gt;
+            d [stroke] = True
+            
+This makes it more clear that duplicate bindings are entirely harmless.</t>
 </tnodes>
 </leo_file>

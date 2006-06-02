@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="267" clone_windows="0"/>
 <globals body_outline_ratio="0.549828178694">
-	<global_window_position top="24" left="282" height="703" width="955"/>
+	<global_window_position top="40" left="333" height="665" width="842"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -44,7 +44,7 @@
 <v t="ekr.20060112104823"><vh>main</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
@@ -256,7 +256,7 @@
 <v t="ekr.20060125165241"><vh>@bool useTextMinibuffer = True</vh></v>
 <v t="ekr.20060122105527.4" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
 </v>
-<v t="ekr.20051007200824" a="E" annotate="7d71002e"><vh>Keyboard shortcuts</vh>
+<v t="ekr.20051007200824" annotate="7d71002e"><vh>Keyboard shortcuts</vh>
 <v t="ekr.20051101160257" annotate="7d71002e"><vh>About keyboard shortcuts</vh>
 <v t="ekr.20051007200824.1" annotate="7d71002e"><vh>About shortcut specifiers</vh></v>
 <v t="ekr.20060116090646"><vh>Reference for function keys</vh></v>
@@ -307,19 +307,18 @@
 <v t="ekr.20060112093227.1"><vh>@shortcuts No bindings: E-M</vh></v>
 <v t="ekr.20060112093227.2"><vh>@shortcuts No bindings: N-Z</vh></v>
 </v>
-<v t="ekr.20060122105527" a="E"><vh>EKR bindings: Mode-oriented bindings + Emacs bindings</vh>
+<v t="ekr.20060122105527"><vh>EKR bindings: Mode-oriented bindings + Emacs bindings</vh>
 <v t="ekr.20060122105527.2"><vh>Summary of Ctrl bindings</vh></v>
-<v t="ekr.20060122105527.9" a="E"><vh>Modes</vh>
+<v t="ekr.20060122105527.9"><vh>Modes</vh>
 <v t="ekr.20060122113439"><vh>@@mode Edit (Alt-Control-space)</vh>
 <v t="ekr.20060122122150"><vh>@mode Edit-extend</vh></v>
 </v>
-<v t="ekr.20060122105527.11" annotate="7d71002e"><vh>@@mode File</vh>
+<v t="ekr.20060122105527.11" a="E" annotate="7d71002e"><vh>@mode File</vh></v>
 <v t="ekr.20060122182825"><vh>@mode File-open</vh></v>
-</v>
-<v t="ekr.20060122105527.12"><vh>@@mode Find </vh>
+<v t="ekr.20060122105527.12"><vh>@mode Find </vh>
 <v t="ekr.20060122105527.13"><vh>@@mode Find-reverse</vh></v>
 </v>
-<v t="ekr.20060122105527.14" a="V"><vh>@@mode Find-options</vh></v>
+<v t="ekr.20060122105527.14"><vh>@mode Find-options</vh></v>
 <v t="ekr.20060122105732" annotate="7d71002e"><vh>@mode Outline (Control-Shift-O)</vh>
 <v t="ekr.20060122130002"><vh>@mode Outline-move</vh></v>
 </v>
@@ -410,10 +409,27 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060512084639"><vh>Recent</vh>
+<v t="ekr.20060512084639" a="E"><vh>Recent</vh>
 <v t="ekr.20060131071612"><vh>@bool trace_masterKeyHandler = False</vh></v>
 <v t="ekr.20060309022759"><vh>@bool trace_colorizer = False</vh></v>
 <v t="ekr.20060131071947"><vh>@bool trace_masterClickHandler = False</vh></v>
+<v t="ekr.20060121102627"><vh>@bool trace_modes = False</vh></v>
+<v t="ekr.20060114073238"><vh>@bool trace_bindings = False</vh></v>
+<v t="ekr.20060122105527.9" a="E"><vh>Modes</vh>
+<v t="ekr.20060122113439"><vh>@@mode Edit (Alt-Control-space)</vh>
+<v t="ekr.20060122122150"><vh>@mode Edit-extend</vh></v>
+</v>
+<v t="ekr.20060122105527.11" a="E" annotate="7d71002e"><vh>@mode File</vh></v>
+<v t="ekr.20060122182825"><vh>@mode File-open</vh></v>
+<v t="ekr.20060122105527.12"><vh>@mode Find </vh>
+<v t="ekr.20060122105527.13"><vh>@@mode Find-reverse</vh></v>
+</v>
+<v t="ekr.20060122105527.14"><vh>@mode Find-options</vh></v>
+<v t="ekr.20060122105732" annotate="7d71002e"><vh>@mode Outline (Control-Shift-O)</vh>
+<v t="ekr.20060122130002"><vh>@mode Outline-move</vh></v>
+</v>
+<v t="ekr.20060122105527.15" a="TV"><vh>@mode Quick-command (Alt-C)</vh></v>
+</v>
 </v>
 </vnodes>
 <tnodes>
@@ -3911,13 +3927,13 @@ keyboard-quit       = Ctrl-g
 mode-help           = Tab
 
 # enter-edit-mode     = e
-# enter-file-mode     = w
+enter-file-mode       = w
 # enter-find-mode     = f
 
 # An extremely useful mode.  It allows the traditional Leo bindings without interference
 # with the Emacs enditing bindings.
 
-show-invisibles         = Alt-v   
+toggle-invisibles       = Alt-v   
 sort-siblings           = Alt-a
 
 # convert-blanks          = Shift-Ctrl-b
@@ -4155,7 +4171,10 @@ contract-or-go-left     -&gt; same = LtArrow
 expand-and-go-right     -&gt; same = RtArrow
 goto-next-visible       -&gt; same = DnArrow
 goto-prev-visible       -&gt; same = UpArrow</t>
-<t tx="ekr.20060122113439"># Boilerplate for most modes.
+<t tx="ekr.20060122113439"># **Note**: commands that affect the text selection do not become visible
+#           until the mode ends, which kinda defeats the purpose of this mode.
+
+# Boilerplate for most modes.
 keyboard-quit       = Ctrl-g
 # exit-named-mode     = Return # Doesn't work well in headlines.
 mode-help           = Tab
@@ -4320,7 +4339,8 @@ open-leoDocs-leo        = d
 open-leoPlugins-leo     = p
 open-leoSettings-leo    = s
 
-open-outline            = o     # to do: should be open-outline-by-name.</t>
+open-outline-by-name    = o
+open-outline            = Shift-o</t>
 <t tx="ekr.20060124070546"># Frequently used...
 enter-find-options-mode             = Ctrl-Shift-F
 
