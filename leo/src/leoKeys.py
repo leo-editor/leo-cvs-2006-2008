@@ -1790,6 +1790,7 @@ class keyHandlerClass:
         self.argTabList = []
         self.modeBindingsDict = {}
         self.getArgEscapes = []
+        self.modeWidget = None
         #@nonl
         #@-node:ekr.20050923213858:<< define internal ivars >>
         #@nl
@@ -1889,16 +1890,14 @@ class keyHandlerClass:
         #@    << give warning and return if there is a serious redefinition >>
         #@+node:ekr.20060114115648:<< give warning and return if there is a serious redefinition >>
         for bunch in bunchList:
-        
             if ( bunch and
-                # (not bunch.pane.endswith('-mode') and not pane.endswith('-mode')) and
+                # not bunch.pane.endswith('-mode') and
                 bunch.pane != 'mini' and # Minibuffer bindings are completely separate.
                 (bunch.pane == pane or pane == 'all' or bunch.pane == 'all') and
                 commandName != bunch.commandName
             ):
                 g.es_print('Ignoring redefinition of %s from %s to %s in %s' % (
-                    k.prettyPrintKey(shortcut),
-                    bunch.commandName,commandName,pane),
+                    k.prettyPrintKey(shortcut),bunch.commandName,commandName,repr(pane)),
                     color='blue')
                 return
         #@nonl
@@ -1947,7 +1946,7 @@ class keyHandlerClass:
                 pane,repr(stroke),commandName,func and func.__name__)) # ,len(d.keys()))
     
         if d.get(stroke):
-            g.es('ignoring duplicate definition of %s to %s in %s' % (
+            g.es_print('ignoring duplicate definition of %s to %s in %s' % (
                 stroke,commandName,pane), color='blue')
         else:
             d [stroke] = g.Bunch(commandName=commandName,func=func,pane=pane,stroke=stroke)
@@ -2983,8 +2982,6 @@ class keyHandlerClass:
         
         '''This is the handler for almost all key bindings.'''
         
-        # g.trace(stroke,g.callers())
-        
         k = self ; c = k.c
         trace = c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
     
@@ -3022,7 +3019,7 @@ class keyHandlerClass:
         if trace:
             if (self.master_key_count % 100) == 0:
                 g.printGcSummary(trace=True)
-            g.trace('keysym',repr(event.keysym or ''),'state',state)
+            g.trace('keysym',repr(event.keysym or ''),'stroke',repr(stroke),'state',state)
         #@nonl
         #@-node:ekr.20060321105403.1:<< do key traces >>
         #@nl
@@ -3238,6 +3235,10 @@ class keyHandlerClass:
     def createModeBindings (self,modeName,d):
         
         k = self ; c = k.c
+        
+        # Just do this once.
+        d2 = k.masterBindingsDict.get(modeName,{})
+        if d2: return
     
         for commandName in d.keys():
             if commandName == '*entry-commands*': continue
@@ -3254,10 +3255,20 @@ class keyHandlerClass:
                 if stroke and stroke not in ('None','none',None):
                     if 0:
                         g.trace(
-                            modeName,
+                            g.app.gui.widget_name(k.widget), modeName,
                             '%10s' % (stroke),
                             '%20s' % (commandName),
                             bunch.nextMode)
+                            
+                    # New in 4.4.1 b1: create an actual binding.
+                    def modeKeyCallback(event=None,k=k,stroke=stroke):
+                        return k.masterKeyHandler(event,stroke)
+                
+                    k.completeOneBindingForWidget (k.widget,stroke,modeKeyCallback)
+                   
+                    # Create the entry for the mode in k.masterBindingsDict.
+                    # Important: this is similar, but not the same as k.bindKeyToDict.
+                    # Thus, we should **not** call k.bindKey here!
                     d2 = k.masterBindingsDict.get(modeName,{})
                     d2 [stroke] = g.Bunch(
                         commandName=commandName,
@@ -3310,11 +3321,12 @@ class keyHandlerClass:
         state = k.getState(modeName)
         trace = c.config.getBool('trace_modes')
         
-        if trace: g.trace(modeName,state)
+        if trace: g.trace(modeName,'state',state)
        
         if state == 0:
             self.initMode(event,modeName)
             k.inputModeName = modeName
+            k.modeWidget = event and event.widget
             k.setState(modeName,1,handler=k.generalModeHandler)
             if c.config.getBool('showHelpWhenEnteringModes'):
                 k.modeHelp(event)
@@ -3328,15 +3340,18 @@ class keyHandlerClass:
             g.trace('No func: improper key binding')
             return 'break'
         else:
-            if trace: g.trace(modeName,state,commandName)
             if commandName == 'mode-help':
                 func(event)
             else:
                 savedModeName = k.inputModeName # Remember this: it may be cleared.
-                # nextMode = bunch.nextMode
                 self.endMode(event)
-                if c.config.getBool('trace_doCommand'):
-                    g.trace(func.__name__)
+                if c.config.getBool('trace_doCommand'): g.trace(func.__name__)
+                # New in 4.4.1 b1: pass an event describing the original widget.
+                if event:
+                    event.widget = k.modeWidget
+                else:
+                    event = g.Bunch(widget = k.modeWidget)
+                if trace: g.trace(modeName,'state',state,commandName,'nextMode',nextMode)
                 func(event)
                 if nextMode in (None,'none'):
                     # Do *not* clear k.inputModeName or the focus here.
@@ -3369,8 +3384,7 @@ class keyHandlerClass:
             
         k.inputModeName = modeName
         
-        if k.masterBindingsDict.get(modeName) is None:
-            k.createModeBindings(modeName,d)
+        k.createModeBindings(modeName,d)
     
         entryCommands = d.get('*entry-commands*',[])
         if entryCommands:
