@@ -5864,7 +5864,7 @@ class rectangleCommandsClass (baseEditCommandsClass):
         }
     #@-node:ekr.20050920084036.222: ctor & finishCreate
     #@+node:ekr.20051004112630:check
-    def check (self,event=None,warning='No rectangle selected'):
+    def check (self,event,warning='No rectangle selected'):
         
         '''Return True if there is a selection.
         Otherwise, return False and issue a warning.'''
@@ -5912,7 +5912,7 @@ class rectangleCommandsClass (baseEditCommandsClass):
         
         '''Clear the rectangle defined by the start and end of selected text.'''
     
-        if not self.check(): return
+        if not self.check(event): return
         
         w,r1,r2,r3,r4 = self.beginCommand('clear-rectangle')
     
@@ -5931,7 +5931,7 @@ class rectangleCommandsClass (baseEditCommandsClass):
         
         '''Delete the rectangle if it contains nothing but whitespace..'''
     
-        if not self.check(): return
+        if not self.check(event): return
     
         w,r1,r2,r3,r4 = self.beginCommand('close-rectangle')
       
@@ -5952,7 +5952,7 @@ class rectangleCommandsClass (baseEditCommandsClass):
         
         '''Delete the rectangle defined by the start and end of selected text.'''
     
-        if not self.check(): return
+        if not self.check(event): return
         
         w,r1,r2,r3,r4 = self.beginCommand('delete-rectangle')
     
@@ -6042,7 +6042,7 @@ class rectangleCommandsClass (baseEditCommandsClass):
         c = self.c ; k = self.k ; w = self.w
         state = k.getState('string-rect')
         if state == 0:
-            if not self.check(): return
+            if not self.check(event): return
             self.stringRect = self.getRectanglePoints()
             k.setLabelBlue('String rectangle: ',protect=True)
             k.getArg(event,'string-rect',1,self.stringRectangle)
