@@ -876,7 +876,7 @@ class leoFind:
         
         n = len(pattern)
         if nocase:
-            s = s.lower() ; pattern.lower()
+            s = s.lower() ; pattern = pattern.lower()
             pattern = pattern.replace('\\n','\n').replace('\\t','\t')
     
         if word:
