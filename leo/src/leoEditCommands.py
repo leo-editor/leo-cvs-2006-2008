@@ -4690,10 +4690,10 @@ class helpCommandsClass (baseEditCommandsClass):
     Options
     
     Both autocompletion and calltips are initially enabled or disabled by the
-    enable_autocompleter and enable_calltips settings in leoSettings.leo. You may
-    enable or disable these features at any time with these commands:
-    enable-auto-completer-command, enable-calltips-command,
-    disable-auto-completer-command and disable-calltips-command.
+    enable_autocompleter_initially and enable_calltips_initially settings in
+    leoSettings.leo. You may enable or disable these features at any time with these
+    commands: enable-autocompleter, enable-calltips, disable-autocompleter and
+    disable-calltips.
     '''
     
         if not g.app.unitTesting:
@@ -4920,32 +4920,6 @@ class helpCommandsClass (baseEditCommandsClass):
                 g.restoreStderr()
                 g.restoreStdout()
     #@nonl
-    #@+node:ekr.20060602154458.1:stateHandler
-    def stateHandler (event=None):
-        
-        '''Prompt for a arg for Python's help function, and put it to the log pane.'''
-                
-        k = c.k ; tag = 'python-help' ; state = k.getState(tag)
-    
-        if state == 0:
-            c.frame.minibufferWantsFocus()
-            k.setLabelBlue('Python help: ',protect=True)
-            k.getArg(event,tag,1,stateHandler)
-        else:
-            k.clearState()
-            k.resetLabel()
-            s = k.arg.strip()
-            if s:
-                g.redirectStderr()
-                g.redirectStdout()
-                try:
-                    help(str(s))
-                except Exception:
-                    pass
-                g.restoreStderr()
-                g.restoreStdout()
-    #@nonl
-    #@-node:ekr.20060602154458.1:stateHandler
     #@-node:ekr.20060602154458:pythonHelp
     #@-others
 #@nonl
@@ -4971,10 +4945,10 @@ class keyHandlerCommandsClass (baseEditCommandsClass):
             'auto-complete':            k.autoCompleter.autoComplete,
             'auto-complete-force':      k.autoCompleter.autoCompleteForce,
             'digit-argument':           k.digitArgument,
-            'disable-auto-completer-command':   k.autoCompleter.disableAutocompleter,
-            'disable-calltips-command':         k.autoCompleter.disableCalltips,
-            'enable-auto-completer-command':    k.autoCompleter.enableAutocompleter,
-            'enable-calltips-command':          k.autoCompleter.enableCalltips,
+            'disable-autocompleter':    k.autoCompleter.disableAutocompleter,
+            'disable-calltips':         k.autoCompleter.disableCalltips,
+            'enable-autocompleter':     k.autoCompleter.enableAutocompleter,
+            'enable-calltips':          k.autoCompleter.enableCalltips,
             'exit-named-mode':          k.exitNamedMode,
             'full-command':             k.fullCommand, # For menu.
             'hide-mini-buffer':         k.hideMinibuffer,

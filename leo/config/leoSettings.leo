@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="267" clone_windows="0"/>
 <globals body_outline_ratio="0.549828178694">
-	<global_window_position top="40" left="333" height="665" width="842"/>
+	<global_window_position top="42" left="118" height="735" width="1080"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -313,7 +313,7 @@
 <v t="ekr.20060122113439"><vh>@@mode Edit (Alt-Control-space)</vh>
 <v t="ekr.20060122122150"><vh>@mode Edit-extend</vh></v>
 </v>
-<v t="ekr.20060122105527.11" a="E" annotate="7d71002e"><vh>@mode File</vh></v>
+<v t="ekr.20060122105527.11" annotate="7d71002e"><vh>@mode File</vh></v>
 <v t="ekr.20060122182825"><vh>@mode File-open</vh></v>
 <v t="ekr.20060122105527.12"><vh>@mode Find </vh>
 <v t="ekr.20060122105527.13"><vh>@@mode Find-reverse</vh></v>
@@ -375,7 +375,8 @@
 <v t="ekr.20060531094310"><vh>@bool autoindent_in_nocolor_mode = True</vh></v>
 <v t="ekr.20041119034357.43"><vh>@bool body_gmt_time = False</vh></v>
 <v t="ekr.20041119034357.39"><vh>@bool body_pane_wraps = True</vh></v>
-<v t="ekr.20060216135834"><vh>@bool enable_autocompleter = False</vh></v>
+<v t="ekr.20060216135834"><vh>@bool enable_autocompleter_initially = False</vh></v>
+<v t="ekr.20060603070801"><vh>@bool enable_calltips_initially = False</vh></v>
 <v t="ekr.20041119034357.44"><vh>@bool smart_auto_indent = False</vh></v>
 <v t="ekr.20041119034357.53"><vh>@int additional_body_text_border = 0</vh></v>
 <v t="ekr.20041119034357.42"><vh>@string body_time_format_string = %m/%d/%Y %H:%M:%S</vh></v>
@@ -415,11 +416,13 @@
 <v t="ekr.20060131071947"><vh>@bool trace_masterClickHandler = False</vh></v>
 <v t="ekr.20060121102627"><vh>@bool trace_modes = False</vh></v>
 <v t="ekr.20060114073238"><vh>@bool trace_bindings = False</vh></v>
-<v t="ekr.20060122105527.9" a="E"><vh>Modes</vh>
+<v t="ekr.20060216135834" a="V"><vh>@bool enable_autocompleter_initially = False</vh></v>
+<v t="ekr.20060603070801"><vh>@bool enable_calltips_initially = False</vh></v>
+<v t="ekr.20060122105527.9"><vh>Modes</vh>
 <v t="ekr.20060122113439"><vh>@@mode Edit (Alt-Control-space)</vh>
 <v t="ekr.20060122122150"><vh>@mode Edit-extend</vh></v>
 </v>
-<v t="ekr.20060122105527.11" a="E" annotate="7d71002e"><vh>@mode File</vh></v>
+<v t="ekr.20060122105527.11" annotate="7d71002e"><vh>@mode File</vh></v>
 <v t="ekr.20060122182825"><vh>@mode File-open</vh></v>
 <v t="ekr.20060122105527.12"><vh>@mode Find </vh>
 <v t="ekr.20060122105527.13"><vh>@@mode Find-reverse</vh></v>
@@ -428,7 +431,7 @@
 <v t="ekr.20060122105732" annotate="7d71002e"><vh>@mode Outline (Control-Shift-O)</vh>
 <v t="ekr.20060122130002"><vh>@mode Outline-move</vh></v>
 </v>
-<v t="ekr.20060122105527.15" a="TV"><vh>@mode Quick-command (Alt-C)</vh></v>
+<v t="ekr.20060122105527.15"><vh>@mode Quick-command (Alt-C)</vh></v>
 </v>
 </v>
 </vnodes>
@@ -1548,8 +1551,8 @@ delete-spaces                       = None
 demote                              = None
 diff                                = None
 digit-argument                      = None
-disable-auto-completer-command      = None
-disable-calltips-command            = None
+disable-autocompleter               = None
+disable-calltips                    = None
 disable-gc-trace                    = None
 downcase-region                     = None
 downcase-word                       = None
@@ -1559,8 +1562,8 @@ dump-all-objects                    = None
 dump-new-objects                    = None
 dump-outline                        = None
 edit-headline                       = None
-enable-auto-completer-command       = None
-enable-calltips-command             = None
+enable-autocompleter                = None
+enable-calltips                     = None
 enable-gc-trace                     = None
 end-edit-headline                   = None
 end-of-buffer                       = None
@@ -4481,8 +4484,12 @@ False (recommended):  No translation.</t>
 <t tx="ekr.20060216135834">True:  enable autocompletion initially.
 False: disable autocomopletion initially.
 
-You can use the enable-auto-completer-command and disable-auto-completer-command
-commands to enable or disable autocompletion at any time.</t>
+You can use the enable-autocompleter and disable-autocompleter
+commands to enable or disable autocompletion at any time.
+
+Note: The 'initially' prefix is needed to distinguish this setting from
+enable-autocompleter command. Otherwised they would get 'munged' to the same
+configuration value.</t>
 <t tx="ekr.20060216145416"></t>
 <t tx="ekr.20060216170801"></t>
 <t tx="ekr.20060303075452">The following commands are will be useful for operating Leo without a mouse.
@@ -4694,7 +4701,7 @@ group-operations-transfer           = Alt-Ctrl-Shift-d</t>
 <t tx="ekr.20060504140408"></t>
 <t tx="ekr.20060504140408.1"></t>
 <t tx="ekr.20060504140408.2"></t>
-<t tx="ekr.20060512084639"></t>
+<t tx="ekr.20060512084639">@nocolor</t>
 <t tx="ekr.20060513100933">The number of times the colorizer's main loop in colorOneChunk executes before pausing to check for events.
 A reasonable value is 10.</t>
 <t tx="ekr.20060513100933.1">The number of times the colorizer's main loop in colorOneChunk executes before actually colorizing text.
@@ -4718,5 +4725,14 @@ open-python-window command.</t>
 <t tx="ekr.20060528175513"></t>
 <t tx="ekr.20060531094310">True:  auto-indent regardless of how text is colored.
 False: suppress auto-indenting if in range @nocolor or @kill.</t>
+<t tx="ekr.20060603070801">True:  enable calltip expansion initially.
+False: disable calltip expansion initially.
+
+You can use the enable-calltips and disable-calltips
+commands to enable or disable autocompletion at any time.
+
+Note: The 'initially' prefix is needed to distinguish this setting from
+enable-calltips command. Otherwised they would get 'munged' to the same
+configuration value.</t>
 </tnodes>
 </leo_file>

@@ -1,10 +1,13 @@
-C:\prog\tigris-cvs\leo\src\LeoPy.leo
-C:/prog/tigris-cvs/leo/src/LeoPyRef.leo
-C:\prog\tigris-cvs\leo\config\leoSettings.leo
-C:\prog\tigris-cvs\leo\test\test.leo
-C:\prog\tigris-cvs\leo\plugins\leoPlugins.leo
 C:\prog\tigris-cvs\leo\test\unitTest.leo
 C:\prog\tigris-cvs\leo\doc\LeoDocs.leo
+C:\prog\tigris-cvs\leo\config\leoSettings.leo
+C:\prog\tigris-cvs\leo\src\LeoPy.leo
+C:\prog\tigris-cvs\leo\doc\LeoPostings.leo
+C:\prog\tigris-cvs\leo\test\test.leo
+C:\prog\tigris-cvs\leo\plugins\leoPlugins.leo
+C:\prog\tigris-cvs\leo\scripts\scripts.leo
+C:\prog\tigris-cvs\leo\src\LeoPyRef.leo
+C:\prog\tigris-cvs\leo\src\colorizer.leo
 C:\prog\Leo Stuff\StudyOutlines\pymacs.leo
 C:\Documents and Settings\Ed\Desktop\Recent\test-rst.leo
 C:/Documents and Settings/Ed/Desktop/leo-major-mode.leo

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="24432" clone_windows="0"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="24433" clone_windows="0"/>
 <globals body_outline_ratio="0.584597432905">
-	<global_window_position top="49" left="249" height="629" width="944"/>
+	<global_window_position top="49" left="249" height="610" width="944"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -46,7 +46,7 @@
 <v t="ekr.20060525110217"><vh>@@button rst-&gt;rst</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
+<v t="ekr.20040414161647"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -394,8 +394,8 @@
 <v t="ekr.20050901102400.5"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="EKR.20040524104904.261" a="E"><vh>Chapter 10: Theory of Operation</vh>
-<v t="ekr.20050901101608.6" a="E"><vh>@rst html\theory.html</vh>
+<v t="EKR.20040524104904.261"><vh>Chapter 10: Theory of Operation</vh>
+<v t="ekr.20050901101608.6"><vh>@rst html\theory.html</vh>
 <v t="ekr.20050901102300"><vh>@rst-no-head links</vh></v>
 <v t="EKR.20040524104904.262"><vh>Overview</vh></v>
 <v t="EKR.20040524104904.263"><vh>Nodes</vh></v>
@@ -407,7 +407,7 @@
 <v t="EKR.20040524104904.267"><vh>Tangle and untangle commands</vh></v>
 <v t="EKR.20040524104904.268"><vh>Unicode theory of operation</vh></v>
 <v t="EKR.20040524104904.269"><vh>Unlimited undo</vh></v>
-<v t="ekr.20060602142732" a="V"><vh>Key bindings</vh></v>
+<v t="ekr.20060602142732"><vh>Key bindings</vh></v>
 <v t="ekr.20050901102400.6"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
@@ -832,7 +832,7 @@
 <v t="ekr.20050916065715"><vh>suggestions for tutorial</vh></v>
 </v>
 </v>
-<v t="edream.110203163054.46"><vh>Release Notes</vh>
+<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
 <v t="edream.110203163054.117"><vh>Previous versions...</vh>
 <v t="ekr.20060206111717"><vh>Ancient...</vh>
 <v t="edream.110203163054.118"><vh>3.x...</vh>
@@ -2703,11 +2703,12 @@
 <v t="ekr.20060601101958.14"><vh>Fixed crasher in  UNL plugin</vh></v>
 <v t="ekr.20060601101958.16"><vh>Suppressed traceback in g.callers when the call stack isn't deep enough</vh></v>
 </v>
-<v t="ekr.20060601102802"><vh>New features and commands</vh>
+<v t="ekr.20060601102802" a="V"><vh>New features and commands</vh>
 <v t="ekr.20060601101958.245"><vh>Support for multiple editors in the body pane</vh></v>
 <v t="ekr.20060601101958.70"><vh>Improved searches</vh></v>
 <v t="ekr.20060601101958.52"><vh>Added debug command</vh></v>
 <v t="ekr.20060601101958.58"><vh>Added Debug button to scripting plugin</vh></v>
+<v t="ekr.20060603072938"><vh>Added python-help command</vh></v>
 <v t="ekr.20060601101958.277"><vh>Added toggle-invisibles and hide-invisibles commands</vh></v>
 <v t="ekr.20060601101958.172"><vh>Added run-unit-test command</vh></v>
 <v t="ekr.20060601101958.234"><vh>The help-for-command command now works for almost all commands</vh></v>
@@ -27294,5 +27295,6 @@ a single method for creating bindings::
             d [stroke] = True
             
 This makes it more clear that duplicate bindings are entirely harmless.</t>
+<t tx="ekr.20060603072938">This prompts for a string s, then puts the result of help(s) in Leo's log pane.</t>
 </tnodes>
 </leo_file>

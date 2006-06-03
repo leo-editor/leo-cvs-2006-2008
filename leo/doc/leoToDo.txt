@@ -372,7 +372,13 @@ other?
 #@-node:ekr.20031218072017.662:Gil 2
 #@-node:ekr.20060601073503:Postings
 #@-node:ekr.20051202094427:Urgent: Resolve cvs conflicts
-#@+node:ekr.20060531161030:B2
+#@+node:ekr.20060531161030:To do: 4.4.1 beta 2 (1 week)
+#@+node:ekr.20060602155519:calltips are broken for help(
+#@-node:ekr.20060602155519:calltips are broken for help(
+#@+node:ekr.20060602100638:backspace in file completion sometimes doesn't work well
+#@-node:ekr.20060602100638:backspace in file completion sometimes doesn't work well
+#@+node:ekr.20060602152600:silent modes and set/clear-silent-mode commands
+#@-node:ekr.20060602152600:silent modes and set/clear-silent-mode commands
 #@+node:ekr.20060211093935:Support for on-enter-mode in mode declarations
 @nocolor
 
@@ -2633,7 +2639,11 @@ def findWord (self,event):
 #@-node:ekr.20060206104205:Finish query-replace
 #@-node:ekr.20060413065803:Improve searches 4
 #@-node:ekr.20060531135634.1:Test and fix *important* Emacs commands
-#@-node:ekr.20060531161030:B2
+#@+node:ekr.20060603073652:Rewrite commands chapter
+Or at least list all the new commands.
+#@nonl
+#@-node:ekr.20060603073652:Rewrite commands chapter
+#@-node:ekr.20060531161030:To do: 4.4.1 beta 2 (1 week)
 #@+node:ekr.20060527164612:Important 1-2 day projects (1-2 weeks)
 #@+node:ekr.20031218072017.801:Support .leo.gz or .leo.zip files
 #@+node:ekr.20050428062312:Request 1

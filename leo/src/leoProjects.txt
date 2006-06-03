@@ -1022,8 +1022,8 @@ def __init__ (self,c,useGlobalKillbuffer=False,useGlobalRegisters=False):
 
     self.altX_prompt = 'full-command: '
     
-    self.enable_autocompleter           = c.config.getBool('enable_autocompleter')
-    self.enable_calltips                = c.config.getBool('enable_calltips')
+    self.enable_autocompleter           = c.config.getBool('enable_autocompleter_initially')
+    self.enable_calltips                = c.config.getBool('enable_calltips_initially')
     self.ignore_caps_lock               = c.config.getBool('ignore_caps_lock')
     self.ignore_unbound_non_ascii_keys  = c.config.getBool('ignore_unbound_non_ascii_keys')
     self.swap_mac_keys                  = c.config.getBool('swap_mac_keys')
@@ -2108,94 +2108,6 @@ def endMode(self,event):
 #@nonl
 #@-node:ekr.20060117202916.2:endMode
 #@-node:ekr.20060602063231:Made modes work again
-#@+node:ekr.20060602105539:Made sure focus goes to body in open-file-by-name
-# The fix was in g.openWithFileName: use frame.c.bodyWantsFocusNow, not c.bodyWantsFocusNow.
-#@nonl
-#@+node:ekr.20060419123128:open-outline-by-name
-def openOutlineByName (self,event):
-    
-    '''Prompt for the name of a Leo outline and open it.'''
-
-    k = self.k
-    k.setLabelBlue('Open Leo Outline: ',protect=True)
-    k.getFileName(event,handler=self.openOutlineByNameFinisher)
-
-def openOutlineByNameFinisher (self,event):
-
-    c = self.c ; k = self.k ; fileName = k.arg
-    
-    k.resetLabel()
-    if fileName and g.os_path_exists(fileName):
-        g.openWithFileName(fileName,c)
-#@nonl
-#@-node:ekr.20060419123128:open-outline-by-name
-#@+node:ekr.20031218072017.2052:g.openWithFileName
-def openWithFileName(fileName,old_c,
-    enableLog=True,readAtFileNodesFlag=True):
-    
-    """Create a Leo Frame for the indicated fileName if the file exists."""
-
-    if not fileName or len(fileName) == 0:
-        return False, None
-        
-    def munge(name):
-        name = name or ''
-        return g.os_path_normpath(name).lower()
-
-    # Create a full, normalized, Unicode path name, preserving case.
-    fileName = g.os_path_normpath(g.os_path_abspath(fileName))
-
-    # If the file is already open just bring its window to the front.
-    theList = app.windowList
-    for frame in theList:
-        if munge(fileName) == munge(frame.c.mFileName):
-            frame.bringToFront()
-            frame.c.setLog()
-            return True, frame
-    try:
-        if old_c:
-            # New in 4.4: We must read the file *twice*.
-            # The first time sets settings for the later call to c.finishCreate.
-            # g.trace('***** prereading',fileName)
-            c2 = g.app.config.openSettingsFile(fileName)
-            if c2: g.app.config.updateSettings(c2,localFlag=True)
-        # Open the file in binary mode to allow 0x1a in bodies & headlines.
-        theFile = open(fileName,'rb')
-        c,frame = app.newLeoCommanderAndFrame(fileName)
-        frame.log.enable(enableLog)
-        g.app.writeWaitingLog() # New in 4.3: write queued log first.
-        c.beginUpdate()
-        try:
-            if not g.doHook("open1",old_c=old_c,c=c,new_c=c,fileName=fileName):
-                c.setLog()
-                app.lockLog()
-                frame.c.fileCommands.open(
-                    theFile,fileName,
-                    readAtFileNodesFlag=readAtFileNodesFlag) # closes file.
-                app.unlockLog()
-                for frame in g.app.windowList:
-                    # The recent files list has been updated by menu.updateRecentFiles.
-                    frame.c.config.setRecentFiles(g.app.config.recentFiles)
-            # Bug fix in 4.4.
-            frame.openDirectory = g.os_path_abspath(g.os_path_dirname(fileName))
-            g.doHook("open2",old_c=old_c,c=c,new_c=frame.c,fileName=fileName)
-        finally:
-            c.endUpdate()
-            k = c.k
-            k and k.setInputState(k.unboundKeyAction)
-            c.bodyWantsFocusNow()
-        return True, frame
-    except IOError:
-        # Do not use string + here: it will fail for non-ascii strings!
-        g.es("can not open: %s" % (fileName), color="blue")
-        return False, None
-    except Exception:
-        g.es("exceptions opening: %s" % (fileName),color="red")
-        g.es_exception()
-        return False, None
-#@nonl
-#@-node:ekr.20031218072017.2052:g.openWithFileName
-#@-node:ekr.20060602105539:Made sure focus goes to body in open-file-by-name
 #@+node:ekr.20060602155135:Fixed long-standing bug involving @comment and @language
 @nocolor
 
@@ -2211,7 +2123,7 @@ There were actually two bugs:
 #@nonl
 #@+node:ekr.20060602155135.1:Report
 @nocolor
-https://sourceforge.net/forum/message.php?msg_id=3761285
+http://sourceforge.net/forum/message.php?msg_id=3761285
 By: nobody
 
 From: Rich

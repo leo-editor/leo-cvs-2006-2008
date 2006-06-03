@@ -1702,8 +1702,8 @@ class keyHandlerClass:
     
         self.altX_prompt = 'full-command: '
         
-        self.enable_autocompleter           = c.config.getBool('enable_autocompleter')
-        self.enable_calltips                = c.config.getBool('enable_calltips')
+        self.enable_autocompleter           = c.config.getBool('enable_autocompleter_initially')
+        self.enable_calltips                = c.config.getBool('enable_calltips_initially')
         self.ignore_caps_lock               = c.config.getBool('ignore_caps_lock')
         self.ignore_unbound_non_ascii_keys  = c.config.getBool('ignore_unbound_non_ascii_keys')
         self.swap_mac_keys                  = c.config.getBool('swap_mac_keys')
