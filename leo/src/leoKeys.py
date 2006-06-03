@@ -443,10 +443,12 @@ class autoCompleterClass:
             f = __builtins__.get(self.leadinWord)
             doc = f and type(f) != types.ClassType and f.__doc__
             if doc:
+                g.trace(doc)
                 s = g.splitLines(doc)
                 s = args = s and s [0] or ''
                 i = s.find('(')
                 if i > -1: s = s [i:]
+                else: s = '(' + s
                 s = s and s.strip() or ''
             #@nonl
             #@-node:ekr.20060224103829:<< try to set s from a Python global function >>
@@ -3555,18 +3557,14 @@ class keyHandlerClass:
             handler = k.getFileNameHandler
             c.frame.log.deleteTab(tabName)
             if handler: handler(event)
-        elif keysym in 'Tab':
-            k.computeFileNameCompletionList(backspace=False)
+        elif keysym == 'Tab':
+            k.doFileNameTab()
+            c.minibufferWantsFocus()
         elif keysym == 'BackSpace':
             k.doFileNameBackSpace() 
             c.minibufferWantsFocus()
         else:
-            # Clear the list, any other character besides tab indicates that a new prefix is in effect.
-            k.mb_tabList = []
-            k.updateLabel(event)
-            k.mb_tabListPrefix = k.getLabel()
-            if keysym.lower() != 'period':
-                k.computeFileNameCompletionList(backspace=False)
+            k.doFileNameChar(event)
         return 'break'
     #@nonl
     #@+node:ekr.20060419125301:k.doFileNameBackSpace
@@ -3584,22 +3582,46 @@ class keyHandlerClass:
         if len(k.mb_tabListPrefix) > len(k.mb_prefix):
             k.mb_tabListPrefix = k.mb_tabListPrefix [:-1]
             k.setLabel(k.mb_tabListPrefix)
-            k.computeFileNameCompletionList(backspace=True)
+    #@nonl
     #@-node:ekr.20060419125301:k.doFileNameBackSpace
+    #@+node:ekr.20060603111722:k.doFileNameChar
+    def doFileNameChar (self,event):
+        
+        k = self
+        
+        # Clear the list, any other character besides tab indicates that a new prefix is in effect.
+        k.mb_tabList = []
+        k.updateLabel(event)
+        k.mb_tabListPrefix = k.getLabel()
+    
+        common_prefix = k.computeFileNameCompletionList()
+    
+        if k.mb_tabList:
+            k.setLabel(k.mb_prompt + common_prefix)
+        else:
+            # Restore everything.
+            old = k.getLabel(ignorePrompt=True)[:-1]
+            k.setLabel(k.mb_prompt + old)
+    #@nonl
+    #@-node:ekr.20060603111722:k.doFileNameChar
+    #@+node:ekr.20060603110904:k.doFileNameTab
+    def doFileNameTab (self):
+        
+        k = self
+        common_prefix = k.computeFileNameCompletionList()
+    
+        if k.mb_tabList:
+            k.setLabel(k.mb_prompt + common_prefix)
+    #@nonl
+    #@-node:ekr.20060603110904:k.doFileNameTab
     #@+node:ekr.20060419125554:k.computeFileNameCompletionList
     # This code must not change mb_tabListPrefix.
-    
-    def computeFileNameCompletionList (self,backspace):
+    def computeFileNameCompletionList (self):
     
         k = self ; c = k.c ; s = k.getLabel() ; tabName = 'Completion'
         path = k.getLabel(ignorePrompt=True)
         sep = os.path.sep
-        if path.endswith(sep):
-            tabList = [g.os_path_join(path,'..\\')]
-        else:
-            path = g.os_path_abspath(path) # To handle . and ..
-            tabList = []
-    
+        tabList = []
         for f in glob.glob(path+'*'):
             if g.os_path_isdir(f):
                 tabList.append(f + sep)
@@ -3609,12 +3631,10 @@ class keyHandlerClass:
                     tabList.append(f)
         k.mb_tabList = tabList
         junk,common_prefix = g.itemsMatchingPrefixInList(path,tabList)
-        c.frame.log.clearTab(tabName)
         if tabList:
-            k.mb_tabListIndex = -1 # The next item will be item 0.
-            if not backspace:
-                k.setLabel(k.mb_prompt + common_prefix)
+            c.frame.log.clearTab(tabName)
             k.showFileNameTabList()
+        return common_prefix
     #@nonl
     #@-node:ekr.20060419125554:k.computeFileNameCompletionList
     #@+node:ekr.20060420100610:k.showFileNameTabList
