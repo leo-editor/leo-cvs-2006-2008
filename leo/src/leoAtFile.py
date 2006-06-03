@@ -2512,16 +2512,21 @@ class atFile:
         new_df = g.match(s,i,version_tag)
         
         if new_df:
-            # Skip to the next minus sign or end-of-line
+            # Pre Leo 4.4.1: Skip to the next minus sign or end-of-line.
+            # Leo 4.4.1 +:   Skip to next minus sign, end-of-line, or non numeric character.
+            # This is required to handle trailing comment delims properly.
             i += len(version_tag)
             j = i
-            while i < len(s) and not g.is_nl(s,i) and s[i] != '-':
+            chars = string.digits + '.'
+            while i < len(s) and s[i] in chars:
+            # while i < len(s) and not g.is_nl(s,i) and s[i] != '-':
                 i += 1
         
             if j < i:
                 pass # version = s[j:i]
             else:
                 valid = False
+        #@nonl
         #@-node:ekr.20041005105605.123:<< read optional version param >>
         #@nl
         #@    << read optional thin param >>
@@ -2670,6 +2675,7 @@ class atFile:
         if valid:
             at.startSentinelComment = start
             at.endSentinelComment = end
+            # g.trace('start',repr(start),'end',repr(end))
         else:
             at.error("Bad @+leo sentinel in: %s" % fileName)
         # g.trace("start,end",repr(at.startSentinelComment),repr(at.endSentinelComment))
@@ -4248,26 +4254,30 @@ class atFile:
             #@+node:ekr.20041005105605.208:<< handle @language >>
             self.putSentinel("@" + directive)
             
-            # Skip the keyword and whitespace.
-            i = k + len("@language")
-            i = g.skip_ws(s,i)
-            j = g.skip_c_id(s,i)
-            language = s[i:j]
+            if 0: # Bug fix: Leo 4.4.1
+                # Do not scan the @language directive here!
+                # These ivars have already been scanned by the init code.
             
-            delim1,delim2,delim3 = g.set_delims_from_language(language)
-            
-            # g.trace(delim1,delim2,delim3)
-            
-            # Returns a tuple (single,start,end) of comment delims
-            if delim1:
-                self.startSentinelComment = delim1
-                self.endSentinelComment = ""
-            elif delim2 and delim3:
-                self.startSentinelComment = delim2
-                self.endSentinelComment = delim3
-            else:
-                line = g.get_line(s,i)
-                g.es("Ignoring bad @language directive: %s" % line,color="blue")
+                # Skip the keyword and whitespace.
+                i = k + len("@language")
+                i = g.skip_ws(s,i)
+                j = g.skip_c_id(s,i)
+                language = s[i:j]
+                
+                delim1,delim2,delim3 = g.set_delims_from_language(language)
+                
+                # g.trace(delim1,delim2,delim3)
+                
+                # Returns a tuple (single,start,end) of comment delims
+                if delim1:
+                    self.startSentinelComment = delim1
+                    self.endSentinelComment = ""
+                elif delim2 and delim3:
+                    self.startSentinelComment = delim2
+                    self.endSentinelComment = delim3
+                else:
+                    line = g.get_line(s,i)
+                    g.es("Ignoring bad @language directive: %s" % line,color="blue")
             #@nonl
             #@-node:ekr.20041005105605.208:<< handle @language >>
             #@nl
@@ -4280,17 +4290,21 @@ class atFile:
             line = s[i:j]
             delim1,delim2,delim3 = g.set_delims_from_string(line)
             
-            # g.trace(delim1,delim2,delim3)
+            g.trace(delim1,delim2,delim3)
             
-            # Returns a tuple (single,start,end) of comment delims
-            if delim1:
-                self.startSentinelComment = delim1
-                self.endSentinelComment = None
-            elif delim2 and delim3:
-                self.startSentinelComment = delim2
-                self.endSentinelComment = delim3
-            else:
-                g.es("Ignoring bad @comment directive: %s" % line,color="blue")
+            if 0: # Bug fix: Leo 4.4.1
+                # Do not scan the @comment directive here!
+                # These ivars have already been scanned by the init code.
+            
+                # Returns a tuple (single,start,end) of comment delims
+                if delim1:
+                    self.startSentinelComment = delim1
+                    self.endSentinelComment = None
+                elif delim2 and delim3:
+                    self.startSentinelComment = delim2
+                    self.endSentinelComment = delim3
+                else:
+                    g.es("Ignoring bad @comment directive: %s" % line,color="blue")
             #@nonl
             #@-node:ekr.20041005105605.209:<< handle @comment >>
             #@nl
