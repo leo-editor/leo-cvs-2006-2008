@@ -2528,7 +2528,7 @@ class keyHandlerClass:
                 if not brief or k.isPlainKey(key):
                     pane = g.choose(b.pane=='all','',' %s:' % (b.pane))
                     s1 = pane
-                    s2 = k.prettyPrintKey(key)
+                    s2 = k.prettyPrintKey(key,brief=True)
                     s3 = b.commandName
                     n1 = max(n1,len(s1))
                     n2 = max(n2,len(s2))
@@ -2559,7 +2559,7 @@ class keyHandlerClass:
             for z in dataList:
                 pane, key = z
                 s1 = pane
-                s2 = k.prettyPrintKey(key)
+                s2 = k.prettyPrintKey(key,brief=True)
                 s3 = commandName
                 n1 = max(n1,len(s1))
                 n2 = max(n2,len(s2))
@@ -3457,7 +3457,7 @@ class keyHandlerClass:
                 for bunch in bunchList:
                     shortcut = bunch.val
                     if shortcut not in (None,'None'):
-                        s1 = key ; s2 = k.prettyPrintKey(shortcut)
+                        s1 = key ; s2 = k.prettyPrintKey(shortcut,brief=True)
                         n = max(n,len(s1))
                         data.append((s1,s2),)
                     
@@ -3915,7 +3915,7 @@ class keyHandlerClass:
     #@nonl
     #@-node:ekr.20060131075440:k.tkbindingFromStroke
     #@+node:ekr.20060201083154:k.prettyPrintKey
-    def prettyPrintKey (self,stroke):
+    def prettyPrintKey (self,stroke,brief=False):
         
         s = stroke and g.stripBrackets(stroke.strip())
         if not s: return ''
@@ -3935,12 +3935,12 @@ class keyHandlerClass:
                     if not shift:
                         s = prev + 'Shift+' + last
                 elif last.islower():
-                    if not prev:
+                    if not prev and not brief:
                         s = 'Key+' + last.upper()
                     else:
                         s = prev + last.upper()
     
-        return '<%s>' % s
+        return g.choose(brief,s,'<%s>' % s)
     #@nonl
     #@-node:ekr.20060201083154:k.prettyPrintKey
     #@-node:ekr.20060128092340:Shortcuts (keyHandler)
