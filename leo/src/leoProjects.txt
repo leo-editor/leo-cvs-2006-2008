@@ -1177,7 +1177,7 @@ def setDefaultUnboundKeyAction (self):
 #@-node:ekr.20060115195302:setDefaultUnboundKeyAction
 #@-node:ekr.20050920085536.1: Birth (keyHandler)
 #@-node:ekr.20060203112912.1:Initing
-#@+node:ekr.20060514170725:4.4.1 projects
+#@+node:ekr.20060514170725:4.4.1 b1 projects
 #@+node:ekr.20060514170854:Fixed bugs
 #@+node:ekr.20060514164817:Fixed crasher in searchbox plugin
 0.7 EKR: Fixed crasher in Leo 4.4 by initing self.p in Quickfind ctor.
@@ -8078,7 +8078,457 @@ This prompts for a string s, then puts the result of help(s) in Leo's log pane.
 #@nonl
 #@-node:ekr.20060602101926:Added python-help command
 #@-node:ekr.20060522103446:New features
-#@-node:ekr.20060514170725:4.4.1 projects
+#@-node:ekr.20060514170725:4.4.1 b1 projects
+#@+node:ekr.20060603090445:4.4.1 b2 projects
+#@+node:ekr.20060603090445.1:Bugs fixed
+#@+node:ekr.20060602155519:Made sure calltip always adds '('
+#@+node:ekr.20060220110302:calltip
+def calltip (self,obj=None):
+    
+    c = self.c ; w = self.widget
+    isStringMethod = False ; s = None
+    # g.trace(self.leadinWord,obj)
+
+    if self.leadinWord and (not obj or type(obj) == types.BuiltinFunctionType):
+        << try to set s from a Python global function >>
+
+    if not s:
+        << get s using inspect >>
+        
+    << remove 'self' from s, but not from args >>
+    if isStringMethod:
+        << remove 's' from s *and* args >>
+
+    s = s.rstrip(')') # Convenient.
+    << insert the text and set j1 and j2 >>
+
+    # End autocompletion mode, restoring the selection.
+    self.finish()
+    c.widgetWantsFocusNow(w)
+    g.app.gui.setSelectionRange(w,j1,j2,insert=j2)
+    << put the status line >>
+#@+node:ekr.20060224103829:<< try to set s from a Python global function >>
+# The first line of the docstring is good enough, except for classes.
+f = __builtins__.get(self.leadinWord)
+doc = f and type(f) != types.ClassType and f.__doc__
+if doc:
+    g.trace(doc)
+    s = g.splitLines(doc)
+    s = args = s and s [0] or ''
+    i = s.find('(')
+    if i > -1: s = s [i:]
+    else: s = '(' + s
+    s = s and s.strip() or ''
+#@nonl
+#@-node:ekr.20060224103829:<< try to set s from a Python global function >>
+#@+node:ekr.20060224103829.1:<< get s using inspect >>
+isStringMethod = self.prevObjects and type(self.prevObjects[-1]) == types.StringType
+
+# g.trace(self.prevObjects)
+
+if isStringMethod and hasattr(string,obj.__name__):
+    # A hack. String functions are builtins, and getargspec doesn't handle them.
+    # Get the corresponding string function instead, and remove the s arg later.
+    obj = getattr(string,obj.__name__)
+
+try:
+    s1,s2,s3,s4 = inspect.getargspec(obj)
+except:
+    # g.es('inspect failed:',repr(obj))
+    self.extendSelection('(')
+    self.finish()
+    return # Not a function.  Just '('.
+
+s = args = inspect.formatargspec(s1,s2,s3,s4)
+#@nonl
+#@-node:ekr.20060224103829.1:<< get s using inspect >>
+#@+node:ekr.20060224103829.2:<< remove 'self' from s, but not from args >>
+if g.match(s,1,'self,'):
+    s = s[0] + s[6:].strip()
+elif g.match_word(s,1,'self'):
+    s = s[0] + s[5:].strip()
+#@nonl
+#@-node:ekr.20060224103829.2:<< remove 'self' from s, but not from args >>
+#@+node:ekr.20060224103829.3:<< remove 's' from s *and* args >>
+if g.match(s,1,'s,'):
+    s = s[0] + s[3:]
+    args = args[0] + args[3:]
+elif g.match_word(s,1,'s'):
+    s = s[0] + s[2:]
+    args = args[0] + args[2:]
+#@nonl
+#@-node:ekr.20060224103829.3:<< remove 's' from s *and* args >>
+#@+node:ekr.20060224103829.4:<< insert the text and set j1 and j2 >>
+if g.app.gui.hasSelection(w):
+    i,j = g.app.gui.getSelectionRange(w)
+else:
+    i = j = g.app.gui.getInsertPoint(w)
+w.insert(j,s)
+c.frame.body.onBodyChanged('Typing')
+
+if 1:
+    j1 = w.index('%s + 1c' % j)
+    j2 = w.index('%s + %sc' % (j,len(s)))
+else:
+    j1 = j2 = w.index('%s + 2c' % j)
+#@nonl
+#@-node:ekr.20060224103829.4:<< insert the text and set j1 and j2 >>
+#@+node:ekr.20060224103829.5:<< put the status line >>
+c.frame.clearStatusLine()
+if obj:
+    name = hasattr(obj,'__name__') and obj.__name__ or repr(obj)
+else:
+    name = self.leadinWord
+c.frame.putStatusLine('%s %s' % (name,args))
+#@nonl
+#@-node:ekr.20060224103829.5:<< put the status line >>
+#@-node:ekr.20060220110302:calltip
+#@-node:ekr.20060602155519:Made sure calltip always adds '('
+#@+node:ekr.20060602100638:Improved filename completion
+@nocolor
+
+What I did:
+    
+- computeFileNameCompletionList always clears the tabList initially.
+- computeFileNameCompletionList no longer sets the label.
+- doFileNameChar now ignores characters without a valid completion.
+- ..\ no longer appears in the completion list.
+- tabs do not cycle through a list: this never is going to be convenient.
+- open-outline-by-name makes sure the file is not a directory.
+
+@color
+#@nonl
+#@+node:ekr.20060419123128:open-outline-by-name
+def openOutlineByName (self,event):
+    
+    '''Prompt for the name of a Leo outline and open it.'''
+
+    k = self.k
+    k.setLabelBlue('Open Leo Outline: ',protect=True)
+    k.getFileName(event,handler=self.openOutlineByNameFinisher)
+
+def openOutlineByNameFinisher (self,event):
+
+    c = self.c ; k = self.k ; fileName = k.arg
+    
+    k.resetLabel()
+    if fileName and g.os_path_exists(fileName) and not g.os_path_isdir(fileName):
+        g.openWithFileName(fileName,c)
+#@nonl
+#@-node:ekr.20060419123128:open-outline-by-name
+#@+node:ekr.20050920084036.4:g.longestCommonPrefix & g.itemsMatchingPrefixInList
+def longestCommonPrefix (s1,s2):
+    
+    '''Find the longest prefix common to strings s1 and s2.'''
+    
+    prefix = ''
+    for ch in s1:
+        if s2.startswith(prefix + ch):
+            prefix = prefix + ch
+        else:
+            return prefix
+    return prefix
+        
+def itemsMatchingPrefixInList (s,aList,matchEmptyPrefix=False):
+    
+    '''This method returns a sorted list items of aList whose prefix is s.
+    
+    It also returns the longest common prefix of all the matches.'''
+
+    if s:
+        pmatches = [a for a in aList if a.startswith(s)]
+    elif matchEmptyPrefix:
+        pmatches = aList[:]
+    else: pmatches = []
+
+    if pmatches:
+        pmatches.sort()
+        common_prefix = reduce(g.longestCommonPrefix,pmatches)
+    else:
+        common_prefix = ''
+
+    # g.trace(repr(s),len(pmatches))
+    return pmatches,common_prefix
+#@nonl
+#@-node:ekr.20050920084036.4:g.longestCommonPrefix & g.itemsMatchingPrefixInList
+#@+node:ekr.20060419124420.1:getFileName & helpers
+def getFileName (self,event=None,handler=None,prefix='',filterExt='.leo'):
+    
+    '''Similar to k.getArg, but uses completion to indicate files on the file system.'''
+    
+    k = self ; c = k.c ; tag = 'getFileName' ; state = k.getState(tag)
+    tabName = 'Completion'
+    keysym = (event and event.keysym) or ''
+    # g.trace('state',state,'keysym',keysym)
+    if state == 0:
+        k.arg = ''
+        << init altX vars >>
+        # Set the states.
+        k.getFileNameHandler = handler
+        k.setState(tag,1,k.getFileName)
+        k.afterArgWidget = event and event.widget or c.frame.body.bodyCtrl
+        c.frame.log.clearTab(tabName)
+        c.minibufferWantsFocusNow()
+    elif keysym == 'Return':
+        k.arg = k.getLabel(ignorePrompt=True)
+        handler = k.getFileNameHandler
+        c.frame.log.deleteTab(tabName)
+        if handler: handler(event)
+    elif keysym == 'Tab':
+        k.doFileNameTab()
+        c.minibufferWantsFocus()
+    elif keysym == 'BackSpace':
+        k.doFileNameBackSpace() 
+        c.minibufferWantsFocus()
+    else:
+        k.doFileNameChar(event)
+    return 'break'
+#@nonl
+#@+node:ekr.20060419125211:<< init altX vars >>
+k.filterExt = filterExt
+k.mb_prefix = (prefix or k.getLabel())
+k.mb_prompt = prefix or k.getLabel()
+k.mb_tabList = []
+
+# Clear the list: any non-tab indicates that a new prefix is in effect.
+theDir = g.os_path_abspath(os.curdir)
+k.extendLabel(theDir,select=False,protect=False)
+
+k.mb_tabListPrefix = k.getLabel()
+#@nonl
+#@-node:ekr.20060419125211:<< init altX vars >>
+#@+node:ekr.20060419125301:k.doFileNameBackSpace
+def doFileNameBackSpace (self):
+
+    '''Cut back to previous prefix and update prefix.'''
+
+    k = self ; c = k.c
+    
+    if 0:
+        g.trace(
+            len(k.mb_tabListPrefix) > len(k.mb_prefix),
+            repr(k.mb_tabListPrefix),repr(k.mb_prefix))
+
+    if len(k.mb_tabListPrefix) > len(k.mb_prefix):
+        k.mb_tabListPrefix = k.mb_tabListPrefix [:-1]
+        k.setLabel(k.mb_tabListPrefix)
+#@nonl
+#@-node:ekr.20060419125301:k.doFileNameBackSpace
+#@+node:ekr.20060603111722:k.doFileNameChar
+def doFileNameChar (self,event):
+    
+    k = self
+    
+    # Clear the list, any other character besides tab indicates that a new prefix is in effect.
+    k.mb_tabList = []
+    k.updateLabel(event)
+    k.mb_tabListPrefix = k.getLabel()
+
+    common_prefix = k.computeFileNameCompletionList()
+
+    if k.mb_tabList:
+        k.setLabel(k.mb_prompt + common_prefix)
+    else:
+        # Restore everything.
+        old = k.getLabel(ignorePrompt=True)[:-1]
+        k.setLabel(k.mb_prompt + old)
+#@nonl
+#@-node:ekr.20060603111722:k.doFileNameChar
+#@+node:ekr.20060603110904:k.doFileNameTab
+def doFileNameTab (self):
+    
+    k = self
+    common_prefix = k.computeFileNameCompletionList()
+
+    if k.mb_tabList:
+        k.setLabel(k.mb_prompt + common_prefix)
+#@nonl
+#@-node:ekr.20060603110904:k.doFileNameTab
+#@+node:ekr.20060419125554:k.computeFileNameCompletionList
+# This code must not change mb_tabListPrefix.
+def computeFileNameCompletionList (self):
+
+    k = self ; c = k.c ; s = k.getLabel() ; tabName = 'Completion'
+    path = k.getLabel(ignorePrompt=True)
+    sep = os.path.sep
+    tabList = []
+    for f in glob.glob(path+'*'):
+        if g.os_path_isdir(f):
+            tabList.append(f + sep)
+        else:
+            junk,ext = g.os_path_splitext(f)
+            if not ext or ext == k.filterExt:
+                tabList.append(f)
+    k.mb_tabList = tabList
+    junk,common_prefix = g.itemsMatchingPrefixInList(path,tabList)
+    if tabList:
+        c.frame.log.clearTab(tabName)
+        k.showFileNameTabList()
+    return common_prefix
+#@nonl
+#@-node:ekr.20060419125554:k.computeFileNameCompletionList
+#@+node:ekr.20060420100610:k.showFileNameTabList
+def showFileNameTabList (self):
+    
+    k = self ; tabName = 'Completion'
+    
+    for path in k.mb_tabList:
+        theDir,fileName = g.os_path_split(path)
+        s = g.choose(path.endswith('\\'),theDir,fileName)
+        s = fileName or g.os_path_basename(theDir) + '\\'
+        g.es(s,tabName=tabName)
+#@nonl
+#@-node:ekr.20060420100610:k.showFileNameTabList
+#@-node:ekr.20060419124420.1:getFileName & helpers
+#@-node:ekr.20060602100638:Improved filename completion
+#@-node:ekr.20060603090445.1:Bugs fixed
+#@+node:ekr.20060603090445.2:New features
+#@+node:ekr.20060211093935:Support for on-enter-mode in mode declarations
+#@-node:ekr.20060211093935:Support for on-enter-mode in mode declarations
+#@+node:ekr.20060603090445.3:Better listings for print-commands and print-bindings & mode-help commands
+# Added brief keyword argument to k.prettyPrintKey.
+#@nonl
+#@+node:ekr.20060201083154:k.prettyPrintKey
+def prettyPrintKey (self,stroke,brief=False):
+    
+    s = stroke and g.stripBrackets(stroke.strip())
+    if not s: return ''
+
+    shift = s.find("shift") >= 0 or s.find("shft") >= 0
+    
+    # Replace all minus signs by plus signs, except a trailing minus:
+    if s.endswith('-'): s = s[:-1].replace('-','+') + '-'
+    else:               s = s.replace('-','+')
+    fields = s.split('+')
+    last = fields and fields[-1]
+
+    if last and len(last) == 1:
+        prev = s[:-1]
+        if last.isalpha():
+            if last.isupper():
+                if not shift:
+                    s = prev + 'Shift+' + last
+            elif last.islower():
+                if not prev and not brief:
+                    s = 'Key+' + last.upper()
+                else:
+                    s = prev + last.upper()
+
+    return g.choose(brief,s,'<%s>' % s)
+#@nonl
+#@-node:ekr.20060201083154:k.prettyPrintKey
+#@+node:ekr.20051012201831:printBindings
+def printBindings (self,event,brief=False):
+
+    '''Print all the bindings presently in effect.'''
+
+    k = self ; c = k.c
+    d = k.bindingsDict ; tabName = 'Bindings'
+    keys = d.keys() ; keys.sort()
+    c.frame.log.clearTab(tabName)
+
+    data = [] ; n1 = 4 ; n2 = 20
+    for key in keys:
+        bunchList = d.get(key,[])
+        for b in bunchList:
+            if not brief or k.isPlainKey(key):
+                pane = g.choose(b.pane=='all','',' %s:' % (b.pane))
+                s1 = pane
+                s2 = k.prettyPrintKey(key,brief=True)
+                s3 = b.commandName
+                n1 = max(n1,len(s1))
+                n2 = max(n2,len(s2))
+                data.append((s1,s2,s3),)
+    # This isn't perfect in variable-width fonts.
+    for s1,s2,s3 in data:
+        g.es('%*s %*s %s' % (-n1,s1,-(min(12,n2)),s2,s3),tabName=tabName)
+                   
+    state = k.unboundKeyAction 
+    k.showStateAndMode()
+#@nonl
+#@-node:ekr.20051012201831:printBindings
+#@+node:ekr.20051014061332:printCommands
+def printCommands (self,event):
+
+    '''Print all the known commands and their bindings, if any.'''
+
+    k = self ; c = k.c ; tabName = 'Commands'
+    
+    c.frame.log.clearTab(tabName)
+    
+    inverseBindingDict = k.computeInverseBindingDict()
+    commandNames = c.commandsDict.keys() ; commandNames.sort()
+
+    data = [] ; n1 = 4 ; n2 = 20
+    for commandName in commandNames:
+        dataList = inverseBindingDict.get(commandName,[('',''),])
+        for z in dataList:
+            pane, key = z
+            s1 = pane
+            s2 = k.prettyPrintKey(key,brief=True)
+            s3 = commandName
+            n1 = max(n1,len(s1))
+            n2 = max(n2,len(s2))
+            data.append((s1,s2,s3),)
+                
+    # This isn't perfect in variable-width fonts.
+    for s1,s2,s3 in data:
+        g.es('%*s %*s %s' % (-n1,s1,-(min(12,n2)),s2,s3),tabName=tabName)
+#@-node:ekr.20051014061332:printCommands
+#@+node:ekr.20060104164523:modeHelp
+def modeHelp (self,event):
+
+    '''The mode-help command.
+    
+    A possible convention would be to bind <Tab> to this command in most modes,
+    by analogy with tab completion.'''
+    
+    k = self ; c = k.c
+
+    c.endEditing()
+    
+    # g.trace(k.inputModeName)
+    
+    if k.inputModeName:
+        d = g.app.config.modeCommandsDict.get('enter-'+k.inputModeName)
+        k.modeHelpHelper(d)
+        
+    if k.useTextWidget:
+        c.minibufferWantsFocus()
+
+    return 'break'
+#@nonl
+#@+node:ekr.20060104125946:modeHelpHelper
+def modeHelpHelper (self,d):
+    
+    k = self ; c = k.c ; tabName = 'Mode'
+    c.frame.log.clearTab(tabName)
+    keys = d.keys() ; keys.sort()
+
+    data = [] ; n = 20
+    for key in keys:
+        if key != '*entry-commands*':
+            bunchList = d.get(key)
+            for bunch in bunchList:
+                shortcut = bunch.val
+                if shortcut not in (None,'None'):
+                    s1 = key ; s2 = k.prettyPrintKey(shortcut,brief=True)
+                    n = max(n,len(s1))
+                    data.append((s1,s2),)
+                
+    data.sort()
+    
+    # g.es('%s\n\n' % (k.inputModeName),tabName=tabName)
+        
+    # This isn't perfect in variable-width fonts.
+    for s1,s2 in data:
+        g.es('%*s %s' % (n,s1,s2),tabName=tabName)
+#@nonl
+#@-node:ekr.20060104125946:modeHelpHelper
+#@-node:ekr.20060104164523:modeHelp
+#@-node:ekr.20060603090445.3:Better listings for print-commands and print-bindings & mode-help commands
+#@-node:ekr.20060603090445.2:New features
+#@-node:ekr.20060603090445:4.4.1 b2 projects
 #@-node:ekr.20050924073836:4.4 projects
 #@-all
 #@nonl

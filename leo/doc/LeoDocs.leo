@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="24447" clone_windows="0"/>
-<globals body_outline_ratio="0.584597432905">
-	<global_window_position top="49" left="249" height="572" width="944"/>
+<globals body_outline_ratio="0.401820546164">
+	<global_window_position top="49" left="249" height="712" width="936"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -833,7 +833,7 @@
 <v t="ekr.20050916065715"><vh>suggestions for tutorial</vh></v>
 </v>
 </v>
-<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
+<v t="edream.110203163054.46" a="V"><vh>Release Notes</vh>
 <v t="edream.110203163054.117"><vh>Previous versions...</vh>
 <v t="ekr.20060206111717"><vh>Ancient...</vh>
 <v t="edream.110203163054.118"><vh>3.x...</vh>
@@ -2694,8 +2694,8 @@
 <v t="ekr.20060511074853"><vh>4.4 final</vh></v>
 </v>
 </v>
-<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20060601101643" a="EV"><vh>4.4.1 b1</vh>
+<v t="edream.110203163054.63"><vh>Latest version</vh>
+<v t="ekr.20060601101643"><vh>4.4.1 b1</vh>
 <v t="ekr.20060601101958.1"><vh>Fixed bugs</vh>
 <v t="ekr.20060601101958.56"><vh>The Open Python Window command runs Idle in a separate process</vh></v>
 <v t="ekr.20060601101958.2"><vh>Fixed crasher in searchbox plugin</vh></v>
@@ -2703,7 +2703,7 @@
 <v t="ekr.20060601101958.13"><vh>Fixed crasher in macros plugin</vh></v>
 <v t="ekr.20060601101958.14"><vh>Fixed crasher in  UNL plugin</vh></v>
 <v t="ekr.20060601101958.16"><vh>Suppressed traceback in g.callers when the call stack isn't deep enough</vh></v>
-<v t="ekr.20060603082009" a="E"><vh>Fixed long-standing bug involving @comment and @language</vh></v>
+<v t="ekr.20060603082009"><vh>Fixed long-standing bug involving @comment and @language</vh></v>
 </v>
 <v t="ekr.20060601102802"><vh>New features, commands &amp; plugins</vh>
 <v t="ekr.20060601101958.245"><vh>Support for multiple editors in the body pane</vh></v>
@@ -27161,7 +27161,7 @@ There are several workaround, as shown in LeoPy.leo:
 - Use @all to gather notes in a derived file, as in done in @thin leoProjects.txt.</t>
 <t tx="ekr.20060601101643">Leo 4.4.1 beta 1                                            June 3, 2006
 
-Leo 4.4.1 beta  is available at:
+Leo 4.4.1 beta 1 is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
 
 Leo is a text editor, data organizer, project manager and much more. See:
@@ -27264,44 +27264,60 @@ which can later rehoist the same node.
 The 'Dehoist' button performs one level of dehoisting.
 
 This plugin replaces the old chapters plugin.</t>
-<t tx="ekr.20060602142732">Much of the complications in leoKeys.py arises because Tkinter key events
-provide insufficient enough information to tell what key actually caused the key
-event.  So instead of just creating one &lt;Key&gt; binding that calls k.masterKeyHandler,
-Leo is forced to create one key binding for every key that is bound somewhere.
+<t tx="ekr.20060602142732">@nocolor
 
-Presently there are several places where such callbacks are created.
-They all have the form::
+leoKeys.py handles key bindings.
+There are two kinds of bindings, gui bindings and pane bidings.
+
+**Gui bindings** are the actual binding as seen by Tkinter (or whatever gui is in effect).
+Leo binds every key that has a binding to k.masterKeyHander.
+For Tkinter, a *separate* binding must be made, rather than a single &lt;Key&gt; binding,
+because, alas, Tkinter key events provide insufficient enough information
+to tell what key actually caused the key event(!)
+This is a significant hole in Tkinter's event mechanism.
+
+At present Leo makes gui bindings in several places, all equivalent.
+Bindings are made to callbacks, all of which have this form::
     
      def callback(event=None,k=k,stroke=stroke):
         return k.masterKeyHandler(event,stroke)
         
-Notes:
+As a result, changing gui bindings actually has no effect whatever.
+It would be clearer to have a single place to make these bindings...
 
-- Each callback calls k.masterKeyHander with the stroke parameter.
-  This parameter tells k.masterKeyHandler what key was pressed.
-  
-- Notice that no function if passed to k.masterKeyHandler.
-  Instead, k.masterKeyHandler uses various dictionaries to determine
-  what function (Leo command) to associate with the stroke
-  *in a particular context*.
-  
-- It's a bit ugly to define this callback in several places,
-  but it doesn't hurt.
-  
-It might be good to simplify and clarify the code by creating
-a single method for creating bindings::
-      
-    define createKeyboarkBinding (self,stroke):
-        k = self ; d = k.actualBindingsDict
-        
-        def masterKeyBinding (event,k=k,stroke=stroke):
-            return k.masterKeyHandler(event,stroke)
+In any case, the purpose of these callbacks is to capture the value of 'stroke' so
+that it can be passed to k.masterKeyHandler.
+This relieves k.masterKeyHandler of the impossible task of computing the stroke from the event.
+**Important**:  No function argument is ever passed to k.masterKeyHandler from these callbacks,
+because k.masterKeyHandler binds keys to command handlers as described next.
 
-        if not d.get(stroke):
-            &lt;&lt; create the actual tk binding to masterKeyBinding &gt;&gt;
-            d [stroke] = True
-            
-This makes it more clear that duplicate bindings are entirely harmless.</t>
+**Pane bindings** are bindings represented by various Python dictionaries in the keyHandlerClass
+(see below).
+k.masterKeyHandler and its helpers use these dictionaries to call the proper command or mode handler.
+This logic is hairy, but it is completely separate from the gui binding logic.
+
+Here are the dictionaries that k.masterKeyHandler uses:
+
+- c.commandsDict:
+  Keys are minibuffer command names, values are functions f.
+
+- k.inverseCommandsDict:
+  Keys are f.__name__, values are emacs command names.
+
+- k.bindingsDict:
+  Keys are shortcuts, values are *lists* of g.bunch(func,name,warningGiven).
+
+- k.masterBindingsDict:
+  Keys are pane names: 'all','text',etc. or mode names.
+  Values are dicts:  keys are strokes, values are g.Bunch(commandName,func,pane,stroke).
+
+- k.settingsNameDict:
+  Keys are lowercase settings, values are 'real' Tk key specifiers.
+  Important: this table has no inverse.
+
+- inverseBindingDict:
+  This is *not* an ivar; it is omputed by k.computeInverseBindingDict().
+  Keys are emacs command names, values are *lists* of shortcuts.</t>
 <t tx="ekr.20060603072938">This prompts for a string s, then puts the result of help(s) in Leo's log pane.</t>
 <t tx="ekr.20060603081045">Creates a 'Shortcut' button in the icon area.
 Pressing the Shortcut button creates *another* button which when pressed will

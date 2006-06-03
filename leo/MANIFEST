@@ -90,6 +90,7 @@ doc\html\arrow_rt.gif
 doc\html\coloring.html
 doc\html\commands.html
 doc\html\customizing.html
+doc\html\debuggers.html
 doc\html\default.css
 doc\html\design.html
 doc\html\directives.html
@@ -534,7 +535,6 @@ plugins\autotrees.py
 plugins\base64Packager.py
 plugins\bibtex.py
 plugins\chapter_hoist.py
-plugins\chapters2.py
 plugins\chinese_menu.py
 plugins\cleo.py
 plugins\color_markup.py
@@ -574,9 +574,6 @@ plugins\mod_labels.py
 plugins\mod_leo2ascd.py
 plugins\mod_read_dir_outline.py
 plugins\mod_scripting.py
-plugins\mod_shadow.ini
-plugins\mod_shadow.py
-plugins\mod_shadow_core.py
 plugins\mod_tempfname.py
 plugins\mod_timestamp.py
 plugins\multifile.py
@@ -611,6 +608,7 @@ plugins\scheduler.py
 plugins\script_io_to_body.py
 plugins\scripts_menu.py
 plugins\searchbox.py
+plugins\shortcut_button.py
 plugins\spellpyx.txt
 plugins\startfile.py
 plugins\table.py
@@ -625,6 +623,7 @@ plugins\usetemacs.py
 plugins\vim.py
 plugins\word_export.ini
 plugins\word_export.py
+plugins\xcc_nodes.py
 plugins\xemacs.py
 plugins\xsltWithNodes.py
 plugins\zodb.py
@@ -667,6 +666,7 @@ src\leoMenu.py
 src\leoNodes.py
 src\leoPlugins.py
 src\leoProjects.txt
+src\leoScriptModule.py
 src\leoTangle.py
 src\leoTest.py
 src\leoTkinterComparePanel.py
@@ -678,6 +678,11 @@ src\leoTkinterKeys.py
 src\leoTkinterMenu.py
 src\leoTkinterTree.py
 src\leoUndo.py
+src\leo_Debugger.py
+src\leo_FileList.py
+src\leo_RemoteDebugger.py
+src\leo_Shell.py
+src\leo_run.py
 src\oldLeoProjects.leo
 test\__init__.py
 test\test.leo
