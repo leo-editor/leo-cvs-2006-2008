@@ -239,6 +239,7 @@ Python23
 PythonLauncher
 PythonPowered
 QParser005
+Quickfind
 README
 REM
 REM_
@@ -1043,6 +1044,7 @@ incompletions
 indices
 initMarked
 initWriteIvars
+initing
 inits
 inline
 inodes
@@ -1760,6 +1762,7 @@ sharedNodes
 shellnew
 shortDescription
 shortFileName
+shortcut_button
 showInvisibles
 show_headlines
 show_leo_directives
@@ -2096,6 +2099,7 @@ win32
 windowList
 windowMenu
 winnt
+winpdb
 won`t
 word2
 wordLabel

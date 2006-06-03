@@ -1,24 +1,22 @@
-Leo 4.4 Final                                                 May 11, 2006
+Leo 4.4.1 beta 1                                            June 3, 2006
 
-Leo 4.4 release Final is now available at:
+Leo 4.4.1 beta  is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&package_id=29106
 
 Leo is a text editor, data organizer, project manager and much more. See:
 http://webpages.charter.net/edreamleo/intro.html
 
-The highlights of Leo 4.4:
---------------------------
-- An Emacs-like mini-buffer: you can now execute any command by typing its long name, with tab completion.
-
-- Many new commands, including cursor and screen movement, basic character, word and paragraph manipulation, and commands to manipulate buffers, the kill ring, regions and rectangles. You can use Leo without using a mouse.
-
-- Flexible key bindings and input modes. You can emulate the operation of Emacs, Vim, or any other editor.
-
-- A tabbed log pane. The Find and Spell Check commands now use tabs instead of dialogs, making those commands much easier to use. Plugins or scripts can easily create new tabs. The Completion tab shows possible typing completions.
-
-- Autocompletion and calltips. To enable autocompletion, bind a key to the auto-complete command.
-
-- Dozens of other new features and bug fixes since Leo 4.3.3.
+The highlights of Leo 4.4.1:
+----------------------------
+- A new colorizer plugin controlled by jEdit language description files.
+  At present this plugin only reliably colors @language python code.
+- Multiple editors in Leo's body pane.
+- Search commands now support regex replace patterns: \1, \2, etc.
+- Support for external debuggers: see http://webpages.charter.net/edreamleo/debuggers.html
+- The scripting plugin now creates a Debug Script button.
+- Several new commands including run-unit-test, python-help and toggle-invisibles.
+- The help-for-command commands now contains information for almost all commands.
+- A new shortcut_button plugin.
 
 Links:
 ------

@@ -1,6 +1,9 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20060601151845:@thin shortcut_button.py
-'''A plugin to create a 'Shortcut' button in the icon area.'''
+'''A plugin to create a 'Shortcut' button in the icon area.
+
+Pressing the Shortcut button creates *another* button which when pressed will
+select the presently selected node at the time the button was created.'''
 
 #@<< imports >>
 #@+node:ekr.20060601151845.2:<< imports >>
@@ -13,13 +16,14 @@ Tk = g.importExtension('Tkinter',pluginName=__name__,verbose=True)
 #@-node:ekr.20060601151845.2:<< imports >>
 #@nl
 
-__version__ = "0.1"
+__version__ = "0.2"
 #@<< version history >>
 #@+node:ekr.20060601151845.3:<< version history >>
 #@@nocolor
 #@+at
 # 
 # 0.1 Initial version.  Suggested by Brian Theado.
+# 0.2 EKR: Improved docstring.
 #@-at
 #@nonl
 #@-node:ekr.20060601151845.3:<< version history >>

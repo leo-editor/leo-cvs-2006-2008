@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="24433" clone_windows="0"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="24447" clone_windows="0"/>
 <globals body_outline_ratio="0.584597432905">
-	<global_window_position top="49" left="249" height="610" width="944"/>
+	<global_window_position top="49" left="249" height="572" width="944"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -497,6 +497,7 @@
 <v t="ekr.20050912125735.1041"><vh>hoist.py</vh></v>
 <v t="ekr.20050912125735.1050"><vh>nodenavigator.py</vh></v>
 <v t="ekr.20050912125735.1072"><vh>searchbox.py</vh></v>
+<v t="ekr.20060603081045"><vh>shortcut_button.py</vh></v>
 <v t="ekr.20050912125735.1092"><vh>UNL.py</vh></v>
 </v>
 <v t="ekr.20050912125735.2786"><vh>LeoN</vh></v>
@@ -2694,7 +2695,7 @@
 </v>
 </v>
 <v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20060601101643" a="E"><vh>4.4.1 b1</vh>
+<v t="ekr.20060601101643" a="EV"><vh>4.4.1 b1</vh>
 <v t="ekr.20060601101958.1"><vh>Fixed bugs</vh>
 <v t="ekr.20060601101958.56"><vh>The Open Python Window command runs Idle in a separate process</vh></v>
 <v t="ekr.20060601101958.2"><vh>Fixed crasher in searchbox plugin</vh></v>
@@ -2702,8 +2703,9 @@
 <v t="ekr.20060601101958.13"><vh>Fixed crasher in macros plugin</vh></v>
 <v t="ekr.20060601101958.14"><vh>Fixed crasher in  UNL plugin</vh></v>
 <v t="ekr.20060601101958.16"><vh>Suppressed traceback in g.callers when the call stack isn't deep enough</vh></v>
+<v t="ekr.20060603082009" a="E"><vh>Fixed long-standing bug involving @comment and @language</vh></v>
 </v>
-<v t="ekr.20060601102802" a="V"><vh>New features and commands</vh>
+<v t="ekr.20060601102802"><vh>New features, commands &amp; plugins</vh>
 <v t="ekr.20060601101958.245"><vh>Support for multiple editors in the body pane</vh></v>
 <v t="ekr.20060601101958.70"><vh>Improved searches</vh></v>
 <v t="ekr.20060601101958.52"><vh>Added debug command</vh></v>
@@ -2712,6 +2714,7 @@
 <v t="ekr.20060601101958.277"><vh>Added toggle-invisibles and hide-invisibles commands</vh></v>
 <v t="ekr.20060601101958.172"><vh>Added run-unit-test command</vh></v>
 <v t="ekr.20060601101958.234"><vh>The help-for-command command now works for almost all commands</vh></v>
+<v t="ekr.20060603081537"><vh>Added shortcut_button plugin</vh></v>
 </v>
 <v t="ekr.20060601102802.2"><vh>New and improved settings</vh>
 <v t="ekr.20060601101958.174"><vh>Added @bool idle_redraw setting</vh></v>
@@ -27171,6 +27174,10 @@ The highlights of Leo 4.4.1:
 - Multiple editors in Leo's body pane.
 - Search commands now support regex replace patterns: \1, \2, etc.
 - Support for external debuggers: see http://webpages.charter.net/edreamleo/debuggers.html
+- The scripting plugin now creates a Debug Script button.
+- Several new commands including run-unit-test, python-help and toggle-invisibles.
+- The help-for-command commands now contains information for almost all commands.
+- A new shortcut_button plugin.
 
 Links:
 ------
@@ -27228,7 +27235,7 @@ Added warnings in various places that the setting:
 
 @bool expanded_click_area = True
 
-interferes with the  Universal Scrollling plugin.</t>
+interferes with the  Universal Scrolling plugin.</t>
 <t tx="ekr.20060601101958.245">The add-editor command adds a new editor, the delete-editor command deletes the
 presently selected editor, and the cycle-editor-focus command cycles focus
 between editors in the body text.</t>
@@ -27296,5 +27303,20 @@ a single method for creating bindings::
             
 This makes it more clear that duplicate bindings are entirely harmless.</t>
 <t tx="ekr.20060603072938">This prompts for a string s, then puts the result of help(s) in Leo's log pane.</t>
+<t tx="ekr.20060603081045">Creates a 'Shortcut' button in the icon area.
+Pressing the Shortcut button creates *another* button which when pressed will
+select the presently selected node at the time the button was created.</t>
+<t tx="ekr.20060603081537">This plugin creates a 'Shortcut' button in the icon area. Pressing the Shortcut
+button creates *another* button which when pressed will select the presently
+selected node at the time the button was created.</t>
+<t tx="ekr.20060603082009">http://sourceforge.net/forum/message.php?msg_id=3761285
+
+There were actually two bugs:
+    
+- parseLeoSentinel was not recognizing the closing comment delim (!!)
+
+- putDirective was incorrectly setting delims for @language and @comment delims.
+  This is wrong: the init code calls scanAllDirectives, and the comment delims
+  **must not change** in the file (except as the result of @delims.)</t>
 </tnodes>
 </leo_file>
