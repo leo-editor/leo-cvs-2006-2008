@@ -4568,6 +4568,7 @@ class helpCommandsClass (baseEditCommandsClass):
             'apropos-autocompletion':   self.aproposAutocompletion,
             'apropos-bindings':         self.aproposBindings,
             'apropos-find-commands':    self.aproposFindCommands,
+            'python-help':              self.pythonHelp,
         }
     #@nonl
     #@-node:ekr.20060205165501:getPublicCommands (helpCommands)
@@ -4896,6 +4897,56 @@ class helpCommandsClass (baseEditCommandsClass):
     #@nonl
     #@-node:ekr.20060205170552:test_apropos_find_commands
     #@-node:ekr.20060205170335.1:aproposFindCommands
+    #@+node:ekr.20060602154458:pythonHelp
+    def pythonHelp (self,event=None):
+        
+        '''Prompt for a arg for Python's help function, and put it to the log pane.'''
+                
+        c = self.c ; k = c.k ; tag = 'python-help' ; state = k.getState(tag)
+    
+        if state == 0:
+            c.frame.minibufferWantsFocus()
+            k.setLabelBlue('Python help: ',protect=True)
+            k.getArg(event,tag,1,self.pythonHelp)
+        else:
+            k.clearState()
+            k.resetLabel()
+            s = k.arg.strip()
+            if s:
+                g.redirectStderr()
+                g.redirectStdout()
+                try: help(str(s))
+                except Exception: pass
+                g.restoreStderr()
+                g.restoreStdout()
+    #@nonl
+    #@+node:ekr.20060602154458.1:stateHandler
+    def stateHandler (event=None):
+        
+        '''Prompt for a arg for Python's help function, and put it to the log pane.'''
+                
+        k = c.k ; tag = 'python-help' ; state = k.getState(tag)
+    
+        if state == 0:
+            c.frame.minibufferWantsFocus()
+            k.setLabelBlue('Python help: ',protect=True)
+            k.getArg(event,tag,1,stateHandler)
+        else:
+            k.clearState()
+            k.resetLabel()
+            s = k.arg.strip()
+            if s:
+                g.redirectStderr()
+                g.redirectStdout()
+                try:
+                    help(str(s))
+                except Exception:
+                    pass
+                g.restoreStderr()
+                g.restoreStdout()
+    #@nonl
+    #@-node:ekr.20060602154458.1:stateHandler
+    #@-node:ekr.20060602154458:pythonHelp
     #@-others
 #@nonl
 #@-node:ekr.20060205164707:class helpCommandsClass
