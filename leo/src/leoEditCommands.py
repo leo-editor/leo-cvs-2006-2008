@@ -4512,7 +4512,7 @@ class editFileCommandsClass (baseEditCommandsClass):
         c = self.c ; k = self.k ; fileName = k.arg
         
         k.resetLabel()
-        if fileName and g.os_path_exists(fileName):
+        if fileName and g.os_path_exists(fileName) and not g.os_path_isdir(fileName):
             g.openWithFileName(fileName,c)
     #@nonl
     #@-node:ekr.20060419123128:open-outline-by-name
