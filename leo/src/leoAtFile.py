@@ -4286,15 +4286,15 @@ class atFile:
             #@+node:ekr.20041005105605.209:<< handle @comment >>
             self.putSentinel("@" + directive)
             
-            j = g.skip_line(s,i)
-            line = s[i:j]
-            delim1,delim2,delim3 = g.set_delims_from_string(line)
-            
-            g.trace(delim1,delim2,delim3)
-            
             if 0: # Bug fix: Leo 4.4.1
                 # Do not scan the @comment directive here!
                 # These ivars have already been scanned by the init code.
+                
+                # g.trace(delim1,delim2,delim3)
+                
+                j = g.skip_line(s,i)
+                line = s[i:j]
+                delim1,delim2,delim3 = g.set_delims_from_string(line)
             
                 # Returns a tuple (single,start,end) of comment delims
                 if delim1:
