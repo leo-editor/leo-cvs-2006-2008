@@ -72,19 +72,22 @@ import types
 # ivars:
 # 
 # c.commandsDict:
-#     keys are emacs command names, values are functions f.
+#     Keys are emacs command names, values are functions f.
 # 
 # k.inverseCommandsDict:
-#     keys are f.__name__, values are emacs command names.
+#     Keys are f.__name__, values are emacs command names.
 # 
 # k.bindingsDict:
 #     keys are shortcuts, values are *lists* of 
 # g.bunch(func,name,warningGiven)
 # 
 # k.masterBindingsDict:
-#     keys are scope names: 'all','text',etc. or mode names.
+#     Keys are scope names: 'all','text',etc. or mode names.
 #     Values are dicts:  keys are strokes, values are 
 # g.Bunch(commandName,func,pane,stroke)
+# k.modeWidgetsDict:
+#     Keys are mode names; values are lists of widgets to which bindings have 
+# been made.
 # 
 # k.settingsNameDict:
 #     Keys are lowercase settings, values are 'real' Tk key specifiers.
@@ -1756,8 +1759,11 @@ class keyHandlerClass:
             # Keys are strings (the tag), values are 'True'
             
         self.masterBindingsDict = {}
-            # keys are scope names: 'all','text',etc. or mode names.
+            # Keys are scope names: 'all','text',etc. or mode names.
             # Values are dicts: keys are strokes, values are g.bunch(commandName,func,pane,stroke)
+            
+        self.modeWidgetsDict = {}
+            # Keys are mode names; values are lists of widgets to which bindings have been made.
         
         # Special bindings for k.fullCommand.
         self.mb_copyKey = None
@@ -2276,8 +2282,7 @@ class keyHandlerClass:
             action = k.unboundKeyAction
             if action in ('insert','overwrite'):
                 c.editCommands.selfInsertCommand(event,action=action)
-            else:
-                pass ; g.trace('ignoring key')
+            else: pass # Ignore the key.
             return 'break'
         elif name.startswith('head'):
             c.frame.tree.onHeadlineKey(event)
@@ -2701,7 +2706,7 @@ class keyHandlerClass:
     #@nonl
     #@-node:ekr.20050920085536.62:getArg
     #@+node:ekr.20050920085536.63:keyboardQuit
-    def keyboardQuit (self,event,hideTabs=True):
+    def keyboardQuit (self,event,hideTabs=True,setDefaultUnboundKeyAction=True):
     
         '''This method clears the state and the minibuffer label.
         
@@ -2728,12 +2733,19 @@ class keyHandlerClass:
         k.clearState()
         k.resetLabel()
         
-        k.setDefaultUnboundKeyAction()
+        if setDefaultUnboundKeyAction: k.setDefaultUnboundKeyAction()
         k.showStateAndMode()
         c.endEditing()
         c.bodyWantsFocus()
     #@nonl
     #@-node:ekr.20050920085536.63:keyboardQuit
+    #@+node:ekr.20060604095734:keyboardQuitPreserveState
+    def keyboardQuitPreserveState (self,event):
+        
+        k = self
+        k.keyboardQuit (event,setDefaultUnboundKeyAction=False)
+    #@nonl
+    #@-node:ekr.20060604095734:keyboardQuitPreserveState
     #@+node:ekr.20051015110547:k.registerCommand
     def registerCommand (self,commandName,shortcut,func,pane='all',verbose=True):
         
@@ -2986,6 +2998,7 @@ class keyHandlerClass:
         
         k = self ; c = k.c
         trace = c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
+        if trace: g.trace(g.callers())
     
         val = self.masterKeyHandlerHelper(event,stroke,trace)
         if val and c and c.exists: # Ignore special keys.
@@ -3021,7 +3034,11 @@ class keyHandlerClass:
         if trace:
             if (self.master_key_count % 100) == 0:
                 g.printGcSummary(trace=True)
-            g.trace('keysym',repr(event.keysym or ''),'stroke',repr(stroke),'state',state)
+            g.trace(
+                # 'keysym',repr(event.keysym or ''),
+                'stroke',repr(stroke),
+                'state',state,
+                'unboundKeyAction',k.unboundKeyAction)
         #@nonl
         #@-node:ekr.20060321105403.1:<< do key traces >>
         #@nl
@@ -3061,9 +3078,18 @@ class keyHandlerClass:
                         k.generalModeHandler (event,
                             commandName=b.commandName,func=b.func,
                             modeName=state,nextMode=b.nextMode)
-                    elif not k.handleMiniBindings(event,state,stroke):
-                        if trace: g.trace('calling modeHelp')
-                        k.modeHelp(event)
+                        return 'break'
+                    else:
+                        ok = k.handleMiniBindings(event,state,stroke)
+                        if ok:
+                            return 'break'
+                        elif stroke and len(stroke) == 1:
+                            # if trace: g.trace('calling modeHelp')
+                            k.modeHelp(event)
+                            return 'break'
+                        else:
+                            # End the mode and fall through to the pane bindings!
+                            k.endMode(event)
                 else:
                     # New in 4.4b4.
                     handler = k.getStateHandler()
@@ -3071,46 +3097,51 @@ class keyHandlerClass:
                         handler(event)
                     else:
                         g.trace('No state handler for %s' % state)
-                return 'break'
+                    return 'break'
             #@nonl
             #@-node:ekr.20060321105403.2:<< handle mode bindings >>
             #@nl
-    
-        #@    << handle per-pane bindings >>
-        #@+node:ekr.20060321105403.3:<< handle per-pane bindings >>
-        for key,name in (
-            # Order here is similar to bindtags order.
-            ('body','body'),
-            ('text','head'), # Important: text bindings in head before tree bindings.
-            ('tree','head'),
-            ('tree','canvas'),
-            ('log', 'log'),
-            ('text','log'),
-            ('text',None), ('all',None),
-        ):
-            if (
-                name and w_name.startswith(name) or
-                key == 'text' and g.app.gui.isTextWidget(w) or
-                key == 'all'
-            ):
-                d = k.masterBindingsDict.get(key)
-                # g.trace(key,name,d and len(d.keys()))
-                if d:
-                    b = d.get(stroke)
-                    if b:
-                        if trace: g.trace('%s found %s = %s' % (key,b.stroke,b.commandName))
-                        return k.masterCommand(event,b.func,b.stroke,b.commandName)
-        
-        if k.ignore_unbound_non_ascii_keys and len(event.char) > 1:
-            # (stroke.find('Alt+') > -1 or stroke.find('Ctrl+') > -1)):
-            if trace: g.trace('ignoring unbound non-ascii key')
-            return 'break'
-        else:
-            if trace: g.trace(repr(stroke),'no func')
+            
+        if stroke and k.isPlainKey(stroke) and k.unboundKeyAction == 'insert':
+            # insert normal character.
             return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
-        #@nonl
-        #@-node:ekr.20060321105403.3:<< handle per-pane bindings >>
-        #@nl
+        else:
+            #@        << handle per-pane bindings >>
+            #@+node:ekr.20060321105403.3:<< handle per-pane bindings >>
+            for key,name in (
+                # Order here is similar to bindtags order.
+                ('body','body'),
+                ('text','head'), # Important: text bindings in head before tree bindings.
+                ('tree','head'),
+                ('tree','canvas'),
+                ('log', 'log'),
+                ('text','log'),
+                ('text',None), ('all',None),
+            ):
+                if (
+                    name and w_name.startswith(name) or
+                    key == 'text' and g.app.gui.isTextWidget(w) or
+                    key == 'all'
+                ):
+                    d = k.masterBindingsDict.get(key)
+                    # g.trace(key,name,d and len(d.keys()))
+                    if d:
+                        b = d.get(stroke)
+                        if b:
+                            if trace: g.trace('%s found %s = %s' % (key,b.stroke,b.commandName))
+                            return k.masterCommand(event,b.func,b.stroke,b.commandName)
+            
+            if k.ignore_unbound_non_ascii_keys and len(event.char) > 1:
+                # (stroke.find('Alt+') > -1 or stroke.find('Ctrl+') > -1)):
+                if trace: g.trace('ignoring unbound non-ascii key')
+                return 'break'
+            else:
+                if trace: g.trace(repr(stroke),'no func')
+                return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
+            #@nonl
+            #@-node:ekr.20060321105403.3:<< handle per-pane bindings >>
+            #@nl
+    #@nonl
     #@-node:ekr.20060205221734:masterKeyHandlerHelper
     #@+node:ekr.20060309065445:handleMiniBindings
     def handleMiniBindings (self,event,state,stroke):
@@ -3120,15 +3151,16 @@ class keyHandlerClass:
         
         if not state.startswith('auto-'):
             d = k.masterBindingsDict.get('mini')
-            b = d.get(stroke)
-            if b:
-                if trace: g.trace(repr(stroke),'mini binding',b.commandName)
-                # Pass this on for macro recording.
-                k.masterCommand(event,b.func,stroke,b.commandName)
-                if not k.silentMode:
-                    c.minibufferWantsFocus()
-                return True
-            
+            if d:
+                b = d.get(stroke)
+                if b:
+                    if trace: g.trace(repr(stroke),'mini binding',b.commandName)
+                    # Pass this on for macro recording.
+                    k.masterCommand(event,b.func,stroke,b.commandName)
+                    if not k.silentMode:
+                        c.minibufferWantsFocus()
+                    return True
+    
         return False
     #@nonl
     #@-node:ekr.20060309065445:handleMiniBindings
@@ -3239,11 +3271,18 @@ class keyHandlerClass:
         
         '''Create mode bindings for the named mode using dictionary d for widget w.'''
         
-        k = self ; c = k.c
+        k = self ; c = k.c ; f = c.frame
+        bodyCtrl = f.body and hasattr(f.body,'bodyCtrl') and f.body.bodyCtrl or None
+        canvas   = f.tree and hasattr(f.tree,'canvas')   and f.tree.canvas   or None
+        bindingWidget = f.tree and hasattr(f.tree,'bindingWidget') and f.tree.bindingWidget or None
+        widgets = (bodyCtrl,canvas,bindingWidget,w)
         
-        # Just do this once.
-        d2 = k.masterBindingsDict.get(modeName,{})
-        if d2: return
+        if 0: # We must make bindings for every widget that uses this mode.
+            aList = k.modeWidgetsDict.get(modeName,[])
+            if w in aList: return
+            aList.append(w) ; k.modeWidgetsDict [modeName] = aList
+            
+        # g.trace(g.listToString(d.keys()))
     
         for commandName in d.keys():
             if commandName == '*entry-commands*': continue
@@ -3267,9 +3306,10 @@ class keyHandlerClass:
                             
                     # New in 4.4.1 b1: create an actual binding.
                     def modeKeyCallback(event=None,k=k,stroke=stroke):
-                        return k.masterKeyHandler(event,stroke)
-                
-                    k.completeOneBindingForWidget (w,stroke,modeKeyCallback)
+                        return k.masterKeyHandler(event,stroke=stroke)
+    
+                    for w2 in widgets:
+                        k.completeOneBindingForWidget (w2,stroke,modeKeyCallback)
                    
                     # Create the entry for the mode in k.masterBindingsDict.
                     # Important: this is similar, but not the same as k.bindKeyToDict.
@@ -3397,9 +3437,8 @@ class keyHandlerClass:
     
         entryCommands = d.get('*entry-commands*',[])
         if entryCommands:
-            # g.trace('entryCommands',entryCommands)
             for commandName in entryCommands:
-                g.trace('entry command:',commandName)
+                if trace: g.trace('entry command:',commandName)
                 k.simulateCommand(commandName)
                 
         # Create bindings after we know whether we are in silent mode.
@@ -3457,7 +3496,7 @@ class keyHandlerClass:
             d = g.app.config.modeCommandsDict.get('enter-'+k.inputModeName)
             k.modeHelpHelper(d)
             
-        if k.useTextWidget:
+        if k.useTextWidget and not k.silentMode:
             c.minibufferWantsFocus()
     
         return 'break'
@@ -3493,14 +3532,17 @@ class keyHandlerClass:
     #@+node:ekr.20060105132013:set-xxx-State
     def setIgnoreState (self,event):
         '''Enter the 'ignore' editing state.'''
+        # g.trace(g.callers())
         self.setInputState('ignore',showState=True)
     
     def setInsertState (self,event):
         '''Enter the 'insert' editing state.'''
+        # g.trace(g.callers())
         self.setInputState('insert',showState=True)
     
     def setOverwriteState (self,event):
         '''Enter the 'override' editing state.'''
+        # g.trace(g.callers())
         self.setInputState('overwrite',showState=True)
     #@nonl
     #@-node:ekr.20060105132013:set-xxx-State
@@ -3510,8 +3552,7 @@ class keyHandlerClass:
         k = self ; c = k.c
     
         k.unboundKeyAction = state
-        if state != 'insert' or showState:
-            k.showStateAndMode()
+        k.showStateAndMode()
     #@nonl
     #@-node:ekr.20060120200818:setInputState
     #@+node:ekr.20060120193743:showStateAndMode
@@ -3526,13 +3567,14 @@ class keyHandlerClass:
         if hasattr(frame,'clearStatusLine'):
             frame.clearStatusLine()
             put = frame.putStatusLine
-            if state != 'insert':
-                put('state: ',color='blue')
-                put(state.capitalize())
+            put('Key state: ',color='blue')
+            put('%s' % state.capitalize())
             if mode:
-                put(' mode: ',color='blue')
+                # put(' mode: ',color='blue')
                 if mode.endswith('-mode'): mode = mode[:-5]
-                put('%s mode.' % (mode.capitalize()),color='blue')
+                mode = mode.replace('-',' ').capitalize()
+                put(' Mode: ',color='blue')
+                put(mode)
                 
             # Restore the focus.
             c.restoreFocus()
