@@ -1790,10 +1790,10 @@ class keyHandlerClass:
         # For modes
         self.afterGetArgState = None
         self.argTabList = []
-        self.modeBindingsDict = {}
         self.getArgEscapes = []
+        self.modeBindingsDict = {}
         self.modeWidget = None
-        #@nonl
+        self.silentMode = False
         #@-node:ekr.20050923213858:<< define internal ivars >>
         #@nl
         
@@ -3125,7 +3125,8 @@ class keyHandlerClass:
                 if trace: g.trace(repr(stroke),'mini binding',b.commandName)
                 # Pass this on for macro recording.
                 k.masterCommand(event,b.func,stroke,b.commandName)
-                c.minibufferWantsFocus()
+                if not k.silentMode:
+                    c.minibufferWantsFocus()
                 return True
             
         return False
@@ -3234,7 +3235,9 @@ class keyHandlerClass:
     #@nonl
     #@-node:ekr.20060117202916:badMode
     #@+node:ekr.20060119150624:createModeBindings
-    def createModeBindings (self,modeName,d):
+    def createModeBindings (self,modeName,d,w):
+        
+        '''Create mode bindings for the named mode using dictionary d for widget w.'''
         
         k = self ; c = k.c
         
@@ -3257,7 +3260,7 @@ class keyHandlerClass:
                 if stroke and stroke not in ('None','none',None):
                     if 0:
                         g.trace(
-                            g.app.gui.widget_name(k.widget), modeName,
+                            g.app.gui.widget_name(w), modeName,
                             '%10s' % (stroke),
                             '%20s' % (commandName),
                             bunch.nextMode)
@@ -3266,7 +3269,7 @@ class keyHandlerClass:
                     def modeKeyCallback(event=None,k=k,stroke=stroke):
                         return k.masterKeyHandler(event,stroke)
                 
-                    k.completeOneBindingForWidget (k.widget,stroke,modeKeyCallback)
+                    k.completeOneBindingForWidget (w,stroke,modeKeyCallback)
                    
                     # Create the entry for the mode in k.masterBindingsDict.
                     # Important: this is similar, but not the same as k.bindKeyToDict.
@@ -3299,8 +3302,6 @@ class keyHandlerClass:
         
         k = self ; c = k.c
         modeName = commandName[6:]
-        # g.trace(modeName)
-        
         k.generalModeHandler(event,modeName=modeName)
     #@-node:ekr.20060102135349.2:enterNamedMode
     #@+node:ekr.20060121104301:exitNamedMode
@@ -3326,18 +3327,20 @@ class keyHandlerClass:
         if trace: g.trace(modeName,'state',state)
        
         if state == 0:
-            self.initMode(event,modeName)
+            # self.initMode(event,modeName)
             k.inputModeName = modeName
             k.modeWidget = event and event.widget
             k.setState(modeName,1,handler=k.generalModeHandler)
-            if c.config.getBool('showHelpWhenEnteringModes'):
-                k.modeHelp(event)
-            else:
-                c.frame.log.hideTab('Mode')
-            if k.useTextWidget:
-                c.minibufferWantsFocus()
-            else:
-                c.restoreRequestedFocus()
+            self.initMode(event,modeName)
+            if not k.silentMode:
+                if c.config.getBool('showHelpWhenEnteringModes'):
+                    k.modeHelp(event)
+                else:
+                    c.frame.log.hideTab('Mode')
+                if k.useTextWidget:
+                    c.minibufferWantsFocus()
+                else:
+                    c.restoreRequestedFocus()
         elif not func:
             g.trace('No func: improper key binding')
             return 'break'
@@ -3347,7 +3350,7 @@ class keyHandlerClass:
             else:
                 savedModeName = k.inputModeName # Remember this: it may be cleared.
                 self.endMode(event)
-                if c.config.getBool('trace_doCommand'): g.trace(func.__name__)
+                if trace or c.config.getBool('trace_doCommand'): g.trace(func.__name__)
                 # New in 4.4.1 b1: pass an event describing the original widget.
                 if event:
                     event.widget = k.modeWidget
@@ -3360,9 +3363,12 @@ class keyHandlerClass:
                     # func may have put us in *another* mode.
                     pass
                 elif nextMode == 'same':
-                    self.reinitMode(modeName) # Re-enter this mode.
+                    silent = k.silentMode
                     k.setState(modeName,1,handler=k.generalModeHandler)
+                    self.reinitMode(modeName) # Re-enter this mode.
+                    k.silentMode = silent
                 else:
+                    k.silentMode = False # All silent modes must do --> set-silent-mode.
                     self.initMode(event,nextMode) # Enter another mode.
     
         return 'break'
@@ -3370,8 +3376,10 @@ class keyHandlerClass:
     #@-node:ekr.20060104110233:generalModeHandler
     #@+node:ekr.20060117202916.1:initMode
     def initMode (self,event,modeName):
-    
+        
         k = self ; c = k.c
+        trace = c.config.getBool('trace_modes')
+        if trace: g.trace(modeName)
     
         if not modeName:
             g.trace('oops: no modeName')
@@ -3385,8 +3393,7 @@ class keyHandlerClass:
             k.modeBindingsDict = d
             
         k.inputModeName = modeName
-        
-        k.createModeBindings(modeName,d)
+        k.silentMode = False
     
         entryCommands = d.get('*entry-commands*',[])
         if entryCommands:
@@ -3394,13 +3401,20 @@ class keyHandlerClass:
             for commandName in entryCommands:
                 g.trace('entry command:',commandName)
                 k.simulateCommand(commandName)
-       
-        k.setLabelBlue(modeName+': ',protect=True)
-        k.showStateAndMode()
-        if k.useTextWidget:
-            c.minibufferWantsFocus()
+                
+        # Create bindings after we know whether we are in silent mode.
+        w = g.choose(k.silentMode,k.modeWidget,k.widget)
+        k.createModeBindings(modeName,d,w)
+            
+        if k.silentMode:
+            k.showStateAndMode()
         else:
-            pass # Do *not* change the focus here!
+            k.setLabelBlue(modeName+': ',protect=True)
+            k.showStateAndMode()
+            if k.useTextWidget:
+                c.minibufferWantsFocus()
+            else:
+                pass # Do *not* change the focus here!
     #@nonl
     #@-node:ekr.20060117202916.1:initMode
     #@+node:ekr.20060204140416:reinitMode
@@ -3411,15 +3425,18 @@ class keyHandlerClass:
         d = k.modeBindingsDict
         
         k.inputModeName = modeName
-        k.createModeBindings(modeName,d)
+        w = g.choose(k.silentMode,k.modeWidget,k.widget)
+        k.createModeBindings(modeName,d,w)
         
-        # Do not set the status line here.
-        k.setLabelBlue(modeName+': ',protect=True)
-    
-        if k.useTextWidget:
-            c.minibufferWantsFocus()
+        if k.silentMode:
+            k.showStateAndMode()
         else:
-            pass # Do *not* change the focus here!
+            # Do not set the status line here.
+            k.setLabelBlue(modeName+': ',protect=True)
+            if k.useTextWidget:
+                c.minibufferWantsFocus()
+            else:
+                pass # Do *not* change the focus here!
     #@nonl
     #@-node:ekr.20060204140416:reinitMode
     #@+node:ekr.20060104164523:modeHelp
@@ -3503,16 +3520,19 @@ class keyHandlerClass:
         k = self ; c = k.c ; frame = c.frame
         state = k.unboundKeyAction
         mode = k.getStateKind()
+        
+        # g.trace(state,mode)
        
         if hasattr(frame,'clearStatusLine'):
             frame.clearStatusLine()
             put = frame.putStatusLine
             if state != 'insert':
                 put('state: ',color='blue')
-                put(state)
+                put(state.capitalize())
             if mode:
                 put(' mode: ',color='blue')
-                put(mode)
+                if mode.endswith('-mode'): mode = mode[:-5]
+                put('%s mode.' % (mode.capitalize()),color='blue')
                 
             # Restore the focus.
             c.restoreFocus()
