@@ -949,6 +949,7 @@ class controlCommandsClass (baseEditCommandsClass):
             'iconify-frame':                self.iconifyFrame, # Same as suspend.
             'keyboard-quit':                self.keyboardQuit,
             'save-buffers-kill-leo':        self.saveBuffersKillLeo,
+            'set-silent-mode':              self.setSilentMode,
             'shell-command':                self.shellCommand,
             'shell-command-on-region':      self.shellCommandOnRegion,
             'suspend':                      self.suspend,
@@ -992,6 +993,17 @@ class controlCommandsClass (baseEditCommandsClass):
         k.setLabelGrey('finished shell-command: %s' % command)
     #@nonl
     #@-node:ekr.20050920084036.160:executeSubprocess
+    #@+node:ekr.20060603161041:setSilentMode
+    def setSilentMode (self,event=None):
+        
+        '''Set the mode to be run silently, without the minibuffer.
+        The only use for this command is to put the following in an @mode node::
+            
+            --> set-silent-mode'''
+        
+        self.c.k.silentMode = True
+    #@nonl
+    #@-node:ekr.20060603161041:setSilentMode
     #@+node:ekr.20050920084036.158:shellCommand
     def shellCommand (self,event):
         
@@ -2275,8 +2287,15 @@ class editCommandsClass (baseEditCommandsClass):
             k.setLabelBlue('Find character: ')
             k.getArg(event,tag,1,self.findCharacter,oneCharacter=True)
         else:
-            ch = k.arg
-            # g.trace(repr(ch))
+            ch = k.arg ; w = self.widget
+            i = w.index('insert')
+            s = g.app.gui.getAllText(w)
+            i = g.app.gui.toPythonIndex(s,w,i)
+            i = s.find(ch,i)
+            # g.trace(repr(ch),i,repr(s))
+            if i > -1:
+                i2 = g.app.gui.toGuiIndex(s,w,i)
+                g.app.gui.setSelectionRange(w,i2,i2)
             k.resetLabel()
             k.clearState()
     #@nonl
@@ -2291,10 +2310,27 @@ class editCommandsClass (baseEditCommandsClass):
         if state == 0:
             self.widget = event.widget
             k.setLabelBlue('Find word: ')
-            k.getArg(event,tag,1,self.findWord,oneCharacter=True)
-        else:
-            ch = k.arg
-            # g.trace(repr(ch))
+            k.getArg(event,tag,1,self.findWord)
+        else:        
+            word = k.arg ; w = self.widget ; c = k.c
+            if word:
+                i = w.index('insert')
+                s = g.app.gui.getAllText(w)
+                i = g.app.gui.toPythonIndex(s,w,i)
+                j = s.find('\n',i) # Limit to this line.
+                s = s[:j]
+                word_chars = string.letters + string.digits + '_'
+                while i < len(s):
+                    if i == -1: break
+                    ok = g.match_word(s,i,word) and (i == 0 or s[i-1] not in word_chars)
+                    # g.trace(ok,repr(word),i,repr(s))
+                    if ok:
+                        i1 = g.app.gui.toGuiIndex(s,w,i)
+                        i2 = g.app.gui.toGuiIndex(s,w,i+len(word))
+                        g.app.gui.setSelectionRange(w,i1,i2)
+                        break
+                    else:
+                        i += 1
             k.resetLabel()
             k.clearState()
     #@nonl
