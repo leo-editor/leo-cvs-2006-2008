@@ -6114,6 +6114,38 @@ def valIsPossible (self,val):
 #@-node:sudoku puzzle
 #@-node:Fun...
 #@+node:Important
+#@+node:Catch mixed tab & space in derived files
+import glob
+
+@others
+
+dir = c.frame.openDirectory
+files = glob.glob('%s\*.py' % dir)
+
+n = 0
+for name in files:
+    f = file(name)
+    lines = f.readlines()
+    # print '%5d %s' % (len(lines),name)
+    f.close()
+    check(name,lines)
+    n += 1
+print 'done.  checked %d files' % (n)
+#@nonl
+#@+node:check
+def check(name,lines):
+    
+    n = 0
+    for line in lines:
+        n += 1
+        i = g.skip_ws(line,0)
+        lws = line[0:i]
+        if lws:
+            if lws.find(' ') > -1 and lws.find('\t') > -1:
+                print '%20s %5d %s' % (name,n,repr(line))
+#@nonl
+#@-node:check
+#@-node:Catch mixed tab & space in derived files
 #@+node:Print missing docstrings
 # Print all commands that do not have a docstring.
 d = c.commandsDict

@@ -1109,10 +1109,10 @@ self.idleCount = 0
 # For modes
 self.afterGetArgState = None
 self.argTabList = []
-self.modeBindingsDict = {}
 self.getArgEscapes = []
+self.modeBindingsDict = {}
 self.modeWidget = None
-#@nonl
+self.silentMode = False
 #@-node:ekr.20050923213858:<< define internal ivars >>
 #@-node:ekr.20050920085536.2: ctor (keyHandler)
 #@+node:ekr.20050920094633:k.finishCreate & helpers
@@ -1837,7 +1837,8 @@ def handleMiniBindings (self,event,state,stroke):
             if trace: g.trace(repr(stroke),'mini binding',b.commandName)
             # Pass this on for macro recording.
             k.masterCommand(event,b.func,stroke,b.commandName)
-            c.minibufferWantsFocus()
+            if not k.silentMode:
+                c.minibufferWantsFocus()
             return True
         
     return False
@@ -1915,7 +1916,9 @@ if c.config.getBool('trace_bindings'):
 #@-node:ekr.20060114110141:<< trace bindings if enabled in leoSettings.leo >>
 #@-node:ekr.20050920085536.16:bindKey
 #@+node:ekr.20060119150624:createModeBindings
-def createModeBindings (self,modeName,d):
+def createModeBindings (self,modeName,d,w):
+    
+    '''Create mode bindings for the named mode using dictionary d for widget w.'''
     
     k = self ; c = k.c
     
@@ -1938,7 +1941,7 @@ def createModeBindings (self,modeName,d):
             if stroke and stroke not in ('None','none',None):
                 if 0:
                     g.trace(
-                        g.app.gui.widget_name(k.widget), modeName,
+                        g.app.gui.widget_name(w), modeName,
                         '%10s' % (stroke),
                         '%20s' % (commandName),
                         bunch.nextMode)
@@ -1947,7 +1950,7 @@ def createModeBindings (self,modeName,d):
                 def modeKeyCallback(event=None,k=k,stroke=stroke):
                     return k.masterKeyHandler(event,stroke)
             
-                k.completeOneBindingForWidget (k.widget,stroke,modeKeyCallback)
+                k.completeOneBindingForWidget (w,stroke,modeKeyCallback)
                
                 # Create the entry for the mode in k.masterBindingsDict.
                 # Important: this is similar, but not the same as k.bindKeyToDict.
@@ -2009,18 +2012,20 @@ def generalModeHandler (self,event,
     if trace: g.trace(modeName,'state',state)
    
     if state == 0:
-        self.initMode(event,modeName)
+        # self.initMode(event,modeName)
         k.inputModeName = modeName
         k.modeWidget = event and event.widget
         k.setState(modeName,1,handler=k.generalModeHandler)
-        if c.config.getBool('showHelpWhenEnteringModes'):
-            k.modeHelp(event)
-        else:
-            c.frame.log.hideTab('Mode')
-        if k.useTextWidget:
-            c.minibufferWantsFocus()
-        else:
-            c.restoreRequestedFocus()
+        self.initMode(event,modeName)
+        if not k.silentMode:
+            if c.config.getBool('showHelpWhenEnteringModes'):
+                k.modeHelp(event)
+            else:
+                c.frame.log.hideTab('Mode')
+            if k.useTextWidget:
+                c.minibufferWantsFocus()
+            else:
+                c.restoreRequestedFocus()
     elif not func:
         g.trace('No func: improper key binding')
         return 'break'
@@ -2030,7 +2035,7 @@ def generalModeHandler (self,event,
         else:
             savedModeName = k.inputModeName # Remember this: it may be cleared.
             self.endMode(event)
-            if c.config.getBool('trace_doCommand'): g.trace(func.__name__)
+            if trace or c.config.getBool('trace_doCommand'): g.trace(func.__name__)
             # New in 4.4.1 b1: pass an event describing the original widget.
             if event:
                 event.widget = k.modeWidget
@@ -2043,9 +2048,12 @@ def generalModeHandler (self,event,
                 # func may have put us in *another* mode.
                 pass
             elif nextMode == 'same':
-                self.reinitMode(modeName) # Re-enter this mode.
+                silent = k.silentMode
                 k.setState(modeName,1,handler=k.generalModeHandler)
+                self.reinitMode(modeName) # Re-enter this mode.
+                k.silentMode = silent
             else:
+                k.silentMode = False # All silent modes must do --> set-silent-mode.
                 self.initMode(event,nextMode) # Enter another mode.
 
     return 'break'
@@ -2078,16 +2086,19 @@ def showStateAndMode(self):
     k = self ; c = k.c ; frame = c.frame
     state = k.unboundKeyAction
     mode = k.getStateKind()
+    
+    # g.trace(state,mode)
    
     if hasattr(frame,'clearStatusLine'):
         frame.clearStatusLine()
         put = frame.putStatusLine
         if state != 'insert':
             put('state: ',color='blue')
-            put(state)
+            put(state.capitalize())
         if mode:
             put(' mode: ',color='blue')
-            put(mode)
+            if mode.endswith('-mode'): mode = mode[:-5]
+            put('%s mode.' % (mode.capitalize()),color='blue')
             
         # Restore the focus.
         c.restoreFocus()
@@ -2605,7 +2616,8 @@ def handleMiniBindings (self,event,state,stroke):
             if trace: g.trace(repr(stroke),'mini binding',b.commandName)
             # Pass this on for macro recording.
             k.masterCommand(event,b.func,stroke,b.commandName)
-            c.minibufferWantsFocus()
+            if not k.silentMode:
+                c.minibufferWantsFocus()
             return True
         
     return False
@@ -5510,7 +5522,8 @@ def handleMiniBindings (self,event,state,stroke):
             if trace: g.trace(repr(stroke),'mini binding',b.commandName)
             # Pass this on for macro recording.
             k.masterCommand(event,b.func,stroke,b.commandName)
-            c.minibufferWantsFocus()
+            if not k.silentMode:
+                c.minibufferWantsFocus()
             return True
         
     return False
@@ -8527,6 +8540,68 @@ def modeHelpHelper (self,d):
 #@-node:ekr.20060104125946:modeHelpHelper
 #@-node:ekr.20060104164523:modeHelp
 #@-node:ekr.20060603090445.3:Better listings for print-commands and print-bindings & mode-help commands
+#@+node:ekr.20060603183927.1:Fixed find-character & find-word commands
+#@+node:ekr.20060417194232.1:findCharacter
+def findCharacter (self,event):
+    
+    '''Put the cursor at the next occurance of a character on a line.'''
+
+    k = self.k ; tag = 'find-char' ; state = k.getState(tag)
+    
+    if state == 0:
+        self.widget = event.widget
+        k.setLabelBlue('Find character: ')
+        k.getArg(event,tag,1,self.findCharacter,oneCharacter=True)
+    else:
+        ch = k.arg ; w = self.widget
+        i = w.index('insert')
+        s = g.app.gui.getAllText(w)
+        i = g.app.gui.toPythonIndex(s,w,i)
+        i = s.find(ch,i)
+        # g.trace(repr(ch),i,repr(s))
+        if i > -1:
+            i2 = g.app.gui.toGuiIndex(s,w,i)
+            g.app.gui.setSelectionRange(w,i2,i2)
+        k.resetLabel()
+        k.clearState()
+#@nonl
+#@-node:ekr.20060417194232.1:findCharacter
+#@+node:ekr.20060417194232.2:findWord
+def findWord (self,event):
+    
+    '''Put the cursor at the next word (on a line) that starts with a character.'''
+
+    k = self.k ; tag = 'find-word-on-line' ; state = k.getState(tag)
+    
+    if state == 0:
+        self.widget = event.widget
+        k.setLabelBlue('Find word: ')
+        k.getArg(event,tag,1,self.findWord)
+    else:        
+        word = k.arg ; w = self.widget ; c = k.c
+        if word:
+            i = w.index('insert')
+            s = g.app.gui.getAllText(w)
+            i = g.app.gui.toPythonIndex(s,w,i)
+            j = s.find('\n',i) # Limit to this line.
+            s = s[:j]
+            word_chars = string.letters + string.digits + '_'
+            while i < len(s):
+                if i == -1: break
+                ok = g.match_word(s,i,word) and (i == 0 or s[i-1] not in word_chars)
+                # g.trace(ok,repr(word),i,repr(s))
+                if ok:
+                    i1 = g.app.gui.toGuiIndex(s,w,i)
+                    i2 = g.app.gui.toGuiIndex(s,w,i+len(word))
+                    g.app.gui.setSelectionRange(w,i1,i2)
+                    break
+                else:
+                    i += 1
+        k.resetLabel()
+        k.clearState()
+#@nonl
+#@-node:ekr.20060417194232.2:findWord
+#@-node:ekr.20060603183927.1:Fixed find-character & find-word commands
 #@-node:ekr.20060603090445.2:New features
 #@-node:ekr.20060603090445:4.4.1 b2 projects
 #@-node:ekr.20050924073836:4.4 projects

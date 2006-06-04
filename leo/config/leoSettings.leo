@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="267" clone_windows="0"/>
 <globals body_outline_ratio="0.549828178694">
-	<global_window_position top="42" left="118" height="735" width="1080"/>
+	<global_window_position top="42" left="118" height="716" width="1080"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -310,7 +310,7 @@
 <v t="ekr.20060122105527"><vh>EKR bindings: Mode-oriented bindings + Emacs bindings</vh>
 <v t="ekr.20060122105527.2"><vh>Summary of Ctrl bindings</vh></v>
 <v t="ekr.20060122105527.9"><vh>Modes</vh>
-<v t="ekr.20060122113439"><vh>@@mode Edit (Alt-Control-space)</vh>
+<v t="ekr.20060122113439"><vh>@mode Edit (Alt-Control-space)</vh>
 <v t="ekr.20060122122150"><vh>@mode Edit-extend</vh></v>
 </v>
 <v t="ekr.20060122105527.11" annotate="7d71002e"><vh>@mode File</vh></v>
@@ -414,12 +414,12 @@
 <v t="ekr.20060131071612"><vh>@bool trace_masterKeyHandler = False</vh></v>
 <v t="ekr.20060309022759"><vh>@bool trace_colorizer = False</vh></v>
 <v t="ekr.20060131071947"><vh>@bool trace_masterClickHandler = False</vh></v>
-<v t="ekr.20060121102627"><vh>@bool trace_modes = False</vh></v>
+<v t="ekr.20060121102627" a="V"><vh>@bool trace_modes = False</vh></v>
 <v t="ekr.20060114073238"><vh>@bool trace_bindings = False</vh></v>
-<v t="ekr.20060216135834" a="V"><vh>@bool enable_autocompleter_initially = False</vh></v>
+<v t="ekr.20060216135834"><vh>@bool enable_autocompleter_initially = False</vh></v>
 <v t="ekr.20060603070801"><vh>@bool enable_calltips_initially = False</vh></v>
 <v t="ekr.20060122105527.9"><vh>Modes</vh>
-<v t="ekr.20060122113439"><vh>@@mode Edit (Alt-Control-space)</vh>
+<v t="ekr.20060122113439"><vh>@mode Edit (Alt-Control-space)</vh>
 <v t="ekr.20060122122150"><vh>@mode Edit-extend</vh></v>
 </v>
 <v t="ekr.20060122105527.11" annotate="7d71002e"><vh>@mode File</vh></v>
@@ -3139,12 +3139,14 @@ zap-to-character                    = None</t>
 <t tx="ekr.20060112093227.1">fill-paragraph                      = None
 fill-region                         = None
 fill-region-as-paragraph            = None
+find-character                      = None
 find-tab-change                     = None
 find-tab-change-all                 = None
 find-tab-change-then-find           = None
 find-tab-find                       = None
 find-tab-find-all                   = None
 find-tab-find-prev                  = None
+find-word                           = None
 flatten-outline                     = None
 flush-lines                         = None
 focus-to-body                       = None
@@ -3253,7 +3255,8 @@ move-outline-left                   = None
 move-outline-right                  = None
 move-outline-up                     = None
 move-past-close                     = None
-move-past-close-extend-selection    = None</t>
+move-past-close-extend-selection    = None
+</t>
 <t tx="ekr.20060112093227.2"># name-last-kbd-macro               = None
 negative-argument                   = None
 new                                 = None
@@ -3836,7 +3839,7 @@ If this is False it will be harder to use the arrow keys in the headline.
     
 False: (Legacy) Selecting an outline node transfers focus to the body pane.</t>
 <t tx="ekr.20060122105527.8"></t>
-<t tx="ekr.20060122105527.9"></t>
+<t tx="ekr.20060122105527.9">@color</t>
 <t tx="ekr.20060122105527.11"># Boilerplate for most modes.
 keyboard-quit       = Ctrl-g
 exit-named-mode     = Return
@@ -4052,7 +4055,8 @@ expand-node                         = Alt-bracketright
 extract                             = Shift-Ctrl-D
 extract-names                       = Shift-Ctrl-N
 extract-section                     = Shift-Ctrl-S  # Shift-Ctrl-E: end-of-line-extend-selection</t>
-<t tx="ekr.20060122105527.21">focus-to-tree                       = Alt-space
+<t tx="ekr.20060122105527.21">find-character                      = Control-B
+focus-to-tree                       = Alt-space
 forward-char                        ! text = RtArrow
 forward-char-extend-selection       ! text = Shift-RtArrow
 forward-paragraph                   ! text = Alt-braceright
@@ -4176,6 +4180,9 @@ goto-next-visible       -&gt; same = DnArrow
 goto-prev-visible       -&gt; same = UpArrow</t>
 <t tx="ekr.20060122113439"># **Note**: commands that affect the text selection do not become visible
 #           until the mode ends, which kinda defeats the purpose of this mode.
+
+--&gt; set-silent-mode
+--&gt; disable-mode-help
 
 # Boilerplate for most modes.
 keyboard-quit       = Ctrl-g
