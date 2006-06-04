@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="24447" clone_windows="0"/>
 <globals body_outline_ratio="0.401820546164">
-	<global_window_position top="49" left="249" height="712" width="936"/>
+	<global_window_position top="49" left="249" height="693" width="936"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -46,7 +46,7 @@
 <v t="ekr.20060525110217"><vh>@@button rst-&gt;rst</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="TV"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -405,7 +405,7 @@
 </v>
 <v t="EKR.20040524104904.266"><vh>Find and change commands</vh></v>
 <v t="EKR.20040524104904.267"><vh>Tangle and untangle commands</vh></v>
-<v t="EKR.20040524104904.268"><vh>Unicode theory of operation</vh></v>
+<v t="EKR.20040524104904.268"><vh>Unicode</vh></v>
 <v t="EKR.20040524104904.269"><vh>Unlimited undo</vh></v>
 <v t="ekr.20060602142732"><vh>Key bindings</vh></v>
 <v t="ekr.20050901102400.6"><vh>@rst-no-head end stuff</vh></v>
@@ -833,7 +833,7 @@
 <v t="ekr.20050916065715"><vh>suggestions for tutorial</vh></v>
 </v>
 </v>
-<v t="edream.110203163054.46" a="V"><vh>Release Notes</vh>
+<v t="edream.110203163054.46"><vh>Release Notes</vh>
 <v t="edream.110203163054.117"><vh>Previous versions...</vh>
 <v t="ekr.20060206111717"><vh>Ancient...</vh>
 <v t="edream.110203163054.118"><vh>3.x...</vh>
@@ -27299,25 +27299,28 @@ This logic is hairy, but it is completely separate from the gui binding logic.
 Here are the dictionaries that k.masterKeyHandler uses:
 
 - c.commandsDict:
-  Keys are minibuffer command names, values are functions f.
+  Keys are minibuffer command names; values are functions f.
 
 - k.inverseCommandsDict:
-  Keys are f.__name__, values are emacs command names.
+  Keys are f.__name__l values are emacs command names.
 
 - k.bindingsDict:
-  Keys are shortcuts, values are *lists* of g.bunch(func,name,warningGiven).
+  Keys are shortcuts; values are *lists* of g.bunch(func,name,warningGiven).
 
 - k.masterBindingsDict:
   Keys are pane names: 'all','text',etc. or mode names.
-  Values are dicts:  keys are strokes, values are g.Bunch(commandName,func,pane,stroke).
+  Values are dicts:  keys are strokes; values are g.Bunch(commandName,func,pane,stroke).
+  
+- k.modeWidgetsDict:
+  Keys are mode names; values are lists of widgets to which bindings have been made.
 
 - k.settingsNameDict:
-  Keys are lowercase settings, values are 'real' Tk key specifiers.
+  Keys are lowercase settings; values are 'real' Tk key specifiers.
   Important: this table has no inverse.
 
 - inverseBindingDict:
   This is *not* an ivar; it is omputed by k.computeInverseBindingDict().
-  Keys are emacs command names, values are *lists* of shortcuts.</t>
+  Keys are emacs command names; values are *lists* of shortcuts.</t>
 <t tx="ekr.20060603072938">This prompts for a string s, then puts the result of help(s) in Leo's log pane.</t>
 <t tx="ekr.20060603081045">Creates a 'Shortcut' button in the icon area.
 Pressing the Shortcut button creates *another* button which when pressed will

@@ -2739,13 +2739,6 @@ class keyHandlerClass:
         c.bodyWantsFocus()
     #@nonl
     #@-node:ekr.20050920085536.63:keyboardQuit
-    #@+node:ekr.20060604095734:keyboardQuitPreserveState
-    def keyboardQuitPreserveState (self,event):
-        
-        k = self
-        k.keyboardQuit (event,setDefaultUnboundKeyAction=False)
-    #@nonl
-    #@-node:ekr.20060604095734:keyboardQuitPreserveState
     #@+node:ekr.20051015110547:k.registerCommand
     def registerCommand (self,commandName,shortcut,func,pane='all',verbose=True):
         

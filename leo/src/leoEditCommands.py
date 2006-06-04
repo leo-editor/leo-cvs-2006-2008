@@ -942,12 +942,12 @@ class controlCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20050920084036.152: getPublicCommands
     def getPublicCommands (self):
         
-        k = self
+        k = self.c.k
     
         return {
             'advertised-undo':              self.advertizedUndo,
             'iconify-frame':                self.iconifyFrame, # Same as suspend.
-            'keyboard-quit':                self.keyboardQuit,
+            'keyboard-quit':                k.keyboardQuit,
             'save-buffers-kill-leo':        self.saveBuffersKillLeo,
             'set-silent-mode':              self.setSilentMode,
             'shell-command':                self.shellCommand,

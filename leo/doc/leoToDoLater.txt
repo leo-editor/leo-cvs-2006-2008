@@ -1147,6 +1147,7 @@ def masterKeyHandler (self,event,stroke=None):
     
     k = self ; c = k.c
     trace = c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
+    if trace: g.trace(g.callers())
 
     val = self.masterKeyHandlerHelper(event,stroke,trace)
     if val and c and c.exists: # Ignore special keys.
@@ -1173,8 +1174,13 @@ def masterKeyHandlerHelper (self,event,stroke,trace):
         # This will return unless k.autoCompleterStateHandler
         # (called from k.callStateFunction) returns 'do-standard-keys'
         << handle mode bindings >>
-
-    << handle per-pane bindings >>
+        
+    if stroke and k.isPlainKey(stroke) and k.unboundKeyAction == 'insert':
+        # insert normal character.
+        return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
+    else:
+        << handle per-pane bindings >>
+#@nonl
 #@+node:ekr.20060321105403:<< define vars >>
 k = self ; c = k.c
 w = event and event.widget
@@ -1192,7 +1198,11 @@ self.master_key_count += 1
 if trace:
     if (self.master_key_count % 100) == 0:
         g.printGcSummary(trace=True)
-    g.trace('keysym',repr(event.keysym or ''),'stroke',repr(stroke),'state',state)
+    g.trace(
+        # 'keysym',repr(event.keysym or ''),
+        'stroke',repr(stroke),
+        'state',state,
+        'unboundKeyAction',k.unboundKeyAction)
 #@nonl
 #@-node:ekr.20060321105403.1:<< do key traces >>
 #@+node:ekr.20060321105403.2:<< handle mode bindings >>
@@ -1222,9 +1232,18 @@ else:
             k.generalModeHandler (event,
                 commandName=b.commandName,func=b.func,
                 modeName=state,nextMode=b.nextMode)
-        elif not k.handleMiniBindings(event,state,stroke):
-            if trace: g.trace('calling modeHelp')
-            k.modeHelp(event)
+            return 'break'
+        else:
+            ok = k.handleMiniBindings(event,state,stroke)
+            if ok:
+                return 'break'
+            elif stroke and len(stroke) == 1:
+                # if trace: g.trace('calling modeHelp')
+                k.modeHelp(event)
+                return 'break'
+            else:
+                # End the mode and fall through to the pane bindings!
+                k.endMode(event)
     else:
         # New in 4.4b4.
         handler = k.getStateHandler()
@@ -1232,7 +1251,7 @@ else:
             handler(event)
         else:
             g.trace('No state handler for %s' % state)
-    return 'break'
+        return 'break'
 #@nonl
 #@-node:ekr.20060321105403.2:<< handle mode bindings >>
 #@+node:ekr.20060321105403.3:<< handle per-pane bindings >>
@@ -1277,15 +1296,16 @@ def handleMiniBindings (self,event,state,stroke):
     
     if not state.startswith('auto-'):
         d = k.masterBindingsDict.get('mini')
-        b = d.get(stroke)
-        if b:
-            if trace: g.trace(repr(stroke),'mini binding',b.commandName)
-            # Pass this on for macro recording.
-            k.masterCommand(event,b.func,stroke,b.commandName)
-            if not k.silentMode:
-                c.minibufferWantsFocus()
-            return True
-        
+        if d:
+            b = d.get(stroke)
+            if b:
+                if trace: g.trace(repr(stroke),'mini binding',b.commandName)
+                # Pass this on for macro recording.
+                k.masterCommand(event,b.func,stroke,b.commandName)
+                if not k.silentMode:
+                    c.minibufferWantsFocus()
+                return True
+
     return False
 #@nonl
 #@-node:ekr.20060309065445:handleMiniBindings

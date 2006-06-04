@@ -3,12 +3,10 @@
 #@+all
 #@+node:ekr.20060531161030:To do: B2
 #@+node:ekr.20060603085719:Mousless leo
-Create **useful** modes
-
-Try to eliminate so many binds.
-
-Emulate vim modes.
-#@nonl
+#@+node:ekr.20060603220405:Must have repeat-complex-command and repeat counts for cursor moves!
+#@-node:ekr.20060603220405:Must have repeat-complex-command and repeat counts for cursor moves!
+#@+node:ekr.20060603223518:Must have a way on unbinding all plain characters
+#@-node:ekr.20060603223518:Must have a way on unbinding all plain characters
 #@+node:ekr.20060603184747:Need shortcuts or modes for
 cycle-focus, swap-focus (new, toggles between outline and body pane)
 
@@ -34,6 +32,37 @@ toggle-extend-mode
 New needed: find-character-extend-selection.
 #@nonl
 #@-node:ekr.20060603184747:Need shortcuts or modes for
+#@+node:ekr.20060604125715:Dialogs should restore focus!
+#@-node:ekr.20060604125715:Dialogs should restore focus!
+#@+node:ekr.20060603223900:Remove duplicate bindings warnings
+createModeCommand: Ignoring duplicate mode: enter-edit-mode
+createModeCommand: Ignoring duplicate mode: enter-edit-extend-mode
+createModeCommand: Ignoring duplicate mode: enter-file-mode
+createModeCommand: Ignoring duplicate mode: enter-file-open-mode
+createModeCommand: Ignoring duplicate mode: enter-find-mode
+createModeCommand: Ignoring duplicate mode: enter-find-options-mode
+createModeCommand: Ignoring duplicate mode: enter-outline-mode
+createModeCommand: Ignoring duplicate mode: enter-outline-move-mode
+createModeCommand: Ignoring duplicate mode: enter-quick-command-mode
+#@+node:ekr.20060102103625:createModeCommand
+def createModeCommand (self,name,modeDict):
+
+    commandName = 'enter-' + name
+    commandName = commandName.replace(' ','-')
+    # g.trace(name,commandName)
+        
+    # Save the info for k.finishCreate and k.makeAllBindings.
+    d = g.app.config.modeCommandsDict
+    
+    # g.trace(modeDict.keys())
+
+    if d.get(commandName):
+        g.trace('Ignoring duplicate mode: %s' % commandName)
+    else:
+        d [commandName] = modeDict
+#@nonl
+#@-node:ekr.20060102103625:createModeCommand
+#@-node:ekr.20060603223900:Remove duplicate bindings warnings
 #@-node:ekr.20060603085719:Mousless leo
 #@+node:ekr.20060531161030.1:Make body editors persistant
 #@-node:ekr.20060531161030.1:Make body editors persistant
