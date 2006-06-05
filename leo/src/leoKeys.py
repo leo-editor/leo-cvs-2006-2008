@@ -2158,6 +2158,7 @@ class keyHandlerClass:
                     # g.es_exception()
                     g.es_print('exception binding %s to %s' % (
                         bindStroke, c.widget_name(w)), color = 'blue')
+                    if g.app.unitTesting: raise
     #@nonl
     #@-node:ekr.20060605130652:makeMasterGuiBinding
     #@-node:ekr.20051006125633:Binding (keyHandler)
@@ -2829,7 +2830,7 @@ class keyHandlerClass:
         if shortcut:
             stroke = k.shortcutFromSetting(shortcut)
             ok = k.bindKey (pane,stroke,func,commandName)
-            k.makeMasterGuiBinding(shortcut)
+            k.makeMasterGuiBinding(stroke)
             if verbose and ok:
                  g.es_print('Registered %s bound to %s' % (
                     commandName,k.prettyPrintKey(stroke)),color='blue')
