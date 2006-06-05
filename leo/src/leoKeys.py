@@ -1800,6 +1800,15 @@ class keyHandlerClass:
         self.modeBindingsDict = {}
         self.modeWidget = None
         self.silentMode = False
+        
+        # The actual values are set later in k.finishCreate.
+        self.ignore_mode_bg_color = 'white'
+        self.ignore_mode_fg_color = 'black'
+        self.insert_mode_bg_color = 'white'
+        self.insert_mode_fg_color = 'black'
+        self.overwrite_mode_bg_color = 'white'
+        self.overwrite_mode_fg_color = 'black'
+        #@nonl
         #@-node:ekr.20050923213858:<< define internal ivars >>
         #@nl
         
@@ -1826,6 +1835,16 @@ class keyHandlerClass:
         k.makeAllBindings()
     
         k.setInputState(self.unboundKeyAction)
+        
+        # Mode colors
+        bodyCtrl = c.frame.body.bodyCtrl
+        if bodyCtrl:
+            self.ignore_mode_bg_color = c.config.getColor('ignore_mode_bg_color') or bodyCtrl.cget('bg')
+            self.ignore_mode_fg_color = c.config.getColor('ignore_mode_fg_color') or bodyCtrl.cget('fg')
+            self.insert_mode_bg_color = c.config.getColor('insert_mode_bg_color') or bodyCtrl.cget('bg')
+            self.insert_mode_fg_color = c.config.getColor('insert_mode_fg_color') or bodyCtrl.cget('fg')
+            self.overwrite_mode_bg_color = c.config.getColor('insert_mode_bg_color') or bodyCtrl.cget('bg')
+            self.overwrite_mode_fg_color = c.config.getColor('insert_mode_fg_color') or bodyCtrl.cget('fg')
     #@nonl
     #@+node:ekr.20051008082929:createInverseCommandsDict
     def createInverseCommandsDict (self):
@@ -1859,6 +1878,7 @@ class keyHandlerClass:
     
         defaultAction = c.config.getString('top_level_unbound_key_action') or 'insert'
         defaultAction.lower()
+    
         if defaultAction in ('ignore','insert','overwrite'):
             self.unboundKeyAction = defaultAction
         else:
@@ -2596,6 +2616,45 @@ class keyHandlerClass:
             return k.keyboardQuit(event)
     #@nonl
     #@-node:ekr.20050920085536.48:repeatComplexCommand & helper
+    #@+node:ekr.20060105132013:set-xxx-State
+    def setIgnoreState (self,event):
+        '''Enter the 'ignore' editing state.'''
+        # g.trace(g.callers())
+        k = self
+        k.setInputState('ignore',showState=True)
+    
+    def setInsertState (self,event):
+        '''Enter the 'insert' editing state.'''
+        # g.trace(g.callers())
+        k = self
+        k.setInputState('insert',showState=True)
+    
+    def setOverwriteState (self,event):
+        '''Enter the 'overwrite' editing state.'''
+        # g.trace(g.callers())
+        k = self
+        k.setInputState('overwrite',showState=True)
+    #@nonl
+    #@-node:ekr.20060105132013:set-xxx-State
+    #@+node:ekr.20060605091826:toggle-input-state
+    def toggleInputState (self,event=None):
+        
+        '''The toggle-input-state command.'''
+        
+        k = self ; c = k.c
+        default = c.config.getString('top_level_unbound_key_action') or 'insert'
+        state = k.unboundKeyAction
+        
+        if default == 'insert':
+            state = g.choose(state=='insert','ignore','insert')
+        elif default == 'overwrite':
+            state = g.choose(state=='overwrite','ignore','overwrite')
+        else:
+            state = g.choose(state=='ignore','insert','ignore') # prefer insert to overwrite.
+            
+        k.setInputState(state)
+    #@nonl
+    #@-node:ekr.20060605091826:toggle-input-state
     #@-node:ekr.20050920085536.32:Externally visible commands
     #@+node:ekr.20051006065121:Externally visible helpers
     #@+node:ekr.20050920085536.64:manufactureKeyPressForCommandName
@@ -3000,7 +3059,7 @@ class keyHandlerClass:
         if trace: g.trace('done:',repr(val))
         return val
     #@nonl
-    #@+node:ekr.20060205221734:masterKeyHandlerHelper
+    #@+node:ekr.20060205221734:masterKeyHandlerHelpers
     def masterKeyHandlerHelper (self,event,stroke,trace):
         
         #@    << define vars >>
@@ -3097,6 +3156,7 @@ class keyHandlerClass:
             
         if stroke and k.isPlainKey(stroke) and k.unboundKeyAction == 'insert':
             # insert normal character.
+            # g.trace('plain key in insert mode',stroke)
             return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
         else:
             #@        << handle per-pane bindings >>
@@ -3135,7 +3195,7 @@ class keyHandlerClass:
             #@-node:ekr.20060321105403.3:<< handle per-pane bindings >>
             #@nl
     #@nonl
-    #@-node:ekr.20060205221734:masterKeyHandlerHelper
+    #@-node:ekr.20060205221734:masterKeyHandlerHelpers
     #@+node:ekr.20060309065445:handleMiniBindings
     def handleMiniBindings (self,event,state,stroke):
         
@@ -3157,6 +3217,22 @@ class keyHandlerClass:
         return False
     #@nonl
     #@-node:ekr.20060309065445:handleMiniBindings
+    #@+node:ekr.20060120071949:isPlainKey
+    def isPlainKey (self,shortcut):
+        
+        '''Return true if the shortcut refers to a plain (non-Alt,non-Ctl) key.'''
+        
+        shortcut = shortcut or ''
+        
+        for s in ('Alt','Ctrl','Command'):
+            if shortcut.find(s) != -1:
+                return False
+        else:
+            shortcut = shortcut.lstrip('<').rstrip('>')
+            # There is no Shift prefix here: upper case letters are represented by themselves.
+            return len(shortcut) == 1
+    #@nonl
+    #@-node:ekr.20060120071949:isPlainKey
     #@-node:ekr.20060127183752:masterKeyHandler & helper
     #@+node:ekr.20060129052538.2:masterClickHandler
     def masterClickHandler (self,event,func=None):
@@ -3522,30 +3598,33 @@ class keyHandlerClass:
     #@nonl
     #@-node:ekr.20060104125946:modeHelpHelper
     #@-node:ekr.20060104164523:modeHelp
-    #@+node:ekr.20060105132013:set-xxx-State
-    def setIgnoreState (self,event):
-        '''Enter the 'ignore' editing state.'''
-        g.trace(g.callers())
-        self.setInputState('ignore',showState=True)
-    
-    def setInsertState (self,event):
-        '''Enter the 'insert' editing state.'''
-        # g.trace(g.callers())
-        self.setInputState('insert',showState=True)
-    
-    def setOverwriteState (self,event):
-        '''Enter the 'override' editing state.'''
-        # g.trace(g.callers())
-        self.setInputState('overwrite',showState=True)
-    #@nonl
-    #@-node:ekr.20060105132013:set-xxx-State
     #@+node:ekr.20060120200818:setInputState
     def setInputState (self,state,showState=False):
     
-        k = self ; c = k.c
+        k = self ; c = k.c ; w = c.frame.body.bodyCtrl
     
+        # g.trace(state,g.callers())
         k.unboundKeyAction = state
         k.showStateAndMode()
+        assert state in ('insert','ignore','overwrite')
+        
+        if w and state == 'insert':
+            try: w.configure(bg=k.insert_mode_bg_color)
+            except Exception: pass
+            try: w.configure(fg=k.insert_mode_fg_color)
+            except Exception: pass
+    
+        elif w and state == 'ignore':
+            try: w.configure(bg=k.ignore_mode_bg_color)
+            except Exception: pass
+            try: w.configure(fg=k.ignore_mode_fg_color)
+            except Exception: pass
+            
+        elif w and state == 'overwrite':
+            try: w.configure(bg=k.overwrite_mode_bg_color)
+            except Exception: pass
+            try: w.configure(fg=k.overwrite_mode_fg_color)
+            except Exception: pass
     #@nonl
     #@-node:ekr.20060120200818:setInputState
     #@+node:ekr.20060120193743:showStateAndMode
@@ -3868,11 +3947,13 @@ class keyHandlerClass:
         
         shortcut = shortcut or ''
         
-        for s in ('Alt','Ctrl+','Command+'):
+        for s in ('Alt','Ctrl','Command'):
             if shortcut.find(s) != -1:
                 return False
         else:
-            return True
+            shortcut = shortcut.lstrip('<').rstrip('>')
+            # There is no Shift prefix here: upper case letters are represented by themselves.
+            return len(shortcut) == 1
     #@nonl
     #@-node:ekr.20060120071949:isPlainKey
     #@+node:ekr.20060128081317:shortcutFromSetting
