@@ -678,6 +678,7 @@ class leoFrame:
                     title="Save",
                     filetypes=[("Leo files", "*.leo")],
                     defaultextension=".leo")
+                c.bringToFront()
                 #@nonl
                 #@-node:ekr.20031218072017.3693:<< Put up a file save dialog to set mFileName >>
                 #@nl
