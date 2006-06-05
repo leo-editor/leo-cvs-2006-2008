@@ -5012,6 +5012,7 @@ class keyHandlerCommandsClass (baseEditCommandsClass):
             'show-calltips-force':      k.autoCompleter.showCalltipsForce,
             'show-mini-buffer':         k.showMinibuffer,
             'toggle-mini-buffer':       k.toggleMinibuffer,
+            'toggle-input-state':       k.toggleInputState,
             'universal-argument':       k.universalArgument,
         }
     #@nonl
