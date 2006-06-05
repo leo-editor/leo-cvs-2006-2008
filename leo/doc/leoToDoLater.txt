@@ -1157,7 +1157,7 @@ def masterKeyHandler (self,event,stroke=None):
     if trace: g.trace('done:',repr(val))
     return val
 #@nonl
-#@+node:ekr.20060205221734:masterKeyHandlerHelper
+#@+node:ekr.20060205221734:masterKeyHandlerHelpers
 def masterKeyHandlerHelper (self,event,stroke,trace):
     
     << define vars >>
@@ -1178,6 +1178,7 @@ def masterKeyHandlerHelper (self,event,stroke,trace):
         
     if stroke and k.isPlainKey(stroke) and k.unboundKeyAction == 'insert':
         # insert normal character.
+        # g.trace('plain key in insert mode',stroke)
         return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
     else:
         << handle per-pane bindings >>
@@ -1288,7 +1289,7 @@ else:
     return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
 #@nonl
 #@-node:ekr.20060321105403.3:<< handle per-pane bindings >>
-#@-node:ekr.20060205221734:masterKeyHandlerHelper
+#@-node:ekr.20060205221734:masterKeyHandlerHelpers
 #@+node:ekr.20060309065445:handleMiniBindings
 def handleMiniBindings (self,event,state,stroke):
     
@@ -1310,6 +1311,22 @@ def handleMiniBindings (self,event,state,stroke):
     return False
 #@nonl
 #@-node:ekr.20060309065445:handleMiniBindings
+#@+node:ekr.20060120071949:isPlainKey
+def isPlainKey (self,shortcut):
+    
+    '''Return true if the shortcut refers to a plain (non-Alt,non-Ctl) key.'''
+    
+    shortcut = shortcut or ''
+    
+    for s in ('Alt','Ctrl','Command'):
+        if shortcut.find(s) != -1:
+            return False
+    else:
+        shortcut = shortcut.lstrip('<').rstrip('>')
+        # There is no Shift prefix here: upper case letters are represented by themselves.
+        return len(shortcut) == 1
+#@nonl
+#@-node:ekr.20060120071949:isPlainKey
 #@-node:ekr.20060127183752:masterKeyHandler & helper
 #@+node:ekr.20060104110233:generalModeHandler
 def generalModeHandler (self,event,

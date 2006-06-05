@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="290" clone_windows="0"/>
 <globals body_outline_ratio="0.549828178694">
-	<global_window_position top="112" left="200" height="583" width="1011"/>
+	<global_window_position top="98" left="386" height="577" width="860"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -330,8 +330,12 @@
 </v>
 </v>
 <v t="ekr.20060603215208"><vh>EKR bindings: vim mode bindings</vh>
-<v t="ekr.20060604080653" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = ignore</vh></v>
-<v t="ekr.20060603215208.4" a="E"><vh>Vim modes</vh>
+<v t="ekr.20060604080653" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
+<v t="ekr.20060605081712"><vh>@color ignore_mode_bg_color = MistyRose1</vh></v>
+<v t="ekr.20060605081712.1"><vh>@color ignore_mode_fg_color = black</vh></v>
+<v t="ekr.20060605081712.2"><vh>@color insert_mode_bg_color = white</vh></v>
+<v t="ekr.20060605081712.3"><vh>@color insert_mode_fg_color = black</vh></v>
+<v t="ekr.20060603215208.4"><vh>Vim modes</vh>
 <v t="ekr.20060604090546"><vh>@@mode move (Not Yet)</vh></v>
 <v t="ekr.20060603223152.1"><vh>@mode file</vh></v>
 <v t="ekr.20060603215208.7"><vh>@mode gui</vh>
@@ -447,9 +451,13 @@
 <v t="ekr.20060216135834"><vh>@bool enable_autocompleter_initially = False</vh></v>
 <v t="ekr.20060603070801"><vh>@bool enable_calltips_initially = False</vh></v>
 </v>
-<v t="ekr.20060603215208" a="ETV"><vh>EKR bindings: vim mode bindings</vh>
-<v t="ekr.20060604080653" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = ignore</vh></v>
-<v t="ekr.20060603215208.4" a="E"><vh>Vim modes</vh>
+<v t="ekr.20060603215208" a="V"><vh>EKR bindings: vim mode bindings</vh>
+<v t="ekr.20060604080653" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
+<v t="ekr.20060605081712"><vh>@color ignore_mode_bg_color = MistyRose1</vh></v>
+<v t="ekr.20060605081712.1"><vh>@color ignore_mode_fg_color = black</vh></v>
+<v t="ekr.20060605081712.2"><vh>@color insert_mode_bg_color = white</vh></v>
+<v t="ekr.20060605081712.3"><vh>@color insert_mode_fg_color = black</vh></v>
+<v t="ekr.20060603215208.4"><vh>Vim modes</vh>
 <v t="ekr.20060604090546"><vh>@@mode move (Not Yet)</vh></v>
 <v t="ekr.20060603223152.1"><vh>@mode file</vh></v>
 <v t="ekr.20060603215208.7"><vh>@mode gui</vh>
@@ -4784,7 +4792,7 @@ configuration value.</t>
 <t tx="ekr.20060603215208">@color</t>
 <t tx="ekr.20060603215208.4">@color
 
-# Important: input state must **not** be a mode.</t>
+# Important: input state is **not** a mode.</t>
 <t tx="ekr.20060603215208.7">--&gt; set-silent-mode
 
 keyboard-quit       = Ctrl-g
@@ -4914,10 +4922,11 @@ find-tab-find-prev                  = F2
 find-tab-change                     = Ctrl-=
 find-tab-change-all                 = None  # Not recommended to bind this to a shortcut.
 find-tab-change-then-find           = Ctrl--</t>
-<t tx="ekr.20060603215208.20"># copy-text           ! mini = Ctrl-c
-# cut-text            ! mini = Ctrl-x
-# paste-text          ! mini = Ctrl-v
-# save-file           ! mini = Ctrl-s
+<t tx="ekr.20060603215208.20"># Top-level bindings are *not* inherited in the minibuffer!
+copy-text           ! mini = Ctrl-c
+cut-text            ! mini = Ctrl-x
+paste-text          ! mini = Ctrl-v
+save-file           ! mini = Ctrl-s
 
 # Important: at present binding to BackSpace in the minibuffer causes problems.
 # backward-delete-char                ! mini = BackSpace
@@ -5027,7 +5036,7 @@ extract                             = Shift-Ctrl-D
 extract-names                       = Shift-Ctrl-N
 extract-section                     = Shift-Ctrl-S  # Shift-Ctrl-E: end-of-line-extend-selection</t>
 <t tx="ekr.20060603215208.22">find-character                      = Control-b
-focus-to-tree                       = Alt-space
+# focus-to-tree                     = Alt-space
 forward-char                        ! text = RtArrow
 forward-char-extend-selection       ! text = Shift-RtArrow
 forward-paragraph                   ! text = Alt-braceright
@@ -5172,7 +5181,13 @@ The valid values are::
 ignore:  Leo ignores the key (like Vim).
 insert:  Leo inserts the key at the cursor (like Emacs)
 overwrite: Leo replaces the character at the cursor.</t>
-<t tx="ekr.20060604081014">set-ignore-state                    = Esc # Keyboard-quit also does this.
+<t tx="ekr.20060604081014"># Important. Leo always treats plain keys properly in insert and overwrite input states,
+# so plain key bindings *only* have effect in the ignore input state.
+
+# Keyboard-quit sets the input state to the *default* input state
+# Specified by @strings top_level_unbound_key_action.
+set-ignore-state                    = None
+toggle-input-state                  = Alt-space # was: focus to tree.
 
 enter-quick-command-mode            = Alt-C
 
@@ -5292,5 +5307,15 @@ The valid values are::
 ignore:  Leo ignores the key (like Vim).
 insert:  Leo inserts the key at the cursor (like Emacs)
 overwrite: Leo replaces the character at the cursor.</t>
+<t tx="ekr.20060605081712">Recommended:
+    
+white                   if top_level_unbound_key_action is ignore
+a color like MistyRose1 if top_level_unbound_key_action is insert or overwrite.</t>
+<t tx="ekr.20060605081712.1"></t>
+<t tx="ekr.20060605081712.2">Recommended:
+    
+A color like MistyRose1 if top_level_unbound_key_action is ignore
+white                   if top_level_unbound_key_action is insert or overwrite.</t>
+<t tx="ekr.20060605081712.3"></t>
 </tnodes>
 </leo_file>
