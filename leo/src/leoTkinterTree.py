@@ -2488,6 +2488,7 @@ class leoTkinterTree (leoFrame.leoTree):
         
         # Important: this will redraw if necessary.
         self.onHeadChanged(p)
+        c.bodyWantsFocus()
     #@nonl
     #@-node:ekr.20040803072955.126:tree.endEditLabel
     #@+node:ekr.20040803072955.143:tree.expandAllAncestors
