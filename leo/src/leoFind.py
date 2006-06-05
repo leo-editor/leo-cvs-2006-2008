@@ -898,7 +898,12 @@ class leoFind:
     #@+node:ekr.20060526140744.1:matchWord
     def matchWord(self,s,i,pattern):
         
-        ok = g.match_word(s,i,pattern) and (i == 0 or s[i-1] not in self.word_chars)
+        ok = g.match_word(s,i,pattern) and (
+            i == 0 or 
+            s[i-1] not in self.word_chars or
+            s[i]   not in self.word_chars
+        )
+    
         # g.trace(ok,repr(s),i)
         return ok
     #@nonl
