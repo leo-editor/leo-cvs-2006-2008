@@ -76,16 +76,11 @@ class parserBaseClass:
     
         commandName = 'enter-' + name
         commandName = commandName.replace(' ','-')
-        # g.trace(name,commandName)
             
         # Save the info for k.finishCreate and k.makeAllBindings.
         d = g.app.config.modeCommandsDict
-        
-        # g.trace(modeDict.keys())
     
-        if d.get(commandName):
-            g.trace('Ignoring duplicate mode: %s' % commandName)
-        else:
+        if not d.get(commandName):
             d [commandName] = modeDict
     #@nonl
     #@-node:ekr.20060102103625:createModeCommand
