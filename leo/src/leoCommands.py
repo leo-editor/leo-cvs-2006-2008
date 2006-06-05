@@ -461,6 +461,7 @@ class baseCommands:
             title = "Open",
             filetypes = [("Leo files","*.leo"), ("All files","*")],
             defaultextension = ".leo")
+        c.bringToFront()
     
         if fileName and len(fileName) > 0:
             ok, frame = g.openWithFileName(fileName,c)
@@ -774,6 +775,8 @@ class baseCommands:
                 title="Save",
                 filetypes=[("Leo files", "*.leo")],
                 defaultextension=".leo")
+            c.bringToFront()
+    
             if fileName:
                 # Don't change mFileName until the dialog has suceeded.
                 c.mFileName = g.ensure_extension(fileName, ".leo")
@@ -804,6 +807,7 @@ class baseCommands:
             title="Save As",
             filetypes=[("Leo files", "*.leo")],
             defaultextension=".leo")
+        c.bringToFront()
     
         if fileName:
             # 7/2/02: don't change mFileName until the dialog has suceeded.
@@ -837,6 +841,7 @@ class baseCommands:
             title="Save To",
             filetypes=[("Leo files", "*.leo")],
             defaultextension=".leo")
+        c.bringToFront()
     
         if fileName:
             fileName = g.ensure_extension(fileName, ".leo")
@@ -857,6 +862,7 @@ class baseCommands:
             
         reply = g.app.gui.runAskYesNoDialog(c,"Revert",
             "Revert to previous version of " + c.mFileName + "?")
+        c.bringToFront()
     
         if reply=="no":
             return
@@ -1104,6 +1110,7 @@ class baseCommands:
             title="Export Headlines",
             filetypes=filetypes,
             defaultextension=".txt")
+        c.bringToFront()
     
         if fileName and len(fileName) > 0:
             g.setGlobalOpenDir(fileName)
@@ -1125,6 +1132,7 @@ class baseCommands:
             title="Flatten Outline",
             filetypes=filetypes,
             defaultextension=".txt")
+        c.bringToFront()
     
         if fileName and len(fileName) > 0:
             g.setGlobalOpenDir(fileName)
@@ -1154,6 +1162,7 @@ class baseCommands:
             filetypes=types,
             defaultextension=".py",
             multiple=True)
+        c.bringToFront()
     
         if names:
             c.importCommands.importFilesCommand (names,"@root")
@@ -1181,6 +1190,7 @@ class baseCommands:
             filetypes=types,
             defaultextension=".py",
             multiple=True)
+        c.bringToFront()
     
         if names:
             c.importCommands.importFilesCommand(names,"@file")
@@ -1203,6 +1213,7 @@ class baseCommands:
             filetypes=filetypes,
             defaultextension=".w",
             multiple=True)
+        c.bringToFront()
     
         if names:
             c.importCommands.importWebCommand(names,"cweb")
@@ -1221,6 +1232,7 @@ class baseCommands:
             filetypes=types,
             defaultextension=".py",
             multiple=True)
+        c.bringToFront()
     
         if names:
             c.importCommands.importFlattenedOutline(names)
@@ -1242,6 +1254,7 @@ class baseCommands:
             filetypes=filetypes,
             defaultextension=".nw",
             multiple=True)
+        c.bringToFront()
     
         if names:
             c.importCommands.importWebCommand(names,"noweb")
@@ -1264,6 +1277,7 @@ class baseCommands:
             title="Outline To CWEB",
             filetypes=filetypes,
             defaultextension=".w")
+        c.bringToFront()
     
         if fileName and len(fileName) > 0:
             g.setGlobalOpenDir(fileName)
@@ -1288,6 +1302,7 @@ class baseCommands:
             title="Outline To Noweb",
             filetypes=filetypes,
             defaultextension=".nw")
+        c.bringToFront()
     
         if fileName and len(fileName) > 0:
             g.setGlobalOpenDir(fileName)
@@ -1318,6 +1333,7 @@ class baseCommands:
             filetypes=types,
             defaultextension=".py",
             multiple=True)
+        c.bringToFront()
     
         if names:
             c.importCommands.removeSentinelsCommand (names)
@@ -1337,10 +1353,12 @@ class baseCommands:
             title="Weave",
             filetypes=filetypes,
             defaultextension=".txt")
+        c.bringToFront()
     
         if fileName and len(fileName) > 0:
             g.setGlobalOpenDir(fileName)
             c.importCommands.weave(fileName)
+    #@nonl
     #@-node:ekr.20031218072017.2860:weave
     #@-node:ekr.20031218072017.2849:Import&Export submenu
     #@-node:ekr.20031218072017.2819:File Menu
