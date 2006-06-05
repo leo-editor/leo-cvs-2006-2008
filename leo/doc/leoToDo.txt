@@ -2,6 +2,28 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20060531161030:To do: B2
+#@+node:ekr.20060605121612:Test overwrite mode
+#@-node:ekr.20060605121612:Test overwrite mode
+#@+node:ekr.20060605121612.1:How do we show top-level plain bindings?
+# need better way than print-bindings.
+#@nonl
+#@-node:ekr.20060605121612.1:How do we show top-level plain bindings?
+#@+node:ekr.20060605110058:Fix unit test
+FAIL: @test return ends editing of headline
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 155, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "<string>", line 14, in ?
+AssertionError: oops2
+
+----------------------------------------------------------------------
+Ran 438 tests in 193.628s
+
+FAILED (failures=1)
+>>>
+#@-node:ekr.20060605110058:Fix unit test
 #@+node:ekr.20060603184747:Create shortcuts for mouseless Leo
 @nocolor
 
@@ -53,8 +75,6 @@ New needed: find-character-extend-selection.
 #@-node:ekr.20060529195042.1:The last character of a python comment is not colored.
 #@-node:ekr.20060527204444:Finish new colorizer plugin
 #@+node:ekr.20060603131801:Urgent
-#@+node:ekr.20060603131801.2:Replace query-replace by mode
-#@-node:ekr.20060603131801.2:Replace query-replace by mode
 #@+node:ekr.20051202094427:Resolve cvs conflicts
 Investigate meld:  http://meld.sourceforge.net/
 #@nonl

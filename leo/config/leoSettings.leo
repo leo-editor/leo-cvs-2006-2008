@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="290" clone_windows="0"/>
 <globals body_outline_ratio="0.549828178694">
-	<global_window_position top="98" left="386" height="577" width="860"/>
+	<global_window_position top="98" left="386" height="640" width="862"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -451,7 +451,7 @@
 <v t="ekr.20060216135834"><vh>@bool enable_autocompleter_initially = False</vh></v>
 <v t="ekr.20060603070801"><vh>@bool enable_calltips_initially = False</vh></v>
 </v>
-<v t="ekr.20060603215208" a="V"><vh>EKR bindings: vim mode bindings</vh>
+<v t="ekr.20060603215208" a="E"><vh>EKR bindings: vim mode bindings</vh>
 <v t="ekr.20060604080653" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
 <v t="ekr.20060605081712"><vh>@color ignore_mode_bg_color = MistyRose1</vh></v>
 <v t="ekr.20060605081712.1"><vh>@color ignore_mode_fg_color = black</vh></v>
@@ -474,7 +474,7 @@
 <v t="ekr.20060603223152.2"><vh>@mode toggle</vh></v>
 </v>
 <v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
-<v t="ekr.20060604081014"><vh>@shortcuts top-level keys</vh></v>
+<v t="ekr.20060604081014" a="TV"><vh>@shortcuts top-level keys</vh></v>
 <v t="ekr.20060603215208.19"><vh>@shortcuts Find Commands</vh></v>
 <v t="ekr.20060603215208.20"><vh>@shortcuts Minibuffer bindings</vh></v>
 <v t="ekr.20060603215208.21" annotate="7d71002e"><vh>@shortcuts EKR: A-E</vh></v>
@@ -5186,17 +5186,16 @@ overwrite: Leo replaces the character at the cursor.</t>
 
 # Keyboard-quit sets the input state to the *default* input state
 # Specified by @strings top_level_unbound_key_action.
-set-ignore-state                    = None
 toggle-input-state                  = Alt-space # was: focus to tree.
 
-enter-quick-command-mode            = Alt-C
+enter-quick-command-mode            = Alt-C # also c
 
 # repeat-complex-command            = ?
 
 beginning-of-line                   = a
 beginning-of-line-extend-selection  = Shift-a
 #                                   = b
-#                                   = c
+enter-quick-command-mode            = c
 next-line                           = d
 next-line-extend-selection          = Shift-d
 end-of-line                         = e
@@ -5205,7 +5204,7 @@ search-with-present-options         = f
 replace-string                      = Shift-f
 enter-gui-mode                      = g
 enter-help-mode                     = h
-set-insert-state                    = i # Insert state is not a mode!
+#                                   = i
 #                                   = j
 enter-kill-mode                     = k
 back-char                           = l

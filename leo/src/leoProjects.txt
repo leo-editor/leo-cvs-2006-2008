@@ -1073,13 +1073,11 @@ self.bindingsDict = {}
 # Previously defined binding tags.
 self.bindtagsDict = {}
     # Keys are strings (the tag), values are 'True'
-    
 self.masterBindingsDict = {}
     # Keys are scope names: 'all','text',etc. or mode names.
     # Values are dicts: keys are strokes, values are g.bunch(commandName,func,pane,stroke)
-    
-self.modeWidgetsDict = {}
-    # Keys are mode names; values are lists of widgets to which bindings have been made.
+self.masterGuiBindingsDict = {}
+    # Keys are strokes; value is True;
 
 # Special bindings for k.fullCommand.
 self.mb_copyKey = None
@@ -1665,7 +1663,12 @@ def plainHelper (self,s,i,j,pattern,nocase,word):
 #@+node:ekr.20060526140744.1:matchWord
 def matchWord(self,s,i,pattern):
     
-    ok = g.match_word(s,i,pattern) and (i == 0 or s[i-1] not in self.word_chars)
+    ok = g.match_word(s,i,pattern) and (
+        i == 0 or 
+        s[i-1] not in self.word_chars or
+        s[i]   not in self.word_chars
+    )
+
     # g.trace(ok,repr(s),i)
     return ok
 #@nonl
@@ -1696,28 +1699,29 @@ def matchWord(self,s,i,pattern):
 ivars:
 
 c.commandsDict:
-    Keys are emacs command names, values are functions f.
+    Keys are emacs command names; values are functions f.
 
 k.inverseCommandsDict:
-    Keys are f.__name__, values are emacs command names.
+    Keys are f.__name__; values are emacs command names.
 
 k.bindingsDict:
-    keys are shortcuts, values are *lists* of g.bunch(func,name,warningGiven)
+    Keys are shortcuts; values are *lists* of g.bunch(func,name,warningGiven)
 
 k.masterBindingsDict:
     Keys are scope names: 'all','text',etc. or mode names.
     Values are dicts:  keys are strokes, values are g.Bunch(commandName,func,pane,stroke)
-k.modeWidgetsDict:
-    Keys are mode names; values are lists of widgets to which bindings have been made.
+    
+k.masterGuiBindingsDict:
+    Keys are strokes; value is a list of widgets for which stroke is bound.
 
 k.settingsNameDict:
-    Keys are lowercase settings, values are 'real' Tk key specifiers.
+    Keys are lowercase settings; values are 'real' Tk key specifiers.
     Important: this table has no inverse.
 
 not an ivar (computed by k.computeInverseBindingDict):
 
 inverseBindingDict
-    keys are emacs command names, values are *lists* of shortcuts.
+    Keys are emacs command names; values are *lists* of shortcuts.
 #@nonl
 #@-node:ekr.20051010062551.1:<< about key dicts >>
 #@+node:ekr.20060127183752:masterKeyHandler & helper
@@ -1986,15 +1990,6 @@ def createModeBindings (self,modeName,d,w):
     '''Create mode bindings for the named mode using dictionary d for widget w.'''
     
     k = self ; c = k.c ; f = c.frame
-    bodyCtrl = f.body and hasattr(f.body,'bodyCtrl') and f.body.bodyCtrl or None
-    canvas   = f.tree and hasattr(f.tree,'canvas')   and f.tree.canvas   or None
-    bindingWidget = f.tree and hasattr(f.tree,'bindingWidget') and f.tree.bindingWidget or None
-    widgets = (bodyCtrl,canvas,bindingWidget,w)
-    
-    if 0: # We must make bindings for every widget that uses this mode.
-        aList = k.modeWidgetsDict.get(modeName,[])
-        if w in aList: return
-        aList.append(w) ; k.modeWidgetsDict [modeName] = aList
         
     # g.trace(g.listToString(d.keys()))
 
@@ -2018,12 +2013,7 @@ def createModeBindings (self,modeName,d,w):
                         '%20s' % (commandName),
                         bunch.nextMode)
                         
-                # New in 4.4.1 b1: create an actual binding.
-                def modeKeyCallback(event=None,k=k,stroke=stroke):
-                    return k.masterKeyHandler(event,stroke=stroke)
-
-                for w2 in widgets:
-                    k.completeOneBindingForWidget (w2,stroke,modeKeyCallback)
+                k.makeMasterGuiBinding(stroke)
                
                 # Create the entry for the mode in k.masterBindingsDict.
                 # Important: this is similar, but not the same as k.bindKeyToDict.
@@ -2057,21 +2047,6 @@ def bindKeyToDict (self,pane,stroke,func,commandName):
         k.masterBindingsDict [pane] = d
 #@nonl
 #@-node:ekr.20060130093055:bindKeyToDict
-#@+node:ekr.20060324092758:completeOneBindingForWidget
-def completeOneBindingForWidget (self,w,stroke,callback):
-
-    k = self ; c = k.c
-
-    try:
-        bindStroke = k.tkbindingFromStroke(stroke)
-        # g.trace(bindStroke,c.widget_name(w))
-        w.bind(bindStroke,callback)
-
-    except Exception:
-        g.es_print('exception binding %s to %s' % (
-            bindStroke, c.widget_name(w)), color = 'blue')
-#@nonl
-#@-node:ekr.20060324092758:completeOneBindingForWidget
 #@+node:ekr.20060104110233:generalModeHandler
 def generalModeHandler (self,event,
     commandName=None,func=None,modeName=None,nextMode=None):
@@ -5912,7 +5887,12 @@ def plainHelper (self,s,i,j,pattern,nocase,word):
 #@+node:ekr.20060526140744.1:matchWord
 def matchWord(self,s,i,pattern):
     
-    ok = g.match_word(s,i,pattern) and (i == 0 or s[i-1] not in self.word_chars)
+    ok = g.match_word(s,i,pattern) and (
+        i == 0 or 
+        s[i-1] not in self.word_chars or
+        s[i]   not in self.word_chars
+    )
+
     # g.trace(ok,repr(s),i)
     return ok
 #@nonl
@@ -8544,6 +8524,8 @@ def showFileNameTabList (self):
 #@-node:ekr.20060420100610:k.showFileNameTabList
 #@-node:ekr.20060419124420.1:getFileName & helpers
 #@-node:ekr.20060602100638:Improved filename completion
+#@+node:ekr.20060605151444:word matches now succeed if first character of the pattern is not in word-chars.
+#@-node:ekr.20060605151444:word matches now succeed if first character of the pattern is not in word-chars.
 #@-node:ekr.20060603090445.1:Bugs fixed
 #@+node:ekr.20060603090445.2:New features
 #@+node:ekr.20060211093935:Support for on-enter-mode in mode declarations
@@ -8792,6 +8774,153 @@ def prettyPrintKey (self,stroke,brief=False):
 #@nonl
 #@-node:ekr.20060201083154:k.prettyPrintKey
 #@-node:ekr.20060604182523:Better printing of bindings (period -> .) etc
+#@+node:ekr.20060605121612.2:Simplified gui bindings
+#@+node:ekr.20060119150624:createModeBindings
+def createModeBindings (self,modeName,d,w):
+    
+    '''Create mode bindings for the named mode using dictionary d for widget w.'''
+    
+    k = self ; c = k.c ; f = c.frame
+        
+    # g.trace(g.listToString(d.keys()))
+
+    for commandName in d.keys():
+        if commandName == '*entry-commands*': continue
+        func = c.commandsDict.get(commandName)
+        if not func:
+            g.es_print('No such command: %s. Referenced from %s' % (
+                commandName,modeName))
+            continue
+        bunchList = d.get(commandName,[])
+        for bunch in bunchList:
+            stroke = bunch.val
+            # Important: bunch.val is a stroke returned from k.strokeFromSetting.
+            # Do not call k.strokeFromSetting again here!
+            if stroke and stroke not in ('None','none',None):
+                if 0:
+                    g.trace(
+                        g.app.gui.widget_name(w), modeName,
+                        '%10s' % (stroke),
+                        '%20s' % (commandName),
+                        bunch.nextMode)
+                        
+                k.makeMasterGuiBinding(stroke)
+               
+                # Create the entry for the mode in k.masterBindingsDict.
+                # Important: this is similar, but not the same as k.bindKeyToDict.
+                # Thus, we should **not** call k.bindKey here!
+                d2 = k.masterBindingsDict.get(modeName,{})
+                d2 [stroke] = g.Bunch(
+                    commandName=commandName,
+                    func=func,
+                    nextMode=bunch.nextMode,
+                    stroke=stroke)
+                k.masterBindingsDict [ modeName ] = d2
+#@nonl
+#@-node:ekr.20060119150624:createModeBindings
+#@+node:ekr.20060605130652:makeMasterGuiBinding
+def makeMasterGuiBinding (self,stroke,w=None):
+    
+    '''Make a master gui binding for stroke in pane w, or in all the standard widgets.'''
+    
+    k = self ; c = k.c ; f = c.frame
+   
+    bindStroke = k.tkbindingFromStroke(stroke)
+    # g.trace(stroke,bindStroke)
+    
+    if w:
+        widgets = [w]
+    else:
+        bodyCtrl = f.body and hasattr(f.body,'bodyCtrl') and f.body.bodyCtrl or None
+        canvas   = f.tree and hasattr(f.tree,'canvas')   and f.tree.canvas   or None
+        bindingWidget = f.tree and hasattr(f.tree,'bindingWidget') and f.tree.bindingWidget or None
+        widgets=(c.miniBufferWidget,bodyCtrl,canvas,bindingWidget)
+    
+    # This is the only real key callback.
+    def masterBindKeyCallback (event,k=k,stroke=stroke):
+        return k.masterKeyHandler(event,stroke=stroke)
+
+    for w in widgets:
+        if not w: continue
+        # Make the binding only if no binding for the stroke exists in the widget.
+        aList = k.masterGuiBindingsDict.get(bindStroke,[])
+        if w not in aList:
+            aList.append(w)
+            k.masterGuiBindingsDict [bindStroke] = aList
+            try:
+                w.bind(bindStroke,masterBindKeyCallback)
+            except Exception:
+                # g.es_exception()
+                g.es_print('exception binding %s to %s' % (
+                    bindStroke, c.widget_name(w)), color = 'blue')
+#@nonl
+#@-node:ekr.20060605130652:makeMasterGuiBinding
+#@+node:ekr.20060216074643:k.completeAllBindings
+def completeAllBindings (self):
+    
+    '''New in 4.4b3: make an actual binding in *all* the standard places.
+    
+    The event will go to k.masterKeyHandler as always, so nothing really changes.
+    except that k.masterKeyHandler will know the proper stroke.'''
+    
+    k = self
+    for stroke in k.bindingsDict.keys():
+        k.makeMasterGuiBinding(stroke)
+#@nonl
+#@-node:ekr.20060216074643:k.completeAllBindings
+#@+node:ekr.20051015110547:k.registerCommand
+def registerCommand (self,commandName,shortcut,func,pane='all',verbose=True):
+    
+    '''Make the function available as a minibuffer command,
+    and optionally attempt to bind a shortcut.
+    
+    You can wrap any method in a callback function, so the
+    restriction to functions is not significant.'''
+    
+    k = self ; c = k.c
+    
+    f = c.commandsDict.get(commandName)
+    if f:
+        g.es_trace('Redefining %s' % (commandName), color='red')
+        
+    c.commandsDict [commandName] = func
+    k.inverseCommandsDict [func.__name__] = commandName
+    # g.trace('leoCommands %24s = %s' % (func.__name__,commandName))
+    
+    if shortcut:
+        stroke = k.shortcutFromSetting(shortcut)
+        ok = k.bindKey (pane,stroke,func,commandName)
+        k.makeMasterGuiBinding(shortcut)
+        if verbose and ok:
+             g.es_print('Registered %s bound to %s' % (
+                commandName,k.prettyPrintKey(stroke)),color='blue')
+    else:
+        # New in 4.4b3: try to get a shortcut from leoSettings.leo.
+        junk,bunchList = c.config.getShortcut(commandName)
+        found = False
+        for bunch in bunchList:
+            accel = bunch.val ; pane = bunch.pane
+            if accel and not pane.endswith('-mode'):
+                found = True
+                shortcut = k.shortcutFromSetting(accel)
+                k.bindKey(pane,shortcut,func,commandName)
+                k.registerBinding(accel)
+                if verbose:
+                    g.es_print('Registered %s bound to %s' % (
+                        commandName,k.prettyPrintKey(shortcut)),color='blue')
+        if verbose and not found:
+            g.es_print('Registered %s' % (commandName),color='blue')
+#@-node:ekr.20051015110547:k.registerCommand
+#@+node:ekr.20060221141535:k.completeAllBindingsForWidget
+def completeAllBindingsForWidget (self,w):
+    
+    k = self
+    
+    for stroke in k.bindingsDict.keys():
+        k.makeMasterGuiBinding(stroke,w=w)
+#@nonl
+#@-node:ekr.20060221141535:k.completeAllBindingsForWidget
+#@-node:ekr.20060605121612.2:Simplified gui bindings
 #@-node:ekr.20060603090445.2:New features
 #@-node:ekr.20060603090445:4.4.1 b2 projects
 #@-node:ekr.20050924073836:4.4 projects

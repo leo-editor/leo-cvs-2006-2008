@@ -4966,6 +4966,37 @@ def doShortcut(self,p,kind,name,val):
     self.setShortcut(name,val)
 #@nonl
 #@-node:ekr.20041120113848:doShortcut
+#@+node:ekr.20060324092758:completeOneBindingForWidget
+def completeOneBindingForWidget (self,w,stroke,callback):
+
+    k = self ; c = k.c
+
+    try:
+        bindStroke = k.tkbindingFromStroke(stroke)
+        # g.trace(bindStroke,c.widget_name(w))
+        w.bind(bindStroke,callback)
+
+    except Exception:
+        g.es_print('exception binding %s to %s' % (
+            bindStroke, c.widget_name(w)), color = 'blue')
+#@nonl
+#@-node:ekr.20060324092758:completeOneBindingForWidget
+#@+node:ekr.20060325110412:registerBinding
+def registerBinding (self,shortcut):
+    
+    k = self ; f = k.c.frame
+
+    # Duplicate the logic k.completeAllBindings to set the actual bindings.
+    stroke = k.shortcutFromSetting(shortcut)
+    # g.trace(stroke)
+        
+    def bindKeyCallback (event,k=k,stroke=stroke):
+        return k.masterKeyHandler(event,stroke=stroke)
+    
+    for w in (f.body.bodyCtrl,f.tree.canvas,f.tree.bindingWidget):
+        k.completeOneBindingForWidget(w,stroke,bindKeyCallback)
+#@nonl
+#@-node:ekr.20060325110412:registerBinding
 #@-node:ekr.20031218072017.434:Unused code
 #@-all
 #@nonl
