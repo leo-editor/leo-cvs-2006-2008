@@ -40,7 +40,7 @@ By Alexis Gendron Paquette. Please send comments to the Leo forums.
 #@@language python
 #@@tabwidth -4
 
-__version__ = "0.14"
+__version__ = "0.15"
 
 #@<< version history >>
 #@+node:ekr.20040910070811.3:<< version history >>
@@ -58,6 +58,8 @@ __version__ = "0.14"
 # 0.14 EKR:
 # - Removed call to g.top()
 # - Added init function.
+# 0.15 EKR: Corrected the call to os.popen3 in OpenProcess per
+# http://sourceforge.net/forum/message.php?msg_id=3761385
 #@-at
 #@nonl
 #@-node:ekr.20040910070811.3:<< version history >>
@@ -364,7 +366,8 @@ def OpenProcess(p):
     # Start the threads and open the pipe.
     OutThread = readingThread()
     ErrThread = readingThread()						
-    In,OutThread.File,ErrThread.File	= os.popen3(command,"t")							
+    # In,OutThread.File,ErrThread.File	= os.popen3(command,"t")
+    OutThread.File,In,ErrThread.File = os.popen3(command,"t") 		
     OutThread.start()
     ErrThread.start()	
 
