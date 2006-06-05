@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="290" clone_windows="0"/>
 <globals body_outline_ratio="0.549828178694">
-	<global_window_position top="98" left="386" height="640" width="862"/>
+	<global_window_position top="98" left="386" height="621" width="862"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -335,7 +335,7 @@
 <v t="ekr.20060605081712.1"><vh>@color ignore_mode_fg_color = black</vh></v>
 <v t="ekr.20060605081712.2"><vh>@color insert_mode_bg_color = white</vh></v>
 <v t="ekr.20060605081712.3"><vh>@color insert_mode_fg_color = black</vh></v>
-<v t="ekr.20060603215208.4"><vh>Vim modes</vh>
+<v t="ekr.20060603215208.4" a="E"><vh>Vim modes</vh>
 <v t="ekr.20060604090546"><vh>@@mode move (Not Yet)</vh></v>
 <v t="ekr.20060603223152.1"><vh>@mode file</vh></v>
 <v t="ekr.20060603215208.7"><vh>@mode gui</vh>
@@ -345,7 +345,7 @@
 <v t="ekr.20060604083323"><vh>@mode apropos</vh></v>
 </v>
 <v t="ekr.20060604081740"><vh>@mode kill</vh></v>
-<v t="ekr.20060604082857"><vh>@mode outline</vh>
+<v t="ekr.20060604082857" a="E"><vh>@mode outline</vh>
 <v t="ekr.20060604082857.1"><vh>@mode move-outline</vh></v>
 </v>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C) (to do: submodes)</vh></v>
@@ -457,7 +457,7 @@
 <v t="ekr.20060605081712.1"><vh>@color ignore_mode_fg_color = black</vh></v>
 <v t="ekr.20060605081712.2"><vh>@color insert_mode_bg_color = white</vh></v>
 <v t="ekr.20060605081712.3"><vh>@color insert_mode_fg_color = black</vh></v>
-<v t="ekr.20060603215208.4"><vh>Vim modes</vh>
+<v t="ekr.20060603215208.4" a="E"><vh>Vim modes</vh>
 <v t="ekr.20060604090546"><vh>@@mode move (Not Yet)</vh></v>
 <v t="ekr.20060603223152.1"><vh>@mode file</vh></v>
 <v t="ekr.20060603215208.7"><vh>@mode gui</vh>
@@ -467,14 +467,14 @@
 <v t="ekr.20060604083323"><vh>@mode apropos</vh></v>
 </v>
 <v t="ekr.20060604081740"><vh>@mode kill</vh></v>
-<v t="ekr.20060604082857"><vh>@mode outline</vh>
-<v t="ekr.20060604082857.1"><vh>@mode move-outline</vh></v>
+<v t="ekr.20060604082857" a="E"><vh>@mode outline</vh>
+<v t="ekr.20060604082857.1" a="TV"><vh>@mode move-outline</vh></v>
 </v>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C) (to do: submodes)</vh></v>
 <v t="ekr.20060603223152.2"><vh>@mode toggle</vh></v>
 </v>
 <v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
-<v t="ekr.20060604081014" a="TV"><vh>@shortcuts top-level keys</vh></v>
+<v t="ekr.20060604081014"><vh>@shortcuts top-level keys</vh></v>
 <v t="ekr.20060603215208.19"><vh>@shortcuts Find Commands</vh></v>
 <v t="ekr.20060603215208.20"><vh>@shortcuts Minibuffer bindings</vh></v>
 <v t="ekr.20060603215208.21" annotate="7d71002e"><vh>@shortcuts EKR: A-E</vh></v>
@@ -5266,7 +5266,9 @@ redo                        -&gt; same = Shift-z</t>
 
 # All top-level bindings apply unless over-ridden
 enter-outline-mode      = Return
-mode-help                   -&gt; same = h
+
+goto-first-node             -&gt; same = Home
+goto-last-visible           -&gt; same = End
 
 move-outline-down           -&gt; same = d
 move-outline-left           -&gt; same = l

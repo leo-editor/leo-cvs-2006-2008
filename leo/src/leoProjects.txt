@@ -1710,7 +1710,6 @@ k.bindingsDict:
 k.masterBindingsDict:
     Keys are scope names: 'all','text',etc. or mode names.
     Values are dicts:  keys are strokes, values are g.Bunch(commandName,func,pane,stroke)
-    
 k.masterGuiBindingsDict:
     Keys are strokes; value is a list of widgets for which stroke is bound.
 
@@ -8526,6 +8525,26 @@ def showFileNameTabList (self):
 #@-node:ekr.20060602100638:Improved filename completion
 #@+node:ekr.20060605151444:word matches now succeed if first character of the pattern is not in word-chars.
 #@-node:ekr.20060605151444:word matches now succeed if first character of the pattern is not in word-chars.
+#@+node:ekr.20060604125715:Dialogs now bring the Leo window back to the front
+Called c.bringToFront() after open/save/import dialogs.
+#@nonl
+#@-node:ekr.20060604125715:Dialogs now bring the Leo window back to the front
+#@+node:ekr.20060605110058:Fixed unit test: ensure that body gets focus after ending editing
+FAIL: @test return ends editing of headline
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 155, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "<string>", line 14, in ?
+AssertionError: oops2
+
+----------------------------------------------------------------------
+Ran 438 tests in 193.628s
+
+FAILED (failures=1)
+>>>
+#@-node:ekr.20060605110058:Fixed unit test: ensure that body gets focus after ending editing
 #@-node:ekr.20060603090445.1:Bugs fixed
 #@+node:ekr.20060603090445.2:New features
 #@+node:ekr.20060211093935:Support for on-enter-mode in mode declarations
@@ -8853,6 +8872,7 @@ def makeMasterGuiBinding (self,stroke,w=None):
                 # g.es_exception()
                 g.es_print('exception binding %s to %s' % (
                     bindStroke, c.widget_name(w)), color = 'blue')
+                if g.app.unitTesting: raise
 #@nonl
 #@-node:ekr.20060605130652:makeMasterGuiBinding
 #@+node:ekr.20060216074643:k.completeAllBindings
@@ -8890,7 +8910,7 @@ def registerCommand (self,commandName,shortcut,func,pane='all',verbose=True):
     if shortcut:
         stroke = k.shortcutFromSetting(shortcut)
         ok = k.bindKey (pane,stroke,func,commandName)
-        k.makeMasterGuiBinding(shortcut)
+        k.makeMasterGuiBinding(stroke)
         if verbose and ok:
              g.es_print('Registered %s bound to %s' % (
                 commandName,k.prettyPrintKey(stroke)),color='blue')
