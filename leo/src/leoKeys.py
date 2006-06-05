@@ -72,31 +72,30 @@ import types
 # ivars:
 # 
 # c.commandsDict:
-#     Keys are emacs command names, values are functions f.
+#     Keys are emacs command names; values are functions f.
 # 
 # k.inverseCommandsDict:
-#     Keys are f.__name__, values are emacs command names.
+#     Keys are f.__name__; values are emacs command names.
 # 
 # k.bindingsDict:
-#     keys are shortcuts, values are *lists* of 
+#     Keys are shortcuts; values are *lists* of 
 # g.bunch(func,name,warningGiven)
 # 
 # k.masterBindingsDict:
 #     Keys are scope names: 'all','text',etc. or mode names.
 #     Values are dicts:  keys are strokes, values are 
 # g.Bunch(commandName,func,pane,stroke)
-# k.modeWidgetsDict:
-#     Keys are mode names; values are lists of widgets to which bindings have 
-# been made.
+# k.masterGuiBindingsDict:
+#     Keys are strokes; value is a list of widgets for which stroke is bound.
 # 
 # k.settingsNameDict:
-#     Keys are lowercase settings, values are 'real' Tk key specifiers.
+#     Keys are lowercase settings; values are 'real' Tk key specifiers.
 #     Important: this table has no inverse.
 # 
 # not an ivar (computed by k.computeInverseBindingDict):
 # 
 # inverseBindingDict
-#     keys are emacs command names, values are *lists* of shortcuts.
+#     Keys are emacs command names; values are *lists* of shortcuts.
 #@-at
 #@nonl
 #@-node:ekr.20051010062551.1:<< about key dicts >>
@@ -1757,13 +1756,11 @@ class keyHandlerClass:
         # Previously defined binding tags.
         self.bindtagsDict = {}
             # Keys are strings (the tag), values are 'True'
-            
         self.masterBindingsDict = {}
             # Keys are scope names: 'all','text',etc. or mode names.
             # Values are dicts: keys are strokes, values are g.bunch(commandName,func,pane,stroke)
-            
-        self.modeWidgetsDict = {}
-            # Keys are mode names; values are lists of widgets to which bindings have been made.
+        self.masterGuiBindingsDict = {}
+            # Keys are strokes; value is True;
         
         # Special bindings for k.fullCommand.
         self.mb_copyKey = None
@@ -2023,7 +2020,16 @@ class keyHandlerClass:
                     g.trace('No shortcut for %s = %s' % (name,key))
     #@nonl
     #@-node:ekr.20051011103654:checkBindings
-    #@+node:ekr.20060216074643:k.completeAllBindings & helpers
+    #@+node:ekr.20060221141535:k.completeAllBindingsForWidget
+    def completeAllBindingsForWidget (self,w):
+        
+        k = self
+        
+        for stroke in k.bindingsDict.keys():
+            k.makeMasterGuiBinding(stroke,w=w)
+    #@nonl
+    #@-node:ekr.20060221141535:k.completeAllBindingsForWidget
+    #@+node:ekr.20060216074643:k.completeAllBindings
     def completeAllBindings (self):
         
         '''New in 4.4b3: make an actual binding in *all* the standard places.
@@ -2031,44 +2037,11 @@ class keyHandlerClass:
         The event will go to k.masterKeyHandler as always, so nothing really changes.
         except that k.masterKeyHandler will know the proper stroke.'''
         
-        k = self ; c = k.c ; f = c.frame
-        bodyCtrl = f.body and hasattr(f.body,'bodyCtrl') and f.body.bodyCtrl or None
-        canvas   = f.tree and hasattr(f.tree,'canvas')   and f.tree.canvas   or None
-        bindingWidget = f.tree and hasattr(f.tree,'bindingWidget') and f.tree.bindingWidget or None
-        if not bodyCtrl or not canvas: return
-        
-        for w in (c.miniBufferWidget,bodyCtrl,canvas,bindingWidget):
-        
-            self.completeAllBindingsForWidget(w)
-    #@+node:ekr.20060221141535:completeAllBindingsForWidget
-    def completeAllBindingsForWidget (self,w):
-        
         k = self
-        
         for stroke in k.bindingsDict.keys():
-            
-            def bindKeyCallback (event,k=k,stroke=stroke):
-                return k.masterKeyHandler(event,stroke=stroke)
-                
-            k.completeOneBindingForWidget(w,stroke,bindKeyCallback)
+            k.makeMasterGuiBinding(stroke)
     #@nonl
-    #@-node:ekr.20060221141535:completeAllBindingsForWidget
-    #@+node:ekr.20060324092758:completeOneBindingForWidget
-    def completeOneBindingForWidget (self,w,stroke,callback):
-    
-        k = self ; c = k.c
-    
-        try:
-            bindStroke = k.tkbindingFromStroke(stroke)
-            # g.trace(bindStroke,c.widget_name(w))
-            w.bind(bindStroke,callback)
-    
-        except Exception:
-            g.es_print('exception binding %s to %s' % (
-                bindStroke, c.widget_name(w)), color = 'blue')
-    #@nonl
-    #@-node:ekr.20060324092758:completeOneBindingForWidget
-    #@-node:ekr.20060216074643:k.completeAllBindings & helpers
+    #@-node:ekr.20060216074643:k.completeAllBindings
     #@+node:ekr.20051007080058:k.makeAllBindings
     def makeAllBindings (self):
         
@@ -2150,6 +2123,43 @@ class keyHandlerClass:
                     k.bindKey(pane,shortcut,command,commandName)
     #@nonl
     #@-node:ekr.20051008134059:makeBindingsFromCommandsDict
+    #@+node:ekr.20060605130652:makeMasterGuiBinding
+    def makeMasterGuiBinding (self,stroke,w=None):
+        
+        '''Make a master gui binding for stroke in pane w, or in all the standard widgets.'''
+        
+        k = self ; c = k.c ; f = c.frame
+       
+        bindStroke = k.tkbindingFromStroke(stroke)
+        # g.trace(stroke,bindStroke)
+        
+        if w:
+            widgets = [w]
+        else:
+            bodyCtrl = f.body and hasattr(f.body,'bodyCtrl') and f.body.bodyCtrl or None
+            canvas   = f.tree and hasattr(f.tree,'canvas')   and f.tree.canvas   or None
+            bindingWidget = f.tree and hasattr(f.tree,'bindingWidget') and f.tree.bindingWidget or None
+            widgets=(c.miniBufferWidget,bodyCtrl,canvas,bindingWidget)
+        
+        # This is the only real key callback.
+        def masterBindKeyCallback (event,k=k,stroke=stroke):
+            return k.masterKeyHandler(event,stroke=stroke)
+    
+        for w in widgets:
+            if not w: continue
+            # Make the binding only if no binding for the stroke exists in the widget.
+            aList = k.masterGuiBindingsDict.get(bindStroke,[])
+            if w not in aList:
+                aList.append(w)
+                k.masterGuiBindingsDict [bindStroke] = aList
+                try:
+                    w.bind(bindStroke,masterBindKeyCallback)
+                except Exception:
+                    # g.es_exception()
+                    g.es_print('exception binding %s to %s' % (
+                        bindStroke, c.widget_name(w)), color = 'blue')
+    #@nonl
+    #@-node:ekr.20060605130652:makeMasterGuiBinding
     #@-node:ekr.20051006125633:Binding (keyHandler)
     #@+node:ekr.20051001051355:Dispatching (keyHandler)
     #@+node:ekr.20050920085536.65:masterCommand & helpers
@@ -2819,7 +2829,7 @@ class keyHandlerClass:
         if shortcut:
             stroke = k.shortcutFromSetting(shortcut)
             ok = k.bindKey (pane,stroke,func,commandName)
-            k.registerBinding(shortcut)
+            k.makeMasterGuiBinding(shortcut)
             if verbose and ok:
                  g.es_print('Registered %s bound to %s' % (
                     commandName,k.prettyPrintKey(stroke)),color='blue')
@@ -2839,22 +2849,6 @@ class keyHandlerClass:
                             commandName,k.prettyPrintKey(shortcut)),color='blue')
             if verbose and not found:
                 g.es_print('Registered %s' % (commandName),color='blue')
-    #@+node:ekr.20060325110412:registerBinding
-    def registerBinding (self,shortcut):
-        
-        k = self ; f = k.c.frame
-    
-        # Duplicate the logic k.completeAllBindings to set the actual bindings.
-        stroke = k.shortcutFromSetting(shortcut)
-        # g.trace(stroke)
-            
-        def bindKeyCallback (event,k=k,stroke=stroke):
-            return k.masterKeyHandler(event,stroke=stroke)
-        
-        for w in (f.body.bodyCtrl,f.tree.canvas,f.tree.bindingWidget):
-            k.completeOneBindingForWidget(w,stroke,bindKeyCallback)
-    #@nonl
-    #@-node:ekr.20060325110412:registerBinding
     #@-node:ekr.20051015110547:k.registerCommand
     #@-node:ekr.20051006065121:Externally visible helpers
     #@+node:ekr.20050924064254:Label...
@@ -3341,15 +3335,6 @@ class keyHandlerClass:
         '''Create mode bindings for the named mode using dictionary d for widget w.'''
         
         k = self ; c = k.c ; f = c.frame
-        bodyCtrl = f.body and hasattr(f.body,'bodyCtrl') and f.body.bodyCtrl or None
-        canvas   = f.tree and hasattr(f.tree,'canvas')   and f.tree.canvas   or None
-        bindingWidget = f.tree and hasattr(f.tree,'bindingWidget') and f.tree.bindingWidget or None
-        widgets = (bodyCtrl,canvas,bindingWidget,w)
-        
-        if 0: # We must make bindings for every widget that uses this mode.
-            aList = k.modeWidgetsDict.get(modeName,[])
-            if w in aList: return
-            aList.append(w) ; k.modeWidgetsDict [modeName] = aList
             
         # g.trace(g.listToString(d.keys()))
     
@@ -3373,12 +3358,7 @@ class keyHandlerClass:
                             '%20s' % (commandName),
                             bunch.nextMode)
                             
-                    # New in 4.4.1 b1: create an actual binding.
-                    def modeKeyCallback(event=None,k=k,stroke=stroke):
-                        return k.masterKeyHandler(event,stroke=stroke)
-    
-                    for w2 in widgets:
-                        k.completeOneBindingForWidget (w2,stroke,modeKeyCallback)
+                    k.makeMasterGuiBinding(stroke)
                    
                     # Create the entry for the mode in k.masterBindingsDict.
                     # Important: this is similar, but not the same as k.bindKeyToDict.
