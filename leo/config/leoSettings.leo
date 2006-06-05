@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="289" clone_windows="0"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="290" clone_windows="0"/>
 <globals body_outline_ratio="0.549828178694">
-	<global_window_position top="112" left="200" height="640" width="1011"/>
+	<global_window_position top="112" left="200" height="583" width="1011"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -44,7 +44,7 @@
 <v t="ekr.20060112104823"><vh>main</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" a="TV" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
@@ -301,36 +301,8 @@
 <v t="ekr.20060102102958.1" annotate="7d71002e"><vh>@shortcuts EKR: N-Z</vh></v>
 </v>
 </v>
-<v t="ekr.20060603215208"><vh>EKR bindings: vim mode bindings</vh>
-<v t="ekr.20060604115210"><vh>To do</vh></v>
-<v t="ekr.20060604080653" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = ignore</vh></v>
-<v t="ekr.20060603215208.4"><vh>Vim modes</vh>
-<v t="ekr.20060604090546"><vh>@@mode move (Not Yet)</vh></v>
-<v t="ekr.20060603223152.1"><vh>@mode file</vh></v>
-<v t="ekr.20060603215208.7"><vh>@mode gui</vh>
-<v t="ekr.20060603215208.8"><vh>@mode Edit-extend</vh></v>
-</v>
-<v t="ekr.20060603223152"><vh>@mode help</vh>
-<v t="ekr.20060604083323"><vh>@mode apropos</vh></v>
-</v>
-<v t="ekr.20060604081740"><vh>@mode kill</vh></v>
-<v t="ekr.20060604082857"><vh>@mode outline</vh>
-<v t="ekr.20060604082857.1"><vh>@mode move-outline</vh></v>
-</v>
-<v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C) (to do: submodes)</vh></v>
-<v t="ekr.20060603223152.2"><vh>@mode toggle</vh></v>
-</v>
-<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
-<v t="ekr.20060604081014"><vh>@shortcuts top-level keys</vh></v>
-<v t="ekr.20060603215208.19"><vh>@shortcuts Find Commands</vh></v>
-<v t="ekr.20060603215208.20"><vh>@@@shortcuts Minibuffer bindings</vh></v>
-<v t="ekr.20060603215208.21" annotate="7d71002e"><vh>@shortcuts EKR: A-E</vh></v>
-<v t="ekr.20060603215208.22"><vh>@shortcuts EKR: F-M</vh></v>
-<v t="ekr.20060603215208.23" annotate="7d71002e"><vh>@shortcuts EKR: N-Z</vh></v>
-</v>
-</v>
-</v>
 <v t="ekr.20060122105527"><vh>EKR bindings: Mode-oriented bindings + Emacs bindings</vh>
+<v t="ekr.20060604180807" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
 <v t="ekr.20060122105527.2"><vh>Summary of Ctrl bindings</vh></v>
 <v t="ekr.20060122105527.9"><vh>Modes</vh>
 <v t="ekr.20060122113439"><vh>@mode Edit (Alt-Control-space)</vh>
@@ -354,6 +326,34 @@
 <v t="ekr.20060122105527.20" annotate="7d71002e"><vh>@shortcuts EKR: A-E</vh></v>
 <v t="ekr.20060122105527.21"><vh>@shortcuts EKR: F-M</vh></v>
 <v t="ekr.20060122105527.22" annotate="7d71002e"><vh>@shortcuts EKR: N-Z</vh></v>
+</v>
+</v>
+</v>
+<v t="ekr.20060603215208"><vh>EKR bindings: vim mode bindings</vh>
+<v t="ekr.20060604080653" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = ignore</vh></v>
+<v t="ekr.20060603215208.4" a="E"><vh>Vim modes</vh>
+<v t="ekr.20060604090546"><vh>@@mode move (Not Yet)</vh></v>
+<v t="ekr.20060603223152.1"><vh>@mode file</vh></v>
+<v t="ekr.20060603215208.7"><vh>@mode gui</vh>
+<v t="ekr.20060603215208.8"><vh>@mode Edit-extend</vh></v>
+</v>
+<v t="ekr.20060603223152"><vh>@mode help</vh>
+<v t="ekr.20060604083323"><vh>@mode apropos</vh></v>
+</v>
+<v t="ekr.20060604081740"><vh>@mode kill</vh></v>
+<v t="ekr.20060604082857"><vh>@mode outline</vh>
+<v t="ekr.20060604082857.1"><vh>@mode move-outline</vh></v>
+</v>
+<v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C) (to do: submodes)</vh></v>
+<v t="ekr.20060603223152.2"><vh>@mode toggle</vh></v>
+</v>
+<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
+<v t="ekr.20060604081014"><vh>@shortcuts top-level keys</vh></v>
+<v t="ekr.20060603215208.19"><vh>@shortcuts Find Commands</vh></v>
+<v t="ekr.20060603215208.20"><vh>@shortcuts Minibuffer bindings</vh></v>
+<v t="ekr.20060603215208.21" annotate="7d71002e"><vh>@shortcuts EKR: A-E</vh></v>
+<v t="ekr.20060603215208.22"><vh>@shortcuts EKR: F-M</vh></v>
+<v t="ekr.20060603215208.23" annotate="7d71002e"><vh>@shortcuts EKR: N-Z</vh></v>
 </v>
 </v>
 <v t="ekr.20060110141538.1" annotate="7d71002e"><vh>No bindings</vh>
@@ -447,10 +447,9 @@
 <v t="ekr.20060216135834"><vh>@bool enable_autocompleter_initially = False</vh></v>
 <v t="ekr.20060603070801"><vh>@bool enable_calltips_initially = False</vh></v>
 </v>
-<v t="ekr.20060603215208"><vh>EKR bindings: vim mode bindings</vh>
-<v t="ekr.20060604115210"><vh>To do</vh></v>
+<v t="ekr.20060603215208" a="ETV"><vh>EKR bindings: vim mode bindings</vh>
 <v t="ekr.20060604080653" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = ignore</vh></v>
-<v t="ekr.20060603215208.4"><vh>Vim modes</vh>
+<v t="ekr.20060603215208.4" a="E"><vh>Vim modes</vh>
 <v t="ekr.20060604090546"><vh>@@mode move (Not Yet)</vh></v>
 <v t="ekr.20060603223152.1"><vh>@mode file</vh></v>
 <v t="ekr.20060603215208.7"><vh>@mode gui</vh>
@@ -466,10 +465,10 @@
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C) (to do: submodes)</vh></v>
 <v t="ekr.20060603223152.2"><vh>@mode toggle</vh></v>
 </v>
-<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
 <v t="ekr.20060604081014"><vh>@shortcuts top-level keys</vh></v>
 <v t="ekr.20060603215208.19"><vh>@shortcuts Find Commands</vh></v>
-<v t="ekr.20060603215208.20"><vh>@@@shortcuts Minibuffer bindings</vh></v>
+<v t="ekr.20060603215208.20"><vh>@shortcuts Minibuffer bindings</vh></v>
 <v t="ekr.20060603215208.21" annotate="7d71002e"><vh>@shortcuts EKR: A-E</vh></v>
 <v t="ekr.20060603215208.22"><vh>@shortcuts EKR: F-M</vh></v>
 <v t="ekr.20060603215208.23" annotate="7d71002e"><vh>@shortcuts EKR: N-Z</vh></v>
@@ -5200,8 +5199,7 @@ back-char-extend-selection          = Shift-l
 #                                   = n
 enter-outline-mode                  = o
 #                                   = p
-quick-find-char                     = q
-quick-find-word                     = Q
+find-character                      = q
 forward-char                        = r
 fowrwad-char-extend-selection       = Shift-r
 #                                   = s
@@ -5284,12 +5282,15 @@ keyboard-quit       = Return
 # mp mrp paragraph
 # ms mrs sentence
 # mw mrw word</t>
-<t tx="ekr.20060604115210">@nocolor
+<t tx="ekr.20060604180807">@nocolor
 
-** Can we use top-level bindings for control keys at the top level?????
+This setting determines the initial binding for otherwise-unbound keystrokes
+when no mode is in effect.  Note: the keyboard-quit command exits all modes.
 
-- Gui commands have problems.
+The valid values are::
 
-    - Need commands that actually scroll the outline pane, etc.</t>
+ignore:  Leo ignores the key (like Vim).
+insert:  Leo inserts the key at the cursor (like Emacs)
+overwrite: Leo replaces the character at the cursor.</t>
 </tnodes>
 </leo_file>

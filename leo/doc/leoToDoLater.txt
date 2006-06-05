@@ -1150,9 +1150,10 @@ def masterKeyHandler (self,event,stroke=None):
     if trace: g.trace(g.callers())
 
     val = self.masterKeyHandlerHelper(event,stroke,trace)
-    if val and c and c.exists: # Ignore special keys.
-        c.frame.updateStatusLine()
-        c.masterFocusHandler()
+    if 0:
+        if val and c and c.exists: # Ignore special keys.
+            c.frame.updateStatusLine()
+            c.masterFocusHandler()
     if trace: g.trace('done:',repr(val))
     return val
 #@nonl

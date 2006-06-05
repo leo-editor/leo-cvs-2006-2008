@@ -2481,8 +2481,9 @@ class leoTkinterTree (leoFrame.leoTree):
     
         self.setEditPosition(None) # That is, self._editPosition = None
         
-        if k:
-            k.setDefaultUnboundKeyAction()
+        # Can't call setDefaultUnboundKeyAction here: it might put us in ignore mode!
+        # if k:
+            # k.setDefaultUnboundKeyAction()
             # k.showStateAndMode() # Destroys UNL info.
         
         # Important: this will redraw if necessary.

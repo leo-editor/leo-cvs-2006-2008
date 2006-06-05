@@ -1854,6 +1854,8 @@ class keyHandlerClass:
     def setDefaultUnboundKeyAction (self):
         
         k = self ; c = k.c
+        
+        # g.trace(g.callers())
     
         defaultAction = c.config.getString('top_level_unbound_key_action') or 'insert'
         defaultAction.lower()
@@ -2022,8 +2024,6 @@ class keyHandlerClass:
     def completeAllBindingsForWidget (self,w):
         
         k = self
-        
-        # g.trace('Return','Return' in k.bindingsDict.keys())
         
         for stroke in k.bindingsDict.keys():
             
@@ -2519,7 +2519,7 @@ class keyHandlerClass:
     #@nonl
     #@-node:ekr.20050920085536.77:numberCommand
     #@+node:ekr.20051012201831:printBindings
-    def printBindings (self,event,brief=False):
+    def printBindings (self,event):
     
         '''Print all the bindings presently in effect.'''
     
@@ -2532,14 +2532,13 @@ class keyHandlerClass:
         for key in keys:
             bunchList = d.get(key,[])
             for b in bunchList:
-                if not brief or k.isPlainKey(key):
-                    pane = g.choose(b.pane=='all','',' %s:' % (b.pane))
-                    s1 = pane
-                    s2 = k.prettyPrintKey(key,brief=True)
-                    s3 = b.commandName
-                    n1 = max(n1,len(s1))
-                    n2 = max(n2,len(s2))
-                    data.append((s1,s2,s3),)
+                pane = g.choose(b.pane=='all','',' %s:' % (b.pane))
+                s1 = pane
+                s2 = k.prettyPrintKey(key,brief=True)
+                s3 = b.commandName
+                n1 = max(n1,len(s1))
+                n2 = max(n2,len(s2))
+                data.append((s1,s2,s3),)
         # This isn't perfect in variable-width fonts.
         for s1,s2,s3 in data:
             g.es('%*s %*s %s' % (-n1,s1,-(min(12,n2)),s2,s3),tabName=tabName)
@@ -2994,9 +2993,10 @@ class keyHandlerClass:
         if trace: g.trace(g.callers())
     
         val = self.masterKeyHandlerHelper(event,stroke,trace)
-        if val and c and c.exists: # Ignore special keys.
-            c.frame.updateStatusLine()
-            c.masterFocusHandler()
+        if 0:
+            if val and c and c.exists: # Ignore special keys.
+                c.frame.updateStatusLine()
+                c.masterFocusHandler()
         if trace: g.trace('done:',repr(val))
         return val
     #@nonl
@@ -3525,7 +3525,7 @@ class keyHandlerClass:
     #@+node:ekr.20060105132013:set-xxx-State
     def setIgnoreState (self,event):
         '''Enter the 'ignore' editing state.'''
-        # g.trace(g.callers())
+        g.trace(g.callers())
         self.setInputState('ignore',showState=True)
     
     def setInsertState (self,event):
@@ -3864,18 +3864,15 @@ class keyHandlerClass:
     #@+node:ekr.20060120071949:isPlainKey
     def isPlainKey (self,shortcut):
         
-        '''Return true if the shortcut refers to a plain key.'''
+        '''Return true if the shortcut refers to a plain (non-Alt,non-Ctl) key.'''
         
         shortcut = shortcut or ''
-        shortcut1 = shortcut[:]
-    
-        shift = 'Shift-'
-        shortcut = shortcut or ''
-        if shortcut.startswith('<'):   shortcut = shortcut[1:]
-        if shortcut.endswith('>'):     shortcut = shortcut[:-1]
-        if shortcut.startswith(shift): shortcut = shortcut[len(shift):]
-    
-        return len(shortcut) == 1
+        
+        for s in ('Alt','Ctrl+','Command+'):
+            if shortcut.find(s) != -1:
+                return False
+        else:
+            return True
     #@nonl
     #@-node:ekr.20060120071949:isPlainKey
     #@+node:ekr.20060128081317:shortcutFromSetting
@@ -3992,6 +3989,7 @@ class keyHandlerClass:
     #@+node:ekr.20060201083154:k.prettyPrintKey
     def prettyPrintKey (self,stroke,brief=False):
         
+        k = self
         s = stroke and g.stripBrackets(stroke.strip())
         if not s: return ''
     
@@ -4002,7 +4000,6 @@ class keyHandlerClass:
         else:               s = s.replace('-','+')
         fields = s.split('+')
         last = fields and fields[-1]
-    
         if last and len(last) == 1:
             prev = s[:-1]
             if last.isalpha():
@@ -4014,7 +4011,12 @@ class keyHandlerClass:
                         s = 'Key+' + last.upper()
                     else:
                         s = prev + last.upper()
-    
+        else:
+            last = k.tkBindNamesInverseDict.get(last,last)
+            if fields and fields[:-1]:
+                s = '%s+%s' % ('+'.join(fields[:-1]),last)
+            else:
+                s = last
         return g.choose(brief,s,'<%s>' % s)
     #@nonl
     #@-node:ekr.20060201083154:k.prettyPrintKey
