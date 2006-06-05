@@ -2843,7 +2843,6 @@ class baseCommands:
             return
             
         if k:
-            # k.setInsertState('insert')
             k.setDefaultUnboundKeyAction()
             k.showStateAndMode()
     
