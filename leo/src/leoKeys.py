@@ -1742,7 +1742,6 @@ class keyHandlerClass:
         self.regx = g.bunch(iter=None,key=None)
         self.repeatCount = None
         self.state = g.bunch(kind=None,n=None,handler=None)
-        self.setDefaultUnboundKeyAction()
         #@nonl
         #@-node:ekr.20051006092617.1:<< define externally visible ivars >>
         #@nl
@@ -1799,8 +1798,8 @@ class keyHandlerClass:
         self.silentMode = False
         
         # The actual values are set later in k.finishCreate.
-        self.ignore_mode_bg_color = 'white'
-        self.ignore_mode_fg_color = 'black'
+        self.command_mode_bg_color = 'white'
+        self.command_mode_fg_color = 'black'
         self.insert_mode_bg_color = 'white'
         self.insert_mode_fg_color = 'black'
         self.overwrite_mode_bg_color = 'white'
@@ -1810,6 +1809,7 @@ class keyHandlerClass:
         #@nl
         
         self.autoCompleter = autoCompleterClass(self)
+        self.setDefaultUnboundKeyAction()
     #@nonl
     #@-node:ekr.20050920085536.2: ctor (keyHandler)
     #@+node:ekr.20050920094633:k.finishCreate & helpers
@@ -1836,12 +1836,12 @@ class keyHandlerClass:
         # Mode colors
         bodyCtrl = c.frame.body.bodyCtrl
         if bodyCtrl:
-            self.ignore_mode_bg_color = c.config.getColor('ignore_mode_bg_color') or bodyCtrl.cget('bg')
-            self.ignore_mode_fg_color = c.config.getColor('ignore_mode_fg_color') or bodyCtrl.cget('fg')
+            self.command_mode_bg_color = c.config.getColor('command_mode_bg_color') or bodyCtrl.cget('bg')
+            self.command_mode_fg_color = c.config.getColor('command_mode_fg_color') or bodyCtrl.cget('fg')
             self.insert_mode_bg_color = c.config.getColor('insert_mode_bg_color') or bodyCtrl.cget('bg')
             self.insert_mode_fg_color = c.config.getColor('insert_mode_fg_color') or bodyCtrl.cget('fg')
-            self.overwrite_mode_bg_color = c.config.getColor('insert_mode_bg_color') or bodyCtrl.cget('bg')
-            self.overwrite_mode_fg_color = c.config.getColor('insert_mode_fg_color') or bodyCtrl.cget('fg')
+            self.overwrite_mode_bg_color = c.config.getColor('overwrite_mode_bg_color') or bodyCtrl.cget('bg')
+            self.overwrite_mode_fg_color = c.config.getColor('overwrite_mode_fg_color') or bodyCtrl.cget('fg')
     #@nonl
     #@+node:ekr.20051008082929:createInverseCommandsDict
     def createInverseCommandsDict (self):
@@ -2852,6 +2852,51 @@ class keyHandlerClass:
                 g.es_print('Registered %s' % (commandName),color='blue')
     #@-node:ekr.20051015110547:k.registerCommand
     #@-node:ekr.20051006065121:Externally visible helpers
+    #@+node:ekr.20060606085637:Input State
+    #@+node:ekr.20060120200818:setInputState
+    def setInputState (self,state,showState=False):
+    
+        k = self ; c = k.c ; body = c.frame.body ; w = body.bodyCtrl
+    
+        # g.trace(state,g.callers())
+        k.unboundKeyAction = state
+        k.showStateAndMode()
+        assert state in ('insert','command','overwrite')
+        
+        if w and state == 'insert':
+            body.setEditorColors(bg=k.insert_mode_bg_color,fg=k.insert_mode_fg_color)
+        elif w and state == 'command':
+            body.setEditorColors(bg=k.command_mode_bg_color,fg=k.command_mode_fg_color)
+        elif w and state == 'overwrite':
+            body.setEditorColors(bg=k.overwrite_mode_bg_color,fg=k.overwrite_mode_fg_color)
+    #@nonl
+    #@-node:ekr.20060120200818:setInputState
+    #@+node:ekr.20060120193743:showStateAndMode
+    def showStateAndMode(self):
+        
+        k = self ; c = k.c ; frame = c.frame
+        state = k.unboundKeyAction
+        mode = k.getStateKind()
+        
+        # g.trace(state,mode)
+       
+        if hasattr(frame,'clearStatusLine'):
+            frame.clearStatusLine()
+            put = frame.putStatusLine
+            put('Key state: ',color='blue')
+            put('%s' % state.capitalize())
+            if mode:
+                # put(' mode: ',color='blue')
+                if mode.endswith('-mode'): mode = mode[:-5]
+                mode = mode.replace('-',' ').capitalize()
+                put(' Mode: ',color='blue')
+                put(mode)
+                
+            # Restore the focus.
+            c.restoreFocus()
+    #@nonl
+    #@-node:ekr.20060120193743:showStateAndMode
+    #@-node:ekr.20060606085637:Input State
     #@+node:ekr.20050924064254:Label...
     #@+at 
     #@nonl
@@ -3579,60 +3624,6 @@ class keyHandlerClass:
     #@nonl
     #@-node:ekr.20060104125946:modeHelpHelper
     #@-node:ekr.20060104164523:modeHelp
-    #@+node:ekr.20060120200818:setInputState
-    def setInputState (self,state,showState=False):
-    
-        k = self ; c = k.c ; w = c.frame.body.bodyCtrl
-    
-        # g.trace(state,g.callers())
-        k.unboundKeyAction = state
-        k.showStateAndMode()
-        assert state in ('insert','command','overwrite')
-        
-        if w and state == 'insert':
-            try: w.configure(bg=k.insert_mode_bg_color)
-            except Exception: pass
-            try: w.configure(fg=k.insert_mode_fg_color)
-            except Exception: pass
-    
-        elif w and state == 'command':
-            try: w.configure(bg=k.ignore_mode_bg_color)
-            except Exception: pass
-            try: w.configure(fg=k.ignore_mode_fg_color)
-            except Exception: pass
-            
-        elif w and state == 'overwrite':
-            try: w.configure(bg=k.overwrite_mode_bg_color)
-            except Exception: pass
-            try: w.configure(fg=k.overwrite_mode_fg_color)
-            except Exception: pass
-    #@nonl
-    #@-node:ekr.20060120200818:setInputState
-    #@+node:ekr.20060120193743:showStateAndMode
-    def showStateAndMode(self):
-        
-        k = self ; c = k.c ; frame = c.frame
-        state = k.unboundKeyAction
-        mode = k.getStateKind()
-        
-        # g.trace(state,mode)
-       
-        if hasattr(frame,'clearStatusLine'):
-            frame.clearStatusLine()
-            put = frame.putStatusLine
-            put('Key state: ',color='blue')
-            put('%s' % state.capitalize())
-            if mode:
-                # put(' mode: ',color='blue')
-                if mode.endswith('-mode'): mode = mode[:-5]
-                mode = mode.replace('-',' ').capitalize()
-                put(' Mode: ',color='blue')
-                put(mode)
-                
-            # Restore the focus.
-            c.restoreFocus()
-    #@nonl
-    #@-node:ekr.20060120193743:showStateAndMode
     #@-node:ekr.20060115103349:Modes
     #@+node:ekr.20051002152108.1:Shared helpers
     #@+node:ekr.20060419124420.1:getFileName & helpers
