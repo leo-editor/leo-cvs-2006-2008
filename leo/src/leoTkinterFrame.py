@@ -2064,7 +2064,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
             c.notValidInBatchMode("End Edit Headline")
         else:
             c.endEditing()
-            c.bodyWantsFocus()
+            c.bodyWantsFocusNow() # New in 4.4.1 b2 (was c.bodyWantFocus)
     #@nonl
     #@-node:ekr.20031218072017.3982:endEditLabelCommand
     #@+node:ekr.20031218072017.3983:insertHeadlineTime
