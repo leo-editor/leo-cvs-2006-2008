@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="290" clone_windows="0"/>
 <globals body_outline_ratio="0.549828178694">
-	<global_window_position top="98" left="386" height="621" width="862"/>
+	<global_window_position top="98" left="386" height="583" width="862"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -336,16 +336,15 @@
 <v t="ekr.20060605081712.2"><vh>@color insert_mode_bg_color = white</vh></v>
 <v t="ekr.20060605081712.3"><vh>@color insert_mode_fg_color = black</vh></v>
 <v t="ekr.20060603215208.4" a="E"><vh>Vim modes</vh>
-<v t="ekr.20060604090546"><vh>@@mode move (Not Yet)</vh></v>
 <v t="ekr.20060603223152.1"><vh>@mode file</vh></v>
-<v t="ekr.20060603215208.7"><vh>@mode gui</vh>
+<v t="ekr.20060603215208.7" a="M"><vh>@mode gui</vh>
 <v t="ekr.20060603215208.8"><vh>@mode Edit-extend</vh></v>
 </v>
 <v t="ekr.20060603223152"><vh>@mode help</vh>
 <v t="ekr.20060604083323"><vh>@mode apropos</vh></v>
 </v>
 <v t="ekr.20060604081740"><vh>@mode kill</vh></v>
-<v t="ekr.20060604082857" a="E"><vh>@mode outline</vh>
+<v t="ekr.20060604082857"><vh>@mode outline</vh>
 <v t="ekr.20060604082857.1"><vh>@mode move-outline</vh></v>
 </v>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C) (to do: submodes)</vh></v>
@@ -458,17 +457,16 @@
 <v t="ekr.20060605081712.2"><vh>@color insert_mode_bg_color = white</vh></v>
 <v t="ekr.20060605081712.3"><vh>@color insert_mode_fg_color = black</vh></v>
 <v t="ekr.20060603215208.4" a="E"><vh>Vim modes</vh>
-<v t="ekr.20060604090546"><vh>@@mode move (Not Yet)</vh></v>
-<v t="ekr.20060603223152.1"><vh>@mode file</vh></v>
-<v t="ekr.20060603215208.7"><vh>@mode gui</vh>
+<v t="ekr.20060603223152.1" a="V"><vh>@mode file</vh></v>
+<v t="ekr.20060603215208.7" a="M"><vh>@mode gui</vh>
 <v t="ekr.20060603215208.8"><vh>@mode Edit-extend</vh></v>
 </v>
 <v t="ekr.20060603223152"><vh>@mode help</vh>
 <v t="ekr.20060604083323"><vh>@mode apropos</vh></v>
 </v>
 <v t="ekr.20060604081740"><vh>@mode kill</vh></v>
-<v t="ekr.20060604082857" a="E"><vh>@mode outline</vh>
-<v t="ekr.20060604082857.1" a="TV"><vh>@mode move-outline</vh></v>
+<v t="ekr.20060604082857"><vh>@mode outline</vh>
+<v t="ekr.20060604082857.1"><vh>@mode move-outline</vh></v>
 </v>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C) (to do: submodes)</vh></v>
 <v t="ekr.20060603223152.2"><vh>@mode toggle</vh></v>
@@ -5126,8 +5124,6 @@ zap-to-character                    = Alt-z</t>
 <t tx="ekr.20060603223152">--&gt; set-silent-mode
 --&gt; mode-help
 
-mode-help               -&gt; same  = h
-
 enter-apropos-mode      = a
 print-bindings          = b
 help-for-command        = c
@@ -5136,17 +5132,12 @@ python-help             = p</t>
 --&gt; mode-help
 
 save-file-as            = a
-close-window            = c
-new                     = n
 open-outline-by-name    = o
-open-outline            = Shift-o
-exit-leo                = q
-save-file               = s
 save-file-to            = t
 
-open-leoDocs-leo        = shift-d
-open-leoPlugins-leo     = shift-p
-open-leoSettings-leo    = shift-s</t>
+open-leoDocs-leo        = d
+open-leoPlugins-leo     = p
+open-leoSettings-leo    = s</t>
 <t tx="ekr.20060603223152.2">--&gt; set-silent-mode
 --&gt; open-find-tab
 
@@ -5226,8 +5217,8 @@ yank                                = y
 undo                                = z
 redo                                = Shift-z</t>
 <t tx="ekr.20060604081740">--&gt; set-silent-mode
+--&gt; mode-help
 
-mode-help           -&gt; same = h
 keyboard-quit       = Return
 
 kill-all-abbrevs    = a       
@@ -5287,17 +5278,6 @@ mode-help               -&gt; same  = question
 apropos-autocompletion  = a
 apropos-bindings        = b
 apropos-find-commands   = f</t>
-<t tx="ekr.20060604090546">--&gt; set-silent-mode
-
-mode-help           -&gt; same = h
-keyboard-quit       = Return
-
-# mc mrc character
-# mh home
-# me end of buffer
-# mp mrp paragraph
-# ms mrs sentence
-# mw mrw word</t>
 <t tx="ekr.20060604180807">@nocolor
 
 This setting determines the initial binding for otherwise-unbound keystrokes
