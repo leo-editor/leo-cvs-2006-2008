@@ -223,6 +223,9 @@ class leoBody:
     def selectMainEditor (self,p):
         pass
         
+    def setEditorColors (self,bg,fg):
+        pass
+        
     def updateEditors (self):
         pass
     #@nonl
