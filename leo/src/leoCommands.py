@@ -5574,9 +5574,16 @@ class baseCommands:
     EndUpdate = endUpdate # Compatibility with old scripts
     #@-node:ekr.20031218072017.2950:c.begin/endUpdate
     #@+node:ekr.20031218072017.2951:c.bringToFront
-    def bringToFront(self):
+    def bringToFront(self,set_focus=True):
+        
+        c = self
+        c.frame.deiconify()
     
-        self.frame.deiconify()
+        if set_focus:
+            bodyCtrl = c.frame.body.bodyCtrl
+            # g.trace(g.app.gui.widget_name(bodyCtrl))
+            bodyCtrl.update_idletasks()
+            g.app.gui.set_focus(c,bodyCtrl)
     
     BringToFront = bringToFront # Compatibility with old scripts
     #@nonl
