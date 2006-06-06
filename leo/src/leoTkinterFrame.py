@@ -2513,6 +2513,9 @@ class leoTkinterBody (leoFrame.leoBody):
         w.leo_name = name
         w.leo_label = None
         w.leo_label_s = None
+        w.leo_scrollBarSpot = None
+        w.leo_insertSpot = None
+        w.leo_selection = None
     
         def focusInCallback(event,self=self,w=w):
             self.onFocusIn(w)
@@ -2561,7 +2564,6 @@ class leoTkinterBody (leoFrame.leoBody):
         w.pack_forget()
         w.leo_label.pack(side='top')
         w.pack(expand=1,fill='both')
-    #@nonl
     #@-node:ekr.20060530210057:create/select/unselect/Label
     #@+node:ekr.20060528100747.1:addEditor
     def addEditor (self,event=None):
@@ -2665,7 +2667,7 @@ class leoTkinterBody (leoFrame.leoBody):
     #@+node:ekr.20060528104554:onFocusIn
     def onFocusIn(self,w):
     
-        c = self.c ; d = self.editorWidgets
+        c = self.c ; d = self.editorWidgets ; p = c.currentPosition()
         if w.leo_p is None: return
     
         # Inactivate the previously active editor.
@@ -2675,6 +2677,9 @@ class leoTkinterBody (leoFrame.leoBody):
             if w2 != w and w2.leo_active:
                 w2.leo_active = False
                 self.unselectLabel(w2)
+                w.leo_scrollBarSpot = w.yview()
+                w.leo_insertSpot = g.app.gui.getInsertPoint(w)
+                w.leo_selection = g.app.gui.getSelectionRange(w)
     
         # Careful, leo_p may not exist.
         if not w.leo_p.exists(c):
@@ -2691,6 +2696,24 @@ class leoTkinterBody (leoFrame.leoBody):
         w.leo_active = True
         c.selectPosition(w.leo_p,updateBeadList=True) # Calls selectMainEditor.
         c.recolor_now()
+        #@    << restore the selection, insertion point and the scrollbar >>
+        #@+node:ekr.20060605190146:<< restore the selection, insertion point and the scrollbar >>
+        if w.leo_insertSpot:
+            g.app.gui.setInsertPoint(w,w.leo_insertSpot)
+            w.see(w.leo_insertSpot)
+        else:
+            g.app.gui.setInsertPoint(w,'1.0')
+            
+        if w.leo_scrollBarSpot:
+            first,last = w.leo_scrollBarSpot
+            w.yview('moveto',first)
+        
+        if w.leo_selection:
+            start,end = w.leo_selection
+            g.app.gui.setSelectionRange(w,start,end)
+        #@nonl
+        #@-node:ekr.20060605190146:<< restore the selection, insertion point and the scrollbar >>
+        #@nl
         c.frame.bodyWantsFocus()
     #@nonl
     #@-node:ekr.20060528104554:onFocusIn
