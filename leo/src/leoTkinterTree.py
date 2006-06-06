@@ -2488,7 +2488,9 @@ class leoTkinterTree (leoFrame.leoTree):
         
         # Important: this will redraw if necessary.
         self.onHeadChanged(p)
-        c.bodyWantsFocus()
+        
+        if 0: # This interferes with the find command and interferes with focus generally!
+            c.bodyWantsFocus()
     #@nonl
     #@-node:ekr.20040803072955.126:tree.endEditLabel
     #@+node:ekr.20040803072955.143:tree.expandAllAncestors
