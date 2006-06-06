@@ -2614,6 +2614,20 @@ class leoTkinterBody (leoFrame.leoBody):
         self.onFocusIn(w)
     #@nonl
     #@-node:ekr.20060528100747.1:addEditor
+    #@+node:ekr.20060606090542:setEditorColors
+    def setEditorColors (self,bg,fg):
+        
+        c = self.c ; d = self.editorWidgets
+    
+        for key in d.keys():
+            w2 = d.get(key)
+            try:
+                w2.configure(bg=bg,fg=fg)
+            except Exception:
+                g.es_exception()
+                pass
+    #@nonl
+    #@-node:ekr.20060606090542:setEditorColors
     #@+node:ekr.20060528170438:cycleEditorFocus
     def cycleEditorFocus (self,event=None):
         
