@@ -1876,7 +1876,7 @@ class keyHandlerClass:
         defaultAction = c.config.getString('top_level_unbound_key_action') or 'insert'
         defaultAction.lower()
     
-        if defaultAction in ('ignore','insert','overwrite'):
+        if defaultAction in ('command','insert','overwrite'):
             self.unboundKeyAction = defaultAction
         else:
             g.trace('ignoring top_level_unbound_key_action setting: %s' % defaultAction)
@@ -2629,10 +2629,10 @@ class keyHandlerClass:
     #@-node:ekr.20050920085536.48:repeatComplexCommand & helper
     #@+node:ekr.20060105132013:set-xxx-State
     def setIgnoreState (self,event):
-        '''Enter the 'ignore' editing state.'''
+        '''Enter the 'command' editing state.'''
         # g.trace(g.callers())
         k = self
-        k.setInputState('ignore',showState=True)
+        k.setInputState('command',showState=True)
     
     def setInsertState (self,event):
         '''Enter the 'insert' editing state.'''
@@ -2657,11 +2657,11 @@ class keyHandlerClass:
         state = k.unboundKeyAction
         
         if default == 'insert':
-            state = g.choose(state=='insert','ignore','insert')
+            state = g.choose(state=='insert','command','insert')
         elif default == 'overwrite':
-            state = g.choose(state=='overwrite','ignore','overwrite')
+            state = g.choose(state=='overwrite','command','overwrite')
         else:
-            state = g.choose(state=='ignore','insert','ignore') # prefer insert to overwrite.
+            state = g.choose(state=='command','insert','command') # prefer insert to overwrite.
             
         k.setInputState(state)
     #@nonl
@@ -3587,7 +3587,7 @@ class keyHandlerClass:
         # g.trace(state,g.callers())
         k.unboundKeyAction = state
         k.showStateAndMode()
-        assert state in ('insert','ignore','overwrite')
+        assert state in ('insert','command','overwrite')
         
         if w and state == 'insert':
             try: w.configure(bg=k.insert_mode_bg_color)
@@ -3595,7 +3595,7 @@ class keyHandlerClass:
             try: w.configure(fg=k.insert_mode_fg_color)
             except Exception: pass
     
-        elif w and state == 'ignore':
+        elif w and state == 'command':
             try: w.configure(bg=k.ignore_mode_bg_color)
             except Exception: pass
             try: w.configure(fg=k.ignore_mode_fg_color)
