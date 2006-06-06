@@ -3149,8 +3149,8 @@ class keyHandlerClass:
             #@-node:ekr.20060321105403.2:<< handle mode bindings >>
             #@nl
             
-        if stroke and k.isPlainKey(stroke) and k.unboundKeyAction == 'insert':
-            # insert normal character.
+        if stroke and k.isPlainKey(stroke) and k.unboundKeyAction in ('insert','overwrite'):
+            # insert/overwrite normal character.
             # g.trace('plain key in insert mode',stroke)
             return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
         else:
