@@ -790,9 +790,9 @@ class leoFind:
         return pos, newpos
     #@nonl
     #@+node:ekr.20060526081931:Search helpers...
-    def searchHelper (self,s,i,j,pattern,backwards,nocase,regexp,word):
+    def searchHelper (self,s,i,j,pattern,backwards,nocase,regexp,word,swapij=True):
         
-        if backwards: i,j = j,i
+        if swapij and backwards: i,j = j,i
             
         # g.trace(backwards,i,j,repr(s[i:i+20]))
     
@@ -846,27 +846,26 @@ class leoFind:
     #@+node:ekr.20060526140744:backwardsHelper
     def backwardsHelper (self,s,i,j,pattern,nocase,word):
     
-        # g.trace(repr(s[i-20: i]))
-    
         if nocase:
             s = s.lower() ; pattern.lower()
     
+        n = len(pattern)
         if word:
-            n = len(pattern)
             while 1:
                 k = s.rfind(pattern,i,j)
                 # g.trace(i,j,k)
                 if k == -1: return -1, -1
                 if self.matchWord(s,k,pattern):
-                    return max(0,k-n+1),k+1, 
+                    return k,k+n
                 else:
-                    j = max(0,k-n)
+                    j = max(0,k-1)
         else:
             k = s.rfind(pattern,i,j)
+            # g.trace(i,j,k)
             if k == -1:
                 return -1, -1
             else:
-                return max(0,k-n+1),k+1, 
+                return k,k+n
     #@nonl
     #@-node:ekr.20060526140744:backwardsHelper
     #@+node:ekr.20060526093531:plainHelper

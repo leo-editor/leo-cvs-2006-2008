@@ -7563,7 +7563,7 @@ class searchCommandsClass (baseEditCommandsClass):
     '''Implements many kinds of searches.'''
 
     #@    @+others
-    #@+node:ekr.20050920084036.258: ctor
+    #@+node:ekr.20050920084036.258: ctor (searchCommandsClass)
     def __init__ (self,c):
         
         # g.trace('searchCommandsClass')
@@ -7572,14 +7572,17 @@ class searchCommandsClass (baseEditCommandsClass):
         
         self.findTabHandler = None
         self.minibufferFindHandler = None
-        self.stack = [] # A stack of previous matches.
         
         try:
             self.w = c.frame.body.bodyCtrl
         except AttributeError:
             self.w = None
+            
+        self.ifinder = leoFind.leoFind(c,title='ifinder')
+        self.isearch_v = None # vnode of last isearch.
+        self.isearch_stack = [] # A stack of previous matches: entries are: (sel,insert)
     #@nonl
-    #@-node:ekr.20050920084036.258: ctor
+    #@-node:ekr.20050920084036.258: ctor (searchCommandsClass)
     #@+node:ekr.20050920084036.259:getPublicCommands (searchCommandsClass)
     def getPublicCommands (self):
         
@@ -7881,11 +7884,13 @@ class searchCommandsClass (baseEditCommandsClass):
         self.forward = forward
         self.regexp = regexp
         
-        old_i = w.index('insert')
-        old_p = c.currentPosition()
-        self.stack = [g.Bunch(insert=old_i,p=old_p)]
+        ins = g.app.gui.getInsertPoint(w)
+        sel = g.app.gui.getSelectionRange(w) or (ins,ins),
+        self.isearch_stack = [(sel,ins),]
     
-        k.setLabelBlue('isearch: ',protect=True)
+        k.setLabelBlue('Isearch%s%s: ' % (
+            g.choose(forward,'',' Backward'),
+            g.choose(regexp,' Regexp','')),protect=True)
         k.setState('isearch',1,handler=self.iSearchStateHandler)
         c.minibufferWantsFocusNow()
     #@nonl
@@ -7893,21 +7898,29 @@ class searchCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20060420144640:iSearchBackspace
     def iSearchBackspace (self):
         
-        c = self.c ; k = self.k ; w = self.w
+        c = self.c ; k = self.k ; gui = g.app.gui ; w = self.w
         
-        b = self.stack.pop()
-        g.trace(b.insert)
+        if not self.isearch_stack:
+            ins = gui.getInsertPoint(w)
+            self.endSearch(ins,ins)
+            return 
+        
+        gui.set_focus(c,w)
+        pattern = k.getLabel(ignorePrompt=True)
+        self.scolorizer(event=None,pattern=pattern)
     
-        c.selectPosition(b.p)
-        w.mark_set('insert',b.insert)
-        w.see('insert')
-        w.update_idletasks()
+        sel,ins = self.isearch_stack.pop()
         
-        if self.stack:
-            self.scolorizer(event=None,pattern=b.pattern)
+        if sel:
+            i,j = sel
+            gui.setTextSelection(w,i,j,insert=ins)
         else:
-            self.stack.append(b)
-            w.tag_delete('color','color1')
+            gui.setInsertPoint(w,ins)
+    
+        w.see('insert')
+        
+        if not self.isearch_stack:
+            self.endSearch(ins,ins)
     #@nonl
     #@-node:ekr.20060420144640:iSearchBackspace
     #@+node:ekr.20050920084036.264:iSearchStateHandler
@@ -7984,43 +7997,39 @@ class searchCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20050920084036.263:iSearchHelper
     def iSearchHelper (self,event):
     
-        '''This method moves the insert spot to position that matches the pattern in the miniBuffer'''
+        '''Move the cursor to position that matches the pattern in the miniBuffer.
+        isearches do not cross node boundaries.'''
         
-        c = self.c ; k = self.k ; w = self.w
+        c = self.c ; gui = g.app.gui ; k = self.k ; w = self.w
+        p = c.currentPosition() ;
         self.searchString = pattern = k.getLabel(ignorePrompt=True)
         if not pattern: return
-        stopindex = g.choose(self.forward,'end','1.0')
-        startindex = g.choose(self.forward,'1.0','end')
-        p1 = c.currentPosition() ; p = p1.copy() ; old_p = p.copy()
-        old_ins = w.index('insert') # This must *not* be changed in the loop.
-        w.mark_set('insert',startindex)
-        while 1:
-            try:
-                i = w.search(pattern,old_ins,backwards=not self.forward,stopindex=stopindex,regexp=self.regexp)
-                # Don't call endSearch here.  We'll do that when the user hits return.
-                g.trace(repr(i))
-                if not i.isspace():
-                    w.mark_set('insert',i)
-                    # if self.forward:
-                        # w.mark_set('insert',i)
-                    # else:
-                        # w.mark_set('insert',i+'-%dc'%(len(pattern)))
-                    w.see('insert')
-                    self.stack.append(g.Bunch(insert=old_ins,p=old_p,pattern=pattern[:-1]))
-                    # g.trace('found',old_ins,i)
-                    return   
-            except: pass # g.es_exception()
-            # old_p = p.copy()
-            if self.forward: p.moveToThreadNext()
-            else:            p.moveToThreadBack()
-            if not p: break
-            g.trace('searching',p.headString())
-            c.selectPosition(p)
-            w.mark_set('insert','1.0')
-            w.update_idletasks()
-            # if not self.forward:
-                # w.mark_set('insert','end')
-        c.selectPosition(p1)
+        s = gui.getAllText(w)
+    
+        if self.isearch_v != p.v:
+            self.isearch_v = p.v
+            self.isearch_stack = []
+    
+        sel = gui.getSelectionRange(w)
+        startindex = insert = gui.getInsertPoint(w)
+        
+        if self.forward:
+            i1 = gui.toPythonIndex(s,w,startindex)
+            j1 = len(s)
+        else:
+            i1 = 0
+            j1 = min(len(s),gui.toPythonIndex(s,w,startindex) + len(pattern))
+        
+        i,j = self.ifinder.searchHelper(s,i1,j1,pattern,
+            backwards=not self.forward,nocase=False,regexp=self.regexp,word=False,swapij=False)
+    
+        if i != -1:
+            self.isearch_stack.append((sel,insert),)
+            pos    = gui.toGuiIndex(s,w,i)
+            newpos = gui.toGuiIndex(s,w,j)
+            # g.trace(i1,j1,i,j,pos,newpos)
+            gui.set_focus(c,w)
+            gui.setTextSelection(w,pos,newpos,insert=pos)
     #@nonl
     #@-node:ekr.20050920084036.263:iSearchHelper
     #@+node:ekr.20060203072636:endSearch
@@ -8028,7 +8037,8 @@ class searchCommandsClass (baseEditCommandsClass):
     
         w = self.w
         w.tag_delete('color','color1')
-        g.app.gui.setTextSelection (self.w,i,j,insert='sel.end')
+        insert = g.choose(self.forward,'sel.end','sel.start')
+        g.app.gui.setTextSelection (self.w,i,j,insert=insert)
         self.k.keyboardQuit(event=None)
     #@nonl
     #@-node:ekr.20060203072636:endSearch
