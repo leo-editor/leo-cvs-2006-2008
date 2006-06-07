@@ -1053,6 +1053,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
             
             self.c = c
             
+            self.buttons = {} # Keys
             self.iconFrame = Tk.Frame(
                 parentFrame,height="5m",bd=2,relief="groove") # ,background='blue')
             self.parentFrame = parentFrame
@@ -1118,7 +1119,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
                 #@-node:ekr.20031218072017.3959:<< create a picture >>
                 #@nl
             elif text:
-                
                 b = Tk.Button(f,text=text,relief="groove",bd=2,command=command)
                 if sys.platform != 'darwin':
                     width = max(6,len(text))
@@ -1402,6 +1402,9 @@ class leoTkinterFrame (leoFrame.leoFrame):
     def createIconBar (self):
         self.callIconBar('show')
         return self.getIconBarObject() # For compatibility.
+        
+    def cycleIconBarFocus (self):
+        self.callIconBar('cycle')
     
     def hideIconBar (self):
         return self.callIconBar('hide')
@@ -2104,10 +2107,10 @@ class leoTkinterFrame (leoFrame.leoFrame):
         frame = self ; c = frame.c
     
         if c.get_focus() == frame.bodyCtrl:
-            c.treeWantsFocus()
+            c.treeWantsFocusNow()
         else:
             c.endEditing()
-            c.bodyWantsFocus()
+            c.bodyWantsFocusNow()
     #@nonl
     #@-node:ekr.20031218072017.3985:toggleActivePane
     #@+node:ekr.20031218072017.3986:cascade
