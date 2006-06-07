@@ -1402,9 +1402,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
     def createIconBar (self):
         self.callIconBar('show')
         return self.getIconBarObject() # For compatibility.
-        
-    def cycleIconBarFocus (self):
-        self.callIconBar('cycle')
     
     def hideIconBar (self):
         return self.callIconBar('hide')
