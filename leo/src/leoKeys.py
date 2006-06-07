@@ -85,6 +85,7 @@ import types
 #     Keys are scope names: 'all','text',etc. or mode names.
 #     Values are dicts:  keys are strokes, values are 
 # g.Bunch(commandName,func,pane,stroke)
+# 
 # k.masterGuiBindingsDict:
 #     Keys are strokes; value is a list of widgets for which stroke is bound.
 # 
@@ -3089,6 +3090,8 @@ class keyHandlerClass:
         
         k = self ; c = k.c
         trace = c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
+        
+        # g.trace(g.app.gui.widget_name(g.app.gui.get_focus(c)))
         if trace: g.trace(g.callers())
     
         val = self.masterKeyHandlerHelper(event,stroke,trace)
@@ -3195,7 +3198,7 @@ class keyHandlerClass:
             #@nl
             
         if stroke and k.isPlainKey(stroke) and k.unboundKeyAction in ('insert','overwrite'):
-            # insert/overwrite normal character.
+            # insert/overwrite normal character.  <Return> is *not* a normal character.
             # g.trace('plain key in insert mode',stroke)
             return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
         else:
@@ -3257,22 +3260,60 @@ class keyHandlerClass:
         return False
     #@nonl
     #@-node:ekr.20060309065445:handleMiniBindings
-    #@+node:ekr.20060120071949:isPlainKey
+    #@+node:ekr.20060120071949:isPlainKey & test
     def isPlainKey (self,shortcut):
         
         '''Return true if the shortcut refers to a plain (non-Alt,non-Ctl) key.'''
-        
-        shortcut = shortcut or ''
+    
+        k = self ; shortcut = shortcut or ''
         
         for s in ('Alt','Ctrl','Command'):
             if shortcut.find(s) != -1:
                 return False
         else:
-            shortcut = shortcut.lstrip('<').rstrip('>')
-            # There is no Shift prefix here: upper case letters are represented by themselves.
-            return len(shortcut) == 1
+            # Careful, allow bare angle brackets for unit tests.
+            if shortcut.startswith('<') and shortcut.endswith('>'):
+                shortcut = shortcut[1:-1]
+    
+            isPlain = (
+                len(shortcut) == 1 or
+                len(k.tkBindNamesInverseDict.get(shortcut,'')) == 1 or
+                # A hack: allow Return to be bound to command.
+                shortcut == 'Tab'
+            )
+            
+            # g.trace(isPlain,repr(shortcut))
+            return isPlain
     #@nonl
-    #@-node:ekr.20060120071949:isPlainKey
+    #@+node:ekr.20060606095344:test_isPlainKey
+    def test_isPlainKey (self):
+        
+        import string
+        
+        k = c.k # self is a dummy argument
+        
+        for ch in (string.printable):
+            if ch == '\n': continue # A special case.
+            assert k.isPlainKey(ch), 'wrong: not plain: %s' % (ch)
+            
+        special = (
+            'Return', # A special case.
+            'Begin','Break','Caps_Lock','Clear','Down','End','Escape',
+            'F1','F2','F3','F4','F5','F6','F7','F8','F9','F10','F11','F12',
+            'KP_Add', 'KP_Decimal', 'KP_Divide', 'KP_Enter', 'KP_Equal',
+            'KP_Multiply, KP_Separator,KP_Space, KP_Subtract, KP_Tab',
+            'KP_F1','KP_F2','KP_F3','KP_F4',
+            'KP_0','KP_1','KP_2','KP_3','KP_4','KP_5','KP_6','KP_7','KP_8','KP_9',
+            'Home','Left','Linefeed','Next','Num_Lock',
+            'PageDn','PageUp','Pause','Prior','Right','Up',
+            'Sys_Req',
+        )
+    
+        for ch in special:
+            assert not k.isPlainKey(ch), 'wrong: is plain: %s' % (ch)
+    #@nonl
+    #@-node:ekr.20060606095344:test_isPlainKey
+    #@-node:ekr.20060120071949:isPlainKey & test
     #@-node:ekr.20060127183752:masterKeyHandler & helper
     #@+node:ekr.20060129052538.2:masterClickHandler
     def masterClickHandler (self,event,func=None):
@@ -3912,22 +3953,32 @@ class keyHandlerClass:
     #@-node:ekr.20060114171910:traceBinding
     #@-node:ekr.20051002152108.1:Shared helpers
     #@+node:ekr.20060128092340:Shortcuts (keyHandler)
-    #@+node:ekr.20060120071949:isPlainKey
+    #@+node:ekr.20060120071949:isPlainKey & test
     def isPlainKey (self,shortcut):
         
         '''Return true if the shortcut refers to a plain (non-Alt,non-Ctl) key.'''
-        
-        shortcut = shortcut or ''
+    
+        k = self ; shortcut = shortcut or ''
         
         for s in ('Alt','Ctrl','Command'):
             if shortcut.find(s) != -1:
                 return False
         else:
-            shortcut = shortcut.lstrip('<').rstrip('>')
-            # There is no Shift prefix here: upper case letters are represented by themselves.
-            return len(shortcut) == 1
+            # Careful, allow bare angle brackets for unit tests.
+            if shortcut.startswith('<') and shortcut.endswith('>'):
+                shortcut = shortcut[1:-1]
+    
+            isPlain = (
+                len(shortcut) == 1 or
+                len(k.tkBindNamesInverseDict.get(shortcut,'')) == 1 or
+                # A hack: allow Return to be bound to command.
+                shortcut == 'Tab'
+            )
+            
+            # g.trace(isPlain,repr(shortcut))
+            return isPlain
     #@nonl
-    #@-node:ekr.20060120071949:isPlainKey
+    #@-node:ekr.20060120071949:isPlainKey & test
     #@+node:ekr.20060128081317:shortcutFromSetting
     def shortcutFromSetting (self,setting):
         
