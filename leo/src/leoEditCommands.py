@@ -2288,14 +2288,23 @@ class editCommandsClass (baseEditCommandsClass):
             k.getArg(event,tag,1,self.findCharacter,oneCharacter=True)
         else:
             ch = k.arg ; w = self.widget
-            i = w.index('insert')
             s = g.app.gui.getAllText(w)
+            i = w.index('insert')
             i = g.app.gui.toPythonIndex(s,w,i)
-            i = s.find(ch,i)
+            end = s.find('\n',i)
+            if end == -1: end = len(s)
+            j = s.find(ch,i,end)
             # g.trace(repr(ch),i,repr(s))
-            if i > -1:
-                i2 = g.app.gui.toGuiIndex(s,w,i)
+            if j > -1:
+                i2 = g.app.gui.toGuiIndex(s,w,j+1)
                 g.app.gui.setSelectionRange(w,i2,i2)
+            else:
+                # Try case insensitive match:
+                s = s.lower() ; ch = ch.lower()
+                j = s.find(ch,i,end)
+                if j > -1:
+                    i2 = g.app.gui.toGuiIndex(s,w,j+1)
+                    g.app.gui.setSelectionRange(w,i2,i2)
             k.resetLabel()
             k.clearState()
     #@nonl
@@ -3076,8 +3085,9 @@ class editCommandsClass (baseEditCommandsClass):
         '''
         c = self.c ; p = c.currentPosition()
         moveSpot = self.moveSpot
-        if extend or self.extendMode:
+        if extend:
             i, j = g.app.gui.getTextSelection(w)
+            # Reset the move spot if needed.
             if (
                 not moveSpot or p.v.t != self.moveSpotNode or
                 i == j or # A cute trick
@@ -3086,16 +3096,13 @@ class editCommandsClass (baseEditCommandsClass):
             ):
                 self.moveSpotNode = p.v.t
                 self.moveSpot = w.index(ins1)
-                self.moveCol = int(ins1.split('.')[1])
-                # g.trace('reset moveSpot',self.moveSpot)
+                self.setMoveCol(ins1)
             moveSpot = self.moveSpot
-            # g.trace(spot,moveSpot)
             if w.compare(spot,'<',moveSpot):
                 g.app.gui.setTextSelection(w,spot,moveSpot,insert=None)
             else:
                 g.app.gui.setTextSelection(w,moveSpot,spot,insert=None)
         else:
-            # Don't change the moveCol while extending: that would mess up the selection.
             if setSpot or not moveSpot:
                 self.setMoveCol(spot)
             g.app.gui.setTextSelection(w,spot,spot,insert=None)
@@ -3179,7 +3186,7 @@ class editCommandsClass (baseEditCommandsClass):
             spot = w.index('insert')
     
             # Handle the selection.
-            self.extendHelper(w,extend,ins1,spot,setSpot=True)
+            self.extendHelper(w,extend or self.extendMode,ins1,spot,setSpot=True)
             w.see(spot)
     #@nonl
     #@-node:ekr.20051218122116:moveToHelper
@@ -3317,7 +3324,10 @@ class editCommandsClass (baseEditCommandsClass):
         self.moveSpot = spot
         self.moveCol = int(spot.split('.')[1])
     
-        # g.trace('spot',self.moveSpot,'col',self.moveCol)
+        if 0:
+            g.trace(
+                # 'spot',self.moveSpot,
+                'col',self.moveCol)
     #@nonl
     #@-node:ekr.20060209095101:setMoveCol
     #@-node:ekr.20051218170358: helpers
