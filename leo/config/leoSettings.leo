@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="290" clone_windows="0"/>
 <globals body_outline_ratio="0.549828178694">
-	<global_window_position top="98" left="386" height="609" width="846"/>
+	<global_window_position top="98" left="386" height="552" width="846"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -44,7 +44,7 @@
 <v t="ekr.20060112104823"><vh>main</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" a="TV" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
@@ -170,7 +170,7 @@
 <v t="ekr.20060131071947"><vh>@bool trace_masterClickHandler = False</vh></v>
 <v t="ekr.20051126062525"><vh>@bool trace_masterCommand = False</vh></v>
 <v t="ekr.20060209045356"><vh>@bool trace_masterFocusHandler = False</vh></v>
-<v t="ekr.20060131071612"><vh>@bool trace_masterKeyHandler = True</vh></v>
+<v t="ekr.20060131071612"><vh>@bool trace_masterKeyHandler = False</vh></v>
 <v t="ekr.20060216091239"><vh>@bool trace_minibuffer = False</vh></v>
 <v t="ekr.20060121102627"><vh>@bool trace_modes = False</vh></v>
 <v t="ekr.20060306031258"><vh>@bool trace_onBodyChanged = False</vh></v>
@@ -332,6 +332,7 @@
 </v>
 </v>
 <v t="ekr.20060603215208"><vh>@keys EKR bindings: vim mode bindings</vh>
+<v t="ekr.20060608065207"><vh>Settings related to key bindings</vh>
 <v t="ekr.20060604080653" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
 <v t="ekr.20060605081712"><vh>@color command_mode_bg_color = MistyRose1</vh></v>
 <v t="ekr.20060605081712.1"><vh>@color command_mode_fg_color = black</vh></v>
@@ -339,6 +340,7 @@
 <v t="ekr.20060605081712.3"><vh>@color insert_mode_fg_color = black</vh></v>
 <v t="ekr.20060606085536"><vh>@color overwrite_mode_bg_color = azure2</vh></v>
 <v t="ekr.20060606085536.1"><vh>@color overwrite_mode_fg_color = black</vh></v>
+</v>
 <v t="ekr.20060603215208.4"><vh>Vim modes</vh>
 <v t="ekr.20060603223152.1"><vh>@mode file</vh></v>
 <v t="ekr.20060603215208.7" a="M"><vh>@mode gui</vh>
@@ -445,9 +447,9 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060512084639" a="TV"><vh>Recent</vh>
+<v t="ekr.20060512084639"><vh>Recent</vh>
 <v t="ekr.20060209045356"><vh>@bool trace_masterFocusHandler = False</vh></v>
-<v t="ekr.20060131071612"><vh>@bool trace_masterKeyHandler = True</vh></v>
+<v t="ekr.20060131071612"><vh>@bool trace_masterKeyHandler = False</vh></v>
 <v t="ekr.20060309022759"><vh>@bool trace_colorizer = False</vh></v>
 <v t="ekr.20060131071947"><vh>@bool trace_masterClickHandler = False</vh></v>
 <v t="ekr.20060121102627"><vh>@bool trace_modes = False</vh></v>
@@ -470,6 +472,7 @@
 </v>
 </v>
 <v t="ekr.20060603215208"><vh>@keys EKR bindings: vim mode bindings</vh>
+<v t="ekr.20060608065207"><vh>Settings related to key bindings</vh>
 <v t="ekr.20060604080653" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
 <v t="ekr.20060605081712"><vh>@color command_mode_bg_color = MistyRose1</vh></v>
 <v t="ekr.20060605081712.1"><vh>@color command_mode_fg_color = black</vh></v>
@@ -477,6 +480,7 @@
 <v t="ekr.20060605081712.3"><vh>@color insert_mode_fg_color = black</vh></v>
 <v t="ekr.20060606085536"><vh>@color overwrite_mode_bg_color = azure2</vh></v>
 <v t="ekr.20060606085536.1"><vh>@color overwrite_mode_fg_color = black</vh></v>
+</v>
 <v t="ekr.20060603215208.4"><vh>Vim modes</vh>
 <v t="ekr.20060603223152.1"><vh>@mode file</vh></v>
 <v t="ekr.20060603215208.7" a="M"><vh>@mode gui</vh>
@@ -1283,7 +1287,7 @@ end-of-line-extend-selection        = None
 equal-sized-panes                   = Alt-Shift-E
 escape                              = Escape
 eval-expression                     = Alt-colon
-eval-expression:                    = None
+eval-expression                     = None
 exchange-point-mark                 = None  # Should be Control-X Control-X.
 execute-script                      = None             # Ctrl-e conflicts with end-of-line
 exit-leo                            = Ctrl-Q
@@ -1914,7 +1918,7 @@ extract-section                     = None # Was Shift-Ctrl-e</t>
 <t tx="ekr.20060102102958.1"># name-last-kbd-macro               = None
 negative-argument                   = None      # Alt-minus conflicts with contract-all.
 new                                 = Ctrl-n    # Ctrl-n conflicts with next-line.
-newline-and-indent:                 = Control-j
+newline-and-indent                  = Control-j
 next-line                           ! text = DnArrow
 next-line-extend-selection          ! text = Shift-DnArrow
 number-command                      = None
@@ -2233,7 +2237,7 @@ eval-expression                     = None
 exchange-point-mark                 = None      # Should be Ctrl-X Ctrl-X.
 execute-script                      = None      # Ctrl-e conflicts with end-of-line
 exit-leo                            = Ctrl-Q
-exit-named-mode        
+exit-named-mode                     = None
 expand-all                          = None      # Alt-9: not useful enough.
 expand-and-go-right                 = None
 expand-next-level                   = Alt-=
@@ -2500,7 +2504,7 @@ move-past-close-extend-selection        = None</t>
 <t tx="ekr.20060112085643.1"># name-last-kbd-macro                   = None
 negative-argument                       = None      # Alt-minus conflicts with contract-all.
 new                                     = Ctrl-n    # Ctrl-n conflicts with next-line.
-newline-and-indent:                     = Control-j
+newline-and-indent                      = Control-j
 next-line                               = DnArrow
 next-line-extend-selection              = Shift-DnArrow
 number-command                          = None
@@ -2776,7 +2780,7 @@ move-outline-up                 = None         # Ctrl-U confllicts with universa
 move-past-close                 = Alt-parenright
 negative-argument               = Alt-minus
 new                             = None         # Ctrl-n conflicts with next-line.
-newline-and-indent:             = Control-j
+newline-and-indent              = Control-j
 next-line                       = Control-n
 next-line-extend-selection      = None
 number-command                  = None
@@ -3047,7 +3051,7 @@ move-past-close-extend-selection        = None</t>
 
 negative-argument                   = None
 new                                 = Ctrl-N
-newline-and-indent:                 = None
+newline-and-indent                  = None
 next-line                           ! text = DnArrow
 next-line-extend-selection          ! text = Shift-DnArrow
 number-command                      = None
@@ -3299,6 +3303,7 @@ isearch-backward                    = None
 isearch-backward-regexp             = None
 isearch-forward                     = None
 isearch-forward-regexp              = None
+isearch-with-present-options        = None
 jump-to-register                    = None
 keep-lines                          = None
 keyboard-quit                       = None
@@ -3334,7 +3339,7 @@ move-past-close-extend-selection    = None
 <t tx="ekr.20060112093227.2"># name-last-kbd-macro               = None
 negative-argument                   = None
 new                                 = None
-newline-and-indent:                 = None
+newline-and-indent                  = None
 next-line                           = None
 next-line-extend-selection          = None
 number-command                      = None
@@ -3638,8 +3643,8 @@ main()</t>
         line = line.strip()
         if line and not line.startswith('#'):
             commandName,shortcut = parser.parseShortcutLine(line)
-            if not shortcut:
-                g.es('In %s:\nmissing "=" in shortcut line:%s' % (
+            if not shortcut or shortcut.val is None:
+                g.es_print('In %s:\nmissing "=" in shortcut line:%s' % (
                     p.headString(),repr(line)),color='red')
             else:
                 shortcut2 = d.get(commandName)
@@ -4666,7 +4671,7 @@ kill-sentence
 kill-word
 move-past-close
 move-past-close-extend-selection
-newline-and-indent:
+newline-and-indent 
 next-line
 next-line-extend-selection
 paste-text
@@ -5249,7 +5254,7 @@ overwrite: Leo replaces the character at the cursor.</t>
 # Keyboard-quit sets the input state to the *default* input state
 # Specified by @strings top_level_unbound_key_action.
 
-toggle-input-state                  Alt-space # was: focus to tree.
+toggle-input-state                  = Alt-space # was: focus to tree.
 enter-quick-command-mode            = Alt-C # also c
 
 # repeat-complex-command            !command = ???
@@ -5266,7 +5271,8 @@ search-with-present-options         !command = f
 replace-string                      !command = Shift-f
 enter-gui-mode                      !command = g
 enter-help-mode                     !command = h
-isearch-forward                     !command = i
+#isearch-forward                     !command = i
+isearch-with-present-options        !command = i
 isearch-backward                    !command = Shift-i
 #                                   !command = j
 enter-kill-mode                     !command = k
@@ -5380,5 +5386,6 @@ azure2
 aquamarine1</t>
 <t tx="ekr.20060606085536.1"></t>
 <t tx="ekr.20060607182402"></t>
+<t tx="ekr.20060608065207"></t>
 </tnodes>
 </leo_file>
