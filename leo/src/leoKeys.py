@@ -1915,24 +1915,8 @@ class keyHandlerClass:
             g.trace('oops: ignoring mode binding',shortcut,commandName,g.callers())
             return False
         bunchList = k.bindingsDict.get(shortcut,[])
-        #@    << give warning and return if there is a serious redefinition >>
-        #@+node:ekr.20060114115648:<< give warning and return if there is a serious redefinition >>
-        for bunch in bunchList:
-            if ( bunch and
-                # not bunch.pane.endswith('-mode') and
-                bunch.pane != 'mini' and # Minibuffer bindings are completely separate.
-                (bunch.pane == pane or pane == 'all' or bunch.pane == 'all') and
-                commandName != bunch.commandName
-            ):
-                g.es_print('Ignoring redefinition of %s from %s to %s in %s' % (
-                    k.prettyPrintKey(shortcut),bunch.commandName,commandName,repr(pane)),
-                    color='blue')
-                return
-        #@nonl
-        #@-node:ekr.20060114115648:<< give warning and return if there is a serious redefinition >>
-        #@nl
-        #@    << trace bindings if enabled in leoSettings.leo >>
-        #@+node:ekr.20060114110141:<< trace bindings if enabled in leoSettings.leo >>
+        #@    << trace bindings >>
+        #@+node:ekr.20060114110141:<< trace bindings >>
         if c.config.getBool('trace_bindings'):
             theFilter = c.config.getString('trace_bindings_filter') or ''
             # g.trace(repr(theFilter))
@@ -1941,12 +1925,15 @@ class keyHandlerClass:
                 if not pane_filter or pane_filter.lower() == pane:
                     g.trace(pane,shortcut,commandName)
         #@nonl
-        #@-node:ekr.20060114110141:<< trace bindings if enabled in leoSettings.leo >>
+        #@-node:ekr.20060114110141:<< trace bindings >>
         #@nl
         try:
             k.bindKeyToDict(pane,shortcut,callback,commandName)
-            bunchList.append(
-                g.bunch(pane=pane,func=callback,commandName=commandName))
+            b = g.bunch(pane=pane,func=callback,commandName=commandName)
+            # Remove any previous definitions.
+            bunchList = [b for b in bunchList if b.commandName != commandName]
+            # Now append the new definition.
+            bunchList.append(b)
             shortcut = g.stripBrackets(shortcut.strip())
             # if shortcut.startswith('<Shift'): g.trace('ooops',shortcut,g.callers())
             k.bindingsDict [shortcut] = bunchList
@@ -1971,14 +1958,11 @@ class keyHandlerClass:
         
         if 0:
             g.trace('%-4s %-18s %-40s %s' % (
-                pane,repr(stroke),commandName,func and func.__name__)) # ,len(d.keys()))
+                pane,repr(stroke),commandName,func and func.__name__))
     
-        if d.get(stroke):
-            g.es_print('ignoring duplicate definition of %s to %s in %s' % (
-                stroke,commandName,pane), color='blue')
-        else:
-            d [stroke] = g.Bunch(commandName=commandName,func=func,pane=pane,stroke=stroke)
-            k.masterBindingsDict [pane] = d
+        # New in Leo 4.4.1: Allow redefintions.
+        d [stroke] = g.Bunch(commandName=commandName,func=func,pane=pane,stroke=stroke)
+        k.masterBindingsDict [pane] = d
     #@nonl
     #@-node:ekr.20060130093055:bindKeyToDict
     #@+node:ekr.20051008135051.1:bindOpenWith
