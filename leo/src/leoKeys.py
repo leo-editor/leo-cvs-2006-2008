@@ -3204,10 +3204,10 @@ class keyHandlerClass:
         
         for key,name in (
             # Order here is similar to bindtags order.
-            # ('command',None),
-            # ('insert',None),
-            # ('overwrite',None),
-            # ('body','body'),
+            ('command',None),
+            ('insert',None),
+            ('overwrite',None),
+            ('body','body'),
             ('text','head'), # Important: text bindings in head before tree bindings.
             ('tree','head'),
             ('tree','canvas'),
@@ -3216,7 +3216,7 @@ class keyHandlerClass:
             ('text',None), ('all',None),
         ):
             if (
-                # key in key_states and isPlain and k.unboundKeyAction == key or
+                key in key_states and isPlain and k.unboundKeyAction == key or
                 name and w_name.startswith(name) or
                 key == 'text' and g.app.gui.isTextWidget(w) or
                 key == 'all'
