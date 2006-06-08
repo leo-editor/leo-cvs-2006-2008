@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="24508" clone_windows="0"/>
 <globals body_outline_ratio="0.401820546164">
-	<global_window_position top="49" left="249" height="693" width="936"/>
+	<global_window_position top="49" left="249" height="674" width="936"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -46,7 +46,7 @@
 <v t="ekr.20060525110217"><vh>@@button rst-&gt;rst</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -144,8 +144,8 @@
 <v t="ekr.20050830080545"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20050831195331.2" a="E"><vh>Chapter 1: Installing Leo</vh>
-<v t="edream.110203163054.48" a="E"><vh>@rst html\install.html</vh>
+<v t="ekr.20050831195331.2"><vh>Chapter 1: Installing Leo</vh>
+<v t="edream.110203163054.48"><vh>@rst html\install.html</vh>
 <v t="ekr.20050901110110"><vh>@rst-no-head links</vh></v>
 <v t="edream.110203163054.49"><vh>System requirements</vh></v>
 <v t="edream.110203163054.50"><vh>How to install Leo on Linux</vh></v>
@@ -640,13 +640,13 @@
 </v>
 </v>
 </v>
-<v t="ekr.20050914132220"><vh>Other docs</vh>
-<v t="ekr.20050831184021.1"><vh>Documentation for rst3 plugin</vh>
-<v t="ekr.20050818163826"><vh>@rst html\rstplugin3.html</vh>
+<v t="ekr.20050914132220" a="E"><vh>Other docs</vh>
+<v t="ekr.20050831184021.1" a="E"><vh>Documentation for rst3 plugin</vh>
+<v t="ekr.20050818163826" a="E"><vh>@rst html\rstplugin3.html</vh>
 <v t="ekr.20050818163826.1"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20050818163826.2"><vh>Overview</vh></v>
 <v t="ekr.20050818163826.3"><vh>Comparison with previous rst plugins</vh></v>
-<v t="ekr.20050818163826.4"><vh>Options</vh>
+<v t="ekr.20050818163826.4" a="ETV"><vh>Options</vh>
 <v t="ekr.20050818163826.5"><vh>Options supporting the http plugin</vh></v>
 <v t="ekr.20050818163826.6"><vh>Options that set command names</vh></v>
 </v>
@@ -2731,7 +2731,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060608111953" a="ETV"><vh>@rst html\docModeOnlyTest.html</vh>
+<v t="ekr.20060608111953" a="E"><vh>@rst html\docModeOnlyTest.html</vh>
 <v t="ekr.20060608111953.1"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20060608111953.2"><vh>leoFind.py</vh>
 <v t="ekr.20060608111953.3"><vh>&lt;&lt; Theory of operation of find/change &gt;&gt;</vh></v>
@@ -14098,10 +14098,11 @@ You should see Leo's main window, something like this:
 <t tx="ekr.20050816073824">-------------
 
 |back| |leo| |next|</t>
-<t tx="ekr.20050818163826">.. August 14, 2005
+<t tx="ekr.20050818163826">.. June 8, 2006
 
 @ @rst-options
 code_mode=False
+doc_only_mode=False
 default_path =
 generate_rst=True
 http_server_support = False
@@ -14212,6 +14213,15 @@ code_mode (default: False)
     In code mode, the rst3 plugin automatically creates rST markup to display the body text as an
     rst code-block. In rst mode the rst3 simply copies the body text of the node to the output. That
     is, the plugin assumes that body text is already valid rST markup.
+    
+doc_only_mode (default: False)
+    True: process nodes in doc_only mode.
+    False: process nodes in rst mode or code_mode, depending on options.
+    In doc_only mode, the rst3 plugin outputs only regular doc parts and @ @rst-markup doc parts.
+    Headlines create section in doc_only mode only if
+    a\) the node contains a doc part or b\) the show_organizer_nodes option is in effect.
+    As always can use @ @rst-options for per-node control of the process,
+    especially node-by-node control of the show_organizer_nodes option.
 
 default_path (default: '')
     The path to be prepended to filenames given in root nodes.
@@ -14424,6 +14434,7 @@ For example, the root of the file that generated this documentation contains::
 
     @ @rst-options
     code_mode=False
+    doc_mode_only=False
     generate_rst=True
     show_organizer_nodes=True
     show_headlines=True

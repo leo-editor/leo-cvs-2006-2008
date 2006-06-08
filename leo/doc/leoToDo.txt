@@ -3,24 +3,6 @@
 #@+all
 #@+node:ekr.20060531161030:To do: B2
 #@+node:ekr.20060605173936:First
-#@+node:ekr.20060607164659:Use last shortcut defined
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3767016
-By: ktenney
-
->No. The message is simply saying that there are two shortcuts. One of them
-must be ignored.
-
-And the second one(the one in my file) is ignored,
-so the shortcut is not redefined, the first one
-encountered (in config/leoSettings.leo) is used.
-
-Would it be possible for the last encountered 
-definition to be the one used? (the one in my file)
-
-
-#@-node:ekr.20060607164659:Use last shortcut defined
 #@+node:ekr.20060605211837:Quick shortcuts
 cycle-focus
 disable-autocompleter
