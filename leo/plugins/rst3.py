@@ -43,7 +43,7 @@ http://webpages.charter.net/edreamleo/rstplugin3.html
 
 from __future__ import generators # To make this plugin work with Python 2.2.
 
-__version__ = '1.14'
+__version__ = '1.15'
 
 #@<< imports >>
 #@+node:ekr.20050805162550.2:<< imports >>
@@ -84,6 +84,7 @@ except ImportError:
 #@<< change log >>
 #@+node:ekr.20050805162550.3:<< change log >>
 #@@nocolor
+#@@color
 #@+at
 # 
 # 1.0 EKR:
@@ -119,8 +120,8 @@ except ImportError:
 # - Better docstring for writeNodeToString.
 # 1.14 EKR: processTopTree ignores @rst- nodes so rst3 button works properly 
 # when such nodes are selected.
-# 
-#@@color
+# 1.15 EKR: added support for @rst-doc-only and doc_only_mode.  An important 
+# new feature.
 #@-at
 #@nonl
 #@-node:ekr.20050805162550.3:<< change log >>
@@ -601,6 +602,7 @@ class rstClass:
         
         # The options dictionary.
         self.optionsDict = {}
+        self.option_prefix = '@rst-option'
         
         # Formatting...
         self.code_block_string = ''
@@ -657,6 +659,7 @@ class rstClass:
     
         self.headlineCommands = [
             self.getOption('code_prefix'),
+            self.getOption('doc_only_prefix'),
             self.getOption('default_path_prefix'),
             self.getOption('rst_prefix'),
             self.getOption('ignore_headline_prefix'),
@@ -723,6 +726,7 @@ class rstClass:
             'rst3_write_intermediate_file': False, # Used only if generate_rst is True.
             # Mode options...
             'rst3_code_mode': False, # True: generate rst markup from @code and @doc parts.
+            'rst3_doc_only_mode': False, # True: generate only from @doc parts.
             'rst3_generate_rst': True, # True: generate rst markup.  False: generate plain text.
             # Formatting options that apply to both code and rst modes....
             'rst3_show_headlines': True,  # Can be set by @rst-no-head headlines.
@@ -734,8 +738,9 @@ class rstClass:
             'rst3_show_markup_doc_parts': False,
             'rst3_show_options_doc_parts': False,
             # Names of headline commands...
-            'rst3_code_prefix':             '@rst-code', # Enter code mode.
-            'rst3_rst_prefix':              '@rst',      # Enter rst mode.
+            'rst3_code_prefix':             '@rst-code',     # Enter code mode.
+            'rst3_doc_only_prefix':         '@rst-doc-only', # Enter doc-only mode.
+            'rst3_rst_prefix':              '@rst',          # Enter rst mode.
             'rst3_ignore_headline_prefix':  '@rst-no-head',
             'rst3_ignore_headlines_prefix': '@rst-no-headlines',
             'rst3_ignore_node_prefix':      '@rst-ignore-node',
@@ -860,8 +865,9 @@ class rstClass:
             
             for prefix,ivar,val in (
                 ('code_prefix','code_mode',True), # '@rst-code'
+                ('doc_mode_prefix','doc_only_mode',True), # @rst-doc-only.
                 ('default_path_prefix','default_prefix',''), # '@rst-default-path'
-                ('rst_prefix','code_mode',False), # '@rst'    
+                ('rst_prefix','code_mode',False), # '@rst'
                 ('ignore_headline_prefix','ignore_this_headline',True), # '@rst-no-head'
                 ('show_headline_prefix','show_this_headline',True), # '@rst-head'  
                 ('ignore_headlines_prefix','show_headlines',False), # '@rst-no-headlines'
@@ -874,6 +880,7 @@ class rstClass:
                     d = { ivar: val }
                     if ivar != 'code_mode':
                         d ['code_mode'] = False # Enter rst mode.
+                        d ['doc_only_mode'] = False
                     # Special case: Treat a bare @rst like @rst-no-head
                     if h == self.getOption('rst_prefix'):
                         d ['ignore_this_headline'] = True
@@ -1318,6 +1325,9 @@ class rstClass:
             if not self.getOption('show_leo_directives'):
                 lines = self.removeLeoDirectives(lines)
             lines = self.handleCodeMode(lines)
+        elif self.getOption('doc_only_mode'):
+            # New in version 1.15
+            lines = self.handleDocOnlyMode(p,lines)
         else:
             lines = self.handleSpecialDocParts(lines,'@rst-options',
                 retainContents=False)
@@ -1411,6 +1421,48 @@ class rstClass:
     #@nonl
     #@-node:ekr.20050813160208:finishCodePart
     #@-node:ekr.20050811150541:handleCodeMode & helper
+    #@+node:ekr.20060608094815:handleDocOnlyMode
+    def handleDocOnlyMode (self,p,lines):
+    
+        '''Handle the preprocessed body text in doc_only mode as follows:
+            
+        - Blank lines are copied after being cleaned.
+        - @ @rst-markup lines get copied as is.
+        - All doc parts get copied.
+        - All code parts are ignored.'''
+        
+        ignore              = self.getOption('ignore_this_headline')
+        showHeadlines       = self.getOption('show_headlines')
+        showThisHeadline    = self.getOption('show_this_headline')
+        showOrganizers      = self.getOption('show_organizer_nodes')
+    
+        result = [] ; n = 0
+        while n < len(lines):
+            s = lines [n] ; n += 1
+            if self.isSpecialDocPart(s,'@rst-options'):
+                n, lines2 = self.getDocPart(lines,n) # ignore.
+            elif self.isAnyDocPart(s):
+                # Handle any other doc part, including @rst-markup.
+                n, lines2 = self.getDocPart(lines,n)
+                if lines2: result.extend(lines2)
+        if not result: result = []
+        if result or showThisHeadline or showOrganizers or p == self.topNode:
+            # g.trace(len(result),p.headString())
+            self.writeHeadlineHelper(p)
+        return result
+    #@nonl
+    #@-node:ekr.20060608094815:handleDocOnlyMode
+    #@+node:ekr.20060608094815.1:isAnyDocPart
+    def isAnyDocPart (self,s):
+        
+        if s.startswith('@doc'):
+            return True
+        elif not s.startswith('@'):
+            return False
+        else:
+            return len(s) == 1 or s[1].isspace()
+    #@nonl
+    #@-node:ekr.20060608094815.1:isAnyDocPart
     #@+node:ekr.20050811153208:isSpecialDocPart
     def isSpecialDocPart (self,s,kind):
         
@@ -1517,23 +1569,36 @@ class rstClass:
     #@nonl
     #@-node:ekr.20050805162550.30:replaceCodeBlockDirectives
     #@-node:ekr.20050811101550.1:writeBody & helpers
-    #@+node:ekr.20050805162550.26:writeHeadline
+    #@+node:ekr.20050805162550.26:writeHeadline & helper
     def writeHeadline (self,p):
     
         '''Generate an rST section if options permit it.
         Remove headline commands from the headline first,
         and never generate an rST section for @rst-option and @rst-options.'''
-    
-        h = p.headString().strip()
+        
+        docOnly             =  self.getOption('doc_only_mode')
+        ignore              = self.getOption('ignore_this_headline')
+        showHeadlines       = self.getOption('show_headlines')
+        showThisHeadline    = self.getOption('show_this_headline')
+        showOrganizers      = self.getOption('show_organizer_nodes')
     
         if (
             p == self.topNode or
-            (not h and not self.getOption('show_organizer_nodes')) or
-            self.getOption('ignore_this_headline') or
-            (not self.getOption('show_headlines') and not self.getOption('show_this_headline')) or 
-            (not self.getOption('show_organizer_nodes') and not p.bodyString().strip())
+            ignore or
+            docOnly or # handleDocOnlyMode handles this.
+            not showHeadlines and not showThisHeadline or
+            # docOnly and not showOrganizers and not thisHeadline or
+            not p.headString().strip() and not showOrganizers or
+            not p.bodyString().strip() and not showOrganizers
         ):
             return
+            
+        self.writeHeadlineHelper(p)
+    #@nonl
+    #@+node:ekr.20060608102001:writeHeadlineHelper
+    def writeHeadlineHelper (self,p):
+        
+        h = p.headString().strip()
     
         # Remove any headline command before writing the 
         i = g.skip_id(h,0,chars='@-')
@@ -1555,7 +1620,8 @@ class rstClass:
         else:
             self.write('\n%s\n' % h)
     #@nonl
-    #@-node:ekr.20050805162550.26:writeHeadline
+    #@-node:ekr.20060608102001:writeHeadlineHelper
+    #@-node:ekr.20050805162550.26:writeHeadline & helper
     #@+node:ekr.20050811102607:skip_literal_block
     def skip_literal_block (self,lines,n):
         
