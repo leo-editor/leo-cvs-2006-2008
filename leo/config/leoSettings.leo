@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="290" clone_windows="0"/>
 <globals body_outline_ratio="0.549828178694">
-	<global_window_position top="98" left="386" height="552" width="846"/>
+	<global_window_position top="98" left="386" height="533" width="846"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -33,7 +33,7 @@
 <v t="ekr.20041119035704.3"><vh>@type type-name: base-type = [list of valid values]</vh></v>
 <v t="ekr.20041120155431.2"><vh>@type type-name: script: script-name</vh></v>
 </v>
-<v t="ekr.20060112110750"><vh>Buttons</vh>
+<v t="ekr.20060112110750" a="E"><vh>Buttons</vh>
 <v t="ekr.20051010093913" annotate="7d71002e"><vh>@button Save</vh></v>
 <v t="ekr.20051011123608" annotate="7d71002e"><vh>@@button align to col</vh></v>
 <v t="ekr.20060112103537.17"><vh>@button Check Bindings</vh>
@@ -44,7 +44,7 @@
 <v t="ekr.20060112104823"><vh>main</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" a="TV" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
@@ -356,7 +356,7 @@
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C) (to do: submodes)</vh></v>
 <v t="ekr.20060603223152.2"><vh>@mode toggle</vh></v>
 </v>
-<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
 <v t="ekr.20060604081014"><vh>@shortcuts top-level keys</vh></v>
 <v t="ekr.20060603215208.19"><vh>@shortcuts Find Commands</vh></v>
 <v t="ekr.20060603215208.20"><vh>@shortcuts Minibuffer bindings</vh></v>
@@ -471,7 +471,7 @@
 <v t="ekr.20041119050105.11"><vh>@bool wrap = False</vh></v>
 </v>
 </v>
-<v t="ekr.20060603215208"><vh>@keys EKR bindings: vim mode bindings</vh>
+<v t="ekr.20060603215208" a="E"><vh>@keys EKR bindings: vim mode bindings</vh>
 <v t="ekr.20060608065207"><vh>Settings related to key bindings</vh>
 <v t="ekr.20060604080653" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
 <v t="ekr.20060605081712"><vh>@color command_mode_bg_color = MistyRose1</vh></v>
@@ -496,9 +496,9 @@
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C) (to do: submodes)</vh></v>
 <v t="ekr.20060603223152.2"><vh>@mode toggle</vh></v>
 </v>
-<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
 <v t="ekr.20060604081014"><vh>@shortcuts top-level keys</vh></v>
-<v t="ekr.20060603215208.19"><vh>@shortcuts Find Commands</vh></v>
+<v t="ekr.20060603215208.19" a="TV"><vh>@shortcuts Find Commands</vh></v>
 <v t="ekr.20060603215208.20"><vh>@shortcuts Minibuffer bindings</vh></v>
 <v t="ekr.20060603215208.21" annotate="7d71002e"><vh>@shortcuts EKR: A-E</vh></v>
 <v t="ekr.20060603215208.22"><vh>@shortcuts EKR: F-M</vh></v>
@@ -4980,6 +4980,7 @@ isearch-backward                    = None
 isearch-backward-regexp             = None
 isearch-forward                     = None
 isearch-forward-regexp              = None
+isearch-with-present-options        = Alt-i
 query-replace                       = None
 query-replace-regex                 = None
 search-backward                     = None
@@ -5141,8 +5142,6 @@ hide-pane                           = None
 indent-region                       = Ctrl-]
 insert-newline                      = None # = Return # for MacOs X.
 insert-node                         = Ctrl-I
-isearch-forward                     = Alt-I
-isearch-backward                    = Alt-R
 keyboard-quit                       = Ctrl-g
 kill-line                           ! text = Shift-Ctrl-k  # Ctrl-K
 kill-region-save                    = Alt-w 	   # Ctrl-w
@@ -5271,7 +5270,7 @@ search-with-present-options         !command = f
 replace-string                      !command = Shift-f
 enter-gui-mode                      !command = g
 enter-help-mode                     !command = h
-#isearch-forward                     !command = i
+#isearch-forward                    !command = i
 isearch-with-present-options        !command = i
 isearch-backward                    !command = Shift-i
 #                                   !command = j

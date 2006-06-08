@@ -21,21 +21,6 @@ definition to be the one used? (the one in my file)
 
 
 #@-node:ekr.20060607164659:Use last shortcut defined
-#@+node:ekr.20060608060052:Add doc-only option to rst3
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3767601
-Craig
-
-I have an @thin file with @Doc and @Code sections scattered though out the tree,
-where each node has one or more doc and code sections.
-
-I would like to be able to use the rst3 pluging to produce an html file containing
-only info from the doc sections, ignoring the code sections.
-
-Any ideas on how to atchieve this?
-#@nonl
-#@-node:ekr.20060608060052:Add doc-only option to rst3
 #@+node:ekr.20060605211837:Quick shortcuts
 cycle-focus
 disable-autocompleter
