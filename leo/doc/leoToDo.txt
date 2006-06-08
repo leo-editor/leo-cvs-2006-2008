@@ -3,19 +3,46 @@
 #@+all
 #@+node:ekr.20060531161030:To do: B2
 #@+node:ekr.20060605173936:First
-#@+node:ekr.20060606060425:Find command is broken!
-#@-node:ekr.20060606060425:Find command is broken!
-#@+node:ekr.20060606055618:Nothing has focus after file dialogs
-#@-node:ekr.20060606055618:Nothing has focus after file dialogs
+#@+node:ekr.20060607164659:Use last shortcut defined
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3767016
+By: ktenney
+
+>No. The message is simply saying that there are two shortcuts. One of them
+must be ignored.
+
+And the second one(the one in my file) is ignored,
+so the shortcut is not redefined, the first one
+encountered (in config/leoSettings.leo) is used.
+
+Would it be possible for the last encountered 
+definition to be the one used? (the one in my file)
+
+
+#@-node:ekr.20060607164659:Use last shortcut defined
+#@+node:ekr.20060608060052:Add doc-only option to rst3
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3767601
+Craig
+
+I have an @thin file with @Doc and @Code sections scattered though out the tree,
+where each node has one or more doc and code sections.
+
+I would like to be able to use the rst3 pluging to produce an html file containing
+only info from the doc sections, ignoring the code sections.
+
+Any ideas on how to atchieve this?
+#@nonl
+#@-node:ekr.20060608060052:Add doc-only option to rst3
 #@+node:ekr.20060605211837:Quick shortcuts
 cycle-focus
 disable-autocompleter
 disable-calltips.
 enable-autocompleter
 enable-calltips
-exchange-point-mark
 execute-script
-find-word
 kill-line
 scroll-outline-down-line
 scroll-outline-down-page
@@ -24,22 +51,31 @@ scroll-outline-up-page
 set-mark
 toggle-extend-mode
 transpose-lines
+
+New shortcuts:
+
+find-character
+exchange-point-mark
 #@nonl
 #@-node:ekr.20060605211837:Quick shortcuts
 #@+node:ekr.20060603184747:New commands for mouseless Leo
 @nocolor
 
-help-for-ignore-mode: shows top-level plain bindings.
+move-to-last-sibling, move-to-first-sibling, Alt-1, Alt-9?
 
-swap-focus: toggles between outline and body pane.
+** cycle focus must cycle through tabs.  (bind to Ctrl-t, Return is good enough for swapping focus).
 
-Commands that scroll present pane.
+help-for-command-mode: shows top-level plain bindings.
+
+Commands that scroll the *present* pane.
 
 find-character-extend-selection.
 
 repeat-complex-command and repeat counts for cursor moves!
 #@nonl
 #@-node:ekr.20060603184747:New commands for mouseless Leo
+#@+node:ekr.20060606084852:Script buttons should create press-xxx-button commands
+#@-node:ekr.20060606084852:Script buttons should create press-xxx-button commands
 #@+node:ekr.20060605212347:Minibuffer abbreviations:  ov = set-overwrite-mode
 #@-node:ekr.20060605212347:Minibuffer abbreviations:  ov = set-overwrite-mode
 #@-node:ekr.20060605173936:First
