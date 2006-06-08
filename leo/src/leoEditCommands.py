@@ -7579,9 +7579,13 @@ class searchCommandsClass (baseEditCommandsClass):
         except AttributeError:
             self.w = None
             
+        # For isearch commands.
         self.ifinder = leoFind.leoFind(c,title='ifinder')
         self.isearch_v = None # vnode of last isearch.
         self.isearch_stack = [] # A stack of previous matches: entries are: (sel,insert)
+        self.ignoreCase = None
+        self.forward = None
+        self.regexp = None
     #@nonl
     #@-node:ekr.20050920084036.258: ctor (searchCommandsClass)
     #@+node:ekr.20050920084036.259:getPublicCommands (searchCommandsClass)
@@ -7864,23 +7868,23 @@ class searchCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20050920084036.261:incremental search...
     def isearchForward (self,event):
         '''Begin a forward incremental search.'''
-        self.startIncremental(event,forward=True,regexp=False)
+        self.startIncremental(event,forward=True,ignoreCase=False,regexp=False)
         
     def isearchBackward (self,event):
         '''Begin a backward incremental search.'''
-        self.startIncremental(event,forward=False,regexp=False)
+        self.startIncremental(event,forward=False,ignoreCase=False,regexp=False)
         
     def isearchForwardRegexp (self,event):
         '''Begin a forward incremental regexp search.'''
-        self.startIncremental(event,forward=True,regexp=True)
+        self.startIncremental(event,forward=True,ignoreCase=False,regexp=True)
         
     def isearchBackwardRegexp (self,event):
         '''Begin a backard incremental regexp search.'''
-        self.startIncremental(event,forward=False,regexp=True)
+        self.startIncremental(event,forward=False,ignoreCase=False,regexp=True)
         
     def isearchWithPresentOptions (self,event):
         '''Begin an incremental regexp search using the regexp and reverse options from the find panel.'''
-        self.startIncremental(event,forward=None,regexp=None)
+        self.startIncremental(event,forward=None,ignoreCase=None,regexp=None)
     #@nonl
     #@+node:ekr.20060420144640:iSearchBackspace
     def iSearchBackspace (self):
@@ -7911,7 +7915,7 @@ class searchCommandsClass (baseEditCommandsClass):
     #@nonl
     #@-node:ekr.20060420144640:iSearchBackspace
     #@+node:ekr.20050920084036.262:startIncremental
-    def startIncremental (self,event,forward,regexp):
+    def startIncremental (self,event,forward,ignoreCase,regexp):
     
         c = self.c ; k = self.k ; w = self.w
         
@@ -7921,19 +7925,25 @@ class searchCommandsClass (baseEditCommandsClass):
             if not self.minibufferFindHandler:
                 self.minibufferFindHandler = minibufferFind(c,self.findTabHandler)
             getOption = self.minibufferFindHandler.getOption
+            # g.trace('reverse',getOption('reverse'))
+            # g.trace('pattern',getOption('pattern_match'))
         else:
             getOption = lambda a: False # The value isn't used.
     
-        self.forward = g.choose(forward is None,not getOption('reverse'),forward)
-        self.regexp  = g.choose(regexp  is None,getOption('pattern_match'),regexp)
+        self.forward    = g.choose(forward is None,not getOption('reverse'),forward)
+        self.ignoreCase = g.choose(ignoreCase is None,getOption('ignore_case'),ignoreCase)
+        self.regexp     = g.choose(regexp  is None,getOption('pattern_match'),regexp)
+        # Note: the word option can't be used with isearches!
         
         ins = g.app.gui.getInsertPoint(w)
         sel = g.app.gui.getSelectionRange(w) or (ins,ins),
         self.isearch_stack = [(sel,ins),]
     
-        k.setLabelBlue('Isearch%s%s: ' % (
-            g.choose(forward,'',' Backward'),
-            g.choose(regexp,' Regexp','')),protect=True)
+        k.setLabelBlue('Isearch%s%s%s: ' % (
+                g.choose(self.forward,'',' Backward'),
+                g.choose(self.regexp,' Regexp',''),
+                g.choose(self.ignoreCase,' NoCase',''),
+            ),protect=True)
         k.setState('isearch',1,handler=self.iSearchStateHandler)
         c.minibufferWantsFocusNow()
     #@nonl
@@ -7952,20 +7962,11 @@ class searchCommandsClass (baseEditCommandsClass):
         ch = event.char
         if keysym == 'Control_L': return
         
-        c.bodyWantsFocus()
-        
-        # g.trace('keysym',keysym)
-        
-        if 0: # Useful, but presently conflicts with other bindings.
-            if k.stroke == '<Control-s>':
-                self.startIncremental(event,forward=True,regexp=False)
-            elif k.stroke == '<Control-r>':
-                self.startIncremental(event,forward=False,regexp=False)
-    
+        c.bodyWantsFocusNow()
         if keysym == 'Return':
-            s = self.searchString
-            i = w.index('insert')
-            j = w.index('insert +%sc' % len(s))
+            sel = g.app.gui.getSelectionRange(w)
+            if sel: i,j = sel
+            else:   i = j = g.app.gui.getInsertPoint(w)
             if not self.forward: i,j = j,i
             self.endSearch(i,j)
         elif keysym == 'BackSpace':
@@ -8036,7 +8037,11 @@ class searchCommandsClass (baseEditCommandsClass):
             j1 = min(len(s),gui.toPythonIndex(s,w,startindex) + len(pattern))
         
         i,j = self.ifinder.searchHelper(s,i1,j1,pattern,
-            backwards=not self.forward,nocase=False,regexp=self.regexp,word=False,swapij=False)
+            backwards=not self.forward,
+            nocase=self.ignoreCase,
+            regexp=self.regexp,
+            word=False, # Incremental word-matches are not possible!
+            swapij=False)
     
         if i != -1:
             self.isearch_stack.append((sel,insert),)
