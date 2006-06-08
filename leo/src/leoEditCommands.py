@@ -5186,17 +5186,18 @@ class killBufferCommandsClass (baseEditCommandsClass):
     
     def killRegionHelper (self,event,deleteFlag):
     
-        w = event.widget ; theRange = w.tag_ranges('sel')
+        w = event.widget
     
-        if len(theRange) != 0:
-            s = w.get(theRange[0],theRange[-1])
-            if deleteFlag:
-                w.delete(theRange[0],theRange[-1])
-            self.addToKillBuffer(s)
-            w.clipboard_clear()
-            w.clipboard_append(s)
-    
-        self.removeRKeys(w)
+        if g.app.gui.isTextWidget(w):
+            theRange = w.tag_ranges('sel')
+            if theRange:
+                s = w.get(theRange[0],theRange[-1])
+                if deleteFlag:
+                    w.delete(theRange[0],theRange[-1])
+                self.addToKillBuffer(s)
+                w.clipboard_clear()
+                w.clipboard_append(s)
+                self.removeRKeys(w)
     #@nonl
     #@-node:ekr.20050920084036.182:killRegion & killRegionSave & helper
     #@+node:ekr.20050930095323.1:killSentence
@@ -7603,6 +7604,7 @@ class searchCommandsClass (baseEditCommandsClass):
             'isearch-backward':                     self.isearchBackward,
             'isearch-forward-regexp':               self.isearchForwardRegexp,
             'isearch-backward-regexp':              self.isearchBackwardRegexp,
+            'isearch-with-present-options':         self.isearchWithPresentOptions,
                         
             'open-find-tab':                        self.openFindTab,
         
@@ -7875,26 +7877,11 @@ class searchCommandsClass (baseEditCommandsClass):
     def isearchBackwardRegexp (self,event):
         '''Begin a backard incremental regexp search.'''
         self.startIncremental(event,forward=False,regexp=True)
-    #@nonl
-    #@+node:ekr.20050920084036.262:startIncremental
-    def startIncremental (self,event,forward,regexp):
-    
-        c = self.c ; k = self.k ; w = self.w
         
-        self.forward = forward
-        self.regexp = regexp
-        
-        ins = g.app.gui.getInsertPoint(w)
-        sel = g.app.gui.getSelectionRange(w) or (ins,ins),
-        self.isearch_stack = [(sel,ins),]
-    
-        k.setLabelBlue('Isearch%s%s: ' % (
-            g.choose(forward,'',' Backward'),
-            g.choose(regexp,' Regexp','')),protect=True)
-        k.setState('isearch',1,handler=self.iSearchStateHandler)
-        c.minibufferWantsFocusNow()
+    def isearchWithPresentOptions (self,event):
+        '''Begin an incremental regexp search using the regexp and reverse options from the find panel.'''
+        self.startIncremental(event,forward=None,regexp=None)
     #@nonl
-    #@-node:ekr.20050920084036.262:startIncremental
     #@+node:ekr.20060420144640:iSearchBackspace
     def iSearchBackspace (self):
         
@@ -7923,6 +7910,34 @@ class searchCommandsClass (baseEditCommandsClass):
             self.endSearch(ins,ins)
     #@nonl
     #@-node:ekr.20060420144640:iSearchBackspace
+    #@+node:ekr.20050920084036.262:startIncremental
+    def startIncremental (self,event,forward,regexp):
+    
+        c = self.c ; k = self.k ; w = self.w
+        
+        # None is a signal to get the option from the find tab.
+        if forward is None or regexp is None:
+            self.openFindTab(show=False)
+            if not self.minibufferFindHandler:
+                self.minibufferFindHandler = minibufferFind(c,self.findTabHandler)
+            getOption = self.minibufferFindHandler.getOption
+        else:
+            getOption = lambda a: False # The value isn't used.
+    
+        self.forward = g.choose(forward is None,not getOption('reverse'),forward)
+        self.regexp  = g.choose(regexp  is None,getOption('pattern_match'),regexp)
+        
+        ins = g.app.gui.getInsertPoint(w)
+        sel = g.app.gui.getSelectionRange(w) or (ins,ins),
+        self.isearch_stack = [(sel,ins),]
+    
+        k.setLabelBlue('Isearch%s%s: ' % (
+            g.choose(forward,'',' Backward'),
+            g.choose(regexp,' Regexp','')),protect=True)
+        k.setState('isearch',1,handler=self.iSearchStateHandler)
+        c.minibufferWantsFocusNow()
+    #@nonl
+    #@-node:ekr.20050920084036.262:startIncremental
     #@+node:ekr.20050920084036.264:iSearchStateHandler
     # Called when from the state manager when the state is 'isearch'
     
