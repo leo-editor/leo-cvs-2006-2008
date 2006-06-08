@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="290" clone_windows="0"/>
 <globals body_outline_ratio="0.549828178694">
-	<global_window_position top="98" left="386" height="583" width="862"/>
+	<global_window_position top="98" left="386" height="609" width="846"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -37,7 +37,7 @@
 <v t="ekr.20051010093913" annotate="7d71002e"><vh>@button Save</vh></v>
 <v t="ekr.20051011123608" annotate="7d71002e"><vh>@@button align to col</vh></v>
 <v t="ekr.20060112103537.17"><vh>@button Check Bindings</vh>
-<v t="ekr.20060112104119"><vh>&lt;&lt; define setNames &gt;&gt;</vh></v>
+<v t="ekr.20060112104119"><vh>defineSetNames</vh></v>
 <v t="ekr.20060112104333"><vh>doSet</vh></v>
 <v t="ekr.20060112105523"><vh>doShortcuts</vh></v>
 <v t="ekr.20060112104333.1"><vh>checkSets</vh></v>
@@ -170,7 +170,7 @@
 <v t="ekr.20060131071947"><vh>@bool trace_masterClickHandler = False</vh></v>
 <v t="ekr.20051126062525"><vh>@bool trace_masterCommand = False</vh></v>
 <v t="ekr.20060209045356"><vh>@bool trace_masterFocusHandler = False</vh></v>
-<v t="ekr.20060131071612"><vh>@bool trace_masterKeyHandler = False</vh></v>
+<v t="ekr.20060131071612"><vh>@bool trace_masterKeyHandler = True</vh></v>
 <v t="ekr.20060216091239"><vh>@bool trace_minibuffer = False</vh></v>
 <v t="ekr.20060121102627"><vh>@bool trace_modes = False</vh></v>
 <v t="ekr.20060306031258"><vh>@bool trace_onBodyChanged = False</vh></v>
@@ -206,7 +206,7 @@
 <v t="ekr.20041119050105.7"><vh>@bool mark_finds = False</vh></v>
 <v t="ekr.20041119050105.12"><vh>@bool node_only = False</vh></v>
 <v t="ekr.20041119050105.9"><vh>@bool reverse = False</vh></v>
-<v t="ekr.20041119050105.8"><vh>@bool pattern_match = True</vh></v>
+<v t="ekr.20041119050105.8"><vh>@bool pattern_match = False</vh></v>
 <v t="ekr.20041120152657"><vh>@bool script_change = None</vh></v>
 <v t="ekr.20041119050105.14"><vh>@bool search_body = True</vh></v>
 <v t="ekr.20041119050105.15"><vh>@bool search_headline = False</vh></v>
@@ -264,24 +264,26 @@
 <v t="ekr.20060303075452"><vh>Commands for mouseless Leo</vh></v>
 <v t="ekr.20060104093101" annotate="7d71002e"><vh>@ignore Unused key bindings</vh>
 <v t="ekr.20060122105527.4" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
-<v t="ekr.20060110141538" annotate="7d71002e"><vh>Default Emacs shortcuts</vh>
+<v t="ekr.20060110141538" annotate="7d71002e"><vh>@keys Default Emacs shortcuts</vh>
 <v t="ekr.20051007193321"><vh>@shortcuts Emacs: A-E</vh></v>
 <v t="ekr.20060112090844"><vh>@shortcuts Emacs: F-M</vh></v>
 <v t="ekr.20060112090844.1"><vh>@shortcuts Emads: N-Z</vh></v>
 <v t="ekr.20060112112006"><vh>@shortcuts Emacs: missing</vh></v>
 </v>
-<v t="ekr.20060103103812" annotate="7d71002e"><vh>Legacy Leo shortcuts with important Emacs bindings</vh>
+<v t="ekr.20060103103812" annotate="7d71002e"><vh>@keys Legacy Leo shortcuts with important Emacs bindings</vh>
 <v t="ekr.20060111082632.1"><vh>@shortcuts Legacy+: A-E</vh></v>
 <v t="ekr.20060112085643"><vh>@shortcuts Legacy+: F-M</vh></v>
 <v t="ekr.20060112085643.1"><vh>@shortcuts Legacy+: N-Z</vh></v>
 </v>
-<v t="ekr.20060110141538.2" annotate="7d71002e"><vh>Legacy Leo bindings</vh>
+<v t="ekr.20060110141538.2" annotate="7d71002e"><vh>@keys Legacy Leo bindings</vh>
 <v t="ekr.20051218203646" annotate="7d71002e"><vh>@shortcuts Legacy: A-E</vh></v>
 <v t="ekr.20060112090844.4"><vh>@shortcuts Legacy: F-M</vh></v>
 <v t="ekr.20060112090844.5"><vh>@shortcuts Legacy: N-Z</vh></v>
 </v>
-<v t="ekr.20060325091143"><vh>@shortcuts for groupoperations plugin</vh></v>
-<v t="ekr.20051010112558"><vh>EKR bindings: a mix of legacy Leo shortcuts with important Emacs bindings</vh>
+<v t="ekr.20060607182402"><vh>@keys groupoperstions plugin</vh>
+<v t="ekr.20060325091143"><vh>@shortcuts group-operations</vh></v>
+</v>
+<v t="ekr.20051010112558"><vh>@keys EKR bindings: a mix of legacy Leo shortcuts with important Emacs bindings</vh>
 <v t="ekr.20060122105438"><vh>To do</vh></v>
 <v t="ekr.20060122105438.1"><vh>Summary of Ctrl bindings</vh></v>
 <v t="ekr.20060115162748"><vh>Modes</vh>
@@ -301,7 +303,7 @@
 <v t="ekr.20060102102958.1" annotate="7d71002e"><vh>@shortcuts EKR: N-Z</vh></v>
 </v>
 </v>
-<v t="ekr.20060122105527"><vh>EKR bindings: Mode-oriented bindings + Emacs bindings</vh>
+<v t="ekr.20060122105527"><vh>@keys EKR bindings: Mode-oriented bindings + Emacs bindings</vh>
 <v t="ekr.20060604180807" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
 <v t="ekr.20060122105527.2"><vh>Summary of Ctrl bindings</vh></v>
 <v t="ekr.20060122105527.9"><vh>Modes</vh>
@@ -329,13 +331,15 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060603215208"><vh>EKR bindings: vim mode bindings</vh>
+<v t="ekr.20060603215208"><vh>@keys EKR bindings: vim mode bindings</vh>
 <v t="ekr.20060604080653" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
-<v t="ekr.20060605081712"><vh>@color ignore_mode_bg_color = MistyRose1</vh></v>
-<v t="ekr.20060605081712.1"><vh>@color ignore_mode_fg_color = black</vh></v>
+<v t="ekr.20060605081712"><vh>@color command_mode_bg_color = MistyRose1</vh></v>
+<v t="ekr.20060605081712.1"><vh>@color command_mode_fg_color = black</vh></v>
 <v t="ekr.20060605081712.2"><vh>@color insert_mode_bg_color = white</vh></v>
 <v t="ekr.20060605081712.3"><vh>@color insert_mode_fg_color = black</vh></v>
-<v t="ekr.20060603215208.4" a="E"><vh>Vim modes</vh>
+<v t="ekr.20060606085536"><vh>@color overwrite_mode_bg_color = azure2</vh></v>
+<v t="ekr.20060606085536.1"><vh>@color overwrite_mode_fg_color = black</vh></v>
+<v t="ekr.20060603215208.4"><vh>Vim modes</vh>
 <v t="ekr.20060603223152.1"><vh>@mode file</vh></v>
 <v t="ekr.20060603215208.7" a="M"><vh>@mode gui</vh>
 <v t="ekr.20060603215208.8"><vh>@mode Edit-extend</vh></v>
@@ -350,7 +354,7 @@
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C) (to do: submodes)</vh></v>
 <v t="ekr.20060603223152.2"><vh>@mode toggle</vh></v>
 </v>
-<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
 <v t="ekr.20060604081014"><vh>@shortcuts top-level keys</vh></v>
 <v t="ekr.20060603215208.19"><vh>@shortcuts Find Commands</vh></v>
 <v t="ekr.20060603215208.20"><vh>@shortcuts Minibuffer bindings</vh></v>
@@ -359,7 +363,7 @@
 <v t="ekr.20060603215208.23" annotate="7d71002e"><vh>@shortcuts EKR: N-Z</vh></v>
 </v>
 </v>
-<v t="ekr.20060110141538.1" annotate="7d71002e"><vh>No bindings</vh>
+<v t="ekr.20060110141538.1" annotate="7d71002e"><vh>@keys No bindings</vh>
 <v t="ekr.20051218202206" annotate="7d71002e"><vh>@shortcuts No bindings: A-E</vh></v>
 <v t="ekr.20060112093227.1"><vh>@shortcuts No bindings: E-M</vh></v>
 <v t="ekr.20060112093227.2"><vh>@shortcuts No bindings: N-Z</vh></v>
@@ -441,23 +445,40 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060512084639"><vh>Recent</vh>
-<v t="ekr.20060131071612"><vh>@bool trace_masterKeyHandler = False</vh></v>
+<v t="ekr.20060512084639" a="TV"><vh>Recent</vh>
+<v t="ekr.20060209045356"><vh>@bool trace_masterFocusHandler = False</vh></v>
+<v t="ekr.20060131071612"><vh>@bool trace_masterKeyHandler = True</vh></v>
 <v t="ekr.20060309022759"><vh>@bool trace_colorizer = False</vh></v>
 <v t="ekr.20060131071947"><vh>@bool trace_masterClickHandler = False</vh></v>
 <v t="ekr.20060121102627"><vh>@bool trace_modes = False</vh></v>
 <v t="ekr.20060114073238"><vh>@bool trace_bindings = False</vh></v>
 <v t="ekr.20060216135834"><vh>@bool enable_autocompleter_initially = False</vh></v>
 <v t="ekr.20060603070801"><vh>@bool enable_calltips_initially = False</vh></v>
+<v t="ekr.20041119050105.3"><vh>Checkboxes</vh>
+<v t="ekr.20041119050105.4"><vh>@bool batch = False</vh></v>
+<v t="ekr.20041119050105.5"><vh>@bool ignore_case = True</vh></v>
+<v t="ekr.20041119050105.6"><vh>@bool mark_changes = False</vh></v>
+<v t="ekr.20041119050105.7"><vh>@bool mark_finds = False</vh></v>
+<v t="ekr.20041119050105.12"><vh>@bool node_only = False</vh></v>
+<v t="ekr.20041119050105.9"><vh>@bool reverse = False</vh></v>
+<v t="ekr.20041119050105.8"><vh>@bool pattern_match = False</vh></v>
+<v t="ekr.20041120152657"><vh>@bool script_change = None</vh></v>
+<v t="ekr.20041119050105.14"><vh>@bool search_body = True</vh></v>
+<v t="ekr.20041119050105.15"><vh>@bool search_headline = False</vh></v>
+<v t="ekr.20041119050105.10"><vh>@bool whole_word = False</vh></v>
+<v t="ekr.20041119050105.11"><vh>@bool wrap = False</vh></v>
 </v>
-<v t="ekr.20060603215208" a="E"><vh>EKR bindings: vim mode bindings</vh>
+</v>
+<v t="ekr.20060603215208"><vh>@keys EKR bindings: vim mode bindings</vh>
 <v t="ekr.20060604080653" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
-<v t="ekr.20060605081712"><vh>@color ignore_mode_bg_color = MistyRose1</vh></v>
-<v t="ekr.20060605081712.1"><vh>@color ignore_mode_fg_color = black</vh></v>
+<v t="ekr.20060605081712"><vh>@color command_mode_bg_color = MistyRose1</vh></v>
+<v t="ekr.20060605081712.1"><vh>@color command_mode_fg_color = black</vh></v>
 <v t="ekr.20060605081712.2"><vh>@color insert_mode_bg_color = white</vh></v>
 <v t="ekr.20060605081712.3"><vh>@color insert_mode_fg_color = black</vh></v>
-<v t="ekr.20060603215208.4" a="E"><vh>Vim modes</vh>
-<v t="ekr.20060603223152.1" a="V"><vh>@mode file</vh></v>
+<v t="ekr.20060606085536"><vh>@color overwrite_mode_bg_color = azure2</vh></v>
+<v t="ekr.20060606085536.1"><vh>@color overwrite_mode_fg_color = black</vh></v>
+<v t="ekr.20060603215208.4"><vh>Vim modes</vh>
+<v t="ekr.20060603223152.1"><vh>@mode file</vh></v>
 <v t="ekr.20060603215208.7" a="M"><vh>@mode gui</vh>
 <v t="ekr.20060603215208.8"><vh>@mode Edit-extend</vh></v>
 </v>
@@ -471,7 +492,7 @@
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C) (to do: submodes)</vh></v>
 <v t="ekr.20060603223152.2"><vh>@mode toggle</vh></v>
 </v>
-<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
 <v t="ekr.20060604081014"><vh>@shortcuts top-level keys</vh></v>
 <v t="ekr.20060603215208.19"><vh>@shortcuts Find Commands</vh></v>
 <v t="ekr.20060603215208.20"><vh>@shortcuts Minibuffer bindings</vh></v>
@@ -1289,7 +1310,8 @@ extract-names                       = Shift-Ctrl-N
 extract-section                     = Shift-Ctrl-E</t>
 <t tx="ekr.20051007200824">@nocolor
 
-This node contains 6 sets of key bindings and settings.
+This node contains sets of key bindings and settings.
+These sets should have headlines starting with @keys so that the Check Bindings script can find them.
 
 - The *inactive* sets should be children of the node '@ignore Unused key bindings'
 
@@ -2110,9 +2132,7 @@ warnings about duplicate bindings.
 
 - The Check Bindings script only checks for missing bindings in this set.</t>
 <t tx="ekr.20060110141538.2">@color</t>
-<t tx="ekr.20060111082632.1">@color
-
-# Important: the print-commands and print-bindings show what bindings are in effect.
+<t tx="ekr.20060111082632.1"># Important: the print-commands and print-bindings show what bindings are in effect.
 
 # append-next-kill                  = None      # Control-Alt-w
 # apply settings                    = None      # Does not exist yet.
@@ -3235,6 +3255,14 @@ goto-parent                         = None
 goto-prev-node                      = None
 goto-prev-sibling                   = None
 goto-prev-visible                   = None
+group-operations-clear-marked       = None
+group-operations-mark-for-clone     = None
+group-operations-mark-for-copy      = None
+group-operations-mark-for-move      = None
+group-operations-mark-target        = None
+group-operations-operate-on-marked  = None
+group-operations-transfer           = None
+toggle-input-state                  = None
 help                                = None
 hide-body-pane                      = None
 hide-find-tab                       = None
@@ -3492,39 +3520,60 @@ import leoTest
 u = leoTest.testUtils(c)
 parser = leoConfig.settingsTreeParser(c)
 
-&lt;&lt; define setNames &gt;&gt;
+# Add these as required to handle commands defined by plugins.
+optionalCommandPrefixes = ['group-operations']
+optionalCommandNames = []
 
+setNames = []
 setsDict = {} # keys are set names, values are dicts of command names.
 
 @others
 
 main()</t>
-<t tx="ekr.20060112104119">setNames = [
-    'Default Emacs shortcuts',
-    'Legacy Leo bindings',
-    'Legacy Leo shortcuts with important Emacs bindings',
-    'No bindings',
-    'EKR bindings: a mix',
-    'EKR bindings: Mode-oriented',
-]
-
-setNames.sort()</t>
-<t tx="ekr.20060112104333">def doSet(p,name):
+<t tx="ekr.20060112104119">def defineSetNames():
     
+    global setNames
+
+    if 1:
+        setNames = []
+        for p in c.allNodes_iter():
+            h = p.headString()
+            if h.startswith('@keys'):
+                h = h[5:].strip()
+                if h not in setNames:
+                    setNames.append(h)
+        g.es('Found these sets...')
+        for setName in setNames:
+            g.es_print('  %s' % str(setName))
+    else:
+        setNames = [
+            'Default Emacs shortcuts',
+            'Legacy Leo bindings',
+            'Legacy Leo shortcuts with important Emacs bindings',
+            'No bindings',
+            'EKR bindings: a mix',
+            'EKR bindings: Mode-oriented',
+        ]
+    
+    setNames.sort()</t>
+<t tx="ekr.20060112104333">def doSet(p,name):
+
     for p in p.subtree_iter():
         if p.headString().startswith('@shortcuts'):
             doShortcuts(p,name)</t>
 <t tx="ekr.20060112104333.1">def checkSets():
     
-    global setNames
+    global setNames, optionalCommandPrefixes, optionalCommandNames
 
     # Compute the union of all the command names.
     allNames = {}
     for setName in setNames:
         d = setsDict.get(setName)
-        assert(d)
-        for key in d.keys():
-            allNames[key] = key
+        if d:
+            for key in d.keys():
+                allNames[key] = key
+        else:
+            g.es_print('No setsDict for %s' % (repr(setName)),color='red')
             
     k = c.keyHandler
     keys = allNames.keys()
@@ -3533,6 +3582,8 @@ setNames.sort()</t>
     # Warn about missing names.
     for setName in ('No bindings',): # setNames:
         d = setsDict.get(setName)
+        if not d:
+            g.es_print("'@keys No bindings' not found",color='red')
         for key in keys:
             if key not in ('None',None) and key not in d.keys():
                 # Don't warn about missing 'enter-xxx-mode' commands.
@@ -3542,24 +3593,37 @@ setNames.sort()</t>
     # Warn about undefined commands.
     for key in keys:
         if not c.commandsDict.get(key):
+            ok = False
             # full-command and quick command are weird special cases.
             if key not in ('None',None,'full-command','quick-command'):
                 # Don't warn about missing 'enter-xxx-mode' commands.
-                if not key.startswith('enter-') or not key.endswith('-mode'):
-                    g.es('Undefined command name: %s' % (key))
-        
-        </t>
+                if key.startswith('enter-') and key.endswith('-mode'):
+                    ok = True
+                for prefix in optionalCommandPrefixes:
+                    if key.startswith(prefix):
+                        ok = True
+                for optionalCommand in optionalCommandNames:
+                    if key == optionalCommand:
+                        ok = True
+                if not ok:
+                    g.es('Undefined command name: %s' % (key))</t>
 <t tx="ekr.20060112104823">def main ():
     
     global setNames
+    defineSetNames()
     
-    root = u.findNodeAnywhere('Keyboard shortcuts')
+    # root = u.findNodeAnywhere('Keyboard shortcuts')
+    # for p in root.self_and_subtree_iter():
 
-    for p in root.self_and_subtree_iter():
-        for name in setNames:
-            if p.headString().startswith(name):
-                doSet(p,name)
-                
+    print '-' * 40
+    seen = {}
+    for p in c.allNodes_iter():
+        h = p.headString()
+        if h.startswith('@keys'):
+            h = h[5:].strip()
+            if not seen.get(h):
+                seen[h] = True
+                doSet(p,h)
     checkSets()
     g.es('Check Bindings done')</t>
 <t tx="ekr.20060112105523">def doShortcuts(p,setName):
@@ -3567,20 +3631,25 @@ setNames.sort()</t>
     global parser,setsDict
     
     d = setsDict.get(setName,{})
+    # g.es(setName,len(d.keys()))
     s = p.bodyString()
     lines = g.splitLines(s)
     for line in lines:
         line = line.strip()
         if line and not line.startswith('#'):
             commandName,shortcut = parser.parseShortcutLine(line)
-            shortcut2 = d.get(commandName)
-            if shortcut2:
-                if shortcut == shortcut2:
-                    g.es('duplicate %s in set %s' % (commandName,setName))
+            if not shortcut:
+                g.es('In %s:\nmissing "=" in shortcut line:%s' % (
+                    p.headString(),repr(line)),color='red')
             else:
-                # g.trace(setName,commandName)
-                d[commandName] = shortcut
-                
+                shortcut2 = d.get(commandName)
+                if shortcut2:
+                    if shortcut == shortcut2:
+                        g.es('duplicate %s in set %s' % (commandName,setName))
+                else:
+                    # g.trace(setName,commandName)
+                    d[commandName] = shortcut
+
     setsDict[setName] = d</t>
 <t tx="ekr.20060112110750"></t>
 <t tx="ekr.20060112112006"></t>
@@ -5067,6 +5136,8 @@ hide-pane                           = None
 indent-region                       = Ctrl-]
 insert-newline                      = None # = Return # for MacOs X.
 insert-node                         = Ctrl-I
+isearch-forward                     = Alt-I
+isearch-backward                    = Alt-R
 keyboard-quit                       = Ctrl-g
 kill-line                           ! text = Shift-Ctrl-k  # Ctrl-K
 kill-region-save                    = Alt-w 	   # Ctrl-w
@@ -5177,45 +5248,46 @@ overwrite: Leo replaces the character at the cursor.</t>
 
 # Keyboard-quit sets the input state to the *default* input state
 # Specified by @strings top_level_unbound_key_action.
-toggle-input-state                  = Alt-space # was: focus to tree.
 
+toggle-input-state                  Alt-space # was: focus to tree.
 enter-quick-command-mode            = Alt-C # also c
 
-# repeat-complex-command            = ?
+# repeat-complex-command            !command = ???
 
-beginning-of-line                   = a
-beginning-of-line-extend-selection  = Shift-a
-#                                   = b
-enter-quick-command-mode            = c
-next-line                           = d
-next-line-extend-selection          = Shift-d
-end-of-line                         = e
-end-of-line-extend-selection        = Shift-e
-search-with-present-options         = f
-replace-string                      = Shift-f
-enter-gui-mode                      = g
-enter-help-mode                     = h
-#                                   = i
-#                                   = j
-enter-kill-mode                     = k
-back-char                           = l
-back-char-extend-selection          = Shift-l
-#                                   = m  
-#                                   = n
-enter-outline-mode                  = o
-#                                   = p
-find-character                      = q
-forward-char                        = r
-fowrwad-char-extend-selection       = Shift-r
-#                                   = s
-enter-toggle-mode                   = t
-previous-line                       = u
-previous-line-extend-selection      = Shift-u
-#                                   = v
-enter-file-mode                     = w
-yank                                = y
-undo                                = z
-redo                                = Shift-z</t>
+beginning-of-line                   !command = a
+beginning-of-line-extend-selection  !command = Shift-a
+#                                   !command = b
+enter-quick-command-mode            !command = c
+next-line                           !command = d
+next-line-extend-selection          !command = Shift-d
+end-of-line                         !command= e
+end-of-line-extend-selection        !command = Shift-e
+search-with-present-options         !command = f
+replace-string                      !command = Shift-f
+enter-gui-mode                      !command = g
+enter-help-mode                     !command = h
+isearch-forward                     !command = i
+isearch-backward                    !command = Shift-i
+#                                   !command = j
+enter-kill-mode                     !command = k
+back-char                           !command = l
+back-char-extend-selection          !command = Shift-l
+#                                   !command = m  
+#                                   !command = n
+enter-outline-mode                  !command = o
+#                                   !command = p
+find-character                      !command = q
+forward-char                        !command = r
+forward-char-extend-selection       !command = Shift-r
+#                                   !command = s
+enter-toggle-mode                   !command = t
+previous-line                       !command = u
+previous-line-extend-selection      !command = Shift-u
+#                                   !command = v
+enter-file-mode                     !command = w
+yank                                !command = y
+undo                                !command = z
+redo                                !command = Shift-z</t>
 <t tx="ekr.20060604081740">--&gt; set-silent-mode
 --&gt; mode-help
 
@@ -5290,7 +5362,7 @@ insert:  Leo inserts the key at the cursor (like Emacs)
 overwrite: Leo replaces the character at the cursor.</t>
 <t tx="ekr.20060605081712">Recommended:
     
-white                   if top_level_unbound_key_action is ignore
+white                   if top_level_unbound_key_action is command
 a color like MistyRose1 if top_level_unbound_key_action is insert or overwrite.</t>
 <t tx="ekr.20060605081712.1"></t>
 <t tx="ekr.20060605081712.2">Recommended:
@@ -5298,5 +5370,15 @@ a color like MistyRose1 if top_level_unbound_key_action is insert or overwrite.<
 A color like MistyRose1 if top_level_unbound_key_action is ignore
 white                   if top_level_unbound_key_action is insert or overwrite.</t>
 <t tx="ekr.20060605081712.3"></t>
+<t tx="ekr.20060606085536">wheat1
+PeachPuff1
+LemonChiffon1
+cornsilk1
+honeydew1
+LavenderBlush1
+azure2
+aquamarine1</t>
+<t tx="ekr.20060606085536.1"></t>
+<t tx="ekr.20060607182402"></t>
 </tnodes>
 </leo_file>
