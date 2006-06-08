@@ -2132,7 +2132,6 @@ class keyHandlerClass:
         k = self ; c = k.c ; f = c.frame
        
         bindStroke = k.tkbindingFromStroke(stroke)
-        # g.trace(stroke,bindStroke)
         
         if w:
             widgets = [w]
@@ -2155,6 +2154,7 @@ class keyHandlerClass:
                 k.masterGuiBindingsDict [bindStroke] = aList
                 try:
                     w.bind(bindStroke,masterBindKeyCallback)
+                    # g.trace(stroke,bindStroke,g.app.gui.widget_name(w))
                 except Exception:
                     # g.es_exception()
                     g.es_print('exception binding %s to %s' % (
@@ -3102,7 +3102,7 @@ class keyHandlerClass:
         if trace: g.trace('done:',repr(val))
         return val
     #@nonl
-    #@+node:ekr.20060205221734:masterKeyHandlerHelpers
+    #@+node:ekr.20060205221734:masterKeyHandlerHelper
     def masterKeyHandlerHelper (self,event,stroke,trace):
         
         #@    << define vars >>
@@ -3197,48 +3197,60 @@ class keyHandlerClass:
             #@-node:ekr.20060321105403.2:<< handle mode bindings >>
             #@nl
             
+        #@    << handle per-pane bindings >>
+        #@+node:ekr.20060321105403.3:<< handle per-pane bindings >>
+        key_states = ('command','insert','overwrite')
+        isPlain =  k.isPlainKey(stroke)
+        
+        for key,name in (
+            # Order here is similar to bindtags order.
+            # ('command',None),
+            # ('insert',None),
+            # ('overwrite',None),
+            # ('body','body'),
+            ('text','head'), # Important: text bindings in head before tree bindings.
+            ('tree','head'),
+            ('tree','canvas'),
+            ('log', 'log'),
+            ('text','log'),
+            ('text',None), ('all',None),
+        ):
+            if (
+                # key in key_states and isPlain and k.unboundKeyAction == key or
+                name and w_name.startswith(name) or
+                key == 'text' and g.app.gui.isTextWidget(w) or
+                key == 'all'
+            ):
+                d = k.masterBindingsDict.get(key)
+                # g.trace(key,name,d and len(d.keys()))
+                if d:
+                    b = d.get(stroke)
+                    if b:
+                        if trace: g.trace('%s found %s = %s' % (key,b.stroke,b.commandName))
+                        return k.masterCommand(event,b.func,b.stroke,b.commandName)
+        #@nonl
+        #@-node:ekr.20060321105403.3:<< handle per-pane bindings >>
+        #@nl
+        #@    << handle keys without bindings >>
+        #@+node:ekr.20060608070318:<< handle keys without bindings >>
         if stroke and k.isPlainKey(stroke) and k.unboundKeyAction in ('insert','overwrite'):
             # insert/overwrite normal character.  <Return> is *not* a normal character.
-            # g.trace('plain key in insert mode',stroke)
+            if trace: g.trace('plain key in insert mode',stroke)
             return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
+        
+        elif k.ignore_unbound_non_ascii_keys and len(event.char) > 1:
+            # (stroke.find('Alt+') > -1 or stroke.find('Ctrl+') > -1)):
+            if trace: g.trace('ignoring unbound non-ascii key')
+            return 'break'
+        
         else:
-            #@        << handle per-pane bindings >>
-            #@+node:ekr.20060321105403.3:<< handle per-pane bindings >>
-            for key,name in (
-                # Order here is similar to bindtags order.
-                ('body','body'),
-                ('text','head'), # Important: text bindings in head before tree bindings.
-                ('tree','head'),
-                ('tree','canvas'),
-                ('log', 'log'),
-                ('text','log'),
-                ('text',None), ('all',None),
-            ):
-                if (
-                    name and w_name.startswith(name) or
-                    key == 'text' and g.app.gui.isTextWidget(w) or
-                    key == 'all'
-                ):
-                    d = k.masterBindingsDict.get(key)
-                    # g.trace(key,name,d and len(d.keys()))
-                    if d:
-                        b = d.get(stroke)
-                        if b:
-                            if trace: g.trace('%s found %s = %s' % (key,b.stroke,b.commandName))
-                            return k.masterCommand(event,b.func,b.stroke,b.commandName)
-            
-            if k.ignore_unbound_non_ascii_keys and len(event.char) > 1:
-                # (stroke.find('Alt+') > -1 or stroke.find('Ctrl+') > -1)):
-                if trace: g.trace('ignoring unbound non-ascii key')
-                return 'break'
-            else:
-                if trace: g.trace(repr(stroke),'no func')
-                return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
-            #@nonl
-            #@-node:ekr.20060321105403.3:<< handle per-pane bindings >>
-            #@nl
+            if trace: g.trace(repr(stroke),'no func')
+            return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
+        #@nonl
+        #@-node:ekr.20060608070318:<< handle keys without bindings >>
+        #@nl
     #@nonl
-    #@-node:ekr.20060205221734:masterKeyHandlerHelpers
+    #@-node:ekr.20060205221734:masterKeyHandlerHelper
     #@+node:ekr.20060309065445:handleMiniBindings
     def handleMiniBindings (self,event,state,stroke):
         
