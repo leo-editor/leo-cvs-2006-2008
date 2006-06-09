@@ -29,7 +29,7 @@ class parserBaseClass:
         'float','path','ratio','shortcut','string','strings']
     
     control_types = [
-        'font','if','ifgui','ifplatform','ignore','mode','page',
+        'abbrev','font','if','ifgui','ifplatform','ignore','mode','page',
         'settings','shortcuts']
     
     # Keys are settings names, values are (type,value) tuples.
@@ -49,6 +49,7 @@ class parserBaseClass:
         
         # Keys are canonicalized names.
         self.dispatchDict = {
+            'abbrev':       self.doAbbrev, # New in 4.4.1 b2.
             'bool':         self.doBool,
             'color':        self.doColor,
             'directory':    self.doDirectory,
@@ -94,6 +95,21 @@ class parserBaseClass:
     #@nonl
     #@-node:ekr.20041120103012:error
     #@+node:ekr.20041120094940:kind handlers (parserBaseClass)
+    #@+node:ekr.20060608221203:doAbbrev
+    def doAbbrev (self,p,kind,name,val):
+        
+        d = {}
+        s = p.bodyString()
+        lines = g.splitLines(s)
+        for line in lines:
+            line = line.strip()
+            if line and not g.match(line,0,'#'):
+                name,val = self.parseAbbrevLine(line)
+                if name: d [val] = name
+                
+        self.set (p,'abbrev','abbrev',d)
+    #@nonl
+    #@-node:ekr.20060608221203:doAbbrev
     #@+node:ekr.20041120094940.1:doBool
     def doBool (self,p,kind,name,val):
     
@@ -547,6 +563,32 @@ class parserBaseClass:
         return name,g.bunch(nextMode=nextMode,pane=pane,val=val)
     #@nonl
     #@-node:ekr.20041120112043:parseShortcutLine (g.app.config)
+    #@+node:ekr.20060608222828:parseAbbrevLine (g.app.config)
+    def parseAbbrevLine (self,s):
+        
+        '''Parse an abbreviation line:
+        command-name = abbreviation
+        return (command-name,abbreviation)
+        '''
+    
+        i = j = g.skip_ws(s,0)
+        i = g.skip_id(s,i,'-') # New in 4.4: allow Emacs-style shortcut names.
+        name = s[j:i]
+        if not name: return None,None
+    
+        i = g.skip_ws(s,i)
+        if not g.match(s,i,'='): return None,None
+    
+        i = g.skip_ws(s,i+1)
+        val = s[i:].strip()
+        # Ignore comments after the shortcut.
+        i = val.find('#')
+        if i > -1: val = val[:i].strip()
+    
+        if val: return name,val
+        else:   return None,None
+    #@nonl
+    #@-node:ekr.20060608222828:parseAbbrevLine (g.app.config)
     #@-node:ekr.20041213082558:parsers
     #@+node:ekr.20041120094940.9:set (parseBaseClass)
     def set (self,p,kind,name,val):
@@ -1032,6 +1074,15 @@ class configClass:
         return False
     #@nonl
     #@-node:ekr.20051011105014:exists (g.app.config)
+    #@+node:ekr.20060608224112:getAbbrevDict
+    def getAbbrevDict (self,c):
+        
+        """Search all dictionaries for the setting & check it's type"""
+        
+        d = self.get(c,'abbrev','abbrev')
+        return d or {}
+    #@nonl
+    #@-node:ekr.20060608224112:getAbbrevDict
     #@+node:ekr.20041117081009.3:getBool
     def getBool (self,c,setting,default=None):
         

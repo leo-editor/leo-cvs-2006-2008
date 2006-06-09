@@ -6569,6 +6569,7 @@ class configSettings:
     def get(self,setting,theType):
         return g.app.config.get(self.c,setting,theType)
     
+    def getAbbrevDict(self):         return g.app.config.getAbbrevDict(self.c)
     def getBool      (self,setting): return g.app.config.getBool     (self.c,setting)
     def getColor     (self,setting): return g.app.config.getColor    (self.c,setting)
     def getDirectory (self,setting): return g.app.config.getDirectory(self.c,setting)
