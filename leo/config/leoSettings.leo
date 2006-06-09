@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="291" clone_windows="0"/>
 <globals body_outline_ratio="0.549828178694">
-	<global_window_position top="29" left="264" height="852" width="886"/>
+	<global_window_position top="29" left="264" height="776" width="886"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -33,7 +33,7 @@
 <v t="ekr.20041119035704.3"><vh>@type type-name: base-type = [list of valid values]</vh></v>
 <v t="ekr.20041120155431.2"><vh>@type type-name: script: script-name</vh></v>
 </v>
-<v t="ekr.20060112110750" a="E"><vh>Buttons</vh>
+<v t="ekr.20060112110750"><vh>Buttons</vh>
 <v t="ekr.20051010093913" annotate="7d71002e"><vh>@button Save</vh></v>
 <v t="ekr.20051011123608" annotate="7d71002e"><vh>@@button align to col</vh></v>
 <v t="ekr.20060112103537.17"><vh>@button Check Bindings</vh>
@@ -341,8 +341,11 @@
 <v t="ekr.20060606085536"><vh>@color overwrite_mode_bg_color = azure2</vh></v>
 <v t="ekr.20060606085536.1"><vh>@color overwrite_mode_fg_color = black</vh></v>
 </v>
+<v t="ekr.20060609072235"><vh>Abbreviations</vh>
+<v t="ekr.20060609072235.1"><vh>@@abbrev</vh></v>
+</v>
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
-<v t="ekr.20060603215208.16" a="E"><vh>@mode quick-command (Alt-C)</vh></v>
+<v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
 <v t="ekr.20060608185854"><vh>@mode commands</vh></v>
 <v t="ekr.20060608190813"><vh>@mode edit</vh></v>
 <v t="ekr.20060608191518" a="M"><vh>@mode emacs</vh></v>
@@ -357,10 +360,10 @@
 <v t="ekr.20060604081740"><vh>@mode kill</vh></v>
 <v t="ekr.20060608184356"><vh>@mode modes</vh></v>
 <v t="ekr.20060604082857.1"><vh>@mode move-outline</vh></v>
-<v t="ekr.20060604082857" a="E"><vh>@mode outline</vh></v>
+<v t="ekr.20060604082857"><vh>@mode outline</vh></v>
 <v t="ekr.20060603223152.2"><vh>@mode toggle-find</vh></v>
 </v>
-<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
 <v t="ekr.20060604081014"><vh>@@@@shortcuts top-level keys (like vim)</vh></v>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20060603215208.19"><vh>@shortcuts Find Commands</vh></v>
@@ -476,7 +479,12 @@
 <v t="ekr.20041119050105.11"><vh>@bool wrap = False</vh></v>
 </v>
 </v>
-<v t="ekr.20060603215208" a="E"><vh>@keys EKR bindings: vim mode bindings</vh>
+<v t="ekr.20060110141538.1" a="TV"><vh>@keys No bindings</vh>
+<v t="ekr.20051218202206" annotate="7d71002e"><vh>@shortcuts No bindings: A-E</vh></v>
+<v t="ekr.20060112093227.1"><vh>@shortcuts No bindings: E-M</vh></v>
+<v t="ekr.20060112093227.2"><vh>@shortcuts No bindings: N-Z</vh></v>
+</v>
+<v t="ekr.20060603215208"><vh>@keys EKR bindings: vim mode bindings</vh>
 <v t="ekr.20060608065207"><vh>Settings related to key bindings</vh>
 <v t="ekr.20060604080653" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
 <v t="ekr.20060605081712"><vh>@color command_mode_bg_color = MistyRose1</vh></v>
@@ -486,8 +494,11 @@
 <v t="ekr.20060606085536"><vh>@color overwrite_mode_bg_color = azure2</vh></v>
 <v t="ekr.20060606085536.1"><vh>@color overwrite_mode_fg_color = black</vh></v>
 </v>
+<v t="ekr.20060609072235"><vh>Abbreviations</vh>
+<v t="ekr.20060609072235.1"><vh>@@abbrev</vh></v>
+</v>
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
-<v t="ekr.20060603215208.16" a="E"><vh>@mode quick-command (Alt-C)</vh></v>
+<v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
 <v t="ekr.20060608185854"><vh>@mode commands</vh></v>
 <v t="ekr.20060608190813"><vh>@mode edit</vh></v>
 <v t="ekr.20060608191518" a="M"><vh>@mode emacs</vh></v>
@@ -502,11 +513,11 @@
 <v t="ekr.20060604081740"><vh>@mode kill</vh></v>
 <v t="ekr.20060608184356"><vh>@mode modes</vh></v>
 <v t="ekr.20060604082857.1"><vh>@mode move-outline</vh></v>
-<v t="ekr.20060604082857" a="E"><vh>@mode outline</vh></v>
+<v t="ekr.20060604082857"><vh>@mode outline</vh></v>
 <v t="ekr.20060603223152.2"><vh>@mode toggle-find</vh></v>
 </v>
-<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
-<v t="ekr.20060604081014" a="TV"><vh>@@@@shortcuts top-level keys (like vim)</vh></v>
+<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
+<v t="ekr.20060604081014"><vh>@@@@shortcuts top-level keys (like vim)</vh></v>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20060603215208.19"><vh>@shortcuts Find Commands</vh></v>
 <v t="ekr.20060603215208.20"><vh>@shortcuts Minibuffer bindings</vh></v>
@@ -2006,7 +2017,7 @@ select-paragraph                    = None
 set-colors                          = None
 set-comment-column                  = None
 set-extend-mode                     = None
-set-ignore-state                    = None
+set-command-state                   = None
 set-insert-state                    = None
 set-fill-column                     = None
 set-fill-prefix                     = None
@@ -2598,7 +2609,7 @@ set-find-everywhere                     = None
 set-find-node-only                      = None
 set-find-suboutline-only                = None
 set-font                                = None
-set-ignore-state                        = None
+set-command-state                       = None
 set-insert-state                        = None
 set-mark-command                        = Ctrl-space    # Also Ctrl-Shift-at
 set-overwrite-state                     = None
@@ -2874,7 +2885,7 @@ set-find-everywhere                 = None
 set-find-node-only                  = None
 set-find-suboutline-only            = None
 set-font                        = None
-set-ignore-state                = None
+set-command-state               = None
 set-insert-state                = None
 set-mark-command                = Control-Shift-at
 set-overwrite-state             = None
@@ -3143,7 +3154,7 @@ set-find-everywhere                 = None
 set-find-node-only                  = None
 set-find-suboutline-only            = None
 set-font                            = None
-set-ignore-state                    = None
+set-command-state                   = None
 set-insert-state                    = None
 set-mark-command                    = None
 set-overwrite-state                 = None
@@ -3446,7 +3457,7 @@ set-find-everywhere                 = None
 set-find-node-only                  = None
 set-find-suboutline-only            = None
 set-font                            = None
-set-ignore-state                    = None
+set-command-state                   = None
 set-insert-state                    = None
 set-mark-command                    = None
 set-overwrite-state                 = None
@@ -3482,6 +3493,8 @@ tangle-all                          = None
 tangle-marked                       = None
 toggle-active-pane                  = None
 toggle-angle-brackets               = None
+toggle-autocompleter                = None
+toggle-calltips                     = None
 toggle-extend-mode                  = None
 toggle-find-ignore-case-option      = None
 toggle-find-in-body-option          = None
@@ -3788,7 +3801,7 @@ keys *only* for the top-level mode.
 - A mode contains *only* the key bindings explicitly specified in the @mode
 node. The only default key binding is the binding for the keyboard-quit command
 (usually Control-g). Thus, all modes except the top-level mode act as if
-top_level_unbound_key_action = 'ignore'. In particular, the set-ignore-state,
+top_level_unbound_key_action = 'ignore'. In particular, the set-command-state,
 set-insert-state and set-overwrite-state commands affect only the top-level mode.
 
 - The mode-help command (recommend binding is Tab) lists all bound keystrokes in
@@ -5046,7 +5059,7 @@ toggle-find-wrap-around-option      ! mini = Alt-Ctrl-a</t>
 
 ###abort-edit-headline                 = Esc
 add-comments                        = Ctrl-(
-auto-complete-force                 = Ctrl-Tab
+auto-complete-force                 = Ctrl-period
 auto-complete                       = period
 back-char                           ! text = LtArrow
 back-char-extend-selection          ! text = Shift-LtArrow
@@ -5178,6 +5191,7 @@ scroll-up-extend-selection          ! text = Shift-PageUp
 select-all                          ! text =  Alt-Shift-A 
     # Shift-Ctrl-A conflicts with beginning-of-line-extend-selection.
 show-calltips                       = parenleft
+show-calltips-force                 = Ctrl-parenleft
 sort-siblings                       = Alt-A
 split-line                          = Alt-Ctrl-o
 
@@ -5309,6 +5323,7 @@ kill-sentence       = s
 kill-word           = w
 backward-kill-word  = Shift-w</t>
 <t tx="ekr.20060604082857">--&gt; set-silent-mode
+--&gt; mode-help
 --&gt; focus-to-tree
 
 keyboard-quit           = Ctrl-g # not needed, but a good reminder
@@ -5332,9 +5347,12 @@ goto-prev-visible           -&gt; same = u
 undo                        -&gt; same = z
 redo                        -&gt; same = Shift-z</t>
 <t tx="ekr.20060604082857.1">--&gt; set-silent-mode
+--&gt; mode-help
+--&gt; focus-to-tree
 
 keyboard-quit               = Ctrl-g # not needed, but a good reminder
 keyboard-quit               = Return
+enter-outline-mode          = o
 
 goto-first-node             -&gt; same = Home
 goto-last-visible           -&gt; same = End
@@ -5395,13 +5413,8 @@ aquamarine1</t>
 keyboard-quit           = Ctrl-g # not needed, but a good reminder
 keyboard-quit           = Return
 
-disable-autocompleter   = Shift-A
-disable-calltips        = Shift-T
-
-enable-autocompleter    = a
-enable-calltips         = t
-set-command-state       = c
-set-insert-state        = i
+toggle-autocompleter    = a
+toggle-calltips         = t
 toggle-extend-mode      = x
 toggle-invisibles       = v</t>
 <t tx="ekr.20060608185854">--&gt; set-silent-mode
@@ -5490,5 +5503,7 @@ redo                                -&gt; same = Shift-z</t>
 
 enter-quick-command-mode            = Alt-C
 </t>
+<t tx="ekr.20060609072235"># At present no abbreviations seem necessary because it is so easy to enter the appropriate mode.</t>
+<t tx="ekr.20060609072235.1"></t>
 </tnodes>
 </leo_file>
