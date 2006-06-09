@@ -2613,7 +2613,7 @@ class keyHandlerClass:
     #@nonl
     #@-node:ekr.20050920085536.48:repeatComplexCommand & helper
     #@+node:ekr.20060105132013:set-xxx-State
-    def setIgnoreState (self,event):
+    def setCommandState (self,event):
         '''Enter the 'command' editing state.'''
         # g.trace(g.callers())
         k = self
