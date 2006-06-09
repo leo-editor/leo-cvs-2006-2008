@@ -4198,7 +4198,7 @@ class editCommandsClass (baseEditCommandsClass):
         A prefix argument means sort in descending order.'''
     
         c = self.c ; k = c.k ; w = event.widget
-        g.trace(c.widget_name(w))
+        # g.trace(c.widget_name(w))
         if not self._chckSel(event): return
     
         self.beginCommand(undoType='sort-lines')
@@ -5015,7 +5015,7 @@ class keyHandlerCommandsClass (baseEditCommandsClass):
             'print-commands':           k.printCommands,
             'repeat-complex-command':   k.repeatComplexCommand,
             # 'scan-for-autocompleter':   k.autoCompleter.scan,
-            'set-ignore-state':         k.setIgnoreState,
+            'set-command-state':        k.setCommandState,
             'set-insert-state':         k.setInsertState,
             'set-overwrite-state':      k.setOverwriteState,
             'show-calltips':            k.autoCompleter.showCalltips,
