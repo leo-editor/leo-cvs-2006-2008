@@ -2037,6 +2037,7 @@ class keyHandlerClass:
         k.addModeCommands() 
         k.makeBindingsFromCommandsDict()
         k.initSpecialIvars()
+        k.initAbbrev()
         c.frame.body.createBindings()
         c.frame.log.setTabBindings('Log')
         c.frame.tree.setBindings()
@@ -2045,6 +2046,26 @@ class keyHandlerClass:
         k.checkBindings()
     #@nonl
     #@-node:ekr.20051007080058:k.makeAllBindings
+    #@+node:ekr.20060609150503:k.initAbbrev
+    def initAbbrev (self):
+        
+        k = self ; c = k.c
+        
+        d = c.config.getAbbrevDict()
+        if d:
+            for key in d.keys():
+                commandName = d.get(key)
+                if c.commandsDict.get(key):
+                    g.trace('ignoring duplicate abbrev: %s',key)
+                else:
+                    func = c.commandsDict.get(commandName)
+                    if func:
+                        c.commandsDict [key] = func
+                    else:
+                        g.es_print('bad abbrev: %s: unknown command name: %s' %
+                            (key,commandName),color='blue')
+    #@nonl
+    #@-node:ekr.20060609150503:k.initAbbrev
     #@+node:ekr.20060104154937:addModeCommands (enterModeCallback)
     def addModeCommands (self):
         
@@ -3654,6 +3675,11 @@ class keyHandlerClass:
         data.sort()
         
         # g.es('%s\n\n' % (k.inputModeName),tabName=tabName)
+        
+        modeName = k.inputModeName.replace('-',' ')
+        if modeName.endswith('mode'): modeName = modeName[:-4].strip()
+        
+        g.es('%s mode\n\n' % modeName,tabName=tabName)
             
         # This isn't perfect in variable-width fonts.
         for s1,s2 in data:
