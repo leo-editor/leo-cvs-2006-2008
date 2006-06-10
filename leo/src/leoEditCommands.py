@@ -2829,6 +2829,10 @@ class editCommandsClass (baseEditCommandsClass):
             w.insert(i,ch)                     
         else:
             return 'break' # New in 4.4a5: this method *always* returns 'break'
+            
+        # New in 4.4.1: Set the column for up and down keys.
+        spot = w.index('insert')
+        c.editCommands.setMoveCol(spot)
     
         # Update the text and handle undo.
         newText = g.app.gui.getAllText(w) # New in 4.4b3: converts to unicode.
@@ -5021,6 +5025,8 @@ class keyHandlerCommandsClass (baseEditCommandsClass):
             'show-calltips':            k.autoCompleter.showCalltips,
             'show-calltips-force':      k.autoCompleter.showCalltipsForce,
             'show-mini-buffer':         k.showMinibuffer,
+            'toggle-autocompleter':     k.autoCompleter.toggleAutocompleter,
+            'toggle-calltips':          k.autoCompleter.toggleCalltips,
             'toggle-mini-buffer':       k.toggleMinibuffer,
             'toggle-input-state':       k.toggleInputState,
             'universal-argument':       k.universalArgument,
