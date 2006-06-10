@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="291" clone_windows="0"/>
 <globals body_outline_ratio="0.549828178694">
-	<global_window_position top="29" left="264" height="776" width="886"/>
+	<global_window_position top="75" left="241" height="757" width="995"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -331,7 +331,12 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060603215208"><vh>@keys EKR bindings: vim mode bindings</vh>
+<v t="ekr.20060110141538.1" annotate="7d71002e"><vh>@keys No bindings</vh>
+<v t="ekr.20051218202206" annotate="7d71002e"><vh>@shortcuts No bindings: A-E</vh></v>
+<v t="ekr.20060112093227.1"><vh>@shortcuts No bindings: E-M</vh></v>
+<v t="ekr.20060112093227.2"><vh>@shortcuts No bindings: N-Z</vh></v>
+</v>
+<v t="ekr.20060603215208" a="E"><vh>@keys EKR bindings: vim mode bindings</vh>
 <v t="ekr.20060608065207"><vh>Settings related to key bindings</vh>
 <v t="ekr.20060604080653" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
 <v t="ekr.20060605081712"><vh>@color command_mode_bg_color = MistyRose1</vh></v>
@@ -341,7 +346,7 @@
 <v t="ekr.20060606085536"><vh>@color overwrite_mode_bg_color = azure2</vh></v>
 <v t="ekr.20060606085536.1"><vh>@color overwrite_mode_fg_color = black</vh></v>
 </v>
-<v t="ekr.20060609072235"><vh>Abbreviations</vh>
+<v t="ekr.20060609072235" a="E"><vh>Abbreviations</vh>
 <v t="ekr.20060609072235.1"><vh>@@abbrev</vh></v>
 </v>
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
@@ -365,6 +370,7 @@
 </v>
 <v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
 <v t="ekr.20060604081014"><vh>@@@@shortcuts top-level keys (like vim)</vh></v>
+<v t="ekr.20060609175331"><vh>@@shortcuts for buttons in test.leo</vh></v>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20060603215208.19"><vh>@shortcuts Find Commands</vh></v>
 <v t="ekr.20060603215208.20"><vh>@shortcuts Minibuffer bindings</vh></v>
@@ -372,11 +378,6 @@
 <v t="ekr.20060603215208.22"><vh>@shortcuts EKR: F-M</vh></v>
 <v t="ekr.20060603215208.23" annotate="7d71002e"><vh>@shortcuts EKR: N-Z</vh></v>
 </v>
-</v>
-<v t="ekr.20060110141538.1" annotate="7d71002e"><vh>@keys No bindings</vh>
-<v t="ekr.20051218202206" annotate="7d71002e"><vh>@shortcuts No bindings: A-E</vh></v>
-<v t="ekr.20060112093227.1"><vh>@shortcuts No bindings: E-M</vh></v>
-<v t="ekr.20060112093227.2"><vh>@shortcuts No bindings: N-Z</vh></v>
 </v>
 </v>
 <v t="ekr.20051123100536" annotate="7d71002e"><vh>Plugins</vh>
@@ -455,7 +456,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060512084639"><vh>Recent</vh>
+<v t="ekr.20060512084639" a="V"><vh>Recent</vh>
 <v t="ekr.20060209045356"><vh>@bool trace_masterFocusHandler = False</vh></v>
 <v t="ekr.20060131071612"><vh>@bool trace_masterKeyHandler = False</vh></v>
 <v t="ekr.20060309022759"><vh>@bool trace_colorizer = False</vh></v>
@@ -464,67 +465,6 @@
 <v t="ekr.20060114073238"><vh>@bool trace_bindings = False</vh></v>
 <v t="ekr.20060216135834"><vh>@bool enable_autocompleter_initially = False</vh></v>
 <v t="ekr.20060603070801"><vh>@bool enable_calltips_initially = False</vh></v>
-<v t="ekr.20041119050105.3"><vh>Checkboxes</vh>
-<v t="ekr.20041119050105.4"><vh>@bool batch = False</vh></v>
-<v t="ekr.20041119050105.5"><vh>@bool ignore_case = True</vh></v>
-<v t="ekr.20041119050105.6"><vh>@bool mark_changes = False</vh></v>
-<v t="ekr.20041119050105.7"><vh>@bool mark_finds = False</vh></v>
-<v t="ekr.20041119050105.12"><vh>@bool node_only = False</vh></v>
-<v t="ekr.20041119050105.9"><vh>@bool reverse = False</vh></v>
-<v t="ekr.20041119050105.8"><vh>@bool pattern_match = False</vh></v>
-<v t="ekr.20041120152657"><vh>@bool script_change = None</vh></v>
-<v t="ekr.20041119050105.14"><vh>@bool search_body = True</vh></v>
-<v t="ekr.20041119050105.15"><vh>@bool search_headline = False</vh></v>
-<v t="ekr.20041119050105.10"><vh>@bool whole_word = False</vh></v>
-<v t="ekr.20041119050105.11"><vh>@bool wrap = False</vh></v>
-</v>
-</v>
-<v t="ekr.20060110141538.1" a="TV"><vh>@keys No bindings</vh>
-<v t="ekr.20051218202206" annotate="7d71002e"><vh>@shortcuts No bindings: A-E</vh></v>
-<v t="ekr.20060112093227.1"><vh>@shortcuts No bindings: E-M</vh></v>
-<v t="ekr.20060112093227.2"><vh>@shortcuts No bindings: N-Z</vh></v>
-</v>
-<v t="ekr.20060603215208"><vh>@keys EKR bindings: vim mode bindings</vh>
-<v t="ekr.20060608065207"><vh>Settings related to key bindings</vh>
-<v t="ekr.20060604080653" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
-<v t="ekr.20060605081712"><vh>@color command_mode_bg_color = MistyRose1</vh></v>
-<v t="ekr.20060605081712.1"><vh>@color command_mode_fg_color = black</vh></v>
-<v t="ekr.20060605081712.2"><vh>@color insert_mode_bg_color = white</vh></v>
-<v t="ekr.20060605081712.3"><vh>@color insert_mode_fg_color = black</vh></v>
-<v t="ekr.20060606085536"><vh>@color overwrite_mode_bg_color = azure2</vh></v>
-<v t="ekr.20060606085536.1"><vh>@color overwrite_mode_fg_color = black</vh></v>
-</v>
-<v t="ekr.20060609072235"><vh>Abbreviations</vh>
-<v t="ekr.20060609072235.1"><vh>@@abbrev</vh></v>
-</v>
-<v t="ekr.20060603215208.4"><vh>Modes</vh>
-<v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
-<v t="ekr.20060608185854"><vh>@mode commands</vh></v>
-<v t="ekr.20060608190813"><vh>@mode edit</vh></v>
-<v t="ekr.20060608191518" a="M"><vh>@mode emacs</vh></v>
-<v t="ekr.20060608185854.1"><vh>@mode extract</vh></v>
-<v t="ekr.20060603223152.1"><vh>@mode file</vh></v>
-<v t="ekr.20060603215208.7" a="M"><vh>@mode gui</vh>
-<v t="ekr.20060603215208.8"><vh>@mode Edit-extend</vh></v>
-</v>
-<v t="ekr.20060603223152"><vh>@mode help</vh>
-<v t="ekr.20060604083323"><vh>@mode apropos</vh></v>
-</v>
-<v t="ekr.20060604081740"><vh>@mode kill</vh></v>
-<v t="ekr.20060608184356"><vh>@mode modes</vh></v>
-<v t="ekr.20060604082857.1"><vh>@mode move-outline</vh></v>
-<v t="ekr.20060604082857"><vh>@mode outline</vh></v>
-<v t="ekr.20060603223152.2"><vh>@mode toggle-find</vh></v>
-</v>
-<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
-<v t="ekr.20060604081014"><vh>@@@@shortcuts top-level keys (like vim)</vh></v>
-<v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
-<v t="ekr.20060603215208.19"><vh>@shortcuts Find Commands</vh></v>
-<v t="ekr.20060603215208.20"><vh>@shortcuts Minibuffer bindings</vh></v>
-<v t="ekr.20060603215208.21" annotate="7d71002e"><vh>@shortcuts EKR: A-E</vh></v>
-<v t="ekr.20060603215208.22"><vh>@shortcuts EKR: F-M</vh></v>
-<v t="ekr.20060603215208.23" annotate="7d71002e"><vh>@shortcuts EKR: N-Z</vh></v>
-</v>
 </v>
 </vnodes>
 <tnodes>
@@ -2226,7 +2166,7 @@ copy-to-register                    = None
 count-region                        = None
 cut-node                            = Shift-Ctrl-X
 cut-text                            = Ctrl-x
-cycle-focus                         = Alt-Shift-f
+cycle-focus                         = None
 dabbrev-completion                  = None
 dabbrev-expands                     = None
 de-hoist                            = None
@@ -2324,7 +2264,6 @@ goto-first-node                     ! text = Alt-Home
 goto-first-node                     ! tree = Alt-Home
 goto-first-node                     ! tree = Home
 goto-first-sibling                  = None
-goto-last-node                      = None
 goto-last-node                      = None
 goto-last-sibling                   = None
 goto-last-visible                   ! text = Alt-End
@@ -2873,7 +2812,6 @@ scroll-up-extend-selection      = None
 search-again                    = None
 search-backward                 = None
 search-forward                  = None
-select-all                      = None
 select-all                      = None  # Ctrl-A conflicts with beginning-of-line.
 select-paragraph                = Alt-h
 set-colors                      = None
@@ -3554,6 +3492,7 @@ optionalCommandNames = []
 
 setNames = []
 setsDict = {} # keys are set names, values are dicts of command names.
+shortcutsDict = {}
 
 @others
 
@@ -3585,6 +3524,10 @@ main()</t>
     
     setNames.sort()</t>
 <t tx="ekr.20060112104333">def doSet(p,name):
+    
+    global shortcutsDict
+    
+    shortcutsDict = {}
 
     for p in p.subtree_iter():
         if p.headString().startswith('@shortcuts'):
@@ -3613,10 +3556,13 @@ main()</t>
         if not d:
             g.es_print("'@keys No bindings' not found",color='red')
         for key in keys:
-            if key not in ('None',None) and key not in d.keys():
+            if key not in ('none','None',None) and key not in d.keys():
                 # Don't warn about missing 'enter-xxx-mode' commands.
-                if not key.startswith('enter-') or not key.endswith('-mode'):
-                    g.es('%s is missing %-35s = None' % (setName,key))
+                if (
+                    not (key.startswith('enter-') and key.endswith('-mode')) and
+                    not (key.startswith('press-') and key.endswith('-button'))
+                ):
+                    g.es_print('%s is missing %-35s = None' % (setName,repr(key)))
                     
     # Warn about undefined commands.
     for key in keys:
@@ -3627,6 +3573,8 @@ main()</t>
                 # Don't warn about missing 'enter-xxx-mode' commands.
                 if key.startswith('enter-') and key.endswith('-mode'):
                     ok = True
+                elif key.startswith('press-') and key.endswith('-button'):
+                    ok = True
                 for prefix in optionalCommandPrefixes:
                     if key.startswith(prefix):
                         ok = True
@@ -3634,7 +3582,7 @@ main()</t>
                     if key == optionalCommand:
                         ok = True
                 if not ok:
-                    g.es('Undefined command name: %s' % (key))</t>
+                    g.es_print('Undefined command name: %s' % (key))</t>
 <t tx="ekr.20060112104823">def main ():
     
     global setNames
@@ -3643,7 +3591,7 @@ main()</t>
     # root = u.findNodeAnywhere('Keyboard shortcuts')
     # for p in root.self_and_subtree_iter():
 
-    print '-' * 40
+    g.es_print('-' * 40)
     seen = {}
     for p in c.allNodes_iter():
         h = p.headString()
@@ -3656,28 +3604,45 @@ main()</t>
     g.es('Check Bindings done')</t>
 <t tx="ekr.20060112105523">def doShortcuts(p,setName):
     
-    global parser,setsDict
+    global parser,setsDict,shortcutsDict
     
     d = setsDict.get(setName,{})
-    # g.es(setName,len(d.keys()))
     s = p.bodyString()
     lines = g.splitLines(s)
     for line in lines:
         line = line.strip()
         if line and not line.startswith('#'):
-            commandName,shortcut = parser.parseShortcutLine(line)
-            if not shortcut or shortcut.val is None:
+            commandName,bunch = parser.parseShortcutLine(line)
+            if not bunch:
                 g.es_print('In %s:\nmissing "=" in shortcut line:%s' % (
                     p.headString(),repr(line)),color='red')
             else:
-                shortcut2 = d.get(commandName)
-                if shortcut2:
-                    if shortcut == shortcut2:
-                        g.es('duplicate %s in set %s' % (commandName,setName))
+                # Having multiple shortcuts for a command if fine,
+                # But having multiple commands for a shortcut is not.
+                shortcut = bunch and bunch.val
+                pane = bunch and bunch.pane
+                if shortcut not in (None,'None','none'):
+                    aList = shortcutsDict.get(shortcut,[])
+                    if aList:
+                        for commandName2,pane2 in aList:
+                            if pane == pane2:
+                                g.es_print('duplicate shortcut %s in set %s: previous command: %s' % (
+                                    shortcut,setName,commandName2),color='red')
+                        else:
+                            aList.append((commandName,pane),)
+                    else:
+                        shortcutsDict [shortcut] = [(commandName,pane),]
+        
+                data = d.get(commandName)
+                if data:
+                    shortcut2,pane2 = data
+                    if shortcut == shortcut2 and pane == pane2:
+                        g.es_print('duplicate %s in set %s' % (
+                            commandName,setName),color='red')
                 else:
-                    # g.trace(setName,commandName)
-                    d[commandName] = shortcut
-
+                    data = shortcut,pane
+                    d[commandName] = data
+                
     setsDict[setName] = d</t>
 <t tx="ekr.20060112110750"></t>
 <t tx="ekr.20060112112006"></t>
@@ -5058,7 +5023,7 @@ toggle-find-wrap-around-option      ! mini = Alt-Ctrl-a</t>
 # back-sentence-extend-selection      = None # Alt-Shift-a, sort-siblings
 
 ###abort-edit-headline                 = Esc
-add-comments                        = Ctrl-(
+add-comments                        = Ctrl-parenleft
 auto-complete-force                 = Ctrl-period
 auto-complete                       = period
 back-char                           ! text = LtArrow
@@ -5089,7 +5054,7 @@ cut-node                            = Shift-Ctrl-x
 cut-text                            = Ctrl-x
 debug                               = Alt-Shift-d
 delete-char                         = Delete
-delete-comments                     = Ctrl-)
+delete-comments                     = Ctrl-parenright
 delete-node                         = Shift-Ctrl-BkSp
 delete-spaces                       = Alt-backslash
 demote                              = Ctrl-}
@@ -5191,7 +5156,7 @@ scroll-up-extend-selection          ! text = Shift-PageUp
 select-all                          ! text =  Alt-Shift-A 
     # Shift-Ctrl-A conflicts with beginning-of-line-extend-selection.
 show-calltips                       = parenleft
-show-calltips-force                 = Ctrl-parenleft
+show-calltips-force                 = Alt-parenleft
 sort-siblings                       = Alt-A
 split-line                          = Alt-Ctrl-o
 
@@ -5208,9 +5173,13 @@ zap-to-character                    = Alt-z</t>
 keyboard-quit           = Ctrl-g # not needed, but a good reminder
 keyboard-quit           = Return
 
-enter-apropos-mode      = a
+apropos-autocompletion  = Shift-a
+apropos-bindings        = Shift-b
+apropos-find-commands   = Shift-f
+
 print-bindings          = b
-help-for-command        = c
+print-commands          = c
+help-for-command        = f
 python-help             = p</t>
 <t tx="ekr.20060603223152.1">--&gt; set-silent-mode
 --&gt; mode-help
@@ -5504,6 +5473,15 @@ redo                                -&gt; same = Shift-z</t>
 enter-quick-command-mode            = Alt-C
 </t>
 <t tx="ekr.20060609072235"># At present no abbreviations seem necessary because it is so easy to enter the appropriate mode.</t>
-<t tx="ekr.20060609072235.1"></t>
+<t tx="ekr.20060609072235.1">aaa</t>
+<t tx="ekr.20060609175331"># Don't work yet.
+press-cycle-ed-button       = Alt-Shift-c
+press-add-ed-button         = Atl-Shift-e
+press-settings-leo-button   = None
+press-beautify-button       = None
+press-spell-button          = None
+press-save-button           = None
+press-rst3-button           = None
+</t>
 </tnodes>
 </leo_file>
