@@ -270,59 +270,6 @@ class autoCompleterClass:
         return self.autoComplete(event,force=True)
     #@nonl
     #@-node:ekr.20060219103822:autoCompleteForce
-    #@+node:ekr.20060219170612:enable/disableAutocompleter/Calltips
-    def disableAutocompleter (self,event=None):
-        '''Disable the autocompleter.'''
-        self.k.enable_autocompleter = False
-        
-    def disableCalltips (self,event=None):
-        '''Disable calltips.'''
-        self.k.enable_calltips = False
-        
-    def enableAutocompleter (self,event=None):
-        '''Enable the autocompleter.'''
-        self.k.enable_autocompleter = True
-        
-    def enableCalltips (self,event=None):
-        '''Enable calltips.'''
-        self.k.enable_calltips = True
-    #@nonl
-    #@-node:ekr.20060219170612:enable/disableAutocompleter/Calltips
-    #@+node:ekr.20060219103046.1:showCalltips
-    def showCalltips (self,event=None,force=False):
-        
-        '''Show the calltips at the cursor.'''
-        
-        c = self.c ; k = c.k
-        
-        w = event and event.widget or c.get_focus()
-        
-        # Insert the calltip if possible, but not in headlines.
-        if (k.enable_calltips or force) and not c.widget_name(w).startswith('head'):
-            self.widget = w
-            self.prefix = ''
-            self.selection = g.app.gui.getTextSelection(w)
-            self.selectedText = g.app.gui.getSelectedText(w)
-            # self.getLeadinWord(w)
-            self.leadinWord = self.findCalltipWord(w)
-            self.object = None
-            self.membersList = None
-            self.calltip()
-        else:
-            # Just insert the invocation character as usual.
-            k.masterCommand(event,func=None,stroke=None,commandName=None)
-            
-        return 'break'
-    #@nonl
-    #@-node:ekr.20060219103046.1:showCalltips
-    #@+node:ekr.20060219170043:showCalltipsForce
-    def showCalltipsForce (self,event=None):
-        
-        '''Show the calltips at the cursor, even if calltips are not presently enabled.'''
-        
-        return self.showCalltips(event,force=True)
-    #@nonl
-    #@-node:ekr.20060219170043:showCalltipsForce
     #@+node:ekr.20051126124705:autoCompleterStateHandler
     def autoCompleterStateHandler (self,event):
         
@@ -364,6 +311,90 @@ class autoCompleterClass:
             return 'do-standard-keys'
     #@nonl
     #@-node:ekr.20051126124705:autoCompleterStateHandler
+    #@+node:ekr.20060219170612:enable/disable/toggleAutocompleter/Calltips
+    def disableAutocompleter (self,event=None):
+        '''Disable the autocompleter.'''
+        self.k.enable_autocompleter = False
+        self.showAutocompleterStatus()
+        
+    def disableCalltips (self,event=None):
+        '''Disable calltips.'''
+        self.k.enable_calltips = False
+        self.showCalltipsStatus()
+        
+    def enableAutocompleter (self,event=None):
+        '''Enable the autocompleter.'''
+        self.k.enable_autocompleter = True
+        self.showAutocompleterStatus()
+        
+    def enableCalltips (self,event=None):
+        '''Enable calltips.'''
+        self.k.enable_calltips = True
+        self.showCalltipsStatus()
+        
+    def toggleAutocompleter (self,event=None):
+        '''Toggle whether the autocompleter is enabled.'''
+        self.k.enable_autocompleter = not self.k.enable_autocompleter
+        self.showAutocompleterStatus()
+        
+    def toggleCalltips (self,event=None):
+        '''Toggle whether calltips are enabled.'''
+        self.k.enable_calltips = not self.k.enable_calltips
+        self.showCalltipsStatus()
+    #@nonl
+    #@-node:ekr.20060219170612:enable/disable/toggleAutocompleter/Calltips
+    #@+node:ekr.20060219103046.1:showCalltips
+    def showCalltips (self,event=None,force=False):
+        
+        '''Show the calltips at the cursor.'''
+        
+        c = self.c ; k = c.k
+        
+        w = event and event.widget or c.get_focus()
+        
+        # Insert the calltip if possible, but not in headlines.
+        if (k.enable_calltips or force) and not c.widget_name(w).startswith('head'):
+            self.widget = w
+            self.prefix = ''
+            self.selection = g.app.gui.getTextSelection(w)
+            self.selectedText = g.app.gui.getSelectedText(w)
+            # self.getLeadinWord(w)
+            self.leadinWord = self.findCalltipWord(w)
+            self.object = None
+            self.membersList = None
+            self.calltip()
+        else:
+            # Just insert the invocation character as usual.
+            k.masterCommand(event,func=None,stroke=None,commandName=None)
+            
+        return 'break'
+    #@nonl
+    #@-node:ekr.20060219103046.1:showCalltips
+    #@+node:ekr.20060219170043:showCalltipsForce
+    def showCalltipsForce (self,event=None):
+        
+        '''Show the calltips at the cursor, even if calltips are not presently enabled.'''
+        
+        return self.showCalltips(event,force=True)
+    #@nonl
+    #@-node:ekr.20060219170043:showCalltipsForce
+    #@+node:ekr.20060609171919:showAutocompleter/CalltipsStatus
+    def showAutocompleterStatus (self):
+        '''Show the autocompleter status on the status line.'''
+        
+        k = self.k ; frame = k.c.frame
+        frame.clearStatusLine()
+        frame.putStatusLine('Autocompleter ',color='blue')
+        frame.putStatusLine(g.choose(k.enable_autocompleter,'On','Off'))
+        
+    def showCalltipsStatus (self):
+        '''Show the autocompleter status on the status line.'''
+        k = self.k ; frame = k.c.frame
+        frame.clearStatusLine()
+        frame.putStatusLine('Calltips ',color='blue')
+        frame.putStatusLine(g.choose(k.enable_calltips,'On','Off'))
+    #@nonl
+    #@-node:ekr.20060609171919:showAutocompleter/CalltipsStatus
     #@-node:ekr.20060219103046:Top level
     #@+node:ekr.20060216160332.2:Helpers
     #@+node:ekr.20051127105431:abort & exit
@@ -2049,22 +2080,26 @@ class keyHandlerClass:
     #@+node:ekr.20060609150503:k.initAbbrev
     def initAbbrev (self):
         
-        k = self ; c = k.c
-        
-        d = c.config.getAbbrevDict()
+        k = self ; c = k.c ; d = c.config.getAbbrevDict()
         if d:
             for key in d.keys():
                 commandName = d.get(key)
-                if c.commandsDict.get(key):
-                    g.trace('ignoring duplicate abbrev: %s',key)
+                if commandName.startswith('press-') and commandName.endsWith('-button'):
+                    pass # These must be handled later.
                 else:
-                    func = c.commandsDict.get(commandName)
-                    if func:
-                        c.commandsDict [key] = func
-                    else:
-                        g.es_print('bad abbrev: %s: unknown command name: %s' %
-                            (key,commandName),color='blue')
-    #@nonl
+                    self.initOneAbbrev(key)
+    
+    def initOneAbbrev (self):
+        k = self ; c = k.c
+        if c.commandsDict.get(key):
+            g.trace('ignoring duplicate abbrev: %s',key)
+        else:
+            func = c.commandsDict.get(commandName)
+            if func:
+                c.commandsDict [key] = func
+            else:
+                g.es_print('bad abbrev: %s: unknown command name: %s' %
+                    (key,commandName),color='blue')
     #@-node:ekr.20060609150503:k.initAbbrev
     #@+node:ekr.20060104154937:addModeCommands (enterModeCallback)
     def addModeCommands (self):
