@@ -43,7 +43,7 @@ http://webpages.charter.net/edreamleo/rstplugin3.html
 
 from __future__ import generators # To make this plugin work with Python 2.2.
 
-__version__ = '1.15'
+__version__ = '1.16'
 
 #@<< imports >>
 #@+node:ekr.20050805162550.2:<< imports >>
@@ -122,6 +122,8 @@ except ImportError:
 # when such nodes are selected.
 # 1.15 EKR: added support for @rst-doc-only and doc_only_mode.  An important 
 # new feature.
+# 1.16 EKR: fixed bug that ignored whatever followed @space or @doc in 
+# doc-only mode.
 #@-at
 #@nonl
 #@-node:ekr.20050805162550.3:<< change log >>
@@ -1341,18 +1343,6 @@ class rstClass:
         if s:
             self.write('%s\n\n' % s)
     #@nonl
-    #@+node:ekr.20050811154552:getDocPart
-    def getDocPart (self,lines,n):
-    
-        result = []
-        while n < len(lines):
-            s = lines [n] ; n += 1
-            if g.match_word(s,0,'@code') or g.match_word(s,0,'@c'):
-                break
-            result.append(s)
-        return n, result
-    #@nonl
-    #@-node:ekr.20050811154552:getDocPart
     #@+node:ekr.20050811150541:handleCodeMode & helper
     def handleCodeMode (self,lines):
     
@@ -1569,6 +1559,33 @@ class rstClass:
     #@nonl
     #@-node:ekr.20050805162550.30:replaceCodeBlockDirectives
     #@-node:ekr.20050811101550.1:writeBody & helpers
+    #@+node:ekr.20050811154552:getDocPart
+    def getDocPart (self,lines,n):
+    
+        result = []
+        #@    << Append whatever follows @doc or @space to result >>
+        #@+node:ekr.20060610104435:<< Append whatever follows @doc or @space to result >>
+        if n > 0:
+            line = lines[n-1]
+            if line.startswith('@doc'):
+                s = line[4:].lstrip()
+            elif line.startswith('@'):
+                s = line[1:].lstrip()
+            else:
+                s = ''
+            if s.strip():
+                result.append(s)
+        #@nonl
+        #@-node:ekr.20060610104435:<< Append whatever follows @doc or @space to result >>
+        #@nl
+        while n < len(lines):
+            s = lines [n] ; n += 1
+            if g.match_word(s,0,'@code') or g.match_word(s,0,'@c'):
+                break
+            result.append(s)
+        return n, result
+    #@nonl
+    #@-node:ekr.20050811154552:getDocPart
     #@+node:ekr.20050805162550.26:writeHeadline & helper
     def writeHeadline (self,p):
     
