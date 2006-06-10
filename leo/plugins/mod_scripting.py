@@ -62,12 +62,13 @@ Tk  = g.importExtension('Tkinter',pluginName=__name__,verbose=True)
 Pmw = g.importExtension('Pmw',pluginName=__name__,verbose=True)
 
 import os
+import string
 import sys
 #@nonl
 #@-node:ekr.20060328125248.2:<< imports >>
 #@nl
 
-__version__ = "0.22"
+__version__ = "0.23"
 #@<< version history >>
 #@+node:ekr.20060328125248.3:<< version history >>
 #@+at
@@ -111,6 +112,7 @@ __version__ = "0.22"
 # 0.21 EKR: Added Debug button & balloons.
 # 0.22 EKR: Created leoScriptModule for use by the debugger and Debug Script 
 # button.
+# 0.23 EKR: Creating a script button creates the press-xxx-button command.
 #@-at
 #@nonl
 #@-node:ekr.20060328125248.3:<< version history >>
@@ -513,6 +515,7 @@ class scriptingController:
     #@-node:ekr.20060328125248.22:createScriptButtonIconButton
     #@+node:ekr.20060328125248.24:createAtButtonIconButton
     def createAtButtonIconButton (self,p,buttonText,statusLine,shortcut,bg='LightSteelBlue1'):
+        c = self.c ; k = c.k
         b = self.createIconButton(text=buttonText,statusLine=statusLine,bg=bg)
         def deleteButtonCallback(event=None,self=self,b=b):
             self.deleteButton(b)
@@ -525,7 +528,6 @@ class scriptingController:
             #@+node:ekr.20060328125248.25:<< bind the shortcut to atButtonCallback >>
             c = self.c; k = c.keyHandler ; func = atButtonCallback
             
-            #shortcut, junk = c.frame.menu.canonicalizeShortcut(shortcut)
             shortcut = k.canonicalizeShortcut(shortcut)
             ok = k.bindKey ('all', shortcut,func,buttonText)
             
@@ -534,6 +536,29 @@ class scriptingController:
             #@nonl
             #@-node:ekr.20060328125248.25:<< bind the shortcut to atButtonCallback >>
             #@nl
+        #@    << create press-buttonText-button command >>
+        #@+node:ekr.20060609174006:<< create press-buttonText-button command >>
+        chars = g.toUnicode(string.letters + string.digits,g.app.tkEncoding)
+        aList = [g.choose(ch in chars,ch,'-') for ch in g.toUnicode(buttonText,g.app.tkEncoding)]
+        buttonCommandName = ''.join(aList)
+        buttonCommandName = buttonCommandName.replace('--','-')
+        buttonCommandName = 'press-%s-button' % buttonCommandName.lower()
+        
+        # g.es_print('Creating %s command' % buttonCommandName)
+        
+        c.commandsDict [buttonCommandName] = atButtonCallback
+        c.k.inverseCommandsDict [atButtonCallback] = buttonCommandName
+        
+        # See if an abbreviation has been specified for this button.
+        d = c.config.getAbbrevDict()
+        if d:
+            key = d.get(buttonCommandName)
+            if key:
+                g.es_print('defining abbrev: %s = %s' % (buttonCommandName,key))
+                k.initOneAbbrev(key)
+        #@nonl
+        #@-node:ekr.20060609174006:<< create press-buttonText-button command >>
+        #@nl
         return b
     #@-node:ekr.20060328125248.24:createAtButtonIconButton
     #@+node:ekr.20060328125248.26:deleteButton

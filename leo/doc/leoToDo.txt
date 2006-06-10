@@ -3,48 +3,28 @@
 #@+all
 #@+node:ekr.20060531161030:To do: B2
 #@+node:ekr.20060605173936:First
-#@+node:ekr.20060605211837:Quick shortcuts
-cycle-focus
-disable-autocompleter
-disable-calltips.
-enable-autocompleter
-enable-calltips
-execute-script
-kill-line
-scroll-outline-down-line
-scroll-outline-down-page
-scroll-outline-up-line
-scroll-outline-up-page
-set-mark
-toggle-extend-mode
-transpose-lines
-
-New shortcuts:
-
-find-character
-exchange-point-mark
-#@nonl
-#@-node:ekr.20060605211837:Quick shortcuts
 #@+node:ekr.20060603184747:New commands for mouseless Leo
 @nocolor
 
-move-to-last-sibling, move-to-first-sibling, Alt-1, Alt-9?
+First
 
-** cycle focus must cycle through tabs.  (bind to Ctrl-t, Return is good enough for swapping focus).
+- cycle focus must cycle through tabs.
 
-help-for-command-mode: shows top-level plain bindings.
+- Commands that scroll the *present* pane.
 
-Commands that scroll the *present* pane.
+- repeat-complex-command
 
-find-character-extend-selection.
+Later
 
-repeat-complex-command and repeat counts for cursor moves!
+- Repeat counts for cursor moves.
+
+- move-to-last-sibling, move-to-first-sibling, Alt-1, Alt-9?
+
+- help-for-command-mode: shows top-level plain bindings.
 #@nonl
 #@-node:ekr.20060603184747:New commands for mouseless Leo
-#@+node:ekr.20060606084852:Script buttons should create press-xxx-button commands
-#@-node:ekr.20060606084852:Script buttons should create press-xxx-button commands
-#@+node:ekr.20060605212347:Minibuffer abbreviations:  ov = set-overwrite-mode
-#@-node:ekr.20060605212347:Minibuffer abbreviations:  ov = set-overwrite-mode
+#@+node:ekr.20060608220822.2:Allow redefinitions of modes
+#@-node:ekr.20060608220822.2:Allow redefinitions of modes
 #@-node:ekr.20060605173936:First
 #@+node:ekr.20060531161030.1:Make body editors persistant
 #@-node:ekr.20060531161030.1:Make body editors persistant
@@ -854,6 +834,26 @@ IndentationError: unindent does not match any outer indentation level (line
 #@-node:ekr.20060107082929:Fix problem reporting indentation errors
 #@+node:ekr.20060325091249:@shortcut does not work: remove it?
 #@-node:ekr.20060325091249:@shortcut does not work: remove it?
+#@+node:ekr.20060609070148:Fix hung (zombie) windows)
+@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=3768494
+By: ktenney
+
+I'm using current CVS, W2k
+
+1 open a Leo file (I'm using a batch file / console)
+
+2 click Edit->Open   <-- Having this dialog open is the problem.
+
+3 return focus to the Leo window
+
+4 click Help->Open leoDocs.leo
+
+Zombie!
+#@-node:ekr.20060609070148:Fix hung (zombie) windows)
+#@+node:ekr.20060608220822.1:undo messes with pane?
+#@-node:ekr.20060608220822.1:undo messes with pane?
 #@-node:ekr.20060227163215:Fix *all* bugs
 #@+node:ekr.20060603090445.5:Later
 #@+node:ekr.20060530110450:Test major Emacs commands
