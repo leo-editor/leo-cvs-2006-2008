@@ -296,7 +296,7 @@ class parserBaseClass:
             return
         
         # Call doShortcuts with a temp dict.
-        d = self.shortcutsDict
+        d = self.shortcutsDict.copy()
         self.shortcutsDict = {}
         self.doShortcuts(p,kind,name,val)
         
