@@ -2633,24 +2633,18 @@ class leoTkinterBody (leoFrame.leoBody):
         
         '''Cycle keyboard focus between the body text editors.'''
         
-        c = self.c ; d = self.editorWidgets
-        keys = d.keys() ; n = len(keys)
-        if n < 2: return 'break' # There is only one widget. 
+        c = self.c ; d = self.editorWidgets ; w = self.bodyCtrl
+        values = d.values()
+        if len(values) > 1:
+            i = values.index(w) + 1
+            if i == len(values): i = 0
+            w2 = d.values()[i]
+            # g.trace('-'*20,w,w2)
+            assert(w!=w2)
+            self.onFocusIn(w2,setFocus=True)
+            self.bodyCtrl = self.frame.bodyCtrl = w2
     
-        i = 0
-        for key in d.keys():
-            i += 1
-            w = d.get(key)
-            if w == self.bodyCtrl:
-                if i >= n: i = 0
-                w = d.get(keys[i])
-                self.bodyCtrl = self.frame.bodyCtrl = w
-                self.onFocusIn(w)
-                # g.app.gui.set_focus(c,w)
-                return 'break'
-                
         return 'break'
-    #@nonl
     #@-node:ekr.20060528170438:cycleEditorFocus
     #@+node:ekr.20060528113806:deleteEditor
     def deleteEditor (self,event=None):
@@ -2674,61 +2668,85 @@ class leoTkinterBody (leoFrame.leoBody):
         # Select another editor.
         w = d.values()[0]
         self.onFocusIn(w)
-        # self.frame.bodyCtrl = self.bodyCtrl = w # Must change both ivars!
-        # self.selectMainEditor()
     #@nonl
     #@-node:ekr.20060528113806:deleteEditor
     #@+node:ekr.20060528104554:onFocusIn
-    def onFocusIn(self,w):
+    lockout_onFocusIn = False
+    
+    def onFocusIn(self,w,setFocus=False):
     
         c = self.c ; d = self.editorWidgets ; p = c.currentPosition()
-        if w.leo_p is None: return
-    
-        # Inactivate the previously active editor.
-        # Don't capture ivars here! selectMainEditor keeps them up-to-date.
-        for key in d.keys():
-            w2 = d.get(key)
-            if w2 != w and w2.leo_active:
-                w2.leo_active = False
-                self.unselectLabel(w2)
-                w.leo_scrollBarSpot = w.yview()
-                w.leo_insertSpot = g.app.gui.getInsertPoint(w)
-                w.leo_selection = g.app.gui.getSelectionRange(w)
-    
-        # Careful, leo_p may not exist.
-        if not w.leo_p.exists(c):
-            g.trace('does not exist',w.leo_name)
-            for p2 in c.allNodes_iter():
-                if p2.v == w.leo_v:
-                    w.leo_p = p2.copy()
+        trace = False
+        if self.lockout_onFocusIn:
+            if trace: g.trace('lockout')
+            return 'break'
+        if w.leo_p is None:
+            if trace: g.trace('no w.leo_p')
+            return 'break'
+        if w == self.bodyCtrl:
+            if trace: g.trace('no change',w,g.callers())
+            return 'break'
+        
+        # Disable recursive calls: some of the calls below generate OnFocusInEvents.
+        self.lockout_onFocusIn = True
+        try:
+            if trace: g.trace(w,g.callers())
+        
+            # Inactivate the previously active editor.
+            # Don't capture ivars here! selectMainEditor keeps them up-to-date.
+            for key in d.keys():
+                w2 = d.get(key)
+                if w2 != w and w2.leo_active:
+                    w2.leo_active = False
+                    self.unselectLabel(w2)
+                    w.leo_scrollBarSpot = w.yview()
+                    w.leo_insertSpot = g.app.gui.getInsertPoint(w)
+                    w.leo_selection = g.app.gui.getSelectionRange(w)
                     break
             else:
-                g.trace("Can't happen") ; return
-    
-        # g.trace(w.leo_name,w.leo_p.headString())
-        self.frame.bodyCtrl = self.bodyCtrl = w # Must change both ivars!
-        w.leo_active = True
-        c.selectPosition(w.leo_p,updateBeadList=True) # Calls selectMainEditor.
-        c.recolor_now()
-        #@    << restore the selection, insertion point and the scrollbar >>
-        #@+node:ekr.20060605190146:<< restore the selection, insertion point and the scrollbar >>
-        if w.leo_insertSpot:
-            g.app.gui.setInsertPoint(w,w.leo_insertSpot)
-            w.see(w.leo_insertSpot)
-        else:
-            g.app.gui.setInsertPoint(w,'1.0')
-            
-        if w.leo_scrollBarSpot:
-            first,last = w.leo_scrollBarSpot
-            w.yview('moveto',first)
+                if trace: g.trace('no active editor!')
         
-        if w.leo_selection:
-            start,end = w.leo_selection
-            g.app.gui.setSelectionRange(w,start,end)
-        #@nonl
-        #@-node:ekr.20060605190146:<< restore the selection, insertion point and the scrollbar >>
-        #@nl
-        c.frame.bodyWantsFocus()
+            # Careful, leo_p may not exist.
+            if not w.leo_p.exists(c):
+                g.trace('does not exist',w.leo_name)
+                for p2 in c.allNodes_iter():
+                    if p2.v == w.leo_v:
+                        w.leo_p = p2.copy()
+                        break
+                else:
+                    if trace: g.trace("Can't happen")
+                    return 'break'
+    
+            self.frame.bodyCtrl = self.bodyCtrl = w # Must change both ivars!
+            w.leo_active = True
+            c.selectPosition(w.leo_p,updateBeadList=True) # Calls selectMainEditor.
+            c.recolor_now()
+            #@        << restore the selection, insertion point and the scrollbar >>
+            #@+node:ekr.20060605190146:<< restore the selection, insertion point and the scrollbar >>
+            if w.leo_insertSpot:
+                g.app.gui.setInsertPoint(w,w.leo_insertSpot)
+                w.see(w.leo_insertSpot)
+            else:
+                g.app.gui.setInsertPoint(w,'1.0')
+                
+            if w.leo_scrollBarSpot:
+                first,last = w.leo_scrollBarSpot
+                w.yview('moveto',first)
+            
+            if w.leo_selection:
+                start,end = w.leo_selection
+                g.app.gui.setSelectionRange(w,start,end)
+            #@nonl
+            #@-node:ekr.20060605190146:<< restore the selection, insertion point and the scrollbar >>
+            #@nl
+            w3 = g.app.gui.get_focus(c)
+            if setFocus or w3 and not g.app.gui.widget_name(w3).startswith('body'):
+                if trace: g.trace(w)
+                c.bodyWantsFocusNow()
+        finally:
+            self.lockout_onFocusIn = False
+    
+        return 'break'
     #@nonl
     #@-node:ekr.20060528104554:onFocusIn
     #@+node:ekr.20060528132829:selectMainEditor
