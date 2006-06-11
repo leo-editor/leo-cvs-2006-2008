@@ -360,7 +360,7 @@ class parserBaseClass:
                     d ['*entry-commands*'] = aList
                 elif bunch is not None:
                     # A regular shortcut.
-                    # g.trace(name,bunch)
+                    # if name.startswith('press-'): g.trace(name,bunch)
                     # New in 4.4a5:
                     bunchList = d.get(name,[])
                     bunchList.append(bunch)
