@@ -3,6 +3,10 @@
 #@+all
 #@+node:ekr.20060531161030:To do: B2
 #@+node:ekr.20060605173936:First
+#@+node:ekr.20060611172007:use g.stripBrackets instead of lstrip and rstrip
+#@-node:ekr.20060611172007:use g.stripBrackets instead of lstrip and rstrip
+#@+node:ekr.20060610071047:Document new command, esp. editor & button commands
+#@-node:ekr.20060610071047:Document new command, esp. editor & button commands
 #@+node:ekr.20060603184747:New commands for mouseless Leo
 @nocolor
 
@@ -854,6 +858,41 @@ Zombie!
 #@-node:ekr.20060609070148:Fix hung (zombie) windows)
 #@+node:ekr.20060608220822.1:undo messes with pane?
 #@-node:ekr.20060608220822.1:undo messes with pane?
+#@+node:ekr.20060610193837:open python window does not appear to work on Solaris
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3771068
+By: leouser
+
+The open python window does not appear to work on Solaris.
+
+http://sourceforge.net/forum/message.php?msg_id=3771167
+By: nobody
+
+from what I could see it looked like it was trying to start the shell up with
+a location that pointed to a nonexistent path.
+#@nonl
+#@-node:ekr.20060610193837:open python window does not appear to work on Solaris
+#@+node:ekr.20060610212014:Problems with tutorial command
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3771026
+By: paulpaterson
+
+I'm finally migrating to 4.4 and having got myself stuck in the minibuffer and
+not knowing how to get out (! shouldn't <esc> do that ?!) I thought I'd consult
+the help!
+
+Clicking on "Help ... Open offline tutorial" looked like a good option. However,
+when you click on this you are asked if you want to "Download tutorial (sbooks.chm)
+from SourceForge?".
+
+This was a bit surprising and confusing as I'd requested the offline tutorial
+and wasn't expecting to go online to get it! Also, from the prompt I have no
+idea if that is what I want to do.
+
+Couldn't this file be distributed with Leo?
+#@nonl
+#@-node:ekr.20060610212014:Problems with tutorial command
 #@-node:ekr.20060227163215:Fix *all* bugs
 #@+node:ekr.20060603090445.5:Later
 #@+node:ekr.20060530110450:Test major Emacs commands

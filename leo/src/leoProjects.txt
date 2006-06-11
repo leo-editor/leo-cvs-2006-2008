@@ -7098,11 +7098,17 @@ What I did:
     
 - The scripting plugin now defines button bindings with the 'button' pane specifier.
   This takes precedence over all other specifiers.
-  
-- The print-bindings commands now properly sorts bindings.
-  This was causing a great deal of confusion.
-  
-- k.bindKey now removes conflicting definitions and issues a warning.
+
+- k.bindKeyToDict now does a better job of detecting and warning about redefinitions.
+
+- k.printBindings now properly sorts entries.
+  This was causing me a great deal of confusion.
+
+- k.registerCommand now properly gets shortcuts from settings if possible,
+  and makes bindings in the new 'button' pane specifier.
+
+- masterKeyHandlerHelper now supports the 'button' pane specifier,
+  which overrides all others.
 
 @color
 #@nonl
