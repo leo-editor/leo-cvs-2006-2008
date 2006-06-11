@@ -1961,12 +1961,26 @@ class keyHandlerClass:
         try:
             k.bindKeyToDict(pane,shortcut,callback,commandName)
             b = g.bunch(pane=pane,func=callback,commandName=commandName)
-            # Remove any previous definitions.
-            bunchList = [b for b in bunchList if b.commandName != commandName]
-            # Now append the new definition.
+            #@        << remove previous conflicting definitions from bunchList >>
+            #@+node:ekr.20060611171940:<< remove previous conflicting definitions from bunchList >>
+            if 1: # important.
+                redefs = [str(b2.commandName) for b2 in bunchList
+                    if b2.commandName != commandName and pane in ('button','all',b2.pane)]
+                for z in redefs:
+                    g.es_print('redefining %s to %s' % (z,commandName),color='red')
+            
+            bunchList = [b2 for b2 in bunchList if pane not in ('button','all',b2.pane)]
+            
+            if 0:
+                if bunchList:
+                    aList = [(str(pane),str(commandName)),]
+                    aList.extend([(str(b2.pane),str(b2.commandName)) for b2 in bunchList])
+                    g.trace(aList)
+            #@nonl
+            #@-node:ekr.20060611171940:<< remove previous conflicting definitions from bunchList >>
+            #@nl
             bunchList.append(b)
             shortcut = g.stripBrackets(shortcut.strip())
-            # if shortcut.startswith('<Shift'): g.trace('ooops',shortcut,g.callers())
             k.bindingsDict [shortcut] = bunchList
             return True
         except Exception: # Could be a user error.
@@ -2611,6 +2625,9 @@ class keyHandlerClass:
                 n1 = max(n1,len(s1))
                 n2 = max(n2,len(s2))
                 data.append((s1,s2,s3),)
+    
+        data.sort(lambda x,y: cmp(x[1],y[1]))
+                
         # This isn't perfect in variable-width fonts.
         for s1,s2,s3 in data:
             g.es('%*s %*s %s' % (-n1,s1,-(min(12,n2)),s2,s3),tabName=tabName)
@@ -2859,7 +2876,6 @@ class keyHandlerClass:
         restriction to functions is not significant.'''
         
         k = self ; c = k.c
-        
         f = c.commandsDict.get(commandName)
         if f:
             g.es_trace('Redefining %s' % (commandName), color='red')
@@ -2870,27 +2886,28 @@ class keyHandlerClass:
         
         if shortcut:
             stroke = k.shortcutFromSetting(shortcut)
-            ok = k.bindKey (pane,stroke,func,commandName)
-            k.makeMasterGuiBinding(stroke)
-            if verbose and ok:
-                 g.es_print('Registered %s bound to %s' % (
-                    commandName,k.prettyPrintKey(stroke)),color='blue')
         else:
-            # New in 4.4b3: try to get a shortcut from leoSettings.leo.
+            # Try to get a shortcut from leoSettings.leo.
             junk,bunchList = c.config.getShortcut(commandName)
             found = False
             for bunch in bunchList:
-                accel = bunch.val ; pane = bunch.pane
-                if accel and not pane.endswith('-mode'):
-                    found = True
-                    shortcut = k.shortcutFromSetting(accel)
-                    k.bindKey(pane,shortcut,func,commandName)
-                    k.registerBinding(accel)
-                    if verbose:
-                        g.es_print('Registered %s bound to %s' % (
-                            commandName,k.prettyPrintKey(shortcut)),color='blue')
-            if verbose and not found:
-                g.es_print('Registered %s' % (commandName),color='blue')
+                accel2 = bunch.val ; pane2 = bunch.pane
+                if accel2 and not pane2.endswith('-mode'):
+                    shortcut2 = accel2
+                    stroke = k.shortcutFromSetting(shortcut2)
+                    break
+            else: stroke = None
+      
+        if stroke:
+            ok = k.bindKey (pane,stroke,func,commandName) # Must be a stroke.
+            k.makeMasterGuiBinding(stroke) # Must be a stroke.
+            if verbose and ok:
+                 g.es_print('%s = %s' % (
+                    commandName,k.prettyPrintKey(stroke)),color='blue')
+                    
+        # Annoying.
+        # else: g.es_print('Registered %s' % (commandName),color='blue')
+    #@nonl
     #@-node:ekr.20051015110547:k.registerCommand
     #@-node:ekr.20051006065121:Externally visible helpers
     #@+node:ekr.20060606085637:Input State
@@ -3247,6 +3264,7 @@ class keyHandlerClass:
             ('command',None),
             ('insert',None),
             ('overwrite',None),
+            ('button',None),
             ('body','body'),
             ('text','head'), # Important: text bindings in head before tree bindings.
             ('tree','head'),
@@ -3259,7 +3277,7 @@ class keyHandlerClass:
                 key in key_states and isPlain and k.unboundKeyAction == key or
                 name and w_name.startswith(name) or
                 key == 'text' and g.app.gui.isTextWidget(w) or
-                key == 'all'
+                key in ('button','all')
             ):
                 d = k.masterBindingsDict.get(key)
                 # g.trace(key,name,d and len(d.keys()))
