@@ -80,9 +80,9 @@ class parserBaseClass:
             
         # Save the info for k.finishCreate and k.makeAllBindings.
         d = g.app.config.modeCommandsDict
-    
-        if not d.get(commandName):
-            d [commandName] = modeDict
+        
+        # New in 4.4.1 b2: silently allow redefinitions of modes.
+        d [commandName] = modeDict
     #@nonl
     #@-node:ekr.20060102103625:createModeCommand
     #@+node:ekr.20041120103012:error
@@ -288,12 +288,7 @@ class parserBaseClass:
         if name.endswith('-'):
             name = name[:-1]
         name = name + '-mode'
-        # g.trace('name',name)
-        
-        # Check for duplicate mode names.
-        if g.app.config.modeCommandsDict.get(name):
-            g.trace('Ignoring duplicate @mode setting: %s' % name)
-            return
+        # g.trace('name',name,'c',p.c)
         
         # Call doShortcuts with a temp dict.
         d = self.shortcutsDict.copy()

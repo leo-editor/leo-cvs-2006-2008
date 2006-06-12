@@ -2791,12 +2791,7 @@ def doMode(self,p,kind,name,val):
     if name.endswith('-'):
         name = name[:-1]
     name = name + '-mode'
-    # g.trace('name',name)
-    
-    # Check for duplicate mode names.
-    if g.app.config.modeCommandsDict.get(name):
-        g.trace('Ignoring duplicate @mode setting: %s' % name)
-        return
+    # g.trace('name',name,'c',p.c)
     
     # Call doShortcuts with a temp dict.
     d = self.shortcutsDict.copy()
@@ -5870,12 +5865,7 @@ def doMode(self,p,kind,name,val):
     if name.endswith('-'):
         name = name[:-1]
     name = name + '-mode'
-    # g.trace('name',name)
-    
-    # Check for duplicate mode names.
-    if g.app.config.modeCommandsDict.get(name):
-        g.trace('Ignoring duplicate @mode setting: %s' % name)
-        return
+    # g.trace('name',name,'c',p.c)
     
     # Call doShortcuts with a temp dict.
     d = self.shortcutsDict.copy()
@@ -5910,9 +5900,9 @@ def createModeCommand (self,name,modeDict):
         
     # Save the info for k.finishCreate and k.makeAllBindings.
     d = g.app.config.modeCommandsDict
-
-    if not d.get(commandName):
-        d [commandName] = modeDict
+    
+    # New in 4.4.1 b2: silently allow redefinitions of modes.
+    d [commandName] = modeDict
 #@nonl
 #@-node:ekr.20060102103625:createModeCommand
 #@+node:ekr.20041120112043:parseShortcutLine (g.app.config)
@@ -7833,6 +7823,64 @@ def doShortcuts(self,p,kind,name,val,s=None):
 #@nonl
 #@-node:ekr.20041120105609:doShortcuts
 #@-node:ekr.20060609214042:Allow @shortcuts bindings to apply to press-xxx-commands
+#@+node:ekr.20060608220822.2:Allow redefinitions of modes
+#@+node:ekr.20060102103625.1:doMode
+def doMode(self,p,kind,name,val):
+    
+    '''Parse an @mode node and create the enter-<name>-mode command.'''
+    
+    c = self.c ; k = c.k
+
+    # Compute the mode name.
+    name = name.strip().lower()
+    j = name.find(' ')
+    if j > -1: name = name[:j]
+    if name.endswith('mode'):
+        name = name[:-4].strip()
+    if name.endswith('-'):
+        name = name[:-1]
+    name = name + '-mode'
+    # g.trace('name',name,'c',p.c)
+    
+    # Call doShortcuts with a temp dict.
+    d = self.shortcutsDict.copy()
+    self.shortcutsDict = {}
+    self.doShortcuts(p,kind,name,val)
+    
+    # Remember the mode dict.
+    d2 = self.shortcutsDict
+    
+    # Restore the global dict.
+    self.shortcutsDict = d
+    
+    # Change the pane of all entries to 'mode-name'.
+    # This will disable warnings about duplicate bindings.
+    for key in d2.keys():
+        if key != '*entry-commands*':
+            bunchList = d2.get(key,[])
+            for bunch in bunchList:
+                bunch.pane = name
+                bunch.val = k.strokeFromSetting(bunch.val)
+                # g.trace(name,bunch.val)
+    
+    # Create the command, but not any bindings to it.
+    self.createModeCommand(name,d2)
+#@nonl
+#@-node:ekr.20060102103625.1:doMode
+#@+node:ekr.20060102103625:createModeCommand
+def createModeCommand (self,name,modeDict):
+
+    commandName = 'enter-' + name
+    commandName = commandName.replace(' ','-')
+        
+    # Save the info for k.finishCreate and k.makeAllBindings.
+    d = g.app.config.modeCommandsDict
+    
+    # New in 4.4.1 b2: silently allow redefinitions of modes.
+    d [commandName] = modeDict
+#@nonl
+#@-node:ekr.20060102103625:createModeCommand
+#@-node:ekr.20060608220822.2:Allow redefinitions of modes
 #@-node:ekr.20060603090445.2:New features
 #@-node:ekr.20060603090445:4.4.1 b2 projects
 #@-node:ekr.20050924073836:4.4 projects
