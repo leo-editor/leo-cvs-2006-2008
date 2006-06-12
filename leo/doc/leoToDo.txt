@@ -3,8 +3,17 @@
 #@+all
 #@+node:ekr.20060531161030:To do: B2
 #@+node:ekr.20060605173936:First
-#@+node:ekr.20060610071047:Document new command, esp. editor & button commands
-#@-node:ekr.20060610071047:Document new command, esp. editor & button commands
+#@+node:ekr.20060612080948:Put a link to online docs in the help menu
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3772475
+
+Maybe put a link to the html TOC into the Help Menu,
+"%leodir%/doc/html/leo_TOC.html".
+
+This is more intuitive (to newbies) than the LeoDocs.leo link.  I found this
+very confusing in the begining.
+
+#@-node:ekr.20060612080948:Put a link to online docs in the help menu
 #@+node:ekr.20060603184747:New commands for mouseless Leo
 @nocolor
 
