@@ -4062,7 +4062,7 @@ class keyHandlerClass:
         if not setting:
             return None
     
-        s = setting.strip().lstrip('<').rstrip('>')
+        s = g.stripBrackets(setting.strip())
         #@    << define cmd, ctrl, alt, shift >>
         #@+node:ekr.20060201065809:<< define cmd, ctrl, alt, shift >>
         s2 = s.lower()
