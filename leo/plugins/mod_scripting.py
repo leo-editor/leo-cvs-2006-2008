@@ -68,7 +68,7 @@ import sys
 #@-node:ekr.20060328125248.2:<< imports >>
 #@nl
 
-__version__ = "0.23"
+__version__ = "0.24"
 #@<< version history >>
 #@+node:ekr.20060328125248.3:<< version history >>
 #@+at
@@ -115,6 +115,7 @@ __version__ = "0.23"
 # 0.23 EKR: Creating a script button creates the press-xxx-button command,
 #           and you can specify settings for such commands using @shortcuts 
 # nodes.
+# 0.24 EKR: Use 'button' pane for bindings.
 #@-at
 #@nonl
 #@-node:ekr.20060328125248.3:<< version history >>
@@ -531,7 +532,7 @@ class scriptingController:
             c = self.c; k = c.keyHandler ; func = atButtonCallback
             
             shortcut = k.canonicalizeShortcut(shortcut)
-            ok = k.bindKey ('all', shortcut,func,buttonText)
+            ok = k.bindKey ('button', shortcut,func,buttonText)
             
             if ok:
                 g.es_print('Bound @button %s to %s' % (buttonText,shortcut),color='blue')
