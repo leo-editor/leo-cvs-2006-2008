@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="291" clone_windows="0"/>
 <globals body_outline_ratio="0.549828178694">
-	<global_window_position top="75" left="241" height="643" width="995"/>
+	<global_window_position top="75" left="241" height="624" width="995"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -346,9 +346,6 @@
 <v t="ekr.20060606085536"><vh>@color overwrite_mode_bg_color = azure2</vh></v>
 <v t="ekr.20060606085536.1"><vh>@color overwrite_mode_fg_color = black</vh></v>
 </v>
-<v t="ekr.20060609072235"><vh>Abbreviations</vh>
-<v t="ekr.20060609072235.1"><vh>@@abbrev</vh></v>
-</v>
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
 <v t="ekr.20060608185854"><vh>@mode commands</vh></v>
@@ -455,9 +452,9 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060512084639" a="E"><vh>Recent</vh>
+<v t="ekr.20060512084639"><vh>Recent</vh>
 <v t="ekr.20060209045356"><vh>@bool trace_masterFocusHandler = False</vh></v>
-<v t="ekr.20060131071612" a="V"><vh>@bool trace_masterKeyHandler = False</vh></v>
+<v t="ekr.20060131071612"><vh>@bool trace_masterKeyHandler = False</vh></v>
 <v t="ekr.20060309022759"><vh>@bool trace_colorizer = False</vh></v>
 <v t="ekr.20060131071947"><vh>@bool trace_masterClickHandler = False</vh></v>
 <v t="ekr.20060121102627"><vh>@bool trace_modes = False</vh></v>
@@ -465,7 +462,7 @@
 <v t="ekr.20060216135834"><vh>@bool enable_autocompleter_initially = False</vh></v>
 <v t="ekr.20060603070801"><vh>@bool enable_calltips_initially = False</vh></v>
 </v>
-<v t="ekr.20060603215208" a="E"><vh>@keys EKR bindings: vim mode bindings</vh>
+<v t="ekr.20060603215208" a="TV"><vh>@keys EKR bindings: vim mode bindings</vh>
 <v t="ekr.20060608065207"><vh>Settings related to key bindings</vh>
 <v t="ekr.20060604080653" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
 <v t="ekr.20060605081712"><vh>@color command_mode_bg_color = MistyRose1</vh></v>
@@ -474,9 +471,6 @@
 <v t="ekr.20060605081712.3"><vh>@color insert_mode_fg_color = black</vh></v>
 <v t="ekr.20060606085536"><vh>@color overwrite_mode_bg_color = azure2</vh></v>
 <v t="ekr.20060606085536.1"><vh>@color overwrite_mode_fg_color = black</vh></v>
-</v>
-<v t="ekr.20060609072235"><vh>Abbreviations</vh>
-<v t="ekr.20060609072235.1"><vh>@@abbrev</vh></v>
 </v>
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
@@ -5514,7 +5508,5 @@ redo                                -&gt; same = Shift-z</t>
 
 enter-quick-command-mode            = Alt-C
 </t>
-<t tx="ekr.20060609072235"># At present no abbreviations seem necessary because it is so easy to enter the appropriate mode.</t>
-<t tx="ekr.20060609072235.1">aaa</t>
 </tnodes>
 </leo_file>

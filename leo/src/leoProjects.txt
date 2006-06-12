@@ -2854,6 +2854,110 @@ def doShortcuts(self,p,kind,name,val,s=None):
 #@nonl
 #@-node:ekr.20041120105609:doShortcuts
 #@-node:ekr.20060610194034:Fixed crasher in init code
+#@+node:ekr.20060611172007:use g.stripBrackets instead of lstrip and rstrip
+lstrip and rstrip do not exist in Python 2.2.1.
+#@nonl
+#@+node:ekr.20060410112600:g.stripBrackets
+def stripBrackets (s):
+    
+    '''Same as s.lstrip('<').rstrip('>') except it works for Python 2.2.1.'''
+    
+    if s.startswith('<'):
+        s = s[1:]
+    if s.endswith('>'):
+        s = s[:-1]
+    return s
+#@nonl
+#@-node:ekr.20060410112600:g.stripBrackets
+#@+node:ekr.20060128081317:shortcutFromSetting
+def shortcutFromSetting (self,setting):
+    
+    k = self
+
+    if not setting:
+        return None
+
+    s = g.stripBrackets(setting.strip())
+    << define cmd, ctrl, alt, shift >>
+    if k.swap_mac_keys and sys.platform == "darwin":
+        << swap cmd and ctrl keys >>
+    << convert minus signs to plus signs >>
+    << compute the last field >>
+    << compute shortcut >>
+    # g.trace(setting,shortcut)
+    return shortcut
+    
+canonicalizeShortcut = shortcutFromSetting # For compatibility.
+strokeFromSetting    = shortcutFromSetting
+#@nonl
+#@+node:ekr.20060201065809:<< define cmd, ctrl, alt, shift >>
+s2 = s.lower()
+
+cmd   = s2.find("cmd") >= 0     or s2.find("command") >= 0
+ctrl  = s2.find("control") >= 0 or s2.find("ctrl") >= 0
+alt   = s2.find("alt") >= 0
+shift = s2.find("shift") >= 0   or s2.find("shft") >= 0
+#@nonl
+#@-node:ekr.20060201065809:<< define cmd, ctrl, alt, shift >>
+#@+node:ekr.20060215104239:<< swap cmd and ctrl keys >>
+if ctrl and not cmd:
+    cmd = True ; ctrl = False
+if alt and not ctrl:
+    ctrl = True ; alt = False
+#@nonl
+#@-node:ekr.20060215104239:<< swap cmd and ctrl keys >>
+#@+node:ekr.20060128103640.1:<< convert minus signs to plus signs >>
+# Replace all minus signs by plus signs, except a trailing minus:
+if s.endswith('-'):
+    s = s[:-1].replace('-','+') + '-'
+else:
+    s = s.replace('-','+')
+#@nonl
+#@-node:ekr.20060128103640.1:<< convert minus signs to plus signs >>
+#@+node:ekr.20060128103640.2:<< compute the last field >>
+if s.endswith('+'):
+    last = '+'
+else:
+    fields = s.split('+') # Don't lower this field.
+    last = fields and fields[-1]
+    if not last:
+        if not g.app.menuWarningsGiven:
+            print "bad shortcut specifier:", s
+        return None
+
+if len(last) == 1:
+    last2 = k.tkBindNamesDict.get(last) # Fix new bug introduced in 4.4b2.
+    # g.trace(last,last2)
+    if last2:
+        last = last2 ; shift = False # Ignore the shift state for these special chars.
+    else:
+        if shift:
+            last = last.upper()
+            shift = False
+        else:
+            last = last.lower()
+else:
+    # Translate from a made-up (or lowercase) name to 'official' Tk binding name.
+    # This is a *one-way* translation, done only here.
+    d = self.settingsNameDict
+    last = d.get(last.lower(),last)
+#@nonl
+#@-node:ekr.20060128103640.2:<< compute the last field >>
+#@+node:ekr.20060128103640.4:<< compute shortcut >>
+table = (
+    (alt, 'Alt+'),
+    (ctrl,'Ctrl+'),
+    (cmd, 'Command+'),
+    (shift,'Shift+'),
+    (True, last),
+)
+    
+# new in 4.4b3: convert all characters to unicode first.
+shortcut = ''.join([g.toUnicode(val,g.app.tkEncoding) for flag,val in table if flag])
+#@nonl
+#@-node:ekr.20060128103640.4:<< compute shortcut >>
+#@-node:ekr.20060128081317:shortcutFromSetting
+#@-node:ekr.20060611172007:use g.stripBrackets instead of lstrip and rstrip
 #@-node:ekr.20060603090445.1:Bugs fixed
 #@+node:ekr.20060603090445.2:New features
 #@+node:ekr.20060211093935:Support for on-enter-mode in mode declarations
@@ -7053,6 +7157,11 @@ The commands that enable and disable calltips now update the status line.
 #@nonl
 #@-node:ekr.20060609171056:Added toggle-autocompleter and toggle-calltips commands
 #@+node:ekr.20060606084852:Script buttons now create press-xxx-button commands
+@nocolor
+
+Creating a script button creates the press-xxx-button command,
+and you can specify settings for such commands using @shortcuts nodes.
+#@nonl
 #@-node:ekr.20060606084852:Script buttons now create press-xxx-button commands
 #@+node:ekr.20060611174052:print-bindings command now properly sorts bindings
 #@+node:ekr.20051012201831:printBindings

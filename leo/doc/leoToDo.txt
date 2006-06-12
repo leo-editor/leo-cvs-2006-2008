@@ -3,8 +3,6 @@
 #@+all
 #@+node:ekr.20060531161030:To do: B2
 #@+node:ekr.20060605173936:First
-#@+node:ekr.20060611172007:use g.stripBrackets instead of lstrip and rstrip
-#@-node:ekr.20060611172007:use g.stripBrackets instead of lstrip and rstrip
 #@+node:ekr.20060610071047:Document new command, esp. editor & button commands
 #@-node:ekr.20060610071047:Document new command, esp. editor & button commands
 #@+node:ekr.20060603184747:New commands for mouseless Leo
@@ -27,8 +25,6 @@ Later
 - help-for-command-mode: shows top-level plain bindings.
 #@nonl
 #@-node:ekr.20060603184747:New commands for mouseless Leo
-#@+node:ekr.20060608220822.2:Allow redefinitions of modes
-#@-node:ekr.20060608220822.2:Allow redefinitions of modes
 #@-node:ekr.20060605173936:First
 #@+node:ekr.20060531161030.1:Make body editors persistant
 #@-node:ekr.20060531161030.1:Make body editors persistant
