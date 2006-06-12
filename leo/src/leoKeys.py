@@ -2098,12 +2098,12 @@ class keyHandlerClass:
         if d:
             for key in d.keys():
                 commandName = d.get(key)
-                if commandName.startswith('press-') and commandName.endsWith('-button'):
-                    pass # These must be handled later.
+                if commandName.startswith('press-') and commandName.endswith('-button'):
+                    pass # Must be done later in k.registerCommand.
                 else:
-                    self.initOneAbbrev(key)
+                    self.initOneAbbrev(commandName,key)
     
-    def initOneAbbrev (self):
+    def initOneAbbrev (self,commandName,key):
         k = self ; c = k.c
         if c.commandsDict.get(key):
             g.trace('ignoring duplicate abbrev: %s',key)
@@ -2114,6 +2114,7 @@ class keyHandlerClass:
             else:
                 g.es_print('bad abbrev: %s: unknown command name: %s' %
                     (key,commandName),color='blue')
+    #@nonl
     #@-node:ekr.20060609150503:k.initAbbrev
     #@+node:ekr.20060104154937:addModeCommands (enterModeCallback)
     def addModeCommands (self):
@@ -2877,8 +2878,8 @@ class keyHandlerClass:
         
         k = self ; c = k.c
         f = c.commandsDict.get(commandName)
-        if f:
-            g.es_trace('Redefining %s' % (commandName), color='red')
+        if f and f.__name__ != 'dummyCallback':
+            g.es_print('Redefining %s' % (commandName), color='red')
             
         c.commandsDict [commandName] = func
         k.inverseCommandsDict [func.__name__] = commandName
@@ -2904,6 +2905,16 @@ class keyHandlerClass:
             if verbose and ok:
                  g.es_print('%s = %s' % (
                     commandName,k.prettyPrintKey(stroke)),color='blue')
+                    
+        # Fixup any previous abbreviation to press-x-button commands.
+        if commandName.startswith('press-') and commandName.endswith('-button'):
+            d = c.config.getAbbrevDict()
+                # Keys are full command names, values are abbreviations.
+            if commandName in d.values():
+                for key in d.keys():
+                    if d.get(key) == commandName:
+                        c.commandsDict [key] = c.commandsDict.get(commandName)
+                        break
                     
         # Annoying.
         # else: g.es_print('Registered %s' % (commandName),color='blue')

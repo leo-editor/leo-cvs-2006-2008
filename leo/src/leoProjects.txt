@@ -2068,203 +2068,6 @@ c.frame.putStatusLine('%s %s' % (name,args))
 #@-node:ekr.20060224103829.5:<< put the status line >>
 #@-node:ekr.20060220110302:calltip
 #@-node:ekr.20060602155519:Made sure calltip always adds '('
-#@+node:ekr.20060602100638:Improved filename completion
-@nocolor
-
-What I did:
-    
-- computeFileNameCompletionList always clears the tabList initially.
-- computeFileNameCompletionList no longer sets the label.
-- doFileNameChar now ignores characters without a valid completion.
-- ..\ no longer appears in the completion list.
-- tabs do not cycle through a list: this never is going to be convenient.
-- open-outline-by-name makes sure the file is not a directory.
-
-@color
-#@nonl
-#@+node:ekr.20060419123128:open-outline-by-name
-def openOutlineByName (self,event):
-    
-    '''Prompt for the name of a Leo outline and open it.'''
-
-    k = self.k
-    k.setLabelBlue('Open Leo Outline: ',protect=True)
-    k.getFileName(event,handler=self.openOutlineByNameFinisher)
-
-def openOutlineByNameFinisher (self,event):
-
-    c = self.c ; k = self.k ; fileName = k.arg
-    
-    k.resetLabel()
-    if fileName and g.os_path_exists(fileName) and not g.os_path_isdir(fileName):
-        g.openWithFileName(fileName,c)
-#@nonl
-#@-node:ekr.20060419123128:open-outline-by-name
-#@+node:ekr.20050920084036.4:g.longestCommonPrefix & g.itemsMatchingPrefixInList
-def longestCommonPrefix (s1,s2):
-    
-    '''Find the longest prefix common to strings s1 and s2.'''
-    
-    prefix = ''
-    for ch in s1:
-        if s2.startswith(prefix + ch):
-            prefix = prefix + ch
-        else:
-            return prefix
-    return prefix
-        
-def itemsMatchingPrefixInList (s,aList,matchEmptyPrefix=False):
-    
-    '''This method returns a sorted list items of aList whose prefix is s.
-    
-    It also returns the longest common prefix of all the matches.'''
-
-    if s:
-        pmatches = [a for a in aList if a.startswith(s)]
-    elif matchEmptyPrefix:
-        pmatches = aList[:]
-    else: pmatches = []
-
-    if pmatches:
-        pmatches.sort()
-        common_prefix = reduce(g.longestCommonPrefix,pmatches)
-    else:
-        common_prefix = ''
-
-    # g.trace(repr(s),len(pmatches))
-    return pmatches,common_prefix
-#@nonl
-#@-node:ekr.20050920084036.4:g.longestCommonPrefix & g.itemsMatchingPrefixInList
-#@+node:ekr.20060419124420.1:getFileName & helpers
-def getFileName (self,event=None,handler=None,prefix='',filterExt='.leo'):
-    
-    '''Similar to k.getArg, but uses completion to indicate files on the file system.'''
-    
-    k = self ; c = k.c ; tag = 'getFileName' ; state = k.getState(tag)
-    tabName = 'Completion'
-    keysym = (event and event.keysym) or ''
-    # g.trace('state',state,'keysym',keysym)
-    if state == 0:
-        k.arg = ''
-        << init altX vars >>
-        # Set the states.
-        k.getFileNameHandler = handler
-        k.setState(tag,1,k.getFileName)
-        k.afterArgWidget = event and event.widget or c.frame.body.bodyCtrl
-        c.frame.log.clearTab(tabName)
-        c.minibufferWantsFocusNow()
-    elif keysym == 'Return':
-        k.arg = k.getLabel(ignorePrompt=True)
-        handler = k.getFileNameHandler
-        c.frame.log.deleteTab(tabName)
-        if handler: handler(event)
-    elif keysym == 'Tab':
-        k.doFileNameTab()
-        c.minibufferWantsFocus()
-    elif keysym == 'BackSpace':
-        k.doFileNameBackSpace() 
-        c.minibufferWantsFocus()
-    else:
-        k.doFileNameChar(event)
-    return 'break'
-#@nonl
-#@+node:ekr.20060419125211:<< init altX vars >>
-k.filterExt = filterExt
-k.mb_prefix = (prefix or k.getLabel())
-k.mb_prompt = prefix or k.getLabel()
-k.mb_tabList = []
-
-# Clear the list: any non-tab indicates that a new prefix is in effect.
-theDir = g.os_path_abspath(os.curdir)
-k.extendLabel(theDir,select=False,protect=False)
-
-k.mb_tabListPrefix = k.getLabel()
-#@nonl
-#@-node:ekr.20060419125211:<< init altX vars >>
-#@+node:ekr.20060419125301:k.doFileNameBackSpace
-def doFileNameBackSpace (self):
-
-    '''Cut back to previous prefix and update prefix.'''
-
-    k = self ; c = k.c
-    
-    if 0:
-        g.trace(
-            len(k.mb_tabListPrefix) > len(k.mb_prefix),
-            repr(k.mb_tabListPrefix),repr(k.mb_prefix))
-
-    if len(k.mb_tabListPrefix) > len(k.mb_prefix):
-        k.mb_tabListPrefix = k.mb_tabListPrefix [:-1]
-        k.setLabel(k.mb_tabListPrefix)
-#@nonl
-#@-node:ekr.20060419125301:k.doFileNameBackSpace
-#@+node:ekr.20060603111722:k.doFileNameChar
-def doFileNameChar (self,event):
-    
-    k = self
-    
-    # Clear the list, any other character besides tab indicates that a new prefix is in effect.
-    k.mb_tabList = []
-    k.updateLabel(event)
-    k.mb_tabListPrefix = k.getLabel()
-
-    common_prefix = k.computeFileNameCompletionList()
-
-    if k.mb_tabList:
-        k.setLabel(k.mb_prompt + common_prefix)
-    else:
-        # Restore everything.
-        old = k.getLabel(ignorePrompt=True)[:-1]
-        k.setLabel(k.mb_prompt + old)
-#@nonl
-#@-node:ekr.20060603111722:k.doFileNameChar
-#@+node:ekr.20060603110904:k.doFileNameTab
-def doFileNameTab (self):
-    
-    k = self
-    common_prefix = k.computeFileNameCompletionList()
-
-    if k.mb_tabList:
-        k.setLabel(k.mb_prompt + common_prefix)
-#@nonl
-#@-node:ekr.20060603110904:k.doFileNameTab
-#@+node:ekr.20060419125554:k.computeFileNameCompletionList
-# This code must not change mb_tabListPrefix.
-def computeFileNameCompletionList (self):
-
-    k = self ; c = k.c ; s = k.getLabel() ; tabName = 'Completion'
-    path = k.getLabel(ignorePrompt=True)
-    sep = os.path.sep
-    tabList = []
-    for f in glob.glob(path+'*'):
-        if g.os_path_isdir(f):
-            tabList.append(f + sep)
-        else:
-            junk,ext = g.os_path_splitext(f)
-            if not ext or ext == k.filterExt:
-                tabList.append(f)
-    k.mb_tabList = tabList
-    junk,common_prefix = g.itemsMatchingPrefixInList(path,tabList)
-    if tabList:
-        c.frame.log.clearTab(tabName)
-        k.showFileNameTabList()
-    return common_prefix
-#@nonl
-#@-node:ekr.20060419125554:k.computeFileNameCompletionList
-#@+node:ekr.20060420100610:k.showFileNameTabList
-def showFileNameTabList (self):
-    
-    k = self ; tabName = 'Completion'
-    
-    for path in k.mb_tabList:
-        theDir,fileName = g.os_path_split(path)
-        s = g.choose(path.endswith('\\'),theDir,fileName)
-        s = fileName or g.os_path_basename(theDir) + '\\'
-        g.es(s,tabName=tabName)
-#@nonl
-#@-node:ekr.20060420100610:k.showFileNameTabList
-#@-node:ekr.20060419124420.1:getFileName & helpers
-#@-node:ekr.20060602100638:Improved filename completion
 #@+node:ekr.20060605151444:word matches now succeed if first character of the pattern is not in word-chars.
 #@-node:ekr.20060605151444:word matches now succeed if first character of the pattern is not in word-chars.
 #@+node:ekr.20060604125715:Dialogs now bring the Leo window back to the front
@@ -2954,7 +2757,364 @@ shortcut = ''.join([g.toUnicode(val,g.app.tkEncoding) for flag,val in table if f
 #@-node:ekr.20060128081317:shortcutFromSetting
 #@-node:ekr.20060611172007:use g.stripBrackets instead of lstrip and rstrip
 #@-node:ekr.20060603090445.1:Bugs fixed
-#@+node:ekr.20060603090445.2:New features
+#@+node:ekr.20060612075338:Code level
+#@+node:ekr.20060605121612.2:Simplified gui bindings
+#@+node:ekr.20060119150624:createModeBindings
+def createModeBindings (self,modeName,d,w):
+    
+    '''Create mode bindings for the named mode using dictionary d for widget w.'''
+    
+    k = self ; c = k.c ; f = c.frame
+        
+    # g.trace(g.listToString(d.keys()))
+
+    for commandName in d.keys():
+        if commandName == '*entry-commands*': continue
+        func = c.commandsDict.get(commandName)
+        if not func:
+            g.es_print('No such command: %s. Referenced from %s' % (
+                commandName,modeName))
+            continue
+        bunchList = d.get(commandName,[])
+        for bunch in bunchList:
+            stroke = bunch.val
+            # Important: bunch.val is a stroke returned from k.strokeFromSetting.
+            # Do not call k.strokeFromSetting again here!
+            if stroke and stroke not in ('None','none',None):
+                if 0:
+                    g.trace(
+                        g.app.gui.widget_name(w), modeName,
+                        '%10s' % (stroke),
+                        '%20s' % (commandName),
+                        bunch.nextMode)
+                        
+                k.makeMasterGuiBinding(stroke)
+               
+                # Create the entry for the mode in k.masterBindingsDict.
+                # Important: this is similar, but not the same as k.bindKeyToDict.
+                # Thus, we should **not** call k.bindKey here!
+                d2 = k.masterBindingsDict.get(modeName,{})
+                d2 [stroke] = g.Bunch(
+                    commandName=commandName,
+                    func=func,
+                    nextMode=bunch.nextMode,
+                    stroke=stroke)
+                k.masterBindingsDict [ modeName ] = d2
+#@nonl
+#@-node:ekr.20060119150624:createModeBindings
+#@+node:ekr.20060605130652:makeMasterGuiBinding
+def makeMasterGuiBinding (self,stroke,w=None):
+    
+    '''Make a master gui binding for stroke in pane w, or in all the standard widgets.'''
+    
+    k = self ; c = k.c ; f = c.frame
+   
+    bindStroke = k.tkbindingFromStroke(stroke)
+    
+    if w:
+        widgets = [w]
+    else:
+        bodyCtrl = f.body and hasattr(f.body,'bodyCtrl') and f.body.bodyCtrl or None
+        canvas   = f.tree and hasattr(f.tree,'canvas')   and f.tree.canvas   or None
+        bindingWidget = f.tree and hasattr(f.tree,'bindingWidget') and f.tree.bindingWidget or None
+        widgets=(c.miniBufferWidget,bodyCtrl,canvas,bindingWidget)
+    
+    # This is the only real key callback.
+    def masterBindKeyCallback (event,k=k,stroke=stroke):
+        return k.masterKeyHandler(event,stroke=stroke)
+
+    for w in widgets:
+        if not w: continue
+        # Make the binding only if no binding for the stroke exists in the widget.
+        aList = k.masterGuiBindingsDict.get(bindStroke,[])
+        if w not in aList:
+            aList.append(w)
+            k.masterGuiBindingsDict [bindStroke] = aList
+            try:
+                w.bind(bindStroke,masterBindKeyCallback)
+                # g.trace(stroke,bindStroke,g.app.gui.widget_name(w))
+            except Exception:
+                # g.es_exception()
+                g.es_print('exception binding %s to %s' % (
+                    bindStroke, c.widget_name(w)), color = 'blue')
+                if g.app.unitTesting: raise
+#@nonl
+#@-node:ekr.20060605130652:makeMasterGuiBinding
+#@+node:ekr.20060216074643:k.completeAllBindings
+def completeAllBindings (self):
+    
+    '''New in 4.4b3: make an actual binding in *all* the standard places.
+    
+    The event will go to k.masterKeyHandler as always, so nothing really changes.
+    except that k.masterKeyHandler will know the proper stroke.'''
+    
+    k = self
+    for stroke in k.bindingsDict.keys():
+        k.makeMasterGuiBinding(stroke)
+#@nonl
+#@-node:ekr.20060216074643:k.completeAllBindings
+#@+node:ekr.20051015110547:k.registerCommand
+def registerCommand (self,commandName,shortcut,func,pane='all',verbose=True):
+    
+    '''Make the function available as a minibuffer command,
+    and optionally attempt to bind a shortcut.
+    
+    You can wrap any method in a callback function, so the
+    restriction to functions is not significant.'''
+    
+    k = self ; c = k.c
+    f = c.commandsDict.get(commandName)
+    if f and f.__name__ != 'dummyCallback':
+        g.es_print('Redefining %s' % (commandName), color='red')
+        
+    c.commandsDict [commandName] = func
+    k.inverseCommandsDict [func.__name__] = commandName
+    # g.trace('leoCommands %24s = %s' % (func.__name__,commandName))
+    
+    if shortcut:
+        stroke = k.shortcutFromSetting(shortcut)
+    else:
+        # Try to get a shortcut from leoSettings.leo.
+        junk,bunchList = c.config.getShortcut(commandName)
+        found = False
+        for bunch in bunchList:
+            accel2 = bunch.val ; pane2 = bunch.pane
+            if accel2 and not pane2.endswith('-mode'):
+                shortcut2 = accel2
+                stroke = k.shortcutFromSetting(shortcut2)
+                break
+        else: stroke = None
+  
+    if stroke:
+        ok = k.bindKey (pane,stroke,func,commandName) # Must be a stroke.
+        k.makeMasterGuiBinding(stroke) # Must be a stroke.
+        if verbose and ok:
+             g.es_print('%s = %s' % (
+                commandName,k.prettyPrintKey(stroke)),color='blue')
+                
+    # Fixup any previous abbreviation to press-x-button commands.
+    if commandName.startswith('press-') and commandName.endswith('-button'):
+        d = c.config.getAbbrevDict()
+            # Keys are full command names, values are abbreviations.
+        if commandName in d.values():
+            for key in d.keys():
+                if d.get(key) == commandName:
+                    c.commandsDict [key] = c.commandsDict.get(commandName)
+                    break
+                
+    # Annoying.
+    # else: g.es_print('Registered %s' % (commandName),color='blue')
+#@nonl
+#@-node:ekr.20051015110547:k.registerCommand
+#@+node:ekr.20060221141535:k.completeAllBindingsForWidget
+def completeAllBindingsForWidget (self,w):
+    
+    k = self
+    
+    for stroke in k.bindingsDict.keys():
+        k.makeMasterGuiBinding(stroke,w=w)
+#@nonl
+#@-node:ekr.20060221141535:k.completeAllBindingsForWidget
+#@-node:ekr.20060605121612.2:Simplified gui bindings
+#@-node:ekr.20060612075338:Code level
+#@+node:ekr.20060603090445.2:New & improved features
+#@+node:ekr.20060602100638:Improved filename completion
+@nocolor
+
+What I did:
+    
+- computeFileNameCompletionList always clears the tabList initially.
+- computeFileNameCompletionList no longer sets the label.
+- doFileNameChar now ignores characters without a valid completion.
+- ..\ no longer appears in the completion list.
+- tabs do not cycle through a list: this never is going to be convenient.
+- open-outline-by-name makes sure the file is not a directory.
+
+@color
+#@nonl
+#@+node:ekr.20060419123128:open-outline-by-name
+def openOutlineByName (self,event):
+    
+    '''Prompt for the name of a Leo outline and open it.'''
+
+    k = self.k
+    k.setLabelBlue('Open Leo Outline: ',protect=True)
+    k.getFileName(event,handler=self.openOutlineByNameFinisher)
+
+def openOutlineByNameFinisher (self,event):
+
+    c = self.c ; k = self.k ; fileName = k.arg
+    
+    k.resetLabel()
+    if fileName and g.os_path_exists(fileName) and not g.os_path_isdir(fileName):
+        g.openWithFileName(fileName,c)
+#@nonl
+#@-node:ekr.20060419123128:open-outline-by-name
+#@+node:ekr.20050920084036.4:g.longestCommonPrefix & g.itemsMatchingPrefixInList
+def longestCommonPrefix (s1,s2):
+    
+    '''Find the longest prefix common to strings s1 and s2.'''
+    
+    prefix = ''
+    for ch in s1:
+        if s2.startswith(prefix + ch):
+            prefix = prefix + ch
+        else:
+            return prefix
+    return prefix
+        
+def itemsMatchingPrefixInList (s,aList,matchEmptyPrefix=False):
+    
+    '''This method returns a sorted list items of aList whose prefix is s.
+    
+    It also returns the longest common prefix of all the matches.'''
+
+    if s:
+        pmatches = [a for a in aList if a.startswith(s)]
+    elif matchEmptyPrefix:
+        pmatches = aList[:]
+    else: pmatches = []
+
+    if pmatches:
+        pmatches.sort()
+        common_prefix = reduce(g.longestCommonPrefix,pmatches)
+    else:
+        common_prefix = ''
+
+    # g.trace(repr(s),len(pmatches))
+    return pmatches,common_prefix
+#@nonl
+#@-node:ekr.20050920084036.4:g.longestCommonPrefix & g.itemsMatchingPrefixInList
+#@+node:ekr.20060419124420.1:getFileName & helpers
+def getFileName (self,event=None,handler=None,prefix='',filterExt='.leo'):
+    
+    '''Similar to k.getArg, but uses completion to indicate files on the file system.'''
+    
+    k = self ; c = k.c ; tag = 'getFileName' ; state = k.getState(tag)
+    tabName = 'Completion'
+    keysym = (event and event.keysym) or ''
+    # g.trace('state',state,'keysym',keysym)
+    if state == 0:
+        k.arg = ''
+        << init altX vars >>
+        # Set the states.
+        k.getFileNameHandler = handler
+        k.setState(tag,1,k.getFileName)
+        k.afterArgWidget = event and event.widget or c.frame.body.bodyCtrl
+        c.frame.log.clearTab(tabName)
+        c.minibufferWantsFocusNow()
+    elif keysym == 'Return':
+        k.arg = k.getLabel(ignorePrompt=True)
+        handler = k.getFileNameHandler
+        c.frame.log.deleteTab(tabName)
+        if handler: handler(event)
+    elif keysym == 'Tab':
+        k.doFileNameTab()
+        c.minibufferWantsFocus()
+    elif keysym == 'BackSpace':
+        k.doFileNameBackSpace() 
+        c.minibufferWantsFocus()
+    else:
+        k.doFileNameChar(event)
+    return 'break'
+#@nonl
+#@+node:ekr.20060419125211:<< init altX vars >>
+k.filterExt = filterExt
+k.mb_prefix = (prefix or k.getLabel())
+k.mb_prompt = prefix or k.getLabel()
+k.mb_tabList = []
+
+# Clear the list: any non-tab indicates that a new prefix is in effect.
+theDir = g.os_path_abspath(os.curdir)
+k.extendLabel(theDir,select=False,protect=False)
+
+k.mb_tabListPrefix = k.getLabel()
+#@nonl
+#@-node:ekr.20060419125211:<< init altX vars >>
+#@+node:ekr.20060419125301:k.doFileNameBackSpace
+def doFileNameBackSpace (self):
+
+    '''Cut back to previous prefix and update prefix.'''
+
+    k = self ; c = k.c
+    
+    if 0:
+        g.trace(
+            len(k.mb_tabListPrefix) > len(k.mb_prefix),
+            repr(k.mb_tabListPrefix),repr(k.mb_prefix))
+
+    if len(k.mb_tabListPrefix) > len(k.mb_prefix):
+        k.mb_tabListPrefix = k.mb_tabListPrefix [:-1]
+        k.setLabel(k.mb_tabListPrefix)
+#@nonl
+#@-node:ekr.20060419125301:k.doFileNameBackSpace
+#@+node:ekr.20060603111722:k.doFileNameChar
+def doFileNameChar (self,event):
+    
+    k = self
+    
+    # Clear the list, any other character besides tab indicates that a new prefix is in effect.
+    k.mb_tabList = []
+    k.updateLabel(event)
+    k.mb_tabListPrefix = k.getLabel()
+
+    common_prefix = k.computeFileNameCompletionList()
+
+    if k.mb_tabList:
+        k.setLabel(k.mb_prompt + common_prefix)
+    else:
+        # Restore everything.
+        old = k.getLabel(ignorePrompt=True)[:-1]
+        k.setLabel(k.mb_prompt + old)
+#@nonl
+#@-node:ekr.20060603111722:k.doFileNameChar
+#@+node:ekr.20060603110904:k.doFileNameTab
+def doFileNameTab (self):
+    
+    k = self
+    common_prefix = k.computeFileNameCompletionList()
+
+    if k.mb_tabList:
+        k.setLabel(k.mb_prompt + common_prefix)
+#@nonl
+#@-node:ekr.20060603110904:k.doFileNameTab
+#@+node:ekr.20060419125554:k.computeFileNameCompletionList
+# This code must not change mb_tabListPrefix.
+def computeFileNameCompletionList (self):
+
+    k = self ; c = k.c ; s = k.getLabel() ; tabName = 'Completion'
+    path = k.getLabel(ignorePrompt=True)
+    sep = os.path.sep
+    tabList = []
+    for f in glob.glob(path+'*'):
+        if g.os_path_isdir(f):
+            tabList.append(f + sep)
+        else:
+            junk,ext = g.os_path_splitext(f)
+            if not ext or ext == k.filterExt:
+                tabList.append(f)
+    k.mb_tabList = tabList
+    junk,common_prefix = g.itemsMatchingPrefixInList(path,tabList)
+    if tabList:
+        c.frame.log.clearTab(tabName)
+        k.showFileNameTabList()
+    return common_prefix
+#@nonl
+#@-node:ekr.20060419125554:k.computeFileNameCompletionList
+#@+node:ekr.20060420100610:k.showFileNameTabList
+def showFileNameTabList (self):
+    
+    k = self ; tabName = 'Completion'
+    
+    for path in k.mb_tabList:
+        theDir,fileName = g.os_path_split(path)
+        s = g.choose(path.endswith('\\'),theDir,fileName)
+        s = fileName or g.os_path_basename(theDir) + '\\'
+        g.es(s,tabName=tabName)
+#@nonl
+#@-node:ekr.20060420100610:k.showFileNameTabList
+#@-node:ekr.20060419124420.1:getFileName & helpers
+#@-node:ekr.20060602100638:Improved filename completion
 #@+node:ekr.20060211093935:Support for on-enter-mode in mode declarations
 #@-node:ekr.20060211093935:Support for on-enter-mode in mode declarations
 #@+node:ekr.20060603090445.3:Better listings for print-commands and print-bindings & mode-help commands
@@ -3218,154 +3378,6 @@ def prettyPrintKey (self,stroke,brief=False):
 #@nonl
 #@-node:ekr.20060201083154:k.prettyPrintKey
 #@-node:ekr.20060604182523:Better printing of bindings (period -> .) etc
-#@+node:ekr.20060605121612.2:Simplified gui bindings
-#@+node:ekr.20060119150624:createModeBindings
-def createModeBindings (self,modeName,d,w):
-    
-    '''Create mode bindings for the named mode using dictionary d for widget w.'''
-    
-    k = self ; c = k.c ; f = c.frame
-        
-    # g.trace(g.listToString(d.keys()))
-
-    for commandName in d.keys():
-        if commandName == '*entry-commands*': continue
-        func = c.commandsDict.get(commandName)
-        if not func:
-            g.es_print('No such command: %s. Referenced from %s' % (
-                commandName,modeName))
-            continue
-        bunchList = d.get(commandName,[])
-        for bunch in bunchList:
-            stroke = bunch.val
-            # Important: bunch.val is a stroke returned from k.strokeFromSetting.
-            # Do not call k.strokeFromSetting again here!
-            if stroke and stroke not in ('None','none',None):
-                if 0:
-                    g.trace(
-                        g.app.gui.widget_name(w), modeName,
-                        '%10s' % (stroke),
-                        '%20s' % (commandName),
-                        bunch.nextMode)
-                        
-                k.makeMasterGuiBinding(stroke)
-               
-                # Create the entry for the mode in k.masterBindingsDict.
-                # Important: this is similar, but not the same as k.bindKeyToDict.
-                # Thus, we should **not** call k.bindKey here!
-                d2 = k.masterBindingsDict.get(modeName,{})
-                d2 [stroke] = g.Bunch(
-                    commandName=commandName,
-                    func=func,
-                    nextMode=bunch.nextMode,
-                    stroke=stroke)
-                k.masterBindingsDict [ modeName ] = d2
-#@nonl
-#@-node:ekr.20060119150624:createModeBindings
-#@+node:ekr.20060605130652:makeMasterGuiBinding
-def makeMasterGuiBinding (self,stroke,w=None):
-    
-    '''Make a master gui binding for stroke in pane w, or in all the standard widgets.'''
-    
-    k = self ; c = k.c ; f = c.frame
-   
-    bindStroke = k.tkbindingFromStroke(stroke)
-    
-    if w:
-        widgets = [w]
-    else:
-        bodyCtrl = f.body and hasattr(f.body,'bodyCtrl') and f.body.bodyCtrl or None
-        canvas   = f.tree and hasattr(f.tree,'canvas')   and f.tree.canvas   or None
-        bindingWidget = f.tree and hasattr(f.tree,'bindingWidget') and f.tree.bindingWidget or None
-        widgets=(c.miniBufferWidget,bodyCtrl,canvas,bindingWidget)
-    
-    # This is the only real key callback.
-    def masterBindKeyCallback (event,k=k,stroke=stroke):
-        return k.masterKeyHandler(event,stroke=stroke)
-
-    for w in widgets:
-        if not w: continue
-        # Make the binding only if no binding for the stroke exists in the widget.
-        aList = k.masterGuiBindingsDict.get(bindStroke,[])
-        if w not in aList:
-            aList.append(w)
-            k.masterGuiBindingsDict [bindStroke] = aList
-            try:
-                w.bind(bindStroke,masterBindKeyCallback)
-                # g.trace(stroke,bindStroke,g.app.gui.widget_name(w))
-            except Exception:
-                # g.es_exception()
-                g.es_print('exception binding %s to %s' % (
-                    bindStroke, c.widget_name(w)), color = 'blue')
-                if g.app.unitTesting: raise
-#@nonl
-#@-node:ekr.20060605130652:makeMasterGuiBinding
-#@+node:ekr.20060216074643:k.completeAllBindings
-def completeAllBindings (self):
-    
-    '''New in 4.4b3: make an actual binding in *all* the standard places.
-    
-    The event will go to k.masterKeyHandler as always, so nothing really changes.
-    except that k.masterKeyHandler will know the proper stroke.'''
-    
-    k = self
-    for stroke in k.bindingsDict.keys():
-        k.makeMasterGuiBinding(stroke)
-#@nonl
-#@-node:ekr.20060216074643:k.completeAllBindings
-#@+node:ekr.20051015110547:k.registerCommand
-def registerCommand (self,commandName,shortcut,func,pane='all',verbose=True):
-    
-    '''Make the function available as a minibuffer command,
-    and optionally attempt to bind a shortcut.
-    
-    You can wrap any method in a callback function, so the
-    restriction to functions is not significant.'''
-    
-    k = self ; c = k.c
-    f = c.commandsDict.get(commandName)
-    if f:
-        g.es_trace('Redefining %s' % (commandName), color='red')
-        
-    c.commandsDict [commandName] = func
-    k.inverseCommandsDict [func.__name__] = commandName
-    # g.trace('leoCommands %24s = %s' % (func.__name__,commandName))
-    
-    if shortcut:
-        stroke = k.shortcutFromSetting(shortcut)
-    else:
-        # Try to get a shortcut from leoSettings.leo.
-        junk,bunchList = c.config.getShortcut(commandName)
-        found = False
-        for bunch in bunchList:
-            accel2 = bunch.val ; pane2 = bunch.pane
-            if accel2 and not pane2.endswith('-mode'):
-                shortcut2 = accel2
-                stroke = k.shortcutFromSetting(shortcut2)
-                break
-        else: stroke = None
-  
-    if stroke:
-        ok = k.bindKey (pane,stroke,func,commandName) # Must be a stroke.
-        k.makeMasterGuiBinding(stroke) # Must be a stroke.
-        if verbose and ok:
-             g.es_print('%s = %s' % (
-                commandName,k.prettyPrintKey(stroke)),color='blue')
-                
-    # Annoying.
-    # else: g.es_print('Registered %s' % (commandName),color='blue')
-#@nonl
-#@-node:ekr.20051015110547:k.registerCommand
-#@+node:ekr.20060221141535:k.completeAllBindingsForWidget
-def completeAllBindingsForWidget (self,w):
-    
-    k = self
-    
-    for stroke in k.bindingsDict.keys():
-        k.makeMasterGuiBinding(stroke,w=w)
-#@nonl
-#@-node:ekr.20060221141535:k.completeAllBindingsForWidget
-#@-node:ekr.20060605121612.2:Simplified gui bindings
 #@+node:ekr.20060607102323:Input-mode bindings bindings of commands to period, etc in the body pane
 @nocolor
 
@@ -5808,21 +5820,6 @@ Thus, all @mode nodes for vim-like modes contain the following line:
 --> set-silent-mode.
 #@nonl
 #@-node:ekr.20060605080141:What I did
-#@+node:ekr.20060604191235:To do
-@nocolor
-
-Plain arrow keys and F-keys don't work in insert mode. 
-(because isPlainKey considers them a plain key?)
-
-find-character should place cursor after found character, not before it.
-
-Optimize state bindings.
-
-Finish @mode gui
-
-Warn on bindings of (plain) keys to invalid commands.
-
-#@-node:ekr.20060604191235:To do
 #@+node:ekr.20060531180657:Creating the mode
 #@+node:ekr.20041119205148:parseHeadline
 def parseHeadline (self,s):
@@ -6960,32 +6957,6 @@ def test_isPlainKey (self):
 #@-node:ekr.20060120071949:isPlainKey & test
 #@-node:ekr.20060127183752:masterKeyHandler & helper
 #@-node:ekr.20060602152600:Vim (silent) modes
-#@+node:ekr.20060609072259:Made @abbrev functional
-#@+node:ekr.20060609150503:k.initAbbrev
-def initAbbrev (self):
-    
-    k = self ; c = k.c ; d = c.config.getAbbrevDict()
-    if d:
-        for key in d.keys():
-            commandName = d.get(key)
-            if commandName.startswith('press-') and commandName.endsWith('-button'):
-                pass # These must be handled later.
-            else:
-                self.initOneAbbrev(key)
-
-def initOneAbbrev (self):
-    k = self ; c = k.c
-    if c.commandsDict.get(key):
-        g.trace('ignoring duplicate abbrev: %s',key)
-    else:
-        func = c.commandsDict.get(commandName)
-        if func:
-            c.commandsDict [key] = func
-        else:
-            g.es_print('bad abbrev: %s: unknown command name: %s' %
-                (key,commandName),color='blue')
-#@-node:ekr.20060609150503:k.initAbbrev
-#@-node:ekr.20060609072259:Made @abbrev functional
 #@+node:ekr.20060609072152:selfInsertCommand sets the column used by up/down arrows
 #@+node:ekr.20051125080855:selfInsertCommand
 def selfInsertCommand(self,event,action='insert'):
@@ -7464,8 +7435,8 @@ def registerCommand (self,commandName,shortcut,func,pane='all',verbose=True):
     
     k = self ; c = k.c
     f = c.commandsDict.get(commandName)
-    if f:
-        g.es_trace('Redefining %s' % (commandName), color='red')
+    if f and f.__name__ != 'dummyCallback':
+        g.es_print('Redefining %s' % (commandName), color='red')
         
     c.commandsDict [commandName] = func
     k.inverseCommandsDict [func.__name__] = commandName
@@ -7491,6 +7462,16 @@ def registerCommand (self,commandName,shortcut,func,pane='all',verbose=True):
         if verbose and ok:
              g.es_print('%s = %s' % (
                 commandName,k.prettyPrintKey(stroke)),color='blue')
+                
+    # Fixup any previous abbreviation to press-x-button commands.
+    if commandName.startswith('press-') and commandName.endswith('-button'):
+        d = c.config.getAbbrevDict()
+            # Keys are full command names, values are abbreviations.
+        if commandName in d.values():
+            for key in d.keys():
+                if d.get(key) == commandName:
+                    c.commandsDict [key] = c.commandsDict.get(commandName)
+                    break
                 
     # Annoying.
     # else: g.es_print('Registered %s' % (commandName),color='blue')
@@ -7673,12 +7654,12 @@ def initAbbrev (self):
     if d:
         for key in d.keys():
             commandName = d.get(key)
-            if commandName.startswith('press-') and commandName.endsWith('-button'):
-                pass # These must be handled later.
+            if commandName.startswith('press-') and commandName.endswith('-button'):
+                pass # Must be done later in k.registerCommand.
             else:
-                self.initOneAbbrev(key)
+                self.initOneAbbrev(commandName,key)
 
-def initOneAbbrev (self):
+def initOneAbbrev (self,commandName,key):
     k = self ; c = k.c
     if c.commandsDict.get(key):
         g.trace('ignoring duplicate abbrev: %s',key)
@@ -7689,6 +7670,7 @@ def initOneAbbrev (self):
         else:
             g.es_print('bad abbrev: %s: unknown command name: %s' %
                 (key,commandName),color='blue')
+#@nonl
 #@-node:ekr.20060609150503:k.initAbbrev
 #@+node:ekr.20060104154937:addModeCommands (enterModeCallback)
 def addModeCommands (self):
@@ -7881,7 +7863,87 @@ def createModeCommand (self,name,modeDict):
 #@nonl
 #@-node:ekr.20060102103625:createModeCommand
 #@-node:ekr.20060608220822.2:Allow redefinitions of modes
-#@-node:ekr.20060603090445.2:New features
+#@+node:ekr.20060612075942:Finished @abbrev
+#@+node:ekr.20060609150503:k.initAbbrev
+def initAbbrev (self):
+    
+    k = self ; c = k.c ; d = c.config.getAbbrevDict()
+    if d:
+        for key in d.keys():
+            commandName = d.get(key)
+            if commandName.startswith('press-') and commandName.endswith('-button'):
+                pass # Must be done later in k.registerCommand.
+            else:
+                self.initOneAbbrev(commandName,key)
+
+def initOneAbbrev (self,commandName,key):
+    k = self ; c = k.c
+    if c.commandsDict.get(key):
+        g.trace('ignoring duplicate abbrev: %s',key)
+    else:
+        func = c.commandsDict.get(commandName)
+        if func:
+            c.commandsDict [key] = func
+        else:
+            g.es_print('bad abbrev: %s: unknown command name: %s' %
+                (key,commandName),color='blue')
+#@nonl
+#@-node:ekr.20060609150503:k.initAbbrev
+#@+node:ekr.20051015110547:k.registerCommand
+def registerCommand (self,commandName,shortcut,func,pane='all',verbose=True):
+    
+    '''Make the function available as a minibuffer command,
+    and optionally attempt to bind a shortcut.
+    
+    You can wrap any method in a callback function, so the
+    restriction to functions is not significant.'''
+    
+    k = self ; c = k.c
+    f = c.commandsDict.get(commandName)
+    if f and f.__name__ != 'dummyCallback':
+        g.es_print('Redefining %s' % (commandName), color='red')
+        
+    c.commandsDict [commandName] = func
+    k.inverseCommandsDict [func.__name__] = commandName
+    # g.trace('leoCommands %24s = %s' % (func.__name__,commandName))
+    
+    if shortcut:
+        stroke = k.shortcutFromSetting(shortcut)
+    else:
+        # Try to get a shortcut from leoSettings.leo.
+        junk,bunchList = c.config.getShortcut(commandName)
+        found = False
+        for bunch in bunchList:
+            accel2 = bunch.val ; pane2 = bunch.pane
+            if accel2 and not pane2.endswith('-mode'):
+                shortcut2 = accel2
+                stroke = k.shortcutFromSetting(shortcut2)
+                break
+        else: stroke = None
+  
+    if stroke:
+        ok = k.bindKey (pane,stroke,func,commandName) # Must be a stroke.
+        k.makeMasterGuiBinding(stroke) # Must be a stroke.
+        if verbose and ok:
+             g.es_print('%s = %s' % (
+                commandName,k.prettyPrintKey(stroke)),color='blue')
+                
+    # Fixup any previous abbreviation to press-x-button commands.
+    if commandName.startswith('press-') and commandName.endswith('-button'):
+        d = c.config.getAbbrevDict()
+            # Keys are full command names, values are abbreviations.
+        if commandName in d.values():
+            for key in d.keys():
+                if d.get(key) == commandName:
+                    c.commandsDict [key] = c.commandsDict.get(commandName)
+                    break
+                
+    # Annoying.
+    # else: g.es_print('Registered %s' % (commandName),color='blue')
+#@nonl
+#@-node:ekr.20051015110547:k.registerCommand
+#@-node:ekr.20060612075942:Finished @abbrev
+#@-node:ekr.20060603090445.2:New & improved features
 #@-node:ekr.20060603090445:4.4.1 b2 projects
 #@-node:ekr.20050924073836:4.4 projects
 #@-all
