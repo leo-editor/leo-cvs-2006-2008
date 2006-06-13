@@ -5401,6 +5401,25 @@ class baseCommands:
             g.es("not found: " + url)
     #@nonl
     #@-node:ekr.20031218072017.2942:leoTutorial (version number)
+    #@+node:ekr.20060613082924:leoUsersGuide
+    def leoUsersGuide (self,event=None):
+        
+        '''Open Leo's users guide in a web browser.'''
+        
+        import webbrowser
+        
+        file = g.os_path_abspath(
+            g.os_path_join(
+                g.app.loadDir,'..','doc','html','leo_TOC.html'))
+    
+        url = 'file:%s' % file
+        
+        try:
+            webbrowser.open_new(url)
+        except:
+            g.es("not found: " + url)
+    #@nonl
+    #@-node:ekr.20060613082924:leoUsersGuide
     #@-node:ekr.20031218072017.2938:Help Menu
     #@-node:ekr.20031218072017.2818:Command handlers...
     #@+node:ekr.20031218072017.2945:Dragging (commands)

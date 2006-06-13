@@ -1299,10 +1299,11 @@ class leoMenu:
             ("&About Leo...",c.about),
             ("Online &Home Page",c.leoHome),
             ("Open Online &Tutorial",c.leoTutorial),
+            ("Open &Users Guide",c.leoUsersGuide),
         ]
     
         self.helpMenuTop2Table = [
-            ("Open &Offline Tutorial",f.leoHelp),
+            # ("Open &Offline Tutorial",f.leoHelp),
         ]
     
         self.helpMenuTop3Table = [

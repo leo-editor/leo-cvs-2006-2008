@@ -7943,6 +7943,148 @@ def registerCommand (self,commandName,shortcut,func,pane='all',verbose=True):
 #@nonl
 #@-node:ekr.20051015110547:k.registerCommand
 #@-node:ekr.20060612075942:Finished @abbrev
+#@+node:ekr.20060612080948:Created open-users-guide command
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3772475
+
+Maybe put a link to the html TOC into the Help Menu,
+"%leodir%/doc/html/leo_TOC.html".
+
+This is more intuitive (to newbies) than the LeoDocs.leo link.  I found this
+very confusing in the begining.
+
+What I did:
+    
+- Created open-users-guide command.
+- Created Open Users Guide menu item.
+- Removed Open Offline Tutorial menu item.
+
+@color
+#@nonl
+#@+node:ekr.20031218072017.2938:Help Menu
+#@+node:ekr.20031218072017.2939:about (version number & date)
+def about (self,event=None):
+    
+    '''Bring up an About Leo Dialog.'''
+    
+    c = self
+    
+    # Don't use triple-quoted strings or continued strings here.
+    # Doing so would add unwanted leading tabs.
+    version = c.getSignOnLine() + "\n\n"
+    theCopyright = (
+        "Copyright 1999-2006 by Edward K. Ream\n" +
+        "All Rights Reserved\n" +
+        "Leo is distributed under the Python License")
+    url = "http://webpages.charter.net/edreamleo/front.html"
+    email = "edreamleo@charter.net"
+
+    g.app.gui.runAboutLeoDialog(c,version,theCopyright,url,email)
+#@nonl
+#@-node:ekr.20031218072017.2939:about (version number & date)
+#@+node:ekr.20031218072017.2943:leoConfig
+def openLeoSettings (self,event=None):
+    
+    '''Open leoSettings.leo in a new Leo window.'''
+
+    c = self
+    name = 'leoSettings.leo'
+    homeDir = g.app.homeDir
+    loadDir = g.app.loadDir
+    configDir = g.app.globalConfigDir
+
+    # Look in configDir first.
+    fileName = g.os_path_join(configDir,name)
+
+    # Look in homeDir second.
+    ok, frame = g.openWithFileName(fileName,c)
+    if not ok:
+        if configDir == loadDir:
+            g.es("%s not found in %s" % (name,configDir))
+        else:
+            fileName = g.os_path_join(homeDir,name)
+            ok, frame = g.openWithFileName(fileName,c)
+            if not ok:
+                g.es("%s not found in %s or %s" % (name,configDir,homeDir))
+#@nonl
+#@-node:ekr.20031218072017.2943:leoConfig
+#@+node:ekr.20031218072017.2940:leoDocumentation
+def leoDocumentation (self,event=None):
+    
+    '''Open LeoDocs.leo in a new Leo window.'''
+    
+    c = self ; name = "LeoDocs.leo"
+
+    fileName = g.os_path_join(g.app.loadDir,"..","doc",name)
+    ok,frame = g.openWithFileName(fileName,c)
+    if not ok:
+        g.es("not found: %s" % name)
+#@-node:ekr.20031218072017.2940:leoDocumentation
+#@+node:ekr.20031218072017.2941:leoHome
+def leoHome (self,event=None):
+    
+    '''Open Leo's Home page in a web browser.'''
+    
+    import webbrowser
+
+    url = "http://webpages.charter.net/edreamleo/front.html"
+    try:
+        webbrowser.open_new(url)
+    except:
+        g.es("not found: " + url)
+#@nonl
+#@-node:ekr.20031218072017.2941:leoHome
+#@+node:ekr.20050130152008:leoPlugins
+def openLeoPlugins (self,event=None):
+    
+    '''Open leoPlugins.leo in a new Leo window.'''
+    
+    c = self ; name = "leoPlugins.leo"
+    fileName = g.os_path_join(g.app.loadDir,"..","plugins",name)
+    ok,frame = g.openWithFileName(fileName,c)
+    if not ok:
+        g.es("not found: %s" % name)
+#@nonl
+#@-node:ekr.20050130152008:leoPlugins
+#@+node:ekr.20031218072017.2942:leoTutorial (version number)
+def leoTutorial (self,event=None):
+    
+    '''Open Leo's online tutorial in a web browser.'''
+    
+    import webbrowser
+
+    if 1: # new url
+        url = "http://www.3dtree.com/ev/e/sbooks/leo/sbframetoc_ie.htm"
+    else:
+        url = "http://www.evisa.com/e/sbooks/leo/sbframetoc_ie.htm"
+    try:
+        webbrowser.open_new(url)
+    except:
+        g.es("not found: " + url)
+#@nonl
+#@-node:ekr.20031218072017.2942:leoTutorial (version number)
+#@+node:ekr.20060613082924:leoUsersGuide
+def leoUsersGuide (self,event=None):
+    
+    '''Open Leo's users guide in a web browser.'''
+    
+    import webbrowser
+    
+    file = g.os_path_abspath(
+        g.os_path_join(
+            g.app.loadDir,'..','doc','html','leo_TOC.html'))
+
+    url = 'file:%s' % file
+    
+    try:
+        webbrowser.open_new(url)
+    except:
+        g.es("not found: " + url)
+#@nonl
+#@-node:ekr.20060613082924:leoUsersGuide
+#@-node:ekr.20031218072017.2938:Help Menu
+#@-node:ekr.20060612080948:Created open-users-guide command
 #@-node:ekr.20060603090445.2:New & improved features
 #@-node:ekr.20060603090445:4.4.1 b2 projects
 #@-node:ekr.20050924073836:4.4 projects
