@@ -2639,10 +2639,10 @@ class leoTkinterBody (leoFrame.leoBody):
             i = values.index(w) + 1
             if i == len(values): i = 0
             w2 = d.values()[i]
-            # g.trace('-'*20,w,w2)
             assert(w!=w2)
             self.onFocusIn(w2,setFocus=True)
             self.bodyCtrl = self.frame.bodyCtrl = w2
+            # g.trace('***',g.app.gui.widget_name(w2),id(w2))
     
         return 'break'
     #@-node:ekr.20060528170438:cycleEditorFocus
@@ -2690,7 +2690,7 @@ class leoTkinterBody (leoFrame.leoBody):
         # Disable recursive calls: some of the calls below generate OnFocusInEvents.
         self.lockout_onFocusIn = True
         try:
-            if trace: g.trace(w,g.callers())
+            # if trace: g.trace(w,g.callers())
         
             # Inactivate the previously active editor.
             # Don't capture ivars here! selectMainEditor keeps them up-to-date.
@@ -2699,9 +2699,9 @@ class leoTkinterBody (leoFrame.leoBody):
                 if w2 != w and w2.leo_active:
                     w2.leo_active = False
                     self.unselectLabel(w2)
-                    w.leo_scrollBarSpot = w.yview()
-                    w.leo_insertSpot = g.app.gui.getInsertPoint(w)
-                    w.leo_selection = g.app.gui.getSelectionRange(w)
+                    w2.leo_scrollBarSpot = w2.yview()
+                    w2.leo_insertSpot = g.app.gui.getInsertPoint(w2)
+                    w2.leo_selection = g.app.gui.getSelectionRange(w2)
                     break
             else:
                 if trace: g.trace('no active editor!')
@@ -2741,7 +2741,7 @@ class leoTkinterBody (leoFrame.leoBody):
             #@nl
             w3 = g.app.gui.get_focus(c)
             if setFocus or w3 and not g.app.gui.widget_name(w3).startswith('body'):
-                if trace: g.trace(w)
+                if trace: g.trace(g.app.gui.widget_name(w),id(w))
                 c.bodyWantsFocusNow()
         finally:
             self.lockout_onFocusIn = False
@@ -3864,6 +3864,32 @@ class leoTkinterLog (leoFrame.leoLog):
             self.setTabBindings(tabName)
     #@nonl
     #@-node:ekr.20051024173701:createTab
+    #@+node:ekr.20060613131217:cycleTabFocus
+    def cycleTabFocus (self,event=None):
+    
+        '''Cycle keyboard focus between the tabs in the log pane.'''
+    
+        c = self.c ; d = self.frameDict # Keys are page names. Values are Tk.Frames.
+        w = d.get(self.tabName)
+        values = d.values()
+        if self.numberOfVisibleTabs() > 1:
+            i = i2 = values.index(w) + 1
+            while 1:
+                if i == len(values): i = 0
+                w2 = values [i]
+                tabName = d.keys() [i]
+                if self.frameDict.get(tabName):
+                    # g.trace(tabName)
+                    assert (w!=w2)
+                    self.selectTab(tabName)
+                    break
+                else:
+                    i += 1
+                    if i == i2:
+                        g.trace("can't happen") ; break
+        return 'break'
+    #@nonl
+    #@-node:ekr.20060613131217:cycleTabFocus
     #@+node:ekr.20051018102027:deleteTab
     def deleteTab (self,tabName):
         
@@ -3919,6 +3945,12 @@ class leoTkinterLog (leoFrame.leoLog):
         self.c.bodyWantsFocus()
     #@nonl
     #@-node:ekr.20051018061932.1:lower/raiseTab
+    #@+node:ekr.20060613131345:numberOfVisibleTabs
+    def numberOfVisibleTabs (self):
+        
+        return len([val for val in self.frameDict.values() if val != None])
+    #@nonl
+    #@-node:ekr.20060613131345:numberOfVisibleTabs
     #@+node:ekr.20051019170806:renameTab
     def renameTab (self,oldName,newName):
         
