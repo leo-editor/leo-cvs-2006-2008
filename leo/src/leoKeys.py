@@ -1965,9 +1965,10 @@ class keyHandlerClass:
             #@+node:ekr.20060611171940:<< remove previous conflicting definitions from bunchList >>
             if 1: # important.
                 redefs = [str(b2.commandName) for b2 in bunchList
-                    if b2.commandName != commandName and pane in ('button','all',b2.pane)]
+                    if b2.commandName != commandName and pane in ('button','all',b2.pane)
+                        and not b2.pane.endswith('-mode')]
                 for z in redefs:
-                    g.es_print('redefining %s to %s' % (z,commandName),color='red')
+                    g.es_print('redefining %s to %s in %s' % (z,commandName,pane),color='red')
             
             bunchList = [b2 for b2 in bunchList if pane not in ('button','all',b2.pane)]
             
