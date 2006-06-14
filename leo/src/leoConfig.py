@@ -8,6 +8,8 @@
 #@+node:ekr.20041227063801:<< imports >>
 import leoGlobals as g
 import leoGui
+
+import copy
 import sys
 #@nonl
 #@-node:ekr.20041227063801:<< imports >>
@@ -296,6 +298,7 @@ class parserBaseClass:
         self.doShortcuts(p,kind,name,val)
         
         # Remember the mode dict.
+        # d2 = copy.deepcopy(self.shortcutsDict)
         d2 = self.shortcutsDict
         
         # Restore the global dict.
@@ -310,7 +313,7 @@ class parserBaseClass:
                     bunch.pane = name
                     bunch.val = k.strokeFromSetting(bunch.val)
                     # g.trace(name,bunch.val)
-        
+    
         # Create the command, but not any bindings to it.
         self.createModeCommand(name,d2)
     #@nonl

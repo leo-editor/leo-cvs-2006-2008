@@ -1687,7 +1687,6 @@ def cycleFocus (self,event):
     body = c.frame.body.bodyCtrl
     log  = c.frame.log.logCtrl
     tree = c.frame.tree.canvas
-
     panes = [body,log,tree]
 
     for w in panes:
@@ -2129,7 +2128,7 @@ def onFocusIn(self,w,setFocus=False):
     # Disable recursive calls: some of the calls below generate OnFocusInEvents.
     self.lockout_onFocusIn = True
     try:
-        if trace: g.trace(w,g.callers())
+        # if trace: g.trace(w,g.callers())
     
         # Inactivate the previously active editor.
         # Don't capture ivars here! selectMainEditor keeps them up-to-date.
@@ -2138,9 +2137,9 @@ def onFocusIn(self,w,setFocus=False):
             if w2 != w and w2.leo_active:
                 w2.leo_active = False
                 self.unselectLabel(w2)
-                w.leo_scrollBarSpot = w.yview()
-                w.leo_insertSpot = g.app.gui.getInsertPoint(w)
-                w.leo_selection = g.app.gui.getSelectionRange(w)
+                w2.leo_scrollBarSpot = w2.yview()
+                w2.leo_insertSpot = g.app.gui.getInsertPoint(w2)
+                w2.leo_selection = g.app.gui.getSelectionRange(w2)
                 break
         else:
             if trace: g.trace('no active editor!')
@@ -2163,7 +2162,7 @@ def onFocusIn(self,w,setFocus=False):
         << restore the selection, insertion point and the scrollbar >>
         w3 = g.app.gui.get_focus(c)
         if setFocus or w3 and not g.app.gui.widget_name(w3).startswith('body'):
-            if trace: g.trace(w)
+            if trace: g.trace(g.app.gui.widget_name(w),id(w))
             c.bodyWantsFocusNow()
     finally:
         self.lockout_onFocusIn = False
@@ -2350,10 +2349,10 @@ def cycleEditorFocus (self,event=None):
         i = values.index(w) + 1
         if i == len(values): i = 0
         w2 = d.values()[i]
-        # g.trace('-'*20,w,w2)
         assert(w!=w2)
         self.onFocusIn(w2,setFocus=True)
         self.bodyCtrl = self.frame.bodyCtrl = w2
+        # g.trace('***',g.app.gui.widget_name(w2),id(w2))
 
     return 'break'
 #@-node:ekr.20060528170438:cycleEditorFocus
@@ -2401,7 +2400,7 @@ def onFocusIn(self,w,setFocus=False):
     # Disable recursive calls: some of the calls below generate OnFocusInEvents.
     self.lockout_onFocusIn = True
     try:
-        if trace: g.trace(w,g.callers())
+        # if trace: g.trace(w,g.callers())
     
         # Inactivate the previously active editor.
         # Don't capture ivars here! selectMainEditor keeps them up-to-date.
@@ -2410,9 +2409,9 @@ def onFocusIn(self,w,setFocus=False):
             if w2 != w and w2.leo_active:
                 w2.leo_active = False
                 self.unselectLabel(w2)
-                w.leo_scrollBarSpot = w.yview()
-                w.leo_insertSpot = g.app.gui.getInsertPoint(w)
-                w.leo_selection = g.app.gui.getSelectionRange(w)
+                w2.leo_scrollBarSpot = w2.yview()
+                w2.leo_insertSpot = g.app.gui.getInsertPoint(w2)
+                w2.leo_selection = g.app.gui.getSelectionRange(w2)
                 break
         else:
             if trace: g.trace('no active editor!')
@@ -2435,7 +2434,7 @@ def onFocusIn(self,w,setFocus=False):
         << restore the selection, insertion point and the scrollbar >>
         w3 = g.app.gui.get_focus(c)
         if setFocus or w3 and not g.app.gui.widget_name(w3).startswith('body'):
-            if trace: g.trace(w)
+            if trace: g.trace(g.app.gui.widget_name(w),id(w))
             c.bodyWantsFocusNow()
     finally:
         self.lockout_onFocusIn = False
@@ -2602,6 +2601,7 @@ def doMode(self,p,kind,name,val):
     self.doShortcuts(p,kind,name,val)
     
     # Remember the mode dict.
+    # d2 = copy.deepcopy(self.shortcutsDict)
     d2 = self.shortcutsDict
     
     # Restore the global dict.
@@ -2616,7 +2616,7 @@ def doMode(self,p,kind,name,val):
                 bunch.pane = name
                 bunch.val = k.strokeFromSetting(bunch.val)
                 # g.trace(name,bunch.val)
-    
+
     # Create the command, but not any bindings to it.
     self.createModeCommand(name,d2)
 #@nonl
@@ -5718,9 +5718,10 @@ if c.config.getBool('trace_bindings'):
 #@+node:ekr.20060611171940:<< remove previous conflicting definitions from bunchList >>
 if 1: # important.
     redefs = [str(b2.commandName) for b2 in bunchList
-        if b2.commandName != commandName and pane in ('button','all',b2.pane)]
+        if b2.commandName != commandName and pane in ('button','all',b2.pane)
+            and not b2.pane.endswith('-mode')]
     for z in redefs:
-        g.es_print('redefining %s to %s' % (z,commandName),color='red')
+        g.es_print('redefining %s to %s in %s' % (z,commandName,pane),color='red')
 
 bunchList = [b2 for b2 in bunchList if pane not in ('button','all',b2.pane)]
 
@@ -5870,6 +5871,7 @@ def doMode(self,p,kind,name,val):
     self.doShortcuts(p,kind,name,val)
     
     # Remember the mode dict.
+    # d2 = copy.deepcopy(self.shortcutsDict)
     d2 = self.shortcutsDict
     
     # Restore the global dict.
@@ -5884,7 +5886,7 @@ def doMode(self,p,kind,name,val):
                 bunch.pane = name
                 bunch.val = k.strokeFromSetting(bunch.val)
                 # g.trace(name,bunch.val)
-    
+
     # Create the command, but not any bindings to it.
     self.createModeCommand(name,d2)
 #@nonl
@@ -7535,9 +7537,10 @@ if c.config.getBool('trace_bindings'):
 #@+node:ekr.20060611171940:<< remove previous conflicting definitions from bunchList >>
 if 1: # important.
     redefs = [str(b2.commandName) for b2 in bunchList
-        if b2.commandName != commandName and pane in ('button','all',b2.pane)]
+        if b2.commandName != commandName and pane in ('button','all',b2.pane)
+            and not b2.pane.endswith('-mode')]
     for z in redefs:
-        g.es_print('redefining %s to %s' % (z,commandName),color='red')
+        g.es_print('redefining %s to %s in %s' % (z,commandName,pane),color='red')
 
 bunchList = [b2 for b2 in bunchList if pane not in ('button','all',b2.pane)]
 
@@ -7805,64 +7808,6 @@ def doShortcuts(self,p,kind,name,val,s=None):
 #@nonl
 #@-node:ekr.20041120105609:doShortcuts
 #@-node:ekr.20060609214042:Allow @shortcuts bindings to apply to press-xxx-commands
-#@+node:ekr.20060608220822.2:Allow redefinitions of modes
-#@+node:ekr.20060102103625.1:doMode
-def doMode(self,p,kind,name,val):
-    
-    '''Parse an @mode node and create the enter-<name>-mode command.'''
-    
-    c = self.c ; k = c.k
-
-    # Compute the mode name.
-    name = name.strip().lower()
-    j = name.find(' ')
-    if j > -1: name = name[:j]
-    if name.endswith('mode'):
-        name = name[:-4].strip()
-    if name.endswith('-'):
-        name = name[:-1]
-    name = name + '-mode'
-    # g.trace('name',name,'c',p.c)
-    
-    # Call doShortcuts with a temp dict.
-    d = self.shortcutsDict.copy()
-    self.shortcutsDict = {}
-    self.doShortcuts(p,kind,name,val)
-    
-    # Remember the mode dict.
-    d2 = self.shortcutsDict
-    
-    # Restore the global dict.
-    self.shortcutsDict = d
-    
-    # Change the pane of all entries to 'mode-name'.
-    # This will disable warnings about duplicate bindings.
-    for key in d2.keys():
-        if key != '*entry-commands*':
-            bunchList = d2.get(key,[])
-            for bunch in bunchList:
-                bunch.pane = name
-                bunch.val = k.strokeFromSetting(bunch.val)
-                # g.trace(name,bunch.val)
-    
-    # Create the command, but not any bindings to it.
-    self.createModeCommand(name,d2)
-#@nonl
-#@-node:ekr.20060102103625.1:doMode
-#@+node:ekr.20060102103625:createModeCommand
-def createModeCommand (self,name,modeDict):
-
-    commandName = 'enter-' + name
-    commandName = commandName.replace(' ','-')
-        
-    # Save the info for k.finishCreate and k.makeAllBindings.
-    d = g.app.config.modeCommandsDict
-    
-    # New in 4.4.1 b2: silently allow redefinitions of modes.
-    d [commandName] = modeDict
-#@nonl
-#@-node:ekr.20060102103625:createModeCommand
-#@-node:ekr.20060608220822.2:Allow redefinitions of modes
 #@+node:ekr.20060612075942:Finished @abbrev
 #@+node:ekr.20060609150503:k.initAbbrev
 def initAbbrev (self):
@@ -8085,6 +8030,874 @@ def leoUsersGuide (self,event=None):
 #@-node:ekr.20060613082924:leoUsersGuide
 #@-node:ekr.20031218072017.2938:Help Menu
 #@-node:ekr.20060612080948:Created open-users-guide command
+#@+node:ekr.20060613090048:scroll-up/down commands now scroll the outline if focus is in outline pane
+# Important: this can be done better using per-pane bindings as in the default leoSettings.leo.
+#@nonl
+#@+node:ekr.20060309060654:scrolling...
+#@+node:ekr.20050920084036.116:scrollUp/Down/extendSelection
+def scrollDown (self,event):
+    '''Scroll the presently selected pane down one page.'''
+    self.scrollHelper(event,'down',extend=False)
+
+def scrollDownExtendSelection (self,event):
+    '''Extend the text selection by scrolling the body text down one page.'''
+    self.scrollHelper(event,'down',extend=True)
+
+def scrollUp (self,event):
+    '''Scroll the presently selected pane up one page.'''
+    self.scrollHelper(event,'up',extend=False)
+
+def scrollUpExtendSelection (self,event):
+    '''Extend the text selection by scrolling the body text up one page.'''
+    self.scrollHelper(event,'up',extend=True)
+#@nonl
+#@+node:ekr.20060113082917:scrollHelper
+def scrollHelper (self,event,direction,extend):
+
+    k = self.k ; c = k.c ; w = event.widget
+    # g.trace(g.app.gui.widget_name(w))
+
+    if g.app.gui.isTextWidget(w):
+
+        c.widgetWantsFocus(w)
+    
+        # Remember the original insert point.  This may become the moveSpot.
+        ins1 = w.index('insert')
+        row, col = ins1.split('.') ; row = int(row) ; col = int(col)
+    
+        # Compute the spot.
+        chng = self.measure(w) ; delta = chng [0]
+        row1 = g.choose(direction=='down',row+delta,row-delta)
+        spot = w.index('%d.%d' % (row1,col))
+        w.mark_set('insert',spot)
+    
+        # Handle the extension.
+        self.extendHelper(w,extend,ins1,spot,setSpot=False)
+        w.see('insert')
+    elif g.app.gui.widget_name(w).startswith('canvas'):
+        if direction=='down':
+            self.scrollOutlineDownPage()
+        else:
+            self.scrollOutlineUpPage()
+#@nonl
+#@-node:ekr.20060113082917:scrollHelper
+#@+node:ekr.20050920084036.147:measure
+def measure (self,w):
+    i = w.index('insert')
+    i1, i2 = i.split('.')
+    start = int(i1)
+    watch = 0
+    ustart = start
+    pone = 1
+    top = i
+    bottom = i
+    while pone:
+        ustart = ustart-1
+        if ustart < 0:
+            break
+        ds = '%s.0' % ustart
+        pone = w.dlineinfo(ds)
+        if pone:
+            top = ds
+            watch = watch + 1
+    pone = 1
+    ustart = start
+    while pone:
+        ustart = ustart + 1
+        ds = '%s.0' % ustart
+        pone = w.dlineinfo(ds)
+        if pone:
+            bottom = ds
+            watch = watch + 1
+
+    return watch, top, bottom
+#@nonl
+#@-node:ekr.20050920084036.147:measure
+#@-node:ekr.20050920084036.116:scrollUp/Down/extendSelection
+#@+node:ekr.20060309060654.1:scrollOutlineUp/Down/Line/Page
+def scrollOutlineDownLine (self,event=None):
+    '''Scroll the outline pane down one line.'''
+    self.c.frame.tree.canvas.yview_scroll(1,"unit")
+    
+def scrollOutlineDownPage (self,event=None):
+    '''Scroll the outline pane down one page.'''
+    self.c.frame.tree.canvas.yview_scroll(1,"page")
+
+def scrollOutlineUpLine (self,event=None):
+    '''Scroll the outline pane up one line.'''
+    self.c.frame.tree.canvas.yview_scroll(-1,"unit")
+
+def scrollOutlineUpPage (self,event=None):
+    '''Scroll the outline pane up one page.'''
+    self.c.frame.tree.canvas.yview_scroll(-1,"page")
+
+
+#@-node:ekr.20060309060654.1:scrollOutlineUp/Down/Line/Page
+#@-node:ekr.20060309060654:scrolling...
+#@-node:ekr.20060613090048:scroll-up/down commands now scroll the outline if focus is in outline pane
+#@+node:ekr.20060613090313:Cycle-focus command cycles through tabs and editors
+#@+node:ekr.20060528100747:Editors
+@ **Important**: body.bodyCtrl and body.frame.bodyCtrl must always be the same.
+#@+node:ekr.20060530204135:recolorWidget
+def recolorWidget (self,w):
+    
+    c = self.c ; old_w = self.bodyCtrl
+    
+    # Save.
+    self.bodyCtrl = self.frame.bodyCtrl = w
+    
+    c.recolor_now()
+    
+    # Restore.
+    self.bodyCtrl = self.frame.bodyCtrl = old_w
+#@nonl
+#@-node:ekr.20060530204135:recolorWidget
+#@+node:ekr.20060530210057:create/select/unselect/Label
+def unselectLabel (self,w):
+    
+    # g.trace(w.leo_name,w.leo_label_s)
+    if not w.leo_label: self.createLabel(w)
+    w.leo_label.configure(text=w.leo_label_s,bg='LightSteelBlue1')
+        
+def selectLabel (self,w):
+    
+    # g.trace(w.leo_name,w.leo_label_s)
+    if not w.leo_label: self.createLabel(w)
+    w.leo_label.configure(text=w.leo_label_s,bg='white')
+        
+def createLabel (self,w):
+
+    w.leo_label = Tk.Label(w.leo_frame)
+    w.pack_forget()
+    w.leo_label.pack(side='top')
+    w.pack(expand=1,fill='both')
+#@-node:ekr.20060530210057:create/select/unselect/Label
+#@+node:ekr.20060528100747.1:addEditor
+def addEditor (self,event=None):
+    
+    '''Add another editor to the body pane.'''
+    
+    c = self.c ; p = c.currentPosition()
+    
+    if self.numberOfEditors == 1:
+        # Inject the ivars into the first editor.
+        w = self.editorWidgets.get('1')
+        w.leo_p = p.copy()
+        w.leo_v = w.leo_p.v
+        w.leo_label_s = p.headString()
+
+    self.numberOfEditors += 1
+    name = '%d' % self.numberOfEditors
+    pane = self.pb.add(name)
+    panes = self.pb.panes()
+    minSize = float(1.0/float(len(panes)))
+    
+    << create label and text widgets >>
+    self.editorWidgets[name] = w
+
+    for pane in panes:
+        self.pb.configurepane(pane,size=minSize)
+    
+    self.pb.updatelayout()
+    
+    self.bodyCtrl = self.frame.bodyCtrl = w
+    self.onFocusIn(w)
+#@nonl
+#@+node:ekr.20060528110922:<< create label and text widgets >>
+f = Tk.Frame(pane)
+f.pack(side='top',expand=1,fill='both')
+
+w = self.createTextWidget(self.frame,f,name=name,p=p)
+
+w.delete('1.0','end')
+w.insert('end',p.bodyString())
+self.setFontFromConfig(w=w)
+self.setColorFromConfig(w=w)
+self.createBindings(w=w)
+c.k.completeAllBindingsForWidget(w)
+
+self.recolorWidget(w)
+#@nonl
+#@-node:ekr.20060528110922:<< create label and text widgets >>
+#@-node:ekr.20060528100747.1:addEditor
+#@+node:ekr.20060606090542:setEditorColors
+def setEditorColors (self,bg,fg):
+    
+    c = self.c ; d = self.editorWidgets
+
+    for key in d.keys():
+        w2 = d.get(key)
+        try:
+            w2.configure(bg=bg,fg=fg)
+        except Exception:
+            g.es_exception()
+            pass
+#@nonl
+#@-node:ekr.20060606090542:setEditorColors
+#@+node:ekr.20060528170438:cycleEditorFocus
+def cycleEditorFocus (self,event=None):
+    
+    '''Cycle keyboard focus between the body text editors.'''
+    
+    c = self.c ; d = self.editorWidgets ; w = self.bodyCtrl
+    values = d.values()
+    if len(values) > 1:
+        i = values.index(w) + 1
+        if i == len(values): i = 0
+        w2 = d.values()[i]
+        assert(w!=w2)
+        self.onFocusIn(w2,setFocus=True)
+        self.bodyCtrl = self.frame.bodyCtrl = w2
+        # g.trace('***',g.app.gui.widget_name(w2),id(w2))
+
+    return 'break'
+#@-node:ekr.20060528170438:cycleEditorFocus
+#@+node:ekr.20060528113806:deleteEditor
+def deleteEditor (self,event=None):
+    
+    '''Delete the presently selected body text editor.'''
+    
+    w = self.bodyCtrl ; d = self.editorWidgets
+    
+    if len(d.keys()) == 1: return
+    
+    name = w.leo_name
+    
+    del d [name]
+    self.pb.delete(name)
+    panes = self.pb.panes()
+    minSize = float(1.0/float(len(panes)))
+    
+    for pane in panes:
+        self.pb.configurepane(pane,size=minSize)
+        
+    # Select another editor.
+    w = d.values()[0]
+    self.onFocusIn(w)
+#@nonl
+#@-node:ekr.20060528113806:deleteEditor
+#@+node:ekr.20060528104554:onFocusIn
+lockout_onFocusIn = False
+
+def onFocusIn(self,w,setFocus=False):
+
+    c = self.c ; d = self.editorWidgets ; p = c.currentPosition()
+    trace = False
+    if self.lockout_onFocusIn:
+        if trace: g.trace('lockout')
+        return 'break'
+    if w.leo_p is None:
+        if trace: g.trace('no w.leo_p')
+        return 'break'
+    if w == self.bodyCtrl:
+        if trace: g.trace('no change',w,g.callers())
+        return 'break'
+    
+    # Disable recursive calls: some of the calls below generate OnFocusInEvents.
+    self.lockout_onFocusIn = True
+    try:
+        # if trace: g.trace(w,g.callers())
+    
+        # Inactivate the previously active editor.
+        # Don't capture ivars here! selectMainEditor keeps them up-to-date.
+        for key in d.keys():
+            w2 = d.get(key)
+            if w2 != w and w2.leo_active:
+                w2.leo_active = False
+                self.unselectLabel(w2)
+                w2.leo_scrollBarSpot = w2.yview()
+                w2.leo_insertSpot = g.app.gui.getInsertPoint(w2)
+                w2.leo_selection = g.app.gui.getSelectionRange(w2)
+                break
+        else:
+            if trace: g.trace('no active editor!')
+    
+        # Careful, leo_p may not exist.
+        if not w.leo_p.exists(c):
+            g.trace('does not exist',w.leo_name)
+            for p2 in c.allNodes_iter():
+                if p2.v == w.leo_v:
+                    w.leo_p = p2.copy()
+                    break
+            else:
+                if trace: g.trace("Can't happen")
+                return 'break'
+
+        self.frame.bodyCtrl = self.bodyCtrl = w # Must change both ivars!
+        w.leo_active = True
+        c.selectPosition(w.leo_p,updateBeadList=True) # Calls selectMainEditor.
+        c.recolor_now()
+        << restore the selection, insertion point and the scrollbar >>
+        w3 = g.app.gui.get_focus(c)
+        if setFocus or w3 and not g.app.gui.widget_name(w3).startswith('body'):
+            if trace: g.trace(g.app.gui.widget_name(w),id(w))
+            c.bodyWantsFocusNow()
+    finally:
+        self.lockout_onFocusIn = False
+
+    return 'break'
+#@nonl
+#@+node:ekr.20060605190146:<< restore the selection, insertion point and the scrollbar >>
+if w.leo_insertSpot:
+    g.app.gui.setInsertPoint(w,w.leo_insertSpot)
+    w.see(w.leo_insertSpot)
+else:
+    g.app.gui.setInsertPoint(w,'1.0')
+    
+if w.leo_scrollBarSpot:
+    first,last = w.leo_scrollBarSpot
+    w.yview('moveto',first)
+
+if w.leo_selection:
+    start,end = w.leo_selection
+    g.app.gui.setSelectionRange(w,start,end)
+#@nonl
+#@-node:ekr.20060605190146:<< restore the selection, insertion point and the scrollbar >>
+#@-node:ekr.20060528104554:onFocusIn
+#@+node:ekr.20060528132829:selectMainEditor
+def selectMainEditor (self,p):
+
+    c = self.c ; p = c.currentPosition() ; w = self.bodyCtrl
+
+    # Don't inject ivars if there is only one editor.
+    if w.leo_p is not None:
+        # Keep w's ivars up-to-date.
+        w.leo_p = p.copy()
+        w.leo_v = p.v
+        w.leo_label_s = p.headString()
+        self.selectLabel(w)
+        # g.trace(w.leo_name,p.headString())
+#@nonl
+#@-node:ekr.20060528132829:selectMainEditor
+#@+node:ekr.20060528131618:updateEditors
+def updateEditors (self):
+    
+    c = self.c ; p = c.currentPosition()
+    d = self.editorWidgets
+    if len(d.keys()) < 2: return # There is only the main widget.
+
+    for key in d.keys():
+        w = d.get(key)
+        v = w.leo_v
+        if v and v == p.v and w != self.bodyCtrl:
+            w.delete('1.0','end')
+            w.insert('end',p.bodyString())
+            # g.trace('update',w,v)
+            self.recolorWidget(w)
+    c.frame.bodyWantsFocus()
+#@nonl
+#@-node:ekr.20060528131618:updateEditors
+#@-node:ekr.20060528100747:Editors
+#@+node:ekr.20031218072017.4040:tkLog.__init__
+def __init__ (self,frame,parentFrame):
+    
+    # g.trace("leoTkinterLog")
+    
+    self.c = c = frame.c # Also set in the base constructor, but we need it here.
+    
+    self.colorTags = []
+        # The list of color names used as tags in present tab.
+        # This gest switched by selectTab.
+
+    self.wrap = g.choose(c.config.getBool('log_pane_wraps'),"word","none")
+    
+    # New in 4.4a2: The log pane is a Pmw.Notebook...
+
+    self.nb = None      # The Pmw.Notebook that holds all the tabs.
+    self.colorTagsDict = {} # Keys are page names.  Values are saved colorTags lists.
+    self.frameDict = {}  # Keys are page names. Values are Tk.Frames.
+    self.logNumber = 0 # To create unique name fields for Tk.Text widgets.
+    self.menu = None # A menu that pops up on right clicks in the hull or in tabs.
+    self.textDict = {}  # Keys are page names. Values are Tk.Text widgets.
+    self.newTabCount = 0 # Number of new tabs created.
+    
+    # Official status variables.  Can be used by client code.
+    self.tabName = None # The name of the active tab.
+    self.logCtrl = None # Same as self.textDict.get(self.tabName)
+    self.tabFrame = None # Same as self.frameDict.get(self.tabName)
+    
+    # Call the base class constructor and calls createControl.
+    leoFrame.leoLog.__init__(self,frame,parentFrame)
+#@-node:ekr.20031218072017.4040:tkLog.__init__
+#@+node:ekr.20051018061932:Tab (TkLog)
+#@+node:ekr.20051017212057:clearTab
+def clearTab (self,tabName,wrap='none'):
+    
+    self.selectTab(tabName,wrap=wrap)
+    t = self.logCtrl
+    t and t.delete('1.0','end')
+#@nonl
+#@-node:ekr.20051017212057:clearTab
+#@+node:ekr.20051024173701:createTab
+def createTab (self,tabName,wrap='none'):
+    
+    # g.trace(tabName,wrap)
+    
+    c = self.c ; k = c.k
+    tabFrame = self.nb.add(tabName)
+    self.menu = self.makeTabMenu(tabName)
+    << Create the tab's text widget >>
+
+    if tabName != 'Log':
+        # c.k doesn't exist when the log pane is created.
+        # k.makeAllBindings will call setTabBindings('Log')
+        self.setTabBindings(tabName)
+#@nonl
+#@+node:ekr.20051018072306:<< Create the tab's text widget >>
+t = self.createTextWidget(tabFrame)
+
+# Set the background color.
+configName = 'log_pane_%s_tab_background_color' % tabName
+bg = c.config.getColor(configName) or 'MistyRose1'
+
+if wrap not in ('none','char','word'): wrap = 'none'
+try: t.configure(bg=bg,wrap=wrap)
+except Exception: pass # Could be a user error.
+
+self.SetWidgetFontFromConfig(logCtrl=t)
+
+self.frameDict [tabName] = tabFrame
+self.textDict [tabName] = t
+
+# Switch to a new colorTags list.
+if self.tabName:
+    self.colorTagsDict [self.tabName] = self.colorTags [:]
+
+self.colorTags = ['black']
+self.colorTagsDict [tabName] = self.colorTags
+#@nonl
+#@-node:ekr.20051018072306:<< Create the tab's text widget >>
+#@-node:ekr.20051024173701:createTab
+#@+node:ekr.20060613131217:cycleTabFocus
+def cycleTabFocus (self,event=None):
+
+    '''Cycle keyboard focus between the tabs in the log pane.'''
+
+    c = self.c ; d = self.frameDict # Keys are page names. Values are Tk.Frames.
+    w = d.get(self.tabName)
+    values = d.values()
+    if self.numberOfVisibleTabs() > 1:
+        i = i2 = values.index(w) + 1
+        while 1:
+            if i == len(values): i = 0
+            w2 = values [i]
+            tabName = d.keys() [i]
+            if self.frameDict.get(tabName):
+                # g.trace(tabName)
+                assert (w!=w2)
+                self.selectTab(tabName)
+                break
+            else:
+                i += 1
+                if i == i2:
+                    g.trace("can't happen") ; break
+    return 'break'
+#@nonl
+#@-node:ekr.20060613131217:cycleTabFocus
+#@+node:ekr.20051018102027:deleteTab
+def deleteTab (self,tabName):
+    
+    if tabName == 'Log':
+        pass
+
+    elif tabName in ('Find','Spell'):
+        self.selectTab('Log')
+    
+    elif tabName in self.nb.pagenames():
+        self.nb.delete(tabName)
+        self.colorTagsDict [tabName] = []
+        self.textDict [tabName] = None
+        self.frameDict [tabName] = None
+        self.tabName = None
+        self.selectTab('Log')
+        
+    # New in Leo 4.4b1.
+    self.c.invalidateFocus()
+    self.c.bodyWantsFocus()
+    
+#@nonl
+#@-node:ekr.20051018102027:deleteTab
+#@+node:ekr.20060204124347:hideTab
+def hideTab (self,tabName):
+    
+    __pychecker__ = '--no-argsused' # tabName
+    
+    self.selectTab('Log')
+#@nonl
+#@-node:ekr.20060204124347:hideTab
+#@+node:ekr.20051027114433:getSelectedTab
+def getSelectedTab (self):
+    
+    return self.tabName
+#@nonl
+#@-node:ekr.20051027114433:getSelectedTab
+#@+node:ekr.20051018061932.1:lower/raiseTab
+def lowerTab (self,tabName):
+    
+    if tabName:
+        b = self.nb.tab(tabName) # b is a Tk.Button.
+        b.config(bg='grey80')
+    self.c.invalidateFocus()
+    self.c.bodyWantsFocus()
+
+def raiseTab (self,tabName):
+
+    if tabName:
+        b = self.nb.tab(tabName) # b is a Tk.Button.
+        b.config(bg='LightSteelBlue1')
+    self.c.invalidateFocus()
+    self.c.bodyWantsFocus()
+#@nonl
+#@-node:ekr.20051018061932.1:lower/raiseTab
+#@+node:ekr.20060613131345:numberOfVisibleTabs
+def numberOfVisibleTabs (self):
+    
+    return len([val for val in self.frameDict.values() if val != None])
+#@nonl
+#@-node:ekr.20060613131345:numberOfVisibleTabs
+#@+node:ekr.20051019170806:renameTab
+def renameTab (self,oldName,newName):
+    
+    label = self.nb.tab(oldName)
+    label.configure(text=newName)
+#@nonl
+#@-node:ekr.20051019170806:renameTab
+#@+node:ekr.20051016101724.1:selectTab
+def selectTab (self,tabName,wrap='none'):
+
+    '''Create the tab if necessary and make it active.'''
+
+    c = self.c ; tabFrame = self.frameDict.get(tabName)
+
+    if tabFrame:
+        # Switch to a new colorTags list.
+        newColorTags = self.colorTagsDict.get(tabName)
+        self.colorTagsDict [self.tabName] = self.colorTags [:]
+        self.colorTags = newColorTags
+    else:
+        self.createTab(tabName,wrap=wrap)
+        
+    self.nb.selectpage(tabName)
+    # Update the status vars.
+    self.tabName = tabName
+    self.logCtrl = self.textDict.get(tabName)
+    self.tabFrame = self.frameDict.get(tabName)
+
+    return tabFrame
+#@nonl
+#@-node:ekr.20051016101724.1:selectTab
+#@+node:ekr.20051022162730:setTabBindings
+def setTabBindings (self,tabName):
+    
+    c = self.c ; k = c.k
+    tab = self.nb.tab(tabName)
+    w = self.textDict.get(tabName)
+    
+    # Send all event in the text area to the master handlers.
+    for kind,handler in (
+        ('<Key>',       k.masterKeyHandler),
+        ('<Button-1>',  k.masterClickHandler),
+        ('<Button-3>',  k.masterClick3Handler),
+    ):
+        w.bind(kind,handler)
+    
+    # Clicks in the tab area are harmless: use the old code.
+    def tabMenuRightClickCallback(event,menu=self.menu):
+        return self.onRightClick(event,menu)
+        
+    def tabMenuClickCallback(event,tabName=tabName):
+        return self.onClick(event,tabName)
+    
+    tab.bind('<Button-1>',tabMenuClickCallback)
+    tab.bind('<Button-3>',tabMenuRightClickCallback)
+    
+    k.completeAllBindingsForWidget(w)
+#@nonl
+#@-node:ekr.20051022162730:setTabBindings
+#@+node:ekr.20051019134106:Tab menu callbacks & helpers
+#@+node:ekr.20051019134422:onRightClick & onClick
+def onRightClick (self,event,menu):
+    
+    c = self.c
+    menu.post(event.x_root,event.y_root)
+    
+    
+def onClick (self,event,tabName):
+
+    self.selectTab(tabName)
+#@nonl
+#@-node:ekr.20051019134422:onRightClick & onClick
+#@+node:ekr.20051019140004.1:newTabFromMenu
+def newTabFromMenu (self,tabName='Log'):
+
+    self.selectTab(tabName)
+    
+    # This is called by getTabName.
+    def selectTabCallback (newName):
+        return self.selectTab(newName)
+
+    self.getTabName(selectTabCallback)
+#@nonl
+#@-node:ekr.20051019140004.1:newTabFromMenu
+#@+node:ekr.20051019165401:renameTabFromMenu
+def renameTabFromMenu (self,tabName):
+
+    if tabName in ('Log','Completions'):
+        g.es('can not rename %s tab' % (tabName),color='blue')
+    else:
+        def renameTabCallback (newName):
+            return self.renameTab(tabName,newName)
+
+        self.getTabName(renameTabCallback)
+#@nonl
+#@-node:ekr.20051019165401:renameTabFromMenu
+#@+node:ekr.20051019172811:getTabName
+def getTabName (self,exitCallback):
+    
+    canvas = self.nb.component('hull')
+
+    # Overlay what is there!
+    f = Tk.Frame(canvas)
+    f.pack(side='top',fill='both',expand=1)
+    
+    row1 = Tk.Frame(f)
+    row1.pack(side='top',expand=0,fill='x',pady=10)
+    row2 = Tk.Frame(f)
+    row2.pack(side='top',expand=0,fill='x')
+
+    Tk.Label(row1,text='Tab name').pack(side='left')
+
+    e = Tk.Entry(row1,background='white')
+    e.pack(side='left')
+
+    def getNameCallback (event=None):
+        s = e.get().strip()
+        f.pack_forget()
+        if s: exitCallback(s)
+        
+    def closeTabNameCallback (event=None):
+        f.pack_forget()
+        
+    b = Tk.Button(row2,text='Ok',width=6,command=getNameCallback)
+    b.pack(side='left',padx=10)
+    
+    b = Tk.Button(row2,text='Cancel',width=6,command=closeTabNameCallback)
+    b.pack(side='left')
+
+    e.focus_force()
+    e.bind('<Return>',getNameCallback)
+#@nonl
+#@-node:ekr.20051019172811:getTabName
+#@-node:ekr.20051019134106:Tab menu callbacks & helpers
+#@-node:ekr.20051018061932:Tab (TkLog)
+#@+node:ekr.20051022142249:clicks and focus (editCommandsClass)
+#@+node:ekr.20060211100905:activate-x-menu & activateMenu (editCommandsClass)
+def activateCmdsMenu    (self,event=None):
+    '''Activate Leo's Cmnds menu.'''
+    self.activateMenu('Cmds')
+
+def activateEditMenu    (self,event=None):
+    '''Activate Leo's Edit menu.'''
+    self.activateMenu('Edit')
+
+def activateFileMenu    (self,event=None):
+    '''Activate Leo's File menu.'''
+    self.activateMenu('File')
+
+def activateHelpMenu    (self,event=None):
+    '''Activate Leo's Help menu.'''
+    self.activateMenu('Help')
+
+def activateOutlineMenu (self,event=None):
+    '''Activate Leo's Outline menu.'''
+    self.activateMenu('Outline')
+
+def activatePluginsMenu (self,event=None):
+    '''Activate Leo's Plugins menu.'''
+    self.activateMenu('Plugins')
+
+def activateWindowMenu  (self,event=None):
+    '''Activate Leo's Window menu.'''
+    self.activateMenu('Window')
+
+def activateMenu (self,menuName):
+    c = self.c
+    c.frame.menu.activateMenu(menuName)
+#@nonl
+#@-node:ekr.20060211100905:activate-x-menu & activateMenu (editCommandsClass)
+#@+node:ekr.20051022144825.1:cycleFocus
+def cycleFocus (self,event):
+    
+    '''Cycle the keyboard focus between Leo's outline, body and log panes.'''
+
+    c = self.c
+    
+    body = c.frame.body.bodyCtrl
+    log  = c.frame.log.logCtrl
+    tree = c.frame.tree.canvas
+    panes = [body,log,tree]
+
+    for w in panes:
+        if w == event.widget:
+            i = panes.index(w)
+            if i >= len(panes) - 1:
+                i = 0
+            else:
+                i += 1
+            pane = panes[i] ; break
+    else:
+        # Assume we were somewhere in the tree.
+        pane = body
+        
+    # g.trace(pane)
+    c.set_focus(pane)
+#@nonl
+#@-node:ekr.20051022144825.1:cycleFocus
+#@+node:ekr.20060613090701:cycleAllFocus 
+firstEditorWidget = None
+firstLogWidget = None
+
+def cycleAllFocus (self,event):
+    
+    '''Cycle the keyboard focus between Leo's outline,
+    all body editors and all tabs in the log pane.'''
+
+    c = self.c ; w = event.widget ; pane = None ; w_name = g.app.gui.widget_name
+    trace = False
+    if trace:
+        g.trace(
+            '---- w',w_name(w),id(w),
+            'bodyCtrl',w_name(c.frame.body.bodyCtrl),id(c.frame.body.bodyCtrl))
+
+    # w may not be the present body widget, so test its name, not its id.
+    if w_name(w).startswith('body'):
+        if c.frame.body.numberOfEditors > 1:
+            if not self.firstEditorWidget:
+                self.firstEditorWidget = c.frame.body.bodyCtrl
+                c.frame.body.cycleEditorFocus(event)
+            else:
+                c.frame.body.cycleEditorFocus(event)
+                if c.frame.body.bodyCtrl == self.firstEditorWidget:
+                    self.firstEditorWidget = None
+                    c.frame.log.selectTab('Log')
+                    pane = c.frame.log.logCtrl
+        else:
+            self.firstEditorWidget = None
+            c.frame.log.selectTab('Log')
+            pane = c.frame.log.logCtrl
+    elif w_name(w).startswith('log'):
+        if c.frame.log.numberOfVisibleTabs() > 1:
+            if not self.firstLogWidget:
+                self.firstLogWidget = c.frame.log.logCtrl
+                c.frame.log.cycleTabFocus()
+            else:
+                c.frame.log.cycleTabFocus()
+                if c.frame.log.logCtrl == self.firstLogWidget:
+                    self.firstLogWidget = None
+                    pane = c.frame.tree.canvas
+        else:
+            self.firstLogWidget = None
+            pane = c.frame.tree.canvas
+    else:
+        pane = c.frame.body.bodyCtrl
+        self.firstEditorWidget = self.firstLogWidget = None
+        
+    if trace:
+        first = self.firstEditorWidget or self.firstLogWidget
+        if trace: g.trace(
+            'first: %10s' % (w_name(first)),first and id(first),
+            'old: %10s' % (w_name(w)),id(w),
+            'new: %10s' % (w_name(pane)),pane and id(pane))
+    if pane: c.set_focus(pane)
+#@nonl
+#@-node:ekr.20060613090701:cycleAllFocus 
+#@+node:ekr.20051022144825:focusTo...
+def focusToBody (self,event):
+    '''Put the keyboard focus in Leo's body pane.'''
+    self.c.bodyWantsFocus()
+
+def focusToLog (self,event):
+    '''Put the keyboard focus in Leo's log pane.'''
+    self.c.logWantsFocus()
+    
+def focusToMinibuffer (self,event):
+    '''Put the keyboard focus in Leo's minibuffer.'''
+    self.c.minibufferWantsFocus()
+
+def focusToTree (self,event):
+    '''Put the keyboard focus in Leo's outline pane.'''
+    self.c.treeWantsFocus()
+#@nonl
+#@-node:ekr.20051022144825:focusTo...
+#@+node:ekr.20060211063744.1:clicks in the headline
+# These call the actual event handlers so as to trigger hooks.
+
+def clickHeadline (self,event=None):
+    '''Simulate a click in the headline of the presently selected node.'''
+    c = self.c ; p = c.currentPosition()
+    c.frame.tree.onHeadlineClick(event,p=p)
+    
+def doubleClickHeadline (self,event=None):
+    '''Simulate a double click in headline of the presently selected node.'''
+    return self.clickHeadline(event)
+
+def rightClickHeadline (self,event=None):
+    '''Simulate a right click in the headline of the presently selected node.'''
+    c = self.c ; p = c.currentPosition()
+    c.frame.tree.onHeadlineRightClick(event,p=p)
+#@nonl
+#@-node:ekr.20060211063744.1:clicks in the headline
+#@+node:ekr.20060211055455:clicks in the icon box
+# These call the actual event handlers so as to trigger hooks.
+
+def clickIconBox (self,event=None):
+    '''Simulate a click in the icon box of the presently selected node.'''
+    c = self.c ; p = c.currentPosition()
+    c.frame.tree.onIconBoxClick(event,p=p)
+
+def doubleClickIconBox (self,event=None):
+    '''Simulate a double-click in the icon box of the presently selected node.'''
+    c = self.c ; p = c.currentPosition()
+    c.frame.tree.onIconBoxDoubleClick(event,p=p)
+
+def rightClickIconBox (self,event=None):
+
+    '''Simulate a right click in the icon box of the presently selected node.'''
+    c = self.c ; p = c.currentPosition()
+    c.frame.tree.onIconBoxRightClick(event,p=p)
+#@nonl
+#@-node:ekr.20060211055455:clicks in the icon box
+#@+node:ekr.20060211062025:clickClickBox
+# Call the actual event handlers so as to trigger hooks.
+
+def clickClickBox (self,event=None):
+
+    '''Simulate a click in the click box (+- box) of the presently selected node.'''
+
+    c = self.c ; p = c.currentPosition()
+    c.frame.tree.onClickBoxClick(event,p=p)
+#@nonl
+#@-node:ekr.20060211062025:clickClickBox
+#@+node:ekr.20060211063744.2:simulate...Drag
+# These call the drag setup methods which in turn trigger hooks.
+
+def simulateBeginDrag (self,event=None):
+
+    '''Simulate the start of a drag in the presently selected node.'''
+    c = self.c ; p = c.currentPosition()
+    c.frame.tree.startDrag(event,p=p)
+
+def simulateEndDrag (self,event=None):
+
+    '''Simulate the end of a drag in the presently selected node.'''
+    c = self.c
+    
+    # Note: this assumes that tree.startDrag has already been called.
+    c.frame.tree.endDrag(event)
+#@nonl
+#@-node:ekr.20060211063744.2:simulate...Drag
+#@-node:ekr.20051022142249:clicks and focus (editCommandsClass)
+#@-node:ekr.20060613090313:Cycle-focus command cycles through tabs and editors
 #@-node:ekr.20060603090445.2:New & improved features
 #@-node:ekr.20060603090445:4.4.1 b2 projects
 #@-node:ekr.20050924073836:4.4 projects
