@@ -1349,6 +1349,7 @@ class editCommandsClass (baseEditCommandsClass):
             'contract-pane':                        c.frame.contractPane,
             'count-region':                         self.countRegion,
             'cycle-focus':                          self.cycleFocus,
+            'cycle-all-focus':                      self.cycleAllFocus,
             'cycle-editor-focus':                   c.frame.body.cycleEditorFocus,
             'dabbrev-completion':                   self.dynamicExpansion2,
             'dabbrev-expands':                      self.dynamicExpansion,
@@ -1566,7 +1567,6 @@ class editCommandsClass (baseEditCommandsClass):
         body = c.frame.body.bodyCtrl
         log  = c.frame.log.logCtrl
         tree = c.frame.tree.canvas
-    
         panes = [body,log,tree]
     
         for w in panes:
@@ -1585,6 +1585,64 @@ class editCommandsClass (baseEditCommandsClass):
         c.set_focus(pane)
     #@nonl
     #@-node:ekr.20051022144825.1:cycleFocus
+    #@+node:ekr.20060613090701:cycleAllFocus 
+    firstEditorWidget = None
+    firstLogWidget = None
+    
+    def cycleAllFocus (self,event):
+        
+        '''Cycle the keyboard focus between Leo's outline,
+        all body editors and all tabs in the log pane.'''
+    
+        c = self.c ; w = event.widget ; pane = None ; w_name = g.app.gui.widget_name
+        trace = False
+        if trace:
+            g.trace(
+                '---- w',w_name(w),id(w),
+                'bodyCtrl',w_name(c.frame.body.bodyCtrl),id(c.frame.body.bodyCtrl))
+    
+        # w may not be the present body widget, so test its name, not its id.
+        if w_name(w).startswith('body'):
+            if c.frame.body.numberOfEditors > 1:
+                if not self.firstEditorWidget:
+                    self.firstEditorWidget = c.frame.body.bodyCtrl
+                    c.frame.body.cycleEditorFocus(event)
+                else:
+                    c.frame.body.cycleEditorFocus(event)
+                    if c.frame.body.bodyCtrl == self.firstEditorWidget:
+                        self.firstEditorWidget = None
+                        c.frame.log.selectTab('Log')
+                        pane = c.frame.log.logCtrl
+            else:
+                self.firstEditorWidget = None
+                c.frame.log.selectTab('Log')
+                pane = c.frame.log.logCtrl
+        elif w_name(w).startswith('log'):
+            if c.frame.log.numberOfVisibleTabs() > 1:
+                if not self.firstLogWidget:
+                    self.firstLogWidget = c.frame.log.logCtrl
+                    c.frame.log.cycleTabFocus()
+                else:
+                    c.frame.log.cycleTabFocus()
+                    if c.frame.log.logCtrl == self.firstLogWidget:
+                        self.firstLogWidget = None
+                        pane = c.frame.tree.canvas
+            else:
+                self.firstLogWidget = None
+                pane = c.frame.tree.canvas
+        else:
+            pane = c.frame.body.bodyCtrl
+            self.firstEditorWidget = self.firstLogWidget = None
+            
+        if trace:
+            first = self.firstEditorWidget or self.firstLogWidget
+            if trace: g.trace(
+                'first: %10s' % (w_name(first)),first and id(first),
+                'old: %10s' % (w_name(w)),id(w),
+                'new: %10s' % (w_name(pane)),pane and id(pane))
+        if pane: c.set_focus(pane)
+    #@nonl
+    #@-node:ekr.20060613090701:cycleAllFocus 
     #@+node:ekr.20051022144825:focusTo...
     def focusToBody (self,event):
         '''Put the keyboard focus in Leo's body pane.'''
@@ -4003,7 +4061,7 @@ class editCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20060309060654:scrolling...
     #@+node:ekr.20050920084036.116:scrollUp/Down/extendSelection
     def scrollDown (self,event):
-        '''Scroll the body text down one page.'''
+        '''Scroll the presently selected pane down one page.'''
         self.scrollHelper(event,'down',extend=False)
     
     def scrollDownExtendSelection (self,event):
@@ -4011,7 +4069,7 @@ class editCommandsClass (baseEditCommandsClass):
         self.scrollHelper(event,'down',extend=True)
     
     def scrollUp (self,event):
-        '''Scroll the body text up one page.'''
+        '''Scroll the presently selected pane up one page.'''
         self.scrollHelper(event,'up',extend=False)
     
     def scrollUpExtendSelection (self,event):
@@ -4022,23 +4080,30 @@ class editCommandsClass (baseEditCommandsClass):
     def scrollHelper (self,event,direction,extend):
     
         k = self.k ; c = k.c ; w = event.widget
-        if not g.app.gui.isTextWidget(w): return
+        # g.trace(g.app.gui.widget_name(w))
     
-        c.widgetWantsFocus(w)
+        if g.app.gui.isTextWidget(w):
     
-        # Remember the original insert point.  This may become the moveSpot.
-        ins1 = w.index('insert')
-        row, col = ins1.split('.') ; row = int(row) ; col = int(col)
-    
-        # Compute the spot.
-        chng = self.measure(w) ; delta = chng [0]
-        row1 = g.choose(direction=='down',row+delta,row-delta)
-        spot = w.index('%d.%d' % (row1,col))
-        w.mark_set('insert',spot)
-    
-        # Handle the extension.
-        self.extendHelper(w,extend,ins1,spot,setSpot=False)
-        w.see('insert')
+            c.widgetWantsFocus(w)
+        
+            # Remember the original insert point.  This may become the moveSpot.
+            ins1 = w.index('insert')
+            row, col = ins1.split('.') ; row = int(row) ; col = int(col)
+        
+            # Compute the spot.
+            chng = self.measure(w) ; delta = chng [0]
+            row1 = g.choose(direction=='down',row+delta,row-delta)
+            spot = w.index('%d.%d' % (row1,col))
+            w.mark_set('insert',spot)
+        
+            # Handle the extension.
+            self.extendHelper(w,extend,ins1,spot,setSpot=False)
+            w.see('insert')
+        elif g.app.gui.widget_name(w).startswith('canvas'):
+            if direction=='down':
+                self.scrollOutlineDownPage()
+            else:
+                self.scrollOutlineUpPage()
     #@nonl
     #@-node:ekr.20060113082917:scrollHelper
     #@+node:ekr.20050920084036.147:measure
