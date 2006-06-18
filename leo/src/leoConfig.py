@@ -47,7 +47,7 @@ class parserBaseClass:
         self.c = c
         self.recentFiles = [] # List of recent files.
         self.shortcutsDict = {}
-            # Keys are cononicalized shortcut names, values are bunches.
+                # Keys are cononicalized shortcut names, values are bunches.
         
         # Keys are canonicalized names.
         self.dispatchDict = {
@@ -79,6 +79,8 @@ class parserBaseClass:
     
         commandName = 'enter-' + name
         commandName = commandName.replace(' ','-')
+        
+        # g.trace(name,len(modeDict.keys()))
             
         # Save the info for k.finishCreate and k.makeAllBindings.
         d = g.app.config.modeCommandsDict
@@ -274,14 +276,16 @@ class parserBaseClass:
             self.set(p,kind,name,val)
     #@nonl
     #@-node:ekr.20041217132253:doInts
-    #@+node:ekr.20060102103625.1:doMode
+    #@+node:ekr.20060102103625.1:doMode (ParserBaseClass)
     def doMode(self,p,kind,name,val):
         
         '''Parse an @mode node and create the enter-<name>-mode command.'''
         
         c = self.c ; k = c.k
-    
-        # Compute the mode name.
+        
+        # g.trace('%20s' % (name),c.fileName())
+        #@    << Compute modeName >>
+        #@+node:ekr.20060618110649:<< Compute modeName >>
         name = name.strip().lower()
         j = name.find(' ')
         if j > -1: name = name[:j]
@@ -289,35 +293,48 @@ class parserBaseClass:
             name = name[:-4].strip()
         if name.endswith('-'):
             name = name[:-1]
-        name = name + '-mode'
-        # g.trace('name',name,'c',p.c)
+        modeName = name + '-mode'
+        #@nonl
+        #@-node:ekr.20060618110649:<< Compute modeName >>
+        #@nl
         
-        # Call doShortcuts with a temp dict.
-        d = self.shortcutsDict.copy()
-        self.shortcutsDict = {}
-        self.doShortcuts(p,kind,name,val)
+        # Create a local shortcutsDict.
+        old_d = self.shortcutsDict
+        d = self.shortcutsDict = {}
         
-        # Remember the mode dict.
-        # d2 = copy.deepcopy(self.shortcutsDict)
-        d2 = self.shortcutsDict
-        
-        # Restore the global dict.
-        self.shortcutsDict = d
-        
-        # Change the pane of all entries to 'mode-name'.
-        # This will disable warnings about duplicate bindings.
-        for key in d2.keys():
-            if key != '*entry-commands*':
-                bunchList = d2.get(key,[])
-                for bunch in bunchList:
-                    bunch.pane = name
-                    bunch.val = k.strokeFromSetting(bunch.val)
-                    # g.trace(name,bunch.val)
+        s = p.bodyString()
+        lines = g.splitLines(s)
+        for line in lines:
+            line = line.strip()
+            if line and not g.match(line,0,'#'):
+                name,bunch = self.parseShortcutLine(line)
+                if not name:
+                    # An entry command: put it in the special *entry-commands* key.
+                    aList = d.get('*entry-commands*',[])
+                    aList.append(bunch.entryCommandName)
+                    d ['*entry-commands*'] = aList
+                elif bunch is not None:
+                    # A regular shortcut.
+                    bunch.pane = modeName
+                    bunchList = d.get(name,[])
+                    # Important: use previous bindings if possible.
+                    key2,bunchList2 = c.config.getShortcut(name)
+                    bunchList3 = [b for b in bunchList2 if b.pane != modeName]
+                    if bunchList3:
+                        # g.trace('inheriting',[b.val for b in bunchList3])
+                        bunchList.extend(bunchList3)
+                    bunchList.append(bunch)
+                    d [name] = bunchList
+                    self.set(p,"shortcut",name,bunchList)
+                    self.setShortcut(name,bunchList)
+            
+        # Restore the global shortcutsDict.
+        self.shortcutsDict = old_d
     
         # Create the command, but not any bindings to it.
-        self.createModeCommand(name,d2)
+        self.createModeCommand(modeName,d)
     #@nonl
-    #@-node:ekr.20060102103625.1:doMode
+    #@-node:ekr.20060102103625.1:doMode (ParserBaseClass)
     #@+node:ekr.20041120104215.2:doPage
     def doPage(self,p,kind,name,val):
     
@@ -337,36 +354,29 @@ class parserBaseClass:
             self.valueError(p,kind,name,val)
     #@nonl
     #@-node:ekr.20041121125741:doRatio
-    #@+node:ekr.20041120105609:doShortcuts
+    #@+node:ekr.20041120105609:doShortcuts (ParserBaseClass)
     def doShortcuts(self,p,kind,name,val,s=None):
         
         __pychecker__ = '--no-argsused' # kind,val.
         
         # g.trace(self.c.fileName(),name)
-        
-        d = self.shortcutsDict # To detect duplicates.
+    
+        c = self.c ; d = self.shortcutsDict
         if s is None: s = p.bodyString()
         lines = g.splitLines(s)
         for line in lines:
             line = line.strip()
             if line and not g.match(line,0,'#'):
                 name,bunch = self.parseShortcutLine(line)
-                if not name:
-                    # An entry command: put it in the special *entry-commands* key.
-                    aList = d.get('*entry-commands*',[])
-                    aList.append(bunch.entryCommandName)
-                    d ['*entry-commands*'] = aList
-                elif bunch is not None:
+                if bunch is not None:
                     # A regular shortcut.
-                    # if name.startswith('press-'): g.trace(name,bunch)
-                    # New in 4.4a5:
                     bunchList = d.get(name,[])
                     bunchList.append(bunch)
                     d [name] = bunchList
                     self.set(p,"shortcut",name,bunchList)
                     self.setShortcut(name,bunchList)
     #@nonl
-    #@-node:ekr.20041120105609:doShortcuts
+    #@-node:ekr.20041120105609:doShortcuts (ParserBaseClass)
     #@+node:ekr.20041217132028:doString
     def doString (self,p,kind,name,val):
         
@@ -596,7 +606,7 @@ class parserBaseClass:
         __pychecker__ = '--no-argsused' # p used in subclasses, not here.
         
         c = self.c ; key = self.munge(name)
-        # g.trace("settingsParser %10s %15s %s" %(kind,val,name))
+        # if kind and kind.startswith('setting'): g.trace("settingsParser %10s %15s %s" %(kind,val,name))
         d = self.settingsDict
         bunch = d.get(key)
         if bunch:
@@ -606,9 +616,7 @@ class parserBaseClass:
                 g.es("over-riding setting: %s from %s" % (name,path))
     
         # N.B.  We can't use c here: it may be destroyed!
-        d[key] = g.Bunch(path=c.mFileName,kind=kind,val=val,tag='setting')
-        
-        # g.trace('parserBaseClass',g.shortFileName(c.mFileName),key,val)
+        d [key] = g.Bunch(path=c.mFileName,kind=kind,val=val,tag='setting')
     #@nonl
     #@-node:ekr.20041120094940.9:set (parseBaseClass)
     #@+node:ekr.20041227071423:setShortcut (ParserBaseClass)
@@ -1272,6 +1280,8 @@ class configClass:
     def set (self,c,setting,kind,val):
         
         '''Set the setting.  Not called during initialization.'''
+        
+        # if kind.startwith('setting'): g.trace(val)
     
         found = False ;  key = self.munge(setting)
         if c:
@@ -1289,7 +1299,6 @@ class configClass:
             d = self.dictList [0]
     
         d[key] = g.Bunch(setting=setting,kind=kind,val=val,tag='setting')
-        # g.trace(d.get(key).toString())
     
         if 0:
             dkind = d.get('_hash','<no hash: %s>' % c.hash())

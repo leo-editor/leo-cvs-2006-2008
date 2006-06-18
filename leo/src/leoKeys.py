@@ -1920,7 +1920,7 @@ class keyHandlerClass:
     #@-node:ekr.20050920085536.1: Birth (keyHandler)
     #@+node:ekr.20051006125633:Binding (keyHandler)
     #@+node:ekr.20050920085536.16:bindKey
-    def bindKey (self,pane,shortcut,callback,commandName):
+    def bindKey (self,pane,shortcut,callback,commandName,modeFlag=False):
     
         '''Bind the indicated shortcut (a Tk keystroke) to the callback.
         callback calls commandName (for error messages).'''
@@ -1948,7 +1948,7 @@ class keyHandlerClass:
         bunchList = k.bindingsDict.get(shortcut,[])
         #@    << trace bindings >>
         #@+node:ekr.20060114110141:<< trace bindings >>
-        if c.config.getBool('trace_bindings'):
+        if c.config.getBool('trace_bindings_verbose'):
             theFilter = c.config.getString('trace_bindings_filter') or ''
             # g.trace(repr(theFilter))
             if not theFilter or shortcut.find(theFilter) != -1:
@@ -1963,14 +1963,15 @@ class keyHandlerClass:
             b = g.bunch(pane=pane,func=callback,commandName=commandName)
             #@        << remove previous conflicting definitions from bunchList >>
             #@+node:ekr.20060611171940:<< remove previous conflicting definitions from bunchList >>
-            if 1: # important.
+            if not modeFlag: # important.
                 redefs = [str(b2.commandName) for b2 in bunchList
                     if b2.commandName != commandName and pane in ('button','all',b2.pane)
                         and not b2.pane.endswith('-mode')]
                 for z in redefs:
-                    g.es_print('redefining %s to %s in %s' % (z,commandName,pane),color='red')
+                    g.es_print('redefining %s in %s to %s in %s' % (z,b2.pane,commandName,pane),color='red')
             
-            bunchList = [b2 for b2 in bunchList if pane not in ('button','all',b2.pane)]
+            if not modeFlag:
+                bunchList = [b2 for b2 in bunchList if pane not in ('button','all',b2.pane)]
             
             if 0:
                 if bunchList:
@@ -2077,9 +2078,10 @@ class keyHandlerClass:
     def makeAllBindings (self):
         
         k = self ; c = k.c
+        
+        #g.trace(c.fileName())
     
         k.bindingsDict = {}
-        
         k.addModeCommands() 
         k.makeBindingsFromCommandsDict()
         k.initSpecialIvars()
@@ -2123,7 +2125,7 @@ class keyHandlerClass:
         '''Add commands created by @mode settings to c.commandsDict and k.inverseCommandsDict.'''
     
         k = self ; c = k.c
-        d = g.app.config.modeCommandsDict
+        d = g.app.config.modeCommandsDict # Keys are command names: enter-x-mode.
         
         # Create the callback functions and update c.commandsDict and k.inverseCommandsDict.
         for key in d.keys():
@@ -2142,7 +2144,7 @@ class keyHandlerClass:
         '''Set ivars for special keystrokes from previously-existing bindings.'''
     
         k = self ; c = k.c
-        trace = c.config.getBool('trace_bindings')
+        trace = c.config.getBool('trace_bindings_verbose')
         warn  = c.config.getBool('warn_about_missing_settings')
         
         for ivar,commandName in (
@@ -2167,17 +2169,22 @@ class keyHandlerClass:
         
         '''Add bindings for all entries in c.commandDict.'''
     
-        k = self ; c = k.c
-        keys = c.commandsDict.keys() ; keys.sort()
+        k = self ; c = k.c ; d = c.commandsDict
+        keys = d.keys() ; keys.sort()
     
         for commandName in keys:
-            command = c.commandsDict.get(commandName)
+            command = d.get(commandName)
             key, bunchList = c.config.getShortcut(commandName)
+            # if commandName == 'keyboard-quit': g.trace(key,bunchList)
             for bunch in bunchList:
                 accel = bunch.val ; pane = bunch.pane
+                # if pane.endswith('-mode'): g.trace('skipping',shortcut,commandName)
                 if accel and not pane.endswith('-mode'):
                     shortcut = k.shortcutFromSetting(accel)
                     k.bindKey(pane,shortcut,command,commandName)
+                    
+        # g.trace(g.listToString(k.bindingsDict.keys(),sort=True))
+        # g.trace('Ctrl+g',k.bindingsDict.get('Ctrl+g'))
     #@nonl
     #@-node:ekr.20051008134059:makeBindingsFromCommandsDict
     #@+node:ekr.20060605130652:makeMasterGuiBinding
@@ -3150,30 +3157,13 @@ class keyHandlerClass:
     #@-node:ekr.20060210141604.1:getEditableTextRange
     #@-node:ekr.20050924064254:Label...
     #@+node:ekr.20060129052538.1:Master event handlers (keyHandler)
-    #@+node:ekr.20060127183752:masterKeyHandler & helper
+    #@+node:ekr.20060127183752:masterKeyHandler
     master_key_count = 0
     
     def masterKeyHandler (self,event,stroke=None):
         
         '''This is the handler for almost all key bindings.'''
-        
-        k = self ; c = k.c
-        trace = c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
-        
-        # g.trace(g.app.gui.widget_name(g.app.gui.get_focus(c)))
-        if trace: g.trace(g.callers())
     
-        val = self.masterKeyHandlerHelper(event,stroke,trace)
-        if 0:
-            if val and c and c.exists: # Ignore special keys.
-                c.frame.updateStatusLine()
-                c.masterFocusHandler()
-        if trace: g.trace('done:',repr(val))
-        return val
-    #@nonl
-    #@+node:ekr.20060205221734:masterKeyHandlerHelper
-    def masterKeyHandlerHelper (self,event,stroke,trace):
-        
         #@    << define vars >>
         #@+node:ekr.20060321105403:<< define vars >>
         k = self ; c = k.c
@@ -3184,6 +3174,8 @@ class keyHandlerClass:
         special_keys = (
             'Caps_Lock', 'Num_Lock', 'Control_L', 'Alt_L',
             'Shift_L', 'Control_R', 'Alt_R','Shift_R','Win_L','Win_R')
+            
+        trace = c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
         #@nonl
         #@-node:ekr.20060321105403:<< define vars >>
         #@nl
@@ -3320,7 +3312,6 @@ class keyHandlerClass:
         #@-node:ekr.20060608070318:<< handle keys without bindings >>
         #@nl
     #@nonl
-    #@-node:ekr.20060205221734:masterKeyHandlerHelper
     #@+node:ekr.20060309065445:handleMiniBindings
     def handleMiniBindings (self,event,state,stroke):
         
@@ -3396,7 +3387,7 @@ class keyHandlerClass:
     #@nonl
     #@-node:ekr.20060606095344:test_isPlainKey
     #@-node:ekr.20060120071949:isPlainKey & test
-    #@-node:ekr.20060127183752:masterKeyHandler & helper
+    #@-node:ekr.20060127183752:masterKeyHandler
     #@+node:ekr.20060129052538.2:masterClickHandler
     def masterClickHandler (self,event,func=None):
     
