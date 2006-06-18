@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="24511" clone_windows="0"/>
 <globals body_outline_ratio="0.393203883495">
-	<global_window_position top="10" left="336" height="824" width="890"/>
+	<global_window_position top="10" left="336" height="805" width="890"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -46,7 +46,7 @@
 <v t="ekr.20060525110217"><vh>@@button rst-&gt;rst</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
+<v t="edream.110203163054.46"><vh>Release Notes</vh>
 <v t="edream.110203163054.117"><vh>Previous versions...</vh>
 <v t="ekr.20060206111717"><vh>Ancient...</vh>
 <v t="edream.110203163054.118"><vh>3.x...</vh>
@@ -1905,7 +1905,7 @@
 </v>
 </v>
 <v t="edream.110203163054.63"><vh>Latest version</vh>
-<v t="ekr.20060601101643" a="E"><vh>4.4.1 b1</vh>
+<v t="ekr.20060601101643"><vh>4.4.1 b1</vh>
 <v t="ekr.20060601101958.1"><vh>Fixed bugs</vh>
 <v t="ekr.20060601101958.56"><vh>The Open Python Window command runs Idle in a separate process</vh></v>
 <v t="ekr.20060601101958.2"><vh>Fixed crasher in searchbox plugin</vh></v>
@@ -1915,7 +1915,7 @@
 <v t="ekr.20060601101958.16"><vh>Suppressed traceback in g.callers when the call stack isn't deep enough</vh></v>
 <v t="ekr.20060603082009"><vh>Fixed long-standing bug involving @comment and @language</vh></v>
 </v>
-<v t="ekr.20060601102802" a="E"><vh>New features, commands &amp; plugins</vh>
+<v t="ekr.20060601102802"><vh>New features, commands &amp; plugins</vh>
 <v t="ekr.20060601101958.245"><vh>Support for multiple editors in the body pane</vh></v>
 <v t="ekr.20060601101958.70"><vh>Improved searches</vh></v>
 <v t="ekr.20060601101958.52"><vh>Added debug command</vh></v>
@@ -1941,9 +1941,9 @@
 </v>
 </v>
 </v>
-<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="TV"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
-<v t="ekr.20040414162124" a="E"><vh>@rst html\leo_TOC.html</vh>
+<v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
 <v t="ekr.20040414163815"><vh>Table of Contents</vh></v>
 <v t="ekr.20050812134441.3"><vh>@rst-no-head end</vh></v>
@@ -2156,7 +2156,7 @@
 <v t="ekr.20050901101852"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20060420094611"><vh>The minibuffer</vh>
 <v t="ekr.20060613062025.6"><vh>Basic editing commands</vh></v>
-<v t="ekr.20060613062025.1" a="E"><vh>Debugging commands</vh></v>
+<v t="ekr.20060613062025.1"><vh>Debugging commands</vh></v>
 <v t="ekr.20060613062025.4"><vh>Emacs commands</vh></v>
 <v t="ekr.20060613062025.5"><vh>Find commands</vh></v>
 <v t="ekr.20060613062025.9"><vh>Gui commands</vh></v>
@@ -2212,8 +2212,8 @@
 <v t="ekr.20050901102400.2"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20050831195331.4" a="EM"><vh>Chapter 7: Scripting Leo with Python</vh>
-<v t="ekr.20040403171740" a="E"><vh>@rst html\scripting.html</vh>
+<v t="ekr.20050831195331.4" a="M"><vh>Chapter 7: Scripting Leo with Python</vh>
+<v t="ekr.20040403171740"><vh>@rst html\scripting.html</vh>
 <v t="ekr.20050812134441.1"><vh>@rst-no-head Links</vh></v>
 <v t="ekr.20050901184158"><vh>@rst-ignore Important: you can run these examples!</vh></v>
 <v t="ekr.20040403183229" rst_http_attribute="5d71002855443c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d3122206e616d653d22687474702d6e6f64652d6d61726b65722d31223e710155043c2f613e71025d710328553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710455063c2f6469763e71055d71062855063c626f64793e710755073c2f626f64793e71085d71092855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e710a55073c2f68746d6c3e710b4e65656555243c64697620636c6173733d2273656374696f6e222069643d226f76657276696577223e0a710c55493c68313e3c6120636c6173733d22746f632d6261636b7265662220687265663d222369643122206e616d653d226f76657276696577223e4f766572766965773c2f613e3c2f68313e0a710d652e"><vh>Overview</vh></v>
@@ -2249,7 +2249,7 @@
 </v>
 </v>
 <v t="EKR.20040524104904.211" a="M"><vh>Chapter 8: Settings, Modes and Key Bindings</vh>
-<v t="ekr.20050901101608.4" a="E"><vh>@rst html\customizing.html</vh>
+<v t="ekr.20050901101608.4"><vh>@rst html\customizing.html</vh>
 <v t="ekr.20050901102055"><vh>@rst-no-head links</vh></v>
 <v t="EKR.20040524104904.140"><vh>Specifying settings</vh></v>
 <v t="ekr.20060105214753"><vh>Input modes</vh></v>
@@ -2335,7 +2335,7 @@
 </v>
 </v>
 <v t="ekr.20050912125144"><vh>Chapter 12: Plugins</vh>
-<v t="ekr.20050912125144.1" a="E"><vh>@rst html\plugins.html</vh>
+<v t="ekr.20050912125144.1"><vh>@rst html\plugins.html</vh>
 <v t="ekr.20050912125735"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20050912125735.868"><vh>Body pane</vh>
 <v t="ekr.20050912125735.869"><vh>arrows.py</vh></v>
@@ -2454,7 +2454,7 @@
 </v>
 </v>
 <v t="ekr.20060612102055"><vh>Chapter 13: Writing Plugins</vh>
-<v t="ekr.20060612103240" a="E"><vh>@rst html\writingPlugins.html</vh>
+<v t="ekr.20060612103240"><vh>@rst html\writingPlugins.html</vh>
 <v t="ekr.20060612103824"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20050903075144"><vh>Overview</vh></v>
 <v t="EKR.20040524104904.224"><vh>Important security warnings</vh></v>
@@ -2467,7 +2467,7 @@
 </v>
 </v>
 <v t="ekr.20050831184021.1"><vh>Chapter 14: Using the rst3 plugin</vh>
-<v t="ekr.20050818163826" a="E"><vh>@rst html\rstplugin3.html</vh>
+<v t="ekr.20050818163826"><vh>@rst html\rstplugin3.html</vh>
 <v t="ekr.20050818163826.1"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20050818163826.2"><vh>Overview</vh></v>
 <v t="ekr.20050818163826.3"><vh>Comparison with previous rst plugins</vh></v>
@@ -2489,7 +2489,7 @@
 </v>
 </v>
 <v t="ekr.20060430221745"><vh>Chapter 15: Controlling syntax coloring</vh>
-<v t="ekr.20060430221745.1" a="E"><vh>@rst html\coloring.html</vh>
+<v t="ekr.20060430221745.1"><vh>@rst html\coloring.html</vh>
 <v t="ekr.20060430222753"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20060430220749"><vh>Files</vh></v>
 <v t="ekr.20060502084233"><vh>The colorizer's inner loop</vh></v>
@@ -2525,7 +2525,7 @@
 </v>
 </v>
 <v t="ekr.20060527105211"><vh>Chapter 16: External debuggers</vh>
-<v t="ekr.20060527105617" a="E"><vh>@rst html\debuggers.html</vh>
+<v t="ekr.20060527105617"><vh>@rst html\debuggers.html</vh>
 <v t="ekr.20060527105804"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20060527105617.2"><vh>Leo's debug command and 'the big debugger Aha'</vh></v>
 <v t="ekr.20060527112801"><vh>Settings</vh></v>
@@ -2816,7 +2816,7 @@
 <v t="ekr.20060608111953.60"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20060613075343" a="V"><vh>To do: Chapter 15: Using the scripting plugin</vh></v>
+<v t="ekr.20060613075343"><vh>To do: Chapter 15: Using the scripting plugin</vh></v>
 </v>
 </vnodes>
 <tnodes>
@@ -3895,7 +3895,7 @@ Leo will continue to call the "idle" hook periodically until ``disableIdleTimeHo
 
 Disables the "idle" hook.
 
-**c.frame.createMenuItemsFromTable (self,menuName,table,openWith=0)**
+**c.frame.menu.createMenuItemsFromTable (self,menuName,table,openWith=0)**
 
 This method adds items to the menu whose name is menuName.
 The table argument describes the entries to be created.
@@ -3912,7 +3912,7 @@ For example::
         ("Toggle Active Pane","Ctrl-T",self.OnToggleActivePane),
         ("-",None,None),
         ("Toggle Split Direction",None,self.OnToggleSplitDirection))
-    c.frame.createMenuItemsFromTable("Window",table)
+    c.frame.menu.createMenuItemsFromTable("Window",table)
 
 If the ``openWith`` keyword argument is 1 the items are added to a submenu of the Open With menu.
 However, it will be more convenient to use the ``createOpenWithMenuFromTable`` method to create the ``Open With`` menu.
