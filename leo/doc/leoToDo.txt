@@ -1,9 +1,84 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
-#@+node:ekr.20060617132114:To do: B2
-#@-node:ekr.20060617132114:To do: B2
 #@+node:ekr.20060531161030:To do: B3
+#@+node:ekr.20060618154031:B3: First
+#@+node:ekr.20060618154031.1:Allow different packing of editors
+#@+node:ekr.20060618154031.2:Request
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3778744
+By: davidmcnab
+
+I've gone back to horizontal splitter orientation,
+so opening up extra editors gives me very thin tall panes.
+
+I've fixed it in my installation by, within leoTkinterBody.createControl, changing
+the "orient='horizontal'" to "orient='vertical'". So for me, the editor panes
+are stacked vertically (one on top of the other), which works well.
+
+However, it would be really nice if this could automatically choose the opposite
+of the 'initial_splitter_orientation' user setting. It would take me ages to
+trawl though Leo code sufficiently to do this myself, but maybe someone else
+more familiar with Leo's code could do it in 2 minutes with their eyes shut.
+#@nonl
+#@-node:ekr.20060618154031.2:Request
+#@-node:ekr.20060618154031.1:Allow different packing of editors
+#@+node:ekr.20060618154031.3:Document how to turn @buttons into plugins
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3778946
+By: ktenney
+
+I have developed some code as a @button, and want
+to convert it to a plugin which creates buttons
+and/or commands.
+
+This seems like a typical workflow. I got it 
+working as a @button, now I want the functionality
+available to all my Leo files without having to
+paste in the @button node.
+
+I sure would welcome a documentation node which
+described the process, I think it might be a good
+plugin writing example.
+
+The node Users Guide-->Chapter 13: Writing Plugins
+in leoDocs.leo discusses aspects of plugin writing
+but I don't see a step by step example. Something
+like;
+
+@button showhead
+-- g.es(p.headString)
+
+how do I convert this to a plugin which creates
+a 'ShowHead' button, and the command 'show-head'
+#@nonl
+#@-node:ekr.20060618154031.3:Document how to turn @buttons into plugins
+#@+node:ekr.20060618155337:Fix scheduler plugin
+@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=3784636
+By: craigj3
+
+I note that the scheduler plugin is currently broken.  I wonder if there will
+be any interest in getting it fixed?
+
+The begin recording command generates this:
+
+Traceback (most recent call last):
+
+  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 264, in doCommand
+    val = command(event)
+
+  File "C:\prog\tigris-cvs\leo\plugins\scheduler.py", line 383, in <lambda>
+    ('Begin Recording',None,lambda c=c: startRecord(c)),
+
+  File "C:\prog\tigris-cvs\leo\plugins\scheduler.py", line 242, in startRecord
+    cmds[c] = c.doCommand
+
+AttributeError: 'Bunch' object has no attribute 'doCommand'
+#@nonl
+#@-node:ekr.20060618155337:Fix scheduler plugin
+#@-node:ekr.20060618154031:B3: First
 #@+node:ekr.20060531161030.1:Make body editors persistant
 #@-node:ekr.20060531161030.1:Make body editors persistant
 #@+node:ekr.20060527204444:Finish new colorizer plugin
