@@ -1349,7 +1349,7 @@ class baseUndoer:
             c.setChanged(True)
             c.endUpdate()
             c.recolor_now()
-            c.bodyWantsFocus()
+            c.bodyWantsFocusNow()
         u.redoing = False
         u.bead += 1
         u.setUndoTypes()
@@ -1614,7 +1614,7 @@ class baseUndoer:
             c.setChanged(True)
             c.endUpdate()
             c.recolor_now()
-            c.bodyWantsFocus()
+            c.bodyWantsFocusNow()
     
         u.undoing = False
         u.bead -= 1
