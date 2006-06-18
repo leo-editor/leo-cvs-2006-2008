@@ -1,40 +1,9 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
-#@+node:ekr.20060531161030:To do: B2
-#@+node:ekr.20060605173936:First
-#@+node:ekr.20060612080948:Put a link to online docs in the help menu
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3772475
-
-Maybe put a link to the html TOC into the Help Menu,
-"%leodir%/doc/html/leo_TOC.html".
-
-This is more intuitive (to newbies) than the LeoDocs.leo link.  I found this
-very confusing in the begining.
-
-#@-node:ekr.20060612080948:Put a link to online docs in the help menu
-#@+node:ekr.20060603184747:New commands for mouseless Leo
-@nocolor
-
-First
-
-- cycle focus must cycle through tabs.
-
-- Commands that scroll the *present* pane.
-
-- repeat-complex-command
-
-Later
-
-- Repeat counts for cursor moves.
-
-- move-to-last-sibling, move-to-first-sibling, Alt-1, Alt-9?
-
-- help-for-command-mode: shows top-level plain bindings.
-#@nonl
-#@-node:ekr.20060603184747:New commands for mouseless Leo
-#@-node:ekr.20060605173936:First
+#@+node:ekr.20060617132114:To do: B2
+#@-node:ekr.20060617132114:To do: B2
+#@+node:ekr.20060531161030:To do: B3
 #@+node:ekr.20060531161030.1:Make body editors persistant
 #@-node:ekr.20060531161030.1:Make body editors persistant
 #@+node:ekr.20060527204444:Finish new colorizer plugin
@@ -861,8 +830,6 @@ I'm using current CVS, W2k
 
 Zombie!
 #@-node:ekr.20060609070148:Fix hung (zombie) windows)
-#@+node:ekr.20060608220822.1:undo messes with pane?
-#@-node:ekr.20060608220822.1:undo messes with pane?
 #@+node:ekr.20060610193837:open python window does not appear to work on Solaris
 @nocolor
 
@@ -900,6 +867,20 @@ Couldn't this file be distributed with Leo?
 #@-node:ekr.20060610212014:Problems with tutorial command
 #@-node:ekr.20060227163215:Fix *all* bugs
 #@+node:ekr.20060603090445.5:Later
+#@+node:ekr.20060603184747:New commands for mouseless Leo
+@nocolor
+
+- repeat-complex-command
+
+- Repeat counts for cursor moves.
+
+- move-to-last-sibling, move-to-first-sibling, Alt-1, Alt-9?
+
+- help-for-command-mode: shows top-level plain bindings.
+
+@color
+#@nonl
+#@-node:ekr.20060603184747:New commands for mouseless Leo
 #@+node:ekr.20060530110450:Test major Emacs commands
 @nocolor
 
@@ -935,7 +916,7 @@ This would allow IPython-like operation.
 #@-node:ekr.20060603090445.9:Script button that saves environment between runs
 #@-node:ekr.20060603090445.7:Ipython stuff
 #@-node:ekr.20060603090445.5:Later
-#@-node:ekr.20060531161030:To do: B2
+#@-node:ekr.20060531161030:To do: B3
 #@+node:ekr.20060527164612:Important 1-2 day projects (1-2 weeks)
 #@+node:ekr.20031218072017.801:Support .leo.gz or .leo.zip files
 #@+node:ekr.20050428062312:Request 1

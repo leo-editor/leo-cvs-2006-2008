@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="291" clone_windows="0"/>
 <globals body_outline_ratio="0.549828178694">
-	<global_window_position top="75" left="241" height="624" width="995"/>
+	<global_window_position top="75" left="241" height="721" width="929"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -150,15 +150,15 @@
 <v t="ekr.20060521132401"><vh>@string debugger_path = None</vh></v>
 </v>
 <v t="ekr.20051126062243" annotate="7d71002e"><vh>Debugging</vh>
+<v t="ekr.20060408090018"><vh>@bool added_setting = True</vh></v>
 <v t="ekr.20060201110016"><vh>@bool allow_idle_time_hook = False</vh></v>
-<v t="ekr.20060521134125"><vh>@string debugger_default_target = None</vh></v>
-<v t="ekr.20060521134125.1"><vh>@string debugger_force_target = None</vh></v>
 <v t="ekr.20060212101234"><vh>@bool gc_before_redraw = False</vh></v>
 <v t="ekr.20060202113731"><vh>@bool show_tree_stats = False</vh></v>
 <v t="ekr.20060216145416"><vh>@bool trace_autocompleter = False</vh></v>
 <v t="ekr.20060114073238"><vh>@bool trace_bindings = False</vh></v>
-<v t="ekr.20060309022759"><vh>@bool trace_colorizer = False</vh></v>
+<v t="ekr.20060616172614"><vh>@bool trace_bindings_verbose = False</vh></v>
 <v t="ekr.20060425124142"><vh>@bool trace_color_parser = True</vh></v>
+<v t="ekr.20060309022759"><vh>@bool trace_colorizer = False</vh></v>
 <v t="ekr.20060204093736"><vh>@bool trace_doCommand = False</vh></v>
 <v t="ekr.20060204102644"><vh>@bool trace_f.set_focus = False</vh></v>
 <v t="ekr.20060207142012"><vh>@bool trace_focus = False</vh></v>
@@ -180,11 +180,12 @@
 <v t="ekr.20060202092911"><vh>@bool trace_tree = False</vh></v>
 <v t="ekr.20060206155101"><vh>@bool trace_tree_alloc = False</vh></v>
 <v t="ekr.20060206161839"><vh>@bool trace_tree_edit = False</vh></v>
-<v t="ekr.20060114082205"><vh>@string trace_bindings_filter = </vh></v>
-<v t="ekr.20060114083009"><vh>@string trace_bindings_pane_filter =</vh></v>
 <v t="ekr.20060425125015"><vh>@bool verbose_trace_color_parser = False</vh></v>
 <v t="ekr.20060323131801"><vh>@bool warn_about_missing_settings = False</vh></v>
-<v t="ekr.20060408090018"><vh>@bool added_setting = True</vh></v>
+<v t="ekr.20060521134125"><vh>@string debugger_default_target = None</vh></v>
+<v t="ekr.20060521134125.1"><vh>@string debugger_force_target = None</vh></v>
+<v t="ekr.20060114082205"><vh>@string trace_bindings_filter = </vh></v>
+<v t="ekr.20060114083009"><vh>@string trace_bindings_pane_filter =</vh></v>
 <v t="ekr.20060325071916"><vh>For unit tests</vh>
 <v t="ekr.20060325071042"><vh>@ifplatform win32</vh>
 <v t="ekr.20060325071042.1"><vh>@bool test_win32_setting = True</vh></v>
@@ -365,7 +366,7 @@
 <v t="ekr.20060604082857"><vh>@mode outline</vh></v>
 <v t="ekr.20060603223152.2"><vh>@mode toggle-find</vh></v>
 </v>
-<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
 <v t="ekr.20060604081014"><vh>@@@@shortcuts top-level keys (like vim)</vh></v>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20060603215208.19"><vh>@shortcuts Find Commands</vh></v>
@@ -452,17 +453,18 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060512084639"><vh>Recent</vh>
-<v t="ekr.20060209045356"><vh>@bool trace_masterFocusHandler = False</vh></v>
-<v t="ekr.20060131071612"><vh>@bool trace_masterKeyHandler = False</vh></v>
-<v t="ekr.20060309022759"><vh>@bool trace_colorizer = False</vh></v>
-<v t="ekr.20060131071947"><vh>@bool trace_masterClickHandler = False</vh></v>
-<v t="ekr.20060121102627"><vh>@bool trace_modes = False</vh></v>
-<v t="ekr.20060114073238"><vh>@bool trace_bindings = False</vh></v>
+<v t="ekr.20060512084639" a="E"><vh>Recent</vh>
 <v t="ekr.20060216135834"><vh>@bool enable_autocompleter_initially = False</vh></v>
 <v t="ekr.20060603070801"><vh>@bool enable_calltips_initially = False</vh></v>
+<v t="ekr.20060114073238" a="V"><vh>@bool trace_bindings = False</vh></v>
+<v t="ekr.20060616172614"><vh>@bool trace_bindings_verbose = False</vh></v>
+<v t="ekr.20060309022759"><vh>@bool trace_colorizer = False</vh></v>
+<v t="ekr.20060131071947"><vh>@bool trace_masterClickHandler = False</vh></v>
+<v t="ekr.20060209045356"><vh>@bool trace_masterFocusHandler = False</vh></v>
+<v t="ekr.20060131071612"><vh>@bool trace_masterKeyHandler = False</vh></v>
+<v t="ekr.20060121102627"><vh>@bool trace_modes = False</vh></v>
 </v>
-<v t="ekr.20060603215208" a="TV"><vh>@keys EKR bindings: vim mode bindings</vh>
+<v t="ekr.20060603215208"><vh>@keys EKR bindings: vim mode bindings</vh>
 <v t="ekr.20060608065207"><vh>Settings related to key bindings</vh>
 <v t="ekr.20060604080653" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
 <v t="ekr.20060605081712"><vh>@color command_mode_bg_color = MistyRose1</vh></v>
@@ -491,7 +493,7 @@
 <v t="ekr.20060604082857"><vh>@mode outline</vh></v>
 <v t="ekr.20060603223152.2"><vh>@mode toggle-find</vh></v>
 </v>
-<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
 <v t="ekr.20060604081014"><vh>@@@@shortcuts top-level keys (like vim)</vh></v>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20060603215208.19"><vh>@shortcuts Find Commands</vh></v>
@@ -1603,6 +1605,7 @@ copy-to-register                    = None
 count-region                        = None
 cut-node                            = None
 cut-text                            = None
+cycle-all-focus                     = None
 cycle-focus                         = None
 cycle-editor-focus                  = None
 dabbrev-completion                  = None
@@ -5053,12 +5056,7 @@ toggle-find-word-option             ! mini = Alt-Ctrl-w
 toggle-find-wrap-around-option      ! mini = Alt-Ctrl-a</t>
 <t tx="ekr.20060603215208.21"># Important: the print-commands and print-bindings show what bindings are in effect.
 
-# back-paragraph                      ! text = Alt-braceleft 
-# back-paragraph-extend-selection     ! text = Alt-Shift-braceleft
-# back-sentence                       ! text = Alt-a  # No conflict
-# back-sentence-extend-selection      = None # Alt-Shift-a, sort-siblings
-
-###abort-edit-headline                 = Esc
+#abort-edit-headline                = Esc
 add-comments                        = Ctrl-parenleft
 auto-complete-force                 = Ctrl-period
 auto-complete                       = period
@@ -5088,6 +5086,7 @@ copy-node                           = Shift-Ctrl-c
 copy-text                           = Ctrl-c        # Conflicts with Emacs ctrl-c
 cut-node                            = Shift-Ctrl-x
 cut-text                            = Ctrl-x
+cycle-all-focus                     = Alt-Ctrl-p
 debug                               = Alt-Shift-d
 delete-char                         = Delete
 delete-comments                     = Ctrl-parenright
@@ -5186,7 +5185,11 @@ reformat-paragraph                  = Shift-Ctrl-p
 run-unit-tests                      = None
 save-file                           = Ctrl-s
 scroll-down                         ! text = PageDn 
-scroll-up                           ! text = PageUp 
+scroll-up                           ! text = PageUp
+scroll-outline-down-line            ! tree = PageDn
+scroll-outline-down-page            ! tree = Shift-PageDn
+scroll-outline-up-line              ! tree = PageUp
+scroll-outline-up-page              ! tree = Shift-PageUp
 scroll-down-extend-selection        ! text = Shift-PageDn
 scroll-up-extend-selection          ! text = Shift-PageUp
 select-all                          ! text =  Alt-Shift-A 
@@ -5508,5 +5511,6 @@ redo                                -&gt; same = Shift-z</t>
 
 enter-quick-command-mode            = Alt-C
 </t>
+<t tx="ekr.20060616172614"></t>
 </tnodes>
 </leo_file>

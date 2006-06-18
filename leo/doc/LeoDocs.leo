@@ -46,7 +46,7 @@
 <v t="ekr.20060525110217"><vh>@@button rst-&gt;rst</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="edream.110203163054.46"><vh>Release Notes</vh>
+<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
 <v t="edream.110203163054.117"><vh>Previous versions...</vh>
 <v t="ekr.20060206111717"><vh>Ancient...</vh>
 <v t="edream.110203163054.118"><vh>3.x...</vh>
@@ -1905,7 +1905,7 @@
 </v>
 </v>
 <v t="edream.110203163054.63"><vh>Latest version</vh>
-<v t="ekr.20060601101643"><vh>4.4.1 b1</vh>
+<v t="ekr.20060601101643" a="E"><vh>4.4.1 b1</vh>
 <v t="ekr.20060601101958.1"><vh>Fixed bugs</vh>
 <v t="ekr.20060601101958.56"><vh>The Open Python Window command runs Idle in a separate process</vh></v>
 <v t="ekr.20060601101958.2"><vh>Fixed crasher in searchbox plugin</vh></v>
@@ -1915,7 +1915,7 @@
 <v t="ekr.20060601101958.16"><vh>Suppressed traceback in g.callers when the call stack isn't deep enough</vh></v>
 <v t="ekr.20060603082009"><vh>Fixed long-standing bug involving @comment and @language</vh></v>
 </v>
-<v t="ekr.20060601102802"><vh>New features, commands &amp; plugins</vh>
+<v t="ekr.20060601102802" a="E"><vh>New features, commands &amp; plugins</vh>
 <v t="ekr.20060601101958.245"><vh>Support for multiple editors in the body pane</vh></v>
 <v t="ekr.20060601101958.70"><vh>Improved searches</vh></v>
 <v t="ekr.20060601101958.52"><vh>Added debug command</vh></v>
@@ -1941,7 +1941,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20040414161647"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124" a="E"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -2151,10 +2151,20 @@
 <v t="ekr.20050828115003"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="EKR.20040524104904.99" a="M"><vh>Chapter 5: Using Leo's Commands</vh>
+<v t="EKR.20040524104904.99"><vh>Chapter 5: Using Leo's Commands</vh>
 <v t="ekr.20050901101608.2"><vh>@rst html\commands.html</vh>
 <v t="ekr.20050901101852"><vh>@rst-no-head links</vh></v>
-<v t="ekr.20060420094611"><vh>The minibuffer</vh></v>
+<v t="ekr.20060420094611"><vh>The minibuffer</vh>
+<v t="ekr.20060613062025.6"><vh>Basic editing commands</vh></v>
+<v t="ekr.20060613062025.1" a="E"><vh>Debugging commands</vh></v>
+<v t="ekr.20060613062025.4"><vh>Emacs commands</vh></v>
+<v t="ekr.20060613062025.5"><vh>Find commands</vh></v>
+<v t="ekr.20060613062025.9"><vh>Gui commands</vh></v>
+<v t="ekr.20060613062025.2"><vh>Help commands</vh></v>
+<v t="ekr.20060613062025.10"><vh>Mode commands</vh></v>
+<v t="ekr.20060613062025.7"><vh>Outline commands</vh></v>
+<v t="ekr.20060613062025.8"><vh>Miscellaneous commands</vh></v>
+</v>
 <v t="EKR.20040524104904.100"><vh>The File Menu</vh>
 <v t="EKR.20040524104904.101"><vh>Loading, Saving and Reverting Files</vh></v>
 <v t="EKR.20040524104904.102"><vh>Communicating with external editors</vh></v>
@@ -2202,7 +2212,7 @@
 <v t="ekr.20050901102400.2"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20050831195331.4" a="M"><vh>Chapter 7: Scripting Leo with Python</vh>
+<v t="ekr.20050831195331.4" a="EM"><vh>Chapter 7: Scripting Leo with Python</vh>
 <v t="ekr.20040403171740" a="E"><vh>@rst html\scripting.html</vh>
 <v t="ekr.20050812134441.1"><vh>@rst-no-head Links</vh></v>
 <v t="ekr.20050901184158"><vh>@rst-ignore Important: you can run these examples!</vh></v>
@@ -2806,17 +2816,7 @@
 <v t="ekr.20060608111953.60"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-</v>
-<v t="ekr.20060613062025" a="E"><vh>Commands</vh>
-<v t="ekr.20060613062025.6"><vh>Basic editing commands</vh></v>
-<v t="ekr.20060613062025.1"><vh>Debugging commands</vh></v>
-<v t="ekr.20060613062025.2"><vh>Help commands</vh></v>
-<v t="ekr.20060613062025.4"><vh>Emacs commands</vh></v>
-<v t="ekr.20060613062025.5"><vh>Find commands</vh></v>
-<v t="ekr.20060613062025.7"><vh>Outline commands</vh></v>
-<v t="ekr.20060613062025.8" a="TV"><vh>Leo commands</vh></v>
-<v t="ekr.20060613062025.9"><vh>Gui commands</vh></v>
-<v t="ekr.20060613062025.10"><vh>Mode commands</vh></v>
+<v t="ekr.20060613075343" a="V"><vh>To do: Chapter 15: Using the scripting plugin</vh></v>
 </v>
 </vnodes>
 <tnodes>
@@ -18817,7 +18817,9 @@ verbose=True
 Chapter 5: Using Leo's Commands
 ##########################################
 
-This chapter is discusses all of Leo's menu commands.
+This chapter discusses all of Leo's menu commands.
+It starts with a discussion of the Emacs-like minibuffer,
+then continues with a discussion of commands in each of Leo's menus.
 
 .. contents::</t>
 <t tx="ekr.20050901101608.3">@ @rst-options
@@ -18917,6 +18919,8 @@ This chapter will be of use primarily to those wanting to change Leo's code.
 
 .. _`Chapter 4\: Writing Programs in Leo`:              directives.html
 .. _`Chapter 6\: Leo and Literate Programming`:         design.html
+.. _`Chapter 8: Settings, Modes and Key Bindings`:      customizing.html
+
 .. _`Clones and views`:                                 intro.html#clones-views
 .. _`Creating script buttons`:                          scripting.html#creating-script-buttons
 .. _`Tangling @root trees with the Tangle commands`:    directives.html#tangling-root-trees-with-the-tangle-commands
@@ -25566,7 +25570,11 @@ The following commands affect the minibuffer:
 - **keyboard-quit**: (default shortcut: Ctrl-g) Exits any minibuffer mode and puts
   the focus in the body pane.
 
-For example, to print a list of all commands type Alt-X print-commands &lt;Return&gt;.</t>
+For example, to print a list of all commands type Alt-X print-commands &lt;Return&gt;.
+
+The following sections list the various commands that you can invoke from the minibuffer.
+**Important**: you may bind keystrokes to any of these commands.
+See `Chapter 8: Settings, Modes and Key Bindings`_ for full details.</t>
 <t tx="ekr.20060421070409.1"></t>
 <t tx="ekr.20060421070409.2">@nocolor
 http://sourceforge.net/forum/message.php?msg_id=3688804
@@ -28588,481 +28596,522 @@ Chapter 13: Writing Plugins
 <t tx="ekr.20060612104638">-----------------------
 
 |back| |leo| |next|</t>
-<t tx="ekr.20060613062025"></t>
-<t tx="ekr.20060613062025.1">collect-garbage
-debug
-disable-gc-trace
-dump-all-objects
-dump-new-objects
-dump-outline
-enable-gc-trace
-free-tree-widgets
-print-focus
-print-gc-summary
-print-stats
-verbose-dump-objects</t>
-<t tx="ekr.20060613062025.2">apropos-autocompletion
-apropos-bindings
-apropos-find-commands
-help
-help-for-command
-mode-help
-print-bindings
-print-commands
-python-help</t>
-<t tx="ekr.20060613062025.4">abbrev-mode
-add-global-abbrev
-add-space-to-lines
-add-tab-to-lines
-advertised-undo
-append-to-buffer
-append-to-register
-call-last-keyboard-macro
-capitalize-word
-center-line
-center-region
-clean-lines
-clear-extend-mode
-clear-kill-ring
-clear-rectangle
-clear-selected-text
-close-rectangle
-copy-rectangle-to-register
-copy-text
-copy-to-register
-count-region
-dabbrev-completion
-dabbrev-expands
-delete-comments
-delete-file
-delete-indentation
-delete-rectangle
-delete-spaces
-diff
-digit-argument
-downcase-region
-downcase-word
-end-kbd-macro
-escape
-eval-expression
-expand-region-abbrevs
-fill-paragraph
-fill-region
-fill-region-as-paragraph
-flush-lines
-full-command
-goto-char
-how-many
-increment-register
-indent-region
-indent-relative
-indent-rigidly
-indent-to-comment-column
-insert-body-time
-insert-file
-insert-keyboard-macro
-insert-parentheses
-insert-register
-inverse-add-global-abbrev
-jump-to-register
-keep-lines
-keyboard-quit
-kill-all-abbrevs
-kill-buffer
-kill-line
-kill-paragraph
-kill-rectangle
-kill-region
-kill-region-save
-kill-sentence
-kill-word
-line-number
-list-abbrevs
-list-buffers-alphabetically
-load-file
-make-directory
-match-bracket
-name-last-kbd-macro
-negative-argument
-number-command
-number-command-0
-number-command-1
-number-command-2
-number-command-3
-number-command-4
-number-command-5
-number-command-6
-number-command-7
-number-command-8
-number-command-9
-open-rectangle
-point-to-register
-prepend-to-buffer
-prepend-to-register
-read-abbrev-file
-remove-blank-lines
-remove-directory
-remove-sentinels
-remove-space-from-lines
-remove-tab-from-lines
-rename-buffer
-repeat-complex-command
-reverse-region
-run-unit-tests
-select-paragraph
-set-comment-column
-set-fill-column
-set-fill-prefix
-shell-command
-shell-command-on-region
-sort-columns
-sort-fields
-sort-lines
-split-line
-start-kbd-macro
-string-rectangle
-suspend
-switch-to-buffer
-tabify
-transpose-chars
-transpose-lines
-transpose-words
-unindent-region
-universal-argument
-unmark-all
-untabify
-upcase-region
-upcase-word
-view-lossage
-view-register
-what-line
-yank
-yank-pop
-yank-rectangle
-zap-to-character</t>
-<t tx="ekr.20060613062025.5">clone-find-all
-find-character
-find-tab-change
-find-tab-change-all
-find-tab-change-then-find
-find-tab-find
-find-tab-find-all
-find-tab-find-prev
-find-word
-isearch-backward
-isearch-backward-regexp
-isearch-forward
-isearch-forward-regexp
-isearch-with-present-options
-query-replace
-query-replace-regex
-re-search-backward
-re-search-forward
-replace-string
-search-again
-search-backward
-search-forward
-search-with-present-options
-set-find-everywhere
-set-find-node-only
-set-find-suboutline-only
-toggle-find-ignore-case-option
-toggle-find-in-body-option
-toggle-find-in-headline-option
-toggle-find-mark-changes-option
-toggle-find-mark-finds-option
-toggle-find-regex-option
-toggle-find-reverse-option
-toggle-find-word-option
-toggle-find-wrap-around-option
-word-search-backward
-word-search-forward</t>
-<t tx="ekr.20060613062025.6">back-char
-back-char-extend-selection
-back-paragraph
-back-paragraph-extend-selection
-back-sentence
-back-sentence-extend-selection
-back-to-indentation
-back-word
-back-word-extend-selection
-backward-delete-char
-backward-kill-paragraph
-backward-kill-sentence
-backward-kill-word
-beginning-of-buffer
-beginning-of-buffer-extend-selection
-beginning-of-line
-beginning-of-line-extend-selection
-cut-text
-delete-char
-end-of-buffer
-end-of-buffer-extend-selection
-end-of-line
-end-of-line-extend-selection
-exchange-point-mark
-extend-to-word
-forward-char
-forward-char-extend-selection
-forward-paragraph
-forward-paragraph-extend-selection
-forward-sentence
-forward-sentence-extend-selection
-forward-word
-forward-word-extend-selection
-insert-newline
-move-lines-down
-move-lines-up
-move-past-close
-move-past-close-extend-selection
-newline-and-indent
-next-line
-next-line-extend-selection
-paste-text
-previous-line
-previous-line-extend-selection
-redo
-select-all
-set-mark-command
-undo</t>
-<t tx="ekr.20060613062025.7">clone-node
-contract-all
-contract-node
-contract-or-go-left
-contract-parent
-copy-node
-cut-node
-de-hoist
-delete-node
-demote
-expand-to-level-1
-expand-to-level-2
-expand-to-level-3
-expand-to-level-4
-expand-to-level-5
-expand-to-level-6
-expand-to-level-7
-expand-to-level-8
-expand-to-level-9
-expand-all
-expand-and-go-right
-expand-next-level
-expand-node
-expand-or-go-right
-expand-prev-level
-go-back
-go-forward
-goto-first-node
-goto-first-sibling
-goto-last-node
-goto-last-sibling
-goto-last-visible
-goto-line
-goto-line-number
-goto-next-changed
-goto-next-clone
-goto-next-marked
-goto-next-node
-goto-next-sibling
-goto-next-visible
-goto-parent
-goto-prev-node
-goto-prev-sibling
-goto-prev-visible
-hoist
-insert-node
-mark
-mark-changed-items
-mark-changed-roots
-mark-clones
-mark-subheads
-move-outline-down
-move-outline-left
-move-outline-right
-move-outline-up
-outline-to-CWEB
-outline-to-noweb
-paste-node
-paste-retaining-clones
-promote
-sort-children
-sort-siblings</t>
-<t tx="ekr.20060613062025.8">about-leo
-add-comments
-check-all-python-code
-check-outline
-check-python-code
-clear-recent-files
-convert-all-blanks
-convert-all-tabs
-convert-blanks
-convert-tabs
-execute-script
-export-headlines
-exit-leo
-extract
-extract-names
-extract-section
-flatten-outline
-goto-global-line
-import-at-file
-import-at-root
-import-cweb-files
-import-derived-file
-import-flattened-outline
-import-noweb-files
-insert-headline-time
-new
-open-leoDocs-leo
-open-leoPlugins-leo
-open-leoSettings-leo
-open-offline-tutorial
-open-online-home
-open-online-tutorial
-open-outline
-open-outline-by-name
-open-python-window
-open-with
-open-with-idle
-open-with-word
-open-with-wordpad
-pretty-print-all-python-code
-pretty-print-python-code
-read-at-file-nodes
-read-outline-only
-reformat-paragraph
-revert
-save-buffers-kill-leo
-save-file
-save-file-as
-save-file-to
-settings
-set-colors
-set-font
-show-colors
-show-find-options
-show-fonts
-show-invisibles
-spell-change
-spell-change-then-find
-spell-find
-spell-ignore
-tangle
-tangle-all
-tangle-marked
-toggle-angle-brackets
-untangle
-untangle-all
-untangle-marked
-weave
-write-abbrev-file
-write-at-file-nodes
-write-dirty-at-file-nodes
-write-missing-at-file-nodes
-write-outline-only</t>
-<t tx="ekr.20060613062025.9">abort-edit-headline
-activate-cmds-menu
-activate-edit-menu
-activate-file-menu
-activate-help-menu
-activate-outline-menu
-activate-plugins-menu
-activate-window-menu
-add-editor
-cascade-windows
-click-click-box
-click-headline
-click-icon-box
-close-window
-contract-body-pane
-contract-log-pane
-contract-outline-pane
-contract-pane
-cycle-editor-focus
-cycle-focus
-delete-editor
-double-click-headline
-double-click-icon-box
-edit-headline
-end-edit-headline
-equal-sized-panes
-expand-body-pane
-expand-log-pane
-expand-outline-pane
-expand-pane
-focus-to-body
-focus-to-log
-focus-to-minibuffer
-focus-to-tree
-fully-expand-body-pane
-fully-expand-log-pane
-fully-expand-outline-pane
-fully-expand-pane
-hide-body-pane
-hide-find-tab
-hide-invisibles
-hide-log-pane
-hide-mini-buffer
-hide-outline-pane
-hide-pane
-hide-spell-tab
-iconify-frame
-minimize-all
-open-compare-window
-open-find-dialog
-open-find-tab
-open-spell-tab
-press-rst3-button
-press-save-button
-press-spell-button
-resize-to-screen
-scroll-down
-scroll-down-extend-selection
-scroll-outline-down-line
-scroll-outline-down-page
-scroll-outline-up-line
-scroll-outline-up-page
-scroll-up
-scroll-up-extend-selection
-show-mini-buffer
-simulate-begin-drag
-simulate-end-drag
-toggle-active-pane
-toggle-invisibles
-toggle-mini-buffer
-toggle-split-direction</t>
-<t tx="ekr.20060613062025.10">auto-complete
-auto-complete-force
-disable-autocompleter
-disable-calltips
-enable-autocompleter
-enable-calltips
-enter-apropos-mode
-enter-commands-mode
-enter-edit-extend-mode
-enter-edit-mode
-enter-emacs-mode
-enter-extract-mode
-enter-file-mode
-enter-gui-mode
-enter-help-mode
-enter-kill-mode
-enter-modes-mode
-enter-move-outline-mode
-enter-outline-mode
-enter-quick-command-mode
-enter-toggle-find-mode
-exit-named-mode
-set-command-state
-set-extend-mode
-set-insert-state
-set-overwrite-state
-set-silent-mode
-show-calltips
-show-calltips-force
-toggle-autocompleter
-toggle-calltips
-toggle-extend-mode
-toggle-input-state</t>
+<t tx="ekr.20060613062025.1">These commands are for debugging Leo itself::
+
+    collect-garbage
+    debug
+    disable-gc-trace
+    dump-all-objects
+    dump-new-objects
+    dump-outline
+    enable-gc-trace
+    free-tree-widgets
+    print-focus
+    print-gc-summary
+    print-stats
+    verbose-dump-objects</t>
+<t tx="ekr.20060613062025.2">The following commands print various helpful messages.
+Apropos commands print longer discussions of specific topics.
+The help-for-command command prompts for a command name
+(you can use typing completion to specify the command)
+and then prints a brief discription of that command::
+
+    apropos-autocompletion
+    apropos-bindings
+    apropos-find-commands
+    help
+    help-for-command
+    mode-help
+    print-bindings
+    print-commands
+    python-help</t>
+<t tx="ekr.20060613062025.4">The following commands work just like their Emacs counterparts.
+Use the help-for-command command for futher details::
+
+    abbrev-mode
+    add-global-abbrev
+    add-space-to-lines
+    add-tab-to-lines
+    advertised-undo
+    append-to-buffer
+    append-to-register
+    call-last-keyboard-macro
+    capitalize-word
+    center-line
+    center-region
+    clean-lines
+    clear-extend-mode
+    clear-kill-ring
+    clear-rectangle
+    clear-selected-text
+    close-rectangle
+    copy-rectangle-to-register
+    copy-text
+    copy-to-register
+    count-region
+    dabbrev-completion
+    dabbrev-expands
+    delete-comments
+    delete-file
+    delete-indentation
+    delete-rectangle
+    delete-spaces
+    diff
+    digit-argument
+    downcase-region
+    downcase-word
+    end-kbd-macro
+    escape
+    eval-expression
+    expand-region-abbrevs
+    fill-paragraph
+    fill-region
+    fill-region-as-paragraph
+    flush-lines
+    full-command
+    goto-char
+    how-many
+    increment-register
+    indent-region
+    indent-relative
+    indent-rigidly
+    indent-to-comment-column
+    insert-body-time
+    insert-file
+    insert-keyboard-macro
+    insert-parentheses
+    insert-register
+    inverse-add-global-abbrev
+    jump-to-register
+    keep-lines
+    keyboard-quit
+    kill-all-abbrevs
+    kill-buffer
+    kill-line
+    kill-paragraph
+    kill-rectangle
+    kill-region
+    kill-region-save
+    kill-sentence
+    kill-word
+    line-number
+    list-abbrevs
+    list-buffers-alphabetically
+    load-file
+    make-directory
+    match-bracket
+    name-last-kbd-macro
+    negative-argument
+    number-command
+    number-command-0
+    number-command-1
+    number-command-2
+    number-command-3
+    number-command-4
+    number-command-5
+    number-command-6
+    number-command-7
+    number-command-8
+    number-command-9
+    open-rectangle
+    point-to-register
+    prepend-to-buffer
+    prepend-to-register
+    read-abbrev-file
+    remove-blank-lines
+    remove-directory
+    remove-sentinels
+    remove-space-from-lines
+    remove-tab-from-lines
+    rename-buffer
+    repeat-complex-command
+    reverse-region
+    run-unit-tests
+    select-paragraph
+    set-comment-column
+    set-fill-column
+    set-fill-prefix
+    shell-command
+    shell-command-on-region
+    sort-columns
+    sort-fields
+    sort-lines
+    split-line
+    start-kbd-macro
+    string-rectangle
+    suspend
+    switch-to-buffer
+    tabify
+    transpose-chars
+    transpose-lines
+    transpose-words
+    unindent-region
+    universal-argument
+    unmark-all
+    untabify
+    upcase-region
+    upcase-word
+    view-lossage
+    view-register
+    what-line
+    yank
+    yank-pop
+    yank-rectangle
+    zap-to-character</t>
+<t tx="ekr.20060613062025.5">Here is a list of all of Leo's find commands.
+The apropos-find-commands command will print a detailed
+help message discussing these commands::
+
+    clone-find-all
+    find-character
+    find-tab-change
+    find-tab-change-all
+    find-tab-change-then-find
+    find-tab-find
+    find-tab-find-all
+    find-tab-find-prev
+    find-word
+    isearch-backward
+    isearch-backward-regexp
+    isearch-forward
+    isearch-forward-regexp
+    isearch-with-present-options
+    query-replace
+    query-replace-regex
+    re-search-backward
+    re-search-forward
+    replace-string
+    search-again
+    search-backward
+    search-forward
+    search-with-present-options
+    set-find-everywhere
+    set-find-node-only
+    set-find-suboutline-only
+    toggle-find-ignore-case-option
+    toggle-find-in-body-option
+    toggle-find-in-headline-option
+    toggle-find-mark-changes-option
+    toggle-find-mark-finds-option
+    toggle-find-regex-option
+    toggle-find-reverse-option
+    toggle-find-word-option
+    toggle-find-wrap-around-option
+    word-search-backward
+    word-search-forward</t>
+<t tx="ekr.20060613062025.6">The following basic editing commands are typically bound to key strokes::
+
+    back-char
+    back-char-extend-selection
+    back-paragraph
+    back-paragraph-extend-selection
+    back-sentence
+    back-sentence-extend-selection
+    back-to-indentation
+    back-word
+    back-word-extend-selection
+    backward-delete-char
+    backward-kill-paragraph
+    backward-kill-sentence
+    backward-kill-word
+    beginning-of-buffer
+    beginning-of-buffer-extend-selection
+    beginning-of-line
+    beginning-of-line-extend-selection
+    cut-text
+    delete-char
+    end-of-buffer
+    end-of-buffer-extend-selection
+    end-of-line
+    end-of-line-extend-selection
+    exchange-point-mark
+    extend-to-word
+    forward-char
+    forward-char-extend-selection
+    forward-paragraph
+    forward-paragraph-extend-selection
+    forward-sentence
+    forward-sentence-extend-selection
+    forward-word
+    forward-word-extend-selection
+    insert-newline
+    move-lines-down
+    move-lines-up
+    move-past-close
+    move-past-close-extend-selection
+    newline-and-indent
+    next-line
+    next-line-extend-selection
+    paste-text
+    previous-line
+    previous-line-extend-selection
+    redo
+    select-all
+    set-mark-command
+    undo</t>
+<t tx="ekr.20060613062025.7">The following commands invoke Leo's outline commands::
+
+    clone-node
+    contract-all
+    contract-node
+    contract-or-go-left
+    contract-parent
+    copy-node
+    cut-node
+    de-hoist
+    delete-node
+    demote
+    expand-to-level-1
+    expand-to-level-2
+    expand-to-level-3
+    expand-to-level-4
+    expand-to-level-5
+    expand-to-level-6
+    expand-to-level-7
+    expand-to-level-8
+    expand-to-level-9
+    expand-all
+    expand-and-go-right
+    expand-next-level
+    expand-node
+    expand-or-go-right
+    expand-prev-level
+    go-back
+    go-forward
+    goto-first-node
+    goto-first-sibling
+    goto-last-node
+    goto-last-sibling
+    goto-last-visible
+    goto-line
+    goto-line-number
+    goto-next-changed
+    goto-next-clone
+    goto-next-marked
+    goto-next-node
+    goto-next-sibling
+    goto-next-visible
+    goto-parent
+    goto-prev-node
+    goto-prev-sibling
+    goto-prev-visible
+    hoist
+    insert-node
+    mark
+    mark-changed-items
+    mark-changed-roots
+    mark-clones
+    mark-subheads
+    move-outline-down
+    move-outline-left
+    move-outline-right
+    move-outline-up
+    outline-to-CWEB
+    outline-to-noweb
+    paste-node
+    paste-retaining-clones
+    promote
+    sort-children
+    sort-siblings</t>
+<t tx="ekr.20060613062025.8">Here are various miscellaneous minibuffer commands::
+
+    about-leo
+    add-comments
+    check-all-python-code
+    check-outline
+    check-python-code
+    clear-recent-files
+    convert-all-blanks
+    convert-all-tabs
+    convert-blanks
+    convert-tabs
+    execute-script
+    export-headlines
+    exit-leo
+    extract
+    extract-names
+    extract-section
+    flatten-outline
+    goto-global-line
+    import-at-file
+    import-at-root
+    import-cweb-files
+    import-derived-file
+    import-flattened-outline
+    import-noweb-files
+    insert-headline-time
+    new
+    open-leoDocs-leo
+    open-leoPlugins-leo
+    open-leoSettings-leo
+    open-offline-tutorial
+    open-online-home
+    open-online-tutorial
+    open-outline
+    open-outline-by-name
+    open-python-window
+    open-with
+    open-with-idle
+    open-with-word
+    open-with-wordpad
+    pretty-print-all-python-code
+    pretty-print-python-code
+    read-at-file-nodes
+    read-outline-only
+    reformat-paragraph
+    revert
+    save-buffers-kill-leo
+    save-file
+    save-file-as
+    save-file-to
+    settings
+    set-colors
+    set-font
+    show-colors
+    show-find-options
+    show-fonts
+    show-invisibles
+    spell-change
+    spell-change-then-find
+    spell-find
+    spell-ignore
+    tangle
+    tangle-all
+    tangle-marked
+    toggle-angle-brackets
+    untangle
+    untangle-all
+    untangle-marked
+    weave
+    write-abbrev-file
+    write-at-file-nodes
+    write-dirty-at-file-nodes
+    write-missing-at-file-nodes
+    write-outline-only</t>
+<t tx="ekr.20060613062025.9">The following commands simulate mouse clicks, double-clicks or drags::
+
+    abort-edit-headline
+    activate-cmds-menu
+    activate-edit-menu
+    activate-file-menu
+    activate-help-menu
+    activate-outline-menu
+    activate-plugins-menu
+    activate-window-menu
+    add-editor
+    cascade-windows
+    click-click-box
+    click-headline
+    click-icon-box
+    close-window
+    contract-body-pane
+    contract-log-pane
+    contract-outline-pane
+    contract-pane
+    cycle-editor-focus
+    cycle-focus
+    delete-editor
+    double-click-headline
+    double-click-icon-box
+    edit-headline
+    end-edit-headline
+    equal-sized-panes
+    expand-body-pane
+    expand-log-pane
+    expand-outline-pane
+    expand-pane
+    focus-to-body
+    focus-to-log
+    focus-to-minibuffer
+    focus-to-tree
+    fully-expand-body-pane
+    fully-expand-log-pane
+    fully-expand-outline-pane
+    fully-expand-pane
+    hide-body-pane
+    hide-find-tab
+    hide-invisibles
+    hide-log-pane
+    hide-mini-buffer
+    hide-outline-pane
+    hide-pane
+    hide-spell-tab
+    iconify-frame
+    minimize-all
+    open-compare-window
+    open-find-dialog
+    open-find-tab
+    open-spell-tab
+    press-rst3-button
+    press-save-button
+    press-spell-button
+    resize-to-screen
+    scroll-down
+    scroll-down-extend-selection
+    scroll-outline-down-line
+    scroll-outline-down-page
+    scroll-outline-up-line
+    scroll-outline-up-page
+    scroll-up
+    scroll-up-extend-selection
+    show-mini-buffer
+    simulate-begin-drag
+    simulate-end-drag
+    toggle-active-pane
+    toggle-invisibles
+    toggle-mini-buffer
+    toggle-split-direction</t>
+<t tx="ekr.20060613062025.10">These commands put Leo into various kinds of modes.
+
+- The ``enter-*-mode`` commands enter modes defined by @mode nodes in leoSettings.leo
+  (or in other .leo files).
+ 
+- The set-command-state, set-insert-state, set-overwrite-state commands
+  determine how treats unbound plain keys. Leo ignores such keys in command
+  state, inserts them into the body pane in insert state, and overwrites the
+  character at the cursor position in overwrite state.
+  
+- Other commands determine whether autocompletion or calltips are in effect.
+
+- When extend mode is effect, basic editing commands that move the cursor also
+  extend the selected text.
+  For example, in extend mode the ``back-char`` command works the same as the
+  ``back-char-extend-selection`` command.
+  
+Here is the full list of mode-related commands::
+
+    auto-complete
+    auto-complete-force
+    disable-autocompleter
+    disable-calltips
+    enable-autocompleter
+    enable-calltips
+    enter-apropos-mode
+    enter-commands-mode
+    enter-edit-mode
+    enter-emacs-mode
+    enter-extract-mode
+    enter-file-mode
+    enter-gui-mode
+    enter-help-mode
+    enter-kill-mode
+    enter-modes-mode
+    enter-move-outline-mode
+    enter-outline-mode
+    enter-quick-command-mode
+    enter-toggle-find-mode
+    exit-named-mode
+    set-command-state
+    set-extend-mode
+    set-insert-state
+    set-overwrite-state
+    set-silent-mode
+    show-calltips
+    show-calltips-force
+    toggle-autocompleter
+    toggle-calltips
+    toggle-extend-mode
+    toggle-input-state</t>
+<t tx="ekr.20060613075343"></t>
 </tnodes>
 </leo_file>
