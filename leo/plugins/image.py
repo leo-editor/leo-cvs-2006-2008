@@ -1,10 +1,13 @@
 #@+leo-ver=4-thin
 #@+node:edream.110203113231.753:@thin image.py
-"""Handles images in body text.
+'''Handle @image nodes.'''
 
-Based on work by Gil Scwartz.
-Brent Burley provided many important insights. See:
-http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/52264"""
+#@+at
+# Based on work by Gil Scwartz.
+# Brent Burley provided many important insights. See:
+# http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/52264
+#@-at
+#@@c
 
 #@@language python
 #@@tabwidth -4
@@ -15,9 +18,28 @@ import leoGlobals as g
 import leoPlugins
 
 Tk = g.importExtension('Tkinter',pluginName=__name__,verbose=True)
+
+try:
+    import ImageTk
+except ImportError:
+    ImageTk = None
 #@nonl
 #@-node:ekr.20050101090207.1:<< imports >>
 #@nl
+#@<< version history >>
+#@+node:ekr.20060619092335:<< version history >>
+#@@nocolor
+
+#@+at
+# 
+# 1.3 EKR: Attempt to use ImageTk if it exists.
+# Does not work on my machine, but that may be an installation problem.
+#@-at
+#@nonl
+#@-node:ekr.20060619092335:<< version history >>
+#@nl
+
+__version__ = "1.3" # Set version for the plugin handler.
 
 #@+others
 #@+node:edream.110203113231.754:onSelect
@@ -33,14 +55,22 @@ def onSelect (tag,keywords):
         a = g.app
         c = keywords.get("c")
         body = c.frame.body
+        photo = None
         
         if os.path.isfile(filename):
-            try:
-                # Note that Tkinter only understands GIF
-                photo = Tk.PhotoImage(master=a.root, file=filename)
-            except:
-                g.es("error: cannot load image")
-                return
+            if ImageTk: # ImageTk understands several file formats.
+                try:
+                    photo = ImageTk.PhotoImage(master=a.root, file=filename)
+                except Exception:
+                    # g.es_exception()
+                    g.es("ImageTk.PhotoImage failed")
+            if not photo:
+                try:# Note that Tkinter only understands GIF
+                    photo = Tk.PhotoImage(master=a.root, file=filename)
+                except Exception:
+                    g.es_exception()
+                    g.es("error: cannot load image: %s" % (filename))
+                    return
             # Nicely display the image at the center top and push the text below.
             a.gsphoto = photo # This is soooo important.
             photoWidth = photo.width()
@@ -97,8 +127,6 @@ if Tk: # Ok for unit testing.
         
         leoPlugins.registerHandler("select2", onSelect)
         leoPlugins.registerHandler("unselect1", onUnselect)
-        
-        __version__ = "1.2" # Set version for the plugin handler.
         g.plugin_signon(__name__)
 #@nonl
 #@-node:edream.110203113231.753:@thin image.py
