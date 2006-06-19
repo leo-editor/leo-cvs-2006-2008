@@ -58,7 +58,7 @@ navigate to the nodes 'by hand' by following the arrows in the UNL.
 #@@language python
 #@@tabwidth -4
 
-__version__ = "0.4"
+__version__ = "0.5"
 #@<< version history >>
 #@+node:rogererens.20041014104353:<< version history >>
 #@+at
@@ -74,7 +74,10 @@ __version__ = "0.4"
 # 
 # 0.4 ekr: Fixed crasher by adding c argument to g.findTopLevelNode and 
 # g.findNodeInTree.
+# 
+# 0.5 EKR: Convert %20 to ' ' in url's.
 #@-at
+#@nonl
 #@-node:rogererens.20041014104353:<< version history >>
 #@nl
 #@<< imports >>
@@ -98,15 +101,15 @@ import urlparse
 #@nl
 
 #@+others
-#@+node:rogererens.20041130095659:@url 'file: ./../../plugins/leoPlugins.leo#Plugins-->Enhancing the icon and status areas-->@thin UNL.py-->To do'
+#@+node:rogererens.20041130095659:@url 'file: ./../../plugins/leoPlugins.leo#Plugins-->Icon and status areas-->@thin UNL.py-->To do'
 #@+at 
 #@nonl
 # It is possible to link to nodes within the same file.  However clones might 
 # be better.
 #@-at
-#@-node:rogererens.20041130095659:@url 'file: ./../../plugins/leoPlugins.leo#Plugins-->Enhancing the icon and status areas-->@thin UNL.py-->To do'
-#@+node:ekr.20041202032543:@url 'file:./../doc/leoDocs.leo#Users Guide-->Chapter 8: Customizing Leo'
-#@-node:ekr.20041202032543:@url 'file:./../doc/leoDocs.leo#Users Guide-->Chapter 8: Customizing Leo'
+#@-node:rogererens.20041130095659:@url 'file: ./../../plugins/leoPlugins.leo#Plugins-->Icon and status areas-->@thin UNL.py-->To do'
+#@+node:ekr.20041202032543:@url 'file:./../doc/leoDocs.leo#Users Guide-->Chapter 8: Settings, Modes and Key Bindings'
+#@-node:ekr.20041202032543:@url 'file:./../doc/leoDocs.leo#Users Guide-->Chapter 8: Settings, Modes and Key Bindings'
 #@+node:rogererens.20041013084119:onSelect2
 def onSelect2 (tag,keywords):
 
@@ -143,13 +146,14 @@ def createStatusLine(tag,keywords):
 #@-node:rogererens.20041013082304.1:createStatusLine
 #@+node:rogererens.20041021091837:onUrl1
 def onUrl1 (tag,keywords):
-    """Redefine the @url functionality of Leo Core: allows jumping to URL _and UNLs_. Spaces are now allowed in URLs."""
+    """Redefine the @url functionality of Leo Core: allows jumping to URL _and UNLs_.
+    Spaces are now allowed in URLs."""
     c = keywords.get("c")
     v = keywords.get("v")
     # The unl key is new in 4.3 beta 2.
     # The unl ends with the first blank, unless either single or double quotes are used.
     url = keywords.get('url')
-    # url = v.headString()[4:].strip() # remove the "@url" part and possible leading and trailing whitespace characters
+    url = url.replace('%20',' ')
 
 #@+at 
 #@nonl
@@ -165,13 +169,12 @@ def onUrl1 (tag,keywords):
             urlTuple = urlparse.urlsplit(url)
             #@            << log url-stuff >>
             #@+node:rogererens.20041125015212:<<log url-stuff>>
-            #@+at
-            # g.es("scheme  : " + urlTuple[0])
-            # g.es("network : " + urlTuple[1])
-            # g.es("path    : " + urlTuple[2])
-            # g.es("query   : " + urlTuple[3])
-            # g.es("fragment: " + urlTuple[4])
-            #@-at
+            if 0:
+                g.es("scheme  : " + urlTuple[0])
+                g.es("network : " + urlTuple[1])
+                g.es("path    : " + urlTuple[2])
+                g.es("query   : " + urlTuple[3])
+                g.es("fragment: " + urlTuple[4])
             #@nonl
             #@-node:rogererens.20041125015212:<<log url-stuff>>
             #@nl
@@ -208,16 +211,16 @@ def onUrl1 (tag,keywords):
                 #@nl
         else:
             import webbrowser
-            
             # Mozilla throws a weird exception, then opens the file!
             try: webbrowser.open(url)
             except: pass
-            
-        return True  # PREVENTS THE EXECUTION OF LEO'S CORE CODE IN
-                    # Code-->Gui Base classes-->@thin leoFrame.py-->class leoTree-->tree.OnIconDoubleClick (@url)
+        return True
+            # PREVENTS THE EXECUTION OF LEO'S CORE CODE IN
+            # Code-->Gui Base classes-->@thin leoFrame.py-->class leoTree-->tree.OnIconDoubleClick (@url)
     except:
         g.es("exception opening " + url)
         g.es_exception()
+#@nonl
 #@-node:rogererens.20041021091837:onUrl1
 #@+node:rogererens.20041014110709:To do
 #@+at
