@@ -9403,6 +9403,47 @@ def makeMasterGuiBinding (self,stroke,w=None):
 #@-node:ekr.20060605130652:makeMasterGuiBinding
 #@-node:ekr.20051006125633:Binding (keyHandler)
 #@-node:ekr.20060614105413:Allow @mode outside of leoSettings.leo
+#@+node:ekr.20060618154031.1:Allow different packing of editors
+#@+node:ekr.20060618154031.2:Request
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3778744
+By: davidmcnab
+
+I've gone back to horizontal splitter orientation,
+so opening up extra editors gives me very thin tall panes.
+
+I've fixed it in my installation by, within leoTkinterBody.createControl, changing
+the "orient='horizontal'" to "orient='vertical'". So for me, the editor panes
+are stacked vertically (one on top of the other), which works well.
+
+However, it would be really nice if this could automatically choose the opposite
+of the 'initial_splitter_orientation' user setting. It would take me ages to
+trawl though Leo code sufficiently to do this myself, but maybe someone else
+more familiar with Leo's code could do it in 2 minutes with their eyes shut.
+#@nonl
+#@-node:ekr.20060618154031.2:Request
+#@+node:ekr.20031218072017.3998:tkBody.createControl
+def createControl (self,frame,parentFrame,p):
+    
+    c = self.c
+    
+    # New in 4.4.1: make the parent frame a Pmw.PanedWidget.
+    self.numberOfEditors = 1 ; name = '1'
+    
+    orient = c.config.getString('editor_orientation') or 'horizontal'
+    if orient not in ('horizontal','vertical'): orient = 'horizontal'
+   
+    self.pb = pb = Pmw.PanedWidget(parentFrame,orient=orient)
+    parentFrame = pb.add(name)
+    pb.pack(expand=1,fill='both') # Must be done after the first page created.
+   
+    w = self.createTextWidget(frame,parentFrame,p,name)
+    self.editorWidgets[name] = w
+
+    return w
+#@nonl
+#@-node:ekr.20031218072017.3998:tkBody.createControl
+#@-node:ekr.20060618154031.1:Allow different packing of editors
 #@-node:ekr.20060603090445.2:New & improved features
 #@+node:ekr.20060619104105:Plugins
 #@+node:ekr.20060608060052:Added doc-only option to rst3
