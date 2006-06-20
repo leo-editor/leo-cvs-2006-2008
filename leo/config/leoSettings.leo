@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="291" clone_windows="0"/>
 <globals body_outline_ratio="0.549828178694">
-	<global_window_position top="75" left="241" height="721" width="929"/>
+	<global_window_position top="75" left="241" height="702" width="929"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -423,6 +423,7 @@
 <v t="ekr.20041119034357.44"><vh>@bool smart_auto_indent = False</vh></v>
 <v t="ekr.20041119034357.53"><vh>@int additional_body_text_border = 0</vh></v>
 <v t="ekr.20041119034357.42"><vh>@string body_time_format_string = %m/%d/%Y %H:%M:%S</vh></v>
+<v t="ekr.20060620085654"><vh>@string editor_orientation = horizontal</vh></v>
 </v>
 <v t="ekr.20041213105954.1"><vh>Log pane options</vh>
 <v t="ekr.20041119052015.1"><vh>@bool log_pane_wraps = False</vh></v>
@@ -456,13 +457,14 @@
 <v t="ekr.20060512084639" a="E"><vh>Recent</vh>
 <v t="ekr.20060216135834"><vh>@bool enable_autocompleter_initially = False</vh></v>
 <v t="ekr.20060603070801"><vh>@bool enable_calltips_initially = False</vh></v>
-<v t="ekr.20060114073238" a="V"><vh>@bool trace_bindings = False</vh></v>
+<v t="ekr.20060114073238"><vh>@bool trace_bindings = False</vh></v>
 <v t="ekr.20060616172614"><vh>@bool trace_bindings_verbose = False</vh></v>
 <v t="ekr.20060309022759"><vh>@bool trace_colorizer = False</vh></v>
 <v t="ekr.20060131071947"><vh>@bool trace_masterClickHandler = False</vh></v>
 <v t="ekr.20060209045356"><vh>@bool trace_masterFocusHandler = False</vh></v>
 <v t="ekr.20060131071612"><vh>@bool trace_masterKeyHandler = False</vh></v>
 <v t="ekr.20060121102627"><vh>@bool trace_modes = False</vh></v>
+<v t="ekr.20060620085654" a="V"><vh>@string editor_orientation = horizontal</vh></v>
 </v>
 <v t="ekr.20060603215208"><vh>@keys EKR bindings: vim mode bindings</vh>
 <v t="ekr.20060608065207"><vh>Settings related to key bindings</vh>
@@ -5512,5 +5514,7 @@ redo                                -&gt; same = Shift-z</t>
 enter-quick-command-mode            = Alt-C
 </t>
 <t tx="ekr.20060616172614"></t>
+<t tx="ekr.20060620085654">vertical:   pack body-pane editors vertically.
+horizontal: pack body-pane editors horizontally.</t>
 </tnodes>
 </leo_file>
