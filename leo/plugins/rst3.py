@@ -43,7 +43,7 @@ http://webpages.charter.net/edreamleo/rstplugin3.html
 
 from __future__ import generators # To make this plugin work with Python 2.2.
 
-__version__ = '1.16'
+__version__ = '1.17'
 
 #@<< imports >>
 #@+node:ekr.20050805162550.2:<< imports >>
@@ -124,6 +124,10 @@ except ImportError:
 # new feature.
 # 1.16 EKR: fixed bug that ignored whatever followed @space or @doc in 
 # doc-only mode.
+# 1.17 EKR:
+# - Support show_headlines in doc-only mode.
+# - .txt files are now written to default_path
+# directory.
 #@-at
 #@nonl
 #@-node:ekr.20050805162550.3:<< change log >>
@@ -1026,8 +1030,8 @@ class rstClass:
     def setOption (self,name,val,tag):
         
         ivar = self.munge(name)
-             
-        if 0: 
+            
+        if 0:
             if not self.optionsDict.has_key(ivar):
                 g.trace('init %24s %20s %s' % (ivar,val,tag))
             elif self.optionsDict.get(ivar) != val:
@@ -1048,12 +1052,12 @@ class rstClass:
     #@+node:ekr.20050809075309:initWrite
     def initWrite (self,p,encoding=None):
         
+        self.initOptionsFromSettings() # Still needed.
+        
         # Set the encoding from any parent @encoding directive.
         # This can be overridden by @rst-option encoding=whatever.
         d = g.scanDirectives(c=self.c,p=p)
         self.encoding = encoding or d.get('encoding') or self.defaultEncoding
-    
-        self.initOptionsFromSettings() # Still needed.
         
         language = d.get('language','').lower()
         syntax = SilverCity is not None
@@ -1069,15 +1073,17 @@ class rstClass:
     
         self.initWrite(p)
         
-        if toString:
-            self.outputFile = StringIO.StringIO()
-            self.writeTree(p)
-            self.source = self.stringOutput = self.outputFile.getvalue()
-        else:
-            # Write the file to the directory containing the .leo file.
+        # Always write to a string first.
+        self.outputFile = StringIO.StringIO()
+        self.writeTree(p)
+        self.source = self.stringOutput = self.outputFile.getvalue()
+            
+        # Copy to a file if requested.
+        if not toString:
+            # Comput the output file name *after* calling writeTree.
             self.outputFileName = self.computeOutputFileName(self.outputFileName)
             self.outputFile = file(self.outputFileName,'w')
-            self.writeTree(p)
+            self.outputFile.write(self.stringOutput)
             self.outputFile.close()
     #@nonl
     #@-node:ekr.20050809080925:writeNormalTree
@@ -1436,9 +1442,10 @@ class rstClass:
                 n, lines2 = self.getDocPart(lines,n)
                 if lines2: result.extend(lines2)
         if not result: result = []
-        if result or showThisHeadline or showOrganizers or p == self.topNode:
-            # g.trace(len(result),p.headString())
-            self.writeHeadlineHelper(p)
+        if showHeadlines:
+            if result or showThisHeadline or showOrganizers or p == self.topNode:
+                # g.trace(len(result),p.headString())
+                self.writeHeadlineHelper(p)
         return result
     #@nonl
     #@-node:ekr.20060608094815:handleDocOnlyMode
@@ -1669,7 +1676,7 @@ class rstClass:
         if default_path:
             default_path = g.os_path_abspath(default_path)
         
-        # g.trace('default_path',default_path)
+        # g.trace('default_path',default_path,'fileName',fileName)
     
         if default_path:
             path = g.os_path_join(default_path,fileName)
