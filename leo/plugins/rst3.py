@@ -126,8 +126,8 @@ except ImportError:
 # doc-only mode.
 # 1.17 EKR:
 # - Support show_headlines in doc-only mode.
-# - .txt files are now written to default_path
-# directory.
+# - .txt files are now written to default_path directory, just like special 
+# files.
 #@-at
 #@nonl
 #@-node:ekr.20050805162550.3:<< change log >>

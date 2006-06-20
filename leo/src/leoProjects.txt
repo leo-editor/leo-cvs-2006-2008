@@ -2206,14 +2206,6 @@ def killRegionHelper (self,event,deleteFlag):
 #@nonl
 #@-node:ekr.20050920084036.182:killRegion & killRegionSave & helper
 #@-node:ekr.20060607164659.1:Fix crasher
-#@+node:ekr.20060610103606:Fixed bug in rst doc_only_mode
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3770732
-By: ktenney
-
-In << Theory of operation of find/change >> 
-the opening paragraph does not appear in the html,
-#@-node:ekr.20060610103606:Fixed bug in rst doc_only_mode
 #@+node:ekr.20060610173725:Fixed bug: cycle-editor hung Leo
 @nocolor
 
@@ -5624,22 +5616,6 @@ def endSearch (self,i,j):
 #@-node:ekr.20060203072636:endSearch
 #@-node:ekr.20050920084036.261:incremental search...
 #@-node:ekr.20060607101706:Improved isearch & added isearch-with-present-options command
-#@+node:ekr.20060608060052:Added doc-only option to rst3
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3767601
-http://sourceforge.net/forum/message.php?msg_id=3768413
-Craig
-
-I have an @thin file with @Doc and @Code sections scattered though out the tree,
-where each node has one or more doc and code sections.
-
-I would like to be able to use the rst3 pluging to produce an html file containing
-only info from the doc sections, ignoring the code sections.
-
-I added the 
-#@nonl
-#@-node:ekr.20060608060052:Added doc-only option to rst3
 #@+node:ekr.20060607164659:Use last shortcut defined
 #@+node:ekr.20060608183807:Request
 @nocolor
@@ -9428,6 +9404,114 @@ def makeMasterGuiBinding (self,stroke,w=None):
 #@-node:ekr.20051006125633:Binding (keyHandler)
 #@-node:ekr.20060614105413:Allow @mode outside of leoSettings.leo
 #@-node:ekr.20060603090445.2:New & improved features
+#@+node:ekr.20060619104105:Plugins
+#@+node:ekr.20060608060052:Added doc-only option to rst3
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3767601
+http://sourceforge.net/forum/message.php?msg_id=3768413
+Craig
+
+I have an @thin file with @Doc and @Code sections scattered though out the tree,
+where each node has one or more doc and code sections.
+
+I would like to be able to use the rst3 pluging to produce an html file containing
+only info from the doc sections, ignoring the code sections.
+
+I added the 
+#@nonl
+#@-node:ekr.20060608060052:Added doc-only option to rst3
+#@+node:ekr.20060610103606:Fixed bug in rst doc_only_mode
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3770732
+By: ktenney
+
+In << Theory of operation of find/change >> 
+the opening paragraph does not appear in the html,
+#@-node:ekr.20060610103606:Fixed bug in rst doc_only_mode
+#@+node:ekr.20060618155337.3:Support show_headlines options in doc-only mode
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3780216
+Craig
+
+In Doc_Only_Mode the rst3 plugin outputs headlines irrespective of the show_headlines
+setting.  The other modes do honour thi setting.
+
+I scratched around and managed to fix this by changing the node: rst3.py-->class
+rstClass-->write methods-->writeBody & helpers-->handleDocOnlyMode
+
+In Line 25 I added a new statement:
+     if showHeadlines:
+and indented the following 3 lines to make them conditional on this if:
+        if result or showThisHeadline or showOrganizers or p == self.topNode:
+            # g.trace(len(result),p.headString())
+            self.writeHeadlineHelper(p)
+#@nonl
+#@-node:ekr.20060618155337.3:Support show_headlines options in doc-only mode
+#@+node:ekr.20060619075829:Fixed bug in UNL plugin
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3785400
+By: craigj3
+
+
+I have a @url node pointing to a Leo file which has a filename with %20 in it.
+When I double-click this node I get:
+
+"can not open: \\\Documents%20and%20Settings\tftcj1.EDCON\My%20Documents\Proj\RI
+CAA\PcasCellLink.leo"
+
+Taking a look with a debugger, I see that Plugins-->Enhancing the icon and status
+areas-->@thin UNL.py-->onUrl1 line 29ish does not covert %20 to spaces before
+calling openWithFileName.
+#@nonl
+#@-node:ekr.20060619075829:Fixed bug in UNL plugin
+#@+node:ekr.20060618155337.4:Improved image plugin
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3783225
+Craig
+
+I am looking at the image pluging for organising photos, and discovered that
+it is limited to gif files only.  I found this a bit silly as installing the
+ImageTk module from the Python Imaging Library and making a two line change
+to the pluging enables it to be used on practically any image type.
+
+The two line are:
+1.  a new import:-
+import ImageTk
+
+2. In <<select image>> line 9 change 
+photo = Tk.PhotoImage(master=a.root, file=filename)
+
+to
+
+photo = ImageTk.PhotoImage(master=a.root, file=filename)
+#@nonl
+#@-node:ekr.20060618155337.4:Improved image plugin
+#@+node:ekr.20060618154320:Fixed path problem with rst3 plugin
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3779706
+By: mstarzyk
+
+My point was not about not found CSS, but that .html files are written to
+default_path directory, but .txt files are not written to default_path
+directory.
+#@nonl
+#@-node:ekr.20060618154320:Fixed path problem with rst3 plugin
+#@+node:ekr.20060618155337:Fixed crashers in scheduler plugin
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3784636
+By: craigj3
+
+I note that the scheduler plugin is currently broken.
+
+The problem was that all commands now get an event arg.
+
+The Begin Recording and End Recording commands do not seem to work...
+#@nonl
+#@-node:ekr.20060618155337:Fixed crashers in scheduler plugin
+#@-node:ekr.20060619104105:Plugins
 #@-node:ekr.20060603090445:4.4.1 b2 projects
 #@-node:ekr.20050924073836:4.4 projects
 #@-all

@@ -1,28 +1,7 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
-#@+node:ekr.20060531161030:To do: B3
-#@+node:ekr.20060618154031:B3: First
-#@+node:ekr.20060618154031.1:Allow different packing of editors
-#@+node:ekr.20060618154031.2:Request
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3778744
-By: davidmcnab
-
-I've gone back to horizontal splitter orientation,
-so opening up extra editors gives me very thin tall panes.
-
-I've fixed it in my installation by, within leoTkinterBody.createControl, changing
-the "orient='horizontal'" to "orient='vertical'". So for me, the editor panes
-are stacked vertically (one on top of the other), which works well.
-
-However, it would be really nice if this could automatically choose the opposite
-of the 'initial_splitter_orientation' user setting. It would take me ages to
-trawl though Leo code sufficiently to do this myself, but maybe someone else
-more familiar with Leo's code could do it in 2 minutes with their eyes shut.
-#@nonl
-#@-node:ekr.20060618154031.2:Request
-#@-node:ekr.20060618154031.1:Allow different packing of editors
+#@+node:ekr.20060618154031:Before B2
 #@+node:ekr.20060618154031.3:Document how to turn @buttons into plugins
 @nocolor
 http://sourceforge.net/forum/message.php?msg_id=3778946
@@ -53,32 +32,19 @@ how do I convert this to a plugin which creates
 a 'ShowHead' button, and the command 'show-head'
 #@nonl
 #@-node:ekr.20060618154031.3:Document how to turn @buttons into plugins
-#@+node:ekr.20060618155337:Fix scheduler plugin
+#@+node:ekr.20060618155337.2:Add section about upgrading settings
 @nocolor
+http://sourceforge.net/forum/message.php?msg_id=3784292
+By: ramondiaz
 
-https://sourceforge.net/forum/message.php?msg_id=3784636
-By: craigj3
-
-I note that the scheduler plugin is currently broken.  I wonder if there will
-be any interest in getting it fixed?
-
-The begin recording command generates this:
-
-Traceback (most recent call last):
-
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 264, in doCommand
-    val = command(event)
-
-  File "C:\prog\tigris-cvs\leo\plugins\scheduler.py", line 383, in <lambda>
-    ('Begin Recording',None,lambda c=c: startRecord(c)),
-
-  File "C:\prog\tigris-cvs\leo\plugins\scheduler.py", line 242, in startRecord
-    cmds[c] = c.doCommand
-
-AttributeError: 'Bunch' object has no attribute 'doCommand'
+On the first chapter (Installation) it would be nice to have a section
+on "Upgrading", including preserving settings, both for the main leo app. and
+the pluggins. Maybe with links to the wiki code or, better yet, with that included
+in the help itself (so you have the full thing when you are offline).
 #@nonl
-#@-node:ekr.20060618155337:Fix scheduler plugin
-#@-node:ekr.20060618154031:B3: First
+#@-node:ekr.20060618155337.2:Add section about upgrading settings
+#@-node:ekr.20060618154031:Before B2
+#@+node:ekr.20060531161030:To do: B3
 #@+node:ekr.20060531161030.1:Make body editors persistant
 #@-node:ekr.20060531161030.1:Make body editors persistant
 #@+node:ekr.20060527204444:Finish new colorizer plugin
@@ -942,6 +908,22 @@ Couldn't this file be distributed with Leo?
 #@-node:ekr.20060610212014:Problems with tutorial command
 #@-node:ekr.20060227163215:Fix *all* bugs
 #@+node:ekr.20060603090445.5:Later
+#@+node:ekr.20060619101345:@open-with settings
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3785897
+
+From: Rich
+
+Would it be possible to have the table of "Open With" editors to be part of
+the config system? I find myself patching the list every time I D/L a new Leo
+version to add the editor I use. This would also help isolate the user from
+the "guts" of Leo, theereby being less intimidating.
+
+Yes, it would be possible because everything in the table is a string (and not,
+e.g., a reference to a method). This would require support for @open-with in
+@settings trees.
+#@-node:ekr.20060619101345:@open-with settings
 #@+node:ekr.20060603184747:New commands for mouseless Leo
 @nocolor
 

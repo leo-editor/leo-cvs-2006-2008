@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="24511" clone_windows="0"/>
 <globals body_outline_ratio="0.393203883495">
-	<global_window_position top="10" left="336" height="805" width="890"/>
+	<global_window_position top="10" left="336" height="767" width="890"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -1941,7 +1941,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20040414161647" a="TV"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="V"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -2106,7 +2106,7 @@
 </v>
 </v>
 <v t="ekr.20050831184021.5"><vh>Chapter 4: Programming with Leo</vh>
-<v t="ekr.20050828061213"><vh>@rst html\directives.html</vh>
+<v t="ekr.20050828061213" a="E"><vh>@rst html\directives.html</vh>
 <v t="ekr.20050828160132"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20050828065955"><vh>@rst-ignore To do</vh></v>
 <v t="ekr.20050828061501.1"><vh>@rst-no-head Intro.</vh></v>
@@ -3899,17 +3899,19 @@ Disables the "idle" hook.
 
 This method adds items to the menu whose name is menuName.
 The table argument describes the entries to be created.
-This table is a sequence of items of the form ``(name,shortcut,command)``:
+This table is a sequence of items of the form ``(name,None,command)``:
 
 - ``name`` is the command name.
-- ``shortcut`` is the shortcut, or`` None`` to indicate no shortcut.
+- ``None`` was a shortcut in previous versions of Leo, but shortcuts for user-defined commands
+  should now be defined in @shortcuts nodes.
 - ``command`` is the routine to execute when the menu item is selected.
 - An entry of the form ``("-",None,None)`` creates a separator line between menu items.
+
 
 For example::
 
     table =
-        ("Toggle Active Pane","Ctrl-T",self.OnToggleActivePane),
+        ("Toggle Active Pane",None,self.OnToggleActivePane),
         ("-",None,None),
         ("Toggle Split Direction",None,self.OnToggleSplitDirection))
     c.frame.menu.createMenuItemsFromTable("Window",table)

@@ -34,7 +34,7 @@ plugins_menu.py
 #bibtex.py
 #autotrees.py
 #mod_autosave.py
-#image.py
+image.py
 #pie_menus.py
 #leoupdate.py
 #__wx_gui.py
