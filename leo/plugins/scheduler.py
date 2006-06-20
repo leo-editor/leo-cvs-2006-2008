@@ -53,17 +53,15 @@ svs = []
 #@-node:ekr.20040331153923.2:<< define scheduler data >>
 #@nl
 
-__version__ = "0.4"
+__version__ = "0.6"
 #@<< version history >>
 #@+node:ekr.20050311090939:<< version history >>
 #@@killcolor
 #@+at
 # 
 # 0.1: Original version by ?
-# 0.2: EKR:
-# - converted to 4.2 code standards.
-# 0.3 EKR:
-# - Changed 'new_c' logic to 'c' logic.
+# 0.2 EKR: onverted to 4.2 code standards.
+# 0.3 EKR: Changed 'new_c' logic to 'c' logic.
 # 0.4 EKR:
 # - Added init function.
 # - Use only 'new' and 'open2' hooks.
@@ -72,6 +70,7 @@ __version__ = "0.4"
 # - Removed call to g.top by creating doCommandCallback in startRecord.
 #   Note: Scheduling messages works, scheduling recordings does not seem to 
 # work.
+# 0.6 EKR: Added event args to commands.  This fixes crashers.
 #@-at
 #@nonl
 #@-node:ekr.20050311090939:<< version history >>
@@ -117,7 +116,7 @@ class Schedule(threading.Thread):
 #@nonl
 #@-node:ekr.20040331153923.4:class Schedule
 #@+node:ekr.20040331153923.5:viewQueue
-def viewQueue():
+def viewQueue(event=None,c=None):
     
     '''Brings up a dialog showing qscheduled commands and messages'''
 
@@ -194,7 +193,7 @@ def popupMessage(message):
 #@nonl
 #@-node:ekr.20040331153923.6:popupMessage
 #@+node:ekr.20040331153923.7:createMessage
-def createMessage():
+def createMessage(event=None,c=None):
     '''Creates dialog to enter message to self in'''
     
     dialog = Tk.Toplevel()
@@ -233,7 +232,7 @@ def createMessage():
 #@nonl
 #@-node:ekr.20040331153923.7:createMessage
 #@+node:ekr.20040331153923.8:startRecord
-def startRecord(c):
+def startRecord(event,c):
 
     '''begins recording'''
 
@@ -241,8 +240,8 @@ def startRecord(c):
 
     cmds[c] = c.doCommand
 
-    def doCommandCallback(command,label,c=c):
-        doCommand(command,label,c=c)
+    def doCommandCallback(command,label,c=c,event=None):
+        doCommand(command,label,event=event,c=c)
 
     c.doCommand = doCommandCallback
     record = True
@@ -275,7 +274,7 @@ def setTime():
 #@nonl
 #@-node:ekr.20040331153923.9:setTime
 #@+node:ekr.20040331153923.10:endRecord
-def endRecord(c):
+def endRecord(event,c):
     '''what happens when recording is ended.  To be cleaned up :) '''
     #@    << setAll and set_time callbacks >>
     #@+node:ekr.20040331155341.2:<< setAll and set_time callbacks >>
@@ -347,8 +346,7 @@ def prepareCom(p,c,command,label):
 #@+node:ekr.20040331153923.12:doCommand
 def doCommand (command,label,event=None,c=None):
     
-    ''' a swap method.  When Leo is recording, most methods pass through here,
-we record them'''
+    ''' a swap method.  When Leo is recording, most methods pass through here, we record them'''
 
     global commands
     if not c or not c.exists: return
@@ -378,12 +376,14 @@ def addScheduleMenu(tag,keywords):
     haveseen.append(men)
     name = 'Schedule'
     men.createNewMenu(name)
+    event = None
     
     table = (
-        ('Begin Recording',None,lambda c=c: startRecord(c)),
-        ('End Recording',None,lambda c=c: endRecord(c)),
-        ('Schedule Message',None,createMessage),
-        ('View Queue',None,viewQueue))
+        ('Begin Recording', None,lambda event=None,c=c: startRecord(event,c)),
+        ('End Recording',   None,lambda event=None,c=c: endRecord(event,c)),
+        ('Schedule Message',None,lambda event=None,c=c: createMessage(event,c)),
+        ('View Queue',      None,lambda event=None,c=c: viewQueue(event,c)),
+    )
 
     men.createMenuItemsFromTable(name,table,dynamicMenu=True)
 #@nonl
