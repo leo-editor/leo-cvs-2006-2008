@@ -2453,8 +2453,11 @@ class leoTkinterBody (leoFrame.leoBody):
         
         # New in 4.4.1: make the parent frame a Pmw.PanedWidget.
         self.numberOfEditors = 1 ; name = '1'
+        
+        orient = c.config.getString('editor_orientation') or 'horizontal'
+        if orient not in ('horizontal','vertical'): orient = 'horizontal'
        
-        self.pb = pb = Pmw.PanedWidget(parentFrame,orient='horizontal')
+        self.pb = pb = Pmw.PanedWidget(parentFrame,orient=orient)
         parentFrame = pb.add(name)
         pb.pack(expand=1,fill='both') # Must be done after the first page created.
        
