@@ -3790,6 +3790,80 @@ def executeFile(filename, options= ''):
         if fdir: os.chdir(cwd)
 #@nonl
 #@-node:ekr.20050503112513.7:g.executeFile
+#@+node:ekr.20060621164312:g.makeScriptButton
+def makeScriptButton (c,p,buttonText=None,balloonText='Script Button',shortcut=None,bg='LightSteelBlue1'):
+    
+    '''Create a script button for the script in node p.
+    The button's text defaults to p.headString'''
+
+    k = c.k
+    if buttonText is None: buttonText = p.headString().strip()
+    #@    << create the button b >>
+    #@+node:ekr.20060621164312.1:<< create the button b >>
+    iconBar = c.frame.getIconBarObject()
+    b = iconBar.add(text=buttonText)
+    
+    if balloonText and balloonText != buttonText:
+        Pmw = g.importExtension('Pmw',pluginName='g.makeScriptButton',verbose=False)
+        if Pmw:
+            balloon = Pmw.Balloon(b,initwait=100)
+            balloon.bind(b,balloonText)
+    
+    if sys.platform == "win32":
+        width = int(len(buttonText) * 0.9)
+        b.configure(width=width,font=('verdana',7,'bold'),bg=bg)
+    #@nonl
+    #@-node:ekr.20060621164312.1:<< create the button b >>
+    #@nl
+    #@    << define the callbacks for b >>
+    #@+node:ekr.20060621164312.2:<< define the callbacks for b >>
+    def deleteButtonCallback(event=None,b=b,c=c):
+        if b: b.pack_forget()
+        c.frame.bodyWantsFocus()
+        
+    def executeScriptCallback (event=None,p=p.copy(),b=b,c=c,buttonText=buttonText):
+        if c.disableCommandsMessage:
+            g.es(c.disableCommandsMessage,color='blue')
+        else:
+            g.app.scriptDict = {}
+            c.executeScript(p=p,silent=True)
+            # Remove the button if the script asks to be removed.
+            if g.app.scriptDict.get('removeMe'):
+                g.es("Removing '%s' button at its request" % buttonText)
+                b.pack_forget()
+        # Do not assume the script will want to remain in this commander.
+    #@nonl
+    #@-node:ekr.20060621164312.2:<< define the callbacks for b >>
+    #@nl
+    b.configure(command=executeScriptCallback)
+    b.bind('<3>',deleteButtonCallback)
+    if shortcut:
+        #@        << bind the shortcut to executeScriptCallback >>
+        #@+node:ekr.20060621164312.3:<< bind the shortcut to executeScriptCallback >>
+        func = executeScriptCallback
+        shortcut = k.canonicalizeShortcut(shortcut)
+        ok = k.bindKey ('button', shortcut,func,buttonText)
+        if ok:
+            g.es_print('Bound @button %s to %s' % (buttonText,shortcut),color='blue')
+        #@nonl
+        #@-node:ekr.20060621164312.3:<< bind the shortcut to executeScriptCallback >>
+        #@nl
+    #@    << create press-buttonText-button command >>
+    #@+node:ekr.20060621164312.4:<< create press-buttonText-button command >>
+    chars = g.toUnicode(string.letters + string.digits,g.app.tkEncoding)
+    aList = [g.choose(ch in chars,ch,'-') for ch in g.toUnicode(buttonText,g.app.tkEncoding)]
+    
+    buttonCommandName = ''.join(aList)
+    buttonCommandName = buttonCommandName.replace('--','-')
+    buttonCommandName = 'press-%s-button' % buttonCommandName.lower()
+    
+    # This will use any shortcut defined in an @shortcuts node.
+    k.registerCommand(buttonCommandName,None,executeScriptCallback,pane='button',verbose=False)
+    #@nonl
+    #@-node:ekr.20060621164312.4:<< create press-buttonText-button command >>
+    #@nl
+#@nonl
+#@-node:ekr.20060621164312:g.makeScriptButton
 #@-node:ekr.20040327103735.2:Script Tools (leoGlobals.py)
 #@+node:ekr.20031218072017.1498:Unicode utils...
 #@+node:ekr.20060216115304.2:g.safeStringCompare & test (Do not use)
