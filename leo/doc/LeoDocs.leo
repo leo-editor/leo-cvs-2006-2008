@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="25523" clone_windows="0"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="25527" clone_windows="0"/>
 <globals body_outline_ratio="0.550802139037">
-	<global_window_position top="24" left="431" height="759" width="855"/>
+	<global_window_position top="72" left="390" height="740" width="855"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -2409,7 +2409,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20040414161647" a="TV"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="V"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -2931,6 +2931,7 @@
 <v t="EKR.20040524104904.231"><vh>Convenience routines for plugins</vh></v>
 <v t="EKR.20040524104904.240"><vh>Support for unit testing</vh></v>
 <v t="ekr.20050417072710.1"><vh>How to make operations undoable</vh></v>
+<v t="ekr.20060621075135"><vh>Turning script buttons into plugins</vh></v>
 <v t="ekr.20060612104638"><vh>@rst-no-head end-of-page stuff</vh></v>
 </v>
 </v>
@@ -3018,29 +3019,33 @@
 </v>
 </v>
 <v t="EKR.20040524104904.380"><vh>Glossary</vh>
-<v t="ekr.20050901071041"><vh>@rst html\glossary.html</vh>
+<v t="ekr.20050901071041" a="E"><vh>@rst html\glossary.html</vh>
 <v t="ekr.20050901071300"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20050901073048"><vh>@rst-no-head glossary</vh></v>
 <v t="ekr.20050901083017"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20060620094033"><vh>What's New...</vh>
-<v t="ekr.20060620094033.1"><vh>What's New in Leo 4.4.1</vh>
+<v t="ekr.20060620094033" a="E"><vh>What's New...</vh>
+<v t="ekr.20060620094033.1" a="E"><vh>What's New in Leo 4.4.1</vh>
 <v t="ekr.20060620094645.310"><vh>@rst html\new-4-4-1.html</vh>
+<v t="ekr.20060621132547"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20060620130636"><vh>New commands</vh></v>
 <v t="ekr.20060620095949.15"><vh>New features</vh></v>
 <v t="ekr.20060620130943"><vh>New and improved plugins</vh></v>
 <v t="ekr.20060620095949.25"><vh>New and improved settings</vh></v>
 <v t="ekr.20060620095655"><vh>Minor improvements</vh></v>
 <v t="ekr.20060620095949.7"><vh>Fixed bugs</vh></v>
+<v t="ekr.20060621132923"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20060620094033.2"><vh>What's New in Leo 4.4</vh>
+<v t="ekr.20060620094033.2" a="E"><vh>What's New in Leo 4.4</vh>
 <v t="ekr.20060620141510"><vh>Patterns</vh></v>
 <v t="ekr.20060620094425"><vh>@rst html\new-4-4.html</vh>
-<v t="ekr.20060620133820.16" a="E"><vh>New features &amp; commands</vh></v>
-<v t="ekr.20060620140130" a="E"><vh>New and improved plugins</vh></v>
-<v t="ekr.20060620140228" a="E"><vh>New and improved settings</vh></v>
+<v t="ekr.20060621132338"><vh>@rst-no-head links</vh></v>
+<v t="ekr.20060620133820.16"><vh>New features &amp; commands</vh></v>
+<v t="ekr.20060620140130"><vh>New and improved plugins</vh></v>
+<v t="ekr.20060620140228"><vh>New and improved settings</vh></v>
+<v t="ekr.20060621132923.1"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
 </v>
@@ -18627,6 +18632,7 @@ Glossary
 
 .. _appendices: appendices.html
 .. _home:       front.html
+.. _next:       new-4-4-1.html
 
 .. |prev| image:: arrow_lt.gif
 	:target: appendices_
@@ -18634,7 +18640,8 @@ Glossary
 .. |leo|  image:: leo.gif
 	:target: home_
 
-.. |next| image:: Blank.gif
+.. |next| image:: arrow_rt.gif
+    :target: next_
 </t>
 <t tx="ekr.20050901071613">----------------------
 
@@ -29624,6 +29631,8 @@ write_intermediate_file = False
 verbose=True
 @c
 
+|prev| |leo| |next|
+
 ##########################################
 What's New in Leo 4.4
 ##########################################
@@ -34473,6 +34482,8 @@ write_intermediate_file = False
 verbose=True
 @c
 
+|prev| |leo| |next|
+
 ##########################################
 What's New in Leo 4.4.1
 ##########################################
@@ -34805,5 +34816,111 @@ New in Leo 4.4 alpha 1:
 &lt;/vh&gt;&lt;/v&gt;
 .
 </t>
+<t tx="ekr.20060621075135">This section provides step-by-step instructions for turning a script button into a plugin.
+The plugin will define a minibuffer command that does the same thing as pressing the button.
+
+We shall start with a script button whose script is::
+    
+    print c.fileName(), p.headString()
+    
+Not very exciting, but it uses the predefined ``c`` and ``p`` constants.
+Our plugin will create a minibuffer command called print-cp.
+
+Here are the step-by-step instructions:
+    
+1. Open leoPlugins.leo and use the Copy Node command to copy the tree at:
+    
+Plugins--&gt; Templates: these show recommended ways of defining plugins.--&gt;Template for Tk plugin with per-commander controller class
+
+2. Paste the tree somewhere else and rename it to @thin print_cp.py.
+   I copied the tree to::
+        
+    Plugins--&gt;Example code--&gt;@thin print_cp.py
+
+3. Update the docstring, the __version__ constant and the &lt;&lt; imports &gt;&gt; section.
+   Note that unlike when using script buttons, you must have the following imports::
+       
+    import leoGlobals as g
+    import leoPlugins
+    
+4. Because this plugin doesn't require any gui interface, we simplify the ``init`` function::
+    
+    def init ():
+        leoPlugins.registerHandler('after-create-leo-frame',onCreate)
+        return True
+
+   The init function registers the onCreate hook and
+   returns True to indicate that it loaded properly.
+   
+5. Leave the ``onCreate`` function unchanged.
+   It creates a per-commander instance of the pluginController class.
+   This class exists mainly to bind self.c properly to a commander.
+   
+6. Change the constructor (__init__ method) of the pluginController class to this::
+    
+    def __init__ (self,c):
+        self.c = c
+        c.k.registerCommand('print-cp',shortcut=None,func=self.print_cp)
+        
+   This registers the print_cp *method* of the print_cp class as the print-cp minibuffer command.
+   
+7. Define the print_cp method as follows::
+    
+    def print_cp (self,event=None):
+        c = self.c ; p = c.currentPosition()
+        g.es_print('c: %s' % (c.fileName()),color='red')
+        g.es_print('p: %s' % (p.headString()),color='red')
+        
+   The print_cp method must have the event argument as shown because it implements a minibuffer command.
+   The print_cp method gets the proper commander from the ``c`` ivar (instance variable) and computes
+   the current postion ``p`` as shown.
+   
+8. Enable the print_cp plugin using the plugins manager plugin,
+   or just add the following line somewhere in pluginsManager.txt::
+    
+    print_cp.py
+
+9. Test the plugin by restarting Leo (I just start test.leo) and typing &lt;Alt-x&gt; print-cp &lt;Return&gt;.
+   
+That's all.  You can find the completed version of the print_cp plugin in leoPlugins.leo,
+or leoPluginsRef.leo if you are using cvs.</t>
+<t tx="ekr.20060621132338">.. Links used in this document.
+
+.. WARNING: image targets may not have upper case letters!
+
+.. _prev:   new-4-4-1.html
+.. _home:   front.html
+
+.. |prev| image:: arrow_lt.gif
+	:target: prev_
+
+.. |leo|  image:: leo.gif
+	:target: home_
+
+.. |next| image:: Blank.gif
+</t>
+<t tx="ekr.20060621132547">.. Links used in this document.
+
+.. WARNING: image targets may not have upper case letters!
+
+.. _prev:   glossary.html
+.. _home:   front.html
+.. _next:   new-4-4.html
+
+.. |prev| image:: arrow_lt.gif
+	:target: prev_
+
+.. |leo|  image:: leo.gif
+	:target: home_
+
+.. |next| image:: arrow_rt.gif
+    :target: next_
+</t>
+<t tx="ekr.20060621132923">-----------------------
+
+|prev| |leo| |next|</t>
+<t tx="ekr.20060621132923.1">-----------------------
+
+|prev| |leo| |next|</t>
 </tnodes>
 </leo_file>
