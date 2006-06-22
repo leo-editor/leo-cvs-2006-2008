@@ -27,8 +27,6 @@ CDATA
 CFA
 CODEC
 COMMENT1
-COMMENT3
-COMMENT4
 CVS
 CWEB
 C_EXTENSION
@@ -128,17 +126,9 @@ Journal3
 Jtobler
 Jurjen
 Jython
-KEYWORD1
-KEYWORD2
-KEYWORD3
-KEYWORD4
 Klass
 Korakot
 LEOHEADER
-LITERAL1
-LITERAL2
-LITERAL3
-LITERAL4
 LPT1
 LaTex
 Larosa
@@ -250,7 +240,6 @@ Ries
 RodrigoB's
 Rossum
 RtArrow
-Ruleset
 SProvide
 SQL
 STL
@@ -419,9 +408,6 @@ atButtonNodes
 atFile
 atFileCommands
 atPluginNodes
-at_char
-at_line_start
-at_word_start
 ato
 author_email
 auto_save
@@ -587,8 +573,6 @@ command2
 commandName
 commandsDict
 comment2
-commentEnd
-commentStart
 compareFiles
 compareHeadlines
 compareOutlines
@@ -659,7 +643,6 @@ defalias
 defaultButton
 defaultFont
 defaultLoc
-defaultRule
 default_path
 defconst
 defmacro
@@ -765,7 +748,6 @@ end_raw
 enddrag1
 enddrag2
 endif
-endswith
 enl
 entrytype
 enum
@@ -962,7 +944,6 @@ hasParent
 has_key
 hasattr
 hash2
-hash_char
 headClick
 headKey
 headPopup
@@ -1030,7 +1011,6 @@ igrep
 ihooks
 imag
 importCommands
-importDict
 importExport
 importExtension
 importFiles
@@ -1091,8 +1071,6 @@ ivar
 ivars
 ivarsDict
 j3
-jEdit's
-jEdit2Py
 j_lines
 java_language
 javac
@@ -1111,7 +1089,6 @@ keymap
 keymapping
 keypress
 keysym
-keywordsDict
 killcolor
 kk
 knuth
@@ -1267,13 +1244,6 @@ masterKeyHandler
 matchTokens
 matchWord
 match_c_word
-match_eol_span
-match_keywords
-match_mark_previous
-match_seq
-match_seq_regexp
-match_span
-match_terminate
 match_word
 maxcolor
 mbcs
@@ -1354,9 +1324,6 @@ nl
 nn
 nnn
 nnnn
-no_escape
-no_line_break
-no_word_break
 nocolor
 nodeAfterTree
 nodeIndices
@@ -1666,10 +1633,6 @@ rst_prefix
 rstplugin
 rstplugin3
 rstrip
-rulesDict
-ruleset's
-rulesetName
-rulesets
 runAtFileTest
 runGC
 runLeoTest
@@ -1752,7 +1715,6 @@ set_focus
 set_lang
 set_language
 set_trace
-setname
 setq
 settingsController
 settingsRoot
@@ -1922,7 +1884,6 @@ theDir
 theFile
 theId
 theIter
-theKeyword
 theList
 theType
 the_news_at_10
@@ -1930,7 +1891,6 @@ thinFile
 threadBack
 threadNext
 thread_id
-tigris
 time1
 time2
 timeit
@@ -2128,8 +2088,6 @@ x1
 x2
 xWantsFocus
 x_keywords
-x_main
-x_setname
 xdb
 xemacs
 xf2fddff

@@ -42,9 +42,7 @@
 		<SEQ TYPE="OPERATOR">&gt;</SEQ>
 		<SEQ TYPE="OPERATOR">&lt;</SEQ>
 		<SEQ TYPE="OPERATOR">^</SEQ>
-		<!-- EKR: problem with special character...
-			<SEQ TYPE="OPERATOR">????</SEQ>
-		-->
+		<SEQ TYPE="OPERATOR">¬</SEQ>
 		<SEQ TYPE="OPERATOR">&amp;</SEQ>
 		<SEQ TYPE="OPERATOR">|</SEQ>
 		<SEQ TYPE="OPERATOR">.</SEQ>

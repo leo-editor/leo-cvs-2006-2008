@@ -1003,7 +1003,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
                 t.insert("end",s)
             
             t.configure(state="disabled")
-            ##### t.update_idletasks() # interferes with coloring.
+            t.update_idletasks()
         #@nonl
         #@-node:ekr.20031218072017.3963:put (leoTkinterFrame:statusLineClass)
         #@+node:ekr.20041223111916.1:unpack & hide
@@ -1972,7 +1972,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
         elif name.startswith('head'):
             # The headline is not officially changed yet.
             # p.initHeadString(s)
-            s=g.app.gui.getAllText(w)
             w.configure(width=f.tree.headWidth(s=s))
         else: pass
     
@@ -2523,7 +2522,6 @@ class leoTkinterBody (leoFrame.leoBody):
         ch = g.choose(insert=='1.0','',bodyCtrl.get('insert-1c'))
         ch = g.toUnicode(ch,g.app.tkEncoding) # New in 4.4b3.
         newText = g.app.gui.getAllText(bodyCtrl) # New in 4.4b3: converts to unicode.
-        # g.trace('newText',repr(newText))
         newSel = g.app.gui.getTextSelection(bodyCtrl)
         if oldText is None: oldText = p.bodyString()
         if removeTrailing is None:
@@ -2593,8 +2591,6 @@ class leoTkinterBody (leoFrame.leoBody):
     def removeTrailingNewlines (self,old,new,ch):
     
         '''Return True if a Tk has erroneously added a trailing newline.'''
-        
-        return True
     
         if not new.endswith('\n'):
             # There is no newline to remove.  Probably will never happen.
@@ -2605,6 +2601,7 @@ class leoTkinterBody (leoFrame.leoBody):
                 return True # Handle a very strange special case.
             else:
                 return ch not in ('\r','\n')
+        ### elif g.safeStringCompare(old,new[-1]):
         elif old == new[:-1]:
             # A single trailing character has been added.
             return ch not in ('\r','\n') # Was False.

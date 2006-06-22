@@ -165,22 +165,6 @@ def computeHomeDir():
     return home
 #@nonl
 #@-node:ekr.20041117151301:computeHomeDir
-#@+node:ekr.20060416113431:computeLeoDir
-def computeLeoDir ():
-    
-    loadDir = g.app.loadDir
-    
-    g.app.leoDir = theDir = g.os_path_dirname(loadDir)
-    
-    if theDir not in sys.path:
-        sys.path.append(theDir)
-        
-    if 0: # This is required so we can do import leo (as a package)
-        theParentDir = g.os_path_dirname(theDir)
-        if theParentDir not in sys.path:
-            sys.path.append(theParentDir)
-#@nonl
-#@-node:ekr.20060416113431:computeLeoDir
 #@+node:ekr.20031218072017.1937:computeLoadDir
 def computeLoadDir():
     
@@ -189,13 +173,13 @@ def computeLoadDir():
     import leoGlobals as g
 
     try:
-        ### import leo
+        import leo
         import sys
         
         # Fix a hangnail: on Windows the drive letter returned by
         # __file__ is randomly upper or lower case!
         # The made for an ugly recent files list.
-        path = g.__file__ # was leo.__file__
+        path = leo.__file__
         if sys.platform=='win32':
             if len(path) > 2 and path[1]==':':
                 # Convert the drive name to upper case.
@@ -228,14 +212,8 @@ def computeStandardDirectories():
     
     '''Set g.app.loadDir, g.app.homeDir and g.app.globalConfigDir.'''
     
-    if 0:
-        import sys
-        for s in sys.path: g.trace(s)
-    
     g.app.loadDir = g.computeLoadDir()
         # Depends on g.app.tkEncoding: uses utf-8 for now.
-        
-    g.app.leoDir = g.computeLeoDir()
     
     g.app.homeDir = g.computeHomeDir()
     
@@ -930,44 +908,38 @@ def alert(message):
     tkMessageBox.showwarning("Alert", message)
 #@-node:ekr.20031218072017.3105:alert
 #@+node:ekr.20051023083258:callers
-def callers (n=8,excludeCaller=True,files=False):
+def callers (n=8,excludeCaller=True):
     
     '''Return a list containing the callers of the function that called g.callerList.
     
     By default, the function that called g.callerList is not on the list,
     which is what is wanted when using g.trace.'''
     
-    result = [] ; first = True
+    result = []
     while n > 0:
-        s = g._callerName(n,files=files)
-        if s.endswith('callers'):
+        s = g._callerName(n)
+        if s == 'callers':
             if excludeCaller and result:
                 del result [-1]
             break
         elif s:
-            if first and files:
-                first = False ; s = '\n' + s
             result.append(s)
         n -= 1
         
-    sep = g.choose(files,'\n',',')
-    return sep.join(result)
+    return ','.join(result)
 #@-node:ekr.20051023083258:callers
-#@+node:ekr.20031218072017.3107:_callerName
-def _callerName (n=1,files=False):
+#@+node:ekr.20031218072017.3107:callerName
+def _callerName (n=1):
 
     try: # get the function name from the call stack.
         f1 = sys._getframe(n) # The stack frame, n levels up.
         code1 = f1.f_code # The code object
-        if files:
-            return '%s:%s' % (g.shortFilename(code1.co_filename),code1.co_name)
-        else:
-            return code1.co_name # The code name
+        return code1.co_name # The code name
     except:
-        g.es_exception()
+        # g.es_exception()
         return '' # "<no caller name>"
 #@nonl
-#@-node:ekr.20031218072017.3107:_callerName
+#@-node:ekr.20031218072017.3107:callerName
 #@+node:ekr.20041105091148:g.pdb & test
 def pdb ():
     
@@ -4895,7 +4867,7 @@ class nullObject:
     def __setattr__(self,attr,val): return self
 #@nonl
 #@-node:ekr.20031219074948.1:class nullObject
-#@+node:ekr.20031218072017.3144:g.makeDict
+#@+node:ekr.20031218072017.3144:g,makeDict
 # From the Python cookbook.
 
 def makeDict(**keys):
@@ -4904,7 +4876,7 @@ def makeDict(**keys):
 
     return keys
 #@nonl
-#@-node:ekr.20031218072017.3144:g.makeDict
+#@-node:ekr.20031218072017.3144:g,makeDict
 #@+node:ekr.20031218072017.3103:g.computeWindowTitle
 def computeWindowTitle (fileName):
 

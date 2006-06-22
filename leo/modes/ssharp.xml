@@ -31,9 +31,8 @@
 		</SPAN>
 
         <SPAN TYPE="LITERAL2" >
-	  <!-- EKR: replaced by escape sequences.  Were Right/left pointing Double Angle Quotation marks. -->
-            <BEGIN>&#xAB; </BEGIN>
-            <END>&#xBB; </END>
+            <BEGIN>«</BEGIN>
+            <END>»</END>
         </SPAN>
         
         <SEQ TYPE="OPERATOR">(</SEQ>
@@ -93,8 +92,7 @@
             <KEYWORD2>senderMethod</KEYWORD2>
             <KEYWORD2>blockSelf</KEYWORD2>
             <KEYWORD2>scheduler</KEYWORD2>
-	  <!-- EKR replaced by escape sequence -->
-            <KEYWORD2>&#xBC; </KEYWORD2>
+            <KEYWORD2>¼</KEYWORD2>
             
 			<!-- not really keywords, but a different color works well-->
 			<KEYWORD4>isNil</KEYWORD4>

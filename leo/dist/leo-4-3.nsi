@@ -18,7 +18,7 @@
 ;@+node:ekr.20050118092706.1:<< defines >>
 ;@<< 4.3 nsi installer version >>
 ;@+node:ekr.20050118124408:<< 4.3 nsi installer version >>
-!define PRODUCT_VERSION "4.4-final"
+!define PRODUCT_VERSION "4.4-b3"
 ;@nonl
 ;@-node:ekr.20050118124408:<< 4.3 nsi installer version >>
 ;@nl
@@ -73,7 +73,7 @@ WindowIcon off
 
 ; settings from HM NIS Edit Wizard
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "LeoSetup-4-4-final.exe"
+OutFile "LeoSetup-4-4-b3.exe"
 LoadLanguageFile "${NSISDIR}\Contrib\Language files\English.nlf"
 InstallDir "$PROGRAMFILES\Leo"
 Icon "..\Icons\leo_inst.ico"
@@ -341,11 +341,6 @@ Section "Leo" SEC01
   File "..\plugins\*.txt"
   
   File "..\plugins\*.py"
-  
-  SetOutPath "$INSTDIR\plugins\trees"
-  
-  File "..\plugins\trees\*.py"
-  File "..\plugins\trees\pluginsManager.txt"
   ;@nonl
   ;@-node:ekr.20050118104901.7:<< install plugins >>
   ;@nl
@@ -484,11 +479,11 @@ SectionEnd
 ;
 ; UninstallText "This will uninstall Leo from your system"
 ; UninstallCaption "Uninstall Leo"
-; UninstallIcon c:\prog\tigris-cvs\leo\Icons\uninst.ico
+; UninstallIcon c:\prog\leoCVS\leo\Icons\uninst.ico
 
 ; UninstallText "This will uninstall Leo from your system"
 UninstallCaption "Uninstall Leo"
-UninstallIcon c:\prog\tigris-cvs\leo\Icons\uninst.ico
+UninstallIcon c:\prog\leoCVS\leo\Icons\uninst.ico
 ;@nonl
 ;@-node:ekr.20050118092706.18:<< Uninstall-related Settings >>
 ;@nl
@@ -633,10 +628,6 @@ Section Uninstall
   Delete "$INSTDIR\plugins\*.ini"
   
   Delete "$INSTDIR\plugins\*.p*"
-  
-  Delete "$INSTDIR\plugins\trees\*.p*"
-  Delete "$INSTDIR\plugins\trees\pluginsManager.txt"
-  ;@nonl
   ;@-node:ekr.20050118104901.8:<< uninstall plugins >>
   ;@nl
   ;@  << uninstall scripts >>
@@ -710,13 +701,9 @@ Section Uninstall
   
   RMDir "$INSTDIR\icons"
   RMDir "$INSTDIR\modes"
-  
-  RMDir "$INSTDIR\plugins\trees"
   RMDir "$INSTDIR\plugins"
-  
   RMDir "$INSTDIR\scripts"
   RMDir "$INSTDIR\src"
-  
   RMDir "$INSTDIR\test\unittest"
   RMDir "$INSTDIR\test"
   

@@ -840,7 +840,7 @@ class leoTkinterTree (leoFrame.leoTree):
                 g.trace("Can't happen: negative updateCount",g.callers())
     #@nonl
     #@-node:ekr.20051216155728:tree.begin/endUpdate
-    #@+node:ekr.20040803072955.58:tree.redraw_now & helper
+    #@+node:ekr.20040803072955.58:redraw_now & helper
     # Redraws immediately: used by Find so a redraw doesn't mess up selections in headlines.
     
     # New in 4.4b2: suppress scrolling by default.
@@ -875,8 +875,7 @@ class leoTkinterTree (leoFrame.leoTree):
         # Do the actual redraw.
         self.expandAllAncestors(c.currentPosition())
         self.redrawHelper(scroll=scroll)
-        if g.app.unitTesting:
-            self.canvas.update_idletasks() # Important for unit tests.
+        self.canvas.update_idletasks() # Important for unit tests.
         c.masterFocusHandler()
         
     redraw = redraw_now # Compatibility
@@ -904,7 +903,7 @@ class leoTkinterTree (leoFrame.leoTree):
         self.canvas['cursor'] = oldcursor
     #@nonl
     #@-node:ekr.20040803072955.59:redrawHelper
-    #@-node:ekr.20040803072955.58:tree.redraw_now & helper
+    #@-node:ekr.20040803072955.58:redraw_now & helper
     #@+node:ekr.20040803072955.61:idle_second_redraw
     def idle_second_redraw (self):
         
@@ -2572,13 +2571,8 @@ class leoTkinterTree (leoFrame.leoTree):
             if p and p != old_p: # Suppress duplicate call.
                 try: # may fail during initialization.
                     # p is NOT c.currentPosition() here!
-                    if 0: # Interferes with new colorizer.
-                        self.canvas.update_idletasks()
-                        self.scrollTo(p)
-                    else:
-                        def scrollCallback(self=self,p=p):
-                            self.scrollTo(p)
-                        self.after(100,scrollCallback)
+                    self.canvas.update_idletasks() # Essential.
+                    self.scrollTo(p)
                 except Exception: pass
             #@        << update c.beadList or c.beadPointer >>
             #@+node:ekr.20040803072955.131:<< update c.beadList or c.beadPointer >>

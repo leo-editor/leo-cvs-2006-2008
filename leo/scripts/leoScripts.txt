@@ -13351,50 +13351,6 @@ commands.getoutput("chmod 755 /usr/bin/leo")
 print "***** Leo installed successfully - type 'leo filename.leo' to use it."
 #@nonl
 #@-node:Linux install script
-#@+node:Scipts related to the new colorizer
-#@+node:Find longest
-# Find longest body text
-
-pmax = p.copy()
-n = len(p.bodyString())
-
-for p in p.self_and_subtree_iter():
-    if len(p.bodyString()) > n:
-        n = len(p.bodyString())
-        pmax = p.copy()
-
-c.selectPosition(pmax)
-c.redraw()
-#@nonl
-#@-node:Find longest
-#@+node:Find most tags
-def tags(p):
-    c.selectPosition(p)
-    w = c.frame.body.bodyCtrl
-    names = w.tag_names()
-    total = 0
-    for name in names:
-        theList = w.tag_ranges(name)
-        if theList:
-            print name,w.tag_ranges(name)
-            total += len(theList)
-    return total
-
-pmax = p.copy()
-n = tags(p) # len(p.bodyString())
-
-for p in p.self_and_subtree_iter():
-    # if len(p.bodyString()) > n:
-    n2 = tags(p)
-    if n2 > n:
-        n = n2
-        pmax = p.copy()
-
-c.selectPosition(pmax)
-c.redraw()
-#@nonl
-#@-node:Find most tags
-#@-node:Scipts related to the new colorizer
 #@-node:Others
 #@-all
 #@nonl

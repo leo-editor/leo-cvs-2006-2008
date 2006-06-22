@@ -1,10 +1,4 @@
-Leo 4.4 Final                                                 May 11, 2006
-
-Leo 4.4 release Final is now available at:
-http://sourceforge.net/project/showfiles.php?group_id=3458&package_id=29106
-
-Leo is a text editor, data organizer, project manager and much more. See:
-http://webpages.charter.net/edreamleo/intro.html
+Leo 4.4 beta 3                                             April 14, 2006
 
 The highlights of Leo 4.4:
 --------------------------
@@ -16,7 +10,7 @@ The highlights of Leo 4.4:
 
 - A tabbed log pane. The Find and Spell Check commands now use tabs instead of dialogs, making those commands much easier to use. Plugins or scripts can easily create new tabs. The Completion tab shows possible typing completions.
 
-- Autocompletion and calltips. To enable autocompletion, bind a key to the auto-complete command.
+- Autocompletion and calltips.
 
 - Dozens of other new features and bug fixes since Leo 4.3.3.
 
@@ -25,5 +19,5 @@ Links:
 Leo:      http://webpages.charter.net/edreamleo/front.html
 Home:     http://sourceforge.net/projects/leo/
 Download: http://sourceforge.net/project/showfiles.php?group_id=3458
-CVS:      http://leo.tigris.org/source/browse/leo/
+CVS:      http://sourceforge.net/cvs/?group_id=3458
 Quotes:   http://webpages.charter.net/edreamleo/testimonials.html

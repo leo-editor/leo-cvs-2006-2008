@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="267" clone_windows="0"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="261" clone_windows="0"/>
 <globals body_outline_ratio="0.549828178694">
-	<global_window_position top="45" left="330" height="751" width="892"/>
+	<global_window_position top="83" left="334" height="789" width="895"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -44,7 +44,7 @@
 <v t="ekr.20060112104823"><vh>main</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" a="V" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20051126062243" annotate="7d71002e"><vh>Debugging options</vh>
 <v t="ekr.20060201110016"><vh>@bool allow_idle_time_hook = False</vh></v>
 <v t="ekr.20060212101234"><vh>@bool gc_before_redraw = False</vh></v>
@@ -53,7 +53,6 @@
 <v t="ekr.20060114073238"><vh>@bool trace_bindings = False</vh></v>
 <v t="ekr.20060301085047"><vh>@bool trace_chapters = False</vh></v>
 <v t="ekr.20060309022759"><vh>@bool trace_colorizer = False</vh></v>
-<v t="ekr.20060425124142"><vh>@bool trace_color_parser = True</vh></v>
 <v t="ekr.20060204093736"><vh>@bool trace_doCommand = False</vh></v>
 <v t="ekr.20060204102644"><vh>@bool trace_f.set_focus = False</vh></v>
 <v t="ekr.20060207142012"><vh>@bool trace_focus = False</vh></v>
@@ -77,9 +76,7 @@
 <v t="ekr.20060206161839"><vh>@bool trace_tree_edit = False</vh></v>
 <v t="ekr.20060114082205"><vh>@string trace_bindings_filter = </vh></v>
 <v t="ekr.20060114083009"><vh>@string trace_bindings_pane_filter =</vh></v>
-<v t="ekr.20060425125015"><vh>@bool verbose_trace_color_parser = False</vh></v>
 <v t="ekr.20060323131801"><vh>@bool warn_about_missing_settings = False</vh></v>
-<v t="ekr.20060408090018"><vh>@bool added_setting = True</vh></v>
 <v t="ekr.20060325071916"><vh>For unit tests</vh>
 <v t="ekr.20060325071042"><vh>@ifplatform win32</vh>
 <v t="ekr.20060325071042.1"><vh>@bool test_win32_setting = True</vh></v>
@@ -89,6 +86,7 @@
 </v>
 </v>
 </v>
+<v t="ekr.20060201111002"><vh>@bool use_syntax_coloring = True</vh></v>
 <v t="ekr.20060113182439"><vh>Other options</vh>
 <v t="ekr.20041119034357.10" annotate="7d71002e"><vh>Command options</vh>
 <v t="ekr.20041119034357.14"><vh>@bool at_root_bodies_start_in_doc_mode = True</vh></v>
@@ -125,7 +123,7 @@
 <v t="ekr.20041119043902.15"><vh>@bool print_trailing_lines = True</vh></v>
 </v>
 </v>
-<v t="ekr.20041213105007" annotate="7d71002e"><vh>Fonts</vh>
+<v t="ekr.20041213105007" a="E" annotate="7d71002e"><vh>Fonts</vh>
 <v t="ekr.20041213105508"><vh>@font log font</vh></v>
 <v t="ekr.20041119034357.45"><vh>@font body text font</vh></v>
 <v t="ekr.20041119051246.4"><vh>@font outline font</vh></v>
@@ -173,7 +171,7 @@
 <v t="ekr.20051025085144"><vh>@string aspell_dir = c:\aspell</vh></v>
 <v t="ekr.20051025085144.1"><vh>@string aspell_bin_dir = c:\aspell\bin</vh></v>
 </v>
-<v t="ekr.20041213105007.1" a="E" annotate="7d71002e"><vh>Colors</vh>
+<v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
 <v t="ekr.20041119052015.2"><vh>@color log_text_foreground_color = None</vh></v>
@@ -202,10 +200,7 @@
 <v t="ekr.20041119051901.1"><vh>@color headline_text_editing_selection_background_color = None</vh></v>
 <v t="ekr.20041119050749.12"><vh>@color outline_pane_background_color = #ffffec</vh></v>
 </v>
-<v t="ekr.20041119034357.70" a="E"><vh>Syntax colors &amp; options</vh>
-<v t="ekr.20060513100933"><vh>@int colorizer_interrupt_count1 = 10</vh></v>
-<v t="ekr.20060513100933.1"><vh>@int colorizer_interrupt_count2 = 5000</vh></v>
-<v t="ekr.20060201111002"><vh>@bool use_syntax_coloring = True</vh></v>
+<v t="ekr.20041119034357.70"><vh>Syntax colors &amp; options</vh>
 <v t="ekr.20041119034357.78"><vh>@color comment_color = firebrick3</vh></v>
 <v t="ekr.20041119034357.79"><vh>@color cweb_section_name_color = red</vh></v>
 <v t="ekr.20041119034357.80"><vh>@color directive_color = blue</vh></v>
@@ -224,22 +219,11 @@
 <v t="ekr.20041119034357.74"><vh>@bool color_directives_in_plain_text = True</vh></v>
 <v t="ekr.20041119034357.75"><vh>@bool underline_undefined_section_names = True</vh></v>
 <v t="ekr.20041119034357.76"><vh>@bool use_hyperlinks = False</vh></v>
-<v t="ekr.20060504131831"><vh>Options for jEdit colorer</vh>
-<v t="ekr.20060504131831.1"><vh>@color keyword1_color = blue</vh></v>
-<v t="ekr.20060504131831.2"><vh>@color literal1_color = #00aa00</vh></v>
-<v t="ekr.20060504134056"><vh>@color literal2_color = #00aa00</vh></v>
-<v t="ekr.20060504134056.1"><vh>@color literal3_color = #00aa00</vh></v>
-<v t="ekr.20060504134056.2"><vh>@color literal4_color = #00aa00</vh></v>
-<v t="ekr.20060504140351"><vh>@color comment1_color = firebrick3</vh></v>
-<v t="ekr.20060504140408"><vh>@color comment2_color = firebrick3</vh></v>
-<v t="ekr.20060504140408.1"><vh>@color comment3_color = firebrick3</vh></v>
-<v t="ekr.20060504140408.2"><vh>@color comment4_color = firebrick3</vh></v>
-</v>
 </v>
 <v t="ekr.20041119034357.67"><vh>@color split_bar_color = LightSteelBlue2</vh></v>
 </v>
 <v t="ekr.20041213105954" annotate="7d71002e"><vh>Window options</vh>
-<v t="ekr.20041119034357.38"><vh>Body pane options</vh>
+<v t="ekr.20041119034357.38" a="E"><vh>Body pane options</vh>
 <v t="ekr.20041119034357.43"><vh>@bool body_gmt_time = False</vh></v>
 <v t="ekr.20041119034357.39"><vh>@bool body_pane_wraps = True</vh></v>
 <v t="ekr.20060216135834"><vh>@bool enable_autocompleter = True</vh></v>
@@ -323,7 +307,7 @@
 </v>
 <v t="ekr.20060122105527.3"><vh>Keyboard and minibuffer Options</vh>
 <v t="ekr.20060215094146"><vh>@@bool ignore_caps_lock = True</vh></v>
-<v t="ekr.20060216170801"><vh>@bool enable_calltips = False</vh></v>
+<v t="ekr.20060216170801"><vh>@bool enable_calltips = True</vh></v>
 <v t="ekr.20060215102141"><vh>@bool ignore_unbound_non_ascii_keys = False</vh></v>
 <v t="ekr.20060122105527.8"><vh>@bool showHelpWhenEnteringModes = False</vh></v>
 <v t="ekr.20060122105527.7" annotate="7d71002e"><vh>@bool stayInTreeAfterSelect = True</vh></v>
@@ -347,17 +331,16 @@
 <v t="ekr.20060112090844.1"><vh>@shortcuts Emads: N-Z</vh></v>
 <v t="ekr.20060112112006"><vh>@shortcuts Emacs: missing</vh></v>
 </v>
-<v t="ekr.20060103103812" annotate="7d71002e"><vh>Legacy Leo shortcuts with important Emacs bindings</vh>
-<v t="ekr.20060111082632.1"><vh>@shortcuts Legacy+: A-E</vh></v>
-<v t="ekr.20060112085643"><vh>@shortcuts Legacy+: F-M</vh></v>
-<v t="ekr.20060112085643.1"><vh>@shortcuts Legacy+: N-Z</vh></v>
-</v>
 <v t="ekr.20060110141538.2" annotate="7d71002e"><vh>Legacy Leo bindings</vh>
 <v t="ekr.20051218203646" annotate="7d71002e"><vh>@shortcuts Legacy: A-E</vh></v>
 <v t="ekr.20060112090844.4"><vh>@shortcuts Legacy: F-M</vh></v>
 <v t="ekr.20060112090844.5"><vh>@shortcuts Legacy: N-Z</vh></v>
 </v>
-<v t="ekr.20060325091143"><vh>@shortcuts for groupoperations plugin</vh></v>
+<v t="ekr.20060103103812" annotate="7d71002e"><vh>Legacy Leo shortcuts with important Emacs bindings</vh>
+<v t="ekr.20060111082632.1"><vh>@shortcuts Legacy+: A-E</vh></v>
+<v t="ekr.20060112085643"><vh>@shortcuts Legacy+: F-M</vh></v>
+<v t="ekr.20060112085643.1"><vh>@shortcuts Legacy+: N-Z</vh></v>
+</v>
 <v t="ekr.20051010112558"><vh>EKR bindings: a mix of legacy Leo shortcuts with important Emacs bindings</vh>
 <v t="ekr.20060122105438"><vh>To do</vh></v>
 <v t="ekr.20060122105438.1"><vh>Summary of Ctrl bindings</vh></v>
@@ -379,12 +362,13 @@
 </v>
 </v>
 </v>
+<v t="ekr.20060325091143"><vh>@shortcuts for groupoperations plugin</vh></v>
 <v t="ekr.20060110141538.1" annotate="7d71002e"><vh>No bindings</vh>
 <v t="ekr.20051218202206" annotate="7d71002e"><vh>@shortcuts No bindings: A-E</vh></v>
 <v t="ekr.20060112093227.1"><vh>@shortcuts No bindings: E-M</vh></v>
 <v t="ekr.20060112093227.2"><vh>@shortcuts No bindings: N-Z</vh></v>
 </v>
-<v t="ekr.20060122105527"><vh>EKR bindings: Mode-oriented bindings + Emacs bindings</vh>
+<v t="ekr.20060122105527" a="E"><vh>EKR bindings: Mode-oriented bindings + Emacs bindings</vh>
 <v t="ekr.20060122105527.2"><vh>Summary of Ctrl bindings</vh></v>
 <v t="ekr.20060122105527.9"><vh>Modes</vh>
 <v t="ekr.20060122113439"><vh>@mode Edit (Control-space)</vh>
@@ -402,7 +386,7 @@
 </v>
 <v t="ekr.20060122105527.15"><vh>@mode Quick-command (Alt-C)</vh></v>
 </v>
-<v t="ekr.20060122105527.18"><vh>Shortcuts</vh>
+<v t="ekr.20060122105527.18" a="E"><vh>Shortcuts</vh>
 <v t="ekr.20060122105527.19" annotate="7d71002e"><vh>@shortcuts EKR: mode-changing commands</vh></v>
 <v t="ekr.20060124070546"><vh>@shortcuts Find Commands</vh></v>
 <v t="ekr.20060203131942"><vh>@shortcuts Minibuffer bindings</vh></v>
@@ -412,11 +396,19 @@
 </v>
 </v>
 </v>
+<v t="ekr.20060408090018"><vh>@bool added_setting = True</vh></v>
 </v>
-<v t="ekr.20060512084639"><vh>Recent</vh>
-<v t="ekr.20060131071612"><vh>@bool trace_masterKeyHandler = False</vh></v>
-<v t="ekr.20060309022759"><vh>@bool trace_colorizer = False</vh></v>
+<v t="ekr.20060219103020" a="E"><vh>Recent settings</vh>
+<v t="ekr.20051126062830"><vh>@bool trace_g.app.gui.set_focus = False</vh></v>
+<v t="ekr.20060301085047"><vh>@bool trace_chapters = False</vh></v>
+<v t="ekr.20051126062243.1"><vh>@bool trace_redraw_now = False</vh></v>
 <v t="ekr.20060131071947"><vh>@bool trace_masterClickHandler = False</vh></v>
+<v t="ekr.20060306031258"><vh>@bool trace_onBodyChanged = False</vh></v>
+<v t="ekr.20060121102627" a="TV"><vh>@bool trace_modes = False</vh></v>
+<v t="ekr.20060323131801"><vh>@bool warn_about_missing_settings = False</vh></v>
+<v t="ekr.20060114073238"><vh>@bool trace_bindings = False</vh></v>
+<v t="ekr.20060131071612"><vh>@bool trace_masterKeyHandler = False</vh></v>
+<v t="ekr.20060216145416"><vh>@bool trace_autocompleter = False</vh></v>
 </v>
 </vnodes>
 <tnodes>
@@ -1456,8 +1448,6 @@ activate-plugins-menu               = None
 activate-window-menu                = None
 add-comments                        = None
 add-global-abbrev                   = None
-add-spaces-to-lines                 = None
-add-tab-to-lines                    = None
 advertised-undo                     = None
 append-to-buffer                    = None
 append-to-register                  = None
@@ -1490,7 +1480,6 @@ center-region                       = None
 check-all-python-code               = None
 check-outline                       = None
 check-python-code                   = None
-clean-line                          = None
 clear-extend-mode                   = None
 clear-kill-ring                     = None
 clear-recent-files                  = None
@@ -3160,12 +3149,11 @@ go-forward                          = None
 goto-char                           = None
 goto-first-node                     = None
 goto-first-sibling                  = None
-goto-global-line                    = None
 goto-last-node                      = None
 goto-last-sibling                   = None
 goto-last-visible                   = None
 goto-line                           = None # Leo's goto-line-number is better.
-goto-line-number                    = None # Leo's legacy Go To Line number command.  goto-global-line is preferred.
+goto-line-number                    = None
 goto-next-changed                   = None
 goto-next-clone                     = None
 goto-next-marked                    = None
@@ -3306,8 +3294,6 @@ reformat-paragraph                  = None
 remove-blank-lines                  = None
 remove-directory                    = None
 remove-sentinels                    = None
-remove-spaces-from-lines            = None
-remove-tab-from-lines               = None
 rename-buffer                       = None
 repeat-complex-command              = None
 replace-string                      = None
@@ -3969,7 +3955,7 @@ enter-quick-command-mode    = Alt-C</t>
 abort-edit-headline                 = Esc
 add-comments                        = Ctrl-(
 auto-complete-force                 = Ctrl-Tab
-auto-complete                       = None # period
+auto-complete                       = period
 back-char                           ! text = LtArrow
 back-char-extend-selection          ! text = Shift-LtArrow
 back-word                           ! text = Alt-b  
@@ -4041,11 +4027,10 @@ fully-expand-pane                   = Alt-Ctrl-!
 goto-first-node                     ! text = Alt-Home
 goto-first-node                     ! tree = Alt-Home
 goto-first-node                     ! tree = Home
-goto-global-line                    = Alt-g # New minibuffer interface.
 goto-last-visible                   ! text = Alt-End
 goto-last-visible                   ! tree = Alt-End
 goto-last-visible                   ! tree = End
-goto-line-number                    = None # Leo's legacy Go To Line Number command: uses dialog.
+goto-line-number                    = Alt-g 
 goto-next-clone                     = Alt-N
 goto-next-visible                   ! text = Alt-DnArrow
 goto-next-visible                   ! tree = Alt-DnArrow
@@ -4453,6 +4438,7 @@ False (recommended):  No translation.</t>
 <t tx="ekr.20060216135834"></t>
 <t tx="ekr.20060216145416"></t>
 <t tx="ekr.20060216170801"></t>
+<t tx="ekr.20060219103020">@nocolor</t>
 <t tx="ekr.20060301085047"></t>
 <t tx="ekr.20060303075452">The following commands are will be useful for operating Leo without a mouse.
 
@@ -4667,22 +4653,5 @@ group-operations-mark-target        = Alt-Ctrl-Shift-t
 group-operations-operate-on-marked  = Alt-Ctrl-Shift-o
 group-operations-transfer           = Alt-Ctrl-Shift-d</t>
 <t tx="ekr.20060408090018"></t>
-<t tx="ekr.20060425124142"></t>
-<t tx="ekr.20060425125015"></t>
-<t tx="ekr.20060504131831"></t>
-<t tx="ekr.20060504131831.1"></t>
-<t tx="ekr.20060504131831.2"></t>
-<t tx="ekr.20060504134056"></t>
-<t tx="ekr.20060504134056.1"></t>
-<t tx="ekr.20060504134056.2"></t>
-<t tx="ekr.20060504140351"></t>
-<t tx="ekr.20060504140408"></t>
-<t tx="ekr.20060504140408.1"></t>
-<t tx="ekr.20060504140408.2"></t>
-<t tx="ekr.20060512084639"></t>
-<t tx="ekr.20060513100933">The number of times the colorizer's main loop in colorOneChunk executes before pausing to check for events.
-A reasonable value is 10.</t>
-<t tx="ekr.20060513100933.1">The number of times the colorizer's main loop in colorOneChunk executes before actually colorizing text.
-A reasonable value is 5000.</t>
 </tnodes>
 </leo_file>

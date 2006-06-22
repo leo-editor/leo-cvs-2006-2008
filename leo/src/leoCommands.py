@@ -299,7 +299,7 @@ class baseCommands:
     #@+node:ekr.20040629121554.1:getSignOnLine (Contains hard-coded version info)
     def getSignOnLine (self):
         c = self
-        return "Leo 4.4 final, build %s, May 11, 2006" % c.getBuildNumber()
+        return "Leo 4.4 b3, build %s, April 14, 2006" % c.getBuildNumber()
     #@nonl
     #@-node:ekr.20040629121554.1:getSignOnLine (Contains hard-coded version info)
     #@+node:ekr.20040629121554.2:initVersion
@@ -2397,14 +2397,6 @@ class baseCommands:
     #@-node:ekr.20031218072017.1827:findMatchingBracket
     #@+node:ekr.20031218072017.1829:getBodyLines
     def getBodyLines (self,expandSelection=False):
-        
-        """Return head,lines,tail where:
-            
-        before is string containg all the lines before the selected text
-        (or the text before the insert point if no selection)
-        lines is a list of lines containing the selected text (or the line containing the insert point if no selection)
-        after is a string all lines after the selected text
-        (or the text after the insert point if no selection)"""
     
         c = self ; body = c.frame.body
         oldVview = body.getYScrollPosition()
@@ -2417,7 +2409,7 @@ class baseCommands:
             # Note: lines is the entire line containing the insert point if no selection.
             head,lines,tail = body.getSelectionLines()
     
-        lines = string.split(lines,'\n') # It would be better to use g.splitLines.
+        lines = string.split(lines,'\n') # It would be better to use splitLines.
     
         return head,lines,tail,oldSel,oldVview
     #@nonl
@@ -3119,7 +3111,7 @@ class baseCommands:
                 u.afterCloneNode(clone,'Clone Node',undoData,dirtyVnodeList=dirtyVnodeList)
                 c.selectPosition(clone)
         finally:
-            c.endUpdate(scroll=True)
+            c.endUpdate()
     
         return clone # For mod_labels and chapters plugins.
     #@nonl
@@ -5519,8 +5511,7 @@ class baseCommands:
             return # nullFrame's do not have a top frame.
     
         c.frame.tree.redraw_now()
-        if 0: # Interferes with new colorizer.
-            c.frame.top.update_idletasks()
+        c.frame.top.update_idletasks()
         
         if c.frame.requestRecolorFlag:
             c.frame.requestRecolorFlag = False

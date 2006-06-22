@@ -314,9 +314,6 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
         #@nonl
         #@-node:ekr.20031218072017.3905:<< Create two rows of buttons >>
         #@nl
-    
-        if self.top: # self.top may not exist during unit testing.
-            self.top.protocol("WM_DELETE_WINDOW", self.onCloseWindow)
     #@nonl
     #@-node:ekr.20031218072017.3902:find.createFrame
     #@+node:ekr.20060207080537:find.createBindings
@@ -338,6 +335,9 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
         for widget in (self.find_ctrl, self.change_ctrl):
             widget.bind("<Key-Return>", findButtonCallback2)
             widget.bind("<Key-Escape>", self.onCloseWindow)
+        
+        if self.top:
+            self.top.protocol("WM_DELETE_WINDOW", self.onCloseWindow)
     #@nonl
     #@-node:ekr.20060207080537:find.createBindings
     #@+node:ekr.20031218072017.2059:find.init

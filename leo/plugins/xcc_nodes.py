@@ -406,26 +406,28 @@ __version__ = "0.4"
 #@+node:ekr.20060513123144:init
 def init ():
     
-    data = (
-        (("new","open2"), OnCreate),
-        # ("start2",      OnStart2),
-        ("select2",     OnSelect2),
-        ("idle",        OnIdle),
-        ("command2",    OnCommand2),
-        ("bodydclick2", OnBodyDoubleClick),
-        ("bodykey2",    OnBodyKey2),
-        ("headkey2",    OnHeadKey2),
-        ("end1",        OnQuit),
-    )
+    ok = not g.app.unitTesting
     
-    for hook,f in data:
-        leoPlugins.registerHandler(hook,f)
-
-    g.plugin_signon(__name__)
-
-    return True
-
-
+    if ok:
+        data = (
+            (("new","open2"), OnCreate),
+            # ("start2",      OnStart2),
+            ("select2",     OnSelect2),
+            ("idle",        OnIdle),
+            ("command2",    OnCommand2),
+            ("bodydclick2", OnBodyDoubleClick),
+            ("bodykey2",    OnBodyKey2),
+            ("headkey2",    OnHeadKey2),
+            ("end1",        OnQuit),
+        )
+        
+        for hook,f in data:
+            leoPlugins.registerHandler(hook,f)
+    
+        g.plugin_signon(__name__)
+    
+    return ok
+#@nonl
 #@-node:ekr.20060513123144:init
 #@+node:ekr.20060513122450.395:Module-level event handlers
 #@+node:ekr.20060513122450.397:OnCreate
@@ -1160,7 +1162,7 @@ class controllerClass:
         if cc.EXT == "dll": cc.SRC_EXT = "cpp"
     
         cc.PTS = cc.sGet("Options",{})
-    
+    #@nonl
     #@-node:ekr.20060513122450.304:sGetBrowseInfo
     #@+node:ekr.20060513122450.305:sGetWriteInfo
     def sGetWriteInfo(self):
@@ -1392,7 +1394,6 @@ class controllerClass:
     def sShow(self):
         
         cc = self
-        
         cc.LeoBodyText.pack_forget()
         cc.LeoYBodyBar.pack_forget()
         
@@ -2108,7 +2109,7 @@ class DBGTASK:
         cc = self
     
         if cc.Command:
-            aWrite(cc.Command)
+            cc.aWrite(cc.Command)
         cc.DBG_SD.remove(cc.Send)
     #@nonl
     #@-node:ekr.20060513122450.348:Send
@@ -2137,7 +2138,7 @@ class OUTPUTTASK(DBGTASK):
         if cc.DBG_PROMPT == False and line != "":
             lower = line.lower()
             if lower.find("error") > -1 or lower.find("warning") > -1:
-                aAddText("//"+line)
+                cc.aAddText("//"+line)
             else:
                 if cc.OPTS["Filter output"] == "False":
                     cc.aAddText("# "+line)
@@ -2162,12 +2163,14 @@ class TARGETPIDTASK(DBGTASK):
     #@-node:ekr.20060513122450.354:__init__
     #@+node:ekr.20060513122450.355:Send
     def Send(self):
+        
+        cc = self.cc
         if self.PidTask != "":		
-            aWrite(ReplaceVars(self.PidTask))
-            DBG_SD.remove(self.Send)
-            DBG_RD.append(self.Receive)
+            cc.aWrite(ReplaceVars(self.PidTask))
+            cc.DBG_SD.remove(self.Send)
+            cc.DBG_RD.append(self.Receive)
         else:
-            DBG_SD.remove(self.Send)
+            cc.DBG_SD.remove(self.Send)
             Warning("xcc: ","Target pid task is undefined!")
     
     
@@ -2495,7 +2498,7 @@ class BREAKIDTASK(DBGTASK):
         cc = self.cc
         if not cc.DBG_PROMPT:
             if line:
-                idb = ReplaceVars(self.IdentifyBreak)
+                idb = cc.ReplaceVars(self.IdentifyBreak)
                             
                 idb = idb.replace("_FILE_",self.Break[0]).replace("_LINE_",self.Break[1])
                 m = re.search(idb,line,re.IGNORECASE)
@@ -2504,7 +2507,7 @@ class BREAKIDTASK(DBGTASK):
                     if bid != None:
                         if cc.VERBOSE:					
                             cc.aAddText("\" Break id at line "+self.Break[1]+" in "+self.Break[0]+" is "+bid+"\n")
-                        DBGTASK(cc,ReplaceVars(DBG["Clear break"]).replace("_ID_",bid))
+                        DBGTASK(cc,cc.ReplaceVars(cc.DBG["Clear break"]).replace("_ID_",bid))
                         
         else:
             cc.DBG_RD.remove(self.Receive)
@@ -2591,10 +2594,12 @@ class ProcessClass:
     #@+node:ekr.20060513122450.49:Open
     def Open(self):
         
+        g.trace(g.callers())
+        
         cc = self.cc
         if self.Spawn:
             os.spawnl(os.P_NOWAIT,self.FileName,self.Arguments)
-            ProcessList.remove(self)
+            cc.ProcessList.remove(self)
             return True
     
         path,fname = os.path.split(self.FileName)
@@ -3990,7 +3995,7 @@ class ToolbarClass(Tk.Frame):
       
         if not cc.ACTIVE_NODE:
             cc.sGo()
-        elif cc.ACTIVE_NODE == controllerSELECTED_NODE:
+        elif cc.ACTIVE_NODE == cc.SELECTED_NODE:
             cc.aGo()
         else:
             Error("xcc: ",str(cc.ACTIVE_NODE)+" is already active!")
