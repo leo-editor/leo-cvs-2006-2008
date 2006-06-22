@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="25527" clone_windows="0"/>
 <globals body_outline_ratio="0.550802139037">
-	<global_window_position top="72" left="390" height="721" width="855"/>
+	<global_window_position top="72" left="390" height="702" width="855"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -2409,7 +2409,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="V"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -2922,8 +2922,8 @@
 <v t="ekr.20050912133515"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20060612102055" a="E"><vh>Chapter 13: Writing Plugins</vh>
-<v t="ekr.20060612103240" a="E"><vh>@rst html\writingPlugins.html</vh>
+<v t="ekr.20060612102055"><vh>Chapter 13: Writing Plugins</vh>
+<v t="ekr.20060612103240"><vh>@rst html\writingPlugins.html</vh>
 <v t="ekr.20060612103824"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20050903075144"><vh>Overview</vh></v>
 <v t="EKR.20040524104904.224"><vh>Important security warnings</vh></v>
@@ -2932,7 +2932,7 @@
 <v t="EKR.20040524104904.231"><vh>Convenience routines for plugins</vh></v>
 <v t="EKR.20040524104904.240"><vh>Support for unit testing</vh></v>
 <v t="ekr.20050417072710.1"><vh>How to make operations undoable</vh></v>
-<v t="ekr.20060621075135" a="TV"><vh>Turning script buttons into plugins</vh></v>
+<v t="ekr.20060621075135"><vh>Turning script buttons into plugins</vh></v>
 <v t="ekr.20060612104638"><vh>@rst-no-head end-of-page stuff</vh></v>
 </v>
 </v>
@@ -34822,7 +34822,8 @@ The plugin will define a minibuffer command that does the same thing as pressing
 
 We shall start with a script button whose script is::
     
-    print c.fileName(), p.headString()
+    g.es_print('c: %s' % (c.fileName()),color='red')
+    g.es_print('p: %s' % (p.headString()),color='red')
     
 Not very exciting, but it uses the predefined ``c`` and ``p`` constants.
 Our plugin will create a minibuffer command called print-cp.
@@ -34862,8 +34863,13 @@ Plugins--&gt; Templates: these show recommended ways of defining plugins.--&gt;T
     def __init__ (self,c):
         self.c = c
         c.k.registerCommand('print-cp',shortcut=None,func=self.print_cp)
+        script = "c.k.simulateCommand('print-cp')"
+        g.makeScriptButton(c,script=script,buttonText='Print c &amp; p',bg='red')
         
-   This registers the print_cp *method* of the print_cp class as the print-cp minibuffer command.
+   This registers the print_cp *method* of the print_cp class as the print-cp minibuffer command,
+   and creates a script button with the following script::
+       
+       c.k.simulateCommand('print-cp')
    
 7. Define the print_cp method as follows::
     
@@ -34881,7 +34887,9 @@ Plugins--&gt; Templates: these show recommended ways of defining plugins.--&gt;T
     
     print_cp.py
 
-9. Test the plugin by restarting Leo (I just start test.leo) and typing &lt;Alt-x&gt; print-cp &lt;Return&gt;.
+9. Test the plugin by restarting Leo (I just start test.leo).
+   You can test the plugin by pressing the 'Print c&amp;p' buttor
+   or by typing &lt;Alt-x&gt; print-cp &lt;Return&gt;.
    
 That's all.  You can find the completed version of the print_cp plugin in leoPlugins.leo,
 or leoPluginsRef.leo if you are using cvs.</t>
