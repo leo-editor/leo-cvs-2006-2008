@@ -1003,7 +1003,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
                 t.insert("end",s)
             
             t.configure(state="disabled")
-            ##### t.update_idletasks() # interferes with coloring.
         #@nonl
         #@-node:ekr.20031218072017.3963:put (leoTkinterFrame:statusLineClass)
         #@+node:ekr.20041223111916.1:unpack & hide
@@ -1030,13 +1029,12 @@ class leoTkinterFrame (leoFrame.leoFrame):
                 s = w.get("%d.0" % (row),index)
                 s = g.toUnicode(s,g.app.tkEncoding)
                 col = g.computeWidth (s,c.tab_width)
-        
-            if 1: # row != self.lastRow or col != self.lastCol:
-                s = "line %d, col %d " % (row,col)
-                # Important: this does not change the focus because labels never get focus.
-                lab.configure(text=s)
-                self.lastRow = row
-                self.lastCol = col
+            
+            s = "line %d, col %d " % (row,col)
+            # Important: this does not change the focus because labels never get focus.
+            lab.configure(text=s)
+            self.lastRow = row
+            self.lastCol = col
         #@nonl
         #@-node:ekr.20031218072017.1733:update
         #@-others

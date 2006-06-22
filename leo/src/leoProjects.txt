@@ -2750,6 +2750,175 @@ to unpredictable places within the next editor pane.
 #@-node:ekr.20060614084550:Restore cursor when changing focus
 #@+node:ekr.20060614085455:Undo restores focus again
 #@-node:ekr.20060614085455:Undo restores focus again
+#@+node:ekr.20060622071734:Updated row/col indicators when using arrow keys
+#@+node:ekr.20060622071734.1:Report
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3790857
+By: ktenney
+
+The row/column display doesn't change if the
+cursor is moved by keyboard arrows, it is
+correct if cursor is placed by mouse click.
+#@nonl
+#@-node:ekr.20060622071734.1:Report
+#@+node:ekr.20060113130510:extendHelper
+def extendHelper (self,w,extend,ins1,spot,setSpot=True):
+
+    '''Handle the details of extending the selection.
+    This method is called for all cursor moves.
+    
+    extend: Clear the selection unless this is True.
+    ins1:   The *previous* insert point.
+    spot:   The *new* insert point.
+    '''
+    c = self.c ; p = c.currentPosition()
+    moveSpot = self.moveSpot
+    if extend:
+        i, j = g.app.gui.getTextSelection(w)
+        # Reset the move spot if needed.
+        if (
+            not moveSpot or p.v.t != self.moveSpotNode or
+            i == j or # A cute trick
+            (not w.compare(moveSpot,'==',i) and
+             not w.compare(moveSpot,'==',j))
+        ):
+            self.moveSpotNode = p.v.t
+            self.moveSpot = w.index(ins1)
+            self.setMoveCol(ins1)
+        moveSpot = self.moveSpot
+        if w.compare(spot,'<',moveSpot):
+            g.app.gui.setTextSelection(w,spot,moveSpot,insert=None)
+        else:
+            g.app.gui.setTextSelection(w,moveSpot,spot,insert=None)
+    else:
+        if setSpot or not moveSpot:
+            self.setMoveCol(spot)
+        g.app.gui.setTextSelection(w,spot,spot,insert=None)
+        
+    c.frame.updateStatusLine()
+#@nonl
+#@-node:ekr.20060113130510:extendHelper
+#@-node:ekr.20060622071734:Updated row/col indicators when using arrow keys
+#@+node:ekr.20060622071324:Fixed show-invisibles crasher
+#@+node:ekr.20060622071324.1:Report
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3790814
+By: nobody
+
+I have encountered a non-fatal traceback with the "show-invisibles" command.
+
+If I enter Meta-x "show-invisibles" once, it works as expected.  But when I
+do Meta-x "show-invisibles" again, I encounter the following traceback:
+
+=====
+Traceback (most recent call last):
+  File "C:\Program Files\Leo\src\leoTkinterMenu.py", line 248, in setMenuLabel
+    menu.entryconfig(realName,label=label,underline=underline)
+  File "C:\Python24\lib\lib-tk\Tkinter.py", line 2601, in entryconfigure
+    return self._configure(('entryconfigure', index), cnf, kw)
+  File "C:\Python24\lib\lib-tk\Tkinter.py", line 1130, in _configure
+    self.tk.call(_flatten((self._w, cmd)) + self._options(cnf))
+TclError: bad menu entry index "Show Invisibles"
+=====
+#@nonl
+#@-node:ekr.20060622071324.1:Report
+#@+node:ekr.20031218072017.2883:show/hide/toggleInvisibles
+def hideInvisibles (self,event=None):
+    c = self ; c.showInvisiblesHelper(False)
+
+def showInvisibles (self,event=None):
+    c = self ; c.showInvisiblesHelper(True)
+
+def toggleShowInvisibles (self,event=None):
+    c = self ; colorizer = c.frame.body.getColorizer()
+    val = g.choose(colorizer.showInvisibles,0,1)
+    c.showInvisiblesHelper(val)
+    
+def showInvisiblesHelper (self,val):
+    c = self ; frame = c.frame ; p = c.currentPosition()
+    colorizer = frame.body.getColorizer()
+    colorizer.showInvisibles = val
+   
+     # It is much easier to change the menu name here than in the menu updater.
+    menu = frame.menu.getMenu("Edit")
+    index = frame.menu.getMenuLabel(menu,g.choose(val,'Hide Invisibles','Show Invisibles'))
+    if index is None:
+        if val: frame.menu.setMenuLabel(menu,"Show Invisibles","Hide Invisibles")
+        else:   frame.menu.setMenuLabel(menu,"Hide Invisibles","Show Invisibles")
+
+    c.frame.body.recolor_now(p)
+#@nonl
+#@-node:ekr.20031218072017.2883:show/hide/toggleInvisibles
+#@+node:ekr.20031218072017.3810:9 Routines with new spellings
+def activateMenu (self,menuName): # New in Leo 4.4b2.
+    self.oops()
+
+def clearAccel (self,menu,name):
+    self.oops()
+
+def createMenuBar (self,frame):
+    self.oops()
+    
+if 0: # Now defined in the base class
+    def createOpenWithMenuFromTable (self,table):
+        self.oops()
+
+    def defineMenuCallback(self,command,name):
+        self.oops()
+        
+    def defineOpenWithMenuCallback(self,command):
+        self.oops()
+    
+def disableMenu (self,menu,name):
+    self.oops()
+    
+def enableMenu (self,menu,name,val):
+    self.oops()
+    
+def getManuLabel(self,menu):
+    self.oops()
+    
+def setMenuLabel (self,menu,name,label,underline=-1):
+    self.oops()
+#@nonl
+#@-node:ekr.20031218072017.3810:9 Routines with new spellings
+#@+node:ekr.20060622075612:getMenuLabel
+def getMenuLabel (self,menu,name):
+    
+    '''Return the index of the menu item whose name (or offset) is given.
+    Return None if there is no such menu item.'''
+
+    try:
+        index = menu.index(name)
+    except:
+        index = None
+        
+    return index
+#@nonl
+#@-node:ekr.20060622075612:getMenuLabel
+#@+node:ekr.20031218072017.4121:setMenuLabel
+def setMenuLabel (self,menu,name,label,underline=-1):
+
+    try:
+        if type(name) == type(0):
+            # "name" is actually an index into the menu.
+            menu.entryconfig(name,label=label,underline=underline)
+        else:
+            # Bug fix: 2/16/03: use translated name.
+            realName = self.getRealMenuName(name)
+            realName = realName.replace("&","")
+            # Bug fix: 3/25/03" use tranlasted label.
+            label = self.getRealMenuName(label)
+            label = label.replace("&","")
+            menu.entryconfig(realName,label=label,underline=underline)
+    except:
+        if not g.app.unitTesting:
+            print "setMenuLabel menu,name,label:",menu,name,label
+            g.es_exception()
+#@nonl
+#@-node:ekr.20031218072017.4121:setMenuLabel
+#@-node:ekr.20060622071324:Fixed show-invisibles crasher
 #@-node:ekr.20060603090445.1:Bugs fixed
 #@+node:ekr.20060612075338:Code level
 #@+node:ekr.20060605121612.2:Simplified gui bindings
@@ -9444,6 +9613,21 @@ def createControl (self,frame,parentFrame,p):
 #@nonl
 #@-node:ekr.20031218072017.3998:tkBody.createControl
 #@-node:ekr.20060618154031.1:Allow different packing of editors
+#@+node:ekr.20060618155337.2:Added section about upgrading settings
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3784292
+By: ramondiaz
+
+On the first chapter (Installation) it would be nice to have a section
+on "Upgrading", including preserving settings, both for the main leo app. and
+the pluggins. Maybe with links to the wiki code or, better yet, with that included
+in the help itself (so you have the full thing when you are offline).
+
+http://webpages.charter.net/edreamleo/install.html#updating-settings-from-previous-versions-of-leo
+#@nonl
+#@-node:ekr.20060618155337.2:Added section about upgrading settings
+#@+node:ekr.20060621134354:created g.makeScriptButton
+#@-node:ekr.20060621134354:created g.makeScriptButton
 #@-node:ekr.20060603090445.2:New & improved features
 #@+node:ekr.20060619104105:Plugins
 #@+node:ekr.20060608060052:Added doc-only option to rst3
