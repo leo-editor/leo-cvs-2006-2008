@@ -20,6 +20,7 @@
 # Plugin_manager.py needs plugins_menu.py
 plugins_menu.py
 #################
+#print_cp.py
 #xcc_nodes.py
 #__jEdit_colorizer__.py
 #word_export.py
@@ -34,7 +35,7 @@ plugins_menu.py
 #bibtex.py
 #autotrees.py
 #mod_autosave.py
-image.py
+#image.py
 #pie_menus.py
 #leoupdate.py
 #__wx_gui.py

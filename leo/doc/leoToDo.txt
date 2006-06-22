@@ -2,11 +2,8 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20060618154031:Before B2
-#@+node:ekr.20060620093915:What's new in Leo 4.4.1
-#@-node:ekr.20060620093915:What's new in Leo 4.4.1
-#@+node:ekr.20060620093915.1:What's new in Leo 4.4
-#@-node:ekr.20060620093915.1:What's new in Leo 4.4
 #@+node:ekr.20060618154031.3:Document how to turn @buttons into plugins
+#@+node:ekr.20060621164956:Request
 @nocolor
 http://sourceforge.net/forum/message.php?msg_id=3778946
 By: ktenney
@@ -31,18 +28,183 @@ like;
 how do I convert this to a plugin which creates a 'ShowHead' button, and the
 command 'show-head'?
 #@nonl
-#@-node:ekr.20060618154031.3:Document how to turn @buttons into plugins
-#@+node:ekr.20060618155337.2:Add section about upgrading settings
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3784292
-By: ramondiaz
+#@-node:ekr.20060621164956:Request
+#@+node:ekr.20060621164312:g.makeScriptButton
+def makeScriptButton (c,
+    p=None, # A node containing the script.
+    script=None, # The script itself.
+    buttonText=None,
+    balloonText='Script Button',
+    shortcut=None,bg='LightSteelBlue1',
+    define_g=True,define_name='__main__',silent=False, # Passed on to c.executeScript.
+):
+    
+    '''Create a script button for the script in node p.
+    The button's text defaults to p.headString'''
 
-On the first chapter (Installation) it would be nice to have a section
-on "Upgrading", including preserving settings, both for the main leo app. and
-the pluggins. Maybe with links to the wiki code or, better yet, with that included
-in the help itself (so you have the full thing when you are offline).
+    k = c.k
+    if p and not buttonText: buttonText = p.headString().strip()
+    if not buttonText: buttonText = 'Unnamed Script Button'
+    << create the button b >>
+    << define the callbacks for b >>
+    b.configure(command=executeScriptCallback)
+    b.bind('<3>',deleteButtonCallback)
+    if shortcut:
+        << bind the shortcut to executeScriptCallback >>
+    << create press-buttonText-button command >>
 #@nonl
-#@-node:ekr.20060618155337.2:Add section about upgrading settings
+#@+node:ekr.20060621164312.1:<< create the button b >>
+iconBar = c.frame.getIconBarObject()
+b = iconBar.add(text=buttonText)
+
+if balloonText and balloonText != buttonText:
+    Pmw = g.importExtension('Pmw',pluginName='g.makeScriptButton',verbose=False)
+    if Pmw:
+        balloon = Pmw.Balloon(b,initwait=100)
+        balloon.bind(b,balloonText)
+
+if sys.platform == "win32":
+    width = int(len(buttonText) * 0.9)
+    b.configure(width=width,font=('verdana',7,'bold'),bg=bg)
+#@nonl
+#@-node:ekr.20060621164312.1:<< create the button b >>
+#@+node:ekr.20060621164312.2:<< define the callbacks for b >>
+def deleteButtonCallback(event=None,b=b,c=c):
+    if b: b.pack_forget()
+    c.frame.bodyWantsFocus()
+    
+def executeScriptCallback (event=None,
+    b=b,c=c,buttonText=buttonText,p=p and p.copy(),script=script):
+
+    if c.disableCommandsMessage:
+        g.es(c.disableCommandsMessage,color='blue')
+    else:
+        g.app.scriptDict = {}
+        c.executeScript(p=p,script=script,
+        define_g= define_g,define_name=define_name,silent=silent)
+        # Remove the button if the script asks to be removed.
+        if g.app.scriptDict.get('removeMe'):
+            g.es("Removing '%s' button at its request" % buttonText)
+            b.pack_forget()
+    # Do not assume the script will want to remain in this commander.
+#@nonl
+#@-node:ekr.20060621164312.2:<< define the callbacks for b >>
+#@+node:ekr.20060621164312.3:<< bind the shortcut to executeScriptCallback >>
+func = executeScriptCallback
+shortcut = k.canonicalizeShortcut(shortcut)
+ok = k.bindKey ('button', shortcut,func,buttonText)
+if ok:
+    g.es_print('Bound @button %s to %s' % (buttonText,shortcut),color='blue')
+#@nonl
+#@-node:ekr.20060621164312.3:<< bind the shortcut to executeScriptCallback >>
+#@+node:ekr.20060621164312.4:<< create press-buttonText-button command >>
+chars = g.toUnicode(string.letters + string.digits,g.app.tkEncoding)
+aList = [g.choose(ch in chars,ch,'-') for ch in g.toUnicode(buttonText,g.app.tkEncoding)]
+
+buttonCommandName = ''.join(aList)
+buttonCommandName = buttonCommandName.replace('--','-')
+buttonCommandName = 'press-%s-button' % buttonCommandName.lower()
+
+# This will use any shortcut defined in an @shortcuts node.
+k.registerCommand(buttonCommandName,None,executeScriptCallback,pane='button',verbose=False)
+#@nonl
+#@-node:ekr.20060621164312.4:<< create press-buttonText-button command >>
+#@-node:ekr.20060621164312:g.makeScriptButton
+#@+node:ekr.20031218072017.2140:c.executeScript
+def executeScript(self,event=None,p=None,script=None,
+    useSelectedText=True,define_g=True,define_name='__main__',silent=False):
+
+    """This executes body text as a Python script.
+    
+    We execute the selected text, or the entire body text if no text is selected."""
+    
+    c = self ; script1 = script
+    if not script:
+        script = g.getScript(c,p,useSelectedText=useSelectedText)
+    << redirect output >>
+    try:
+        if script.strip():
+            sys.path.insert(0,c.frame.openDirectory)
+            script += '\n' # Make sure we end the script properly.
+            try:
+                p = c.currentPosition()
+                d = g.choose(define_g,{'c':c,'g':g,'p':p},{})
+                if define_name: d['__name__'] = define_name
+                # g.trace(script)
+                exec script in d
+                if not script1 and not silent:
+                    g.es("end of script",color="purple")
+            except Exception:
+                << handle an exception in the script >>
+            del sys.path[0]
+        else:
+            g.es("no script selected",color="blue")
+    finally: # New in 4.3 beta 2: unredirect output last.
+        << unredirect output >>
+#@nonl
+#@+node:ekr.20031218072017.2143:<< redirect output >>
+if c.config.redirect_execute_script_output_to_log_pane:
+
+    g.redirectStdout() # Redirect stdout
+    g.redirectStderr() # Redirect stderr
+#@nonl
+#@-node:ekr.20031218072017.2143:<< redirect output >>
+#@+node:ekr.20050505104140:<< handle an exception in the script >>
+g.es("exception executing script",color='blue')
+
+if 0:
+    print 'script...'
+    for line in g.splitLines(script):
+        print repr(line)
+
+fileName,n = g.es_exception(full=True,c=c)
+if p and not script1 and fileName == "<string>":
+    c.goToScriptLineNumber(p,script,n)
+
+<< dump the lines near the error >>
+#@nonl
+#@+node:EKR.20040612215018:<< dump the lines near the error >>
+if g.os_path_exists(fileName):
+    f = file(fileName)
+    lines = f.readlines()
+    f.close()
+else:
+    lines = g.splitLines(script)
+
+s = '-' * 20
+g.es_print(s)
+
+if 0:
+    # Just print the error line.
+    try:
+        s = "%s line %d: %s" % (fileName,n,lines[n-1])
+        g.es(s,newline=False)
+    except IndexError:
+        s = "%s line %d" % (fileName,n)
+        g.es(s,newline=False)
+else: # Print surrounding lines.
+    i = max(0,n-2)
+    j = min(n+2,len(lines))
+    # g.trace(n,i,j)
+    while i < j:
+        ch = g.choose(i==n-1,'*',' ')
+        s = "%s line %d: %s" % (ch,i+1,lines[i])
+        g.es(s,newline=False)
+        i += 1
+#@nonl
+#@-node:EKR.20040612215018:<< dump the lines near the error >>
+#@-node:ekr.20050505104140:<< handle an exception in the script >>
+#@+node:EKR.20040627100424:<< unredirect output >>
+if c.exists and c.config.redirect_execute_script_output_to_log_pane:
+
+    g.restoreStderr()
+    g.restoreStdout()
+#@nonl
+#@-node:EKR.20040627100424:<< unredirect output >>
+#@-node:ekr.20031218072017.2140:c.executeScript
+#@-node:ekr.20060618154031.3:Document how to turn @buttons into plugins
+#@+node:ekr.20060603090445.6:Document --> in release notes
+#@-node:ekr.20060603090445.6:Document --> in release notes
 #@-node:ekr.20060618154031:Before B2
 #@+node:ekr.20060531161030:To do: B3
 #@+node:ekr.20060531161030.1:Make body editors persistant
@@ -64,7 +226,834 @@ in the help itself (so you have the full thing when you are offline).
 #@nonl
 #@-node:ekr.20060529195042.1:The last character of a python comment is not colored.
 #@-node:ekr.20060527204444:Finish new colorizer plugin
-#@+node:ekr.20060603131801:Urgent
+#@+node:ekr.20060227163215:Fix *all* bugs
+#@+node:ekr.20060120084705:Overwrite mode doesn't work in headllines
+#@-node:ekr.20060120084705:Overwrite mode doesn't work in headllines
+#@+node:ekr.20060117074259:Handle Mac issues
+#@+node:ekr.20060117074259.1:Mac indentation problem
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3526056
+By: nobody
+
+Hi Edward. I've been using the linux and windows version but would like to try
+leo on the mac. The install instructions seem a bit out of date. I take it any
+additional downloading of TclTkAqua is unneccessary?
+
+I have python2.4 in addition to the stock python 2.3.5 that comes with osx 10.4.
+Launching leo like so:  "python2.4 leo.py", as I do on linux, seems to run just
+fine.
+
+I don't know if this was fixed on osx or in leo in general, but moving the mouse
+to each of the panes and scrolling with the wheel works just great now. Thanks.
+
+Plugin manager: the plugin text font is really tiny, and the window opens to
+a default width such that the 'Installed Plugins' button reads 'talled Plugi'.
+Resizing the window does stretch the buttons horizontally.
+
+Ok -- here's maybe a big issue. I open a new leo file (File->New) and type in:
+
+for i in range(3):
+
+I hit return after the colon, but a newline is not entered.
+
+Stephen
+#@-node:ekr.20060117074259.1:Mac indentation problem
+#@+node:ekr.20051112080017:Problem removing script buttons on the mac
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3423121
+By: nobody
+
+Hi! I need help removing script buttons. It says I should right click the ofending
+button. I have a mac and Ctl-click, Command-click, etc doesn't work. What should
+I do?
+
+EKR: This is on the list of unfixable bugs, but I have a hard time believing there is no workaround.
+#@nonl
+#@-node:ekr.20051112080017:Problem removing script buttons on the mac
+#@+node:ekr.20060116083043:Use special Help menu on the Mac
+# http://sourceforge.net/forum/message.php?msg_id=3237845
+#@nonl
+#@+node:ekr.20031218072017.3803:createHelpMenuFromTable
+def createHelpMenuFromTable (self):
+
+    if 0: ## sys.platform == 'darwin':
+        helpMenu = self.getMacHelpMenu()
+        if not helpMenu: return
+    else:
+        helpMenu = self.createNewMenu("&Help")
+    
+    self.createMenuEntries(helpMenu,self.helpMenuTopTable)
+    
+    if sys.platform=="win32":
+        self.createMenuEntries(helpMenu,self.helpMenuTop2Table)
+    
+    self.createMenuEntries(helpMenu,self.helpMenuTop3Table)
+#@nonl
+#@-node:ekr.20031218072017.3803:createHelpMenuFromTable
+#@+node:ekr.20031218072017.4113:new_menu
+def new_menu(self,parent,tearoff=False):
+    
+    """Wrapper for the Tkinter new_menu menu method."""
+
+    return Tk.Menu(parent,tearoff=tearoff)
+#@nonl
+#@-node:ekr.20031218072017.4113:new_menu
+#@+node:ekr.20031218072017.3804:createNewMenu (contains Tk code)
+def createNewMenu (self,menuName,parentName="top",before=None):
+
+    try:
+        parent = self.getMenu(parentName) # parent may be None.
+        menu = self.getMenu(menuName)
+        if menu:
+            g.es("menu already exists: " + menuName,color="red")
+        else:
+            menu = self.new_menu(parent,tearoff=0)
+            self.setMenu(menuName,menu)
+            label = self.getRealMenuName(menuName)
+            amp_index = label.find("&")
+            label = label.replace("&","")
+            if before: # Insert the menu before the "before" menu.
+                index_label = self.getRealMenuName(before)
+                amp_index = index_label.find("&")
+                index_label = index_label.replace("&","")
+                index = parent.index(index_label)
+                self.insert_cascade(parent,index=index,label=label,menu=menu,underline=amp_index)
+            else:
+                self.add_cascade(parent,label=label,menu=menu,underline=amp_index)
+            return menu
+    except:
+        g.es("exception creating " + menuName + " menu")
+        g.es_exception()
+        return None
+#@nonl
+#@-node:ekr.20031218072017.3804:createNewMenu (contains Tk code)
+#@+node:ekr.20031218072017.3807:getMenu, setMenu, destroyMenu
+def getMenu (self,menuName):
+
+    cmn = self.canonicalizeMenuName(menuName)
+    return self.menus.get(cmn)
+    
+def setMenu (self,menuName,menu):
+    
+    cmn = self.canonicalizeMenuName(menuName)
+    self.menus [cmn] = menu
+    
+def destroyMenu (self,menuName):
+    
+    cmn = self.canonicalizeMenuName(menuName)
+    del self.menus[cmn]
+#@nonl
+#@-node:ekr.20031218072017.3807:getMenu, setMenu, destroyMenu
+#@+node:ekr.20060211144330.1:getMacHelpMenu
+def getMacHelpMenu (self):
+    
+    return None ###
+    
+    try:
+        helpMenu = Tk.Menu('top.help')
+        return helpMenu
+        
+    except Exception:
+        g.trace('Can not get MacOS Help menu')
+        g.es_exception()
+        return None
+#@nonl
+#@-node:ekr.20060211144330.1:getMacHelpMenu
+#@-node:ekr.20060116083043:Use special Help menu on the Mac
+#@-node:ekr.20060117074259:Handle Mac issues
+#@+node:ekr.20060202235215.3:Remove deprecation warning
+#@+node:EKR.20040627114602:getDescendentUnknownAttributes
+# Only @thin vnodes have the descendentTnodeUnknownAttributes field.
+# The question is: what are we to do about this?
+
+def getDescendentUnknownAttributes (self,s):
+    
+    try:
+        bin = binascii.unhexlify(s) # Throws a TypeError if val is not a hex string.
+        val = pickle.loads(bin)
+        return val
+
+    except (TypeError,pickle.UnpicklingError,ImportError):
+        g.trace('oops: getDescendentUnknownAttributes')
+        return None
+#@nonl
+#@-node:EKR.20040627114602:getDescendentUnknownAttributes
+#@-node:ekr.20060202235215.3:Remove deprecation warning
+#@+node:ekr.20060207085518:Improve c.insertHeadline (minor)
+c.insertHeadlineTime uses the edit widget.  It shouldn't.
+#@nonl
+#@-node:ekr.20060207085518:Improve c.insertHeadline (minor)
+#@+node:ekr.20051104152338:Fix bug in Remove Sentinels command
+#@+node:ekr.20051104152338.1:Report
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3413805
+By: nobody
+
+I thought this might be for 4.4a2, but I see the same effect w/ 
+Leo 4.3.3, build  1.282 , September 17, 2005
+Python 2.3.5, Tk 8.4.7, win32
+
+I haven't used Leo for code, but just started to try to re-organize some Perl
+I inherited.
+
+Leo apears to remove sentinels, AND preceding newlines, so the effect is something
+like this:
+
+.... some code....
+
+   next line;
+}
+#@verbatim
+#@ leo sentinel here...
+#
+
+    If  ( something ) {
+      more code;
+......
+
+becomes:
+
+.... some code....
+
+   next line;
+} If  ( something ) {
+      more code;
+......
+
+Now, that may be annoying, but mildly so - it still runs.
+When this:
+
+#
+#@verbatim
+#@ sentinel
+if () {
+
+turns to this:
+
+# if() {
+
+code just breaks.
+#@nonl
+#@-node:ekr.20051104152338.1:Report
+#@-node:ekr.20051104152338:Fix bug in Remove Sentinels command
+#@+node:ekr.20051014152256:Fix long-standing bug in import code
+Improve import code so it handles stufff like this from Ipyton/iplib
+
+### This should *not* terminate the function!
+
+    self.LOGHEAD = Itpl(
+"""#log# Automatic Logger file. *** THIS MUST BE THE FIRST LINE ***
+#log# DO NOT CHANGE THIS LINE OR THE TWO BELOW
+#log# opts = $self.rc.opts
+#log# args = $self.rc.args
+#log# It is safe to make manual edits below here.
+#log#-----------------------------------------------------------------------
+""")
+
+- Handle blanks better in imports:
+    - Add tab_width keyword arg to import command.
+    - Convert tabs to blanks if tab width < 0.
+- Ignore position of blank lines wrt sentinels.
+- Ignore (optionally?) underindented blank lines.
+- Use pyclbr to parse Python imports?
+#@nonl
+#@+node:ekr.20040930075711:Handle underindented lines
+@nocolor
+
+Leo can't represent some files using nodes!
+
+I call this the "underindented blank line" problem.
+
+Example:
+
+@color
+
+class aClass:
+    def spam(): pass
+# comment line
+    def eggs(): pass
+    
+@nocolor
+
+Leo's import code can't handle this:
+    
+- If the import code puts the comment line in a node, the line won't be output with the proper indentation!!
+
+- Having the comment line stop the scanning of aClass is even worse.
+
+- This usually shows up with an unindented blank line instead of the comment line.
+#@nonl
+#@-node:ekr.20040930075711:Handle underindented lines
+#@+node:ekr.20040722132104:Write script to report underindented lines
+#@-node:ekr.20040722132104:Write script to report underindented lines
+#@-node:ekr.20051014152256:Fix long-standing bug in import code
+#@+node:ekr.20060107082929:Fix problem reporting indentation errors
+@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=3510448
+By: ktenney
+
+Howdy,
+
+I'm executing a script in a Leo node which has
+an indentation error. I get the following report,
+which doesn't help locate the error.
+
+Pardon me if this is well known issue, I don't
+remember discussion of it.
+
+Thanks,
+Kent
+
+################################################
+exception executing script
+Traceback (most recent call last):
+  File "C:\python24\lib\site-packages\leo\src\leoCommands.py", line 1277, in
+executeScript
+    exec script in d
+IndentationError: unindent does not match any outer indentation level (line
+103)
+--------------------
+  line 1276:                     # g.trace(script)
+* line 1277:                     exec script in d
+  line 1278:                     if not script1 and not silent:
+  line 1279:                         g.es("end of script",color="purple")
+
+#@-node:ekr.20060107082929:Fix problem reporting indentation errors
+#@+node:ekr.20060325091249:@shortcut does not work: remove it?
+#@-node:ekr.20060325091249:@shortcut does not work: remove it?
+#@+node:ekr.20060609070148:Fix hung (zombie) windows)
+@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=3768494
+By: ktenney
+
+I'm using current CVS, W2k
+
+1 open a Leo file (I'm using a batch file / console)
+
+2 click Edit->Open   <-- Having this dialog open is the problem.
+
+3 return focus to the Leo window
+
+4 click Help->Open leoDocs.leo
+
+Zombie!
+#@-node:ekr.20060609070148:Fix hung (zombie) windows)
+#@+node:ekr.20060610193837:open python window does not appear to work on Solaris
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3771068
+By: leouser
+
+The open python window does not appear to work on Solaris.
+
+http://sourceforge.net/forum/message.php?msg_id=3771167
+By: nobody
+
+from what I could see it looked like it was trying to start the shell up with
+a location that pointed to a nonexistent path.
+#@nonl
+#@-node:ekr.20060610193837:open python window does not appear to work on Solaris
+#@+node:ekr.20060610212014:Problems with tutorial command
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3771026
+By: paulpaterson
+
+I'm finally migrating to 4.4 and having got myself stuck in the minibuffer and
+not knowing how to get out (! shouldn't <esc> do that ?!) I thought I'd consult
+the help!
+
+Clicking on "Help ... Open offline tutorial" looked like a good option. However,
+when you click on this you are asked if you want to "Download tutorial (sbooks.chm)
+from SourceForge?".
+
+This was a bit surprising and confusing as I'd requested the offline tutorial
+and wasn't expecting to go online to get it! Also, from the prompt I have no
+idea if that is what I want to do.
+
+Couldn't this file be distributed with Leo?
+#@nonl
+#@-node:ekr.20060610212014:Problems with tutorial command
+#@-node:ekr.20060227163215:Fix *all* bugs
+#@+node:ekr.20060530110450:Test major Emacs commands
+@nocolor
+
+- Macros
+- Lossage
+- History
+- Yank & Kill
+- Insert newline (look up proper behavior).
+#@nonl
+#@-node:ekr.20060530110450:Test major Emacs commands
+#@-node:ekr.20060531161030:To do: B3
+#@+node:ekr.20060527164612:Important 1-2 day projects (1-2 weeks)
+#@+node:ekr.20040919182750.1:Better handling of whitespace (cvs fiendly)
+http://sourceforge.net/forum/message.php?msg_id=3578166
+#@nonl
+#@+node:ekr.20040721094203:Make sure Leo uses "verbatim" whitespace
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=2674828
+By: bwmulder
+
+If I understand correctly, there are two different problems:
+
+- Trailing whitespaces
+- Left indented comments
+
+1. Before commenting on these, a question:
+
+If I write something like
+    a=b
+    if a:
+        @others
+
+[four spaces indentation]
+
+I sometimes see tab characters before the lines inserted for '@others'.
+
+It seems that Leo remembers 'two levels of indentation', and then
+fabricates this indentation using tab characters.
+
+I think it might be more robust if Leo remembered the actual
+characters in front of @others and would use them for indentation.
+
+I suspect that many indentation errors I had with Leo could have been
+avoided had not Leo had its own ideas on how to do indentation.
+
+Maybe Leo could use the exact sequence of characters in front of
+@others for all inserted lines?
+
+2. I do not care much about trailing whitespaces. Most of the time
+they are invisible, but sometimes they are very misleading (trailing in python or C).
+
+As far as I am concerned, Leo need never produce trailing whitespaces.
+
+Maybe we need special machinerie if sources have trailing whitespaces
+and the sources are not under our control. 
+
+Not sure if everybody would be happy if we essentially ban all trailing
+whitespaces.
+
+3. Unindented commentlines could be dealt with by using indentation to
+indicate structure.
+
+Of course, this might break the correspondance Leo structure / Python
+structure, which is very ugly.
+
+4. One possible alternative might be a new directive which indicates outindent:
+
+@outindent <number>.
+
+This would apply to the next comment block.
+
+To me, 4. looks a little bit less ugly than 3.
+
+5. As indicated in a different post, I suspect that Leo has a problem
+if almost every node in an outline is changed. Profiling should point
+to the culprit.
+
+> 2. Have Leo strip whitespace from otherwise blank lines, and hope
+that that solves all problems in Perfect Import. This is solving the
+problem in the atFile code. The problem is that if we apply settings
+in general we will get massive changes to derived files. In most
+programming settings these changes might be welcome, but the problem
+is actually making these changes. My first few attempts met with
+abject failure.
+
+Are you saying that you could not remove trailing blanks? What kind of
+problems did you run into?
+
+Summary:
+- Use actual characters in front of @others or <<>> for indentation.
+- Don't write trailing whitespaces
+- Introduce directive for left-indendet comments.
+- Profile to find out what slows Leo down if many nodes change.
+#@nonl
+#@-node:ekr.20040721094203:Make sure Leo uses "verbatim" whitespace
+#@+node:ekr.20040720103642.1:Script to remove trailing body newlines VERY DANGEROUS
+count = 0 ; seen = {}
+
+c.beginUpdate()
+try:
+    for p in c.all_positions_iter():
+        if seen.get(p.v.t): continue
+        s = p.bodyString()
+        if s:
+            s2 = s.rstrip() + '\n'
+            if s2 != s:
+                # Do NOT set anything dirty here!
+                s2 = g.toUnicode(s2,g.app.tkEncoding,reportErrors=True)
+                ### p.v.t.bodyString = s2
+                seen [p.v.t] = True
+                count += 1
+finally:
+    c.endUpdate()
+
+g.es_print("%d nodes converted" % count)
+g.es_print("You MUST do Write All Nodes AND Save this file to complete the conversion")
+#@nonl
+#@-node:ekr.20040720103642.1:Script to remove trailing body newlines VERY DANGEROUS
+#@+node:EKR.20040603092958.1:Add new options for handling newlines in body text
+@nocolor
+
+- "asis":  ideal, maybe not possible?
+- "zero": no trailing newlines.
+- "one": exactly one trailing newline.
+
+Special case code is required so empty nodes stay empty with "one" option.
+#@nonl
+#@-node:EKR.20040603092958.1:Add new options for handling newlines in body text
+#@-node:ekr.20040919182750.1:Better handling of whitespace (cvs fiendly)
+#@+node:ekr.20031218072017.801:Support .leo.gz or .leo.zip files
+#@+node:ekr.20050428062312:Request 1
+@nocolor
+
+By: samcollett ( Sam Collett ) 
+ Compressed LEO files   
+2003-01-07 16:57
+
+
+Would it be possible to have a new file format that was basically a compressed
+version of LEO files? Maybe using the gzip compression method. You could then
+save a lot of space when you do large files. Not being a professional
+programmer myself (I mainly dabble in web design - HTML and Active Server
+Pages) how difficult would this be to implement? You would just output using a
+different file extension so users of the older versions can still use files
+with the LEO extension.
+#@-node:ekr.20050428062312:Request 1
+#@+node:ekr.20040226092546:Request 2
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=2442772
+By: ejoy
+
+I made an experiment last night. I replaced the call to open()in leofilecommand.py
+with a call to gzip.open().
+
+The LeoPy.leo file saved this way is only 600K! And there is no significant
+speed down in saving.
+
+I think it is a good idea to add compression support for load/save .leo files.
+When reading or writing file with name ending with ".leo.gz", leo can call gzip
+module to uncompress/compress the file, saving a lot of disk space.
+
+What do you think of this?
+#@nonl
+#@-node:ekr.20040226092546:Request 2
+#@+node:ekr.20031218072017.2297:open (leoFileCommands)
+def open(self,theFile,fileName,readAtFileNodesFlag=True,silent=False):
+
+    c = self.c ; frame = c.frame
+    # Read the entire file into the buffer
+    self.fileBuffer = theFile.read() ; theFile.close()
+    self.fileIndex = 0
+    << Set the default directory >>
+    self.topPosition = None
+    ok, ratio = self.getLeoFile(
+        fileName,
+        readAtFileNodesFlag=readAtFileNodesFlag,
+        silent=silent)
+    frame.resizePanesToRatio(ratio,frame.secondary_ratio)
+    if 0: # 1/30/04: this is useless.
+        if self.topPosition: 
+            c.setTopVnode(self.topPosition)
+    # Delete the file buffer
+    self.fileBuffer = ""
+    return ok
+#@nonl
+#@+node:ekr.20031218072017.2298:<< Set the default directory >>
+@ The most natural default directory is the directory containing the .leo file that we are about to open.  If the user has specified the "Default Directory" preference that will over-ride what we are about to set.
+@c
+
+theDir = g.os_path_dirname(fileName)
+
+if len(theDir) > 0:
+    c.openDirectory = theDir
+#@nonl
+#@-node:ekr.20031218072017.2298:<< Set the default directory >>
+#@-node:ekr.20031218072017.2297:open (leoFileCommands)
+#@+node:ekr.20050428063105:newOpen (From chapters.py)
+oldOpen = leoFileCommands.fileCommands.open
+
+def newOpen( self,file,fileName,readAtFileNodesFlag=True,silent=False):
+
+    global iscStringIO
+    c = self.c
+    
+    if zipfile.is_zipfile( fileName ):
+        iscStringIO = True
+        chapters = openChaptersFile( fileName )
+        g.es( str( len( chapters ) ) + " Chapters To Read", color = 'blue' )
+        insertChapters( chapters, c.frame, c )
+        g.es( "Finished Reading Chapters", color = 'blue' )
+        iscStringIO = False
+        return True
+
+    return oldOpen(self,file,fileName,readAtFileNodesFlag,silent)
+#@nonl
+#@-node:ekr.20050428063105:newOpen (From chapters.py)
+#@-node:ekr.20031218072017.801:Support .leo.gz or .leo.zip files
+#@+node:ekr.20050419060645:Alternate lead-in characters
+@nocolor
+
+An @decorator setting might be good. This would be a list of all Python
+decorators. Leo would create @verbatim sentinels for these.
+#@nonl
+#@-node:ekr.20050419060645:Alternate lead-in characters
+#@+node:ekr.20060603184747:New commands for mouseless Leo
+@nocolor
+
+- repeat-complex-command
+
+- Repeat counts for cursor moves.
+
+- move-to-last-sibling, move-to-first-sibling, Alt-1, Alt-9?
+
+- help-for-command-mode: shows top-level plain bindings.
+
+@color
+#@nonl
+#@-node:ekr.20060603184747:New commands for mouseless Leo
+#@+node:ekr.20060530130736.2:Customize Open With menu without writing code
+http://sourceforge.net/forum/message.php?msg_id=3737745
+
+Desparately needs a way to modify the Open-With menu other than going
+in and changing the code.
+#@+node:ekr.20060619101345:@open-with settings
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3785897
+
+From: Rich
+
+Would it be possible to have the table of "Open With" editors to be part of
+the config system? I find myself patching the list every time I D/L a new Leo
+version to add the editor I use. This would also help isolate the user from
+the "guts" of Leo, theereby being less intimidating.
+
+Yes, it would be possible because everything in the table is a string (and not,
+e.g., a reference to a method). This would require support for @open-with in
+@settings trees.
+#@-node:ekr.20060619101345:@open-with settings
+#@-node:ekr.20060530130736.2:Customize Open With menu without writing code
+#@+node:ekr.20060306194040:More screen shots or video tutorial on Leo's web site
+
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3615177
+By: ktenney
+
+High on my ToLearn list is vnc2swf
+http://www.unixuser.org/~euske/vnc2swf/
+
+
+http://sourceforge.net/forum/message.php?msg_id=3615278
+By: James
+
+A lot of people are now using Wink for demonstrations
+(http://www.debugmode.com/wink/), it's is free and seems to work well.
+#@+node:ekr.20060531134434:Tutorials
+http://sourceforge.net/forum/message.php?msg_id=3758271
+
+From: Rich
+
+Tutorials would be great. I use Liberty BASIC, (http://libertybasic.conforums.com)
+and it has a very good tutorial -- leads the beginner by the hand through much
+of the language. Also the help file has working code snippets
+to cut-n-paste-n-play-with. I'd like to see something like:
+
+[Buttons]
+...[What are Buttons good for?]
+...[How do I make my own buttons?]
+......[Some commands you can use with buttons]
+......[Where to find button commands]
+#@nonl
+#@-node:ekr.20060531134434:Tutorials
+#@+node:ekr.20060531134434.1:Screencasts
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3758303
+By: ktenney
+
+My sense is that documentation/screencasts has the
+greatest potential for expanding Leo's mindshare.
+
+I really like those produced by the good folks
+at Dabo;
+http://leafe.com/screencasts/
+http://leafe.com/screencasts/populategrid.html
+
+The TurboGears people have taken this to the extreme;
+http://www.turbogears.org/ultimate.html
+
+Leo is different enough that it warrants a 
+demonstration of it's advantages.
+#@nonl
+#@-node:ekr.20060531134434.1:Screencasts
+#@-node:ekr.20060306194040:More screen shots or video tutorial on Leo's web site
+#@+node:ekr.20060530085844:Improve autocompletion
+#@-node:ekr.20060530085844:Improve autocompletion
+#@+node:ekr.20041022091645.4:Pymacs
+#@+node:ekr.20040125121407:Postings
+@nocolor
+#@nonl
+#@+node:ekr.20040125121407.1:randomandy
+http://sourceforge.net/forum/message.php?msg_id=2389876
+By: randomandy
+
+Is it only me who sees this as a question on how to reinvent the wheel? (or
+in the case of emacs, how to reinvent the <i>everything</i>.)
+
+Leo and Python both seem so well suited as wonderful hierarchal glue programs.
+And both are so elegant in the way their simple functionality brings such power
+and order to the cause. It just seems it would be a shame to take something
+so novel and unique and try to turn it into <i>yet another</i> huge text editor.
+
+I'm with <A HREF="http://sourceforge.net/forum/message.php?msg_id=2345873">Danny
+</A> on this one. The ideal solution is to find the most elegant and seamless
+way to splice one's own beloved text editor (or multipurpose editor/OS) in with
+the Leo paradigm. Have Leo hand off the text duties to the editor, or have the
+editor deliver heirarchy commands to Leo.
+
+I'm also quite curious if this makes a good tie in with SciTE. SciTE produces
+stunningly readible language highlighting/formatting. Could it be employed for
+basic cell text display, and then for heavier editing, a keystroke or button
+could open the cell text in one's preferred weapons grade text editor?
+
+Scintilla also has a similarly beautiful code-to-html and code-to-pdf capability
+that seems very suited to the literary part of the Leo paradigm: publication.
+It would be nice if that code could be exploited as well.
+
+This Leo is really a marvelous work. It's transforming the way I think (i.e.
+making it possible again). Nice work, Edward.
+#@-node:ekr.20040125121407.1:randomandy
+#@+node:ekr.20040125121407.2:dannyobrien
+By: dannyobrien ( danny o'brien ) 
+ RE: What would it take to turn Leo into Emacs   
+2003-12-23 09:18  
+
+ I agree with the embedding; I've used the vim plugin and it works well, but actually embedding the editor directly into the text field of leo (and allowing a range of keyboard shortcuts for eg headline editing) would be perfect.
+
+There is some support for this in gvim, the GUI version of vim that comes as standard. This can be run so as its GUI is "embedded" in another GTK widget, using that library's GtkSocket/GtkPlug system. A quick demo of that (and how to do it in python) is here:
+
+http://www.daa.com.au/pipermail/pygtk/2003-October/006185.html
+
+To see this working with gvim, run the second (socket.py) program on that page then type
+
+gvim --socketid <number generated by socket.py>
+
+I'm not sure how you could do this in other widget libraries - I don't know much about X Windows, but I suppose it would need support in vim as well as the widget set.
+ 
+#@-node:ekr.20040125121407.2:dannyobrien
+#@+node:ekr.20040125121407.3:mdawson
+http://sourceforge.net/forum/message.php?msg_id=2388448
+By: mdawson
+
+I use XEmacs as my text editor.  The first thing I did when
+evaluating Leo was to set up "open with" to use XEmacs for editing
+Leo body text.
+
+My progress so far:
+
+- my Open_With Plugin opens a Leo node as a foreground buffer in
+XEmacs, or a background (invisible) buffer in XEmacs.
+
+- my Open_Tree Plugin opens a sub-tree of Leo nodes as background
+buffers in XEmacs.
+
+- my filename modification plugin changes the temporary file names
+used by Leo so that they can be spotted more easily in an XEmacs
+buffer listing (e.g. ibuffer).
+
+- an elisp function to kill all XEmacs Leo buffers at once.
+
+- another elisp function to indent and unindent the Leo comments in
+derived Python source, which improves the readability of code.
+
+- my setup of the elisp Multiple-Major-Modes XEmacs package, so that
+XEmacs is in text-mode in Leo @doc sections, and the correct
+language mode in @code sections.
+
+Any of these might be able to be adapted for your own use. They
+should all work with Emacs as well as XEmacs, but I've not tested
+that.
+
+These are all outlined in Appendix "C. XEmacs Text Editor" of the
+document at:
+    http://devguide.leo.marshallresearch.ca
+
+and the Leo outline that contains them is available at:
+    http://leo.marshallresearch.ca
+
+
+    ----------------------------------------
+    Michael Dawson
+#@nonl
+#@-node:ekr.20040125121407.3:mdawson
+#@-node:ekr.20040125121407:Postings
+#@+node:ekr.20041022144159:Q: Pymacs bridge
+I'm trying to use the Pymacs bridge to add a symbol completion facility to
+Emacs's python-mode.  Neither the Python nor Emacs Lisp portions are all
+that complex, but I'm having trouble passing a list of strings from Emacs
+Lisp into Python.  On the Emacs Lisp side it looks like this:
+
+    (pymacs-load "pycomplete")
+
+    (defun py-complete ()
+      (interactive)
+      (pycomplete-pycomplete (py-symbol-near-point)
+                             (py-find-global-imports)))
+
+(py-find-global-imports) returns a (Lisp) list of strings, e.g.:
+
+    ("import time", "import sys")
+
+On the Python side I have this function:
+
+    def pycomplete(s, imports=None):
+        completions = get_all_completions(s, imports)
+        dots = s.split(".")
+        return os.path.commonprefix([k[len(dots[-1]):] for k in completions])
+
+Unfortunately, the imports arg does not come across as a Python list of
+strings (s does come across the bridge as a normal Python string).  Its
+repr() prints out like this:
+
+    lisp('("import time")')
+
+What do I need to do to convert that object into a true Python list of
+strings?  I'm afraid I don't quite understand the description of the lisp
+object in the Pymacs docs.  I tried imports.value() but that just gave me
+
+    (aref pymacs-lisp 0)
+
+Any help appreciated...
+
+Skip
+#@nonl
+#@-node:ekr.20041022144159:Q: Pymacs bridge
+#@+node:ekr.20041022144159.1:A: pymacs-forget-mutability
+"""
+Proper Emacs Lisp lists, those for which the cdr of last cell is nil, are
+normally transmitted opaquely to Python. If pymacs-forget-mutability is
+set, or if Python later asks for these to be expanded, proper Emacs Lisp
+lists get converted into Python lists, if we except the empty list, which
+is always converted as Python None. In the other direction, Python lists
+are always converted into proper Emacs Lisp lists.
+"""
+
+So, maybe try
+
+    (defun py-complete ()
+      (interactive)
+      (let ((pymacs-forget-mutability t)) 
+	(pycomplete-pycomplete (py-symbol-near-point)
+                               (py-find-global-imports))))
+#@-node:ekr.20041022144159.1:A: pymacs-forget-mutability
+#@-node:ekr.20041022091645.4:Pymacs
+#@-node:ekr.20060527164612:Important 1-2 day projects (1-2 weeks)
+#@+node:ekr.20060527182117:Important 1-2 week projects (2-3 weeks)
 #@+node:ekr.20051202094427:Resolve cvs conflicts
 Investigate meld:  http://meld.sourceforge.net/
 #@nonl
@@ -436,530 +1425,14 @@ other?
 #@-node:ekr.20031218072017.662:Gil 2
 #@-node:ekr.20060601073503:Postings
 #@-node:ekr.20051202094427:Resolve cvs conflicts
-#@+node:ekr.20040919182750.1:Better handling of whitespace (cvs fiendly)
-http://sourceforge.net/forum/message.php?msg_id=3578166
+#@+node:ekr.20041228084830.3:Finish wxWindows plugin
+#@+node:ekr.20060529130339:Don't use body wrappers, use g.app.gui methods instead
+#@-node:ekr.20060529130339:Don't use body wrappers, use g.app.gui methods instead
+#@+node:ekr.20060527190832.1:Add gui index conversion methods
+Add gui.toPythonIndex(s,index) and gui.toGuiIndex(s,index)
 #@nonl
-#@+node:ekr.20040721094203:Make sure Leo uses "verbatim" whitespace
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=2674828
-By: bwmulder
-
-If I understand correctly, there are two different problems:
-
-- Trailing whitespaces
-- Left indented comments
-
-1. Before commenting on these, a question:
-
-If I write something like
-    a=b
-    if a:
-        @others
-
-[four spaces indentation]
-
-I sometimes see tab characters before the lines inserted for '@others'.
-
-It seems that Leo remembers 'two levels of indentation', and then
-fabricates this indentation using tab characters.
-
-I think it might be more robust if Leo remembered the actual
-characters in front of @others and would use them for indentation.
-
-I suspect that many indentation errors I had with Leo could have been
-avoided had not Leo had its own ideas on how to do indentation.
-
-Maybe Leo could use the exact sequence of characters in front of
-@others for all inserted lines?
-
-2. I do not care much about trailing whitespaces. Most of the time
-they are invisible, but sometimes they are very misleading (trailing in python or C).
-
-As far as I am concerned, Leo need never produce trailing whitespaces.
-
-Maybe we need special machinerie if sources have trailing whitespaces
-and the sources are not under our control. 
-
-Not sure if everybody would be happy if we essentially ban all trailing
-whitespaces.
-
-3. Unindented commentlines could be dealt with by using indentation to
-indicate structure.
-
-Of course, this might break the correspondance Leo structure / Python
-structure, which is very ugly.
-
-4. One possible alternative might be a new directive which indicates outindent:
-
-@outindent <number>.
-
-This would apply to the next comment block.
-
-To me, 4. looks a little bit less ugly than 3.
-
-5. As indicated in a different post, I suspect that Leo has a problem
-if almost every node in an outline is changed. Profiling should point
-to the culprit.
-
-> 2. Have Leo strip whitespace from otherwise blank lines, and hope
-that that solves all problems in Perfect Import. This is solving the
-problem in the atFile code. The problem is that if we apply settings
-in general we will get massive changes to derived files. In most
-programming settings these changes might be welcome, but the problem
-is actually making these changes. My first few attempts met with
-abject failure.
-
-Are you saying that you could not remove trailing blanks? What kind of
-problems did you run into?
-
-Summary:
-- Use actual characters in front of @others or <<>> for indentation.
-- Don't write trailing whitespaces
-- Introduce directive for left-indendet comments.
-- Profile to find out what slows Leo down if many nodes change.
-#@nonl
-#@-node:ekr.20040721094203:Make sure Leo uses "verbatim" whitespace
-#@+node:ekr.20040720103642.1:Script to remove trailing body newlines VERY DANGEROUS
-count = 0 ; seen = {}
-
-c.beginUpdate()
-try:
-    for p in c.all_positions_iter():
-        if seen.get(p.v.t): continue
-        s = p.bodyString()
-        if s:
-            s2 = s.rstrip() + '\n'
-            if s2 != s:
-                # Do NOT set anything dirty here!
-                s2 = g.toUnicode(s2,g.app.tkEncoding,reportErrors=True)
-                ### p.v.t.bodyString = s2
-                seen [p.v.t] = True
-                count += 1
-finally:
-    c.endUpdate()
-
-g.es_print("%d nodes converted" % count)
-g.es_print("You MUST do Write All Nodes AND Save this file to complete the conversion")
-#@nonl
-#@-node:ekr.20040720103642.1:Script to remove trailing body newlines VERY DANGEROUS
-#@+node:EKR.20040603092958.1:Add new options for handling newlines in body text
-@nocolor
-
-- "asis":  ideal, maybe not possible?
-- "zero": no trailing newlines.
-- "one": exactly one trailing newline.
-
-Special case code is required so empty nodes stay empty with "one" option.
-#@nonl
-#@-node:EKR.20040603092958.1:Add new options for handling newlines in body text
-#@-node:ekr.20040919182750.1:Better handling of whitespace (cvs fiendly)
-#@-node:ekr.20060603131801:Urgent
-#@+node:ekr.20060227163215:Fix *all* bugs
-#@+node:ekr.20060120084705:Overwrite mode doesn't work in headllines
-#@-node:ekr.20060120084705:Overwrite mode doesn't work in headllines
-#@+node:ekr.20060117074259:Handle Mac issues
-#@+node:ekr.20060117074259.1:Mac indentation problem
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3526056
-By: nobody
-
-Hi Edward. I've been using the linux and windows version but would like to try
-leo on the mac. The install instructions seem a bit out of date. I take it any
-additional downloading of TclTkAqua is unneccessary?
-
-I have python2.4 in addition to the stock python 2.3.5 that comes with osx 10.4.
-Launching leo like so:  "python2.4 leo.py", as I do on linux, seems to run just
-fine.
-
-I don't know if this was fixed on osx or in leo in general, but moving the mouse
-to each of the panes and scrolling with the wheel works just great now. Thanks.
-
-Plugin manager: the plugin text font is really tiny, and the window opens to
-a default width such that the 'Installed Plugins' button reads 'talled Plugi'.
-Resizing the window does stretch the buttons horizontally.
-
-Ok -- here's maybe a big issue. I open a new leo file (File->New) and type in:
-
-for i in range(3):
-
-I hit return after the colon, but a newline is not entered.
-
-Stephen
-#@-node:ekr.20060117074259.1:Mac indentation problem
-#@+node:ekr.20051112080017:Problem removing script buttons on the mac
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3423121
-By: nobody
-
-Hi! I need help removing script buttons. It says I should right click the ofending
-button. I have a mac and Ctl-click, Command-click, etc doesn't work. What should
-I do?
-
-EKR: This is on the list of unfixable bugs, but I have a hard time believing there is no workaround.
-#@nonl
-#@-node:ekr.20051112080017:Problem removing script buttons on the mac
-#@+node:ekr.20060116083043:Use special Help menu on the Mac
-# http://sourceforge.net/forum/message.php?msg_id=3237845
-#@nonl
-#@+node:ekr.20031218072017.3803:createHelpMenuFromTable
-def createHelpMenuFromTable (self):
-
-    if 0: ## sys.platform == 'darwin':
-        helpMenu = self.getMacHelpMenu()
-        if not helpMenu: return
-    else:
-        helpMenu = self.createNewMenu("&Help")
-    
-    self.createMenuEntries(helpMenu,self.helpMenuTopTable)
-    
-    if sys.platform=="win32":
-        self.createMenuEntries(helpMenu,self.helpMenuTop2Table)
-    
-    self.createMenuEntries(helpMenu,self.helpMenuTop3Table)
-#@nonl
-#@-node:ekr.20031218072017.3803:createHelpMenuFromTable
-#@+node:ekr.20031218072017.4113:new_menu
-def new_menu(self,parent,tearoff=False):
-    
-    """Wrapper for the Tkinter new_menu menu method."""
-
-    return Tk.Menu(parent,tearoff=tearoff)
-#@nonl
-#@-node:ekr.20031218072017.4113:new_menu
-#@+node:ekr.20031218072017.3804:createNewMenu (contains Tk code)
-def createNewMenu (self,menuName,parentName="top",before=None):
-
-    try:
-        parent = self.getMenu(parentName) # parent may be None.
-        menu = self.getMenu(menuName)
-        if menu:
-            g.es("menu already exists: " + menuName,color="red")
-        else:
-            menu = self.new_menu(parent,tearoff=0)
-            self.setMenu(menuName,menu)
-            label = self.getRealMenuName(menuName)
-            amp_index = label.find("&")
-            label = label.replace("&","")
-            if before: # Insert the menu before the "before" menu.
-                index_label = self.getRealMenuName(before)
-                amp_index = index_label.find("&")
-                index_label = index_label.replace("&","")
-                index = parent.index(index_label)
-                self.insert_cascade(parent,index=index,label=label,menu=menu,underline=amp_index)
-            else:
-                self.add_cascade(parent,label=label,menu=menu,underline=amp_index)
-            return menu
-    except:
-        g.es("exception creating " + menuName + " menu")
-        g.es_exception()
-        return None
-#@nonl
-#@-node:ekr.20031218072017.3804:createNewMenu (contains Tk code)
-#@+node:ekr.20031218072017.3807:getMenu, setMenu, destroyMenu
-def getMenu (self,menuName):
-
-    cmn = self.canonicalizeMenuName(menuName)
-    return self.menus.get(cmn)
-    
-def setMenu (self,menuName,menu):
-    
-    cmn = self.canonicalizeMenuName(menuName)
-    self.menus [cmn] = menu
-    
-def destroyMenu (self,menuName):
-    
-    cmn = self.canonicalizeMenuName(menuName)
-    del self.menus[cmn]
-#@nonl
-#@-node:ekr.20031218072017.3807:getMenu, setMenu, destroyMenu
-#@+node:ekr.20060211144330.1:getMacHelpMenu
-def getMacHelpMenu (self):
-    
-    return None ###
-    
-    try:
-        helpMenu = Tk.Menu('top.help')
-        return helpMenu
-        
-    except Exception:
-        g.trace('Can not get MacOS Help menu')
-        g.es_exception()
-        return None
-#@nonl
-#@-node:ekr.20060211144330.1:getMacHelpMenu
-#@-node:ekr.20060116083043:Use special Help menu on the Mac
-#@-node:ekr.20060117074259:Handle Mac issues
-#@+node:ekr.20060202235215.3:Remove deprecation warning
-#@+node:EKR.20040627114602:getDescendentUnknownAttributes
-# Only @thin vnodes have the descendentTnodeUnknownAttributes field.
-# The question is: what are we to do about this?
-
-def getDescendentUnknownAttributes (self,s):
-    
-    try:
-        bin = binascii.unhexlify(s) # Throws a TypeError if val is not a hex string.
-        val = pickle.loads(bin)
-        return val
-
-    except (TypeError,pickle.UnpicklingError,ImportError):
-        g.trace('oops: getDescendentUnknownAttributes')
-        return None
-#@nonl
-#@-node:EKR.20040627114602:getDescendentUnknownAttributes
-#@-node:ekr.20060202235215.3:Remove deprecation warning
-#@+node:ekr.20060207085518:Improve c.insertHeadline (minor)
-c.insertHeadlineTime uses the edit widget.  It shouldn't.
-#@nonl
-#@-node:ekr.20060207085518:Improve c.insertHeadline (minor)
-#@+node:ekr.20051104152338:Fix bug in Remove Sentinels command
-#@+node:ekr.20051104152338.1:Report
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3413805
-By: nobody
-
-I thought this might be for 4.4a2, but I see the same effect w/ 
-Leo 4.3.3, build  1.282 , September 17, 2005
-Python 2.3.5, Tk 8.4.7, win32
-
-I haven't used Leo for code, but just started to try to re-organize some Perl
-I inherited.
-
-Leo apears to remove sentinels, AND preceding newlines, so the effect is something
-like this:
-
-.... some code....
-
-   next line;
-}
-#@verbatim
-#@ leo sentinel here...
-#
-
-    If  ( something ) {
-      more code;
-......
-
-becomes:
-
-.... some code....
-
-   next line;
-} If  ( something ) {
-      more code;
-......
-
-Now, that may be annoying, but mildly so - it still runs.
-When this:
-
-#
-#@verbatim
-#@ sentinel
-if () {
-
-turns to this:
-
-# if() {
-
-code just breaks.
-#@nonl
-#@-node:ekr.20051104152338.1:Report
-#@-node:ekr.20051104152338:Fix bug in Remove Sentinels command
-#@+node:ekr.20051014152256:Fix long-standing bug in import code
-Improve import code so it handles stufff like this from Ipyton/iplib
-
-### This should *not* terminate the function!
-
-    self.LOGHEAD = Itpl(
-"""#log# Automatic Logger file. *** THIS MUST BE THE FIRST LINE ***
-#log# DO NOT CHANGE THIS LINE OR THE TWO BELOW
-#log# opts = $self.rc.opts
-#log# args = $self.rc.args
-#log# It is safe to make manual edits below here.
-#log#-----------------------------------------------------------------------
-""")
-
-- Handle blanks better in imports:
-    - Add tab_width keyword arg to import command.
-    - Convert tabs to blanks if tab width < 0.
-- Ignore position of blank lines wrt sentinels.
-- Ignore (optionally?) underindented blank lines.
-- Use pyclbr to parse Python imports?
-#@nonl
-#@+node:ekr.20040930075711:Handle underindented lines
-@nocolor
-
-Leo can't represent some files using nodes!
-
-I call this the "underindented blank line" problem.
-
-Example:
-
-@color
-
-class aClass:
-    def spam(): pass
-# comment line
-    def eggs(): pass
-    
-@nocolor
-
-Leo's import code can't handle this:
-    
-- If the import code puts the comment line in a node, the line won't be output with the proper indentation!!
-
-- Having the comment line stop the scanning of aClass is even worse.
-
-- This usually shows up with an unindented blank line instead of the comment line.
-#@nonl
-#@-node:ekr.20040930075711:Handle underindented lines
-#@+node:ekr.20040722132104:Write script to report underindented lines
-#@-node:ekr.20040722132104:Write script to report underindented lines
-#@-node:ekr.20051014152256:Fix long-standing bug in import code
-#@+node:ekr.20060107082929:Fix problem reporting indentation errors
-@nocolor
-
-https://sourceforge.net/forum/message.php?msg_id=3510448
-By: ktenney
-
-Howdy,
-
-I'm executing a script in a Leo node which has
-an indentation error. I get the following report,
-which doesn't help locate the error.
-
-Pardon me if this is well known issue, I don't
-remember discussion of it.
-
-Thanks,
-Kent
-
-################################################
-exception executing script
-Traceback (most recent call last):
-  File "C:\python24\lib\site-packages\leo\src\leoCommands.py", line 1277, in
-executeScript
-    exec script in d
-IndentationError: unindent does not match any outer indentation level (line
-103)
---------------------
-  line 1276:                     # g.trace(script)
-* line 1277:                     exec script in d
-  line 1278:                     if not script1 and not silent:
-  line 1279:                         g.es("end of script",color="purple")
-
-#@-node:ekr.20060107082929:Fix problem reporting indentation errors
-#@+node:ekr.20060325091249:@shortcut does not work: remove it?
-#@-node:ekr.20060325091249:@shortcut does not work: remove it?
-#@+node:ekr.20060609070148:Fix hung (zombie) windows)
-@nocolor
-
-https://sourceforge.net/forum/message.php?msg_id=3768494
-By: ktenney
-
-I'm using current CVS, W2k
-
-1 open a Leo file (I'm using a batch file / console)
-
-2 click Edit->Open   <-- Having this dialog open is the problem.
-
-3 return focus to the Leo window
-
-4 click Help->Open leoDocs.leo
-
-Zombie!
-#@-node:ekr.20060609070148:Fix hung (zombie) windows)
-#@+node:ekr.20060610193837:open python window does not appear to work on Solaris
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3771068
-By: leouser
-
-The open python window does not appear to work on Solaris.
-
-http://sourceforge.net/forum/message.php?msg_id=3771167
-By: nobody
-
-from what I could see it looked like it was trying to start the shell up with
-a location that pointed to a nonexistent path.
-#@nonl
-#@-node:ekr.20060610193837:open python window does not appear to work on Solaris
-#@+node:ekr.20060610212014:Problems with tutorial command
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3771026
-By: paulpaterson
-
-I'm finally migrating to 4.4 and having got myself stuck in the minibuffer and
-not knowing how to get out (! shouldn't <esc> do that ?!) I thought I'd consult
-the help!
-
-Clicking on "Help ... Open offline tutorial" looked like a good option. However,
-when you click on this you are asked if you want to "Download tutorial (sbooks.chm)
-from SourceForge?".
-
-This was a bit surprising and confusing as I'd requested the offline tutorial
-and wasn't expecting to go online to get it! Also, from the prompt I have no
-idea if that is what I want to do.
-
-Couldn't this file be distributed with Leo?
-#@nonl
-#@-node:ekr.20060610212014:Problems with tutorial command
-#@-node:ekr.20060227163215:Fix *all* bugs
-#@+node:ekr.20060603090445.5:Later
-#@+node:ekr.20060619101345:@open-with settings
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3785897
-
-From: Rich
-
-Would it be possible to have the table of "Open With" editors to be part of
-the config system? I find myself patching the list every time I D/L a new Leo
-version to add the editor I use. This would also help isolate the user from
-the "guts" of Leo, theereby being less intimidating.
-
-Yes, it would be possible because everything in the table is a string (and not,
-e.g., a reference to a method). This would require support for @open-with in
-@settings trees.
-#@-node:ekr.20060619101345:@open-with settings
-#@+node:ekr.20060603184747:New commands for mouseless Leo
-@nocolor
-
-- repeat-complex-command
-
-- Repeat counts for cursor moves.
-
-- move-to-last-sibling, move-to-first-sibling, Alt-1, Alt-9?
-
-- help-for-command-mode: shows top-level plain bindings.
-
-@color
-#@nonl
-#@-node:ekr.20060603184747:New commands for mouseless Leo
-#@+node:ekr.20060530110450:Test major Emacs commands
-@nocolor
-
-- Macros
-- Lossage
-- History
-- Yank & Kill
-- Insert newline (look up proper behavior).
-#@nonl
-#@-node:ekr.20060530110450:Test major Emacs commands
-#@+node:ekr.20060530130736.2:Customize Open With menu without writing code
-http://sourceforge.net/forum/message.php?msg_id=3737745
-
-Desparately needs a way to modify the Open-With menu other than going
-in and changing the code.
-#@-node:ekr.20060530130736.2:Customize Open With menu without writing code
-#@+node:ekr.20060603090445.6:Document --> in release notes
-#@-node:ekr.20060603090445.6:Document --> in release notes
-#@+node:ekr.20060603073652:Rewrite commands chapter
-Or at least list all the new commands.
-#@nonl
-#@-node:ekr.20060603073652:Rewrite commands chapter
+#@-node:ekr.20060527190832.1:Add gui index conversion methods
+#@-node:ekr.20041228084830.3:Finish wxWindows plugin
 #@+node:ekr.20060603090445.7:Ipython stuff
 #@+node:ekr.20060603085719.1:Use IPython autocompleter?
 #@-node:ekr.20060603085719.1:Use IPython autocompleter?
@@ -972,327 +1445,6 @@ This would allow IPython-like operation.
 #@nonl
 #@-node:ekr.20060603090445.9:Script button that saves environment between runs
 #@-node:ekr.20060603090445.7:Ipython stuff
-#@-node:ekr.20060603090445.5:Later
-#@-node:ekr.20060531161030:To do: B3
-#@+node:ekr.20060527164612:Important 1-2 day projects (1-2 weeks)
-#@+node:ekr.20031218072017.801:Support .leo.gz or .leo.zip files
-#@+node:ekr.20050428062312:Request 1
-@nocolor
-
-By: samcollett ( Sam Collett ) 
- Compressed LEO files   
-2003-01-07 16:57
-
-
-Would it be possible to have a new file format that was basically a compressed
-version of LEO files? Maybe using the gzip compression method. You could then
-save a lot of space when you do large files. Not being a professional
-programmer myself (I mainly dabble in web design - HTML and Active Server
-Pages) how difficult would this be to implement? You would just output using a
-different file extension so users of the older versions can still use files
-with the LEO extension.
-#@-node:ekr.20050428062312:Request 1
-#@+node:ekr.20040226092546:Request 2
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=2442772
-By: ejoy
-
-I made an experiment last night. I replaced the call to open()in leofilecommand.py
-with a call to gzip.open().
-
-The LeoPy.leo file saved this way is only 600K! And there is no significant
-speed down in saving.
-
-I think it is a good idea to add compression support for load/save .leo files.
-When reading or writing file with name ending with ".leo.gz", leo can call gzip
-module to uncompress/compress the file, saving a lot of disk space.
-
-What do you think of this?
-#@nonl
-#@-node:ekr.20040226092546:Request 2
-#@+node:ekr.20031218072017.2297:open (leoFileCommands)
-def open(self,theFile,fileName,readAtFileNodesFlag=True,silent=False):
-
-    c = self.c ; frame = c.frame
-    # Read the entire file into the buffer
-    self.fileBuffer = theFile.read() ; theFile.close()
-    self.fileIndex = 0
-    << Set the default directory >>
-    self.topPosition = None
-    ok, ratio = self.getLeoFile(
-        fileName,
-        readAtFileNodesFlag=readAtFileNodesFlag,
-        silent=silent)
-    frame.resizePanesToRatio(ratio,frame.secondary_ratio)
-    if 0: # 1/30/04: this is useless.
-        if self.topPosition: 
-            c.setTopVnode(self.topPosition)
-    # Delete the file buffer
-    self.fileBuffer = ""
-    return ok
-#@nonl
-#@+node:ekr.20031218072017.2298:<< Set the default directory >>
-@ The most natural default directory is the directory containing the .leo file that we are about to open.  If the user has specified the "Default Directory" preference that will over-ride what we are about to set.
-@c
-
-theDir = g.os_path_dirname(fileName)
-
-if len(theDir) > 0:
-    c.openDirectory = theDir
-#@nonl
-#@-node:ekr.20031218072017.2298:<< Set the default directory >>
-#@-node:ekr.20031218072017.2297:open (leoFileCommands)
-#@+node:ekr.20050428063105:newOpen (From chapters.py)
-oldOpen = leoFileCommands.fileCommands.open
-
-def newOpen( self,file,fileName,readAtFileNodesFlag=True,silent=False):
-
-    global iscStringIO
-    c = self.c
-    
-    if zipfile.is_zipfile( fileName ):
-        iscStringIO = True
-        chapters = openChaptersFile( fileName )
-        g.es( str( len( chapters ) ) + " Chapters To Read", color = 'blue' )
-        insertChapters( chapters, c.frame, c )
-        g.es( "Finished Reading Chapters", color = 'blue' )
-        iscStringIO = False
-        return True
-
-    return oldOpen(self,file,fileName,readAtFileNodesFlag,silent)
-#@nonl
-#@-node:ekr.20050428063105:newOpen (From chapters.py)
-#@-node:ekr.20031218072017.801:Support .leo.gz or .leo.zip files
-#@+node:ekr.20050419060645:Alternate lead-in characters
-@nocolor
-
-An @decorator setting might be good. This would be a list of all Python
-decorators. Leo would create @verbatim sentinels for these.
-#@nonl
-#@-node:ekr.20050419060645:Alternate lead-in characters
-#@+node:ekr.20060306194040:More screen shots or video tutorial on Leo's web site
-
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3615177
-By: ktenney
-
-High on my ToLearn list is vnc2swf
-http://www.unixuser.org/~euske/vnc2swf/
-
-
-http://sourceforge.net/forum/message.php?msg_id=3615278
-By: James
-
-A lot of people are now using Wink for demonstrations
-(http://www.debugmode.com/wink/), it's is free and seems to work well.
-#@+node:ekr.20060531134434:Tutorials
-http://sourceforge.net/forum/message.php?msg_id=3758271
-
-From: Rich
-
-Tutorials would be great. I use Liberty BASIC, (http://libertybasic.conforums.com)
-and it has a very good tutorial -- leads the beginner by the hand through much
-of the language. Also the help file has working code snippets
-to cut-n-paste-n-play-with. I'd like to see something like:
-
-[Buttons]
-...[What are Buttons good for?]
-...[How do I make my own buttons?]
-......[Some commands you can use with buttons]
-......[Where to find button commands]
-#@nonl
-#@-node:ekr.20060531134434:Tutorials
-#@+node:ekr.20060531134434.1:Screencasts
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3758303
-By: ktenney
-
-My sense is that documentation/screencasts has the
-greatest potential for expanding Leo's mindshare.
-
-I really like those produced by the good folks
-at Dabo;
-http://leafe.com/screencasts/
-http://leafe.com/screencasts/populategrid.html
-
-The TurboGears people have taken this to the extreme;
-http://www.turbogears.org/ultimate.html
-
-Leo is different enough that it warrants a 
-demonstration of it's advantages.
-#@nonl
-#@-node:ekr.20060531134434.1:Screencasts
-#@-node:ekr.20060306194040:More screen shots or video tutorial on Leo's web site
-#@+node:ekr.20060530085844:Improve autocompletion
-#@-node:ekr.20060530085844:Improve autocompletion
-#@+node:ekr.20041022091645.4:Pymacs
-#@+node:ekr.20040125121407:Postings
-@nocolor
-#@nonl
-#@+node:ekr.20040125121407.1:randomandy
-http://sourceforge.net/forum/message.php?msg_id=2389876
-By: randomandy
-
-Is it only me who sees this as a question on how to reinvent the wheel? (or
-in the case of emacs, how to reinvent the <i>everything</i>.)
-
-Leo and Python both seem so well suited as wonderful hierarchal glue programs.
-And both are so elegant in the way their simple functionality brings such power
-and order to the cause. It just seems it would be a shame to take something
-so novel and unique and try to turn it into <i>yet another</i> huge text editor.
-
-I'm with <A HREF="http://sourceforge.net/forum/message.php?msg_id=2345873">Danny
-</A> on this one. The ideal solution is to find the most elegant and seamless
-way to splice one's own beloved text editor (or multipurpose editor/OS) in with
-the Leo paradigm. Have Leo hand off the text duties to the editor, or have the
-editor deliver heirarchy commands to Leo.
-
-I'm also quite curious if this makes a good tie in with SciTE. SciTE produces
-stunningly readible language highlighting/formatting. Could it be employed for
-basic cell text display, and then for heavier editing, a keystroke or button
-could open the cell text in one's preferred weapons grade text editor?
-
-Scintilla also has a similarly beautiful code-to-html and code-to-pdf capability
-that seems very suited to the literary part of the Leo paradigm: publication.
-It would be nice if that code could be exploited as well.
-
-This Leo is really a marvelous work. It's transforming the way I think (i.e.
-making it possible again). Nice work, Edward.
-#@-node:ekr.20040125121407.1:randomandy
-#@+node:ekr.20040125121407.2:dannyobrien
-By: dannyobrien ( danny o'brien ) 
- RE: What would it take to turn Leo into Emacs   
-2003-12-23 09:18  
-
- I agree with the embedding; I've used the vim plugin and it works well, but actually embedding the editor directly into the text field of leo (and allowing a range of keyboard shortcuts for eg headline editing) would be perfect.
-
-There is some support for this in gvim, the GUI version of vim that comes as standard. This can be run so as its GUI is "embedded" in another GTK widget, using that library's GtkSocket/GtkPlug system. A quick demo of that (and how to do it in python) is here:
-
-http://www.daa.com.au/pipermail/pygtk/2003-October/006185.html
-
-To see this working with gvim, run the second (socket.py) program on that page then type
-
-gvim --socketid <number generated by socket.py>
-
-I'm not sure how you could do this in other widget libraries - I don't know much about X Windows, but I suppose it would need support in vim as well as the widget set.
- 
-#@-node:ekr.20040125121407.2:dannyobrien
-#@+node:ekr.20040125121407.3:mdawson
-http://sourceforge.net/forum/message.php?msg_id=2388448
-By: mdawson
-
-I use XEmacs as my text editor.  The first thing I did when
-evaluating Leo was to set up "open with" to use XEmacs for editing
-Leo body text.
-
-My progress so far:
-
-- my Open_With Plugin opens a Leo node as a foreground buffer in
-XEmacs, or a background (invisible) buffer in XEmacs.
-
-- my Open_Tree Plugin opens a sub-tree of Leo nodes as background
-buffers in XEmacs.
-
-- my filename modification plugin changes the temporary file names
-used by Leo so that they can be spotted more easily in an XEmacs
-buffer listing (e.g. ibuffer).
-
-- an elisp function to kill all XEmacs Leo buffers at once.
-
-- another elisp function to indent and unindent the Leo comments in
-derived Python source, which improves the readability of code.
-
-- my setup of the elisp Multiple-Major-Modes XEmacs package, so that
-XEmacs is in text-mode in Leo @doc sections, and the correct
-language mode in @code sections.
-
-Any of these might be able to be adapted for your own use. They
-should all work with Emacs as well as XEmacs, but I've not tested
-that.
-
-These are all outlined in Appendix "C. XEmacs Text Editor" of the
-document at:
-    http://devguide.leo.marshallresearch.ca
-
-and the Leo outline that contains them is available at:
-    http://leo.marshallresearch.ca
-
-
-    ----------------------------------------
-    Michael Dawson
-#@nonl
-#@-node:ekr.20040125121407.3:mdawson
-#@-node:ekr.20040125121407:Postings
-#@+node:ekr.20041022144159:Q: Pymacs bridge
-I'm trying to use the Pymacs bridge to add a symbol completion facility to
-Emacs's python-mode.  Neither the Python nor Emacs Lisp portions are all
-that complex, but I'm having trouble passing a list of strings from Emacs
-Lisp into Python.  On the Emacs Lisp side it looks like this:
-
-    (pymacs-load "pycomplete")
-
-    (defun py-complete ()
-      (interactive)
-      (pycomplete-pycomplete (py-symbol-near-point)
-                             (py-find-global-imports)))
-
-(py-find-global-imports) returns a (Lisp) list of strings, e.g.:
-
-    ("import time", "import sys")
-
-On the Python side I have this function:
-
-    def pycomplete(s, imports=None):
-        completions = get_all_completions(s, imports)
-        dots = s.split(".")
-        return os.path.commonprefix([k[len(dots[-1]):] for k in completions])
-
-Unfortunately, the imports arg does not come across as a Python list of
-strings (s does come across the bridge as a normal Python string).  Its
-repr() prints out like this:
-
-    lisp('("import time")')
-
-What do I need to do to convert that object into a true Python list of
-strings?  I'm afraid I don't quite understand the description of the lisp
-object in the Pymacs docs.  I tried imports.value() but that just gave me
-
-    (aref pymacs-lisp 0)
-
-Any help appreciated...
-
-Skip
-#@nonl
-#@-node:ekr.20041022144159:Q: Pymacs bridge
-#@+node:ekr.20041022144159.1:A: pymacs-forget-mutability
-"""
-Proper Emacs Lisp lists, those for which the cdr of last cell is nil, are
-normally transmitted opaquely to Python. If pymacs-forget-mutability is
-set, or if Python later asks for these to be expanded, proper Emacs Lisp
-lists get converted into Python lists, if we except the empty list, which
-is always converted as Python None. In the other direction, Python lists
-are always converted into proper Emacs Lisp lists.
-"""
-
-So, maybe try
-
-    (defun py-complete ()
-      (interactive)
-      (let ((pymacs-forget-mutability t)) 
-	(pycomplete-pycomplete (py-symbol-near-point)
-                               (py-find-global-imports))))
-#@-node:ekr.20041022144159.1:A: pymacs-forget-mutability
-#@-node:ekr.20041022091645.4:Pymacs
-#@-node:ekr.20060527164612:Important 1-2 day projects (1-2 weeks)
-#@+node:ekr.20060527182117:Important 1-2 week projects (2-3 weeks)
-#@+node:ekr.20041228084830.3:Finish wxWindows plugin
-#@+node:ekr.20060529130339:Don't use body wrappers, use g.app.gui methods instead
-#@-node:ekr.20060529130339:Don't use body wrappers, use g.app.gui methods instead
-#@+node:ekr.20060527190832.1:Add gui index conversion methods
-Add gui.toPythonIndex(s,index) and gui.toGuiIndex(s,index)
-#@nonl
-#@-node:ekr.20060527190832.1:Add gui index conversion methods
-#@-node:ekr.20041228084830.3:Finish wxWindows plugin
 #@+node:ekr.20041228084018.5:Finish zodb plugin
 @ New notes:
 
