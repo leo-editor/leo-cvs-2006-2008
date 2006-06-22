@@ -3791,13 +3791,21 @@ def executeFile(filename, options= ''):
 #@nonl
 #@-node:ekr.20050503112513.7:g.executeFile
 #@+node:ekr.20060621164312:g.makeScriptButton
-def makeScriptButton (c,p,buttonText=None,balloonText='Script Button',shortcut=None,bg='LightSteelBlue1'):
+def makeScriptButton (c,
+    p=None, # A node containing the script.
+    script=None, # The script itself.
+    buttonText=None,
+    balloonText='Script Button',
+    shortcut=None,bg='LightSteelBlue1',
+    define_g=True,define_name='__main__',silent=False, # Passed on to c.executeScript.
+):
     
     '''Create a script button for the script in node p.
     The button's text defaults to p.headString'''
 
     k = c.k
-    if buttonText is None: buttonText = p.headString().strip()
+    if p and not buttonText: buttonText = p.headString().strip()
+    if not buttonText: buttonText = 'Unnamed Script Button'
     #@    << create the button b >>
     #@+node:ekr.20060621164312.1:<< create the button b >>
     iconBar = c.frame.getIconBarObject()
@@ -3821,12 +3829,15 @@ def makeScriptButton (c,p,buttonText=None,balloonText='Script Button',shortcut=N
         if b: b.pack_forget()
         c.frame.bodyWantsFocus()
         
-    def executeScriptCallback (event=None,p=p.copy(),b=b,c=c,buttonText=buttonText):
+    def executeScriptCallback (event=None,
+        b=b,c=c,buttonText=buttonText,p=p and p.copy(),script=script):
+    
         if c.disableCommandsMessage:
             g.es(c.disableCommandsMessage,color='blue')
         else:
             g.app.scriptDict = {}
-            c.executeScript(p=p,silent=True)
+            c.executeScript(p=p,script=script,
+            define_g= define_g,define_name=define_name,silent=silent)
             # Remove the button if the script asks to be removed.
             if g.app.scriptDict.get('removeMe'):
                 g.es("Removing '%s' button at its request" % buttonText)
