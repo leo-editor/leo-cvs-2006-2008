@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="291" clone_windows="0"/>
 <globals body_outline_ratio="0.549828178694">
-	<global_window_position top="75" left="241" height="683" width="929"/>
+	<global_window_position top="75" left="241" height="664" width="929"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -44,7 +44,7 @@
 <v t="ekr.20060112104823"><vh>main</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" a="V" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
@@ -454,7 +454,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060512084639" a="E"><vh>Recent</vh>
+<v t="ekr.20060512084639"><vh>Recent</vh>
 <v t="ekr.20060216135834"><vh>@bool enable_autocompleter_initially = False</vh></v>
 <v t="ekr.20060603070801"><vh>@bool enable_calltips_initially = False</vh></v>
 <v t="ekr.20060114073238"><vh>@bool trace_bindings = False</vh></v>
@@ -464,46 +464,7 @@
 <v t="ekr.20060209045356"><vh>@bool trace_masterFocusHandler = False</vh></v>
 <v t="ekr.20060131071612"><vh>@bool trace_masterKeyHandler = False</vh></v>
 <v t="ekr.20060121102627"><vh>@bool trace_modes = False</vh></v>
-<v t="ekr.20060620085654" a="V"><vh>@string editor_orientation = horizontal</vh></v>
-</v>
-<v t="ekr.20060603215208"><vh>@keys EKR bindings: vim mode bindings</vh>
-<v t="ekr.20060608065207"><vh>Settings related to key bindings</vh>
-<v t="ekr.20060604080653" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
-<v t="ekr.20060605081712"><vh>@color command_mode_bg_color = MistyRose1</vh></v>
-<v t="ekr.20060605081712.1"><vh>@color command_mode_fg_color = black</vh></v>
-<v t="ekr.20060605081712.2"><vh>@color insert_mode_bg_color = white</vh></v>
-<v t="ekr.20060605081712.3"><vh>@color insert_mode_fg_color = black</vh></v>
-<v t="ekr.20060606085536"><vh>@color overwrite_mode_bg_color = azure2</vh></v>
-<v t="ekr.20060606085536.1"><vh>@color overwrite_mode_fg_color = black</vh></v>
-</v>
-<v t="ekr.20060603215208.4"><vh>Modes</vh>
-<v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
-<v t="ekr.20060608185854"><vh>@mode commands</vh></v>
-<v t="ekr.20060608190813"><vh>@mode edit</vh></v>
-<v t="ekr.20060608191518" a="M"><vh>@mode emacs</vh></v>
-<v t="ekr.20060608185854.1"><vh>@mode extract</vh></v>
-<v t="ekr.20060603223152.1"><vh>@mode file</vh></v>
-<v t="ekr.20060603215208.7" a="M"><vh>@mode gui</vh>
-<v t="ekr.20060603215208.8"><vh>@mode Edit-extend</vh></v>
-</v>
-<v t="ekr.20060603223152"><vh>@mode help</vh>
-<v t="ekr.20060604083323"><vh>@mode apropos</vh></v>
-</v>
-<v t="ekr.20060604081740"><vh>@mode kill</vh></v>
-<v t="ekr.20060608184356"><vh>@mode modes</vh></v>
-<v t="ekr.20060604082857.1"><vh>@mode move-outline</vh></v>
-<v t="ekr.20060604082857"><vh>@mode outline</vh></v>
-<v t="ekr.20060603223152.2"><vh>@mode toggle-find</vh></v>
-</v>
-<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
-<v t="ekr.20060604081014"><vh>@@@@shortcuts top-level keys (like vim)</vh></v>
-<v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
-<v t="ekr.20060603215208.19"><vh>@shortcuts Find Commands</vh></v>
-<v t="ekr.20060603215208.20"><vh>@shortcuts Minibuffer bindings</vh></v>
-<v t="ekr.20060603215208.21" annotate="7d71002e"><vh>@shortcuts EKR: A-E</vh></v>
-<v t="ekr.20060603215208.22"><vh>@shortcuts EKR: F-M</vh></v>
-<v t="ekr.20060603215208.23" annotate="7d71002e"><vh>@shortcuts EKR: N-Z</vh></v>
-</v>
+<v t="ekr.20060620085654"><vh>@string editor_orientation = horizontal</vh></v>
 </v>
 </vnodes>
 <tnodes>

@@ -1891,60 +1891,6 @@ def handleMiniBindings (self,event,state,stroke):
     return False
 #@nonl
 #@-node:ekr.20060309065445:handleMiniBindings
-#@+node:ekr.20060120071949:isPlainKey & test
-def isPlainKey (self,shortcut):
-    
-    '''Return true if the shortcut refers to a plain (non-Alt,non-Ctl) key.'''
-
-    k = self ; shortcut = shortcut or ''
-    
-    for s in ('Alt','Ctrl','Command'):
-        if shortcut.find(s) != -1:
-            return False
-    else:
-        # Careful, allow bare angle brackets for unit tests.
-        if shortcut.startswith('<') and shortcut.endswith('>'):
-            shortcut = shortcut[1:-1]
-
-        isPlain = (
-            len(shortcut) == 1 or
-            len(k.tkBindNamesInverseDict.get(shortcut,'')) == 1 or
-            # A hack: allow Return to be bound to command.
-            shortcut == 'Tab'
-        )
-        
-        # g.trace(isPlain,repr(shortcut))
-        return isPlain
-#@nonl
-#@+node:ekr.20060606095344:test_isPlainKey
-def test_isPlainKey (self):
-    
-    import string
-    
-    k = c.k # self is a dummy argument
-    
-    for ch in (string.printable):
-        if ch == '\n': continue # A special case.
-        assert k.isPlainKey(ch), 'wrong: not plain: %s' % (ch)
-        
-    special = (
-        'Return', # A special case.
-        'Begin','Break','Caps_Lock','Clear','Down','End','Escape',
-        'F1','F2','F3','F4','F5','F6','F7','F8','F9','F10','F11','F12',
-        'KP_Add', 'KP_Decimal', 'KP_Divide', 'KP_Enter', 'KP_Equal',
-        'KP_Multiply, KP_Separator,KP_Space, KP_Subtract, KP_Tab',
-        'KP_F1','KP_F2','KP_F3','KP_F4',
-        'KP_0','KP_1','KP_2','KP_3','KP_4','KP_5','KP_6','KP_7','KP_8','KP_9',
-        'Home','Left','Linefeed','Next','Num_Lock',
-        'PageDn','PageUp','Pause','Prior','Right','Up',
-        'Sys_Req',
-    )
-
-    for ch in special:
-        assert not k.isPlainKey(ch), 'wrong: is plain: %s' % (ch)
-#@nonl
-#@-node:ekr.20060606095344:test_isPlainKey
-#@-node:ekr.20060120071949:isPlainKey & test
 #@-node:ekr.20060127183752:masterKeyHandler
 #@-node:ekr.20060609072012:Recent
 #@+node:ekr.20060603090445.1:Bugs fixed
@@ -2097,7 +2043,7 @@ lockout_onFocusIn = False
 
 def onFocusIn(self,w,setFocus=False):
 
-    c = self.c ; d = self.editorWidgets ; p = c.currentPosition()
+    c = self.c ; d = self.editorWidgets
     trace = False
     if self.lockout_onFocusIn:
         if trace: g.trace('lockout')
@@ -2361,7 +2307,7 @@ lockout_onFocusIn = False
 
 def onFocusIn(self,w,setFocus=False):
 
-    c = self.c ; d = self.editorWidgets ; p = c.currentPosition()
+    c = self.c ; d = self.editorWidgets
     trace = False
     if self.lockout_onFocusIn:
         if trace: g.trace('lockout')
@@ -2557,6 +2503,8 @@ AttributeError: 'NoneType' object has no attribute 'entryCommandName'
 def doMode(self,p,kind,name,val):
     
     '''Parse an @mode node and create the enter-<name>-mode command.'''
+    
+    __pychecker__ = '--no-argsused' # val not used.
     
     c = self.c ; k = c.k
     
@@ -2876,7 +2824,8 @@ def disableMenu (self,menu,name):
 def enableMenu (self,menu,name,val):
     self.oops()
     
-def getManuLabel(self,menu):
+def getManuLabel (self,menu):
+    __pychecker__ = '--no-argsused' # menu not used.
     self.oops()
     
 def setMenuLabel (self,menu,name,label,underline=-1):
@@ -2927,7 +2876,9 @@ def createModeBindings (self,modeName,d,w):
     
     '''Create mode bindings for the named mode using dictionary d for widget w.'''
     
-    k = self ; c = k.c ; f = c.frame
+    __pychecker__ = '--no-argsused' # w not used (except for debugging).
+    
+    k = self ; c = k.c
         
     # g.trace(g.listToString(d.keys()))
 
@@ -3039,7 +2990,6 @@ def registerCommand (self,commandName,shortcut,func,pane='all',verbose=True):
     else:
         # Try to get a shortcut from leoSettings.leo.
         junk,bunchList = c.config.getShortcut(commandName)
-        found = False
         for bunch in bunchList:
             accel2 = bunch.val ; pane2 = bunch.pane
             if accel2 and not pane2.endswith('-mode'):
@@ -3079,6 +3029,181 @@ def completeAllBindingsForWidget (self,w):
 #@nonl
 #@-node:ekr.20060221141535:k.completeAllBindingsForWidget
 #@-node:ekr.20060605121612.2:Simplified gui bindings
+#@+node:ekr.20060622100448:Created g.makeScriptButton
+#@+node:ekr.20060621164312:g.makeScriptButton
+def makeScriptButton (c,
+    p=None, # A node containing the script.
+    script=None, # The script itself.
+    buttonText=None,
+    balloonText='Script Button',
+    shortcut=None,bg='LightSteelBlue1',
+    define_g=True,define_name='__main__',silent=False, # Passed on to c.executeScript.
+):
+    
+    '''Create a script button for the script in node p.
+    The button's text defaults to p.headString'''
+
+    k = c.k
+    if p and not buttonText: buttonText = p.headString().strip()
+    if not buttonText: buttonText = 'Unnamed Script Button'
+    << create the button b >>
+    << define the callbacks for b >>
+    b.configure(command=executeScriptCallback)
+    b.bind('<3>',deleteButtonCallback)
+    if shortcut:
+        << bind the shortcut to executeScriptCallback >>
+    << create press-buttonText-button command >>
+#@nonl
+#@+node:ekr.20060621164312.1:<< create the button b >>
+iconBar = c.frame.getIconBarObject()
+b = iconBar.add(text=buttonText)
+
+if balloonText and balloonText != buttonText:
+    Pmw = g.importExtension('Pmw',pluginName='g.makeScriptButton',verbose=False)
+    if Pmw:
+        balloon = Pmw.Balloon(b,initwait=100)
+        balloon.bind(b,balloonText)
+
+if sys.platform == "win32":
+    width = int(len(buttonText) * 0.9)
+    b.configure(width=width,font=('verdana',7,'bold'),bg=bg)
+#@nonl
+#@-node:ekr.20060621164312.1:<< create the button b >>
+#@+node:ekr.20060621164312.2:<< define the callbacks for b >>
+def deleteButtonCallback(event=None,b=b,c=c):
+    if b: b.pack_forget()
+    c.frame.bodyWantsFocus()
+    
+def executeScriptCallback (event=None,
+    b=b,c=c,buttonText=buttonText,p=p and p.copy(),script=script):
+
+    if c.disableCommandsMessage:
+        g.es(c.disableCommandsMessage,color='blue')
+    else:
+        g.app.scriptDict = {}
+        c.executeScript(p=p,script=script,
+        define_g= define_g,define_name=define_name,silent=silent)
+        # Remove the button if the script asks to be removed.
+        if g.app.scriptDict.get('removeMe'):
+            g.es("Removing '%s' button at its request" % buttonText)
+            b.pack_forget()
+    # Do not assume the script will want to remain in this commander.
+#@nonl
+#@-node:ekr.20060621164312.2:<< define the callbacks for b >>
+#@+node:ekr.20060621164312.3:<< bind the shortcut to executeScriptCallback >>
+func = executeScriptCallback
+shortcut = k.canonicalizeShortcut(shortcut)
+ok = k.bindKey ('button', shortcut,func,buttonText)
+if ok:
+    g.es_print('Bound @button %s to %s' % (buttonText,shortcut),color='blue')
+#@nonl
+#@-node:ekr.20060621164312.3:<< bind the shortcut to executeScriptCallback >>
+#@+node:ekr.20060621164312.4:<< create press-buttonText-button command >>
+chars = g.toUnicode(string.letters + string.digits,g.app.tkEncoding)
+aList = [g.choose(ch in chars,ch,'-') for ch in g.toUnicode(buttonText,g.app.tkEncoding)]
+
+buttonCommandName = ''.join(aList)
+buttonCommandName = buttonCommandName.replace('--','-')
+buttonCommandName = 'press-%s-button' % buttonCommandName.lower()
+
+# This will use any shortcut defined in an @shortcuts node.
+k.registerCommand(buttonCommandName,None,executeScriptCallback,pane='button',verbose=False)
+#@nonl
+#@-node:ekr.20060621164312.4:<< create press-buttonText-button command >>
+#@-node:ekr.20060621164312:g.makeScriptButton
+#@+node:ekr.20031218072017.2140:c.executeScript
+def executeScript(self,event=None,p=None,script=None,
+    useSelectedText=True,define_g=True,define_name='__main__',silent=False):
+
+    """This executes body text as a Python script.
+    
+    We execute the selected text, or the entire body text if no text is selected."""
+    
+    c = self ; script1 = script
+    if not script:
+        script = g.getScript(c,p,useSelectedText=useSelectedText)
+    << redirect output >>
+    try:
+        if script.strip():
+            sys.path.insert(0,c.frame.openDirectory)
+            script += '\n' # Make sure we end the script properly.
+            try:
+                p = c.currentPosition()
+                d = g.choose(define_g,{'c':c,'g':g,'p':p},{})
+                if define_name: d['__name__'] = define_name
+                # g.trace(script)
+                exec script in d
+                if not script1 and not silent:
+                    g.es("end of script",color="purple")
+            except Exception:
+                << handle an exception in the script >>
+            del sys.path[0]
+        else:
+            g.es("no script selected",color="blue")
+    finally: # New in 4.3 beta 2: unredirect output last.
+        << unredirect output >>
+#@nonl
+#@+node:ekr.20031218072017.2143:<< redirect output >>
+if c.config.redirect_execute_script_output_to_log_pane:
+
+    g.redirectStdout() # Redirect stdout
+    g.redirectStderr() # Redirect stderr
+#@nonl
+#@-node:ekr.20031218072017.2143:<< redirect output >>
+#@+node:ekr.20050505104140:<< handle an exception in the script >>
+g.es("exception executing script",color='blue')
+
+if 0:
+    print 'script...'
+    for line in g.splitLines(script):
+        print repr(line)
+
+fileName,n = g.es_exception(full=True,c=c)
+if p and not script1 and fileName == "<string>":
+    c.goToScriptLineNumber(p,script,n)
+
+<< dump the lines near the error >>
+#@nonl
+#@+node:EKR.20040612215018:<< dump the lines near the error >>
+if g.os_path_exists(fileName):
+    f = file(fileName)
+    lines = f.readlines()
+    f.close()
+else:
+    lines = g.splitLines(script)
+
+s = '-' * 20
+g.es_print(s)
+
+if 0:
+    # Just print the error line.
+    try:
+        s = "%s line %d: %s" % (fileName,n,lines[n-1])
+        g.es(s,newline=False)
+    except IndexError:
+        s = "%s line %d" % (fileName,n)
+        g.es(s,newline=False)
+else: # Print surrounding lines.
+    i = max(0,n-2)
+    j = min(n+2,len(lines))
+    # g.trace(n,i,j)
+    while i < j:
+        ch = g.choose(i==n-1,'*',' ')
+        s = "%s line %d: %s" % (ch,i+1,lines[i])
+        g.es(s,newline=False)
+        i += 1
+#@nonl
+#@-node:EKR.20040612215018:<< dump the lines near the error >>
+#@-node:ekr.20050505104140:<< handle an exception in the script >>
+#@+node:EKR.20040627100424:<< unredirect output >>
+if c.exists and c.config.redirect_execute_script_output_to_log_pane:
+
+    g.restoreStderr()
+    g.restoreStdout()
+#@nonl
+#@-node:EKR.20040627100424:<< unredirect output >>
+#@-node:ekr.20031218072017.2140:c.executeScript
+#@-node:ekr.20060622100448:Created g.makeScriptButton
 #@-node:ekr.20060612075338:Code level
 #@+node:ekr.20060603090445.2:New & improved features
 #@+node:ekr.20060602100638:Improved filename completion
@@ -3765,60 +3890,6 @@ def handleMiniBindings (self,event,state,stroke):
     return False
 #@nonl
 #@-node:ekr.20060309065445:handleMiniBindings
-#@+node:ekr.20060120071949:isPlainKey & test
-def isPlainKey (self,shortcut):
-    
-    '''Return true if the shortcut refers to a plain (non-Alt,non-Ctl) key.'''
-
-    k = self ; shortcut = shortcut or ''
-    
-    for s in ('Alt','Ctrl','Command'):
-        if shortcut.find(s) != -1:
-            return False
-    else:
-        # Careful, allow bare angle brackets for unit tests.
-        if shortcut.startswith('<') and shortcut.endswith('>'):
-            shortcut = shortcut[1:-1]
-
-        isPlain = (
-            len(shortcut) == 1 or
-            len(k.tkBindNamesInverseDict.get(shortcut,'')) == 1 or
-            # A hack: allow Return to be bound to command.
-            shortcut == 'Tab'
-        )
-        
-        # g.trace(isPlain,repr(shortcut))
-        return isPlain
-#@nonl
-#@+node:ekr.20060606095344:test_isPlainKey
-def test_isPlainKey (self):
-    
-    import string
-    
-    k = c.k # self is a dummy argument
-    
-    for ch in (string.printable):
-        if ch == '\n': continue # A special case.
-        assert k.isPlainKey(ch), 'wrong: not plain: %s' % (ch)
-        
-    special = (
-        'Return', # A special case.
-        'Begin','Break','Caps_Lock','Clear','Down','End','Escape',
-        'F1','F2','F3','F4','F5','F6','F7','F8','F9','F10','F11','F12',
-        'KP_Add', 'KP_Decimal', 'KP_Divide', 'KP_Enter', 'KP_Equal',
-        'KP_Multiply, KP_Separator,KP_Space, KP_Subtract, KP_Tab',
-        'KP_F1','KP_F2','KP_F3','KP_F4',
-        'KP_0','KP_1','KP_2','KP_3','KP_4','KP_5','KP_6','KP_7','KP_8','KP_9',
-        'Home','Left','Linefeed','Next','Num_Lock',
-        'PageDn','PageUp','Pause','Prior','Right','Up',
-        'Sys_Req',
-    )
-
-    for ch in special:
-        assert not k.isPlainKey(ch), 'wrong: is plain: %s' % (ch)
-#@nonl
-#@-node:ekr.20060606095344:test_isPlainKey
-#@-node:ekr.20060120071949:isPlainKey & test
 #@-node:ekr.20060127183752:masterKeyHandler
 #@-node:ekr.20060607102323:Input-mode bindings bindings of commands to period, etc in the body pane
 #@+node:ekr.20060607105318:Improved check bindings script in leoSettings.leo
@@ -5984,6 +6055,8 @@ def doMode(self,p,kind,name,val):
     
     '''Parse an @mode node and create the enter-<name>-mode command.'''
     
+    __pychecker__ = '--no-argsused' # val not used.
+    
     c = self.c ; k = c.k
     
     # g.trace('%20s' % (name),c.fileName())
@@ -6192,7 +6265,9 @@ def createModeBindings (self,modeName,d,w):
     
     '''Create mode bindings for the named mode using dictionary d for widget w.'''
     
-    k = self ; c = k.c ; f = c.frame
+    __pychecker__ = '--no-argsused' # w not used (except for debugging).
+    
+    k = self ; c = k.c
         
     # g.trace(g.listToString(d.keys()))
 
@@ -7028,60 +7103,6 @@ def handleMiniBindings (self,event,state,stroke):
     return False
 #@nonl
 #@-node:ekr.20060309065445:handleMiniBindings
-#@+node:ekr.20060120071949:isPlainKey & test
-def isPlainKey (self,shortcut):
-    
-    '''Return true if the shortcut refers to a plain (non-Alt,non-Ctl) key.'''
-
-    k = self ; shortcut = shortcut or ''
-    
-    for s in ('Alt','Ctrl','Command'):
-        if shortcut.find(s) != -1:
-            return False
-    else:
-        # Careful, allow bare angle brackets for unit tests.
-        if shortcut.startswith('<') and shortcut.endswith('>'):
-            shortcut = shortcut[1:-1]
-
-        isPlain = (
-            len(shortcut) == 1 or
-            len(k.tkBindNamesInverseDict.get(shortcut,'')) == 1 or
-            # A hack: allow Return to be bound to command.
-            shortcut == 'Tab'
-        )
-        
-        # g.trace(isPlain,repr(shortcut))
-        return isPlain
-#@nonl
-#@+node:ekr.20060606095344:test_isPlainKey
-def test_isPlainKey (self):
-    
-    import string
-    
-    k = c.k # self is a dummy argument
-    
-    for ch in (string.printable):
-        if ch == '\n': continue # A special case.
-        assert k.isPlainKey(ch), 'wrong: not plain: %s' % (ch)
-        
-    special = (
-        'Return', # A special case.
-        'Begin','Break','Caps_Lock','Clear','Down','End','Escape',
-        'F1','F2','F3','F4','F5','F6','F7','F8','F9','F10','F11','F12',
-        'KP_Add', 'KP_Decimal', 'KP_Divide', 'KP_Enter', 'KP_Equal',
-        'KP_Multiply, KP_Separator,KP_Space, KP_Subtract, KP_Tab',
-        'KP_F1','KP_F2','KP_F3','KP_F4',
-        'KP_0','KP_1','KP_2','KP_3','KP_4','KP_5','KP_6','KP_7','KP_8','KP_9',
-        'Home','Left','Linefeed','Next','Num_Lock',
-        'PageDn','PageUp','Pause','Prior','Right','Up',
-        'Sys_Req',
-    )
-
-    for ch in special:
-        assert not k.isPlainKey(ch), 'wrong: is plain: %s' % (ch)
-#@nonl
-#@-node:ekr.20060606095344:test_isPlainKey
-#@-node:ekr.20060120071949:isPlainKey & test
 #@-node:ekr.20060127183752:masterKeyHandler
 #@-node:ekr.20060602152600:Vim (silent) modes
 #@+node:ekr.20060609072152:selfInsertCommand sets the column used by up/down arrows
@@ -7480,60 +7501,6 @@ def handleMiniBindings (self,event,state,stroke):
     return False
 #@nonl
 #@-node:ekr.20060309065445:handleMiniBindings
-#@+node:ekr.20060120071949:isPlainKey & test
-def isPlainKey (self,shortcut):
-    
-    '''Return true if the shortcut refers to a plain (non-Alt,non-Ctl) key.'''
-
-    k = self ; shortcut = shortcut or ''
-    
-    for s in ('Alt','Ctrl','Command'):
-        if shortcut.find(s) != -1:
-            return False
-    else:
-        # Careful, allow bare angle brackets for unit tests.
-        if shortcut.startswith('<') and shortcut.endswith('>'):
-            shortcut = shortcut[1:-1]
-
-        isPlain = (
-            len(shortcut) == 1 or
-            len(k.tkBindNamesInverseDict.get(shortcut,'')) == 1 or
-            # A hack: allow Return to be bound to command.
-            shortcut == 'Tab'
-        )
-        
-        # g.trace(isPlain,repr(shortcut))
-        return isPlain
-#@nonl
-#@+node:ekr.20060606095344:test_isPlainKey
-def test_isPlainKey (self):
-    
-    import string
-    
-    k = c.k # self is a dummy argument
-    
-    for ch in (string.printable):
-        if ch == '\n': continue # A special case.
-        assert k.isPlainKey(ch), 'wrong: not plain: %s' % (ch)
-        
-    special = (
-        'Return', # A special case.
-        'Begin','Break','Caps_Lock','Clear','Down','End','Escape',
-        'F1','F2','F3','F4','F5','F6','F7','F8','F9','F10','F11','F12',
-        'KP_Add', 'KP_Decimal', 'KP_Divide', 'KP_Enter', 'KP_Equal',
-        'KP_Multiply, KP_Separator,KP_Space, KP_Subtract, KP_Tab',
-        'KP_F1','KP_F2','KP_F3','KP_F4',
-        'KP_0','KP_1','KP_2','KP_3','KP_4','KP_5','KP_6','KP_7','KP_8','KP_9',
-        'Home','Left','Linefeed','Next','Num_Lock',
-        'PageDn','PageUp','Pause','Prior','Right','Up',
-        'Sys_Req',
-    )
-
-    for ch in special:
-        assert not k.isPlainKey(ch), 'wrong: is plain: %s' % (ch)
-#@nonl
-#@-node:ekr.20060606095344:test_isPlainKey
-#@-node:ekr.20060120071949:isPlainKey & test
 #@-node:ekr.20060127183752:masterKeyHandler
 #@+node:ekr.20051015110547:k.registerCommand
 def registerCommand (self,commandName,shortcut,func,pane='all',verbose=True):
@@ -7558,7 +7525,6 @@ def registerCommand (self,commandName,shortcut,func,pane='all',verbose=True):
     else:
         # Try to get a shortcut from leoSettings.leo.
         junk,bunchList = c.config.getShortcut(commandName)
-        found = False
         for bunch in bunchList:
             accel2 = bunch.val ; pane2 = bunch.pane
             if accel2 and not pane2.endswith('-mode'):
@@ -7966,7 +7932,6 @@ def registerCommand (self,commandName,shortcut,func,pane='all',verbose=True):
     else:
         # Try to get a shortcut from leoSettings.leo.
         junk,bunchList = c.config.getShortcut(commandName)
-        found = False
         for bunch in bunchList:
             accel2 = bunch.val ; pane2 = bunch.pane
             if accel2 and not pane2.endswith('-mode'):
@@ -8125,11 +8090,11 @@ def leoUsersGuide (self,event=None):
     
     import webbrowser
     
-    file = g.os_path_abspath(
+    theFile = g.os_path_abspath(
         g.os_path_join(
             g.app.loadDir,'..','doc','html','leo_TOC.html'))
 
-    url = 'file:%s' % file
+    url = 'file:%s' % theFile
     
     try:
         webbrowser.open_new(url)
@@ -8390,7 +8355,7 @@ lockout_onFocusIn = False
 
 def onFocusIn(self,w,setFocus=False):
 
-    c = self.c ; d = self.editorWidgets ; p = c.currentPosition()
+    c = self.c ; d = self.editorWidgets
     trace = False
     if self.lockout_onFocusIn:
         if trace: g.trace('lockout')
@@ -8862,7 +8827,7 @@ def cycleFocus (self,event):
     c.set_focus(pane)
 #@nonl
 #@-node:ekr.20051022144825.1:cycleFocus
-#@+node:ekr.20060613090701:cycleAllFocus 
+#@+node:ekr.20060613090701:cycleAllFocus
 firstEditorWidget = None
 firstLogWidget = None
 
@@ -8919,7 +8884,7 @@ def cycleAllFocus (self,event):
             'new: %10s' % (w_name(pane)),pane and id(pane))
     if pane: c.set_focus(pane)
 #@nonl
-#@-node:ekr.20060613090701:cycleAllFocus 
+#@-node:ekr.20060613090701:cycleAllFocus
 #@+node:ekr.20051022144825:focusTo...
 def focusToBody (self,event):
     '''Put the keyboard focus in Leo's body pane.'''
@@ -9137,6 +9102,8 @@ def createModeCommand (self,name,modeDict):
 def doMode(self,p,kind,name,val):
     
     '''Parse an @mode node and create the enter-<name>-mode command.'''
+    
+    __pychecker__ = '--no-argsused' # val not used.
     
     c = self.c ; k = c.k
     
@@ -9626,8 +9593,34 @@ in the help itself (so you have the full thing when you are offline).
 http://webpages.charter.net/edreamleo/install.html#updating-settings-from-previous-versions-of-leo
 #@nonl
 #@-node:ekr.20060618155337.2:Added section about upgrading settings
-#@+node:ekr.20060621134354:created g.makeScriptButton
-#@-node:ekr.20060621134354:created g.makeScriptButton
+#@+node:ekr.20060618154031.3:Documented how to turn @buttons into plugins
+#@+node:ekr.20060621164956:Request
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3778946
+By: ktenney
+
+I have developed some code as a @button, and want to convert it to a plugin
+which creates buttons and/or commands.
+
+This seems like a typical workflow. I got it working as a @button, now I want
+the functionality available to all my Leo files without having to paste in the
+@button node.
+
+I sure would welcome a documentation node which described the process, I think
+it might be a good plugin writing example.
+
+The node Users Guide-->Chapter 13: Writing Plugins in leoDocs.leo discusses
+aspects of plugin writing but I don't see a step by step example. Something
+like;
+
+@button showhead
+-- g.es(p.headString)
+
+how do I convert this to a plugin which creates a 'ShowHead' button, and the
+command 'show-head'?
+#@nonl
+#@-node:ekr.20060621164956:Request
+#@-node:ekr.20060618154031.3:Documented how to turn @buttons into plugins
 #@-node:ekr.20060603090445.2:New & improved features
 #@+node:ekr.20060619104105:Plugins
 #@+node:ekr.20060608060052:Added doc-only option to rst3

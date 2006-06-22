@@ -38,7 +38,9 @@ if 0:
 #@+node:ekr.20060621123339.4:init
 def init ():
     
-    leoPlugins.registerHandler('after-create-leo-frame',onCreate)
+    # leoPlugins.registerHandler('after-create-leo-frame',onCreate)
+    leoPlugins.registerHandler(('new','open2'),onCreate)
+    
     return True
 #@nonl
 #@-node:ekr.20060621123339.4:init
@@ -59,6 +61,8 @@ class pluginController:
     def __init__ (self,c):
         self.c = c
         c.k.registerCommand('print-cp',shortcut=None,func=self.print_cp)
+        script = "c.k.simulateCommand('print-cp')"
+        g.makeScriptButton(c,script=script,buttonText='Print c & p',bg='red')
     #@nonl
     #@-node:ekr.20060621123339.7:__init__
     #@+node:ekr.20060621124649:print_cp
