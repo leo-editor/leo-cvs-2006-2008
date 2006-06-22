@@ -2676,7 +2676,7 @@ class leoTkinterBody (leoFrame.leoBody):
     
     def onFocusIn(self,w,setFocus=False):
     
-        c = self.c ; d = self.editorWidgets ; p = c.currentPosition()
+        c = self.c ; d = self.editorWidgets
         trace = False
         if self.lockout_onFocusIn:
             if trace: g.trace('lockout')

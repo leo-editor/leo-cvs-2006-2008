@@ -2898,7 +2898,6 @@ class keyHandlerClass:
         else:
             # Try to get a shortcut from leoSettings.leo.
             junk,bunchList = c.config.getShortcut(commandName)
-            found = False
             for bunch in bunchList:
                 accel2 = bunch.val ; pane2 = bunch.pane
                 if accel2 and not pane2.endswith('-mode'):
@@ -3333,60 +3332,6 @@ class keyHandlerClass:
         return False
     #@nonl
     #@-node:ekr.20060309065445:handleMiniBindings
-    #@+node:ekr.20060120071949:isPlainKey & test
-    def isPlainKey (self,shortcut):
-        
-        '''Return true if the shortcut refers to a plain (non-Alt,non-Ctl) key.'''
-    
-        k = self ; shortcut = shortcut or ''
-        
-        for s in ('Alt','Ctrl','Command'):
-            if shortcut.find(s) != -1:
-                return False
-        else:
-            # Careful, allow bare angle brackets for unit tests.
-            if shortcut.startswith('<') and shortcut.endswith('>'):
-                shortcut = shortcut[1:-1]
-    
-            isPlain = (
-                len(shortcut) == 1 or
-                len(k.tkBindNamesInverseDict.get(shortcut,'')) == 1 or
-                # A hack: allow Return to be bound to command.
-                shortcut == 'Tab'
-            )
-            
-            # g.trace(isPlain,repr(shortcut))
-            return isPlain
-    #@nonl
-    #@+node:ekr.20060606095344:test_isPlainKey
-    def test_isPlainKey (self):
-        
-        import string
-        
-        k = c.k # self is a dummy argument
-        
-        for ch in (string.printable):
-            if ch == '\n': continue # A special case.
-            assert k.isPlainKey(ch), 'wrong: not plain: %s' % (ch)
-            
-        special = (
-            'Return', # A special case.
-            'Begin','Break','Caps_Lock','Clear','Down','End','Escape',
-            'F1','F2','F3','F4','F5','F6','F7','F8','F9','F10','F11','F12',
-            'KP_Add', 'KP_Decimal', 'KP_Divide', 'KP_Enter', 'KP_Equal',
-            'KP_Multiply, KP_Separator,KP_Space, KP_Subtract, KP_Tab',
-            'KP_F1','KP_F2','KP_F3','KP_F4',
-            'KP_0','KP_1','KP_2','KP_3','KP_4','KP_5','KP_6','KP_7','KP_8','KP_9',
-            'Home','Left','Linefeed','Next','Num_Lock',
-            'PageDn','PageUp','Pause','Prior','Right','Up',
-            'Sys_Req',
-        )
-    
-        for ch in special:
-            assert not k.isPlainKey(ch), 'wrong: is plain: %s' % (ch)
-    #@nonl
-    #@-node:ekr.20060606095344:test_isPlainKey
-    #@-node:ekr.20060120071949:isPlainKey & test
     #@-node:ekr.20060127183752:masterKeyHandler
     #@+node:ekr.20060129052538.2:masterClickHandler
     def masterClickHandler (self,event,func=None):
@@ -3494,7 +3439,9 @@ class keyHandlerClass:
         
         '''Create mode bindings for the named mode using dictionary d for widget w.'''
         
-        k = self ; c = k.c ; f = c.frame
+        __pychecker__ = '--no-argsused' # w not used (except for debugging).
+        
+        k = self ; c = k.c
             
         # g.trace(g.listToString(d.keys()))
     
@@ -4056,6 +4003,34 @@ class keyHandlerClass:
             # g.trace(isPlain,repr(shortcut))
             return isPlain
     #@nonl
+    #@+node:ekr.20060606095344:test_isPlainKey
+    def test_isPlainKey (self):
+        
+        import string
+        
+        k = c.k # self is a dummy argument
+        
+        for ch in (string.printable):
+            if ch == '\n': continue # A special case.
+            assert k.isPlainKey(ch), 'wrong: not plain: %s' % (ch)
+            
+        special = (
+            'Return', # A special case.
+            'Begin','Break','Caps_Lock','Clear','Down','End','Escape',
+            'F1','F2','F3','F4','F5','F6','F7','F8','F9','F10','F11','F12',
+            'KP_Add', 'KP_Decimal', 'KP_Divide', 'KP_Enter', 'KP_Equal',
+            'KP_Multiply, KP_Separator,KP_Space, KP_Subtract, KP_Tab',
+            'KP_F1','KP_F2','KP_F3','KP_F4',
+            'KP_0','KP_1','KP_2','KP_3','KP_4','KP_5','KP_6','KP_7','KP_8','KP_9',
+            'Home','Left','Linefeed','Next','Num_Lock',
+            'PageDn','PageUp','Pause','Prior','Right','Up',
+            'Sys_Req',
+        )
+    
+        for ch in special:
+            assert not k.isPlainKey(ch), 'wrong: is plain: %s' % (ch)
+    #@nonl
+    #@-node:ekr.20060606095344:test_isPlainKey
     #@-node:ekr.20060120071949:isPlainKey & test
     #@+node:ekr.20060128081317:shortcutFromSetting
     def shortcutFromSetting (self,setting):

@@ -1647,7 +1647,8 @@ class leoMenu:
     def enableMenu (self,menu,name,val):
         self.oops()
         
-    def getManuLabel(self,menu):
+    def getManuLabel (self,menu):
+        __pychecker__ = '--no-argsused' # menu not used.
         self.oops()
         
     def setMenuLabel (self,menu,name,label,underline=-1):

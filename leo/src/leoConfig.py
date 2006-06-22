@@ -9,7 +9,6 @@
 import leoGlobals as g
 import leoGui
 
-import copy
 import sys
 #@nonl
 #@-node:ekr.20041227063801:<< imports >>
@@ -280,6 +279,8 @@ class parserBaseClass:
     def doMode(self,p,kind,name,val):
         
         '''Parse an @mode node and create the enter-<name>-mode command.'''
+        
+        __pychecker__ = '--no-argsused' # val not used.
         
         c = self.c ; k = c.k
         

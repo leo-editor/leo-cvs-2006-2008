@@ -5410,11 +5410,11 @@ class baseCommands:
         
         import webbrowser
         
-        file = g.os_path_abspath(
+        theFile = g.os_path_abspath(
             g.os_path_join(
                 g.app.loadDir,'..','doc','html','leo_TOC.html'))
     
-        url = 'file:%s' % file
+        url = 'file:%s' % theFile
         
         try:
             webbrowser.open_new(url)
