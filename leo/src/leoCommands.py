@@ -1977,8 +1977,10 @@ class baseCommands:
        
          # It is much easier to change the menu name here than in the menu updater.
         menu = frame.menu.getMenu("Edit")
-        if val: frame.menu.setMenuLabel(menu,"Show Invisibles","Hide Invisibles")
-        else:   frame.menu.setMenuLabel(menu,"Hide Invisibles","Show Invisibles")
+        index = frame.menu.getMenuLabel(menu,g.choose(val,'Hide Invisibles','Show Invisibles'))
+        if index is None:
+            if val: frame.menu.setMenuLabel(menu,"Show Invisibles","Hide Invisibles")
+            else:   frame.menu.setMenuLabel(menu,"Hide Invisibles","Show Invisibles")
     
         c.frame.body.recolor_now(p)
     #@nonl
