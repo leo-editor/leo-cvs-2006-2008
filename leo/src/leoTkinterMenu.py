@@ -231,6 +231,20 @@ class leoTkinterMenu (leoMenu.leoMenu):
                 pass
     #@nonl
     #@-node:ekr.20031218072017.4120:enableMenu
+    #@+node:ekr.20060622075612:getMenuLabel
+    def getMenuLabel (self,menu,name):
+        
+        '''Return the index of the menu item whose name (or offset) is given.
+        Return None if there is no such menu item.'''
+    
+        try:
+            index = menu.index(name)
+        except:
+            index = None
+            
+        return index
+    #@nonl
+    #@-node:ekr.20060622075612:getMenuLabel
     #@+node:ekr.20031218072017.4121:setMenuLabel
     def setMenuLabel (self,menu,name,label,underline=-1):
     

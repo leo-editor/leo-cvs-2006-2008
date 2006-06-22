@@ -1621,7 +1621,7 @@ class leoMenu:
         self.oops()
     #@nonl
     #@-node:ekr.20031218072017.3809:9 Routines with Tk spellings
-    #@+node:ekr.20031218072017.3810:8 Routines with new spellings
+    #@+node:ekr.20031218072017.3810:9 Routines with new spellings
     def activateMenu (self,menuName): # New in Leo 4.4b2.
         self.oops()
     
@@ -1647,10 +1647,13 @@ class leoMenu:
     def enableMenu (self,menu,name,val):
         self.oops()
         
+    def getManuLabel(self,menu):
+        self.oops()
+        
     def setMenuLabel (self,menu,name,label,underline=-1):
         self.oops()
     #@nonl
-    #@-node:ekr.20031218072017.3810:8 Routines with new spellings
+    #@-node:ekr.20031218072017.3810:9 Routines with new spellings
     #@-node:ekr.20031218072017.3808:Must be overridden in menu subclasses
     #@-others
 #@nonl
