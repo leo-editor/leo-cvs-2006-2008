@@ -3140,6 +3140,7 @@ class editCommandsClass (baseEditCommandsClass):
     def extendHelper (self,w,extend,ins1,spot,setSpot=True):
     
         '''Handle the details of extending the selection.
+        This method is called for all cursor moves.
         
         extend: Clear the selection unless this is True.
         ins1:   The *previous* insert point.
@@ -3168,6 +3169,8 @@ class editCommandsClass (baseEditCommandsClass):
             if setSpot or not moveSpot:
                 self.setMoveCol(spot)
             g.app.gui.setTextSelection(w,spot,spot,insert=None)
+            
+        c.frame.updateStatusLine()
     #@nonl
     #@-node:ekr.20060113130510:extendHelper
     #@+node:ekr.20060113105246.1:moveUpOrDownHelper
