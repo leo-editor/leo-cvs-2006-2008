@@ -1745,6 +1745,7 @@ class keyHandlerClass:
         self.swap_mac_keys                  = c.config.getBool('swap_mac_keys')
         self.trace_key_event                = c.config.getBool('trace_key_event')
         self.trace_minibuffer               = c.config.getBool('trace_minibuffer')
+        self.warn_about_redefined_shortcuts = c.config.getBool('warn_about_redefined_shortcuts')
         #@    << define Tk ivars >>
         #@+node:ekr.20051006092617:<< define Tk ivars >>
         if self.useTextWidget:
@@ -1963,21 +1964,16 @@ class keyHandlerClass:
             b = g.bunch(pane=pane,func=callback,commandName=commandName)
             #@        << remove previous conflicting definitions from bunchList >>
             #@+node:ekr.20060611171940:<< remove previous conflicting definitions from bunchList >>
-            if not modeFlag: # important.
+            if not modeFlag and self.warn_about_redefined_shortcuts:
                 redefs = [str(b2.commandName) for b2 in bunchList
                     if b2.commandName != commandName and pane in ('button','all',b2.pane)
                         and not b2.pane.endswith('-mode')]
                 for z in redefs:
-                    g.es_print('redefining %s in %s to %s in %s' % (z,b2.pane,commandName,pane),color='red')
+                    g.es_print('redefining %s in %s to %s in %s' % (
+                        z,b2.pane,commandName,pane),color='red')
             
             if not modeFlag:
                 bunchList = [b2 for b2 in bunchList if pane not in ('button','all',b2.pane)]
-            
-            if 0:
-                if bunchList:
-                    aList = [(str(pane),str(commandName)),]
-                    aList.extend([(str(b2.pane),str(b2.commandName)) for b2 in bunchList])
-                    g.trace(aList)
             #@nonl
             #@-node:ekr.20060611171940:<< remove previous conflicting definitions from bunchList >>
             #@nl
@@ -2679,11 +2675,13 @@ class keyHandlerClass:
         '''Repeat the previously executed minibuffer command.'''
         k = self
         if k.mb_history:
-            k.setState('last-full-command',1,handler=k.doLastAltX)
-            k.setLabelBlue("Redo: %s" % k.mb_history[0])
+            k.setState('last-full-command',1,handler=k.repeatComplexCommandHelper)
+            k.setLabelBlue("Redo: %s" % str(k.mb_history[0]))
+        else:
+            g.es('No previous command',color='blue')
         return 'break'
         
-    def doLastAltX (self,event):
+    def repeatComplexCommandHelper (self,event):
         
         k = self ; c = k.c
         if event.keysym == 'Return' and k.mb_history:
