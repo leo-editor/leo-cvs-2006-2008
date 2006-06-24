@@ -316,6 +316,7 @@ class parserBaseClass:
                     d ['*entry-commands*'] = aList
                 elif bunch is not None:
                     # A regular shortcut.
+                    bunch.val = k.strokeFromSetting(bunch.val)
                     bunch.pane = modeName
                     bunchList = d.get(name,[])
                     # Important: use previous bindings if possible.
