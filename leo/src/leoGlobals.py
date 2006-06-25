@@ -1121,8 +1121,8 @@ def getLastTracebackFileAndLineNumber():
     
     typ,val,tb = sys.exc_info()
     
-    if typ is exceptions.SyntaxError:
-        # Syntax errors are a special case.
+    if typ in (exceptions.SyntaxError,exceptions.IndentationError):
+        # Syntax and indentation errors are a special case.
         # extract_tb does _not_ return the proper line number!
         # This code is similar to the code in format_exception_only(!!)
         try:
@@ -3757,6 +3757,8 @@ def handleScriptException (c,p,script,script1):
     g.es("exception executing script",color='blue')
 
     fileName, n = g.es_exception(full=True,c=c)
+    
+    g.trace(fileName,n)
 
     if p and not script1 and fileName == "<string>":
         c.goToScriptLineNumber(p,script,n)
@@ -3773,23 +3775,14 @@ def handleScriptException (c,p,script,script1):
     s = '-' * 20
     g.es_print(s)
     
-    if 0:
-        # Just print the error line.
-        try:
-            s = "%s line %d: %s" % (fileName,n,lines[n-1])
-            g.es(s,newline=False)
-        except IndexError:
-            s = "%s line %d" % (fileName,n)
-            g.es(s,newline=False)
-    else: # Print surrounding lines.
-        i = max(0,n-2)
-        j = min(n+2,len(lines))
-        # g.trace(n,i,j)
-        while i < j:
-            ch = g.choose(i==n-1,'*',' ')
-            s = "%s line %d: %s" % (ch,i+1,lines[i])
-            g.es(s,newline=False)
-            i += 1
+    # Print surrounding lines.
+    i = max(0,n-2)
+    j = min(n+2,len(lines))
+    while i < j:
+        ch = g.choose(i==n-1,'*',' ')
+        s = "%s line %d: %s" % (ch,i+1,lines[i])
+        g.es(s,newline=False)
+        i += 1
     #@nonl
     #@-node:EKR.20040612215018:<< dump the lines near the error >>
     #@nl

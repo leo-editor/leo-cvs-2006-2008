@@ -1526,6 +1526,182 @@ def handleDefaultChar(self,event):
 #@-node:ekr.20051026083544:handleDefaultChar
 #@-node:ekr.20050920085536.65:masterCommand & helpers
 #@-node:ekr.20060625061210:Update column display when typing
+#@+node:ekr.20060107082929:Fixed problem reporting indentation errors
+#@+node:ekr.20060624085200.1:Report
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3510448
+
+The fix was to getLastTracebackFileAndLineNumber.
+
+I also created handleScriptException.
+#@nonl
+#@-node:ekr.20060624085200.1:Report
+#@+node:ekr.20031218072017.2140:c.executeScript
+def executeScript(self,event=None,p=None,script=None,
+    useSelectedText=True,define_g=True,define_name='__main__',silent=False):
+
+    """This executes body text as a Python script.
+    
+    We execute the selected text, or the entire body text if no text is selected."""
+    
+    c = self ; script1 = script
+    if not script:
+        script = g.getScript(c,p,useSelectedText=useSelectedText)
+    << redirect output >>
+    try:
+        if script.strip():
+            sys.path.insert(0,c.frame.openDirectory)
+            script += '\n' # Make sure we end the script properly.
+            try:
+                p = c.currentPosition()
+                d = g.choose(define_g,{'c':c,'g':g,'p':p},{})
+                if define_name: d['__name__'] = define_name
+                # g.trace(script)
+                exec script in d
+                if not script1 and not silent:
+                    g.es("end of script",color="purple")
+            except Exception:
+                g.handleScriptException(c,p,script,script1)
+            del sys.path[0]
+        else:
+            g.es("no script selected",color="blue")
+    finally: # New in 4.3 beta 2: unredirect output last.
+        << unredirect output >>
+#@nonl
+#@+node:ekr.20031218072017.2143:<< redirect output >>
+if c.config.redirect_execute_script_output_to_log_pane:
+
+    g.redirectStdout() # Redirect stdout
+    g.redirectStderr() # Redirect stderr
+#@nonl
+#@-node:ekr.20031218072017.2143:<< redirect output >>
+#@+node:EKR.20040627100424:<< unredirect output >>
+if c.exists and c.config.redirect_execute_script_output_to_log_pane:
+
+    g.restoreStderr()
+    g.restoreStdout()
+#@nonl
+#@-node:EKR.20040627100424:<< unredirect output >>
+#@-node:ekr.20031218072017.2140:c.executeScript
+#@+node:ekr.20060624085200:g.handleScriptException
+def handleScriptException (c,p,script,script1):
+
+    g.es("exception executing script",color='blue')
+
+    fileName, n = g.es_exception(full=True,c=c)
+    
+    g.trace(fileName,n)
+
+    if p and not script1 and fileName == "<string>":
+        c.goToScriptLineNumber(p,script,n)
+
+    << dump the lines near the error >>
+#@nonl
+#@+node:EKR.20040612215018:<< dump the lines near the error >>
+if g.os_path_exists(fileName):
+    f = file(fileName)
+    lines = f.readlines()
+    f.close()
+else:
+    lines = g.splitLines(script)
+
+s = '-' * 20
+g.es_print(s)
+
+# Print surrounding lines.
+i = max(0,n-2)
+j = min(n+2,len(lines))
+while i < j:
+    ch = g.choose(i==n-1,'*',' ')
+    s = "%s line %d: %s" % (ch,i+1,lines[i])
+    g.es(s,newline=False)
+    i += 1
+#@nonl
+#@-node:EKR.20040612215018:<< dump the lines near the error >>
+#@-node:ekr.20060624085200:g.handleScriptException
+#@+node:ekr.20031218072017.3112:es_exception & test
+def es_exception (full=True,c=None,color="red"):
+    
+    __pychecker__ = '--no-argsused' # c not used. retained for compatibility.
+
+    typ,val,tb = sys.exc_info()
+
+    # g.trace(full,typ,tb)
+    
+    fileName,n = g.getLastTracebackFileAndLineNumber()
+
+    if full or g.app.debugSwitch > 0:
+        lines = traceback.format_exception(typ,val,tb)
+    else:
+        lines = traceback.format_exception_only(typ,val)
+        if 0: # We might as well print the entire SyntaxError message.
+            lines = lines[-1:] # Usually only one line, but more for Syntax errors!
+
+    for line in lines:
+        g.es_error(line,color=color)
+        if not g.stdErrIsRedirected():
+            print line
+
+    if g.app.debugSwitch > 1:
+        import pdb # Be careful: g.pdb may or may not have been defined.
+        pdb.set_trace()
+
+    return fileName,n
+#@nonl
+#@+node:ekr.20050220030850:test_g_es_exception
+def test_g_es_exception():
+    
+    if c.config.redirect_execute_script_output_to_log_pane:
+        return # Test doesn't work when redirection is on.
+
+    try:
+        import sys
+        # Catch the output of g.es_exception.
+        # We catch the AssertionError, so nothing gets written to stderr.
+        sys.stdout = fo = g.fileLikeObject()
+        try: # Create an exception to catch.
+            assert False, 'Assert False in test_g_es_exception'
+        except AssertionError:
+            g.es_exception(color='suppress')
+            result = fo.get()
+            s1 = 'Traceback (most recent call last):'
+            s2 = 'AssertionError: Assert False in test_g_es_exception'
+            assert result.find(s1) > -1, 'No traceback line: %s' % repr(result)
+            assert result.find(s2) > -1, 'No AssertionError line: %s' % repr(result)
+    finally:
+        # Not needed unless we execute this script as selected text.
+        sys.stdout = sys.__stdout__
+#@nonl
+#@-node:ekr.20050220030850:test_g_es_exception
+#@-node:ekr.20031218072017.3112:es_exception & test
+#@+node:ekr.20040731204831:getLastTracebackFileAndLineNumber
+def getLastTracebackFileAndLineNumber():
+    
+    typ,val,tb = sys.exc_info()
+    
+    if typ in (exceptions.SyntaxError,exceptions.IndentationError):
+        # Syntax and indentation errors are a special case.
+        # extract_tb does _not_ return the proper line number!
+        # This code is similar to the code in format_exception_only(!!)
+        try:
+            msg,(filename, lineno, offset, line) = val
+            return filename,lineno
+        except:
+            g.trace("bad line number")
+            return None,0
+
+    else:
+        # The proper line number is the second element in the last tuple.
+        data = traceback.extract_tb(tb)
+        # g.trace(data)
+        item = data[-1]
+        filename = item[0]
+        n = item[1]
+        return filename,n
+#@nonl
+#@-node:ekr.20040731204831:getLastTracebackFileAndLineNumber
+#@-node:ekr.20060107082929:Fixed problem reporting indentation errors
 #@-node:ekr.20060624072803.1:Bugs fixed
 #@+node:ekr.20060624072803.2:New features
 #@+node:ekr.20060623064600:Finished repeat-complex-command
