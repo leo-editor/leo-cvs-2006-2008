@@ -2757,63 +2757,24 @@ class baseLeoImportCommands:
     #@nonl
     #@-node:ekr.20031218072017.3300:removeSentinelsCommand
     #@+node:ekr.20031218072017.3303:removeSentinelLines
-    #@+at 
-    #@nonl
-    # Properly removes all sentinel lines in s.  Only leading single-line 
-    # comments may be sentinels.
-    # 
-    # line_delim, start_delim and end_delim are the comment delimiters.
-    #@-at
-    #@@c
+    # This does not handle @nonl properly, but that's a nit...
     
     def removeSentinelLines(self,s,line_delim,start_delim,end_delim):
     
-        i = 0 ; result = [] ; nlSeen = True
-        while i < len(s):
-            # g.trace(i,nlSeen,g.get_line_after(s,i))
-            start = i # The start of the next syntax element.
-            if nlSeen or g.is_nl(s,i):
-                nlSeen = False
-                #@            << handle possible sentinel >>
-                #@+node:ekr.20031218072017.3304:<< handle possible sentinel >>
-                if g.is_nl(s,i):
-                    i = g.skip_nl(s,i)
-                    nlSeen = True
-                i = g.skip_ws(s,i)
-                # g.trace(i,g.get_line(s,i))
-                if line_delim:
-                    if g.match(s,i,line_delim):
-                        j = i+len(line_delim)
-                        if g.match(s,j,"@"):
-                            i = g.skip_line(s,i)
-                            nlSeen = True
-                            continue # Remove the entire sentinel line, including the newline.
-                        else:
-                            i = g.skip_to_end_of_line(s,i)
-                elif start_delim:
-                    if g.match(s,i,start_delim):
-                        j = i+len(start_delim)
-                        i = g.skip_matching_delims(s,i,start_delim,end_delim)
-                        if g.match(s,j,"@"):
-                            continue # Remove the sentinel
-                elif nlSeen and start < i:
-                    # Put the newline that was at the start of this line.
-                    result.append(s[start:i])
-                    continue
-                #@nonl
-                #@-node:ekr.20031218072017.3304:<< handle possible sentinel >>
-                #@nl
-            if line_delim and g.match(s,i,line_delim):
-                i = g.skip_to_end_of_line(s,i)
-            elif start_delim and end_delim and g.match(s,i,start_delim):
-                i = g.skip_matching_delims(s,i,start_delim,end_delim)
-            elif g.match(s,i,"'") or g.match(s,i,'"'):
-                i = g.skip_string(s,i)
-            else:
-                i += 1
-            assert(i == 0 or start<i)
-            result.append(s[start:i])# 12/11/03: hugely faster than string concatenation.
+        '''Properly remove all sentinle lines in s.'''
     
+        delim = (line_delim or start_delim or '') + '@'
+        verbatim = delim + 'verbatim' ; verbatimFlag = False
+        result = [] ; lines = g.splitLines(s)
+        for line in lines:
+            i = g.skip_ws(line,0)
+            if not verbatimFlag and g.match(line,i,delim):
+                if g.match(line,i,verbatim):
+                    verbatimFlag = True # Force the next line to be in the result.
+                # g.trace(repr(line))
+            else:
+                result.append(line)
+                verbatimFlag = False
         result = ''.join(result)
         return result
     #@nonl
