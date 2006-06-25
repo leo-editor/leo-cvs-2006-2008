@@ -46,7 +46,7 @@
 <v t="ekr.20060525110217"><vh>@@button rst-&gt;rst</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -144,8 +144,8 @@
 <v t="ekr.20050830080545"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20050831195331.2"><vh>Chapter 1: Installing Leo</vh>
-<v t="edream.110203163054.48"><vh>@rst html\install.html</vh>
+<v t="ekr.20050831195331.2" a="E"><vh>Chapter 1: Installing Leo</vh>
+<v t="edream.110203163054.48" a="E"><vh>@rst html\install.html</vh>
 <v t="ekr.20050901110110"><vh>@rst-no-head links</vh></v>
 <v t="edream.110203163054.49"><vh>System requirements</vh></v>
 <v t="edream.110203163054.50"><vh>How to install Leo on Linux</vh></v>
@@ -157,7 +157,7 @@
 <v t="edream.110203163054.61"><vh>Putting the Leo icon in Leo windows</vh></v>
 <v t="ekr.20050901174937"><vh>Running Leo</vh></v>
 <v t="ekr.20060105145125"><vh>How to install the Aspell spell checker</vh></v>
-<v t="ekr.20060621134106"><vh>Updating settings from previous versions of Leo</vh></v>
+<v t="ekr.20060621134106" a="TV"><vh>Updating settings from previous versions of Leo</vh></v>
 <v t="ekr.20050906105335"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
@@ -663,10 +663,10 @@
 <v t="ekr.20050901083017"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20060620094033"><vh>What's New...</vh>
+<v t="ekr.20060620094033" a="E"><vh>What's New...</vh>
 <v t="ekr.20060620141510"><vh>Patterns</vh></v>
-<v t="ekr.20060620094033.1"><vh>What's New in Leo 4.4.1</vh>
-<v t="ekr.20060620094645.310"><vh>@rst html\new-4-4-1.html</vh>
+<v t="ekr.20060620094033.1" a="E"><vh>What's New in Leo 4.4.1</vh>
+<v t="ekr.20060620094645.310" a="E"><vh>@rst html\new-4-4-1.html</vh>
 <v t="ekr.20060621132547"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20060620130636"><vh>New commands</vh></v>
 <v t="ekr.20060620095949.15"><vh>New features</vh></v>
@@ -676,8 +676,8 @@
 <v t="ekr.20060621132923"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20060620094033.2"><vh>What's New in Leo 4.4</vh>
-<v t="ekr.20060620094425"><vh>@rst html\new-4-4.html</vh>
+<v t="ekr.20060620094033.2" a="E"><vh>What's New in Leo 4.4</vh>
+<v t="ekr.20060620094425" a="E"><vh>@rst html\new-4-4.html</vh>
 <v t="ekr.20060621132338"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20060620133820.16"><vh>New features &amp; commands</vh></v>
 <v t="ekr.20060620140130"><vh>New and improved plugins</vh></v>
@@ -703,9 +703,9 @@
 </v>
 </v>
 <v t="ekr.20050914132220"><vh>Other docs</vh>
-<v t="ekr.20051203084745"><vh>JythonShell help</vh>
+<v t="ekr.20051203084745" a="E"><vh>JythonShell help</vh>
 <v t="ekr.20051203085709"><vh>original</vh></v>
-<v t="ekr.20051203084850"><vh>@rst html\jythonShell.html</vh>
+<v t="ekr.20051203084850" a="E"><vh>@rst html\jythonShell.html</vh>
 <v t="ekr.20051203084850.1"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20051203085709.1"><vh>Autocompleter Actions</vh></v>
 <v t="ekr.20051203085709.2"><vh>Keystrokes</vh></v>
@@ -2841,7 +2841,7 @@
 </v>
 </v>
 <v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20060620094645" a="V"><vh>4.4.1 b2</vh>
+<v t="ekr.20060620094645"><vh>4.4.1 b2</vh>
 <v t="ekr.20060620094645.34"><vh>Bugs fixed</vh>
 <v t="ekr.20060620094645.35"><vh>Made sure calltip always adds '('</vh></v>
 <v t="ekr.20060620094645.43"><vh>word matches now succeed if first character of the pattern is not in word-chars.</vh></v>
@@ -22294,7 +22294,7 @@ Ctrl K
 
 Ctrl N
     Start typing, and then use this keystroke to search downwards only through
-    the history items that match what you ve typed so far. If you use this
+    the history items that match what you've typed so far. If you use this
     keystroke at a blank prompt, they just behave like normal arrow keys.
 
 Ctrl P
@@ -29599,7 +29599,7 @@ New in Leo 4.4.1 b1:
   to the replace command.</t>
 <t tx="ekr.20060620095949.25">New in Leo 4.4.1 b2:
     
-- Added support for commands to be exectued on entry to a mode.
+- Added support for commands to be executed on entry to a mode.
 - Added support for bindings that are active only in command, enter and insert key states.
 - Added support for @abbrev nodes in leoSettings.leo.
 - Improved check bindings script in leoSettings.leo.
@@ -29646,7 +29646,7 @@ New in Leo 4.4.1 b1:
 </t>
 <t tx="ekr.20060620133820.16">New in Leo 4.4 beta 4:
 
-- Added script to update new copies of leoSettting.leo from previous copies.
+- Added script to update new copies of leoSetttings.leo from previous copies.
 - Made all edit command undoable.
 - Added commands::
 
@@ -30045,7 +30045,7 @@ or leoPluginsRef.leo if you are using cvs.</t>
 
 |prev| |leo| |next|</t>
 <t tx="ekr.20060621134106">Your copy of the leoSettings.leo file may contain many settings that are different
-from the standard version of leoSettings.leo file distribured with Leo,
+from the standard version of leoSettings.leo file distributed with Leo,
 so updating leoSettings.leo in new versions of Leo could be tedious.
 Fortunately there is help.
 scripts.leo contains the node::

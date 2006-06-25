@@ -1585,7 +1585,7 @@ class editCommandsClass (baseEditCommandsClass):
         c.set_focus(pane)
     #@nonl
     #@-node:ekr.20051022144825.1:cycleFocus
-    #@+node:ekr.20060613090701:cycleAllFocus 
+    #@+node:ekr.20060613090701:cycleAllFocus
     firstEditorWidget = None
     firstLogWidget = None
     
@@ -1642,7 +1642,7 @@ class editCommandsClass (baseEditCommandsClass):
                 'new: %10s' % (w_name(pane)),pane and id(pane))
         if pane: c.set_focus(pane)
     #@nonl
-    #@-node:ekr.20060613090701:cycleAllFocus 
+    #@-node:ekr.20060613090701:cycleAllFocus
     #@+node:ekr.20051022144825:focusTo...
     def focusToBody (self,event):
         '''Put the keyboard focus in Leo's body pane.'''

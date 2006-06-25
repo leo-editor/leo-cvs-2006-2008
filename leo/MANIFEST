@@ -94,6 +94,8 @@ doc\html\debuggers.html
 doc\html\default.css
 doc\html\design.html
 doc\html\directives.html
+doc\html\docModeOnlyTest.html
+doc\html\docOnlyTest.html
 doc\html\frontMatter.html
 doc\html\glossary.html
 doc\html\history.html
@@ -103,6 +105,8 @@ doc\html\jythonShell.html
 doc\html\leo.gif
 doc\html\leo_TOC.html
 doc\html\leo_rst.css
+doc\html\new-4-4-1.html
+doc\html\new-4-4.html
 doc\html\outlines.html
 doc\html\plugins.html
 doc\html\rstplugin3.html
@@ -112,6 +116,8 @@ doc\html\techReport.html
 doc\html\testimonials.html
 doc\html\theory.html
 doc\html\whitepapers.html
+doc\html\writingPlugins.html
+doc\html\writingPlugins.html.txt
 doc\html\CVS\Entries.Extra
 doc\html\CVS\Entries.Extra.Old
 doc\html\CVS\Entries.Old
@@ -594,6 +600,7 @@ plugins\pluginsNotes.txt
 plugins\pluginsTest.py
 plugins\plugins_menu.py
 plugins\pretty_print.py
+plugins\print_cp.py
 plugins\quit_leo.py
 plugins\rClick.py
 plugins\read_only_nodes.py

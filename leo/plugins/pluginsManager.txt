@@ -31,7 +31,7 @@ plugins_menu.py
 #UniversalScrolling.py
 #mod_http.py
 #niceNosent.py
-#vim.py
+vim.py
 #bibtex.py
 #autotrees.py
 #mod_autosave.py

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="261" clone_windows="0"/>
-<globals body_outline_ratio="0.5">
-	<global_window_position top="83" left="334" height="789" width="895"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="291" clone_windows="0"/>
+<globals body_outline_ratio="0.549828178694">
+	<global_window_position top="75" left="241" height="634" width="945"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -37,140 +37,14 @@
 <v t="ekr.20051010093913" annotate="7d71002e"><vh>@button Save</vh></v>
 <v t="ekr.20051011123608" annotate="7d71002e"><vh>@@button align to col</vh></v>
 <v t="ekr.20060112103537.17"><vh>@button Check Bindings</vh>
-<v t="ekr.20060112104119"><vh>&lt;&lt; define setNames &gt;&gt;</vh></v>
+<v t="ekr.20060112104119"><vh>defineSetNames</vh></v>
 <v t="ekr.20060112104333"><vh>doSet</vh></v>
 <v t="ekr.20060112105523"><vh>doShortcuts</vh></v>
 <v t="ekr.20060112104333.1"><vh>checkSets</vh></v>
 <v t="ekr.20060112104823"><vh>main</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
-<v t="ekr.20051126062243" annotate="7d71002e"><vh>Debugging options</vh>
-<v t="ekr.20060201110016"><vh>@bool allow_idle_time_hook = False</vh></v>
-<v t="ekr.20060212101234"><vh>@bool gc_before_redraw = False</vh></v>
-<v t="ekr.20060202113731"><vh>@bool show_tree_stats = False</vh></v>
-<v t="ekr.20060216145416"><vh>@bool trace_autocompleter = False</vh></v>
-<v t="ekr.20060114073238"><vh>@bool trace_bindings = False</vh></v>
-<v t="ekr.20060301085047"><vh>@bool trace_chapters = False</vh></v>
-<v t="ekr.20060309022759"><vh>@bool trace_colorizer = False</vh></v>
-<v t="ekr.20060204093736"><vh>@bool trace_doCommand = False</vh></v>
-<v t="ekr.20060204102644"><vh>@bool trace_f.set_focus = False</vh></v>
-<v t="ekr.20060207142012"><vh>@bool trace_focus = False</vh></v>
-<v t="ekr.20051126062830"><vh>@bool trace_g.app.gui.set_focus = False</vh></v>
-<v t="ekr.20060126075152"><vh>@bool trace_gc = False</vh></v>
-<v t="ekr.20060212103826"><vh>@bool trace_gc_calls = False</vh></v>
-<v t="ekr.20060126083715"><vh>@bool trace_gc_verbose = False</vh></v>
-<v t="ekr.20060215054710"><vh>@bool trace_key_event= False</vh></v>
-<v t="ekr.20060131071947"><vh>@bool trace_masterClickHandler = False</vh></v>
-<v t="ekr.20051126062525"><vh>@bool trace_masterCommand = False</vh></v>
-<v t="ekr.20060209045356"><vh>@bool trace_masterFocusHandler = False</vh></v>
-<v t="ekr.20060131071612"><vh>@bool trace_masterKeyHandler = False</vh></v>
-<v t="ekr.20060216091239"><vh>@bool trace_minibuffer = False</vh></v>
-<v t="ekr.20060121102627"><vh>@bool trace_modes = False</vh></v>
-<v t="ekr.20060306031258"><vh>@bool trace_onBodyChanged = False</vh></v>
-<v t="ekr.20051126062243.1"><vh>@bool trace_redraw_now = False</vh></v>
-<v t="ekr.20060210105437"><vh>@bool trace_select = False</vh></v>
-<v t="ekr.20060216130607"><vh>@bool trace_status_line = False</vh></v>
-<v t="ekr.20060202092911"><vh>@bool trace_tree = False</vh></v>
-<v t="ekr.20060206155101"><vh>@bool trace_tree_alloc = False</vh></v>
-<v t="ekr.20060206161839"><vh>@bool trace_tree_edit = False</vh></v>
-<v t="ekr.20060114082205"><vh>@string trace_bindings_filter = </vh></v>
-<v t="ekr.20060114083009"><vh>@string trace_bindings_pane_filter =</vh></v>
-<v t="ekr.20060323131801"><vh>@bool warn_about_missing_settings = False</vh></v>
-<v t="ekr.20060325071916"><vh>For unit tests</vh>
-<v t="ekr.20060325071042"><vh>@ifplatform win32</vh>
-<v t="ekr.20060325071042.1"><vh>@bool test_win32_setting = True</vh></v>
-</v>
-<v t="ekr.20060325071042.2"><vh>@ifplatform darwin</vh>
-<v t="ekr.20060325071042.3"><vh>@bool test_darwin_setting = True</vh></v>
-</v>
-</v>
-</v>
-<v t="ekr.20060201111002"><vh>@bool use_syntax_coloring = True</vh></v>
-<v t="ekr.20060113182439"><vh>Other options</vh>
-<v t="ekr.20041119034357.10" a="E" annotate="7d71002e"><vh>Command options</vh>
-<v t="ekr.20041119034357.14"><vh>@bool at_root_bodies_start_in_doc_mode = True</vh></v>
-<v t="ekr.20041119041019"><vh>@bool redirect_execute_script_output_to_log_pane = False</vh></v>
-<v t="ekr.20041119041019.1"><vh>@string remove_sentinels_extension = .txt</vh></v>
-<v t="ekr.20041119041019.2"><vh>@bool save_clears_undo_buffer = False</vh></v>
-<v t="ekr.20041119050749.10"><vh>@string headline_time_format_string = %m/%d</vh></v>
-<v t="ekr.20041119050749.11"><vh>@string headline_gmt_time = None</vh></v>
-<v t="ekr.20050126083026"><vh>@string undo_granularity = None</vh></v>
-<v t="ekr.20051027175030"><vh>@bool autocomplete-brackets = False</vh></v>
-</v>
-<v t="ekr.20041119034357.16" annotate="7d71002e"><vh>Compare panel options</vh>
-<v t="ekr.20041119034357.17"><vh>files &amp; directories</vh>
-<v t="ekr.20041119043902"><vh>@string compare_file_1 = None</vh></v>
-<v t="ekr.20041119043902.1"><vh>@string compare_file_2 = None</vh></v>
-<v t="ekr.20041119043902.2"><vh>@string output_file = None</vh></v>
-<v t="ekr.20041119043902.3"><vh>@bool append_output_to_output_file = False</vh></v>
-<v t="ekr.20041119034357.18"><vh>@string limit_directory_search_extension = .py</vh></v>
-</v>
-<v t="ekr.20041119034357.19"><vh>file compare options</vh>
-<v t="ekr.20041119043902.4"><vh>@bool ignore_blank_lines = True</vh></v>
-<v t="ekr.20041119043902.5"><vh>@bool ignore_first_line_of_file_1 = False</vh></v>
-<v t="ekr.20041119043902.6"><vh>@bool ignore_first_line_of_file_2 = False</vh></v>
-<v t="ekr.20041119043902.7"><vh>@bool ignore_interior_whitespace = False</vh></v>
-<v t="ekr.20041119043902.8"><vh>@bool ignore_leading_whitespace = False</vh></v>
-<v t="ekr.20041119043902.9"><vh>@bool ignore_sentinel_lines = False</vh></v>
-</v>
-<v t="ekr.20041119050105"><vh>output options</vh>
-<v t="ekr.20041119043902.10"><vh>@int limit_count = 9</vh></v>
-<v t="ekr.20041119043902.11"><vh>@bool make_whitespace_visible = False</vh></v>
-<v t="ekr.20041119043902.12"><vh>@bool print_both_lines_for_matches = False</vh></v>
-<v t="ekr.20041119043902.13"><vh>@bool print_matching_lines = False</vh></v>
-<v t="ekr.20041119043902.14"><vh>@bool print_mismatching_lines = True</vh></v>
-<v t="ekr.20041119043902.15"><vh>@bool print_trailing_lines = True</vh></v>
-</v>
-</v>
-<v t="ekr.20041213105007" annotate="7d71002e"><vh>Fonts</vh>
-<v t="ekr.20041213105508"><vh>@font log font</vh></v>
-<v t="ekr.20041119034357.45"><vh>@font body text font</vh></v>
-<v t="ekr.20041119051246.4"><vh>@font outline font</vh></v>
-</v>
-<v t="ekr.20050203090810" annotate="7d71002e"><vh>For unit tests</vh>
-<v t="ekr.20050203085250"><vh>@int global_setting_for_unit_tests = 132</vh></v>
-</v>
-<v t="ekr.20041119034357.3" annotate="7d71002e"><vh>General configuration options</vh>
-<v t="ekr.20041119034357.5"><vh>@bool read_only = False</vh></v>
-<v t="ekr.20041119034357.13"><vh>@bool use_plugins = True</vh></v>
-<v t="ekr.20041119034357.7"><vh>.leo file options</vh>
-<v t="ekr.20041119034357.8"><vh>@string output_initial_comment = None</vh></v>
-<v t="ekr.20041119034357.9"><vh>@string stylesheet = None</vh></v>
-</v>
-<v t="ekr.20041119034357.11"><vh>directory options</vh>
-<v t="ekr.20041119041304"><vh>@bool create_nonexistent_directories = False</vh></v>
-<v t="ekr.20041119041304.1"><vh>@string relative_path_base_directory = .</vh></v>
-</v>
-<v t="ekr.20041119034357.12"><vh>derived files options</vh>
-<v t="ekr.20041119041747"><vh>@string output_newline = nl</vh></v>
-<v t="ekr.20041119041747.1"><vh>@string trailing_body_newlines = one</vh></v>
-<v t="ekr.20041119041747.4"><vh>@bool write_strips_blank_lines = True</vh></v>
-</v>
-<v t="ekr.20041119034357.15"><vh>unicode encoding options</vh>
-<v t="ekr.20041119042929.9"><vh>@string default_derived_file_encoding = UTF-8</vh></v>
-<v t="ekr.20041119042929.10"><vh>@string new_leo_file_encoding = UTF-8</vh></v>
-<v t="ekr.20041119042929.11"><vh>@string tk_encoding = None</vh></v>
-</v>
-<v t="ekr.20060127050605"><vh>@int max_undo_stack_size = 50</vh></v>
-</v>
-<v t="ekr.20041119034357.28" annotate="7d71002e"><vh>Preferences panel options</vh>
-<v t="ekr.20041119034357.29"><vh>@directory default_tangle_directory = None</vh></v>
-<v t="ekr.20041119034357.30"><vh>@language default_target_language = python</vh></v>
-<v t="ekr.20050620083647"><vh>@language target_language = python</vh></v>
-<v t="ekr.20041119034357.31"><vh>@int tab_width = -4</vh></v>
-<v t="ekr.20041119034357.32"><vh>@int page_width = 80</vh></v>
-<v t="ekr.20041119034357.33"><vh>@bool output_doc_chunks = True</vh></v>
-<v t="ekr.20041119034357.34"><vh>@bool tangle_outputs_header = True</vh></v>
-<v t="ekr.20041119034357.35"><vh>@bool run_tangle_done.py = False</vh></v>
-<v t="ekr.20041119034357.36"><vh>@bool run_untangle_done.py = False</vh></v>
-</v>
-<v t="ekr.20051025084017" annotate="7d71002e"><vh>Spell tab</vh>
-<v t="ekr.20051025084017.1"><vh>@string aspell_local_language_code = en</vh></v>
-<v t="ekr.20051025084017.2"><vh>@string aspell_local_dictionary = None</vh></v>
-<v t="ekr.20051025085144"><vh>@string aspell_dir = c:\aspell</vh></v>
-<v t="ekr.20051025085144.1"><vh>@string aspell_bin_dir = c:\aspell\bin</vh></v>
-</v>
+<v t="ekr.20041119034357.1" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
@@ -201,6 +75,9 @@
 <v t="ekr.20041119050749.12"><vh>@color outline_pane_background_color = #ffffec</vh></v>
 </v>
 <v t="ekr.20041119034357.70"><vh>Syntax colors &amp; options</vh>
+<v t="ekr.20060513100933"><vh>@int colorizer_interrupt_count1 = 10</vh></v>
+<v t="ekr.20060513100933.1"><vh>@int colorizer_interrupt_count2 = 5000</vh></v>
+<v t="ekr.20060201111002"><vh>@bool use_syntax_coloring = True</vh></v>
 <v t="ekr.20041119034357.78"><vh>@color comment_color = firebrick3</vh></v>
 <v t="ekr.20041119034357.79"><vh>@color cweb_section_name_color = red</vh></v>
 <v t="ekr.20041119034357.80"><vh>@color directive_color = blue</vh></v>
@@ -219,78 +96,113 @@
 <v t="ekr.20041119034357.74"><vh>@bool color_directives_in_plain_text = True</vh></v>
 <v t="ekr.20041119034357.75"><vh>@bool underline_undefined_section_names = True</vh></v>
 <v t="ekr.20041119034357.76"><vh>@bool use_hyperlinks = False</vh></v>
+<v t="ekr.20060504131831"><vh>Options for jEdit colorer</vh>
+<v t="ekr.20060504131831.1"><vh>@color keyword1_color = blue</vh></v>
+<v t="ekr.20060504131831.2"><vh>@color literal1_color = #00aa00</vh></v>
+<v t="ekr.20060504134056"><vh>@color literal2_color = #00aa00</vh></v>
+<v t="ekr.20060504134056.1"><vh>@color literal3_color = #00aa00</vh></v>
+<v t="ekr.20060504134056.2"><vh>@color literal4_color = #00aa00</vh></v>
+<v t="ekr.20060504140351"><vh>@color comment1_color = firebrick3</vh></v>
+<v t="ekr.20060504140408"><vh>@color comment2_color = firebrick3</vh></v>
+<v t="ekr.20060504140408.1"><vh>@color comment3_color = firebrick3</vh></v>
+<v t="ekr.20060504140408.2"><vh>@color comment4_color = firebrick3</vh></v>
+</v>
 </v>
 <v t="ekr.20041119034357.67"><vh>@color split_bar_color = LightSteelBlue2</vh></v>
 </v>
-<v t="ekr.20041213105954" annotate="7d71002e"><vh>Window options</vh>
-<v t="ekr.20041119034357.38" a="E"><vh>Body pane options</vh>
-<v t="ekr.20041119034357.43"><vh>@bool body_gmt_time = False</vh></v>
-<v t="ekr.20041119034357.39"><vh>@bool body_pane_wraps = True</vh></v>
-<v t="ekr.20060216135834"><vh>@bool enable_autocompleter = True</vh></v>
-<v t="ekr.20041119034357.44"><vh>@bool smart_auto_indent = False</vh></v>
-<v t="ekr.20041119034357.53"><vh>@int additional_body_text_border = 0</vh></v>
-<v t="ekr.20041119034357.42"><vh>@string body_time_format_string = %m/%d/%Y %H:%M:%S</vh></v>
+<v t="ekr.20041119034357.10" annotate="7d71002e"><vh>Command options</vh>
+<v t="ekr.20041119034357.14"><vh>@bool at_root_bodies_start_in_doc_mode = True</vh></v>
+<v t="ekr.20041119041019"><vh>@bool redirect_execute_script_output_to_log_pane = False</vh></v>
+<v t="ekr.20041119041019.1"><vh>@string remove_sentinels_extension = .txt</vh></v>
+<v t="ekr.20041119041019.2"><vh>@bool save_clears_undo_buffer = False</vh></v>
+<v t="ekr.20041119050749.10"><vh>@string headline_time_format_string = %m/%d</vh></v>
+<v t="ekr.20041119050749.11"><vh>@string headline_gmt_time = None</vh></v>
+<v t="ekr.20050126083026"><vh>@string undo_granularity = None</vh></v>
+<v t="ekr.20051027175030"><vh>@bool autocomplete-brackets = False</vh></v>
 </v>
-<v t="ekr.20041213105954.1"><vh>Log pane options</vh>
-<v t="ekr.20041119052015.1"><vh>@bool log_pane_wraps = False</vh></v>
+<v t="ekr.20041119034357.16" annotate="7d71002e"><vh>Compare panel</vh>
+<v t="ekr.20041119034357.17"><vh>files &amp; directories</vh>
+<v t="ekr.20041119043902"><vh>@string compare_file_1 = None</vh></v>
+<v t="ekr.20041119043902.1"><vh>@string compare_file_2 = None</vh></v>
+<v t="ekr.20041119043902.2"><vh>@string output_file = None</vh></v>
+<v t="ekr.20041119043902.3"><vh>@bool append_output_to_output_file = False</vh></v>
+<v t="ekr.20041119034357.18"><vh>@string limit_directory_search_extension = .py</vh></v>
 </v>
-<v t="ekr.20041119034357.56"><vh>Options for new windows</vh>
-<v t="ekr.20041119034357.59"><vh>@strings[vertical,horizontal] initial_splitter_orientation = vertical</vh></v>
-<v t="ekr.20041119034357.57"><vh>@ratio initial_horizontal_ratio = 0.4</vh></v>
-<v t="ekr.20041119034357.58"><vh>@ratio initial_horizontal_secondary_ratio = 0.8</vh></v>
-<v t="ekr.20041119034357.60"><vh>@ratio initial_vertical_ratio = 0.5</vh></v>
-<v t="ekr.20041119034357.61"><vh>@ratio initial_vertical_secondary_ratio = 0.65</vh></v>
-<v t="ekr.20041119034357.62"><vh>@int initial_window_height = 600</vh></v>
-<v t="ekr.20041119034357.63"><vh>@int initial_window_left = 20</vh></v>
-<v t="ekr.20041119034357.64"><vh>@int initial_window_top = 20</vh></v>
-<v t="ekr.20041119034357.65"><vh>@int initial_window_width = 800</vh></v>
+<v t="ekr.20041119034357.19"><vh>file compare options</vh>
+<v t="ekr.20041119043902.4"><vh>@bool ignore_blank_lines = True</vh></v>
+<v t="ekr.20041119043902.5"><vh>@bool ignore_first_line_of_file_1 = False</vh></v>
+<v t="ekr.20041119043902.6"><vh>@bool ignore_first_line_of_file_2 = False</vh></v>
+<v t="ekr.20041119043902.7"><vh>@bool ignore_interior_whitespace = False</vh></v>
+<v t="ekr.20041119043902.8"><vh>@bool ignore_leading_whitespace = False</vh></v>
+<v t="ekr.20041119043902.9"><vh>@bool ignore_sentinel_lines = False</vh></v>
 </v>
-<v t="ekr.20041119034357.54"><vh>Outline pane options</vh>
-<v t="ekr.20041119050749.3"><vh>@bool allow_clone_drags = False</vh></v>
-<v t="ekr.20041119050749.4"><vh>@bool enable_drag_messages = False</vh></v>
-<v t="ekr.20041119050749.5"><vh>@bool expanded_click_area = True</vh></v>
-<v t="ekr.20060120123529"><vh>@bool initialClickExpandsOrContractsNode = True</vh></v>
-<v t="ekr.20041119050749.17"><vh>@bool look_for_control_drag_on_mouse_down = True</vh></v>
-<v t="ekr.20041119050749.18"><vh>@bool outline_pane_scrolls_horizontally = False</vh></v>
-</v>
-<v t="ekr.20041213105954.2"><vh>Splitter options</vh>
-<v t="ekr.20041119034357.68"><vh>@string split_bar_relief = groove</vh></v>
-<v t="ekr.20041119034357.69"><vh>@int split_bar_width = 6</vh></v>
-</v>
+<v t="ekr.20041119050105"><vh>output options</vh>
+<v t="ekr.20041119043902.10"><vh>@int limit_count = 9</vh></v>
+<v t="ekr.20041119043902.11"><vh>@bool make_whitespace_visible = False</vh></v>
+<v t="ekr.20041119043902.12"><vh>@bool print_both_lines_for_matches = False</vh></v>
+<v t="ekr.20041119043902.13"><vh>@bool print_matching_lines = False</vh></v>
+<v t="ekr.20041119043902.14"><vh>@bool print_mismatching_lines = True</vh></v>
+<v t="ekr.20041119043902.15"><vh>@bool print_trailing_lines = True</vh></v>
 </v>
 </v>
-<v t="ekr.20051123100536" annotate="7d71002e"><vh>Plugins settings</vh>
-<v t="ekr.20060305100614"><vh>chapter plugin</vh>
-<v t="ekr.20060305100614.1"><vh>@color selected_chapter_tab_background_color = LightSteelBlue2</vh></v>
-<v t="ekr.20060306001441"><vh>@color selected_chapter_tab_foreground_color = black</vh></v>
-<v t="ekr.20060306001504"><vh>@color unselected_chapter_tab_background_color = lightgrey</vh></v>
-<v t="ekr.20060306001630"><vh>@color unselected_chapter_tab_foreground_color = black</vh></v>
-<v t="ekr.20060306124427"><vh>@color editor_label_background_color = wheat1</vh></v>
-<v t="ekr.20060306124427.1"><vh>@color editor_label_foreground_color = black</vh></v>
+<v t="ekr.20060524151415"><vh>Debugger</vh>
+<v t="ekr.20060524151415.1"><vh>@string debugger_kind = winpdb</vh></v>
+<v t="ekr.20060521132401"><vh>@string debugger_path = None</vh></v>
 </v>
-<v t="ekr.20060111091324"><vh>fastgotonode plugin</vh>
-<v t="ekr.20060111091324.1"><vh>@bool fastgotonode_useKeyBinding = True</vh></v>
-<v t="ekr.20060111091324.2"><vh>@string fastgotonode_binding =  Shift-space</vh></v>
+<v t="ekr.20051126062243" annotate="7d71002e"><vh>Debugging</vh>
+<v t="ekr.20060408090018"><vh>@bool added_setting = True</vh></v>
+<v t="ekr.20060201110016"><vh>@bool allow_idle_time_hook = False</vh></v>
+<v t="ekr.20060212101234"><vh>@bool gc_before_redraw = False</vh></v>
+<v t="ekr.20060202113731"><vh>@bool show_tree_stats = False</vh></v>
+<v t="ekr.20060216145416"><vh>@bool trace_autocompleter = False</vh></v>
+<v t="ekr.20060114073238"><vh>@bool trace_bindings = False</vh></v>
+<v t="ekr.20060616172614"><vh>@bool trace_bindings_verbose = False</vh></v>
+<v t="ekr.20060425124142"><vh>@bool trace_color_parser = True</vh></v>
+<v t="ekr.20060309022759"><vh>@bool trace_colorizer = False</vh></v>
+<v t="ekr.20060204093736"><vh>@bool trace_doCommand = False</vh></v>
+<v t="ekr.20060204102644"><vh>@bool trace_f.set_focus = False</vh></v>
+<v t="ekr.20060207142012"><vh>@bool trace_focus = False</vh></v>
+<v t="ekr.20051126062830"><vh>@bool trace_g.app.gui.set_focus = False</vh></v>
+<v t="ekr.20060126075152"><vh>@bool trace_gc = False</vh></v>
+<v t="ekr.20060212103826"><vh>@bool trace_gc_calls = False</vh></v>
+<v t="ekr.20060126083715"><vh>@bool trace_gc_verbose = False</vh></v>
+<v t="ekr.20060215054710"><vh>@bool trace_key_event= False</vh></v>
+<v t="ekr.20060131071947"><vh>@bool trace_masterClickHandler = False</vh></v>
+<v t="ekr.20051126062525"><vh>@bool trace_masterCommand = False</vh></v>
+<v t="ekr.20060209045356"><vh>@bool trace_masterFocusHandler = False</vh></v>
+<v t="ekr.20060131071612"><vh>@bool trace_masterKeyHandler = False</vh></v>
+<v t="ekr.20060216091239"><vh>@bool trace_minibuffer = False</vh></v>
+<v t="ekr.20060121102627"><vh>@bool trace_modes = False</vh></v>
+<v t="ekr.20060306031258"><vh>@bool trace_onBodyChanged = False</vh></v>
+<v t="ekr.20051126062243.1"><vh>@bool trace_redraw_now = False</vh></v>
+<v t="ekr.20060210105437"><vh>@bool trace_select = False</vh></v>
+<v t="ekr.20060216130607"><vh>@bool trace_status_line = False</vh></v>
+<v t="ekr.20060202092911"><vh>@bool trace_tree = False</vh></v>
+<v t="ekr.20060206155101"><vh>@bool trace_tree_alloc = False</vh></v>
+<v t="ekr.20060206161839"><vh>@bool trace_tree_edit = False</vh></v>
+<v t="ekr.20060425125015"><vh>@bool verbose_trace_color_parser = False</vh></v>
+<v t="ekr.20060323131801"><vh>@bool warn_about_missing_settings = False</vh></v>
+<v t="ekr.20060521134125"><vh>@string debugger_default_target = None</vh></v>
+<v t="ekr.20060521134125.1"><vh>@string debugger_force_target = None</vh></v>
+<v t="ekr.20060114082205"><vh>@string trace_bindings_filter = </vh></v>
+<v t="ekr.20060114083009"><vh>@string trace_bindings_pane_filter =</vh></v>
+<v t="ekr.20060325071916"><vh>For unit tests</vh>
+<v t="ekr.20060325071042"><vh>@ifplatform win32</vh>
+<v t="ekr.20060325071042.1"><vh>@bool test_win32_setting = True</vh></v>
 </v>
-<v t="ekr.20060109115046"><vh>library plugin</vh>
-<v t="ekr.20060109115046.1"><vh>@bool library_verbose = True</vh></v>
-<v t="ekr.20060109115046.2"><vh>@string library_lib = default</vh></v>
-<v t="ekr.20060109115046.3"><vh>@string library_lib0 = default/library.dbm</vh></v>
-<v t="ekr.20060109121753"><vh>@string library_lib1 = default/libraryS.dbm</vh></v>
-</v>
-<v t="ekr.20051123100536.1"><vh>vim plugin</vh>
-<v t="ekr.20051123100536.2"><vh>@string vim_cmd = c:\Program Files\vim\vim63\gvim --servername LEO</vh></v>
-<v t="ekr.20051123100536.3"><vh>@string vim_exe = c:\Program Files\vim\vim63\gvim</vh></v>
+<v t="ekr.20060325071042.2"><vh>@ifplatform darwin</vh>
+<v t="ekr.20060325071042.3"><vh>@bool test_darwin_setting = True</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.20" annotate="7d71002e"><vh>Find/Change panel options</vh>
+</v>
+<v t="ekr.20041119034357.20" annotate="7d71002e"><vh>Find/Change panel</vh>
 <v t="ekr.20060125104049"><vh>@bool show_only_find_tab_options = True</vh></v>
 <v t="ekr.20060204124608"><vh>@bool minibufferSearchesShowFindTab = True</vh></v>
 <v t="ekr.20041119050105.1"><vh>@string change_text = None</vh></v>
 <v t="ekr.20041119050105.2"><vh>@string find_text = None</vh></v>
 <v t="ekr.20041119050105.3"><vh>Checkboxes</vh>
 <v t="ekr.20041119050105.4"><vh>@bool batch = False</vh></v>
-<v t="ekr.20041119050105.5"><vh>@bool ignore_case = False</vh></v>
+<v t="ekr.20041119050105.5"><vh>@bool ignore_case = True</vh></v>
 <v t="ekr.20041119050105.6"><vh>@bool mark_changes = False</vh></v>
 <v t="ekr.20041119050105.7"><vh>@bool mark_finds = False</vh></v>
 <v t="ekr.20041119050105.12"><vh>@bool node_only = False</vh></v>
@@ -299,13 +211,41 @@
 <v t="ekr.20041120152657"><vh>@bool script_change = None</vh></v>
 <v t="ekr.20041119050105.14"><vh>@bool search_body = True</vh></v>
 <v t="ekr.20041119050105.15"><vh>@bool search_headline = False</vh></v>
-<v t="ekr.20041119050105.10"><vh>@bool whole_word = True</vh></v>
+<v t="ekr.20041119050105.10"><vh>@bool whole_word = False</vh></v>
 <v t="ekr.20041119050105.11"><vh>@bool wrap = False</vh></v>
 </v>
 <v t="ekr.20041120152900.2"><vh>@bool script_search = None</vh></v>
 <v t="ekr.20041119050105.16"><vh>@bool suboutline_only = False</vh></v>
 </v>
-<v t="ekr.20060122105527.3"><vh>Keyboard and minibuffer Options</vh>
+<v t="ekr.20041213105007" annotate="7d71002e"><vh>Fonts</vh>
+<v t="ekr.20041213105508"><vh>@font log font</vh></v>
+<v t="ekr.20041119034357.45"><vh>@font body text font</vh></v>
+<v t="ekr.20041119051246.4"><vh>@font outline font</vh></v>
+</v>
+<v t="ekr.20041119034357.3" annotate="7d71002e"><vh>General options</vh>
+<v t="ekr.20041119034357.5"><vh>@bool read_only = False</vh></v>
+<v t="ekr.20041119034357.13"><vh>@bool use_plugins = True</vh></v>
+<v t="ekr.20041119034357.7"><vh>.leo file options</vh>
+<v t="ekr.20041119034357.8"><vh>@string output_initial_comment = None</vh></v>
+<v t="ekr.20041119034357.9"><vh>@string stylesheet = None</vh></v>
+</v>
+<v t="ekr.20041119034357.11"><vh>directory options</vh>
+<v t="ekr.20041119041304"><vh>@bool create_nonexistent_directories = False</vh></v>
+<v t="ekr.20041119041304.1"><vh>@string relative_path_base_directory = .</vh></v>
+</v>
+<v t="ekr.20041119034357.12"><vh>derived files options</vh>
+<v t="ekr.20041119041747"><vh>@string output_newline = nl</vh></v>
+<v t="ekr.20041119041747.1"><vh>@string trailing_body_newlines = one</vh></v>
+<v t="ekr.20041119041747.4"><vh>@bool write_strips_blank_lines = True</vh></v>
+</v>
+<v t="ekr.20041119034357.15"><vh>unicode encoding options</vh>
+<v t="ekr.20041119042929.9"><vh>@string default_derived_file_encoding = UTF-8</vh></v>
+<v t="ekr.20041119042929.10"><vh>@string new_leo_file_encoding = UTF-8</vh></v>
+<v t="ekr.20041119042929.11"><vh>@string tk_encoding = None</vh></v>
+</v>
+<v t="ekr.20060127050605"><vh>@int max_undo_stack_size = 50</vh></v>
+</v>
+<v t="ekr.20060122105527.3"><vh>Keyboard and minibuffer options</vh>
 <v t="ekr.20060215094146"><vh>@@bool ignore_caps_lock = True</vh></v>
 <v t="ekr.20060216170801"><vh>@bool enable_calltips = True</vh></v>
 <v t="ekr.20060215102141"><vh>@bool ignore_unbound_non_ascii_keys = False</vh></v>
@@ -315,7 +255,6 @@
 <v t="ekr.20060122105527.5" annotate="7d71002e"><vh>@bool useCmdMenu = True</vh></v>
 <v t="ekr.20060122105527.6" annotate="7d71002e"><vh>@bool useMinibuffer = True</vh></v>
 <v t="ekr.20060125165241"><vh>@bool useTextMinibuffer = True</vh></v>
-<v t="ekr.20060122105527.4" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
 </v>
 <v t="ekr.20051007200824" annotate="7d71002e"><vh>Keyboard shortcuts</vh>
 <v t="ekr.20051101160257" annotate="7d71002e"><vh>About keyboard shortcuts</vh>
@@ -325,23 +264,27 @@
 <v t="ekr.20060117092249"><vh>About modes</vh></v>
 <v t="ekr.20060303075452"><vh>Commands for mouseless Leo</vh></v>
 <v t="ekr.20060104093101" annotate="7d71002e"><vh>@ignore Unused key bindings</vh>
-<v t="ekr.20060110141538" annotate="7d71002e"><vh>Default Emacs shortcuts</vh>
+<v t="ekr.20060122105527.4" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
+<v t="ekr.20060110141538" annotate="7d71002e"><vh>@keys Default Emacs shortcuts</vh>
 <v t="ekr.20051007193321"><vh>@shortcuts Emacs: A-E</vh></v>
 <v t="ekr.20060112090844"><vh>@shortcuts Emacs: F-M</vh></v>
 <v t="ekr.20060112090844.1"><vh>@shortcuts Emads: N-Z</vh></v>
 <v t="ekr.20060112112006"><vh>@shortcuts Emacs: missing</vh></v>
 </v>
-<v t="ekr.20060110141538.2" annotate="7d71002e"><vh>Legacy Leo bindings</vh>
-<v t="ekr.20051218203646" annotate="7d71002e"><vh>@shortcuts Legacy: A-E</vh></v>
-<v t="ekr.20060112090844.4"><vh>@shortcuts Legacy: F-M</vh></v>
-<v t="ekr.20060112090844.5"><vh>@shortcuts Legacy: N-Z</vh></v>
-</v>
-<v t="ekr.20060103103812" annotate="7d71002e"><vh>Legacy Leo shortcuts with important Emacs bindings</vh>
+<v t="ekr.20060103103812" annotate="7d71002e"><vh>@keys Legacy Leo shortcuts with important Emacs bindings</vh>
 <v t="ekr.20060111082632.1"><vh>@shortcuts Legacy+: A-E</vh></v>
 <v t="ekr.20060112085643"><vh>@shortcuts Legacy+: F-M</vh></v>
 <v t="ekr.20060112085643.1"><vh>@shortcuts Legacy+: N-Z</vh></v>
 </v>
-<v t="ekr.20051010112558"><vh>EKR bindings: a mix of legacy Leo shortcuts with important Emacs bindings</vh>
+<v t="ekr.20060110141538.2" annotate="7d71002e"><vh>@keys Legacy Leo bindings</vh>
+<v t="ekr.20051218203646" annotate="7d71002e"><vh>@shortcuts Legacy: A-E</vh></v>
+<v t="ekr.20060112090844.4"><vh>@shortcuts Legacy: F-M</vh></v>
+<v t="ekr.20060112090844.5"><vh>@shortcuts Legacy: N-Z</vh></v>
+</v>
+<v t="ekr.20060607182402"><vh>@keys groupoperstions plugin</vh>
+<v t="ekr.20060325091143"><vh>@shortcuts group-operations</vh></v>
+</v>
+<v t="ekr.20051010112558"><vh>@keys EKR bindings: a mix of legacy Leo shortcuts with important Emacs bindings</vh>
 <v t="ekr.20060122105438"><vh>To do</vh></v>
 <v t="ekr.20060122105438.1"><vh>Summary of Ctrl bindings</vh></v>
 <v t="ekr.20060115162748"><vh>Modes</vh>
@@ -361,32 +304,25 @@
 <v t="ekr.20060102102958.1" annotate="7d71002e"><vh>@shortcuts EKR: N-Z</vh></v>
 </v>
 </v>
-</v>
-<v t="ekr.20060325091143"><vh>@shortcuts for groupoperations plugin</vh></v>
-<v t="ekr.20060110141538.1" annotate="7d71002e"><vh>No bindings</vh>
-<v t="ekr.20051218202206" annotate="7d71002e"><vh>@shortcuts No bindings: A-E</vh></v>
-<v t="ekr.20060112093227.1"><vh>@shortcuts No bindings: E-M</vh></v>
-<v t="ekr.20060112093227.2"><vh>@shortcuts No bindings: N-Z</vh></v>
-</v>
-<v t="ekr.20060122105527" a="E"><vh>EKR bindings: Mode-oriented bindings + Emacs bindings</vh>
+<v t="ekr.20060122105527"><vh>@keys EKR bindings: Mode-oriented bindings + Emacs bindings</vh>
+<v t="ekr.20060604180807" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
 <v t="ekr.20060122105527.2"><vh>Summary of Ctrl bindings</vh></v>
 <v t="ekr.20060122105527.9"><vh>Modes</vh>
-<v t="ekr.20060122113439"><vh>@mode Edit (Control-space)</vh>
+<v t="ekr.20060122113439"><vh>@mode Edit (Alt-Control-space)</vh>
 <v t="ekr.20060122122150"><vh>@mode Edit-extend</vh></v>
 </v>
-<v t="ekr.20060122105527.11" annotate="7d71002e"><vh>@@mode File</vh>
+<v t="ekr.20060122105527.11" annotate="7d71002e"><vh>@mode File</vh></v>
 <v t="ekr.20060122182825"><vh>@mode File-open</vh></v>
-</v>
-<v t="ekr.20060122105527.12"><vh>@@mode Find </vh>
+<v t="ekr.20060122105527.12"><vh>@mode Find </vh>
 <v t="ekr.20060122105527.13"><vh>@@mode Find-reverse</vh></v>
 </v>
-<v t="ekr.20060122105527.14"><vh>@@mode Find-options</vh></v>
+<v t="ekr.20060122105527.14"><vh>@mode Find-options</vh></v>
 <v t="ekr.20060122105732" annotate="7d71002e"><vh>@mode Outline (Control-Shift-O)</vh>
 <v t="ekr.20060122130002"><vh>@mode Outline-move</vh></v>
 </v>
 <v t="ekr.20060122105527.15"><vh>@mode Quick-command (Alt-C)</vh></v>
 </v>
-<v t="ekr.20060122105527.18" a="E"><vh>Shortcuts</vh>
+<v t="ekr.20060122105527.18"><vh>Shortcuts</vh>
 <v t="ekr.20060122105527.19" annotate="7d71002e"><vh>@shortcuts EKR: mode-changing commands</vh></v>
 <v t="ekr.20060124070546"><vh>@shortcuts Find Commands</vh></v>
 <v t="ekr.20060203131942"><vh>@shortcuts Minibuffer bindings</vh></v>
@@ -396,10 +332,140 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060408093541"><vh>@bool added_setting = True</vh></v>
+<v t="ekr.20060110141538.1" annotate="7d71002e"><vh>@keys No bindings</vh>
+<v t="ekr.20051218202206" annotate="7d71002e"><vh>@shortcuts No bindings: A-E</vh></v>
+<v t="ekr.20060112093227.1"><vh>@shortcuts No bindings: E-M</vh></v>
+<v t="ekr.20060112093227.2"><vh>@shortcuts No bindings: N-Z</vh></v>
 </v>
-<v t="ekr.20060330094136" a="E"><vh>Changed settings</vh>
-<v t="ekr.20060201111002" a="V"><vh>@bool use_syntax_coloring = True</vh></v>
+<v t="ekr.20060603215208"><vh>@keys EKR bindings: vim mode bindings</vh>
+<v t="ekr.20060608065207"><vh>Settings related to key bindings</vh>
+<v t="ekr.20060624072653"><vh>@bool warn_about_redefined_shortcuts = True</vh></v>
+<v t="ekr.20060604080653" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
+<v t="ekr.20060605081712"><vh>@color command_mode_bg_color = MistyRose1</vh></v>
+<v t="ekr.20060605081712.1"><vh>@color command_mode_fg_color = black</vh></v>
+<v t="ekr.20060605081712.2"><vh>@color insert_mode_bg_color = white</vh></v>
+<v t="ekr.20060605081712.3"><vh>@color insert_mode_fg_color = black</vh></v>
+<v t="ekr.20060606085536"><vh>@color overwrite_mode_bg_color = azure2</vh></v>
+<v t="ekr.20060606085536.1"><vh>@color overwrite_mode_fg_color = black</vh></v>
+</v>
+<v t="ekr.20060603215208.4"><vh>Modes</vh>
+<v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
+<v t="ekr.20060608185854"><vh>@mode commands</vh></v>
+<v t="ekr.20060608190813"><vh>@mode edit</vh></v>
+<v t="ekr.20060608191518"><vh>@mode emacs</vh></v>
+<v t="ekr.20060608185854.1"><vh>@mode extract</vh></v>
+<v t="ekr.20060603223152.1"><vh>@mode file</vh></v>
+<v t="ekr.20060603215208.7" a="M"><vh>@mode gui</vh>
+<v t="ekr.20060603215208.8"><vh>@mode Edit-extend</vh></v>
+</v>
+<v t="ekr.20060603223152"><vh>@mode help</vh>
+<v t="ekr.20060604083323"><vh>@mode apropos</vh></v>
+</v>
+<v t="ekr.20060604081740"><vh>@mode kill</vh></v>
+<v t="ekr.20060608184356"><vh>@mode modes</vh></v>
+<v t="ekr.20060604082857.1"><vh>@mode move-outline</vh></v>
+<v t="ekr.20060604082857"><vh>@mode outline</vh></v>
+<v t="ekr.20060603223152.2"><vh>@mode toggle-find</vh></v>
+</v>
+<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
+<v t="ekr.20060604081014"><vh>@@@@shortcuts top-level keys (like vim)</vh></v>
+<v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
+<v t="ekr.20060603215208.19"><vh>@shortcuts Find Commands</vh></v>
+<v t="ekr.20060603215208.20"><vh>@shortcuts Minibuffer bindings</vh></v>
+<v t="ekr.20060603215208.21" annotate="7d71002e"><vh>@shortcuts EKR: A-E</vh></v>
+<v t="ekr.20060603215208.22"><vh>@shortcuts EKR: F-M</vh></v>
+<v t="ekr.20060603215208.23" annotate="7d71002e"><vh>@shortcuts EKR: N-Z</vh></v>
+</v>
+</v>
+</v>
+<v t="ekr.20051123100536" annotate="7d71002e"><vh>Plugins</vh>
+<v t="ekr.20060111091324"><vh>fastgotonode plugin</vh>
+<v t="ekr.20060111091324.1"><vh>@bool fastgotonode_useKeyBinding = True</vh></v>
+<v t="ekr.20060111091324.2"><vh>@string fastgotonode_binding =  Shift-space</vh></v>
+</v>
+<v t="ekr.20060109115046"><vh>library plugin</vh>
+<v t="ekr.20060109115046.1"><vh>@bool library_verbose = True</vh></v>
+<v t="ekr.20060109115046.2"><vh>@string library_lib = default</vh></v>
+<v t="ekr.20060109115046.3"><vh>@string library_lib0 = default/library.dbm</vh></v>
+<v t="ekr.20060109121753"><vh>@string library_lib1 = default/libraryS.dbm</vh></v>
+</v>
+<v t="ekr.20051123100536.1"><vh>vim plugin</vh>
+<v t="ekr.20051123100536.2"><vh>@string vim_cmd = c:\Program Files\vim\vim63\gvim --servername LEO</vh></v>
+<v t="ekr.20051123100536.3"><vh>@string vim_exe = c:\Program Files\vim\vim63\gvim</vh></v>
+</v>
+</v>
+<v t="ekr.20041119034357.28" annotate="7d71002e"><vh>Preferences panel</vh>
+<v t="ekr.20041119034357.29"><vh>@directory default_tangle_directory = None</vh></v>
+<v t="ekr.20041119034357.30"><vh>@language default_target_language = python</vh></v>
+<v t="ekr.20050620083647"><vh>@language target_language = python</vh></v>
+<v t="ekr.20041119034357.31"><vh>@int tab_width = -4</vh></v>
+<v t="ekr.20041119034357.32"><vh>@int page_width = 80</vh></v>
+<v t="ekr.20041119034357.33"><vh>@bool output_doc_chunks = True</vh></v>
+<v t="ekr.20041119034357.34"><vh>@bool tangle_outputs_header = True</vh></v>
+<v t="ekr.20041119034357.35"><vh>@bool run_tangle_done.py = False</vh></v>
+<v t="ekr.20041119034357.36"><vh>@bool run_untangle_done.py = False</vh></v>
+</v>
+<v t="ekr.20051025084017" annotate="7d71002e"><vh>Spell tab</vh>
+<v t="ekr.20051025084017.1"><vh>@string aspell_local_language_code = en</vh></v>
+<v t="ekr.20051025084017.2"><vh>@string aspell_local_dictionary = None</vh></v>
+<v t="ekr.20051025085144"><vh>@string aspell_dir = c:\aspell</vh></v>
+<v t="ekr.20051025085144.1"><vh>@string aspell_bin_dir = c:\aspell\bin</vh></v>
+</v>
+<v t="ekr.20050203090810" annotate="7d71002e"><vh>Unit test</vh>
+<v t="ekr.20050203085250"><vh>@int global_setting_for_unit_tests = 132</vh></v>
+</v>
+<v t="ekr.20041213105954" annotate="7d71002e"><vh>Window</vh>
+<v t="ekr.20041119034357.38"><vh>Body pane options</vh>
+<v t="ekr.20060531094310"><vh>@bool autoindent_in_nocolor_mode = True</vh></v>
+<v t="ekr.20041119034357.43"><vh>@bool body_gmt_time = False</vh></v>
+<v t="ekr.20041119034357.39"><vh>@bool body_pane_wraps = True</vh></v>
+<v t="ekr.20060216135834"><vh>@bool enable_autocompleter_initially = False</vh></v>
+<v t="ekr.20060603070801"><vh>@bool enable_calltips_initially = False</vh></v>
+<v t="ekr.20041119034357.44"><vh>@bool smart_auto_indent = False</vh></v>
+<v t="ekr.20041119034357.53"><vh>@int additional_body_text_border = 0</vh></v>
+<v t="ekr.20041119034357.42"><vh>@string body_time_format_string = %m/%d/%Y %H:%M:%S</vh></v>
+<v t="ekr.20060620085654"><vh>@string editor_orientation = horizontal</vh></v>
+</v>
+<v t="ekr.20041213105954.1"><vh>Log pane options</vh>
+<v t="ekr.20041119052015.1"><vh>@bool log_pane_wraps = False</vh></v>
+</v>
+<v t="ekr.20041119034357.56"><vh>Options for new windows</vh>
+<v t="ekr.20041119034357.59"><vh>@strings[vertical,horizontal] initial_splitter_orientation = vertical</vh></v>
+<v t="ekr.20041119034357.57"><vh>@ratio initial_horizontal_ratio = 0.4</vh></v>
+<v t="ekr.20041119034357.58"><vh>@ratio initial_horizontal_secondary_ratio = 0.8</vh></v>
+<v t="ekr.20041119034357.60"><vh>@ratio initial_vertical_ratio = 0.5</vh></v>
+<v t="ekr.20041119034357.61"><vh>@ratio initial_vertical_secondary_ratio = 0.65</vh></v>
+<v t="ekr.20041119034357.62"><vh>@int initial_window_height = 600</vh></v>
+<v t="ekr.20041119034357.63"><vh>@int initial_window_left = 20</vh></v>
+<v t="ekr.20041119034357.64"><vh>@int initial_window_top = 20</vh></v>
+<v t="ekr.20041119034357.65"><vh>@int initial_window_width = 800</vh></v>
+</v>
+<v t="ekr.20041119034357.54"><vh>Outline pane options</vh>
+<v t="ekr.20041119050749.3"><vh>@bool allow_clone_drags = False</vh></v>
+<v t="ekr.20041119050749.4"><vh>@bool enable_drag_messages = False</vh></v>
+<v t="ekr.20041119050749.5"><vh>@bool expanded_click_area = True</vh></v>
+<v t="ekr.20060528175513"><vh>@bool idle_redraw = False</vh></v>
+<v t="ekr.20060120123529"><vh>@bool initialClickExpandsOrContractsNode = True</vh></v>
+<v t="ekr.20041119050749.17"><vh>@bool look_for_control_drag_on_mouse_down = True</vh></v>
+<v t="ekr.20041119050749.18"><vh>@bool outline_pane_scrolls_horizontally = False</vh></v>
+</v>
+<v t="ekr.20041213105954.2"><vh>Splitter options</vh>
+<v t="ekr.20041119034357.68"><vh>@string split_bar_relief = groove</vh></v>
+<v t="ekr.20041119034357.69"><vh>@int split_bar_width = 6</vh></v>
+</v>
+</v>
+</v>
+<v t="ekr.20060512084639" a="E"><vh>Recent</vh>
+<v t="ekr.20060216135834"><vh>@bool enable_autocompleter_initially = False</vh></v>
+<v t="ekr.20060603070801"><vh>@bool enable_calltips_initially = False</vh></v>
+<v t="ekr.20060114073238"><vh>@bool trace_bindings = False</vh></v>
+<v t="ekr.20060616172614"><vh>@bool trace_bindings_verbose = False</vh></v>
+<v t="ekr.20060309022759" a="V"><vh>@bool trace_colorizer = False</vh></v>
+<v t="ekr.20060131071947"><vh>@bool trace_masterClickHandler = False</vh></v>
+<v t="ekr.20060209045356"><vh>@bool trace_masterFocusHandler = False</vh></v>
+<v t="ekr.20060131071612"><vh>@bool trace_masterKeyHandler = False</vh></v>
+<v t="ekr.20060121102627"><vh>@bool trace_modes = False</vh></v>
+<v t="ekr.20060620085654"><vh>@string editor_orientation = horizontal</vh></v>
 </v>
 </vnodes>
 <tnodes>
@@ -885,11 +951,10 @@ Setting this setting to False allows Leo to be used on Aqua.</t>
 False: Don't issue such messages.
 
 </t>
-<t tx="ekr.20041119050749.5">
-1: Click near a node expands or contracts the node.
+<t tx="ekr.20041119050749.5">1: Click near a node expands or contracts the node.
 0: Only clicks in a node's plus/minus box expands or contracts the node.
 
-</t>
+Note:  @bool expanded_click_area = True conflicts with the UniversalScrolling plugin.</t>
 <t tx="ekr.20041119050749.6">Foreground color of unselected headline text.</t>
 <t tx="ekr.20041119050749.7">Foreground color of selected headline text that is not being edited.
 
@@ -1047,7 +1112,7 @@ Therefore, @if-platform and @ifPlatformare equivalent to @ifplatform.</t>
 # 
 # Default size is 12 for Linux, 8 otherwise.
 
-log_text_font_family = Courier 
+log_text_font_family = Courier
 log_text_font_size = 9
 log_text_font_slant = roman
 log_text_font_weight = normal
@@ -1184,12 +1249,11 @@ end-of-line-extend-selection        = None
 equal-sized-panes                   = Alt-Shift-E
 escape                              = Escape
 eval-expression                     = Alt-colon
-eval-expression:                    = None
+eval-expression                     = None
 exchange-point-mark                 = None  # Should be Control-X Control-X.
 execute-script                      = None             # Ctrl-e conflicts with end-of-line
 exit-leo                            = Ctrl-Q
 exit-named-mode                     = None
-expand-abbrev                       = None
 expand-all                          = None
 expand-and-go-right                 = None
 expand-next-level                   = None
@@ -1212,7 +1276,8 @@ extract-names                       = Shift-Ctrl-N
 extract-section                     = Shift-Ctrl-E</t>
 <t tx="ekr.20051007200824">@nocolor
 
-This node contains 6 sets of key bindings and settings.
+This node contains sets of key bindings and settings.
+These sets should have headlines starting with @keys so that the Check Bindings script can find them.
 
 - The *inactive* sets should be children of the node '@ignore Unused key bindings'
 
@@ -1404,12 +1469,7 @@ Ctrl-A, Ctrl-Shift-a, Ctrl-Shift-A
     
 See "About shortcut specifiers" for a full discussion of what may appear in the tail of a shortcut.</t>
 <t tx="ekr.20051123100536"></t>
-<t tx="ekr.20051123100536.1">A common alternative is:
-
-vim_cmd = c:\Program Files\vim\vim64\gvim --servername LEO
-    _vim_exe = r"c:\Program Files\vim\vim64\gvim"
-
-For MacOS X (darwin) the following are typical defaults:
+<t tx="ekr.20051123100536.1">For MacOS X (darwin) the following are typical defaults:
 
 vim_cmd = "/Applications/gvim.app/Contents/MacOS/gvim --servername LEO" 
 vim_exe = "gvim"</t>
@@ -1439,6 +1499,7 @@ activate-plugins-menu               = None
 activate-window-menu                = None
 add-comments                        = None
 add-global-abbrev                   = None
+add-tab-to-lines                    = None
 advertised-undo                     = None
 append-to-buffer                    = None
 append-to-register                  = None
@@ -1471,6 +1532,7 @@ center-region                       = None
 check-all-python-code               = None
 check-outline                       = None
 check-python-code                   = None
+clean-lines                         = None
 clear-extend-mode                   = None
 clear-kill-ring                     = None
 clear-recent-files                  = None
@@ -1502,9 +1564,12 @@ copy-to-register                    = None
 count-region                        = None
 cut-node                            = None
 cut-text                            = None
+cycle-all-focus                     = None
 cycle-focus                         = None
+cycle-editor-focus                  = None
 dabbrev-completion                  = None
 dabbrev-expands                     = None
+debug                               = None
 de-hoist                            = None
 delete-char                         = None
 delete-comments                     = None
@@ -1516,8 +1581,8 @@ delete-spaces                       = None
 demote                              = None
 diff                                = None
 digit-argument                      = None
-disable-auto-completer-command      = None
-disable-calltips-command            = None
+disable-autocompleter               = None
+disable-calltips                    = None
 disable-gc-trace                    = None
 downcase-region                     = None
 downcase-word                       = None
@@ -1527,8 +1592,8 @@ dump-all-objects                    = None
 dump-new-objects                    = None
 dump-outline                        = None
 edit-headline                       = None
-enable-auto-completer-command       = None
-enable-calltips-command             = None
+enable-autocompleter                = None
+enable-calltips                     = None
 enable-gc-trace                     = None
 end-edit-headline                   = None
 end-of-buffer                       = None
@@ -1542,7 +1607,6 @@ exchange-point-mark                 = None
 execute-script                      = None
 exit-leo                            = None
 exit-named-mode                     = None
-expand-abbrev                       = None
 expand-all                          = None
 expand-and-go-right                 = None
 expand-next-level                   = None
@@ -1663,7 +1727,6 @@ exchange-point-mark                 = None
 execute-script                      = Ctrl-E
 exit-leo                            = Ctrl-Q
 exit-named-mode                     = None
-expand-abbrev                       = None
 expand-all                          = Alt-9
 expand-and-go-right                 = None
 expand-next-level                   = Alt+=
@@ -1788,7 +1851,6 @@ eval-expression                     = None
 exchange-point-mark                 = None      # Should be Ctrl-X Ctrl-X.
 execute-script                      = None
 exit-leo                            = Ctrl-Q
-expand-abbrev                       = None
 expand-all                          = None  
 expand-and-go-right                 ! text = Alt-RtArrow
 expand-and-go-right                 ! tree = Alt-RtArrow
@@ -1814,7 +1876,7 @@ extract-section                     = None # Was Shift-Ctrl-e</t>
 <t tx="ekr.20060102102958.1"># name-last-kbd-macro               = None
 negative-argument                   = None      # Alt-minus conflicts with contract-all.
 new                                 = Ctrl-n    # Ctrl-n conflicts with next-line.
-newline-and-indent:                 = Control-j
+newline-and-indent                  = Control-j
 next-line                           ! text = DnArrow
 next-line-extend-selection          ! text = Shift-DnArrow
 number-command                      = None
@@ -1892,7 +1954,7 @@ select-paragraph                    = None
 set-colors                          = None
 set-comment-column                  = None
 set-extend-mode                     = None
-set-ignore-state                    = None
+set-command-state                   = None
 set-insert-state                    = None
 set-fill-column                     = None
 set-fill-prefix                     = None
@@ -2032,9 +2094,7 @@ warnings about duplicate bindings.
 
 - The Check Bindings script only checks for missing bindings in this set.</t>
 <t tx="ekr.20060110141538.2">@color</t>
-<t tx="ekr.20060111082632.1">@color
-
-# Important: the print-commands and print-bindings show what bindings are in effect.
+<t tx="ekr.20060111082632.1"># Important: the print-commands and print-bindings show what bindings are in effect.
 
 # append-next-kill                  = None      # Control-Alt-w
 # apply settings                    = None      # Does not exist yet.
@@ -2103,7 +2163,7 @@ copy-to-register                    = None
 count-region                        = None
 cut-node                            = Shift-Ctrl-X
 cut-text                            = Ctrl-x
-cycle-focus                         = Alt-Shift-f
+cycle-focus                         = None
 dabbrev-completion                  = None
 dabbrev-expands                     = None
 de-hoist                            = None
@@ -2135,8 +2195,7 @@ eval-expression                     = None
 exchange-point-mark                 = None      # Should be Ctrl-X Ctrl-X.
 execute-script                      = None      # Ctrl-e conflicts with end-of-line
 exit-leo                            = Ctrl-Q
-exit-named-mode        
-expand-abbrev                       = None
+exit-named-mode                     = None
 expand-all                          = None      # Alt-9: not useful enough.
 expand-and-go-right                 = None
 expand-next-level                   = Alt-=
@@ -2202,7 +2261,6 @@ goto-first-node                     ! text = Alt-Home
 goto-first-node                     ! tree = Alt-Home
 goto-first-node                     ! tree = Home
 goto-first-sibling                  = None
-goto-last-node                      = None
 goto-last-node                      = None
 goto-last-sibling                   = None
 goto-last-visible                   ! text = Alt-End
@@ -2403,7 +2461,7 @@ move-past-close-extend-selection        = None</t>
 <t tx="ekr.20060112085643.1"># name-last-kbd-macro                   = None
 negative-argument                       = None      # Alt-minus conflicts with contract-all.
 new                                     = Ctrl-n    # Ctrl-n conflicts with next-line.
-newline-and-indent:                     = Control-j
+newline-and-indent                      = Control-j
 next-line                               = DnArrow
 next-line-extend-selection              = Shift-DnArrow
 number-command                          = None
@@ -2487,7 +2545,7 @@ set-find-everywhere                     = None
 set-find-node-only                      = None
 set-find-suboutline-only                = None
 set-font                                = None
-set-ignore-state                        = None
+set-command-state                       = None
 set-insert-state                        = None
 set-mark-command                        = Ctrl-space    # Also Ctrl-Shift-at
 set-overwrite-state                     = None
@@ -2679,7 +2737,7 @@ move-outline-up                 = None         # Ctrl-U confllicts with universa
 move-past-close                 = Alt-parenright
 negative-argument               = Alt-minus
 new                             = None         # Ctrl-n conflicts with next-line.
-newline-and-indent:             = Control-j
+newline-and-indent              = Control-j
 next-line                       = Control-n
 next-line-extend-selection      = None
 number-command                  = None
@@ -2751,7 +2809,6 @@ scroll-up-extend-selection      = None
 search-again                    = None
 search-backward                 = None
 search-forward                  = None
-select-all                      = None
 select-all                      = None  # Ctrl-A conflicts with beginning-of-line.
 select-paragraph                = Alt-h
 set-colors                      = None
@@ -2763,7 +2820,7 @@ set-find-everywhere                 = None
 set-find-node-only                  = None
 set-find-suboutline-only            = None
 set-font                        = None
-set-ignore-state                = None
+set-command-state               = None
 set-insert-state                = None
 set-mark-command                = Control-Shift-at
 set-overwrite-state             = None
@@ -2950,7 +3007,7 @@ move-past-close-extend-selection        = None</t>
 
 negative-argument                   = None
 new                                 = Ctrl-N
-newline-and-indent:                 = None
+newline-and-indent                  = None
 next-line                           ! text = DnArrow
 next-line-extend-selection          ! text = Shift-DnArrow
 number-command                      = None
@@ -3032,7 +3089,7 @@ set-find-everywhere                 = None
 set-find-node-only                  = None
 set-find-suboutline-only            = None
 set-font                            = None
-set-ignore-state                    = None
+set-command-state                   = None
 set-insert-state                    = None
 set-mark-command                    = None
 set-overwrite-state                 = None
@@ -3108,12 +3165,14 @@ zap-to-character                    = None</t>
 <t tx="ekr.20060112093227.1">fill-paragraph                      = None
 fill-region                         = None
 fill-region-as-paragraph            = None
+find-character                      = None
 find-tab-change                     = None
 find-tab-change-all                 = None
 find-tab-change-then-find           = None
 find-tab-find                       = None
 find-tab-find-all                   = None
 find-tab-find-prev                  = None
+find-word                           = None
 flatten-outline                     = None
 flush-lines                         = None
 focus-to-body                       = None
@@ -3140,11 +3199,12 @@ go-forward                          = None
 goto-char                           = None
 goto-first-node                     = None
 goto-first-sibling                  = None
+goto-global-line                    = None
 goto-last-node                      = None
 goto-last-sibling                   = None
 goto-last-visible                   = None
 goto-line                           = None # Leo's goto-line-number is better.
-goto-line-number                    = None
+goto-line-number                    = None # Leo's legacy Go To Line number command.  goto-global-line is preferred.
 goto-next-changed                   = None
 goto-next-clone                     = None
 goto-next-marked                    = None
@@ -3155,6 +3215,14 @@ goto-parent                         = None
 goto-prev-node                      = None
 goto-prev-sibling                   = None
 goto-prev-visible                   = None
+group-operations-clear-marked       = None
+group-operations-mark-for-clone     = None
+group-operations-mark-for-copy      = None
+group-operations-mark-for-move      = None
+group-operations-mark-target        = None
+group-operations-operate-on-marked  = None
+group-operations-transfer           = None
+toggle-input-state                  = None
 help                                = None
 hide-body-pane                      = None
 hide-find-tab                       = None
@@ -3191,6 +3259,7 @@ isearch-backward                    = None
 isearch-backward-regexp             = None
 isearch-forward                     = None
 isearch-forward-regexp              = None
+isearch-with-present-options        = None
 jump-to-register                    = None
 keep-lines                          = None
 keyboard-quit                       = None
@@ -3221,11 +3290,12 @@ move-outline-left                   = None
 move-outline-right                  = None
 move-outline-up                     = None
 move-past-close                     = None
-move-past-close-extend-selection    = None</t>
+move-past-close-extend-selection    = None
+</t>
 <t tx="ekr.20060112093227.2"># name-last-kbd-macro               = None
 negative-argument                   = None
 new                                 = None
-newline-and-indent:                 = None
+newline-and-indent                  = None
 next-line                           = None
 next-line-extend-selection          = None
 number-command                      = None
@@ -3285,12 +3355,15 @@ reformat-paragraph                  = None
 remove-blank-lines                  = None
 remove-directory                    = None
 remove-sentinels                    = None
+remove-space-from-lines             = None
+remove-tab-from-lines               = None
 rename-buffer                       = None
 repeat-complex-command              = None
 replace-string                      = None
 resize-to-screen                    = None
 reverse-region                      = None
 revert                              = None
+run-unit-tests                      = None
 save-buffers-kill-leo               = None
 save-file                           = None
 save-file-as                        = None
@@ -3319,7 +3392,7 @@ set-find-everywhere                 = None
 set-find-node-only                  = None
 set-find-suboutline-only            = None
 set-font                            = None
-set-ignore-state                    = None
+set-command-state                   = None
 set-insert-state                    = None
 set-mark-command                    = None
 set-overwrite-state                 = None
@@ -3355,6 +3428,8 @@ tangle-all                          = None
 tangle-marked                       = None
 toggle-active-pane                  = None
 toggle-angle-brackets               = None
+toggle-autocompleter                = None
+toggle-calltips                     = None
 toggle-extend-mode                  = None
 toggle-find-ignore-case-option      = None
 toggle-find-in-body-option          = None
@@ -3408,39 +3483,65 @@ import leoTest
 u = leoTest.testUtils(c)
 parser = leoConfig.settingsTreeParser(c)
 
-&lt;&lt; define setNames &gt;&gt;
+# Add these as required to handle commands defined by plugins.
+optionalCommandPrefixes = ['group-operations']
+optionalCommandNames = []
 
+setNames = []
 setsDict = {} # keys are set names, values are dicts of command names.
+shortcutsDict = {}
 
 @others
 
 main()</t>
-<t tx="ekr.20060112104119">setNames = [
-    'Default Emacs shortcuts',
-    'Legacy Leo bindings',
-    'Legacy Leo shortcuts with important Emacs bindings',
-    'No bindings',
-    'EKR bindings: a mix',
-    'EKR bindings: Mode-oriented',
-]
+<t tx="ekr.20060112104119">def defineSetNames():
+    
+    global setNames
 
-setNames.sort()</t>
+    if 1:
+        setNames = []
+        for p in c.allNodes_iter():
+            h = p.headString()
+            if h.startswith('@keys'):
+                h = h[5:].strip()
+                if h not in setNames:
+                    setNames.append(h)
+        g.es('Found these sets...')
+        for setName in setNames:
+            g.es_print('  %s' % str(setName))
+    else:
+        setNames = [
+            'Default Emacs shortcuts',
+            'Legacy Leo bindings',
+            'Legacy Leo shortcuts with important Emacs bindings',
+            'No bindings',
+            'EKR bindings: a mix',
+            'EKR bindings: Mode-oriented',
+        ]
+    
+    setNames.sort()</t>
 <t tx="ekr.20060112104333">def doSet(p,name):
     
+    global shortcutsDict
+    
+    shortcutsDict = {}
+
     for p in p.subtree_iter():
         if p.headString().startswith('@shortcuts'):
             doShortcuts(p,name)</t>
 <t tx="ekr.20060112104333.1">def checkSets():
     
-    global setNames
+    global setNames, optionalCommandPrefixes, optionalCommandNames
 
     # Compute the union of all the command names.
     allNames = {}
     for setName in setNames:
         d = setsDict.get(setName)
-        assert(d)
-        for key in d.keys():
-            allNames[key] = key
+        if d:
+            for key in d.keys():
+                allNames[key] = key
+        else:
+            g.es_print('No setsDict for %s' % (repr(setName)),color='red')
             
     k = c.keyHandler
     keys = allNames.keys()
@@ -3449,38 +3550,58 @@ setNames.sort()</t>
     # Warn about missing names.
     for setName in ('No bindings',): # setNames:
         d = setsDict.get(setName)
+        if not d:
+            g.es_print("'@keys No bindings' not found",color='red')
         for key in keys:
-            if key not in ('None',None) and key not in d.keys():
+            if key not in ('none','None',None) and key not in d.keys():
                 # Don't warn about missing 'enter-xxx-mode' commands.
-                if not key.startswith('enter-') or not key.endswith('-mode'):
-                    g.es('%s is missing %-35s = None' % (setName,key))
+                if (
+                    not (key.startswith('enter-') and key.endswith('-mode')) and
+                    not (key.startswith('press-') and key.endswith('-button'))
+                ):
+                    g.es_print('%s is missing %-35s = None' % (setName,repr(key)))
                     
     # Warn about undefined commands.
     for key in keys:
         if not c.commandsDict.get(key):
+            ok = False
             # full-command and quick command are weird special cases.
             if key not in ('None',None,'full-command','quick-command'):
                 # Don't warn about missing 'enter-xxx-mode' commands.
-                if not key.startswith('enter-') or not key.endswith('-mode'):
-                    g.es('Undefined command name: %s' % (key))
-        
-        </t>
+                if key.startswith('enter-') and key.endswith('-mode'):
+                    ok = True
+                elif key.startswith('press-') and key.endswith('-button'):
+                    ok = True
+                for prefix in optionalCommandPrefixes:
+                    if key.startswith(prefix):
+                        ok = True
+                for optionalCommand in optionalCommandNames:
+                    if key == optionalCommand:
+                        ok = True
+                if not ok:
+                    g.es_print('Undefined command name: %s' % (key))</t>
 <t tx="ekr.20060112104823">def main ():
     
     global setNames
+    defineSetNames()
     
-    root = u.findNodeAnywhere('Keyboard shortcuts')
+    # root = u.findNodeAnywhere('Keyboard shortcuts')
+    # for p in root.self_and_subtree_iter():
 
-    for p in root.self_and_subtree_iter():
-        for name in setNames:
-            if p.headString().startswith(name):
-                doSet(p,name)
-                
+    g.es_print('-' * 40)
+    seen = {}
+    for p in c.allNodes_iter():
+        h = p.headString()
+        if h.startswith('@keys'):
+            h = h[5:].strip()
+            if not seen.get(h):
+                seen[h] = True
+                doSet(p,h)
     checkSets()
     g.es('Check Bindings done')</t>
 <t tx="ekr.20060112105523">def doShortcuts(p,setName):
     
-    global parser,setsDict
+    global parser,setsDict,shortcutsDict
     
     d = setsDict.get(setName,{})
     s = p.bodyString()
@@ -3488,19 +3609,40 @@ setNames.sort()</t>
     for line in lines:
         line = line.strip()
         if line and not line.startswith('#'):
-            commandName,shortcut = parser.parseShortcutLine(line)
-            shortcut2 = d.get(commandName)
-            if shortcut2:
-                if shortcut == shortcut2:
-                    g.es('duplicate %s in set %s' % (commandName,setName))
+            commandName,bunch = parser.parseShortcutLine(line)
+            if not bunch:
+                g.es_print('In %s:\nmissing "=" in shortcut line:%s' % (
+                    p.headString(),repr(line)),color='red')
             else:
-                # g.trace(setName,commandName)
-                d[commandName] = shortcut
+                # Having multiple shortcuts for a command if fine,
+                # But having multiple commands for a shortcut is not.
+                shortcut = bunch and bunch.val
+                pane = bunch and bunch.pane
+                if shortcut not in (None,'None','none'):
+                    aList = shortcutsDict.get(shortcut,[])
+                    if aList:
+                        for commandName2,pane2 in aList:
+                            if pane == pane2:
+                                g.es_print('duplicate shortcut %s in set %s: previous command: %s' % (
+                                    shortcut,setName,commandName2),color='red')
+                        else:
+                            aList.append((commandName,pane),)
+                    else:
+                        shortcutsDict [shortcut] = [(commandName,pane),]
+        
+                data = d.get(commandName)
+                if data:
+                    shortcut2,pane2 = data
+                    if shortcut == shortcut2 and pane == pane2:
+                        g.es_print('duplicate %s in set %s' % (
+                            commandName,setName),color='red')
+                else:
+                    data = shortcut,pane
+                    d[commandName] = data
                 
     setsDict[setName] = d</t>
 <t tx="ekr.20060112110750"></t>
 <t tx="ekr.20060112112006"></t>
-<t tx="ekr.20060113182439"></t>
 <t tx="ekr.20060114073238">If True, Leo will report to the console which bindings have been created.
 
 Thus, you must be running from a console window for this setting to be useful.</t>
@@ -3621,20 +3763,26 @@ keys *only* for the top-level mode.
 - A mode contains *only* the key bindings explicitly specified in the @mode
 node. The only default key binding is the binding for the keyboard-quit command
 (usually Control-g). Thus, all modes except the top-level mode act as if
-top_level_unbound_key_action = 'ignore'. In particular, the set-ignore-state,
+top_level_unbound_key_action = 'ignore'. In particular, the set-command-state,
 set-insert-state and set-overwrite-state commands affect only the top-level mode.
 
 - The mode-help command (recommend binding is Tab) lists all bound keystrokes in
 a mode.
 
-- Shortcut specifier lines in @mode nodes of the form:
+- ** New in 4.4.1: In @mode nodes, shortcut specifier lines of the form::
 
-command-name -&gt; mode-name = binding
+    --&gt; command-name
+    
+Specify that the named command will be executed before entering the mode. More
+than one such **mode-entry commands may appear. - In @mode nodes, shortcut
+specifier lines of the form:
+
+    command-name -&gt; mode-name = binding
 
 specify that Leo will enter the named mode after executing the command. As a
 special case,
 
-command-name -&gt; same = binding
+    command-name -&gt; same = binding
 
 will cause the command to be executed without changing mode.</t>
 <t tx="ekr.20060117130936"># Boilerplate for most modes.
@@ -3670,8 +3818,8 @@ isearch-forward-regexp  = x
 search-forward          = f
 word-search-forward     = w
 re-search-forward       = Shift-R</t>
-<t tx="ekr.20060120123529">True:  Clicking an unselected node selects the node and *also* expands or contracts it.
-False: Clicking an unselected node just selects the node.</t>
+<t tx="ekr.20060120123529">True:  Clicking anywhere in an unselected node selects the node and *also* expands or contracts it.
+False: Clicking an unselected node just selects the node, unless the click happens in the expand/contract box.</t>
 <t tx="ekr.20060121102627"></t>
 <t tx="ekr.20060121131041.2"># Boilerplate for all modes.
 keyboard-quit           = Return
@@ -3796,7 +3944,7 @@ If this is False it will be harder to use the arrow keys in the headline.
     
 False: (Legacy) Selecting an outline node transfers focus to the body pane.</t>
 <t tx="ekr.20060122105527.8"></t>
-<t tx="ekr.20060122105527.9"></t>
+<t tx="ekr.20060122105527.9">@color</t>
 <t tx="ekr.20060122105527.11"># Boilerplate for most modes.
 keyboard-quit       = Ctrl-g
 exit-named-mode     = Return
@@ -3814,13 +3962,17 @@ save-file               = s
 save-file-to            = t
 close-window            = w
 </t>
-<t tx="ekr.20060122105527.12"># Boilerplate for most modes.
+<t tx="ekr.20060122105527.12"># Entry commands...
+--&gt; open-find-tab
+--&gt; show-find-options
+
+# Boilerplate for most modes.
 exit-named-mode     -&gt; same = Return
 exit-named-mode     -&gt; same = BackSpace
 keyboard-quit       -&gt; same = Ctrl-g
 mode-help           -&gt; same = Tab
 
-enter-options-mode  = Ctrl-Y
+enter-find-options-mode  = Ctrl-Y
 
 search-again                 = a
 switch-to-buffer             = h
@@ -3846,7 +3998,11 @@ isearch-backward-regexp = x
 search-backward         = f
 word-search-backward    = w
 re-search-backward      = Shift-R</t>
-<t tx="ekr.20060122105527.14"># Boilerplate for most modes.
+<t tx="ekr.20060122105527.14"># Entry commands...
+--&gt; open-find-tab
+--&gt; show-find-options
+
+# Boilerplate for most modes.
 exit-named-mode     = Return
 keyboard-quit       = Ctrl-g
 mode-help           = Tab
@@ -3882,13 +4038,13 @@ keyboard-quit       = Ctrl-g
 mode-help           = Tab
 
 # enter-edit-mode     = e
-# enter-file-mode     = w
+enter-file-mode       = w
 # enter-find-mode     = f
 
 # An extremely useful mode.  It allows the traditional Leo bindings without interference
 # with the Emacs enditing bindings.
 
-show-invisibles         = Alt-v   
+toggle-invisibles       = Alt-v   
 sort-siblings           = Alt-a
 
 # convert-blanks          = Shift-Ctrl-b
@@ -3924,7 +4080,7 @@ write-at-file-nodes     = w
 <t tx="ekr.20060122105527.18"></t>
 <t tx="ekr.20060122105527.19"># Defined by @mode nodes: needed to suppress warnings.
 
-enter-edit-mode             = Alt-space
+enter-edit-mode             = Alt-Control-space
 enter-edit-extend-mode      = None
 
 enter-options-mode          = Ctrl-Shift-Y
@@ -3975,6 +4131,7 @@ copy-node                           = Shift-Ctrl-c
 copy-text                           = Ctrl-c        # Conflicts with Emacs ctrl-c
 cut-node                            = Shift-Ctrl-x
 cut-text                            = Ctrl-x
+debug                               = Alt-Shift-d
 delete-char                         = Delete
 delete-comments                     = Ctrl-)
 delete-node                         = Shift-Ctrl-BkSp
@@ -4003,7 +4160,9 @@ expand-node                         = Alt-bracketright
 extract                             = Shift-Ctrl-D
 extract-names                       = Shift-Ctrl-N
 extract-section                     = Shift-Ctrl-S  # Shift-Ctrl-E: end-of-line-extend-selection</t>
-<t tx="ekr.20060122105527.21">forward-char                        ! text = RtArrow
+<t tx="ekr.20060122105527.21">find-character                      = Control-B
+focus-to-tree                       = Alt-space
+forward-char                        ! text = RtArrow
 forward-char-extend-selection       ! text = Shift-RtArrow
 forward-paragraph                   ! text = Alt-braceright
 forward-paragraph-extend-selection  ! text = Alt-Shift-braceright
@@ -4018,10 +4177,11 @@ fully-expand-pane                   = Alt-Ctrl-!
 goto-first-node                     ! text = Alt-Home
 goto-first-node                     ! tree = Alt-Home
 goto-first-node                     ! tree = Home
+goto-global-line                    = Alt-g # New minibuffer interface.
 goto-last-visible                   ! text = Alt-End
 goto-last-visible                   ! tree = Alt-End
 goto-last-visible                   ! tree = End
-goto-line-number                    = Alt-g 
+goto-line-number                    = None # Leo's legacy Go To Line Number command: uses dialog.
 goto-next-clone                     = Alt-N
 goto-next-visible                   ! text = Alt-DnArrow
 goto-next-visible                   ! tree = Alt-DnArrow
@@ -4069,7 +4229,7 @@ print-focus                         = Alt-Ctrl-Shift-F
 promote                             = Ctrl-{            
 redo                                = Shift-Ctrl-Z
 reformat-paragraph                  = Shift-Ctrl-p
-run-unit-test                       = None
+run-unit-tests                      = None
 save-file                           = Ctrl-s
 scroll-down                         ! text = PageDn 
 scroll-up                           ! text = PageUp 
@@ -4123,7 +4283,13 @@ contract-or-go-left     -&gt; same = LtArrow
 expand-and-go-right     -&gt; same = RtArrow
 goto-next-visible       -&gt; same = DnArrow
 goto-prev-visible       -&gt; same = UpArrow</t>
-<t tx="ekr.20060122113439"># Boilerplate for most modes.
+<t tx="ekr.20060122113439"># **Note**: commands that affect the text selection do not become visible
+#           until the mode ends, which kinda defeats the purpose of this mode.
+
+--&gt; set-silent-mode
+--&gt; disable-mode-help
+
+# Boilerplate for most modes.
 keyboard-quit       = Ctrl-g
 # exit-named-mode     = Return # Doesn't work well in headlines.
 mode-help           = Tab
@@ -4288,7 +4454,8 @@ open-leoDocs-leo        = d
 open-leoPlugins-leo     = p
 open-leoSettings-leo    = s
 
-open-outline            = o     # to do: should be open-outline-by-name.</t>
+open-outline-by-name    = o
+open-outline            = Shift-o</t>
 <t tx="ekr.20060124070546"># Frequently used...
 enter-find-options-mode             = Ctrl-Shift-F
 
@@ -4342,7 +4509,8 @@ False: (legacy)     The Find tab shows text, options and buttons.</t>
 <t tx="ekr.20060126075152"># True: calls to the garbage collector.</t>
 <t tx="ekr.20060126083715"># True: verbose trace the garbage collector.</t>
 <t tx="ekr.20060127050605"></t>
-<t tx="ekr.20060131071612"></t>
+<t tx="ekr.20060131071612">
+</t>
 <t tx="ekr.20060131071947"></t>
 <t tx="ekr.20060201110016"></t>
 <t tx="ekr.20060201111002"></t>
@@ -4426,10 +4594,17 @@ False: (Recommended):   allow unicode characters in Leo's text.</t>
 False (recommended):  No translation.</t>
 <t tx="ekr.20060216091239">True: trace all changes to the minibuffer</t>
 <t tx="ekr.20060216130607">True: trace all changes to the status line.</t>
-<t tx="ekr.20060216135834"></t>
+<t tx="ekr.20060216135834">True:  enable autocompletion initially.
+False: disable autocomopletion initially.
+
+You can use the enable-autocompleter and disable-autocompleter
+commands to enable or disable autocompletion at any time.
+
+Note: The 'initially' prefix is needed to distinguish this setting from
+enable-autocompleter command. Otherwised they would get 'munged' to the same
+configuration value.</t>
 <t tx="ekr.20060216145416"></t>
 <t tx="ekr.20060216170801"></t>
-<t tx="ekr.20060301085047"></t>
 <t tx="ekr.20060303075452">The following commands are will be useful for operating Leo without a mouse.
 
 Clicks
@@ -4482,7 +4657,7 @@ kill-sentence
 kill-word
 move-past-close
 move-past-close-extend-selection
-newline-and-indent:
+newline-and-indent 
 next-line
 next-line-extend-selection
 paste-text
@@ -4611,23 +4786,7 @@ toggle-find-word-option
 toggle-find-wrap-around-option
 word-search-backward
 word-search-forward</t>
-<t tx="ekr.20060305100614"></t>
-<t tx="ekr.20060305100614.1">LightSteelBlue2
-SteelBlue2</t>
-<t tx="ekr.20060306001441">black</t>
-<t tx="ekr.20060306001504">lightgrey</t>
-<t tx="ekr.20060306001630">black</t>
 <t tx="ekr.20060306031258"></t>
-<t tx="ekr.20060306124427">MistyRose1
-LightSteelBlue2
-#ffffec
-lightgrey
-gray90
-LavenderBlush2
-wheat1
-pink1
-thistle2</t>
-<t tx="ekr.20060306124427.1"></t>
 <t tx="ekr.20060309022759"></t>
 <t tx="ekr.20060323131801">True: warn if a command has no setting.</t>
 <t tx="ekr.20060325071042"></t>
@@ -4642,7 +4801,679 @@ group-operations-mark-for-clone     = Alt-Ctrl-`
 group-operations-mark-target        = Alt-Ctrl-Shift-t
 group-operations-operate-on-marked  = Alt-Ctrl-Shift-o
 group-operations-transfer           = Alt-Ctrl-Shift-d</t>
-<t tx="ekr.20060330094136"></t>
-<t tx="ekr.20060408093541"></t>
+<t tx="ekr.20060408090018"></t>
+<t tx="ekr.20060425124142"></t>
+<t tx="ekr.20060425125015"></t>
+<t tx="ekr.20060504131831"></t>
+<t tx="ekr.20060504131831.1"></t>
+<t tx="ekr.20060504131831.2"></t>
+<t tx="ekr.20060504134056"></t>
+<t tx="ekr.20060504134056.1"></t>
+<t tx="ekr.20060504134056.2"></t>
+<t tx="ekr.20060504140351"></t>
+<t tx="ekr.20060504140408"></t>
+<t tx="ekr.20060504140408.1"></t>
+<t tx="ekr.20060504140408.2"></t>
+<t tx="ekr.20060512084639">@nocolor</t>
+<t tx="ekr.20060513100933">The number of times the colorizer's main loop in colorOneChunk executes before pausing to check for events.
+A reasonable value is 10.</t>
+<t tx="ekr.20060513100933.1">The number of times the colorizer's main loop in colorOneChunk executes before actually colorizing text.
+A reasonable value is 5000.</t>
+<t tx="ekr.20060521132401">c:\Python24\Scripts\_winpdb.py</t>
+<t tx="ekr.20060521134125">The debug target to use if no target is specified otherwise.
+
+c:\prog\tigris-cvs\leo\src\leo.py
+</t>
+<t tx="ekr.20060521134125.1">The debug target to use regardless of the selected node or other settings.</t>
+<t tx="ekr.20060524151415"></t>
+<t tx="ekr.20060524151415.1">idle: use Python's standard Idle debugger.
+
+winpdb: (recommended) use winpdb debugger.
+
+To use winpdb you must download and install winpdb from:
+http://www.digitalpeers.com/pythondebugger/
+
+There is no special support for Idle, so you may as well open Idle using Leo's
+open-python-window command.</t>
+<t tx="ekr.20060528175513"></t>
+<t tx="ekr.20060531094310">True:  auto-indent regardless of how text is colored.
+False: suppress auto-indenting if in range @nocolor or @kill.</t>
+<t tx="ekr.20060603070801">True:  enable calltip expansion initially.
+False: disable calltip expansion initially.
+
+You can use the enable-calltips and disable-calltips
+commands to enable or disable autocompletion at any time.
+
+Note: The 'initially' prefix is needed to distinguish this setting from
+enable-calltips command. Otherwised they would get 'munged' to the same
+configuration value.</t>
+<t tx="ekr.20060603215208">@color</t>
+<t tx="ekr.20060603215208.4">@color
+
+# Important: input state is **not** a mode.</t>
+<t tx="ekr.20060603215208.7">--&gt; set-silent-mode
+
+keyboard-quit           = Ctrl-g # not needed, but a good reminder
+
+contract-pane                       -&gt; same = c
+expand-pane                         -&gt; same = e
+cycle-focus                         -&gt; same = f
+cycle-editor-focus                  -&gt; same = y
+
+scroll-outline-down-line            -&gt; same= d
+scroll-outline-down-page            -&gt; same= Shift-d
+scroll-outline-up-line              -&gt; same= u
+scroll-outline-up-page              -&gt; same= Shift-u
+
+# scroll-down                         -&gt; same = d
+# scroll-down-extend-selection        -&gt; same = Shift-d
+# scroll-up                           -&gt; same = u
+# scroll-up-extend-selection          -&gt; same = Shift-u
+
+# scroll-outline-down-line
+# scroll-outline-down-page
+# scroll-outline-up-line
+# scroll-outline-up-page</t>
+<t tx="ekr.20060603215208.8"># Boilerplate for most modes.
+keyboard-quit       = Ctrl-g
+exit-named-mode     = BackSpace
+mode-help           = Tab
+
+# Other modes
+enter-edit-mode     = Ctrl-e
+enter-find-mode     = Ctrl-Shift-f
+# enter-edit-mode     = BackSpace
+
+# Standard bindings.
+# undo                -&gt; same = Ctrl-z
+# redo                -&gt; same = Ctrl-Shift-z
+
+# Arrow keys
+back-char-extend-selection          -&gt; same = LtArrow
+forward-char-extend-selection       -&gt; same = RtArrow
+next-line-extend-selection          -&gt; same = DnArrow
+previous-line-extend-selection      -&gt; same = UpArrow
+back-word-extend-selection          -&gt; same = Ctrl-LtArrow
+forward-word-extend-selection       -&gt; same = Ctrl-RtArrow
+
+# Special keys
+end-of-buffer-extend-selection       -&gt; same = End
+beginning-of-buffer-extend-selection -&gt; same = Home
+scroll-down-extend-selection         -&gt; same = PageDn
+scroll-up-extend-selection           -&gt; same = PageUp
+
+# Plain keys
+back-char-extend-selection          -&gt; same = b
+back-word-extend-selection          -&gt; same = r   # unusual
+beginning-of-line-extend-selection  -&gt; same = a
+beginning-of-buffer-extend-selection -&gt;same = h   # unusual
+end-of-buffer-extend-selection      -&gt; same = z   # unusual
+end-of-line-extend-selection        -&gt; same = e
+forward-char-extend-selection       -&gt; same = f
+next-line-extend-selection          -&gt; same = n
+next-line-extend-selection          -&gt; same = d
+previous-line-extend-selection      -&gt; same = p
+previous-line-extend-selection      -&gt; same = u
+forward-word-extend-selection       -&gt; same = w</t>
+<t tx="ekr.20060603215208.16"># Allows temporary rebindings without interfering with typical bindings.
+
+--&gt; set-silent-mode
+--&gt; mode-help
+
+keyboard-quit           = Ctrl-g # not needed, but a good reminder
+keyboard-quit           = Return
+
+enter-emacs-mode        = space
+enter-commands-mode     = c
+enter-edit-mode         = e
+enter-file-mode         = f
+enter-gui-mode          = g
+enter-help-mode         = h
+enter-kill-mode         = k
+enter-modes-mode        = m
+enter-outline-mode      = o
+enter-move-outline-mode = Shift-o
+enter-toggle-find-mode  = t
+enter-extract-mode      = x</t>
+<t tx="ekr.20060603215208.17"></t>
+<t tx="ekr.20060603215208.19"># To start finds and changes...
+search-again                        = None  # similar to search-with-present-options.
+search-with-present-options         = Ctrl-f
+replace-string                      = Ctrl-Shift-r
+hide-find-tab                       = None
+open-find-tab                       = None
+
+clone-find-all                      = None
+isearch-backward                    = None
+isearch-backward-regexp             = None
+isearch-forward                     = None
+isearch-forward-regexp              = None
+isearch-with-present-options        = Alt-i
+query-replace                       = None
+query-replace-regex                 = None
+search-backward                     = None
+search-forward                      = None
+word-search-backward                = None 
+word-search-forward                 = None
+
+# To coninue finds and changes...
+find-tab-find                       = F3
+find-tab-find-all                   = None
+find-tab-find-prev                  = F2
+find-tab-change                     = Ctrl-=
+find-tab-change-all                 = None  # Not recommended to bind this to a shortcut.
+find-tab-change-then-find           = Ctrl--</t>
+<t tx="ekr.20060603215208.20"># Top-level bindings are *not* inherited in the minibuffer!
+copy-text           ! mini = Ctrl-c
+cut-text            ! mini = Ctrl-x
+paste-text          ! mini = Ctrl-v
+save-file           ! mini = Ctrl-s
+
+# Important: at present binding to BackSpace in the minibuffer causes problems.
+# backward-delete-char                ! mini = BackSpace
+
+back-char                           ! mini = LtArrow
+back-char-extend-selection          ! mini = Shift-LtArrow
+back-word                           ! mini = Alt-b  
+back-word                           ! mini = Ctrl-LtArrow
+back-word-extend-selection          ! mini = Alt-Shift-b
+back-word-extend-selection          ! mini = Ctrl-Shift-LtArrow
+backward-kill-word                  ! mini = Alt-Delete
+beginning-of-line                   ! mini = Home
+beginning-of-line-extend-selection  ! mini = Shift-Home
+beginning-of-line                   ! mini = Ctrl-a
+beginning-of-line-extend-selection  ! mini = Ctrl-Shift-a
+end-of-line                         ! mini = End
+end-of-line-extend-selection        ! mini = Shift-End
+end-of-line                         ! mini = Ctrl-e
+end-of-line-extend-selection        ! mini = Ctrl-Shift-e
+forward-char                        ! mini = RtArrow
+forward-char-extend-selection       ! mini = Shift-RtArrow
+forward-word                        ! mini = Alt-f          # Usually opens file menu.
+forward-word-extend-selection       ! mini = Alt-Shift-f
+forward-word                        ! mini = Ctrl-RtArrow
+forward-word-extend-selection       ! mini = Ctrl-Shift-RtArrow
+select-all                          ! mini = Alt-Shift-A
+
+# Find options.  Important: conflicts with non-minibuffer bindings do not matter here!
+find-tab-find                       ! mini = F3
+find-tab-find-prev                  ! mini = F2
+find-tab-change                     ! mini  =Ctrl-=
+find-tab-change-then-find           ! mini = Ctrl--
+
+set-find-everywhere                 ! mini = Alt-Ctrl-e
+set-find-node-only                  ! mini = Alt-Ctrl-n
+set-find-suboutline-only            ! mini = Alt-Ctrl-s
+toggle-find-ignore-case-option      ! mini = Alt-Ctrl-i
+toggle-find-in-body-option          ! mini = Alt-Ctrl-b
+toggle-find-in-headline-option      ! mini = Alt-Ctrl-h
+toggle-find-mark-changes-option     ! mini = Alt-Ctrl-c
+toggle-find-mark-finds-option       ! mini = Alt-Ctrl-f
+toggle-find-regex-option            ! mini = Alt-Ctrl-x
+toggle-find-reverse-option          ! mini = Alt-Ctrl-r
+toggle-find-word-option             ! mini = Alt-Ctrl-w
+toggle-find-wrap-around-option      ! mini = Alt-Ctrl-a</t>
+<t tx="ekr.20060603215208.21"># Important: the print-commands and print-bindings show what bindings are in effect.
+
+#abort-edit-headline                = Esc
+add-comments                        = Ctrl-parenleft
+auto-complete-force                 = Ctrl-period
+auto-complete                       = period
+back-char                           ! text = LtArrow
+back-char-extend-selection          ! text = Shift-LtArrow
+back-word                           ! text = Alt-b  
+back-word                           ! text = Ctrl-LtArrow
+back-word-extend-selection          ! text = Alt-Shift-b
+back-word-extend-selection          ! text = Ctrl-Shift-LtArrow
+backward-delete-char                = BackSpace
+backward-kill-word                  = Alt-Delete
+beginning-of-buffer                  ! text = Home
+beginning-of-buffer-extend-selection ! text = Shift-Home
+beginning-of-line                  ! text = Ctrl-a
+beginning-of-line-extend-selection ! text = Ctrl-Shift-a
+clone-node                          = Ctrl-`   
+close-window                        = Ctrl-w
+close-window                        = Alt-F4
+contract-all                        = Alt--
+contract-log-pane                   = Alt-Ctrl-RtArrow # Alt-Ctrl-DnArrow in other orientation.
+contract-pane                       = Alt+Ctrl+-
+contract-node                       = Alt-bracketleft
+contract-or-go-left                 ! text = Alt-LtArrow
+contract-or-go-left                 ! tree = Alt-LtArrow
+contract-or-go-left                 ! tree = LtArrow
+copy-node                           = Shift-Ctrl-c
+copy-text                           = Ctrl-c        # Conflicts with Emacs ctrl-c
+cut-node                            = Shift-Ctrl-x
+cut-text                            = Ctrl-x
+cycle-all-focus                     = Alt-Ctrl-p
+debug                               = Alt-Shift-d
+delete-char                         = Delete
+delete-comments                     = Ctrl-parenright
+delete-node                         = Shift-Ctrl-BkSp
+delete-spaces                       = Alt-backslash
+demote                              = Ctrl-}
+edit-headline                       = Ctrl-h
+end-edit-headline                   ! tree = Return     # Esc is also possible.
+end-of-buffer                       ! text = End
+end-of-buffer-extend-selection      ! text = Shift-End
+end-of-line                         ! text = Ctrl-e
+end-of-line-extend-selection        ! text = Ctrl-Shift-e
+exchange-point-mark                 = None      # Should be Ctrl-X Ctrl-X.
+exit-leo                            = Ctrl-q
+expand-and-go-right                 ! text = Alt-RtArrow
+expand-and-go-right                 ! tree = Alt-RtArrow
+expand-and-go-right                 ! tree = RtArrow
+expand-body-pane                    = Alt-Ctrl-UpArrow  # Alt-Ctrl-LtArrow in other orientation.
+expand-log-pane                     = Alt-Ctrl-LtArrow  # Alt-Ctrl-UpArrow in other orientation.
+expand-pane                         = Alt+Ctrl-=
+expand-outline-pane                 = Alt-Ctrl-DnArrow  # Alt-Ctrl-RtArrow in other orientation.
+expand-next-level                   = Alt-=
+expand-node                         = Alt-bracketright
+extract                             = Shift-Ctrl-D
+extract-names                       = Shift-Ctrl-N
+extract-section                     = Shift-Ctrl-S  # Shift-Ctrl-E: end-of-line-extend-selection</t>
+<t tx="ekr.20060603215208.22">find-character                      = Control-b
+# focus-to-tree                     = Alt-space
+forward-char                        ! text = RtArrow
+forward-char-extend-selection       ! text = Shift-RtArrow
+forward-paragraph                   ! text = Alt-braceright
+forward-paragraph-extend-selection  ! text = Alt-Shift-braceright
+forward-sentence                    ! text = Alt-e
+forward-sentence-extend-selection   ! text = Alt-Shift-e
+forward-word                        ! text = Alt-f          # Usually opens file menu.
+forward-word-extend-selection       ! text = Alt-Shift-f
+forward-word                        ! text = Ctrl-RtArrow
+forward-word-extend-selection       ! text = Ctrl-Shift-RtArrow
+full-command                        = Alt-x
+fully-expand-pane                   = Alt-Ctrl-!
+goto-first-node                     ! text = Alt-Home
+goto-first-node                     ! tree = Alt-Home
+goto-first-node                     ! tree = Home
+goto-global-line                    = Alt-g # New minibuffer interface.
+goto-last-visible                   ! text = Alt-End
+goto-last-visible                   ! tree = Alt-End
+goto-last-visible                   ! tree = End
+goto-line-number                    = None # Leo's legacy Go To Line Number command: uses dialog.
+goto-next-clone                     = Alt-N
+goto-next-visible                   ! text = Alt-DnArrow
+goto-next-visible                   ! tree = Alt-DnArrow
+goto-next-visible                   ! tree = DnArrow
+goto-prev-visible                   ! text = Alt-UpArrow
+goto-prev-visible                   ! tree = Alt-UpArrow
+goto-prev-visible                   ! tree = UpArrow
+help                                = F1
+hide-pane                           = None
+indent-region                       = Ctrl-]
+insert-newline                      = None # = Return # for MacOs X.
+insert-node                         = Ctrl-I
+keyboard-quit                       = Ctrl-g
+kill-line                           ! text = Shift-Ctrl-k  # Ctrl-K
+kill-region-save                    = Alt-w 	   # Ctrl-w
+kill-sentence                       = Alt-k
+kill-word                           = Alt-d
+mark                                = Ctrl-M
+match-bracket                       = Ctrl-K    # kill-line
+move-outline-down                   = Ctrl-D
+move-outline-down                   = Alt-Shift-DnArrow
+move-outline-left                   = Ctrl-L
+move-outline-left                   = Alt-Shift-LtArrow
+move-outline-right                  = Ctrl-R
+move-outline-right                  = Alt-Shift-RtArrow
+move-outline-up                     = Ctrl-U
+move-outline-up                     = Alt-Shift-UpArrow
+move-past-close                     = Alt-parenright # Same as Alt-shift-parenright
+move-past-close-extend-selection    = None</t>
+<t tx="ekr.20060603215208.23"># name-last-kbd-macro               = None
+negative-argument                   = None      # Alt-minus conflicts with contract-all.
+new                                 = Ctrl-n    # Ctrl-n conflicts with next-line.
+newline-and-indent                  = Ctrl-j
+next-line                           ! text = DnArrow
+next-line-extend-selection          ! text = Shift-DnArrow
+open-outline                        = Ctrl-o
+open-spell-tab                      = F7
+paste-node                          = Shift-Ctrl-V
+paste-text                          = Ctrl-v
+# previous-line                       ! text = Ctrl-P
+# previous-line-extend-selection      ! text = Ctrl-Shift-P
+previous-line                       ! text = UpArrow
+previous-line-extend-selection      ! text = Shift-UpArrow
+print-focus                         = Alt-Ctrl-Shift-F
+promote                             = Ctrl-{            
+redo                                = Shift-Ctrl-Z
+reformat-paragraph                  = Shift-Ctrl-p
+run-unit-tests                      = None
+save-file                           = Ctrl-s
+scroll-down                         ! text = PageDn 
+scroll-up                           ! text = PageUp
+scroll-outline-down-line            ! tree = PageDn
+scroll-outline-down-page            ! tree = Shift-PageDn
+scroll-outline-up-line              ! tree = PageUp
+scroll-outline-up-page              ! tree = Shift-PageUp
+scroll-down-extend-selection        ! text = Shift-PageDn
+scroll-up-extend-selection          ! text = Shift-PageUp
+select-all                          ! text =  Alt-Shift-A 
+    # Shift-Ctrl-A conflicts with beginning-of-line-extend-selection.
+show-calltips                       = parenleft
+show-calltips-force                 = Alt-parenleft
+sort-siblings                       = Alt-A
+split-line                          = Alt-Ctrl-o
+
+toggle-active-pane                  = Ctrl-T
+undo                                = Ctrl-Z
+unindent-region                     = Ctrl-[
+universal-argument                  = Alt-u     # Usually Ctrl-u, conflicts with move-outline-up.
+write-at-file-nodes                 = Shift-Ctrl-W
+write-dirty-at-file-nodes           = Shift+Ctrl+Q
+zap-to-character                    = Alt-z</t>
+<t tx="ekr.20060603223152">--&gt; set-silent-mode
+--&gt; mode-help
+
+keyboard-quit           = Ctrl-g # not needed, but a good reminder
+keyboard-quit           = Return
+
+apropos-autocompletion  = Shift-a
+apropos-bindings        = Shift-b
+apropos-find-commands   = Shift-f
+
+print-bindings          = b
+print-commands          = c
+help-for-command        = f
+python-help             = p</t>
+<t tx="ekr.20060603223152.1">--&gt; set-silent-mode
+--&gt; mode-help
+
+keyboard-quit           = Ctrl-g # not needed, but a good reminder
+keyboard-quit           = Return
+
+save-file               = Ctrl-S
+save-file-as            = a
+open-outline-by-name    = o
+save-file-to            = t
+
+open-leoDocs-leo        = d
+open-leoPlugins-leo     = p
+open-leoSettings-leo    = s
+
+insert-file             = i
+write-at-file-nodes     = w
+read-at-file-nodes      = r</t>
+<t tx="ekr.20060603223152.2"># A mode to toggle find options and invoke various find commands.
+--&gt; set-silent-mode
+--&gt; open-find-tab
+
+mode-help = ?
+keyboard-quit = Return
+
+isearch-with-present-options        = Alt-i
+search-with-present-options         = Ctrl-f
+replace-string                      = Ctrl-Shift-r
+find-tab-find                       = F3
+find-tab-find-prev                  = F2
+find-tab-change                     = Ctrl-=
+find-tab-change-then-find           = Ctrl--
+
+toggle-find-ignore-case-option      -&gt; same = i
+toggle-find-in-body-option          -&gt; same = b
+toggle-find-in-headline-option      -&gt; same = h
+toggle-find-mark-changes-option     -&gt; same = c
+toggle-find-mark-finds-option       -&gt; same = m
+toggle-find-regex-option            -&gt; same = x
+toggle-find-reverse-option          -&gt; same = r
+toggle-find-word-option             -&gt; same = w
+toggle-find-wrap-around-option      -&gt; same = a</t>
+<t tx="ekr.20060604080653">@nocolor
+
+This setting determines the initial binding for otherwise-unbound keystrokes
+when no mode is in effect.  Note: the keyboard-quit command exits all modes.
+
+The valid values are::
+
+ignore:  Leo ignores the key (like Vim).
+insert:  Leo inserts the key at the cursor (like Emacs)
+overwrite: Leo replaces the character at the cursor.</t>
+<t tx="ekr.20060604081014"># Keyboard-quit sets the input state to the *default* input state
+# Specified by @strings top_level_unbound_key_action.
+
+toggle-input-state                  = Alt-space # was: focus to tree.
+enter-quick-command-mode            = Alt-C # also c
+
+# repeat-complex-command            !command = ???
+
+beginning-of-line                   !command = a
+beginning-of-line-extend-selection  !command = Shift-a
+#                                   !command = b
+enter-quick-command-mode            !command = c
+next-line                           !command = d
+next-line-extend-selection          !command = Shift-d
+end-of-line                         !command= e
+end-of-line-extend-selection        !command = Shift-e
+search-with-present-options         !command = f
+replace-string                      !command = Shift-f
+enter-gui-mode                      !command = g
+enter-help-mode                     !command = h
+isearch-with-present-options        !command = i
+isearch-backward                    !command = Shift-i
+#                                   !command = j
+enter-kill-mode                     !command = k
+back-char                           !command = l
+back-char-extend-selection          !command = Shift-l
+enter-modes-mode                    !command = m  
+#                                   !command = n
+enter-outline-mode                  !command = o
+#                                   !command = p
+find-character                      !command = q
+forward-char                        !command = r
+forward-char-extend-selection       !command = Shift-r
+#                                   !command = s
+enter-toggle-find-mode              !command = t
+previous-line                       !command = u
+previous-line-extend-selection      !command = Shift-u
+#                                   !command = v
+enter-file-mode                     !command = w
+yank                                !command = y
+undo                                !command = z
+redo                                !command = Shift-z</t>
+<t tx="ekr.20060604081740">--&gt; set-silent-mode
+--&gt; mode-help
+
+keyboard-quit           = Ctrl-g # not needed, but a good reminder
+keyboard-quit           = Return
+
+kill-all-abbrevs    = a       
+kill-buffer         = b              
+kill-line           = l
+kill-paragraph      = p          
+kill-rectangle      = e
+kill-region         = r
+# kill-region-save  all: &lt;Alt+W&gt;
+kill-sentence       = s
+kill-word           = w
+backward-kill-word  = Shift-w</t>
+<t tx="ekr.20060604082857">--&gt; set-silent-mode
+--&gt; mode-help
+--&gt; focus-to-tree
+
+keyboard-quit           = Ctrl-g # not needed, but a good reminder
+keyboard-quit           = Return
+
+enter-move-outline-mode     = m
+
+demote                      -&gt; same = {
+promote                     -&gt; same = }
+copy-node                   -&gt; same = Shift-c
+cut-node                    -&gt; same = Shift-x
+paste-node                  -&gt; same = Shift-p
+
+clone-node                  -&gt; same = c
+goto-next-visible           -&gt; same = d
+edit-headline                       = e # Must exit.
+insert-node                         = i # Must exit.
+contract-or-go-left         -&gt; same = l
+expand-and-go-right         -&gt; same = r
+goto-prev-visible           -&gt; same = u
+undo                        -&gt; same = z
+redo                        -&gt; same = Shift-z</t>
+<t tx="ekr.20060604082857.1">--&gt; set-silent-mode
+--&gt; mode-help
+--&gt; focus-to-tree
+
+keyboard-quit               = Ctrl-g # not needed, but a good reminder
+keyboard-quit               = Return
+enter-outline-mode          = o
+
+goto-first-node             -&gt; same = Home
+goto-last-visible           -&gt; same = End
+
+move-outline-down           -&gt; same = d
+move-outline-left           -&gt; same = l
+move-outline-right          -&gt; same = r
+move-outline-up             -&gt; same = u
+
+undo                        -&gt; same = z
+redo                        -&gt; same = Shift-z</t>
+<t tx="ekr.20060604083323">--&gt; set-silent-mode
+--&gt; mode-help
+
+# All top-level bindings apply unless over-ridden
+
+mode-help               -&gt; same  = question
+
+apropos-autocompletion  = a
+apropos-bindings        = b
+apropos-find-commands   = f</t>
+<t tx="ekr.20060604180807">@nocolor
+
+This setting determines the initial binding for otherwise-unbound keystrokes
+when no mode is in effect.  Note: the keyboard-quit command exits all modes.
+
+The valid values are::
+
+ignore:  Leo ignores the key (like Vim).
+insert:  Leo inserts the key at the cursor (like Emacs)
+overwrite: Leo replaces the character at the cursor.</t>
+<t tx="ekr.20060605081712">Recommended:
+    
+white                   if top_level_unbound_key_action is command
+a color like MistyRose1 if top_level_unbound_key_action is insert or overwrite.</t>
+<t tx="ekr.20060605081712.1"></t>
+<t tx="ekr.20060605081712.2">Recommended:
+    
+A color like MistyRose1 if top_level_unbound_key_action is ignore
+white                   if top_level_unbound_key_action is insert or overwrite.</t>
+<t tx="ekr.20060605081712.3"></t>
+<t tx="ekr.20060606085536">wheat1
+PeachPuff1
+LemonChiffon1
+cornsilk1
+honeydew1
+LavenderBlush1
+azure2
+aquamarine1</t>
+<t tx="ekr.20060606085536.1"></t>
+<t tx="ekr.20060607182402"></t>
+<t tx="ekr.20060608065207"></t>
+<t tx="ekr.20060608184356"># This mode toggles various modes.
+
+--&gt; set-silent-mode
+--&gt; mode-help
+
+keyboard-quit           = Ctrl-g # not needed, but a good reminder
+keyboard-quit           = Return
+
+toggle-autocompleter    = a
+toggle-calltips         = t
+toggle-extend-mode      = x
+toggle-invisibles       = v</t>
+<t tx="ekr.20060608185854">--&gt; set-silent-mode
+--&gt; mode-help
+
+keyboard-quit           = Ctrl-g # not needed, but a good reminder
+keyboard-quit           = Return
+
+close-rectangle         = c
+convert-all-blanks      = Shift-b
+convert-all-tabs        = Shift-t
+convert-blanks          = b
+convert-tabs            = t
+execute-script          = e
+open-rectangle          = o
+repeat-complex-command  = a
+reformat-paragraph      = r
+remove-blank-lines      = b
+sort-lines              = l
+sort-siblings           = s</t>
+<t tx="ekr.20060608185854.1">--&gt; set-silent-mode
+--&gt; mode-help
+
+keyboard-quit           = Ctrl-g # not needed, but a good reminder
+keyboard-quit           = Return
+
+extract                 = e
+extract-names           = n
+extract-section         = s</t>
+<t tx="ekr.20060608190813">--&gt; set-silent-mode
+--&gt; mode-help
+
+keyboard-quit           = Ctrl-g # not needed, but a good reminder
+
+
+# set-mark              = s
+transpose-lines         = t
+exchange-point-mark     = x     # This should be a top-level binding.
+
+# downcase-region       = d
+# upcase-region         = u
+</t>
+<t tx="ekr.20060608191518">--&gt; set-silent-mode
+--&gt; mode-help
+
+keyboard-quit                   = Ctrl-g # not needed, but a good reminder
+enter-quick-command-mode        = Alt-c
+
+### bind newline and backspace??
+
+repeat-complex-command              -&gt; same = Control-a
+
+beginning-of-line                   -&gt; same = a
+beginning-of-line-extend-selection  -&gt; same = Shift-a
+#                                   -&gt; same = b
+#                                   -&gt; same = c
+next-line                           -&gt; same = d
+next-line-extend-selection          -&gt; same = Shift-d
+end-of-line                         -&gt; same = e
+end-of-line-extend-selection        -&gt; same = Shift-e
+#                                   -&gt; same = f
+#                                   -&gt; same = g
+#                                   -&gt; same = h
+#                                   -&gt; same = i
+#                                   -&gt; same = j
+#                                   -&gt; same = k         # kill ?
+back-char                           -&gt; same = l
+back-char-extend-selection          -&gt; same = Shift-l
+#                                   -&gt; same = m  
+#                                   -&gt; same = n
+#                                   -&gt; same = o
+#                                   -&gt; same = p
+#                                   -&gt; same = q
+forward-char                        -&gt; same = r
+forward-char-extend-selection       -&gt; same = Shift-r
+#                                   -&gt; same = s
+#                                   -&gt; same = t
+previous-line                       -&gt; same = u
+previous-line-extend-selection      -&gt; same = Shift-u
+#                                   -&gt; same = v
+#                                   -&gt; same = w
+yank                                -&gt; same = y
+undo                                -&gt; same = z
+redo                                -&gt; same = Shift-z</t>
+<t tx="ekr.20060608191518.2"># Keyboard-quit sets the input state to the *default* input state
+# Specified by @strings top_level_unbound_key_action.
+
+enter-quick-command-mode            = Alt-C
+</t>
+<t tx="ekr.20060616172614"></t>
+<t tx="ekr.20060620085654">vertical:   pack body-pane editors vertically.
+horizontal: pack body-pane editors horizontally.</t>
+<t tx="ekr.20060624072653"></t>
 </tnodes>
 </leo_file>

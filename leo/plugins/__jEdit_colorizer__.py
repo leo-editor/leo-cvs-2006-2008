@@ -26,7 +26,7 @@ php_re = re.compile("<?(\s[pP][hH][pP])")
 #@nl
 #@<< version history >>
 #@+node:ekr.20060530091119.22:<< version history >>
-#@@killcolor
+#@@nocolor
 #@+at
 # 
 # 0.20 EKR: Use x.py files rather than x.xml files.
@@ -62,7 +62,8 @@ leoKeywords = [
     "@nocolor","@noheader","@nowrap","@others",
     "@pagewidth","@path","@quiet","@raw","@root","@root-code","@root-doc",
     "@silent","@tabwidth","@terse",
-    "@unit","@verbose","@wrap", ]
+    "@unit","@verbose","@wrap",
+]
 #@nonl
 #@-node:ekr.20060530091119.24:<< define leoKeywords >>
 #@-middle:ekr.20060530091119.23:module-level
@@ -127,9 +128,7 @@ def onStart1 (tag, keywords):
     '''Override Leo's core colorizer classes.'''
     
     import leoColor
-    
-    leoColor.colorizer = baseColorizer
-    
+
     leoColor.colorizer = colorizer
     
     leoColor.nullColorizer = nullColorizer
@@ -345,6 +344,15 @@ class baseColorizer:
         self.configure_tags()
     #@nonl
     #@-node:ekr.20060530091119.8:__init__
+    #@+node:ekr.20060623081100:addImportedRules
+    def addImportedRules (self,mode):
+        
+        '''Append any imported rules at the end of the rulesets specified in mode.importDict'''
+            
+        d = mode.importDict
+        g.trace(d)
+    #@nonl
+    #@-node:ekr.20060623081100:addImportedRules
     #@+node:ekr.20060530091119.36:addLeoRules
     def addLeoRules (self,theDict):
     
@@ -390,6 +398,8 @@ class baseColorizer:
             for ch in key:
                 if ch not in self.word_chars:
                     self.word_chars.append(g.toUnicode(ch,encoding='UTF-8'))
+                    
+        # g.trace(repr(self.word_chars))
     #@nonl
     #@-node:ekr.20060530091119.18:init_keywords
     #@+node:ekr.20060530091119.37:configure_tags
@@ -489,10 +499,11 @@ class baseColorizer:
                 self.keywordsDict = d = mode.keywordsDictDict.get(self.rulesetName,{})
                 self.init_keywords(d)
                 # g.trace(len(self.keywordsDict.keys()))
+                # g.trace(g.listToString(self.keywordsDict.keys(),sort=True))
                 self.rulesDict = mode.rulesDictDict.get(self.rulesetName)
                 self.addLeoRules(self.rulesDict)
+                self.addImportedRules(mode)
                 self.defaultColor = 'null'
-                ### To do: append imported rules.
                 # g.trace(len(self.rules))
                 self.mode = mode
                 self.modes [language] = g.Bunch(
@@ -506,7 +517,7 @@ class baseColorizer:
     #@nonl
     #@-node:ekr.20060530091119.9:init_mode
     #@-node:ekr.20060530091119.35:Birth and init
-    #@+node:ekr.20060530091119.38:Entry points (3 to be REWRITTEN)
+    #@+node:ekr.20060530091119.38:Entry points
     #@+node:ekr.20060530091119.11:colorize
     def colorize(self,p,incremental=False):
         
@@ -542,7 +553,9 @@ class baseColorizer:
     # This is needed, even without threads.
     
     def interrupt(self):
+        
         '''Interrupt colorOneChunk'''
+    
         self.chunk_s = ''
         self.chunk_i = 0
         self.tagList = []
@@ -550,24 +563,7 @@ class baseColorizer:
         if self.trace: g.trace('%3d' % (self.chunk_count))
     #@nonl
     #@-node:ekr.20060530091119.10:interrupt
-    #@+node:ekr.20060530091119.40:recolor_range  (TO BE DELETED)
-    def recolor_range(self,p,leading,trailing):
-        
-        '''An entry point for the colorer called from incremental undo code.
-        Colorizes the lines between the leading and trailing lines.'''
-        
-        return self.colorize(p)
-    
-        # if self.enabled:
-            # self.incremental=True
-            # self.invalidate_range(leading,trailing)
-            # self.updateSyntaxColorer(p)
-            # return self.colorizeAnyLanguage(p,leading=leading,trailing=trailing)
-        # else:
-            # return "ok" # For unit testing.
-    #@nonl
-    #@-node:ekr.20060530091119.40:recolor_range  (TO BE DELETED)
-    #@+node:ekr.20060530091119.41:recolor_all (MUST BE REWRITTEN)
+    #@+node:ekr.20060530091119.41:recolor_all (rewrite)
     def recolor_all (self):
         
         g.trace()
@@ -615,25 +611,26 @@ class baseColorizer:
             state = self.colorizeLine(s,state)
             self.line_index += 1
     #@nonl
-    #@-node:ekr.20060530091119.41:recolor_all (MUST BE REWRITTEN)
-    #@+node:ekr.20060530091119.43:schedule & idle_colorize (TO BE DELETED)
+    #@-node:ekr.20060530091119.41:recolor_all (rewrite)
+    #@+node:ekr.20060530091119.43:schedule & recolor_range
+    # Called by body.recolor.
+    
     def schedule(self,p,incremental=0):
         
-        __pychecker__ = '--no-argsused'
-        # p not used, but it is difficult to remove.
-    
-        if self.enabled:
-            g.app.gui.setIdleTimeHook(self.idle_colorize)
-            self.idle_colorize()
-            
-    def idle_colorize(self):
-    
-        # New in 4.3b1: make sure the colorizer still exists!
-        if hasattr(self,'enabled') and self.enabled:
-            p = self.c.currentPosition()
-            p and self.colorize(p)
+        __pychecker__ = '--no-argsused' # incremental not used.
+        
+        self.colorize(p)
+        
+    def recolor_range(self,p,leading,trailing):
+        
+        '''An entry point for the colorer called from incremental undo code.
+        Colorizes the lines between the leading and trailing lines.'''
+        
+        __pychecker__ = '--no-argsused' # leading,trailing not used.
+        
+        return self.colorize(p)
     #@nonl
-    #@-node:ekr.20060530091119.43:schedule & idle_colorize (TO BE DELETED)
+    #@-node:ekr.20060530091119.43:schedule & recolor_range
     #@+node:ekr.20060530091119.44:useSyntaxColoring
     def useSyntaxColoring (self,p):
         
@@ -667,12 +664,13 @@ class baseColorizer:
     def updateSyntaxColorer (self,p):
     
         p = p.copy()
+    
         # self.flag is True unless an unambiguous @nocolor is seen.
         self.flag = self.useSyntaxColoring(p)
         self.scanColorDirectives(p)
     #@nonl
     #@-node:ekr.20060530091119.45:updateSyntaxColorer
-    #@-node:ekr.20060530091119.38:Entry points (3 to be REWRITTEN)
+    #@-node:ekr.20060530091119.38:Entry points
     #@+node:ekr.20060530091119.46:Colorizer code
     #@+node:ekr.20060530091119.12:colorAll
     def colorAll(self,s):
@@ -830,7 +828,7 @@ class baseColorizer:
         word = s[i:j]
         kind = self.keywordsDict.get(s[i:j])
         if kind:
-            # g.trace('%3d %10s %s' % (i,word,repr(kind)))
+            g.trace('%3d %10s %s' % (i,word,repr(kind)))
             self.colorRangeWithTag(s,i,j,kind)
             self.prev = (i,j,kind)
             return j-i
@@ -1198,8 +1196,6 @@ class nullColorizer (colorizer):
     def disable(self): pass
         
     def enable(self): pass
-        
-    def idle_colorize(self): pass
             
     def recolor_range(self,p,leading,trailing): pass
     

@@ -128,6 +128,7 @@ Journal3
 Jtobler
 Jurjen
 Jython
+JythonShell
 KEYWORD1
 KEYWORD2
 KEYWORD3
@@ -164,6 +165,7 @@ Litt
 Locators
 Loewis
 LtArrow
+Lua
 Lundh
 Lundh's
 M2C
@@ -356,7 +358,9 @@ a1
 a2
 a3
 a4
+a5
 a6
+a7
 aClass
 aColor
 aDirectory
@@ -946,6 +950,7 @@ gray25
 gray50
 gray75
 group_id
+groupoperations
 gti
 gui
 guiName
@@ -1081,6 +1086,7 @@ is_nl
 is_special
 is_ws
 is_ws_or_nl
+isearch
 ish
 isinstance
 iso
@@ -1768,6 +1774,7 @@ show_headlines
 show_leo_directives
 show_options_nodes
 show_organizer_nodes
+show_tree_stats
 showfiles
 shutil
 siblings_iter
@@ -1974,6 +1981,8 @@ towards
 tp
 traceDrawing
 tracePositions
+trace_bindings
+trace_doCommand
 trace_gc
 trace_minibuffer
 treeCanvas
@@ -2034,6 +2043,7 @@ url
 url1
 url2
 urllib
+useCmdMenu
 useDoubleClick
 useMinibuffer
 useVerticalBar
@@ -2049,6 +2059,7 @@ username_Leo
 usetemacs
 ushort
 usr
+ut
 utf
 utils_remove
 utils_rename
