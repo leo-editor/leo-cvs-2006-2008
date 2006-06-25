@@ -2740,7 +2740,7 @@ class nullColorizer (colorizer):
         
     def enable(self): pass
         
-    def idle_colorize(self): pass
+    # def idle_colorize(self): pass
             
     def recolor_range(self,p,leading,trailing): pass
     
