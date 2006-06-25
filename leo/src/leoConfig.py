@@ -1392,11 +1392,15 @@ class configClass:
     def readSettingsFiles (self,fileName,verbose=True):
         
         seen = []
+        localDirectory = g.os_path_dirname(fileName)
+        localConfigFile = g.os_path_join(localDirectory,'leoSettings.leo')
+        if not g.os_path_exists(localConfigFile): localConfigFile = None
         
         # Init settings from leoSettings.leo files.
         for path,localFlag in (
             (self.globalConfigFile,False),
             (self.homeFile,False),
+            (localConfigFile,False), # New in 4.4.1.
             (fileName,True),
         ):
             if path and path.lower() not in seen:
