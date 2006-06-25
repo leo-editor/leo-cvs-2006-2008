@@ -1397,54 +1397,7 @@ class baseCommands:
                     if not script1 and not silent:
                         g.es("end of script",color="purple")
                 except Exception:
-                    #@                << handle an exception in the script >>
-                    #@+node:ekr.20050505104140:<< handle an exception in the script >>
-                    g.es("exception executing script",color='blue')
-                    
-                    if 0:
-                        print 'script...'
-                        for line in g.splitLines(script):
-                            print repr(line)
-                    
-                    fileName,n = g.es_exception(full=True,c=c)
-                    if p and not script1 and fileName == "<string>":
-                        c.goToScriptLineNumber(p,script,n)
-                    
-                    #@<< dump the lines near the error >>
-                    #@+node:EKR.20040612215018:<< dump the lines near the error >>
-                    if g.os_path_exists(fileName):
-                        f = file(fileName)
-                        lines = f.readlines()
-                        f.close()
-                    else:
-                        lines = g.splitLines(script)
-                    
-                    s = '-' * 20
-                    g.es_print(s)
-                    
-                    if 0:
-                        # Just print the error line.
-                        try:
-                            s = "%s line %d: %s" % (fileName,n,lines[n-1])
-                            g.es(s,newline=False)
-                        except IndexError:
-                            s = "%s line %d" % (fileName,n)
-                            g.es(s,newline=False)
-                    else: # Print surrounding lines.
-                        i = max(0,n-2)
-                        j = min(n+2,len(lines))
-                        # g.trace(n,i,j)
-                        while i < j:
-                            ch = g.choose(i==n-1,'*',' ')
-                            s = "%s line %d: %s" % (ch,i+1,lines[i])
-                            g.es(s,newline=False)
-                            i += 1
-                    #@nonl
-                    #@-node:EKR.20040612215018:<< dump the lines near the error >>
-                    #@nl
-                    #@nonl
-                    #@-node:ekr.20050505104140:<< handle an exception in the script >>
-                    #@nl
+                    g.handleScriptException(c,p,script,script1)
                 del sys.path[0]
             else:
                 g.es("no script selected",color="blue")
