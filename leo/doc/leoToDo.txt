@@ -2,119 +2,16 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20060531161030:To do: B3
+#@+node:ekr.20060625083222:Make sure mode bindings always work
+And print the exection message.
+#@nonl
+#@-node:ekr.20060625083222:Make sure mode bindings always work
 #@+node:ekr.20060527204444:Finish new colorizer plugin
 - Add all features used by Php.
 
 - Add all other features.
 #@nonl
 #@-node:ekr.20060527204444:Finish new colorizer plugin
-#@+node:ekr.20060227163215:Fix long-standing bugs: 2
-#@+node:ekr.20051104152338:Fix bug in Remove Sentinels command
-#@+node:ekr.20051104152338.1:Report
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3413805
-By: nobody
-
-I thought this might be for 4.4a2, but I see the same effect w/ 
-Leo 4.3.3, build  1.282 , September 17, 2005
-Python 2.3.5, Tk 8.4.7, win32
-
-I haven't used Leo for code, but just started to try to re-organize some Perl
-I inherited.
-
-Leo apears to remove sentinels, AND preceding newlines, so the effect is something
-like this:
-
-.... some code....
-
-   next line;
-}
-#@verbatim
-#@ leo sentinel here...
-#
-
-    If  ( something ) {
-      more code;
-......
-
-becomes:
-
-.... some code....
-
-   next line;
-} If  ( something ) {
-      more code;
-......
-
-Now, that may be annoying, but mildly so - it still runs.
-When this:
-
-#
-#@verbatim
-#@ sentinel
-if () {
-
-turns to this:
-
-# if() {
-
-code just breaks.
-#@nonl
-#@-node:ekr.20051104152338.1:Report
-#@-node:ekr.20051104152338:Fix bug in Remove Sentinels command
-#@+node:ekr.20051014152256:Fix long-standing bug in import code
-Improve import code so it handles stufff like this from Ipyton/iplib
-
-### This should *not* terminate the function!
-
-    self.LOGHEAD = Itpl(
-"""#log# Automatic Logger file. *** THIS MUST BE THE FIRST LINE ***
-#log# DO NOT CHANGE THIS LINE OR THE TWO BELOW
-#log# opts = $self.rc.opts
-#log# args = $self.rc.args
-#log# It is safe to make manual edits below here.
-#log#-----------------------------------------------------------------------
-""")
-
-- Handle blanks better in imports:
-    - Add tab_width keyword arg to import command.
-    - Convert tabs to blanks if tab width < 0.
-- Ignore position of blank lines wrt sentinels.
-- Ignore (optionally?) underindented blank lines.
-- Use pyclbr to parse Python imports?
-#@nonl
-#@+node:ekr.20040930075711:Handle underindented lines
-@nocolor
-
-Leo can't represent some files using nodes!
-
-I call this the "underindented blank line" problem.
-
-Example:
-
-@color
-
-class aClass:
-    def spam(): pass
-# comment line
-    def eggs(): pass
-    
-@nocolor
-
-Leo's import code can't handle this:
-    
-- If the import code puts the comment line in a node, the line won't be output with the proper indentation!!
-
-- Having the comment line stop the scanning of aClass is even worse.
-
-- This usually shows up with an unindented blank line instead of the comment line.
-#@nonl
-#@-node:ekr.20040930075711:Handle underindented lines
-#@+node:ekr.20040722132104:Write script to report underindented lines
-#@-node:ekr.20040722132104:Write script to report underindented lines
-#@-node:ekr.20051014152256:Fix long-standing bug in import code
-#@-node:ekr.20060227163215:Fix long-standing bugs: 2
 #@+node:ekr.20060624082933:Fix all other bugs
 #@+node:ekr.20060609070148:Fix hung (zombie) windows)
 @nocolor

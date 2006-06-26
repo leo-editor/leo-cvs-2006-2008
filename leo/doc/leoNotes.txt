@@ -4572,6 +4572,108 @@ for bunch in bunchList:
 #@nonl
 #@-node:ekr.20060114115648:<< give warning and return if there is a serious redefinition >>
 #@-node:ekr.20060608182131:from k.bindKey
+#@+node:ekr.20060626101103:from leoImport.py
+#@+node:ekr.20031218072017.2265:<< skip the Python def >>
+# Set defIndent to the indentation of the def line.
+defIndent = self.getLeadingIndent(s,start)
+i = g.skip_line(s,i) # Skip the def line.
+indent = self.getLeadingIndent(s,i)
+#g.trace(defIndent,indent)
+#g.trace(g.get_line(s,i))
+while i < len(s) and indent > defIndent:
+    progress = i
+    ch = s[i]
+    if g.is_nl(s,i):
+        backslashNewline = i > 0 and g.match(s,i-1,"\\\n")
+        i = g.skip_nl(s,i)
+        if not backslashNewline:
+            # New in Leo 4.4.1: don't set indent for comment lines.
+            j = skip_ws(s,i)
+            if not g.match(s,j,'#'):
+                indent = self.getLeadingIndent(s,i)
+                if indent <= defIndent:
+                    break
+    elif ch == '#':
+        i = g.skip_to_end_of_line(s,i)
+    elif ch == '"' or ch == '\'':
+        i = g.skip_python_string(s,i)
+    else: i += 1
+    assert(progress < i)
+#@nonl
+#@-node:ekr.20031218072017.2265:<< skip the Python def >>
+#@+node:ekr.20031218072017.2260:<< create nodes for all defs of the class >>
+indent =  self.getLeadingIndent(s,i)
+start = i = g.skip_blank_lines(s,i)
+parent_vnode = None
+while i < len(s) and indent > classIndent:
+    progress = i
+    if g.is_nl(s,i):
+        backslashNewline = i > 0 and g.match(s,i-1,"\\\n")
+        j = g.skip_nl(s,i)
+        if not backslashNewline:
+            indent = self.getLeadingIndent(s,j)
+            if indent > classIndent: i = j
+            else: break
+        else: i = j
+    elif g.match_c_word(s,i,"def"):
+        if not parent_vnode:
+            << create parent_vnode >>
+        i = start = self.scanPythonDef(s,i,start,parent_vnode)
+        indent = self.getLeadingIndent(s,i)
+    elif g.match_c_word(s,i,"class"):
+        if not parent_vnode:
+            << create parent_vnode >>
+        i = start = self.scanPythonClass(s,i,start,parent_vnode)
+        indent = self.getLeadingIndent(s,i)
+    elif s[i] == '#': i = g.skip_to_end_of_line(s,i)
+    elif s[i] == '"' or s[i] == '\'': i = g.skip_python_string(s,i)
+    else: i += 1
+    assert(progress < i)
+#@nonl
+#@+node:ekr.20031218072017.2261:<< create parent_vnode >>
+# This must be done after the declaration reference is generated.
+if self.treeType == "@file":
+    class_vnode.appendStringToBody("\t@others\n")
+else:
+    ref = g.angleBrackets(" class " + classname + " methods ")
+    class_vnode.appendStringToBody("\t" + ref + "\n\n")
+parent_vnode = class_vnode
+#@nonl
+#@-node:ekr.20031218072017.2261:<< create parent_vnode >>
+#@-node:ekr.20031218072017.2260:<< create nodes for all defs of the class >>
+#@+node:ekr.20060626100504:<< create parent_vnode >>
+# This must be done after the declaration reference is generated.
+if self.treeType == "@file":
+    class_vnode.appendStringToBody("\t@others\n")
+else:
+    ref = g.angleBrackets(" class " + classname + " methods ")
+    class_vnode.appendStringToBody("\t" + ref + "\n\n")
+parent_vnode = class_vnode
+#@nonl
+#@-node:ekr.20060626100504:<< create parent_vnode >>
+#@+node:ekr.20031218072017.2259:<< create class_vnode  >>
+# Create the section name using the old value of self.methodName.
+if  self.treeType == "@file":
+    prefix = ""
+else:
+    prefix = g.angleBrackets(" " + self.methodName + " methods ") + "=\n\n"
+    self.methodsSeen = True
+
+# i points just after the class line.
+
+# Add a docstring to the class node.
+docStringSeen = False
+j = g.skip_ws_and_nl(s,i)
+if g.match(s,j,'"""') or g.match(s,j,"'''"):
+    j = g.skip_python_string(s,j)
+    if j != len(s): # No scanning error.
+        i = j ; docStringSeen = True
+
+body = s[start:i]
+body = self.undentBody(body)
+if docStringSeen: body = body + '\n'
+#@-node:ekr.20031218072017.2259:<< create class_vnode  >>
+#@-node:ekr.20060626101103:from leoImport.py
 #@-node:ekr.20031218072017.434:Unused code
 #@-all
 #@nonl

@@ -1702,6 +1702,591 @@ def getLastTracebackFileAndLineNumber():
 #@nonl
 #@-node:ekr.20040731204831:getLastTracebackFileAndLineNumber
 #@-node:ekr.20060107082929:Fixed problem reporting indentation errors
+#@+node:ekr.20051104152338:Fixed bug in Remove Sentinels command
+#@+node:ekr.20051104152338.1:Report
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3413805
+By: nobody
+
+I thought this might be for 4.4a2, but I see the same effect w/ 
+Leo 4.3.3, build  1.282 , September 17, 2005
+Python 2.3.5, Tk 8.4.7, win32
+
+I haven't used Leo for code, but just started to try to re-organize some Perl I inherited.
+
+Leo apears to remove sentinels, AND preceding newlines, so the effect is something
+like this:
+
+.... some code....
+
+   next line;
+}
+#@verbatim
+#@ leo sentinel here...
+#
+
+    If  ( something ) {
+      more code;
+......
+
+becomes:
+
+.... some code....
+
+   next line;
+} If  ( something ) {
+      more code;
+......
+
+Now, that may be annoying, but mildly so - it still runs.
+When this:
+
+#
+#@verbatim
+#@ sentinel
+if () {
+
+turns to this:
+
+# if() {
+
+code just breaks.
+#@nonl
+#@-node:ekr.20051104152338.1:Report
+#@+node:ekr.20031218072017.3300:removeSentinelsCommand
+def removeSentinelsCommand (self,paths):
+    
+    c = self.c
+
+    self.setEncoding()
+
+    for fileName in paths:
+        g.setGlobalOpenDir(fileName)
+        path, self.fileName = g.os_path_split(fileName)
+        << Read file into s >>
+        << set delims from the header line >>
+        # g.trace("line: '%s', start: '%s', end: '%s'" % (line_delim,start_delim,end_delim))
+        s = self.removeSentinelLines(s,line_delim,start_delim,end_delim)
+        ext = c.config.remove_sentinels_extension
+        if not ext:
+            ext = ".txt"
+        if ext[0] == '.':
+            newFileName = g.os_path_join(path,fileName+ext)
+        else:
+            head,ext2 = g.os_path_splitext(fileName) 
+            newFileName = g.os_path_join(path,head+ext+ext2)
+        << Write s into newFileName >>
+#@nonl
+#@+node:ekr.20031218072017.3301:<< Read file into s >>
+try:
+    theFile = open(fileName)
+    s = theFile.read()
+    s = g.toUnicode(s,self.encoding)
+    theFile.close()
+except IOError:
+    g.es("can not open " + fileName, color="blue")
+    leoTest.fail()
+    return
+#@nonl
+#@-node:ekr.20031218072017.3301:<< Read file into s >>
+#@+node:ekr.20031218072017.3302:<< set delims from the header line >>
+# Skip any non @+leo lines.
+i = 0
+while i < len(s) and not g.find_on_line(s,i,"@+leo"):
+    i = g.skip_line(s,i)
+
+# Get the comment delims from the @+leo sentinel line.
+at = self.c.atFileCommands
+j = g.skip_line(s,i) ; line = s[i:j]
+
+valid,new_df,start_delim,end_delim,derivedFileIsThin = at.parseLeoSentinel(line)
+if not valid:
+    g.es("invalid @+leo sentinel in " + fileName)
+    return
+
+if end_delim:
+    line_delim = None
+else:
+    line_delim,start_delim = start_delim,None
+#@nonl
+#@-node:ekr.20031218072017.3302:<< set delims from the header line >>
+#@+node:ekr.20031218072017.1149:<< Write s into newFileName >>
+try:
+    mode = c.config.output_newline
+    mode = g.choose(mode=="platform",'w','wb')
+    theFile = open(newFileName,mode)
+    s = g.toEncodedString(s,self.encoding,reportErrors=True)
+    theFile.write(s)
+    theFile.close()
+    g.es("created: " + newFileName)
+except:
+    g.es("exception creating: " + newFileName)
+    g.es_exception()
+#@nonl
+#@-node:ekr.20031218072017.1149:<< Write s into newFileName >>
+#@-node:ekr.20031218072017.3300:removeSentinelsCommand
+#@+node:ekr.20031218072017.3303:removeSentinelLines
+# This does not handle @nonl properly, but that's a nit...
+
+def removeSentinelLines(self,s,line_delim,start_delim,end_delim):
+
+    '''Properly remove all sentinle lines in s.'''
+
+    delim = (line_delim or start_delim or '') + '@'
+    verbatim = delim + 'verbatim' ; verbatimFlag = False
+    result = [] ; lines = g.splitLines(s)
+    for line in lines:
+        i = g.skip_ws(line,0)
+        if not verbatimFlag and g.match(line,i,delim):
+            if g.match(line,i,verbatim):
+                verbatimFlag = True # Force the next line to be in the result.
+            # g.trace(repr(line))
+        else:
+            result.append(line)
+            verbatimFlag = False
+    result = ''.join(result)
+    return result
+#@nonl
+#@-node:ekr.20031218072017.3303:removeSentinelLines
+#@-node:ekr.20051104152338:Fixed bug in Remove Sentinels command
+#@+node:ekr.20051014152256:Fixed long-standing bug in import code
+#@+node:ekr.20060625173330:Report
+Improve import code so it handles stufff like this from Ipyton/iplib
+
+### This should *not* terminate the function!
+
+    self.LOGHEAD = Itpl(
+"""#log# Automatic Logger file. *** THIS MUST BE THE FIRST LINE ***
+#log# DO NOT CHANGE THIS LINE OR THE TWO BELOW
+#log# opts = $self.rc.opts
+#log# args = $self.rc.args
+#log# It is safe to make manual edits below here.
+#log#-----------------------------------------------------------------------
+""")
+
+- Handle blanks better in imports:
+    - Add tab_width keyword arg to import command.
+    - Convert tabs to blanks if tab width < 0.
+- Ignore position of blank lines wrt sentinels.
+- Ignore (optionally?) underindented blank lines.
+- Use pyclbr to parse Python imports?
+#@nonl
+#@-node:ekr.20060625173330:Report
+#@+node:ekr.20040930075711:Handle underindented lines
+@nocolor
+
+Leo can't represent some files using nodes!
+
+I call this the "underindented blank line" problem.
+
+Example:
+
+@color
+
+class aClass:
+    def spam(): pass
+# comment line
+    def eggs(): pass
+    
+@nocolor
+
+Leo's import code can't handle this:
+    
+- If the import code puts the comment line in a node, the line won't be output with the proper indentation!!
+
+- Having the comment line stop the scanning of aClass is even worse.
+
+- This usually shows up with an unindented blank line instead of the comment line.
+#@nonl
+#@-node:ekr.20040930075711:Handle underindented lines
+#@+node:ekr.20031218072017.2256:Python scanners & tests
+#@+node:ekr.20031218072017.2257:scanPythonClass & helpers
+def scanPythonClass (self,s,i,start,parent):
+
+    """Creates a child node c of parent for the class, and children of c for each def in the class."""
+
+    # g.trace(g.get_line(s,i))
+    class_indent = self.getLeadingIndent(s,i)
+    << set class_name and headline >>
+    if not class_name: return i
+    i = g.skip_line(s,i) # Skip the class line.
+    i,prefix,body = self.createClassNodeText(s,i,start)
+    class_vnode = self.createHeadline(parent,prefix + body,headline)
+    savedMethodName = self.methodName
+    self.methodName = headline
+    # Create a node for leading declarations of the class.
+    i = self.scanPythonDecls(s,i,class_vnode,class_indent,indent_parent_ref_flag=True)
+    start,i = self.scanPythonClassHelper(s,i,class_indent,class_name,class_vnode)
+    s2 = s[start:i]
+    if s2: class_vnode.appendStringToBody(s2)
+    self.methodName = savedMethodName
+    return i
+#@nonl
+#@+node:ekr.20031218072017.2258:<< set class_name and headline >>
+# Skip to the class name.
+i = g.skip_ws(s,i)
+i = g.skip_c_id(s,i) # skip "class"
+i = g.skip_ws_and_nl(s,i)
+if i < len(s) and g.is_c_id(s[i]):
+    j = i ; i = g.skip_c_id(s,i)
+    class_name = s[j:i]
+    headline = "class " + class_name
+else:
+    headline = ''
+    class_name = ''
+#@nonl
+#@-node:ekr.20031218072017.2258:<< set class_name and headline >>
+#@+node:ekr.20060626100102:scanPythonClassHelper
+def scanPythonClassHelper(self,s,i,class_indent,class_name,class_vnode):
+    
+    indent =  self.getLeadingIndent(s,i)
+    start = i = g.skip_blank_lines(s,i)
+    parent_vnode = None
+    while i < len(s):
+        progress = i
+        # New in Leo 4.4.1: ignore comment lines, whatever their indentation.
+        if indent <= class_indent:
+            j = g.skip_ws(s,i)
+            if g.match(s,j,'#'):
+                i = g.skip_to_end_of_line(s,j)
+            else: break
+        if g.is_nl(s,i):
+            backslashNewline = i > 0 and g.match(s,i-1,"\\\n")
+            j = g.skip_nl(s,i)
+            if not backslashNewline:
+                indent = self.getLeadingIndent(s,j)
+                if indent > class_indent: i = j
+                else: break
+            else: i = j
+        elif g.match_c_word(s,i,"def"):
+            if not parent_vnode:
+                self.createParentText(class_vnode,class_name)
+                parent_vnode = class_vnode
+            i = start = self.scanPythonDef(s,i,start,parent_vnode)
+            indent = self.getLeadingIndent(s,i)
+        elif g.match_c_word(s,i,"class"):
+            if not parent_vnode:
+                self.createParentText(class_vnode,class_name)
+                parent_vnode = class_vnode
+            i = start = self.scanPythonClass(s,i,start,parent_vnode)
+            indent = self.getLeadingIndent(s,i)
+        elif s[i] == '#': i = g.skip_to_end_of_line(s,i)
+        elif s[i] == '"' or s[i] == '\'': i = g.skip_python_string(s,i)
+        else: i += 1
+        assert(progress < i)
+    return start,i
+#@-node:ekr.20060626100102:scanPythonClassHelper
+#@+node:ekr.20060626101103.1:createParentText
+def createParentText (self,class_vnode,class_name):
+
+    '''Insert the proper body text in the class_vnode.'''
+    
+    # This must be done after the declaration reference is generated.
+    if self.treeType == "@file":
+        class_vnode.appendStringToBody("\t@others\n")
+    else:
+        ref = g.angleBrackets(' class %s methods ' % (class_name))
+        class_vnode.appendStringToBody("\t" + ref + "\n\n")
+#@nonl
+#@-node:ekr.20060626101103.1:createParentText
+#@+node:ekr.20060626103415:createClassNodeText
+def createClassNodeText (self,s,i,start):
+    
+    # Create the section name using the old value of self.methodName.
+    if  self.treeType == "@file":
+        prefix = ""
+    else:
+        prefix = g.angleBrackets(" " + self.methodName + " methods ") + "=\n\n"
+        self.methodsSeen = True
+    
+    # i points just after the class line.
+    
+    # Add a docstring to the class node.
+    docStringSeen = False
+    j = g.skip_ws_and_nl(s,i)
+    if g.match(s,j,'"""') or g.match(s,j,"'''"):
+        j = g.skip_python_string(s,j)
+        if j != len(s): # No scanning error.
+            i = j ; docStringSeen = True
+    
+    body = s[start:i]
+    body = self.undentBody(body)
+    if docStringSeen: body = body + '\n'
+    
+    return i,prefix,body
+#@nonl
+#@-node:ekr.20060626103415:createClassNodeText
+#@-node:ekr.20031218072017.2257:scanPythonClass & helpers
+#@+node:ekr.20031218072017.2263:scanPythonDef
+def scanPythonDef (self,s,i,start,parent):
+
+    """Creates a node of parent for the def."""
+
+    # g.trace(g.get_line(s,i))
+    << set headline or return i >>
+    i = self.skipPythonDef(s,i,start)
+    # Create the def node.
+    savedMethodName = self.methodName
+    self.methodName = headline
+    << Create def node >>
+    self.methodName = savedMethodName
+    return i
+#@+node:ekr.20031218072017.2264:<< set headline or return i >>
+i = g.skip_ws(s,i)
+i = g.skip_c_id(s,i) # Skip the "def"
+i = g.skip_ws_and_nl(s,i)
+if i < len(s) and g.is_c_id(s[i]):
+    j = i ; i = g.skip_c_id(s,i)
+    headline = s[j:i]
+    # g.trace("headline:" + headline)
+else: return i
+#@nonl
+#@-node:ekr.20031218072017.2264:<< set headline or return i >>
+#@+node:ekr.20031218072017.2266:<< Create def node >>
+# Create the prefix line for @root trees.
+if self.treeType == "@file":
+    prefix = ""
+else:
+    prefix = g.angleBrackets(" " + savedMethodName + " methods ") + "=\n\n"
+    self.methodsSeen = True
+
+# Create body.
+start = g.skip_blank_lines(s,start)
+body = s[start:i]
+body = self.undentBody(body)
+
+# Create the node.
+self.createHeadline(parent,prefix + body,headline)
+
+#@-node:ekr.20031218072017.2266:<< Create def node >>
+#@-node:ekr.20031218072017.2263:scanPythonDef
+#@+node:ekr.20031218072017.2267:scanPythonDecls
+def scanPythonDecls (self,s,i,parent,indent,indent_parent_ref_flag=True):
+    
+    done = False ; start = i
+    while not done and i < len(s):
+        progress = i
+        # g.trace(g.get_line(s,i))
+        ch = s[i]
+        if ch == '\n':
+            backslashNewline = i > 0 and g.match(s,i-1,"\\\n")
+            i = g.skip_nl(s,i)
+            # 2/14/03: break on lesser indention.
+            j = g.skip_ws(s,i)
+            if not g.is_nl(s,j) and not g.match(s,j,"#") and not backslashNewline:
+                lineIndent = self.getLeadingIndent(s,i)
+                if lineIndent <= indent:
+                    break
+        elif ch == '#': i = g.skip_to_end_of_line(s,i)
+        elif ch == '"' or ch == '\'':
+            i = g.skip_python_string(s,i)
+        elif g.is_c_id(ch):
+            << break on def or class >>
+        else: i += 1
+        assert(progress < i)
+    j = g.skip_blank_lines(s,start)
+    if g.is_nl(s,j): j = g.skip_nl(s,j)
+    if j < i:
+        << Create a child node for declarations >>
+    return i
+#@nonl
+#@+node:ekr.20031218072017.2268:<< break on def or class >>
+if g.match_c_word(s,i,"def") or g.match_c_word(s,i,"class"):
+    i = g.find_line_start(s,i)
+    done = True
+    break
+else:
+    i = g.skip_c_id(s,i)
+#@nonl
+#@-node:ekr.20031218072017.2268:<< break on def or class >>
+#@+node:ekr.20031218072017.2269:<< Create a child node for declarations >>
+headline = ref = g.angleBrackets(" " + self.methodName + " declarations ")
+leading_tab = g.choose(indent_parent_ref_flag,"\t","")
+
+# Append the reference to the parent's body.
+parent.appendStringToBody(leading_tab + ref + "\n") # 7/6/02
+
+# Create the node for the decls.
+body = self.undentBody(s[j:i])
+if self.treeType == "@root":
+    body = "@code\n\n" + body
+self.createHeadline(parent,body,headline)
+#@nonl
+#@-node:ekr.20031218072017.2269:<< Create a child node for declarations >>
+#@-node:ekr.20031218072017.2267:scanPythonDecls
+#@+node:ekr.20031218072017.2270:scanPythonText
+# See the comments for scanCText for what the text looks like.
+
+def scanPythonText (self,s,parent):
+
+    """Creates a child of parent for each Python function definition seen."""
+
+    decls_seen = False ; start = i = 0
+    self.methodsSeen = False
+    while i < len(s):
+        progress = i
+        # g.trace(g.get_line(s,i))
+        ch = s[i]
+        if ch == '\n' or ch == '\r': i = g.skip_nl(s,i)
+        elif ch == '#': i = g.skip_to_end_of_line(s,i)
+        elif ch == '"' or ch == '\'': i = g.skip_python_string(s,i)
+        elif g.is_c_id(ch):
+            << handle possible Python function or class >>
+        else: i += 1
+        assert(progress < i)
+    if not decls_seen: # 2/17/03
+        parent.appendStringToBody("@ignore\n" + self.rootLine + "@language python\n")
+    << Append a reference to the methods of this file >>
+    << Append any unused python text to the parent's body text >>
+#@nonl
+#@+node:ekr.20031218072017.2271:<< handle possible Python function or class >>
+if g.match_c_word(s,i,"def") or g.match_word(s,i,"class"):
+    isDef = g.match_c_word(s,i,"def")
+    if not decls_seen:
+        parent.appendStringToBody("@ignore\n" + self.rootLine + "@language python\n")
+        i = start = self.scanPythonDecls(s,start,parent,-1,indent_parent_ref_flag=False)
+        decls_seen = True
+        if self.treeType == "@file": # 7/29/02
+            parent.appendStringToBody("@others\n") # 7/29/02
+    if isDef:
+        i = start = self.scanPythonDef(s,i,start,parent)
+    else:
+        i = start = self.scanPythonClass(s,i,start,parent)
+else:
+    i = g.skip_c_id(s,i)
+#@nonl
+#@-node:ekr.20031218072017.2271:<< handle possible Python function or class >>
+#@+node:ekr.20031218072017.2272:<< Append a reference to the methods of this file >>
+if self.treeType == "@root" and self.methodsSeen:
+    parent.appendStringToBody(
+        g.angleBrackets(" " + self.methodName + " methods ") + "\n\n")
+#@nonl
+#@-node:ekr.20031218072017.2272:<< Append a reference to the methods of this file >>
+#@+node:ekr.20031218072017.2273:<< Append any unused python text to the parent's body text >>
+# Do nothing if only whitespace is left.
+i = start ; i = g.skip_ws_and_nl(s,i)
+if i < len(s):
+    parent.appendStringToBody(s[start:])
+#@nonl
+#@-node:ekr.20031218072017.2273:<< Append any unused python text to the parent's body text >>
+#@-node:ekr.20031218072017.2270:scanPythonText
+#@+node:ekr.20060626083237.1:skipPythonDef
+def skipPythonDef (self,s,i,start):
+
+    # Set defIndent to the indentation of the def line.
+    defIndent = self.getLeadingIndent(s,start)
+    parenCount = 0
+    i = g.skip_line(s,i) # Skip the def line.
+    indent = self.getLeadingIndent(s,i)
+    while i < len(s): # and indent > defIndent
+        progress = i
+        ch = s[i]
+        if g.is_nl(s,i):
+            backslashNewline = i > 0 and g.match(s,i-1,"\\\n")
+            i = g.skip_nl(s,i)
+            if not backslashNewline:
+                # New in Leo 4.4.1: don't set indent for comment lines.
+                j = g.skip_ws(s,i)
+                if not g.match(s,j,'#'):
+                    indent = self.getLeadingIndent(s,i)
+                    if indent <= defIndent and parenCount == 0:
+                        break
+        elif ch == '#':
+            i = g.skip_to_end_of_line(s,i)
+        elif ch == '"' or ch == '\'':
+            i = g.skip_python_string(s,i)
+        elif ch in '[{(':
+            i += 1 ; parenCount += 1
+        elif ch in ']})':
+            i += 1 ; parenCount -= 1
+        else: i += 1
+        assert(progress < i)
+        
+    return i
+#@nonl
+#@-node:ekr.20060626083237.1:skipPythonDef
+#@+node:ekr.20060626083237.2:test_skipPythonDef
+def test_skipPythonDef (self):
+
+    global c # Get syntax warning if this is not first.
+    if self: c = self.c             # Run from @test node: c not global
+    else: self = c.importCommands   # Run from @suite: c *is* global
+
+    d = g.scanDirectives(c)
+    self.tab_width = d.get("tabwidth")
+    verbose = False
+    << define s >>
+    start = 0
+    i = self.skipPythonDef(s,i=0,start=start)
+    result = s[start:i].strip()
+    if verbose: g.trace(result)
+    assert result.startswith('def test1') and result.endswith('return 1'),'result:\n%s' % result
+    start = i
+    i = self.skipPythonDef(s,i=i,start=start)
+    result = s[start:i].strip()
+    if verbose: g.trace(result)
+    assert result.startswith('def test2') and result.endswith('pass'),'result:\n%s' % result
+#@nonl
+#@+node:ekr.20060626083725:<< define s >>
+s = '''\
+def test1():
+    aList = (a,
+b,c)
+# underindented comment.
+    return 1
+
+def test2():
+# underindented comment.
+    pass
+'''
+
+s = g.adjustTripleString(s,self.tab_width)
+#@nonl
+#@-node:ekr.20060626083725:<< define s >>
+#@-node:ekr.20060626083237.2:test_skipPythonDef
+#@+node:ekr.20060626100102.1:test_scanPythonClass
+def test_scanPythonClass (self):
+
+    global c # Get syntax warning if this is not first.
+    if self: c = self.c             # Run from @test node: c not global
+    else: self = c.importCommands   # Run from @suite: c *is* global
+
+    d = g.scanDirectives(c)
+    self.tab_width = d.get("tabwidth")
+    verbose = False
+    << define s >>
+    start = 0
+    i = self.skipPythonDef(s,i=0,start=start)
+    result = s[start:i].strip()
+    if verbose: g.trace(result)
+    assert result.startswith('class aClass') and result.endswith("'eggs'"),'result:\n%s' % result
+    start = i
+    i = self.skipPythonDef(s,i=i,start=start)
+    result = s[start:i].strip()
+    if verbose: g.trace(result)
+    assert result.startswith('class aClass2') and result.endswith("'twit'"),'result:\n%s' % result
+#@nonl
+#@+node:ekr.20060626100102.2:<< define s >>
+s = '''\
+class aClass:
+    def spam():
+        return 'spam'
+# underindented comment line
+    def eggs():
+        return 'eggs'
+        
+class aClass2:
+    def twit():
+        return 'twit'
+'''
+
+s = g.adjustTripleString(s,self.tab_width)
+#@nonl
+#@-node:ekr.20060626100102.2:<< define s >>
+#@-node:ekr.20060626100102.1:test_scanPythonClass
+#@-node:ekr.20031218072017.2256:Python scanners & tests
+#@-node:ekr.20051014152256:Fixed long-standing bug in import code
 #@-node:ekr.20060624072803.1:Bugs fixed
 #@+node:ekr.20060624072803.2:New features
 #@+node:ekr.20060623064600:Finished repeat-complex-command
