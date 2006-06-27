@@ -1850,7 +1850,7 @@ def removeSentinelLines(self,s,line_delim,start_delim,end_delim):
 #@nonl
 #@-node:ekr.20031218072017.3303:removeSentinelLines
 #@-node:ekr.20051104152338:Fixed bug in Remove Sentinels command
-#@+node:ekr.20051014152256:Fixed long-standing bug in import code
+#@+node:ekr.20051014152256:Fixed long-standing bugs in import code
 #@+node:ekr.20060625173330:Report
 Improve import code so it handles stufff like this from Ipyton/iplib
 
@@ -1900,6 +1900,21 @@ Leo's import code can't handle this:
 - This usually shows up with an unindented blank line instead of the comment line.
 #@nonl
 #@-node:ekr.20040930075711:Handle underindented lines
+#@+node:ekr.20060627063640:Handle long signature lines
+Definitions such as the following caused problems:
+    
+@color
+
+def __init__(self, parent, id=-1, title="", pos=wx.DefaultPosition,
+        size=wx.DefaultSize, style=wx.DEFAULT_FRAME_STYLE):
+
+    wx.Frame.__init__(self, parent, id, title, pos, size, style)
+    
+@nocolor
+
+The import code wasn't skipping the entire signature, so the indentation wasn't computed properly.
+#@nonl
+#@-node:ekr.20060627063640:Handle long signature lines
 #@+node:ekr.20031218072017.2256:Python scanners & tests
 #@+node:ekr.20031218072017.2257:scanPythonClass & helpers
 def scanPythonClass (self,s,i,start,parent):
@@ -2173,11 +2188,13 @@ if i < len(s):
 #@-node:ekr.20031218072017.2270:scanPythonText
 #@+node:ekr.20060626083237.1:skipPythonDef
 def skipPythonDef (self,s,i,start):
+    
+    # g.trace(g.get_line(s,i))
 
     # Set defIndent to the indentation of the def line.
     defIndent = self.getLeadingIndent(s,start)
     parenCount = 0
-    i = g.skip_line(s,i) # Skip the def line.
+    << skip the entire signature >>
     indent = self.getLeadingIndent(s,i)
     while i < len(s): # and indent > defIndent
         progress = i
@@ -2198,13 +2215,35 @@ def skipPythonDef (self,s,i,start):
             i = g.skip_python_string(s,i)
         elif ch in '[{(':
             i += 1 ; parenCount += 1
+            # g.trace('ch',ch,parenCount)
         elif ch in ']})':
             i += 1 ; parenCount -= 1
+            # g.trace('ch',ch,parenCount)
         else: i += 1
         assert(progress < i)
         
     return i
 #@nonl
+#@+node:ekr.20060627062652:<< skip the entire signature >>
+# Now that we count parens, we must be careful to skip the entire signature.
+if 1:
+    j = s.find('(',i)
+    if j == -1:
+        bad = True
+    else:
+        j = g.skip_matching_delims(s,j,'(',')')
+        if g.match(s,j,':'):
+            i = g.skip_line(s,j)
+            bad = False
+        else:
+            bad = True
+    if bad:
+        g.es_print('Warning: improper signature: %s' % g.get_line(s,i))
+        return i
+else:
+    i = g.skip_line(s,i) # Skip the def line.
+#@nonl
+#@-node:ekr.20060627062652:<< skip the entire signature >>
 #@-node:ekr.20060626083237.1:skipPythonDef
 #@+node:ekr.20060626083237.2:test_skipPythonDef
 def test_skipPythonDef (self):
@@ -2245,6 +2284,45 @@ s = g.adjustTripleString(s,self.tab_width)
 #@nonl
 #@-node:ekr.20060626083725:<< define s >>
 #@-node:ekr.20060626083237.2:test_skipPythonDef
+#@+node:ekr.20060627063313:test_skipPythonDef2
+def test_skipPythonDef2 (self):
+    
+    '''Tests of long signature lines.'''
+
+    global c # Get syntax warning if this is not first.
+    if self: c = self.c             # Run from @test node: c not global
+    else: self = c.importCommands   # Run from @suite: c *is* global
+
+    d = g.scanDirectives(c)
+    self.tab_width = d.get("tabwidth")
+    verbose = False
+    << define s >>
+    start = 0
+    i = self.skipPythonDef(s,i=0,start=start)
+    result = s[start:i].strip()
+    if verbose: g.trace(result)
+    assert result.startswith('def test1') and result.endswith('return 1'),'result:\n%s' % result
+    start = i
+    i = self.skipPythonDef(s,i=i,start=start)
+    result = s[start:i].strip()
+    if verbose: g.trace(result)
+    assert result.startswith('def test2') and result.endswith('return 2'),'result:\n%s' % result
+#@nonl
+#@+node:ekr.20060627063313.1:<< define s >>
+s = '''\
+def test1(
+        a=2):
+    return 1
+
+def test2(
+a=3):
+    return 2
+'''
+
+s = g.adjustTripleString(s,self.tab_width)
+#@nonl
+#@-node:ekr.20060627063313.1:<< define s >>
+#@-node:ekr.20060627063313:test_skipPythonDef2
 #@+node:ekr.20060626100102.1:test_scanPythonClass
 def test_scanPythonClass (self):
 
@@ -2286,7 +2364,7 @@ s = g.adjustTripleString(s,self.tab_width)
 #@-node:ekr.20060626100102.2:<< define s >>
 #@-node:ekr.20060626100102.1:test_scanPythonClass
 #@-node:ekr.20031218072017.2256:Python scanners & tests
-#@-node:ekr.20051014152256:Fixed long-standing bug in import code
+#@-node:ekr.20051014152256:Fixed long-standing bugs in import code
 #@-node:ekr.20060624072803.1:Bugs fixed
 #@+node:ekr.20060624072803.2:New features
 #@+node:ekr.20060623064600:Finished repeat-complex-command

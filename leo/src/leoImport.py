@@ -1231,11 +1231,34 @@ class baseLeoImportCommands:
     #@-node:ekr.20031218072017.2270:scanPythonText
     #@+node:ekr.20060626083237.1:skipPythonDef
     def skipPythonDef (self,s,i,start):
+        
+        # g.trace(g.get_line(s,i))
     
         # Set defIndent to the indentation of the def line.
         defIndent = self.getLeadingIndent(s,start)
         parenCount = 0
-        i = g.skip_line(s,i) # Skip the def line.
+        #@    << skip the entire signature >>
+        #@+node:ekr.20060627062652:<< skip the entire signature >>
+        # Now that we count parens, we must be careful to skip the entire signature.
+        if 1:
+            j = s.find('(',i)
+            if j == -1:
+                bad = True
+            else:
+                j = g.skip_matching_delims(s,j,'(',')')
+                if g.match(s,j,':'):
+                    i = g.skip_line(s,j)
+                    bad = False
+                else:
+                    bad = True
+            if bad:
+                g.es_print('Warning: improper signature: %s' % g.get_line(s,i))
+                return i
+        else:
+            i = g.skip_line(s,i) # Skip the def line.
+        #@nonl
+        #@-node:ekr.20060627062652:<< skip the entire signature >>
+        #@nl
         indent = self.getLeadingIndent(s,i)
         while i < len(s): # and indent > defIndent
             progress = i
@@ -1256,8 +1279,10 @@ class baseLeoImportCommands:
                 i = g.skip_python_string(s,i)
             elif ch in '[{(':
                 i += 1 ; parenCount += 1
+                # g.trace('ch',ch,parenCount)
             elif ch in ']})':
                 i += 1 ; parenCount -= 1
+                # g.trace('ch',ch,parenCount)
             else: i += 1
             assert(progress < i)
             
@@ -1304,6 +1329,46 @@ class baseLeoImportCommands:
         assert result.startswith('def test2') and result.endswith('pass'),'result:\n%s' % result
     #@nonl
     #@-node:ekr.20060626083237.2:test_skipPythonDef
+    #@+node:ekr.20060627063313:test_skipPythonDef2
+    def test_skipPythonDef2 (self):
+        
+        '''Tests of long signature lines.'''
+    
+        global c # Get syntax warning if this is not first.
+        if self: c = self.c             # Run from @test node: c not global
+        else: self = c.importCommands   # Run from @suite: c *is* global
+    
+        d = g.scanDirectives(c)
+        self.tab_width = d.get("tabwidth")
+        verbose = False
+        #@    << define s >>
+        #@+node:ekr.20060627063313.1:<< define s >>
+        s = '''\
+        def test1(
+                a=2):
+            return 1
+        
+        def test2(
+        a=3):
+            return 2
+        '''
+        
+        s = g.adjustTripleString(s,self.tab_width)
+        #@nonl
+        #@-node:ekr.20060627063313.1:<< define s >>
+        #@nl
+        start = 0
+        i = self.skipPythonDef(s,i=0,start=start)
+        result = s[start:i].strip()
+        if verbose: g.trace(result)
+        assert result.startswith('def test1') and result.endswith('return 1'),'result:\n%s' % result
+        start = i
+        i = self.skipPythonDef(s,i=i,start=start)
+        result = s[start:i].strip()
+        if verbose: g.trace(result)
+        assert result.startswith('def test2') and result.endswith('return 2'),'result:\n%s' % result
+    #@nonl
+    #@-node:ekr.20060627063313:test_skipPythonDef2
     #@+node:ekr.20060626100102.1:test_scanPythonClass
     def test_scanPythonClass (self):
     
