@@ -1743,6 +1743,7 @@ class keyHandlerClass:
         self.ignore_caps_lock               = c.config.getBool('ignore_caps_lock')
         self.ignore_unbound_non_ascii_keys  = c.config.getBool('ignore_unbound_non_ascii_keys')
         self.swap_mac_keys                  = c.config.getBool('swap_mac_keys')
+        self.trace_bind_key_exceptions      = c.config.getBool('trace_bind_key_exceptions')
         self.trace_key_event                = c.config.getBool('trace_key_event')
         self.trace_minibuffer               = c.config.getBool('trace_minibuffer')
         self.warn_about_redefined_shortcuts = c.config.getBool('warn_about_redefined_shortcuts')
@@ -2215,7 +2216,8 @@ class keyHandlerClass:
                     w.bind(bindStroke,masterBindKeyCallback)
                     # g.trace(stroke,bindStroke,g.app.gui.widget_name(w))
                 except Exception:
-                    # g.es_exception()
+                    if self.trace_bind_key_exceptions:
+                        g.es_exception()
                     g.es_print('exception binding %s to %s' % (
                         bindStroke, c.widget_name(w)), color = 'blue')
                     if g.app.unitTesting: raise

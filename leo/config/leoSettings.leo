@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="291" clone_windows="0"/>
 <globals body_outline_ratio="0.549828178694">
-	<global_window_position top="75" left="241" height="634" width="945"/>
+	<global_window_position top="75" left="241" height="615" width="945"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -252,6 +252,7 @@
 <v t="ekr.20060122105527.8"><vh>@bool showHelpWhenEnteringModes = False</vh></v>
 <v t="ekr.20060122105527.7" annotate="7d71002e"><vh>@bool stayInTreeAfterSelect = True</vh></v>
 <v t="ekr.20060215104345"><vh>@bool swap_mac_keys = False</vh></v>
+<v t="ekr.20060627065953"><vh>@bool trace_bind_key_exceptions = True</vh></v>
 <v t="ekr.20060122105527.5" annotate="7d71002e"><vh>@bool useCmdMenu = True</vh></v>
 <v t="ekr.20060122105527.6" annotate="7d71002e"><vh>@bool useMinibuffer = True</vh></v>
 <v t="ekr.20060125165241"><vh>@bool useTextMinibuffer = True</vh></v>
@@ -458,9 +459,10 @@
 <v t="ekr.20060512084639" a="E"><vh>Recent</vh>
 <v t="ekr.20060216135834"><vh>@bool enable_autocompleter_initially = False</vh></v>
 <v t="ekr.20060603070801"><vh>@bool enable_calltips_initially = False</vh></v>
+<v t="ekr.20060627065953" a="TV"><vh>@bool trace_bind_key_exceptions = True</vh></v>
 <v t="ekr.20060114073238"><vh>@bool trace_bindings = False</vh></v>
 <v t="ekr.20060616172614"><vh>@bool trace_bindings_verbose = False</vh></v>
-<v t="ekr.20060309022759" a="V"><vh>@bool trace_colorizer = False</vh></v>
+<v t="ekr.20060309022759"><vh>@bool trace_colorizer = False</vh></v>
 <v t="ekr.20060131071947"><vh>@bool trace_masterClickHandler = False</vh></v>
 <v t="ekr.20060209045356"><vh>@bool trace_masterFocusHandler = False</vh></v>
 <v t="ekr.20060131071612"><vh>@bool trace_masterKeyHandler = False</vh></v>
@@ -5475,5 +5477,6 @@ enter-quick-command-mode            = Alt-C
 <t tx="ekr.20060620085654">vertical:   pack body-pane editors vertically.
 horizontal: pack body-pane editors horizontally.</t>
 <t tx="ekr.20060624072653"></t>
+<t tx="ekr.20060627065953"></t>
 </tnodes>
 </leo_file>

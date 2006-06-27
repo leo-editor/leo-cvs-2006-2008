@@ -1,209 +1,22 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
-#@+node:ekr.20060531161030:To do: B3
-#@+node:ekr.20060625083222:Make sure mode bindings always work
-And print the exection message.
-#@nonl
-#@-node:ekr.20060625083222:Make sure mode bindings always work
-#@+node:ekr.20060527204444:Finish new colorizer plugin
-- Add all features used by Php.
-
-- Add all other features.
-#@nonl
-#@-node:ekr.20060527204444:Finish new colorizer plugin
-#@+node:ekr.20060624082933:Fix all other bugs
-#@+node:ekr.20060609070148:Fix hung (zombie) windows)
+#@+node:ekr.20060531161030:To do: B3 or B4
+#@+node:ekr.20060627075911:Flash matching parens
+#@-node:ekr.20060627075911:Flash matching parens
+#@+node:ekr.20060624082933:Fix  bugs
+#@+node:ekr.20060530110450:Test major Emacs commands
 @nocolor
 
-https://sourceforge.net/forum/message.php?msg_id=3768494
-By: ktenney
-
-I'm using current CVS, W2k
-
-1 open a Leo file (I'm using a batch file / console)
-
-2 click Edit->Open   <-- Having this dialog open is the problem.
-
-3 return focus to the Leo window
-
-4 click Help->Open leoDocs.leo
-
-Zombie!
-#@-node:ekr.20060609070148:Fix hung (zombie) windows)
+- Macros
+- Lossage
+- History (works for repeat-complex-command)
+- Yank & Kill
+- Insert newline (look up proper behavior).
+#@nonl
+#@-node:ekr.20060530110450:Test major Emacs commands
 #@+node:ekr.20060120084705:Overwrite mode doesn't work in headllines
 #@-node:ekr.20060120084705:Overwrite mode doesn't work in headllines
-#@+node:ekr.20060624082529:Minor
-#@+node:ekr.20060117074259:Handle Mac issues
-#@+node:ekr.20060117074259.1:Mac indentation problem
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3526056
-By: nobody
-
-Hi Edward. I've been using the linux and windows version but would like to try
-leo on the mac. The install instructions seem a bit out of date. I take it any
-additional downloading of TclTkAqua is unneccessary?
-
-I have python2.4 in addition to the stock python 2.3.5 that comes with osx 10.4.
-Launching leo like so:  "python2.4 leo.py", as I do on linux, seems to run just
-fine.
-
-I don't know if this was fixed on osx or in leo in general, but moving the mouse
-to each of the panes and scrolling with the wheel works just great now. Thanks.
-
-Plugin manager: the plugin text font is really tiny, and the window opens to
-a default width such that the 'Installed Plugins' button reads 'talled Plugi'.
-Resizing the window does stretch the buttons horizontally.
-
-Ok -- here's maybe a big issue. I open a new leo file (File->New) and type in:
-
-for i in range(3):
-
-I hit return after the colon, but a newline is not entered.
-
-Stephen
-#@-node:ekr.20060117074259.1:Mac indentation problem
-#@+node:ekr.20051112080017:Problem removing script buttons on the mac
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3423121
-By: nobody
-
-Hi! I need help removing script buttons. It says I should right click the ofending
-button. I have a mac and Ctl-click, Command-click, etc doesn't work. What should
-I do?
-
-EKR: This is on the list of unfixable bugs, but I have a hard time believing there is no workaround.
-#@nonl
-#@-node:ekr.20051112080017:Problem removing script buttons on the mac
-#@+node:ekr.20060116083043:Use special Help menu on the Mac
-# http://sourceforge.net/forum/message.php?msg_id=3237845
-#@nonl
-#@+node:ekr.20031218072017.3803:createHelpMenuFromTable
-def createHelpMenuFromTable (self):
-
-    if 0: ## sys.platform == 'darwin':
-        helpMenu = self.getMacHelpMenu()
-        if not helpMenu: return
-    else:
-        helpMenu = self.createNewMenu("&Help")
-    
-    self.createMenuEntries(helpMenu,self.helpMenuTopTable)
-    
-    if sys.platform=="win32":
-        self.createMenuEntries(helpMenu,self.helpMenuTop2Table)
-    
-    self.createMenuEntries(helpMenu,self.helpMenuTop3Table)
-#@nonl
-#@-node:ekr.20031218072017.3803:createHelpMenuFromTable
-#@+node:ekr.20031218072017.4113:new_menu
-def new_menu(self,parent,tearoff=False):
-    
-    """Wrapper for the Tkinter new_menu menu method."""
-
-    return Tk.Menu(parent,tearoff=tearoff)
-#@nonl
-#@-node:ekr.20031218072017.4113:new_menu
-#@+node:ekr.20031218072017.3804:createNewMenu (contains Tk code)
-def createNewMenu (self,menuName,parentName="top",before=None):
-
-    try:
-        parent = self.getMenu(parentName) # parent may be None.
-        menu = self.getMenu(menuName)
-        if menu:
-            g.es("menu already exists: " + menuName,color="red")
-        else:
-            menu = self.new_menu(parent,tearoff=0)
-            self.setMenu(menuName,menu)
-            label = self.getRealMenuName(menuName)
-            amp_index = label.find("&")
-            label = label.replace("&","")
-            if before: # Insert the menu before the "before" menu.
-                index_label = self.getRealMenuName(before)
-                amp_index = index_label.find("&")
-                index_label = index_label.replace("&","")
-                index = parent.index(index_label)
-                self.insert_cascade(parent,index=index,label=label,menu=menu,underline=amp_index)
-            else:
-                self.add_cascade(parent,label=label,menu=menu,underline=amp_index)
-            return menu
-    except:
-        g.es("exception creating " + menuName + " menu")
-        g.es_exception()
-        return None
-#@nonl
-#@-node:ekr.20031218072017.3804:createNewMenu (contains Tk code)
-#@+node:ekr.20031218072017.3807:getMenu, setMenu, destroyMenu
-def getMenu (self,menuName):
-
-    cmn = self.canonicalizeMenuName(menuName)
-    return self.menus.get(cmn)
-    
-def setMenu (self,menuName,menu):
-    
-    cmn = self.canonicalizeMenuName(menuName)
-    self.menus [cmn] = menu
-    
-def destroyMenu (self,menuName):
-    
-    cmn = self.canonicalizeMenuName(menuName)
-    del self.menus[cmn]
-#@nonl
-#@-node:ekr.20031218072017.3807:getMenu, setMenu, destroyMenu
-#@+node:ekr.20060211144330.1:getMacHelpMenu
-def getMacHelpMenu (self):
-    
-    return None ###
-    
-    try:
-        helpMenu = Tk.Menu('top.help')
-        return helpMenu
-        
-    except Exception:
-        g.trace('Can not get MacOS Help menu')
-        g.es_exception()
-        return None
-#@nonl
-#@-node:ekr.20060211144330.1:getMacHelpMenu
-#@-node:ekr.20060116083043:Use special Help menu on the Mac
-#@-node:ekr.20060117074259:Handle Mac issues
-#@+node:ekr.20060207085518:Improve c.insertHeadline
-c.insertHeadlineTime uses the edit widget.  It shouldn't.
-#@nonl
-#@-node:ekr.20060207085518:Improve c.insertHeadline
-#@+node:ekr.20060202235215.3:Remove deprecation warning
-#@+node:EKR.20040627114602:getDescendentUnknownAttributes
-# Only @thin vnodes have the descendentTnodeUnknownAttributes field.
-# The question is: what are we to do about this?
-
-def getDescendentUnknownAttributes (self,s):
-    
-    try:
-        bin = binascii.unhexlify(s) # Throws a TypeError if val is not a hex string.
-        val = pickle.loads(bin)
-        return val
-
-    except (TypeError,pickle.UnpicklingError,ImportError):
-        g.trace('oops: getDescendentUnknownAttributes')
-        return None
-#@nonl
-#@-node:EKR.20040627114602:getDescendentUnknownAttributes
-#@-node:ekr.20060202235215.3:Remove deprecation warning
-#@+node:ekr.20060610193837:open python window does not appear to work on Solaris
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3771068
-By: leouser
-
-The open python window does not appear to work on Solaris.
-
-http://sourceforge.net/forum/message.php?msg_id=3771167
-By: nobody
-
-from what I could see it looked like it was trying to start the shell up with
-a location that pointed to a nonexistent path.
-#@nonl
-#@-node:ekr.20060610193837:open python window does not appear to work on Solaris
 #@+node:ekr.20060610212014:Problems with tutorial command
 @nocolor
 http://sourceforge.net/forum/message.php?msg_id=3771026
@@ -224,21 +37,20 @@ idea if that is what I want to do.
 Couldn't this file be distributed with Leo?
 #@nonl
 #@-node:ekr.20060610212014:Problems with tutorial command
-#@-node:ekr.20060624082529:Minor
-#@+node:ekr.20060530110450:Test major Emacs commands
-@nocolor
-
-- Macros
-- Lossage
-- History (works for repeat-complex-command)
-- Yank & Kill
-- Insert newline (look up proper behavior).
+#@+node:ekr.20060207085518:Improve c.insertHeadline
+c.insertHeadlineTime uses the edit widget.  It shouldn't.
 #@nonl
-#@-node:ekr.20060530110450:Test major Emacs commands
-#@-node:ekr.20060624082933:Fix all other bugs
+#@-node:ekr.20060207085518:Improve c.insertHeadline
+#@-node:ekr.20060624082933:Fix  bugs
 #@+node:ekr.20060531161030.1:Make body editors persistant
 #@-node:ekr.20060531161030.1:Make body editors persistant
-#@-node:ekr.20060531161030:To do: B3
+#@+node:ekr.20060527204444:Finish new colorizer plugin
+- Add all features used by Php.
+
+- Add all other features.
+#@nonl
+#@-node:ekr.20060527204444:Finish new colorizer plugin
+#@-node:ekr.20060531161030:To do: B3 or B4
 #@+node:ekr.20060623064600.1:Urgent (big picture)
 #@+node:ekr.20051202094427:Resolve cvs conflicts
 Investigate meld:  http://meld.sourceforge.net/
@@ -746,6 +558,192 @@ Add gui.toPythonIndex(s,index) and gui.toGuiIndex(s,index)
 #@-node:ekr.20041228084830.3:Finish wxWindows plugin
 #@-node:ekr.20060623064600.1:Urgent (big picture)
 #@+node:ekr.20060527164612:Important 1-2 day projects (1-2 weeks)
+#@+node:ekr.20060609070148:Fix hung (zombie) windows)
+@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=3768494
+By: ktenney
+
+I'm using current CVS, W2k
+
+1 open a Leo file (I'm using a batch file / console)
+
+2 click Edit->Open   <-- Having this dialog open is the problem.
+
+3 return focus to the Leo window
+
+4 click Help->Open leoDocs.leo
+
+Zombie!
+#@-node:ekr.20060609070148:Fix hung (zombie) windows)
+#@+node:ekr.20060624082529:Fix minor bugs
+#@+node:ekr.20060117074259:Handle Mac issues
+#@+node:ekr.20060117074259.1:Mac indentation problem
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3526056
+By: nobody
+
+Hi Edward. I've been using the linux and windows version but would like to try
+leo on the mac. The install instructions seem a bit out of date. I take it any
+additional downloading of TclTkAqua is unneccessary?
+
+I have python2.4 in addition to the stock python 2.3.5 that comes with osx 10.4.
+Launching leo like so:  "python2.4 leo.py", as I do on linux, seems to run just
+fine.
+
+I don't know if this was fixed on osx or in leo in general, but moving the mouse
+to each of the panes and scrolling with the wheel works just great now. Thanks.
+
+Plugin manager: the plugin text font is really tiny, and the window opens to
+a default width such that the 'Installed Plugins' button reads 'talled Plugi'.
+Resizing the window does stretch the buttons horizontally.
+
+Ok -- here's maybe a big issue. I open a new leo file (File->New) and type in:
+
+for i in range(3):
+
+I hit return after the colon, but a newline is not entered.
+
+Stephen
+#@-node:ekr.20060117074259.1:Mac indentation problem
+#@+node:ekr.20051112080017:Problem removing script buttons on the mac
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3423121
+By: nobody
+
+Hi! I need help removing script buttons. It says I should right click the ofending
+button. I have a mac and Ctl-click, Command-click, etc doesn't work. What should
+I do?
+
+EKR: This is on the list of unfixable bugs, but I have a hard time believing there is no workaround.
+#@nonl
+#@-node:ekr.20051112080017:Problem removing script buttons on the mac
+#@+node:ekr.20060116083043:Use special Help menu on the Mac
+# http://sourceforge.net/forum/message.php?msg_id=3237845
+#@nonl
+#@+node:ekr.20031218072017.3803:createHelpMenuFromTable
+def createHelpMenuFromTable (self):
+
+    if 0: ## sys.platform == 'darwin':
+        helpMenu = self.getMacHelpMenu()
+        if not helpMenu: return
+    else:
+        helpMenu = self.createNewMenu("&Help")
+    
+    self.createMenuEntries(helpMenu,self.helpMenuTopTable)
+    
+    if sys.platform=="win32":
+        self.createMenuEntries(helpMenu,self.helpMenuTop2Table)
+    
+    self.createMenuEntries(helpMenu,self.helpMenuTop3Table)
+#@nonl
+#@-node:ekr.20031218072017.3803:createHelpMenuFromTable
+#@+node:ekr.20031218072017.4113:new_menu
+def new_menu(self,parent,tearoff=False):
+    
+    """Wrapper for the Tkinter new_menu menu method."""
+
+    return Tk.Menu(parent,tearoff=tearoff)
+#@nonl
+#@-node:ekr.20031218072017.4113:new_menu
+#@+node:ekr.20031218072017.3804:createNewMenu (contains Tk code)
+def createNewMenu (self,menuName,parentName="top",before=None):
+
+    try:
+        parent = self.getMenu(parentName) # parent may be None.
+        menu = self.getMenu(menuName)
+        if menu:
+            g.es("menu already exists: " + menuName,color="red")
+        else:
+            menu = self.new_menu(parent,tearoff=0)
+            self.setMenu(menuName,menu)
+            label = self.getRealMenuName(menuName)
+            amp_index = label.find("&")
+            label = label.replace("&","")
+            if before: # Insert the menu before the "before" menu.
+                index_label = self.getRealMenuName(before)
+                amp_index = index_label.find("&")
+                index_label = index_label.replace("&","")
+                index = parent.index(index_label)
+                self.insert_cascade(parent,index=index,label=label,menu=menu,underline=amp_index)
+            else:
+                self.add_cascade(parent,label=label,menu=menu,underline=amp_index)
+            return menu
+    except:
+        g.es("exception creating " + menuName + " menu")
+        g.es_exception()
+        return None
+#@nonl
+#@-node:ekr.20031218072017.3804:createNewMenu (contains Tk code)
+#@+node:ekr.20031218072017.3807:getMenu, setMenu, destroyMenu
+def getMenu (self,menuName):
+
+    cmn = self.canonicalizeMenuName(menuName)
+    return self.menus.get(cmn)
+    
+def setMenu (self,menuName,menu):
+    
+    cmn = self.canonicalizeMenuName(menuName)
+    self.menus [cmn] = menu
+    
+def destroyMenu (self,menuName):
+    
+    cmn = self.canonicalizeMenuName(menuName)
+    del self.menus[cmn]
+#@nonl
+#@-node:ekr.20031218072017.3807:getMenu, setMenu, destroyMenu
+#@+node:ekr.20060211144330.1:getMacHelpMenu
+def getMacHelpMenu (self):
+    
+    return None ###
+    
+    try:
+        helpMenu = Tk.Menu('top.help')
+        return helpMenu
+        
+    except Exception:
+        g.trace('Can not get MacOS Help menu')
+        g.es_exception()
+        return None
+#@nonl
+#@-node:ekr.20060211144330.1:getMacHelpMenu
+#@-node:ekr.20060116083043:Use special Help menu on the Mac
+#@-node:ekr.20060117074259:Handle Mac issues
+#@+node:ekr.20060202235215.3:Remove deprecation warning
+#@+node:EKR.20040627114602:getDescendentUnknownAttributes
+# Only @thin vnodes have the descendentTnodeUnknownAttributes field.
+# The question is: what are we to do about this?
+
+def getDescendentUnknownAttributes (self,s):
+    
+    try:
+        bin = binascii.unhexlify(s) # Throws a TypeError if val is not a hex string.
+        val = pickle.loads(bin)
+        return val
+
+    except (TypeError,pickle.UnpicklingError,ImportError):
+        g.trace('oops: getDescendentUnknownAttributes')
+        return None
+#@nonl
+#@-node:EKR.20040627114602:getDescendentUnknownAttributes
+#@-node:ekr.20060202235215.3:Remove deprecation warning
+#@+node:ekr.20060610193837:open python window does not appear to work on Solaris
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3771068
+By: leouser
+
+The open python window does not appear to work on Solaris.
+
+http://sourceforge.net/forum/message.php?msg_id=3771167
+By: nobody
+
+from what I could see it looked like it was trying to start the shell up with
+a location that pointed to a nonexistent path.
+#@nonl
+#@-node:ekr.20060610193837:open python window does not appear to work on Solaris
+#@-node:ekr.20060624082529:Fix minor bugs
 #@+node:ekr.20031218072017.801:Support .leo.gz or .leo.zip files
 #@+node:ekr.20050428062312:Request 1
 @nocolor
