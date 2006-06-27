@@ -1301,6 +1301,15 @@ class editCommandsClass (baseEditCommandsClass):
         self.swapSpots = []
         self._useRegex = False # For replace-string
         self.widget = None # For use by state handlers.
+        
+        # Settings...
+        self.autocompleteBrackets   = c.config.getBool('autocomplete-brackets')
+        self.bracketsFlashBg        = c.config.getColor('flash-brackets-background-color')
+        self.bracketsFlashCount     = c.config.getInt('flash-brackets-count')
+        self.bracketsFlashDelay     = c.config.getInt('flash-brackets-delay')
+        self.bracketsFlashFg        = c.config.getColor('flash-brackets-foreground-color')
+        self.flashMatchingBrackets  = c.config.getBool('flash-matching-brackets')
+        self.smartAutoIndent        = c.config.getBool('smart_auto_indent')
     #@nonl
     #@-node:ekr.20050920084036.54: ctor (editCommandsClass)
     #@+node:ekr.20050920084036.55: getPublicCommands (editCommandsClass)
@@ -2828,25 +2837,24 @@ class editCommandsClass (baseEditCommandsClass):
             c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview)
     #@nonl
     #@-node:ekr.20050920084036.141:removeBlankLines
-    #@+node:ekr.20051125080855:selfInsertCommand
+    #@+node:ekr.20051125080855:selfInsertCommand & helpers
     def selfInsertCommand(self,event,action='insert'):
         
         '''Insert a character in the body pane.
         This is the default binding for all keys in the body pane.'''
         
         c = self.c ; p = c.currentPosition()
-        # g.trace('event',event,g.callers())
         ch = event and event.char or ''
         if event and event.keysym == 'Return': ch = '\n' # This fixes the MacOS return bug.
         w = event and event.widget
         name = c.widget_name(w)
-        # g.trace(name)
         oldSel =  name.startswith('body') and g.app.gui.getTextSelection(w)
         oldText = name.startswith('body') and p.bodyString()
         undoType = 'Typing'
         trace = c.config.getBool('trace_masterCommand')
+        brackets = ('(',')','[',']','{','}')
         
-        if trace: g.trace(name,repr(ch))
+        if trace: g.trace(name,repr(ch),ch in brackets)
         
         if g.doHook("bodykey1",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType):
             return "break" # The hook claims to have handled the event.
@@ -2878,13 +2886,15 @@ class editCommandsClass (baseEditCommandsClass):
             #@nonl
             #@-node:ekr.20051026171121:<< handle newline >>
             #@nl
-        elif ch in ('(',')','[',']','{','}') and c.config.getBool('autocomplete-brackets'):
+        elif ch in brackets and self.autocompleteBrackets:
             self.updateAutomatchBracket(p,w,ch,oldSel)
         elif ch: # Null chars must not delete the selection.
             i,j = oldSel
             if i != j:                  w.delete(i,j)
             elif action == 'overwrite': w.delete(i,'%s+1c' % i)
-            w.insert(i,ch)                     
+            w.insert(i,ch)
+            if ch in brackets and self.flashMatchingBrackets: # New in 4.4.1.
+                self.flashMatchingBracketsHelper(w,i,ch)               
         else:
             return 'break' # New in 4.4a5: this method *always* returns 'break'
             
@@ -2903,9 +2913,54 @@ class editCommandsClass (baseEditCommandsClass):
         g.doHook("bodykey2",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType)
         return 'break'
     #@nonl
+    #@+node:ekr.20060627083506:flashMatchingBracketsHelper
+    def flashMatchingBracketsHelper (self,w,index,ch):
+    
+        s = g.app.gui.getAllText(w)
+        i = g.app.gui.toPythonIndex(s,w,index)
+        # g.trace(index,i,ch)
+    
+        if ch in ('(','{','['):
+            d = {'(': ')', '{': '}', '[': ']'}
+            reverse = False # Search forward
+        else:
+            d = {')': '(', '}': '{', ']': '['}
+            reverse = True # Search backward
+    
+        delim2 = d.get(ch)
+        j = g.skip_matching_python_delims(s,i,ch,delim2,reverse=reverse)
+        if j != -1:
+            j = g.app.gui.toGuiIndex(s,w,j)
+            self.flashCharacter(w,j)
+    #@nonl
+    #@-node:ekr.20060627083506:flashMatchingBracketsHelper
+    #@+node:ekr.20060627091557:flashCharacter
+    def flashCharacter(self,w,i):
+        
+        bg      = self.bracketsFlashBg or 'DodgerBlue1'
+        fg      = self.bracketsFlashFg or 'white'
+        flashes = self.bracketsFlashCount or 2
+        delay   = self.bracketsFlashDelay or 75
+    
+        def addFlashCallback(w,count,index):
+            w.tag_add('flash',index,'%s+1c' % (index))
+            w.after(delay,removeFlashCallback,w,count-1,index)
+        
+        def removeFlashCallback(w,count,index):
+            w.tag_remove('flash','1.0','end')
+            if count > 0:
+                w.after(delay,addFlashCallback,w,count,index)
+    
+        try:
+            w.tag_configure('flash',foreground=fg,background=bg)
+            addFlashCallback(w,flashes,i)
+        except Exception:
+            pass
+    #@nonl
+    #@-node:ekr.20060627091557:flashCharacter
     #@+node:ekr.20051027172949:updateAutomatchBracket
     def updateAutomatchBracket (self,p,w,ch,oldSel):
-        
+    
         # assert ch in ('(',')','[',']','{','}')
         
         c = self.c ; d = g.scanDirectives(c,p) ; i,j = oldSel
@@ -2943,17 +2998,17 @@ class editCommandsClass (baseEditCommandsClass):
             # For Python: increase auto-indent after colons.
             if c.frame.body.colorizer.scanColorDirectives(p) == "python":
                 width += abs(tab_width)
-        if c.config.getBool("smart_auto_indent"):
+        if self.smartAutoIndent:
             # Determine if prev line has unclosed parens/brackets/braces
-            brackets = [width] ; tabex = 0
+            bracketWidths = [width] ; tabex = 0
             for i in range(0,len(s)):
                 if s [i] == '\t':
                     tabex += tab_width-1
                 if s [i] in '([{':
-                    brackets.append(i+tabex+1)
-                elif s [i] in '}])' and len(brackets) > 1:
-                    brackets.pop()
-            width = brackets.pop()
+                    bracketWidths.append(i+tabex+1)
+                elif s [i] in '}])' and len(bracketWidths) > 1:
+                    bracketWidths.pop()
+            width = bracketWidths.pop()
         ws = g.computeLeadingWhitespace(width,tab_width)
         if ws:
             w.insert("insert",ws)
@@ -2980,7 +3035,7 @@ class editCommandsClass (baseEditCommandsClass):
             w.insert("insert",' ' * n)
     #@nonl
     #@-node:ekr.20051026092433:updateTab
-    #@-node:ekr.20051125080855:selfInsertCommand
+    #@-node:ekr.20051125080855:selfInsertCommand & helpers
     #@-node:ekr.20050920084036.85:insert & delete...
     #@+node:ekr.20050920084036.79:info...
     #@+node:ekr.20050920084036.80:howMany

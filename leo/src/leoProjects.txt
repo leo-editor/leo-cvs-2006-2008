@@ -1916,19 +1916,43 @@ def __init__(self, parent, id=-1, title="", pos=wx.DefaultPosition,
 The import code wasn't skipping the entire signature, so the indentation wasn't computed properly.
 #@nonl
 #@-node:ekr.20060627063640:Handle long signature lines
-#@+node:ekr.20031218072017.3189:skip_matching_delims BAD NAME
-def skip_matching_delims(s,i,delim1,delim2):
+#@+node:ekr.20031218072017.3189:skip_matching_python_delims
+def skip_matching_python_delims(s,i,delim1,delim2,reverse=False):
     
+    '''Skip from the opening delim to the matching delim2.
+    
+    Return the index of the matching ')', or -1'''
+    
+    level = 0 ; n = len(s)
     assert(g.match(s,i,delim1))
-
-    i += len(delim1)
-    k = string.find(s,delim2,i)
-    if k == -1:
-        return len(s)
+    if reverse:
+         while i >= 0:
+            ch = s[i]
+            if ch == delim1:
+                level += 1 ; i -= 1
+            elif ch == delim2:
+                level -= 1
+                if level <= 0:  return i
+                i -= 1
+            # Doesn't handle strings and comments properly...
+            else: i -= 1
     else:
-        return k + len(delim2)
+        while i < n:
+            progress = i
+            ch = s[i]
+            if ch == delim1:
+                level += 1 ; i += 1
+            elif ch == delim2:
+                level -= 1
+                if level <= 0:  return i
+                i += 1
+            elif ch == '\'' or ch == '"': i = g.skip_string(s,i)
+            elif g.match(s,i,'#'):  i = g.skip_to_end_of_line(s,i)
+            else: i += 1
+            if i == progress: return -1
+    return -1
 #@nonl
-#@-node:ekr.20031218072017.3189:skip_matching_delims BAD NAME
+#@-node:ekr.20031218072017.3189:skip_matching_python_delims
 #@+node:ekr.20031218072017.2256:Python scanners & tests
 #@+node:ekr.20031218072017.2257:scanPythonClass & helpers
 def scanPythonClass (self,s,i,start,parent):
@@ -2741,6 +2765,296 @@ def reportDirectories(verbose):
 #@-node:ekr.20041130093254:reportDirectories
 #@-node:ekr.20031218072017.1934:run & allies
 #@-node:ekr.20060625072145.1:Read leoSettings.leo from the directory containing the .leo file
+#@+node:ekr.20060627075911:Flash matching parens & corresponding settings
+@nocolor
+
+Here are the relevant settings:
+    
+@bool flash_matching_brackets: True: flash matching bracket when typing (, ), [, ], { or }.
+
+\@color flash_brackets_background_color and @color flash_brackets_foreground_color.
+
+@int flash_brackets_count: The number of times to flash matching brackets.
+
+@int flash-brackets-delay: One half the total cycle time of bracket flashes, in milliseconds.
+
+@color
+#@nonl
+#@+node:ekr.20050920084036.54: ctor (editCommandsClass)
+def __init__ (self,c):
+
+    baseEditCommandsClass.__init__(self,c) # init the base class.
+    
+    self.ccolumn = '0'   # For comment column functions.
+    self.dynaregex = re.compile(r'[%s%s\-_]+'%(string.ascii_letters,string.digits))
+        # For dynamic abbreviations
+    self.extendMode = False # True: all cursor move commands extend the selection.
+    self.fillPrefix = '' # For fill prefix functions.
+    self.fillColumn = 70 # For line centering.
+    self.moveSpotNode = None # A tnode.
+    self.moveSpot = None # For retaining preferred column when moving up or down.
+    self.moveCol = None # For retaining preferred column when moving up or down.
+    self.store ={'rlist':[], 'stext':''} # For dynamic expansion.
+    self.swapSpots = []
+    self._useRegex = False # For replace-string
+    self.widget = None # For use by state handlers.
+    
+    # Settings...
+    self.autocompleteBrackets   = c.config.getBool('autocomplete-brackets')
+    self.bracketsFlashBg        = c.config.getColor('flash-brackets-background-color')
+    self.bracketsFlashCount     = c.config.getInt('flash-brackets-count')
+    self.bracketsFlashDelay     = c.config.getInt('flash-brackets-delay')
+    self.bracketsFlashFg        = c.config.getColor('flash-brackets-foreground-color')
+    self.flashMatchingBrackets  = c.config.getBool('flash-matching-brackets')
+    self.smartAutoIndent        = c.config.getBool('smart_auto_indent')
+#@nonl
+#@-node:ekr.20050920084036.54: ctor (editCommandsClass)
+#@+node:ekr.20060627080947:skip_matching_python_parens
+def skip_matching_python_parens(s,i):
+
+    '''Skip from the opening ( to the matching ).
+    
+    Return the index of the matching ')', or -1'''
+    
+    return skip_matching_python_delims(s,i,'(',')')
+#@nonl
+#@-node:ekr.20060627080947:skip_matching_python_parens
+#@+node:ekr.20031218072017.3189:skip_matching_python_delims
+def skip_matching_python_delims(s,i,delim1,delim2,reverse=False):
+    
+    '''Skip from the opening delim to the matching delim2.
+    
+    Return the index of the matching ')', or -1'''
+    
+    level = 0 ; n = len(s)
+    assert(g.match(s,i,delim1))
+    if reverse:
+         while i >= 0:
+            ch = s[i]
+            if ch == delim1:
+                level += 1 ; i -= 1
+            elif ch == delim2:
+                level -= 1
+                if level <= 0:  return i
+                i -= 1
+            # Doesn't handle strings and comments properly...
+            else: i -= 1
+    else:
+        while i < n:
+            progress = i
+            ch = s[i]
+            if ch == delim1:
+                level += 1 ; i += 1
+            elif ch == delim2:
+                level -= 1
+                if level <= 0:  return i
+                i += 1
+            elif ch == '\'' or ch == '"': i = g.skip_string(s,i)
+            elif g.match(s,i,'#'):  i = g.skip_to_end_of_line(s,i)
+            else: i += 1
+            if i == progress: return -1
+    return -1
+#@nonl
+#@-node:ekr.20031218072017.3189:skip_matching_python_delims
+#@+node:ekr.20051125080855:selfInsertCommand & helpers
+def selfInsertCommand(self,event,action='insert'):
+    
+    '''Insert a character in the body pane.
+    This is the default binding for all keys in the body pane.'''
+    
+    c = self.c ; p = c.currentPosition()
+    ch = event and event.char or ''
+    if event and event.keysym == 'Return': ch = '\n' # This fixes the MacOS return bug.
+    w = event and event.widget
+    name = c.widget_name(w)
+    oldSel =  name.startswith('body') and g.app.gui.getTextSelection(w)
+    oldText = name.startswith('body') and p.bodyString()
+    undoType = 'Typing'
+    trace = c.config.getBool('trace_masterCommand')
+    brackets = ('(',')','[',']','{','}')
+    
+    if trace: g.trace(name,repr(ch),ch in brackets)
+    
+    if g.doHook("bodykey1",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType):
+        return "break" # The hook claims to have handled the event.
+        
+    if ch == '\t':
+        self.updateTab(p,w)
+    elif ch == '\b':
+        # This is correct: we only come here if there no bindngs for this key. 
+        self.backwardDeleteCharacter(event)
+    elif ch in ('\r','\n'):
+        ch = '\n'
+        << handle newline >>
+    elif ch in brackets and self.autocompleteBrackets:
+        self.updateAutomatchBracket(p,w,ch,oldSel)
+    elif ch: # Null chars must not delete the selection.
+        i,j = oldSel
+        if i != j:                  w.delete(i,j)
+        elif action == 'overwrite': w.delete(i,'%s+1c' % i)
+        w.insert(i,ch)
+        if ch in brackets and self.flashMatchingBrackets: # New in 4.4.1.
+            self.flashMatchingBracketsHelper(w,i,ch)               
+    else:
+        return 'break' # New in 4.4a5: this method *always* returns 'break'
+        
+    # New in 4.4.1: Set the column for up and down keys.
+    spot = w.index('insert')
+    c.editCommands.setMoveCol(spot)
+
+    # Update the text and handle undo.
+    newText = g.app.gui.getAllText(w) # New in 4.4b3: converts to unicode.
+    # g.trace(repr(newText))
+    w.see(w.index('insert'))
+    if newText != oldText:
+        c.frame.body.onBodyChanged(undoType=undoType,
+            oldSel=oldSel,oldText=oldText,oldYview=None)
+            
+    g.doHook("bodykey2",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType)
+    return 'break'
+#@nonl
+#@+node:ekr.20051026171121:<< handle newline >>
+i,j = oldSel
+
+if i != j:
+    # No auto-indent if there is selected text.
+    w.delete(i,j)
+    w.insert(i,ch)
+else:
+    w.insert(i,ch)
+    allow_in_nocolor = c.config.getBool('autoindent_in_nocolor_mode')
+    if (
+        (allow_in_nocolor or c.frame.body.colorizer.useSyntaxColoring(p)) and
+        undoType != "Change"
+    ):
+        # No auto-indent if in @nocolor mode or after a Change command.
+        self.updateAutoIndent(p,w)
+#@nonl
+#@-node:ekr.20051026171121:<< handle newline >>
+#@+node:ekr.20060627083506:flashMatchingBracketsHelper
+def flashMatchingBracketsHelper (self,w,index,ch):
+
+    s = g.app.gui.getAllText(w)
+    i = g.app.gui.toPythonIndex(s,w,index)
+    # g.trace(index,i,ch)
+
+    if ch in ('(','{','['):
+        d = {'(': ')', '{': '}', '[': ']'}
+        reverse = False # Search forward
+    else:
+        d = {')': '(', '}': '{', ']': '['}
+        reverse = True # Search backward
+
+    delim2 = d.get(ch)
+    j = g.skip_matching_python_delims(s,i,ch,delim2,reverse=reverse)
+    if j != -1:
+        j = g.app.gui.toGuiIndex(s,w,j)
+        self.flashCharacter(w,j)
+#@nonl
+#@-node:ekr.20060627083506:flashMatchingBracketsHelper
+#@+node:ekr.20060627091557:flashCharacter
+def flashCharacter(self,w,i):
+    
+    bg      = self.bracketsFlashBg or 'DodgerBlue1'
+    fg      = self.bracketsFlashFg or 'white'
+    flashes = self.bracketsFlashCount or 2
+    delay   = self.bracketsFlashDelay or 75
+
+    def addFlashCallback(w,count,index):
+        w.tag_add('flash',index,'%s+1c' % (index))
+        w.after(delay,removeFlashCallback,w,count-1,index)
+    
+    def removeFlashCallback(w,count,index):
+        w.tag_remove('flash','1.0','end')
+        if count > 0:
+            w.after(delay,addFlashCallback,w,count,index)
+
+    try:
+        w.tag_configure('flash',foreground=fg,background=bg)
+        addFlashCallback(w,flashes,i)
+    except Exception:
+        pass
+#@nonl
+#@-node:ekr.20060627091557:flashCharacter
+#@+node:ekr.20051027172949:updateAutomatchBracket
+def updateAutomatchBracket (self,p,w,ch,oldSel):
+
+    # assert ch in ('(',')','[',']','{','}')
+    
+    c = self.c ; d = g.scanDirectives(c,p) ; i,j = oldSel
+    language = d.get('language')
+    
+    if ch in ('(','[','{',):
+        automatch = language not in ('plain',)
+        if automatch:
+            ch = ch + {'(':')','[':']','{':'}'}.get(ch)
+        if i != j:
+            w.delete(i,j)
+        w.insert(i,ch)
+        if automatch:
+            w.mark_set('insert','insert-1c')
+    else:
+        ch2 = w.get('insert')
+        if ch2 in (')',']','}'):
+            w.mark_set('insert','insert+1c')
+        else:
+            if i != j:
+                w.delete(i,j)
+            w.insert(i,ch)
+#@nonl
+#@-node:ekr.20051027172949:updateAutomatchBracket
+#@+node:ekr.20051026171121.1:udpateAutoIndent
+# By David McNab:
+def updateAutoIndent (self,p,w):
+
+    c = self.c ; d = g.scanDirectives(c,p)
+    tab_width = d.get("tabwidth",c.tab_width) # Get the previous line.
+    s = w.get("insert linestart - 1 lines","insert linestart -1c")
+    # Add the leading whitespace to the present line.
+    junk, width = g.skip_leading_ws_with_indent(s,0,tab_width)
+    if s and len(s) > 0 and s [ -1] == ':':
+        # For Python: increase auto-indent after colons.
+        if c.frame.body.colorizer.scanColorDirectives(p) == "python":
+            width += abs(tab_width)
+    if self.smartAutoIndent:
+        # Determine if prev line has unclosed parens/brackets/braces
+        bracketWidths = [width] ; tabex = 0
+        for i in range(0,len(s)):
+            if s [i] == '\t':
+                tabex += tab_width-1
+            if s [i] in '([{':
+                bracketWidths.append(i+tabex+1)
+            elif s [i] in '}])' and len(bracketWidths) > 1:
+                bracketWidths.pop()
+        width = bracketWidths.pop()
+    ws = g.computeLeadingWhitespace(width,tab_width)
+    if ws:
+        w.insert("insert",ws)
+#@nonl
+#@-node:ekr.20051026171121.1:udpateAutoIndent
+#@+node:ekr.20051026092433:updateTab
+def updateTab (self,p,w):
+
+    c = self.c ; d = g.scanDirectives(c,p)
+    tab_width = d.get("tabwidth",c.tab_width)
+    
+    i,j = g.app.gui.getTextSelection(w)
+    if i != j:
+        w.delete(i,j)
+    if tab_width > 0:
+        w.insert("insert",'\t')
+    else:
+        # Get the preceeding characters.
+        s = w.get("insert linestart","insert")
+    
+        # Compute n, the number of spaces to insert.
+        width = g.computeWidth(s,tab_width)
+        n = abs(tab_width) - (width % abs(tab_width))
+        w.insert("insert",' ' * n)
+#@nonl
+#@-node:ekr.20051026092433:updateTab
+#@-node:ekr.20051125080855:selfInsertCommand & helpers
+#@-node:ekr.20060627075911:Flash matching parens & corresponding settings
 #@-node:ekr.20060624072803.2:New features
 #@+node:ekr.20060624072803.3:New settings
 #@+node:ekr.20060624072803.4:Added @bool warn_about_redefined_shortcuts setting
@@ -2749,6 +3063,18 @@ def reportDirectories(verbose):
 When True, this provides a full traceback for all exceptions taken when binding keyboard shortcuts.
 #@nonl
 #@-node:ekr.20060627070101:Added @bool trace_bind_key_exceptions setting
+#@+node:ekr.20060627122419:Added bracket flash settings
+@killcolor
+
+@bool flash_matching_brackets: True: flash matching bracket when typing (, ), [, ], { or }.
+
+@color flash_brackets_background_color and @color flash_brackets_foreground_color.
+
+@int flash_brackets_count: The number of times to flash matching brackets.
+
+@int flash-brackets-delay: One half the total cycle time of bracket flashes, in milliseconds.
+#@nonl
+#@-node:ekr.20060627122419:Added bracket flash settings
 #@-node:ekr.20060624072803.3:New settings
 #@-node:ekr.20060624072803:4.4.1 b3 projects
 #@-node:ekr.20050924073836:4.4 projects
