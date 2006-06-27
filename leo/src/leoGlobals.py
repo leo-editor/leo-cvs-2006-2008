@@ -3589,40 +3589,51 @@ def skip_long(s,i):
     except:
         return i,None
 #@-node:ekr.20031218072017.3188:skip_long
-#@+node:ekr.20031218072017.3189:skip_matching_delims BAD NAME
-def skip_matching_delims(s,i,delim1,delim2):
+#@+node:ekr.20031218072017.3189:skip_matching_python_delims
+def skip_matching_python_delims(s,i,delim1,delim2,reverse=False):
     
+    '''Skip from the opening delim to the matching delim2.
+    
+    Return the index of the matching ')', or -1'''
+    
+    level = 0 ; n = len(s)
     assert(g.match(s,i,delim1))
-
-    i += len(delim1)
-    k = string.find(s,delim2,i)
-    if k == -1:
-        return len(s)
+    if reverse:
+         while i >= 0:
+            ch = s[i]
+            if ch == delim1:
+                level += 1 ; i -= 1
+            elif ch == delim2:
+                level -= 1
+                if level <= 0:  return i
+                i -= 1
+            # Doesn't handle strings and comments properly...
+            else: i -= 1
     else:
-        return k + len(delim2)
+        while i < n:
+            progress = i
+            ch = s[i]
+            if ch == delim1:
+                level += 1 ; i += 1
+            elif ch == delim2:
+                level -= 1
+                if level <= 0:  return i
+                i += 1
+            elif ch == '\'' or ch == '"': i = g.skip_string(s,i)
+            elif g.match(s,i,'#'):  i = g.skip_to_end_of_line(s,i)
+            else: i += 1
+            if i == progress: return -1
+    return -1
 #@nonl
-#@-node:ekr.20031218072017.3189:skip_matching_delims BAD NAME
+#@-node:ekr.20031218072017.3189:skip_matching_python_delims
 #@+node:ekr.20060627080947:skip_matching_python_parens
 def skip_matching_python_parens(s,i):
 
-    """Skip from the opening ( to the matching ).
+    '''Skip from the opening ( to the matching ).
     
-    Return the index of the matching ')', or -1"""
-
-    level = 0 ; n = len(s)
-    assert(g.match(s,i,'('))
-    while i < n:
-        ch = s[i]
-        if ch == '(':
-            level += 1 ; i += 1
-        elif ch == ')':
-            level -= 1
-            if level <= 0:  return i
-            i += 1
-        elif ch == '\'' or ch == '"': i = g.skip_string(s,i)
-        elif g.match(s,i,'#'):  i = g.skip_to_end_of_line(s,i)
-        else: i += 1
-    return -1
+    Return the index of the matching ')', or -1'''
+    
+    return skip_matching_python_delims(s,i,'(',')')
 #@nonl
 #@-node:ekr.20060627080947:skip_matching_python_parens
 #@+node:ekr.20031218072017.3190:skip_nl
