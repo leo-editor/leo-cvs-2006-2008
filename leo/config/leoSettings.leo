@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="291" clone_windows="0"/>
 <globals body_outline_ratio="0.549828178694">
-	<global_window_position top="75" left="241" height="615" width="945"/>
+	<global_window_position top="75" left="241" height="577" width="945"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -44,7 +44,7 @@
 <v t="ekr.20060112104823"><vh>main</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" a="TV" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
@@ -422,6 +422,11 @@
 <v t="ekr.20041119034357.39"><vh>@bool body_pane_wraps = True</vh></v>
 <v t="ekr.20060216135834"><vh>@bool enable_autocompleter_initially = False</vh></v>
 <v t="ekr.20060603070801"><vh>@bool enable_calltips_initially = False</vh></v>
+<v t="ekr.20060627084739"><vh>@bool flash_matching_brackets = True</vh></v>
+<v t="ekr.20060627121646"><vh>@color flash_brackets_background_color = DodgerBlue1</vh></v>
+<v t="ekr.20060627121646.1"><vh>@color flash_brackets_foreground_color = white</vh></v>
+<v t="ekr.20060627121646.2"><vh>@int flash_brackets_count = 2</vh></v>
+<v t="ekr.20060627121646.3"><vh>@int flash-brackets-delay = 75</vh></v>
 <v t="ekr.20041119034357.44"><vh>@bool smart_auto_indent = False</vh></v>
 <v t="ekr.20041119034357.53"><vh>@int additional_body_text_border = 0</vh></v>
 <v t="ekr.20041119034357.42"><vh>@string body_time_format_string = %m/%d/%Y %H:%M:%S</vh></v>
@@ -456,10 +461,11 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060512084639" a="E"><vh>Recent</vh>
+<v t="ekr.20060512084639"><vh>Recent</vh>
 <v t="ekr.20060216135834"><vh>@bool enable_autocompleter_initially = False</vh></v>
 <v t="ekr.20060603070801"><vh>@bool enable_calltips_initially = False</vh></v>
-<v t="ekr.20060627065953" a="TV"><vh>@bool trace_bind_key_exceptions = True</vh></v>
+<v t="ekr.20060627084739"><vh>@bool flash_matching_brackets = True</vh></v>
+<v t="ekr.20060627065953"><vh>@bool trace_bind_key_exceptions = True</vh></v>
 <v t="ekr.20060114073238"><vh>@bool trace_bindings = False</vh></v>
 <v t="ekr.20060616172614"><vh>@bool trace_bindings_verbose = False</vh></v>
 <v t="ekr.20060309022759"><vh>@bool trace_colorizer = False</vh></v>
@@ -5478,5 +5484,10 @@ enter-quick-command-mode            = Alt-C
 horizontal: pack body-pane editors horizontally.</t>
 <t tx="ekr.20060624072653"></t>
 <t tx="ekr.20060627065953"></t>
+<t tx="ekr.20060627084739">True: flash matching bracket when typing (, ), [, ], { or }.</t>
+<t tx="ekr.20060627121646"></t>
+<t tx="ekr.20060627121646.1"></t>
+<t tx="ekr.20060627121646.2">The number of times to flash matching brackets.</t>
+<t tx="ekr.20060627121646.3">One half the total cycle time of bracket flashes, in milliseconds.</t>
 </tnodes>
 </leo_file>
