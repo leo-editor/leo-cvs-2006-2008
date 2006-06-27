@@ -2,8 +2,6 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20060531161030:To do: B3 or B4
-#@+node:ekr.20060627075911:Flash matching parens
-#@-node:ekr.20060627075911:Flash matching parens
 #@+node:ekr.20060624082933:Fix  bugs
 #@+node:ekr.20060530110450:Test major Emacs commands
 @nocolor
