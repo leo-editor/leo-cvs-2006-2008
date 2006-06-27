@@ -1027,6 +1027,7 @@ def __init__ (self,c,useGlobalKillbuffer=False,useGlobalRegisters=False):
     self.ignore_caps_lock               = c.config.getBool('ignore_caps_lock')
     self.ignore_unbound_non_ascii_keys  = c.config.getBool('ignore_unbound_non_ascii_keys')
     self.swap_mac_keys                  = c.config.getBool('swap_mac_keys')
+    self.trace_bind_key_exceptions      = c.config.getBool('trace_bind_key_exceptions')
     self.trace_key_event                = c.config.getBool('trace_key_event')
     self.trace_minibuffer               = c.config.getBool('trace_minibuffer')
     self.warn_about_redefined_shortcuts = c.config.getBool('warn_about_redefined_shortcuts')
@@ -1915,6 +1916,19 @@ def __init__(self, parent, id=-1, title="", pos=wx.DefaultPosition,
 The import code wasn't skipping the entire signature, so the indentation wasn't computed properly.
 #@nonl
 #@-node:ekr.20060627063640:Handle long signature lines
+#@+node:ekr.20031218072017.3189:skip_matching_delims BAD NAME
+def skip_matching_delims(s,i,delim1,delim2):
+    
+    assert(g.match(s,i,delim1))
+
+    i += len(delim1)
+    k = string.find(s,delim2,i)
+    if k == -1:
+        return len(s)
+    else:
+        return k + len(delim2)
+#@nonl
+#@-node:ekr.20031218072017.3189:skip_matching_delims BAD NAME
 #@+node:ekr.20031218072017.2256:Python scanners & tests
 #@+node:ekr.20031218072017.2257:scanPythonClass & helpers
 def scanPythonClass (self,s,i,start,parent):
@@ -2226,22 +2240,16 @@ def skipPythonDef (self,s,i,start):
 #@nonl
 #@+node:ekr.20060627062652:<< skip the entire signature >>
 # Now that we count parens, we must be careful to skip the entire signature.
-if 1:
-    j = s.find('(',i)
-    if j == -1:
-        bad = True
-    else:
-        j = g.skip_matching_delims(s,j,'(',')')
-        if g.match(s,j,':'):
-            i = g.skip_line(s,j)
-            bad = False
-        else:
-            bad = True
-    if bad:
-        g.es_print('Warning: improper signature: %s' % g.get_line(s,i))
-        return i
+
+j = s.find('(',i)
+if j != -1:
+    j = g.skip_matching_python_parens(s,j)
+
+if j == -1 or not g.match(s,j+1,':'):
+    g.es_print('Warning: improper signature: %s' % g.get_line(s,i))
+    return i
 else:
-    i = g.skip_line(s,i) # Skip the def line.
+    i = g.skip_line(s,j) # Still not quite 100% correct.
 #@nonl
 #@-node:ekr.20060627062652:<< skip the entire signature >>
 #@-node:ekr.20060626083237.1:skipPythonDef
@@ -2737,6 +2745,10 @@ def reportDirectories(verbose):
 #@+node:ekr.20060624072803.3:New settings
 #@+node:ekr.20060624072803.4:Added @bool warn_about_redefined_shortcuts setting
 #@-node:ekr.20060624072803.4:Added @bool warn_about_redefined_shortcuts setting
+#@+node:ekr.20060627070101:Added @bool trace_bind_key_exceptions setting
+When True, this provides a full traceback for all exceptions taken when binding keyboard shortcuts.
+#@nonl
+#@-node:ekr.20060627070101:Added @bool trace_bind_key_exceptions setting
 #@-node:ekr.20060624072803.3:New settings
 #@-node:ekr.20060624072803:4.4.1 b3 projects
 #@-node:ekr.20050924073836:4.4 projects
