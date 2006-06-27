@@ -1240,22 +1240,16 @@ class baseLeoImportCommands:
         #@    << skip the entire signature >>
         #@+node:ekr.20060627062652:<< skip the entire signature >>
         # Now that we count parens, we must be careful to skip the entire signature.
-        if 1:
-            j = s.find('(',i)
-            if j == -1:
-                bad = True
-            else:
-                j = g.skip_matching_delims(s,j,'(',')')
-                if g.match(s,j,':'):
-                    i = g.skip_line(s,j)
-                    bad = False
-                else:
-                    bad = True
-            if bad:
-                g.es_print('Warning: improper signature: %s' % g.get_line(s,i))
-                return i
+        
+        j = s.find('(',i)
+        if j != -1:
+            j = g.skip_matching_python_parens(s,j)
+        
+        if j == -1 or not g.match(s,j+1,':'):
+            g.es_print('Warning: improper signature: %s' % g.get_line(s,i))
+            return i
         else:
-            i = g.skip_line(s,i) # Skip the def line.
+            i = g.skip_line(s,j) # Still not quite 100% correct.
         #@nonl
         #@-node:ekr.20060627062652:<< skip the entire signature >>
         #@nl
