@@ -1816,7 +1816,6 @@ class keyHandlerClass:
         self.mb_prompt = ''
         
         self.func = None
-        self.keysymHistory = []
         self.previous = []
         self.stroke = None
         
@@ -2247,6 +2246,7 @@ class keyHandlerClass:
         special = keysym in (
             'Caps_Lock','Num_Lock','Control_L','Alt_L','Shift_L','Control_R','Alt_R','Shift_R')
         interesting = func is not None
+        inserted = not special
     
         if trace and interesting:
             g.trace(
@@ -2254,27 +2254,14 @@ class keyHandlerClass:
                 'w:',w and c.widget_name(w),'func:',func and func.__name__
             )
     
-        # if interesting: g.trace(stroke,commandName,k.getStateKind())
-    
-        inserted = not special or (
-            stroke != '<Key>' and (len(k.keysymHistory)==0 or k.keysymHistory[0]!=keysym))
-    
         if inserted:
             # g.trace(stroke,keysym)
             #@        << add character to history >>
             #@+node:ekr.20050920085536.67:<< add character to history >>
-            # Don't add multiple special characters to history.
-            k.keysymHistory.insert(0,keysym)
-            
-            if len(ch) > 0:
+            if stroke or len(ch) > 0:
                 if len(keyHandlerClass.lossage) > 99:
                     keyHandlerClass.lossage.pop()
-                keyHandlerClass.lossage.insert(0,ch)
-            
-            if 0: # traces
-                g.trace(keysym,stroke)
-                g.trace(k.keysymHistory)
-                g.trace(keyHandlerClass.lossage)
+                keyHandlerClass.lossage.insert(0,(ch,stroke),)
             #@nonl
             #@-node:ekr.20050920085536.67:<< add character to history >>
             #@nl

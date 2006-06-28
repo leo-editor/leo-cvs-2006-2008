@@ -1102,7 +1102,6 @@ self.mb_tabListIndex = -1
 self.mb_prompt = ''
 
 self.func = None
-self.keysymHistory = []
 self.previous = []
 self.stroke = None
 
@@ -1385,17 +1384,13 @@ def masterCommand (self,event,func,stroke,commandName=None):
     special = keysym in (
         'Caps_Lock','Num_Lock','Control_L','Alt_L','Shift_L','Control_R','Alt_R','Shift_R')
     interesting = func is not None
+    inserted = not special
 
     if trace and interesting:
         g.trace(
             # 'stroke: ',stroke,'state:','%x' % state,'ch:',repr(ch),'keysym:',repr(keysym),
             'w:',w and c.widget_name(w),'func:',func and func.__name__
         )
-
-    # if interesting: g.trace(stroke,commandName,k.getStateKind())
-
-    inserted = not special or (
-        stroke != '<Key>' and (len(k.keysymHistory)==0 or k.keysymHistory[0]!=keysym))
 
     if inserted:
         # g.trace(stroke,keysym)
@@ -1456,18 +1451,10 @@ def masterCommand (self,event,func,stroke,commandName=None):
         return val
 #@nonl
 #@+node:ekr.20050920085536.67:<< add character to history >>
-# Don't add multiple special characters to history.
-k.keysymHistory.insert(0,keysym)
-
-if len(ch) > 0:
+if stroke or len(ch) > 0:
     if len(keyHandlerClass.lossage) > 99:
         keyHandlerClass.lossage.pop()
-    keyHandlerClass.lossage.insert(0,ch)
-
-if 0: # traces
-    g.trace(keysym,stroke)
-    g.trace(k.keysymHistory)
-    g.trace(keyHandlerClass.lossage)
+    keyHandlerClass.lossage.insert(0,(ch,stroke),)
 #@nonl
 #@-node:ekr.20050920085536.67:<< add character to history >>
 #@+node:ekr.20050923172809.1:callStateFunction
@@ -2636,6 +2623,376 @@ def updateTab (self,p,w):
 #@-node:ekr.20051026092433:updateTab
 #@-node:ekr.20051125080855:selfInsertCommand & helpers
 #@-node:ekr.20060120084705:Overwrite mode now works in headllines
+#@+node:ekr.20060627141422:Fixed crasher in masterCommand
+@nocolor
+
+After executing a command we must be careful to test c.exists.
+
+@color
+#@nonl
+#@+node:ekr.20050920085536.65:masterCommand & helpers
+def masterCommand (self,event,func,stroke,commandName=None):
+
+    '''This is the central dispatching method.
+    All commands and keystrokes pass through here.'''
+
+    k = self ; c = k.c
+    c.setLog()
+    trace = c.config.getBool('trace_masterCommand')
+  
+    c.startRedrawCount = c.frame.tree.redrawCount
+    k.stroke = stroke # Set this global for general use.
+    keysym = event and event.keysym or ''
+    ch = event and event.char or ''
+    w = event and event.widget
+    state = event and hasattr(event,'state') and event.state or 0
+    k.func = func
+    k.funcReturn = None # For unit testing.
+    commandName = commandName or func and func.__name__ or '<no function>'
+    special = keysym in (
+        'Caps_Lock','Num_Lock','Control_L','Alt_L','Shift_L','Control_R','Alt_R','Shift_R')
+    interesting = func is not None
+    inserted = not special
+
+    if trace and interesting:
+        g.trace(
+            # 'stroke: ',stroke,'state:','%x' % state,'ch:',repr(ch),'keysym:',repr(keysym),
+            'w:',w and c.widget_name(w),'func:',func and func.__name__
+        )
+
+    if inserted:
+        # g.trace(stroke,keysym)
+        << add character to history >>
+        
+    # We *must not* interfere with the global state in the macro class.
+    if c.macroCommands.recordingMacro:
+        done = c.macroCommands.startKbdMacro(event)
+        if done: return 'break'
+        
+    # g.trace(stroke,k.abortAllModesKey)
+
+    if k.abortAllModesKey and stroke == k.abortAllModesKey: # 'Control-g'
+        k.keyboardQuit(event)
+        k.endCommand(event,commandName)
+        return 'break'
+        
+    if special: # Don't pass these on.
+        return 'break' 
+
+    if 0: # *** This is now handled by k.masterKeyHandler.
+        if k.inState():
+            val = k.callStateFunction(event) # Calls end-command.
+            if val != 'do-func': return 'break'
+            g.trace('Executing key outside of mode')
+
+    if k.regx.iter:
+        try:
+            k.regXKey = keysym
+            k.regx.iter.next() # EKR: next() may throw StopIteration.
+        finally:
+            return 'break'
+
+    if k.abbrevOn:
+        expanded = c.abbrevCommands.expandAbbrev(event)
+        if expanded: return 'break'
+
+    if func: # Func is an argument.
+        if trace: g.trace('command',commandName)
+        if commandName.startswith('specialCallback'):
+            # The callback function will call c.doCommand
+            val = func(event)
+            # k.simulateCommand uses k.funcReturn.
+            k.funcReturn = k.funcReturn or val # For unit tests.
+        else:
+            # Call c.doCommand directly
+            c.doCommand(func,commandName,event=event)
+        if c.exists:
+            k.endCommand(event,commandName)
+            c.frame.updateStatusLine()
+        return 'break'
+    elif k.inState():
+        return 'break' #Ignore unbound keys in a state.
+    else:
+        val = k.handleDefaultChar(event)
+        if c.exists:
+            c.frame.updateStatusLine()
+        return val
+#@nonl
+#@+node:ekr.20050920085536.67:<< add character to history >>
+if stroke or len(ch) > 0:
+    if len(keyHandlerClass.lossage) > 99:
+        keyHandlerClass.lossage.pop()
+    keyHandlerClass.lossage.insert(0,(ch,stroke),)
+#@nonl
+#@-node:ekr.20050920085536.67:<< add character to history >>
+#@+node:ekr.20050923172809.1:callStateFunction
+def callStateFunction (self,event):
+    
+    k = self ; val = None
+    
+    # g.trace(k.state.kind)
+    
+    if k.state.kind:
+        if k.state.handler:
+            val = k.state.handler(event)
+            if val != 'continue':
+                k.endCommand(event,k.commandName)
+        else:
+            g.es_print('no state function for %s' % (k.state.kind),color='red')
+            
+    return val
+#@nonl
+#@-node:ekr.20050923172809.1:callStateFunction
+#@+node:ekr.20050923174229.3:callKeystrokeFunction (not used)
+def callKeystrokeFunction (self,event):
+    
+    '''Handle a quick keystroke function.
+    Return the function or None.'''
+    
+    k = self
+    numberOfArgs, func = k.keystrokeFunctionDict [k.stroke]
+
+    if func:
+        func(event)
+        commandName = k.inverseCommandsDict.get(func) # Get the emacs command name.
+        k.endCommand(event,commandName)
+    
+    return func
+#@nonl
+#@-node:ekr.20050923174229.3:callKeystrokeFunction (not used)
+#@+node:ekr.20051026083544:handleDefaultChar
+def handleDefaultChar(self,event):
+    
+    k = self ; c = k.c
+    w = event and event.widget
+    name = c.widget_name(w)
+
+    if name.startswith('body'):
+        action = k.unboundKeyAction
+        if action in ('insert','overwrite'):
+            c.editCommands.selfInsertCommand(event,action=action)
+        else: pass # Ignore the key.
+        return 'break'
+    elif name.startswith('head'):
+        c.frame.tree.onHeadlineKey(event)
+        return 'break'
+    else:
+        # Let tkinter handle the event.
+        # ch = event and event.char ; g.trace('to tk:',name,repr(ch))
+        return None
+#@nonl
+#@-node:ekr.20051026083544:handleDefaultChar
+#@-node:ekr.20050920085536.65:masterCommand & helpers
+#@-node:ekr.20060627141422:Fixed crasher in masterCommand
+#@+node:ekr.20060628094329.1:Improved view-lossage command
+@nocolor
+
+- A better trace, and the trace goes to the log pane.
+
+- Eliminated k.keysymHistory: Tk keysyms are pretty useless.
+
+@color
+#@nonl
+#@+node:ekr.20050920084036.83:viewLossage
+def viewLossage (self,event):
+    
+    '''Put the Emacs-lossage in the minibuffer label.'''
+
+    k = self.k
+    
+    g.es('Lossage...')
+    aList = leoKeys.keyHandlerClass.lossage
+    aList.reverse()
+    for data in aList:
+        ch,stroke = data
+        d = {' ':'Space','\t':'Tab','\b':'Backspace','\n':'Newline','\r':'Return'}
+        ch = d.get(ch) or ch
+        g.es(stroke or ch or 'None')
+#@nonl
+#@-node:ekr.20050920084036.83:viewLossage
+#@+node:ekr.20050920084036.63:watchEscape (Revise)
+def watchEscape (self,event):
+
+    k = self.k
+
+    if not k.inState():
+        k.setState('escape','start',handler=self.watchEscape)
+        k.setLabelBlue('Esc ')
+    elif k.getStateKind() == 'escape':
+        state = k.getState('escape')
+        # hi1 = k.keysymHistory [0]
+        # hi2 = k.keysymHistory [1]
+        data1 = keyHandlerClass.lossage[0]
+        data2 = keyHandlerClass.lossage[1]
+        ch1, stroke1 = data1
+        ch2, stroke2 = data2
+        
+        if state == 'esc esc' and event.keysym == 'colon':
+            self.evalExpression(event)
+        elif state == 'evaluate':
+            self.escEvaluate(event)
+        # elif hi1 == hi2 == 'Escape':
+        elif stroke1 == 'Escape' and stroke2 == 'Escape':
+            k.setState('escape','esc esc')
+            k.setLabel('Esc Esc -')
+        elif event.keysym not in ('Shift_L','Shift_R'):
+            k.keyboardQuit(event)
+#@nonl
+#@-node:ekr.20050920084036.63:watchEscape (Revise)
+#@+node:ekr.20050920085536.65:masterCommand & helpers
+def masterCommand (self,event,func,stroke,commandName=None):
+
+    '''This is the central dispatching method.
+    All commands and keystrokes pass through here.'''
+
+    k = self ; c = k.c
+    c.setLog()
+    trace = c.config.getBool('trace_masterCommand')
+  
+    c.startRedrawCount = c.frame.tree.redrawCount
+    k.stroke = stroke # Set this global for general use.
+    keysym = event and event.keysym or ''
+    ch = event and event.char or ''
+    w = event and event.widget
+    state = event and hasattr(event,'state') and event.state or 0
+    k.func = func
+    k.funcReturn = None # For unit testing.
+    commandName = commandName or func and func.__name__ or '<no function>'
+    special = keysym in (
+        'Caps_Lock','Num_Lock','Control_L','Alt_L','Shift_L','Control_R','Alt_R','Shift_R')
+    interesting = func is not None
+    inserted = not special
+
+    if trace and interesting:
+        g.trace(
+            # 'stroke: ',stroke,'state:','%x' % state,'ch:',repr(ch),'keysym:',repr(keysym),
+            'w:',w and c.widget_name(w),'func:',func and func.__name__
+        )
+
+    if inserted:
+        # g.trace(stroke,keysym)
+        << add character to history >>
+        
+    # We *must not* interfere with the global state in the macro class.
+    if c.macroCommands.recordingMacro:
+        done = c.macroCommands.startKbdMacro(event)
+        if done: return 'break'
+        
+    # g.trace(stroke,k.abortAllModesKey)
+
+    if k.abortAllModesKey and stroke == k.abortAllModesKey: # 'Control-g'
+        k.keyboardQuit(event)
+        k.endCommand(event,commandName)
+        return 'break'
+        
+    if special: # Don't pass these on.
+        return 'break' 
+
+    if 0: # *** This is now handled by k.masterKeyHandler.
+        if k.inState():
+            val = k.callStateFunction(event) # Calls end-command.
+            if val != 'do-func': return 'break'
+            g.trace('Executing key outside of mode')
+
+    if k.regx.iter:
+        try:
+            k.regXKey = keysym
+            k.regx.iter.next() # EKR: next() may throw StopIteration.
+        finally:
+            return 'break'
+
+    if k.abbrevOn:
+        expanded = c.abbrevCommands.expandAbbrev(event)
+        if expanded: return 'break'
+
+    if func: # Func is an argument.
+        if trace: g.trace('command',commandName)
+        if commandName.startswith('specialCallback'):
+            # The callback function will call c.doCommand
+            val = func(event)
+            # k.simulateCommand uses k.funcReturn.
+            k.funcReturn = k.funcReturn or val # For unit tests.
+        else:
+            # Call c.doCommand directly
+            c.doCommand(func,commandName,event=event)
+        if c.exists:
+            k.endCommand(event,commandName)
+            c.frame.updateStatusLine()
+        return 'break'
+    elif k.inState():
+        return 'break' #Ignore unbound keys in a state.
+    else:
+        val = k.handleDefaultChar(event)
+        if c.exists:
+            c.frame.updateStatusLine()
+        return val
+#@nonl
+#@+node:ekr.20050920085536.67:<< add character to history >>
+if stroke or len(ch) > 0:
+    if len(keyHandlerClass.lossage) > 99:
+        keyHandlerClass.lossage.pop()
+    keyHandlerClass.lossage.insert(0,(ch,stroke),)
+#@nonl
+#@-node:ekr.20050920085536.67:<< add character to history >>
+#@+node:ekr.20050923172809.1:callStateFunction
+def callStateFunction (self,event):
+    
+    k = self ; val = None
+    
+    # g.trace(k.state.kind)
+    
+    if k.state.kind:
+        if k.state.handler:
+            val = k.state.handler(event)
+            if val != 'continue':
+                k.endCommand(event,k.commandName)
+        else:
+            g.es_print('no state function for %s' % (k.state.kind),color='red')
+            
+    return val
+#@nonl
+#@-node:ekr.20050923172809.1:callStateFunction
+#@+node:ekr.20050923174229.3:callKeystrokeFunction (not used)
+def callKeystrokeFunction (self,event):
+    
+    '''Handle a quick keystroke function.
+    Return the function or None.'''
+    
+    k = self
+    numberOfArgs, func = k.keystrokeFunctionDict [k.stroke]
+
+    if func:
+        func(event)
+        commandName = k.inverseCommandsDict.get(func) # Get the emacs command name.
+        k.endCommand(event,commandName)
+    
+    return func
+#@nonl
+#@-node:ekr.20050923174229.3:callKeystrokeFunction (not used)
+#@+node:ekr.20051026083544:handleDefaultChar
+def handleDefaultChar(self,event):
+    
+    k = self ; c = k.c
+    w = event and event.widget
+    name = c.widget_name(w)
+
+    if name.startswith('body'):
+        action = k.unboundKeyAction
+        if action in ('insert','overwrite'):
+            c.editCommands.selfInsertCommand(event,action=action)
+        else: pass # Ignore the key.
+        return 'break'
+    elif name.startswith('head'):
+        c.frame.tree.onHeadlineKey(event)
+        return 'break'
+    else:
+        # Let tkinter handle the event.
+        # ch = event and event.char ; g.trace('to tk:',name,repr(ch))
+        return None
+#@nonl
+#@-node:ekr.20051026083544:handleDefaultChar
+#@-node:ekr.20050920085536.65:masterCommand & helpers
+#@-node:ekr.20060628094329.1:Improved view-lossage command
 #@-node:ekr.20060624072803.1:Bugs fixed
 #@+node:ekr.20060624072803.2:New features
 #@+node:ekr.20060623064600:Finished repeat-complex-command
@@ -3296,6 +3653,10 @@ def updateTab (self,p,w):
 #@-node:ekr.20060627075911:Flash matching parens & corresponding settings
 #@-node:ekr.20060624072803.2:New features
 #@+node:ekr.20060624072803.3:New settings
+#@+node:ekr.20060628094329:Added standard bindings for Ctrl-y (yank) and Ctrl-k (kill-line)
+# Ctrl-k is no longer needed by the match-brackets command now that brackets flash automatically.
+#@nonl
+#@-node:ekr.20060628094329:Added standard bindings for Ctrl-y (yank) and Ctrl-k (kill-line)
 #@+node:ekr.20060624072803.4:Added @bool warn_about_redefined_shortcuts setting
 #@-node:ekr.20060624072803.4:Added @bool warn_about_redefined_shortcuts setting
 #@+node:ekr.20060627070101:Added @bool trace_bind_key_exceptions setting

@@ -2144,13 +2144,19 @@ class editCommandsClass (baseEditCommandsClass):
             k.setLabelBlue('Esc ')
         elif k.getStateKind() == 'escape':
             state = k.getState('escape')
-            hi1 = k.keysymHistory [0]
-            hi2 = k.keysymHistory [1]
+            # hi1 = k.keysymHistory [0]
+            # hi2 = k.keysymHistory [1]
+            data1 = keyHandlerClass.lossage[0]
+            data2 = keyHandlerClass.lossage[1]
+            ch1, stroke1 = data1
+            ch2, stroke2 = data2
+            
             if state == 'esc esc' and event.keysym == 'colon':
                 self.evalExpression(event)
             elif state == 'evaluate':
                 self.escEvaluate(event)
-            elif hi1 == hi2 == 'Escape':
+            # elif hi1 == hi2 == 'Escape':
+            elif stroke1 == 'Escape' and stroke2 == 'Escape':
                 k.setState('escape','esc esc')
                 k.setLabel('Esc Esc -')
             elif event.keysym not in ('Shift_L','Shift_R'):
@@ -3081,8 +3087,15 @@ class editCommandsClass (baseEditCommandsClass):
         '''Put the Emacs-lossage in the minibuffer label.'''
     
         k = self.k
-        loss = ''.join(leoKeys.keyHandlerClass.lossage)
-        k.setLabel(loss)
+        
+        g.es('Lossage...')
+        aList = leoKeys.keyHandlerClass.lossage
+        aList.reverse()
+        for data in aList:
+            ch,stroke = data
+            d = {' ':'Space','\t':'Tab','\b':'Backspace','\n':'Newline','\r':'Return'}
+            ch = d.get(ch) or ch
+            g.es(stroke or ch or 'None')
     #@nonl
     #@-node:ekr.20050920084036.83:viewLossage
     #@+node:ekr.20050920084036.84:whatLine
