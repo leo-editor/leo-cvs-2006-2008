@@ -2,7 +2,11 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20060531161030:To do: B3 or B4
-#@+node:ekr.20060624082933:Fix  bugs
+#@+node:ekr.20060624082933:Fix  minor bugs
+#@+node:ekr.20060627141422:Fix crasher in masterCommand
+c.frame may not exist when exiting so call to c.frame.update.updateStatus() can crash
+#@nonl
+#@-node:ekr.20060627141422:Fix crasher in masterCommand
 #@+node:ekr.20060530110450:Test major Emacs commands
 @nocolor
 
@@ -13,8 +17,6 @@
 - Insert newline (look up proper behavior).
 #@nonl
 #@-node:ekr.20060530110450:Test major Emacs commands
-#@+node:ekr.20060120084705:Overwrite mode doesn't work in headllines
-#@-node:ekr.20060120084705:Overwrite mode doesn't work in headllines
 #@+node:ekr.20060610212014:Problems with tutorial command
 @nocolor
 http://sourceforge.net/forum/message.php?msg_id=3771026
@@ -39,7 +41,7 @@ Couldn't this file be distributed with Leo?
 c.insertHeadlineTime uses the edit widget.  It shouldn't.
 #@nonl
 #@-node:ekr.20060207085518:Improve c.insertHeadline
-#@-node:ekr.20060624082933:Fix  bugs
+#@-node:ekr.20060624082933:Fix  minor bugs
 #@+node:ekr.20060531161030.1:Make body editors persistant
 #@-node:ekr.20060531161030.1:Make body editors persistant
 #@+node:ekr.20060527204444:Finish new colorizer plugin
