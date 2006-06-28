@@ -456,8 +456,6 @@ class baseLeoPlugin(object):
     Contents of file ``<LeoDir>/plugins/hello.py``::
     
         class Hello(baseLeoPlugin):
-            """Say hello from <current node>
-            """
             def __init__(self, tag, keywords):
                 
                 # call parent __init__
