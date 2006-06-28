@@ -2321,14 +2321,16 @@ class keyHandlerClass:
             else:
                 # Call c.doCommand directly
                 c.doCommand(func,commandName,event=event)
-            k.endCommand(event,commandName)
-            c.frame.updateStatusLine() # New in Leo 4.4.1.
+            if c.exists:
+                k.endCommand(event,commandName)
+                c.frame.updateStatusLine()
             return 'break'
         elif k.inState():
-            return 'break' # New in 4.4b2: ignore unbound keys in a state.
+            return 'break' #Ignore unbound keys in a state.
         else:
             val = k.handleDefaultChar(event)
-            c.frame.updateStatusLine() # New in Leo 4.4.1.
+            if c.exists:
+                c.frame.updateStatusLine()
             return val
     #@nonl
     #@+node:ekr.20050923172809.1:callStateFunction
