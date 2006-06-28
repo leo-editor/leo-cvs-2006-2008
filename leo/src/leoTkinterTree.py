@@ -1817,19 +1817,16 @@ class leoTkinterTree (leoFrame.leoTree):
         
         The headline officially changes only when editing ends.'''
         
-        c = self.c ; ch = event and event.char or ''
+        c = self.c ; k = c.k
+        ch = event and event.char or ''
         i,j = g.app.gui.getTextSelection(w)
         
-        # g.trace(repr(ch))
-        
         if ch == '\b':
-            if i != j:
-                w.delete(i,j)
-            else:
-                w.delete('insert-1c')
+            if i != j:  w.delete(i,j)
+            else:       w.delete('insert-1c')
         elif ch and ch not in ('\n','\r'):
-            if i != j:
-                w.delete(i,j)
+            if i != j:                              w.delete(i,j)
+            elif k.unboundKeyAction == 'overwrite': w.delete(i,'%s+1c' % i)
             i = w.index('insert')
             w.insert(i,ch)
     
