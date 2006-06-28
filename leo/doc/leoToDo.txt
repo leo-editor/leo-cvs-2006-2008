@@ -1,47 +1,304 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
-#@+node:ekr.20060531161030:To do: B3 or B4
-#@+node:ekr.20060624082933:Fix  minor bugs
-#@+node:ekr.20060627141422:Fix crasher in masterCommand
-c.frame may not exist when exiting so call to c.frame.update.updateStatus() can crash
+#@+node:ekr.20060531161030:To do: B4
+#@+node:ekr.20060628103226:Finish emacs commands
+#@+node:ekr.20060628103226.2:Alt-x handlers should add to lossage
+#@-node:ekr.20060628103226.2:Alt-x handlers should add to lossage
+#@+node:ekr.20060628095110:Fix yank and kill-line commands
+Blank lines: deletes the newline.
+Non-blank lines: deletes up to the newline.
 #@nonl
-#@-node:ekr.20060627141422:Fix crasher in masterCommand
-#@+node:ekr.20060530110450:Test major Emacs commands
-@nocolor
+#@+node:ekr.20050920084036.183:addToKillBuffer
+def addToKillBuffer (self,text):
+    
+    killKeys =(
+        '<Control-k>', '<Control-w>',
+        '<Alt-d>', '<Alt-Delete', '<Alt-z>', '<Delete>',
+        '<Control-Alt-w>')
 
-- Macros
-- Lossage
-- History (works for repeat-complex-command)
-- Yank & Kill
-- Insert newline (look up proper behavior).
+    k = self.k
+    self.reset = True
+
+    # g.trace(repr(text))
+
+    if self.killBuffer and k.stroke in killKeys:
+        self.killBuffer [0] = self.killBuffer [0] + text
+    else:
+        self.killBuffer.insert(0,text)
 #@nonl
-#@-node:ekr.20060530110450:Test major Emacs commands
-#@+node:ekr.20060610212014:Problems with tutorial command
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3771026
-By: paulpaterson
+#@-node:ekr.20050920084036.183:addToKillBuffer
+#@+node:ekr.20050920084036.174:class killBufferCommandsClass (add docstrings)
+class killBufferCommandsClass (baseEditCommandsClass):
+    
+    '''A class to manage the kill buffer.'''
 
-I'm finally migrating to 4.4 and having got myself stuck in the minibuffer and
-not knowing how to get out (! shouldn't <esc> do that ?!) I thought I'd consult
-the help!
-
-Clicking on "Help ... Open offline tutorial" looked like a good option. However,
-when you click on this you are asked if you want to "Download tutorial (sbooks.chm)
-from SourceForge?".
-
-This was a bit surprising and confusing as I'd requested the offline tutorial
-and wasn't expecting to go online to get it! Also, from the prompt I have no
-idea if that is what I want to do.
-
-Couldn't this file be distributed with Leo?
+    @others
 #@nonl
-#@-node:ekr.20060610212014:Problems with tutorial command
-#@+node:ekr.20060207085518:Improve c.insertHeadline
-c.insertHeadlineTime uses the edit widget.  It shouldn't.
+#@+node:ekr.20050920084036.175: ctor & finishCreate
+def __init__ (self,c):
+
+    baseEditCommandsClass.__init__(self,c) # init the base class.
+
+    self.killBuffer = [] # May be changed in finishCreate.
+    self.kbiterator = self.iterateKillBuffer()
+    self.last_clipboard = None # For interacting with system clipboard.
+    self.reset = False
+    try:
+        self.widget = c.frame.body.bodyCtrl
+    except AttributeError:
+        self.widget = None
+
+def finishCreate (self):
+    
+    baseEditCommandsClass.finishCreate(self)
+        # Call the base finishCreate.
+        # This sets self.k
+    
+    if self.k.useGlobalKillbuffer:
+        self.killBuffer = leoKeys.keyHandlerClass.global_killbuffer
 #@nonl
-#@-node:ekr.20060207085518:Improve c.insertHeadline
-#@-node:ekr.20060624082933:Fix  minor bugs
+#@-node:ekr.20050920084036.175: ctor & finishCreate
+#@+node:ekr.20050920084036.176: getPublicCommands
+def getPublicCommands (self):
+    
+    return {
+        'backward-kill-sentence':   self.backwardKillSentence,
+        'backward-kill-word':       self.backwardKillWord,
+        'clear-kill-ring':          self.clearKillRing,
+        'kill-line':                self.killLine,
+        'kill-word':                self.killWord,
+        'kill-sentence':            self.killSentence,
+        'kill-region':              self.killRegion,
+        'kill-region-save':         self.killRegionSave,
+        'yank':                     self.yank,
+        'yank-pop':                 self.yankPop,
+        'zap-to-character':         self.zapToCharacter,
+    }
+#@nonl
+#@-node:ekr.20050920084036.176: getPublicCommands
+#@+node:ekr.20050920084036.183:addToKillBuffer
+def addToKillBuffer (self,text):
+    
+    killKeys =(
+        '<Control-k>', '<Control-w>',
+        '<Alt-d>', '<Alt-Delete', '<Alt-z>', '<Delete>',
+        '<Control-Alt-w>')
+
+    k = self.k
+    self.reset = True
+
+    # g.trace(repr(text))
+
+    if self.killBuffer and k.stroke in killKeys:
+        self.killBuffer [0] = self.killBuffer [0] + text
+    else:
+        self.killBuffer.insert(0,text)
+#@nonl
+#@-node:ekr.20050920084036.183:addToKillBuffer
+#@+node:ekr.20050920084036.181:backwardKillSentence
+def backwardKillSentence (self,event):
+    
+    '''Kill the previous sentence.'''
+    
+    w = event.widget
+    i = w.search('.','insert',backwards=True,stopindex='1.0')
+
+    if i:
+        i2 = w.search('.',i,backwards=True,stopindex='1.0')
+        i2 = g.choose(i2=='','1.0',i2+'+1c ')
+        self.kill(event,i2,'%s + 1c' % i)
+#@nonl
+#@-node:ekr.20050920084036.181:backwardKillSentence
+#@+node:ekr.20050920084036.180:backwardKillWord
+def backwardKillWord (self,event):
+    
+    '''Kill the previous word.'''
+
+    c = self.c
+    c.editCommands.backwardWord(event)
+    self.killWord(event)
+    self.killWs(event)
+    c.editCommands.backwardWord(event)
+#@nonl
+#@-node:ekr.20050920084036.180:backwardKillWord
+#@+node:ekr.20051216151811:clearKillRing
+def clearKillRing (self,event=None):
+    
+    '''Clear the kill ring.'''
+    
+    self.killBuffer = []
+#@nonl
+#@-node:ekr.20051216151811:clearKillRing
+#@+node:ekr.20050920084036.185:getClipboard
+def getClipboard (self,w):
+
+    try:
+        ctxt = w.selection_get(selection='CLIPBOARD')
+        if not self.killBuffer or ctxt != self.last_clipboard:
+            self.last_clipboard = ctxt
+            if not self.killBuffer or self.killBuffer [0] != ctxt:
+                return ctxt
+    except: pass
+
+    return None
+#@nonl
+#@-node:ekr.20050920084036.185:getClipboard
+#@+node:ekr.20050920084036.184:iterateKillBuffer
+def iterateKillBuffer (self):
+
+    while 1:
+        if self.killBuffer:
+            self.last_clipboard = None
+            for z in self.killBuffer:
+                if self.reset:
+                    self.reset = False
+                    break
+                yield z
+#@-node:ekr.20050920084036.184:iterateKillBuffer
+#@+node:ekr.20050920084036.178:kill, killLine, killWord
+def kill (self,event,frm,to):
+
+    k = self.k ; w = event.widget ; s = w.get(frm,to)
+    self.addToKillBuffer(s)
+    w.clipboard_clear()
+    w.clipboard_append(s)
+    w.delete(frm,to)
+
+def killLine (self,event):
+    '''Kill the line containing the cursor.'''
+    self.kill(event,'insert linestart','insert lineend+1c')
+
+def killWord (self,event):
+    '''Kill the word containing the cursor.'''
+    self.kill(event,'insert wordstart','insert wordend')
+    self.killWs(event)
+#@-node:ekr.20050920084036.178:kill, killLine, killWord
+#@+node:ekr.20050920084036.182:killRegion & killRegionSave & helper
+def killRegion (self,event):
+    '''Kill the text selection.'''
+    self.killRegionHelper(event,deleteFlag=True)
+    
+def killRegionSave (self,event):
+    '''Add the selected text to the kill ring, but do not delete it.'''
+    self.killRegionHelper(event,deleteFlag=False)
+
+def killRegionHelper (self,event,deleteFlag):
+
+    w = event.widget
+
+    if g.app.gui.isTextWidget(w):
+        theRange = w.tag_ranges('sel')
+        if theRange:
+            s = w.get(theRange[0],theRange[-1])
+            if deleteFlag:
+                w.delete(theRange[0],theRange[-1])
+            self.addToKillBuffer(s)
+            w.clipboard_clear()
+            w.clipboard_append(s)
+            self.removeRKeys(w)
+#@nonl
+#@-node:ekr.20050920084036.182:killRegion & killRegionSave & helper
+#@+node:ekr.20050930095323.1:killSentence
+def killSentence (self,event):
+    
+    '''Kill the sentence containing the cursor.'''
+
+    w = event.widget
+    i  = w.search('.','insert',stopindex='end')
+    if i:
+        i2 = w.search('.','insert',backwards=True,stopindex='1.0')
+        i2 = g.choose(i2=='','1.0',i2+'+1c ')
+        self.kill(event,i2,'%s + 1c' % i)
+#@nonl
+#@-node:ekr.20050930095323.1:killSentence
+#@+node:ekr.20050930100733:killWs
+def killWs (self,event):
+    
+    ws = '' ; w = event.widget
+
+    while 1:
+        s = w.get('insert')
+        if s in (' ','\t'):
+            w.delete('insert')
+            ws = ws + s
+        else:
+            break
+            
+    if ws:
+        self.addToKillBuffer(ws)
+#@nonl
+#@-node:ekr.20050930100733:killWs
+#@+node:ekr.20050930091642.1:yank
+def yank (self,event):
+    
+    '''Insert the next entry in the kill ring at the insert point.'''
+
+    k = self.k ; w = self.w
+    i = w.index('insert')
+    clip_text = self.getClipboard(w)
+
+    if self.killBuffer or clip_text:
+        self.reset = True
+        s = clip_text or self.kbiterator.next()
+        w.tag_delete('kb')
+        w.insert('insert',s,('kb'))
+        w.mark_set('insert',i)
+#@nonl
+#@-node:ekr.20050930091642.1:yank
+#@+node:ekr.20050930091642.2:yankPop
+def yankPop (self,event):
+    
+    '''Replaces the just-yanked kill buffer with the contents of the previous kill buffer.'''
+
+    k = self.k ; w = event.widget
+    i = w.index('insert') ; t, t1 = i.split('.')
+    clip_text = self.getClipboard(w)
+
+    if self.killBuffer or clip_text:
+        if clip_text: s = clip_text
+        else:         s = self.kbiterator.next()
+        t1 = str(int(t1)+len(s))
+        r = w.tag_ranges('kb')
+        if r and r [0] == i:
+            w.delete(r[0],r[-1])
+        w.tag_delete('kb')
+        w.insert('insert',s,('kb'))
+        w.mark_set('insert',i)
+#@nonl
+#@-node:ekr.20050930091642.2:yankPop
+#@+node:ekr.20050920084036.128:zapToCharacter
+def zapToCharacter (self,event):
+    
+    '''Kill characters from the insertion point to a given character.'''
+
+    k = self.k ; state = k.getState('zap-to-char')
+
+    if state == 0:
+        k.setLabelBlue('Zap To Character: ',protect=True)
+        k.setState('zap-to-char',1,handler=self.zapToCharacter)
+    else:
+        c = k.c ; w = event.widget ; ch = event.char
+        k.resetLabel()
+        k.clearState()
+        if (
+            len(event.char) != 0 and
+            ch in (string.ascii_letters + string.digits + string.punctuation)
+        ):
+            i = w.search(ch,'insert',stopindex='end')
+            if i:
+                t = w.get('insert','%s+1c' % i)
+                self.addToKillBuffer(t)
+                w.delete('insert','%s+1c' % i)
+#@nonl
+#@-node:ekr.20050920084036.128:zapToCharacter
+#@-node:ekr.20050920084036.174:class killBufferCommandsClass (add docstrings)
+#@-node:ekr.20060628095110:Fix yank and kill-line commands
+#@+node:ekr.20060628094329.2:Fix macros
+#@-node:ekr.20060628094329.2:Fix macros
+#@+node:ekr.20060628103226.3:Make sure repeat counts work on basic editing commands
+#@-node:ekr.20060628103226.3:Make sure repeat counts work on basic editing commands
+#@-node:ekr.20060628103226:Finish emacs commands
 #@+node:ekr.20060531161030.1:Make body editors persistant
 #@-node:ekr.20060531161030.1:Make body editors persistant
 #@+node:ekr.20060527204444:Finish new colorizer plugin
@@ -50,7 +307,7 @@ c.insertHeadlineTime uses the edit widget.  It shouldn't.
 - Add all other features.
 #@nonl
 #@-node:ekr.20060527204444:Finish new colorizer plugin
-#@-node:ekr.20060531161030:To do: B3 or B4
+#@-node:ekr.20060531161030:To do: B4
 #@+node:ekr.20060623064600.1:Urgent (big picture)
 #@+node:ekr.20051202094427:Resolve cvs conflicts
 Investigate meld:  http://meld.sourceforge.net/
