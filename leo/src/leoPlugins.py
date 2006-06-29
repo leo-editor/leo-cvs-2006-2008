@@ -1,5 +1,5 @@
 #@+leo-ver=4-thin
-#@+node:ktenney.20060628092017:@thin C:\Python24\Lib\site-packages\leo\src\leoPlugins.py
+#@+node:ekr.20031218072017.3439:@thin leoPlugins.py
 """Install and run Leo plugins.
 
 On startup:
@@ -577,5 +577,6 @@ class baseLeoPlugin(object):
 #@nonl
 #@-node:ktenney.20060628092017.1:baseLeoPlugin
 #@-others
-#@-node:ktenney.20060628092017:@thin C:\Python24\Lib\site-packages\leo\src\leoPlugins.py
+#@nonl
+#@-node:ekr.20031218072017.3439:@thin leoPlugins.py
 #@-leo
