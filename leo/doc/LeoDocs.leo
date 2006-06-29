@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="25545" clone_windows="0"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="25645" clone_windows="0"/>
 <globals body_outline_ratio="0.550802139037">
-	<global_window_position top="174" left="325" height="683" width="945"/>
+	<global_window_position top="164" left="183" height="637" width="776"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -46,7 +46,7 @@
 <v t="ekr.20060525110217"><vh>@@button rst-&gt;rst</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
+<v t="ekr.20040414161647"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -144,8 +144,8 @@
 <v t="ekr.20050830080545"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20050831195331.2" a="E"><vh>Chapter 1: Installing Leo</vh>
-<v t="edream.110203163054.48" a="E"><vh>@rst html\install.html</vh>
+<v t="ekr.20050831195331.2"><vh>Chapter 1: Installing Leo</vh>
+<v t="edream.110203163054.48"><vh>@rst html\install.html</vh>
 <v t="ekr.20050901110110"><vh>@rst-no-head links</vh></v>
 <v t="edream.110203163054.49"><vh>System requirements</vh></v>
 <v t="edream.110203163054.50"><vh>How to install Leo on Linux</vh></v>
@@ -157,7 +157,7 @@
 <v t="edream.110203163054.61"><vh>Putting the Leo icon in Leo windows</vh></v>
 <v t="ekr.20050901174937"><vh>Running Leo</vh></v>
 <v t="ekr.20060105145125"><vh>How to install the Aspell spell checker</vh></v>
-<v t="ekr.20060621134106" a="TV"><vh>Updating settings from previous versions of Leo</vh></v>
+<v t="ekr.20060621134106"><vh>Updating settings from previous versions of Leo</vh></v>
 <v t="ekr.20050906105335"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
@@ -318,7 +318,7 @@
 <v t="ekr.20050901102400.2"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20050831195331.4" a="M"><vh>Chapter 7: Scripting Leo with Python</vh>
+<v t="ekr.20050831195331.4"><vh>Chapter 7: Scripting Leo with Python</vh>
 <v t="ekr.20040403171740"><vh>@rst html\scripting.html</vh>
 <v t="ekr.20050812134441.1"><vh>@rst-no-head Links</vh></v>
 <v t="ekr.20050901184158"><vh>@rst-ignore Important: you can run these examples!</vh></v>
@@ -354,7 +354,7 @@
 <v t="ekr.20050901102400.3"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="EKR.20040524104904.211" a="M"><vh>Chapter 8: Settings, Modes and Key Bindings</vh>
+<v t="EKR.20040524104904.211"><vh>Chapter 8: Settings, Modes and Key Bindings</vh>
 <v t="ekr.20050901101608.4"><vh>@rst html\customizing.html</vh>
 <v t="ekr.20050901102055"><vh>@rst-no-head links</vh></v>
 <v t="EKR.20040524104904.140"><vh>Specifying settings</vh></v>
@@ -380,6 +380,7 @@
 <v t="ekr.20050902105852.10"><vh>Leo 4.1: The debut of gnx's</vh></v>
 <v t="ekr.20050902105852.11"><vh>Leo 4.2: Complete at last</vh></v>
 <v t="ekr.20050902105852.12"><vh>Leo 4.3 Settings</vh></v>
+<v t="ekr.20060629083935"><vh>Leo 4.4 The minibuffer and key bindings</vh></v>
 <v t="ekr.20050902100834"><vh>@rst-ignore-tree Details</vh>
 <v t="EKR.20040524104904.247"><vh>Versions</vh></v>
 <v t="EKR.20040524104904.248"><vh>Designing @file trees</vh>
@@ -663,10 +664,10 @@
 <v t="ekr.20050901083017"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20060620094033" a="E"><vh>What's New...</vh>
+<v t="ekr.20060620094033"><vh>What's New...</vh>
 <v t="ekr.20060620141510"><vh>Patterns</vh></v>
-<v t="ekr.20060620094033.1" a="E"><vh>What's New in Leo 4.4.1</vh>
-<v t="ekr.20060620094645.310" a="E"><vh>@rst html\new-4-4-1.html</vh>
+<v t="ekr.20060620094033.1"><vh>What's New in Leo 4.4.1</vh>
+<v t="ekr.20060620094645.310"><vh>@rst html\new-4-4-1.html</vh>
 <v t="ekr.20060621132547"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20060620130636"><vh>New commands</vh></v>
 <v t="ekr.20060620095949.15"><vh>New features</vh></v>
@@ -676,8 +677,8 @@
 <v t="ekr.20060621132923"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20060620094033.2" a="E"><vh>What's New in Leo 4.4</vh>
-<v t="ekr.20060620094425" a="E"><vh>@rst html\new-4-4.html</vh>
+<v t="ekr.20060620094033.2"><vh>What's New in Leo 4.4</vh>
+<v t="ekr.20060620094425"><vh>@rst html\new-4-4.html</vh>
 <v t="ekr.20060621132338"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20060620133820.16"><vh>New features &amp; commands</vh></v>
 <v t="ekr.20060620140130"><vh>New and improved plugins</vh></v>
@@ -703,9 +704,9 @@
 </v>
 </v>
 <v t="ekr.20050914132220"><vh>Other docs</vh>
-<v t="ekr.20051203084745" a="E"><vh>JythonShell help</vh>
+<v t="ekr.20051203084745"><vh>JythonShell help</vh>
 <v t="ekr.20051203085709"><vh>original</vh></v>
-<v t="ekr.20051203084850" a="E"><vh>@rst html\jythonShell.html</vh>
+<v t="ekr.20051203084850"><vh>@rst html\jythonShell.html</vh>
 <v t="ekr.20051203084850.1"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20051203085709.1"><vh>Autocompleter Actions</vh></v>
 <v t="ekr.20051203085709.2"><vh>Keystrokes</vh></v>
@@ -919,7 +920,7 @@
 <v t="ekr.20060608111953.38"><vh>findNext</vh></v>
 <v t="ekr.20060608111953.39"><vh>findNextMatch</vh></v>
 <v t="ekr.20060608111953.40"><vh>resetWrap</vh></v>
-<v t="ekr.20060608111953.41" a="M"><vh>search &amp; helpers</vh>
+<v t="ekr.20060608111953.41"><vh>search &amp; helpers</vh>
 <v t="ekr.20060608111953.42"><vh>&lt;&lt; fail if we are passed the wrap point &gt;&gt;</vh></v>
 <v t="ekr.20060608111953.43"><vh>Search helpers...</vh>
 <v t="ekr.20060608111953.44"><vh>regexHelper</vh></v>
@@ -2804,7 +2805,6 @@
 </v>
 </v>
 <v t="ekr.20060511074853"><vh>4.4 final</vh></v>
-</v>
 <v t="ekr.20060601101643"><vh>4.4.1 b1</vh>
 <v t="ekr.20060601101958.1"><vh>Fixed bugs</vh>
 <v t="ekr.20060601101958.56"><vh>The Open Python Window command runs Idle in a separate process</vh></v>
@@ -2839,8 +2839,6 @@
 <v t="ekr.20060601101958.239"><vh>Warn about invalid Enter and Leave key bindings</vh></v>
 </v>
 </v>
-</v>
-<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
 <v t="ekr.20060620094645"><vh>4.4.1 b2</vh>
 <v t="ekr.20060620094645.34"><vh>Bugs fixed</vh>
 <v t="ekr.20060620094645.35"><vh>Made sure calltip always adds '('</vh></v>
@@ -2876,7 +2874,7 @@
 <v t="ekr.20060620094645.232"><vh>Script buttons now create press-xxx-button commands</vh></v>
 <v t="ekr.20060620094645.233"><vh>print-bindings command now properly sorts bindings</vh></v>
 <v t="ekr.20060620094645.234"><vh>Allow @shortcuts bindings to apply to press-xxx-commands</vh></v>
-<v t="ekr.20060620094645.242" a="M"><vh>Added support for @abbrev nodes in leoSettings.leo</vh></v>
+<v t="ekr.20060620094645.242"><vh>Added support for @abbrev nodes in leoSettings.leo</vh></v>
 <v t="ekr.20060620094645.243"><vh>Created open-users-guide command</vh></v>
 <v t="ekr.20060620094645.252"><vh>scroll-up/down commands now scroll the outline if focus is in outline pane</vh></v>
 <v t="ekr.20060620094645.258"><vh>Cycle-focus command cycles through tabs and editors</vh></v>
@@ -2895,6 +2893,32 @@
 </v>
 <v t="ekr.20060622132524"><vh>Settings</vh>
 <v t="ekr.20060620094645.299"><vh>Added editor_orientation setting</vh></v>
+</v>
+</v>
+</v>
+</v>
+<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
+<v t="ekr.20060629083400.1" a="V"><vh>4.4.1 b3</vh>
+<v t="ekr.20060629083935.2"><vh>Bugs fixed</vh>
+<v t="ekr.20060629083935.3"><vh>Fixed recent bug: Ctrl-g does not work in @mode nodes</vh></v>
+<v t="ekr.20060629083935.8"><vh>Update column display when typing</vh></v>
+<v t="ekr.20060629083935.15"><vh>Fixed long-standing problem reporting indentation errors</vh></v>
+<v t="ekr.20060629083935.25"><vh>Fixed long-standing bug in Remove Sentinels command</vh></v>
+<v t="ekr.20060629083935.32"><vh>Fixed long-standing bugs in import code</vh></v>
+<v t="ekr.20060629083935.61"><vh>Overwrite mode now works in headllines</vh></v>
+<v t="ekr.20060629083935.70"><vh>Fixed crasher in masterCommand</vh></v>
+<v t="ekr.20060629083935.71"><vh>Improved view-lossage command</vh></v>
+</v>
+<v t="ekr.20060629083935.74"><vh>New features</vh>
+<v t="ekr.20060629083935.75"><vh>Finished repeat-complex-command</vh></v>
+<v t="ekr.20060629083935.76"><vh>Read leoSettings.leo from the directory containing the .leo file</vh></v>
+<v t="ekr.20060629083935.93"><vh>Flash matching parens &amp; corresponding settings</vh></v>
+</v>
+<v t="ekr.20060629083935.96"><vh>New settings</vh>
+<v t="ekr.20060629083935.97"><vh>Added standard bindings for Ctrl-y (yank) and Ctrl-k (kill-line)</vh></v>
+<v t="ekr.20060629083935.98"><vh>Added @bool warn_about_redefined_shortcuts setting</vh></v>
+<v t="ekr.20060629083935.99"><vh>Added @bool trace_bind_key_exceptions setting</vh></v>
+<v t="ekr.20060629083935.100"><vh>Added bracket flash settings</vh></v>
 </v>
 </v>
 </v>
@@ -19568,7 +19592,9 @@ Leo 4.2 marked so many significant changes. I often find it hard to remember
 what life with Leo was like before it.</t>
 <t tx="ekr.20050902105852.12">Leo 4.3 corrected many problems with ``leoConfig.txt``. Instead, Leo gets
 settings from one or more ``leoSettings.leo files``. This version also
-introduced a way to changed settings using a settings dialog.</t>
+introduced a way to changed settings using a settings dialog.  However,
+the settings dialog proved not to be useful (worse, it inhibited design) and
+the settings dialog was retired in Leo 4.4.</t>
 <t tx="ekr.20050902160924">**Important**: Script buttons are easier to use than the script-oriented
 find/change commands described next. I recommend using script buttons whenever
 possible. See `Creating script buttons`_.
@@ -29578,7 +29604,14 @@ New in Leo 4.4.1 b1:
 - Improved show-fonts command.
 - Strip quotes from color, font settings.
 - Warn about invalid Enter and Leave key bindings.</t>
-<t tx="ekr.20060620095949.15">New in Leo 4.4.1 b2:
+<t tx="ekr.20060620095949.15">New in Leo 4.4.1 b3:
+    
+- Leo highlights (flashes) matching brackets when typing typing (, ), [, ], { or }.
+- Fixed long-standing problem reporting indentation errors.
+- Fixed long-standing bug in Remove Sentinels command.
+- Fixed long-standing bugs in import commands.
+
+New in Leo 4.4.1 b2:
     
 - The scroll-up/down commands now scroll the outline if focus is in outline pane.
   However, his can be done better using per-pane bindings as in the default leoSettings.leo.
@@ -29596,8 +29629,23 @@ New in Leo 4.4.1 b1:
 - The standard escapes \n and \t are now valid in plain searches.
 
 - The shortcut for the replace-string command now changes from the find command
-  to the replace command.</t>
-<t tx="ekr.20060620095949.25">New in Leo 4.4.1 b2:
+  to the replace command.
+</t>
+<t tx="ekr.20060620095949.25">New in Leo 4.4.1 b3:
+    
+- Added settings to control how Leo highlights matching brackets::
+
+    @bool flash_matching_brackets
+    @color flash_brackets_background_color
+    @color flash_brackets_foreground_color
+    @int flash_brackets_count
+    @int flash-brackets-delay
+    
+- Added @bool warn_about_redefined_shortcuts
+- Added @bool trace_bind_key_exceptions setting
+
+
+New in Leo 4.4.1 b2:
     
 - Added support for commands to be executed on entry to a mode.
 - Added support for bindings that are active only in command, enter and insert key states.
@@ -30083,5 +30131,89 @@ http://webpages.charter.net/edreamleo/writingPlugins.html#turning-script-buttons
 <t tx="ekr.20060622130815.3">http://sourceforge.net/forum/message.php?msg_id=3790814</t>
 <t tx="ekr.20060622130815.9"></t>
 <t tx="ekr.20060622132524"></t>
+<t tx="ekr.20060629083400.1">Leo 4.4.1 beta 3                                            June 29, 2006
+
+Leo 4.4.1 beta 3 is available at:
+http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+
+Leo is a text editor, data organizer, project manager and much more. See:
+http://webpages.charter.net/edreamleo/intro.html
+
+The highlights of Leo 4.4.1:
+----------------------------
+- A new colorizer plugin controlled by jEdit language description files.
+  At present this plugin only reliably colors @language python code.
+- Multiple editors in Leo's body pane.
+- Search commands now support regex replace patterns: \1, \2, etc.
+- Support for external debuggers: see http://webpages.charter.net/edreamleo/debuggers.html
+- The scripting plugin now creates a Debug Script button.
+- Several new commands including run-unit-test, python-help and toggle-invisibles.
+- The help-for-command commands now contains information for almost all commands.
+- A new shortcut_button plugin.
+
+Links:
+------
+Leo:      http://webpages.charter.net/edreamleo/front.html
+Home:     http://sourceforge.net/projects/leo/
+Download: http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:      http://leo.tigris.org/source/browse/leo/
+Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
+<t tx="ekr.20060629083935">Leo 4.4 was a year-long effort to incorporate an Emacs-style minibuffer and related commands into Leo.  Thinking in terms of minibuffer commands was important conceptually; it freed my thinking.  Leo 4.4 also featured many improvements in how keys are bound to commands, including per-pane bindings and user-defined key-binding modes.</t>
+<t tx="ekr.20060629083935.2"></t>
+<t tx="ekr.20060629083935.3"></t>
+<t tx="ekr.20060629083935.8">http://sourceforge.net/forum/message.php?msg_id=3795258
+
+The column display doesn't change while typing.
+
+</t>
+<t tx="ekr.20060629083935.15">http://sourceforge.net/forum/message.php?msg_id=3510448
+
+The fix was to getLastTracebackFileAndLineNumber.
+
+I also created handleScriptException.</t>
+<t tx="ekr.20060629083935.25">http://sourceforge.net/forum/message.php?msg_id=3413805</t>
+<t tx="ekr.20060629083935.32">- Underindented comments do not end the scan of Python classes or methods.
+- Handles continued signature lines properly.</t>
+<t tx="ekr.20060629083935.61">Note: Editing headline text will happen in insert mode unless
+
+@strings top_level_unbound_key_action = overwrite</t>
+<t tx="ekr.20060629083935.70">After executing a command we must be careful to test c.exists.
+</t>
+<t tx="ekr.20060629083935.71">- A better trace, and the trace goes to the log pane.
+
+- Eliminated k.keysymHistory: Tk keysyms are pretty useless.
+</t>
+<t tx="ekr.20060629083935.74"></t>
+<t tx="ekr.20060629083935.75">@nocolor
+
+- Improved prompt.
+- Added message if no previous complex command.
+- Added mode entries.</t>
+<t tx="ekr.20060629083935.76">http://sourceforge.net/forum/message.php?msg_id=3794854</t>
+<t tx="ekr.20060629083935.93">@killcolor
+
+Here are the relevant settings:
+    
+@bool flash_matching_brackets: True: flash matching bracket when typing (, ), [, ], { or }.
+
+@color flash_brackets_background_color and @color flash_brackets_foreground_color.
+
+@int flash_brackets_count: The number of times to flash matching brackets.
+
+@int flash-brackets-delay: One half the total cycle time of bracket flashes, in milliseconds.
+</t>
+<t tx="ekr.20060629083935.96"></t>
+<t tx="ekr.20060629083935.97"># Ctrl-k is no longer needed by the match-brackets command now that brackets flash automatically.</t>
+<t tx="ekr.20060629083935.98"></t>
+<t tx="ekr.20060629083935.99">When True, this provides a full traceback for all exceptions taken when binding keyboard shortcuts.</t>
+<t tx="ekr.20060629083935.100">@killcolor
+
+@bool flash_matching_brackets: True: flash matching bracket when typing (, ), [, ], { or }.
+
+@color flash_brackets_background_color and @color flash_brackets_foreground_color.
+
+@int flash_brackets_count: The number of times to flash matching brackets.
+
+@int flash-brackets-delay: One half the total cycle time of bracket flashes, in milliseconds.</t>
 </tnodes>
 </leo_file>

@@ -315,6 +315,7 @@ TypeError
 UNL
 UNL's
 UST
+Underindented
 UnicodeError
 Unindent
 UniversalScrolling
@@ -1119,6 +1120,8 @@ keymap
 keymapping
 keypress
 keysym
+keysymHistory
+keysyms
 keywordsDict
 killcolor
 kk

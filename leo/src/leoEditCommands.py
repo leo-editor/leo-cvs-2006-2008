@@ -2146,8 +2146,8 @@ class editCommandsClass (baseEditCommandsClass):
             state = k.getState('escape')
             # hi1 = k.keysymHistory [0]
             # hi2 = k.keysymHistory [1]
-            data1 = keyHandlerClass.lossage[0]
-            data2 = keyHandlerClass.lossage[1]
+            data1 = leoKeys.keyHandlerClass.lossage[0]
+            data2 = leoKeys.keyHandlerClass.lossage[1]
             ch1, stroke1 = data1
             ch2, stroke2 = data2
             
@@ -3094,8 +3094,7 @@ class editCommandsClass (baseEditCommandsClass):
         for data in aList:
             ch,stroke = data
             d = {' ':'Space','\t':'Tab','\b':'Backspace','\n':'Newline','\r':'Return'}
-            ch = d.get(ch) or ch
-            g.es(stroke or ch or 'None')
+            g.es(stroke or d.get(ch) or ch or 'None')
     #@nonl
     #@-node:ekr.20050920084036.83:viewLossage
     #@+node:ekr.20050920084036.84:whatLine

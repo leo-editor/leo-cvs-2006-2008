@@ -1,6 +1,6 @@
-Leo 4.4.1 beta 2                                            June 23, 2006
+Leo 4.4.1 beta 3                                            June 29, 2006
 
-Leo 4.4.1 beta 2 is now available at:
+Leo 4.4.1 beta 3 is now available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&package_id=29106
 
 Leo is a text editor, data organizer, project manager and much more. See:

@@ -2909,6 +2909,8 @@ class baseLeoImportCommands:
     def removeSentinelLines(self,s,line_delim,start_delim,end_delim):
     
         '''Properly remove all sentinle lines in s.'''
+        
+        __pychecker__ = '--no-argsused' # end_delim.
     
         delim = (line_delim or start_delim or '') + '@'
         verbatim = delim + 'verbatim' ; verbatimFlag = False

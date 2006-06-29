@@ -294,8 +294,8 @@ def zapToCharacter (self,event):
 #@-node:ekr.20050920084036.128:zapToCharacter
 #@-node:ekr.20050920084036.174:class killBufferCommandsClass (add docstrings)
 #@-node:ekr.20060628095110:Fix yank and kill-line commands
-#@+node:ekr.20060628094329.2:Fix macros
-#@-node:ekr.20060628094329.2:Fix macros
+#@+node:ekr.20060628094329.2:Test/Fix macros
+#@-node:ekr.20060628094329.2:Test/Fix macros
 #@+node:ekr.20060628103226.3:Make sure repeat counts work on basic editing commands
 #@-node:ekr.20060628103226.3:Make sure repeat counts work on basic editing commands
 #@-node:ekr.20060628103226:Finish emacs commands
