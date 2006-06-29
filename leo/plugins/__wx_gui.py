@@ -5,18 +5,16 @@
 
 """A plugin to use wxPython as Leo's gui."""
 
-__version__ = "0.3"
+__version__ = '0.4'
 #@<< version history >>
 #@+node:ekr.20050719111045:<< version history >>
 #@@nocolor
 #@+at
 # 
 # 0.1 EKR: Initial version ca: 2003
-# 0.2 EKR:
-#     - Version that works with Leo 4.3.
-#     - Created init function.
-# 0.3 EKR:
-#     - Ran script to put 'g.' in front of all functions in leoGlobals.py.
+# 0.2 EKR: Works with Leo 4.3.
+# 0.3 EKR: Ran script to put 'g.' in front of all functions in leoGlobals.py.
+# 0.4 EKR: Now starts without crashing with 4.4.1 code base.
 #@-at
 #@nonl
 #@-node:ekr.20050719111045:<< version history >>
@@ -929,12 +927,23 @@ class wxLeoBody (leoFrame.leoBody):
         pass
     #@-node:edream.111303205611.4:tag_remove
     #@-node:edream.111303204517:Color tags (hacks for styles)
-    #@+node:edream.110203113231.544:Config... TO DO
-    def setBodyFontFromConfig (self):
+    #@+node:edream.110203113231.544:Configuration TO DO
+    def cget(self,*args,**keys):
         
-        pass # g.trace()
+        pass
+        
+        # val = self.bodyCtrl.cget(*args,**keys)
+        # if g.app.trace:
+            # g.trace(val,args,keys)
+        # return val
+        
+    def configure (self,*args,**keys):
+        
+        if g.app.trace: g.trace(args,keys)
+    
+        # return self.bodyCtrl.configure(*args,**keys)
     #@nonl
-    #@-node:edream.110203113231.544:Config... TO DO
+    #@-node:edream.110203113231.544:Configuration TO DO
     #@+node:edream.110203113231.545:Focus...
     def hasFocus (self):
         
@@ -944,7 +953,23 @@ class wxLeoBody (leoFrame.leoBody):
         
         self.bodyCtrl.SetFocus()
     #@-node:edream.110203113231.545:Focus...
-    #@+node:edream.111303204025:Indices
+    #@+node:edream.110203113231.549:Height & width
+    def getBodyPaneHeight (self):
+    
+        return self.bodyCtrl.GetCharHeight()
+        
+    def getBodyPaneWidth (self):
+    
+        return self.bodyCtrl.GetCharWidth()
+    #@nonl
+    #@-node:edream.110203113231.549:Height & width
+    #@+node:edream.110203113231.548:Idle-time TO DO
+    def scheduleIdleTimeRoutine (self,function,*args,**keys):
+    
+        g.trace()
+    #@nonl
+    #@-node:edream.110203113231.548:Idle-time TO DO
+    #@+node:edream.111303204025:Indices (wxLeoBody)
     #@+node:edream.111303204025.1:adjustIndex
     def adjustIndex (self,index,offset):
         
@@ -1000,28 +1025,20 @@ class wxLeoBody (leoFrame.leoBody):
         return self.bodyCtrl.GetLastPosition()
     #@nonl
     #@-node:edream.111403080609:maxWxIndex (internal use)
-    #@-node:edream.111303204025:Indices
-    #@+node:edream.110203113231.548:Idle-time callback...
-    def scheduleIdleTimeRoutine (self,function,*args,**keys):
-        g.trace()
-    #@-node:edream.110203113231.548:Idle-time callback...
-    #@+node:edream.110203113231.549:Height & width info...
-    def getBodyPaneHeight (self):
-        return self.bodyCtrl.GetCharHeight()
-        
-    def getBodyPaneWidth (self):
-        return self.bodyCtrl.GetCharWidth()
-    #@nonl
-    #@-node:edream.110203113231.549:Height & width info...
+    #@-node:edream.111303204025:Indices (wxLeoBody)
     #@+node:edream.111303171218:Insert point
-    # Returning indices...
+    #@+node:ekr.20060629123738:get/setPythonInsertionPoint
+    #@-node:ekr.20060629123738:get/setPythonInsertionPoint
+    #@+node:ekr.20060629123738.1:getInsertionPoint & getBeforeInsertionPoint
     def getBeforeInsertionPoint (self):
         g.trace()
         
     def getInsertionPoint (self):
+    
         return self.bodyCtrl.GetInsertionPoint()
         
-    # Returning chars...
+    #@-node:ekr.20060629123738.1:getInsertionPoint & getBeforeInsertionPoint
+    #@+node:ekr.20060629123738.2:getCharAtInsertPoint & getCharBeforeInsertPoint
     def getCharAtInsertPoint (self):
         t = self.bodyCtrl
         pos = t.GetInsertionPoint()
@@ -1031,42 +1048,86 @@ class wxLeoBody (leoFrame.leoBody):
         t = self.bodyCtrl
         pos = t.GetInsertionPoint()
         return t.GetRange(pos-1,pos)
-    
-    # Setting the insertion point...
+    #@nonl
+    #@-node:ekr.20060629123738.2:getCharAtInsertPoint & getCharBeforeInsertPoint
+    #@+node:ekr.20060629123738.3:setInsertionPointTo...
     def setInsertionPoint (self,index):
+    
         self.bodyCtrl.SetInsertionPoint(index)
     
     def setInsertPointToEnd (self):
+    
         self.bodyCtrl.SetInsertionPointEnd()
         
     def setInsertPointToStartOfLine (self,lineNumber):
+    
         g.trace()
     #@nonl
+    #@-node:ekr.20060629123738.3:setInsertionPointTo...
     #@-node:edream.111303171218:Insert point
-    #@+node:edream.111603222048:Menu
+    #@+node:edream.111603222048:Menus
     def bind (self,bind_shortcut,callback):
         
         pass # later.
     #@nonl
-    #@-node:edream.111603222048:Menu
+    #@-node:edream.111603222048:Menus
     #@+node:edream.111303171218.1:Selection
+    
+    
+    
+    
+    #@+node:ekr.20060629124102.1:deleteSelection
     def deleteSelection (self):
         t = self.bodyCtrl
         t.Remove(t.GetSelection())
-    
-    def getTextSelection (self):
-        return self.bodyCtrl.GetSelection()
+    #@nonl
+    #@-node:ekr.20060629124102.1:deleteSelection
+    #@+node:ekr.20060629125105:getSelectedText
+    def getSelectedText (self):
         
+        """Return the selected text of the body frame, converted to unicode."""
+        
+        start, end = self.bodyCtrl.GetSelection()
+        # g.trace(start,end)
+    
+        if start is not None and end is not None and start != end:
+            s = self.bodyCtrl.GetRange(start,end)
+            if s:
+                return g.toUnicode(s,g.app.tkEncoding)
+            else:
+                return u''
+        else:
+            return u''
+    #@nonl
+    #@-node:ekr.20060629125105:getSelectedText
+    #@+node:ekr.20060629124102.2:getTextSelection
+    def getTextSelection (self):
+        
+        """Return a tuple representing the selected range of body text.
+        
+        Return a tuple giving the insertion point if no range of text is selected."""
+    
+        return self.bodyCtrl.GetSelection()
+    #@nonl
+    #@-node:ekr.20060629124102.2:getTextSelection
+    #@+node:ekr.20060629124102.3:hasTextSelection
     def hasTextSelection (self):
         start,end = self.bodyCtrl.GetSelection()
         return start != end
-    
+    #@nonl
+    #@-node:ekr.20060629124102.3:hasTextSelection
+    #@+node:ekr.20060629124102.4:selectAllText
     def selectAllText (self):
-        self.bodyCtrl.SetSelection(-1,-1)
     
+        self.bodyCtrl.SetSelection(-1,-1)
+    #@nonl
+    #@-node:ekr.20060629124102.4:selectAllText
+    #@+node:ekr.20060629124102.5:setTextSelection
     def setTextSelection (self,sel):
+    
         self.bodyCtrl.SetSelection(sel)
     #@nonl
+    #@-node:ekr.20060629124102.5:setTextSelection
     #@-node:edream.111303171218.1:Selection
     #@+node:edream.111303171238:Text
     # These routines replace most of the former insert/delete and index routines.
@@ -1297,14 +1358,14 @@ class wxLeoFrame(wx.wxFrame,leoFrame.leoFrame):
         frame.log = wxLeoLog(frame,self.splitter2)
         frame.body = wxLeoBody(frame,self.splitter1)
         frame.bodyCtrl = frame.body
-        g.app.setLog(frame.log,'wxLeoFrame:finishCreate') # writeWaitingLog hangs without this(!)
+        g.app.setLog(frame.log) # writeWaitingLog hangs without this(!)
     
         # Attach the controls to the splitter.
         self.splitter1.SplitHorizontally(self.splitter2,self.body.bodyCtrl,0)
         self.splitter2.SplitVertically(self.tree.treeCtrl,self.log.logCtrl,cSplitterWidth/2)
         
         self.menu = wxLeoMenu(frame)
-        self.menu.createMenuBar()
+        ###self.menu.createMenuBar()
         
         #@    << set the window icon >>
         #@+node:edream.110203113231.265:<< set the window icon >>
@@ -1800,12 +1861,12 @@ class wxLeoLog (leoFrame.leoLog):
     #@+node:edream.110203113231.559:wxLeoLog.put & putnl
     # All output to the log stream eventually comes here.
     
-    def put (self,s,color=None):
+    def put (self,s,color=None,tabName=None):
     
         if self.logCtrl:
             self.logCtrl.AppendText(s)
     
-    def putnl (self):
+    def putnl (self,tabName=None):
     
         if self.logCtrl:
             self.logCtrl.AppendText('\n')
@@ -1943,13 +2004,13 @@ class wxLeoMenu (leoMenu.leoMenu):
     #@-node:edream.111603104327:9 Routines with Tk names
     #@+node:edream.111603112846:7 Routines with other names...
     #@+node:edream.111303103457.2:createMenuBar
-    def createMenuBar(self):
+    def createMenuBar(self,frame):
         
         self.menuBar = menuBar = wx.wxMenuBar()
     
         self.createMenusFromTables()
     
-        self.frame.SetMenuBar(menuBar)
+        frame.SetMenuBar(menuBar)
     #@nonl
     #@-node:edream.111303103457.2:createMenuBar
     #@+node:edream.111603112846.1:createOpenWithMenuFromTable (not ready yet)
@@ -2451,6 +2512,7 @@ class wxLeoTree (leoFrame.leoTree):
             "treeCtrl")
     
         self.root_id = None
+        self.updateCount = 0
         
         #@    << declare event handlers >>
         #@+node:edream.111603213329:<< declare event handlers >>
@@ -2538,7 +2600,7 @@ class wxLeoTree (leoFrame.leoTree):
     #@nonl
     #@-node:edream.110203113231.295:beginUpdate
     #@+node:edream.110203113231.296:endUpdate
-    def endUpdate (self,flag=True):
+    def endUpdate (self,flag=True,scroll=False):
     
         assert(self.updateCount > 0)
     
