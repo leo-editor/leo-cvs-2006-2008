@@ -701,6 +701,7 @@ class configClass:
     
     defaultBodyFontSize = g.choose(sys.platform=="win32",9,12)
     defaultLogFontSize  = g.choose(sys.platform=="win32",8,12)
+    defaultMenuFontSize = g.choose(sys.platform=="win32",9,12)
     defaultTreeFontSize = g.choose(sys.platform=="win32",9,12)
     
     defaultsDict = {'_hash':'defaultsDict'}

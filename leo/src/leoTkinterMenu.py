@@ -22,8 +22,13 @@ class leoTkinterMenu (leoMenu.leoMenu):
         leoMenu.leoMenu.__init__(self,frame)
         
         self.top = frame.top
-        self.c = frame.c
+        self.c = c = frame.c
         self.frame = frame
+        
+        self.font = c.config.getFontFromParams(
+            'menu_text_font_family', 'menu_text_font_size',
+            'menu_text_font_slant',  'menu_text_font_weight',
+            c.config.defaultMenuFontSize)
     #@nonl
     #@-node:ekr.20031218072017.4102:leoTkinterMenu.__init__
     #@-node:ekr.20031218072017.4101:Birth & death
@@ -152,15 +157,21 @@ class leoTkinterMenu (leoMenu.leoMenu):
         return parent.insert_cascade(
             index=index,label=label,
             menu=menu,underline=underline)
-    
-    
+    #@nonl
     #@-node:ekr.20031218072017.4112:insert_cascade
     #@+node:ekr.20031218072017.4113:new_menu
     def new_menu(self,parent,tearoff=False):
         
         """Wrapper for the Tkinter new_menu menu method."""
-    
-        return Tk.Menu(parent,tearoff=tearoff)
+        
+        if self.font:
+            try:
+                return Tk.Menu(parent,tearoff=tearoff,font=self.font)
+            except Exception:
+                g.es_exception()
+                return Tk.Menu(parent,tearoff=tearoff)
+        else:
+            return Tk.Menu(parent,tearoff=tearoff)
     #@nonl
     #@-node:ekr.20031218072017.4113:new_menu
     #@-node:ekr.20031218072017.4104:Methods with Tk spellings
@@ -178,6 +189,8 @@ class leoTkinterMenu (leoMenu.leoMenu):
     def createMenuBar(self,frame):
     
         top = frame.top
+        
+        # Note: font setting has no effect here.
         topMenu = Tk.Menu(top,postcommand=self.updateAllMenus)
         
         # Do gui-independent stuff.

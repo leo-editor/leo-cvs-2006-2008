@@ -6483,6 +6483,7 @@ class configSettings:
         
         self.defaultBodyFontSize = g.app.config.defaultBodyFontSize
         self.defaultLogFontSize  = g.app.config.defaultLogFontSize
+        self.defaultMenuFontSize = g.app.config.defaultMenuFontSize
         self.defaultTreeFontSize = g.app.config.defaultTreeFontSize
         
         for key in g.app.config.encodingIvarsDict.keys():

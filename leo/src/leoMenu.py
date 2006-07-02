@@ -473,7 +473,7 @@ class leoMenu:
     #@nonl
     #@-node:ekr.20031218072017.3803:createHelpMenuFromTable
     #@-node:ekr.20031218072017.3785:createMenusFromTables & helpers
-    #@+node:ekr.20031218072017.3804:createNewMenu (contains Tk code)
+    #@+node:ekr.20031218072017.3804:createNewMenu
     def createNewMenu (self,menuName,parentName="top",before=None):
     
         try:
@@ -501,7 +501,7 @@ class leoMenu:
             g.es_exception()
             return None
     #@nonl
-    #@-node:ekr.20031218072017.3804:createNewMenu (contains Tk code)
+    #@-node:ekr.20031218072017.3804:createNewMenu
     #@+node:ekr.20031218072017.4116:createOpenWithMenuFromTable & helper
     #@+at 
     #@nonl
