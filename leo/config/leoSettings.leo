@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="291" clone_windows="0"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="292" clone_windows="0"/>
 <globals body_outline_ratio="0.549828178694">
-	<global_window_position top="75" left="241" height="737" width="953"/>
+	<global_window_position top="75" left="241" height="718" width="953"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -217,9 +217,10 @@
 <v t="ekr.20041120152900.2"><vh>@bool script_search = None</vh></v>
 <v t="ekr.20041119050105.16"><vh>@bool suboutline_only = False</vh></v>
 </v>
-<v t="ekr.20041213105007" annotate="7d71002e"><vh>Fonts</vh>
+<v t="ekr.20041213105007" a="E" annotate="7d71002e"><vh>Fonts</vh>
 <v t="ekr.20041213105508"><vh>@font log font</vh></v>
 <v t="ekr.20041119034357.45"><vh>@font body text font</vh></v>
+<v t="ekr.20060702100257" a="TV"><vh>@font menu text font</vh></v>
 <v t="ekr.20041119051246.4"><vh>@font outline font</vh></v>
 </v>
 <v t="ekr.20041119034357.3" annotate="7d71002e"><vh>General options</vh>
@@ -257,7 +258,7 @@
 <v t="ekr.20060122105527.6" annotate="7d71002e"><vh>@bool useMinibuffer = True</vh></v>
 <v t="ekr.20060125165241"><vh>@bool useTextMinibuffer = True</vh></v>
 </v>
-<v t="ekr.20051007200824" a="E" annotate="7d71002e"><vh>Keyboard shortcuts</vh>
+<v t="ekr.20051007200824" annotate="7d71002e"><vh>Keyboard shortcuts</vh>
 <v t="ekr.20051101160257" annotate="7d71002e"><vh>About keyboard shortcuts</vh>
 <v t="ekr.20051007200824.1" annotate="7d71002e"><vh>About shortcut specifiers</vh></v>
 <v t="ekr.20060116090646"><vh>Reference for function keys</vh></v>
@@ -349,7 +350,7 @@
 <v t="ekr.20060606085536"><vh>@color overwrite_mode_bg_color = azure2</vh></v>
 <v t="ekr.20060606085536.1"><vh>@color overwrite_mode_fg_color = black</vh></v>
 </v>
-<v t="ekr.20060603215208.4" a="E"><vh>Modes</vh>
+<v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
 <v t="ekr.20060608185854"><vh>@mode commands</vh></v>
 <v t="ekr.20060608190813"><vh>@mode edit</vh></v>
@@ -368,7 +369,7 @@
 <v t="ekr.20060604082857"><vh>@mode outline</vh></v>
 <v t="ekr.20060603223152.2"><vh>@mode toggle-find</vh></v>
 </v>
-<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
 <v t="ekr.20060604081014"><vh>@@@@shortcuts top-level keys (like vim)</vh></v>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20060603215208.19"><vh>@shortcuts Find Commands</vh></v>
@@ -475,7 +476,7 @@
 <v t="ekr.20060121102627"><vh>@bool trace_modes = False</vh></v>
 <v t="ekr.20060620085654"><vh>@string editor_orientation = horizontal</vh></v>
 </v>
-<v t="ekr.20060603215208" a="E"><vh>@keys EKR bindings: Emacs keys + modes</vh>
+<v t="ekr.20060603215208"><vh>@keys EKR bindings: Emacs keys + modes</vh>
 <v t="ekr.20060608065207"><vh>Settings related to key bindings</vh>
 <v t="ekr.20060624072653"><vh>@bool warn_about_redefined_shortcuts = True</vh></v>
 <v t="ekr.20060604080653" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
@@ -486,7 +487,7 @@
 <v t="ekr.20060606085536"><vh>@color overwrite_mode_bg_color = azure2</vh></v>
 <v t="ekr.20060606085536.1"><vh>@color overwrite_mode_fg_color = black</vh></v>
 </v>
-<v t="ekr.20060603215208.4" a="E"><vh>Modes</vh>
+<v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
 <v t="ekr.20060608185854"><vh>@mode commands</vh></v>
 <v t="ekr.20060608190813"><vh>@mode edit</vh></v>
@@ -505,13 +506,13 @@
 <v t="ekr.20060604082857"><vh>@mode outline</vh></v>
 <v t="ekr.20060603223152.2"><vh>@mode toggle-find</vh></v>
 </v>
-<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
 <v t="ekr.20060604081014"><vh>@@@@shortcuts top-level keys (like vim)</vh></v>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20060603215208.19"><vh>@shortcuts Find Commands</vh></v>
 <v t="ekr.20060603215208.20"><vh>@shortcuts Minibuffer bindings</vh></v>
 <v t="ekr.20060603215208.21" annotate="7d71002e"><vh>@shortcuts EKR: A-E</vh></v>
-<v t="ekr.20060603215208.22" a="TV"><vh>@shortcuts EKR: F-M</vh></v>
+<v t="ekr.20060603215208.22"><vh>@shortcuts EKR: F-M</vh></v>
 <v t="ekr.20060603215208.23" annotate="7d71002e"><vh>@shortcuts EKR: N-Z</vh></v>
 </v>
 </v>
@@ -1151,7 +1152,12 @@ Autments the settings parser and the dialog creator with scripts.</t>
 <t tx="ekr.20041120181045">A float value restricted to the range 0.0 to 1.0.</t>
 <t tx="ekr.20041122163623">When looking at @x, Leo converts to lower case and removes minus signs.
 Therefore, @if-platform and @ifPlatformare equivalent to @ifplatform.</t>
-<t tx="ekr.20041213105007"></t>
+<t tx="ekr.20041213105007">@nocolor
+
+Valid values:
+    
+weight: bold, normal, None
+slant: roman, italic, None</t>
 <t tx="ekr.20041213105007.1"></t>
 <t tx="ekr.20041213105007.2"></t>
 <t tx="ekr.20041213105007.3"></t>
@@ -5530,5 +5536,9 @@ horizontal: pack body-pane editors horizontally.</t>
 <t tx="ekr.20060627121646.1"></t>
 <t tx="ekr.20060627121646.2">The number of times to flash matching brackets.</t>
 <t tx="ekr.20060627121646.3">One half the total cycle time of bracket flashes, in milliseconds.</t>
+<t tx="ekr.20060702100257">menu_text_font_family = None
+menu_text_font_size = 12
+menu_text_font_slant = None
+menu_text_font_weight = bold</t>
 </tnodes>
 </leo_file>
