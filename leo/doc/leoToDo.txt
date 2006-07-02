@@ -301,14 +301,39 @@ def zapToCharacter (self,event):
 #@-node:ekr.20060628103226:Finish emacs commands
 #@+node:ekr.20060531161030.1:Make body editors persistant
 #@-node:ekr.20060531161030.1:Make body editors persistant
-#@+node:ekr.20060527204444:Finish new colorizer plugin
-- Add all features used by Php.
+#@+node:ekr.20060702091716:Generalize bracket flasher
+@nocolor
 
-- Add all other features.
+http://sourceforge.net/forum/message.php?msg_id=3802513
+By: tfer
+
+Could you make the set of symbols to flash user settable?  There are times when
+you might went to add/delete to that set for different languages, e.g. <> in
+html, xml, distinguishalbe open/close quotes, in text, etc.
+
+Tom
+
+Reply:
+
+Easily done.
+
+1. Add two new settings:
+
+- @string open_flash_brackets
+- @string close_flash_brackets
+
+2.  Initialize corresponding ivars in the ctor for editCommandsClass.
+
+3. Replace static data by the ivars in the flashMatchingBracketsHelper method.
+
+I could do this myself in a few minutes, but I would like to start making Leo a more cooperative venture.  Would you be willing to make these changes yourself?   Not only would this offload a bit of work from me, but more importantly it would get more people on board as Leo developers and it would expose problems using Leo with cvs.
 #@nonl
-#@-node:ekr.20060527204444:Finish new colorizer plugin
+#@-node:ekr.20060702091716:Generalize bracket flasher
 #@-node:ekr.20060531161030:To do: B4
 #@+node:ekr.20060623064600.1:Urgent (big picture)
+#@+node:ekr.20041228084830.3:Finish wxWindows plugin
+# Don't use body wrappers, use g.app.gui methods instead
+#@-node:ekr.20041228084830.3:Finish wxWindows plugin
 #@+node:ekr.20051202094427:Resolve cvs conflicts
 Investigate meld:  http://meld.sourceforge.net/
 #@nonl
@@ -805,14 +830,6 @@ An @decorator setting might be good. This would be a list of all Python
 decorators. Leo would create @verbatim sentinels for these.
 #@nonl
 #@-node:ekr.20050419060645:Alternate lead-in characters
-#@+node:ekr.20041228084830.3:Finish wxWindows plugin
-#@+node:ekr.20060529130339:Don't use body wrappers, use g.app.gui methods instead
-#@-node:ekr.20060529130339:Don't use body wrappers, use g.app.gui methods instead
-#@+node:ekr.20060527190832.1:Add gui index conversion methods
-Add gui.toPythonIndex(s,index) and gui.toGuiIndex(s,index)
-#@nonl
-#@-node:ekr.20060527190832.1:Add gui index conversion methods
-#@-node:ekr.20041228084830.3:Finish wxWindows plugin
 #@-node:ekr.20060623064600.1:Urgent (big picture)
 #@+node:ekr.20060527164612:Important 1-2 day projects (1-2 weeks)
 #@+node:ekr.20060609070148:Fix hung (zombie) windows)
@@ -900,11 +917,18 @@ def createHelpMenuFromTable (self):
 def new_menu(self,parent,tearoff=False):
     
     """Wrapper for the Tkinter new_menu menu method."""
-
-    return Tk.Menu(parent,tearoff=tearoff)
+    
+    if self.font:
+        try:
+            return Tk.Menu(parent,tearoff=tearoff,font=self.font)
+        except Exception:
+            g.es_exception()
+            return Tk.Menu(parent,tearoff=tearoff)
+    else:
+        return Tk.Menu(parent,tearoff=tearoff)
 #@nonl
 #@-node:ekr.20031218072017.4113:new_menu
-#@+node:ekr.20031218072017.3804:createNewMenu (contains Tk code)
+#@+node:ekr.20031218072017.3804:createNewMenu
 def createNewMenu (self,menuName,parentName="top",before=None):
 
     try:
@@ -932,7 +956,7 @@ def createNewMenu (self,menuName,parentName="top",before=None):
         g.es_exception()
         return None
 #@nonl
-#@-node:ekr.20031218072017.3804:createNewMenu (contains Tk code)
+#@-node:ekr.20031218072017.3804:createNewMenu
 #@+node:ekr.20031218072017.3807:getMenu, setMenu, destroyMenu
 def getMenu (self,menuName):
 
@@ -2896,6 +2920,34 @@ class UndoableCompoundEvent3:
 #@-node:ekr.20060228072202:New undoer
 #@+node:ekr.20060531192407:IPython
 #@-node:ekr.20060531192407:IPython
+#@+node:ekr.20060629154112:Merge Leo & jyLeo
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3799470
+By: leouser
+
+I guess its hard to say what pieces must merge and what can stay different.
+Id like it if the blasted nodes were the same.  I guess there is progress again
+on a jython 2.2 being complete and work starting on 2.3.  So there is hope that
+the nodes will be the same code, at least it will be possible.
+
+At the top of my head the big differences outside of the position changes are:
+1. Some modifications to the read/write code so that Chapters can work and also
+Serialized positions.
+2. Commander has some things different, it looks to the Chapters instance to
+determine what is the curentPosition, top Position etc... instead of keeping
+track of it itself.
+3. GUI layers are very different.  Interesting tidbit here: the work I did to
+get the JTree to use positions to determine if a node is expanded or not looks
+like it has provided the outline for enhancing the JTree for Java itself to
+be able to do this.  We will have to see, but maybe in Java 7 you can say: "Positions
+lead to user controled tree expansion models".
+
+There is a tremendous amount that is the same. Im sure you could make an interesting
+evening out of comparing the codebases to see where things change.
+
+
+#@-node:ekr.20060629154112:Merge Leo & jyLeo
 #@-node:ekr.20060527182117:Important 1-2 week projects (2-3 weeks)
 #@-all
 #@nonl

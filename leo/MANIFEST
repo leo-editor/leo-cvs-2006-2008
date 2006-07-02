@@ -693,6 +693,7 @@ src\leo_run.py
 src\oldLeoProjects.leo
 test\__init__.py
 test\test.leo
+test\testRemoveSentinels.py
 test\unitTest.leo
 test\unittest\batchTest.py
 test\unittest\errorTest.py

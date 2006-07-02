@@ -16,7 +16,7 @@
 <v t="ekr.20050315084922"><vh>@button Spell</vh></v>
 <v t="ekr.20051015172713"><vh>@button Save</vh></v>
 </v>
-<v t="EKR.20040519091259"><vh>Annoucnements (don't split into lines)</vh>
+<v t="EKR.20040519091259" a="E"><vh>Annoucnements (don't split into lines)</vh>
 <v t="EKR.20040519091259.1"><vh>Download statistics</vh></v>
 <v t="EKR.20040519091259.2"><vh>Quotes of the month</vh>
 <v t="ekr.20060213160806"><vh>February 2005</vh></v>
@@ -25,7 +25,7 @@
 <v t="EKR.20040519091259.3"><vh>November 2003</vh></v>
 <v t="EKR.20040519091259.4"><vh>October 2003</vh></v>
 </v>
-<v t="ekr.20060629090118"><vh>ANN: Leo 4.4.1 beta 3</vh></v>
+<v t="ekr.20060629090118" a="TV"><vh>ANN: Leo 4.4.1 beta 3</vh></v>
 <v t="ekr.20060622182003"><vh>ANN: Leo 4.4.1 beta 2</vh></v>
 <v t="ekr.20060603080748"><vh>ANN: Leo 4.4.1 beta 1</vh></v>
 <v t="ekr.20060511075451"><vh>ANN: Leo 4.4 final</vh></v>
@@ -180,7 +180,7 @@
 </v>
 <v t="ekr.20050118092706"><vh>@thin leo-4-3.nsi</vh></v>
 </v>
-<v t="EKR.20040519090846" a="V"><vh>Distribution files (update for each release)</vh>
+<v t="EKR.20040519090846"><vh>Distribution files (update for each release)</vh>
 <v t="EKR.20040519090846.2"><vh>@asis ../doc/INSTALL.TXT</vh>
 <v t="EKR.20040519090846.3"><vh>System requirements</vh></v>
 <v t="EKR.20040519090846.4"><vh>Linux installation</vh></v>
@@ -4693,6 +4693,8 @@ Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
 
 Leo 4.4.1 beta 3 is now available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+
+This release corrects several long-standing bugs and adds optional flashing of matching brackets.
 
 Leo is a text editor, data organizer, project manager and much more. See:
 http://webpages.charter.net/edreamleo/intro.html
