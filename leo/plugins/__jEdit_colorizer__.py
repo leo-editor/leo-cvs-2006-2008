@@ -188,18 +188,15 @@ def match_at_nocolor (self,s,i):
 #@+node:ekr.20060530091119.31:match_doc_part
 def match_doc_part (self,s,i):
     
-    if trace_match: g.trace()
-    
-    if i >= len(s) or s[i] != '@':
-        return 0
-    elif i + 1 >= len(s):
+    if g.match_word(s,i,'@doc'):
+        j = i+4
+        self.colorRangeWithTag(s,i,j,'leoKeyword')
+    elif g.match(s,i,'@') and (i+1 >= len(s) or s[i+1] in (' ','\t')):
         j = i + 1
-        self.colorRangeWithTag(s,i,j,'docPart')
-        return 1
-    elif not g.match_word(s,i,'@doc') and not s[i+1] in (' ','\t','\n'):
-        return 0
+        self.colorRangeWithTag(s,i,j,'leoKeyword')
+    else: return 0
 
-    j = i ; n = len(s)
+    i = j ; n = len(s)
     while j < n:
         k = s.find('@c',j)
         if k == -1:
@@ -235,9 +232,8 @@ def match_leo_keywords(self,s,i):
         j += 1
         
     word = s[i:j]
-    kind = leoKeywordsDict.get(s[i:j])
-    if kind:
-        # g.trace('%3d %10s %s' % (i,word,repr(kind)))
+    if leoKeywordsDict.get(word):
+        kind = 'leoKeyword'
         self.colorRangeWithTag(s,i,j,kind)
         self.prev = (i,j,kind)
         return j-i
@@ -441,13 +437,14 @@ class baseColorizer:
         '''Put Leo-specific rules to theList.'''
     
         for ch, rule, atFront, in (
+            # Warning: rules added at front are added in reverse order.
+            ('@',  match_leo_keywords,True), # Debatable: atFront means Leo keywords override langauge keywords.
             ('@',  match_at_color,    True),
             ('@',  match_at_nocolor,  True),
-            ('@',  match_doc_part,    True),
+            ('@',  match_doc_part,    True), # Called **first**.
             ('<',  match_section_ref, True),
             (' ',  match_blanks,      False),
             ('\t', match_tabs,        False),
-            ('@',  match_leo_keywords,False),
         ):
             theList = theDict.get(ch,[])
             if atFront:
@@ -895,18 +892,19 @@ class baseColorizer:
         return 'break'
     #@-node:ekr.20060530091119.13:colorOneChunk
     #@+node:ekr.20060530091119.48:colorRangeWithTag
-    def colorRangeWithTag (self,s,i,j,tag,delegate=''):
+    def colorRangeWithTag (self,s,i,j,tag,delegate='',exclude_match=False):
     
         '''Add an item to the tagList if colorizing is enabled.'''
         
         # toGuiIndex could be slow for large s.
+        w = self.body.bodyCtrl 
         if not self.flag: return
         
-        # Color the range, even if there is a delegate.
-        w = self.body.bodyCtrl 
-        x1 = g.app.gui.toGuiIndex(s,w,i)
-        x2 = g.app.gui.toGuiIndex(s,w,j)
-        self.tagList.append((tag,x1,x2),)
+        # Color the range, even if there is a delegate, unless exclude_match is true.
+        if not exclude_match:
+            x1 = g.app.gui.toGuiIndex(s,w,i)
+            x2 = g.app.gui.toGuiIndex(s,w,j)
+            self.tagList.append((tag,x1,x2),)
         if 1:
             if tag != 'blank':
                 if delegate:
@@ -945,7 +943,7 @@ class baseColorizer:
     #@nonl
     #@-node:ekr.20060530091119.14:quickColor
     #@-node:ekr.20060530091119.46:Colorizer code
-    #@+node:ekr.20060530091119.49:jEdit matchers (todo: exclude_match)
+    #@+node:ekr.20060530091119.49:jEdit matchers
     #@@nocolor
     #@+at
     # 
@@ -1047,7 +1045,7 @@ class baseColorizer:
     
         if g.match(s,i,seq):
             j = g.skip_to_end_of_line(s,i)
-            self.colorRangeWithTag(s,i,j,kind,delegate=delegate)
+            self.colorRangeWithTag(s,i,j,kind,delegate=delegate,exclude_match=exclude_match)
             self.prev = (i,j,kind)
             return j - i 
         else:
@@ -1072,7 +1070,7 @@ class baseColorizer:
             n = self.match_regexp_helper(s,i,regexp)
             if n > 0:
                 j = g.skip_to_end_of_line(s,i)
-                self.colorRangeWithTag(s,i,j,kind,delegate=delegate)
+                self.colorRangeWithTag(s,i,j,kind,delegate=delegate,exclude_match=exclude_match)
                 self.prev = (i,j,kind)
                 return j - i
             else:
@@ -1081,7 +1079,7 @@ class baseColorizer:
             return 0
     #@nonl
     #@-node:ekr.20060530091119.52:match_eol_span_regexp
-    #@+node:ekr.20060530091119.53:match_mark_following
+    #@+node:ekr.20060530091119.53:match_mark_following & getNextToken
     def match_mark_following (self,s,i,
         kind='',pattern='',
         at_line_start=False,at_whitespace_end=False,at_word_start=False,
@@ -1097,12 +1095,30 @@ class baseColorizer:
     
         if g.match(s,i,pattern):
             j = i + len(pattern)
-            self.colorRangeWithTag(s,i,j,kind)
+            self.colorRangeWithTag(s,i,j,kind,exclude_match=exclude_match)
+            k = self.getNextToken(s,j)
+            if k > j:
+                self.colorRangeWithTag(s,j,k,kind,exclude_match=False)
+                j = k
             self.prev = (i,j,kind)
             return j - i
         else:
             return 0
-    #@-node:ekr.20060530091119.53:match_mark_following
+    #@+node:ekr.20060704095454:getNextToken
+    def getNextToken (self,s,i):
+        
+        '''Return the index of the end of the next token for match_mark_following.
+        
+        The jEdit docs are not clear about what a 'token' is, but experiments with jEdit
+        show that token means a word, as defined by word_chars.'''
+        
+        while i < len(s) and s[i] in self.word_chars:
+            i += 1
+            
+        return min(len(s),i+1)
+    #@nonl
+    #@-node:ekr.20060704095454:getNextToken
+    #@-node:ekr.20060530091119.53:match_mark_following & getNextToken
     #@+node:ekr.20060530091119.54:match_mark_previous
     def match_mark_previous (self,s,i,
         kind='',pattern='',
@@ -1123,7 +1139,12 @@ class baseColorizer:
     
         if g.match(s,i,pattern):
             j = i + len(pattern)
-            self.colorRangeWithTag(s,i,j,kind)
+            # Color the previous token.
+            if self.prev:
+                i2,j2,kind2 = self.prev
+                self.colorRangeWithTag(s,i2,j2,kind2,exclude_match=False)
+            if not exclude_match:
+                self.colorRangeWithTag(s,i,j,kind)
             self.prev = (i,j,kind)
             return j - i
         else:
@@ -1196,7 +1217,7 @@ class baseColorizer:
             else:
                 j += len(end)
                 # g.trace(i,j,s[i:j],kind,no_line_break)
-                self.colorRangeWithTag(s,i,j,kind,delegate=delegate)
+                self.colorRangeWithTag(s,i,j,kind,delegate=delegate,exclude_match=exclude_match)
                 self.prev = (i,j,kind)
                 return j - i
         else:
@@ -1225,14 +1246,14 @@ class baseColorizer:
             # We may have to allow $n here, in which case we must use a regex object?
             if n > 0 and g.match(s,i+n,end):
                 g.trace('found',i,j,kind,delegate)
-                self.colorRangeWithTag(s,i,j,kind,delegate=delegate)
+                self.colorRangeWithTag(s,i,j,kind,delegate=delegate,exclude_match=exclude_match)
                 self.prev = (i,j,kind)
                 return n + len(end)
         else:
             return 0
     #@nonl
     #@-node:ekr.20060530091119.58:match_span_regexp
-    #@-node:ekr.20060530091119.49:jEdit matchers (todo: exclude_match)
+    #@-node:ekr.20060530091119.49:jEdit matchers
     #@+node:ekr.20060530091119.59:Utils
     #@+at 
     #@nonl
