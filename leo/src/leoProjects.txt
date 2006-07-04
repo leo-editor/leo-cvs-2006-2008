@@ -51,6 +51,21 @@ http://sourceforge.net/forum/message.php?msg_id=3802624
 By: dcbbcd
 
 How can I set the font for the menu?
+
+
+-----------------
+
+This works well on Windows XP, but there is the potential for problems on other
+platforms. 
+ 
+If I am not mistaken (I could be) the present code uses a dummy Tk.Text widget
+to compute what the default font *family* is, and this seems dubious when
+setting menu fonts. That this works on XP may be coincidence. Please report any
+problems immediately. What I want to avoid is having to specify a default system
+menu font family explicitly in leoSettings.leo. 
+ 
+The font settings do not have any effect on the menus shown at the top-level.
+I've tried setting the top-level font without result.
 #@nonl
 #@-node:ekr.20060702095034:Request
 #@+node:ekr.20041117062717.1:defaultsDict
