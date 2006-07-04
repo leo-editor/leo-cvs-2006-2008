@@ -155,37 +155,37 @@ def rule9(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule10(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword1", begin="<#ftl\\>", end=">",
+    return colorer.match_span_regexp(s, i, kind="keyword1", begin="<#ftl\\>", end=">", hash_char="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="EXPRESSION",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule11(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword1", begin="<#?(if|elseif|switch|foreach|list|case|assign|local|global|setting|include|import|stop|escape|macro|function|transform|call|visit|recurse)(\\s|/|$)", end=">",
+    return colorer.match_span_regexp(s, i, kind="keyword1", begin="<#?(if|elseif|switch|foreach|list|case|assign|local|global|setting|include|import|stop|escape|macro|function|transform|call|visit|recurse)(\\s|/|$)", end=">", hash_char="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="EXPRESSION",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule12(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword1", begin="</#?(assign|local|global|if|switch|foreach|list|escape|macro|function|transform|compress|noescape)\\>", end=">",
+    return colorer.match_span_regexp(s, i, kind="keyword1", begin="</#?(assign|local|global|if|switch|foreach|list|escape|macro|function|transform|compress|noescape)\\>", end=">", hash_char="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="INVALID",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule13(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword1", begin="<#?(else|compress|noescape|default|break|flush|nested|t|rt|lt|return|recurse)\\>", end=">",
+    return colorer.match_span_regexp(s, i, kind="keyword1", begin="<#?(else|compress|noescape|default|break|flush|nested|t|rt|lt|return|recurse)\\>", end=">", hash_char="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="INVALID",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule14(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword1", begin="</@(([_@[:alpha:]][_@[:alnum:]]*)(\\.[_@[:alpha:]][_@[:alnum:]]*)*)?", end=">",
+    return colorer.match_span_regexp(s, i, kind="keyword1", begin="</@(([_@[:alpha:]][_@[:alnum:]]*)(\\.[_@[:alpha:]][_@[:alnum:]]*)*)?", end=">", hash_char="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="INVALID",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule15(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword1", begin="<@([_@[:alpha:]][_@[:alnum:]]*)(\\.[_@[:alpha:]][_@[:alnum:]]*)*", end=">",
+    return colorer.match_span_regexp(s, i, kind="keyword1", begin="<@([_@[:alpha:]][_@[:alnum:]]*)(\\.[_@[:alpha:]][_@[:alnum:]]*)*", end=">", hash_char="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="EXPRESSION",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)

@@ -279,31 +279,31 @@ def rule16(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule17(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal2", seq="application[\\t\\s]+responses",
+    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="application[\\t\\s]+responses", hash_char="a",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule18(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal2", seq="current[\\t\\s]+application",
+    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="current[\\t\\s]+application", hash_char="c",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule19(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal2", seq="white[\\t\\s]+space",
+    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="white[\\t\\s]+space", hash_char="w",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule20(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal2", seq="all[\\t\\s]+caps",
+    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="all[\\t\\s]+caps", hash_char="a",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule21(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal2", seq="all[\\t\\s]+lowercase",
+    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="all[\\t\\s]+lowercase", hash_char="a",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule22(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal2", seq="small[\\t\\s]+caps",
+    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="small[\\t\\s]+caps", hash_char="s",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule23(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword3", seq="missing[\\t\\s]+value",
+    return colorer.match_seq_regexp(s, i, kind="keyword3", regexp="missing[\\t\\s]+value", hash_char="m",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule24(colorer, s, i):

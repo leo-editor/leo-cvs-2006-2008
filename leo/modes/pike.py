@@ -210,7 +210,7 @@ def rule6(colorer, s, i):
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rule7(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", seq="#.*?(?=($|/\\*|//))",
+    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="#.*?(?=($|/\\*|//))", hash_char="#",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule8(colorer, s, i):
@@ -490,7 +490,7 @@ def rule35(colorer, s, i):
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rule36(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="function", seq="@(b|i|u|tt|url|pre|ref|code|expr|image)?(\\{.*@\\})",
+    return colorer.match_seq_regexp(s, i, kind="function", regexp="@(b|i|u|tt|url|pre|ref|code|expr|image)?(\\{.*@\\})", hash_char="@",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule37(colorer, s, i):
@@ -572,11 +572,11 @@ rulesDict3 = {
 # Rules for pike_string_literal ruleset.
 
 def rule39(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal2", seq="%([^ a-z]*[a-z]|\\[[^\\]]*\\])",
+    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="%([^ a-z]*[a-z]|\\[[^\\]]*\\])", hash_char="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule40(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="comment2", seq="DEBUG:",
+    return colorer.match_seq_regexp(s, i, kind="comment2", regexp="DEBUG:", hash_char="D",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules dict for string_literal ruleset.

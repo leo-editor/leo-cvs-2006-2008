@@ -570,7 +570,7 @@ def rule2(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule3(colorer, s, i):
-    return colorer.match_eol_span_regexp(s, i, kind="keyword2", seq="\\* *process",
+    return colorer.match_eol_span_regexp(s, i, kind="keyword2", regexp="\\* *process", hash_char="*",
         at_line_start=True, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 

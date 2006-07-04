@@ -154,19 +154,19 @@ def rule3(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule4(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal2", seq="I\\d{1,2}",
+    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="I\\d{1,2}", hash_char="I",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule5(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal2", seq="S\\d{1,2}",
+    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="S\\d{1,2}", hash_char="S",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule6(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal2", seq="N\\d{1,2}",
+    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="N\\d{1,2}", hash_char="N",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule7(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal2", seq="P\\d{1,2}",
+    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="P\\d{1,2}", hash_char="P",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule8(colorer, s, i):

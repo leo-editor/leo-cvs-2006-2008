@@ -2560,7 +2560,7 @@ def rule3(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule4(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="markup", begin="<SCRIPT\\s+LANGUAGE=\"?PHP\"?>", end="</SCRIPT>",
+    return colorer.match_span_regexp(s, i, kind="markup", begin="<SCRIPT\\s+LANGUAGE=\"?PHP\"?>", end="</SCRIPT>", hash_char="< ",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="PHP",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
@@ -2713,7 +2713,7 @@ def rule25(colorer, s, i):
         delegate="", exclude_match=False)
 
 def rule26(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="literal1", begin="<<<[[:space:]'\"]*([[:alnum:]_]+)[[:space:]'\"]*", end="$1",
+    return colorer.match_span_regexp(s, i, kind="literal1", begin="<<<[[:space:]'\"]*([[:alnum:]_]+)[[:space:]'\"]*", end="$1", hash_char="< ",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="PHP_LITERAL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)

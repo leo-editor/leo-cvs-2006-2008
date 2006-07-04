@@ -138,7 +138,7 @@ def rule7(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def rule8(colorer, s, i):
-    return colorer.match_eol_span_regexp(s, i, kind="comment1", seq="REM\\s",
+    return colorer.match_eol_span_regexp(s, i, kind="comment1", regexp="REM\\s", hash_char="R",
         at_line_start=False, at_whitespace_end=True, at_word_start=False,
         delegate="", exclude_match=False)
 
@@ -189,7 +189,7 @@ def rule19(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule20(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", seq="%%[[:alpha:]]",
+    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="%%[[:alpha:]]", hash_char="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule21(colorer, s, i):

@@ -48,7 +48,7 @@ def rule2(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule3(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="label", seq="\\s+\\w[[:alnum:][:blank:]]+::",
+    return colorer.match_seq_regexp(s, i, kind="label", regexp="\\s+\\w[[:alnum:][:blank:]]+::", hash_char=" ",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule4(colorer, s, i):
@@ -64,121 +64,121 @@ def rule5(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule6(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="('{2,5})[^']+\\1[^']",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="('{2,5})[^']+\\1[^']", hash_char="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule7(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal4", seq="-{4,}",
+    return colorer.match_seq_regexp(s, i, kind="literal4", regexp="-{4,}", hash_char="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule8(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword1", begin="(={1,5})", end="$1",
+    return colorer.match_span_regexp(s, i, kind="keyword1", begin="(={1,5})", end="$1", hash_char="=",
         at_line_start=True, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule9(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", seq="A[a-z]+[A-Z][a-zA-Z]+",
+    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="A[a-z]+[A-Z][a-zA-Z]+", hash_char="A",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule10(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", seq="B[a-z]+[A-Z][a-zA-Z]+",
+    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="B[a-z]+[A-Z][a-zA-Z]+", hash_char="B",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule11(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", seq="C[a-z]+[A-Z][a-zA-Z]+",
+    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="C[a-z]+[A-Z][a-zA-Z]+", hash_char="C",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule12(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", seq="D[a-z]+[A-Z][a-zA-Z]+",
+    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="D[a-z]+[A-Z][a-zA-Z]+", hash_char="D",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule13(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", seq="E[a-z]+[A-Z][a-zA-Z]+",
+    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="E[a-z]+[A-Z][a-zA-Z]+", hash_char="E",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule14(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", seq="F[a-z]+[A-Z][a-zA-Z]+",
+    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="F[a-z]+[A-Z][a-zA-Z]+", hash_char="F",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule15(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", seq="G[a-z]+[A-Z][a-zA-Z]+",
+    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="G[a-z]+[A-Z][a-zA-Z]+", hash_char="G",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule16(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", seq="H[a-z]+[A-Z][a-zA-Z]+",
+    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="H[a-z]+[A-Z][a-zA-Z]+", hash_char="H",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule17(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", seq="I[a-z]+[A-Z][a-zA-Z]+",
+    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="I[a-z]+[A-Z][a-zA-Z]+", hash_char="I",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule18(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", seq="J[a-z]+[A-Z][a-zA-Z]+",
+    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="J[a-z]+[A-Z][a-zA-Z]+", hash_char="J",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule19(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", seq="K[a-z]+[A-Z][a-zA-Z]+",
+    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="K[a-z]+[A-Z][a-zA-Z]+", hash_char="K",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule20(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", seq="L[a-z]+[A-Z][a-zA-Z]+",
+    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="L[a-z]+[A-Z][a-zA-Z]+", hash_char="L",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule21(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", seq="M[a-z]+[A-Z][a-zA-Z]+",
+    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="M[a-z]+[A-Z][a-zA-Z]+", hash_char="M",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule22(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", seq="N[a-z]+[A-Z][a-zA-Z]+",
+    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="N[a-z]+[A-Z][a-zA-Z]+", hash_char="N",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule23(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", seq="O[a-z]+[A-Z][a-zA-Z]+",
+    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="O[a-z]+[A-Z][a-zA-Z]+", hash_char="O",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule24(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", seq="P[a-z]+[A-Z][a-zA-Z]+",
+    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="P[a-z]+[A-Z][a-zA-Z]+", hash_char="P",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule25(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", seq="Q[a-z]+[A-Z][a-zA-Z]+",
+    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="Q[a-z]+[A-Z][a-zA-Z]+", hash_char="Q",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule26(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", seq="R[a-z]+[A-Z][a-zA-Z]+",
+    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="R[a-z]+[A-Z][a-zA-Z]+", hash_char="R",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule27(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", seq="S[a-z]+[A-Z][a-zA-Z]+",
+    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="S[a-z]+[A-Z][a-zA-Z]+", hash_char="S",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule28(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", seq="T[a-z]+[A-Z][a-zA-Z]+",
+    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="T[a-z]+[A-Z][a-zA-Z]+", hash_char="T",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule29(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", seq="U[a-z]+[A-Z][a-zA-Z]+",
+    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="U[a-z]+[A-Z][a-zA-Z]+", hash_char="U",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule30(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", seq="V[a-z]+[A-Z][a-zA-Z]+",
+    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="V[a-z]+[A-Z][a-zA-Z]+", hash_char="V",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule31(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", seq="W[a-z]+[A-Z][a-zA-Z]+",
+    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="W[a-z]+[A-Z][a-zA-Z]+", hash_char="W",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule32(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", seq="X[a-z]+[A-Z][a-zA-Z]+",
+    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="X[a-z]+[A-Z][a-zA-Z]+", hash_char="X",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule33(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", seq="Y[a-z]+[A-Z][a-zA-Z]+",
+    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="Y[a-z]+[A-Z][a-zA-Z]+", hash_char="Y",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule34(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", seq="Z[a-z]+[A-Z][a-zA-Z]+",
+    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="Z[a-z]+[A-Z][a-zA-Z]+", hash_char="Z",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule35(colorer, s, i):

@@ -37,7 +37,7 @@ def rule1(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule2(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal2", seq="\\\\'\\w\\d",
+    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="\\\\'\\w\\d", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule3(colorer, s, i):

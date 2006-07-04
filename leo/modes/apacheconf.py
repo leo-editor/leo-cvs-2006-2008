@@ -964,13 +964,13 @@ def rule1(colorer, s, i):
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rule2(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="markup", begin="<(VirtualHost)[^>]*>", end="</$1>",
+    return colorer.match_span_regexp(s, i, kind="markup", begin="<(VirtualHost)[^>]*>", end="</$1>", hash_char="< ",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="VHOST",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule3(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="markup", begin="<(\\w+)[^>]*>", end="</$1>",
+    return colorer.match_span_regexp(s, i, kind="markup", begin="<(\\w+)[^>]*>", end="</$1>", hash_char="< ",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
@@ -1063,13 +1063,13 @@ def rule6(colorer, s, i):
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rule7(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="markup", begin="<(VirtualHost)[^>]*>", end="</$1>",
+    return colorer.match_span_regexp(s, i, kind="markup", begin="<(VirtualHost)[^>]*>", end="</$1>", hash_char="< ",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="VHOST",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule8(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="markup", begin="<(\\w+)[^>]*>", end="</$1>",
+    return colorer.match_span_regexp(s, i, kind="markup", begin="<(\\w+)[^>]*>", end="</$1>", hash_char="< ",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)

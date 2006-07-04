@@ -78,39 +78,39 @@ def rule1(colorer, s, i):
         delegate="", exclude_match=False)
 
 def rule2(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="markup", seq=":\\s+(\\S+)",
+    return colorer.match_seq_regexp(s, i, kind="markup", regexp=":\\s+(\\S+)", hash_char=":",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule3(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="markup", seq="IN:\\s+(\\S+)",
+    return colorer.match_seq_regexp(s, i, kind="markup", regexp="IN:\\s+(\\S+)", hash_char="I",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule4(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="markup", seq="USE:\\s+(\\S+)",
+    return colorer.match_seq_regexp(s, i, kind="markup", regexp="USE:\\s+(\\S+)", hash_char="U",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule5(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="markup", seq="DEFER:\\s+(\\S+)",
+    return colorer.match_seq_regexp(s, i, kind="markup", regexp="DEFER:\\s+(\\S+)", hash_char="D",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule6(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="markup", seq="POSTPONE:\\s+(\\S+)",
+    return colorer.match_seq_regexp(s, i, kind="markup", regexp="POSTPONE:\\s+(\\S+)", hash_char="P",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule7(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal2", seq="CHAR:\\s+(\\S+)",
+    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="CHAR:\\s+(\\S+)", hash_char="C",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule8(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal2", seq="BIN:\\s+(\\S+)",
+    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="BIN:\\s+(\\S+)", hash_char="B",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule9(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal2", seq="OCT:\\s+(\\S+)",
+    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="OCT:\\s+(\\S+)", hash_char="O",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule10(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal2", seq="HEX:\\s+(\\S+)",
+    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="HEX:\\s+(\\S+)", hash_char="H",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule11(colorer, s, i):

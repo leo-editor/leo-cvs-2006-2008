@@ -1112,39 +1112,39 @@ def rule34(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule35(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="1[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*", hash_char="1",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule36(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="2[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*", hash_char="2",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule37(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="3[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*", hash_char="3",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule38(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="4[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*", hash_char="4",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule39(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="5[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*", hash_char="5",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule40(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="6[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*", hash_char="6",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule41(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="7[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*", hash_char="7",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule42(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="8[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*", hash_char="8",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule43(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="9[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*", hash_char="9",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule44(colorer, s, i):
@@ -1245,39 +1245,39 @@ def rule48(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule49(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="1[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*", hash_char="1",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule50(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="2[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*", hash_char="2",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule51(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="3[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*", hash_char="3",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule52(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="4[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*", hash_char="4",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule53(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="5[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*", hash_char="5",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule54(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="6[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*", hash_char="6",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule55(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="7[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*", hash_char="7",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule56(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="8[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*", hash_char="8",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule57(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="9[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*", hash_char="9",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule58(colorer, s, i):
@@ -1378,39 +1378,39 @@ def rule62(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule63(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="1[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*", hash_char="1",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule64(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="2[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*", hash_char="2",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule65(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="3[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*", hash_char="3",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule66(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="4[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*", hash_char="4",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule67(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="5[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*", hash_char="5",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule68(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="6[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*", hash_char="6",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule69(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="7[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*", hash_char="7",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule70(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="8[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*", hash_char="8",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule71(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="9[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*", hash_char="9",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule72(colorer, s, i):
@@ -1511,39 +1511,39 @@ def rule76(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule77(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="1[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*", hash_char="1",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule78(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="2[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*", hash_char="2",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule79(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="3[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*", hash_char="3",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule80(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="4[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*", hash_char="4",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule81(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="5[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*", hash_char="5",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule82(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="6[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*", hash_char="6",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule83(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="7[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*", hash_char="7",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule84(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="8[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*", hash_char="8",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule85(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="9[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*", hash_char="9",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule86(colorer, s, i):
@@ -1644,39 +1644,39 @@ def rule90(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule91(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="1[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*", hash_char="1",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule92(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="2[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*", hash_char="2",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule93(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="3[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*", hash_char="3",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule94(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="4[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*", hash_char="4",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule95(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="5[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*", hash_char="5",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule96(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="6[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*", hash_char="6",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule97(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="7[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*", hash_char="7",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule98(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="8[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*", hash_char="8",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule99(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="9[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*", hash_char="9",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule100(colorer, s, i):
@@ -1777,39 +1777,39 @@ def rule104(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule105(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="1[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*", hash_char="1",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule106(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="2[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*", hash_char="2",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule107(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="3[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*", hash_char="3",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule108(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="4[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*", hash_char="4",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule109(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="5[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*", hash_char="5",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule110(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="6[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*", hash_char="6",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule111(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="7[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*", hash_char="7",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule112(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="8[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*", hash_char="8",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule113(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="9[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*", hash_char="9",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule114(colorer, s, i):
@@ -1910,39 +1910,39 @@ def rule118(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule119(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="1[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*", hash_char="1",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule120(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="2[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*", hash_char="2",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule121(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="3[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*", hash_char="3",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule122(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="4[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*", hash_char="4",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule123(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="5[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*", hash_char="5",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule124(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="6[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*", hash_char="6",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule125(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="7[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*", hash_char="7",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule126(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="8[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*", hash_char="8",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule127(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="9[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*", hash_char="9",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule128(colorer, s, i):
@@ -2043,39 +2043,39 @@ def rule132(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule133(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="1[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*", hash_char="1",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule134(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="2[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*", hash_char="2",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule135(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="3[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*", hash_char="3",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule136(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="4[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*", hash_char="4",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule137(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="5[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*", hash_char="5",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule138(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="6[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*", hash_char="6",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule139(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="7[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*", hash_char="7",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule140(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="8[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*", hash_char="8",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule141(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="9[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*", hash_char="9",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule142(colorer, s, i):
@@ -2176,39 +2176,39 @@ def rule146(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule147(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="1[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*", hash_char="1",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule148(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="2[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*", hash_char="2",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule149(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="3[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*", hash_char="3",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule150(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="4[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*", hash_char="4",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule151(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="5[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*", hash_char="5",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule152(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="6[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*", hash_char="6",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule153(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="7[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*", hash_char="7",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule154(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="8[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*", hash_char="8",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule155(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="9[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*", hash_char="9",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule156(colorer, s, i):
@@ -2309,39 +2309,39 @@ def rule160(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule161(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="1[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*", hash_char="1",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule162(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="2[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*", hash_char="2",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule163(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="3[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*", hash_char="3",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule164(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="4[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*", hash_char="4",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule165(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="5[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*", hash_char="5",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule166(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="6[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*", hash_char="6",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule167(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="7[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*", hash_char="7",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule168(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="8[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*", hash_char="8",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule169(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="9[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*", hash_char="9",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule170(colorer, s, i):
@@ -2442,39 +2442,39 @@ def rule174(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule175(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="1[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*", hash_char="1",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule176(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="2[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*", hash_char="2",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule177(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="3[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*", hash_char="3",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule178(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="4[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*", hash_char="4",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule179(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="5[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*", hash_char="5",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule180(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="6[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*", hash_char="6",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule181(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="7[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*", hash_char="7",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule182(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="8[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*", hash_char="8",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule183(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="9[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*", hash_char="9",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule184(colorer, s, i):
@@ -2575,39 +2575,39 @@ def rule188(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule189(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="1[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*", hash_char="1",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule190(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="2[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*", hash_char="2",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule191(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="3[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*", hash_char="3",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule192(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="4[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*", hash_char="4",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule193(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="5[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*", hash_char="5",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule194(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="6[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*", hash_char="6",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule195(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="7[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*", hash_char="7",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule196(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="8[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*", hash_char="8",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule197(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="9[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*", hash_char="9",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule198(colorer, s, i):
@@ -2708,39 +2708,39 @@ def rule202(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule203(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="1[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*", hash_char="1",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule204(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="2[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*", hash_char="2",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule205(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="3[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*", hash_char="3",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule206(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="4[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*", hash_char="4",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule207(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="5[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*", hash_char="5",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule208(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="6[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*", hash_char="6",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule209(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="7[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*", hash_char="7",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule210(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="8[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*", hash_char="8",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule211(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="9[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*", hash_char="9",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule212(colorer, s, i):
@@ -2841,39 +2841,39 @@ def rule216(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule217(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="1[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*", hash_char="1",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule218(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="2[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*", hash_char="2",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule219(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="3[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*", hash_char="3",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule220(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="4[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*", hash_char="4",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule221(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="5[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*", hash_char="5",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule222(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="6[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*", hash_char="6",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule223(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="7[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*", hash_char="7",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule224(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="8[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*", hash_char="8",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule225(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", seq="9[0-9]*",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*", hash_char="9",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rule226(colorer, s, i):

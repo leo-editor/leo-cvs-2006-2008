@@ -227,7 +227,7 @@ def rule4(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rule5(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="literal1", begin="<<<([[:alpha:]_][[:alnum:]_]*)\\s*", end="$1",
+    return colorer.match_span_regexp(s, i, kind="literal1", begin="<<<([[:alpha:]_][[:alnum:]_]*)\\s*", end="$1", hash_char="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="LITERAL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
