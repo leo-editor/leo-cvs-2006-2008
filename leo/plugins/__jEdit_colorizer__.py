@@ -222,8 +222,6 @@ def match_leo_keywords(self,s,i):
     
     '''Succeed if s[i:] is a Leo keyword.'''
     
-    g.trace('outer')
-    
     # We must be at the start of a word.
     if i > 0 and s[i-1] in self.word_chars:
         return 0
@@ -406,12 +404,11 @@ class baseColorizer:
         
         '''Append any imported rules at the end of the rulesets specified in mode.importDict'''
         
-        # return #### Not yet: unbounded recursion.
-    
         names = mode.importDict.get(rulesetName,[])
-        g.trace(rulesetName,names)
+        if names: g.trace(rulesetName,names)
+        return #### Not yet: unbounded recursion.
+    
         for name in names:
-            g.trace(name)
             bunch = self.modes.get(name)
             if bunch:
                 importedRulesDict = bunch.rulesDict
@@ -542,13 +539,13 @@ class baseColorizer:
         
         if not language: return
         rulesetName = self.computeRulesetName(language,delegate)
-        g.trace(rulesetName)
         if not delegate: self.modeStack = []
         bunch = self.modes.get(rulesetName)
         if bunch:
             self.initModeFromBunch(bunch)
             return True
         else:
+            g.trace(rulesetName)
             path = g.os_path_join(g.app.loadDir,'..','modes')
             mode = g.importFromPath (language,path)
             if not mode:
@@ -639,13 +636,14 @@ class baseColorizer:
         self.rulesDict      = bunch.rulesDict
         self.rulesetName    = bunch.rulesetName
         
-        g.trace(self.rulesetName)
+        # g.trace(self.rulesetName)
     #@nonl
     #@-node:ekr.20060703110708:initModeFromBunch
     #@+node:ekr.20060703090759:push/popDelegate
     def pushDelegate (self,delegate):
         
         delegate = delegate.lower()
+        g.trace(delegate,g.callers(3))
         # This should not be necessary.
         for bunch in self.modeStack:
             if bunch.rulesetName == self.modeBunch.rulesetName:
@@ -657,6 +655,7 @@ class baseColorizer:
     
     def popDelegate (self):
         
+        g.trace()
         if self.modeStack:
             bunch = self.modeStack.pop()
             self.initModeFromBunch(bunch)
@@ -903,8 +902,19 @@ class baseColorizer:
         # toGuiIndex could be slow for large s.
         if not self.flag: return
         
+        # Color the range, even if there is a delegate.
+        w = self.body.bodyCtrl 
+        x1 = g.app.gui.toGuiIndex(s,w,i)
+        x2 = g.app.gui.toGuiIndex(s,w,j)
+        self.tagList.append((tag,x1,x2),)
+        if 1:
+            if tag != 'blank':
+                if delegate:
+                    g.trace(delegate,tag,i,j,repr(s[i:j]))
+                else:
+                    g.trace(tag,i,j,len(self.tagList)/3)
+        
         if delegate:
-            g.trace(delegate,i,j,repr(s[i:j]))
             ok = self.pushDelegate(delegate)
             if ok:
                 # Similar logic as colorOneChunk, but we color everything at once.
@@ -913,16 +923,10 @@ class baseColorizer:
                     for f in self.rulesDict.get(s[i],[]):
                         n = f(self,s,i)
                         if n > 0:
-                            g.trace(n > 0,i,f.__name__)
+                            # g.trace(n > 0,i,f.__name__)
                             i += n ; break
                     else: i += 1
                 self.popDelegate()
-        else:
-            w = self.body.bodyCtrl 
-            x1 = g.app.gui.toGuiIndex(s,w,i)
-            x2 = g.app.gui.toGuiIndex(s,w,j)
-            self.tagList.append((tag,x1,x2),)
-            g.trace(tag,i,j,len(self.tagList)/3)
     #@nonl
     #@-node:ekr.20060530091119.48:colorRangeWithTag
     #@+node:ekr.20060530091119.14:quickColor
@@ -991,7 +995,7 @@ class baseColorizer:
         word = s[i:j]
         kind = self.keywordsDict.get(s[i:j])
         if kind:
-            g.trace('%3d %10s %s' % (i,word,repr(kind)))
+            # g.trace('%3d %10s %s' % (i,word,repr(kind)))
             self.colorRangeWithTag(s,i,j,kind)
             self.prev = (i,j,kind)
             return j-i
@@ -1140,7 +1144,6 @@ class baseColorizer:
         
         if g.match(s,i,seq):
             j = i + len(seq)
-            g.trace(kind)
             self.colorRangeWithTag(s,i,j,kind,delegate=delegate)
             self.prev = (i,j,kind)
             return j - i
@@ -1274,7 +1277,7 @@ class baseColorizer:
     #@+node:ekr.20060530091119.63:removeAllTags
     def removeAllTags (self):
         
-        g.trace(len(self.tagList)/3)
+        # g.trace(len(self.tagList)/3)
         
         w = self.c.frame.body.bodyCtrl
         names = w.tag_names()
@@ -1379,10 +1382,17 @@ class baseColorizer:
     #@+node:ekr.20060530091119.19:tagAll
     def tagAll (self):
         
-        g.trace(len(self.tagList)/3)
+        # g.trace(len(self.tagList)/3)
+        
+        w = self.body ; tags = w.tag_names()
         
         for tag,x1,x2 in self.tagList:
-            self.body.tag_add(tag,x1,x2)
+            # Remove any old tags from the range.
+            for tag2 in tags:
+                w.tag_remove(tag2,x1,x2)
+                
+            # Add the new tag.
+            w.tag_add(tag,x1,x2)
     #@nonl
     #@-node:ekr.20060530091119.19:tagAll
     #@-node:ekr.20060530091119.59:Utils
