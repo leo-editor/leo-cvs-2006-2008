@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="292" clone_windows="0"/>
 <globals body_outline_ratio="0.549828178694">
-	<global_window_position top="75" left="241" height="718" width="953"/>
+	<global_window_position top="75" left="241" height="661" width="953"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -45,7 +45,7 @@
 </v>
 </v>
 <v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
-<v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
+<v t="ekr.20041213105007.1" a="E" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
 <v t="ekr.20041119052015.2"><vh>@color log_text_foreground_color = None</vh></v>
@@ -74,7 +74,7 @@
 <v t="ekr.20041119051901.1"><vh>@color headline_text_editing_selection_background_color = None</vh></v>
 <v t="ekr.20041119050749.12"><vh>@color outline_pane_background_color = #ffffec</vh></v>
 </v>
-<v t="ekr.20041119034357.70"><vh>Syntax colors &amp; options</vh>
+<v t="ekr.20041119034357.70" a="E"><vh>Syntax colors &amp; options</vh>
 <v t="ekr.20060513100933"><vh>@int colorizer_interrupt_count1 = 10</vh></v>
 <v t="ekr.20060513100933.1"><vh>@int colorizer_interrupt_count2 = 5000</vh></v>
 <v t="ekr.20060201111002"><vh>@bool use_syntax_coloring = True</vh></v>
@@ -96,7 +96,8 @@
 <v t="ekr.20041119034357.74"><vh>@bool color_directives_in_plain_text = True</vh></v>
 <v t="ekr.20041119034357.75"><vh>@bool underline_undefined_section_names = True</vh></v>
 <v t="ekr.20041119034357.76"><vh>@bool use_hyperlinks = False</vh></v>
-<v t="ekr.20060504131831"><vh>Options for jEdit colorer</vh>
+<v t="ekr.20060504131831" a="E"><vh>Options for jEdit colorer</vh>
+<v t="ekr.20060704090341" a="TV"><vh>@color label_color = green</vh></v>
 <v t="ekr.20060504131831.1"><vh>@color keyword1_color = blue</vh></v>
 <v t="ekr.20060504131831.2"><vh>@color literal1_color = #00aa00</vh></v>
 <v t="ekr.20060504134056"><vh>@color literal2_color = #00aa00</vh></v>
@@ -104,8 +105,8 @@
 <v t="ekr.20060504134056.2"><vh>@color literal4_color = #00aa00</vh></v>
 <v t="ekr.20060504140351"><vh>@color comment1_color = firebrick3</vh></v>
 <v t="ekr.20060504140408"><vh>@color comment2_color = firebrick3</vh></v>
-<v t="ekr.20060504140408.1"><vh>@color comment3_color = firebrick3</vh></v>
-<v t="ekr.20060504140408.2"><vh>@color comment4_color = firebrick3</vh></v>
+<v t="ekr.20060504140408.1"><vh>@color comment3_color = plum3</vh></v>
+<v t="ekr.20060504140408.2"><vh>@color comment4_color = orchid1</vh></v>
 </v>
 </v>
 <v t="ekr.20041119034357.67"><vh>@color split_bar_color = LightSteelBlue2</vh></v>
@@ -217,10 +218,10 @@
 <v t="ekr.20041120152900.2"><vh>@bool script_search = None</vh></v>
 <v t="ekr.20041119050105.16"><vh>@bool suboutline_only = False</vh></v>
 </v>
-<v t="ekr.20041213105007" a="E" annotate="7d71002e"><vh>Fonts</vh>
+<v t="ekr.20041213105007" annotate="7d71002e"><vh>Fonts</vh>
 <v t="ekr.20041213105508"><vh>@font log font</vh></v>
 <v t="ekr.20041119034357.45"><vh>@font body text font</vh></v>
-<v t="ekr.20060702100257" a="TV"><vh>@font menu text font</vh></v>
+<v t="ekr.20060702100257"><vh>@font menu text font</vh></v>
 <v t="ekr.20041119051246.4"><vh>@font outline font</vh></v>
 </v>
 <v t="ekr.20041119034357.3" annotate="7d71002e"><vh>General options</vh>
@@ -5537,8 +5538,9 @@ horizontal: pack body-pane editors horizontally.</t>
 <t tx="ekr.20060627121646.2">The number of times to flash matching brackets.</t>
 <t tx="ekr.20060627121646.3">One half the total cycle time of bracket flashes, in milliseconds.</t>
 <t tx="ekr.20060702100257">menu_text_font_family = None
-menu_text_font_size = 12
+menu_text_font_size = None
 menu_text_font_slant = None
-menu_text_font_weight = bold</t>
+menu_text_font_weight = None</t>
+<t tx="ekr.20060704090341"></t>
 </tnodes>
 </leo_file>
