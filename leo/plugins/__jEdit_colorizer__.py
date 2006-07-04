@@ -335,10 +335,10 @@ class baseColorizer:
         self.p = None
         # Attributes dict ivars: defaults are as shown.
         self.default = 'null'
-    	self.digit_re = ''
-    	self.highlight_digits = True
-    	self.ignore_case = True
-    	self.no_word_sep = ''
+        self.digit_re = ''
+        self.highlight_digits = True
+        self.ignore_case = True
+        self.no_word_sep = ''
         # Config settings.
         self.comment_string = None # Set by scanColorDirectives on @comment
         self.showInvisibles = False # True: show "invisible" characters.
@@ -361,6 +361,7 @@ class baseColorizer:
         self.keywordNumber = 0 # The kind of keyword for keywordsColorHelper.
         self.kill_chunk = False
         self.language = 'python' # set by scanColorDirectives.
+        self.prev = None # The previous token.
         self.ranges = 0
         self.redoColoring = False # May be set by plugins.
         self.redoingColoring = False
@@ -905,7 +906,7 @@ class baseColorizer:
             x1 = g.app.gui.toGuiIndex(s,w,i)
             x2 = g.app.gui.toGuiIndex(s,w,j)
             self.tagList.append((tag,x1,x2),)
-        if 1:
+        if 0:
             if tag != 'blank':
                 if delegate:
                     g.trace(delegate,tag,i,j,repr(s[i:j]))
@@ -1405,11 +1406,12 @@ class baseColorizer:
         
         # g.trace(len(self.tagList)/3)
         
-        w = self.body ; tags = w.tag_names()
+        w = self.body # ; tags = w.tag_names()
         
         for tag,x1,x2 in self.tagList:
+    
             # Remove any old tags from the range.
-            for tag2 in tags:
+            for tag2 in w.tag_names(x1):
                 w.tag_remove(tag2,x1,x2)
                 
             # Add the new tag.

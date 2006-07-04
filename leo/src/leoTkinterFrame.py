@@ -2968,8 +2968,8 @@ class leoTkinterBody (leoFrame.leoBody):
     def tag_delete(self,tagName):
         self.bodyCtrl.tag_delete(tagName)
         
-    def tag_names(self): # New in Leo 4.4.1.
-        return self.bodyCtrl.tag_names()
+    def tag_names(self,*args): # New in Leo 4.4.1.
+        return self.bodyCtrl.tag_names(*args)
     
     def tag_remove (self,tagName,index1,index2):
         return self.bodyCtrl.tag_remove(tagName,index1,index2)
