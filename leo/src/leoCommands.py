@@ -1484,7 +1484,7 @@ class baseCommands:
             #@nonl
             #@-node:ekr.20031218072017.2867:<< get n, the line number, from a dialog >>
             #@nl
-            n = self.applyLineNumberMappingIfAny(n) #bwm
+        n = self.applyLineNumberMappingIfAny(n) #bwm
         if n==1:
             p = root ; n2 = 1 ; found = True
         elif n >= len(lines):
