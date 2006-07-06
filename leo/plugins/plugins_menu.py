@@ -57,9 +57,10 @@ import sys
 #@nonl
 #@-node:ekr.20050101090207.10:<< imports >>
 #@nl
-__version__ = "1.11"
+__version__ = "1.12"
 #@<< version history >>
 #@+node:ekr.20050101100033:<< version history >>
+#@@nocolor
 #@+at
 # 
 # 1.4 EKR: Check at runtime to make sure that the plugin has been loaded 
@@ -84,6 +85,8 @@ __version__ = "1.11"
 # 1.10 EKR: Removed the g.app.dialog hack.
 # 1.11 EKR: Added event arg to cmd_callback.  This was causing crashes in 
 # several plugins.
+# 1.12 EKR: Fixed bug per 
+# http://sourceforge.net/forum/message.php?msg_id=3810157
 #@-at
 #@nonl
 #@-node:ekr.20050101100033:<< version history >>
@@ -101,7 +104,7 @@ def addPluginMenuItem (p,c):
     if p.hastoplevel:
         # Check at runtime to see if the plugin has actually been loaded.
         # This prevents us from calling hasTopLevel() on unloaded plugins.
-        def callback (c=c,p=p):
+        def callback (event,c=c,p=p):
             path, name = g.os_path_split(p.filename)
             name, ext = g.os_path_splitext(name)
             # g.trace(name,g.app.loadedPlugins)
