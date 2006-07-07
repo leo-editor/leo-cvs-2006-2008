@@ -38,12 +38,12 @@
 		</SPAN>
 
 		<!-- Standard literals-->
-		<!-- EKR: added NO_LINE_BREAK="TRUE"-->
-		<SPAN TYPE="LITERAL1" NO_LINE_BREAK="TRUE">
+		<!-- EKR: added NO_LINE_BREAK="False"-->
+		<SPAN TYPE="LITERAL1" NO_LINE_BREAK="False">
 			<BEGIN>"</BEGIN>
 			<END>"</END>
 		</SPAN>
-		<SPAN TYPE="LITERAL1" NO_LINE_BREAK="TRUE">
+		<SPAN TYPE="LITERAL1" NO_LINE_BREAK="False">
 			<BEGIN>'</BEGIN>
 			<END>'</END>
 		</SPAN>
