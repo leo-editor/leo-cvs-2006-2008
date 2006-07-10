@@ -329,6 +329,14 @@ Easily done.
 I could do this myself in a few minutes, but I would like to start making Leo a more cooperative venture.  Would you be willing to make these changes yourself?   Not only would this offload a bit of work from me, but more importantly it would get more people on board as Leo developers and it would expose problems using Leo with cvs.
 #@nonl
 #@-node:ekr.20060702091716:Generalize bracket flasher
+#@+node:ekr.20060705084548:Fix minor scrolling problem
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3805745
+
+can scroll the tree upwards even if it is already at the first node. When I do
+this empty lines and sometimes even text appears above the normal nodes. 
+#@-node:ekr.20060705084548:Fix minor scrolling problem
 #@-node:ekr.20060531161030:To do: B4
 #@+node:ekr.20060623064600.1:Urgent (big picture)
 #@+node:ekr.20041228084830.3:Finish wxWindows plugin

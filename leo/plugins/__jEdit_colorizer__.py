@@ -358,6 +358,7 @@ class baseColorizer:
         self.defaultRulesList = []
         self.enabled = True # Set to False by unit tests.
         self.flag = True # True unless in range of @nocolor
+        self.importedRulesets = {}
         self.keywordNumber = 0 # The kind of keyword for keywordsColorHelper.
         self.kill_chunk = False
         self.language = 'python' # set by scanColorDirectives.
@@ -397,39 +398,37 @@ class baseColorizer:
     #@nonl
     #@-node:ekr.20060530091119.8:__init__
     #@+node:ekr.20060623081100:addImportedRules
-    def addImportedRules (self,mode,rulesDict,rulesetName):
+    def addImportedRules (self,mode,rulesDict,rulesetName,language,delegate):
         
         '''Append any imported rules at the end of the rulesets specified in mode.importDict'''
         
+        if self.importedRulesets.get(rulesetName):
+            return
+        else:
+            self.importedRulesets [rulesetName] = True
+        
         names = mode.importDict.get(rulesetName,[])
-        if names: g.trace(rulesetName,names)
-        return #### Not yet: unbounded recursion.
     
         for name in names:
-            bunch = self.modes.get(name)
-            if bunch:
-                importedRulesDict = bunch.rulesDict
-                g.trace('importedRulesDict',importedRulesDict)
-            else:
-                i = name.find('_')
-                if i > -1:
-                    language = name[:i]
-                    delegate = name[i+1:]
-                    if delegate == 'main': delegate = None
-                    g.trace('language',language,'delegate',delegate)
-                    savedBunch = self.modeBunch
-                    ok = self.init_mode(language,delegate)
-                    if ok:
-                        rulesDict2 = self.rulesDict
-                        g.trace('len(keys)',len(rulesDict2.keys()))
-                        for key in rulesDict2.keys():
-                            aList = rulesDict.get(key,[])
-                            aList2 = rulesDict2.get(key)
-                            aList.extend(aList2)
-                            rulesDict [key] = aList
-                    self.initModeFromBunch(savedBunch)
-                else:
-                    g.trace('No imported ruleset',name)
+            language,delegate = self.nameToLanguageDeletegate(name)
+            g.trace(rulesetName,name,language,delegate)
+            savedBunch = self.modeBunch
+            ok = self.init_mode(language,delegate=delegate)
+            if 1: # This **does** cause problems.
+                if ok:
+                    rulesDict2 = self.rulesDict
+                    for key in rulesDict2.keys():
+                        aList = rulesDict.get(key,[])
+                        aList2 = rulesDict2.get(key)
+                        if aList2:
+                            # Don't add the standard rules again.
+                            rules = [z for z in aList2 if z not in aList]
+                            if rules:
+                                g.trace('Adding rules:',[z.__name__ for z in rules])
+                                aList.extend(rules)
+                                rulesDict [key] = aList
+                    g.trace('appended rules from %s to %s' % (rulesetName,self.language))
+            self.initModeFromBunch(savedBunch)
     #@nonl
     #@-node:ekr.20060623081100:addImportedRules
     #@+node:ekr.20060530091119.36:addLeoRules
@@ -438,12 +437,14 @@ class baseColorizer:
         '''Put Leo-specific rules to theList.'''
     
         for ch, rule, atFront, in (
-            # Warning: rules added at front are added in reverse order.
-            ('@',  match_leo_keywords,True), # Debatable: atFront means Leo keywords override langauge keywords.
+            # Rules added at front are added in **reverse** order.
+            ('@',  match_leo_keywords,True), # Called after all other Leo matchers.
+                # Debatable: Leo keywords override langauge keywords.
             ('@',  match_at_color,    True),
             ('@',  match_at_nocolor,  True),
-            ('@',  match_doc_part,    True), # Called **first**.
-            ('<',  match_section_ref, True),
+            ('@',  match_doc_part,    True), 
+            ('<',  match_section_ref, True), # Called **first**.
+            # Rules added at back are added in normal order.
             (' ',  match_blanks,      False),
             ('\t', match_tabs,        False),
         ):
@@ -535,15 +536,17 @@ class baseColorizer:
     #@+node:ekr.20060530091119.9:init_mode & helpers
     def init_mode (self,language,delegate=None):
         
-        if not language: return
         rulesetName = self.computeRulesetName(language,delegate)
-        if not delegate: self.modeStack = []
+        if not delegate:
+            self.modeStack = []
+    
         bunch = self.modes.get(rulesetName)
         if bunch:
+            g.trace('********** old',rulesetName) # ,g.callers(5))
             self.initModeFromBunch(bunch)
             return True
         else:
-            g.trace(rulesetName)
+            g.trace('********** new',rulesetName) # ,g.callers(5))
             path = g.os_path_join(g.app.loadDir,'..','modes')
             mode = g.importFromPath (language,path)
             if not mode:
@@ -557,7 +560,7 @@ class baseColorizer:
             self.setModeAttributes()
             self.rulesDict = mode.rulesDictDict.get(rulesetName)
             self.addLeoRules(self.rulesDict)
-            self.addImportedRules(mode,self.rulesDict,rulesetName)
+            
             self.defaultColor = 'null'
             self.mode = mode
             self.modes [rulesetName] = self.modeBunch = g.Bunch(
@@ -568,6 +571,8 @@ class baseColorizer:
                 mode            = self.mode,
                 rulesDict       = self.rulesDict,
                 rulesetName     = self.rulesetName)
+            # Do this after 'officially' initing the mode, to limit recursion.
+            self.addImportedRules(mode,self.rulesDict,rulesetName,language,delegate)
             return True
     #@nonl
     #@+node:ekr.20060530091119.18:setKeywords
@@ -634,26 +639,22 @@ class baseColorizer:
         self.rulesDict      = bunch.rulesDict
         self.rulesetName    = bunch.rulesetName
         
-        # g.trace(self.rulesetName)
+        g.trace(self.rulesetName) # ,'rulesDict',id(self.rulesDict),g.callers(9))
     #@nonl
     #@-node:ekr.20060703110708:initModeFromBunch
     #@+node:ekr.20060703090759:push/popDelegate
-    def pushDelegate (self,delegate):
+    def pushDelegate (self,language,delegate):
         
-        delegate = delegate.lower()
-        g.trace(delegate,g.callers(3))
-        # This should not be necessary.
-        for bunch in self.modeStack:
-            if bunch.rulesetName == self.modeBunch.rulesetName:
-                g.trace('already on stack',delegate)
-                return False
+        g.trace(language,delegate,g.callers())
+        
+        rulesetName = self.computeRulesetName(language,delegate)
+    
         self.modeStack.append(self.modeBunch)
-        ok = self.init_mode(self.language,delegate)
+        ok = self.init_mode(language,delegate)
         return ok
     
     def popDelegate (self):
-        
-        g.trace()
+    
         if self.modeStack:
             bunch = self.modeStack.pop()
             self.initModeFromBunch(bunch)
@@ -838,7 +839,7 @@ class baseColorizer:
         
         '''Color the body pane.  All coloring starts here.'''
     
-        self.init_mode(self.language)
+        self.init_mode(language=self.language)
         self.configure_variable_tags()
         if self.killcolorFlag or not self.mode:
             self.removeAllTags() ; return
@@ -897,6 +898,8 @@ class baseColorizer:
     
         '''Add an item to the tagList if colorizing is enabled.'''
         
+        # g.trace(i,j,delegate,g.callers(5))
+        
         # toGuiIndex could be slow for large s.
         w = self.body.bodyCtrl 
         if not self.flag: return
@@ -911,10 +914,13 @@ class baseColorizer:
                 if delegate:
                     g.trace(delegate,tag,i,j,repr(s[i:j]))
                 else:
-                    g.trace(tag,i,j,len(self.tagList)/3)
+                    g.trace(tag,i,j,len(self.tagList)/3,g.callers(4))
         
         if delegate:
-            ok = self.pushDelegate(delegate)
+            language2,delegate2 = self.nameToLanguageDeletegate(delegate)
+            g.trace(delegate,'-->',language2,delegate2,g.callers())
+            
+            ok = self.pushDelegate(language2,delegate2)
             if ok:
                 # Similar logic as colorOneChunk, but we color everything at once.
                 # We must use the same indices here as in the caller.
@@ -922,7 +928,9 @@ class baseColorizer:
                     for f in self.rulesDict.get(s[i],[]):
                         n = f(self,s,i)
                         if n > 0:
-                            # g.trace(n > 0,i,f.__name__)
+                            if 0:
+                                if f.__name__ != 'match_blanks':
+                                    g.trace(delegate,i,f.__name__)
                             i += n ; break
                     else: i += 1
                 self.popDelegate()
@@ -1036,7 +1044,7 @@ class baseColorizer:
         
         '''Succeed if seq matches s[i:]'''
         
-        if trace_match: g.trace()
+        if self.trace_match: g.trace(g.callers(2),i,repr(s[i:i+20]))
     
         if at_line_start and i != 0 and s[i-1] != '\n': return 0
         if at_whitespace_end and i != g.skip_ws(s,0): return 0
@@ -1060,7 +1068,7 @@ class baseColorizer:
         
         '''Succeed if the regular expression regex matches s[i:].'''
         
-        if trace_match: g.trace()
+        if self.trace_match: g.trace(g.callers(2),i,repr(s[i:i+20]))
     
         if at_line_start and i != 0 and s[i-1] != '\n': return 0
         if at_whitespace_end and i != g.skip_ws(s,0): return 0
@@ -1088,7 +1096,7 @@ class baseColorizer:
         
         '''Succeed if s[i:] matches pattern.'''
         
-        if trace_match: g.trace()
+        if self.trace_match: g.trace(g.callers(2),i,repr(s[i:i+20]))
     
         if at_line_start and i != 0 and s[i-1] != '\n': return 0
         if at_whitespace_end and i != g.skip_ws(s,0): return 0
@@ -1132,7 +1140,7 @@ class baseColorizer:
         'at_whitespace_end':True: sequence must be first non-whitespace text of the line.
         'at_word_start':    True: sequence must start a word.'''
         
-        if trace_match: g.trace()
+        if self.trace_match: g.trace(g.callers(2),i,repr(s[i:i+20]))
     
         if at_line_start and i != 0 and s[i-1] != '\n': return 0
         if at_whitespace_end and i != g.skip_ws(s,0): return 0
@@ -1159,18 +1167,24 @@ class baseColorizer:
         delegate=''):
         
         '''Succeed if s[:] mathces seq.'''
-    
-        if at_line_start and i != 0 and s[i-1] != '\n': return 0
-        if at_whitespace_end and i != g.skip_ws(s,0): return 0
-        if at_word_start and i > 0 and s[i-1] not in self.word_chars: return 0
         
-        if g.match(s,i,seq):
+        if at_line_start and i != 0 and s[i-1] != '\n':
+            result = 0
+        elif at_whitespace_end and i != g.skip_ws(s,0):
+            result = 0
+        elif at_word_start and i > 0 and s[i-1] not in self.word_chars:
+            result = 0
+        elif g.match(s,i,seq):
             j = i + len(seq)
             self.colorRangeWithTag(s,i,j,kind,delegate=delegate)
             self.prev = (i,j,kind)
-            return j - i
+            result = j - i
         else:
-            return 0
+            result = 0
+            
+        if self.trace_match:
+            g.trace(g.callers(3),'result',result,'i',i,repr(s[i:i+g.choose(result,result,20)]))
+        return result
     #@nonl
     #@-node:ekr.20060530091119.55:match_seq
     #@+node:ekr.20060530091119.56:match_seq_regexp
@@ -1181,7 +1195,7 @@ class baseColorizer:
         
         '''Succeed if the regular expression regexp matches at s[i:].'''
         
-        if trace_match: g.trace()
+        if self.trace_match: g.trace(g.callers(2),i,repr(s[i:i+20]))
     
         if at_line_start and i != 0 and s[i-1] != '\n': return 0
         if at_whitespace_end and i != g.skip_ws(s,0): return 0
@@ -1205,24 +1219,27 @@ class baseColorizer:
     
         '''Succeed if s[i:] starts with 'begin' and contains a following 'end'.'''
         
-        if trace_match: g.trace()
-        
-        if at_line_start and i != 0 and s[i-1] != '\n': return 0
-        if at_whitespace_end and i != g.skip_ws(s,0): return 0
-        if at_word_start and i > 0 and s[i-1] not in self.word_chars: return 0
-    
-        if g.match(s,i,begin):
+        if at_line_start and i != 0 and s[i-1] != '\n':
+            result = 0
+        elif at_whitespace_end and i != g.skip_ws(s,0):
+            result = 0
+        elif at_word_start and i > 0 and s[i-1] not in self.word_chars:
+            result = 0
+        elif g.match(s,i,begin):
             j = s.find(end,i+len(begin))
             if j == -1 or no_line_break and '\n' in s[i:j]:
-                return 0
+                result = 0
             else:
                 j += len(end)
                 # g.trace(i,j,s[i:j],kind,no_line_break)
                 self.colorRangeWithTag(s,i,j,kind,delegate=delegate,exclude_match=exclude_match)
                 self.prev = (i,j,kind)
-                return j - i
+                result = j - i
         else:
-            return 0
+            result = 0
+            
+        if self.trace_match: g.trace(g.callers(3),'result',result,'i',i,repr(s[i:i+g.choose(result,result,20)]))
+        return result
     #@nonl
     #@-node:ekr.20060530091119.57:match_span
     #@+node:ekr.20060530091119.58:match_span_regexp
@@ -1235,7 +1252,10 @@ class baseColorizer:
             
         '''Succeed if s[i:] starts with 'begin' ( a regular expression) and contains a following 'end'.'''
         
-        if trace_match: g.trace('begin',repr(begin),'end',repr(end),'hash_char',repr(hash_char))
+        if trace_match:
+            g.trace(
+                g.callers(2),'begin',repr(begin),'end',repr(end),
+                    'hash_char',repr(hash_char),repr(s[i:i+20]))
         
         if at_line_start and i != 0 and s[i-1] != '\n': return 0
         if at_whitespace_end and i != g.skip_ws(s,0): return 0
@@ -1284,6 +1304,26 @@ class baseColorizer:
         return ''.join([g.choose(ch in valid,ch.lower(),'_') for ch in s])
     #@nonl
     #@-node:ekr.20060703120853:munge
+    #@+node:ekr.20060706102149:nameToLanguageDeletegate
+    def nameToLanguageDeletegate (self,name):
+    
+        i = name.find('::')
+    
+        if i == -1:
+            # Use a ruleset in the the present language file.
+            language = self.language
+            delegate = name
+        else:
+            # Delegate to another language file.
+            language = name[:i]
+            delegate = name[i+2:]
+        
+        if delegate.lower() == 'main': delegate = None
+        if delegate.lower().endswith('_main'): delegate = delegate[:-5]
+    
+        return language,delegate
+    #@nonl
+    #@-node:ekr.20060706102149:nameToLanguageDeletegate
     #@+node:ekr.20060530091119.62:removeAllImages
     def removeAllImages (self):
         
