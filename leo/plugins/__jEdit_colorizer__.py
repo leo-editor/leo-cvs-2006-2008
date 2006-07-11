@@ -6,7 +6,7 @@
 #@@tabwidth -4
 #@@pagewidth 80
 
-__version__ = '0.26'
+__version__ = '0.27'
 #@<< imports >>
 #@+node:ekr.20060530091119.21:<< imports >>
 import leoGlobals as g
@@ -41,6 +41,7 @@ php_re = re.compile("<?(\s[pP][hH][pP])")
 # colorizer enabled.
 # 0.25 EKR: Fixed bug in match_doc_part.
 # 0.26 EKR: Added support for show/hide-invisibles commands.
+# 0.27 EKR: Always configure tags: support for multiple editors.
 #@-at
 #@nonl
 #@-node:ekr.20060530091119.22:<< version history >>
@@ -347,7 +348,7 @@ class baseColorizer:
         self.underline_undefined = c.config.getBool("underline_undefined_section_names")
         self.use_hyperlinks = c.config.getBool("use_hyperlinks")
         # Debugging settings
-        self.trace_match = True
+        self.trace_match = False
         # State ivars...
         self.colored_ranges = {}
             # Keys are indices, values are tags.
@@ -394,7 +395,6 @@ class baseColorizer:
             'label','literal1','literal2','literal3','literal4',
             'markup','operator',
         ]
-        self.configure_tags()
     #@nonl
     #@-node:ekr.20060530091119.8:__init__
     #@+node:ekr.20060623081100:addImportedRules
@@ -460,6 +460,8 @@ class baseColorizer:
     def configure_tags (self):
     
         c = self.c
+        
+        # g.trace(self.body.bodyCtrl)
     
         keys = default_colors_dict.keys() ; keys.sort()
         for name in keys:
@@ -542,11 +544,11 @@ class baseColorizer:
     
         bunch = self.modes.get(rulesetName)
         if bunch:
-            g.trace('********** old',rulesetName) # ,g.callers(5))
+            # g.trace('********** old',rulesetName) # ,g.callers(5))
             self.initModeFromBunch(bunch)
             return True
         else:
-            g.trace('********** new',rulesetName) # ,g.callers(5))
+            # g.trace('********** new',rulesetName) # ,g.callers(5))
             path = g.os_path_join(g.app.loadDir,'..','modes')
             mode = g.importFromPath (language,path)
             if not mode:
@@ -639,7 +641,7 @@ class baseColorizer:
         self.rulesDict      = bunch.rulesDict
         self.rulesetName    = bunch.rulesetName
         
-        g.trace(self.rulesetName) # ,'rulesDict',id(self.rulesDict),g.callers(9))
+        # g.trace(self.rulesetName) # ,'rulesDict',id(self.rulesDict),g.callers(9))
     #@nonl
     #@-node:ekr.20060703110708:initModeFromBunch
     #@+node:ekr.20060703090759:push/popDelegate
@@ -839,12 +841,15 @@ class baseColorizer:
         
         '''Color the body pane.  All coloring starts here.'''
     
+        # g.trace(p and p.headString(), self.killcolorFlag or not self.mode)
+    
         self.init_mode(language=self.language)
-        self.configure_variable_tags()
+        self.configure_tags() # Must do this every time to support multiple editors.
         if self.killcolorFlag or not self.mode:
             self.removeAllTags() ; return
         try:
             c = self.c ; self.p = p
+            # g.trace(c.frame.body.bodyCtrl,g.callers())
             self.redoColoring = False
             self.redoingColoring = False
             g.doHook("init-color-markup",colorer=self,p=self.p,v=self.p)
@@ -1339,9 +1344,9 @@ class baseColorizer:
     #@+node:ekr.20060530091119.63:removeAllTags
     def removeAllTags (self):
         
-        # g.trace(len(self.tagList)/3)
-        
         w = self.c.frame.body.bodyCtrl
+        # g.trace(len(self.tagList)/3,w)
+    
         names = w.tag_names()
         for name in names:
             if name not in ('sel','insert'):
@@ -1443,10 +1448,9 @@ class baseColorizer:
     #@-node:ekr.20060530091119.67:setFontFromConfig
     #@+node:ekr.20060530091119.19:tagAll
     def tagAll (self):
-        
-        # g.trace(len(self.tagList)/3)
-        
-        w = self.body # ; tags = w.tag_names()
+    
+        w = self.body.bodyCtrl
+        # g.trace(len(self.tagList)/3,w)
         
         for tag,x1,x2 in self.tagList:
     
@@ -1456,6 +1460,8 @@ class baseColorizer:
                 
             # Add the new tag.
             w.tag_add(tag,x1,x2)
+            
+        w.update_idletasks()
     #@nonl
     #@-node:ekr.20060530091119.19:tagAll
     #@-node:ekr.20060530091119.59:Utils
