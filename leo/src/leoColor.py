@@ -1353,6 +1353,8 @@ class baseColorizer:
         
         __pychecker__ = 'maxlines=500'
         
+        g.trace(p and p.headString())
+        
         c = self.c
         
         if not c.config.getBool('use_syntax_coloring'):
@@ -1391,6 +1393,8 @@ class baseColorizer:
             
             #@<< configure tags >>
             #@+node:ekr.20031218072017.1603:<< configure tags >>
+            # g.trace('configure tags',self.body.bodyCtrl)
+            
             for name in default_colors_dict.keys(): # Python 2.1 support.
                 option_name,default_color = default_colors_dict[name]
                 option_color = c.config.getColor(option_name)
