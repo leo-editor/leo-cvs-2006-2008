@@ -2535,6 +2535,8 @@ class leoTkinterBody (leoFrame.leoBody):
     #@+node:ekr.20060530204135:recolorWidget
     def recolorWidget (self,w):
         
+        # g.trace(w)
+        
         c = self.c ; old_w = self.bodyCtrl
         
         # Save.
@@ -2612,7 +2614,15 @@ class leoTkinterBody (leoFrame.leoBody):
         self.pb.updatelayout()
         
         self.bodyCtrl = self.frame.bodyCtrl = w
+        
         self.onFocusIn(w)
+        
+        if 0: # Support for new colorizer.
+            def createEditorCallback(self=self,p=p.copy(),w=w):
+                self.onFocusIn(w)
+                self.selectMainEditor(p)
+            
+            w.after_idle(createEditorCallback)
     #@nonl
     #@-node:ekr.20060528100747.1:addEditor
     #@+node:ekr.20060606090542:setEditorColors
@@ -2678,20 +2688,21 @@ class leoTkinterBody (leoFrame.leoBody):
     
         c = self.c ; d = self.editorWidgets
         trace = False
+        if trace: g.trace(g.callers())
         if self.lockout_onFocusIn:
             if trace: g.trace('lockout')
             return 'break'
         if w.leo_p is None:
-            if trace: g.trace('no w.leo_p')
+            if trace: g.trace('no w.leo_p') 
             return 'break'
         if w == self.bodyCtrl:
-            if trace: g.trace('no change',w,g.callers())
+            if trace: g.trace('no change',w)
             return 'break'
         
         # Disable recursive calls: some of the calls below generate OnFocusInEvents.
         self.lockout_onFocusIn = True
         try:
-            # if trace: g.trace(w,g.callers())
+            if trace: g.trace(w)
         
             # Inactivate the previously active editor.
             # Don't capture ivars here! selectMainEditor keeps them up-to-date.
@@ -2735,8 +2746,11 @@ class leoTkinterBody (leoFrame.leoBody):
                 w.yview('moveto',first)
             
             if w.leo_selection:
-                start,end = w.leo_selection
-                g.app.gui.setSelectionRange(w,start,end)
+                try:
+                    start,end = w.leo_selection
+                    g.app.gui.setSelectionRange(w,start,end)
+                except Exception:
+                    pass
             #@nonl
             #@-node:ekr.20060605190146:<< restore the selection, insertion point and the scrollbar >>
             #@nl
