@@ -46,7 +46,7 @@
 <v t="ekr.20060525110217"><vh>@@button rst-&gt;rst</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -596,18 +596,18 @@
 <v t="ekr.20050818163826.17"><vh>@rst-no-head end-of-page stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20060430221745"><vh>Chapter 15: Controlling syntax coloring</vh>
-<v t="ekr.20060430221745.1"><vh>@rst html\coloring.html</vh>
+<v t="ekr.20060430221745" a="E"><vh>Chapter 15: Controlling syntax coloring</vh>
+<v t="ekr.20060430221745.1" a="E"><vh>@rst html\coloring.html</vh>
 <v t="ekr.20060430222753"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20060430220749"><vh>Files</vh></v>
 <v t="ekr.20060502084233"><vh>The colorizer's inner loop</vh></v>
-<v t="ekr.20060502084233.1"><vh>Format of colorizer control files</vh>
+<v t="ekr.20060502084233.1" a="E"><vh>Format of colorizer control files</vh>
 <v t="ekr.20060502100550"><vh>Ruleset names</vh></v>
 <v t="ekr.20060502090516"><vh>x.properties</vh></v>
 <v t="ekr.20060510085547"><vh>Attribute dictionaries and x.attributesDictDict</vh></v>
 <v t="ekr.20060502090516.1"><vh>Keyword dictionaries and x.keywordsDictDict</vh></v>
 <v t="ekr.20060502090516.2"><vh>Rules, rules dictionaries and x.rulesDictDict</vh></v>
-<v t="ekr.20060503072213"><vh>x.importDict and imported versus delegated rulesets</vh></v>
+<v t="ekr.20060503072213" a="TV"><vh>x.importDict and imported versus delegated rulesets</vh></v>
 </v>
 <v t="ekr.20060502122950"><vh>Rule methods</vh>
 <v t="ekr.20060503064515"><vh>Arguments to rule methods</vh></v>
@@ -2898,7 +2898,7 @@
 </v>
 </v>
 <v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20060629083400.1" a="V"><vh>4.4.1 b3</vh>
+<v t="ekr.20060629083400.1"><vh>4.4.1 b3</vh>
 <v t="ekr.20060629083935.2"><vh>Bugs fixed</vh>
 <v t="ekr.20060629083935.3"><vh>Fixed recent bug: Ctrl-g does not work in @mode nodes</vh></v>
 <v t="ekr.20060629083935.8"><vh>Update column display when typing</vh></v>
@@ -26937,7 +26937,7 @@ For example::
 
     # Import dict for php mode.
     importDict = {
-        "php_javascript_php": "javascript_main",
+        "php_javascript_php": ["javascript_main"],
     }
 
 For any ruleset ``R`` whose ruleset name is ``N``, ``x.importDict.get(N)``

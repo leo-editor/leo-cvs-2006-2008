@@ -5685,13 +5685,14 @@ class baseCommands:
     #@nonl
     #@-node:ekr.20031218072017.2954:c.redraw and c.redraw_now
     #@+node:ekr.20051216171520:c.recolor_now
-    def recolor_now(self,p=None,incremental=False):
+    def recolor_now(self,p=None,incremental=False,interruptable=True):
     
         c = self
         if p is None:
             p = c.currentPosition()
     
-        c.frame.body.colorizer.colorize(p,incremental)
+        c.frame.body.colorizer.colorize(p,
+            incremental=incremental,interruptable=interruptable)
     #@nonl
     #@-node:ekr.20051216171520:c.recolor_now
     #@+node:ekr.20031218072017.2953:c.recolor & requestRecolor

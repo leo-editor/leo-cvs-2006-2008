@@ -2,6 +2,8 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20060531161030:To do: B4
+#@+node:ekr.20060527204444:Finish new colorizer plugin
+#@-node:ekr.20060527204444:Finish new colorizer plugin
 #@+node:ekr.20060628103226:Finish emacs commands
 #@+node:ekr.20060628103226.2:Alt-x handlers should add to lossage
 #@-node:ekr.20060628103226.2:Alt-x handlers should add to lossage

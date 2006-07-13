@@ -658,10 +658,9 @@ class baseColorizer:
     #@+node:ekr.20060703090759:push/popDelegate
     def pushDelegate (self,language,delegate):
         
-        g.trace(language,delegate,g.callers())
+        # g.trace(language,delegate,g.callers())
         
         rulesetName = self.computeRulesetName(language,delegate)
-    
         self.modeStack.append(self.modeBunch)
         ok = self.init_mode(language,delegate)
         return ok
@@ -943,7 +942,7 @@ class baseColorizer:
         
         if delegate:
             language2,delegate2 = self.nameToLanguageDeletegate(delegate)
-            g.trace(delegate,'-->',language2,delegate2,g.callers())
+            # g.trace(delegate,'-->',language2,delegate2,g.callers())
             
             ok = self.pushDelegate(language2,delegate2)
             if ok:

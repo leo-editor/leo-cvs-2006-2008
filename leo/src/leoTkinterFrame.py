@@ -2535,14 +2535,14 @@ class leoTkinterBody (leoFrame.leoBody):
     #@+node:ekr.20060530204135:recolorWidget
     def recolorWidget (self,w):
         
-        # g.trace(w)
+        g.trace(w,g.callers())
         
         c = self.c ; old_w = self.bodyCtrl
         
         # Save.
         self.bodyCtrl = self.frame.bodyCtrl = w
         
-        c.recolor_now()
+        c.recolor_now(interruptable=False) # Force a complete recoloring.
         
         # Restore.
         self.bodyCtrl = self.frame.bodyCtrl = old_w
@@ -2597,6 +2597,7 @@ class leoTkinterBody (leoFrame.leoBody):
         
         w.delete('1.0','end')
         w.insert('end',p.bodyString())
+        w.see('1.0')
         self.setFontFromConfig(w=w)
         self.setColorFromConfig(w=w)
         self.createBindings(w=w)
@@ -2612,17 +2613,10 @@ class leoTkinterBody (leoFrame.leoBody):
             self.pb.configurepane(pane,size=minSize)
         
         self.pb.updatelayout()
-        
         self.bodyCtrl = self.frame.bodyCtrl = w
-        
-        self.onFocusIn(w)
-        
-        if 0: # Support for new colorizer.
-            def createEditorCallback(self=self,p=p.copy(),w=w):
-                self.onFocusIn(w)
-                self.selectMainEditor(p)
-            
-            w.after_idle(createEditorCallback)
+        self.updateEditors()
+        # self.onFocusIn(w,setFocus=True)
+        c.bodyWantsFocusNow()
     #@nonl
     #@-node:ekr.20060528100747.1:addEditor
     #@+node:ekr.20060606090542:setEditorColors
@@ -2694,9 +2688,6 @@ class leoTkinterBody (leoFrame.leoBody):
             return 'break'
         if w.leo_p is None:
             if trace: g.trace('no w.leo_p') 
-            return 'break'
-        if w == self.bodyCtrl:
-            if trace: g.trace('no change',w)
             return 'break'
         
         # Disable recursive calls: some of the calls below generate OnFocusInEvents.

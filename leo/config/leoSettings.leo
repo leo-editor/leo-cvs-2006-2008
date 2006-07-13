@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="292" clone_windows="0"/>
 <globals body_outline_ratio="0.549828178694">
-	<global_window_position top="75" left="241" height="661" width="953"/>
+	<global_window_position top="75" left="241" height="623" width="953"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -97,7 +97,7 @@
 <v t="ekr.20041119034357.75"><vh>@bool underline_undefined_section_names = True</vh></v>
 <v t="ekr.20041119034357.76"><vh>@bool use_hyperlinks = False</vh></v>
 <v t="ekr.20060504131831" a="E"><vh>Options for jEdit colorer</vh>
-<v t="ekr.20060704090341" a="TV"><vh>@color label_color = green</vh></v>
+<v t="ekr.20060704090341"><vh>@color label_color = green</vh></v>
 <v t="ekr.20060504131831.1"><vh>@color keyword1_color = blue</vh></v>
 <v t="ekr.20060504131831.2"><vh>@color literal1_color = #00aa00</vh></v>
 <v t="ekr.20060504134056"><vh>@color literal2_color = #00aa00</vh></v>
@@ -107,6 +107,7 @@
 <v t="ekr.20060504140408"><vh>@color comment2_color = firebrick3</vh></v>
 <v t="ekr.20060504140408.1"><vh>@color comment3_color = plum3</vh></v>
 <v t="ekr.20060504140408.2"><vh>@color comment4_color = orchid1</vh></v>
+<v t="ekr.20060713101831" a="TV"><vh>@color operator_color = red</vh></v>
 </v>
 </v>
 <v t="ekr.20041119034357.67"><vh>@color split_bar_color = LightSteelBlue2</vh></v>
@@ -476,6 +477,7 @@
 <v t="ekr.20060131071612"><vh>@bool trace_masterKeyHandler = False</vh></v>
 <v t="ekr.20060121102627"><vh>@bool trace_modes = False</vh></v>
 <v t="ekr.20060620085654"><vh>@string editor_orientation = horizontal</vh></v>
+<v t="ekr.20060210105437"><vh>@bool trace_select = False</vh></v>
 </v>
 <v t="ekr.20060603215208"><vh>@keys EKR bindings: Emacs keys + modes</vh>
 <v t="ekr.20060608065207"><vh>Settings related to key bindings</vh>
@@ -5542,5 +5544,6 @@ menu_text_font_size = None
 menu_text_font_slant = None
 menu_text_font_weight = None</t>
 <t tx="ekr.20060704090341"></t>
+<t tx="ekr.20060713101831"></t>
 </tnodes>
 </leo_file>

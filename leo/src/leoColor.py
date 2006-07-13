@@ -1322,7 +1322,8 @@ class baseColorizer:
     #@+node:ekr.20031218072017.2801:colorize & recolor_range
     # The main colorizer entry point.
     
-    def colorize(self,p,incremental=False):
+    def colorize(self,p,incremental=False,interruptable=True):
+        # interruptable used only in new colorizer.
     
         if self.enabled:
             # if self.trace: g.trace("incremental",incremental)
@@ -1353,7 +1354,7 @@ class baseColorizer:
         
         __pychecker__ = 'maxlines=500'
         
-        g.trace(p and p.headString())
+        # g.trace(p and p.headString())
         
         c = self.c
         
