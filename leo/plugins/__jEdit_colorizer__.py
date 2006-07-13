@@ -34,7 +34,7 @@ php_re = re.compile("<?(\s[pP][hH][pP])")
 # 0.21 EKR: No known crashers or serious problems.
 # - The colorizer now switches modes properly.
 # - Possible fix for unicode crasher.
-# 0.22 EKR: colorOneChunk now allows for good response to key events.
+#  0.22 EKR: colorOneChunk now allows for good response to key events.
 # 0.23 EKR: use g.app.gui.toGuiIndex in colorRangeWithTag.  Fixes a bug and is 
 # simpler.
 # 0.24 EKR: Fixed unicode crasher.  All unit tests now pass with the new 
@@ -233,11 +233,14 @@ def match_leo_keywords(self,s,i):
         j += 1
         
     word = s[i:j]
+    # g.trace(i,word,repr(self.word_chars))
     if leoKeywordsDict.get(word):
         kind = 'leoKeyword'
         self.colorRangeWithTag(s,i,j,kind)
         self.prev = (i,j,kind)
-        return j-i
+        result = j-i
+        # g.trace(g.callers(3),'result',result,'i',i,repr(s[i:i+g.choose(result,result,20)]))
+        return result
     else:
         return 0
 #@nonl
@@ -360,10 +363,12 @@ class baseColorizer:
         self.enabled = True # Set to False by unit tests.
         self.flag = True # True unless in range of @nocolor
         self.importedRulesets = {}
+        self.interruptable = True
         self.keywordNumber = 0 # The kind of keyword for keywordsColorHelper.
         self.kill_chunk = False
         self.language = 'python' # set by scanColorDirectives.
         self.prev = None # The previous token.
+        self.queue = [] # Entries are (p,bodyCtrl)
         self.ranges = 0
         self.redoColoring = False # May be set by plugins.
         self.redoingColoring = False
@@ -552,7 +557,7 @@ class baseColorizer:
             path = g.os_path_join(g.app.loadDir,'..','modes')
             mode = g.importFromPath (language,path)
             if not mode:
-                g.trace('Not found: %s' % rulesetName)
+                g.trace('Not found: %s for language: %s' % (rulesetName,language))
                 return False
             self.language = language
             self.rulesetName = rulesetName
@@ -598,8 +603,14 @@ class baseColorizer:
         self.word_chars = [g.toUnicode(ch,encoding='UTF-8') for ch in (string.letters + string.digits)]
         for key in d.keys():
             for ch in key:
+                # if ch == ' ': g.trace('blank in key: %s' % repr (key))
                 if ch not in self.word_chars:
                     self.word_chars.append(g.toUnicode(ch,encoding='UTF-8'))
+                    
+        for ch in (' ', '\t'):
+            if ch in self.word_chars:
+                # g.trace('removing %s from word_chars' % (repr(ch)))
+                self.word_chars.remove(ch)
                     
         # g.trace(len(d.keys()))
     #@nonl
@@ -666,16 +677,20 @@ class baseColorizer:
     #@-node:ekr.20060530091119.35:Birth and init
     #@+node:ekr.20060530091119.38:Entry points
     #@+node:ekr.20060530091119.11:colorize
-    def colorize(self,p,incremental=False):
+    def colorize(self,p,incremental=False,interruptable=True):
         
         '''The main colorizer entry point.'''
         
         self.count += 1 # For unit testing.
         
-        if self.trace:
-            g.trace(self.count,g.callers())
+        # g.trace(self.count,interruptable,p.c.frame.body.bodyCtrl,g.callers())
             
-        self.interrupt() # New in 4.4.1
+        if interruptable:
+            self.interrupt() # New in 4.4.1
+        else:
+            data = p.copy(),p.c.frame.body.bodyCtrl
+            self.queue.append(data)
+        self.interruptable = interruptable
     
         if self.enabled:
             self.updateSyntaxColorer(p)
@@ -876,15 +891,16 @@ class baseColorizer:
         count = 0 ; self.chunk_count += 1
         while i < len(s):
             count += 1 ; self.recolor_count += 1
-            if self.recolor_count > limit2 > 0:
-                self.recolor_count, self.chunk_s, self.chunk_i = 0, s, i
-                self.tagAll()
-                w.after(50,self.colorOneChunk)
-                return 'break'
-            if count >= limit:
-                self.chunk_s, self.chunk_i = s, i
-                w.after_idle(self.colorOneChunk)
-                return 'break'
+            if self.interruptable:
+                if self.recolor_count > limit2 > 0:
+                    self.recolor_count, self.chunk_s, self.chunk_i = 0, s, i
+                    self.tagAll()
+                    w.after(50,self.colorOneChunk)
+                    return 'break'
+                if count >= limit:
+                    self.chunk_s, self.chunk_i = s, i
+                    w.after_idle(self.colorOneChunk)
+                    return 'break'
             for f in self.rulesDict.get(s[i],[]):
                 # g.trace(f.__name__)
                 n = f(self,s,i)
@@ -896,7 +912,11 @@ class baseColorizer:
         self.tagAll()
         self.tagList = []
         self.chunks_done = True # Prohibit any more queued calls.
+        if self.queue:
+            p,bodyCtrl = self.queue.pop()
+            self.colorizeAnyLanguage(p)
         return 'break'
+    #@nonl
     #@-node:ekr.20060530091119.13:colorOneChunk
     #@+node:ekr.20060530091119.48:colorRangeWithTag
     def colorRangeWithTag (self,s,i,j,tag,delegate='',exclude_match=False):
@@ -1386,8 +1406,11 @@ class baseColorizer:
             
             if theDict.has_key("language"):
                 i = theDict["language"]
-                language,junk,junk,junk = g.set_language(s,i)
-                self.language = language
+                tag = "@language"
+                assert(g.match_word(s,i,tag))
+                i = g.skip_ws(s,i+len(tag))
+                j = g.skip_c_id(s,i)
+                self.language = s[i:j].lower()
             
             if theDict.has_key("comment") or theDict.has_key("language"):
                 break
@@ -1409,6 +1432,8 @@ class baseColorizer:
             #@nonl
             #@-node:ekr.20060530091119.66:<< Test for @root, @root-doc or @root-code >>
             #@nl
+            
+        # g.trace(self.language)
     
         return self.language # For use by external routines.
     #@nonl
