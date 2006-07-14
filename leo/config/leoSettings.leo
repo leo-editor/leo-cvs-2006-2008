@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="292" clone_windows="0"/>
 <globals body_outline_ratio="0.549828178694">
-	<global_window_position top="75" left="241" height="623" width="953"/>
+	<global_window_position top="75" left="241" height="604" width="953"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -107,7 +107,7 @@
 <v t="ekr.20060504140408"><vh>@color comment2_color = firebrick3</vh></v>
 <v t="ekr.20060504140408.1"><vh>@color comment3_color = plum3</vh></v>
 <v t="ekr.20060504140408.2"><vh>@color comment4_color = orchid1</vh></v>
-<v t="ekr.20060713101831" a="TV"><vh>@color operator_color = red</vh></v>
+<v t="ekr.20060713101831" a="TV"><vh>@color operator_color = None</vh></v>
 </v>
 </v>
 <v t="ekr.20041119034357.67"><vh>@color split_bar_color = LightSteelBlue2</vh></v>
