@@ -1,5 +1,7 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20060715100156.8:@thin mod_shadow_core.py
+__not_a_plugin__ = True
+
 #@+others
 #@+node:ekr.20060715100156.9:import
 import difflib
