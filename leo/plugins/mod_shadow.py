@@ -7,28 +7,14 @@
 """
 Use a subfolder for files with Leo comments.
 
-Adapted for post 4.2 (cvs versoin).
-
-I have not yet written unit tests for this plugin. Please use with
-caution.
-
-I have seen some messages when updating from external
-sources, which I have not yet analysed.
-
 This plugin allows you to use Leo with files which contain no
 Leo comments, and still have information flow in both directions:
 from the file into Leo, and from Leo into the file.
-
-To start using this plugin:
-    - Go to the directories where the sources are.
-    - Create a subfolder called LeoShadow (or whatever you have set shodow_subdir to).
-    - Copy the files into the subfolder.
-    - Replace the files with files of length 0.
-        (actually: <= 2, so that on Windows you can say: @echo.>filename)
-    - Enable this plugin.
-    - Start Leo.
+ 
+    The simplest way to start using this plugin is to use the 'convert_to_shadow.py'
+    script in the scripts section.
     
-    After starting, Leo will copy the files from the LeoShadow subfolder to the old
+    After (re)starting, Leo will copy the files from the LeoShadow subfolder to the old
     location after removing all sentinels.
     
     After this initial setup, changes in Leo will be reflected both in the file
@@ -36,9 +22,15 @@ To start using this plugin:
     
     Conversely, changes in the file without sentinels will flow back to the file
     in the leo subfolder, and show up in Leo.
+
+    Text insertions within a node will show up as expected. Text insertion
+    at the end of the node will show up and the end of the node.
+
+    Note that the plugin never structures input; this has to be done manually
+    within Leo.
     
 You can change the name of the shadow subfolder, default Leo, via the mod_shadow.ini
-configuration file.
+configuration file (to be changed in the near future).
 
 Configuraton:
     verbosity >= 1: print logon message in status pane.
