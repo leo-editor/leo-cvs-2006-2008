@@ -6,7 +6,7 @@
 #@@tabwidth -4
 #@@pagewidth 80
 
-__version__ = '0.27'
+__version__ = '0.28'
 #@<< imports >>
 #@+node:ekr.20060530091119.21:<< imports >>
 import leoGlobals as g
@@ -42,6 +42,8 @@ php_re = re.compile("<?(\s[pP][hH][pP])")
 # 0.25 EKR: Fixed bug in match_doc_part.
 # 0.26 EKR: Added support for show/hide-invisibles commands.
 # 0.27 EKR: Always configure tags: support for multiple editors.
+# 0.28 EKR: The check for whitespace in keywords (word_chars) is no longer 
+# needed.
 #@-at
 #@nonl
 #@-node:ekr.20060530091119.22:<< version history >>
@@ -607,9 +609,10 @@ class baseColorizer:
                 if ch not in self.word_chars:
                     self.word_chars.append(g.toUnicode(ch,encoding='UTF-8'))
                     
+        # jEdit2Py now does this check, so this isn't really needed.
         for ch in (' ', '\t'):
             if ch in self.word_chars:
-                # g.trace('removing %s from word_chars' % (repr(ch)))
+                g.es_print('removing %s from word_chars' % (repr(ch)))
                 self.word_chars.remove(ch)
                     
         # g.trace(len(d.keys()))
