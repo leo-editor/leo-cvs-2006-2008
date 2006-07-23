@@ -209,8 +209,6 @@ pvwave_main_keywords_dict = {
 	"dcomplex": "keyword1",
 	"dcomplexarr": "keyword1",
 	"declare": "keyword2",
-	"declare func": "keyword1",
-	"declare function": "keyword1",
 	"define_key": "keyword1",
 	"defroi": "keyword1",
 	"defsysv": "keyword1",

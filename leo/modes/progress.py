@@ -109,8 +109,6 @@ progress_main_keywords_dict = {
 	"WINDOW-SYSTEM": "comment2",
 	"_CREATE-WINDOW": "comment2",
 	"_CUSTOM": "comment2",
-	"_CUSTOM _DEFINITIONS": "comment2",
-	"_CUSTOM _MAIN-BLOCK": "comment2",
 	"_DEFINITIONS": "comment2",
 	"_END-PROCEDURE-SETTINGS": "comment2",
 	"_FUNCTION": "comment2",
