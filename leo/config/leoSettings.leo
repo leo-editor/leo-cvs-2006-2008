@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="292" clone_windows="0"/>
 <globals body_outline_ratio="0.549828178694">
-	<global_window_position top="75" left="241" height="604" width="953"/>
+	<global_window_position top="141" left="291" height="566" width="953"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -45,7 +45,7 @@
 </v>
 </v>
 <v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
-<v t="ekr.20041213105007.1" a="E" annotate="7d71002e"><vh>Colors</vh>
+<v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
 <v t="ekr.20041119052015.2"><vh>@color log_text_foreground_color = None</vh></v>
@@ -74,7 +74,7 @@
 <v t="ekr.20041119051901.1"><vh>@color headline_text_editing_selection_background_color = None</vh></v>
 <v t="ekr.20041119050749.12"><vh>@color outline_pane_background_color = #ffffec</vh></v>
 </v>
-<v t="ekr.20041119034357.70" a="E"><vh>Syntax colors &amp; options</vh>
+<v t="ekr.20041119034357.70"><vh>Syntax colors &amp; options</vh>
 <v t="ekr.20060513100933"><vh>@int colorizer_interrupt_count1 = 10</vh></v>
 <v t="ekr.20060513100933.1"><vh>@int colorizer_interrupt_count2 = 5000</vh></v>
 <v t="ekr.20060201111002"><vh>@bool use_syntax_coloring = True</vh></v>
@@ -96,7 +96,7 @@
 <v t="ekr.20041119034357.74"><vh>@bool color_directives_in_plain_text = True</vh></v>
 <v t="ekr.20041119034357.75"><vh>@bool underline_undefined_section_names = True</vh></v>
 <v t="ekr.20041119034357.76"><vh>@bool use_hyperlinks = False</vh></v>
-<v t="ekr.20060504131831" a="E"><vh>Options for jEdit colorer</vh>
+<v t="ekr.20060504131831"><vh>Options for jEdit colorer</vh>
 <v t="ekr.20060704090341"><vh>@color label_color = green</vh></v>
 <v t="ekr.20060504131831.1"><vh>@color keyword1_color = blue</vh></v>
 <v t="ekr.20060504131831.2"><vh>@color literal1_color = #00aa00</vh></v>
@@ -107,7 +107,7 @@
 <v t="ekr.20060504140408"><vh>@color comment2_color = firebrick3</vh></v>
 <v t="ekr.20060504140408.1"><vh>@color comment3_color = plum3</vh></v>
 <v t="ekr.20060504140408.2"><vh>@color comment4_color = orchid1</vh></v>
-<v t="ekr.20060713101831" a="TV"><vh>@color operator_color = None</vh></v>
+<v t="ekr.20060713101831"><vh>@color operator_color = None</vh></v>
 </v>
 </v>
 <v t="ekr.20041119034357.67"><vh>@color split_bar_color = LightSteelBlue2</vh></v>
@@ -219,7 +219,7 @@
 <v t="ekr.20041120152900.2"><vh>@bool script_search = None</vh></v>
 <v t="ekr.20041119050105.16"><vh>@bool suboutline_only = False</vh></v>
 </v>
-<v t="ekr.20041213105007" annotate="7d71002e"><vh>Fonts</vh>
+<v t="ekr.20041213105007" a="TV" annotate="7d71002e"><vh>Fonts</vh>
 <v t="ekr.20041213105508"><vh>@font log font</vh></v>
 <v t="ekr.20041119034357.45"><vh>@font body text font</vh></v>
 <v t="ekr.20060702100257"><vh>@font menu text font</vh></v>
@@ -435,7 +435,7 @@
 <v t="ekr.20041119034357.42"><vh>@string body_time_format_string = %m/%d/%Y %H:%M:%S</vh></v>
 <v t="ekr.20060620085654"><vh>@string editor_orientation = horizontal</vh></v>
 </v>
-<v t="ekr.20041213105954.1"><vh>Log pane options</vh>
+<v t="ekr.20041213105954.1" a="E"><vh>Log pane options</vh>
 <v t="ekr.20041119052015.1"><vh>@bool log_pane_wraps = False</vh></v>
 </v>
 <v t="ekr.20041119034357.56"><vh>Options for new windows</vh>
@@ -1160,7 +1160,9 @@ Therefore, @if-platform and @ifPlatformare equivalent to @ifplatform.</t>
 Valid values:
     
 weight: bold, normal, None
-slant: roman, italic, None</t>
+slant: roman, italic, None
+
+Use the show-fonts command to pick fonts, then copy the values shown by the show-fonts command to the values here.</t>
 <t tx="ekr.20041213105007.1"></t>
 <t tx="ekr.20041213105007.2"></t>
 <t tx="ekr.20041213105007.3"></t>
