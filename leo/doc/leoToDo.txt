@@ -1261,7 +1261,10 @@ Summary:
 - Profile to find out what slows Leo down if many nodes change.
 #@nonl
 #@-node:ekr.20040721094203:Make sure Leo uses "verbatim" whitespace
-#@+node:ekr.20040720103642.1:Script to remove trailing body newlines VERY DANGEROUS
+#@+node:ekr.20040720103642.1:Script to remove trailing body newlines
+@ Setting nodes dirty is very slow.
+To do: a separate pass that sets an @file nodes dirty if any child is marked dirty.
+@c
 count = 0 ; seen = {}
 
 c.beginUpdate()
@@ -1274,8 +1277,7 @@ try:
             if s2 != s:
                 # Do NOT set anything dirty here!
                 s2 = g.toUnicode(s2,g.app.tkEncoding,reportErrors=True)
-                if 1: # Slow??
-                    p.v.t.bodyString = s2
+                p.v.t.bodyString = s2
                 seen [p.v.t] = True
                 count += 1
 finally:
@@ -1284,7 +1286,7 @@ finally:
 g.es_print("%d nodes converted" % count)
 g.es_print("You MUST do Write All Nodes AND Save this file to complete the conversion")
 #@nonl
-#@-node:ekr.20040720103642.1:Script to remove trailing body newlines VERY DANGEROUS
+#@-node:ekr.20040720103642.1:Script to remove trailing body newlines
 #@+node:EKR.20040603092958.1:Add new options for handling newlines in body text
 @nocolor
 
@@ -1299,8 +1301,13 @@ Special case code is required so empty nodes stay empty with "one" option.
 #@+node:ekr.20050419060645:Alternate lead-in characters
 @nocolor
 
-An @decorator setting might be good. This would be a list of all Python
-decorators. Leo would create @verbatim sentinels for these.
+- @string leadin-character
+
+- @leadin <string> directive.
+
+- @decorators <list of decorators>
+
+Leo should create @verbatim sentinels for Python decorators.
 #@nonl
 #@-node:ekr.20050419060645:Alternate lead-in characters
 #@-node:ekr.20060623064600.1:Urgent (big picture)
