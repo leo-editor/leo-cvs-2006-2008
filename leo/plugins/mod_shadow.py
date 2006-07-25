@@ -50,7 +50,7 @@ shadow file).
 #@@language python
 #@@tabwidth -4
 
-__version__ = "0.9.3"
+__version__ = "0.9.4"
 #@<< version history >>
 #@+node:ekr.20060715100156.54:<< version history >>
 #@@killcolor 
@@ -82,6 +82,8 @@ __version__ = "0.9.3"
 # - Changed default shadow directory from 'Leo' to 'LeoShadow'.
 # - Added @thin mod_shadow.ini.
 # - use g.importFromPath to import mod_shadow_core.
+# 0.9.4 EKR:
+# - Added guard for self.line_mapping in applyLineNumberMappingIfAny.
 #@-at
 #@nonl
 #@-node:ekr.20060715100156.54:<< version history >>
@@ -325,7 +327,8 @@ def applyLineNumberMappingIfAny(self, n):
     """
     Hook for mod_shadow plugin.
     """
-    if self.line_mapping:
+    
+    if hasattr(self,'line_mapping') and self.line_mapping:
         return self.line_mapping[n]
     else:
         return n
