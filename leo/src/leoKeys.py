@@ -3270,11 +3270,11 @@ class keyHandlerClass:
             if (
                 key in key_states and isPlain and k.unboundKeyAction == key or
                 name and w_name.startswith(name) or
-                key == 'text' and g.app.gui.isTextWidget(w) or
+                key in ('text','all') and g.app.gui.isTextWidget(w) or
                 key in ('button','all')
             ):
                 d = k.masterBindingsDict.get(key)
-                # g.trace(key,name,d and len(d.keys()))
+                # g.trace(g.app.gui.isTextWidget(w),w_name,key,name,d and len(d.keys()))
                 if d:
                     b = d.get(stroke)
                     if b:

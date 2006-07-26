@@ -1993,21 +1993,20 @@ class editCommandsClass (baseEditCommandsClass):
         
         c = self.c ; k = c.k
         
-        def fontPickerKeyCallback(event,self=self,k=k):
-            return k.masterKeyHandler(event)
-    
         table = (
             ('<Button-1>',  k.masterClickHandler),
             ('<Double-1>',  k.masterClickHandler),
             ('<Button-3>',  k.masterClickHandler),
             ('<Double-3>',  k.masterClickHandler),
-            ('<Key>',       fontPickerKeyCallback),
+            ('<Key>',       k.masterKeyHandler),
             ("<Escape>",    self.hideTab),
         )
     
-        for w in (self.familyBox,self.sampleWidget):
-            for event, callback in table:
-                w.bind(event,callback)
+        w = self.sampleWidget
+        for event, callback in table:
+            w.bind(event,callback)
+            
+        k.completeAllBindingsForWidget(w)
     #@nonl
     #@-node:ekr.20060726133852:createBindings (fontPicker)
     #@+node:ekr.20051019201809.6:getFont
