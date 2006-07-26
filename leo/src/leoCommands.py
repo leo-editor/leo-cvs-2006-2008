@@ -3038,7 +3038,7 @@ class baseCommands:
                 #@-node:ekr.20050418084539.2:<< put only needed info in copiedBunchList >>
                 #@nl
             undoData = u.beforeInsertNode(current,
-            pasteAsClone=pasteAsClone,copiedBunchList=copiedBunchList)
+                pasteAsClone=pasteAsClone,copiedBunchList=copiedBunchList)
             c.endEditing()
             c.validateOutline()
             c.selectPosition(pasted)

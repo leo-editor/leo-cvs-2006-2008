@@ -1917,7 +1917,7 @@ class editCommandsClass (baseEditCommandsClass):
         names.sort()
         names.insert(0,'<None>')
         
-        familyBox = Pmw.ComboBox(f1,
+        self.familyBox = familyBox = Pmw.ComboBox(f1,
             labelpos="we",label_text='Family:',label_width=10,
             label_background=bg,
             arrowbutton_background=bg,
@@ -1965,7 +1965,7 @@ class editCommandsClass (baseEditCommandsClass):
         #@nl
         #@    << create the sample text widget >>
         #@+node:ekr.20051019202139.1:<< create the sample text widget >>
-        sample = Tk.Text(f,height=20,width=80,font=font)
+        self.sampleWidget = sample = Tk.Text(f,height=20,width=80,font=font)
         sample.pack(side='left')
         
         s = 'The quick brown fox\njumped over the lazy dog.\n0123456789'
@@ -1985,8 +1985,31 @@ class editCommandsClass (baseEditCommandsClass):
         #@nonl
         #@-node:ekr.20051019202328:<< create and bind the callbacks >>
         #@nl
+        self.createBindings()
     #@nonl
     #@-node:ekr.20051019201809.1:createFontPicker
+    #@+node:ekr.20060726133852:createBindings (fontPicker)
+    def createBindings (self):
+        
+        c = self.c ; k = c.k
+        
+        def fontPickerKeyCallback(event,self=self,k=k):
+            return k.masterKeyHandler(event)
+    
+        table = (
+            ('<Button-1>',  k.masterClickHandler),
+            ('<Double-1>',  k.masterClickHandler),
+            ('<Button-3>',  k.masterClickHandler),
+            ('<Double-3>',  k.masterClickHandler),
+            ('<Key>',       fontPickerKeyCallback),
+            ("<Escape>",    self.hideTab),
+        )
+    
+        for w in (self.familyBox,self.sampleWidget):
+            for event, callback in table:
+                w.bind(event,callback)
+    #@nonl
+    #@-node:ekr.20060726133852:createBindings (fontPicker)
     #@+node:ekr.20051019201809.6:getFont
     def getFont(self,family=None,size=12,slant='roman',weight='normal'):
         
@@ -2025,6 +2048,14 @@ class editCommandsClass (baseEditCommandsClass):
         label.configure(font=font)
     #@nonl
     #@-node:ekr.20051019201809.7:setFont
+    #@+node:ekr.20060726134339:hideTab
+    def hideTab (self,event=None):
+        
+        c = self.c
+        c.frame.log.selectTab('Log')
+        c.bodyWantsFocus()
+    #@nonl
+    #@-node:ekr.20060726134339:hideTab
     #@-node:ekr.20051019201809:show-fonts & helpers
     #@-node:ekr.20051019183105:color & font
     #@+node:ekr.20050920084036.132:comment column...
@@ -7186,13 +7217,6 @@ class findTab (leoFind.leoFind):
         def findButtonBindingCallback(event=None,self=self):
             self.findButton()
             return 'break'
-            
-        if 0: # No longer needed.
-            def findTabClickCallback(event,self=self):
-                c = self.c ; k = c.k ; w = event.widget
-                k.keyboardQuit(event)
-                w and c.widgetWantsFocusNow(w)
-                return k.masterClickHandler(event)
     
         table = (
             ('<Button-1>',  k.masterClickHandler),
@@ -7415,11 +7439,6 @@ class findTab (leoFind.leoFind):
         
         # Pack this last so buttons don't get squashed when frame is resized.
         self.outerScrolledFrame.pack(side='top',expand=1,fill='both',padx=2,pady=2)
-        
-        if 0: # These dont work in the new binding scheme.  Use shortcuts or mode bindings instead.
-            for w in buttons:
-                w.bindHotKey(ftxt)
-                w.bindHotKey(ctxt)
     #@nonl
     #@-node:ekr.20051020120306.13:createFrame (findTab)
     #@+node:ekr.20051020120306.19:find.init
