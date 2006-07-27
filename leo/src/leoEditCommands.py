@@ -5340,21 +5340,25 @@ class killBufferCommandsClass (baseEditCommandsClass):
                     yield z
     #@-node:ekr.20050920084036.184:iterateKillBuffer
     #@+node:ekr.20050920084036.178:kill, killLine, killWord
-    def kill (self,event,frm,to):
+    def kill (self,event,frm,to,undoType=None):
     
-        k = self.k ; w = event.widget ; s = w.get(frm,to)
+        k = self.k ; w = event.widget
+        s = w.get(frm,to)
+        
+        self.beginCommand(undoType=undoType)
         self.addToKillBuffer(s)
         w.clipboard_clear()
         w.clipboard_append(s)
         w.delete(frm,to)
+        self.endCommand(changed=True,setLabel=True)
     
     def killLine (self,event):
         '''Kill the line containing the cursor.'''
-        self.kill(event,'insert linestart','insert lineend+1c')
+        self.kill(event,'insert linestart','insert lineend+1c','kill-line')
     
     def killWord (self,event):
         '''Kill the word containing the cursor.'''
-        self.kill(event,'insert wordstart','insert wordend')
+        self.kill(event,'insert wordstart','insert wordend','kill-word')
         self.killWs(event)
     #@-node:ekr.20050920084036.178:kill, killLine, killWord
     #@+node:ekr.20050920084036.182:killRegion & killRegionSave & helper
