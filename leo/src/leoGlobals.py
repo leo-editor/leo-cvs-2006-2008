@@ -303,6 +303,8 @@ def comment_delims_from_extension(filename):
 # Returns a tuple (single,start,end) of comment delims
 
 def set_delims_from_language(language):
+    
+    # g.trace(g.callers())
 
     val = app.language_delims_dict.get(language)
     if val:
