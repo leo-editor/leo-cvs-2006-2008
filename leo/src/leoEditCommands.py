@@ -1438,6 +1438,8 @@ class editCommandsClass (baseEditCommandsClass):
             'scroll-down-extend-selection':         self.scrollDownExtendSelection,
             'scroll-outline-down-line':             self.scrollOutlineDownLine,
             'scroll-outline-down-page':             self.scrollOutlineDownPage,
+            'scroll-outline-left':                  self.scrollOutlineLeft,
+            'scroll-outline-right':                 self.scrollOutlineRight,
             'scroll-outline-up-line':               self.scrollOutlineUpLine,
             'scroll-outline-up-page':               self.scrollOutlineUpPage,
             'scroll-up':                            self.scrollUp,
@@ -4258,6 +4260,15 @@ class editCommandsClass (baseEditCommandsClass):
     
     
     #@-node:ekr.20060309060654.1:scrollOutlineUp/Down/Line/Page
+    #@+node:ekr.20060726154531:scrollOutlineLeftRight
+    def scrollOutlineLeft (self,event=None):
+        '''Scroll the outline left.'''
+        self.c.frame.tree.canvas.xview_scroll(1,"unit")
+        
+    def scrollOutlineRight (self,event=None):
+        '''Scroll the outline left.'''
+        self.c.frame.tree.canvas.xview_scroll(-1,"unit")
+    #@-node:ekr.20060726154531:scrollOutlineLeftRight
     #@-node:ekr.20060309060654:scrolling...
     #@+node:ekr.20050920084036.117:sort...
     '''XEmacs provides several commands for sorting text in a buffer.  All
