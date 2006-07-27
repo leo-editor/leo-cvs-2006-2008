@@ -5290,7 +5290,7 @@ class killBufferCommandsClass (baseEditCommandsClass):
         if i:
             i2 = w.search('.',i,backwards=True,stopindex='1.0')
             i2 = g.choose(i2=='','1.0',i2+'+1c ')
-            self.kill(event,i2,'%s + 1c' % i)
+            self.kill(event,i2,'%s + 1c' % i,undoType='backward-kill-sentence')
     #@nonl
     #@-node:ekr.20050920084036.181:backwardKillSentence
     #@+node:ekr.20050920084036.180:backwardKillWord
@@ -5345,12 +5345,12 @@ class killBufferCommandsClass (baseEditCommandsClass):
         k = self.k ; w = event.widget
         s = w.get(frm,to)
         
-        self.beginCommand(undoType=undoType)
+        if undoType: self.beginCommand(undoType=undoType)
         self.addToKillBuffer(s)
         w.clipboard_clear()
         w.clipboard_append(s)
         w.delete(frm,to)
-        self.endCommand(changed=True,setLabel=True)
+        if undoType: self.endCommand(changed=True,setLabel=True)
     
     def killLine (self,event):
         '''Kill the line containing the cursor.'''
@@ -5396,7 +5396,7 @@ class killBufferCommandsClass (baseEditCommandsClass):
         if i:
             i2 = w.search('.','insert',backwards=True,stopindex='1.0')
             i2 = g.choose(i2=='','1.0',i2+'+1c ')
-            self.kill(event,i2,'%s + 1c' % i)
+            self.kill(event,i2,'%s + 1c' % i,undoType='kill-sentence')
     #@nonl
     #@-node:ekr.20050930095323.1:killSentence
     #@+node:ekr.20050930100733:killWs

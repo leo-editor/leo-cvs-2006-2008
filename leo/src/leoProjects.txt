@@ -393,6 +393,48 @@ def handleMiniBindings (self,event,state,stroke):
 #@-node:ekr.20060309065445:handleMiniBindings
 #@-node:ekr.20060127183752:masterKeyHandler
 #@-node:ekr.20060726122814:Added bindings to text panes for show-font command
+#@+node:ekr.20060727075804:Fixed kill-line, kill-word, kill-sentence, etc
+#@+node:ekr.20060727075804.1:Report
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3839322
+By: paulpaterson
+
+I think I may have confused the issue by combining two reports; just to be clear
+... kill-line doesn't work on 4.4.1 beta 3.
+
+1. Open Leo
+2. Create Node
+3. Create Node
+4. Type three lines
+5. Go to one line and press CTRL-SHIFT-K (or kill-line) - the line is removed
+6. Go up a node
+7. Go down a node
+
+The line you "removed" is back.
+#@-node:ekr.20060727075804.1:Report
+#@+node:ekr.20050920084036.178:kill, killLine, killWord
+def kill (self,event,frm,to,undoType=None):
+
+    k = self.k ; w = event.widget
+    s = w.get(frm,to)
+    
+    if undoType: self.beginCommand(undoType=undoType)
+    self.addToKillBuffer(s)
+    w.clipboard_clear()
+    w.clipboard_append(s)
+    w.delete(frm,to)
+    if undoType: self.endCommand(changed=True,setLabel=True)
+
+def killLine (self,event):
+    '''Kill the line containing the cursor.'''
+    self.kill(event,'insert linestart','insert lineend+1c','kill-line')
+
+def killWord (self,event):
+    '''Kill the word containing the cursor.'''
+    self.kill(event,'insert wordstart','insert wordend','kill-word')
+    self.killWs(event)
+#@-node:ekr.20050920084036.178:kill, killLine, killWord
+#@-node:ekr.20060727075804:Fixed kill-line, kill-word, kill-sentence, etc
 #@-node:ekr.20060702103435.1:Bugs fixed
 #@+node:ekr.20060702103435.2:New features
 #@+node:ekr.20060702094931:Created menu font settings
@@ -532,6 +574,8 @@ def createMenuBar(self,frame):
 #@-node:ekr.20031218072017.4115:createMenuBar
 #@-node:ekr.20060702094931:Created menu font settings
 #@+node:ekr.20060724074426:Added scroll-outline-left/right commands
+http://sourceforge.net/forum/message.php?msg_id=3834645
+#@nonl
 #@+node:ekr.20060309060654:scrolling...
 #@+node:ekr.20050920084036.116:scrollUp/Down/extendSelection
 def scrollDown (self,event):
