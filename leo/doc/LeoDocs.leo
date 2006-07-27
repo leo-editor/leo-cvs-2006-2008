@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="25645" clone_windows="0"/>
 <globals body_outline_ratio="0.550802139037">
-	<global_window_position top="164" left="183" height="637" width="776"/>
+	<global_window_position top="164" left="183" height="618" width="776"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -46,7 +46,7 @@
 <v t="ekr.20060525110217"><vh>@@button rst-&gt;rst</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
+<v t="ekr.20040414161647"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -596,7 +596,7 @@
 <v t="ekr.20050818163826.17"><vh>@rst-no-head end-of-page stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20060430221745" a="E"><vh>Chapter 15: Controlling syntax coloring</vh>
+<v t="ekr.20060430221745"><vh>Chapter 15: Controlling syntax coloring</vh>
 <v t="ekr.20060430221745.1" a="E"><vh>@rst html\coloring.html</vh>
 <v t="ekr.20060430222753"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20060430220749"><vh>Files</vh></v>
@@ -607,7 +607,7 @@
 <v t="ekr.20060510085547"><vh>Attribute dictionaries and x.attributesDictDict</vh></v>
 <v t="ekr.20060502090516.1"><vh>Keyword dictionaries and x.keywordsDictDict</vh></v>
 <v t="ekr.20060502090516.2"><vh>Rules, rules dictionaries and x.rulesDictDict</vh></v>
-<v t="ekr.20060503072213" a="TV"><vh>x.importDict and imported versus delegated rulesets</vh></v>
+<v t="ekr.20060503072213"><vh>x.importDict and imported versus delegated rulesets</vh></v>
 </v>
 <v t="ekr.20060502122950"><vh>Rule methods</vh>
 <v t="ekr.20060503064515"><vh>Arguments to rule methods</vh></v>
@@ -2832,7 +2832,7 @@
 <v t="ekr.20060601101958.244"><vh>Added warnings about the expanded_click_area setting</vh></v>
 <v t="ekr.20060601101958.276"><vh>Removed support for @shortcut (@shortcuts remains)</vh></v>
 </v>
-<v t="ekr.20060601101958.28"><vh>Minor improvements</vh>
+<v t="ekr.20060601101958.28" a="E"><vh>Minor improvements</vh>
 <v t="ekr.20060601101958.218"><vh>Finished Cmds menu</vh></v>
 <v t="ekr.20060601101958.235"><vh>Improved show-fonts command</vh></v>
 <v t="ekr.20060601101958.238"><vh>Strip quotes from color, font settings.</vh></v>
@@ -2898,7 +2898,7 @@
 </v>
 </v>
 <v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20060629083400.1"><vh>4.4.1 b3</vh>
+<v t="ekr.20060629083400.1" a="E"><vh>4.4.1 b3</vh>
 <v t="ekr.20060629083935.2"><vh>Bugs fixed</vh>
 <v t="ekr.20060629083935.3"><vh>Fixed recent bug: Ctrl-g does not work in @mode nodes</vh></v>
 <v t="ekr.20060629083935.8"><vh>Update column display when typing</vh></v>
@@ -2909,7 +2909,7 @@
 <v t="ekr.20060629083935.70"><vh>Fixed crasher in masterCommand</vh></v>
 <v t="ekr.20060629083935.71"><vh>Improved view-lossage command</vh></v>
 </v>
-<v t="ekr.20060629083935.74"><vh>New features</vh>
+<v t="ekr.20060629083935.74" a="V"><vh>New features</vh>
 <v t="ekr.20060629083935.75"><vh>Finished repeat-complex-command</vh></v>
 <v t="ekr.20060629083935.76"><vh>Read leoSettings.leo from the directory containing the .leo file</vh></v>
 <v t="ekr.20060629083935.93"><vh>Flash matching parens &amp; corresponding settings</vh></v>

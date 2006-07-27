@@ -22,9 +22,10 @@
 plugins_menu.py
 
 #################
+#mod_shadow.py
 #print_cp.py
 #xcc_nodes.py
-__jEdit_colorizer__.py
+#__jEdit_colorizer__.py
 #word_export.py
 #open_shell.py
 #at_view.py

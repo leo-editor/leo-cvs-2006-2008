@@ -233,6 +233,7 @@ def check_for_shadow_file (self,filename):
             return shadow_filename, os.path.getsize(filename)<= 2
         else:
             return '', False 
+#@nonl
 #@-node:ekr.20060715100156.63:check_for_shadow_file
 #@-node:ekr.20060715100156.60:plugin specific functions
 #@+node:ekr.20060715100156.64:additional core functions
