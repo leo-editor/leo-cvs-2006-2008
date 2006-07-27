@@ -6,7 +6,7 @@
 #@@tabwidth -4
 #@@pagewidth 80
 
-__version__ = '0.28'
+__version__ = '0.29'
 #@<< imports >>
 #@+node:ekr.20060530091119.21:<< imports >>
 import leoGlobals as g
@@ -44,6 +44,8 @@ php_re = re.compile("<?(\s[pP][hH][pP])")
 # 0.27 EKR: Always configure tags: support for multiple editors.
 # 0.28 EKR: The check for whitespace in keywords (word_chars) is no longer 
 # needed.
+# 0.29 EKR: Update g.app.language_delims_dict if no entry for the language 
+# exists.
 #@-at
 #@nonl
 #@-node:ekr.20060530091119.22:<< version history >>
@@ -563,6 +565,7 @@ class baseColorizer:
                 return False
             self.language = language
             self.rulesetName = rulesetName
+            self.properties = mode.properties
             self.keywordsDict = mode.keywordsDictDict.get(rulesetName,{})
             self.setKeywords()
             self.attributesDict = mode.attributesDictDict.get(rulesetName)
@@ -578,10 +581,12 @@ class baseColorizer:
                 keywordsDict    = self.keywordsDict,
                 language        = self.language,
                 mode            = self.mode,
+                properties      = self.properties,
                 rulesDict       = self.rulesDict,
                 rulesetName     = self.rulesetName)
             # Do this after 'officially' initing the mode, to limit recursion.
             self.addImportedRules(mode,self.rulesDict,rulesetName,language,delegate)
+            self.updateDelimsTables()
             return True
     #@nonl
     #@+node:ekr.20060530091119.18:setKeywords
@@ -652,6 +657,7 @@ class baseColorizer:
         self.setKeywords()
         self.language       = bunch.language
         self.mode           = bunch.mode
+        self.properties     = bunch.properties
         self.rulesDict      = bunch.rulesDict
         self.rulesetName    = bunch.rulesetName
         
@@ -675,6 +681,33 @@ class baseColorizer:
             self.initModeFromBunch(bunch)
     #@nonl
     #@-node:ekr.20060703090759:push/popDelegate
+    #@+node:ekr.20060727084423:updateDelimsTables
+    def updateDelimsTables (self):
+        
+        '''Update g.app.language_delims_dict if no entry for the language exists.'''
+    
+        d = self.properties
+        lineComment = d.get('lineComment')
+        startComment = d.get('commentStart')
+        endComment = d.get('commentEnd')
+        
+        if lineComment and startComment and endComment:
+            delims = '%s %s %s' % (lineComment,startComment,endComment)
+        elif startComment and endComment:
+            delims = '%s %s' % (startComment,endComment)
+        elif lineComment:
+            delims = '%s' % lineComment
+        else:
+            delims = None
+            
+        if delims:
+            d = g.app.language_delims_dict
+            if not d.get(self.language):
+                d [self.language] = delims
+                # g.trace(self.language,'delims:',repr(delims))
+       
+    #@nonl
+    #@-node:ekr.20060727084423:updateDelimsTables
     #@-node:ekr.20060530091119.9:init_mode & helpers
     #@-node:ekr.20060530091119.35:Birth and init
     #@+node:ekr.20060530091119.38:Entry points
