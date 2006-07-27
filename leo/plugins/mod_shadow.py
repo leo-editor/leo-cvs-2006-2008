@@ -50,7 +50,7 @@ shadow file).
 #@@language python
 #@@tabwidth -4
 
-__version__ = "0.9.4"
+__version__ = "0.9.5"
 #@<< version history >>
 #@+node:ekr.20060715100156.54:<< version history >>
 #@@killcolor 
@@ -84,6 +84,9 @@ __version__ = "0.9.4"
 # - use g.importFromPath to import mod_shadow_core.
 # 0.9.4 EKR:
 # - Added guard for self.line_mapping in applyLineNumberMappingIfAny.
+# 0.9.5 EKR:
+# - Renamed test_propagate_changes_Leo to do_test_propagate_changes_Leo
+#   so the unit tests don't try to run this.
 #@-at
 #@nonl
 #@-node:ekr.20060715100156.54:<< version history >>
@@ -396,8 +399,8 @@ def massageComment (self,s):
 #@-node:ekr.20060715100156.68:Leo overwrites
 #@-node:ekr.20060715100156.59:interface
 #@+node:ekr.20060715100156.74:test_support
-#@+node:ekr.20060715100156.75:test_propagate_changes_Leo
-def test_propagate_changes_Leo(c):
+#@+node:ekr.20060715100156.75:do_test_propagate_changes_Leo
+def do_test_propagate_changes_Leo(c):
     """
     Leo version of the test procedure.
     Gets the arguments from Leo nodes.
@@ -423,7 +426,7 @@ def test_propagate_changes_Leo(c):
     finally:
         testing = old_testing
     
-#@-node:ekr.20060715100156.75:test_propagate_changes_Leo
+#@-node:ekr.20060715100156.75:do_test_propagate_changes_Leo
 #@-node:ekr.20060715100156.74:test_support
 #@+node:ekr.20060715100156.76:stop_testing
 def stop_testing ():

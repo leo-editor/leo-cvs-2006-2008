@@ -592,7 +592,7 @@ class sentinel_squasher:
 #@-others
 #@nonl
 #@-node:ekr.20060715100156.11:plugin core
-#@+node:ekr.20060715100156.51:test_propagate_changes
+#@+node:ekr.20060715100156.51:propagate_changes_test
 def propagate_changes_test (before_with_sentinels_lines, changed_without_sentinels_lines, after_with_sentinel_lines, marker, es, nullObject):
     """"
     Check if 'before_with_sentinels_lines' is transformed to 'after_with_sentinel_lines' when picking
@@ -605,7 +605,7 @@ def propagate_changes_test (before_with_sentinels_lines, changed_without_sentine
         marker = marker)
     assert resultlines == after_with_sentinel_lines, "Test failed: changes have not been propagated back properly"
  
-#@-node:ekr.20060715100156.51:test_propagate_changes
+#@-node:ekr.20060715100156.51:propagate_changes_test
 #@-others
 #@nonl
 #@-node:ekr.20060715100156.8:@thin mod_shadow_core.py
