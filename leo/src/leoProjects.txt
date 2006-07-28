@@ -435,6 +435,134 @@ def killWord (self,event):
     self.killWs(event)
 #@-node:ekr.20050920084036.178:kill, killLine, killWord
 #@-node:ekr.20060727075804:Fixed kill-line, kill-word, kill-sentence, etc
+#@+node:ekr.20060705084548:Fixed minor scrolling problem
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3805745
+
+can scroll the tree upwards even if it is already at the first node. When I do
+this empty lines and sometimes even text appears above the normal nodes. 
+
+@color
+#@nonl
+#@+node:ekr.20060309060654:scrolling...
+#@+node:ekr.20050920084036.116:scrollUp/Down/extendSelection
+def scrollDown (self,event):
+    '''Scroll the presently selected pane down one page.'''
+    self.scrollHelper(event,'down',extend=False)
+
+def scrollDownExtendSelection (self,event):
+    '''Extend the text selection by scrolling the body text down one page.'''
+    self.scrollHelper(event,'down',extend=True)
+
+def scrollUp (self,event):
+    '''Scroll the presently selected pane up one page.'''
+    self.scrollHelper(event,'up',extend=False)
+
+def scrollUpExtendSelection (self,event):
+    '''Extend the text selection by scrolling the body text up one page.'''
+    self.scrollHelper(event,'up',extend=True)
+#@nonl
+#@+node:ekr.20060113082917:scrollHelper
+def scrollHelper (self,event,direction,extend):
+
+    k = self.k ; c = k.c ; w = event.widget
+    # g.trace(g.app.gui.widget_name(w))
+
+    if g.app.gui.isTextWidget(w):
+
+        c.widgetWantsFocus(w)
+    
+        # Remember the original insert point.  This may become the moveSpot.
+        ins1 = w.index('insert')
+        row, col = ins1.split('.') ; row = int(row) ; col = int(col)
+    
+        # Compute the spot.
+        chng = self.measure(w) ; delta = chng [0]
+        row1 = g.choose(direction=='down',row+delta,row-delta)
+        spot = w.index('%d.%d' % (row1,col))
+        w.mark_set('insert',spot)
+    
+        # Handle the extension.
+        self.extendHelper(w,extend,ins1,spot,setSpot=False)
+        w.see('insert')
+    elif g.app.gui.widget_name(w).startswith('canvas'):
+        if direction=='down':
+            self.scrollOutlineDownPage()
+        else:
+            self.scrollOutlineUpPage()
+#@nonl
+#@-node:ekr.20060113082917:scrollHelper
+#@+node:ekr.20050920084036.147:measure
+def measure (self,w):
+    i = w.index('insert')
+    i1, i2 = i.split('.')
+    start = int(i1)
+    watch = 0
+    ustart = start
+    pone = 1
+    top = i
+    bottom = i
+    while pone:
+        ustart = ustart-1
+        if ustart < 0:
+            break
+        ds = '%s.0' % ustart
+        pone = w.dlineinfo(ds)
+        if pone:
+            top = ds
+            watch = watch + 1
+    pone = 1
+    ustart = start
+    while pone:
+        ustart = ustart + 1
+        ds = '%s.0' % ustart
+        pone = w.dlineinfo(ds)
+        if pone:
+            bottom = ds
+            watch = watch + 1
+
+    return watch, top, bottom
+#@nonl
+#@-node:ekr.20050920084036.147:measure
+#@-node:ekr.20050920084036.116:scrollUp/Down/extendSelection
+#@+node:ekr.20060309060654.1:scrollOutlineUp/Down/Line/Page
+def scrollOutlineDownLine (self,event=None):
+    '''Scroll the outline pane down one line.'''
+    a,b = self.c.frame.treeBar.get()
+    if b < 1.0:
+        self.c.frame.tree.canvas.yview_scroll(1,"unit")
+    
+def scrollOutlineDownPage (self,event=None):
+    '''Scroll the outline pane down one page.'''
+    a,b = self.c.frame.treeBar.get()
+    if b < 1.0:
+        self.c.frame.tree.canvas.yview_scroll(1,"page")
+
+def scrollOutlineUpLine (self,event=None):
+    '''Scroll the outline pane up one line.'''
+    a,b = self.c.frame.treeBar.get()
+    if a > 0.0:
+        self.c.frame.tree.canvas.yview_scroll(-1,"unit")
+
+def scrollOutlineUpPage (self,event=None):
+    '''Scroll the outline pane up one page.'''
+    a,b = self.c.frame.treeBar.get()
+    if a > 0.0:
+        self.c.frame.tree.canvas.yview_scroll(-1,"page")
+#@nonl
+#@-node:ekr.20060309060654.1:scrollOutlineUp/Down/Line/Page
+#@+node:ekr.20060726154531:scrollOutlineLeftRight
+def scrollOutlineLeft (self,event=None):
+    '''Scroll the outline left.'''
+    self.c.frame.tree.canvas.xview_scroll(1,"unit")
+    
+def scrollOutlineRight (self,event=None):
+    '''Scroll the outline left.'''
+    self.c.frame.tree.canvas.xview_scroll(-1,"unit")
+#@-node:ekr.20060726154531:scrollOutlineLeftRight
+#@-node:ekr.20060309060654:scrolling...
+#@-node:ekr.20060705084548:Fixed minor scrolling problem
 #@-node:ekr.20060702103435.1:Bugs fixed
 #@+node:ekr.20060702103435.2:New features
 #@+node:ekr.20060702094931:Created menu font settings
@@ -660,21 +788,28 @@ def measure (self,w):
 #@+node:ekr.20060309060654.1:scrollOutlineUp/Down/Line/Page
 def scrollOutlineDownLine (self,event=None):
     '''Scroll the outline pane down one line.'''
-    self.c.frame.tree.canvas.yview_scroll(1,"unit")
+    a,b = self.c.frame.treeBar.get()
+    if b < 1.0:
+        self.c.frame.tree.canvas.yview_scroll(1,"unit")
     
 def scrollOutlineDownPage (self,event=None):
     '''Scroll the outline pane down one page.'''
-    self.c.frame.tree.canvas.yview_scroll(1,"page")
+    a,b = self.c.frame.treeBar.get()
+    if b < 1.0:
+        self.c.frame.tree.canvas.yview_scroll(1,"page")
 
 def scrollOutlineUpLine (self,event=None):
     '''Scroll the outline pane up one line.'''
-    self.c.frame.tree.canvas.yview_scroll(-1,"unit")
+    a,b = self.c.frame.treeBar.get()
+    if a > 0.0:
+        self.c.frame.tree.canvas.yview_scroll(-1,"unit")
 
 def scrollOutlineUpPage (self,event=None):
     '''Scroll the outline pane up one page.'''
-    self.c.frame.tree.canvas.yview_scroll(-1,"page")
-
-
+    a,b = self.c.frame.treeBar.get()
+    if a > 0.0:
+        self.c.frame.tree.canvas.yview_scroll(-1,"page")
+#@nonl
 #@-node:ekr.20060309060654.1:scrollOutlineUp/Down/Line/Page
 #@+node:ekr.20060726154531:scrollOutlineLeftRight
 def scrollOutlineLeft (self,event=None):
