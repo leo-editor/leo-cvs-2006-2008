@@ -812,6 +812,63 @@ def updateEditors (self):
 #@-node:ekr.20060710103551:Multiple editors not colorized by new editor
 #@+node:ekr.20060527204444:Finish new colorizer plugin
 #@-node:ekr.20060527204444:Finish new colorizer plugin
+#@+node:ekr.20060531161030.1:Make body editors persistant
+#@-node:ekr.20060531161030.1:Make body editors persistant
+#@+node:ekr.20060730103005:Fix bug in backward-kill-word
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3841115
+By: paulpaterson
+
+I'm not sure if this is fixed also but backward-kill-word has an interesting
+bug.
+
+If you do a backward-kill-word on the following with the cursor at the * position
+...
+
+-- The cat sat* on the mat
+
+Then you get the following ...
+
+-- The *cat on the mat
+
+ie. the word was deleted but the cursor also moved an additional work back,
+which is quite perplexing when it first happens.
+
+Perhaps the command should be called,
+backward-kill-word-and-then-move-back-another-word!
+
+Paul
+
+#@-node:ekr.20060730103005:Fix bug in backward-kill-word
+#@+node:ekr.20060702091716:Generalize bracket flasher
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3802513
+By: tfer
+
+Could you make the set of symbols to flash user settable?  There are times when
+you might went to add/delete to that set for different languages, e.g. <> in
+html, xml, distinguishalbe open/close quotes, in text, etc.
+
+Tom
+
+Reply:
+
+Easily done.
+
+1. Add two new settings:
+
+- @string open_flash_brackets
+- @string close_flash_brackets
+
+2.  Initialize corresponding ivars in the ctor for editCommandsClass.
+
+3. Replace static data by the ivars in the flashMatchingBracketsHelper method.
+
+I could do this myself in a few minutes, but I would like to start making Leo a more cooperative venture.  Would you be willing to make these changes yourself?   Not only would this offload a bit of work from me, but more importantly it would get more people on board as Leo developers and it would expose problems using Leo with cvs.
+#@nonl
+#@-node:ekr.20060702091716:Generalize bracket flasher
 #@+node:ekr.20060628103226:Finish emacs commands
 #@+node:ekr.20060628103226.2:Alt-x handlers should add to lossage
 #@-node:ekr.20060628103226.2:Alt-x handlers should add to lossage
@@ -1113,44 +1170,6 @@ def zapToCharacter (self,event):
 #@+node:ekr.20060628103226.3:Make sure repeat counts work on basic editing commands
 #@-node:ekr.20060628103226.3:Make sure repeat counts work on basic editing commands
 #@-node:ekr.20060628103226:Finish emacs commands
-#@+node:ekr.20060531161030.1:Make body editors persistant
-#@-node:ekr.20060531161030.1:Make body editors persistant
-#@+node:ekr.20060702091716:Generalize bracket flasher
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3802513
-By: tfer
-
-Could you make the set of symbols to flash user settable?  There are times when
-you might went to add/delete to that set for different languages, e.g. <> in
-html, xml, distinguishalbe open/close quotes, in text, etc.
-
-Tom
-
-Reply:
-
-Easily done.
-
-1. Add two new settings:
-
-- @string open_flash_brackets
-- @string close_flash_brackets
-
-2.  Initialize corresponding ivars in the ctor for editCommandsClass.
-
-3. Replace static data by the ivars in the flashMatchingBracketsHelper method.
-
-I could do this myself in a few minutes, but I would like to start making Leo a more cooperative venture.  Would you be willing to make these changes yourself?   Not only would this offload a bit of work from me, but more importantly it would get more people on board as Leo developers and it would expose problems using Leo with cvs.
-#@nonl
-#@-node:ekr.20060702091716:Generalize bracket flasher
-#@+node:ekr.20060705084548:Fix minor scrolling problem
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3805745
-
-can scroll the tree upwards even if it is already at the first node. When I do
-this empty lines and sometimes even text appears above the normal nodes. 
-#@-node:ekr.20060705084548:Fix minor scrolling problem
 #@-node:ekr.20060531161030:To do: B4
 #@+node:ekr.20060623064600.1:Urgent (big picture)
 #@+node:ekr.20051202094427:Resolve cvs conflicts
