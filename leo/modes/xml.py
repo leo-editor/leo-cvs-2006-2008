@@ -259,6 +259,7 @@ def rule26(colorer, s, i):
 # Rules dict for dtd_tags ruleset.
 rulesDict3 = {
 	"\"": [rule16,],
+	"#": [rule26,],
 	"%": [rule15,],
 	"'": [rule17,],
 	"(": [rule19,],
@@ -307,7 +308,6 @@ rulesDict3 = {
 	"Y": [rule26,],
 	"Z": [rule26,],
 	"[": [rule18,],
-	"_": [rule26,],
 	"a": [rule26,],
 	"b": [rule26,],
 	"c": [rule26,],
@@ -377,6 +377,7 @@ def rule33(colorer, s, i):
 # Rules dict for entity_tags ruleset.
 rulesDict4 = {
 	"\"": [rule29,],
+	"#": [rule33,],
 	"%": [rule32,],
 	"'": [rule30,],
 	"-": [rule28,],
@@ -419,7 +420,6 @@ rulesDict4 = {
 	"X": [rule33,],
 	"Y": [rule33,],
 	"Z": [rule33,],
-	"_": [rule33,],
 	"a": [rule33,],
 	"b": [rule33,],
 	"c": [rule33,],

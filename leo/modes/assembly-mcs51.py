@@ -308,7 +308,7 @@ def rule26(colorer, s, i):
 rulesDict1 = {
 	"!": [rule22,],
 	"\"": [rule2,],
-	"$": [rule4,rule12,],
+	"$": [rule4,rule12,rule26,],
 	"%": [rule3,rule17,],
 	"&": [rule20,],
 	"'": [rule1,],

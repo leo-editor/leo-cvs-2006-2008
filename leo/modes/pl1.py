@@ -648,6 +648,7 @@ def rule21(colorer, s, i):
 # Rules dict for main ruleset.
 rulesDict1 = {
 	"\"": [rule2,],
+	"%": [rule21,],
 	"&": [rule12,],
 	"'": [rule1,],
 	"(": [rule18,rule20,],
@@ -702,7 +703,6 @@ rulesDict1 = {
 	"Z": [rule21,],
 	"\\": [rule3,],
 	"^": [rule11,],
-	"_": [rule21,],
 	"a": [rule21,],
 	"b": [rule21,],
 	"c": [rule21,],

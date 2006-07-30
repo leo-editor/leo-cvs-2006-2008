@@ -197,7 +197,7 @@ def rule16(colorer, s, i):
 rulesDict1 = {
 	"#": [rule0,],
 	"$": [rule9,rule11,rule12,rule13,rule14,rule15,],
-	"%": [rule4,rule5,rule8,rule10,],
+	"%": [rule4,rule5,rule8,rule10,rule16,],
 	"0": [rule16,],
 	"1": [rule16,],
 	"2": [rule16,],
@@ -208,6 +208,7 @@ rulesDict1 = {
 	"7": [rule16,],
 	"8": [rule16,],
 	"9": [rule16,],
+	":": [rule16,],
 	"<": [rule1,],
 	"=": [rule3,],
 	">": [rule2,],
@@ -238,7 +239,6 @@ rulesDict1 = {
 	"X": [rule16,],
 	"Y": [rule16,],
 	"Z": [rule16,],
-	"_": [rule16,],
 	"a": [rule16,],
 	"b": [rule16,],
 	"c": [rule16,],
@@ -290,6 +290,7 @@ def rule19(colorer, s, i):
 
 # Rules dict for verify ruleset.
 rulesDict3 = {
+	"%": [rule19,],
 	"0": [rule19,],
 	"1": [rule19,],
 	"2": [rule19,],
@@ -300,6 +301,7 @@ rulesDict3 = {
 	"7": [rule19,],
 	"8": [rule19,],
 	"9": [rule19,],
+	":": [rule19,],
 	"@": [rule19,],
 	"A": [rule19,],
 	"B": [rule19,],
@@ -327,7 +329,6 @@ rulesDict3 = {
 	"X": [rule19,],
 	"Y": [rule19,],
 	"Z": [rule19,],
-	"_": [rule19,],
 	"a": [rule19,],
 	"b": [rule19,],
 	"c": [rule19,],

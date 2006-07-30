@@ -132,8 +132,9 @@ def rule13(colorer, s, i):
 rulesDict1 = {
 	"!": [rule1,],
 	"\"": [rule12,],
-	"#": [rule0,],
+	"#": [rule0,rule13,],
 	"(": [rule11,],
+	"-": [rule13,],
 	"0": [rule13,],
 	"1": [rule13,],
 	"2": [rule13,],
@@ -145,6 +146,9 @@ rulesDict1 = {
 	"8": [rule13,],
 	"9": [rule13,],
 	":": [rule2,],
+	";": [rule13,],
+	"<": [rule13,],
+	">": [rule13,],
 	"@": [rule13,],
 	"A": [rule13,],
 	"B": [rule8,rule13,],
@@ -172,7 +176,8 @@ rulesDict1 = {
 	"X": [rule13,],
 	"Y": [rule13,],
 	"Z": [rule13,],
-	"_": [rule13,],
+	"[": [rule13,],
+	"]": [rule13,],
 	"a": [rule13,],
 	"b": [rule13,],
 	"c": [rule13,],
@@ -199,6 +204,10 @@ rulesDict1 = {
 	"x": [rule13,],
 	"y": [rule13,],
 	"z": [rule13,],
+	"{": [rule13,],
+	"|": [rule13,],
+	"}": [rule13,],
+	"~": [rule13,],
 }
 
 # Rules for factor_stack_effect ruleset.

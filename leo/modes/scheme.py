@@ -283,9 +283,13 @@ def rule10(colorer, s, i):
 
 # Rules dict for main ruleset.
 rulesDict1 = {
+	"!": [rule10,],
 	"\"": [rule9,],
-	"#": [rule0,rule3,rule4,rule5,rule6,rule7,],
+	"#": [rule0,rule3,rule4,rule5,rule6,rule7,rule10,],
 	"'": [rule1,rule2,],
+	"*": [rule10,],
+	"-": [rule10,],
+	"/": [rule10,],
 	"0": [rule10,],
 	"1": [rule10,],
 	"2": [rule10,],
@@ -297,6 +301,10 @@ rulesDict1 = {
 	"8": [rule10,],
 	"9": [rule10,],
 	";": [rule8,],
+	"<": [rule10,],
+	"=": [rule10,],
+	">": [rule10,],
+	"?": [rule10,],
 	"@": [rule10,],
 	"A": [rule10,],
 	"B": [rule10,],
@@ -324,7 +332,6 @@ rulesDict1 = {
 	"X": [rule10,],
 	"Y": [rule10,],
 	"Z": [rule10,],
-	"_": [rule10,],
 	"a": [rule10,],
 	"b": [rule10,],
 	"c": [rule10,],

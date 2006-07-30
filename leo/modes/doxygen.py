@@ -334,9 +334,13 @@ def rule6(colorer, s, i):
 # Rules dict for main ruleset.
 rulesDict1 = {
 	"\"": [rule3,],
-	"#": [rule0,],
+	"#": [rule0,rule6,],
+	"$": [rule6,],
+	"%": [rule6,],
+	"&": [rule6,],
 	"'": [rule4,],
 	"+": [rule2,],
+	",": [rule6,],
 	"0": [rule6,],
 	"1": [rule6,],
 	"2": [rule6,],
@@ -347,7 +351,9 @@ rulesDict1 = {
 	"7": [rule6,],
 	"8": [rule6,],
 	"9": [rule6,],
+	"<": [rule6,],
 	"=": [rule1,],
+	">": [rule6,],
 	"@": [rule6,],
 	"A": [rule6,],
 	"B": [rule6,],
@@ -375,7 +381,9 @@ rulesDict1 = {
 	"X": [rule6,],
 	"Y": [rule6,],
 	"Z": [rule6,],
-	"_": [rule6,],
+	"[": [rule6,],
+	"\\": [rule6,],
+	"]": [rule6,],
 	"`": [rule5,],
 	"a": [rule6,],
 	"b": [rule6,],
@@ -403,6 +411,7 @@ rulesDict1 = {
 	"x": [rule6,],
 	"y": [rule6,],
 	"z": [rule6,],
+	"~": [rule6,],
 }
 
 # Rules for doxygen_doxygen ruleset.
@@ -440,7 +449,12 @@ def rule13(colorer, s, i):
 
 # Rules dict for doxygen ruleset.
 rulesDict2 = {
+	"#": [rule13,],
+	"$": [rule13,],
+	"%": [rule13,],
+	"&": [rule13,],
 	"*": [rule7,],
+	",": [rule13,],
 	"0": [rule13,],
 	"1": [rule13,],
 	"2": [rule13,],
@@ -451,7 +465,8 @@ rulesDict2 = {
 	"7": [rule13,],
 	"8": [rule13,],
 	"9": [rule13,],
-	"<": [rule8,rule9,rule10,rule11,rule12,],
+	"<": [rule8,rule9,rule10,rule11,rule12,rule13,],
+	">": [rule13,],
 	"@": [rule13,],
 	"A": [rule13,],
 	"B": [rule13,],
@@ -479,7 +494,9 @@ rulesDict2 = {
 	"X": [rule13,],
 	"Y": [rule13,],
 	"Z": [rule13,],
-	"_": [rule13,],
+	"[": [rule13,],
+	"\\": [rule13,],
+	"]": [rule13,],
 	"a": [rule13,],
 	"b": [rule13,],
 	"c": [rule13,],
@@ -506,6 +523,7 @@ rulesDict2 = {
 	"x": [rule13,],
 	"y": [rule13,],
 	"z": [rule13,],
+	"~": [rule13,],
 }
 
 # x.rulesDictDict for doxygen mode.

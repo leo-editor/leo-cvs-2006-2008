@@ -155,7 +155,7 @@ def rule8(colorer, s, i):
 # Rules dict for main ruleset.
 rulesDict1 = {
 	"\"": [rule1,],
-	"-": [rule0,],
+	"-": [rule0,rule8,],
 	"0": [rule8,],
 	"1": [rule8,],
 	"2": [rule8,],
@@ -194,7 +194,6 @@ rulesDict1 = {
 	"X": [rule8,],
 	"Y": [rule8,],
 	"Z": [rule8,],
-	"_": [rule8,],
 	"a": [rule8,],
 	"b": [rule8,],
 	"c": [rule8,],

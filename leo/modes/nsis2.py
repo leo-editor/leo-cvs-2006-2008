@@ -497,10 +497,13 @@ def rule8(colorer, s, i):
 
 # Rules dict for main ruleset.
 rulesDict1 = {
+	"!": [rule8,],
 	"\"": [rule5,],
 	"#": [rule1,],
-	"$": [rule2,],
+	"$": [rule2,rule8,],
 	"'": [rule6,],
+	".": [rule8,],
+	"/": [rule8,],
 	"0": [rule8,],
 	"1": [rule8,],
 	"2": [rule8,],
@@ -540,6 +543,7 @@ rulesDict1 = {
 	"X": [rule8,],
 	"Y": [rule8,],
 	"Z": [rule8,],
+	"\\": [rule8,],
 	"_": [rule8,],
 	"`": [rule7,],
 	"a": [rule8,],
@@ -568,6 +572,8 @@ rulesDict1 = {
 	"x": [rule8,],
 	"y": [rule8,],
 	"z": [rule8,],
+	"{": [rule8,],
+	"}": [rule8,],
 }
 
 # Rules for nsis2_nsis_literal ruleset.

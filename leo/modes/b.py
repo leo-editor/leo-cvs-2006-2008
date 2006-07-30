@@ -384,7 +384,7 @@ rulesDict1 = {
 	"{": [rule28,],
 	"|": [rule20,],
 	"}": [rule27,],
-	"~": [rule17,],
+	"~": [rule17,rule31,],
 }
 
 # x.rulesDictDict for b mode.

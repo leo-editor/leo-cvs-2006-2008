@@ -265,7 +265,7 @@ rulesDict1 = {
 	"\"": [rule6,],
 	"#": [rule0,rule1,],
 	"+": [rule3,],
-	"-": [rule2,],
+	"-": [rule2,rule7,],
 	"0": [rule7,],
 	"1": [rule7,],
 	"2": [rule7,],
@@ -341,6 +341,7 @@ def rule8(colorer, s, i):
 
 # Rules dict for literals ruleset.
 rulesDict2 = {
+	"-": [rule8,],
 	"0": [rule8,],
 	"1": [rule8,],
 	"2": [rule8,],

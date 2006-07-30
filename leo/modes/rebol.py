@@ -600,10 +600,12 @@ def rule15(colorer, s, i):
 
 # Rules dict for main ruleset.
 rulesDict1 = {
+	"!": [rule15,],
 	"\"": [rule2,],
 	"'": [rule14,],
 	"*": [rule11,],
 	"+": [rule9,],
+	"-": [rule15,],
 	"/": [rule10,],
 	"0": [rule15,],
 	"1": [rule15,],
@@ -619,6 +621,7 @@ rulesDict1 = {
 	"<": [rule7,rule8,rule13,],
 	"=": [rule5,],
 	">": [rule6,rule12,],
+	"?": [rule15,],
 	"@": [rule15,],
 	"A": [rule15,],
 	"B": [rule15,],
@@ -646,7 +649,6 @@ rulesDict1 = {
 	"X": [rule15,],
 	"Y": [rule15,],
 	"Z": [rule15,],
-	"_": [rule15,],
 	"a": [rule15,],
 	"b": [rule15,],
 	"c": [rule0,rule1,rule15,],
@@ -674,6 +676,7 @@ rulesDict1 = {
 	"y": [rule15,],
 	"z": [rule15,],
 	"{": [rule3,],
+	"~": [rule15,],
 }
 
 # x.rulesDictDict for rebol mode.

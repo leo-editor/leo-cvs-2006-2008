@@ -6058,12 +6058,14 @@ def rule798(colorer, s, i):
 # Rules dict for main ruleset.
 rulesDict1 = {
 	"\"": [rule2,],
+	"&": [rule798,],
 	"'": [rule1,],
 	"(": [rule15,],
 	")": [rule16,],
 	"*": [rule4,],
 	"+": [rule5,],
 	",": [rule6,],
+	"-": [rule798,],
 	".": [rule7,],
 	"/": [rule0,rule8,],
 	"0": [rule798,],

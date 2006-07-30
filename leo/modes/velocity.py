@@ -202,7 +202,7 @@ def rule11(colorer, s, i):
 
 # Rules dict for velocity ruleset.
 rulesDict2 = {
-	"#": [rule6,rule7,],
+	"#": [rule6,rule7,rule11,],
 	"$": [rule8,rule9,rule10,],
 	"0": [rule11,],
 	"1": [rule11,],
@@ -241,7 +241,6 @@ rulesDict2 = {
 	"X": [rule11,],
 	"Y": [rule11,],
 	"Z": [rule11,],
-	"_": [rule11,],
 	"a": [rule11,],
 	"b": [rule11,],
 	"c": [rule11,],

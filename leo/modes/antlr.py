@@ -165,7 +165,6 @@ rulesDict1 = {
 	"X": [rule6,],
 	"Y": [rule6,],
 	"Z": [rule6,],
-	"_": [rule6,],
 	"a": [rule6,],
 	"b": [rule6,],
 	"c": [rule6,],

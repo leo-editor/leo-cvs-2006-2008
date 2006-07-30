@@ -365,11 +365,13 @@ def rule17(colorer, s, i):
 # Rules dict for main ruleset.
 rulesDict1 = {
 	"!": [rule16,],
+	"$": [rule17,],
+	"%": [rule17,],
 	"'": [rule1,],
 	"*": [rule15,],
 	"+": [rule14,],
 	"-": [rule13,],
-	".": [rule12,],
+	".": [rule12,rule17,],
 	"/": [rule0,rule11,],
 	"0": [rule17,],
 	"1": [rule17,],
@@ -382,7 +384,7 @@ rulesDict1 = {
 	"8": [rule17,],
 	"9": [rule17,],
 	"<": [rule3,],
-	"=": [rule2,],
+	"=": [rule2,rule17,],
 	">": [rule4,],
 	"?": [rule10,],
 	"@": [rule9,rule17,],

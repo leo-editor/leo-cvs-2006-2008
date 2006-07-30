@@ -428,7 +428,6 @@ rulesDict1 = {
 	"[": [rule13,rule42,],
 	"\\": [rule43,],
 	"]": [rule14,rule44,],
-	"_": [rule48,],
 	"a": [rule48,],
 	"b": [rule48,],
 	"c": [rule48,],

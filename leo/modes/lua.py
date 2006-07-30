@@ -308,7 +308,7 @@ rulesDict1 = {
 	"*": [rule8,],
 	"+": [rule6,],
 	"-": [rule0,rule1,rule7,],
-	".": [rule11,],
+	".": [rule11,rule23,],
 	"/": [rule9,],
 	"0": [rule23,],
 	"1": [rule23,],

@@ -316,6 +316,7 @@ def rule44(colorer, s, i):
 
 # Rules dict for main ruleset.
 rulesDict1 = {
+	"!": [rule44,],
 	"\"": [rule3,],
 	"%": [rule0,],
 	"'": [rule2,],

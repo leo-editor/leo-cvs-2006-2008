@@ -814,6 +814,7 @@ def rule32(colorer, s, i):
 rulesDict1 = {
 	"!": [rule8,],
 	"\"": [rule1,],
+	"#": [rule32,],
 	"%": [rule17,],
 	"&": [rule18,],
 	"'": [rule2,],

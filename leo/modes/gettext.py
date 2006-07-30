@@ -102,6 +102,7 @@ rulesDict1 = {
 	"#": [rule0,rule1,rule2,rule3,rule4,],
 	"$": [rule6,],
 	"%": [rule5,],
+	"-": [rule9,],
 	"0": [rule9,],
 	"1": [rule9,],
 	"2": [rule9,],

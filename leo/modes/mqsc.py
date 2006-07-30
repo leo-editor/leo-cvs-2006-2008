@@ -281,7 +281,6 @@ rulesDict1 = {
 	"X": [rule4,],
 	"Y": [rule4,],
 	"Z": [rule4,],
-	"_": [rule4,],
 	"a": [rule4,],
 	"b": [rule4,],
 	"c": [rule4,],

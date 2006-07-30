@@ -699,7 +699,7 @@ rulesDict3 = {
 	"\"": [rule19,],
 	"&": [rule32,],
 	"'": [rule20,],
-	"(": [rule21,],
+	"(": [rule21,rule33,],
 	")": [rule22,],
 	"*": [rule30,],
 	"+": [rule24,],
@@ -745,7 +745,6 @@ rulesDict3 = {
 	"X": [rule33,],
 	"Y": [rule33,],
 	"Z": [rule33,],
-	"_": [rule33,],
 	"a": [rule33,],
 	"b": [rule33,],
 	"c": [rule33,],
@@ -772,6 +771,8 @@ rulesDict3 = {
 	"x": [rule33,],
 	"y": [rule33,],
 	"z": [rule33,],
+	"{": [rule33,],
+	"}": [rule33,],
 }
 
 # Rules for coldfusion_cftags ruleset.
@@ -810,6 +811,7 @@ rulesDict4 = {
 	"\"": [rule34,],
 	"#": [rule37,rule38,],
 	"'": [rule35,],
+	"(": [rule39,],
 	"0": [rule39,],
 	"1": [rule39,],
 	"2": [rule39,],
@@ -848,7 +850,6 @@ rulesDict4 = {
 	"X": [rule39,],
 	"Y": [rule39,],
 	"Z": [rule39,],
-	"_": [rule39,],
 	"a": [rule39,],
 	"b": [rule39,],
 	"c": [rule39,],
@@ -875,6 +876,8 @@ rulesDict4 = {
 	"x": [rule39,],
 	"y": [rule39,],
 	"z": [rule39,],
+	"{": [rule39,],
+	"}": [rule39,],
 }
 
 # x.rulesDictDict for coldfusion mode.

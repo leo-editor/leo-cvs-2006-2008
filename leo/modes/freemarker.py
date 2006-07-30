@@ -401,7 +401,6 @@ rulesDict2 = {
 	"Z": [rule47,],
 	"[": [rule41,],
 	"]": [rule42,],
-	"_": [rule47,],
 	"a": [rule47,],
 	"b": [rule47,],
 	"c": [rule47,],

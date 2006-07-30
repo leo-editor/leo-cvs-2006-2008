@@ -216,7 +216,6 @@ rulesDict3 = {
 	"X": [rule12,],
 	"Y": [rule12,],
 	"Z": [rule12,],
-	"_": [rule12,],
 	"a": [rule12,],
 	"b": [rule12,],
 	"c": [rule12,],

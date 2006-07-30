@@ -313,7 +313,7 @@ def rule24(colorer, s, i):
 rulesDict1 = {
 	"\"": [rule2,],
 	"&": [rule11,],
-	"'": [rule3,],
+	"'": [rule3,rule24,],
 	"(": [rule0,rule4,],
 	")": [rule5,],
 	"*": [rule9,],
@@ -361,7 +361,6 @@ rulesDict1 = {
 	"Y": [rule24,],
 	"Z": [rule24,],
 	"^": [rule8,],
-	"_": [rule24,],
 	"a": [rule17,rule20,rule21,rule24,],
 	"b": [rule24,],
 	"c": [rule18,rule24,],

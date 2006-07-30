@@ -216,6 +216,7 @@ def rule9(colorer, s, i):
 rulesDict2 = {
 	"\"": [rule6,],
 	"'": [rule7,],
+	"-": [rule9,],
 	"0": [rule9,],
 	"1": [rule9,],
 	"2": [rule9,],
@@ -254,7 +255,6 @@ rulesDict2 = {
 	"X": [rule9,],
 	"Y": [rule9,],
 	"Z": [rule9,],
-	"_": [rule9,],
 	"a": [rule9,],
 	"b": [rule9,],
 	"c": [rule9,],
@@ -321,6 +321,7 @@ def rule17(colorer, s, i):
 # Rules dict for attribute ruleset.
 rulesDict3 = {
 	"$": [rule14,rule15,rule16,],
+	"-": [rule17,],
 	"0": [rule17,],
 	"1": [rule17,],
 	"2": [rule17,],
@@ -361,7 +362,6 @@ rulesDict3 = {
 	"X": [rule17,],
 	"Y": [rule17,],
 	"Z": [rule17,],
-	"_": [rule17,],
 	"a": [rule17,],
 	"b": [rule17,],
 	"c": [rule17,],

@@ -526,15 +526,16 @@ def rule21(colorer, s, i):
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"!": [rule20,],
+	"!": [rule20,rule21,],
 	"\"": [rule2,rule3,],
-	"#": [rule0,],
+	"#": [rule0,rule21,],
 	"$": [rule15,],
 	"%": [rule16,],
 	"&": [rule6,],
 	"'": [rule4,rule5,],
 	"*": [rule18,],
 	"+": [rule8,],
+	"-": [rule21,],
 	"/": [rule10,],
 	"0": [rule21,],
 	"1": [rule21,],
@@ -579,7 +580,6 @@ rulesDict1 = {
 	"Y": [rule21,],
 	"Z": [rule21,],
 	"^": [rule17,],
-	"_": [rule21,],
 	"a": [rule21,],
 	"b": [rule21,],
 	"c": [rule21,],
