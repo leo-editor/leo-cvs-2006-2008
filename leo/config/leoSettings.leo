@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="292" clone_windows="0"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="300" clone_windows="0"/>
 <globals body_outline_ratio="0.549828178694">
-	<global_window_position top="141" left="291" height="686" width="938"/>
+	<global_window_position top="141" left="291" height="667" width="938"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -260,7 +260,7 @@
 <v t="ekr.20060122105527.6" annotate="7d71002e"><vh>@bool useMinibuffer = True</vh></v>
 <v t="ekr.20060125165241"><vh>@bool useTextMinibuffer = True</vh></v>
 </v>
-<v t="ekr.20051007200824" a="E" annotate="7d71002e"><vh>Keyboard shortcuts</vh>
+<v t="ekr.20051007200824" annotate="7d71002e"><vh>Keyboard shortcuts</vh>
 <v t="ekr.20051101160257" annotate="7d71002e"><vh>About keyboard shortcuts</vh>
 <v t="ekr.20051007200824.1" annotate="7d71002e"><vh>About shortcut specifiers</vh></v>
 <v t="ekr.20060116090646"><vh>Reference for function keys</vh></v>
@@ -339,7 +339,7 @@
 <v t="ekr.20060110141538.1" a="E" annotate="7d71002e"><vh>@keys No bindings</vh>
 <v t="ekr.20051218202206" annotate="7d71002e"><vh>@shortcuts No bindings: A-E</vh></v>
 <v t="ekr.20060112093227.1"><vh>@shortcuts No bindings: E-M</vh></v>
-<v t="ekr.20060112093227.2" a="V"><vh>@shortcuts No bindings: N-Z</vh></v>
+<v t="ekr.20060112093227.2"><vh>@shortcuts No bindings: N-Z</vh></v>
 </v>
 <v t="ekr.20060603215208"><vh>@keys EKR bindings: Emacs keys + modes</vh>
 <v t="ekr.20060608065207"><vh>Settings related to key bindings</vh>
@@ -382,7 +382,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20051123100536" annotate="7d71002e"><vh>Plugins</vh>
+<v t="ekr.20051123100536" a="E" annotate="7d71002e"><vh>Plugins</vh>
 <v t="ekr.20060111091324"><vh>fastgotonode plugin</vh>
 <v t="ekr.20060111091324.1"><vh>@bool fastgotonode_useKeyBinding = True</vh></v>
 <v t="ekr.20060111091324.2"><vh>@string fastgotonode_binding =  Shift-space</vh></v>
@@ -396,6 +396,15 @@
 <v t="ekr.20051123100536.1"><vh>vim plugin</vh>
 <v t="ekr.20051123100536.2"><vh>@string vim_cmd = c:\Program Files\vim\vim63\gvim --servername LEO</vh></v>
 <v t="ekr.20051123100536.3"><vh>@string vim_exe = c:\Program Files\vim\vim63\gvim</vh></v>
+</v>
+<v t="ekr.20060730101451" a="TV"><vh>shadow plugin</vh>
+<v t="ekr.20060730101451.1"><vh>@bool shadow_active = True</vh></v>
+<v t="ekr.20060730101451.2"><vh>@bool shadow_backups = True</vh></v>
+<v t="ekr.20060730101451.3"><vh>@string shadow_prefix = x</vh></v>
+<v t="ekr.20060730101451.4"><vh>@bool shadow_print_copy_operations = True</vh></v>
+<v t="ekr.20060730101451.5"><vh>@string shadow_subdir = LeoShadow</vh></v>
+<v t="ekr.20060730101451.6"><vh>@bool shadow_testing = True</vh></v>
+<v t="ekr.20060730101451.7"><vh>@int shadow_verbose = 3</vh></v>
 </v>
 </v>
 <v t="ekr.20041119034357.28" annotate="7d71002e"><vh>Preferences panel</vh>
@@ -5552,5 +5561,13 @@ menu_text_font_slant = None
 menu_text_font_weight = None</t>
 <t tx="ekr.20060704090341"></t>
 <t tx="ekr.20060713101831"></t>
+<t tx="ekr.20060730101451"></t>
+<t tx="ekr.20060730101451.1"></t>
+<t tx="ekr.20060730101451.2"></t>
+<t tx="ekr.20060730101451.3"></t>
+<t tx="ekr.20060730101451.4"></t>
+<t tx="ekr.20060730101451.5"></t>
+<t tx="ekr.20060730101451.6"></t>
+<t tx="ekr.20060730101451.7"></t>
 </tnodes>
 </leo_file>
