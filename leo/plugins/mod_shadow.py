@@ -29,12 +29,10 @@ from the file into Leo, and from Leo into the file.
     Note that the plugin never structures input; this has to be done manually
     within Leo.
     
-You can change the name of the shadow subfolder, default Leo, via the mod_shadow.ini
-configuration file (to be changed in the near future).
-
-Configuraton:
-    verbosity >= 1: print logon message in status pane.
-    verbosity >= 2: print message each time the subfolder is used.
+You can set settings for this plugin in leoSettings.leo at: @settings-->Plugins-->shadow plugin.
+    
+    shadow_verbose >= 1: print logon message in status pane.
+    shadow_verbose >= 2: print message each time the subfolder is used.
     
 You can specify a prefix for the shadow files. This is so that the py.test script
 does not pick up test scripts twice (once the file without Leo sentinels, once the
@@ -50,7 +48,7 @@ shadow file).
 #@@language python
 #@@tabwidth -4
 
-__version__ = "0.10.2"
+__version__ = "0.10.3"
 #@<< version history >>
 #@+node:ekr.20060715100156.54:<< version history >>
 #@@killcolor 
@@ -460,7 +458,7 @@ def do_test_propagate_changes_Leo(c):
         after_with_sentinel_lines = get_node_lines ("after with sentinels")
         
         sq = mod_shadow_core.sentinel_squasher(g.es, g.nullObject)
-        mod_shadow_core.test_propagate_changes (
+        mod_shadow_core.propagate_changes_test (c,
             before_with_sentinels_lines,
             changed_without_sentinels_lines,
             after_with_sentinel_lines,

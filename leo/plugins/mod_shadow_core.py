@@ -16,7 +16,6 @@ do_backups = False              # True: always make backups of each file.
 print_all = False               # True: print intermediate files.
 
 if 0: # These are now computed as necessary using c.config class.
-    shadow_subdir = "LeoShadow" # subdirectory for shadow files.
     prefix = "" # Prefix to be used for shadow files, if any.
     active = True # The plugin can be switched off by this switch
     verbosity = 10
@@ -306,9 +305,10 @@ class sentinel_squasher:
     """
     #@	@+others
     #@+node:ekr.20060715100156.37:__init__
-    def __init__(self, es, nullObject):
+    def __init__(self, c, es, nullObject):
         self.es = es
         self.nullObject = nullObject
+        self.c = c
     #@-node:ekr.20060715100156.37:__init__
     #@+node:ekr.20060715100156.38:check_lines_for_equality
     def check_lines_for_equality (self, lines1, lines2, message, lines1_message, lines2_message, es):
@@ -423,10 +423,14 @@ class sentinel_squasher:
         lines_with_sentinels = file(with_sentinels).readlines()
         marker = marker_from_extension(without_sentinels)
     
-        new_lines_with_sentinels = self.propagate_changes_from_lines_without_sentinels_to_lines_with_sentinels(lines_without_sentinels, lines_with_sentinels, marker)
-        written = write_if_changed(new_lines_with_sentinels, targetfilename=with_sentinels, sourcefilename=without_sentinels)
+        new_lines_with_sentinels = self.propagate_changes_from_lines_without_sentinels_to_lines_with_sentinels(
+            lines_without_sentinels,
+            lines_with_sentinels, marker)
+        written = write_if_changed(
+            new_lines_with_sentinels,
+            targetfilename=with_sentinels, sourcefilename=without_sentinels)
         return written
-    
+    #@nonl
     #@-node:ekr.20060715100156.41:propagate_changes_from_file_without_sentinels_to_file_with_sentinels
     #@+node:ekr.20060715100156.42:copy_sentinels
     def copy_sentinels(self, reader_lines_with_sentinels, writer_new_sourcelines, marker, upto):
@@ -582,8 +586,7 @@ class sentinel_squasher:
         #@-node:ekr.20060715100156.50:<< final correctness check >>
         #@nl
         return result
-        
-    
+    #@nonl
     #@-node:ekr.20060715100156.43:propagate_changes_from_lines_without_sentinels_to_lines_with_sentinels
     #@-others
 #@-node:ekr.20060715100156.36:class sentinel_squasher
@@ -591,7 +594,7 @@ class sentinel_squasher:
 #@nonl
 #@-node:ekr.20060715100156.11:plugin core
 #@+node:ekr.20060715100156.51:propagate_changes_test
-def propagate_changes_test (
+def propagate_changes_test (c,
     before_with_sentinels_lines,
     changed_without_sentinels_lines,
     after_with_sentinel_lines, marker, es, nullObject):
@@ -599,7 +602,7 @@ def propagate_changes_test (
     Check if 'before_with_sentinels_lines' is transformed to 'after_with_sentinel_lines' when picking
     up changes from 'changed_without_sentinels_lines'.
     """
-    sq = sentinel_squasher(es, nullObject)
+    sq = sentinel_squasher(c, es, nullObject)
     resultlines = sq.propagate_changes_from_lines_without_sentinels_to_lines_with_sentinels(
         new_lines_without_sentinels = changed_without_sentinels_lines, 
         lines_with_sentinels        = before_with_sentinels_lines, 
