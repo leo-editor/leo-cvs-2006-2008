@@ -418,12 +418,11 @@ class sentinel_squasher:
     
         This is the most complicated part of the plugin.
         """
-        if testing: g.trace(without_sentinels, with_sentinels)
+        # g.trace(without_sentinels, with_sentinels)
     
         lines_without_sentinels = file(without_sentinels).readlines()
         lines_with_sentinels = file(with_sentinels).readlines()
         marker = marker_from_extension(without_sentinels)
-    
     
         new_lines_with_sentinels = self.propagate_changes_from_lines_without_sentinels_to_lines_with_sentinels(lines_without_sentinels, lines_with_sentinels, marker)
         written = write_if_changed(new_lines_with_sentinels, targetfilename=with_sentinels, sourcefilename=without_sentinels)
@@ -593,7 +592,10 @@ class sentinel_squasher:
 #@nonl
 #@-node:ekr.20060715100156.11:plugin core
 #@+node:ekr.20060715100156.51:propagate_changes_test
-def propagate_changes_test (before_with_sentinels_lines, changed_without_sentinels_lines, after_with_sentinel_lines, marker, es, nullObject):
+def propagate_changes_test (
+    before_with_sentinels_lines,
+    changed_without_sentinels_lines,
+    after_with_sentinel_lines, marker, es, nullObject):
     """"
     Check if 'before_with_sentinels_lines' is transformed to 'after_with_sentinel_lines' when picking
     up changes from 'changed_without_sentinels_lines'.

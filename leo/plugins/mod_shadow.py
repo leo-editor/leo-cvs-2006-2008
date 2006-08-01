@@ -50,7 +50,7 @@ shadow file).
 #@@language python
 #@@tabwidth -4
 
-__version__ = "0.10.1"
+__version__ = "0.10.2"
 #@<< version history >>
 #@+node:ekr.20060715100156.54:<< version history >>
 #@@killcolor 
@@ -91,6 +91,8 @@ __version__ = "0.10.1"
 # - Use settings in leoSettings.leo rather than an .ini file.
 # - Created init function and removed main function.
 # - active global is no longer used.
+# 0.10.2 EKR: Removed 'active' and 'testing' globals and the stopTesting 
+# function.
 #@-at
 #@nonl
 #@-node:ekr.20060715100156.54:<< version history >>
@@ -450,9 +452,6 @@ def do_test_propagate_changes_Leo(c):
     def get_node_lines(title):
         unicode_string = u.findNodeInTree(p, title).bodyString()
         return unicode_string.split("\n")
-    global testing
-    old_testing = testing
-    testing = 5
     try:
         p = c.currentPosition()
         u = testUtils(c)
@@ -468,16 +467,10 @@ def do_test_propagate_changes_Leo(c):
             after_with_sentinel_lines,
             "#@", g.es, g.nullObject)
     finally:
-        testing = old_testing
+        pass
 #@nonl
 #@-node:ekr.20060715100156.75:do_test_propagate_changes_Leo
 #@-node:ekr.20060715100156.74:test_support
-#@+node:ekr.20060715100156.76:stop_testing
-def stop_testing ():
-   global testing 
-   testing = False
-#@nonl
-#@-node:ekr.20060715100156.76:stop_testing
 #@-others
 #@nonl
 #@-node:ekr.20060715100156.52:@thin mod_shadow.py
