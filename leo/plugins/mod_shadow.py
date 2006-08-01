@@ -282,7 +282,6 @@ def openForRead (self, filename, rb):
     shadow_subdir = c.config.getString('shadow_subdir') or ''
     shadow_prefix = c.config.getString('shadow_prefix') or ''
     shadow_verbosity = getVerbosity(c)
-    if shadow_verbosity is None: shadow_verbosity = 1
     try:
         dir, simplename = os.path.split(filename)
         shadow_filename = os.path.join(dir,shadow_subdir,shadow_prefix + simplename)

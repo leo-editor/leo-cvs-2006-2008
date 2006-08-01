@@ -1045,11 +1045,11 @@ expanded="ekr.20060530091119.35,"><vh>@thin __jEdit_colorizer__.py</vh></v>
 </v>
 </v>
 </v>
-<v t="ekr.20060715100156.8"
-expanded="ekr.20060715100156.36,"><vh>@thin mod_shadow_core.py</vh></v>
-<v t="ekr.20060715100156.52" a="TV"
+<v t="ekr.20060715100156.8" a="TV"
+expanded="ekr.20060715100156.36,ekr.20060715100156.43,"><vh>@thin mod_shadow_core.py</vh></v>
+<v t="ekr.20060715100156.52"
 marks="ekr.20060715100156.53,"
-expanded="ekr.20060801095508.1,ekr.20060715100156.71,ekr.20060715100156.74,"><vh>@thin mod_shadow.py</vh></v>
+expanded="ekr.20060715100156.71,ekr.20060715100156.74,"><vh>@thin mod_shadow.py</vh></v>
 <v t="ekr.20060715100853"><vh>@thin ../LeoShadow/readme.txt</vh></v>
 </v>
 </vnodes>

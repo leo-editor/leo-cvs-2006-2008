@@ -2,34 +2,33 @@
 #@+node:ekr.20060715100156.8:@thin mod_shadow_core.py
 __not_a_plugin__ = True
 
-#@+others
-#@+node:ekr.20060715100156.9:import
+#@<< imports >>
+#@+node:ekr.20060715100156.9:<< imports >>
 import difflib
 import sys
 import os
-#@-node:ekr.20060715100156.9:import
-#@+node:ekr.20060715100156.10:globals
-print_copy_operations = False # True: tell when files are copied.
+#@-node:ekr.20060715100156.9:<< imports >>
+#@nl
+#@<< globals >>
+#@+node:ekr.20060715100156.10:<< globals >>
+print_copy_operations = False   # True: tell when files are copied.
+do_backups = False              # True: always make backups of each file.
+print_all = False               # True: print intermediate files.
 
-do_backups = False # True: always make backups of each file.
-
-shadow_subdir = "LeoShadow" # subdirectory for shadow files.
-
-prefix = "" # Prefix to be used for shadow files, if any.
-
-active = True # The plugin can be switched off by this switch
-
-verbosity = 10
-
-print_all = False
-# Mostly a debug switch. Set to True to see all
-# intermediate files after each 
+if 0: # These are now computed as necessary using c.config class.
+    shadow_subdir = "LeoShadow" # subdirectory for shadow files.
+    prefix = "" # Prefix to be used for shadow files, if any.
+    active = True # The plugin can be switched off by this switch
+    verbosity = 10
 
 __version__ = "$Rev: 1765 $"
 __author__  = "Bernhard Mulder"
 __date__    = "$Date$"
 __cvsid__   = "$Id$"
-#@-node:ekr.20060715100156.10:globals
+#@-node:ekr.20060715100156.10:<< globals >>
+#@nl
+
+#@+others
 #@+node:ekr.20060715100156.11:plugin core
 #@+others
 #@+node:ekr.20060715100156.12:auxilary functions
