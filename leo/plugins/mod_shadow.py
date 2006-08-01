@@ -87,6 +87,10 @@ __version__ = "0.9.5"
 # 0.9.5 EKR:
 # - Renamed test_propagate_changes_Leo to do_test_propagate_changes_Leo
 #   so the unit tests don't try to run this.
+# 0.10.1 EKR:
+# - Use settings in leoSettings.leo rather than an .ini file.
+# - Created init function and removed main function.
+# - active global is no longer used.
 #@-at
 #@nonl
 #@-node:ekr.20060715100156.54:<< version history >>
@@ -155,9 +159,8 @@ __cvsid__   = "$Id$"
 #@-doc
 #@-node:ekr.20060715100156.57:<< Implementation notes >>
 #@nl
-   
-#@+others
-#@+node:ekr.20060715100156.58:imports
+#@<< imports >>
+#@+node:ekr.20060801095508:<< imports >>
 import leoGlobals as g 
 
 import leoAtFile
@@ -173,14 +176,29 @@ import sys
 plugins_path = g.os_path_join(g.app.loadDir,"..","plugins")
 mod_shadow_core = g.importFromPath('mod_shadow_core',plugins_path)
 #@nonl
-#@-node:ekr.20060715100156.58:imports
-#@+node:ekr.20060715100156.59:interface
-#@+node:ekr.20060715100156.60:plugin specific functions
+#@-node:ekr.20060801095508:<< imports >>
+#@nl
+   
+#@+others
+#@+node:ekr.20060801095508.1:Module level
+#@+node:ekr.20060801095508.2:init
+def init ():
+    
+    ok = mod_shadow_core is not None and not g.app.unitTesting
+        # Not safe for unit testing: changes Leo's core.
+
+    if ok:
+        putInHooks()
+        g.es_print("Shadow plugin enabled!",color="orange")
+
+    return ok
+#@nonl
+#@-node:ekr.20060801095508.2:init
 #@+node:ekr.20060715100156.61:putInHooks
 def putInHooks ():
     """Modify methods in Leo's core to support this plugin."""
     
-    # Need to modify Leos Kernel first
+    # Need to modify Leo's Kernel first
     # Overwrite existing Leo methods.
     g.funcToMethod(replaceTargetFileIfDifferent,leoAtFile.atFile)
     g.funcToMethod(massageComment,leoImport.leoImportCommands)
@@ -191,7 +209,7 @@ def putInHooks ():
     g.funcToMethod(gotoLineNumberOpen,leoCommands.Commands)
     g.funcToMethod(applyLineNumberMappingIfAny, leoCommands.Commands)
 #@-node:ekr.20060715100156.61:putInHooks
-#@+node:ekr.20060715100156.62:applyConfiguration
+#@+node:ekr.20060715100156.62:OLDapplyConfiguration
 def applyConfiguration (config=None):
 
     """Called when the user presses the "Apply" button on the Properties form.
@@ -210,9 +228,9 @@ def applyConfiguration (config=None):
         mod_shadow_core.prefix = config.get("Main", "prefix")
         mod_shadow_core.print_copy_operations = config.get("Main", "print_copy_operations")
         mod_shadow_core.shadow_subdir = config.get("Main", "shadow_subdir")
-
-#@-node:ekr.20060715100156.62:applyConfiguration
-#@+node:ekr.20060715100156.63:check_for_shadow_file
+#@nonl
+#@-node:ekr.20060715100156.62:OLDapplyConfiguration
+#@+node:ekr.20060715100156.63:check_for_shadow_file (Not used)
 def check_for_shadow_file (self,filename):
     """
     Check if there is a shadow file for filename.
@@ -237,9 +255,17 @@ def check_for_shadow_file (self,filename):
         else:
             return '', False 
 #@nonl
-#@-node:ekr.20060715100156.63:check_for_shadow_file
-#@-node:ekr.20060715100156.60:plugin specific functions
-#@+node:ekr.20060715100156.64:additional core functions
+#@-node:ekr.20060715100156.63:check_for_shadow_file (Not used)
+#@+node:ekr.20060801102118:getVerbosity
+def getVerbosity (c):
+    
+    verbosity = c.config.getInt('shadow_verbose')
+    if verbosity is None: verbosity = 1
+    return verbosity
+#@nonl
+#@-node:ekr.20060801102118:getVerbosity
+#@-node:ekr.20060801095508.1:Module level
+#@+node:ekr.20060715100156.68:Leo overwrites
 #@+node:ekr.20060715100156.65:openForRead
 def openForRead (self, filename, rb):
     """
@@ -250,21 +276,29 @@ def openForRead (self, filename, rb):
         else:
             update the shadow file from the real file.
     """
+    c = self.c
+    shadow_subdir = c.config.getString('shadow_subdir') or ''
+    shadow_prefix = c.config.getString('shadow_prefix') or ''
+    shadow_verbosity = getVerbosity(c)
+    if shadow_verbosity is None: shadow_verbosity = 1
     try:
         dir, simplename = os.path.split(filename)
-        shadow_filename = os.path.join(dir,mod_shadow_core.shadow_subdir, mod_shadow_core.prefix + simplename)
+        shadow_filename = os.path.join(dir,shadow_subdir,shadow_prefix + simplename)
         if os.path.exists(shadow_filename):
             file_to_read_from = shadow_filename
             newfile = os.path.exists(filename)and os.path.getsize(filename)<=2            
             if newfile:
-                if mod_shadow_core.verbosity >= 2:
+                if shadow_verbosity >= 2:
                     g.es("Copy %s to %s without sentinels"%(shadow_filename, filename))
                 mod_shadow_core.copy_file_removing_sentinels(sourcefilename=shadow_filename, targetfilename=filename)
             else:
                 sq = mod_shadow_core.sentinel_squasher(g.es, g.nullObject)
-                if mod_shadow_core.verbosity >= 2:
-                    g.es("reading in shadow directory %s"% mod_shadow_core.shadow_subdir,color="orange")
-                written = sq.propagate_changes_from_file_without_sentinels_to_file_with_sentinels(with_sentinels=shadow_filename, without_sentinels=filename)
+                if shadow_verbosity >= 2:
+                    g.es("reading in shadow directory %s"% (
+                        shadow_subdir),color="orange")
+                written = sq.propagate_changes_from_file_without_sentinels_to_file_with_sentinels(
+                                with_sentinels=shadow_filename,
+                                without_sentinels=filename)
                 if written:
                     g.es("file %s updated from %s" % (shadow_filename, filename), color="orange")
         else:
@@ -285,16 +319,20 @@ def openForWrite (self, filename, wb):
           If so, write to the shadow file,
           and update the real file after the close.
     """
+    c = self.c
+    shadow_subdir = c.config.getString('shadow_subdir') or ''
+    shadow_prefix = c.config.getString('shadow_prefix') or ''
+    shadow_verbosity = getVerbosity(c)
     dir, simplename = os.path.split(filename)
     rootname, ext = os.path.splitext(simplename)
     assert ext=='.tmp'
-    shadow_filename = os.path.join(dir,mod_shadow_core.shadow_subdir, mod_shadow_core.prefix + rootname)
+    shadow_filename = os.path.join(dir,shadow_subdir, shadow_prefix + rootname)
     self.writing_to_shadow_directory = os.path.exists(shadow_filename)
     if self.writing_to_shadow_directory:
         self.shadow_filename = shadow_filename 
-        if mod_shadow_core.verbosity >= 2: 
-            g.es("Using shadow file in folder %s" % mod_shadow_core.shadow_subdir,color="orange")
-        file_to_use = os.path.join(dir,mod_shadow_core.shadow_subdir,mod_shadow_core.prefix + simplename)
+        if shadow_verbosity >= 2: 
+            g.es("Using shadow file in folder %s" % shadow_subdir,color="orange")
+        file_to_use = os.path.join(dir,shadow_subdir,shadow_prefix + simplename)
     else:
         file_to_use = filename 
     return open(file_to_use,'wb')
@@ -308,11 +346,14 @@ def gotoLineNumberOpen (self,filename):
     shadow file number -> real file number.
     """
     try:
+        shadow_subdir = c.config.getString('shadow_subdir') or ''
+        shadow_prefix = c.config.getString('shadow_prefix') or ''
         dir, simplename = os.path.split(filename)
-        shadow_filename = os.path.join(dir,mod_shadow_core.shadow_subdir,mod_shadow_core.prefix + simplename)
+        shadow_filename = os.path.join(dir,shadow_subdir,shadow_prefix + simplename)
         if os.path.exists(shadow_filename):
             lines = file(shadow_filename).readlines()
-            self.line_mapping = mod_shadow_core.push_filter_mapping(lines, mod_shadow_core.marker_from_extension(simplename))
+            self.line_mapping = mod_shadow_core.push_filter_mapping(
+                lines, mod_shadow_core.marker_from_extension(simplename))
         else:
             self.line_mapping ={}
             lines = file(filename).readlines()
@@ -323,8 +364,6 @@ def gotoLineNumberOpen (self,filename):
         raise
 #@nonl
 #@-node:ekr.20060715100156.67:gotoLineNumberOpen
-#@-node:ekr.20060715100156.64:additional core functions
-#@+node:ekr.20060715100156.68:Leo overwrites
 #@+node:ekr.20060715100156.69:gotoLineNumber
 #@+node:ekr.20060715100156.70:applyLineNumberMappingIfAny
 def applyLineNumberMappingIfAny(self, n):
@@ -362,7 +401,9 @@ def replaceTargetFileIfDifferent (self):
     # Check if we are dealing with a shadow file
     try:
         targetFileName = self.targetFileName 
-        outputFileName = self.outputFileName 
+        outputFileName = self.outputFileName
+        shadow_subdir = c.config.getString('shadow_subdir') or ''
+        shadow_verbosity = getVerbosity(c)
         if self.writing_to_shadow_directory:
             self.targetFileName = self.shadow_filename 
             self.outputFileName = self.shadow_filename+'.tmp'
@@ -370,8 +411,8 @@ def replaceTargetFileIfDifferent (self):
             # Original_replaceTargetFileIfDifferent should be oblivious
             # to the existance of the shadow directory.
             if self.writing_to_shadow_directory:
-                if mod_shadow_core.verbosity >= 2:
-                    g.es("Updating file from shadow folder %s" % mod_shadow_core.shadow_subdir,color='orange')
+                if shadow_verbosity >= 2:
+                    g.es("Updating file from shadow folder %s" % shadow_subdir,color='orange')
                 mod_shadow_core.copy_file_removing_sentinels(self.shadow_filename,targetFileName)
 
     finally:
@@ -397,7 +438,6 @@ def massageComment (self,s):
 	return s 
 #@-node:ekr.20060715100156.73:massageComment
 #@-node:ekr.20060715100156.68:Leo overwrites
-#@-node:ekr.20060715100156.59:interface
 #@+node:ekr.20060715100156.74:test_support
 #@+node:ekr.20060715100156.75:do_test_propagate_changes_Leo
 def do_test_propagate_changes_Leo(c):
@@ -422,42 +462,23 @@ def do_test_propagate_changes_Leo(c):
         after_with_sentinel_lines = get_node_lines ("after with sentinels")
         
         sq = mod_shadow_core.sentinel_squasher(g.es, g.nullObject)
-        mod_shadow_core.test_propagate_changes (before_with_sentinels_lines, changed_without_sentinels_lines, after_with_sentinel_lines, "#@", g.es, g.nullObject)
+        mod_shadow_core.test_propagate_changes (
+            before_with_sentinels_lines,
+            changed_without_sentinels_lines,
+            after_with_sentinel_lines,
+            "#@", g.es, g.nullObject)
     finally:
         testing = old_testing
-    
+#@nonl
 #@-node:ekr.20060715100156.75:do_test_propagate_changes_Leo
 #@-node:ekr.20060715100156.74:test_support
 #@+node:ekr.20060715100156.76:stop_testing
 def stop_testing ():
    global testing 
-   testing = False 
-#@-node:ekr.20060715100156.76:stop_testing
-#@+node:ekr.20060715100156.77:main
-def main():
-    pass
-
-try:
-    g.app
-    assert g.app is not None
-    # if g.app is not defined, we are not
-    # imported from Leo
-except:
-    mod_shadow_core.active = False
-else:
-    applyConfiguration()
-
-if mod_shadow_core.active and not g.app.unitTesting: # Not safe for unit testing: changes Leo's core.
-   putInHooks() # Changes Leo's core.
-   # leoPlugins.registerHandler("idle", autosave)
-   if mod_shadow_core.verbosity >= 1:
-      g.es("Shadow plugin enabled!",color="orange")
-    
+   testing = False
 #@nonl
-#@-node:ekr.20060715100156.77:main
+#@-node:ekr.20060715100156.76:stop_testing
 #@-others
-
-main()
 #@nonl
 #@-node:ekr.20060715100156.52:@thin mod_shadow.py
 #@-leo
