@@ -50,7 +50,7 @@ shadow file).
 #@@language python
 #@@tabwidth -4
 
-__version__ = "0.9.5"
+__version__ = "0.10.1"
 #@<< version history >>
 #@+node:ekr.20060715100156.54:<< version history >>
 #@@killcolor 
