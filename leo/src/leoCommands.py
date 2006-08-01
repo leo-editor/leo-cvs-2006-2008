@@ -6198,7 +6198,9 @@ class baseCommands:
     #@+node:ekr.20040803140033.1:setCurrentPosition
     def setCurrentPosition (self,p):
         
-        """Set the presently selected position."""
+        """Set the presently selected position. For internal use only.
+        
+        Client code should use c.selectPosition instead."""
         
         c = self
         
