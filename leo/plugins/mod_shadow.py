@@ -97,7 +97,7 @@ __version__ = "0.10.3"
 #@nl
 #@<< globals >>
 #@+node:ekr.20060715100156.55:<< globals >>
-__version__ = "$Rev: 2900 $"
+__version__ = "$Rev: 3076 $"
 __author__  = "Bernhard Mulder"
 __date__    = "$Date$"
 __cvsid__   = "$Id$"
@@ -175,6 +175,10 @@ import sys
 
 plugins_path = g.os_path_join(g.app.loadDir,"..","plugins")
 mod_shadow_core = g.importFromPath('mod_shadow_core',plugins_path)
+
+shadow_subdir_default = 'LeoFolder'
+shadow_prefix_default = ''
+
 #@nonl
 #@-node:ekr.20060801095508:<< imports >>
 #@nl
@@ -277,8 +281,8 @@ def openForRead (self, filename, rb):
             update the shadow file from the real file.
     """
     c = self.c
-    shadow_subdir = c.config.getString('shadow_subdir') or ''
-    shadow_prefix = c.config.getString('shadow_prefix') or ''
+    shadow_subdir = c.config.getString('shadow_subdir') or shadow_subdir_default
+    shadow_prefix = c.config.getString('shadow_prefix') or shadow_prefix_default
     shadow_verbosity = getVerbosity(c)
     try:
         dir, simplename = os.path.split(filename)
@@ -319,8 +323,8 @@ def openForWrite (self, filename, wb):
           and update the real file after the close.
     """
     c = self.c
-    shadow_subdir = c.config.getString('shadow_subdir') or ''
-    shadow_prefix = c.config.getString('shadow_prefix') or ''
+    shadow_subdir = c.config.getString('shadow_subdir') or shadow_subdir_default
+    shadow_prefix = c.config.getString('shadow_prefix') or shadow_prefix_default
     shadow_verbosity = getVerbosity(c)
     dir, simplename = os.path.split(filename)
     rootname, ext = os.path.splitext(simplename)
@@ -345,8 +349,8 @@ def gotoLineNumberOpen (self,filename):
     shadow file number -> real file number.
     """
     try:
-        shadow_subdir = c.config.getString('shadow_subdir') or ''
-        shadow_prefix = c.config.getString('shadow_prefix') or ''
+        shadow_subdir = self.config.getString('shadow_subdir') or shadow_subdir_default
+        shadow_prefix = self.config.getString('shadow_prefix') or shadow_prefix_default
         dir, simplename = os.path.split(filename)
         shadow_filename = os.path.join(dir,shadow_subdir,shadow_prefix + simplename)
         if os.path.exists(shadow_filename):
@@ -399,9 +403,10 @@ def replaceTargetFileIfDifferent (self):
     
     # Check if we are dealing with a shadow file
     try:
+        c = self.c
         targetFileName = self.targetFileName 
         outputFileName = self.outputFileName
-        shadow_subdir = c.config.getString('shadow_subdir') or ''
+        shadow_subdir = c.config.getString('shadow_subdir') or shadow_subdir_default
         shadow_verbosity = getVerbosity(c)
         if self.writing_to_shadow_directory:
             self.targetFileName = self.shadow_filename 

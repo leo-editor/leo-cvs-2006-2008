@@ -305,10 +305,9 @@ class sentinel_squasher:
     """
     #@	@+others
     #@+node:ekr.20060715100156.37:__init__
-    def __init__(self, c, es, nullObject):
+    def __init__(self, es, nullObject):
         self.es = es
         self.nullObject = nullObject
-        self.c = c
     #@-node:ekr.20060715100156.37:__init__
     #@+node:ekr.20060715100156.38:check_lines_for_equality
     def check_lines_for_equality (self, lines1, lines2, message, lines1_message, lines2_message, es):
