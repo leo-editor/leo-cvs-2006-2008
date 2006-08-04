@@ -5326,9 +5326,9 @@ class killBufferCommandsClass (baseEditCommandsClass):
     
         c = self.c
         c.editCommands.backwardWord(event)
-        self.killWord(event)
         self.killWs(event)
-        c.editCommands.backwardWord(event)
+        self.killWord(event)
+        # c.editCommands.backwardWord(event)
     #@nonl
     #@-node:ekr.20050920084036.180:backwardKillWord
     #@+node:ekr.20051216151811:clearKillRing

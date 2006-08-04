@@ -563,6 +563,49 @@ def scrollOutlineRight (self,event=None):
 #@-node:ekr.20060726154531:scrollOutlineLeftRight
 #@-node:ekr.20060309060654:scrolling...
 #@-node:ekr.20060705084548:Fixed minor scrolling problem
+#@+node:ekr.20060730103005:Fixed bug in backward-kill-word
+# There is still some doubt about what the best operation of this command should be.
+#@nonl
+#@+node:ekr.20060804110605:Report
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3841115
+By: paulpaterson
+
+I'm not sure if this is fixed also but backward-kill-word has an interesting
+bug.
+
+If you do a backward-kill-word on the following with the cursor at the * position
+...
+
+-- The cat sat* on the mat
+
+Then you get the following ...
+
+-- The *cat on the mat
+
+ie. the word was deleted but the cursor also moved an additional work back,
+which is quite perplexing when it first happens.
+
+Perhaps the command should be called,
+backward-kill-word-and-then-move-back-another-word!
+
+Paul
+#@nonl
+#@-node:ekr.20060804110605:Report
+#@+node:ekr.20050920084036.180:backwardKillWord
+def backwardKillWord (self,event):
+    
+    '''Kill the previous word.'''
+
+    c = self.c
+    c.editCommands.backwardWord(event)
+    self.killWs(event)
+    self.killWord(event)
+    # c.editCommands.backwardWord(event)
+#@nonl
+#@-node:ekr.20050920084036.180:backwardKillWord
+#@-node:ekr.20060730103005:Fixed bug in backward-kill-word
 #@-node:ekr.20060702103435.1:Bugs fixed
 #@+node:ekr.20060702103435.2:New features
 #@+node:ekr.20060702094931:Created menu font settings
@@ -822,6 +865,305 @@ def scrollOutlineRight (self,event=None):
 #@-node:ekr.20060726154531:scrollOutlineLeftRight
 #@-node:ekr.20060309060654:scrolling...
 #@-node:ekr.20060724074426:Added scroll-outline-left/right commands
+#@+node:ekr.20060702091716:Generalized bracket flasher
+#@+node:ekr.20060804095512.1:Request
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3802513
+By: tfer
+
+Could you make the set of symbols to flash user settable?
+
+Added these settings:
+    
+@string open_flash_brackets = ([{
+@string close_flash_brackets = )]}
+#@-node:ekr.20060804095512.1:Request
+#@+node:ekr.20050920084036.54: ctor (editCommandsClass)
+def __init__ (self,c):
+
+    baseEditCommandsClass.__init__(self,c) # init the base class.
+    
+    self.ccolumn = '0'   # For comment column functions.
+    self.dynaregex = re.compile(r'[%s%s\-_]+'%(string.ascii_letters,string.digits))
+        # For dynamic abbreviations
+    self.extendMode = False # True: all cursor move commands extend the selection.
+    self.fillPrefix = '' # For fill prefix functions.
+    self.fillColumn = 70 # For line centering.
+    self.moveSpotNode = None # A tnode.
+    self.moveSpot = None # For retaining preferred column when moving up or down.
+    self.moveCol = None # For retaining preferred column when moving up or down.
+    self.store ={'rlist':[], 'stext':''} # For dynamic expansion.
+    self.swapSpots = []
+    self._useRegex = False # For replace-string
+    self.widget = None # For use by state handlers.
+    
+    # Settings...
+    self.autocompleteBrackets   = c.config.getBool('autocomplete-brackets')
+    self.bracketsFlashBg        = c.config.getColor('flash-brackets-background-color')
+    self.bracketsFlashCount     = c.config.getInt('flash-brackets-count')
+    self.bracketsFlashDelay     = c.config.getInt('flash-brackets-delay')
+    self.bracketsFlashFg        = c.config.getColor('flash-brackets-foreground-color')
+    self.flashMatchingBrackets  = c.config.getBool('flash-matching-brackets')
+    self.smartAutoIndent        = c.config.getBool('smart_auto_indent')
+    
+    self.initBracketMatcher(c)
+#@nonl
+#@-node:ekr.20050920084036.54: ctor (editCommandsClass)
+#@+node:ekr.20060804095512:initBracketMatcher
+def initBracketMatcher (self,c):
+
+    self.openBracketsList  = c.config.getString('open_flash_brackets')  or '([{'
+    self.closeBracketsList = c.config.getString('close_flash_brackets') or ')]}'
+    
+    if len(self.openBracketsList) != len(self.closeBracketsList):
+        g.es_print('bad open/close_flash_brackets setting: using defaults')
+        self.openBracketsList  = '([{'
+        self.closeBracketsList = ')]}'
+
+    # g.trace('self.openBrackets',openBrackets)
+    # g.trace('self.closeBrackets',closeBrackets)
+#@nonl
+#@-node:ekr.20060804095512:initBracketMatcher
+#@+node:ekr.20051125080855:selfInsertCommand & helpers
+def selfInsertCommand(self,event,action='insert'):
+    
+    '''Insert a character in the body pane.
+    This is the default binding for all keys in the body pane.'''
+    
+    c = self.c ; p = c.currentPosition()
+    ch = event and event.char or ''
+    if event and event.keysym == 'Return': ch = '\n' # This fixes the MacOS return bug.
+    w = event and event.widget
+    name = c.widget_name(w)
+    oldSel =  name.startswith('body') and g.app.gui.getTextSelection(w)
+    oldText = name.startswith('body') and p.bodyString()
+    undoType = 'Typing'
+    trace = c.config.getBool('trace_masterCommand')
+    brackets = self.openBracketsList + self.closeBracketsList
+    
+    if trace: g.trace(name,repr(ch),ch in brackets)
+    
+    if g.doHook("bodykey1",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType):
+        return "break" # The hook claims to have handled the event.
+        
+    if ch == '\t':
+        self.updateTab(p,w)
+    elif ch == '\b':
+        # This is correct: we only come here if there no bindngs for this key. 
+        self.backwardDeleteCharacter(event)
+    elif ch in ('\r','\n'):
+        ch = '\n'
+        << handle newline >>
+    elif ch in brackets and self.autocompleteBrackets:
+        self.updateAutomatchBracket(p,w,ch,oldSel)
+    elif ch: # Null chars must not delete the selection.
+        i,j = oldSel
+        if i != j:                  w.delete(i,j)
+        elif action == 'overwrite': w.delete(i,'%s+1c' % i)
+        w.insert(i,ch)
+        if ch in brackets and self.flashMatchingBrackets: # New in 4.4.1.
+           self.flashMatchingBracketsHelper(w,i,ch)               
+    else:
+        return 'break' # New in 4.4a5: this method *always* returns 'break'
+        
+    # New in 4.4.1: Set the column for up and down keys.
+    spot = w.index('insert')
+    c.editCommands.setMoveCol(spot)
+
+    # Update the text and handle undo.
+    newText = g.app.gui.getAllText(w) # New in 4.4b3: converts to unicode.
+    # g.trace(repr(newText))
+    w.see(w.index('insert'))
+    if newText != oldText:
+        c.frame.body.onBodyChanged(undoType=undoType,
+            oldSel=oldSel,oldText=oldText,oldYview=None)
+            
+    g.doHook("bodykey2",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType)
+    return 'break'
+#@nonl
+#@+node:ekr.20051026171121:<< handle newline >>
+i,j = oldSel
+
+if i != j:
+    # No auto-indent if there is selected text.
+    w.delete(i,j)
+    w.insert(i,ch)
+else:
+    w.insert(i,ch)
+    allow_in_nocolor = c.config.getBool('autoindent_in_nocolor_mode')
+    if (
+        (allow_in_nocolor or c.frame.body.colorizer.useSyntaxColoring(p)) and
+        undoType != "Change"
+    ):
+        # No auto-indent if in @nocolor mode or after a Change command.
+        self.updateAutoIndent(p,w)
+#@nonl
+#@-node:ekr.20051026171121:<< handle newline >>
+#@+node:ekr.20060804095512:initBracketMatcher
+def initBracketMatcher (self,c):
+
+    self.openBracketsList  = c.config.getString('open_flash_brackets')  or '([{'
+    self.closeBracketsList = c.config.getString('close_flash_brackets') or ')]}'
+    
+    if len(self.openBracketsList) != len(self.closeBracketsList):
+        g.es_print('bad open/close_flash_brackets setting: using defaults')
+        self.openBracketsList  = '([{'
+        self.closeBracketsList = ')]}'
+
+    # g.trace('self.openBrackets',openBrackets)
+    # g.trace('self.closeBrackets',closeBrackets)
+#@nonl
+#@-node:ekr.20060804095512:initBracketMatcher
+#@+node:ekr.20060627083506:flashMatchingBracketsHelper
+def flashMatchingBracketsHelper (self,w,index,ch):
+
+    s = g.app.gui.getAllText(w)
+    i = g.app.gui.toPythonIndex(s,w,index)
+    
+    d = {}
+    if ch in self.openBracketsList:
+        for z in xrange(len(self.openBracketsList)):
+            d [self.openBracketsList[z]] = self.closeBracketsList[z]
+        reverse = False # Search forward
+    else:
+        for z in xrange(len(self.openBracketsList)):
+            d [self.closeBracketsList[z]] = self.openBracketsList[z]
+        reverse = True # Search backward
+
+    delim2 = d.get(ch)
+    j = g.skip_matching_python_delims(s,i,ch,delim2,reverse=reverse)
+    if j != -1:
+        j = g.app.gui.toGuiIndex(s,w,j)
+        self.flashCharacter(w,j)
+#@nonl
+#@-node:ekr.20060627083506:flashMatchingBracketsHelper
+#@+node:ekr.20060627091557:flashCharacter
+def flashCharacter(self,w,i):
+    
+    bg      = self.bracketsFlashBg or 'DodgerBlue1'
+    fg      = self.bracketsFlashFg or 'white'
+    flashes = self.bracketsFlashCount or 2
+    delay   = self.bracketsFlashDelay or 75
+
+    def addFlashCallback(w,count,index):
+        w.tag_add('flash',index,'%s+1c' % (index))
+        w.after(delay,removeFlashCallback,w,count-1,index)
+    
+    def removeFlashCallback(w,count,index):
+        w.tag_remove('flash','1.0','end')
+        if count > 0:
+            w.after(delay,addFlashCallback,w,count,index)
+
+    try:
+        w.tag_configure('flash',foreground=fg,background=bg)
+        addFlashCallback(w,flashes,i)
+    except Exception:
+        pass
+#@nonl
+#@-node:ekr.20060627091557:flashCharacter
+#@+node:ekr.20051027172949:updateAutomatchBracket
+def updateAutomatchBracket (self,p,w,ch,oldSel):
+
+    # assert ch in ('(',')','[',']','{','}')
+    
+    c = self.c ; d = g.scanDirectives(c,p) ; i,j = oldSel
+    language = d.get('language')
+    
+    if ch in ('(','[','{',):
+        automatch = language not in ('plain',)
+        if automatch:
+            ch = ch + {'(':')','[':']','{':'}'}.get(ch)
+        if i != j:
+            w.delete(i,j)
+        w.insert(i,ch)
+        if automatch:
+            w.mark_set('insert','insert-1c')
+    else:
+        ch2 = w.get('insert')
+        if ch2 in (')',']','}'):
+            w.mark_set('insert','insert+1c')
+        else:
+            if i != j:
+                w.delete(i,j)
+            w.insert(i,ch)
+#@nonl
+#@-node:ekr.20051027172949:updateAutomatchBracket
+#@+node:ekr.20051026171121.1:udpateAutoIndent
+# By David McNab:
+def updateAutoIndent (self,p,w):
+
+    c = self.c ; d = g.scanDirectives(c,p)
+    tab_width = d.get("tabwidth",c.tab_width) # Get the previous line.
+    s = w.get("insert linestart - 1 lines","insert linestart -1c")
+    # Add the leading whitespace to the present line.
+    junk, width = g.skip_leading_ws_with_indent(s,0,tab_width)
+    if s and len(s) > 0 and s [ -1] == ':':
+        # For Python: increase auto-indent after colons.
+        if c.frame.body.colorizer.scanColorDirectives(p) == "python":
+            width += abs(tab_width)
+    if self.smartAutoIndent:
+        # Determine if prev line has unclosed parens/brackets/braces
+        bracketWidths = [width] ; tabex = 0
+        for i in range(0,len(s)):
+            if s [i] == '\t':
+                tabex += tab_width-1
+            if s [i] in '([{':
+                bracketWidths.append(i+tabex+1)
+            elif s [i] in '}])' and len(bracketWidths) > 1:
+                bracketWidths.pop()
+        width = bracketWidths.pop()
+    ws = g.computeLeadingWhitespace(width,tab_width)
+    if ws:
+        w.insert("insert",ws)
+#@nonl
+#@-node:ekr.20051026171121.1:udpateAutoIndent
+#@+node:ekr.20051026092433:updateTab
+def updateTab (self,p,w):
+
+    c = self.c ; d = g.scanDirectives(c,p)
+    tab_width = d.get("tabwidth",c.tab_width)
+    
+    i,j = g.app.gui.getTextSelection(w)
+    if i != j:
+        w.delete(i,j)
+    if tab_width > 0:
+        w.insert("insert",'\t')
+    else:
+        # Get the preceeding characters.
+        s = w.get("insert linestart","insert")
+    
+        # Compute n, the number of spaces to insert.
+        width = g.computeWidth(s,tab_width)
+        n = abs(tab_width) - (width % abs(tab_width))
+        w.insert("insert",' ' * n)
+#@nonl
+#@-node:ekr.20051026092433:updateTab
+#@-node:ekr.20051125080855:selfInsertCommand & helpers
+#@+node:ekr.20060627083506:flashMatchingBracketsHelper
+def flashMatchingBracketsHelper (self,w,index,ch):
+
+    s = g.app.gui.getAllText(w)
+    i = g.app.gui.toPythonIndex(s,w,index)
+    
+    d = {}
+    if ch in self.openBracketsList:
+        for z in xrange(len(self.openBracketsList)):
+            d [self.openBracketsList[z]] = self.closeBracketsList[z]
+        reverse = False # Search forward
+    else:
+        for z in xrange(len(self.openBracketsList)):
+            d [self.closeBracketsList[z]] = self.openBracketsList[z]
+        reverse = True # Search backward
+
+    delim2 = d.get(ch)
+    j = g.skip_matching_python_delims(s,i,ch,delim2,reverse=reverse)
+    if j != -1:
+        j = g.app.gui.toGuiIndex(s,w,j)
+        self.flashCharacter(w,j)
+#@nonl
+#@-node:ekr.20060627083506:flashMatchingBracketsHelper
+#@-node:ekr.20060702091716:Generalized bracket flasher
 #@-node:ekr.20060702103435.2:New features
 #@+node:ekr.20060702103435.3:New settings
 #@+node:ekr.20060702103435.4:Added @font menu font setting
