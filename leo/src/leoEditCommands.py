@@ -1310,6 +1310,8 @@ class editCommandsClass (baseEditCommandsClass):
         self.bracketsFlashFg        = c.config.getColor('flash-brackets-foreground-color')
         self.flashMatchingBrackets  = c.config.getBool('flash-matching-brackets')
         self.smartAutoIndent        = c.config.getBool('smart_auto_indent')
+        
+        self.initBracketMatcher(c)
     #@nonl
     #@-node:ekr.20050920084036.54: ctor (editCommandsClass)
     #@+node:ekr.20050920084036.55: getPublicCommands (editCommandsClass)
@@ -2890,7 +2892,7 @@ class editCommandsClass (baseEditCommandsClass):
         oldText = name.startswith('body') and p.bodyString()
         undoType = 'Typing'
         trace = c.config.getBool('trace_masterCommand')
-        brackets = ('(',')','[',']','{','}')
+        brackets = self.openBracketsList + self.closeBracketsList
         
         if trace: g.trace(name,repr(ch),ch in brackets)
         
@@ -2932,7 +2934,7 @@ class editCommandsClass (baseEditCommandsClass):
             elif action == 'overwrite': w.delete(i,'%s+1c' % i)
             w.insert(i,ch)
             if ch in brackets and self.flashMatchingBrackets: # New in 4.4.1.
-                self.flashMatchingBracketsHelper(w,i,ch)               
+               self.flashMatchingBracketsHelper(w,i,ch)               
         else:
             return 'break' # New in 4.4a5: this method *always* returns 'break'
             
@@ -2951,18 +2953,35 @@ class editCommandsClass (baseEditCommandsClass):
         g.doHook("bodykey2",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType)
         return 'break'
     #@nonl
+    #@+node:ekr.20060804095512:initBracketMatcher
+    def initBracketMatcher (self,c):
+    
+        self.openBracketsList  = c.config.getString('open_flash_brackets')  or '([{'
+        self.closeBracketsList = c.config.getString('close_flash_brackets') or ')]}'
+        
+        if len(self.openBracketsList) != len(self.closeBracketsList):
+            g.es_print('bad open/close_flash_brackets setting: using defaults')
+            self.openBracketsList  = '([{'
+            self.closeBracketsList = ')]}'
+    
+        # g.trace('self.openBrackets',openBrackets)
+        # g.trace('self.closeBrackets',closeBrackets)
+    #@nonl
+    #@-node:ekr.20060804095512:initBracketMatcher
     #@+node:ekr.20060627083506:flashMatchingBracketsHelper
     def flashMatchingBracketsHelper (self,w,index,ch):
     
         s = g.app.gui.getAllText(w)
         i = g.app.gui.toPythonIndex(s,w,index)
-        # g.trace(index,i,ch)
-    
-        if ch in ('(','{','['):
-            d = {'(': ')', '{': '}', '[': ']'}
+        
+        d = {}
+        if ch in self.openBracketsList:
+            for z in xrange(len(self.openBracketsList)):
+                d [self.openBracketsList[z]] = self.closeBracketsList[z]
             reverse = False # Search forward
         else:
-            d = {')': '(', '}': '{', ']': '['}
+            for z in xrange(len(self.openBracketsList)):
+                d [self.closeBracketsList[z]] = self.openBracketsList[z]
             reverse = True # Search backward
     
         delim2 = d.get(ch)
