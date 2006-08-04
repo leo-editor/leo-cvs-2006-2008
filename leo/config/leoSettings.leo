@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="300" clone_windows="0"/>
 <globals body_outline_ratio="0.549828178694">
-	<global_window_position top="141" left="291" height="667" width="938"/>
+	<global_window_position top="196" left="280" height="610" width="938"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -248,7 +248,7 @@
 </v>
 <v t="ekr.20060127050605"><vh>@int max_undo_stack_size = 50</vh></v>
 </v>
-<v t="ekr.20060122105527.3"><vh>Keyboard and minibuffer options</vh>
+<v t="ekr.20060122105527.3" a="E"><vh>Keyboard and minibuffer options</vh>
 <v t="ekr.20060215094146"><vh>@@bool ignore_caps_lock = True</vh></v>
 <v t="ekr.20060216170801"><vh>@bool enable_calltips = True</vh></v>
 <v t="ekr.20060215102141"><vh>@bool ignore_unbound_non_ascii_keys = False</vh></v>
@@ -259,6 +259,8 @@
 <v t="ekr.20060122105527.5" annotate="7d71002e"><vh>@bool useCmdMenu = True</vh></v>
 <v t="ekr.20060122105527.6" annotate="7d71002e"><vh>@bool useMinibuffer = True</vh></v>
 <v t="ekr.20060125165241"><vh>@bool useTextMinibuffer = True</vh></v>
+<v t="ekr.20060804095015"><vh>@string open_flash_brackets = ([{</vh></v>
+<v t="ekr.20060804095015.1" a="TV"><vh>@string close_flash_brackets = )]}</vh></v>
 </v>
 <v t="ekr.20051007200824" annotate="7d71002e"><vh>Keyboard shortcuts</vh>
 <v t="ekr.20051101160257" annotate="7d71002e"><vh>About keyboard shortcuts</vh>
@@ -382,7 +384,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20051123100536" a="E" annotate="7d71002e"><vh>Plugins</vh>
+<v t="ekr.20051123100536" annotate="7d71002e"><vh>Plugins</vh>
 <v t="ekr.20060111091324"><vh>fastgotonode plugin</vh>
 <v t="ekr.20060111091324.1"><vh>@bool fastgotonode_useKeyBinding = True</vh></v>
 <v t="ekr.20060111091324.2"><vh>@string fastgotonode_binding =  Shift-space</vh></v>
@@ -397,7 +399,7 @@
 <v t="ekr.20051123100536.2"><vh>@string vim_cmd = c:\Program Files\vim\vim63\gvim --servername LEO</vh></v>
 <v t="ekr.20051123100536.3"><vh>@string vim_exe = c:\Program Files\vim\vim63\gvim</vh></v>
 </v>
-<v t="ekr.20060730101451" a="TV"><vh>shadow plugin</vh>
+<v t="ekr.20060730101451"><vh>shadow plugin</vh>
 <v t="ekr.20060730101451.1"><vh>@bool shadow_active = True</vh></v>
 <v t="ekr.20060730101451.2"><vh>@bool shadow_backups = True</vh></v>
 <v t="ekr.20060730101451.3"><vh>@string shadow_prefix = x</vh></v>
@@ -5569,5 +5571,7 @@ menu_text_font_weight = None</t>
 <t tx="ekr.20060730101451.5"></t>
 <t tx="ekr.20060730101451.6"></t>
 <t tx="ekr.20060730101451.7"></t>
+<t tx="ekr.20060804095015">Important: the order the open_flash_brackets and close_flash_brackets settings must be consistent.</t>
+<t tx="ekr.20060804095015.1">Important: the order the open_flash_brackets and close_flash_brackets settings must be consistent.</t>
 </tnodes>
 </leo_file>
