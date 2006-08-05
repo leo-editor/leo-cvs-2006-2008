@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="25645" clone_windows="0"/>
 <globals body_outline_ratio="0.550802139037">
-	<global_window_position top="164" left="183" height="618" width="776"/>
+	<global_window_position top="164" left="183" height="599" width="776"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -46,7 +46,7 @@
 <v t="ekr.20060525110217"><vh>@@button rst-&gt;rst</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="TV"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -94,6 +94,7 @@
 <v t="ekr.20050830115714.29"><vh>How can I add support for a new language?</vh></v>
 <v t="ekr.20050830115714.30"><vh>How do I submit a plugin?</vh></v>
 <v t="ekr.20050830120844"><vh>How do I add a new menu item from a plugin?</vh></v>
+<v t="ekr.20060805094325"><vh>How can I use Leo's legacy key bindings?</vh></v>
 </v>
 <v t="ekr.20050830115714.118"><vh>Tips and techniques</vh>
 <v t="ekr.20050830120857"><vh>How can I use Leo to develop Leo itself?</vh></v>
@@ -597,11 +598,11 @@
 </v>
 </v>
 <v t="ekr.20060430221745"><vh>Chapter 15: Controlling syntax coloring</vh>
-<v t="ekr.20060430221745.1" a="E"><vh>@rst html\coloring.html</vh>
+<v t="ekr.20060430221745.1"><vh>@rst html\coloring.html</vh>
 <v t="ekr.20060430222753"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20060430220749"><vh>Files</vh></v>
 <v t="ekr.20060502084233"><vh>The colorizer's inner loop</vh></v>
-<v t="ekr.20060502084233.1" a="E"><vh>Format of colorizer control files</vh>
+<v t="ekr.20060502084233.1"><vh>Format of colorizer control files</vh>
 <v t="ekr.20060502100550"><vh>Ruleset names</vh></v>
 <v t="ekr.20060502090516"><vh>x.properties</vh></v>
 <v t="ekr.20060510085547"><vh>Attribute dictionaries and x.attributesDictDict</vh></v>
@@ -949,7 +950,7 @@
 </v>
 <v t="ekr.20060613075343"><vh>To do: Chapter 15: Using the scripting plugin</vh></v>
 </v>
-<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
+<v t="edream.110203163054.46"><vh>Release Notes</vh>
 <v t="edream.110203163054.117"><vh>Previous versions...</vh>
 <v t="ekr.20060206111717"><vh>Ancient...</vh>
 <v t="edream.110203163054.118"><vh>3.x...</vh>
@@ -2832,7 +2833,7 @@
 <v t="ekr.20060601101958.244"><vh>Added warnings about the expanded_click_area setting</vh></v>
 <v t="ekr.20060601101958.276"><vh>Removed support for @shortcut (@shortcuts remains)</vh></v>
 </v>
-<v t="ekr.20060601101958.28" a="E"><vh>Minor improvements</vh>
+<v t="ekr.20060601101958.28"><vh>Minor improvements</vh>
 <v t="ekr.20060601101958.218"><vh>Finished Cmds menu</vh></v>
 <v t="ekr.20060601101958.235"><vh>Improved show-fonts command</vh></v>
 <v t="ekr.20060601101958.238"><vh>Strip quotes from color, font settings.</vh></v>
@@ -2897,8 +2898,8 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20060629083400.1" a="E"><vh>4.4.1 b3</vh>
+<v t="edream.110203163054.63"><vh>Latest version</vh>
+<v t="ekr.20060629083400.1"><vh>4.4.1 b3</vh>
 <v t="ekr.20060629083935.2"><vh>Bugs fixed</vh>
 <v t="ekr.20060629083935.3"><vh>Fixed recent bug: Ctrl-g does not work in @mode nodes</vh></v>
 <v t="ekr.20060629083935.8"><vh>Update column display when typing</vh></v>
@@ -2909,7 +2910,7 @@
 <v t="ekr.20060629083935.70"><vh>Fixed crasher in masterCommand</vh></v>
 <v t="ekr.20060629083935.71"><vh>Improved view-lossage command</vh></v>
 </v>
-<v t="ekr.20060629083935.74" a="V"><vh>New features</vh>
+<v t="ekr.20060629083935.74"><vh>New features</vh>
 <v t="ekr.20060629083935.75"><vh>Finished repeat-complex-command</vh></v>
 <v t="ekr.20060629083935.76"><vh>Read leoSettings.leo from the directory containing the .leo file</vh></v>
 <v t="ekr.20060629083935.93"><vh>Flash matching parens &amp; corresponding settings</vh></v>
@@ -30215,5 +30216,28 @@ Here are the relevant settings:
 @int flash_brackets_count: The number of times to flash matching brackets.
 
 @int flash-brackets-delay: One half the total cycle time of bracket flashes, in milliseconds.</t>
+<t tx="ekr.20060805094325">You can 'revert' to old key bindings as follows:
+
+1. Open leoSettings.leo.
+
+2. Find the node 'Keyboard shortcuts'.
+
+3. Disable the old bindings by moving the node
+'@keys EKR bindings: Emacs keys + modes'
+so that it is a child of the node:
+'@ignore Unused key bindings'.
+
+4. Notice that there are two child nodes of the node
+'@ignore Unused key bindings'
+that refer to legacy key bindings:
+    
+- '@keys Legacy Leo shortcuts with important Emacs bindings'
+
+- '@keys Legacy Leo bindings'.
+
+5.  Move **one** of these two legacy nodes up one level so that it is a child of the node
+'Keyboard shortcuts'.
+It should **not** be a child of the node
+'@ignore Unused key bindings'.</t>
 </tnodes>
 </leo_file>
