@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="7415" clone_windows="0"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="7416" clone_windows="0"/>
 <globals body_outline_ratio="0.563037249284">
 	<global_window_position top="26" left="277" height="660" width="922"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
@@ -9,7 +9,7 @@
 <preferences/>
 <find_panel_settings/>
 <vnodes>
-<v t="ekr.20041211035618"><vh>Scripts, buttons &amp; settings</vh>
+<v t="ekr.20041211035618" a="E"><vh>Scripts, buttons &amp; settings</vh>
 <v t="EKR.20040517075110"><vh>replaceLeoGlobals</vh>
 <v t="EKR.20040517075110.1"><vh>&lt;&lt; set nameList to the list of functions in leoGlobals.py &gt;&gt;</vh></v>
 <v t="EKR.20040517075110.2"><vh>findFunctionsInTree</vh></v>
@@ -39,6 +39,7 @@
 <v t="ekr.20050724100334"><vh>@button Beautify</vh></v>
 <v t="ekr.20051025144116"><vh>@button Spell</vh></v>
 <v t="ekr.20050819055746"><vh>@button Save</vh></v>
+<v t="bwmulder.20060807083225"><vh>@button shadow</vh></v>
 <v t="ekr.20050722075812"><vh>Remove blank trailing lines</vh></v>
 </v>
 <v t="edream.110203113231.618"><vh>Plugins</vh>
@@ -1047,9 +1048,9 @@ expanded="ekr.20060530091119.35,"><vh>@thin __jEdit_colorizer__.py</vh></v>
 </v>
 <v t="ekr.20060715100156.8"
 expanded="ekr.20060715100156.11,ekr.20060715100156.12,"><vh>@thin mod_shadow_core.py</vh></v>
-<v t="ekr.20060715100156.52" a="TV"
+<v t="ekr.20060715100156.52" a="E"
 marks="ekr.20060715100156.53,"
-expanded="ekr.20060715100156.71,ekr.20060715100156.74,"><vh>@thin mod_shadow.py</vh></v>
+expanded="ekr.20060715100156.68,ekr.20060715100156.71,ekr.20060715100156.74,"><vh>@thin mod_shadow.py</vh></v>
 <v t="ekr.20060715100853"><vh>@thin ../LeoShadow/readme.txt</vh></v>
 </v>
 </vnodes>
@@ -1432,6 +1433,56 @@ Leo loads plugins in the order they appear in this file.
 File names may be indented as desired.
 
 @color</t>
+<t tx="bwmulder.20060807083225">"""
+Look for @thin files in the current subtree.
+Convert those thin files into a file with a shadow file,
+if this shadow file does not exist already.
+
+FIXME: the line end convention is currently changed:
+      unix lineendings are converted to DOS lineendings,
+      if files are converted on Windows.
+      Not sure if that is a probem or not.
+"""
+def l(filename):
+    return g.comment_delims_from_extension(filename)[0]
+import mod_shadow_core, os, shutil
+for p in p.self_and_subtree_iter():
+   s = p.headString()
+   sstrip = s.strip()
+   if sstrip.startswith("@thin"):
+       # shadow_subdir = c.config.shadow_subdir
+       shadow_subdir = c.config.getString("shadow_subdir")
+       # prefix = c.config.prefix
+       prefix = c.config.getString("shadow_prefix")
+       start = sstrip.find("@thin") + len("@thin")
+       leofiledir = os.path.split(c.mFileName)[0]
+       filename = sstrip[start:].strip()
+       fullfilename = os.path.join(leofiledir, filename)
+       dir = os.path.split(fullfilename)[0]
+       leoFolder = os.path.join(leofiledir, dir, shadow_subdir)
+       if not os.path.exists(leoFolder):
+           os.mkdir(leoFolder)
+           assert os.path.exists(leoFolder)
+       else:
+           assert os.path.isdir(leoFolder)
+       dir, name = os.path.split(filename)
+       newname = os.path.join(leoFolder, prefix + name)
+       if os.path.exists(newname):
+           continue
+       g.es( "renaming %s to %s" % (filename, newname))
+       shutil.copy2(fullfilename, newname)
+       os.unlink(fullfilename)
+       f = file(fullfilename, "w")
+       f.close()
+       mod_shadow_core.copy_file_removing_sentinels(
+           sourcefilename=newname,
+           targetfilename=fullfilename,
+           marker_from_extension = l)
+       g.es("File %s is now shadowed" % filename)
+
+
+
+</t>
 <t tx="edream.110203113231.233">@ To do:
     
      WARNING: problems with locking out event handlers could cause Leo to drop Text!
