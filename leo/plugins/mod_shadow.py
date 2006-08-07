@@ -11,11 +11,11 @@ This plugin allows you to use Leo with files which contain no
 Leo comments, and still have information flow in both directions:
 from the file into Leo, and from Leo into the file.
  
-    The simplest way to start using this plugin is to use the 'convert_to_shadow.py'
-    script in the scripts section.
-    
-    After (re)starting, Leo will copy the files from the LeoShadow subfolder to the old
-    location after removing all sentinels.
+    To use this plugin:
+        1. Install the shadow button
+        2. Position the cursor somewhere in your tree.
+        3. Upon clicking on the shadow button, all @thin files will be converted to have
+           a shadow file.
     
     After this initial setup, changes in Leo will be reflected both in the file
     in the Leo subfolder, and the file without sentinels.
@@ -31,12 +31,11 @@ from the file into Leo, and from Leo into the file.
     
 You can set settings for this plugin in leoSettings.leo at: @settings-->Plugins-->shadow plugin.
     
-    shadow_verbose >= 1: print logon message in status pane.
-    shadow_verbose >= 2: print message each time the subfolder is used.
+    shadow_subdir (default: LeoFolder): name of the shadow directory.
+    shadow_prefix (default: x): prefix of shadow files.
     
-You can specify a prefix for the shadow files. This is so that the py.test script
-does not pick up test scripts twice (once the file without Leo sentinels, once the
-shadow file).
+The prefix allows the shadow file and the original file to have different names.
+This is useful for name-based tools like py.test.
 """
 #@-node:ekr.20060715100156.53:<< docstring >>
 #@nl
@@ -178,8 +177,6 @@ mod_shadow_core = g.importFromPath('mod_shadow_core',plugins_path)
 
 shadow_subdir_default = 'LeoFolder'
 shadow_prefix_default = ''
-
-#@nonl
 #@-node:ekr.20060801095508:<< imports >>
 #@nl
    
@@ -268,6 +265,11 @@ def getVerbosity (c):
     return verbosity
 #@nonl
 #@-node:ekr.20060801102118:getVerbosity
+#@+node:bwmulder.20060806152117:marker_from_extension
+def marker_from_extension(filename):
+    return g.comment_delims_from_extension(filename)[0]
+#@nonl
+#@-node:bwmulder.20060806152117:marker_from_extension
 #@-node:ekr.20060801095508.1:Module level
 #@+node:ekr.20060715100156.68:Leo overwrites
 #@+node:ekr.20060715100156.65:openForRead
@@ -293,15 +295,18 @@ def openForRead (self, filename, rb):
             if newfile:
                 if shadow_verbosity >= 2:
                     g.es("Copy %s to %s without sentinels"%(shadow_filename, filename))
-                mod_shadow_core.copy_file_removing_sentinels(sourcefilename=shadow_filename, targetfilename=filename)
+                mod_shadow_core.copy_file_removing_sentinels(sourcefilename=shadow_filename,
+                                             targetfilename=filename,
+                                             marker_from_extension=marker_from_extension)
             else:
                 sq = mod_shadow_core.sentinel_squasher(g.es, g.nullObject)
                 if shadow_verbosity >= 2:
-                    g.es("reading in shadow directory %s"% (
+                    g.es("reading from shadow directory %s"% (
                         shadow_subdir),color="orange")
                 written = sq.propagate_changes_from_file_without_sentinels_to_file_with_sentinels(
                                 with_sentinels=shadow_filename,
-                                without_sentinels=filename)
+                                without_sentinels=filename,
+                                marker_from_extension=marker_from_extension)
                 if written:
                     g.es("file %s updated from %s" % (shadow_filename, filename), color="orange")
         else:
@@ -356,7 +361,7 @@ def gotoLineNumberOpen (self,filename):
         if os.path.exists(shadow_filename):
             lines = file(shadow_filename).readlines()
             self.line_mapping = mod_shadow_core.push_filter_mapping(
-                lines, mod_shadow_core.marker_from_extension(simplename))
+                lines, marker_from_extension(shadow_filename))
         else:
             self.line_mapping ={}
             lines = file(filename).readlines()
@@ -417,7 +422,7 @@ def replaceTargetFileIfDifferent (self):
             if self.writing_to_shadow_directory:
                 if shadow_verbosity >= 2:
                     g.es("Updating file from shadow folder %s" % shadow_subdir,color='orange')
-                mod_shadow_core.copy_file_removing_sentinels(self.shadow_filename,targetFileName)
+                mod_shadow_core.copy_file_removing_sentinels(self.shadow_filename,targetFileName, marker_from_extension)
 
     finally:
         if self.writing_to_shadow_directory:
@@ -431,7 +436,6 @@ def replaceTargetFileIfDifferent (self):
         # Not sure if this finally clause is needed or not
         self.targetFileName = targetFileName
         self.outputFileName = outputFileName 
-#@nonl
 #@-node:ekr.20060715100156.72:atFile.replaceTargetFileIfDifferent
 #@-node:ekr.20060715100156.71:writing
 #@+node:ekr.20060715100156.73:massageComment

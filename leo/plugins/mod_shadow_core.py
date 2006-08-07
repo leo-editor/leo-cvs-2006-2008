@@ -49,13 +49,13 @@ def copy_time (sourcefilename, targetfilename):
    else:
       assert 0, "Sync operation can't work if no modification time can be set"
 #@-node:ekr.20060715100156.13:copy_time
-#@+node:ekr.20060715100156.14:marker_from_extension
-def marker_from_extension (filename):
+#@+node:ekr.20060715100156.14:default_marker_from_extension
+def default_marker_from_extension (filename):
     """
     Tries to guess the sentinel leadin
     comment from the filename extension.
    
-    This function belongs into the Leo core.
+    This function allows testing independent of Leo
     
     """
     root, ext = os.path.splitext(filename)
@@ -70,7 +70,7 @@ def marker_from_extension (filename):
     else:
         assert 0, "extension %s not handled by this plugin" % ext 
     return marker 
-#@-node:ekr.20060715100156.14:marker_from_extension
+#@-node:ekr.20060715100156.14:default_marker_from_extension
 #@+node:ekr.20060715100156.15:write_if_changed
 def write_if_changed (lines, sourcefilename, targetfilename):
    """
@@ -232,7 +232,7 @@ class sourcewriter:
     #@-others
 #@-node:ekr.20060715100156.26:class sourcewriter
 #@+node:ekr.20060715100156.32:copy_file_removing_sentinels
-def copy_file_removing_sentinels (sourcefilename, targetfilename):
+def copy_file_removing_sentinels (sourcefilename, targetfilename, marker_from_extension):
     """
     Filter out Leo comments.
     
@@ -240,12 +240,12 @@ def copy_file_removing_sentinels (sourcefilename, targetfilename):
     to targetfilename, if the contents of those lines is different
     from the lines in targetfilename.
     """
-    outlines, sentinel_lines = read_file_separating_out_sentinels(sourcefilename)
+    outlines, sentinel_lines = read_file_separating_out_sentinels(sourcefilename, marker_from_extension)
     write_if_changed(outlines, sourcefilename, targetfilename)
 
 #@-node:ekr.20060715100156.32:copy_file_removing_sentinels
 #@+node:ekr.20060715100156.33:read_file_separating_out_sentinels
-def read_file_separating_out_sentinels (sourcefilename):
+def read_file_separating_out_sentinels (sourcefilename, marker_from_extension):
    """
    Removes sentinels from the lines of 'sourcefilename'.
    
@@ -410,7 +410,7 @@ class sentinel_squasher:
     
     #@-node:ekr.20060715100156.40:check_the_final_output
     #@+node:ekr.20060715100156.41:propagate_changes_from_file_without_sentinels_to_file_with_sentinels
-    def propagate_changes_from_file_without_sentinels_to_file_with_sentinels (self, with_sentinels, without_sentinels):
+    def propagate_changes_from_file_without_sentinels_to_file_with_sentinels (self, with_sentinels, without_sentinels, marker_from_extension):
         """
         Propagate the changes from file 'without_sentinels' to file 'with_sentinels'.
     
