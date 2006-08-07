@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="300" clone_windows="0"/>
-<globals body_outline_ratio="0.549828178694">
-	<global_window_position top="196" left="280" height="610" width="938"/>
+<globals body_outline_ratio="0.449828178694">
+	<global_window_position top="196" left="280" height="701" width="937"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -248,7 +248,7 @@
 </v>
 <v t="ekr.20060127050605"><vh>@int max_undo_stack_size = 50</vh></v>
 </v>
-<v t="ekr.20060122105527.3" a="E"><vh>Keyboard and minibuffer options</vh>
+<v t="ekr.20060122105527.3"><vh>Keyboard and minibuffer options</vh>
 <v t="ekr.20060215094146"><vh>@@bool ignore_caps_lock = True</vh></v>
 <v t="ekr.20060216170801"><vh>@bool enable_calltips = True</vh></v>
 <v t="ekr.20060215102141"><vh>@bool ignore_unbound_non_ascii_keys = False</vh></v>
@@ -260,7 +260,7 @@
 <v t="ekr.20060122105527.6" annotate="7d71002e"><vh>@bool useMinibuffer = True</vh></v>
 <v t="ekr.20060125165241"><vh>@bool useTextMinibuffer = True</vh></v>
 <v t="ekr.20060804095015"><vh>@string open_flash_brackets = ([{</vh></v>
-<v t="ekr.20060804095015.1" a="TV"><vh>@string close_flash_brackets = )]}</vh></v>
+<v t="ekr.20060804095015.1"><vh>@string close_flash_brackets = )]}</vh></v>
 </v>
 <v t="ekr.20051007200824" annotate="7d71002e"><vh>Keyboard shortcuts</vh>
 <v t="ekr.20051101160257" annotate="7d71002e"><vh>About keyboard shortcuts</vh>
@@ -338,7 +338,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060110141538.1" a="E" annotate="7d71002e"><vh>@keys No bindings</vh>
+<v t="ekr.20060110141538.1" annotate="7d71002e"><vh>@keys No bindings</vh>
 <v t="ekr.20051218202206" annotate="7d71002e"><vh>@shortcuts No bindings: A-E</vh></v>
 <v t="ekr.20060112093227.1"><vh>@shortcuts No bindings: E-M</vh></v>
 <v t="ekr.20060112093227.2"><vh>@shortcuts No bindings: N-Z</vh></v>
@@ -373,7 +373,7 @@
 <v t="ekr.20060604082857"><vh>@mode outline</vh></v>
 <v t="ekr.20060603223152.2"><vh>@mode toggle-find</vh></v>
 </v>
-<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
 <v t="ekr.20060604081014"><vh>@@@@shortcuts top-level keys (like vim)</vh></v>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20060603215208.19"><vh>@shortcuts Find Commands</vh></v>
@@ -384,7 +384,20 @@
 </v>
 </v>
 </v>
-<v t="ekr.20051123100536" annotate="7d71002e"><vh>Plugins</vh>
+<v t="ekr.20051123100536" a="E" annotate="7d71002e"><vh>Plugins</vh>
+<v t="ekr.20060807103220" a="TV"><vh>datenodes plugin</vh>
+<v t="ekr.20060807103220.1"><vh>@string datenodes_body_text = To do...</vh></v>
+<v t="ekr.20060807103220.2"><vh>@string datenodes_day_node_headline = %Y-%m-%d</vh></v>
+<v t="ekr.20060807103220.3"><vh>@string datenodes_month_node_day_headline = %d: %A</vh></v>
+<v t="ekr.20060807103220.4"><vh>@string datenodes_month_node_month_headline = %B %Y</vh></v>
+<v t="ekr.20060807103220.5"><vh>@bool datenodes_month_node_omit_saturdays = True</vh></v>
+<v t="ekr.20060807103220.6"><vh>@bool datenodes_month_node_omit_sundays = True</vh></v>
+<v t="ekr.20060807103220.7"><vh>@string datenodes_year_node_day_headline = %d: %A</vh></v>
+<v t="ekr.20060807103220.8"><vh>@string datenodes_year_node_month_headline = %B</vh></v>
+<v t="ekr.20060807103220.9"><vh>@string datenodes_year_node_year_headline = %Y</vh></v>
+<v t="ekr.20060807103220.10"><vh>@bool datenodes_year_node_omit_saturdays = True</vh></v>
+<v t="ekr.20060807103220.11"><vh>@bool datenodes_year_node_omit_sundays = True</vh></v>
+</v>
 <v t="ekr.20060111091324"><vh>fastgotonode plugin</vh>
 <v t="ekr.20060111091324.1"><vh>@bool fastgotonode_useKeyBinding = True</vh></v>
 <v t="ekr.20060111091324.2"><vh>@string fastgotonode_binding =  Shift-space</vh></v>
@@ -491,7 +504,7 @@
 <v t="ekr.20060210105437"><vh>@bool trace_select = False</vh></v>
 <v t="ekr.20041119050749.18"><vh>@bool outline_pane_scrolls_horizontally = True</vh></v>
 </v>
-<v t="ekr.20060603215208" a="E"><vh>@keys EKR bindings: Emacs keys + modes</vh>
+<v t="ekr.20060603215208"><vh>@keys EKR bindings: Emacs keys + modes</vh>
 <v t="ekr.20060608065207"><vh>Settings related to key bindings</vh>
 <v t="ekr.20060624072653"><vh>@bool warn_about_redefined_shortcuts = True</vh></v>
 <v t="ekr.20060604080653" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
@@ -521,7 +534,7 @@
 <v t="ekr.20060604082857"><vh>@mode outline</vh></v>
 <v t="ekr.20060603223152.2"><vh>@mode toggle-find</vh></v>
 </v>
-<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
 <v t="ekr.20060604081014"><vh>@@@@shortcuts top-level keys (like vim)</vh></v>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20060603215208.19"><vh>@shortcuts Find Commands</vh></v>
@@ -5573,5 +5586,17 @@ menu_text_font_weight = None</t>
 <t tx="ekr.20060730101451.7"></t>
 <t tx="ekr.20060804095015">Important: the order the open_flash_brackets and close_flash_brackets settings must be consistent.</t>
 <t tx="ekr.20060804095015.1">Important: the order the open_flash_brackets and close_flash_brackets settings must be consistent.</t>
+<t tx="ekr.20060807103220"></t>
+<t tx="ekr.20060807103220.1">This is the body text of a single day node.</t>
+<t tx="ekr.20060807103220.2">This is the format of the headline if a single day node is inserted.</t>
+<t tx="ekr.20060807103220.3">This is the format of day node headline if a whole month is inserted.</t>
+<t tx="ekr.20060807103220.4">This is the format of the month node headline if a whole month is inserted.</t>
+<t tx="ekr.20060807103220.5">True: Omit saturdays if a whole month is inserted.</t>
+<t tx="ekr.20060807103220.6">True: Omit sundays if a whole month is inserted.</t>
+<t tx="ekr.20060807103220.7">This is the format of the day node headline if a whole year is inserted.</t>
+<t tx="ekr.20060807103220.8">This is the format of the month node headline if a whole year is inserted.</t>
+<t tx="ekr.20060807103220.9">This is the format of the year node headline if a whole year is inserted.</t>
+<t tx="ekr.20060807103220.10">True: Omit saturdays if a whole year is inserted</t>
+<t tx="ekr.20060807103220.11">True: Omit sundays if a whole year is inserted</t>
 </tnodes>
 </leo_file>
