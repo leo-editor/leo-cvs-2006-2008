@@ -1,10 +1,9 @@
 #@+leo-ver=4-thin
-#@+node:gfunch.20041207100416:@thin datenodes.py
+#@+node:ekr.20060807103814.1:@thin datenodes.py
 """
-This plugin adds 'date nodes' (nodes with dates as their headlines) to the
-current outline. Date nodes may be added one at a time, a month's-worth at a
-time, or a year's-worth at a time. The format of the labels (headlines) is
-configurable in the ini file.
+This plugin adds 'date nodes' (nodes with dates as their headlines) to the current outline.
+Date nodes may be added one at a time, a month's-worth at a time, or a year's-worth at a time.
+There are options to omit saturdays and sundays. The format of the labels (headlines) is configurable.
 """
 
 #@@language python
@@ -18,13 +17,14 @@ configurable in the ini file.
 # current outline.
 # Date nodes may be added one at a time, a month's-worth at a time, or a 
 # year's-worth at a time.
-# The format of the labels (headlines) is configurable in the ini file.
+# There are options to omit saturdays and sundays. The format of the labels 
+# (headlines) is configurable.
 #@-at
 #@nonl
 #@-node:gfunch.20041207100416.1:<< about this plugin >>
 #@nl
 
-__version__ = "0.4"
+__version__ = "0.5"
 #@<< version history >>
 #@+node:gfunch.20041207100416.2:<< version history >>
 #@+at
@@ -33,6 +33,8 @@ __version__ = "0.4"
 # 0.2: Improved menu structure. Added ini file.
 # 0.3: Changed docstring slightly.
 # 0.4: Added event=None to insert_xxx_node.
+# 0.5: Added options to omit saturdays and sundays. Use leoSettings.leo 
+# instead of datenodes.ini for storing options.
 #@-at
 #@-node:gfunch.20041207100416.2:<< version history >>
 #@nl
@@ -44,10 +46,9 @@ __version__ = "0.4"
 import leoGlobals as g
 import leoPlugins
 
-import os
 import calendar
+import codecs
 import datetime
-import ConfigParser
 #@-node:gfunch.20041207100416.3:<< imports >>
 #@nl
 
@@ -58,272 +59,241 @@ import ConfigParser
 class DateNodes:
     """Main DateNodes class"""
     
+    # The defaults for all possible settings.
+    default_settings = {
+        "datenodes_body_text": "To do...",
+	    "datenodes_day_node_headline": "%Y-%m-%d",
+        "datenodes_month_node_day_headline": "%d: %A",
+        "datenodes_month_node_month_headline": "%B %Y",
+        "datenodes_month_node_omit_saturdays": True,
+        "datenodes_month_node_omit_sundays": True,
+	    "datenodes_year_node_day_headline": "%d: %A",
+	    "datenodes_year_node_month_headline": "%B",
+	    "datenodes_year_node_year_headline": "%Y",
+	    "datenodes_year_node_omit_saturdays": True,
+	    "datenodes_year_node_omit_sundays": True
+    }
+
+    # Names of settings that have to be read with getBool()
+    boolean_settings = ["datenodes_month_node_omit_saturdays", "datenodes_month_node_omit_sundays", 
+                        "datenodes_year_node_omit_saturdays", "datenodes_year_node_omit_sundays"]
+    
+    ascii_encoder = codecs.getencoder("ASCII")
+    
+    
     #@    @+others
     #@+node:gfunch.20041207100416.6:__init__
     #@@c
     
-    months = range(1,13)
-    
-    def __init__(self, c, config_dat):
-        # initialize instance variables
+    def __init__(self, c):
         self.c = c
-        # set configuration options
-        self._set_config(config_dat)
-    
-        
+        self._get_settings()
     #@-node:gfunch.20041207100416.6:__init__
-    #@+node:gfunch.20041209073652:_set_config
+    #@+node:gfunch.20041209073652:_get_settings
     #@@c
     
-    def _set_config(self, config_dat):
-        """Set any configuration options."""
-        
-        # default settings
-        settings = {
-        'day node'   : {'day_heading': '%Y-%m-%d'},
-        'month nodes': {'day_heading': '%d: %A', 'month_heading': '%B %Y'},
-        'year nodes' : {'day_heading': '%d: %A', 'month_heading': '%B', 'year_heading': '%Y'}
-        }
-        
-        settings.update(config_dat)
-        
-        self.d_dfmt = settings['day node']['day_heading']
-        self.m_dfmt = settings['month nodes']['day_heading']
-        self.m_mfmt = settings['month nodes']['month_heading']
-        self.y_dfmt = settings['year nodes']['day_heading']
-        self.y_mfmt = settings['year nodes']['month_heading']
-        self.y_yfmt = settings['year nodes']['year_heading']
-        
-        self.d_body = settings['day node']['body']
+    def _get_settings(self):
+        """Get any configuration options."""
     
+        settings = {}
     
-    
+        for setting in DateNodes.default_settings:
+            if setting in DateNodes.boolean_settings:
+                getter = self.c.config.getBool
+            else:
+                getter = self.c.config.getString
+                
+            value = getter(setting)
             
-    #@-node:gfunch.20041209073652:_set_config
-    #@+node:gfunch.20041208093039:_get_current_date
-    #@@c
+            if value is None:
+                value = DateNodes.default_settings[setting]
+                
+            settings[setting[10:]] = value  # Omit datenodes_ prefix
     
-    def _get_current_date(self):
-        """Get the current date in tuple form (year, month, day)."""
+        self.settings = settings
         
-        g.trace(repr(datetime.date.today()))
-        
-        date = datetime.date.today().timetuple()[:3]
-    
-        return date
-    #@-node:gfunch.20041208093039:_get_current_date
-    #@+node:gfunch.20041207100416.9:_get_month_info
-    #@@c
-    
-    def _get_month_info(self, date=None):
-        """Get the start date and number of dayss in a given month."""
-            
-        year, month, day = date or self._get_current_date()
-        
-        start,num_days = calendar.monthrange(year,month)
-        start_day = calendar.day_name[start]
-        
-        return (start_day,num_days)
-    
-    #@-node:gfunch.20041207100416.9:_get_month_info
-    #@+node:gfunch.20041208095742:_create_node_label
-    #@@c
-    
-    def _create_node_label(self, date, fmt='%Y-%m-%d'):
-        """Create a formatted node label (heading)."""
-        
-        year,month,day = date
-        
-        label = str(datetime.date(year, month, day).strftime(fmt))
-        
-        return label
     #@nonl
-    #@-node:gfunch.20041208095742:_create_node_label
+    #@-node:gfunch.20041209073652:_get_settings
+    #@+node:gfunch.20041208095742:_format_node_label
+    #@@c
+    
+    def _format_node_label(self, date, fmt):
+        """Format a node label (heading)."""
+    
+        # Convert fmt to ASCII string, because strftime() doesn't like Unicode strings
+        try:
+            ascii_fmt = DateNodes.ascii_encoder(fmt)[0]
+        except UnicodeError:
+            g.es("datenodes plugin: WARNING: The format string " + fmt + " contains non-ASCII characters.")
+            ascii_fmt = DateNodes.ascii_encoder(fmt, replace)[0]
+        
+        return date.strftime(ascii_fmt)
+        
+    #@-node:gfunch.20041208095742:_format_node_label
+    #@+node:dcb.20060806185031:_insert_date_node
+    #@@c
+    
+    def _insert_date_node(self, parent, date, format):
+        node = parent.insertAsLastChild()
+    
+        label = self._format_node_label(date, format)
+    
+        node.setHeadStringOrHeadline(label)
+        
+        return node
+        
+    #@-node:dcb.20060806185031:_insert_date_node
+    #@+node:dcb.20060806183810:_insert_day_node
+    #@@c
+    
+    def _insert_day_node(self, parent, date, day_fmt):
+        day_node = self._insert_date_node(parent, date, day_fmt)
+        
+        day_node.setBodyStringOrPane(self.settings["body_text"])
+    
+        return day_node
+    #@nonl
+    #@-node:dcb.20060806183810:_insert_day_node
+    #@+node:gfunch.20041207100416.11:_insert_month_node
+    #@@c
+    
+    def _insert_month_node(self, parent, date, day_fmt, month_fmt, omit_saturdays, omit_sundays):
+        """Insert a months-worth of date nodes into the outline ."""
+    
+        month_node = self._insert_date_node(parent, date, month_fmt)
+    
+    
+        year, month = date.timetuple()[:2]
+        
+        first_day_of_month, num_days = calendar.monthrange(year, month)
+        
+        for day in range(1, num_days + 1):
+            day_date = datetime.date(year, month, day)
+            isoweekday = day_date.isoweekday()
+            
+            if (isoweekday == 6 and omit_saturdays) or (isoweekday == 7 and omit_sundays):
+                continue
+             
+            self._insert_day_node(parent = month_node, date = day_date, day_fmt = day_fmt)
+            
+            
+        return month_node
+        
+    #@-node:gfunch.20041207100416.11:_insert_month_node
+    #@+node:gfunch.20041207100416.12:_insert_year_node
+    #@@c
+    
+    def _insert_year_node(self, parent, date, day_fmt, month_fmt, year_fmt, omit_saturdays, omit_sundays):
+        """Insert a years-worth of date nodes into the outline."""
+    
+        year_node = self._insert_date_node(parent, date, year_fmt)
+        
+        
+        year, month, day = date.timetuple()[:3]
+    
+        for month in range(1, 13):
+            month_date = datetime.date(year, month, day)
+            
+            self._insert_month_node(parent = year_node, date = month_date, day_fmt = day_fmt, month_fmt = month_fmt, 
+                                    omit_saturdays = omit_saturdays, omit_sundays = omit_sundays)
+    
+    
+        return year_node
+    #@nonl
+    #@-node:gfunch.20041207100416.12:_insert_year_node
     #@+node:gfunch.20041208074734:insert_day_node
     #@@c
     
-    def insert_day_node(self, event=None, date=None, day_fmt=None):
-        """Insert a date node into the outline as 
-        a subnode of the current selection."""
-            
-        #@    << get settings >>
-        #@+node:gfunch.20041209141737:<< get settings >>
-        c = self.c
-        
-        # g.trace(date,g.callers())
-        
-        year, month, day = date or self._get_current_date()
-        day_fmt = day_fmt or self.d_dfmt
-        #@nonl
-        #@-node:gfunch.20041209141737:<< get settings >>
-        #@nl
-        
-        c.beginUpdate()
-        #@    << insert day node >>
-        #@+node:gfunch.20041209141737.1:<< insert day node >>
-        p = c.currentPosition()
-        
-        v = p.insertAsLastChild()    
-        label = self._create_node_label(date=(year,month,day),fmt=day_fmt)
-        v.setHeadStringOrHeadline(label)
-        v.setBodyStringOrPane(self.d_body)
-            
-        c.setCurrentPosition(p)
-        #@-node:gfunch.20041209141737.1:<< insert day node >>
-        #@nl
-        c.endUpdate()
+    def insert_day_node(self, event = None):
+        self.c.beginUpdate()
+    
+    
+        today = datetime.date.today()
+        day_fmt = self.settings["day_node_headline"]
+    
+    
+        day_node = self._insert_day_node(self.c.currentPosition(), today, day_fmt)
+    
+        self.c.selectPosition(day_node)
+        self.c.endUpdate()
+    
+    
+    
     #@-node:gfunch.20041208074734:insert_day_node
-    #@+node:gfunch.20041207100416.11:insert_month_nodes
+    #@+node:dcb.20060806183928:insert_month_node
     #@@c
     
-    def insert_month_nodes(self, event=None, date=None, day_fmt=None, month_fmt=None):
-        """Insert a months-worth of date nodes into the outline as 
-        subnodes of the current selection."""
-    
-        #@    << get settings >>
-        #@+node:gfunch.20041209141737.2:<< get settings >>
-        c = self.c
-            
-        year, month, day = date or self._get_current_date()
-        day_fmt = day_fmt or self.m_dfmt
-        month_fmt = month_fmt or self.m_mfmt
-        #@nonl
-        #@-node:gfunch.20041209141737.2:<< get settings >>
-        #@nl
-        
-        c.beginUpdate()
-        #@    << insert month node >>
-        #@+node:gfunch.20041209141737.3:<< insert month node >>
-        (start_day,num_days) = self._get_month_info(date)
-            
-        p = c.currentPosition()
-        
-        v = p.insertAsLastChild()    
-        label = self._create_node_label(date=(year,month,day), fmt=month_fmt)
-        v.setHeadStringOrHeadline(label)
-        #@-node:gfunch.20041209141737.3:<< insert month node >>
-        #@nl
-        #@    << insert day sub-nodes >>
-        #@+node:gfunch.20041209141737.4:<< insert day sub-nodes >>
-        c.setCurrentPosition(v)
-        
-        pp = c.currentPosition()
-        for day in range(1, num_days+1):
-            self.insert_day_node(date=(year,month,day), day_fmt=day_fmt)
-        #@nonl
-        #@-node:gfunch.20041209141737.4:<< insert day sub-nodes >>
-        #@nl
-        c.setCurrentPosition(p)
-        
-        c.endUpdate()
+    def insert_month_node(self, event = None):
+        self.c.beginUpdate()
     
     
+        today = datetime.date.today()
+        day_fmt = self.settings["month_node_day_headline"]
+        month_fmt = self.settings["month_node_month_headline"]
+        omit_saturdays = self.settings["month_node_omit_saturdays"]
+        omit_sundays = self.settings["month_node_omit_sundays"]
     
     
-    #@-node:gfunch.20041207100416.11:insert_month_nodes
-    #@+node:gfunch.20041207100416.12:insert_year_nodes
+        month_node = self._insert_month_node(self.c.currentPosition(), today, day_fmt, month_fmt, omit_saturdays, omit_sundays)
+    
+        self.c.selectPosition(month_node)
+        self.c.endUpdate()
+    
+    
+    #@-node:dcb.20060806183928:insert_month_node
+    #@+node:dcb.20060806184117:insert_year_node
     #@@c
     
-    def insert_year_nodes(self, event=None,date=None, day_fmt=None, month_fmt=None, year_fmt=None):
-        """Insert a years-worth of date nodes into the outline as 
-        subnodes of the current selection."""
-        
-        #@    << get settings >>
-        #@+node:gfunch.20041209141737.5:<< get settings >>
-        c = self.c
-            
-        year, month, day = date or self._get_current_date()
-        day_fmt = day_fmt or self.y_dfmt
-        month_fmt = month_fmt or self.y_mfmt
-        year_fmt = year_fmt or self.y_yfmt
-        #@-node:gfunch.20041209141737.5:<< get settings >>
-        #@nl
-    
-        c.beginUpdate()
-        #@    << insert year node >>
-        #@+node:gfunch.20041209141737.6:<< insert year node >>
-        p = c.currentPosition()
-        
-        v = p.insertAsLastChild()    
-        label = self._create_node_label(date=(year,month,day), fmt=year_fmt)
-        v.setHeadStringOrHeadline(label)
-            
-        c.setCurrentPosition(v)
-        #@nonl
-        #@-node:gfunch.20041209141737.6:<< insert year node >>
-        #@nl
-        #@    << insert month sub-nodes >>
-        #@+node:gfunch.20041209141737.7:<< insert month sub-nodes >>
-        for month in self.months:
-            self.insert_month_nodes(date=(year, month, day), day_fmt=day_fmt, month_fmt=month_fmt)
-        #@nonl
-        #@-node:gfunch.20041209141737.7:<< insert month sub-nodes >>
-        #@nl
-        c.endUpdate()
+    def insert_year_node(self, event = None):
+        self.c.beginUpdate()
     
     
-    #@-node:gfunch.20041207100416.12:insert_year_nodes
+        today = datetime.date.today()
+        day_fmt = self.settings["year_node_day_headline"]
+        month_fmt = self.settings["year_node_month_headline"]
+        year_fmt = self.settings["year_node_year_headline"]
+        omit_saturdays = self.settings["year_node_omit_saturdays"]
+        omit_sundays = self.settings["year_node_omit_sundays"]
+    
+    
+        year_node = self._insert_year_node(self.c.currentPosition(), today, day_fmt, month_fmt, year_fmt, omit_saturdays, omit_sundays)
+    
+        self.c.selectPosition(year_node)
+        self.c.endUpdate()
+    
+    
+    
+    #@-node:dcb.20060806184117:insert_year_node
     #@-others
 #@-node:gfunch.20041207100416.5:class DateNodes
 #@+node:gfunch.20041207100654:on_create
 def on_create(tag, keywords):
 
-    #@    << get settings >>
-    #@+node:gfunch.20041209141737.8:<< get settings >>
     c = keywords.get("c")
-        
-    # get the configuration settings
-    config_file = g.os_path_join(g.app.loadDir,"../","plugins","datenodes.ini")
-    settings = read_config(config_file)
-            
-    
-    #@-node:gfunch.20041209141737.8:<< get settings >>
-    #@nl
-    
-    # establish a class instance
-    myDateNodes = DateNodes(c, settings)
-    
-    # create the plug-in menu
-    create_menu(c,myDateNodes)
-#@nonl
-#@-node:gfunch.20041207100654:on_create
-#@+node:gfunch.20041209063345:read_config
-def read_config(fname):
-    """Read the configuration (ini) file and parse it into a dictionary.""" 
-    config = ConfigParser.ConfigParser()
-    config.read(fname)
-    sections = config.sections()
-    config_dat = {}
-    for section in sections:
-        config_dat[section] = {}
-        for item in config.items(section):
-            name, val = item
-            config_dat[section].update({name: val})
-    return config_dat
-#@nonl
-#@-node:gfunch.20041209063345:read_config
-#@+node:gfunch.20041207102456:create_menu
-def create_menu(c, instance):
 
-    """Create the plug-in menu."""
+    # establish a class instance
+    instance = DateNodes(c)
+    
+
+    # Create the plug-in menu.
 
     # create a menu separator
-    c.frame.menu.createMenuItemsFromTable("Outline",[("-", None, None),])
+    c.frame.menu.createMenuItemsFromTable("Outline", [("-", None, None),])
 
     # create an expandable menu
     table = [("Single Day", None, instance.insert_day_node),
-             ("Full Month", None, instance.insert_month_nodes),
-             ("Full Year", None, instance.insert_year_nodes)]
-
-    expandMenu = c.frame.menu.createNewMenu("Insert Date Nodes...","Outline")
-    c.frame.menu.createMenuEntries(expandMenu,table,dynamicMenu=True)
+             ("Full Month", None, instance.insert_month_node),
+             ("Full Year", None, instance.insert_year_node)]
+    
+    expandMenu = c.frame.menu.createNewMenu("Insert Date Nodes...", "Outline")
+    c.frame.menu.createMenuEntries(expandMenu, table, dynamicMenu = True)
 #@nonl
-#@-node:gfunch.20041207102456:create_menu
+#@-node:gfunch.20041207100654:on_create
 #@-others
 
 if 1: # OK for unit testing.
     leoPlugins.registerHandler("after-create-leo-frame", on_create)
     g.plugin_signon(__name__)
 #@nonl
-#@-node:gfunch.20041207100416:@thin datenodes.py
+#@-node:ekr.20060807103814.1:@thin datenodes.py
 #@-leo
