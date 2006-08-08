@@ -58,7 +58,6 @@ class leoTkinterComparePanel (leoCompare.leoCompare,leoTkinterDialog.leoTkinterD
         self.printMismatchesVar          = Tk.IntVar()
         self.printTrailingMismatchesVar  = Tk.IntVar()
         self.stopAfterMismatchVar        = Tk.IntVar()
-        #@nonl
         #@-node:ekr.20031218072017.3841:<< init tkinter compare ivars >>
         #@nl
         
@@ -176,7 +175,6 @@ class leoTkinterComparePanel (leoCompare.leoCompare,leoTkinterDialog.leoTkinterD
             b = c.config.getBool("make_whitespace_visible")
             if b == None: b = 0
             self.makeWhitespaceVisibleVar.set(b)
-    #@nonl
     #@-node:ekr.20031218072017.3842:finishCreate (tkComparePanel)
     #@+node:ekr.20031218072017.3843:createFrame (tkComparePanel)
     def createFrame (self):
@@ -211,7 +209,6 @@ class leoTkinterComparePanel (leoCompare.leoCompare,leoTkinterDialog.leoTkinterD
         
         lower = Tk.Frame(outer)
         lower.pack(pady=6)
-        #@nonl
         #@-node:ekr.20031218072017.3844:<< create the organizer frames >>
         #@nl
         #@    << create the browser rows >>
@@ -233,7 +230,6 @@ class leoTkinterComparePanel (leoCompare.leoCompare,leoTkinterDialog.leoTkinterD
         
             b = Tk.Checkbutton(row,text=text2,anchor="w",variable=var,width=15)
             b.pack(side="left")
-        #@nonl
         #@-node:ekr.20031218072017.3845:<< create the browser rows >>
         #@nl
         #@    << create the extension row >>
@@ -248,7 +244,6 @@ class leoTkinterComparePanel (leoCompare.leoCompare,leoTkinterDialog.leoTkinterD
         b = Tk.Checkbutton(row4,anchor="w",var=self.appendOutputVar,
             text="Append output to output file")
         b.pack(side="left",padx=4)
-        #@nonl
         #@-node:ekr.20031218072017.3846:<< create the extension row >>
         #@nl
         #@    << create the whitespace options frame >>
@@ -267,7 +262,6 @@ class leoTkinterComparePanel (leoCompare.leoCompare,leoTkinterDialog.leoTkinterD
             
         spacer = Tk.Frame(f)
         spacer.pack(padx="1i")
-        #@nonl
         #@-node:ekr.20031218072017.3847:<< create the whitespace options frame >>
         #@nl
         #@    << create the print options frame >>
@@ -303,7 +297,6 @@ class leoTkinterComparePanel (leoCompare.leoCompare,leoTkinterDialog.leoTkinterD
         
         spacer = Tk.Frame(f)
         spacer.pack(padx="1i")
-        #@nonl
         #@-node:ekr.20031218072017.3848:<< create the print options frame >>
         #@nl
         #@    << create the compare buttons >>
@@ -314,14 +307,12 @@ class leoTkinterComparePanel (leoCompare.leoCompare,leoTkinterDialog.leoTkinterD
             
             b = Tk.Button(lower,text=text,command=command,width=18)
             b.pack(side="left",padx=6)
-        #@nonl
         #@-node:ekr.20031218072017.3849:<< create the compare buttons >>
         #@nl
     
         gui.center_dialog(top) # Do this _after_ building the dialog!
         self.finishCreate()
         top.protocol("WM_DELETE_WINDOW", self.onClose)
-    #@nonl
     #@-node:ekr.20031218072017.3843:createFrame (tkComparePanel)
     #@+node:ekr.20031218072017.3850:setIvarsFromWidgets
     def setIvarsFromWidgets (self):
@@ -381,7 +372,6 @@ class leoTkinterComparePanel (leoCompare.leoCompare,leoTkinterDialog.leoTkinterD
             except: self.limitCount = 0
         else:
             self.limitCount = 0
-    #@nonl
     #@-node:ekr.20031218072017.3850:setIvarsFromWidgets
     #@-node:ekr.20031218072017.3839:Birth...
     #@+node:ekr.20031218072017.3851:bringToFront
@@ -418,7 +408,6 @@ class leoTkinterComparePanel (leoCompare.leoCompare,leoTkinterDialog.leoTkinterD
         else: fileName = None
             
         return fileName
-    #@nonl
     #@-node:ekr.20031218072017.3852:browser
     #@+node:ekr.20031218072017.3853:Event handlers...
     #@+node:ekr.20031218072017.3854:onBrowse...
@@ -454,13 +443,11 @@ class leoTkinterComparePanel (leoCompare.leoCompare,leoTkinterDialog.leoTkinterD
             e = self.browseEntries[2]
             e.delete(0,"end")
             e.insert(0,fileName)
-    #@nonl
     #@-node:ekr.20031218072017.3854:onBrowse...
     #@+node:ekr.20031218072017.3855:onClose
     def onClose (self):
         
         self.top.withdraw()
-    #@nonl
     #@-node:ekr.20031218072017.3855:onClose
     #@+node:ekr.20031218072017.3856:onCompare...
     def onCompareDirectories (self):
@@ -472,7 +459,6 @@ class leoTkinterComparePanel (leoCompare.leoCompare,leoTkinterDialog.leoTkinterD
     
         self.setIvarsFromWidgets()
         self.compare_files(self.fileName1,self.fileName2)
-    #@nonl
     #@-node:ekr.20031218072017.3856:onCompare...
     #@+node:ekr.20031218072017.3857:onPrintMatchedLines
     def onPrintMatchedLines (self):
@@ -481,10 +467,8 @@ class leoTkinterComparePanel (leoCompare.leoCompare,leoTkinterDialog.leoTkinterD
         b = self.printButtons[1]
         state = g.choose(v,"normal","disabled")
         b.configure(state=state)
-    #@nonl
     #@-node:ekr.20031218072017.3857:onPrintMatchedLines
     #@-node:ekr.20031218072017.3853:Event handlers...
     #@-others
-#@nonl
 #@-node:ekr.20031218072017.3838:@thin leoTkinterComparePanel.py
 #@-leo

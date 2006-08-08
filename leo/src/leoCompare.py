@@ -55,7 +55,6 @@ def go ():
         name1 = "c:\\prog\\test\\compare1.txt"
         name2 = "c:\\prog\\test\\compare2.txt"
         compare.compare_files(name1,name2)
-#@nonl
 #@-node:ekr.20031218072017.3632:go
 #@+node:ekr.20031218072017.3633:class leoCompare
 class baseLeoCompare:
@@ -119,7 +118,6 @@ class baseLeoCompare:
         self.fileName2 = None
         # Open files...
         self.outputFile = None
-    #@nonl
     #@-node:ekr.20031218072017.3634:compare.__init__
     #@+node:ekr.20031218072017.3635:compare_directories (entry)
     # We ignore the filename portion of path1 and path2 if it exists.
@@ -201,7 +199,6 @@ class baseLeoCompare:
         if self.outputFile:
             self.outputFile.close()
             self.outputFile = None
-    #@nonl
     #@-node:ekr.20031218072017.3635:compare_directories (entry)
     #@+node:ekr.20031218072017.3636:compare_files (entry)
     def compare_files (self, name1, name2):
@@ -231,7 +228,6 @@ class baseLeoCompare:
         except:
             self.show("exception closing files")
             g.es_exception()
-    #@nonl
     #@-node:ekr.20031218072017.3636:compare_files (entry)
     #@+node:ekr.20031218072017.3637:compare_lines
     def compare_lines (self,s1,s2):
@@ -255,7 +251,6 @@ class baseLeoCompare:
             s2 = ws2 + tail2
     
         return s1 == s2
-    #@nonl
     #@-node:ekr.20031218072017.3637:compare_lines
     #@+node:ekr.20031218072017.3638:compare_open_files
     def compare_open_files (self, f1, f2, name1, name2):
@@ -289,7 +284,6 @@ class baseLeoCompare:
             if s2 == None:
                 g.readlineForceUnixNewline(f2) ; lines2 += 1
             s2 = None
-        #@nonl
         #@-node:ekr.20031218072017.3639:<< handle opening lines >>
         #@nl
         while 1:
@@ -337,7 +331,6 @@ class baseLeoCompare:
                     
                     self.dump(string.rjust("1." + str(lines1),6) + '*:',s1)
                     self.dump(string.rjust("2." + str(lines2),6) + '*:',s2)
-            #@nonl
             #@-node:ekr.20031218072017.3641:<< print matches and/or mismatches >>
             #@nl
             #@        << warn if mismatch limit reached >>
@@ -349,7 +342,6 @@ class baseLeoCompare:
                     self.show("limit count reached")
                     self.show("")
                     printTrailing = False
-            #@nonl
             #@-node:ekr.20031218072017.3642:<< warn if mismatch limit reached >>
             #@nl
             s1 = s2 = None # force a read of both lines.
@@ -365,10 +357,8 @@ class baseLeoCompare:
         self.show("lines1:" + str(lines1))
         self.show("lines2:" + str(lines2))
         self.show("mismatches:" + str(mismatches))
-        #@nonl
         #@-node:ekr.20031218072017.3643:<< handle reporting after at least one eof is seen >>
         #@nl
-    #@nonl
     #@-node:ekr.20031218072017.3638:compare_open_files
     #@+node:ekr.20031218072017.3644:filecmp
     def filecmp (self,f1,f2):
@@ -382,7 +372,6 @@ class baseLeoCompare:
             if val: self.show(str(val)+ " (equal)")
             else:   self.show(str(val) + " (not equal)")
         return val
-    #@nonl
     #@-node:ekr.20031218072017.3644:filecmp
     #@+node:ekr.20031218072017.3645:utils...
     #@+node:ekr.20031218072017.3646:doOpen
@@ -394,7 +383,6 @@ class baseLeoCompare:
         except:
             self.show("can not open:" + '"' + name + '"')
             return None
-    #@nonl
     #@-node:ekr.20031218072017.3646:doOpen
     #@+node:ekr.20031218072017.3647:dump
     def dump (self,tag,s):
@@ -419,7 +407,6 @@ class baseLeoCompare:
                         out += ch
     
         self.show(out)
-    #@nonl
     #@-node:ekr.20031218072017.3647:dump
     #@+node:ekr.20031218072017.3648:dumpToEndOfFile
     def dumpToEndOfFile (self,tag,f,s,line,printTrailing):
@@ -437,7 +424,6 @@ class baseLeoCompare:
     
         self.show(tag + str(trailingLines) + " trailing lines")
         return trailingLines
-    #@nonl
     #@-node:ekr.20031218072017.3648:dumpToEndOfFile
     #@+node:ekr.20031218072017.3649:isLeoHeader & isSentinel
     #@+at 
@@ -463,7 +449,6 @@ class baseLeoCompare:
     
         i = g.skip_ws(s,0)
         return g.match(s,i,sentinelComment)
-    #@nonl
     #@-node:ekr.20031218072017.3649:isLeoHeader & isSentinel
     #@+node:ekr.20031218072017.1144:openOutputFile (compare)
     def openOutputFile (self):
@@ -491,7 +476,6 @@ class baseLeoCompare:
                 self.outputFile = None
                 self.show("exception opening output file")
                 g.es_exception()
-    #@nonl
     #@-node:ekr.20031218072017.1144:openOutputFile (compare)
     #@+node:ekr.20031218072017.3650:show
     def show (self,s):
@@ -504,7 +488,6 @@ class baseLeoCompare:
         else:
             print s
             print
-    #@nonl
     #@-node:ekr.20031218072017.3650:show
     #@+node:ekr.20031218072017.3651:showIvars
     def showIvars (self):
@@ -527,7 +510,6 @@ class baseLeoCompare:
         self.show("printMatches:"            + str(self.printMatches))
         self.show("printMismatches:"         + str(self.printMismatches))
         self.show("printTrailingMismatches:" + str(self.printTrailingMismatches))
-    #@nonl
     #@-node:ekr.20031218072017.3651:showIvars
     #@-node:ekr.20031218072017.3645:utils...
     #@-others
@@ -535,9 +517,7 @@ class baseLeoCompare:
 class leoCompare (baseLeoCompare):
     """A class containing Leo's compare code."""
     pass
-#@nonl
 #@-node:ekr.20031218072017.3633:class leoCompare
 #@-others
-#@nonl
 #@-node:ekr.20031218072017.3630:@thin leoCompare.py
 #@-leo

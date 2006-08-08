@@ -35,7 +35,6 @@ class leoTkinterDialog:
         self.top = None # The toplevel Tk widget.
         self.focus_widget = None # The widget to get the first focus.
         self.canClose = canClose
-    #@nonl
     #@-node:ekr.20031218072017.3860:__init__ (tkDialog)
     #@+node:ekr.20031218072017.3861:cancelButton, noButton, okButton, yesButton
     def cancelButton(self):
@@ -65,7 +64,6 @@ class leoTkinterDialog:
     
         self.answer="yes"
         self.top.destroy()
-    #@nonl
     #@-node:ekr.20031218072017.3861:cancelButton, noButton, okButton, yesButton
     #@+node:ekr.20031218072017.3862:center
     def center(self):
@@ -102,7 +100,6 @@ class leoTkinterDialog:
                 self.defaultButtonCommand = command
             
         return buttonList
-    #@nonl
     #@-node:ekr.20031218072017.3863:createButtons
     #@+node:ekr.20031218072017.3864:createMessageFrame
     def createMessageFrame (self,message):
@@ -139,7 +136,6 @@ class leoTkinterDialog:
             g.app.gui.attachLeoIcon(top)
         
         self.top.after_idle(attachIconCallback)
-    #@nonl
     #@-node:ekr.20031218072017.3865:createTopFrame
     #@+node:ekr.20040731065422:onClose
     def onClose (self):
@@ -147,7 +143,6 @@ class leoTkinterDialog:
         """Disable all attempts to close this frame with the close box."""
         
         pass
-    #@nonl
     #@-node:ekr.20040731065422:onClose
     #@+node:ekr.20031218072017.3866:run (tkDialog)
     def run (self,modal):
@@ -179,10 +174,8 @@ class leoTkinterDialog:
             return self.answer
         else:
             return None
-    #@nonl
     #@-node:ekr.20031218072017.3866:run (tkDialog)
     #@-others
-#@nonl
 #@-node:ekr.20031218072017.3859: class leoTkinterDialog
 #@+node:ekr.20031218072017.3867:class tkinterAboutLeo
 class tkinterAboutLeo (leoTkinterDialog):
@@ -208,7 +201,6 @@ class tkinterAboutLeo (leoTkinterDialog):
     
         self.createTopFrame()
         self.createFrame()
-        
     #@-node:ekr.20031218072017.3868:tkinterAboutLeo.__init__
     #@+node:ekr.20031218072017.3869:tkinterAboutLeo.createFrame
     def createFrame (self):
@@ -263,7 +255,6 @@ class tkinterAboutLeo (leoTkinterDialog):
         text.tag_bind("email","<Leave>",self.setDefaultCursor)
     
         text.configure(state="disabled")
-    #@nonl
     #@-node:ekr.20031218072017.3869:tkinterAboutLeo.createFrame
     #@+node:ekr.20031218072017.3870:tkinterAboutLeo.onAboutLeoEmail
     def onAboutLeoEmail(self,event=None):
@@ -277,7 +268,6 @@ class tkinterAboutLeo (leoTkinterDialog):
             webbrowser.open("mailto:" + self.email)
         except:
             g.es("not found: " + self.email)
-    #@nonl
     #@-node:ekr.20031218072017.3870:tkinterAboutLeo.onAboutLeoEmail
     #@+node:ekr.20031218072017.3871:tkinterAboutLeo.onAboutLeoUrl
     def onAboutLeoUrl(self,event=None):
@@ -291,7 +281,6 @@ class tkinterAboutLeo (leoTkinterDialog):
             webbrowser.open(self.url)
         except:
             g.es("not found: " + self.url)
-    #@nonl
     #@-node:ekr.20031218072017.3871:tkinterAboutLeo.onAboutLeoUrl
     #@+node:ekr.20031218072017.3872:tkinterAboutLeo: setArrowCursor, setDefaultCursor
     def setArrowCursor (self,event=None):
@@ -309,7 +298,6 @@ class tkinterAboutLeo (leoTkinterDialog):
         __pychecker__ = '--no-argsused' # the event param must be present.
         
         self.text.configure(cursor="xterm")
-    #@nonl
     #@-node:ekr.20031218072017.3872:tkinterAboutLeo: setArrowCursor, setDefaultCursor
     #@-others
 #@-node:ekr.20031218072017.3867:class tkinterAboutLeo
@@ -363,7 +351,6 @@ class tkinterAskLeoID (leoTkinterDialog):
     
         self.id_entry = text = Tk.Entry(f,width=20)
         text.pack()
-    #@nonl
     #@-node:ekr.20031218072017.1985:tkinterAskLeoID.createFrame
     #@+node:ekr.20031218072017.1987:tkinterAskLeoID.onButton
     def onButton(self):
@@ -378,7 +365,6 @@ class tkinterAskLeoID (leoTkinterDialog):
         
         self.top.destroy() # terminates wait_window
         self.top = None
-    #@nonl
     #@-node:ekr.20031218072017.1987:tkinterAskLeoID.onButton
     #@+node:ekr.20031218072017.1988:tkinterAskLeoID.onKey
     def onKey(self,event):
@@ -399,7 +385,6 @@ class tkinterAskLeoID (leoTkinterDialog):
             else:
                 i += 1
         if not ok: return
-        #@nonl
         #@-node:ekr.20031218072017.1989:<< eliminate invalid characters >>
         #@nl
         #@    << enable the ok button if there are 3 or more valid characters >>
@@ -411,7 +396,6 @@ class tkinterAskLeoID (leoTkinterDialog):
             b.configure(state="normal")
         else:
             b.configure(state="disabled")
-        #@nonl
         #@-node:ekr.20031218072017.1990:<< enable the ok button if there are 3 or more valid characters >>
         #@nl
         
@@ -419,10 +403,8 @@ class tkinterAskLeoID (leoTkinterDialog):
         if ch in ('\n','\r'):
             self.onButton()
         return "break"
-    
     #@-node:ekr.20031218072017.1988:tkinterAskLeoID.onKey
     #@-others
-#@nonl
 #@-node:ekr.20031218072017.1983:class tkinterAskLeoID
 #@+node:ekr.20031218072017.3873:class tkinterAskOk
 class tkinterAskOk(leoTkinterDialog):
@@ -448,7 +430,6 @@ class tkinterAskOk(leoTkinterDialog):
     
         buttons = {"text":text,"command":self.okButton,"default":True}, # Singleton tuple.
         self.createButtons(buttons)
-    #@nonl
     #@-node:ekr.20031218072017.3874:class tkinterAskOk.__init__
     #@+node:ekr.20031218072017.3875:class tkinterAskOk.onKey
     def onKey(self,event):
@@ -463,7 +444,6 @@ class tkinterAskOk(leoTkinterDialog):
         return "break"
     #@-node:ekr.20031218072017.3875:class tkinterAskOk.onKey
     #@-others
-#@nonl
 #@-node:ekr.20031218072017.3873:class tkinterAskOk
 #@+node:ekr.20031218072017.3876:class tkinterAskOkCancelNumber
 class  tkinterAskOkCancelNumber (leoTkinterDialog):
@@ -494,7 +474,6 @@ class  tkinterAskOkCancelNumber (leoTkinterDialog):
                 {"text":"Cancel","command":self.cancelButton} )
         buttonList = self.createButtons(buttons)
         self.ok_button = buttonList[0] # Override the default kind of Ok button.
-    #@nonl
     #@-node:ekr.20031218072017.3877:tkinterAskOKCancelNumber.__init__
     #@+node:ekr.20031218072017.3878:tkinterAskOKCancelNumber.createFrame
     def createFrame (self,message):
@@ -512,7 +491,6 @@ class  tkinterAskOkCancelNumber (leoTkinterDialog):
         t.pack(side="left")
         
         c.set_focus(t)
-    #@nonl
     #@-node:ekr.20031218072017.3878:tkinterAskOKCancelNumber.createFrame
     #@+node:ekr.20031218072017.3879:tkinterAskOKCancelNumber.okButton, cancelButton
     def okButton(self):
@@ -534,7 +512,6 @@ class  tkinterAskOkCancelNumber (leoTkinterDialog):
     
         self.answer=-1
         self.top.destroy()
-    #@nonl
     #@-node:ekr.20031218072017.3879:tkinterAskOKCancelNumber.okButton, cancelButton
     #@+node:ekr.20031218072017.3880:tkinterAskOKCancelNumber.onKey
     def onKey (self,event):
@@ -552,7 +529,6 @@ class  tkinterAskOkCancelNumber (leoTkinterDialog):
                 s = e.get()
             else:
                 i += 1
-        #@nonl
         #@-node:ekr.20031218072017.3881:<< eliminate non-numbers >>
         #@nl
     
@@ -564,7 +540,6 @@ class  tkinterAskOkCancelNumber (leoTkinterDialog):
             self.cancelButton()
     
         return "break"
-    #@nonl
     #@-node:ekr.20031218072017.3880:tkinterAskOKCancelNumber.onKey
     #@-others
 #@-node:ekr.20031218072017.3876:class tkinterAskOkCancelNumber
@@ -607,10 +582,8 @@ class tkinterAskYesNo (leoTkinterDialog):
             self.noButton()
     
         return "break"
-    #@nonl
     #@-node:ekr.20031218072017.3884:tkinterAskYesNo.onKey
     #@-others
-
 #@-node:ekr.20031218072017.3882:class tkinterAskYesNo
 #@+node:ekr.20031218072017.3885:class tkinterAskYesNoCancel
 class tkinterAskYesNoCancel(leoTkinterDialog):
@@ -648,7 +621,6 @@ class tkinterAskYesNoCancel(leoTkinterDialog):
             {"text":noMessage, "command":self.noButton,    "default":noMessage==defaultButton},
             {"text":"Cancel",  "command":self.cancelButton,"default":"Cancel"==defaultButton} )
         self.createButtons(buttons)
-    #@nonl
     #@-node:ekr.20031218072017.3886:askYesNoCancel.__init__
     #@+node:ekr.20031218072017.3887:askYesNoCancel.onKey
     def onKey(self,event):
@@ -668,7 +640,6 @@ class tkinterAskYesNoCancel(leoTkinterDialog):
             self.cancelButton()
     
         return "break"
-    #@nonl
     #@-node:ekr.20031218072017.3887:askYesNoCancel.onKey
     #@+node:ekr.20031218072017.3888:askYesNoCancel.noButton & yesButton
     def noButton(self):
@@ -729,7 +700,6 @@ class tkinterListBoxDialog (leoTkinterDialog):
     
         ok.pack(side="left",pady=2,padx=5)
         hide.pack(side="left",pady=2,padx=5)
-    #@nonl
     #@-node:ekr.20031218072017.3891:addStdButtons
     #@+node:ekr.20031218072017.3892:createFrame
     def createFrame(self):
@@ -760,7 +730,6 @@ class tkinterListBoxDialog (leoTkinterDialog):
         
         bar.config(command=box.yview)
         box.config(yscrollcommand=bar.set)
-    #@nonl
     #@-node:ekr.20031218072017.3892:createFrame
     #@+node:ekr.20031218072017.3893:destroy
     def destroy (self,event=None):
@@ -779,7 +748,6 @@ class tkinterListBoxDialog (leoTkinterDialog):
         """Hide a list box dialog."""
         
         self.top.withdraw()
-    #@nonl
     #@-node:ekr.20031218072017.3894:hide
     #@+node:ekr.20031218072017.3895:fillbox
     def fillbox(self,event=None):
@@ -791,7 +759,6 @@ class tkinterListBoxDialog (leoTkinterDialog):
         __pychecker__ = '--no-argsused' # the event param must be present.
         
         pass
-    #@nonl
     #@-node:ekr.20031218072017.3895:fillbox
     #@+node:ekr.20031218072017.3896:go
     def go(self,event=None):
@@ -818,12 +785,9 @@ class tkinterListBoxDialog (leoTkinterDialog):
                     # A case could be made for updateBeadList=False
             finally:
                 c.endUpdate()
-    #@nonl
     #@-node:ekr.20031218072017.3896:go
     #@-others
-#@nonl
 #@-node:ekr.20031218072017.3889:class tkinterListboxDialog
 #@-others
-#@nonl
 #@-node:ekr.20031218072017.3858:@thin leoTkinterDialog.py
 #@-leo

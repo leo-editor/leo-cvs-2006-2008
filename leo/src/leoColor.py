@@ -29,7 +29,6 @@ leoKeywords = [
     "@pagewidth","@path","@quiet","@raw","@root","@root-code","@root-doc",
     "@silent","@tabwidth","@terse",
     "@unit","@verbose","@wrap" ]
-#@nonl
 #@-node:ekr.20031218072017.1595:<< define leo keywords >>
 #@nl
 #@<< define colorizer constants >>
@@ -48,13 +47,11 @@ default_colors_dict = {
     "string"         :("string_color",                "#00aa00"), # Used by IDLE.
     "name"           :("undefined_section_name_color","red"),
     "latexBackground":("latex_background_color","white") }
-#@nonl
 #@-node:ekr.20031218072017.2795:<< define colorizer constants >>
 #@nl
 #@<< define global colorizer data >>
 #@+node:EKR.20040623090054:<< define global colorizer data >>
 case_insensitiveLanguages = ['plsql',]
-#@nonl
 #@-node:EKR.20040623090054:<< define global colorizer data >>
 #@nl
 
@@ -71,7 +68,6 @@ class baseColorizer:
     #Actionscript keywords for Leo adapted from UltraEdit syntax highlighting
     "break", "call", "continue", "delete", "do", "else", "false", "for", "function", "goto", "if", "in", "new", "null", "return", "true", "typeof", "undefined", "var", "void", "while", "with", "#include", "catch", "constructor", "prototype", "this", "try", "_parent", "_root", "__proto__", "ASnative", "abs", "acos", "appendChild", "asfunction", "asin", "atan", "atan2", "attachMovie", "attachSound", "attributes", "BACKSPACE", "CAPSLOCK", "CONTROL", "ceil", "charAt", "charCodeAt", "childNodes", "chr", "cloneNode", "close", "concat", "connect", "cos", "createElement", "createTextNode", "DELETEKEY", "DOWN", "docTypeDecl", "duplicateMovieClip", "END", "ENTER", "ESCAPE", "enterFrame", "entry", "equal", "eval", "evaluate", "exp", "firstChild", "floor", "fromCharCode", "fscommand", "getAscii", "getBeginIndex", "getBounds", "getBytesLoaded", "getBytesTotal", "getCaretIndex", "getCode", "getDate", "getDay", "getEndIndex", "getFocus", "getFullYear", "getHours", "getMilliseconds", "getMinutes", "getMonth", "getPan", "getProperty", "getRGB", "getSeconds", "getTime", "getTimer", "getTimezoneOffset", "getTransform", "getURL", "getUTCDate", "getUTCDay", "getUTCFullYear", "getUTCHours", "getUTCMilliseconds", "getUTCMinutes", "getUTCMonth", "getUTCSeconds", "getVersion", "getVolume", "getYear", "globalToLocal", "gotoAndPlay", "gotoAndStop", "HOME", "haschildNodes", "hide", "hitTest", "INSERT", "Infinity", "ifFrameLoaded", "ignoreWhite", "indexOf", "insertBefore", "int", "isDown", "isFinite", "isNaN", "isToggled", "join", "keycode", "keyDown", "keyUp", "LEFT", "LN10", "LN2", "LOG10E", "LOG2E", "lastChild", "lastIndexOf", "length", "load", "loaded", "loadMovie", "loadMovieNum", "loadVariables", "loadVariablesNum", "localToGlobal", "log", "MAX_VALUE", "MIN_VALUE", "max", "maxscroll", "mbchr", "mblength", "mbord", "mbsubstring", "min", "NEGATIVE_INFINITY", "NaN", "newline", "nextFrame", "nextScene", "nextSibling", "nodeName", "nodeType", "nodeValue", "on", "onClipEvent", "onClose", "onConnect", "onData", "onLoad", "onXML", "ord", "PGDN", "PGUP", "PI", "POSITIVE_INFINITY", "parentNode", "parseFloat", "parseInt", "parseXML", "play", "pop", "pow", "press", "prevFrame", "previousSibling", "prevScene", "print", "printAsBitmap", "printAsBitmapNum", "printNum", "push", "RIGHT", "random", "release", "removeMovieClip", "removeNode", "reverse", "round", "SPACE", "SQRT1_2", "SQRT2", "scroll", "send", "sendAndLoad", "set", "setDate", "setFocus", "setFullYear", "setHours", "setMilliseconds", "setMinutes", "setMonth", "setPan", "setProperty", "setRGB", "setSeconds", "setSelection", "setTime", "setTransform", "setUTCDate", "setUTCFullYear", "setUTCHours", "setUTCMilliseconds", "setUTCMinutes", "setUTCMonth", "setUTCSeconds", "setVolume", "setYear", "shift", "show", "sin", "slice", "sort", "start", "startDrag", "status", "stop", "stopAllSounds", "stopDrag", "substr", "substring", "swapDepths", "splice", "split", "sqrt", "TAB", "tan", "targetPath", "tellTarget", "toggleHighQuality", "toLowerCase", "toString", "toUpperCase", "trace", "UP", "UTC", "unescape", "unloadMovie", "unLoadMovieNum", "unshift", "updateAfterEvent", "valueOf", "xmlDecl", "_alpha", "_currentframe", "_droptarget", "_focusrect", "_framesloaded", "_height", "_highquality", "_name", "_quality", "_rotation", "_soundbuftime", "_target", "_totalframes", "_url", "_visible", "_width", "_x", "_xmouse", "_xscale", "_y", "_ymouse", "_yscale", "and", "add", "eq", "ge", "gt", "le", "lt", "ne", "not", "or", "Array", "Boolean", "Color", "Date", "Key", "Math", "MovieClip", "Mouse", "Number", "Object", "Selection", "Sound", "String", "XML", "XMLSocket"
     ]
-    #@nonl
     #@-node:ekr.20031218072017.372:actionscript keywords
     #@+node:bwmulder.20041023131509:ada keywords
     ada_keywords = [
@@ -98,7 +94,6 @@ class baseColorizer:
         "digits",                    "renames",
         "do",          "mod",        "requeue",    "xor"
        ]
-    #@nonl
     #@-node:bwmulder.20041023131509:ada keywords
     #@+node:ekr.20040206072057:c# keywords
     csharp_keywords = [
@@ -122,7 +117,6 @@ class baseColorizer:
         "value","virtual","void","volatile",
         "where","while",
         "yield"]
-    #@nonl
     #@-node:ekr.20040206072057:c# keywords
     #@+node:ekr.20031218072017.373:c/c++ keywords
     c_keywords = [
@@ -139,7 +133,6 @@ class baseColorizer:
         "private","protected","public","reinterpret_cast","static_cast",
         "template","this","throw","true","try",
         "typeid","typename","using","virtual","wchar_t"]
-    #@nonl
     #@-node:ekr.20031218072017.373:c/c++ keywords
     #@+node:ekr.20040401103539:css keywords
     css_keywords = [
@@ -208,7 +201,6 @@ class baseColorizer:
     #aural values
     "stress", "azimuth", "elevation", "pitch", "richness", "volume",
     "page-break", "page-after", "page-inside"]
-    #@nonl
     #@-node:ekr.20040401103539:css keywords
     #@+node:ekr.20031218072017.374:elisp keywords
     # EKR: needs more work.
@@ -231,7 +223,6 @@ class baseColorizer:
         "type-of",
         "unless",
         "when","while"]
-    #@nonl
     #@-node:ekr.20031218072017.374:elisp keywords
     #@+node:ekr.20041107093834:forth keywords
     # Default forth keywords: extended by leo-forthwords.txt.
@@ -271,7 +262,6 @@ class baseColorizer:
     # Forth bold-italics words: extemded leo-forthbolditalicwords.txt if present
     # Note: on some boxen, bold italics may show in plain bold.
     forth_bolditalicwords = [ ]
-    #@nonl
     #@-node:ekr.20041107093834:forth keywords
     #@+node:ekr.20031218072017.375:html keywords
     # No longer used by syntax colorer.
@@ -291,7 +281,6 @@ class baseColorizer:
             "script","style"]
     
         html_specials = [ "<%","%>" ]
-    #@nonl
     #@-node:ekr.20031218072017.375:html keywords
     #@+node:ekr.20031218072017.376:java keywords
     java_keywords = [
@@ -306,7 +295,6 @@ class baseColorizer:
         "short","static","super","switch","synchronized",
         "this","throw","transient","true","try",
         "var","void","volatile","while"]
-    #@nonl
     #@-node:ekr.20031218072017.376:java keywords
     #@+node:ekr.20031218072017.377:latex keywords
     #If you see two idenitical words, with minor capitalization differences
@@ -437,7 +425,6 @@ class baseColorizer:
         "\\Xi", "\\xi",
         #Z
         "\\zeta" ]
-    #@nonl
     #@-node:ekr.20031218072017.377:latex keywords
     #@+node:ekr.20060328110802:lua keywords
     # ddm 13/02/06
@@ -471,7 +458,6 @@ class baseColorizer:
         "threadvar",
         # limited contexts
         "exports","property","default","write","stored","index","name" ]
-    #@nonl
     #@-node:ekr.20031218072017.378:pascal keywords
     #@+node:ekr.20031218072017.379:perl keywords
     perl_keywords = [
@@ -537,7 +523,6 @@ class baseColorizer:
         "chmod","chown","die","exec","kill",
         "print","printf","return","reverse",
         "sort","system","syscall","unlink","utime","warn"]
-    #@nonl
     #@-node:ekr.20031218072017.379:perl keywords
     #@+node:ekr.20031218072017.380:php keywords
     php_keywords = [ # 08-SEP-2002 DTHEIN
@@ -949,7 +934,6 @@ class baseColorizer:
         "class",     "except",    "if",        "or",        "yield",   
         "continue",  "exec",      "import",    "pass",      "while",
         "def",       "finally",   "in",        "print"]
-    #@nonl
     #@-node:ekr.20031218072017.381:python keywords
     #@+node:ekr.20040331145826:rapidq keywords
     rapidq_keywords = [
@@ -980,7 +964,6 @@ class baseColorizer:
     "SUB","SUBI","SWAP","TALLY","TAN","THEN","TIME$","TIMER","TO","TYPE","UBOUND",
     "UCASE$","UNLOADLIBRARY","UNTIL","VAL","VARIANT","VARPTR","VARPTR$","VARTYPE",
     "WEND","WHILE","WITH","WORD","XOR"]
-    #@nonl
     #@-node:ekr.20040331145826:rapidq keywords
     #@+node:ekr.20031218072017.382:rebol keywords
     rebol_keywords = [
@@ -1050,7 +1033,6 @@ class baseColorizer:
     "within?", "word?",  
     "zero?"
     ]
-    #@nonl
     #@-node:ekr.20031218072017.382:rebol keywords
     #@+node:ekr.20040401111125:shell keywords
     shell_keywords = [
@@ -1062,7 +1044,6 @@ class baseColorizer:
         "exit","kill","newgrp","pwd","read","readonly",
         "return","shift","test","trap","ulimit",
         "umask","wait" ]
-    #@nonl
     #@-node:ekr.20040401111125:shell keywords
     #@+node:ekr.20031218072017.383:tcl/tk keywords
     tcltk_keywords = [ # Only the tcl keywords are here.
@@ -1094,13 +1075,11 @@ class baseColorizer:
         "unknown",   "unset",     "update",     "uplevel",   "upvar",
         "variable",  "vwait",
         "while" ]
-    #@nonl
     #@-node:ekr.20031218072017.383:tcl/tk keywords
     #@-others
     
     cweb_keywords = c_keywords
     perlpod_keywords = perl_keywords
-    #@nonl
     #@-node:ekr.20031218072017.371:<< define colorizer keywords >> colorizer
     #@nl
     def interrupt(self): pass
@@ -1164,7 +1143,6 @@ class baseColorizer:
         self.latex_cweb_docs     = c.config.getBool("color_cweb_doc_parts_with_latex")
         self.latex_cweb_comments = c.config.getBool("color_cweb_comments_with_latex")
         # print "docs,comments",self.latex_cweb_docs,self.latex_cweb_comments
-        #@nonl
         #@-node:ekr.20031218072017.1606:<< ivars for communication between colorizeAnyLanguage and its allies >>
         #@nl
         #@    << define dispatch dicts >>
@@ -1236,7 +1214,6 @@ class baseColorizer:
                     ddict2 [self.block_comment_start] = self.doBlockComment
                 else:
                     mutli_list.append((self.block_comment_start,self.doBlockComment),)
-        #@nonl
         #@-node:ekr.20031218072017.1607:<< define dispatch dicts >>
         #@nl
         self.setFontFromConfig()
@@ -1269,11 +1246,8 @@ class baseColorizer:
             except IOError:
                 # print "Not found",path
                 pass
-        #@nonl
         #@-node:ekr.20041107094252:<< extend forth words from files >>
         #@nl
-      
-    #@nonl
     #@-node:ekr.20031218072017.1605:color.__init__
     #@+node:ekr.20050420083821:disable & enable
     def disable (self):
@@ -1284,7 +1258,6 @@ class baseColorizer:
     def enable (self):
     
         self.enabled=True
-    #@nonl
     #@-node:ekr.20050420083821:disable & enable
     #@+node:ekr.20041217041016:setFontFromConfig
     def setFontFromConfig (self):
@@ -1317,7 +1290,6 @@ class baseColorizer:
             
         self.color_tags_list = []
         self.image_references = []
-    #@nonl
     #@-node:ekr.20041217041016:setFontFromConfig
     #@+node:ekr.20031218072017.2801:colorize & recolor_range
     # The main colorizer entry point.
@@ -1345,7 +1317,6 @@ class baseColorizer:
             return self.colorizeAnyLanguage(p,leading=leading,trailing=trailing)
         else:
             return "ok" # For unit testing.
-    #@nonl
     #@-node:ekr.20031218072017.2801:colorize & recolor_range
     #@+node:ekr.20031218072017.1880:colorizeAnyLanguage & allies
     def colorizeAnyLanguage (self,p,leading=None,trailing=None):
@@ -1456,7 +1427,6 @@ class baseColorizer:
             self.body.tag_configure("bolditalic",font=self.bolditalic_font)
             for name in self.color_tags_list:
                 self.body.tag_configure(name,foreground=name)
-            #@nonl
             #@-node:ekr.20031218072017.1603:<< configure tags >>
             #@nl
             #@<< configure language-specific settings >>
@@ -1519,14 +1489,12 @@ class baseColorizer:
             else:
                 self.lb = g.choose(self.language == "cweb","@<","<<")
                 self.rb = g.choose(self.language == "cweb","@>",">>")
-            #@nonl
             #@-node:ekr.20031218072017.370:<< configure language-specific settings >> colorizer
             #@nl
             
             self.hyperCount = 0 # Number of hypertext tags
             self.count += 1
             lines = string.split(s,'\n')
-            #@nonl
             #@-node:ekr.20031218072017.1602:<< initialize ivars & tags >> colorizeAnyLanguage
             #@nl
             g.doHook("init-color-markup",colorer=self,p=self.p,v=self.p)
@@ -1538,7 +1506,6 @@ class baseColorizer:
                 self.last_language == self.language and
                 self.comment_string == self.last_comment and
                 self.markup_string == self.last_markup
-                #@nonl
                 #@-node:ekr.20031218072017.1881:<< all state ivars match >>
                 #@afterref
  ):
@@ -1678,7 +1645,6 @@ class baseColorizer:
                 # 1/8/03: complete new_states by brute force.
                 while len(new_states) < new_len:
                     new_states.append("unknown")
-                #@nonl
                 #@-node:ekr.20031218072017.1885:<< initialize new states >>
                 #@nl
                 #@<< colorize until the states match >>
@@ -1716,10 +1682,8 @@ class baseColorizer:
                 # Update the ivars
                 self.states = new_states
                 self.lines = new_lines
-                #@nonl
                 #@-node:ekr.20031218072017.1886:<< colorize until the states match >>
                 #@nl
-                #@nonl
                 #@-node:ekr.20031218072017.1882:<< incrementally color the text >>
                 #@nl
             else:
@@ -1789,7 +1753,6 @@ class baseColorizer:
             self.last_language = self.language
             self.last_comment = self.comment_string
             self.last_markup = self.markup_string
-            #@nonl
             #@-node:ekr.20031218072017.1888:<< update state ivars >>
             #@nl
             return "ok" # for testing.
@@ -1799,7 +1762,6 @@ class baseColorizer:
             self.last_flag = "unknown"
             self.last_language = "unknown"
             self.last_comment = "unknown"
-            #@nonl
             #@-node:ekr.20031218072017.1889:<< set state ivars to "unknown" >>
             #@nl
             if self.c:
@@ -1807,7 +1769,6 @@ class baseColorizer:
             else:
                 import traceback ; traceback.print_exc()
             return "error" # for unit testing.
-    #@nonl
     #@-node:ekr.20031218072017.1880:colorizeAnyLanguage & allies
     #@+node:ekr.20031218072017.1892:colorizeLine & allies
     def colorizeLine (self,s,state):
@@ -1826,7 +1787,6 @@ class baseColorizer:
             i,state = func(s,i)
     
         return state
-    #@nonl
     #@+node:ekr.20031218072017.1618:continueBlockComment
     def continueBlockComment (self,s,i):
         
@@ -1854,7 +1814,6 @@ class baseColorizer:
                     self.tag("comment",i,j+k)
             i = j + k
             return i,"normal"
-    #@nonl
     #@-node:ekr.20031218072017.1618:continueBlockComment
     #@+node:ekr.20031218072017.1893:continueSingle/DoubleString
     def continueDoubleString (self,s,i):
@@ -1882,7 +1841,6 @@ class baseColorizer:
         self.tag("string",j,i)
         state = g.choose(continueFlag,continueState,"normal")
         return i,state
-    #@nonl
     #@-node:ekr.20031218072017.1893:continueSingle/DoubleString
     #@+node:ekr.20031218072017.1614:continueDocPart
     def continueDocPart (self,s,i):
@@ -1923,7 +1881,6 @@ class baseColorizer:
                 if j == -1: j = len(s)
                 self.tag("docPart",i,j)
                 i = j
-            #@nonl
             #@-node:ekr.20031218072017.1615:<< handle cweb doc part >>
             #@nl
         else:
@@ -1956,7 +1913,6 @@ class baseColorizer:
             #@-node:ekr.20031218072017.1616:<< handle noweb doc part >>
             #@nl
         return i,state
-    #@nonl
     #@-node:ekr.20031218072017.1614:continueDocPart
     #@+node:ekr.20031218072017.1894:continueNocolor
     def continueNocolor (self,s,i):
@@ -1982,7 +1938,6 @@ class baseColorizer:
                     self.tag("tab",i,i+1)
                 i += 1
             return i,"nocolor"
-    #@nonl
     #@-node:ekr.20031218072017.1894:continueNocolor
     #@+node:ekr.20031218072017.1613:continueSingle/DoublePythonString
     def continueDoublePythonString (self,s,i):
@@ -2015,7 +1970,6 @@ class baseColorizer:
             else:
                 self.tag("string",i,j+3)
             return j+3,"normal"
-    #@nonl
     #@-node:ekr.20031218072017.1613:continueSingle/DoublePythonString
     #@+node:ekr.20031218072017.1620:doAtKeyword: NOT for cweb keywords
     # Handles non-cweb keyword.
@@ -2046,7 +2000,6 @@ class baseColorizer:
             return j,"normal"
         else:
             return j,"normal"
-    #@nonl
     #@-node:ekr.20031218072017.1620:doAtKeyword: NOT for cweb keywords
     #@+node:ekr.20031218072017.1895:doLatexLine
     # Colorize the line from i to j.
@@ -2063,7 +2016,6 @@ class baseColorizer:
             else:
                 self.tag("latexModeBackground",i,i+1)
                 i += 1
-    #@nonl
     #@-node:ekr.20031218072017.1895:doLatexLine
     #@+node:ekr.20031218072017.1896:doNormalState
     def doNormalState (self,s,i):
@@ -2098,7 +2050,6 @@ class baseColorizer:
                 else:
                     self.tag("latexBackground",i,i+1)
                     j = i + 1 # skip the character.
-                #@nonl
                 #@-node:ekr.20031218072017.1899:<< handle possible latex keyword >>
                 #@nl
             elif self.language == "html":
@@ -2160,7 +2111,6 @@ class baseColorizer:
                         word = ''
                     elif word in self.keywords:
                         self.tag("keyword",i,j)
-                #@nonl
                 #@-node:ekr.20041107093219.3:<< handle possible forth keyword >>
                 #@nl
             else:
@@ -2185,11 +2135,9 @@ class baseColorizer:
                     if word in self.php_paren_keywords and g.match(s,j,"()"):
                         self.tag("keyword",i,j+2)
                         j += 2
-                #@nonl
                 #@-node:ekr.20031218072017.1901:<< handle general keyword >>
                 #@nl
             i = j
-            #@nonl
             #@-node:ekr.20031218072017.1898:<< handle possible  keyword >>
             #@-middle:ekr.20031218072017.1897:Valid regardless of latex mode
             #@nl
@@ -2241,14 +2189,12 @@ class baseColorizer:
                                 self.tag("cwebName",i,j)
                                 self.tag("nameBrackets",j,j+2)
                                 i = j + 2
-                        #@nonl
                         #@-node:ekr.20031218072017.1903:<< Handle cweb control word >>
                         #@nl
                     else:
                         i,state = self.doAtKeyword(s,i)
             else:
                 i,state = self.doAtKeyword(s,i)
-            #@nonl
             #@-node:ekr.20031218072017.1902:<< handle at keyword >>
             #@-middle:ekr.20031218072017.1897:Valid regardless of latex mode
             #@nl
@@ -2271,7 +2217,6 @@ class baseColorizer:
                     colorer=self,p=self.p,v=self.p,s=s,i=i,j=j,colortag="comment"):
                     self.tag("comment",i,j)
                 i = j
-            #@nonl
             #@-node:ekr.20031218072017.1617:<< handle single-line comment >>
             #@-middle:ekr.20031218072017.1897:Valid regardless of latex mode
             #@nl
@@ -2286,7 +2231,6 @@ class baseColorizer:
                 self.tag("comment",i,i+k)
             
             i += k ; state = "blockComment"
-            #@nonl
             #@-node:ekr.20031218072017.1619:<< start block comment >>
             #@-middle:ekr.20031218072017.1897:Valid regardless of latex mode
             #@nl
@@ -2298,7 +2242,6 @@ class baseColorizer:
             i += 1 # Skip the %
             self.doLatexLine(s,i,len(s))
             i = len(s)
-            #@nonl
             #@-node:ekr.20031218072017.1905:<< handle latex line >>
             #@-middle:ekr.20031218072017.1897:Valid regardless of latex mode
             #@nl
@@ -2311,7 +2254,6 @@ class baseColorizer:
             else:
                 self.tag("latexBackground",i,i+1)
             i += 1
-            #@nonl
             #@-node:ekr.20031218072017.1907:<< handle latex normal character >>
             #@-middle:ekr.20031218072017.1906:Vaid only in latex mode
             #@nl
@@ -2354,7 +2296,6 @@ class baseColorizer:
                 else: i += 1
             
             self.tag("pp",j,i)
-            #@nonl
             #@-node:ekr.20031218072017.1909:<< handle C preprocessor line >>
             #@-middle:ekr.20031218072017.1908:Valid when not in latex_mode
             #@nl
@@ -2371,7 +2312,6 @@ class baseColorizer:
                 i += 2
             else:
                 i += 1
-            
             #@-node:ekr.20031218072017.1910:<< handle special php keywords >>
             #@-middle:ekr.20031218072017.1908:Valid when not in latex_mode
             #@nl
@@ -2382,7 +2322,6 @@ class baseColorizer:
             if self.showInvisibles:
                 self.tag("blank",i,i+1)
             i += 1
-            #@nonl
             #@-node:ekr.20031218072017.1911:<< handle blank >>
             #@-middle:ekr.20031218072017.1908:Valid when not in latex_mode
             #@nl
@@ -2393,7 +2332,6 @@ class baseColorizer:
             if self.showInvisibles:
                 self.tag("tab",i,i+1)
             i += 1
-            #@nonl
             #@-node:ekr.20031218072017.1912:<< handle tab >>
             #@-middle:ekr.20031218072017.1908:Valid when not in latex_mode
             #@nl
@@ -2403,7 +2341,6 @@ class baseColorizer:
             #@+node:ekr.20031218072017.1913:<< handle normal character >>
             # self.tag("normal",i,i+1)
             i += 1
-            #@nonl
             #@-node:ekr.20031218072017.1913:<< handle normal character >>
             #@-middle:ekr.20031218072017.1908:Valid when not in latex_mode
             #@nl
@@ -2412,7 +2349,6 @@ class baseColorizer:
             g.trace(self.progress,i,state)
             assert(self.progress < i)
         return i,state
-    #@nonl
     #@+node:ekr.20031218072017.1897:Valid regardless of latex mode
     #@-node:ekr.20031218072017.1897:Valid regardless of latex mode
     #@+node:ekr.20031218072017.1906:Vaid only in latex mode
@@ -2452,7 +2388,6 @@ class baseColorizer:
                     self.body.tag_bind(tagName,"<Control-1>",ref.OnHyperLinkControlClick)
                     self.body.tag_bind(tagName,"<Any-Enter>",ref.OnHyperLinkEnter)
                     self.body.tag_bind(tagName,"<Any-Leave>",ref.OnHyperLinkLeave)
-                    #@nonl
                     #@-node:ekr.20031218072017.1915:<< set the hyperlink >>
                     #@nl
             elif k == 3: # a section definition
@@ -2461,7 +2396,6 @@ class baseColorizer:
                 self.tag("name",i+2,j)
             self.tag("nameBrackets",j,j+k)
             return j + k
-    #@nonl
     #@-node:ekr.20031218072017.1914:doNowebSecRef
     #@+node:ekr.20031218072017.1604:removeAllTags & removeTagsFromLines
     def removeAllTags (self):
@@ -2481,7 +2415,6 @@ class baseColorizer:
             
         for tag in self.color_tags_list:
             self.body.tag_remove(tag,self.index(0),self.index("end")) # 10/27/03
-    #@nonl
     #@-node:ekr.20031218072017.1604:removeAllTags & removeTagsFromLines
     #@-node:ekr.20031218072017.1892:colorizeLine & allies
     #@+node:ekr.20031218072017.1377:scanColorDirectives
@@ -2519,7 +2452,6 @@ class baseColorizer:
             
             if theDict.has_key("comment") or theDict.has_key("language"):
                 break
-            #@nonl
             #@-node:ekr.20031218072017.1378:<< Test for @comment or @language >>
             #@nl
             #@        << Test for @root, @root-doc or @root-code >>
@@ -2538,7 +2470,6 @@ class baseColorizer:
             #@nl
     
         return self.language # For use by external routines.
-    #@nonl
     #@-node:ekr.20031218072017.1377:scanColorDirectives
     #@+node:ekr.20031218072017.2802:color.schedule & idle_colorize (not used)
     def schedule(self,p,incremental=0):
@@ -2557,7 +2488,6 @@ class baseColorizer:
             p = self.c.currentPosition()
             if p:
                 self.colorize(p,self.incremental)
-    #@nonl
     #@-node:ekr.20031218072017.2802:color.schedule & idle_colorize (not used)
     #@+node:ekr.20031218072017.2803:getCwebWord
     def getCwebWord (self,s,i):
@@ -2585,7 +2515,6 @@ class baseColorizer:
         # if word: g.trace(word)
             
         return word
-    #@nonl
     #@-node:ekr.20031218072017.2803:getCwebWord
     #@+node:ekr.20031218072017.1944:removeAllImages
     def removeAllImages (self):
@@ -2597,7 +2526,6 @@ class baseColorizer:
                 pass # The image may have been deleted earlier.
         
         self.image_references = []
-    #@nonl
     #@-node:ekr.20031218072017.1944:removeAllImages
     #@+node:ekr.20031218072017.2804:updateSyntaxColorer
     # self.flag is True unless an unambiguous @nocolor is seen.
@@ -2650,7 +2578,6 @@ class baseColorizer:
     def tag (self,name,i,j):
     
         self.body.tag_add(name,self.index(i),self.index(j))
-    #@nonl
     #@-node:ekr.20031218072017.1609:index & tag
     #@+node:ekr.20031218072017.2807:setFirstLineState
     def setFirstLineState (self):
@@ -2664,7 +2591,6 @@ class baseColorizer:
             state = "nocolor"
     
         return state
-    #@nonl
     #@-node:ekr.20031218072017.2807:setFirstLineState
     #@+node:ekr.20031218072017.2808:skip_id
     def skip_id(self,s,i,chars=None):
@@ -2691,7 +2617,6 @@ class baseColorizer:
                 return k+3, "normal"
         else:
             return self.skip_string(s,i)
-    #@nonl
     #@-node:ekr.20031218072017.1610:skip_python_string
     #@+node:ekr.20031218072017.2809:skip_string
     def skip_string(self,s,i):
@@ -2714,7 +2639,6 @@ class baseColorizer:
         if s[i] == delim:
             i += 1
         return i,"normal"
-    #@nonl
     #@-node:ekr.20031218072017.2809:skip_string
     #@-node:ekr.20031218072017.2806:Utils
     #@-others
@@ -2722,7 +2646,6 @@ class baseColorizer:
 class colorizer (baseColorizer):
     """Leo's syntax colorer class"""
     pass
-#@nonl
 #@-node:ekr.20031218072017.2796:class colorizer
 #@+node:ekr.20031218072017.2218:class nullColorizer
 class nullColorizer (colorizer):
@@ -2754,12 +2677,9 @@ class nullColorizer (colorizer):
     def schedule(self,p,incremental=0): pass
     
     def updateSyntaxColorer (self,p): pass
-    #@nonl
     #@-node:ekr.20031218072017.2220:entry points
     #@-others
-#@nonl
 #@-node:ekr.20031218072017.2218:class nullColorizer
 #@-others
-#@nonl
 #@-node:ekr.20031218072017.2794:@thin leoColor.py
 #@-leo

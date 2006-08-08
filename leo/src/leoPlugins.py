@@ -48,7 +48,6 @@ def callTagHandler (bunch,tag,keywords):
     result = handler(tag,keywords)
     loadingModuleNameStack.pop()
     return result
-#@nonl
 #@-node:ekr.20050102094729:callTagHandler
 #@+node:ekr.20031218072017.3442:doHandlersForTag
 def doHandlersForTag (tag,keywords):
@@ -77,7 +76,6 @@ def doHandlersForTag (tag,keywords):
             callTagHandler(bunch,tag,keywords)
 
     return None
-#@nonl
 #@-node:ekr.20031218072017.3442:doHandlersForTag
 #@+node:ekr.20041001161108:doPlugins
 def doPlugins(tag,keywords):
@@ -87,7 +85,6 @@ def doPlugins(tag,keywords):
         loadHandlers()
 
     return doHandlersForTag(tag,keywords)
-#@nonl
 #@-node:ekr.20041001161108:doPlugins
 #@+node:ekr.20041111124831:getHandlersForTag
 def getHandlersForTag(tags):
@@ -109,7 +106,6 @@ def getHandlersForOneTag (tag):
 
     bunch = handlers.get(tag)
     return bunch.fn
-#@nonl
 #@-node:ekr.20041111124831:getHandlersForTag
 #@+node:ekr.20041114113029:getPluginModule
 def getPluginModule (moduleName):
@@ -117,13 +113,11 @@ def getPluginModule (moduleName):
     global loadedModules
     
     return loadedModules.get(moduleName)
-#@nonl
 #@-node:ekr.20041114113029:getPluginModule
 #@+node:ekr.20041001160216:isLoaded
 def isLoaded (name):
     
     return name in g.app.loadedPlugins
-#@nonl
 #@-node:ekr.20041001160216:isLoaded
 #@+node:ekr.20031218072017.3440:loadHandlers
 def loadHandlers():
@@ -169,7 +163,6 @@ def loadHandlers():
         # Don't import leoTest initially.  It causes problems.
         import leoTest ; leoTest.fail()
         return
-    #@nonl
     #@-node:ekr.20031218072017.3441:<< set enabled_files from pluginsManager.txt >>
     #@nl
     
@@ -182,7 +175,6 @@ def loadHandlers():
     # Note: g.plugin_signon adds module names to g.app.loadedPlugins 
     if g.app.loadedPlugins:
         g.es("%d plugins loaded" % (len(g.app.loadedPlugins)), color="blue")
-#@nonl
 #@-node:ekr.20031218072017.3440:loadHandlers
 #@+node:ekr.20041113113140:loadOnePlugin
 def loadOnePlugin (moduleOrFileName, verbose=False):
@@ -259,7 +251,6 @@ def printHandlers (moduleName=None):
         if moduleName in (None,key):
             for tag in tags:
                 print '%25s %s' % (tag,key)
-#@nonl
 #@-node:ekr.20050110191444:printHandlers
 #@+node:ekr.20031218072017.3444:registerExclusiveHandler
 def registerExclusiveHandler(tags, fn):
@@ -295,7 +286,6 @@ def registerOneExclusiveHandler(tag, fn):
     else:
         bunch = g.Bunch(fn=fn,moduleName=moduleName,tag='handler')
         handlers = [bunch]
-#@nonl
 #@-node:ekr.20031218072017.3444:registerExclusiveHandler
 #@+node:ekr.20031218072017.3443:registerHandler
 def registerHandler(tags,fn):
@@ -332,7 +322,6 @@ def registerOneHandler(tag,fn):
         
     # g.trace(tag) ; g.printList(items)
     handlers[tag] = items
-#@nonl
 #@-node:ekr.20031218072017.3443:registerHandler
 #@+node:ekr.20050110182317:unloadOnePlugin
 def unloadOnePlugin (moduleOrFileName,verbose=False):
@@ -352,7 +341,6 @@ def unloadOnePlugin (moduleOrFileName,verbose=False):
         bunches = handlers.get(tag)
         bunches = [bunch for bunch in bunches if bunch.moduleName != moduleName]
         handlers[tag] = bunches
-#@nonl
 #@-node:ekr.20050110182317:unloadOnePlugin
 #@+node:ekr.20041111123313:unregisterHandler
 def unregisterHandler(tags,fn):
@@ -380,7 +368,6 @@ def unregisterOneHandler (tag,fn):
                 fn_list.remove(fn)
             handlers[tag] = fn_list
             # g.trace(handlers.get(tag))
-#@nonl
 #@-node:ekr.20041111123313:unregisterHandler
 #@+node:ktenney.20060628092017.1:baseLeoPlugin
 class baseLeoPlugin(object):
@@ -492,13 +479,11 @@ class baseLeoPlugin(object):
         leoPlugins.registerHandler("after-create-leo-frame", Hello)
         
     """
-    #@nonl
     #@-node:ktenney.20060628092017.2:<<docstring>>
     #@nl
     #@    <<baseLeoPlugin declarations>>
     #@+node:ktenney.20060628092017.3:<<baseLeoPlugin declarations>>
     import leoGlobals as g
-    #@nonl
     #@-node:ktenney.20060628092017.3:<<baseLeoPlugin declarations>>
     #@nl
     #@    @+others
@@ -510,9 +495,6 @@ class baseLeoPlugin(object):
                     
         self.c = keywords['c']
         self.commandNames = []
-        
-                                
-    #@nonl
     #@-node:ktenney.20060628092017.4:__init__
     #@+node:ktenney.20060628092017.5:setCommand
     def setCommand(self, commandName, handler, 
@@ -573,10 +555,7 @@ class baseLeoPlugin(object):
                                 buttonText = buttonText, bg = color)
     #@-node:ktenney.20060628092017.7:setButton
     #@-others
-    
-#@nonl
 #@-node:ktenney.20060628092017.1:baseLeoPlugin
 #@-others
-#@nonl
 #@-node:ekr.20031218072017.3439:@thin leoPlugins.py
 #@-leo

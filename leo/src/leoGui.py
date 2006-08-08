@@ -79,7 +79,6 @@ class leoGui:
     textAllFiletypes = [
         ("Text files","*.txt"),
         ("All files", "*")]
-    #@nonl
     #@-node:ekr.20040131103531:<< define leoGui file types >> (not used yet)
     #@nl
     
@@ -98,7 +97,6 @@ class leoGui:
         self.script = None
         self.utils = None
         self.isNullGui = False
-    #@nonl
     #@-node:ekr.20031218072017.3722: leoGui.__init__
     #@+node:ekr.20031218072017.3723:stubs
     #@+node:ekr.20031218072017.3724:createRootWindow
@@ -109,13 +107,11 @@ class leoGui:
         Nothing needs to be done if the root window need not exist."""
     
         self.oops()
-    #@nonl
     #@-node:ekr.20031218072017.3724:createRootWindow
     #@+node:ekr.20031218072017.3725:destroySelf
     def destroySelf (self):
     
         self.oops()
-    #@nonl
     #@-node:ekr.20031218072017.3725:destroySelf
     #@+node:ekr.20031218072017.3726:finishCreate
     def finishCreate (self):
@@ -123,7 +119,6 @@ class leoGui:
         """Do any remaining chores after the root window has been created."""
     
         self.oops()
-    #@nonl
     #@-node:ekr.20031218072017.3726:finishCreate
     #@+node:ekr.20031218072017.3727:killGui
     def killGui(self,exitFlag=True):
@@ -133,7 +128,6 @@ class leoGui:
         The entire Leo application should terminate if exitFlag is True."""
     
         self.oops()
-    #@nonl
     #@-node:ekr.20031218072017.3727:killGui
     #@+node:ekr.20031218072017.3728:recreateRootWindow
     def recreateRootWindow(self):
@@ -142,7 +136,6 @@ class leoGui:
         after a previous gui has terminated with killGui(False)."""
     
         self.oops()
-    #@nonl
     #@-node:ekr.20031218072017.3728:recreateRootWindow
     #@+node:ekr.20031218072017.3729:runMainLoop
     def runMainLoop(self):
@@ -150,7 +143,6 @@ class leoGui:
         """Run the gui's main loop."""
     
         self.oops()
-    #@nonl
     #@-node:ekr.20031218072017.3729:runMainLoop
     #@-node:ekr.20031218072017.3723:stubs
     #@-node:ekr.20031218072017.3721:app.gui Birth & death
@@ -179,7 +171,6 @@ class leoGui:
         message=None,yesMessage="Yes",noMessage="No",defaultButton="Yes"):
         """Create and run an askYesNoCancel dialog ."""
         self.oops()
-    #@nonl
     #@-node:ekr.20031218072017.3730:app.gui dialogs
     #@+node:ekr.20031218072017.3731:app.gui file dialogs
     def runOpenFileDialog(self,title,filetypes,defaultextension,multiple=False):
@@ -193,7 +184,6 @@ class leoGui:
         """Create and run a save file dialog ."""
         
         self.oops()
-    #@nonl
     #@-node:ekr.20031218072017.3731:app.gui file dialogs
     #@+node:ekr.20031218072017.3732:app.gui panels
     # New in 4.3: it is not an error to call these...
@@ -206,7 +196,6 @@ class leoGui:
         
     def createLeoFrame(self,title):
         """Create a new Leo frame."""
-    #@nonl
     #@-node:ekr.20031218072017.3732:app.gui panels
     #@+node:ekr.20031218072017.3733:app.gui utils
     #@+at 
@@ -220,7 +209,6 @@ class leoGui:
     # dialog being created.  The commander may be a Commands instance or one 
     # of its subcommanders.
     #@-at
-    #@nonl
     #@+node:ekr.20031218072017.3734:Clipboard
     def replaceClipboardWith (self,s):
         
@@ -229,7 +217,6 @@ class leoGui:
     def getTextFromClipboard (self):
         
         self.oops()
-    #@nonl
     #@-node:ekr.20031218072017.3734:Clipboard
     #@+node:ekr.20031218072017.3735:Dialog utils
     def attachLeoIcon (self,window):
@@ -253,7 +240,6 @@ class leoGui:
         
         pass
         # self.oops()
-    #@nonl
     #@-node:ekr.20031218072017.3736:Font
     #@+node:ekr.20031218072017.3737:Focus
     def get_focus(self,frame):
@@ -277,7 +263,6 @@ class leoGui:
         __pychecker__ = '--no-argsused' # widget
     
         self.oops()
-    #@nonl
     #@-node:ekr.20031218072017.3737:Focus
     #@+node:ekr.20031218072017.3738:Index
     def firstIndex (self):
@@ -295,7 +280,6 @@ class leoGui:
     def moveIndexToNextLine(self,t,index):
     
         self.oops()
-    #@nonl
     #@-node:ekr.20031218072017.3738:Index
     #@+node:ekr.20031218072017.3739:Idle time
     def setIdleTimeHook (self,idleTimeHookHandler):
@@ -314,7 +298,6 @@ class leoGui:
         '''Return True if w is a Text widget suitable for text-oriented commands.'''
         
         self.oops()
-    #@nonl
     #@-node:ekr.20051220144306:isTextWidget
     #@-node:ekr.20031218072017.3733:app.gui utils
     #@+node:ekr.20031218072017.3740:guiName
@@ -324,20 +307,17 @@ class leoGui:
             return self.mGuiName
         except:
             return "invalid gui name"
-    #@nonl
     #@-node:ekr.20031218072017.3740:guiName
     #@+node:ekr.20031218072017.2231:setScript
     def setScript (self,script=None,scriptFileName=None):
     
         self.script = script
         self.scriptFileName = scriptFileName
-    #@nonl
     #@-node:ekr.20031218072017.2231:setScript
     #@+node:ekr.20051206103652:widget_name
     def widget_name (self,w):
         
         return w and hasattr(w,'_name') and w._name or repr(w)
-    #@nonl
     #@-node:ekr.20051206103652:widget_name
     #@+node:ekr.20031218072017.3741:oops
     def oops (self):
@@ -346,7 +326,6 @@ class leoGui:
         # However, this message is useful when writing gui plugins.
         if 0:
             print "leoGui oops", g.callers(), "should be overridden in subclass"
-    #@nonl
     #@-node:ekr.20031218072017.3741:oops
     #@-others
 #@-node:ekr.20031218072017.3720:class leoGui
@@ -369,7 +348,6 @@ class nullGui(leoGui):
         self.script = None
         self.lastFrame = None
         self.isNullGui = True
-    #@nonl
     #@-node:ekr.20031218072017.2225: nullGui.__init__
     #@+node:ekr.20031219075221: nullGui.__getattr__
     if 0: # This causes no end of problems.
@@ -378,7 +356,6 @@ class nullGui(leoGui):
     
             g.trace("nullGui",attr)
             return nullObject()
-    #@nonl
     #@-node:ekr.20031219075221: nullGui.__getattr__
     #@+node:ekr.20031218072017.2226:nullGui.createLeoFrame
     def createLeoFrame(self,title):
@@ -395,17 +372,14 @@ class nullGui(leoGui):
     def attachLeoIcon (self,w):
         
         pass
-    #@nonl
     #@-node:ekr.20050328144031:attachLeoIcon
     #@+node:ekr.20031218072017.2227:createRootWindow
     def createRootWindow(self):
         pass
-    #@nonl
     #@-node:ekr.20031218072017.2227:createRootWindow
     #@+node:ekr.20031218072017.2228:finishCreate
     def finishCreate (self):
         pass
-    #@nonl
     #@-node:ekr.20031218072017.2228:finishCreate
     #@+node:ekr.20031218072017.2229:runMainLoop
     def runMainLoop(self):
@@ -420,7 +394,6 @@ class nullGui(leoGui):
             # g.es("\nEnd of batch script")
         
         # Getting here will terminate Leo.
-    #@nonl
     #@-node:ekr.20031218072017.2229:runMainLoop
     #@-node:ekr.20031218072017.2224:Birth & death
     #@+node:ekr.20031218072017.2230:oops
@@ -434,10 +407,8 @@ class nullGui(leoGui):
         # However, this message is useful when writing gui plugins.
         if 0:
             g.trace("nullGui",g.callers())
-    #@nonl
     #@-node:ekr.20031218072017.2230:oops
     #@-others
-#@nonl
 #@-node:ekr.20031218072017.2223:class nullGui (leoGui)
 #@+node:ekr.20031218072017.3742:class unitTestGui (leoGui)
 class unitTestGui(leoGui):
@@ -462,7 +433,6 @@ class unitTestGui(leoGui):
     def destroySelf (self):
         
         g.app.gui = self.oldGui
-    #@nonl
     #@-node:ekr.20031218072017.3743: test.gui.__init__& destroySelf
     #@+node:ekr.20031218072017.3744:dialogs (unitTestGui)
     def runAboutLeoDialog(self,c,version,theCopyright,url,email):
@@ -489,7 +459,6 @@ class unitTestGui(leoGui):
     def runAskYesNoCancelDialog(self,c,title,
         message=None,yesMessage="Yes",noMessage="No",defaultButton="Yes"):
         return self.simulateDialog("yesNoCancelDialog","cancel")
-    #@nonl
     #@-node:ekr.20031218072017.3744:dialogs (unitTestGui)
     #@+node:ekr.20031218072017.3745:dummy routines
     def getindex(self,body,index):
@@ -509,7 +478,6 @@ class unitTestGui(leoGui):
         
     def toPythonIndex (self,s,w,index):
         return 0
-    #@nonl
     #@-node:ekr.20031218072017.3745:dummy routines
     #@+node:ekr.20031218072017.3746:oops
     def oops(self):
@@ -518,7 +486,6 @@ class unitTestGui(leoGui):
         
         if 0: # Fail the unit test.
             assert 0,"call to undefined method in unitTestMethod class"
-    #@nonl
     #@-node:ekr.20031218072017.3746:oops
     #@+node:ekr.20031218072017.3747:simulateDialog
     def simulateDialog (self,key,defaultVal=None):
@@ -529,12 +496,9 @@ class unitTestGui(leoGui):
             print key, val
     
         return val
-    #@nonl
     #@-node:ekr.20031218072017.3747:simulateDialog
     #@-others
-#@nonl
 #@-node:ekr.20031218072017.3742:class unitTestGui (leoGui)
 #@-others
-#@nonl
 #@-node:ekr.20031218072017.3719:@thin leoGui.py
 #@-leo

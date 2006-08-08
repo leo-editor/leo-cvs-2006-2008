@@ -35,7 +35,6 @@ class underlinedTkButton:
             else:
                 self.hotKey = text [index + 1]
                 text = text[:index] + text[index+1:]
-        #@nonl
         #@-node:ekr.20041025152712.2:<< set self.hotKey if '&' is in the string >>
         #@nl
     
@@ -54,7 +53,6 @@ class underlinedTkButton:
             g.trace("bad buttonType")
         
         self.text = text # for traces
-    #@nonl
     #@-node:ekr.20041025152712:__init__
     #@+node:ekr.20041026080125:bindHotKey
     def bindHotKey (self,widget):
@@ -73,10 +71,8 @@ class underlinedTkButton:
         
         # See if this helps.
         return 'break'
-    #@nonl
     #@-node:ekr.20041025152717:buttonCallback
     #@-others
-#@nonl
 #@-node:ekr.20041025152343:class underlinedTkButton
 #@+node:ekr.20041025152343.1:class leoTkinterFind
 class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
@@ -105,7 +101,6 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
             self.dict[key] = Tk.StringVar()
             
         self.s_ctrl = Tk.Text() # Used by find.search()
-        #@nonl
         #@-node:ekr.20031218072017.3900:<< create the tkinter intVars >>
         #@nl
         
@@ -118,13 +113,11 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
         if self.top and not show:
             self.top.withdraw()
         self.init(c) # New in 4.3: init only once.
-    #@nonl
     #@-node:ekr.20031218072017.3899:__init__
     #@+node:ekr.20031218072017.3901:destroySelf
     def destroySelf (self):
         
         self.top.destroy()
-    #@nonl
     #@-node:ekr.20031218072017.3901:destroySelf
     #@+node:ekr.20031218072017.3902:find.createFrame
     def createFrame (self):
@@ -180,7 +173,6 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
         ctxt.bind("<Tab>",toFind)
         ftxt.bind("<Control-Tab>",insertFindTab)
         ctxt.bind("<Control-Tab>",insertChangeTab)
-        #@nonl
         #@-node:ekr.20041026092141:<< Bind Tab and control-tab >>
         #@nl
         
@@ -197,7 +189,6 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
         clab.pack(side="left")
         ctxt.pack(side="right", expand=1, fill="both")
         ftxt.pack(side="right", expand=1, fill="both")
-        #@nonl
         #@-node:ekr.20031218072017.3904:<< Create the Find and Change panes >>
         #@nl
         #@    << Create four columns of radio and checkboxes >>
@@ -256,7 +247,6 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
                 box.bindHotKey(ftxt)
                 box.bindHotKey(ctxt)
                 if var is None: box.button.configure(state="disabled")
-        #@nonl
         #@-node:ekr.20031218072017.3903:<< Create four columns of radio and checkboxes >>
         #@nl
         #@    << Create two rows of buttons >>
@@ -311,13 +301,11 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
         changeAllButton.button.pack(pady="1p",padx="25p",side="right")
         changeAllButton.bindHotKey(ftxt)
         changeAllButton.bindHotKey(ctxt)
-        #@nonl
         #@-node:ekr.20031218072017.3905:<< Create two rows of buttons >>
         #@nl
     
         if self.top: # self.top may not exist during unit testing.
             self.top.protocol("WM_DELETE_WINDOW", self.onCloseWindow)
-    #@nonl
     #@-node:ekr.20031218072017.3902:find.createFrame
     #@+node:ekr.20060207080537:find.createBindings
     def createBindings (self):
@@ -338,7 +326,6 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
         for widget in (self.find_ctrl, self.change_ctrl):
             widget.bind("<Key-Return>", findButtonCallback2)
             widget.bind("<Key-Escape>", self.onCloseWindow)
-    #@nonl
     #@-node:ekr.20060207080537:find.createBindings
     #@+node:ekr.20031218072017.2059:find.init
     def init (self,c):
@@ -365,7 +352,6 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
             s = c.config.getString(setting)
             if not s: s = defaultText
             w.insert("end",s)
-        #@nonl
         #@-node:ekr.20031218072017.2060:<< set find/change widgets >>
         #@nl
         #@    << set radio buttons from ivars >>
@@ -393,10 +379,8 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
                 found = True ; break
         if not found:
             self.dict["radio-search-scope"].set("entire-outline")
-        #@nonl
         #@-node:ekr.20031218072017.2061:<< set radio buttons from ivars >>
         #@nl
-    #@nonl
     #@-node:ekr.20031218072017.2059:find.init
     #@-node:ekr.20031218072017.3898:Birth & death
     #@+node:ekr.20031218072017.1460:find.update_ivars
@@ -434,7 +418,6 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
             s = s[:-1]
         s = g.toUnicode(s,g.app.tkEncoding)
         self.change_text = s
-    #@nonl
     #@-node:ekr.20031218072017.1460:find.update_ivars
     #@+node:ekr.20050204090259:tkFind.adjust_find_text
     def adjust_find_text(self,s):
@@ -443,7 +426,6 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
         
         w.delete("1.0","end")
         w.insert("end",s)
-    #@nonl
     #@-node:ekr.20050204090259:tkFind.adjust_find_text
     #@+node:ekr.20031218072017.3906:onCloseWindow
     def onCloseWindow(self,event=None):
@@ -451,13 +433,11 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
         __pychecker__ = '--no-argsused' # the event param must be present.
     
         self.top.withdraw()
-    #@nonl
     #@-node:ekr.20031218072017.3906:onCloseWindow
     #@+node:ekr.20051013084256:dismiss
     def dismiss (self):
         
         self.top.withdraw()
-    #@nonl
     #@-node:ekr.20051013084256:dismiss
     #@+node:ekr.20031218072017.3907:bringToFront
     def bringToFront (self):
@@ -472,7 +452,6 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
     
         c.widgetWantsFocusNow(t)
         gui.selectAllText(t)
-    #@nonl
     #@-node:ekr.20031218072017.3907:bringToFront
     #@+node:EKR.20040603221140:selectAllFindText
     def selectAllFindText (self,event=None):
@@ -483,7 +462,6 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
             return "break"
         except:
             return None # To keep pychecker happy.
-    #@nonl
     #@-node:EKR.20040603221140:selectAllFindText
     #@+node:ekr.20031218072017.3908:Tkinter wrappers (leoTkinterFind)
     def init_s_ctrl (self,s):
@@ -492,12 +470,9 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
         t.insert("end",s)
         t.mark_set("insert",g.choose(self.reverse,"end","1.0"))
         return t
-    #@nonl
     #@-node:ekr.20031218072017.3908:Tkinter wrappers (leoTkinterFind)
     #@-others
-#@nonl
 #@-node:ekr.20041025152343.1:class leoTkinterFind
 #@-others
-#@nonl
 #@-node:ekr.20031218072017.3897:@thin leoTkinterFind.py
 #@-leo

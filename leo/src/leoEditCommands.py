@@ -31,7 +31,6 @@ Pmw            = g.importExtension('Pmw',           pluginName=None,verbose=Fals
 tkColorChooser = g.importExtension('tkColorChooser',pluginName=None,verbose=False)
 tkFileDialog   = g.importExtension('tkFileDialog',  pluginName=None,verbose=False)
 tkFont         = g.importExtension('tkFont',        pluginName=None,verbose=False)
-#@nonl
 #@-node:ekr.20050710151017:<< imports >>
 #@nl
 
@@ -64,7 +63,6 @@ class baseEditCommandsClass:
         '''Called from k.keyboardQuit to init all classes.'''
         
         pass
-    #@nonl
     #@-node:ekr.20050920084036.2: ctor, finishCreate, init (baseEditCommandsClass)
     #@+node:ekr.20051214132256:begin/endCommand
     #@+node:ekr.20051214133130:beginCommand  & beginCommandWithEvent
@@ -79,7 +77,6 @@ class baseEditCommandsClass:
         '''Do the common processing at the start of each command.'''
         
         return self.beginCommandHelper(ch=event.char,undoType=undoType,w=event.widget)
-    #@nonl
     #@+node:ekr.20051215102349:beingCommandHelper
     # New in Leo 4.4b4: calling beginCommand is valid for all widgets,
     # but does nothing unless we are in the body pane.
@@ -98,7 +95,6 @@ class baseEditCommandsClass:
             self.undoData = None
             
         return w
-    #@nonl
     #@-node:ekr.20051215102349:beingCommandHelper
     #@-node:ekr.20051214133130:beginCommand  & beginCommandWithEvent
     #@+node:ekr.20051214133130.1:endCommand
@@ -125,7 +121,6 @@ class baseEditCommandsClass:
                 k.setLabelGrey(label)
             else:
                 k.resetLabel()
-    #@nonl
     #@-node:ekr.20051214133130.1:endCommand
     #@-node:ekr.20051214132256:begin/endCommand
     #@+node:ekr.20050920084036.5:getPublicCommands & getStateCommands
@@ -135,7 +130,6 @@ class baseEditCommandsClass:
         Keys are untranslated command names.  Values are methods of the subclass.'''
     
         return {}
-    #@nonl
     #@-node:ekr.20050920084036.5:getPublicCommands & getStateCommands
     #@+node:ekr.20050920084036.6:getWSString
     def getWSString (self,txt):
@@ -151,7 +145,6 @@ class baseEditCommandsClass:
                     ntxt.append(' ')
     
         return ''.join(ntxt)
-    #@nonl
     #@-node:ekr.20050920084036.6:getWSString
     #@+node:ekr.20050920084036.7:oops
     def oops (self):
@@ -159,7 +152,6 @@ class baseEditCommandsClass:
         print("baseEditCommandsClass oops:",
             g.callers(),
             "must be overridden in subclass")
-    #@nonl
     #@-node:ekr.20050920084036.7:oops
     #@+node:ekr.20050920084036.12:removeRKeys (baseCommandsClass)
     def removeRKeys (self,w):
@@ -170,7 +162,6 @@ class baseEditCommandsClass:
         w.unbind('<Right>')
         w.unbind('<Up>')
         w.unbind('<Down>')
-    #@nonl
     #@-node:ekr.20050920084036.12:removeRKeys (baseCommandsClass)
     #@+node:ekr.20050929161635:Helpers
     #@+node:ekr.20050920084036.249:_chckSel
@@ -186,7 +177,6 @@ class baseEditCommandsClass:
             k.setLabelGrey(warning)
         
         return val
-    #@nonl
     #@-node:ekr.20050920084036.249:_chckSel
     #@+node:ekr.20050920084036.250:_checkIfRectangle
     def _checkIfRectangle (self,event):
@@ -201,7 +191,6 @@ class baseEditCommandsClass:
             return True
     
         return False
-    #@nonl
     #@-node:ekr.20050920084036.250:_checkIfRectangle
     #@+node:ekr.20050920084036.10:contRanges
     def contRanges (self,w,range):
@@ -227,7 +216,6 @@ class baseEditCommandsClass:
         r3, r4 = i2.split('.')
     
         return int(r1), int(r2), int(r3), int(r4)
-    #@nonl
     #@-node:ekr.20050920084036.233:getRectanglePoints
     #@+node:ekr.20050920084036.9:inRange
     def inRange (self,w,range,l='',r=''):
@@ -240,7 +228,6 @@ class baseEditCommandsClass:
             if w.compare(l1,'>=',ranges[z]) and w.compare(r1,'<=',ranges[z1]):
                 return True
         return False
-    #@nonl
     #@-node:ekr.20050920084036.9:inRange
     #@+node:ekr.20051002090441:keyboardQuit
     def keyboardQuit (self,event):
@@ -248,7 +235,6 @@ class baseEditCommandsClass:
         '''Clear the state and the minibuffer label.'''
         
         return self.k.keyboardQuit(event)
-    #@nonl
     #@-node:ekr.20051002090441:keyboardQuit
     #@+node:ekr.20050920084036.11:testinrange
     def testinrange (self,w):
@@ -258,11 +244,9 @@ class baseEditCommandsClass:
             return False
         else:
             return True
-    #@nonl
     #@-node:ekr.20050920084036.11:testinrange
     #@-node:ekr.20050929161635:Helpers
     #@-others
-#@nonl
 #@-node:ekr.20050920084036.1:<< define class baseEditCommandsClass >>
 #@nl
 
@@ -279,7 +263,6 @@ def createEditCommanders (c):
         theInstance = theClass(c)# Create the class.
         setattr(c,name,theInstance)
         # g.trace(name,theInstance)
-#@nonl
 #@-node:ekr.20050920084720:createEditCommanders (leoEditCommands module)
 #@+node:ekr.20050922104731:finishCreateEditCommanders (leoEditCommands module)
 def finishCreateEditCommanders (c):
@@ -306,7 +289,6 @@ def finishCreateEditCommanders (c):
                 for key in keys: print
                 
     return d
-#@nonl
 #@-node:ekr.20050922104731:finishCreateEditCommanders (leoEditCommands module)
 #@+node:ekr.20050924100713.1:initAllEditCommanders
 def initAllEditCommanders (c):
@@ -318,7 +300,6 @@ def initAllEditCommanders (c):
     for name, theClass in classesList:
         theInstance = getattr(c,name)
         theInstance.init()
-#@nonl
 #@-node:ekr.20050924100713.1:initAllEditCommanders
 #@-node:ekr.20050924100713: Module level...
 #@+node:ekr.20050920085536.84:class  Tracker (an iterator)
@@ -333,14 +314,12 @@ class Tracker:
         self.tablist = []
         self.prefix = None 
         self.ng = self._next()
-    #@nonl
     #@-node:ekr.20050920085536.85:init
     #@+node:ekr.20050920085536.86:setTabList
     def setTabList (self,prefix,tlist):
         
         self.prefix = prefix 
-        self.tablist = tlist 
-    #@nonl
+        self.tablist = tlist
     #@-node:ekr.20050920085536.86:setTabList
     #@+node:ekr.20050920085536.87:_next
     def _next (self):
@@ -351,24 +330,20 @@ class Tracker:
             for z in self.tablist:
                 if tlist!=self.tablist:
                     break 
-                yield z 
-    #@nonl
+                yield z
     #@-node:ekr.20050920085536.87:_next
     #@+node:ekr.20050920085536.88:next
     def next (self):
         
         return self.ng.next()
-    #@nonl
     #@-node:ekr.20050920085536.88:next
     #@+node:ekr.20050920085536.89:clear
     def clear (self):
     
         self.tablist = []
         self.prefix = None
-    #@nonl
     #@-node:ekr.20050920085536.89:clear
     #@-others
-#@nonl
 #@-node:ekr.20050920085536.84:class  Tracker (an iterator)
 #@+node:ekr.20050920084036.13:class abbrevCommandsClass (test)
 #@+at
@@ -406,9 +381,6 @@ class abbrevCommandsClass (baseEditCommandsClass):
     def finishCreate(self):
         
         baseEditCommandsClass.finishCreate(self)
-    
-        
-    #@nonl
     #@-node:ekr.20050920084036.14: ctor & finishCreate
     #@+node:ekr.20050920084036.15: getPublicCommands & getStateCommands
     def getPublicCommands (self):
@@ -424,7 +396,6 @@ class abbrevCommandsClass (baseEditCommandsClass):
             'read-abbrev-file':             self.readAbbreviations,
             'write-abbrev-file':            self.writeAbbreviations,
         }
-    #@nonl
     #@-node:ekr.20050920084036.15: getPublicCommands & getStateCommands
     #@+node:ekr.20050920084036.25:addAbbreviation
     def addAbbreviation (self,event):
@@ -450,7 +421,6 @@ class abbrevCommandsClass (baseEditCommandsClass):
                 k.setLabelGrey(
                     "Abbreviations are on.\nAbbreviation: '%s' = '%s'" % (
                     k.arg,word))
-    #@nonl
     #@-node:ekr.20050920084036.25:addAbbreviation
     #@+node:ekr.20051004080550:addInverseAbbreviation
     def addInverseAbbreviation (self,event):
@@ -472,7 +442,6 @@ class abbrevCommandsClass (baseEditCommandsClass):
             word = w.get('insert -1c wordstart','insert -1c wordend').strip()
             if word:
                 self.abbrevs [word] = k.arg
-    #@nonl
     #@-node:ekr.20051004080550:addInverseAbbreviation
     #@+node:ekr.20050920084036.27:expandAbbrev
     def expandAbbrev (self,event):
@@ -496,7 +465,6 @@ class abbrevCommandsClass (baseEditCommandsClass):
             w.insert('insert',val)
             
         return val is not None
-    #@nonl
     #@-node:ekr.20050920084036.27:expandAbbrev
     #@+node:ekr.20050920084036.18:killAllAbbrevs
     def killAllAbbrevs (self,event):
@@ -504,7 +472,6 @@ class abbrevCommandsClass (baseEditCommandsClass):
         '''Delete all abbreviations.'''
     
         self.abbrevs = {}
-    #@nonl
     #@-node:ekr.20050920084036.18:killAllAbbrevs
     #@+node:ekr.20050920084036.19:listAbbrevs
     def listAbbrevs (self,event):
@@ -516,7 +483,6 @@ class abbrevCommandsClass (baseEditCommandsClass):
         if self.abbrevs:
             for z in self.abbrevs:
                 g.es('%s=%s' % (z,self.abbrevs[z]))
-    #@nonl
     #@-node:ekr.20050920084036.19:listAbbrevs
     #@+node:ekr.20050920084036.20:readAbbreviations
     def readAbbreviations (self,event):
@@ -531,7 +497,6 @@ class abbrevCommandsClass (baseEditCommandsClass):
             b = b [:-1]
             self.abbrevs [a] = b
         f.close()
-    #@nonl
     #@-node:ekr.20050920084036.20:readAbbreviations
     #@+node:ekr.20050920084036.21:regionalExpandAbbrev
     def regionalExpandAbbrev (self,event):
@@ -581,13 +546,11 @@ class abbrevCommandsClass (baseEditCommandsClass):
             w.tag_delete('found')
             k.setLabelGrey('')
             self.k.regx = g.bunch(iter=None,key=None)
-        #@nonl
         #@-node:ekr.20050920084036.22:<< define a new generator searchXR >>
         #@nl
         # EKR: the 'result' of calling searchXR is a generator object.
         k.regx.iter = searchXR(i1,i2,ins,event)
         k.regx.iter.next() # Call it the first time.
-    #@nonl
     #@-node:ekr.20050920084036.21:regionalExpandAbbrev
     #@+node:ekr.20050920084036.23:toggleAbbrevMode
     def toggleAbbrevMode (self,event):
@@ -598,7 +561,6 @@ class abbrevCommandsClass (baseEditCommandsClass):
         k.abbrevOn = not k.abbrevOn
         k.keyboardQuit(event)
         k.setLabel('Abbreviations are ' + g.choose(k.abbrevOn,'On','Off'))
-    #@nonl
     #@-node:ekr.20050920084036.23:toggleAbbrevMode
     #@+node:ekr.20050920084036.24:writeAbbreviations
     def writeAbbreviations (self,event):
@@ -611,10 +573,8 @@ class abbrevCommandsClass (baseEditCommandsClass):
         for x in self.abbrevs:
             f.write('%s=%s\n' % (x,self.abbrevs[x]))
         f.close()
-    #@nonl
     #@-node:ekr.20050920084036.24:writeAbbreviations
     #@-others
-#@nonl
 #@-node:ekr.20050920084036.13:class abbrevCommandsClass (test)
 #@+node:ekr.20050920084036.31:class bufferCommandsClass
 #@+at 
@@ -644,7 +604,6 @@ class bufferCommandsClass (baseEditCommandsClass):
             self.w = c.frame.body.bodyCtrl
         except AttributeError:
             self.w = None
-    #@nonl
     #@-node:ekr.20050920084036.32: ctor (bufferCommandsClass)
     #@+node:ekr.20050920084036.33: getPublicCommands
     def getPublicCommands (self):
@@ -663,7 +622,6 @@ class bufferCommandsClass (baseEditCommandsClass):
             'rename-buffer':                self.renameBuffer,
             'switch-to-buffer':             self.switchToBuffer,
         }
-    #@nonl
     #@-node:ekr.20050920084036.33: getPublicCommands
     #@+node:ekr.20050920084036.34:Entry points
     #@+node:ekr.20050920084036.35:appendToBuffer
@@ -691,7 +649,6 @@ class bufferCommandsClass (baseEditCommandsClass):
             finally:
                 c.endUpdate()
                 c.recolor_now()
-    #@nonl
     #@-node:ekr.20050920084036.35:appendToBuffer
     #@+node:ekr.20050920084036.36:copyToBuffer
     def copyToBuffer (self,event):
@@ -718,7 +675,6 @@ class bufferCommandsClass (baseEditCommandsClass):
             finally:
                 c.endUpdate()
                 c.recolor_now()
-    #@nonl
     #@-node:ekr.20050920084036.36:copyToBuffer
     #@+node:ekr.20050920084036.37:insertToBuffer
     def insertToBuffer (self,event):
@@ -743,7 +699,6 @@ class bufferCommandsClass (baseEditCommandsClass):
                 self.endCommand()
             finally:
                 c.endUpdate()
-    #@nonl
     #@-node:ekr.20050920084036.37:insertToBuffer
     #@+node:ekr.20050920084036.38:killBuffer
     def killBuffer (self,event):
@@ -763,7 +718,6 @@ class bufferCommandsClass (baseEditCommandsClass):
             c.deleteOutline (op_name='kill-buffer: %s' % h)
             c.selectPosition(current)
             self.k.setLabelBlue('Killed buffer: %s' % h)
-    #@nonl
     #@-node:ekr.20050920084036.38:killBuffer
     #@+node:ekr.20050920084036.42:listBuffers & listBuffersAlphabetically
     def listBuffers (self,event):
@@ -789,7 +743,6 @@ class bufferCommandsClass (baseEditCommandsClass):
         g.es('Buffers...')
         for name in names:
             g.es(name)
-    #@nonl
     #@-node:ekr.20050920084036.42:listBuffers & listBuffersAlphabetically
     #@+node:ekr.20050920084036.39:prependToBuffer
     def prependToBuffer (self,event):
@@ -816,7 +769,6 @@ class bufferCommandsClass (baseEditCommandsClass):
             finally:
                 c.endUpdate()
                 c.recolor_now()
-    #@nonl
     #@-node:ekr.20050920084036.39:prependToBuffer
     #@+node:ekr.20050920084036.43:renameBuffer
     def renameBuffer (self,event):
@@ -840,7 +792,6 @@ class bufferCommandsClass (baseEditCommandsClass):
             c.beginUpdate()
             p.setHeadStringOrHeadline(name)
             c.endUpdate()
-    #@nonl
     #@-node:ekr.20050920084036.43:renameBuffer
     #@+node:ekr.20050920084036.40:switchToBuffer
     def switchToBuffer (self,event):
@@ -859,7 +810,6 @@ class bufferCommandsClass (baseEditCommandsClass):
                 c.selectPosition(p)
             finally:
                 c.endUpdate()
-    #@nonl
     #@-node:ekr.20050920084036.40:switchToBuffer
     #@-node:ekr.20050920084036.34:Entry points
     #@+node:ekr.20050927102133.1:Utils
@@ -887,7 +837,6 @@ class bufferCommandsClass (baseEditCommandsClass):
                 self.tnodes[key] = t
                 nameList.append(key)
                 self.names[h] = nameList
-    #@nonl
     #@-node:ekr.20051215121416:computeData
     #@+node:ekr.20051215164823:findBuffer
     def findBuffer (self,name):
@@ -900,7 +849,6 @@ class bufferCommandsClass (baseEditCommandsClass):
                
         g.trace("Can't happen",name)
         return None
-    #@nonl
     #@-node:ekr.20051215164823:findBuffer
     #@+node:ekr.20050927093851:getBufferName
     def getBufferName (self,finisher):
@@ -921,11 +869,9 @@ class bufferCommandsClass (baseEditCommandsClass):
             finisher = self.getBufferNameFinisher
             self.getBufferNameFinisher = None
             finisher(k.arg)
-    #@nonl
     #@-node:ekr.20050927093851:getBufferName
     #@-node:ekr.20050927102133.1:Utils
     #@-others
-#@nonl
 #@-node:ekr.20050920084036.31:class bufferCommandsClass
 #@+node:ekr.20050920084036.150:class controlCommandsClass
 class controlCommandsClass (baseEditCommandsClass):
@@ -937,7 +883,6 @@ class controlCommandsClass (baseEditCommandsClass):
         baseEditCommandsClass.__init__(self,c) # init the base class.
         
         self.payload = None
-    #@nonl
     #@-node:ekr.20050920084036.151: ctor
     #@+node:ekr.20050920084036.152: getPublicCommands
     def getPublicCommands (self):
@@ -954,7 +899,6 @@ class controlCommandsClass (baseEditCommandsClass):
             'shell-command-on-region':      self.shellCommandOnRegion,
             'suspend':                      self.suspend,
         }
-    #@nonl
     #@-node:ekr.20050920084036.152: getPublicCommands
     #@+node:ekr.20050922110030:advertizedUndo
     def advertizedUndo (self,event):
@@ -962,7 +906,6 @@ class controlCommandsClass (baseEditCommandsClass):
         '''Undo the previous command.'''
     
         self.c.undoer.undo()
-    #@nonl
     #@-node:ekr.20050922110030:advertizedUndo
     #@+node:ekr.20050920084036.160:executeSubprocess
     def executeSubprocess (self,event,command,input):
@@ -991,7 +934,6 @@ class controlCommandsClass (baseEditCommandsClass):
             w.insert('insert',x)
             
         k.setLabelGrey('finished shell-command: %s' % command)
-    #@nonl
     #@-node:ekr.20050920084036.160:executeSubprocess
     #@+node:ekr.20060603161041:setSilentMode
     def setSilentMode (self,event=None):
@@ -1002,7 +944,6 @@ class controlCommandsClass (baseEditCommandsClass):
             --> set-silent-mode'''
         
         self.c.k.silentMode = True
-    #@nonl
     #@-node:ekr.20060603161041:setSilentMode
     #@+node:ekr.20050920084036.158:shellCommand
     def shellCommand (self,event):
@@ -1022,7 +963,6 @@ class controlCommandsClass (baseEditCommandsClass):
                 self.executeSubprocess(event,command,input=None)
         else:
             k.setLabelGrey('can not execute shell-command: can not import subprocess')
-    #@nonl
     #@-node:ekr.20050920084036.158:shellCommand
     #@+node:ekr.20050930112126:shellCommandOnRegion
     def shellCommandOnRegion (self,event):
@@ -1044,8 +984,6 @@ class controlCommandsClass (baseEditCommandsClass):
                     k.resetLabel()
         else:
             k.setLabelGrey('can not execute shell-command: can not import subprocess')
-        
-    #@nonl
     #@-node:ekr.20050930112126:shellCommandOnRegion
     #@+node:ekr.20050920084036.155:shutdown, saveBuffersKillEmacs & setShutdownHook
     def shutdown (self,event):
@@ -1055,7 +993,6 @@ class controlCommandsClass (baseEditCommandsClass):
         g.app.onQuit()
             
     saveBuffersKillLeo = shutdown
-    #@nonl
     #@-node:ekr.20050920084036.155:shutdown, saveBuffersKillEmacs & setShutdownHook
     #@+node:ekr.20050920084036.153:suspend & iconifyFrame
     def suspend (self,event):
@@ -1074,7 +1011,6 @@ class controlCommandsClass (baseEditCommandsClass):
         self.suspend(event)
     #@-node:ekr.20050920084036.153:suspend & iconifyFrame
     #@-others
-#@nonl
 #@-node:ekr.20050920084036.150:class controlCommandsClass
 #@+node:ekr.20060127162818.1:class debugCommandsClass
 class debugCommandsClass (baseEditCommandsClass):
@@ -1084,7 +1020,6 @@ class debugCommandsClass (baseEditCommandsClass):
     def __init__ (self,c):
     
         baseEditCommandsClass.__init__(self,c) # init the base class.
-    #@nonl
     #@-node:ekr.20060127162921: ctor
     #@+node:ekr.20060127163325: getPublicCommands
     def getPublicCommands (self):
@@ -1105,7 +1040,6 @@ class debugCommandsClass (baseEditCommandsClass):
             'run-unit-tests':       self.runUnitTests,
             'verbose-dump-objects': self.verboseDumpObjects,
         }
-    #@nonl
     #@-node:ekr.20060127163325: getPublicCommands
     #@+node:ekr.20060205050659:collectGarbage
     def collectGarbage (self,event=None):
@@ -1113,7 +1047,6 @@ class debugCommandsClass (baseEditCommandsClass):
         """Run Python's Gargabe Collector."""
         
         g.collectGarbage()
-    #@nonl
     #@-node:ekr.20060205050659:collectGarbage
     #@+node:ekr.20060519003651:debug
     def debug (self,event=None,target = None):
@@ -1140,7 +1073,6 @@ class debugCommandsClass (baseEditCommandsClass):
         else:
             g.es('No debugger found.')
             return
-        #@nonl
         #@-node:ekr.20060521140213:<< find a debugger or return >>
         #@nl
         #@    << find the target file >>
@@ -1159,7 +1091,6 @@ class debugCommandsClass (baseEditCommandsClass):
                     break
                 else:
                     g.es('Debug target does not exist: %s' % (target),color='blue')
-        #@nonl
         #@-node:ekr.20060521140213.1:<< find the target file >>
         #@nl
         
@@ -1172,7 +1103,6 @@ class debugCommandsClass (baseEditCommandsClass):
             os.spawnv(os.P_NOWAIT, sys.executable, args)
         else: # Use a pristine environment.
             os.spawnve(os.P_NOWAIT, sys.executable, args, os.environ)
-    #@nonl
     #@-node:ekr.20060519003651:debug
     #@+node:ekr.20060202160523:dumpAll/New/VerboseObjects
     def dumpAllObjects (self,event=None):
@@ -1217,7 +1147,6 @@ class debugCommandsClass (baseEditCommandsClass):
         g.app.trace_gc = True
         g.app.trace_gc_inited = False
         g.enable_gc_debug()
-    #@nonl
     #@-node:ekr.20060127163325.1:enable/disableGcTrace
     #@+node:ekr.20060202154734:freeTreeWidgets
     def freeTreeWidgets (self,event=None):
@@ -1228,7 +1157,6 @@ class debugCommandsClass (baseEditCommandsClass):
         
         c.frame.tree.destroyWidgets()
         c.redraw_now()
-    #@nonl
     #@-node:ekr.20060202154734:freeTreeWidgets
     #@+node:ekr.20060210100432:printFocus
     # Doesn't work if the focus isn't in a pane with bindings!
@@ -1242,7 +1170,6 @@ class debugCommandsClass (baseEditCommandsClass):
         g.es_print('      hasFocusWidget: %s' % c.widget_name(c.hasFocusWidget))
         g.es_print('requestedFocusWidget: %s' % c.widget_name(c.requestedFocusWidget))
         g.es_print('           get_focus: %s' % c.widget_name(c.get_focus()))
-    #@nonl
     #@-node:ekr.20060210100432:printFocus
     #@+node:ekr.20060205043324.3:printGcSummary
     def printGcSummary (self,event=None):
@@ -1251,7 +1178,6 @@ class debugCommandsClass (baseEditCommandsClass):
         '''Print a brief summary of all Python objects.'''
     
         g.printGcSummary()
-    #@nonl
     #@-node:ekr.20060205043324.3:printGcSummary
     #@+node:ekr.20060202133313:printStats
     def printStats (self,event=None):
@@ -1261,7 +1187,6 @@ class debugCommandsClass (baseEditCommandsClass):
         c = self.c
         c.frame.tree.showStats()
         self.dumpAllObjects()
-    #@nonl
     #@-node:ekr.20060202133313:printStats
     #@+node:ekr.20060328121145:runUnitTest
     def runUnitTests (self,event=None):
@@ -1271,10 +1196,8 @@ class debugCommandsClass (baseEditCommandsClass):
         c = self.c
     
         leoTest.doTests(c,all=False)
-    #@nonl
     #@-node:ekr.20060328121145:runUnitTest
     #@-others
-#@nonl
 #@-node:ekr.20060127162818.1:class debugCommandsClass
 #@+node:ekr.20050920084036.53:class editCommandsClass
 class editCommandsClass (baseEditCommandsClass):
@@ -1312,7 +1235,6 @@ class editCommandsClass (baseEditCommandsClass):
         self.smartAutoIndent        = c.config.getBool('smart_auto_indent')
         
         self.initBracketMatcher(c)
-    #@nonl
     #@-node:ekr.20050920084036.54: ctor (editCommandsClass)
     #@+node:ekr.20050920084036.55: getPublicCommands (editCommandsClass)
     def getPublicCommands (self):        
@@ -1488,7 +1410,6 @@ class editCommandsClass (baseEditCommandsClass):
     def upCaseWord (self,event):
         '''Convert all characters of the word at the cursor to UPPER CASE.'''
         self.capitalizeHelper(event,'up','upcase-word')
-    #@nonl
     #@-node:ekr.20051015114221:capitalizeWord & up/downCaseWord
     #@+node:ekr.20050920084036.145:changePreviousWord (not used)
     def changePreviousWord (self,event):
@@ -1510,7 +1431,6 @@ class editCommandsClass (baseEditCommandsClass):
         w.mark_set('insert',i)
         
         self.endCommand(changed=True,setLabel=True)
-    #@nonl
     #@-node:ekr.20050920084036.145:changePreviousWord (not used)
     #@+node:ekr.20051015114221.1:capitalizeHelper
     def capitalizeHelper (self,event,which,undoType):
@@ -1568,7 +1488,6 @@ class editCommandsClass (baseEditCommandsClass):
     def activateMenu (self,menuName):
         c = self.c
         c.frame.menu.activateMenu(menuName)
-    #@nonl
     #@-node:ekr.20060211100905:activate-x-menu & activateMenu (editCommandsClass)
     #@+node:ekr.20051022144825.1:cycleFocus
     def cycleFocus (self,event):
@@ -1596,7 +1515,6 @@ class editCommandsClass (baseEditCommandsClass):
             
         # g.trace(pane)
         c.set_focus(pane)
-    #@nonl
     #@-node:ekr.20051022144825.1:cycleFocus
     #@+node:ekr.20060613090701:cycleAllFocus
     firstEditorWidget = None
@@ -1654,7 +1572,6 @@ class editCommandsClass (baseEditCommandsClass):
                 'old: %10s' % (w_name(w)),id(w),
                 'new: %10s' % (w_name(pane)),pane and id(pane))
         if pane: c.set_focus(pane)
-    #@nonl
     #@-node:ekr.20060613090701:cycleAllFocus
     #@+node:ekr.20051022144825:focusTo...
     def focusToBody (self,event):
@@ -1672,7 +1589,6 @@ class editCommandsClass (baseEditCommandsClass):
     def focusToTree (self,event):
         '''Put the keyboard focus in Leo's outline pane.'''
         self.c.treeWantsFocus()
-    #@nonl
     #@-node:ekr.20051022144825:focusTo...
     #@+node:ekr.20060211063744.1:clicks in the headline
     # These call the actual event handlers so as to trigger hooks.
@@ -1690,7 +1606,6 @@ class editCommandsClass (baseEditCommandsClass):
         '''Simulate a right click in the headline of the presently selected node.'''
         c = self.c ; p = c.currentPosition()
         c.frame.tree.onHeadlineRightClick(event,p=p)
-    #@nonl
     #@-node:ekr.20060211063744.1:clicks in the headline
     #@+node:ekr.20060211055455:clicks in the icon box
     # These call the actual event handlers so as to trigger hooks.
@@ -1710,7 +1625,6 @@ class editCommandsClass (baseEditCommandsClass):
         '''Simulate a right click in the icon box of the presently selected node.'''
         c = self.c ; p = c.currentPosition()
         c.frame.tree.onIconBoxRightClick(event,p=p)
-    #@nonl
     #@-node:ekr.20060211055455:clicks in the icon box
     #@+node:ekr.20060211062025:clickClickBox
     # Call the actual event handlers so as to trigger hooks.
@@ -1721,7 +1635,6 @@ class editCommandsClass (baseEditCommandsClass):
     
         c = self.c ; p = c.currentPosition()
         c.frame.tree.onClickBoxClick(event,p=p)
-    #@nonl
     #@-node:ekr.20060211062025:clickClickBox
     #@+node:ekr.20060211063744.2:simulate...Drag
     # These call the drag setup methods which in turn trigger hooks.
@@ -1739,7 +1652,6 @@ class editCommandsClass (baseEditCommandsClass):
         
         # Note: this assumes that tree.startDrag has already been called.
         c.frame.tree.endDrag(event)
-    #@nonl
     #@-node:ekr.20060211063744.2:simulate...Drag
     #@-node:ekr.20051022142249:clicks and focus (editCommandsClass)
     #@+node:ekr.20051019183105:color & font
@@ -1815,7 +1727,6 @@ class editCommandsClass (baseEditCommandsClass):
             "purple2", "purple3", "purple4", "MediumPurple1", "MediumPurple2",
             "MediumPurple3", "MediumPurple4", "thistle1", "thistle2", "thistle3",
             "thistle4" )
-        #@nonl
         #@-node:ekr.20051019183105.2:<< define colors >>
         #@nl
         
@@ -1860,7 +1771,6 @@ class editCommandsClass (baseEditCommandsClass):
             except: pass # Ignore invalid names.
         
         colorBox.configure(selectioncommand=colorCallback)
-        #@nonl
         #@-node:ekr.20051019183105.4:<< create optionMenu and callback >>
         #@nl
         #@    << create picker button and callback >>
@@ -1877,10 +1787,8 @@ class editCommandsClass (baseEditCommandsClass):
         b = Tk.Button(f3,text="Color Picker...",
             command=pickerCallback,background=bg)
         b.pack(side='left',pady=4)
-        #@nonl
         #@-node:ekr.20051019183105.5:<< create picker button and callback >>
         #@nl
-    #@nonl
     #@-node:ekr.20051019183105.3:createColorPicker
     #@-node:ekr.20051019183105.1:show-colors
     #@+node:ekr.20051019201809:show-fonts & helpers
@@ -1898,7 +1806,6 @@ class editCommandsClass (baseEditCommandsClass):
             t = log.textDict.get(tabName)
             t.pack_forget()
             self.createFontPicker(f)
-    #@nonl
     #@+node:ekr.20051019201809.1:createFontPicker
     def createFontPicker (self,parent):
     
@@ -1911,7 +1818,6 @@ class editCommandsClass (baseEditCommandsClass):
         f2 = Tk.Frame(f,background=bg)     ; f2.pack(side='top',expand=1,fill='x')
         f3 = Tk.Frame(f,background=bg)     ; f3.pack(side='top',expand=1,fill='x')
         f4 = Tk.Frame(f,background=bg)     ; f4.pack(side='top',expand=1,fill='x')
-        #@nonl
         #@-node:ekr.20051019202139:<< create the frames >>
         #@nl
         #@    << create the family combo box >>
@@ -1929,7 +1835,6 @@ class editCommandsClass (baseEditCommandsClass):
         
         familyBox.selectitem(0)
         familyBox.pack(side="left",padx=2,pady=2)
-        #@nonl
         #@-node:ekr.20051019201809.2:<< create the family combo box >>
         #@nl
         #@    << create the size entry >>
@@ -1951,7 +1856,6 @@ class editCommandsClass (baseEditCommandsClass):
         
         weightBox.selectitem(0)
         weightBox.pack(side="left",padx=2,pady=2)
-        #@nonl
         #@-node:ekr.20051019201809.4:<< create the weight combo box >>
         #@nl
         #@    << create the slant combo box >>
@@ -1964,7 +1868,6 @@ class editCommandsClass (baseEditCommandsClass):
         
         slantBox.selectitem(0)
         slantBox.pack(side="left",padx=2,pady=2)
-        #@nonl
         #@-node:ekr.20051019201809.5:<< create the slant combo box>>
         #@nl
         #@    << create the sample text widget >>
@@ -1974,7 +1877,6 @@ class editCommandsClass (baseEditCommandsClass):
         
         s = 'The quick brown fox\njumped over the lazy dog.\n0123456789'
         sample.insert('1.0',s)
-        #@nonl
         #@-node:ekr.20051019202139.1:<< create the sample text widget >>
         #@nl
         #@    << create and bind the callbacks >>
@@ -1986,11 +1888,9 @@ class editCommandsClass (baseEditCommandsClass):
             w.configure(selectioncommand=fontCallback)
         
         sizeEntry.bind('<Return>',fontCallback)
-        #@nonl
         #@-node:ekr.20051019202328:<< create and bind the callbacks >>
         #@nl
         self.createBindings()
-    #@nonl
     #@-node:ekr.20051019201809.1:createFontPicker
     #@+node:ekr.20060726133852:createBindings (fontPicker)
     def createBindings (self):
@@ -2011,7 +1911,6 @@ class editCommandsClass (baseEditCommandsClass):
             w.bind(event,callback)
             
         k.completeAllBindingsForWidget(w)
-    #@nonl
     #@-node:ekr.20060726133852:createBindings (fontPicker)
     #@+node:ekr.20051019201809.6:getFont
     def getFont(self,family=None,size=12,slant='roman',weight='normal'):
@@ -2023,7 +1922,6 @@ class editCommandsClass (baseEditCommandsClass):
             g.es("family,size,slant,weight:",family,size,slant,weight)
             # g.es_exception() # This just confuses people.
             return g.app.config.defaultFont
-    #@nonl
     #@-node:ekr.20051019201809.6:getFont
     #@+node:ekr.20051019201809.7:setFont
     def setFont(self,familyBox,sizeEntry,slantBox,weightBox,label):
@@ -2049,7 +1947,6 @@ class editCommandsClass (baseEditCommandsClass):
         slant=d.get('slant','roman')
         font = self.getFont(family,size,slant,weight)
         label.configure(font=font)
-    #@nonl
     #@-node:ekr.20051019201809.7:setFont
     #@+node:ekr.20060726134339:hideTab
     def hideTab (self,event=None):
@@ -2057,7 +1954,6 @@ class editCommandsClass (baseEditCommandsClass):
         c = self.c
         c.frame.log.selectTab('Log')
         c.bodyWantsFocus()
-    #@nonl
     #@-node:ekr.20060726134339:hideTab
     #@-node:ekr.20051019201809:show-fonts & helpers
     #@-node:ekr.20051019183105:color & font
@@ -2070,7 +1966,6 @@ class editCommandsClass (baseEditCommandsClass):
         cc = event.widget.index('insert')
         cc1, cc2 = cc.split('.')
         self.ccolumn = cc2
-    #@nonl
     #@-node:ekr.20050920084036.133:setCommentColumn
     #@+node:ekr.20050920084036.134:indentToCommentColumn
     def indentToCommentColumn (self,event):
@@ -2094,7 +1989,6 @@ class editCommandsClass (baseEditCommandsClass):
         w.mark_set('insert','insert lineend')
         
         self.endCommand(changed=True,setLabel=True)
-    #@nonl
     #@-node:ekr.20050920084036.134:indentToCommentColumn
     #@-node:ekr.20050920084036.132:comment column...
     #@+node:ekr.20050920084036.58:dynamic abbreviation...
@@ -2149,7 +2043,6 @@ class editCommandsClass (baseEditCommandsClass):
         if dEstring:
             w.delete(i,i2)
             w.insert(i,dEstring)
-    #@nonl
     #@-node:ekr.20050920084036.60:dynamicExpansion2
     #@+node:ekr.20050920084036.61:getDynamicList (helper)
     def getDynamicList (self,w,txt,rlist):
@@ -2164,7 +2057,6 @@ class editCommandsClass (baseEditCommandsClass):
                  else:
                      rlist.remove(word)
                      rlist.append(word)
-    #@nonl
     #@-node:ekr.20050920084036.61:getDynamicList (helper)
     #@-node:ekr.20050920084036.58:dynamic abbreviation...
     #@+node:ekr.20050920084036.62:esc methods for Python evaluation
@@ -2195,7 +2087,6 @@ class editCommandsClass (baseEditCommandsClass):
                 k.setLabel('Esc Esc -')
             elif event.keysym not in ('Shift_L','Shift_R'):
                 k.keyboardQuit(event)
-    #@nonl
     #@-node:ekr.20050920084036.63:watchEscape (Revise)
     #@+node:ekr.20050920084036.64:escEvaluate (Revise)
     def escEvaluate (self,event):
@@ -2219,7 +2110,6 @@ class editCommandsClass (baseEditCommandsClass):
                     k.setLabel('Error: Invalid Expression')
         else:
             k.updateLabel(event)
-    #@nonl
     #@-node:ekr.20050920084036.64:escEvaluate (Revise)
     #@-node:ekr.20050920084036.62:esc methods for Python evaluation
     #@+node:ekr.20050920084036.65:evalExpression
@@ -2240,7 +2130,6 @@ class editCommandsClass (baseEditCommandsClass):
                 k.setLabelGrey('Eval: %s -> %s' % (e,result))
             except Exception:
                 k.setLabelGrey('Invalid Expression: %s' % e)
-    #@nonl
     #@-node:ekr.20050920084036.65:evalExpression
     #@+node:ekr.20060116074839.2:extend-to-word
     def extendToWord (self,event):
@@ -2253,7 +2142,6 @@ class editCommandsClass (baseEditCommandsClass):
         else:
             i = g.app.gui.getInsertPoint(w)
         g.app.gui.setSelectionRange(w, i+' wordstart', i+' wordend')
-    #@nonl
     #@-node:ekr.20060116074839.2:extend-to-word
     #@+node:ekr.20050920084036.66:fill column and centering
     #@+at
@@ -2301,7 +2189,6 @@ class editCommandsClass (baseEditCommandsClass):
             w.insert('insert linestart',ws)
             
         self.endCommand(changed=True,setLabel=True)
-    #@nonl
     #@-node:ekr.20050920084036.67:centerLine
     #@+node:ekr.20050920084036.68:setFillColumn
     def setFillColumn (self,event):
@@ -2321,7 +2208,6 @@ class editCommandsClass (baseEditCommandsClass):
                 k.commandName = 'set-fill-column %d' % n
             except ValueError:
                 k.resetLabel()
-    #@nonl
     #@-node:ekr.20050920084036.68:setFillColumn
     #@+node:ekr.20050920084036.69:centerRegion
     def centerRegion( self, event ):
@@ -2355,7 +2241,6 @@ class editCommandsClass (baseEditCommandsClass):
             sindex = sindex + 1
             
         self.endCommand(changed=True,setLabel=True)
-    #@nonl
     #@-node:ekr.20050920084036.69:centerRegion
     #@+node:ekr.20050920084036.70:setFillPrefix
     def setFillPrefix( self, event ):
@@ -2365,7 +2250,6 @@ class editCommandsClass (baseEditCommandsClass):
         w = event.widget
         txt = w.get( 'insert linestart', 'insert' )
         self.fillPrefix = txt
-    #@nonl
     #@-node:ekr.20050920084036.70:setFillPrefix
     #@+node:ekr.20050920084036.71:_addPrefix
     def _addPrefix (self,ntxt):
@@ -2374,14 +2258,11 @@ class editCommandsClass (baseEditCommandsClass):
         ntxt = map(lambda a: self.fillPrefix+a,ntxt)
         ntxt = '.'.join(ntxt)
         return ntxt
-    #@nonl
     #@-node:ekr.20050920084036.71:_addPrefix
     #@-others
-    #@nonl
     #@-node:ekr.20050920084036.66:fill column and centering
     #@+node:ekr.20060417194232:find (quick)
     # To do: extend selection.
-    #@nonl
     #@+node:ekr.20060417194232.1:findCharacter
     def findCharacter (self,event):
         
@@ -2414,7 +2295,6 @@ class editCommandsClass (baseEditCommandsClass):
                     g.app.gui.setSelectionRange(w,i2,i2)
             k.resetLabel()
             k.clearState()
-    #@nonl
     #@-node:ekr.20060417194232.1:findCharacter
     #@+node:ekr.20060417194232.2:findWord
     def findWord (self,event):
@@ -2449,7 +2329,6 @@ class editCommandsClass (baseEditCommandsClass):
                         i += 1
             k.resetLabel()
             k.clearState()
-    #@nonl
     #@-node:ekr.20060417194232.2:findWord
     #@-node:ekr.20060417194232:find (quick)
     #@+node:ekr.20050920084036.72:goto...
@@ -2471,7 +2350,6 @@ class editCommandsClass (baseEditCommandsClass):
                 w.see('insert')
             k.resetLabel()
             k.clearState()
-    #@nonl
     #@-node:ekr.20050929115226:gotoCharacter
     #@+node:ekr.20060417181052:gotoGlobalLine
     def gotoGlobalLine (self,event):
@@ -2491,7 +2369,6 @@ class editCommandsClass (baseEditCommandsClass):
             k.clearState()
             if n.isdigit():
                 self.c.goToLineNumber (n=int(n))
-    #@nonl
     #@-node:ekr.20060417181052:gotoGlobalLine
     #@+node:ekr.20050929124234:gotoLine
     def gotoLine (self,event):
@@ -2511,7 +2388,6 @@ class editCommandsClass (baseEditCommandsClass):
                 w.see('insert')
             k.resetLabel()
             k.clearState()
-    #@nonl
     #@-node:ekr.20050929124234:gotoLine
     #@-node:ekr.20050920084036.72:goto...
     #@+node:ekr.20050920084036.74:indent...
@@ -2528,7 +2404,6 @@ class editCommandsClass (baseEditCommandsClass):
         w.mark_set('insert',i2)
     
         self.endCommand(changed=True,setLabel=True)
-    #@nonl
     #@-node:ekr.20050920084036.75:backToIndentation
     #@+node:ekr.20050920084036.76:deleteIndentation
     def deleteIndentation (self,event):
@@ -2547,7 +2422,6 @@ class editCommandsClass (baseEditCommandsClass):
         w.mark_set('insert',i)
     
         self.endCommand(changed=True,setLabel=True)
-    #@nonl
     #@-node:ekr.20050920084036.76:deleteIndentation
     #@+node:ekr.20050920084036.78:indentRelative
     def indentRelative (self,event):
@@ -2594,7 +2468,6 @@ class editCommandsClass (baseEditCommandsClass):
         c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview)
         w.mark_set('insert',i)
         self.endCommand(changed=True,setLabel=True)
-    #@nonl
     #@-node:ekr.20050920084036.78:indentRelative
     #@-node:ekr.20050920084036.74:indent...
     #@+node:ekr.20050920084036.85:insert & delete...
@@ -2614,7 +2487,6 @@ class editCommandsClass (baseEditCommandsClass):
     def removeTabFromLines (self,event):
         '''Remove a tab from start of all lines, or all selected lines.'''
         self.addRemoveHelper(event,ch='\t',add=False,undoType='remove-tab-from-lines')
-    #@nonl
     #@+node:ekr.20060417172056:addRemoveHelper
     def addRemoveHelper(self,event,ch,add,undoType):
     
@@ -2643,7 +2515,6 @@ class editCommandsClass (baseEditCommandsClass):
             w.delete('1.0','end')
             w.insert('1.0',result)
         self.endCommand(changed=True,setLabel=True)
-    #@nonl
     #@-node:ekr.20060417172056:addRemoveHelper
     #@-node:ekr.20060417171125:addSpace/TabToLines & removeSpace/TabFromLines & helper
     #@+node:ekr.20051026092433.1:backwardDeleteCharacter
@@ -2691,7 +2562,6 @@ class editCommandsClass (baseEditCommandsClass):
                 
                 # Make sure we actually delete something.
                 w.delete("insert -%dc" % (max(1,count)),"insert")
-                #@nonl
                 #@-node:ekr.20051026092746:<< backspace with negative tab_width >>
                 #@nl
             self.endCommand(changed=True,setLabel=False) # Necessary to make text changes stick.
@@ -2703,7 +2573,6 @@ class editCommandsClass (baseEditCommandsClass):
                 # Bug fix: 1/6/06 (after a5 released).
                 # Do nothing at the start of the headline.
                 w.delete('insert-1c')
-    #@nonl
     #@-node:ekr.20051026092433.1:backwardDeleteCharacter
     #@+node:ekr.20060415112257:clean-lines
     def cleanLines (self,event):
@@ -2753,7 +2622,6 @@ class editCommandsClass (baseEditCommandsClass):
         self.beginCommand(undoType='clear-selected-text')
         g.app.gui.replaceSelectionRangeWithText (w,i,j,'')
         self.endCommand(changed=True,setLabel=True)
-    #@nonl
     #@-node:ekr.20060414085834:clearSelectedText
     #@+node:ekr.20050920084036.87:deleteNextChar
     def deleteNextChar (self,event):
@@ -2777,7 +2645,6 @@ class editCommandsClass (baseEditCommandsClass):
             changed = False
             
         self.endCommand(changed=changed,setLabel=False)
-    #@nonl
     #@-node:ekr.20050920084036.87:deleteNextChar
     #@+node:ekr.20050920084036.135:deleteSpaces
     def deleteSpaces (self,event,insertspace=False):
@@ -2801,7 +2668,6 @@ class editCommandsClass (baseEditCommandsClass):
             if insertspace: w.insert('insert',' ')
     
         self.endCommand(changed=True,setLabel=True)
-    #@nonl
     #@-node:ekr.20050920084036.135:deleteSpaces
     #@+node:ekr.20050920084036.138:insertNewLine
     def insertNewLine (self,event):
@@ -2817,7 +2683,6 @@ class editCommandsClass (baseEditCommandsClass):
             self.endCommand(changed=True,setLabel=False)
     
     insertNewline = insertNewLine
-    #@nonl
     #@-node:ekr.20050920084036.138:insertNewLine
     #@+node:ekr.20050920084036.86:insertNewLineAndTab
     def insertNewLineAndTab (self,event):
@@ -2831,7 +2696,6 @@ class editCommandsClass (baseEditCommandsClass):
             self.beginCommand(undoType='insert-newline-and-indent')
             w.insert('insert','\n\t')
             self.endCommand(changed=True,setLabel=False)
-    #@nonl
     #@-node:ekr.20050920084036.86:insertNewLineAndTab
     #@+node:ekr.20050920084036.139:insertParentheses
     def insertParentheses (self,event):
@@ -2843,7 +2707,6 @@ class editCommandsClass (baseEditCommandsClass):
         w.insert('insert','()')
         w.mark_set('insert','insert -1c')
         self.endCommand(changed=True,setLabel=False)
-    #@nonl
     #@-node:ekr.20050920084036.139:insertParentheses
     #@+node:ekr.20050920084036.141:removeBlankLines
     def removeBlankLines (self,event):
@@ -2875,7 +2738,6 @@ class editCommandsClass (baseEditCommandsClass):
         
         if result != body:
             c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview)
-    #@nonl
     #@-node:ekr.20050920084036.141:removeBlankLines
     #@+node:ekr.20051125080855:selfInsertCommand & helpers
     def selfInsertCommand(self,event,action='insert'):
@@ -2923,7 +2785,6 @@ class editCommandsClass (baseEditCommandsClass):
                 ):
                     # No auto-indent if in @nocolor mode or after a Change command.
                     self.updateAutoIndent(p,w)
-            #@nonl
             #@-node:ekr.20051026171121:<< handle newline >>
             #@nl
         elif ch in brackets and self.autocompleteBrackets:
@@ -2952,7 +2813,6 @@ class editCommandsClass (baseEditCommandsClass):
                 
         g.doHook("bodykey2",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType)
         return 'break'
-    #@nonl
     #@+node:ekr.20060804095512:initBracketMatcher
     def initBracketMatcher (self,c):
     
@@ -2966,7 +2826,6 @@ class editCommandsClass (baseEditCommandsClass):
     
         # g.trace('self.openBrackets',openBrackets)
         # g.trace('self.closeBrackets',closeBrackets)
-    #@nonl
     #@-node:ekr.20060804095512:initBracketMatcher
     #@+node:ekr.20060627083506:flashMatchingBracketsHelper
     def flashMatchingBracketsHelper (self,w,index,ch):
@@ -2989,7 +2848,6 @@ class editCommandsClass (baseEditCommandsClass):
         if j != -1:
             j = g.app.gui.toGuiIndex(s,w,j)
             self.flashCharacter(w,j)
-    #@nonl
     #@-node:ekr.20060627083506:flashMatchingBracketsHelper
     #@+node:ekr.20060627091557:flashCharacter
     def flashCharacter(self,w,i):
@@ -3013,7 +2871,6 @@ class editCommandsClass (baseEditCommandsClass):
             addFlashCallback(w,flashes,i)
         except Exception:
             pass
-    #@nonl
     #@-node:ekr.20060627091557:flashCharacter
     #@+node:ekr.20051027172949:updateAutomatchBracket
     def updateAutomatchBracket (self,p,w,ch,oldSel):
@@ -3040,7 +2897,6 @@ class editCommandsClass (baseEditCommandsClass):
                 if i != j:
                     w.delete(i,j)
                 w.insert(i,ch)
-    #@nonl
     #@-node:ekr.20051027172949:updateAutomatchBracket
     #@+node:ekr.20051026171121.1:udpateAutoIndent
     # By David McNab:
@@ -3069,7 +2925,6 @@ class editCommandsClass (baseEditCommandsClass):
         ws = g.computeLeadingWhitespace(width,tab_width)
         if ws:
             w.insert("insert",ws)
-    #@nonl
     #@-node:ekr.20051026171121.1:udpateAutoIndent
     #@+node:ekr.20051026092433:updateTab
     def updateTab (self,p,w):
@@ -3090,7 +2945,6 @@ class editCommandsClass (baseEditCommandsClass):
             width = g.computeWidth(s,tab_width)
             n = abs(tab_width) - (width % abs(tab_width))
             w.insert("insert",' ' * n)
-    #@nonl
     #@-node:ekr.20051026092433:updateTab
     #@-node:ekr.20051125080855:selfInsertCommand & helpers
     #@-node:ekr.20050920084036.85:insert & delete...
@@ -3112,7 +2966,6 @@ class editCommandsClass (baseEditCommandsClass):
             reg = re.compile(k.arg)
             i = reg.findall(s)
             k.setLabelGrey('%s occurances of %s' % (len(i),k.arg))
-    #@nonl
     #@-node:ekr.20050920084036.80:howMany
     #@+node:ekr.20050920084036.81:lineNumber
     def lineNumber (self,event):
@@ -3130,7 +2983,6 @@ class editCommandsClass (baseEditCommandsClass):
         perc = int(len(txt2)/perc)
     
         k.setLabelGrey('Char: %s point %s of %s(%s%s)  Column %s' % (c,len(txt2),len(txt),perc,'%',i1))
-    #@nonl
     #@-node:ekr.20050920084036.81:lineNumber
     #@+node:ekr.20050920084036.83:viewLossage
     def viewLossage (self,event):
@@ -3146,7 +2998,6 @@ class editCommandsClass (baseEditCommandsClass):
             ch,stroke = data
             d = {' ':'Space','\t':'Tab','\b':'Backspace','\n':'Newline','\r':'Return'}
             g.es(stroke or d.get(ch) or ch or 'None')
-    #@nonl
     #@-node:ekr.20050920084036.83:viewLossage
     #@+node:ekr.20050920084036.84:whatLine
     def whatLine (self,event):
@@ -3159,7 +3010,6 @@ class editCommandsClass (baseEditCommandsClass):
         k.keyboardQuit(event)
     
         k.setLabel("Line %s" % i1)
-    #@nonl
     #@-node:ekr.20050920084036.84:whatLine
     #@-node:ekr.20050920084036.79:info...
     #@+node:ekr.20050920084036.88:line...
@@ -3180,7 +3030,6 @@ class editCommandsClass (baseEditCommandsClass):
             k.resetLabel()
             self.linesHelper(event,k.arg,'flush')
             k.commandName = 'flush-lines %s' % k.arg
-    #@nonl
     #@-node:ekr.20050920084036.90:flushLines
     #@+node:ekr.20051002095724:keepLines
     def keepLines (self,event):
@@ -3199,7 +3048,6 @@ class editCommandsClass (baseEditCommandsClass):
             k.resetLabel()
             self.linesHelper(event,k.arg,'keep')
             k.commandName = 'keep-lines %s' % k.arg
-    #@nonl
     #@-node:ekr.20051002095724:keepLines
     #@+node:ekr.20050920084036.92:linesHelper
     def linesHelper (self,event,pattern,which):
@@ -3232,7 +3080,6 @@ class editCommandsClass (baseEditCommandsClass):
         w.insert(i,''.join(keeplines))
         w.mark_set('insert',i)
         self.endCommand(changed=True,setLabel=True)
-    #@nonl
     #@-node:ekr.20050920084036.92:linesHelper
     #@+node:ekr.20050920084036.77:splitLine
     def splitLine (self,event):
@@ -3249,7 +3096,6 @@ class editCommandsClass (baseEditCommandsClass):
         # w.mark_set('insert',i)
         # w.insert('insert','\n')
         self.endCommand(changed=True,setLabel=True)
-    #@nonl
     #@-node:ekr.20050920084036.77:splitLine
     #@-node:ekr.20050920084036.88:line...
     #@+node:ekr.20050929114218:move cursor... (leoEditCommands)
@@ -3289,7 +3135,6 @@ class editCommandsClass (baseEditCommandsClass):
             g.app.gui.setTextSelection(w,spot,spot,insert=None)
             
         c.frame.updateStatusLine()
-    #@nonl
     #@-node:ekr.20060113130510:extendHelper
     #@+node:ekr.20060113105246.1:moveUpOrDownHelper
     def moveUpOrDownHelper (self,event,direction,extend):
@@ -3334,7 +3179,6 @@ class editCommandsClass (baseEditCommandsClass):
                     w.see('insert')
         # Handle the extension.
         self.extendHelper(w,extend,ins1,spot,setSpot=False)
-    #@nonl
     #@-node:ekr.20060113105246.1:moveUpOrDownHelper
     #@+node:ekr.20051218122116:moveToHelper
     def moveToHelper (self,event,spot,extend):
@@ -3371,7 +3215,6 @@ class editCommandsClass (baseEditCommandsClass):
             # Handle the selection.
             self.extendHelper(w,extend or self.extendMode,ins1,spot,setSpot=True)
             w.see(spot)
-    #@nonl
     #@-node:ekr.20051218122116:moveToHelper
     #@+node:ekr.20051218121447:moveWordHelper
     def moveWordHelper (self,event,extend,forward):
@@ -3391,7 +3234,6 @@ class editCommandsClass (baseEditCommandsClass):
              if ind: nind = '%s wordstart' % ind
              else:   nind = '1.0'
         self.moveToHelper(event,nind,extend)
-    #@nonl
     #@-node:ekr.20051218121447:moveWordHelper
     #@+node:ekr.20051218171457:movePastCloseHelper
     def movePastCloseHelper (self,event,extend):
@@ -3418,7 +3260,6 @@ class editCommandsClass (baseEditCommandsClass):
         
         ins = '%s+1c' % i2
         self.moveToHelper(event,ins,extend)
-    #@nonl
     #@-node:ekr.20051218171457:movePastCloseHelper
     #@+node:ekr.20051213094517:backSentenceHelper
     def backSentenceHelper (self,event,extend):
@@ -3438,7 +3279,6 @@ class editCommandsClass (baseEditCommandsClass):
             ins = '1.0'
         if ins:
             self.moveToHelper(event,ins,extend)
-    #@nonl
     #@-node:ekr.20051213094517:backSentenceHelper
     #@+node:ekr.20050920084036.137:forwardSentenceHelper
     def forwardSentenceHelper (self,event,extend):
@@ -3452,7 +3292,6 @@ class editCommandsClass (baseEditCommandsClass):
         i = w.search('.','insert',stopindex='end')
         ins = i and '%s +1c' % i or 'end'
         self.moveToHelper(event,ins,extend)
-    #@nonl
     #@-node:ekr.20050920084036.137:forwardSentenceHelper
     #@+node:ekr.20051218133207.1:forwardParagraphHelper
     def forwardParagraphHelper (self,event,extend):
@@ -3476,7 +3315,6 @@ class editCommandsClass (baseEditCommandsClass):
                 break
         if i:
             self.moveToHelper(event,i,extend)
-    #@nonl
     #@-node:ekr.20051218133207.1:forwardParagraphHelper
     #@+node:ekr.20051218133207:backwardParagraphHelper
     def backwardParagraphHelper (self,event,extend):
@@ -3499,7 +3337,6 @@ class editCommandsClass (baseEditCommandsClass):
                 break
         if i:
             self.moveToHelper(event,i,extend)
-    #@nonl
     #@-node:ekr.20051218133207:backwardParagraphHelper
     #@+node:ekr.20060209095101:setMoveCol
     def setMoveCol (self,spot):
@@ -3511,7 +3348,6 @@ class editCommandsClass (baseEditCommandsClass):
             g.trace(
                 # 'spot',self.moveSpot,
                 'col',self.moveCol)
-    #@nonl
     #@-node:ekr.20060209095101:setMoveCol
     #@-node:ekr.20051218170358: helpers
     #@+node:ekr.20050920084036.136:exchangePointMark
@@ -3529,7 +3365,6 @@ class editCommandsClass (baseEditCommandsClass):
             ins = g.choose(ins==i,j,i)
             g.app.gui.setInsertPoint(w,ins)
             g.app.gui.setTextSelection(w,i,j,insert=None)
-    #@nonl
     #@-node:ekr.20050920084036.136:exchangePointMark
     #@+node:ekr.20051218174113:clear/set/ToggleExtendMode
     def clearExtendMode (self,event):
@@ -3549,7 +3384,6 @@ class editCommandsClass (baseEditCommandsClass):
         self.extendMode = not self.extendMode
         c = self.c ; w = event.widget
         c.widgetWantsFocus(w)
-    #@nonl
     #@-node:ekr.20051218174113:clear/set/ToggleExtendMode
     #@+node:ekr.20050920084036.148:buffers
     def beginningOfBuffer (self,event):
@@ -3617,7 +3451,6 @@ class editCommandsClass (baseEditCommandsClass):
     def prevLineExtendSelection (self,event):
         '''Extend the selection by moving the cursor up.'''
         self.moveUpOrDownHelper(event,'up',extend=True)
-    #@nonl
     #@-node:ekr.20051218141237:lines
     #@+node:ekr.20050920084036.140:movePastClose (test)
     def movePastClose (self,event):
@@ -3627,7 +3460,6 @@ class editCommandsClass (baseEditCommandsClass):
     def movePastCloseExtendSelection (self,event):
         '''Extend the selection by moving the cursor past the closing parenthesis.'''
         self.movePastCloseHelper(event,extend=True)
-    #@nonl
     #@-node:ekr.20050920084036.140:movePastClose (test)
     #@+node:ekr.20050920084036.102:paragraphs
     def backwardParagraph (self,event):
@@ -3645,7 +3477,6 @@ class editCommandsClass (baseEditCommandsClass):
     def forwardParagraphExtendSelection (self,event):
         '''Extend the selection by moving the cursor to the next paragraph.'''
         self.forwardParagraphHelper(event,extend=True)
-    #@nonl
     #@-node:ekr.20050920084036.102:paragraphs
     #@+node:ekr.20050920084036.131:sentences
     def backSentence (self,event):
@@ -3663,7 +3494,6 @@ class editCommandsClass (baseEditCommandsClass):
     def forwardSentenceExtendSelection (self,event):
         '''Extend the selection by moving the cursor to the next sentence.'''
         self.forwardSentenceHelper(event,extend=True)
-    #@nonl
     #@-node:ekr.20050920084036.131:sentences
     #@+node:ekr.20050920084036.149:words
     def backwardWord (self,event):
@@ -3707,7 +3537,6 @@ class editCommandsClass (baseEditCommandsClass):
         w.selection_clear()
     
         self.endCommand(changed=True,setLabel=True)
-    #@nonl
     #@-node:ekr.20050920084036.99:backwardKillParagraph
     #@+node:ekr.20050920084036.103:fillParagraph
     def fillParagraph( self, event ):
@@ -3745,7 +3574,6 @@ class editCommandsClass (baseEditCommandsClass):
             w.insert( i2, ntxt )
             w.mark_set( 'insert', i )
             self.endCommand(changed=True,setLabel=True)
-    #@nonl
     #@-node:ekr.20050920084036.103:fillParagraph
     #@+node:ekr.20050920084036.100:fillRegion
     def fillRegion (self,event):
@@ -3769,7 +3597,6 @@ class editCommandsClass (baseEditCommandsClass):
             self.fillParagraph(event)
     
         self.endCommand(changed=True,setLabel=True)
-    #@nonl
     #@-node:ekr.20050920084036.100:fillRegion
     #@+node:ekr.20050920084036.104:fillRegionAsParagraph
     def fillRegionAsParagraph (self,event):
@@ -3789,7 +3616,6 @@ class editCommandsClass (baseEditCommandsClass):
         w.insert(i1,txt)
     
         self.endCommand(changed=True,setLabel=True)
-    #@nonl
     #@-node:ekr.20050920084036.104:fillRegionAsParagraph
     #@+node:ekr.20050920084036.98:killParagraph (Test)
     def killParagraph (self,event):
@@ -3811,7 +3637,6 @@ class editCommandsClass (baseEditCommandsClass):
         w.selection_clear()
     
         self.endCommand(changed=True,setLabel=True)
-    #@nonl
     #@-node:ekr.20050920084036.98:killParagraph (Test)
     #@+node:ekr.20050920084036.96:selectParagraph & helper
     def selectParagraph (self,event):
@@ -3840,7 +3665,6 @@ class editCommandsClass (baseEditCommandsClass):
                     if not txt: i = w.index('%s + 1 lines' % i)
                     self.selectParagraphHelper(w,i)
                     break
-    #@nonl
     #@+node:ekr.20050920084036.97:selectParagraphHelper
     def selectParagraphHelper (self,w,start):
     
@@ -3856,11 +3680,9 @@ class editCommandsClass (baseEditCommandsClass):
     
         w.tag_add('sel','%s linestart' % start,'%s lineend' % i2)
         w.mark_set('insert','%s lineend' % i2)
-    #@nonl
     #@-node:ekr.20050920084036.97:selectParagraphHelper
     #@-node:ekr.20050920084036.96:selectParagraph & helper
     #@-others
-    #@nonl
     #@-node:ekr.20050920084036.95:paragraph...
     #@+node:ekr.20050920084036.105:region...
     #@+others
@@ -3887,7 +3709,6 @@ class editCommandsClass (baseEditCommandsClass):
                     w.tag_remove(mrk,'1.0','insert')
         
             return 'break'
-        #@nonl
         #@-node:ekr.20051002102410:down
         #@+node:ekr.20051002102410.1:extend
         def extend (event):
@@ -3903,7 +3724,6 @@ class editCommandsClass (baseEditCommandsClass):
                 self.testinrange(w)
         
             return 'break'
-        
         #@-node:ekr.20051002102410.1:extend
         #@+node:ekr.20051002102410.2:truncate
         def truncate (event):
@@ -3920,7 +3740,6 @@ class editCommandsClass (baseEditCommandsClass):
                 self.testinrange(w)
         
             return 'break'
-        #@nonl
         #@-node:ekr.20051002102410.2:truncate
         #@+node:ekr.20051002102410.3:up
         def up (event):
@@ -3938,7 +3757,6 @@ class editCommandsClass (baseEditCommandsClass):
                     w.tag_remove(mrk,'insert','end')
         
             return 'break'
-        #@nonl
         #@-node:ekr.20051002102410.3:up
         #@-others
     
@@ -3949,7 +3767,6 @@ class editCommandsClass (baseEditCommandsClass):
         w.bind('<Down>',down,'+')
     
         return 'break'
-    #@nonl
     #@-node:ekr.20050920084036.106:setRegion
     #@+node:ekr.20050920084036.107:indentRegion (not used: use c.indentBody instead)
     def indentRegion (self,event):
@@ -3981,7 +3798,6 @@ class editCommandsClass (baseEditCommandsClass):
             ### w.event_generate('<Key>')
             ### w.update_idletasks()
         self.removeRKeys(w)
-    #@nonl
     #@-node:ekr.20050920084036.107:indentRegion (not used: use c.indentBody instead)
     #@+node:ekr.20050920084036.108:tabIndentRegion (indent-rigidly)
     def tabIndentRegion (self,event):
@@ -4001,7 +3817,6 @@ class editCommandsClass (baseEditCommandsClass):
             w.insert(i,'\t')
             if i == i2: break
             i = w.index('%s + 1 lines' % i)
-    #@nonl
     #@-node:ekr.20050920084036.108:tabIndentRegion (indent-rigidly)
     #@+node:ekr.20050920084036.109:countRegion
     def countRegion (self,event):
@@ -4018,7 +3833,6 @@ class editCommandsClass (baseEditCommandsClass):
     
         k.setLabelGrey('Region has %s lines, %s character%s' % (
             lines,chars,g.choose(chars==1,'','s')))
-    #@nonl
     #@-node:ekr.20050920084036.109:countRegion
     #@+node:ekr.20060417183606:moveLinesDown (works)
     def moveLinesDown (self,event):
@@ -4063,7 +3877,6 @@ class editCommandsClass (baseEditCommandsClass):
             g.app.gui.setSelectionRangeWithLength(w,'1.0',len(selected)-1)
     
         self.endCommand(changed=True,setLabel=True)
-    #@nonl
     #@-node:ekr.20060417183606:moveLinesDown (works)
     #@+node:ekr.20060417183606.1:moveLinesUp (works, except for selection point when last line selected)
     def moveLinesUp (self,event):
@@ -4117,7 +3930,6 @@ class editCommandsClass (baseEditCommandsClass):
             g.app.gui.setSelectionRange(w,'end-%dc' % (len(selected)+1),'end-1c') # works
     
         self.endCommand(changed=True,setLabel=True)
-    #@nonl
     #@-node:ekr.20060417183606.1:moveLinesUp (works, except for selection point when last line selected)
     #@+node:ekr.20050920084036.110:reverseRegion
     def reverseRegion (self,event):
@@ -4146,7 +3958,6 @@ class editCommandsClass (baseEditCommandsClass):
         k.resetLabel()
         
         self.endCommand(changed=True,setLabel=True)
-    #@nonl
     #@-node:ekr.20050920084036.110:reverseRegion
     #@+node:ekr.20050920084036.111:up/downCaseRegion & helper
     def downCaseRegion (self,event):
@@ -4174,10 +3985,8 @@ class editCommandsClass (baseEditCommandsClass):
             self.endCommand(changed=True,setLabel=True)
     
         self.removeRKeys(w)
-    #@nonl
     #@-node:ekr.20050920084036.111:up/downCaseRegion & helper
     #@-others
-    #@nonl
     #@-node:ekr.20050920084036.105:region...
     #@+node:ekr.20060309060654:scrolling...
     #@+node:ekr.20050920084036.116:scrollUp/Down/extendSelection
@@ -4196,7 +4005,6 @@ class editCommandsClass (baseEditCommandsClass):
     def scrollUpExtendSelection (self,event):
         '''Extend the text selection by scrolling the body text up one page.'''
         self.scrollHelper(event,'up',extend=True)
-    #@nonl
     #@+node:ekr.20060113082917:scrollHelper
     def scrollHelper (self,event,direction,extend):
     
@@ -4225,7 +4033,6 @@ class editCommandsClass (baseEditCommandsClass):
                 self.scrollOutlineDownPage()
             else:
                 self.scrollOutlineUpPage()
-    #@nonl
     #@-node:ekr.20060113082917:scrollHelper
     #@+node:ekr.20050920084036.147:measure
     def measure (self,w):
@@ -4257,7 +4064,6 @@ class editCommandsClass (baseEditCommandsClass):
                 watch = watch + 1
     
         return watch, top, bottom
-    #@nonl
     #@-node:ekr.20050920084036.147:measure
     #@-node:ekr.20050920084036.116:scrollUp/Down/extendSelection
     #@+node:ekr.20060309060654.1:scrollOutlineUp/Down/Line/Page
@@ -4284,7 +4090,6 @@ class editCommandsClass (baseEditCommandsClass):
         a,b = self.c.frame.treeBar.get()
         if a > 0.0:
             self.c.frame.tree.canvas.yview_scroll(-1,"page")
-    #@nonl
     #@-node:ekr.20060309060654.1:scrollOutlineUp/Down/Line/Page
     #@+node:ekr.20060726154531:scrollOutlineLeftRight
     def scrollOutlineLeft (self,event=None):
@@ -4425,7 +4230,6 @@ class editCommandsClass (baseEditCommandsClass):
             inum = inum + 1
         w.mark_set('insert',ins)
         self.endCommand(changed=True,setLabel=True)
-    #@nonl
     #@-node:ekr.20050920084036.118:sortLines
     #@+node:ekr.20050920084036.119:sortColumns
     def sortColumns (self,event):
@@ -4461,7 +4265,6 @@ class editCommandsClass (baseEditCommandsClass):
              i = i + 1
         w.mark_set('insert',ins)
         self.endCommand(changed=True,setLabel=True)
-    #@nonl
     #@-node:ekr.20050920084036.119:sortColumns
     #@+node:ekr.20050920084036.120:sortFields
     def sortFields (self,event,which=None):
@@ -4506,7 +4309,6 @@ class editCommandsClass (baseEditCommandsClass):
             int1 = int1 + 1
         w.mark_set('insert',ins)
         self.endCommand(changed=True,setLabel=True)
-    #@nonl
     #@-node:ekr.20050920084036.120:sortFields
     #@-node:ekr.20050920084036.117:sort...
     #@+node:ekr.20050920084036.121:swap/transpose...
@@ -4519,7 +4321,6 @@ class editCommandsClass (baseEditCommandsClass):
         w.insert(lind,ftext)
         self.swapSpots.pop()
         self.swapSpots.pop()
-    #@nonl
     #@-node:ekr.20060529184652:swapHelper
     #@+node:ekr.20050920084036.122:transposeLines
     def transposeLines (self,event):
@@ -4543,7 +4344,6 @@ class editCommandsClass (baseEditCommandsClass):
             w.insert('1.0',l2+'\n')
     
         self.endCommand(changed=True,setLabel=True)
-    #@nonl
     #@-node:ekr.20050920084036.122:transposeLines
     #@+node:ekr.20050920084036.123:swapWords
     def swapWords (self,event,swapspots):
@@ -4569,7 +4369,6 @@ class editCommandsClass (baseEditCommandsClass):
             swapspots.append(i)
     
         self.endCommand(changed=True,setLabel=True)
-    #@nonl
     #@-node:ekr.20050920084036.123:swapWords
     #@+node:ekr.20060529184652.1:transposeWords (doesn't work)
     def transposeWords (self,event):
@@ -4579,7 +4378,6 @@ class editCommandsClass (baseEditCommandsClass):
         self.beginCommand(undoType='transpose-words')
         self.swapWords(event,self.swapSpots)
         self.endCommand(changed=True,setLabel=True)
-    #@nonl
     #@-node:ekr.20060529184652.1:transposeWords (doesn't work)
     #@+node:ekr.20050920084036.124:swapCharacters & transeposeCharacters
     def swapCharacters (self,event):
@@ -4598,7 +4396,6 @@ class editCommandsClass (baseEditCommandsClass):
         self.endCommand(changed=True,setLabel=True)
     
     transposeCharacters = swapCharacters
-    #@nonl
     #@-node:ekr.20050920084036.124:swapCharacters & transeposeCharacters
     #@-node:ekr.20050920084036.121:swap/transpose...
     #@+node:ekr.20050920084036.126:tabify & untabify
@@ -4627,10 +4424,8 @@ class editCommandsClass (baseEditCommandsClass):
             w.delete(i,end)
             w.insert(i,ntxt)
             self.endCommand(changed=True,setLabel=True)
-    #@nonl
     #@-node:ekr.20050920084036.126:tabify & untabify
     #@-others
-#@nonl
 #@-node:ekr.20050920084036.53:class editCommandsClass
 #@+node:ekr.20050920084036.161:class editFileCommandsClass
 class editFileCommandsClass (baseEditCommandsClass):
@@ -4642,7 +4437,6 @@ class editFileCommandsClass (baseEditCommandsClass):
     def __init__ (self,c):
     
         baseEditCommandsClass.__init__(self,c) # init the base class.
-    #@nonl
     #@-node:ekr.20050920084036.162: ctor
     #@+node:ekr.20050920084036.163: getPublicCommands (editFileCommandsClass)
     def getPublicCommands (self):
@@ -4658,7 +4452,6 @@ class editFileCommandsClass (baseEditCommandsClass):
             'remove-directory':     self.removeDirectory,
             'save-file':            self.saveFile
         }
-    #@nonl
     #@-node:ekr.20050920084036.163: getPublicCommands (editFileCommandsClass)
     #@+node:ekr.20050920084036.164:deleteFile
     def deleteFile (self,event):
@@ -4679,7 +4472,6 @@ class editFileCommandsClass (baseEditCommandsClass):
                 k.setLabel('Deleted: %s' % k.arg)
             except:
                 k.setLabel('Not Deleted: %s' % k.arg)
-    #@nonl
     #@-node:ekr.20050920084036.164:deleteFile
     #@+node:ekr.20050920084036.165:diff (revise)
     def diff (self,event):
@@ -4702,7 +4494,6 @@ class editFileCommandsClass (baseEditCommandsClass):
             idata.append(z)
         w.delete('1.0','end')
         w.insert('1.0',''.join(idata))
-    #@nonl
     #@-node:ekr.20050920084036.165:diff (revise)
     #@+node:ekr.20050920084036.166:getReadableTextFile
     def getReadableTextFile (self):
@@ -4713,7 +4504,6 @@ class editFileCommandsClass (baseEditCommandsClass):
         else:
             f = open(fname,'rt')
             return f, fname
-    #@nonl
     #@-node:ekr.20050920084036.166:getReadableTextFile
     #@+node:ekr.20050920084036.167:insertFile
     def insertFile (self,event):
@@ -4727,7 +4517,6 @@ class editFileCommandsClass (baseEditCommandsClass):
             f.close()
             w.insert('insert',txt)
             w.see('1.0')
-    #@nonl
     #@-node:ekr.20050920084036.167:insertFile
     #@+node:ekr.20050920084036.168:makeDirectory
     def makeDirectory (self,event):
@@ -4748,7 +4537,6 @@ class editFileCommandsClass (baseEditCommandsClass):
                 k.setLabel("Created: %s" % k.arg)
             except:
                 k.setLabel("Not Create: %s" % k.arg)
-    #@nonl
     #@-node:ekr.20050920084036.168:makeDirectory
     #@+node:ekr.20060419123128:open-outline-by-name
     def openOutlineByName (self,event):
@@ -4766,7 +4554,6 @@ class editFileCommandsClass (baseEditCommandsClass):
         k.resetLabel()
         if fileName and g.os_path_exists(fileName) and not g.os_path_isdir(fileName):
             g.openWithFileName(fileName,c)
-    #@nonl
     #@-node:ekr.20060419123128:open-outline-by-name
     #@+node:ekr.20050920084036.169:removeDirectory
     def removeDirectory (self,event):
@@ -4787,7 +4574,6 @@ class editFileCommandsClass (baseEditCommandsClass):
                 k.setLabel('Removed: %s' % k.arg)
             except:
                 k.setLabel('Not Remove: %s' % k.arg)
-    #@nonl
     #@-node:ekr.20050920084036.169:removeDirectory
     #@+node:ekr.20050920084036.170:saveFile
     def saveFile (self,event):
@@ -4800,10 +4586,8 @@ class editFileCommandsClass (baseEditCommandsClass):
         if f:
             f.write(txt)
             f.close()
-    #@nonl
     #@-node:ekr.20050920084036.170:saveFile
     #@-others
-#@nonl
 #@-node:ekr.20050920084036.161:class editFileCommandsClass
 #@+node:ekr.20060205164707:class helpCommandsClass
 class helpCommandsClass (baseEditCommandsClass):
@@ -4822,7 +4606,6 @@ class helpCommandsClass (baseEditCommandsClass):
             'apropos-find-commands':    self.aproposFindCommands,
             'python-help':              self.pythonHelp,
         }
-    #@nonl
     #@-node:ekr.20060205165501:getPublicCommands (helpCommands)
     #@+node:ekr.20051014170754:help
     def help (self,event=None):
@@ -4857,12 +4640,10 @@ class helpCommandsClass (baseEditCommandsClass):
         
         if not g.app.unitTesting:
             g.es_print(s)
-    #@nonl
     #@+node:ekr.20060205165654:test_help
     def test_help(self):
         
         c.helpCommands.help()
-    #@nonl
     #@-node:ekr.20060205165654:test_help
     #@-node:ekr.20051014170754:help
     #@+node:ekr.20060417203717:helpForCommand
@@ -4884,7 +4665,6 @@ class helpCommandsClass (baseEditCommandsClass):
             g.es('%s:\n%s\n' % (commandName,s),color='blue')
         else:
             g.es('No help available for %s' % (commandName),color='blue')
-    #@nonl
     #@-node:ekr.20060417203717:helpForCommand
     #@+node:ekr.20060226131603.1:aproposAutocompletion
     def aproposAutocompletion (self,event=None):
@@ -4952,12 +4732,10 @@ class helpCommandsClass (baseEditCommandsClass):
             # Remove indentation from indentation of this function.
             s = g.adjustTripleString(s,c.tab_width)
             g.es_print(s)
-    #@nonl
     #@+node:ekr.20060226132000:test_aproposAutocompletion
     def test_aproposAutocompletion (self):
     
         c.helpCommands.aproposAutocompletion()
-    #@nonl
     #@-node:ekr.20060226132000:test_aproposAutocompletion
     #@-node:ekr.20060226131603.1:aproposAutocompletion
     #@+node:ekr.20060205170335:aproposBindings
@@ -5023,12 +4801,10 @@ class helpCommandsClass (baseEditCommandsClass):
             
         if not g.app.unitTesting:
             g.es_print(s)
-    #@nonl
     #@+node:ekr.20060205170435:test_apropos_bindings
     def test_apropos_bindings (self):
     
         c.helpCommands.aproposBindings()
-    #@nonl
     #@-node:ekr.20060205170435:test_apropos_bindings
     #@-node:ekr.20060205170335:aproposBindings
     #@+node:ekr.20060205170335.1:aproposFindCommands
@@ -5132,7 +4908,6 @@ class helpCommandsClass (baseEditCommandsClass):
         
         Here is the list of incremental find commands: isearch-backward, isearch-backward-regexp, isearch-forward and
         isearch-forward-regexp.'''
-        #@nonl
         #@-node:ekr.20060209082023.1:<< define s >>
         #@nl
     
@@ -5141,12 +4916,10 @@ class helpCommandsClass (baseEditCommandsClass):
     
         if not g.app.unitTesting:
             g.es_print(s)
-    #@nonl
     #@+node:ekr.20060205170552:test_apropos_find_commands
     def test_apropos_find_commands (self):
     
         c.helpCommands.aproposFindCommands()
-    #@nonl
     #@-node:ekr.20060205170552:test_apropos_find_commands
     #@-node:ekr.20060205170335.1:aproposFindCommands
     #@+node:ekr.20060602154458:pythonHelp
@@ -5171,10 +4944,8 @@ class helpCommandsClass (baseEditCommandsClass):
                 except Exception: pass
                 g.restoreStderr()
                 g.restoreStdout()
-    #@nonl
     #@-node:ekr.20060602154458:pythonHelp
     #@-others
-#@nonl
 #@-node:ekr.20060205164707:class helpCommandsClass
 #@+node:ekr.20050920084036.171:class keyHandlerCommandsClass (add docstrings)
 class keyHandlerCommandsClass (baseEditCommandsClass):
@@ -5186,7 +4957,6 @@ class keyHandlerCommandsClass (baseEditCommandsClass):
     def __init__ (self,c):
     
         baseEditCommandsClass.__init__(self,c) # init the base class.
-    #@nonl
     #@-node:ekr.20050920084036.172: ctor
     #@+node:ekr.20050920084036.173:getPublicCommands (keyHandler)
     def getPublicCommands (self):
@@ -5233,10 +5003,8 @@ class keyHandlerCommandsClass (baseEditCommandsClass):
             'toggle-input-state':       k.toggleInputState,
             'universal-argument':       k.universalArgument,
         }
-    #@nonl
     #@-node:ekr.20050920084036.173:getPublicCommands (keyHandler)
     #@-others
-#@nonl
 #@-node:ekr.20050920084036.171:class keyHandlerCommandsClass (add docstrings)
 #@+node:ekr.20050920084036.174:class killBufferCommandsClass (add docstrings)
 class killBufferCommandsClass (baseEditCommandsClass):
@@ -5266,7 +5034,6 @@ class killBufferCommandsClass (baseEditCommandsClass):
         
         if self.k.useGlobalKillbuffer:
             self.killBuffer = leoKeys.keyHandlerClass.global_killbuffer
-    #@nonl
     #@-node:ekr.20050920084036.175: ctor & finishCreate
     #@+node:ekr.20050920084036.176: getPublicCommands
     def getPublicCommands (self):
@@ -5284,7 +5051,6 @@ class killBufferCommandsClass (baseEditCommandsClass):
             'yank-pop':                 self.yankPop,
             'zap-to-character':         self.zapToCharacter,
         }
-    #@nonl
     #@-node:ekr.20050920084036.176: getPublicCommands
     #@+node:ekr.20050920084036.183:addToKillBuffer
     def addToKillBuffer (self,text):
@@ -5303,7 +5069,6 @@ class killBufferCommandsClass (baseEditCommandsClass):
             self.killBuffer [0] = self.killBuffer [0] + text
         else:
             self.killBuffer.insert(0,text)
-    #@nonl
     #@-node:ekr.20050920084036.183:addToKillBuffer
     #@+node:ekr.20050920084036.181:backwardKillSentence
     def backwardKillSentence (self,event):
@@ -5317,7 +5082,6 @@ class killBufferCommandsClass (baseEditCommandsClass):
             i2 = w.search('.',i,backwards=True,stopindex='1.0')
             i2 = g.choose(i2=='','1.0',i2+'+1c ')
             self.kill(event,i2,'%s + 1c' % i,undoType='backward-kill-sentence')
-    #@nonl
     #@-node:ekr.20050920084036.181:backwardKillSentence
     #@+node:ekr.20050920084036.180:backwardKillWord
     def backwardKillWord (self,event):
@@ -5329,7 +5093,6 @@ class killBufferCommandsClass (baseEditCommandsClass):
         self.killWs(event)
         self.killWord(event)
         # c.editCommands.backwardWord(event)
-    #@nonl
     #@-node:ekr.20050920084036.180:backwardKillWord
     #@+node:ekr.20051216151811:clearKillRing
     def clearKillRing (self,event=None):
@@ -5337,7 +5100,6 @@ class killBufferCommandsClass (baseEditCommandsClass):
         '''Clear the kill ring.'''
         
         self.killBuffer = []
-    #@nonl
     #@-node:ekr.20051216151811:clearKillRing
     #@+node:ekr.20050920084036.185:getClipboard
     def getClipboard (self,w):
@@ -5351,7 +5113,6 @@ class killBufferCommandsClass (baseEditCommandsClass):
         except: pass
     
         return None
-    #@nonl
     #@-node:ekr.20050920084036.185:getClipboard
     #@+node:ekr.20050920084036.184:iterateKillBuffer
     def iterateKillBuffer (self):
@@ -5410,7 +5171,6 @@ class killBufferCommandsClass (baseEditCommandsClass):
                 w.clipboard_clear()
                 w.clipboard_append(s)
                 self.removeRKeys(w)
-    #@nonl
     #@-node:ekr.20050920084036.182:killRegion & killRegionSave & helper
     #@+node:ekr.20050930095323.1:killSentence
     def killSentence (self,event):
@@ -5423,7 +5183,6 @@ class killBufferCommandsClass (baseEditCommandsClass):
             i2 = w.search('.','insert',backwards=True,stopindex='1.0')
             i2 = g.choose(i2=='','1.0',i2+'+1c ')
             self.kill(event,i2,'%s + 1c' % i,undoType='kill-sentence')
-    #@nonl
     #@-node:ekr.20050930095323.1:killSentence
     #@+node:ekr.20050930100733:killWs
     def killWs (self,event):
@@ -5440,7 +5199,6 @@ class killBufferCommandsClass (baseEditCommandsClass):
                 
         if ws:
             self.addToKillBuffer(ws)
-    #@nonl
     #@-node:ekr.20050930100733:killWs
     #@+node:ekr.20050930091642.1:yank
     def yank (self,event):
@@ -5457,7 +5215,6 @@ class killBufferCommandsClass (baseEditCommandsClass):
             w.tag_delete('kb')
             w.insert('insert',s,('kb'))
             w.mark_set('insert',i)
-    #@nonl
     #@-node:ekr.20050930091642.1:yank
     #@+node:ekr.20050930091642.2:yankPop
     def yankPop (self,event):
@@ -5478,7 +5235,6 @@ class killBufferCommandsClass (baseEditCommandsClass):
             w.tag_delete('kb')
             w.insert('insert',s,('kb'))
             w.mark_set('insert',i)
-    #@nonl
     #@-node:ekr.20050930091642.2:yankPop
     #@+node:ekr.20050920084036.128:zapToCharacter
     def zapToCharacter (self,event):
@@ -5503,10 +5259,8 @@ class killBufferCommandsClass (baseEditCommandsClass):
                     t = w.get('insert','%s+1c' % i)
                     self.addToKillBuffer(t)
                     w.delete('insert','%s+1c' % i)
-    #@nonl
     #@-node:ekr.20050920084036.128:zapToCharacter
     #@-others
-#@nonl
 #@-node:ekr.20050920084036.174:class killBufferCommandsClass (add docstrings)
 #@+node:ekr.20050920084036.186:class leoCommandsClass (add docstrings)
 class leoCommandsClass (baseEditCommandsClass):
@@ -5516,7 +5270,6 @@ class leoCommandsClass (baseEditCommandsClass):
     def __init__ (self,c):
     
         baseEditCommandsClass.__init__(self,c) # init the base class.
-    #@nonl
     #@-node:ekr.20050920084036.187: ctor
     #@+node:ekr.20050920084036.188:leoCommands.getPublicCommands
     def getPublicCommands (self):
@@ -5681,7 +5434,6 @@ class leoCommandsClass (baseEditCommandsClass):
             'write-missing-at-file-nodes':  c.fileCommands.writeMissingAtFileNodes,
             'write-outline-only':           c.fileCommands.writeOutlineOnly,
         }
-        #@nonl
         #@-node:ekr.20050920084036.189:<< define dictionary d of names and Leo commands >>
         #@nl
         
@@ -5694,10 +5446,8 @@ class leoCommandsClass (baseEditCommandsClass):
             # g.trace('leoCommands %24s = %s' % (f.__name__,name))
             
         return d2
-    #@nonl
     #@-node:ekr.20050920084036.188:leoCommands.getPublicCommands
     #@-others
-#@nonl
 #@-node:ekr.20050920084036.186:class leoCommandsClass (add docstrings)
 #@+node:ekr.20050920084036.190:class macroCommandsClass
 class macroCommandsClass (baseEditCommandsClass):
@@ -5715,7 +5465,6 @@ class macroCommandsClass (baseEditCommandsClass):
         
         # Important: we must not interfere with k.state in startKbdMacro!
         self.recordingMacro = False
-    #@nonl
     #@-node:ekr.20050920084036.191: ctor
     #@+node:ekr.20050920084036.192: getPublicCommands
     def getPublicCommands (self):
@@ -5728,7 +5477,6 @@ class macroCommandsClass (baseEditCommandsClass):
             'insert-keyboard-macro' :   self.insertKeyboardMacro,
             'start-kbd-macro':          self.startKbdMacro,
         }
-    #@nonl
     #@-node:ekr.20050920084036.192: getPublicCommands
     #@+node:ekr.20050920084036.193:Entry points
     #@+node:ekr.20050920084036.194:insertKeyboardMacro
@@ -5754,7 +5502,6 @@ class macroCommandsClass (baseEditCommandsClass):
                     prompt=prompt,protect=True)
             else:
                 k.updateLabel(event)
-    #@nonl
     #@+node:ekr.20050920084036.195:findFirstMatchFromList
     def findFirstMatchFromList (self,s,aList=None):
     
@@ -5772,7 +5519,6 @@ class macroCommandsClass (baseEditCommandsClass):
             return mstring
     
         return s
-    #@nonl
     #@-node:ekr.20050920084036.195:findFirstMatchFromList
     #@-node:ekr.20050920084036.194:insertKeyboardMacro
     #@+node:ekr.20050920084036.196:loadFile & helpers
@@ -5783,7 +5529,6 @@ class macroCommandsClass (baseEditCommandsClass):
         f = tkFileDialog and tkFileDialog.askopenfile()
         if f:
             self._loadMacros(f)
-    #@nonl
     #@+node:ekr.20050920084036.197:_loadMacros
     def _loadMacros (self,f):
     
@@ -5793,7 +5538,6 @@ class macroCommandsClass (baseEditCommandsClass):
         macros = cPickle.load(f)
         for z in macros:
             k.addToDoAltX(z,macros[z])
-    #@nonl
     #@-node:ekr.20050920084036.197:_loadMacros
     #@-node:ekr.20050920084036.196:loadFile & helpers
     #@+node:ekr.20050920084036.198:nameLastKbdMacro
@@ -5811,7 +5555,6 @@ class macroCommandsClass (baseEditCommandsClass):
             name = k.arg
             k.addToDoAltX(name,self.lastMacro)
             k.setLabelGrey('Macro defined: %s' % name)
-    #@nonl
     #@-node:ekr.20050920084036.198:nameLastKbdMacro
     #@+node:ekr.20050920084036.199:saveMacros & helper
     def saveMacros (self,event,macname):
@@ -5824,7 +5567,6 @@ class macroCommandsClass (baseEditCommandsClass):
             f.seek(0)
             if f:
                 self._saveMacros(f,macname)
-    #@nonl
     #@+node:ekr.20050920084036.200:_saveMacros
     def _saveMacros( self, f , name ):
         '''Saves the macros as a pickled dictionary'''
@@ -5840,7 +5582,6 @@ class macroCommandsClass (baseEditCommandsClass):
             f = file( fname, 'w' )
             cPickle.dump( macs, f )
             f.close()
-    #@nonl
     #@-node:ekr.20050920084036.200:_saveMacros
     #@-node:ekr.20050920084036.199:saveMacros & helper
     #@+node:ekr.20050920084036.204:startKbdMacro
@@ -5867,7 +5608,6 @@ class macroCommandsClass (baseEditCommandsClass):
             else:
                 self.macro.append((stroke,event.keycode,event.keysym,event.char))
                 return True
-    #@nonl
     #@-node:ekr.20050920084036.204:startKbdMacro
     #@+node:ekr.20050920084036.206:endKbdMacro
     def endKbdMacro (self,event):
@@ -5884,7 +5624,6 @@ class macroCommandsClass (baseEditCommandsClass):
             k.setLabelGrey('Keyboard macro defined, not named')
         else:
             k.setLabelGrey('Empty keyboard macro')
-    #@nonl
     #@-node:ekr.20050920084036.206:endKbdMacro
     #@+node:ekr.20050920084036.202:callLastKeyboardMacro & helper (called from universal command)
     def callLastKeyboardMacro (self,event):
@@ -5895,7 +5634,6 @@ class macroCommandsClass (baseEditCommandsClass):
     
         if self.lastMacro:
             self._executeMacro(self.lastMacro,w)
-    #@nonl
     #@+node:ekr.20050920084036.203:_executeMacro (revise)
     def _executeMacro (self,macro,w):
     
@@ -5915,7 +5653,6 @@ class macroCommandsClass (baseEditCommandsClass):
                     ev.keysym = z [2]
                     ev.char = z [3]
                     k.masterCommand(ev,b.f,'<%s>' % meth)
-    #@nonl
     #@-node:ekr.20050920084036.203:_executeMacro (revise)
     #@-node:ekr.20050920084036.202:callLastKeyboardMacro & helper (called from universal command)
     #@-node:ekr.20050920084036.193:Entry points
@@ -5938,11 +5675,9 @@ class macroCommandsClass (baseEditCommandsClass):
         c.commandsDict [name] = func
         self.namedMacros [name] = macro
         return True
-    #@nonl
     #@-node:ekr.20050920085536.15:addToDoAltX
     #@-node:ekr.20051006065746:Common Helpers
     #@-others
-#@nonl
 #@-node:ekr.20050920084036.190:class macroCommandsClass
 #@+node:ekr.20050920084036.207:class queryReplaceCommandsClass (limited to single node)
 class queryReplaceCommandsClass (baseEditCommandsClass):
@@ -5969,7 +5704,6 @@ class queryReplaceCommandsClass (baseEditCommandsClass):
             'query-replace':        self.queryReplace,
             'query-replace-regex':  self.queryReplaceRegex,
         }
-    #@nonl
     #@-node:ekr.20050920084036.209: getPublicCommands
     #@+node:ekr.20050920084036.210:Entry points
     def queryReplace (self,event):
@@ -5993,7 +5727,6 @@ class queryReplaceCommandsClass (baseEditCommandsClass):
         event.widget.delete(i[0],i[1])
         event.widget.insert('insert',self.qR)
         self.replaced += 1
-    #@nonl
     #@-node:ekr.20050920084036.212:doOneReplace
     #@+node:ekr.20050920084036.219:findNextMatch
     def findNextMatch (self,event):
@@ -6031,7 +5764,6 @@ class queryReplaceCommandsClass (baseEditCommandsClass):
             else:
                 self.quitSearch(event)
                 return False
-            #@nonl
             #@-node:ekr.20051005155611:<< handle regexp >>
             #@nl
         else:
@@ -6047,10 +5779,8 @@ class queryReplaceCommandsClass (baseEditCommandsClass):
             else:
                 self.quitSearch(event)
                 return False
-            #@nonl
             #@-node:ekr.20051005160923:<< handle plain search >>
             #@nl
-    #@nonl
     #@-node:ekr.20050920084036.219:findNextMatch
     #@+node:ekr.20050920084036.211:getUserResponse
     def getUserResponse (self,event):
@@ -6074,7 +5804,6 @@ class queryReplaceCommandsClass (baseEditCommandsClass):
                 self.quitSearch(event)
     
         w.see('insert')
-    #@nonl
     #@-node:ekr.20050920084036.211:getUserResponse
     #@+node:ekr.20050920084036.220:quitSearch
     def quitSearch (self,event,message=None):
@@ -6085,7 +5814,6 @@ class queryReplaceCommandsClass (baseEditCommandsClass):
         if message is None:
             message = 'Replaced %d occurences' % self.replaced
         k.setLabelGrey(message)
-    #@nonl
     #@-node:ekr.20050920084036.220:quitSearch
     #@+node:ekr.20050920084036.215:stateHandler
     def stateHandler (self,event):
@@ -6116,11 +5844,9 @@ class queryReplaceCommandsClass (baseEditCommandsClass):
             self.findNextMatch(event)
         elif state == 3:
             self.getUserResponse(event)
-    #@nonl
     #@-node:ekr.20050920084036.215:stateHandler
     #@-node:ekr.20051005151838:Helpers
     #@-others
-#@nonl
 #@-node:ekr.20050920084036.207:class queryReplaceCommandsClass (limited to single node)
 #@+node:ekr.20050920084036.221:class rectangleCommandsClass
 class rectangleCommandsClass (baseEditCommandsClass):
@@ -6156,7 +5882,6 @@ class rectangleCommandsClass (baseEditCommandsClass):
         Otherwise, return False and issue a warning.'''
     
         return self._chckSel(event,warning)
-    #@nonl
     #@-node:ekr.20051004112630:check
     #@+node:ekr.20050920084036.223:getPublicCommands
     def getPublicCommands (self):
@@ -6170,7 +5895,6 @@ class rectangleCommandsClass (baseEditCommandsClass):
             'string-rectangle': self.stringRectangle,
             'yank-rectangle':   self.yankRectangle,
         }
-    #@nonl
     #@-node:ekr.20050920084036.223:getPublicCommands
     #@+node:ekr.20051215103053:beginCommand & beginCommandWithEvent (rectangle)
     def beginCommand (self,undoType='Typing'):
@@ -6190,7 +5914,6 @@ class rectangleCommandsClass (baseEditCommandsClass):
         r1, r2, r3, r4 = self.getRectanglePoints()
     
         return w, r1, r2, r3, r4
-    #@nonl
     #@-node:ekr.20051215103053:beginCommand & beginCommandWithEvent (rectangle)
     #@+node:ekr.20050920084036.224:Entries
     #@+node:ekr.20050920084036.225:clearRectangle
@@ -6210,7 +5933,6 @@ class rectangleCommandsClass (baseEditCommandsClass):
             w.insert('%s.%s' % (r,r2),s)
             
         self.endCommand()
-    #@nonl
     #@-node:ekr.20050920084036.225:clearRectangle
     #@+node:ekr.20050920084036.226:closeRectangle
     def closeRectangle (self,event):
@@ -6231,7 +5953,6 @@ class rectangleCommandsClass (baseEditCommandsClass):
             w.delete('%s.%s' % (r,r2),'%s.%s' % (r,r4))
             
         self.endCommand()
-    #@nonl
     #@-node:ekr.20050920084036.226:closeRectangle
     #@+node:ekr.20050920084036.227:deleteRectangle
     def deleteRectangle (self,event):
@@ -6246,7 +5967,6 @@ class rectangleCommandsClass (baseEditCommandsClass):
             w.delete('%s.%s' % (r,r2),'%s.%s' % (r,r4))
             
         self.endCommand()
-    #@nonl
     #@-node:ekr.20050920084036.227:deleteRectangle
     #@+node:ekr.20050920084036.228:killRectangle
     def killRectangle (self,event):
@@ -6268,7 +5988,6 @@ class rectangleCommandsClass (baseEditCommandsClass):
             w.mark_set('sel.end','insert')
             
         self.endCommand()
-    #@nonl
     #@-node:ekr.20050920084036.228:killRectangle
     #@+node:ekr.20050920084036.230:openRectangle
     def openRectangle (self,event):
@@ -6285,7 +6004,6 @@ class rectangleCommandsClass (baseEditCommandsClass):
             w.insert('%s.%s' % (r,r2),s)
             
         self.endCommand()
-    #@nonl
     #@-node:ekr.20050920084036.230:openRectangle
     #@+node:ekr.20050920084036.229:yankRectangle
     def yankRectangle (self,event,killRect=None):
@@ -6318,7 +6036,6 @@ class rectangleCommandsClass (baseEditCommandsClass):
             i1 += 1
     
         self.endCommand()
-    #@nonl
     #@-node:ekr.20050920084036.229:yankRectangle
     #@+node:ekr.20050920084036.232:stringRectangle
     def stringRectangle (self,event):
@@ -6347,7 +6064,6 @@ class rectangleCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20050920084036.232:stringRectangle
     #@-node:ekr.20050920084036.224:Entries
     #@-others
-#@nonl
 #@-node:ekr.20050920084036.221:class rectangleCommandsClass
 #@+node:ekr.20050920084036.234:class registerCommandsClass
 class registerCommandsClass (baseEditCommandsClass):
@@ -6377,7 +6093,6 @@ class registerCommandsClass (baseEditCommandsClass):
     
         self.method = None 
         self.registerMode = 0 # Must be an int.
-    #@nonl
     #@-node:ekr.20050920084036.235: ctor, finishCreate & init
     #@+node:ekr.20050920084036.247: getPublicCommands
     def getPublicCommands (self):
@@ -6394,7 +6109,6 @@ class registerCommandsClass (baseEditCommandsClass):
             'prepend-to-register':          self.prependToRegister,
             'view-register':                self.viewRegister,
         }
-    #@nonl
     #@-node:ekr.20050920084036.247: getPublicCommands
     #@+node:ekr.20050920084036.252:addRegisterItems (Not used!)
     def addRegisterItems( self ):
@@ -6426,14 +6140,12 @@ class registerCommandsClass (baseEditCommandsClass):
         }
     
         return methodDict, helpDict
-    #@nonl
     #@-node:ekr.20050920084036.252:addRegisterItems (Not used!)
     #@-node:ekr.20051004095209:Birth
     #@+node:ekr.20051004123217:checkBodySelection
     def checkBodySelection (self,warning='No text selected'):
         
         return self._chckSel(event=None,warning=warning)
-    #@nonl
     #@-node:ekr.20051004123217:checkBodySelection
     #@+node:ekr.20050920084036.236:Entries...
     #@+node:ekr.20050920084036.238:appendToRegister
@@ -6463,7 +6175,6 @@ class registerCommandsClass (baseEditCommandsClass):
                 else:
                     k.setLabelGrey('Register must be a letter')
         c.bodyWantsFocus()
-    #@nonl
     #@-node:ekr.20050920084036.238:appendToRegister
     #@+node:ekr.20050920084036.237:prependToRegister
     def prependToRegister (self,event):
@@ -6492,7 +6203,6 @@ class registerCommandsClass (baseEditCommandsClass):
                 else:
                     k.setLabelGrey('Register must be a letter')
         c.bodyWantsFocus()
-    #@nonl
     #@-node:ekr.20050920084036.237:prependToRegister
     #@+node:ekr.20050920084036.239:copyRectangleToRegister
     def copyRectangleToRegister (self,event):
@@ -6523,7 +6233,6 @@ class registerCommandsClass (baseEditCommandsClass):
             else:
                 k.setLabelGrey('Register must be a letter')
         c.bodyWantsFocus()
-    #@nonl
     #@-node:ekr.20050920084036.239:copyRectangleToRegister
     #@+node:ekr.20050920084036.240:copyToRegister
     def copyToRegister (self,event):
@@ -6553,7 +6262,6 @@ class registerCommandsClass (baseEditCommandsClass):
                 else:
                     k.setLabelGrey('Register must be a letter')
         c.bodyWantsFocus()
-    #@nonl
     #@-node:ekr.20050920084036.240:copyToRegister
     #@+node:ekr.20050920084036.241:incrementRegister
     def incrementRegister (self,event):
@@ -6611,7 +6319,6 @@ class registerCommandsClass (baseEditCommandsClass):
             else:
                 k.setLabelGrey('Register must be a letter')
         c.bodyWantsFocus()
-    #@nonl
     #@-node:ekr.20050920084036.242:insertRegister
     #@+node:ekr.20050920084036.243:jumpToRegister
     def jumpToRegister (self,event):
@@ -6640,7 +6347,6 @@ class registerCommandsClass (baseEditCommandsClass):
                 else:
                     k.setLabelGrey('Register %s is empty' % key)
         c.bodyWantsFocus()
-    #@nonl
     #@-node:ekr.20050920084036.243:jumpToRegister
     #@+node:ekr.20050920084036.244:numberToRegister (not used)
     #@+at
@@ -6692,7 +6398,6 @@ class registerCommandsClass (baseEditCommandsClass):
             else:
                 k.setLabelGrey('Register must be a letter')
         c.bodyWantsFocus()
-    #@nonl
     #@-node:ekr.20050920084036.245:pointToRegister
     #@+node:ekr.20050920084036.246:viewRegister
     def viewRegister (self,event):
@@ -6714,11 +6419,9 @@ class registerCommandsClass (baseEditCommandsClass):
             else:
                 k.setLabelGrey('Register must be a letter')
         c.bodyWantsFocus()
-    #@nonl
     #@-node:ekr.20050920084036.246:viewRegister
     #@-node:ekr.20050920084036.236:Entries...
     #@-others
-#@nonl
 #@-node:ekr.20050920084036.234:class registerCommandsClass
 #@+node:ekr.20051023094009:Search classes
 #@+node:ekr.20060123125256:class minibufferFind (the findHandler)
@@ -6742,7 +6445,6 @@ class minibufferFind:
         s = k.prettyPrintKey(s)
         s = k.shortcutFromSetting(s)
         self.replaceStringShortcut = s
-    #@nonl
     #@-node:ekr.20060123125317.2: ctor (minibufferFind)
     #@+node:ekr.20060124140114: Options
     #@+node:ekr.20060124123133:setFindScope
@@ -6760,7 +6462,6 @@ class minibufferFind:
                 h.dict["radio-search-scope"].set(where)
         else:
             g.trace('oops: bad `where` value: %s' % where)
-    #@nonl
     #@-node:ekr.20060124123133:setFindScope
     #@+node:ekr.20060124122844:setOption
     def setOption (self, ivar, val):
@@ -6775,7 +6476,6 @@ class minibufferFind:
     
         elif not g.app.unitTesting:
             g.trace('oops: bad find ivar %s' % ivar)
-    #@nonl
     #@-node:ekr.20060124122844:setOption
     #@+node:ekr.20060125082510:getOption
     def getOption (self,ivar,verbose=False):
@@ -6790,7 +6490,6 @@ class minibufferFind:
         else:
             g.trace('bad ivar name: %s' % ivar)
             return None
-    #@nonl
     #@-node:ekr.20060125082510:getOption
     #@+node:ekr.20060125074939:showFindOptions
     def showFindOptions (self):
@@ -6836,7 +6535,6 @@ class minibufferFind:
             if val: z.append(s)
     
         frame.putStatusLine(' '.join(z))
-    #@nonl
     #@-node:ekr.20060125074939:showFindOptions
     #@+node:ekr.20060124135401:toggleOption
     def toggleOption (self, ivar):
@@ -6850,7 +6548,6 @@ class minibufferFind:
             # g.trace('%s = %s' % (ivar,val),var)
         else:
             g.trace('oops: bad find ivar %s' % ivar)
-    #@nonl
     #@-node:ekr.20060124135401:toggleOption
     #@+node:ekr.20060205105950:setupChangePattern
     def setupChangePattern (self,pattern):
@@ -6863,7 +6560,6 @@ class minibufferFind:
         t.insert('1.0',s)
         
         h.update_ivars()
-    #@nonl
     #@-node:ekr.20060205105950:setupChangePattern
     #@+node:ekr.20060125091234:setupSearchPattern
     def setupSearchPattern (self,pattern):
@@ -6876,7 +6572,6 @@ class minibufferFind:
         t.insert('1.0',s)
         
         h.update_ivars()
-    #@nonl
     #@-node:ekr.20060125091234:setupSearchPattern
     #@-node:ekr.20060124140114: Options
     #@+node:ekr.20060210180352:addChangeStringToLabel
@@ -6924,7 +6619,6 @@ class minibufferFind:
             k.resetLabel()
             k.showStateAndMode()
             self.generalSearchHelper(k.arg,cloneFindAll=True)
-    #@nonl
     #@-node:ekr.20060128080201:cloneFindAll
     #@+node:ekr.20060204120158:findAgain
     def findAgain (self,event):
@@ -6936,8 +6630,6 @@ class minibufferFind:
     
         # This handles the reverse option.
         return f.findAgainCommand()
-            
-    #@nonl
     #@-node:ekr.20060204120158:findAgain
     #@+node:ekr.20060209064140:findAll
     def findAll (self,event):
@@ -6953,7 +6645,6 @@ class minibufferFind:
             k.resetLabel()
             k.showStateAndMode()
             self.generalSearchHelper(k.arg,findAll=True)
-    #@nonl
     #@-node:ekr.20060209064140:findAll
     #@+node:ekr.20060205105950.1:generalChangeHelper
     def generalChangeHelper (self,find_pattern,change_pattern):
@@ -6971,7 +6662,6 @@ class minibufferFind:
     
         # This handles the reverse option.
         self.finder.findNextCommand()
-    #@nonl
     #@-node:ekr.20060205105950.1:generalChangeHelper
     #@+node:ekr.20060124181213.4:generalSearchHelper
     def generalSearchHelper (self,pattern,cloneFindAll=False,findAll=False):
@@ -6991,7 +6681,6 @@ class minibufferFind:
         else:
             # This handles the reverse option.
             self.finder.findNextCommand()
-    #@nonl
     #@-node:ekr.20060124181213.4:generalSearchHelper
     #@+node:ekr.20060210174441:lastStateHelper
     def lastStateHelper (self):
@@ -7000,7 +6689,6 @@ class minibufferFind:
         k.clearState()
         k.resetLabel()
         k.showStateAndMode()
-    #@nonl
     #@-node:ekr.20060210174441:lastStateHelper
     #@+node:ekr.20050920084036.113:replaceString
     def replaceString (self,event):
@@ -7059,7 +6747,6 @@ class minibufferFind:
             self.updateFindList(k.arg)
             self.lastStateHelper()
             self.generalSearchHelper(k.arg)
-    #@nonl
     #@-node:ekr.20060124140224.3:reSearchBackward/Forward
     #@+node:ekr.20060124140224.1:seachForward/Backward
     def searchBackward (self,event):
@@ -7097,7 +6784,6 @@ class minibufferFind:
             self.updateFindList(k.arg)
             self.lastStateHelper()
             self.generalSearchHelper(k.arg)
-    #@nonl
     #@-node:ekr.20060124140224.1:seachForward/Backward
     #@+node:ekr.20060125093807:searchWithPresentOptions
     def searchWithPresentOptions (self,event):
@@ -7120,7 +6806,6 @@ class minibufferFind:
             k.resetLabel()
             k.showStateAndMode()
             self.generalSearchHelper(k.arg)
-    #@nonl
     #@-node:ekr.20060125093807:searchWithPresentOptions
     #@+node:ekr.20060124134356:setupArgs
     def setupArgs (self,forward=False,regexp=False,word=False):
@@ -7144,7 +6829,6 @@ class minibufferFind:
         h.v = p.v
         h.update_ivars()
         self.showFindOptions()
-    #@nonl
     #@-node:ekr.20060124134356:setupArgs
     #@+node:ekr.20060210173041:stateZeroHelper
     def stateZeroHelper (self,event,tag,prefix,handler,escapes=[]):
@@ -7159,7 +6843,6 @@ class minibufferFind:
         k.getArgEscape = None # k.getArg may set this.
         k.getArg(event,tag,1,handler, # enter state 1
             tabList=self.findTextList,completion=True,prefix=prefix)
-    #@nonl
     #@-node:ekr.20060210173041:stateZeroHelper
     #@+node:ekr.20060224171851:updateChange/FindList
     def updateChangeList (self,s):
@@ -7171,7 +6854,6 @@ class minibufferFind:
     
         if s not in self.findTextList:
             self.findTextList.append(s)
-    #@nonl
     #@-node:ekr.20060224171851:updateChange/FindList
     #@+node:ekr.20060124140224.2:wordSearchBackward/Forward
     def wordSearchBackward (self,event):
@@ -7195,10 +6877,8 @@ class minibufferFind:
         else:
             self.lastStateHelper()
             self.generalSearchHelper(k.arg)
-    #@nonl
     #@-node:ekr.20060124140224.2:wordSearchBackward/Forward
     #@-others
-#@nonl
 #@-node:ekr.20060123125256:class minibufferFind (the findHandler)
 #@+node:ekr.20051020120306.6:class findTab (leoFind.leoFind)
 class findTab (leoFind.leoFind):
@@ -7228,7 +6908,6 @@ class findTab (leoFind.leoFind):
             self.dict[key] = Tk.StringVar()
             
         self.s_ctrl = Tk.Text() # Used by find.search()
-        #@nonl
         #@-node:ekr.20051020120306.12:<< create the tkinter intVars >>
         #@nl
         
@@ -7243,7 +6922,6 @@ class findTab (leoFind.leoFind):
         self.createBindings()
         
         self.init(c) # New in 4.3: init only once.
-    #@nonl
     #@-node:ekr.20051020120306.11:__init__
     #@+node:ekr.20051023181449:createBindings (findTab)
     def createBindings (self):
@@ -7271,7 +6949,6 @@ class findTab (leoFind.leoFind):
         for w in (self.find_ctrl,self.change_ctrl):
             for event, callback in table:
                 w.bind(event,callback)
-    #@nonl
     #@-node:ekr.20051023181449:createBindings (findTab)
     #@+node:ekr.20051020120306.13:createFrame (findTab)
     def createFrame (self,parentFrame):
@@ -7299,7 +6976,6 @@ class findTab (leoFind.leoFind):
         
         for z in ('borderframe','clipper','frame','hull'):
             self.outerScrolledFrame.component(z).configure(relief='flat',background=bg)
-        #@nonl
         #@-node:ekr.20051020120306.14:<< Create the outer frames >>
         #@nl
         #@    << Create the Find and Change panes >>
@@ -7355,7 +7031,6 @@ class findTab (leoFind.leoFind):
         ctxt.bind("<Tab>",toFind)
         ftxt.bind("<Control-Tab>",insertFindTab)
         ctxt.bind("<Control-Tab>",insertChangeTab)
-        #@nonl
         #@-node:ekr.20051020120306.16:<< Bind Tab and control-tab >>
         #@nl
         
@@ -7374,7 +7049,6 @@ class findTab (leoFind.leoFind):
         else:
             flab.pack(side="left") ; ftxt.pack(side="right", expand=1, fill="x")
             clab.pack(side="left") ; ctxt.pack(side="right", expand=1, fill="x")
-        #@nonl
         #@-node:ekr.20051020120306.15:<< Create the Find and Change panes >>
         #@nl
         #@    << Create two columns of radio and checkboxes >>
@@ -7434,7 +7108,6 @@ class findTab (leoFind.leoFind):
                 box.bindHotKey(ftxt)
                 box.bindHotKey(ctxt)
                 if var is None: box.button.configure(state="disabled")
-        #@nonl
         #@-node:ekr.20051020120306.17:<< Create two columns of radio and checkboxes >>
         #@nl
         
@@ -7473,13 +7146,11 @@ class findTab (leoFind.leoFind):
                 elif boxKind != 'check':
                     w.button.configure(width=width)
                 w.button.pack(side='top',anchor='w',pady=2,padx=2)
-            #@nonl
             #@-node:ekr.20051020120306.18:<< Create two columns of buttons >>
             #@nl
         
         # Pack this last so buttons don't get squashed when frame is resized.
         self.outerScrolledFrame.pack(side='top',expand=1,fill='both',padx=2,pady=2)
-    #@nonl
     #@-node:ekr.20051020120306.13:createFrame (findTab)
     #@+node:ekr.20051020120306.19:find.init
     def init (self,c):
@@ -7508,7 +7179,6 @@ class findTab (leoFind.leoFind):
             s = c.config.getString(setting)
             if not s: s = defaultText
             w.insert("end",s)
-        #@nonl
         #@-node:ekr.20051020120306.20:<< set find/change widgets >>
         #@nl
         #@    << set radio buttons from ivars >>
@@ -7537,10 +7207,8 @@ class findTab (leoFind.leoFind):
                 found = True ; break
         if not found:
             self.dict["radio-search-scope"].set("entire-outline")
-        #@nonl
         #@-node:ekr.20051020120306.21:<< set radio buttons from ivars >>
         #@nl
-    #@nonl
     #@-node:ekr.20051020120306.19:find.init
     #@-node:ekr.20051020120306.10:Birth & death
     #@+node:ekr.20051020120306.22:find.update_ivars
@@ -7573,7 +7241,6 @@ class findTab (leoFind.leoFind):
             s = s[:-1]
         s = g.toUnicode(s,g.app.tkEncoding)
         self.change_text = s
-    #@nonl
     #@-node:ekr.20051020120306.22:find.update_ivars
     #@+node:ekr.20060221074900:Callbacks
     #@+node:ekr.20060221074900.1:findButtonCallback
@@ -7581,7 +7248,6 @@ class findTab (leoFind.leoFind):
         
         self.findButton()
         return 'break'
-    #@nonl
     #@-node:ekr.20060221074900.1:findButtonCallback
     #@+node:ekr.20051020120306.25:hideTab
     def hideTab (self,event=None):
@@ -7589,7 +7255,6 @@ class findTab (leoFind.leoFind):
         c = self.c
         c.frame.log.selectTab('Log')
         c.bodyWantsFocus()
-    #@nonl
     #@-node:ekr.20051020120306.25:hideTab
     #@-node:ekr.20060221074900:Callbacks
     #@+node:ekr.20051024192602: Top level
@@ -7598,7 +7263,6 @@ class findTab (leoFind.leoFind):
     
         self.setup_command()
         self.findAll()
-    #@nonl
     #@-node:ekr.20060209064832:findAllCommand
     #@+node:ekr.20060204120158.1:findAgainCommand
     def findAgainCommand (self):
@@ -7611,7 +7275,6 @@ class findTab (leoFind.leoFind):
         else:
             # Tell the caller that to get the find args.
             return False
-    #@nonl
     #@-node:ekr.20060204120158.1:findAgainCommand
     #@+node:ekr.20060128075225:cloneFindAllCommand
     def cloneFindAllCommand (self,event=None):
@@ -7633,7 +7296,6 @@ class findTab (leoFind.leoFind):
         self.reverse = not self.reverse
         self.findNext()
         self.reverse = not self.reverse
-    #@nonl
     #@-node:ekr.20051024192642.2:findNext/PrefCommand
     #@+node:ekr.20051024192642.3:change/ThenFindCommand
     def changeCommand (self,event=None):
@@ -7650,7 +7312,6 @@ class findTab (leoFind.leoFind):
         
         self.setup_command()
         self.changeThenFind()
-    #@nonl
     #@-node:ekr.20051024192642.3:change/ThenFindCommand
     #@-node:ekr.20051024192602: Top level
     #@+node:ekr.20051020120306.26:bringToFront
@@ -7663,7 +7324,6 @@ class findTab (leoFind.leoFind):
         c.widgetWantsFocus(t)
         g.app.gui.selectAllText(t)
         c.widgetWantsFocus(t)
-    #@nonl
     #@-node:ekr.20051020120306.26:bringToFront
     #@+node:ekr.20051020120306.27:selectAllFindText
     def selectAllFindText (self,event=None):
@@ -7675,7 +7335,6 @@ class findTab (leoFind.leoFind):
             g.app.gui.setTextSelection(w,"1.0","end")
     
         return "break"
-    #@nonl
     #@-node:ekr.20051020120306.27:selectAllFindText
     #@+node:ekr.20051020120306.28:Tkinter wrappers
     def init_s_ctrl (self,s):
@@ -7684,7 +7343,6 @@ class findTab (leoFind.leoFind):
         t.insert("end",s)
         t.mark_set("insert",g.choose(self.reverse,"end","1.0"))
         return t
-    #@nonl
     #@-node:ekr.20051020120306.28:Tkinter wrappers
     #@+node:ekr.20051020120306.1:class underlinedTkButton
     class underlinedTkButton:
@@ -7710,7 +7368,6 @@ class findTab (leoFind.leoFind):
                 else:
                     self.hotKey = text [index + 1]
                     text = text[:index] + text[index+1:]
-            #@nonl
             #@-node:ekr.20051020120306.3:<< set self.hotKey if '&' is in the string >>
             #@nl
         
@@ -7729,7 +7386,6 @@ class findTab (leoFind.leoFind):
                 g.trace("bad buttonType")
             
             self.text = text # for traces
-        #@nonl
         #@-node:ekr.20051020120306.2:__init__
         #@+node:ekr.20051020120306.4:bindHotKey
         def bindHotKey (self,widget):
@@ -7737,7 +7393,6 @@ class findTab (leoFind.leoFind):
             if self.hotKey:
                 for key in (self.hotKey.lower(),self.hotKey.upper()):
                     widget.bind("<Alt-%s>" % key,self.buttonCallback)
-        #@nonl
         #@-node:ekr.20051020120306.4:bindHotKey
         #@+node:ekr.20051020120306.5:buttonCallback
         # The hot key has been hit.  Call the button's command.
@@ -7754,10 +7409,8 @@ class findTab (leoFind.leoFind):
             return 'break'
         #@-node:ekr.20051020120306.5:buttonCallback
         #@-others
-    #@nonl
     #@-node:ekr.20051020120306.1:class underlinedTkButton
     #@-others
-#@nonl
 #@-node:ekr.20051020120306.6:class findTab (leoFind.leoFind)
 #@+node:ekr.20050920084036.257:class searchCommandsClass
 class searchCommandsClass (baseEditCommandsClass):
@@ -7787,7 +7440,6 @@ class searchCommandsClass (baseEditCommandsClass):
         self.ignoreCase = None
         self.forward = None
         self.regexp = None
-    #@nonl
     #@-node:ekr.20050920084036.258: ctor (searchCommandsClass)
     #@+node:ekr.20050920084036.259:getPublicCommands (searchCommandsClass)
     def getPublicCommands (self):
@@ -7845,7 +7497,6 @@ class searchCommandsClass (baseEditCommandsClass):
             'word-search-forward':                  self.wordSearchForward,
             'word-search-backward':                 self.wordSearchBackward,
         }
-    #@nonl
     #@-node:ekr.20050920084036.259:getPublicCommands (searchCommandsClass)
     #@+node:ekr.20060123131421:Top-level methods
     #@+node:ekr.20051020120306:openFindTab
@@ -7870,7 +7521,6 @@ class searchCommandsClass (baseEditCommandsClass):
             pass # self.findTabHandler.bringToFront()
         else:
             log.hideTab(tabName)
-    #@nonl
     #@-node:ekr.20051020120306:openFindTab
     #@+node:ekr.20051022212004:Find Tab commands
     # Just open the Find tab if it has never been opened.
@@ -7923,7 +7573,6 @@ class searchCommandsClass (baseEditCommandsClass):
         '''Hide the Find tab.'''
         if self.findTabHandler:
             self.c.frame.log.selectTab('Log')
-    #@nonl
     #@-node:ekr.20051022212004:Find Tab commands
     #@+node:ekr.20060124115801:getHandler
     def getHandler(self,show=False):
@@ -7940,7 +7589,6 @@ class searchCommandsClass (baseEditCommandsClass):
             self.minibufferFindHandler = minibufferFind(c,self.findTabHandler)
     
         return self.minibufferFindHandler
-    #@nonl
     #@-node:ekr.20060124115801:getHandler
     #@+node:ekr.20060123115459:Find options wrappers
     def setFindScopeEveryWhere (self, event):
@@ -7994,7 +7642,6 @@ class searchCommandsClass (baseEditCommandsClass):
         
     def setFindScope (self, where):  self.getHandler().setFindScope(where)
     def toggleOption (self, ivar):   self.getHandler().toggleOption(ivar)
-    #@nonl
     #@-node:ekr.20060123115459:Find options wrappers
     #@+node:ekr.20060124093828:Find wrappers
     def cloneFindAll (self,event):
@@ -8048,7 +7695,6 @@ class searchCommandsClass (baseEditCommandsClass):
         string in the Find tab and executes a search based on all the settings in
         the Find tab. Recommended as the default search command.'''
         self.getHandler().searchWithPresentOptions(event)
-    #@nonl
     #@-node:ekr.20060124093828:Find wrappers
     #@+node:ekr.20060204120158.2:findAgain
     def findAgain (self,event):
@@ -8063,7 +7709,6 @@ class searchCommandsClass (baseEditCommandsClass):
         # In that case, we revert to find-with-present-options.
         if not h.findAgain(event):
             h.searchWithPresentOptions(event)
-    #@nonl
     #@-node:ekr.20060204120158.2:findAgain
     #@-node:ekr.20060123131421:Top-level methods
     #@+node:ekr.20050920084036.261:incremental search...
@@ -8086,7 +7731,6 @@ class searchCommandsClass (baseEditCommandsClass):
     def isearchWithPresentOptions (self,event):
         '''Begin an incremental regexp search using the regexp and reverse options from the find panel.'''
         self.startIncremental(event,forward=None,ignoreCase=None,regexp=None)
-    #@nonl
     #@+node:ekr.20060420144640:iSearchBackspace
     def iSearchBackspace (self):
         
@@ -8113,7 +7757,6 @@ class searchCommandsClass (baseEditCommandsClass):
         
         if not self.isearch_stack:
             self.endSearch(ins,ins)
-    #@nonl
     #@-node:ekr.20060420144640:iSearchBackspace
     #@+node:ekr.20050920084036.262:startIncremental
     def startIncremental (self,event,forward,ignoreCase,regexp):
@@ -8147,7 +7790,6 @@ class searchCommandsClass (baseEditCommandsClass):
             ),protect=True)
         k.setState('isearch',1,handler=self.iSearchStateHandler)
         c.minibufferWantsFocusNow()
-    #@nonl
     #@-node:ekr.20050920084036.262:startIncremental
     #@+node:ekr.20050920084036.264:iSearchStateHandler
     # Called when from the state manager when the state is 'isearch'
@@ -8177,7 +7819,6 @@ class searchCommandsClass (baseEditCommandsClass):
             k.updateLabel(event)
             self.iSearchHelper(event)
             self.scolorizer(event)
-    #@nonl
     #@-node:ekr.20050920084036.264:iSearchStateHandler
     #@+node:ekr.20050920084036.265:scolorizer
     def scolorizer (self,event,pattern=None):
@@ -8209,7 +7850,6 @@ class searchCommandsClass (baseEditCommandsClass):
     
         w.tag_config('color',foreground='red')
         w.tag_config('color1',background='lightblue')
-    #@nonl
     #@-node:ekr.20050920084036.265:scolorizer
     #@+node:ekr.20050920084036.263:iSearchHelper
     def iSearchHelper (self,event):
@@ -8251,7 +7891,6 @@ class searchCommandsClass (baseEditCommandsClass):
             # g.trace(i1,j1,i,j,pos,newpos)
             gui.set_focus(c,w)
             gui.setTextSelection(w,pos,newpos,insert=pos)
-    #@nonl
     #@-node:ekr.20050920084036.263:iSearchHelper
     #@+node:ekr.20060203072636:endSearch
     def endSearch (self,i,j):
@@ -8261,11 +7900,9 @@ class searchCommandsClass (baseEditCommandsClass):
         insert = g.choose(self.forward,'sel.end','sel.start')
         g.app.gui.setTextSelection (self.w,i,j,insert=insert)
         self.k.keyboardQuit(event=None)
-    #@nonl
     #@-node:ekr.20060203072636:endSearch
     #@-node:ekr.20050920084036.261:incremental search...
     #@-others
-#@nonl
 #@-node:ekr.20050920084036.257:class searchCommandsClass
 #@-node:ekr.20051023094009:Search classes
 #@+node:ekr.20051025071455:Spell classes
@@ -8300,7 +7937,6 @@ class Aspell:
             self.local_language_code = local_language_code
             self.local_dictionary_file = local_dictionary_file
             self.local_dictionary = "%s.wl" % os.path.splitext(local_dictionary_file) [0]
-    #@nonl
     #@-node:ekr.20051025071455.8:__init__
     #@-node:ekr.20051025071455.7:Birth & death
     #@+node:ekr.20051025071455.10:processWord
@@ -8319,7 +7955,6 @@ class Aspell:
             return None
         else:
             return self.sc.suggest(word)
-    #@nonl
     #@-node:ekr.20051025071455.10:processWord
     #@+node:ekr.20051025071455.11:updateDictionary
     def updateDictionary(self):
@@ -8340,10 +7975,8 @@ class Aspell:
         except Exception, err:
             g.es_print("Unable to update local aspell dictionary: %s" % err)
             return False
-    #@nonl
     #@-node:ekr.20051025071455.11:updateDictionary
     #@-others
-
 #@-node:ekr.20051025071455.6:class Aspell
 #@+node:ekr.20051025071455.1:class spellCommandsClass
 class spellCommandsClass (baseEditCommandsClass):
@@ -8359,7 +7992,6 @@ class spellCommandsClass (baseEditCommandsClass):
         self.handler = None
         
         # All the work happens when we first open the frame.
-    #@nonl
     #@-node:ekr.20051025080056:ctor
     #@+node:ekr.20051025080420:getPublicCommands (searchCommandsClass)
     def getPublicCommands (self):
@@ -8372,7 +8004,6 @@ class spellCommandsClass (baseEditCommandsClass):
             'spell-ignore':             self.ignore,
             'hide-spell-tab':           self.hide,
         }
-    #@nonl
     #@-node:ekr.20051025080420:getPublicCommands (searchCommandsClass)
     #@+node:ekr.20051025080633:openSpellTab
     def openSpellTab (self,event=None):
@@ -8394,7 +8025,6 @@ class spellCommandsClass (baseEditCommandsClass):
             self.handler = spellTab(c,f)
             
         self.handler.bringToFront()
-    #@nonl
     #@-node:ekr.20051025080633:openSpellTab
     #@+node:ekr.20051025080420.1:commands...
     # Just open the Spell tab if it has never been opened.
@@ -8445,10 +8075,8 @@ class spellCommandsClass (baseEditCommandsClass):
             self.handler.ignore()
         else:
             self.openSpellTab()
-    #@nonl
     #@-node:ekr.20051025080420.1:commands...
     #@-others
-#@nonl
 #@-node:ekr.20051025071455.1:class spellCommandsClass
 #@+node:ekr.20051025071455.18:class spellTab (leoFind.leoFind)
 class spellTab(leoFind.leoFind):
@@ -8476,7 +8104,6 @@ class spellTab(leoFind.leoFind):
         if self.loaded:
             self.createSpellTab(parentFrame)
             self.createBindings()
-    #@nonl
     #@-node:ekr.20051025071455.20:spellTab.__init__
     #@+node:ekr.20051025094004:init_aspell
     def init_aspell (self,c):
@@ -8524,7 +8151,6 @@ class spellTab(leoFind.leoFind):
         for z in ('borderframe','clipper','frame','hull'):
             self.outerScrolledFrame.component(z).configure(
                 relief='flat',background=bg)
-        #@nonl
         #@-node:ekr.20051113090322:<< Create the outer frames >>
         #@nl
         #@    << Create the text and suggestion panes >>
@@ -8549,7 +8175,6 @@ class spellTab(leoFind.leoFind):
         txt ['yscrollcommand'] = bar.set
         bar ['command'] = txt.yview
         bar.pack(side='right',fill='y')
-        #@nonl
         #@-node:ekr.20051025071455.23:<< Create the text and suggestion panes >>
         #@nl
         #@    << Create the spelling buttons >>
@@ -8578,7 +8203,6 @@ class spellTab(leoFind.leoFind):
         (self.findButton,self.addButton,
          self.changeButton, self.changeFindButton,
          self.ignoreButton, self.hideButton) = buttonList
-        #@nonl
         #@-node:ekr.20051025071455.24:<< Create the spelling buttons >>
         #@nl
         
@@ -8589,7 +8213,6 @@ class spellTab(leoFind.leoFind):
         self.listBox.bind("<Double-1>",self.onChangeThenFindButton)
         self.listBox.bind("<Button-1>",self.onSelectListBox)
         self.listBox.bind("<Map>",self.onMap)
-    #@nonl
     #@-node:ekr.20051025071455.22:createSpellTab
     #@+node:ekr.20051025120920:createBindings (spellTab)
     def createBindings (self):
@@ -8615,8 +8238,6 @@ class spellTab(leoFind.leoFind):
                     if shortcut:
                         # g.trace(shortcut,commandName)
                         w.bind(shortcut,func)
-               
-    #@nonl
     #@-node:ekr.20051025120920:createBindings (spellTab)
     #@+node:ekr.20051025071455.16:readDictionary
     def readDictionary (self,fileName):
@@ -8644,7 +8265,6 @@ class spellTab(leoFind.leoFind):
             f.close()
     
         return d
-    #@nonl
     #@-node:ekr.20051025071455.16:readDictionary
     #@-node:ekr.20051025071455.19:Birth & death
     #@+node:ekr.20051025071455.29:Buttons
@@ -8653,7 +8273,6 @@ class spellTab(leoFind.leoFind):
         """Handle a click in the Add button in the Check Spelling dialog."""
     
         self.add()
-    #@nonl
     #@-node:ekr.20051025071455.30:onAddButton
     #@+node:ekr.20051025071455.31:onIgnoreButton
     def onIgnoreButton(self,event=None):
@@ -8661,7 +8280,6 @@ class spellTab(leoFind.leoFind):
         """Handle a click in the Ignore button in the Check Spelling dialog."""
     
         self.ignore()
-    #@nonl
     #@-node:ekr.20051025071455.31:onIgnoreButton
     #@+node:ekr.20051025071455.32:onChangeButton & onChangeThenFindButton
     def onChangeButton(self,event=None):
@@ -8690,7 +8308,6 @@ class spellTab(leoFind.leoFind):
         self.updateButtons()
         c.invalidateFocus()
         c.bodyWantsFocusNow()
-    #@nonl
     #@-node:ekr.20051025071455.33:onFindButton
     #@+node:ekr.20051025071455.34:onHideButton
     def onHideButton(self):
@@ -8698,7 +8315,6 @@ class spellTab(leoFind.leoFind):
         """Handle a click in the Hide button in the Spell tab."""
         
         self.hide()
-    #@nonl
     #@-node:ekr.20051025071455.34:onHideButton
     #@-node:ekr.20051025071455.29:Buttons
     #@+node:ekr.20051025071455.36:Commands
@@ -8734,7 +8350,6 @@ class spellTab(leoFind.leoFind):
             
         self.dictionary[self.currentWord.lower()] = 0
         self.onFindButton()
-    #@nonl
     #@-node:ekr.20051025071455.37:add
     #@+node:ekr.20051025071455.38:change
     def change(self,event=None):
@@ -8763,7 +8378,6 @@ class spellTab(leoFind.leoFind):
         c.invalidateFocus()
         c.bodyWantsFocusNow()
         return False
-    #@nonl
     #@-node:ekr.20051025071455.38:change
     #@+node:ekr.20051025071455.40:find
     def find (self,event=None):
@@ -8796,7 +8410,6 @@ class spellTab(leoFind.leoFind):
             self.fillbox([])
             c.invalidateFocus()
             c.bodyWantsFocusNow()
-    #@nonl
     #@-node:ekr.20051025071455.40:find
     #@+node:ekr.20051025121408:hide
     def hide (self,event=None):
@@ -8807,7 +8420,6 @@ class spellTab(leoFind.leoFind):
             g.es(message,color='blue')
             
         self.messages = []
-    #@nonl
     #@-node:ekr.20051025121408:hide
     #@+node:ekr.20051025071455.41:ignore
     def ignore(self,event=None):
@@ -8824,7 +8436,6 @@ class spellTab(leoFind.leoFind):
     
         self.dictionary[self.currentWord.lower()] = 0
         self.onFindButton()
-    #@nonl
     #@-node:ekr.20051025071455.41:ignore
     #@-node:ekr.20051025071455.36:Commands
     #@+node:ekr.20051025071455.42:Helpers
@@ -8832,7 +8443,6 @@ class spellTab(leoFind.leoFind):
     def bringToFront (self):
         
         self.c.frame.log.selectTab('Spell')
-    #@nonl
     #@-node:ekr.20051025071455.43:bringToFront
     #@+node:ekr.20051025071455.44:fillbox
     def fillbox(self, alts, word=None):
@@ -8851,8 +8461,7 @@ class spellTab(leoFind.leoFind):
         
         # This doesn't show up because we don't have focus.
         if len(self.suggestions):
-            self.listBox.select_set(1) 
-    
+            self.listBox.select_set(1)
     #@-node:ekr.20051025071455.44:fillbox
     #@+node:ekr.20051025071455.45:findNextMisspelledWord
     def findNextMisspelledWord(self):
@@ -8883,7 +8492,6 @@ class spellTab(leoFind.leoFind):
                 
                 if self.dictionary.has_key(word.lower()):
                     continue
-                #@nonl
                 #@-node:ekr.20051025071455.46:<< Skip word if ignored or in local dictionary >>
                 #@nl
                 alts = aspell.processWord(word)
@@ -8896,7 +8504,6 @@ class spellTab(leoFind.leoFind):
         except:
             g.es_exception()
         return alts, word
-    #@nonl
     #@-node:ekr.20051025071455.45:findNextMisspelledWord
     #@+node:ekr.20051025071455.47:findNextWord
     # Unicode characters may cause index problems.
@@ -8946,7 +8553,6 @@ class spellTab(leoFind.leoFind):
                     t.mark_set("insert", "1.0")
                     
         __pychecker__ = '--no-implicitreturns' # This is not really an implicit return.
-    #@nonl
     #@-node:ekr.20051025071455.47:findNextWord
     #@+node:ekr.20051025071455.48:getSuggestion
     def getSuggestion(self):
@@ -8964,14 +8570,12 @@ class spellTab(leoFind.leoFind):
             return suggestion
         else:
             return None
-    #@nonl
     #@-node:ekr.20051025071455.48:getSuggestion
     #@+node:ekr.20051025071455.49:onMap
     def onMap (self, event=None):
         """Respond to a Tk <Map> event."""
         
         self.update(show= False, fill= False)
-    #@nonl
     #@-node:ekr.20051025071455.49:onMap
     #@+node:ekr.20051025071455.50:onSelectListBox
     def onSelectListBox(self, event=None):
@@ -8996,7 +8600,6 @@ class spellTab(leoFind.leoFind):
         if show:
             self.bringToFront()
             c.bodyWantsFocus()
-    #@nonl
     #@-node:ekr.20051025071455.51:update
     #@+node:ekr.20051025071455.52:updateButtons
     def updateButtons (self):
@@ -9018,11 +8621,9 @@ class spellTab(leoFind.leoFind):
     
         self.addButton.configure(state='normal')
         self.ignoreButton.configure(state='normal')
-    #@nonl
     #@-node:ekr.20051025071455.52:updateButtons
     #@-node:ekr.20051025071455.42:Helpers
     #@-others
-#@nonl
 #@-node:ekr.20051025071455.18:class spellTab (leoFind.leoFind)
 #@-others
 #@-node:ekr.20051025071455:Spell classes
@@ -9048,9 +8649,7 @@ classesList = [
     ('searchCommands',      searchCommandsClass),
     ('spellCommands',       spellCommandsClass),
 ]
-#@nonl
 #@-node:ekr.20050922104213:<< define classesList >>
 #@nl
-#@nonl
 #@-node:ekr.20050710142719:@thin leoEditCommands.py
 #@-leo

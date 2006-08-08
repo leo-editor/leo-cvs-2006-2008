@@ -24,7 +24,6 @@ import string
 import sys
 import Tkinter as Tk
 Pmw = g.importExtension('Pmw',    pluginName='leoTkinterGui',verbose=True)
-#@nonl
 #@-node:ekr.20041228050845:<< imports >>
 #@nl
 
@@ -52,7 +51,6 @@ class tkinterGui(leoGui.leoGui):
                     self.win32clipboard = win32clipboard
                 except:
                     g.es_exception()
-    #@nonl
     #@-node:ekr.20031218072017.837: tkinterGui.__init__
     #@+node:ekr.20031218072017.4048:app.gui.Tkinter birth & death
     #@+node:ekr.20031218072017.4049:createRootWindow & allies
@@ -73,7 +71,6 @@ class tkinterGui(leoGui.leoGui):
                 WmDefault.addoptions(root,d)
             except ImportError:
                 g.trace("can not import WMDefault")
-            #@nonl
             #@-node:ekr.20041125050302:<< fix problems with menus (XP) >>
             #@nl
         else: # Use Tkinter.
@@ -91,7 +88,6 @@ class tkinterGui(leoGui.leoGui):
         root.withdraw()
     
         return root
-    #@nonl
     #@+node:ekr.20031218072017.1856:setDefaultIcon
     def setDefaultIcon(self):
         
@@ -117,7 +113,6 @@ class tkinterGui(leoGui.leoGui):
         except:
             print "exception setting bitmap"
             import traceback ; traceback.print_exc()
-    #@nonl
     #@-node:ekr.20031218072017.1856:setDefaultIcon
     #@+node:ekr.20031218072017.2186:tkGui.getDefaultConfigFont
     def getDefaultConfigFont(self,config):
@@ -135,7 +130,6 @@ class tkinterGui(leoGui.leoGui):
     
         config.defaultFont = None
         config.defaultFontFamily = self.defaultFontFamily
-    #@nonl
     #@-node:ekr.20031218072017.2186:tkGui.getDefaultConfigFont
     #@-node:ekr.20031218072017.4049:createRootWindow & allies
     #@+node:ekr.20031218072017.4051:destroySelf
@@ -146,7 +140,6 @@ class tkinterGui(leoGui.leoGui):
             
         else: # Works in Python 2.3.  Closes Python window.
             self.root.quit()
-    #@nonl
     #@-node:ekr.20031218072017.4051:destroySelf
     #@+node:ekr.20031218072017.4052:finishCreate (not used: must be present)
     def finishCreate (self):
@@ -154,7 +147,6 @@ class tkinterGui(leoGui.leoGui):
         pass
         
         # g.trace('g.app.gui')
-        
     #@-node:ekr.20031218072017.4052:finishCreate (not used: must be present)
     #@+node:ekr.20031218072017.4053:killGui (not used)
     def killGui(self,exitFlag=True):
@@ -162,7 +154,6 @@ class tkinterGui(leoGui.leoGui):
         """Destroy a gui and terminate Leo if exitFlag is True."""
     
         pass # Not ready yet.
-    
     #@-node:ekr.20031218072017.4053:killGui (not used)
     #@+node:ekr.20031218072017.4054:recreateRootWindow (not used)
     def recreateRootWindow(self):
@@ -170,7 +161,6 @@ class tkinterGui(leoGui.leoGui):
     
         after a previous gui has terminated with killGui(False)."""
         pass
-    
     #@-node:ekr.20031218072017.4054:recreateRootWindow (not used)
     #@+node:ekr.20031218072017.4055:runMainLoop (tkGui)
     def runMainLoop(self):
@@ -188,7 +178,6 @@ class tkinterGui(leoGui.leoGui):
         else:
              # g.trace("tkinterGui")
             self.root.mainloop()
-    #@nonl
     #@-node:ekr.20031218072017.4055:runMainLoop (tkGui)
     #@-node:ekr.20031218072017.4048:app.gui.Tkinter birth & death
     #@+node:ekr.20031218072017.4056:app.gui.Tkinter dialogs
@@ -223,11 +212,9 @@ class tkinterGui(leoGui.leoGui):
         d = leoTkinterDialog.tkinterAskYesNoCancel(
             c,title,message,yesMessage,noMessage,defaultButton)
         return d.run(modal=True)
-    #@nonl
     #@-node:ekr.20031218072017.4056:app.gui.Tkinter dialogs
     #@+node:ekr.20031218072017.4057:app.gui.Tkinter file dialogs
     # We no longer specify default extensions so that we can open and save files without extensions.
-    #@nonl
     #@+node:ekr.20060212061804:runOpenFileDialog
     def runOpenFileDialog(self,title,filetypes,defaultextension,multiple=False):
     
@@ -256,7 +243,6 @@ class tkinterGui(leoGui.leoGui):
             # Return a single file name as a string.
             return tkFileDialog.askopenfilename(
                 title=title,filetypes=filetypes,initialdir=initialdir)
-    #@nonl
     #@-node:ekr.20060212061804:runOpenFileDialog
     #@+node:ekr.20060212061804.1:runSaveFileDialog
     def runSaveFileDialog(self,initialfile,title,filetypes,defaultextension):
@@ -270,7 +256,6 @@ class tkinterGui(leoGui.leoGui):
         return tkFileDialog.asksaveasfilename(
             initialdir=initialdir,initialfile=initialfile,
             title=title,filetypes=filetypes)
-    #@nonl
     #@-node:ekr.20060212061804.1:runSaveFileDialog
     #@-node:ekr.20031218072017.4057:app.gui.Tkinter file dialogs
     #@+node:ekr.20031218072017.4058:app.gui.Tkinter panels
@@ -291,7 +276,6 @@ class tkinterGui(leoGui.leoGui):
     
         gui = self
         return leoTkinterFrame.leoTkinterFrame(title,gui)
-    #@nonl
     #@-node:ekr.20031218072017.4058:app.gui.Tkinter panels
     #@+node:ekr.20031218072017.4059:app.gui.Tkinter.utils
     #@+node:ekr.20031218072017.844:Clipboard (tkGui)
@@ -301,7 +285,6 @@ class tkinterGui(leoGui.leoGui):
     # and
     # presently that never happens.
     #@-at
-    #@nonl
     #@+node:ekr.20031218072017.845:replaceClipboardWith
     def replaceClipboardWith (self,s):
     
@@ -319,7 +302,6 @@ class tkinterGui(leoGui.leoGui):
         else:
             self.root.clipboard_clear()
             self.root.clipboard_append(s)
-    #@nonl
     #@-node:ekr.20031218072017.845:replaceClipboardWith
     #@+node:ekr.20031218072017.846:getTextFromClipboard
     def getTextFromClipboard (self):
@@ -346,7 +328,6 @@ class tkinterGui(leoGui.leoGui):
                 return s
             except:
                 return None
-    #@nonl
     #@-node:ekr.20031218072017.846:getTextFromClipboard
     #@-node:ekr.20031218072017.844:Clipboard (tkGui)
     #@+node:ekr.20031218072017.4060:Dialog
@@ -365,7 +346,6 @@ class tkinterGui(leoGui.leoGui):
         w,h,x,y = int(w),int(h),int(x),int(y)
         
         return w,h,x,y
-    #@nonl
     #@-node:ekr.20031218072017.4061:get_window_info
     #@+node:ekr.20031218072017.4062:center_dialog
     def center_dialog(self,top):
@@ -385,7 +365,6 @@ class tkinterGui(leoGui.leoGui):
         top.geometry("%dx%d%+d%+d" % (w,h,x,y))
         
         return w,h,x,y
-    #@nonl
     #@-node:ekr.20031218072017.4062:center_dialog
     #@+node:ekr.20031218072017.4063:create_labeled_frame
     # Returns frames w and f.
@@ -427,7 +406,6 @@ class tkinterGui(leoGui.leoGui):
             caption.grid(in_=w,row=0,column=2,rowspan=2,columnspan=3,padx=4,sticky="w")
     
         return w,f
-    #@nonl
     #@-node:ekr.20031218072017.4063:create_labeled_frame
     #@-node:ekr.20031218072017.4060:Dialog
     #@+node:ekr.20031218072017.4064:Focus
@@ -437,7 +415,6 @@ class tkinterGui(leoGui.leoGui):
         """Returns the widget that has focus, or body if None."""
     
         return c.frame.top.focus_displayof()
-    #@nonl
     #@-node:ekr.20031218072017.4065:get_focus
     #@+node:ekr.20031218072017.2373:set_focus (app.gui)
     set_focus_count = 0
@@ -475,7 +452,6 @@ class tkinterGui(leoGui.leoGui):
             except Exception:
                 # g.es_exception()
                 return False
-    #@nonl
     #@-node:ekr.20031218072017.2373:set_focus (app.gui)
     #@-node:ekr.20031218072017.4064:Focus
     #@+node:ekr.20031218072017.4066:Font
@@ -495,7 +471,6 @@ class tkinterGui(leoGui.leoGui):
             g.es("family,size,slant,weight:",family,size,slant,weight)
             # g.es_exception() # This just confuses people.
             return g.app.config.defaultFont
-    #@nonl
     #@-node:ekr.20031218072017.2187:tkGui.getFontFromParams
     #@-node:ekr.20031218072017.4066:Font
     #@+node:ekr.20031218072017.4067:Icons
@@ -549,13 +524,11 @@ class tkinterGui(leoGui.leoGui):
                         self.leoIcon = self.createLeoIcon(icon_image)
                     else: # Assumes 64x64
                         self.leoIcon = tkIcon.Icon(icon_image)
-                #@nonl
                 #@-node:ekr.20031218072017.4069:<< try to use the PIL and tkIcon packages to draw the icon >>
                 #@nl
             except:
                 # import traceback ; traceback.print_exc()
                 self.leoIcon = None
-    #@nonl
     #@+node:ekr.20031218072017.4070:createLeoIcon
     # This code is adapted from tkIcon.__init__
     # Unlike the tkIcon code, this code does _not_ resize the icon file.
@@ -586,7 +559,6 @@ class tkinterGui(leoGui.leoGui):
             return _tkicon.new(i.size, c, m)
         except:
             return None
-    #@nonl
     #@-node:ekr.20031218072017.4070:createLeoIcon
     #@-node:ekr.20031218072017.4068:attachLeoIcon & createLeoIcon
     #@-node:ekr.20031218072017.4067:Icons
@@ -596,14 +568,12 @@ class tkinterGui(leoGui.leoGui):
     
         if self.root:
             self.root.after_idle(idleTimeHookHandler)
-    #@nonl
     #@-node:ekr.20031218072017.4072:tkinterGui.setIdleTimeHook
     #@+node:ekr.20031218072017.4073:setIdleTimeHookAfterDelay
     def setIdleTimeHookAfterDelay (self,idleTimeHookHandler):
         
         if self.root:
             g.app.root.after(g.app.idleTimeDelay,idleTimeHookHandler)
-    #@nonl
     #@-node:ekr.20031218072017.4073:setIdleTimeHookAfterDelay
     #@-node:ekr.20031218072017.4071:Idle Time
     #@+node:ekr.20031218072017.4074:Indices (Tk)
@@ -626,19 +596,16 @@ class tkinterGui(leoGui.leoGui):
         row, col = index.split('.') ; row, col = int(row), int(col)
         index = g.convertRowColToPythonIndex (s,row-1,col)
         return index
-    #@nonl
     #@-node:ekr.20060528172956:toGuiIndex & toPythonIndex
     #@+node:ekr.20031218072017.4075:firstIndex
     def firstIndex (self):
     
         return "1.0"
-    #@nonl
     #@-node:ekr.20031218072017.4075:firstIndex
     #@+node:ekr.20031218072017.4076:lastIndex
     def lastIndex (self):
     
         return "end"
-    #@nonl
     #@-node:ekr.20031218072017.4076:lastIndex
     #@+node:ekr.20031218072017.4077:moveIndexBackward
     def moveIndexBackward(self,index,n):
@@ -657,7 +624,6 @@ class tkinterGui(leoGui.leoGui):
         newpos = t.index("%s linestart + 1lines" % (index))
         
         return g.choose(t.compare(newpos,"==","end"),None,newpos)
-    #@nonl
     #@-node:ekr.20031218072017.4078:moveIndexForward & moveIndexToNextLine
     #@+node:ekr.20031218072017.4079:compareIndices
     def compareIndices (self,t,n1,rel,n2):
@@ -666,7 +632,6 @@ class tkinterGui(leoGui.leoGui):
             return t.compare(n1,rel,n2)
         except Exception:
             return False
-    #@nonl
     #@-node:ekr.20031218072017.4079:compareIndices
     #@+node:ekr.20031218072017.4080:getindex
     def getindex(self,text,index):
@@ -674,7 +639,6 @@ class tkinterGui(leoGui.leoGui):
         """Convert string index of the form line.col into a tuple of two ints."""
         
         return tuple(map(int,string.split(text.index(index), ".")))
-    #@nonl
     #@-node:ekr.20031218072017.4080:getindex
     #@-node:ekr.20031218072017.4074:Indices (Tk)
     #@+node:ekr.20031218072017.4081:Insert Point
@@ -685,7 +649,6 @@ class tkinterGui(leoGui.leoGui):
             return t.index("insert")
         except Exception:
             return '1.0'
-    #@nonl
     #@-node:ekr.20031218072017.4082:getInsertPoint
     #@+node:ekr.20031218072017.4083:setInsertPoint
     def setInsertPoint (self,t,pos):
@@ -694,7 +657,6 @@ class tkinterGui(leoGui.leoGui):
             t.mark_set("insert",pos)
         except Exception:
             pass
-    #@nonl
     #@-node:ekr.20031218072017.4083:setInsertPoint
     #@-node:ekr.20031218072017.4081:Insert Point
     #@+node:ekr.20031218072017.4084:Selection
@@ -706,7 +668,6 @@ class tkinterGui(leoGui.leoGui):
             return t.tag_ranges("sel")
         except Exception:
             return 0,0
-    #@nonl
     #@-node:ekr.20031218072017.4085:getSelectionRange
     #@+node:ekr.20051126125950:getSelectedText
     def getSelectedText (self,t):
@@ -720,7 +681,6 @@ class tkinterGui(leoGui.leoGui):
                 return g.toUnicode(s,g.app.tkEncoding)
         else:
             return u""
-    #@nonl
     #@-node:ekr.20051126125950:getSelectedText
     #@+node:ekr.20031218072017.4086:getTextSelection
     def getTextSelection (self,t,sort=True):
@@ -745,14 +705,12 @@ class tkinterGui(leoGui.leoGui):
             # Return the insertion point if there is no selected text.
             insert = t.index("insert")
             return insert,insert
-    #@nonl
     #@-node:ekr.20031218072017.4086:getTextSelection
     #@+node:ekr.20051126171929:hasSelection
     def hasSelection (self,widget):
         
         i,j = self.getTextSelection(widget)
         return i and j and i != j
-    #@nonl
     #@-node:ekr.20051126171929:hasSelection
     #@+node:ekr.20060529092645:selectAllText (new in 4.4.1)
     def selectAllText (self,w,insert='end-1c'):
@@ -760,13 +718,11 @@ class tkinterGui(leoGui.leoGui):
         '''Select all text of the widget, *not* including the extra newline.'''
         
         self.setTextSelection(w,'1.0','end-1c',insert=insert)
-    #@nonl
     #@-node:ekr.20060529092645:selectAllText (new in 4.4.1)
     #@+node:ekr.20031218072017.4088:setSelectionRangeWithLength
     def setSelectionRangeWithLength(self,t,start,length,insert='sel.end'):
         
         return g.app.gui.setTextSelection(t,start,"%s+%dc" % (start,length),insert=insert)
-    #@nonl
     #@-node:ekr.20031218072017.4088:setSelectionRangeWithLength
     #@+node:ekr.20031218072017.4089:setTextSelection & setSelectionRange
     def setTextSelection (self,t,start,end,insert='sel.end'):
@@ -793,7 +749,6 @@ class tkinterGui(leoGui.leoGui):
             pass
         
     setSelectionRange = setTextSelection
-    #@nonl
     #@-node:ekr.20031218072017.4089:setTextSelection & setSelectionRange
     #@-node:ekr.20031218072017.4084:Selection
     #@+node:ekr.20031218072017.4090:Text
@@ -808,7 +763,6 @@ class tkinterGui(leoGui.leoGui):
             return u""
         else:
             return g.toUnicode(s,g.app.tkEncoding)
-    #@nonl
     #@-node:ekr.20031218072017.4091:g.app.gui.getAllText
     #@+node:ekr.20031218072017.4092:getCharAfterIndex
     def getCharAfterIndex (self,t,index):
@@ -818,13 +772,11 @@ class tkinterGui(leoGui.leoGui):
         else:
             ch = t.get(index + "+1c")
             return g.toUnicode(ch,g.app.tkEncoding)
-    #@nonl
     #@-node:ekr.20031218072017.4092:getCharAfterIndex
     #@+node:ekr.20031218072017.4093:getCharAtIndex
     def getCharAtIndex (self,t,index):
         ch = t.get(index)
         return g.toUnicode(ch,g.app.tkEncoding)
-    #@nonl
     #@-node:ekr.20031218072017.4093:getCharAtIndex
     #@+node:ekr.20031218072017.4094:getCharBeforeIndex
     def getCharBeforeIndex (self,t,index):
@@ -835,21 +787,18 @@ class tkinterGui(leoGui.leoGui):
         else:
             ch = t.get(index + "-1c")
             return g.toUnicode(ch,g.app.tkEncoding)
-    #@nonl
     #@-node:ekr.20031218072017.4094:getCharBeforeIndex
     #@+node:ekr.20031218072017.4095:getLineContainingIndex
     def getLineContainingIndex (self,t,index):
     
         line = t.get(index + " linestart", index + " lineend")
         return g.toUnicode(line,g.app.tkEncoding)
-    #@nonl
     #@-node:ekr.20031218072017.4095:getLineContainingIndex
     #@+node:ekr.20031218072017.4096:replaceSelectionRangeWithText (leoTkinterGui)
     def replaceSelectionRangeWithText (self,t,start,end,text):
     
         t.delete(start,end)
         t.insert(start,text)
-    #@nonl
     #@-node:ekr.20031218072017.4096:replaceSelectionRangeWithText (leoTkinterGui)
     #@-node:ekr.20031218072017.4090:Text
     #@+node:ekr.20031218072017.4097:Visibility
@@ -857,7 +806,6 @@ class tkinterGui(leoGui.leoGui):
     def makeIndexVisible(self,t,index):
     
         return t.see(index)
-    #@nonl
     #@-node:ekr.20031218072017.4098:makeIndexVisible
     #@-node:ekr.20031218072017.4097:Visibility
     #@+node:ekr.20051220144507:isTextWidget
@@ -865,11 +813,9 @@ class tkinterGui(leoGui.leoGui):
         
         '''Return True if w is a Text widget suitable for text-oriented commands.'''
         
-        return w and isinstance(w,Tk.Text) 
-    #@nonl
+        return w and isinstance(w,Tk.Text)
     #@-node:ekr.20051220144507:isTextWidget
     #@-node:ekr.20031218072017.4059:app.gui.Tkinter.utils
     #@-others
-#@nonl
 #@-node:ekr.20031218072017.4047:@thin leoTkinterGui.py
 #@-leo

@@ -21,7 +21,6 @@ import re
 import string
 import sys
 import types
-#@nonl
 #@-node:ekr.20050920094258:<< imports >>
 #@nl
 #@<< about 'internal' bindings >>
@@ -59,7 +58,6 @@ import types
 # consistent with Tk's key-event specifiers).  It is also, I think, the least 
 # confusing set of rules.
 #@-at
-#@nonl
 #@-node:ekr.20060130103826:<< about 'internal' bindings >>
 #@-middle:ekr.20060131101205: docs
 #@nl
@@ -98,7 +96,6 @@ import types
 # inverseBindingDict
 #     Keys are emacs command names; values are *lists* of shortcuts.
 #@-at
-#@nonl
 #@-node:ekr.20051010062551.1:<< about key dicts >>
 #@-middle:ekr.20060131101205: docs
 #@nl
@@ -149,7 +146,6 @@ class autoCompleterClass:
         self.verbose = False # True: print all members.
         self.watchwords = {} # Keys are ids, values are lists of ids that can follow a id dot.
         self.widget = None # The widget that should get focus after autocomplete is done.
-    #@nonl
     #@+node:ekr.20060223085549:defineClassesDict
     def defineClassesDict (self):
         
@@ -238,7 +234,6 @@ class autoCompleterClass:
             for z in idList:
                 self.objectDict[z]=obj
                 # g.trace(obj)
-    #@nonl
     #@-node:ekr.20060219171914:defineObjectDict
     #@-node:ekr.20051126123759.1: ctor (autocompleter)
     #@+node:ekr.20060219103046:Top level
@@ -260,7 +255,6 @@ class autoCompleterClass:
                 self.start(event=event,w=w)
     
         return 'break'
-    #@nonl
     #@-node:ekr.20051126122952.1:autoComplete
     #@+node:ekr.20060219103822:autoCompleteForce
     def autoCompleteForce (self,event=None):
@@ -268,7 +262,6 @@ class autoCompleterClass:
         '''Show autocompletion, even if autocompletion is not presently enabled.'''
         
         return self.autoComplete(event,force=True)
-    #@nonl
     #@-node:ekr.20060219103822:autoCompleteForce
     #@+node:ekr.20051126124705:autoCompleterStateHandler
     def autoCompleterStateHandler (self,event):
@@ -309,7 +302,6 @@ class autoCompleterClass:
         else:
             if trace: g.trace('ignore',repr(ch))
             return 'do-standard-keys'
-    #@nonl
     #@-node:ekr.20051126124705:autoCompleterStateHandler
     #@+node:ekr.20060219170612:enable/disable/toggleAutocompleter/Calltips
     def disableAutocompleter (self,event=None):
@@ -341,7 +333,6 @@ class autoCompleterClass:
         '''Toggle whether calltips are enabled.'''
         self.k.enable_calltips = not self.k.enable_calltips
         self.showCalltipsStatus()
-    #@nonl
     #@-node:ekr.20060219170612:enable/disable/toggleAutocompleter/Calltips
     #@+node:ekr.20060219103046.1:showCalltips
     def showCalltips (self,event=None,force=False):
@@ -368,7 +359,6 @@ class autoCompleterClass:
             k.masterCommand(event,func=None,stroke=None,commandName=None)
             
         return 'break'
-    #@nonl
     #@-node:ekr.20060219103046.1:showCalltips
     #@+node:ekr.20060219170043:showCalltipsForce
     def showCalltipsForce (self,event=None):
@@ -376,7 +366,6 @@ class autoCompleterClass:
         '''Show the calltips at the cursor, even if calltips are not presently enabled.'''
         
         return self.showCalltips(event,force=True)
-    #@nonl
     #@-node:ekr.20060219170043:showCalltipsForce
     #@+node:ekr.20060609171919:showAutocompleter/CalltipsStatus
     def showAutocompleterStatus (self):
@@ -393,7 +382,6 @@ class autoCompleterClass:
         frame.clearStatusLine()
         frame.putStatusLine('Calltips ',color='blue')
         frame.putStatusLine(g.choose(k.enable_calltips,'On','Off'))
-    #@nonl
     #@-node:ekr.20060609171919:showAutocompleter/CalltipsStatus
     #@-node:ekr.20060219103046:Top level
     #@+node:ekr.20060216160332.2:Helpers
@@ -418,7 +406,6 @@ class autoCompleterClass:
         
         self.clear()
         self.object = None
-    #@nonl
     #@-node:ekr.20051127105431:abort & exit
     #@+node:ekr.20060219180034:append/begin/popTabName
     def appendTabName (self,word):
@@ -451,7 +438,6 @@ class autoCompleterClass:
             c.frame.log.deleteTab(self.tabName)
         self.tabName = s.replace('_','') or ''
         c.frame.log.clearTab(self.tabName)
-    #@nonl
     #@-node:ekr.20060219180034:append/begin/popTabName
     #@+node:ekr.20060221131304:appendToKnownObjects
     def appendToKnownObjects (self,obj):
@@ -461,7 +447,6 @@ class autoCompleterClass:
                 if hasattr(obj,'__name__'):
                     self.knownObjects[obj.__name__] = obj
                     # g.trace('adding',obj.__name__)
-    #@nonl
     #@-node:ekr.20060221131304:appendToKnownObjects
     #@+node:ekr.20060220110302:calltip
     def calltip (self,obj=None):
@@ -484,7 +469,6 @@ class autoCompleterClass:
                 if i > -1: s = s [i:]
                 else: s = '(' + s
                 s = s and s.strip() or ''
-            #@nonl
             #@-node:ekr.20060224103829:<< try to set s from a Python global function >>
             #@nl
     
@@ -509,7 +493,6 @@ class autoCompleterClass:
                 return # Not a function.  Just '('.
             
             s = args = inspect.formatargspec(s1,s2,s3,s4)
-            #@nonl
             #@-node:ekr.20060224103829.1:<< get s using inspect >>
             #@nl
             
@@ -519,7 +502,6 @@ class autoCompleterClass:
             s = s[0] + s[6:].strip()
         elif g.match_word(s,1,'self'):
             s = s[0] + s[5:].strip()
-        #@nonl
         #@-node:ekr.20060224103829.2:<< remove 'self' from s, but not from args >>
         #@nl
         if isStringMethod:
@@ -531,7 +513,6 @@ class autoCompleterClass:
             elif g.match_word(s,1,'s'):
                 s = s[0] + s[2:]
                 args = args[0] + args[2:]
-            #@nonl
             #@-node:ekr.20060224103829.3:<< remove 's' from s *and* args >>
             #@nl
     
@@ -550,7 +531,6 @@ class autoCompleterClass:
             j2 = w.index('%s + %sc' % (j,len(s)))
         else:
             j1 = j2 = w.index('%s + 2c' % j)
-        #@nonl
         #@-node:ekr.20060224103829.4:<< insert the text and set j1 and j2 >>
         #@nl
     
@@ -566,7 +546,6 @@ class autoCompleterClass:
         else:
             name = self.leadinWord
         c.frame.putStatusLine('%s %s' % (name,args))
-        #@nonl
         #@-node:ekr.20060224103829.5:<< put the status line >>
         #@nl
     #@-node:ekr.20060220110302:calltip
@@ -636,7 +615,6 @@ class autoCompleterClass:
             self.setSelection(common_prefix)
         for name in self.tabList:
             g.es('%s' % (name),tabName=self.tabName)
-    #@nonl
     #@-node:ekr.20051126123149:computeCompletionList
     #@+node:ekr.20051126131103:doBackSpace (autocompleter)
     def doBackSpace (self):
@@ -678,7 +656,6 @@ class autoCompleterClass:
                 self.abort() # should not happen.
         else:
             self.abort()
-    #@nonl
     #@-node:ekr.20051126131103:doBackSpace (autocompleter)
     #@+node:ekr.20051126123249.1:doTabCompletion
     def doTabCompletion (self):
@@ -699,7 +676,6 @@ class autoCompleterClass:
             self.computeCompletionList()
     
         c.widgetWantsFocusNow(w)
-    #@nonl
     #@-node:ekr.20051126123249.1:doTabCompletion
     #@+node:ekr.20051127065601:extendSelection
     def extendSelection (self,s):
@@ -716,7 +692,6 @@ class autoCompleterClass:
         j = w.index('%s + 1c' % (j))
         g.app.gui.setSelectionRange(w,i,j,insert=j)
         c.frame.body.onBodyChanged('Typing')
-    #@nonl
     #@-node:ekr.20051127065601:extendSelection
     #@+node:ekr.20060221104137:findAnchor
     def findAnchor (self,w):
@@ -733,7 +708,6 @@ class autoCompleterClass:
         
         # g.trace(i,j,repr(word),w.get(j))
         return j,word
-    #@nonl
     #@-node:ekr.20060221104137:findAnchor
     #@+node:ekr.20060224094501:findCalltipWord
     def findCalltipWord (self,w):
@@ -744,7 +718,6 @@ class autoCompleterClass:
             return w.get(i+'-1c wordstart',i+'-1c wordstart wordend')
         else:
             return ''
-    #@nonl
     #@-node:ekr.20060224094501:findCalltipWord
     #@+node:ekr.20051127105102:finish
     def finish (self):
@@ -759,7 +732,6 @@ class autoCompleterClass:
         c.frame.body.onBodyChanged('Typing')
         self.clear()
         self.object = None
-    #@nonl
     #@-node:ekr.20051127105102:finish
     #@+node:ekr.20060223081914:getAttr and hasAttr
     # The values of self.attrDictDic are anonymous attrDict's.
@@ -786,7 +758,6 @@ class autoCompleterClass:
             d = self.attrDictDict.get(self.language)
             aList = d.get(obj,[])
             return attr in aList
-    #@nonl
     #@-node:ekr.20060223081914:getAttr and hasAttr
     #@+node:ekr.20060219111416:getLeadinWord
     def getLeadinWord (self,w):
@@ -829,7 +800,6 @@ class autoCompleterClass:
                 i = j
             self.leadinWord = word
             return True
-    #@nonl
     #@-node:ekr.20060219111416:getLeadinWord
     #@+node:ekr.20060219174642:getMembersList
     def getMembersList (self,obj):
@@ -844,7 +814,6 @@ class autoCompleterClass:
             return members
         else:
             return []
-    #@nonl
     #@-node:ekr.20060219174642:getMembersList
     #@+node:ekr.20060220132026:info
     def info (self):
@@ -869,7 +838,6 @@ class autoCompleterClass:
         if doc:
             c.frame.log.clearTab('Info',wrap='word')
             g.es(doc,tabName='Info')
-    #@nonl
     #@-node:ekr.20060220132026:info
     #@+node:ekr.20060220104902:insertNormalChar
     def insertNormalChar (self,ch,keysym):
@@ -907,7 +875,6 @@ class autoCompleterClass:
                         return
             self.extendSelection(ch)
             self.finish()
-    #@nonl
     #@-node:ekr.20060220104902:insertNormalChar
     #@+node:ekr.20060222092243:push, pop, clear, stackNames
     def push (self,obj):
@@ -938,7 +905,6 @@ class autoCompleterClass:
             else:
                 aList.append(str(z))
         return aList
-    #@nonl
     #@-node:ekr.20060222092243:push, pop, clear, stackNames
     #@+node:ekr.20060221112937:setObjectAndMembersList & helpers
     def setObjectAndMembersList (self,word):
@@ -966,7 +932,6 @@ class autoCompleterClass:
             self.completeFromObject(obj)
     
         # g.trace(word,self.object,len(self.membersList))
-    #@nonl
     #@+node:ekr.20060223124014:getObjectFromAttribute
     def getObjectFromAttribute (self,word):
         
@@ -982,7 +947,6 @@ class autoCompleterClass:
             # Don't clear the stack here!
             self.membersList = []
             self.object = None
-    #@nonl
     #@-node:ekr.20060223124014:getObjectFromAttribute
     #@+node:ekr.20060223124014.2:completeSelf
     def completeSelf (self):
@@ -1016,7 +980,6 @@ class autoCompleterClass:
             self.object = None
             self.clear()
             self.membersList = []
-    #@nonl
     #@-node:ekr.20060223124014.2:completeSelf
     #@+node:ekr.20060223124014.3:completeFromObject
     def completeFromObject (self,obj):
@@ -1030,7 +993,6 @@ class autoCompleterClass:
             self.object = None
             self.clear()
             self.membersList = []
-    #@nonl
     #@-node:ekr.20060223124014.3:completeFromObject
     #@-node:ekr.20060221112937:setObjectAndMembersList & helpers
     #@+node:ekr.20051127070018:setSelection
@@ -1053,7 +1015,6 @@ class autoCompleterClass:
         j = w.index('%s + %dc' % (i,len(s)))
         g.app.gui.setSelectionRange(w,i,j,insert=j)
         c.frame.body.onBodyChanged('Typing')
-    #@nonl
     #@-node:ekr.20051127070018:setSelection
     #@+node:ekr.20060220062710:start
     def start (self,event=None,w=None):
@@ -1080,12 +1041,10 @@ class autoCompleterClass:
             self.autoCompleterStateHandler(event)
         else:
             self.abort()
-    #@nonl
     #@-node:ekr.20060220062710:start
     #@-node:ekr.20060216160332.2:Helpers
     #@+node:ekr.20060216160332.1:Scanning
     # Not used at present, but soon.
-    #@nonl
     #@+node:ekr.20060217132329:initialScan
     # Don't call this finishCreate: the startup logic would call it too soon.
     
@@ -1094,7 +1053,6 @@ class autoCompleterClass:
         g.trace(g.callers())
         
         self.scan(thread=True)
-    #@nonl
     #@-node:ekr.20060217132329:initialScan
     #@+node:ekr.20060216155558.1:scan
     def scan (self,event=None,verbose=True,thread=True):
@@ -1120,7 +1078,6 @@ class autoCompleterClass:
             t.start()
         else:
             self.scanOutline(verbose=verbose)
-    #@nonl
     #@-node:ekr.20060216155558.1:scan
     #@+node:ekr.20060216163305:definePatterns
     def definePatterns (self):
@@ -1151,7 +1108,6 @@ class autoCompleterClass:
             self.pt = string.digits + string.letters + self.r
             ripout = string.punctuation + string.whitespace + '\n'
             self.ripout = ripout.replace('_','') # punctuation except underscore.
-    #@nonl
     #@-node:ekr.20060216163305:definePatterns
     #@+node:ekr.20060216161220:scanOutline
     def scanOutline (self,verbose=True):
@@ -1189,7 +1145,6 @@ class autoCompleterClass:
             
         if verbose:        
             g.es_print('\nauto-completer scan complete',color='blue')
-    #@nonl
     #@-node:ekr.20060216161220:scanOutline
     #@+node:ekr.20060216161234:scanForCallTip
     def scanForCallTip (self,s,language):
@@ -1214,7 +1169,6 @@ class autoCompleterClass:
                 d [a] = aList
         
         self.calltips [language] = d
-    #@nonl
     #@-node:ekr.20060216161234:scanForCallTip
     #@+node:ekr.20060216161247:scanForAutoCompleter
     def scanForAutoCompleter (self,s):
@@ -1238,7 +1192,6 @@ class autoCompleterClass:
                 if str(b) not in z:
                     z.append(str(b))
                     self.watchwords [a] = z
-    #@nonl
     #@+node:ekr.20051025144611.20:makeAutocompletionList
     def makeAutocompletionList (self,a,b,glist):
         
@@ -1278,8 +1231,7 @@ class autoCompleterClass:
                 b1 = self.getCleanString(b)
                 if b1:
                     glist.append((a1,b1))
-            return b 
-    #@nonl
+            return b
     #@+node:ekr.20060216161258:reverseFindWhitespace
     def reverseFindWhitespace (self,s):
     
@@ -1291,7 +1243,6 @@ class autoCompleterClass:
             i -= 1
     
         return s
-    #@nonl
     #@-node:ekr.20060216161258:reverseFindWhitespace
     #@+node:ekr.20060216161253:getCleanString
     def getCleanString (self,s):
@@ -1305,7 +1256,6 @@ class autoCompleterClass:
             i += 1
     
         return s
-    #@nonl
     #@-node:ekr.20060216161253:getCleanString
     #@-node:ekr.20051025144611.20:makeAutocompletionList
     #@-node:ekr.20060216161247:scanForAutoCompleter
@@ -1341,7 +1291,6 @@ class autoCompleterClass:
         # Verify that it has all the proper attributes.
         # g.trace(g.listToString(dir(obj)))
         return obj
-    #@nonl
     #@-node:ekr.20060223114802.1:createProxyObjectFromClass
     #@+node:ekr.20060223093358:createClassObjectFromString
     def computeClassObjectFromString (self,className,s):
@@ -1359,7 +1308,6 @@ class autoCompleterClass:
                 g.es_print('unexpected exception in computeProxyObject')
                 g.es_exception()
             return None
-    #@nonl
     #@-node:ekr.20060223093358:createClassObjectFromString
     #@-node:ekr.20060223114802:Proxy classes and objects
     #@+node:ekr.20060223093117:class forgivingParserClass
@@ -1375,7 +1323,6 @@ class autoCompleterClass:
             self.c = c
             self.excludedTnodesList = []
             self.old_putBody = None # Set in parse for communication with newPutBody.
-        #@nonl
         #@-node:ekr.20060223093117.1:ctor (forgivingParserClass)
         #@+node:ekr.20060223093117.2:parse
         def parse (self,p):
@@ -1399,7 +1346,6 @@ class autoCompleterClass:
             finally:
                 c.atFileCommands.putBody = self.old_putBody
                 return s
-        #@nonl
         #@-node:ekr.20060223093117.2:parse
         #@+node:ekr.20060223093117.3:forgivingParser
         def forgivingParser (self,p):
@@ -1422,7 +1368,6 @@ class autoCompleterClass:
                         self.excludedTnodesList.append(p.v.t)
                         s = g.getScript(c,root,useSelectedText=False)
             return s or ''
-        #@nonl
         #@-node:ekr.20060223093117.3:forgivingParser
         #@+node:ekr.20060223093117.4:computeErrorNode
         def computeErrorNode (self,c,root,n,lines):
@@ -1442,7 +1387,6 @@ class autoCompleterClass:
                         return p
         
             return None
-        #@nonl
         #@-node:ekr.20060223093117.4:computeErrorNode
         #@+node:ekr.20060223093117.5:newPutBody
         def newPutBody (self,p,oneNodeOnly=False,fromString=''):
@@ -1452,10 +1396,8 @@ class autoCompleterClass:
                 # g.trace('ignoring',p.headString())
             else:
                 self.old_putBody(p,oneNodeOnly,fromString)
-        #@nonl
         #@-node:ekr.20060223093117.5:newPutBody
         #@-others
-    #@nonl
     #@-node:ekr.20060223093117:class forgivingParserClass
     #@+node:ekr.20060222082041:class classScannerClass
     class classScannerClass:
@@ -1472,7 +1414,6 @@ class autoCompleterClass:
             # self.start_in_doc = c.config.getBool('at_root_bodies_start_in_doc_mode')
         
             self.start_in_doc = False
-        #@nonl
         #@-node:ekr.20060222082041.1:ctor
         #@+node:ekr.20060223120755:scan
         def scan (self):
@@ -1489,7 +1430,6 @@ class autoCompleterClass:
                 s = None
                 
             return className,obj,p,s
-        #@nonl
         #@-node:ekr.20060223120755:scan
         #@+node:ekr.20060222082041.2:findParentClass
         def findParentClass (self,root):
@@ -1512,7 +1452,6 @@ class autoCompleterClass:
                     return className,None,p
             
             return None,None,None
-        #@nonl
         #@-node:ekr.20060222082041.2:findParentClass
         #@+node:ekr.20060222082041.3:findClass & helpers
         def findClass (self,p):
@@ -1534,12 +1473,10 @@ class autoCompleterClass:
                         if className: return className
             else:
                 return None
-        #@nonl
         #@+node:ekr.20060222082041.4:endsDoc
         def endsDoc (self,s):
             
             return s.startswith('@c')
-        #@nonl
         #@-node:ekr.20060222082041.4:endsDoc
         #@+node:ekr.20060222082041.5:startsClass
         def startsClass (self,s):
@@ -1553,7 +1490,6 @@ class autoCompleterClass:
                 return word
             else:
                 return None
-        #@nonl
         #@-node:ekr.20060222082041.5:startsClass
         #@+node:ekr.20060222082041.6:startsDoc
         def startsDoc (self,s):
@@ -1563,14 +1499,11 @@ class autoCompleterClass:
                     return True
             else:
                 return False
-        #@nonl
         #@-node:ekr.20060222082041.6:startsDoc
         #@-node:ekr.20060222082041.3:findClass & helpers
         #@-others
-    #@nonl
     #@-node:ekr.20060222082041:class classScannerClass
     #@-others
-#@nonl
 #@-node:ekr.20051126123249:class autoCompleterClass
 #@+node:ekr.20060219100201:class keyHandlerClass
 class keyHandlerClass:
@@ -1590,7 +1523,6 @@ class keyHandlerClass:
     
     lossage = []
         # A case could be made for per-instance lossage, but this is not supported.
-    #@nonl
     #@-node:ekr.20050924065520:<< define class vars >>
     #@-middle:ekr.20060131101205.1: constants and dicts
     #@nl
@@ -1626,7 +1558,6 @@ class keyHandlerClass:
     # KP_F1,KP_F2,KP_F3,KP_F4,
     # KP_0,KP_1,KP_2,KP_3,KP_4,KP_5,KP_6,KP_7,KP_8,KP_9
     #@-at
-    #@nonl
     #@-node:ekr.20060131101205.2:<< define list of special names >>
     #@-middle:ekr.20060131101205.1: constants and dicts
     #@nl
@@ -1650,7 +1581,6 @@ class keyHandlerClass:
     # Add lowercase version of special keys.
     for s in tkNamesList:
         settingsNameDict [s.lower()] = s
-    #@nonl
     #@-node:ekr.20031218072017.2101:<< define dict of special names >>
     #@-middle:ekr.20060131101205.1: constants and dicts
     #@nl
@@ -1707,7 +1637,6 @@ class keyHandlerClass:
     tkBindNamesInverseDict = {}
     for key in tkBindNamesDict.keys():
         tkBindNamesInverseDict [tkBindNamesDict.get(key)] = key
-    #@nonl
     #@-node:ekr.20031218072017.2100:<< define dict of Tk bind names >>
     #@-middle:ekr.20060131101205.1: constants and dicts
     #@nl
@@ -1758,7 +1687,6 @@ class keyHandlerClass:
                 
             else:
                 self.svar = None
-        #@nonl
         #@-node:ekr.20051006092617:<< define Tk ivars >>
         #@nl
         #@    << define externally visible ivars >>
@@ -1776,7 +1704,6 @@ class keyHandlerClass:
         self.regx = g.bunch(iter=None,key=None)
         self.repeatCount = None
         self.state = g.bunch(kind=None,n=None,handler=None)
-        #@nonl
         #@-node:ekr.20051006092617.1:<< define externally visible ivars >>
         #@nl
         #@    << define internal ivars >>
@@ -1837,13 +1764,11 @@ class keyHandlerClass:
         self.insert_mode_fg_color = 'black'
         self.overwrite_mode_bg_color = 'white'
         self.overwrite_mode_fg_color = 'black'
-        #@nonl
         #@-node:ekr.20050923213858:<< define internal ivars >>
         #@nl
         
         self.autoCompleter = autoCompleterClass(self)
         self.setDefaultUnboundKeyAction()
-    #@nonl
     #@-node:ekr.20050920085536.2: ctor (keyHandler)
     #@+node:ekr.20050920094633:k.finishCreate & helpers
     def finishCreate (self):
@@ -1875,7 +1800,6 @@ class keyHandlerClass:
             self.insert_mode_fg_color = c.config.getColor('insert_mode_fg_color') or bodyCtrl.cget('fg')
             self.overwrite_mode_bg_color = c.config.getColor('overwrite_mode_bg_color') or bodyCtrl.cget('bg')
             self.overwrite_mode_fg_color = c.config.getColor('overwrite_mode_fg_color') or bodyCtrl.cget('fg')
-    #@nonl
     #@+node:ekr.20051008082929:createInverseCommandsDict
     def createInverseCommandsDict (self):
         
@@ -1896,7 +1820,6 @@ class keyHandlerClass:
             except Exception:
                 g.es_exception()
                 g.trace(repr(name),repr(f),g.callers())
-    #@nonl
     #@-node:ekr.20051008082929:createInverseCommandsDict
     #@-node:ekr.20050920094633:k.finishCreate & helpers
     #@+node:ekr.20060115195302:setDefaultUnboundKeyAction
@@ -1916,7 +1839,6 @@ class keyHandlerClass:
             self.unboundKeyAction = 'insert'
             
         k.setInputState(self.unboundKeyAction)
-    #@nonl
     #@-node:ekr.20060115195302:setDefaultUnboundKeyAction
     #@-node:ekr.20050920085536.1: Birth (keyHandler)
     #@+node:ekr.20051006125633:Binding (keyHandler)
@@ -1940,7 +1862,6 @@ class keyHandlerClass:
                     g.es_print('Ignoring invalid key binding: %s = %s' % (
                         commandName,shortcut),color='blue')
                     return
-        #@nonl
         #@-node:ekr.20060530084936:<< give warning and return if we try to bind to Enter or Leave >>
         #@nl
         if pane.endswith('-mode'):
@@ -1956,7 +1877,6 @@ class keyHandlerClass:
                 pane_filter = c.config.getString('trace_bindings_pane_filter')
                 if not pane_filter or pane_filter.lower() == pane:
                     g.trace(pane,shortcut,commandName)
-        #@nonl
         #@-node:ekr.20060114110141:<< trace bindings >>
         #@nl
         try:
@@ -1974,7 +1894,6 @@ class keyHandlerClass:
             
             if not modeFlag:
                 bunchList = [b2 for b2 in bunchList if pane not in ('button','all',b2.pane)]
-            #@nonl
             #@-node:ekr.20060611171940:<< remove previous conflicting definitions from bunchList >>
             #@nl
             bunchList.append(b)
@@ -1989,7 +1908,6 @@ class keyHandlerClass:
             return False
             
     bindShortcut = bindKey # For compatibility
-    #@nonl
     #@-node:ekr.20050920085536.16:bindKey
     #@+node:ekr.20060130093055:bindKeyToDict
     def bindKeyToDict (self,pane,stroke,func,commandName):
@@ -2006,7 +1924,6 @@ class keyHandlerClass:
         # New in Leo 4.4.1: Allow redefintions.
         d [stroke] = g.Bunch(commandName=commandName,func=func,pane=pane,stroke=stroke)
         k.masterBindingsDict [pane] = d
-    #@nonl
     #@-node:ekr.20060130093055:bindKeyToDict
     #@+node:ekr.20051008135051.1:bindOpenWith
     def bindOpenWith (self,shortcut,name,data):
@@ -2022,7 +1939,6 @@ class keyHandlerClass:
         # Use k.registerCommand to set the shortcuts in the various binding dicts.
         commandName = 'open-with-%s' % name.lower()
         k.registerCommand(commandName,shortcut,openWithCallback,pane='text',verbose=False)
-    #@nonl
     #@-node:ekr.20051008135051.1:bindOpenWith
     #@+node:ekr.20051011103654:checkBindings
     def checkBindings (self):
@@ -2046,7 +1962,6 @@ class keyHandlerClass:
                         name,abbrev,key))
                 else:
                     g.trace('No shortcut for %s = %s' % (name,key))
-    #@nonl
     #@-node:ekr.20051011103654:checkBindings
     #@+node:ekr.20060221141535:k.completeAllBindingsForWidget
     def completeAllBindingsForWidget (self,w):
@@ -2055,7 +1970,6 @@ class keyHandlerClass:
         
         for stroke in k.bindingsDict.keys():
             k.makeMasterGuiBinding(stroke,w=w)
-    #@nonl
     #@-node:ekr.20060221141535:k.completeAllBindingsForWidget
     #@+node:ekr.20060216074643:k.completeAllBindings
     def completeAllBindings (self):
@@ -2068,7 +1982,6 @@ class keyHandlerClass:
         k = self
         for stroke in k.bindingsDict.keys():
             k.makeMasterGuiBinding(stroke)
-    #@nonl
     #@-node:ekr.20060216074643:k.completeAllBindings
     #@+node:ekr.20051007080058:k.makeAllBindings
     def makeAllBindings (self):
@@ -2088,7 +2001,6 @@ class keyHandlerClass:
         c.frame.setMinibufferBindings()
         k.completeAllBindings()
         k.checkBindings()
-    #@nonl
     #@-node:ekr.20051007080058:k.makeAllBindings
     #@+node:ekr.20060609150503:k.initAbbrev
     def initAbbrev (self):
@@ -2113,7 +2025,6 @@ class keyHandlerClass:
             else:
                 g.es_print('bad abbrev: %s: unknown command name: %s' %
                     (key,commandName),color='blue')
-    #@nonl
     #@-node:ekr.20060609150503:k.initAbbrev
     #@+node:ekr.20060104154937:addModeCommands (enterModeCallback)
     def addModeCommands (self):
@@ -2132,7 +2043,6 @@ class keyHandlerClass:
             c.commandsDict[key] = f = enterModeCallback
             k.inverseCommandsDict [f.__name__] = key
             # g.trace('leoCommands %24s = %s' % (f.__name__,key))
-    #@nonl
     #@-node:ekr.20060104154937:addModeCommands (enterModeCallback)
     #@+node:ekr.20051008152134:initSpecialIvars
     def initSpecialIvars (self):
@@ -2158,7 +2068,6 @@ class keyHandlerClass:
                         setattr(k,ivar,stroke) ; found = True ;break
             if not found and warn:
                 g.trace('no setting for %s' % commandName)
-    #@nonl
     #@-node:ekr.20051008152134:initSpecialIvars
     #@+node:ekr.20051008134059:makeBindingsFromCommandsDict
     def makeBindingsFromCommandsDict (self):
@@ -2181,7 +2090,6 @@ class keyHandlerClass:
                     
         # g.trace(g.listToString(k.bindingsDict.keys(),sort=True))
         # g.trace('Ctrl+g',k.bindingsDict.get('Ctrl+g'))
-    #@nonl
     #@-node:ekr.20051008134059:makeBindingsFromCommandsDict
     #@+node:ekr.20060605130652:makeMasterGuiBinding
     def makeMasterGuiBinding (self,stroke,w=None):
@@ -2220,7 +2128,6 @@ class keyHandlerClass:
                     g.es_print('exception binding %s to %s' % (
                         bindStroke, c.widget_name(w)), color = 'blue')
                     if g.app.unitTesting: raise
-    #@nonl
     #@-node:ekr.20060605130652:makeMasterGuiBinding
     #@-node:ekr.20051006125633:Binding (keyHandler)
     #@+node:ekr.20051001051355:Dispatching (keyHandler)
@@ -2262,7 +2169,6 @@ class keyHandlerClass:
                 if len(keyHandlerClass.lossage) > 99:
                     keyHandlerClass.lossage.pop()
                 keyHandlerClass.lossage.insert(0,(ch,stroke),)
-            #@nonl
             #@-node:ekr.20050920085536.67:<< add character to history >>
             #@nl
             
@@ -2319,7 +2225,6 @@ class keyHandlerClass:
             if c.exists:
                 c.frame.updateStatusLine()
             return val
-    #@nonl
     #@+node:ekr.20050923172809.1:callStateFunction
     def callStateFunction (self,event):
         
@@ -2336,7 +2241,6 @@ class keyHandlerClass:
                 g.es_print('no state function for %s' % (k.state.kind),color='red')
                 
         return val
-    #@nonl
     #@-node:ekr.20050923172809.1:callStateFunction
     #@+node:ekr.20050923174229.3:callKeystrokeFunction (not used)
     def callKeystrokeFunction (self,event):
@@ -2353,7 +2257,6 @@ class keyHandlerClass:
             k.endCommand(event,commandName)
         
         return func
-    #@nonl
     #@-node:ekr.20050923174229.3:callKeystrokeFunction (not used)
     #@+node:ekr.20051026083544:handleDefaultChar
     def handleDefaultChar(self,event):
@@ -2375,7 +2278,6 @@ class keyHandlerClass:
             # Let tkinter handle the event.
             # ch = event and event.char ; g.trace('to tk:',name,repr(ch))
             return None
-    #@nonl
     #@-node:ekr.20051026083544:handleDefaultChar
     #@-node:ekr.20050920085536.65:masterCommand & helpers
     #@+node:ekr.20050920085536.41:fullCommand (alt-x) & helper
@@ -2431,7 +2333,6 @@ class keyHandlerClass:
             # g.trace('new prefix',k.mb_tabListPrefix)
     
         return 'break'
-    #@nonl
     #@+node:ekr.20050920085536.45:callAltXFunction
     def callAltXFunction (self,event):
         
@@ -2456,7 +2357,6 @@ class keyHandlerClass:
                 k.keyboardQuit(event)
                 k.setLabel('Command does not exist: %s' % commandName)
                 c.bodyWantsFocus()
-    #@nonl
     #@-node:ekr.20050920085536.45:callAltXFunction
     #@-node:ekr.20050920085536.41:fullCommand (alt-x) & helper
     #@+node:ekr.20051001050607:endCommand
@@ -2488,7 +2388,6 @@ class keyHandlerClass:
                     pass
             if 0: # Do *not* call this by default.  It interferes with undo.
                 c.frame.body.onBodyChanged(undoType='Typing')
-    #@nonl
     #@-node:ekr.20051001050607:endCommand
     #@-node:ekr.20051001051355:Dispatching (keyHandler)
     #@+node:ekr.20050920085536.32:Externally visible commands
@@ -2506,7 +2405,6 @@ class keyHandlerClass:
         k = self
         k.setLabelBlue('Digit Argument: ',protect=True)
         k.universalDispatcher(event)
-    #@nonl
     #@-node:ekr.20050930080419:digitArgument & universalArgument
     #@+node:ekr.20051014155551:k.show/hide/toggleMinibuffer
     def hideMinibuffer (self,event):
@@ -2531,7 +2429,6 @@ class keyHandlerClass:
             k.hideMinibuffer(event)
         else:
             k.showMinibuffer(event)
-    #@nonl
     #@-node:ekr.20051014155551:k.show/hide/toggleMinibuffer
     #@+node:ekr.20050920085536.68:negativeArgument (redo?)
     def negativeArgument (self,event):
@@ -2551,7 +2448,6 @@ class keyHandlerClass:
                 func(event)
     
         return 'break'
-    #@nonl
     #@-node:ekr.20050920085536.68:negativeArgument (redo?)
     #@+node:ekr.20050920085536.77:numberCommand
     def numberCommand (self,event,stroke,number):
@@ -2600,7 +2496,6 @@ class keyHandlerClass:
     def numberCommand9 (self,event):
         '''Execute command number 9.'''
         return self.numberCommand (event,None,9)
-    #@nonl
     #@-node:ekr.20050920085536.77:numberCommand
     #@+node:ekr.20051012201831:printBindings
     def printBindings (self,event):
@@ -2632,7 +2527,6 @@ class keyHandlerClass:
                        
         state = k.unboundKeyAction 
         k.showStateAndMode()
-    #@nonl
     #@-node:ekr.20051012201831:printBindings
     #@+node:ekr.20051014061332:printCommands
     def printCommands (self,event):
@@ -2683,7 +2577,6 @@ class keyHandlerClass:
             return 'break'
         else:
             return k.keyboardQuit(event)
-    #@nonl
     #@-node:ekr.20050920085536.48:repeatComplexCommand & helper
     #@+node:ekr.20060105132013:set-xxx-State
     def setCommandState (self,event):
@@ -2703,7 +2596,6 @@ class keyHandlerClass:
         # g.trace(g.callers())
         k = self
         k.setInputState('overwrite',showState=True)
-    #@nonl
     #@-node:ekr.20060105132013:set-xxx-State
     #@+node:ekr.20060605091826:toggle-input-state
     def toggleInputState (self,event=None):
@@ -2722,7 +2614,6 @@ class keyHandlerClass:
             state = g.choose(state=='command','insert','command') # prefer insert to overwrite.
             
         k.setInputState(state)
-    #@nonl
     #@-node:ekr.20060605091826:toggle-input-state
     #@-node:ekr.20050920085536.32:Externally visible commands
     #@+node:ekr.20051006065121:Externally visible helpers
@@ -2740,7 +2631,6 @@ class keyHandlerClass:
             w.event_generate(stroke)
         else:
             g.trace('no shortcut for %s' % (commandName),color='red')
-    #@nonl
     #@-node:ekr.20050920085536.64:manufactureKeyPressForCommandName
     #@+node:ekr.20051105155441:simulateCommand
     def simulateCommand (self,commandName):
@@ -2764,7 +2654,6 @@ class keyHandlerClass:
                 raise AttributeError
             else:
                 return None
-    #@nonl
     #@-node:ekr.20051105155441:simulateCommand
     #@+node:ekr.20050920085536.62:getArg
     def getArg (self,event,
@@ -2798,7 +2687,6 @@ class keyHandlerClass:
             # Clear the list: any non-tab indicates that a new prefix is in effect.
             k.mb_tabListPrefix = k.getLabel()
             k.oneCharacterArg = oneCharacter
-            #@nonl
             #@-node:ekr.20050928092516:<< init altX vars >>
             #@nl
             # Set the states.
@@ -2830,7 +2718,6 @@ class keyHandlerClass:
             k.updateLabel(event)
             k.mb_tabListPrefix = k.getLabel()
         return 'break'
-    #@nonl
     #@-node:ekr.20050920085536.62:getArg
     #@+node:ekr.20050920085536.63:keyboardQuit
     def keyboardQuit (self,event,hideTabs=True,setDefaultUnboundKeyAction=True):
@@ -2864,7 +2751,6 @@ class keyHandlerClass:
         k.showStateAndMode()
         c.endEditing()
         c.bodyWantsFocus()
-    #@nonl
     #@-node:ekr.20050920085536.63:keyboardQuit
     #@+node:ekr.20051015110547:k.registerCommand
     def registerCommand (self,commandName,shortcut,func,pane='all',verbose=True):
@@ -2916,7 +2802,6 @@ class keyHandlerClass:
                     
         # Annoying.
         # else: g.es_print('Registered %s' % (commandName),color='blue')
-    #@nonl
     #@-node:ekr.20051015110547:k.registerCommand
     #@-node:ekr.20051006065121:Externally visible helpers
     #@+node:ekr.20060606085637:Input State
@@ -2936,7 +2821,6 @@ class keyHandlerClass:
             body.setEditorColors(bg=k.command_mode_bg_color,fg=k.command_mode_fg_color)
         elif w and state == 'overwrite':
             body.setEditorColors(bg=k.overwrite_mode_bg_color,fg=k.overwrite_mode_fg_color)
-    #@nonl
     #@-node:ekr.20060120200818:setInputState
     #@+node:ekr.20060120193743:showStateAndMode
     def showStateAndMode(self):
@@ -2961,7 +2845,6 @@ class keyHandlerClass:
                 
             # Restore the focus.
             c.restoreFocus()
-    #@nonl
     #@-node:ekr.20060120193743:showStateAndMode
     #@-node:ekr.20060606085637:Input State
     #@+node:ekr.20050924064254:Label...
@@ -2975,7 +2858,6 @@ class keyHandlerClass:
     # 
     # trace = self.trace_minibuffer and not g.app.unitTesting
     #@-at
-    #@nonl
     #@+node:ekr.20060125175103:k.minibufferWantsFocus/Now
     def minibufferWantsFocus(self):
         
@@ -2992,7 +2874,6 @@ class keyHandlerClass:
             c.widgetWantsFocusNow(c.miniBufferWidget)
         else:
             c.bodyWantsFocusNow()
-    #@nonl
     #@-node:ekr.20060125175103:k.minibufferWantsFocus/Now
     #@+node:ekr.20051023132350:getLabel
     def getLabel (self,ignorePrompt=False):
@@ -3010,7 +2891,6 @@ class keyHandlerClass:
             return s[len(k.mb_prefix):]
         else:
             return s or ''
-    #@nonl
     #@-node:ekr.20051023132350:getLabel
     #@+node:ekr.20051023132350.2:protectLabel
     def protectLabel (self):
@@ -3024,7 +2904,6 @@ class keyHandlerClass:
         else:
             if k.svar:
                 k.mb_prefix = k.svar.get()
-    #@nonl
     #@-node:ekr.20051023132350.2:protectLabel
     #@+node:ekr.20050920085536.37:resetLabel
     def resetLabel (self):
@@ -3032,7 +2911,6 @@ class keyHandlerClass:
         k = self
         k.setLabelGrey('')
         k.mb_prefix = ''
-    #@nonl
     #@-node:ekr.20050920085536.37:resetLabel
     #@+node:ekr.20051023132350.1:setLabel
     def setLabel (self,s,protect=False):
@@ -3052,7 +2930,6 @@ class keyHandlerClass:
     
         if protect:
             k.mb_prefix = s
-    #@nonl
     #@-node:ekr.20051023132350.1:setLabel
     #@+node:ekr.20060206064635:extendLabel
     def extendLabel(self,s,select=False,protect=False):
@@ -3083,7 +2960,6 @@ class keyHandlerClass:
     
         if label is not None:
             k.setLabel(label,protect)
-    #@nonl
     #@-node:ekr.20050920085536.36:setLabelBlue
     #@+node:ekr.20050920085536.35:setLabelGrey
     def setLabelGrey (self,label=None):
@@ -3096,7 +2972,6 @@ class keyHandlerClass:
             k.setLabel(label)
     
     setLabelGray = setLabelGrey
-    #@nonl
     #@-node:ekr.20050920085536.35:setLabelGrey
     #@+node:ekr.20050920085536.38:updateLabel
     def updateLabel (self,event):
@@ -3127,7 +3002,6 @@ class keyHandlerClass:
             else:
                 # Just add the character.
                 k.setLabel(k.getLabel() + ch)
-    #@nonl
     #@-node:ekr.20050920085536.38:updateLabel
     #@+node:ekr.20060210141604.1:getEditableTextRange
     def getEditableTextRange (self):
@@ -3166,7 +3040,6 @@ class keyHandlerClass:
             'Shift_L', 'Control_R', 'Alt_R','Shift_R','Win_L','Win_R')
             
         trace = c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
-        #@nonl
         #@-node:ekr.20060321105403:<< define vars >>
         #@nl
     
@@ -3185,7 +3058,6 @@ class keyHandlerClass:
                 'stroke',repr(stroke),
                 'state',state,
                 'unboundKeyAction',k.unboundKeyAction)
-        #@nonl
         #@-node:ekr.20060321105403.1:<< do key traces >>
         #@nl
     
@@ -3244,7 +3116,6 @@ class keyHandlerClass:
                     else:
                         g.trace('No state handler for %s' % state)
                     return 'break'
-            #@nonl
             #@-node:ekr.20060321105403.2:<< handle mode bindings >>
             #@nl
             
@@ -3280,7 +3151,6 @@ class keyHandlerClass:
                     if b:
                         if trace: g.trace('%s found %s = %s' % (key,b.stroke,b.commandName))
                         return k.masterCommand(event,b.func,b.stroke,b.commandName)
-        #@nonl
         #@-node:ekr.20060321105403.3:<< handle per-pane bindings >>
         #@nl
         #@    << handle keys without bindings >>
@@ -3298,10 +3168,8 @@ class keyHandlerClass:
         else:
             if trace: g.trace(repr(stroke),'no func')
             return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
-        #@nonl
         #@-node:ekr.20060608070318:<< handle keys without bindings >>
         #@nl
-    #@nonl
     #@+node:ekr.20060309065445:handleMiniBindings
     def handleMiniBindings (self,event,state,stroke):
         
@@ -3321,7 +3189,6 @@ class keyHandlerClass:
                     return True
     
         return False
-    #@nonl
     #@-node:ekr.20060309065445:handleMiniBindings
     #@-node:ekr.20060127183752:masterKeyHandler
     #@+node:ekr.20060129052538.2:masterClickHandler
@@ -3379,7 +3246,6 @@ class keyHandlerClass:
     
     masterClick3Handler = masterClickHandler
     masterDoubleClick3Handler = masterClickHandler
-    #@nonl
     #@-node:ekr.20060129052538.2:masterClickHandler
     #@+node:ekr.20060131084938:masterDoubleClickHandler
     def masterDoubleClickHandler (self,event,func=None):
@@ -3396,7 +3262,6 @@ class keyHandlerClass:
             i = w.index("@%d,%d" % (event.x,event.y))
             g.app.gui.setTextSelection(w,i+' wordstart',i+' wordend')
             return 'break'
-    #@nonl
     #@-node:ekr.20060131084938:masterDoubleClickHandler
     #@+node:ekr.20060128090219:masterMenuHandler
     def masterMenuHandler (self,stroke,func,commandName):
@@ -3411,7 +3276,6 @@ class keyHandlerClass:
             return k.masterKeyHandler(event,stroke=stroke)
         else:
             return k.masterCommand(event,func,stroke,commandName)
-    #@nonl
     #@-node:ekr.20060128090219:masterMenuHandler
     #@-node:ekr.20060129052538.1:Master event handlers (keyHandler)
     #@+node:ekr.20060115103349:Modes
@@ -3423,7 +3287,6 @@ class keyHandlerClass:
         k.clearState()
         if modeName.endswith('-mode'): modeName = modeName[:-5]
         k.setLabelGrey('@mode %s is not defined (or is empty)' % modeName)
-    #@nonl
     #@-node:ekr.20060117202916:badMode
     #@+node:ekr.20060119150624:createModeBindings
     def createModeBindings (self,modeName,d,w):
@@ -3468,7 +3331,6 @@ class keyHandlerClass:
                         nextMode=bunch.nextMode,
                         stroke=stroke)
                     k.masterBindingsDict [ modeName ] = d2
-    #@nonl
     #@-node:ekr.20060119150624:createModeBindings
     #@+node:ekr.20060117202916.2:endMode
     def endMode(self,event):
@@ -3482,7 +3344,6 @@ class keyHandlerClass:
         k.clearState()
         k.resetLabel()
         k.showStateAndMode() # Restores focus.
-    #@nonl
     #@-node:ekr.20060117202916.2:endMode
     #@+node:ekr.20060102135349.2:enterNamedMode
     def enterNamedMode (self,event,commandName):
@@ -3559,7 +3420,6 @@ class keyHandlerClass:
                     self.initMode(event,nextMode) # Enter another mode.
     
         return 'break'
-    #@nonl
     #@-node:ekr.20060104110233:generalModeHandler
     #@+node:ekr.20060117202916.1:initMode
     def initMode (self,event,modeName):
@@ -3601,7 +3461,6 @@ class keyHandlerClass:
                 c.minibufferWantsFocus()
             else:
                 pass # Do *not* change the focus here!
-    #@nonl
     #@-node:ekr.20060117202916.1:initMode
     #@+node:ekr.20060204140416:reinitMode
     def reinitMode (self,modeName):
@@ -3623,7 +3482,6 @@ class keyHandlerClass:
                 c.minibufferWantsFocus()
             else:
                 pass # Do *not* change the focus here!
-    #@nonl
     #@-node:ekr.20060204140416:reinitMode
     #@+node:ekr.20060104164523:modeHelp
     def modeHelp (self,event):
@@ -3647,7 +3505,6 @@ class keyHandlerClass:
             c.minibufferWantsFocus()
     
         return 'break'
-    #@nonl
     #@+node:ekr.20060104125946:modeHelpHelper
     def modeHelpHelper (self,d):
         
@@ -3678,7 +3535,6 @@ class keyHandlerClass:
         # This isn't perfect in variable-width fonts.
         for s1,s2 in data:
             g.es('%*s %s' % (n,s1,s2),tabName=tabName)
-    #@nonl
     #@-node:ekr.20060104125946:modeHelpHelper
     #@-node:ekr.20060104164523:modeHelp
     #@-node:ekr.20060115103349:Modes
@@ -3706,7 +3562,6 @@ class keyHandlerClass:
             k.extendLabel(theDir,select=False,protect=False)
             
             k.mb_tabListPrefix = k.getLabel()
-            #@nonl
             #@-node:ekr.20060419125211:<< init altX vars >>
             #@nl
             # Set the states.
@@ -3729,7 +3584,6 @@ class keyHandlerClass:
         else:
             k.doFileNameChar(event)
         return 'break'
-    #@nonl
     #@+node:ekr.20060419125301:k.doFileNameBackSpace
     def doFileNameBackSpace (self):
     
@@ -3745,7 +3599,6 @@ class keyHandlerClass:
         if len(k.mb_tabListPrefix) > len(k.mb_prefix):
             k.mb_tabListPrefix = k.mb_tabListPrefix [:-1]
             k.setLabel(k.mb_tabListPrefix)
-    #@nonl
     #@-node:ekr.20060419125301:k.doFileNameBackSpace
     #@+node:ekr.20060603111722:k.doFileNameChar
     def doFileNameChar (self,event):
@@ -3765,7 +3618,6 @@ class keyHandlerClass:
             # Restore everything.
             old = k.getLabel(ignorePrompt=True)[:-1]
             k.setLabel(k.mb_prompt + old)
-    #@nonl
     #@-node:ekr.20060603111722:k.doFileNameChar
     #@+node:ekr.20060603110904:k.doFileNameTab
     def doFileNameTab (self):
@@ -3775,7 +3627,6 @@ class keyHandlerClass:
     
         if k.mb_tabList:
             k.setLabel(k.mb_prompt + common_prefix)
-    #@nonl
     #@-node:ekr.20060603110904:k.doFileNameTab
     #@+node:ekr.20060419125554:k.computeFileNameCompletionList
     # This code must not change mb_tabListPrefix.
@@ -3798,7 +3649,6 @@ class keyHandlerClass:
             c.frame.log.clearTab(tabName)
             k.showFileNameTabList()
         return common_prefix
-    #@nonl
     #@-node:ekr.20060419125554:k.computeFileNameCompletionList
     #@+node:ekr.20060420100610:k.showFileNameTabList
     def showFileNameTabList (self):
@@ -3810,7 +3660,6 @@ class keyHandlerClass:
             s = g.choose(path.endswith('\\'),theDir,fileName)
             s = fileName or g.os_path_basename(theDir) + '\\'
             g.es(s,tabName=tabName)
-    #@nonl
     #@-node:ekr.20060420100610:k.showFileNameTabList
     #@-node:ekr.20060419124420.1:getFileName & helpers
     #@+node:ekr.20051017212452:computeCompletionList
@@ -3847,7 +3696,6 @@ class keyHandlerClass:
                 g.es('%*s %*s %s' % (-(min(20,n1)),s1,n2,s2,s3),tabName=tabName)
     
         c.bodyWantsFocus()
-    #@nonl
     #@-node:ekr.20051017212452:computeCompletionList
     #@+node:ekr.20051018070524:computeInverseBindingDict
     def computeInverseBindingDict (self):
@@ -3870,7 +3718,6 @@ class keyHandlerClass:
                 d [b.commandName] = shortcutList
     
         return d
-    #@nonl
     #@-node:ekr.20051018070524:computeInverseBindingDict
     #@+node:ekr.20050920085536.46:k.doBackSpace
     # Used by getArg and fullCommand.
@@ -3898,7 +3745,6 @@ class keyHandlerClass:
             # g.trace(repr(s),repr(k.mb_prefix))
             if s and len(s) > len(k.mb_prefix):
                 k.setLabel(s[:-1])
-    #@nonl
     #@-node:ekr.20050920085536.46:k.doBackSpace
     #@+node:ekr.20050920085536.44:k.doTabCompletion
     # Used by getArg and fullCommand.
@@ -3921,7 +3767,6 @@ class keyHandlerClass:
                 k.computeCompletionList(defaultTabList,backspace=False)
     
         c.minibufferWantsFocusNow()
-    #@nonl
     #@-node:ekr.20050920085536.44:k.doTabCompletion
     #@+node:ekr.20051014170754.1:getShortcutForCommand/Name (should return lists)
     def getShortcutForCommandName (self,commandName):
@@ -3949,7 +3794,6 @@ class keyHandlerClass:
                     if b.commandName == command.__name__:
                          return k.tkbindingFromStroke(key)
         return ''
-    #@nonl
     #@-node:ekr.20051014170754.1:getShortcutForCommand/Name (should return lists)
     #@+node:ekr.20060114171910:traceBinding
     def traceBinding (self,bunch,shortcut,w):
@@ -3965,7 +3809,6 @@ class keyHandlerClass:
         
         if not pane_filter or pane_filter.lower() == bunch.pane:
              g.trace(bunch.pane,shortcut,bunch.commandName,w._name)
-    #@nonl
     #@-node:ekr.20060114171910:traceBinding
     #@-node:ekr.20051002152108.1:Shared helpers
     #@+node:ekr.20060128092340:Shortcuts (keyHandler)
@@ -3993,7 +3836,6 @@ class keyHandlerClass:
             
             # g.trace(isPlain,repr(shortcut))
             return isPlain
-    #@nonl
     #@+node:ekr.20060606095344:test_isPlainKey
     def test_isPlainKey (self):
         
@@ -4020,7 +3862,6 @@ class keyHandlerClass:
     
         for ch in special:
             assert not k.isPlainKey(ch), 'wrong: is plain: %s' % (ch)
-    #@nonl
     #@-node:ekr.20060606095344:test_isPlainKey
     #@-node:ekr.20060120071949:isPlainKey & test
     #@+node:ekr.20060128081317:shortcutFromSetting
@@ -4040,7 +3881,6 @@ class keyHandlerClass:
         ctrl  = s2.find("control") >= 0 or s2.find("ctrl") >= 0
         alt   = s2.find("alt") >= 0
         shift = s2.find("shift") >= 0   or s2.find("shft") >= 0
-        #@nonl
         #@-node:ekr.20060201065809:<< define cmd, ctrl, alt, shift >>
         #@nl
         if k.swap_mac_keys and sys.platform == "darwin":
@@ -4050,7 +3890,6 @@ class keyHandlerClass:
                 cmd = True ; ctrl = False
             if alt and not ctrl:
                 ctrl = True ; alt = False
-            #@nonl
             #@-node:ekr.20060215104239:<< swap cmd and ctrl keys >>
             #@nl
         #@    << convert minus signs to plus signs >>
@@ -4060,7 +3899,6 @@ class keyHandlerClass:
             s = s[:-1].replace('-','+') + '-'
         else:
             s = s.replace('-','+')
-        #@nonl
         #@-node:ekr.20060128103640.1:<< convert minus signs to plus signs >>
         #@nl
         #@    << compute the last field >>
@@ -4091,7 +3929,6 @@ class keyHandlerClass:
             # This is a *one-way* translation, done only here.
             d = self.settingsNameDict
             last = d.get(last.lower(),last)
-        #@nonl
         #@-node:ekr.20060128103640.2:<< compute the last field >>
         #@nl
         #@    << compute shortcut >>
@@ -4106,7 +3943,6 @@ class keyHandlerClass:
             
         # new in 4.4b3: convert all characters to unicode first.
         shortcut = ''.join([g.toUnicode(val,g.app.tkEncoding) for flag,val in table if flag])
-        #@nonl
         #@-node:ekr.20060128103640.4:<< compute shortcut >>
         #@nl
         # g.trace(setting,shortcut)
@@ -4114,7 +3950,6 @@ class keyHandlerClass:
         
     canonicalizeShortcut = shortcutFromSetting # For compatibility.
     strokeFromSetting    = shortcutFromSetting
-    #@nonl
     #@-node:ekr.20060128081317:shortcutFromSetting
     #@+node:ekr.20060131075440:k.tkbindingFromStroke
     def tkbindingFromStroke (self,stroke):
@@ -4132,7 +3967,6 @@ class keyHandlerClass:
             stroke = stroke.replace(a,b)
             
         return '<%s>' % stroke
-    #@nonl
     #@-node:ekr.20060131075440:k.tkbindingFromStroke
     #@+node:ekr.20060201083154:k.prettyPrintKey
     def prettyPrintKey (self,stroke,brief=False):
@@ -4166,7 +4000,6 @@ class keyHandlerClass:
             else:
                 s = last
         return g.choose(brief,s,'<%s>' % s)
-    #@nonl
     #@-node:ekr.20060201083154:k.prettyPrintKey
     #@-node:ekr.20060128092340:Shortcuts (keyHandler)
     #@+node:ekr.20050923172809:States
@@ -4177,13 +4010,11 @@ class keyHandlerClass:
         k.state.kind = None
         k.state.n = None
         k.state.handler = None
-    #@nonl
     #@-node:ekr.20050923172814.1:clearState
     #@+node:ekr.20060420150209:getStateHandler
     def getStateHandler (self):
     
         return self.state.handler
-    #@nonl
     #@-node:ekr.20060420150209:getStateHandler
     #@+node:ekr.20050923172814.2:getState
     def getState (self,kind):
@@ -4192,14 +4023,11 @@ class keyHandlerClass:
         val = g.choose(k.state.kind == kind,k.state.n,0)
         # g.trace(state,'returns',val)
         return val
-    #@nonl
     #@-node:ekr.20050923172814.2:getState
     #@+node:ekr.20050923172814.5:getStateKind
     def getStateKind (self):
     
         return self.state.kind
-        
-    #@nonl
     #@-node:ekr.20050923172814.5:getStateKind
     #@+node:ekr.20050923172814.3:inState
     def inState (self,kind=None):
@@ -4210,7 +4038,6 @@ class keyHandlerClass:
             return k.state.kind == kind and k.state.n != None
         else:
             return k.state.kind and k.state.n != None
-    #@nonl
     #@-node:ekr.20050923172814.3:inState
     #@+node:ekr.20050923172814.4:setState
     def setState (self,kind,n,handler=None):
@@ -4324,7 +4151,6 @@ class keyHandlerClass:
         # are always
         # to make the individual command more convenient to use.
         #@-at
-        #@nonl
         #@-node:ekr.20051006083627.1:<< about repeat counts >>
         #@nl
     
@@ -4367,7 +4193,6 @@ class keyHandlerClass:
             k.doControlU(event,stroke)
     
         return 'break'
-    #@nonl
     #@+node:ekr.20050920085536.75:executeNTimes
     def executeNTimes (self,event,n):
         
@@ -4396,7 +4221,6 @@ class keyHandlerClass:
             else:
                 for z in xrange(n):
                     w.event_generate('<Key>',keycode=event.keycode,keysym=event.keysym)
-    #@nonl
     #@-node:ekr.20050920085536.75:executeNTimes
     #@+node:ekr.20050920085536.76:doControlU
     def doControlU (self,event,stroke):
@@ -4411,13 +4235,10 @@ class keyHandlerClass:
             k.resetLabel()
             c.macroCommands.startKbdMacro(event)
             c.macroCommands.callLastKeyboardMacro(event)
-    #@nonl
     #@-node:ekr.20050920085536.76:doControlU
     #@-node:ekr.20050920085536.73:universalDispatcher & helpers
     #@-others
-#@nonl
 #@-node:ekr.20060219100201:class keyHandlerClass
 #@-others
-#@nonl
 #@-node:ekr.20031218072017.3748:@thin leoKeys.py
 #@-leo

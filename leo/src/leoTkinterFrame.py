@@ -24,7 +24,6 @@ import threading
 import time
 
 Pmw = g.importExtension("Pmw",pluginName="leoTkinterFrame.py",verbose=False)
-#@nonl
 #@-node:ekr.20041221070525:<< imports >>
 #@nl
 
@@ -84,10 +83,8 @@ class leoTkinterFrame (leoFrame.leoFrame):
         self.wantedWidget = None
         self.wantedCallbackScheduled = False
         self.scrollWay = None
-        #@nonl
         #@-node:ekr.20031218072017.1802:<< set the leoTkinterFrame ivars >>
         #@nl
-    #@nonl
     #@-node:ekr.20031218072017.1801:__init__ (tkFrame)
     #@+node:ekr.20031218072017.3942:__repr__ (tkFrame)
     def __repr__ (self):
@@ -102,7 +99,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
     def components (self):
     
         return self.componentsDict.keys()
-    #@nonl
     #@-node:ekr.20041221122440:f.component & components
     #@+node:ekr.20031218072017.2176:f.finishCreate & helpers
     def finishCreate (self,c):
@@ -127,7 +123,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
         c.bodyWantsFocusNow()
         self.trace_status_line = c.config.getBool('trace_status_line')
         # f.enableTclTraces()
-    #@nonl
     #@+node:ekr.20051009044751:createOuterFrames
     def createOuterFrames (self):
     
@@ -155,7 +150,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
         f.outerFrame = Tk.Frame(top)
         f.outerFrame.pack(expand=1,fill="both")
         f.componentClass(c,'hull',f.outerFrame)
-    #@nonl
     #@-node:ekr.20051009044751:createOuterFrames
     #@+node:ekr.20051009044920:createIconBarComponents
     # Warning: there is also a method called createIconBar.
@@ -170,7 +164,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
             f.iconBarComponentName,iconBar.iconFrame,
             iconBar,iconBar.pack,iconBar.unpack)
         f.iconBar.show()
-    #@nonl
     #@-node:ekr.20051009044920:createIconBarComponents
     #@+node:ekr.20051009045208:createSplitterComponents
     def createSplitterComponents (self):
@@ -198,7 +191,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
         f.reconfigurePanes()
         f.body.setFontFromConfig()
         f.body.setColorFromConfig()
-    #@nonl
     #@-node:ekr.20051009045208:createSplitterComponents
     #@+node:ekr.20051009045300:createStatusLineComponents
     # Warning: there is also a method called createStatusLine.
@@ -217,7 +209,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
             f.statusLineComponentName,
             statusLine.statusFrame,statusLine,statusLine.pack,statusLine.unpack)
         f.statusLine.show() # Show status line by default.
-    #@nonl
     #@-node:ekr.20051009045300:createStatusLineComponents
     #@+node:ekr.20051009045404:createFirstTreeNode
     def createFirstTreeNode (self):
@@ -230,7 +221,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
         v.initHeadString("NewHeadline")
         p.moveToRoot()
         c.editPosition(p)
-    #@nonl
     #@-node:ekr.20051009045404:createFirstTreeNode
     #@+node:ekr.20051121092320:f.enableTclTraces
     def enableTclTraces (self):
@@ -265,7 +255,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
         else:
             w.bind_all("<Control-1>", tracewidget)
             w.bind_all("<Control-Shift-1>", untracewidget)
-    #@nonl
     #@-node:ekr.20051121092320:f.enableTclTraces
     #@-node:ekr.20031218072017.2176:f.finishCreate & helpers
     #@+node:ekr.20031218072017.3944:f.createCanvas & helpers
@@ -284,7 +273,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
             canvas = self.createTkTreeCanvas(parentFrame,scrolls,pack)
     
         return canvas
-    #@nonl
     #@+node:ekr.20041221071131.1:createTkTreeCanvas
     def createTkTreeCanvas (self,parentFrame,scrolls,pack):
         
@@ -317,7 +305,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
                         return frame.OnMouseWheel(e)
                 
                 canvas.bind("<ButtonPress>",mapWheel,add=1)
-                #@nonl
                 #@-node:ekr.20050119210541:<< workaround for mouse-wheel problems >>
                 #@nl
             
@@ -382,13 +369,11 @@ class leoTkinterFrame (leoFrame.leoFrame):
                 canvas.bind_all( '<Button-1>',scrollUp)
                 canvas.bind_all( '<ButtonRelease-1>',off)
                 canvas.bind_all( '<ButtonRelease-3>',off)
-            #@nonl
             #@-node:ekr.20040709081208:<< do scrolling by hand in a separate thread >>
             #@nl
         
         # g.print_bindings("canvas",canvas)
         return canvas
-    #@nonl
     #@-node:ekr.20041221071131.1:createTkTreeCanvas
     #@+node:ekr.20041221071131:createPmwTreeCanvas (not used)
     def createPmwTreeCanvas (self,parentFrame,hScrollMode,pack):
@@ -409,7 +394,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
         canvas.configure(background='white')
         
         return canvas
-    #@nonl
     #@-node:ekr.20041221071131:createPmwTreeCanvas (not used)
     #@-node:ekr.20031218072017.3944:f.createCanvas & helpers
     #@+node:ekr.20041221123325:createLeoSplitters & helpers
@@ -434,7 +418,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
                 bar.configure(background='LightSteelBlue2')
                 handle = splitter.component('handle-1')
                 handle.configure(background='SteelBlue2')
-            #@nonl
             #@-node:ekr.20041223130032:<< create Pmw splitters and their components >>
             #@nl
         else:
@@ -451,7 +434,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
     
             self.f2,self.bar2 = f2,bar2
             self.split2Pane1,self.split2Pane2 = split2Pane1,split2Pane2
-    #@nonl
     #@+node:ekr.20041221195402:Pmw...
     #@+node:ekr.20041221073427:createLeoPmwSplitter
     def createLeoPmwSplitter (self,parent,verticalFlag,name):
@@ -473,7 +455,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
         self.componentClass(c,name,panedFrame,panedFrame)
     
         return panedFrame
-    #@nonl
     #@-node:ekr.20041221073427:createLeoPmwSplitter
     #@+node:ekr.20031218072017.3946:resizePanesToRatio
     def resizePanesToRatio(self,ratio,ratio2):
@@ -502,13 +483,11 @@ class leoTkinterFrame (leoFrame.leoFrame):
                 # Use ratio2 to set outline height.
                 size = ratio2 * float(splitter2.winfo_height())
                 splitter2.configurepane('outline',size=int(size))
-            #@nonl
             #@-node:ekr.20050104084531:<< resize the Pmw panes >>
             #@nl
         else:
             self.divideLeoSplitter(self.splitVerticalFlag,ratio)
             self.divideLeoSplitter(not self.splitVerticalFlag,ratio2)
-    #@nonl
     #@-node:ekr.20031218072017.3946:resizePanesToRatio
     #@+node:ekr.20041221075743:onPmwResizeSplitter1/2
     #@+at 
@@ -546,7 +525,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
                 n1,n2 = float(n1),float(n2)
                 self.secondary_ratio = n1/(n1+n2)
                 # g.trace(self.secondary_ratio)
-    #@nonl
     #@-node:ekr.20041221075743:onPmwResizeSplitter1/2
     #@-node:ekr.20041221195402:Pmw...
     #@+node:ekr.20041221185246:Tk...
@@ -563,7 +541,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
     # window.  OTOH, creating a single splitter window would be much easier 
     # than this code.
     #@-at
-    #@nonl
     #@+node:ekr.20041221073427.1:createLeoTkSplitter
     def createLeoTkSplitter (self,parent,verticalFlag,componentName):
         
@@ -594,7 +571,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
             self.componentClass(c,'splitBar2',bar)
     
         return f, bar, f1, f2
-    #@nonl
     #@-node:ekr.20041221073427.1:createLeoTkSplitter
     #@+node:ekr.20031218072017.3947:bindBar
     def bindBar (self, bar, verticalFlag):
@@ -604,7 +580,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
     
         else:
             bar.bind("<B1-Motion>", self.onDragSecondarySplitBar)
-    #@nonl
     #@-node:ekr.20031218072017.3947:bindBar
     #@+node:ekr.20031218072017.3949:divideAnySplitter
     # This is the general-purpose placer for splitters.
@@ -622,7 +597,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
             bar.place(relx=frac)
             pane1.place(relwidth=frac)
             pane2.place(relwidth=1-frac)
-    #@nonl
     #@-node:ekr.20031218072017.3949:divideAnySplitter
     #@+node:ekr.20031218072017.3950:divideLeoSplitter
     # Divides the main or secondary splitter, using the key invariant.
@@ -644,7 +618,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
     def divideLeoSplitter2 (self, frac, verticalFlag): 
         self.divideAnySplitter (frac, verticalFlag,
             self.bar2, self.split2Pane1, self.split2Pane2)
-    #@nonl
     #@-node:ekr.20031218072017.3950:divideLeoSplitter
     #@+node:ekr.20031218072017.3951:onDrag...
     def onDragMainSplitBar (self, event):
@@ -681,7 +654,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
         frac = float(offset) / wMax
         # g.trace(frac)
         self.divideLeoSplitter(verticalFlag, frac)
-    #@nonl
     #@-node:ekr.20031218072017.3951:onDrag...
     #@+node:ekr.20031218072017.3952:placeSplitter
     def placeSplitter (self,bar,pane1,pane2,verticalFlag):
@@ -701,7 +673,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
             pane1.place(rely=0.5, relx =   0, anchor="w", relheight=1.0, relwidth=adj)
             pane2.place(rely=0.5, relx = 1.0, anchor="e", relheight=1.0, relwidth=1.0-adj)
             bar.place  (rely=0.5, relx = adj, anchor="c", relheight=1.0)
-    #@nonl
     #@-node:ekr.20031218072017.3952:placeSplitter
     #@+node:ekr.20031218072017.998:Scrolling callbacks (frame)
     def setCallback (self,*args,**keys):
@@ -727,7 +698,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
             self.tree.allocateNodesBeforeScrolling(args)
     
         apply(self.canvas.yview,args,keys)
-    #@nonl
     #@-node:ekr.20031218072017.998:Scrolling callbacks (frame)
     #@-node:ekr.20041221185246:Tk...
     #@-node:ekr.20041221123325:createLeoSplitters & helpers
@@ -759,7 +729,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
             g.clearAllIvars(v)
         
         vList = [] ; tDict = {} # Remove these references immediately.
-        #@nonl
         #@-node:ekr.20031218072017.1976:<< clear all vnodes and tnodes in the tree>>
         #@nl
     
@@ -777,7 +746,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
         # This must be done last.
         frame.destroyAllPanels()
         g.clearAllIvars(frame)
-    #@nonl
     #@-node:ekr.20031218072017.1975:destroyAllObjects
     #@+node:ekr.20031218072017.3965:destroyAllPanels
     def destroyAllPanels (self):
@@ -789,7 +757,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
         for panel in panels:
             if panel:
                 panel.top.destroy()
-    #@nonl
     #@-node:ekr.20031218072017.3965:destroyAllPanels
     #@+node:ekr.20031218072017.1974:destroySelf (tkFrame)
     def destroySelf (self):
@@ -809,7 +776,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
         c.exists = False # Make sure this one ivar has not been destroyed.
     
         top.destroy()
-    #@nonl
     #@-node:ekr.20031218072017.1974:destroySelf (tkFrame)
     #@-node:ekr.20031218072017.3964:Destroying the frame
     #@-node:ekr.20031218072017.3941: Birth & Death (tkFrame)
@@ -828,13 +794,11 @@ class leoTkinterFrame (leoFrame.leoFrame):
             
             self.setPacker(packer)
             self.setUnpacker(unpacker)
-        #@nonl
         #@-node:ekr.20041223095751.1: ctor
         #@+node:ekr.20041223154028.4:__repr__
         def __repr__ (self):
             
             return '<component %s>' % self.name
-        #@nonl
         #@-node:ekr.20041223154028.4:__repr__
         #@+node:ekr.20041223124022:destroy
         def destroy (self):
@@ -843,7 +807,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
                 del c.frame.componentsDict[self.name]
             except KeyError:
                 g.es("No component named %s" % name,color='blue')
-        #@nonl
         #@-node:ekr.20041223124022:destroy
         #@+node:ekr.20041223124022.1:getters & setters
         # Setters...
@@ -860,7 +823,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
                     if self.frame:
                         self.frame.pack_forget()
             self.unpacker = unpacker
-        #@nonl
         #@-node:ekr.20041223124022.1:getters & setters
         #@+node:ekr.20041223095751.2:pack & unpack
         def pack (self):
@@ -870,10 +832,8 @@ class leoTkinterFrame (leoFrame.leoFrame):
         def unpack (self):
         
             self.unpacker()
-        #@nonl
         #@-node:ekr.20041223095751.2:pack & unpack
         #@-others
-    #@nonl
     #@-node:ekr.20041223095751:class componentClass (componentBaseClass)
     #@+node:ekr.20041223104933:class statusLineClass
     class statusLineClass:
@@ -905,7 +865,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
                 height=1,state="disabled",bg=bg,relief="groove",name='status-line')
             self.textWidget.pack(side="left",expand=1,fill="x")
             self.textWidget.bind("<Button-1>", self.onActivate)
-        #@nonl
         #@-node:ekr.20031218072017.3961: ctor
         #@+node:ekr.20031218072017.3962:clear
         def clear (self):
@@ -919,7 +878,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
             t.configure(state="normal")
             t.delete("1.0","end")
             t.configure(state="disabled")
-        #@nonl
         #@-node:ekr.20031218072017.3962:clear
         #@+node:EKR.20040424153344:enable, disable & isEnabled
         def disable (self,background=None):
@@ -943,7 +901,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
                 
         def isEnabled(self):
             return self.enabled
-        #@nonl
         #@-node:EKR.20040424153344:enable, disable & isEnabled
         #@+node:ekr.20041026132435:get
         def get (self):
@@ -953,13 +910,11 @@ class leoTkinterFrame (leoFrame.leoFrame):
                 return t.get("1.0","end")
             else:
                 return ""
-        #@nonl
         #@-node:ekr.20041026132435:get
         #@+node:ekr.20041223114744:getFrame
         def getFrame (self):
             
             return self.statusFrame
-        #@nonl
         #@-node:ekr.20041223114744:getFrame
         #@+node:ekr.20050120093555:onActivate
         def onActivate (self,event=None):
@@ -967,7 +922,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
             # Don't change background as the result of simple mouse clicks.
             background = self.statusFrame.cget("background")
             self.enable(background=background)
-        #@nonl
         #@-node:ekr.20050120093555:onActivate
         #@+node:ekr.20041223111916:pack & show
         def pack (self):
@@ -977,7 +931,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
                 self.statusFrame.pack(fill="x",pady=1)
                 
         show = pack
-        #@nonl
         #@-node:ekr.20041223111916:pack & show
         #@+node:ekr.20031218072017.3963:put (leoTkinterFrame:statusLineClass)
         def put(self,s,color=None):
@@ -1003,7 +956,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
                 t.insert("end",s)
             
             t.configure(state="disabled")
-        #@nonl
         #@-node:ekr.20031218072017.3963:put (leoTkinterFrame:statusLineClass)
         #@+node:ekr.20041223111916.1:unpack & hide
         def unpack (self):
@@ -1013,7 +965,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
                 self.statusFrame.pack_forget()
         
         hide = unpack
-        #@nonl
         #@-node:ekr.20041223111916.1:unpack & hide
         #@+node:ekr.20031218072017.1733:update
         def update (self):
@@ -1035,10 +986,8 @@ class leoTkinterFrame (leoFrame.leoFrame):
             lab.configure(text=s)
             self.lastRow = row
             self.lastCol = col
-        #@nonl
         #@-node:ekr.20031218072017.1733:update
         #@-others
-    #@nonl
     #@-node:ekr.20041223104933:class statusLineClass
     #@+node:ekr.20041223102225:class iconBarClass
     class iconBarClass:
@@ -1056,7 +1005,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
                 parentFrame,height="5m",bd=2,relief="groove") # ,background='blue')
             self.parentFrame = parentFrame
             self.visible = False
-        #@nonl
         #@-node:ekr.20041223102225.1: ctor
         #@+node:ekr.20031218072017.3958:add
         def add(self,*args,**keys):
@@ -1113,7 +1061,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
                 except:
                     g.es_exception()
                     return None
-                #@nonl
                 #@-node:ekr.20031218072017.3959:<< create a picture >>
                 #@nl
             elif text:
@@ -1125,7 +1072,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
                 return b
                 
             return None
-        #@nonl
         #@-node:ekr.20031218072017.3958:add
         #@+node:ekr.20031218072017.3956:clear
         def clear(self):
@@ -1146,7 +1092,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
         def getFrame (self):
         
             return self.iconFrame
-        #@nonl
         #@-node:ekr.20041223114821:getFrame
         #@+node:ekr.20041223102225.2:pack (show)
         def pack (self):
@@ -1158,7 +1103,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
                 self.iconFrame.pack(fill="x",pady=2)
                 
         show = pack
-        #@nonl
         #@-node:ekr.20041223102225.2:pack (show)
         #@+node:ekr.20031218072017.3955:unpack (hide)
         def unpack (self):
@@ -1172,10 +1116,8 @@ class leoTkinterFrame (leoFrame.leoFrame):
                 self.iconFrame.pack_forget()
                 
         hide = unpack
-        #@nonl
         #@-node:ekr.20031218072017.3955:unpack (hide)
         #@-others
-    #@nonl
     #@-node:ekr.20041223102225:class iconBarClass
     #@+node:ekr.20041222060024:tkFrame.unpack/repack...
     #@+node:ekr.20041223160653:pane packers
@@ -1202,7 +1144,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
     def packTree (self):
         # Pane 1 of secondary splitter.
         self.placePane1(not self.splitVerticalFlag,self.split2Pane1,self.secondary_ratio)
-    #@nonl
     #@-node:ekr.20041223160653:pane packers
     #@+node:ekr.20041224102942:pane replacers
     #@+node:ekr.20041224105456.1:replaceBodyPaneWithComponent
@@ -1216,7 +1157,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
                 self.unpackComponent('body')
                 self.split1Pane2 = f
                 self.packBody()
-    #@nonl
     #@-node:ekr.20041224105456.1:replaceBodyPaneWithComponent
     #@+node:ekr.20041224105456.3:replaceLogPaneWithComponent
     def replaceLogPaneWithComponent (self,componentName):
@@ -1230,7 +1170,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
                 self.split2Pane2 = f
                 self.packLog()
                 self.divideLeoSplitter(not self.splitVerticalFlag,self.secondary_ratio)
-    #@nonl
     #@-node:ekr.20041224105456.3:replaceLogPaneWithComponent
     #@+node:ekr.20041224105456.4:replaceTreePaneWithComponent
     def replaceTreePaneWithComponent (self,componentName):
@@ -1244,7 +1183,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
                 self.split2Pane1 = f
                 self.packTree()
                 self.divideLeoSplitter(not self.splitVerticalFlag,self.secondary_ratio)
-    #@nonl
     #@-node:ekr.20041224105456.4:replaceTreePaneWithComponent
     #@-node:ekr.20041224102942:pane replacers
     #@+node:ekr.20041223162512:pane unpackers
@@ -1258,7 +1196,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
     
     def unpackTree(self):
         self.split2Pane1.place_forget()
-    #@nonl
     #@-node:ekr.20041223162512:pane unpackers
     #@+node:ekr.20041222061439:pack/unpackComponent
     # Note: the 'packers' for the 'body', 'log' and 'tree' components are actually placers,
@@ -1277,7 +1214,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
             component.unpack()
         elif verbose:
             g.es("unpackComponent: no component named %s" % name,color='blue')
-    #@nonl
     #@-node:ekr.20041222061439:pack/unpackComponent
     #@+node:ekr.20041224072631:show/hideComponent
     def hideComponent (self,name):
@@ -1293,7 +1229,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
             component.show()
         else:
             g.es("showComponent: no component named %s" % name,color='blue')
-    #@nonl
     #@-node:ekr.20041224072631:show/hideComponent
     #@-node:ekr.20041222060024:tkFrame.unpack/repack...
     #@+node:ekr.20051014154752:Minibuffer methods
@@ -1307,7 +1242,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
         if not frame.minibufferVisible:
             frame.minibufferFrame.pack(side='bottom',fill='x')
             frame.minibufferVisible = True
-            
     #@-node:ekr.20060203115311:showMinibuffer
     #@+node:ekr.20060203115311.1:hideMinibuffer
     def hideMinibuffer (self):
@@ -1318,7 +1252,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
         if frame.minibufferVisible:
             frame.minibufferFrame.pack_forget()
             frame.minibufferVisible = False
-    #@nonl
     #@-node:ekr.20060203115311.1:hideMinibuffer
     #@+node:ekr.20050920094212:f.createMiniBufferWidget
     def createMiniBufferWidget (self):
@@ -1344,7 +1277,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
         frame.minibufferVisible = c.showMinibuffer
     
         return label
-    #@nonl
     #@-node:ekr.20050920094212:f.createMiniBufferWidget
     #@+node:ekr.20060203114017:f.setMinibufferBindings
     def setMinibufferBindings (self):
@@ -1368,7 +1300,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
             if sys.platform.startswith('win'):
                 # Support Linux middle-button paste easter egg.
                 t.bind("<Button-2>",frame.OnPaste)
-    #@nonl
     #@-node:ekr.20060203114017:f.setMinibufferBindings
     #@-node:ekr.20051014154752:Minibuffer methods
     #@+node:ekr.20031218072017.3953:Icon area methods (compatibility)
@@ -1403,7 +1334,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
     
     def hideIconBar (self):
         return self.callIconBar('hide')
-    #@nonl
     #@-node:ekr.20031218072017.3953:Icon area methods (compatibility)
     #@+node:ekr.20041223105114.1:Status line methods (compatibility)
     def getStatusObject(self):
@@ -1455,7 +1385,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
         
     def updateStatusLine(self):
         return self.callStatus('update')
-    #@nonl
     #@-node:ekr.20041223105114.1:Status line methods (compatibility)
     #@+node:ekr.20031218072017.3967:Configuration (tkFrame)
     #@+node:ekr.20031218072017.3968:configureBar
@@ -1487,7 +1416,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
             else:
                 # Panes arranged horizontally; vertical splitter bar
                 bar.configure(width=7,cursor="sb_h_double_arrow")
-    #@nonl
     #@-node:ekr.20031218072017.3968:configureBar
     #@+node:ekr.20031218072017.3969:configureBarsFromConfig
     def configureBarsFromConfig (self):
@@ -1514,7 +1442,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
         except: # Could be a user error.
             g.es("exception in user configuration for splitbar")
             g.es_exception()
-    #@nonl
     #@-node:ekr.20031218072017.3969:configureBarsFromConfig
     #@+node:ekr.20031218072017.2246:reconfigureFromConfig
     def reconfigureFromConfig (self):
@@ -1534,7 +1461,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
         frame.log.setColorFromConfig()
     
         c.redraw_now()
-    #@nonl
     #@-node:ekr.20031218072017.2246:reconfigureFromConfig
     #@+node:ekr.20031218072017.1625:setInitialWindowGeometry
     def setInitialWindowGeometry(self):
@@ -1550,7 +1476,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
         
         if h and w and x and y:
             self.setTopGeometry(w,h,x,y)
-    #@nonl
     #@-node:ekr.20031218072017.1625:setInitialWindowGeometry
     #@+node:ekr.20031218072017.722:setTabWidth
     def setTabWidth (self, w):
@@ -1589,7 +1514,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
             self.bodyCtrl.pack_forget()
             self.bodyXBar.pack(side="bottom", fill="x")
             self.bodyCtrl.pack(expand=1,fill="both")
-    #@nonl
     #@-node:ekr.20031218072017.1540:f.setWrap
     #@+node:ekr.20031218072017.2307:setTopGeometry
     def setTopGeometry(self,w,h,x,y,adjustSize=True):
@@ -1613,7 +1537,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
         geom = "%dx%d%+d%+d" % (w,h,x,y)
         
         self.top.geometry(geom)
-    #@nonl
     #@-node:ekr.20031218072017.2307:setTopGeometry
     #@+node:ekr.20031218072017.3970:reconfigurePanes (use config bar_width)
     def reconfigurePanes (self):
@@ -1649,7 +1572,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
             c.requestCloseWindow = True
         else:
             g.app.closeLeoWindow(self)
-    #@nonl
     #@-node:ekr.20031218072017.3972:frame.OnCloseLeoEvent
     #@+node:ekr.20031218072017.3973:frame.OnControlKeyUp/Down
     def OnControlKeyDown (self,event=None):
@@ -1663,7 +1585,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
         __pychecker__ = '--no-argsused' # event not used.
     
         self.controlKeyIsDown = False
-    #@nonl
     #@-node:ekr.20031218072017.3973:frame.OnControlKeyUp/Down
     #@+node:ekr.20031218072017.3975:OnActivateBody (tkFrame)
     def OnActivateBody (self,event=None):
@@ -1681,7 +1602,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
             g.es_event_exception("activate body")
             
         return 'break'
-    #@nonl
     #@-node:ekr.20031218072017.3975:OnActivateBody (tkFrame)
     #@+node:ekr.20031218072017.2253:OnActivateLeoEvent, OnDeactivateLeoEvent
     def OnActivateLeoEvent(self,event=None):
@@ -1695,7 +1615,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
     def OnDeactivateLeoEvent(self,event=None):
         
         pass # This causes problems on the Mac.
-    #@nonl
     #@-node:ekr.20031218072017.2253:OnActivateLeoEvent, OnDeactivateLeoEvent
     #@+node:ekr.20031218072017.3976:OnActivateTree
     def OnActivateTree (self,event=None):
@@ -1710,7 +1629,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
                 
         except:
             g.es_event_exception("activate tree")
-    #@nonl
     #@-node:ekr.20031218072017.3976:OnActivateTree
     #@+node:ekr.20031218072017.3977:OnBodyClick, OnBodyRClick (Events)
     def OnBodyClick (self,event=None):
@@ -1732,7 +1650,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
             g.doHook("bodyrclick2",c=c,p=p,v=p,event=event)
         except:
             g.es_event_exception("iconrclick")
-    #@nonl
     #@-node:ekr.20031218072017.3977:OnBodyClick, OnBodyRClick (Events)
     #@+node:ekr.20031218072017.3978:OnBodyDoubleClick (Events)
     def OnBodyDoubleClick (self,event=None):
@@ -1751,7 +1668,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
             g.es_event_exception("bodydclick")
             
         return "break" # Restore this to handle proper double-click logic.
-    #@nonl
     #@-node:ekr.20031218072017.3978:OnBodyDoubleClick (Events)
     #@+node:ekr.20031218072017.1803:OnMouseWheel (Tomaz Ficko)
     # Contributed by Tomaz Ficko.  This works on some systems.
@@ -1768,7 +1684,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
             g.es_event_exception("scroll wheel")
     
         return "break"
-    #@nonl
     #@-node:ekr.20031218072017.1803:OnMouseWheel (Tomaz Ficko)
     #@-node:ekr.20031218072017.3971:Event handlers (tkFrame)
     #@+node:ekr.20031218072017.3979:Gui-dependent commands
@@ -1792,7 +1707,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
             f.contractLogPane()
         elif wname.startswith('head') or wname.startswith('canvas'):
             f.contractOutlinePane()
-    #@nonl
     #@-node:ekr.20060209110128.1:contractPane
     #@+node:ekr.20060209110128.2:expandPane
     def expandPane (self,event=None):
@@ -1813,7 +1727,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
             f.expandLogPane()
         elif wname.startswith('head') or wname.startswith('canvas'):
             f.expandOutlinePane()
-    #@nonl
     #@-node:ekr.20060209110128.2:expandPane
     #@+node:ekr.20060210123852:fullyExpandPane
     def fullyExpandPane (self,event=None):
@@ -1834,7 +1747,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
             f.fullyExpandLogPane()
         elif wname.startswith('head') or wname.startswith('canvas'):
             f.fullyExpandOutlinePane()
-    #@nonl
     #@-node:ekr.20060210123852:fullyExpandPane
     #@+node:ekr.20060209143933:hidePane
     def hidePane (self,event=None):
@@ -1858,7 +1770,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
         elif wname.startswith('head') or wname.startswith('canvas'):
             f.hideOutlinePane()
             c.bodyWantsFocusNow()
-    #@nonl
     #@-node:ekr.20060209143933:hidePane
     #@+node:ekr.20060209110936:expand/contract/hide...Pane
     #@+at 
@@ -1897,7 +1808,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
     def expandOutlinePane (self,event=None):
         '''Expand the outline pane.'''
         self.contractBodyPane()
-    #@nonl
     #@-node:ekr.20060209110936:expand/contract/hide...Pane
     #@+node:ekr.20060210123852.1:fullyExpand/hide...Pane
     def fullyExpandBodyPane (self,event=None):
@@ -1923,7 +1833,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
     def hideOutlinePane (self,event=None):
         '''Completely contract the outline pane.'''
         f = self ; f.divideLeoSplitter(f.splitVerticalFlag,0.0)
-    #@nonl
     #@-node:ekr.20060210123852.1:fullyExpand/hide...Pane
     #@-node:ekr.20060209110128:Minibuffer commands... (tkFrame)
     #@+node:ekr.20031218072017.3980:Edit Menu...
@@ -1952,7 +1861,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
                 c.selectPosition(p)
             finally:
                 c.endUpdate()
-    #@nonl
     #@-node:ekr.20031218072017.3981:abortEditLabelCommand
     #@+node:ekr.20031218072017.840:Cut/Copy/Paste (tkFrame)
     #@+node:ekr.20051011072903.2:copyText
@@ -1970,7 +1878,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
             g.app.gui.replaceClipboardWith(s)
             
     OnCopyFromMenu = copyText
-    #@nonl
     #@-node:ekr.20051011072903.2:copyText
     #@+node:ekr.20051011072049.2:cutText
     def cutText (self,event=None):
@@ -2001,7 +1908,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
         else: pass
     
     OnCutFromMenu = cutText
-    #@nonl
     #@-node:ekr.20051011072049.2:cutText
     #@+node:ekr.20051011072903.5:pasteText
     def pasteText (self,event=None):
@@ -2048,7 +1954,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
         return 'break' # Essential
     
     OnPasteFromMenu = pasteText
-    #@nonl
     #@-node:ekr.20051011072903.5:pasteText
     #@-node:ekr.20031218072017.840:Cut/Copy/Paste (tkFrame)
     #@+node:ekr.20031218072017.3982:endEditLabelCommand
@@ -2063,7 +1968,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
         else:
             c.endEditing()
             c.bodyWantsFocusNow() # New in 4.4.1 b2 (was c.bodyWantFocus)
-    #@nonl
     #@-node:ekr.20031218072017.3982:endEditLabelCommand
     #@+node:ekr.20031218072017.3983:insertHeadlineTime
     def insertHeadlineTime (self,event=None):
@@ -2090,7 +1994,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
                     w.delete(i,j)
                 w.insert("insert",time)
             c.frame.tree.onHeadChanged(p,'Insert Headline Time')
-    #@nonl
     #@-node:ekr.20031218072017.3983:insertHeadlineTime
     #@-node:ekr.20031218072017.3980:Edit Menu...
     #@+node:ekr.20031218072017.3984:Window Menu...
@@ -2106,7 +2009,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
         else:
             c.endEditing()
             c.bodyWantsFocusNow()
-    #@nonl
     #@-node:ekr.20031218072017.3985:toggleActivePane
     #@+node:ekr.20031218072017.3986:cascade
     def cascade (self,event=None):
@@ -2146,7 +2048,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
         
         frame = self
         frame.divideLeoSplitter2(0.99, not frame.splitVerticalFlag)
-    #@nonl
     #@-node:ekr.20031218072017.3988:hideLogWindow
     #@+node:ekr.20031218072017.3989:minimizeAll
     def minimizeAll (self,event=None):
@@ -2162,7 +2063,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
     
         if frame and frame.top.state() == "normal":
             frame.top.iconify()
-    #@nonl
     #@-node:ekr.20031218072017.3989:minimizeAll
     #@+node:ekr.20031218072017.3990:toggleSplitDirection (tkFrame)
     # The key invariant: self.splitVerticalFlag tells the alignment of the main splitter.
@@ -2181,7 +2081,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
             self.togglePmwSplitDirection(self.splitVerticalFlag)
         else:
             self.toggleTkSplitDirection(self.splitVerticalFlag)
-    #@nonl
     #@+node:ekr.20041221122440.1:togglePmwSplitDirection
     #@+at 
     #@nonl
@@ -2230,7 +2129,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
             c.selectPosition(p)
         finally:
             c.endUpdate()
-    #@nonl
     #@-node:ekr.20041221122440.1:togglePmwSplitDirection
     #@+node:ekr.20041221122440.2:toggleTkSplitDirection
     def toggleTkSplitDirection (self,verticalFlag):
@@ -2253,7 +2151,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
         # Redraw with an appropriate ratio.
         vflag,ratio,secondary_ratio = frame.initialRatios()
         self.resizePanesToRatio(ratio,secondary_ratio)
-    #@nonl
     #@-node:ekr.20041221122440.2:toggleTkSplitDirection
     #@-node:ekr.20031218072017.3990:toggleSplitDirection (tkFrame)
     #@+node:EKR.20040422130619:resizeToScreen
@@ -2275,7 +2172,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
             geom = "%dx%d%+d%+d" % (w-8,h-46,0,0)
        
         top.geometry(geom)
-    #@nonl
     #@-node:EKR.20040422130619:resizeToScreen
     #@-node:ekr.20031218072017.3984:Window Menu...
     #@+node:ekr.20031218072017.3991:Help Menu...
@@ -2313,7 +2209,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
                 except:
                     g.es("exception dowloading sbooks.chm")
                     g.es_exception()
-    #@nonl
     #@+node:ekr.20031218072017.3993:showProgressBar
     def showProgressBar (self,count,size,total):
     
@@ -2326,12 +2221,10 @@ class leoTkinterFrame (leoFrame.leoFrame):
             self.scale = scale = Tk.Scale(top,state="normal",orient="horizontal",from_=0,to=total)
             scale.pack()
             top.lift()
-            #@nonl
             #@-node:ekr.20031218072017.3994:<< create the scale widget >>
             #@nl
         self.scale.set(count*size)
         self.scale.update_idletasks()
-    #@nonl
     #@-node:ekr.20031218072017.3993:showProgressBar
     #@-node:ekr.20031218072017.3992:leoHelp
     #@-node:ekr.20031218072017.3991:Help Menu...
@@ -2346,7 +2239,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
     # condition here
     # that alters text improperly.
     #@-at
-    #@nonl
     #@-node:ekr.20050120083053:Delayed Focus (tkFrame)
     #@+node:ekr.20031218072017.3995:Tk bindings...
     def bringToFront (self):
@@ -2387,10 +2279,8 @@ class leoTkinterFrame (leoFrame.leoFrame):
         
     def update (self):
         self.top.update()
-    #@nonl
     #@-node:ekr.20031218072017.3995:Tk bindings...
     #@-others
-#@nonl
 #@-node:ekr.20031218072017.3940:class leoTkinterFrame
 #@+node:ekr.20031218072017.3996:class leoTkinterBody
 class leoTkinterBody (leoFrame.leoBody):
@@ -2415,7 +2305,6 @@ class leoTkinterBody (leoFrame.leoBody):
         self.trace_onBodyChanged = c.config.getBool('trace_onBodyChanged')
         self.bodyCtrl = self.createControl(frame,parentFrame,p)
         self.colorizer = leoColor.colorizer(c)
-    #@nonl
     #@-node:ekr.20031218072017.2182:tkBody. __init__
     #@+node:ekr.20031218072017.838:tkBody.createBindings
     def createBindings (self,w=None):
@@ -2442,7 +2331,6 @@ class leoTkinterBody (leoFrame.leoBody):
         if sys.platform.startswith('win'):
             # Support Linux middle-button paste easter egg.
             w.bind("<Button-2>",frame.OnPaste)
-    #@nonl
     #@-node:ekr.20031218072017.838:tkBody.createBindings
     #@+node:ekr.20031218072017.3998:tkBody.createControl
     def createControl (self,frame,parentFrame,p):
@@ -2463,7 +2351,6 @@ class leoTkinterBody (leoFrame.leoBody):
         self.editorWidgets[name] = w
     
         return w
-    #@nonl
     #@-node:ekr.20031218072017.3998:tkBody.createControl
     #@+node:ekr.20060528100747.3:tkBody.createTextWidget
     def createTextWidget (self,frame,parentFrame,p,name):
@@ -2523,7 +2410,6 @@ class leoTkinterBody (leoFrame.leoBody):
         w.bind('<FocusIn>',focusInCallback)
     
         return w
-    #@nonl
     #@-node:ekr.20060528100747.3:tkBody.createTextWidget
     #@-node:ekr.20031218072017.3997: Birth & death
     #@+node:ekr.20060528100747:Editors
@@ -2546,7 +2432,6 @@ class leoTkinterBody (leoFrame.leoBody):
         
         # Restore.
         self.bodyCtrl = self.frame.bodyCtrl = old_w
-    #@nonl
     #@-node:ekr.20060530204135:recolorWidget
     #@+node:ekr.20060530210057:create/select/unselect/Label
     def unselectLabel (self,w):
@@ -2604,7 +2489,6 @@ class leoTkinterBody (leoFrame.leoBody):
         c.k.completeAllBindingsForWidget(w)
         
         self.recolorWidget(w)
-        #@nonl
         #@-node:ekr.20060528110922:<< create label and text widgets >>
         #@nl
         self.editorWidgets[name] = w
@@ -2617,7 +2501,6 @@ class leoTkinterBody (leoFrame.leoBody):
         self.updateEditors()
         # self.onFocusIn(w,setFocus=True)
         c.bodyWantsFocusNow()
-    #@nonl
     #@-node:ekr.20060528100747.1:addEditor
     #@+node:ekr.20060606090542:setEditorColors
     def setEditorColors (self,bg,fg):
@@ -2631,7 +2514,6 @@ class leoTkinterBody (leoFrame.leoBody):
             except Exception:
                 g.es_exception()
                 pass
-    #@nonl
     #@-node:ekr.20060606090542:setEditorColors
     #@+node:ekr.20060528170438:cycleEditorFocus
     def cycleEditorFocus (self,event=None):
@@ -2673,7 +2555,6 @@ class leoTkinterBody (leoFrame.leoBody):
         # Select another editor.
         w = d.values()[0]
         self.onFocusIn(w)
-    #@nonl
     #@-node:ekr.20060528113806:deleteEditor
     #@+node:ekr.20060528104554:onFocusIn
     lockout_onFocusIn = False
@@ -2742,7 +2623,6 @@ class leoTkinterBody (leoFrame.leoBody):
                     g.app.gui.setSelectionRange(w,start,end)
                 except Exception:
                     pass
-            #@nonl
             #@-node:ekr.20060605190146:<< restore the selection, insertion point and the scrollbar >>
             #@nl
             w3 = g.app.gui.get_focus(c)
@@ -2753,7 +2633,6 @@ class leoTkinterBody (leoFrame.leoBody):
             self.lockout_onFocusIn = False
     
         return 'break'
-    #@nonl
     #@-node:ekr.20060528104554:onFocusIn
     #@+node:ekr.20060528132829:selectMainEditor
     def selectMainEditor (self,p):
@@ -2768,7 +2647,6 @@ class leoTkinterBody (leoFrame.leoBody):
             w.leo_label_s = p.headString()
             self.selectLabel(w)
             # g.trace(w.leo_name,p.headString())
-    #@nonl
     #@-node:ekr.20060528132829:selectMainEditor
     #@+node:ekr.20060528131618:updateEditors
     def updateEditors (self):
@@ -2786,7 +2664,6 @@ class leoTkinterBody (leoFrame.leoBody):
                 # g.trace('update',w,v)
                 self.recolorWidget(w)
         c.frame.bodyWantsFocus()
-    #@nonl
     #@-node:ekr.20060528131618:updateEditors
     #@-node:ekr.20060528100747:Editors
     #@+node:ekr.20041217135735.1:tkBody.setColorFromConfig
@@ -2834,7 +2711,6 @@ class leoTkinterBody (leoFrame.leoBody):
                 try: w.configure(cursor=cursor)
                 except:
                     import traceback ; traceback.print_exc()
-    #@nonl
     #@-node:ekr.20041217135735.1:tkBody.setColorFromConfig
     #@+node:ekr.20031218072017.2183:tkBody.setFontFromConfig
     def setFontFromConfig (self,w=None):
@@ -2852,7 +2728,6 @@ class leoTkinterBody (leoFrame.leoBody):
         w.configure(font=font)
     
         # g.trace("BODY",body.cget("font"),font.cget("family"),font.cget("weight"))
-    #@nonl
     #@-node:ekr.20031218072017.2183:tkBody.setFontFromConfig
     #@+node:ekr.20031218072017.1329:onBodyChanged (tkBody)
     # This is the only key handler for the body pane.
@@ -2885,7 +2760,6 @@ class leoTkinterBody (leoFrame.leoBody):
             c.frame.scanForTabWidth(p)
             body.recolor_now(p,incremental=not self.forceFullRecolorFlag)
             self.forceFullRecolorFlag = False
-            #@nonl
             #@-node:ekr.20051026083733.6:<< recolor the body >>
             #@nl
             if not c.changed: c.setChanged(True)
@@ -2907,10 +2781,8 @@ class leoTkinterBody (leoFrame.leoBody):
                     redraw_flag = True
             finally:
                 c.endUpdate(redraw_flag)
-            #@nonl
             #@-node:ekr.20051026083733.7:<< redraw the screen if necessary >>
             #@nl
-    #@nonl
     #@-node:ekr.20031218072017.1329:onBodyChanged (tkBody)
     #@+node:ekr.20031218072017.4003:Focus (tkBody)
     def hasFocus (self):
@@ -2920,13 +2792,11 @@ class leoTkinterBody (leoFrame.leoBody):
     def setFocus (self):
         
         self.c.widgetWantsFocus(self.bodyCtrl)
-    #@nonl
     #@-node:ekr.20031218072017.4003:Focus (tkBody)
     #@+node:ekr.20031218072017.3999:forceRecolor
     def forceFullRecolor (self):
         
         self.forceFullRecolorFlag = True
-    #@nonl
     #@-node:ekr.20031218072017.3999:forceRecolor
     #@+node:ekr.20031218072017.4000:Tk bindings (tkBbody)
     #@+at
@@ -2950,12 +2820,10 @@ class leoTkinterBody (leoFrame.leoBody):
         def __getattr__(self,attr):
             if attr[0:2] == "tk_":
                 return getattr(self.bodyCtrl,attr[3:])
-    #@nonl
     #@+node:ekr.20031218072017.4001:Bounding box (Tk spelling)
     def bbox(self,index):
     
         return self.bodyCtrl.bbox(index)
-    #@nonl
     #@-node:ekr.20031218072017.4001:Bounding box (Tk spelling)
     #@+node:ekr.20031218072017.4002:Color tags (Tk spelling)
     # Could have been replaced by the __getattr__ routine above...
@@ -2978,7 +2846,6 @@ class leoTkinterBody (leoFrame.leoBody):
     
     def tag_remove (self,tagName,index1,index2):
         return self.bodyCtrl.tag_remove(tagName,index1,index2)
-    #@nonl
     #@-node:ekr.20031218072017.4002:Color tags (Tk spelling)
     #@+node:ekr.20031218072017.2184:Configuration (Tk spelling)
     def cget(self,*args,**keys):
@@ -2996,7 +2863,6 @@ class leoTkinterBody (leoFrame.leoBody):
             g.trace(args,keys)
         
         return self.bodyCtrl.configure(*args,**keys)
-    #@nonl
     #@-node:ekr.20031218072017.2184:Configuration (Tk spelling)
     #@+node:ekr.20031218072017.4004:Height & width
     def getBodyPaneHeight (self):
@@ -3006,13 +2872,11 @@ class leoTkinterBody (leoFrame.leoBody):
     def getBodyPaneWidth (self):
         
         return self.bodyCtrl.winfo_width()
-    #@nonl
     #@-node:ekr.20031218072017.4004:Height & width
     #@+node:ekr.20031218072017.4005:Idle time...
     def scheduleIdleTimeRoutine (self,function,*args,**keys):
     
         self.bodyCtrl.after_idle(function,*args,**keys)
-    #@nonl
     #@-node:ekr.20031218072017.4005:Idle time...
     #@+node:ekr.20031218072017.4006:Indices (leoTkinterBody)
     #@+node:ekr.20031218072017.4007:adjustIndex
@@ -3020,19 +2884,16 @@ class leoTkinterBody (leoFrame.leoBody):
         
         t = self.bodyCtrl
         return t.index("%s + %dc" % (t.index(index),offset))
-    #@nonl
     #@-node:ekr.20031218072017.4007:adjustIndex
     #@+node:ekr.20031218072017.4008:compareIndices
     def compareIndices(self,i,rel,j):
     
         return self.bodyCtrl.compare(i,rel,j)
-    #@nonl
     #@-node:ekr.20031218072017.4008:compareIndices
     #@+node:ekr.20031218072017.4009:convertRowColumnToIndex
     def convertRowColumnToIndex (self,row,column):
         
         return self.bodyCtrl.index("%s.%s" % (row,column))
-    #@nonl
     #@-node:ekr.20031218072017.4009:convertRowColumnToIndex
     #@+node:ekr.20031218072017.4010:convertIndexToRowColumn
     def convertIndexToRowColumn (self,index):
@@ -3040,13 +2901,11 @@ class leoTkinterBody (leoFrame.leoBody):
         index = self.bodyCtrl.index(index)
         start, end = string.split(index,'.')
         return int(start),int(end)
-    #@nonl
     #@-node:ekr.20031218072017.4010:convertIndexToRowColumn
     #@+node:ekr.20031218072017.4011:getImageIndex
     def getImageIndex (self,image):
         
         return self.bodyCtrl.index(image)
-    #@nonl
     #@-node:ekr.20031218072017.4011:getImageIndex
     #@+node:ekr.20031218072017.4012:tkIndex (internal use only)
     def tkIndex(self,index):
@@ -3056,7 +2915,6 @@ class leoTkinterBody (leoFrame.leoBody):
         if index == "start": index = "1.0"
         
         return self.bodyCtrl.index(index)
-    #@nonl
     #@-node:ekr.20031218072017.4012:tkIndex (internal use only)
     #@-node:ekr.20031218072017.4006:Indices (leoTkinterBody)
     #@+node:ekr.20031218072017.4013:Insert point
@@ -3077,7 +2935,6 @@ class leoTkinterBody (leoFrame.leoBody):
         if s is None: s = t.get('1.0','end')
         row,col = g.convertPythonIndexToRowCol(s,i)
         t.mark_set( 'insert','%d.%d' % (row+1,col))
-    #@nonl
     #@-node:ekr.20050710102922:get/setPythonInsertionPoint
     #@+node:ekr.20031218072017.495:getInsertionPoint & getBeforeInsertionPoint
     def getBeforeInsertionPoint (self):
@@ -3087,7 +2944,6 @@ class leoTkinterBody (leoFrame.leoBody):
     def getInsertionPoint (self):
         
         return self.bodyCtrl.index("insert")
-    #@nonl
     #@-node:ekr.20031218072017.495:getInsertionPoint & getBeforeInsertionPoint
     #@+node:ekr.20031218072017.4014:getCharAtInsertPoint & getCharBeforeInsertPoint
     def getCharAtInsertPoint (self):
@@ -3099,13 +2955,11 @@ class leoTkinterBody (leoFrame.leoBody):
     
         s = self.bodyCtrl.get("insert -1c")
         return g.toUnicode(s,g.app.tkEncoding)
-    #@nonl
     #@-node:ekr.20031218072017.4014:getCharAtInsertPoint & getCharBeforeInsertPoint
     #@+node:ekr.20031218072017.4015:makeInsertPointVisible
     def makeInsertPointVisible (self):
         
         self.bodyCtrl.see("insert") # -5l")
-    #@nonl
     #@-node:ekr.20031218072017.4015:makeInsertPointVisible
     #@+node:ekr.20031218072017.4016:setInsertionPointTo...
     def setInsertionPoint (self,index):
@@ -3116,7 +2970,6 @@ class leoTkinterBody (leoFrame.leoBody):
         
     def setInsertPointToStartOfLine (self,lineNumber): # zero-based line number
         self.bodyCtrl.mark_set("insert",str(1+lineNumber)+".0 linestart")
-    #@nonl
     #@-node:ekr.20031218072017.4016:setInsertionPointTo...
     #@-node:ekr.20031218072017.4013:Insert point
     #@+node:ekr.20031218072017.4017:Menus
@@ -3134,7 +2987,6 @@ class leoTkinterBody (leoFrame.leoBody):
             start,end = sel
             if t.compare(start,"!=",end):
                 t.delete(start,end)
-    #@nonl
     #@-node:ekr.20031218072017.4019:deleteTextSelection
     #@+node:ekr.20031218072017.4020:getSelectedText
     def getSelectedText (self):
@@ -3150,7 +3002,6 @@ class leoTkinterBody (leoFrame.leoBody):
                 return g.toUnicode(s,g.app.tkEncoding)
         else:
             return u'' # Bug fix: 1/8/06
-    #@nonl
     #@-node:ekr.20031218072017.4020:getSelectedText
     #@+node:ekr.20031218072017.4021:getTextSelection
     def getTextSelection (self,sort=True):
@@ -3174,7 +3025,6 @@ class leoTkinterBody (leoFrame.leoBody):
             # Return the insertion point if there is no selected text.
             insert = w.index("insert")
             return insert,insert
-    #@nonl
     #@-node:ekr.20031218072017.4021:getTextSelection
     #@+node:ekr.20050710104804:getPythonTextSelection
     def getPythonTextSelection (self):
@@ -3198,7 +3048,6 @@ class leoTkinterBody (leoFrame.leoBody):
             # Return the insertion point if there is no selected text.
             i = self.getPythonTextSelection()
             return i,i
-    #@nonl
     #@-node:ekr.20050710104804:getPythonTextSelection
     #@+node:ekr.20050710104804.1:setPythonTextSelection
     def setPythonTextSelection(self,i,j):
@@ -3210,14 +3059,12 @@ class leoTkinterBody (leoFrame.leoBody):
         row,col = g.convertPythonIndexToRowCol(s,j)
         i2 = '%d.%d' % (row+1,col)
         g.app.gui.setTextSelection(self.bodyCtrl,i1,i2)
-    #@nonl
     #@-node:ekr.20050710104804.1:setPythonTextSelection
     #@+node:ekr.20031218072017.4022:hasTextSelection
     def hasTextSelection (self):
     
         sel = self.bodyCtrl.tag_ranges("sel")
         return sel and len(sel) == 2
-    #@nonl
     #@-node:ekr.20031218072017.4022:hasTextSelection
     #@+node:ekr.20031218072017.4023:selectAllText
     def selectAllText (self,event=None):
@@ -3242,7 +3089,6 @@ class leoTkinterBody (leoFrame.leoBody):
         except:
             # g.es_exception()
             pass
-    #@nonl
     #@-node:ekr.20031218072017.4023:selectAllText
     #@+node:ekr.20031218072017.4024:setTextSelection (tkinterBody)
     def setTextSelection (self,i,j=None,insert='sel.end'):
@@ -3254,7 +3100,6 @@ class leoTkinterBody (leoFrame.leoBody):
             i,j = i
     
         g.app.gui.setTextSelection(self.bodyCtrl,i,j,insert)
-    #@nonl
     #@-node:ekr.20031218072017.4024:setTextSelection (tkinterBody)
     #@-node:ekr.20031218072017.4018:Selection
     #@+node:ekr.20031218072017.4025:Text
@@ -3278,7 +3123,6 @@ class leoTkinterBody (leoFrame.leoBody):
     def deleteRange (self,index1,index2):
         t = self.bodyCtrl
         t.delete(t.index(index1),t.index(index2))
-    #@nonl
     #@-node:ekr.20031218072017.4026:delete...
     #@+node:ekr.20031218072017.4027:get...
     #@+node:ekr.20031218072017.4028:tkBody.getAllText
@@ -3292,7 +3136,6 @@ class leoTkinterBody (leoFrame.leoBody):
             return u""
         else:
             return g.toUnicode(s,g.app.tkEncoding)
-    #@nonl
     #@-node:ekr.20031218072017.4028:tkBody.getAllText
     #@+node:ekr.20031218072017.4029:getCharAtIndex
     def getCharAtIndex (self,index):
@@ -3304,7 +3147,6 @@ class leoTkinterBody (leoFrame.leoBody):
             return u""
         else:
             return g.toUnicode(s,g.app.tkEncoding)
-    #@nonl
     #@-node:ekr.20031218072017.4029:getCharAtIndex
     #@+node:ekr.20031218072017.4030:getInsertLines
     def getInsertLines (self):
@@ -3328,7 +3170,6 @@ class leoTkinterBody (leoFrame.leoBody):
         after  = g.toUnicode(after ,g.app.tkEncoding)
     
         return before,ins,after
-    #@nonl
     #@-node:ekr.20031218072017.4030:getInsertLines
     #@+node:ekr.20031218072017.4031:getSelectionAreas
     def getSelectionAreas (self):
@@ -3359,7 +3200,6 @@ class leoTkinterBody (leoFrame.leoBody):
         sel    = g.toUnicode(sel,   g.app.tkEncoding)
         after  = g.toUnicode(after ,g.app.tkEncoding)
         return before,sel,after
-    #@nonl
     #@-node:ekr.20031218072017.4031:getSelectionAreas
     #@+node:ekr.20031218072017.2377:getSelectionLines (tkBody)
     def getSelectionLines (self):
@@ -3392,14 +3232,12 @@ class leoTkinterBody (leoFrame.leoBody):
         
         # g.trace(i,j)
         return before,sel,after
-    #@nonl
     #@-node:ekr.20031218072017.2377:getSelectionLines (tkBody)
     #@+node:ekr.20031218072017.4032:getTextRange
     def getTextRange (self,index1,index2):
         
         t = self.bodyCtrl
         return t.get(t.index(index1),t.index(index2))
-    #@nonl
     #@-node:ekr.20031218072017.4032:getTextRange
     #@-node:ekr.20031218072017.4027:get...
     #@+node:ekr.20031218072017.4033:Insert...
@@ -3407,19 +3245,16 @@ class leoTkinterBody (leoFrame.leoBody):
     def insertAtInsertPoint (self,s):
         
         self.bodyCtrl.insert("insert",s)
-    #@nonl
     #@-node:ekr.20031218072017.4034:insertAtInsertPoint
     #@+node:ekr.20031218072017.4035:insertAtEnd
     def insertAtEnd (self,s):
         
         self.bodyCtrl.insert("end",s)
-    #@nonl
     #@-node:ekr.20031218072017.4035:insertAtEnd
     #@+node:ekr.20031218072017.4036:insertAtStartOfLine
     def insertAtStartOfLine (self,lineNumber,s):
         
         self.bodyCtrl.insert(str(1+lineNumber)+".0",s)
-    #@nonl
     #@-node:ekr.20031218072017.4036:insertAtStartOfLine
     #@-node:ekr.20031218072017.4033:Insert...
     #@+node:ekr.20031218072017.4037:setSelectionAreas (tkinterBody)
@@ -3447,7 +3282,6 @@ class leoTkinterBody (leoFrame.leoBody):
         # g.trace(sel_start,sel_end)
         
         return t.index(sel_start), t.index(sel_end)
-    #@nonl
     #@-node:ekr.20031218072017.4037:setSelectionAreas (tkinterBody)
     #@-node:ekr.20031218072017.4025:Text
     #@+node:ekr.20031218072017.4038:Visibility & scrolling
@@ -3478,11 +3312,9 @@ class leoTkinterBody (leoFrame.leoBody):
     def scrollDown (self):
     
         self.bodyCtrl.yview("scroll",1,"units")
-    #@nonl
     #@-node:ekr.20031218072017.4038:Visibility & scrolling
     #@-node:ekr.20031218072017.4000:Tk bindings (tkBbody)
     #@-others
-#@nonl
 #@-node:ekr.20031218072017.3996:class leoTkinterBody
 #@+node:ekr.20031218072017.4039:class leoTkinterLog
 class leoTkinterLog (leoFrame.leoLog):
@@ -3545,7 +3377,6 @@ class leoTkinterLog (leoFrame.leoLog):
         self.nb.pack(fill='both',expand=1)
         self.selectTab('Log') # create the tab and make it the active tab.
         return self.logCtrl
-    #@nonl
     #@-node:ekr.20031218072017.4042:tkLog.createControl
     #@+node:ekr.20051016103459:tkLog.createTextWidget
     def createTextWidget (self,parentFrame):
@@ -3570,7 +3401,6 @@ class leoTkinterLog (leoFrame.leoLog):
         log.pack(expand=1, fill="both")
     
         return log
-    #@nonl
     #@-node:ekr.20051016103459:tkLog.createTextWidget
     #@+node:ekr.20051019134106.1:tkLog.makeTabMenu
     def makeTabMenu (self,tabName=None):
@@ -3600,7 +3430,6 @@ class leoTkinterLog (leoFrame.leoLog):
             menu.add_command(label='Rename This Tab',command=renameTabCallback)
     
         return menu
-    #@nonl
     #@-node:ekr.20051019134106.1:tkLog.makeTabMenu
     #@-node:ekr.20051016095907:tkLog Birth
     #@+node:ekr.20051016095907.1:Config & get/saveState
@@ -3612,7 +3441,6 @@ class leoTkinterLog (leoFrame.leoLog):
     def configureFont(self,font):
     
         self.logCtrl.configure(font=font)
-    #@nonl
     #@-node:ekr.20031218072017.4041:tkLog.configureBorder & configureFont
     #@+node:ekr.20031218072017.4043:tkLog.getFontConfig
     def getFontConfig (self):
@@ -3620,7 +3448,6 @@ class leoTkinterLog (leoFrame.leoLog):
         font = self.logCtrl.cget("font")
         # g.trace(font)
         return font
-    #@nonl
     #@-node:ekr.20031218072017.4043:tkLog.getFontConfig
     #@+node:ekr.20041222043017:tkLog.restoreAllState
     def restoreAllState (self,d):
@@ -3644,7 +3471,6 @@ class leoTkinterLog (leoFrame.leoLog):
                 start,stop = items[0],items[1]
                 items = items[2:]
                 logCtrl.tag_add(color,start,stop)
-    #@nonl
     #@-node:ekr.20041222043017:tkLog.restoreAllState
     #@+node:ekr.20041222043017.1:tkLog.saveAllState
     def saveAllState (self):
@@ -3665,7 +3491,6 @@ class leoTkinterLog (leoFrame.leoLog):
         d = {'text':text,'colors': colors}
         # g.trace('\n',g.dictToString(d))
         return d
-    #@nonl
     #@-node:ekr.20041222043017.1:tkLog.saveAllState
     #@+node:ekr.20041217135735.2:tkLog.setColorFromConfig
     def setColorFromConfig (self):
@@ -3679,7 +3504,6 @@ class leoTkinterLog (leoFrame.leoLog):
         except:
             g.es("exception setting log pane background color")
             g.es_exception()
-    #@nonl
     #@-node:ekr.20041217135735.2:tkLog.setColorFromConfig
     #@+node:ekr.20031218072017.4046:tkLog.setFontFromConfig
     def SetWidgetFontFromConfig (self,logCtrl=None):
@@ -3709,7 +3533,6 @@ class leoTkinterLog (leoFrame.leoLog):
             except: pass
             
     setFontFromConfig = SetWidgetFontFromConfig # Renaming supresses a pychecker warning.
-    #@nonl
     #@-node:ekr.20031218072017.4046:tkLog.setFontFromConfig
     #@-node:ekr.20051016095907.1:Config & get/saveState
     #@+node:ekr.20051016095907.2:Focus & update (tkLog)
@@ -3722,13 +3545,11 @@ class leoTkinterLog (leoFrame.leoLog):
             self.c.logWantsFocus()
         except:
             g.es_event_exception("activate log")
-    #@nonl
     #@-node:ekr.20031218072017.4045:tkLog.onActivateLog
     #@+node:ekr.20031218072017.4044:tkLog.hasFocus
     def hasFocus (self):
         
         return self.c.get_focus() == self.logCtrl
-    #@nonl
     #@-node:ekr.20031218072017.4044:tkLog.hasFocus
     #@+node:ekr.20050208133438:forceLogUpdate
     def forceLogUpdate (self,s):
@@ -3741,7 +3562,6 @@ class leoTkinterLog (leoFrame.leoLog):
                 print g.toEncodedString(s,'utf-8')
         else:
             self.logCtrl.update_idletasks()
-    #@nonl
     #@-node:ekr.20050208133438:forceLogUpdate
     #@-node:ekr.20051016095907.2:Focus & update (tkLog)
     #@+node:ekr.20051016101927:put & putnl (tkLog)
@@ -3754,7 +3574,6 @@ class leoTkinterLog (leoFrame.leoLog):
     # concern.
     # It may be that Pmw will allow us to dispense with the colorTags logic...
     #@-at
-    #@nonl
     #@+node:ekr.20031218072017.1473:put
     # All output to the log stream eventually comes here.
     def put (self,s,color=None,tabName='Log'):
@@ -3784,7 +3603,6 @@ class leoTkinterLog (leoFrame.leoLog):
             
             self.logCtrl.see("end")
             self.forceLogUpdate(s)
-            #@nonl
             #@-node:EKR.20040423082910:<< put s to log control >>
             #@nl
             self.logCtrl.update_idletasks()
@@ -3799,10 +3617,8 @@ class leoTkinterLog (leoFrame.leoLog):
                 s = g.toEncodedString(s,"ascii")
             
             print s
-            #@nonl
             #@-node:EKR.20040423082910.1:<< put s to logWaiting and print s >>
             #@nl
-    #@nonl
     #@-node:ekr.20031218072017.1473:put
     #@+node:ekr.20051016101927.1:putnl
     def putnl (self,tabName='Log'):
@@ -3830,7 +3646,6 @@ class leoTkinterLog (leoFrame.leoLog):
         self.selectTab(tabName,wrap=wrap)
         t = self.logCtrl
         t and t.delete('1.0','end')
-    #@nonl
     #@-node:ekr.20051017212057:clearTab
     #@+node:ekr.20051024173701:createTab
     def createTab (self,tabName,wrap='none'):
@@ -3863,7 +3678,6 @@ class leoTkinterLog (leoFrame.leoLog):
         
         self.colorTags = ['black']
         self.colorTagsDict [tabName] = self.colorTags
-        #@nonl
         #@-node:ekr.20051018072306:<< Create the tab's text widget >>
         #@nl
     
@@ -3871,7 +3685,6 @@ class leoTkinterLog (leoFrame.leoLog):
             # c.k doesn't exist when the log pane is created.
             # k.makeAllBindings will call setTabBindings('Log')
             self.setTabBindings(tabName)
-    #@nonl
     #@-node:ekr.20051024173701:createTab
     #@+node:ekr.20060613131217:cycleTabFocus
     def cycleTabFocus (self,event=None):
@@ -3897,7 +3710,6 @@ class leoTkinterLog (leoFrame.leoLog):
                     if i == i2:
                         g.trace("can't happen") ; break
         return 'break'
-    #@nonl
     #@-node:ekr.20060613131217:cycleTabFocus
     #@+node:ekr.20051018102027:deleteTab
     def deleteTab (self,tabName):
@@ -3919,8 +3731,6 @@ class leoTkinterLog (leoFrame.leoLog):
         # New in Leo 4.4b1.
         self.c.invalidateFocus()
         self.c.bodyWantsFocus()
-        
-    #@nonl
     #@-node:ekr.20051018102027:deleteTab
     #@+node:ekr.20060204124347:hideTab
     def hideTab (self,tabName):
@@ -3928,13 +3738,11 @@ class leoTkinterLog (leoFrame.leoLog):
         __pychecker__ = '--no-argsused' # tabName
         
         self.selectTab('Log')
-    #@nonl
     #@-node:ekr.20060204124347:hideTab
     #@+node:ekr.20051027114433:getSelectedTab
     def getSelectedTab (self):
         
         return self.tabName
-    #@nonl
     #@-node:ekr.20051027114433:getSelectedTab
     #@+node:ekr.20051018061932.1:lower/raiseTab
     def lowerTab (self,tabName):
@@ -3952,20 +3760,17 @@ class leoTkinterLog (leoFrame.leoLog):
             b.config(bg='LightSteelBlue1')
         self.c.invalidateFocus()
         self.c.bodyWantsFocus()
-    #@nonl
     #@-node:ekr.20051018061932.1:lower/raiseTab
     #@+node:ekr.20060613131345:numberOfVisibleTabs
     def numberOfVisibleTabs (self):
         
         return len([val for val in self.frameDict.values() if val != None])
-    #@nonl
     #@-node:ekr.20060613131345:numberOfVisibleTabs
     #@+node:ekr.20051019170806:renameTab
     def renameTab (self,oldName,newName):
         
         label = self.nb.tab(oldName)
         label.configure(text=newName)
-    #@nonl
     #@-node:ekr.20051019170806:renameTab
     #@+node:ekr.20051016101724.1:selectTab
     def selectTab (self,tabName,wrap='none'):
@@ -3989,7 +3794,6 @@ class leoTkinterLog (leoFrame.leoLog):
         self.tabFrame = self.frameDict.get(tabName)
     
         return tabFrame
-    #@nonl
     #@-node:ekr.20051016101724.1:selectTab
     #@+node:ekr.20051022162730:setTabBindings
     def setTabBindings (self,tabName):
@@ -4017,7 +3821,6 @@ class leoTkinterLog (leoFrame.leoLog):
         tab.bind('<Button-3>',tabMenuRightClickCallback)
         
         k.completeAllBindingsForWidget(w)
-    #@nonl
     #@-node:ekr.20051022162730:setTabBindings
     #@+node:ekr.20051019134106:Tab menu callbacks & helpers
     #@+node:ekr.20051019134422:onRightClick & onClick
@@ -4030,7 +3833,6 @@ class leoTkinterLog (leoFrame.leoLog):
     def onClick (self,event,tabName):
     
         self.selectTab(tabName)
-    #@nonl
     #@-node:ekr.20051019134422:onRightClick & onClick
     #@+node:ekr.20051019140004.1:newTabFromMenu
     def newTabFromMenu (self,tabName='Log'):
@@ -4042,7 +3844,6 @@ class leoTkinterLog (leoFrame.leoLog):
             return self.selectTab(newName)
     
         self.getTabName(selectTabCallback)
-    #@nonl
     #@-node:ekr.20051019140004.1:newTabFromMenu
     #@+node:ekr.20051019165401:renameTabFromMenu
     def renameTabFromMenu (self,tabName):
@@ -4054,7 +3855,6 @@ class leoTkinterLog (leoFrame.leoLog):
                 return self.renameTab(tabName,newName)
     
             self.getTabName(renameTabCallback)
-    #@nonl
     #@-node:ekr.20051019165401:renameTabFromMenu
     #@+node:ekr.20051019172811:getTabName
     def getTabName (self,exitCallback):
@@ -4091,14 +3891,11 @@ class leoTkinterLog (leoFrame.leoLog):
     
         e.focus_force()
         e.bind('<Return>',getNameCallback)
-    #@nonl
     #@-node:ekr.20051019172811:getTabName
     #@-node:ekr.20051019134106:Tab menu callbacks & helpers
     #@-node:ekr.20051018061932:Tab (TkLog)
     #@-others
-#@nonl
 #@-node:ekr.20031218072017.4039:class leoTkinterLog
 #@-others
-#@nonl
 #@-node:ekr.20031218072017.3939:@thin leoTkinterFrame.py
 #@-leo

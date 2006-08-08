@@ -27,7 +27,6 @@ if 0: # Set to 1 for lint-like testing.
         print ; print "Warning (in leo.py): pychecker.checker running..." ; print
     except:
         print ; print 'Can not import pychecker' ; print
-#@nonl
 #@-node:ekr.20031218072017.2606:<< Import pychecker >>
 #@nl
 
@@ -67,7 +66,6 @@ def run(fileName=None,*args,**keywords):
     # NOW we can set g.
     g = leoGlobals
     assert(g.app)
-    #@nonl
     #@-node:ekr.20041219072112:<< import leoGlobals and leoApp >>
     #@nl
     g.computeStandardDirectories()
@@ -86,7 +84,6 @@ def run(fileName=None,*args,**keywords):
     except ImportError:
         print "Error importing leoConfig.py"
         import traceback ; traceback.print_exc()
-    #@nonl
     #@-node:ekr.20041219072416.1:<< import leoNodes and leoConfig >>
     #@nl
     g.app.nodeIndices = leoNodes.nodeIndices(g.app.leoID)
@@ -130,7 +127,6 @@ def run(fileName=None,*args,**keywords):
         except:
             print "unexpected exception importing psyco"
             g.es_exception()
-    #@nonl
     #@-node:ekr.20040411081633:<< start psycho >>
     #@nl
     # New in 4.3: clear g.app.initing _before_ creating the frame.
@@ -152,7 +148,6 @@ def run(fileName=None,*args,**keywords):
         c.redraw_now()
     c.bodyWantsFocus()
     g.app.gui.runMainLoop()
-#@nonl
 #@+node:ekr.20031218072017.1936:isValidPython
 def isValidPython():
 
@@ -180,7 +175,6 @@ You may download Python from http://python.org/download/
         print "isValidPython: unexpected exception: g.CheckVersion"
         import traceback ; traceback.print_exc()
         return 0
-#@nonl
 #@-node:ekr.20031218072017.1936:isValidPython
 #@+node:ekr.20041124083125:completeFileName (leo.py)
 def completeFileName (fileName):
@@ -198,7 +192,6 @@ def completeFileName (fileName):
         fileName = fileName + ".leo"
 
     return fileName
-#@nonl
 #@-node:ekr.20041124083125:completeFileName (leo.py)
 #@+node:ekr.20031218072017.1624:createFrame (leo.py)
 def createFrame (fileName):
@@ -227,7 +220,6 @@ def createFrame (fileName):
         g.es("File not found: " + fileName)
 
     return c,frame
-#@nonl
 #@-node:ekr.20031218072017.1624:createFrame (leo.py)
 #@+node:ekr.20031218072017.1938:createNullGuiWithScript (leo.py)
 def createNullGuiWithScript (script):
@@ -272,7 +264,6 @@ def getBatchScript ():
     finally:
         if f: f.close()
         return script, windowFlag
-#@nonl
 #@-node:ekr.20031218072017.1939:getBatchScript
 #@+node:ekr.20041130093254:reportDirectories
 def reportDirectories(verbose):
@@ -285,7 +276,6 @@ def reportDirectories(verbose):
             ("home",g.app.homeDir),
         ):
             g.es("%s dir: %s" % (kind,theDir),color="blue")
-#@nonl
 #@-node:ekr.20041130093254:reportDirectories
 #@-node:ekr.20031218072017.1934:run & allies
 #@+node:ekr.20031218072017.2607:profile
@@ -313,7 +303,6 @@ def profile ():
     p.strip_dirs()
     p.sort_stats('cum','file','name')
     p.print_stats()
-#@nonl
 #@-node:ekr.20031218072017.2607:profile
 #@-others
 
@@ -326,6 +315,5 @@ if __name__ == "__main__":
         run(fileName)
     else:
         run()
-#@nonl
 #@-node:ekr.20031218072017.2605:@thin leo.py 
 #@-leo

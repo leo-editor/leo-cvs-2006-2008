@@ -28,7 +28,6 @@ import leoNodes
 import os
 import string
 import time
-#@nonl
 #@-node:ekr.20041005105605.2:<< imports >>
 #@nl
 
@@ -88,7 +87,6 @@ class atFile:
     startClone     = 81 # @clone (4.2)
     startNl        = 82 # @nl (4.0)
     startNonl      = 83 # @nonl (4.0)
-    #@nonl
     #@-node:ekr.20041005105605.5:<< define class constants >>
     #@nl
     #@    << define sentinelDict >>
@@ -121,7 +119,6 @@ class atFile:
         "@+node":   startNode,   "@-node":   endNode,
         "@+others": startOthers, "@-others": endOthers,
     }
-    #@nonl
     #@-node:ekr.20041005105605.6:<< define sentinelDict >>
     #@nl
     
@@ -179,10 +176,8 @@ class atFile:
             self.endBody:               self.ignoreOldSentinel,
             self.startBody:             self.ignoreOldSentinel,
             self.startVerbatimAfterRef: self.ignoreOldSentinel }
-        #@nonl
         #@-node:ekr.20041005105605.9:<< define the dispatch dictionary used by scanText4 >>
         #@nl
-    #@nonl
     #@-node:ekr.20041005105605.8:atFile.__init__ & initIvars
     #@+node:ekr.20041005105605.10:initCommonIvars
     def initCommonIvars (self):
@@ -228,7 +223,6 @@ class atFile:
         self.startSentinelComment = ""
         self.endSentinelComment = ""
         self.language = None
-        #@nonl
         #@-node:ekr.20041005105605.11:<< set defaults for arguments and options >>
         #@nl
         #@    << init common ivars >>
@@ -243,10 +237,8 @@ class atFile:
         self.root = None # The root of tree being read or written.
         self.root_seen = False # True: root vnode has been handled in this file.
         self.toString = False # True: sring-oriented read or write.
-        #@nonl
         #@-node:ekr.20041005105605.12:<< init common ivars >>
         #@nl
-    #@nonl
     #@-node:ekr.20041005105605.10:initCommonIvars
     #@+node:ekr.20041005105605.13:initReadIvars
     def initReadIvars(self,root,fileName,
@@ -326,7 +318,6 @@ class atFile:
             self.outputFile = None # The temporary output file.
             self.stringOutput = None
             self.targetFileName = self.outputFileName = u""
-        #@nonl
         #@-node:ekr.20041005105605.16:<< init ivars for writing >>>
         #@nl
         
@@ -358,7 +349,6 @@ class atFile:
         # Init all other ivars even if there is an error.
         if not self.errors and self.root:
             self.root.v.t.tnodeList = []
-    #@nonl
     #@-node:ekr.20041005105605.15:initWriteIvars
     #@-node:ekr.20041005105605.7:Birth & init
     #@+node:ekr.20041005105605.17:Reading...
@@ -368,7 +358,6 @@ class atFile:
     # All reading happens in the readOpenFile logic, so plugins should need to
     # override only this method.
     #@-at
-    #@nonl
     #@+node:ekr.20041005105605.19:openFileForReading
     def openFileForReading(self,fileName,fromString=False):
         
@@ -392,13 +381,11 @@ class atFile:
                     
                 if read_only:
                     g.es("read only: " + fn,color="red")
-                #@nonl
                 #@-node:ekr.20041005105605.20:<< warn on read-only file >>
                 #@nl
             except IOError:
                 at.error("can not open: '@file %s'" % (fn))
                 at.inputFile = None
-    #@nonl
     #@-node:ekr.20041005105605.19:openFileForReading
     #@+node:ekr.20041005105605.21:read
     # The caller must enclose this code in beginUpdate/endUpdate.
@@ -425,7 +412,6 @@ class atFile:
         if not fileName:
             at.error("Missing file name.  Restoring @file tree from .leo file.")
             return False
-        #@nonl
         #@-node:ekr.20041005105605.22:<< set fileName >>
         #@nl
         at.initReadIvars(root,fileName,importFileName=importFileName,thinFile=thinFile)
@@ -452,7 +438,6 @@ class atFile:
                 if s and not p.v.t.isVisited():
                     at.error("Not in derived file: %s" % p.headString())
                     p.v.t.setVisited() # One message is enough.
-            #@nonl
             #@-node:ekr.20041005105605.23:<< warn about non-empty unvisited nodes >>
             #@nl
         if at.errors == 0 and not at.importing:
@@ -479,7 +464,6 @@ class atFile:
                         if not thinFile or (thinFile and p.v.isDirty()):
                             g.es("changed: " + p.headString(),color="blue")
                             p.setMarked()
-                #@nonl
                 #@-node:ekr.20041005105605.24:<< copy all tempBodyStrings to tnodes >>
                 #@nl
         #@    << delete all tempBodyStrings >>
@@ -488,11 +472,9 @@ class atFile:
             
             if hasattr(p.v.t,"tempBodyString"):
                 delattr(p.v.t,"tempBodyString")
-        #@nonl
         #@-node:ekr.20041005105605.25:<< delete all tempBodyStrings >>
         #@nl
         return at.errors == 0
-    #@nonl
     #@-node:ekr.20041005105605.21:read
     #@+node:ekr.20041005105605.26:readAll
     def readAll(self,root,partialFlag=False):
@@ -529,7 +511,6 @@ class atFile:
             
         if partialFlag and not anyRead:
             g.es("no @file nodes in the selected tree")
-    #@nonl
     #@-node:ekr.20041005105605.26:readAll
     #@+node:ekr.20041005105605.27:readOpenFile
     def readOpenFile(self,root,theFile,fileName):
@@ -559,10 +540,8 @@ class atFile:
         at.completeLastDirectives(lines,lastLines)
         s = '\n'.join(lines).replace('\r', '')
         root.v.t.tempBodyString = s
-        #@nonl
         #@-node:ekr.20041005105605.28:<< handle first and last lines >>
         #@nl
-    #@nonl
     #@-node:ekr.20041005105605.27:readOpenFile
     #@+node:bwmulder.20041231170726:openForRead
     def openForRead(self, *args, **kw):
@@ -570,7 +549,6 @@ class atFile:
         Hook for the mod_shadow plugin.
         """
         return open(*args, **kw)
-    #@nonl
     #@-node:bwmulder.20041231170726:openForRead
     #@+node:bwmulder.20050101094804:openForWrite
     def openForWrite(self, *args, **kw):
@@ -578,7 +556,6 @@ class atFile:
         Hook for the mod_shadow plugin
         """
         return open(*args, **kw)
-    
     #@-node:bwmulder.20050101094804:openForWrite
     #@+node:ekr.20050103163224:scanHeaderForThin
     def scanHeaderForThin (self,theFile,fileName):
@@ -595,7 +572,6 @@ class atFile:
         junk,junk,isThin = at.scanHeader(theFile,fileName)
         
         return isThin
-    #@nonl
     #@-node:ekr.20050103163224:scanHeaderForThin
     #@-node:ekr.20041005105605.18:Reading (top level)
     #@+node:ekr.20041005105605.29:Reading (3.x)
@@ -679,7 +655,6 @@ class atFile:
         result.setVisited() # Suppress all other errors for this node.
         result.t.setVisited() # Suppress warnings about unvisited nodes.
         return result
-    #@nonl
     #@-node:ekr.20041005105605.30:createNthChild3
     #@+node:ekr.20041005105605.32:handleLinesFollowingSentinel
     def handleLinesFollowingSentinel (self,lines,sentinel,comments = True):
@@ -720,7 +695,6 @@ class atFile:
             else:
                 k = s.rfind(end)
                 s = string.strip(s[:k]) # works even if k == -1
-            #@nonl
             #@-node:ekr.20041005105605.33:<< remove the comment delims from s >>
             #@nl
             
@@ -729,7 +703,6 @@ class atFile:
             s = s.replace('@@','@')
     
         return s
-    #@nonl
     #@-node:ekr.20041005105605.32:handleLinesFollowingSentinel
     #@+node:ekr.20041005105605.34:readLinesToNextSentinel
     # We expect only a single line, and more may exist if cvs detects a conflict.
@@ -757,7 +730,6 @@ class atFile:
                 else: break
     
         return nextLine,lines
-    #@nonl
     #@-node:ekr.20041005105605.34:readLinesToNextSentinel
     #@+node:ekr.20041005105605.35:scanDoc3
     # Scans the doc part and appends the text out.
@@ -782,7 +754,6 @@ class atFile:
             j = g.skip_ws(s,0)
             if g.match(s,j,at.startSentinelComment):
                 s = at.readLine(theFile)
-        #@nonl
         #@-node:ekr.20041005105605.37:<< Skip an opening block delim >>
         #@nl
         nextLine = None ; kind = at.noSentinel
@@ -864,7 +835,6 @@ class atFile:
             out.append(s)
         #@-node:ekr.20041005105605.41:<< Remove a closing block delim from out >>
         #@nl
-    #@nonl
     #@-node:ekr.20041005105605.35:scanDoc3
     #@+node:ekr.20041005105605.42:scanText3
     def scanText3 (self,theFile,p,out,endSentinelKind,nextLine=None):
@@ -884,7 +854,6 @@ class atFile:
             else:
                 s = at.readLine(theFile)
                 if len(s) == 0: break
-            #@nonl
             #@-node:ekr.20041005105605.43:<< put the next line into s >>
             #@nl
             #@        << set kind, nextKind >>
@@ -909,7 +878,6 @@ class atFile:
             
             # nextLine != None only if we have a non-sentinel line.
             # Therefore, nextLine == None whenever scanText3 returns.
-            #@nonl
             #@-node:ekr.20041005105605.44:<< set kind, nextKind >>
             #@nl
             if kind != at.noSentinel:
@@ -942,7 +910,6 @@ class atFile:
                 
                 # Set leading_ws to the additional indentation on the line.
                 leading_ws = s[linep:i]
-                #@nonl
                 #@-node:ekr.20041005105605.45:<< Set lineIndent, linep and leading_ws >>
                 #@nl
                 i = at.skipSentinelStart3(s,0)
@@ -993,7 +960,6 @@ class atFile:
                         name = at.sentinelName(kind)
                         expect = at.sentinelName(endSentinelKind)
                         at.readError("Ignoring " + name + " sentinel.  Expecting " + expect)
-                    #@nonl
                     #@-node:ekr.20041005105605.49:<< handle an ending sentinel >>
                     #@nl
             elif kind == at.startBody:
@@ -1017,7 +983,6 @@ class atFile:
                     child.t.tempBodyString = body
                 
                 at.indent = oldIndent
-                #@nonl
                 #@-node:ekr.20041005105605.50:<< scan @+body >> 3.x
                 #@nl
             elif kind == at.startNode:
@@ -1043,7 +1008,6 @@ class atFile:
                     i += 1 # Skip the ":".
                 else:
                     at.readError("Bad child index in @+node")
-                #@nonl
                 #@-node:ekr.20041005105605.52:<< Set childIndex >>
                 #@nl
                 #@<< Set cloneIndex >>
@@ -1062,7 +1026,6 @@ class atFile:
                     i += 1
                 else:
                     at.readError("Bad attribute field in @+node")
-                #@nonl
                 #@-node:ekr.20041005105605.53:<< Set cloneIndex >>
                 #@nl
                 headline = ""
@@ -1088,7 +1051,6 @@ class atFile:
                     if g.match(s,i,"<<"):
                         k = s.find(">>",i)
                         if k != -1: ref = s[i:k+2]
-                #@nonl
                 #@-node:ekr.20041005105605.54:<< Set headline and ref >>
                 #@nl
                 
@@ -1137,10 +1099,8 @@ class atFile:
                     out.append(s)
                 else:
                     nextLine = s # Handle the sentinel or blank line later.
-                
                 #@-node:ekr.20041005105605.56:<< look for sentinels that may follow a reference >>
                 #@nl
-                #@nonl
                 #@-node:ekr.20041005105605.51:<< scan @+node >>
                 #@nl
             elif kind == at.startRef:
@@ -1169,7 +1129,6 @@ class atFile:
                     line = line.replace('@@','@')
                 
                 out.append(line)
-                #@nonl
                 #@-node:ekr.20041005105605.57:<< scan old ref >> (3.0)
                 #@nl
             elif kind == at.startAt:
@@ -1177,7 +1136,6 @@ class atFile:
                 #@+node:ekr.20041005105605.58:<< scan @+at >>
                 assert(g.match(s,i,"+at"))
                 at.scanDoc3(theFile,s,i,out,kind)
-                #@nonl
                 #@-node:ekr.20041005105605.58:<< scan @+at >>
                 #@nl
             elif kind == at.startDoc:
@@ -1185,7 +1143,6 @@ class atFile:
                 #@+node:ekr.20041005105605.59:<< scan @+doc >>
                 assert(g.match(s,i,"+doc"))
                 at.scanDoc3(theFile,s,i,out,kind)
-                #@nonl
                 #@-node:ekr.20041005105605.59:<< scan @+doc >>
                 #@nl
             elif kind == at.startOthers:
@@ -1197,10 +1154,8 @@ class atFile:
                 out.append(leading_ws + "@others")
                 
                 at.scanText3(theFile,p,out,at.endOthers)
-                #@nonl
                 #@-node:ekr.20041005105605.60:<< scan @+others >>
                 #@nl
-            #@nonl
             #@-node:ekr.20041005105605.48:<< handle common sentinels >>
             #@nl
             #@<< handle rare sentinels >>
@@ -1252,7 +1207,6 @@ class atFile:
                     at.readError("Bad @delims")
                     # Append the bad @delims line to the body text.
                     out.append("@delims")
-                #@nonl
                 #@-node:ekr.20041005105605.63:<< scan @delims >>
                 #@nl
             elif kind == at.startDirective:
@@ -1278,7 +1232,6 @@ class atFile:
                     s2 = s2.replace('@@','@')
                 out.append(s2)
                 # g.trace(s2)
-                #@nonl
                 #@-node:ekr.20041005105605.64:<< scan @@ >>
                 #@nl
             elif kind == at.startLeo:
@@ -1286,7 +1239,6 @@ class atFile:
                 #@+node:ekr.20041005105605.65:<< scan @+leo >>
                 assert(g.match(s,i,"+leo"))
                 at.readError("Ignoring unexpected @+leo sentinel")
-                #@nonl
                 #@-node:ekr.20041005105605.65:<< scan @+leo >>
                 #@nl
             elif kind == at.startVerbatim:
@@ -1302,7 +1254,6 @@ class atFile:
                 out.append(s[i:])
                 #@-node:ekr.20041005105605.66:<< scan @verbatim >>
                 #@nl
-            #@nonl
             #@-node:ekr.20041005105605.61:<< handle rare sentinels >>
             #@nl
             else:
@@ -1312,10 +1263,8 @@ class atFile:
                 i = g.skip_line(s,i)
                 line = s[j:i]
                 at.readError("Unknown sentinel: " + line)
-                #@nonl
                 #@-node:ekr.20041005105605.67:<< warn about unknown sentinel >>
                 #@nl
-            #@nonl
             #@-node:ekr.20041005105605.46:<< handle the line in s >>
             #@nl
         #@    << handle unexpected end of text >>
@@ -1327,7 +1276,6 @@ class atFile:
         #@nl
         assert(len(s)==0 and nextLine==None) # We get here only if readline fails.
         return lastLines # We get here only if there are problems.
-    #@nonl
     #@-node:ekr.20041005105605.42:scanText3
     #@+node:ekr.20041005105605.69:sentinelKind3
     def sentinelKind3(self,s):
@@ -1368,7 +1316,6 @@ class atFile:
         else:
             # g.trace("not found:",key)
             return at.noSentinel
-    #@nonl
     #@-node:ekr.20041005105605.69:sentinelKind3
     #@+node:ekr.20041005105605.70:skipSentinelStart3
     def skipSentinelStart3(self,s,i):
@@ -1446,7 +1393,6 @@ class atFile:
             # g.trace('creating last child %s\nof parent%s\n' % (child,parent))
     
         return child
-    #@nonl
     #@-node:ekr.20041005105605.72:createThinChild4
     #@+node:ekr.20041005105605.73:findChild4
     def findChild4 (self,headline):
@@ -1486,7 +1432,6 @@ class atFile:
         # Don't check the headline.  It simply causes problems.
         t.setVisited() # Supress warning about unvisited node.
         return t
-    #@nonl
     #@-node:ekr.20041005105605.73:findChild4
     #@+node:ekr.20041005105605.74:scanText4 & allies
     def scanText4 (self,theFile,fileName,p,verbose=False):
@@ -1522,7 +1467,6 @@ class atFile:
                 g.trace("no tnodeList",p.v)
                 
         # g.trace(at.startSentinelComment)
-        #@nonl
         #@-node:ekr.20041005105605.75:<< init ivars for scanText4 >>
         #@nl
         while at.errors == 0 and not at.done:
@@ -1545,7 +1489,6 @@ class atFile:
             at.readError(
                 "Unexpected end of file. Expecting %s sentinel" %
                 at.sentinelName(at.endSentinelStack[-1]))
-            #@nonl
             #@-node:ekr.20041005105605.76:<< report unexpected end of text >>
             #@nl
     
@@ -1570,7 +1513,6 @@ class atFile:
                     if g.match(s,i," "): i += 1
             else:
                 i = at.skipIndent(s,0,at.indent)
-            
             #@-node:ekr.20041005105605.78:<< Skip the leading stuff >>
             #@nl
             #@        << Append s to docOut >>
@@ -1583,10 +1525,8 @@ class atFile:
             else:
                 # trailing whitespace: the newline is fake.
                 at.docOut.append(line)
-            #@nonl
             #@-node:ekr.20041005105605.79:<< Append s to docOut >>
             #@nl
-    #@nonl
     #@-node:ekr.20041005105605.77:readNormalLine
     #@+node:ekr.20041005105605.80:start sentinels
     #@+node:ekr.20041005105605.81:readStartAll (4.2)
@@ -1606,7 +1546,6 @@ class atFile:
         at.out.append(leadingWs + "@all\n")
         
         at.endSentinelStack.append(at.endAll)
-    #@nonl
     #@-node:ekr.20041005105605.81:readStartAll (4.2)
     #@+node:ekr.20041005105605.82:readStartAt & readStartDoc
     def readStartAt (self,s,i):
@@ -1644,7 +1583,6 @@ class atFile:
                 return j
         else:
             return g.skip_to_end_of_line(s,i)
-    #@nonl
     #@-node:ekr.20041005105605.82:readStartAt & readStartDoc
     #@+node:ekr.20041005105605.83:readStartLeo
     def readStartLeo (self,s,i):
@@ -1654,7 +1592,6 @@ class atFile:
         at = self
         assert(g.match(s,i,"+leo"))
         at.readError("Ignoring unexpected @+leo sentinel")
-    #@nonl
     #@-node:ekr.20041005105605.83:readStartLeo
     #@+node:ekr.20041005105605.84:readStartMiddle
     def readStartMiddle (self,s,i):
@@ -1664,7 +1601,6 @@ class atFile:
         at = self
         
         at.readStartNode(s,i,middle=True)
-    #@nonl
     #@-node:ekr.20041005105605.84:readStartMiddle
     #@+node:ekr.20041005105605.85:readStartNode (4.x)
     def readStartNode (self,s,i,middle=False):
@@ -1691,7 +1627,6 @@ class atFile:
             else:
                 gnx = s[i:j]
                 i = j + 1 # Skip the i
-            #@nonl
             #@-node:ekr.20041005105605.86:<< set gnx and bump i >>
             #@nl
         #@    << Set headline, undoing the CWEB hack >>
@@ -1708,7 +1643,6 @@ class atFile:
         # Undo the CWEB hack: undouble @ signs if the opening comment delim ends in '@'.
         if at.startSentinelComment[-1:] == '@':
             headline = headline.replace('@@','@')
-        #@nonl
         #@-node:ekr.20041005105605.87:<< Set headline, undoing the CWEB hack >>
         #@nl
         if not at.root_seen:
@@ -1731,7 +1665,6 @@ class atFile:
                             at.readError("File name in @node sentinel does not match file's name")
                     else:
                         at.readError("Missing @file in root @node sentinel")
-            #@nonl
             #@-node:ekr.20041005105605.88:<< Check the filename in the sentinel >>
             #@nl
     
@@ -1752,7 +1685,6 @@ class atFile:
             at.t = at.findChild4(headline)
         
         at.endSentinelStack.append(at.endNode)
-    #@nonl
     #@-node:ekr.20041005105605.85:readStartNode (4.x)
     #@+node:ekr.20041005105605.89:readStartOthers
     def readStartOthers (self,s,i):
@@ -1771,7 +1703,6 @@ class atFile:
         at.out.append(leadingWs + "@others\n")
         
         at.endSentinelStack.append(at.endOthers)
-    #@nonl
     #@-node:ekr.20041005105605.89:readStartOthers
     #@-node:ekr.20041005105605.80:start sentinels
     #@+node:ekr.20041005105605.90:end sentinels
@@ -1784,7 +1715,6 @@ class atFile:
         
         at = self
         at.popSentinelStack(at.endAll)
-    #@nonl
     #@-node:ekr.20041005105605.91:readEndAll (4.2)
     #@+node:ekr.20041005105605.92:readEndAt & readEndDoc
     def readEndAt (self,s,i):
@@ -1808,7 +1738,6 @@ class atFile:
         at.readLastDocLine("@doc")
         at.popSentinelStack(at.endDoc)
         at.inCode = True
-    #@nonl
     #@-node:ekr.20041005105605.92:readEndAt & readEndDoc
     #@+node:ekr.20041005105605.93:readEndLeo
     def readEndLeo (self,s,i):
@@ -1827,7 +1756,6 @@ class atFile:
             at.lastLines.append(s) # Capture all trailing lines, even if empty.
     
         at.done = True
-    #@nonl
     #@-node:ekr.20041005105605.93:readEndLeo
     #@+node:ekr.20041005105605.94:readEndMiddle
     def readEndMiddle (self,s,i):
@@ -1837,7 +1765,6 @@ class atFile:
         at = self
         
         at.readEndNode(s,i,middle=True)
-    #@nonl
     #@-node:ekr.20041005105605.94:readEndMiddle
     #@+node:ekr.20041005105605.95:readEndNode (4.x)
     def readEndNode (self,s,i,middle=False):
@@ -1899,7 +1826,6 @@ class atFile:
                     else:
                         # This should never happen.
                         g.es("Correcting hidden node: t=%s" % repr(at.t),color="red")
-                    #@nonl
                     #@-node:ekr.20041005105605.97:<< bump at.correctedLines and tell about the correction >>
                     #@nl
                     # p.setMarked()
@@ -1920,7 +1846,6 @@ class atFile:
                         c.changed = True
                     else: # Far too slow for mass changes.
                         at.c.setChanged(True)
-                #@nonl
                 #@-node:ekr.20041005105605.96:<< indicate that the node has been changed >>
                 #@nl
             at.t.tempBodyString = s
@@ -1936,7 +1861,6 @@ class atFile:
             at.lastThinNode = at.thinNodeStack.pop()
     
         at.popSentinelStack(at.endNode)
-    #@nonl
     #@-node:ekr.20041005105605.95:readEndNode (4.x)
     #@+node:ekr.20041005105605.98:readEndOthers
     def readEndOthers (self,s,i):
@@ -1947,7 +1871,6 @@ class atFile:
         
         at = self
         at.popSentinelStack(at.endOthers)
-    #@nonl
     #@-node:ekr.20041005105605.98:readEndOthers
     #@+node:ekr.20041005105605.99:readLastDocLine
     def readLastDocLine (self,tag):
@@ -1995,7 +1918,6 @@ class atFile:
     
         at.out.append(tag + s)
         at.docOut = []
-    #@nonl
     #@-node:ekr.20041005105605.99:readLastDocLine
     #@-node:ekr.20041005105605.90:end sentinels
     #@+node:ekr.20041005105605.100:Unpaired sentinels
@@ -2007,7 +1929,6 @@ class atFile:
         __pychecker__ = '--no-argsused' # i unused, but must be present.
         
         g.es("Ignoring 3.x sentinel: " + s.strip(), color="blue")
-    #@nonl
     #@-node:ekr.20041005105605.101:ignoreOldSentinel
     #@+node:ekr.20041005105605.102:readAfterRef
     def  readAfterRef (self,s,i):
@@ -2020,7 +1941,6 @@ class atFile:
         # Append the next line to the text.
         s = at.readLine(at.inputFile)
         at.out.append(s)
-    #@nonl
     #@-node:ekr.20041005105605.102:readAfterRef
     #@+node:ekr.20041005105605.103:readClone
     def readClone (self,s,i):
@@ -2039,7 +1959,6 @@ class atFile:
             at.readError("Invalid count in @clone sentinel")
         else:
             at.cloneSibCount = val
-    #@nonl
     #@-node:ekr.20041005105605.103:readClone
     #@+node:ekr.20041005105605.104:readComment
     def readComment (self,s,i):
@@ -2092,7 +2011,6 @@ class atFile:
             at.readError("Bad @delims")
             # Append the bad @delims line to the body text.
             at.out.append("@delims")
-    #@nonl
     #@-node:ekr.20041005105605.105:readDelims
     #@+node:ekr.20041005105605.106:readDirective (@@)
     def readDirective (self,s,i):
@@ -2145,7 +2063,6 @@ class atFile:
                 else:
                     line = g.get_line(s,i)
                     g.es("Ignoring bad @@language sentinel: %s" % line,color="red")
-                #@nonl
                 #@-node:ekr.20041005105605.107:<< handle @language >>
                 #@nl
             elif g.match_word(s,i,"@comment"):
@@ -2168,12 +2085,10 @@ class atFile:
                 else:
                     line = g.get_line(s,i)
                     g.es("Ignoring bad @comment sentinel: %s" % line,color="red")
-                #@nonl
                 #@-node:ekr.20041005105605.108:<< handle @comment >>
                 #@nl
     
         at.out.append(s2)
-    #@nonl
     #@-node:ekr.20041005105605.106:readDirective (@@)
     #@+node:ekr.20041005105605.109:readNl
     def readNl (self,s,i):
@@ -2187,7 +2102,6 @@ class atFile:
             at.out.append('\n')
         else:
             at.docOut.append('\n')
-    #@nonl
     #@-node:ekr.20041005105605.109:readNl
     #@+node:ekr.20041005105605.110:readNonl
     def readNonl (self,s,i):
@@ -2219,7 +2133,6 @@ class atFile:
                 else:
                     g.trace("docOut:",s)
                     at.readError("unexpected @nonl directive in doc part")
-    #@nonl
     #@-node:ekr.20041005105605.110:readNonl
     #@+node:ekr.20041005105605.111:readRef
     #@+at 
@@ -2263,7 +2176,6 @@ class atFile:
         s = at.readLine(at.inputFile) 
         i = at.skipIndent(s,0,at.indent)
         at.out.append(s[i:])
-    #@nonl
     #@-node:ekr.20041005105605.112:readVerbatim
     #@-node:ekr.20041005105605.100:Unpaired sentinels
     #@+node:ekr.20041005105605.113:badEndSentinel, push/popSentinelStack
@@ -2287,7 +2199,6 @@ class atFile:
             at.endSentinelStack.pop()
         else:
             at.badEndSentinel(expectedKind)
-    #@nonl
     #@-node:ekr.20041005105605.113:badEndSentinel, push/popSentinelStack
     #@-node:ekr.20041005105605.74:scanText4 & allies
     #@+node:ekr.20041005105605.114:sentinelKind4
@@ -2335,7 +2246,6 @@ class atFile:
             return at.sentinelDict[key]
         else:
             return at.noSentinel
-    #@nonl
     #@-node:ekr.20041005105605.114:sentinelKind4
     #@+node:ekr.20041005105605.115:skipSentinelStart4
     def skipSentinelStart4(self,s,i):
@@ -2411,7 +2321,6 @@ class atFile:
             # 21-SEP-2002 DTHEIN: no trailing whitespace on empty @last directive
             trailingLine = " " + lastLines[j]
             out[k] = tag + trailingLine.rstrip() ; j -= 1
-    #@nonl
     #@-node:ekr.20041005105605.118:completeLastDirectives
     #@+node:ekr.20050301105854:copyAllTempBodyStringsToTnodes
     def  copyAllTempBodyStringsToTnodes (self,root,thinFile):
@@ -2441,7 +2350,6 @@ class atFile:
                         pass
                     g.es("changed: " + p.headString(),color="blue")
                     p.setMarked()
-    #@nonl
     #@-node:ekr.20050301105854:copyAllTempBodyStringsToTnodes
     #@+node:ekr.20041005105605.119:createImportedNode
     def createImportedNode (self,root,headline):
@@ -2458,7 +2366,6 @@ class atFile:
             
         p.v.t.setVisited() # Suppress warning about unvisited node.
         return p
-    #@nonl
     #@-node:ekr.20041005105605.119:createImportedNode
     #@+node:ekr.20041005105605.120:parseLeoSentinel
     def parseLeoSentinel (self,s):
@@ -2483,7 +2390,6 @@ class atFile:
             start = s[j:i]
         else:
             valid = False
-        #@nonl
         #@-node:ekr.20041005105605.121:<< set the opening comment delim >>
         #@nl
         #@    << make sure we have @+leo >>
@@ -2504,7 +2410,6 @@ class atFile:
         if g.match(s,i,tag):
             i += len(tag)
         else: valid = False
-        #@nonl
         #@-node:ekr.20041005105605.122:<< make sure we have @+leo >>
         #@nl
         #@    << read optional version param >>
@@ -2526,7 +2431,6 @@ class atFile:
                 pass # version = s[j:i]
             else:
                 valid = False
-        #@nonl
         #@-node:ekr.20041005105605.123:<< read optional version param >>
         #@nl
         #@    << read optional thin param >>
@@ -2534,7 +2438,6 @@ class atFile:
         if g.match(s,i,thin_tag):
             i += len(tag)
             isThinDerivedFile = True
-        #@nonl
         #@-node:ekr.20041005105605.124:<< read optional thin param >>
         #@nl
         #@    << read optional encoding param >>
@@ -2577,11 +2480,9 @@ class atFile:
         while i < n and not g.is_ws(s[i]) and not g.is_nl(s,i):
             i += 1
         end = s[j:i]
-        #@nonl
         #@-node:ekr.20041005105605.126:<< set the closing comment delim >>
         #@nl
         return valid,new_df,start,end,isThinDerivedFile
-    #@nonl
     #@+node:ekr.20050211111552:test_parseLeoSentinel
     def test_parseLeoSentinel (self):
         
@@ -2616,7 +2517,6 @@ class atFile:
         
         self.root.setOrphan()
         self.root.setDirty()
-    #@nonl
     #@-node:ekr.20041005105605.127:readError
     #@+node:ekr.20041005105605.128:readLine
     def readLine (self,theFile):
@@ -2626,8 +2526,6 @@ class atFile:
         s = g.readlineForceUnixNewline(theFile) # calls theFile.readline
         u = g.toUnicode(s,self.encoding)
         return u
-    
-    
     #@-node:ekr.20041005105605.128:readLine
     #@+node:ekr.20041005105605.129:scanHeader  (3.x and 4.x)
     def scanHeader(self,theFile,fileName):
@@ -2680,7 +2578,6 @@ class atFile:
             at.error("Bad @+leo sentinel in: %s" % fileName)
         # g.trace("start,end",repr(at.startSentinelComment),repr(at.endSentinelComment))
         return firstLines,new_df,isThinDerivedFile
-    #@nonl
     #@-node:ekr.20041005105605.129:scanHeader  (3.x and 4.x)
     #@+node:ekr.20041005105605.131:skipIndent
     # Skip past whitespace equivalent to width spaces.
@@ -2694,7 +2591,6 @@ class atFile:
             else: break
             i += 1
         return i
-    #@nonl
     #@-node:ekr.20041005105605.131:skipIndent
     #@-node:ekr.20041005105605.116:Reading utils...
     #@-node:ekr.20041005105605.17:Reading...
@@ -2702,7 +2598,6 @@ class atFile:
     #@+node:ekr.20041005105605.133:Writing (top level)
     #@+node:ekr.20041005105605.134:Don't override in plugins
     # Plugins probably should not need to override these methods.
-    #@nonl
     #@+node:ekr.20041005105605.135:closeWriteFile
     # 4.0: Don't use newline-pending logic.
     
@@ -2716,7 +2611,6 @@ class atFile:
                 self.stringOutput = self.outputFile.get()
             at.outputFile.close()
             at.outputFile = None
-    #@nonl
     #@-node:ekr.20041005105605.135:closeWriteFile
     #@+node:ekr.20041005105605.136:norefWrite
     def norefWrite(self,root,toString=False):
@@ -2754,7 +2648,6 @@ class atFile:
                 line = s[j:i]
                 at.putBuffered(line) ; at.onl()
                 i = g.skip_nl(s,i)
-            #@nonl
             #@-node:ekr.20041005105605.138:<< put all @first lines in root >>
             #@nl
             at.putOpenLeoSentinel("@+leo-ver=4")
@@ -2785,7 +2678,6 @@ class atFile:
                     at.onl_sent() ; at.putSentinel("@nonl")
                 
                 at.putCloseNodeSentinel(p)
-                #@nonl
                 #@-node:ekr.20041005105605.140:<< Write p's node >>
                 #@nl
             
@@ -2815,10 +2707,8 @@ class atFile:
             for line in lines[j+1:k+1]:
                 i = len(tag) ; i = g.skip_ws(line,i)
                 at.putBuffered(line[i:]) ; at.onl()
-            #@nonl
             #@-node:ekr.20041005105605.141:<< put all @last lines in root >>
             #@nl
-            #@nonl
             #@-node:ekr.20041005105605.137:<< write root's tree >>
             #@nl
             at.closeWriteFile()
@@ -2851,7 +2741,6 @@ class atFile:
                 root.setDirty()
         
         return at.outputFile is not None
-    #@nonl
     #@+node:ekr.20041005105605.143:openFileForWritingHelper
     def openFileForWritingHelper (self,fileName):
         
@@ -2883,7 +2772,6 @@ class atFile:
                 at.writeError("can not create " + at.outputFileName)
         except:
             at.exception("exception creating:" + at.outputFileName)
-    #@nonl
     #@-node:ekr.20041005105605.143:openFileForWritingHelper
     #@-node:ekr.20041005105605.142:openFileForWriting & openFileForWritingHelper
     #@+node:ekr.20041005105605.144:write
@@ -2905,7 +2793,6 @@ class atFile:
             at.targetFileName = root.atThinFileNodeName()
         else:
             at.targetFileName = root.atFileNodeName()
-        #@nonl
         #@-node:ekr.20041005105605.145:<< set at.targetFileName >>
         #@nl
         at.initWriteIvars(root,at.targetFileName,
@@ -2936,7 +2823,6 @@ class atFile:
                     root.clearOrphan()
                     root.clearDirty()
                     at.replaceTargetFileIfDifferent()
-                #@nonl
                 #@-node:ekr.20041005105605.146:<< set dirty and orphan bits on error >>
                 #@nl
         except:
@@ -2974,7 +2860,6 @@ class atFile:
             at.exception("exception preprocessing script")
     
         return at.stringOutput
-    #@nonl
     #@-node:ekr.20050506084734:writeFromString
     #@+node:ekr.20041005105605.147:writeAll
     def writeAll(self,writeAtFileNodesFlag=False,writeDirtyAtFileNodesFlag=False,toString=False):
@@ -3007,7 +2892,6 @@ class atFile:
             
         for v2 in p.self_and_subtree_iter():
             v2.clearOrphan()
-        #@nonl
         #@-node:ekr.20041005105605.148:<< Clear all orphan bits >>
         #@nl
         while p and p != after:
@@ -3040,7 +2924,6 @@ class atFile:
                 
                     if at.fileChangedFlag and autoSave: # Set by replaceTargetFileIfDifferent.
                         mustAutoSave = True
-                #@nonl
                 #@-node:ekr.20041005105605.149:<< handle v's tree >>
                 #@nl
                 p.moveToNodeAfterTree()
@@ -3056,11 +2939,9 @@ class atFile:
                 g.es("no @file nodes in the selected tree")
             else:
                 g.es("no dirty @file nodes")
-        #@nonl
         #@-node:ekr.20041005105605.150:<< say the command is finished >>
         #@nl
         return mustAutoSave
-    #@nonl
     #@-node:ekr.20041005105605.147:writeAll
     #@+node:ekr.20041005105605.151:writeMissing
     def writeMissing(self,p,toString=False):
@@ -3095,7 +2976,6 @@ class atFile:
                             
                             if at.fileChangedFlag: # Set by replaceTargetFileIfDifferent.
                                 changedFiles = True
-                            #@nonl
                             #@-node:ekr.20041005105605.152:<< write the @file node >>
                             #@nl
                             at.closeWriteFile()
@@ -3111,7 +2991,6 @@ class atFile:
             g.es("no missing @file node in the selected tree")
             
         return changedFiles # So caller knows whether to do an auto-save.
-    #@nonl
     #@-node:ekr.20041005105605.151:writeMissing
     #@-node:ekr.20041005105605.134:Don't override in plugins
     #@+node:ekr.20041005105605.153:Override in plugins...
@@ -3125,7 +3004,6 @@ class atFile:
     # or
     # writeMissing methods.
     #@-at
-    #@nonl
     #@+node:ekr.20041005105605.154:asisWrite
     def asisWrite(self,root,toString=False):
     
@@ -3147,7 +3025,6 @@ class atFile:
                     if s and len(s) > 0:
                         s = g.toEncodedString(s,at.encoding,reportErrors=True) # 3/7/03
                         at.outputFile.write(s)
-                #@nonl
                 #@-node:ekr.20041005105605.155:<< Write p's headline if it starts with @@ >>
                 #@nl
                 #@            << Write p's body >>
@@ -3157,7 +3034,6 @@ class atFile:
                 if s:
                     s = g.toEncodedString(s,at.encoding,reportErrors=True) # 3/7/03
                     at.outputStringWithLineEndings(s)
-                #@nonl
                 #@-node:ekr.20041005105605.156:<< Write p's body >>
                 #@nl
             at.closeWriteFile()
@@ -3167,7 +3043,6 @@ class atFile:
             at.writeException(root)
             
     silentWrite = asisWrite # Compatibility with old scripts.
-    #@nonl
     #@-node:ekr.20041005105605.154:asisWrite
     #@+node:ekr.20041005105605.157:writeOpenFile
     # New in 4.3: must be inited before calling this method.
@@ -3194,7 +3069,6 @@ class atFile:
     
         if not toString and not nosentinels:
             at.warnAboutOrphandAndIgnoredNodes()
-    #@nonl
     #@-node:ekr.20041005105605.157:writeOpenFile
     #@-node:ekr.20041005105605.153:Override in plugins...
     #@-node:ekr.20041005105605.133:Writing (top level)
@@ -3230,7 +3104,6 @@ class atFile:
                 s = s + '\n'
         else:
             trailingNewlineFlag = True # don't need to generate an @nonl
-        #@nonl
         #@-node:ekr.20041005105605.162:<< Make sure all lines end in a newline >>
         #@nl
         i = 0
@@ -3282,7 +3155,6 @@ class atFile:
                 at.putDirective(s,i)
             else:
                 assert(0) # Unknown directive.
-            #@nonl
             #@-node:ekr.20041005105605.163:<< handle line at s[i]  >>
             #@nl
             i = next_i
@@ -3290,7 +3162,6 @@ class atFile:
             at.putEndDocLine()
         if at.sentinels and not trailingNewlineFlag:
             at.putSentinel("@nonl")
-    #@nonl
     #@-node:ekr.20041005105605.161:putBody
     #@+node:ekr.20041005105605.164:writing code lines...
     #@+node:ekr.20041005105605.165:@all
@@ -3314,7 +3185,6 @@ class atFile:
     
         at.putSentinel("@-all")
         at.indent -= delta
-    #@nonl
     #@-node:ekr.20041005105605.166:putAtAllLine
     #@+node:ekr.20041005105605.167:putatAllBody
     def putAtAllBody(self,p):
@@ -3339,7 +3209,6 @@ class atFile:
                 s = s + '\n'
         else:
             trailingNewlineFlag = True # don't need to generate an @nonl
-        #@nonl
         #@-node:ekr.20041005105605.168:<< Make sure all lines end in a newline >>
         #@nl
         i = 0
@@ -3357,7 +3226,6 @@ class atFile:
             at.putEndDocLine()
         if at.sentinels and not trailingNewlineFlag:
             at.putSentinel("@nonl")
-    #@nonl
     #@-node:ekr.20041005105605.167:putatAllBody
     #@+node:ekr.20041005105605.169:putAtAllChild
     #@+at
@@ -3392,7 +3260,6 @@ class atFile:
             at.putAtAllChild(child)
     
         at.putCloseNodeSentinel(p)
-    #@nonl
     #@-node:ekr.20041005105605.169:putAtAllChild
     #@-node:ekr.20041005105605.165:@all
     #@+node:ekr.20041005105605.170:@others
@@ -3422,7 +3289,6 @@ class atFile:
         else:
             # g.trace("ok",p)
             return True
-    #@nonl
     #@-node:ekr.20041005105605.171:inAtOthers
     #@+node:ekr.20041005105605.172:putAtOthersChild
     def putAtOthersChild(self,p):
@@ -3442,7 +3308,6 @@ class atFile:
                 at.putAtOthersChild(child)
                 
         at.putCloseNodeSentinel(p)
-    #@nonl
     #@-node:ekr.20041005105605.172:putAtOthersChild
     #@+node:ekr.20041005105605.173:putAtOthersLine
     def putAtOthersLine (self,s,i,p):
@@ -3465,7 +3330,6 @@ class atFile:
     
         at.putSentinel("@-others")
         at.indent -= delta
-    #@nonl
     #@-node:ekr.20041005105605.173:putAtOthersLine
     #@-node:ekr.20041005105605.170:@others
     #@+node:ekr.20041005105605.174:putCodeLine
@@ -3508,7 +3372,6 @@ class atFile:
                 at.onl()
             else:
                 at.os(line)
-    #@nonl
     #@-node:ekr.20041005105605.174:putCodeLine
     #@+node:ekr.20041005105605.175:putRefLine & allies
     #@+node:ekr.20041005105605.176:putRefLine
@@ -3585,7 +3448,6 @@ class atFile:
         at.indent -= delta
         
         return delta
-    #@nonl
     #@-node:ekr.20041005105605.177:putRefAt
     #@+node:ekr.20041005105605.178:putAfterLastRef
     def putAfterLastRef (self,s,start,delta):
@@ -3611,7 +3473,6 @@ class atFile:
             at.indent += delta
             at.putSentinel("@nl")
             at.indent -= delta
-    #@nonl
     #@-node:ekr.20041005105605.178:putAfterLastRef
     #@+node:ekr.20041005105605.179:putAfterMiddleef
     def putAfterMiddleRef (self,s,start,end,delta):
@@ -3627,7 +3488,6 @@ class atFile:
             at.os(after) ; at.onl_sent() # Not a real newline.
             at.putSentinel("@nonl")
             at.indent -= delta
-    #@nonl
     #@-node:ekr.20041005105605.179:putAfterMiddleef
     #@-node:ekr.20041005105605.175:putRefLine & allies
     #@-node:ekr.20041005105605.164:writing code lines...
@@ -3644,7 +3504,6 @@ class atFile:
             at.os(at.startSentinelComment) ; at.oblank()
     
         at.onl()
-    #@nonl
     #@-node:ekr.20041005105605.181:putBlankDocLine
     #@+node:ekr.20041005105605.182:putStartDocLine
     def putStartDocLine (self,s,i,kind):
@@ -3690,7 +3549,6 @@ class atFile:
                 # Doesn't work if we are using block comments.
                 at.putSentinel("@nonl")
                 at.putDocLine(s,j)
-    #@nonl
     #@-node:ekr.20041005105605.182:putStartDocLine
     #@+node:ekr.20041005105605.183:putDocLine
     def putDocLine (self,s,i):
@@ -3752,7 +3610,6 @@ class atFile:
                         
             # Output the remaining line: no more is left.
             at.putPending(split=False)
-            #@nonl
             #@-node:ekr.20041005105605.184:<< append words to pending line, splitting the line if needed >>
             #@nl
     #@-node:ekr.20041005105605.183:putDocLine
@@ -3773,7 +3630,6 @@ class atFile:
     
         sentinel = g.choose(at.docKind == at.docDirective,"@-doc","@-at")
         at.putSentinel(sentinel)
-    #@nonl
     #@-node:ekr.20041005105605.185:putEndDocLine
     #@+node:ekr.20041005105605.186:putPending
     def putPending (self,split):
@@ -3801,7 +3657,6 @@ class atFile:
             at.os(at.startSentinelComment) ; at.oblank()
     
         at.os(s) ; at.onl()
-    #@nonl
     #@-node:ekr.20041005105605.186:putPending
     #@-node:ekr.20041005105605.180:writing doc lines...
     #@-node:ekr.20041005105605.160:Writing 4.x
@@ -3831,7 +3686,6 @@ class atFile:
         if end and len(end) > 0:
             h = h.replace(start,"")
             h = h.replace(end,"")
-        #@nonl
         #@-node:ekr.20041005105605.189:<< remove comment delims from h if necessary >>
         #@nl
         
@@ -3840,7 +3694,6 @@ class atFile:
             return "%s:%s" % (gnx,h)
         else:
             return h
-    #@nonl
     #@-node:ekr.20041005105605.188:nodeSentinelText 4.x
     #@+node:ekr.20041005105605.190:putLeadInSentinel 4.x
     def putLeadInSentinel (self,s,i,j,delta):
@@ -3869,7 +3722,6 @@ class atFile:
             at.indent += delta # Align the @nonl with the following line.
             at.putSentinel("@nonl")
             at.indent -= delta # Let the caller set at.indent permanently.
-    #@nonl
     #@-node:ekr.20041005105605.190:putLeadInSentinel 4.x
     #@+node:ekr.20041005105605.191:putCloseNodeSentinel 4.x
     def putCloseNodeSentinel(self,p,middle=False):
@@ -3882,7 +3734,6 @@ class atFile:
             at.putSentinel("@-middle:" + s)
         else:
             at.putSentinel("@-node:" + s)
-    #@nonl
     #@-node:ekr.20041005105605.191:putCloseNodeSentinel 4.x
     #@+node:ekr.20041005105605.192:putOpenLeoSentinel 4.x
     def putOpenLeoSentinel(self,s):
@@ -3903,7 +3754,6 @@ class atFile:
             s = s + "-encoding=%s,." % (encoding)
         
         at.putSentinel(s)
-    #@nonl
     #@-node:ekr.20041005105605.192:putOpenLeoSentinel 4.x
     #@+node:ekr.20041005105605.193:putOpenNodeSentinel (sets tnodeList) 4.x
     def putOpenNodeSentinel(self,p,inAtAll=False,middle=False):
@@ -3934,7 +3784,6 @@ class atFile:
                 t.tnodeList.append(p.v.t)
             except AttributeError:
                 pass # Do nothing.  We are creating a script.
-    #@nonl
     #@-node:ekr.20041005105605.193:putOpenNodeSentinel (sets tnodeList) 4.x
     #@+node:ekr.20041005105605.194:putSentinel (applies cweb hack) 4.x
     # This method outputs all sentinels.
@@ -3966,14 +3815,12 @@ class atFile:
         if start and start[-1] == '@':
             assert(s and s[0]=='@')
             s = s.replace('@','@@')[1:]
-        #@nonl
         #@-node:ekr.20041005105605.195:<< apply the cweb hack to s >>
         #@nl
         at.os(s)
         if at.endSentinelComment:
             at.os(at.endSentinelComment)
         at.onl()
-    #@nonl
     #@-node:ekr.20041005105605.194:putSentinel (applies cweb hack) 4.x
     #@-node:ekr.20041005105605.187:Writing 4,x sentinels...
     #@+node:ekr.20041005105605.196:Writing 4.x utils...
@@ -3994,7 +3841,6 @@ class atFile:
             return equal
         except IOError:
             return False # Should never happen
-    #@nonl
     #@-node:ekr.20041005105605.197:compareFiles
     #@+node:ekr.20041005105605.198:directiveKind4 & test
     def directiveKind4(self,s,i):
@@ -4040,7 +3886,6 @@ class atFile:
                 return at.miscDirective
     
         return at.noDirective
-    #@nonl
     #@+node:ekr.20050608103755:test_directiveKind4
     def test_directiveKind4 (self):
         
@@ -4070,7 +3915,6 @@ class atFile:
             result = at.directiveKind4(s,i)
             assert result == expected, '%d %s result: %s expected: %s' % (
                 i,repr(s),at.sentinelName(result),at.sentinelName(expected))
-    #@nonl
     #@-node:ekr.20050608103755:test_directiveKind4
     #@-node:ekr.20041005105605.198:directiveKind4 & test
     #@+node:ekr.20041005105605.199:hasSectionName
@@ -4085,7 +3929,6 @@ class atFile:
             n2 = s.find(">>",i,end)
     
         return -1 < n1 < n2, n1, n2
-    #@nonl
     #@-node:ekr.20041005105605.199:hasSectionName
     #@+node:ekr.20041005105605.200:isSectionName
     # returns (flag, end). end is the index of the character after the section name.
@@ -4099,11 +3942,9 @@ class atFile:
             return True, i + 2
         else:
             return False, -1
-    #@nonl
     #@-node:ekr.20041005105605.200:isSectionName
     #@+node:ekr.20041005105605.201:os and allies
     # Note:  self.outputFile may be either a fileLikeObject or a real file.
-    
     #@+node:ekr.20041005105605.202:oblank, oblanks & otabs
     def oblank(self):
         self.os(' ')
@@ -4113,7 +3954,6 @@ class atFile:
         
     def otabs(self,n):
         self.os('\t' * abs(n))
-    #@nonl
     #@-node:ekr.20041005105605.202:oblank, oblanks & otabs
     #@+node:ekr.20041005105605.203:onl & onl_sent
     def onl(self):
@@ -4128,7 +3968,6 @@ class atFile:
     
         if self.sentinels:
             self.onl()
-    #@nonl
     #@-node:ekr.20041005105605.203:onl & onl_sent
     #@+node:ekr.20041005105605.204:os
     def os (self,s):
@@ -4145,7 +3984,6 @@ class atFile:
                 at.outputFile.write(s)
             except:
                 at.exception("exception writing:" + s)
-    #@nonl
     #@-node:ekr.20041005105605.204:os
     #@-node:ekr.20041005105605.201:os and allies
     #@+node:ekr.20041005105605.205:outputStringWithLineEndings
@@ -4155,7 +3993,6 @@ class atFile:
     
         # Calling self.onl() runs afoul of queued newlines.
         self.os(s.replace('\n',self.output_newline))
-    #@nonl
     #@-node:ekr.20041005105605.205:outputStringWithLineEndings
     #@+node:ekr.20050506090446.1:putAtFirstLines (new in 4.3 b2)
     def putAtFirstLines (self,s):
@@ -4176,7 +4013,6 @@ class atFile:
             line = s[j:i]
             at.os(line) ; at.onl()
             i = g.skip_nl(s,i)
-    #@nonl
     #@-node:ekr.20050506090446.1:putAtFirstLines (new in 4.3 b2)
     #@+node:ekr.20050506090955:putAtLastLines (new in 4.3 b2)
     def putAtLastLines (self,s):
@@ -4204,7 +4040,6 @@ class atFile:
             if g.match(line,0,tag):
                 i = len(tag) ; i = g.skip_ws(line,i)
                 at.os(line[i:])
-    #@nonl
     #@-node:ekr.20050506090955:putAtLastLines (new in 4.3 b2)
     #@+node:ekr.20041005105605.206:putDirective  (handles @delims,@comment,@language) 4.x
     #@+at 
@@ -4246,7 +4081,6 @@ class atFile:
                 self.endSentinelComment = g.choose(j<i, s[j:i], "")
             else:
                 self.writeError("Bad @delims directive")
-            #@nonl
             #@-node:ekr.20041005105605.207:<< handle @delims >>
             #@nl
         elif g.match_word(s,k,"@language"):
@@ -4278,7 +4112,6 @@ class atFile:
                 else:
                     line = g.get_line(s,i)
                     g.es("Ignoring bad @language directive: %s" % line,color="blue")
-            #@nonl
             #@-node:ekr.20041005105605.208:<< handle @language >>
             #@nl
         elif g.match_word(s,k,"@comment"):
@@ -4305,7 +4138,6 @@ class atFile:
                     self.endSentinelComment = delim3
                 else:
                     g.es("Ignoring bad @comment directive: %s" % line,color="blue")
-            #@nonl
             #@-node:ekr.20041005105605.209:<< handle @comment >>
             #@nl
         elif g.match_word(s,k,"@last"):
@@ -4317,7 +4149,6 @@ class atFile:
     
         i = g.skip_line(s,k)
         return i
-    #@nonl
     #@-node:ekr.20041005105605.206:putDirective  (handles @delims,@comment,@language) 4.x
     #@+node:ekr.20041005105605.210:putIndent
     def putIndent(self,n):
@@ -4332,7 +4163,6 @@ class atFile:
                 self.oblanks(r)
             else:
                 self.oblanks(n)
-    #@nonl
     #@-node:ekr.20041005105605.210:putIndent
     #@+node:ekr.20041005105605.211:putInitialComment
     def putInitialComment (self):
@@ -4345,7 +4175,6 @@ class atFile:
                 line = line.replace("@date",time.asctime())
                 if len(line)> 0:
                     self.putSentinel("@comment " + line)
-    #@nonl
     #@-node:ekr.20041005105605.211:putInitialComment
     #@+node:ekr.20041005105605.212:replaceTargetFileIfDifferent
     def replaceTargetFileIfDifferent (self):
@@ -4370,7 +4199,6 @@ class atFile:
                     self.outputFileName,
                     self.targetFileName,
                     not self.explicitLineEnding)
-                #@nonl
                 #@-node:ekr.20050104131343:<< files are identical >>
                 #@nl
             ):
@@ -4388,7 +4216,6 @@ class atFile:
                         ignoreLineEndings=True)):
                 
                     g.es("correcting line endings in: " + self.targetFileName,color="blue")
-                #@nonl
                 #@-node:ekr.20041019090322:<< report if the files differ only in line endings >>
                 #@nl
                 mode = self.stat(self.targetFileName)
@@ -4404,7 +4231,6 @@ class atFile:
                 g.es('%-10s %s' % ('created:',self.targetFileName))
                 self.fileChangedFlag = True
             return False
-    #@nonl
     #@-node:ekr.20041005105605.212:replaceTargetFileIfDifferent
     #@+node:ekr.20041005105605.216:warnAboutOrpanAndIgnoredNodes
     def warnAboutOrphandAndIgnoredNodes (self):
@@ -4429,7 +4255,6 @@ class atFile:
                     if p.isAtIgnoreNode():
                         at.writeError("@ignore node: " + p.headString())
                     p.moveToThreadNext()
-    #@nonl
     #@-node:ekr.20041005105605.216:warnAboutOrpanAndIgnoredNodes
     #@+node:ekr.20041005105605.217:writeError
     def writeError(self,message=None):
@@ -4441,7 +4266,6 @@ class atFile:
     
         self.root.setOrphan()
         self.root.setDirty()
-    #@nonl
     #@-node:ekr.20041005105605.217:writeError
     #@+node:ekr.20041005105605.218:writeException
     def writeException (self,root=None):
@@ -4465,7 +4289,6 @@ class atFile:
             # Make sure we try to rewrite this file.
             root.setOrphan()
             root.setDirty()
-    #@nonl
     #@-node:ekr.20041005105605.218:writeException
     #@-node:ekr.20041005105605.196:Writing 4.x utils...
     #@-node:ekr.20041005105605.132:Writing...
@@ -4477,13 +4300,11 @@ class atFile:
     # g.utils_x
     # functions is that these methods may call self.error.
     #@-at
-    #@nonl
     #@+node:ekr.20050104131820:chmod
     def chmod (self,fileName,mode):
         
         # Do _not_ call self.error here.
         return g.utils_chmod(fileName,mode)
-    #@nonl
     #@-node:ekr.20050104131820:chmod
     #@+node:ekr.20050104131929.1:rename & test
     #@<< about os.rename >>
@@ -4508,7 +4329,6 @@ class atFile:
     # existing
     # file.
     #@-at
-    #@nonl
     #@-node:ekr.20050104131929.2:<< about os.rename >>
     #@nl
     
@@ -4539,7 +4359,6 @@ class atFile:
                     self.outputFileName,self.targetFileName))
                 g.es_exception()
             return False
-    #@nonl
     #@+node:ekr.20050107085710:test_atFile_rename
     def test_atFile_rename (self):
     
@@ -4571,7 +4390,6 @@ class atFile:
         assert s == 'test %s' % path
         os.remove(path2)
         assert not exists(path)
-    #@nonl
     #@-node:ekr.20050107085710:test_atFile_rename
     #@-node:ekr.20050104131929.1:rename & test
     #@+node:ekr.20050104132018:remove & test
@@ -4585,7 +4403,6 @@ class atFile:
                 self.error("exception removing: %s" % fileName)
                 g.es_exception()
             return False
-    #@nonl
     #@+node:ekr.20050107090156:test_atFile_remove
     def test_atFile_remove(self):
         
@@ -4608,7 +4425,6 @@ class atFile:
         assert exists(path)
         assert at.remove(path)
         assert not exists(path)
-    #@nonl
     #@-node:ekr.20050107090156:test_atFile_remove
     #@-node:ekr.20050104132018:remove & test
     #@+node:ekr.20050104132026:stat
@@ -4618,7 +4434,6 @@ class atFile:
         
         # Do _not_ call self.error here.
         return g.utils_stat(fileName)
-    #@nonl
     #@-node:ekr.20050104132026:stat
     #@-node:ekr.20050104131929:file operations...
     #@+node:ekr.20041005105605.220:atFile.error
@@ -4630,13 +4445,11 @@ class atFile:
         self.errors += 1
     
         # g.trace('errors',self.errors)
-    #@nonl
     #@-node:ekr.20041005105605.220:atFile.error
     #@+node:ekr.20051219122720:atFile.forceGnxOnPosition
     def forceGnxOnPosition (self,p):
         
         self._forcedGnxPositionList.append(p.v)
-    #@nonl
     #@-node:ekr.20051219122720:atFile.forceGnxOnPosition
     #@+node:ekr.20050206085258:atFile.printError & test
     def printError (self,message):
@@ -4657,14 +4470,12 @@ class atFile:
         at.errors = 0
         at.printError(
             "test of printError: Ᾱ(U+1FB9: Greek Capital Letter Alpha With Macron)")
-    #@nonl
     #@-node:ekr.20050206085258:atFile.printError & test
     #@+node:ekr.20041005105605.221:exception
     def exception (self,message):
         
         self.error(message)
         g.es_exception()
-    #@nonl
     #@-node:ekr.20041005105605.221:exception
     #@+node:ekr.20041005105605.222:atFile.scanAllDirectives
     #@+at 
@@ -4703,7 +4514,6 @@ class atFile:
         
         self.encoding = c.config.default_derived_file_encoding
         self.output_newline = g.getOutputNewline(c=self.c) # Init from config settings.
-        #@nonl
         #@-node:ekr.20041005105605.223:<< Set ivars >>
         #@nl
         #@    << Set path from @file node >>
@@ -4722,7 +4532,6 @@ class atFile:
                 self.default_directory = g.makeAllNonExistentDirectories(theDir)
                 if not self.default_directory:
                     self.error("Directory \"%s\" does not exist" % theDir)
-        #@nonl
         #@-node:ekr.20041005105605.224:<< Set path from @file node >> in scanDirectory in leoGlobals.py
         #@nl
         old = {}
@@ -4751,7 +4560,6 @@ class atFile:
                 
                 if 0: # 11/14/02: we want a _relative_ path, not an absolute path.
                     path = g.os_path_join(g.app.loadDir,path)
-                #@nonl
                 #@-node:ekr.20041005105605.226:<< compute relative path from s[k:] >>
                 #@nl
                 if path and len(path) > 0:
@@ -4774,7 +4582,6 @@ class atFile:
                         self.error("ignoring bad @path: %s" % path)
                 else:
                     self.error("ignoring empty @path")
-            #@nonl
             #@-node:ekr.20041005105605.225:<< Test for @path >>
             #@nl
             #@        << Test for @encoding >>
@@ -4784,7 +4591,6 @@ class atFile:
                 e = g.scanAtEncodingDirective(s,theDict)
                 if e:
                     self.encoding = e
-            #@nonl
             #@-node:ekr.20041005105605.228:<< Test for @encoding >>
             #@nl
             #@        << Test for @comment and @language >>
@@ -4805,7 +4611,6 @@ class atFile:
             elif theDict.has_key("language"):
                 k = theDict["language"]
                 self.language,delim1,delim2,delim3 = g.set_language(s,k)
-            #@nonl
             #@-node:ekr.20041005105605.229:<< Test for @comment and @language >>
             #@nl
             #@        << Test for @header and @noheader >>
@@ -4813,7 +4618,6 @@ class atFile:
             # EKR: 10/10/02: perform the sames checks done by tangle.scanAllDirectives.
             if theDict.has_key("header") and theDict.has_key("noheader"):
                 g.es("conflicting @header and @noheader directives")
-            #@nonl
             #@-node:ekr.20041005105605.230:<< Test for @header and @noheader >>
             #@nl
             #@        << Test for @lineending >>
@@ -4833,7 +4637,6 @@ class atFile:
                 w = g.scanAtPagewidthDirective(s,theDict,issue_error_flag=True)
                 if w and w > 0:
                     self.page_width = w
-            #@nonl
             #@-node:ekr.20041005105605.232:<< Test for @pagewidth >>
             #@nl
             #@        << Test for @tabwidth >>
@@ -4843,7 +4646,6 @@ class atFile:
                 w = g.scanAtTabwidthDirective(s,theDict,issue_error_flag=True)
                 if w and w != 0:
                     self.tab_width = w
-            
             #@-node:ekr.20041005105605.233:<< Test for @tabwidth >>
             #@nl
             old.update(theDict)
@@ -4895,10 +4697,8 @@ class atFile:
                 self.endSentinelComment = ""
                 
             # g.trace(repr(self.startSentinelComment),repr(self.endSentinelComment))
-            #@nonl
             #@-node:ekr.20041005105605.235:<< Set comment strings from delims >>
             #@nl
-    #@nonl
     #@-node:ekr.20041005105605.222:atFile.scanAllDirectives
     #@+node:ekr.20041005105605.236:scanDefaultDirectory
     def scanDefaultDirectory(self,p,importing=False):
@@ -4923,7 +4723,6 @@ class atFile:
                 at.default_directory = g.makeAllNonExistentDirectories(theDir)
                 if not at.default_directory:
                     at.error("Directory \"%s\" does not exist" % theDir)
-        #@nonl
         #@-node:ekr.20041005105605.237:<< Set path from @file node >>  in df.scanDeafaultDirectory in leoAtFile.py
         #@nl
         if at.default_directory:
@@ -4951,7 +4750,6 @@ class atFile:
                     path = path[1:-1]
                 
                 path = path.strip()
-                #@nonl
                 #@-node:ekr.20041005105605.239:<< compute relative path from s[k:] >>
                 #@nl
                 
@@ -4970,14 +4768,12 @@ class atFile:
                             at.default_directory = g.makeAllNonExistentDirectories(path)
                             if not at.default_directory:
                                 at.error("invalid @path: %s" % path)
-                        #@nonl
                         #@-node:ekr.20041005105605.240:<< handle absolute path >>
                         #@nl
                     else:
                         at.error("ignoring bad @path: %s" % path)
                 else:
                     at.error("ignoring empty @path")
-                
                 #@-node:ekr.20041005105605.238:<< handle @path >> in df.scanDeafaultDirectory in leoAtFile.py
                 #@nl
                 return
@@ -5005,7 +4801,6 @@ class atFile:
             g.trace()
             at.error("No absolute directory specified anywhere.")
             at.default_directory = ""
-    #@nonl
     #@-node:ekr.20041005105605.236:scanDefaultDirectory
     #@+node:ekr.20041005105605.242:scanForClonedSibs (reading & writing)
     def scanForClonedSibs (self,v):
@@ -5030,7 +4825,6 @@ class atFile:
         # g.trace(clonedSibs,thisClonedSibIndex)
     
         return clonedSibs,thisClonedSibIndex
-    #@nonl
     #@-node:ekr.20041005105605.242:scanForClonedSibs (reading & writing)
     #@+node:ekr.20041005105605.243:sentinelName
     # Returns the name of the sentinel for warnings.
@@ -5061,13 +4855,10 @@ class atFile:
             at.startVerbatimAfterRef: "@verbatimAfterRef" } # 3.x only.
     
         return sentinelNameDict.get(kind,"<unknown sentinel!>")
-    #@nonl
     #@-node:ekr.20041005105605.243:sentinelName
     #@-node:ekr.20041005105605.219:Uilites... (atFile)
     #@-others
-#@nonl
 #@-node:ekr.20041005105605.4:class atFile
 #@-others
-#@nonl
 #@-node:ekr.20041005105605.1:@thin leoAtFile.py
 #@-leo

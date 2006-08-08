@@ -172,16 +172,13 @@ class tst_node:
         self.is_root = root_flag
         self.referenced = False
         self.parts = []
-    #@nonl
     #@-node:ekr.20031218072017.3450:tst_node.__init__
     #@+node:ekr.20031218072017.3451:tst_node.__repr__
     def __repr__ (self):
     
         return "tst_node:" + self.name
-    #@nonl
     #@-node:ekr.20031218072017.3451:tst_node.__repr__
     #@-others
-#@nonl
 #@-node:ekr.20031218072017.3449:class tst_node
 #@+node:ekr.20031218072017.3452:class part_node
 class part_node:
@@ -195,16 +192,13 @@ class part_node:
         self.doc = doc # The doc text.
         self.is_dirty = is_dirty # True: vnode for body text is dirty.
         self.is_root = is_root # True: name is a root name.
-    #@nonl
     #@-node:ekr.20031218072017.3453:part_node.__init__
     #@+node:ekr.20031218072017.3454:part_node.__repr__
     def __repr__ (self):
     
         return "part_node:" + self.name
-    #@nonl
     #@-node:ekr.20031218072017.3454:part_node.__repr__
     #@-others
-#@nonl
 #@-node:ekr.20031218072017.3452:class part_node
 #@+node:ekr.20031218072017.3455:class ust_node
 class ust_node:
@@ -229,16 +223,13 @@ class ust_node:
         self.of = of  # m in "(part n of m)" or zero.
         self.nl_flag = nl_flag  # True: section starts with a newline.
         self.update_flag = update_flag # True: section corresponds to a section in the outline.
-    #@nonl
     #@-node:ekr.20031218072017.3456:ust_node.__init__
     #@+node:ekr.20031218072017.3457:ust_node.__repr__
     def __repr__ (self):
     
         return "ust_node:" + self.name
-    #@nonl
     #@-node:ekr.20031218072017.3457:ust_node.__repr__
     #@-others
-#@nonl
 #@-node:ekr.20031218072017.3455:class ust_node
 #@+node:ekr.20031218072017.3458:class def_node
 class def_node:
@@ -265,16 +256,13 @@ class def_node:
         self.part = part
         self.of = of
         self.nl_flag = nl_flag
-    #@nonl
     #@-node:ekr.20031218072017.3459:def_node.__init__
     #@+node:ekr.20031218072017.3460:def_node.__repr__
     def __repr__ (self):
     
         return "def_node:" + self.name
-    #@nonl
     #@-node:ekr.20031218072017.3460:def_node.__repr__
     #@-others
-#@nonl
 #@-node:ekr.20031218072017.3458:class def_node
 #@+node:ekr.20031218072017.3461:class root_attributes (Stephen P. Schaefer)
 #@+at 
@@ -317,7 +305,6 @@ class root_attributes:
                 ", tab_width: " + tangle_state.tab_width +
                 # Stephen P. Schaefer 9/13/2002
                 ", first_lines: " + tangle_state.first_lines)
-            #@nonl
             #@-node:ekr.20031218072017.3463:<< trace the state >>
             #@nl
         self.language = tangle_state.language
@@ -337,7 +324,6 @@ class root_attributes:
         self.page_width = tangle_state.page_width
         self.tab_width = tangle_state.tab_width
         self.first_lines = tangle_state.first_lines # Stephen P. Schaefer 9/13/2002
-    #@nonl
     #@-node:ekr.20031218072017.3462:root_attributes.__init__
     #@+node:ekr.20031218072017.3464:root_attributes.__repr__
     def __repr__ (self):
@@ -355,7 +341,6 @@ class root_attributes:
             ", first_lines: " + self.first_lines)
     #@-node:ekr.20031218072017.3464:root_attributes.__repr__
     #@-others
-#@nonl
 #@-node:ekr.20031218072017.3461:class root_attributes (Stephen P. Schaefer)
 #@-node:ekr.20031218072017.3448:node classes
 #@+node:ekr.20031218072017.3465:class tangleCommands methods
@@ -367,7 +352,6 @@ class baseTangleCommands:
     
         self.c = c
         self.init_ivars()
-    #@nonl
     #@-node:ekr.20031218072017.3466:tangle.__init__
     #@+node:ekr.20031218072017.1356:tangle.init_ivars & init_directive_ivars
     # Called by __init__
@@ -450,7 +434,6 @@ class baseTangleCommands:
         
         # Support of output_newline option
         self.output_newline = g.getOutputNewline(c=c)
-        #@nonl
         #@-node:ekr.20031218072017.1357:<< init tangle ivars >>
         #@nl
         #@    << init untangle ivars >>
@@ -464,7 +447,6 @@ class baseTangleCommands:
         self.comment2 = self.comment2_end = None
         self.string1 = self.string2 = self.verbatim = None
         self.message = None # forgiving compare message.
-        #@nonl
         #@-node:ekr.20031218072017.1358:<< init untangle ivars >>
         #@nl
         
@@ -521,10 +503,8 @@ class baseTangleCommands:
         self.first_lines = ""
         self.encoding = c.config.default_derived_file_encoding # 2/21/03
         self.output_newline = g.getOutputNewline(c=c) # 4/24/03: initialize from config settings.
-        #@nonl
         #@-node:ekr.20031218072017.1359:<< init directive ivars >> (tangle)
         #@nl
-    #@nonl
     #@-node:ekr.20031218072017.1356:tangle.init_ivars & init_directive_ivars
     #@+node:ekr.20031218072017.3467:top level
     #@+at 
@@ -562,7 +542,6 @@ class baseTangleCommands:
                 except:
                     g.es("Can not execute tangle_done.run()")
                     g.es_exception()
-            #@nonl
             #@-node:ekr.20031218072017.3469:<< call tangle_done.run() or untangle_done.run() >>
             #@nl
     
@@ -571,7 +550,6 @@ class baseTangleCommands:
         self.ust = {}
         self.root_list = []
         self.def_stack = []
-    #@nonl
     #@-node:ekr.20031218072017.3468:cleanup
     #@+node:ekr.20031218072017.3470:initTangleCommand
     def initTangleCommand (self):
@@ -582,7 +560,6 @@ class baseTangleCommands:
         g.es("Tangling...")
         self.init_ivars()
         self.tangling = True
-    #@nonl
     #@-node:ekr.20031218072017.3470:initTangleCommand
     #@+node:ekr.20031218072017.3471:initUntangleCommand
     def initUntangleCommand (self):
@@ -593,7 +570,6 @@ class baseTangleCommands:
         g.es("Untangling...")
         self.init_ivars()
         self.tangling = False
-    #@nonl
     #@-node:ekr.20031218072017.3471:initUntangleCommand
     #@+node:ekr.20031218072017.3472:tangle
     def tangle(self,event=None):
@@ -615,7 +591,6 @@ class baseTangleCommands:
             self.tangleTree(p,report_errors)
         
         g.es("tangle complete")
-    #@nonl
     #@-node:ekr.20031218072017.3472:tangle
     #@+node:ekr.20031218072017.3473:tangleAll
     def tangleAll(self,event=None):
@@ -638,7 +613,6 @@ class baseTangleCommands:
             self.warning("----- Tangle halted because of errors")
         else:
             g.es("Tangle complete")
-    #@nonl
     #@-node:ekr.20031218072017.3473:tangleAll
     #@+node:ekr.20031218072017.3474:tangleMarked
     def tangleMarked(self,event=None):
@@ -668,7 +642,6 @@ class baseTangleCommands:
             self.warning("----- Tangle halted because of errors")
         else:
             g.es("Tangle complete")
-    #@nonl
     #@-node:ekr.20031218072017.3474:tangleMarked
     #@+node:ekr.20031218072017.3475:tanglePass1
     # Traverses the tree whose root is given, handling each headline and associated body text.
@@ -701,7 +674,6 @@ class baseTangleCommands:
         if self.tangling:
             self.st_check()
             # g.trace(self.st_dump(verbose_flag=True))
-    #@nonl
     #@-node:ekr.20031218072017.3475:tanglePass1
     #@+node:ekr.20031218072017.3476:tanglePass2
     # At this point p is the root of the tree that has been tangled.
@@ -718,7 +690,6 @@ class baseTangleCommands:
             self.warning("----- The outline contains no roots")
         else:
             self.put_all_roots() # pass 2 top level function.
-    #@nonl
     #@-node:ekr.20031218072017.3476:tanglePass2
     #@+node:ekr.20031218072017.3477:tangleTree (calls cleanup)
     # This function is called only from the top level, so there is no need to initialize globals.
@@ -758,7 +729,6 @@ class baseTangleCommands:
             # This is done by Untangle if we are untangling.
             self.warning("----- The outline contains no roots")
         return any_root_flag
-    #@nonl
     #@-node:ekr.20031218072017.3477:tangleTree (calls cleanup)
     #@+node:ekr.20031218072017.3478:untangle
     def untangle(self,event=None):
@@ -772,7 +742,6 @@ class baseTangleCommands:
             g.es("Untangle complete")
         finally:
             c.endUpdate()
-    #@nonl
     #@-node:ekr.20031218072017.3478:untangle
     #@+node:ekr.20031218072017.3479:untangleAll
     def untangleAll(self,event=None):
@@ -797,7 +766,6 @@ class baseTangleCommands:
             self.warning("----- Untangle command halted because of errors")
         else:
             g.es("Untangle complete")
-    #@nonl
     #@-node:ekr.20031218072017.3479:untangleAll
     #@+node:ekr.20031218072017.3480:untangleMarked
     def untangleMarked(self,event=None):
@@ -827,7 +795,6 @@ class baseTangleCommands:
             self.warning("----- Untangle command halted because of errors")
         else:
             g.es("Untangle complete")
-    #@nonl
     #@-node:ekr.20031218072017.3480:untangleMarked
     #@+node:ekr.20031218072017.3481:untangleRoot (calls cleanup)
     #@+at 
@@ -863,7 +830,6 @@ class baseTangleCommands:
             # A bad @root command.  token_type has already given an error.
             self.cleanup()
             return
-        #@nonl
         #@-node:ekr.20031218072017.3483:<< Set path & root_name to the file specified in the @root directive >>
         #@nl
         #@    << return if @silent or unknown language >>
@@ -875,7 +841,6 @@ class baseTangleCommands:
         if self.print_mode in ("quiet","silent"):
             g.es("@" + self.print_mode +  " inhibits Untangle for " + path, color="blue")
             return
-        #@nonl
         #@-node:ekr.20031218072017.3482:<< return if @silent or unknown language >>
         #@nl
         #@    << Read the file into file_buf >>
@@ -918,7 +883,6 @@ class baseTangleCommands:
                 p.moveToNodeAfterTree()
             
             self.ust_warn_about_orphans()
-            #@nonl
             #@-node:ekr.20031218072017.3485:<< Pass 2:  Untangle the outline using the UST and a newly-created TST >>
             #@nl
         self.cleanup()
@@ -974,7 +938,6 @@ class baseTangleCommands:
                             if flag and not p.isAncestorOf(end):
                                 break
                             end.moveToThreadNext()
-                        #@nonl
                         #@-node:ekr.20031218072017.3487:<< set end to the next root in the unit >>
                         #@nl
                         # g.trace("end:",end)
@@ -1000,7 +963,6 @@ class baseTangleCommands:
             elif self.errors > 0:
                 self.warning("----- Untangle command halted because of errors")
         return any_root_flag
-    #@nonl
     #@-node:ekr.20031218072017.3486:untangleTree
     #@-node:ekr.20031218072017.3467:top level
     #@+node:ekr.20031218072017.3488:tangle
@@ -1052,7 +1014,6 @@ class baseTangleCommands:
         else: assert(False)
     
         return i, done
-    #@nonl
     #@-node:ekr.20031218072017.3490:handle_newline
     #@+node:ekr.20031218072017.3491:skip_body
     # This method handles all the body text.
@@ -1081,7 +1042,6 @@ class baseTangleCommands:
                         if changed: anyChanged = True
                     code_seen = True
                     code = doc = None
-                #@nonl
                 #@-node:ekr.20031218072017.3494:<< Define a section for a leading code part >>
                 #@nl
     
@@ -1110,7 +1070,6 @@ class baseTangleCommands:
                             part,not_root_name,True) # set update flag
                 
                 doc = None
-                #@nonl
                 #@-node:ekr.20031218072017.3493:<< Define a section containing only an @doc part >>
                 #@nl
     
@@ -1144,7 +1103,6 @@ class baseTangleCommands:
                     if changed: anyChanged = True
                     
                 code = doc = None
-                #@nonl
                 #@-node:ekr.20031218072017.3495:<< Scan and define a section definition >>
                 #@nl
             elif kind == at_code:
@@ -1171,7 +1129,6 @@ class baseTangleCommands:
                 
                 code_seen = True
                 code = doc = None
-                #@nonl
                 #@-node:ekr.20031218072017.3496:<< Scan and define an @code defininition >>
                 #@nl
             elif kind == at_root:
@@ -1198,7 +1155,6 @@ class baseTangleCommands:
                     if changed: anyChanged = True
                     
                 code = doc = None
-                #@nonl
                 #@-node:ekr.20031218072017.3497:<< Scan and define a root section >>
                 #@nl
             elif kind == at_doc:
@@ -1216,7 +1172,6 @@ class baseTangleCommands:
         # 3/4/02: Only call p.trimTrailingLines if we have changed its body.
         if anyChanged:
             p.trimTrailingLines()
-    #@nonl
     #@+node:ekr.20031218072017.3492:The interface between tangle and untangle
     #@+at 
     #@nonl
@@ -1286,11 +1241,9 @@ class baseTangleCommands:
                         name = s[i:end]
                         self.st_enter_section_name(name,None,None,unused_parts_flag)
                         i = end
-                    #@nonl
                     #@-node:ekr.20031218072017.3500:<< handle possible noweb section reference >>
                     #@nl
                 else: i += 1
-            #@nonl
             #@-node:ekr.20031218072017.3499:<< skip a noweb code section >>
             #@nl
         else:
@@ -1314,17 +1267,14 @@ class baseTangleCommands:
                         name = s[i:j]
                         self.st_enter_section_name(name,None,None,unused_parts_flag)
                         i = j
-                    #@nonl
                     #@-node:ekr.20031218072017.3502:<< handle CWEB control code >>
                     #@nl
                 else: i += 1
-            #@nonl
             #@-node:ekr.20031218072017.3501:<< skip a CWEB code section >>
             #@nl
         code = s[code1:i]
         # g.trace("returns:",code)
         return i,code
-    #@nonl
     #@-node:ekr.20031218072017.3498:skip_code
     #@+node:ekr.20031218072017.3503:skip_doc
     def skip_doc(self,s,i):
@@ -1354,7 +1304,6 @@ class baseTangleCommands:
         doc = s[doc1:i]
         # g.trace(doc)
         return i, doc
-    #@nonl
     #@-node:ekr.20031218072017.3503:skip_doc
     #@+node:ekr.20031218072017.3504:skip_headline
     #@+at 
@@ -1378,7 +1327,6 @@ class baseTangleCommands:
             self.header_name = None
         else:
             self.header_name = s[j:end]
-    #@nonl
     #@-node:ekr.20031218072017.3504:skip_headline
     #@-node:ekr.20031218072017.3489:Pass 1
     #@+node:ekr.20031218072017.3505:Pass 2
@@ -1408,7 +1356,6 @@ class baseTangleCommands:
     def otabs (self,n):
         if abs(n) > 0:
             self.output_file.write('\t' * abs(n))
-    #@nonl
     #@-node:ekr.20031218072017.1488:oblank, oblanks, os, otab, otabs (Tangle)
     #@+node:ekr.20031218072017.1151:tangle.put_all_roots
     #@+at 
@@ -1453,7 +1400,6 @@ class baseTangleCommands:
             self.tab_width = section.root_attributes.tab_width
             # Stephen P. Schaefer, 9/13/2002
             self.first_lines = section.root_attributes.first_lines
-            #@nonl
             #@-node:ekr.20031218072017.1152:<<Get root specific attributes>>
             #@nl
             #@        <<Put @first lines>>
@@ -1461,7 +1407,6 @@ class baseTangleCommands:
             # Stephen P. Schaefer 9/13/2002
             if self.first_lines:
                 self.os(self.first_lines)
-            #@nonl
             #@-node:ekr.20031218072017.1153:<<Put @first lines>>
             #@nl
             if self.use_header_flag and self.print_mode == "verbose":
@@ -1498,7 +1443,6 @@ class baseTangleCommands:
                 except: pass
                 #@-node:ekr.20031218072017.1155:<< Erase the temporary file >>
                 #@nl
-    #@nonl
     #@-node:ekr.20031218072017.1151:tangle.put_all_roots
     #@+node:ekr.20031218072017.3506:put_code
     #@+at 
@@ -1544,7 +1488,6 @@ class baseTangleCommands:
                     name = s[i:name_end]
                     self.put_section(s,i,name,name_end)
                     i = j
-                #@nonl
                 #@-node:ekr.20031218072017.3507:<<put possible section reference >>
                 #@nl
             elif ch == '@': # We are in the middle of a line.
@@ -1562,7 +1505,6 @@ class baseTangleCommands:
                             self.os("/*@" + s[i] + "*/") ; i += 1
                         else:
                             self.os("@") # The at sign is not part of a control code.
-                    #@nonl
                     #@-node:ekr.20031218072017.3508:<< handle 2-character CWEB control codes >>
                     #@nl
                 else:
@@ -1584,7 +1526,6 @@ class baseTangleCommands:
                         self.os("/*@*/>>") ; i += 3
                         
                     else: self.os("@") ; i += 1
-                    #@nonl
                     #@-node:ekr.20031218072017.3509:<< handle noweb @ < < convention >>
                     #@nl
             elif ch == g.body_ignored_newline:
@@ -1596,7 +1537,6 @@ class baseTangleCommands:
                     self.os('@') ; i += 2
             else: self.os(s[i]) ; i += 1
             assert(progress < i)
-    #@nonl
     #@-node:ekr.20031218072017.3506:put_code
     #@+node:ekr.20031218072017.3510:put_doc
     # This method outputs a doc section within a block comment.
@@ -1693,7 +1633,6 @@ class baseTangleCommands:
                     while j < len(s) and not g.is_ws_or_nl(s,j):
                         word_width += 1
                         j += 1
-                    #@nonl
                     #@-node:ekr.20031218072017.3513:<<compute the width of the next word>>
                     #@nl
                     if words == 0 or line_width + word_width < width:
@@ -1703,7 +1642,6 @@ class baseTangleCommands:
                         while i < len(s) and not g.is_ws_or_nl(s,i):
                             self.os(s[i])
                             i += 1
-                        #@nonl
                         #@-node:ekr.20031218072017.3514:<<output next word>>
                         #@nl
                         line_width += word_width
@@ -1729,7 +1667,6 @@ class baseTangleCommands:
                     self.os(self.end_comment_string)
                 self.onl()
             else: self.onl()
-    #@nonl
     #@-node:ekr.20031218072017.3510:put_doc
     #@+node:ekr.20031218072017.3515:put_leading_ws
     # Puts tabs and spaces corresponding to n spaces, assuming that we are at the start of a line.
@@ -1769,7 +1706,6 @@ class baseTangleCommands:
             # Always output the leading whitespace of _this_ line.
             k, width = g.skip_leading_ws_with_indent(s,j,self.tab_width)
             self.put_leading_ws(width)
-        #@nonl
         #@-node:ekr.20031218072017.3517:<< Output leading white space except for blank lines >>
         #@nl
         if i >= len(s):
@@ -1783,7 +1719,6 @@ class baseTangleCommands:
             # These should have set limit in pass 1.
             assert(kind != section_def and kind != at_chapter and kind != at_section)
         return i
-    #@nonl
     #@-node:ekr.20031218072017.3516:put_newline
     #@+node:ekr.20031218072017.3518:put_part_node
     # This method outputs one part of a section definition.
@@ -1800,7 +1735,6 @@ class baseTangleCommands:
     
         if part.code:
             self.put_code(part.code,no_first_lws_flag)
-    #@nonl
     #@-node:ekr.20031218072017.3518:put_part_node
     #@+node:ekr.20031218072017.3519:put_section
     #@+at 
@@ -1848,7 +1782,6 @@ class baseTangleCommands:
                 ((self.use_noweb_flag and s[j] != '<') or
                 (self.use_cweb_flag and s[j] != '@'))):
             self.tangle_indent += abs(self.tab_width)
-        #@nonl
         #@-node:ekr.20031218072017.3520:<< Calculate the new value of tangle_indent >>
         #@nl
         #@    << Set 'newline_flag' if the line ends with the reference >>
@@ -1857,7 +1790,6 @@ class baseTangleCommands:
             i = name_end
             i = g.skip_ws(s,i)
             newline_flag = (i >= len(s) or g.is_nl(s,i))
-        #@nonl
         #@-node:ekr.20031218072017.3521:<< Set 'newline_flag' if the line ends with the reference >>
         #@nl
         section = self.st_lookup(name,not_root_name)
@@ -1902,7 +1834,6 @@ class baseTangleCommands:
                             if sections > 1:
                                 self.oblank()
                                 self.os("(%d of %d)" % (count,sections))
-                            #@nonl
                             #@-node:ekr.20031218072017.3524:<< put ( n of m ) >>
                             #@nl
                         else:
@@ -1915,13 +1846,11 @@ class baseTangleCommands:
                             if sections > 1:
                                 self.oblank()
                                 self.os("(%d of %d)" % (count,sections))
-                            #@nonl
                             #@-node:ekr.20031218072017.3524:<< put ( n of m ) >>
                             #@nl
                             self.oblank() ; self.os(self.end_comment_string)
                         
                         self.onl() # Always output a newline.
-                        #@nonl
                         #@-node:ekr.20031218072017.3523:<< Put the section name in a comment >>
                         #@nl
                     self.put_part_node(part,no_first_leading_ws_flag)
@@ -1969,12 +1898,10 @@ class baseTangleCommands:
                                 self.os(s[name_end])
                                 name_end += 1
                             self.onl() # We must supply the newline!
-                        #@nonl
                         #@-node:ekr.20031218072017.3525:<< Put the ending comment >>
                         #@nl
                     # Restore the old indent.
                     self.tangle_indent = inner_old_indent
-                #@nonl
                 #@-node:ekr.20031218072017.3522:<<put all parts of the section definition>>
                 #@nl
                 self.section_stack.pop()
@@ -1993,14 +1920,12 @@ class baseTangleCommands:
                     self.oblank() ; self.os(self.end_comment_string) ; self.onl()
             
             self.error("Undefined section: " + name)
-            #@nonl
             #@-node:ekr.20031218072017.3526:<<Put a comment about the undefined section>>
             #@nl
         if not newline_flag:
             self.put_leading_ws(trailing_ws_indent)
         self.tangle_indent = outer_old_indent
         return i, name_end
-    #@nonl
     #@-node:ekr.20031218072017.3519:put_section
     #@+node:ekr.20031218072017.3527:section_check
     #@+at 
@@ -2024,7 +1949,6 @@ class baseTangleCommands:
             self.error(s)
             return False
         return True
-    #@nonl
     #@-node:ekr.20031218072017.3527:section_check
     #@-node:ekr.20031218072017.3505:Pass 2
     #@-node:ekr.20031218072017.3488:tangle
@@ -2045,7 +1969,6 @@ class baseTangleCommands:
                     section.name +
                     g.choose(self.use_noweb_flag," >>"," @>") +
                     " has been defined but not used.")
-    #@nonl
     #@-node:ekr.20031218072017.3529:st_check
     #@+node:ekr.20031218072017.3530:st_dump
     # Dumps the given symbol table in a readable format.
@@ -2063,7 +1986,6 @@ class baseTangleCommands:
                 theType = g.choose(len(section.parts)>0,"  ","un")
                 s += ("\n" + theType + "defined:[" + section.name + "]")
         return s
-    #@nonl
     #@-node:ekr.20031218072017.3530:st_dump
     #@+node:ekr.20031218072017.3531:st_dump_node
     # Dumps each part of a section's definition.
@@ -2084,7 +2006,6 @@ class baseTangleCommands:
                 s += "\ncode: [" + repr(part.code) + "]"
             s += "\n----- end of partList\n"
         return s
-    #@nonl
     #@-node:ekr.20031218072017.3531:st_dump_node
     #@+node:ekr.20031218072017.3532:st_enter
     def st_enter(self,name,code,doc,multiple_parts_flag,is_root_flag):
@@ -2115,7 +2036,6 @@ class baseTangleCommands:
                 if self.tangling and code and code == part.code:
                     g.es("Warning: possible duplicate definition of: <<" +
                         section.name + ">>")
-            #@nonl
             #@-node:ekr.20031218072017.3533:<<check for duplicate code definitions >>
             #@nl
         if code or doc:
@@ -2131,7 +2051,6 @@ class baseTangleCommands:
             # Stephen Schaefer, 9/2/02
             # remember the language and comment characteristics
             section.root_attributes = root_attributes(self)
-            #@nonl
             #@-node:ekr.20031218072017.3534:<<remember root node attributes>>
             #@nl
         # Stephen Schaefer, 9/2/02
@@ -2145,7 +2064,6 @@ class baseTangleCommands:
         # assert(code)
         if name: # User errors can result in an empty @root name.
             self.st_enter(name,code,doc,disallow_multiple_parts,is_root_name)
-    #@nonl
     #@-node:ekr.20031218072017.3535:st_enter_root_name
     #@+node:ekr.20031218072017.3536:st_enter_section_name
     def st_enter_section_name(self,name,code,doc,multiple_parts_flag):
@@ -2155,7 +2073,6 @@ class baseTangleCommands:
         The code and doc pointers are None for references."""
         
         return self.st_enter(name,code,doc,multiple_parts_flag,not_root_name)
-    #@nonl
     #@-node:ekr.20031218072017.3536:st_enter_section_name
     #@+node:ekr.20031218072017.3537:st_lookup
     def st_lookup(self,name,is_root_flag):
@@ -2176,7 +2093,6 @@ class baseTangleCommands:
             section = tst_node(key,is_root_flag)
             self.tst [key] = section
             return section
-    #@nonl
     #@-node:ekr.20031218072017.3537:st_lookup
     #@-node:ekr.20031218072017.3528:tst
     #@+node:ekr.20031218072017.3538:ust
@@ -2195,7 +2111,6 @@ class baseTangleCommands:
                 s += repr(g.get_line(part.code,0))
         s += "\n--------------------"
         return s
-    #@nonl
     #@-node:ekr.20031218072017.3539:ust_dump
     #@+node:ekr.20031218072017.3540:ust_enter
     #@+at 
@@ -2231,7 +2146,6 @@ class baseTangleCommands:
         section = self.ust[name]
         section.parts[part]=u # Parts may be defined in any order.
         # g.trace("section [%s](part %d of %d)...%s" % (name,part,of,g.get_line(code,0)))
-    #@nonl
     #@-node:ekr.20031218072017.3540:ust_enter
     #@+node:ekr.20031218072017.3542:ust_lookup
     # Searches the given table for a part matching the name and part number.
@@ -2254,7 +2168,6 @@ class baseTangleCommands:
     
         # g.trace("not found: %s(%d)...\n" % (name,part_number))
         return None, False
-    #@nonl
     #@-node:ekr.20031218072017.3542:ust_lookup
     #@+node:ekr.20031218072017.3543:ust_warn_about_orphans
     def ust_warn_about_orphans (self):
@@ -2431,7 +2344,6 @@ class baseTangleCommands:
         if self.comment_end: tot_len += len(self.comment_end)
         
         CWEB_flag = (self.language == "c" and not self.use_noweb_flag)
-        #@nonl
         #@-node:ekr.20031218072017.3549:<< Define forgiving_compare vars >>
         #@nl
         p1 = g.skip_ws_and_nl(s1,0) 
@@ -2495,7 +2407,6 @@ class baseTangleCommands:
                 #@+node:ekr.20031218072017.3551:<< Compare non-critical whitespace >>
                 p1 = g.skip_ws(s1,p1)
                 p2 = g.skip_ws(s2,p2)
-                #@nonl
                 #@-node:ekr.20031218072017.3551:<< Compare non-critical whitespace >>
                 #@nl
             elif ch1 == '\'' or ch1 == '"':
@@ -2551,10 +2462,8 @@ class baseTangleCommands:
                     result = s1[p1] == s2[p2]
                     p1 += 1 ; p2 += 1
                     if not result: self.mismatch("Mismatched single characters")
-                    #@nonl
                     #@-node:ekr.20031218072017.3553:<< Compare single characters >>
                     #@nl
-                #@nonl
                 #@-node:ekr.20031218072017.3555:<< Compare possible strings >>
                 #@nl
             elif ch1 == '#':
@@ -2579,7 +2488,6 @@ class baseTangleCommands:
                             p1 += 1 ; p2 += 1
                     if not result:
                         self.mismatch("Mismatched preprocessor directives")
-                    #@nonl
                     #@-node:ekr.20031218072017.3554:<< Compare preprocessor directives >>
                     #@nl
                 else:
@@ -2589,7 +2497,6 @@ class baseTangleCommands:
                     result = s1[p1] == s2[p2]
                     p1 += 1 ; p2 += 1
                     if not result: self.mismatch("Mismatched single characters")
-                    #@nonl
                     #@-node:ekr.20031218072017.3553:<< Compare single characters >>
                     #@nl
                 #@-node:ekr.20031218072017.3552:<< Compare possible preprocessor directives >>
@@ -2619,7 +2526,6 @@ class baseTangleCommands:
                     p1 += 1 ; p2 += 1
                     if not result:
                         self.mismatch("Mismatch at '@' or '<'")
-                #@nonl
                 #@-node:ekr.20031218072017.3558:<< Compare possible section references >>
                 #@nl
             else:
@@ -2686,10 +2592,8 @@ class baseTangleCommands:
                     result = s1[p1] == s2[p2]
                     p1 += 1 ; p2 += 1
                     if not result: self.mismatch("Mismatched single characters")
-                    #@nonl
                     #@-node:ekr.20031218072017.3553:<< Compare single characters >>
                     #@nl
-                #@nonl
                 #@-node:ekr.20031218072017.3559:<< Compare comments or single characters >>
                 #@nl
         #@    << Make sure both parts have ended >>
@@ -2703,7 +2607,6 @@ class baseTangleCommands:
                 p1 = len(s1)
                 p2 = len(s2)
                 self.mismatch("One part ends before the other.")
-        #@nonl
         #@-node:ekr.20031218072017.3560:<< Make sure both parts have ended >>
         #@nl
         if not result:
@@ -2714,17 +2617,14 @@ class baseTangleCommands:
                     "\nPart ",part," section ",name,
                     "\n1:",g.get_line(s1,p1),
                     "\n2:",g.get_line(s2,p2))
-            #@nonl
             #@-node:ekr.20031218072017.3561:<< Trace the mismatch >>
             #@nl
         return result
-    #@nonl
     #@-node:ekr.20031218072017.3548:forgiving_compare
     #@+node:ekr.20031218072017.3562:mismatch
     def mismatch (self,message):
     
         self.message = message
-    #@nonl
     #@-node:ekr.20031218072017.3562:mismatch
     #@+node:ekr.20031218072017.3563:scan_derived_file (pass 1)
     #@+at 
@@ -2804,7 +2704,6 @@ class baseTangleCommands:
             if g.match(s,i,line):
                 # Even a block comment will end on the first line.
                 i = g.skip_to_end_of_line(s,i)
-        #@nonl
         #@-node:ekr.20031218072017.3564:<< Skip the header line output by tangle >>
         #@nl
         # The top level of the stack represents the root.
@@ -2821,7 +2720,6 @@ class baseTangleCommands:
                 # Set line_indent, used only if we see a section reference.
                 junk, line_indent = g.skip_leading_ws_with_indent(s,i,c.tab_width)
                 i = g.skip_leading_ws(s,i,indent,c.tab_width) # skip indent leading white space.
-                #@nonl
                 #@-node:ekr.20031218072017.3565:<< handle the start of a new line >>
                 #@nl
             elif g.match(s,i,self.sentinel) and self.is_sentinel_line(s,i):
@@ -2867,7 +2765,6 @@ class baseTangleCommands:
                                 self.ust_enter(name,dn.part,dn.of,dn.code,dn.nl_flag,False) # not root
                     elif kind == end_sentinel_line:
                         self.error("Missing sentinel line for: " + name)
-                #@nonl
                 #@-node:ekr.20031218072017.3567:<< terminate the previous part of this section if it exists >>
                 #@nl
                 
@@ -2905,7 +2802,6 @@ class baseTangleCommands:
                     # Restore the old indentation level.
                     if len(self.def_stack) > 0:
                         indent = self.def_stack[-1].indent
-                #@nonl
                 #@-node:ekr.20031218072017.3566:<< handle a sentinel line >>
                 #@nl
             elif g.match(s,i,self.line_comment) or g.match(s,i,self.verbatim):
@@ -2927,7 +2823,6 @@ class baseTangleCommands:
                 if g.match(s,i,self.comment_end):
                     i += len(self.comment_end)
                 self.copy(s[j:i])
-                #@nonl
                 #@-node:ekr.20031218072017.3570:<< copy a multi-line comment >>
                 #@nl
             elif g.match(s,i,self.comment2):
@@ -2942,7 +2837,6 @@ class baseTangleCommands:
                 if g.match(s,i,self.comment2_end):
                     i += len(self.comment2)
                 self.copy(s[j:i])
-                #@nonl
                 #@-node:ekr.20031218072017.3571:<< copy an alternate multi-line comment >>
                 #@nl
             elif g.match(s,i,self.string1) or g.match(s,i,self.string2):
@@ -2954,7 +2848,6 @@ class baseTangleCommands:
                 else:
                     i = g.skip_string(s,i)
                 self.copy(s[j:i])
-                #@nonl
                 #@-node:ekr.20031218072017.3569:<< copy a string >>
                 #@nl
             else:
@@ -2975,10 +2868,8 @@ class baseTangleCommands:
                 self.error("Missing root part")
         else:
             self.error("Missing root section")
-        #@nonl
         #@-node:ekr.20031218072017.3572:<< end all open sections >>
         #@nl
-    #@nonl
     #@-node:ekr.20031218072017.3563:scan_derived_file (pass 1)
     #@+node:ekr.20031218072017.3573:update_def (pass 2)
     #@+at 
@@ -3042,7 +2933,6 @@ class baseTangleCommands:
                 j = g.skip_ws(ucode,i)
         # Only the value of ucode matters here.
         if ucode: ucode = ucode[i:]
-        #@nonl
         #@-node:ekr.20031218072017.3574:<< Remove leading blank lines and comments from ucode >>
         #@nl
         # g.trace(ucode)
@@ -3080,7 +2970,6 @@ class baseTangleCommands:
             p.setMarked()
         finally:
             c.endUpdate()
-    #@nonl
     #@-node:ekr.20031218072017.3575:update_current_vnode
     #@-node:ekr.20031218072017.3544:untangle
     #@+node:ekr.20031218072017.3576:utility methods
@@ -3112,7 +3001,6 @@ class baseTangleCommands:
             return False
         else: # A root name.
             return s1 == s2
-    #@nonl
     #@-node:ekr.20031218072017.3577:compare_section_names
     #@+node:ekr.20031218072017.3578:copy
     def copy (self, s):
@@ -3120,7 +3008,6 @@ class baseTangleCommands:
         assert(len(self.def_stack) > 0)
         dn = self.def_stack[-1] # Add the code at the top of the stack.
         dn.code += s
-    #@nonl
     #@-node:ekr.20031218072017.3578:copy
     #@+node:ekr.20031218072017.3579:error, pathError, warning
     def error (self,s):
@@ -3141,13 +3028,11 @@ class baseTangleCommands:
     def is_end_of_directive (self,s,i):
     
         return g.is_nl(s,i) and not self.is_escaped(s,i)
-    #@nonl
     #@-node:ekr.20031218072017.3580:is_end_of_directive
     #@+node:ekr.20031218072017.3581:is_end_of_string
     def is_end_of_string (self,s,i,delim):
     
         return i < len(s) and s[i] == delim and not self.is_escaped(s,i)
-    #@nonl
     #@-node:ekr.20031218072017.3581:is_end_of_string
     #@+node:ekr.20031218072017.3582:is_escaped
     # This function returns True if the s[i] is preceded by an odd number of back slashes.
@@ -3173,7 +3058,6 @@ class baseTangleCommands:
     
         # g.trace(kind,g.get_line(s,end))
         return i, kind, end
-    #@nonl
     #@-node:ekr.20031218072017.3583:is_section_name
     #@+node:ekr.20031218072017.3584:is_sentinel_line & is_sentinel_line_with_data
     #@+at 
@@ -3236,7 +3120,6 @@ class baseTangleCommands:
             i += len(start_sentinel)
         else:
             return false_data
-        #@nonl
         #@-node:ekr.20031218072017.3586:<< Make sure the line starts with start_sentinel >>
         #@nl
         #@    << Set end_flag if we have -- end -- >>
@@ -3257,7 +3140,6 @@ class baseTangleCommands:
             while i < len(s) and s[i] == '-':
                 i += 1
             end_flag = True
-        #@nonl
         #@-node:ekr.20031218072017.3587:<< Set end_flag if we have -- end -- >>
         #@nl
         #@    << Make sure we have a section reference >>
@@ -3273,7 +3155,6 @@ class baseTangleCommands:
             name = s[j:i]
         else:
             return false_data
-        #@nonl
         #@-node:ekr.20031218072017.3588:<< Make sure we have a section reference >>
         #@nl
         #@    << Set part and of if they exist >>
@@ -3300,7 +3181,6 @@ class baseTangleCommands:
                     i += 1 # Skip the paren and do _not_ return.
                 else:
                     return false_data
-        #@nonl
         #@-node:ekr.20031218072017.3589:<< Set part and of if they exist >>
         #@nl
         #@    << Set nl_flag to False if !newline exists >>
@@ -3326,12 +3206,10 @@ class baseTangleCommands:
         i = g.skip_ws(s,i)
         if i < len(s) and not g.is_nl(s,i):
             return false_data
-        #@nonl
         #@-node:ekr.20031218072017.3591:<< Make sure the line ends with end_sentinel >>
         #@nl
         kind = g.choose(end_flag,end_sentinel_line,start_sentinel_line)
         return True,i,kind,name,part,of,end,nl_flag
-    #@nonl
     #@-node:ekr.20031218072017.3584:is_sentinel_line & is_sentinel_line_with_data
     #@+node:ekr.20031218072017.3592:push_new_def_node
     # This function pushes a new def_node on the top of the section stack.
@@ -3341,7 +3219,6 @@ class baseTangleCommands:
         # g.trace(name,part)
         node = def_node(name,indent,part,of,nl_flag,None)
         self.def_stack.append(node)
-    #@nonl
     #@-node:ekr.20031218072017.3592:push_new_def_node
     #@+node:ekr.20031218072017.3593:scan_short_val
     # This function scans a positive integer.
@@ -3359,7 +3236,6 @@ class baseTangleCommands:
         val = int(s[j:i])
         # g.trace(s[j:i],val)
         return i, val
-    #@nonl
     #@-node:ekr.20031218072017.3593:scan_short_val
     #@+node:ekr.20031218072017.3594:setRootFromHeadline
     def setRootFromHeadline (self,p):
@@ -3373,7 +3249,6 @@ class baseTangleCommands:
             if i < len(s): # Non-empty file name.
                 # self.root_name must be set later by token_type().
                 self.root = s[i:]
-    #@nonl
     #@-node:ekr.20031218072017.3594:setRootFromHeadline
     #@+node:ekr.20031218072017.1259:setRootFromText
     #@+at 
@@ -3412,7 +3287,6 @@ class baseTangleCommands:
         else:
             self.root_name = string.strip(s[root1:root2])
         return i
-    #@nonl
     #@-node:ekr.20031218072017.1259:setRootFromText
     #@+node:ekr.20031218072017.3595:skip_CWEB_section_name
     #@+at 
@@ -3457,7 +3331,6 @@ class baseTangleCommands:
             return i, bad_section_name, -1
         else:
             return i, kind, end
-    #@nonl
     #@-node:ekr.20031218072017.3595:skip_CWEB_section_name
     #@+node:ekr.20031218072017.3596:skip_noweb_section_name
     #@+at 
@@ -3507,7 +3380,6 @@ class baseTangleCommands:
         if kind == bad_section_name:
             i = j
         return i, kind, end
-    #@nonl
     #@-node:ekr.20031218072017.3596:skip_noweb_section_name
     #@+node:ekr.20031218072017.3597:skip_section_name
     # Returns a tuple (i, kind, end)
@@ -3518,7 +3390,6 @@ class baseTangleCommands:
             return self.skip_noweb_section_name(s,i)
         else:
             return self.skip_cweb_section_name(s,i)
-    #@nonl
     #@-node:ekr.20031218072017.3597:skip_section_name
     #@+node:ekr.20031218072017.3598:standardize_name
     def standardize_name (self,name):
@@ -3541,7 +3412,6 @@ class baseTangleCommands:
         name = string.strip(name[j:i])
         # g.trace(name)
         return name
-    #@nonl
     #@-node:ekr.20031218072017.3598:standardize_name
     #@+node:ekr.20031218072017.1360:tangle.scanAllDirectives
     #@+at 
@@ -3591,7 +3461,6 @@ class baseTangleCommands:
                     i = g.skip_nl(s,i)
                 if i >= sizeString:  # DTHEIN 13-OCT-2002: get out when end of string reached
                     break
-            
             #@-node:ekr.20031218072017.1361:<< Collect @first attributes >>
             #@nl
         for p in p.self_and_parents_iter():
@@ -3694,7 +3563,6 @@ class baseTangleCommands:
                     theDir = g.os_path_join(g.app.loadDir,theDir)
                 
                 # g.trace("theDir: " + theDir)
-                #@nonl
                 #@-node:ekr.20031218072017.1367:<< compute dir and relative_path from s[k:] >>
                 #@nl
                 if len(theDir) > 0:
@@ -3716,7 +3584,6 @@ class baseTangleCommands:
                                             g.es("relative_path_base_directory: " + base)
                                         if relative_path and len(relative_path) > 0:
                                             g.es("relative path in @path directive: " + relative_path)
-                            #@nonl
                             #@-node:ekr.20031218072017.1368:<< handle absolute @path >>
                             #@nl
                         elif issue_error_flag and not self.path_warning_given:
@@ -3734,7 +3601,6 @@ class baseTangleCommands:
                 w = g.scanAtPagewidthDirective(s,theDict,issue_error_flag)
                 if w and w > 0:
                     self.page_width = w
-            #@nonl
             #@-node:ekr.20031218072017.1369:<< Test for @pagewidth >>
             #@nl
             #@        << Test for @root >>
@@ -3752,7 +3618,6 @@ class baseTangleCommands:
                 i = theDict["root"]
                 # i += len("@root")
                 self.setRootFromText(s[i:],issue_error_flag)
-            #@nonl
             #@-node:ekr.20031218072017.1370:<< Test for @root >>
             #@nl
             #@        << Test for @tabwidth >>
@@ -3839,7 +3704,6 @@ class baseTangleCommands:
             self.pathError("No absolute directory specified by @root, @path or Preferences.")
         #@-node:ekr.20031218072017.1373:<< Set self.tangle_directory >>
         #@nl
-    #@nonl
     #@-node:ekr.20031218072017.1360:tangle.scanAllDirectives
     #@+node:ekr.20031218072017.3599:token_type
     def token_type(self,s,i,err_flag):
@@ -3869,7 +3733,6 @@ class baseTangleCommands:
             elif g.match(s,i,"@@"): kind = at_at
             elif i < len(s) and s[i] == '@': kind = at_other
             else: kind = plain_line
-            #@nonl
             #@-node:ekr.20031218072017.3600:<< set token_type in noweb mode >>
             #@nl
         else:
@@ -3886,7 +3749,6 @@ class baseTangleCommands:
                     kind = at_web
                 else: kind = at_other # Set kind later
             else: kind = plain_line
-            #@nonl
             #@-node:ekr.20031218072017.3601:<< set token_type for CWEB mode >>
             #@nl
         if kind == at_other :
@@ -3913,7 +3775,6 @@ class baseTangleCommands:
             
             if kind == at_root:
                 i = self.setRootFromText(s[i:],err_flag)
-            #@nonl
             #@-node:ekr.20031218072017.3602:<< set kind for directive >>
             #@nl
         # g.trace(kind,g.get_line(s,i))
@@ -3925,9 +3786,7 @@ class baseTangleCommands:
 class tangleCommands (baseTangleCommands):
     """A class that implements Leo' tangle and untangle commands."""
     pass
-#@nonl
 #@-node:ekr.20031218072017.3465:class tangleCommands methods
 #@-others
-#@nonl
 #@-node:ekr.20031218072017.3446:@thin leoTangle.py
 #@-leo

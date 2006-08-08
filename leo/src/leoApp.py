@@ -185,10 +185,8 @@ class LeoApp:
             "txt"   : "plain",
             "tcl"   : "tcltk",
             "w"     : "cweb" }
-        #@nonl
         #@-node:ekr.20031218072017.368:<< define global data structures >> app
         #@nl
-    #@nonl
     #@-node:ekr.20031218072017.1416:app.__init__
     #@+node:ekr.20031218072017.2609:app.closeLeoWindow
     def closeLeoWindow (self,frame):
@@ -229,7 +227,6 @@ class LeoApp:
             g.app.finishQuit()
     
         return True # The window has been closed.
-    #@nonl
     #@-node:ekr.20031218072017.2609:app.closeLeoWindow
     #@+node:ekr.20031218072017.2610:app.createTkGui
     def createTkGui (self,fileName=None):
@@ -251,9 +248,6 @@ class LeoApp:
         if 0:
             if fileName:
                 print "Tk gui created in", g.shortFileName(fileName)
-    
-    
-    
     #@-node:ekr.20031218072017.2610:app.createTkGui
     #@+node:ekr.20031218072017.2612:app.destroyAllOpenWithFiles
     def destroyAllOpenWithFiles (self):
@@ -269,7 +263,6 @@ class LeoApp:
             
         # Delete the list so the gc can recycle Leo windows!
         g.app.openWithFiles = []
-    #@nonl
     #@-node:ekr.20031218072017.2612:app.destroyAllOpenWithFiles
     #@+node:ekr.20031218072017.2613:app.destroyOpenWithFilesForFrame
     def destroyOpenWithFilesForFrame (self,frame):
@@ -297,7 +290,6 @@ class LeoApp:
                 
         # Remove theDict from the list so the gc can recycle the Leo window!
         g.app.openWithFiles.remove(theDict)
-    #@nonl
     #@-node:ekr.20031218072017.2614:app.destroyOpenWithFileWithDict
     #@+node:ekr.20031218072017.2615:app.destroyWindow
     def destroyWindow (self,frame):
@@ -313,7 +305,6 @@ class LeoApp:
         # force the window to go away now.
         # Important: this also destroys all the objects of the commander.
         frame.destroySelf()
-    #@nonl
     #@-node:ekr.20031218072017.2615:app.destroyWindow
     #@+node:ekr.20031218072017.1732:app.finishQuit
     def finishQuit(self):
@@ -340,7 +331,6 @@ class LeoApp:
             if g.app.gui and g.app.gui.guiName() == "tkinter":
                 self.root.after_cancel(g.app.afterHandler)
             g.app.afterHandler = None
-    #@nonl
     #@-node:ekr.20031218072017.1732:app.finishQuit
     #@+node:ekr.20031218072017.2616:app.forceShutdown
     def forceShutdown (self):
@@ -359,7 +349,6 @@ class LeoApp:
             self.destroyWindow(w)
     
         self.finishQuit()
-    #@nonl
     #@-node:ekr.20031218072017.2616:app.forceShutdown
     #@+node:ekr.20031218072017.2617:app.onQuit
     def onQuit (self,event=None):
@@ -375,7 +364,6 @@ class LeoApp:
     
         if g.app.windowList:
             g.app.quitting = False # If we get here the quit has been disabled.
-    #@nonl
     #@-node:ekr.20031218072017.2617:app.onQuit
     #@+node:ekr.20031218072017.2618:app.setEncoding
     #@+at 
@@ -410,7 +398,6 @@ class LeoApp:
             elif encoding:
                 color = g.choose(self.tkEncoding=="ascii","red","blue")
                 g.trace("ignoring invalid %s encoding: %s" % (src,encoding),color=color)
-    #@nonl
     #@-node:ekr.20031218072017.2618:app.setEncoding
     #@+node:ekr.20031218072017.1978:app.setLeoID
     def setLeoID (self,verbose=True):
@@ -436,7 +423,6 @@ class LeoApp:
             return
         else:
             g.app.leoID = None
-        #@nonl
         #@-node:ekr.20031218072017.1979:<< return if we can set leoID from sys.leoID>>
         #@nl
         #@    << return if we can set leoID from "leoID.txt" >>
@@ -463,7 +449,6 @@ class LeoApp:
                     g.app.leoID = None
                     g.es_print('Unexpected exception in app.setLeoID',color='red')
                     g.es_exception()
-        #@nonl
         #@-node:ekr.20031218072017.1980:<< return if we can set leoID from "leoID.txt" >>
         #@nl
         #@    << return if we can set leoID from os.getenv('USER') >>
@@ -477,7 +462,6 @@ class LeoApp:
                 
         except Exception:
             pass
-        #@nonl
         #@-node:ekr.20060211140947.1:<< return if we can set leoID from os.getenv('USER') >>
         #@nl
         #@    << put up a dialog requiring a valid id >>
@@ -492,7 +476,6 @@ class LeoApp:
         
         # g.trace(g.app.leoID)
         g.es_print("leoID = %s" % (repr(g.app.leoID)),color="blue")
-        #@nonl
         #@-node:ekr.20031218072017.1981:<< put up a dialog requiring a valid id >>
         #@nl
         #@    << attempt to create leoID.txt >>
@@ -514,10 +497,8 @@ class LeoApp:
                         g.es(cant,color='red')
                 except IOError:
                     g.es(cant,color='red')
-        #@nonl
         #@-node:ekr.20031218072017.1982:<< attempt to create leoID.txt >>
         #@nl
-    #@nonl
     #@-node:ekr.20031218072017.1978:app.setLeoID
     #@+node:ekr.20031218072017.1847:app.setLog, lockLog, unlocklog
     def setLog (self,log):
@@ -535,7 +516,6 @@ class LeoApp:
     def unlockLog(self):
         """Enable changes to the log"""
         self.logIsLocked = False
-    #@nonl
     #@-node:ekr.20031218072017.1847:app.setLog, lockLog, unlocklog
     #@+node:ekr.20031218072017.2619:app.writeWaitingLog
     def writeWaitingLog (self):
@@ -549,7 +529,6 @@ class LeoApp:
                 self.logWaiting = []
         else:
             print 'writeWaitingLog: still no log!'
-    #@nonl
     #@-node:ekr.20031218072017.2619:app.writeWaitingLog
     #@+node:ekr.20031218072017.2188:app.newLeoCommanderAndFrame
     def newLeoCommanderAndFrame(self,fileName,updateRecentFiles=True):
@@ -573,7 +552,6 @@ class LeoApp:
                 s += str(n)
             title = g.computeWindowTitle(s)
             g.app.numberOfWindows = n+1
-        
         #@-node:ekr.20031218072017.2189:<< compute the window title >>
         #@nl
     
@@ -599,7 +577,6 @@ class LeoApp:
             g.doHook("after-create-leo-frame",c=c)
     
         return c,frame
-    #@nonl
     #@-node:ekr.20031218072017.2188:app.newLeoCommanderAndFrame
     #@-others
 #@-node:ekr.20031218072017.2608:@thin leoApp.py
