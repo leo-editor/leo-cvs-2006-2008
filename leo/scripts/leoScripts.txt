@@ -12486,6 +12486,13 @@ def checkTopologiesOfLinkedNodes(c=c):
     - Topologies include headlines somehow.
 #@-node:checkLinksOfNodesWithSameTopologies (to do)
 #@-node:Scripts for checking clones
+#@+node:@path xyz
+@path c:\xyz
+#@+node:@@file abc
+#@+node:d
+#@-node:d
+#@-node:@@file abc
+#@-node:@path xyz
 #@-node:Tests
 #@+node:Others
 #@+node:AutoIt script from e
@@ -13795,6 +13802,16 @@ c.redraw()
 #@nonl
 #@-node:Find most tags
 #@-node:Scipts related to the new colorizer
+#@+node:Finding @file nodes
+current = c.currentPosition()
+for p in current.self_and_parents_iter():
+    if p.isAnyAtFileNode():
+        d = g.scanDirectives(c,p=p)
+        path = d.get('path')
+        print g.os_path_join(path,p.atFileNodeName())
+        break
+#@nonl
+#@-node:Finding @file nodes
 #@-node:Others
 #@-all
 #@nonl

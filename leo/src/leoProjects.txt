@@ -1164,6 +1164,125 @@ def flashMatchingBracketsHelper (self,w,index,ch):
 #@nonl
 #@-node:ekr.20060627083506:flashMatchingBracketsHelper
 #@-node:ekr.20060702091716:Generalized bracket flasher
+#@+node:ekr.20050419060645:Leo *already* supports Python decorators
+#@+node:ekr.20060808085830:Notes
+@nocolor
+
+For a nice intro to decorators, see: http://www.ddj.com/184406073
+
+Background
+
+Python 2.4 uses the at-sign @ to start decorators; Leo uses @ to denote Leo
+directives. The @ that starts a Python decorator must start in column one (the
+leftmost column); most Leo directives must also start in column one, but leading
+whitespace is significant in the @others and @all directives. Supporting Python
+decorators is a significant change to Leo because it will alter Leo's read/write
+logic for derived files.
+
+Choices
+
+There are two possible approaches to solving this problem:
+
+1.  Treat Leo directives (including directives defined in plugins) as special cases.
+
+Leo would treat @x as a decorator (i.e., plain source code) unless x is a Leo
+directive. Note that plugins can define Leo directives... This way requires no
+change to most Leo files and so is simpler to use. It requires only that
+decorators have names that do not conflict with Leo directives.
+
+2.  Generalize the **leadin string** that introduces Leo directives.
+
+Leo would allow uses to specify alternatives for '@' as follows:
+
+A.  Add a new option in leoSettings.leo: @string leadin-string = @
+
+B. Add a new directive: <default-leadin-string>leadin <string>.
+
+If present, this directive would have to be the very first line of body text. It
+would change the leadin string from the string specified by the leadin-string
+*setting* to the string specified in the @leadin *directive*. As usual, the
+scope of this directive would be the entire subtree of the node containing the
+directive unless overridden in a descendent node.
+
+The second approach is more general, and clearly separates Python decorators
+from Leo directives. But this way disrupts the vast majority of Leo source code
+in order to handle an extremely rare problem, namely of a conflict between a
+Python decorator and a Leo directive. How often do we expect a Python decorator
+to be name @others or @tabwidth or @code?
+
+Conclusion
+
+Unless I hear howls of protest I shall go ahead with the first approach. That
+is, Leo will treat directives as special cases; all other strings that look like
+directives will be output as plain source code.
+#@nonl
+#@-node:ekr.20060808085830:Notes
+#@+node:ekr.20060808085830.1:Already works!
+@nocolor
+
+A big surprise: Leo *already* outputs decorators correctly, assuming the
+decorator does not conflict with a Leo directive.
+
+I had misremembered how the write logic works: it puts a verbatim sentinel only
+if a line starts with the comment delimiter followed by an '@'. Lines that
+merely start with an '@' are output as is unless the @ starts with a Leo
+directive.
+
+I appreciate all the various suggestions, but the most important objectives
+are:
+
+1. having the atFile.read logic recreate the outline properly from derived files.
+
+2. forcing minimal changes to the appearance of Leo source code.
+
+The present scheme meets these two objectives in the simplest possible way, so I
+shall do nothing more unless there is a real need for more, which I do not
+expect. So for now I only need to update Leo's documentation.
+#@nonl
+#@-node:ekr.20060808085830.1:Already works!
+#@+node:ekr.20041005105605.174:putCodeLine
+def putCodeLine (self,s,i):
+    
+    """Put a normal code line."""
+    
+    at = self
+    
+    # Put @verbatim sentinel if required.
+    k = g.skip_ws(s,i)
+    if g.match(s,k,self.startSentinelComment + '@'):
+        self.putSentinel("@verbatim")
+
+    j = g.skip_line(s,i)
+    line = s[i:j]
+
+    # c.config.write_strips_blank_lines
+    if 0: # 7/22/04: Don't put any whitespace in otherwise blank lines.
+        if line.strip(): # The line has non-empty content.
+            if not at.raw:
+                at.putIndent(at.indent)
+        
+            if line[-1:]=="\n":
+                at.os(line[:-1])
+                at.onl()
+            else:
+                at.os(line)
+        elif line and line[-1] == '\n':
+            at.onl()
+        else:
+            g.trace("Can't happen: completely empty line")
+    else:
+        # 1/29/04: Don't put leading indent if the line is empty!
+        if line and not at.raw:
+            at.putIndent(at.indent)
+    
+        if line[-1:]=="\n":
+            at.os(line[:-1])
+            at.onl()
+        else:
+            at.os(line)
+#@nonl
+#@-node:ekr.20041005105605.174:putCodeLine
+#@-node:ekr.20050419060645:Leo *already* supports Python decorators
 #@-node:ekr.20060702103435.2:New features
 #@+node:ekr.20060702103435.3:New settings
 #@+node:ekr.20060702103435.4:Added @font menu font setting
