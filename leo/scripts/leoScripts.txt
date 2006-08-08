@@ -9010,6 +9010,62 @@ fileMenu.insert(3,'command',label='Test',command=callback)
 #@nonl
 #@-node:Add a menu item after Open With
 #@-node:Scripts demonstrating how to do anything with Leo menus
+#@+node:Set trailing ws script
+'''This script quickly ends all nodes in the selected tree with exactly one
+newline and marks all @thin/@file nodes dirty if any of their descendents have
+been changed.'''
+
+@others
+
+c.beginUpdate()
+try:
+    p = c.currentPosition()
+    pass1(p) # Make the changes and do p.v.t.setDirty for all changed nodes p.
+    pass2() # Quickly set all @thin/@file nodes dirty if any of their descendents are dirty.
+    g.es_print('done')
+finally:
+    c.endUpdate()
+#@nonl
+#@+node:pass1
+def pass1(root):
+    
+    '''Remove trailing newlines from all nodes.'''
+
+    count = 0 ; seen = {}
+    for p in root.self_and_subtree_iter():
+        if seen.get(p.v.t): continue
+        s = p.bodyString()
+        if s:
+            s2 = s.rstrip() + '\n'
+            if s2 != s:
+                s2 = g.toUnicode(s2,g.app.tkEncoding,reportErrors=True)
+                p.v.t.bodyString = s2
+                seen [p.v.t] = True
+                p.v.t.setDirty() # Just set the bit: do **not** redraw!
+                count += 1
+                
+    g.es_print("pass 1: %d nodes converted" % count)
+#@-node:pass1
+#@+node:pass2
+def pass2():
+    
+    '''Quickly mark all changed @file nodes dirty.'''
+    
+    count = 0
+    
+    # Important: we must look at **all** nodes because of clones.
+    for p in c.allNodes_iter():
+        if p.isAnyAtFileNode():
+            root = p.copy()
+            for p2 in root.self_and_subtree_iter():
+                if p2.v.t.isDirty():
+                    root.setDirty()
+                    count += 1
+                    break
+                    
+    g.es_print("pass 2: %d @file/@thin nodes set dirty" % count)
+#@-node:pass2
+#@-node:Set trailing ws script
 #@-node:Important
 #@+node:Prototypes
 #@+node:Debugger canvas
