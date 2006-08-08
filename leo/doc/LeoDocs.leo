@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="25645" clone_windows="0"/>
 <globals body_outline_ratio="0.550802139037">
-	<global_window_position top="164" left="183" height="599" width="776"/>
+	<global_window_position top="165" left="384" height="696" width="799"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -15989,7 +15989,11 @@ See `Chapter 4: Writing Programs in Leo`_ for full details.
 
 - **@pagewidth** Sets the page width used to break doc parts into lines.
 
-- **@path** Sets the path to be prepended to filenames in descendant ``@file`` nodes.</t>
+- **@path** Sets the path to be prepended to filenames in descendant ``@file`` nodes.
+
+**Important**:
+Leo treats lines starting with ``@`` as a normal code line unless the ``@`` starts a Leo directive.
+In particular, Leo will output Python decorators correctly, provided the name of the decorator is not a Leo directive.</t>
 <t tx="ekr.20050828210721">The ``@last`` directive allows you to place lines at the very end of files derived from ``@file`` nodes.
 The ``@last`` directive is recognized only at the end of body text of ``@file`` nodes.
 No text may follow ``@last`` directives.
@@ -17199,7 +17203,7 @@ I wanted to thank you for the effort you've put into Leo.  It looks fantastic.  
 "Leo is a powerful tool for organizing text into tree structures, and for just generally attacking a number of problems from a tree-based perspective." -- Joe Orr
 
 "I found this blog entry by someone (a talented former coworker of mine actually) complaining about some poorly written code she had to maintain:
-http://www.ceejbot.com/blog/space/2003-01-29#the_news_at_10
+http://snippy.ceejbot.com/wiki/show/start/2003/01/29/001
 She said: 'You'd need a bulldozer to start refactoring it.' That was my cue to write a long message explaining that there is indeed such a bulldozer and it's called Leo. (You can see my message there as a reply to her original posting.) I gave her my recipe for how to get someone else's messy, scary code into Leo and how to break it down into manageable chunks." -- Dan Winkler
 
 "Ed, you continue to push the envelope. The amazing thing is that the footprint isn't doubling every few months like it would be in another designer's hands. Adding features by removing constraints, hot refactoring while adding unit tests. Forget the book. I would pay to see the movie."</t>
@@ -30223,21 +30227,21 @@ Here are the relevant settings:
 2. Find the node 'Keyboard shortcuts'.
 
 3. Disable the old bindings by moving the node
-'@keys EKR bindings: Emacs keys + modes'
-so that it is a child of the node:
-'@ignore Unused key bindings'.
+   '@keys EKR bindings: Emacs keys + modes'
+   so that it is a child of the node:
+   '@ignore Unused key bindings'.
 
 4. Notice that there are two child nodes of the node
-'@ignore Unused key bindings'
-that refer to legacy key bindings:
+   '@ignore Unused key bindings'
+   that refer to legacy key bindings:
     
-- '@keys Legacy Leo shortcuts with important Emacs bindings'
+   - '@keys Legacy Leo shortcuts with important Emacs bindings'
 
-- '@keys Legacy Leo bindings'.
+   - '@keys Legacy Leo bindings'.
 
-5.  Move **one** of these two legacy nodes up one level so that it is a child of the node
-'Keyboard shortcuts'.
-It should **not** be a child of the node
-'@ignore Unused key bindings'.</t>
+5. Move **one** of these two legacy nodes up one level so that it is a child of the node
+   'Keyboard shortcuts'.
+   It should **not** be a child of the node
+   '@ignore Unused key bindings'.</t>
 </tnodes>
 </leo_file>
