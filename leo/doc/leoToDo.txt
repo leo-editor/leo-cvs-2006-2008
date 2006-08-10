@@ -59,7 +59,6 @@ def select (self,p,updateBeadList=True):
     g.doHook("select3",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
     
     return 'break' # Supresses unwanted selection.
-#@nonl
 #@+node:ekr.20040803072955.129:<< unselect the old node >>
 # Remember the position of the scrollbar before making any changes.
 yview=body.yview()
@@ -72,7 +71,6 @@ if old_p != p:
 if old_p.edit_widget():
     old_p.v.t.scrollBarSpot = yview
     old_p.v.t.insertSpot = insertSpot
-#@nonl
 #@-node:ekr.20040803072955.129:<< unselect the old node >>
 #@+node:ekr.20040803072955.130:<< select the new node >>
 # Bug fix: we must always set this, even if we never edit the node.
@@ -98,7 +96,6 @@ else:
     c.frame.bodyCtrl.mark_set("insert","1.0")
     
 # g.trace("select:",p.headString())
-#@nonl
 #@-node:ekr.20040803072955.130:<< select the new node >>
 #@+node:ekr.20040803072955.131:<< update c.beadList or c.beadPointer >>
 # c.beadList is the list of nodes for the back and forward commands.
@@ -122,7 +119,6 @@ if updateBeadList:
             g.trace('len(c.beadList)',len(c.beadList))
         
     # g.trace(c.beadPointer,p,present_p)
-#@nonl
 #@-node:ekr.20040803072955.131:<< update c.beadList or c.beadPointer >>
 #@+node:ekr.20040803072955.132:<< update c.visitedList >>
 # The test 'p in c.visitedList' calls p.__cmp__, so this code *is* valid.
@@ -135,7 +131,6 @@ c.visitedList.insert(0,p.copy())
 
 # g.trace('len(c.visitedList)',len(c.visitedList))
 # g.trace([z.headString()[:10] for z in c.visitedList]) # don't assign to p!
-#@nonl
 #@-node:ekr.20040803072955.132:<< update c.visitedList >>
 #@+node:ekr.20040803072955.133:<< set the current node >>
 self.setSelectedLabelState(p)
@@ -146,7 +141,6 @@ if self.stayInTree:
     c.treeWantsFocus()
 else:
     c.bodyWantsFocus()
-#@nonl
 #@-node:ekr.20040803072955.133:<< set the current node >>
 #@-node:ekr.20040803072955.128:tree.select
 #@+node:ekr.20060528100747.3:tkBody.createTextWidget
@@ -207,7 +201,6 @@ def createTextWidget (self,frame,parentFrame,p,name):
     w.bind('<FocusIn>',focusInCallback)
 
     return w
-#@nonl
 #@-node:ekr.20060528100747.3:tkBody.createTextWidget
 #@+node:ekr.20060528100747:Editors
 @ **Important**: body.bodyCtrl and body.frame.bodyCtrl must always be the same.
@@ -225,7 +218,6 @@ def recolorWidget (self,w):
     
     # Restore.
     self.bodyCtrl = self.frame.bodyCtrl = old_w
-#@nonl
 #@-node:ekr.20060530204135:recolorWidget
 #@+node:ekr.20060530210057:create/select/unselect/Label
 def unselectLabel (self,w):
@@ -278,7 +270,6 @@ def addEditor (self,event=None):
     self.updateEditors()
     # self.onFocusIn(w,setFocus=True)
     c.bodyWantsFocusNow()
-#@nonl
 #@+node:ekr.20060528110922:<< create label and text widgets >>
 f = Tk.Frame(pane)
 f.pack(side='top',expand=1,fill='both')
@@ -294,7 +285,6 @@ self.createBindings(w=w)
 c.k.completeAllBindingsForWidget(w)
 
 self.recolorWidget(w)
-#@nonl
 #@-node:ekr.20060528110922:<< create label and text widgets >>
 #@-node:ekr.20060528100747.1:addEditor
 #@+node:ekr.20060606090542:setEditorColors
@@ -309,7 +299,6 @@ def setEditorColors (self,bg,fg):
         except Exception:
             g.es_exception()
             pass
-#@nonl
 #@-node:ekr.20060606090542:setEditorColors
 #@+node:ekr.20060528170438:cycleEditorFocus
 def cycleEditorFocus (self,event=None):
@@ -351,7 +340,6 @@ def deleteEditor (self,event=None):
     # Select another editor.
     w = d.values()[0]
     self.onFocusIn(w)
-#@nonl
 #@-node:ekr.20060528113806:deleteEditor
 #@+node:ekr.20060528104554:onFocusIn
 lockout_onFocusIn = False
@@ -411,7 +399,6 @@ def onFocusIn(self,w,setFocus=False):
         self.lockout_onFocusIn = False
 
     return 'break'
-#@nonl
 #@+node:ekr.20060605190146:<< restore the selection, insertion point and the scrollbar >>
 if w.leo_insertSpot:
     g.app.gui.setInsertPoint(w,w.leo_insertSpot)
@@ -429,7 +416,6 @@ if w.leo_selection:
         g.app.gui.setSelectionRange(w,start,end)
     except Exception:
         pass
-#@nonl
 #@-node:ekr.20060605190146:<< restore the selection, insertion point and the scrollbar >>
 #@-node:ekr.20060528104554:onFocusIn
 #@+node:ekr.20060528132829:selectMainEditor
@@ -445,7 +431,6 @@ def selectMainEditor (self,p):
         w.leo_label_s = p.headString()
         self.selectLabel(w)
         # g.trace(w.leo_name,p.headString())
-#@nonl
 #@-node:ekr.20060528132829:selectMainEditor
 #@+node:ekr.20060528131618:updateEditors
 def updateEditors (self):
@@ -463,7 +448,6 @@ def updateEditors (self):
             # g.trace('update',w,v)
             self.recolorWidget(w)
     c.frame.bodyWantsFocus()
-#@nonl
 #@-node:ekr.20060528131618:updateEditors
 #@-node:ekr.20060528100747:Editors
 #@-node:ekr.20060710103551:Multiple editors not colorized by new editor
@@ -495,7 +479,6 @@ def addToKillBuffer (self,text):
         self.killBuffer [0] = self.killBuffer [0] + text
     else:
         self.killBuffer.insert(0,text)
-#@nonl
 #@-node:ekr.20050920084036.183:addToKillBuffer
 #@+node:ekr.20050920084036.174:class killBufferCommandsClass (add docstrings)
 class killBufferCommandsClass (baseEditCommandsClass):
@@ -503,7 +486,6 @@ class killBufferCommandsClass (baseEditCommandsClass):
     '''A class to manage the kill buffer.'''
 
     @others
-#@nonl
 #@+node:ekr.20050920084036.175: ctor & finishCreate
 def __init__ (self,c):
 
@@ -526,7 +508,6 @@ def finishCreate (self):
     
     if self.k.useGlobalKillbuffer:
         self.killBuffer = leoKeys.keyHandlerClass.global_killbuffer
-#@nonl
 #@-node:ekr.20050920084036.175: ctor & finishCreate
 #@+node:ekr.20050920084036.176: getPublicCommands
 def getPublicCommands (self):
@@ -544,7 +525,6 @@ def getPublicCommands (self):
         'yank-pop':                 self.yankPop,
         'zap-to-character':         self.zapToCharacter,
     }
-#@nonl
 #@-node:ekr.20050920084036.176: getPublicCommands
 #@+node:ekr.20050920084036.183:addToKillBuffer
 def addToKillBuffer (self,text):
@@ -563,7 +543,6 @@ def addToKillBuffer (self,text):
         self.killBuffer [0] = self.killBuffer [0] + text
     else:
         self.killBuffer.insert(0,text)
-#@nonl
 #@-node:ekr.20050920084036.183:addToKillBuffer
 #@+node:ekr.20050920084036.181:backwardKillSentence
 def backwardKillSentence (self,event):
@@ -577,7 +556,6 @@ def backwardKillSentence (self,event):
         i2 = w.search('.',i,backwards=True,stopindex='1.0')
         i2 = g.choose(i2=='','1.0',i2+'+1c ')
         self.kill(event,i2,'%s + 1c' % i,undoType='backward-kill-sentence')
-#@nonl
 #@-node:ekr.20050920084036.181:backwardKillSentence
 #@+node:ekr.20050920084036.180:backwardKillWord
 def backwardKillWord (self,event):
@@ -589,7 +567,6 @@ def backwardKillWord (self,event):
     self.killWs(event)
     self.killWord(event)
     # c.editCommands.backwardWord(event)
-#@nonl
 #@-node:ekr.20050920084036.180:backwardKillWord
 #@+node:ekr.20051216151811:clearKillRing
 def clearKillRing (self,event=None):
@@ -597,7 +574,6 @@ def clearKillRing (self,event=None):
     '''Clear the kill ring.'''
     
     self.killBuffer = []
-#@nonl
 #@-node:ekr.20051216151811:clearKillRing
 #@+node:ekr.20050920084036.185:getClipboard
 def getClipboard (self,w):
@@ -611,7 +587,6 @@ def getClipboard (self,w):
     except: pass
 
     return None
-#@nonl
 #@-node:ekr.20050920084036.185:getClipboard
 #@+node:ekr.20050920084036.184:iterateKillBuffer
 def iterateKillBuffer (self):
@@ -670,7 +645,6 @@ def killRegionHelper (self,event,deleteFlag):
             w.clipboard_clear()
             w.clipboard_append(s)
             self.removeRKeys(w)
-#@nonl
 #@-node:ekr.20050920084036.182:killRegion & killRegionSave & helper
 #@+node:ekr.20050930095323.1:killSentence
 def killSentence (self,event):
@@ -683,7 +657,6 @@ def killSentence (self,event):
         i2 = w.search('.','insert',backwards=True,stopindex='1.0')
         i2 = g.choose(i2=='','1.0',i2+'+1c ')
         self.kill(event,i2,'%s + 1c' % i,undoType='kill-sentence')
-#@nonl
 #@-node:ekr.20050930095323.1:killSentence
 #@+node:ekr.20050930100733:killWs
 def killWs (self,event):
@@ -700,7 +673,6 @@ def killWs (self,event):
             
     if ws:
         self.addToKillBuffer(ws)
-#@nonl
 #@-node:ekr.20050930100733:killWs
 #@+node:ekr.20050930091642.1:yank
 def yank (self,event):
@@ -717,7 +689,6 @@ def yank (self,event):
         w.tag_delete('kb')
         w.insert('insert',s,('kb'))
         w.mark_set('insert',i)
-#@nonl
 #@-node:ekr.20050930091642.1:yank
 #@+node:ekr.20050930091642.2:yankPop
 def yankPop (self,event):
@@ -738,7 +709,6 @@ def yankPop (self,event):
         w.tag_delete('kb')
         w.insert('insert',s,('kb'))
         w.mark_set('insert',i)
-#@nonl
 #@-node:ekr.20050930091642.2:yankPop
 #@+node:ekr.20050920084036.128:zapToCharacter
 def zapToCharacter (self,event):
@@ -763,7 +733,6 @@ def zapToCharacter (self,event):
                 t = w.get('insert','%s+1c' % i)
                 self.addToKillBuffer(t)
                 w.delete('insert','%s+1c' % i)
-#@nonl
 #@-node:ekr.20050920084036.128:zapToCharacter
 #@-node:ekr.20050920084036.174:class killBufferCommandsClass (add docstrings)
 #@-node:ekr.20060628095110:Fix yank and kill-line commands
@@ -794,7 +763,6 @@ def pasteOutlineRetainingClones (self,event=None):
     c = self
 
     return c.pasteOutline(reassignIndices=False)
-#@nonl
 #@-node:EKR.20040610130943:pasteOutlineRetainingClones
 #@+node:ekr.20031218072017.1551:pasteOutline
 # To cut and paste between apps, just copy into an empty body first, then copy to Leo's clipboard.
@@ -845,7 +813,6 @@ def pasteOutline(self,event=None,reassignIndices=True):
     finally:
         c.endUpdate()
         c.recolor()
-#@nonl
 #@+node:ekr.20050418084539:<< remember all data for undo/redo Paste As Clone >>
 @
 
@@ -863,7 +830,6 @@ for p in c.allNodes_iter():
     if t not in tnodeInfoDict.keys():
         tnodeInfoDict[t] = g.Bunch(
             t=t,head=p.headString(),body=p.bodyString())
-#@nonl
 #@-node:ekr.20050418084539:<< remember all data for undo/redo Paste As Clone >>
 #@+node:ekr.20050418084539.2:<< put only needed info in copiedBunchList >>
 # Create a dict containing only copied tnodes.
@@ -880,7 +846,6 @@ for t in tnodeInfoDict.keys():
         copiedBunchList.append(bunch)
 
 # g.trace('copiedBunchList',copiedBunchList)
-#@nonl
 #@-node:ekr.20050418084539.2:<< put only needed info in copiedBunchList >>
 #@-node:ekr.20031218072017.1551:pasteOutline
 #@+node:ekr.20031218072017.1559:getLeoOutline (from clipboard)
@@ -916,7 +881,6 @@ def getLeoOutline (self,s,reassignIndices=True):
     self.usingClipboard = False
     self.tnodesDict = {}
     return v
-#@nonl
 #@+node:EKR.20040610134756:<< recreate tnodesDict >>
 nodeIndices = g.app.nodeIndices
 
@@ -932,7 +896,6 @@ if 0:
     print '-'*40
     for key in self.tnodesDict.keys():
         print key,self.tnodesDict[key]
-#@nonl
 #@-node:EKR.20040610134756:<< recreate tnodesDict >>
 #@-node:ekr.20031218072017.1559:getLeoOutline (from clipboard)
 #@+node:ekr.20031218072017.1565:getVnodes
@@ -970,7 +933,6 @@ def getVnodes (self,reassignIndices=True):
         c.setCurrentPosition(newCurrent)
 
     self.getTag("</vnodes>")
-#@nonl
 #@+node:ekr.20041023105832:<< set self.forbiddenTnodes to tnodes than must not be pasted >>
 self.forbiddenTnodes = []
 
@@ -979,7 +941,6 @@ for p in oldCurrent.self_and_parents_iter():
         self.forbiddenTnodes.append(p.v.t)
         
 # g.trace("forbiddenTnodes",self.forbiddenTnodes)
-#@nonl
 #@-node:ekr.20041023105832:<< set self.forbiddenTnodes to tnodes than must not be pasted >>
 #@-node:ekr.20031218072017.1565:getVnodes
 #@+node:ekr.20031218072017.1566:getVnode changed for 4.2 & 4.4)
@@ -1056,7 +1017,6 @@ def getVnode (self,parent,back,skip,appendToCurrentStack,appendToTopStack):
     # End this vnode.
     self.getTag("</v>")
     return v
-#@nonl
 #@+node:ekr.20031218072017.1567:<< Handle vnode attribute bits  >>
 # The a=" has already been seen.
 while 1:
@@ -1070,7 +1030,6 @@ while 1:
     else: break
 
 self.getDquote()
-#@nonl
 #@-node:ekr.20031218072017.1567:<< Handle vnode attribute bits  >>
 #@+node:ekr.20041023110111:<< raise invalidPaste if the tnode is in self.forbiddenTnodes >>
 # Bug fix in 4.3 a1: make sure we have valid paste.
@@ -1084,7 +1043,6 @@ t = self.tnodesDict.get(index)
 if t in self.forbiddenTnodes:
     # g.trace(t)
     raise invalidPaste
-#@nonl
 #@-node:ekr.20041023110111:<< raise invalidPaste if the tnode is in self.forbiddenTnodes >>
 #@+node:ekr.20031218072017.1568:<< Set the remembered status bits >>
 if setCurrent:
@@ -1101,7 +1059,6 @@ if setMarked:
 
 if setOrphan:
     v.setOrphan()
-#@nonl
 #@-node:ekr.20031218072017.1568:<< Set the remembered status bits >>
 #@+node:ekr.20040326055828:<< Append to current or top stack >>
 if not setCurrent and len(self.currentVnodeStack) > 0 and appendToCurrentStack:
@@ -1111,12 +1068,10 @@ if not setCurrent and len(self.currentVnodeStack) > 0 and appendToCurrentStack:
 if not setTop and len(self.topVnodeStack) > 0 and appendToTopStack:
     #g.trace("append top",v)
     self.topVnodeStack.append(v)
-#@nonl
 #@-node:ekr.20040326055828:<< Append to current or top stack >>
 #@-node:ekr.20031218072017.1566:getVnode changed for 4.2 & 4.4)
 #@-node:ekr.20060724071225:Look at Paste Node As Clone
 #@-node:ekr.20060531161030:To do: B4
-#@+node:ekr.20060623064600.1:Urgent (big picture)
 #@+node:ekr.20051202094427:Resolve cvs conflicts
 Investigate meld:  http://meld.sourceforge.net/
 #@nonl
@@ -1488,7 +1443,73 @@ other?
 #@-node:ekr.20031218072017.662:Gil 2
 #@-node:ekr.20060601073503:Postings
 #@-node:ekr.20051202094427:Resolve cvs conflicts
-#@-node:ekr.20060623064600.1:Urgent (big picture)
+#@+node:ekr.20060306194040:Video and more screen shots Leo's web site
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3615177
+By: ktenney
+
+High on my ToLearn list is vnc2swf
+http://www.unixuser.org/~euske/vnc2swf/
+
+
+http://sourceforge.net/forum/message.php?msg_id=3615278
+By: James
+
+A lot of people are now using Wink for demonstrations
+(http://www.debugmode.com/wink/), it's is free and seems to work well.
+
+Check out http://murl.se/11332
+At the bottom they talk about tools and techniques.
+http://showmedo.com seems like it would be a good
+place to host vids also.
+
+I've listened/watched a fair number of things like this;
+my recomendation is to get a good microphone and
+pre-amp to record your voice, and prepare the audio
+track carefully. It is so aggravating when
+it's hard to discern the words being spoken.
+
+Thanks,
+Kent
+#@nonl
+#@+node:ekr.20060531134434:Tutorials
+http://sourceforge.net/forum/message.php?msg_id=3758271
+
+From: Rich
+
+Tutorials would be great. I use Liberty BASIC, (http://libertybasic.conforums.com)
+and it has a very good tutorial -- leads the beginner by the hand through much
+of the language. Also the help file has working code snippets
+to cut-n-paste-n-play-with. I'd like to see something like:
+
+[Buttons]
+...[What are Buttons good for?]
+...[How do I make my own buttons?]
+......[Some commands you can use with buttons]
+......[Where to find button commands]
+#@nonl
+#@-node:ekr.20060531134434:Tutorials
+#@+node:ekr.20060531134434.1:Screencasts
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3758303
+By: ktenney
+
+My sense is that documentation/screencasts has the
+greatest potential for expanding Leo's mindshare.
+
+I really like those produced by the good folks
+at Dabo;
+http://leafe.com/screencasts/
+http://leafe.com/screencasts/populategrid.html
+
+The TurboGears people have taken this to the extreme;
+http://www.turbogears.org/ultimate.html
+
+Leo is different enough that it warrants a 
+demonstration of it's advantages.
+#@nonl
+#@-node:ekr.20060531134434.1:Screencasts
+#@-node:ekr.20060306194040:Video and more screen shots Leo's web site
 #@+node:ekr.20060527164612:Important 1-2 day projects (1-2 weeks)
 #@+node:ekr.20060609070148:Fix hung (zombie) windows)
 @nocolor
@@ -1569,7 +1590,6 @@ def createHelpMenuFromTable (self):
         self.createMenuEntries(helpMenu,self.helpMenuTop2Table)
     
     self.createMenuEntries(helpMenu,self.helpMenuTop3Table)
-#@nonl
 #@-node:ekr.20031218072017.3803:createHelpMenuFromTable
 #@+node:ekr.20031218072017.4113:new_menu
 def new_menu(self,parent,tearoff=False):
@@ -1584,7 +1604,6 @@ def new_menu(self,parent,tearoff=False):
             return Tk.Menu(parent,tearoff=tearoff)
     else:
         return Tk.Menu(parent,tearoff=tearoff)
-#@nonl
 #@-node:ekr.20031218072017.4113:new_menu
 #@+node:ekr.20031218072017.3804:createNewMenu
 def createNewMenu (self,menuName,parentName="top",before=None):
@@ -1613,7 +1632,6 @@ def createNewMenu (self,menuName,parentName="top",before=None):
         g.es("exception creating " + menuName + " menu")
         g.es_exception()
         return None
-#@nonl
 #@-node:ekr.20031218072017.3804:createNewMenu
 #@+node:ekr.20031218072017.3807:getMenu, setMenu, destroyMenu
 def getMenu (self,menuName):
@@ -1630,7 +1648,6 @@ def destroyMenu (self,menuName):
     
     cmn = self.canonicalizeMenuName(menuName)
     del self.menus[cmn]
-#@nonl
 #@-node:ekr.20031218072017.3807:getMenu, setMenu, destroyMenu
 #@+node:ekr.20060211144330.1:getMacHelpMenu
 def getMacHelpMenu (self):
@@ -1645,7 +1662,6 @@ def getMacHelpMenu (self):
         g.trace('Can not get MacOS Help menu')
         g.es_exception()
         return None
-#@nonl
 #@-node:ekr.20060211144330.1:getMacHelpMenu
 #@-node:ekr.20060116083043:Use special Help menu on the Mac
 #@-node:ekr.20060117074259:Handle Mac issues
@@ -1664,7 +1680,6 @@ def getDescendentUnknownAttributes (self,s):
     except (TypeError,pickle.UnpicklingError,ImportError):
         g.trace('oops: getDescendentUnknownAttributes')
         return None
-#@nonl
 #@-node:EKR.20040627114602:getDescendentUnknownAttributes
 #@-node:ekr.20060202235215.3:Remove deprecation warning
 #@+node:ekr.20060610193837:open python window does not appear to work on Solaris
@@ -1738,7 +1753,6 @@ def open(self,theFile,fileName,readAtFileNodesFlag=True,silent=False):
     # Delete the file buffer
     self.fileBuffer = ""
     return ok
-#@nonl
 #@+node:ekr.20031218072017.2298:<< Set the default directory >>
 @ The most natural default directory is the directory containing the .leo file that we are about to open.  If the user has specified the "Default Directory" preference that will over-ride what we are about to set.
 @c
@@ -1747,7 +1761,6 @@ theDir = g.os_path_dirname(fileName)
 
 if len(theDir) > 0:
     c.openDirectory = theDir
-#@nonl
 #@-node:ekr.20031218072017.2298:<< Set the default directory >>
 #@-node:ekr.20031218072017.2297:open (leoFileCommands)
 #@+node:ekr.20050428063105:newOpen (From chapters.py)
@@ -1804,59 +1817,6 @@ e.g., a reference to a method). This would require support for @open-with in
 @settings trees.
 #@-node:ekr.20060619101345:@open-with settings
 #@-node:ekr.20060530130736.2:Customize Open With menu without writing code
-#@+node:ekr.20060306194040:More screen shots or video tutorial on Leo's web site
-
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3615177
-By: ktenney
-
-High on my ToLearn list is vnc2swf
-http://www.unixuser.org/~euske/vnc2swf/
-
-
-http://sourceforge.net/forum/message.php?msg_id=3615278
-By: James
-
-A lot of people are now using Wink for demonstrations
-(http://www.debugmode.com/wink/), it's is free and seems to work well.
-#@+node:ekr.20060531134434:Tutorials
-http://sourceforge.net/forum/message.php?msg_id=3758271
-
-From: Rich
-
-Tutorials would be great. I use Liberty BASIC, (http://libertybasic.conforums.com)
-and it has a very good tutorial -- leads the beginner by the hand through much
-of the language. Also the help file has working code snippets
-to cut-n-paste-n-play-with. I'd like to see something like:
-
-[Buttons]
-...[What are Buttons good for?]
-...[How do I make my own buttons?]
-......[Some commands you can use with buttons]
-......[Where to find button commands]
-#@nonl
-#@-node:ekr.20060531134434:Tutorials
-#@+node:ekr.20060531134434.1:Screencasts
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3758303
-By: ktenney
-
-My sense is that documentation/screencasts has the
-greatest potential for expanding Leo's mindshare.
-
-I really like those produced by the good folks
-at Dabo;
-http://leafe.com/screencasts/
-http://leafe.com/screencasts/populategrid.html
-
-The TurboGears people have taken this to the extreme;
-http://www.turbogears.org/ultimate.html
-
-Leo is different enough that it warrants a 
-demonstration of it's advantages.
-#@nonl
-#@-node:ekr.20060531134434.1:Screencasts
-#@-node:ekr.20060306194040:More screen shots or video tutorial on Leo's web site
 #@+node:ekr.20060530085844:Improve autocompletion
 #@-node:ekr.20060530085844:Improve autocompletion
 #@+node:ekr.20041022091645.4:Pymacs
@@ -2768,817 +2728,6 @@ Thanks.
 Edward
 #@-node:ekr.20050915062404:My post
 #@-node:ekr.20050831131028:opml
-#@+node:ekr.20060228072202:New undoer
-#@+node:ekr.20060201161901.1:Postings re undo
-#@+node:ekr.20060201161901.2:@url http://sourceforge.net/forum/message.php?msg_id=3332355
-@nocolor
-
-By: Edward K. Ream - edream 
-   RE: Dividing The Undo: doing w/o v.uA 
-2005-09-09 14:17  
-> If we can open up how [Leo] reads xml, it may make it simpler to start developing a stash scheme. 
- 
-I agree that reading xml more properly would be A Good Thing (tm). As we shall see, however, it is not the main issue. 
- 
-> DOM seems like a good path to start out on. 
- 
-This is not the path I would have chosen. The new colorizer at in leoPlugins.leo at: 
- 
-Plugins-->Experimental/unfinished-->New colorizer-->@thin __jEdit_colorizer__.py 
- 
-uses sax. I like the light-weight approach. I would rather do a bit more work in the initial parsing and create the data structures myself then relying on DOM. 
- 
-But parsing is irrelevant. The problem is the design of *thin* derived files and the code that reads such files. Let us consider how we can "do without" v.unknownAttributes in thin derived files. I **shall not** change the format of thin derived files, so some trickery is required. The first step is read this section of Leo's new docs: 
- 
-http://webpages.charter.net/edreamleo/customizing.html#adding-extensible-attributes-to-nodes-and-leo-files  /> 
-The key here is the so-called 'hidden machinery'. This is an essential feature of the code that reads and writes thin derived files and it **will not** change. **Note**: Leo has two sets of read code: the code that reads .leo files has no trouble whatever recreating vnodes. It is only vnodes in thin derived files that may not have attributes. 
- 
-**Important**: for @thin trees (in the outline) Leo saves *only* the <v> element corresponding to the @thin node itself. It is this <v> element that contains the 'hidden machinery'. Don't even think about having Leo write the whole tree of <v> elements: the 4.0 read code is made possible because these <v> elements do *not* exist. This eliminates all the error 'recovery' schemes that can not, if fact, be robust enough. 
- 
-So the only real alternative is to add uA's sufficient to recreate elements in the *reconstituted* vnodes that Leo creates in the leoAtFile read logic. Happily, we can do this as follows. When writing, a plugin (or an extended Leo) would 'piggyback' the vnode attributes in the corresponding **t**.unknownAttributes field. When reading, the plugin (or Leo) would put the vnode attributes "where they belong" in the appropriate vnode. We associate a 'vnode traversal index' with each vnode. This is simply how many previous "same" vnodes appeared in the traversal before getting to the desired vnode. Something like this:: 
- 
-vx = {} # traversal indices for vnodes. 
-for p in c.allNodes_iter(): 
-....n = vx.get(p.v.t,0) # n is the traversal index for vnode p.v. 
-....vx[p.v.t] = n+1 # bump the index for the next v such that v.t == p.v.t 
- 
-We store attributes for vnode v in v.t.unknownAttributes, along with the traversal index. The read code uses the traversal index to copy vnode attributes from t.unknownAttributes to v.unknownAttrutes. Rather than forcing each plugin to do this, Leo should probably have support for this in the leoFileCommands read/write code. In short, the t.unknownAttributes machinery suffices in theory, and in practice a bit of support code would be good. 
- 
-Glad you asked :-) . I have been willing to live without v.uA's in thin derived files. I never thought much about this until you asked, but necessity is the mother... So this is good. A way exists to treat all vnodes as first-class citizens. 
- 
-Edward 
-#@-node:ekr.20060201161901.2:@url http://sourceforge.net/forum/message.php?msg_id=3332355
-#@-node:ekr.20060201161901.1:Postings re undo
-#@+node:ekr.20060201152349:NodeUndoer.py
-@ignore
-
-<<imports>>
-#commanders = util.WeakHashMap()
-commanders = {}
-
-
-class NodeUndoer:
-    '''A class that manages NodeUndoerBase instances for tnodes'''
-    
-    undoers = {} #util.WeakHashMap()
-    checksums = util.WeakHashMap()
-    
-    def __init__( self, c, umenu, rmenu, gtnu, gtnr, vunstack, clearundo ):
-        '''c -> a commander
-           umenu -> a JMenuItem that is the 'undo' action
-           rmenu -> a JMenuItem that is the 'redo' action
-           gtnu -> a JMenuItem that is the 'goto next undo' action
-           gtnr -> a JMenuItem that is the 'goto next redo' action
-           vunstack -> a JMenuItem that is the 'visualise undo stack' action
-           clearundo -> a JMenuItem that is the 'clear undo stack' action
-        '''
-        
-        self.c = c
-        self.umenu = umenu
-        umenu.actionPerformed = lambda event: self.undo()
-        self.rmenu = rmenu
-        rmenu.actionPerformed = lambda event: self.redo()
-        self.gtnu = gtnu
-        gtnu.actionPerformed = lambda event: self.gotoNextUndoSpot()
-        self.gtnr = gtnr
-        gtnr.actionPerformed = lambda event : self.gotoNextRedoSpot()
-        self.umanager = None
-        self.vunstack = vunstack
-        vunstack.actionPerformed = lambda event: self.visualiseUndoStack()
-        self.clearundo = clearundo
-        clearundo.actionPerformed = lambda event: self.clearUndo()
-        self.ignore = 0
-        self.tnode = None
-        self.compound = None 
-        self.checksums_ok = 1
-        self.checksum_violations = []
-        wm1 = WeakMethod( self, "serializeForLeoFile" ); wm2 = WeakMethod( self, "unserializeFromLeoFile" )
-        wm3 = WeakMethod( self, "checkSumViolation" )
-        leoPlugins.registerHandler( "write-leo-file-data", wm1 )
-        leoPlugins.registerHandler( "read-leo-file-data", wm2 )
-        leoPlugins.registerHandler( "checksum-violation", wm3 )
-    
-    def undo( self ):
-        
-        if self.ignore: return
-        self.ignore = 1
-        self.umanager.undo()
-        self.setMenu()
-        self.ignore = 0
-        return
-        
-    def redo( self ):
-        
-        if self.ignore: return
-        self.ignore = 1
-        self.umanager.redo()
-        self.setMenu()
-        self.ignore = 0
-        return
-        
-    
-    def setNode( self, p ):
-        
-        #print "SETTING NODE!!! %s" % t
-        #print "FILEINDEX %s" % t.fileIndex
-        #java.lang.Thread.dumpStack()
-        v = p.v
-        t = v.t
-        #vid = v.vid
-        
-        if self.tnode:
-            self.checksums[ self.tnode ] = md5.md5( self.tnode.bodyString ).hexdigest()
-        
-        #if self.undoers.containsKey( t ):
-        if self.undoers.has_key( v ):
-            #print "CONTAINTS %s" % t
-            ua = self.undoers[ v ]
-            print "--!!!!!!-- %s" % v
-            print ua.__class__
-            if ua.__class__ == leoSwingUndo.UndoBase:
-                self.umanager = self.undoers[ v ]
-                #if self.checksums.containsKey( v ):
-                #    checksum = self.checksums[ v ]
-                #    amd5 = md5.md5( t.bodyString )
-                #    if amd5.hexdigest() != checksum:
-                #        self.umanager.discardAllEdits()
-                #        g.es( "Emptied undoer for %s:%s because of checksum mismatch" % ( t.headString, t ), color = "red" )
-                #        #self.tnode = t
-                #        #return
-                #for z in self.umanager.undostack:
-                #    commanders[ z ] = self.c
-            else:
-                print "UNPICKLING!!!!!"
-                ua = cPickle.loads( ua )
-                print "UNPICKLED Is now %s %s" % ( ua, len( ua.undostack ) )
-                self.undoers[ v ] = ua
-                self.umanager = ua
-            if self.checksums.containsKey( t ):
-                checksum = self.checksums[ t ]
-                amd5 = md5.md5( t.bodyString )
-                if amd5.hexdigest() != checksum:
-                    self.umanager.discardAllEdits()
-                    print "DISCARDED EDITSS!!!!"
-                    g.es( "Emptied undoer for %s:%s because of checksum mismatch" % ( t.headString, t ), color = "red" )
-                    #self.tnode = t
-                    #return
-            for z in self.umanager.undostack:
-                commanders[ z ] = self.c
-                                    
-        else:
-            print "V not in Undoers %s" % v
-            #print v.vid
-            self.umanager = leoSwingUndo.UndoBase()
-            self.undoers[ v ] = self.umanager
-
-        self.tnode = t
-        self.setMenu()
-        
-    def __addUndo( self, undo ):
-        #self.umanager.addEdit( undo )
-        self.umanager.addUndo( undo )
-        #upe = self.UndoableProxyEvent( undo, self.umanager, self, self.c )
-        #self.c.undoer.addUndo( upe )
-        #die_listeners[ undo ] = upe
-        
-        
-    def addUndo( self, undo ):
-        
-        if not self.ignore:
-            
-            if self.compound:
-                self.compound.addEdit( undo )
-                return
-            
-            self.__addUndo( undo )                
-    
-        self.setMenu()
-            
-    def setMenu( self ):
-        
-        self.umenu.setText( self.umanager.getUndoPresentationName() )
-        self.umenu.setEnabled( self.umanager.canUndo() )
-        if self.umanager.canUndo():
-            self.gtnu.setEnabled( 1 )
-        else:
-            self.gtnu.setEnabled( 0 )
-        self.rmenu.setText( self.umanager.getRedoPresentationName() )    
-        self.rmenu.setEnabled( self.umanager.canRedo() ) 
-        if self.umanager.canRedo():
-            self.gtnr.setEnabled( 1 )
-        else:
-            self.gtnr.setEnabled( 0 )
-        
-        self.c.undoer.setMenu()
-               
-    
-    
-    def getUStack( self, tnode ):
-            
-        if hasattr( tnode, 'unknownAttributes' ):
-            uas = tnode.unknownAttributes
-        else:
-            tnode.unknownAttributes = uas = {}
-        
-        return uas
-        
-
-    def clearUndo( self ):
-        
-        self.umanager.discardAllEdits()
-        self.setMenu()
-        
-    def gotoNextUndoSpot( self ):
-        
-        ua = self.umanager.editToBeUndone()
-        if ua:
-            spot = ua.spot
-            self.c.frame.body._current_editor.setCaretPosition( spot )
-            return
-            
-    def gotoNextRedoSpot( self ):
-        ua = self.umanager.editToBeRedone()
-        if ua:
-            spot = ua.spot
-            self.c.frame.body._current_editor.setCaretPosition( spot )
-            return
-
-    @others
-    
-
-                    
-<<UndoableDocumentEvent>>
-<<UndoableCompoundEvent>>
-
-
-
-
-#@+node:ekr.20060201152349.1:<<imports>>
-import java
-import java.util as util
-import javax.swing as swing
-import javax.swing.undo as sundo
-import javax.swing.event as sevent
-import java.io as io
-import jarray
-import md5
-import org.python.util as putil
-import NodeUndoerBase
-import LeoCompoundEdit
-import leoGlobals as g
-import zlib
-import leoSwingUndo
-import leoPlugins
-import leoNodes
-import base64
-import pickle
-import cPickle
-from utilities.WeakMethod import WeakMethod
-#@nonl
-#@-node:ekr.20060201152349.1:<<imports>>
-#@+node:ekr.20060201152349.2:visualiseUndoStack
-def visualiseUndoStack( self ):
-    
-    umanager = self.umanager            
-    table = swing.JTable( self.UneditableTableModel() )#( data, util.Vector( [ 'spot', 'data', 'action', 'redo/undo' ] ) )
-    table.setSelectionMode( swing.ListSelectionModel.SINGLE_SELECTION )
-    self.setDataForTable( table )
-
-    
-    jd = swing.JDialog()
-    jd.setTitle( "Undo Stack" )
-    cp = jd.getContentPane()
-    cp.add( swing.JScrollPane( table ) )
-    bholder = swing.JPanel()
-    cp.add( bholder, java.awt.BorderLayout.SOUTH )
-    uto = swing.JButton( "Undo To" )
-    bholder.add( uto )
-    <<_undoTo>>
-    uto.actionPerformed = _undoTo
-    
-    rto = swing.JButton( "Redo To" )
-    bholder.add( rto )
-    <<_redoTo>>
-    rto.actionPerformed = _redoTo
-    
-        
-    jb = swing.JButton( "Close" )
-    jb.actionPerformed = lambda event : jd.dispose()
-    bholder.add( jb )
-    jd.pack()
-    g.app.gui.center_dialog( jd )
-    jd.setModal( 1 )
-    jd.show()
-    
-    
-#@+node:ekr.20060201152349.3:<<_undoTo>>
-def _undoTo( event ):
-    sr = table.getSelectedRow()
-    if sr == -1:
-        swing.JOptionPane.showMessageDialog( None,
-                                            "No Selected Row",
-                                            "Select A Row Please",
-                                            swing.JOptionPane.INFORMATION_MESSAGE )
-        return
-    edits = umanager.getEdits()
-    undo = edits.get( sr )
-    if not undo.canUndo():
-        swing.JOptionPane.showMessageDialog( None, 
-                                            "Cant Undo To This Point", 
-                                            "Illegal Undo Selection", 
-                                            swing.JOptionPane.WARNING_MESSAGE )
-        return
-    self.ignore = 1
-    umanager.undoTo( undo )
-    self.ignore = 0
-    self.setDataForTable( table )
-#@-node:ekr.20060201152349.3:<<_undoTo>>
-#@+node:ekr.20060201152349.4:<<_redoTo>>
-def _redoTo( event ):
-    sr = table.getSelectedRow()
-    if sr == -1:
-        swing.JOptionPane.showMessageDialog( None,
-                                            "No Selected Row",
-                                            "Select A Row Please",
-                                            swing.JOptionPane.INFORMATION_MESSAGE )
-        return
-    edits = umanager.getEdits()
-    undo = edits.get( sr )
-    if not undo.canRedo():
-        swing.JOptionPane.showMessageDialog( None, 
-                                            "Cant Redo To This Point", 
-                                            "Illegal Redo Selection", 
-                                            swing.JOptionPane.WARNING_MESSAGE )
-        return
-        
-    self.ignore = 1
-    umanager.redoTo( undo )
-    self.ignore = 0
-    self.setDataForTable( table )
-    
-#@-node:ekr.20060201152349.4:<<_redoTo>>
-#@-node:ekr.20060201152349.2:visualiseUndoStack
-#@+node:ekr.20060201152349.5:buildTableData
-def buildTableData( self ):
-    
-    data = util.Vector()
-    editu = self.umanager.editToBeUndone()
-    editr = self.umanager.editToBeRedone()
-    umanager = self.umanager
-    cu = cr = -1
-    edits = umanager.getEdits()
-    for z in edits:
-        if z.__class__ == LeoCompoundEdit:
-            vec = java.util.Vector()
-            edits2 = z.getEdits()
-            spot = edits2[ 0 ].spot
-            vec.add( spot )
-            vec.add( "?" )
-            vec.add( z.getPresentationName() )
-            vec.add( "" )
-        else:
-            vec = z.getForTableModel()
-            
-        if z is editu:
-            vec.set( 3, 'current undo' )
-            cu = edits.indexOf( z )
-        elif z.canUndo():
-            vec.set( 3, 'undo' )
-        if z is editr:
-            vec.set( 3, 'current redo' )
-            cr = edits.indexOf( z )
-        elif z.canRedo():
-            vec.set( 3, 'redo' )
-        data.add( vec )
-    
-    return data, cu, cr
-
-
-#@-node:ekr.20060201152349.5:buildTableData
-#@+node:ekr.20060201152349.6:setDataForTable
-def setDataForTable( self, table ):
-    
-    data, cu, cr = self.buildTableData()
-    dm = table.getModel()
-    dm.setDataVector( data, util.Vector( [ 'spot', 'data', 'action', 'redo/undo' ] ) )
-    lsm = table.getSelectionModel()
-    if cu != -1:
-        lsm.setLeadSelectionIndex( cu )
-    elif cr != -1:
-        lsm.setLeadSelectionIndex( cr )
-        
-    
-#@nonl
-#@-node:ekr.20060201152349.6:setDataForTable
-#@+node:ekr.20060201152349.7:pickle and unpickle
-def serializeForLeoFile( self, tag, *args, **kwords ):
-    
-    if not args[ 0 ].has_key( "c" ): return
-    c = args[ 0 ][ 'c' ]
-    store = args[ 0 ][ 'store' ]
-    if c == self.c:
-        nwundoers = {}
-        for z in self.undoers:
-            if  self.undoers[ z ].__class__ == leoSwingUndo.UndoBase:
-                nwundoers[ z.vid ] = cPickle.dumps( self.undoers[ z ] )
-            else:
-                nwundoers[ z.vid ] = self.undoers[ z ]
-                
-        store.addData( "tundoer", nwundoers ) #the storage class does the rest of the work for us
-        
-
-def unserializeFromLeoFile( self, tag, *args, **kwords ):
-
-    if not args[ 0 ].has_key( "c" ): return
-    c = args[ 0 ][ 'c' ]
-    store = args[ 0 ][ 'store' ]
-    if c == self.c and self.checksums_ok:
-        try:
-            udata = store.getData( "tundoer" )
-            if udata:
-                for z in udata:
-                    if leoNodes.vid_vnode.has_key( z ):
-                        #print "A connection %s %s" % ( z, leoNodes.vid_vnode[ z ] )
-                        v = leoNodes.vid_vnode[ z ]
-                        self.undoers[ v ] = udata[ z ]
-
-        except:
-            self.undostack = []
-            self.undopointer = 0
-
-    if not self.checksums_ok:
-        self.checksums_ok = 1
-        self.checksum_violations = []
-        self.undostack = []
-        self.undopointer = 0
-        
-#@-node:ekr.20060201152349.7:pickle and unpickle
-#@+node:ekr.20060201152349.8:checkSumViolation
-def checkSumViolation( self, tag, *args, **kwords ):
-    
-    if not args[ 0 ].has_key( "c" ): return
-    c = args[ 0 ][ 'c' ]
-    filename = args[ 0 ][ 'filename' ]
-    if c == self.c:
-        self.checksums_ok = 0
-        self.checksum_violations.append( filename )
-#@nonl
-#@-node:ekr.20060201152349.8:checkSumViolation
-#@+node:ekr.20060201152349.9:startCompounding stopCompounding
-def startCompounding( self, name ):
-    self.compound = UndoableCompoundEvent( name )
-    #self.compound = LeoCompoundEdit( name )
-        
-def stopCompounding( self ):
-        
-    compound = self.compound
-    compound.end()
-    self.compound = None
-    #print "COMPOUND is %s" % compound
-    self.__addUndo( compound )
-    self.setMenu()
-#@-node:ekr.20060201152349.9:startCompounding stopCompounding
-#@+node:ekr.20060201152349.10:infrastructure
-@others
-#@nonl
-#@+node:ekr.20060201152349.11:UneditableTableModel
-class UneditableTableModel( swing.table.DefaultTableModel ):
-    
-    def __init__( self ):
-        swing.table.DefaultTableModel.__init__( self )
-        
-    def isCellEditable( self, row, column ):
-        return 0
-        
-#@-node:ekr.20060201152349.11:UneditableTableModel
-#@+node:ekr.20060201152349.12:PickleProxy
-class PickleProxy:
-    '''This class exists to pickle the NodeUndoerBase instance into a form
-       that can be safely stored in a Leo ua.'''
-       
-    def __init__( self, undoer, t ):
-        self.undoer = undoer
-        self.t = t
-            
-    def getPickleProxy( self ):
-        
-      
-        try:
-            #array = self.undoer.serializeSelf()
-            data = pickle.dumps( self.undoer )
-            ds = len( data )
-            pp = zlib.compress( data, level = 9 )
-            ps = len( pp )
-            amd5 = md5.md5( self.t.bodyString )
-            checksum = amd5.hexdigest()
-            return pp, checksum 
-        except Exception, x:
-            return "", ""  
-#@-node:ekr.20060201152349.12:PickleProxy
-#@-node:ekr.20060201152349.10:infrastructure
-#@+node:ekr.20060201152349.13:UndoableProxyEvent
-class UndoableProxyEvent( sundo.UndoableEdit ):
-
-       
-    def __init__( self, event, owner, master , c):
-        
-        self.event = event
-        self.owner = owner
-        self.master = master
-        self.c = c
-        self.cp = c.currentPosition().copy()
-        self._can_undo = event.canUndo()
-        self._can_redo = event.canRedo()
-        self.can_undo = self._can_undo
-        self.can_redo = self._can_redo
-        self.dieable = 0
-        self.ignore = 0
-        
-    
-    def __canRedo( self ):
-        return self._can_redo == self.event.canRedo()
-        
-    def __canUndo( self ):
-        return self._can_undo == self.event.canUndo()
-            
-            
-    def addEdit( self, edit ):
-        return 0
-        
-    def canRedo( self ):
-        #if self.__canUndo():
-        return self.can_redo
-        #else:
-        #    return self.event.canRedo()
-        
-    def canUndo( self ):
-        #if self.__canRedo():
-        return self.can_undo
-        #else:
-        #    return self.event.canUndo()
-        
-    def isAlive( self ):
-        return self.can_redo or self.can_undo
-    
-    def invalidate( self ):
-        self.c.undoer.killFromEvent( self )
-        
-    def die( self ):    
-        self.can_undo = self.can_redo = 0
-        #edits = self.owner.getEdits()
-        #spot = edits.indexOf( self.event )
-        #self.owner.trimEdits( spot, edits.size() )
-    
-        
-    def getPresentationName( self ):
-        return self.event.getPresentationName()
-        
-    def getRedoPresentationName( self ):
-        
-        if self.__canRedo():
-            return self.event.getRedoPresentationName()
-        elif self.isAlive():
-            return "Expended %s" % self.event.getRedoPresentationName()
-        else:
-            return "Dead %s" % self.event.getRedoPresentationName()
-        
-    def getUndoPresentationName( self ):
-        
-        if self.__canUndo():
-            return self.event.getUndoPresentationName()
-        elif self.isAlive():
-            return "Expended %s" % self.event.getUndoPresentationName()
-        else:
-            return "Dead %s" % self.event.getUndoPresentationName()
-        
-        
-    def isSignificant( self ):
-        return 1
-    
-    def sync( self ):
-        self._can_redo = self.event.canRedo()
-        self._can_undo = self.event.canUndo()
-        
-    def redo( self ):
-        
-        self.c.selectPosition( self.cp.copy() )
-        self.can_redo = 0
-        self.can_undo = 1
-        if self.__canRedo():
-            self.master.ignore = 1
-            if not self.ignore:
-                self.owner.redo()
-            self.master.ignore = 0
-            self.master.setMenu()
-            
-        self.sync()
-            
-        
-    def undo( self ):
-        
-        self.c.selectPosition( self.cp.copy() )
-        self.can_undo = 0
-        self.can_redo = 1
-        if self.__canUndo():
-            self.master.ignore = 1
-            if not self.ignore:
-                self.owner.undo()
-            self.master.ignore = 0
-            self.master.setMenu()
-            
-        self.sync()
-        
-    def replaceEdit( self, edit ):
-        return 0
-        
-
-#@-node:ekr.20060201152349.13:UndoableProxyEvent
-#@+node:ekr.20060201152349.14:<<UndoableDocumentEvent>>
-class UndoableDocumentEvent3:#( sundo.UndoableEdit, io.Serializable ):
-    '''A class that takes the current Editors document and does undo changes
-       upon the data within the Editor.  It is assumed that the data in the document
-       will be in sync with the changes represented within the UndoableDocumentEvent'''
-       
-    def __init__( self, c, event, txt = "" ):
-        
-        commanders[ self ] = c
-        self.spot = event.getOffset()
-        self.length = event.getLength()
-        self.txt = txt
-
-        self.can_undo = 1
-        self.can_redo = 0
-        if self.txt.isspace():
-           name_txt = "%s whitespaces" % len( self.txt )
-        else:
-           name_txt = self.txt
-        
-        if event.getType() == sevent.DocumentEvent.EventType.INSERT:
-            self.etype = "insert"
-        elif event.getType() == sevent.DocumentEvent.EventType.REMOVE:
-            self.etype = "remove"
-
-            
-            
-        if self.etype == "insert":
-            self.name = "insert %s" % name_txt  
-        elif self.etype == "remove":
-            self.name = "remove %s" % name_txt
-    
-    #def __getstate__( self ):
-    #    dic = self.__dict__
-    #    import copy
-    #    rv = copy.copy( dic )
-    #    #del rv[ c ]
-    #    return rv        
-            
-    def addEdit( self, edit ):
-        return 0
-        
-    def canRedo( self ):
-        return self.can_redo
-        
-    def canUndo( self ):
-        
-        return self.can_undo
-        
-    def die( self ):    
-        self.can_undo = self.can_redo = 0
-        #if die_listeners.has_key( self ):
-        #    dlistener = die_listeners[ self ]
-        #    if dlistener.dieable:
-        #        print "WHACKING %s" % dlistener
-        #        dlistener.invalidate()
-    
-        
-    def getPresentationName( self ):
-        return self.name 
-        
-    def getRedoPresentationName( self ):
-        return "Redo %s" % self.name
-        
-    def getUndoPresentationName( self ):
-        return "Undo %s" % self.name
-        
-    def isSignificant( self ):
-        return 1
-        
-    def redo( self ):
-        
-        self.can_redo = 0
-        self.can_undo = 1
-        self.redoEvent()
-        
-    def undo( self ):
-        
-        self.can_undo = 0
-        self.can_redo = 1
-        self.undoEvent()
-        
-    def replaceEdit( self, edit ):
-        return 0
-        
-    def redoEvent( self ):
-        
-        c = commanders.get( self )
-        doc = c.frame.body._current_editor.getDocument()
-        if self.etype == "insert":
-            doc.insertString( self.spot, self.txt, None )
-            return       
-        elif self.etype == "remove":            
-            doc.remove( self.spot, self.length )
-            return    
-        
-    def undoEvent( self ):
-        
-
-        c = commanders.get( self )                
-        doc = c.frame.body._current_editor.getDocument()
-        if self.etype == "insert":
-            print 'undoing spot %s %s %s' % ( self.spot, self.length, self.txt )
-            doc.remove( self.spot, self.length )
-            print 'undone %s' % self
-            return  
-        elif self.etype == "remove":
-            doc.insertString( self.spot, self.txt, None )
-            return 
-
-    def getForTableModel( self ):
-        return util.Vector( [ self.spot, self.txt, self.name, '' ] )
-        
-
-
-#@-node:ekr.20060201152349.14:<<UndoableDocumentEvent>>
-#@+node:ekr.20060201152349.15:<<UndoableCompoundEvent>>
-class UndoableCompoundEvent3:
-    
-    def __init__( self, pname ):
-        #self.ce = sundo.CompoundEdit()
-        self.pname = pname
-        self.undostack = []
-        self.can_undo = 1
-        self.can_redo = 0
-        
-    def getPresentationName( self ):
-        return self.pname
-        
-    def getRedoPresentationName( self ):
-        return "Redo %s" % self.pname
-        
-    def getUndoPresentationName( self ):
-        return "Undo %s" % self.pname
-        
-    def canUndo( self ):
-        return self.can_undo
-        #return self.ce.canUndo()
-        
-    def canRedo( self ):
-        return self.can_redo
-        #return self.ce.canRedo()
-        
-    def undo( self ):
-        for z in self.undostack:
-            print z
-            z.undo()
-        self.can_undo = 0
-        self.can_redo = 1
-        
-    def redo( self ):
-        
-        self.undostack.reverse()
-        for z in self.undostack:
-            print z
-            z.redo()
-        
-        self.undostack.reverse()
-        self.can_undo = 1
-        self.can_redo = 0
-        
-    def isSignificant( self ):
-        return 1
-        #return self.ce.isSignificant()
-        
-    def addEdit( self, edit ):
-        self.undostack.insert( 0, edit )
-        
-
-    
-    def die( self ):
-        pass
-        #return self.ce.die()
-        
-    def end( self ):
-        pass
-        #return self.ce.end()
-        
-        
-
-            
-        
-
-#@-node:ekr.20060201152349.15:<<UndoableCompoundEvent>>
-#@-node:ekr.20060201152349:NodeUndoer.py
-#@-node:ekr.20060228072202:New undoer
 #@+node:ekr.20060531192407:IPython
 #@-node:ekr.20060531192407:IPython
 #@+node:ekr.20060629154112:Merge Leo & jyLeo

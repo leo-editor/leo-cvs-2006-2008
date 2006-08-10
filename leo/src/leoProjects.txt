@@ -1238,6 +1238,11 @@ def putCodeLine (self,s,i):
             at.os(line)
 #@-node:ekr.20041005105605.174:putCodeLine
 #@-node:ekr.20050419060645:Leo *already* supports Python decorators
+#@+node:ekr.20060809083139:Wrote script to convert g.es to g.et where appropriate
+http://sourceforge.net/forum/message.php?msg_id=3858363
+#@+node:ekr.20060809083139.1:@url http://docs.python.org/lib/module-gettext.html
+#@-node:ekr.20060809083139.1:@url http://docs.python.org/lib/module-gettext.html
+#@-node:ekr.20060809083139:Wrote script to convert g.es to g.et where appropriate
 #@-node:ekr.20060702103435.2:New features
 #@+node:ekr.20060702103435.3:New settings
 #@+node:ekr.20060702103435.4:Added @font menu font setting

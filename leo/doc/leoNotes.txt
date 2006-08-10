@@ -187,7 +187,6 @@ but with the name of your new language instead of "Python".
 #@nonl
 #@+node:EKR.20040623090054:<< define global colorizer data >>
 case_insensitiveLanguages = ['plsql',]
-#@nonl
 #@-node:EKR.20040623090054:<< define global colorizer data >>
 #@+node:ekr.20031218072017.368:<< define global data structures >> app
 # Internally, lower case is used for all language names.
@@ -277,7 +276,6 @@ self.extension_dict = {
     "txt"   : "plain",
     "tcl"   : "tcltk",
     "w"     : "cweb" }
-#@nonl
 #@-node:ekr.20031218072017.368:<< define global data structures >> app
 #@+node:ekr.20031218072017.370:<< configure language-specific settings >> colorizer
 # Define has_string, keywords, single_comment_start, block_comment_start, block_comment_end.
@@ -338,21 +336,18 @@ if 1: # 10/25/02: we color both kinds of references in cweb mode.
 else:
     self.lb = g.choose(self.language == "cweb","@<","<<")
     self.rb = g.choose(self.language == "cweb","@>",">>")
-#@nonl
 #@-node:ekr.20031218072017.370:<< configure language-specific settings >> colorizer
 #@+node:ekr.20031218072017.371:<< define colorizer keywords >> colorizer
 @others
 
 cweb_keywords = c_keywords
 perlpod_keywords = perl_keywords
-#@nonl
 #@+node:ekr.20031218072017.372:actionscript keywords
 actionscript_keywords = [
 #Jason 2003-07-03 
 #Actionscript keywords for Leo adapted from UltraEdit syntax highlighting
 "break", "call", "continue", "delete", "do", "else", "false", "for", "function", "goto", "if", "in", "new", "null", "return", "true", "typeof", "undefined", "var", "void", "while", "with", "#include", "catch", "constructor", "prototype", "this", "try", "_parent", "_root", "__proto__", "ASnative", "abs", "acos", "appendChild", "asfunction", "asin", "atan", "atan2", "attachMovie", "attachSound", "attributes", "BACKSPACE", "CAPSLOCK", "CONTROL", "ceil", "charAt", "charCodeAt", "childNodes", "chr", "cloneNode", "close", "concat", "connect", "cos", "createElement", "createTextNode", "DELETEKEY", "DOWN", "docTypeDecl", "duplicateMovieClip", "END", "ENTER", "ESCAPE", "enterFrame", "entry", "equal", "eval", "evaluate", "exp", "firstChild", "floor", "fromCharCode", "fscommand", "getAscii", "getBeginIndex", "getBounds", "getBytesLoaded", "getBytesTotal", "getCaretIndex", "getCode", "getDate", "getDay", "getEndIndex", "getFocus", "getFullYear", "getHours", "getMilliseconds", "getMinutes", "getMonth", "getPan", "getProperty", "getRGB", "getSeconds", "getTime", "getTimer", "getTimezoneOffset", "getTransform", "getURL", "getUTCDate", "getUTCDay", "getUTCFullYear", "getUTCHours", "getUTCMilliseconds", "getUTCMinutes", "getUTCMonth", "getUTCSeconds", "getVersion", "getVolume", "getYear", "globalToLocal", "gotoAndPlay", "gotoAndStop", "HOME", "haschildNodes", "hide", "hitTest", "INSERT", "Infinity", "ifFrameLoaded", "ignoreWhite", "indexOf", "insertBefore", "int", "isDown", "isFinite", "isNaN", "isToggled", "join", "keycode", "keyDown", "keyUp", "LEFT", "LN10", "LN2", "LOG10E", "LOG2E", "lastChild", "lastIndexOf", "length", "load", "loaded", "loadMovie", "loadMovieNum", "loadVariables", "loadVariablesNum", "localToGlobal", "log", "MAX_VALUE", "MIN_VALUE", "max", "maxscroll", "mbchr", "mblength", "mbord", "mbsubstring", "min", "NEGATIVE_INFINITY", "NaN", "newline", "nextFrame", "nextScene", "nextSibling", "nodeName", "nodeType", "nodeValue", "on", "onClipEvent", "onClose", "onConnect", "onData", "onLoad", "onXML", "ord", "PGDN", "PGUP", "PI", "POSITIVE_INFINITY", "parentNode", "parseFloat", "parseInt", "parseXML", "play", "pop", "pow", "press", "prevFrame", "previousSibling", "prevScene", "print", "printAsBitmap", "printAsBitmapNum", "printNum", "push", "RIGHT", "random", "release", "removeMovieClip", "removeNode", "reverse", "round", "SPACE", "SQRT1_2", "SQRT2", "scroll", "send", "sendAndLoad", "set", "setDate", "setFocus", "setFullYear", "setHours", "setMilliseconds", "setMinutes", "setMonth", "setPan", "setProperty", "setRGB", "setSeconds", "setSelection", "setTime", "setTransform", "setUTCDate", "setUTCFullYear", "setUTCHours", "setUTCMilliseconds", "setUTCMinutes", "setUTCMonth", "setUTCSeconds", "setVolume", "setYear", "shift", "show", "sin", "slice", "sort", "start", "startDrag", "status", "stop", "stopAllSounds", "stopDrag", "substr", "substring", "swapDepths", "splice", "split", "sqrt", "TAB", "tan", "targetPath", "tellTarget", "toggleHighQuality", "toLowerCase", "toString", "toUpperCase", "trace", "UP", "UTC", "unescape", "unloadMovie", "unLoadMovieNum", "unshift", "updateAfterEvent", "valueOf", "xmlDecl", "_alpha", "_currentframe", "_droptarget", "_focusrect", "_framesloaded", "_height", "_highquality", "_name", "_quality", "_rotation", "_soundbuftime", "_target", "_totalframes", "_url", "_visible", "_width", "_x", "_xmouse", "_xscale", "_y", "_ymouse", "_yscale", "and", "add", "eq", "ge", "gt", "le", "lt", "ne", "not", "or", "Array", "Boolean", "Color", "Date", "Key", "Math", "MovieClip", "Mouse", "Number", "Object", "Selection", "Sound", "String", "XML", "XMLSocket"
 ]
-#@nonl
 #@-node:ekr.20031218072017.372:actionscript keywords
 #@+node:bwmulder.20041023131509:ada keywords
 ada_keywords = [
@@ -379,7 +374,6 @@ ada_keywords = [
     "digits",                    "renames",
     "do",          "mod",        "requeue",    "xor"
    ]
-#@nonl
 #@-node:bwmulder.20041023131509:ada keywords
 #@+node:ekr.20040206072057:c# keywords
 csharp_keywords = [
@@ -403,7 +397,6 @@ csharp_keywords = [
     "value","virtual","void","volatile",
     "where","while",
     "yield"]
-#@nonl
 #@-node:ekr.20040206072057:c# keywords
 #@+node:ekr.20031218072017.373:c/c++ keywords
 c_keywords = [
@@ -420,7 +413,6 @@ c_keywords = [
     "private","protected","public","reinterpret_cast","static_cast",
     "template","this","throw","true","try",
     "typeid","typename","using","virtual","wchar_t"]
-#@nonl
 #@-node:ekr.20031218072017.373:c/c++ keywords
 #@+node:ekr.20040401103539:css keywords
 css_keywords = [
@@ -489,7 +481,6 @@ css_keywords = [
 #aural values
 "stress", "azimuth", "elevation", "pitch", "richness", "volume",
 "page-break", "page-after", "page-inside"]
-#@nonl
 #@-node:ekr.20040401103539:css keywords
 #@+node:ekr.20031218072017.374:elisp keywords
 # EKR: needs more work.
@@ -512,7 +503,6 @@ elisp_keywords = [
     "type-of",
     "unless",
     "when","while"]
-#@nonl
 #@-node:ekr.20031218072017.374:elisp keywords
 #@+node:ekr.20041107093834:forth keywords
 # Default forth keywords: extended by leo-forthwords.txt.
@@ -552,7 +542,6 @@ forth_italicwords = [ ]
 # Forth bold-italics words: extemded leo-forthbolditalicwords.txt if present
 # Note: on some boxen, bold italics may show in plain bold.
 forth_bolditalicwords = [ ]
-#@nonl
 #@-node:ekr.20041107093834:forth keywords
 #@+node:ekr.20031218072017.375:html keywords
 # No longer used by syntax colorer.
@@ -572,7 +561,6 @@ if 0: # Not used at present.
         "script","style"]
 
     html_specials = [ "<%","%>" ]
-#@nonl
 #@-node:ekr.20031218072017.375:html keywords
 #@+node:ekr.20031218072017.376:java keywords
 java_keywords = [
@@ -587,7 +575,6 @@ java_keywords = [
     "short","static","super","switch","synchronized",
     "this","throw","transient","true","try",
     "var","void","volatile","while"]
-#@nonl
 #@-node:ekr.20031218072017.376:java keywords
 #@+node:ekr.20031218072017.377:latex keywords
 #If you see two idenitical words, with minor capitalization differences
@@ -718,7 +705,6 @@ latex_keywords = [
     "\\Xi", "\\xi",
     #Z
     "\\zeta" ]
-#@nonl
 #@-node:ekr.20031218072017.377:latex keywords
 #@+node:ekr.20060328110802:lua keywords
 # ddm 13/02/06
@@ -752,7 +738,6 @@ pascal_keywords = [
     "threadvar",
     # limited contexts
     "exports","property","default","write","stored","index","name" ]
-#@nonl
 #@-node:ekr.20031218072017.378:pascal keywords
 #@+node:ekr.20031218072017.379:perl keywords
 perl_keywords = [
@@ -818,7 +803,6 @@ perl_keywords = [
     "chmod","chown","die","exec","kill",
     "print","printf","return","reverse",
     "sort","system","syscall","unlink","utime","warn"]
-#@nonl
 #@-node:ekr.20031218072017.379:perl keywords
 #@+node:ekr.20031218072017.380:php keywords
 php_keywords = [ # 08-SEP-2002 DTHEIN
@@ -1230,7 +1214,6 @@ python_keywords = [
     "class",     "except",    "if",        "or",        "yield",   
     "continue",  "exec",      "import",    "pass",      "while",
     "def",       "finally",   "in",        "print"]
-#@nonl
 #@-node:ekr.20031218072017.381:python keywords
 #@+node:ekr.20040331145826:rapidq keywords
 rapidq_keywords = [
@@ -1261,7 +1244,6 @@ rapidq_keywords = [
 "SUB","SUBI","SWAP","TALLY","TAN","THEN","TIME$","TIMER","TO","TYPE","UBOUND",
 "UCASE$","UNLOADLIBRARY","UNTIL","VAL","VARIANT","VARPTR","VARPTR$","VARTYPE",
 "WEND","WHILE","WITH","WORD","XOR"]
-#@nonl
 #@-node:ekr.20040331145826:rapidq keywords
 #@+node:ekr.20031218072017.382:rebol keywords
 rebol_keywords = [
@@ -1331,7 +1313,6 @@ rebol_keywords = [
 "within?", "word?",  
 "zero?"
 ]
-#@nonl
 #@-node:ekr.20031218072017.382:rebol keywords
 #@+node:ekr.20040401111125:shell keywords
 shell_keywords = [
@@ -1343,7 +1324,6 @@ shell_keywords = [
     "exit","kill","newgrp","pwd","read","readonly",
     "return","shift","test","trap","ulimit",
     "umask","wait" ]
-#@nonl
 #@-node:ekr.20040401111125:shell keywords
 #@+node:ekr.20031218072017.383:tcl/tk keywords
 tcltk_keywords = [ # Only the tcl keywords are here.
@@ -1375,7 +1355,6 @@ tcltk_keywords = [ # Only the tcl keywords are here.
     "unknown",   "unset",     "update",     "uplevel",   "upvar",
     "variable",  "vwait",
     "while" ]
-#@nonl
 #@-node:ekr.20031218072017.383:tcl/tk keywords
 #@-node:ekr.20031218072017.371:<< define colorizer keywords >> colorizer
 #@+node:ekr.20050618052621:Add the language name to @language default_target_language entry in leoSettings.leo

@@ -247,6 +247,7 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
                 box.bindHotKey(ftxt)
                 box.bindHotKey(ctxt)
                 if var is None: box.button.configure(state="disabled")
+        #@nonl
         #@-node:ekr.20031218072017.3903:<< Create four columns of radio and checkboxes >>
         #@nl
         #@    << Create two rows of buttons >>
