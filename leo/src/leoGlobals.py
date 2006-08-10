@@ -30,6 +30,7 @@ except ImportError:
 
 import exceptions
 import filecmp
+import gettext
 import operator
 import os
 if 0: # Do NOT import pdb here!  We shall defined pdb as a _function_ below.
@@ -2541,6 +2542,27 @@ def test_g_es_trace():
     
     g.es_trace('\ntest of es_trace: Ă',color='red')
 #@-node:ekr.20050707065530:es_trace & test
+#@+node:ekr.20060810095921:et, et_* and _ (underscore)
+if 1: # Do nothing
+    et = es
+    et_print = es_print
+    es_trace = es_trace
+    def _(s): return s
+else: # Use the gettext module to translate arguments.
+    def et (s):
+        es(_(s))
+        
+    def et_trace(s):
+        es_trace(_(s))
+
+    def et_trace(s):
+        es_trace(_(s))
+
+    def _ (s):
+        '''Return the translated text of s.'''
+        return gettext.gettext(s)
+#@nonl
+#@-node:ekr.20060810095921:et, et_* and _ (underscore)
 #@+node:ekr.20031218072017.3148:top
 if 0: # An extremely dangerous function.
 
