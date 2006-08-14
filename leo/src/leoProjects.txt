@@ -1248,6 +1248,381 @@ http://sourceforge.net/forum/message.php?msg_id=3858363
 #@+node:ekr.20060702103435.4:Added @font menu font setting
 #@-node:ekr.20060702103435.4:Added @font menu font setting
 #@-node:ekr.20060702103435.3:New settings
+#@+node:ekr.20060813125138:Code level
+#@+node:ekr.20060813112104:Removed component classes
+#@+node:ekr.20060813112938:Icon bar
+#@+node:ekr.20031218072017.3953:Icon area methods (compatibility)
+def addIconButton (self,*args,**keys):
+    return self.iconBar and self.iconBar.add(*args,**keys)
+
+def clearIconBar (self):
+    if self.iconBar: self.iconBar.clear()
+
+def createIconBar (self):
+    f = self ; c = f.c
+    if not f.iconBar:
+        f.iconBar = f.iconBarClass(c,f.outerFrame)
+        f.iconFrame = f.iconBar.iconFrame
+        f.iconBar.pack()
+    return f.iconBar
+    
+def getIconBar(self):
+    return self.iconBar
+getIconBarObject = getIconBar
+
+def hideIconBar (self):
+    if self.iconBar: self.iconBar(hide)
+#@nonl
+#@-node:ekr.20031218072017.3953:Icon area methods (compatibility)
+#@+node:ekr.20041223102225:class iconBarClass
+class iconBarClass:
+    
+    '''A class representing the singleton Icon bar'''
+    
+    @others
+#@+node:ekr.20041223102225.1: ctor
+def __init__ (self,c,parentFrame):
+    
+    self.c = c
+    
+    self.buttons = {} # Keys
+    self.iconFrame = Tk.Frame(
+        parentFrame,height="5m",bd=2,relief="groove") # ,background='blue')
+    self.parentFrame = parentFrame
+    self.visible = False
+#@-node:ekr.20041223102225.1: ctor
+#@+node:ekr.20031218072017.3958:add
+def add(self,*args,**keys):
+    
+    """Add a button containing text or a picture to the icon bar.
+    
+    Pictures take precedence over text"""
+    
+    f = self.iconFrame
+    text = keys.get('text')
+    imagefile = keys.get('imagefile')
+    image = keys.get('image')
+    command = keys.get('command')
+    bg = keys.get('bg')
+
+    if not imagefile and not image and not text: return
+
+    # First define n.
+    try:
+        g.app.iconWidgetCount += 1
+        n = g.app.iconWidgetCount
+    except:
+        n = g.app.iconWidgetCount = 1
+
+    if not command:
+        def command():
+            print "command for widget %s" % (n)
+
+    if imagefile or image:
+        << create a picture >>
+    elif text:
+        b = Tk.Button(f,text=text,relief="groove",bd=2,command=command)
+        if sys.platform != 'darwin':
+            width = max(6,len(text))
+            b.configure(width=width)
+        b.pack(side="left", fill="y")
+        return b
+        
+    return None
+#@+node:ekr.20031218072017.3959:<< create a picture >>
+try:
+    if imagefile:
+        # Create the image.  Throws an exception if file not found
+        imagefile = g.os_path_join(g.app.loadDir,imagefile)
+        imagefile = g.os_path_normpath(imagefile)
+        image = Tk.PhotoImage(master=g.app.root,file=imagefile)
+        
+        # Must keep a reference to the image!
+        try:
+            refs = g.app.iconImageRefs
+        except:
+            refs = g.app.iconImageRefs = []
+    
+        refs.append((imagefile,image),)
+    
+    if not bg:
+        bg = f.cget("bg")
+
+    b = Tk.Button(f,image=image,relief="flat",bd=0,command=command,bg=bg)
+    b.pack(side="left",fill="y")
+    return b
+    
+except:
+    g.es_exception()
+    return None
+#@-node:ekr.20031218072017.3959:<< create a picture >>
+#@-node:ekr.20031218072017.3958:add
+#@+node:ekr.20031218072017.3956:clear
+def clear(self):
+    
+    """Destroy all the widgets in the icon bar"""
+    
+    f = self.iconFrame
+    
+    for slave in f.pack_slaves():
+        slave.destroy()
+    self.visible = False
+
+    f.configure(height="5m") # The default height.
+    g.app.iconWidgetCount = 0
+    g.app.iconImageRefs = []
+#@-node:ekr.20031218072017.3956:clear
+#@+node:ekr.20041223114821:getFrame
+def getFrame (self):
+
+    return self.iconFrame
+#@-node:ekr.20041223114821:getFrame
+#@+node:ekr.20041223102225.2:pack (show)
+def pack (self):
+    
+    """Show the icon bar by repacking it"""
+    
+    if not self.visible:
+        self.visible = True
+        self.iconFrame.pack(fill="x",pady=2)
+        
+show = pack
+#@-node:ekr.20041223102225.2:pack (show)
+#@+node:ekr.20031218072017.3955:unpack (hide)
+def unpack (self):
+    
+    """Hide the icon bar by unpacking it.
+    
+    A later call to show will repack it in a new location."""
+    
+    if self.visible:
+        self.visible = False
+        self.iconFrame.pack_forget()
+        
+hide = unpack
+#@-node:ekr.20031218072017.3955:unpack (hide)
+#@-node:ekr.20041223102225:class iconBarClass
+#@-node:ekr.20060813112938:Icon bar
+#@+node:ekr.20051009045208:createSplitterComponents
+def createSplitterComponents (self):
+
+    f = self ; c = f.c
+
+    f.createLeoSplitters(f.outerFrame)
+    
+    # Create the canvas, tree, log and body.
+    f.canvas = f.createCanvas(f.split2Pane1)
+    f.tree   = leoTkinterTree.leoTkinterTree(c,f,f.canvas)
+    f.log    = leoTkinterLog(f,f.split2Pane2)
+    f.body   = leoTkinterBody(f,f.split1Pane2)
+    
+    # Yes, this an "official" ivar: this is a kludge.
+    f.bodyCtrl = f.body.bodyCtrl
+    
+    # Configure.
+    f.setTabWidth(c.tab_width)
+    f.tree.setColorFromConfig()
+    f.reconfigurePanes()
+    f.body.setFontFromConfig()
+    f.body.setColorFromConfig()
+#@nonl
+#@-node:ekr.20051009045208:createSplitterComponents
+#@+node:ekr.20060813115100:Status Line
+#@+node:ekr.20041223104933:class statusLineClass
+class statusLineClass:
+    
+    '''A class representing the status line.'''
+    
+    @others
+#@+node:ekr.20031218072017.3961: ctor
+def __init__ (self,c,parentFrame):
+    
+    self.c = c
+    self.bodyCtrl = c.frame.bodyCtrl
+    self.colorTags = [] # list of color names used as tags.
+    self.enabled = False
+    self.isVisible = False
+    self.lastRow = self.lastCol = 0
+    self.log = c.frame.log
+    #if 'black' not in self.log.colorTags:
+    #    self.log.colorTags.append("black")
+    self.parentFrame = parentFrame
+    self.statusFrame = Tk.Frame(parentFrame,bd=2)
+    text = "line 0, col 0"
+    width = len(text) + 4
+    self.labelWidget = Tk.Label(self.statusFrame,text=text,width=width,anchor="w")
+    self.labelWidget.pack(side="left",padx=1)
+    
+    bg = self.statusFrame.cget("background")
+    self.textWidget = Tk.Text(self.statusFrame,
+        height=1,state="disabled",bg=bg,relief="groove",name='status-line')
+    self.textWidget.pack(side="left",expand=1,fill="x")
+    self.textWidget.bind("<Button-1>", self.onActivate)
+#@-node:ekr.20031218072017.3961: ctor
+#@+node:ekr.20031218072017.3962:clear
+def clear (self):
+    
+    t = self.textWidget
+    if not t: return
+    
+    trace = self.c.frame.trace_status_line and not g.app.unitTesting
+    if trace: g.trace(g.callers())
+    
+    t.configure(state="normal")
+    t.delete("1.0","end")
+    t.configure(state="disabled")
+#@-node:ekr.20031218072017.3962:clear
+#@+node:EKR.20040424153344:enable, disable & isEnabled
+def disable (self,background=None):
+    
+    c = self.c ; t = self.textWidget
+    if t:
+        if not background:
+            background = self.statusFrame.cget("background")
+        t.configure(state="disabled",background=background)
+    self.enabled = False
+    c.bodyWantsFocus()
+    
+def enable (self,background="white"):
+    
+    # g.trace()
+    c = self.c ; t = self.textWidget
+    if t:
+        t.configure(state="normal",background=background)
+        c.widgetWantsFocus(t)
+    self.enabled = True
+        
+def isEnabled(self):
+    return self.enabled
+#@nonl
+#@-node:EKR.20040424153344:enable, disable & isEnabled
+#@+node:ekr.20041026132435:get
+def get (self):
+    
+    t = self.textWidget
+    if t:
+        return t.get("1.0","end")
+    else:
+        return ""
+#@-node:ekr.20041026132435:get
+#@+node:ekr.20041223114744:getFrame
+def getFrame (self):
+    
+    return self.statusFrame
+#@-node:ekr.20041223114744:getFrame
+#@+node:ekr.20050120093555:onActivate
+def onActivate (self,event=None):
+    
+    # Don't change background as the result of simple mouse clicks.
+    background = self.statusFrame.cget("background")
+    self.enable(background=background)
+#@-node:ekr.20050120093555:onActivate
+#@+node:ekr.20041223111916:pack & show
+def pack (self):
+    
+    if not self.isVisible:
+        self.isVisible = True
+        self.statusFrame.pack(fill="x",pady=1)
+        
+show = pack
+#@-node:ekr.20041223111916:pack & show
+#@+node:ekr.20031218072017.3963:put (leoTkinterFrame:statusLineClass)
+def put(self,s,color=None):
+    
+    t = self.textWidget
+    if not t: return
+    
+    trace = self.c.frame.trace_status_line and not g.app.unitTesting
+    if trace: g.trace(s,g.callers())
+    
+    t.configure(state="normal")
+        
+    if color and color not in self.colorTags:
+        self.colorTags.append(color)
+        t.tag_config(color,foreground=color)
+
+    if color:
+        t.insert("end",s)
+        t.tag_add(color,"end-%dc" % (len(s)+1),"end-1c")
+        t.tag_config("black",foreground="black")
+        t.tag_add("black","end")
+    else:
+        t.insert("end",s)
+    
+    t.configure(state="disabled")
+#@-node:ekr.20031218072017.3963:put (leoTkinterFrame:statusLineClass)
+#@+node:ekr.20041223111916.1:unpack & hide
+def unpack (self):
+    
+    if self.isVisible:
+        self.isVisible = False
+        self.statusFrame.pack_forget()
+
+hide = unpack
+#@-node:ekr.20041223111916.1:unpack & hide
+#@+node:ekr.20031218072017.1733:update
+def update (self):
+    
+    c = self.c ; w = self.bodyCtrl ; lab = self.labelWidget
+    if g.app.killed or not self.isVisible:
+        return
+
+    index = w.index("insert")
+    row,col = g.app.gui.getindex(w,index)
+
+    if col > 0:
+        s = w.get("%d.0" % (row),index)
+        s = g.toUnicode(s,g.app.tkEncoding)
+        col = g.computeWidth (s,c.tab_width)
+    
+    s = "line %d, col %d " % (row,col)
+    # Important: this does not change the focus because labels never get focus.
+    lab.configure(text=s)
+    self.lastRow = row
+    self.lastCol = col
+#@-node:ekr.20031218072017.1733:update
+#@-node:ekr.20041223104933:class statusLineClass
+#@+node:ekr.20041223105114.1:Status line methods (compatibility)
+def createStatusLine (self):
+    f = self ; c = f.c
+    if not self.statusLine:
+        f.statusLine  = statusLine = f.statusLineClass(c,f.outerFrame)
+        f.statusFrame = statusLine.statusFrame
+        f.statusLabel = statusLine.labelWidget
+        f.statusText  = statusLine.textWidget
+        statusLine.pack()
+    return self.statusLine
+
+def clearStatusLine (self):
+    if self.statusLine: self.statusLine.clear()
+    
+def disableStatusLine (self,background=None):
+    if self.statusLine: self.statusLine.disable(background)
+
+def enableStatusLine (self,background="white"):
+    if self.statusLine: self.statusLine.enable(background)
+
+def getStatusLine (self):
+    return self.statusLine
+    
+getStatusObject = getStatusLine
+    
+def putStatusLine (self,s,color=None):
+    if self.statusLine: self.statusLine.put(s,color)
+    
+def setFocusStatusLine (self):
+    if self.statusLine: self.statusLine.setFocus()
+
+def statusLineIsEnabled(self):
+    return self.statusLine and self.statusLine.isEnabled()
+    
+def updateStatusLine(self):
+    if self.statusLine: self.statusLine.update()
+#@nonl
+#@-node:ekr.20041223105114.1:Status line methods (compatibility)
+#@-node:ekr.20060813115100:Status Line
+#@-node:ekr.20060813112104:Removed component classes
+#@-node:ekr.20060813125138:Code level
 #@-node:ekr.20060702103435:4.4.1 b4 projects
 #@-all
 #@nonl
