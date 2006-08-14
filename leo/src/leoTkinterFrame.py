@@ -27,7 +27,7 @@ Pmw = g.importExtension("Pmw",pluginName="leoTkinterFrame.py",verbose=False)
 #@-node:ekr.20041221070525:<< imports >>
 #@nl
 
-use_Pmw = False
+use_components = False
 
 #@+others
 #@+node:ekr.20031218072017.3940:class leoTkinterFrame
@@ -91,15 +91,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
     
         return "<leoTkinterFrame: %s>" % self.title
     #@-node:ekr.20031218072017.3942:__repr__ (tkFrame)
-    #@+node:ekr.20041221122440:f.component & components
-    def component (self,name):
-        
-        return self.componentsDict.get(name)
-        
-    def components (self):
-    
-        return self.componentsDict.keys()
-    #@-node:ekr.20041221122440:f.component & components
     #@+node:ekr.20031218072017.2176:f.finishCreate & helpers
     def finishCreate (self,c):
         
@@ -109,9 +100,9 @@ class leoTkinterFrame (leoFrame.leoFrame):
         # This must be done after creating the commander.
         f.splitVerticalFlag,f.ratio,f.secondary_ratio = f.initialRatios()
         f.createOuterFrames()
-        f.createIconBarComponents()
+        f.createIconBar()
         f.createSplitterComponents()
-        f.createStatusLineComponents()
+        f.createStatusLine()
         f.createFirstTreeNode()
         f.menu = leoTkinterMenu.leoTkinterMenu(f)
             # c.finishCreate calls f.createMenuBar later.
@@ -149,22 +140,10 @@ class leoTkinterFrame (leoFrame.leoFrame):
         # Create the outer frame, the 'hull' component.
         f.outerFrame = Tk.Frame(top)
         f.outerFrame.pack(expand=1,fill="both")
-        f.componentClass(c,'hull',f.outerFrame)
+        
+        if use_components:
+            f.componentClass(c,'hull',f.outerFrame)
     #@-node:ekr.20051009044751:createOuterFrames
-    #@+node:ekr.20051009044920:createIconBarComponents
-    # Warning: there is also a method called createIconBar.
-    
-    def createIconBarComponents (self):
-    
-        f = self ; c = f.c
-    
-        iconBar = f.iconBarClass(c,f.outerFrame)
-        f.iconFrame = iconBar.iconFrame
-        f.iconBar = f.componentClass(c,
-            f.iconBarComponentName,iconBar.iconFrame,
-            iconBar,iconBar.pack,iconBar.unpack)
-        f.iconBar.show()
-    #@-node:ekr.20051009044920:createIconBarComponents
     #@+node:ekr.20051009045208:createSplitterComponents
     def createSplitterComponents (self):
     
@@ -178,10 +157,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
         f.log    = leoTkinterLog(f,f.split2Pane2)
         f.body   = leoTkinterBody(f,f.split1Pane2)
         
-        f.componentClass(c,'tree',f.split2Pane1, f.tree, f.packTree, f.unpackTree)
-        f.componentClass(c,'log', f.split2Pane2, f.log,  f.packLog,  f.unpackLog)
-        f.componentClass(c,'body',f.split1Pane2, f.body, f.packBody, f.unpackBody)
-        
         # Yes, this an "official" ivar: this is a kludge.
         f.bodyCtrl = f.body.bodyCtrl
         
@@ -191,25 +166,8 @@ class leoTkinterFrame (leoFrame.leoFrame):
         f.reconfigurePanes()
         f.body.setFontFromConfig()
         f.body.setColorFromConfig()
+    #@nonl
     #@-node:ekr.20051009045208:createSplitterComponents
-    #@+node:ekr.20051009045300:createStatusLineComponents
-    # Warning: there is also a method called createStatusLine.
-    
-    def createStatusLineComponents (self):
-        
-        f = self ; c = f.c
-        statusLine = f.statusLineClass(c,f.outerFrame)
-        
-        # Create offical ivars in the frame class.
-        f.statusFrame = statusLine.statusFrame
-        f.statusLabel = statusLine.labelWidget
-        f.statusText  = statusLine.textWidget
-        
-        f.statusLine = f.componentClass(c,
-            f.statusLineComponentName,
-            statusLine.statusFrame,statusLine,statusLine.pack,statusLine.unpack)
-        f.statusLine.show() # Show status line by default.
-    #@-node:ekr.20051009045300:createStatusLineComponents
     #@+node:ekr.20051009045404:createFirstTreeNode
     def createFirstTreeNode (self):
         
@@ -266,13 +224,10 @@ class leoTkinterFrame (leoFrame.leoFrame):
     
         scrolls = c.config.getBool('outline_pane_scrolls_horizontally')
         scrolls = g.choose(scrolls,1,0)
-    
-        if use_Pmw and Pmw:
-            canvas = self.createPmwTreeCanvas(parentFrame,scrolls,pack)
-        else:
-            canvas = self.createTkTreeCanvas(parentFrame,scrolls,pack)
+        canvas = self.createTkTreeCanvas(parentFrame,scrolls,pack)
     
         return canvas
+    #@nonl
     #@+node:ekr.20041221071131.1:createTkTreeCanvas
     def createTkTreeCanvas (self,parentFrame,scrolls,pack):
         
@@ -375,159 +330,8 @@ class leoTkinterFrame (leoFrame.leoFrame):
         # g.print_bindings("canvas",canvas)
         return canvas
     #@-node:ekr.20041221071131.1:createTkTreeCanvas
-    #@+node:ekr.20041221071131:createPmwTreeCanvas (not used)
-    def createPmwTreeCanvas (self,parentFrame,hScrollMode,pack):
-     
-        hscrollmode = g.choose(hScrollMode,'dynamic','none')
-        
-        self.scrolledCanvas = scrolledCanvas = Pmw.ScrolledCanvas(
-            parentFrame,
-            hscrollmode=hscrollmode,
-            vscrollmode='dynamic')
-    
-        if pack:
-            scrolledCanvas.pack(side='top',expand=1,fill="both")
-    
-        self.treeBar = scrolledCanvas.component('vertscrollbar')
-        
-        canvas = scrolledCanvas.component('canvas')
-        canvas.configure(background='white')
-        
-        return canvas
-    #@-node:ekr.20041221071131:createPmwTreeCanvas (not used)
     #@-node:ekr.20031218072017.3944:f.createCanvas & helpers
     #@+node:ekr.20041221123325:createLeoSplitters & helpers
-    def createLeoSplitters (self,parentFrame):
-        
-        if use_Pmw and Pmw:
-            #@        << create Pmw splitters and their components >>
-            #@+node:ekr.20041223130032:<< create Pmw splitters and their components >>
-            # Create splitter1 and its components.
-            splitter1 = self.createLeoPmwSplitter(parentFrame,self.splitVerticalFlag,'splitter1')
-            self.split1Pane1 = splitter2Frame = splitter1.add('splitter2Frame',min=50,size=300)
-            self.split1Pane2 = splitter1.add('body',min=50,size=300)
-            
-            # Create splitter2 and its components.
-            splitter2 = self.createLeoPmwSplitter(splitter2Frame,not self.splitVerticalFlag,'splitter2')
-            self.split2Pane1 = splitter2.add('outline',min=50,size=300)
-            self.split2Pane2 = splitter2.add('log',min=50,size=50)
-            
-            # Set the colors of the separator and handle after adding the dynamic frames.
-            for splitter in (splitter1,splitter2):
-                bar = splitter.component('separator-1')
-                bar.configure(background='LightSteelBlue2')
-                handle = splitter.component('handle-1')
-                handle.configure(background='SteelBlue2')
-            #@-node:ekr.20041223130032:<< create Pmw splitters and their components >>
-            #@nl
-        else:
-            # Splitter 1 is the main splitter containing splitter2 and the body pane.
-            f1,bar1,split1Pane1,split1Pane2 = self.createLeoTkSplitter(
-                parentFrame,self.splitVerticalFlag,'splitter1')
-    
-            self.f1,self.bar1 = f1,bar1
-            self.split1Pane1,self.split1Pane2 = split1Pane1,split1Pane2
-    
-            # Splitter 2 is the secondary splitter containing the tree and log panes.
-            f2,bar2,split2Pane1,split2Pane2 = self.createLeoTkSplitter(
-                split1Pane1,not self.splitVerticalFlag,'splitter2')
-    
-            self.f2,self.bar2 = f2,bar2
-            self.split2Pane1,self.split2Pane2 = split2Pane1,split2Pane2
-    #@+node:ekr.20041221195402:Pmw...
-    #@+node:ekr.20041221073427:createLeoPmwSplitter
-    def createLeoPmwSplitter (self,parent,verticalFlag,name):
-        
-        c = self.c
-        
-        orient = g.choose(verticalFlag,'vertical','horizontal')
-        command = g.choose(name=='splitter1',
-            self.onPmwResizeSplitter1,self.onPmwResizeSplitter2)
-    
-        panedFrame = Pmw.PanedWidget(parent,
-            orient=orient,
-            separatorthickness = 6, # default is 2
-            handlesize = 8,         # default is 8
-            command = command)
-    
-        panedFrame.pack(expand=1,fill='both')
-        
-        self.componentClass(c,name,panedFrame,panedFrame)
-    
-        return panedFrame
-    #@-node:ekr.20041221073427:createLeoPmwSplitter
-    #@+node:ekr.20031218072017.3946:resizePanesToRatio
-    def resizePanesToRatio(self,ratio,ratio2):
-        
-        # g.trace(ratio,ratio2,g.callers())
-        
-        if use_Pmw and Pmw:
-            #@        << resize the Pmw panes >>
-            #@+node:ekr.20050104084531:<< resize the Pmw panes >>
-            self.ratio = ratio
-            self.secondary_ratio = ratio2
-            splitter1 = self.component('splitter1').getObject()
-            splitter2 = self.component('splitter2').getObject()
-            
-            if self.splitVerticalFlag:
-                # Use ratio to set splitter2 height.
-                size = ratio * float(splitter1.winfo_height())
-                splitter1.configurepane('splitter2Frame',size=int(size))
-                # Use ratio2 to set outline width.
-                size = ratio2 * float(splitter2.winfo_width())
-                splitter2.configurepane('outline',size=int(size))
-            else:
-                # Use ratio to set splitter2 width.
-                size = ratio * float(splitter1.winfo_width())
-                splitter1.configurepane('splitter2Frame',size=int(size))
-                # Use ratio2 to set outline height.
-                size = ratio2 * float(splitter2.winfo_height())
-                splitter2.configurepane('outline',size=int(size))
-            #@-node:ekr.20050104084531:<< resize the Pmw panes >>
-            #@nl
-        else:
-            self.divideLeoSplitter(self.splitVerticalFlag,ratio)
-            self.divideLeoSplitter(not self.splitVerticalFlag,ratio2)
-    #@-node:ekr.20031218072017.3946:resizePanesToRatio
-    #@+node:ekr.20041221075743:onPmwResizeSplitter1/2
-    #@+at 
-    #@nonl
-    # These methods cause problems because Pmw.PanedWidget's calls these 
-    # methods way too often.
-    # 
-    # We don't need to remember changes to pane sizes, for several reasons:
-    # 1. The initial secondary ratio is always set by 
-    # leoFrame.initialRatios().
-    #     - Remembering this ratio implies a change to the file format and is 
-    # not worth the cost.
-    #     - The user can set these initial ratios with user options.
-    # 2. The only benefit of remembering the secondary ratio is when using the 
-    # Equal Sized Panes command.
-    #     - But resetting the secondary ratio to the default secondary ratio 
-    # is good enough.
-    # 3. Not remembering these ratios simplifies the code enough to be worth 
-    # doing.
-    #@-at
-    #@@c
-    
-    def onPmwResizeSplitter1 (self,sizes):
-        if 0: # Don't try to remember size changes.
-            if not self.initing:
-                n1,n2 = sizes
-                n1,n2 = float(n1),float(n2)
-                self.ratio = n1/(n1+n2)
-                # g.trace(self.ratio)
-        
-    def onPmwResizeSplitter2 (self,sizes):
-        if 0: # Don't try to remember size changes.
-            if not self.initing:
-                n1,n2 = sizes
-                n1,n2 = float(n1),float(n2)
-                self.secondary_ratio = n1/(n1+n2)
-                # g.trace(self.secondary_ratio)
-    #@-node:ekr.20041221075743:onPmwResizeSplitter1/2
-    #@-node:ekr.20041221195402:Pmw...
-    #@+node:ekr.20041221185246:Tk...
     #@+at 
     #@nonl
     # The key invariants used throughout this code:
@@ -537,10 +341,29 @@ class leoTkinterFrame (leoFrame.leoFrame):
     # splitter.
     # 
     # Only the general-purpose divideAnySplitter routine doesn't know about 
-    # these invariants.  So most of this code is specialized for Leo's 
-    # window.  OTOH, creating a single splitter window would be much easier 
-    # than this code.
+    # these
+    # invariants. So most of this code is specialized for Leo's window. OTOH, 
+    # creating
+    # a single splitter window would be much easier than this code.
     #@-at
+    #@@c
+    
+    def createLeoSplitters (self,parentFrame):
+        
+        # Splitter 1 is the main splitter containing splitter2 and the body pane.
+        f1,bar1,split1Pane1,split1Pane2 = self.createLeoTkSplitter(
+            parentFrame,self.splitVerticalFlag,'splitter1')
+    
+        self.f1,self.bar1 = f1,bar1
+        self.split1Pane1,self.split1Pane2 = split1Pane1,split1Pane2
+    
+        # Splitter 2 is the secondary splitter containing the tree and log panes.
+        f2,bar2,split2Pane1,split2Pane2 = self.createLeoTkSplitter(
+            split1Pane1,not self.splitVerticalFlag,'splitter2')
+    
+        self.f2,self.bar2 = f2,bar2
+        self.split2Pane1,self.split2Pane2 = split2Pane1,split2Pane2
+    #@nonl
     #@+node:ekr.20041221073427.1:createLeoTkSplitter
     def createLeoTkSplitter (self,parent,verticalFlag,componentName):
         
@@ -562,15 +385,17 @@ class leoTkinterFrame (leoFrame.leoFrame):
         # Define the splitter, bar and outer frame components.
         # It would be useless to define placed components here.
         # N.B. All frames managed by the placer must descend from splitterFrame1 or splitterFrame2
-        self.componentClass(self.c,componentName,f)
-        if componentName == 'splitter1':
-            self.componentClass(c,'splitter1Frame',f)
-            self.componentClass(c,'splitBar1',bar)
-        else:
-            self.componentClass(c,'splitter2Frame',f)
-            self.componentClass(c,'splitBar2',bar)
+        if use_components:
+            self.componentClass(self.c,componentName,f)
+            if componentName == 'splitter1':
+                self.componentClass(c,'splitter1Frame',f)
+                self.componentClass(c,'splitBar1',bar)
+            else:
+                self.componentClass(c,'splitter2Frame',f)
+                self.componentClass(c,'splitBar2',bar)
     
         return f, bar, f1, f2
+    #@nonl
     #@-node:ekr.20041221073427.1:createLeoTkSplitter
     #@+node:ekr.20031218072017.3947:bindBar
     def bindBar (self, bar, verticalFlag):
@@ -658,9 +483,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
     #@+node:ekr.20031218072017.3952:placeSplitter
     def placeSplitter (self,bar,pane1,pane2,verticalFlag):
     
-        if use_Pmw and Pmw:
-            return
-    
         if verticalFlag:
             # Panes arranged vertically; horizontal splitter bar
             pane1.place(relx=0.5, rely =   0, anchor="n", relwidth=1.0, relheight=0.5)
@@ -699,7 +521,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
     
         apply(self.canvas.yview,args,keys)
     #@-node:ekr.20031218072017.998:Scrolling callbacks (frame)
-    #@-node:ekr.20041221185246:Tk...
     #@-node:ekr.20041221123325:createLeoSplitters & helpers
     #@+node:ekr.20031218072017.3964:Destroying the frame
     #@+node:ekr.20031218072017.1975:destroyAllObjects
@@ -779,62 +600,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
     #@-node:ekr.20031218072017.1974:destroySelf (tkFrame)
     #@-node:ekr.20031218072017.3964:Destroying the frame
     #@-node:ekr.20031218072017.3941: Birth & Death (tkFrame)
-    #@+node:ekr.20041223095751:class componentClass (componentBaseClass)
-    class componentClass (leoFrame.componentBaseClass):
-        
-        '''A class to manage components of Leo windows'''
-        
-        #@    @+others
-        #@+node:ekr.20041223095751.1: ctor
-        def __init__ (self,c,name,frame,obj=None,packer=None,unpacker=None):
-            
-            # Init the base class.
-            leoFrame.componentBaseClass.__init__(
-                self,c,name,frame,obj,packer,unpacker)
-            
-            self.setPacker(packer)
-            self.setUnpacker(unpacker)
-        #@-node:ekr.20041223095751.1: ctor
-        #@+node:ekr.20041223154028.4:__repr__
-        def __repr__ (self):
-            
-            return '<component %s>' % self.name
-        #@-node:ekr.20041223154028.4:__repr__
-        #@+node:ekr.20041223124022:destroy
-        def destroy (self):
-            
-            try:
-                del c.frame.componentsDict[self.name]
-            except KeyError:
-                g.es("No component named %s" % name,color='blue')
-        #@-node:ekr.20041223124022:destroy
-        #@+node:ekr.20041223124022.1:getters & setters
-        # Setters...
-        def setPacker (self,packer):
-            if not packer: # Define default packer.
-                def packer():
-                    if self.frame:
-                        self.frame.pack(side='top',expand=1,fill='both')
-            self.packer = packer
-        
-        def setUnpacker (self,unpacker):
-            if not unpacker: # Define default unpacker.
-                def unpacker():
-                    if self.frame:
-                        self.frame.pack_forget()
-            self.unpacker = unpacker
-        #@-node:ekr.20041223124022.1:getters & setters
-        #@+node:ekr.20041223095751.2:pack & unpack
-        def pack (self):
-        
-            self.packer()
-            
-        def unpack (self):
-        
-            self.unpacker()
-        #@-node:ekr.20041223095751.2:pack & unpack
-        #@-others
-    #@-node:ekr.20041223095751:class componentClass (componentBaseClass)
     #@+node:ekr.20041223104933:class statusLineClass
     class statusLineClass:
         
@@ -901,6 +666,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
                 
         def isEnabled(self):
             return self.enabled
+        #@nonl
         #@-node:EKR.20040424153344:enable, disable & isEnabled
         #@+node:ekr.20041026132435:get
         def get (self):
@@ -1303,88 +1069,65 @@ class leoTkinterFrame (leoFrame.leoFrame):
     #@-node:ekr.20060203114017:f.setMinibufferBindings
     #@-node:ekr.20051014154752:Minibuffer methods
     #@+node:ekr.20031218072017.3953:Icon area methods (compatibility)
-    def getIconBarObject(self):
-        component = self.component(self.iconBarComponentName)
-        if not component: return g.trace("No iconBar component")
-        obj = component.getObject()
-        if obj: return obj
-        else: return g.trace(
-            "%s component has no status line object" % (
-                self.iconBarComponentName))
-                    
-    def callIconBar(self,name,*args,**keys):
-        obj = self.getIconBarObject()
-        if not obj: return
-        try:
-            f = getattr(obj,name)
-            return f(*args,**keys)
-        except AttributeError:
-            return g.trace("%s component has no '%s' method" % (
-                self.iconBarComponentName,name))
-    
     def addIconButton (self,*args,**keys):
-        return self.callIconBar('add',*args,**keys)
+        return self.iconBar and self.iconBar.add(*args,**keys)
     
     def clearIconBar (self):
-        return self.callIconBar('clear')
+        if self.iconBar: self.iconBar.clear()
     
     def createIconBar (self):
-        self.callIconBar('show')
-        return self.getIconBarObject() # For compatibility.
+        f = self ; c = f.c
+        if not f.iconBar:
+            f.iconBar = f.iconBarClass(c,f.outerFrame)
+            f.iconFrame = f.iconBar.iconFrame
+            f.iconBar.pack()
+        return f.iconBar
+        
+    def getIconBar(self):
+        return self.iconBar
+    getIconBarObject = getIconBar
     
     def hideIconBar (self):
-        return self.callIconBar('hide')
+        if self.iconBar: self.iconBar(hide)
+    #@nonl
     #@-node:ekr.20031218072017.3953:Icon area methods (compatibility)
     #@+node:ekr.20041223105114.1:Status line methods (compatibility)
-    def getStatusObject(self):
-        component = self.component(self.statusLineComponentName)
-        if not component: return g.trace("No statusLine component")
-        obj = component.getObject()
-        if obj: return obj
-        else: return g.trace(
-            "%s component has no status line object" % (
-                self.statusLineComponentName))
-                    
-    def callStatus(self,name,*args,**keys):
-        obj = self.getStatusObject()
-        if not obj: return
-        try:
-            f = getattr(obj,name)
-            return f(*args,**keys)
-        except AttributeError:
-            return g.trace("%s component has no '%s' method" % (
-                self.statusLineComponentName,name))
-        except Exception:
-            # g.es_exception()
-            return None # Support for chapters plugin.
-    
     def createStatusLine (self):
-        self.callStatus('show')
-        return self.getStatusObject() # For compatibility.
+        f = self ; c = f.c
+        if not self.statusLine:
+            f.statusLine  = statusLine = f.statusLineClass(c,f.outerFrame)
+            f.statusFrame = statusLine.statusFrame
+            f.statusLabel = statusLine.labelWidget
+            f.statusText  = statusLine.textWidget
+            statusLine.pack()
+        return self.statusLine
     
     def clearStatusLine (self):
-        return self.callStatus('clear')
+        if self.statusLine: self.statusLine.clear()
         
     def disableStatusLine (self,background=None):
-        return self.callStatus('disable',background)
+        if self.statusLine: self.statusLine.disable(background)
     
     def enableStatusLine (self,background="white"):
-        return self.callStatus('enable',background)
+        if self.statusLine: self.statusLine.enable(background)
     
     def getStatusLine (self):
-        return self.callStatus('get')
+        return self.statusLine
+        
+    getStatusObject = getStatusLine
         
     def putStatusLine (self,s,color=None):
-        return self.callStatus('put',s,color)
+        if self.statusLine: self.statusLine.put(s,color)
         
     def setFocusStatusLine (self):
-        return self.callStatus('setFocus')
+        if self.statusLine: self.statusLine.setFocus()
     
     def statusLineIsEnabled(self):
-        return self.callStatus('isEnabled')
+        return self.statusLine and self.statusLine.isEnabled()
         
     def updateStatusLine(self):
-        return self.callStatus('update')
+        if self.statusLine: self.statusLine.update()
+    #@nonl
     #@-node:ekr.20041223105114.1:Status line methods (compatibility)
     #@+node:ekr.20031218072017.3967:Configuration (tkFrame)
     #@+node:ekr.20031218072017.3968:configureBar
@@ -1540,10 +1283,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
     #@-node:ekr.20031218072017.2307:setTopGeometry
     #@+node:ekr.20031218072017.3970:reconfigurePanes (use config bar_width)
     def reconfigurePanes (self):
-        
-        if use_Pmw and Pmw:
-            return
-        
+    
         c = self.c
         
         border = c.config.getInt('additional_body_text_border')
@@ -2077,59 +1817,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
         orientation = g.choose(self.splitVerticalFlag,"vertical","horizontal")
         c.config.set("initial_splitter_orientation","string",orientation)
         
-        if use_Pmw and Pmw:
-            self.togglePmwSplitDirection(self.splitVerticalFlag)
-        else:
-            self.toggleTkSplitDirection(self.splitVerticalFlag)
-    #@+node:ekr.20041221122440.1:togglePmwSplitDirection
-    #@+at 
-    #@nonl
-    # Alas, there seems to be is no way to
-    # a) change the orientation of a Pmw.PanedWidget, or
-    # b) change the parent of a widget.
-    # Therefore, we must recreate all widgets to toggle the orientation!
-    #@-at
-    #@@c
-    
-    def togglePmwSplitDirection (self,verticalFlag):
-        
-        __pychecker__ = '--no-argsused' # verticalFlag not used.
-        
-        frame = self ; c = self.c ; p = c.currentPosition()
-        
-        for name in ('splitter1','splitter2'):
-            splitter = self.component(name).getObject()
-            splitter.pack_forget()
-    
-        # Remember the contents of the log, including most tags.
-        d = self.log.saveAllState()
-    
-        # Recreate everything: similar to code in finishCreate.
-        self.createLeoSplitters(self.outerFrame)
-        frame.canvas = self.createCanvas(self.split2Pane1) # Also packs canvas
-        frame.tree  = leoTkinterTree.leoTkinterTree(c,frame,frame.canvas)
-        frame.log   = leoTkinterLog(frame,self.split2Pane2)
-        frame.body  = leoTkinterBody(frame,self.split1Pane2)
-        
-        # A kludge: reset this "official" ivar.
-        frame.bodyCtrl = frame.body.bodyCtrl
-    
-        # Configure: similar to code in finishCreate.
-        frame.setTabWidth(c.tab_width)
-        frame.tree.setColorFromConfig()
-        self.reconfigurePanes()
-        self.body.setFontFromConfig()
-        self.body.setColorFromConfig()
-    
-        # Restore everything.
-        c.setLog()
-        frame.log.restoreAllState(d)
-        c.beginUpdate()
-        try:
-            c.selectPosition(p)
-        finally:
-            c.endUpdate()
-    #@-node:ekr.20041221122440.1:togglePmwSplitDirection
+        self.toggleTkSplitDirection(self.splitVerticalFlag)
     #@+node:ekr.20041221122440.2:toggleTkSplitDirection
     def toggleTkSplitDirection (self,verticalFlag):
     

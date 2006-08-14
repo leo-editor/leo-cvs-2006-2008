@@ -54,68 +54,6 @@ import re
 #@nl
 
 #@+others
-#@+node:ekr.20041223130609:class componentBaseClass
-class componentBaseClass:
-
-    #@    @+others
-    #@+node:ekr.20041223154028: ctor
-    def __init__ (self,c,name,frame,obj=None,packer=None,unpacker=None):
-        
-        self.c = c
-        self.frame = frame    # The Tk.Frame containing the component.
-        self.isVisible = False # True if the component is visible.
-        self.name = name      # The component's name: the key for c.frame.componentsDict.
-        self.obj = obj        # Optional object (typically not a Tk.Frame.)
-        self.packer = packer
-        self.unpacker = unpacker
-    
-        c.frame.componentsDict[name] = self
-    #@-node:ekr.20041223154028: ctor
-    #@+node:ekr.20041223124910:__repr__
-    def __repr__ (self):
-        
-        return '<component %s>' % self.name
-    #@-node:ekr.20041223124910:__repr__
-    #@+node:ekr.20041223154028.1:oops
-    def oops (self):
-        
-        print ("componentBaseClass oops:",
-            g.callers(),
-            "must be overridden in subclass")
-    #@-node:ekr.20041223154028.1:oops
-    #@+node:ekr.20041223154028.2:getters
-    # Getters...
-    def getFrame    (self): return self.frame
-    def getObject   (self): return self.obj
-    def getPacker   (self): return self.packer
-    def getUnpacker (self): return self.unpacker
-    #@-node:ekr.20041223154028.2:getters
-    #@+node:ekr.20041223154028.3:must be defined in subclasses
-    def destroy (self):
-        self.oops()
-    #@-node:ekr.20041223154028.3:must be defined in subclasses
-    #@+node:ekr.20041224072245:show & hide, pack & unpack
-    # Pack always packs the widget, which can make it visble in two places.
-    # Show packs a new widget only if it is not visible.
-    
-    def hide (self):
-        if self.isVisible:
-            self.isVisible = False
-            self.unpack()
-    
-    def pack (self):
-        self.oops()
-        
-    def show (self):
-        if not self.isVisible:
-            self.isVisible = True
-            self.pack()
-        
-    def unpack (self):
-        self.oops()
-    #@-node:ekr.20041224072245:show & hide, pack & unpack
-    #@-others
-#@-node:ekr.20041223130609:class componentBaseClass
 #@+node:ekr.20031218072017.3656:class leoBody
 class leoBody:
     
@@ -445,6 +383,7 @@ class leoFrame:
         self.menu = None
         self.miniBufferWidget = None # New in 4.4.
         self.prefsPanel = None
+        self.statusLine = None
         self.useMiniBufferWidget = False # New in 4.4
     
         # Gui-independent data
