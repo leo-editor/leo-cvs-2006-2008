@@ -123,10 +123,11 @@ def run(fileName=None,*args,**keywords):
             psyco.full()
             g.es("psyco now running",color="blue")
         except ImportError:
-            pass
+            g.app.use_psyco = False
         except:
             print "unexpected exception importing psyco"
             g.es_exception()
+            g.app.use_psyco = False
     #@-node:ekr.20040411081633:<< start psycho >>
     #@nl
     # New in 4.3: clear g.app.initing _before_ creating the frame.
