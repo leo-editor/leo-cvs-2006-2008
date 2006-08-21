@@ -104,6 +104,62 @@ self.lb.bind(g.angleBrackets("ListboxSelect"), gotoSelectedPosition)
 #@-node:displayClones
 #@-node:class cloneNavigator
 #@-node:@@button Show other clones
+#@+node:@@button LeoToHtml
+# LeoToHTML by Dan Rahmel
+
+<< docstring >>
+
+flagIgnoreFiles = True
+flagJustHeadlines = True
+filePath = "c:\\"
+
+myFileName = c.frame.shortFileName()    # Get current outline filename
+myFileName = myFileName[:-4]            # Remove .leo suffix
+# Open file for output
+f=open(filePath + myFileName + ".htm", 'w')
+
+# Write HTML header information
+f.write("<HTML>")
+f.write("<BODY>")
+
+for p in c.allNodes_iter():
+    myLevel = str(p.level() + 1)
+    myHeadline = p.headString()
+    # Check for node with LeoToHTML and ignore it
+    if not myHeadline.upper() == "LEOTOHTML":
+        if myHeadline[:5] != "@file" and not flagIgnoreFiles:
+            # Write headline at current style level. indent level: 3
+            f.write("<H" + myLevel + ">" + myHeadline + "</H" + myLevel + ">")
+            # If including body text, convert it to HTML usable format
+            if not flagJustHeadlines:
+                myBody = p.bodyString().encode( "utf-8" )
+                f.write("<P>" + myBody)
+ 
+# Write closing HTML info
+f.write("</BODY>")  
+f.write("</HTML>")
+
+# Close file
+f.close()
+g.es(" Leo -> HTML completed.",color="turquoise4")
+#@nonl
+#@+node:<< docstring >>
+'''
+This script takes an outline stored in LEO and outputs it to HTML code.
+The HTML can be stuck into a web page, loaded into the Microsoft Word
+outline view for printing, or a million other uses.
+
+--- Instructions ---
+In LEO, open your outline, insert a node, and set the headline to LEOTOHTML.
+Paste this code into the text body. To generate a .htm file of the outline,
+select the Execute Script option under the Edit menu while the node is selected.
+
+The switches below allow you to customize some of the settings. Set the flag
+properties to True or False.
+'''
+#@nonl
+#@-node:<< docstring >>
+#@-node:@@button LeoToHtml
 #@-node:Contributed @button nodes
 #@+node:Text editing scripts
 #@+node:delete from ':' to end (script)
