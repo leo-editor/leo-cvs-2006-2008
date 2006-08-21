@@ -297,7 +297,9 @@ def profile ():
 
     import profile, pstats
     
-    name = "c:/prog/test/leoProfile.txt"
+    # name = "c:/prog/test/leoProfile.txt"
+    name = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','test','leoProfile.txt'))
+    
     profile.run('leo.run()',name)
 
     p = pstats.Stats(name)
