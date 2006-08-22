@@ -1330,6 +1330,7 @@ class baseColorizer:
         c = self.c
         
         if not c.config.getBool('use_syntax_coloring'):
+            g.trace('no coloring')
             return
     
         if self.killFlag:

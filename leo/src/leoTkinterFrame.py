@@ -2109,9 +2109,11 @@ class leoTkinterBody (leoFrame.leoBody):
     #@+node:ekr.20060530204135:recolorWidget
     def recolorWidget (self,w):
         
-        g.trace(w,g.callers())
+        
         
         c = self.c ; old_w = self.bodyCtrl
+        
+        g.trace(w,c.currentPosition().headString())
         
         # Save.
         self.bodyCtrl = self.frame.bodyCtrl = w
@@ -2147,7 +2149,7 @@ class leoTkinterBody (leoFrame.leoBody):
         '''Add another editor to the body pane.'''
         
         c = self.c ; p = c.currentPosition()
-        
+         
         if self.numberOfEditors == 1:
             # Inject the ivars into the first editor.
             w = self.editorWidgets.get('1')

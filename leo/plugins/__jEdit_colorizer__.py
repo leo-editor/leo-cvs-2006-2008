@@ -718,7 +718,7 @@ class baseColorizer:
         
         self.count += 1 # For unit testing.
         
-        # g.trace(self.count,interruptable,p.c.frame.body.bodyCtrl,g.callers())
+        g.trace(self.count,'interrup?',interruptable,p.c.frame.body.bodyCtrl)
             
         if interruptable:
             self.interrupt() # New in 4.4.1

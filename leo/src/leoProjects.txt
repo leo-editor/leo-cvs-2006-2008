@@ -581,6 +581,29 @@ def backwardKillWord (self,event):
     # c.editCommands.backwardWord(event)
 #@-node:ekr.20050920084036.180:backwardKillWord
 #@-node:ekr.20060730103005:Fixed bug in backward-kill-word
+#@+node:ekr.20060821095942:Fixed unicode bug in forward-word and backward-word commands
+http://leo.zwiki.org/9RussianUnicodeWordsAreNotDetectedProperlyInBodyPane
+#@nonl
+#@+node:ekr.20051218121447:moveWordHelper
+def moveWordHelper (self,event,extend,forward):
+
+    '''This function moves the cursor to the next word, direction dependent on the way parameter'''
+
+    c = self.c ; w = event.widget
+    if not g.app.gui.isTextWidget(w): return
+    
+    c.widgetWantsFocus(w)
+    if forward:
+         ind = w.search('\\W','insert',stopindex='end',regexp=True)
+         if ind: nind = '%s wordend' % ind
+         else:   nind = 'end'
+    else:
+         ind = w.search('\\W','insert -1c',stopindex='1.0',regexp=True,backwards=True)
+         if ind: nind = '%s wordstart' % ind
+         else:   nind = '1.0'
+    self.moveToHelper(event,nind,extend)
+#@-node:ekr.20051218121447:moveWordHelper
+#@-node:ekr.20060821095942:Fixed unicode bug in forward-word and backward-word commands
 #@-node:ekr.20060702103435.1:Bugs fixed
 #@+node:ekr.20060702103435.2:New features
 #@+node:ekr.20060702094931:Created menu font settings
