@@ -3226,11 +3226,11 @@ class editCommandsClass (baseEditCommandsClass):
         
         c.widgetWantsFocus(w)
         if forward:
-             ind = w.search('\w','insert',stopindex='end',regexp=True)
+             ind = w.search('\\W','insert',stopindex='end',regexp=True)
              if ind: nind = '%s wordend' % ind
              else:   nind = 'end'
         else:
-             ind = w.search('\w','insert -1c',stopindex='1.0',regexp=True,backwards=True)
+             ind = w.search('\\W','insert -1c',stopindex='1.0',regexp=True,backwards=True)
              if ind: nind = '%s wordstart' % ind
              else:   nind = '1.0'
         self.moveToHelper(event,nind,extend)
