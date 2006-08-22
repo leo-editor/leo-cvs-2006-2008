@@ -6,7 +6,7 @@
 #@@tabwidth -4
 #@@pagewidth 80
 
-__version__ = '0.29'
+__version__ = '0.30'
 #@<< imports >>
 #@+node:ekr.20060530091119.21:<< imports >>
 import leoGlobals as g
@@ -34,7 +34,7 @@ php_re = re.compile("<?(\s[pP][hH][pP])")
 # 0.21 EKR: No known crashers or serious problems.
 # - The colorizer now switches modes properly.
 # - Possible fix for unicode crasher.
-#  0.22 EKR: colorOneChunk now allows for good response to key events.
+# 0.22 EKR: colorOneChunk now allows for good response to key events.
 # 0.23 EKR: use g.app.gui.toGuiIndex in colorRangeWithTag.  Fixes a bug and is 
 # simpler.
 # 0.24 EKR: Fixed unicode crasher.  All unit tests now pass with the new 
@@ -46,6 +46,8 @@ php_re = re.compile("<?(\s[pP][hH][pP])")
 # needed.
 # 0.29 EKR: Update g.app.language_delims_dict if no entry for the language 
 # exists.
+# 0.30 EKR: Disable interruptable coloring when there is more than one body 
+# widget.
 #@-at
 #@nonl
 #@-node:ekr.20060530091119.22:<< version history >>
@@ -718,7 +720,12 @@ class baseColorizer:
         
         self.count += 1 # For unit testing.
         
-        g.trace(self.count,'interrup?',interruptable,p.c.frame.body.bodyCtrl)
+        c = self.c
+        
+        if c.frame.body.numberOfEditors > 1:
+            interruptable = False
+        
+        # g.trace(self.count,'interrupt:',g.choose(interruptable,1,0),id(p.c.frame.body.bodyCtrl))
             
         if interruptable:
             self.interrupt() # New in 4.4.1
