@@ -72,6 +72,7 @@ class leoBody:
         
         # May be overridden in subclasses...
         self.bodyCtrl = self
+        self.numberOfEditors = 1
         
         # Must be overridden in subclasses...
         self.colorizer = None

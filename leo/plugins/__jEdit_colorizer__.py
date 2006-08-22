@@ -724,7 +724,7 @@ class baseColorizer:
         
         if c.frame.body.numberOfEditors > 1:
             interruptable = False
-        
+    
         # g.trace(self.count,'interrupt:',g.choose(interruptable,1,0),id(p.c.frame.body.bodyCtrl))
             
         if interruptable:
@@ -732,6 +732,7 @@ class baseColorizer:
         else:
             data = p.copy(),p.c.frame.body.bodyCtrl
             self.queue.append(data)
+    
         self.interruptable = interruptable
     
         if self.enabled:
@@ -742,7 +743,6 @@ class baseColorizer:
         else:
             return "ok" # For unit testing.
     #@nonl
-    #@-node:ekr.20060530091119.11:colorize
     #@+node:ekr.20060530091119.39:enable & disable
     def disable (self):
     
@@ -874,6 +874,7 @@ class baseColorizer:
         self.scanColorDirectives(p)
     #@nonl
     #@-node:ekr.20060530091119.45:updateSyntaxColorer
+    #@-node:ekr.20060530091119.11:colorize
     #@-node:ekr.20060530091119.38:Entry points
     #@+node:ekr.20060530091119.46:Colorizer code
     #@+node:ekr.20060530091119.12:colorAll

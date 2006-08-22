@@ -2054,7 +2054,7 @@ class leoTkinterBody (leoFrame.leoBody):
         body = w = Tk.Text(parentFrame,name='body-pane',
             bd=2,bg="white",relief="flat",setgrid=0,wrap=wrap)
             
-        g.trace(id(w))
+        # g.trace(id(w))
         
         bodyBar = Tk.Scrollbar(parentFrame,name='bodyBar')
         frame.bodyBar = self.bodyBar = bodyBar
@@ -2111,12 +2111,10 @@ class leoTkinterBody (leoFrame.leoBody):
     #@-at
     #@+node:ekr.20060530204135:recolorWidget
     def recolorWidget (self,w):
-        
-        
-        
+    
         c = self.c ; old_w = self.bodyCtrl
         
-        g.trace(id(w),c.currentPosition().headString())
+        # g.trace(id(w),c.currentPosition().headString())
         
         # Save.
         self.bodyCtrl = self.frame.bodyCtrl = w
@@ -2125,6 +2123,7 @@ class leoTkinterBody (leoFrame.leoBody):
         
         # Restore.
         self.bodyCtrl = self.frame.bodyCtrl = old_w
+    #@nonl
     #@-node:ekr.20060530204135:recolorWidget
     #@+node:ekr.20060530210057:create/select/unselect/Label
     def unselectLabel (self,w):
