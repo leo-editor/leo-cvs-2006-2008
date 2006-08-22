@@ -160,6 +160,66 @@ properties to True or False.
 #@nonl
 #@-node:<< docstring >>
 #@-node:@@button LeoToHtml
+#@+node:@@button LeoToRtf
+# LeoToRTF by Dan Rahmel
+
+<< docstring >>
+
+# The switches below allow you to customize some of the settings.
+flagIgnoreFiles = True
+flagJustHeadlines = False
+filePath = "c:\\"
+
+myFileName = c.frame.shortFileName() # Get current outline filename
+myFileName = myFileName[:-4] # Remove .leo suffix
+
+g.es(" Leo -> RTF started...",color="turquoise4")
+
+# Open file for output
+f=open(filePath + myFileName + ".rtf", 'w')
+
+# Write RTF header information
+f.write("{\\rtf1\\ansi\\ansicpg1252\\deff0\\deflang1033{\\fonttbl{\\f0\\fswiss\\
+fcharset0 Arial;}}")
+f.write("{\\*\\generator LEOtoRTF;}\\viewkind4\\uc1\\pard\\f0\\fs20")
+
+for p in c.allNodes_iter():
+    myLevel = str(p.level() + 1)
+    myHeadline = p.headString()
+    # Check for node with LeoToHTML and ignore it
+    if not myHeadline.upper() == "LEOTORTF":
+        if not (myHeadline[:5] == "@file" and flagIgnoreFiles):
+            # Write headline with correct # of tabs for indentation
+            myOutput = ("\\tab"*int(myLevel)) + " " + myHeadline +"\\par"
+            myOutput = myOutput.encode( "utf-8" )
+            f.write(myOutput)
+            # If including outline body text, convert it to RTF usable format
+            if not flagJustHeadlines:
+                myBody = p.bodyString().encode( "utf-8" ) 
+                f.write("\\tab"*int(myLevel) + " " + myBody + "\\par")
+
+# Write RTF close
+f.write("}")  
+
+# Close file
+f.close()
+g.es(" Leo -> RTF completed.",color="turquoise4")
+#@nonl
+#@+node:<< docstring >>
+'''
+This script takes an outline stored in LEO and outputs it to an RTF.
+The tabbed RTF file can be loaded into Microsoft Word and formatted as a
+proper outline with the Bullets and Numbering formatting options
+
+--- Instructions ---
+In LEO, open your outline, insert a node, and set the headline to LEOTORTF.
+Paste this code into the text body. To generate a .rtf file of the outline,
+select the Execute Script option under the Edit menu while the node is
+selected.
+'''
+#@nonl
+#@-node:<< docstring >>
+#@-node:@@button LeoToRtf
 #@-node:Contributed @button nodes
 #@+node:Text editing scripts
 #@+node:delete from ':' to end (script)
