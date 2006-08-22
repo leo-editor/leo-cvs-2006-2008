@@ -2053,6 +2053,8 @@ class leoTkinterBody (leoFrame.leoBody):
         # Setgrid=1 cause severe problems with the font panel.
         body = w = Tk.Text(parentFrame,name='body-pane',
             bd=2,bg="white",relief="flat",setgrid=0,wrap=wrap)
+            
+        g.trace(id(w))
         
         bodyBar = Tk.Scrollbar(parentFrame,name='bodyBar')
         frame.bodyBar = self.bodyBar = bodyBar
@@ -2098,6 +2100,7 @@ class leoTkinterBody (leoFrame.leoBody):
         w.bind('<FocusIn>',focusInCallback)
     
         return w
+    #@nonl
     #@-node:ekr.20060528100747.3:tkBody.createTextWidget
     #@-node:ekr.20031218072017.3997: Birth & death
     #@+node:ekr.20060528100747:Editors
@@ -2113,7 +2116,7 @@ class leoTkinterBody (leoFrame.leoBody):
         
         c = self.c ; old_w = self.bodyCtrl
         
-        g.trace(w,c.currentPosition().headString())
+        g.trace(id(w),c.currentPosition().headString())
         
         # Save.
         self.bodyCtrl = self.frame.bodyCtrl = w
@@ -2199,6 +2202,7 @@ class leoTkinterBody (leoFrame.leoBody):
     
         for key in d.keys():
             w2 = d.get(key)
+            # g.trace(id(w2),bg,fg)
             try:
                 w2.configure(bg=bg,fg=fg)
             except Exception:
@@ -2361,8 +2365,10 @@ class leoTkinterBody (leoFrame.leoBody):
         
         c = self.c
         if not w: w = self.bodyCtrl
-            
+        
         bg = c.config.getColor("body_text_background_color") or 'white'
+        # g.trace(id(w),bg)
+        
         try: w.configure(bg=bg)
         except:
             g.es("exception setting body text background color")
@@ -2549,8 +2555,7 @@ class leoTkinterBody (leoFrame.leoBody):
         
     def configure (self,*args,**keys):
         
-        if g.app.trace:
-            g.trace(args,keys)
+        # g.trace(args,keys)
         
         return self.bodyCtrl.configure(*args,**keys)
     #@-node:ekr.20031218072017.2184:Configuration (Tk spelling)

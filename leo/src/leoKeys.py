@@ -1789,17 +1789,21 @@ class keyHandlerClass:
         # Important: bindings exist even if c.showMiniBuffer is False.
         k.makeAllBindings()
     
-        k.setInputState(self.unboundKeyAction)
+        # Set mode colors used by k.setInputState.
+        bg = c.config.getColor('body_text_background_color') or 'white'
+        fg = c.config.getColor('body_text_foreground_color') or 'black'
+       
+        k.command_mode_bg_color = c.config.getColor('command_mode_bg_color') or bg
+        k.command_mode_fg_color = c.config.getColor('command_mode_fg_color') or fg
+        k.insert_mode_bg_color = c.config.getColor('insert_mode_bg_color') or bg
+        k.insert_mode_fg_color = c.config.getColor('insert_mode_fg_color') or fg
+        k.overwrite_mode_bg_color = c.config.getColor('overwrite_mode_bg_color') or bg
+        k.overwrite_mode_fg_color = c.config.getColor('overwrite_mode_fg_color') or fg
         
-        # Mode colors
-        bodyCtrl = c.frame.body.bodyCtrl
-        if bodyCtrl:
-            self.command_mode_bg_color = c.config.getColor('command_mode_bg_color') or bodyCtrl.cget('bg')
-            self.command_mode_fg_color = c.config.getColor('command_mode_fg_color') or bodyCtrl.cget('fg')
-            self.insert_mode_bg_color = c.config.getColor('insert_mode_bg_color') or bodyCtrl.cget('bg')
-            self.insert_mode_fg_color = c.config.getColor('insert_mode_fg_color') or bodyCtrl.cget('fg')
-            self.overwrite_mode_bg_color = c.config.getColor('overwrite_mode_bg_color') or bodyCtrl.cget('bg')
-            self.overwrite_mode_fg_color = c.config.getColor('overwrite_mode_fg_color') or bodyCtrl.cget('fg')
+        # g.trace(k.insert_mode_bg_color,k.insert_mode_fg_color,k)
+            
+        k.setInputState(self.unboundKeyAction)
+    #@nonl
     #@+node:ekr.20051008082929:createInverseCommandsDict
     def createInverseCommandsDict (self):
         
@@ -2814,13 +2818,19 @@ class keyHandlerClass:
         k.unboundKeyAction = state
         k.showStateAndMode()
         assert state in ('insert','command','overwrite')
-        
-        if w and state == 'insert':
-            body.setEditorColors(bg=k.insert_mode_bg_color,fg=k.insert_mode_fg_color)
-        elif w and state == 'command':
-            body.setEditorColors(bg=k.command_mode_bg_color,fg=k.command_mode_fg_color)
-        elif w and state == 'overwrite':
-            body.setEditorColors(bg=k.overwrite_mode_bg_color,fg=k.overwrite_mode_fg_color)
+    
+        if w:
+            if state == 'insert':
+                bg = k.insert_mode_bg_color ; fg = k.insert_mode_fg_color
+            elif state == 'command':
+                bg = k.command_mode_bg_color ; fg = k.command_mode_fg_color
+            elif state == 'overwrite':
+                bg = k.overwrite_mode_bg_color, fg = k.overwrite_mode_fg_color
+    
+            # g.trace(id(w),bg,fg,self)
+    
+            body.setEditorColors(bg=bg,fg=fg)
+    #@nonl
     #@-node:ekr.20060120200818:setInputState
     #@+node:ekr.20060120193743:showStateAndMode
     def showStateAndMode(self):
