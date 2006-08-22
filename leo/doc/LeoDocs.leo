@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="25645" clone_windows="0"/>
-<globals body_outline_ratio="0.550802139037">
-	<global_window_position top="165" left="384" height="696" width="799"/>
+<globals body_outline_ratio="0.5">
+	<global_window_position top="165" left="384" height="677" width="799"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -103,6 +103,7 @@
 <v t="ekr.20050830115714.120"><vh>How can I display graphics in Leo?</vh></v>
 <v t="ekr.20050830115714.113"><vh>How can I create a template .leo file?</vh></v>
 <v t="ekr.20050830115714.116"><vh>How can I show Leo files with Excel?</vh></v>
+<v t="ekr.20060822111759"><vh>How can I reuse @button nodes in multiple files?</vh></v>
 </v>
 <v t="ekr.20050830115714.76"><vh>Trouble shooting</vh>
 <v t="ekr.20060329101442"><vh>Nothing (or almost nothing) happens when I start Leo.  What should I do?</vh></v>
@@ -30243,5 +30244,24 @@ Here are the relevant settings:
    'Keyboard shortcuts'.
    It should **not** be a child of the node
    '@ignore Unused key bindings'.</t>
+<t tx="ekr.20060822111759">By Rich Ries
+
+There is no direct way to make script buttons available in multiple Leo files.
+Sure, you could copy and paste the @button nodes, but there is a slightly
+easier way using the "New Buttons" plugin.
+
+1) Create and test and debug your desired Script Button.
+
+2) With the Script Button node selected, run Plugins --&gt; New buttons --&gt; Make Template From
+
+Open a new Leo file.
+
+3) Assuming you have only the one New Button Template defined, left-click the
+   New button, and a new node will be added to your outline. (Otherwise, you'll
+   need to select the Template you want.)
+
+4) Press [Script Button] to create the new script button.
+
+It's easier to *do* this than to *explain* it!</t>
 </tnodes>
 </leo_file>
