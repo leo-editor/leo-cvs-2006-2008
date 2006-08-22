@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="300" clone_windows="0"/>
-<globals body_outline_ratio="0.5">
-	<global_window_position top="196" left="280" height="663" width="937"/>
+<globals body_outline_ratio="0.749174917492">
+	<global_window_position top="196" left="280" height="606" width="937"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -44,8 +44,8 @@
 <v t="ekr.20060112104823"><vh>main</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
-<v t="ekr.20041213105007.1" a="E" annotate="7d71002e"><vh>Colors</vh>
+<v t="ekr.20041119034357.1" a="TV" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
 <v t="ekr.20041119052015.2"><vh>@color log_text_foreground_color = None</vh></v>
@@ -54,14 +54,21 @@
 <v t="ekr.20051020125928"><vh>@color log_pane_Find_tab_background_color = #d6c7d3</vh></v>
 <v t="ekr.20051025070845"><vh>@color log_pane_Spell_tab_background_color = MistyRose1</vh></v>
 </v>
-<v t="ekr.20041213105007.2" a="E"><vh>Body pane colors</vh>
+<v t="ekr.20041213105007.2"><vh>Body pane colors</vh>
 <v t="ekr.20041119034357.41"><vh>@color body_cursor_background_color = None</vh></v>
 <v t="ekr.20041119034357.40"><vh>@color body_cursor_foreground_color = None</vh></v>
 <v t="ekr.20041119034357.50"><vh>@color body_insertion_cursor_color = None</vh></v>
-<v t="ekr.20041119034357.49"><vh>@color body_text_background_color = red</vh></v>
+<v t="ekr.20041119034357.49"><vh>@color body_text_background_color = None</vh></v>
 <v t="ekr.20041119034357.48"><vh>@color body_text_foreground_color = None</vh></v>
 <v t="ekr.20051006200015"><vh>@color body_text_selection_background_color = Gray80</vh></v>
 <v t="ekr.20051006200015.1"><vh>@color body_text_selection_foreground_color = white</vh></v>
+<v t="ekr.20060605081712"><vh>@color command_mode_bg_color = MistyRose1</vh></v>
+<v t="ekr.20060822101942"><vh>@color command_mode_bg_color = None</vh></v>
+<v t="ekr.20060822101942.1"><vh>@color command_mode_fg_color = None</vh></v>
+<v t="ekr.20060822101942.2"><vh>@color insert_mode_bg_color = None</vh></v>
+<v t="ekr.20060605081712.3"><vh>@color insert_mode_fg_color = None</vh></v>
+<v t="ekr.20060606085536"><vh>@color overwrite_mode_bg_color = azure2</vh></v>
+<v t="ekr.20060606085536.1"><vh>@color overwrite_mode_fg_color = None</vh></v>
 </v>
 <v t="ekr.20041119051246.1"><vh>Outline pane colors</vh>
 <v t="ekr.20041119051246.2"><vh>@color headline_text_unselected_background_color = #ffffec</vh></v>
@@ -74,10 +81,10 @@
 <v t="ekr.20041119051901.1"><vh>@color headline_text_editing_selection_background_color = None</vh></v>
 <v t="ekr.20041119050749.12"><vh>@color outline_pane_background_color = #ffffec</vh></v>
 </v>
-<v t="ekr.20041119034357.70" a="E"><vh>Syntax colors &amp; options</vh>
+<v t="ekr.20041119034357.70"><vh>Syntax colors &amp; options</vh>
 <v t="ekr.20060513100933"><vh>@int colorizer_interrupt_count1 = 10</vh></v>
 <v t="ekr.20060513100933.1"><vh>@int colorizer_interrupt_count2 = 5000</vh></v>
-<v t="ekr.20060201111002" a="TV"><vh>@bool use_syntax_coloring = True</vh></v>
+<v t="ekr.20060201111002"><vh>@bool use_syntax_coloring = True</vh></v>
 <v t="ekr.20041119034357.78"><vh>@color comment_color = firebrick3</vh></v>
 <v t="ekr.20041119034357.79"><vh>@color cweb_section_name_color = red</vh></v>
 <v t="ekr.20041119034357.80"><vh>@color directive_color = blue</vh></v>
@@ -227,7 +234,6 @@
 </v>
 <v t="ekr.20041119034357.3" annotate="7d71002e"><vh>General options</vh>
 <v t="ekr.20041119034357.5"><vh>@bool read_only = False</vh></v>
-<v t="ekr.20041119034357.13"><vh>@bool use_plugins = True</vh></v>
 <v t="ekr.20041119034357.7"><vh>.leo file options</vh>
 <v t="ekr.20041119034357.8"><vh>@string output_initial_comment = None</vh></v>
 <v t="ekr.20041119034357.9"><vh>@string stylesheet = None</vh></v>
@@ -343,16 +349,10 @@
 <v t="ekr.20060112093227.1"><vh>@shortcuts No bindings: E-M</vh></v>
 <v t="ekr.20060112093227.2"><vh>@shortcuts No bindings: N-Z</vh></v>
 </v>
-<v t="ekr.20060603215208"><vh>@keys EKR bindings: Emacs keys + modes</vh>
-<v t="ekr.20060608065207"><vh>Settings related to key bindings</vh>
+<v t="ekr.20060603215208" a="E"><vh>@keys EKR bindings: Emacs keys + modes</vh>
+<v t="ekr.20060608065207" a="E"><vh>Settings related to key bindings</vh>
 <v t="ekr.20060624072653"><vh>@bool warn_about_redefined_shortcuts = True</vh></v>
 <v t="ekr.20060604080653" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
-<v t="ekr.20060605081712"><vh>@color command_mode_bg_color = MistyRose1</vh></v>
-<v t="ekr.20060605081712.1"><vh>@color command_mode_fg_color = black</vh></v>
-<v t="ekr.20060605081712.2"><vh>@color insert_mode_bg_color = white</vh></v>
-<v t="ekr.20060605081712.3"><vh>@color insert_mode_fg_color = black</vh></v>
-<v t="ekr.20060606085536"><vh>@color overwrite_mode_bg_color = azure2</vh></v>
-<v t="ekr.20060606085536.1"><vh>@color overwrite_mode_fg_color = black</vh></v>
 </v>
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
@@ -385,6 +385,7 @@
 </v>
 </v>
 <v t="ekr.20051123100536" annotate="7d71002e"><vh>Plugins</vh>
+<v t="ekr.20041119034357.13"><vh>@bool use_plugins = True</vh></v>
 <v t="ekr.20060807103220"><vh>datenodes plugin</vh>
 <v t="ekr.20060807103220.1"><vh>@string datenodes_body_text = To do...</vh></v>
 <v t="ekr.20060807103220.2"><vh>@string datenodes_day_node_headline = %Y-%m-%d</vh></v>
@@ -505,15 +506,9 @@
 <v t="ekr.20041119050749.18"><vh>@bool outline_pane_scrolls_horizontally = True</vh></v>
 </v>
 <v t="ekr.20060603215208"><vh>@keys EKR bindings: Emacs keys + modes</vh>
-<v t="ekr.20060608065207"><vh>Settings related to key bindings</vh>
+<v t="ekr.20060608065207" a="E"><vh>Settings related to key bindings</vh>
 <v t="ekr.20060624072653"><vh>@bool warn_about_redefined_shortcuts = True</vh></v>
 <v t="ekr.20060604080653" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
-<v t="ekr.20060605081712"><vh>@color command_mode_bg_color = MistyRose1</vh></v>
-<v t="ekr.20060605081712.1"><vh>@color command_mode_fg_color = black</vh></v>
-<v t="ekr.20060605081712.2"><vh>@color insert_mode_bg_color = white</vh></v>
-<v t="ekr.20060605081712.3"><vh>@color insert_mode_fg_color = black</vh></v>
-<v t="ekr.20060606085536"><vh>@color overwrite_mode_bg_color = azure2</vh></v>
-<v t="ekr.20060606085536.1"><vh>@color overwrite_mode_fg_color = black</vh></v>
 </v>
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
@@ -657,10 +652,14 @@ body_text_font_size = None
 body_text_font_slant = None
 body_text_font_weight = None
 </t>
-<t tx="ekr.20041119034357.48">Foreground colors of body text.</t>
+<t tx="ekr.20041119034357.48">Foreground color of body text.
+
+Note: this setting can be overridden by the x_mode_fg_color settings.</t>
 <t tx="ekr.20041119034357.49">Background color of body text.
 
-#ffecea</t>
+#ffecea
+
+Note: this setting can be overridden by the x_mode_bg_color settings.</t>
 <t tx="ekr.20041119034357.50">Color of insertion cursor
 
 </t>
@@ -5444,13 +5443,10 @@ overwrite: Leo replaces the character at the cursor.</t>
     
 white                   if top_level_unbound_key_action is command
 a color like MistyRose1 if top_level_unbound_key_action is insert or overwrite.</t>
-<t tx="ekr.20060605081712.1"></t>
-<t tx="ekr.20060605081712.2">Recommended:
-    
-A color like MistyRose1 if top_level_unbound_key_action is ignore
-white                   if top_level_unbound_key_action is insert or overwrite.</t>
-<t tx="ekr.20060605081712.3"></t>
-<t tx="ekr.20060606085536">wheat1
+<t tx="ekr.20060605081712.3">Overrides body_text_foreground_color.</t>
+<t tx="ekr.20060606085536">Overrides body_text_background_color.
+
+wheat1
 PeachPuff1
 LemonChiffon1
 cornsilk1
@@ -5458,7 +5454,7 @@ honeydew1
 LavenderBlush1
 azure2
 aquamarine1</t>
-<t tx="ekr.20060606085536.1"></t>
+<t tx="ekr.20060606085536.1">Overrides body_text_foreground_color.</t>
 <t tx="ekr.20060607182402"></t>
 <t tx="ekr.20060608065207"></t>
 <t tx="ekr.20060608184356"># This mode toggles various modes.
@@ -5598,5 +5594,8 @@ menu_text_font_weight = None</t>
 <t tx="ekr.20060807103220.9">This is the format of the year node headline if a whole year is inserted.</t>
 <t tx="ekr.20060807103220.10">True: Omit saturdays if a whole year is inserted</t>
 <t tx="ekr.20060807103220.11">True: Omit sundays if a whole year is inserted</t>
+<t tx="ekr.20060822101942">Overrides body_text_background_color.</t>
+<t tx="ekr.20060822101942.1">Overrides body_text_foreground_color.</t>
+<t tx="ekr.20060822101942.2">Overrides body_text_background_color.</t>
 </tnodes>
 </leo_file>
