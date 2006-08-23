@@ -27,8 +27,6 @@ Pmw = g.importExtension("Pmw",pluginName="leoTkinterFrame.py",verbose=False)
 #@-node:ekr.20041221070525:<< imports >>
 #@nl
 
-use_components = False
-
 #@+others
 #@+node:ekr.20031218072017.3940:class leoTkinterFrame
 class leoTkinterFrame (leoFrame.leoFrame):
@@ -140,9 +138,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
         # Create the outer frame, the 'hull' component.
         f.outerFrame = Tk.Frame(top)
         f.outerFrame.pack(expand=1,fill="both")
-        
-        if use_components:
-            f.componentClass(c,'hull',f.outerFrame)
+    #@nonl
     #@-node:ekr.20051009044751:createOuterFrames
     #@+node:ekr.20051009045208:createSplitterComponents
     def createSplitterComponents (self):
@@ -381,18 +377,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
         self.configureBar(bar,verticalFlag)
         self.bindBar(bar,verticalFlag)
         self.placeSplitter(bar,f1,f2,verticalFlag)
-        
-        # Define the splitter, bar and outer frame components.
-        # It would be useless to define placed components here.
-        # N.B. All frames managed by the placer must descend from splitterFrame1 or splitterFrame2
-        if use_components:
-            self.componentClass(self.c,componentName,f)
-            if componentName == 'splitter1':
-                self.componentClass(c,'splitter1Frame',f)
-                self.componentClass(c,'splitBar1',bar)
-            else:
-                self.componentClass(c,'splitter2Frame',f)
-                self.componentClass(c,'splitBar2',bar)
     
         return f, bar, f1, f2
     #@nonl
@@ -885,118 +869,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
         #@-node:ekr.20031218072017.3955:unpack (hide)
         #@-others
     #@-node:ekr.20041223102225:class iconBarClass
-    #@+node:ekr.20041222060024:tkFrame.unpack/repack...
-    #@+node:ekr.20041223160653:pane packers
-    def placePane1(self,verticalFlag,pane1,frac):
-        if verticalFlag:
-            pane1.place(relx=0.5,rely=0,anchor="n",relwidth=1.0,relheight=frac)
-        else:
-            pane1.place(rely=0.5,relx=0,anchor="w",relheight=1.0,relwidth=frac)
-            
-    def placePane2(self,verticalFlag,pane2,frac):
-        if verticalFlag:
-            pane2.place(relx=0.5,rely=1.0,anchor="s",relwidth=1.0,relheight=1-frac)
-        else:
-            pane2.place(rely=0.5,relx=1.0,anchor="e",relheight=1.0,relwidth=1-frac)
-    
-    # These are the packers of the corresponding components.
-    # These are called from, packComponent('body'), etc.
-    def packBody (self):
-        # Pane 2 of primary splitter.
-        self.placePane2(self.splitVerticalFlag,self.split1Pane2,self.ratio)
-    def packLog (self):
-        # Pane 2 of secondary splitter.
-        self.placePane2(not self.splitVerticalFlag,self.split2Pane2,self.secondary_ratio)
-    def packTree (self):
-        # Pane 1 of secondary splitter.
-        self.placePane1(not self.splitVerticalFlag,self.split2Pane1,self.secondary_ratio)
-    #@-node:ekr.20041223160653:pane packers
-    #@+node:ekr.20041224102942:pane replacers
-    #@+node:ekr.20041224105456.1:replaceBodyPaneWithComponent
-    def replaceBodyPaneWithComponent (self,componentName):
-        component = self.component(componentName)
-        if component:
-            f = component.getFrame()
-            if f:
-                component.setPacker(self.packBody)
-                component.setUnpacker(self.unpackBody)
-                self.unpackComponent('body')
-                self.split1Pane2 = f
-                self.packBody()
-    #@-node:ekr.20041224105456.1:replaceBodyPaneWithComponent
-    #@+node:ekr.20041224105456.3:replaceLogPaneWithComponent
-    def replaceLogPaneWithComponent (self,componentName):
-        component = self.component(componentName)
-        if component:
-            f = component.getFrame()
-            if f:
-                component.setPacker(self.packLog)
-                component.setUnpacker(self.unpackLog)
-                self.unpackComponent('log')
-                self.split2Pane2 = f
-                self.packLog()
-                self.divideLeoSplitter(not self.splitVerticalFlag,self.secondary_ratio)
-    #@-node:ekr.20041224105456.3:replaceLogPaneWithComponent
-    #@+node:ekr.20041224105456.4:replaceTreePaneWithComponent
-    def replaceTreePaneWithComponent (self,componentName):
-        component = self.component(componentName)
-        if component:
-            f = component.getFrame()
-            if f:
-                component.setPacker(self.packTree)
-                component.setUnpacker(self.unpackTree)
-                self.unpackComponent('tree')
-                self.split2Pane1 = f
-                self.packTree()
-                self.divideLeoSplitter(not self.splitVerticalFlag,self.secondary_ratio)
-    #@-node:ekr.20041224105456.4:replaceTreePaneWithComponent
-    #@-node:ekr.20041224102942:pane replacers
-    #@+node:ekr.20041223162512:pane unpackers
-    # These are the packers of the corresponding components.
-    
-    def unpackBody(self):
-        self.split1Pane2.place_forget()
-        
-    def unpackLog(self):
-        self.split2Pane2.place_forget()
-    
-    def unpackTree(self):
-        self.split2Pane1.place_forget()
-    #@-node:ekr.20041223162512:pane unpackers
-    #@+node:ekr.20041222061439:pack/unpackComponent
-    # Note: the 'packers' for the 'body', 'log' and 'tree' components are actually placers,
-    # so packing twice does not duplicate those component.
-    
-    def packComponent (self,name,verbose=True):
-        component = self.component(name)
-        if component:
-            component.pack()
-        elif verbose:
-            g.es("packComponent: no component named %s" % name,color='blue')
-    
-    def unpackComponent (self,name,verbose=True):
-        component = self.component(name)
-        if component:
-            component.unpack()
-        elif verbose:
-            g.es("unpackComponent: no component named %s" % name,color='blue')
-    #@-node:ekr.20041222061439:pack/unpackComponent
-    #@+node:ekr.20041224072631:show/hideComponent
-    def hideComponent (self,name):
-        component = self.component(name)
-        if component:
-            component.hide()
-        else:
-            g.es("hideComponent: no component named %s" % name,color='blue')
-    
-    def showComponent (self,name):
-        component = self.component(name)
-        if component:
-            component.show()
-        else:
-            g.es("showComponent: no component named %s" % name,color='blue')
-    #@-node:ekr.20041224072631:show/hideComponent
-    #@-node:ekr.20041222060024:tkFrame.unpack/repack...
     #@+node:ekr.20051014154752:Minibuffer methods
     #@+node:ekr.20060203115311:showMinibuffer
     def showMinibuffer (self):
@@ -1088,7 +960,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
     getIconBarObject = getIconBar
     
     def hideIconBar (self):
-        if self.iconBar: self.iconBar(hide)
+        if self.iconBar: self.iconBar.hide()
     #@nonl
     #@-node:ekr.20031218072017.3953:Icon area methods (compatibility)
     #@+node:ekr.20041223105114.1:Status line methods (compatibility)

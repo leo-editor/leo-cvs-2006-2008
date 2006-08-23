@@ -2543,6 +2543,8 @@ def test_g_es_trace():
     g.es_trace('\ntest of es_trace: Ă',color='red')
 #@-node:ekr.20050707065530:es_trace & test
 #@+node:ekr.20060810095921:et, et_* and _ (underscore)
+__pychecker__ = 'no-reuseattr'
+
 if 1: # Do nothing
     et = es
     et_print = es_print
@@ -2561,6 +2563,8 @@ else: # Use the gettext module to translate arguments.
     def _ (s):
         '''Return the translated text of s.'''
         return gettext.gettext(s)
+        
+__pychecker__ = 'reuseattr'
 #@nonl
 #@-node:ekr.20060810095921:et, et_* and _ (underscore)
 #@+node:ekr.20031218072017.3148:top

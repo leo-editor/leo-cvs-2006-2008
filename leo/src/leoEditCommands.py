@@ -1221,6 +1221,7 @@ class editCommandsClass (baseEditCommandsClass):
         self.moveSpot = None # For retaining preferred column when moving up or down.
         self.moveCol = None # For retaining preferred column when moving up or down.
         self.store ={'rlist':[], 'stext':''} # For dynamic expansion.
+        self.sampleWidget = None # Created later.
         self.swapSpots = []
         self._useRegex = False # For replace-string
         self.widget = None # For use by state handlers.
