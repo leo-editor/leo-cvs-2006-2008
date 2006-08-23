@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="25645" clone_windows="0"/>
-<globals body_outline_ratio="0.5">
-	<global_window_position top="165" left="384" height="677" width="799"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="25764" clone_windows="0"/>
+<globals body_outline_ratio="0.632218844985">
+	<global_window_position top="165" left="384" height="658" width="799"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -46,7 +46,7 @@
 <v t="ekr.20060525110217"><vh>@@button rst-&gt;rst</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647" a="TV"><vh>Users Guide</vh>
+<v t="ekr.20040414161647"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -951,7 +951,7 @@
 </v>
 <v t="ekr.20060613075343"><vh>To do: Chapter 15: Using the scripting plugin</vh></v>
 </v>
-<v t="edream.110203163054.46"><vh>Release Notes</vh>
+<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
 <v t="edream.110203163054.117"><vh>Previous versions...</vh>
 <v t="ekr.20060206111717"><vh>Ancient...</vh>
 <v t="edream.110203163054.118"><vh>3.x...</vh>
@@ -2807,6 +2807,8 @@
 </v>
 </v>
 <v t="ekr.20060511074853"><vh>4.4 final</vh></v>
+</v>
+<v t="ekr.20060822140418"><vh>4.4.1</vh>
 <v t="ekr.20060601101643"><vh>4.4.1 b1</vh>
 <v t="ekr.20060601101958.1"><vh>Fixed bugs</vh>
 <v t="ekr.20060601101958.56"><vh>The Open Python Window command runs Idle in a separate process</vh></v>
@@ -2897,9 +2899,6 @@
 <v t="ekr.20060620094645.299"><vh>Added editor_orientation setting</vh></v>
 </v>
 </v>
-</v>
-</v>
-<v t="edream.110203163054.63"><vh>Latest version</vh>
 <v t="ekr.20060629083400.1"><vh>4.4.1 b3</vh>
 <v t="ekr.20060629083935.2"><vh>Bugs fixed</vh>
 <v t="ekr.20060629083935.3"><vh>Fixed recent bug: Ctrl-g does not work in @mode nodes</vh></v>
@@ -2921,6 +2920,28 @@
 <v t="ekr.20060629083935.98"><vh>Added @bool warn_about_redefined_shortcuts setting</vh></v>
 <v t="ekr.20060629083935.99"><vh>Added @bool trace_bind_key_exceptions setting</vh></v>
 <v t="ekr.20060629083935.100"><vh>Added bracket flash settings</vh></v>
+</v>
+</v>
+</v>
+</v>
+<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
+<v t="ekr.20060822140418.1" a="E"><vh>4.4.1 b4</vh>
+<v t="ekr.20060822140418.3"><vh>Bugs fixed</vh>
+<v t="ekr.20060822140418.4" a="E"><vh>Added bindings to text panes for show-font command</vh></v>
+<v t="ekr.20060822140418.26" a="E"><vh>Fixed kill-line, kill-word, kill-sentence, etc</vh></v>
+<v t="ekr.20060822140418.29" a="E"><vh>Fixed minor scrolling problem</vh></v>
+<v t="ekr.20060822140418.36" a="E"><vh>Fixed bug in backward-kill-word</vh></v>
+<v t="ekr.20060822140418.39" a="E"><vh>Fixed unicode bug in forward-word and backward-word commands</vh></v>
+<v t="ekr.20060822140418.41" a="E"><vh>Fixed problem setting body background color</vh></v>
+<v t="ekr.20060822140418.49" a="E"><vh>Disabled incremental colorizing in new colorizer when there are multiple editors</vh></v>
+<v t="ekr.20060822140418.97" a="E"><vh>Removed component classes</vh></v>
+</v>
+<v t="ekr.20060822140418.69" a="TV"><vh>New features</vh>
+<v t="ekr.20060822140418.76" a="E"><vh>Added scroll-outline-left/right commands</vh></v>
+<v t="ekr.20060822140418.77" a="E"><vh>Generalized bracket flasher</vh></v>
+<v t="ekr.20060822140418.88" a="E"><vh>Leo *already* supports Python decorators</vh></v>
+<v t="ekr.20060822140418.92" a="E"><vh>Wrote script to convert g.es to g.et where appropriate</vh></v>
+<v t="ekr.20060822140418.70" a="E"><vh>Created menu font settings</vh></v>
 </v>
 </v>
 </v>
@@ -30263,5 +30284,68 @@ Open a new Leo file.
 4) Press [Script Button] to create the new script button.
 
 It's easier to *do* this than to *explain* it!</t>
+<t tx="ekr.20060822140418"></t>
+<t tx="ekr.20060822140418.1">Leo 4.4.1 beta 4                                            August 23, 2006
+
+Leo 4.4.1 beta 4 is available at:
+http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+
+Leo is a text editor, data organizer, project manager and much more. See:
+http://webpages.charter.net/edreamleo/intro.html
+
+The highlights of Leo 4.4.1:
+----------------------------
+- Leo outputs decorators correctly, provided that the decorator is not a Leo directive.
+- A new colorizer plugin controlled by jEdit language description files.
+- A new shadow files plugin that allows derived files not to have sentinel lines.
+- Multiple editors in Leo's body pane.
+- Search commands now support regex replace patterns: \1, \2, etc.
+- Support for external debuggers: see http://webpages.charter.net/edreamleo/debuggers.html
+- The scripting plugin now creates a Debug Script button.
+- Several new commands including run-unit-test, python-help, toggle-invisibles,
+  and scroll-outline-left/right.
+- The help-for-command commands now contains information for almost all commands.
+- A new shortcut_button plugin.
+
+Links:
+------
+Leo:      http://webpages.charter.net/edreamleo/front.html
+Home:     http://sourceforge.net/projects/leo/
+Download: http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:      http://leo.tigris.org/source/browse/leo/
+Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
+<t tx="ekr.20060822140418.3"></t>
+<t tx="ekr.20060822140418.4">http://sourceforge.net/forum/forum.php?thread_id=1542384&amp;forum_id=10228</t>
+<t tx="ekr.20060822140418.26">http://sourceforge.net/forum/message.php?msg_id=3839322</t>
+<t tx="ekr.20060822140418.29">http://sourceforge.net/forum/message.php?msg_id=3805745</t>
+<t tx="ekr.20060822140418.36">http://sourceforge.net/forum/message.php?msg_id=3841115
+
+There is still some doubt about what the best operation of this command should be.</t>
+<t tx="ekr.20060822140418.39">http://leo.zwiki.org/9RussianUnicodeWordsAreNotDetectedProperlyInBodyPane</t>
+<t tx="ekr.20060822140418.41">http://sourceforge.net/forum/message.php?msg_id=3874380
+
+Setting a value for background color in the body pane had no effect.
+
+There were several problems, amoung which conflicting and confusing settings.
+In particular, the insert_mode_bg_color setting overrides the body_text_background_color setting.
+
+I changed the code so that insert_mode_bg_color defaults to
+body_text_background_color, and put all the settings for the body text in one
+place.</t>
+<t tx="ekr.20060822140418.49"></t>
+<t tx="ekr.20060822140418.69"></t>
+<t tx="ekr.20060822140418.70">http://sourceforge.net/forum/message.php?msg_id=3802624
+
+Added @font menu font setting</t>
+<t tx="ekr.20060822140418.76">http://sourceforge.net/forum/message.php?msg_id=3834645</t>
+<t tx="ekr.20060822140418.77">http://sourceforge.net/forum/message.php?msg_id=3802513
+
+Added these settings:
+    
+@string open_flash_brackets = ([{
+@string close_flash_brackets = )]}</t>
+<t tx="ekr.20060822140418.88">Leo *already* outputs decorators correctly, assuming the decorator does not conflict with a Leo directive.</t>
+<t tx="ekr.20060822140418.92">http://sourceforge.net/forum/message.php?msg_id=3858363</t>
+<t tx="ekr.20060822140418.97">These were overly complicated an not useful.</t>
 </tnodes>
 </leo_file>

@@ -1,11 +1,13 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
-#@+node:ekr.20060531161030:To do: B4
+#@+node:ekr.20060531161030:To do: B5
+#@+node:ekr.20060822162521:Possible to do multi-line headlines?
+#@-node:ekr.20060822162521:Possible to do multi-line headlines?
+#@+node:ekr.20060813121814:Add colorizer files for cweb, forth, plsql, rapidq
+#@-node:ekr.20060813121814:Add colorizer files for cweb, forth, plsql, rapidq
 #@+node:ekr.20060527204444:Finish new colorizer plugin
 #@-node:ekr.20060527204444:Finish new colorizer plugin
-#@+node:ekr.20060531161030.1:Make body editors persistant
-#@-node:ekr.20060531161030.1:Make body editors persistant
 #@+node:ekr.20060628103226:Finish emacs commands
 #@+node:ekr.20060628103226.2:Alt-x handlers should add to lossage
 #@-node:ekr.20060628103226.2:Alt-x handlers should add to lossage
@@ -622,9 +624,8 @@ if not setTop and len(self.topVnodeStack) > 0 and appendToTopStack:
 #@-node:ekr.20040326055828:<< Append to current or top stack >>
 #@-node:ekr.20031218072017.1566:getVnode changed for 4.2 & 4.4)
 #@-node:ekr.20060724071225:Look at Paste Node As Clone
-#@+node:ekr.20060813121814:Add colorizer files for cweb, forth, plsql, rapidq
-#@-node:ekr.20060813121814:Add colorizer files for cweb, forth, plsql, rapidq
-#@-node:ekr.20060531161030:To do: B4
+#@-node:ekr.20060531161030:To do: B5
+#@+node:ekr.20060822174843:Most important
 #@+node:ekr.20051202094427:Resolve cvs conflicts
 Investigate meld:  http://meld.sourceforge.net/
 #@nonl
@@ -1063,490 +1064,6 @@ demonstration of it's advantages.
 #@nonl
 #@-node:ekr.20060531134434.1:Screencasts
 #@-node:ekr.20060306194040:Video and more screen shots Leo's web site
-#@+node:ekr.20060527164612:Important 1-2 day projects (1-2 weeks)
-#@+node:ekr.20060609070148:Fix hung (zombie) windows)
-@nocolor
-
-https://sourceforge.net/forum/message.php?msg_id=3768494
-By: ktenney
-
-I'm using current CVS, W2k
-
-1 open a Leo file (I'm using a batch file / console)
-
-2 click Edit->Open   <-- Having this dialog open is the problem.
-
-3 return focus to the Leo window
-
-4 click Help->Open leoDocs.leo
-
-Zombie!
-#@-node:ekr.20060609070148:Fix hung (zombie) windows)
-#@+node:ekr.20060624082529:Fix minor bugs
-#@+node:ekr.20060117074259:Handle Mac issues
-#@+node:ekr.20060117074259.1:Mac indentation problem
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3526056
-By: nobody
-
-Hi Edward. I've been using the linux and windows version but would like to try
-leo on the mac. The install instructions seem a bit out of date. I take it any
-additional downloading of TclTkAqua is unneccessary?
-
-I have python2.4 in addition to the stock python 2.3.5 that comes with osx 10.4.
-Launching leo like so:  "python2.4 leo.py", as I do on linux, seems to run just
-fine.
-
-I don't know if this was fixed on osx or in leo in general, but moving the mouse
-to each of the panes and scrolling with the wheel works just great now. Thanks.
-
-Plugin manager: the plugin text font is really tiny, and the window opens to
-a default width such that the 'Installed Plugins' button reads 'talled Plugi'.
-Resizing the window does stretch the buttons horizontally.
-
-Ok -- here's maybe a big issue. I open a new leo file (File->New) and type in:
-
-for i in range(3):
-
-I hit return after the colon, but a newline is not entered.
-
-Stephen
-#@-node:ekr.20060117074259.1:Mac indentation problem
-#@+node:ekr.20051112080017:Problem removing script buttons on the mac
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3423121
-By: nobody
-
-Hi! I need help removing script buttons. It says I should right click the ofending
-button. I have a mac and Ctl-click, Command-click, etc doesn't work. What should
-I do?
-
-EKR: This is on the list of unfixable bugs, but I have a hard time believing there is no workaround.
-#@nonl
-#@-node:ekr.20051112080017:Problem removing script buttons on the mac
-#@+node:ekr.20060116083043:Use special Help menu on the Mac
-# http://sourceforge.net/forum/message.php?msg_id=3237845
-#@nonl
-#@+node:ekr.20031218072017.3803:createHelpMenuFromTable
-def createHelpMenuFromTable (self):
-
-    if 0: ## sys.platform == 'darwin':
-        helpMenu = self.getMacHelpMenu()
-        if not helpMenu: return
-    else:
-        helpMenu = self.createNewMenu("&Help")
-    
-    self.createMenuEntries(helpMenu,self.helpMenuTopTable)
-    
-    if sys.platform=="win32":
-        self.createMenuEntries(helpMenu,self.helpMenuTop2Table)
-    
-    self.createMenuEntries(helpMenu,self.helpMenuTop3Table)
-#@-node:ekr.20031218072017.3803:createHelpMenuFromTable
-#@+node:ekr.20031218072017.4113:new_menu
-def new_menu(self,parent,tearoff=False):
-    
-    """Wrapper for the Tkinter new_menu menu method."""
-    
-    if self.font:
-        try:
-            return Tk.Menu(parent,tearoff=tearoff,font=self.font)
-        except Exception:
-            g.es_exception()
-            return Tk.Menu(parent,tearoff=tearoff)
-    else:
-        return Tk.Menu(parent,tearoff=tearoff)
-#@-node:ekr.20031218072017.4113:new_menu
-#@+node:ekr.20031218072017.3804:createNewMenu
-def createNewMenu (self,menuName,parentName="top",before=None):
-
-    try:
-        parent = self.getMenu(parentName) # parent may be None.
-        menu = self.getMenu(menuName)
-        if menu:
-            g.es("menu already exists: " + menuName,color="red")
-        else:
-            menu = self.new_menu(parent,tearoff=0)
-            self.setMenu(menuName,menu)
-            label = self.getRealMenuName(menuName)
-            amp_index = label.find("&")
-            label = label.replace("&","")
-            if before: # Insert the menu before the "before" menu.
-                index_label = self.getRealMenuName(before)
-                amp_index = index_label.find("&")
-                index_label = index_label.replace("&","")
-                index = parent.index(index_label)
-                self.insert_cascade(parent,index=index,label=label,menu=menu,underline=amp_index)
-            else:
-                self.add_cascade(parent,label=label,menu=menu,underline=amp_index)
-            return menu
-    except:
-        g.es("exception creating " + menuName + " menu")
-        g.es_exception()
-        return None
-#@-node:ekr.20031218072017.3804:createNewMenu
-#@+node:ekr.20031218072017.3807:getMenu, setMenu, destroyMenu
-def getMenu (self,menuName):
-
-    cmn = self.canonicalizeMenuName(menuName)
-    return self.menus.get(cmn)
-    
-def setMenu (self,menuName,menu):
-    
-    cmn = self.canonicalizeMenuName(menuName)
-    self.menus [cmn] = menu
-    
-def destroyMenu (self,menuName):
-    
-    cmn = self.canonicalizeMenuName(menuName)
-    del self.menus[cmn]
-#@-node:ekr.20031218072017.3807:getMenu, setMenu, destroyMenu
-#@+node:ekr.20060211144330.1:getMacHelpMenu
-def getMacHelpMenu (self):
-    
-    return None ###
-    
-    try:
-        helpMenu = Tk.Menu('top.help')
-        return helpMenu
-        
-    except Exception:
-        g.trace('Can not get MacOS Help menu')
-        g.es_exception()
-        return None
-#@-node:ekr.20060211144330.1:getMacHelpMenu
-#@-node:ekr.20060116083043:Use special Help menu on the Mac
-#@-node:ekr.20060117074259:Handle Mac issues
-#@+node:ekr.20060202235215.3:Remove deprecation warning
-#@+node:EKR.20040627114602:getDescendentUnknownAttributes
-# Only @thin vnodes have the descendentTnodeUnknownAttributes field.
-# The question is: what are we to do about this?
-
-def getDescendentUnknownAttributes (self,s):
-    
-    try:
-        bin = binascii.unhexlify(s) # Throws a TypeError if val is not a hex string.
-        val = pickle.loads(bin)
-        return val
-
-    except (TypeError,pickle.UnpicklingError,ImportError):
-        g.trace('oops: getDescendentUnknownAttributes')
-        return None
-#@-node:EKR.20040627114602:getDescendentUnknownAttributes
-#@-node:ekr.20060202235215.3:Remove deprecation warning
-#@+node:ekr.20060610193837:open python window does not appear to work on Solaris
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3771068
-By: leouser
-
-The open python window does not appear to work on Solaris.
-
-http://sourceforge.net/forum/message.php?msg_id=3771167
-By: nobody
-
-from what I could see it looked like it was trying to start the shell up with
-a location that pointed to a nonexistent path.
-#@nonl
-#@-node:ekr.20060610193837:open python window does not appear to work on Solaris
-#@-node:ekr.20060624082529:Fix minor bugs
-#@+node:ekr.20031218072017.801:Support .leo.gz or .leo.zip files
-#@+node:ekr.20050428062312:Request 1
-@nocolor
-
-By: samcollett ( Sam Collett ) 
- Compressed LEO files   
-2003-01-07 16:57
-
-
-Would it be possible to have a new file format that was basically a compressed
-version of LEO files? Maybe using the gzip compression method. You could then
-save a lot of space when you do large files. Not being a professional
-programmer myself (I mainly dabble in web design - HTML and Active Server
-Pages) how difficult would this be to implement? You would just output using a
-different file extension so users of the older versions can still use files
-with the LEO extension.
-#@-node:ekr.20050428062312:Request 1
-#@+node:ekr.20040226092546:Request 2
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=2442772
-By: ejoy
-
-I made an experiment last night. I replaced the call to open()in leofilecommand.py
-with a call to gzip.open().
-
-The LeoPy.leo file saved this way is only 600K! And there is no significant
-speed down in saving.
-
-I think it is a good idea to add compression support for load/save .leo files.
-When reading or writing file with name ending with ".leo.gz", leo can call gzip
-module to uncompress/compress the file, saving a lot of disk space.
-
-What do you think of this?
-#@nonl
-#@-node:ekr.20040226092546:Request 2
-#@+node:ekr.20031218072017.2297:open (leoFileCommands)
-def open(self,theFile,fileName,readAtFileNodesFlag=True,silent=False):
-
-    c = self.c ; frame = c.frame
-    # Read the entire file into the buffer
-    self.fileBuffer = theFile.read() ; theFile.close()
-    self.fileIndex = 0
-    << Set the default directory >>
-    self.topPosition = None
-    ok, ratio = self.getLeoFile(
-        fileName,
-        readAtFileNodesFlag=readAtFileNodesFlag,
-        silent=silent)
-    frame.resizePanesToRatio(ratio,frame.secondary_ratio)
-    if 0: # 1/30/04: this is useless.
-        if self.topPosition: 
-            c.setTopVnode(self.topPosition)
-    # Delete the file buffer
-    self.fileBuffer = ""
-    return ok
-#@+node:ekr.20031218072017.2298:<< Set the default directory >>
-@ The most natural default directory is the directory containing the .leo file that we are about to open.  If the user has specified the "Default Directory" preference that will over-ride what we are about to set.
-@c
-
-theDir = g.os_path_dirname(fileName)
-
-if len(theDir) > 0:
-    c.openDirectory = theDir
-#@-node:ekr.20031218072017.2298:<< Set the default directory >>
-#@-node:ekr.20031218072017.2297:open (leoFileCommands)
-#@+node:ekr.20050428063105:newOpen (From chapters.py)
-oldOpen = leoFileCommands.fileCommands.open
-
-def newOpen( self,file,fileName,readAtFileNodesFlag=True,silent=False):
-
-    global iscStringIO
-    c = self.c
-    
-    if zipfile.is_zipfile( fileName ):
-        iscStringIO = True
-        chapters = openChaptersFile( fileName )
-        g.es( str( len( chapters ) ) + " Chapters To Read", color = 'blue' )
-        insertChapters( chapters, c.frame, c )
-        g.es( "Finished Reading Chapters", color = 'blue' )
-        iscStringIO = False
-        return True
-
-    return oldOpen(self,file,fileName,readAtFileNodesFlag,silent)
-#@nonl
-#@-node:ekr.20050428063105:newOpen (From chapters.py)
-#@-node:ekr.20031218072017.801:Support .leo.gz or .leo.zip files
-#@+node:ekr.20060603184747:New commands for mouseless Leo
-@nocolor
-
-- Repeat counts for cursor moves.
-
-- move-to-last-sibling, move-to-first-sibling, Alt-1, Alt-9?
-
-
-@color
-#@nonl
-#@-node:ekr.20060603184747:New commands for mouseless Leo
-#@+node:ekr.20060530130736.2:Customize Open With menu without writing code
-http://sourceforge.net/forum/message.php?msg_id=3737745
-
-Desparately needs a way to modify the Open-With menu other than going
-in and changing the code.
-#@+node:ekr.20060619101345:@open-with settings
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3785897
-
-From: Rich
-
-Would it be possible to have the table of "Open With" editors to be part of
-the config system? I find myself patching the list every time I D/L a new Leo
-version to add the editor I use. This would also help isolate the user from
-the "guts" of Leo, theereby being less intimidating.
-
-Yes, it would be possible because everything in the table is a string (and not,
-e.g., a reference to a method). This would require support for @open-with in
-@settings trees.
-#@-node:ekr.20060619101345:@open-with settings
-#@-node:ekr.20060530130736.2:Customize Open With menu without writing code
-#@+node:ekr.20060530085844:Improve autocompletion
-#@-node:ekr.20060530085844:Improve autocompletion
-#@+node:ekr.20041022091645.4:Pymacs
-#@+node:ekr.20040125121407:Postings
-@nocolor
-#@nonl
-#@+node:ekr.20040125121407.1:randomandy
-http://sourceforge.net/forum/message.php?msg_id=2389876
-By: randomandy
-
-Is it only me who sees this as a question on how to reinvent the wheel? (or
-in the case of emacs, how to reinvent the <i>everything</i>.)
-
-Leo and Python both seem so well suited as wonderful hierarchal glue programs.
-And both are so elegant in the way their simple functionality brings such power
-and order to the cause. It just seems it would be a shame to take something
-so novel and unique and try to turn it into <i>yet another</i> huge text editor.
-
-I'm with <A HREF="http://sourceforge.net/forum/message.php?msg_id=2345873">Danny
-</A> on this one. The ideal solution is to find the most elegant and seamless
-way to splice one's own beloved text editor (or multipurpose editor/OS) in with
-the Leo paradigm. Have Leo hand off the text duties to the editor, or have the
-editor deliver heirarchy commands to Leo.
-
-I'm also quite curious if this makes a good tie in with SciTE. SciTE produces
-stunningly readible language highlighting/formatting. Could it be employed for
-basic cell text display, and then for heavier editing, a keystroke or button
-could open the cell text in one's preferred weapons grade text editor?
-
-Scintilla also has a similarly beautiful code-to-html and code-to-pdf capability
-that seems very suited to the literary part of the Leo paradigm: publication.
-It would be nice if that code could be exploited as well.
-
-This Leo is really a marvelous work. It's transforming the way I think (i.e.
-making it possible again). Nice work, Edward.
-#@-node:ekr.20040125121407.1:randomandy
-#@+node:ekr.20040125121407.2:dannyobrien
-By: dannyobrien ( danny o'brien ) 
- RE: What would it take to turn Leo into Emacs   
-2003-12-23 09:18  
-
- I agree with the embedding; I've used the vim plugin and it works well, but actually embedding the editor directly into the text field of leo (and allowing a range of keyboard shortcuts for eg headline editing) would be perfect.
-
-There is some support for this in gvim, the GUI version of vim that comes as standard. This can be run so as its GUI is "embedded" in another GTK widget, using that library's GtkSocket/GtkPlug system. A quick demo of that (and how to do it in python) is here:
-
-http://www.daa.com.au/pipermail/pygtk/2003-October/006185.html
-
-To see this working with gvim, run the second (socket.py) program on that page then type
-
-gvim --socketid <number generated by socket.py>
-
-I'm not sure how you could do this in other widget libraries - I don't know much about X Windows, but I suppose it would need support in vim as well as the widget set.
- 
-#@-node:ekr.20040125121407.2:dannyobrien
-#@+node:ekr.20040125121407.3:mdawson
-http://sourceforge.net/forum/message.php?msg_id=2388448
-By: mdawson
-
-I use XEmacs as my text editor.  The first thing I did when
-evaluating Leo was to set up "open with" to use XEmacs for editing
-Leo body text.
-
-My progress so far:
-
-- my Open_With Plugin opens a Leo node as a foreground buffer in
-XEmacs, or a background (invisible) buffer in XEmacs.
-
-- my Open_Tree Plugin opens a sub-tree of Leo nodes as background
-buffers in XEmacs.
-
-- my filename modification plugin changes the temporary file names
-used by Leo so that they can be spotted more easily in an XEmacs
-buffer listing (e.g. ibuffer).
-
-- an elisp function to kill all XEmacs Leo buffers at once.
-
-- another elisp function to indent and unindent the Leo comments in
-derived Python source, which improves the readability of code.
-
-- my setup of the elisp Multiple-Major-Modes XEmacs package, so that
-XEmacs is in text-mode in Leo @doc sections, and the correct
-language mode in @code sections.
-
-Any of these might be able to be adapted for your own use. They
-should all work with Emacs as well as XEmacs, but I've not tested
-that.
-
-These are all outlined in Appendix "C. XEmacs Text Editor" of the
-document at:
-    http://devguide.leo.marshallresearch.ca
-
-and the Leo outline that contains them is available at:
-    http://leo.marshallresearch.ca
-
-
-    ----------------------------------------
-    Michael Dawson
-#@nonl
-#@-node:ekr.20040125121407.3:mdawson
-#@-node:ekr.20040125121407:Postings
-#@+node:ekr.20041022144159:Q: Pymacs bridge
-I'm trying to use the Pymacs bridge to add a symbol completion facility to
-Emacs's python-mode.  Neither the Python nor Emacs Lisp portions are all
-that complex, but I'm having trouble passing a list of strings from Emacs
-Lisp into Python.  On the Emacs Lisp side it looks like this:
-
-    (pymacs-load "pycomplete")
-
-    (defun py-complete ()
-      (interactive)
-      (pycomplete-pycomplete (py-symbol-near-point)
-                             (py-find-global-imports)))
-
-(py-find-global-imports) returns a (Lisp) list of strings, e.g.:
-
-    ("import time", "import sys")
-
-On the Python side I have this function:
-
-    def pycomplete(s, imports=None):
-        completions = get_all_completions(s, imports)
-        dots = s.split(".")
-        return os.path.commonprefix([k[len(dots[-1]):] for k in completions])
-
-Unfortunately, the imports arg does not come across as a Python list of
-strings (s does come across the bridge as a normal Python string).  Its
-repr() prints out like this:
-
-    lisp('("import time")')
-
-What do I need to do to convert that object into a true Python list of
-strings?  I'm afraid I don't quite understand the description of the lisp
-object in the Pymacs docs.  I tried imports.value() but that just gave me
-
-    (aref pymacs-lisp 0)
-
-Any help appreciated...
-
-Skip
-#@nonl
-#@-node:ekr.20041022144159:Q: Pymacs bridge
-#@+node:ekr.20041022144159.1:A: pymacs-forget-mutability
-"""
-Proper Emacs Lisp lists, those for which the cdr of last cell is nil, are
-normally transmitted opaquely to Python. If pymacs-forget-mutability is
-set, or if Python later asks for these to be expanded, proper Emacs Lisp
-lists get converted into Python lists, if we except the empty list, which
-is always converted as Python None. In the other direction, Python lists
-are always converted into proper Emacs Lisp lists.
-"""
-
-So, maybe try
-
-    (defun py-complete ()
-      (interactive)
-      (let ((pymacs-forget-mutability t)) 
-	(pycomplete-pycomplete (py-symbol-near-point)
-                               (py-find-global-imports))))
-#@-node:ekr.20041022144159.1:A: pymacs-forget-mutability
-#@-node:ekr.20041022091645.4:Pymacs
-#@-node:ekr.20060527164612:Important 1-2 day projects (1-2 weeks)
-#@+node:ekr.20060527182117:Important 1-2 week projects (2-3 weeks)
-#@+node:ekr.20041228084830.3:Finish wxWindows plugin
-# Don't use body wrappers, use g.app.gui methods instead
-#@-node:ekr.20041228084830.3:Finish wxWindows plugin
-#@+node:ekr.20060603090445.7:Ipython stuff
-#@+node:ekr.20060603085719.1:Use IPython autocompleter?
-#@-node:ekr.20060603085719.1:Use IPython autocompleter?
-#@+node:ekr.20060603090445.8:Add newline history (like Iptyon history?)
-#@-node:ekr.20060603090445.8:Add newline history (like Iptyon history?)
-#@+node:ekr.20060601150940.1:Investigate Ipython support in Scripting plugin
-#@-node:ekr.20060601150940.1:Investigate Ipython support in Scripting plugin
-#@+node:ekr.20060603090445.9:Script button that saves environment between runs
-This would allow IPython-like operation.
-#@nonl
-#@-node:ekr.20060603090445.9:Script button that saves environment between runs
-#@-node:ekr.20060603090445.7:Ipython stuff
 #@+node:ekr.20041228084018.5:Finish zodb plugin
 @ New notes:
 
@@ -2183,6 +1700,11 @@ Scott
 #@-node:ekr.20031218072017.737:Leo & data bases
 #@-node:ekr.20031218072017.412:Zope postings
 #@-node:ekr.20041228084018.5:Finish zodb plugin
+#@+node:ekr.20041228084830.3:Finish wxWindows plugin
+# Don't use body wrappers, use g.app.gui methods instead
+#@-node:ekr.20041228084830.3:Finish wxWindows plugin
+#@-node:ekr.20060822174843:Most important
+#@+node:ekr.20060527164612:Important 1-2 day projects
 #@+node:ekr.20050831131028:opml
 #@+node:ekr.20050831131452:Original post
 @nocolor
@@ -2281,8 +1803,488 @@ Thanks.
 Edward
 #@-node:ekr.20050915062404:My post
 #@-node:ekr.20050831131028:opml
-#@+node:ekr.20060531192407:IPython
-#@-node:ekr.20060531192407:IPython
+#@+node:ekr.20060531161030.1:Make body editors persistant
+#@-node:ekr.20060531161030.1:Make body editors persistant
+#@+node:ekr.20060609070148:Fix hung (zombie) windows)
+@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=3768494
+By: ktenney
+
+I'm using current CVS, W2k
+
+1 open a Leo file (I'm using a batch file / console)
+
+2 click Edit->Open   <-- Having this dialog open is the problem.
+
+3 return focus to the Leo window
+
+4 click Help->Open leoDocs.leo
+
+Zombie!
+#@-node:ekr.20060609070148:Fix hung (zombie) windows)
+#@+node:ekr.20060624082529:Fix minor bugs
+#@+node:ekr.20060117074259:Handle Mac issues
+#@+node:ekr.20060117074259.1:Mac indentation problem
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3526056
+By: nobody
+
+Hi Edward. I've been using the linux and windows version but would like to try
+leo on the mac. The install instructions seem a bit out of date. I take it any
+additional downloading of TclTkAqua is unneccessary?
+
+I have python2.4 in addition to the stock python 2.3.5 that comes with osx 10.4.
+Launching leo like so:  "python2.4 leo.py", as I do on linux, seems to run just
+fine.
+
+I don't know if this was fixed on osx or in leo in general, but moving the mouse
+to each of the panes and scrolling with the wheel works just great now. Thanks.
+
+Plugin manager: the plugin text font is really tiny, and the window opens to
+a default width such that the 'Installed Plugins' button reads 'talled Plugi'.
+Resizing the window does stretch the buttons horizontally.
+
+Ok -- here's maybe a big issue. I open a new leo file (File->New) and type in:
+
+for i in range(3):
+
+I hit return after the colon, but a newline is not entered.
+
+Stephen
+#@-node:ekr.20060117074259.1:Mac indentation problem
+#@+node:ekr.20051112080017:Problem removing script buttons on the mac
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3423121
+By: nobody
+
+Hi! I need help removing script buttons. It says I should right click the ofending
+button. I have a mac and Ctl-click, Command-click, etc doesn't work. What should
+I do?
+
+EKR: This is on the list of unfixable bugs, but I have a hard time believing there is no workaround.
+#@nonl
+#@-node:ekr.20051112080017:Problem removing script buttons on the mac
+#@+node:ekr.20060116083043:Use special Help menu on the Mac
+# http://sourceforge.net/forum/message.php?msg_id=3237845
+#@nonl
+#@+node:ekr.20031218072017.3803:createHelpMenuFromTable
+def createHelpMenuFromTable (self):
+
+    if 0: ## sys.platform == 'darwin':
+        helpMenu = self.getMacHelpMenu()
+        if not helpMenu: return
+    else:
+        helpMenu = self.createNewMenu("&Help")
+    
+    self.createMenuEntries(helpMenu,self.helpMenuTopTable)
+    
+    if sys.platform=="win32":
+        self.createMenuEntries(helpMenu,self.helpMenuTop2Table)
+    
+    self.createMenuEntries(helpMenu,self.helpMenuTop3Table)
+#@-node:ekr.20031218072017.3803:createHelpMenuFromTable
+#@+node:ekr.20031218072017.4113:new_menu
+def new_menu(self,parent,tearoff=False):
+    
+    """Wrapper for the Tkinter new_menu menu method."""
+    
+    if self.font:
+        try:
+            return Tk.Menu(parent,tearoff=tearoff,font=self.font)
+        except Exception:
+            g.es_exception()
+            return Tk.Menu(parent,tearoff=tearoff)
+    else:
+        return Tk.Menu(parent,tearoff=tearoff)
+#@-node:ekr.20031218072017.4113:new_menu
+#@+node:ekr.20031218072017.3804:createNewMenu
+def createNewMenu (self,menuName,parentName="top",before=None):
+
+    try:
+        parent = self.getMenu(parentName) # parent may be None.
+        menu = self.getMenu(menuName)
+        if menu:
+            g.es("menu already exists: " + menuName,color="red")
+        else:
+            menu = self.new_menu(parent,tearoff=0)
+            self.setMenu(menuName,menu)
+            label = self.getRealMenuName(menuName)
+            amp_index = label.find("&")
+            label = label.replace("&","")
+            if before: # Insert the menu before the "before" menu.
+                index_label = self.getRealMenuName(before)
+                amp_index = index_label.find("&")
+                index_label = index_label.replace("&","")
+                index = parent.index(index_label)
+                self.insert_cascade(parent,index=index,label=label,menu=menu,underline=amp_index)
+            else:
+                self.add_cascade(parent,label=label,menu=menu,underline=amp_index)
+            return menu
+    except:
+        g.es("exception creating " + menuName + " menu")
+        g.es_exception()
+        return None
+#@-node:ekr.20031218072017.3804:createNewMenu
+#@+node:ekr.20031218072017.3807:getMenu, setMenu, destroyMenu
+def getMenu (self,menuName):
+
+    cmn = self.canonicalizeMenuName(menuName)
+    return self.menus.get(cmn)
+    
+def setMenu (self,menuName,menu):
+    
+    cmn = self.canonicalizeMenuName(menuName)
+    self.menus [cmn] = menu
+    
+def destroyMenu (self,menuName):
+    
+    cmn = self.canonicalizeMenuName(menuName)
+    del self.menus[cmn]
+#@-node:ekr.20031218072017.3807:getMenu, setMenu, destroyMenu
+#@+node:ekr.20060211144330.1:getMacHelpMenu
+def getMacHelpMenu (self):
+    
+    return None ###
+    
+    try:
+        helpMenu = Tk.Menu('top.help')
+        return helpMenu
+        
+    except Exception:
+        g.trace('Can not get MacOS Help menu')
+        g.es_exception()
+        return None
+#@-node:ekr.20060211144330.1:getMacHelpMenu
+#@-node:ekr.20060116083043:Use special Help menu on the Mac
+#@-node:ekr.20060117074259:Handle Mac issues
+#@+node:ekr.20060202235215.3:Remove deprecation warning
+#@+node:EKR.20040627114602:getDescendentUnknownAttributes
+# Only @thin vnodes have the descendentTnodeUnknownAttributes field.
+# The question is: what are we to do about this?
+
+def getDescendentUnknownAttributes (self,s):
+    
+    try:
+        bin = binascii.unhexlify(s) # Throws a TypeError if val is not a hex string.
+        val = pickle.loads(bin)
+        return val
+
+    except (TypeError,pickle.UnpicklingError,ImportError):
+        g.trace('oops: getDescendentUnknownAttributes')
+        return None
+#@-node:EKR.20040627114602:getDescendentUnknownAttributes
+#@-node:ekr.20060202235215.3:Remove deprecation warning
+#@+node:ekr.20060610193837:open python window does not appear to work on Solaris
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3771068
+By: leouser
+
+The open python window does not appear to work on Solaris.
+
+http://sourceforge.net/forum/message.php?msg_id=3771167
+By: nobody
+
+from what I could see it looked like it was trying to start the shell up with
+a location that pointed to a nonexistent path.
+#@nonl
+#@-node:ekr.20060610193837:open python window does not appear to work on Solaris
+#@-node:ekr.20060624082529:Fix minor bugs
+#@+node:ekr.20031218072017.801:Support .leo.gz or .leo.zip files
+#@+node:ekr.20050428062312:Request 1
+@nocolor
+
+By: samcollett ( Sam Collett ) 
+ Compressed LEO files   
+2003-01-07 16:57
+
+
+Would it be possible to have a new file format that was basically a compressed
+version of LEO files? Maybe using the gzip compression method. You could then
+save a lot of space when you do large files. Not being a professional
+programmer myself (I mainly dabble in web design - HTML and Active Server
+Pages) how difficult would this be to implement? You would just output using a
+different file extension so users of the older versions can still use files
+with the LEO extension.
+#@-node:ekr.20050428062312:Request 1
+#@+node:ekr.20040226092546:Request 2
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=2442772
+By: ejoy
+
+I made an experiment last night. I replaced the call to open()in leofilecommand.py
+with a call to gzip.open().
+
+The LeoPy.leo file saved this way is only 600K! And there is no significant
+speed down in saving.
+
+I think it is a good idea to add compression support for load/save .leo files.
+When reading or writing file with name ending with ".leo.gz", leo can call gzip
+module to uncompress/compress the file, saving a lot of disk space.
+
+What do you think of this?
+#@nonl
+#@-node:ekr.20040226092546:Request 2
+#@+node:ekr.20031218072017.2297:open (leoFileCommands)
+def open(self,theFile,fileName,readAtFileNodesFlag=True,silent=False):
+
+    c = self.c ; frame = c.frame
+    # Read the entire file into the buffer
+    self.fileBuffer = theFile.read() ; theFile.close()
+    self.fileIndex = 0
+    << Set the default directory >>
+    self.topPosition = None
+    ok, ratio = self.getLeoFile(
+        fileName,
+        readAtFileNodesFlag=readAtFileNodesFlag,
+        silent=silent)
+    frame.resizePanesToRatio(ratio,frame.secondary_ratio)
+    if 0: # 1/30/04: this is useless.
+        if self.topPosition: 
+            c.setTopVnode(self.topPosition)
+    # Delete the file buffer
+    self.fileBuffer = ""
+    return ok
+#@+node:ekr.20031218072017.2298:<< Set the default directory >>
+@ The most natural default directory is the directory containing the .leo file that we are about to open.  If the user has specified the "Default Directory" preference that will over-ride what we are about to set.
+@c
+
+theDir = g.os_path_dirname(fileName)
+
+if len(theDir) > 0:
+    c.openDirectory = theDir
+#@-node:ekr.20031218072017.2298:<< Set the default directory >>
+#@-node:ekr.20031218072017.2297:open (leoFileCommands)
+#@+node:ekr.20050428063105:newOpen (From chapters.py)
+oldOpen = leoFileCommands.fileCommands.open
+
+def newOpen( self,file,fileName,readAtFileNodesFlag=True,silent=False):
+
+    global iscStringIO
+    c = self.c
+    
+    if zipfile.is_zipfile( fileName ):
+        iscStringIO = True
+        chapters = openChaptersFile( fileName )
+        g.es( str( len( chapters ) ) + " Chapters To Read", color = 'blue' )
+        insertChapters( chapters, c.frame, c )
+        g.es( "Finished Reading Chapters", color = 'blue' )
+        iscStringIO = False
+        return True
+
+    return oldOpen(self,file,fileName,readAtFileNodesFlag,silent)
+#@nonl
+#@-node:ekr.20050428063105:newOpen (From chapters.py)
+#@-node:ekr.20031218072017.801:Support .leo.gz or .leo.zip files
+#@+node:ekr.20060603184747:New commands for mouseless Leo
+@nocolor
+
+- Repeat counts for cursor moves.
+
+- move-to-last-sibling, move-to-first-sibling, Alt-1, Alt-9?
+
+
+@color
+#@nonl
+#@-node:ekr.20060603184747:New commands for mouseless Leo
+#@+node:ekr.20060530130736.2:Customize Open With menu without writing code
+http://sourceforge.net/forum/message.php?msg_id=3737745
+
+Desparately needs a way to modify the Open-With menu other than going
+in and changing the code.
+#@+node:ekr.20060619101345:@open-with settings
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3785897
+
+From: Rich
+
+Would it be possible to have the table of "Open With" editors to be part of
+the config system? I find myself patching the list every time I D/L a new Leo
+version to add the editor I use. This would also help isolate the user from
+the "guts" of Leo, theereby being less intimidating.
+
+Yes, it would be possible because everything in the table is a string (and not,
+e.g., a reference to a method). This would require support for @open-with in
+@settings trees.
+#@-node:ekr.20060619101345:@open-with settings
+#@-node:ekr.20060530130736.2:Customize Open With menu without writing code
+#@+node:ekr.20060530085844:Improve autocompletion
+#@-node:ekr.20060530085844:Improve autocompletion
+#@+node:ekr.20041022091645.4:Pymacs
+#@+node:ekr.20040125121407:Postings
+@nocolor
+#@nonl
+#@+node:ekr.20040125121407.1:randomandy
+http://sourceforge.net/forum/message.php?msg_id=2389876
+By: randomandy
+
+Is it only me who sees this as a question on how to reinvent the wheel? (or
+in the case of emacs, how to reinvent the <i>everything</i>.)
+
+Leo and Python both seem so well suited as wonderful hierarchal glue programs.
+And both are so elegant in the way their simple functionality brings such power
+and order to the cause. It just seems it would be a shame to take something
+so novel and unique and try to turn it into <i>yet another</i> huge text editor.
+
+I'm with <A HREF="http://sourceforge.net/forum/message.php?msg_id=2345873">Danny
+</A> on this one. The ideal solution is to find the most elegant and seamless
+way to splice one's own beloved text editor (or multipurpose editor/OS) in with
+the Leo paradigm. Have Leo hand off the text duties to the editor, or have the
+editor deliver heirarchy commands to Leo.
+
+I'm also quite curious if this makes a good tie in with SciTE. SciTE produces
+stunningly readible language highlighting/formatting. Could it be employed for
+basic cell text display, and then for heavier editing, a keystroke or button
+could open the cell text in one's preferred weapons grade text editor?
+
+Scintilla also has a similarly beautiful code-to-html and code-to-pdf capability
+that seems very suited to the literary part of the Leo paradigm: publication.
+It would be nice if that code could be exploited as well.
+
+This Leo is really a marvelous work. It's transforming the way I think (i.e.
+making it possible again). Nice work, Edward.
+#@-node:ekr.20040125121407.1:randomandy
+#@+node:ekr.20040125121407.2:dannyobrien
+By: dannyobrien ( danny o'brien ) 
+ RE: What would it take to turn Leo into Emacs   
+2003-12-23 09:18  
+
+ I agree with the embedding; I've used the vim plugin and it works well, but actually embedding the editor directly into the text field of leo (and allowing a range of keyboard shortcuts for eg headline editing) would be perfect.
+
+There is some support for this in gvim, the GUI version of vim that comes as standard. This can be run so as its GUI is "embedded" in another GTK widget, using that library's GtkSocket/GtkPlug system. A quick demo of that (and how to do it in python) is here:
+
+http://www.daa.com.au/pipermail/pygtk/2003-October/006185.html
+
+To see this working with gvim, run the second (socket.py) program on that page then type
+
+gvim --socketid <number generated by socket.py>
+
+I'm not sure how you could do this in other widget libraries - I don't know much about X Windows, but I suppose it would need support in vim as well as the widget set.
+ 
+#@-node:ekr.20040125121407.2:dannyobrien
+#@+node:ekr.20040125121407.3:mdawson
+http://sourceforge.net/forum/message.php?msg_id=2388448
+By: mdawson
+
+I use XEmacs as my text editor.  The first thing I did when
+evaluating Leo was to set up "open with" to use XEmacs for editing
+Leo body text.
+
+My progress so far:
+
+- my Open_With Plugin opens a Leo node as a foreground buffer in
+XEmacs, or a background (invisible) buffer in XEmacs.
+
+- my Open_Tree Plugin opens a sub-tree of Leo nodes as background
+buffers in XEmacs.
+
+- my filename modification plugin changes the temporary file names
+used by Leo so that they can be spotted more easily in an XEmacs
+buffer listing (e.g. ibuffer).
+
+- an elisp function to kill all XEmacs Leo buffers at once.
+
+- another elisp function to indent and unindent the Leo comments in
+derived Python source, which improves the readability of code.
+
+- my setup of the elisp Multiple-Major-Modes XEmacs package, so that
+XEmacs is in text-mode in Leo @doc sections, and the correct
+language mode in @code sections.
+
+Any of these might be able to be adapted for your own use. They
+should all work with Emacs as well as XEmacs, but I've not tested
+that.
+
+These are all outlined in Appendix "C. XEmacs Text Editor" of the
+document at:
+    http://devguide.leo.marshallresearch.ca
+
+and the Leo outline that contains them is available at:
+    http://leo.marshallresearch.ca
+
+
+    ----------------------------------------
+    Michael Dawson
+#@nonl
+#@-node:ekr.20040125121407.3:mdawson
+#@-node:ekr.20040125121407:Postings
+#@+node:ekr.20041022144159:Q: Pymacs bridge
+I'm trying to use the Pymacs bridge to add a symbol completion facility to
+Emacs's python-mode.  Neither the Python nor Emacs Lisp portions are all
+that complex, but I'm having trouble passing a list of strings from Emacs
+Lisp into Python.  On the Emacs Lisp side it looks like this:
+
+    (pymacs-load "pycomplete")
+
+    (defun py-complete ()
+      (interactive)
+      (pycomplete-pycomplete (py-symbol-near-point)
+                             (py-find-global-imports)))
+
+(py-find-global-imports) returns a (Lisp) list of strings, e.g.:
+
+    ("import time", "import sys")
+
+On the Python side I have this function:
+
+    def pycomplete(s, imports=None):
+        completions = get_all_completions(s, imports)
+        dots = s.split(".")
+        return os.path.commonprefix([k[len(dots[-1]):] for k in completions])
+
+Unfortunately, the imports arg does not come across as a Python list of
+strings (s does come across the bridge as a normal Python string).  Its
+repr() prints out like this:
+
+    lisp('("import time")')
+
+What do I need to do to convert that object into a true Python list of
+strings?  I'm afraid I don't quite understand the description of the lisp
+object in the Pymacs docs.  I tried imports.value() but that just gave me
+
+    (aref pymacs-lisp 0)
+
+Any help appreciated...
+
+Skip
+#@nonl
+#@-node:ekr.20041022144159:Q: Pymacs bridge
+#@+node:ekr.20041022144159.1:A: pymacs-forget-mutability
+"""
+Proper Emacs Lisp lists, those for which the cdr of last cell is nil, are
+normally transmitted opaquely to Python. If pymacs-forget-mutability is
+set, or if Python later asks for these to be expanded, proper Emacs Lisp
+lists get converted into Python lists, if we except the empty list, which
+is always converted as Python None. In the other direction, Python lists
+are always converted into proper Emacs Lisp lists.
+"""
+
+So, maybe try
+
+    (defun py-complete ()
+      (interactive)
+      (let ((pymacs-forget-mutability t)) 
+	(pycomplete-pycomplete (py-symbol-near-point)
+                               (py-find-global-imports))))
+#@-node:ekr.20041022144159.1:A: pymacs-forget-mutability
+#@-node:ekr.20041022091645.4:Pymacs
+#@-node:ekr.20060527164612:Important 1-2 day projects
+#@+node:ekr.20060527182117:Important 1-2 week projects
+#@+node:ekr.20060603090445.7:Ipython stuff
+#@+node:ekr.20060603085719.1:Use IPython autocompleter?
+#@-node:ekr.20060603085719.1:Use IPython autocompleter?
+#@+node:ekr.20060603090445.8:Add newline history (like Iptyon history?)
+#@-node:ekr.20060603090445.8:Add newline history (like Iptyon history?)
+#@+node:ekr.20060601150940.1:Investigate Ipython support in Scripting plugin
+#@-node:ekr.20060601150940.1:Investigate Ipython support in Scripting plugin
+#@+node:ekr.20060603090445.9:Script button that saves environment between runs
+This would allow IPython-like operation.
+#@nonl
+#@-node:ekr.20060603090445.9:Script button that saves environment between runs
+#@-node:ekr.20060603090445.7:Ipython stuff
 #@+node:ekr.20060629154112:Merge Leo & jyLeo
 @nocolor
 
@@ -2311,7 +2313,7 @@ evening out of comparing the codebases to see where things change.
 
 
 #@-node:ekr.20060629154112:Merge Leo & jyLeo
-#@-node:ekr.20060527182117:Important 1-2 week projects (2-3 weeks)
+#@-node:ekr.20060527182117:Important 1-2 week projects
 #@-all
 #@nonl
 #@-node:ekr.20040117181936:@thin ../doc/leoToDo.txt
