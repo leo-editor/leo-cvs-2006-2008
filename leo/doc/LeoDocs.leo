@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="25764" clone_windows="0"/>
-<globals body_outline_ratio="0.632218844985">
-	<global_window_position top="165" left="384" height="658" width="799"/>
+<globals body_outline_ratio="0.5">
+	<global_window_position top="165" left="384" height="639" width="799"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -536,7 +536,10 @@
 <v t="ekr.20050912125735.3077"><vh>Servers</vh>
 <v t="ekr.20050912125735.3078"><vh>mod_http.py</vh></v>
 </v>
-<v t="ekr.20050912125735.3136"><vh>Spell Checking</vh>
+<v t="ekr.20060823094954"><vh>Shadow files</vh>
+<v t="ekr.20060823094954.1"><vh>mod_shadow.py</vh></v>
+</v>
+<v t="ekr.20050912125735.3136"><vh>Spell checking</vh>
 <v t="ekr.20050912125735.3138"><vh>spellpyx.py</vh></v>
 </v>
 <v t="ekr.20050912125735.3559"><vh>Text formatting</vh>
@@ -2925,23 +2928,23 @@
 </v>
 </v>
 <v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20060822140418.1" a="E"><vh>4.4.1 b4</vh>
+<v t="ekr.20060822140418.1" a="TV"><vh>4.4.1 b4</vh>
 <v t="ekr.20060822140418.3"><vh>Bugs fixed</vh>
-<v t="ekr.20060822140418.4" a="E"><vh>Added bindings to text panes for show-font command</vh></v>
-<v t="ekr.20060822140418.26" a="E"><vh>Fixed kill-line, kill-word, kill-sentence, etc</vh></v>
-<v t="ekr.20060822140418.29" a="E"><vh>Fixed minor scrolling problem</vh></v>
-<v t="ekr.20060822140418.36" a="E"><vh>Fixed bug in backward-kill-word</vh></v>
-<v t="ekr.20060822140418.39" a="E"><vh>Fixed unicode bug in forward-word and backward-word commands</vh></v>
-<v t="ekr.20060822140418.41" a="E"><vh>Fixed problem setting body background color</vh></v>
-<v t="ekr.20060822140418.49" a="E"><vh>Disabled incremental colorizing in new colorizer when there are multiple editors</vh></v>
-<v t="ekr.20060822140418.97" a="E"><vh>Removed component classes</vh></v>
+<v t="ekr.20060822140418.4"><vh>Added bindings to text panes for show-font command</vh></v>
+<v t="ekr.20060822140418.26"><vh>Fixed kill-line, kill-word, kill-sentence, etc</vh></v>
+<v t="ekr.20060822140418.29"><vh>Fixed minor scrolling problem</vh></v>
+<v t="ekr.20060822140418.36"><vh>Fixed bug in backward-kill-word</vh></v>
+<v t="ekr.20060822140418.39"><vh>Fixed unicode bug in forward-word and backward-word commands</vh></v>
+<v t="ekr.20060822140418.41"><vh>Fixed problem setting body background color</vh></v>
+<v t="ekr.20060822140418.49"><vh>Disabled incremental colorizing in new colorizer when there are multiple editors</vh></v>
+<v t="ekr.20060822140418.97"><vh>Removed component classes</vh></v>
 </v>
-<v t="ekr.20060822140418.69" a="TV"><vh>New features</vh>
-<v t="ekr.20060822140418.76" a="E"><vh>Added scroll-outline-left/right commands</vh></v>
-<v t="ekr.20060822140418.77" a="E"><vh>Generalized bracket flasher</vh></v>
-<v t="ekr.20060822140418.88" a="E"><vh>Leo *already* supports Python decorators</vh></v>
-<v t="ekr.20060822140418.92" a="E"><vh>Wrote script to convert g.es to g.et where appropriate</vh></v>
-<v t="ekr.20060822140418.70" a="E"><vh>Created menu font settings</vh></v>
+<v t="ekr.20060822140418.69"><vh>New features</vh>
+<v t="ekr.20060822140418.76"><vh>Added scroll-outline-left/right commands</vh></v>
+<v t="ekr.20060822140418.77"><vh>Generalized bracket flasher</vh></v>
+<v t="ekr.20060822140418.88"><vh>Leo *already* supports Python decorators</vh></v>
+<v t="ekr.20060822140418.92"><vh>Wrote script to convert g.es to g.et where appropriate</vh></v>
+<v t="ekr.20060822140418.70"><vh>Created menu font settings</vh></v>
 </v>
 </v>
 </v>
@@ -30285,7 +30288,7 @@ Open a new Leo file.
 
 It's easier to *do* this than to *explain* it!</t>
 <t tx="ekr.20060822140418"></t>
-<t tx="ekr.20060822140418.1">Leo 4.4.1 beta 4                                            August 23, 2006
+<t tx="ekr.20060822140418.1">Leo 4.4.1 beta 4                                            August 24, 2006
 
 Leo 4.4.1 beta 4 is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
@@ -30347,5 +30350,41 @@ Added these settings:
 <t tx="ekr.20060822140418.88">Leo *already* outputs decorators correctly, assuming the decorator does not conflict with a Leo directive.</t>
 <t tx="ekr.20060822140418.92">http://sourceforge.net/forum/message.php?msg_id=3858363</t>
 <t tx="ekr.20060822140418.97">These were overly complicated an not useful.</t>
+<t tx="ekr.20060823094954"></t>
+<t tx="ekr.20060823094954.1">The shadow plugin allows you to use Leo with files which contain no
+Leo comments, and still have information flow in both directions:
+from the file into Leo, and from Leo into the file.
+ 
+To use this plugin:
+
+1. Install the shadow script button found in leoPy.leo in the node::
+    
+    Code--&gt;Buttons and settings--&gt;@@button shadow
+    
+   That is, copy and paste this @button node to your Leo outline, and change @@button to @button.
+
+2. Position the cursor somewhere in your tree.
+
+3. Clicking the shadow button will create a shadow file for all @thin nodes
+   in the selected outline.
+
+After this initial setup, changes in Leo will be reflected both in the file
+in the Leo subfolder, and the file without sentinels.
+Conversely, changes in the file without sentinels will flow back to the file
+in the leo subfolder, and show up in Leo.
+Text insertions within a node will show up as expected. Text insertion
+at the end of the node will show up and the end of the node.
+Note that the plugin never structures input; this has to be done manually
+within Leo.
+
+You can set settings for this plugin in leoSettings.leo at::
+    
+     @settings--&gt;Plugins--&gt;shadow plugin.
+
+- @string shadow_subdir (default: LeoFolder): name of the shadow directory.
+
+- @string shadow_prefix (default: x): prefix of shadow files.
+  This prefix allows the shadow file and the original file to have different names.
+  This is useful for name-based tools like py.test.</t>
 </tnodes>
 </leo_file>

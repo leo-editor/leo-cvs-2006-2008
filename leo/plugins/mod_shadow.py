@@ -7,35 +7,41 @@
 """
 Use a subfolder for files with Leo comments.
 
-This plugin allows you to use Leo with files which contain no
+The shadow plugin allows you to use Leo with files which contain no
 Leo comments, and still have information flow in both directions:
 from the file into Leo, and from Leo into the file.
  
-    To use this plugin:
-        1. Install the shadow button
-        2. Position the cursor somewhere in your tree.
-        3. Upon clicking on the shadow button, all @thin files will be converted to have
-           a shadow file.
-    
-    After this initial setup, changes in Leo will be reflected both in the file
-    in the Leo subfolder, and the file without sentinels.
-    
-    Conversely, changes in the file without sentinels will flow back to the file
-    in the leo subfolder, and show up in Leo.
+To use this plugin:
 
-    Text insertions within a node will show up as expected. Text insertion
-    at the end of the node will show up and the end of the node.
+1. Install the shadow script button found in leoPy.leo in the node::
+    
+    Code-->Buttons and settings-->@@button shadow
+    
+   That is, copy and paste this @button node to your Leo outline, and change @@ to @.
 
-    Note that the plugin never structures input; this has to be done manually
-    within Leo.
+2. Position the cursor somewhere in your tree.
+
+3. Clicking the shadow button will create a shadow file for all @thin nodes
+   in the selected outline.
+
+After this initial setup, changes in Leo will be reflected both in the file
+in the Leo subfolder, and the file without sentinels.
+Conversely, changes in the file without sentinels will flow back to the file
+in the leo subfolder, and show up in Leo.
+Text insertions within a node will show up as expected. Text insertion
+at the end of the node will show up and the end of the node.
+Note that the plugin never structures input; this has to be done manually
+within Leo.
+
+You can set settings for this plugin in leoSettings.leo at::
     
-You can set settings for this plugin in leoSettings.leo at: @settings-->Plugins-->shadow plugin.
-    
-    shadow_subdir (default: LeoFolder): name of the shadow directory.
-    shadow_prefix (default: x): prefix of shadow files.
-    
-The prefix allows the shadow file and the original file to have different names.
-This is useful for name-based tools like py.test.
+    @settings-->Plugins-->shadow plugin.
+
+- @string shadow_subdir (default: LeoFolder): name of the shadow directory.
+
+- @string shadow_prefix (default: x): prefix of shadow files.
+  This prefix allows the shadow file and the original file to have different names.
+  This is useful for name-based tools like py.test.
 """
 #@-node:ekr.20060715100156.53:<< docstring >>
 #@nl
@@ -47,7 +53,7 @@ This is useful for name-based tools like py.test.
 #@@language python
 #@@tabwidth -4
 
-__version__ = "0.10.3"
+__version__ = "0.10.4"
 #@<< version history >>
 #@+node:ekr.20060715100156.54:<< version history >>
 #@@killcolor 
@@ -90,6 +96,7 @@ __version__ = "0.10.3"
 # - active global is no longer used.
 # 0.10.2 EKR: Removed 'active' and 'testing' globals and the stopTesting 
 # function.
+# 0.10.4 EKR: Revised docstring.
 #@-at
 #@nonl
 #@-node:ekr.20060715100156.54:<< version history >>
