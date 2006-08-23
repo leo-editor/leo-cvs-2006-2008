@@ -1,631 +1,17 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
-#@+node:ekr.20060531161030:To do: B5
-#@+node:ekr.20060822162521:Possible to do multi-line headlines?
-#@-node:ekr.20060822162521:Possible to do multi-line headlines?
-#@+node:ekr.20060813121814:Add colorizer files for cweb, forth, plsql, rapidq
-#@-node:ekr.20060813121814:Add colorizer files for cweb, forth, plsql, rapidq
-#@+node:ekr.20060527204444:Finish new colorizer plugin
-#@-node:ekr.20060527204444:Finish new colorizer plugin
-#@+node:ekr.20060628103226:Finish emacs commands
-#@+node:ekr.20060628103226.2:Alt-x handlers should add to lossage
-#@-node:ekr.20060628103226.2:Alt-x handlers should add to lossage
-#@+node:ekr.20060628095110:Fix yank and kill-line commands
-Blank lines: deletes the newline.
-Non-blank lines: deletes up to the newline.
-#@nonl
-#@+node:ekr.20050920084036.183:addToKillBuffer
-def addToKillBuffer (self,text):
-    
-    killKeys =(
-        '<Control-k>', '<Control-w>',
-        '<Alt-d>', '<Alt-Delete', '<Alt-z>', '<Delete>',
-        '<Control-Alt-w>')
-
-    k = self.k
-    self.reset = True
-
-    # g.trace(repr(text))
-
-    if self.killBuffer and k.stroke in killKeys:
-        self.killBuffer [0] = self.killBuffer [0] + text
-    else:
-        self.killBuffer.insert(0,text)
-#@-node:ekr.20050920084036.183:addToKillBuffer
-#@+node:ekr.20050920084036.174:class killBufferCommandsClass (add docstrings)
-class killBufferCommandsClass (baseEditCommandsClass):
-    
-    '''A class to manage the kill buffer.'''
-
-    @others
-#@+node:ekr.20050920084036.175: ctor & finishCreate
-def __init__ (self,c):
-
-    baseEditCommandsClass.__init__(self,c) # init the base class.
-
-    self.killBuffer = [] # May be changed in finishCreate.
-    self.kbiterator = self.iterateKillBuffer()
-    self.last_clipboard = None # For interacting with system clipboard.
-    self.reset = False
-    try:
-        self.widget = c.frame.body.bodyCtrl
-    except AttributeError:
-        self.widget = None
-
-def finishCreate (self):
-    
-    baseEditCommandsClass.finishCreate(self)
-        # Call the base finishCreate.
-        # This sets self.k
-    
-    if self.k.useGlobalKillbuffer:
-        self.killBuffer = leoKeys.keyHandlerClass.global_killbuffer
-#@-node:ekr.20050920084036.175: ctor & finishCreate
-#@+node:ekr.20050920084036.176: getPublicCommands
-def getPublicCommands (self):
-    
-    return {
-        'backward-kill-sentence':   self.backwardKillSentence,
-        'backward-kill-word':       self.backwardKillWord,
-        'clear-kill-ring':          self.clearKillRing,
-        'kill-line':                self.killLine,
-        'kill-word':                self.killWord,
-        'kill-sentence':            self.killSentence,
-        'kill-region':              self.killRegion,
-        'kill-region-save':         self.killRegionSave,
-        'yank':                     self.yank,
-        'yank-pop':                 self.yankPop,
-        'zap-to-character':         self.zapToCharacter,
-    }
-#@-node:ekr.20050920084036.176: getPublicCommands
-#@+node:ekr.20050920084036.183:addToKillBuffer
-def addToKillBuffer (self,text):
-    
-    killKeys =(
-        '<Control-k>', '<Control-w>',
-        '<Alt-d>', '<Alt-Delete', '<Alt-z>', '<Delete>',
-        '<Control-Alt-w>')
-
-    k = self.k
-    self.reset = True
-
-    # g.trace(repr(text))
-
-    if self.killBuffer and k.stroke in killKeys:
-        self.killBuffer [0] = self.killBuffer [0] + text
-    else:
-        self.killBuffer.insert(0,text)
-#@-node:ekr.20050920084036.183:addToKillBuffer
-#@+node:ekr.20050920084036.181:backwardKillSentence
-def backwardKillSentence (self,event):
-    
-    '''Kill the previous sentence.'''
-    
-    w = event.widget
-    i = w.search('.','insert',backwards=True,stopindex='1.0')
-
-    if i:
-        i2 = w.search('.',i,backwards=True,stopindex='1.0')
-        i2 = g.choose(i2=='','1.0',i2+'+1c ')
-        self.kill(event,i2,'%s + 1c' % i,undoType='backward-kill-sentence')
-#@-node:ekr.20050920084036.181:backwardKillSentence
-#@+node:ekr.20050920084036.180:backwardKillWord
-def backwardKillWord (self,event):
-    
-    '''Kill the previous word.'''
-
-    c = self.c
-    c.editCommands.backwardWord(event)
-    self.killWs(event)
-    self.killWord(event)
-    # c.editCommands.backwardWord(event)
-#@-node:ekr.20050920084036.180:backwardKillWord
-#@+node:ekr.20051216151811:clearKillRing
-def clearKillRing (self,event=None):
-    
-    '''Clear the kill ring.'''
-    
-    self.killBuffer = []
-#@-node:ekr.20051216151811:clearKillRing
-#@+node:ekr.20050920084036.185:getClipboard
-def getClipboard (self,w):
-
-    try:
-        ctxt = w.selection_get(selection='CLIPBOARD')
-        if not self.killBuffer or ctxt != self.last_clipboard:
-            self.last_clipboard = ctxt
-            if not self.killBuffer or self.killBuffer [0] != ctxt:
-                return ctxt
-    except: pass
-
-    return None
-#@-node:ekr.20050920084036.185:getClipboard
-#@+node:ekr.20050920084036.184:iterateKillBuffer
-def iterateKillBuffer (self):
-
-    while 1:
-        if self.killBuffer:
-            self.last_clipboard = None
-            for z in self.killBuffer:
-                if self.reset:
-                    self.reset = False
-                    break
-                yield z
-#@-node:ekr.20050920084036.184:iterateKillBuffer
-#@+node:ekr.20050920084036.178:kill, killLine, killWord
-def kill (self,event,frm,to,undoType=None):
-
-    k = self.k ; w = event.widget
-    s = w.get(frm,to)
-    
-    if undoType: self.beginCommand(undoType=undoType)
-    self.addToKillBuffer(s)
-    w.clipboard_clear()
-    w.clipboard_append(s)
-    w.delete(frm,to)
-    if undoType: self.endCommand(changed=True,setLabel=True)
-
-def killLine (self,event):
-    '''Kill the line containing the cursor.'''
-    self.kill(event,'insert linestart','insert lineend+1c','kill-line')
-
-def killWord (self,event):
-    '''Kill the word containing the cursor.'''
-    self.kill(event,'insert wordstart','insert wordend','kill-word')
-    self.killWs(event)
-#@-node:ekr.20050920084036.178:kill, killLine, killWord
-#@+node:ekr.20050920084036.182:killRegion & killRegionSave & helper
-def killRegion (self,event):
-    '''Kill the text selection.'''
-    self.killRegionHelper(event,deleteFlag=True)
-    
-def killRegionSave (self,event):
-    '''Add the selected text to the kill ring, but do not delete it.'''
-    self.killRegionHelper(event,deleteFlag=False)
-
-def killRegionHelper (self,event,deleteFlag):
-
-    w = event.widget
-
-    if g.app.gui.isTextWidget(w):
-        theRange = w.tag_ranges('sel')
-        if theRange:
-            s = w.get(theRange[0],theRange[-1])
-            if deleteFlag:
-                w.delete(theRange[0],theRange[-1])
-            self.addToKillBuffer(s)
-            w.clipboard_clear()
-            w.clipboard_append(s)
-            self.removeRKeys(w)
-#@-node:ekr.20050920084036.182:killRegion & killRegionSave & helper
-#@+node:ekr.20050930095323.1:killSentence
-def killSentence (self,event):
-    
-    '''Kill the sentence containing the cursor.'''
-
-    w = event.widget
-    i  = w.search('.','insert',stopindex='end')
-    if i:
-        i2 = w.search('.','insert',backwards=True,stopindex='1.0')
-        i2 = g.choose(i2=='','1.0',i2+'+1c ')
-        self.kill(event,i2,'%s + 1c' % i,undoType='kill-sentence')
-#@-node:ekr.20050930095323.1:killSentence
-#@+node:ekr.20050930100733:killWs
-def killWs (self,event):
-    
-    ws = '' ; w = event.widget
-
-    while 1:
-        s = w.get('insert')
-        if s in (' ','\t'):
-            w.delete('insert')
-            ws = ws + s
-        else:
-            break
-            
-    if ws:
-        self.addToKillBuffer(ws)
-#@-node:ekr.20050930100733:killWs
-#@+node:ekr.20050930091642.1:yank
-def yank (self,event):
-    
-    '''Insert the next entry in the kill ring at the insert point.'''
-
-    k = self.k ; w = self.w
-    i = w.index('insert')
-    clip_text = self.getClipboard(w)
-
-    if self.killBuffer or clip_text:
-        self.reset = True
-        s = clip_text or self.kbiterator.next()
-        w.tag_delete('kb')
-        w.insert('insert',s,('kb'))
-        w.mark_set('insert',i)
-#@-node:ekr.20050930091642.1:yank
-#@+node:ekr.20050930091642.2:yankPop
-def yankPop (self,event):
-    
-    '''Replaces the just-yanked kill buffer with the contents of the previous kill buffer.'''
-
-    k = self.k ; w = event.widget
-    i = w.index('insert') ; t, t1 = i.split('.')
-    clip_text = self.getClipboard(w)
-
-    if self.killBuffer or clip_text:
-        if clip_text: s = clip_text
-        else:         s = self.kbiterator.next()
-        t1 = str(int(t1)+len(s))
-        r = w.tag_ranges('kb')
-        if r and r [0] == i:
-            w.delete(r[0],r[-1])
-        w.tag_delete('kb')
-        w.insert('insert',s,('kb'))
-        w.mark_set('insert',i)
-#@-node:ekr.20050930091642.2:yankPop
-#@+node:ekr.20050920084036.128:zapToCharacter
-def zapToCharacter (self,event):
-    
-    '''Kill characters from the insertion point to a given character.'''
-
-    k = self.k ; state = k.getState('zap-to-char')
-
-    if state == 0:
-        k.setLabelBlue('Zap To Character: ',protect=True)
-        k.setState('zap-to-char',1,handler=self.zapToCharacter)
-    else:
-        c = k.c ; w = event.widget ; ch = event.char
-        k.resetLabel()
-        k.clearState()
-        if (
-            len(event.char) != 0 and
-            ch in (string.ascii_letters + string.digits + string.punctuation)
-        ):
-            i = w.search(ch,'insert',stopindex='end')
-            if i:
-                t = w.get('insert','%s+1c' % i)
-                self.addToKillBuffer(t)
-                w.delete('insert','%s+1c' % i)
-#@-node:ekr.20050920084036.128:zapToCharacter
-#@-node:ekr.20050920084036.174:class killBufferCommandsClass (add docstrings)
-#@-node:ekr.20060628095110:Fix yank and kill-line commands
-#@+node:ekr.20060628094329.2:Test/Fix macros
-#@-node:ekr.20060628094329.2:Test/Fix macros
-#@+node:ekr.20060628103226.3:Make sure repeat counts work on basic editing commands
-#@-node:ekr.20060628103226.3:Make sure repeat counts work on basic editing commands
-#@-node:ekr.20060628103226:Finish emacs commands
-#@+node:ekr.20060724071225:Look at Paste Node As Clone
+#@+node:ekr.20060822174843:Most important
+#@+node:ekr.20060823105514:Start simulating cvs conflicts by using 2 repositories simultaneously
+#@-node:ekr.20060823105514:Start simulating cvs conflicts by using 2 repositories simultaneously
+#@+node:ekr.20060823105514.1:Really solid perfect import
 @nocolor
 
-http://sourceforge.net/forum/message.php?msg_id=3835397
-By: nobody
+- Make sure whitespace is preserved properly.
 
-In my large outline with probably thousands of nodes, "paste node as clone"
-takes almost a minute to complete, always. Is this normal behavior? It slows
-down my thought processes significantly to have to wait 1 minute to clone a
-node...
-
-@color
+- Make sure perfect import works.
 #@nonl
-#@+node:EKR.20040610130943:pasteOutlineRetainingClones
-def pasteOutlineRetainingClones (self,event=None):
-    
-    '''Paste an outline into the present outline from the clipboard.
-    Nodes *retain* their original identify.'''
-    
-    c = self
-
-    return c.pasteOutline(reassignIndices=False)
-#@-node:EKR.20040610130943:pasteOutlineRetainingClones
-#@+node:ekr.20031218072017.1551:pasteOutline
-# To cut and paste between apps, just copy into an empty body first, then copy to Leo's clipboard.
-
-def pasteOutline(self,event=None,reassignIndices=True):
-    
-    '''Paste an outline into the present outline from the clipboard.
-    Nodes do *not* retain their original identify.'''
-
-    c = self ; u = c.undoer ; current = c.currentPosition()
-    s = g.app.gui.getTextFromClipboard()
-    pasteAsClone = not reassignIndices
-    undoType = g.choose(reassignIndices,'Paste Node','Paste As Clone')
-    
-    c.endEditing()
-
-    if not s or not c.canPasteOutline(s):
-        return # This should never happen.
-
-    isLeo = g.match(s,0,g.app.prolog_prefix_string)
-    tnodeInfoDict = {}
-    if pasteAsClone:
-        << remember all data for undo/redo Paste As Clone >>
-
-    if isLeo:
-        pasted = c.fileCommands.getLeoOutline(s,reassignIndices)
-    else:
-        pasted = c.importCommands.convertMoreStringToOutlineAfter(s,current)
-    if not pasted: return
-
-    c.beginUpdate()
-    try:
-        copiedBunchList = []
-        if pasteAsClone:
-            << put only needed info in copiedBunchList >>
-        undoData = u.beforeInsertNode(current,
-            pasteAsClone=pasteAsClone,copiedBunchList=copiedBunchList)
-        c.endEditing()
-        c.validateOutline()
-        c.selectPosition(pasted)
-        pasted.setDirty()
-        c.setChanged(True)
-        # paste as first child if back is expanded.
-        back = pasted.back()
-        if back and back.isExpanded():
-            pasted.moveToNthChildOf(back,0)
-        u.afterInsertNode(pasted,undoType,undoData)
-    finally:
-        c.endUpdate()
-        c.recolor()
-#@+node:ekr.20050418084539:<< remember all data for undo/redo Paste As Clone >>
-@
-
-We don't know yet which nodes will be affected by the paste, so we remember
-everything. This is expensive, but foolproof.
-
-The alternative is to try to remember the 'before' values of tnodes in the
-fileCommands read logic. Several experiments failed, and the code is very ugly.
-In short, it seems wise to do things the foolproof way.
-
-@c
-
-for p in c.allNodes_iter():
-    t = p.v.t
-    if t not in tnodeInfoDict.keys():
-        tnodeInfoDict[t] = g.Bunch(
-            t=t,head=p.headString(),body=p.bodyString())
-#@-node:ekr.20050418084539:<< remember all data for undo/redo Paste As Clone >>
-#@+node:ekr.20050418084539.2:<< put only needed info in copiedBunchList >>
-# Create a dict containing only copied tnodes.
-copiedTnodeDict = {}
-for p in pasted.self_and_subtree_iter():
-    if p.v.t not in copiedTnodeDict:
-        copiedTnodeDict[p.v.t] = p.v.t
-        
-# g.trace(copiedTnodeDict.keys())
-
-for t in tnodeInfoDict.keys():
-    bunch = tnodeInfoDict.get(t)
-    if copiedTnodeDict.get(t):
-        copiedBunchList.append(bunch)
-
-# g.trace('copiedBunchList',copiedBunchList)
-#@-node:ekr.20050418084539.2:<< put only needed info in copiedBunchList >>
-#@-node:ekr.20031218072017.1551:pasteOutline
-#@+node:ekr.20031218072017.1559:getLeoOutline (from clipboard)
-# This method reads a Leo outline from string s in clipboard format.
-def getLeoOutline (self,s,reassignIndices=True):
-
-    self.usingClipboard = True
-    self.fileBuffer = s ; self.fileIndex = 0
-    self.tnodesDict = {}
-    self.descendentUnknownAttributesDictList = []
-
-    if not reassignIndices:
-        << recreate tnodesDict >>
-
-    try:
-        self.getXmlVersionTag() # leo.py 3.0
-        self.getXmlStylesheetTag() # 10/25/02
-        self.getTag("<leo_file>") # <leo_file/> is not valid.
-        self.getClipboardHeader()
-        self.getVnodes(reassignIndices)
-        self.getTnodes()
-        self.getTag("</leo_file>")
-        v = self.finishPaste(reassignIndices)
-    except invalidPaste:
-        v = None
-        g.es("Invalid Paste As Clone",color="blue")
-    except BadLeoFile:
-        v = None
-        g.es("The clipboard is not valid ",color="blue")
-
-    # Clean up.
-    self.fileBuffer = None ; self.fileIndex = 0
-    self.usingClipboard = False
-    self.tnodesDict = {}
-    return v
-#@+node:EKR.20040610134756:<< recreate tnodesDict >>
-nodeIndices = g.app.nodeIndices
-
-self.tnodesDict = {}
-
-for t in self.c.all_unique_tnodes_iter():
-    tref = t.fileIndex
-    if nodeIndices.isGnx(tref):
-        tref = nodeIndices.toString(tref)
-    self.tnodesDict[tref] = t
-    
-if 0:
-    print '-'*40
-    for key in self.tnodesDict.keys():
-        print key,self.tnodesDict[key]
-#@-node:EKR.20040610134756:<< recreate tnodesDict >>
-#@-node:ekr.20031218072017.1559:getLeoOutline (from clipboard)
-#@+node:ekr.20031218072017.1565:getVnodes
-def getVnodes (self,reassignIndices=True):
-
-    c = self.c
-
-    if self.getOpenTag("<vnodes>"):
-        return # <vnodes/> seen.
-        
-    self.forbiddenTnodes = []
-    back = parent = None # This routine _must_ work on vnodes!
-    self.currentVnodeStack = []
-    self.topVnodeStack = []
-        
-    if self.usingClipboard:
-        oldRoot = c.rootPosition()
-        oldCurrent = c.currentPosition()
-        if not reassignIndices:
-            << set self.forbiddenTnodes to tnodes than must not be pasted >>
-
-    while self.matchTag("<v"):
-        append1 = not self.usingClipboard and len(self.currentVnodeStack) == 0
-        append2 = not self.usingClipboard and len(self.topVnodeStack) == 0
-        back = self.getVnode(parent,back,skip=False,
-            appendToCurrentStack=append1,appendToTopStack=append2)
-
-    if self.usingClipboard:
-        # Link in the pasted nodes after the current position.
-        newRoot = c.rootPosition()
-        c.setRootPosition(oldRoot)
-        newRoot.v.linkAfter(oldCurrent.v)
-        newCurrent = oldCurrent.copy()
-        newCurrent.v = newRoot.v
-        c.setCurrentPosition(newCurrent)
-
-    self.getTag("</vnodes>")
-#@+node:ekr.20041023105832:<< set self.forbiddenTnodes to tnodes than must not be pasted >>
-self.forbiddenTnodes = []
-
-for p in oldCurrent.self_and_parents_iter():
-    if p.v.t not in self.forbiddenTnodes:
-        self.forbiddenTnodes.append(p.v.t)
-        
-# g.trace("forbiddenTnodes",self.forbiddenTnodes)
-#@-node:ekr.20041023105832:<< set self.forbiddenTnodes to tnodes than must not be pasted >>
-#@-node:ekr.20031218072017.1565:getVnodes
-#@+node:ekr.20031218072017.1566:getVnode changed for 4.2 & 4.4)
-def getVnode (self,parent,back,skip,appendToCurrentStack,appendToTopStack):
-
-    v = None
-    setCurrent = setExpanded = setMarked = setOrphan = setTop = False
-    tref = -1 ; headline = '' ; tnodeList = None ; attrDict = {}
-
-    # we have already matched <v.
-    
-    # New in Leo 4.4: support collapsed tnodes.
-    if self.matchTag('/>'): # A collapsed vnode.
-        v,skip2 = self.createVnode(parent,back,tref,headline,attrDict)
-        return v
-    
-    while 1:
-        if self.matchTag("a=\""):
-            << Handle vnode attribute bits >>
-        elif self.matchTag("t="):
-            # New for 4.1.  Read either "Tnnn" or "gnx".
-            tref = index = self.getDqString()
-            if self.usingClipboard:
-                << raise invalidPaste if the tnode is in self.forbiddenTnodes >>
-        elif self.matchTag("vtag=\"V"):
-            self.getIndex() ; self.getDquote() # ignored
-        elif self.matchTag("tnodeList="):
-            s = self.getDqString()
-            tnodeList = self.getTnodeList(s) # New for 4.0
-        elif self.matchTag("descendentTnodeUnknownAttributes="):
-            # New for 4.2, deprecated for 4.3?
-            s = self.getDqString()
-            theDict = self.getDescendentUnknownAttributes(s)
-            if theDict:
-                self.descendentUnknownAttributesDictList.append(theDict)
-        elif self.matchTag("expanded="): # New in 4.2
-            s = self.getDqString()
-            self.descendentExpandedList.extend(self.getDescendentAttributes(s,tag="expanded"))
-        elif self.matchTag("marks="): # New in 4.2.
-            s = self.getDqString()
-            self.descendentMarksList.extend(self.getDescendentAttributes(s,tag="marks"))
-        elif self.matchTag(">"):
-            break
-        else: # New for 4.0: allow unknown attributes.
-            # New in 4.2: allow pickle'd and hexlify'ed values.
-            attr,val = self.getUa("vnode")
-            if attr: attrDict[attr] = val
-    # Headlines are optional.
-    if self.matchTag("<vh>"):
-        headline = self.getEscapedString() ; self.getTag("</vh>")
-    # g.trace("skip:",skip,"parent:",parent,"back:",back,"headline:",headline)
-    if skip:
-        v = self.getExistingVnode(tref,headline)
-        if v: # Bug fix: 4/18/05: The headline may change during paste as clone.
-            v.initHeadString(headline,encoding=self.leo_file_encoding)
-    if v is None:
-        v,skip2 = self.createVnode(parent,back,tref,headline,attrDict)
-        skip = skip or skip2
-        if tnodeList:
-            v.t.tnodeList = tnodeList # New for 4.0, 4.2: now in tnode.
-            
-    << Set the remembered status bits >>
-
-    # Recursively create all nested nodes.
-    parent = v ; back = None
-    while self.matchTag("<v"):
-        append1 = appendToCurrentStack and len(self.currentVnodeStack) == 0
-        append2 = appendToTopStack and len(self.topVnodeStack) == 0
-        back = self.getVnode(parent,back,skip,
-            appendToCurrentStack=append1,appendToTopStack=append2)
-            
-    << Append to current or top stack >>
-
-    # End this vnode.
-    self.getTag("</v>")
-    return v
-#@+node:ekr.20031218072017.1567:<< Handle vnode attribute bits  >>
-# The a=" has already been seen.
-while 1:
-    if   self.matchChar('C'): pass # Not used: clone bits are recomputed later.
-    elif self.matchChar('D'): pass # Not used.
-    elif self.matchChar('E'): setExpanded = True
-    elif self.matchChar('M'): setMarked = True
-    elif self.matchChar('O'): setOrphan = True
-    elif self.matchChar('T'): setTop = True
-    elif self.matchChar('V'): setCurrent = True
-    else: break
-
-self.getDquote()
-#@-node:ekr.20031218072017.1567:<< Handle vnode attribute bits  >>
-#@+node:ekr.20041023110111:<< raise invalidPaste if the tnode is in self.forbiddenTnodes >>
-# Bug fix in 4.3 a1: make sure we have valid paste.
-theId,time,n = g.app.nodeIndices.scanGnx(index,0)
-if not time and index[0] == "T":
-    index = index[1:]
-    
-index = self.canonicalTnodeIndex(index)
-t = self.tnodesDict.get(index)
-
-if t in self.forbiddenTnodes:
-    # g.trace(t)
-    raise invalidPaste
-#@-node:ekr.20041023110111:<< raise invalidPaste if the tnode is in self.forbiddenTnodes >>
-#@+node:ekr.20031218072017.1568:<< Set the remembered status bits >>
-if setCurrent:
-    self.currentVnodeStack = [v]
-
-if setTop:
-    self.topVnodeStack = [v]
-    
-if setExpanded:
-    v.initExpandedBit()
-    
-if setMarked:
-    v.initMarkedBit() # 3/25/03: Do not call setMarkedBit here!
-
-if setOrphan:
-    v.setOrphan()
-#@-node:ekr.20031218072017.1568:<< Set the remembered status bits >>
-#@+node:ekr.20040326055828:<< Append to current or top stack >>
-if not setCurrent and len(self.currentVnodeStack) > 0 and appendToCurrentStack:
-    #g.trace("append current",v)
-    self.currentVnodeStack.append(v)
-    
-if not setTop and len(self.topVnodeStack) > 0 and appendToTopStack:
-    #g.trace("append top",v)
-    self.topVnodeStack.append(v)
-#@-node:ekr.20040326055828:<< Append to current or top stack >>
-#@-node:ekr.20031218072017.1566:getVnode changed for 4.2 & 4.4)
-#@-node:ekr.20060724071225:Look at Paste Node As Clone
-#@-node:ekr.20060531161030:To do: B5
-#@+node:ekr.20060822174843:Most important
+#@-node:ekr.20060823105514.1:Really solid perfect import
 #@+node:ekr.20051202094427:Resolve cvs conflicts
 Investigate meld:  http://meld.sourceforge.net/
 #@nonl
@@ -997,6 +383,8 @@ other?
 #@-node:ekr.20031218072017.662:Gil 2
 #@-node:ekr.20060601073503:Postings
 #@-node:ekr.20051202094427:Resolve cvs conflicts
+#@+node:ekr.20060823110428:Could Leo run a slide show?
+#@-node:ekr.20060823110428:Could Leo run a slide show?
 #@+node:ekr.20060306194040:Video and more screen shots Leo's web site
 @nocolor
 http://sourceforge.net/forum/message.php?msg_id=3615177
@@ -1704,6 +1092,632 @@ Scott
 # Don't use body wrappers, use g.app.gui methods instead
 #@-node:ekr.20041228084830.3:Finish wxWindows plugin
 #@-node:ekr.20060822174843:Most important
+#@+node:ekr.20060531161030:To do: B5
+#@+node:ekr.20060822162521:Make headlines scroll
+Limit the with of the headline to the width of the outline pane.
+#@nonl
+#@-node:ekr.20060822162521:Make headlines scroll
+#@+node:ekr.20060813121814:Add colorizer files for cweb, forth, plsql, rapidq
+#@-node:ekr.20060813121814:Add colorizer files for cweb, forth, plsql, rapidq
+#@+node:ekr.20060527204444:Finish new colorizer plugin
+#@-node:ekr.20060527204444:Finish new colorizer plugin
+#@+node:ekr.20060628103226:Finish emacs commands
+#@+node:ekr.20060628103226.2:Alt-x handlers should add to lossage
+#@-node:ekr.20060628103226.2:Alt-x handlers should add to lossage
+#@+node:ekr.20060628095110:Fix yank and kill-line commands
+Blank lines: deletes the newline.
+Non-blank lines: deletes up to the newline.
+#@nonl
+#@+node:ekr.20050920084036.183:addToKillBuffer
+def addToKillBuffer (self,text):
+    
+    killKeys =(
+        '<Control-k>', '<Control-w>',
+        '<Alt-d>', '<Alt-Delete', '<Alt-z>', '<Delete>',
+        '<Control-Alt-w>')
+
+    k = self.k
+    self.reset = True
+
+    # g.trace(repr(text))
+
+    if self.killBuffer and k.stroke in killKeys:
+        self.killBuffer [0] = self.killBuffer [0] + text
+    else:
+        self.killBuffer.insert(0,text)
+#@-node:ekr.20050920084036.183:addToKillBuffer
+#@+node:ekr.20050920084036.174:class killBufferCommandsClass (add docstrings)
+class killBufferCommandsClass (baseEditCommandsClass):
+    
+    '''A class to manage the kill buffer.'''
+
+    @others
+#@+node:ekr.20050920084036.175: ctor & finishCreate
+def __init__ (self,c):
+
+    baseEditCommandsClass.__init__(self,c) # init the base class.
+
+    self.killBuffer = [] # May be changed in finishCreate.
+    self.kbiterator = self.iterateKillBuffer()
+    self.last_clipboard = None # For interacting with system clipboard.
+    self.reset = False
+    try:
+        self.widget = c.frame.body.bodyCtrl
+    except AttributeError:
+        self.widget = None
+
+def finishCreate (self):
+    
+    baseEditCommandsClass.finishCreate(self)
+        # Call the base finishCreate.
+        # This sets self.k
+    
+    if self.k.useGlobalKillbuffer:
+        self.killBuffer = leoKeys.keyHandlerClass.global_killbuffer
+#@-node:ekr.20050920084036.175: ctor & finishCreate
+#@+node:ekr.20050920084036.176: getPublicCommands
+def getPublicCommands (self):
+    
+    return {
+        'backward-kill-sentence':   self.backwardKillSentence,
+        'backward-kill-word':       self.backwardKillWord,
+        'clear-kill-ring':          self.clearKillRing,
+        'kill-line':                self.killLine,
+        'kill-word':                self.killWord,
+        'kill-sentence':            self.killSentence,
+        'kill-region':              self.killRegion,
+        'kill-region-save':         self.killRegionSave,
+        'yank':                     self.yank,
+        'yank-pop':                 self.yankPop,
+        'zap-to-character':         self.zapToCharacter,
+    }
+#@-node:ekr.20050920084036.176: getPublicCommands
+#@+node:ekr.20050920084036.183:addToKillBuffer
+def addToKillBuffer (self,text):
+    
+    killKeys =(
+        '<Control-k>', '<Control-w>',
+        '<Alt-d>', '<Alt-Delete', '<Alt-z>', '<Delete>',
+        '<Control-Alt-w>')
+
+    k = self.k
+    self.reset = True
+
+    # g.trace(repr(text))
+
+    if self.killBuffer and k.stroke in killKeys:
+        self.killBuffer [0] = self.killBuffer [0] + text
+    else:
+        self.killBuffer.insert(0,text)
+#@-node:ekr.20050920084036.183:addToKillBuffer
+#@+node:ekr.20050920084036.181:backwardKillSentence
+def backwardKillSentence (self,event):
+    
+    '''Kill the previous sentence.'''
+    
+    w = event.widget
+    i = w.search('.','insert',backwards=True,stopindex='1.0')
+
+    if i:
+        i2 = w.search('.',i,backwards=True,stopindex='1.0')
+        i2 = g.choose(i2=='','1.0',i2+'+1c ')
+        self.kill(event,i2,'%s + 1c' % i,undoType='backward-kill-sentence')
+#@-node:ekr.20050920084036.181:backwardKillSentence
+#@+node:ekr.20050920084036.180:backwardKillWord
+def backwardKillWord (self,event):
+    
+    '''Kill the previous word.'''
+
+    c = self.c
+    c.editCommands.backwardWord(event)
+    self.killWs(event)
+    self.killWord(event)
+    # c.editCommands.backwardWord(event)
+#@-node:ekr.20050920084036.180:backwardKillWord
+#@+node:ekr.20051216151811:clearKillRing
+def clearKillRing (self,event=None):
+    
+    '''Clear the kill ring.'''
+    
+    self.killBuffer = []
+#@-node:ekr.20051216151811:clearKillRing
+#@+node:ekr.20050920084036.185:getClipboard
+def getClipboard (self,w):
+
+    try:
+        ctxt = w.selection_get(selection='CLIPBOARD')
+        if not self.killBuffer or ctxt != self.last_clipboard:
+            self.last_clipboard = ctxt
+            if not self.killBuffer or self.killBuffer [0] != ctxt:
+                return ctxt
+    except: pass
+
+    return None
+#@-node:ekr.20050920084036.185:getClipboard
+#@+node:ekr.20050920084036.184:iterateKillBuffer
+def iterateKillBuffer (self):
+
+    while 1:
+        if self.killBuffer:
+            self.last_clipboard = None
+            for z in self.killBuffer:
+                if self.reset:
+                    self.reset = False
+                    break
+                yield z
+#@-node:ekr.20050920084036.184:iterateKillBuffer
+#@+node:ekr.20050920084036.178:kill, killLine, killWord
+def kill (self,event,frm,to,undoType=None):
+
+    k = self.k ; w = event.widget
+    s = w.get(frm,to)
+    
+    if undoType: self.beginCommand(undoType=undoType)
+    self.addToKillBuffer(s)
+    w.clipboard_clear()
+    w.clipboard_append(s)
+    w.delete(frm,to)
+    if undoType: self.endCommand(changed=True,setLabel=True)
+
+def killLine (self,event):
+    '''Kill the line containing the cursor.'''
+    self.kill(event,'insert linestart','insert lineend+1c','kill-line')
+
+def killWord (self,event):
+    '''Kill the word containing the cursor.'''
+    self.kill(event,'insert wordstart','insert wordend','kill-word')
+    self.killWs(event)
+#@-node:ekr.20050920084036.178:kill, killLine, killWord
+#@+node:ekr.20050920084036.182:killRegion & killRegionSave & helper
+def killRegion (self,event):
+    '''Kill the text selection.'''
+    self.killRegionHelper(event,deleteFlag=True)
+    
+def killRegionSave (self,event):
+    '''Add the selected text to the kill ring, but do not delete it.'''
+    self.killRegionHelper(event,deleteFlag=False)
+
+def killRegionHelper (self,event,deleteFlag):
+
+    w = event.widget
+
+    if g.app.gui.isTextWidget(w):
+        theRange = w.tag_ranges('sel')
+        if theRange:
+            s = w.get(theRange[0],theRange[-1])
+            if deleteFlag:
+                w.delete(theRange[0],theRange[-1])
+            self.addToKillBuffer(s)
+            w.clipboard_clear()
+            w.clipboard_append(s)
+            self.removeRKeys(w)
+#@-node:ekr.20050920084036.182:killRegion & killRegionSave & helper
+#@+node:ekr.20050930095323.1:killSentence
+def killSentence (self,event):
+    
+    '''Kill the sentence containing the cursor.'''
+
+    w = event.widget
+    i  = w.search('.','insert',stopindex='end')
+    if i:
+        i2 = w.search('.','insert',backwards=True,stopindex='1.0')
+        i2 = g.choose(i2=='','1.0',i2+'+1c ')
+        self.kill(event,i2,'%s + 1c' % i,undoType='kill-sentence')
+#@-node:ekr.20050930095323.1:killSentence
+#@+node:ekr.20050930100733:killWs
+def killWs (self,event):
+    
+    ws = '' ; w = event.widget
+
+    while 1:
+        s = w.get('insert')
+        if s in (' ','\t'):
+            w.delete('insert')
+            ws = ws + s
+        else:
+            break
+            
+    if ws:
+        self.addToKillBuffer(ws)
+#@-node:ekr.20050930100733:killWs
+#@+node:ekr.20050930091642.1:yank
+def yank (self,event):
+    
+    '''Insert the next entry in the kill ring at the insert point.'''
+
+    k = self.k ; w = self.w
+    i = w.index('insert')
+    clip_text = self.getClipboard(w)
+
+    if self.killBuffer or clip_text:
+        self.reset = True
+        s = clip_text or self.kbiterator.next()
+        w.tag_delete('kb')
+        w.insert('insert',s,('kb'))
+        w.mark_set('insert',i)
+#@-node:ekr.20050930091642.1:yank
+#@+node:ekr.20050930091642.2:yankPop
+def yankPop (self,event):
+    
+    '''Replaces the just-yanked kill buffer with the contents of the previous kill buffer.'''
+
+    k = self.k ; w = event.widget
+    i = w.index('insert') ; t, t1 = i.split('.')
+    clip_text = self.getClipboard(w)
+
+    if self.killBuffer or clip_text:
+        if clip_text: s = clip_text
+        else:         s = self.kbiterator.next()
+        t1 = str(int(t1)+len(s))
+        r = w.tag_ranges('kb')
+        if r and r [0] == i:
+            w.delete(r[0],r[-1])
+        w.tag_delete('kb')
+        w.insert('insert',s,('kb'))
+        w.mark_set('insert',i)
+#@-node:ekr.20050930091642.2:yankPop
+#@+node:ekr.20050920084036.128:zapToCharacter
+def zapToCharacter (self,event):
+    
+    '''Kill characters from the insertion point to a given character.'''
+
+    k = self.k ; state = k.getState('zap-to-char')
+
+    if state == 0:
+        k.setLabelBlue('Zap To Character: ',protect=True)
+        k.setState('zap-to-char',1,handler=self.zapToCharacter)
+    else:
+        c = k.c ; w = event.widget ; ch = event.char
+        k.resetLabel()
+        k.clearState()
+        if (
+            len(event.char) != 0 and
+            ch in (string.ascii_letters + string.digits + string.punctuation)
+        ):
+            i = w.search(ch,'insert',stopindex='end')
+            if i:
+                t = w.get('insert','%s+1c' % i)
+                self.addToKillBuffer(t)
+                w.delete('insert','%s+1c' % i)
+#@-node:ekr.20050920084036.128:zapToCharacter
+#@-node:ekr.20050920084036.174:class killBufferCommandsClass (add docstrings)
+#@-node:ekr.20060628095110:Fix yank and kill-line commands
+#@+node:ekr.20060628094329.2:Test/Fix macros
+#@-node:ekr.20060628094329.2:Test/Fix macros
+#@+node:ekr.20060628103226.3:Make sure repeat counts work on basic editing commands
+#@-node:ekr.20060628103226.3:Make sure repeat counts work on basic editing commands
+#@-node:ekr.20060628103226:Finish emacs commands
+#@+node:ekr.20060724071225:Look at Paste Node As Clone
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3835397
+By: nobody
+
+In my large outline with probably thousands of nodes, "paste node as clone"
+takes almost a minute to complete, always. Is this normal behavior? It slows
+down my thought processes significantly to have to wait 1 minute to clone a
+node...
+
+@color
+#@nonl
+#@+node:EKR.20040610130943:pasteOutlineRetainingClones
+def pasteOutlineRetainingClones (self,event=None):
+    
+    '''Paste an outline into the present outline from the clipboard.
+    Nodes *retain* their original identify.'''
+    
+    c = self
+
+    return c.pasteOutline(reassignIndices=False)
+#@-node:EKR.20040610130943:pasteOutlineRetainingClones
+#@+node:ekr.20031218072017.1551:pasteOutline
+# To cut and paste between apps, just copy into an empty body first, then copy to Leo's clipboard.
+
+def pasteOutline(self,event=None,reassignIndices=True):
+    
+    '''Paste an outline into the present outline from the clipboard.
+    Nodes do *not* retain their original identify.'''
+
+    c = self ; u = c.undoer ; current = c.currentPosition()
+    s = g.app.gui.getTextFromClipboard()
+    pasteAsClone = not reassignIndices
+    undoType = g.choose(reassignIndices,'Paste Node','Paste As Clone')
+    
+    c.endEditing()
+
+    if not s or not c.canPasteOutline(s):
+        return # This should never happen.
+
+    isLeo = g.match(s,0,g.app.prolog_prefix_string)
+    tnodeInfoDict = {}
+    if pasteAsClone:
+        << remember all data for undo/redo Paste As Clone >>
+
+    if isLeo:
+        pasted = c.fileCommands.getLeoOutline(s,reassignIndices)
+    else:
+        pasted = c.importCommands.convertMoreStringToOutlineAfter(s,current)
+    if not pasted: return
+
+    c.beginUpdate()
+    try:
+        copiedBunchList = []
+        if pasteAsClone:
+            << put only needed info in copiedBunchList >>
+        undoData = u.beforeInsertNode(current,
+            pasteAsClone=pasteAsClone,copiedBunchList=copiedBunchList)
+        c.endEditing()
+        c.validateOutline()
+        c.selectPosition(pasted)
+        pasted.setDirty()
+        c.setChanged(True)
+        # paste as first child if back is expanded.
+        back = pasted.back()
+        if back and back.isExpanded():
+            pasted.moveToNthChildOf(back,0)
+        u.afterInsertNode(pasted,undoType,undoData)
+    finally:
+        c.endUpdate()
+        c.recolor()
+#@+node:ekr.20050418084539:<< remember all data for undo/redo Paste As Clone >>
+@
+
+We don't know yet which nodes will be affected by the paste, so we remember
+everything. This is expensive, but foolproof.
+
+The alternative is to try to remember the 'before' values of tnodes in the
+fileCommands read logic. Several experiments failed, and the code is very ugly.
+In short, it seems wise to do things the foolproof way.
+
+@c
+
+for p in c.allNodes_iter():
+    t = p.v.t
+    if t not in tnodeInfoDict.keys():
+        tnodeInfoDict[t] = g.Bunch(
+            t=t,head=p.headString(),body=p.bodyString())
+#@-node:ekr.20050418084539:<< remember all data for undo/redo Paste As Clone >>
+#@+node:ekr.20050418084539.2:<< put only needed info in copiedBunchList >>
+# Create a dict containing only copied tnodes.
+copiedTnodeDict = {}
+for p in pasted.self_and_subtree_iter():
+    if p.v.t not in copiedTnodeDict:
+        copiedTnodeDict[p.v.t] = p.v.t
+        
+# g.trace(copiedTnodeDict.keys())
+
+for t in tnodeInfoDict.keys():
+    bunch = tnodeInfoDict.get(t)
+    if copiedTnodeDict.get(t):
+        copiedBunchList.append(bunch)
+
+# g.trace('copiedBunchList',copiedBunchList)
+#@-node:ekr.20050418084539.2:<< put only needed info in copiedBunchList >>
+#@-node:ekr.20031218072017.1551:pasteOutline
+#@+node:ekr.20031218072017.1559:getLeoOutline (from clipboard)
+# This method reads a Leo outline from string s in clipboard format.
+def getLeoOutline (self,s,reassignIndices=True):
+
+    self.usingClipboard = True
+    self.fileBuffer = s ; self.fileIndex = 0
+    self.tnodesDict = {}
+    self.descendentUnknownAttributesDictList = []
+
+    if not reassignIndices:
+        << recreate tnodesDict >>
+
+    try:
+        self.getXmlVersionTag() # leo.py 3.0
+        self.getXmlStylesheetTag() # 10/25/02
+        self.getTag("<leo_file>") # <leo_file/> is not valid.
+        self.getClipboardHeader()
+        self.getVnodes(reassignIndices)
+        self.getTnodes()
+        self.getTag("</leo_file>")
+        v = self.finishPaste(reassignIndices)
+    except invalidPaste:
+        v = None
+        g.es("Invalid Paste As Clone",color="blue")
+    except BadLeoFile:
+        v = None
+        g.es("The clipboard is not valid ",color="blue")
+
+    # Clean up.
+    self.fileBuffer = None ; self.fileIndex = 0
+    self.usingClipboard = False
+    self.tnodesDict = {}
+    return v
+#@+node:EKR.20040610134756:<< recreate tnodesDict >>
+nodeIndices = g.app.nodeIndices
+
+self.tnodesDict = {}
+
+for t in self.c.all_unique_tnodes_iter():
+    tref = t.fileIndex
+    if nodeIndices.isGnx(tref):
+        tref = nodeIndices.toString(tref)
+    self.tnodesDict[tref] = t
+    
+if 0:
+    print '-'*40
+    for key in self.tnodesDict.keys():
+        print key,self.tnodesDict[key]
+#@-node:EKR.20040610134756:<< recreate tnodesDict >>
+#@-node:ekr.20031218072017.1559:getLeoOutline (from clipboard)
+#@+node:ekr.20031218072017.1565:getVnodes
+def getVnodes (self,reassignIndices=True):
+
+    c = self.c
+
+    if self.getOpenTag("<vnodes>"):
+        return # <vnodes/> seen.
+        
+    self.forbiddenTnodes = []
+    back = parent = None # This routine _must_ work on vnodes!
+    self.currentVnodeStack = []
+    self.topVnodeStack = []
+        
+    if self.usingClipboard:
+        oldRoot = c.rootPosition()
+        oldCurrent = c.currentPosition()
+        if not reassignIndices:
+            << set self.forbiddenTnodes to tnodes than must not be pasted >>
+
+    while self.matchTag("<v"):
+        append1 = not self.usingClipboard and len(self.currentVnodeStack) == 0
+        append2 = not self.usingClipboard and len(self.topVnodeStack) == 0
+        back = self.getVnode(parent,back,skip=False,
+            appendToCurrentStack=append1,appendToTopStack=append2)
+
+    if self.usingClipboard:
+        # Link in the pasted nodes after the current position.
+        newRoot = c.rootPosition()
+        c.setRootPosition(oldRoot)
+        newRoot.v.linkAfter(oldCurrent.v)
+        newCurrent = oldCurrent.copy()
+        newCurrent.v = newRoot.v
+        c.setCurrentPosition(newCurrent)
+
+    self.getTag("</vnodes>")
+#@+node:ekr.20041023105832:<< set self.forbiddenTnodes to tnodes than must not be pasted >>
+self.forbiddenTnodes = []
+
+for p in oldCurrent.self_and_parents_iter():
+    if p.v.t not in self.forbiddenTnodes:
+        self.forbiddenTnodes.append(p.v.t)
+        
+# g.trace("forbiddenTnodes",self.forbiddenTnodes)
+#@-node:ekr.20041023105832:<< set self.forbiddenTnodes to tnodes than must not be pasted >>
+#@-node:ekr.20031218072017.1565:getVnodes
+#@+node:ekr.20031218072017.1566:getVnode changed for 4.2 & 4.4)
+def getVnode (self,parent,back,skip,appendToCurrentStack,appendToTopStack):
+
+    v = None
+    setCurrent = setExpanded = setMarked = setOrphan = setTop = False
+    tref = -1 ; headline = '' ; tnodeList = None ; attrDict = {}
+
+    # we have already matched <v.
+    
+    # New in Leo 4.4: support collapsed tnodes.
+    if self.matchTag('/>'): # A collapsed vnode.
+        v,skip2 = self.createVnode(parent,back,tref,headline,attrDict)
+        return v
+    
+    while 1:
+        if self.matchTag("a=\""):
+            << Handle vnode attribute bits >>
+        elif self.matchTag("t="):
+            # New for 4.1.  Read either "Tnnn" or "gnx".
+            tref = index = self.getDqString()
+            if self.usingClipboard:
+                << raise invalidPaste if the tnode is in self.forbiddenTnodes >>
+        elif self.matchTag("vtag=\"V"):
+            self.getIndex() ; self.getDquote() # ignored
+        elif self.matchTag("tnodeList="):
+            s = self.getDqString()
+            tnodeList = self.getTnodeList(s) # New for 4.0
+        elif self.matchTag("descendentTnodeUnknownAttributes="):
+            # New for 4.2, deprecated for 4.3?
+            s = self.getDqString()
+            theDict = self.getDescendentUnknownAttributes(s)
+            if theDict:
+                self.descendentUnknownAttributesDictList.append(theDict)
+        elif self.matchTag("expanded="): # New in 4.2
+            s = self.getDqString()
+            self.descendentExpandedList.extend(self.getDescendentAttributes(s,tag="expanded"))
+        elif self.matchTag("marks="): # New in 4.2.
+            s = self.getDqString()
+            self.descendentMarksList.extend(self.getDescendentAttributes(s,tag="marks"))
+        elif self.matchTag(">"):
+            break
+        else: # New for 4.0: allow unknown attributes.
+            # New in 4.2: allow pickle'd and hexlify'ed values.
+            attr,val = self.getUa("vnode")
+            if attr: attrDict[attr] = val
+    # Headlines are optional.
+    if self.matchTag("<vh>"):
+        headline = self.getEscapedString() ; self.getTag("</vh>")
+    # g.trace("skip:",skip,"parent:",parent,"back:",back,"headline:",headline)
+    if skip:
+        v = self.getExistingVnode(tref,headline)
+        if v: # Bug fix: 4/18/05: The headline may change during paste as clone.
+            v.initHeadString(headline,encoding=self.leo_file_encoding)
+    if v is None:
+        v,skip2 = self.createVnode(parent,back,tref,headline,attrDict)
+        skip = skip or skip2
+        if tnodeList:
+            v.t.tnodeList = tnodeList # New for 4.0, 4.2: now in tnode.
+            
+    << Set the remembered status bits >>
+
+    # Recursively create all nested nodes.
+    parent = v ; back = None
+    while self.matchTag("<v"):
+        append1 = appendToCurrentStack and len(self.currentVnodeStack) == 0
+        append2 = appendToTopStack and len(self.topVnodeStack) == 0
+        back = self.getVnode(parent,back,skip,
+            appendToCurrentStack=append1,appendToTopStack=append2)
+            
+    << Append to current or top stack >>
+
+    # End this vnode.
+    self.getTag("</v>")
+    return v
+#@+node:ekr.20031218072017.1567:<< Handle vnode attribute bits  >>
+# The a=" has already been seen.
+while 1:
+    if   self.matchChar('C'): pass # Not used: clone bits are recomputed later.
+    elif self.matchChar('D'): pass # Not used.
+    elif self.matchChar('E'): setExpanded = True
+    elif self.matchChar('M'): setMarked = True
+    elif self.matchChar('O'): setOrphan = True
+    elif self.matchChar('T'): setTop = True
+    elif self.matchChar('V'): setCurrent = True
+    else: break
+
+self.getDquote()
+#@-node:ekr.20031218072017.1567:<< Handle vnode attribute bits  >>
+#@+node:ekr.20041023110111:<< raise invalidPaste if the tnode is in self.forbiddenTnodes >>
+# Bug fix in 4.3 a1: make sure we have valid paste.
+theId,time,n = g.app.nodeIndices.scanGnx(index,0)
+if not time and index[0] == "T":
+    index = index[1:]
+    
+index = self.canonicalTnodeIndex(index)
+t = self.tnodesDict.get(index)
+
+if t in self.forbiddenTnodes:
+    # g.trace(t)
+    raise invalidPaste
+#@-node:ekr.20041023110111:<< raise invalidPaste if the tnode is in self.forbiddenTnodes >>
+#@+node:ekr.20031218072017.1568:<< Set the remembered status bits >>
+if setCurrent:
+    self.currentVnodeStack = [v]
+
+if setTop:
+    self.topVnodeStack = [v]
+    
+if setExpanded:
+    v.initExpandedBit()
+    
+if setMarked:
+    v.initMarkedBit() # 3/25/03: Do not call setMarkedBit here!
+
+if setOrphan:
+    v.setOrphan()
+#@-node:ekr.20031218072017.1568:<< Set the remembered status bits >>
+#@+node:ekr.20040326055828:<< Append to current or top stack >>
+if not setCurrent and len(self.currentVnodeStack) > 0 and appendToCurrentStack:
+    #g.trace("append current",v)
+    self.currentVnodeStack.append(v)
+    
+if not setTop and len(self.topVnodeStack) > 0 and appendToTopStack:
+    #g.trace("append top",v)
+    self.topVnodeStack.append(v)
+#@-node:ekr.20040326055828:<< Append to current or top stack >>
+#@-node:ekr.20031218072017.1566:getVnode changed for 4.2 & 4.4)
+#@-node:ekr.20060724071225:Look at Paste Node As Clone
+#@-node:ekr.20060531161030:To do: B5
 #@+node:ekr.20060527164612:Important 1-2 day projects
 #@+node:ekr.20050831131028:opml
 #@+node:ekr.20050831131452:Original post
