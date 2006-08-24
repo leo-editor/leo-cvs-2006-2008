@@ -6,7 +6,7 @@
 #@@tabwidth -4
 #@@pagewidth 80
 
-__version__ = '0.30'
+__version__ = '0.31'
 #@<< imports >>
 #@+node:ekr.20060530091119.21:<< imports >>
 import leoGlobals as g
@@ -48,6 +48,7 @@ php_re = re.compile("<?(\s[pP][hH][pP])")
 # exists.
 # 0.30 EKR: Disable interruptable coloring when there is more than one body 
 # widget.
+# 0.31 EKR: Properly match keywords when ignore_case is in effect.
 #@-at
 #@nonl
 #@-node:ekr.20060530091119.22:<< version history >>
@@ -1068,7 +1069,9 @@ class baseColorizer:
             j += 1
             
         word = s[i:j]
-        kind = self.keywordsDict.get(s[i:j])
+        if self.ignore_case: word = word.lower()
+    
+        kind = self.keywordsDict.get(word)
         if kind:
             # g.trace('%3d %10s %s' % (i,word,repr(kind)))
             self.colorRangeWithTag(s,i,j,kind)
