@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="6769" clone_windows="0"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="6888" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="34" left="113" height="751" width="953"/>
+	<global_window_position top="34" left="113" height="732" width="953"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -4280,7 +4280,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060608175017.1" a="E"><vh>4.4.1 x</vh>
+<v t="ekr.20060608175017.1" a="ETV"><vh>4.4.1</vh>
 <v t="ekr.20060608175017.2"><vh>4.4.1 b1 projects</vh>
 <v t="ekr.20060608175017.3"><vh>Fixed bugs</vh>
 <v t="ekr.20060608175017.4"><vh>Fixed crasher in searchbox plugin</vh>
@@ -5233,7 +5233,7 @@
 <v t="ekr.20060624072840.312"><vh>Fixed crashers in scheduler plugin</vh></v>
 </v>
 </v>
-<v t="ekr.20060702103442" a="TV"><vh>4.4.1 b3 projects</vh>
+<v t="ekr.20060702103442"><vh>4.4.1 b3 projects</vh>
 <v t="ekr.20060702103442.1"><vh>Bugs fixed</vh>
 <v t="ekr.20060702103442.2"><vh>Fixed recent bug: Ctrl-g does not work in @mode nodes</vh>
 <v t="ekr.20060702103442.3"><vh>createModeBindings</vh></v>
@@ -5384,6 +5384,171 @@
 <v t="ekr.20060702103442.97"><vh>Added @bool warn_about_redefined_shortcuts setting</vh></v>
 <v t="ekr.20060702103442.98"><vh>Added @bool trace_bind_key_exceptions setting</vh></v>
 <v t="ekr.20060702103442.99"><vh>Added bracket flash settings</vh></v>
+</v>
+</v>
+<v t="ekr.20060824095130"><vh>4.4.1 b4 projects</vh>
+<v t="ekr.20060824095130.1"><vh>Bugs fixed</vh>
+<v t="ekr.20060824095130.2"><vh>Added bindings to text panes for show-font command</vh>
+<v t="ekr.20060824095130.3"><vh>Report</vh></v>
+<v t="ekr.20060824095130.4"><vh>show-fonts &amp; helpers</vh>
+<v t="ekr.20060824095130.5"><vh>createFontPicker</vh>
+<v t="ekr.20060824095130.6"><vh>&lt;&lt; create the frames &gt;&gt;</vh></v>
+<v t="ekr.20060824095130.7"><vh>&lt;&lt; create the family combo box &gt;&gt;</vh></v>
+<v t="ekr.20060824095130.8"><vh>&lt;&lt; create the size entry &gt;&gt;</vh></v>
+<v t="ekr.20060824095130.9"><vh>&lt;&lt; create the weight combo box &gt;&gt;</vh></v>
+<v t="ekr.20060824095130.10"><vh>&lt;&lt; create the slant combo box&gt;&gt;</vh></v>
+<v t="ekr.20060824095130.11"><vh>&lt;&lt; create the sample text widget &gt;&gt;</vh></v>
+<v t="ekr.20060824095130.12"><vh>&lt;&lt; create and bind the callbacks &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20060824095130.13"><vh>createBindings (fontPicker)</vh></v>
+<v t="ekr.20060824095130.14"><vh>getFont</vh></v>
+<v t="ekr.20060824095130.15"><vh>setFont</vh></v>
+<v t="ekr.20060824095130.16"><vh>hideTab</vh></v>
+</v>
+<v t="ekr.20060824095130.17"><vh>masterKeyHandler</vh>
+<v t="ekr.20060824095130.18"><vh>&lt;&lt; define vars &gt;&gt;</vh></v>
+<v t="ekr.20060824095130.19"><vh>&lt;&lt; do key traces &gt;&gt;</vh></v>
+<v t="ekr.20060824095130.20"><vh>&lt;&lt; handle mode bindings &gt;&gt;</vh></v>
+<v t="ekr.20060824095130.21"><vh>&lt;&lt; handle per-pane bindings &gt;&gt;</vh></v>
+<v t="ekr.20060824095130.22"><vh>&lt;&lt; handle keys without bindings &gt;&gt;</vh></v>
+<v t="ekr.20060824095130.23"><vh>handleMiniBindings</vh></v>
+</v>
+</v>
+<v t="ekr.20060824095130.24"><vh>Fixed kill-line, kill-word, kill-sentence, etc</vh>
+<v t="ekr.20060824095130.25"><vh>Report</vh></v>
+<v t="ekr.20060824095130.26"><vh>kill, killLine, killWord</vh></v>
+</v>
+<v t="ekr.20060824095130.27"><vh>Fixed minor scrolling problem</vh>
+<v t="ekr.20060824095130.28"><vh>scrolling...</vh>
+<v t="ekr.20060824095130.29"><vh>scrollUp/Down/extendSelection</vh>
+<v t="ekr.20060824095130.30"><vh>scrollHelper</vh></v>
+<v t="ekr.20060824095130.31"><vh>measure</vh></v>
+</v>
+<v t="ekr.20060824095130.32"><vh>scrollOutlineUp/Down/Line/Page</vh></v>
+<v t="ekr.20060824095130.33"><vh>scrollOutlineLeftRight</vh></v>
+</v>
+</v>
+<v t="ekr.20060824095130.34"><vh>Fixed bug in backward-kill-word</vh>
+<v t="ekr.20060824095130.35"><vh>Report</vh></v>
+<v t="ekr.20060824095130.36"><vh>backwardKillWord</vh></v>
+</v>
+<v t="ekr.20060824095130.37"><vh>Fixed unicode bug in forward-word and backward-word commands</vh>
+<v t="ekr.20060824095130.38"><vh>moveWordHelper</vh></v>
+</v>
+<v t="ekr.20060824095130.39"><vh>Fixed problem setting body background color</vh>
+<v t="ekr.20060824095130.40"><vh>Report</vh></v>
+<v t="ekr.20060824095130.41"><vh>k.finishCreate &amp; helpers</vh>
+<v t="ekr.20060824095130.42"><vh>createInverseCommandsDict</vh></v>
+</v>
+<v t="ekr.20060824095130.43"><vh>createSplitterComponents</vh></v>
+<v t="ekr.20060824095130.44"><vh>tkBody.setColorFromConfig</vh></v>
+<v t="ekr.20060824095130.45"><vh>setEditorColors</vh></v>
+<v t="ekr.20060824095130.46"><vh>setInputState</vh></v>
+</v>
+<v t="ekr.20060824095130.47"><vh>Disabled incremental colorizing in new colorizer when there are multiple editors</vh>
+<v t="ekr.20060824095130.48"><vh>c.recolor_now</vh></v>
+<v t="ekr.20060824095130.49"><vh>tree.select</vh>
+<v t="ekr.20060824095130.50"><vh>&lt;&lt; unselect the old node &gt;&gt;</vh></v>
+<v t="ekr.20060824095130.51"><vh>&lt;&lt; select the new node &gt;&gt;</vh></v>
+<v t="ekr.20060824095130.52"><vh>&lt;&lt; update c.beadList or c.beadPointer &gt;&gt;</vh></v>
+<v t="ekr.20060824095130.53"><vh>&lt;&lt; update c.visitedList &gt;&gt;</vh></v>
+<v t="ekr.20060824095130.54"><vh>&lt;&lt; set the current node &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20060824095130.55"><vh>tkBody.createTextWidget</vh></v>
+<v t="ekr.20060824095130.56"><vh>Editors</vh>
+<v t="ekr.20060824095130.57"><vh>recolorWidget</vh></v>
+<v t="ekr.20060824095130.58"><vh>create/select/unselect/Label</vh></v>
+<v t="ekr.20060824095130.59"><vh>addEditor</vh>
+<v t="ekr.20060824095130.60"><vh>&lt;&lt; create label and text widgets &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20060824095130.45"><vh>setEditorColors</vh></v>
+<v t="ekr.20060824095130.61"><vh>cycleEditorFocus</vh></v>
+<v t="ekr.20060824095130.62"><vh>deleteEditor</vh></v>
+<v t="ekr.20060824095130.63"><vh>onFocusIn</vh>
+<v t="ekr.20060824095130.64"><vh>&lt;&lt; restore the selection, insertion point and the scrollbar &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20060824095130.65"><vh>selectMainEditor</vh></v>
+<v t="ekr.20060824095130.66"><vh>updateEditors</vh></v>
+</v>
+</v>
+</v>
+<v t="ekr.20060824095130.67"><vh>New features</vh>
+<v t="ekr.20060824095130.68"><vh>Created menu font settings</vh>
+<v t="ekr.20060824095130.69"><vh>Request</vh></v>
+<v t="ekr.20060824095130.70"><vh>defaultsDict</vh></v>
+<v t="ekr.20060824095130.71"><vh>leoTkinterMenu.__init__</vh></v>
+<v t="ekr.20060824095130.72"><vh>new_menu</vh></v>
+<v t="ekr.20060824095130.73"><vh>createMenuBar</vh></v>
+</v>
+<v t="ekr.20060824095130.74"><vh>Added scroll-outline-left/right commands</vh>
+<v t="ekr.20060824095130.28"><vh>scrolling...</vh>
+<v t="ekr.20060824095130.29"><vh>scrollUp/Down/extendSelection</vh>
+<v t="ekr.20060824095130.30"><vh>scrollHelper</vh></v>
+<v t="ekr.20060824095130.31"><vh>measure</vh></v>
+</v>
+<v t="ekr.20060824095130.32"><vh>scrollOutlineUp/Down/Line/Page</vh></v>
+<v t="ekr.20060824095130.33"><vh>scrollOutlineLeftRight</vh></v>
+</v>
+</v>
+<v t="ekr.20060824095130.75"><vh>Generalized bracket flasher</vh>
+<v t="ekr.20060824095130.76"><vh>Request</vh></v>
+<v t="ekr.20060824095130.77"><vh> ctor (editCommandsClass)</vh></v>
+<v t="ekr.20060824095130.78"><vh>initBracketMatcher</vh></v>
+<v t="ekr.20060824095130.79"><vh>selfInsertCommand &amp; helpers</vh>
+<v t="ekr.20060824095130.80"><vh>&lt;&lt; handle newline &gt;&gt;</vh></v>
+<v t="ekr.20060824095130.78"><vh>initBracketMatcher</vh></v>
+<v t="ekr.20060824095130.81"><vh>flashMatchingBracketsHelper</vh></v>
+<v t="ekr.20060824095130.82"><vh>flashCharacter</vh></v>
+<v t="ekr.20060824095130.83"><vh>updateAutomatchBracket</vh></v>
+<v t="ekr.20060824095130.84"><vh>udpateAutoIndent</vh></v>
+<v t="ekr.20060824095130.85"><vh>updateTab</vh></v>
+</v>
+<v t="ekr.20060824095130.81"><vh>flashMatchingBracketsHelper</vh></v>
+</v>
+<v t="ekr.20060824095130.86"><vh>Leo *already* supports Python decorators</vh>
+<v t="ekr.20060824095130.87"><vh>Notes</vh></v>
+<v t="ekr.20060824095130.88"><vh>Already works!</vh></v>
+<v t="ekr.20060824095130.89"><vh>putCodeLine</vh></v>
+</v>
+<v t="ekr.20060824095130.90"><vh>Wrote script to convert g.es to g.et where appropriate</vh>
+<v t="ekr.20060824095130.91"><vh>@url http://docs.python.org/lib/module-gettext.html</vh></v>
+</v>
+</v>
+<v t="ekr.20060824095130.92"><vh>New settings</vh>
+<v t="ekr.20060824095130.93"><vh>Added @font menu font setting</vh></v>
+</v>
+<v t="ekr.20060824095130.94"><vh>Code level</vh>
+<v t="ekr.20060824095130.95"><vh>Removed component classes</vh>
+<v t="ekr.20060824095130.96"><vh>Icon bar</vh>
+<v t="ekr.20060824095130.97"><vh>Icon area methods (compatibility)</vh></v>
+<v t="ekr.20060824095130.98" a="E"><vh>class iconBarClass</vh>
+<v t="ekr.20060824095130.99"><vh> ctor</vh></v>
+<v t="ekr.20060824095130.100"><vh>add</vh>
+<v t="ekr.20060824095130.101"><vh>&lt;&lt; create a picture &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20060824095130.102"><vh>clear</vh></v>
+<v t="ekr.20060824095130.103"><vh>getFrame</vh></v>
+<v t="ekr.20060824095130.104"><vh>pack (show)</vh></v>
+<v t="ekr.20060824095130.105"><vh>unpack (hide)</vh></v>
+</v>
+</v>
+<v t="ekr.20060824095130.43"><vh>createSplitterComponents</vh></v>
+<v t="ekr.20060824095130.106"><vh>Status Line</vh>
+<v t="ekr.20060824095130.107"><vh>class statusLineClass</vh>
+<v t="ekr.20060824095130.108"><vh> ctor</vh></v>
+<v t="ekr.20060824095130.109"><vh>clear</vh></v>
+<v t="ekr.20060824095130.110"><vh>enable, disable &amp; isEnabled</vh></v>
+<v t="ekr.20060824095130.111"><vh>get</vh></v>
+<v t="ekr.20060824095130.112"><vh>getFrame</vh></v>
+<v t="ekr.20060824095130.113"><vh>onActivate</vh></v>
+<v t="ekr.20060824095130.114"><vh>pack &amp; show</vh></v>
+<v t="ekr.20060824095130.115"><vh>put (leoTkinterFrame:statusLineClass)</vh></v>
+<v t="ekr.20060824095130.116"><vh>unpack &amp; hide</vh></v>
+<v t="ekr.20060824095130.117"><vh>update</vh></v>
+</v>
+<v t="ekr.20060824095130.118"><vh>Status line methods (compatibility)</vh></v>
+</v>
+</v>
 </v>
 </v>
 </v>
@@ -59047,5 +59212,1919 @@ Here are the relevant settings:
 @int flash_brackets_count: The number of times to flash matching brackets.
 
 @int flash-brackets-delay: One half the total cycle time of bracket flashes, in milliseconds.</t>
+<t tx="ekr.20060824095130"></t>
+<t tx="ekr.20060824095130.1"></t>
+<t tx="ekr.20060824095130.2"></t>
+<t tx="ekr.20060824095130.3">http://sourceforge.net/forum/forum.php?thread_id=1542384&amp;forum_id=10228
+
+@nocolor
+
+In the show-fonts pane when I place the cursor in the preview text field and press Ctrl-t for switching the active pane the cursor stays in the show-fonts pane and the two characters before the cursor are reversed.</t>
+<t tx="ekr.20060824095130.4">def showFonts (self,event):
+    
+    '''Open a tab in the log pane showing a font picker.'''
+
+    c = self.c ; log = c.frame.log ; tabName = 'Fonts'
+
+    if log.frameDict.get(tabName):
+        log.selectTab(tabName)
+    else:
+        log.selectTab(tabName)
+        f = log.frameDict.get(tabName)
+        t = log.textDict.get(tabName)
+        t.pack_forget()
+        self.createFontPicker(f)
+</t>
+<t tx="ekr.20060824095130.5">def createFontPicker (self,parent):
+
+    bg = parent.cget('background')
+    font = self.getFont()
+    &lt;&lt; create the frames &gt;&gt;
+    &lt;&lt; create the family combo box &gt;&gt;
+    &lt;&lt; create the size entry &gt;&gt;
+    &lt;&lt; create the weight combo box &gt;&gt;
+    &lt;&lt; create the slant combo box &gt;&gt;
+    &lt;&lt; create the sample text widget &gt;&gt;
+    &lt;&lt; create and bind the callbacks &gt;&gt;
+    self.createBindings()
+</t>
+<t tx="ekr.20060824095130.6">f = Tk.Frame(parent,background=bg) ; f.pack (side='top',expand=0,fill='both')
+f1 = Tk.Frame(f,background=bg)     ; f1.pack(side='top',expand=1,fill='x')
+f2 = Tk.Frame(f,background=bg)     ; f2.pack(side='top',expand=1,fill='x')
+f3 = Tk.Frame(f,background=bg)     ; f3.pack(side='top',expand=1,fill='x')
+f4 = Tk.Frame(f,background=bg)     ; f4.pack(side='top',expand=1,fill='x')
+</t>
+<t tx="ekr.20060824095130.7">names = tkFont.families()
+names = list(names)
+names.sort()
+names.insert(0,'&lt;None&gt;')
+
+self.familyBox = familyBox = Pmw.ComboBox(f1,
+    labelpos="we",label_text='Family:',label_width=10,
+    label_background=bg,
+    arrowbutton_background=bg,
+    scrolledlist_items=names)
+
+familyBox.selectitem(0)
+familyBox.pack(side="left",padx=2,pady=2)
+</t>
+<t tx="ekr.20060824095130.8">Tk.Label(f2,text="Size:",width=10,background=bg).pack(side="left")
+
+sizeEntry = Tk.Entry(f2,width=4)
+sizeEntry.insert(0,'12')
+sizeEntry.pack(side="left",padx=2,pady=2)
+</t>
+<t tx="ekr.20060824095130.9">weightBox = Pmw.ComboBox(f3,
+    labelpos="we",label_text="Weight:",label_width=10,
+    label_background=bg,
+    arrowbutton_background=bg,
+    scrolledlist_items=['normal','bold'])
+
+weightBox.selectitem(0)
+weightBox.pack(side="left",padx=2,pady=2)
+</t>
+<t tx="ekr.20060824095130.10">slantBox = Pmw.ComboBox(f4,
+    labelpos="we",label_text="Slant:",label_width=10,
+    label_background=bg,
+    arrowbutton_background=bg,
+    scrolledlist_items=['roman','italic'])
+
+slantBox.selectitem(0)
+slantBox.pack(side="left",padx=2,pady=2)
+</t>
+<t tx="ekr.20060824095130.11">self.sampleWidget = sample = Tk.Text(f,height=20,width=80,font=font)
+sample.pack(side='left')
+
+s = 'The quick brown fox\njumped over the lazy dog.\n0123456789'
+sample.insert('1.0',s)
+</t>
+<t tx="ekr.20060824095130.12">def fontCallback(event=None):
+    self.setFont(familyBox,sizeEntry,slantBox,weightBox,sample)
+
+for w in (familyBox,slantBox,weightBox):
+    w.configure(selectioncommand=fontCallback)
+
+sizeEntry.bind('&lt;Return&gt;',fontCallback)
+</t>
+<t tx="ekr.20060824095130.13">def createBindings (self):
+    
+    c = self.c ; k = c.k
+    
+    table = (
+        ('&lt;Button-1&gt;',  k.masterClickHandler),
+        ('&lt;Double-1&gt;',  k.masterClickHandler),
+        ('&lt;Button-3&gt;',  k.masterClickHandler),
+        ('&lt;Double-3&gt;',  k.masterClickHandler),
+        ('&lt;Key&gt;',       k.masterKeyHandler),
+        ("&lt;Escape&gt;",    self.hideTab),
+    )
+
+    w = self.sampleWidget
+    for event, callback in table:
+        w.bind(event,callback)
+        
+    k.completeAllBindingsForWidget(w)
+</t>
+<t tx="ekr.20060824095130.14">def getFont(self,family=None,size=12,slant='roman',weight='normal'):
+    
+    try:
+        return tkFont.Font(family=family,size=size,slant=slant,weight=weight)
+    except Exception:
+        g.es("exception setting font")
+        g.es("family,size,slant,weight:",family,size,slant,weight)
+        # g.es_exception() # This just confuses people.
+        return g.app.config.defaultFont
+</t>
+<t tx="ekr.20060824095130.15">def setFont(self,familyBox,sizeEntry,slantBox,weightBox,label):
+    
+    d = {}
+    for box,key in (
+        (familyBox, 'family'),
+        (None,      'size'),
+        (slantBox,  'slant'),
+        (weightBox, 'weight'),
+    ):
+        if box: val = box.get()
+        else:
+            val = sizeEntry.get().strip() or ''
+            try: int(val)
+            except ValueError: val = None
+        if val and val.lower() not in ('none','&lt;none&gt;',):
+            d[key] = val
+
+    family=d.get('family',None)
+    size=d.get('size',12)
+    weight=d.get('weight','normal')
+    slant=d.get('slant','roman')
+    font = self.getFont(family,size,slant,weight)
+    label.configure(font=font)
+</t>
+<t tx="ekr.20060824095130.16">def hideTab (self,event=None):
+    
+    c = self.c
+    c.frame.log.selectTab('Log')
+    c.bodyWantsFocus()
+</t>
+<t tx="ekr.20060824095130.17">master_key_count = 0
+
+def masterKeyHandler (self,event,stroke=None):
+    
+    '''This is the handler for almost all key bindings.'''
+
+    &lt;&lt; define vars &gt;&gt;
+
+    if keysym in special_keys:
+        return None
+
+    &lt;&lt; do key traces &gt;&gt;
+
+    # Handle keyboard-quit first.
+    if k.abortAllModesKey and stroke == k.abortAllModesKey:
+        return k.masterCommand(event,k.keyboardQuit,stroke,'keyboard-quit')
+
+    if k.inState():
+        # This will return unless k.autoCompleterStateHandler
+        # (called from k.callStateFunction) returns 'do-standard-keys'
+        &lt;&lt; handle mode bindings &gt;&gt;
+        
+    &lt;&lt; handle per-pane bindings &gt;&gt;
+    &lt;&lt; handle keys without bindings &gt;&gt;
+</t>
+<t tx="ekr.20060824095130.18">k = self ; c = k.c
+w = event and event.widget
+w_name = c.widget_name(w)
+keysym = event.keysym or ''
+state = k.state.kind
+special_keys = (
+    'Caps_Lock', 'Num_Lock', 'Control_L', 'Alt_L',
+    'Shift_L', 'Control_R', 'Alt_R','Shift_R','Win_L','Win_R')
+    
+trace = c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
+</t>
+<t tx="ekr.20060824095130.19">self.master_key_count += 1
+
+if trace:
+    if (self.master_key_count % 100) == 0:
+        g.printGcSummary(trace=True)
+    g.trace(
+        # 'keysym',repr(event.keysym or ''),
+        'stroke',repr(stroke),
+        'state',state,
+        'unboundKeyAction',k.unboundKeyAction)
+</t>
+<t tx="ekr.20060824095130.20"># First, honor minibuffer bindings for all except user modes.
+if state in ('getArg','getFileName','full-command','auto-complete'):
+    if k.handleMiniBindings(event,state,stroke):
+        return 'break'
+
+# Second, honor general modes.
+if state == 'getArg':
+    return k.getArg(event,stroke=stroke)
+elif state == 'getFileName':
+    return k.getFileName(event)
+elif state in ('full-command','auto-complete'):
+    # Do the default state action.
+    if trace: g.trace('calling state function')
+    val = k.callStateFunction(event) # Calls end-command.
+    if val != 'do-standard-keys': return 'break'
+        
+# Third, pass keys to user modes.
+else:
+    d =  k.masterBindingsDict.get(state)
+    if d:
+        b = d.get(stroke)
+        if b:
+            if trace: g.trace('calling generalModeHandler')
+            k.generalModeHandler (event,
+                commandName=b.commandName,func=b.func,
+                modeName=state,nextMode=b.nextMode)
+            return 'break'
+        else:
+            ok = k.handleMiniBindings(event,state,stroke)
+            if ok:
+                return 'break'
+            elif stroke and len(stroke) == 1:
+                # if trace: g.trace('calling modeHelp')
+                k.modeHelp(event)
+                return 'break'
+            else:
+                # End the mode and fall through to the pane bindings!
+                k.endMode(event)
+    else:
+        # New in 4.4b4.
+        handler = k.getStateHandler()
+        if handler:
+            handler(event)
+        else:
+            g.trace('No state handler for %s' % state)
+        return 'break'
+</t>
+<t tx="ekr.20060824095130.21">key_states = ('command','insert','overwrite')
+isPlain =  k.isPlainKey(stroke)
+
+for key,name in (
+    # Order here is similar to bindtags order.
+    ('command',None),
+    ('insert',None),
+    ('overwrite',None),
+    ('button',None),
+    ('body','body'),
+    ('text','head'), # Important: text bindings in head before tree bindings.
+    ('tree','head'),
+    ('tree','canvas'),
+    ('log', 'log'),
+    ('text','log'),
+    ('text',None), ('all',None),
+):
+    if (
+        key in key_states and isPlain and k.unboundKeyAction == key or
+        name and w_name.startswith(name) or
+        key in ('text','all') and g.app.gui.isTextWidget(w) or
+        key in ('button','all')
+    ):
+        d = k.masterBindingsDict.get(key)
+        # g.trace(g.app.gui.isTextWidget(w),w_name,key,name,d and len(d.keys()))
+        if d:
+            b = d.get(stroke)
+            if b:
+                if trace: g.trace('%s found %s = %s' % (key,b.stroke,b.commandName))
+                return k.masterCommand(event,b.func,b.stroke,b.commandName)
+</t>
+<t tx="ekr.20060824095130.22">if stroke and k.isPlainKey(stroke) and k.unboundKeyAction in ('insert','overwrite'):
+    # insert/overwrite normal character.  &lt;Return&gt; is *not* a normal character.
+    if trace: g.trace('plain key in insert mode',stroke)
+    return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
+
+elif k.ignore_unbound_non_ascii_keys and len(event.char) &gt; 1:
+    # (stroke.find('Alt+') &gt; -1 or stroke.find('Ctrl+') &gt; -1)):
+    if trace: g.trace('ignoring unbound non-ascii key')
+    return 'break'
+
+else:
+    if trace: g.trace(repr(stroke),'no func')
+    return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
+</t>
+<t tx="ekr.20060824095130.23">def handleMiniBindings (self,event,state,stroke):
+    
+    k = self ; c = k.c
+    trace = c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
+    
+    if not state.startswith('auto-'):
+        d = k.masterBindingsDict.get('mini')
+        if d:
+            b = d.get(stroke)
+            if b:
+                if trace: g.trace(repr(stroke),'mini binding',b.commandName)
+                # Pass this on for macro recording.
+                k.masterCommand(event,b.func,stroke,b.commandName)
+                if not k.silentMode:
+                    c.minibufferWantsFocus()
+                return True
+
+    return False
+</t>
+<t tx="ekr.20060824095130.24"></t>
+<t tx="ekr.20060824095130.25">@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3839322
+By: paulpaterson
+
+I think I may have confused the issue by combining two reports; just to be clear
+... kill-line doesn't work on 4.4.1 beta 3.
+
+1. Open Leo
+2. Create Node
+3. Create Node
+4. Type three lines
+5. Go to one line and press CTRL-SHIFT-K (or kill-line) - the line is removed
+6. Go up a node
+7. Go down a node
+
+The line you "removed" is back.
+</t>
+<t tx="ekr.20060824095130.26">def kill (self,event,frm,to,undoType=None):
+
+    k = self.k ; w = event.widget
+    s = w.get(frm,to)
+    
+    if undoType: self.beginCommand(undoType=undoType)
+    self.addToKillBuffer(s)
+    w.clipboard_clear()
+    w.clipboard_append(s)
+    w.delete(frm,to)
+    if undoType: self.endCommand(changed=True,setLabel=True)
+
+def killLine (self,event):
+    '''Kill the line containing the cursor.'''
+    self.kill(event,'insert linestart','insert lineend+1c','kill-line')
+
+def killWord (self,event):
+    '''Kill the word containing the cursor.'''
+    self.kill(event,'insert wordstart','insert wordend','kill-word')
+    self.killWs(event)
+</t>
+<t tx="ekr.20060824095130.27">@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3805745
+
+can scroll the tree upwards even if it is already at the first node. When I do
+this empty lines and sometimes even text appears above the normal nodes. 
+
+@color</t>
+<t tx="ekr.20060824095130.28"></t>
+<t tx="ekr.20060824095130.29">def scrollDown (self,event):
+    '''Scroll the presently selected pane down one page.'''
+    self.scrollHelper(event,'down',extend=False)
+
+def scrollDownExtendSelection (self,event):
+    '''Extend the text selection by scrolling the body text down one page.'''
+    self.scrollHelper(event,'down',extend=True)
+
+def scrollUp (self,event):
+    '''Scroll the presently selected pane up one page.'''
+    self.scrollHelper(event,'up',extend=False)
+
+def scrollUpExtendSelection (self,event):
+    '''Extend the text selection by scrolling the body text up one page.'''
+    self.scrollHelper(event,'up',extend=True)
+</t>
+<t tx="ekr.20060824095130.30">def scrollHelper (self,event,direction,extend):
+
+    k = self.k ; c = k.c ; w = event.widget
+    # g.trace(g.app.gui.widget_name(w))
+
+    if g.app.gui.isTextWidget(w):
+
+        c.widgetWantsFocus(w)
+    
+        # Remember the original insert point.  This may become the moveSpot.
+        ins1 = w.index('insert')
+        row, col = ins1.split('.') ; row = int(row) ; col = int(col)
+    
+        # Compute the spot.
+        chng = self.measure(w) ; delta = chng [0]
+        row1 = g.choose(direction=='down',row+delta,row-delta)
+        spot = w.index('%d.%d' % (row1,col))
+        w.mark_set('insert',spot)
+    
+        # Handle the extension.
+        self.extendHelper(w,extend,ins1,spot,setSpot=False)
+        w.see('insert')
+    elif g.app.gui.widget_name(w).startswith('canvas'):
+        if direction=='down':
+            self.scrollOutlineDownPage()
+        else:
+            self.scrollOutlineUpPage()
+</t>
+<t tx="ekr.20060824095130.31">def measure (self,w):
+    i = w.index('insert')
+    i1, i2 = i.split('.')
+    start = int(i1)
+    watch = 0
+    ustart = start
+    pone = 1
+    top = i
+    bottom = i
+    while pone:
+        ustart = ustart-1
+        if ustart &lt; 0:
+            break
+        ds = '%s.0' % ustart
+        pone = w.dlineinfo(ds)
+        if pone:
+            top = ds
+            watch = watch + 1
+    pone = 1
+    ustart = start
+    while pone:
+        ustart = ustart + 1
+        ds = '%s.0' % ustart
+        pone = w.dlineinfo(ds)
+        if pone:
+            bottom = ds
+            watch = watch + 1
+
+    return watch, top, bottom
+</t>
+<t tx="ekr.20060824095130.32">def scrollOutlineDownLine (self,event=None):
+    '''Scroll the outline pane down one line.'''
+    a,b = self.c.frame.treeBar.get()
+    if b &lt; 1.0:
+        self.c.frame.tree.canvas.yview_scroll(1,"unit")
+    
+def scrollOutlineDownPage (self,event=None):
+    '''Scroll the outline pane down one page.'''
+    a,b = self.c.frame.treeBar.get()
+    if b &lt; 1.0:
+        self.c.frame.tree.canvas.yview_scroll(1,"page")
+
+def scrollOutlineUpLine (self,event=None):
+    '''Scroll the outline pane up one line.'''
+    a,b = self.c.frame.treeBar.get()
+    if a &gt; 0.0:
+        self.c.frame.tree.canvas.yview_scroll(-1,"unit")
+
+def scrollOutlineUpPage (self,event=None):
+    '''Scroll the outline pane up one page.'''
+    a,b = self.c.frame.treeBar.get()
+    if a &gt; 0.0:
+        self.c.frame.tree.canvas.yview_scroll(-1,"page")
+</t>
+<t tx="ekr.20060824095130.33">def scrollOutlineLeft (self,event=None):
+    '''Scroll the outline left.'''
+    self.c.frame.tree.canvas.xview_scroll(1,"unit")
+    
+def scrollOutlineRight (self,event=None):
+    '''Scroll the outline left.'''
+    self.c.frame.tree.canvas.xview_scroll(-1,"unit")
+</t>
+<t tx="ekr.20060824095130.34"># There is still some doubt about what the best operation of this command should be.</t>
+<t tx="ekr.20060824095130.35">@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3841115
+By: paulpaterson
+
+I'm not sure if this is fixed also but backward-kill-word has an interesting
+bug.
+
+If you do a backward-kill-word on the following with the cursor at the * position
+...
+
+-- The cat sat* on the mat
+
+Then you get the following ...
+
+-- The *cat on the mat
+
+ie. the word was deleted but the cursor also moved an additional work back,
+which is quite perplexing when it first happens.
+
+Perhaps the command should be called,
+backward-kill-word-and-then-move-back-another-word!
+
+Paul</t>
+<t tx="ekr.20060824095130.36">def backwardKillWord (self,event):
+    
+    '''Kill the previous word.'''
+
+    c = self.c
+    c.editCommands.backwardWord(event)
+    self.killWs(event)
+    self.killWord(event)
+    # c.editCommands.backwardWord(event)
+</t>
+<t tx="ekr.20060824095130.37">http://leo.zwiki.org/9RussianUnicodeWordsAreNotDetectedProperlyInBodyPane</t>
+<t tx="ekr.20060824095130.38">def moveWordHelper (self,event,extend,forward):
+
+    '''This function moves the cursor to the next word, direction dependent on the way parameter'''
+
+    c = self.c ; w = event.widget
+    if not g.app.gui.isTextWidget(w): return
+    
+    c.widgetWantsFocus(w)
+    if forward:
+         ind = w.search('\\W','insert',stopindex='end',regexp=True)
+         if ind: nind = '%s wordend' % ind
+         else:   nind = 'end'
+    else:
+         ind = w.search('\\W','insert -1c',stopindex='1.0',regexp=True,backwards=True)
+         if ind: nind = '%s wordstart' % ind
+         else:   nind = '1.0'
+    self.moveToHelper(event,nind,extend)
+</t>
+<t tx="ekr.20060824095130.39"></t>
+<t tx="ekr.20060824095130.40">@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3874380
+By: znafets
+
+setting a value for background color in the body pane settings seem to have
+no effect (Linux)
+
+settings 
+  -&gt; Colors 
+    -&gt; Body Pane Colors
+      -&gt;@color body_text_background_color = #CCFF77
+
+while outline and log pane seem to work correct
+
+-----
+
+There were several problems, amoung which conflicting and confusing settings.
+In particular, the insert_mode_bg_color setting overrides the body_text_background_color setting.
+
+I've change the code so that insert_mode_bg_color defaults to
+body_text_background_color, and put all the settings for the body text in one
+place.</t>
+<t tx="ekr.20060824095130.41">def finishCreate (self):
+    
+    '''Complete the construction of the keyHandler class.
+    c.commandsDict has been created when this is called.'''
+    
+    k = self ; c = k.c
+    
+    # g.trace('keyHandler')
+   
+    k.createInverseCommandsDict()
+    
+    if not c.miniBufferWidget:
+        # Does not exist for leoSettings.leo files.
+        return
+
+    # Important: bindings exist even if c.showMiniBuffer is False.
+    k.makeAllBindings()
+
+    # Set mode colors used by k.setInputState.
+    bg = c.config.getColor('body_text_background_color') or 'white'
+    fg = c.config.getColor('body_text_foreground_color') or 'black'
+   
+    k.command_mode_bg_color = c.config.getColor('command_mode_bg_color') or bg
+    k.command_mode_fg_color = c.config.getColor('command_mode_fg_color') or fg
+    k.insert_mode_bg_color = c.config.getColor('insert_mode_bg_color') or bg
+    k.insert_mode_fg_color = c.config.getColor('insert_mode_fg_color') or fg
+    k.overwrite_mode_bg_color = c.config.getColor('overwrite_mode_bg_color') or bg
+    k.overwrite_mode_fg_color = c.config.getColor('overwrite_mode_fg_color') or fg
+    
+    # g.trace(k.insert_mode_bg_color,k.insert_mode_fg_color,k)
+        
+    k.setInputState(self.unboundKeyAction)</t>
+<t tx="ekr.20060824095130.42">def createInverseCommandsDict (self):
+    
+    '''Add entries to k.inverseCommandsDict using c.commandDict.
+    
+    c.commandsDict:        keys are command names, values are funcions f.
+    k.inverseCommandsDict: keys are f.__name__, values are minibuffer command names.
+    '''
+
+    k = self ; c = k.c
+
+    for name in c.commandsDict.keys():
+        f = c.commandsDict.get(name)
+        try:
+            k.inverseCommandsDict [f.__name__] = name
+            # g.trace('%24s = %s' % (f.__name__,name))
+                
+        except Exception:
+            g.es_exception()
+            g.trace(repr(name),repr(f),g.callers())
+</t>
+<t tx="ekr.20060824095130.43">def createSplitterComponents (self):
+
+    f = self ; c = f.c
+
+    f.createLeoSplitters(f.outerFrame)
+    
+    # Create the canvas, tree, log and body.
+    f.canvas = f.createCanvas(f.split2Pane1)
+    f.tree   = leoTkinterTree.leoTkinterTree(c,f,f.canvas)
+    f.log    = leoTkinterLog(f,f.split2Pane2)
+    f.body   = leoTkinterBody(f,f.split1Pane2)
+    
+    # Yes, this an "official" ivar: this is a kludge.
+    f.bodyCtrl = f.body.bodyCtrl
+    
+    # Configure.
+    f.setTabWidth(c.tab_width)
+    f.tree.setColorFromConfig()
+    f.reconfigurePanes()
+    f.body.setFontFromConfig()
+    f.body.setColorFromConfig()</t>
+<t tx="ekr.20060824095130.44">def setColorFromConfig (self,w=None):
+    
+    c = self.c
+    if not w: w = self.bodyCtrl
+    
+    bg = c.config.getColor("body_text_background_color") or 'white'
+    # g.trace(id(w),bg)
+    
+    try: w.configure(bg=bg)
+    except:
+        g.es("exception setting body text background color")
+        g.es_exception()
+    
+    fg = c.config.getColor("body_text_foreground_color") or 'black'
+    try: w.configure(fg=fg)
+    except:
+        g.es("exception setting body textforeground color")
+        g.es_exception()
+
+    bg = c.config.getColor("body_insertion_cursor_color")
+    if bg:
+        try: w.configure(insertbackground=bg)
+        except:
+            g.es("exception setting body pane cursor color")
+            g.es_exception()
+        
+    sel_bg = c.config.getColor('body_text_selection_background_color') or 'Gray80'
+    try: w.configure(selectbackground=sel_bg)
+    except Exception:
+        g.es("exception setting body pane text selection background color")
+        g.es_exception()
+
+    sel_fg = c.config.getColor('body_text_selection_foreground_color') or 'white'
+    try: w.configure(selectforeground=sel_fg)
+    except Exception:
+        g.es("exception setting body pane text selection foreground color")
+        g.es_exception()
+  
+    if sys.platform != "win32": # Maybe a Windows bug.
+        fg = c.config.getColor("body_cursor_foreground_color")
+        bg = c.config.getColor("body_cursor_background_color")
+        if fg and bg:
+            cursor="xterm" + " " + fg + " " + bg
+            try: w.configure(cursor=cursor)
+            except:
+                import traceback ; traceback.print_exc()
+</t>
+<t tx="ekr.20060824095130.45">def setEditorColors (self,bg,fg):
+    
+    c = self.c ; d = self.editorWidgets
+
+    for key in d.keys():
+        w2 = d.get(key)
+        # g.trace(id(w2),bg,fg)
+        try:
+            w2.configure(bg=bg,fg=fg)
+        except Exception:
+            g.es_exception()
+            pass
+</t>
+<t tx="ekr.20060824095130.46">def setInputState (self,state,showState=False):
+
+    k = self ; c = k.c ; body = c.frame.body ; w = body.bodyCtrl
+
+    # g.trace(state,g.callers())
+    k.unboundKeyAction = state
+    k.showStateAndMode()
+    assert state in ('insert','command','overwrite')
+
+    if w:
+        if state == 'insert':
+            bg = k.insert_mode_bg_color ; fg = k.insert_mode_fg_color
+        elif state == 'command':
+            bg = k.command_mode_bg_color ; fg = k.command_mode_fg_color
+        elif state == 'overwrite':
+            bg = k.overwrite_mode_bg_color, fg = k.overwrite_mode_fg_color
+
+        # g.trace(id(w),bg,fg,self)
+
+        body.setEditorColors(bg=bg,fg=fg)</t>
+<t tx="ekr.20060824095130.47"></t>
+<t tx="ekr.20060824095130.48">def recolor_now(self,p=None,incremental=False,interruptable=True):
+
+    c = self
+    if p is None:
+        p = c.currentPosition()
+
+    c.frame.body.colorizer.colorize(p,
+        incremental=incremental,interruptable=interruptable)
+</t>
+<t tx="ekr.20060824095130.49">#  Do **not** try to "optimize" this by returning if p==tree.currentPosition.
+
+def select (self,p,updateBeadList=True):
+    
+    '''Select a node.  Never redraws outline, but may change coloring of individual headlines.'''
+    
+    c = self.c ; frame = c.frame ; body = frame.bodyCtrl
+    old_p = c.currentPosition()
+    if not p or not p.exists(c):
+        # g.trace('does not exist',p.headString())
+        return # Not an error.
+    
+    if self.trace_select and not g.app.unitTesting: g.trace(g.callers())
+
+    if not g.doHook("unselect1",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p):
+        if old_p:
+            &lt;&lt; unselect the old node &gt;&gt;
+
+    g.doHook("unselect2",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
+    
+    if not g.doHook("select1",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p):
+        &lt;&lt; select the new node &gt;&gt;
+        if p and p != old_p: # Suppress duplicate call.
+            try: # may fail during initialization.
+                # p is NOT c.currentPosition() here!
+                if 0: # Interferes with new colorizer.
+                    self.canvas.update_idletasks()
+                    self.scrollTo(p)
+                else:
+                    def scrollCallback(self=self,p=p):
+                        self.scrollTo(p)
+                    self.canvas.after(100,scrollCallback)
+            except Exception: pass
+        &lt;&lt; update c.beadList or c.beadPointer &gt;&gt;
+        &lt;&lt; update c.visitedList &gt;&gt;
+
+    c.setCurrentPosition(p)
+    &lt;&lt; set the current node &gt;&gt;
+    c.frame.body.selectMainEditor(p) # New in Leo 4.4.1.
+    c.frame.updateStatusLine() # New in Leo 4.4.1.
+    
+    g.doHook("select2",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
+    g.doHook("select3",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
+    
+    return 'break' # Supresses unwanted selection.
+</t>
+<t tx="ekr.20060824095130.50"># Remember the position of the scrollbar before making any changes.
+yview=body.yview()
+insertSpot = c.frame.body.getInsertionPoint()
+
+if old_p != p:
+    self.endEditLabel() # sets editPosition = None
+    self.setUnselectedLabelState(old_p) # 12/17/04
+
+if old_p.edit_widget():
+    old_p.v.t.scrollBarSpot = yview
+    old_p.v.t.insertSpot = insertSpot
+</t>
+<t tx="ekr.20060824095130.51"># Bug fix: we must always set this, even if we never edit the node.
+self.revertHeadline = p.headString()
+
+frame.setWrap(p)
+    
+# Always do this.  Otherwise there can be problems with trailing hewlines.
+s = g.toUnicode(p.v.t.bodyString,"utf-8")
+self.setText(0,body,s)
+
+# We must do a full recoloring: we may be changing context!
+self.frame.body.recolor_now(p) # recolor now uses p.copy(), so this is safe.
+
+if p.v and p.v.t.scrollBarSpot != None:
+    first,last = p.v.t.scrollBarSpot
+    body.yview("moveto",first)
+
+if p.v and p.v.t.insertSpot != None:
+    c.frame.bodyCtrl.mark_set("insert",p.v.t.insertSpot)
+    c.frame.bodyCtrl.see(p.v.t.insertSpot)
+else:
+    c.frame.bodyCtrl.mark_set("insert","1.0")
+    
+# g.trace("select:",p.headString())
+</t>
+<t tx="ekr.20060824095130.52"># c.beadList is the list of nodes for the back and forward commands.
+
+if updateBeadList:
+    
+    if c.beadPointer &gt; -1:
+        present_p = c.beadList[c.beadPointer]
+    else:
+        present_p = c.nullPosition()
+    
+    if p != present_p:
+        # Replace the tail of c.beadList by p and make p the present node.
+        c.beadPointer += 1
+        c.beadList[c.beadPointer:] = []
+        c.beadList.append(p.copy())
+        
+        # New in Leo 4.4: limit this list to 100 items.
+        if 0: # Doesn't work yet.
+            c.beadList = c.beadList [-100:]
+            g.trace('len(c.beadList)',len(c.beadList))
+        
+    # g.trace(c.beadPointer,p,present_p)
+</t>
+<t tx="ekr.20060824095130.53"># The test 'p in c.visitedList' calls p.__cmp__, so this code *is* valid.
+
+# Make p the most recently visited position on the list.
+if p in c.visitedList:
+    c.visitedList.remove(p)
+
+c.visitedList.insert(0,p.copy())
+
+# g.trace('len(c.visitedList)',len(c.visitedList))
+# g.trace([z.headString()[:10] for z in c.visitedList]) # don't assign to p!
+</t>
+<t tx="ekr.20060824095130.54">self.setSelectedLabelState(p)
+
+frame.scanForTabWidth(p) #GS I believe this should also get into the select1 hook
+
+if self.stayInTree:
+    c.treeWantsFocus()
+else:
+    c.bodyWantsFocus()
+</t>
+<t tx="ekr.20060824095130.55">def createTextWidget (self,frame,parentFrame,p,name):
+    
+    c = self.c
+    
+    parentFrame.configure(bg='LightSteelBlue1')
+
+    wrap = c.config.getBool('body_pane_wraps')
+    wrap = g.choose(wrap,"word","none")
+    
+    # Setgrid=1 cause severe problems with the font panel.
+    body = w = Tk.Text(parentFrame,name='body-pane',
+        bd=2,bg="white",relief="flat",setgrid=0,wrap=wrap)
+        
+    # g.trace(id(w))
+    
+    bodyBar = Tk.Scrollbar(parentFrame,name='bodyBar')
+    frame.bodyBar = self.bodyBar = bodyBar
+    body['yscrollcommand'] = bodyBar.set
+    bodyBar['command'] = body.yview
+    bodyBar.pack(side="right", fill="y")
+    
+    # Always create the horizontal bar.
+    frame.bodyXBar = self.bodyXBar = bodyXBar = Tk.Scrollbar(
+        parentFrame,name='bodyXBar',orient="horizontal")
+    body['xscrollcommand'] = bodyXBar.set
+    bodyXBar['command'] = body.xview
+    self.bodyXbar = frame.bodyXBar = bodyXBar
+    
+    if wrap == "none":
+        # g.trace(parentFrame)
+        bodyXBar.pack(side="bottom", fill="x")
+        
+    body.pack(expand=1,fill="both")
+
+    self.wrapState = wrap
+
+    if 0: # Causes the cursor not to blink.
+        body.configure(insertofftime=0)
+        
+    # Inject ivars
+    if name == '1':
+        w.leo_p = w.leo_v = None # Will be set when the second editor is created.
+    else:
+        w.leo_p = p.copy()
+        w.leo_v = body.leo_p.v
+    w.leo_active = True
+    w.leo_frame = parentFrame
+    w.leo_name = name
+    w.leo_label = None
+    w.leo_label_s = None
+    w.leo_scrollBarSpot = None
+    w.leo_insertSpot = None
+    w.leo_selection = None
+
+    def focusInCallback(event,self=self,w=w):
+        self.onFocusIn(w)
+    w.bind('&lt;FocusIn&gt;',focusInCallback)
+
+    return w</t>
+<t tx="ekr.20060824095130.56">@ **Important**: body.bodyCtrl and body.frame.bodyCtrl must always be the same.
+</t>
+<t tx="ekr.20060824095130.57">def recolorWidget (self,w):
+
+    c = self.c ; old_w = self.bodyCtrl
+    
+    # g.trace(id(w),c.currentPosition().headString())
+    
+    # Save.
+    self.bodyCtrl = self.frame.bodyCtrl = w
+    
+    c.recolor_now(interruptable=False) # Force a complete recoloring.
+    
+    # Restore.
+    self.bodyCtrl = self.frame.bodyCtrl = old_w</t>
+<t tx="ekr.20060824095130.58">def unselectLabel (self,w):
+    
+    # g.trace(w.leo_name,w.leo_label_s)
+    if not w.leo_label: self.createLabel(w)
+    w.leo_label.configure(text=w.leo_label_s,bg='LightSteelBlue1')
+        
+def selectLabel (self,w):
+    
+    # g.trace(w.leo_name,w.leo_label_s)
+    if not w.leo_label: self.createLabel(w)
+    w.leo_label.configure(text=w.leo_label_s,bg='white')
+        
+def createLabel (self,w):
+
+    w.leo_label = Tk.Label(w.leo_frame)
+    w.pack_forget()
+    w.leo_label.pack(side='top')
+    w.pack(expand=1,fill='both')
+</t>
+<t tx="ekr.20060824095130.59">def addEditor (self,event=None):
+    
+    '''Add another editor to the body pane.'''
+    
+    c = self.c ; p = c.currentPosition()
+     
+    if self.numberOfEditors == 1:
+        # Inject the ivars into the first editor.
+        w = self.editorWidgets.get('1')
+        w.leo_p = p.copy()
+        w.leo_v = w.leo_p.v
+        w.leo_label_s = p.headString()
+
+    self.numberOfEditors += 1
+    name = '%d' % self.numberOfEditors
+    pane = self.pb.add(name)
+    panes = self.pb.panes()
+    minSize = float(1.0/float(len(panes)))
+    
+    &lt;&lt; create label and text widgets &gt;&gt;
+    self.editorWidgets[name] = w
+
+    for pane in panes:
+        self.pb.configurepane(pane,size=minSize)
+    
+    self.pb.updatelayout()
+    self.bodyCtrl = self.frame.bodyCtrl = w
+    self.updateEditors()
+    # self.onFocusIn(w,setFocus=True)
+    c.bodyWantsFocusNow()
+</t>
+<t tx="ekr.20060824095130.60">f = Tk.Frame(pane)
+f.pack(side='top',expand=1,fill='both')
+
+w = self.createTextWidget(self.frame,f,name=name,p=p)
+
+w.delete('1.0','end')
+w.insert('end',p.bodyString())
+w.see('1.0')
+self.setFontFromConfig(w=w)
+self.setColorFromConfig(w=w)
+self.createBindings(w=w)
+c.k.completeAllBindingsForWidget(w)
+
+self.recolorWidget(w)
+</t>
+<t tx="ekr.20060824095130.61">def cycleEditorFocus (self,event=None):
+    
+    '''Cycle keyboard focus between the body text editors.'''
+    
+    c = self.c ; d = self.editorWidgets ; w = self.bodyCtrl
+    values = d.values()
+    if len(values) &gt; 1:
+        i = values.index(w) + 1
+        if i == len(values): i = 0
+        w2 = d.values()[i]
+        assert(w!=w2)
+        self.onFocusIn(w2,setFocus=True)
+        self.bodyCtrl = self.frame.bodyCtrl = w2
+        # g.trace('***',g.app.gui.widget_name(w2),id(w2))
+
+    return 'break'
+</t>
+<t tx="ekr.20060824095130.62">def deleteEditor (self,event=None):
+    
+    '''Delete the presently selected body text editor.'''
+    
+    w = self.bodyCtrl ; d = self.editorWidgets
+    
+    if len(d.keys()) == 1: return
+    
+    name = w.leo_name
+    
+    del d [name]
+    self.pb.delete(name)
+    panes = self.pb.panes()
+    minSize = float(1.0/float(len(panes)))
+    
+    for pane in panes:
+        self.pb.configurepane(pane,size=minSize)
+        
+    # Select another editor.
+    w = d.values()[0]
+    self.onFocusIn(w)
+</t>
+<t tx="ekr.20060824095130.63">lockout_onFocusIn = False
+
+def onFocusIn(self,w,setFocus=False):
+
+    c = self.c ; d = self.editorWidgets
+    trace = False
+    if trace: g.trace(g.callers())
+    if self.lockout_onFocusIn:
+        if trace: g.trace('lockout')
+        return 'break'
+    if w.leo_p is None:
+        if trace: g.trace('no w.leo_p') 
+        return 'break'
+    
+    # Disable recursive calls: some of the calls below generate OnFocusInEvents.
+    self.lockout_onFocusIn = True
+    try:
+        if trace: g.trace(w)
+    
+        # Inactivate the previously active editor.
+        # Don't capture ivars here! selectMainEditor keeps them up-to-date.
+        for key in d.keys():
+            w2 = d.get(key)
+            if w2 != w and w2.leo_active:
+                w2.leo_active = False
+                self.unselectLabel(w2)
+                w2.leo_scrollBarSpot = w2.yview()
+                w2.leo_insertSpot = g.app.gui.getInsertPoint(w2)
+                w2.leo_selection = g.app.gui.getSelectionRange(w2)
+                break
+        else:
+            if trace: g.trace('no active editor!')
+    
+        # Careful, leo_p may not exist.
+        if not w.leo_p.exists(c):
+            g.trace('does not exist',w.leo_name)
+            for p2 in c.allNodes_iter():
+                if p2.v == w.leo_v:
+                    w.leo_p = p2.copy()
+                    break
+            else:
+                if trace: g.trace("Can't happen")
+                return 'break'
+
+        self.frame.bodyCtrl = self.bodyCtrl = w # Must change both ivars!
+        w.leo_active = True
+        c.selectPosition(w.leo_p,updateBeadList=True) # Calls selectMainEditor.
+        c.recolor_now()
+        &lt;&lt; restore the selection, insertion point and the scrollbar &gt;&gt;
+        w3 = g.app.gui.get_focus(c)
+        if setFocus or w3 and not g.app.gui.widget_name(w3).startswith('body'):
+            if trace: g.trace(g.app.gui.widget_name(w),id(w))
+            c.bodyWantsFocusNow()
+    finally:
+        self.lockout_onFocusIn = False
+
+    return 'break'
+</t>
+<t tx="ekr.20060824095130.64">if w.leo_insertSpot:
+    g.app.gui.setInsertPoint(w,w.leo_insertSpot)
+    w.see(w.leo_insertSpot)
+else:
+    g.app.gui.setInsertPoint(w,'1.0')
+    
+if w.leo_scrollBarSpot:
+    first,last = w.leo_scrollBarSpot
+    w.yview('moveto',first)
+
+if w.leo_selection:
+    try:
+        start,end = w.leo_selection
+        g.app.gui.setSelectionRange(w,start,end)
+    except Exception:
+        pass
+</t>
+<t tx="ekr.20060824095130.65">def selectMainEditor (self,p):
+
+    c = self.c ; p = c.currentPosition() ; w = self.bodyCtrl
+
+    # Don't inject ivars if there is only one editor.
+    if w.leo_p is not None:
+        # Keep w's ivars up-to-date.
+        w.leo_p = p.copy()
+        w.leo_v = p.v
+        w.leo_label_s = p.headString()
+        self.selectLabel(w)
+        # g.trace(w.leo_name,p.headString())
+</t>
+<t tx="ekr.20060824095130.66">def updateEditors (self):
+    
+    c = self.c ; p = c.currentPosition()
+    d = self.editorWidgets
+    if len(d.keys()) &lt; 2: return # There is only the main widget.
+
+    for key in d.keys():
+        w = d.get(key)
+        v = w.leo_v
+        if v and v == p.v and w != self.bodyCtrl:
+            w.delete('1.0','end')
+            w.insert('end',p.bodyString())
+            # g.trace('update',w,v)
+            self.recolorWidget(w)
+    c.frame.bodyWantsFocus()
+</t>
+<t tx="ekr.20060824095130.67"></t>
+<t tx="ekr.20060824095130.68"></t>
+<t tx="ekr.20060824095130.69">@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3802624
+By: dcbbcd
+
+How can I set the font for the menu?
+
+
+-----------------
+
+This works well on Windows XP, but there is the potential for problems on other
+platforms. 
+ 
+If I am not mistaken (I could be) the present code uses a dummy Tk.Text widget
+to compute what the default font *family* is, and this seems dubious when
+setting menu fonts. That this works on XP may be coincidence. Please report any
+problems immediately. What I want to avoid is having to specify a default system
+menu font family explicitly in leoSettings.leo. 
+ 
+The font settings do not have any effect on the menus shown at the top-level.
+I've tried setting the top-level font without result.</t>
+<t tx="ekr.20060824095130.70">@ This contains only the "interesting" defaults.
+Ints and bools default to 0, floats to 0.0 and strings to "".
+@c
+
+defaultBodyFontSize = g.choose(sys.platform=="win32",9,12)
+defaultLogFontSize  = g.choose(sys.platform=="win32",8,12)
+defaultMenuFontSize = g.choose(sys.platform=="win32",9,12)
+defaultTreeFontSize = g.choose(sys.platform=="win32",9,12)
+
+defaultsDict = {'_hash':'defaultsDict'}
+
+defaultsData = (
+    # compare options...
+    ("ignore_blank_lines","bool",True),
+    ("limit_count","int",9),
+    ("print_mismatching_lines","bool",True),
+    ("print_trailing_lines","bool",True),
+    # find/change options...
+    ("search_body","bool",True),
+    ("whole_word","bool",True),
+    # Prefs panel.
+    ("default_target_language","language","python"),
+    ("target_language","language","python"), # Bug fix: 6/20,2005.
+    ("tab_width","int",-4),
+    ("page_width","int",132),
+    ("output_doc_chunks","bool",True),
+    ("tangle_outputs_header","bool",True),
+    # Syntax coloring options...
+    # Defaults for colors are handled by leoColor.py.
+    ("color_directives_in_plain_text","bool",True),
+    ("underline_undefined_section_names","bool",True),
+    # Window options...
+    ("allow_clone_drags","bool",True),
+    ("body_pane_wraps","bool",True),
+    ("body_text_font_family","family","Courier"),
+    ("body_text_font_size","size",defaultBodyFontSize),
+    ("body_text_font_slant","slant","roman"),
+    ("body_text_font_weight","weight","normal"),
+    ("enable_drag_messages","bool",True),
+    ("headline_text_font_family","string",None),
+    ("headline_text_font_size","size",defaultLogFontSize),
+    ("headline_text_font_slant","slant","roman"),
+    ("headline_text_font_weight","weight","normal"),
+    ("log_text_font_family","string",None),
+    ("log_text_font_size","size",defaultLogFontSize),
+    ("log_text_font_slant","slant","roman"),
+    ("log_text_font_weight","weight","normal"),
+    ("initial_window_height","int",600),
+    ("initial_window_width","int",800),
+    ("initial_window_left","int",10),
+    ("initial_window_top","int",10),
+    ("initial_splitter_orientation","string","vertical"),
+    ("initial_vertical_ratio","ratio",0.5),
+    ("initial_horizontal_ratio","ratio",0.3),
+    ("initial_horizontal_secondary_ratio","ratio",0.5),
+    ("initial_vertical_secondary_ratio","ratio",0.7),
+    ("outline_pane_scrolls_horizontally","bool",False),
+    ("split_bar_color","color","LightSteelBlue2"),
+    ("split_bar_relief","relief","groove"),
+    ("split_bar_width","int",7),
+)
+</t>
+<t tx="ekr.20060824095130.71">def __init__ (self,frame):
+    
+    # Init the base class.
+    leoMenu.leoMenu.__init__(self,frame)
+    
+    self.top = frame.top
+    self.c = c = frame.c
+    self.frame = frame
+    
+    self.font = c.config.getFontFromParams(
+        'menu_text_font_family', 'menu_text_font_size',
+        'menu_text_font_slant',  'menu_text_font_weight',
+        c.config.defaultMenuFontSize)
+</t>
+<t tx="ekr.20060824095130.72">def new_menu(self,parent,tearoff=False):
+    
+    """Wrapper for the Tkinter new_menu menu method."""
+    
+    if self.font:
+        try:
+            return Tk.Menu(parent,tearoff=tearoff,font=self.font)
+        except Exception:
+            g.es_exception()
+            return Tk.Menu(parent,tearoff=tearoff)
+    else:
+        return Tk.Menu(parent,tearoff=tearoff)
+</t>
+<t tx="ekr.20060824095130.73">def createMenuBar(self,frame):
+
+    top = frame.top
+    
+    # Note: font setting has no effect here.
+    topMenu = Tk.Menu(top,postcommand=self.updateAllMenus)
+    
+    # Do gui-independent stuff.
+    self.setMenu("top",topMenu)
+    self.createMenusFromTables()
+    
+    top.config(menu=topMenu) # Display the menu.
+</t>
+<t tx="ekr.20060824095130.74">http://sourceforge.net/forum/message.php?msg_id=3834645</t>
+<t tx="ekr.20060824095130.75"></t>
+<t tx="ekr.20060824095130.76">@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3802513
+By: tfer
+
+Could you make the set of symbols to flash user settable?
+
+Added these settings:
+    
+@string open_flash_brackets = ([{
+@string close_flash_brackets = )]}
+</t>
+<t tx="ekr.20060824095130.77">def __init__ (self,c):
+
+    baseEditCommandsClass.__init__(self,c) # init the base class.
+    
+    self.ccolumn = '0'   # For comment column functions.
+    self.dynaregex = re.compile(r'[%s%s\-_]+'%(string.ascii_letters,string.digits))
+        # For dynamic abbreviations
+    self.extendMode = False # True: all cursor move commands extend the selection.
+    self.fillPrefix = '' # For fill prefix functions.
+    self.fillColumn = 70 # For line centering.
+    self.moveSpotNode = None # A tnode.
+    self.moveSpot = None # For retaining preferred column when moving up or down.
+    self.moveCol = None # For retaining preferred column when moving up or down.
+    self.store ={'rlist':[], 'stext':''} # For dynamic expansion.
+    self.sampleWidget = None # Created later.
+    self.swapSpots = []
+    self._useRegex = False # For replace-string
+    self.widget = None # For use by state handlers.
+    
+    # Settings...
+    self.autocompleteBrackets   = c.config.getBool('autocomplete-brackets')
+    self.bracketsFlashBg        = c.config.getColor('flash-brackets-background-color')
+    self.bracketsFlashCount     = c.config.getInt('flash-brackets-count')
+    self.bracketsFlashDelay     = c.config.getInt('flash-brackets-delay')
+    self.bracketsFlashFg        = c.config.getColor('flash-brackets-foreground-color')
+    self.flashMatchingBrackets  = c.config.getBool('flash-matching-brackets')
+    self.smartAutoIndent        = c.config.getBool('smart_auto_indent')
+    
+    self.initBracketMatcher(c)
+</t>
+<t tx="ekr.20060824095130.78">def initBracketMatcher (self,c):
+
+    self.openBracketsList  = c.config.getString('open_flash_brackets')  or '([{'
+    self.closeBracketsList = c.config.getString('close_flash_brackets') or ')]}'
+    
+    if len(self.openBracketsList) != len(self.closeBracketsList):
+        g.es_print('bad open/close_flash_brackets setting: using defaults')
+        self.openBracketsList  = '([{'
+        self.closeBracketsList = ')]}'
+
+    # g.trace('self.openBrackets',openBrackets)
+    # g.trace('self.closeBrackets',closeBrackets)
+</t>
+<t tx="ekr.20060824095130.79">def selfInsertCommand(self,event,action='insert'):
+    
+    '''Insert a character in the body pane.
+    This is the default binding for all keys in the body pane.'''
+    
+    c = self.c ; p = c.currentPosition()
+    ch = event and event.char or ''
+    if event and event.keysym == 'Return': ch = '\n' # This fixes the MacOS return bug.
+    w = event and event.widget
+    name = c.widget_name(w)
+    oldSel =  name.startswith('body') and g.app.gui.getTextSelection(w)
+    oldText = name.startswith('body') and p.bodyString()
+    undoType = 'Typing'
+    trace = c.config.getBool('trace_masterCommand')
+    brackets = self.openBracketsList + self.closeBracketsList
+    
+    if trace: g.trace(name,repr(ch),ch in brackets)
+    
+    if g.doHook("bodykey1",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType):
+        return "break" # The hook claims to have handled the event.
+        
+    if ch == '\t':
+        self.updateTab(p,w)
+    elif ch == '\b':
+        # This is correct: we only come here if there no bindngs for this key. 
+        self.backwardDeleteCharacter(event)
+    elif ch in ('\r','\n'):
+        ch = '\n'
+        &lt;&lt; handle newline &gt;&gt;
+    elif ch in brackets and self.autocompleteBrackets:
+        self.updateAutomatchBracket(p,w,ch,oldSel)
+    elif ch: # Null chars must not delete the selection.
+        i,j = oldSel
+        if i != j:                  w.delete(i,j)
+        elif action == 'overwrite': w.delete(i,'%s+1c' % i)
+        w.insert(i,ch)
+        if ch in brackets and self.flashMatchingBrackets: # New in 4.4.1.
+           self.flashMatchingBracketsHelper(w,i,ch)               
+    else:
+        return 'break' # New in 4.4a5: this method *always* returns 'break'
+        
+    # New in 4.4.1: Set the column for up and down keys.
+    spot = w.index('insert')
+    c.editCommands.setMoveCol(spot)
+
+    # Update the text and handle undo.
+    newText = g.app.gui.getAllText(w) # New in 4.4b3: converts to unicode.
+    # g.trace(repr(newText))
+    w.see(w.index('insert'))
+    if newText != oldText:
+        c.frame.body.onBodyChanged(undoType=undoType,
+            oldSel=oldSel,oldText=oldText,oldYview=None)
+            
+    g.doHook("bodykey2",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType)
+    return 'break'
+</t>
+<t tx="ekr.20060824095130.80">i,j = oldSel
+
+if i != j:
+    # No auto-indent if there is selected text.
+    w.delete(i,j)
+    w.insert(i,ch)
+else:
+    w.insert(i,ch)
+    allow_in_nocolor = c.config.getBool('autoindent_in_nocolor_mode')
+    if (
+        (allow_in_nocolor or c.frame.body.colorizer.useSyntaxColoring(p)) and
+        undoType != "Change"
+    ):
+        # No auto-indent if in @nocolor mode or after a Change command.
+        self.updateAutoIndent(p,w)
+</t>
+<t tx="ekr.20060824095130.81">def flashMatchingBracketsHelper (self,w,index,ch):
+
+    s = g.app.gui.getAllText(w)
+    i = g.app.gui.toPythonIndex(s,w,index)
+    
+    d = {}
+    if ch in self.openBracketsList:
+        for z in xrange(len(self.openBracketsList)):
+            d [self.openBracketsList[z]] = self.closeBracketsList[z]
+        reverse = False # Search forward
+    else:
+        for z in xrange(len(self.openBracketsList)):
+            d [self.closeBracketsList[z]] = self.openBracketsList[z]
+        reverse = True # Search backward
+
+    delim2 = d.get(ch)
+    j = g.skip_matching_python_delims(s,i,ch,delim2,reverse=reverse)
+    if j != -1:
+        j = g.app.gui.toGuiIndex(s,w,j)
+        self.flashCharacter(w,j)
+</t>
+<t tx="ekr.20060824095130.82">def flashCharacter(self,w,i):
+    
+    bg      = self.bracketsFlashBg or 'DodgerBlue1'
+    fg      = self.bracketsFlashFg or 'white'
+    flashes = self.bracketsFlashCount or 2
+    delay   = self.bracketsFlashDelay or 75
+
+    def addFlashCallback(w,count,index):
+        w.tag_add('flash',index,'%s+1c' % (index))
+        w.after(delay,removeFlashCallback,w,count-1,index)
+    
+    def removeFlashCallback(w,count,index):
+        w.tag_remove('flash','1.0','end')
+        if count &gt; 0:
+            w.after(delay,addFlashCallback,w,count,index)
+
+    try:
+        w.tag_configure('flash',foreground=fg,background=bg)
+        addFlashCallback(w,flashes,i)
+    except Exception:
+        pass
+</t>
+<t tx="ekr.20060824095130.83">def updateAutomatchBracket (self,p,w,ch,oldSel):
+
+    # assert ch in ('(',')','[',']','{','}')
+    
+    c = self.c ; d = g.scanDirectives(c,p) ; i,j = oldSel
+    language = d.get('language')
+    
+    if ch in ('(','[','{',):
+        automatch = language not in ('plain',)
+        if automatch:
+            ch = ch + {'(':')','[':']','{':'}'}.get(ch)
+        if i != j:
+            w.delete(i,j)
+        w.insert(i,ch)
+        if automatch:
+            w.mark_set('insert','insert-1c')
+    else:
+        ch2 = w.get('insert')
+        if ch2 in (')',']','}'):
+            w.mark_set('insert','insert+1c')
+        else:
+            if i != j:
+                w.delete(i,j)
+            w.insert(i,ch)
+</t>
+<t tx="ekr.20060824095130.84"># By David McNab:
+def updateAutoIndent (self,p,w):
+
+    c = self.c ; d = g.scanDirectives(c,p)
+    tab_width = d.get("tabwidth",c.tab_width) # Get the previous line.
+    s = w.get("insert linestart - 1 lines","insert linestart -1c")
+    # Add the leading whitespace to the present line.
+    junk, width = g.skip_leading_ws_with_indent(s,0,tab_width)
+    if s and len(s) &gt; 0 and s [ -1] == ':':
+        # For Python: increase auto-indent after colons.
+        if c.frame.body.colorizer.scanColorDirectives(p) == "python":
+            width += abs(tab_width)
+    if self.smartAutoIndent:
+        # Determine if prev line has unclosed parens/brackets/braces
+        bracketWidths = [width] ; tabex = 0
+        for i in range(0,len(s)):
+            if s [i] == '\t':
+                tabex += tab_width-1
+            if s [i] in '([{':
+                bracketWidths.append(i+tabex+1)
+            elif s [i] in '}])' and len(bracketWidths) &gt; 1:
+                bracketWidths.pop()
+        width = bracketWidths.pop()
+    ws = g.computeLeadingWhitespace(width,tab_width)
+    if ws:
+        w.insert("insert",ws)
+</t>
+<t tx="ekr.20060824095130.85">def updateTab (self,p,w):
+
+    c = self.c ; d = g.scanDirectives(c,p)
+    tab_width = d.get("tabwidth",c.tab_width)
+    
+    i,j = g.app.gui.getTextSelection(w)
+    if i != j:
+        w.delete(i,j)
+    if tab_width &gt; 0:
+        w.insert("insert",'\t')
+    else:
+        # Get the preceeding characters.
+        s = w.get("insert linestart","insert")
+    
+        # Compute n, the number of spaces to insert.
+        width = g.computeWidth(s,tab_width)
+        n = abs(tab_width) - (width % abs(tab_width))
+        w.insert("insert",' ' * n)
+</t>
+<t tx="ekr.20060824095130.86"></t>
+<t tx="ekr.20060824095130.87">@nocolor
+
+For a nice intro to decorators, see: http://www.ddj.com/184406073
+
+Background
+
+Python 2.4 uses the at-sign @ to start decorators; Leo uses @ to denote Leo
+directives. The @ that starts a Python decorator must start in column one (the
+leftmost column); most Leo directives must also start in column one, but leading
+whitespace is significant in the @others and @all directives. Supporting Python
+decorators is a significant change to Leo because it will alter Leo's read/write
+logic for derived files.
+
+Choices
+
+There are two possible approaches to solving this problem:
+
+1.  Treat Leo directives (including directives defined in plugins) as special cases.
+
+Leo would treat @x as a decorator (i.e., plain source code) unless x is a Leo
+directive. Note that plugins can define Leo directives... This way requires no
+change to most Leo files and so is simpler to use. It requires only that
+decorators have names that do not conflict with Leo directives.
+
+2.  Generalize the **leadin string** that introduces Leo directives.
+
+Leo would allow uses to specify alternatives for '@' as follows:
+
+A.  Add a new option in leoSettings.leo: @string leadin-string = @
+
+B. Add a new directive: &lt;default-leadin-string&gt;leadin &lt;string&gt;.
+
+If present, this directive would have to be the very first line of body text. It
+would change the leadin string from the string specified by the leadin-string
+*setting* to the string specified in the @leadin *directive*. As usual, the
+scope of this directive would be the entire subtree of the node containing the
+directive unless overridden in a descendent node.
+
+The second approach is more general, and clearly separates Python decorators
+from Leo directives. But this way disrupts the vast majority of Leo source code
+in order to handle an extremely rare problem, namely of a conflict between a
+Python decorator and a Leo directive. How often do we expect a Python decorator
+to be name @others or @tabwidth or @code?
+
+Conclusion
+
+Unless I hear howls of protest I shall go ahead with the first approach. That
+is, Leo will treat directives as special cases; all other strings that look like
+directives will be output as plain source code.</t>
+<t tx="ekr.20060824095130.88">@nocolor
+
+A big surprise: Leo *already* outputs decorators correctly, assuming the
+decorator does not conflict with a Leo directive.
+
+I had misremembered how the write logic works: it puts a verbatim sentinel only
+if a line starts with the comment delimiter followed by an '@'. Lines that
+merely start with an '@' are output as is unless the @ starts with a Leo
+directive.
+
+I appreciate all the various suggestions, but the most important objectives
+are:
+
+1. having the atFile.read logic recreate the outline properly from derived files.
+
+2. forcing minimal changes to the appearance of Leo source code.
+
+The present scheme meets these two objectives in the simplest possible way, so I
+shall do nothing more unless there is a real need for more, which I do not
+expect. So for now I only need to update Leo's documentation.</t>
+<t tx="ekr.20060824095130.89">def putCodeLine (self,s,i):
+    
+    """Put a normal code line."""
+    
+    at = self
+    
+    # Put @verbatim sentinel if required.
+    k = g.skip_ws(s,i)
+    if g.match(s,k,self.startSentinelComment + '@'):
+        self.putSentinel("@verbatim")
+
+    j = g.skip_line(s,i)
+    line = s[i:j]
+
+    # c.config.write_strips_blank_lines
+    if 0: # 7/22/04: Don't put any whitespace in otherwise blank lines.
+        if line.strip(): # The line has non-empty content.
+            if not at.raw:
+                at.putIndent(at.indent)
+        
+            if line[-1:]=="\n":
+                at.os(line[:-1])
+                at.onl()
+            else:
+                at.os(line)
+        elif line and line[-1] == '\n':
+            at.onl()
+        else:
+            g.trace("Can't happen: completely empty line")
+    else:
+        # 1/29/04: Don't put leading indent if the line is empty!
+        if line and not at.raw:
+            at.putIndent(at.indent)
+    
+        if line[-1:]=="\n":
+            at.os(line[:-1])
+            at.onl()
+        else:
+            at.os(line)
+</t>
+<t tx="ekr.20060824095130.90">http://sourceforge.net/forum/message.php?msg_id=3858363
+</t>
+<t tx="ekr.20060824095130.91"></t>
+<t tx="ekr.20060824095130.92"></t>
+<t tx="ekr.20060824095130.93"></t>
+<t tx="ekr.20060824095130.94"></t>
+<t tx="ekr.20060824095130.95"></t>
+<t tx="ekr.20060824095130.96"></t>
+<t tx="ekr.20060824095130.97">def addIconButton (self,*args,**keys):
+    return self.iconBar and self.iconBar.add(*args,**keys)
+
+def clearIconBar (self):
+    if self.iconBar: self.iconBar.clear()
+
+def createIconBar (self):
+    f = self ; c = f.c
+    if not f.iconBar:
+        f.iconBar = f.iconBarClass(c,f.outerFrame)
+        f.iconFrame = f.iconBar.iconFrame
+        f.iconBar.pack()
+    return f.iconBar
+    
+def getIconBar(self):
+    return self.iconBar
+getIconBarObject = getIconBar
+
+def hideIconBar (self):
+    if self.iconBar: self.iconBar.hide()</t>
+<t tx="ekr.20060824095130.98">class iconBarClass:
+    
+    '''A class representing the singleton Icon bar'''
+    
+    @others
+</t>
+<t tx="ekr.20060824095130.99">def __init__ (self,c,parentFrame):
+    
+    self.c = c
+    
+    self.buttons = {} # Keys
+    self.iconFrame = Tk.Frame(
+        parentFrame,height="5m",bd=2,relief="groove") # ,background='blue')
+    self.parentFrame = parentFrame
+    self.visible = False
+</t>
+<t tx="ekr.20060824095130.100">def add(self,*args,**keys):
+    
+    """Add a button containing text or a picture to the icon bar.
+    
+    Pictures take precedence over text"""
+    
+    f = self.iconFrame
+    text = keys.get('text')
+    imagefile = keys.get('imagefile')
+    image = keys.get('image')
+    command = keys.get('command')
+    bg = keys.get('bg')
+
+    if not imagefile and not image and not text: return
+
+    # First define n.
+    try:
+        g.app.iconWidgetCount += 1
+        n = g.app.iconWidgetCount
+    except:
+        n = g.app.iconWidgetCount = 1
+
+    if not command:
+        def command():
+            print "command for widget %s" % (n)
+
+    if imagefile or image:
+        &lt;&lt; create a picture &gt;&gt;
+    elif text:
+        b = Tk.Button(f,text=text,relief="groove",bd=2,command=command)
+        if sys.platform != 'darwin':
+            width = max(6,len(text))
+            b.configure(width=width)
+        b.pack(side="left", fill="y")
+        return b
+        
+    return None
+</t>
+<t tx="ekr.20060824095130.101">try:
+    if imagefile:
+        # Create the image.  Throws an exception if file not found
+        imagefile = g.os_path_join(g.app.loadDir,imagefile)
+        imagefile = g.os_path_normpath(imagefile)
+        image = Tk.PhotoImage(master=g.app.root,file=imagefile)
+        
+        # Must keep a reference to the image!
+        try:
+            refs = g.app.iconImageRefs
+        except:
+            refs = g.app.iconImageRefs = []
+    
+        refs.append((imagefile,image),)
+    
+    if not bg:
+        bg = f.cget("bg")
+
+    b = Tk.Button(f,image=image,relief="flat",bd=0,command=command,bg=bg)
+    b.pack(side="left",fill="y")
+    return b
+    
+except:
+    g.es_exception()
+    return None
+</t>
+<t tx="ekr.20060824095130.102">def clear(self):
+    
+    """Destroy all the widgets in the icon bar"""
+    
+    f = self.iconFrame
+    
+    for slave in f.pack_slaves():
+        slave.destroy()
+    self.visible = False
+
+    f.configure(height="5m") # The default height.
+    g.app.iconWidgetCount = 0
+    g.app.iconImageRefs = []
+</t>
+<t tx="ekr.20060824095130.103">def getFrame (self):
+
+    return self.iconFrame
+</t>
+<t tx="ekr.20060824095130.104">def pack (self):
+    
+    """Show the icon bar by repacking it"""
+    
+    if not self.visible:
+        self.visible = True
+        self.iconFrame.pack(fill="x",pady=2)
+        
+show = pack
+</t>
+<t tx="ekr.20060824095130.105">def unpack (self):
+    
+    """Hide the icon bar by unpacking it.
+    
+    A later call to show will repack it in a new location."""
+    
+    if self.visible:
+        self.visible = False
+        self.iconFrame.pack_forget()
+        
+hide = unpack
+</t>
+<t tx="ekr.20060824095130.106"></t>
+<t tx="ekr.20060824095130.107">class statusLineClass:
+    
+    '''A class representing the status line.'''
+    
+    @others
+</t>
+<t tx="ekr.20060824095130.108">def __init__ (self,c,parentFrame):
+    
+    self.c = c
+    self.bodyCtrl = c.frame.bodyCtrl
+    self.colorTags = [] # list of color names used as tags.
+    self.enabled = False
+    self.isVisible = False
+    self.lastRow = self.lastCol = 0
+    self.log = c.frame.log
+    #if 'black' not in self.log.colorTags:
+    #    self.log.colorTags.append("black")
+    self.parentFrame = parentFrame
+    self.statusFrame = Tk.Frame(parentFrame,bd=2)
+    text = "line 0, col 0"
+    width = len(text) + 4
+    self.labelWidget = Tk.Label(self.statusFrame,text=text,width=width,anchor="w")
+    self.labelWidget.pack(side="left",padx=1)
+    
+    bg = self.statusFrame.cget("background")
+    self.textWidget = Tk.Text(self.statusFrame,
+        height=1,state="disabled",bg=bg,relief="groove",name='status-line')
+    self.textWidget.pack(side="left",expand=1,fill="x")
+    self.textWidget.bind("&lt;Button-1&gt;", self.onActivate)
+</t>
+<t tx="ekr.20060824095130.109">def clear (self):
+    
+    t = self.textWidget
+    if not t: return
+    
+    trace = self.c.frame.trace_status_line and not g.app.unitTesting
+    if trace: g.trace(g.callers())
+    
+    t.configure(state="normal")
+    t.delete("1.0","end")
+    t.configure(state="disabled")
+</t>
+<t tx="ekr.20060824095130.110">def disable (self,background=None):
+    
+    c = self.c ; t = self.textWidget
+    if t:
+        if not background:
+            background = self.statusFrame.cget("background")
+        t.configure(state="disabled",background=background)
+    self.enabled = False
+    c.bodyWantsFocus()
+    
+def enable (self,background="white"):
+    
+    # g.trace()
+    c = self.c ; t = self.textWidget
+    if t:
+        t.configure(state="normal",background=background)
+        c.widgetWantsFocus(t)
+    self.enabled = True
+        
+def isEnabled(self):
+    return self.enabled</t>
+<t tx="ekr.20060824095130.111">def get (self):
+    
+    t = self.textWidget
+    if t:
+        return t.get("1.0","end")
+    else:
+        return ""
+</t>
+<t tx="ekr.20060824095130.112">def getFrame (self):
+    
+    return self.statusFrame
+</t>
+<t tx="ekr.20060824095130.113">def onActivate (self,event=None):
+    
+    # Don't change background as the result of simple mouse clicks.
+    background = self.statusFrame.cget("background")
+    self.enable(background=background)
+</t>
+<t tx="ekr.20060824095130.114">def pack (self):
+    
+    if not self.isVisible:
+        self.isVisible = True
+        self.statusFrame.pack(fill="x",pady=1)
+        
+show = pack
+</t>
+<t tx="ekr.20060824095130.115">def put(self,s,color=None):
+    
+    t = self.textWidget
+    if not t: return
+    
+    trace = self.c.frame.trace_status_line and not g.app.unitTesting
+    if trace: g.trace(s,g.callers())
+    
+    t.configure(state="normal")
+        
+    if color and color not in self.colorTags:
+        self.colorTags.append(color)
+        t.tag_config(color,foreground=color)
+
+    if color:
+        t.insert("end",s)
+        t.tag_add(color,"end-%dc" % (len(s)+1),"end-1c")
+        t.tag_config("black",foreground="black")
+        t.tag_add("black","end")
+    else:
+        t.insert("end",s)
+    
+    t.configure(state="disabled")
+</t>
+<t tx="ekr.20060824095130.116">def unpack (self):
+    
+    if self.isVisible:
+        self.isVisible = False
+        self.statusFrame.pack_forget()
+
+hide = unpack
+</t>
+<t tx="ekr.20060824095130.117">def update (self):
+    
+    c = self.c ; w = self.bodyCtrl ; lab = self.labelWidget
+    if g.app.killed or not self.isVisible:
+        return
+
+    index = w.index("insert")
+    row,col = g.app.gui.getindex(w,index)
+
+    if col &gt; 0:
+        s = w.get("%d.0" % (row),index)
+        s = g.toUnicode(s,g.app.tkEncoding)
+        col = g.computeWidth (s,c.tab_width)
+    
+    s = "line %d, col %d " % (row,col)
+    # Important: this does not change the focus because labels never get focus.
+    lab.configure(text=s)
+    self.lastRow = row
+    self.lastCol = col
+</t>
+<t tx="ekr.20060824095130.118">def createStatusLine (self):
+    f = self ; c = f.c
+    if not self.statusLine:
+        f.statusLine  = statusLine = f.statusLineClass(c,f.outerFrame)
+        f.statusFrame = statusLine.statusFrame
+        f.statusLabel = statusLine.labelWidget
+        f.statusText  = statusLine.textWidget
+        statusLine.pack()
+    return self.statusLine
+
+def clearStatusLine (self):
+    if self.statusLine: self.statusLine.clear()
+    
+def disableStatusLine (self,background=None):
+    if self.statusLine: self.statusLine.disable(background)
+
+def enableStatusLine (self,background="white"):
+    if self.statusLine: self.statusLine.enable(background)
+
+def getStatusLine (self):
+    return self.statusLine
+    
+getStatusObject = getStatusLine
+    
+def putStatusLine (self,s,color=None):
+    if self.statusLine: self.statusLine.put(s,color)
+    
+def setFocusStatusLine (self):
+    if self.statusLine: self.statusLine.setFocus()
+
+def statusLineIsEnabled(self):
+    return self.statusLine and self.statusLine.isEnabled()
+    
+def updateStatusLine(self):
+    if self.statusLine: self.statusLine.update()</t>
 </tnodes>
 </leo_file>

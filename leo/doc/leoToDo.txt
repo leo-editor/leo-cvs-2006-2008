@@ -1092,15 +1092,11 @@ Scott
 # Don't use body wrappers, use g.app.gui methods instead
 #@-node:ekr.20041228084830.3:Finish wxWindows plugin
 #@-node:ekr.20060822174843:Most important
-#@+node:ekr.20060531161030:To do: B5
+#@+node:ekr.20060531161030:To do: 4.4.2
 #@+node:ekr.20060822162521:Make headlines scroll
 Limit the with of the headline to the width of the outline pane.
 #@nonl
 #@-node:ekr.20060822162521:Make headlines scroll
-#@+node:ekr.20060813121814:Add colorizer files for cweb, forth, plsql, rapidq
-#@-node:ekr.20060813121814:Add colorizer files for cweb, forth, plsql, rapidq
-#@+node:ekr.20060527204444:Finish new colorizer plugin
-#@-node:ekr.20060527204444:Finish new colorizer plugin
 #@+node:ekr.20060628103226:Finish emacs commands
 #@+node:ekr.20060628103226.2:Alt-x handlers should add to lossage
 #@-node:ekr.20060628103226.2:Alt-x handlers should add to lossage
@@ -1717,7 +1713,7 @@ if not setTop and len(self.topVnodeStack) > 0 and appendToTopStack:
 #@-node:ekr.20040326055828:<< Append to current or top stack >>
 #@-node:ekr.20031218072017.1566:getVnode changed for 4.2 & 4.4)
 #@-node:ekr.20060724071225:Look at Paste Node As Clone
-#@-node:ekr.20060531161030:To do: B5
+#@-node:ekr.20060531161030:To do: 4.4.2
 #@+node:ekr.20060527164612:Important 1-2 day projects
 #@+node:ekr.20050831131028:opml
 #@+node:ekr.20050831131452:Original post
@@ -1819,24 +1815,6 @@ Edward
 #@-node:ekr.20050831131028:opml
 #@+node:ekr.20060531161030.1:Make body editors persistant
 #@-node:ekr.20060531161030.1:Make body editors persistant
-#@+node:ekr.20060609070148:Fix hung (zombie) windows)
-@nocolor
-
-https://sourceforge.net/forum/message.php?msg_id=3768494
-By: ktenney
-
-I'm using current CVS, W2k
-
-1 open a Leo file (I'm using a batch file / console)
-
-2 click Edit->Open   <-- Having this dialog open is the problem.
-
-3 return focus to the Leo window
-
-4 click Help->Open leoDocs.leo
-
-Zombie!
-#@-node:ekr.20060609070148:Fix hung (zombie) windows)
 #@+node:ekr.20060624082529:Fix minor bugs
 #@+node:ekr.20060117074259:Handle Mac issues
 #@+node:ekr.20060117074259.1:Mac indentation problem

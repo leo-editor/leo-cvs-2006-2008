@@ -2,6 +2,24 @@
 #@+node:ekr.20060207133601:@thin ../doc/leoToDoLater.txt
 #@+all
 #@+node:ekr.20060528155800:Big, not so important
+#@+node:ekr.20060609070148:Fix hung (zombie) windows)
+@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=3768494
+By: ktenney
+
+I'm using current CVS, W2k
+
+1 open a Leo file (I'm using a batch file / console)
+
+2 click Edit->Open   <-- Having this dialog open is the problem.
+
+3 return focus to the Leo window
+
+4 click Help->Open leoDocs.leo
+
+Zombie!
+#@-node:ekr.20060609070148:Fix hung (zombie) windows)
 #@+node:ekr.20060116173818:Fix vampire nodes (maybe)
 #@-node:ekr.20060116173818:Fix vampire nodes (maybe)
 #@+node:ekr.20060329102951:@ref (maybe)
@@ -166,6 +184,104 @@ Special case code is required so empty nodes stay empty with "one" option.
 #@-node:EKR.20040603092958.1:Add new options for handling newlines in body text
 #@-node:ekr.20040919182750.1:Better handling of whitespace (cvs fiendly)
 #@-node:ekr.20060528155800:Big, not so important
+#@+node:ekr.20060824110846:Colorizing
+#@+node:ekr.20060813121814:Add colorizer files for cweb, forth,  rapidq
+#@+node:ekr.20060824103837:Notes
+@nocolor
+
+Renamed pl-sql.* to plsql.* (This required rerunning jEdit2py.)
+
+Forth is going to be a problem, because keywords can be extensible.
+Perhaps the user should be responsible for updating forth.xml.
+#@nonl
+#@-node:ekr.20060824103837:Notes
+#@+node:ekr.20031218072017.1595:<< define leo keywords >>
+# leoKeywords is used by directivesKind, so it should be a module-level symbol.
+
+# leoKeywords must be a list so that plugins may alter it.
+
+leoKeywords = [
+    "@","@all","@c","@code","@color","@comment",
+    "@delims","@doc","@encoding","@end_raw",
+    "@first","@header","@ignore",
+    "@killcolor",
+    "@language","@last","@lineending",
+    "@nocolor","@noheader","@nowrap","@others",
+    "@pagewidth","@path","@quiet","@raw","@root","@root-code","@root-doc",
+    "@silent","@tabwidth","@terse",
+    "@unit","@verbose","@wrap" ]
+#@-node:ekr.20031218072017.1595:<< define leo keywords >>
+#@+node:ekr.20041107093834:forth keywords
+# Default forth keywords: extended by leo-forthwords.txt.
+forth_keywords = [
+    "variable", "constant", "code", "end-code",
+    "dup", "2dup", "swap", "2swap", "drop", "2drop",
+    "r>", ">r", "2r>", "2>r",
+    "if", "else", "then",
+    "begin", "again", "until", "while", "repeat",
+    "v-for", "v-next", "exit",
+    "meta", "host", "target", "picasm", "macro",
+    "needs", "include",
+    "'", "[']",
+    ":", ";",
+    "@", "!", ",", "1+", "+", "-",
+    "<", "<=", "=", ">=", ">",
+    "invert", "and", "or", 
+    ]
+
+# Forth words which define other words: extended by leo-forthdefwords.txt.
+forth_definingwords = [
+    ":", "variable", "constant", "code",
+    ]
+
+# Forth words which start strings: extended by leo-forthstringwords.txt.
+forth_stringwords = [
+    's"', '."', '"', '."',
+    'abort"',
+    ]
+
+# Forth words to be rendered in boldface: extended by leo-forthboldwords.txt.
+forth_boldwords = [ ]
+
+# Forth words to be rendered in italics: extended by leo-forthitalicwords.txt.
+forth_italicwords = [ ]
+
+# Forth bold-italics words: extemded leo-forthbolditalicwords.txt if present
+# Note: on some boxen, bold italics may show in plain bold.
+forth_bolditalicwords = [ ]
+#@-node:ekr.20041107093834:forth keywords
+#@+node:ekr.20040331145826:rapidq keywords
+rapidq_keywords = [
+# Syntax file for RapidQ
+"$APPTYPE","$DEFINE","$ELSE","$ENDIF","$ESCAPECHARS","$IFDEF","$IFNDEF",
+"$INCLUDE","$MACRO","$OPTIMIZE","$OPTION","$RESOURCE","$TYPECHECK","$UNDEF",
+"ABS","ACOS","ALIAS","AND","AS","ASC","ASIN","ATAN","ATN","BIN$","BIND","BYTE",
+"CALL","CALLBACK","CALLFUNC","CASE","CEIL","CHDIR","CHDRIVE","CHR$","CINT",
+"CLNG","CLS","CODEPTR","COMMAND$","COMMANDCOUNT","CONSOLE","CONST","CONSTRUCTOR",
+"CONVBASE$","COS","CREATE","CSRLIN","CURDIR$","DATA","DATE$","DEC","DECLARE",
+"DEFBYTE","DEFDBL","DEFDWORD","DEFINT","DEFLNG","DEFSHORT","DEFSNG","DEFSTR",
+"DEFWORD","DELETE$","DIM","DIR$","DIREXISTS","DO","DOEVENTS","DOUBLE","DWORD",
+"ELSE","ELSEIF","END","ENVIRON","ENVIRON$","EVENT","EXIT","EXP","EXTENDS",
+"EXTRACTRESOURCE","FIELD$","FILEEXISTS","FIX","FLOOR","FOR","FORMAT$","FRAC",
+"FUNCTION","FUNCTIONI","GET$","GOSUB","GOTO","HEX$","IF","INC","INITARRAY",
+"INKEY$","INP","INPUT","INPUT$","INPUTHANDLE","INSERT$","INSTR","INT","INTEGER",
+"INV","IS","ISCONSOLE","KILL","KILLMESSAGE","LBOUND","LCASE$","LEFT$","LEN",
+"LFLUSH","LIB","LIBRARYINST","LOCATE","LOG","LONG","LOOP","LPRINT","LTRIM$",
+"MEMCMP","MESSAGEBOX","MESSAGEDLG","MID$","MKDIR","MOD","MOUSEX","MOUSEY",
+"NEXT","NOT","OFF","ON","OR","OUT","OUTPUTHANDLE","PARAMSTR$","PARAMSTRCOUNT",
+"PARAMVAL","PARAMVALCOUNT","PCOPY","PEEK","PLAYWAV","POKE","POS","POSTMESSAGE",
+"PRINT","PROPERTY","QUICKSORT","RANDOMIZE","REDIM","RENAME","REPLACE$",
+"REPLACESUBSTR$","RESOURCE","RESOURCECOUNT","RESTORE","RESULT","RETURN",
+"REVERSE$","RGB","RIGHT$","RINSTR","RMDIR","RND","ROUND","RTRIM$","RUN",
+"SCREEN","SELECT","SENDER","SENDMESSAGE","SETCONSOLETITLE","SGN","SHELL",
+"SHL","SHORT","SHOWMESSAGE","SHR","SIN","SINGLE","SIZEOF","SLEEP","SOUND",
+"SPACE$","SQR","STACK","STATIC","STEP","STR$","STRF$","STRING","STRING$",
+"SUB","SUBI","SWAP","TALLY","TAN","THEN","TIME$","TIMER","TO","TYPE","UBOUND",
+"UCASE$","UNLOADLIBRARY","UNTIL","VAL","VARIANT","VARPTR","VARPTR$","VARTYPE",
+"WEND","WHILE","WITH","WORD","XOR"]
+#@-node:ekr.20040331145826:rapidq keywords
+#@-node:ekr.20060813121814:Add colorizer files for cweb, forth,  rapidq
+#@-node:ekr.20060824110846:Colorizing
 #@+node:ekr.20060527184335.1:Command-line options
 #@+node:ekr.20060103101524:Improve command-line handling
 @nocolor
