@@ -473,6 +473,7 @@ modes\ptl.xml
 modes\pvwave.xml
 modes\pyrex.xml
 modes\python.xml
+modes\r.xml
 modes\rebol.xml
 modes\redcode.xml
 modes\relax-ng-compact.xml
@@ -535,8 +536,6 @@ plugins\add_directives.py
 plugins\at_folder.py
 plugins\at_produce.py
 plugins\at_view.py
-plugins\autocompleter.ini
-plugins\autocompleter.py
 plugins\autotrees.py
 plugins\base64Packager.py
 plugins\bibtex.py
@@ -547,6 +546,7 @@ plugins\color_markup.py
 plugins\datenodes.ini
 plugins\datenodes.py
 plugins\detect_urls.py
+plugins\dtest.py
 plugins\dump_globals.py
 plugins\dyna.txt
 plugins\dyna_menu.ini
@@ -564,6 +564,7 @@ plugins\groupOperations.py
 plugins\hoist.py
 plugins\image.py
 plugins\import_cisco_config.py
+plugins\keybindings.py
 plugins\leo-forthstringwords.txt
 plugins\leo-forthwords.txt
 plugins\leoPlugins.leo
@@ -580,6 +581,9 @@ plugins\mod_labels.py
 plugins\mod_leo2ascd.py
 plugins\mod_read_dir_outline.py
 plugins\mod_scripting.py
+plugins\mod_shadow.ini
+plugins\mod_shadow.py
+plugins\mod_shadow_core.py
 plugins\mod_tempfname.py
 plugins\mod_timestamp.py
 plugins\multifile.py
@@ -643,6 +647,7 @@ plugins\trees\test.py
 scripts\LinixInstall.py
 scripts\__init__.py
 scripts\c2py.py
+scripts\convert_to_shadow.py
 scripts\disStats.py
 scripts\leoFindScript.py
 scripts\leoScripts.txt
