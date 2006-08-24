@@ -50,7 +50,7 @@ jhtml_jhtml_keywords_dict = {
 	"bean": "keyword2",
 	"converter": "keyword2",
 	"currency": "keyword2",
-	"currencyConversion": "keyword2",
+	"currencyconversion": "keyword2",
 	"date": "keyword2",
 	"declareparam": "keyword2",
 	"droplet": "keyword1",

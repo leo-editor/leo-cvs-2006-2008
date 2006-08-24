@@ -47,9 +47,9 @@ tpl_main_keywords_dict = {}
 # Keywords dict for tpl_tpl ruleset.
 tpl_tpl_keywords_dict = {
 	"=": "operator",
-	"END": "keyword2",
-	"START": "keyword2",
+	"end": "keyword2",
 	"include": "keyword1",
+	"start": "keyword2",
 }
 
 # Keywords dict for tpl_tags ruleset.

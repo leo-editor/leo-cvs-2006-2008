@@ -31,7 +31,6 @@ attributesDictDict = {
 rebol_main_keywords_dict = {
 	"?": "keyword2",
 	"??": "keyword2",
-	"Usage": "keyword1",
 	"about": "keyword1",
 	"abs": "keyword1",
 	"absolute": "keyword1",
@@ -494,6 +493,7 @@ rebol_main_keywords_dict = {
 	"uppercase": "keyword1",
 	"url!": "keyword3",
 	"url?": "keyword2",
+	"usage": "keyword1",
 	"use": "keyword1",
 	"val": "keyword1",
 	"value": "keyword1",

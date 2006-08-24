@@ -94,11 +94,9 @@ zpt_tags_keywords_dict = {
 
 # Keywords dict for zpt_attribute ruleset.
 zpt_attribute_keywords_dict = {
-	"CONTEXTS": "literal3",
-	"Letter": "literal3",
-	"Roman": "literal3",
 	"attrs": "literal3",
 	"container": "literal3",
+	"contexts": "literal3",
 	"default": "literal3",
 	"end": "literal3",
 	"even": "literal3",

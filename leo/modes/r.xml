@@ -1477,7 +1477,6 @@
   <KEYWORD2>grey</KEYWORD2>
   <KEYWORD2>Grid</KEYWORD2>
   <KEYWORD2>grid</KEYWORD2>
-  <KEYWORD2>Grid Viewports</KEYWORD2>
   <KEYWORD2>grid.add</KEYWORD2>
   <KEYWORD2>grid.arrows</KEYWORD2>
   <KEYWORD2>grid.Call</KEYWORD2>
@@ -1552,7 +1551,6 @@
   <KEYWORD2>guiDlgFunction</KEYWORD2>
   <KEYWORD2>guiDlgGraphOptions</KEYWORD2>
   <KEYWORD2>guiDlgGrid</KEYWORD2>
-  <KEYWORD2>guiDlgI ut</KEYWORD2>
   <KEYWORD2>guiDlgItemSel</KEYWORD2>
   <KEYWORD2>guiDlgList</KEYWORD2>
   <KEYWORD2>guiDlgMessage</KEYWORD2>
@@ -3312,7 +3310,6 @@
   <KEYWORD2>RweaveTryStop</KEYWORD2>
   <KEYWORD2>rweibull</KEYWORD2>
   <KEYWORD2>rwilcox</KEYWORD2>
-  <KEYWORD2>Rwin configuration</KEYWORD2>
   <KEYWORD2>s</KEYWORD2>
   <KEYWORD2>saddle</KEYWORD2>
   <KEYWORD2>saddle.distn</KEYWORD2>
@@ -3994,7 +3991,6 @@
   <KEYWORD2>tktoggle</KEYWORD2>
   <KEYWORD2>tktoplevel</KEYWORD2>
   <KEYWORD2>tktype</KEYWORD2>
-  <KEYWORD2>tku ost</KEYWORD2>
   <KEYWORD2>tkunpost</KEYWORD2>
   <KEYWORD2>tkwait.variable</KEYWORD2>
   <KEYWORD2>tkwait.visibility</KEYWORD2>
@@ -4017,7 +4013,6 @@
   <KEYWORD2>tkwm.geometry</KEYWORD2>
   <KEYWORD2>tkwm.grid</KEYWORD2>
   <KEYWORD2>tkwm.group</KEYWORD2>
-  <KEYWORD2>tkwm.ico osition</KEYWORD2>
   <KEYWORD2>tkwm.iconbitmap</KEYWORD2>
   <KEYWORD2>tkwm.iconify</KEYWORD2>
   <KEYWORD2>tkwm.iconmask</KEYWORD2>

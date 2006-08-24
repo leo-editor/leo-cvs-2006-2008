@@ -105,13 +105,11 @@ php_tags_literal_keywords_dict = {}
 
 # Keywords dict for php_php ruleset.
 php_php_keywords_dict = {
-	"COM_invoke": "keyword2",
-	"COM_load": "keyword2",
-	"__CLASS__": "keyword3",
-	"__FILE__": "keyword3",
-	"__FUNCTION__": "keyword3",
-	"__LINE__": "keyword3",
-	"__METHOD__": "keyword3",
+	"__class__": "keyword3",
+	"__file__": "keyword3",
+	"__function__": "keyword3",
+	"__line__": "keyword3",
+	"__method__": "keyword3",
 	"abs": "keyword2",
 	"abstract": "keyword1",
 	"accept_connect": "keyword2",
@@ -248,6 +246,8 @@ php_php_keywords_dict = {
 	"closedir": "keyword2",
 	"closelog": "keyword2",
 	"com_get": "keyword2",
+	"com_invoke": "keyword2",
+	"com_load": "keyword2",
 	"com_propget": "keyword2",
 	"com_propput": "keyword2",
 	"com_propset": "keyword2",
