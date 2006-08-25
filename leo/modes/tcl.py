@@ -425,173 +425,173 @@ keywordsDictDict = {
 
 # Rules for tcl_main ruleset.
 
-def rule0(colorer, s, i):
+def tcl_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule1(colorer, s, i):
+def tcl_rule1(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="#",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule2(colorer, s, i):
+def tcl_rule2(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule3(colorer, s, i):
+def tcl_rule3(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="!",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule4(colorer, s, i):
+def tcl_rule4(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule5(colorer, s, i):
+def tcl_rule5(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule6(colorer, s, i):
+def tcl_rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule7(colorer, s, i):
+def tcl_rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule8(colorer, s, i):
+def tcl_rule8(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule9(colorer, s, i):
+def tcl_rule9(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule10(colorer, s, i):
+def tcl_rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule11(colorer, s, i):
+def tcl_rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule12(colorer, s, i):
+def tcl_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule13(colorer, s, i):
+def tcl_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="&",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule14(colorer, s, i):
+def tcl_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="|",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule15(colorer, s, i):
+def tcl_rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule16(colorer, s, i):
+def tcl_rule16(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="~",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule17(colorer, s, i):
+def tcl_rule17(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule18(colorer, s, i):
+def tcl_rule18(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="{",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule19(colorer, s, i):
+def tcl_rule19(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"!": [rule3,],
-	"\"": [rule0,],
-	"#": [rule1,],
-	"$": [rule19,],
-	"%": [rule12,],
-	"&": [rule13,],
-	"*": [rule9,],
-	"+": [rule6,],
-	"-": [rule7,],
-	"/": [rule8,],
-	"0": [rule19,],
-	"1": [rule19,],
-	"2": [rule19,],
-	"3": [rule19,],
-	"4": [rule19,],
-	"5": [rule19,],
-	"6": [rule19,],
-	"7": [rule19,],
-	"8": [rule19,],
-	"9": [rule19,],
-	"<": [rule5,rule11,],
-	"=": [rule2,],
-	">": [rule4,rule10,],
-	"@": [rule19,],
-	"A": [rule19,],
-	"B": [rule19,],
-	"C": [rule19,],
-	"D": [rule19,],
-	"E": [rule19,],
-	"F": [rule19,],
-	"G": [rule19,],
-	"H": [rule19,],
-	"I": [rule19,],
-	"J": [rule19,],
-	"K": [rule19,],
-	"L": [rule19,],
-	"M": [rule19,],
-	"N": [rule19,],
-	"O": [rule19,],
-	"P": [rule19,],
-	"Q": [rule19,],
-	"R": [rule19,],
-	"S": [rule19,],
-	"T": [rule19,],
-	"U": [rule19,],
-	"V": [rule19,],
-	"W": [rule19,],
-	"X": [rule19,],
-	"Y": [rule19,],
-	"Z": [rule19,],
-	"\\": [rule19,],
-	"^": [rule15,],
-	"_": [rule19,],
-	"a": [rule19,],
-	"b": [rule19,],
-	"c": [rule19,],
-	"d": [rule19,],
-	"e": [rule19,],
-	"f": [rule19,],
-	"g": [rule19,],
-	"h": [rule19,],
-	"i": [rule19,],
-	"j": [rule19,],
-	"k": [rule19,],
-	"l": [rule19,],
-	"m": [rule19,],
-	"n": [rule19,],
-	"o": [rule19,],
-	"p": [rule19,],
-	"q": [rule19,],
-	"r": [rule19,],
-	"s": [rule19,],
-	"t": [rule19,],
-	"u": [rule19,],
-	"v": [rule19,],
-	"w": [rule19,],
-	"x": [rule19,],
-	"y": [rule19,],
-	"z": [rule19,],
-	"{": [rule18,],
-	"|": [rule14,],
-	"}": [rule17,],
-	"~": [rule16,],
+	"!": [tcl_rule3,],
+	"\"": [tcl_rule0,],
+	"#": [tcl_rule1,],
+	"$": [tcl_rule19,],
+	"%": [tcl_rule12,],
+	"&": [tcl_rule13,],
+	"*": [tcl_rule9,],
+	"+": [tcl_rule6,],
+	"-": [tcl_rule7,],
+	"/": [tcl_rule8,],
+	"0": [tcl_rule19,],
+	"1": [tcl_rule19,],
+	"2": [tcl_rule19,],
+	"3": [tcl_rule19,],
+	"4": [tcl_rule19,],
+	"5": [tcl_rule19,],
+	"6": [tcl_rule19,],
+	"7": [tcl_rule19,],
+	"8": [tcl_rule19,],
+	"9": [tcl_rule19,],
+	"<": [tcl_rule5,tcl_rule11,],
+	"=": [tcl_rule2,],
+	">": [tcl_rule4,tcl_rule10,],
+	"@": [tcl_rule19,],
+	"A": [tcl_rule19,],
+	"B": [tcl_rule19,],
+	"C": [tcl_rule19,],
+	"D": [tcl_rule19,],
+	"E": [tcl_rule19,],
+	"F": [tcl_rule19,],
+	"G": [tcl_rule19,],
+	"H": [tcl_rule19,],
+	"I": [tcl_rule19,],
+	"J": [tcl_rule19,],
+	"K": [tcl_rule19,],
+	"L": [tcl_rule19,],
+	"M": [tcl_rule19,],
+	"N": [tcl_rule19,],
+	"O": [tcl_rule19,],
+	"P": [tcl_rule19,],
+	"Q": [tcl_rule19,],
+	"R": [tcl_rule19,],
+	"S": [tcl_rule19,],
+	"T": [tcl_rule19,],
+	"U": [tcl_rule19,],
+	"V": [tcl_rule19,],
+	"W": [tcl_rule19,],
+	"X": [tcl_rule19,],
+	"Y": [tcl_rule19,],
+	"Z": [tcl_rule19,],
+	"\\": [tcl_rule19,],
+	"^": [tcl_rule15,],
+	"_": [tcl_rule19,],
+	"a": [tcl_rule19,],
+	"b": [tcl_rule19,],
+	"c": [tcl_rule19,],
+	"d": [tcl_rule19,],
+	"e": [tcl_rule19,],
+	"f": [tcl_rule19,],
+	"g": [tcl_rule19,],
+	"h": [tcl_rule19,],
+	"i": [tcl_rule19,],
+	"j": [tcl_rule19,],
+	"k": [tcl_rule19,],
+	"l": [tcl_rule19,],
+	"m": [tcl_rule19,],
+	"n": [tcl_rule19,],
+	"o": [tcl_rule19,],
+	"p": [tcl_rule19,],
+	"q": [tcl_rule19,],
+	"r": [tcl_rule19,],
+	"s": [tcl_rule19,],
+	"t": [tcl_rule19,],
+	"u": [tcl_rule19,],
+	"v": [tcl_rule19,],
+	"w": [tcl_rule19,],
+	"x": [tcl_rule19,],
+	"y": [tcl_rule19,],
+	"z": [tcl_rule19,],
+	"{": [tcl_rule18,],
+	"|": [tcl_rule14,],
+	"}": [tcl_rule17,],
+	"~": [tcl_rule16,],
 }
 
 # x.rulesDictDict for tcl mode.

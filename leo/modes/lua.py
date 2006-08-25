@@ -194,193 +194,193 @@ keywordsDictDict = {
 
 # Rules for lua_main ruleset.
 
-def rule0(colorer, s, i):
+def lua_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="--[[", end="]]",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule1(colorer, s, i):
+def lua_rule1(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="--",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule2(colorer, s, i):
+def lua_rule2(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment2", seq="#!",
         at_line_start=True, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule3(colorer, s, i):
+def lua_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule4(colorer, s, i):
+def lua_rule4(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule5(colorer, s, i):
+def lua_rule5(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="[[", end="]]",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule6(colorer, s, i):
+def lua_rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule7(colorer, s, i):
+def lua_rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule8(colorer, s, i):
+def lua_rule8(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule9(colorer, s, i):
+def lua_rule9(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule10(colorer, s, i):
+def lua_rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule11(colorer, s, i):
+def lua_rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="..",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule12(colorer, s, i):
+def lua_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule13(colorer, s, i):
+def lua_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule14(colorer, s, i):
+def lua_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule15(colorer, s, i):
+def lua_rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule16(colorer, s, i):
+def lua_rule16(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="==",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule17(colorer, s, i):
+def lua_rule17(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="~=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule18(colorer, s, i):
+def lua_rule18(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule19(colorer, s, i):
+def lua_rule19(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="function", pattern="(",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule20(colorer, s, i):
+def lua_rule20(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="function", pattern="{",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule21(colorer, s, i):
+def lua_rule21(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="function", pattern="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule22(colorer, s, i):
+def lua_rule22(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="function", pattern="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule23(colorer, s, i):
+def lua_rule23(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"\"": [rule3,rule21,],
-	"#": [rule2,],
-	"'": [rule4,rule22,],
-	"(": [rule19,],
-	"*": [rule8,],
-	"+": [rule6,],
-	"-": [rule0,rule1,rule7,],
-	".": [rule11,rule23,],
-	"/": [rule9,],
-	"0": [rule23,],
-	"1": [rule23,],
-	"2": [rule23,],
-	"3": [rule23,],
-	"4": [rule23,],
-	"5": [rule23,],
-	"6": [rule23,],
-	"7": [rule23,],
-	"8": [rule23,],
-	"9": [rule23,],
-	"<": [rule12,rule13,],
-	"=": [rule16,rule18,],
-	">": [rule14,rule15,],
-	"@": [rule23,],
-	"A": [rule23,],
-	"B": [rule23,],
-	"C": [rule23,],
-	"D": [rule23,],
-	"E": [rule23,],
-	"F": [rule23,],
-	"G": [rule23,],
-	"H": [rule23,],
-	"I": [rule23,],
-	"J": [rule23,],
-	"K": [rule23,],
-	"L": [rule23,],
-	"M": [rule23,],
-	"N": [rule23,],
-	"O": [rule23,],
-	"P": [rule23,],
-	"Q": [rule23,],
-	"R": [rule23,],
-	"S": [rule23,],
-	"T": [rule23,],
-	"U": [rule23,],
-	"V": [rule23,],
-	"W": [rule23,],
-	"X": [rule23,],
-	"Y": [rule23,],
-	"Z": [rule23,],
-	"[": [rule5,],
-	"^": [rule10,],
-	"_": [rule23,],
-	"a": [rule23,],
-	"b": [rule23,],
-	"c": [rule23,],
-	"d": [rule23,],
-	"e": [rule23,],
-	"f": [rule23,],
-	"g": [rule23,],
-	"h": [rule23,],
-	"i": [rule23,],
-	"j": [rule23,],
-	"k": [rule23,],
-	"l": [rule23,],
-	"m": [rule23,],
-	"n": [rule23,],
-	"o": [rule23,],
-	"p": [rule23,],
-	"q": [rule23,],
-	"r": [rule23,],
-	"s": [rule23,],
-	"t": [rule23,],
-	"u": [rule23,],
-	"v": [rule23,],
-	"w": [rule23,],
-	"x": [rule23,],
-	"y": [rule23,],
-	"z": [rule23,],
-	"{": [rule20,],
-	"~": [rule17,],
+	"\"": [lua_rule3,lua_rule21,],
+	"#": [lua_rule2,],
+	"'": [lua_rule4,lua_rule22,],
+	"(": [lua_rule19,],
+	"*": [lua_rule8,],
+	"+": [lua_rule6,],
+	"-": [lua_rule0,lua_rule1,lua_rule7,],
+	".": [lua_rule11,lua_rule23,],
+	"/": [lua_rule9,],
+	"0": [lua_rule23,],
+	"1": [lua_rule23,],
+	"2": [lua_rule23,],
+	"3": [lua_rule23,],
+	"4": [lua_rule23,],
+	"5": [lua_rule23,],
+	"6": [lua_rule23,],
+	"7": [lua_rule23,],
+	"8": [lua_rule23,],
+	"9": [lua_rule23,],
+	"<": [lua_rule12,lua_rule13,],
+	"=": [lua_rule16,lua_rule18,],
+	">": [lua_rule14,lua_rule15,],
+	"@": [lua_rule23,],
+	"A": [lua_rule23,],
+	"B": [lua_rule23,],
+	"C": [lua_rule23,],
+	"D": [lua_rule23,],
+	"E": [lua_rule23,],
+	"F": [lua_rule23,],
+	"G": [lua_rule23,],
+	"H": [lua_rule23,],
+	"I": [lua_rule23,],
+	"J": [lua_rule23,],
+	"K": [lua_rule23,],
+	"L": [lua_rule23,],
+	"M": [lua_rule23,],
+	"N": [lua_rule23,],
+	"O": [lua_rule23,],
+	"P": [lua_rule23,],
+	"Q": [lua_rule23,],
+	"R": [lua_rule23,],
+	"S": [lua_rule23,],
+	"T": [lua_rule23,],
+	"U": [lua_rule23,],
+	"V": [lua_rule23,],
+	"W": [lua_rule23,],
+	"X": [lua_rule23,],
+	"Y": [lua_rule23,],
+	"Z": [lua_rule23,],
+	"[": [lua_rule5,],
+	"^": [lua_rule10,],
+	"_": [lua_rule23,],
+	"a": [lua_rule23,],
+	"b": [lua_rule23,],
+	"c": [lua_rule23,],
+	"d": [lua_rule23,],
+	"e": [lua_rule23,],
+	"f": [lua_rule23,],
+	"g": [lua_rule23,],
+	"h": [lua_rule23,],
+	"i": [lua_rule23,],
+	"j": [lua_rule23,],
+	"k": [lua_rule23,],
+	"l": [lua_rule23,],
+	"m": [lua_rule23,],
+	"n": [lua_rule23,],
+	"o": [lua_rule23,],
+	"p": [lua_rule23,],
+	"q": [lua_rule23,],
+	"r": [lua_rule23,],
+	"s": [lua_rule23,],
+	"t": [lua_rule23,],
+	"u": [lua_rule23,],
+	"v": [lua_rule23,],
+	"w": [lua_rule23,],
+	"x": [lua_rule23,],
+	"y": [lua_rule23,],
+	"z": [lua_rule23,],
+	"{": [lua_rule20,],
+	"~": [lua_rule17,],
 }
 
 # x.rulesDictDict for lua mode.

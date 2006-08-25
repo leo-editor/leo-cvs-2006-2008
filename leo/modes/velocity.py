@@ -127,37 +127,37 @@ keywordsDictDict = {
 
 # Rules for velocity_main ruleset.
 
-def rule0(colorer, s, i):
+def velocity_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="<!--", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule1(colorer, s, i):
+def velocity_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<SCRIPT", end="</SCRIPT>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="JAVASCRIPT",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule2(colorer, s, i):
+def velocity_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<STYLE", end="</STYLE>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="CSS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule3(colorer, s, i):
+def velocity_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="<!", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="xml::DTD-TAGS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule4(colorer, s, i):
+def velocity_rule4(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="html::TAGS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule5(colorer, s, i):
+def velocity_rule5(colorer, s, i):
     return colorer.match_span(s, i, kind="literal2", begin="&", end=";",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
@@ -166,123 +166,123 @@ def rule5(colorer, s, i):
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"&": [rule5,],
-	"<": [rule0,rule1,rule2,rule3,rule4,],
+	"&": [velocity_rule5,],
+	"<": [velocity_rule0,velocity_rule1,velocity_rule2,velocity_rule3,velocity_rule4,],
 }
 
 # Rules for velocity_velocity ruleset.
 
-def rule6(colorer, s, i):
+def velocity_rule6(colorer, s, i):
     return colorer.match_span(s, i, kind="comment2", begin="#*", end="*#",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule7(colorer, s, i):
+def velocity_rule7(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment3", seq="##",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule8(colorer, s, i):
+def velocity_rule8(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword3", begin="${", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule9(colorer, s, i):
+def velocity_rule9(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword3", pattern="$!",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule10(colorer, s, i):
+def velocity_rule10(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword3", pattern="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule11(colorer, s, i):
+def velocity_rule11(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for velocity ruleset.
 rulesDict2 = {
-	"#": [rule6,rule7,rule11,],
-	"$": [rule8,rule9,rule10,],
-	"0": [rule11,],
-	"1": [rule11,],
-	"2": [rule11,],
-	"3": [rule11,],
-	"4": [rule11,],
-	"5": [rule11,],
-	"6": [rule11,],
-	"7": [rule11,],
-	"8": [rule11,],
-	"9": [rule11,],
-	"@": [rule11,],
-	"A": [rule11,],
-	"B": [rule11,],
-	"C": [rule11,],
-	"D": [rule11,],
-	"E": [rule11,],
-	"F": [rule11,],
-	"G": [rule11,],
-	"H": [rule11,],
-	"I": [rule11,],
-	"J": [rule11,],
-	"K": [rule11,],
-	"L": [rule11,],
-	"M": [rule11,],
-	"N": [rule11,],
-	"O": [rule11,],
-	"P": [rule11,],
-	"Q": [rule11,],
-	"R": [rule11,],
-	"S": [rule11,],
-	"T": [rule11,],
-	"U": [rule11,],
-	"V": [rule11,],
-	"W": [rule11,],
-	"X": [rule11,],
-	"Y": [rule11,],
-	"Z": [rule11,],
-	"a": [rule11,],
-	"b": [rule11,],
-	"c": [rule11,],
-	"d": [rule11,],
-	"e": [rule11,],
-	"f": [rule11,],
-	"g": [rule11,],
-	"h": [rule11,],
-	"i": [rule11,],
-	"j": [rule11,],
-	"k": [rule11,],
-	"l": [rule11,],
-	"m": [rule11,],
-	"n": [rule11,],
-	"o": [rule11,],
-	"p": [rule11,],
-	"q": [rule11,],
-	"r": [rule11,],
-	"s": [rule11,],
-	"t": [rule11,],
-	"u": [rule11,],
-	"v": [rule11,],
-	"w": [rule11,],
-	"x": [rule11,],
-	"y": [rule11,],
-	"z": [rule11,],
+	"#": [velocity_rule6,velocity_rule7,velocity_rule11,],
+	"$": [velocity_rule8,velocity_rule9,velocity_rule10,],
+	"0": [velocity_rule11,],
+	"1": [velocity_rule11,],
+	"2": [velocity_rule11,],
+	"3": [velocity_rule11,],
+	"4": [velocity_rule11,],
+	"5": [velocity_rule11,],
+	"6": [velocity_rule11,],
+	"7": [velocity_rule11,],
+	"8": [velocity_rule11,],
+	"9": [velocity_rule11,],
+	"@": [velocity_rule11,],
+	"A": [velocity_rule11,],
+	"B": [velocity_rule11,],
+	"C": [velocity_rule11,],
+	"D": [velocity_rule11,],
+	"E": [velocity_rule11,],
+	"F": [velocity_rule11,],
+	"G": [velocity_rule11,],
+	"H": [velocity_rule11,],
+	"I": [velocity_rule11,],
+	"J": [velocity_rule11,],
+	"K": [velocity_rule11,],
+	"L": [velocity_rule11,],
+	"M": [velocity_rule11,],
+	"N": [velocity_rule11,],
+	"O": [velocity_rule11,],
+	"P": [velocity_rule11,],
+	"Q": [velocity_rule11,],
+	"R": [velocity_rule11,],
+	"S": [velocity_rule11,],
+	"T": [velocity_rule11,],
+	"U": [velocity_rule11,],
+	"V": [velocity_rule11,],
+	"W": [velocity_rule11,],
+	"X": [velocity_rule11,],
+	"Y": [velocity_rule11,],
+	"Z": [velocity_rule11,],
+	"a": [velocity_rule11,],
+	"b": [velocity_rule11,],
+	"c": [velocity_rule11,],
+	"d": [velocity_rule11,],
+	"e": [velocity_rule11,],
+	"f": [velocity_rule11,],
+	"g": [velocity_rule11,],
+	"h": [velocity_rule11,],
+	"i": [velocity_rule11,],
+	"j": [velocity_rule11,],
+	"k": [velocity_rule11,],
+	"l": [velocity_rule11,],
+	"m": [velocity_rule11,],
+	"n": [velocity_rule11,],
+	"o": [velocity_rule11,],
+	"p": [velocity_rule11,],
+	"q": [velocity_rule11,],
+	"r": [velocity_rule11,],
+	"s": [velocity_rule11,],
+	"t": [velocity_rule11,],
+	"u": [velocity_rule11,],
+	"v": [velocity_rule11,],
+	"w": [velocity_rule11,],
+	"x": [velocity_rule11,],
+	"y": [velocity_rule11,],
+	"z": [velocity_rule11,],
 }
 
 # Rules for velocity_javascript ruleset.
 
-def rule12(colorer, s, i):
+def velocity_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="JAVASCRIPT2")
 
-def rule13(colorer, s, i):
+def velocity_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq="SRC=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="BACK_TO_HTML")
 
 # Rules dict for javascript ruleset.
 rulesDict3 = {
-	">": [rule12,],
-	"S": [rule13,],
+	">": [velocity_rule12,],
+	"S": [velocity_rule13,],
 }
 
 # Rules for velocity_javascript2 ruleset.
@@ -294,24 +294,24 @@ rulesDict4 = {}
 
 # Rules for velocity_back_to_html ruleset.
 
-def rule14(colorer, s, i):
+def velocity_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="MAIN")
 
 # Rules dict for back_to_html ruleset.
 rulesDict5 = {
-	">": [rule14,],
+	">": [velocity_rule14,],
 }
 
 # Rules for velocity_css ruleset.
 
-def rule15(colorer, s, i):
+def velocity_rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="CSS2")
 
 # Rules dict for css ruleset.
 rulesDict6 = {
-	">": [rule15,],
+	">": [velocity_rule15,],
 }
 
 # Rules for velocity_css2 ruleset.

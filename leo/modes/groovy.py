@@ -198,246 +198,246 @@ keywordsDictDict = {
 
 # Rules for groovy_main ruleset.
 
-def rule0(colorer, s, i):
+def groovy_rule0(colorer, s, i):
     return colorer.match_seq(s, i, kind="comment1", seq="/**/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule1(colorer, s, i):
+def groovy_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="comment3", begin="/**", end="*/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="GROOVYDOC",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule2(colorer, s, i):
+def groovy_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule3(colorer, s, i):
+def groovy_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="LITERAL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule4(colorer, s, i):
+def groovy_rule4(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule5(colorer, s, i):
+def groovy_rule5(colorer, s, i):
     return colorer.match_span_regexp(s, i, kind="literal1", begin="<<<([[:alpha:]_][[:alnum:]_]*)\\s*", end="$1", hash_char="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="LITERAL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule6(colorer, s, i):
+def groovy_rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=~",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule7(colorer, s, i):
+def groovy_rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule8(colorer, s, i):
+def groovy_rule8(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="|",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule9(colorer, s, i):
+def groovy_rule9(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="!",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule10(colorer, s, i):
+def groovy_rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<=>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule11(colorer, s, i):
+def groovy_rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule12(colorer, s, i):
+def groovy_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule13(colorer, s, i):
+def groovy_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule14(colorer, s, i):
+def groovy_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule15(colorer, s, i):
+def groovy_rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule16(colorer, s, i):
+def groovy_rule16(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="?",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule17(colorer, s, i):
+def groovy_rule17(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="&",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule18(colorer, s, i):
+def groovy_rule18(colorer, s, i):
     return colorer.match_seq(s, i, kind="null", seq=".*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule19(colorer, s, i):
+def groovy_rule19(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="//",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule20(colorer, s, i):
+def groovy_rule20(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="function", pattern="(",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule21(colorer, s, i):
+def groovy_rule21(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"!": [rule9,],
-	"\"": [rule3,],
-	"&": [rule17,],
-	"'": [rule4,],
-	"(": [rule20,],
-	"+": [rule13,],
-	"-": [rule14,rule15,],
-	".": [rule18,],
-	"/": [rule0,rule1,rule2,rule19,],
-	"0": [rule21,],
-	"1": [rule21,],
-	"2": [rule21,],
-	"3": [rule21,],
-	"4": [rule21,],
-	"5": [rule21,],
-	"6": [rule21,],
-	"7": [rule21,],
-	"8": [rule21,],
-	"9": [rule21,],
-	"<": [rule5,rule10,rule12,],
-	"=": [rule6,rule7,],
-	">": [rule11,],
-	"?": [rule16,],
-	"@": [rule21,],
-	"A": [rule21,],
-	"B": [rule21,],
-	"C": [rule21,],
-	"D": [rule21,],
-	"E": [rule21,],
-	"F": [rule21,],
-	"G": [rule21,],
-	"H": [rule21,],
-	"I": [rule21,],
-	"J": [rule21,],
-	"K": [rule21,],
-	"L": [rule21,],
-	"M": [rule21,],
-	"N": [rule21,],
-	"O": [rule21,],
-	"P": [rule21,],
-	"Q": [rule21,],
-	"R": [rule21,],
-	"S": [rule21,],
-	"T": [rule21,],
-	"U": [rule21,],
-	"V": [rule21,],
-	"W": [rule21,],
-	"X": [rule21,],
-	"Y": [rule21,],
-	"Z": [rule21,],
-	"a": [rule21,],
-	"b": [rule21,],
-	"c": [rule21,],
-	"d": [rule21,],
-	"e": [rule21,],
-	"f": [rule21,],
-	"g": [rule21,],
-	"h": [rule21,],
-	"i": [rule21,],
-	"j": [rule21,],
-	"k": [rule21,],
-	"l": [rule21,],
-	"m": [rule21,],
-	"n": [rule21,],
-	"o": [rule21,],
-	"p": [rule21,],
-	"q": [rule21,],
-	"r": [rule21,],
-	"s": [rule21,],
-	"t": [rule21,],
-	"u": [rule21,],
-	"v": [rule21,],
-	"w": [rule21,],
-	"x": [rule21,],
-	"y": [rule21,],
-	"z": [rule21,],
-	"|": [rule8,],
+	"!": [groovy_rule9,],
+	"\"": [groovy_rule3,],
+	"&": [groovy_rule17,],
+	"'": [groovy_rule4,],
+	"(": [groovy_rule20,],
+	"+": [groovy_rule13,],
+	"-": [groovy_rule14,groovy_rule15,],
+	".": [groovy_rule18,],
+	"/": [groovy_rule0,groovy_rule1,groovy_rule2,groovy_rule19,],
+	"0": [groovy_rule21,],
+	"1": [groovy_rule21,],
+	"2": [groovy_rule21,],
+	"3": [groovy_rule21,],
+	"4": [groovy_rule21,],
+	"5": [groovy_rule21,],
+	"6": [groovy_rule21,],
+	"7": [groovy_rule21,],
+	"8": [groovy_rule21,],
+	"9": [groovy_rule21,],
+	"<": [groovy_rule5,groovy_rule10,groovy_rule12,],
+	"=": [groovy_rule6,groovy_rule7,],
+	">": [groovy_rule11,],
+	"?": [groovy_rule16,],
+	"@": [groovy_rule21,],
+	"A": [groovy_rule21,],
+	"B": [groovy_rule21,],
+	"C": [groovy_rule21,],
+	"D": [groovy_rule21,],
+	"E": [groovy_rule21,],
+	"F": [groovy_rule21,],
+	"G": [groovy_rule21,],
+	"H": [groovy_rule21,],
+	"I": [groovy_rule21,],
+	"J": [groovy_rule21,],
+	"K": [groovy_rule21,],
+	"L": [groovy_rule21,],
+	"M": [groovy_rule21,],
+	"N": [groovy_rule21,],
+	"O": [groovy_rule21,],
+	"P": [groovy_rule21,],
+	"Q": [groovy_rule21,],
+	"R": [groovy_rule21,],
+	"S": [groovy_rule21,],
+	"T": [groovy_rule21,],
+	"U": [groovy_rule21,],
+	"V": [groovy_rule21,],
+	"W": [groovy_rule21,],
+	"X": [groovy_rule21,],
+	"Y": [groovy_rule21,],
+	"Z": [groovy_rule21,],
+	"a": [groovy_rule21,],
+	"b": [groovy_rule21,],
+	"c": [groovy_rule21,],
+	"d": [groovy_rule21,],
+	"e": [groovy_rule21,],
+	"f": [groovy_rule21,],
+	"g": [groovy_rule21,],
+	"h": [groovy_rule21,],
+	"i": [groovy_rule21,],
+	"j": [groovy_rule21,],
+	"k": [groovy_rule21,],
+	"l": [groovy_rule21,],
+	"m": [groovy_rule21,],
+	"n": [groovy_rule21,],
+	"o": [groovy_rule21,],
+	"p": [groovy_rule21,],
+	"q": [groovy_rule21,],
+	"r": [groovy_rule21,],
+	"s": [groovy_rule21,],
+	"t": [groovy_rule21,],
+	"u": [groovy_rule21,],
+	"v": [groovy_rule21,],
+	"w": [groovy_rule21,],
+	"x": [groovy_rule21,],
+	"y": [groovy_rule21,],
+	"z": [groovy_rule21,],
+	"|": [groovy_rule8,],
 }
 
 # Rules for groovy_literal ruleset.
 
-def rule22(colorer, s, i):
+def groovy_rule22(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="${", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule23(colorer, s, i):
+def groovy_rule23(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword2", pattern="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 # Rules dict for literal ruleset.
 rulesDict2 = {
-	"$": [rule22,rule23,],
+	"$": [groovy_rule22,groovy_rule23,],
 }
 
 # Rules for groovy_groovydoc ruleset.
 
-def rule24(colorer, s, i):
+def groovy_rule24(colorer, s, i):
     return colorer.match_seq(s, i, kind="comment3", seq="{",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule25(colorer, s, i):
+def groovy_rule25(colorer, s, i):
     return colorer.match_seq(s, i, kind="comment3", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule26(colorer, s, i):
+def groovy_rule26(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="<!--", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule27(colorer, s, i):
+def groovy_rule27(colorer, s, i):
     return colorer.match_seq(s, i, kind="comment3", seq="<<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule28(colorer, s, i):
+def groovy_rule28(colorer, s, i):
     return colorer.match_seq(s, i, kind="comment3", seq="<=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule29(colorer, s, i):
+def groovy_rule29(colorer, s, i):
     return colorer.match_seq(s, i, kind="comment3", seq="< ",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule30(colorer, s, i):
+def groovy_rule30(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="xml::TAGS",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule31(colorer, s, i):
+def groovy_rule31(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="label", pattern="@",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 # Rules dict for groovydoc ruleset.
 rulesDict3 = {
-	"*": [rule25,],
-	"<": [rule26,rule27,rule28,rule29,rule30,],
-	"@": [rule31,],
-	"{": [rule24,],
+	"*": [groovy_rule25,],
+	"<": [groovy_rule26,groovy_rule27,groovy_rule28,groovy_rule29,groovy_rule30,],
+	"@": [groovy_rule31,],
+	"{": [groovy_rule24,],
 }
 
 # x.rulesDictDict for groovy mode.

@@ -128,301 +128,301 @@ keywordsDictDict = {
 
 # Rules for csharp_main ruleset.
 
-def rule0(colorer, s, i):
+def csharp_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule1(colorer, s, i):
+def csharp_rule1(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment3", seq="///",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DOC_COMMENT", exclude_match=False)
 
-def rule2(colorer, s, i):
+def csharp_rule2(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment2", seq="//",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule3(colorer, s, i):
+def csharp_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="literal3", begin="@\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=True, no_line_break=False, no_word_break=False)
 
-def rule4(colorer, s, i):
+def csharp_rule4(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule5(colorer, s, i):
+def csharp_rule5(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule6(colorer, s, i):
+def csharp_rule6(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="keyword2", seq="#if",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule7(colorer, s, i):
+def csharp_rule7(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="keyword2", seq="#else",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule8(colorer, s, i):
+def csharp_rule8(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="keyword2", seq="#elif",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule9(colorer, s, i):
+def csharp_rule9(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="keyword2", seq="#endif",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule10(colorer, s, i):
+def csharp_rule10(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="keyword2", seq="#define",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule11(colorer, s, i):
+def csharp_rule11(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="keyword2", seq="#undef",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule12(colorer, s, i):
+def csharp_rule12(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="keyword2", seq="#warning",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule13(colorer, s, i):
+def csharp_rule13(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="keyword2", seq="#error",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule14(colorer, s, i):
+def csharp_rule14(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="keyword2", seq="#line",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule15(colorer, s, i):
+def csharp_rule15(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="keyword2", seq="#region",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule16(colorer, s, i):
+def csharp_rule16(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="keyword2", seq="#endregion",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule17(colorer, s, i):
+def csharp_rule17(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="~",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule18(colorer, s, i):
+def csharp_rule18(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="!",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule19(colorer, s, i):
+def csharp_rule19(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=":",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule20(colorer, s, i):
+def csharp_rule20(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=";",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule21(colorer, s, i):
+def csharp_rule21(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="{",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule22(colorer, s, i):
+def csharp_rule22(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule23(colorer, s, i):
+def csharp_rule23(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=",",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule24(colorer, s, i):
+def csharp_rule24(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=".",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule25(colorer, s, i):
+def csharp_rule25(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="!",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule26(colorer, s, i):
+def csharp_rule26(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="[",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule27(colorer, s, i):
+def csharp_rule27(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="]",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule28(colorer, s, i):
+def csharp_rule28(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule29(colorer, s, i):
+def csharp_rule29(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule30(colorer, s, i):
+def csharp_rule30(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule31(colorer, s, i):
+def csharp_rule31(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule32(colorer, s, i):
+def csharp_rule32(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule33(colorer, s, i):
+def csharp_rule33(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule34(colorer, s, i):
+def csharp_rule34(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule35(colorer, s, i):
+def csharp_rule35(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule36(colorer, s, i):
+def csharp_rule36(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule37(colorer, s, i):
+def csharp_rule37(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="|",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule38(colorer, s, i):
+def csharp_rule38(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="&",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule39(colorer, s, i):
+def csharp_rule39(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule40(colorer, s, i):
+def csharp_rule40(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="?",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule41(colorer, s, i):
+def csharp_rule41(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="function", pattern="(",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule42(colorer, s, i):
+def csharp_rule42(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"!": [rule18,rule25,],
-	"\"": [rule4,],
-	"#": [rule6,rule7,rule8,rule9,rule10,rule11,rule12,rule13,rule14,rule15,rule16,],
-	"%": [rule39,],
-	"&": [rule38,],
-	"'": [rule5,],
-	"(": [rule41,],
-	"*": [rule33,],
-	"+": [rule28,],
-	",": [rule23,],
-	"-": [rule29,],
-	".": [rule24,],
-	"/": [rule0,rule1,rule2,rule34,],
-	"0": [rule42,],
-	"1": [rule42,],
-	"2": [rule42,],
-	"3": [rule42,],
-	"4": [rule42,],
-	"5": [rule42,],
-	"6": [rule42,],
-	"7": [rule42,],
-	"8": [rule42,],
-	"9": [rule42,],
-	":": [rule19,],
-	";": [rule20,],
-	"<": [rule31,],
-	"=": [rule32,],
-	">": [rule30,],
-	"?": [rule40,],
-	"@": [rule3,rule42,],
-	"A": [rule42,],
-	"B": [rule42,],
-	"C": [rule42,],
-	"D": [rule42,],
-	"E": [rule42,],
-	"F": [rule42,],
-	"G": [rule42,],
-	"H": [rule42,],
-	"I": [rule42,],
-	"J": [rule42,],
-	"K": [rule42,],
-	"L": [rule42,],
-	"M": [rule42,],
-	"N": [rule42,],
-	"O": [rule42,],
-	"P": [rule42,],
-	"Q": [rule42,],
-	"R": [rule42,],
-	"S": [rule42,],
-	"T": [rule42,],
-	"U": [rule42,],
-	"V": [rule42,],
-	"W": [rule42,],
-	"X": [rule42,],
-	"Y": [rule42,],
-	"Z": [rule42,],
-	"[": [rule26,],
-	"\\": [rule35,],
-	"]": [rule27,],
-	"^": [rule36,],
-	"a": [rule42,],
-	"b": [rule42,],
-	"c": [rule42,],
-	"d": [rule42,],
-	"e": [rule42,],
-	"f": [rule42,],
-	"g": [rule42,],
-	"h": [rule42,],
-	"i": [rule42,],
-	"j": [rule42,],
-	"k": [rule42,],
-	"l": [rule42,],
-	"m": [rule42,],
-	"n": [rule42,],
-	"o": [rule42,],
-	"p": [rule42,],
-	"q": [rule42,],
-	"r": [rule42,],
-	"s": [rule42,],
-	"t": [rule42,],
-	"u": [rule42,],
-	"v": [rule42,],
-	"w": [rule42,],
-	"x": [rule42,],
-	"y": [rule42,],
-	"z": [rule42,],
-	"{": [rule21,],
-	"|": [rule37,],
-	"}": [rule22,],
-	"~": [rule17,],
+	"!": [csharp_rule18,csharp_rule25,],
+	"\"": [csharp_rule4,],
+	"#": [csharp_rule6,csharp_rule7,csharp_rule8,csharp_rule9,csharp_rule10,csharp_rule11,csharp_rule12,csharp_rule13,csharp_rule14,csharp_rule15,csharp_rule16,],
+	"%": [csharp_rule39,],
+	"&": [csharp_rule38,],
+	"'": [csharp_rule5,],
+	"(": [csharp_rule41,],
+	"*": [csharp_rule33,],
+	"+": [csharp_rule28,],
+	",": [csharp_rule23,],
+	"-": [csharp_rule29,],
+	".": [csharp_rule24,],
+	"/": [csharp_rule0,csharp_rule1,csharp_rule2,csharp_rule34,],
+	"0": [csharp_rule42,],
+	"1": [csharp_rule42,],
+	"2": [csharp_rule42,],
+	"3": [csharp_rule42,],
+	"4": [csharp_rule42,],
+	"5": [csharp_rule42,],
+	"6": [csharp_rule42,],
+	"7": [csharp_rule42,],
+	"8": [csharp_rule42,],
+	"9": [csharp_rule42,],
+	":": [csharp_rule19,],
+	";": [csharp_rule20,],
+	"<": [csharp_rule31,],
+	"=": [csharp_rule32,],
+	">": [csharp_rule30,],
+	"?": [csharp_rule40,],
+	"@": [csharp_rule3,csharp_rule42,],
+	"A": [csharp_rule42,],
+	"B": [csharp_rule42,],
+	"C": [csharp_rule42,],
+	"D": [csharp_rule42,],
+	"E": [csharp_rule42,],
+	"F": [csharp_rule42,],
+	"G": [csharp_rule42,],
+	"H": [csharp_rule42,],
+	"I": [csharp_rule42,],
+	"J": [csharp_rule42,],
+	"K": [csharp_rule42,],
+	"L": [csharp_rule42,],
+	"M": [csharp_rule42,],
+	"N": [csharp_rule42,],
+	"O": [csharp_rule42,],
+	"P": [csharp_rule42,],
+	"Q": [csharp_rule42,],
+	"R": [csharp_rule42,],
+	"S": [csharp_rule42,],
+	"T": [csharp_rule42,],
+	"U": [csharp_rule42,],
+	"V": [csharp_rule42,],
+	"W": [csharp_rule42,],
+	"X": [csharp_rule42,],
+	"Y": [csharp_rule42,],
+	"Z": [csharp_rule42,],
+	"[": [csharp_rule26,],
+	"\\": [csharp_rule35,],
+	"]": [csharp_rule27,],
+	"^": [csharp_rule36,],
+	"a": [csharp_rule42,],
+	"b": [csharp_rule42,],
+	"c": [csharp_rule42,],
+	"d": [csharp_rule42,],
+	"e": [csharp_rule42,],
+	"f": [csharp_rule42,],
+	"g": [csharp_rule42,],
+	"h": [csharp_rule42,],
+	"i": [csharp_rule42,],
+	"j": [csharp_rule42,],
+	"k": [csharp_rule42,],
+	"l": [csharp_rule42,],
+	"m": [csharp_rule42,],
+	"n": [csharp_rule42,],
+	"o": [csharp_rule42,],
+	"p": [csharp_rule42,],
+	"q": [csharp_rule42,],
+	"r": [csharp_rule42,],
+	"s": [csharp_rule42,],
+	"t": [csharp_rule42,],
+	"u": [csharp_rule42,],
+	"v": [csharp_rule42,],
+	"w": [csharp_rule42,],
+	"x": [csharp_rule42,],
+	"y": [csharp_rule42,],
+	"z": [csharp_rule42,],
+	"{": [csharp_rule21,],
+	"|": [csharp_rule37,],
+	"}": [csharp_rule22,],
+	"~": [csharp_rule17,],
 }
 
 # Rules for csharp_doc_comment ruleset.
 
-def rule43(colorer, s, i):
+def csharp_rule43(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="<--", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule44(colorer, s, i):
+def csharp_rule44(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="xml::TAGS",exclude_match=False,
@@ -430,7 +430,7 @@ def rule44(colorer, s, i):
 
 # Rules dict for doc_comment ruleset.
 rulesDict2 = {
-	"<": [rule43,rule44,],
+	"<": [csharp_rule43,csharp_rule44,],
 }
 
 # x.rulesDictDict for csharp mode.

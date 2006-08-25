@@ -185,181 +185,181 @@ keywordsDictDict = {
 
 # Rules for fortran_main ruleset.
 
-def rule0(colorer, s, i):
+def fortran_rule0(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="C",
         at_line_start=True, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule1(colorer, s, i):
+def fortran_rule1(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="!",
         at_line_start=True, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule2(colorer, s, i):
+def fortran_rule2(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="*",
         at_line_start=True, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule3(colorer, s, i):
+def fortran_rule3(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="!",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule4(colorer, s, i):
+def fortran_rule4(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment2", seq="D",
         at_line_start=True, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule5(colorer, s, i):
+def fortran_rule5(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule6(colorer, s, i):
+def fortran_rule6(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule7(colorer, s, i):
+def fortran_rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule8(colorer, s, i):
+def fortran_rule8(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule9(colorer, s, i):
+def fortran_rule9(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule10(colorer, s, i):
+def fortran_rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule11(colorer, s, i):
+def fortran_rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="&",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule12(colorer, s, i):
+def fortran_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule13(colorer, s, i):
+def fortran_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="==",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule14(colorer, s, i):
+def fortran_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=".lt.",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule15(colorer, s, i):
+def fortran_rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=".gt.",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule16(colorer, s, i):
+def fortran_rule16(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=".eq.",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule17(colorer, s, i):
+def fortran_rule17(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=".ne.",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule18(colorer, s, i):
+def fortran_rule18(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=".le.",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule19(colorer, s, i):
+def fortran_rule19(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=".ge.",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule20(colorer, s, i):
+def fortran_rule20(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=".AND.",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule21(colorer, s, i):
+def fortran_rule21(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=".OR.",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule22(colorer, s, i):
+def fortran_rule22(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"!": [rule1,rule3,],
-	"\"": [rule5,],
-	"&": [rule11,],
-	"'": [rule6,],
-	"*": [rule2,],
-	".": [rule14,rule15,rule16,rule17,rule18,rule19,rule20,rule21,rule22,],
-	"/": [rule12,],
-	"0": [rule22,],
-	"1": [rule22,],
-	"2": [rule22,],
-	"3": [rule22,],
-	"4": [rule22,],
-	"5": [rule22,],
-	"6": [rule22,],
-	"7": [rule22,],
-	"8": [rule22,],
-	"9": [rule22,],
-	"<": [rule7,rule10,],
-	"=": [rule13,],
-	">": [rule8,rule9,],
-	"@": [rule22,],
-	"A": [rule22,],
-	"B": [rule22,],
-	"C": [rule0,rule22,],
-	"D": [rule4,rule22,],
-	"E": [rule22,],
-	"F": [rule22,],
-	"G": [rule22,],
-	"H": [rule22,],
-	"I": [rule22,],
-	"J": [rule22,],
-	"K": [rule22,],
-	"L": [rule22,],
-	"M": [rule22,],
-	"N": [rule22,],
-	"O": [rule22,],
-	"P": [rule22,],
-	"Q": [rule22,],
-	"R": [rule22,],
-	"S": [rule22,],
-	"T": [rule22,],
-	"U": [rule22,],
-	"V": [rule22,],
-	"W": [rule22,],
-	"X": [rule22,],
-	"Y": [rule22,],
-	"Z": [rule22,],
-	"a": [rule22,],
-	"b": [rule22,],
-	"c": [rule22,],
-	"d": [rule22,],
-	"e": [rule22,],
-	"f": [rule22,],
-	"g": [rule22,],
-	"h": [rule22,],
-	"i": [rule22,],
-	"j": [rule22,],
-	"k": [rule22,],
-	"l": [rule22,],
-	"m": [rule22,],
-	"n": [rule22,],
-	"o": [rule22,],
-	"p": [rule22,],
-	"q": [rule22,],
-	"r": [rule22,],
-	"s": [rule22,],
-	"t": [rule22,],
-	"u": [rule22,],
-	"v": [rule22,],
-	"w": [rule22,],
-	"x": [rule22,],
-	"y": [rule22,],
-	"z": [rule22,],
+	"!": [fortran_rule1,fortran_rule3,],
+	"\"": [fortran_rule5,],
+	"&": [fortran_rule11,],
+	"'": [fortran_rule6,],
+	"*": [fortran_rule2,],
+	".": [fortran_rule14,fortran_rule15,fortran_rule16,fortran_rule17,fortran_rule18,fortran_rule19,fortran_rule20,fortran_rule21,fortran_rule22,],
+	"/": [fortran_rule12,],
+	"0": [fortran_rule22,],
+	"1": [fortran_rule22,],
+	"2": [fortran_rule22,],
+	"3": [fortran_rule22,],
+	"4": [fortran_rule22,],
+	"5": [fortran_rule22,],
+	"6": [fortran_rule22,],
+	"7": [fortran_rule22,],
+	"8": [fortran_rule22,],
+	"9": [fortran_rule22,],
+	"<": [fortran_rule7,fortran_rule10,],
+	"=": [fortran_rule13,],
+	">": [fortran_rule8,fortran_rule9,],
+	"@": [fortran_rule22,],
+	"A": [fortran_rule22,],
+	"B": [fortran_rule22,],
+	"C": [fortran_rule0,fortran_rule22,],
+	"D": [fortran_rule4,fortran_rule22,],
+	"E": [fortran_rule22,],
+	"F": [fortran_rule22,],
+	"G": [fortran_rule22,],
+	"H": [fortran_rule22,],
+	"I": [fortran_rule22,],
+	"J": [fortran_rule22,],
+	"K": [fortran_rule22,],
+	"L": [fortran_rule22,],
+	"M": [fortran_rule22,],
+	"N": [fortran_rule22,],
+	"O": [fortran_rule22,],
+	"P": [fortran_rule22,],
+	"Q": [fortran_rule22,],
+	"R": [fortran_rule22,],
+	"S": [fortran_rule22,],
+	"T": [fortran_rule22,],
+	"U": [fortran_rule22,],
+	"V": [fortran_rule22,],
+	"W": [fortran_rule22,],
+	"X": [fortran_rule22,],
+	"Y": [fortran_rule22,],
+	"Z": [fortran_rule22,],
+	"a": [fortran_rule22,],
+	"b": [fortran_rule22,],
+	"c": [fortran_rule22,],
+	"d": [fortran_rule22,],
+	"e": [fortran_rule22,],
+	"f": [fortran_rule22,],
+	"g": [fortran_rule22,],
+	"h": [fortran_rule22,],
+	"i": [fortran_rule22,],
+	"j": [fortran_rule22,],
+	"k": [fortran_rule22,],
+	"l": [fortran_rule22,],
+	"m": [fortran_rule22,],
+	"n": [fortran_rule22,],
+	"o": [fortran_rule22,],
+	"p": [fortran_rule22,],
+	"q": [fortran_rule22,],
+	"r": [fortran_rule22,],
+	"s": [fortran_rule22,],
+	"t": [fortran_rule22,],
+	"u": [fortran_rule22,],
+	"v": [fortran_rule22,],
+	"w": [fortran_rule22,],
+	"x": [fortran_rule22,],
+	"y": [fortran_rule22,],
+	"z": [fortran_rule22,],
 }
 
 # x.rulesDictDict for fortran mode.

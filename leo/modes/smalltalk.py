@@ -55,159 +55,159 @@ keywordsDictDict = {
 
 # Rules for smalltalk_main ruleset.
 
-def rule0(colorer, s, i):
+def smalltalk_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule1(colorer, s, i):
+def smalltalk_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule2(colorer, s, i):
+def smalltalk_rule2(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=":=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule3(colorer, s, i):
+def smalltalk_rule3(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="_",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule4(colorer, s, i):
+def smalltalk_rule4(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule5(colorer, s, i):
+def smalltalk_rule5(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="==",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule6(colorer, s, i):
+def smalltalk_rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule7(colorer, s, i):
+def smalltalk_rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule8(colorer, s, i):
+def smalltalk_rule8(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule9(colorer, s, i):
+def smalltalk_rule9(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule10(colorer, s, i):
+def smalltalk_rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule11(colorer, s, i):
+def smalltalk_rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule12(colorer, s, i):
+def smalltalk_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule13(colorer, s, i):
+def smalltalk_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule14(colorer, s, i):
+def smalltalk_rule14(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="keyword3", pattern=":",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule15(colorer, s, i):
+def smalltalk_rule15(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="label", pattern="#",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule16(colorer, s, i):
+def smalltalk_rule16(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="literal1", pattern="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule17(colorer, s, i):
+def smalltalk_rule17(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"\"": [rule1,],
-	"#": [rule15,],
-	"$": [rule16,],
-	"'": [rule0,],
-	"*": [rule13,],
-	"+": [rule10,],
-	"-": [rule11,],
-	"/": [rule12,],
-	"0": [rule17,],
-	"1": [rule17,],
-	"2": [rule17,],
-	"3": [rule17,],
-	"4": [rule17,],
-	"5": [rule17,],
-	"6": [rule17,],
-	"7": [rule17,],
-	"8": [rule17,],
-	"9": [rule17,],
-	":": [rule2,rule14,],
-	"<": [rule7,rule9,],
-	"=": [rule4,rule5,],
-	">": [rule6,rule8,],
-	"@": [rule17,],
-	"A": [rule17,],
-	"B": [rule17,],
-	"C": [rule17,],
-	"D": [rule17,],
-	"E": [rule17,],
-	"F": [rule17,],
-	"G": [rule17,],
-	"H": [rule17,],
-	"I": [rule17,],
-	"J": [rule17,],
-	"K": [rule17,],
-	"L": [rule17,],
-	"M": [rule17,],
-	"N": [rule17,],
-	"O": [rule17,],
-	"P": [rule17,],
-	"Q": [rule17,],
-	"R": [rule17,],
-	"S": [rule17,],
-	"T": [rule17,],
-	"U": [rule17,],
-	"V": [rule17,],
-	"W": [rule17,],
-	"X": [rule17,],
-	"Y": [rule17,],
-	"Z": [rule17,],
-	"_": [rule3,],
-	"a": [rule17,],
-	"b": [rule17,],
-	"c": [rule17,],
-	"d": [rule17,],
-	"e": [rule17,],
-	"f": [rule17,],
-	"g": [rule17,],
-	"h": [rule17,],
-	"i": [rule17,],
-	"j": [rule17,],
-	"k": [rule17,],
-	"l": [rule17,],
-	"m": [rule17,],
-	"n": [rule17,],
-	"o": [rule17,],
-	"p": [rule17,],
-	"q": [rule17,],
-	"r": [rule17,],
-	"s": [rule17,],
-	"t": [rule17,],
-	"u": [rule17,],
-	"v": [rule17,],
-	"w": [rule17,],
-	"x": [rule17,],
-	"y": [rule17,],
-	"z": [rule17,],
+	"\"": [smalltalk_rule1,],
+	"#": [smalltalk_rule15,],
+	"$": [smalltalk_rule16,],
+	"'": [smalltalk_rule0,],
+	"*": [smalltalk_rule13,],
+	"+": [smalltalk_rule10,],
+	"-": [smalltalk_rule11,],
+	"/": [smalltalk_rule12,],
+	"0": [smalltalk_rule17,],
+	"1": [smalltalk_rule17,],
+	"2": [smalltalk_rule17,],
+	"3": [smalltalk_rule17,],
+	"4": [smalltalk_rule17,],
+	"5": [smalltalk_rule17,],
+	"6": [smalltalk_rule17,],
+	"7": [smalltalk_rule17,],
+	"8": [smalltalk_rule17,],
+	"9": [smalltalk_rule17,],
+	":": [smalltalk_rule2,smalltalk_rule14,],
+	"<": [smalltalk_rule7,smalltalk_rule9,],
+	"=": [smalltalk_rule4,smalltalk_rule5,],
+	">": [smalltalk_rule6,smalltalk_rule8,],
+	"@": [smalltalk_rule17,],
+	"A": [smalltalk_rule17,],
+	"B": [smalltalk_rule17,],
+	"C": [smalltalk_rule17,],
+	"D": [smalltalk_rule17,],
+	"E": [smalltalk_rule17,],
+	"F": [smalltalk_rule17,],
+	"G": [smalltalk_rule17,],
+	"H": [smalltalk_rule17,],
+	"I": [smalltalk_rule17,],
+	"J": [smalltalk_rule17,],
+	"K": [smalltalk_rule17,],
+	"L": [smalltalk_rule17,],
+	"M": [smalltalk_rule17,],
+	"N": [smalltalk_rule17,],
+	"O": [smalltalk_rule17,],
+	"P": [smalltalk_rule17,],
+	"Q": [smalltalk_rule17,],
+	"R": [smalltalk_rule17,],
+	"S": [smalltalk_rule17,],
+	"T": [smalltalk_rule17,],
+	"U": [smalltalk_rule17,],
+	"V": [smalltalk_rule17,],
+	"W": [smalltalk_rule17,],
+	"X": [smalltalk_rule17,],
+	"Y": [smalltalk_rule17,],
+	"Z": [smalltalk_rule17,],
+	"_": [smalltalk_rule3,],
+	"a": [smalltalk_rule17,],
+	"b": [smalltalk_rule17,],
+	"c": [smalltalk_rule17,],
+	"d": [smalltalk_rule17,],
+	"e": [smalltalk_rule17,],
+	"f": [smalltalk_rule17,],
+	"g": [smalltalk_rule17,],
+	"h": [smalltalk_rule17,],
+	"i": [smalltalk_rule17,],
+	"j": [smalltalk_rule17,],
+	"k": [smalltalk_rule17,],
+	"l": [smalltalk_rule17,],
+	"m": [smalltalk_rule17,],
+	"n": [smalltalk_rule17,],
+	"o": [smalltalk_rule17,],
+	"p": [smalltalk_rule17,],
+	"q": [smalltalk_rule17,],
+	"r": [smalltalk_rule17,],
+	"s": [smalltalk_rule17,],
+	"t": [smalltalk_rule17,],
+	"u": [smalltalk_rule17,],
+	"v": [smalltalk_rule17,],
+	"w": [smalltalk_rule17,],
+	"x": [smalltalk_rule17,],
+	"y": [smalltalk_rule17,],
+	"z": [smalltalk_rule17,],
 }
 
 # x.rulesDictDict for smalltalk mode.

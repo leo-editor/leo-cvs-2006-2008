@@ -103,113 +103,113 @@ keywordsDictDict = {
 
 # Rules for lotos_main ruleset.
 
-def rule0(colorer, s, i):
+def lotos_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="(*", end="*)",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule1(colorer, s, i):
+def lotos_rule1(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule2(colorer, s, i):
+def lotos_rule2(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="[>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule3(colorer, s, i):
+def lotos_rule3(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="|||",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule4(colorer, s, i):
+def lotos_rule4(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="||",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule5(colorer, s, i):
+def lotos_rule5(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="|[",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule6(colorer, s, i):
+def lotos_rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="]|",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule7(colorer, s, i):
+def lotos_rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="[]",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule8(colorer, s, i):
+def lotos_rule8(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"(": [rule0,],
-	"0": [rule8,],
-	"1": [rule8,],
-	"2": [rule8,],
-	"3": [rule8,],
-	"4": [rule8,],
-	"5": [rule8,],
-	"6": [rule8,],
-	"7": [rule8,],
-	"8": [rule8,],
-	"9": [rule8,],
-	">": [rule1,],
-	"@": [rule8,],
-	"A": [rule8,],
-	"B": [rule8,],
-	"C": [rule8,],
-	"D": [rule8,],
-	"E": [rule8,],
-	"F": [rule8,],
-	"G": [rule8,],
-	"H": [rule8,],
-	"I": [rule8,],
-	"J": [rule8,],
-	"K": [rule8,],
-	"L": [rule8,],
-	"M": [rule8,],
-	"N": [rule8,],
-	"O": [rule8,],
-	"P": [rule8,],
-	"Q": [rule8,],
-	"R": [rule8,],
-	"S": [rule8,],
-	"T": [rule8,],
-	"U": [rule8,],
-	"V": [rule8,],
-	"W": [rule8,],
-	"X": [rule8,],
-	"Y": [rule8,],
-	"Z": [rule8,],
-	"[": [rule2,rule7,],
-	"]": [rule6,],
-	"a": [rule8,],
-	"b": [rule8,],
-	"c": [rule8,],
-	"d": [rule8,],
-	"e": [rule8,],
-	"f": [rule8,],
-	"g": [rule8,],
-	"h": [rule8,],
-	"i": [rule8,],
-	"j": [rule8,],
-	"k": [rule8,],
-	"l": [rule8,],
-	"m": [rule8,],
-	"n": [rule8,],
-	"o": [rule8,],
-	"p": [rule8,],
-	"q": [rule8,],
-	"r": [rule8,],
-	"s": [rule8,],
-	"t": [rule8,],
-	"u": [rule8,],
-	"v": [rule8,],
-	"w": [rule8,],
-	"x": [rule8,],
-	"y": [rule8,],
-	"z": [rule8,],
-	"|": [rule3,rule4,rule5,],
+	"(": [lotos_rule0,],
+	"0": [lotos_rule8,],
+	"1": [lotos_rule8,],
+	"2": [lotos_rule8,],
+	"3": [lotos_rule8,],
+	"4": [lotos_rule8,],
+	"5": [lotos_rule8,],
+	"6": [lotos_rule8,],
+	"7": [lotos_rule8,],
+	"8": [lotos_rule8,],
+	"9": [lotos_rule8,],
+	">": [lotos_rule1,],
+	"@": [lotos_rule8,],
+	"A": [lotos_rule8,],
+	"B": [lotos_rule8,],
+	"C": [lotos_rule8,],
+	"D": [lotos_rule8,],
+	"E": [lotos_rule8,],
+	"F": [lotos_rule8,],
+	"G": [lotos_rule8,],
+	"H": [lotos_rule8,],
+	"I": [lotos_rule8,],
+	"J": [lotos_rule8,],
+	"K": [lotos_rule8,],
+	"L": [lotos_rule8,],
+	"M": [lotos_rule8,],
+	"N": [lotos_rule8,],
+	"O": [lotos_rule8,],
+	"P": [lotos_rule8,],
+	"Q": [lotos_rule8,],
+	"R": [lotos_rule8,],
+	"S": [lotos_rule8,],
+	"T": [lotos_rule8,],
+	"U": [lotos_rule8,],
+	"V": [lotos_rule8,],
+	"W": [lotos_rule8,],
+	"X": [lotos_rule8,],
+	"Y": [lotos_rule8,],
+	"Z": [lotos_rule8,],
+	"[": [lotos_rule2,lotos_rule7,],
+	"]": [lotos_rule6,],
+	"a": [lotos_rule8,],
+	"b": [lotos_rule8,],
+	"c": [lotos_rule8,],
+	"d": [lotos_rule8,],
+	"e": [lotos_rule8,],
+	"f": [lotos_rule8,],
+	"g": [lotos_rule8,],
+	"h": [lotos_rule8,],
+	"i": [lotos_rule8,],
+	"j": [lotos_rule8,],
+	"k": [lotos_rule8,],
+	"l": [lotos_rule8,],
+	"m": [lotos_rule8,],
+	"n": [lotos_rule8,],
+	"o": [lotos_rule8,],
+	"p": [lotos_rule8,],
+	"q": [lotos_rule8,],
+	"r": [lotos_rule8,],
+	"s": [lotos_rule8,],
+	"t": [lotos_rule8,],
+	"u": [lotos_rule8,],
+	"v": [lotos_rule8,],
+	"w": [lotos_rule8,],
+	"x": [lotos_rule8,],
+	"y": [lotos_rule8,],
+	"z": [lotos_rule8,],
+	"|": [lotos_rule3,lotos_rule4,lotos_rule5,],
 }
 
 # x.rulesDictDict for lotos mode.

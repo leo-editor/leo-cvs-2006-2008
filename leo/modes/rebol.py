@@ -526,157 +526,157 @@ keywordsDictDict = {
 
 # Rules for rebol_main ruleset.
 
-def rule0(colorer, s, i):
+def rebol_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="comment {", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule1(colorer, s, i):
+def rebol_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="comment{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule2(colorer, s, i):
+def rebol_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule3(colorer, s, i):
+def rebol_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule4(colorer, s, i):
+def rebol_rule4(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq=";",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule5(colorer, s, i):
+def rebol_rule5(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule6(colorer, s, i):
+def rebol_rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule7(colorer, s, i):
+def rebol_rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule8(colorer, s, i):
+def rebol_rule8(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule9(colorer, s, i):
+def rebol_rule9(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule10(colorer, s, i):
+def rebol_rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule11(colorer, s, i):
+def rebol_rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule12(colorer, s, i):
+def rebol_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule13(colorer, s, i):
+def rebol_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule14(colorer, s, i):
+def rebol_rule14(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="literal2", pattern="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule15(colorer, s, i):
+def rebol_rule15(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"!": [rule15,],
-	"\"": [rule2,],
-	"'": [rule14,],
-	"*": [rule11,],
-	"+": [rule9,],
-	"-": [rule15,],
-	"/": [rule10,],
-	"0": [rule15,],
-	"1": [rule15,],
-	"2": [rule15,],
-	"3": [rule15,],
-	"4": [rule15,],
-	"5": [rule15,],
-	"6": [rule15,],
-	"7": [rule15,],
-	"8": [rule15,],
-	"9": [rule15,],
-	";": [rule4,],
-	"<": [rule7,rule8,rule13,],
-	"=": [rule5,],
-	">": [rule6,rule12,],
-	"?": [rule15,],
-	"@": [rule15,],
-	"A": [rule15,],
-	"B": [rule15,],
-	"C": [rule15,],
-	"D": [rule15,],
-	"E": [rule15,],
-	"F": [rule15,],
-	"G": [rule15,],
-	"H": [rule15,],
-	"I": [rule15,],
-	"J": [rule15,],
-	"K": [rule15,],
-	"L": [rule15,],
-	"M": [rule15,],
-	"N": [rule15,],
-	"O": [rule15,],
-	"P": [rule15,],
-	"Q": [rule15,],
-	"R": [rule15,],
-	"S": [rule15,],
-	"T": [rule15,],
-	"U": [rule15,],
-	"V": [rule15,],
-	"W": [rule15,],
-	"X": [rule15,],
-	"Y": [rule15,],
-	"Z": [rule15,],
-	"a": [rule15,],
-	"b": [rule15,],
-	"c": [rule0,rule1,rule15,],
-	"d": [rule15,],
-	"e": [rule15,],
-	"f": [rule15,],
-	"g": [rule15,],
-	"h": [rule15,],
-	"i": [rule15,],
-	"j": [rule15,],
-	"k": [rule15,],
-	"l": [rule15,],
-	"m": [rule15,],
-	"n": [rule15,],
-	"o": [rule15,],
-	"p": [rule15,],
-	"q": [rule15,],
-	"r": [rule15,],
-	"s": [rule15,],
-	"t": [rule15,],
-	"u": [rule15,],
-	"v": [rule15,],
-	"w": [rule15,],
-	"x": [rule15,],
-	"y": [rule15,],
-	"z": [rule15,],
-	"{": [rule3,],
-	"~": [rule15,],
+	"!": [rebol_rule15,],
+	"\"": [rebol_rule2,],
+	"'": [rebol_rule14,],
+	"*": [rebol_rule11,],
+	"+": [rebol_rule9,],
+	"-": [rebol_rule15,],
+	"/": [rebol_rule10,],
+	"0": [rebol_rule15,],
+	"1": [rebol_rule15,],
+	"2": [rebol_rule15,],
+	"3": [rebol_rule15,],
+	"4": [rebol_rule15,],
+	"5": [rebol_rule15,],
+	"6": [rebol_rule15,],
+	"7": [rebol_rule15,],
+	"8": [rebol_rule15,],
+	"9": [rebol_rule15,],
+	";": [rebol_rule4,],
+	"<": [rebol_rule7,rebol_rule8,rebol_rule13,],
+	"=": [rebol_rule5,],
+	">": [rebol_rule6,rebol_rule12,],
+	"?": [rebol_rule15,],
+	"@": [rebol_rule15,],
+	"A": [rebol_rule15,],
+	"B": [rebol_rule15,],
+	"C": [rebol_rule15,],
+	"D": [rebol_rule15,],
+	"E": [rebol_rule15,],
+	"F": [rebol_rule15,],
+	"G": [rebol_rule15,],
+	"H": [rebol_rule15,],
+	"I": [rebol_rule15,],
+	"J": [rebol_rule15,],
+	"K": [rebol_rule15,],
+	"L": [rebol_rule15,],
+	"M": [rebol_rule15,],
+	"N": [rebol_rule15,],
+	"O": [rebol_rule15,],
+	"P": [rebol_rule15,],
+	"Q": [rebol_rule15,],
+	"R": [rebol_rule15,],
+	"S": [rebol_rule15,],
+	"T": [rebol_rule15,],
+	"U": [rebol_rule15,],
+	"V": [rebol_rule15,],
+	"W": [rebol_rule15,],
+	"X": [rebol_rule15,],
+	"Y": [rebol_rule15,],
+	"Z": [rebol_rule15,],
+	"a": [rebol_rule15,],
+	"b": [rebol_rule15,],
+	"c": [rebol_rule0,rebol_rule1,rebol_rule15,],
+	"d": [rebol_rule15,],
+	"e": [rebol_rule15,],
+	"f": [rebol_rule15,],
+	"g": [rebol_rule15,],
+	"h": [rebol_rule15,],
+	"i": [rebol_rule15,],
+	"j": [rebol_rule15,],
+	"k": [rebol_rule15,],
+	"l": [rebol_rule15,],
+	"m": [rebol_rule15,],
+	"n": [rebol_rule15,],
+	"o": [rebol_rule15,],
+	"p": [rebol_rule15,],
+	"q": [rebol_rule15,],
+	"r": [rebol_rule15,],
+	"s": [rebol_rule15,],
+	"t": [rebol_rule15,],
+	"u": [rebol_rule15,],
+	"v": [rebol_rule15,],
+	"w": [rebol_rule15,],
+	"x": [rebol_rule15,],
+	"y": [rebol_rule15,],
+	"z": [rebol_rule15,],
+	"{": [rebol_rule3,],
+	"~": [rebol_rule15,],
 }
 
 # x.rulesDictDict for rebol mode.

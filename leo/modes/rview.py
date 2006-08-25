@@ -134,269 +134,269 @@ keywordsDictDict = {
 
 # Rules for rview_main ruleset.
 
-def rule0(colorer, s, i):
+def rview_rule0(colorer, s, i):
     return colorer.match_seq(s, i, kind="comment1", seq="/**/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule1(colorer, s, i):
+def rview_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="comment2", begin="/**", end="*/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="JAVADOC",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule2(colorer, s, i):
+def rview_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule3(colorer, s, i):
+def rview_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="RVIEWSTMT",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule4(colorer, s, i):
+def rview_rule4(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule5(colorer, s, i):
+def rview_rule5(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="{",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule6(colorer, s, i):
+def rview_rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule7(colorer, s, i):
+def rview_rule7(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="function", pattern="(",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule8(colorer, s, i):
+def rview_rule8(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment2", seq="//",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule9(colorer, s, i):
+def rview_rule9(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"\"": [rule3,],
-	"(": [rule7,],
-	"/": [rule0,rule1,rule2,rule8,],
-	"0": [rule9,],
-	"1": [rule9,],
-	"2": [rule9,],
-	"3": [rule9,],
-	"4": [rule9,],
-	"5": [rule9,],
-	"6": [rule9,],
-	"7": [rule9,],
-	"8": [rule9,],
-	"9": [rule9,],
-	"=": [rule6,],
-	"@": [rule9,],
-	"A": [rule9,],
-	"B": [rule9,],
-	"C": [rule9,],
-	"D": [rule9,],
-	"E": [rule9,],
-	"F": [rule9,],
-	"G": [rule9,],
-	"H": [rule9,],
-	"I": [rule9,],
-	"J": [rule9,],
-	"K": [rule9,],
-	"L": [rule9,],
-	"M": [rule9,],
-	"N": [rule9,],
-	"O": [rule9,],
-	"P": [rule9,],
-	"Q": [rule9,],
-	"R": [rule9,],
-	"S": [rule9,],
-	"T": [rule9,],
-	"U": [rule9,],
-	"V": [rule9,],
-	"W": [rule9,],
-	"X": [rule9,],
-	"Y": [rule9,],
-	"Z": [rule9,],
-	"a": [rule9,],
-	"b": [rule9,],
-	"c": [rule9,],
-	"d": [rule9,],
-	"e": [rule9,],
-	"f": [rule9,],
-	"g": [rule9,],
-	"h": [rule9,],
-	"i": [rule9,],
-	"j": [rule9,],
-	"k": [rule9,],
-	"l": [rule9,],
-	"m": [rule9,],
-	"n": [rule9,],
-	"o": [rule9,],
-	"p": [rule9,],
-	"q": [rule9,],
-	"r": [rule9,],
-	"s": [rule9,],
-	"t": [rule9,],
-	"u": [rule9,],
-	"v": [rule9,],
-	"w": [rule9,],
-	"x": [rule9,],
-	"y": [rule9,],
-	"z": [rule9,],
-	"{": [rule5,],
-	"}": [rule4,],
+	"\"": [rview_rule3,],
+	"(": [rview_rule7,],
+	"/": [rview_rule0,rview_rule1,rview_rule2,rview_rule8,],
+	"0": [rview_rule9,],
+	"1": [rview_rule9,],
+	"2": [rview_rule9,],
+	"3": [rview_rule9,],
+	"4": [rview_rule9,],
+	"5": [rview_rule9,],
+	"6": [rview_rule9,],
+	"7": [rview_rule9,],
+	"8": [rview_rule9,],
+	"9": [rview_rule9,],
+	"=": [rview_rule6,],
+	"@": [rview_rule9,],
+	"A": [rview_rule9,],
+	"B": [rview_rule9,],
+	"C": [rview_rule9,],
+	"D": [rview_rule9,],
+	"E": [rview_rule9,],
+	"F": [rview_rule9,],
+	"G": [rview_rule9,],
+	"H": [rview_rule9,],
+	"I": [rview_rule9,],
+	"J": [rview_rule9,],
+	"K": [rview_rule9,],
+	"L": [rview_rule9,],
+	"M": [rview_rule9,],
+	"N": [rview_rule9,],
+	"O": [rview_rule9,],
+	"P": [rview_rule9,],
+	"Q": [rview_rule9,],
+	"R": [rview_rule9,],
+	"S": [rview_rule9,],
+	"T": [rview_rule9,],
+	"U": [rview_rule9,],
+	"V": [rview_rule9,],
+	"W": [rview_rule9,],
+	"X": [rview_rule9,],
+	"Y": [rview_rule9,],
+	"Z": [rview_rule9,],
+	"a": [rview_rule9,],
+	"b": [rview_rule9,],
+	"c": [rview_rule9,],
+	"d": [rview_rule9,],
+	"e": [rview_rule9,],
+	"f": [rview_rule9,],
+	"g": [rview_rule9,],
+	"h": [rview_rule9,],
+	"i": [rview_rule9,],
+	"j": [rview_rule9,],
+	"k": [rview_rule9,],
+	"l": [rview_rule9,],
+	"m": [rview_rule9,],
+	"n": [rview_rule9,],
+	"o": [rview_rule9,],
+	"p": [rview_rule9,],
+	"q": [rview_rule9,],
+	"r": [rview_rule9,],
+	"s": [rview_rule9,],
+	"t": [rview_rule9,],
+	"u": [rview_rule9,],
+	"v": [rview_rule9,],
+	"w": [rview_rule9,],
+	"x": [rview_rule9,],
+	"y": [rview_rule9,],
+	"z": [rview_rule9,],
+	"{": [rview_rule5,],
+	"}": [rview_rule4,],
 }
 
 # Rules for rview_rviewstmt ruleset.
 
-def rule10(colorer, s, i):
+def rview_rule10(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule11(colorer, s, i):
+def rview_rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule12(colorer, s, i):
+def rview_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule13(colorer, s, i):
+def rview_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule14(colorer, s, i):
+def rview_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule15(colorer, s, i):
+def rview_rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule16(colorer, s, i):
+def rview_rule16(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule17(colorer, s, i):
+def rview_rule17(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule18(colorer, s, i):
+def rview_rule18(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule19(colorer, s, i):
+def rview_rule19(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule20(colorer, s, i):
+def rview_rule20(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule21(colorer, s, i):
+def rview_rule21(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="{",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule22(colorer, s, i):
+def rview_rule22(colorer, s, i):
     return colorer.match_seq(s, i, kind="null", seq="::",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule23(colorer, s, i):
+def rview_rule23(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="label", pattern=":",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule24(colorer, s, i):
+def rview_rule24(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="function", pattern="(",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule25(colorer, s, i):
+def rview_rule25(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for rviewstmt ruleset.
 rulesDict2 = {
-	"'": [rule10,],
-	"(": [rule24,],
-	"*": [rule14,],
-	"+": [rule11,],
-	"-": [rule12,],
-	"/": [rule13,],
-	"0": [rule25,],
-	"1": [rule25,],
-	"2": [rule25,],
-	"3": [rule25,],
-	"4": [rule25,],
-	"5": [rule25,],
-	"6": [rule25,],
-	"7": [rule25,],
-	"8": [rule25,],
-	"9": [rule25,],
-	":": [rule22,rule23,],
-	"<": [rule17,rule19,],
-	"=": [rule15,],
-	">": [rule16,rule18,],
-	"@": [rule25,],
-	"A": [rule25,],
-	"B": [rule25,],
-	"C": [rule25,],
-	"D": [rule25,],
-	"E": [rule25,],
-	"F": [rule25,],
-	"G": [rule25,],
-	"H": [rule25,],
-	"I": [rule25,],
-	"J": [rule25,],
-	"K": [rule25,],
-	"L": [rule25,],
-	"M": [rule25,],
-	"N": [rule25,],
-	"O": [rule25,],
-	"P": [rule25,],
-	"Q": [rule25,],
-	"R": [rule25,],
-	"S": [rule25,],
-	"T": [rule25,],
-	"U": [rule25,],
-	"V": [rule25,],
-	"W": [rule25,],
-	"X": [rule25,],
-	"Y": [rule25,],
-	"Z": [rule25,],
-	"a": [rule25,],
-	"b": [rule25,],
-	"c": [rule25,],
-	"d": [rule25,],
-	"e": [rule25,],
-	"f": [rule25,],
-	"g": [rule25,],
-	"h": [rule25,],
-	"i": [rule25,],
-	"j": [rule25,],
-	"k": [rule25,],
-	"l": [rule25,],
-	"m": [rule25,],
-	"n": [rule25,],
-	"o": [rule25,],
-	"p": [rule25,],
-	"q": [rule25,],
-	"r": [rule25,],
-	"s": [rule25,],
-	"t": [rule25,],
-	"u": [rule25,],
-	"v": [rule25,],
-	"w": [rule25,],
-	"x": [rule25,],
-	"y": [rule25,],
-	"z": [rule25,],
-	"{": [rule21,],
-	"}": [rule20,],
+	"'": [rview_rule10,],
+	"(": [rview_rule24,],
+	"*": [rview_rule14,],
+	"+": [rview_rule11,],
+	"-": [rview_rule12,],
+	"/": [rview_rule13,],
+	"0": [rview_rule25,],
+	"1": [rview_rule25,],
+	"2": [rview_rule25,],
+	"3": [rview_rule25,],
+	"4": [rview_rule25,],
+	"5": [rview_rule25,],
+	"6": [rview_rule25,],
+	"7": [rview_rule25,],
+	"8": [rview_rule25,],
+	"9": [rview_rule25,],
+	":": [rview_rule22,rview_rule23,],
+	"<": [rview_rule17,rview_rule19,],
+	"=": [rview_rule15,],
+	">": [rview_rule16,rview_rule18,],
+	"@": [rview_rule25,],
+	"A": [rview_rule25,],
+	"B": [rview_rule25,],
+	"C": [rview_rule25,],
+	"D": [rview_rule25,],
+	"E": [rview_rule25,],
+	"F": [rview_rule25,],
+	"G": [rview_rule25,],
+	"H": [rview_rule25,],
+	"I": [rview_rule25,],
+	"J": [rview_rule25,],
+	"K": [rview_rule25,],
+	"L": [rview_rule25,],
+	"M": [rview_rule25,],
+	"N": [rview_rule25,],
+	"O": [rview_rule25,],
+	"P": [rview_rule25,],
+	"Q": [rview_rule25,],
+	"R": [rview_rule25,],
+	"S": [rview_rule25,],
+	"T": [rview_rule25,],
+	"U": [rview_rule25,],
+	"V": [rview_rule25,],
+	"W": [rview_rule25,],
+	"X": [rview_rule25,],
+	"Y": [rview_rule25,],
+	"Z": [rview_rule25,],
+	"a": [rview_rule25,],
+	"b": [rview_rule25,],
+	"c": [rview_rule25,],
+	"d": [rview_rule25,],
+	"e": [rview_rule25,],
+	"f": [rview_rule25,],
+	"g": [rview_rule25,],
+	"h": [rview_rule25,],
+	"i": [rview_rule25,],
+	"j": [rview_rule25,],
+	"k": [rview_rule25,],
+	"l": [rview_rule25,],
+	"m": [rview_rule25,],
+	"n": [rview_rule25,],
+	"o": [rview_rule25,],
+	"p": [rview_rule25,],
+	"q": [rview_rule25,],
+	"r": [rview_rule25,],
+	"s": [rview_rule25,],
+	"t": [rview_rule25,],
+	"u": [rview_rule25,],
+	"v": [rview_rule25,],
+	"w": [rview_rule25,],
+	"x": [rview_rule25,],
+	"y": [rview_rule25,],
+	"z": [rview_rule25,],
+	"{": [rview_rule21,],
+	"}": [rview_rule20,],
 }
 
 # x.rulesDictDict for rview mode.

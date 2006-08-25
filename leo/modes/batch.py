@@ -104,177 +104,177 @@ keywordsDictDict = {
 
 # Rules for batch_main ruleset.
 
-def rule0(colorer, s, i):
+def batch_rule0(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword3", seq="@",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule1(colorer, s, i):
+def batch_rule1(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule2(colorer, s, i):
+def batch_rule2(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="|",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule3(colorer, s, i):
+def batch_rule3(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="&",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule4(colorer, s, i):
+def batch_rule4(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="!",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule5(colorer, s, i):
+def batch_rule5(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule6(colorer, s, i):
+def batch_rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule7(colorer, s, i):
+def batch_rule7(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="label", pattern=":",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule8(colorer, s, i):
+def batch_rule8(colorer, s, i):
     return colorer.match_eol_span_regexp(s, i, kind="comment1", regexp="REM\\s", hash_char="R",
         at_line_start=False, at_whitespace_end=True, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule9(colorer, s, i):
+def batch_rule9(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule10(colorer, s, i):
+def batch_rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="%0",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule11(colorer, s, i):
+def batch_rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="%1",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule12(colorer, s, i):
+def batch_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="%2",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule13(colorer, s, i):
+def batch_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="%3",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule14(colorer, s, i):
+def batch_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="%4",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule15(colorer, s, i):
+def batch_rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="%5",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule16(colorer, s, i):
+def batch_rule16(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="%6",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule17(colorer, s, i):
+def batch_rule17(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="%7",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule18(colorer, s, i):
+def batch_rule18(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="%8",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule19(colorer, s, i):
+def batch_rule19(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="%9",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule20(colorer, s, i):
+def batch_rule20(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="%%[[:alpha:]]", hash_char="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule21(colorer, s, i):
+def batch_rule21(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="%", end="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule22(colorer, s, i):
+def batch_rule22(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"!": [rule4,],
-	"\"": [rule9,],
-	"%": [rule10,rule11,rule12,rule13,rule14,rule15,rule16,rule17,rule18,rule19,rule20,rule21,],
-	"&": [rule3,],
-	"+": [rule1,],
-	".": [rule22,],
-	"0": [rule22,],
-	"1": [rule22,],
-	"2": [rule22,],
-	"3": [rule22,],
-	"4": [rule22,],
-	"5": [rule22,],
-	"6": [rule22,],
-	"7": [rule22,],
-	"8": [rule22,],
-	"9": [rule22,],
-	":": [rule7,],
-	"<": [rule6,],
-	">": [rule5,],
-	"@": [rule0,rule22,],
-	"A": [rule22,],
-	"B": [rule22,],
-	"C": [rule22,],
-	"D": [rule22,],
-	"E": [rule22,],
-	"F": [rule22,],
-	"G": [rule22,],
-	"H": [rule22,],
-	"I": [rule22,],
-	"J": [rule22,],
-	"K": [rule22,],
-	"L": [rule22,],
-	"M": [rule22,],
-	"N": [rule22,],
-	"O": [rule22,],
-	"P": [rule22,],
-	"Q": [rule22,],
-	"R": [rule8,rule22,],
-	"S": [rule22,],
-	"T": [rule22,],
-	"U": [rule22,],
-	"V": [rule22,],
-	"W": [rule22,],
-	"X": [rule22,],
-	"Y": [rule22,],
-	"Z": [rule22,],
-	"a": [rule22,],
-	"b": [rule22,],
-	"c": [rule22,],
-	"d": [rule22,],
-	"e": [rule22,],
-	"f": [rule22,],
-	"g": [rule22,],
-	"h": [rule22,],
-	"i": [rule22,],
-	"j": [rule22,],
-	"k": [rule22,],
-	"l": [rule22,],
-	"m": [rule22,],
-	"n": [rule22,],
-	"o": [rule22,],
-	"p": [rule22,],
-	"q": [rule22,],
-	"r": [rule22,],
-	"s": [rule22,],
-	"t": [rule22,],
-	"u": [rule22,],
-	"v": [rule22,],
-	"w": [rule22,],
-	"x": [rule22,],
-	"y": [rule22,],
-	"z": [rule22,],
-	"|": [rule2,],
+	"!": [batch_rule4,],
+	"\"": [batch_rule9,],
+	"%": [batch_rule10,batch_rule11,batch_rule12,batch_rule13,batch_rule14,batch_rule15,batch_rule16,batch_rule17,batch_rule18,batch_rule19,batch_rule20,batch_rule21,],
+	"&": [batch_rule3,],
+	"+": [batch_rule1,],
+	".": [batch_rule22,],
+	"0": [batch_rule22,],
+	"1": [batch_rule22,],
+	"2": [batch_rule22,],
+	"3": [batch_rule22,],
+	"4": [batch_rule22,],
+	"5": [batch_rule22,],
+	"6": [batch_rule22,],
+	"7": [batch_rule22,],
+	"8": [batch_rule22,],
+	"9": [batch_rule22,],
+	":": [batch_rule7,],
+	"<": [batch_rule6,],
+	">": [batch_rule5,],
+	"@": [batch_rule0,batch_rule22,],
+	"A": [batch_rule22,],
+	"B": [batch_rule22,],
+	"C": [batch_rule22,],
+	"D": [batch_rule22,],
+	"E": [batch_rule22,],
+	"F": [batch_rule22,],
+	"G": [batch_rule22,],
+	"H": [batch_rule22,],
+	"I": [batch_rule22,],
+	"J": [batch_rule22,],
+	"K": [batch_rule22,],
+	"L": [batch_rule22,],
+	"M": [batch_rule22,],
+	"N": [batch_rule22,],
+	"O": [batch_rule22,],
+	"P": [batch_rule22,],
+	"Q": [batch_rule22,],
+	"R": [batch_rule8,batch_rule22,],
+	"S": [batch_rule22,],
+	"T": [batch_rule22,],
+	"U": [batch_rule22,],
+	"V": [batch_rule22,],
+	"W": [batch_rule22,],
+	"X": [batch_rule22,],
+	"Y": [batch_rule22,],
+	"Z": [batch_rule22,],
+	"a": [batch_rule22,],
+	"b": [batch_rule22,],
+	"c": [batch_rule22,],
+	"d": [batch_rule22,],
+	"e": [batch_rule22,],
+	"f": [batch_rule22,],
+	"g": [batch_rule22,],
+	"h": [batch_rule22,],
+	"i": [batch_rule22,],
+	"j": [batch_rule22,],
+	"k": [batch_rule22,],
+	"l": [batch_rule22,],
+	"m": [batch_rule22,],
+	"n": [batch_rule22,],
+	"o": [batch_rule22,],
+	"p": [batch_rule22,],
+	"q": [batch_rule22,],
+	"r": [batch_rule22,],
+	"s": [batch_rule22,],
+	"t": [batch_rule22,],
+	"u": [batch_rule22,],
+	"v": [batch_rule22,],
+	"w": [batch_rule22,],
+	"x": [batch_rule22,],
+	"y": [batch_rule22,],
+	"z": [batch_rule22,],
+	"|": [batch_rule2,],
 }
 
 # x.rulesDictDict for batch mode.

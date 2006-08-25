@@ -134,114 +134,114 @@ keywordsDictDict = {
 
 # Rules for assembly_parrot_main ruleset.
 
-def rule0(colorer, s, i):
+def assembly-parrot_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule1(colorer, s, i):
+def assembly-parrot_rule1(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="#",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule2(colorer, s, i):
+def assembly-parrot_rule2(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="label", pattern=":",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule3(colorer, s, i):
+def assembly-parrot_rule3(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=",",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule4(colorer, s, i):
+def assembly-parrot_rule4(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="literal2", regexp="I\\d{1,2}", hash_char="I",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule5(colorer, s, i):
+def assembly-parrot_rule5(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="literal2", regexp="S\\d{1,2}", hash_char="S",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule6(colorer, s, i):
+def assembly-parrot_rule6(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="literal2", regexp="N\\d{1,2}", hash_char="N",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule7(colorer, s, i):
+def assembly-parrot_rule7(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="literal2", regexp="P\\d{1,2}", hash_char="P",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule8(colorer, s, i):
+def assembly-parrot_rule8(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"\"": [rule0,],
-	"#": [rule1,],
-	",": [rule3,],
-	"0": [rule8,],
-	"1": [rule8,],
-	"2": [rule8,],
-	"3": [rule8,],
-	"4": [rule8,],
-	"5": [rule8,],
-	"6": [rule8,],
-	"7": [rule8,],
-	"8": [rule8,],
-	"9": [rule8,],
-	":": [rule2,],
-	"@": [rule8,],
-	"A": [rule8,],
-	"B": [rule8,],
-	"C": [rule8,],
-	"D": [rule8,],
-	"E": [rule8,],
-	"F": [rule8,],
-	"G": [rule8,],
-	"H": [rule8,],
-	"I": [rule4,rule8,],
-	"J": [rule8,],
-	"K": [rule8,],
-	"L": [rule8,],
-	"M": [rule8,],
-	"N": [rule6,rule8,],
-	"O": [rule8,],
-	"P": [rule7,rule8,],
-	"Q": [rule8,],
-	"R": [rule8,],
-	"S": [rule5,rule8,],
-	"T": [rule8,],
-	"U": [rule8,],
-	"V": [rule8,],
-	"W": [rule8,],
-	"X": [rule8,],
-	"Y": [rule8,],
-	"Z": [rule8,],
-	"_": [rule8,],
-	"a": [rule8,],
-	"b": [rule8,],
-	"c": [rule8,],
-	"d": [rule8,],
-	"e": [rule8,],
-	"f": [rule8,],
-	"g": [rule8,],
-	"h": [rule8,],
-	"i": [rule8,],
-	"j": [rule8,],
-	"k": [rule8,],
-	"l": [rule8,],
-	"m": [rule8,],
-	"n": [rule8,],
-	"o": [rule8,],
-	"p": [rule8,],
-	"q": [rule8,],
-	"r": [rule8,],
-	"s": [rule8,],
-	"t": [rule8,],
-	"u": [rule8,],
-	"v": [rule8,],
-	"w": [rule8,],
-	"x": [rule8,],
-	"y": [rule8,],
-	"z": [rule8,],
+	"\"": [assembly-parrot_rule0,],
+	"#": [assembly-parrot_rule1,],
+	",": [assembly-parrot_rule3,],
+	"0": [assembly-parrot_rule8,],
+	"1": [assembly-parrot_rule8,],
+	"2": [assembly-parrot_rule8,],
+	"3": [assembly-parrot_rule8,],
+	"4": [assembly-parrot_rule8,],
+	"5": [assembly-parrot_rule8,],
+	"6": [assembly-parrot_rule8,],
+	"7": [assembly-parrot_rule8,],
+	"8": [assembly-parrot_rule8,],
+	"9": [assembly-parrot_rule8,],
+	":": [assembly-parrot_rule2,],
+	"@": [assembly-parrot_rule8,],
+	"A": [assembly-parrot_rule8,],
+	"B": [assembly-parrot_rule8,],
+	"C": [assembly-parrot_rule8,],
+	"D": [assembly-parrot_rule8,],
+	"E": [assembly-parrot_rule8,],
+	"F": [assembly-parrot_rule8,],
+	"G": [assembly-parrot_rule8,],
+	"H": [assembly-parrot_rule8,],
+	"I": [assembly-parrot_rule4,assembly-parrot_rule8,],
+	"J": [assembly-parrot_rule8,],
+	"K": [assembly-parrot_rule8,],
+	"L": [assembly-parrot_rule8,],
+	"M": [assembly-parrot_rule8,],
+	"N": [assembly-parrot_rule6,assembly-parrot_rule8,],
+	"O": [assembly-parrot_rule8,],
+	"P": [assembly-parrot_rule7,assembly-parrot_rule8,],
+	"Q": [assembly-parrot_rule8,],
+	"R": [assembly-parrot_rule8,],
+	"S": [assembly-parrot_rule5,assembly-parrot_rule8,],
+	"T": [assembly-parrot_rule8,],
+	"U": [assembly-parrot_rule8,],
+	"V": [assembly-parrot_rule8,],
+	"W": [assembly-parrot_rule8,],
+	"X": [assembly-parrot_rule8,],
+	"Y": [assembly-parrot_rule8,],
+	"Z": [assembly-parrot_rule8,],
+	"_": [assembly-parrot_rule8,],
+	"a": [assembly-parrot_rule8,],
+	"b": [assembly-parrot_rule8,],
+	"c": [assembly-parrot_rule8,],
+	"d": [assembly-parrot_rule8,],
+	"e": [assembly-parrot_rule8,],
+	"f": [assembly-parrot_rule8,],
+	"g": [assembly-parrot_rule8,],
+	"h": [assembly-parrot_rule8,],
+	"i": [assembly-parrot_rule8,],
+	"j": [assembly-parrot_rule8,],
+	"k": [assembly-parrot_rule8,],
+	"l": [assembly-parrot_rule8,],
+	"m": [assembly-parrot_rule8,],
+	"n": [assembly-parrot_rule8,],
+	"o": [assembly-parrot_rule8,],
+	"p": [assembly-parrot_rule8,],
+	"q": [assembly-parrot_rule8,],
+	"r": [assembly-parrot_rule8,],
+	"s": [assembly-parrot_rule8,],
+	"t": [assembly-parrot_rule8,],
+	"u": [assembly-parrot_rule8,],
+	"v": [assembly-parrot_rule8,],
+	"w": [assembly-parrot_rule8,],
+	"x": [assembly-parrot_rule8,],
+	"y": [assembly-parrot_rule8,],
+	"z": [assembly-parrot_rule8,],
 }
 
 # x.rulesDictDict for assembly_parrot mode.

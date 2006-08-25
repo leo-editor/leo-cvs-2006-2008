@@ -147,318 +147,318 @@ keywordsDictDict = {
 
 # Rules for java_main ruleset.
 
-def rule0(colorer, s, i):
+def java_rule0(colorer, s, i):
     return colorer.match_seq(s, i, kind="comment1", seq="/**/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule1(colorer, s, i):
+def java_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="comment3", begin="/**", end="*/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="JAVADOC",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule2(colorer, s, i):
+def java_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule3(colorer, s, i):
+def java_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule4(colorer, s, i):
+def java_rule4(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule5(colorer, s, i):
+def java_rule5(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment2", seq="//",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule6(colorer, s, i):
+def java_rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule7(colorer, s, i):
+def java_rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="!",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule8(colorer, s, i):
+def java_rule8(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule9(colorer, s, i):
+def java_rule9(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule10(colorer, s, i):
+def java_rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule11(colorer, s, i):
+def java_rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule12(colorer, s, i):
+def java_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule13(colorer, s, i):
+def java_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="null", seq=".*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule14(colorer, s, i):
+def java_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule15(colorer, s, i):
+def java_rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule16(colorer, s, i):
+def java_rule16(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule17(colorer, s, i):
+def java_rule17(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule18(colorer, s, i):
+def java_rule18(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="&",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule19(colorer, s, i):
+def java_rule19(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="|",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule20(colorer, s, i):
+def java_rule20(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule21(colorer, s, i):
+def java_rule21(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="~",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule22(colorer, s, i):
+def java_rule22(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule23(colorer, s, i):
+def java_rule23(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="{",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule24(colorer, s, i):
+def java_rule24(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="label", pattern=":",
         at_line_start=False, at_whitespace_end=True, at_word_start=False, exclude_match=True)
 
-def rule25(colorer, s, i):
+def java_rule25(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="function", pattern="(",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule26(colorer, s, i):
+def java_rule26(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword4", pattern="@",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule27(colorer, s, i):
+def java_rule27(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"!": [rule7,],
-	"\"": [rule3,],
-	"%": [rule17,],
-	"&": [rule18,],
-	"'": [rule4,],
-	"(": [rule25,],
-	"*": [rule14,],
-	"+": [rule10,],
-	"-": [rule11,],
-	".": [rule13,],
-	"/": [rule0,rule1,rule2,rule5,rule12,],
-	"0": [rule27,],
-	"1": [rule27,],
-	"2": [rule27,],
-	"3": [rule27,],
-	"4": [rule27,],
-	"5": [rule27,],
-	"6": [rule27,],
-	"7": [rule27,],
-	"8": [rule27,],
-	"9": [rule27,],
-	":": [rule24,],
-	"<": [rule9,rule16,],
-	"=": [rule6,],
-	">": [rule8,rule15,],
-	"@": [rule26,rule27,],
-	"A": [rule27,],
-	"B": [rule27,],
-	"C": [rule27,],
-	"D": [rule27,],
-	"E": [rule27,],
-	"F": [rule27,],
-	"G": [rule27,],
-	"H": [rule27,],
-	"I": [rule27,],
-	"J": [rule27,],
-	"K": [rule27,],
-	"L": [rule27,],
-	"M": [rule27,],
-	"N": [rule27,],
-	"O": [rule27,],
-	"P": [rule27,],
-	"Q": [rule27,],
-	"R": [rule27,],
-	"S": [rule27,],
-	"T": [rule27,],
-	"U": [rule27,],
-	"V": [rule27,],
-	"W": [rule27,],
-	"X": [rule27,],
-	"Y": [rule27,],
-	"Z": [rule27,],
-	"^": [rule20,],
-	"a": [rule27,],
-	"b": [rule27,],
-	"c": [rule27,],
-	"d": [rule27,],
-	"e": [rule27,],
-	"f": [rule27,],
-	"g": [rule27,],
-	"h": [rule27,],
-	"i": [rule27,],
-	"j": [rule27,],
-	"k": [rule27,],
-	"l": [rule27,],
-	"m": [rule27,],
-	"n": [rule27,],
-	"o": [rule27,],
-	"p": [rule27,],
-	"q": [rule27,],
-	"r": [rule27,],
-	"s": [rule27,],
-	"t": [rule27,],
-	"u": [rule27,],
-	"v": [rule27,],
-	"w": [rule27,],
-	"x": [rule27,],
-	"y": [rule27,],
-	"z": [rule27,],
-	"{": [rule23,],
-	"|": [rule19,],
-	"}": [rule22,],
-	"~": [rule21,],
+	"!": [java_rule7,],
+	"\"": [java_rule3,],
+	"%": [java_rule17,],
+	"&": [java_rule18,],
+	"'": [java_rule4,],
+	"(": [java_rule25,],
+	"*": [java_rule14,],
+	"+": [java_rule10,],
+	"-": [java_rule11,],
+	".": [java_rule13,],
+	"/": [java_rule0,java_rule1,java_rule2,java_rule5,java_rule12,],
+	"0": [java_rule27,],
+	"1": [java_rule27,],
+	"2": [java_rule27,],
+	"3": [java_rule27,],
+	"4": [java_rule27,],
+	"5": [java_rule27,],
+	"6": [java_rule27,],
+	"7": [java_rule27,],
+	"8": [java_rule27,],
+	"9": [java_rule27,],
+	":": [java_rule24,],
+	"<": [java_rule9,java_rule16,],
+	"=": [java_rule6,],
+	">": [java_rule8,java_rule15,],
+	"@": [java_rule26,java_rule27,],
+	"A": [java_rule27,],
+	"B": [java_rule27,],
+	"C": [java_rule27,],
+	"D": [java_rule27,],
+	"E": [java_rule27,],
+	"F": [java_rule27,],
+	"G": [java_rule27,],
+	"H": [java_rule27,],
+	"I": [java_rule27,],
+	"J": [java_rule27,],
+	"K": [java_rule27,],
+	"L": [java_rule27,],
+	"M": [java_rule27,],
+	"N": [java_rule27,],
+	"O": [java_rule27,],
+	"P": [java_rule27,],
+	"Q": [java_rule27,],
+	"R": [java_rule27,],
+	"S": [java_rule27,],
+	"T": [java_rule27,],
+	"U": [java_rule27,],
+	"V": [java_rule27,],
+	"W": [java_rule27,],
+	"X": [java_rule27,],
+	"Y": [java_rule27,],
+	"Z": [java_rule27,],
+	"^": [java_rule20,],
+	"a": [java_rule27,],
+	"b": [java_rule27,],
+	"c": [java_rule27,],
+	"d": [java_rule27,],
+	"e": [java_rule27,],
+	"f": [java_rule27,],
+	"g": [java_rule27,],
+	"h": [java_rule27,],
+	"i": [java_rule27,],
+	"j": [java_rule27,],
+	"k": [java_rule27,],
+	"l": [java_rule27,],
+	"m": [java_rule27,],
+	"n": [java_rule27,],
+	"o": [java_rule27,],
+	"p": [java_rule27,],
+	"q": [java_rule27,],
+	"r": [java_rule27,],
+	"s": [java_rule27,],
+	"t": [java_rule27,],
+	"u": [java_rule27,],
+	"v": [java_rule27,],
+	"w": [java_rule27,],
+	"x": [java_rule27,],
+	"y": [java_rule27,],
+	"z": [java_rule27,],
+	"{": [java_rule23,],
+	"|": [java_rule19,],
+	"}": [java_rule22,],
+	"~": [java_rule21,],
 }
 
 # Rules for java_javadoc ruleset.
 
-def rule28(colorer, s, i):
+def java_rule28(colorer, s, i):
     return colorer.match_seq(s, i, kind="comment3", seq="{",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule29(colorer, s, i):
+def java_rule29(colorer, s, i):
     return colorer.match_seq(s, i, kind="comment3", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule30(colorer, s, i):
+def java_rule30(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="<!--", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule31(colorer, s, i):
+def java_rule31(colorer, s, i):
     return colorer.match_seq(s, i, kind="comment3", seq="<<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule32(colorer, s, i):
+def java_rule32(colorer, s, i):
     return colorer.match_seq(s, i, kind="comment3", seq="<=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule33(colorer, s, i):
+def java_rule33(colorer, s, i):
     return colorer.match_seq(s, i, kind="comment3", seq="< ",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule34(colorer, s, i):
+def java_rule34(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="xml::TAGS",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule35(colorer, s, i):
+def java_rule35(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for javadoc ruleset.
 rulesDict2 = {
-	"*": [rule29,],
-	"0": [rule35,],
-	"1": [rule35,],
-	"2": [rule35,],
-	"3": [rule35,],
-	"4": [rule35,],
-	"5": [rule35,],
-	"6": [rule35,],
-	"7": [rule35,],
-	"8": [rule35,],
-	"9": [rule35,],
-	"<": [rule30,rule31,rule32,rule33,rule34,],
-	"@": [rule35,],
-	"A": [rule35,],
-	"B": [rule35,],
-	"C": [rule35,],
-	"D": [rule35,],
-	"E": [rule35,],
-	"F": [rule35,],
-	"G": [rule35,],
-	"H": [rule35,],
-	"I": [rule35,],
-	"J": [rule35,],
-	"K": [rule35,],
-	"L": [rule35,],
-	"M": [rule35,],
-	"N": [rule35,],
-	"O": [rule35,],
-	"P": [rule35,],
-	"Q": [rule35,],
-	"R": [rule35,],
-	"S": [rule35,],
-	"T": [rule35,],
-	"U": [rule35,],
-	"V": [rule35,],
-	"W": [rule35,],
-	"X": [rule35,],
-	"Y": [rule35,],
-	"Z": [rule35,],
-	"a": [rule35,],
-	"b": [rule35,],
-	"c": [rule35,],
-	"d": [rule35,],
-	"e": [rule35,],
-	"f": [rule35,],
-	"g": [rule35,],
-	"h": [rule35,],
-	"i": [rule35,],
-	"j": [rule35,],
-	"k": [rule35,],
-	"l": [rule35,],
-	"m": [rule35,],
-	"n": [rule35,],
-	"o": [rule35,],
-	"p": [rule35,],
-	"q": [rule35,],
-	"r": [rule35,],
-	"s": [rule35,],
-	"t": [rule35,],
-	"u": [rule35,],
-	"v": [rule35,],
-	"w": [rule35,],
-	"x": [rule35,],
-	"y": [rule35,],
-	"z": [rule35,],
-	"{": [rule28,],
+	"*": [java_rule29,],
+	"0": [java_rule35,],
+	"1": [java_rule35,],
+	"2": [java_rule35,],
+	"3": [java_rule35,],
+	"4": [java_rule35,],
+	"5": [java_rule35,],
+	"6": [java_rule35,],
+	"7": [java_rule35,],
+	"8": [java_rule35,],
+	"9": [java_rule35,],
+	"<": [java_rule30,java_rule31,java_rule32,java_rule33,java_rule34,],
+	"@": [java_rule35,],
+	"A": [java_rule35,],
+	"B": [java_rule35,],
+	"C": [java_rule35,],
+	"D": [java_rule35,],
+	"E": [java_rule35,],
+	"F": [java_rule35,],
+	"G": [java_rule35,],
+	"H": [java_rule35,],
+	"I": [java_rule35,],
+	"J": [java_rule35,],
+	"K": [java_rule35,],
+	"L": [java_rule35,],
+	"M": [java_rule35,],
+	"N": [java_rule35,],
+	"O": [java_rule35,],
+	"P": [java_rule35,],
+	"Q": [java_rule35,],
+	"R": [java_rule35,],
+	"S": [java_rule35,],
+	"T": [java_rule35,],
+	"U": [java_rule35,],
+	"V": [java_rule35,],
+	"W": [java_rule35,],
+	"X": [java_rule35,],
+	"Y": [java_rule35,],
+	"Z": [java_rule35,],
+	"a": [java_rule35,],
+	"b": [java_rule35,],
+	"c": [java_rule35,],
+	"d": [java_rule35,],
+	"e": [java_rule35,],
+	"f": [java_rule35,],
+	"g": [java_rule35,],
+	"h": [java_rule35,],
+	"i": [java_rule35,],
+	"j": [java_rule35,],
+	"k": [java_rule35,],
+	"l": [java_rule35,],
+	"m": [java_rule35,],
+	"n": [java_rule35,],
+	"o": [java_rule35,],
+	"p": [java_rule35,],
+	"q": [java_rule35,],
+	"r": [java_rule35,],
+	"s": [java_rule35,],
+	"t": [java_rule35,],
+	"u": [java_rule35,],
+	"v": [java_rule35,],
+	"w": [java_rule35,],
+	"x": [java_rule35,],
+	"y": [java_rule35,],
+	"z": [java_rule35,],
+	"{": [java_rule28,],
 }
 
 # x.rulesDictDict for java mode.

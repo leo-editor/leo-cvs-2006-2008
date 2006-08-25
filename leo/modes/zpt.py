@@ -147,37 +147,37 @@ keywordsDictDict = {
 
 # Rules for zpt_main ruleset.
 
-def rule0(colorer, s, i):
+def zpt_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="<!--", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule1(colorer, s, i):
+def zpt_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<SCRIPT", end="</SCRIPT>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="JAVASCRIPT",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule2(colorer, s, i):
+def zpt_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<STYLE", end="</STYLE>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="CSS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule3(colorer, s, i):
+def zpt_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="<!", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="xml::DTD-TAGS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule4(colorer, s, i):
+def zpt_rule4(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="TAGS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule5(colorer, s, i):
+def zpt_rule5(colorer, s, i):
     return colorer.match_span(s, i, kind="literal2", begin="&", end=";",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
@@ -185,246 +185,246 @@ def rule5(colorer, s, i):
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"&": [rule5,],
-	"<": [rule0,rule1,rule2,rule3,rule4,],
+	"&": [zpt_rule5,],
+	"<": [zpt_rule0,zpt_rule1,zpt_rule2,zpt_rule3,zpt_rule4,],
 }
 
 # Rules for zpt_tags ruleset.
 
-def rule6(colorer, s, i):
+def zpt_rule6(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="ATTRIBUTE",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule7(colorer, s, i):
+def zpt_rule7(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="ATTRIBUTE",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule8(colorer, s, i):
+def zpt_rule8(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule9(colorer, s, i):
+def zpt_rule9(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for tags ruleset.
 rulesDict2 = {
-	"\"": [rule6,],
-	"'": [rule7,],
-	"-": [rule9,],
-	"0": [rule9,],
-	"1": [rule9,],
-	"2": [rule9,],
-	"3": [rule9,],
-	"4": [rule9,],
-	"5": [rule9,],
-	"6": [rule9,],
-	"7": [rule9,],
-	"8": [rule9,],
-	"9": [rule9,],
-	"=": [rule8,],
-	"@": [rule9,],
-	"A": [rule9,],
-	"B": [rule9,],
-	"C": [rule9,],
-	"D": [rule9,],
-	"E": [rule9,],
-	"F": [rule9,],
-	"G": [rule9,],
-	"H": [rule9,],
-	"I": [rule9,],
-	"J": [rule9,],
-	"K": [rule9,],
-	"L": [rule9,],
-	"M": [rule9,],
-	"N": [rule9,],
-	"O": [rule9,],
-	"P": [rule9,],
-	"Q": [rule9,],
-	"R": [rule9,],
-	"S": [rule9,],
-	"T": [rule9,],
-	"U": [rule9,],
-	"V": [rule9,],
-	"W": [rule9,],
-	"X": [rule9,],
-	"Y": [rule9,],
-	"Z": [rule9,],
-	"a": [rule9,],
-	"b": [rule9,],
-	"c": [rule9,],
-	"d": [rule9,],
-	"e": [rule9,],
-	"f": [rule9,],
-	"g": [rule9,],
-	"h": [rule9,],
-	"i": [rule9,],
-	"j": [rule9,],
-	"k": [rule9,],
-	"l": [rule9,],
-	"m": [rule9,],
-	"n": [rule9,],
-	"o": [rule9,],
-	"p": [rule9,],
-	"q": [rule9,],
-	"r": [rule9,],
-	"s": [rule9,],
-	"t": [rule9,],
-	"u": [rule9,],
-	"v": [rule9,],
-	"w": [rule9,],
-	"x": [rule9,],
-	"y": [rule9,],
-	"z": [rule9,],
+	"\"": [zpt_rule6,],
+	"'": [zpt_rule7,],
+	"-": [zpt_rule9,],
+	"0": [zpt_rule9,],
+	"1": [zpt_rule9,],
+	"2": [zpt_rule9,],
+	"3": [zpt_rule9,],
+	"4": [zpt_rule9,],
+	"5": [zpt_rule9,],
+	"6": [zpt_rule9,],
+	"7": [zpt_rule9,],
+	"8": [zpt_rule9,],
+	"9": [zpt_rule9,],
+	"=": [zpt_rule8,],
+	"@": [zpt_rule9,],
+	"A": [zpt_rule9,],
+	"B": [zpt_rule9,],
+	"C": [zpt_rule9,],
+	"D": [zpt_rule9,],
+	"E": [zpt_rule9,],
+	"F": [zpt_rule9,],
+	"G": [zpt_rule9,],
+	"H": [zpt_rule9,],
+	"I": [zpt_rule9,],
+	"J": [zpt_rule9,],
+	"K": [zpt_rule9,],
+	"L": [zpt_rule9,],
+	"M": [zpt_rule9,],
+	"N": [zpt_rule9,],
+	"O": [zpt_rule9,],
+	"P": [zpt_rule9,],
+	"Q": [zpt_rule9,],
+	"R": [zpt_rule9,],
+	"S": [zpt_rule9,],
+	"T": [zpt_rule9,],
+	"U": [zpt_rule9,],
+	"V": [zpt_rule9,],
+	"W": [zpt_rule9,],
+	"X": [zpt_rule9,],
+	"Y": [zpt_rule9,],
+	"Z": [zpt_rule9,],
+	"a": [zpt_rule9,],
+	"b": [zpt_rule9,],
+	"c": [zpt_rule9,],
+	"d": [zpt_rule9,],
+	"e": [zpt_rule9,],
+	"f": [zpt_rule9,],
+	"g": [zpt_rule9,],
+	"h": [zpt_rule9,],
+	"i": [zpt_rule9,],
+	"j": [zpt_rule9,],
+	"k": [zpt_rule9,],
+	"l": [zpt_rule9,],
+	"m": [zpt_rule9,],
+	"n": [zpt_rule9,],
+	"o": [zpt_rule9,],
+	"p": [zpt_rule9,],
+	"q": [zpt_rule9,],
+	"r": [zpt_rule9,],
+	"s": [zpt_rule9,],
+	"t": [zpt_rule9,],
+	"u": [zpt_rule9,],
+	"v": [zpt_rule9,],
+	"w": [zpt_rule9,],
+	"x": [zpt_rule9,],
+	"y": [zpt_rule9,],
+	"z": [zpt_rule9,],
 }
 
 # Rules for zpt_attribute ruleset.
 
-def rule10(colorer, s, i):
+def zpt_rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=":",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule11(colorer, s, i):
+def zpt_rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=";",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule12(colorer, s, i):
+def zpt_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="?",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule13(colorer, s, i):
+def zpt_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="|",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule14(colorer, s, i):
+def zpt_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal2", seq="$$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule15(colorer, s, i):
+def zpt_rule15(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="${", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule16(colorer, s, i):
+def zpt_rule16(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword2", pattern="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule17(colorer, s, i):
+def zpt_rule17(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for attribute ruleset.
 rulesDict3 = {
-	"$": [rule14,rule15,rule16,],
-	"-": [rule17,],
-	"0": [rule17,],
-	"1": [rule17,],
-	"2": [rule17,],
-	"3": [rule17,],
-	"4": [rule17,],
-	"5": [rule17,],
-	"6": [rule17,],
-	"7": [rule17,],
-	"8": [rule17,],
-	"9": [rule17,],
-	":": [rule10,],
-	";": [rule11,],
-	"?": [rule12,],
-	"@": [rule17,],
-	"A": [rule17,],
-	"B": [rule17,],
-	"C": [rule17,],
-	"D": [rule17,],
-	"E": [rule17,],
-	"F": [rule17,],
-	"G": [rule17,],
-	"H": [rule17,],
-	"I": [rule17,],
-	"J": [rule17,],
-	"K": [rule17,],
-	"L": [rule17,],
-	"M": [rule17,],
-	"N": [rule17,],
-	"O": [rule17,],
-	"P": [rule17,],
-	"Q": [rule17,],
-	"R": [rule17,],
-	"S": [rule17,],
-	"T": [rule17,],
-	"U": [rule17,],
-	"V": [rule17,],
-	"W": [rule17,],
-	"X": [rule17,],
-	"Y": [rule17,],
-	"Z": [rule17,],
-	"a": [rule17,],
-	"b": [rule17,],
-	"c": [rule17,],
-	"d": [rule17,],
-	"e": [rule17,],
-	"f": [rule17,],
-	"g": [rule17,],
-	"h": [rule17,],
-	"i": [rule17,],
-	"j": [rule17,],
-	"k": [rule17,],
-	"l": [rule17,],
-	"m": [rule17,],
-	"n": [rule17,],
-	"o": [rule17,],
-	"p": [rule17,],
-	"q": [rule17,],
-	"r": [rule17,],
-	"s": [rule17,],
-	"t": [rule17,],
-	"u": [rule17,],
-	"v": [rule17,],
-	"w": [rule17,],
-	"x": [rule17,],
-	"y": [rule17,],
-	"z": [rule17,],
-	"|": [rule13,],
+	"$": [zpt_rule14,zpt_rule15,zpt_rule16,],
+	"-": [zpt_rule17,],
+	"0": [zpt_rule17,],
+	"1": [zpt_rule17,],
+	"2": [zpt_rule17,],
+	"3": [zpt_rule17,],
+	"4": [zpt_rule17,],
+	"5": [zpt_rule17,],
+	"6": [zpt_rule17,],
+	"7": [zpt_rule17,],
+	"8": [zpt_rule17,],
+	"9": [zpt_rule17,],
+	":": [zpt_rule10,],
+	";": [zpt_rule11,],
+	"?": [zpt_rule12,],
+	"@": [zpt_rule17,],
+	"A": [zpt_rule17,],
+	"B": [zpt_rule17,],
+	"C": [zpt_rule17,],
+	"D": [zpt_rule17,],
+	"E": [zpt_rule17,],
+	"F": [zpt_rule17,],
+	"G": [zpt_rule17,],
+	"H": [zpt_rule17,],
+	"I": [zpt_rule17,],
+	"J": [zpt_rule17,],
+	"K": [zpt_rule17,],
+	"L": [zpt_rule17,],
+	"M": [zpt_rule17,],
+	"N": [zpt_rule17,],
+	"O": [zpt_rule17,],
+	"P": [zpt_rule17,],
+	"Q": [zpt_rule17,],
+	"R": [zpt_rule17,],
+	"S": [zpt_rule17,],
+	"T": [zpt_rule17,],
+	"U": [zpt_rule17,],
+	"V": [zpt_rule17,],
+	"W": [zpt_rule17,],
+	"X": [zpt_rule17,],
+	"Y": [zpt_rule17,],
+	"Z": [zpt_rule17,],
+	"a": [zpt_rule17,],
+	"b": [zpt_rule17,],
+	"c": [zpt_rule17,],
+	"d": [zpt_rule17,],
+	"e": [zpt_rule17,],
+	"f": [zpt_rule17,],
+	"g": [zpt_rule17,],
+	"h": [zpt_rule17,],
+	"i": [zpt_rule17,],
+	"j": [zpt_rule17,],
+	"k": [zpt_rule17,],
+	"l": [zpt_rule17,],
+	"m": [zpt_rule17,],
+	"n": [zpt_rule17,],
+	"o": [zpt_rule17,],
+	"p": [zpt_rule17,],
+	"q": [zpt_rule17,],
+	"r": [zpt_rule17,],
+	"s": [zpt_rule17,],
+	"t": [zpt_rule17,],
+	"u": [zpt_rule17,],
+	"v": [zpt_rule17,],
+	"w": [zpt_rule17,],
+	"x": [zpt_rule17,],
+	"y": [zpt_rule17,],
+	"z": [zpt_rule17,],
+	"|": [zpt_rule13,],
 }
 
 # Rules for zpt_javascript ruleset.
 
-def rule18(colorer, s, i):
+def zpt_rule18(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="javascript::MAIN")
 
-def rule19(colorer, s, i):
+def zpt_rule19(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq="SRC=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="BACK_TO_HTML")
 
 # Rules dict for javascript ruleset.
 rulesDict4 = {
-	">": [rule18,],
-	"S": [rule19,],
+	">": [zpt_rule18,],
+	"S": [zpt_rule19,],
 }
 
 # Rules for zpt_back_to_html ruleset.
 
-def rule20(colorer, s, i):
+def zpt_rule20(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="zpt::MAIN")
 
 # Rules dict for back_to_html ruleset.
 rulesDict5 = {
-	">": [rule20,],
+	">": [zpt_rule20,],
 }
 
 # Rules for zpt_css ruleset.
 
-def rule21(colorer, s, i):
+def zpt_rule21(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="css::MAIN")
 
 # Rules dict for css ruleset.
 rulesDict6 = {
-	">": [rule21,],
+	">": [zpt_rule21,],
 }
 
 # x.rulesDictDict for zpt mode.

@@ -528,199 +528,199 @@ keywordsDictDict = {
 
 # Rules for assembly_macro32_main ruleset.
 
-def rule0(colorer, s, i):
+def assembly-macro32_rule0(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq=";",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule1(colorer, s, i):
+def assembly-macro32_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule2(colorer, s, i):
+def assembly-macro32_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule3(colorer, s, i):
+def assembly-macro32_rule3(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="label", pattern="%%",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule4(colorer, s, i):
+def assembly-macro32_rule4(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword2", pattern="%",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule5(colorer, s, i):
+def assembly-macro32_rule5(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="label", pattern=":",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule6(colorer, s, i):
+def assembly-macro32_rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="B^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule7(colorer, s, i):
+def assembly-macro32_rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="D^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule8(colorer, s, i):
+def assembly-macro32_rule8(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="O^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule9(colorer, s, i):
+def assembly-macro32_rule9(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="X^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule10(colorer, s, i):
+def assembly-macro32_rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="A^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule11(colorer, s, i):
+def assembly-macro32_rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="M^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule12(colorer, s, i):
+def assembly-macro32_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="F^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule13(colorer, s, i):
+def assembly-macro32_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="C^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule14(colorer, s, i):
+def assembly-macro32_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="L^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule15(colorer, s, i):
+def assembly-macro32_rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="G^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule16(colorer, s, i):
+def assembly-macro32_rule16(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule17(colorer, s, i):
+def assembly-macro32_rule17(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule18(colorer, s, i):
+def assembly-macro32_rule18(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule19(colorer, s, i):
+def assembly-macro32_rule19(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule20(colorer, s, i):
+def assembly-macro32_rule20(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule21(colorer, s, i):
+def assembly-macro32_rule21(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="@",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule22(colorer, s, i):
+def assembly-macro32_rule22(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="#",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule23(colorer, s, i):
+def assembly-macro32_rule23(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="&",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule24(colorer, s, i):
+def assembly-macro32_rule24(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="!",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule25(colorer, s, i):
+def assembly-macro32_rule25(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule26(colorer, s, i):
+def assembly-macro32_rule26(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"!": [rule24,],
-	"\"": [rule2,],
-	"#": [rule22,],
-	"%": [rule3,rule4,],
-	"&": [rule23,],
-	"'": [rule1,],
-	"*": [rule20,],
-	"+": [rule17,],
-	"-": [rule18,],
-	".": [rule26,],
-	"/": [rule19,],
-	"0": [rule26,],
-	"1": [rule26,],
-	"2": [rule26,],
-	"3": [rule26,],
-	"4": [rule26,],
-	"5": [rule26,],
-	"6": [rule26,],
-	"7": [rule26,],
-	"8": [rule26,],
-	"9": [rule26,],
-	":": [rule5,],
-	";": [rule0,],
-	"@": [rule21,rule26,],
-	"A": [rule10,rule26,],
-	"B": [rule6,rule26,],
-	"C": [rule13,rule26,],
-	"D": [rule7,rule26,],
-	"E": [rule26,],
-	"F": [rule12,rule26,],
-	"G": [rule15,rule26,],
-	"H": [rule26,],
-	"I": [rule26,],
-	"J": [rule26,],
-	"K": [rule26,],
-	"L": [rule14,rule26,],
-	"M": [rule11,rule26,],
-	"N": [rule26,],
-	"O": [rule8,rule26,],
-	"P": [rule26,],
-	"Q": [rule26,],
-	"R": [rule26,],
-	"S": [rule26,],
-	"T": [rule26,],
-	"U": [rule26,],
-	"V": [rule26,],
-	"W": [rule26,],
-	"X": [rule9,rule26,],
-	"Y": [rule26,],
-	"Z": [rule26,],
-	"\\": [rule25,],
-	"^": [rule16,],
-	"_": [rule26,],
-	"a": [rule26,],
-	"b": [rule26,],
-	"c": [rule26,],
-	"d": [rule26,],
-	"e": [rule26,],
-	"f": [rule26,],
-	"g": [rule26,],
-	"h": [rule26,],
-	"i": [rule26,],
-	"j": [rule26,],
-	"k": [rule26,],
-	"l": [rule26,],
-	"m": [rule26,],
-	"n": [rule26,],
-	"o": [rule26,],
-	"p": [rule26,],
-	"q": [rule26,],
-	"r": [rule26,],
-	"s": [rule26,],
-	"t": [rule26,],
-	"u": [rule26,],
-	"v": [rule26,],
-	"w": [rule26,],
-	"x": [rule26,],
-	"y": [rule26,],
-	"z": [rule26,],
+	"!": [assembly-macro32_rule24,],
+	"\"": [assembly-macro32_rule2,],
+	"#": [assembly-macro32_rule22,],
+	"%": [assembly-macro32_rule3,assembly-macro32_rule4,],
+	"&": [assembly-macro32_rule23,],
+	"'": [assembly-macro32_rule1,],
+	"*": [assembly-macro32_rule20,],
+	"+": [assembly-macro32_rule17,],
+	"-": [assembly-macro32_rule18,],
+	".": [assembly-macro32_rule26,],
+	"/": [assembly-macro32_rule19,],
+	"0": [assembly-macro32_rule26,],
+	"1": [assembly-macro32_rule26,],
+	"2": [assembly-macro32_rule26,],
+	"3": [assembly-macro32_rule26,],
+	"4": [assembly-macro32_rule26,],
+	"5": [assembly-macro32_rule26,],
+	"6": [assembly-macro32_rule26,],
+	"7": [assembly-macro32_rule26,],
+	"8": [assembly-macro32_rule26,],
+	"9": [assembly-macro32_rule26,],
+	":": [assembly-macro32_rule5,],
+	";": [assembly-macro32_rule0,],
+	"@": [assembly-macro32_rule21,assembly-macro32_rule26,],
+	"A": [assembly-macro32_rule10,assembly-macro32_rule26,],
+	"B": [assembly-macro32_rule6,assembly-macro32_rule26,],
+	"C": [assembly-macro32_rule13,assembly-macro32_rule26,],
+	"D": [assembly-macro32_rule7,assembly-macro32_rule26,],
+	"E": [assembly-macro32_rule26,],
+	"F": [assembly-macro32_rule12,assembly-macro32_rule26,],
+	"G": [assembly-macro32_rule15,assembly-macro32_rule26,],
+	"H": [assembly-macro32_rule26,],
+	"I": [assembly-macro32_rule26,],
+	"J": [assembly-macro32_rule26,],
+	"K": [assembly-macro32_rule26,],
+	"L": [assembly-macro32_rule14,assembly-macro32_rule26,],
+	"M": [assembly-macro32_rule11,assembly-macro32_rule26,],
+	"N": [assembly-macro32_rule26,],
+	"O": [assembly-macro32_rule8,assembly-macro32_rule26,],
+	"P": [assembly-macro32_rule26,],
+	"Q": [assembly-macro32_rule26,],
+	"R": [assembly-macro32_rule26,],
+	"S": [assembly-macro32_rule26,],
+	"T": [assembly-macro32_rule26,],
+	"U": [assembly-macro32_rule26,],
+	"V": [assembly-macro32_rule26,],
+	"W": [assembly-macro32_rule26,],
+	"X": [assembly-macro32_rule9,assembly-macro32_rule26,],
+	"Y": [assembly-macro32_rule26,],
+	"Z": [assembly-macro32_rule26,],
+	"\\": [assembly-macro32_rule25,],
+	"^": [assembly-macro32_rule16,],
+	"_": [assembly-macro32_rule26,],
+	"a": [assembly-macro32_rule26,],
+	"b": [assembly-macro32_rule26,],
+	"c": [assembly-macro32_rule26,],
+	"d": [assembly-macro32_rule26,],
+	"e": [assembly-macro32_rule26,],
+	"f": [assembly-macro32_rule26,],
+	"g": [assembly-macro32_rule26,],
+	"h": [assembly-macro32_rule26,],
+	"i": [assembly-macro32_rule26,],
+	"j": [assembly-macro32_rule26,],
+	"k": [assembly-macro32_rule26,],
+	"l": [assembly-macro32_rule26,],
+	"m": [assembly-macro32_rule26,],
+	"n": [assembly-macro32_rule26,],
+	"o": [assembly-macro32_rule26,],
+	"p": [assembly-macro32_rule26,],
+	"q": [assembly-macro32_rule26,],
+	"r": [assembly-macro32_rule26,],
+	"s": [assembly-macro32_rule26,],
+	"t": [assembly-macro32_rule26,],
+	"u": [assembly-macro32_rule26,],
+	"v": [assembly-macro32_rule26,],
+	"w": [assembly-macro32_rule26,],
+	"x": [assembly-macro32_rule26,],
+	"y": [assembly-macro32_rule26,],
+	"z": [assembly-macro32_rule26,],
 }
 
 # x.rulesDictDict for assembly_macro32 mode.

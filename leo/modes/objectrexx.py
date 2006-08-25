@@ -207,202 +207,202 @@ keywordsDictDict = {
 
 # Rules for objectrexx_main ruleset.
 
-def rule0(colorer, s, i):
+def objectrexx_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule1(colorer, s, i):
+def objectrexx_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule2(colorer, s, i):
+def objectrexx_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule3(colorer, s, i):
+def objectrexx_rule3(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="keyword2", seq="#",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule4(colorer, s, i):
+def objectrexx_rule4(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="--",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule5(colorer, s, i):
+def objectrexx_rule5(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule6(colorer, s, i):
+def objectrexx_rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="!",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule7(colorer, s, i):
+def objectrexx_rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule8(colorer, s, i):
+def objectrexx_rule8(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule9(colorer, s, i):
+def objectrexx_rule9(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule10(colorer, s, i):
+def objectrexx_rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule11(colorer, s, i):
+def objectrexx_rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule12(colorer, s, i):
+def objectrexx_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule13(colorer, s, i):
+def objectrexx_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule14(colorer, s, i):
+def objectrexx_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule15(colorer, s, i):
+def objectrexx_rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule16(colorer, s, i):
+def objectrexx_rule16(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="&",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule17(colorer, s, i):
+def objectrexx_rule17(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="|",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule18(colorer, s, i):
+def objectrexx_rule18(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule19(colorer, s, i):
+def objectrexx_rule19(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="~",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule20(colorer, s, i):
+def objectrexx_rule20(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule21(colorer, s, i):
+def objectrexx_rule21(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="{",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule22(colorer, s, i):
+def objectrexx_rule22(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="function", pattern="::",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule23(colorer, s, i):
+def objectrexx_rule23(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="label", pattern=":",
         at_line_start=False, at_whitespace_end=True, at_word_start=False, exclude_match=True)
 
-def rule24(colorer, s, i):
+def objectrexx_rule24(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="function", pattern="(",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule25(colorer, s, i):
+def objectrexx_rule25(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"!": [rule6,],
-	"\"": [rule1,],
-	"#": [rule3,],
-	"%": [rule15,],
-	"&": [rule16,],
-	"'": [rule2,],
-	"(": [rule24,],
-	"*": [rule12,],
-	"+": [rule9,],
-	"-": [rule4,rule10,],
-	"/": [rule0,rule11,],
-	"0": [rule25,],
-	"1": [rule25,],
-	"2": [rule25,],
-	"3": [rule25,],
-	"4": [rule25,],
-	"5": [rule25,],
-	"6": [rule25,],
-	"7": [rule25,],
-	"8": [rule25,],
-	"9": [rule25,],
-	":": [rule22,rule23,],
-	"<": [rule8,rule14,],
-	"=": [rule5,],
-	">": [rule7,rule13,],
-	"@": [rule25,],
-	"A": [rule25,],
-	"B": [rule25,],
-	"C": [rule25,],
-	"D": [rule25,],
-	"E": [rule25,],
-	"F": [rule25,],
-	"G": [rule25,],
-	"H": [rule25,],
-	"I": [rule25,],
-	"J": [rule25,],
-	"K": [rule25,],
-	"L": [rule25,],
-	"M": [rule25,],
-	"N": [rule25,],
-	"O": [rule25,],
-	"P": [rule25,],
-	"Q": [rule25,],
-	"R": [rule25,],
-	"S": [rule25,],
-	"T": [rule25,],
-	"U": [rule25,],
-	"V": [rule25,],
-	"W": [rule25,],
-	"X": [rule25,],
-	"Y": [rule25,],
-	"Z": [rule25,],
-	"^": [rule18,],
-	"a": [rule25,],
-	"b": [rule25,],
-	"c": [rule25,],
-	"d": [rule25,],
-	"e": [rule25,],
-	"f": [rule25,],
-	"g": [rule25,],
-	"h": [rule25,],
-	"i": [rule25,],
-	"j": [rule25,],
-	"k": [rule25,],
-	"l": [rule25,],
-	"m": [rule25,],
-	"n": [rule25,],
-	"o": [rule25,],
-	"p": [rule25,],
-	"q": [rule25,],
-	"r": [rule25,],
-	"s": [rule25,],
-	"t": [rule25,],
-	"u": [rule25,],
-	"v": [rule25,],
-	"w": [rule25,],
-	"x": [rule25,],
-	"y": [rule25,],
-	"z": [rule25,],
-	"{": [rule21,],
-	"|": [rule17,],
-	"}": [rule20,],
-	"~": [rule19,],
+	"!": [objectrexx_rule6,],
+	"\"": [objectrexx_rule1,],
+	"#": [objectrexx_rule3,],
+	"%": [objectrexx_rule15,],
+	"&": [objectrexx_rule16,],
+	"'": [objectrexx_rule2,],
+	"(": [objectrexx_rule24,],
+	"*": [objectrexx_rule12,],
+	"+": [objectrexx_rule9,],
+	"-": [objectrexx_rule4,objectrexx_rule10,],
+	"/": [objectrexx_rule0,objectrexx_rule11,],
+	"0": [objectrexx_rule25,],
+	"1": [objectrexx_rule25,],
+	"2": [objectrexx_rule25,],
+	"3": [objectrexx_rule25,],
+	"4": [objectrexx_rule25,],
+	"5": [objectrexx_rule25,],
+	"6": [objectrexx_rule25,],
+	"7": [objectrexx_rule25,],
+	"8": [objectrexx_rule25,],
+	"9": [objectrexx_rule25,],
+	":": [objectrexx_rule22,objectrexx_rule23,],
+	"<": [objectrexx_rule8,objectrexx_rule14,],
+	"=": [objectrexx_rule5,],
+	">": [objectrexx_rule7,objectrexx_rule13,],
+	"@": [objectrexx_rule25,],
+	"A": [objectrexx_rule25,],
+	"B": [objectrexx_rule25,],
+	"C": [objectrexx_rule25,],
+	"D": [objectrexx_rule25,],
+	"E": [objectrexx_rule25,],
+	"F": [objectrexx_rule25,],
+	"G": [objectrexx_rule25,],
+	"H": [objectrexx_rule25,],
+	"I": [objectrexx_rule25,],
+	"J": [objectrexx_rule25,],
+	"K": [objectrexx_rule25,],
+	"L": [objectrexx_rule25,],
+	"M": [objectrexx_rule25,],
+	"N": [objectrexx_rule25,],
+	"O": [objectrexx_rule25,],
+	"P": [objectrexx_rule25,],
+	"Q": [objectrexx_rule25,],
+	"R": [objectrexx_rule25,],
+	"S": [objectrexx_rule25,],
+	"T": [objectrexx_rule25,],
+	"U": [objectrexx_rule25,],
+	"V": [objectrexx_rule25,],
+	"W": [objectrexx_rule25,],
+	"X": [objectrexx_rule25,],
+	"Y": [objectrexx_rule25,],
+	"Z": [objectrexx_rule25,],
+	"^": [objectrexx_rule18,],
+	"a": [objectrexx_rule25,],
+	"b": [objectrexx_rule25,],
+	"c": [objectrexx_rule25,],
+	"d": [objectrexx_rule25,],
+	"e": [objectrexx_rule25,],
+	"f": [objectrexx_rule25,],
+	"g": [objectrexx_rule25,],
+	"h": [objectrexx_rule25,],
+	"i": [objectrexx_rule25,],
+	"j": [objectrexx_rule25,],
+	"k": [objectrexx_rule25,],
+	"l": [objectrexx_rule25,],
+	"m": [objectrexx_rule25,],
+	"n": [objectrexx_rule25,],
+	"o": [objectrexx_rule25,],
+	"p": [objectrexx_rule25,],
+	"q": [objectrexx_rule25,],
+	"r": [objectrexx_rule25,],
+	"s": [objectrexx_rule25,],
+	"t": [objectrexx_rule25,],
+	"u": [objectrexx_rule25,],
+	"v": [objectrexx_rule25,],
+	"w": [objectrexx_rule25,],
+	"x": [objectrexx_rule25,],
+	"y": [objectrexx_rule25,],
+	"z": [objectrexx_rule25,],
+	"{": [objectrexx_rule21,],
+	"|": [objectrexx_rule17,],
+	"}": [objectrexx_rule20,],
+	"~": [objectrexx_rule19,],
 }
 
 # x.rulesDictDict for objectrexx mode.

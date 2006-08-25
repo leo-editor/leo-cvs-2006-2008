@@ -2535,61 +2535,61 @@ keywordsDictDict = {
 
 # Rules for php_main ruleset.
 
-def rule0(colorer, s, i):
+def php_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<?php", end="?>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="PHP",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule1(colorer, s, i):
+def php_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<?", end="?>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="PHP",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule2(colorer, s, i):
+def php_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<%=", end="%>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="PHP",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule3(colorer, s, i):
+def php_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="<!--", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule4(colorer, s, i):
+def php_rule4(colorer, s, i):
     return colorer.match_span_regexp(s, i, kind="markup", begin="<SCRIPT\\s+LANGUAGE=\"?PHP\"?>", end="</SCRIPT>", hash_char="< ",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="PHP",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule5(colorer, s, i):
+def php_rule5(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<SCRIPT", end="</SCRIPT>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="JAVASCRIPT",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule6(colorer, s, i):
+def php_rule6(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<STYLE", end="</STYLE>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="html::CSS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule7(colorer, s, i):
+def php_rule7(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="<!", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="xml::DTD-TAGS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule8(colorer, s, i):
+def php_rule8(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="TAGS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule9(colorer, s, i):
+def php_rule9(colorer, s, i):
     return colorer.match_span(s, i, kind="literal2", begin="&", end=";",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
@@ -2597,69 +2597,69 @@ def rule9(colorer, s, i):
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"&": [rule9,],
-	"<": [rule0,rule1,rule2,rule3,rule4,rule5,rule6,rule7,rule8,],
+	"&": [php_rule9,],
+	"<": [php_rule0,php_rule1,php_rule2,php_rule3,php_rule4,php_rule5,php_rule6,php_rule7,php_rule8,],
 }
 
 # Rules for php_tags ruleset.
 
-def rule10(colorer, s, i):
+def php_rule10(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<?php", end="?>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="PHP",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule11(colorer, s, i):
+def php_rule11(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<?", end="?>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="PHP",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule12(colorer, s, i):
+def php_rule12(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<%=", end="%>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="PHP",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule13(colorer, s, i):
+def php_rule13(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="TAGS_LITERAL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule14(colorer, s, i):
+def php_rule14(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="TAGS_LITERAL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule15(colorer, s, i):
+def php_rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules dict for tags ruleset.
 rulesDict2 = {
-	"\"": [rule13,],
-	"'": [rule14,],
-	"<": [rule10,rule11,rule12,],
-	"=": [rule15,],
+	"\"": [php_rule13,],
+	"'": [php_rule14,],
+	"<": [php_rule10,php_rule11,php_rule12,],
+	"=": [php_rule15,],
 }
 
 # Rules for php_tags_literal ruleset.
 
-def rule16(colorer, s, i):
+def php_rule16(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<?php", end="?>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="PHP",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule17(colorer, s, i):
+def php_rule17(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<?", end="?>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="PHP",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule18(colorer, s, i):
+def php_rule18(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<%=", end="%>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="PHP",exclude_match=False,
@@ -2667,314 +2667,314 @@ def rule18(colorer, s, i):
 
 # Rules dict for tags_literal ruleset.
 rulesDict3 = {
-	"<": [rule16,rule17,rule18,],
+	"<": [php_rule16,php_rule17,php_rule18,],
 }
 
 # Rules for php_php ruleset.
 
-def rule19(colorer, s, i):
+def php_rule19(colorer, s, i):
     return colorer.match_span(s, i, kind="comment3", begin="/**", end="*/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="PHPDOC",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule20(colorer, s, i):
+def php_rule20(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule21(colorer, s, i):
+def php_rule21(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="PHP_LITERAL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule22(colorer, s, i):
+def php_rule22(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule23(colorer, s, i):
+def php_rule23(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="`", end="`",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="PHP_LITERAL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule24(colorer, s, i):
+def php_rule24(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment2", seq="//",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule25(colorer, s, i):
+def php_rule25(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="#",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule26(colorer, s, i):
+def php_rule26(colorer, s, i):
     return colorer.match_span_regexp(s, i, kind="literal1", begin="<<<[[:space:]'\"]*([[:alnum:]_]+)[[:space:]'\"]*", end="$1", hash_char="< ",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="PHP_LITERAL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule27(colorer, s, i):
+def php_rule27(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword3", pattern="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule28(colorer, s, i):
+def php_rule28(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule29(colorer, s, i):
+def php_rule29(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule30(colorer, s, i):
+def php_rule30(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="!",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule31(colorer, s, i):
+def php_rule31(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule32(colorer, s, i):
+def php_rule32(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule33(colorer, s, i):
+def php_rule33(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule34(colorer, s, i):
+def php_rule34(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule35(colorer, s, i):
+def php_rule35(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule36(colorer, s, i):
+def php_rule36(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule37(colorer, s, i):
+def php_rule37(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule38(colorer, s, i):
+def php_rule38(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule39(colorer, s, i):
+def php_rule39(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule40(colorer, s, i):
+def php_rule40(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule41(colorer, s, i):
+def php_rule41(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="&",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule42(colorer, s, i):
+def php_rule42(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="|",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule43(colorer, s, i):
+def php_rule43(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule44(colorer, s, i):
+def php_rule44(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="~",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule45(colorer, s, i):
+def php_rule45(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=".",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule46(colorer, s, i):
+def php_rule46(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule47(colorer, s, i):
+def php_rule47(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="{",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule48(colorer, s, i):
+def php_rule48(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=",",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule49(colorer, s, i):
+def php_rule49(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=";",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule50(colorer, s, i):
+def php_rule50(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="]",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule51(colorer, s, i):
+def php_rule51(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="[",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule52(colorer, s, i):
+def php_rule52(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="?",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule53(colorer, s, i):
+def php_rule53(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="@",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule54(colorer, s, i):
+def php_rule54(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=":",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule55(colorer, s, i):
+def php_rule55(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="function", pattern="(",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule56(colorer, s, i):
+def php_rule56(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for php ruleset.
 rulesDict4 = {
-	"!": [rule30,],
-	"\"": [rule21,],
-	"#": [rule25,],
-	"$": [rule27,],
-	"%": [rule40,],
-	"&": [rule41,],
-	"'": [rule22,],
-	"(": [rule55,],
-	"*": [rule37,],
-	"+": [rule34,],
-	",": [rule48,],
-	"-": [rule29,rule35,],
-	".": [rule45,],
-	"/": [rule19,rule20,rule24,rule36,],
-	"0": [rule56,],
-	"1": [rule56,],
-	"2": [rule56,],
-	"3": [rule56,],
-	"4": [rule56,],
-	"5": [rule56,],
-	"6": [rule56,],
-	"7": [rule56,],
-	"8": [rule56,],
-	"9": [rule56,],
-	":": [rule54,],
-	";": [rule49,],
-	"<": [rule26,rule32,rule39,],
-	"=": [rule28,rule33,],
-	">": [rule31,rule38,],
-	"?": [rule52,],
-	"@": [rule53,rule56,],
-	"A": [rule56,],
-	"B": [rule56,],
-	"C": [rule56,],
-	"D": [rule56,],
-	"E": [rule56,],
-	"F": [rule56,],
-	"G": [rule56,],
-	"H": [rule56,],
-	"I": [rule56,],
-	"J": [rule56,],
-	"K": [rule56,],
-	"L": [rule56,],
-	"M": [rule56,],
-	"N": [rule56,],
-	"O": [rule56,],
-	"P": [rule56,],
-	"Q": [rule56,],
-	"R": [rule56,],
-	"S": [rule56,],
-	"T": [rule56,],
-	"U": [rule56,],
-	"V": [rule56,],
-	"W": [rule56,],
-	"X": [rule56,],
-	"Y": [rule56,],
-	"Z": [rule56,],
-	"[": [rule51,],
-	"]": [rule50,],
-	"^": [rule43,],
-	"_": [rule56,],
-	"`": [rule23,],
-	"a": [rule56,],
-	"b": [rule56,],
-	"c": [rule56,],
-	"d": [rule56,],
-	"e": [rule56,],
-	"f": [rule56,],
-	"g": [rule56,],
-	"h": [rule56,],
-	"i": [rule56,],
-	"j": [rule56,],
-	"k": [rule56,],
-	"l": [rule56,],
-	"m": [rule56,],
-	"n": [rule56,],
-	"o": [rule56,],
-	"p": [rule56,],
-	"q": [rule56,],
-	"r": [rule56,],
-	"s": [rule56,],
-	"t": [rule56,],
-	"u": [rule56,],
-	"v": [rule56,],
-	"w": [rule56,],
-	"x": [rule56,],
-	"y": [rule56,],
-	"z": [rule56,],
-	"{": [rule47,],
-	"|": [rule42,],
-	"}": [rule46,],
-	"~": [rule44,],
+	"!": [php_rule30,],
+	"\"": [php_rule21,],
+	"#": [php_rule25,],
+	"$": [php_rule27,],
+	"%": [php_rule40,],
+	"&": [php_rule41,],
+	"'": [php_rule22,],
+	"(": [php_rule55,],
+	"*": [php_rule37,],
+	"+": [php_rule34,],
+	",": [php_rule48,],
+	"-": [php_rule29,php_rule35,],
+	".": [php_rule45,],
+	"/": [php_rule19,php_rule20,php_rule24,php_rule36,],
+	"0": [php_rule56,],
+	"1": [php_rule56,],
+	"2": [php_rule56,],
+	"3": [php_rule56,],
+	"4": [php_rule56,],
+	"5": [php_rule56,],
+	"6": [php_rule56,],
+	"7": [php_rule56,],
+	"8": [php_rule56,],
+	"9": [php_rule56,],
+	":": [php_rule54,],
+	";": [php_rule49,],
+	"<": [php_rule26,php_rule32,php_rule39,],
+	"=": [php_rule28,php_rule33,],
+	">": [php_rule31,php_rule38,],
+	"?": [php_rule52,],
+	"@": [php_rule53,php_rule56,],
+	"A": [php_rule56,],
+	"B": [php_rule56,],
+	"C": [php_rule56,],
+	"D": [php_rule56,],
+	"E": [php_rule56,],
+	"F": [php_rule56,],
+	"G": [php_rule56,],
+	"H": [php_rule56,],
+	"I": [php_rule56,],
+	"J": [php_rule56,],
+	"K": [php_rule56,],
+	"L": [php_rule56,],
+	"M": [php_rule56,],
+	"N": [php_rule56,],
+	"O": [php_rule56,],
+	"P": [php_rule56,],
+	"Q": [php_rule56,],
+	"R": [php_rule56,],
+	"S": [php_rule56,],
+	"T": [php_rule56,],
+	"U": [php_rule56,],
+	"V": [php_rule56,],
+	"W": [php_rule56,],
+	"X": [php_rule56,],
+	"Y": [php_rule56,],
+	"Z": [php_rule56,],
+	"[": [php_rule51,],
+	"]": [php_rule50,],
+	"^": [php_rule43,],
+	"_": [php_rule56,],
+	"`": [php_rule23,],
+	"a": [php_rule56,],
+	"b": [php_rule56,],
+	"c": [php_rule56,],
+	"d": [php_rule56,],
+	"e": [php_rule56,],
+	"f": [php_rule56,],
+	"g": [php_rule56,],
+	"h": [php_rule56,],
+	"i": [php_rule56,],
+	"j": [php_rule56,],
+	"k": [php_rule56,],
+	"l": [php_rule56,],
+	"m": [php_rule56,],
+	"n": [php_rule56,],
+	"o": [php_rule56,],
+	"p": [php_rule56,],
+	"q": [php_rule56,],
+	"r": [php_rule56,],
+	"s": [php_rule56,],
+	"t": [php_rule56,],
+	"u": [php_rule56,],
+	"v": [php_rule56,],
+	"w": [php_rule56,],
+	"x": [php_rule56,],
+	"y": [php_rule56,],
+	"z": [php_rule56,],
+	"{": [php_rule47,],
+	"|": [php_rule42,],
+	"}": [php_rule46,],
+	"~": [php_rule44,],
 }
 
 # Rules for php_php_literal ruleset.
 
-def rule57(colorer, s, i):
+def php_rule57(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword3", pattern="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 # Rules dict for php_literal ruleset.
 rulesDict5 = {
-	"$": [rule57,],
+	"$": [php_rule57,],
 }
 
 # Rules for php_javascript ruleset.
 
-def rule58(colorer, s, i):
+def php_rule58(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="JAVASCRIPT+PHP")
 
-def rule59(colorer, s, i):
+def php_rule59(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq="SRC=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="BACK_TO_HTML")
 
 # Rules dict for javascript ruleset.
 rulesDict6 = {
-	">": [rule58,],
-	"S": [rule59,],
+	">": [php_rule58,],
+	"S": [php_rule59,],
 }
 
 # Rules for php_javascript_php ruleset.
 
-def rule60(colorer, s, i):
+def php_rule60(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<?php", end="?>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="php::PHP",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule61(colorer, s, i):
+def php_rule61(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<?", end="?>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="php::PHP",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule62(colorer, s, i):
+def php_rule62(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<%=", end="%>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="php::PHP",exclude_match=False,
@@ -2983,115 +2983,115 @@ def rule62(colorer, s, i):
 
 # Rules dict for javascript_php ruleset.
 rulesDict7 = {
-	"<": [rule60,rule61,rule62,],
+	"<": [php_rule60,php_rule61,php_rule62,],
 }
 
 # Rules for php_phpdoc ruleset.
 
-def rule63(colorer, s, i):
+def php_rule63(colorer, s, i):
     return colorer.match_seq(s, i, kind="comment3", seq="{",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule64(colorer, s, i):
+def php_rule64(colorer, s, i):
     return colorer.match_seq(s, i, kind="comment3", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule65(colorer, s, i):
+def php_rule65(colorer, s, i):
     return colorer.match_span(s, i, kind="comment2", begin="<!--", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule66(colorer, s, i):
+def php_rule66(colorer, s, i):
     return colorer.match_seq(s, i, kind="comment3", seq="<<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule67(colorer, s, i):
+def php_rule67(colorer, s, i):
     return colorer.match_seq(s, i, kind="comment3", seq="<=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule68(colorer, s, i):
+def php_rule68(colorer, s, i):
     return colorer.match_seq(s, i, kind="comment3", seq="< ",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule69(colorer, s, i):
+def php_rule69(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="xml::TAGS",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule70(colorer, s, i):
+def php_rule70(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for phpdoc ruleset.
 rulesDict8 = {
-	"*": [rule64,],
-	"0": [rule70,],
-	"1": [rule70,],
-	"2": [rule70,],
-	"3": [rule70,],
-	"4": [rule70,],
-	"5": [rule70,],
-	"6": [rule70,],
-	"7": [rule70,],
-	"8": [rule70,],
-	"9": [rule70,],
-	"<": [rule65,rule66,rule67,rule68,rule69,],
-	"@": [rule70,],
-	"A": [rule70,],
-	"B": [rule70,],
-	"C": [rule70,],
-	"D": [rule70,],
-	"E": [rule70,],
-	"F": [rule70,],
-	"G": [rule70,],
-	"H": [rule70,],
-	"I": [rule70,],
-	"J": [rule70,],
-	"K": [rule70,],
-	"L": [rule70,],
-	"M": [rule70,],
-	"N": [rule70,],
-	"O": [rule70,],
-	"P": [rule70,],
-	"Q": [rule70,],
-	"R": [rule70,],
-	"S": [rule70,],
-	"T": [rule70,],
-	"U": [rule70,],
-	"V": [rule70,],
-	"W": [rule70,],
-	"X": [rule70,],
-	"Y": [rule70,],
-	"Z": [rule70,],
-	"_": [rule70,],
-	"a": [rule70,],
-	"b": [rule70,],
-	"c": [rule70,],
-	"d": [rule70,],
-	"e": [rule70,],
-	"f": [rule70,],
-	"g": [rule70,],
-	"h": [rule70,],
-	"i": [rule70,],
-	"j": [rule70,],
-	"k": [rule70,],
-	"l": [rule70,],
-	"m": [rule70,],
-	"n": [rule70,],
-	"o": [rule70,],
-	"p": [rule70,],
-	"q": [rule70,],
-	"r": [rule70,],
-	"s": [rule70,],
-	"t": [rule70,],
-	"u": [rule70,],
-	"v": [rule70,],
-	"w": [rule70,],
-	"x": [rule70,],
-	"y": [rule70,],
-	"z": [rule70,],
-	"{": [rule63,],
+	"*": [php_rule64,],
+	"0": [php_rule70,],
+	"1": [php_rule70,],
+	"2": [php_rule70,],
+	"3": [php_rule70,],
+	"4": [php_rule70,],
+	"5": [php_rule70,],
+	"6": [php_rule70,],
+	"7": [php_rule70,],
+	"8": [php_rule70,],
+	"9": [php_rule70,],
+	"<": [php_rule65,php_rule66,php_rule67,php_rule68,php_rule69,],
+	"@": [php_rule70,],
+	"A": [php_rule70,],
+	"B": [php_rule70,],
+	"C": [php_rule70,],
+	"D": [php_rule70,],
+	"E": [php_rule70,],
+	"F": [php_rule70,],
+	"G": [php_rule70,],
+	"H": [php_rule70,],
+	"I": [php_rule70,],
+	"J": [php_rule70,],
+	"K": [php_rule70,],
+	"L": [php_rule70,],
+	"M": [php_rule70,],
+	"N": [php_rule70,],
+	"O": [php_rule70,],
+	"P": [php_rule70,],
+	"Q": [php_rule70,],
+	"R": [php_rule70,],
+	"S": [php_rule70,],
+	"T": [php_rule70,],
+	"U": [php_rule70,],
+	"V": [php_rule70,],
+	"W": [php_rule70,],
+	"X": [php_rule70,],
+	"Y": [php_rule70,],
+	"Z": [php_rule70,],
+	"_": [php_rule70,],
+	"a": [php_rule70,],
+	"b": [php_rule70,],
+	"c": [php_rule70,],
+	"d": [php_rule70,],
+	"e": [php_rule70,],
+	"f": [php_rule70,],
+	"g": [php_rule70,],
+	"h": [php_rule70,],
+	"i": [php_rule70,],
+	"j": [php_rule70,],
+	"k": [php_rule70,],
+	"l": [php_rule70,],
+	"m": [php_rule70,],
+	"n": [php_rule70,],
+	"o": [php_rule70,],
+	"p": [php_rule70,],
+	"q": [php_rule70,],
+	"r": [php_rule70,],
+	"s": [php_rule70,],
+	"t": [php_rule70,],
+	"u": [php_rule70,],
+	"v": [php_rule70,],
+	"w": [php_rule70,],
+	"x": [php_rule70,],
+	"y": [php_rule70,],
+	"z": [php_rule70,],
+	"{": [php_rule63,],
 }
 
 # x.rulesDictDict for php mode.

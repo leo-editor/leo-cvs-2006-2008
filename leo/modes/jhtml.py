@@ -83,55 +83,55 @@ keywordsDictDict = {
 
 # Rules for jhtml_main ruleset.
 
-def rule0(colorer, s, i):
+def jhtml_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="null", begin="<!--#", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule1(colorer, s, i):
+def jhtml_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="<!--", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule2(colorer, s, i):
+def jhtml_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="`", end="`",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="java::MAIN",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule3(colorer, s, i):
+def jhtml_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<java>", end="</java>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="java::MAIN",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule4(colorer, s, i):
+def jhtml_rule4(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<SCRIPT", end="</SCRIPT>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="html::JAVASCRIPT",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule5(colorer, s, i):
+def jhtml_rule5(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<STYLE", end="</STYLE>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="html::CSS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule6(colorer, s, i):
+def jhtml_rule6(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="<!", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="xml::DTD-TAGS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule7(colorer, s, i):
+def jhtml_rule7(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="JHTML",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule8(colorer, s, i):
+def jhtml_rule8(colorer, s, i):
     return colorer.match_span(s, i, kind="literal2", begin="&", end=";",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
@@ -139,130 +139,130 @@ def rule8(colorer, s, i):
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"&": [rule8,],
-	"<": [rule0,rule1,rule3,rule4,rule5,rule6,rule7,],
-	"`": [rule2,],
+	"&": [jhtml_rule8,],
+	"<": [jhtml_rule0,jhtml_rule1,jhtml_rule3,jhtml_rule4,jhtml_rule5,jhtml_rule6,jhtml_rule7,],
+	"`": [jhtml_rule2,],
 }
 
 # Rules for jhtml_jhtml ruleset.
 
-def rule9(colorer, s, i):
+def jhtml_rule9(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="<!--", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule10(colorer, s, i):
+def jhtml_rule10(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="ATTRVALUE",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule11(colorer, s, i):
+def jhtml_rule11(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="ATTRVALUE",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule12(colorer, s, i):
+def jhtml_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq="/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule13(colorer, s, i):
+def jhtml_rule13(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for jhtml ruleset.
 rulesDict2 = {
-	"\"": [rule10,],
-	"'": [rule11,],
-	"/": [rule12,],
-	"0": [rule13,],
-	"1": [rule13,],
-	"2": [rule13,],
-	"3": [rule13,],
-	"4": [rule13,],
-	"5": [rule13,],
-	"6": [rule13,],
-	"7": [rule13,],
-	"8": [rule13,],
-	"9": [rule13,],
-	"<": [rule9,],
-	"@": [rule13,],
-	"A": [rule13,],
-	"B": [rule13,],
-	"C": [rule13,],
-	"D": [rule13,],
-	"E": [rule13,],
-	"F": [rule13,],
-	"G": [rule13,],
-	"H": [rule13,],
-	"I": [rule13,],
-	"J": [rule13,],
-	"K": [rule13,],
-	"L": [rule13,],
-	"M": [rule13,],
-	"N": [rule13,],
-	"O": [rule13,],
-	"P": [rule13,],
-	"Q": [rule13,],
-	"R": [rule13,],
-	"S": [rule13,],
-	"T": [rule13,],
-	"U": [rule13,],
-	"V": [rule13,],
-	"W": [rule13,],
-	"X": [rule13,],
-	"Y": [rule13,],
-	"Z": [rule13,],
-	"a": [rule13,],
-	"b": [rule13,],
-	"c": [rule13,],
-	"d": [rule13,],
-	"e": [rule13,],
-	"f": [rule13,],
-	"g": [rule13,],
-	"h": [rule13,],
-	"i": [rule13,],
-	"j": [rule13,],
-	"k": [rule13,],
-	"l": [rule13,],
-	"m": [rule13,],
-	"n": [rule13,],
-	"o": [rule13,],
-	"p": [rule13,],
-	"q": [rule13,],
-	"r": [rule13,],
-	"s": [rule13,],
-	"t": [rule13,],
-	"u": [rule13,],
-	"v": [rule13,],
-	"w": [rule13,],
-	"x": [rule13,],
-	"y": [rule13,],
-	"z": [rule13,],
+	"\"": [jhtml_rule10,],
+	"'": [jhtml_rule11,],
+	"/": [jhtml_rule12,],
+	"0": [jhtml_rule13,],
+	"1": [jhtml_rule13,],
+	"2": [jhtml_rule13,],
+	"3": [jhtml_rule13,],
+	"4": [jhtml_rule13,],
+	"5": [jhtml_rule13,],
+	"6": [jhtml_rule13,],
+	"7": [jhtml_rule13,],
+	"8": [jhtml_rule13,],
+	"9": [jhtml_rule13,],
+	"<": [jhtml_rule9,],
+	"@": [jhtml_rule13,],
+	"A": [jhtml_rule13,],
+	"B": [jhtml_rule13,],
+	"C": [jhtml_rule13,],
+	"D": [jhtml_rule13,],
+	"E": [jhtml_rule13,],
+	"F": [jhtml_rule13,],
+	"G": [jhtml_rule13,],
+	"H": [jhtml_rule13,],
+	"I": [jhtml_rule13,],
+	"J": [jhtml_rule13,],
+	"K": [jhtml_rule13,],
+	"L": [jhtml_rule13,],
+	"M": [jhtml_rule13,],
+	"N": [jhtml_rule13,],
+	"O": [jhtml_rule13,],
+	"P": [jhtml_rule13,],
+	"Q": [jhtml_rule13,],
+	"R": [jhtml_rule13,],
+	"S": [jhtml_rule13,],
+	"T": [jhtml_rule13,],
+	"U": [jhtml_rule13,],
+	"V": [jhtml_rule13,],
+	"W": [jhtml_rule13,],
+	"X": [jhtml_rule13,],
+	"Y": [jhtml_rule13,],
+	"Z": [jhtml_rule13,],
+	"a": [jhtml_rule13,],
+	"b": [jhtml_rule13,],
+	"c": [jhtml_rule13,],
+	"d": [jhtml_rule13,],
+	"e": [jhtml_rule13,],
+	"f": [jhtml_rule13,],
+	"g": [jhtml_rule13,],
+	"h": [jhtml_rule13,],
+	"i": [jhtml_rule13,],
+	"j": [jhtml_rule13,],
+	"k": [jhtml_rule13,],
+	"l": [jhtml_rule13,],
+	"m": [jhtml_rule13,],
+	"n": [jhtml_rule13,],
+	"o": [jhtml_rule13,],
+	"p": [jhtml_rule13,],
+	"q": [jhtml_rule13,],
+	"r": [jhtml_rule13,],
+	"s": [jhtml_rule13,],
+	"t": [jhtml_rule13,],
+	"u": [jhtml_rule13,],
+	"v": [jhtml_rule13,],
+	"w": [jhtml_rule13,],
+	"x": [jhtml_rule13,],
+	"y": [jhtml_rule13,],
+	"z": [jhtml_rule13,],
 }
 
 # Rules for jhtml_attrvalue ruleset.
 
-def rule14(colorer, s, i):
+def jhtml_rule14(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="`", end="`",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="java::MAIN",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule15(colorer, s, i):
+def jhtml_rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="label", seq="param:",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule16(colorer, s, i):
+def jhtml_rule16(colorer, s, i):
     return colorer.match_seq(s, i, kind="label", seq="bean:",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules dict for attrvalue ruleset.
 rulesDict3 = {
-	"`": [rule14,],
-	"b": [rule16,],
-	"p": [rule15,],
+	"`": [jhtml_rule14,],
+	"b": [jhtml_rule16,],
+	"p": [jhtml_rule15,],
 }
 
 # x.rulesDictDict for jhtml mode.

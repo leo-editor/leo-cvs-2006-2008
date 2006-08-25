@@ -157,1473 +157,1473 @@ keywordsDictDict = {
 
 # Rules for lilypond_main ruleset.
 
-def rule0(colorer, s, i):
+def lilypond_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment2", begin="%{", end="%}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule1(colorer, s, i):
+def lilypond_rule1(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule2(colorer, s, i):
+def lilypond_rule2(colorer, s, i):
     return colorer.match_seq(s, i, kind="null", seq="\\\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule3(colorer, s, i):
+def lilypond_rule3(colorer, s, i):
     return colorer.match_seq(s, i, kind="null", seq="\\'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule4(colorer, s, i):
+def lilypond_rule4(colorer, s, i):
     return colorer.match_seq(s, i, kind="null", seq="\\H",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule5(colorer, s, i):
+def lilypond_rule5(colorer, s, i):
     return colorer.match_seq(s, i, kind="digit", seq="\\breve",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule6(colorer, s, i):
+def lilypond_rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="digit", seq="\\longa",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule7(colorer, s, i):
+def lilypond_rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="digit", seq="\\maxima",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule8(colorer, s, i):
+def lilypond_rule8(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="function", pattern="=",
         at_line_start=False, at_whitespace_end=True, at_word_start=False, exclude_match=False)
 
-def rule9(colorer, s, i):
+def lilypond_rule9(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="function", pattern="=",
         at_line_start=False, at_whitespace_end=True, at_word_start=False, exclude_match=False)
 
-def rule10(colorer, s, i):
+def lilypond_rule10(colorer, s, i):
     return colorer.match_span(s, i, kind="literal2", begin="#(", end=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="scheme::MAIN",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule11(colorer, s, i):
+def lilypond_rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq="{",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule12(colorer, s, i):
+def lilypond_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule13(colorer, s, i):
+def lilypond_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq="[",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule14(colorer, s, i):
+def lilypond_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq="]",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule15(colorer, s, i):
+def lilypond_rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq="<<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule16(colorer, s, i):
+def lilypond_rule16(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq=">>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule17(colorer, s, i):
+def lilypond_rule17(colorer, s, i):
     return colorer.match_seq(s, i, kind="null", seq="-<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule18(colorer, s, i):
+def lilypond_rule18(colorer, s, i):
     return colorer.match_seq(s, i, kind="null", seq="->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule19(colorer, s, i):
+def lilypond_rule19(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="|",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule20(colorer, s, i):
+def lilypond_rule20(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule21(colorer, s, i):
+def lilypond_rule21(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="digit", regexp="-[[:digit:]]+>", hash_char="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule22(colorer, s, i):
+def lilypond_rule22(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule23(colorer, s, i):
+def lilypond_rule23(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq=",",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule24(colorer, s, i):
+def lilypond_rule24(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="comment2", regexp="r([[:digit:]]*)\\>", hash_char="r",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule25(colorer, s, i):
+def lilypond_rule25(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="comment2", regexp="R([[:digit:]]*)\\>", hash_char="R",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule26(colorer, s, i):
+def lilypond_rule26(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="comment2", regexp="s([[:digit:]]*)\\>", hash_char="s",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule27(colorer, s, i):
+def lilypond_rule27(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="digit", regexp="1[[:digit:]]*\\>", hash_char="1",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule28(colorer, s, i):
+def lilypond_rule28(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="digit", regexp="2[[:digit:]]*\\>", hash_char="2",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule29(colorer, s, i):
+def lilypond_rule29(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="digit", regexp="3[[:digit:]]*\\>", hash_char="3",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule30(colorer, s, i):
+def lilypond_rule30(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="digit", regexp="4[[:digit:]]*\\>", hash_char="4",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule31(colorer, s, i):
+def lilypond_rule31(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="digit", regexp="5[[:digit:]]*\\>", hash_char="5",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule32(colorer, s, i):
+def lilypond_rule32(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="digit", regexp="6[[:digit:]]*\\>", hash_char="6",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule33(colorer, s, i):
+def lilypond_rule33(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="digit", regexp="7[[:digit:]]*\\>", hash_char="7",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule34(colorer, s, i):
+def lilypond_rule34(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="digit", regexp="8[[:digit:]]*\\>", hash_char="8",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule35(colorer, s, i):
+def lilypond_rule35(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="digit", regexp="9[[:digit:]]*\\>", hash_char="9",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule36(colorer, s, i):
+def lilypond_rule36(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="digit", regexp="0[[:digit:]]*\\>", hash_char="0",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule37(colorer, s, i):
+def lilypond_rule37(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\with\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule38(colorer, s, i):
+def lilypond_rule38(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\whiteTriangleMarkup\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule39(colorer, s, i):
+def lilypond_rule39(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\vsize\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule40(colorer, s, i):
+def lilypond_rule40(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\voiceTwo\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule41(colorer, s, i):
+def lilypond_rule41(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\voiceThree\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule42(colorer, s, i):
+def lilypond_rule42(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\voiceOne\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule43(colorer, s, i):
+def lilypond_rule43(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\voiceFour\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule44(colorer, s, i):
+def lilypond_rule44(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\virgula\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule45(colorer, s, i):
+def lilypond_rule45(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\virga\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule46(colorer, s, i):
+def lilypond_rule46(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\verylongfermata\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule47(colorer, s, i):
+def lilypond_rule47(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\version\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule48(colorer, s, i):
+def lilypond_rule48(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\varcoda\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule49(colorer, s, i):
+def lilypond_rule49(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\upprall\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule50(colorer, s, i):
+def lilypond_rule50(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\upmordent\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule51(colorer, s, i):
+def lilypond_rule51(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\upbow\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule52(colorer, s, i):
+def lilypond_rule52(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\up\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule53(colorer, s, i):
+def lilypond_rule53(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\unusedEntry\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule54(colorer, s, i):
+def lilypond_rule54(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\unset\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule55(colorer, s, i):
+def lilypond_rule55(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\unit\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule56(colorer, s, i):
+def lilypond_rule56(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\unaCorda\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule57(colorer, s, i):
+def lilypond_rule57(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\unHideNotes\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule58(colorer, s, i):
+def lilypond_rule58(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\type\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule59(colorer, s, i):
+def lilypond_rule59(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\turnOff\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule60(colorer, s, i):
+def lilypond_rule60(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\turn\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule61(colorer, s, i):
+def lilypond_rule61(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\tupletUp\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule62(colorer, s, i):
+def lilypond_rule62(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\tupletDown\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule63(colorer, s, i):
+def lilypond_rule63(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\tupletBoth\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule64(colorer, s, i):
+def lilypond_rule64(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\trill\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule65(colorer, s, i):
+def lilypond_rule65(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\treCorde\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule66(colorer, s, i):
+def lilypond_rule66(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\transposition\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule67(colorer, s, i):
+def lilypond_rule67(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\transpose\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule68(colorer, s, i):
+def lilypond_rule68(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\tiny\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule69(colorer, s, i):
+def lilypond_rule69(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\times\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule70(colorer, s, i):
+def lilypond_rule70(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\time\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule71(colorer, s, i):
+def lilypond_rule71(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\tieUp\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule72(colorer, s, i):
+def lilypond_rule72(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\tieSolid\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule73(colorer, s, i):
+def lilypond_rule73(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\tieDown\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule74(colorer, s, i):
+def lilypond_rule74(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\tieDotted\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule75(colorer, s, i):
+def lilypond_rule75(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\tieBoth\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule76(colorer, s, i):
+def lilypond_rule76(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\thumb\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule77(colorer, s, i):
+def lilypond_rule77(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\tenuto\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule78(colorer, s, i):
+def lilypond_rule78(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\tempo\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule79(colorer, s, i):
+def lilypond_rule79(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\tag\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule80(colorer, s, i):
+def lilypond_rule80(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\sustainUp\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule81(colorer, s, i):
+def lilypond_rule81(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\sustainDown\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule82(colorer, s, i):
+def lilypond_rule82(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\stropha\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule83(colorer, s, i):
+def lilypond_rule83(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\stopped\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule84(colorer, s, i):
+def lilypond_rule84(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\stopTextSpan\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule85(colorer, s, i):
+def lilypond_rule85(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\stopGroup\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule86(colorer, s, i):
+def lilypond_rule86(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\stopGraceMusic\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule87(colorer, s, i):
+def lilypond_rule87(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\stopAppoggiaturaMusic\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule88(colorer, s, i):
+def lilypond_rule88(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\stopAcciaccaturaMusic\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule89(colorer, s, i):
+def lilypond_rule89(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\stop\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule90(colorer, s, i):
+def lilypond_rule90(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\stemUp\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule91(colorer, s, i):
+def lilypond_rule91(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\stemDown\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule92(colorer, s, i):
+def lilypond_rule92(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\stemBoth\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule93(colorer, s, i):
+def lilypond_rule93(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\startTextSpan\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule94(colorer, s, i):
+def lilypond_rule94(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\startGroup\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule95(colorer, s, i):
+def lilypond_rule95(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\startGraceMusic\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule96(colorer, s, i):
+def lilypond_rule96(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\startAppoggiaturaMusic\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule97(colorer, s, i):
+def lilypond_rule97(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\startAcciaccaturaMusic\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule98(colorer, s, i):
+def lilypond_rule98(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\start\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule99(colorer, s, i):
+def lilypond_rule99(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\staccato\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule100(colorer, s, i):
+def lilypond_rule100(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\staccatissimo\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule101(colorer, s, i):
+def lilypond_rule101(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\spp\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule102(colorer, s, i):
+def lilypond_rule102(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\sp\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule103(colorer, s, i):
+def lilypond_rule103(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\sostenutoUp\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule104(colorer, s, i):
+def lilypond_rule104(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\sostenutoDown\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule105(colorer, s, i):
+def lilypond_rule105(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\smaller\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule106(colorer, s, i):
+def lilypond_rule106(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\small\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule107(colorer, s, i):
+def lilypond_rule107(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\slurUp\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule108(colorer, s, i):
+def lilypond_rule108(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\slurSolid\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule109(colorer, s, i):
+def lilypond_rule109(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\slurDown\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule110(colorer, s, i):
+def lilypond_rule110(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\slurDotted\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule111(colorer, s, i):
+def lilypond_rule111(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\slurBoth\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule112(colorer, s, i):
+def lilypond_rule112(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\skip\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule113(colorer, s, i):
+def lilypond_rule113(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\simultaneous\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule114(colorer, s, i):
+def lilypond_rule114(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\signumcongruentiae\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule115(colorer, s, i):
+def lilypond_rule115(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\showStaffSwitch\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule116(colorer, s, i):
+def lilypond_rule116(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\shortfermata\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule117(colorer, s, i):
+def lilypond_rule117(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\shiftOnnn\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule118(colorer, s, i):
+def lilypond_rule118(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\shiftOnn\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule119(colorer, s, i):
+def lilypond_rule119(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\shiftOn\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule120(colorer, s, i):
+def lilypond_rule120(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\shiftOff\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule121(colorer, s, i):
+def lilypond_rule121(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\sfz\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule122(colorer, s, i):
+def lilypond_rule122(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\sfp\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule123(colorer, s, i):
+def lilypond_rule123(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\sff\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule124(colorer, s, i):
+def lilypond_rule124(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\sf\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule125(colorer, s, i):
+def lilypond_rule125(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\setTextDim\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule126(colorer, s, i):
+def lilypond_rule126(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\setTextDecresc\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule127(colorer, s, i):
+def lilypond_rule127(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\setTextCresc\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule128(colorer, s, i):
+def lilypond_rule128(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\setMmRestFermata\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule129(colorer, s, i):
+def lilypond_rule129(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\setHairpinCresc\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule130(colorer, s, i):
+def lilypond_rule130(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\setEasyHeads\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule131(colorer, s, i):
+def lilypond_rule131(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\set\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule132(colorer, s, i):
+def lilypond_rule132(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\sequential\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule133(colorer, s, i):
+def lilypond_rule133(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\semicirculus\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule134(colorer, s, i):
+def lilypond_rule134(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\semiGermanChords\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule135(colorer, s, i):
+def lilypond_rule135(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\segno\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule136(colorer, s, i):
+def lilypond_rule136(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\scriptUp\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule137(colorer, s, i):
+def lilypond_rule137(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\scriptDown\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule138(colorer, s, i):
+def lilypond_rule138(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\scriptBoth\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule139(colorer, s, i):
+def lilypond_rule139(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\score\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule140(colorer, s, i):
+def lilypond_rule140(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\rtoe\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule141(colorer, s, i):
+def lilypond_rule141(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\right\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule142(colorer, s, i):
+def lilypond_rule142(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\rheel\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule143(colorer, s, i):
+def lilypond_rule143(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\rfz\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule144(colorer, s, i):
+def lilypond_rule144(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\revert\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule145(colorer, s, i):
+def lilypond_rule145(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\reverseturn\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule146(colorer, s, i):
+def lilypond_rule146(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\rest\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule147(colorer, s, i):
+def lilypond_rule147(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\repeat\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule148(colorer, s, i):
+def lilypond_rule148(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\remove\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule149(colorer, s, i):
+def lilypond_rule149(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\relative\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule150(colorer, s, i):
+def lilypond_rule150(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\recordEventSequence\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule151(colorer, s, i):
+def lilypond_rule151(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\raggedright\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule152(colorer, s, i):
+def lilypond_rule152(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\raggedlast\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule153(colorer, s, i):
+def lilypond_rule153(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\quote\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule154(colorer, s, i):
+def lilypond_rule154(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\quilisma\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule155(colorer, s, i):
+def lilypond_rule155(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\pt\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule156(colorer, s, i):
+def lilypond_rule156(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\prallup\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule157(colorer, s, i):
+def lilypond_rule157(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\prallprall\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule158(colorer, s, i):
+def lilypond_rule158(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\prallmordent\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule159(colorer, s, i):
+def lilypond_rule159(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\pralldown\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule160(colorer, s, i):
+def lilypond_rule160(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\prall\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule161(colorer, s, i):
+def lilypond_rule161(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\ppppp\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule162(colorer, s, i):
+def lilypond_rule162(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\pppp\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule163(colorer, s, i):
+def lilypond_rule163(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\ppp\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule164(colorer, s, i):
+def lilypond_rule164(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\pp\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule165(colorer, s, i):
+def lilypond_rule165(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\portato\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule166(colorer, s, i):
+def lilypond_rule166(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\phrygian\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule167(colorer, s, i):
+def lilypond_rule167(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\phrasingSlurUp\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule168(colorer, s, i):
+def lilypond_rule168(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\phrasingSlurDown\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule169(colorer, s, i):
+def lilypond_rule169(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\phrasingSlurBoth\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule170(colorer, s, i):
+def lilypond_rule170(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\pes\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule171(colorer, s, i):
+def lilypond_rule171(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\partialJazzMusic\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule172(colorer, s, i):
+def lilypond_rule172(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\partialJazzExceptions\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule173(colorer, s, i):
+def lilypond_rule173(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\partial\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule174(colorer, s, i):
+def lilypond_rule174(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\partcombine\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule175(colorer, s, i):
+def lilypond_rule175(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\partCombineListener\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule176(colorer, s, i):
+def lilypond_rule176(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\paperTwentythree\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule177(colorer, s, i):
+def lilypond_rule177(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\paperTwentysix\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule178(colorer, s, i):
+def lilypond_rule178(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\paperTwenty\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule179(colorer, s, i):
+def lilypond_rule179(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\paperThirteen\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule180(colorer, s, i):
+def lilypond_rule180(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\paperSixteen\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule181(colorer, s, i):
+def lilypond_rule181(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\paperEleven\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule182(colorer, s, i):
+def lilypond_rule182(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\paperEightteen\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule183(colorer, s, i):
+def lilypond_rule183(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\paper\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule184(colorer, s, i):
+def lilypond_rule184(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\packed\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule185(colorer, s, i):
+def lilypond_rule185(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\p\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule186(colorer, s, i):
+def lilypond_rule186(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\override\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule187(colorer, s, i):
+def lilypond_rule187(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\oriscus\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule188(colorer, s, i):
+def lilypond_rule188(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\open\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule189(colorer, s, i):
+def lilypond_rule189(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\oneVoice\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule190(colorer, s, i):
+def lilypond_rule190(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\once\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule191(colorer, s, i):
+def lilypond_rule191(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\octave\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule192(colorer, s, i):
+def lilypond_rule192(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\notes\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule193(colorer, s, i):
+def lilypond_rule193(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\normalsize\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule194(colorer, s, i):
+def lilypond_rule194(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\noBreak\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule195(colorer, s, i):
+def lilypond_rule195(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\noBeam\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule196(colorer, s, i):
+def lilypond_rule196(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\newpage\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule197(colorer, s, i):
+def lilypond_rule197(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\new\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule198(colorer, s, i):
+def lilypond_rule198(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\name\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule199(colorer, s, i):
+def lilypond_rule199(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\mp\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule200(colorer, s, i):
+def lilypond_rule200(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\mordent\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule201(colorer, s, i):
+def lilypond_rule201(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\mm\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule202(colorer, s, i):
+def lilypond_rule202(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\mixolydian\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule203(colorer, s, i):
+def lilypond_rule203(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\minor\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule204(colorer, s, i):
+def lilypond_rule204(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\midi\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule205(colorer, s, i):
+def lilypond_rule205(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\mf\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule206(colorer, s, i):
+def lilypond_rule206(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\melismaEnd\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule207(colorer, s, i):
+def lilypond_rule207(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\melisma\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule208(colorer, s, i):
+def lilypond_rule208(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\maxima\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule209(colorer, s, i):
+def lilypond_rule209(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\markup\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule210(colorer, s, i):
+def lilypond_rule210(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\mark\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule211(colorer, s, i):
+def lilypond_rule211(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\marcato\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule212(colorer, s, i):
+def lilypond_rule212(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\major\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule213(colorer, s, i):
+def lilypond_rule213(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\maininput\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule214(colorer, s, i):
+def lilypond_rule214(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\lyricsto\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule215(colorer, s, i):
+def lilypond_rule215(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\lyrics\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule216(colorer, s, i):
+def lilypond_rule216(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\lydian\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule217(colorer, s, i):
+def lilypond_rule217(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\ltoe\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule218(colorer, s, i):
+def lilypond_rule218(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\longfermata\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule219(colorer, s, i):
+def lilypond_rule219(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\longa\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule220(colorer, s, i):
+def lilypond_rule220(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\locrian\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule221(colorer, s, i):
+def lilypond_rule221(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\lineprall\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule222(colorer, s, i):
+def lilypond_rule222(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\linea\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule223(colorer, s, i):
+def lilypond_rule223(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\lheel\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule224(colorer, s, i):
+def lilypond_rule224(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\left\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule225(colorer, s, i):
+def lilypond_rule225(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\key\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule226(colorer, s, i):
+def lilypond_rule226(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\ionian\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule227(colorer, s, i):
+def lilypond_rule227(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\include\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule228(colorer, s, i):
+def lilypond_rule228(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\inclinatum\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule229(colorer, s, i):
+def lilypond_rule229(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\in\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule230(colorer, s, i):
+def lilypond_rule230(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\ignatzekExceptions\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule231(colorer, s, i):
+def lilypond_rule231(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\ignatzekExceptionMusic\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule232(colorer, s, i):
+def lilypond_rule232(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\ictus\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule233(colorer, s, i):
+def lilypond_rule233(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\hsize\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule234(colorer, s, i):
+def lilypond_rule234(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\hideStaffSwitch\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule235(colorer, s, i):
+def lilypond_rule235(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\hideNotes\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule236(colorer, s, i):
+def lilypond_rule236(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\header\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule237(colorer, s, i):
+def lilypond_rule237(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\harmonic\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule238(colorer, s, i):
+def lilypond_rule238(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\grobdescriptions\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule239(colorer, s, i):
+def lilypond_rule239(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\grace\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule240(colorer, s, i):
+def lilypond_rule240(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\glissando\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule241(colorer, s, i):
+def lilypond_rule241(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\germanChords\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule242(colorer, s, i):
+def lilypond_rule242(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\fz\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule243(colorer, s, i):
+def lilypond_rule243(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\fullJazzExceptions\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule244(colorer, s, i):
+def lilypond_rule244(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\fp\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule245(colorer, s, i):
+def lilypond_rule245(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\flexa\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule246(colorer, s, i):
+def lilypond_rule246(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\flageolet\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule247(colorer, s, i):
+def lilypond_rule247(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\finalis\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule248(colorer, s, i):
+def lilypond_rule248(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\figures\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule249(colorer, s, i):
+def lilypond_rule249(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\ffff\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule250(colorer, s, i):
+def lilypond_rule250(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\fff\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule251(colorer, s, i):
+def lilypond_rule251(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\ff\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule252(colorer, s, i):
+def lilypond_rule252(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\fermataMarkup\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule253(colorer, s, i):
+def lilypond_rule253(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\fermata\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule254(colorer, s, i):
+def lilypond_rule254(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\fatText\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule255(colorer, s, i):
+def lilypond_rule255(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\f\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule256(colorer, s, i):
+def lilypond_rule256(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\episemInitium\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule257(colorer, s, i):
+def lilypond_rule257(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\episemFinis\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule258(colorer, s, i):
+def lilypond_rule258(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\endincipit\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule259(colorer, s, i):
+def lilypond_rule259(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\enddim\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule260(colorer, s, i):
+def lilypond_rule260(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\enddecr\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule261(colorer, s, i):
+def lilypond_rule261(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\endcresc\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule262(colorer, s, i):
+def lilypond_rule262(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\endcr\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule263(colorer, s, i):
+def lilypond_rule263(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\emptyText\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule264(colorer, s, i):
+def lilypond_rule264(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\dynamicUp\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule265(colorer, s, i):
+def lilypond_rule265(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\dynamicDown\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule266(colorer, s, i):
+def lilypond_rule266(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\dynamicBoth\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule267(colorer, s, i):
+def lilypond_rule267(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\drums\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule268(colorer, s, i):
+def lilypond_rule268(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\downprall\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule269(colorer, s, i):
+def lilypond_rule269(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\downmordent\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule270(colorer, s, i):
+def lilypond_rule270(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\downbow\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule271(colorer, s, i):
+def lilypond_rule271(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\down\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule272(colorer, s, i):
+def lilypond_rule272(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\dotsUp\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule273(colorer, s, i):
+def lilypond_rule273(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\dotsDown\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule274(colorer, s, i):
+def lilypond_rule274(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\dotsBoth\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule275(colorer, s, i):
+def lilypond_rule275(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\dorian\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule276(colorer, s, i):
+def lilypond_rule276(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\divisioMinima\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule277(colorer, s, i):
+def lilypond_rule277(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\divisioMaxima\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule278(colorer, s, i):
+def lilypond_rule278(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\divisioMaior\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule279(colorer, s, i):
+def lilypond_rule279(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\dim\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule280(colorer, s, i):
+def lilypond_rule280(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\description\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule281(colorer, s, i):
+def lilypond_rule281(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\descendens\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule282(colorer, s, i):
+def lilypond_rule282(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\denies\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule283(colorer, s, i):
+def lilypond_rule283(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\deminutum\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule284(colorer, s, i):
+def lilypond_rule284(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\default\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule285(colorer, s, i):
+def lilypond_rule285(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\decr\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule286(colorer, s, i):
+def lilypond_rule286(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\dashUnderscore\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule287(colorer, s, i):
+def lilypond_rule287(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\dashPlus\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule288(colorer, s, i):
+def lilypond_rule288(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\dashLarger\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule289(colorer, s, i):
+def lilypond_rule289(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\dashHat\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule290(colorer, s, i):
+def lilypond_rule290(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\dashDot\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule291(colorer, s, i):
+def lilypond_rule291(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\dashDash\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule292(colorer, s, i):
+def lilypond_rule292(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\dashBar\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule293(colorer, s, i):
+def lilypond_rule293(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\cresc\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule294(colorer, s, i):
+def lilypond_rule294(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\cr\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule295(colorer, s, i):
+def lilypond_rule295(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\context\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule296(colorer, s, i):
+def lilypond_rule296(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\consistsend\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule297(colorer, s, i):
+def lilypond_rule297(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\consists\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule298(colorer, s, i):
+def lilypond_rule298(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\coda\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule299(colorer, s, i):
+def lilypond_rule299(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\cm\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule300(colorer, s, i):
+def lilypond_rule300(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\clef\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule301(colorer, s, i):
+def lilypond_rule301(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\circulus\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule302(colorer, s, i):
+def lilypond_rule302(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\chords\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule303(colorer, s, i):
+def lilypond_rule303(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\chordmodifiers\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule304(colorer, s, i):
+def lilypond_rule304(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\change\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule305(colorer, s, i):
+def lilypond_rule305(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\center\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule306(colorer, s, i):
+def lilypond_rule306(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\cavum\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule307(colorer, s, i):
+def lilypond_rule307(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\caesura\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule308(colorer, s, i):
+def lilypond_rule308(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\cadenzaOn\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule309(colorer, s, i):
+def lilypond_rule309(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\cadenzaOff\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule310(colorer, s, i):
+def lilypond_rule310(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\breve\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule311(colorer, s, i):
+def lilypond_rule311(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\breathe\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule312(colorer, s, i):
+def lilypond_rule312(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\break\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule313(colorer, s, i):
+def lilypond_rule313(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\blackTriangleMarkup\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule314(colorer, s, i):
+def lilypond_rule314(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\bigger\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule315(colorer, s, i):
+def lilypond_rule315(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\bar\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule316(colorer, s, i):
+def lilypond_rule316(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\autochange\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule317(colorer, s, i):
+def lilypond_rule317(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\autoBeamOn\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule318(colorer, s, i):
+def lilypond_rule318(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\autoBeamOff\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule319(colorer, s, i):
+def lilypond_rule319(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\auctum\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule320(colorer, s, i):
+def lilypond_rule320(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\ascendens\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule321(colorer, s, i):
+def lilypond_rule321(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\arpeggioUp\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule322(colorer, s, i):
+def lilypond_rule322(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\arpeggioDown\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule323(colorer, s, i):
+def lilypond_rule323(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\arpeggioBracket\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule324(colorer, s, i):
+def lilypond_rule324(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\arpeggioBoth\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule325(colorer, s, i):
+def lilypond_rule325(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\arpeggio\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule326(colorer, s, i):
+def lilypond_rule326(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\appoggiatura\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule327(colorer, s, i):
+def lilypond_rule327(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\applyoutput\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule328(colorer, s, i):
+def lilypond_rule328(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\applycontext\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule329(colorer, s, i):
+def lilypond_rule329(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\apply\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule330(colorer, s, i):
+def lilypond_rule330(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\alternative\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule331(colorer, s, i):
+def lilypond_rule331(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\alias\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule332(colorer, s, i):
+def lilypond_rule332(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\aeolian\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule333(colorer, s, i):
+def lilypond_rule333(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\addquote\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule334(colorer, s, i):
+def lilypond_rule334(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\addlyrics\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule335(colorer, s, i):
+def lilypond_rule335(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\acciaccatura\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule336(colorer, s, i):
+def lilypond_rule336(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\accepts\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule337(colorer, s, i):
+def lilypond_rule337(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\accentus\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule338(colorer, s, i):
+def lilypond_rule338(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="\\\\accent\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule339(colorer, s, i):
+def lilypond_rule339(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="\\\\RemoveEmptyStaffContext\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule340(colorer, s, i):
+def lilypond_rule340(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="\\\\OrchestralScoreContext\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule341(colorer, s, i):
+def lilypond_rule341(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="\\\\EasyNotation\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule342(colorer, s, i):
+def lilypond_rule342(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="\\\\AncientRemoveEmptyStaffContext\\>", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule343(colorer, s, i):
+def lilypond_rule343(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule344(colorer, s, i):
+def lilypond_rule344(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"\"": [rule20,],
-	"#": [rule10,],
-	"%": [rule0,rule1,],
-	"'": [rule22,],
-	",": [rule23,],
-	"-": [rule17,rule18,rule21,],
-	"0": [rule36,rule344,],
-	"1": [rule27,rule344,],
-	"2": [rule28,rule344,],
-	"3": [rule29,rule344,],
-	"4": [rule30,rule344,],
-	"5": [rule31,rule344,],
-	"6": [rule32,rule344,],
-	"7": [rule33,rule344,],
-	"8": [rule34,rule344,],
-	"9": [rule35,rule344,],
-	"<": [rule15,],
-	"=": [rule8,rule9,],
-	">": [rule16,],
-	"@": [rule344,],
-	"A": [rule344,],
-	"B": [rule344,],
-	"C": [rule344,],
-	"D": [rule344,],
-	"E": [rule344,],
-	"F": [rule344,],
-	"G": [rule344,],
-	"H": [rule344,],
-	"I": [rule344,],
-	"J": [rule344,],
-	"K": [rule344,],
-	"L": [rule344,],
-	"M": [rule344,],
-	"N": [rule344,],
-	"O": [rule344,],
-	"P": [rule344,],
-	"Q": [rule344,],
-	"R": [rule25,rule344,],
-	"S": [rule344,],
-	"T": [rule344,],
-	"U": [rule344,],
-	"V": [rule344,],
-	"W": [rule344,],
-	"X": [rule344,],
-	"Y": [rule344,],
-	"Z": [rule344,],
-	"[": [rule13,],
-	"\\": [rule2,rule3,rule4,rule5,rule6,rule7,rule37,rule38,rule39,rule40,rule41,rule42,rule43,rule44,rule45,rule46,rule47,rule48,rule49,rule50,rule51,rule52,rule53,rule54,rule55,rule56,rule57,rule58,rule59,rule60,rule61,rule62,rule63,rule64,rule65,rule66,rule67,rule68,rule69,rule70,rule71,rule72,rule73,rule74,rule75,rule76,rule77,rule78,rule79,rule80,rule81,rule82,rule83,rule84,rule85,rule86,rule87,rule88,rule89,rule90,rule91,rule92,rule93,rule94,rule95,rule96,rule97,rule98,rule99,rule100,rule101,rule102,rule103,rule104,rule105,rule106,rule107,rule108,rule109,rule110,rule111,rule112,rule113,rule114,rule115,rule116,rule117,rule118,rule119,rule120,rule121,rule122,rule123,rule124,rule125,rule126,rule127,rule128,rule129,rule130,rule131,rule132,rule133,rule134,rule135,rule136,rule137,rule138,rule139,rule140,rule141,rule142,rule143,rule144,rule145,rule146,rule147,rule148,rule149,rule150,rule151,rule152,rule153,rule154,rule155,rule156,rule157,rule158,rule159,rule160,rule161,rule162,rule163,rule164,rule165,rule166,rule167,rule168,rule169,rule170,rule171,rule172,rule173,rule174,rule175,rule176,rule177,rule178,rule179,rule180,rule181,rule182,rule183,rule184,rule185,rule186,rule187,rule188,rule189,rule190,rule191,rule192,rule193,rule194,rule195,rule196,rule197,rule198,rule199,rule200,rule201,rule202,rule203,rule204,rule205,rule206,rule207,rule208,rule209,rule210,rule211,rule212,rule213,rule214,rule215,rule216,rule217,rule218,rule219,rule220,rule221,rule222,rule223,rule224,rule225,rule226,rule227,rule228,rule229,rule230,rule231,rule232,rule233,rule234,rule235,rule236,rule237,rule238,rule239,rule240,rule241,rule242,rule243,rule244,rule245,rule246,rule247,rule248,rule249,rule250,rule251,rule252,rule253,rule254,rule255,rule256,rule257,rule258,rule259,rule260,rule261,rule262,rule263,rule264,rule265,rule266,rule267,rule268,rule269,rule270,rule271,rule272,rule273,rule274,rule275,rule276,rule277,rule278,rule279,rule280,rule281,rule282,rule283,rule284,rule285,rule286,rule287,rule288,rule289,rule290,rule291,rule292,rule293,rule294,rule295,rule296,rule297,rule298,rule299,rule300,rule301,rule302,rule303,rule304,rule305,rule306,rule307,rule308,rule309,rule310,rule311,rule312,rule313,rule314,rule315,rule316,rule317,rule318,rule319,rule320,rule321,rule322,rule323,rule324,rule325,rule326,rule327,rule328,rule329,rule330,rule331,rule332,rule333,rule334,rule335,rule336,rule337,rule338,rule339,rule340,rule341,rule342,rule343,],
-	"]": [rule14,],
-	"_": [rule344,],
-	"a": [rule344,],
-	"b": [rule344,],
-	"c": [rule344,],
-	"d": [rule344,],
-	"e": [rule344,],
-	"f": [rule344,],
-	"g": [rule344,],
-	"h": [rule344,],
-	"i": [rule344,],
-	"j": [rule344,],
-	"k": [rule344,],
-	"l": [rule344,],
-	"m": [rule344,],
-	"n": [rule344,],
-	"o": [rule344,],
-	"p": [rule344,],
-	"q": [rule344,],
-	"r": [rule24,rule344,],
-	"s": [rule26,rule344,],
-	"t": [rule344,],
-	"u": [rule344,],
-	"v": [rule344,],
-	"w": [rule344,],
-	"x": [rule344,],
-	"y": [rule344,],
-	"z": [rule344,],
-	"{": [rule11,],
-	"|": [rule19,],
-	"}": [rule12,],
+	"\"": [lilypond_rule20,],
+	"#": [lilypond_rule10,],
+	"%": [lilypond_rule0,lilypond_rule1,],
+	"'": [lilypond_rule22,],
+	",": [lilypond_rule23,],
+	"-": [lilypond_rule17,lilypond_rule18,lilypond_rule21,],
+	"0": [lilypond_rule36,lilypond_rule344,],
+	"1": [lilypond_rule27,lilypond_rule344,],
+	"2": [lilypond_rule28,lilypond_rule344,],
+	"3": [lilypond_rule29,lilypond_rule344,],
+	"4": [lilypond_rule30,lilypond_rule344,],
+	"5": [lilypond_rule31,lilypond_rule344,],
+	"6": [lilypond_rule32,lilypond_rule344,],
+	"7": [lilypond_rule33,lilypond_rule344,],
+	"8": [lilypond_rule34,lilypond_rule344,],
+	"9": [lilypond_rule35,lilypond_rule344,],
+	"<": [lilypond_rule15,],
+	"=": [lilypond_rule8,lilypond_rule9,],
+	">": [lilypond_rule16,],
+	"@": [lilypond_rule344,],
+	"A": [lilypond_rule344,],
+	"B": [lilypond_rule344,],
+	"C": [lilypond_rule344,],
+	"D": [lilypond_rule344,],
+	"E": [lilypond_rule344,],
+	"F": [lilypond_rule344,],
+	"G": [lilypond_rule344,],
+	"H": [lilypond_rule344,],
+	"I": [lilypond_rule344,],
+	"J": [lilypond_rule344,],
+	"K": [lilypond_rule344,],
+	"L": [lilypond_rule344,],
+	"M": [lilypond_rule344,],
+	"N": [lilypond_rule344,],
+	"O": [lilypond_rule344,],
+	"P": [lilypond_rule344,],
+	"Q": [lilypond_rule344,],
+	"R": [lilypond_rule25,lilypond_rule344,],
+	"S": [lilypond_rule344,],
+	"T": [lilypond_rule344,],
+	"U": [lilypond_rule344,],
+	"V": [lilypond_rule344,],
+	"W": [lilypond_rule344,],
+	"X": [lilypond_rule344,],
+	"Y": [lilypond_rule344,],
+	"Z": [lilypond_rule344,],
+	"[": [lilypond_rule13,],
+	"\\": [lilypond_rule2,lilypond_rule3,lilypond_rule4,lilypond_rule5,lilypond_rule6,lilypond_rule7,lilypond_rule37,lilypond_rule38,lilypond_rule39,lilypond_rule40,lilypond_rule41,lilypond_rule42,lilypond_rule43,lilypond_rule44,lilypond_rule45,lilypond_rule46,lilypond_rule47,lilypond_rule48,lilypond_rule49,lilypond_rule50,lilypond_rule51,lilypond_rule52,lilypond_rule53,lilypond_rule54,lilypond_rule55,lilypond_rule56,lilypond_rule57,lilypond_rule58,lilypond_rule59,lilypond_rule60,lilypond_rule61,lilypond_rule62,lilypond_rule63,lilypond_rule64,lilypond_rule65,lilypond_rule66,lilypond_rule67,lilypond_rule68,lilypond_rule69,lilypond_rule70,lilypond_rule71,lilypond_rule72,lilypond_rule73,lilypond_rule74,lilypond_rule75,lilypond_rule76,lilypond_rule77,lilypond_rule78,lilypond_rule79,lilypond_rule80,lilypond_rule81,lilypond_rule82,lilypond_rule83,lilypond_rule84,lilypond_rule85,lilypond_rule86,lilypond_rule87,lilypond_rule88,lilypond_rule89,lilypond_rule90,lilypond_rule91,lilypond_rule92,lilypond_rule93,lilypond_rule94,lilypond_rule95,lilypond_rule96,lilypond_rule97,lilypond_rule98,lilypond_rule99,lilypond_rule100,lilypond_rule101,lilypond_rule102,lilypond_rule103,lilypond_rule104,lilypond_rule105,lilypond_rule106,lilypond_rule107,lilypond_rule108,lilypond_rule109,lilypond_rule110,lilypond_rule111,lilypond_rule112,lilypond_rule113,lilypond_rule114,lilypond_rule115,lilypond_rule116,lilypond_rule117,lilypond_rule118,lilypond_rule119,lilypond_rule120,lilypond_rule121,lilypond_rule122,lilypond_rule123,lilypond_rule124,lilypond_rule125,lilypond_rule126,lilypond_rule127,lilypond_rule128,lilypond_rule129,lilypond_rule130,lilypond_rule131,lilypond_rule132,lilypond_rule133,lilypond_rule134,lilypond_rule135,lilypond_rule136,lilypond_rule137,lilypond_rule138,lilypond_rule139,lilypond_rule140,lilypond_rule141,lilypond_rule142,lilypond_rule143,lilypond_rule144,lilypond_rule145,lilypond_rule146,lilypond_rule147,lilypond_rule148,lilypond_rule149,lilypond_rule150,lilypond_rule151,lilypond_rule152,lilypond_rule153,lilypond_rule154,lilypond_rule155,lilypond_rule156,lilypond_rule157,lilypond_rule158,lilypond_rule159,lilypond_rule160,lilypond_rule161,lilypond_rule162,lilypond_rule163,lilypond_rule164,lilypond_rule165,lilypond_rule166,lilypond_rule167,lilypond_rule168,lilypond_rule169,lilypond_rule170,lilypond_rule171,lilypond_rule172,lilypond_rule173,lilypond_rule174,lilypond_rule175,lilypond_rule176,lilypond_rule177,lilypond_rule178,lilypond_rule179,lilypond_rule180,lilypond_rule181,lilypond_rule182,lilypond_rule183,lilypond_rule184,lilypond_rule185,lilypond_rule186,lilypond_rule187,lilypond_rule188,lilypond_rule189,lilypond_rule190,lilypond_rule191,lilypond_rule192,lilypond_rule193,lilypond_rule194,lilypond_rule195,lilypond_rule196,lilypond_rule197,lilypond_rule198,lilypond_rule199,lilypond_rule200,lilypond_rule201,lilypond_rule202,lilypond_rule203,lilypond_rule204,lilypond_rule205,lilypond_rule206,lilypond_rule207,lilypond_rule208,lilypond_rule209,lilypond_rule210,lilypond_rule211,lilypond_rule212,lilypond_rule213,lilypond_rule214,lilypond_rule215,lilypond_rule216,lilypond_rule217,lilypond_rule218,lilypond_rule219,lilypond_rule220,lilypond_rule221,lilypond_rule222,lilypond_rule223,lilypond_rule224,lilypond_rule225,lilypond_rule226,lilypond_rule227,lilypond_rule228,lilypond_rule229,lilypond_rule230,lilypond_rule231,lilypond_rule232,lilypond_rule233,lilypond_rule234,lilypond_rule235,lilypond_rule236,lilypond_rule237,lilypond_rule238,lilypond_rule239,lilypond_rule240,lilypond_rule241,lilypond_rule242,lilypond_rule243,lilypond_rule244,lilypond_rule245,lilypond_rule246,lilypond_rule247,lilypond_rule248,lilypond_rule249,lilypond_rule250,lilypond_rule251,lilypond_rule252,lilypond_rule253,lilypond_rule254,lilypond_rule255,lilypond_rule256,lilypond_rule257,lilypond_rule258,lilypond_rule259,lilypond_rule260,lilypond_rule261,lilypond_rule262,lilypond_rule263,lilypond_rule264,lilypond_rule265,lilypond_rule266,lilypond_rule267,lilypond_rule268,lilypond_rule269,lilypond_rule270,lilypond_rule271,lilypond_rule272,lilypond_rule273,lilypond_rule274,lilypond_rule275,lilypond_rule276,lilypond_rule277,lilypond_rule278,lilypond_rule279,lilypond_rule280,lilypond_rule281,lilypond_rule282,lilypond_rule283,lilypond_rule284,lilypond_rule285,lilypond_rule286,lilypond_rule287,lilypond_rule288,lilypond_rule289,lilypond_rule290,lilypond_rule291,lilypond_rule292,lilypond_rule293,lilypond_rule294,lilypond_rule295,lilypond_rule296,lilypond_rule297,lilypond_rule298,lilypond_rule299,lilypond_rule300,lilypond_rule301,lilypond_rule302,lilypond_rule303,lilypond_rule304,lilypond_rule305,lilypond_rule306,lilypond_rule307,lilypond_rule308,lilypond_rule309,lilypond_rule310,lilypond_rule311,lilypond_rule312,lilypond_rule313,lilypond_rule314,lilypond_rule315,lilypond_rule316,lilypond_rule317,lilypond_rule318,lilypond_rule319,lilypond_rule320,lilypond_rule321,lilypond_rule322,lilypond_rule323,lilypond_rule324,lilypond_rule325,lilypond_rule326,lilypond_rule327,lilypond_rule328,lilypond_rule329,lilypond_rule330,lilypond_rule331,lilypond_rule332,lilypond_rule333,lilypond_rule334,lilypond_rule335,lilypond_rule336,lilypond_rule337,lilypond_rule338,lilypond_rule339,lilypond_rule340,lilypond_rule341,lilypond_rule342,lilypond_rule343,],
+	"]": [lilypond_rule14,],
+	"_": [lilypond_rule344,],
+	"a": [lilypond_rule344,],
+	"b": [lilypond_rule344,],
+	"c": [lilypond_rule344,],
+	"d": [lilypond_rule344,],
+	"e": [lilypond_rule344,],
+	"f": [lilypond_rule344,],
+	"g": [lilypond_rule344,],
+	"h": [lilypond_rule344,],
+	"i": [lilypond_rule344,],
+	"j": [lilypond_rule344,],
+	"k": [lilypond_rule344,],
+	"l": [lilypond_rule344,],
+	"m": [lilypond_rule344,],
+	"n": [lilypond_rule344,],
+	"o": [lilypond_rule344,],
+	"p": [lilypond_rule344,],
+	"q": [lilypond_rule344,],
+	"r": [lilypond_rule24,lilypond_rule344,],
+	"s": [lilypond_rule26,lilypond_rule344,],
+	"t": [lilypond_rule344,],
+	"u": [lilypond_rule344,],
+	"v": [lilypond_rule344,],
+	"w": [lilypond_rule344,],
+	"x": [lilypond_rule344,],
+	"y": [lilypond_rule344,],
+	"z": [lilypond_rule344,],
+	"{": [lilypond_rule11,],
+	"|": [lilypond_rule19,],
+	"}": [lilypond_rule12,],
 }
 
 # x.rulesDictDict for lilypond mode.

@@ -335,180 +335,180 @@ keywordsDictDict = {
 
 # Rules for vbscript_main ruleset.
 
-def rule0(colorer, s, i):
+def vbscript_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule1(colorer, s, i):
+def vbscript_rule1(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="keyword2", seq="#if",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule2(colorer, s, i):
+def vbscript_rule2(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="keyword2", seq="#else",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule3(colorer, s, i):
+def vbscript_rule3(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="keyword2", seq="#end",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule4(colorer, s, i):
+def vbscript_rule4(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule5(colorer, s, i):
+def vbscript_rule5(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="rem",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule6(colorer, s, i):
+def vbscript_rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule7(colorer, s, i):
+def vbscript_rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule8(colorer, s, i):
+def vbscript_rule8(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule9(colorer, s, i):
+def vbscript_rule9(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule10(colorer, s, i):
+def vbscript_rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule11(colorer, s, i):
+def vbscript_rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule12(colorer, s, i):
+def vbscript_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=".",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule13(colorer, s, i):
+def vbscript_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule14(colorer, s, i):
+def vbscript_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule15(colorer, s, i):
+def vbscript_rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule16(colorer, s, i):
+def vbscript_rule16(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule17(colorer, s, i):
+def vbscript_rule17(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule18(colorer, s, i):
+def vbscript_rule18(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule19(colorer, s, i):
+def vbscript_rule19(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="&",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule20(colorer, s, i):
+def vbscript_rule20(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="label", pattern=":",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule21(colorer, s, i):
+def vbscript_rule21(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"\"": [rule0,],
-	"#": [rule1,rule2,rule3,],
-	"&": [rule19,],
-	"'": [rule4,],
-	"*": [rule15,],
-	"+": [rule13,],
-	"-": [rule14,],
-	".": [rule12,],
-	"/": [rule16,],
-	"0": [rule21,],
-	"1": [rule21,],
-	"2": [rule21,],
-	"3": [rule21,],
-	"4": [rule21,],
-	"5": [rule21,],
-	"6": [rule21,],
-	"7": [rule21,],
-	"8": [rule21,],
-	"9": [rule21,],
-	":": [rule20,],
-	"<": [rule6,rule7,rule11,],
-	"=": [rule10,],
-	">": [rule8,rule9,],
-	"@": [rule21,],
-	"A": [rule21,],
-	"B": [rule21,],
-	"C": [rule21,],
-	"D": [rule21,],
-	"E": [rule21,],
-	"F": [rule21,],
-	"G": [rule21,],
-	"H": [rule21,],
-	"I": [rule21,],
-	"J": [rule21,],
-	"K": [rule21,],
-	"L": [rule21,],
-	"M": [rule21,],
-	"N": [rule21,],
-	"O": [rule21,],
-	"P": [rule21,],
-	"Q": [rule21,],
-	"R": [rule21,],
-	"S": [rule21,],
-	"T": [rule21,],
-	"U": [rule21,],
-	"V": [rule21,],
-	"W": [rule21,],
-	"X": [rule21,],
-	"Y": [rule21,],
-	"Z": [rule21,],
-	"\\": [rule17,],
-	"^": [rule18,],
-	"a": [rule21,],
-	"b": [rule21,],
-	"c": [rule21,],
-	"d": [rule21,],
-	"e": [rule21,],
-	"f": [rule21,],
-	"g": [rule21,],
-	"h": [rule21,],
-	"i": [rule21,],
-	"j": [rule21,],
-	"k": [rule21,],
-	"l": [rule21,],
-	"m": [rule21,],
-	"n": [rule21,],
-	"o": [rule21,],
-	"p": [rule21,],
-	"q": [rule21,],
-	"r": [rule5,rule21,],
-	"s": [rule21,],
-	"t": [rule21,],
-	"u": [rule21,],
-	"v": [rule21,],
-	"w": [rule21,],
-	"x": [rule21,],
-	"y": [rule21,],
-	"z": [rule21,],
+	"\"": [vbscript_rule0,],
+	"#": [vbscript_rule1,vbscript_rule2,vbscript_rule3,],
+	"&": [vbscript_rule19,],
+	"'": [vbscript_rule4,],
+	"*": [vbscript_rule15,],
+	"+": [vbscript_rule13,],
+	"-": [vbscript_rule14,],
+	".": [vbscript_rule12,],
+	"/": [vbscript_rule16,],
+	"0": [vbscript_rule21,],
+	"1": [vbscript_rule21,],
+	"2": [vbscript_rule21,],
+	"3": [vbscript_rule21,],
+	"4": [vbscript_rule21,],
+	"5": [vbscript_rule21,],
+	"6": [vbscript_rule21,],
+	"7": [vbscript_rule21,],
+	"8": [vbscript_rule21,],
+	"9": [vbscript_rule21,],
+	":": [vbscript_rule20,],
+	"<": [vbscript_rule6,vbscript_rule7,vbscript_rule11,],
+	"=": [vbscript_rule10,],
+	">": [vbscript_rule8,vbscript_rule9,],
+	"@": [vbscript_rule21,],
+	"A": [vbscript_rule21,],
+	"B": [vbscript_rule21,],
+	"C": [vbscript_rule21,],
+	"D": [vbscript_rule21,],
+	"E": [vbscript_rule21,],
+	"F": [vbscript_rule21,],
+	"G": [vbscript_rule21,],
+	"H": [vbscript_rule21,],
+	"I": [vbscript_rule21,],
+	"J": [vbscript_rule21,],
+	"K": [vbscript_rule21,],
+	"L": [vbscript_rule21,],
+	"M": [vbscript_rule21,],
+	"N": [vbscript_rule21,],
+	"O": [vbscript_rule21,],
+	"P": [vbscript_rule21,],
+	"Q": [vbscript_rule21,],
+	"R": [vbscript_rule21,],
+	"S": [vbscript_rule21,],
+	"T": [vbscript_rule21,],
+	"U": [vbscript_rule21,],
+	"V": [vbscript_rule21,],
+	"W": [vbscript_rule21,],
+	"X": [vbscript_rule21,],
+	"Y": [vbscript_rule21,],
+	"Z": [vbscript_rule21,],
+	"\\": [vbscript_rule17,],
+	"^": [vbscript_rule18,],
+	"a": [vbscript_rule21,],
+	"b": [vbscript_rule21,],
+	"c": [vbscript_rule21,],
+	"d": [vbscript_rule21,],
+	"e": [vbscript_rule21,],
+	"f": [vbscript_rule21,],
+	"g": [vbscript_rule21,],
+	"h": [vbscript_rule21,],
+	"i": [vbscript_rule21,],
+	"j": [vbscript_rule21,],
+	"k": [vbscript_rule21,],
+	"l": [vbscript_rule21,],
+	"m": [vbscript_rule21,],
+	"n": [vbscript_rule21,],
+	"o": [vbscript_rule21,],
+	"p": [vbscript_rule21,],
+	"q": [vbscript_rule21,],
+	"r": [vbscript_rule5,vbscript_rule21,],
+	"s": [vbscript_rule21,],
+	"t": [vbscript_rule21,],
+	"u": [vbscript_rule21,],
+	"v": [vbscript_rule21,],
+	"w": [vbscript_rule21,],
+	"x": [vbscript_rule21,],
+	"y": [vbscript_rule21,],
+	"z": [vbscript_rule21,],
 }
 
 # x.rulesDictDict for vbscript mode.

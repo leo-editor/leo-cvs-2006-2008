@@ -74,120 +74,120 @@ keywordsDictDict = {
 
 # Rules for idl_main ruleset.
 
-def rule0(colorer, s, i):
+def idl_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule1(colorer, s, i):
+def idl_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule2(colorer, s, i):
+def idl_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule3(colorer, s, i):
+def idl_rule3(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment2", seq="//",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule4(colorer, s, i):
+def idl_rule4(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule5(colorer, s, i):
+def idl_rule5(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="{",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule6(colorer, s, i):
+def idl_rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=":",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule7(colorer, s, i):
+def idl_rule7(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="function", pattern="(",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule8(colorer, s, i):
+def idl_rule8(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"\"": [rule1,],
-	"'": [rule2,],
-	"(": [rule7,],
-	"/": [rule0,rule3,],
-	"0": [rule8,],
-	"1": [rule8,],
-	"2": [rule8,],
-	"3": [rule8,],
-	"4": [rule8,],
-	"5": [rule8,],
-	"6": [rule8,],
-	"7": [rule8,],
-	"8": [rule8,],
-	"9": [rule8,],
-	":": [rule6,],
-	"@": [rule8,],
-	"A": [rule8,],
-	"B": [rule8,],
-	"C": [rule8,],
-	"D": [rule8,],
-	"E": [rule8,],
-	"F": [rule8,],
-	"G": [rule8,],
-	"H": [rule8,],
-	"I": [rule8,],
-	"J": [rule8,],
-	"K": [rule8,],
-	"L": [rule8,],
-	"M": [rule8,],
-	"N": [rule8,],
-	"O": [rule8,],
-	"P": [rule8,],
-	"Q": [rule8,],
-	"R": [rule8,],
-	"S": [rule8,],
-	"T": [rule8,],
-	"U": [rule8,],
-	"V": [rule8,],
-	"W": [rule8,],
-	"X": [rule8,],
-	"Y": [rule8,],
-	"Z": [rule8,],
-	"a": [rule8,],
-	"b": [rule8,],
-	"c": [rule8,],
-	"d": [rule8,],
-	"e": [rule8,],
-	"f": [rule8,],
-	"g": [rule8,],
-	"h": [rule8,],
-	"i": [rule8,],
-	"j": [rule8,],
-	"k": [rule8,],
-	"l": [rule8,],
-	"m": [rule8,],
-	"n": [rule8,],
-	"o": [rule8,],
-	"p": [rule8,],
-	"q": [rule8,],
-	"r": [rule8,],
-	"s": [rule8,],
-	"t": [rule8,],
-	"u": [rule8,],
-	"v": [rule8,],
-	"w": [rule8,],
-	"x": [rule8,],
-	"y": [rule8,],
-	"z": [rule8,],
-	"{": [rule5,],
-	"}": [rule4,],
+	"\"": [idl_rule1,],
+	"'": [idl_rule2,],
+	"(": [idl_rule7,],
+	"/": [idl_rule0,idl_rule3,],
+	"0": [idl_rule8,],
+	"1": [idl_rule8,],
+	"2": [idl_rule8,],
+	"3": [idl_rule8,],
+	"4": [idl_rule8,],
+	"5": [idl_rule8,],
+	"6": [idl_rule8,],
+	"7": [idl_rule8,],
+	"8": [idl_rule8,],
+	"9": [idl_rule8,],
+	":": [idl_rule6,],
+	"@": [idl_rule8,],
+	"A": [idl_rule8,],
+	"B": [idl_rule8,],
+	"C": [idl_rule8,],
+	"D": [idl_rule8,],
+	"E": [idl_rule8,],
+	"F": [idl_rule8,],
+	"G": [idl_rule8,],
+	"H": [idl_rule8,],
+	"I": [idl_rule8,],
+	"J": [idl_rule8,],
+	"K": [idl_rule8,],
+	"L": [idl_rule8,],
+	"M": [idl_rule8,],
+	"N": [idl_rule8,],
+	"O": [idl_rule8,],
+	"P": [idl_rule8,],
+	"Q": [idl_rule8,],
+	"R": [idl_rule8,],
+	"S": [idl_rule8,],
+	"T": [idl_rule8,],
+	"U": [idl_rule8,],
+	"V": [idl_rule8,],
+	"W": [idl_rule8,],
+	"X": [idl_rule8,],
+	"Y": [idl_rule8,],
+	"Z": [idl_rule8,],
+	"a": [idl_rule8,],
+	"b": [idl_rule8,],
+	"c": [idl_rule8,],
+	"d": [idl_rule8,],
+	"e": [idl_rule8,],
+	"f": [idl_rule8,],
+	"g": [idl_rule8,],
+	"h": [idl_rule8,],
+	"i": [idl_rule8,],
+	"j": [idl_rule8,],
+	"k": [idl_rule8,],
+	"l": [idl_rule8,],
+	"m": [idl_rule8,],
+	"n": [idl_rule8,],
+	"o": [idl_rule8,],
+	"p": [idl_rule8,],
+	"q": [idl_rule8,],
+	"r": [idl_rule8,],
+	"s": [idl_rule8,],
+	"t": [idl_rule8,],
+	"u": [idl_rule8,],
+	"v": [idl_rule8,],
+	"w": [idl_rule8,],
+	"x": [idl_rule8,],
+	"y": [idl_rule8,],
+	"z": [idl_rule8,],
+	"{": [idl_rule5,],
+	"}": [idl_rule4,],
 }
 
 # x.rulesDictDict for idl mode.

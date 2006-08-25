@@ -62,67 +62,67 @@ keywordsDictDict = {
 
 # Rules for psp_main ruleset.
 
-def rule0(colorer, s, i):
+def psp_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="literal4", begin="<%@", end="%>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule1(colorer, s, i):
+def psp_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="comment2", begin="<%--", end="--%>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule2(colorer, s, i):
+def psp_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="literal3", begin="<%", end="%>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="python::MAIN",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule3(colorer, s, i):
+def psp_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<script language=\"jscript\">", end="</script>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="javascript::MAIN",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule4(colorer, s, i):
+def psp_rule4(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<script language=\"javascript\">", end="</script>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="javascript::MAIN",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule5(colorer, s, i):
+def psp_rule5(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<script>", end="</script>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="javascript::MAIN",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule6(colorer, s, i):
+def psp_rule6(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<!--#", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule7(colorer, s, i):
+def psp_rule7(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="<!--", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule8(colorer, s, i):
+def psp_rule8(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<STYLE>", end="</STYLE>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="css::MAIN",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule9(colorer, s, i):
+def psp_rule9(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="TAGS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule10(colorer, s, i):
+def psp_rule10(colorer, s, i):
     return colorer.match_span(s, i, kind="literal2", begin="&", end=";",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
@@ -130,35 +130,35 @@ def rule10(colorer, s, i):
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"&": [rule10,],
-	"<": [rule0,rule1,rule2,rule3,rule4,rule5,rule6,rule7,rule8,rule9,],
+	"&": [psp_rule10,],
+	"<": [psp_rule0,psp_rule1,psp_rule2,psp_rule3,psp_rule4,psp_rule5,psp_rule6,psp_rule7,psp_rule8,psp_rule9,],
 }
 
 # Rules for psp_tags ruleset.
 
-def rule11(colorer, s, i):
+def psp_rule11(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule12(colorer, s, i):
+def psp_rule12(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule13(colorer, s, i):
+def psp_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule14(colorer, s, i):
+def psp_rule14(colorer, s, i):
     return colorer.match_span(s, i, kind="comment2", begin="<%--", end="--%>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule15(colorer, s, i):
+def psp_rule15(colorer, s, i):
     return colorer.match_span(s, i, kind="literal3", begin="<%", end="%>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="python::MAIN",exclude_match=False,
@@ -166,101 +166,101 @@ def rule15(colorer, s, i):
 
 # Rules dict for tags ruleset.
 rulesDict2 = {
-	"\"": [rule11,],
-	"'": [rule12,],
-	"<": [rule14,rule15,],
-	"=": [rule13,],
+	"\"": [psp_rule11,],
+	"'": [psp_rule12,],
+	"<": [psp_rule14,psp_rule15,],
+	"=": [psp_rule13,],
 }
 
 # Rules for psp_directive ruleset.
 
-def rule16(colorer, s, i):
+def psp_rule16(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule17(colorer, s, i):
+def psp_rule17(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule18(colorer, s, i):
+def psp_rule18(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule19(colorer, s, i):
+def psp_rule19(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for directive ruleset.
 rulesDict3 = {
-	"\"": [rule16,],
-	"'": [rule17,],
-	"0": [rule19,],
-	"1": [rule19,],
-	"2": [rule19,],
-	"3": [rule19,],
-	"4": [rule19,],
-	"5": [rule19,],
-	"6": [rule19,],
-	"7": [rule19,],
-	"8": [rule19,],
-	"9": [rule19,],
-	"=": [rule18,],
-	"@": [rule19,],
-	"A": [rule19,],
-	"B": [rule19,],
-	"C": [rule19,],
-	"D": [rule19,],
-	"E": [rule19,],
-	"F": [rule19,],
-	"G": [rule19,],
-	"H": [rule19,],
-	"I": [rule19,],
-	"J": [rule19,],
-	"K": [rule19,],
-	"L": [rule19,],
-	"M": [rule19,],
-	"N": [rule19,],
-	"O": [rule19,],
-	"P": [rule19,],
-	"Q": [rule19,],
-	"R": [rule19,],
-	"S": [rule19,],
-	"T": [rule19,],
-	"U": [rule19,],
-	"V": [rule19,],
-	"W": [rule19,],
-	"X": [rule19,],
-	"Y": [rule19,],
-	"Z": [rule19,],
-	"a": [rule19,],
-	"b": [rule19,],
-	"c": [rule19,],
-	"d": [rule19,],
-	"e": [rule19,],
-	"f": [rule19,],
-	"g": [rule19,],
-	"h": [rule19,],
-	"i": [rule19,],
-	"j": [rule19,],
-	"k": [rule19,],
-	"l": [rule19,],
-	"m": [rule19,],
-	"n": [rule19,],
-	"o": [rule19,],
-	"p": [rule19,],
-	"q": [rule19,],
-	"r": [rule19,],
-	"s": [rule19,],
-	"t": [rule19,],
-	"u": [rule19,],
-	"v": [rule19,],
-	"w": [rule19,],
-	"x": [rule19,],
-	"y": [rule19,],
-	"z": [rule19,],
+	"\"": [psp_rule16,],
+	"'": [psp_rule17,],
+	"0": [psp_rule19,],
+	"1": [psp_rule19,],
+	"2": [psp_rule19,],
+	"3": [psp_rule19,],
+	"4": [psp_rule19,],
+	"5": [psp_rule19,],
+	"6": [psp_rule19,],
+	"7": [psp_rule19,],
+	"8": [psp_rule19,],
+	"9": [psp_rule19,],
+	"=": [psp_rule18,],
+	"@": [psp_rule19,],
+	"A": [psp_rule19,],
+	"B": [psp_rule19,],
+	"C": [psp_rule19,],
+	"D": [psp_rule19,],
+	"E": [psp_rule19,],
+	"F": [psp_rule19,],
+	"G": [psp_rule19,],
+	"H": [psp_rule19,],
+	"I": [psp_rule19,],
+	"J": [psp_rule19,],
+	"K": [psp_rule19,],
+	"L": [psp_rule19,],
+	"M": [psp_rule19,],
+	"N": [psp_rule19,],
+	"O": [psp_rule19,],
+	"P": [psp_rule19,],
+	"Q": [psp_rule19,],
+	"R": [psp_rule19,],
+	"S": [psp_rule19,],
+	"T": [psp_rule19,],
+	"U": [psp_rule19,],
+	"V": [psp_rule19,],
+	"W": [psp_rule19,],
+	"X": [psp_rule19,],
+	"Y": [psp_rule19,],
+	"Z": [psp_rule19,],
+	"a": [psp_rule19,],
+	"b": [psp_rule19,],
+	"c": [psp_rule19,],
+	"d": [psp_rule19,],
+	"e": [psp_rule19,],
+	"f": [psp_rule19,],
+	"g": [psp_rule19,],
+	"h": [psp_rule19,],
+	"i": [psp_rule19,],
+	"j": [psp_rule19,],
+	"k": [psp_rule19,],
+	"l": [psp_rule19,],
+	"m": [psp_rule19,],
+	"n": [psp_rule19,],
+	"o": [psp_rule19,],
+	"p": [psp_rule19,],
+	"q": [psp_rule19,],
+	"r": [psp_rule19,],
+	"s": [psp_rule19,],
+	"t": [psp_rule19,],
+	"u": [psp_rule19,],
+	"v": [psp_rule19,],
+	"w": [psp_rule19,],
+	"x": [psp_rule19,],
+	"y": [psp_rule19,],
+	"z": [psp_rule19,],
 }
 
 # x.rulesDictDict for psp mode.

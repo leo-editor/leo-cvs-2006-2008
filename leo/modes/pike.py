@@ -171,415 +171,415 @@ keywordsDictDict = {
 
 # Rules for pike_main ruleset.
 
-def rule0(colorer, s, i):
+def pike_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="COMMENT",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule1(colorer, s, i):
+def pike_rule1(colorer, s, i):
     return colorer.match_seq(s, i, kind="invalid", seq="*/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule2(colorer, s, i):
+def pike_rule2(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="//!",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="AUTODOC", exclude_match=False)
 
-def rule3(colorer, s, i):
+def pike_rule3(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="//",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="COMMENT", exclude_match=False)
 
-def rule4(colorer, s, i):
+def pike_rule4(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="STRING_LITERAL",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule5(colorer, s, i):
+def pike_rule5(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="#\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="STRING_LITERAL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule6(colorer, s, i):
+def pike_rule6(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule7(colorer, s, i):
+def pike_rule7(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="#.*?(?=($|/\\*|//))", hash_char="#",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule8(colorer, s, i):
+def pike_rule8(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="({",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule9(colorer, s, i):
+def pike_rule9(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="})",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule10(colorer, s, i):
+def pike_rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="([",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule11(colorer, s, i):
+def pike_rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="])",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule12(colorer, s, i):
+def pike_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="(<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule13(colorer, s, i):
+def pike_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">)",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule14(colorer, s, i):
+def pike_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule15(colorer, s, i):
+def pike_rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="!",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule16(colorer, s, i):
+def pike_rule16(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule17(colorer, s, i):
+def pike_rule17(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule18(colorer, s, i):
+def pike_rule18(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule19(colorer, s, i):
+def pike_rule19(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule20(colorer, s, i):
+def pike_rule20(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule21(colorer, s, i):
+def pike_rule21(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule22(colorer, s, i):
+def pike_rule22(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule23(colorer, s, i):
+def pike_rule23(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="&",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule24(colorer, s, i):
+def pike_rule24(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="|",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule25(colorer, s, i):
+def pike_rule25(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule26(colorer, s, i):
+def pike_rule26(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="~",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule27(colorer, s, i):
+def pike_rule27(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="@",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule28(colorer, s, i):
+def pike_rule28(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="`",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule29(colorer, s, i):
+def pike_rule29(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=".",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule30(colorer, s, i):
+def pike_rule30(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="function", pattern="(",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule31(colorer, s, i):
+def pike_rule31(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"!": [rule15,],
-	"\"": [rule4,],
-	"#": [rule5,rule7,],
-	"%": [rule22,],
-	"&": [rule23,],
-	"'": [rule6,],
-	"(": [rule8,rule10,rule12,rule30,],
-	"*": [rule1,rule19,],
-	"+": [rule16,],
-	"-": [rule17,],
-	".": [rule29,],
-	"/": [rule0,rule2,rule3,rule18,],
-	"0": [rule31,],
-	"1": [rule31,],
-	"2": [rule31,],
-	"3": [rule31,],
-	"4": [rule31,],
-	"5": [rule31,],
-	"6": [rule31,],
-	"7": [rule31,],
-	"8": [rule31,],
-	"9": [rule31,],
-	"<": [rule21,],
-	"=": [rule14,],
-	">": [rule13,rule20,],
-	"@": [rule27,rule31,],
-	"A": [rule31,],
-	"B": [rule31,],
-	"C": [rule31,],
-	"D": [rule31,],
-	"E": [rule31,],
-	"F": [rule31,],
-	"G": [rule31,],
-	"H": [rule31,],
-	"I": [rule31,],
-	"J": [rule31,],
-	"K": [rule31,],
-	"L": [rule31,],
-	"M": [rule31,],
-	"N": [rule31,],
-	"O": [rule31,],
-	"P": [rule31,],
-	"Q": [rule31,],
-	"R": [rule31,],
-	"S": [rule31,],
-	"T": [rule31,],
-	"U": [rule31,],
-	"V": [rule31,],
-	"W": [rule31,],
-	"X": [rule31,],
-	"Y": [rule31,],
-	"Z": [rule31,],
-	"]": [rule11,],
-	"^": [rule25,],
-	"`": [rule28,],
-	"a": [rule31,],
-	"b": [rule31,],
-	"c": [rule31,],
-	"d": [rule31,],
-	"e": [rule31,],
-	"f": [rule31,],
-	"g": [rule31,],
-	"h": [rule31,],
-	"i": [rule31,],
-	"j": [rule31,],
-	"k": [rule31,],
-	"l": [rule31,],
-	"m": [rule31,],
-	"n": [rule31,],
-	"o": [rule31,],
-	"p": [rule31,],
-	"q": [rule31,],
-	"r": [rule31,],
-	"s": [rule31,],
-	"t": [rule31,],
-	"u": [rule31,],
-	"v": [rule31,],
-	"w": [rule31,],
-	"x": [rule31,],
-	"y": [rule31,],
-	"z": [rule31,],
-	"|": [rule24,],
-	"}": [rule9,],
-	"~": [rule26,],
+	"!": [pike_rule15,],
+	"\"": [pike_rule4,],
+	"#": [pike_rule5,pike_rule7,],
+	"%": [pike_rule22,],
+	"&": [pike_rule23,],
+	"'": [pike_rule6,],
+	"(": [pike_rule8,pike_rule10,pike_rule12,pike_rule30,],
+	"*": [pike_rule1,pike_rule19,],
+	"+": [pike_rule16,],
+	"-": [pike_rule17,],
+	".": [pike_rule29,],
+	"/": [pike_rule0,pike_rule2,pike_rule3,pike_rule18,],
+	"0": [pike_rule31,],
+	"1": [pike_rule31,],
+	"2": [pike_rule31,],
+	"3": [pike_rule31,],
+	"4": [pike_rule31,],
+	"5": [pike_rule31,],
+	"6": [pike_rule31,],
+	"7": [pike_rule31,],
+	"8": [pike_rule31,],
+	"9": [pike_rule31,],
+	"<": [pike_rule21,],
+	"=": [pike_rule14,],
+	">": [pike_rule13,pike_rule20,],
+	"@": [pike_rule27,pike_rule31,],
+	"A": [pike_rule31,],
+	"B": [pike_rule31,],
+	"C": [pike_rule31,],
+	"D": [pike_rule31,],
+	"E": [pike_rule31,],
+	"F": [pike_rule31,],
+	"G": [pike_rule31,],
+	"H": [pike_rule31,],
+	"I": [pike_rule31,],
+	"J": [pike_rule31,],
+	"K": [pike_rule31,],
+	"L": [pike_rule31,],
+	"M": [pike_rule31,],
+	"N": [pike_rule31,],
+	"O": [pike_rule31,],
+	"P": [pike_rule31,],
+	"Q": [pike_rule31,],
+	"R": [pike_rule31,],
+	"S": [pike_rule31,],
+	"T": [pike_rule31,],
+	"U": [pike_rule31,],
+	"V": [pike_rule31,],
+	"W": [pike_rule31,],
+	"X": [pike_rule31,],
+	"Y": [pike_rule31,],
+	"Z": [pike_rule31,],
+	"]": [pike_rule11,],
+	"^": [pike_rule25,],
+	"`": [pike_rule28,],
+	"a": [pike_rule31,],
+	"b": [pike_rule31,],
+	"c": [pike_rule31,],
+	"d": [pike_rule31,],
+	"e": [pike_rule31,],
+	"f": [pike_rule31,],
+	"g": [pike_rule31,],
+	"h": [pike_rule31,],
+	"i": [pike_rule31,],
+	"j": [pike_rule31,],
+	"k": [pike_rule31,],
+	"l": [pike_rule31,],
+	"m": [pike_rule31,],
+	"n": [pike_rule31,],
+	"o": [pike_rule31,],
+	"p": [pike_rule31,],
+	"q": [pike_rule31,],
+	"r": [pike_rule31,],
+	"s": [pike_rule31,],
+	"t": [pike_rule31,],
+	"u": [pike_rule31,],
+	"v": [pike_rule31,],
+	"w": [pike_rule31,],
+	"x": [pike_rule31,],
+	"y": [pike_rule31,],
+	"z": [pike_rule31,],
+	"|": [pike_rule24,],
+	"}": [pike_rule9,],
+	"~": [pike_rule26,],
 }
 
 # Rules for pike_comment ruleset.
 
-def rule32(colorer, s, i):
+def pike_rule32(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for comment ruleset.
 rulesDict2 = {
-	"0": [rule32,],
-	"1": [rule32,],
-	"2": [rule32,],
-	"3": [rule32,],
-	"4": [rule32,],
-	"5": [rule32,],
-	"6": [rule32,],
-	"7": [rule32,],
-	"8": [rule32,],
-	"9": [rule32,],
-	"@": [rule32,],
-	"A": [rule32,],
-	"B": [rule32,],
-	"C": [rule32,],
-	"D": [rule32,],
-	"E": [rule32,],
-	"F": [rule32,],
-	"G": [rule32,],
-	"H": [rule32,],
-	"I": [rule32,],
-	"J": [rule32,],
-	"K": [rule32,],
-	"L": [rule32,],
-	"M": [rule32,],
-	"N": [rule32,],
-	"O": [rule32,],
-	"P": [rule32,],
-	"Q": [rule32,],
-	"R": [rule32,],
-	"S": [rule32,],
-	"T": [rule32,],
-	"U": [rule32,],
-	"V": [rule32,],
-	"W": [rule32,],
-	"X": [rule32,],
-	"Y": [rule32,],
-	"Z": [rule32,],
-	"a": [rule32,],
-	"b": [rule32,],
-	"c": [rule32,],
-	"d": [rule32,],
-	"e": [rule32,],
-	"f": [rule32,],
-	"g": [rule32,],
-	"h": [rule32,],
-	"i": [rule32,],
-	"j": [rule32,],
-	"k": [rule32,],
-	"l": [rule32,],
-	"m": [rule32,],
-	"n": [rule32,],
-	"o": [rule32,],
-	"p": [rule32,],
-	"q": [rule32,],
-	"r": [rule32,],
-	"s": [rule32,],
-	"t": [rule32,],
-	"u": [rule32,],
-	"v": [rule32,],
-	"w": [rule32,],
-	"x": [rule32,],
-	"y": [rule32,],
-	"z": [rule32,],
+	"0": [pike_rule32,],
+	"1": [pike_rule32,],
+	"2": [pike_rule32,],
+	"3": [pike_rule32,],
+	"4": [pike_rule32,],
+	"5": [pike_rule32,],
+	"6": [pike_rule32,],
+	"7": [pike_rule32,],
+	"8": [pike_rule32,],
+	"9": [pike_rule32,],
+	"@": [pike_rule32,],
+	"A": [pike_rule32,],
+	"B": [pike_rule32,],
+	"C": [pike_rule32,],
+	"D": [pike_rule32,],
+	"E": [pike_rule32,],
+	"F": [pike_rule32,],
+	"G": [pike_rule32,],
+	"H": [pike_rule32,],
+	"I": [pike_rule32,],
+	"J": [pike_rule32,],
+	"K": [pike_rule32,],
+	"L": [pike_rule32,],
+	"M": [pike_rule32,],
+	"N": [pike_rule32,],
+	"O": [pike_rule32,],
+	"P": [pike_rule32,],
+	"Q": [pike_rule32,],
+	"R": [pike_rule32,],
+	"S": [pike_rule32,],
+	"T": [pike_rule32,],
+	"U": [pike_rule32,],
+	"V": [pike_rule32,],
+	"W": [pike_rule32,],
+	"X": [pike_rule32,],
+	"Y": [pike_rule32,],
+	"Z": [pike_rule32,],
+	"a": [pike_rule32,],
+	"b": [pike_rule32,],
+	"c": [pike_rule32,],
+	"d": [pike_rule32,],
+	"e": [pike_rule32,],
+	"f": [pike_rule32,],
+	"g": [pike_rule32,],
+	"h": [pike_rule32,],
+	"i": [pike_rule32,],
+	"j": [pike_rule32,],
+	"k": [pike_rule32,],
+	"l": [pike_rule32,],
+	"m": [pike_rule32,],
+	"n": [pike_rule32,],
+	"o": [pike_rule32,],
+	"p": [pike_rule32,],
+	"q": [pike_rule32,],
+	"r": [pike_rule32,],
+	"s": [pike_rule32,],
+	"t": [pike_rule32,],
+	"u": [pike_rule32,],
+	"v": [pike_rule32,],
+	"w": [pike_rule32,],
+	"x": [pike_rule32,],
+	"y": [pike_rule32,],
+	"z": [pike_rule32,],
 }
 
 # Rules for pike_autodoc ruleset.
 
-def rule33(colorer, s, i):
+def pike_rule33(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="null", seq="@decl",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="MAIN", exclude_match=True)
 
-def rule34(colorer, s, i):
+def pike_rule34(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="@xml{", end="@}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="xml::TAGS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule35(colorer, s, i):
+def pike_rule35(colorer, s, i):
     return colorer.match_span(s, i, kind="function", begin="@[", end="]",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule36(colorer, s, i):
+def pike_rule36(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="function", regexp="@(b|i|u|tt|url|pre|ref|code|expr|image)?(\\{.*@\\})", hash_char="@",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule37(colorer, s, i):
+def pike_rule37(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-def rule38(colorer, s, i):
+def pike_rule38(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="null", seq="@decl",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="MAIN", exclude_match=False)
 
 # Rules dict for autodoc ruleset.
 rulesDict3 = {
-	"0": [rule37,],
-	"1": [rule37,],
-	"2": [rule37,],
-	"3": [rule37,],
-	"4": [rule37,],
-	"5": [rule37,],
-	"6": [rule37,],
-	"7": [rule37,],
-	"8": [rule37,],
-	"9": [rule37,],
-	"@": [rule33,rule34,rule35,rule36,rule37,rule38,],
-	"A": [rule37,],
-	"B": [rule37,],
-	"C": [rule37,],
-	"D": [rule37,],
-	"E": [rule37,],
-	"F": [rule37,],
-	"G": [rule37,],
-	"H": [rule37,],
-	"I": [rule37,],
-	"J": [rule37,],
-	"K": [rule37,],
-	"L": [rule37,],
-	"M": [rule37,],
-	"N": [rule37,],
-	"O": [rule37,],
-	"P": [rule37,],
-	"Q": [rule37,],
-	"R": [rule37,],
-	"S": [rule37,],
-	"T": [rule37,],
-	"U": [rule37,],
-	"V": [rule37,],
-	"W": [rule37,],
-	"X": [rule37,],
-	"Y": [rule37,],
-	"Z": [rule37,],
-	"a": [rule37,],
-	"b": [rule37,],
-	"c": [rule37,],
-	"d": [rule37,],
-	"e": [rule37,],
-	"f": [rule37,],
-	"g": [rule37,],
-	"h": [rule37,],
-	"i": [rule37,],
-	"j": [rule37,],
-	"k": [rule37,],
-	"l": [rule37,],
-	"m": [rule37,],
-	"n": [rule37,],
-	"o": [rule37,],
-	"p": [rule37,],
-	"q": [rule37,],
-	"r": [rule37,],
-	"s": [rule37,],
-	"t": [rule37,],
-	"u": [rule37,],
-	"v": [rule37,],
-	"w": [rule37,],
-	"x": [rule37,],
-	"y": [rule37,],
-	"z": [rule37,],
+	"0": [pike_rule37,],
+	"1": [pike_rule37,],
+	"2": [pike_rule37,],
+	"3": [pike_rule37,],
+	"4": [pike_rule37,],
+	"5": [pike_rule37,],
+	"6": [pike_rule37,],
+	"7": [pike_rule37,],
+	"8": [pike_rule37,],
+	"9": [pike_rule37,],
+	"@": [pike_rule33,pike_rule34,pike_rule35,pike_rule36,pike_rule37,pike_rule38,],
+	"A": [pike_rule37,],
+	"B": [pike_rule37,],
+	"C": [pike_rule37,],
+	"D": [pike_rule37,],
+	"E": [pike_rule37,],
+	"F": [pike_rule37,],
+	"G": [pike_rule37,],
+	"H": [pike_rule37,],
+	"I": [pike_rule37,],
+	"J": [pike_rule37,],
+	"K": [pike_rule37,],
+	"L": [pike_rule37,],
+	"M": [pike_rule37,],
+	"N": [pike_rule37,],
+	"O": [pike_rule37,],
+	"P": [pike_rule37,],
+	"Q": [pike_rule37,],
+	"R": [pike_rule37,],
+	"S": [pike_rule37,],
+	"T": [pike_rule37,],
+	"U": [pike_rule37,],
+	"V": [pike_rule37,],
+	"W": [pike_rule37,],
+	"X": [pike_rule37,],
+	"Y": [pike_rule37,],
+	"Z": [pike_rule37,],
+	"a": [pike_rule37,],
+	"b": [pike_rule37,],
+	"c": [pike_rule37,],
+	"d": [pike_rule37,],
+	"e": [pike_rule37,],
+	"f": [pike_rule37,],
+	"g": [pike_rule37,],
+	"h": [pike_rule37,],
+	"i": [pike_rule37,],
+	"j": [pike_rule37,],
+	"k": [pike_rule37,],
+	"l": [pike_rule37,],
+	"m": [pike_rule37,],
+	"n": [pike_rule37,],
+	"o": [pike_rule37,],
+	"p": [pike_rule37,],
+	"q": [pike_rule37,],
+	"r": [pike_rule37,],
+	"s": [pike_rule37,],
+	"t": [pike_rule37,],
+	"u": [pike_rule37,],
+	"v": [pike_rule37,],
+	"w": [pike_rule37,],
+	"x": [pike_rule37,],
+	"y": [pike_rule37,],
+	"z": [pike_rule37,],
 }
 
 # Rules for pike_string_literal ruleset.
 
-def rule39(colorer, s, i):
+def pike_rule39(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="literal2", regexp="%([^ a-z]*[a-z]|\\[[^\\]]*\\])", hash_char="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule40(colorer, s, i):
+def pike_rule40(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="comment2", regexp="DEBUG:", hash_char="D",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules dict for string_literal ruleset.
 rulesDict4 = {
-	"%": [rule39,],
-	"D": [rule40,],
+	"%": [pike_rule39,],
+	"D": [pike_rule40,],
 }
 
 # x.rulesDictDict for pike mode.

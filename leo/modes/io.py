@@ -69,212 +69,212 @@ keywordsDictDict = {
 
 # Rules for io_main ruleset.
 
-def rule0(colorer, s, i):
+def io_rule0(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="#",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule1(colorer, s, i):
+def io_rule1(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="//",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule2(colorer, s, i):
+def io_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule3(colorer, s, i):
+def io_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="literal2", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule4(colorer, s, i):
+def io_rule4(colorer, s, i):
     return colorer.match_span(s, i, kind="literal2", begin="\"\"\"", end="\"\"\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule5(colorer, s, i):
+def io_rule5(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="`",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule6(colorer, s, i):
+def io_rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="~",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule7(colorer, s, i):
+def io_rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="@",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule8(colorer, s, i):
+def io_rule8(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="@@",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule9(colorer, s, i):
+def io_rule9(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule10(colorer, s, i):
+def io_rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule11(colorer, s, i):
+def io_rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule12(colorer, s, i):
+def io_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="&",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule13(colorer, s, i):
+def io_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule14(colorer, s, i):
+def io_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule15(colorer, s, i):
+def io_rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule16(colorer, s, i):
+def io_rule16(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule17(colorer, s, i):
+def io_rule17(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule18(colorer, s, i):
+def io_rule18(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="{",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule19(colorer, s, i):
+def io_rule19(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule20(colorer, s, i):
+def io_rule20(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="[",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule21(colorer, s, i):
+def io_rule21(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="]",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule22(colorer, s, i):
+def io_rule22(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="|",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule23(colorer, s, i):
+def io_rule23(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule24(colorer, s, i):
+def io_rule24(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule25(colorer, s, i):
+def io_rule25(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule26(colorer, s, i):
+def io_rule26(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="?",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule27(colorer, s, i):
+def io_rule27(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"\"": [rule3,rule4,],
-	"#": [rule0,],
-	"$": [rule9,],
-	"%": [rule10,],
-	"&": [rule12,],
-	"*": [rule13,],
-	"+": [rule15,],
-	"-": [rule14,],
-	"/": [rule1,rule2,rule16,],
-	"0": [rule27,],
-	"1": [rule27,],
-	"2": [rule27,],
-	"3": [rule27,],
-	"4": [rule27,],
-	"5": [rule27,],
-	"6": [rule27,],
-	"7": [rule27,],
-	"8": [rule27,],
-	"9": [rule27,],
-	"<": [rule25,],
-	"=": [rule17,],
-	">": [rule24,],
-	"?": [rule26,],
-	"@": [rule7,rule8,rule27,],
-	"A": [rule27,],
-	"B": [rule27,],
-	"C": [rule27,],
-	"D": [rule27,],
-	"E": [rule27,],
-	"F": [rule27,],
-	"G": [rule27,],
-	"H": [rule27,],
-	"I": [rule27,],
-	"J": [rule27,],
-	"K": [rule27,],
-	"L": [rule27,],
-	"M": [rule27,],
-	"N": [rule27,],
-	"O": [rule27,],
-	"P": [rule27,],
-	"Q": [rule27,],
-	"R": [rule27,],
-	"S": [rule27,],
-	"T": [rule27,],
-	"U": [rule27,],
-	"V": [rule27,],
-	"W": [rule27,],
-	"X": [rule27,],
-	"Y": [rule27,],
-	"Z": [rule27,],
-	"[": [rule20,],
-	"\\": [rule23,],
-	"]": [rule21,],
-	"^": [rule11,],
-	"`": [rule5,],
-	"a": [rule27,],
-	"b": [rule27,],
-	"c": [rule27,],
-	"d": [rule27,],
-	"e": [rule27,],
-	"f": [rule27,],
-	"g": [rule27,],
-	"h": [rule27,],
-	"i": [rule27,],
-	"j": [rule27,],
-	"k": [rule27,],
-	"l": [rule27,],
-	"m": [rule27,],
-	"n": [rule27,],
-	"o": [rule27,],
-	"p": [rule27,],
-	"q": [rule27,],
-	"r": [rule27,],
-	"s": [rule27,],
-	"t": [rule27,],
-	"u": [rule27,],
-	"v": [rule27,],
-	"w": [rule27,],
-	"x": [rule27,],
-	"y": [rule27,],
-	"z": [rule27,],
-	"{": [rule18,],
-	"|": [rule22,],
-	"}": [rule19,],
-	"~": [rule6,],
+	"\"": [io_rule3,io_rule4,],
+	"#": [io_rule0,],
+	"$": [io_rule9,],
+	"%": [io_rule10,],
+	"&": [io_rule12,],
+	"*": [io_rule13,],
+	"+": [io_rule15,],
+	"-": [io_rule14,],
+	"/": [io_rule1,io_rule2,io_rule16,],
+	"0": [io_rule27,],
+	"1": [io_rule27,],
+	"2": [io_rule27,],
+	"3": [io_rule27,],
+	"4": [io_rule27,],
+	"5": [io_rule27,],
+	"6": [io_rule27,],
+	"7": [io_rule27,],
+	"8": [io_rule27,],
+	"9": [io_rule27,],
+	"<": [io_rule25,],
+	"=": [io_rule17,],
+	">": [io_rule24,],
+	"?": [io_rule26,],
+	"@": [io_rule7,io_rule8,io_rule27,],
+	"A": [io_rule27,],
+	"B": [io_rule27,],
+	"C": [io_rule27,],
+	"D": [io_rule27,],
+	"E": [io_rule27,],
+	"F": [io_rule27,],
+	"G": [io_rule27,],
+	"H": [io_rule27,],
+	"I": [io_rule27,],
+	"J": [io_rule27,],
+	"K": [io_rule27,],
+	"L": [io_rule27,],
+	"M": [io_rule27,],
+	"N": [io_rule27,],
+	"O": [io_rule27,],
+	"P": [io_rule27,],
+	"Q": [io_rule27,],
+	"R": [io_rule27,],
+	"S": [io_rule27,],
+	"T": [io_rule27,],
+	"U": [io_rule27,],
+	"V": [io_rule27,],
+	"W": [io_rule27,],
+	"X": [io_rule27,],
+	"Y": [io_rule27,],
+	"Z": [io_rule27,],
+	"[": [io_rule20,],
+	"\\": [io_rule23,],
+	"]": [io_rule21,],
+	"^": [io_rule11,],
+	"`": [io_rule5,],
+	"a": [io_rule27,],
+	"b": [io_rule27,],
+	"c": [io_rule27,],
+	"d": [io_rule27,],
+	"e": [io_rule27,],
+	"f": [io_rule27,],
+	"g": [io_rule27,],
+	"h": [io_rule27,],
+	"i": [io_rule27,],
+	"j": [io_rule27,],
+	"k": [io_rule27,],
+	"l": [io_rule27,],
+	"m": [io_rule27,],
+	"n": [io_rule27,],
+	"o": [io_rule27,],
+	"p": [io_rule27,],
+	"q": [io_rule27,],
+	"r": [io_rule27,],
+	"s": [io_rule27,],
+	"t": [io_rule27,],
+	"u": [io_rule27,],
+	"v": [io_rule27,],
+	"w": [io_rule27,],
+	"x": [io_rule27,],
+	"y": [io_rule27,],
+	"z": [io_rule27,],
+	"{": [io_rule18,],
+	"|": [io_rule22,],
+	"}": [io_rule19,],
+	"~": [io_rule6,],
 }
 
 # x.rulesDictDict for io mode.

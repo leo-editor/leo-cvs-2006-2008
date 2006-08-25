@@ -30,32 +30,32 @@ keywordsDictDict = {
 
 # Rules for ini_main ruleset.
 
-def rule0(colorer, s, i):
+def ini_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="[", end="]",
         at_line_start=True, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule1(colorer, s, i):
+def ini_rule1(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq=";",
         at_line_start=True, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule2(colorer, s, i):
+def ini_rule2(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="#",
         at_line_start=True, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule3(colorer, s, i):
+def ini_rule3(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="keyword1", pattern="=",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"#": [rule2,],
-	";": [rule1,],
-	"=": [rule3,],
-	"[": [rule0,],
+	"#": [ini_rule2,],
+	";": [ini_rule1,],
+	"=": [ini_rule3,],
+	"[": [ini_rule0,],
 }
 
 # x.rulesDictDict for ini mode.

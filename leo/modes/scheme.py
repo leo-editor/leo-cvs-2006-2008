@@ -233,131 +233,131 @@ keywordsDictDict = {
 
 # Rules for scheme_main ruleset.
 
-def rule0(colorer, s, i):
+def scheme_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="#|", end="|#",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule1(colorer, s, i):
+def scheme_rule1(colorer, s, i):
     return colorer.match_seq(s, i, kind="null", seq="'(",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule2(colorer, s, i):
+def scheme_rule2(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="literal1", pattern="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule3(colorer, s, i):
+def scheme_rule3(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="literal1", pattern="#\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule4(colorer, s, i):
+def scheme_rule4(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="literal1", pattern="#b",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule5(colorer, s, i):
+def scheme_rule5(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="literal1", pattern="#d",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule6(colorer, s, i):
+def scheme_rule6(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="literal1", pattern="#o",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule7(colorer, s, i):
+def scheme_rule7(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="literal1", pattern="#x",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule8(colorer, s, i):
+def scheme_rule8(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq=";",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule9(colorer, s, i):
+def scheme_rule9(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule10(colorer, s, i):
+def scheme_rule10(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"!": [rule10,],
-	"\"": [rule9,],
-	"#": [rule0,rule3,rule4,rule5,rule6,rule7,rule10,],
-	"'": [rule1,rule2,],
-	"*": [rule10,],
-	"-": [rule10,],
-	"/": [rule10,],
-	"0": [rule10,],
-	"1": [rule10,],
-	"2": [rule10,],
-	"3": [rule10,],
-	"4": [rule10,],
-	"5": [rule10,],
-	"6": [rule10,],
-	"7": [rule10,],
-	"8": [rule10,],
-	"9": [rule10,],
-	";": [rule8,],
-	"<": [rule10,],
-	"=": [rule10,],
-	">": [rule10,],
-	"?": [rule10,],
-	"@": [rule10,],
-	"A": [rule10,],
-	"B": [rule10,],
-	"C": [rule10,],
-	"D": [rule10,],
-	"E": [rule10,],
-	"F": [rule10,],
-	"G": [rule10,],
-	"H": [rule10,],
-	"I": [rule10,],
-	"J": [rule10,],
-	"K": [rule10,],
-	"L": [rule10,],
-	"M": [rule10,],
-	"N": [rule10,],
-	"O": [rule10,],
-	"P": [rule10,],
-	"Q": [rule10,],
-	"R": [rule10,],
-	"S": [rule10,],
-	"T": [rule10,],
-	"U": [rule10,],
-	"V": [rule10,],
-	"W": [rule10,],
-	"X": [rule10,],
-	"Y": [rule10,],
-	"Z": [rule10,],
-	"a": [rule10,],
-	"b": [rule10,],
-	"c": [rule10,],
-	"d": [rule10,],
-	"e": [rule10,],
-	"f": [rule10,],
-	"g": [rule10,],
-	"h": [rule10,],
-	"i": [rule10,],
-	"j": [rule10,],
-	"k": [rule10,],
-	"l": [rule10,],
-	"m": [rule10,],
-	"n": [rule10,],
-	"o": [rule10,],
-	"p": [rule10,],
-	"q": [rule10,],
-	"r": [rule10,],
-	"s": [rule10,],
-	"t": [rule10,],
-	"u": [rule10,],
-	"v": [rule10,],
-	"w": [rule10,],
-	"x": [rule10,],
-	"y": [rule10,],
-	"z": [rule10,],
+	"!": [scheme_rule10,],
+	"\"": [scheme_rule9,],
+	"#": [scheme_rule0,scheme_rule3,scheme_rule4,scheme_rule5,scheme_rule6,scheme_rule7,scheme_rule10,],
+	"'": [scheme_rule1,scheme_rule2,],
+	"*": [scheme_rule10,],
+	"-": [scheme_rule10,],
+	"/": [scheme_rule10,],
+	"0": [scheme_rule10,],
+	"1": [scheme_rule10,],
+	"2": [scheme_rule10,],
+	"3": [scheme_rule10,],
+	"4": [scheme_rule10,],
+	"5": [scheme_rule10,],
+	"6": [scheme_rule10,],
+	"7": [scheme_rule10,],
+	"8": [scheme_rule10,],
+	"9": [scheme_rule10,],
+	";": [scheme_rule8,],
+	"<": [scheme_rule10,],
+	"=": [scheme_rule10,],
+	">": [scheme_rule10,],
+	"?": [scheme_rule10,],
+	"@": [scheme_rule10,],
+	"A": [scheme_rule10,],
+	"B": [scheme_rule10,],
+	"C": [scheme_rule10,],
+	"D": [scheme_rule10,],
+	"E": [scheme_rule10,],
+	"F": [scheme_rule10,],
+	"G": [scheme_rule10,],
+	"H": [scheme_rule10,],
+	"I": [scheme_rule10,],
+	"J": [scheme_rule10,],
+	"K": [scheme_rule10,],
+	"L": [scheme_rule10,],
+	"M": [scheme_rule10,],
+	"N": [scheme_rule10,],
+	"O": [scheme_rule10,],
+	"P": [scheme_rule10,],
+	"Q": [scheme_rule10,],
+	"R": [scheme_rule10,],
+	"S": [scheme_rule10,],
+	"T": [scheme_rule10,],
+	"U": [scheme_rule10,],
+	"V": [scheme_rule10,],
+	"W": [scheme_rule10,],
+	"X": [scheme_rule10,],
+	"Y": [scheme_rule10,],
+	"Z": [scheme_rule10,],
+	"a": [scheme_rule10,],
+	"b": [scheme_rule10,],
+	"c": [scheme_rule10,],
+	"d": [scheme_rule10,],
+	"e": [scheme_rule10,],
+	"f": [scheme_rule10,],
+	"g": [scheme_rule10,],
+	"h": [scheme_rule10,],
+	"i": [scheme_rule10,],
+	"j": [scheme_rule10,],
+	"k": [scheme_rule10,],
+	"l": [scheme_rule10,],
+	"m": [scheme_rule10,],
+	"n": [scheme_rule10,],
+	"o": [scheme_rule10,],
+	"p": [scheme_rule10,],
+	"q": [scheme_rule10,],
+	"r": [scheme_rule10,],
+	"s": [scheme_rule10,],
+	"t": [scheme_rule10,],
+	"u": [scheme_rule10,],
+	"v": [scheme_rule10,],
+	"w": [scheme_rule10,],
+	"x": [scheme_rule10,],
+	"y": [scheme_rule10,],
+	"z": [scheme_rule10,],
 }
 
 # x.rulesDictDict for scheme mode.

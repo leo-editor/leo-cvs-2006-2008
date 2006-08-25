@@ -98,43 +98,43 @@ keywordsDictDict = {
 
 # Rules for xml_main ruleset.
 
-def rule0(colorer, s, i):
+def xml_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="<!--", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule1(colorer, s, i):
+def xml_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="<!ENTITY", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="ENTITY-TAGS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule2(colorer, s, i):
+def xml_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="<![CDATA[", end="]]>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="CDATA",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule3(colorer, s, i):
+def xml_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="<!", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DTD-TAGS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule4(colorer, s, i):
+def xml_rule4(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword3", begin="<?", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule5(colorer, s, i):
+def xml_rule5(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="TAGS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule6(colorer, s, i):
+def xml_rule6(colorer, s, i):
     return colorer.match_span(s, i, kind="literal2", begin="&", end=";",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
@@ -142,310 +142,310 @@ def rule6(colorer, s, i):
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"&": [rule6,],
-	"<": [rule0,rule1,rule2,rule3,rule4,rule5,],
+	"&": [xml_rule6,],
+	"<": [xml_rule0,xml_rule1,xml_rule2,xml_rule3,xml_rule4,xml_rule5,],
 }
 
 # Rules for xml_tags ruleset.
 
-def rule7(colorer, s, i):
+def xml_rule7(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="<!--", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule8(colorer, s, i):
+def xml_rule8(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule9(colorer, s, i):
+def xml_rule9(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule10(colorer, s, i):
+def xml_rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq="/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule11(colorer, s, i):
+def xml_rule11(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="label", pattern=":",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule12(colorer, s, i):
+def xml_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=":",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules dict for tags ruleset.
 rulesDict2 = {
-	"\"": [rule8,],
-	"'": [rule9,],
-	"/": [rule10,],
-	":": [rule11,rule12,],
-	"<": [rule7,],
+	"\"": [xml_rule8,],
+	"'": [xml_rule9,],
+	"/": [xml_rule10,],
+	":": [xml_rule11,xml_rule12,],
+	"<": [xml_rule7,],
 }
 
 # Rules for xml_dtd_tags ruleset.
 
-def rule13(colorer, s, i):
+def xml_rule13(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="<!--", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule14(colorer, s, i):
+def xml_rule14(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="--", end="--",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule15(colorer, s, i):
+def xml_rule15(colorer, s, i):
     return colorer.match_span(s, i, kind="literal2", begin="%", end=";",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=True)
 
-def rule16(colorer, s, i):
+def xml_rule16(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule17(colorer, s, i):
+def xml_rule17(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule18(colorer, s, i):
+def xml_rule18(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="[", end="]",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="MAIN",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule19(colorer, s, i):
+def xml_rule19(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="(",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule20(colorer, s, i):
+def xml_rule20(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule21(colorer, s, i):
+def xml_rule21(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="|",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule22(colorer, s, i):
+def xml_rule22(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="?",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule23(colorer, s, i):
+def xml_rule23(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule24(colorer, s, i):
+def xml_rule24(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule25(colorer, s, i):
+def xml_rule25(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=",",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule26(colorer, s, i):
+def xml_rule26(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for dtd_tags ruleset.
 rulesDict3 = {
-	"\"": [rule16,],
-	"#": [rule26,],
-	"%": [rule15,],
-	"'": [rule17,],
-	"(": [rule19,],
-	")": [rule20,],
-	"*": [rule23,],
-	"+": [rule24,],
-	",": [rule25,],
-	"-": [rule14,],
-	"0": [rule26,],
-	"1": [rule26,],
-	"2": [rule26,],
-	"3": [rule26,],
-	"4": [rule26,],
-	"5": [rule26,],
-	"6": [rule26,],
-	"7": [rule26,],
-	"8": [rule26,],
-	"9": [rule26,],
-	"<": [rule13,],
-	"?": [rule22,],
-	"@": [rule26,],
-	"A": [rule26,],
-	"B": [rule26,],
-	"C": [rule26,],
-	"D": [rule26,],
-	"E": [rule26,],
-	"F": [rule26,],
-	"G": [rule26,],
-	"H": [rule26,],
-	"I": [rule26,],
-	"J": [rule26,],
-	"K": [rule26,],
-	"L": [rule26,],
-	"M": [rule26,],
-	"N": [rule26,],
-	"O": [rule26,],
-	"P": [rule26,],
-	"Q": [rule26,],
-	"R": [rule26,],
-	"S": [rule26,],
-	"T": [rule26,],
-	"U": [rule26,],
-	"V": [rule26,],
-	"W": [rule26,],
-	"X": [rule26,],
-	"Y": [rule26,],
-	"Z": [rule26,],
-	"[": [rule18,],
-	"a": [rule26,],
-	"b": [rule26,],
-	"c": [rule26,],
-	"d": [rule26,],
-	"e": [rule26,],
-	"f": [rule26,],
-	"g": [rule26,],
-	"h": [rule26,],
-	"i": [rule26,],
-	"j": [rule26,],
-	"k": [rule26,],
-	"l": [rule26,],
-	"m": [rule26,],
-	"n": [rule26,],
-	"o": [rule26,],
-	"p": [rule26,],
-	"q": [rule26,],
-	"r": [rule26,],
-	"s": [rule26,],
-	"t": [rule26,],
-	"u": [rule26,],
-	"v": [rule26,],
-	"w": [rule26,],
-	"x": [rule26,],
-	"y": [rule26,],
-	"z": [rule26,],
-	"|": [rule21,],
+	"\"": [xml_rule16,],
+	"#": [xml_rule26,],
+	"%": [xml_rule15,],
+	"'": [xml_rule17,],
+	"(": [xml_rule19,],
+	")": [xml_rule20,],
+	"*": [xml_rule23,],
+	"+": [xml_rule24,],
+	",": [xml_rule25,],
+	"-": [xml_rule14,],
+	"0": [xml_rule26,],
+	"1": [xml_rule26,],
+	"2": [xml_rule26,],
+	"3": [xml_rule26,],
+	"4": [xml_rule26,],
+	"5": [xml_rule26,],
+	"6": [xml_rule26,],
+	"7": [xml_rule26,],
+	"8": [xml_rule26,],
+	"9": [xml_rule26,],
+	"<": [xml_rule13,],
+	"?": [xml_rule22,],
+	"@": [xml_rule26,],
+	"A": [xml_rule26,],
+	"B": [xml_rule26,],
+	"C": [xml_rule26,],
+	"D": [xml_rule26,],
+	"E": [xml_rule26,],
+	"F": [xml_rule26,],
+	"G": [xml_rule26,],
+	"H": [xml_rule26,],
+	"I": [xml_rule26,],
+	"J": [xml_rule26,],
+	"K": [xml_rule26,],
+	"L": [xml_rule26,],
+	"M": [xml_rule26,],
+	"N": [xml_rule26,],
+	"O": [xml_rule26,],
+	"P": [xml_rule26,],
+	"Q": [xml_rule26,],
+	"R": [xml_rule26,],
+	"S": [xml_rule26,],
+	"T": [xml_rule26,],
+	"U": [xml_rule26,],
+	"V": [xml_rule26,],
+	"W": [xml_rule26,],
+	"X": [xml_rule26,],
+	"Y": [xml_rule26,],
+	"Z": [xml_rule26,],
+	"[": [xml_rule18,],
+	"a": [xml_rule26,],
+	"b": [xml_rule26,],
+	"c": [xml_rule26,],
+	"d": [xml_rule26,],
+	"e": [xml_rule26,],
+	"f": [xml_rule26,],
+	"g": [xml_rule26,],
+	"h": [xml_rule26,],
+	"i": [xml_rule26,],
+	"j": [xml_rule26,],
+	"k": [xml_rule26,],
+	"l": [xml_rule26,],
+	"m": [xml_rule26,],
+	"n": [xml_rule26,],
+	"o": [xml_rule26,],
+	"p": [xml_rule26,],
+	"q": [xml_rule26,],
+	"r": [xml_rule26,],
+	"s": [xml_rule26,],
+	"t": [xml_rule26,],
+	"u": [xml_rule26,],
+	"v": [xml_rule26,],
+	"w": [xml_rule26,],
+	"x": [xml_rule26,],
+	"y": [xml_rule26,],
+	"z": [xml_rule26,],
+	"|": [xml_rule21,],
 }
 
 # Rules for xml_entity_tags ruleset.
 
-def rule27(colorer, s, i):
+def xml_rule27(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="<!--", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule28(colorer, s, i):
+def xml_rule28(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="--", end="--",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule29(colorer, s, i):
+def xml_rule29(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule30(colorer, s, i):
+def xml_rule30(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule31(colorer, s, i):
+def xml_rule31(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule32(colorer, s, i):
+def xml_rule32(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule33(colorer, s, i):
+def xml_rule33(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for entity_tags ruleset.
 rulesDict4 = {
-	"\"": [rule29,],
-	"#": [rule33,],
-	"%": [rule32,],
-	"'": [rule30,],
-	"-": [rule28,],
-	"0": [rule33,],
-	"1": [rule33,],
-	"2": [rule33,],
-	"3": [rule33,],
-	"4": [rule33,],
-	"5": [rule33,],
-	"6": [rule33,],
-	"7": [rule33,],
-	"8": [rule33,],
-	"9": [rule33,],
-	"<": [rule27,],
-	"=": [rule31,],
-	"@": [rule33,],
-	"A": [rule33,],
-	"B": [rule33,],
-	"C": [rule33,],
-	"D": [rule33,],
-	"E": [rule33,],
-	"F": [rule33,],
-	"G": [rule33,],
-	"H": [rule33,],
-	"I": [rule33,],
-	"J": [rule33,],
-	"K": [rule33,],
-	"L": [rule33,],
-	"M": [rule33,],
-	"N": [rule33,],
-	"O": [rule33,],
-	"P": [rule33,],
-	"Q": [rule33,],
-	"R": [rule33,],
-	"S": [rule33,],
-	"T": [rule33,],
-	"U": [rule33,],
-	"V": [rule33,],
-	"W": [rule33,],
-	"X": [rule33,],
-	"Y": [rule33,],
-	"Z": [rule33,],
-	"a": [rule33,],
-	"b": [rule33,],
-	"c": [rule33,],
-	"d": [rule33,],
-	"e": [rule33,],
-	"f": [rule33,],
-	"g": [rule33,],
-	"h": [rule33,],
-	"i": [rule33,],
-	"j": [rule33,],
-	"k": [rule33,],
-	"l": [rule33,],
-	"m": [rule33,],
-	"n": [rule33,],
-	"o": [rule33,],
-	"p": [rule33,],
-	"q": [rule33,],
-	"r": [rule33,],
-	"s": [rule33,],
-	"t": [rule33,],
-	"u": [rule33,],
-	"v": [rule33,],
-	"w": [rule33,],
-	"x": [rule33,],
-	"y": [rule33,],
-	"z": [rule33,],
+	"\"": [xml_rule29,],
+	"#": [xml_rule33,],
+	"%": [xml_rule32,],
+	"'": [xml_rule30,],
+	"-": [xml_rule28,],
+	"0": [xml_rule33,],
+	"1": [xml_rule33,],
+	"2": [xml_rule33,],
+	"3": [xml_rule33,],
+	"4": [xml_rule33,],
+	"5": [xml_rule33,],
+	"6": [xml_rule33,],
+	"7": [xml_rule33,],
+	"8": [xml_rule33,],
+	"9": [xml_rule33,],
+	"<": [xml_rule27,],
+	"=": [xml_rule31,],
+	"@": [xml_rule33,],
+	"A": [xml_rule33,],
+	"B": [xml_rule33,],
+	"C": [xml_rule33,],
+	"D": [xml_rule33,],
+	"E": [xml_rule33,],
+	"F": [xml_rule33,],
+	"G": [xml_rule33,],
+	"H": [xml_rule33,],
+	"I": [xml_rule33,],
+	"J": [xml_rule33,],
+	"K": [xml_rule33,],
+	"L": [xml_rule33,],
+	"M": [xml_rule33,],
+	"N": [xml_rule33,],
+	"O": [xml_rule33,],
+	"P": [xml_rule33,],
+	"Q": [xml_rule33,],
+	"R": [xml_rule33,],
+	"S": [xml_rule33,],
+	"T": [xml_rule33,],
+	"U": [xml_rule33,],
+	"V": [xml_rule33,],
+	"W": [xml_rule33,],
+	"X": [xml_rule33,],
+	"Y": [xml_rule33,],
+	"Z": [xml_rule33,],
+	"a": [xml_rule33,],
+	"b": [xml_rule33,],
+	"c": [xml_rule33,],
+	"d": [xml_rule33,],
+	"e": [xml_rule33,],
+	"f": [xml_rule33,],
+	"g": [xml_rule33,],
+	"h": [xml_rule33,],
+	"i": [xml_rule33,],
+	"j": [xml_rule33,],
+	"k": [xml_rule33,],
+	"l": [xml_rule33,],
+	"m": [xml_rule33,],
+	"n": [xml_rule33,],
+	"o": [xml_rule33,],
+	"p": [xml_rule33,],
+	"q": [xml_rule33,],
+	"r": [xml_rule33,],
+	"s": [xml_rule33,],
+	"t": [xml_rule33,],
+	"u": [xml_rule33,],
+	"v": [xml_rule33,],
+	"w": [xml_rule33,],
+	"x": [xml_rule33,],
+	"y": [xml_rule33,],
+	"z": [xml_rule33,],
 }
 
 # Rules for xml_cdata ruleset.

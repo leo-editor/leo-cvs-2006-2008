@@ -44,56 +44,56 @@ keywordsDictDict = {
 
 # Rules for props_main ruleset.
 
-def rule0(colorer, s, i):
+def props_rule0(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="#",
         at_line_start=True, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule1(colorer, s, i):
+def props_rule1(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="null", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="PROP_VALUE", exclude_match=False)
 
-def rule2(colorer, s, i):
+def props_rule2(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="null", seq=":",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="PROP_VALUE", exclude_match=False)
 
-def rule3(colorer, s, i):
+def props_rule3(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="null", seq=" ",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="PROP_VALUE", exclude_match=False)
 
-def rule4(colorer, s, i):
+def props_rule4(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="null", seq="\t",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="PROP_VALUE", exclude_match=False)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"\t": [rule4,],
-	" ": [rule3,],
-	"#": [rule0,],
-	":": [rule2,],
-	"=": [rule1,],
+	"\t": [props_rule4,],
+	" ": [props_rule3,],
+	"#": [props_rule0,],
+	":": [props_rule2,],
+	"=": [props_rule1,],
 }
 
 # Rules for props_prop_value ruleset.
 
-def rule5(colorer, s, i):
+def props_rule5(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword3", begin="{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule6(colorer, s, i):
+def props_rule6(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="digit", pattern="#",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 # Rules dict for prop_value ruleset.
 rulesDict2 = {
-	"#": [rule6,],
-	"{": [rule5,],
+	"#": [props_rule6,],
+	"{": [props_rule5,],
 }
 
 # x.rulesDictDict for props mode.

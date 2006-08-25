@@ -501,66 +501,66 @@ keywordsDictDict = {
 
 # Rules for coldfusion_main ruleset.
 
-def rule0(colorer, s, i):
+def coldfusion_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment4", begin="<!---", end="--->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule1(colorer, s, i):
+def coldfusion_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule2(colorer, s, i):
+def coldfusion_rule2(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment2", seq="//",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule3(colorer, s, i):
+def coldfusion_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="comment3", begin="<!--", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule4(colorer, s, i):
+def coldfusion_rule4(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword3", begin="<CFSCRIPT", end="</CFSCRIPT>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="CFSCRIPT",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule5(colorer, s, i):
+def coldfusion_rule5(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword3", begin="<CF", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="CFTAGS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule6(colorer, s, i):
+def coldfusion_rule6(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword3", begin="</CF", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="CFTAGS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule7(colorer, s, i):
+def coldfusion_rule7(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<SCRIPT", end="</SCRIPT>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="html::JAVASCRIPT",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule8(colorer, s, i):
+def coldfusion_rule8(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<STYLE", end="</STYLE>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="html::CSS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule9(colorer, s, i):
+def coldfusion_rule9(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="TAGS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule10(colorer, s, i):
+def coldfusion_rule10(colorer, s, i):
     return colorer.match_span(s, i, kind="literal2", begin="&", end=";",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
@@ -568,42 +568,42 @@ def rule10(colorer, s, i):
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"&": [rule10,],
-	"/": [rule1,rule2,],
-	"<": [rule0,rule3,rule4,rule5,rule6,rule7,rule8,rule9,],
+	"&": [coldfusion_rule10,],
+	"/": [coldfusion_rule1,coldfusion_rule2,],
+	"<": [coldfusion_rule0,coldfusion_rule3,coldfusion_rule4,coldfusion_rule5,coldfusion_rule6,coldfusion_rule7,coldfusion_rule8,coldfusion_rule9,],
 }
 
 # Rules for coldfusion_tags ruleset.
 
-def rule11(colorer, s, i):
+def coldfusion_rule11(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule12(colorer, s, i):
+def coldfusion_rule12(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule13(colorer, s, i):
+def coldfusion_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule14(colorer, s, i):
+def coldfusion_rule14(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword3", begin="<CF", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="CFTAGS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule15(colorer, s, i):
+def coldfusion_rule15(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword3", begin="</CF", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="CFTAGS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule16(colorer, s, i):
+def coldfusion_rule16(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword3", begin="<CFSCRIPT", end="</CFSCRIPT>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="CFSCRIPT",exclude_match=False,
@@ -611,273 +611,273 @@ def rule16(colorer, s, i):
 
 # Rules dict for tags ruleset.
 rulesDict2 = {
-	"\"": [rule11,],
-	"'": [rule12,],
-	"<": [rule14,rule15,rule16,],
-	"=": [rule13,],
+	"\"": [coldfusion_rule11,],
+	"'": [coldfusion_rule12,],
+	"<": [coldfusion_rule14,coldfusion_rule15,coldfusion_rule16,],
+	"=": [coldfusion_rule13,],
 }
 
 # Rules for coldfusion_cfscript ruleset.
 
-def rule17(colorer, s, i):
+def coldfusion_rule17(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule18(colorer, s, i):
+def coldfusion_rule18(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment2", seq="//",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule19(colorer, s, i):
+def coldfusion_rule19(colorer, s, i):
     return colorer.match_span(s, i, kind="label", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule20(colorer, s, i):
+def coldfusion_rule20(colorer, s, i):
     return colorer.match_span(s, i, kind="label", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule21(colorer, s, i):
+def coldfusion_rule21(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal2", seq="(",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule22(colorer, s, i):
+def coldfusion_rule22(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal2", seq=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule23(colorer, s, i):
+def coldfusion_rule23(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule24(colorer, s, i):
+def coldfusion_rule24(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule25(colorer, s, i):
+def coldfusion_rule25(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule26(colorer, s, i):
+def coldfusion_rule26(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule27(colorer, s, i):
+def coldfusion_rule27(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule28(colorer, s, i):
+def coldfusion_rule28(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule29(colorer, s, i):
+def coldfusion_rule29(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="><",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule30(colorer, s, i):
+def coldfusion_rule30(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule31(colorer, s, i):
+def coldfusion_rule31(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="!!",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule32(colorer, s, i):
+def coldfusion_rule32(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="&&",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule33(colorer, s, i):
+def coldfusion_rule33(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for cfscript ruleset.
 rulesDict3 = {
-	"!": [rule31,],
-	"\"": [rule19,],
-	"&": [rule32,],
-	"'": [rule20,],
-	"(": [rule21,rule33,],
-	")": [rule22,],
-	"*": [rule30,],
-	"+": [rule24,],
-	"-": [rule25,],
-	"/": [rule17,rule18,rule26,],
-	"0": [rule33,],
-	"1": [rule33,],
-	"2": [rule33,],
-	"3": [rule33,],
-	"4": [rule33,],
-	"5": [rule33,],
-	"6": [rule33,],
-	"7": [rule33,],
-	"8": [rule33,],
-	"9": [rule33,],
-	"<": [rule28,],
-	"=": [rule23,],
-	">": [rule27,rule29,],
-	"@": [rule33,],
-	"A": [rule33,],
-	"B": [rule33,],
-	"C": [rule33,],
-	"D": [rule33,],
-	"E": [rule33,],
-	"F": [rule33,],
-	"G": [rule33,],
-	"H": [rule33,],
-	"I": [rule33,],
-	"J": [rule33,],
-	"K": [rule33,],
-	"L": [rule33,],
-	"M": [rule33,],
-	"N": [rule33,],
-	"O": [rule33,],
-	"P": [rule33,],
-	"Q": [rule33,],
-	"R": [rule33,],
-	"S": [rule33,],
-	"T": [rule33,],
-	"U": [rule33,],
-	"V": [rule33,],
-	"W": [rule33,],
-	"X": [rule33,],
-	"Y": [rule33,],
-	"Z": [rule33,],
-	"a": [rule33,],
-	"b": [rule33,],
-	"c": [rule33,],
-	"d": [rule33,],
-	"e": [rule33,],
-	"f": [rule33,],
-	"g": [rule33,],
-	"h": [rule33,],
-	"i": [rule33,],
-	"j": [rule33,],
-	"k": [rule33,],
-	"l": [rule33,],
-	"m": [rule33,],
-	"n": [rule33,],
-	"o": [rule33,],
-	"p": [rule33,],
-	"q": [rule33,],
-	"r": [rule33,],
-	"s": [rule33,],
-	"t": [rule33,],
-	"u": [rule33,],
-	"v": [rule33,],
-	"w": [rule33,],
-	"x": [rule33,],
-	"y": [rule33,],
-	"z": [rule33,],
-	"{": [rule33,],
-	"}": [rule33,],
+	"!": [coldfusion_rule31,],
+	"\"": [coldfusion_rule19,],
+	"&": [coldfusion_rule32,],
+	"'": [coldfusion_rule20,],
+	"(": [coldfusion_rule21,coldfusion_rule33,],
+	")": [coldfusion_rule22,],
+	"*": [coldfusion_rule30,],
+	"+": [coldfusion_rule24,],
+	"-": [coldfusion_rule25,],
+	"/": [coldfusion_rule17,coldfusion_rule18,coldfusion_rule26,],
+	"0": [coldfusion_rule33,],
+	"1": [coldfusion_rule33,],
+	"2": [coldfusion_rule33,],
+	"3": [coldfusion_rule33,],
+	"4": [coldfusion_rule33,],
+	"5": [coldfusion_rule33,],
+	"6": [coldfusion_rule33,],
+	"7": [coldfusion_rule33,],
+	"8": [coldfusion_rule33,],
+	"9": [coldfusion_rule33,],
+	"<": [coldfusion_rule28,],
+	"=": [coldfusion_rule23,],
+	">": [coldfusion_rule27,coldfusion_rule29,],
+	"@": [coldfusion_rule33,],
+	"A": [coldfusion_rule33,],
+	"B": [coldfusion_rule33,],
+	"C": [coldfusion_rule33,],
+	"D": [coldfusion_rule33,],
+	"E": [coldfusion_rule33,],
+	"F": [coldfusion_rule33,],
+	"G": [coldfusion_rule33,],
+	"H": [coldfusion_rule33,],
+	"I": [coldfusion_rule33,],
+	"J": [coldfusion_rule33,],
+	"K": [coldfusion_rule33,],
+	"L": [coldfusion_rule33,],
+	"M": [coldfusion_rule33,],
+	"N": [coldfusion_rule33,],
+	"O": [coldfusion_rule33,],
+	"P": [coldfusion_rule33,],
+	"Q": [coldfusion_rule33,],
+	"R": [coldfusion_rule33,],
+	"S": [coldfusion_rule33,],
+	"T": [coldfusion_rule33,],
+	"U": [coldfusion_rule33,],
+	"V": [coldfusion_rule33,],
+	"W": [coldfusion_rule33,],
+	"X": [coldfusion_rule33,],
+	"Y": [coldfusion_rule33,],
+	"Z": [coldfusion_rule33,],
+	"a": [coldfusion_rule33,],
+	"b": [coldfusion_rule33,],
+	"c": [coldfusion_rule33,],
+	"d": [coldfusion_rule33,],
+	"e": [coldfusion_rule33,],
+	"f": [coldfusion_rule33,],
+	"g": [coldfusion_rule33,],
+	"h": [coldfusion_rule33,],
+	"i": [coldfusion_rule33,],
+	"j": [coldfusion_rule33,],
+	"k": [coldfusion_rule33,],
+	"l": [coldfusion_rule33,],
+	"m": [coldfusion_rule33,],
+	"n": [coldfusion_rule33,],
+	"o": [coldfusion_rule33,],
+	"p": [coldfusion_rule33,],
+	"q": [coldfusion_rule33,],
+	"r": [coldfusion_rule33,],
+	"s": [coldfusion_rule33,],
+	"t": [coldfusion_rule33,],
+	"u": [coldfusion_rule33,],
+	"v": [coldfusion_rule33,],
+	"w": [coldfusion_rule33,],
+	"x": [coldfusion_rule33,],
+	"y": [coldfusion_rule33,],
+	"z": [coldfusion_rule33,],
+	"{": [coldfusion_rule33,],
+	"}": [coldfusion_rule33,],
 }
 
 # Rules for coldfusion_cftags ruleset.
 
-def rule34(colorer, s, i):
+def coldfusion_rule34(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule35(colorer, s, i):
+def coldfusion_rule35(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule36(colorer, s, i):
+def coldfusion_rule36(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule37(colorer, s, i):
+def coldfusion_rule37(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword3", seq="##",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule38(colorer, s, i):
+def coldfusion_rule38(colorer, s, i):
     return colorer.match_span(s, i, kind="literal2", begin="#", end="#",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule39(colorer, s, i):
+def coldfusion_rule39(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for cftags ruleset.
 rulesDict4 = {
-	"\"": [rule34,],
-	"#": [rule37,rule38,],
-	"'": [rule35,],
-	"(": [rule39,],
-	"0": [rule39,],
-	"1": [rule39,],
-	"2": [rule39,],
-	"3": [rule39,],
-	"4": [rule39,],
-	"5": [rule39,],
-	"6": [rule39,],
-	"7": [rule39,],
-	"8": [rule39,],
-	"9": [rule39,],
-	"=": [rule36,],
-	"@": [rule39,],
-	"A": [rule39,],
-	"B": [rule39,],
-	"C": [rule39,],
-	"D": [rule39,],
-	"E": [rule39,],
-	"F": [rule39,],
-	"G": [rule39,],
-	"H": [rule39,],
-	"I": [rule39,],
-	"J": [rule39,],
-	"K": [rule39,],
-	"L": [rule39,],
-	"M": [rule39,],
-	"N": [rule39,],
-	"O": [rule39,],
-	"P": [rule39,],
-	"Q": [rule39,],
-	"R": [rule39,],
-	"S": [rule39,],
-	"T": [rule39,],
-	"U": [rule39,],
-	"V": [rule39,],
-	"W": [rule39,],
-	"X": [rule39,],
-	"Y": [rule39,],
-	"Z": [rule39,],
-	"a": [rule39,],
-	"b": [rule39,],
-	"c": [rule39,],
-	"d": [rule39,],
-	"e": [rule39,],
-	"f": [rule39,],
-	"g": [rule39,],
-	"h": [rule39,],
-	"i": [rule39,],
-	"j": [rule39,],
-	"k": [rule39,],
-	"l": [rule39,],
-	"m": [rule39,],
-	"n": [rule39,],
-	"o": [rule39,],
-	"p": [rule39,],
-	"q": [rule39,],
-	"r": [rule39,],
-	"s": [rule39,],
-	"t": [rule39,],
-	"u": [rule39,],
-	"v": [rule39,],
-	"w": [rule39,],
-	"x": [rule39,],
-	"y": [rule39,],
-	"z": [rule39,],
-	"{": [rule39,],
-	"}": [rule39,],
+	"\"": [coldfusion_rule34,],
+	"#": [coldfusion_rule37,coldfusion_rule38,],
+	"'": [coldfusion_rule35,],
+	"(": [coldfusion_rule39,],
+	"0": [coldfusion_rule39,],
+	"1": [coldfusion_rule39,],
+	"2": [coldfusion_rule39,],
+	"3": [coldfusion_rule39,],
+	"4": [coldfusion_rule39,],
+	"5": [coldfusion_rule39,],
+	"6": [coldfusion_rule39,],
+	"7": [coldfusion_rule39,],
+	"8": [coldfusion_rule39,],
+	"9": [coldfusion_rule39,],
+	"=": [coldfusion_rule36,],
+	"@": [coldfusion_rule39,],
+	"A": [coldfusion_rule39,],
+	"B": [coldfusion_rule39,],
+	"C": [coldfusion_rule39,],
+	"D": [coldfusion_rule39,],
+	"E": [coldfusion_rule39,],
+	"F": [coldfusion_rule39,],
+	"G": [coldfusion_rule39,],
+	"H": [coldfusion_rule39,],
+	"I": [coldfusion_rule39,],
+	"J": [coldfusion_rule39,],
+	"K": [coldfusion_rule39,],
+	"L": [coldfusion_rule39,],
+	"M": [coldfusion_rule39,],
+	"N": [coldfusion_rule39,],
+	"O": [coldfusion_rule39,],
+	"P": [coldfusion_rule39,],
+	"Q": [coldfusion_rule39,],
+	"R": [coldfusion_rule39,],
+	"S": [coldfusion_rule39,],
+	"T": [coldfusion_rule39,],
+	"U": [coldfusion_rule39,],
+	"V": [coldfusion_rule39,],
+	"W": [coldfusion_rule39,],
+	"X": [coldfusion_rule39,],
+	"Y": [coldfusion_rule39,],
+	"Z": [coldfusion_rule39,],
+	"a": [coldfusion_rule39,],
+	"b": [coldfusion_rule39,],
+	"c": [coldfusion_rule39,],
+	"d": [coldfusion_rule39,],
+	"e": [coldfusion_rule39,],
+	"f": [coldfusion_rule39,],
+	"g": [coldfusion_rule39,],
+	"h": [coldfusion_rule39,],
+	"i": [coldfusion_rule39,],
+	"j": [coldfusion_rule39,],
+	"k": [coldfusion_rule39,],
+	"l": [coldfusion_rule39,],
+	"m": [coldfusion_rule39,],
+	"n": [coldfusion_rule39,],
+	"o": [coldfusion_rule39,],
+	"p": [coldfusion_rule39,],
+	"q": [coldfusion_rule39,],
+	"r": [coldfusion_rule39,],
+	"s": [coldfusion_rule39,],
+	"t": [coldfusion_rule39,],
+	"u": [coldfusion_rule39,],
+	"v": [coldfusion_rule39,],
+	"w": [coldfusion_rule39,],
+	"x": [coldfusion_rule39,],
+	"y": [coldfusion_rule39,],
+	"z": [coldfusion_rule39,],
+	"{": [coldfusion_rule39,],
+	"}": [coldfusion_rule39,],
 }
 
 # x.rulesDictDict for coldfusion mode.

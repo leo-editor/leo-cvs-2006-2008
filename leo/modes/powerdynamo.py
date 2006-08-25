@@ -288,163 +288,163 @@ keywordsDictDict = {
 
 # Rules for powerdynamo_main ruleset.
 
-def rule0(colorer, s, i):
+def powerdynamo_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="label", begin="<!--script", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="powerdynamo-script",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule1(colorer, s, i):
+def powerdynamo_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="label", begin="<!--data", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="powerdynamo-tag-data",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule2(colorer, s, i):
+def powerdynamo_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="label", begin="<!--document", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="powerdynamo-tag-document",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule3(colorer, s, i):
+def powerdynamo_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="label", begin="<!--evaluate", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="powerdynamo-script",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule4(colorer, s, i):
+def powerdynamo_rule4(colorer, s, i):
     return colorer.match_span(s, i, kind="label", begin="<!--execute", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="powerdynamo-script",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule5(colorer, s, i):
+def powerdynamo_rule5(colorer, s, i):
     return colorer.match_span(s, i, kind="label", begin="<!--formatting", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="powerdynamo-tag-general",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule6(colorer, s, i):
+def powerdynamo_rule6(colorer, s, i):
     return colorer.match_span(s, i, kind="label", begin="<!--/formatting", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="powerdynamo-tag-general",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule7(colorer, s, i):
+def powerdynamo_rule7(colorer, s, i):
     return colorer.match_span(s, i, kind="label", begin="<!--include", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="powerdynamo-tag-general",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule8(colorer, s, i):
+def powerdynamo_rule8(colorer, s, i):
     return colorer.match_span(s, i, kind="label", begin="<!--label", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="powerdynamo-tag-general",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule9(colorer, s, i):
+def powerdynamo_rule9(colorer, s, i):
     return colorer.match_span(s, i, kind="label", begin="<!--sql", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="transact-sql::MAIN",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule10(colorer, s, i):
+def powerdynamo_rule10(colorer, s, i):
     return colorer.match_span(s, i, kind="label", begin="<!--sql_error_code", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="powerdynamo-tag-general",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule11(colorer, s, i):
+def powerdynamo_rule11(colorer, s, i):
     return colorer.match_span(s, i, kind="label", begin="<!--sql_error_info", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="powerdynamo-tag-general",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule12(colorer, s, i):
+def powerdynamo_rule12(colorer, s, i):
     return colorer.match_span(s, i, kind="label", begin="<!--sql_state", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="powerdynamo-tag-general",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule13(colorer, s, i):
+def powerdynamo_rule13(colorer, s, i):
     return colorer.match_span(s, i, kind="label", begin="<!--sql_on_no_error", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="powerdynamo-tag-general",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule14(colorer, s, i):
+def powerdynamo_rule14(colorer, s, i):
     return colorer.match_span(s, i, kind="label", begin="<!--/sql_on_no_error", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="powerdynamo-tag-general",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule15(colorer, s, i):
+def powerdynamo_rule15(colorer, s, i):
     return colorer.match_span(s, i, kind="label", begin="<!--sql_on_error", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="powerdynamo-tag-general",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule16(colorer, s, i):
+def powerdynamo_rule16(colorer, s, i):
     return colorer.match_span(s, i, kind="label", begin="<!--/sql_on_error", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="powerdynamo-tag-general",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule17(colorer, s, i):
+def powerdynamo_rule17(colorer, s, i):
     return colorer.match_span(s, i, kind="label", begin="<!--sql_on_no_rows", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="powerdynamo-tag-general",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule18(colorer, s, i):
+def powerdynamo_rule18(colorer, s, i):
     return colorer.match_span(s, i, kind="label", begin="<!--/sql_on_no_rows", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="powerdynamo-tag-general",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule19(colorer, s, i):
+def powerdynamo_rule19(colorer, s, i):
     return colorer.match_span(s, i, kind="label", begin="<!--sql_on_rows", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="powerdynamo-tag-general",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule20(colorer, s, i):
+def powerdynamo_rule20(colorer, s, i):
     return colorer.match_span(s, i, kind="label", begin="<!--/sql_on_rows", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="powerdynamo-tag-general",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule21(colorer, s, i):
+def powerdynamo_rule21(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="<!--", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule22(colorer, s, i):
+def powerdynamo_rule22(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<SCRIPT", end="</SCRIPT>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="html::JAVASCRIPT",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule23(colorer, s, i):
+def powerdynamo_rule23(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<STYLE", end="</STYLE>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="html::CSS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule24(colorer, s, i):
+def powerdynamo_rule24(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="<!", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="xml::DTD-TAGS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule25(colorer, s, i):
+def powerdynamo_rule25(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="TAGS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule26(colorer, s, i):
+def powerdynamo_rule26(colorer, s, i):
     return colorer.match_span(s, i, kind="literal2", begin="&", end=";",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
@@ -452,45 +452,45 @@ def rule26(colorer, s, i):
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"&": [rule26,],
-	"<": [rule0,rule1,rule2,rule3,rule4,rule5,rule6,rule7,rule8,rule9,rule10,rule11,rule12,rule13,rule14,rule15,rule16,rule17,rule18,rule19,rule20,rule21,rule22,rule23,rule24,rule25,],
+	"&": [powerdynamo_rule26,],
+	"<": [powerdynamo_rule0,powerdynamo_rule1,powerdynamo_rule2,powerdynamo_rule3,powerdynamo_rule4,powerdynamo_rule5,powerdynamo_rule6,powerdynamo_rule7,powerdynamo_rule8,powerdynamo_rule9,powerdynamo_rule10,powerdynamo_rule11,powerdynamo_rule12,powerdynamo_rule13,powerdynamo_rule14,powerdynamo_rule15,powerdynamo_rule16,powerdynamo_rule17,powerdynamo_rule18,powerdynamo_rule19,powerdynamo_rule20,powerdynamo_rule21,powerdynamo_rule22,powerdynamo_rule23,powerdynamo_rule24,powerdynamo_rule25,],
 }
 
 # Rules for powerdynamo_tags ruleset.
 
-def rule27(colorer, s, i):
+def powerdynamo_rule27(colorer, s, i):
     return colorer.match_span(s, i, kind="label", begin="<!--script", end="--?>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="powerdynamo-script",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule28(colorer, s, i):
+def powerdynamo_rule28(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="TAGS_LITERAL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule29(colorer, s, i):
+def powerdynamo_rule29(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="TAGS_LITERAL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule30(colorer, s, i):
+def powerdynamo_rule30(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules dict for tags ruleset.
 rulesDict2 = {
-	"\"": [rule28,],
-	"'": [rule29,],
-	"<": [rule27,],
-	"=": [rule30,],
+	"\"": [powerdynamo_rule28,],
+	"'": [powerdynamo_rule29,],
+	"<": [powerdynamo_rule27,],
+	"=": [powerdynamo_rule30,],
 }
 
 # Rules for powerdynamo_tags_literal ruleset.
 
-def rule31(colorer, s, i):
+def powerdynamo_rule31(colorer, s, i):
     return colorer.match_span(s, i, kind="label", begin="<!--script", end="?-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="powerdynamo-script",exclude_match=False,
@@ -498,497 +498,497 @@ def rule31(colorer, s, i):
 
 # Rules dict for tags_literal ruleset.
 rulesDict3 = {
-	"<": [rule31,],
+	"<": [powerdynamo_rule31,],
 }
 
 # Rules for powerdynamo_powerdynamo_script ruleset.
 
-def rule32(colorer, s, i):
+def powerdynamo_rule32(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule33(colorer, s, i):
+def powerdynamo_rule33(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="powerdynamo_LITERAL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule34(colorer, s, i):
+def powerdynamo_rule34(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="powerdynamo_LITERAL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule35(colorer, s, i):
+def powerdynamo_rule35(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="//",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule36(colorer, s, i):
+def powerdynamo_rule36(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule37(colorer, s, i):
+def powerdynamo_rule37(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="!",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule38(colorer, s, i):
+def powerdynamo_rule38(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule39(colorer, s, i):
+def powerdynamo_rule39(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule40(colorer, s, i):
+def powerdynamo_rule40(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule41(colorer, s, i):
+def powerdynamo_rule41(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule42(colorer, s, i):
+def powerdynamo_rule42(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule43(colorer, s, i):
+def powerdynamo_rule43(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule44(colorer, s, i):
+def powerdynamo_rule44(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule45(colorer, s, i):
+def powerdynamo_rule45(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule46(colorer, s, i):
+def powerdynamo_rule46(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule47(colorer, s, i):
+def powerdynamo_rule47(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule48(colorer, s, i):
+def powerdynamo_rule48(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="&",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule49(colorer, s, i):
+def powerdynamo_rule49(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="|",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule50(colorer, s, i):
+def powerdynamo_rule50(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule51(colorer, s, i):
+def powerdynamo_rule51(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="~",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule52(colorer, s, i):
+def powerdynamo_rule52(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=".",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule53(colorer, s, i):
+def powerdynamo_rule53(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule54(colorer, s, i):
+def powerdynamo_rule54(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="{",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule55(colorer, s, i):
+def powerdynamo_rule55(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=",",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule56(colorer, s, i):
+def powerdynamo_rule56(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=";",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule57(colorer, s, i):
+def powerdynamo_rule57(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="]",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule58(colorer, s, i):
+def powerdynamo_rule58(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="[",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule59(colorer, s, i):
+def powerdynamo_rule59(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="?",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule60(colorer, s, i):
+def powerdynamo_rule60(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="@",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule61(colorer, s, i):
+def powerdynamo_rule61(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=":",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule62(colorer, s, i):
+def powerdynamo_rule62(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="function", pattern="(",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule63(colorer, s, i):
+def powerdynamo_rule63(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for powerdynamo_script ruleset.
 rulesDict4 = {
-	"!": [rule37,],
-	"\"": [rule33,],
-	"%": [rule47,],
-	"&": [rule48,],
-	"'": [rule34,],
-	"(": [rule62,],
-	"*": [rule44,],
-	"+": [rule41,],
-	",": [rule55,],
-	"-": [rule42,],
-	".": [rule52,],
-	"/": [rule32,rule35,rule43,],
-	"0": [rule63,],
-	"1": [rule63,],
-	"2": [rule63,],
-	"3": [rule63,],
-	"4": [rule63,],
-	"5": [rule63,],
-	"6": [rule63,],
-	"7": [rule63,],
-	"8": [rule63,],
-	"9": [rule63,],
-	":": [rule61,],
-	";": [rule56,],
-	"<": [rule39,rule46,],
-	"=": [rule36,rule40,],
-	">": [rule38,rule45,],
-	"?": [rule59,],
-	"@": [rule60,rule63,],
-	"A": [rule63,],
-	"B": [rule63,],
-	"C": [rule63,],
-	"D": [rule63,],
-	"E": [rule63,],
-	"F": [rule63,],
-	"G": [rule63,],
-	"H": [rule63,],
-	"I": [rule63,],
-	"J": [rule63,],
-	"K": [rule63,],
-	"L": [rule63,],
-	"M": [rule63,],
-	"N": [rule63,],
-	"O": [rule63,],
-	"P": [rule63,],
-	"Q": [rule63,],
-	"R": [rule63,],
-	"S": [rule63,],
-	"T": [rule63,],
-	"U": [rule63,],
-	"V": [rule63,],
-	"W": [rule63,],
-	"X": [rule63,],
-	"Y": [rule63,],
-	"Z": [rule63,],
-	"[": [rule58,],
-	"]": [rule57,],
-	"^": [rule50,],
-	"_": [rule63,],
-	"a": [rule63,],
-	"b": [rule63,],
-	"c": [rule63,],
-	"d": [rule63,],
-	"e": [rule63,],
-	"f": [rule63,],
-	"g": [rule63,],
-	"h": [rule63,],
-	"i": [rule63,],
-	"j": [rule63,],
-	"k": [rule63,],
-	"l": [rule63,],
-	"m": [rule63,],
-	"n": [rule63,],
-	"o": [rule63,],
-	"p": [rule63,],
-	"q": [rule63,],
-	"r": [rule63,],
-	"s": [rule63,],
-	"t": [rule63,],
-	"u": [rule63,],
-	"v": [rule63,],
-	"w": [rule63,],
-	"x": [rule63,],
-	"y": [rule63,],
-	"z": [rule63,],
-	"{": [rule54,],
-	"|": [rule49,],
-	"}": [rule53,],
-	"~": [rule51,],
+	"!": [powerdynamo_rule37,],
+	"\"": [powerdynamo_rule33,],
+	"%": [powerdynamo_rule47,],
+	"&": [powerdynamo_rule48,],
+	"'": [powerdynamo_rule34,],
+	"(": [powerdynamo_rule62,],
+	"*": [powerdynamo_rule44,],
+	"+": [powerdynamo_rule41,],
+	",": [powerdynamo_rule55,],
+	"-": [powerdynamo_rule42,],
+	".": [powerdynamo_rule52,],
+	"/": [powerdynamo_rule32,powerdynamo_rule35,powerdynamo_rule43,],
+	"0": [powerdynamo_rule63,],
+	"1": [powerdynamo_rule63,],
+	"2": [powerdynamo_rule63,],
+	"3": [powerdynamo_rule63,],
+	"4": [powerdynamo_rule63,],
+	"5": [powerdynamo_rule63,],
+	"6": [powerdynamo_rule63,],
+	"7": [powerdynamo_rule63,],
+	"8": [powerdynamo_rule63,],
+	"9": [powerdynamo_rule63,],
+	":": [powerdynamo_rule61,],
+	";": [powerdynamo_rule56,],
+	"<": [powerdynamo_rule39,powerdynamo_rule46,],
+	"=": [powerdynamo_rule36,powerdynamo_rule40,],
+	">": [powerdynamo_rule38,powerdynamo_rule45,],
+	"?": [powerdynamo_rule59,],
+	"@": [powerdynamo_rule60,powerdynamo_rule63,],
+	"A": [powerdynamo_rule63,],
+	"B": [powerdynamo_rule63,],
+	"C": [powerdynamo_rule63,],
+	"D": [powerdynamo_rule63,],
+	"E": [powerdynamo_rule63,],
+	"F": [powerdynamo_rule63,],
+	"G": [powerdynamo_rule63,],
+	"H": [powerdynamo_rule63,],
+	"I": [powerdynamo_rule63,],
+	"J": [powerdynamo_rule63,],
+	"K": [powerdynamo_rule63,],
+	"L": [powerdynamo_rule63,],
+	"M": [powerdynamo_rule63,],
+	"N": [powerdynamo_rule63,],
+	"O": [powerdynamo_rule63,],
+	"P": [powerdynamo_rule63,],
+	"Q": [powerdynamo_rule63,],
+	"R": [powerdynamo_rule63,],
+	"S": [powerdynamo_rule63,],
+	"T": [powerdynamo_rule63,],
+	"U": [powerdynamo_rule63,],
+	"V": [powerdynamo_rule63,],
+	"W": [powerdynamo_rule63,],
+	"X": [powerdynamo_rule63,],
+	"Y": [powerdynamo_rule63,],
+	"Z": [powerdynamo_rule63,],
+	"[": [powerdynamo_rule58,],
+	"]": [powerdynamo_rule57,],
+	"^": [powerdynamo_rule50,],
+	"_": [powerdynamo_rule63,],
+	"a": [powerdynamo_rule63,],
+	"b": [powerdynamo_rule63,],
+	"c": [powerdynamo_rule63,],
+	"d": [powerdynamo_rule63,],
+	"e": [powerdynamo_rule63,],
+	"f": [powerdynamo_rule63,],
+	"g": [powerdynamo_rule63,],
+	"h": [powerdynamo_rule63,],
+	"i": [powerdynamo_rule63,],
+	"j": [powerdynamo_rule63,],
+	"k": [powerdynamo_rule63,],
+	"l": [powerdynamo_rule63,],
+	"m": [powerdynamo_rule63,],
+	"n": [powerdynamo_rule63,],
+	"o": [powerdynamo_rule63,],
+	"p": [powerdynamo_rule63,],
+	"q": [powerdynamo_rule63,],
+	"r": [powerdynamo_rule63,],
+	"s": [powerdynamo_rule63,],
+	"t": [powerdynamo_rule63,],
+	"u": [powerdynamo_rule63,],
+	"v": [powerdynamo_rule63,],
+	"w": [powerdynamo_rule63,],
+	"x": [powerdynamo_rule63,],
+	"y": [powerdynamo_rule63,],
+	"z": [powerdynamo_rule63,],
+	"{": [powerdynamo_rule54,],
+	"|": [powerdynamo_rule49,],
+	"}": [powerdynamo_rule53,],
+	"~": [powerdynamo_rule51,],
 }
 
 # Rules for powerdynamo_powerdynamo_tag_general ruleset.
 
-def rule64(colorer, s, i):
+def powerdynamo_rule64(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="powerdynamo_LITERAL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule65(colorer, s, i):
+def powerdynamo_rule65(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="powerdynamo_LITERAL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule66(colorer, s, i):
+def powerdynamo_rule66(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for powerdynamo_tag_general ruleset.
 rulesDict5 = {
-	"\"": [rule64,],
-	"'": [rule65,],
-	"0": [rule66,],
-	"1": [rule66,],
-	"2": [rule66,],
-	"3": [rule66,],
-	"4": [rule66,],
-	"5": [rule66,],
-	"6": [rule66,],
-	"7": [rule66,],
-	"8": [rule66,],
-	"9": [rule66,],
-	"@": [rule66,],
-	"A": [rule66,],
-	"B": [rule66,],
-	"C": [rule66,],
-	"D": [rule66,],
-	"E": [rule66,],
-	"F": [rule66,],
-	"G": [rule66,],
-	"H": [rule66,],
-	"I": [rule66,],
-	"J": [rule66,],
-	"K": [rule66,],
-	"L": [rule66,],
-	"M": [rule66,],
-	"N": [rule66,],
-	"O": [rule66,],
-	"P": [rule66,],
-	"Q": [rule66,],
-	"R": [rule66,],
-	"S": [rule66,],
-	"T": [rule66,],
-	"U": [rule66,],
-	"V": [rule66,],
-	"W": [rule66,],
-	"X": [rule66,],
-	"Y": [rule66,],
-	"Z": [rule66,],
-	"_": [rule66,],
-	"a": [rule66,],
-	"b": [rule66,],
-	"c": [rule66,],
-	"d": [rule66,],
-	"e": [rule66,],
-	"f": [rule66,],
-	"g": [rule66,],
-	"h": [rule66,],
-	"i": [rule66,],
-	"j": [rule66,],
-	"k": [rule66,],
-	"l": [rule66,],
-	"m": [rule66,],
-	"n": [rule66,],
-	"o": [rule66,],
-	"p": [rule66,],
-	"q": [rule66,],
-	"r": [rule66,],
-	"s": [rule66,],
-	"t": [rule66,],
-	"u": [rule66,],
-	"v": [rule66,],
-	"w": [rule66,],
-	"x": [rule66,],
-	"y": [rule66,],
-	"z": [rule66,],
+	"\"": [powerdynamo_rule64,],
+	"'": [powerdynamo_rule65,],
+	"0": [powerdynamo_rule66,],
+	"1": [powerdynamo_rule66,],
+	"2": [powerdynamo_rule66,],
+	"3": [powerdynamo_rule66,],
+	"4": [powerdynamo_rule66,],
+	"5": [powerdynamo_rule66,],
+	"6": [powerdynamo_rule66,],
+	"7": [powerdynamo_rule66,],
+	"8": [powerdynamo_rule66,],
+	"9": [powerdynamo_rule66,],
+	"@": [powerdynamo_rule66,],
+	"A": [powerdynamo_rule66,],
+	"B": [powerdynamo_rule66,],
+	"C": [powerdynamo_rule66,],
+	"D": [powerdynamo_rule66,],
+	"E": [powerdynamo_rule66,],
+	"F": [powerdynamo_rule66,],
+	"G": [powerdynamo_rule66,],
+	"H": [powerdynamo_rule66,],
+	"I": [powerdynamo_rule66,],
+	"J": [powerdynamo_rule66,],
+	"K": [powerdynamo_rule66,],
+	"L": [powerdynamo_rule66,],
+	"M": [powerdynamo_rule66,],
+	"N": [powerdynamo_rule66,],
+	"O": [powerdynamo_rule66,],
+	"P": [powerdynamo_rule66,],
+	"Q": [powerdynamo_rule66,],
+	"R": [powerdynamo_rule66,],
+	"S": [powerdynamo_rule66,],
+	"T": [powerdynamo_rule66,],
+	"U": [powerdynamo_rule66,],
+	"V": [powerdynamo_rule66,],
+	"W": [powerdynamo_rule66,],
+	"X": [powerdynamo_rule66,],
+	"Y": [powerdynamo_rule66,],
+	"Z": [powerdynamo_rule66,],
+	"_": [powerdynamo_rule66,],
+	"a": [powerdynamo_rule66,],
+	"b": [powerdynamo_rule66,],
+	"c": [powerdynamo_rule66,],
+	"d": [powerdynamo_rule66,],
+	"e": [powerdynamo_rule66,],
+	"f": [powerdynamo_rule66,],
+	"g": [powerdynamo_rule66,],
+	"h": [powerdynamo_rule66,],
+	"i": [powerdynamo_rule66,],
+	"j": [powerdynamo_rule66,],
+	"k": [powerdynamo_rule66,],
+	"l": [powerdynamo_rule66,],
+	"m": [powerdynamo_rule66,],
+	"n": [powerdynamo_rule66,],
+	"o": [powerdynamo_rule66,],
+	"p": [powerdynamo_rule66,],
+	"q": [powerdynamo_rule66,],
+	"r": [powerdynamo_rule66,],
+	"s": [powerdynamo_rule66,],
+	"t": [powerdynamo_rule66,],
+	"u": [powerdynamo_rule66,],
+	"v": [powerdynamo_rule66,],
+	"w": [powerdynamo_rule66,],
+	"x": [powerdynamo_rule66,],
+	"y": [powerdynamo_rule66,],
+	"z": [powerdynamo_rule66,],
 }
 
 # Rules for powerdynamo_powerdynamo_tag_data ruleset.
 
-def rule67(colorer, s, i):
+def powerdynamo_rule67(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="powerdynamo_LITERAL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule68(colorer, s, i):
+def powerdynamo_rule68(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="powerdynamo_LITERAL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule69(colorer, s, i):
+def powerdynamo_rule69(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for powerdynamo_tag_data ruleset.
 rulesDict6 = {
-	"\"": [rule67,],
-	"'": [rule68,],
-	"0": [rule69,],
-	"1": [rule69,],
-	"2": [rule69,],
-	"3": [rule69,],
-	"4": [rule69,],
-	"5": [rule69,],
-	"6": [rule69,],
-	"7": [rule69,],
-	"8": [rule69,],
-	"9": [rule69,],
-	"@": [rule69,],
-	"A": [rule69,],
-	"B": [rule69,],
-	"C": [rule69,],
-	"D": [rule69,],
-	"E": [rule69,],
-	"F": [rule69,],
-	"G": [rule69,],
-	"H": [rule69,],
-	"I": [rule69,],
-	"J": [rule69,],
-	"K": [rule69,],
-	"L": [rule69,],
-	"M": [rule69,],
-	"N": [rule69,],
-	"O": [rule69,],
-	"P": [rule69,],
-	"Q": [rule69,],
-	"R": [rule69,],
-	"S": [rule69,],
-	"T": [rule69,],
-	"U": [rule69,],
-	"V": [rule69,],
-	"W": [rule69,],
-	"X": [rule69,],
-	"Y": [rule69,],
-	"Z": [rule69,],
-	"_": [rule69,],
-	"a": [rule69,],
-	"b": [rule69,],
-	"c": [rule69,],
-	"d": [rule69,],
-	"e": [rule69,],
-	"f": [rule69,],
-	"g": [rule69,],
-	"h": [rule69,],
-	"i": [rule69,],
-	"j": [rule69,],
-	"k": [rule69,],
-	"l": [rule69,],
-	"m": [rule69,],
-	"n": [rule69,],
-	"o": [rule69,],
-	"p": [rule69,],
-	"q": [rule69,],
-	"r": [rule69,],
-	"s": [rule69,],
-	"t": [rule69,],
-	"u": [rule69,],
-	"v": [rule69,],
-	"w": [rule69,],
-	"x": [rule69,],
-	"y": [rule69,],
-	"z": [rule69,],
+	"\"": [powerdynamo_rule67,],
+	"'": [powerdynamo_rule68,],
+	"0": [powerdynamo_rule69,],
+	"1": [powerdynamo_rule69,],
+	"2": [powerdynamo_rule69,],
+	"3": [powerdynamo_rule69,],
+	"4": [powerdynamo_rule69,],
+	"5": [powerdynamo_rule69,],
+	"6": [powerdynamo_rule69,],
+	"7": [powerdynamo_rule69,],
+	"8": [powerdynamo_rule69,],
+	"9": [powerdynamo_rule69,],
+	"@": [powerdynamo_rule69,],
+	"A": [powerdynamo_rule69,],
+	"B": [powerdynamo_rule69,],
+	"C": [powerdynamo_rule69,],
+	"D": [powerdynamo_rule69,],
+	"E": [powerdynamo_rule69,],
+	"F": [powerdynamo_rule69,],
+	"G": [powerdynamo_rule69,],
+	"H": [powerdynamo_rule69,],
+	"I": [powerdynamo_rule69,],
+	"J": [powerdynamo_rule69,],
+	"K": [powerdynamo_rule69,],
+	"L": [powerdynamo_rule69,],
+	"M": [powerdynamo_rule69,],
+	"N": [powerdynamo_rule69,],
+	"O": [powerdynamo_rule69,],
+	"P": [powerdynamo_rule69,],
+	"Q": [powerdynamo_rule69,],
+	"R": [powerdynamo_rule69,],
+	"S": [powerdynamo_rule69,],
+	"T": [powerdynamo_rule69,],
+	"U": [powerdynamo_rule69,],
+	"V": [powerdynamo_rule69,],
+	"W": [powerdynamo_rule69,],
+	"X": [powerdynamo_rule69,],
+	"Y": [powerdynamo_rule69,],
+	"Z": [powerdynamo_rule69,],
+	"_": [powerdynamo_rule69,],
+	"a": [powerdynamo_rule69,],
+	"b": [powerdynamo_rule69,],
+	"c": [powerdynamo_rule69,],
+	"d": [powerdynamo_rule69,],
+	"e": [powerdynamo_rule69,],
+	"f": [powerdynamo_rule69,],
+	"g": [powerdynamo_rule69,],
+	"h": [powerdynamo_rule69,],
+	"i": [powerdynamo_rule69,],
+	"j": [powerdynamo_rule69,],
+	"k": [powerdynamo_rule69,],
+	"l": [powerdynamo_rule69,],
+	"m": [powerdynamo_rule69,],
+	"n": [powerdynamo_rule69,],
+	"o": [powerdynamo_rule69,],
+	"p": [powerdynamo_rule69,],
+	"q": [powerdynamo_rule69,],
+	"r": [powerdynamo_rule69,],
+	"s": [powerdynamo_rule69,],
+	"t": [powerdynamo_rule69,],
+	"u": [powerdynamo_rule69,],
+	"v": [powerdynamo_rule69,],
+	"w": [powerdynamo_rule69,],
+	"x": [powerdynamo_rule69,],
+	"y": [powerdynamo_rule69,],
+	"z": [powerdynamo_rule69,],
 }
 
 # Rules for powerdynamo_powerdynamo_tag_document ruleset.
 
-def rule70(colorer, s, i):
+def powerdynamo_rule70(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="powerdynamo_LITERAL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule71(colorer, s, i):
+def powerdynamo_rule71(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="powerdynamo_LITERAL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule72(colorer, s, i):
+def powerdynamo_rule72(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for powerdynamo_tag_document ruleset.
 rulesDict7 = {
-	"\"": [rule70,],
-	"'": [rule71,],
-	"0": [rule72,],
-	"1": [rule72,],
-	"2": [rule72,],
-	"3": [rule72,],
-	"4": [rule72,],
-	"5": [rule72,],
-	"6": [rule72,],
-	"7": [rule72,],
-	"8": [rule72,],
-	"9": [rule72,],
-	"@": [rule72,],
-	"A": [rule72,],
-	"B": [rule72,],
-	"C": [rule72,],
-	"D": [rule72,],
-	"E": [rule72,],
-	"F": [rule72,],
-	"G": [rule72,],
-	"H": [rule72,],
-	"I": [rule72,],
-	"J": [rule72,],
-	"K": [rule72,],
-	"L": [rule72,],
-	"M": [rule72,],
-	"N": [rule72,],
-	"O": [rule72,],
-	"P": [rule72,],
-	"Q": [rule72,],
-	"R": [rule72,],
-	"S": [rule72,],
-	"T": [rule72,],
-	"U": [rule72,],
-	"V": [rule72,],
-	"W": [rule72,],
-	"X": [rule72,],
-	"Y": [rule72,],
-	"Z": [rule72,],
-	"_": [rule72,],
-	"a": [rule72,],
-	"b": [rule72,],
-	"c": [rule72,],
-	"d": [rule72,],
-	"e": [rule72,],
-	"f": [rule72,],
-	"g": [rule72,],
-	"h": [rule72,],
-	"i": [rule72,],
-	"j": [rule72,],
-	"k": [rule72,],
-	"l": [rule72,],
-	"m": [rule72,],
-	"n": [rule72,],
-	"o": [rule72,],
-	"p": [rule72,],
-	"q": [rule72,],
-	"r": [rule72,],
-	"s": [rule72,],
-	"t": [rule72,],
-	"u": [rule72,],
-	"v": [rule72,],
-	"w": [rule72,],
-	"x": [rule72,],
-	"y": [rule72,],
-	"z": [rule72,],
+	"\"": [powerdynamo_rule70,],
+	"'": [powerdynamo_rule71,],
+	"0": [powerdynamo_rule72,],
+	"1": [powerdynamo_rule72,],
+	"2": [powerdynamo_rule72,],
+	"3": [powerdynamo_rule72,],
+	"4": [powerdynamo_rule72,],
+	"5": [powerdynamo_rule72,],
+	"6": [powerdynamo_rule72,],
+	"7": [powerdynamo_rule72,],
+	"8": [powerdynamo_rule72,],
+	"9": [powerdynamo_rule72,],
+	"@": [powerdynamo_rule72,],
+	"A": [powerdynamo_rule72,],
+	"B": [powerdynamo_rule72,],
+	"C": [powerdynamo_rule72,],
+	"D": [powerdynamo_rule72,],
+	"E": [powerdynamo_rule72,],
+	"F": [powerdynamo_rule72,],
+	"G": [powerdynamo_rule72,],
+	"H": [powerdynamo_rule72,],
+	"I": [powerdynamo_rule72,],
+	"J": [powerdynamo_rule72,],
+	"K": [powerdynamo_rule72,],
+	"L": [powerdynamo_rule72,],
+	"M": [powerdynamo_rule72,],
+	"N": [powerdynamo_rule72,],
+	"O": [powerdynamo_rule72,],
+	"P": [powerdynamo_rule72,],
+	"Q": [powerdynamo_rule72,],
+	"R": [powerdynamo_rule72,],
+	"S": [powerdynamo_rule72,],
+	"T": [powerdynamo_rule72,],
+	"U": [powerdynamo_rule72,],
+	"V": [powerdynamo_rule72,],
+	"W": [powerdynamo_rule72,],
+	"X": [powerdynamo_rule72,],
+	"Y": [powerdynamo_rule72,],
+	"Z": [powerdynamo_rule72,],
+	"_": [powerdynamo_rule72,],
+	"a": [powerdynamo_rule72,],
+	"b": [powerdynamo_rule72,],
+	"c": [powerdynamo_rule72,],
+	"d": [powerdynamo_rule72,],
+	"e": [powerdynamo_rule72,],
+	"f": [powerdynamo_rule72,],
+	"g": [powerdynamo_rule72,],
+	"h": [powerdynamo_rule72,],
+	"i": [powerdynamo_rule72,],
+	"j": [powerdynamo_rule72,],
+	"k": [powerdynamo_rule72,],
+	"l": [powerdynamo_rule72,],
+	"m": [powerdynamo_rule72,],
+	"n": [powerdynamo_rule72,],
+	"o": [powerdynamo_rule72,],
+	"p": [powerdynamo_rule72,],
+	"q": [powerdynamo_rule72,],
+	"r": [powerdynamo_rule72,],
+	"s": [powerdynamo_rule72,],
+	"t": [powerdynamo_rule72,],
+	"u": [powerdynamo_rule72,],
+	"v": [powerdynamo_rule72,],
+	"w": [powerdynamo_rule72,],
+	"x": [powerdynamo_rule72,],
+	"y": [powerdynamo_rule72,],
+	"z": [powerdynamo_rule72,],
 }
 
 # x.rulesDictDict for powerdynamo mode.

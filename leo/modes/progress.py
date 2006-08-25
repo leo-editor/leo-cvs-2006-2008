@@ -2822,3293 +2822,3293 @@ keywordsDictDict = {
 
 # Rules for progress_main ruleset.
 
-def rule0(colorer, s, i):
+def progress_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule1(colorer, s, i):
+def progress_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule2(colorer, s, i):
+def progress_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule3(colorer, s, i):
+def progress_rule3(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="label", pattern="{&",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule4(colorer, s, i):
+def progress_rule4(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule5(colorer, s, i):
+def progress_rule5(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule6(colorer, s, i):
+def progress_rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=",",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule7(colorer, s, i):
+def progress_rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=".",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule8(colorer, s, i):
+def progress_rule8(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule9(colorer, s, i):
+def progress_rule9(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule10(colorer, s, i):
+def progress_rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="?",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule11(colorer, s, i):
+def progress_rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="@",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule12(colorer, s, i):
+def progress_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="[",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule13(colorer, s, i):
+def progress_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="]",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule14(colorer, s, i):
+def progress_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule15(colorer, s, i):
+def progress_rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="(",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule16(colorer, s, i):
+def progress_rule16(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule17(colorer, s, i):
+def progress_rule17(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule18(colorer, s, i):
+def progress_rule18(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule19(colorer, s, i):
+def progress_rule19(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule20(colorer, s, i):
+def progress_rule20(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="label", pattern=":",
         at_line_start=False, at_whitespace_end=True, at_word_start=False, exclude_match=True)
 
-def rule21(colorer, s, i):
+def progress_rule21(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":accelerator",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule22(colorer, s, i):
+def progress_rule22(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":accept-changes",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule23(colorer, s, i):
+def progress_rule23(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":accept-row-changes",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule24(colorer, s, i):
+def progress_rule24(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":add-buffer",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule25(colorer, s, i):
+def progress_rule25(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":add-calc-column",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule26(colorer, s, i):
+def progress_rule26(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":add-columns-from",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule27(colorer, s, i):
+def progress_rule27(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":add-events-procedure",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule28(colorer, s, i):
+def progress_rule28(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":add-fields-from",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule29(colorer, s, i):
+def progress_rule29(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":add-first",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule30(colorer, s, i):
+def progress_rule30(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":add-index-field",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule31(colorer, s, i):
+def progress_rule31(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":add-last",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule32(colorer, s, i):
+def progress_rule32(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":add-like-column",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule33(colorer, s, i):
+def progress_rule33(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":add-like-field",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule34(colorer, s, i):
+def progress_rule34(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":add-like-index",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule35(colorer, s, i):
+def progress_rule35(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":add-new-field",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule36(colorer, s, i):
+def progress_rule36(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":add-new-index",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule37(colorer, s, i):
+def progress_rule37(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":add-super-procedure",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule38(colorer, s, i):
+def progress_rule38(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":adm-data",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule39(colorer, s, i):
+def progress_rule39(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":after-buffer",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule40(colorer, s, i):
+def progress_rule40(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":after-rowid",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule41(colorer, s, i):
+def progress_rule41(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":after-table",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule42(colorer, s, i):
+def progress_rule42(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":allow-column-searching",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule43(colorer, s, i):
+def progress_rule43(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":always-on-top",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule44(colorer, s, i):
+def progress_rule44(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":ambiguous",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule45(colorer, s, i):
+def progress_rule45(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":append-child",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule46(colorer, s, i):
+def progress_rule46(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":appl-alert-boxes",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule47(colorer, s, i):
+def progress_rule47(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":apply-callback",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule48(colorer, s, i):
+def progress_rule48(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":appserver-info",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule49(colorer, s, i):
+def progress_rule49(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":appserver-password",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule50(colorer, s, i):
+def progress_rule50(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":appserver-userid",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule51(colorer, s, i):
+def progress_rule51(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":async-request-count",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule52(colorer, s, i):
+def progress_rule52(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":async-request-handle",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule53(colorer, s, i):
+def progress_rule53(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":asynchronous",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule54(colorer, s, i):
+def progress_rule54(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":attach-data-source",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule55(colorer, s, i):
+def progress_rule55(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":attr-space",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule56(colorer, s, i):
+def progress_rule56(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":attribute-names",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule57(colorer, s, i):
+def progress_rule57(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":auto-completion",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule58(colorer, s, i):
+def progress_rule58(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":auto-delete",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule59(colorer, s, i):
+def progress_rule59(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":auto-delete-xml",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule60(colorer, s, i):
+def progress_rule60(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":auto-end-key",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule61(colorer, s, i):
+def progress_rule61(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":auto-go",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule62(colorer, s, i):
+def progress_rule62(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":auto-indent",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule63(colorer, s, i):
+def progress_rule63(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":auto-resize",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule64(colorer, s, i):
+def progress_rule64(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":auto-return",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule65(colorer, s, i):
+def progress_rule65(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":auto-validate",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule66(colorer, s, i):
+def progress_rule66(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":auto-zap",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule67(colorer, s, i):
+def progress_rule67(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":available",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule68(colorer, s, i):
+def progress_rule68(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":available-formats",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule69(colorer, s, i):
+def progress_rule69(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":background",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule70(colorer, s, i):
+def progress_rule70(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":base-ade",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule71(colorer, s, i):
+def progress_rule71(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":basic-logging",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule72(colorer, s, i):
+def progress_rule72(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":batch-mode",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule73(colorer, s, i):
+def progress_rule73(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":before-buffer",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule74(colorer, s, i):
+def progress_rule74(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":before-rowid",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule75(colorer, s, i):
+def progress_rule75(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":before-table",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule76(colorer, s, i):
+def progress_rule76(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":bgcolor",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule77(colorer, s, i):
+def progress_rule77(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":blank",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule78(colorer, s, i):
+def progress_rule78(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":block-iteration-display",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule79(colorer, s, i):
+def progress_rule79(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":border-bottom-chars",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule80(colorer, s, i):
+def progress_rule80(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":border-bottom-pixels",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule81(colorer, s, i):
+def progress_rule81(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":border-left-chars",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule82(colorer, s, i):
+def progress_rule82(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":border-left-pixels",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule83(colorer, s, i):
+def progress_rule83(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":border-right-chars",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule84(colorer, s, i):
+def progress_rule84(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":border-right-pixels",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule85(colorer, s, i):
+def progress_rule85(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":border-top-chars",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule86(colorer, s, i):
+def progress_rule86(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":border-top-pixels",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule87(colorer, s, i):
+def progress_rule87(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":box",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule88(colorer, s, i):
+def progress_rule88(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":box-selectable",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule89(colorer, s, i):
+def progress_rule89(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":browse-column-data-types",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule90(colorer, s, i):
+def progress_rule90(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":browse-column-formats",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule91(colorer, s, i):
+def progress_rule91(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":browse-column-labels",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule92(colorer, s, i):
+def progress_rule92(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":buffer-chars",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule93(colorer, s, i):
+def progress_rule93(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":buffer-compare",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule94(colorer, s, i):
+def progress_rule94(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":buffer-copy",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule95(colorer, s, i):
+def progress_rule95(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":buffer-create",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule96(colorer, s, i):
+def progress_rule96(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":buffer-delete",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule97(colorer, s, i):
+def progress_rule97(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":buffer-field",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule98(colorer, s, i):
+def progress_rule98(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":buffer-handle",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule99(colorer, s, i):
+def progress_rule99(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":buffer-lines",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule100(colorer, s, i):
+def progress_rule100(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":buffer-name",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule101(colorer, s, i):
+def progress_rule101(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":buffer-release",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule102(colorer, s, i):
+def progress_rule102(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":buffer-validate",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule103(colorer, s, i):
+def progress_rule103(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":buffer-value",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule104(colorer, s, i):
+def progress_rule104(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":bytes-read",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule105(colorer, s, i):
+def progress_rule105(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":bytes-written",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule106(colorer, s, i):
+def progress_rule106(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":cache",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule107(colorer, s, i):
+def progress_rule107(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":call-name",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule108(colorer, s, i):
+def progress_rule108(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":call-type",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule109(colorer, s, i):
+def progress_rule109(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":can-create",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule110(colorer, s, i):
+def progress_rule110(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":can-delete",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule111(colorer, s, i):
+def progress_rule111(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":can-read",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule112(colorer, s, i):
+def progress_rule112(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":can-write",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule113(colorer, s, i):
+def progress_rule113(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":cancel-break",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule114(colorer, s, i):
+def progress_rule114(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":cancel-button",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule115(colorer, s, i):
+def progress_rule115(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":cancel-requests",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule116(colorer, s, i):
+def progress_rule116(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":cancelled",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule117(colorer, s, i):
+def progress_rule117(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":careful-paint",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule118(colorer, s, i):
+def progress_rule118(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":case-sensitive",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule119(colorer, s, i):
+def progress_rule119(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":centered",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule120(colorer, s, i):
+def progress_rule120(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":character_length",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule121(colorer, s, i):
+def progress_rule121(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":charset",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule122(colorer, s, i):
+def progress_rule122(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":checked",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule123(colorer, s, i):
+def progress_rule123(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":child-num",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule124(colorer, s, i):
+def progress_rule124(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":clear",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule125(colorer, s, i):
+def progress_rule125(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":clear-selection",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule126(colorer, s, i):
+def progress_rule126(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":client-connection-id",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule127(colorer, s, i):
+def progress_rule127(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":client-type",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule128(colorer, s, i):
+def progress_rule128(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":clone-node",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule129(colorer, s, i):
+def progress_rule129(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":code",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule130(colorer, s, i):
+def progress_rule130(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":codepage",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule131(colorer, s, i):
+def progress_rule131(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":column-bgcolor",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule132(colorer, s, i):
+def progress_rule132(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":column-dcolor",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule133(colorer, s, i):
+def progress_rule133(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":column-fgcolor",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule134(colorer, s, i):
+def progress_rule134(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":column-font",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule135(colorer, s, i):
+def progress_rule135(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":column-label",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule136(colorer, s, i):
+def progress_rule136(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":column-movable",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule137(colorer, s, i):
+def progress_rule137(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":column-pfcolor",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule138(colorer, s, i):
+def progress_rule138(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":column-read-only",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule139(colorer, s, i):
+def progress_rule139(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":column-resizable",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule140(colorer, s, i):
+def progress_rule140(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":column-scrolling",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule141(colorer, s, i):
+def progress_rule141(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":columns",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule142(colorer, s, i):
+def progress_rule142(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":com-handle",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule143(colorer, s, i):
+def progress_rule143(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":complete",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule144(colorer, s, i):
+def progress_rule144(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":config-name",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule145(colorer, s, i):
+def progress_rule145(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":connect",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule146(colorer, s, i):
+def progress_rule146(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":connected",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule147(colorer, s, i):
+def progress_rule147(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":context-help",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule148(colorer, s, i):
+def progress_rule148(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":context-help-file",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule149(colorer, s, i):
+def progress_rule149(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":context-help-id",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule150(colorer, s, i):
+def progress_rule150(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":control-box",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule151(colorer, s, i):
+def progress_rule151(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":convert-3d-colors",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule152(colorer, s, i):
+def progress_rule152(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":convert-to-offset",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule153(colorer, s, i):
+def progress_rule153(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":coverage",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule154(colorer, s, i):
+def progress_rule154(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":cpcase",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule155(colorer, s, i):
+def progress_rule155(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":cpcoll",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule156(colorer, s, i):
+def progress_rule156(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":cplog",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule157(colorer, s, i):
+def progress_rule157(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":cpprint",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule158(colorer, s, i):
+def progress_rule158(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":cprcodein",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule159(colorer, s, i):
+def progress_rule159(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":cprcodeout",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule160(colorer, s, i):
+def progress_rule160(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":cpstream",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule161(colorer, s, i):
+def progress_rule161(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":cpterm",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule162(colorer, s, i):
+def progress_rule162(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":crc-value",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule163(colorer, s, i):
+def progress_rule163(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":create-like",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule164(colorer, s, i):
+def progress_rule164(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":create-node",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule165(colorer, s, i):
+def progress_rule165(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":create-node-namespace",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule166(colorer, s, i):
+def progress_rule166(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":create-on-add",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule167(colorer, s, i):
+def progress_rule167(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":create-result-list-entry",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule168(colorer, s, i):
+def progress_rule168(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":current-changed",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule169(colorer, s, i):
+def progress_rule169(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":current-column",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule170(colorer, s, i):
+def progress_rule170(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":current-environment",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule171(colorer, s, i):
+def progress_rule171(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":current-iteration",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule172(colorer, s, i):
+def progress_rule172(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":current-result-row",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule173(colorer, s, i):
+def progress_rule173(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":current-row-modified",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule174(colorer, s, i):
+def progress_rule174(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":current-window",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule175(colorer, s, i):
+def progress_rule175(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":cursor-char",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule176(colorer, s, i):
+def progress_rule176(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":cursor-line",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule177(colorer, s, i):
+def progress_rule177(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":cursor-offset",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule178(colorer, s, i):
+def progress_rule178(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":data-entry-return",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule179(colorer, s, i):
+def progress_rule179(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":data-source",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule180(colorer, s, i):
+def progress_rule180(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":data-type",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule181(colorer, s, i):
+def progress_rule181(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":dataset",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule182(colorer, s, i):
+def progress_rule182(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":date-format",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule183(colorer, s, i):
+def progress_rule183(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":db-references",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule184(colorer, s, i):
+def progress_rule184(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":dbname",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule185(colorer, s, i):
+def progress_rule185(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":dcolor",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule186(colorer, s, i):
+def progress_rule186(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":dde-error",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule187(colorer, s, i):
+def progress_rule187(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":dde-id",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule188(colorer, s, i):
+def progress_rule188(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":dde-item",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule189(colorer, s, i):
+def progress_rule189(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":dde-name",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule190(colorer, s, i):
+def progress_rule190(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":dde-topic",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule191(colorer, s, i):
+def progress_rule191(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":deblank",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule192(colorer, s, i):
+def progress_rule192(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":debug",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule193(colorer, s, i):
+def progress_rule193(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":debug-alert",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule194(colorer, s, i):
+def progress_rule194(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":decimals",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule195(colorer, s, i):
+def progress_rule195(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":default",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule196(colorer, s, i):
+def progress_rule196(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":default-buffer-handle",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule197(colorer, s, i):
+def progress_rule197(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":default-button",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule198(colorer, s, i):
+def progress_rule198(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":default-commit",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule199(colorer, s, i):
+def progress_rule199(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":default-string",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule200(colorer, s, i):
+def progress_rule200(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":delete",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule201(colorer, s, i):
+def progress_rule201(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":delete-current-row",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule202(colorer, s, i):
+def progress_rule202(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":delete-line",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule203(colorer, s, i):
+def progress_rule203(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":delete-node",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule204(colorer, s, i):
+def progress_rule204(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":delete-result-list-entry",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule205(colorer, s, i):
+def progress_rule205(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":delete-selected-row",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule206(colorer, s, i):
+def progress_rule206(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":delete-selected-rows",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule207(colorer, s, i):
+def progress_rule207(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":delimiter",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule208(colorer, s, i):
+def progress_rule208(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":description",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule209(colorer, s, i):
+def progress_rule209(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":deselect-focused-row",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule210(colorer, s, i):
+def progress_rule210(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":deselect-rows",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule211(colorer, s, i):
+def progress_rule211(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":deselect-selected-row",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule212(colorer, s, i):
+def progress_rule212(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":detach-data-source",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule213(colorer, s, i):
+def progress_rule213(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":directory",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule214(colorer, s, i):
+def progress_rule214(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":disable",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule215(colorer, s, i):
+def progress_rule215(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":disable-auto-zap",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule216(colorer, s, i):
+def progress_rule216(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":disable-connections",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule217(colorer, s, i):
+def progress_rule217(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":disable-dump-triggers",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule218(colorer, s, i):
+def progress_rule218(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":disable-load-triggers",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule219(colorer, s, i):
+def progress_rule219(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":disconnect",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule220(colorer, s, i):
+def progress_rule220(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":display-message",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule221(colorer, s, i):
+def progress_rule221(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":display-timezone",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule222(colorer, s, i):
+def progress_rule222(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":display-type",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule223(colorer, s, i):
+def progress_rule223(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":down",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule224(colorer, s, i):
+def progress_rule224(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":drag-enabled",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule225(colorer, s, i):
+def progress_rule225(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":drop-target",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule226(colorer, s, i):
+def progress_rule226(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":dump-logging-now",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule227(colorer, s, i):
+def progress_rule227(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":dynamic",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule228(colorer, s, i):
+def progress_rule228(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":edge-chars",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule229(colorer, s, i):
+def progress_rule229(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":edge-pixels",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule230(colorer, s, i):
+def progress_rule230(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":edit-can-paste",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule231(colorer, s, i):
+def progress_rule231(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":edit-can-undo",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule232(colorer, s, i):
+def progress_rule232(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":edit-clear",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule233(colorer, s, i):
+def progress_rule233(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":edit-copy",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule234(colorer, s, i):
+def progress_rule234(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":edit-cut",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule235(colorer, s, i):
+def progress_rule235(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":edit-paste",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule236(colorer, s, i):
+def progress_rule236(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":edit-undo",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule237(colorer, s, i):
+def progress_rule237(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":empty",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule238(colorer, s, i):
+def progress_rule238(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":empty-temp-table",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule239(colorer, s, i):
+def progress_rule239(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":enable",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule240(colorer, s, i):
+def progress_rule240(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":enable-connections",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule241(colorer, s, i):
+def progress_rule241(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":enabled",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule242(colorer, s, i):
+def progress_rule242(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":encoding",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule243(colorer, s, i):
+def progress_rule243(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":end-file-drop",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule244(colorer, s, i):
+def progress_rule244(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":end-user-prompt",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule245(colorer, s, i):
+def progress_rule245(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":error-column",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule246(colorer, s, i):
+def progress_rule246(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":error-object-detail",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule247(colorer, s, i):
+def progress_rule247(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":error-row",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule248(colorer, s, i):
+def progress_rule248(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":error-string",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule249(colorer, s, i):
+def progress_rule249(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":event-procedure",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule250(colorer, s, i):
+def progress_rule250(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":event-procedure-context",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule251(colorer, s, i):
+def progress_rule251(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":event-type",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule252(colorer, s, i):
+def progress_rule252(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":exclusive-id",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule253(colorer, s, i):
+def progress_rule253(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":execution-log",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule254(colorer, s, i):
+def progress_rule254(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":expand",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule255(colorer, s, i):
+def progress_rule255(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":expandable",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule256(colorer, s, i):
+def progress_rule256(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":export",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule257(colorer, s, i):
+def progress_rule257(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":extent",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule258(colorer, s, i):
+def progress_rule258(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":fetch-selected-row",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule259(colorer, s, i):
+def progress_rule259(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":fgcolor",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule260(colorer, s, i):
+def progress_rule260(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":file-create-date",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule261(colorer, s, i):
+def progress_rule261(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":file-create-time",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule262(colorer, s, i):
+def progress_rule262(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":file-mod-date",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule263(colorer, s, i):
+def progress_rule263(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":file-mod-time",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule264(colorer, s, i):
+def progress_rule264(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":file-name",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule265(colorer, s, i):
+def progress_rule265(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":file-offset",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule266(colorer, s, i):
+def progress_rule266(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":file-size",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule267(colorer, s, i):
+def progress_rule267(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":file-type",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule268(colorer, s, i):
+def progress_rule268(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":fill",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule269(colorer, s, i):
+def progress_rule269(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":fill-mode",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule270(colorer, s, i):
+def progress_rule270(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":filled",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule271(colorer, s, i):
+def progress_rule271(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":find-by-rowid",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule272(colorer, s, i):
+def progress_rule272(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":find-current",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule273(colorer, s, i):
+def progress_rule273(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":find-first",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule274(colorer, s, i):
+def progress_rule274(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":find-last",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule275(colorer, s, i):
+def progress_rule275(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":find-unique",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule276(colorer, s, i):
+def progress_rule276(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":first-async-request",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule277(colorer, s, i):
+def progress_rule277(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":first-buffer",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule278(colorer, s, i):
+def progress_rule278(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":first-child",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule279(colorer, s, i):
+def progress_rule279(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":first-column",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule280(colorer, s, i):
+def progress_rule280(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":first-data-source",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule281(colorer, s, i):
+def progress_rule281(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":first-dataset",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule282(colorer, s, i):
+def progress_rule282(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":first-procedure",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule283(colorer, s, i):
+def progress_rule283(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":first-query",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule284(colorer, s, i):
+def progress_rule284(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":first-server",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule285(colorer, s, i):
+def progress_rule285(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":first-server-socket",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule286(colorer, s, i):
+def progress_rule286(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":first-socket",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule287(colorer, s, i):
+def progress_rule287(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":first-tab-item",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule288(colorer, s, i):
+def progress_rule288(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":fit-last-column",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule289(colorer, s, i):
+def progress_rule289(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":flat-button",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule290(colorer, s, i):
+def progress_rule290(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":focused-row",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule291(colorer, s, i):
+def progress_rule291(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":focused-row-selected",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule292(colorer, s, i):
+def progress_rule292(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":font",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule293(colorer, s, i):
+def progress_rule293(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":font-based-layout",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule294(colorer, s, i):
+def progress_rule294(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":foreground",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule295(colorer, s, i):
+def progress_rule295(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":form-input",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule296(colorer, s, i):
+def progress_rule296(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":format",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule297(colorer, s, i):
+def progress_rule297(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":forward-only",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule298(colorer, s, i):
+def progress_rule298(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":frame",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule299(colorer, s, i):
+def progress_rule299(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":frame-col",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule300(colorer, s, i):
+def progress_rule300(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":frame-name",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule301(colorer, s, i):
+def progress_rule301(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":frame-row",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule302(colorer, s, i):
+def progress_rule302(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":frame-spacing",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule303(colorer, s, i):
+def progress_rule303(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":frame-x",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule304(colorer, s, i):
+def progress_rule304(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":frame-y",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule305(colorer, s, i):
+def progress_rule305(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":frequency",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule306(colorer, s, i):
+def progress_rule306(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":full-height-chars",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule307(colorer, s, i):
+def progress_rule307(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":full-height-pixels",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule308(colorer, s, i):
+def progress_rule308(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":full-pathname",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule309(colorer, s, i):
+def progress_rule309(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":full-width-chars",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule310(colorer, s, i):
+def progress_rule310(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":full-width-pixels",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule311(colorer, s, i):
+def progress_rule311(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":function",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule312(colorer, s, i):
+def progress_rule312(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":get-attribute",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule313(colorer, s, i):
+def progress_rule313(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":get-attribute-node",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule314(colorer, s, i):
+def progress_rule314(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":get-blue-value",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule315(colorer, s, i):
+def progress_rule315(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":get-browse-column",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule316(colorer, s, i):
+def progress_rule316(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":get-buffer-handle",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule317(colorer, s, i):
+def progress_rule317(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":get-bytes-available",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule318(colorer, s, i):
+def progress_rule318(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":get-cgi-list",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule319(colorer, s, i):
+def progress_rule319(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":get-cgi-value",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule320(colorer, s, i):
+def progress_rule320(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":get-changes",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule321(colorer, s, i):
+def progress_rule321(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":get-child",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule322(colorer, s, i):
+def progress_rule322(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":get-child-relation",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule323(colorer, s, i):
+def progress_rule323(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":get-config-value",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule324(colorer, s, i):
+def progress_rule324(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":get-current",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule325(colorer, s, i):
+def progress_rule325(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":get-document-element",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule326(colorer, s, i):
+def progress_rule326(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":get-dropped-file",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule327(colorer, s, i):
+def progress_rule327(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":get-dynamic",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule328(colorer, s, i):
+def progress_rule328(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":get-first",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule329(colorer, s, i):
+def progress_rule329(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":get-green-value",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule330(colorer, s, i):
+def progress_rule330(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":get-iteration",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule331(colorer, s, i):
+def progress_rule331(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":get-last",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule332(colorer, s, i):
+def progress_rule332(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":get-message",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule333(colorer, s, i):
+def progress_rule333(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":get-next",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule334(colorer, s, i):
+def progress_rule334(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":get-number",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule335(colorer, s, i):
+def progress_rule335(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":get-parent",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule336(colorer, s, i):
+def progress_rule336(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":get-prev",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule337(colorer, s, i):
+def progress_rule337(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":get-printers",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule338(colorer, s, i):
+def progress_rule338(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":get-red-value",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule339(colorer, s, i):
+def progress_rule339(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":get-repositioned-row",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule340(colorer, s, i):
+def progress_rule340(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":get-rgb-value",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule341(colorer, s, i):
+def progress_rule341(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":get-selected-widget",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule342(colorer, s, i):
+def progress_rule342(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":get-signature",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule343(colorer, s, i):
+def progress_rule343(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":get-socket-option",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule344(colorer, s, i):
+def progress_rule344(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":get-tab-item",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule345(colorer, s, i):
+def progress_rule345(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":get-text-height-chars",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule346(colorer, s, i):
+def progress_rule346(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":get-text-height-pixels",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule347(colorer, s, i):
+def progress_rule347(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":get-text-width-chars",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule348(colorer, s, i):
+def progress_rule348(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":get-text-width-pixels",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule349(colorer, s, i):
+def progress_rule349(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":get-wait-state",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule350(colorer, s, i):
+def progress_rule350(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":graphic-edge",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule351(colorer, s, i):
+def progress_rule351(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":grid-factor-horizontal",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule352(colorer, s, i):
+def progress_rule352(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":grid-factor-vertical",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule353(colorer, s, i):
+def progress_rule353(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":grid-snap",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule354(colorer, s, i):
+def progress_rule354(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":grid-unit-height-chars",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule355(colorer, s, i):
+def progress_rule355(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":grid-unit-height-pixels",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule356(colorer, s, i):
+def progress_rule356(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":grid-unit-width-chars",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule357(colorer, s, i):
+def progress_rule357(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":grid-unit-width-pixels",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule358(colorer, s, i):
+def progress_rule358(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":grid-visible",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule359(colorer, s, i):
+def progress_rule359(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":handle",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule360(colorer, s, i):
+def progress_rule360(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":handler",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule361(colorer, s, i):
+def progress_rule361(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":has-lobs",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule362(colorer, s, i):
+def progress_rule362(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":has-records",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule363(colorer, s, i):
+def progress_rule363(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":height-chars",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule364(colorer, s, i):
+def progress_rule364(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":height-pixels",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule365(colorer, s, i):
+def progress_rule365(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":hidden",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule366(colorer, s, i):
+def progress_rule366(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":horizontal",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule367(colorer, s, i):
+def progress_rule367(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":html-charset",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule368(colorer, s, i):
+def progress_rule368(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":html-end-of-line",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule369(colorer, s, i):
+def progress_rule369(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":html-end-of-page",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule370(colorer, s, i):
+def progress_rule370(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":html-frame-begin",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule371(colorer, s, i):
+def progress_rule371(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":html-frame-end",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule372(colorer, s, i):
+def progress_rule372(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":html-header-begin",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule373(colorer, s, i):
+def progress_rule373(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":html-header-end",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule374(colorer, s, i):
+def progress_rule374(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":html-title-begin",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule375(colorer, s, i):
+def progress_rule375(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":html-title-end",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule376(colorer, s, i):
+def progress_rule376(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":hwnd",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule377(colorer, s, i):
+def progress_rule377(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":icfparameter",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule378(colorer, s, i):
+def progress_rule378(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":icon",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule379(colorer, s, i):
+def progress_rule379(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":image",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule380(colorer, s, i):
+def progress_rule380(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":image-down",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule381(colorer, s, i):
+def progress_rule381(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":image-insensitive",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule382(colorer, s, i):
+def progress_rule382(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":image-up",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule383(colorer, s, i):
+def progress_rule383(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":immediate-display",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule384(colorer, s, i):
+def progress_rule384(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":import-node",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule385(colorer, s, i):
+def progress_rule385(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":in-handle",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule386(colorer, s, i):
+def progress_rule386(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":increment-exclusive-id",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule387(colorer, s, i):
+def progress_rule387(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":index",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule388(colorer, s, i):
+def progress_rule388(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":index-information",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule389(colorer, s, i):
+def progress_rule389(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":initial",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule390(colorer, s, i):
+def progress_rule390(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":initialize-document-type",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule391(colorer, s, i):
+def progress_rule391(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":initiate",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule392(colorer, s, i):
+def progress_rule392(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":inner-chars",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule393(colorer, s, i):
+def progress_rule393(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":inner-lines",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule394(colorer, s, i):
+def progress_rule394(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":input-value",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule395(colorer, s, i):
+def progress_rule395(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":insert",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule396(colorer, s, i):
+def progress_rule396(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":insert-backtab",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule397(colorer, s, i):
+def progress_rule397(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":insert-before",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule398(colorer, s, i):
+def progress_rule398(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":insert-file",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule399(colorer, s, i):
+def progress_rule399(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":insert-row",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule400(colorer, s, i):
+def progress_rule400(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":insert-string",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule401(colorer, s, i):
+def progress_rule401(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":insert-tab",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule402(colorer, s, i):
+def progress_rule402(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":instantiating-procedure",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule403(colorer, s, i):
+def progress_rule403(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":internal-entries",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule404(colorer, s, i):
+def progress_rule404(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":invoke",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule405(colorer, s, i):
+def progress_rule405(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":is-open",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule406(colorer, s, i):
+def progress_rule406(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":is-parameter-set",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule407(colorer, s, i):
+def progress_rule407(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":is-row-selected",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule408(colorer, s, i):
+def progress_rule408(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":is-selected",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule409(colorer, s, i):
+def progress_rule409(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":is-xml",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule410(colorer, s, i):
+def progress_rule410(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":items-per-row",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule411(colorer, s, i):
+def progress_rule411(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":keep-connection-open",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule412(colorer, s, i):
+def progress_rule412(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":keep-frame-z-order",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule413(colorer, s, i):
+def progress_rule413(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":keep-security-cache",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule414(colorer, s, i):
+def progress_rule414(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":key",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule415(colorer, s, i):
+def progress_rule415(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":label",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule416(colorer, s, i):
+def progress_rule416(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":label-bgcolor",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule417(colorer, s, i):
+def progress_rule417(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":label-dcolor",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule418(colorer, s, i):
+def progress_rule418(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":label-fgcolor",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule419(colorer, s, i):
+def progress_rule419(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":label-font",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule420(colorer, s, i):
+def progress_rule420(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":labels",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule421(colorer, s, i):
+def progress_rule421(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":languages",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule422(colorer, s, i):
+def progress_rule422(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":large",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule423(colorer, s, i):
+def progress_rule423(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":large-to-small",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule424(colorer, s, i):
+def progress_rule424(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":last-async-request",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule425(colorer, s, i):
+def progress_rule425(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":last-child",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule426(colorer, s, i):
+def progress_rule426(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":last-procedure",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule427(colorer, s, i):
+def progress_rule427(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":last-server",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule428(colorer, s, i):
+def progress_rule428(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":last-server-socket",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule429(colorer, s, i):
+def progress_rule429(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":last-socket",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule430(colorer, s, i):
+def progress_rule430(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":last-tab-item",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule431(colorer, s, i):
+def progress_rule431(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":line",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule432(colorer, s, i):
+def progress_rule432(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":list-item-pairs",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule433(colorer, s, i):
+def progress_rule433(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":list-items",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule434(colorer, s, i):
+def progress_rule434(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":listings",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule435(colorer, s, i):
+def progress_rule435(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":literal-question",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule436(colorer, s, i):
+def progress_rule436(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":load",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule437(colorer, s, i):
+def progress_rule437(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":load-icon",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule438(colorer, s, i):
+def progress_rule438(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":load-image",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule439(colorer, s, i):
+def progress_rule439(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":load-image-down",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule440(colorer, s, i):
+def progress_rule440(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":load-image-insensitive",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule441(colorer, s, i):
+def progress_rule441(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":load-image-up",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule442(colorer, s, i):
+def progress_rule442(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":load-mouse-pointer",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule443(colorer, s, i):
+def progress_rule443(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":load-small-icon",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule444(colorer, s, i):
+def progress_rule444(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":local-host",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule445(colorer, s, i):
+def progress_rule445(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":local-name",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule446(colorer, s, i):
+def progress_rule446(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":local-port",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule447(colorer, s, i):
+def progress_rule447(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":locator-column-number",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule448(colorer, s, i):
+def progress_rule448(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":locator-line-number",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule449(colorer, s, i):
+def progress_rule449(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":locator-public-id",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule450(colorer, s, i):
+def progress_rule450(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":locator-system-id",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule451(colorer, s, i):
+def progress_rule451(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":locator-type",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule452(colorer, s, i):
+def progress_rule452(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":locked",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule453(colorer, s, i):
+def progress_rule453(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":log-id",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule454(colorer, s, i):
+def progress_rule454(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":longchar-to-node-value",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule455(colorer, s, i):
+def progress_rule455(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":lookup",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule456(colorer, s, i):
+def progress_rule456(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":mandatory",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule457(colorer, s, i):
+def progress_rule457(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":manual-highlight",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule458(colorer, s, i):
+def progress_rule458(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":margin-height-chars",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule459(colorer, s, i):
+def progress_rule459(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":margin-height-pixels",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule460(colorer, s, i):
+def progress_rule460(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":margin-width-chars",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule461(colorer, s, i):
+def progress_rule461(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":margin-width-pixels",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule462(colorer, s, i):
+def progress_rule462(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":max-button",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule463(colorer, s, i):
+def progress_rule463(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":max-chars",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule464(colorer, s, i):
+def progress_rule464(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":max-data-guess",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule465(colorer, s, i):
+def progress_rule465(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":max-height-chars",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule466(colorer, s, i):
+def progress_rule466(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":max-height-pixels",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule467(colorer, s, i):
+def progress_rule467(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":max-value",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule468(colorer, s, i):
+def progress_rule468(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":max-width-chars",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule469(colorer, s, i):
+def progress_rule469(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":max-width-pixels",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule470(colorer, s, i):
+def progress_rule470(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":md5-value",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule471(colorer, s, i):
+def progress_rule471(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":memptr-to-node-value",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule472(colorer, s, i):
+def progress_rule472(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":menu-bar",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule473(colorer, s, i):
+def progress_rule473(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":menu-key",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule474(colorer, s, i):
+def progress_rule474(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":menu-mouse",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule475(colorer, s, i):
+def progress_rule475(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":merge-changes",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule476(colorer, s, i):
+def progress_rule476(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":merge-row-changes",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule477(colorer, s, i):
+def progress_rule477(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":message-area",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule478(colorer, s, i):
+def progress_rule478(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":message-area-font",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule479(colorer, s, i):
+def progress_rule479(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":min-button",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule480(colorer, s, i):
+def progress_rule480(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":min-column-width-chars",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule481(colorer, s, i):
+def progress_rule481(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":min-column-width-pixels",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule482(colorer, s, i):
+def progress_rule482(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":min-height-chars",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule483(colorer, s, i):
+def progress_rule483(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":min-height-pixels",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule484(colorer, s, i):
+def progress_rule484(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":min-schema-marshall",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule485(colorer, s, i):
+def progress_rule485(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":min-value",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule486(colorer, s, i):
+def progress_rule486(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":min-width-chars",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule487(colorer, s, i):
+def progress_rule487(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":min-width-pixels",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule488(colorer, s, i):
+def progress_rule488(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":modified",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule489(colorer, s, i):
+def progress_rule489(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":mouse-pointer",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule490(colorer, s, i):
+def progress_rule490(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":movable",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule491(colorer, s, i):
+def progress_rule491(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":move-after-tab-item",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule492(colorer, s, i):
+def progress_rule492(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":move-before-tab-item",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule493(colorer, s, i):
+def progress_rule493(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":move-column",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule494(colorer, s, i):
+def progress_rule494(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":move-to-bottom",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule495(colorer, s, i):
+def progress_rule495(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":move-to-eof",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule496(colorer, s, i):
+def progress_rule496(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":move-to-top",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule497(colorer, s, i):
+def progress_rule497(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":multiple",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule498(colorer, s, i):
+def progress_rule498(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":multitasking-interval",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule499(colorer, s, i):
+def progress_rule499(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":name",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule500(colorer, s, i):
+def progress_rule500(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":namespace-prefix",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule501(colorer, s, i):
+def progress_rule501(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":namespace-uri",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule502(colorer, s, i):
+def progress_rule502(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":needs-appserver-prompt",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule503(colorer, s, i):
+def progress_rule503(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":needs-prompt",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule504(colorer, s, i):
+def progress_rule504(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":new",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule505(colorer, s, i):
+def progress_rule505(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":new-row",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule506(colorer, s, i):
+def progress_rule506(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":next-column",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule507(colorer, s, i):
+def progress_rule507(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":next-sibling",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule508(colorer, s, i):
+def progress_rule508(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":next-tab-item",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule509(colorer, s, i):
+def progress_rule509(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":no-current-value",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule510(colorer, s, i):
+def progress_rule510(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":no-empty-space",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule511(colorer, s, i):
+def progress_rule511(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":no-focus",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule512(colorer, s, i):
+def progress_rule512(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":no-schema-marshall",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule513(colorer, s, i):
+def progress_rule513(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":no-validate",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule514(colorer, s, i):
+def progress_rule514(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":node-type",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule515(colorer, s, i):
+def progress_rule515(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":node-value",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule516(colorer, s, i):
+def progress_rule516(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":node-value-to-longchar",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule517(colorer, s, i):
+def progress_rule517(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":node-value-to-memptr",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule518(colorer, s, i):
+def progress_rule518(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":normalize",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule519(colorer, s, i):
+def progress_rule519(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":num-buffers",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule520(colorer, s, i):
+def progress_rule520(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":num-buttons",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule521(colorer, s, i):
+def progress_rule521(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":num-child-relations",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule522(colorer, s, i):
+def progress_rule522(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":num-children",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule523(colorer, s, i):
+def progress_rule523(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":num-columns",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule524(colorer, s, i):
+def progress_rule524(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":num-dropped-files",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule525(colorer, s, i):
+def progress_rule525(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":num-entries",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule526(colorer, s, i):
+def progress_rule526(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":num-fields",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule527(colorer, s, i):
+def progress_rule527(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":num-formats",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule528(colorer, s, i):
+def progress_rule528(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":num-items",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule529(colorer, s, i):
+def progress_rule529(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":num-iterations",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule530(colorer, s, i):
+def progress_rule530(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":num-lines",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule531(colorer, s, i):
+def progress_rule531(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":num-locked-columns",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule532(colorer, s, i):
+def progress_rule532(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":num-messages",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule533(colorer, s, i):
+def progress_rule533(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":num-parameters",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule534(colorer, s, i):
+def progress_rule534(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":num-replaced",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule535(colorer, s, i):
+def progress_rule535(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":num-results",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule536(colorer, s, i):
+def progress_rule536(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":num-selected-rows",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule537(colorer, s, i):
+def progress_rule537(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":num-selected-widgets",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule538(colorer, s, i):
+def progress_rule538(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":num-tabs",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule539(colorer, s, i):
+def progress_rule539(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":num-to-retain",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule540(colorer, s, i):
+def progress_rule540(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":num-visible-columns",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule541(colorer, s, i):
+def progress_rule541(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":numeric-decimal-point",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule542(colorer, s, i):
+def progress_rule542(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":numeric-format",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule543(colorer, s, i):
+def progress_rule543(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":numeric-separator",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule544(colorer, s, i):
+def progress_rule544(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":ole-invoke-locale",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule545(colorer, s, i):
+def progress_rule545(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":ole-names-locale",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule546(colorer, s, i):
+def progress_rule546(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":on-frame-border",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule547(colorer, s, i):
+def progress_rule547(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":origin-handle",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule548(colorer, s, i):
+def progress_rule548(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":origin-rowid",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule549(colorer, s, i):
+def progress_rule549(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":overlay",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule550(colorer, s, i):
+def progress_rule550(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":owner",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule551(colorer, s, i):
+def progress_rule551(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":owner-document",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule552(colorer, s, i):
+def progress_rule552(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":page-bottom",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule553(colorer, s, i):
+def progress_rule553(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":page-top",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule554(colorer, s, i):
+def progress_rule554(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":parameter",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule555(colorer, s, i):
+def progress_rule555(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":parent",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule556(colorer, s, i):
+def progress_rule556(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":parent-relation",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule557(colorer, s, i):
+def progress_rule557(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":parse-status",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule558(colorer, s, i):
+def progress_rule558(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":password-field",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule559(colorer, s, i):
+def progress_rule559(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":pathname",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule560(colorer, s, i):
+def progress_rule560(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":persistent",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule561(colorer, s, i):
+def progress_rule561(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":persistent-cache-disabled",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule562(colorer, s, i):
+def progress_rule562(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":persistent-procedure",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule563(colorer, s, i):
+def progress_rule563(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":pfcolor",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule564(colorer, s, i):
+def progress_rule564(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":pixels-per-column",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule565(colorer, s, i):
+def progress_rule565(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":pixels-per-row",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule566(colorer, s, i):
+def progress_rule566(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":popup-menu",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule567(colorer, s, i):
+def progress_rule567(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":popup-only",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule568(colorer, s, i):
+def progress_rule568(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":position",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule569(colorer, s, i):
+def progress_rule569(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":prepare-string",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule570(colorer, s, i):
+def progress_rule570(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":prepared",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule571(colorer, s, i):
+def progress_rule571(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":prev-column",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule572(colorer, s, i):
+def progress_rule572(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":prev-sibling",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule573(colorer, s, i):
+def progress_rule573(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":prev-tab-item",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule574(colorer, s, i):
+def progress_rule574(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":primary",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule575(colorer, s, i):
+def progress_rule575(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":printer-control-handle",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule576(colorer, s, i):
+def progress_rule576(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":printer-hdc",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule577(colorer, s, i):
+def progress_rule577(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":printer-name",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule578(colorer, s, i):
+def progress_rule578(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":printer-port",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule579(colorer, s, i):
+def progress_rule579(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":private-data",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule580(colorer, s, i):
+def progress_rule580(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":procedure-name",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule581(colorer, s, i):
+def progress_rule581(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":profiling",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule582(colorer, s, i):
+def progress_rule582(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":progress-source",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule583(colorer, s, i):
+def progress_rule583(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":proxy",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule584(colorer, s, i):
+def progress_rule584(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":proxy-password",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule585(colorer, s, i):
+def progress_rule585(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":proxy-userid",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule586(colorer, s, i):
+def progress_rule586(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":public-id",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule587(colorer, s, i):
+def progress_rule587(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":published-events",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule588(colorer, s, i):
+def progress_rule588(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":query",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule589(colorer, s, i):
+def progress_rule589(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":query-close",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule590(colorer, s, i):
+def progress_rule590(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":query-off-end",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule591(colorer, s, i):
+def progress_rule591(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":query-open",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule592(colorer, s, i):
+def progress_rule592(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":query-prepare",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule593(colorer, s, i):
+def progress_rule593(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":quit",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule594(colorer, s, i):
+def progress_rule594(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":radio-buttons",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule595(colorer, s, i):
+def progress_rule595(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":raw-transfer",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule596(colorer, s, i):
+def progress_rule596(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":read",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule597(colorer, s, i):
+def progress_rule597(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":read-file",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule598(colorer, s, i):
+def progress_rule598(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":read-only",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule599(colorer, s, i):
+def progress_rule599(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":recid",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule600(colorer, s, i):
+def progress_rule600(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":record-length",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule601(colorer, s, i):
+def progress_rule601(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":refresh",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule602(colorer, s, i):
+def progress_rule602(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":refreshable",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule603(colorer, s, i):
+def progress_rule603(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":reject-changes",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule604(colorer, s, i):
+def progress_rule604(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":reject-row-changes",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule605(colorer, s, i):
+def progress_rule605(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":rejected",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule606(colorer, s, i):
+def progress_rule606(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":remote",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule607(colorer, s, i):
+def progress_rule607(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":remote-host",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule608(colorer, s, i):
+def progress_rule608(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":remote-port",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule609(colorer, s, i):
+def progress_rule609(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":remove-attribute",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule610(colorer, s, i):
+def progress_rule610(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":remove-child",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule611(colorer, s, i):
+def progress_rule611(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":remove-events-procedure",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule612(colorer, s, i):
+def progress_rule612(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":remove-super-procedure",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule613(colorer, s, i):
+def progress_rule613(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":replace",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule614(colorer, s, i):
+def progress_rule614(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":replace-child",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule615(colorer, s, i):
+def progress_rule615(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":replace-selection-text",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule616(colorer, s, i):
+def progress_rule616(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":reposition-backwards",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule617(colorer, s, i):
+def progress_rule617(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":reposition-forwards",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule618(colorer, s, i):
+def progress_rule618(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":reposition-parent-relation",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule619(colorer, s, i):
+def progress_rule619(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":reposition-to-row",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule620(colorer, s, i):
+def progress_rule620(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":reposition-to-rowid",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule621(colorer, s, i):
+def progress_rule621(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":resizable",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule622(colorer, s, i):
+def progress_rule622(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":resize",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule623(colorer, s, i):
+def progress_rule623(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":retain-shape",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule624(colorer, s, i):
+def progress_rule624(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":return-inserted",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule625(colorer, s, i):
+def progress_rule625(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":return-value",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule626(colorer, s, i):
+def progress_rule626(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":return-value-data-type",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule627(colorer, s, i):
+def progress_rule627(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":row",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule628(colorer, s, i):
+def progress_rule628(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":row-height-chars",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule629(colorer, s, i):
+def progress_rule629(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":row-height-pixels",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule630(colorer, s, i):
+def progress_rule630(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":row-markers",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule631(colorer, s, i):
+def progress_rule631(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":row-resizable",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule632(colorer, s, i):
+def progress_rule632(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":row-state",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule633(colorer, s, i):
+def progress_rule633(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":rowid",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule634(colorer, s, i):
+def progress_rule634(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":rule-row",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule635(colorer, s, i):
+def progress_rule635(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":rule-y",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule636(colorer, s, i):
+def progress_rule636(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":save",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule637(colorer, s, i):
+def progress_rule637(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":save-file",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule638(colorer, s, i):
+def progress_rule638(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":save-row-changes",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule639(colorer, s, i):
+def progress_rule639(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":sax-parse",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule640(colorer, s, i):
+def progress_rule640(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":sax-parse-first",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule641(colorer, s, i):
+def progress_rule641(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":sax-parse-next",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule642(colorer, s, i):
+def progress_rule642(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":sax-xml",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule643(colorer, s, i):
+def progress_rule643(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":schema-change",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule644(colorer, s, i):
+def progress_rule644(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":schema-path",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule645(colorer, s, i):
+def progress_rule645(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":screen-lines",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule646(colorer, s, i):
+def progress_rule646(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":screen-value",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule647(colorer, s, i):
+def progress_rule647(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":scroll-bars",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule648(colorer, s, i):
+def progress_rule648(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":scroll-delta",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule649(colorer, s, i):
+def progress_rule649(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":scroll-offset",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule650(colorer, s, i):
+def progress_rule650(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":scroll-to-current-row",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule651(colorer, s, i):
+def progress_rule651(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":scroll-to-item",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule652(colorer, s, i):
+def progress_rule652(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":scroll-to-selected-row",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule653(colorer, s, i):
+def progress_rule653(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":scrollable",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule654(colorer, s, i):
+def progress_rule654(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":scrollbar-horizontal",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule655(colorer, s, i):
+def progress_rule655(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":scrollbar-vertical",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule656(colorer, s, i):
+def progress_rule656(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":search",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule657(colorer, s, i):
+def progress_rule657(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":select-all",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule658(colorer, s, i):
+def progress_rule658(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":select-focused-row",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule659(colorer, s, i):
+def progress_rule659(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":select-next-row",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule660(colorer, s, i):
+def progress_rule660(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":select-prev-row",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule661(colorer, s, i):
+def progress_rule661(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":select-row",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule662(colorer, s, i):
+def progress_rule662(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":selectable",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule663(colorer, s, i):
+def progress_rule663(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":selected",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule664(colorer, s, i):
+def progress_rule664(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":selection-end",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule665(colorer, s, i):
+def progress_rule665(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":selection-start",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule666(colorer, s, i):
+def progress_rule666(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":selection-text",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule667(colorer, s, i):
+def progress_rule667(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":sensitive",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule668(colorer, s, i):
+def progress_rule668(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":separator-fgcolor",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule669(colorer, s, i):
+def progress_rule669(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":separators",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule670(colorer, s, i):
+def progress_rule670(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":server",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule671(colorer, s, i):
+def progress_rule671(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":server-connection-bound",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule672(colorer, s, i):
+def progress_rule672(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":server-connection-bound-request",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule673(colorer, s, i):
+def progress_rule673(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":server-connection-context",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule674(colorer, s, i):
+def progress_rule674(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":server-connection-id",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule675(colorer, s, i):
+def progress_rule675(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":server-operating-mode",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule676(colorer, s, i):
+def progress_rule676(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":session-end",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule677(colorer, s, i):
+def progress_rule677(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":set-attribute",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule678(colorer, s, i):
+def progress_rule678(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":set-attribute-node",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule679(colorer, s, i):
+def progress_rule679(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":set-blue-value",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule680(colorer, s, i):
+def progress_rule680(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":set-break",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule681(colorer, s, i):
+def progress_rule681(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":set-buffers",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule682(colorer, s, i):
+def progress_rule682(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":set-callback-procedure",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule683(colorer, s, i):
+def progress_rule683(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":set-commit",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule684(colorer, s, i):
+def progress_rule684(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":set-connect-procedure",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule685(colorer, s, i):
+def progress_rule685(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":set-dynamic",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule686(colorer, s, i):
+def progress_rule686(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":set-green-value",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule687(colorer, s, i):
+def progress_rule687(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":set-input-source",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule688(colorer, s, i):
+def progress_rule688(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":set-numeric-format",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule689(colorer, s, i):
+def progress_rule689(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":set-parameter",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule690(colorer, s, i):
+def progress_rule690(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":set-read-response-procedure",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule691(colorer, s, i):
+def progress_rule691(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":set-red-value",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule692(colorer, s, i):
+def progress_rule692(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":set-repositioned-row",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule693(colorer, s, i):
+def progress_rule693(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":set-rgb-value",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule694(colorer, s, i):
+def progress_rule694(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":set-rollback",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule695(colorer, s, i):
+def progress_rule695(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":set-selection",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule696(colorer, s, i):
+def progress_rule696(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":set-socket-option",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule697(colorer, s, i):
+def progress_rule697(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":set-wait-state",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule698(colorer, s, i):
+def progress_rule698(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":show-in-taskbar",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule699(colorer, s, i):
+def progress_rule699(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":side-label-handle",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule700(colorer, s, i):
+def progress_rule700(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":side-labels",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule701(colorer, s, i):
+def progress_rule701(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":skip-deleted-record",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule702(colorer, s, i):
+def progress_rule702(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":small-icon",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule703(colorer, s, i):
+def progress_rule703(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":small-title",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule704(colorer, s, i):
+def progress_rule704(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":sort",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule705(colorer, s, i):
+def progress_rule705(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":startup-parameters",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule706(colorer, s, i):
+def progress_rule706(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":status-area",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule707(colorer, s, i):
+def progress_rule707(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":status-area-font",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule708(colorer, s, i):
+def progress_rule708(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":stop",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule709(colorer, s, i):
+def progress_rule709(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":stop-parsing",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule710(colorer, s, i):
+def progress_rule710(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":stopped",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule711(colorer, s, i):
+def progress_rule711(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":stretch-to-fit",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule712(colorer, s, i):
+def progress_rule712(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":string-value",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule713(colorer, s, i):
+def progress_rule713(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":sub-menu-help",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule714(colorer, s, i):
+def progress_rule714(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":subtype",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule715(colorer, s, i):
+def progress_rule715(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":super-procedures",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule716(colorer, s, i):
+def progress_rule716(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":suppress-namespace-processing",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule717(colorer, s, i):
+def progress_rule717(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":suppress-warnings",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule718(colorer, s, i):
+def progress_rule718(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":synchronize",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule719(colorer, s, i):
+def progress_rule719(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":system-alert-boxes",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule720(colorer, s, i):
+def progress_rule720(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":system-id",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule721(colorer, s, i):
+def progress_rule721(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":tab-position",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule722(colorer, s, i):
+def progress_rule722(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":tab-stop",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule723(colorer, s, i):
+def progress_rule723(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":table",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule724(colorer, s, i):
+def progress_rule724(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":table-crc-list",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule725(colorer, s, i):
+def progress_rule725(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":table-handle",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule726(colorer, s, i):
+def progress_rule726(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":table-list",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule727(colorer, s, i):
+def progress_rule727(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":table-number",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule728(colorer, s, i):
+def progress_rule728(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":temp-directory",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule729(colorer, s, i):
+def progress_rule729(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":temp-table-prepare",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule730(colorer, s, i):
+def progress_rule730(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":text-selected",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule731(colorer, s, i):
+def progress_rule731(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":three-d",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule732(colorer, s, i):
+def progress_rule732(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":tic-marks",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule733(colorer, s, i):
+def progress_rule733(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":time-source",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule734(colorer, s, i):
+def progress_rule734(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":title",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule735(colorer, s, i):
+def progress_rule735(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":title-bgcolor",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule736(colorer, s, i):
+def progress_rule736(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":title-dcolor",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule737(colorer, s, i):
+def progress_rule737(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":title-fgcolor",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule738(colorer, s, i):
+def progress_rule738(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":title-font",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule739(colorer, s, i):
+def progress_rule739(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":toggle-box",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule740(colorer, s, i):
+def progress_rule740(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":tooltip",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule741(colorer, s, i):
+def progress_rule741(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":tooltips",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule742(colorer, s, i):
+def progress_rule742(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":top-only",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule743(colorer, s, i):
+def progress_rule743(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":trace-filter",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule744(colorer, s, i):
+def progress_rule744(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":tracing",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule745(colorer, s, i):
+def progress_rule745(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":tracking-changes",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule746(colorer, s, i):
+def progress_rule746(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":trans-init-procedure",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule747(colorer, s, i):
+def progress_rule747(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":transaction",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule748(colorer, s, i):
+def progress_rule748(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":transparent",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule749(colorer, s, i):
+def progress_rule749(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":type",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule750(colorer, s, i):
+def progress_rule750(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":undo",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule751(colorer, s, i):
+def progress_rule751(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":unique-id",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule752(colorer, s, i):
+def progress_rule752(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":unique-match",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule753(colorer, s, i):
+def progress_rule753(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":url",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule754(colorer, s, i):
+def progress_rule754(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":url-decode",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule755(colorer, s, i):
+def progress_rule755(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":url-encode",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule756(colorer, s, i):
+def progress_rule756(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":url-password",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule757(colorer, s, i):
+def progress_rule757(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":url-userid",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule758(colorer, s, i):
+def progress_rule758(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":user-data",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule759(colorer, s, i):
+def progress_rule759(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":v6display",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule760(colorer, s, i):
+def progress_rule760(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":validate",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule761(colorer, s, i):
+def progress_rule761(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":validate-expression",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule762(colorer, s, i):
+def progress_rule762(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":validate-message",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule763(colorer, s, i):
+def progress_rule763(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":validate-xml",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule764(colorer, s, i):
+def progress_rule764(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":validation-enabled",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule765(colorer, s, i):
+def progress_rule765(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":value",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule766(colorer, s, i):
+def progress_rule766(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":view-first-column-on-reopen",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule767(colorer, s, i):
+def progress_rule767(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":virtual-height-chars",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule768(colorer, s, i):
+def progress_rule768(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":virtual-height-pixels",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule769(colorer, s, i):
+def progress_rule769(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":virtual-width-chars",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule770(colorer, s, i):
+def progress_rule770(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":virtual-width-pixels",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule771(colorer, s, i):
+def progress_rule771(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":visible",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule772(colorer, s, i):
+def progress_rule772(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":warning",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule773(colorer, s, i):
+def progress_rule773(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":widget-enter",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule774(colorer, s, i):
+def progress_rule774(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":widget-leave",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule775(colorer, s, i):
+def progress_rule775(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":width-chars",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule776(colorer, s, i):
+def progress_rule776(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":width-pixels",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule777(colorer, s, i):
+def progress_rule777(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":window",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule778(colorer, s, i):
+def progress_rule778(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":window-state",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule779(colorer, s, i):
+def progress_rule779(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":window-system",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule780(colorer, s, i):
+def progress_rule780(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":word-wrap",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule781(colorer, s, i):
+def progress_rule781(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":work-area-height-pixels",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule782(colorer, s, i):
+def progress_rule782(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":work-area-width-pixels",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule783(colorer, s, i):
+def progress_rule783(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":work-area-x",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule784(colorer, s, i):
+def progress_rule784(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":work-area-y",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule785(colorer, s, i):
+def progress_rule785(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":write",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule786(colorer, s, i):
+def progress_rule786(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":write-data",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule787(colorer, s, i):
+def progress_rule787(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":x",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule788(colorer, s, i):
+def progress_rule788(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":x-document",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule789(colorer, s, i):
+def progress_rule789(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":xml-schema-path",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule790(colorer, s, i):
+def progress_rule790(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":xml-suppress-namespace-processing",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule791(colorer, s, i):
+def progress_rule791(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":y",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule792(colorer, s, i):
+def progress_rule792(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":year-offset",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule793(colorer, s, i):
+def progress_rule793(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern=":_dcm",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule794(colorer, s, i):
+def progress_rule794(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="invalid", regexp="put\\s+screen", hash_char="p",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule795(colorer, s, i):
+def progress_rule795(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="invalid", pattern=":WHERE-STRING",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule796(colorer, s, i):
+def progress_rule796(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="invalid", pattern=":REPOSITION-PARENT-RELATION",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule797(colorer, s, i):
+def progress_rule797(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword3", regexp="choose\\s+of", hash_char="c",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule798(colorer, s, i):
+def progress_rule798(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"\"": [rule2,],
-	"&": [rule798,],
-	"'": [rule1,],
-	"(": [rule15,],
-	")": [rule16,],
-	"*": [rule4,],
-	"+": [rule5,],
-	",": [rule6,],
-	"-": [rule798,],
-	".": [rule7,],
-	"/": [rule0,rule8,],
-	"0": [rule798,],
-	"1": [rule798,],
-	"2": [rule798,],
-	"3": [rule798,],
-	"4": [rule798,],
-	"5": [rule798,],
-	"6": [rule798,],
-	"7": [rule798,],
-	"8": [rule798,],
-	"9": [rule798,],
-	":": [rule20,rule21,rule22,rule23,rule24,rule25,rule26,rule27,rule28,rule29,rule30,rule31,rule32,rule33,rule34,rule35,rule36,rule37,rule38,rule39,rule40,rule41,rule42,rule43,rule44,rule45,rule46,rule47,rule48,rule49,rule50,rule51,rule52,rule53,rule54,rule55,rule56,rule57,rule58,rule59,rule60,rule61,rule62,rule63,rule64,rule65,rule66,rule67,rule68,rule69,rule70,rule71,rule72,rule73,rule74,rule75,rule76,rule77,rule78,rule79,rule80,rule81,rule82,rule83,rule84,rule85,rule86,rule87,rule88,rule89,rule90,rule91,rule92,rule93,rule94,rule95,rule96,rule97,rule98,rule99,rule100,rule101,rule102,rule103,rule104,rule105,rule106,rule107,rule108,rule109,rule110,rule111,rule112,rule113,rule114,rule115,rule116,rule117,rule118,rule119,rule120,rule121,rule122,rule123,rule124,rule125,rule126,rule127,rule128,rule129,rule130,rule131,rule132,rule133,rule134,rule135,rule136,rule137,rule138,rule139,rule140,rule141,rule142,rule143,rule144,rule145,rule146,rule147,rule148,rule149,rule150,rule151,rule152,rule153,rule154,rule155,rule156,rule157,rule158,rule159,rule160,rule161,rule162,rule163,rule164,rule165,rule166,rule167,rule168,rule169,rule170,rule171,rule172,rule173,rule174,rule175,rule176,rule177,rule178,rule179,rule180,rule181,rule182,rule183,rule184,rule185,rule186,rule187,rule188,rule189,rule190,rule191,rule192,rule193,rule194,rule195,rule196,rule197,rule198,rule199,rule200,rule201,rule202,rule203,rule204,rule205,rule206,rule207,rule208,rule209,rule210,rule211,rule212,rule213,rule214,rule215,rule216,rule217,rule218,rule219,rule220,rule221,rule222,rule223,rule224,rule225,rule226,rule227,rule228,rule229,rule230,rule231,rule232,rule233,rule234,rule235,rule236,rule237,rule238,rule239,rule240,rule241,rule242,rule243,rule244,rule245,rule246,rule247,rule248,rule249,rule250,rule251,rule252,rule253,rule254,rule255,rule256,rule257,rule258,rule259,rule260,rule261,rule262,rule263,rule264,rule265,rule266,rule267,rule268,rule269,rule270,rule271,rule272,rule273,rule274,rule275,rule276,rule277,rule278,rule279,rule280,rule281,rule282,rule283,rule284,rule285,rule286,rule287,rule288,rule289,rule290,rule291,rule292,rule293,rule294,rule295,rule296,rule297,rule298,rule299,rule300,rule301,rule302,rule303,rule304,rule305,rule306,rule307,rule308,rule309,rule310,rule311,rule312,rule313,rule314,rule315,rule316,rule317,rule318,rule319,rule320,rule321,rule322,rule323,rule324,rule325,rule326,rule327,rule328,rule329,rule330,rule331,rule332,rule333,rule334,rule335,rule336,rule337,rule338,rule339,rule340,rule341,rule342,rule343,rule344,rule345,rule346,rule347,rule348,rule349,rule350,rule351,rule352,rule353,rule354,rule355,rule356,rule357,rule358,rule359,rule360,rule361,rule362,rule363,rule364,rule365,rule366,rule367,rule368,rule369,rule370,rule371,rule372,rule373,rule374,rule375,rule376,rule377,rule378,rule379,rule380,rule381,rule382,rule383,rule384,rule385,rule386,rule387,rule388,rule389,rule390,rule391,rule392,rule393,rule394,rule395,rule396,rule397,rule398,rule399,rule400,rule401,rule402,rule403,rule404,rule405,rule406,rule407,rule408,rule409,rule410,rule411,rule412,rule413,rule414,rule415,rule416,rule417,rule418,rule419,rule420,rule421,rule422,rule423,rule424,rule425,rule426,rule427,rule428,rule429,rule430,rule431,rule432,rule433,rule434,rule435,rule436,rule437,rule438,rule439,rule440,rule441,rule442,rule443,rule444,rule445,rule446,rule447,rule448,rule449,rule450,rule451,rule452,rule453,rule454,rule455,rule456,rule457,rule458,rule459,rule460,rule461,rule462,rule463,rule464,rule465,rule466,rule467,rule468,rule469,rule470,rule471,rule472,rule473,rule474,rule475,rule476,rule477,rule478,rule479,rule480,rule481,rule482,rule483,rule484,rule485,rule486,rule487,rule488,rule489,rule490,rule491,rule492,rule493,rule494,rule495,rule496,rule497,rule498,rule499,rule500,rule501,rule502,rule503,rule504,rule505,rule506,rule507,rule508,rule509,rule510,rule511,rule512,rule513,rule514,rule515,rule516,rule517,rule518,rule519,rule520,rule521,rule522,rule523,rule524,rule525,rule526,rule527,rule528,rule529,rule530,rule531,rule532,rule533,rule534,rule535,rule536,rule537,rule538,rule539,rule540,rule541,rule542,rule543,rule544,rule545,rule546,rule547,rule548,rule549,rule550,rule551,rule552,rule553,rule554,rule555,rule556,rule557,rule558,rule559,rule560,rule561,rule562,rule563,rule564,rule565,rule566,rule567,rule568,rule569,rule570,rule571,rule572,rule573,rule574,rule575,rule576,rule577,rule578,rule579,rule580,rule581,rule582,rule583,rule584,rule585,rule586,rule587,rule588,rule589,rule590,rule591,rule592,rule593,rule594,rule595,rule596,rule597,rule598,rule599,rule600,rule601,rule602,rule603,rule604,rule605,rule606,rule607,rule608,rule609,rule610,rule611,rule612,rule613,rule614,rule615,rule616,rule617,rule618,rule619,rule620,rule621,rule622,rule623,rule624,rule625,rule626,rule627,rule628,rule629,rule630,rule631,rule632,rule633,rule634,rule635,rule636,rule637,rule638,rule639,rule640,rule641,rule642,rule643,rule644,rule645,rule646,rule647,rule648,rule649,rule650,rule651,rule652,rule653,rule654,rule655,rule656,rule657,rule658,rule659,rule660,rule661,rule662,rule663,rule664,rule665,rule666,rule667,rule668,rule669,rule670,rule671,rule672,rule673,rule674,rule675,rule676,rule677,rule678,rule679,rule680,rule681,rule682,rule683,rule684,rule685,rule686,rule687,rule688,rule689,rule690,rule691,rule692,rule693,rule694,rule695,rule696,rule697,rule698,rule699,rule700,rule701,rule702,rule703,rule704,rule705,rule706,rule707,rule708,rule709,rule710,rule711,rule712,rule713,rule714,rule715,rule716,rule717,rule718,rule719,rule720,rule721,rule722,rule723,rule724,rule725,rule726,rule727,rule728,rule729,rule730,rule731,rule732,rule733,rule734,rule735,rule736,rule737,rule738,rule739,rule740,rule741,rule742,rule743,rule744,rule745,rule746,rule747,rule748,rule749,rule750,rule751,rule752,rule753,rule754,rule755,rule756,rule757,rule758,rule759,rule760,rule761,rule762,rule763,rule764,rule765,rule766,rule767,rule768,rule769,rule770,rule771,rule772,rule773,rule774,rule775,rule776,rule777,rule778,rule779,rule780,rule781,rule782,rule783,rule784,rule785,rule786,rule787,rule788,rule789,rule790,rule791,rule792,rule793,rule795,rule796,],
-	"<": [rule18,rule19,],
-	"=": [rule9,],
-	">": [rule17,],
-	"?": [rule10,],
-	"@": [rule11,rule798,],
-	"A": [rule798,],
-	"B": [rule798,],
-	"C": [rule798,],
-	"D": [rule798,],
-	"E": [rule798,],
-	"F": [rule798,],
-	"G": [rule798,],
-	"H": [rule798,],
-	"I": [rule798,],
-	"J": [rule798,],
-	"K": [rule798,],
-	"L": [rule798,],
-	"M": [rule798,],
-	"N": [rule798,],
-	"O": [rule798,],
-	"P": [rule798,],
-	"Q": [rule798,],
-	"R": [rule798,],
-	"S": [rule798,],
-	"T": [rule798,],
-	"U": [rule798,],
-	"V": [rule798,],
-	"W": [rule798,],
-	"X": [rule798,],
-	"Y": [rule798,],
-	"Z": [rule798,],
-	"[": [rule12,],
-	"]": [rule13,],
-	"^": [rule14,],
-	"_": [rule798,],
-	"a": [rule798,],
-	"b": [rule798,],
-	"c": [rule797,rule798,],
-	"d": [rule798,],
-	"e": [rule798,],
-	"f": [rule798,],
-	"g": [rule798,],
-	"h": [rule798,],
-	"i": [rule798,],
-	"j": [rule798,],
-	"k": [rule798,],
-	"l": [rule798,],
-	"m": [rule798,],
-	"n": [rule798,],
-	"o": [rule798,],
-	"p": [rule794,rule798,],
-	"q": [rule798,],
-	"r": [rule798,],
-	"s": [rule798,],
-	"t": [rule798,],
-	"u": [rule798,],
-	"v": [rule798,],
-	"w": [rule798,],
-	"x": [rule798,],
-	"y": [rule798,],
-	"z": [rule798,],
-	"{": [rule3,],
+	"\"": [progress_rule2,],
+	"&": [progress_rule798,],
+	"'": [progress_rule1,],
+	"(": [progress_rule15,],
+	")": [progress_rule16,],
+	"*": [progress_rule4,],
+	"+": [progress_rule5,],
+	",": [progress_rule6,],
+	"-": [progress_rule798,],
+	".": [progress_rule7,],
+	"/": [progress_rule0,progress_rule8,],
+	"0": [progress_rule798,],
+	"1": [progress_rule798,],
+	"2": [progress_rule798,],
+	"3": [progress_rule798,],
+	"4": [progress_rule798,],
+	"5": [progress_rule798,],
+	"6": [progress_rule798,],
+	"7": [progress_rule798,],
+	"8": [progress_rule798,],
+	"9": [progress_rule798,],
+	":": [progress_rule20,progress_rule21,progress_rule22,progress_rule23,progress_rule24,progress_rule25,progress_rule26,progress_rule27,progress_rule28,progress_rule29,progress_rule30,progress_rule31,progress_rule32,progress_rule33,progress_rule34,progress_rule35,progress_rule36,progress_rule37,progress_rule38,progress_rule39,progress_rule40,progress_rule41,progress_rule42,progress_rule43,progress_rule44,progress_rule45,progress_rule46,progress_rule47,progress_rule48,progress_rule49,progress_rule50,progress_rule51,progress_rule52,progress_rule53,progress_rule54,progress_rule55,progress_rule56,progress_rule57,progress_rule58,progress_rule59,progress_rule60,progress_rule61,progress_rule62,progress_rule63,progress_rule64,progress_rule65,progress_rule66,progress_rule67,progress_rule68,progress_rule69,progress_rule70,progress_rule71,progress_rule72,progress_rule73,progress_rule74,progress_rule75,progress_rule76,progress_rule77,progress_rule78,progress_rule79,progress_rule80,progress_rule81,progress_rule82,progress_rule83,progress_rule84,progress_rule85,progress_rule86,progress_rule87,progress_rule88,progress_rule89,progress_rule90,progress_rule91,progress_rule92,progress_rule93,progress_rule94,progress_rule95,progress_rule96,progress_rule97,progress_rule98,progress_rule99,progress_rule100,progress_rule101,progress_rule102,progress_rule103,progress_rule104,progress_rule105,progress_rule106,progress_rule107,progress_rule108,progress_rule109,progress_rule110,progress_rule111,progress_rule112,progress_rule113,progress_rule114,progress_rule115,progress_rule116,progress_rule117,progress_rule118,progress_rule119,progress_rule120,progress_rule121,progress_rule122,progress_rule123,progress_rule124,progress_rule125,progress_rule126,progress_rule127,progress_rule128,progress_rule129,progress_rule130,progress_rule131,progress_rule132,progress_rule133,progress_rule134,progress_rule135,progress_rule136,progress_rule137,progress_rule138,progress_rule139,progress_rule140,progress_rule141,progress_rule142,progress_rule143,progress_rule144,progress_rule145,progress_rule146,progress_rule147,progress_rule148,progress_rule149,progress_rule150,progress_rule151,progress_rule152,progress_rule153,progress_rule154,progress_rule155,progress_rule156,progress_rule157,progress_rule158,progress_rule159,progress_rule160,progress_rule161,progress_rule162,progress_rule163,progress_rule164,progress_rule165,progress_rule166,progress_rule167,progress_rule168,progress_rule169,progress_rule170,progress_rule171,progress_rule172,progress_rule173,progress_rule174,progress_rule175,progress_rule176,progress_rule177,progress_rule178,progress_rule179,progress_rule180,progress_rule181,progress_rule182,progress_rule183,progress_rule184,progress_rule185,progress_rule186,progress_rule187,progress_rule188,progress_rule189,progress_rule190,progress_rule191,progress_rule192,progress_rule193,progress_rule194,progress_rule195,progress_rule196,progress_rule197,progress_rule198,progress_rule199,progress_rule200,progress_rule201,progress_rule202,progress_rule203,progress_rule204,progress_rule205,progress_rule206,progress_rule207,progress_rule208,progress_rule209,progress_rule210,progress_rule211,progress_rule212,progress_rule213,progress_rule214,progress_rule215,progress_rule216,progress_rule217,progress_rule218,progress_rule219,progress_rule220,progress_rule221,progress_rule222,progress_rule223,progress_rule224,progress_rule225,progress_rule226,progress_rule227,progress_rule228,progress_rule229,progress_rule230,progress_rule231,progress_rule232,progress_rule233,progress_rule234,progress_rule235,progress_rule236,progress_rule237,progress_rule238,progress_rule239,progress_rule240,progress_rule241,progress_rule242,progress_rule243,progress_rule244,progress_rule245,progress_rule246,progress_rule247,progress_rule248,progress_rule249,progress_rule250,progress_rule251,progress_rule252,progress_rule253,progress_rule254,progress_rule255,progress_rule256,progress_rule257,progress_rule258,progress_rule259,progress_rule260,progress_rule261,progress_rule262,progress_rule263,progress_rule264,progress_rule265,progress_rule266,progress_rule267,progress_rule268,progress_rule269,progress_rule270,progress_rule271,progress_rule272,progress_rule273,progress_rule274,progress_rule275,progress_rule276,progress_rule277,progress_rule278,progress_rule279,progress_rule280,progress_rule281,progress_rule282,progress_rule283,progress_rule284,progress_rule285,progress_rule286,progress_rule287,progress_rule288,progress_rule289,progress_rule290,progress_rule291,progress_rule292,progress_rule293,progress_rule294,progress_rule295,progress_rule296,progress_rule297,progress_rule298,progress_rule299,progress_rule300,progress_rule301,progress_rule302,progress_rule303,progress_rule304,progress_rule305,progress_rule306,progress_rule307,progress_rule308,progress_rule309,progress_rule310,progress_rule311,progress_rule312,progress_rule313,progress_rule314,progress_rule315,progress_rule316,progress_rule317,progress_rule318,progress_rule319,progress_rule320,progress_rule321,progress_rule322,progress_rule323,progress_rule324,progress_rule325,progress_rule326,progress_rule327,progress_rule328,progress_rule329,progress_rule330,progress_rule331,progress_rule332,progress_rule333,progress_rule334,progress_rule335,progress_rule336,progress_rule337,progress_rule338,progress_rule339,progress_rule340,progress_rule341,progress_rule342,progress_rule343,progress_rule344,progress_rule345,progress_rule346,progress_rule347,progress_rule348,progress_rule349,progress_rule350,progress_rule351,progress_rule352,progress_rule353,progress_rule354,progress_rule355,progress_rule356,progress_rule357,progress_rule358,progress_rule359,progress_rule360,progress_rule361,progress_rule362,progress_rule363,progress_rule364,progress_rule365,progress_rule366,progress_rule367,progress_rule368,progress_rule369,progress_rule370,progress_rule371,progress_rule372,progress_rule373,progress_rule374,progress_rule375,progress_rule376,progress_rule377,progress_rule378,progress_rule379,progress_rule380,progress_rule381,progress_rule382,progress_rule383,progress_rule384,progress_rule385,progress_rule386,progress_rule387,progress_rule388,progress_rule389,progress_rule390,progress_rule391,progress_rule392,progress_rule393,progress_rule394,progress_rule395,progress_rule396,progress_rule397,progress_rule398,progress_rule399,progress_rule400,progress_rule401,progress_rule402,progress_rule403,progress_rule404,progress_rule405,progress_rule406,progress_rule407,progress_rule408,progress_rule409,progress_rule410,progress_rule411,progress_rule412,progress_rule413,progress_rule414,progress_rule415,progress_rule416,progress_rule417,progress_rule418,progress_rule419,progress_rule420,progress_rule421,progress_rule422,progress_rule423,progress_rule424,progress_rule425,progress_rule426,progress_rule427,progress_rule428,progress_rule429,progress_rule430,progress_rule431,progress_rule432,progress_rule433,progress_rule434,progress_rule435,progress_rule436,progress_rule437,progress_rule438,progress_rule439,progress_rule440,progress_rule441,progress_rule442,progress_rule443,progress_rule444,progress_rule445,progress_rule446,progress_rule447,progress_rule448,progress_rule449,progress_rule450,progress_rule451,progress_rule452,progress_rule453,progress_rule454,progress_rule455,progress_rule456,progress_rule457,progress_rule458,progress_rule459,progress_rule460,progress_rule461,progress_rule462,progress_rule463,progress_rule464,progress_rule465,progress_rule466,progress_rule467,progress_rule468,progress_rule469,progress_rule470,progress_rule471,progress_rule472,progress_rule473,progress_rule474,progress_rule475,progress_rule476,progress_rule477,progress_rule478,progress_rule479,progress_rule480,progress_rule481,progress_rule482,progress_rule483,progress_rule484,progress_rule485,progress_rule486,progress_rule487,progress_rule488,progress_rule489,progress_rule490,progress_rule491,progress_rule492,progress_rule493,progress_rule494,progress_rule495,progress_rule496,progress_rule497,progress_rule498,progress_rule499,progress_rule500,progress_rule501,progress_rule502,progress_rule503,progress_rule504,progress_rule505,progress_rule506,progress_rule507,progress_rule508,progress_rule509,progress_rule510,progress_rule511,progress_rule512,progress_rule513,progress_rule514,progress_rule515,progress_rule516,progress_rule517,progress_rule518,progress_rule519,progress_rule520,progress_rule521,progress_rule522,progress_rule523,progress_rule524,progress_rule525,progress_rule526,progress_rule527,progress_rule528,progress_rule529,progress_rule530,progress_rule531,progress_rule532,progress_rule533,progress_rule534,progress_rule535,progress_rule536,progress_rule537,progress_rule538,progress_rule539,progress_rule540,progress_rule541,progress_rule542,progress_rule543,progress_rule544,progress_rule545,progress_rule546,progress_rule547,progress_rule548,progress_rule549,progress_rule550,progress_rule551,progress_rule552,progress_rule553,progress_rule554,progress_rule555,progress_rule556,progress_rule557,progress_rule558,progress_rule559,progress_rule560,progress_rule561,progress_rule562,progress_rule563,progress_rule564,progress_rule565,progress_rule566,progress_rule567,progress_rule568,progress_rule569,progress_rule570,progress_rule571,progress_rule572,progress_rule573,progress_rule574,progress_rule575,progress_rule576,progress_rule577,progress_rule578,progress_rule579,progress_rule580,progress_rule581,progress_rule582,progress_rule583,progress_rule584,progress_rule585,progress_rule586,progress_rule587,progress_rule588,progress_rule589,progress_rule590,progress_rule591,progress_rule592,progress_rule593,progress_rule594,progress_rule595,progress_rule596,progress_rule597,progress_rule598,progress_rule599,progress_rule600,progress_rule601,progress_rule602,progress_rule603,progress_rule604,progress_rule605,progress_rule606,progress_rule607,progress_rule608,progress_rule609,progress_rule610,progress_rule611,progress_rule612,progress_rule613,progress_rule614,progress_rule615,progress_rule616,progress_rule617,progress_rule618,progress_rule619,progress_rule620,progress_rule621,progress_rule622,progress_rule623,progress_rule624,progress_rule625,progress_rule626,progress_rule627,progress_rule628,progress_rule629,progress_rule630,progress_rule631,progress_rule632,progress_rule633,progress_rule634,progress_rule635,progress_rule636,progress_rule637,progress_rule638,progress_rule639,progress_rule640,progress_rule641,progress_rule642,progress_rule643,progress_rule644,progress_rule645,progress_rule646,progress_rule647,progress_rule648,progress_rule649,progress_rule650,progress_rule651,progress_rule652,progress_rule653,progress_rule654,progress_rule655,progress_rule656,progress_rule657,progress_rule658,progress_rule659,progress_rule660,progress_rule661,progress_rule662,progress_rule663,progress_rule664,progress_rule665,progress_rule666,progress_rule667,progress_rule668,progress_rule669,progress_rule670,progress_rule671,progress_rule672,progress_rule673,progress_rule674,progress_rule675,progress_rule676,progress_rule677,progress_rule678,progress_rule679,progress_rule680,progress_rule681,progress_rule682,progress_rule683,progress_rule684,progress_rule685,progress_rule686,progress_rule687,progress_rule688,progress_rule689,progress_rule690,progress_rule691,progress_rule692,progress_rule693,progress_rule694,progress_rule695,progress_rule696,progress_rule697,progress_rule698,progress_rule699,progress_rule700,progress_rule701,progress_rule702,progress_rule703,progress_rule704,progress_rule705,progress_rule706,progress_rule707,progress_rule708,progress_rule709,progress_rule710,progress_rule711,progress_rule712,progress_rule713,progress_rule714,progress_rule715,progress_rule716,progress_rule717,progress_rule718,progress_rule719,progress_rule720,progress_rule721,progress_rule722,progress_rule723,progress_rule724,progress_rule725,progress_rule726,progress_rule727,progress_rule728,progress_rule729,progress_rule730,progress_rule731,progress_rule732,progress_rule733,progress_rule734,progress_rule735,progress_rule736,progress_rule737,progress_rule738,progress_rule739,progress_rule740,progress_rule741,progress_rule742,progress_rule743,progress_rule744,progress_rule745,progress_rule746,progress_rule747,progress_rule748,progress_rule749,progress_rule750,progress_rule751,progress_rule752,progress_rule753,progress_rule754,progress_rule755,progress_rule756,progress_rule757,progress_rule758,progress_rule759,progress_rule760,progress_rule761,progress_rule762,progress_rule763,progress_rule764,progress_rule765,progress_rule766,progress_rule767,progress_rule768,progress_rule769,progress_rule770,progress_rule771,progress_rule772,progress_rule773,progress_rule774,progress_rule775,progress_rule776,progress_rule777,progress_rule778,progress_rule779,progress_rule780,progress_rule781,progress_rule782,progress_rule783,progress_rule784,progress_rule785,progress_rule786,progress_rule787,progress_rule788,progress_rule789,progress_rule790,progress_rule791,progress_rule792,progress_rule793,progress_rule795,progress_rule796,],
+	"<": [progress_rule18,progress_rule19,],
+	"=": [progress_rule9,],
+	">": [progress_rule17,],
+	"?": [progress_rule10,],
+	"@": [progress_rule11,progress_rule798,],
+	"A": [progress_rule798,],
+	"B": [progress_rule798,],
+	"C": [progress_rule798,],
+	"D": [progress_rule798,],
+	"E": [progress_rule798,],
+	"F": [progress_rule798,],
+	"G": [progress_rule798,],
+	"H": [progress_rule798,],
+	"I": [progress_rule798,],
+	"J": [progress_rule798,],
+	"K": [progress_rule798,],
+	"L": [progress_rule798,],
+	"M": [progress_rule798,],
+	"N": [progress_rule798,],
+	"O": [progress_rule798,],
+	"P": [progress_rule798,],
+	"Q": [progress_rule798,],
+	"R": [progress_rule798,],
+	"S": [progress_rule798,],
+	"T": [progress_rule798,],
+	"U": [progress_rule798,],
+	"V": [progress_rule798,],
+	"W": [progress_rule798,],
+	"X": [progress_rule798,],
+	"Y": [progress_rule798,],
+	"Z": [progress_rule798,],
+	"[": [progress_rule12,],
+	"]": [progress_rule13,],
+	"^": [progress_rule14,],
+	"_": [progress_rule798,],
+	"a": [progress_rule798,],
+	"b": [progress_rule798,],
+	"c": [progress_rule797,progress_rule798,],
+	"d": [progress_rule798,],
+	"e": [progress_rule798,],
+	"f": [progress_rule798,],
+	"g": [progress_rule798,],
+	"h": [progress_rule798,],
+	"i": [progress_rule798,],
+	"j": [progress_rule798,],
+	"k": [progress_rule798,],
+	"l": [progress_rule798,],
+	"m": [progress_rule798,],
+	"n": [progress_rule798,],
+	"o": [progress_rule798,],
+	"p": [progress_rule794,progress_rule798,],
+	"q": [progress_rule798,],
+	"r": [progress_rule798,],
+	"s": [progress_rule798,],
+	"t": [progress_rule798,],
+	"u": [progress_rule798,],
+	"v": [progress_rule798,],
+	"w": [progress_rule798,],
+	"x": [progress_rule798,],
+	"y": [progress_rule798,],
+	"z": [progress_rule798,],
+	"{": [progress_rule3,],
 }
 
 # x.rulesDictDict for progress mode.

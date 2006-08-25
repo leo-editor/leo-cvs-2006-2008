@@ -2987,1532 +2987,1532 @@ keywordsDictDict = {
 
 # Rules for apdl_main ruleset.
 
-def rule0(colorer, s, i):
+def apdl_rule0(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="label", seq=":",
         at_line_start=True, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule1(colorer, s, i):
+def apdl_rule1(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="!",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule2(colorer, s, i):
+def apdl_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule3(colorer, s, i):
+def apdl_rule3(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*ABBR",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule4(colorer, s, i):
+def apdl_rule4(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*ABB",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule5(colorer, s, i):
+def apdl_rule5(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*AFUN",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule6(colorer, s, i):
+def apdl_rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*AFU",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule7(colorer, s, i):
+def apdl_rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*ASK",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule8(colorer, s, i):
+def apdl_rule8(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*CFCLOS",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule9(colorer, s, i):
+def apdl_rule9(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*CFC",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule10(colorer, s, i):
+def apdl_rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*CFOPEN",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule11(colorer, s, i):
+def apdl_rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*CFO",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule12(colorer, s, i):
+def apdl_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*CFWRITE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule13(colorer, s, i):
+def apdl_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*CFW",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule14(colorer, s, i):
+def apdl_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*CREATE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule15(colorer, s, i):
+def apdl_rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*CRE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule16(colorer, s, i):
+def apdl_rule16(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*CYCLE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule17(colorer, s, i):
+def apdl_rule17(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*CYC",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule18(colorer, s, i):
+def apdl_rule18(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*DEL",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule19(colorer, s, i):
+def apdl_rule19(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*DIM",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule20(colorer, s, i):
+def apdl_rule20(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*DO",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule21(colorer, s, i):
+def apdl_rule21(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*ELSEIF",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule22(colorer, s, i):
+def apdl_rule22(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*ELSE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule23(colorer, s, i):
+def apdl_rule23(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*ENDDO",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule24(colorer, s, i):
+def apdl_rule24(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*ENDIF",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule25(colorer, s, i):
+def apdl_rule25(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*END",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule26(colorer, s, i):
+def apdl_rule26(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*EVAL",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule27(colorer, s, i):
+def apdl_rule27(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*EVA",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule28(colorer, s, i):
+def apdl_rule28(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*EXIT",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule29(colorer, s, i):
+def apdl_rule29(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*EXI",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule30(colorer, s, i):
+def apdl_rule30(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*GET",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule31(colorer, s, i):
+def apdl_rule31(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*GO",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule32(colorer, s, i):
+def apdl_rule32(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*IF",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule33(colorer, s, i):
+def apdl_rule33(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*LIST",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule34(colorer, s, i):
+def apdl_rule34(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*LIS",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule35(colorer, s, i):
+def apdl_rule35(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*MFOURI",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule36(colorer, s, i):
+def apdl_rule36(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*MFO",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule37(colorer, s, i):
+def apdl_rule37(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*MFUN",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule38(colorer, s, i):
+def apdl_rule38(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*MFU",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule39(colorer, s, i):
+def apdl_rule39(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*MOONEY",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule40(colorer, s, i):
+def apdl_rule40(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*MOO",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule41(colorer, s, i):
+def apdl_rule41(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*MOPER",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule42(colorer, s, i):
+def apdl_rule42(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*MOP",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule43(colorer, s, i):
+def apdl_rule43(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*MSG",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule44(colorer, s, i):
+def apdl_rule44(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*REPEAT",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule45(colorer, s, i):
+def apdl_rule45(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*REP",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule46(colorer, s, i):
+def apdl_rule46(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*SET",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule47(colorer, s, i):
+def apdl_rule47(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*STATUS",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule48(colorer, s, i):
+def apdl_rule48(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*STA",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule49(colorer, s, i):
+def apdl_rule49(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*TREAD",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule50(colorer, s, i):
+def apdl_rule50(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*TRE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule51(colorer, s, i):
+def apdl_rule51(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*ULIB",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule52(colorer, s, i):
+def apdl_rule52(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*ULI",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule53(colorer, s, i):
+def apdl_rule53(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*USE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule54(colorer, s, i):
+def apdl_rule54(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*VABS",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule55(colorer, s, i):
+def apdl_rule55(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*VAB",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule56(colorer, s, i):
+def apdl_rule56(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*VCOL",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule57(colorer, s, i):
+def apdl_rule57(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*VCO",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule58(colorer, s, i):
+def apdl_rule58(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*VCUM",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule59(colorer, s, i):
+def apdl_rule59(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*VCU",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule60(colorer, s, i):
+def apdl_rule60(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*VEDIT",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule61(colorer, s, i):
+def apdl_rule61(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*VED",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule62(colorer, s, i):
+def apdl_rule62(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*VFACT",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule63(colorer, s, i):
+def apdl_rule63(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*VFA",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule64(colorer, s, i):
+def apdl_rule64(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*VFILL",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule65(colorer, s, i):
+def apdl_rule65(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*VFI",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule66(colorer, s, i):
+def apdl_rule66(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*VFUN",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule67(colorer, s, i):
+def apdl_rule67(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*VFU",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule68(colorer, s, i):
+def apdl_rule68(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*VGET",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule69(colorer, s, i):
+def apdl_rule69(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*VGE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule70(colorer, s, i):
+def apdl_rule70(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*VITRP",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule71(colorer, s, i):
+def apdl_rule71(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*VIT",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule72(colorer, s, i):
+def apdl_rule72(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*VLEN",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule73(colorer, s, i):
+def apdl_rule73(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*VLE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule74(colorer, s, i):
+def apdl_rule74(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*VMASK",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule75(colorer, s, i):
+def apdl_rule75(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*VMA",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule76(colorer, s, i):
+def apdl_rule76(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*VOPER",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule77(colorer, s, i):
+def apdl_rule77(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*VOP",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule78(colorer, s, i):
+def apdl_rule78(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*VPLOT",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule79(colorer, s, i):
+def apdl_rule79(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*VPL",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule80(colorer, s, i):
+def apdl_rule80(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*VPUT",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule81(colorer, s, i):
+def apdl_rule81(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*VPU",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule82(colorer, s, i):
+def apdl_rule82(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*VREAD",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule83(colorer, s, i):
+def apdl_rule83(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*VRE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule84(colorer, s, i):
+def apdl_rule84(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*VSCFUN",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule85(colorer, s, i):
+def apdl_rule85(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*VSC",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule86(colorer, s, i):
+def apdl_rule86(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*VSTAT",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule87(colorer, s, i):
+def apdl_rule87(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*VST",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule88(colorer, s, i):
+def apdl_rule88(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*VWRITE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule89(colorer, s, i):
+def apdl_rule89(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="*VWR",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule90(colorer, s, i):
+def apdl_rule90(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/ANFILE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule91(colorer, s, i):
+def apdl_rule91(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/ANF",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule92(colorer, s, i):
+def apdl_rule92(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/ANGLE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule93(colorer, s, i):
+def apdl_rule93(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/ANG",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule94(colorer, s, i):
+def apdl_rule94(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/ANNOT",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule95(colorer, s, i):
+def apdl_rule95(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/ANN",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule96(colorer, s, i):
+def apdl_rule96(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/ANUM",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule97(colorer, s, i):
+def apdl_rule97(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/ANU",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule98(colorer, s, i):
+def apdl_rule98(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/ASSIGN",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule99(colorer, s, i):
+def apdl_rule99(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/ASS",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule100(colorer, s, i):
+def apdl_rule100(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/AUTO",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule101(colorer, s, i):
+def apdl_rule101(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/AUT",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule102(colorer, s, i):
+def apdl_rule102(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/AUX15",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule103(colorer, s, i):
+def apdl_rule103(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/AUX2",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule104(colorer, s, i):
+def apdl_rule104(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/AUX",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule105(colorer, s, i):
+def apdl_rule105(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/AXLAB",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule106(colorer, s, i):
+def apdl_rule106(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/AXL",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule107(colorer, s, i):
+def apdl_rule107(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/BATCH",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule108(colorer, s, i):
+def apdl_rule108(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/BAT",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule109(colorer, s, i):
+def apdl_rule109(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/CLABEL",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule110(colorer, s, i):
+def apdl_rule110(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/CLA",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule111(colorer, s, i):
+def apdl_rule111(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/CLEAR",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule112(colorer, s, i):
+def apdl_rule112(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/CLE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule113(colorer, s, i):
+def apdl_rule113(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/CLOG",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule114(colorer, s, i):
+def apdl_rule114(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/CLO",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule115(colorer, s, i):
+def apdl_rule115(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/CMAP",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule116(colorer, s, i):
+def apdl_rule116(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/CMA",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule117(colorer, s, i):
+def apdl_rule117(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/COLOR",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule118(colorer, s, i):
+def apdl_rule118(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/COL",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule119(colorer, s, i):
+def apdl_rule119(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/COM",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule120(colorer, s, i):
+def apdl_rule120(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/CONFIG",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule121(colorer, s, i):
+def apdl_rule121(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/CONTOUR",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule122(colorer, s, i):
+def apdl_rule122(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/CON",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule123(colorer, s, i):
+def apdl_rule123(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/COPY",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule124(colorer, s, i):
+def apdl_rule124(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/COP",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule125(colorer, s, i):
+def apdl_rule125(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/CPLANE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule126(colorer, s, i):
+def apdl_rule126(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/CPL",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule127(colorer, s, i):
+def apdl_rule127(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/CTYPE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule128(colorer, s, i):
+def apdl_rule128(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/CTY",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule129(colorer, s, i):
+def apdl_rule129(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/CVAL",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule130(colorer, s, i):
+def apdl_rule130(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/CVA",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule131(colorer, s, i):
+def apdl_rule131(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/DELETE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule132(colorer, s, i):
+def apdl_rule132(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/DEL",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule133(colorer, s, i):
+def apdl_rule133(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/DEVDISP",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule134(colorer, s, i):
+def apdl_rule134(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/DEVICE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule135(colorer, s, i):
+def apdl_rule135(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/DEV",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule136(colorer, s, i):
+def apdl_rule136(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/DIST",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule137(colorer, s, i):
+def apdl_rule137(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/DIS",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule138(colorer, s, i):
+def apdl_rule138(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/DSCALE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule139(colorer, s, i):
+def apdl_rule139(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/DSC",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule140(colorer, s, i):
+def apdl_rule140(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/DV3D",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule141(colorer, s, i):
+def apdl_rule141(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/DV3",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule142(colorer, s, i):
+def apdl_rule142(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/EDGE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule143(colorer, s, i):
+def apdl_rule143(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/EDG",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule144(colorer, s, i):
+def apdl_rule144(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/EFACET",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule145(colorer, s, i):
+def apdl_rule145(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/EFA",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule146(colorer, s, i):
+def apdl_rule146(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/EOF",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule147(colorer, s, i):
+def apdl_rule147(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/ERASE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule148(colorer, s, i):
+def apdl_rule148(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/ERA",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule149(colorer, s, i):
+def apdl_rule149(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/ESHAPE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule150(colorer, s, i):
+def apdl_rule150(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/ESH",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule151(colorer, s, i):
+def apdl_rule151(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/EXIT",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule152(colorer, s, i):
+def apdl_rule152(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/EXI",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule153(colorer, s, i):
+def apdl_rule153(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/EXPAND",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule154(colorer, s, i):
+def apdl_rule154(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/EXP",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule155(colorer, s, i):
+def apdl_rule155(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/FACET",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule156(colorer, s, i):
+def apdl_rule156(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/FAC",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule157(colorer, s, i):
+def apdl_rule157(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/FDELE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule158(colorer, s, i):
+def apdl_rule158(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/FDE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule159(colorer, s, i):
+def apdl_rule159(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/FILNAME",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule160(colorer, s, i):
+def apdl_rule160(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/FIL",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule161(colorer, s, i):
+def apdl_rule161(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/FOCUS",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule162(colorer, s, i):
+def apdl_rule162(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/FOC",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule163(colorer, s, i):
+def apdl_rule163(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/FORMAT",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule164(colorer, s, i):
+def apdl_rule164(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/FOR",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule165(colorer, s, i):
+def apdl_rule165(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/FTYPE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule166(colorer, s, i):
+def apdl_rule166(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/FTY",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule167(colorer, s, i):
+def apdl_rule167(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/GCMD",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule168(colorer, s, i):
+def apdl_rule168(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/GCM",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule169(colorer, s, i):
+def apdl_rule169(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/GCOLUMN",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule170(colorer, s, i):
+def apdl_rule170(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/GCO",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule171(colorer, s, i):
+def apdl_rule171(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/GFILE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule172(colorer, s, i):
+def apdl_rule172(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/GFI",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule173(colorer, s, i):
+def apdl_rule173(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/GFORMAT",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule174(colorer, s, i):
+def apdl_rule174(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/GFO",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule175(colorer, s, i):
+def apdl_rule175(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/GLINE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule176(colorer, s, i):
+def apdl_rule176(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/GLI",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule177(colorer, s, i):
+def apdl_rule177(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/GMARKER",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule178(colorer, s, i):
+def apdl_rule178(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/GMA",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule179(colorer, s, i):
+def apdl_rule179(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/GOLIST",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule180(colorer, s, i):
+def apdl_rule180(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/GOL",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule181(colorer, s, i):
+def apdl_rule181(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/GOPR",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule182(colorer, s, i):
+def apdl_rule182(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/GOP",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule183(colorer, s, i):
+def apdl_rule183(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/GO",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule184(colorer, s, i):
+def apdl_rule184(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/GRAPHICS",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule185(colorer, s, i):
+def apdl_rule185(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/GRA",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule186(colorer, s, i):
+def apdl_rule186(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/GRESUME",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule187(colorer, s, i):
+def apdl_rule187(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/GRE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule188(colorer, s, i):
+def apdl_rule188(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/GRID",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule189(colorer, s, i):
+def apdl_rule189(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/GRI",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule190(colorer, s, i):
+def apdl_rule190(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/GROPT",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule191(colorer, s, i):
+def apdl_rule191(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/GRO",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule192(colorer, s, i):
+def apdl_rule192(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/GRTYP",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule193(colorer, s, i):
+def apdl_rule193(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/GRT",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule194(colorer, s, i):
+def apdl_rule194(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/GSAVE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule195(colorer, s, i):
+def apdl_rule195(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/GSA",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule196(colorer, s, i):
+def apdl_rule196(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/GST",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule197(colorer, s, i):
+def apdl_rule197(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/GTHK",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule198(colorer, s, i):
+def apdl_rule198(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/GTH",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule199(colorer, s, i):
+def apdl_rule199(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/GTYPE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule200(colorer, s, i):
+def apdl_rule200(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/GTY",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule201(colorer, s, i):
+def apdl_rule201(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/HEADER",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule202(colorer, s, i):
+def apdl_rule202(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/HEA",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule203(colorer, s, i):
+def apdl_rule203(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/INPUT",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule204(colorer, s, i):
+def apdl_rule204(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/INP",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule205(colorer, s, i):
+def apdl_rule205(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/LARC",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule206(colorer, s, i):
+def apdl_rule206(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/LAR",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule207(colorer, s, i):
+def apdl_rule207(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/LIGHT",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule208(colorer, s, i):
+def apdl_rule208(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/LIG",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule209(colorer, s, i):
+def apdl_rule209(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/LINE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule210(colorer, s, i):
+def apdl_rule210(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/LIN",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule211(colorer, s, i):
+def apdl_rule211(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/LSPEC",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule212(colorer, s, i):
+def apdl_rule212(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/LSP",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule213(colorer, s, i):
+def apdl_rule213(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/LSYMBOL",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule214(colorer, s, i):
+def apdl_rule214(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/LSY",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule215(colorer, s, i):
+def apdl_rule215(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/MENU",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule216(colorer, s, i):
+def apdl_rule216(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/MEN",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule217(colorer, s, i):
+def apdl_rule217(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/MPLIB",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule218(colorer, s, i):
+def apdl_rule218(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/MPL",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule219(colorer, s, i):
+def apdl_rule219(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/MREP",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule220(colorer, s, i):
+def apdl_rule220(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/MRE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule221(colorer, s, i):
+def apdl_rule221(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/MSTART",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule222(colorer, s, i):
+def apdl_rule222(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/MST",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule223(colorer, s, i):
+def apdl_rule223(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/NERR",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule224(colorer, s, i):
+def apdl_rule224(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/NER",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule225(colorer, s, i):
+def apdl_rule225(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/NOERASE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule226(colorer, s, i):
+def apdl_rule226(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/NOE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule227(colorer, s, i):
+def apdl_rule227(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/NOLIST",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule228(colorer, s, i):
+def apdl_rule228(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/NOL",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule229(colorer, s, i):
+def apdl_rule229(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/NOPR",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule230(colorer, s, i):
+def apdl_rule230(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/NOP",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule231(colorer, s, i):
+def apdl_rule231(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/NORMAL",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule232(colorer, s, i):
+def apdl_rule232(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/NOR",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule233(colorer, s, i):
+def apdl_rule233(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/NUMBER",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule234(colorer, s, i):
+def apdl_rule234(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/NUM",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule235(colorer, s, i):
+def apdl_rule235(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/OPT",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule236(colorer, s, i):
+def apdl_rule236(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/OUTPUT",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule237(colorer, s, i):
+def apdl_rule237(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/OUt",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule238(colorer, s, i):
+def apdl_rule238(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/PAGE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule239(colorer, s, i):
+def apdl_rule239(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/PAG",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule240(colorer, s, i):
+def apdl_rule240(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/PBC",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule241(colorer, s, i):
+def apdl_rule241(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/PBF",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule242(colorer, s, i):
+def apdl_rule242(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/PCIRCLE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule243(colorer, s, i):
+def apdl_rule243(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/PCI",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule244(colorer, s, i):
+def apdl_rule244(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/PCOPY",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule245(colorer, s, i):
+def apdl_rule245(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/PCO",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule246(colorer, s, i):
+def apdl_rule246(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/PLOPTS",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule247(colorer, s, i):
+def apdl_rule247(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/PLO",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule248(colorer, s, i):
+def apdl_rule248(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/PMACRO",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule249(colorer, s, i):
+def apdl_rule249(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/PMA",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule250(colorer, s, i):
+def apdl_rule250(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/PMETH",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule251(colorer, s, i):
+def apdl_rule251(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/PME",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule252(colorer, s, i):
+def apdl_rule252(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/PMORE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule253(colorer, s, i):
+def apdl_rule253(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/PMO",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule254(colorer, s, i):
+def apdl_rule254(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/PNUM",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule255(colorer, s, i):
+def apdl_rule255(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/PNU",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule256(colorer, s, i):
+def apdl_rule256(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/POLYGON",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule257(colorer, s, i):
+def apdl_rule257(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/POL",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule258(colorer, s, i):
+def apdl_rule258(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/POST26",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule259(colorer, s, i):
+def apdl_rule259(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/POST1",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule260(colorer, s, i):
+def apdl_rule260(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/POS",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule261(colorer, s, i):
+def apdl_rule261(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/PREP7",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule262(colorer, s, i):
+def apdl_rule262(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/PRE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule263(colorer, s, i):
+def apdl_rule263(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/PSEARCH",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule264(colorer, s, i):
+def apdl_rule264(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/PSE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule265(colorer, s, i):
+def apdl_rule265(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/PSF",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule266(colorer, s, i):
+def apdl_rule266(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/PSPEC",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule267(colorer, s, i):
+def apdl_rule267(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/PSP",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule268(colorer, s, i):
+def apdl_rule268(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/PSTATUS",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule269(colorer, s, i):
+def apdl_rule269(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/PST",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule270(colorer, s, i):
+def apdl_rule270(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/PSYMB",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule271(colorer, s, i):
+def apdl_rule271(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/PSY",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule272(colorer, s, i):
+def apdl_rule272(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/PWEDGE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule273(colorer, s, i):
+def apdl_rule273(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/PWE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule274(colorer, s, i):
+def apdl_rule274(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/QUIT",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule275(colorer, s, i):
+def apdl_rule275(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/QUI",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule276(colorer, s, i):
+def apdl_rule276(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/RATIO",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule277(colorer, s, i):
+def apdl_rule277(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/RAT",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule278(colorer, s, i):
+def apdl_rule278(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/RENAME",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule279(colorer, s, i):
+def apdl_rule279(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/REN",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule280(colorer, s, i):
+def apdl_rule280(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/REPLOT",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule281(colorer, s, i):
+def apdl_rule281(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/REP",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule282(colorer, s, i):
+def apdl_rule282(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/RESET",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule283(colorer, s, i):
+def apdl_rule283(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/RES",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule284(colorer, s, i):
+def apdl_rule284(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/RGB",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule285(colorer, s, i):
+def apdl_rule285(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/RUNST",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule286(colorer, s, i):
+def apdl_rule286(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/RUN",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule287(colorer, s, i):
+def apdl_rule287(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/SECLIB",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule288(colorer, s, i):
+def apdl_rule288(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/SEC",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule289(colorer, s, i):
+def apdl_rule289(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/SEG",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule290(colorer, s, i):
+def apdl_rule290(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/SHADE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule291(colorer, s, i):
+def apdl_rule291(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/SHA",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule292(colorer, s, i):
+def apdl_rule292(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/SHOWDISP",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule293(colorer, s, i):
+def apdl_rule293(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/SHOW",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule294(colorer, s, i):
+def apdl_rule294(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/SHO",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule295(colorer, s, i):
+def apdl_rule295(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/SHRINK",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule296(colorer, s, i):
+def apdl_rule296(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/SHR",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule297(colorer, s, i):
+def apdl_rule297(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/SOLU",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule298(colorer, s, i):
+def apdl_rule298(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/SOL",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule299(colorer, s, i):
+def apdl_rule299(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/SSCALE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule300(colorer, s, i):
+def apdl_rule300(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/SSC",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule301(colorer, s, i):
+def apdl_rule301(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/STATUS",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule302(colorer, s, i):
+def apdl_rule302(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/STA",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule303(colorer, s, i):
+def apdl_rule303(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/STITLE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule304(colorer, s, i):
+def apdl_rule304(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/STI",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule305(colorer, s, i):
+def apdl_rule305(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/SYP",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule306(colorer, s, i):
+def apdl_rule306(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/SYS",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule307(colorer, s, i):
+def apdl_rule307(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/TITLE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule308(colorer, s, i):
+def apdl_rule308(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/TIT",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule309(colorer, s, i):
+def apdl_rule309(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/TLABEL",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule310(colorer, s, i):
+def apdl_rule310(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/TLA",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule311(colorer, s, i):
+def apdl_rule311(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/TRIAD",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule312(colorer, s, i):
+def apdl_rule312(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/TRI",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule313(colorer, s, i):
+def apdl_rule313(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/TRLCY",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule314(colorer, s, i):
+def apdl_rule314(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/TRL",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule315(colorer, s, i):
+def apdl_rule315(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/TSPEC",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule316(colorer, s, i):
+def apdl_rule316(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/TSP",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule317(colorer, s, i):
+def apdl_rule317(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/TYPE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule318(colorer, s, i):
+def apdl_rule318(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/TYP",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule319(colorer, s, i):
+def apdl_rule319(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/UCMD",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule320(colorer, s, i):
+def apdl_rule320(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/UCM",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule321(colorer, s, i):
+def apdl_rule321(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/UIS",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule322(colorer, s, i):
+def apdl_rule322(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/UI",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule323(colorer, s, i):
+def apdl_rule323(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/UNITS",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule324(colorer, s, i):
+def apdl_rule324(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/UNI",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule325(colorer, s, i):
+def apdl_rule325(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/USER",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule326(colorer, s, i):
+def apdl_rule326(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/USE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule327(colorer, s, i):
+def apdl_rule327(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/VCONE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule328(colorer, s, i):
+def apdl_rule328(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/VCO",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule329(colorer, s, i):
+def apdl_rule329(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/VIEW",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule330(colorer, s, i):
+def apdl_rule330(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/VIE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule331(colorer, s, i):
+def apdl_rule331(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/VSCALE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule332(colorer, s, i):
+def apdl_rule332(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/VSC",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule333(colorer, s, i):
+def apdl_rule333(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/VUP",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule334(colorer, s, i):
+def apdl_rule334(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/WAIT",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule335(colorer, s, i):
+def apdl_rule335(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/WAI",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule336(colorer, s, i):
+def apdl_rule336(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/WINDOW",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule337(colorer, s, i):
+def apdl_rule337(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/WIN",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule338(colorer, s, i):
+def apdl_rule338(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/XRANGE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule339(colorer, s, i):
+def apdl_rule339(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/XRA",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule340(colorer, s, i):
+def apdl_rule340(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/YRANGE",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule341(colorer, s, i):
+def apdl_rule341(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/YRA",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule342(colorer, s, i):
+def apdl_rule342(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/ZOOM",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule343(colorer, s, i):
+def apdl_rule343(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="/ZOO",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule344(colorer, s, i):
+def apdl_rule344(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule345(colorer, s, i):
+def apdl_rule345(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule346(colorer, s, i):
+def apdl_rule346(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule347(colorer, s, i):
+def apdl_rule347(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule348(colorer, s, i):
+def apdl_rule348(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="(",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule349(colorer, s, i):
+def apdl_rule349(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule350(colorer, s, i):
+def apdl_rule350(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=",",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule351(colorer, s, i):
+def apdl_rule351(colorer, s, i):
     return colorer.match_seq(s, i, kind="null", seq=";",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule352(colorer, s, i):
+def apdl_rule352(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule353(colorer, s, i):
+def apdl_rule353(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule354(colorer, s, i):
+def apdl_rule354(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="%C",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule355(colorer, s, i):
+def apdl_rule355(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="%G",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule356(colorer, s, i):
+def apdl_rule356(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="%I",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule357(colorer, s, i):
+def apdl_rule357(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="%/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule358(colorer, s, i):
+def apdl_rule358(colorer, s, i):
     return colorer.match_span(s, i, kind="function", begin="%", end="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule359(colorer, s, i):
+def apdl_rule359(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"!": [rule1,],
-	"$": [rule346,],
-	"%": [rule354,rule355,rule356,rule357,rule358,],
-	"'": [rule2,],
-	"(": [rule348,],
-	")": [rule349,],
-	"*": [rule3,rule4,rule5,rule6,rule7,rule8,rule9,rule10,rule11,rule12,rule13,rule14,rule15,rule16,rule17,rule18,rule19,rule20,rule21,rule22,rule23,rule24,rule25,rule26,rule27,rule28,rule29,rule30,rule31,rule32,rule33,rule34,rule35,rule36,rule37,rule38,rule39,rule40,rule41,rule42,rule43,rule44,rule45,rule46,rule47,rule48,rule49,rule50,rule51,rule52,rule53,rule54,rule55,rule56,rule57,rule58,rule59,rule60,rule61,rule62,rule63,rule64,rule65,rule66,rule67,rule68,rule69,rule70,rule71,rule72,rule73,rule74,rule75,rule76,rule77,rule78,rule79,rule80,rule81,rule82,rule83,rule84,rule85,rule86,rule87,rule88,rule89,rule352,],
-	"+": [rule344,],
-	",": [rule350,rule359,],
-	"-": [rule345,rule359,],
-	".": [rule359,],
-	"/": [rule90,rule91,rule92,rule93,rule94,rule95,rule96,rule97,rule98,rule99,rule100,rule101,rule102,rule103,rule104,rule105,rule106,rule107,rule108,rule109,rule110,rule111,rule112,rule113,rule114,rule115,rule116,rule117,rule118,rule119,rule120,rule121,rule122,rule123,rule124,rule125,rule126,rule127,rule128,rule129,rule130,rule131,rule132,rule133,rule134,rule135,rule136,rule137,rule138,rule139,rule140,rule141,rule142,rule143,rule144,rule145,rule146,rule147,rule148,rule149,rule150,rule151,rule152,rule153,rule154,rule155,rule156,rule157,rule158,rule159,rule160,rule161,rule162,rule163,rule164,rule165,rule166,rule167,rule168,rule169,rule170,rule171,rule172,rule173,rule174,rule175,rule176,rule177,rule178,rule179,rule180,rule181,rule182,rule183,rule184,rule185,rule186,rule187,rule188,rule189,rule190,rule191,rule192,rule193,rule194,rule195,rule196,rule197,rule198,rule199,rule200,rule201,rule202,rule203,rule204,rule205,rule206,rule207,rule208,rule209,rule210,rule211,rule212,rule213,rule214,rule215,rule216,rule217,rule218,rule219,rule220,rule221,rule222,rule223,rule224,rule225,rule226,rule227,rule228,rule229,rule230,rule231,rule232,rule233,rule234,rule235,rule236,rule237,rule238,rule239,rule240,rule241,rule242,rule243,rule244,rule245,rule246,rule247,rule248,rule249,rule250,rule251,rule252,rule253,rule254,rule255,rule256,rule257,rule258,rule259,rule260,rule261,rule262,rule263,rule264,rule265,rule266,rule267,rule268,rule269,rule270,rule271,rule272,rule273,rule274,rule275,rule276,rule277,rule278,rule279,rule280,rule281,rule282,rule283,rule284,rule285,rule286,rule287,rule288,rule289,rule290,rule291,rule292,rule293,rule294,rule295,rule296,rule297,rule298,rule299,rule300,rule301,rule302,rule303,rule304,rule305,rule306,rule307,rule308,rule309,rule310,rule311,rule312,rule313,rule314,rule315,rule316,rule317,rule318,rule319,rule320,rule321,rule322,rule323,rule324,rule325,rule326,rule327,rule328,rule329,rule330,rule331,rule332,rule333,rule334,rule335,rule336,rule337,rule338,rule339,rule340,rule341,rule342,rule343,rule353,],
-	"0": [rule359,],
-	"1": [rule359,],
-	"2": [rule359,],
-	"3": [rule359,],
-	"4": [rule359,],
-	"5": [rule359,],
-	"6": [rule359,],
-	"7": [rule359,],
-	"8": [rule359,],
-	"9": [rule359,],
-	":": [rule0,],
-	";": [rule351,],
-	"=": [rule347,],
-	"@": [rule359,],
-	"A": [rule359,],
-	"B": [rule359,],
-	"C": [rule359,],
-	"D": [rule359,],
-	"E": [rule359,],
-	"F": [rule359,],
-	"G": [rule359,],
-	"H": [rule359,],
-	"I": [rule359,],
-	"J": [rule359,],
-	"K": [rule359,],
-	"L": [rule359,],
-	"M": [rule359,],
-	"N": [rule359,],
-	"O": [rule359,],
-	"P": [rule359,],
-	"Q": [rule359,],
-	"R": [rule359,],
-	"S": [rule359,],
-	"T": [rule359,],
-	"U": [rule359,],
-	"V": [rule359,],
-	"W": [rule359,],
-	"X": [rule359,],
-	"Y": [rule359,],
-	"Z": [rule359,],
-	"_": [rule359,],
-	"a": [rule359,],
-	"b": [rule359,],
-	"c": [rule359,],
-	"d": [rule359,],
-	"e": [rule359,],
-	"f": [rule359,],
-	"g": [rule359,],
-	"h": [rule359,],
-	"i": [rule359,],
-	"j": [rule359,],
-	"k": [rule359,],
-	"l": [rule359,],
-	"m": [rule359,],
-	"n": [rule359,],
-	"o": [rule359,],
-	"p": [rule359,],
-	"q": [rule359,],
-	"r": [rule359,],
-	"s": [rule359,],
-	"t": [rule359,],
-	"u": [rule359,],
-	"v": [rule359,],
-	"w": [rule359,],
-	"x": [rule359,],
-	"y": [rule359,],
-	"z": [rule359,],
+	"!": [apdl_rule1,],
+	"$": [apdl_rule346,],
+	"%": [apdl_rule354,apdl_rule355,apdl_rule356,apdl_rule357,apdl_rule358,],
+	"'": [apdl_rule2,],
+	"(": [apdl_rule348,],
+	")": [apdl_rule349,],
+	"*": [apdl_rule3,apdl_rule4,apdl_rule5,apdl_rule6,apdl_rule7,apdl_rule8,apdl_rule9,apdl_rule10,apdl_rule11,apdl_rule12,apdl_rule13,apdl_rule14,apdl_rule15,apdl_rule16,apdl_rule17,apdl_rule18,apdl_rule19,apdl_rule20,apdl_rule21,apdl_rule22,apdl_rule23,apdl_rule24,apdl_rule25,apdl_rule26,apdl_rule27,apdl_rule28,apdl_rule29,apdl_rule30,apdl_rule31,apdl_rule32,apdl_rule33,apdl_rule34,apdl_rule35,apdl_rule36,apdl_rule37,apdl_rule38,apdl_rule39,apdl_rule40,apdl_rule41,apdl_rule42,apdl_rule43,apdl_rule44,apdl_rule45,apdl_rule46,apdl_rule47,apdl_rule48,apdl_rule49,apdl_rule50,apdl_rule51,apdl_rule52,apdl_rule53,apdl_rule54,apdl_rule55,apdl_rule56,apdl_rule57,apdl_rule58,apdl_rule59,apdl_rule60,apdl_rule61,apdl_rule62,apdl_rule63,apdl_rule64,apdl_rule65,apdl_rule66,apdl_rule67,apdl_rule68,apdl_rule69,apdl_rule70,apdl_rule71,apdl_rule72,apdl_rule73,apdl_rule74,apdl_rule75,apdl_rule76,apdl_rule77,apdl_rule78,apdl_rule79,apdl_rule80,apdl_rule81,apdl_rule82,apdl_rule83,apdl_rule84,apdl_rule85,apdl_rule86,apdl_rule87,apdl_rule88,apdl_rule89,apdl_rule352,],
+	"+": [apdl_rule344,],
+	",": [apdl_rule350,apdl_rule359,],
+	"-": [apdl_rule345,apdl_rule359,],
+	".": [apdl_rule359,],
+	"/": [apdl_rule90,apdl_rule91,apdl_rule92,apdl_rule93,apdl_rule94,apdl_rule95,apdl_rule96,apdl_rule97,apdl_rule98,apdl_rule99,apdl_rule100,apdl_rule101,apdl_rule102,apdl_rule103,apdl_rule104,apdl_rule105,apdl_rule106,apdl_rule107,apdl_rule108,apdl_rule109,apdl_rule110,apdl_rule111,apdl_rule112,apdl_rule113,apdl_rule114,apdl_rule115,apdl_rule116,apdl_rule117,apdl_rule118,apdl_rule119,apdl_rule120,apdl_rule121,apdl_rule122,apdl_rule123,apdl_rule124,apdl_rule125,apdl_rule126,apdl_rule127,apdl_rule128,apdl_rule129,apdl_rule130,apdl_rule131,apdl_rule132,apdl_rule133,apdl_rule134,apdl_rule135,apdl_rule136,apdl_rule137,apdl_rule138,apdl_rule139,apdl_rule140,apdl_rule141,apdl_rule142,apdl_rule143,apdl_rule144,apdl_rule145,apdl_rule146,apdl_rule147,apdl_rule148,apdl_rule149,apdl_rule150,apdl_rule151,apdl_rule152,apdl_rule153,apdl_rule154,apdl_rule155,apdl_rule156,apdl_rule157,apdl_rule158,apdl_rule159,apdl_rule160,apdl_rule161,apdl_rule162,apdl_rule163,apdl_rule164,apdl_rule165,apdl_rule166,apdl_rule167,apdl_rule168,apdl_rule169,apdl_rule170,apdl_rule171,apdl_rule172,apdl_rule173,apdl_rule174,apdl_rule175,apdl_rule176,apdl_rule177,apdl_rule178,apdl_rule179,apdl_rule180,apdl_rule181,apdl_rule182,apdl_rule183,apdl_rule184,apdl_rule185,apdl_rule186,apdl_rule187,apdl_rule188,apdl_rule189,apdl_rule190,apdl_rule191,apdl_rule192,apdl_rule193,apdl_rule194,apdl_rule195,apdl_rule196,apdl_rule197,apdl_rule198,apdl_rule199,apdl_rule200,apdl_rule201,apdl_rule202,apdl_rule203,apdl_rule204,apdl_rule205,apdl_rule206,apdl_rule207,apdl_rule208,apdl_rule209,apdl_rule210,apdl_rule211,apdl_rule212,apdl_rule213,apdl_rule214,apdl_rule215,apdl_rule216,apdl_rule217,apdl_rule218,apdl_rule219,apdl_rule220,apdl_rule221,apdl_rule222,apdl_rule223,apdl_rule224,apdl_rule225,apdl_rule226,apdl_rule227,apdl_rule228,apdl_rule229,apdl_rule230,apdl_rule231,apdl_rule232,apdl_rule233,apdl_rule234,apdl_rule235,apdl_rule236,apdl_rule237,apdl_rule238,apdl_rule239,apdl_rule240,apdl_rule241,apdl_rule242,apdl_rule243,apdl_rule244,apdl_rule245,apdl_rule246,apdl_rule247,apdl_rule248,apdl_rule249,apdl_rule250,apdl_rule251,apdl_rule252,apdl_rule253,apdl_rule254,apdl_rule255,apdl_rule256,apdl_rule257,apdl_rule258,apdl_rule259,apdl_rule260,apdl_rule261,apdl_rule262,apdl_rule263,apdl_rule264,apdl_rule265,apdl_rule266,apdl_rule267,apdl_rule268,apdl_rule269,apdl_rule270,apdl_rule271,apdl_rule272,apdl_rule273,apdl_rule274,apdl_rule275,apdl_rule276,apdl_rule277,apdl_rule278,apdl_rule279,apdl_rule280,apdl_rule281,apdl_rule282,apdl_rule283,apdl_rule284,apdl_rule285,apdl_rule286,apdl_rule287,apdl_rule288,apdl_rule289,apdl_rule290,apdl_rule291,apdl_rule292,apdl_rule293,apdl_rule294,apdl_rule295,apdl_rule296,apdl_rule297,apdl_rule298,apdl_rule299,apdl_rule300,apdl_rule301,apdl_rule302,apdl_rule303,apdl_rule304,apdl_rule305,apdl_rule306,apdl_rule307,apdl_rule308,apdl_rule309,apdl_rule310,apdl_rule311,apdl_rule312,apdl_rule313,apdl_rule314,apdl_rule315,apdl_rule316,apdl_rule317,apdl_rule318,apdl_rule319,apdl_rule320,apdl_rule321,apdl_rule322,apdl_rule323,apdl_rule324,apdl_rule325,apdl_rule326,apdl_rule327,apdl_rule328,apdl_rule329,apdl_rule330,apdl_rule331,apdl_rule332,apdl_rule333,apdl_rule334,apdl_rule335,apdl_rule336,apdl_rule337,apdl_rule338,apdl_rule339,apdl_rule340,apdl_rule341,apdl_rule342,apdl_rule343,apdl_rule353,],
+	"0": [apdl_rule359,],
+	"1": [apdl_rule359,],
+	"2": [apdl_rule359,],
+	"3": [apdl_rule359,],
+	"4": [apdl_rule359,],
+	"5": [apdl_rule359,],
+	"6": [apdl_rule359,],
+	"7": [apdl_rule359,],
+	"8": [apdl_rule359,],
+	"9": [apdl_rule359,],
+	":": [apdl_rule0,],
+	";": [apdl_rule351,],
+	"=": [apdl_rule347,],
+	"@": [apdl_rule359,],
+	"A": [apdl_rule359,],
+	"B": [apdl_rule359,],
+	"C": [apdl_rule359,],
+	"D": [apdl_rule359,],
+	"E": [apdl_rule359,],
+	"F": [apdl_rule359,],
+	"G": [apdl_rule359,],
+	"H": [apdl_rule359,],
+	"I": [apdl_rule359,],
+	"J": [apdl_rule359,],
+	"K": [apdl_rule359,],
+	"L": [apdl_rule359,],
+	"M": [apdl_rule359,],
+	"N": [apdl_rule359,],
+	"O": [apdl_rule359,],
+	"P": [apdl_rule359,],
+	"Q": [apdl_rule359,],
+	"R": [apdl_rule359,],
+	"S": [apdl_rule359,],
+	"T": [apdl_rule359,],
+	"U": [apdl_rule359,],
+	"V": [apdl_rule359,],
+	"W": [apdl_rule359,],
+	"X": [apdl_rule359,],
+	"Y": [apdl_rule359,],
+	"Z": [apdl_rule359,],
+	"_": [apdl_rule359,],
+	"a": [apdl_rule359,],
+	"b": [apdl_rule359,],
+	"c": [apdl_rule359,],
+	"d": [apdl_rule359,],
+	"e": [apdl_rule359,],
+	"f": [apdl_rule359,],
+	"g": [apdl_rule359,],
+	"h": [apdl_rule359,],
+	"i": [apdl_rule359,],
+	"j": [apdl_rule359,],
+	"k": [apdl_rule359,],
+	"l": [apdl_rule359,],
+	"m": [apdl_rule359,],
+	"n": [apdl_rule359,],
+	"o": [apdl_rule359,],
+	"p": [apdl_rule359,],
+	"q": [apdl_rule359,],
+	"r": [apdl_rule359,],
+	"s": [apdl_rule359,],
+	"t": [apdl_rule359,],
+	"u": [apdl_rule359,],
+	"v": [apdl_rule359,],
+	"w": [apdl_rule359,],
+	"x": [apdl_rule359,],
+	"y": [apdl_rule359,],
+	"z": [apdl_rule359,],
 }
 
 # x.rulesDictDict for apdl mode.

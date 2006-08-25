@@ -119,207 +119,207 @@ keywordsDictDict = {
 
 # Rules for aspect_j_main ruleset.
 
-def rule0(colorer, s, i):
+def aspect-j_rule0(colorer, s, i):
     return colorer.match_seq(s, i, kind="comment1", seq="/**/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule1(colorer, s, i):
+def aspect-j_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="comment3", begin="/**", end="*/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="java::JAVADOC",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule2(colorer, s, i):
+def aspect-j_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule3(colorer, s, i):
+def aspect-j_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule4(colorer, s, i):
+def aspect-j_rule4(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule5(colorer, s, i):
+def aspect-j_rule5(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment2", seq="//",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule6(colorer, s, i):
+def aspect-j_rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule7(colorer, s, i):
+def aspect-j_rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="!",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule8(colorer, s, i):
+def aspect-j_rule8(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule9(colorer, s, i):
+def aspect-j_rule9(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule10(colorer, s, i):
+def aspect-j_rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule11(colorer, s, i):
+def aspect-j_rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule12(colorer, s, i):
+def aspect-j_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule13(colorer, s, i):
+def aspect-j_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="null", seq=".*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule14(colorer, s, i):
+def aspect-j_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule15(colorer, s, i):
+def aspect-j_rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule16(colorer, s, i):
+def aspect-j_rule16(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule17(colorer, s, i):
+def aspect-j_rule17(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule18(colorer, s, i):
+def aspect-j_rule18(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="&",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule19(colorer, s, i):
+def aspect-j_rule19(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="|",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule20(colorer, s, i):
+def aspect-j_rule20(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule21(colorer, s, i):
+def aspect-j_rule21(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="~",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule22(colorer, s, i):
+def aspect-j_rule22(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule23(colorer, s, i):
+def aspect-j_rule23(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="{",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule24(colorer, s, i):
+def aspect-j_rule24(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="label", pattern=":",
         at_line_start=False, at_whitespace_end=True, at_word_start=False, exclude_match=True)
 
-def rule25(colorer, s, i):
+def aspect-j_rule25(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="function", pattern="(",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule26(colorer, s, i):
+def aspect-j_rule26(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"!": [rule7,],
-	"\"": [rule3,],
-	"%": [rule17,],
-	"&": [rule18,],
-	"'": [rule4,],
-	"(": [rule25,],
-	"*": [rule14,],
-	"+": [rule10,],
-	"-": [rule11,],
-	".": [rule13,rule26,],
-	"/": [rule0,rule1,rule2,rule5,rule12,],
-	"0": [rule26,],
-	"1": [rule26,],
-	"2": [rule26,],
-	"3": [rule26,],
-	"4": [rule26,],
-	"5": [rule26,],
-	"6": [rule26,],
-	"7": [rule26,],
-	"8": [rule26,],
-	"9": [rule26,],
-	":": [rule24,],
-	"<": [rule9,rule16,],
-	"=": [rule6,],
-	">": [rule8,rule15,],
-	"@": [rule26,],
-	"A": [rule26,],
-	"B": [rule26,],
-	"C": [rule26,],
-	"D": [rule26,],
-	"E": [rule26,],
-	"F": [rule26,],
-	"G": [rule26,],
-	"H": [rule26,],
-	"I": [rule26,],
-	"J": [rule26,],
-	"K": [rule26,],
-	"L": [rule26,],
-	"M": [rule26,],
-	"N": [rule26,],
-	"O": [rule26,],
-	"P": [rule26,],
-	"Q": [rule26,],
-	"R": [rule26,],
-	"S": [rule26,],
-	"T": [rule26,],
-	"U": [rule26,],
-	"V": [rule26,],
-	"W": [rule26,],
-	"X": [rule26,],
-	"Y": [rule26,],
-	"Z": [rule26,],
-	"^": [rule20,],
-	"a": [rule26,],
-	"b": [rule26,],
-	"c": [rule26,],
-	"d": [rule26,],
-	"e": [rule26,],
-	"f": [rule26,],
-	"g": [rule26,],
-	"h": [rule26,],
-	"i": [rule26,],
-	"j": [rule26,],
-	"k": [rule26,],
-	"l": [rule26,],
-	"m": [rule26,],
-	"n": [rule26,],
-	"o": [rule26,],
-	"p": [rule26,],
-	"q": [rule26,],
-	"r": [rule26,],
-	"s": [rule26,],
-	"t": [rule26,],
-	"u": [rule26,],
-	"v": [rule26,],
-	"w": [rule26,],
-	"x": [rule26,],
-	"y": [rule26,],
-	"z": [rule26,],
-	"{": [rule23,],
-	"|": [rule19,],
-	"}": [rule22,],
-	"~": [rule21,],
+	"!": [aspect-j_rule7,],
+	"\"": [aspect-j_rule3,],
+	"%": [aspect-j_rule17,],
+	"&": [aspect-j_rule18,],
+	"'": [aspect-j_rule4,],
+	"(": [aspect-j_rule25,],
+	"*": [aspect-j_rule14,],
+	"+": [aspect-j_rule10,],
+	"-": [aspect-j_rule11,],
+	".": [aspect-j_rule13,aspect-j_rule26,],
+	"/": [aspect-j_rule0,aspect-j_rule1,aspect-j_rule2,aspect-j_rule5,aspect-j_rule12,],
+	"0": [aspect-j_rule26,],
+	"1": [aspect-j_rule26,],
+	"2": [aspect-j_rule26,],
+	"3": [aspect-j_rule26,],
+	"4": [aspect-j_rule26,],
+	"5": [aspect-j_rule26,],
+	"6": [aspect-j_rule26,],
+	"7": [aspect-j_rule26,],
+	"8": [aspect-j_rule26,],
+	"9": [aspect-j_rule26,],
+	":": [aspect-j_rule24,],
+	"<": [aspect-j_rule9,aspect-j_rule16,],
+	"=": [aspect-j_rule6,],
+	">": [aspect-j_rule8,aspect-j_rule15,],
+	"@": [aspect-j_rule26,],
+	"A": [aspect-j_rule26,],
+	"B": [aspect-j_rule26,],
+	"C": [aspect-j_rule26,],
+	"D": [aspect-j_rule26,],
+	"E": [aspect-j_rule26,],
+	"F": [aspect-j_rule26,],
+	"G": [aspect-j_rule26,],
+	"H": [aspect-j_rule26,],
+	"I": [aspect-j_rule26,],
+	"J": [aspect-j_rule26,],
+	"K": [aspect-j_rule26,],
+	"L": [aspect-j_rule26,],
+	"M": [aspect-j_rule26,],
+	"N": [aspect-j_rule26,],
+	"O": [aspect-j_rule26,],
+	"P": [aspect-j_rule26,],
+	"Q": [aspect-j_rule26,],
+	"R": [aspect-j_rule26,],
+	"S": [aspect-j_rule26,],
+	"T": [aspect-j_rule26,],
+	"U": [aspect-j_rule26,],
+	"V": [aspect-j_rule26,],
+	"W": [aspect-j_rule26,],
+	"X": [aspect-j_rule26,],
+	"Y": [aspect-j_rule26,],
+	"Z": [aspect-j_rule26,],
+	"^": [aspect-j_rule20,],
+	"a": [aspect-j_rule26,],
+	"b": [aspect-j_rule26,],
+	"c": [aspect-j_rule26,],
+	"d": [aspect-j_rule26,],
+	"e": [aspect-j_rule26,],
+	"f": [aspect-j_rule26,],
+	"g": [aspect-j_rule26,],
+	"h": [aspect-j_rule26,],
+	"i": [aspect-j_rule26,],
+	"j": [aspect-j_rule26,],
+	"k": [aspect-j_rule26,],
+	"l": [aspect-j_rule26,],
+	"m": [aspect-j_rule26,],
+	"n": [aspect-j_rule26,],
+	"o": [aspect-j_rule26,],
+	"p": [aspect-j_rule26,],
+	"q": [aspect-j_rule26,],
+	"r": [aspect-j_rule26,],
+	"s": [aspect-j_rule26,],
+	"t": [aspect-j_rule26,],
+	"u": [aspect-j_rule26,],
+	"v": [aspect-j_rule26,],
+	"w": [aspect-j_rule26,],
+	"x": [aspect-j_rule26,],
+	"y": [aspect-j_rule26,],
+	"z": [aspect-j_rule26,],
+	"{": [aspect-j_rule23,],
+	"|": [aspect-j_rule19,],
+	"}": [aspect-j_rule22,],
+	"~": [aspect-j_rule21,],
 }
 
 # x.rulesDictDict for aspect_j mode.

@@ -54,154 +54,154 @@ keywordsDictDict = {
 
 # Rules for relax_ng_compact_main ruleset.
 
-def rule0(colorer, s, i):
+def relax-ng-compact_rule0(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="#",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule1(colorer, s, i):
+def relax-ng-compact_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule2(colorer, s, i):
+def relax-ng-compact_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule3(colorer, s, i):
+def relax-ng-compact_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="literal2", begin="\"\"\"", end="\"\"\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule4(colorer, s, i):
+def relax-ng-compact_rule4(colorer, s, i):
     return colorer.match_span(s, i, kind="literal2", begin="'''", end="'''",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule5(colorer, s, i):
+def relax-ng-compact_rule5(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule6(colorer, s, i):
+def relax-ng-compact_rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule7(colorer, s, i):
+def relax-ng-compact_rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="?",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule8(colorer, s, i):
+def relax-ng-compact_rule8(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="&=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule9(colorer, s, i):
+def relax-ng-compact_rule9(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="&",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule10(colorer, s, i):
+def relax-ng-compact_rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="|=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule11(colorer, s, i):
+def relax-ng-compact_rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="|",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule12(colorer, s, i):
+def relax-ng-compact_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule13(colorer, s, i):
+def relax-ng-compact_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule14(colorer, s, i):
+def relax-ng-compact_rule14(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="null", pattern="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule15(colorer, s, i):
+def relax-ng-compact_rule15(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"\"": [rule1,rule3,],
-	"#": [rule0,],
-	"&": [rule8,rule9,],
-	"'": [rule2,rule4,],
-	"*": [rule6,],
-	"+": [rule5,],
-	"-": [rule13,],
-	"0": [rule15,],
-	"1": [rule15,],
-	"2": [rule15,],
-	"3": [rule15,],
-	"4": [rule15,],
-	"5": [rule15,],
-	"6": [rule15,],
-	"7": [rule15,],
-	"8": [rule15,],
-	"9": [rule15,],
-	"=": [rule12,],
-	"?": [rule7,],
-	"@": [rule15,],
-	"A": [rule15,],
-	"B": [rule15,],
-	"C": [rule15,],
-	"D": [rule15,],
-	"E": [rule15,],
-	"F": [rule15,],
-	"G": [rule15,],
-	"H": [rule15,],
-	"I": [rule15,],
-	"J": [rule15,],
-	"K": [rule15,],
-	"L": [rule15,],
-	"M": [rule15,],
-	"N": [rule15,],
-	"O": [rule15,],
-	"P": [rule15,],
-	"Q": [rule15,],
-	"R": [rule15,],
-	"S": [rule15,],
-	"T": [rule15,],
-	"U": [rule15,],
-	"V": [rule15,],
-	"W": [rule15,],
-	"X": [rule15,],
-	"Y": [rule15,],
-	"Z": [rule15,],
-	"\\": [rule14,],
-	"a": [rule15,],
-	"b": [rule15,],
-	"c": [rule15,],
-	"d": [rule15,],
-	"e": [rule15,],
-	"f": [rule15,],
-	"g": [rule15,],
-	"h": [rule15,],
-	"i": [rule15,],
-	"j": [rule15,],
-	"k": [rule15,],
-	"l": [rule15,],
-	"m": [rule15,],
-	"n": [rule15,],
-	"o": [rule15,],
-	"p": [rule15,],
-	"q": [rule15,],
-	"r": [rule15,],
-	"s": [rule15,],
-	"t": [rule15,],
-	"u": [rule15,],
-	"v": [rule15,],
-	"w": [rule15,],
-	"x": [rule15,],
-	"y": [rule15,],
-	"z": [rule15,],
-	"|": [rule10,rule11,],
+	"\"": [relax-ng-compact_rule1,relax-ng-compact_rule3,],
+	"#": [relax-ng-compact_rule0,],
+	"&": [relax-ng-compact_rule8,relax-ng-compact_rule9,],
+	"'": [relax-ng-compact_rule2,relax-ng-compact_rule4,],
+	"*": [relax-ng-compact_rule6,],
+	"+": [relax-ng-compact_rule5,],
+	"-": [relax-ng-compact_rule13,],
+	"0": [relax-ng-compact_rule15,],
+	"1": [relax-ng-compact_rule15,],
+	"2": [relax-ng-compact_rule15,],
+	"3": [relax-ng-compact_rule15,],
+	"4": [relax-ng-compact_rule15,],
+	"5": [relax-ng-compact_rule15,],
+	"6": [relax-ng-compact_rule15,],
+	"7": [relax-ng-compact_rule15,],
+	"8": [relax-ng-compact_rule15,],
+	"9": [relax-ng-compact_rule15,],
+	"=": [relax-ng-compact_rule12,],
+	"?": [relax-ng-compact_rule7,],
+	"@": [relax-ng-compact_rule15,],
+	"A": [relax-ng-compact_rule15,],
+	"B": [relax-ng-compact_rule15,],
+	"C": [relax-ng-compact_rule15,],
+	"D": [relax-ng-compact_rule15,],
+	"E": [relax-ng-compact_rule15,],
+	"F": [relax-ng-compact_rule15,],
+	"G": [relax-ng-compact_rule15,],
+	"H": [relax-ng-compact_rule15,],
+	"I": [relax-ng-compact_rule15,],
+	"J": [relax-ng-compact_rule15,],
+	"K": [relax-ng-compact_rule15,],
+	"L": [relax-ng-compact_rule15,],
+	"M": [relax-ng-compact_rule15,],
+	"N": [relax-ng-compact_rule15,],
+	"O": [relax-ng-compact_rule15,],
+	"P": [relax-ng-compact_rule15,],
+	"Q": [relax-ng-compact_rule15,],
+	"R": [relax-ng-compact_rule15,],
+	"S": [relax-ng-compact_rule15,],
+	"T": [relax-ng-compact_rule15,],
+	"U": [relax-ng-compact_rule15,],
+	"V": [relax-ng-compact_rule15,],
+	"W": [relax-ng-compact_rule15,],
+	"X": [relax-ng-compact_rule15,],
+	"Y": [relax-ng-compact_rule15,],
+	"Z": [relax-ng-compact_rule15,],
+	"\\": [relax-ng-compact_rule14,],
+	"a": [relax-ng-compact_rule15,],
+	"b": [relax-ng-compact_rule15,],
+	"c": [relax-ng-compact_rule15,],
+	"d": [relax-ng-compact_rule15,],
+	"e": [relax-ng-compact_rule15,],
+	"f": [relax-ng-compact_rule15,],
+	"g": [relax-ng-compact_rule15,],
+	"h": [relax-ng-compact_rule15,],
+	"i": [relax-ng-compact_rule15,],
+	"j": [relax-ng-compact_rule15,],
+	"k": [relax-ng-compact_rule15,],
+	"l": [relax-ng-compact_rule15,],
+	"m": [relax-ng-compact_rule15,],
+	"n": [relax-ng-compact_rule15,],
+	"o": [relax-ng-compact_rule15,],
+	"p": [relax-ng-compact_rule15,],
+	"q": [relax-ng-compact_rule15,],
+	"r": [relax-ng-compact_rule15,],
+	"s": [relax-ng-compact_rule15,],
+	"t": [relax-ng-compact_rule15,],
+	"u": [relax-ng-compact_rule15,],
+	"v": [relax-ng-compact_rule15,],
+	"w": [relax-ng-compact_rule15,],
+	"x": [relax-ng-compact_rule15,],
+	"y": [relax-ng-compact_rule15,],
+	"z": [relax-ng-compact_rule15,],
+	"|": [relax-ng-compact_rule10,relax-ng-compact_rule11,],
 }
 
 # x.rulesDictDict for relax_ng_compact mode.

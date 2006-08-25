@@ -342,302 +342,302 @@ keywordsDictDict = {
 
 # Rules for inno_setup_main ruleset.
 
-def rule0(colorer, s, i):
+def inno-setup_rule0(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="[code]",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="pascal::MAIN")
 
-def rule1(colorer, s, i):
+def inno-setup_rule1(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="[Setup]",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule2(colorer, s, i):
+def inno-setup_rule2(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="[Types]",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule3(colorer, s, i):
+def inno-setup_rule3(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="[Components]",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule4(colorer, s, i):
+def inno-setup_rule4(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="[Tasks]",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule5(colorer, s, i):
+def inno-setup_rule5(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="[Dirs]",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule6(colorer, s, i):
+def inno-setup_rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="[Files]",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule7(colorer, s, i):
+def inno-setup_rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="[Icons]",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule8(colorer, s, i):
+def inno-setup_rule8(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="[INI]",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule9(colorer, s, i):
+def inno-setup_rule9(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="[InstallDelete]",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule10(colorer, s, i):
+def inno-setup_rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="[Languages]",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule11(colorer, s, i):
+def inno-setup_rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="[Messages]",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule12(colorer, s, i):
+def inno-setup_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="[CustomMessages]",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule13(colorer, s, i):
+def inno-setup_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="[LangOptions]",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule14(colorer, s, i):
+def inno-setup_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="[Registry]",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule15(colorer, s, i):
+def inno-setup_rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="[Run]",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule16(colorer, s, i):
+def inno-setup_rule16(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="[UninstallRun]",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule17(colorer, s, i):
+def inno-setup_rule17(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="[UninstallDelete]",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule18(colorer, s, i):
+def inno-setup_rule18(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="literal4", seq="#define",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
-def rule19(colorer, s, i):
+def inno-setup_rule19(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="literal4", seq="#dim",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
-def rule20(colorer, s, i):
+def inno-setup_rule20(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="literal4", seq="#undef",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
-def rule21(colorer, s, i):
+def inno-setup_rule21(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="literal4", seq="#include",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
-def rule22(colorer, s, i):
+def inno-setup_rule22(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="literal4", seq="#emit",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
-def rule23(colorer, s, i):
+def inno-setup_rule23(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="literal4", seq="#expr",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
-def rule24(colorer, s, i):
+def inno-setup_rule24(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="literal4", seq="#insert",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
-def rule25(colorer, s, i):
+def inno-setup_rule25(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="literal4", seq="#append",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
-def rule26(colorer, s, i):
+def inno-setup_rule26(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="literal4", seq="#if",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
-def rule27(colorer, s, i):
+def inno-setup_rule27(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="literal4", seq="#elif",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
-def rule28(colorer, s, i):
+def inno-setup_rule28(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="literal4", seq="#else",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
-def rule29(colorer, s, i):
+def inno-setup_rule29(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="literal4", seq="#endif",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
-def rule30(colorer, s, i):
+def inno-setup_rule30(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="literal4", seq="#ifexist",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
-def rule31(colorer, s, i):
+def inno-setup_rule31(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="literal4", seq="#ifnexist",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
-def rule32(colorer, s, i):
+def inno-setup_rule32(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="literal4", seq="#ifdef",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
-def rule33(colorer, s, i):
+def inno-setup_rule33(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="literal4", seq="#for",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
-def rule34(colorer, s, i):
+def inno-setup_rule34(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="literal4", seq="#sub",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
-def rule35(colorer, s, i):
+def inno-setup_rule35(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="literal4", seq="#endsub",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
-def rule36(colorer, s, i):
+def inno-setup_rule36(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="literal4", seq="#pragma",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
-def rule37(colorer, s, i):
+def inno-setup_rule37(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="literal4", seq="#error",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="DIRECTIVE", exclude_match=False)
 
-def rule38(colorer, s, i):
+def inno-setup_rule38(colorer, s, i):
     return colorer.match_span(s, i, kind="literal4", begin="{#", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule39(colorer, s, i):
+def inno-setup_rule39(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="literal2", pattern="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule40(colorer, s, i):
+def inno-setup_rule40(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="STRING",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule41(colorer, s, i):
+def inno-setup_rule41(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="STRING",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule42(colorer, s, i):
+def inno-setup_rule42(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword3", begin="{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule43(colorer, s, i):
+def inno-setup_rule43(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq=";",
         at_line_start=True, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule44(colorer, s, i):
+def inno-setup_rule44(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="#",
         at_line_start=True, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule45(colorer, s, i):
+def inno-setup_rule45(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"\"": [rule40,],
-	"#": [rule18,rule19,rule20,rule21,rule22,rule23,rule24,rule25,rule26,rule27,rule28,rule29,rule30,rule31,rule32,rule33,rule34,rule35,rule36,rule37,rule44,],
-	"%": [rule39,],
-	"'": [rule41,],
-	"0": [rule45,],
-	"1": [rule45,],
-	"2": [rule45,],
-	"3": [rule45,],
-	"4": [rule45,],
-	"5": [rule45,],
-	"6": [rule45,],
-	"7": [rule45,],
-	"8": [rule45,],
-	"9": [rule45,],
-	";": [rule43,],
-	"@": [rule45,],
-	"A": [rule45,],
-	"B": [rule45,],
-	"C": [rule45,],
-	"D": [rule45,],
-	"E": [rule45,],
-	"F": [rule45,],
-	"G": [rule45,],
-	"H": [rule45,],
-	"I": [rule45,],
-	"J": [rule45,],
-	"K": [rule45,],
-	"L": [rule45,],
-	"M": [rule45,],
-	"N": [rule45,],
-	"O": [rule45,],
-	"P": [rule45,],
-	"Q": [rule45,],
-	"R": [rule45,],
-	"S": [rule45,],
-	"T": [rule45,],
-	"U": [rule45,],
-	"V": [rule45,],
-	"W": [rule45,],
-	"X": [rule45,],
-	"Y": [rule45,],
-	"Z": [rule45,],
-	"[": [rule0,rule1,rule2,rule3,rule4,rule5,rule6,rule7,rule8,rule9,rule10,rule11,rule12,rule13,rule14,rule15,rule16,rule17,],
-	"a": [rule45,],
-	"b": [rule45,],
-	"c": [rule45,],
-	"d": [rule45,],
-	"e": [rule45,],
-	"f": [rule45,],
-	"g": [rule45,],
-	"h": [rule45,],
-	"i": [rule45,],
-	"j": [rule45,],
-	"k": [rule45,],
-	"l": [rule45,],
-	"m": [rule45,],
-	"n": [rule45,],
-	"o": [rule45,],
-	"p": [rule45,],
-	"q": [rule45,],
-	"r": [rule45,],
-	"s": [rule45,],
-	"t": [rule45,],
-	"u": [rule45,],
-	"v": [rule45,],
-	"w": [rule45,],
-	"x": [rule45,],
-	"y": [rule45,],
-	"z": [rule45,],
-	"{": [rule38,rule42,],
+	"\"": [inno-setup_rule40,],
+	"#": [inno-setup_rule18,inno-setup_rule19,inno-setup_rule20,inno-setup_rule21,inno-setup_rule22,inno-setup_rule23,inno-setup_rule24,inno-setup_rule25,inno-setup_rule26,inno-setup_rule27,inno-setup_rule28,inno-setup_rule29,inno-setup_rule30,inno-setup_rule31,inno-setup_rule32,inno-setup_rule33,inno-setup_rule34,inno-setup_rule35,inno-setup_rule36,inno-setup_rule37,inno-setup_rule44,],
+	"%": [inno-setup_rule39,],
+	"'": [inno-setup_rule41,],
+	"0": [inno-setup_rule45,],
+	"1": [inno-setup_rule45,],
+	"2": [inno-setup_rule45,],
+	"3": [inno-setup_rule45,],
+	"4": [inno-setup_rule45,],
+	"5": [inno-setup_rule45,],
+	"6": [inno-setup_rule45,],
+	"7": [inno-setup_rule45,],
+	"8": [inno-setup_rule45,],
+	"9": [inno-setup_rule45,],
+	";": [inno-setup_rule43,],
+	"@": [inno-setup_rule45,],
+	"A": [inno-setup_rule45,],
+	"B": [inno-setup_rule45,],
+	"C": [inno-setup_rule45,],
+	"D": [inno-setup_rule45,],
+	"E": [inno-setup_rule45,],
+	"F": [inno-setup_rule45,],
+	"G": [inno-setup_rule45,],
+	"H": [inno-setup_rule45,],
+	"I": [inno-setup_rule45,],
+	"J": [inno-setup_rule45,],
+	"K": [inno-setup_rule45,],
+	"L": [inno-setup_rule45,],
+	"M": [inno-setup_rule45,],
+	"N": [inno-setup_rule45,],
+	"O": [inno-setup_rule45,],
+	"P": [inno-setup_rule45,],
+	"Q": [inno-setup_rule45,],
+	"R": [inno-setup_rule45,],
+	"S": [inno-setup_rule45,],
+	"T": [inno-setup_rule45,],
+	"U": [inno-setup_rule45,],
+	"V": [inno-setup_rule45,],
+	"W": [inno-setup_rule45,],
+	"X": [inno-setup_rule45,],
+	"Y": [inno-setup_rule45,],
+	"Z": [inno-setup_rule45,],
+	"[": [inno-setup_rule0,inno-setup_rule1,inno-setup_rule2,inno-setup_rule3,inno-setup_rule4,inno-setup_rule5,inno-setup_rule6,inno-setup_rule7,inno-setup_rule8,inno-setup_rule9,inno-setup_rule10,inno-setup_rule11,inno-setup_rule12,inno-setup_rule13,inno-setup_rule14,inno-setup_rule15,inno-setup_rule16,inno-setup_rule17,],
+	"a": [inno-setup_rule45,],
+	"b": [inno-setup_rule45,],
+	"c": [inno-setup_rule45,],
+	"d": [inno-setup_rule45,],
+	"e": [inno-setup_rule45,],
+	"f": [inno-setup_rule45,],
+	"g": [inno-setup_rule45,],
+	"h": [inno-setup_rule45,],
+	"i": [inno-setup_rule45,],
+	"j": [inno-setup_rule45,],
+	"k": [inno-setup_rule45,],
+	"l": [inno-setup_rule45,],
+	"m": [inno-setup_rule45,],
+	"n": [inno-setup_rule45,],
+	"o": [inno-setup_rule45,],
+	"p": [inno-setup_rule45,],
+	"q": [inno-setup_rule45,],
+	"r": [inno-setup_rule45,],
+	"s": [inno-setup_rule45,],
+	"t": [inno-setup_rule45,],
+	"u": [inno-setup_rule45,],
+	"v": [inno-setup_rule45,],
+	"w": [inno-setup_rule45,],
+	"x": [inno-setup_rule45,],
+	"y": [inno-setup_rule45,],
+	"z": [inno-setup_rule45,],
+	"{": [inno-setup_rule38,inno-setup_rule42,],
 }
 
 # Rules for inno_setup_string ruleset.
 
-def rule46(colorer, s, i):
+def inno-setup_rule46(colorer, s, i):
     return colorer.match_span(s, i, kind="literal4", begin="{#", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule47(colorer, s, i):
+def inno-setup_rule47(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword3", begin="{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="CONSTANT",exclude_match=False,
@@ -645,115 +645,115 @@ def rule47(colorer, s, i):
 
 # Rules dict for string ruleset.
 rulesDict2 = {
-	"{": [rule46,rule47,],
+	"{": [inno-setup_rule46,inno-setup_rule47,],
 }
 
 # Rules for inno_setup_constant ruleset.
 
-def rule48(colorer, s, i):
+def inno-setup_rule48(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern="code:",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule49(colorer, s, i):
+def inno-setup_rule49(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="|",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules dict for constant ruleset.
 rulesDict3 = {
-	"c": [rule48,],
-	"|": [rule49,],
+	"c": [inno-setup_rule48,],
+	"|": [inno-setup_rule49,],
 }
 
 # Rules for inno_setup_directive ruleset.
 
-def rule50(colorer, s, i):
+def inno-setup_rule50(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq=";",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule51(colorer, s, i):
+def inno-setup_rule51(colorer, s, i):
     return colorer.match_span(s, i, kind="comment2", begin="/*", end="*/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule52(colorer, s, i):
+def inno-setup_rule52(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule53(colorer, s, i):
+def inno-setup_rule53(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for directive ruleset.
 rulesDict4 = {
-	"\"": [rule52,],
-	"/": [rule51,],
-	"0": [rule53,],
-	"1": [rule53,],
-	"2": [rule53,],
-	"3": [rule53,],
-	"4": [rule53,],
-	"5": [rule53,],
-	"6": [rule53,],
-	"7": [rule53,],
-	"8": [rule53,],
-	"9": [rule53,],
-	";": [rule50,],
-	"@": [rule53,],
-	"A": [rule53,],
-	"B": [rule53,],
-	"C": [rule53,],
-	"D": [rule53,],
-	"E": [rule53,],
-	"F": [rule53,],
-	"G": [rule53,],
-	"H": [rule53,],
-	"I": [rule53,],
-	"J": [rule53,],
-	"K": [rule53,],
-	"L": [rule53,],
-	"M": [rule53,],
-	"N": [rule53,],
-	"O": [rule53,],
-	"P": [rule53,],
-	"Q": [rule53,],
-	"R": [rule53,],
-	"S": [rule53,],
-	"T": [rule53,],
-	"U": [rule53,],
-	"V": [rule53,],
-	"W": [rule53,],
-	"X": [rule53,],
-	"Y": [rule53,],
-	"Z": [rule53,],
-	"a": [rule53,],
-	"b": [rule53,],
-	"c": [rule53,],
-	"d": [rule53,],
-	"e": [rule53,],
-	"f": [rule53,],
-	"g": [rule53,],
-	"h": [rule53,],
-	"i": [rule53,],
-	"j": [rule53,],
-	"k": [rule53,],
-	"l": [rule53,],
-	"m": [rule53,],
-	"n": [rule53,],
-	"o": [rule53,],
-	"p": [rule53,],
-	"q": [rule53,],
-	"r": [rule53,],
-	"s": [rule53,],
-	"t": [rule53,],
-	"u": [rule53,],
-	"v": [rule53,],
-	"w": [rule53,],
-	"x": [rule53,],
-	"y": [rule53,],
-	"z": [rule53,],
+	"\"": [inno-setup_rule52,],
+	"/": [inno-setup_rule51,],
+	"0": [inno-setup_rule53,],
+	"1": [inno-setup_rule53,],
+	"2": [inno-setup_rule53,],
+	"3": [inno-setup_rule53,],
+	"4": [inno-setup_rule53,],
+	"5": [inno-setup_rule53,],
+	"6": [inno-setup_rule53,],
+	"7": [inno-setup_rule53,],
+	"8": [inno-setup_rule53,],
+	"9": [inno-setup_rule53,],
+	";": [inno-setup_rule50,],
+	"@": [inno-setup_rule53,],
+	"A": [inno-setup_rule53,],
+	"B": [inno-setup_rule53,],
+	"C": [inno-setup_rule53,],
+	"D": [inno-setup_rule53,],
+	"E": [inno-setup_rule53,],
+	"F": [inno-setup_rule53,],
+	"G": [inno-setup_rule53,],
+	"H": [inno-setup_rule53,],
+	"I": [inno-setup_rule53,],
+	"J": [inno-setup_rule53,],
+	"K": [inno-setup_rule53,],
+	"L": [inno-setup_rule53,],
+	"M": [inno-setup_rule53,],
+	"N": [inno-setup_rule53,],
+	"O": [inno-setup_rule53,],
+	"P": [inno-setup_rule53,],
+	"Q": [inno-setup_rule53,],
+	"R": [inno-setup_rule53,],
+	"S": [inno-setup_rule53,],
+	"T": [inno-setup_rule53,],
+	"U": [inno-setup_rule53,],
+	"V": [inno-setup_rule53,],
+	"W": [inno-setup_rule53,],
+	"X": [inno-setup_rule53,],
+	"Y": [inno-setup_rule53,],
+	"Z": [inno-setup_rule53,],
+	"a": [inno-setup_rule53,],
+	"b": [inno-setup_rule53,],
+	"c": [inno-setup_rule53,],
+	"d": [inno-setup_rule53,],
+	"e": [inno-setup_rule53,],
+	"f": [inno-setup_rule53,],
+	"g": [inno-setup_rule53,],
+	"h": [inno-setup_rule53,],
+	"i": [inno-setup_rule53,],
+	"j": [inno-setup_rule53,],
+	"k": [inno-setup_rule53,],
+	"l": [inno-setup_rule53,],
+	"m": [inno-setup_rule53,],
+	"n": [inno-setup_rule53,],
+	"o": [inno-setup_rule53,],
+	"p": [inno-setup_rule53,],
+	"q": [inno-setup_rule53,],
+	"r": [inno-setup_rule53,],
+	"s": [inno-setup_rule53,],
+	"t": [inno-setup_rule53,],
+	"u": [inno-setup_rule53,],
+	"v": [inno-setup_rule53,],
+	"w": [inno-setup_rule53,],
+	"x": [inno-setup_rule53,],
+	"y": [inno-setup_rule53,],
+	"z": [inno-setup_rule53,],
 }
 
 # x.rulesDictDict for inno_setup mode.

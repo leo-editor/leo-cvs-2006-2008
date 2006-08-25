@@ -28,31 +28,31 @@ keywordsDictDict = {
 
 # Rules for rtf_main ruleset.
 
-def rule0(colorer, s, i):
+def rtf_rule0(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="{",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule1(colorer, s, i):
+def rtf_rule1(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule2(colorer, s, i):
+def rtf_rule2(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="literal2", regexp="\\\\'\\w\\d", hash_char="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule3(colorer, s, i):
+def rtf_rule3(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword2", pattern="\\*\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule4(colorer, s, i):
+def rtf_rule4(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword1", pattern="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"\\": [rule2,rule3,rule4,],
-	"{": [rule0,],
-	"}": [rule1,],
+	"\\": [rtf_rule2,rtf_rule3,rtf_rule4,],
+	"{": [rtf_rule0,],
+	"}": [rtf_rule1,],
 }
 
 # x.rulesDictDict for rtf mode.

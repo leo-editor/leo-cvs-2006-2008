@@ -663,171 +663,171 @@ keywordsDictDict = {
 
 # Rules for cobol_main ruleset.
 
-def rule0(colorer, s, i):
+def cobol_rule0(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="*",
         at_line_start=True, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule1(colorer, s, i):
+def cobol_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule2(colorer, s, i):
+def cobol_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule3(colorer, s, i):
+def cobol_rule3(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule4(colorer, s, i):
+def cobol_rule4(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=" >=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule5(colorer, s, i):
+def cobol_rule5(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=" <=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule6(colorer, s, i):
+def cobol_rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule7(colorer, s, i):
+def cobol_rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule8(colorer, s, i):
+def cobol_rule8(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule9(colorer, s, i):
+def cobol_rule9(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule10(colorer, s, i):
+def cobol_rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="**",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule11(colorer, s, i):
+def cobol_rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=" > ",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule12(colorer, s, i):
+def cobol_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=" < ",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule13(colorer, s, i):
+def cobol_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule14(colorer, s, i):
+def cobol_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=" & ",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule15(colorer, s, i):
+def cobol_rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="|",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule16(colorer, s, i):
+def cobol_rule16(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule17(colorer, s, i):
+def cobol_rule17(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="~",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule18(colorer, s, i):
+def cobol_rule18(colorer, s, i):
     return colorer.match_span(s, i, kind="comment2", begin="EXEC SQL", end="END-EXEC",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule19(colorer, s, i):
+def cobol_rule19(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	" ": [rule4,rule5,rule11,rule12,rule14,],
-	"\"": [rule1,],
-	"%": [rule13,],
-	"'": [rule2,],
-	"*": [rule0,rule9,rule10,],
-	"+": [rule6,],
-	"-": [rule7,rule19,],
-	"/": [rule8,],
-	"0": [rule19,],
-	"1": [rule19,],
-	"2": [rule19,],
-	"3": [rule19,],
-	"4": [rule19,],
-	"5": [rule19,],
-	"6": [rule19,],
-	"7": [rule19,],
-	"8": [rule19,],
-	"9": [rule19,],
-	"=": [rule3,],
-	"@": [rule19,],
-	"A": [rule19,],
-	"B": [rule19,],
-	"C": [rule19,],
-	"D": [rule19,],
-	"E": [rule18,rule19,],
-	"F": [rule19,],
-	"G": [rule19,],
-	"H": [rule19,],
-	"I": [rule19,],
-	"J": [rule19,],
-	"K": [rule19,],
-	"L": [rule19,],
-	"M": [rule19,],
-	"N": [rule19,],
-	"O": [rule19,],
-	"P": [rule19,],
-	"Q": [rule19,],
-	"R": [rule19,],
-	"S": [rule19,],
-	"T": [rule19,],
-	"U": [rule19,],
-	"V": [rule19,],
-	"W": [rule19,],
-	"X": [rule19,],
-	"Y": [rule19,],
-	"Z": [rule19,],
-	"[": [rule19,],
-	"]": [rule19,],
-	"^": [rule16,],
-	"a": [rule19,],
-	"b": [rule19,],
-	"c": [rule19,],
-	"d": [rule19,],
-	"e": [rule19,],
-	"f": [rule19,],
-	"g": [rule19,],
-	"h": [rule19,],
-	"i": [rule19,],
-	"j": [rule19,],
-	"k": [rule19,],
-	"l": [rule19,],
-	"m": [rule19,],
-	"n": [rule19,],
-	"o": [rule19,],
-	"p": [rule19,],
-	"q": [rule19,],
-	"r": [rule19,],
-	"s": [rule19,],
-	"t": [rule19,],
-	"u": [rule19,],
-	"v": [rule19,],
-	"w": [rule19,],
-	"x": [rule19,],
-	"y": [rule19,],
-	"z": [rule19,],
-	"|": [rule15,],
-	"~": [rule17,],
+	" ": [cobol_rule4,cobol_rule5,cobol_rule11,cobol_rule12,cobol_rule14,],
+	"\"": [cobol_rule1,],
+	"%": [cobol_rule13,],
+	"'": [cobol_rule2,],
+	"*": [cobol_rule0,cobol_rule9,cobol_rule10,],
+	"+": [cobol_rule6,],
+	"-": [cobol_rule7,cobol_rule19,],
+	"/": [cobol_rule8,],
+	"0": [cobol_rule19,],
+	"1": [cobol_rule19,],
+	"2": [cobol_rule19,],
+	"3": [cobol_rule19,],
+	"4": [cobol_rule19,],
+	"5": [cobol_rule19,],
+	"6": [cobol_rule19,],
+	"7": [cobol_rule19,],
+	"8": [cobol_rule19,],
+	"9": [cobol_rule19,],
+	"=": [cobol_rule3,],
+	"@": [cobol_rule19,],
+	"A": [cobol_rule19,],
+	"B": [cobol_rule19,],
+	"C": [cobol_rule19,],
+	"D": [cobol_rule19,],
+	"E": [cobol_rule18,cobol_rule19,],
+	"F": [cobol_rule19,],
+	"G": [cobol_rule19,],
+	"H": [cobol_rule19,],
+	"I": [cobol_rule19,],
+	"J": [cobol_rule19,],
+	"K": [cobol_rule19,],
+	"L": [cobol_rule19,],
+	"M": [cobol_rule19,],
+	"N": [cobol_rule19,],
+	"O": [cobol_rule19,],
+	"P": [cobol_rule19,],
+	"Q": [cobol_rule19,],
+	"R": [cobol_rule19,],
+	"S": [cobol_rule19,],
+	"T": [cobol_rule19,],
+	"U": [cobol_rule19,],
+	"V": [cobol_rule19,],
+	"W": [cobol_rule19,],
+	"X": [cobol_rule19,],
+	"Y": [cobol_rule19,],
+	"Z": [cobol_rule19,],
+	"[": [cobol_rule19,],
+	"]": [cobol_rule19,],
+	"^": [cobol_rule16,],
+	"a": [cobol_rule19,],
+	"b": [cobol_rule19,],
+	"c": [cobol_rule19,],
+	"d": [cobol_rule19,],
+	"e": [cobol_rule19,],
+	"f": [cobol_rule19,],
+	"g": [cobol_rule19,],
+	"h": [cobol_rule19,],
+	"i": [cobol_rule19,],
+	"j": [cobol_rule19,],
+	"k": [cobol_rule19,],
+	"l": [cobol_rule19,],
+	"m": [cobol_rule19,],
+	"n": [cobol_rule19,],
+	"o": [cobol_rule19,],
+	"p": [cobol_rule19,],
+	"q": [cobol_rule19,],
+	"r": [cobol_rule19,],
+	"s": [cobol_rule19,],
+	"t": [cobol_rule19,],
+	"u": [cobol_rule19,],
+	"v": [cobol_rule19,],
+	"w": [cobol_rule19,],
+	"x": [cobol_rule19,],
+	"y": [cobol_rule19,],
+	"z": [cobol_rule19,],
+	"|": [cobol_rule15,],
+	"~": [cobol_rule17,],
 }
 
 # x.rulesDictDict for cobol mode.

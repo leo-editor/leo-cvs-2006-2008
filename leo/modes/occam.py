@@ -218,192 +218,192 @@ keywordsDictDict = {
 
 # Rules for occam_main ruleset.
 
-def rule0(colorer, s, i):
+def occam_rule0(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="--",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule1(colorer, s, i):
+def occam_rule1(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment2", seq="#",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule2(colorer, s, i):
+def occam_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule3(colorer, s, i):
+def occam_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule4(colorer, s, i):
+def occam_rule4(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=":=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule5(colorer, s, i):
+def occam_rule5(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule6(colorer, s, i):
+def occam_rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule7(colorer, s, i):
+def occam_rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule8(colorer, s, i):
+def occam_rule8(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule9(colorer, s, i):
+def occam_rule9(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="><",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule10(colorer, s, i):
+def occam_rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule11(colorer, s, i):
+def occam_rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule12(colorer, s, i):
+def occam_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule13(colorer, s, i):
+def occam_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule14(colorer, s, i):
+def occam_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule15(colorer, s, i):
+def occam_rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule16(colorer, s, i):
+def occam_rule16(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule17(colorer, s, i):
+def occam_rule17(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule18(colorer, s, i):
+def occam_rule18(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule19(colorer, s, i):
+def occam_rule19(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="?",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule20(colorer, s, i):
+def occam_rule20(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="!",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule21(colorer, s, i):
+def occam_rule21(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule22(colorer, s, i):
+def occam_rule22(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="\\/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule23(colorer, s, i):
+def occam_rule23(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="~",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule24(colorer, s, i):
+def occam_rule24(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"!": [rule20,],
-	"\"": [rule3,],
-	"#": [rule1,],
-	"'": [rule2,],
-	"*": [rule18,],
-	"+": [rule14,],
-	"-": [rule0,rule15,],
-	".": [rule24,],
-	"/": [rule16,rule21,],
-	"0": [rule24,],
-	"1": [rule24,],
-	"2": [rule24,],
-	"3": [rule24,],
-	"4": [rule24,],
-	"5": [rule24,],
-	"6": [rule24,],
-	"7": [rule24,],
-	"8": [rule24,],
-	"9": [rule24,],
-	":": [rule4,],
-	"<": [rule7,rule8,rule11,rule13,],
-	"=": [rule5,],
-	">": [rule6,rule9,rule10,rule12,],
-	"?": [rule19,],
-	"@": [rule24,],
-	"A": [rule24,],
-	"B": [rule24,],
-	"C": [rule24,],
-	"D": [rule24,],
-	"E": [rule24,],
-	"F": [rule24,],
-	"G": [rule24,],
-	"H": [rule24,],
-	"I": [rule24,],
-	"J": [rule24,],
-	"K": [rule24,],
-	"L": [rule24,],
-	"M": [rule24,],
-	"N": [rule24,],
-	"O": [rule24,],
-	"P": [rule24,],
-	"Q": [rule24,],
-	"R": [rule24,],
-	"S": [rule24,],
-	"T": [rule24,],
-	"U": [rule24,],
-	"V": [rule24,],
-	"W": [rule24,],
-	"X": [rule24,],
-	"Y": [rule24,],
-	"Z": [rule24,],
-	"\\": [rule17,rule22,],
-	"a": [rule24,],
-	"b": [rule24,],
-	"c": [rule24,],
-	"d": [rule24,],
-	"e": [rule24,],
-	"f": [rule24,],
-	"g": [rule24,],
-	"h": [rule24,],
-	"i": [rule24,],
-	"j": [rule24,],
-	"k": [rule24,],
-	"l": [rule24,],
-	"m": [rule24,],
-	"n": [rule24,],
-	"o": [rule24,],
-	"p": [rule24,],
-	"q": [rule24,],
-	"r": [rule24,],
-	"s": [rule24,],
-	"t": [rule24,],
-	"u": [rule24,],
-	"v": [rule24,],
-	"w": [rule24,],
-	"x": [rule24,],
-	"y": [rule24,],
-	"z": [rule24,],
-	"~": [rule23,],
+	"!": [occam_rule20,],
+	"\"": [occam_rule3,],
+	"#": [occam_rule1,],
+	"'": [occam_rule2,],
+	"*": [occam_rule18,],
+	"+": [occam_rule14,],
+	"-": [occam_rule0,occam_rule15,],
+	".": [occam_rule24,],
+	"/": [occam_rule16,occam_rule21,],
+	"0": [occam_rule24,],
+	"1": [occam_rule24,],
+	"2": [occam_rule24,],
+	"3": [occam_rule24,],
+	"4": [occam_rule24,],
+	"5": [occam_rule24,],
+	"6": [occam_rule24,],
+	"7": [occam_rule24,],
+	"8": [occam_rule24,],
+	"9": [occam_rule24,],
+	":": [occam_rule4,],
+	"<": [occam_rule7,occam_rule8,occam_rule11,occam_rule13,],
+	"=": [occam_rule5,],
+	">": [occam_rule6,occam_rule9,occam_rule10,occam_rule12,],
+	"?": [occam_rule19,],
+	"@": [occam_rule24,],
+	"A": [occam_rule24,],
+	"B": [occam_rule24,],
+	"C": [occam_rule24,],
+	"D": [occam_rule24,],
+	"E": [occam_rule24,],
+	"F": [occam_rule24,],
+	"G": [occam_rule24,],
+	"H": [occam_rule24,],
+	"I": [occam_rule24,],
+	"J": [occam_rule24,],
+	"K": [occam_rule24,],
+	"L": [occam_rule24,],
+	"M": [occam_rule24,],
+	"N": [occam_rule24,],
+	"O": [occam_rule24,],
+	"P": [occam_rule24,],
+	"Q": [occam_rule24,],
+	"R": [occam_rule24,],
+	"S": [occam_rule24,],
+	"T": [occam_rule24,],
+	"U": [occam_rule24,],
+	"V": [occam_rule24,],
+	"W": [occam_rule24,],
+	"X": [occam_rule24,],
+	"Y": [occam_rule24,],
+	"Z": [occam_rule24,],
+	"\\": [occam_rule17,occam_rule22,],
+	"a": [occam_rule24,],
+	"b": [occam_rule24,],
+	"c": [occam_rule24,],
+	"d": [occam_rule24,],
+	"e": [occam_rule24,],
+	"f": [occam_rule24,],
+	"g": [occam_rule24,],
+	"h": [occam_rule24,],
+	"i": [occam_rule24,],
+	"j": [occam_rule24,],
+	"k": [occam_rule24,],
+	"l": [occam_rule24,],
+	"m": [occam_rule24,],
+	"n": [occam_rule24,],
+	"o": [occam_rule24,],
+	"p": [occam_rule24,],
+	"q": [occam_rule24,],
+	"r": [occam_rule24,],
+	"s": [occam_rule24,],
+	"t": [occam_rule24,],
+	"u": [occam_rule24,],
+	"v": [occam_rule24,],
+	"w": [occam_rule24,],
+	"x": [occam_rule24,],
+	"y": [occam_rule24,],
+	"z": [occam_rule24,],
+	"~": [occam_rule23,],
 }
 
 # x.rulesDictDict for occam mode.

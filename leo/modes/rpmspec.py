@@ -117,244 +117,244 @@ keywordsDictDict = {
 
 # Rules for rpmspec_main ruleset.
 
-def rule0(colorer, s, i):
+def rpmspec_rule0(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="#",
         at_line_start=True, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule1(colorer, s, i):
+def rpmspec_rule1(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule2(colorer, s, i):
+def rpmspec_rule2(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule3(colorer, s, i):
+def rpmspec_rule3(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule4(colorer, s, i):
+def rpmspec_rule4(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="%attr(", end=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="ATTR",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule5(colorer, s, i):
+def rpmspec_rule5(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="%verify(", end=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="VERIFY",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule6(colorer, s, i):
+def rpmspec_rule6(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword1", pattern="Source",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule7(colorer, s, i):
+def rpmspec_rule7(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword1", pattern="Patch",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule8(colorer, s, i):
+def rpmspec_rule8(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern="%patch",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule9(colorer, s, i):
+def rpmspec_rule9(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="${", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule10(colorer, s, i):
+def rpmspec_rule10(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword3", begin="%{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule11(colorer, s, i):
+def rpmspec_rule11(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword2", pattern="$#",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule12(colorer, s, i):
+def rpmspec_rule12(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword2", pattern="$?",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule13(colorer, s, i):
+def rpmspec_rule13(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword2", pattern="$*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule14(colorer, s, i):
+def rpmspec_rule14(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword2", pattern="$<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule15(colorer, s, i):
+def rpmspec_rule15(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword2", pattern="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule16(colorer, s, i):
+def rpmspec_rule16(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"#": [rule0,],
-	"$": [rule9,rule11,rule12,rule13,rule14,rule15,],
-	"%": [rule4,rule5,rule8,rule10,rule16,],
-	"0": [rule16,],
-	"1": [rule16,],
-	"2": [rule16,],
-	"3": [rule16,],
-	"4": [rule16,],
-	"5": [rule16,],
-	"6": [rule16,],
-	"7": [rule16,],
-	"8": [rule16,],
-	"9": [rule16,],
-	":": [rule16,],
-	"<": [rule1,],
-	"=": [rule3,],
-	">": [rule2,],
-	"@": [rule16,],
-	"A": [rule16,],
-	"B": [rule16,],
-	"C": [rule16,],
-	"D": [rule16,],
-	"E": [rule16,],
-	"F": [rule16,],
-	"G": [rule16,],
-	"H": [rule16,],
-	"I": [rule16,],
-	"J": [rule16,],
-	"K": [rule16,],
-	"L": [rule16,],
-	"M": [rule16,],
-	"N": [rule16,],
-	"O": [rule16,],
-	"P": [rule7,rule16,],
-	"Q": [rule16,],
-	"R": [rule16,],
-	"S": [rule6,rule16,],
-	"T": [rule16,],
-	"U": [rule16,],
-	"V": [rule16,],
-	"W": [rule16,],
-	"X": [rule16,],
-	"Y": [rule16,],
-	"Z": [rule16,],
-	"a": [rule16,],
-	"b": [rule16,],
-	"c": [rule16,],
-	"d": [rule16,],
-	"e": [rule16,],
-	"f": [rule16,],
-	"g": [rule16,],
-	"h": [rule16,],
-	"i": [rule16,],
-	"j": [rule16,],
-	"k": [rule16,],
-	"l": [rule16,],
-	"m": [rule16,],
-	"n": [rule16,],
-	"o": [rule16,],
-	"p": [rule16,],
-	"q": [rule16,],
-	"r": [rule16,],
-	"s": [rule16,],
-	"t": [rule16,],
-	"u": [rule16,],
-	"v": [rule16,],
-	"w": [rule16,],
-	"x": [rule16,],
-	"y": [rule16,],
-	"z": [rule16,],
+	"#": [rpmspec_rule0,],
+	"$": [rpmspec_rule9,rpmspec_rule11,rpmspec_rule12,rpmspec_rule13,rpmspec_rule14,rpmspec_rule15,],
+	"%": [rpmspec_rule4,rpmspec_rule5,rpmspec_rule8,rpmspec_rule10,rpmspec_rule16,],
+	"0": [rpmspec_rule16,],
+	"1": [rpmspec_rule16,],
+	"2": [rpmspec_rule16,],
+	"3": [rpmspec_rule16,],
+	"4": [rpmspec_rule16,],
+	"5": [rpmspec_rule16,],
+	"6": [rpmspec_rule16,],
+	"7": [rpmspec_rule16,],
+	"8": [rpmspec_rule16,],
+	"9": [rpmspec_rule16,],
+	":": [rpmspec_rule16,],
+	"<": [rpmspec_rule1,],
+	"=": [rpmspec_rule3,],
+	">": [rpmspec_rule2,],
+	"@": [rpmspec_rule16,],
+	"A": [rpmspec_rule16,],
+	"B": [rpmspec_rule16,],
+	"C": [rpmspec_rule16,],
+	"D": [rpmspec_rule16,],
+	"E": [rpmspec_rule16,],
+	"F": [rpmspec_rule16,],
+	"G": [rpmspec_rule16,],
+	"H": [rpmspec_rule16,],
+	"I": [rpmspec_rule16,],
+	"J": [rpmspec_rule16,],
+	"K": [rpmspec_rule16,],
+	"L": [rpmspec_rule16,],
+	"M": [rpmspec_rule16,],
+	"N": [rpmspec_rule16,],
+	"O": [rpmspec_rule16,],
+	"P": [rpmspec_rule7,rpmspec_rule16,],
+	"Q": [rpmspec_rule16,],
+	"R": [rpmspec_rule16,],
+	"S": [rpmspec_rule6,rpmspec_rule16,],
+	"T": [rpmspec_rule16,],
+	"U": [rpmspec_rule16,],
+	"V": [rpmspec_rule16,],
+	"W": [rpmspec_rule16,],
+	"X": [rpmspec_rule16,],
+	"Y": [rpmspec_rule16,],
+	"Z": [rpmspec_rule16,],
+	"a": [rpmspec_rule16,],
+	"b": [rpmspec_rule16,],
+	"c": [rpmspec_rule16,],
+	"d": [rpmspec_rule16,],
+	"e": [rpmspec_rule16,],
+	"f": [rpmspec_rule16,],
+	"g": [rpmspec_rule16,],
+	"h": [rpmspec_rule16,],
+	"i": [rpmspec_rule16,],
+	"j": [rpmspec_rule16,],
+	"k": [rpmspec_rule16,],
+	"l": [rpmspec_rule16,],
+	"m": [rpmspec_rule16,],
+	"n": [rpmspec_rule16,],
+	"o": [rpmspec_rule16,],
+	"p": [rpmspec_rule16,],
+	"q": [rpmspec_rule16,],
+	"r": [rpmspec_rule16,],
+	"s": [rpmspec_rule16,],
+	"t": [rpmspec_rule16,],
+	"u": [rpmspec_rule16,],
+	"v": [rpmspec_rule16,],
+	"w": [rpmspec_rule16,],
+	"x": [rpmspec_rule16,],
+	"y": [rpmspec_rule16,],
+	"z": [rpmspec_rule16,],
 }
 
 # Rules for rpmspec_attr ruleset.
 
-def rule17(colorer, s, i):
+def rpmspec_rule17(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=",",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule18(colorer, s, i):
+def rpmspec_rule18(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules dict for attr ruleset.
 rulesDict2 = {
-	",": [rule17,],
-	"-": [rule18,],
+	",": [rpmspec_rule17,],
+	"-": [rpmspec_rule18,],
 }
 
 # Rules for rpmspec_verify ruleset.
 
-def rule19(colorer, s, i):
+def rpmspec_rule19(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for verify ruleset.
 rulesDict3 = {
-	"%": [rule19,],
-	"0": [rule19,],
-	"1": [rule19,],
-	"2": [rule19,],
-	"3": [rule19,],
-	"4": [rule19,],
-	"5": [rule19,],
-	"6": [rule19,],
-	"7": [rule19,],
-	"8": [rule19,],
-	"9": [rule19,],
-	":": [rule19,],
-	"@": [rule19,],
-	"A": [rule19,],
-	"B": [rule19,],
-	"C": [rule19,],
-	"D": [rule19,],
-	"E": [rule19,],
-	"F": [rule19,],
-	"G": [rule19,],
-	"H": [rule19,],
-	"I": [rule19,],
-	"J": [rule19,],
-	"K": [rule19,],
-	"L": [rule19,],
-	"M": [rule19,],
-	"N": [rule19,],
-	"O": [rule19,],
-	"P": [rule19,],
-	"Q": [rule19,],
-	"R": [rule19,],
-	"S": [rule19,],
-	"T": [rule19,],
-	"U": [rule19,],
-	"V": [rule19,],
-	"W": [rule19,],
-	"X": [rule19,],
-	"Y": [rule19,],
-	"Z": [rule19,],
-	"a": [rule19,],
-	"b": [rule19,],
-	"c": [rule19,],
-	"d": [rule19,],
-	"e": [rule19,],
-	"f": [rule19,],
-	"g": [rule19,],
-	"h": [rule19,],
-	"i": [rule19,],
-	"j": [rule19,],
-	"k": [rule19,],
-	"l": [rule19,],
-	"m": [rule19,],
-	"n": [rule19,],
-	"o": [rule19,],
-	"p": [rule19,],
-	"q": [rule19,],
-	"r": [rule19,],
-	"s": [rule19,],
-	"t": [rule19,],
-	"u": [rule19,],
-	"v": [rule19,],
-	"w": [rule19,],
-	"x": [rule19,],
-	"y": [rule19,],
-	"z": [rule19,],
+	"%": [rpmspec_rule19,],
+	"0": [rpmspec_rule19,],
+	"1": [rpmspec_rule19,],
+	"2": [rpmspec_rule19,],
+	"3": [rpmspec_rule19,],
+	"4": [rpmspec_rule19,],
+	"5": [rpmspec_rule19,],
+	"6": [rpmspec_rule19,],
+	"7": [rpmspec_rule19,],
+	"8": [rpmspec_rule19,],
+	"9": [rpmspec_rule19,],
+	":": [rpmspec_rule19,],
+	"@": [rpmspec_rule19,],
+	"A": [rpmspec_rule19,],
+	"B": [rpmspec_rule19,],
+	"C": [rpmspec_rule19,],
+	"D": [rpmspec_rule19,],
+	"E": [rpmspec_rule19,],
+	"F": [rpmspec_rule19,],
+	"G": [rpmspec_rule19,],
+	"H": [rpmspec_rule19,],
+	"I": [rpmspec_rule19,],
+	"J": [rpmspec_rule19,],
+	"K": [rpmspec_rule19,],
+	"L": [rpmspec_rule19,],
+	"M": [rpmspec_rule19,],
+	"N": [rpmspec_rule19,],
+	"O": [rpmspec_rule19,],
+	"P": [rpmspec_rule19,],
+	"Q": [rpmspec_rule19,],
+	"R": [rpmspec_rule19,],
+	"S": [rpmspec_rule19,],
+	"T": [rpmspec_rule19,],
+	"U": [rpmspec_rule19,],
+	"V": [rpmspec_rule19,],
+	"W": [rpmspec_rule19,],
+	"X": [rpmspec_rule19,],
+	"Y": [rpmspec_rule19,],
+	"Z": [rpmspec_rule19,],
+	"a": [rpmspec_rule19,],
+	"b": [rpmspec_rule19,],
+	"c": [rpmspec_rule19,],
+	"d": [rpmspec_rule19,],
+	"e": [rpmspec_rule19,],
+	"f": [rpmspec_rule19,],
+	"g": [rpmspec_rule19,],
+	"h": [rpmspec_rule19,],
+	"i": [rpmspec_rule19,],
+	"j": [rpmspec_rule19,],
+	"k": [rpmspec_rule19,],
+	"l": [rpmspec_rule19,],
+	"m": [rpmspec_rule19,],
+	"n": [rpmspec_rule19,],
+	"o": [rpmspec_rule19,],
+	"p": [rpmspec_rule19,],
+	"q": [rpmspec_rule19,],
+	"r": [rpmspec_rule19,],
+	"s": [rpmspec_rule19,],
+	"t": [rpmspec_rule19,],
+	"u": [rpmspec_rule19,],
+	"v": [rpmspec_rule19,],
+	"w": [rpmspec_rule19,],
+	"x": [rpmspec_rule19,],
+	"y": [rpmspec_rule19,],
+	"z": [rpmspec_rule19,],
 }
 
 # x.rulesDictDict for rpmspec mode.

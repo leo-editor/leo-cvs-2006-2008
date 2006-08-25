@@ -820,175 +820,175 @@ keywordsDictDict = {
 
 # Rules for assembly_x86_main ruleset.
 
-def rule0(colorer, s, i):
+def assembly-x86_rule0(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq=";",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule1(colorer, s, i):
+def assembly-x86_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule2(colorer, s, i):
+def assembly-x86_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule3(colorer, s, i):
+def assembly-x86_rule3(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="label", pattern="%%",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule4(colorer, s, i):
+def assembly-x86_rule4(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword2", pattern="%",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule5(colorer, s, i):
+def assembly-x86_rule5(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="label", pattern=":",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule6(colorer, s, i):
+def assembly-x86_rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule7(colorer, s, i):
+def assembly-x86_rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule8(colorer, s, i):
+def assembly-x86_rule8(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule9(colorer, s, i):
+def assembly-x86_rule9(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule10(colorer, s, i):
+def assembly-x86_rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule11(colorer, s, i):
+def assembly-x86_rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="|",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule12(colorer, s, i):
+def assembly-x86_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule13(colorer, s, i):
+def assembly-x86_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="&",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule14(colorer, s, i):
+def assembly-x86_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="~",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule15(colorer, s, i):
+def assembly-x86_rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="!",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule16(colorer, s, i):
+def assembly-x86_rule16(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule17(colorer, s, i):
+def assembly-x86_rule17(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule18(colorer, s, i):
+def assembly-x86_rule18(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule19(colorer, s, i):
+def assembly-x86_rule19(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"!": [rule15,],
-	"\"": [rule2,],
-	"%": [rule3,rule4,rule10,],
-	"&": [rule13,],
-	"'": [rule1,],
-	"*": [rule9,],
-	"+": [rule6,],
-	"-": [rule7,],
-	".": [rule19,],
-	"/": [rule8,],
-	"0": [rule19,],
-	"1": [rule19,],
-	"2": [rule19,],
-	"3": [rule19,],
-	"4": [rule19,],
-	"5": [rule19,],
-	"6": [rule19,],
-	"7": [rule19,],
-	"8": [rule19,],
-	"9": [rule19,],
-	":": [rule5,],
-	";": [rule0,],
-	"<": [rule17,],
-	"=": [rule16,],
-	">": [rule18,],
-	"?": [rule19,],
-	"@": [rule19,],
-	"A": [rule19,],
-	"B": [rule19,],
-	"C": [rule19,],
-	"D": [rule19,],
-	"E": [rule19,],
-	"F": [rule19,],
-	"G": [rule19,],
-	"H": [rule19,],
-	"I": [rule19,],
-	"J": [rule19,],
-	"K": [rule19,],
-	"L": [rule19,],
-	"M": [rule19,],
-	"N": [rule19,],
-	"O": [rule19,],
-	"P": [rule19,],
-	"Q": [rule19,],
-	"R": [rule19,],
-	"S": [rule19,],
-	"T": [rule19,],
-	"U": [rule19,],
-	"V": [rule19,],
-	"W": [rule19,],
-	"X": [rule19,],
-	"Y": [rule19,],
-	"Z": [rule19,],
-	"^": [rule12,],
-	"_": [rule19,],
-	"a": [rule19,],
-	"b": [rule19,],
-	"c": [rule19,],
-	"d": [rule19,],
-	"e": [rule19,],
-	"f": [rule19,],
-	"g": [rule19,],
-	"h": [rule19,],
-	"i": [rule19,],
-	"j": [rule19,],
-	"k": [rule19,],
-	"l": [rule19,],
-	"m": [rule19,],
-	"n": [rule19,],
-	"o": [rule19,],
-	"p": [rule19,],
-	"q": [rule19,],
-	"r": [rule19,],
-	"s": [rule19,],
-	"t": [rule19,],
-	"u": [rule19,],
-	"v": [rule19,],
-	"w": [rule19,],
-	"x": [rule19,],
-	"y": [rule19,],
-	"z": [rule19,],
-	"|": [rule11,],
-	"~": [rule14,],
+	"!": [assembly-x86_rule15,],
+	"\"": [assembly-x86_rule2,],
+	"%": [assembly-x86_rule3,assembly-x86_rule4,assembly-x86_rule10,],
+	"&": [assembly-x86_rule13,],
+	"'": [assembly-x86_rule1,],
+	"*": [assembly-x86_rule9,],
+	"+": [assembly-x86_rule6,],
+	"-": [assembly-x86_rule7,],
+	".": [assembly-x86_rule19,],
+	"/": [assembly-x86_rule8,],
+	"0": [assembly-x86_rule19,],
+	"1": [assembly-x86_rule19,],
+	"2": [assembly-x86_rule19,],
+	"3": [assembly-x86_rule19,],
+	"4": [assembly-x86_rule19,],
+	"5": [assembly-x86_rule19,],
+	"6": [assembly-x86_rule19,],
+	"7": [assembly-x86_rule19,],
+	"8": [assembly-x86_rule19,],
+	"9": [assembly-x86_rule19,],
+	":": [assembly-x86_rule5,],
+	";": [assembly-x86_rule0,],
+	"<": [assembly-x86_rule17,],
+	"=": [assembly-x86_rule16,],
+	">": [assembly-x86_rule18,],
+	"?": [assembly-x86_rule19,],
+	"@": [assembly-x86_rule19,],
+	"A": [assembly-x86_rule19,],
+	"B": [assembly-x86_rule19,],
+	"C": [assembly-x86_rule19,],
+	"D": [assembly-x86_rule19,],
+	"E": [assembly-x86_rule19,],
+	"F": [assembly-x86_rule19,],
+	"G": [assembly-x86_rule19,],
+	"H": [assembly-x86_rule19,],
+	"I": [assembly-x86_rule19,],
+	"J": [assembly-x86_rule19,],
+	"K": [assembly-x86_rule19,],
+	"L": [assembly-x86_rule19,],
+	"M": [assembly-x86_rule19,],
+	"N": [assembly-x86_rule19,],
+	"O": [assembly-x86_rule19,],
+	"P": [assembly-x86_rule19,],
+	"Q": [assembly-x86_rule19,],
+	"R": [assembly-x86_rule19,],
+	"S": [assembly-x86_rule19,],
+	"T": [assembly-x86_rule19,],
+	"U": [assembly-x86_rule19,],
+	"V": [assembly-x86_rule19,],
+	"W": [assembly-x86_rule19,],
+	"X": [assembly-x86_rule19,],
+	"Y": [assembly-x86_rule19,],
+	"Z": [assembly-x86_rule19,],
+	"^": [assembly-x86_rule12,],
+	"_": [assembly-x86_rule19,],
+	"a": [assembly-x86_rule19,],
+	"b": [assembly-x86_rule19,],
+	"c": [assembly-x86_rule19,],
+	"d": [assembly-x86_rule19,],
+	"e": [assembly-x86_rule19,],
+	"f": [assembly-x86_rule19,],
+	"g": [assembly-x86_rule19,],
+	"h": [assembly-x86_rule19,],
+	"i": [assembly-x86_rule19,],
+	"j": [assembly-x86_rule19,],
+	"k": [assembly-x86_rule19,],
+	"l": [assembly-x86_rule19,],
+	"m": [assembly-x86_rule19,],
+	"n": [assembly-x86_rule19,],
+	"o": [assembly-x86_rule19,],
+	"p": [assembly-x86_rule19,],
+	"q": [assembly-x86_rule19,],
+	"r": [assembly-x86_rule19,],
+	"s": [assembly-x86_rule19,],
+	"t": [assembly-x86_rule19,],
+	"u": [assembly-x86_rule19,],
+	"v": [assembly-x86_rule19,],
+	"w": [assembly-x86_rule19,],
+	"x": [assembly-x86_rule19,],
+	"y": [assembly-x86_rule19,],
+	"z": [assembly-x86_rule19,],
+	"|": [assembly-x86_rule11,],
+	"~": [assembly-x86_rule14,],
 }
 
 # x.rulesDictDict for assembly_x86 mode.

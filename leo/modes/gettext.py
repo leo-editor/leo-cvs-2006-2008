@@ -51,150 +51,150 @@ keywordsDictDict = {
 
 # Rules for gettext_main ruleset.
 
-def rule0(colorer, s, i):
+def gettext_rule0(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment2", seq="#:",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule1(colorer, s, i):
+def gettext_rule1(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="#",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule2(colorer, s, i):
+def gettext_rule2(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment2", seq="#.",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule3(colorer, s, i):
+def gettext_rule3(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment2", seq="#~",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule4(colorer, s, i):
+def gettext_rule4(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="comment2", pattern="#,",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule5(colorer, s, i):
+def gettext_rule5(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword3", pattern="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule6(colorer, s, i):
+def gettext_rule6(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword3", pattern="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule7(colorer, s, i):
+def gettext_rule7(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword3", pattern="@",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule8(colorer, s, i):
+def gettext_rule8(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="QUOTED",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule9(colorer, s, i):
+def gettext_rule9(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"\"": [rule8,],
-	"#": [rule0,rule1,rule2,rule3,rule4,],
-	"$": [rule6,],
-	"%": [rule5,],
-	"-": [rule9,],
-	"0": [rule9,],
-	"1": [rule9,],
-	"2": [rule9,],
-	"3": [rule9,],
-	"4": [rule9,],
-	"5": [rule9,],
-	"6": [rule9,],
-	"7": [rule9,],
-	"8": [rule9,],
-	"9": [rule9,],
-	"@": [rule7,rule9,],
-	"A": [rule9,],
-	"B": [rule9,],
-	"C": [rule9,],
-	"D": [rule9,],
-	"E": [rule9,],
-	"F": [rule9,],
-	"G": [rule9,],
-	"H": [rule9,],
-	"I": [rule9,],
-	"J": [rule9,],
-	"K": [rule9,],
-	"L": [rule9,],
-	"M": [rule9,],
-	"N": [rule9,],
-	"O": [rule9,],
-	"P": [rule9,],
-	"Q": [rule9,],
-	"R": [rule9,],
-	"S": [rule9,],
-	"T": [rule9,],
-	"U": [rule9,],
-	"V": [rule9,],
-	"W": [rule9,],
-	"X": [rule9,],
-	"Y": [rule9,],
-	"Z": [rule9,],
-	"_": [rule9,],
-	"a": [rule9,],
-	"b": [rule9,],
-	"c": [rule9,],
-	"d": [rule9,],
-	"e": [rule9,],
-	"f": [rule9,],
-	"g": [rule9,],
-	"h": [rule9,],
-	"i": [rule9,],
-	"j": [rule9,],
-	"k": [rule9,],
-	"l": [rule9,],
-	"m": [rule9,],
-	"n": [rule9,],
-	"o": [rule9,],
-	"p": [rule9,],
-	"q": [rule9,],
-	"r": [rule9,],
-	"s": [rule9,],
-	"t": [rule9,],
-	"u": [rule9,],
-	"v": [rule9,],
-	"w": [rule9,],
-	"x": [rule9,],
-	"y": [rule9,],
-	"z": [rule9,],
+	"\"": [gettext_rule8,],
+	"#": [gettext_rule0,gettext_rule1,gettext_rule2,gettext_rule3,gettext_rule4,],
+	"$": [gettext_rule6,],
+	"%": [gettext_rule5,],
+	"-": [gettext_rule9,],
+	"0": [gettext_rule9,],
+	"1": [gettext_rule9,],
+	"2": [gettext_rule9,],
+	"3": [gettext_rule9,],
+	"4": [gettext_rule9,],
+	"5": [gettext_rule9,],
+	"6": [gettext_rule9,],
+	"7": [gettext_rule9,],
+	"8": [gettext_rule9,],
+	"9": [gettext_rule9,],
+	"@": [gettext_rule7,gettext_rule9,],
+	"A": [gettext_rule9,],
+	"B": [gettext_rule9,],
+	"C": [gettext_rule9,],
+	"D": [gettext_rule9,],
+	"E": [gettext_rule9,],
+	"F": [gettext_rule9,],
+	"G": [gettext_rule9,],
+	"H": [gettext_rule9,],
+	"I": [gettext_rule9,],
+	"J": [gettext_rule9,],
+	"K": [gettext_rule9,],
+	"L": [gettext_rule9,],
+	"M": [gettext_rule9,],
+	"N": [gettext_rule9,],
+	"O": [gettext_rule9,],
+	"P": [gettext_rule9,],
+	"Q": [gettext_rule9,],
+	"R": [gettext_rule9,],
+	"S": [gettext_rule9,],
+	"T": [gettext_rule9,],
+	"U": [gettext_rule9,],
+	"V": [gettext_rule9,],
+	"W": [gettext_rule9,],
+	"X": [gettext_rule9,],
+	"Y": [gettext_rule9,],
+	"Z": [gettext_rule9,],
+	"_": [gettext_rule9,],
+	"a": [gettext_rule9,],
+	"b": [gettext_rule9,],
+	"c": [gettext_rule9,],
+	"d": [gettext_rule9,],
+	"e": [gettext_rule9,],
+	"f": [gettext_rule9,],
+	"g": [gettext_rule9,],
+	"h": [gettext_rule9,],
+	"i": [gettext_rule9,],
+	"j": [gettext_rule9,],
+	"k": [gettext_rule9,],
+	"l": [gettext_rule9,],
+	"m": [gettext_rule9,],
+	"n": [gettext_rule9,],
+	"o": [gettext_rule9,],
+	"p": [gettext_rule9,],
+	"q": [gettext_rule9,],
+	"r": [gettext_rule9,],
+	"s": [gettext_rule9,],
+	"t": [gettext_rule9,],
+	"u": [gettext_rule9,],
+	"v": [gettext_rule9,],
+	"w": [gettext_rule9,],
+	"x": [gettext_rule9,],
+	"y": [gettext_rule9,],
+	"z": [gettext_rule9,],
 }
 
 # Rules for gettext_quoted ruleset.
 
-def rule10(colorer, s, i):
+def gettext_rule10(colorer, s, i):
     return colorer.match_span(s, i, kind="literal2", begin="\\\"", end="\\\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule11(colorer, s, i):
+def gettext_rule11(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword3", pattern="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule12(colorer, s, i):
+def gettext_rule12(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword3", pattern="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule13(colorer, s, i):
+def gettext_rule13(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword3", pattern="@",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 # Rules dict for quoted ruleset.
 rulesDict2 = {
-	"$": [rule12,],
-	"%": [rule11,],
-	"@": [rule13,],
-	"\\": [rule10,],
+	"$": [gettext_rule12,],
+	"%": [gettext_rule11,],
+	"@": [gettext_rule13,],
+	"\\": [gettext_rule10,],
 }
 
 # x.rulesDictDict for gettext mode.

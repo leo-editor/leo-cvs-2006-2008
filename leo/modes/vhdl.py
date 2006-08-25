@@ -154,188 +154,188 @@ keywordsDictDict = {
 
 # Rules for vhdl_main ruleset.
 
-def rule0(colorer, s, i):
+def vhdl_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule1(colorer, s, i):
+def vhdl_rule1(colorer, s, i):
     return colorer.match_seq(s, i, kind="null", seq="'event",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule2(colorer, s, i):
+def vhdl_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule3(colorer, s, i):
+def vhdl_rule3(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="--",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule4(colorer, s, i):
+def vhdl_rule4(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule5(colorer, s, i):
+def vhdl_rule5(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule6(colorer, s, i):
+def vhdl_rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="!",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule7(colorer, s, i):
+def vhdl_rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=":",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule8(colorer, s, i):
+def vhdl_rule8(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule9(colorer, s, i):
+def vhdl_rule9(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule10(colorer, s, i):
+def vhdl_rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule11(colorer, s, i):
+def vhdl_rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule12(colorer, s, i):
+def vhdl_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule13(colorer, s, i):
+def vhdl_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule14(colorer, s, i):
+def vhdl_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule15(colorer, s, i):
+def vhdl_rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule16(colorer, s, i):
+def vhdl_rule16(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="**",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule17(colorer, s, i):
+def vhdl_rule17(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule18(colorer, s, i):
+def vhdl_rule18(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="&",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule19(colorer, s, i):
+def vhdl_rule19(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="|",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule20(colorer, s, i):
+def vhdl_rule20(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule21(colorer, s, i):
+def vhdl_rule21(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="~",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule22(colorer, s, i):
+def vhdl_rule22(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="label", pattern=":",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule23(colorer, s, i):
+def vhdl_rule23(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"!": [rule6,],
-	"\"": [rule0,],
-	"%": [rule17,],
-	"&": [rule18,],
-	"'": [rule1,rule2,],
-	"*": [rule15,rule16,],
-	"+": [rule12,],
-	"-": [rule3,rule13,],
-	"/": [rule5,rule14,],
-	"0": [rule23,],
-	"1": [rule23,],
-	"2": [rule23,],
-	"3": [rule23,],
-	"4": [rule23,],
-	"5": [rule23,],
-	"6": [rule23,],
-	"7": [rule23,],
-	"8": [rule23,],
-	"9": [rule23,],
-	":": [rule7,rule22,],
-	"<": [rule10,rule11,],
-	"=": [rule4,],
-	">": [rule8,rule9,],
-	"@": [rule23,],
-	"A": [rule23,],
-	"B": [rule23,],
-	"C": [rule23,],
-	"D": [rule23,],
-	"E": [rule23,],
-	"F": [rule23,],
-	"G": [rule23,],
-	"H": [rule23,],
-	"I": [rule23,],
-	"J": [rule23,],
-	"K": [rule23,],
-	"L": [rule23,],
-	"M": [rule23,],
-	"N": [rule23,],
-	"O": [rule23,],
-	"P": [rule23,],
-	"Q": [rule23,],
-	"R": [rule23,],
-	"S": [rule23,],
-	"T": [rule23,],
-	"U": [rule23,],
-	"V": [rule23,],
-	"W": [rule23,],
-	"X": [rule23,],
-	"Y": [rule23,],
-	"Z": [rule23,],
-	"^": [rule20,],
-	"_": [rule23,],
-	"a": [rule23,],
-	"b": [rule23,],
-	"c": [rule23,],
-	"d": [rule23,],
-	"e": [rule23,],
-	"f": [rule23,],
-	"g": [rule23,],
-	"h": [rule23,],
-	"i": [rule23,],
-	"j": [rule23,],
-	"k": [rule23,],
-	"l": [rule23,],
-	"m": [rule23,],
-	"n": [rule23,],
-	"o": [rule23,],
-	"p": [rule23,],
-	"q": [rule23,],
-	"r": [rule23,],
-	"s": [rule23,],
-	"t": [rule23,],
-	"u": [rule23,],
-	"v": [rule23,],
-	"w": [rule23,],
-	"x": [rule23,],
-	"y": [rule23,],
-	"z": [rule23,],
-	"|": [rule19,],
-	"~": [rule21,],
+	"!": [vhdl_rule6,],
+	"\"": [vhdl_rule0,],
+	"%": [vhdl_rule17,],
+	"&": [vhdl_rule18,],
+	"'": [vhdl_rule1,vhdl_rule2,],
+	"*": [vhdl_rule15,vhdl_rule16,],
+	"+": [vhdl_rule12,],
+	"-": [vhdl_rule3,vhdl_rule13,],
+	"/": [vhdl_rule5,vhdl_rule14,],
+	"0": [vhdl_rule23,],
+	"1": [vhdl_rule23,],
+	"2": [vhdl_rule23,],
+	"3": [vhdl_rule23,],
+	"4": [vhdl_rule23,],
+	"5": [vhdl_rule23,],
+	"6": [vhdl_rule23,],
+	"7": [vhdl_rule23,],
+	"8": [vhdl_rule23,],
+	"9": [vhdl_rule23,],
+	":": [vhdl_rule7,vhdl_rule22,],
+	"<": [vhdl_rule10,vhdl_rule11,],
+	"=": [vhdl_rule4,],
+	">": [vhdl_rule8,vhdl_rule9,],
+	"@": [vhdl_rule23,],
+	"A": [vhdl_rule23,],
+	"B": [vhdl_rule23,],
+	"C": [vhdl_rule23,],
+	"D": [vhdl_rule23,],
+	"E": [vhdl_rule23,],
+	"F": [vhdl_rule23,],
+	"G": [vhdl_rule23,],
+	"H": [vhdl_rule23,],
+	"I": [vhdl_rule23,],
+	"J": [vhdl_rule23,],
+	"K": [vhdl_rule23,],
+	"L": [vhdl_rule23,],
+	"M": [vhdl_rule23,],
+	"N": [vhdl_rule23,],
+	"O": [vhdl_rule23,],
+	"P": [vhdl_rule23,],
+	"Q": [vhdl_rule23,],
+	"R": [vhdl_rule23,],
+	"S": [vhdl_rule23,],
+	"T": [vhdl_rule23,],
+	"U": [vhdl_rule23,],
+	"V": [vhdl_rule23,],
+	"W": [vhdl_rule23,],
+	"X": [vhdl_rule23,],
+	"Y": [vhdl_rule23,],
+	"Z": [vhdl_rule23,],
+	"^": [vhdl_rule20,],
+	"_": [vhdl_rule23,],
+	"a": [vhdl_rule23,],
+	"b": [vhdl_rule23,],
+	"c": [vhdl_rule23,],
+	"d": [vhdl_rule23,],
+	"e": [vhdl_rule23,],
+	"f": [vhdl_rule23,],
+	"g": [vhdl_rule23,],
+	"h": [vhdl_rule23,],
+	"i": [vhdl_rule23,],
+	"j": [vhdl_rule23,],
+	"k": [vhdl_rule23,],
+	"l": [vhdl_rule23,],
+	"m": [vhdl_rule23,],
+	"n": [vhdl_rule23,],
+	"o": [vhdl_rule23,],
+	"p": [vhdl_rule23,],
+	"q": [vhdl_rule23,],
+	"r": [vhdl_rule23,],
+	"s": [vhdl_rule23,],
+	"t": [vhdl_rule23,],
+	"u": [vhdl_rule23,],
+	"v": [vhdl_rule23,],
+	"w": [vhdl_rule23,],
+	"x": [vhdl_rule23,],
+	"y": [vhdl_rule23,],
+	"z": [vhdl_rule23,],
+	"|": [vhdl_rule19,],
+	"~": [vhdl_rule21,],
 }
 
 # x.rulesDictDict for vhdl mode.

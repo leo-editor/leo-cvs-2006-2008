@@ -170,211 +170,211 @@ keywordsDictDict = {
 
 # Rules for pascal_main ruleset.
 
-def rule0(colorer, s, i):
+def pascal_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment3", begin="{$", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule1(colorer, s, i):
+def pascal_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="comment3", begin="(*$", end="*)",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule2(colorer, s, i):
+def pascal_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule3(colorer, s, i):
+def pascal_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="(*", end="*)",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule4(colorer, s, i):
+def pascal_rule4(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment2", seq="//",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule5(colorer, s, i):
+def pascal_rule5(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule6(colorer, s, i):
+def pascal_rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule7(colorer, s, i):
+def pascal_rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="(",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule8(colorer, s, i):
+def pascal_rule8(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="]",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule9(colorer, s, i):
+def pascal_rule9(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="[",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule10(colorer, s, i):
+def pascal_rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=".",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule11(colorer, s, i):
+def pascal_rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=",",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule12(colorer, s, i):
+def pascal_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=";",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule13(colorer, s, i):
+def pascal_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule14(colorer, s, i):
+def pascal_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="@",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule15(colorer, s, i):
+def pascal_rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=":=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule16(colorer, s, i):
+def pascal_rule16(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=":",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule17(colorer, s, i):
+def pascal_rule17(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule18(colorer, s, i):
+def pascal_rule18(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule19(colorer, s, i):
+def pascal_rule19(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule20(colorer, s, i):
+def pascal_rule20(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule21(colorer, s, i):
+def pascal_rule21(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule22(colorer, s, i):
+def pascal_rule22(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule23(colorer, s, i):
+def pascal_rule23(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule24(colorer, s, i):
+def pascal_rule24(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule25(colorer, s, i):
+def pascal_rule25(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule26(colorer, s, i):
+def pascal_rule26(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule27(colorer, s, i):
+def pascal_rule27(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"'": [rule5,],
-	"(": [rule1,rule3,rule7,],
-	")": [rule6,],
-	"*": [rule26,],
-	"+": [rule23,],
-	",": [rule11,],
-	"-": [rule24,],
-	".": [rule10,],
-	"/": [rule4,rule25,],
-	"0": [rule27,],
-	"1": [rule27,],
-	"2": [rule27,],
-	"3": [rule27,],
-	"4": [rule27,],
-	"5": [rule27,],
-	"6": [rule27,],
-	"7": [rule27,],
-	"8": [rule27,],
-	"9": [rule27,],
-	":": [rule15,rule16,],
-	";": [rule12,],
-	"<": [rule18,rule20,rule22,],
-	"=": [rule17,],
-	">": [rule19,rule21,],
-	"@": [rule14,rule27,],
-	"A": [rule27,],
-	"B": [rule27,],
-	"C": [rule27,],
-	"D": [rule27,],
-	"E": [rule27,],
-	"F": [rule27,],
-	"G": [rule27,],
-	"H": [rule27,],
-	"I": [rule27,],
-	"J": [rule27,],
-	"K": [rule27,],
-	"L": [rule27,],
-	"M": [rule27,],
-	"N": [rule27,],
-	"O": [rule27,],
-	"P": [rule27,],
-	"Q": [rule27,],
-	"R": [rule27,],
-	"S": [rule27,],
-	"T": [rule27,],
-	"U": [rule27,],
-	"V": [rule27,],
-	"W": [rule27,],
-	"X": [rule27,],
-	"Y": [rule27,],
-	"Z": [rule27,],
-	"[": [rule9,],
-	"]": [rule8,],
-	"^": [rule13,],
-	"a": [rule27,],
-	"b": [rule27,],
-	"c": [rule27,],
-	"d": [rule27,],
-	"e": [rule27,],
-	"f": [rule27,],
-	"g": [rule27,],
-	"h": [rule27,],
-	"i": [rule27,],
-	"j": [rule27,],
-	"k": [rule27,],
-	"l": [rule27,],
-	"m": [rule27,],
-	"n": [rule27,],
-	"o": [rule27,],
-	"p": [rule27,],
-	"q": [rule27,],
-	"r": [rule27,],
-	"s": [rule27,],
-	"t": [rule27,],
-	"u": [rule27,],
-	"v": [rule27,],
-	"w": [rule27,],
-	"x": [rule27,],
-	"y": [rule27,],
-	"z": [rule27,],
-	"{": [rule0,rule2,],
+	"'": [pascal_rule5,],
+	"(": [pascal_rule1,pascal_rule3,pascal_rule7,],
+	")": [pascal_rule6,],
+	"*": [pascal_rule26,],
+	"+": [pascal_rule23,],
+	",": [pascal_rule11,],
+	"-": [pascal_rule24,],
+	".": [pascal_rule10,],
+	"/": [pascal_rule4,pascal_rule25,],
+	"0": [pascal_rule27,],
+	"1": [pascal_rule27,],
+	"2": [pascal_rule27,],
+	"3": [pascal_rule27,],
+	"4": [pascal_rule27,],
+	"5": [pascal_rule27,],
+	"6": [pascal_rule27,],
+	"7": [pascal_rule27,],
+	"8": [pascal_rule27,],
+	"9": [pascal_rule27,],
+	":": [pascal_rule15,pascal_rule16,],
+	";": [pascal_rule12,],
+	"<": [pascal_rule18,pascal_rule20,pascal_rule22,],
+	"=": [pascal_rule17,],
+	">": [pascal_rule19,pascal_rule21,],
+	"@": [pascal_rule14,pascal_rule27,],
+	"A": [pascal_rule27,],
+	"B": [pascal_rule27,],
+	"C": [pascal_rule27,],
+	"D": [pascal_rule27,],
+	"E": [pascal_rule27,],
+	"F": [pascal_rule27,],
+	"G": [pascal_rule27,],
+	"H": [pascal_rule27,],
+	"I": [pascal_rule27,],
+	"J": [pascal_rule27,],
+	"K": [pascal_rule27,],
+	"L": [pascal_rule27,],
+	"M": [pascal_rule27,],
+	"N": [pascal_rule27,],
+	"O": [pascal_rule27,],
+	"P": [pascal_rule27,],
+	"Q": [pascal_rule27,],
+	"R": [pascal_rule27,],
+	"S": [pascal_rule27,],
+	"T": [pascal_rule27,],
+	"U": [pascal_rule27,],
+	"V": [pascal_rule27,],
+	"W": [pascal_rule27,],
+	"X": [pascal_rule27,],
+	"Y": [pascal_rule27,],
+	"Z": [pascal_rule27,],
+	"[": [pascal_rule9,],
+	"]": [pascal_rule8,],
+	"^": [pascal_rule13,],
+	"a": [pascal_rule27,],
+	"b": [pascal_rule27,],
+	"c": [pascal_rule27,],
+	"d": [pascal_rule27,],
+	"e": [pascal_rule27,],
+	"f": [pascal_rule27,],
+	"g": [pascal_rule27,],
+	"h": [pascal_rule27,],
+	"i": [pascal_rule27,],
+	"j": [pascal_rule27,],
+	"k": [pascal_rule27,],
+	"l": [pascal_rule27,],
+	"m": [pascal_rule27,],
+	"n": [pascal_rule27,],
+	"o": [pascal_rule27,],
+	"p": [pascal_rule27,],
+	"q": [pascal_rule27,],
+	"r": [pascal_rule27,],
+	"s": [pascal_rule27,],
+	"t": [pascal_rule27,],
+	"u": [pascal_rule27,],
+	"v": [pascal_rule27,],
+	"w": [pascal_rule27,],
+	"x": [pascal_rule27,],
+	"y": [pascal_rule27,],
+	"z": [pascal_rule27,],
+	"{": [pascal_rule0,pascal_rule2,],
 }
 
 # x.rulesDictDict for pascal mode.

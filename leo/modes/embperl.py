@@ -31,31 +31,31 @@ keywordsDictDict = {
 
 # Rules for embperl_main ruleset.
 
-def rule0(colorer, s, i):
+def embperl_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment2", begin="[#", end="#]",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule1(colorer, s, i):
+def embperl_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="literal3", begin="[+", end="+]",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="perl::MAIN",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule2(colorer, s, i):
+def embperl_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="literal3", begin="[-", end="-]",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="perl::MAIN",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule3(colorer, s, i):
+def embperl_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="literal3", begin="[$", end="$]",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="perl::MAIN",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule4(colorer, s, i):
+def embperl_rule4(colorer, s, i):
     return colorer.match_span(s, i, kind="literal3", begin="[!", end="!]",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="perl::MAIN",exclude_match=False,
@@ -64,7 +64,7 @@ def rule4(colorer, s, i):
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"[": [rule0,rule1,rule2,rule3,rule4,],
+	"[": [embperl_rule0,embperl_rule1,embperl_rule2,embperl_rule3,embperl_rule4,],
 }
 
 # x.rulesDictDict for embperl mode.

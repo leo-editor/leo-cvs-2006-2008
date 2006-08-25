@@ -520,129 +520,129 @@ keywordsDictDict = {
 
 # Rules for css_main ruleset.
 
-def rule0(colorer, s, i):
+def css_rule0(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=":",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule1(colorer, s, i):
+def css_rule1(colorer, s, i):
     return colorer.match_seq(s, i, kind="null", seq=";",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule2(colorer, s, i):
+def css_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="null", begin="(", end=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="LITERAL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule3(colorer, s, i):
+def css_rule3(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="{",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule4(colorer, s, i):
+def css_rule4(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule5(colorer, s, i):
+def css_rule5(colorer, s, i):
     return colorer.match_seq(s, i, kind="null", seq=",",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule6(colorer, s, i):
+def css_rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="null", seq=".",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule7(colorer, s, i):
+def css_rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="!",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule8(colorer, s, i):
+def css_rule8(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="literal2", pattern="#",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule9(colorer, s, i):
+def css_rule9(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule10(colorer, s, i):
+def css_rule10(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"!": [rule7,],
-	"#": [rule8,],
-	"(": [rule2,],
-	",": [rule5,],
-	"-": [rule10,],
-	".": [rule6,],
-	"/": [rule9,],
-	"0": [rule10,],
-	"1": [rule10,],
-	"2": [rule10,],
-	"3": [rule10,],
-	"4": [rule10,],
-	"5": [rule10,],
-	"6": [rule10,],
-	"7": [rule10,],
-	"8": [rule10,],
-	"9": [rule10,],
-	":": [rule0,rule10,],
-	";": [rule1,],
-	"@": [rule10,],
-	"A": [rule10,],
-	"B": [rule10,],
-	"C": [rule10,],
-	"D": [rule10,],
-	"E": [rule10,],
-	"F": [rule10,],
-	"G": [rule10,],
-	"H": [rule10,],
-	"I": [rule10,],
-	"J": [rule10,],
-	"K": [rule10,],
-	"L": [rule10,],
-	"M": [rule10,],
-	"N": [rule10,],
-	"O": [rule10,],
-	"P": [rule10,],
-	"Q": [rule10,],
-	"R": [rule10,],
-	"S": [rule10,],
-	"T": [rule10,],
-	"U": [rule10,],
-	"V": [rule10,],
-	"W": [rule10,],
-	"X": [rule10,],
-	"Y": [rule10,],
-	"Z": [rule10,],
-	"a": [rule10,],
-	"b": [rule10,],
-	"c": [rule10,],
-	"d": [rule10,],
-	"e": [rule10,],
-	"f": [rule10,],
-	"g": [rule10,],
-	"h": [rule10,],
-	"i": [rule10,],
-	"j": [rule10,],
-	"k": [rule10,],
-	"l": [rule10,],
-	"m": [rule10,],
-	"n": [rule10,],
-	"o": [rule10,],
-	"p": [rule10,],
-	"q": [rule10,],
-	"r": [rule10,],
-	"s": [rule10,],
-	"t": [rule10,],
-	"u": [rule10,],
-	"v": [rule10,],
-	"w": [rule10,],
-	"x": [rule10,],
-	"y": [rule10,],
-	"z": [rule10,],
-	"{": [rule3,],
-	"}": [rule4,],
+	"!": [css_rule7,],
+	"#": [css_rule8,],
+	"(": [css_rule2,],
+	",": [css_rule5,],
+	"-": [css_rule10,],
+	".": [css_rule6,],
+	"/": [css_rule9,],
+	"0": [css_rule10,],
+	"1": [css_rule10,],
+	"2": [css_rule10,],
+	"3": [css_rule10,],
+	"4": [css_rule10,],
+	"5": [css_rule10,],
+	"6": [css_rule10,],
+	"7": [css_rule10,],
+	"8": [css_rule10,],
+	"9": [css_rule10,],
+	":": [css_rule0,css_rule10,],
+	";": [css_rule1,],
+	"@": [css_rule10,],
+	"A": [css_rule10,],
+	"B": [css_rule10,],
+	"C": [css_rule10,],
+	"D": [css_rule10,],
+	"E": [css_rule10,],
+	"F": [css_rule10,],
+	"G": [css_rule10,],
+	"H": [css_rule10,],
+	"I": [css_rule10,],
+	"J": [css_rule10,],
+	"K": [css_rule10,],
+	"L": [css_rule10,],
+	"M": [css_rule10,],
+	"N": [css_rule10,],
+	"O": [css_rule10,],
+	"P": [css_rule10,],
+	"Q": [css_rule10,],
+	"R": [css_rule10,],
+	"S": [css_rule10,],
+	"T": [css_rule10,],
+	"U": [css_rule10,],
+	"V": [css_rule10,],
+	"W": [css_rule10,],
+	"X": [css_rule10,],
+	"Y": [css_rule10,],
+	"Z": [css_rule10,],
+	"a": [css_rule10,],
+	"b": [css_rule10,],
+	"c": [css_rule10,],
+	"d": [css_rule10,],
+	"e": [css_rule10,],
+	"f": [css_rule10,],
+	"g": [css_rule10,],
+	"h": [css_rule10,],
+	"i": [css_rule10,],
+	"j": [css_rule10,],
+	"k": [css_rule10,],
+	"l": [css_rule10,],
+	"m": [css_rule10,],
+	"n": [css_rule10,],
+	"o": [css_rule10,],
+	"p": [css_rule10,],
+	"q": [css_rule10,],
+	"r": [css_rule10,],
+	"s": [css_rule10,],
+	"t": [css_rule10,],
+	"u": [css_rule10,],
+	"v": [css_rule10,],
+	"w": [css_rule10,],
+	"x": [css_rule10,],
+	"y": [css_rule10,],
+	"z": [css_rule10,],
+	"{": [css_rule3,],
+	"}": [css_rule4,],
 }
 
 # Rules for css_literal ruleset.

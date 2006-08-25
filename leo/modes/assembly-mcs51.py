@@ -192,207 +192,207 @@ keywordsDictDict = {
 
 # Rules for assembly_mcs51_main ruleset.
 
-def rule0(colorer, s, i):
+def assembly-mcs51_rule0(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq=";",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule1(colorer, s, i):
+def assembly-mcs51_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule2(colorer, s, i):
+def assembly-mcs51_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule3(colorer, s, i):
+def assembly-mcs51_rule3(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="label", pattern="%%",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule4(colorer, s, i):
+def assembly-mcs51_rule4(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword2", pattern="$",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule5(colorer, s, i):
+def assembly-mcs51_rule5(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="label", pattern=":",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule6(colorer, s, i):
+def assembly-mcs51_rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="null", seq=",",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule7(colorer, s, i):
+def assembly-mcs51_rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="null", seq=":",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule8(colorer, s, i):
+def assembly-mcs51_rule8(colorer, s, i):
     return colorer.match_seq(s, i, kind="null", seq="(",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule9(colorer, s, i):
+def assembly-mcs51_rule9(colorer, s, i):
     return colorer.match_seq(s, i, kind="null", seq=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule10(colorer, s, i):
+def assembly-mcs51_rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="null", seq="]",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule11(colorer, s, i):
+def assembly-mcs51_rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="null", seq="[",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule12(colorer, s, i):
+def assembly-mcs51_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="null", seq="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule13(colorer, s, i):
+def assembly-mcs51_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule14(colorer, s, i):
+def assembly-mcs51_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule15(colorer, s, i):
+def assembly-mcs51_rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule16(colorer, s, i):
+def assembly-mcs51_rule16(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule17(colorer, s, i):
+def assembly-mcs51_rule17(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule18(colorer, s, i):
+def assembly-mcs51_rule18(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="|",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule19(colorer, s, i):
+def assembly-mcs51_rule19(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule20(colorer, s, i):
+def assembly-mcs51_rule20(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="&",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule21(colorer, s, i):
+def assembly-mcs51_rule21(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="~",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule22(colorer, s, i):
+def assembly-mcs51_rule22(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="!",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule23(colorer, s, i):
+def assembly-mcs51_rule23(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule24(colorer, s, i):
+def assembly-mcs51_rule24(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule25(colorer, s, i):
+def assembly-mcs51_rule25(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule26(colorer, s, i):
+def assembly-mcs51_rule26(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"!": [rule22,],
-	"\"": [rule2,],
-	"$": [rule4,rule12,rule26,],
-	"%": [rule3,rule17,],
-	"&": [rule20,],
-	"'": [rule1,],
-	"(": [rule8,],
-	")": [rule9,],
-	"*": [rule16,],
-	"+": [rule13,],
-	",": [rule6,],
-	"-": [rule14,],
-	"/": [rule15,],
-	"0": [rule26,],
-	"1": [rule26,],
-	"2": [rule26,],
-	"3": [rule26,],
-	"4": [rule26,],
-	"5": [rule26,],
-	"6": [rule26,],
-	"7": [rule26,],
-	"8": [rule26,],
-	"9": [rule26,],
-	":": [rule5,rule7,],
-	";": [rule0,],
-	"<": [rule24,],
-	"=": [rule23,],
-	">": [rule25,],
-	"@": [rule26,],
-	"A": [rule26,],
-	"B": [rule26,],
-	"C": [rule26,],
-	"D": [rule26,],
-	"E": [rule26,],
-	"F": [rule26,],
-	"G": [rule26,],
-	"H": [rule26,],
-	"I": [rule26,],
-	"J": [rule26,],
-	"K": [rule26,],
-	"L": [rule26,],
-	"M": [rule26,],
-	"N": [rule26,],
-	"O": [rule26,],
-	"P": [rule26,],
-	"Q": [rule26,],
-	"R": [rule26,],
-	"S": [rule26,],
-	"T": [rule26,],
-	"U": [rule26,],
-	"V": [rule26,],
-	"W": [rule26,],
-	"X": [rule26,],
-	"Y": [rule26,],
-	"Z": [rule26,],
-	"[": [rule11,],
-	"]": [rule10,],
-	"^": [rule19,],
-	"_": [rule26,],
-	"a": [rule26,],
-	"b": [rule26,],
-	"c": [rule26,],
-	"d": [rule26,],
-	"e": [rule26,],
-	"f": [rule26,],
-	"g": [rule26,],
-	"h": [rule26,],
-	"i": [rule26,],
-	"j": [rule26,],
-	"k": [rule26,],
-	"l": [rule26,],
-	"m": [rule26,],
-	"n": [rule26,],
-	"o": [rule26,],
-	"p": [rule26,],
-	"q": [rule26,],
-	"r": [rule26,],
-	"s": [rule26,],
-	"t": [rule26,],
-	"u": [rule26,],
-	"v": [rule26,],
-	"w": [rule26,],
-	"x": [rule26,],
-	"y": [rule26,],
-	"z": [rule26,],
-	"|": [rule18,],
-	"~": [rule21,],
+	"!": [assembly-mcs51_rule22,],
+	"\"": [assembly-mcs51_rule2,],
+	"$": [assembly-mcs51_rule4,assembly-mcs51_rule12,assembly-mcs51_rule26,],
+	"%": [assembly-mcs51_rule3,assembly-mcs51_rule17,],
+	"&": [assembly-mcs51_rule20,],
+	"'": [assembly-mcs51_rule1,],
+	"(": [assembly-mcs51_rule8,],
+	")": [assembly-mcs51_rule9,],
+	"*": [assembly-mcs51_rule16,],
+	"+": [assembly-mcs51_rule13,],
+	",": [assembly-mcs51_rule6,],
+	"-": [assembly-mcs51_rule14,],
+	"/": [assembly-mcs51_rule15,],
+	"0": [assembly-mcs51_rule26,],
+	"1": [assembly-mcs51_rule26,],
+	"2": [assembly-mcs51_rule26,],
+	"3": [assembly-mcs51_rule26,],
+	"4": [assembly-mcs51_rule26,],
+	"5": [assembly-mcs51_rule26,],
+	"6": [assembly-mcs51_rule26,],
+	"7": [assembly-mcs51_rule26,],
+	"8": [assembly-mcs51_rule26,],
+	"9": [assembly-mcs51_rule26,],
+	":": [assembly-mcs51_rule5,assembly-mcs51_rule7,],
+	";": [assembly-mcs51_rule0,],
+	"<": [assembly-mcs51_rule24,],
+	"=": [assembly-mcs51_rule23,],
+	">": [assembly-mcs51_rule25,],
+	"@": [assembly-mcs51_rule26,],
+	"A": [assembly-mcs51_rule26,],
+	"B": [assembly-mcs51_rule26,],
+	"C": [assembly-mcs51_rule26,],
+	"D": [assembly-mcs51_rule26,],
+	"E": [assembly-mcs51_rule26,],
+	"F": [assembly-mcs51_rule26,],
+	"G": [assembly-mcs51_rule26,],
+	"H": [assembly-mcs51_rule26,],
+	"I": [assembly-mcs51_rule26,],
+	"J": [assembly-mcs51_rule26,],
+	"K": [assembly-mcs51_rule26,],
+	"L": [assembly-mcs51_rule26,],
+	"M": [assembly-mcs51_rule26,],
+	"N": [assembly-mcs51_rule26,],
+	"O": [assembly-mcs51_rule26,],
+	"P": [assembly-mcs51_rule26,],
+	"Q": [assembly-mcs51_rule26,],
+	"R": [assembly-mcs51_rule26,],
+	"S": [assembly-mcs51_rule26,],
+	"T": [assembly-mcs51_rule26,],
+	"U": [assembly-mcs51_rule26,],
+	"V": [assembly-mcs51_rule26,],
+	"W": [assembly-mcs51_rule26,],
+	"X": [assembly-mcs51_rule26,],
+	"Y": [assembly-mcs51_rule26,],
+	"Z": [assembly-mcs51_rule26,],
+	"[": [assembly-mcs51_rule11,],
+	"]": [assembly-mcs51_rule10,],
+	"^": [assembly-mcs51_rule19,],
+	"_": [assembly-mcs51_rule26,],
+	"a": [assembly-mcs51_rule26,],
+	"b": [assembly-mcs51_rule26,],
+	"c": [assembly-mcs51_rule26,],
+	"d": [assembly-mcs51_rule26,],
+	"e": [assembly-mcs51_rule26,],
+	"f": [assembly-mcs51_rule26,],
+	"g": [assembly-mcs51_rule26,],
+	"h": [assembly-mcs51_rule26,],
+	"i": [assembly-mcs51_rule26,],
+	"j": [assembly-mcs51_rule26,],
+	"k": [assembly-mcs51_rule26,],
+	"l": [assembly-mcs51_rule26,],
+	"m": [assembly-mcs51_rule26,],
+	"n": [assembly-mcs51_rule26,],
+	"o": [assembly-mcs51_rule26,],
+	"p": [assembly-mcs51_rule26,],
+	"q": [assembly-mcs51_rule26,],
+	"r": [assembly-mcs51_rule26,],
+	"s": [assembly-mcs51_rule26,],
+	"t": [assembly-mcs51_rule26,],
+	"u": [assembly-mcs51_rule26,],
+	"v": [assembly-mcs51_rule26,],
+	"w": [assembly-mcs51_rule26,],
+	"x": [assembly-mcs51_rule26,],
+	"y": [assembly-mcs51_rule26,],
+	"z": [assembly-mcs51_rule26,],
+	"|": [assembly-mcs51_rule18,],
+	"~": [assembly-mcs51_rule21,],
 }
 
 # x.rulesDictDict for assembly_mcs51 mode.

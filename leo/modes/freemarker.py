@@ -94,131 +94,131 @@ keywordsDictDict = {
 
 # Rules for freemarker_main ruleset.
 
-def rule0(colorer, s, i):
+def freemarker_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<script", end="</script>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="html::JAVASCRIPT",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule1(colorer, s, i):
+def freemarker_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<Script", end="</Script>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="html::JAVASCRIPT",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule2(colorer, s, i):
+def freemarker_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<SCRIPT", end="</SCRIPT>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="html::JAVASCRIPT",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule3(colorer, s, i):
+def freemarker_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<style", end="</style>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="html::CSS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule4(colorer, s, i):
+def freemarker_rule4(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<Style", end="</Style>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="html::CSS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule5(colorer, s, i):
+def freemarker_rule5(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<STYLE", end="</STYLE>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="html::CSS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule6(colorer, s, i):
+def freemarker_rule6(colorer, s, i):
     return colorer.match_span(s, i, kind="comment2", begin="<!--", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="xml::DTD-TAGS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule7(colorer, s, i):
+def freemarker_rule7(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="<!", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="xml::DTD-TAGS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule8(colorer, s, i):
+def freemarker_rule8(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword1", begin="${", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="EXPRESSION",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule9(colorer, s, i):
+def freemarker_rule9(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword1", begin="#{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="EXPRESSION",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule10(colorer, s, i):
+def freemarker_rule10(colorer, s, i):
     return colorer.match_span_regexp(s, i, kind="keyword1", begin="<#ftl\\>", end=">", hash_char="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="EXPRESSION",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule11(colorer, s, i):
+def freemarker_rule11(colorer, s, i):
     return colorer.match_span_regexp(s, i, kind="keyword1", begin="<#?(if|elseif|switch|foreach|list|case|assign|local|global|setting|include|import|stop|escape|macro|function|transform|call|visit|recurse)(\\s|/|$)", end=">", hash_char="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="EXPRESSION",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule12(colorer, s, i):
+def freemarker_rule12(colorer, s, i):
     return colorer.match_span_regexp(s, i, kind="keyword1", begin="</#?(assign|local|global|if|switch|foreach|list|escape|macro|function|transform|compress|noescape)\\>", end=">", hash_char="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="INVALID",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule13(colorer, s, i):
+def freemarker_rule13(colorer, s, i):
     return colorer.match_span_regexp(s, i, kind="keyword1", begin="<#?(else|compress|noescape|default|break|flush|nested|t|rt|lt|return|recurse)\\>", end=">", hash_char="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="INVALID",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule14(colorer, s, i):
+def freemarker_rule14(colorer, s, i):
     return colorer.match_span_regexp(s, i, kind="keyword1", begin="</@(([_@[:alpha:]][_@[:alnum:]]*)(\\.[_@[:alpha:]][_@[:alnum:]]*)*)?", end=">", hash_char="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="INVALID",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule15(colorer, s, i):
+def freemarker_rule15(colorer, s, i):
     return colorer.match_span_regexp(s, i, kind="keyword1", begin="<@([_@[:alpha:]][_@[:alnum:]]*)(\\.[_@[:alpha:]][_@[:alnum:]]*)*", end=">", hash_char="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="EXPRESSION",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule16(colorer, s, i):
+def freemarker_rule16(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="<#--", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule17(colorer, s, i):
+def freemarker_rule17(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="<stop>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule18(colorer, s, i):
+def freemarker_rule18(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="<comment>", end="</comment>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule19(colorer, s, i):
+def freemarker_rule19(colorer, s, i):
     return colorer.match_span(s, i, kind="invalid", begin="<#", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule20(colorer, s, i):
+def freemarker_rule20(colorer, s, i):
     return colorer.match_span(s, i, kind="invalid", begin="</#", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule21(colorer, s, i):
+def freemarker_rule21(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="TAGS",exclude_match=False,
@@ -226,246 +226,246 @@ def rule21(colorer, s, i):
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"#": [rule9,],
-	"$": [rule8,],
-	"<": [rule0,rule1,rule2,rule3,rule4,rule5,rule6,rule7,rule10,rule11,rule12,rule13,rule14,rule15,rule16,rule17,rule18,rule19,rule20,rule21,],
+	"#": [freemarker_rule9,],
+	"$": [freemarker_rule8,],
+	"<": [freemarker_rule0,freemarker_rule1,freemarker_rule2,freemarker_rule3,freemarker_rule4,freemarker_rule5,freemarker_rule6,freemarker_rule7,freemarker_rule10,freemarker_rule11,freemarker_rule12,freemarker_rule13,freemarker_rule14,freemarker_rule15,freemarker_rule16,freemarker_rule17,freemarker_rule18,freemarker_rule19,freemarker_rule20,freemarker_rule21,],
 }
 
 # Rules for freemarker_expression ruleset.
 
-def rule22(colorer, s, i):
+def freemarker_rule22(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="<#--", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule23(colorer, s, i):
+def freemarker_rule23(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="<!--", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule24(colorer, s, i):
+def freemarker_rule24(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule25(colorer, s, i):
+def freemarker_rule25(colorer, s, i):
     return colorer.match_span(s, i, kind="operator", begin="(", end=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="EXPRESSION",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule26(colorer, s, i):
+def freemarker_rule26(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule27(colorer, s, i):
+def freemarker_rule27(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="!",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule28(colorer, s, i):
+def freemarker_rule28(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="|",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule29(colorer, s, i):
+def freemarker_rule29(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="&",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule30(colorer, s, i):
+def freemarker_rule30(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule31(colorer, s, i):
+def freemarker_rule31(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule32(colorer, s, i):
+def freemarker_rule32(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule33(colorer, s, i):
+def freemarker_rule33(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule34(colorer, s, i):
+def freemarker_rule34(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule35(colorer, s, i):
+def freemarker_rule35(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule36(colorer, s, i):
+def freemarker_rule36(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule37(colorer, s, i):
+def freemarker_rule37(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=".",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule38(colorer, s, i):
+def freemarker_rule38(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=":",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule39(colorer, s, i):
+def freemarker_rule39(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=".",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule40(colorer, s, i):
+def freemarker_rule40(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=".",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule41(colorer, s, i):
+def freemarker_rule41(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="[",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule42(colorer, s, i):
+def freemarker_rule42(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="]",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule43(colorer, s, i):
+def freemarker_rule43(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="{",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule44(colorer, s, i):
+def freemarker_rule44(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule45(colorer, s, i):
+def freemarker_rule45(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=";",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule46(colorer, s, i):
+def freemarker_rule46(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="function", pattern="?",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule47(colorer, s, i):
+def freemarker_rule47(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for expression ruleset.
 rulesDict2 = {
-	"!": [rule27,],
-	"\"": [rule24,],
-	"%": [rule36,],
-	"&": [rule29,],
-	"(": [rule25,],
-	"*": [rule32,],
-	"+": [rule35,],
-	"-": [rule34,],
-	".": [rule37,rule39,rule40,],
-	"/": [rule33,],
-	"0": [rule47,],
-	"1": [rule47,],
-	"2": [rule47,],
-	"3": [rule47,],
-	"4": [rule47,],
-	"5": [rule47,],
-	"6": [rule47,],
-	"7": [rule47,],
-	"8": [rule47,],
-	"9": [rule47,],
-	":": [rule38,],
-	";": [rule45,],
-	"<": [rule22,rule23,rule30,],
-	"=": [rule26,],
-	">": [rule31,],
-	"?": [rule46,],
-	"@": [rule47,],
-	"A": [rule47,],
-	"B": [rule47,],
-	"C": [rule47,],
-	"D": [rule47,],
-	"E": [rule47,],
-	"F": [rule47,],
-	"G": [rule47,],
-	"H": [rule47,],
-	"I": [rule47,],
-	"J": [rule47,],
-	"K": [rule47,],
-	"L": [rule47,],
-	"M": [rule47,],
-	"N": [rule47,],
-	"O": [rule47,],
-	"P": [rule47,],
-	"Q": [rule47,],
-	"R": [rule47,],
-	"S": [rule47,],
-	"T": [rule47,],
-	"U": [rule47,],
-	"V": [rule47,],
-	"W": [rule47,],
-	"X": [rule47,],
-	"Y": [rule47,],
-	"Z": [rule47,],
-	"[": [rule41,],
-	"]": [rule42,],
-	"a": [rule47,],
-	"b": [rule47,],
-	"c": [rule47,],
-	"d": [rule47,],
-	"e": [rule47,],
-	"f": [rule47,],
-	"g": [rule47,],
-	"h": [rule47,],
-	"i": [rule47,],
-	"j": [rule47,],
-	"k": [rule47,],
-	"l": [rule47,],
-	"m": [rule47,],
-	"n": [rule47,],
-	"o": [rule47,],
-	"p": [rule47,],
-	"q": [rule47,],
-	"r": [rule47,],
-	"s": [rule47,],
-	"t": [rule47,],
-	"u": [rule47,],
-	"v": [rule47,],
-	"w": [rule47,],
-	"x": [rule47,],
-	"y": [rule47,],
-	"z": [rule47,],
-	"{": [rule43,],
-	"|": [rule28,],
-	"}": [rule44,],
+	"!": [freemarker_rule27,],
+	"\"": [freemarker_rule24,],
+	"%": [freemarker_rule36,],
+	"&": [freemarker_rule29,],
+	"(": [freemarker_rule25,],
+	"*": [freemarker_rule32,],
+	"+": [freemarker_rule35,],
+	"-": [freemarker_rule34,],
+	".": [freemarker_rule37,freemarker_rule39,freemarker_rule40,],
+	"/": [freemarker_rule33,],
+	"0": [freemarker_rule47,],
+	"1": [freemarker_rule47,],
+	"2": [freemarker_rule47,],
+	"3": [freemarker_rule47,],
+	"4": [freemarker_rule47,],
+	"5": [freemarker_rule47,],
+	"6": [freemarker_rule47,],
+	"7": [freemarker_rule47,],
+	"8": [freemarker_rule47,],
+	"9": [freemarker_rule47,],
+	":": [freemarker_rule38,],
+	";": [freemarker_rule45,],
+	"<": [freemarker_rule22,freemarker_rule23,freemarker_rule30,],
+	"=": [freemarker_rule26,],
+	">": [freemarker_rule31,],
+	"?": [freemarker_rule46,],
+	"@": [freemarker_rule47,],
+	"A": [freemarker_rule47,],
+	"B": [freemarker_rule47,],
+	"C": [freemarker_rule47,],
+	"D": [freemarker_rule47,],
+	"E": [freemarker_rule47,],
+	"F": [freemarker_rule47,],
+	"G": [freemarker_rule47,],
+	"H": [freemarker_rule47,],
+	"I": [freemarker_rule47,],
+	"J": [freemarker_rule47,],
+	"K": [freemarker_rule47,],
+	"L": [freemarker_rule47,],
+	"M": [freemarker_rule47,],
+	"N": [freemarker_rule47,],
+	"O": [freemarker_rule47,],
+	"P": [freemarker_rule47,],
+	"Q": [freemarker_rule47,],
+	"R": [freemarker_rule47,],
+	"S": [freemarker_rule47,],
+	"T": [freemarker_rule47,],
+	"U": [freemarker_rule47,],
+	"V": [freemarker_rule47,],
+	"W": [freemarker_rule47,],
+	"X": [freemarker_rule47,],
+	"Y": [freemarker_rule47,],
+	"Z": [freemarker_rule47,],
+	"[": [freemarker_rule41,],
+	"]": [freemarker_rule42,],
+	"a": [freemarker_rule47,],
+	"b": [freemarker_rule47,],
+	"c": [freemarker_rule47,],
+	"d": [freemarker_rule47,],
+	"e": [freemarker_rule47,],
+	"f": [freemarker_rule47,],
+	"g": [freemarker_rule47,],
+	"h": [freemarker_rule47,],
+	"i": [freemarker_rule47,],
+	"j": [freemarker_rule47,],
+	"k": [freemarker_rule47,],
+	"l": [freemarker_rule47,],
+	"m": [freemarker_rule47,],
+	"n": [freemarker_rule47,],
+	"o": [freemarker_rule47,],
+	"p": [freemarker_rule47,],
+	"q": [freemarker_rule47,],
+	"r": [freemarker_rule47,],
+	"s": [freemarker_rule47,],
+	"t": [freemarker_rule47,],
+	"u": [freemarker_rule47,],
+	"v": [freemarker_rule47,],
+	"w": [freemarker_rule47,],
+	"x": [freemarker_rule47,],
+	"y": [freemarker_rule47,],
+	"z": [freemarker_rule47,],
+	"{": [freemarker_rule43,],
+	"|": [freemarker_rule28,],
+	"}": [freemarker_rule44,],
 }
 
 # Rules for freemarker_tags ruleset.
 
-def rule48(colorer, s, i):
+def freemarker_rule48(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="INQUOTE",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule49(colorer, s, i):
+def freemarker_rule49(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="INQUOTE",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule50(colorer, s, i):
+def freemarker_rule50(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules dict for tags ruleset.
 rulesDict3 = {
-	"\"": [rule48,],
-	"'": [rule49,],
-	"=": [rule50,],
+	"\"": [freemarker_rule48,],
+	"'": [freemarker_rule49,],
+	"=": [freemarker_rule50,],
 }
 
 # Rules for freemarker_inquote ruleset.
 
-def rule51(colorer, s, i):
+def freemarker_rule51(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword1", begin="${", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="EXPRESSION",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule52(colorer, s, i):
+def freemarker_rule52(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword1", begin="#{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="EXPRESSION",exclude_match=False,
@@ -473,8 +473,8 @@ def rule52(colorer, s, i):
 
 # Rules dict for inquote ruleset.
 rulesDict4 = {
-	"#": [rule52,],
-	"$": [rule51,],
+	"#": [freemarker_rule52,],
+	"$": [freemarker_rule51,],
 }
 
 # Rules for freemarker_invalid ruleset.

@@ -67,158 +67,158 @@ keywordsDictDict = {
 
 # Rules for factor_main ruleset.
 
-def rule0(colorer, s, i):
+def factor_rule0(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment2", seq="#!",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule1(colorer, s, i):
+def factor_rule1(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="!",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule2(colorer, s, i):
+def factor_rule2(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="markup", regexp=":\\s+(\\S+)", hash_char=":",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule3(colorer, s, i):
+def factor_rule3(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="markup", regexp="IN:\\s+(\\S+)", hash_char="I",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule4(colorer, s, i):
+def factor_rule4(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="markup", regexp="USE:\\s+(\\S+)", hash_char="U",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule5(colorer, s, i):
+def factor_rule5(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="markup", regexp="DEFER:\\s+(\\S+)", hash_char="D",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule6(colorer, s, i):
+def factor_rule6(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="markup", regexp="POSTPONE:\\s+(\\S+)", hash_char="P",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule7(colorer, s, i):
+def factor_rule7(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="literal2", regexp="CHAR:\\s+(\\S+)", hash_char="C",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule8(colorer, s, i):
+def factor_rule8(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="literal2", regexp="BIN:\\s+(\\S+)", hash_char="B",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule9(colorer, s, i):
+def factor_rule9(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="literal2", regexp="OCT:\\s+(\\S+)", hash_char="O",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule10(colorer, s, i):
+def factor_rule10(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="literal2", regexp="HEX:\\s+(\\S+)", hash_char="H",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule11(colorer, s, i):
+def factor_rule11(colorer, s, i):
     return colorer.match_span(s, i, kind="comment3", begin="(", end=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="STACK_EFFECT",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule12(colorer, s, i):
+def factor_rule12(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule13(colorer, s, i):
+def factor_rule13(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"!": [rule1,],
-	"\"": [rule12,],
-	"#": [rule0,rule13,],
-	"(": [rule11,],
-	"-": [rule13,],
-	"0": [rule13,],
-	"1": [rule13,],
-	"2": [rule13,],
-	"3": [rule13,],
-	"4": [rule13,],
-	"5": [rule13,],
-	"6": [rule13,],
-	"7": [rule13,],
-	"8": [rule13,],
-	"9": [rule13,],
-	":": [rule2,],
-	";": [rule13,],
-	"<": [rule13,],
-	">": [rule13,],
-	"@": [rule13,],
-	"A": [rule13,],
-	"B": [rule8,rule13,],
-	"C": [rule7,rule13,],
-	"D": [rule5,rule13,],
-	"E": [rule13,],
-	"F": [rule13,],
-	"G": [rule13,],
-	"H": [rule10,rule13,],
-	"I": [rule3,rule13,],
-	"J": [rule13,],
-	"K": [rule13,],
-	"L": [rule13,],
-	"M": [rule13,],
-	"N": [rule13,],
-	"O": [rule9,rule13,],
-	"P": [rule6,rule13,],
-	"Q": [rule13,],
-	"R": [rule13,],
-	"S": [rule13,],
-	"T": [rule13,],
-	"U": [rule4,rule13,],
-	"V": [rule13,],
-	"W": [rule13,],
-	"X": [rule13,],
-	"Y": [rule13,],
-	"Z": [rule13,],
-	"[": [rule13,],
-	"]": [rule13,],
-	"a": [rule13,],
-	"b": [rule13,],
-	"c": [rule13,],
-	"d": [rule13,],
-	"e": [rule13,],
-	"f": [rule13,],
-	"g": [rule13,],
-	"h": [rule13,],
-	"i": [rule13,],
-	"j": [rule13,],
-	"k": [rule13,],
-	"l": [rule13,],
-	"m": [rule13,],
-	"n": [rule13,],
-	"o": [rule13,],
-	"p": [rule13,],
-	"q": [rule13,],
-	"r": [rule13,],
-	"s": [rule13,],
-	"t": [rule13,],
-	"u": [rule13,],
-	"v": [rule13,],
-	"w": [rule13,],
-	"x": [rule13,],
-	"y": [rule13,],
-	"z": [rule13,],
-	"{": [rule13,],
-	"|": [rule13,],
-	"}": [rule13,],
-	"~": [rule13,],
+	"!": [factor_rule1,],
+	"\"": [factor_rule12,],
+	"#": [factor_rule0,factor_rule13,],
+	"(": [factor_rule11,],
+	"-": [factor_rule13,],
+	"0": [factor_rule13,],
+	"1": [factor_rule13,],
+	"2": [factor_rule13,],
+	"3": [factor_rule13,],
+	"4": [factor_rule13,],
+	"5": [factor_rule13,],
+	"6": [factor_rule13,],
+	"7": [factor_rule13,],
+	"8": [factor_rule13,],
+	"9": [factor_rule13,],
+	":": [factor_rule2,],
+	";": [factor_rule13,],
+	"<": [factor_rule13,],
+	">": [factor_rule13,],
+	"@": [factor_rule13,],
+	"A": [factor_rule13,],
+	"B": [factor_rule8,factor_rule13,],
+	"C": [factor_rule7,factor_rule13,],
+	"D": [factor_rule5,factor_rule13,],
+	"E": [factor_rule13,],
+	"F": [factor_rule13,],
+	"G": [factor_rule13,],
+	"H": [factor_rule10,factor_rule13,],
+	"I": [factor_rule3,factor_rule13,],
+	"J": [factor_rule13,],
+	"K": [factor_rule13,],
+	"L": [factor_rule13,],
+	"M": [factor_rule13,],
+	"N": [factor_rule13,],
+	"O": [factor_rule9,factor_rule13,],
+	"P": [factor_rule6,factor_rule13,],
+	"Q": [factor_rule13,],
+	"R": [factor_rule13,],
+	"S": [factor_rule13,],
+	"T": [factor_rule13,],
+	"U": [factor_rule4,factor_rule13,],
+	"V": [factor_rule13,],
+	"W": [factor_rule13,],
+	"X": [factor_rule13,],
+	"Y": [factor_rule13,],
+	"Z": [factor_rule13,],
+	"[": [factor_rule13,],
+	"]": [factor_rule13,],
+	"a": [factor_rule13,],
+	"b": [factor_rule13,],
+	"c": [factor_rule13,],
+	"d": [factor_rule13,],
+	"e": [factor_rule13,],
+	"f": [factor_rule13,],
+	"g": [factor_rule13,],
+	"h": [factor_rule13,],
+	"i": [factor_rule13,],
+	"j": [factor_rule13,],
+	"k": [factor_rule13,],
+	"l": [factor_rule13,],
+	"m": [factor_rule13,],
+	"n": [factor_rule13,],
+	"o": [factor_rule13,],
+	"p": [factor_rule13,],
+	"q": [factor_rule13,],
+	"r": [factor_rule13,],
+	"s": [factor_rule13,],
+	"t": [factor_rule13,],
+	"u": [factor_rule13,],
+	"v": [factor_rule13,],
+	"w": [factor_rule13,],
+	"x": [factor_rule13,],
+	"y": [factor_rule13,],
+	"z": [factor_rule13,],
+	"{": [factor_rule13,],
+	"|": [factor_rule13,],
+	"}": [factor_rule13,],
+	"~": [factor_rule13,],
 }
 
 # Rules for factor_stack_effect ruleset.
 
-def rule14(colorer, s, i):
+def factor_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="comment3", seq="--",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules dict for stack_effect ruleset.
 rulesDict2 = {
-	"-": [rule14,],
+	"-": [factor_rule14,],
 }
 
 # x.rulesDictDict for factor mode.

@@ -672,237 +672,237 @@ keywordsDictDict = {
 
 # Rules for actionscript_main ruleset.
 
-def rule0(colorer, s, i):
+def actionscript_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule1(colorer, s, i):
+def actionscript_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule2(colorer, s, i):
+def actionscript_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule3(colorer, s, i):
+def actionscript_rule3(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="function", pattern="(",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule4(colorer, s, i):
+def actionscript_rule4(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="//",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule5(colorer, s, i):
+def actionscript_rule5(colorer, s, i):
     return colorer.match_seq(s, i, kind="null", seq=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule6(colorer, s, i):
+def actionscript_rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="null", seq="(",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule7(colorer, s, i):
+def actionscript_rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule8(colorer, s, i):
+def actionscript_rule8(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="!",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule9(colorer, s, i):
+def actionscript_rule9(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule10(colorer, s, i):
+def actionscript_rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule11(colorer, s, i):
+def actionscript_rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule12(colorer, s, i):
+def actionscript_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule13(colorer, s, i):
+def actionscript_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule14(colorer, s, i):
+def actionscript_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule15(colorer, s, i):
+def actionscript_rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule16(colorer, s, i):
+def actionscript_rule16(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule17(colorer, s, i):
+def actionscript_rule17(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule18(colorer, s, i):
+def actionscript_rule18(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="&",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule19(colorer, s, i):
+def actionscript_rule19(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="|",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule20(colorer, s, i):
+def actionscript_rule20(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule21(colorer, s, i):
+def actionscript_rule21(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="~",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule22(colorer, s, i):
+def actionscript_rule22(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=".",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule23(colorer, s, i):
+def actionscript_rule23(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule24(colorer, s, i):
+def actionscript_rule24(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="{",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule25(colorer, s, i):
+def actionscript_rule25(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=",",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule26(colorer, s, i):
+def actionscript_rule26(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=";",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule27(colorer, s, i):
+def actionscript_rule27(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="]",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule28(colorer, s, i):
+def actionscript_rule28(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="[",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule29(colorer, s, i):
+def actionscript_rule29(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="?",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule30(colorer, s, i):
+def actionscript_rule30(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="label", pattern=":",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule31(colorer, s, i):
+def actionscript_rule31(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=":",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule32(colorer, s, i):
+def actionscript_rule32(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"!": [rule8,],
-	"\"": [rule1,],
-	"#": [rule32,],
-	"%": [rule17,],
-	"&": [rule18,],
-	"'": [rule2,],
-	"(": [rule3,rule6,],
-	")": [rule5,],
-	"*": [rule14,],
-	"+": [rule11,],
-	",": [rule25,],
-	"-": [rule12,],
-	".": [rule22,],
-	"/": [rule0,rule4,rule13,],
-	"0": [rule32,],
-	"1": [rule32,],
-	"2": [rule32,],
-	"3": [rule32,],
-	"4": [rule32,],
-	"5": [rule32,],
-	"6": [rule32,],
-	"7": [rule32,],
-	"8": [rule32,],
-	"9": [rule32,],
-	":": [rule30,rule31,],
-	";": [rule26,],
-	"<": [rule10,rule16,],
-	"=": [rule7,],
-	">": [rule9,rule15,],
-	"?": [rule29,],
-	"@": [rule32,],
-	"A": [rule32,],
-	"B": [rule32,],
-	"C": [rule32,],
-	"D": [rule32,],
-	"E": [rule32,],
-	"F": [rule32,],
-	"G": [rule32,],
-	"H": [rule32,],
-	"I": [rule32,],
-	"J": [rule32,],
-	"K": [rule32,],
-	"L": [rule32,],
-	"M": [rule32,],
-	"N": [rule32,],
-	"O": [rule32,],
-	"P": [rule32,],
-	"Q": [rule32,],
-	"R": [rule32,],
-	"S": [rule32,],
-	"T": [rule32,],
-	"U": [rule32,],
-	"V": [rule32,],
-	"W": [rule32,],
-	"X": [rule32,],
-	"Y": [rule32,],
-	"Z": [rule32,],
-	"[": [rule28,],
-	"]": [rule27,],
-	"^": [rule20,],
-	"_": [rule32,],
-	"a": [rule32,],
-	"b": [rule32,],
-	"c": [rule32,],
-	"d": [rule32,],
-	"e": [rule32,],
-	"f": [rule32,],
-	"g": [rule32,],
-	"h": [rule32,],
-	"i": [rule32,],
-	"j": [rule32,],
-	"k": [rule32,],
-	"l": [rule32,],
-	"m": [rule32,],
-	"n": [rule32,],
-	"o": [rule32,],
-	"p": [rule32,],
-	"q": [rule32,],
-	"r": [rule32,],
-	"s": [rule32,],
-	"t": [rule32,],
-	"u": [rule32,],
-	"v": [rule32,],
-	"w": [rule32,],
-	"x": [rule32,],
-	"y": [rule32,],
-	"z": [rule32,],
-	"{": [rule24,],
-	"|": [rule19,],
-	"}": [rule23,],
-	"~": [rule21,],
+	"!": [actionscript_rule8,],
+	"\"": [actionscript_rule1,],
+	"#": [actionscript_rule32,],
+	"%": [actionscript_rule17,],
+	"&": [actionscript_rule18,],
+	"'": [actionscript_rule2,],
+	"(": [actionscript_rule3,actionscript_rule6,],
+	")": [actionscript_rule5,],
+	"*": [actionscript_rule14,],
+	"+": [actionscript_rule11,],
+	",": [actionscript_rule25,],
+	"-": [actionscript_rule12,],
+	".": [actionscript_rule22,],
+	"/": [actionscript_rule0,actionscript_rule4,actionscript_rule13,],
+	"0": [actionscript_rule32,],
+	"1": [actionscript_rule32,],
+	"2": [actionscript_rule32,],
+	"3": [actionscript_rule32,],
+	"4": [actionscript_rule32,],
+	"5": [actionscript_rule32,],
+	"6": [actionscript_rule32,],
+	"7": [actionscript_rule32,],
+	"8": [actionscript_rule32,],
+	"9": [actionscript_rule32,],
+	":": [actionscript_rule30,actionscript_rule31,],
+	";": [actionscript_rule26,],
+	"<": [actionscript_rule10,actionscript_rule16,],
+	"=": [actionscript_rule7,],
+	">": [actionscript_rule9,actionscript_rule15,],
+	"?": [actionscript_rule29,],
+	"@": [actionscript_rule32,],
+	"A": [actionscript_rule32,],
+	"B": [actionscript_rule32,],
+	"C": [actionscript_rule32,],
+	"D": [actionscript_rule32,],
+	"E": [actionscript_rule32,],
+	"F": [actionscript_rule32,],
+	"G": [actionscript_rule32,],
+	"H": [actionscript_rule32,],
+	"I": [actionscript_rule32,],
+	"J": [actionscript_rule32,],
+	"K": [actionscript_rule32,],
+	"L": [actionscript_rule32,],
+	"M": [actionscript_rule32,],
+	"N": [actionscript_rule32,],
+	"O": [actionscript_rule32,],
+	"P": [actionscript_rule32,],
+	"Q": [actionscript_rule32,],
+	"R": [actionscript_rule32,],
+	"S": [actionscript_rule32,],
+	"T": [actionscript_rule32,],
+	"U": [actionscript_rule32,],
+	"V": [actionscript_rule32,],
+	"W": [actionscript_rule32,],
+	"X": [actionscript_rule32,],
+	"Y": [actionscript_rule32,],
+	"Z": [actionscript_rule32,],
+	"[": [actionscript_rule28,],
+	"]": [actionscript_rule27,],
+	"^": [actionscript_rule20,],
+	"_": [actionscript_rule32,],
+	"a": [actionscript_rule32,],
+	"b": [actionscript_rule32,],
+	"c": [actionscript_rule32,],
+	"d": [actionscript_rule32,],
+	"e": [actionscript_rule32,],
+	"f": [actionscript_rule32,],
+	"g": [actionscript_rule32,],
+	"h": [actionscript_rule32,],
+	"i": [actionscript_rule32,],
+	"j": [actionscript_rule32,],
+	"k": [actionscript_rule32,],
+	"l": [actionscript_rule32,],
+	"m": [actionscript_rule32,],
+	"n": [actionscript_rule32,],
+	"o": [actionscript_rule32,],
+	"p": [actionscript_rule32,],
+	"q": [actionscript_rule32,],
+	"r": [actionscript_rule32,],
+	"s": [actionscript_rule32,],
+	"t": [actionscript_rule32,],
+	"u": [actionscript_rule32,],
+	"v": [actionscript_rule32,],
+	"w": [actionscript_rule32,],
+	"x": [actionscript_rule32,],
+	"y": [actionscript_rule32,],
+	"z": [actionscript_rule32,],
+	"{": [actionscript_rule24,],
+	"|": [actionscript_rule19,],
+	"}": [actionscript_rule23,],
+	"~": [actionscript_rule21,],
 }
 
 # x.rulesDictDict for actionscript mode.

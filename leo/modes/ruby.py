@@ -92,254 +92,254 @@ keywordsDictDict = {
 
 # Rules for ruby_main ruleset.
 
-def rule0(colorer, s, i):
+def ruby_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment2", begin="=begin", end="=end",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule1(colorer, s, i):
+def ruby_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="literal2", begin="#{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=True,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule2(colorer, s, i):
+def ruby_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="doubleQuoteLiteral",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule3(colorer, s, i):
+def ruby_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule4(colorer, s, i):
+def ruby_rule4(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="#",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule5(colorer, s, i):
+def ruby_rule5(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="{",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule6(colorer, s, i):
+def ruby_rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule7(colorer, s, i):
+def ruby_rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="(",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule8(colorer, s, i):
+def ruby_rule8(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule9(colorer, s, i):
+def ruby_rule9(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="::",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule10(colorer, s, i):
+def ruby_rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="===",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule11(colorer, s, i):
+def ruby_rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule12(colorer, s, i):
+def ruby_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule13(colorer, s, i):
+def ruby_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule14(colorer, s, i):
+def ruby_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule15(colorer, s, i):
+def ruby_rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule16(colorer, s, i):
+def ruby_rule16(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule17(colorer, s, i):
+def ruby_rule17(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule18(colorer, s, i):
+def ruby_rule18(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="**",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule19(colorer, s, i):
+def ruby_rule19(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule20(colorer, s, i):
+def ruby_rule20(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule21(colorer, s, i):
+def ruby_rule21(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="&",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule22(colorer, s, i):
+def ruby_rule22(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="|",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule23(colorer, s, i):
+def ruby_rule23(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="!",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule24(colorer, s, i):
+def ruby_rule24(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule25(colorer, s, i):
+def ruby_rule25(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule26(colorer, s, i):
+def ruby_rule26(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule27(colorer, s, i):
+def ruby_rule27(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="~",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule28(colorer, s, i):
+def ruby_rule28(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="...",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule29(colorer, s, i):
+def ruby_rule29(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="..",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule30(colorer, s, i):
+def ruby_rule30(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="]",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule31(colorer, s, i):
+def ruby_rule31(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="[",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule32(colorer, s, i):
+def ruby_rule32(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="?",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule33(colorer, s, i):
+def ruby_rule33(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="label", pattern=":",
         at_line_start=False, at_whitespace_end=True, at_word_start=False, exclude_match=True)
 
-def rule34(colorer, s, i):
+def ruby_rule34(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=":",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule35(colorer, s, i):
+def ruby_rule35(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"!": [rule23,],
-	"\"": [rule2,],
-	"#": [rule1,rule4,],
-	"%": [rule20,],
-	"&": [rule21,],
-	"'": [rule3,],
-	"(": [rule7,],
-	")": [rule8,],
-	"*": [rule18,rule19,],
-	"+": [rule15,],
-	"-": [rule16,],
-	".": [rule28,rule29,],
-	"/": [rule17,],
-	"0": [rule35,],
-	"1": [rule35,],
-	"2": [rule35,],
-	"3": [rule35,],
-	"4": [rule35,],
-	"5": [rule35,],
-	"6": [rule35,],
-	"7": [rule35,],
-	"8": [rule35,],
-	"9": [rule35,],
-	":": [rule9,rule33,rule34,],
-	"<": [rule13,rule14,rule25,],
-	"=": [rule0,rule10,rule11,],
-	">": [rule12,rule24,],
-	"?": [rule32,],
-	"@": [rule35,],
-	"A": [rule35,],
-	"B": [rule35,],
-	"C": [rule35,],
-	"D": [rule35,],
-	"E": [rule35,],
-	"F": [rule35,],
-	"G": [rule35,],
-	"H": [rule35,],
-	"I": [rule35,],
-	"J": [rule35,],
-	"K": [rule35,],
-	"L": [rule35,],
-	"M": [rule35,],
-	"N": [rule35,],
-	"O": [rule35,],
-	"P": [rule35,],
-	"Q": [rule35,],
-	"R": [rule35,],
-	"S": [rule35,],
-	"T": [rule35,],
-	"U": [rule35,],
-	"V": [rule35,],
-	"W": [rule35,],
-	"X": [rule35,],
-	"Y": [rule35,],
-	"Z": [rule35,],
-	"[": [rule31,],
-	"]": [rule30,],
-	"^": [rule26,],
-	"_": [rule35,],
-	"a": [rule35,],
-	"b": [rule35,],
-	"c": [rule35,],
-	"d": [rule35,],
-	"e": [rule35,],
-	"f": [rule35,],
-	"g": [rule35,],
-	"h": [rule35,],
-	"i": [rule35,],
-	"j": [rule35,],
-	"k": [rule35,],
-	"l": [rule35,],
-	"m": [rule35,],
-	"n": [rule35,],
-	"o": [rule35,],
-	"p": [rule35,],
-	"q": [rule35,],
-	"r": [rule35,],
-	"s": [rule35,],
-	"t": [rule35,],
-	"u": [rule35,],
-	"v": [rule35,],
-	"w": [rule35,],
-	"x": [rule35,],
-	"y": [rule35,],
-	"z": [rule35,],
-	"{": [rule5,],
-	"|": [rule22,],
-	"}": [rule6,],
-	"~": [rule27,],
+	"!": [ruby_rule23,],
+	"\"": [ruby_rule2,],
+	"#": [ruby_rule1,ruby_rule4,],
+	"%": [ruby_rule20,],
+	"&": [ruby_rule21,],
+	"'": [ruby_rule3,],
+	"(": [ruby_rule7,],
+	")": [ruby_rule8,],
+	"*": [ruby_rule18,ruby_rule19,],
+	"+": [ruby_rule15,],
+	"-": [ruby_rule16,],
+	".": [ruby_rule28,ruby_rule29,],
+	"/": [ruby_rule17,],
+	"0": [ruby_rule35,],
+	"1": [ruby_rule35,],
+	"2": [ruby_rule35,],
+	"3": [ruby_rule35,],
+	"4": [ruby_rule35,],
+	"5": [ruby_rule35,],
+	"6": [ruby_rule35,],
+	"7": [ruby_rule35,],
+	"8": [ruby_rule35,],
+	"9": [ruby_rule35,],
+	":": [ruby_rule9,ruby_rule33,ruby_rule34,],
+	"<": [ruby_rule13,ruby_rule14,ruby_rule25,],
+	"=": [ruby_rule0,ruby_rule10,ruby_rule11,],
+	">": [ruby_rule12,ruby_rule24,],
+	"?": [ruby_rule32,],
+	"@": [ruby_rule35,],
+	"A": [ruby_rule35,],
+	"B": [ruby_rule35,],
+	"C": [ruby_rule35,],
+	"D": [ruby_rule35,],
+	"E": [ruby_rule35,],
+	"F": [ruby_rule35,],
+	"G": [ruby_rule35,],
+	"H": [ruby_rule35,],
+	"I": [ruby_rule35,],
+	"J": [ruby_rule35,],
+	"K": [ruby_rule35,],
+	"L": [ruby_rule35,],
+	"M": [ruby_rule35,],
+	"N": [ruby_rule35,],
+	"O": [ruby_rule35,],
+	"P": [ruby_rule35,],
+	"Q": [ruby_rule35,],
+	"R": [ruby_rule35,],
+	"S": [ruby_rule35,],
+	"T": [ruby_rule35,],
+	"U": [ruby_rule35,],
+	"V": [ruby_rule35,],
+	"W": [ruby_rule35,],
+	"X": [ruby_rule35,],
+	"Y": [ruby_rule35,],
+	"Z": [ruby_rule35,],
+	"[": [ruby_rule31,],
+	"]": [ruby_rule30,],
+	"^": [ruby_rule26,],
+	"_": [ruby_rule35,],
+	"a": [ruby_rule35,],
+	"b": [ruby_rule35,],
+	"c": [ruby_rule35,],
+	"d": [ruby_rule35,],
+	"e": [ruby_rule35,],
+	"f": [ruby_rule35,],
+	"g": [ruby_rule35,],
+	"h": [ruby_rule35,],
+	"i": [ruby_rule35,],
+	"j": [ruby_rule35,],
+	"k": [ruby_rule35,],
+	"l": [ruby_rule35,],
+	"m": [ruby_rule35,],
+	"n": [ruby_rule35,],
+	"o": [ruby_rule35,],
+	"p": [ruby_rule35,],
+	"q": [ruby_rule35,],
+	"r": [ruby_rule35,],
+	"s": [ruby_rule35,],
+	"t": [ruby_rule35,],
+	"u": [ruby_rule35,],
+	"v": [ruby_rule35,],
+	"w": [ruby_rule35,],
+	"x": [ruby_rule35,],
+	"y": [ruby_rule35,],
+	"z": [ruby_rule35,],
+	"{": [ruby_rule5,],
+	"|": [ruby_rule22,],
+	"}": [ruby_rule6,],
+	"~": [ruby_rule27,],
 }
 
 # Rules for ruby_doublequoteliteral ruleset.
 
-def rule36(colorer, s, i):
+def ruby_rule36(colorer, s, i):
     return colorer.match_span(s, i, kind="literal2", begin="#{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=True,
@@ -347,7 +347,7 @@ def rule36(colorer, s, i):
 
 # Rules dict for doublequoteliteral ruleset.
 rulesDict2 = {
-	"#": [rule36,],
+	"#": [ruby_rule36,],
 }
 
 # x.rulesDictDict for ruby mode.

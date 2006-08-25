@@ -193,230 +193,230 @@ keywordsDictDict = {
 
 # Rules for javascript_main ruleset.
 
-def rule0(colorer, s, i):
+def javascript_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule1(colorer, s, i):
+def javascript_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule2(colorer, s, i):
+def javascript_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule3(colorer, s, i):
+def javascript_rule3(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="function", pattern="(",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule4(colorer, s, i):
+def javascript_rule4(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment2", seq="//",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule5(colorer, s, i):
+def javascript_rule5(colorer, s, i):
     return colorer.match_seq(s, i, kind="comment1", seq="<!--",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule6(colorer, s, i):
+def javascript_rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule7(colorer, s, i):
+def javascript_rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="!",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule8(colorer, s, i):
+def javascript_rule8(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule9(colorer, s, i):
+def javascript_rule9(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule10(colorer, s, i):
+def javascript_rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule11(colorer, s, i):
+def javascript_rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule12(colorer, s, i):
+def javascript_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule13(colorer, s, i):
+def javascript_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule14(colorer, s, i):
+def javascript_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule15(colorer, s, i):
+def javascript_rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule16(colorer, s, i):
+def javascript_rule16(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule17(colorer, s, i):
+def javascript_rule17(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="&",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule18(colorer, s, i):
+def javascript_rule18(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="|",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule19(colorer, s, i):
+def javascript_rule19(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule20(colorer, s, i):
+def javascript_rule20(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="~",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule21(colorer, s, i):
+def javascript_rule21(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=".",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule22(colorer, s, i):
+def javascript_rule22(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule23(colorer, s, i):
+def javascript_rule23(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="{",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule24(colorer, s, i):
+def javascript_rule24(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=",",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule25(colorer, s, i):
+def javascript_rule25(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=";",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule26(colorer, s, i):
+def javascript_rule26(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="]",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule27(colorer, s, i):
+def javascript_rule27(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="[",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule28(colorer, s, i):
+def javascript_rule28(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="?",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule29(colorer, s, i):
+def javascript_rule29(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="label", pattern=":",
         at_line_start=False, at_whitespace_end=True, at_word_start=False, exclude_match=True)
 
-def rule30(colorer, s, i):
+def javascript_rule30(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=":",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule31(colorer, s, i):
+def javascript_rule31(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"!": [rule7,],
-	"\"": [rule1,],
-	"%": [rule16,],
-	"&": [rule17,],
-	"'": [rule2,],
-	"(": [rule3,],
-	"*": [rule13,],
-	"+": [rule10,],
-	",": [rule24,],
-	"-": [rule11,],
-	".": [rule21,],
-	"/": [rule0,rule4,rule12,],
-	"0": [rule31,],
-	"1": [rule31,],
-	"2": [rule31,],
-	"3": [rule31,],
-	"4": [rule31,],
-	"5": [rule31,],
-	"6": [rule31,],
-	"7": [rule31,],
-	"8": [rule31,],
-	"9": [rule31,],
-	":": [rule29,rule30,],
-	";": [rule25,],
-	"<": [rule5,rule9,rule15,],
-	"=": [rule6,],
-	">": [rule8,rule14,],
-	"?": [rule28,],
-	"@": [rule31,],
-	"A": [rule31,],
-	"B": [rule31,],
-	"C": [rule31,],
-	"D": [rule31,],
-	"E": [rule31,],
-	"F": [rule31,],
-	"G": [rule31,],
-	"H": [rule31,],
-	"I": [rule31,],
-	"J": [rule31,],
-	"K": [rule31,],
-	"L": [rule31,],
-	"M": [rule31,],
-	"N": [rule31,],
-	"O": [rule31,],
-	"P": [rule31,],
-	"Q": [rule31,],
-	"R": [rule31,],
-	"S": [rule31,],
-	"T": [rule31,],
-	"U": [rule31,],
-	"V": [rule31,],
-	"W": [rule31,],
-	"X": [rule31,],
-	"Y": [rule31,],
-	"Z": [rule31,],
-	"[": [rule27,],
-	"]": [rule26,],
-	"^": [rule19,],
-	"a": [rule31,],
-	"b": [rule31,],
-	"c": [rule31,],
-	"d": [rule31,],
-	"e": [rule31,],
-	"f": [rule31,],
-	"g": [rule31,],
-	"h": [rule31,],
-	"i": [rule31,],
-	"j": [rule31,],
-	"k": [rule31,],
-	"l": [rule31,],
-	"m": [rule31,],
-	"n": [rule31,],
-	"o": [rule31,],
-	"p": [rule31,],
-	"q": [rule31,],
-	"r": [rule31,],
-	"s": [rule31,],
-	"t": [rule31,],
-	"u": [rule31,],
-	"v": [rule31,],
-	"w": [rule31,],
-	"x": [rule31,],
-	"y": [rule31,],
-	"z": [rule31,],
-	"{": [rule23,],
-	"|": [rule18,],
-	"}": [rule22,],
-	"~": [rule20,],
+	"!": [javascript_rule7,],
+	"\"": [javascript_rule1,],
+	"%": [javascript_rule16,],
+	"&": [javascript_rule17,],
+	"'": [javascript_rule2,],
+	"(": [javascript_rule3,],
+	"*": [javascript_rule13,],
+	"+": [javascript_rule10,],
+	",": [javascript_rule24,],
+	"-": [javascript_rule11,],
+	".": [javascript_rule21,],
+	"/": [javascript_rule0,javascript_rule4,javascript_rule12,],
+	"0": [javascript_rule31,],
+	"1": [javascript_rule31,],
+	"2": [javascript_rule31,],
+	"3": [javascript_rule31,],
+	"4": [javascript_rule31,],
+	"5": [javascript_rule31,],
+	"6": [javascript_rule31,],
+	"7": [javascript_rule31,],
+	"8": [javascript_rule31,],
+	"9": [javascript_rule31,],
+	":": [javascript_rule29,javascript_rule30,],
+	";": [javascript_rule25,],
+	"<": [javascript_rule5,javascript_rule9,javascript_rule15,],
+	"=": [javascript_rule6,],
+	">": [javascript_rule8,javascript_rule14,],
+	"?": [javascript_rule28,],
+	"@": [javascript_rule31,],
+	"A": [javascript_rule31,],
+	"B": [javascript_rule31,],
+	"C": [javascript_rule31,],
+	"D": [javascript_rule31,],
+	"E": [javascript_rule31,],
+	"F": [javascript_rule31,],
+	"G": [javascript_rule31,],
+	"H": [javascript_rule31,],
+	"I": [javascript_rule31,],
+	"J": [javascript_rule31,],
+	"K": [javascript_rule31,],
+	"L": [javascript_rule31,],
+	"M": [javascript_rule31,],
+	"N": [javascript_rule31,],
+	"O": [javascript_rule31,],
+	"P": [javascript_rule31,],
+	"Q": [javascript_rule31,],
+	"R": [javascript_rule31,],
+	"S": [javascript_rule31,],
+	"T": [javascript_rule31,],
+	"U": [javascript_rule31,],
+	"V": [javascript_rule31,],
+	"W": [javascript_rule31,],
+	"X": [javascript_rule31,],
+	"Y": [javascript_rule31,],
+	"Z": [javascript_rule31,],
+	"[": [javascript_rule27,],
+	"]": [javascript_rule26,],
+	"^": [javascript_rule19,],
+	"a": [javascript_rule31,],
+	"b": [javascript_rule31,],
+	"c": [javascript_rule31,],
+	"d": [javascript_rule31,],
+	"e": [javascript_rule31,],
+	"f": [javascript_rule31,],
+	"g": [javascript_rule31,],
+	"h": [javascript_rule31,],
+	"i": [javascript_rule31,],
+	"j": [javascript_rule31,],
+	"k": [javascript_rule31,],
+	"l": [javascript_rule31,],
+	"m": [javascript_rule31,],
+	"n": [javascript_rule31,],
+	"o": [javascript_rule31,],
+	"p": [javascript_rule31,],
+	"q": [javascript_rule31,],
+	"r": [javascript_rule31,],
+	"s": [javascript_rule31,],
+	"t": [javascript_rule31,],
+	"u": [javascript_rule31,],
+	"v": [javascript_rule31,],
+	"w": [javascript_rule31,],
+	"x": [javascript_rule31,],
+	"y": [javascript_rule31,],
+	"z": [javascript_rule31,],
+	"{": [javascript_rule23,],
+	"|": [javascript_rule18,],
+	"}": [javascript_rule22,],
+	"~": [javascript_rule20,],
 }
 
 # x.rulesDictDict for javascript mode.

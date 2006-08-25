@@ -114,114 +114,114 @@ keywordsDictDict = {
 
 # Rules for smi_mib_main ruleset.
 
-def rule0(colorer, s, i):
+def smi-mib_rule0(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="--",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule1(colorer, s, i):
+def smi-mib_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule2(colorer, s, i):
+def smi-mib_rule2(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="::=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule3(colorer, s, i):
+def smi-mib_rule3(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule4(colorer, s, i):
+def smi-mib_rule4(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="{",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule5(colorer, s, i):
+def smi-mib_rule5(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="OBJECT IDENTIFIER",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule6(colorer, s, i):
+def smi-mib_rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="SEQUENCE OF",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule7(colorer, s, i):
+def smi-mib_rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword2", seq="OCTET STRING",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule8(colorer, s, i):
+def smi-mib_rule8(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"\"": [rule1,],
-	"-": [rule0,rule8,],
-	"0": [rule8,],
-	"1": [rule8,],
-	"2": [rule8,],
-	"3": [rule8,],
-	"4": [rule8,],
-	"5": [rule8,],
-	"6": [rule8,],
-	"7": [rule8,],
-	"8": [rule8,],
-	"9": [rule8,],
-	":": [rule2,],
-	"@": [rule8,],
-	"A": [rule8,],
-	"B": [rule8,],
-	"C": [rule8,],
-	"D": [rule8,],
-	"E": [rule8,],
-	"F": [rule8,],
-	"G": [rule8,],
-	"H": [rule8,],
-	"I": [rule8,],
-	"J": [rule8,],
-	"K": [rule8,],
-	"L": [rule8,],
-	"M": [rule8,],
-	"N": [rule8,],
-	"O": [rule5,rule7,rule8,],
-	"P": [rule8,],
-	"Q": [rule8,],
-	"R": [rule8,],
-	"S": [rule6,rule8,],
-	"T": [rule8,],
-	"U": [rule8,],
-	"V": [rule8,],
-	"W": [rule8,],
-	"X": [rule8,],
-	"Y": [rule8,],
-	"Z": [rule8,],
-	"a": [rule8,],
-	"b": [rule8,],
-	"c": [rule8,],
-	"d": [rule8,],
-	"e": [rule8,],
-	"f": [rule8,],
-	"g": [rule8,],
-	"h": [rule8,],
-	"i": [rule8,],
-	"j": [rule8,],
-	"k": [rule8,],
-	"l": [rule8,],
-	"m": [rule8,],
-	"n": [rule8,],
-	"o": [rule8,],
-	"p": [rule8,],
-	"q": [rule8,],
-	"r": [rule8,],
-	"s": [rule8,],
-	"t": [rule8,],
-	"u": [rule8,],
-	"v": [rule8,],
-	"w": [rule8,],
-	"x": [rule8,],
-	"y": [rule8,],
-	"z": [rule8,],
-	"{": [rule4,],
-	"}": [rule3,],
+	"\"": [smi-mib_rule1,],
+	"-": [smi-mib_rule0,smi-mib_rule8,],
+	"0": [smi-mib_rule8,],
+	"1": [smi-mib_rule8,],
+	"2": [smi-mib_rule8,],
+	"3": [smi-mib_rule8,],
+	"4": [smi-mib_rule8,],
+	"5": [smi-mib_rule8,],
+	"6": [smi-mib_rule8,],
+	"7": [smi-mib_rule8,],
+	"8": [smi-mib_rule8,],
+	"9": [smi-mib_rule8,],
+	":": [smi-mib_rule2,],
+	"@": [smi-mib_rule8,],
+	"A": [smi-mib_rule8,],
+	"B": [smi-mib_rule8,],
+	"C": [smi-mib_rule8,],
+	"D": [smi-mib_rule8,],
+	"E": [smi-mib_rule8,],
+	"F": [smi-mib_rule8,],
+	"G": [smi-mib_rule8,],
+	"H": [smi-mib_rule8,],
+	"I": [smi-mib_rule8,],
+	"J": [smi-mib_rule8,],
+	"K": [smi-mib_rule8,],
+	"L": [smi-mib_rule8,],
+	"M": [smi-mib_rule8,],
+	"N": [smi-mib_rule8,],
+	"O": [smi-mib_rule5,smi-mib_rule7,smi-mib_rule8,],
+	"P": [smi-mib_rule8,],
+	"Q": [smi-mib_rule8,],
+	"R": [smi-mib_rule8,],
+	"S": [smi-mib_rule6,smi-mib_rule8,],
+	"T": [smi-mib_rule8,],
+	"U": [smi-mib_rule8,],
+	"V": [smi-mib_rule8,],
+	"W": [smi-mib_rule8,],
+	"X": [smi-mib_rule8,],
+	"Y": [smi-mib_rule8,],
+	"Z": [smi-mib_rule8,],
+	"a": [smi-mib_rule8,],
+	"b": [smi-mib_rule8,],
+	"c": [smi-mib_rule8,],
+	"d": [smi-mib_rule8,],
+	"e": [smi-mib_rule8,],
+	"f": [smi-mib_rule8,],
+	"g": [smi-mib_rule8,],
+	"h": [smi-mib_rule8,],
+	"i": [smi-mib_rule8,],
+	"j": [smi-mib_rule8,],
+	"k": [smi-mib_rule8,],
+	"l": [smi-mib_rule8,],
+	"m": [smi-mib_rule8,],
+	"n": [smi-mib_rule8,],
+	"o": [smi-mib_rule8,],
+	"p": [smi-mib_rule8,],
+	"q": [smi-mib_rule8,],
+	"r": [smi-mib_rule8,],
+	"s": [smi-mib_rule8,],
+	"t": [smi-mib_rule8,],
+	"u": [smi-mib_rule8,],
+	"v": [smi-mib_rule8,],
+	"w": [smi-mib_rule8,],
+	"x": [smi-mib_rule8,],
+	"y": [smi-mib_rule8,],
+	"z": [smi-mib_rule8,],
+	"{": [smi-mib_rule4,],
+	"}": [smi-mib_rule3,],
 }
 
 # x.rulesDictDict for smi_mib mode.

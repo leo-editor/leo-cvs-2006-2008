@@ -703,195 +703,195 @@ keywordsDictDict = {
 
 # Rules for maple_main ruleset.
 
-def rule0(colorer, s, i):
+def maple_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule1(colorer, s, i):
+def maple_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule2(colorer, s, i):
+def maple_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="`", end="`",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule3(colorer, s, i):
+def maple_rule3(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="#",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule4(colorer, s, i):
+def maple_rule4(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule5(colorer, s, i):
+def maple_rule5(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule6(colorer, s, i):
+def maple_rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule7(colorer, s, i):
+def maple_rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule8(colorer, s, i):
+def maple_rule8(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule9(colorer, s, i):
+def maple_rule9(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule10(colorer, s, i):
+def maple_rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule11(colorer, s, i):
+def maple_rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule12(colorer, s, i):
+def maple_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule13(colorer, s, i):
+def maple_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule14(colorer, s, i):
+def maple_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule15(colorer, s, i):
+def maple_rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule16(colorer, s, i):
+def maple_rule16(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="@@",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule17(colorer, s, i):
+def maple_rule17(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="@",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule18(colorer, s, i):
+def maple_rule18(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="||",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule19(colorer, s, i):
+def maple_rule19(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=":=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule20(colorer, s, i):
+def maple_rule20(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="::",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule21(colorer, s, i):
+def maple_rule21(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=":-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule22(colorer, s, i):
+def maple_rule22(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="&",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule23(colorer, s, i):
+def maple_rule23(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="!",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule24(colorer, s, i):
+def maple_rule24(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"!": [rule23,],
-	"\"": [rule0,],
-	"#": [rule3,],
-	"$": [rule15,],
-	"&": [rule22,],
-	"'": [rule1,],
-	"*": [rule6,],
-	"+": [rule4,],
-	"-": [rule5,],
-	"/": [rule7,],
-	"0": [rule24,],
-	"1": [rule24,],
-	"2": [rule24,],
-	"3": [rule24,],
-	"4": [rule24,],
-	"5": [rule24,],
-	"6": [rule24,],
-	"7": [rule24,],
-	"8": [rule24,],
-	"9": [rule24,],
-	":": [rule19,rule20,rule21,],
-	"<": [rule9,rule10,rule11,],
-	"=": [rule14,],
-	">": [rule12,rule13,],
-	"@": [rule16,rule17,rule24,],
-	"A": [rule24,],
-	"B": [rule24,],
-	"C": [rule24,],
-	"D": [rule24,],
-	"E": [rule24,],
-	"F": [rule24,],
-	"G": [rule24,],
-	"H": [rule24,],
-	"I": [rule24,],
-	"J": [rule24,],
-	"K": [rule24,],
-	"L": [rule24,],
-	"M": [rule24,],
-	"N": [rule24,],
-	"O": [rule24,],
-	"P": [rule24,],
-	"Q": [rule24,],
-	"R": [rule24,],
-	"S": [rule24,],
-	"T": [rule24,],
-	"U": [rule24,],
-	"V": [rule24,],
-	"W": [rule24,],
-	"X": [rule24,],
-	"Y": [rule24,],
-	"Z": [rule24,],
-	"^": [rule8,],
-	"_": [rule24,],
-	"`": [rule2,rule24,],
-	"a": [rule24,],
-	"b": [rule24,],
-	"c": [rule24,],
-	"d": [rule24,],
-	"e": [rule24,],
-	"f": [rule24,],
-	"g": [rule24,],
-	"h": [rule24,],
-	"i": [rule24,],
-	"j": [rule24,],
-	"k": [rule24,],
-	"l": [rule24,],
-	"m": [rule24,],
-	"n": [rule24,],
-	"o": [rule24,],
-	"p": [rule24,],
-	"q": [rule24,],
-	"r": [rule24,],
-	"s": [rule24,],
-	"t": [rule24,],
-	"u": [rule24,],
-	"v": [rule24,],
-	"w": [rule24,],
-	"x": [rule24,],
-	"y": [rule24,],
-	"z": [rule24,],
-	"|": [rule18,],
+	"!": [maple_rule23,],
+	"\"": [maple_rule0,],
+	"#": [maple_rule3,],
+	"$": [maple_rule15,],
+	"&": [maple_rule22,],
+	"'": [maple_rule1,],
+	"*": [maple_rule6,],
+	"+": [maple_rule4,],
+	"-": [maple_rule5,],
+	"/": [maple_rule7,],
+	"0": [maple_rule24,],
+	"1": [maple_rule24,],
+	"2": [maple_rule24,],
+	"3": [maple_rule24,],
+	"4": [maple_rule24,],
+	"5": [maple_rule24,],
+	"6": [maple_rule24,],
+	"7": [maple_rule24,],
+	"8": [maple_rule24,],
+	"9": [maple_rule24,],
+	":": [maple_rule19,maple_rule20,maple_rule21,],
+	"<": [maple_rule9,maple_rule10,maple_rule11,],
+	"=": [maple_rule14,],
+	">": [maple_rule12,maple_rule13,],
+	"@": [maple_rule16,maple_rule17,maple_rule24,],
+	"A": [maple_rule24,],
+	"B": [maple_rule24,],
+	"C": [maple_rule24,],
+	"D": [maple_rule24,],
+	"E": [maple_rule24,],
+	"F": [maple_rule24,],
+	"G": [maple_rule24,],
+	"H": [maple_rule24,],
+	"I": [maple_rule24,],
+	"J": [maple_rule24,],
+	"K": [maple_rule24,],
+	"L": [maple_rule24,],
+	"M": [maple_rule24,],
+	"N": [maple_rule24,],
+	"O": [maple_rule24,],
+	"P": [maple_rule24,],
+	"Q": [maple_rule24,],
+	"R": [maple_rule24,],
+	"S": [maple_rule24,],
+	"T": [maple_rule24,],
+	"U": [maple_rule24,],
+	"V": [maple_rule24,],
+	"W": [maple_rule24,],
+	"X": [maple_rule24,],
+	"Y": [maple_rule24,],
+	"Z": [maple_rule24,],
+	"^": [maple_rule8,],
+	"_": [maple_rule24,],
+	"`": [maple_rule2,maple_rule24,],
+	"a": [maple_rule24,],
+	"b": [maple_rule24,],
+	"c": [maple_rule24,],
+	"d": [maple_rule24,],
+	"e": [maple_rule24,],
+	"f": [maple_rule24,],
+	"g": [maple_rule24,],
+	"h": [maple_rule24,],
+	"i": [maple_rule24,],
+	"j": [maple_rule24,],
+	"k": [maple_rule24,],
+	"l": [maple_rule24,],
+	"m": [maple_rule24,],
+	"n": [maple_rule24,],
+	"o": [maple_rule24,],
+	"p": [maple_rule24,],
+	"q": [maple_rule24,],
+	"r": [maple_rule24,],
+	"s": [maple_rule24,],
+	"t": [maple_rule24,],
+	"u": [maple_rule24,],
+	"v": [maple_rule24,],
+	"w": [maple_rule24,],
+	"x": [maple_rule24,],
+	"y": [maple_rule24,],
+	"z": [maple_rule24,],
+	"|": [maple_rule18,],
 }
 
 # x.rulesDictDict for maple mode.

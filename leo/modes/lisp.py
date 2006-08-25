@@ -997,144 +997,144 @@ keywordsDictDict = {
 
 # Rules for lisp_main ruleset.
 
-def rule0(colorer, s, i):
+def lisp_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="#|", end="|#",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule1(colorer, s, i):
+def lisp_rule1(colorer, s, i):
     return colorer.match_seq(s, i, kind="null", seq="'(",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule2(colorer, s, i):
+def lisp_rule2(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="literal1", pattern="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule3(colorer, s, i):
+def lisp_rule3(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword4", pattern="&",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule4(colorer, s, i):
+def lisp_rule4(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="`",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule5(colorer, s, i):
+def lisp_rule5(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="@",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule6(colorer, s, i):
+def lisp_rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule7(colorer, s, i):
+def lisp_rule7(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment4", seq=";;;;",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule8(colorer, s, i):
+def lisp_rule8(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment3", seq=";;;",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule9(colorer, s, i):
+def lisp_rule9(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment2", seq=";;",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule10(colorer, s, i):
+def lisp_rule10(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq=";",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule11(colorer, s, i):
+def lisp_rule11(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule12(colorer, s, i):
+def lisp_rule12(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"\"": [rule11,],
-	"#": [rule0,],
-	"%": [rule6,],
-	"&": [rule3,],
-	"'": [rule1,rule2,],
-	"*": [rule12,],
-	"+": [rule12,],
-	"-": [rule12,],
-	"/": [rule12,],
-	"0": [rule12,],
-	"1": [rule12,],
-	"2": [rule12,],
-	"3": [rule12,],
-	"4": [rule12,],
-	"5": [rule12,],
-	"6": [rule12,],
-	"7": [rule12,],
-	"8": [rule12,],
-	"9": [rule12,],
-	";": [rule7,rule8,rule9,rule10,],
-	"<": [rule12,],
-	"=": [rule12,],
-	">": [rule12,],
-	"@": [rule5,rule12,],
-	"A": [rule12,],
-	"B": [rule12,],
-	"C": [rule12,],
-	"D": [rule12,],
-	"E": [rule12,],
-	"F": [rule12,],
-	"G": [rule12,],
-	"H": [rule12,],
-	"I": [rule12,],
-	"J": [rule12,],
-	"K": [rule12,],
-	"L": [rule12,],
-	"M": [rule12,],
-	"N": [rule12,],
-	"O": [rule12,],
-	"P": [rule12,],
-	"Q": [rule12,],
-	"R": [rule12,],
-	"S": [rule12,],
-	"T": [rule12,],
-	"U": [rule12,],
-	"V": [rule12,],
-	"W": [rule12,],
-	"X": [rule12,],
-	"Y": [rule12,],
-	"Z": [rule12,],
-	"`": [rule4,],
-	"a": [rule12,],
-	"b": [rule12,],
-	"c": [rule12,],
-	"d": [rule12,],
-	"e": [rule12,],
-	"f": [rule12,],
-	"g": [rule12,],
-	"h": [rule12,],
-	"i": [rule12,],
-	"j": [rule12,],
-	"k": [rule12,],
-	"l": [rule12,],
-	"m": [rule12,],
-	"n": [rule12,],
-	"o": [rule12,],
-	"p": [rule12,],
-	"q": [rule12,],
-	"r": [rule12,],
-	"s": [rule12,],
-	"t": [rule12,],
-	"u": [rule12,],
-	"v": [rule12,],
-	"w": [rule12,],
-	"x": [rule12,],
-	"y": [rule12,],
-	"z": [rule12,],
+	"\"": [lisp_rule11,],
+	"#": [lisp_rule0,],
+	"%": [lisp_rule6,],
+	"&": [lisp_rule3,],
+	"'": [lisp_rule1,lisp_rule2,],
+	"*": [lisp_rule12,],
+	"+": [lisp_rule12,],
+	"-": [lisp_rule12,],
+	"/": [lisp_rule12,],
+	"0": [lisp_rule12,],
+	"1": [lisp_rule12,],
+	"2": [lisp_rule12,],
+	"3": [lisp_rule12,],
+	"4": [lisp_rule12,],
+	"5": [lisp_rule12,],
+	"6": [lisp_rule12,],
+	"7": [lisp_rule12,],
+	"8": [lisp_rule12,],
+	"9": [lisp_rule12,],
+	";": [lisp_rule7,lisp_rule8,lisp_rule9,lisp_rule10,],
+	"<": [lisp_rule12,],
+	"=": [lisp_rule12,],
+	">": [lisp_rule12,],
+	"@": [lisp_rule5,lisp_rule12,],
+	"A": [lisp_rule12,],
+	"B": [lisp_rule12,],
+	"C": [lisp_rule12,],
+	"D": [lisp_rule12,],
+	"E": [lisp_rule12,],
+	"F": [lisp_rule12,],
+	"G": [lisp_rule12,],
+	"H": [lisp_rule12,],
+	"I": [lisp_rule12,],
+	"J": [lisp_rule12,],
+	"K": [lisp_rule12,],
+	"L": [lisp_rule12,],
+	"M": [lisp_rule12,],
+	"N": [lisp_rule12,],
+	"O": [lisp_rule12,],
+	"P": [lisp_rule12,],
+	"Q": [lisp_rule12,],
+	"R": [lisp_rule12,],
+	"S": [lisp_rule12,],
+	"T": [lisp_rule12,],
+	"U": [lisp_rule12,],
+	"V": [lisp_rule12,],
+	"W": [lisp_rule12,],
+	"X": [lisp_rule12,],
+	"Y": [lisp_rule12,],
+	"Z": [lisp_rule12,],
+	"`": [lisp_rule4,],
+	"a": [lisp_rule12,],
+	"b": [lisp_rule12,],
+	"c": [lisp_rule12,],
+	"d": [lisp_rule12,],
+	"e": [lisp_rule12,],
+	"f": [lisp_rule12,],
+	"g": [lisp_rule12,],
+	"h": [lisp_rule12,],
+	"i": [lisp_rule12,],
+	"j": [lisp_rule12,],
+	"k": [lisp_rule12,],
+	"l": [lisp_rule12,],
+	"m": [lisp_rule12,],
+	"n": [lisp_rule12,],
+	"o": [lisp_rule12,],
+	"p": [lisp_rule12,],
+	"q": [lisp_rule12,],
+	"r": [lisp_rule12,],
+	"s": [lisp_rule12,],
+	"t": [lisp_rule12,],
+	"u": [lisp_rule12,],
+	"v": [lisp_rule12,],
+	"w": [lisp_rule12,],
+	"x": [lisp_rule12,],
+	"y": [lisp_rule12,],
+	"z": [lisp_rule12,],
 }
 
 # x.rulesDictDict for lisp mode.

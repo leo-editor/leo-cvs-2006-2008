@@ -494,194 +494,194 @@ keywordsDictDict = {
 
 # Rules for povray_main ruleset.
 
-def rule0(colorer, s, i):
+def povray_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule1(colorer, s, i):
+def povray_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule2(colorer, s, i):
+def povray_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule3(colorer, s, i):
+def povray_rule3(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment2", seq="//",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule4(colorer, s, i):
+def povray_rule4(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule5(colorer, s, i):
+def povray_rule5(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="!",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule6(colorer, s, i):
+def povray_rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule7(colorer, s, i):
+def povray_rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule8(colorer, s, i):
+def povray_rule8(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule9(colorer, s, i):
+def povray_rule9(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule10(colorer, s, i):
+def povray_rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule11(colorer, s, i):
+def povray_rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule12(colorer, s, i):
+def povray_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule13(colorer, s, i):
+def povray_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule14(colorer, s, i):
+def povray_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule15(colorer, s, i):
+def povray_rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="&",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule16(colorer, s, i):
+def povray_rule16(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="|",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule17(colorer, s, i):
+def povray_rule17(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule18(colorer, s, i):
+def povray_rule18(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="~",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule19(colorer, s, i):
+def povray_rule19(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule20(colorer, s, i):
+def povray_rule20(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="{",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule21(colorer, s, i):
+def povray_rule21(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="label", pattern=":",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule22(colorer, s, i):
+def povray_rule22(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="function", pattern="(",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule23(colorer, s, i):
+def povray_rule23(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"!": [rule5,],
-	"\"": [rule1,],
-	"#": [rule23,],
-	"%": [rule14,],
-	"&": [rule15,],
-	"'": [rule2,],
-	"(": [rule22,],
-	"*": [rule11,],
-	"+": [rule8,],
-	"-": [rule9,],
-	"/": [rule0,rule3,rule10,],
-	"0": [rule23,],
-	"1": [rule23,],
-	"2": [rule23,],
-	"3": [rule23,],
-	"4": [rule23,],
-	"5": [rule23,],
-	"6": [rule23,],
-	"7": [rule23,],
-	"8": [rule23,],
-	"9": [rule23,],
-	":": [rule21,],
-	"<": [rule7,rule13,],
-	"=": [rule4,],
-	">": [rule6,rule12,],
-	"@": [rule23,],
-	"A": [rule23,],
-	"B": [rule23,],
-	"C": [rule23,],
-	"D": [rule23,],
-	"E": [rule23,],
-	"F": [rule23,],
-	"G": [rule23,],
-	"H": [rule23,],
-	"I": [rule23,],
-	"J": [rule23,],
-	"K": [rule23,],
-	"L": [rule23,],
-	"M": [rule23,],
-	"N": [rule23,],
-	"O": [rule23,],
-	"P": [rule23,],
-	"Q": [rule23,],
-	"R": [rule23,],
-	"S": [rule23,],
-	"T": [rule23,],
-	"U": [rule23,],
-	"V": [rule23,],
-	"W": [rule23,],
-	"X": [rule23,],
-	"Y": [rule23,],
-	"Z": [rule23,],
-	"^": [rule17,],
-	"_": [rule23,],
-	"a": [rule23,],
-	"b": [rule23,],
-	"c": [rule23,],
-	"d": [rule23,],
-	"e": [rule23,],
-	"f": [rule23,],
-	"g": [rule23,],
-	"h": [rule23,],
-	"i": [rule23,],
-	"j": [rule23,],
-	"k": [rule23,],
-	"l": [rule23,],
-	"m": [rule23,],
-	"n": [rule23,],
-	"o": [rule23,],
-	"p": [rule23,],
-	"q": [rule23,],
-	"r": [rule23,],
-	"s": [rule23,],
-	"t": [rule23,],
-	"u": [rule23,],
-	"v": [rule23,],
-	"w": [rule23,],
-	"x": [rule23,],
-	"y": [rule23,],
-	"z": [rule23,],
-	"{": [rule20,],
-	"|": [rule16,],
-	"}": [rule19,],
-	"~": [rule18,],
+	"!": [povray_rule5,],
+	"\"": [povray_rule1,],
+	"#": [povray_rule23,],
+	"%": [povray_rule14,],
+	"&": [povray_rule15,],
+	"'": [povray_rule2,],
+	"(": [povray_rule22,],
+	"*": [povray_rule11,],
+	"+": [povray_rule8,],
+	"-": [povray_rule9,],
+	"/": [povray_rule0,povray_rule3,povray_rule10,],
+	"0": [povray_rule23,],
+	"1": [povray_rule23,],
+	"2": [povray_rule23,],
+	"3": [povray_rule23,],
+	"4": [povray_rule23,],
+	"5": [povray_rule23,],
+	"6": [povray_rule23,],
+	"7": [povray_rule23,],
+	"8": [povray_rule23,],
+	"9": [povray_rule23,],
+	":": [povray_rule21,],
+	"<": [povray_rule7,povray_rule13,],
+	"=": [povray_rule4,],
+	">": [povray_rule6,povray_rule12,],
+	"@": [povray_rule23,],
+	"A": [povray_rule23,],
+	"B": [povray_rule23,],
+	"C": [povray_rule23,],
+	"D": [povray_rule23,],
+	"E": [povray_rule23,],
+	"F": [povray_rule23,],
+	"G": [povray_rule23,],
+	"H": [povray_rule23,],
+	"I": [povray_rule23,],
+	"J": [povray_rule23,],
+	"K": [povray_rule23,],
+	"L": [povray_rule23,],
+	"M": [povray_rule23,],
+	"N": [povray_rule23,],
+	"O": [povray_rule23,],
+	"P": [povray_rule23,],
+	"Q": [povray_rule23,],
+	"R": [povray_rule23,],
+	"S": [povray_rule23,],
+	"T": [povray_rule23,],
+	"U": [povray_rule23,],
+	"V": [povray_rule23,],
+	"W": [povray_rule23,],
+	"X": [povray_rule23,],
+	"Y": [povray_rule23,],
+	"Z": [povray_rule23,],
+	"^": [povray_rule17,],
+	"_": [povray_rule23,],
+	"a": [povray_rule23,],
+	"b": [povray_rule23,],
+	"c": [povray_rule23,],
+	"d": [povray_rule23,],
+	"e": [povray_rule23,],
+	"f": [povray_rule23,],
+	"g": [povray_rule23,],
+	"h": [povray_rule23,],
+	"i": [povray_rule23,],
+	"j": [povray_rule23,],
+	"k": [povray_rule23,],
+	"l": [povray_rule23,],
+	"m": [povray_rule23,],
+	"n": [povray_rule23,],
+	"o": [povray_rule23,],
+	"p": [povray_rule23,],
+	"q": [povray_rule23,],
+	"r": [povray_rule23,],
+	"s": [povray_rule23,],
+	"t": [povray_rule23,],
+	"u": [povray_rule23,],
+	"v": [povray_rule23,],
+	"w": [povray_rule23,],
+	"x": [povray_rule23,],
+	"y": [povray_rule23,],
+	"z": [povray_rule23,],
+	"{": [povray_rule20,],
+	"|": [povray_rule16,],
+	"}": [povray_rule19,],
+	"~": [povray_rule18,],
 }
 
 # x.rulesDictDict for povray mode.

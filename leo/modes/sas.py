@@ -287,163 +287,163 @@ keywordsDictDict = {
 
 # Rules for sas_main ruleset.
 
-def rule0(colorer, s, i):
+def sas_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule1(colorer, s, i):
+def sas_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule2(colorer, s, i):
+def sas_rule2(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule3(colorer, s, i):
+def sas_rule3(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule4(colorer, s, i):
+def sas_rule4(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule5(colorer, s, i):
+def sas_rule5(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="_",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule6(colorer, s, i):
+def sas_rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="|",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule7(colorer, s, i):
+def sas_rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="~",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule8(colorer, s, i):
+def sas_rule8(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule9(colorer, s, i):
+def sas_rule9(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="@",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule10(colorer, s, i):
+def sas_rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="?",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule11(colorer, s, i):
+def sas_rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule12(colorer, s, i):
+def sas_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=".",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule13(colorer, s, i):
+def sas_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule14(colorer, s, i):
+def sas_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule15(colorer, s, i):
+def sas_rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule16(colorer, s, i):
+def sas_rule16(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="!",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule17(colorer, s, i):
+def sas_rule17(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"!": [rule16,],
-	"$": [rule17,],
-	"%": [rule17,],
-	"'": [rule1,],
-	"*": [rule15,],
-	"+": [rule14,],
-	"-": [rule13,],
-	".": [rule12,rule17,],
-	"/": [rule0,rule11,],
-	"0": [rule17,],
-	"1": [rule17,],
-	"2": [rule17,],
-	"3": [rule17,],
-	"4": [rule17,],
-	"5": [rule17,],
-	"6": [rule17,],
-	"7": [rule17,],
-	"8": [rule17,],
-	"9": [rule17,],
-	"<": [rule3,],
-	"=": [rule2,rule17,],
-	">": [rule4,],
-	"?": [rule10,],
-	"@": [rule9,rule17,],
-	"A": [rule17,],
-	"B": [rule17,],
-	"C": [rule17,],
-	"D": [rule17,],
-	"E": [rule17,],
-	"F": [rule17,],
-	"G": [rule17,],
-	"H": [rule17,],
-	"I": [rule17,],
-	"J": [rule17,],
-	"K": [rule17,],
-	"L": [rule17,],
-	"M": [rule17,],
-	"N": [rule17,],
-	"O": [rule17,],
-	"P": [rule17,],
-	"Q": [rule17,],
-	"R": [rule17,],
-	"S": [rule17,],
-	"T": [rule17,],
-	"U": [rule17,],
-	"V": [rule17,],
-	"W": [rule17,],
-	"X": [rule17,],
-	"Y": [rule17,],
-	"Z": [rule17,],
-	"^": [rule8,],
-	"_": [rule5,rule17,],
-	"a": [rule17,],
-	"b": [rule17,],
-	"c": [rule17,],
-	"d": [rule17,],
-	"e": [rule17,],
-	"f": [rule17,],
-	"g": [rule17,],
-	"h": [rule17,],
-	"i": [rule17,],
-	"j": [rule17,],
-	"k": [rule17,],
-	"l": [rule17,],
-	"m": [rule17,],
-	"n": [rule17,],
-	"o": [rule17,],
-	"p": [rule17,],
-	"q": [rule17,],
-	"r": [rule17,],
-	"s": [rule17,],
-	"t": [rule17,],
-	"u": [rule17,],
-	"v": [rule17,],
-	"w": [rule17,],
-	"x": [rule17,],
-	"y": [rule17,],
-	"z": [rule17,],
-	"|": [rule6,],
-	"~": [rule7,],
+	"!": [sas_rule16,],
+	"$": [sas_rule17,],
+	"%": [sas_rule17,],
+	"'": [sas_rule1,],
+	"*": [sas_rule15,],
+	"+": [sas_rule14,],
+	"-": [sas_rule13,],
+	".": [sas_rule12,sas_rule17,],
+	"/": [sas_rule0,sas_rule11,],
+	"0": [sas_rule17,],
+	"1": [sas_rule17,],
+	"2": [sas_rule17,],
+	"3": [sas_rule17,],
+	"4": [sas_rule17,],
+	"5": [sas_rule17,],
+	"6": [sas_rule17,],
+	"7": [sas_rule17,],
+	"8": [sas_rule17,],
+	"9": [sas_rule17,],
+	"<": [sas_rule3,],
+	"=": [sas_rule2,sas_rule17,],
+	">": [sas_rule4,],
+	"?": [sas_rule10,],
+	"@": [sas_rule9,sas_rule17,],
+	"A": [sas_rule17,],
+	"B": [sas_rule17,],
+	"C": [sas_rule17,],
+	"D": [sas_rule17,],
+	"E": [sas_rule17,],
+	"F": [sas_rule17,],
+	"G": [sas_rule17,],
+	"H": [sas_rule17,],
+	"I": [sas_rule17,],
+	"J": [sas_rule17,],
+	"K": [sas_rule17,],
+	"L": [sas_rule17,],
+	"M": [sas_rule17,],
+	"N": [sas_rule17,],
+	"O": [sas_rule17,],
+	"P": [sas_rule17,],
+	"Q": [sas_rule17,],
+	"R": [sas_rule17,],
+	"S": [sas_rule17,],
+	"T": [sas_rule17,],
+	"U": [sas_rule17,],
+	"V": [sas_rule17,],
+	"W": [sas_rule17,],
+	"X": [sas_rule17,],
+	"Y": [sas_rule17,],
+	"Z": [sas_rule17,],
+	"^": [sas_rule8,],
+	"_": [sas_rule5,sas_rule17,],
+	"a": [sas_rule17,],
+	"b": [sas_rule17,],
+	"c": [sas_rule17,],
+	"d": [sas_rule17,],
+	"e": [sas_rule17,],
+	"f": [sas_rule17,],
+	"g": [sas_rule17,],
+	"h": [sas_rule17,],
+	"i": [sas_rule17,],
+	"j": [sas_rule17,],
+	"k": [sas_rule17,],
+	"l": [sas_rule17,],
+	"m": [sas_rule17,],
+	"n": [sas_rule17,],
+	"o": [sas_rule17,],
+	"p": [sas_rule17,],
+	"q": [sas_rule17,],
+	"r": [sas_rule17,],
+	"s": [sas_rule17,],
+	"t": [sas_rule17,],
+	"u": [sas_rule17,],
+	"v": [sas_rule17,],
+	"w": [sas_rule17,],
+	"x": [sas_rule17,],
+	"y": [sas_rule17,],
+	"z": [sas_rule17,],
+	"|": [sas_rule6,],
+	"~": [sas_rule7,],
 }
 
 # x.rulesDictDict for sas mode.

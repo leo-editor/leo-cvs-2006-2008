@@ -112,287 +112,287 @@ keywordsDictDict = {
 
 # Rules for haskell_main ruleset.
 
-def rule0(colorer, s, i):
+def haskell_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment2", begin="{-#", end="#-}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule1(colorer, s, i):
+def haskell_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="{-", end="-}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule2(colorer, s, i):
+def haskell_rule2(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="--",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule3(colorer, s, i):
+def haskell_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule4(colorer, s, i):
+def haskell_rule4(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal1", seq="' '",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule5(colorer, s, i):
+def haskell_rule5(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal1", seq="'!'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule6(colorer, s, i):
+def haskell_rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal1", seq="'\"'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule7(colorer, s, i):
+def haskell_rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal1", seq="'$'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule8(colorer, s, i):
+def haskell_rule8(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal1", seq="'%'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule9(colorer, s, i):
+def haskell_rule9(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal1", seq="'/'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule10(colorer, s, i):
+def haskell_rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal1", seq="'('",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule11(colorer, s, i):
+def haskell_rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal1", seq="')'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule12(colorer, s, i):
+def haskell_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal1", seq="'['",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule13(colorer, s, i):
+def haskell_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal1", seq="']'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule14(colorer, s, i):
+def haskell_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal1", seq="'+'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule15(colorer, s, i):
+def haskell_rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal1", seq="'-'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule16(colorer, s, i):
+def haskell_rule16(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal1", seq="'*'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule17(colorer, s, i):
+def haskell_rule17(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal1", seq="'='",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule18(colorer, s, i):
+def haskell_rule18(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal1", seq="'/'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule19(colorer, s, i):
+def haskell_rule19(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal1", seq="'^'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule20(colorer, s, i):
+def haskell_rule20(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal1", seq="'.'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule21(colorer, s, i):
+def haskell_rule21(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal1", seq="','",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule22(colorer, s, i):
+def haskell_rule22(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal1", seq="':'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule23(colorer, s, i):
+def haskell_rule23(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal1", seq="';'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule24(colorer, s, i):
+def haskell_rule24(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal1", seq="'<'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule25(colorer, s, i):
+def haskell_rule25(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal1", seq="'>'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule26(colorer, s, i):
+def haskell_rule26(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal1", seq="'|'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule27(colorer, s, i):
+def haskell_rule27(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal1", seq="'@'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule28(colorer, s, i):
+def haskell_rule28(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=True)
 
-def rule29(colorer, s, i):
+def haskell_rule29(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="..",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule30(colorer, s, i):
+def haskell_rule30(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="&&",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule31(colorer, s, i):
+def haskell_rule31(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="::",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule32(colorer, s, i):
+def haskell_rule32(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule33(colorer, s, i):
+def haskell_rule33(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule34(colorer, s, i):
+def haskell_rule34(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule35(colorer, s, i):
+def haskell_rule35(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule36(colorer, s, i):
+def haskell_rule36(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule37(colorer, s, i):
+def haskell_rule37(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule38(colorer, s, i):
+def haskell_rule38(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule39(colorer, s, i):
+def haskell_rule39(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule40(colorer, s, i):
+def haskell_rule40(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule41(colorer, s, i):
+def haskell_rule41(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="|",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule42(colorer, s, i):
+def haskell_rule42(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="@",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule43(colorer, s, i):
+def haskell_rule43(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="~",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule44(colorer, s, i):
+def haskell_rule44(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="!",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule45(colorer, s, i):
+def haskell_rule45(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule46(colorer, s, i):
+def haskell_rule46(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"!": [rule44,],
-	"\"": [rule3,],
-	"$": [rule45,],
-	"%": [rule38,],
-	"&": [rule30,],
-	"'": [rule4,rule5,rule6,rule7,rule8,rule9,rule10,rule11,rule12,rule13,rule14,rule15,rule16,rule17,rule18,rule19,rule20,rule21,rule22,rule23,rule24,rule25,rule26,rule27,rule28,],
-	"*": [rule36,],
-	"+": [rule34,],
-	"-": [rule2,rule35,],
-	".": [rule29,],
-	"/": [rule37,],
-	"0": [rule46,],
-	"1": [rule46,],
-	"2": [rule46,],
-	"3": [rule46,],
-	"4": [rule46,],
-	"5": [rule46,],
-	"6": [rule46,],
-	"7": [rule46,],
-	"8": [rule46,],
-	"9": [rule46,],
-	":": [rule31,rule46,],
-	"<": [rule32,],
-	"=": [rule40,],
-	">": [rule33,],
-	"@": [rule42,rule46,],
-	"A": [rule46,],
-	"B": [rule46,],
-	"C": [rule46,],
-	"D": [rule46,],
-	"E": [rule46,],
-	"F": [rule46,],
-	"G": [rule46,],
-	"H": [rule46,],
-	"I": [rule46,],
-	"J": [rule46,],
-	"K": [rule46,],
-	"L": [rule46,],
-	"M": [rule46,],
-	"N": [rule46,],
-	"O": [rule46,],
-	"P": [rule46,],
-	"Q": [rule46,],
-	"R": [rule46,],
-	"S": [rule46,],
-	"T": [rule46,],
-	"U": [rule46,],
-	"V": [rule46,],
-	"W": [rule46,],
-	"X": [rule46,],
-	"Y": [rule46,],
-	"Z": [rule46,],
-	"^": [rule39,],
-	"_": [rule46,],
-	"a": [rule46,],
-	"b": [rule46,],
-	"c": [rule46,],
-	"d": [rule46,],
-	"e": [rule46,],
-	"f": [rule46,],
-	"g": [rule46,],
-	"h": [rule46,],
-	"i": [rule46,],
-	"j": [rule46,],
-	"k": [rule46,],
-	"l": [rule46,],
-	"m": [rule46,],
-	"n": [rule46,],
-	"o": [rule46,],
-	"p": [rule46,],
-	"q": [rule46,],
-	"r": [rule46,],
-	"s": [rule46,],
-	"t": [rule46,],
-	"u": [rule46,],
-	"v": [rule46,],
-	"w": [rule46,],
-	"x": [rule46,],
-	"y": [rule46,],
-	"z": [rule46,],
-	"{": [rule0,rule1,],
-	"|": [rule41,],
-	"~": [rule43,],
+	"!": [haskell_rule44,],
+	"\"": [haskell_rule3,],
+	"$": [haskell_rule45,],
+	"%": [haskell_rule38,],
+	"&": [haskell_rule30,],
+	"'": [haskell_rule4,haskell_rule5,haskell_rule6,haskell_rule7,haskell_rule8,haskell_rule9,haskell_rule10,haskell_rule11,haskell_rule12,haskell_rule13,haskell_rule14,haskell_rule15,haskell_rule16,haskell_rule17,haskell_rule18,haskell_rule19,haskell_rule20,haskell_rule21,haskell_rule22,haskell_rule23,haskell_rule24,haskell_rule25,haskell_rule26,haskell_rule27,haskell_rule28,],
+	"*": [haskell_rule36,],
+	"+": [haskell_rule34,],
+	"-": [haskell_rule2,haskell_rule35,],
+	".": [haskell_rule29,],
+	"/": [haskell_rule37,],
+	"0": [haskell_rule46,],
+	"1": [haskell_rule46,],
+	"2": [haskell_rule46,],
+	"3": [haskell_rule46,],
+	"4": [haskell_rule46,],
+	"5": [haskell_rule46,],
+	"6": [haskell_rule46,],
+	"7": [haskell_rule46,],
+	"8": [haskell_rule46,],
+	"9": [haskell_rule46,],
+	":": [haskell_rule31,haskell_rule46,],
+	"<": [haskell_rule32,],
+	"=": [haskell_rule40,],
+	">": [haskell_rule33,],
+	"@": [haskell_rule42,haskell_rule46,],
+	"A": [haskell_rule46,],
+	"B": [haskell_rule46,],
+	"C": [haskell_rule46,],
+	"D": [haskell_rule46,],
+	"E": [haskell_rule46,],
+	"F": [haskell_rule46,],
+	"G": [haskell_rule46,],
+	"H": [haskell_rule46,],
+	"I": [haskell_rule46,],
+	"J": [haskell_rule46,],
+	"K": [haskell_rule46,],
+	"L": [haskell_rule46,],
+	"M": [haskell_rule46,],
+	"N": [haskell_rule46,],
+	"O": [haskell_rule46,],
+	"P": [haskell_rule46,],
+	"Q": [haskell_rule46,],
+	"R": [haskell_rule46,],
+	"S": [haskell_rule46,],
+	"T": [haskell_rule46,],
+	"U": [haskell_rule46,],
+	"V": [haskell_rule46,],
+	"W": [haskell_rule46,],
+	"X": [haskell_rule46,],
+	"Y": [haskell_rule46,],
+	"Z": [haskell_rule46,],
+	"^": [haskell_rule39,],
+	"_": [haskell_rule46,],
+	"a": [haskell_rule46,],
+	"b": [haskell_rule46,],
+	"c": [haskell_rule46,],
+	"d": [haskell_rule46,],
+	"e": [haskell_rule46,],
+	"f": [haskell_rule46,],
+	"g": [haskell_rule46,],
+	"h": [haskell_rule46,],
+	"i": [haskell_rule46,],
+	"j": [haskell_rule46,],
+	"k": [haskell_rule46,],
+	"l": [haskell_rule46,],
+	"m": [haskell_rule46,],
+	"n": [haskell_rule46,],
+	"o": [haskell_rule46,],
+	"p": [haskell_rule46,],
+	"q": [haskell_rule46,],
+	"r": [haskell_rule46,],
+	"s": [haskell_rule46,],
+	"t": [haskell_rule46,],
+	"u": [haskell_rule46,],
+	"v": [haskell_rule46,],
+	"w": [haskell_rule46,],
+	"x": [haskell_rule46,],
+	"y": [haskell_rule46,],
+	"z": [haskell_rule46,],
+	"{": [haskell_rule0,haskell_rule1,],
+	"|": [haskell_rule41,],
+	"~": [haskell_rule43,],
 }
 
 # x.rulesDictDict for haskell mode.

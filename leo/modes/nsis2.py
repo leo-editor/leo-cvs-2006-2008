@@ -452,139 +452,139 @@ keywordsDictDict = {
 
 # Rules for nsis2_main ruleset.
 
-def rule0(colorer, s, i):
+def nsis2_rule0(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq=";",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule1(colorer, s, i):
+def nsis2_rule1(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment2", seq="#",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule2(colorer, s, i):
+def nsis2_rule2(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword3", pattern="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule3(colorer, s, i):
+def nsis2_rule3(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="function", pattern="::",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule4(colorer, s, i):
+def nsis2_rule4(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="label", pattern=":",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule5(colorer, s, i):
+def nsis2_rule5(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="NSIS_LITERAL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule6(colorer, s, i):
+def nsis2_rule6(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="NSIS_LITERAL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule7(colorer, s, i):
+def nsis2_rule7(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="`", end="`",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="NSIS_LITERAL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule8(colorer, s, i):
+def nsis2_rule8(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"!": [rule8,],
-	"\"": [rule5,],
-	"#": [rule1,],
-	"$": [rule2,rule8,],
-	"'": [rule6,],
-	".": [rule8,],
-	"/": [rule8,],
-	"0": [rule8,],
-	"1": [rule8,],
-	"2": [rule8,],
-	"3": [rule8,],
-	"4": [rule8,],
-	"5": [rule8,],
-	"6": [rule8,],
-	"7": [rule8,],
-	"8": [rule8,],
-	"9": [rule8,],
-	":": [rule3,rule4,],
-	";": [rule0,],
-	"@": [rule8,],
-	"A": [rule8,],
-	"B": [rule8,],
-	"C": [rule8,],
-	"D": [rule8,],
-	"E": [rule8,],
-	"F": [rule8,],
-	"G": [rule8,],
-	"H": [rule8,],
-	"I": [rule8,],
-	"J": [rule8,],
-	"K": [rule8,],
-	"L": [rule8,],
-	"M": [rule8,],
-	"N": [rule8,],
-	"O": [rule8,],
-	"P": [rule8,],
-	"Q": [rule8,],
-	"R": [rule8,],
-	"S": [rule8,],
-	"T": [rule8,],
-	"U": [rule8,],
-	"V": [rule8,],
-	"W": [rule8,],
-	"X": [rule8,],
-	"Y": [rule8,],
-	"Z": [rule8,],
-	"\\": [rule8,],
-	"_": [rule8,],
-	"`": [rule7,],
-	"a": [rule8,],
-	"b": [rule8,],
-	"c": [rule8,],
-	"d": [rule8,],
-	"e": [rule8,],
-	"f": [rule8,],
-	"g": [rule8,],
-	"h": [rule8,],
-	"i": [rule8,],
-	"j": [rule8,],
-	"k": [rule8,],
-	"l": [rule8,],
-	"m": [rule8,],
-	"n": [rule8,],
-	"o": [rule8,],
-	"p": [rule8,],
-	"q": [rule8,],
-	"r": [rule8,],
-	"s": [rule8,],
-	"t": [rule8,],
-	"u": [rule8,],
-	"v": [rule8,],
-	"w": [rule8,],
-	"x": [rule8,],
-	"y": [rule8,],
-	"z": [rule8,],
-	"{": [rule8,],
-	"}": [rule8,],
+	"!": [nsis2_rule8,],
+	"\"": [nsis2_rule5,],
+	"#": [nsis2_rule1,],
+	"$": [nsis2_rule2,nsis2_rule8,],
+	"'": [nsis2_rule6,],
+	".": [nsis2_rule8,],
+	"/": [nsis2_rule8,],
+	"0": [nsis2_rule8,],
+	"1": [nsis2_rule8,],
+	"2": [nsis2_rule8,],
+	"3": [nsis2_rule8,],
+	"4": [nsis2_rule8,],
+	"5": [nsis2_rule8,],
+	"6": [nsis2_rule8,],
+	"7": [nsis2_rule8,],
+	"8": [nsis2_rule8,],
+	"9": [nsis2_rule8,],
+	":": [nsis2_rule3,nsis2_rule4,],
+	";": [nsis2_rule0,],
+	"@": [nsis2_rule8,],
+	"A": [nsis2_rule8,],
+	"B": [nsis2_rule8,],
+	"C": [nsis2_rule8,],
+	"D": [nsis2_rule8,],
+	"E": [nsis2_rule8,],
+	"F": [nsis2_rule8,],
+	"G": [nsis2_rule8,],
+	"H": [nsis2_rule8,],
+	"I": [nsis2_rule8,],
+	"J": [nsis2_rule8,],
+	"K": [nsis2_rule8,],
+	"L": [nsis2_rule8,],
+	"M": [nsis2_rule8,],
+	"N": [nsis2_rule8,],
+	"O": [nsis2_rule8,],
+	"P": [nsis2_rule8,],
+	"Q": [nsis2_rule8,],
+	"R": [nsis2_rule8,],
+	"S": [nsis2_rule8,],
+	"T": [nsis2_rule8,],
+	"U": [nsis2_rule8,],
+	"V": [nsis2_rule8,],
+	"W": [nsis2_rule8,],
+	"X": [nsis2_rule8,],
+	"Y": [nsis2_rule8,],
+	"Z": [nsis2_rule8,],
+	"\\": [nsis2_rule8,],
+	"_": [nsis2_rule8,],
+	"`": [nsis2_rule7,],
+	"a": [nsis2_rule8,],
+	"b": [nsis2_rule8,],
+	"c": [nsis2_rule8,],
+	"d": [nsis2_rule8,],
+	"e": [nsis2_rule8,],
+	"f": [nsis2_rule8,],
+	"g": [nsis2_rule8,],
+	"h": [nsis2_rule8,],
+	"i": [nsis2_rule8,],
+	"j": [nsis2_rule8,],
+	"k": [nsis2_rule8,],
+	"l": [nsis2_rule8,],
+	"m": [nsis2_rule8,],
+	"n": [nsis2_rule8,],
+	"o": [nsis2_rule8,],
+	"p": [nsis2_rule8,],
+	"q": [nsis2_rule8,],
+	"r": [nsis2_rule8,],
+	"s": [nsis2_rule8,],
+	"t": [nsis2_rule8,],
+	"u": [nsis2_rule8,],
+	"v": [nsis2_rule8,],
+	"w": [nsis2_rule8,],
+	"x": [nsis2_rule8,],
+	"y": [nsis2_rule8,],
+	"z": [nsis2_rule8,],
+	"{": [nsis2_rule8,],
+	"}": [nsis2_rule8,],
 }
 
 # Rules for nsis2_nsis_literal ruleset.
 
-def rule9(colorer, s, i):
+def nsis2_rule9(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword3", pattern="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 # Rules dict for nsis_literal ruleset.
 rulesDict2 = {
-	"$": [rule9,],
+	"$": [nsis2_rule9,],
 }
 
 # x.rulesDictDict for nsis2 mode.

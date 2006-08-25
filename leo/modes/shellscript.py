@@ -78,283 +78,283 @@ keywordsDictDict = {
 
 # Rules for shellscript_main ruleset.
 
-def rule0(colorer, s, i):
+def shellscript_rule0(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment2", seq="#!",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule1(colorer, s, i):
+def shellscript_rule1(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="#",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule2(colorer, s, i):
+def shellscript_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="${", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule3(colorer, s, i):
+def shellscript_rule3(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword2", pattern="$#",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule4(colorer, s, i):
+def shellscript_rule4(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword2", pattern="$?",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule5(colorer, s, i):
+def shellscript_rule5(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword2", pattern="$*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule6(colorer, s, i):
+def shellscript_rule6(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword2", pattern="$@",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule7(colorer, s, i):
+def shellscript_rule7(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword2", pattern="$$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule8(colorer, s, i):
+def shellscript_rule8(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword2", pattern="$<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule9(colorer, s, i):
+def shellscript_rule9(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword2", pattern="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule10(colorer, s, i):
+def shellscript_rule10(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="keyword2", pattern="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule11(colorer, s, i):
+def shellscript_rule11(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword3", begin="$((", end="))",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="EXEC",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule12(colorer, s, i):
+def shellscript_rule12(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword3", begin="$(", end=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="EXEC",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule13(colorer, s, i):
+def shellscript_rule13(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword3", begin="$[", end="]",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="EXEC",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule14(colorer, s, i):
+def shellscript_rule14(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword3", begin="`", end="`",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="EXEC",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule15(colorer, s, i):
+def shellscript_rule15(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="LITERAL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule16(colorer, s, i):
+def shellscript_rule16(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule17(colorer, s, i):
+def shellscript_rule17(colorer, s, i):
     return colorer.match_span_regexp(s, i, kind="literal1", begin="<<[[:space:]'\"]*([[:alnum:]_]+)[[:space:]'\"]*", end="$1", hash_char="< ",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="LITERAL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule18(colorer, s, i):
+def shellscript_rule18(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="|",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule19(colorer, s, i):
+def shellscript_rule19(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="&",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule20(colorer, s, i):
+def shellscript_rule20(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="!",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule21(colorer, s, i):
+def shellscript_rule21(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule22(colorer, s, i):
+def shellscript_rule22(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule23(colorer, s, i):
+def shellscript_rule23(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword2", pattern="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule24(colorer, s, i):
+def shellscript_rule24(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="function", pattern="(",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule25(colorer, s, i):
+def shellscript_rule25(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"!": [rule20,],
-	"\"": [rule15,],
-	"#": [rule0,rule1,],
-	"$": [rule2,rule3,rule4,rule5,rule6,rule7,rule8,rule9,rule11,rule12,rule13,],
-	"%": [rule23,],
-	"&": [rule19,],
-	"'": [rule16,],
-	"(": [rule24,],
-	"0": [rule25,],
-	"1": [rule25,],
-	"2": [rule25,],
-	"3": [rule25,],
-	"4": [rule25,],
-	"5": [rule25,],
-	"6": [rule25,],
-	"7": [rule25,],
-	"8": [rule25,],
-	"9": [rule25,],
-	";": [rule25,],
-	"<": [rule17,rule22,],
-	"=": [rule10,],
-	">": [rule21,],
-	"@": [rule25,],
-	"A": [rule25,],
-	"B": [rule25,],
-	"C": [rule25,],
-	"D": [rule25,],
-	"E": [rule25,],
-	"F": [rule25,],
-	"G": [rule25,],
-	"H": [rule25,],
-	"I": [rule25,],
-	"J": [rule25,],
-	"K": [rule25,],
-	"L": [rule25,],
-	"M": [rule25,],
-	"N": [rule25,],
-	"O": [rule25,],
-	"P": [rule25,],
-	"Q": [rule25,],
-	"R": [rule25,],
-	"S": [rule25,],
-	"T": [rule25,],
-	"U": [rule25,],
-	"V": [rule25,],
-	"W": [rule25,],
-	"X": [rule25,],
-	"Y": [rule25,],
-	"Z": [rule25,],
-	"`": [rule14,],
-	"a": [rule25,],
-	"b": [rule25,],
-	"c": [rule25,],
-	"d": [rule25,],
-	"e": [rule25,],
-	"f": [rule25,],
-	"g": [rule25,],
-	"h": [rule25,],
-	"i": [rule25,],
-	"j": [rule25,],
-	"k": [rule25,],
-	"l": [rule25,],
-	"m": [rule25,],
-	"n": [rule25,],
-	"o": [rule25,],
-	"p": [rule25,],
-	"q": [rule25,],
-	"r": [rule25,],
-	"s": [rule25,],
-	"t": [rule25,],
-	"u": [rule25,],
-	"v": [rule25,],
-	"w": [rule25,],
-	"x": [rule25,],
-	"y": [rule25,],
-	"z": [rule25,],
-	"|": [rule18,],
+	"!": [shellscript_rule20,],
+	"\"": [shellscript_rule15,],
+	"#": [shellscript_rule0,shellscript_rule1,],
+	"$": [shellscript_rule2,shellscript_rule3,shellscript_rule4,shellscript_rule5,shellscript_rule6,shellscript_rule7,shellscript_rule8,shellscript_rule9,shellscript_rule11,shellscript_rule12,shellscript_rule13,],
+	"%": [shellscript_rule23,],
+	"&": [shellscript_rule19,],
+	"'": [shellscript_rule16,],
+	"(": [shellscript_rule24,],
+	"0": [shellscript_rule25,],
+	"1": [shellscript_rule25,],
+	"2": [shellscript_rule25,],
+	"3": [shellscript_rule25,],
+	"4": [shellscript_rule25,],
+	"5": [shellscript_rule25,],
+	"6": [shellscript_rule25,],
+	"7": [shellscript_rule25,],
+	"8": [shellscript_rule25,],
+	"9": [shellscript_rule25,],
+	";": [shellscript_rule25,],
+	"<": [shellscript_rule17,shellscript_rule22,],
+	"=": [shellscript_rule10,],
+	">": [shellscript_rule21,],
+	"@": [shellscript_rule25,],
+	"A": [shellscript_rule25,],
+	"B": [shellscript_rule25,],
+	"C": [shellscript_rule25,],
+	"D": [shellscript_rule25,],
+	"E": [shellscript_rule25,],
+	"F": [shellscript_rule25,],
+	"G": [shellscript_rule25,],
+	"H": [shellscript_rule25,],
+	"I": [shellscript_rule25,],
+	"J": [shellscript_rule25,],
+	"K": [shellscript_rule25,],
+	"L": [shellscript_rule25,],
+	"M": [shellscript_rule25,],
+	"N": [shellscript_rule25,],
+	"O": [shellscript_rule25,],
+	"P": [shellscript_rule25,],
+	"Q": [shellscript_rule25,],
+	"R": [shellscript_rule25,],
+	"S": [shellscript_rule25,],
+	"T": [shellscript_rule25,],
+	"U": [shellscript_rule25,],
+	"V": [shellscript_rule25,],
+	"W": [shellscript_rule25,],
+	"X": [shellscript_rule25,],
+	"Y": [shellscript_rule25,],
+	"Z": [shellscript_rule25,],
+	"`": [shellscript_rule14,],
+	"a": [shellscript_rule25,],
+	"b": [shellscript_rule25,],
+	"c": [shellscript_rule25,],
+	"d": [shellscript_rule25,],
+	"e": [shellscript_rule25,],
+	"f": [shellscript_rule25,],
+	"g": [shellscript_rule25,],
+	"h": [shellscript_rule25,],
+	"i": [shellscript_rule25,],
+	"j": [shellscript_rule25,],
+	"k": [shellscript_rule25,],
+	"l": [shellscript_rule25,],
+	"m": [shellscript_rule25,],
+	"n": [shellscript_rule25,],
+	"o": [shellscript_rule25,],
+	"p": [shellscript_rule25,],
+	"q": [shellscript_rule25,],
+	"r": [shellscript_rule25,],
+	"s": [shellscript_rule25,],
+	"t": [shellscript_rule25,],
+	"u": [shellscript_rule25,],
+	"v": [shellscript_rule25,],
+	"w": [shellscript_rule25,],
+	"x": [shellscript_rule25,],
+	"y": [shellscript_rule25,],
+	"z": [shellscript_rule25,],
+	"|": [shellscript_rule18,],
 }
 
 # Rules for shellscript_literal ruleset.
 
-def rule26(colorer, s, i):
+def shellscript_rule26(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="${", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule27(colorer, s, i):
+def shellscript_rule27(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword2", pattern="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 # Rules dict for literal ruleset.
 rulesDict2 = {
-	"$": [rule26,rule27,],
+	"$": [shellscript_rule26,shellscript_rule27,],
 }
 
 # Rules for shellscript_exec ruleset.
 
-def rule28(colorer, s, i):
+def shellscript_rule28(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="${", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule29(colorer, s, i):
+def shellscript_rule29(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword3", begin="$((", end="))",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule30(colorer, s, i):
+def shellscript_rule30(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword3", begin="$(", end=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule31(colorer, s, i):
+def shellscript_rule31(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword3", begin="$[", end="]",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule32(colorer, s, i):
+def shellscript_rule32(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword2", pattern="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule33(colorer, s, i):
+def shellscript_rule33(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="|",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule34(colorer, s, i):
+def shellscript_rule34(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="&",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule35(colorer, s, i):
+def shellscript_rule35(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="!",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule36(colorer, s, i):
+def shellscript_rule36(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule37(colorer, s, i):
+def shellscript_rule37(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules dict for exec ruleset.
 rulesDict3 = {
-	"!": [rule35,],
-	"$": [rule28,rule29,rule30,rule31,rule32,],
-	"&": [rule34,],
-	"<": [rule37,],
-	">": [rule36,],
-	"|": [rule33,],
+	"!": [shellscript_rule35,],
+	"$": [shellscript_rule28,shellscript_rule29,shellscript_rule30,shellscript_rule31,shellscript_rule32,],
+	"&": [shellscript_rule34,],
+	"<": [shellscript_rule37,],
+	">": [shellscript_rule36,],
+	"|": [shellscript_rule33,],
 }
 
 # x.rulesDictDict for shellscript mode.

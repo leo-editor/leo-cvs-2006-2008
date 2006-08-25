@@ -203,190 +203,190 @@ keywordsDictDict = {
 
 # Rules for applescript_main ruleset.
 
-def rule0(colorer, s, i):
+def applescript_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="(*", end="*)",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule1(colorer, s, i):
+def applescript_rule1(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="--",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule2(colorer, s, i):
+def applescript_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule3(colorer, s, i):
+def applescript_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule4(colorer, s, i):
+def applescript_rule4(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="(",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule5(colorer, s, i):
+def applescript_rule5(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule6(colorer, s, i):
+def applescript_rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule7(colorer, s, i):
+def applescript_rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule8(colorer, s, i):
+def applescript_rule8(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule9(colorer, s, i):
+def applescript_rule9(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule10(colorer, s, i):
+def applescript_rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule11(colorer, s, i):
+def applescript_rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="&",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule12(colorer, s, i):
+def applescript_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule13(colorer, s, i):
+def applescript_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule14(colorer, s, i):
+def applescript_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule15(colorer, s, i):
+def applescript_rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule16(colorer, s, i):
+def applescript_rule16(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule17(colorer, s, i):
+def applescript_rule17(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="literal2", regexp="application[\\t\\s]+responses", hash_char="a",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule18(colorer, s, i):
+def applescript_rule18(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="literal2", regexp="current[\\t\\s]+application", hash_char="c",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule19(colorer, s, i):
+def applescript_rule19(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="literal2", regexp="white[\\t\\s]+space", hash_char="w",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule20(colorer, s, i):
+def applescript_rule20(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="literal2", regexp="all[\\t\\s]+caps", hash_char="a",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule21(colorer, s, i):
+def applescript_rule21(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="literal2", regexp="all[\\t\\s]+lowercase", hash_char="a",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule22(colorer, s, i):
+def applescript_rule22(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="literal2", regexp="small[\\t\\s]+caps", hash_char="s",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule23(colorer, s, i):
+def applescript_rule23(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword3", regexp="missing[\\t\\s]+value", hash_char="m",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule24(colorer, s, i):
+def applescript_rule24(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"\"": [rule2,],
-	"&": [rule11,],
-	"'": [rule3,rule24,],
-	"(": [rule0,rule4,],
-	")": [rule5,],
-	"*": [rule9,],
-	"+": [rule6,],
-	"-": [rule1,rule7,],
-	"/": [rule10,],
-	"0": [rule24,],
-	"1": [rule24,],
-	"2": [rule24,],
-	"3": [rule24,],
-	"4": [rule24,],
-	"5": [rule24,],
-	"6": [rule24,],
-	"7": [rule24,],
-	"8": [rule24,],
-	"9": [rule24,],
-	"<": [rule12,rule13,],
-	"=": [rule16,],
-	">": [rule14,rule15,],
-	"@": [rule24,],
-	"A": [rule24,],
-	"B": [rule24,],
-	"C": [rule24,],
-	"D": [rule24,],
-	"E": [rule24,],
-	"F": [rule24,],
-	"G": [rule24,],
-	"H": [rule24,],
-	"I": [rule24,],
-	"J": [rule24,],
-	"K": [rule24,],
-	"L": [rule24,],
-	"M": [rule24,],
-	"N": [rule24,],
-	"O": [rule24,],
-	"P": [rule24,],
-	"Q": [rule24,],
-	"R": [rule24,],
-	"S": [rule24,],
-	"T": [rule24,],
-	"U": [rule24,],
-	"V": [rule24,],
-	"W": [rule24,],
-	"X": [rule24,],
-	"Y": [rule24,],
-	"Z": [rule24,],
-	"^": [rule8,],
-	"a": [rule17,rule20,rule21,rule24,],
-	"b": [rule24,],
-	"c": [rule18,rule24,],
-	"d": [rule24,],
-	"e": [rule24,],
-	"f": [rule24,],
-	"g": [rule24,],
-	"h": [rule24,],
-	"i": [rule24,],
-	"j": [rule24,],
-	"k": [rule24,],
-	"l": [rule24,],
-	"m": [rule23,rule24,],
-	"n": [rule24,],
-	"o": [rule24,],
-	"p": [rule24,],
-	"q": [rule24,],
-	"r": [rule24,],
-	"s": [rule22,rule24,],
-	"t": [rule24,],
-	"u": [rule24,],
-	"v": [rule24,],
-	"w": [rule19,rule24,],
-	"x": [rule24,],
-	"y": [rule24,],
-	"z": [rule24,],
+	"\"": [applescript_rule2,],
+	"&": [applescript_rule11,],
+	"'": [applescript_rule3,applescript_rule24,],
+	"(": [applescript_rule0,applescript_rule4,],
+	")": [applescript_rule5,],
+	"*": [applescript_rule9,],
+	"+": [applescript_rule6,],
+	"-": [applescript_rule1,applescript_rule7,],
+	"/": [applescript_rule10,],
+	"0": [applescript_rule24,],
+	"1": [applescript_rule24,],
+	"2": [applescript_rule24,],
+	"3": [applescript_rule24,],
+	"4": [applescript_rule24,],
+	"5": [applescript_rule24,],
+	"6": [applescript_rule24,],
+	"7": [applescript_rule24,],
+	"8": [applescript_rule24,],
+	"9": [applescript_rule24,],
+	"<": [applescript_rule12,applescript_rule13,],
+	"=": [applescript_rule16,],
+	">": [applescript_rule14,applescript_rule15,],
+	"@": [applescript_rule24,],
+	"A": [applescript_rule24,],
+	"B": [applescript_rule24,],
+	"C": [applescript_rule24,],
+	"D": [applescript_rule24,],
+	"E": [applescript_rule24,],
+	"F": [applescript_rule24,],
+	"G": [applescript_rule24,],
+	"H": [applescript_rule24,],
+	"I": [applescript_rule24,],
+	"J": [applescript_rule24,],
+	"K": [applescript_rule24,],
+	"L": [applescript_rule24,],
+	"M": [applescript_rule24,],
+	"N": [applescript_rule24,],
+	"O": [applescript_rule24,],
+	"P": [applescript_rule24,],
+	"Q": [applescript_rule24,],
+	"R": [applescript_rule24,],
+	"S": [applescript_rule24,],
+	"T": [applescript_rule24,],
+	"U": [applescript_rule24,],
+	"V": [applescript_rule24,],
+	"W": [applescript_rule24,],
+	"X": [applescript_rule24,],
+	"Y": [applescript_rule24,],
+	"Z": [applescript_rule24,],
+	"^": [applescript_rule8,],
+	"a": [applescript_rule17,applescript_rule20,applescript_rule21,applescript_rule24,],
+	"b": [applescript_rule24,],
+	"c": [applescript_rule18,applescript_rule24,],
+	"d": [applescript_rule24,],
+	"e": [applescript_rule24,],
+	"f": [applescript_rule24,],
+	"g": [applescript_rule24,],
+	"h": [applescript_rule24,],
+	"i": [applescript_rule24,],
+	"j": [applescript_rule24,],
+	"k": [applescript_rule24,],
+	"l": [applescript_rule24,],
+	"m": [applescript_rule23,applescript_rule24,],
+	"n": [applescript_rule24,],
+	"o": [applescript_rule24,],
+	"p": [applescript_rule24,],
+	"q": [applescript_rule24,],
+	"r": [applescript_rule24,],
+	"s": [applescript_rule22,applescript_rule24,],
+	"t": [applescript_rule24,],
+	"u": [applescript_rule24,],
+	"v": [applescript_rule24,],
+	"w": [applescript_rule19,applescript_rule24,],
+	"x": [applescript_rule24,],
+	"y": [applescript_rule24,],
+	"z": [applescript_rule24,],
 }
 
 # x.rulesDictDict for applescript mode.

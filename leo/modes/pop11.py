@@ -186,320 +186,320 @@ keywordsDictDict = {
 
 # Rules for pop11_main ruleset.
 
-def rule0(colorer, s, i):
+def pop11_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="COMMENT",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule1(colorer, s, i):
+def pop11_rule1(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq=";;;",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule2(colorer, s, i):
+def pop11_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="STRING",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule3(colorer, s, i):
+def pop11_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="STRING",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule4(colorer, s, i):
+def pop11_rule4(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="`", end="`",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="STRING",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule5(colorer, s, i):
+def pop11_rule5(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="[", end="]",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="LIST",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule6(colorer, s, i):
+def pop11_rule6(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="LIST",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule7(colorer, s, i):
+def pop11_rule7(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="![", end="]",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="LIST",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule8(colorer, s, i):
+def pop11_rule8(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="function", pattern="(",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def rule9(colorer, s, i):
+def pop11_rule9(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="label", pattern=":",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule10(colorer, s, i):
+def pop11_rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="null", seq="#_<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule11(colorer, s, i):
+def pop11_rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="null", seq=">_#",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule12(colorer, s, i):
+def pop11_rule12(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="label", pattern="#_",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule13(colorer, s, i):
+def pop11_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="null", seq=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule14(colorer, s, i):
+def pop11_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="null", seq="(",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule15(colorer, s, i):
+def pop11_rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="null", seq=".",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule16(colorer, s, i):
+def pop11_rule16(colorer, s, i):
     return colorer.match_seq(s, i, kind="null", seq=",",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule17(colorer, s, i):
+def pop11_rule17(colorer, s, i):
     return colorer.match_seq(s, i, kind="null", seq=";",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule18(colorer, s, i):
+def pop11_rule18(colorer, s, i):
     return colorer.match_seq(s, i, kind="null", seq="^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule19(colorer, s, i):
+def pop11_rule19(colorer, s, i):
     return colorer.match_seq(s, i, kind="null", seq="@",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule20(colorer, s, i):
+def pop11_rule20(colorer, s, i):
     return colorer.match_seq(s, i, kind="null", seq=":",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule21(colorer, s, i):
+def pop11_rule21(colorer, s, i):
     return colorer.match_seq(s, i, kind="null", seq="|",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule22(colorer, s, i):
+def pop11_rule22(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule23(colorer, s, i):
+def pop11_rule23(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule24(colorer, s, i):
+def pop11_rule24(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule25(colorer, s, i):
+def pop11_rule25(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule26(colorer, s, i):
+def pop11_rule26(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule27(colorer, s, i):
+def pop11_rule27(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule28(colorer, s, i):
+def pop11_rule28(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule29(colorer, s, i):
+def pop11_rule29(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule30(colorer, s, i):
+def pop11_rule30(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule31(colorer, s, i):
+def pop11_rule31(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule32(colorer, s, i):
+def pop11_rule32(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"!": [rule7,],
-	"\"": [rule3,],
-	"#": [rule10,rule12,],
-	"'": [rule2,],
-	"(": [rule8,rule14,],
-	")": [rule13,],
-	"*": [rule31,],
-	"+": [rule28,],
-	",": [rule16,],
-	"-": [rule30,],
-	".": [rule15,],
-	"/": [rule0,rule29,],
-	"0": [rule32,],
-	"1": [rule32,],
-	"2": [rule32,],
-	"3": [rule32,],
-	"4": [rule32,],
-	"5": [rule32,],
-	"6": [rule32,],
-	"7": [rule32,],
-	"8": [rule32,],
-	"9": [rule32,],
-	":": [rule9,rule20,],
-	";": [rule1,rule17,],
-	"<": [rule24,rule25,rule27,],
-	"=": [rule22,],
-	">": [rule11,rule23,rule26,],
-	"@": [rule19,rule32,],
-	"A": [rule32,],
-	"B": [rule32,],
-	"C": [rule32,],
-	"D": [rule32,],
-	"E": [rule32,],
-	"F": [rule32,],
-	"G": [rule32,],
-	"H": [rule32,],
-	"I": [rule32,],
-	"J": [rule32,],
-	"K": [rule32,],
-	"L": [rule32,],
-	"M": [rule32,],
-	"N": [rule32,],
-	"O": [rule32,],
-	"P": [rule32,],
-	"Q": [rule32,],
-	"R": [rule32,],
-	"S": [rule32,],
-	"T": [rule32,],
-	"U": [rule32,],
-	"V": [rule32,],
-	"W": [rule32,],
-	"X": [rule32,],
-	"Y": [rule32,],
-	"Z": [rule32,],
-	"[": [rule5,],
-	"^": [rule18,],
-	"_": [rule32,],
-	"`": [rule4,],
-	"a": [rule32,],
-	"b": [rule32,],
-	"c": [rule32,],
-	"d": [rule32,],
-	"e": [rule32,],
-	"f": [rule32,],
-	"g": [rule32,],
-	"h": [rule32,],
-	"i": [rule32,],
-	"j": [rule32,],
-	"k": [rule32,],
-	"l": [rule32,],
-	"m": [rule32,],
-	"n": [rule32,],
-	"o": [rule32,],
-	"p": [rule32,],
-	"q": [rule32,],
-	"r": [rule32,],
-	"s": [rule32,],
-	"t": [rule32,],
-	"u": [rule32,],
-	"v": [rule32,],
-	"w": [rule32,],
-	"x": [rule32,],
-	"y": [rule32,],
-	"z": [rule32,],
-	"{": [rule6,],
-	"|": [rule21,],
+	"!": [pop11_rule7,],
+	"\"": [pop11_rule3,],
+	"#": [pop11_rule10,pop11_rule12,],
+	"'": [pop11_rule2,],
+	"(": [pop11_rule8,pop11_rule14,],
+	")": [pop11_rule13,],
+	"*": [pop11_rule31,],
+	"+": [pop11_rule28,],
+	",": [pop11_rule16,],
+	"-": [pop11_rule30,],
+	".": [pop11_rule15,],
+	"/": [pop11_rule0,pop11_rule29,],
+	"0": [pop11_rule32,],
+	"1": [pop11_rule32,],
+	"2": [pop11_rule32,],
+	"3": [pop11_rule32,],
+	"4": [pop11_rule32,],
+	"5": [pop11_rule32,],
+	"6": [pop11_rule32,],
+	"7": [pop11_rule32,],
+	"8": [pop11_rule32,],
+	"9": [pop11_rule32,],
+	":": [pop11_rule9,pop11_rule20,],
+	";": [pop11_rule1,pop11_rule17,],
+	"<": [pop11_rule24,pop11_rule25,pop11_rule27,],
+	"=": [pop11_rule22,],
+	">": [pop11_rule11,pop11_rule23,pop11_rule26,],
+	"@": [pop11_rule19,pop11_rule32,],
+	"A": [pop11_rule32,],
+	"B": [pop11_rule32,],
+	"C": [pop11_rule32,],
+	"D": [pop11_rule32,],
+	"E": [pop11_rule32,],
+	"F": [pop11_rule32,],
+	"G": [pop11_rule32,],
+	"H": [pop11_rule32,],
+	"I": [pop11_rule32,],
+	"J": [pop11_rule32,],
+	"K": [pop11_rule32,],
+	"L": [pop11_rule32,],
+	"M": [pop11_rule32,],
+	"N": [pop11_rule32,],
+	"O": [pop11_rule32,],
+	"P": [pop11_rule32,],
+	"Q": [pop11_rule32,],
+	"R": [pop11_rule32,],
+	"S": [pop11_rule32,],
+	"T": [pop11_rule32,],
+	"U": [pop11_rule32,],
+	"V": [pop11_rule32,],
+	"W": [pop11_rule32,],
+	"X": [pop11_rule32,],
+	"Y": [pop11_rule32,],
+	"Z": [pop11_rule32,],
+	"[": [pop11_rule5,],
+	"^": [pop11_rule18,],
+	"_": [pop11_rule32,],
+	"`": [pop11_rule4,],
+	"a": [pop11_rule32,],
+	"b": [pop11_rule32,],
+	"c": [pop11_rule32,],
+	"d": [pop11_rule32,],
+	"e": [pop11_rule32,],
+	"f": [pop11_rule32,],
+	"g": [pop11_rule32,],
+	"h": [pop11_rule32,],
+	"i": [pop11_rule32,],
+	"j": [pop11_rule32,],
+	"k": [pop11_rule32,],
+	"l": [pop11_rule32,],
+	"m": [pop11_rule32,],
+	"n": [pop11_rule32,],
+	"o": [pop11_rule32,],
+	"p": [pop11_rule32,],
+	"q": [pop11_rule32,],
+	"r": [pop11_rule32,],
+	"s": [pop11_rule32,],
+	"t": [pop11_rule32,],
+	"u": [pop11_rule32,],
+	"v": [pop11_rule32,],
+	"w": [pop11_rule32,],
+	"x": [pop11_rule32,],
+	"y": [pop11_rule32,],
+	"z": [pop11_rule32,],
+	"{": [pop11_rule6,],
+	"|": [pop11_rule21,],
 }
 
 # Rules for pop11_list ruleset.
 
-def rule33(colorer, s, i):
+def pop11_rule33(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="[", end="]",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="LIST",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule34(colorer, s, i):
+def pop11_rule34(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="LIST",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule35(colorer, s, i):
+def pop11_rule35(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="![", end="]",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="LIST",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule36(colorer, s, i):
+def pop11_rule36(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="STRING",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule37(colorer, s, i):
+def pop11_rule37(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="STRING",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule38(colorer, s, i):
+def pop11_rule38(colorer, s, i):
     return colorer.match_span(s, i, kind="null", begin="%", end="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="MAIN",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule39(colorer, s, i):
+def pop11_rule39(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="COMMENT",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-def rule40(colorer, s, i):
+def pop11_rule40(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq=";;;",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule41(colorer, s, i):
+def pop11_rule41(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal2", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule42(colorer, s, i):
+def pop11_rule42(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal2", seq="==",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def rule43(colorer, s, i):
+def pop11_rule43(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="literal2", pattern="^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule44(colorer, s, i):
+def pop11_rule44(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="literal2", pattern="?",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 # Rules dict for list ruleset.
 rulesDict2 = {
-	"!": [rule35,],
-	"\"": [rule37,],
-	"%": [rule38,],
-	"'": [rule36,],
-	"/": [rule39,],
-	";": [rule40,],
-	"=": [rule41,rule42,],
-	"?": [rule44,],
-	"[": [rule33,],
-	"^": [rule43,],
-	"{": [rule34,],
+	"!": [pop11_rule35,],
+	"\"": [pop11_rule37,],
+	"%": [pop11_rule38,],
+	"'": [pop11_rule36,],
+	"/": [pop11_rule39,],
+	";": [pop11_rule40,],
+	"=": [pop11_rule41,pop11_rule42,],
+	"?": [pop11_rule44,],
+	"[": [pop11_rule33,],
+	"^": [pop11_rule43,],
+	"{": [pop11_rule34,],
 }
 
 # Rules for pop11_string ruleset.
@@ -509,18 +509,18 @@ rulesDict3 = {}
 
 # Rules for pop11_comment ruleset.
 
-def rule45(colorer, s, i):
+def pop11_rule45(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="label", pattern=":",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule46(colorer, s, i):
+def pop11_rule46(colorer, s, i):
     return colorer.match_seq(s, i, kind="comment1", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules dict for comment ruleset.
 rulesDict4 = {
-	"*": [rule46,],
-	":": [rule45,],
+	"*": [pop11_rule46,],
+	":": [pop11_rule45,],
 }
 
 # x.rulesDictDict for pop11 mode.

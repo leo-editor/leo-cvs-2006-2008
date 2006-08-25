@@ -66,140 +66,140 @@ keywordsDictDict = {
 
 # Rules for makefile_main ruleset.
 
-def rule0(colorer, s, i):
+def makefile_rule0(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="#",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule1(colorer, s, i):
+def makefile_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="$(", end=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="VARIABLE",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule2(colorer, s, i):
+def makefile_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="${", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="VARIABLE",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule3(colorer, s, i):
+def makefile_rule3(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword2", pattern="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule4(colorer, s, i):
+def makefile_rule4(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule5(colorer, s, i):
+def makefile_rule5(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule6(colorer, s, i):
+def makefile_rule6(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="`", end="`",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule7(colorer, s, i):
+def makefile_rule7(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="label", pattern=":",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-def rule8(colorer, s, i):
+def makefile_rule8(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for main ruleset.
 rulesDict1 = {
-	"\"": [rule4,],
-	"#": [rule0,],
-	"$": [rule1,rule2,rule3,],
-	"'": [rule5,],
-	"-": [rule8,],
-	"0": [rule8,],
-	"1": [rule8,],
-	"2": [rule8,],
-	"3": [rule8,],
-	"4": [rule8,],
-	"5": [rule8,],
-	"6": [rule8,],
-	"7": [rule8,],
-	"8": [rule8,],
-	"9": [rule8,],
-	":": [rule7,],
-	"@": [rule8,],
-	"A": [rule8,],
-	"B": [rule8,],
-	"C": [rule8,],
-	"D": [rule8,],
-	"E": [rule8,],
-	"F": [rule8,],
-	"G": [rule8,],
-	"H": [rule8,],
-	"I": [rule8,],
-	"J": [rule8,],
-	"K": [rule8,],
-	"L": [rule8,],
-	"M": [rule8,],
-	"N": [rule8,],
-	"O": [rule8,],
-	"P": [rule8,],
-	"Q": [rule8,],
-	"R": [rule8,],
-	"S": [rule8,],
-	"T": [rule8,],
-	"U": [rule8,],
-	"V": [rule8,],
-	"W": [rule8,],
-	"X": [rule8,],
-	"Y": [rule8,],
-	"Z": [rule8,],
-	"`": [rule6,],
-	"a": [rule8,],
-	"b": [rule8,],
-	"c": [rule8,],
-	"d": [rule8,],
-	"e": [rule8,],
-	"f": [rule8,],
-	"g": [rule8,],
-	"h": [rule8,],
-	"i": [rule8,],
-	"j": [rule8,],
-	"k": [rule8,],
-	"l": [rule8,],
-	"m": [rule8,],
-	"n": [rule8,],
-	"o": [rule8,],
-	"p": [rule8,],
-	"q": [rule8,],
-	"r": [rule8,],
-	"s": [rule8,],
-	"t": [rule8,],
-	"u": [rule8,],
-	"v": [rule8,],
-	"w": [rule8,],
-	"x": [rule8,],
-	"y": [rule8,],
-	"z": [rule8,],
+	"\"": [makefile_rule4,],
+	"#": [makefile_rule0,],
+	"$": [makefile_rule1,makefile_rule2,makefile_rule3,],
+	"'": [makefile_rule5,],
+	"-": [makefile_rule8,],
+	"0": [makefile_rule8,],
+	"1": [makefile_rule8,],
+	"2": [makefile_rule8,],
+	"3": [makefile_rule8,],
+	"4": [makefile_rule8,],
+	"5": [makefile_rule8,],
+	"6": [makefile_rule8,],
+	"7": [makefile_rule8,],
+	"8": [makefile_rule8,],
+	"9": [makefile_rule8,],
+	":": [makefile_rule7,],
+	"@": [makefile_rule8,],
+	"A": [makefile_rule8,],
+	"B": [makefile_rule8,],
+	"C": [makefile_rule8,],
+	"D": [makefile_rule8,],
+	"E": [makefile_rule8,],
+	"F": [makefile_rule8,],
+	"G": [makefile_rule8,],
+	"H": [makefile_rule8,],
+	"I": [makefile_rule8,],
+	"J": [makefile_rule8,],
+	"K": [makefile_rule8,],
+	"L": [makefile_rule8,],
+	"M": [makefile_rule8,],
+	"N": [makefile_rule8,],
+	"O": [makefile_rule8,],
+	"P": [makefile_rule8,],
+	"Q": [makefile_rule8,],
+	"R": [makefile_rule8,],
+	"S": [makefile_rule8,],
+	"T": [makefile_rule8,],
+	"U": [makefile_rule8,],
+	"V": [makefile_rule8,],
+	"W": [makefile_rule8,],
+	"X": [makefile_rule8,],
+	"Y": [makefile_rule8,],
+	"Z": [makefile_rule8,],
+	"`": [makefile_rule6,],
+	"a": [makefile_rule8,],
+	"b": [makefile_rule8,],
+	"c": [makefile_rule8,],
+	"d": [makefile_rule8,],
+	"e": [makefile_rule8,],
+	"f": [makefile_rule8,],
+	"g": [makefile_rule8,],
+	"h": [makefile_rule8,],
+	"i": [makefile_rule8,],
+	"j": [makefile_rule8,],
+	"k": [makefile_rule8,],
+	"l": [makefile_rule8,],
+	"m": [makefile_rule8,],
+	"n": [makefile_rule8,],
+	"o": [makefile_rule8,],
+	"p": [makefile_rule8,],
+	"q": [makefile_rule8,],
+	"r": [makefile_rule8,],
+	"s": [makefile_rule8,],
+	"t": [makefile_rule8,],
+	"u": [makefile_rule8,],
+	"v": [makefile_rule8,],
+	"w": [makefile_rule8,],
+	"x": [makefile_rule8,],
+	"y": [makefile_rule8,],
+	"z": [makefile_rule8,],
 }
 
 # Rules for makefile_variable ruleset.
 
-def rule9(colorer, s, i):
+def makefile_rule9(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="#",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-def rule10(colorer, s, i):
+def makefile_rule10(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="$(", end=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="VARIABLE",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-def rule11(colorer, s, i):
+def makefile_rule11(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="${", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="VARIABLE",exclude_match=False,
@@ -207,8 +207,8 @@ def rule11(colorer, s, i):
 
 # Rules dict for variable ruleset.
 rulesDict2 = {
-	"#": [rule9,],
-	"$": [rule10,rule11,],
+	"#": [makefile_rule9,],
+	"$": [makefile_rule10,makefile_rule11,],
 }
 
 # x.rulesDictDict for makefile mode.
