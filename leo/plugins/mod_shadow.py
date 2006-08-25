@@ -274,7 +274,7 @@ def getVerbosity (c):
 #@-node:ekr.20060801102118:getVerbosity
 #@+node:bwmulder.20060806152117:marker_from_extension
 def marker_from_extension(filename):
-    return g.comment_delims_from_extension(filename)[0]
+    return g.comment_delims_from_extension(filename)[0] + "@"
 #@nonl
 #@-node:bwmulder.20060806152117:marker_from_extension
 #@-node:ekr.20060801095508.1:Module level
