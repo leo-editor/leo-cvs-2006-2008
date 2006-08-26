@@ -73,6 +73,7 @@ class baseFileCommands:
         self.fileDate = -1
         self.leo_file_encoding = c.config.new_leo_file_encoding
         # For reading
+        self.checking = False # True: checking only: do *not* alter the outline.
         self.descendentExpandedList = []
         self.descendentMarksList = []
         self.fileFormatNumber = 0
@@ -144,6 +145,9 @@ class baseFileCommands:
             t = self.tnodesDict.get(tref)
             if not t:
                 t = self.newTnode(tref)
+                
+        if self.checking: return None,False
+        
         if back: # create v after back.
             v = back.insertAfter(t)
         elif parent: # create v as the parent's first child.
@@ -173,6 +177,7 @@ class baseFileCommands:
         #@nl
         # g.trace(skip,tref,v,v.t,len(v.t.vnodeList))
         return v,skip
+    #@nonl
     #@-node:ekr.20031218072017.1860:createVnode (changed for 4.2) sets skip
     #@+node:ekr.20040326063413:getExistingVnode
     def getExistingVnode (self,tref,headline):
@@ -574,6 +579,7 @@ class baseFileCommands:
             g.es("read only: " + fileName,color="red")
         #@-node:ekr.20031218072017.1554:<< warn on read-only files >>
         #@nl
+        self.checking = False
         self.mFileName = c.mFileName
         self.tnodesDict = {}
         self.descendentExpandedList = []
@@ -716,14 +722,32 @@ class baseFileCommands:
                 break
     #@-node:ekr.20031218072017.1970:getLeoHeader
     #@+node:ekr.20031218072017.1559:getLeoOutline (from clipboard)
-    # This method reads a Leo outline from string s in clipboard format.
     def getLeoOutline (self,s,reassignIndices=True):
+        
+        '''Read a Leo outline from string s in clipboard format.'''
     
+        try:
+            v = self.getLeoOutlineHelper(s,reassignIndices,checking=True)
+            v = self.getLeoOutlineHelper(s,reassignIndices,checking=False)
+        except invalidPaste:
+            v = None
+            g.es("Invalid Paste As Clone",color="blue")
+        except BadLeoFile:
+            v = None
+            g.es("The clipboard is not valid ",color="blue")
+    
+        return v
+    #@nonl
+    #@+node:ekr.20060826052453.1:getLeoOutlineHelper
+    def getLeoOutlineHelper (self,s,reassignIndices,checking):
+        
+        self.checking = checking
         self.usingClipboard = True
         self.fileBuffer = s ; self.fileIndex = 0
-        self.tnodesDict = {}
         self.descendentUnknownAttributesDictList = []
+        v = None
     
+        self.tnodesDict = {}
         if not reassignIndices:
             #@        << recreate tnodesDict >>
             #@+node:EKR.20040610134756:<< recreate tnodesDict >>
@@ -743,28 +767,23 @@ class baseFileCommands:
                     print key,self.tnodesDict[key]
             #@-node:EKR.20040610134756:<< recreate tnodesDict >>
             #@nl
-    
         try:
-            self.getXmlVersionTag() # leo.py 3.0
-            self.getXmlStylesheetTag() # 10/25/02
-            self.getTag("<leo_file>") # <leo_file/> is not valid.
+            self.getXmlVersionTag()
+            self.getXmlStylesheetTag()
+            self.getTag("<leo_file>")
             self.getClipboardHeader()
             self.getVnodes(reassignIndices)
             self.getTnodes()
             self.getTag("</leo_file>")
-            v = self.finishPaste(reassignIndices)
-        except invalidPaste:
-            v = None
-            g.es("Invalid Paste As Clone",color="blue")
-        except BadLeoFile:
-            v = None
-            g.es("The clipboard is not valid ",color="blue")
-    
-        # Clean up.
-        self.fileBuffer = None ; self.fileIndex = 0
-        self.usingClipboard = False
-        self.tnodesDict = {}
+            if not checking:
+                v = self.finishPaste(reassignIndices)
+        finally:
+            self.fileBuffer = None ; self.fileIndex = 0
+            self.usingClipboard = False
+            self.tnodesDict = {}
         return v
+    #@nonl
+    #@-node:ekr.20060826052453.1:getLeoOutlineHelper
     #@-node:ekr.20031218072017.1559:getLeoOutline (from clipboard)
     #@+node:ekr.20031218072017.3025:getPosition
     def getPosition (self):
@@ -1000,7 +1019,8 @@ class baseFileCommands:
         # New in Leo 4.4: support collapsed tnodes.
         if self.matchTag('/>'): # A collapsed vnode.
             v,skip2 = self.createVnode(parent,back,tref,headline,attrDict)
-            return v
+            if self.checking: return None
+            else: return v
         
         while 1:
             if self.matchTag("a=\""):
@@ -1072,28 +1092,30 @@ class baseFileCommands:
                 v.initHeadString(headline,encoding=self.leo_file_encoding)
         if v is None:
             v,skip2 = self.createVnode(parent,back,tref,headline,attrDict)
-            skip = skip or skip2
-            if tnodeList:
-                v.t.tnodeList = tnodeList # New for 4.0, 4.2: now in tnode.
+            if not self.checking:
+                skip = skip or skip2
+                if tnodeList:
+                    v.t.tnodeList = tnodeList # New for 4.0, 4.2: now in tnode.
                 
-        #@    << Set the remembered status bits >>
-        #@+node:ekr.20031218072017.1568:<< Set the remembered status bits >>
-        if setCurrent:
-            self.currentVnodeStack = [v]
-        
-        if setTop:
-            self.topVnodeStack = [v]
+        if not self.checking:
+            #@        << Set the remembered status bits >>
+            #@+node:ekr.20031218072017.1568:<< Set the remembered status bits >>
+            if setCurrent:
+                self.currentVnodeStack = [v]
             
-        if setExpanded:
-            v.initExpandedBit()
+            if setTop:
+                self.topVnodeStack = [v]
+                
+            if setExpanded:
+                v.initExpandedBit()
+                
+            if setMarked:
+                v.initMarkedBit() # 3/25/03: Do not call setMarkedBit here!
             
-        if setMarked:
-            v.initMarkedBit() # 3/25/03: Do not call setMarkedBit here!
-        
-        if setOrphan:
-            v.setOrphan()
-        #@-node:ekr.20031218072017.1568:<< Set the remembered status bits >>
-        #@nl
+            if setOrphan:
+                v.setOrphan()
+            #@-node:ekr.20031218072017.1568:<< Set the remembered status bits >>
+            #@nl
     
         # Recursively create all nested nodes.
         parent = v ; back = None
@@ -1102,22 +1124,24 @@ class baseFileCommands:
             append2 = appendToTopStack and len(self.topVnodeStack) == 0
             back = self.getVnode(parent,back,skip,
                 appendToCurrentStack=append1,appendToTopStack=append2)
+        
+        if not self.checking:
+            #@        << Append to current or top stack >>
+            #@+node:ekr.20040326055828:<< Append to current or top stack >>
+            if not setCurrent and len(self.currentVnodeStack) > 0 and appendToCurrentStack:
+                #g.trace("append current",v)
+                self.currentVnodeStack.append(v)
                 
-        #@    << Append to current or top stack >>
-        #@+node:ekr.20040326055828:<< Append to current or top stack >>
-        if not setCurrent and len(self.currentVnodeStack) > 0 and appendToCurrentStack:
-            #g.trace("append current",v)
-            self.currentVnodeStack.append(v)
-            
-        if not setTop and len(self.topVnodeStack) > 0 and appendToTopStack:
-            #g.trace("append top",v)
-            self.topVnodeStack.append(v)
-        #@-node:ekr.20040326055828:<< Append to current or top stack >>
-        #@nl
+            if not setTop and len(self.topVnodeStack) > 0 and appendToTopStack:
+                #g.trace("append top",v)
+                self.topVnodeStack.append(v)
+            #@-node:ekr.20040326055828:<< Append to current or top stack >>
+            #@nl
     
         # End this vnode.
         self.getTag("</v>")
         return v
+    #@nonl
     #@-node:ekr.20031218072017.1566:getVnode changed for 4.2 & 4.4)
     #@+node:ekr.20031218072017.1565:getVnodes
     def getVnodes (self,reassignIndices=True):
@@ -1154,7 +1178,7 @@ class baseFileCommands:
             back = self.getVnode(parent,back,skip=False,
                 appendToCurrentStack=append1,appendToTopStack=append2)
     
-        if self.usingClipboard:
+        if self.usingClipboard and not self.checking:
             # Link in the pasted nodes after the current position.
             newRoot = c.rootPosition()
             c.setRootPosition(oldRoot)
