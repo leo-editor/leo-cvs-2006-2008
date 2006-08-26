@@ -53,7 +53,6 @@ php_re = re.compile("<?(\s[pP][hH][pP])")
 #@nonl
 #@-node:ekr.20060530091119.22:<< version history >>
 #@nl
-
 #@<< define leoKeywords >>
 #@+middle:ekr.20060530091119.23:module-level
 #@+node:ekr.20060530091119.24:<< define leoKeywords >>
@@ -426,20 +425,19 @@ class baseColorizer:
             g.trace(rulesetName,name,language,delegate)
             savedBunch = self.modeBunch
             ok = self.init_mode(language,delegate=delegate)
-            if 1: # This **does** cause problems.
-                if ok:
-                    rulesDict2 = self.rulesDict
-                    for key in rulesDict2.keys():
-                        aList = rulesDict.get(key,[])
-                        aList2 = rulesDict2.get(key)
-                        if aList2:
-                            # Don't add the standard rules again.
-                            rules = [z for z in aList2 if z not in aList]
-                            if rules:
-                                g.trace('Adding rules:',[z.__name__ for z in rules])
-                                aList.extend(rules)
-                                rulesDict [key] = aList
-                    g.trace('appended rules from %s to %s' % (rulesetName,self.language))
+            if ok:
+                rulesDict2 = self.rulesDict
+                for key in rulesDict2.keys():
+                    aList = rulesDict.get(key,[])
+                    aList2 = rulesDict2.get(key)
+                    if aList2:
+                        # Don't add the standard rules again.
+                        rules = [z for z in aList2 if z not in aList]
+                        if rules:
+                            # g.trace('Adding rules:',[z.__name__ for z in rules])
+                            aList.extend(rules)
+                            rulesDict [key] = aList
+                # g.trace('appended rules from %s to %s' % (rulesetName,self.language))
             self.initModeFromBunch(savedBunch)
     #@nonl
     #@-node:ekr.20060623081100:addImportedRules
@@ -564,7 +562,7 @@ class baseColorizer:
             path = g.os_path_join(g.app.loadDir,'..','modes')
             mode = g.importFromPath (language,path)
             if not mode:
-                g.trace('Not found: %s for language: %s' % (rulesetName,language))
+                # g.trace('Not found: %s for language: %s' % (rulesetName,language))
                 return False
             self.language = language
             self.rulesetName = rulesetName
@@ -670,12 +668,16 @@ class baseColorizer:
     #@+node:ekr.20060703090759:push/popDelegate
     def pushDelegate (self,language,delegate):
         
-        # g.trace(language,delegate,g.callers())
-        
-        rulesetName = self.computeRulesetName(language,delegate)
+        for modeBunch in self.modeStack:
+            # g.trace('comparing',modeBunch.rulesetName,self.rulesetName)
+            if modeBunch.rulesetName == self.rulesetName:
+                # g.trace('Suppressing inner already seen delegate',self.rulesetName)
+                return False
+    
+        # g.trace(language,delegate)
         self.modeStack.append(self.modeBunch)
-        ok = self.init_mode(language,delegate)
-        return ok
+        self.init_mode(language,delegate)
+        return True
     
     def popDelegate (self):
     
@@ -967,30 +969,21 @@ class baseColorizer:
     
         '''Add an item to the tagList if colorizing is enabled.'''
         
-        # g.trace(i,j,delegate,g.callers(5))
-        
         # toGuiIndex could be slow for large s.
         w = self.body.bodyCtrl 
         if not self.flag: return
         
-        # Color the range, even if there is a delegate, unless exclude_match is true.
-        if not exclude_match:
-            x1 = g.app.gui.toGuiIndex(s,w,i)
-            x2 = g.app.gui.toGuiIndex(s,w,j)
-            self.tagList.append((tag,x1,x2),)
-        if 0:
-            if tag != 'blank':
-                if delegate:
-                    g.trace(delegate,tag,i,j,repr(s[i:j]))
-                else:
-                    g.trace(tag,i,j,len(self.tagList)/3,g.callers(4))
-        
+        x1 = g.app.gui.toGuiIndex(s,w,i)
+        x2 = g.app.gui.toGuiIndex(s,w,j)
+    
         if delegate:
             language2,delegate2 = self.nameToLanguageDeletegate(delegate)
-            # g.trace(delegate,'-->',language2,delegate2,g.callers())
-            
-            ok = self.pushDelegate(language2,delegate2)
-            if ok:
+            rulesetName2 = self.computeRulesetName(delegate2)
+            # g.trace(delegate,self.rulesetName,'-->',rulesetName2,tag,i,j,repr(s[i:j]))
+            # g.pdb()
+    
+            pushed = self.pushDelegate(language2,delegate2)
+            if pushed:
                 # Similar logic as colorOneChunk, but we color everything at once.
                 # We must use the same indices here as in the caller.
                 while i < j:
@@ -1002,7 +995,12 @@ class baseColorizer:
                                     g.trace(delegate,i,f.__name__)
                             i += n ; break
                     else: i += 1
+    
                 self.popDelegate()
+            else:
+                self.tagList.append((tag,x1,x2),)
+        elif not exclude_match:
+            self.tagList.append((tag,x1,x2),)
     #@nonl
     #@-node:ekr.20060530091119.48:colorRangeWithTag
     #@+node:ekr.20060530091119.14:quickColor

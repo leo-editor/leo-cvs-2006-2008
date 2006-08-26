@@ -13704,7 +13704,7 @@ Traceback (most recent call last):
 TypeError: int argument required
 #@nonl
 #@-node:errors
-#@+node:@@button jEdit2Py
+#@+node:@button jEdit2Py
 '''Convert jEdit language description file to an equivalent .py file.'''
 
 @language python
@@ -13756,6 +13756,7 @@ both elements has the same effect as setting them on the SPAN element.
 7/23/06 EKR: Ignore keywords containing whitespace.
 7/30/06 EKR: Compute keywordChars properly.  This fixes erlang bug, e.g.
 8/24/06 EKR: Lowercase all keywords if ignore_case is true.
+8/25/06 EKR: Prefixed all rule names with fileName (w/o extension) so I can makes sense of imported rules.
 #@nonl
 #@-node:<< version history >>
 #@+node:<< set files to convert >>
@@ -13764,8 +13765,8 @@ fixed = ['antlr','applescript','apacheconf','bibtex','cil','pl1','shell','shells
 errors = ['cil',] # End keyword not matched by start.
 errors = [r'%s\%s.xml' % (theDir,s) for s in errors]
 # for s in errors: print s
-if 0: # A single file
-    files = [r'%s\%s.xml' % (theDir,s) for s in ('plsql',)]
+if 0: # A a list of files.
+    files = [r'%s\%s.xml' % (theDir,s) for s in ('php','javascript')]
 elif 1: # translate all files.
     files = glob.glob(r'c:\prog\tigris-cvs\leo\modes\*.xml')
 elif 0: # error files
@@ -13862,6 +13863,7 @@ def __init__ (self,contentHandler,fileName):
     self.c = contentHandler.c
     self.fileName = g.shortFileName(fileName) # The file from which the mode was imported.
     modeName, junk = g.os_path_splitext(self.fileName)
+    self.fileModeName = modeName
     self.modeName = munge(modeName).lower()
     self.outputFile = None # The open output file to which Python statements get written.
     self.tab_width = g.scanDirectives(c).get('tab_width')
@@ -14143,10 +14145,11 @@ def putEolSpan (self,rule):
     seq = rule.getSeq(rule.name)
 
     s = '''\n\
-def rule%d(colorer, s, i):
+def %s_rule%d(colorer, s, i):
     return colorer.match_eol_span(s, i, kind=%s, seq=%s,
         at_line_start=%s, at_whitespace_end=%s, at_word_start=%s,
         delegate=%s, exclude_match=%s)''' % (
+        self.fileModeName,
         self.handlerCount,
         quote(rule.getStrAttrib('type').lower()),
         quote(seq),
@@ -14168,10 +14171,11 @@ def putEolSpanRegexp (self,rule):
     seq = rule.getSeq(rule.name)
 
     s = '''\n\
-def rule%d(colorer, s, i):
+def %s_rule%d(colorer, s, i):
     return colorer.match_eol_span_regexp(s, i, kind=%s, regexp=%s, hash_char=%s,
         at_line_start=%s, at_whitespace_end=%s, at_word_start=%s,
         delegate=%s, exclude_match=%s)''' % (
+        self.fileModeName,
         self.handlerCount,
         quote(rule.getStrAttrib('type').lower()),
         quote(seq),
@@ -14201,8 +14205,10 @@ def putImport (self,rule):
 def putKeywords (self,rule):
 
     s = '''\n\
-def rule%d(colorer, s, i):
-    return colorer.match_keywords(s, i)''' % (self.handlerCount)
+def %s_rule%d(colorer, s, i):
+    return colorer.match_keywords(s, i)''' % (
+    self.fileModeName,
+    self.handlerCount)
 
     self.putTripleString(s)
     return 'keywords'
@@ -14215,9 +14221,10 @@ def putMarkFollowing (self,rule):
     seq = rule.getSeq(rule.name)
 
     s = '''\n\
-def rule%d(colorer, s, i):
+def %s_rule%d(colorer, s, i):
     return colorer.match_mark_following(s, i, kind=%s, pattern=%s,
         at_line_start=%s, at_whitespace_end=%s, at_word_start=%s, exclude_match=%s)''' % (
+        self.fileModeName,
         self.handlerCount,
         quote(rule.getStrAttrib('type').lower()),
         quote(seq),
@@ -14238,9 +14245,10 @@ def putMarkPrevious (self,rule):
     seq = rule.getSeq(rule.name)
     
     s = '''\n\
-def rule%d(colorer, s, i):
+def %s_rule%d(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind=%s, pattern=%s,
         at_line_start=%s, at_whitespace_end=%s, at_word_start=%s, exclude_match=%s)''' % (
+        self.fileModeName,
         self.handlerCount,
         quote(rule.getStrAttrib('type').lower()),
         quote(seq),
@@ -14261,9 +14269,10 @@ def putSeq (self,rule):
     seq = rule.getSeq(rule.name)
 
     s = '''\n\
-def rule%d(colorer, s, i):
+def %s_rule%d(colorer, s, i):
     return colorer.match_seq(s, i, kind=%s, seq=%s,
         at_line_start=%s, at_whitespace_end=%s, at_word_start=%s, delegate=%s)''' % (
+        self.fileModeName,
         self.handlerCount,
         quote(rule.getStrAttrib('type').lower()),
         quote(seq),
@@ -14284,9 +14293,10 @@ def putSeqRegexp (self,rule):
     seq = rule.getSeq(rule.name)
 
     s = '''\n\
-def rule%d(colorer, s, i):
+def %s_rule%d(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind=%s, regexp=%s, hash_char=%s,
         at_line_start=%s, at_whitespace_end=%s, at_word_start=%s, delegate=%s)''' % (
+        self.fileModeName,
         self.handlerCount,
         quote(rule.getStrAttrib('type').lower()),
         quote(seq),
@@ -14308,11 +14318,12 @@ def putSpan (self,rule):
     begin,end = rule.getSpan()
 
     s = '''\n\
-def rule%d(colorer, s, i):
+def %s_rule%d(colorer, s, i):
     return colorer.match_span(s, i, kind=%s, begin=%s, end=%s,
         at_line_start=%s, at_whitespace_end=%s, at_word_start=%s,
         delegate=%s,exclude_match=%s,
         no_escape=%s, no_line_break=%s, no_word_break=%s)''' % (
+        self.fileModeName,
         self.handlerCount,
         quote(rule.getStrAttrib('type').lower()),
         quote(begin),quote(end),
@@ -14337,11 +14348,12 @@ def putSpanRegexp (self,rule):
     begin,end = rule.getSpan()
 
     s = '''\n\
-def rule%d(colorer, s, i):
+def %s_rule%d(colorer, s, i):
     return colorer.match_span_regexp(s, i, kind=%s, begin=%s, end=%s, hash_char=%s,
         at_line_start=%s, at_whitespace_end=%s, at_word_start=%s,
         delegate=%s,exclude_match=%s,
         no_escape=%s, no_line_break=%s, no_word_break=%s)''' % (
+        self.fileModeName,
         self.handlerCount,
         quote(rule.getStrAttrib('type').lower()),
         quote(begin),quote(end),
@@ -14369,8 +14381,9 @@ def putTerminate (self,rule):
     if n == None: return
 
     s = '''\n\
-def rule%d(colorer, s, i):
+def %s_rule%d(colorer, s, i):
     return colorer.match_terminate(s, i, kind=%s, at_char=%d)''' % (
+        self.fileModeName,
         self.handlerCount,
         quote(rule.getStrAttrib('type').lower()),
         n)
@@ -14398,11 +14411,11 @@ def putRules (self):
             if ch == 'keywords':
                 for ch in self.keywordChars:
                     theList = d2.get(ch,[])
-                    theList.append('rule%d' % (self.handlerCount-1))
+                    theList.append('%s_rule%d' % (self.fileModeName,self.handlerCount-1))
                     d2 [ch] = theList
             elif ch:
                 theList = d2.get(ch,[])
-                theList.append('rule%d' % (self.handlerCount-1))
+                theList.append('%s_rule%d' % (self.fileModeName,self.handlerCount-1))
                 d2 [ch] = theList
         # Create the rules dict for the ruleset.
         self.put('\n# Rules dict for %s ruleset.\n' % (ruleset.name))
@@ -15036,26 +15049,7 @@ def getMode (self):
 #@nonl
 #@-node:getMode
 #@-node:class contentHandler (xml.sax.saxutils.XMLGenerator)
-#@-node:@@button jEdit2Py
-#@+node:@@thin decoratorTest.py
-@tabwidth 5
-
-class traced:
-    def __init__(self,func):
-        self.func = func
-
-    def __call__(__self,*__args,**__kw):
-        print "entering", __self.func
-        try:
-            return __self.func(*__args,**__kw)
-        finally:
-            print "exiting", __self.func
-
-@traced
-def hello():
-    print "Hello, world!"
-hello()
-#@-node:@@thin decoratorTest.py
+#@-node:@button jEdit2Py
 #@-node:jEdit2Py
 #@+node:jython script
 # The first script in Jython Essentials, by Pedroni & Rappin.
