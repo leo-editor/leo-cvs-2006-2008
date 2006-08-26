@@ -167,6 +167,58 @@ c.debugCommands.dumpNewObjects()
 c.debugCommands.dumpAllObjects()
 #@nonl
 #@-node:ekr.20060202162439.2:@@button All-obj
+#@+node:ekr.20060815164203:@@button shadow
+"""
+Look for @thin files in the current subtree.
+Convert those thin files into a file with a shadow file,
+if this shadow file does not exist already.
+
+FIXME: the line end convention is currently changed:
+      unix lineendings are converted to DOS lineendings,
+      if files are converted on Windows.
+      Not sure if that is a probem or not.
+"""
+
+import mod_shadow_core, os, shutil
+
+def marker_from_extension(filename):
+    marker = g.comment_delims_from_extension(filename)[0]
+    return marker and marker + '@'
+
+shadow_subdir = c.config.getString("shadow_subdir").strip()
+if not shadow_subdir: assert False,'No shadow_subdir setting'
+prefix = c.config.getString("shadow_prefix")
+
+for p in p.self_and_subtree_iter():
+   h = p.headString().strip()
+   if h.startswith("@thin"):
+       start = h.find("@thin") + len("@thin")
+       leofiledir = os.path.split(c.mFileName)[0]
+       filename = h[start:].strip()
+       fullfilename = os.path.join(leofiledir, filename)
+       theDir = os.path.split(fullfilename)[0]
+       leoFolder = os.path.join(leofiledir, theDir, shadow_subdir)
+       if not os.path.exists(leoFolder):
+           os.mkdir(leoFolder)
+           assert os.path.exists(leoFolder)
+       else:
+           assert os.path.isdir(leoFolder)
+       junk, name = os.path.split(filename)
+       newname = os.path.join(leoFolder, prefix + name)
+       if os.path.exists(newname):
+           continue
+       g.es( "renaming %s to %s" % (filename, newname))
+       shutil.copy2(fullfilename, newname)
+       os.unlink(fullfilename)
+       f = file(fullfilename, "w")
+       f.close()
+       mod_shadow_core.copy_file_removing_sentinels(
+           sourcefilename=newname,
+           targetfilename=fullfilename,
+           marker_from_extension = marker_from_extension)
+       g.es("File %s is now shadowed" % filename)
+#@nonl
+#@-node:ekr.20060815164203:@@button shadow
 #@-all
 #@nonl
 #@-node:ekr.20051027111215:@thin buttons.txt

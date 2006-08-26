@@ -3270,7 +3270,9 @@ class keyHandlerClass:
             return func(event)
         else:
             i = w.index("@%d,%d" % (event.x,event.y))
-            g.app.gui.setTextSelection(w,i+' wordstart',i+' wordend')
+            start = w.index(i+' wordstart')
+            end = w.index(i+' wordend')
+            g.app.gui.setTextSelection(w,start,end)
             return 'break'
     #@-node:ekr.20060131084938:masterDoubleClickHandler
     #@+node:ekr.20060128090219:masterMenuHandler
