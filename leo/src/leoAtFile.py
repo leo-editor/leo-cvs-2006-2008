@@ -1829,15 +1829,16 @@ class atFile:
                     #@-node:ekr.20041005105605.97:<< bump at.correctedLines and tell about the correction >>
                     #@nl
                     # p.setMarked()
-                    at.t.bodyString = s # Just etting at.t.tempBodyString won't work here.
+                    at.t.bodyString = s # Just setting at.t.tempBodyString won't work here.
                     at.t.setDirty() # Mark the node dirty.  Ancestors will be marked dirty later.
                     at.c.setChanged(True)
                 else:
-                    if not at.updateWarningGiven:
-                        at.updateWarningGiven = True
-                        # print "***",at.t,at.root.t
-                        g.es("Warning: updating changed text in %s" %
-                            (at.root.headString()),color="blue")
+                    if 0: # New in 4.4.1 final.  This warning can be very confusing.
+                        if not at.updateWarningGiven:
+                            at.updateWarningGiven = True
+                            # print "***",at.t,at.root.t
+                            g.es("Warning: updating changed text in %s" %
+                                (at.root.headString()),color="blue")
                     # g.es("old...\n%s\n" % old)
                     # g.es("new...\n%s\n" % s)
                     # Just set the dirty bit. Ancestors will be marked dirty later.
@@ -1846,6 +1847,7 @@ class atFile:
                         c.changed = True
                     else: # Far too slow for mass changes.
                         at.c.setChanged(True)
+                #@nonl
                 #@-node:ekr.20041005105605.96:<< indicate that the node has been changed >>
                 #@nl
             at.t.tempBodyString = s
