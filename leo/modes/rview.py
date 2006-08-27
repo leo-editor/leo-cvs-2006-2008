@@ -141,7 +141,7 @@ def rview_rule0(colorer, s, i):
 def rview_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="comment2", begin="/**", end="*/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="JAVADOC",exclude_match=False,
+        delegate="rview::javadoc",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rview_rule2(colorer, s, i):
@@ -153,7 +153,7 @@ def rview_rule2(colorer, s, i):
 def rview_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="RVIEWSTMT",exclude_match=False,
+        delegate="rview::rviewstmt",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rview_rule4(colorer, s, i):

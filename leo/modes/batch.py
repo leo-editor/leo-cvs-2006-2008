@@ -137,7 +137,7 @@ def batch_rule7(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def batch_rule8(colorer, s, i):
-    return colorer.match_eol_span_regexp(s, i, kind="comment1", regexp="REM\\s", hash_char="R",
+    return colorer.match_eol_span_regexp(s, i, kind="comment1", regexp="REM\\s",
         at_line_start=False, at_whitespace_end=True, at_word_start=False,
         delegate="", exclude_match=False)
 
@@ -188,7 +188,7 @@ def batch_rule19(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def batch_rule20(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="%%[[:alpha:]]", hash_char="%",
+    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="%%[[:alpha:]]",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def batch_rule21(colorer, s, i):

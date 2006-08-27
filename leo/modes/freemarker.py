@@ -97,97 +97,97 @@ keywordsDictDict = {
 def freemarker_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<script", end="</script>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="html::JAVASCRIPT",exclude_match=False,
+        delegate="html::javascript",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def freemarker_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<Script", end="</Script>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="html::JAVASCRIPT",exclude_match=False,
+        delegate="html::javascript",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def freemarker_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<SCRIPT", end="</SCRIPT>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="html::JAVASCRIPT",exclude_match=False,
+        delegate="html::javascript",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def freemarker_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<style", end="</style>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="html::CSS",exclude_match=False,
+        delegate="html::css",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def freemarker_rule4(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<Style", end="</Style>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="html::CSS",exclude_match=False,
+        delegate="html::css",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def freemarker_rule5(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<STYLE", end="</STYLE>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="html::CSS",exclude_match=False,
+        delegate="html::css",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def freemarker_rule6(colorer, s, i):
     return colorer.match_span(s, i, kind="comment2", begin="<!--", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="xml::DTD-TAGS",exclude_match=False,
+        delegate="xml::dtd-tags",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def freemarker_rule7(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="<!", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="xml::DTD-TAGS",exclude_match=False,
+        delegate="xml::dtd-tags",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def freemarker_rule8(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword1", begin="${", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="EXPRESSION",exclude_match=False,
+        delegate="freemarker::expression",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def freemarker_rule9(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword1", begin="#{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="EXPRESSION",exclude_match=False,
+        delegate="freemarker::expression",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def freemarker_rule10(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword1", begin="<#ftl\\>", end=">", hash_char="<",
+    return colorer.match_span_regexp(s, i, kind="keyword1", begin="<#ftl\\>", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="EXPRESSION",exclude_match=False,
+        delegate="freemarker::expression",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def freemarker_rule11(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword1", begin="<#?(if|elseif|switch|foreach|list|case|assign|local|global|setting|include|import|stop|escape|macro|function|transform|call|visit|recurse)(\\s|/|$)", end=">", hash_char="<",
+    return colorer.match_span_regexp(s, i, kind="keyword1", begin="<#?(if|elseif|switch|foreach|list|case|assign|local|global|setting|include|import|stop|escape|macro|function|transform|call|visit|recurse)(\\s|/|$)", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="EXPRESSION",exclude_match=False,
+        delegate="freemarker::expression",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def freemarker_rule12(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword1", begin="</#?(assign|local|global|if|switch|foreach|list|escape|macro|function|transform|compress|noescape)\\>", end=">", hash_char="<",
+    return colorer.match_span_regexp(s, i, kind="keyword1", begin="</#?(assign|local|global|if|switch|foreach|list|escape|macro|function|transform|compress|noescape)\\>", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="INVALID",exclude_match=False,
+        delegate="freemarker::invalid",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def freemarker_rule13(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword1", begin="<#?(else|compress|noescape|default|break|flush|nested|t|rt|lt|return|recurse)\\>", end=">", hash_char="<",
+    return colorer.match_span_regexp(s, i, kind="keyword1", begin="<#?(else|compress|noescape|default|break|flush|nested|t|rt|lt|return|recurse)\\>", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="INVALID",exclude_match=False,
+        delegate="freemarker::invalid",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def freemarker_rule14(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword1", begin="</@(([_@[:alpha:]][_@[:alnum:]]*)(\\.[_@[:alpha:]][_@[:alnum:]]*)*)?", end=">", hash_char="<",
+    return colorer.match_span_regexp(s, i, kind="keyword1", begin="</@(([_@[:alpha:]][_@[:alnum:]]*)(\\.[_@[:alpha:]][_@[:alnum:]]*)*)?", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="INVALID",exclude_match=False,
+        delegate="freemarker::invalid",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def freemarker_rule15(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword1", begin="<@([_@[:alpha:]][_@[:alnum:]]*)(\\.[_@[:alpha:]][_@[:alnum:]]*)*", end=">", hash_char="<",
+    return colorer.match_span_regexp(s, i, kind="keyword1", begin="<@([_@[:alpha:]][_@[:alnum:]]*)(\\.[_@[:alpha:]][_@[:alnum:]]*)*", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="EXPRESSION",exclude_match=False,
+        delegate="freemarker::expression",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def freemarker_rule16(colorer, s, i):
@@ -221,7 +221,7 @@ def freemarker_rule20(colorer, s, i):
 def freemarker_rule21(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="TAGS",exclude_match=False,
+        delegate="freemarker::tags",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 # Rules dict for freemarker_main ruleset.
@@ -254,7 +254,7 @@ def freemarker_rule24(colorer, s, i):
 def freemarker_rule25(colorer, s, i):
     return colorer.match_span(s, i, kind="operator", begin="(", end=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="EXPRESSION",exclude_match=False,
+        delegate="freemarker::expression",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def freemarker_rule26(colorer, s, i):
@@ -437,13 +437,13 @@ rulesDict2 = {
 def freemarker_rule48(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="INQUOTE",exclude_match=False,
+        delegate="freemarker::inquote",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def freemarker_rule49(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="INQUOTE",exclude_match=False,
+        delegate="freemarker::inquote",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def freemarker_rule50(colorer, s, i):
@@ -462,13 +462,13 @@ rulesDict3 = {
 def freemarker_rule51(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword1", begin="${", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="EXPRESSION",exclude_match=False,
+        delegate="freemarker::expression",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def freemarker_rule52(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword1", begin="#{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="EXPRESSION",exclude_match=False,
+        delegate="freemarker::expression",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 # Rules dict for freemarker_inquote ruleset.

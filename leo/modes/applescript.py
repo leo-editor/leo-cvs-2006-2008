@@ -279,31 +279,31 @@ def applescript_rule16(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def applescript_rule17(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="application[\\t\\s]+responses", hash_char="a",
+    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="application[\\t\\s]+responses",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def applescript_rule18(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="current[\\t\\s]+application", hash_char="c",
+    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="current[\\t\\s]+application",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def applescript_rule19(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="white[\\t\\s]+space", hash_char="w",
+    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="white[\\t\\s]+space",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def applescript_rule20(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="all[\\t\\s]+caps", hash_char="a",
+    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="all[\\t\\s]+caps",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def applescript_rule21(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="all[\\t\\s]+lowercase", hash_char="a",
+    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="all[\\t\\s]+lowercase",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def applescript_rule22(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="small[\\t\\s]+caps", hash_char="s",
+    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="small[\\t\\s]+caps",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def applescript_rule23(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword3", regexp="missing[\\t\\s]+value", hash_char="m",
+    return colorer.match_seq_regexp(s, i, kind="keyword3", regexp="missing[\\t\\s]+value",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def applescript_rule24(colorer, s, i):

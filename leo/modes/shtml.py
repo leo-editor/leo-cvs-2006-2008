@@ -90,7 +90,7 @@ keywordsDictDict = {
 def shtml_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword3", begin="<!--#", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="SSI",exclude_match=False,
+        delegate="shtml::ssi",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def shtml_rule1(colorer, s, i):
@@ -102,25 +102,25 @@ def shtml_rule1(colorer, s, i):
 def shtml_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<SCRIPT", end="</SCRIPT>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="html::JAVASCRIPT",exclude_match=False,
+        delegate="html::javascript",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def shtml_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<STYLE", end="</STYLE>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="html::CSS",exclude_match=False,
+        delegate="html::css",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def shtml_rule4(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="<!", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="xml::DTD-TAGS",exclude_match=False,
+        delegate="xml::dtd-tags",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def shtml_rule5(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="TAGS",exclude_match=False,
+        delegate="shtml::tags",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def shtml_rule6(colorer, s, i):
@@ -165,7 +165,7 @@ rulesDict2 = {
 def shtml_rule10(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="SSI-EXPRESSION",exclude_match=True,
+        delegate="shtml::ssi-expression",exclude_match=True,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def shtml_rule11(colorer, s, i):

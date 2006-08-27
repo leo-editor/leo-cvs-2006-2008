@@ -2538,19 +2538,19 @@ keywordsDictDict = {
 def php_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<?php", end="?>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="PHP",exclude_match=False,
+        delegate="php::php",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def php_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<?", end="?>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="PHP",exclude_match=False,
+        delegate="php::php",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def php_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<%=", end="%>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="PHP",exclude_match=False,
+        delegate="php::php",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def php_rule3(colorer, s, i):
@@ -2560,33 +2560,33 @@ def php_rule3(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def php_rule4(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="markup", begin="<SCRIPT\\s+LANGUAGE=\"?PHP\"?>", end="</SCRIPT>", hash_char="< ",
+    return colorer.match_span_regexp(s, i, kind="markup", begin="<SCRIPT\\s+LANGUAGE=\"?PHP\"?>", end="</SCRIPT>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="PHP",exclude_match=False,
+        delegate="php::php",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def php_rule5(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<SCRIPT", end="</SCRIPT>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="JAVASCRIPT",exclude_match=False,
+        delegate="php::javascript",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def php_rule6(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<STYLE", end="</STYLE>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="html::CSS",exclude_match=False,
+        delegate="html::css",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def php_rule7(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="<!", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="xml::DTD-TAGS",exclude_match=False,
+        delegate="xml::dtd-tags",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def php_rule8(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="TAGS",exclude_match=False,
+        delegate="php::tags",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def php_rule9(colorer, s, i):
@@ -2606,31 +2606,31 @@ rulesDict1 = {
 def php_rule10(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<?php", end="?>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="PHP",exclude_match=False,
+        delegate="php::php",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def php_rule11(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<?", end="?>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="PHP",exclude_match=False,
+        delegate="php::php",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def php_rule12(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<%=", end="%>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="PHP",exclude_match=False,
+        delegate="php::php",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def php_rule13(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="TAGS_LITERAL",exclude_match=False,
+        delegate="php::tags_literal",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def php_rule14(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="TAGS_LITERAL",exclude_match=False,
+        delegate="php::tags_literal",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def php_rule15(colorer, s, i):
@@ -2650,19 +2650,19 @@ rulesDict2 = {
 def php_rule16(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<?php", end="?>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="PHP",exclude_match=False,
+        delegate="php::php",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def php_rule17(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<?", end="?>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="PHP",exclude_match=False,
+        delegate="php::php",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def php_rule18(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<%=", end="%>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="PHP",exclude_match=False,
+        delegate="php::php",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 # Rules dict for php_tags_literal ruleset.
@@ -2675,7 +2675,7 @@ rulesDict3 = {
 def php_rule19(colorer, s, i):
     return colorer.match_span(s, i, kind="comment3", begin="/**", end="*/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="PHPDOC",exclude_match=False,
+        delegate="php::phpdoc",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def php_rule20(colorer, s, i):
@@ -2687,7 +2687,7 @@ def php_rule20(colorer, s, i):
 def php_rule21(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="PHP_LITERAL",exclude_match=False,
+        delegate="php::php_literal",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def php_rule22(colorer, s, i):
@@ -2699,7 +2699,7 @@ def php_rule22(colorer, s, i):
 def php_rule23(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="`", end="`",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="PHP_LITERAL",exclude_match=False,
+        delegate="php::php_literal",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def php_rule24(colorer, s, i):
@@ -2713,9 +2713,9 @@ def php_rule25(colorer, s, i):
         delegate="", exclude_match=False)
 
 def php_rule26(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="literal1", begin="<<<[[:space:]'\"]*([[:alnum:]_]+)[[:space:]'\"]*", end="$1", hash_char="< ",
+    return colorer.match_span_regexp(s, i, kind="literal1", begin="<<<[[:space:]'\"]*([[:alnum:]_]+)[[:space:]'\"]*", end="$1",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="PHP_LITERAL",exclude_match=False,
+        delegate="php::php_literal",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def php_rule27(colorer, s, i):
@@ -2948,11 +2948,11 @@ rulesDict5 = {
 
 def php_rule58(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq=">",
-        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="JAVASCRIPT+PHP")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="php::javascript+php")
 
 def php_rule59(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq="SRC=",
-        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="BACK_TO_HTML")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="php::back_to_html")
 
 # Rules dict for php_javascript ruleset.
 rulesDict6 = {
@@ -2965,19 +2965,19 @@ rulesDict6 = {
 def php_rule60(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<?php", end="?>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="php::PHP",exclude_match=False,
+        delegate="php::php",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def php_rule61(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<?", end="?>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="php::PHP",exclude_match=False,
+        delegate="php::php",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def php_rule62(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<%=", end="%>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="php::PHP",exclude_match=False,
+        delegate="php::php",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 
@@ -3017,7 +3017,7 @@ def php_rule68(colorer, s, i):
 def php_rule69(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="xml::TAGS",exclude_match=False,
+        delegate="xml::tags",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def php_rule70(colorer, s, i):
@@ -3108,6 +3108,6 @@ rulesDictDict = {
 
 # Import dict for php mode.
 importDict = {
-	"php_javascript_php": ["javascript_main",],
+	"php_javascript_php": ["javascript::main",],
 }
 

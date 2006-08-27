@@ -37,7 +37,7 @@ def rtf_rule1(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rtf_rule2(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="\\\\'\\w\\d", hash_char="\\",
+    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="\\\\'\\w\\d",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rtf_rule3(colorer, s, i):

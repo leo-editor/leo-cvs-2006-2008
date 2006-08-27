@@ -136,25 +136,25 @@ def velocity_rule0(colorer, s, i):
 def velocity_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<SCRIPT", end="</SCRIPT>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="JAVASCRIPT",exclude_match=False,
+        delegate="velocity::javascript",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def velocity_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<STYLE", end="</STYLE>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="CSS",exclude_match=False,
+        delegate="velocity::css",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def velocity_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="<!", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="xml::DTD-TAGS",exclude_match=False,
+        delegate="xml::dtd-tags",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def velocity_rule4(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="html::TAGS",exclude_match=False,
+        delegate="html::tags",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def velocity_rule5(colorer, s, i):
@@ -273,11 +273,11 @@ rulesDict2 = {
 
 def velocity_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq=">",
-        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="JAVASCRIPT2")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="velocity::javascript2")
 
 def velocity_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq="SRC=",
-        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="BACK_TO_HTML")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="velocity::back_to_html")
 
 # Rules dict for velocity_javascript ruleset.
 rulesDict3 = {
@@ -296,7 +296,7 @@ rulesDict4 = {}
 
 def velocity_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq=">",
-        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="MAIN")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="velocity::main")
 
 # Rules dict for velocity_back_to_html ruleset.
 rulesDict5 = {
@@ -307,7 +307,7 @@ rulesDict5 = {
 
 def velocity_rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq=">",
-        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="CSS2")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="velocity::css2")
 
 # Rules dict for velocity_css ruleset.
 rulesDict6 = {
@@ -334,8 +334,8 @@ rulesDictDict = {
 
 # Import dict for velocity mode.
 importDict = {
-	"velocity_css2": ["velocity_css2_velocity","css_main",],
-	"velocity_javascript2": ["velocity_javascript2_velocity","javascript_main",],
-	"velocity_main": ["velocity_main_velocity",],
+	"velocity_css2": ["velocity_css2::velocity","css::main",],
+	"velocity_javascript2": ["velocity_javascript2::velocity","javascript::main",],
+	"velocity_main": ["velocity_main::velocity",],
 }
 

@@ -6005,7 +6005,7 @@ def progress_rule793(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def progress_rule794(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="invalid", regexp="put\\s+screen", hash_char="p",
+    return colorer.match_seq_regexp(s, i, kind="invalid", regexp="put\\s+screen",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def progress_rule795(colorer, s, i):
@@ -6017,7 +6017,7 @@ def progress_rule796(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 def progress_rule797(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword3", regexp="choose\\s+of", hash_char="c",
+    return colorer.match_seq_regexp(s, i, kind="keyword3", regexp="choose\\s+of",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def progress_rule798(colorer, s, i):

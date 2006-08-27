@@ -96,25 +96,25 @@ def html_rule0(colorer, s, i):
 def html_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<SCRIPT", end="</SCRIPT>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="JAVASCRIPT",exclude_match=False,
+        delegate="html::javascript",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def html_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<STYLE", end="</STYLE>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="CSS",exclude_match=False,
+        delegate="html::css",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def html_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="<!", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="xml::DTD-TAGS",exclude_match=False,
+        delegate="xml::dtd-tags",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def html_rule4(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="TAGS",exclude_match=False,
+        delegate="html::tags",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def html_rule5(colorer, s, i):
@@ -158,11 +158,11 @@ rulesDict2 = {
 
 def html_rule9(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq=">",
-        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="javascript::MAIN")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="javascript::main")
 
 def html_rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq="SRC=",
-        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="BACK_TO_HTML")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="html::back_to_html")
 
 # Rules dict for html_javascript ruleset.
 rulesDict3 = {
@@ -174,7 +174,7 @@ rulesDict3 = {
 
 def html_rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq=">",
-        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="html::MAIN")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="html::main")
 
 # Rules dict for html_back_to_html ruleset.
 rulesDict4 = {
@@ -185,7 +185,7 @@ rulesDict4 = {
 
 def html_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq=">",
-        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="css::MAIN")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="css::main")
 
 # Rules dict for html_css ruleset.
 rulesDict5 = {

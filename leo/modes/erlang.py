@@ -186,7 +186,7 @@ def erlang_rule4(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
 def erlang_rule5(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal3", regexp="\\$.\\w*", hash_char="$",
+    return colorer.match_seq_regexp(s, i, kind="literal3", regexp="\\$.\\w*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def erlang_rule6(colorer, s, i):
@@ -278,51 +278,51 @@ def erlang_rule27(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def erlang_rule28(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\bdiv\\b", hash_char="d",
+    return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\bdiv\\b",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def erlang_rule29(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\brem\\b", hash_char="r",
+    return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\brem\\b",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def erlang_rule30(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\bor\\b", hash_char="o",
+    return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\bor\\b",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def erlang_rule31(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\bxor\\b", hash_char="x",
+    return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\bxor\\b",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def erlang_rule32(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\bbor\\b", hash_char="b",
+    return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\bbor\\b",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def erlang_rule33(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\bbxor\\b", hash_char="b",
+    return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\bbxor\\b",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def erlang_rule34(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\bbsl\\b", hash_char="b",
+    return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\bbsl\\b",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def erlang_rule35(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\bbsr\\b", hash_char="b",
+    return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\bbsr\\b",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def erlang_rule36(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\band\\b", hash_char="a",
+    return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\band\\b",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def erlang_rule37(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\bband\\b", hash_char="b",
+    return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\bband\\b",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def erlang_rule38(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\bnot\\b", hash_char="n",
+    return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\bnot\\b",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def erlang_rule39(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\bbnot\\b", hash_char="b",
+    return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\bbnot\\b",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def erlang_rule40(colorer, s, i):

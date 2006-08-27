@@ -107,19 +107,19 @@ def xml_rule0(colorer, s, i):
 def xml_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="<!ENTITY", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="ENTITY-TAGS",exclude_match=False,
+        delegate="xml::entity-tags",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def xml_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="<![CDATA[", end="]]>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="CDATA",exclude_match=False,
+        delegate="xml::cdata",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def xml_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="<!", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="DTD-TAGS",exclude_match=False,
+        delegate="xml::dtd-tags",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def xml_rule4(colorer, s, i):
@@ -131,7 +131,7 @@ def xml_rule4(colorer, s, i):
 def xml_rule5(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="TAGS",exclude_match=False,
+        delegate="xml::tags",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def xml_rule6(colorer, s, i):
@@ -222,7 +222,7 @@ def xml_rule17(colorer, s, i):
 def xml_rule18(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="[", end="]",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="MAIN",exclude_match=False,
+        delegate="xml::main",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def xml_rule19(colorer, s, i):

@@ -156,25 +156,25 @@ def zpt_rule0(colorer, s, i):
 def zpt_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<SCRIPT", end="</SCRIPT>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="JAVASCRIPT",exclude_match=False,
+        delegate="zpt::javascript",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def zpt_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<STYLE", end="</STYLE>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="CSS",exclude_match=False,
+        delegate="zpt::css",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def zpt_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="<!", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="xml::DTD-TAGS",exclude_match=False,
+        delegate="xml::dtd-tags",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def zpt_rule4(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="TAGS",exclude_match=False,
+        delegate="zpt::tags",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def zpt_rule5(colorer, s, i):
@@ -194,13 +194,13 @@ rulesDict1 = {
 def zpt_rule6(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="ATTRIBUTE",exclude_match=False,
+        delegate="zpt::attribute",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def zpt_rule7(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="ATTRIBUTE",exclude_match=False,
+        delegate="zpt::attribute",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def zpt_rule8(colorer, s, i):
@@ -393,11 +393,11 @@ rulesDict3 = {
 
 def zpt_rule18(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq=">",
-        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="javascript::MAIN")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="javascript::main")
 
 def zpt_rule19(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq="SRC=",
-        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="BACK_TO_HTML")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="zpt::back_to_html")
 
 # Rules dict for zpt_javascript ruleset.
 rulesDict4 = {
@@ -409,7 +409,7 @@ rulesDict4 = {
 
 def zpt_rule20(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq=">",
-        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="zpt::MAIN")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="zpt::main")
 
 # Rules dict for zpt_back_to_html ruleset.
 rulesDict5 = {
@@ -420,7 +420,7 @@ rulesDict5 = {
 
 def zpt_rule21(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq=">",
-        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="css::MAIN")
+        at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="css::main")
 
 # Rules dict for zpt_css ruleset.
 rulesDict6 = {

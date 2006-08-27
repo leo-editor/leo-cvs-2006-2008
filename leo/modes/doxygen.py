@@ -441,7 +441,7 @@ def doxygen_rule11(colorer, s, i):
 def doxygen_rule12(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="xml::TAGS",exclude_match=False,
+        delegate="xml::tags",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def doxygen_rule13(colorer, s, i):

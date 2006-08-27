@@ -129,31 +129,31 @@ def shellscript_rule10(colorer, s, i):
 def shellscript_rule11(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword3", begin="$((", end="))",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="EXEC",exclude_match=False,
+        delegate="shellscript::exec",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def shellscript_rule12(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword3", begin="$(", end=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="EXEC",exclude_match=False,
+        delegate="shellscript::exec",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def shellscript_rule13(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword3", begin="$[", end="]",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="EXEC",exclude_match=False,
+        delegate="shellscript::exec",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def shellscript_rule14(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword3", begin="`", end="`",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="EXEC",exclude_match=False,
+        delegate="shellscript::exec",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def shellscript_rule15(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="LITERAL",exclude_match=False,
+        delegate="shellscript::literal",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def shellscript_rule16(colorer, s, i):
@@ -163,9 +163,9 @@ def shellscript_rule16(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def shellscript_rule17(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="literal1", begin="<<[[:space:]'\"]*([[:alnum:]_]+)[[:space:]'\"]*", end="$1", hash_char="< ",
+    return colorer.match_span_regexp(s, i, kind="literal1", begin="<<[[:space:]'\"]*([[:alnum:]_]+)[[:space:]'\"]*", end="$1",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="LITERAL",exclude_match=False,
+        delegate="shellscript::literal",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def shellscript_rule18(colorer, s, i):

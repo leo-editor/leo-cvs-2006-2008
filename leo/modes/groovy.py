@@ -205,7 +205,7 @@ def groovy_rule0(colorer, s, i):
 def groovy_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="comment3", begin="/**", end="*/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="GROOVYDOC",exclude_match=False,
+        delegate="groovy::groovydoc",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def groovy_rule2(colorer, s, i):
@@ -217,7 +217,7 @@ def groovy_rule2(colorer, s, i):
 def groovy_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="LITERAL",exclude_match=False,
+        delegate="groovy::literal",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def groovy_rule4(colorer, s, i):
@@ -227,9 +227,9 @@ def groovy_rule4(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def groovy_rule5(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="literal1", begin="<<<([[:alpha:]_][[:alnum:]_]*)\\s*", end="$1", hash_char="<",
+    return colorer.match_span_regexp(s, i, kind="literal1", begin="<<<([[:alpha:]_][[:alnum:]_]*)\\s*", end="$1",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="LITERAL",exclude_match=False,
+        delegate="groovy::literal",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def groovy_rule6(colorer, s, i):
@@ -425,7 +425,7 @@ def groovy_rule29(colorer, s, i):
 def groovy_rule30(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="xml::TAGS",exclude_match=False,
+        delegate="xml::tags",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def groovy_rule31(colorer, s, i):

@@ -109,13 +109,13 @@ keywordsDictDict = {
 def objective-c_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment3", begin="/**", end="*/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="doxygen::DOXYGEN",exclude_match=False,
+        delegate="doxygen::doxygen",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def objective-c_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="comment3", begin="/*!", end="*/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="doxygen::DOXYGEN",exclude_match=False,
+        delegate="doxygen::doxygen",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def objective-c_rule2(colorer, s, i):
@@ -149,7 +149,7 @@ def objective-c_rule6(colorer, s, i):
 def objective-c_rule7(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="keyword2", seq="#",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="c::CPP", exclude_match=False)
+        delegate="c::cpp", exclude_match=False)
 
 def objective-c_rule8(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment2", seq="//",

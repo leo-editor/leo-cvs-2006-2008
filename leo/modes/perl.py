@@ -333,67 +333,67 @@ def perl_rule0(colorer, s, i):
 def perl_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="label", begin="=head1", end="=cut",
         at_line_start=True, at_whitespace_end=False, at_word_start=False,
-        delegate="POD",exclude_match=False,
+        delegate="perl::pod",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def perl_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="label", begin="=head2", end="=cut",
         at_line_start=True, at_whitespace_end=False, at_word_start=False,
-        delegate="POD",exclude_match=False,
+        delegate="perl::pod",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def perl_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="label", begin="=head3", end="=cut",
         at_line_start=True, at_whitespace_end=False, at_word_start=False,
-        delegate="POD",exclude_match=False,
+        delegate="perl::pod",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def perl_rule4(colorer, s, i):
     return colorer.match_span(s, i, kind="label", begin="=head4", end="=cut",
         at_line_start=True, at_whitespace_end=False, at_word_start=False,
-        delegate="POD",exclude_match=False,
+        delegate="perl::pod",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def perl_rule5(colorer, s, i):
     return colorer.match_span(s, i, kind="label", begin="=item", end="=cut",
         at_line_start=True, at_whitespace_end=False, at_word_start=False,
-        delegate="POD",exclude_match=False,
+        delegate="perl::pod",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def perl_rule6(colorer, s, i):
     return colorer.match_span(s, i, kind="label", begin="=over", end="=cut",
         at_line_start=True, at_whitespace_end=False, at_word_start=False,
-        delegate="POD",exclude_match=False,
+        delegate="perl::pod",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def perl_rule7(colorer, s, i):
     return colorer.match_span(s, i, kind="label", begin="=back", end="=cut",
         at_line_start=True, at_whitespace_end=False, at_word_start=False,
-        delegate="POD",exclude_match=False,
+        delegate="perl::pod",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def perl_rule8(colorer, s, i):
     return colorer.match_span(s, i, kind="label", begin="=pod", end="=cut",
         at_line_start=True, at_whitespace_end=False, at_word_start=False,
-        delegate="POD",exclude_match=False,
+        delegate="perl::pod",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def perl_rule9(colorer, s, i):
     return colorer.match_span(s, i, kind="label", begin="=for", end="=cut",
         at_line_start=True, at_whitespace_end=False, at_word_start=False,
-        delegate="POD",exclude_match=False,
+        delegate="perl::pod",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def perl_rule10(colorer, s, i):
     return colorer.match_span(s, i, kind="label", begin="=begin", end="=cut",
         at_line_start=True, at_whitespace_end=False, at_word_start=False,
-        delegate="POD",exclude_match=False,
+        delegate="perl::pod",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def perl_rule11(colorer, s, i):
     return colorer.match_span(s, i, kind="label", begin="=end", end="=cut",
         at_line_start=True, at_whitespace_end=False, at_word_start=False,
-        delegate="POD",exclude_match=False,
+        delegate="perl::pod",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def perl_rule12(colorer, s, i):
@@ -411,37 +411,37 @@ def perl_rule14(colorer, s, i):
 def perl_rule15(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="${", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="VARIABLE",exclude_match=False,
+        delegate="perl::variable",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def perl_rule16(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="\\$(?:#|\\w)+", hash_char="$",
+    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="\\$(?:#|\\w)+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def perl_rule17(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="@(?:#|\\w)+", hash_char="@",
+    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="@(?:#|\\w)+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def perl_rule18(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="%(?:#|\\w)+", hash_char="%",
+    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="%(?:#|\\w)+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def perl_rule19(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="@{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="VARIABLE",exclude_match=False,
+        delegate="perl::variable",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def perl_rule20(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="%{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="VARIABLE",exclude_match=False,
+        delegate="perl::variable",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def perl_rule21(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="LITERAL",exclude_match=False,
+        delegate="perl::literal",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def perl_rule22(colorer, s, i):
@@ -453,55 +453,55 @@ def perl_rule22(colorer, s, i):
 def perl_rule23(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword3", begin="`", end="`",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="EXEC",exclude_match=False,
+        delegate="perl::exec",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def perl_rule24(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="literal2", begin="<<[:space:]*(['\"])([[:space:][:alnum:]_]*)\\1;?\\s*", end="$2", hash_char="<",
+    return colorer.match_span_regexp(s, i, kind="literal2", begin="<<[:space:]*(['\"])([[:space:][:alnum:]_]*)\\1;?\\s*", end="$2",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="LITERAL",exclude_match=False,
+        delegate="perl::literal",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def perl_rule25(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="literal2", begin="<<([[:alpha:]_][[:alnum:]_]*);?\\s*", end="$1", hash_char="<",
+    return colorer.match_span_regexp(s, i, kind="literal2", begin="<<([[:alpha:]_][[:alnum:]_]*);?\\s*", end="$1",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="LITERAL",exclude_match=False,
+        delegate="perl::literal",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def perl_rule26(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="markup", regexp="/[^[:blank:]]*?[^\\\\]/", hash_char="/",
+    return colorer.match_seq_regexp(s, i, kind="markup", regexp="/[^[:blank:]]*?[^\\\\]/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def perl_rule27(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="markup", regexp="q(?:|[qrx])\\{(?:.*?[^\\\\])*?\\}", hash_char="q",
+    return colorer.match_seq_regexp(s, i, kind="markup", regexp="q(?:|[qrx])\\{(?:.*?[^\\\\])*?\\}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def perl_rule28(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="markup", regexp="tr([[:punct:]])(?:.*?[^\\\\])*?\\1(?:.*?[^\\\\])*?\\1", hash_char="t",
+    return colorer.match_seq_regexp(s, i, kind="markup", regexp="tr([[:punct:]])(?:.*?[^\\\\])*?\\1(?:.*?[^\\\\])*?\\1",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def perl_rule29(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="markup", regexp="y([[:punct:]])(?:.*?[^\\\\])*?\\1(?:.*?[^\\\\])*?\\1", hash_char="y",
+    return colorer.match_seq_regexp(s, i, kind="markup", regexp="y([[:punct:]])(?:.*?[^\\\\])*?\\1(?:.*?[^\\\\])*?\\1",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def perl_rule30(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="markup", regexp="m\\{(?:.*?[^\\\\])*?\\}[sgiexom]*", hash_char="m",
+    return colorer.match_seq_regexp(s, i, kind="markup", regexp="m\\{(?:.*?[^\\\\])*?\\}[sgiexom]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def perl_rule31(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="markup", regexp="m([[:punct:]])(?:.*?[^\\\\])*?\\1[sgiexom]*", hash_char="m",
+    return colorer.match_seq_regexp(s, i, kind="markup", regexp="m([[:punct:]])(?:.*?[^\\\\])*?\\1[sgiexom]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def perl_rule32(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="markup", regexp="s\\s*\\{(?:.*?[^\\\\])*?\\}\\s*\\{(?:.*?[^\\\\])*?\\}[sgiexom]*", hash_char="s",
+    return colorer.match_seq_regexp(s, i, kind="markup", regexp="s\\s*\\{(?:.*?[^\\\\])*?\\}\\s*\\{(?:.*?[^\\\\])*?\\}[sgiexom]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def perl_rule33(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="markup", regexp="s([[:punct:]])(?:.*?[^\\\\])*?\\1(?:.*?[^\\\\])*?\\1[sgiexom]*", hash_char="s",
+    return colorer.match_seq_regexp(s, i, kind="markup", regexp="s([[:punct:]])(?:.*?[^\\\\])*?\\1(?:.*?[^\\\\])*?\\1[sgiexom]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def perl_rule34(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="markup", regexp="/[^[:blank:]]*?/", hash_char="/",
+    return colorer.match_seq_regexp(s, i, kind="markup", regexp="/[^[:blank:]]*?/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def perl_rule35(colorer, s, i):
@@ -689,7 +689,7 @@ rulesDict2 = {
 def perl_rule56(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="${", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="VARIABLE",exclude_match=False,
+        delegate="perl::variable",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def perl_rule57(colorer, s, i):
@@ -703,7 +703,7 @@ def perl_rule58(colorer, s, i):
 def perl_rule59(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="@{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="VARIABLE",exclude_match=False,
+        delegate="perl::variable",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def perl_rule60(colorer, s, i):
@@ -713,7 +713,7 @@ def perl_rule60(colorer, s, i):
 def perl_rule61(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="%{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="VARIABLE",exclude_match=False,
+        delegate="perl::variable",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def perl_rule62(colorer, s, i):
@@ -900,7 +900,7 @@ rulesDict4 = {
 def perl_rule95(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="VARIABLE",exclude_match=False,
+        delegate="perl::variable",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def perl_rule96(colorer, s, i):
@@ -954,19 +954,19 @@ def perl_rule105(colorer, s, i):
 def perl_rule106(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="(", end=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="REGEXP",exclude_match=False,
+        delegate="perl::regexp",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def perl_rule107(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="[", end="]",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="REGEXP",exclude_match=False,
+        delegate="perl::regexp",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def perl_rule108(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="REGEXP",exclude_match=False,
+        delegate="perl::regexp",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 # Rules dict for perl_regexp ruleset.

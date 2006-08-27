@@ -61,6 +61,6 @@ rulesDictDict = {
 
 # Import dict for swig mode.
 importDict = {
-	"swig_main": ["c_main",],
+	"swig_main": ["c::main",],
 }
 

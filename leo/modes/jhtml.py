@@ -98,37 +98,37 @@ def jhtml_rule1(colorer, s, i):
 def jhtml_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="`", end="`",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="java::MAIN",exclude_match=False,
+        delegate="java::main",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def jhtml_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<java>", end="</java>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="java::MAIN",exclude_match=False,
+        delegate="java::main",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def jhtml_rule4(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<SCRIPT", end="</SCRIPT>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="html::JAVASCRIPT",exclude_match=False,
+        delegate="html::javascript",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def jhtml_rule5(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<STYLE", end="</STYLE>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="html::CSS",exclude_match=False,
+        delegate="html::css",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def jhtml_rule6(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="<!", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="xml::DTD-TAGS",exclude_match=False,
+        delegate="xml::dtd-tags",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def jhtml_rule7(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="JHTML",exclude_match=False,
+        delegate="jhtml::jhtml",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def jhtml_rule8(colorer, s, i):
@@ -155,13 +155,13 @@ def jhtml_rule9(colorer, s, i):
 def jhtml_rule10(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="ATTRVALUE",exclude_match=False,
+        delegate="jhtml::attrvalue",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def jhtml_rule11(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="ATTRVALUE",exclude_match=False,
+        delegate="jhtml::attrvalue",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def jhtml_rule12(colorer, s, i):
@@ -247,7 +247,7 @@ rulesDict2 = {
 def jhtml_rule14(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="`", end="`",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="java::MAIN",exclude_match=False,
+        delegate="java::main",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def jhtml_rule15(colorer, s, i):

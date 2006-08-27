@@ -61,19 +61,19 @@ keywordsDictDict = {
 def tex_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="$$", end="$$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="MATH",exclude_match=False,
+        delegate="tex::math",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def tex_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="$", end="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="MATH",exclude_match=False,
+        delegate="tex::math",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def tex_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="\\[", end="\\]",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="MATH",exclude_match=False,
+        delegate="tex::math",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def tex_rule3(colorer, s, i):
@@ -97,13 +97,13 @@ def tex_rule6(colorer, s, i):
 def tex_rule7(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword1", begin="\\begin{verbatim}", end="\\end{verbatim}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="VERBATIM",exclude_match=False,
+        delegate="tex::verbatim",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def tex_rule8(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword1", begin="\\verb|", end="|",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="VERBATIM",exclude_match=False,
+        delegate="tex::verbatim",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def tex_rule9(colorer, s, i):

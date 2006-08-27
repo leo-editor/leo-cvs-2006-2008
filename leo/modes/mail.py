@@ -86,7 +86,7 @@ def mail_rule4(colorer, s, i):
 
 def mail_rule5(colorer, s, i):
     return colorer.match_seq(s, i, kind="comment2", seq="--",
-        at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="SIGNATURE")
+        at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="mail::signature")
 
 def mail_rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq=":-)",

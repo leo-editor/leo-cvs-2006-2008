@@ -174,7 +174,7 @@ keywordsDictDict = {
 def pike_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="COMMENT",exclude_match=False,
+        delegate="pike::comment",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def pike_rule1(colorer, s, i):
@@ -184,23 +184,23 @@ def pike_rule1(colorer, s, i):
 def pike_rule2(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="//!",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="AUTODOC", exclude_match=False)
+        delegate="pike::autodoc", exclude_match=False)
 
 def pike_rule3(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="//",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="COMMENT", exclude_match=False)
+        delegate="pike::comment", exclude_match=False)
 
 def pike_rule4(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="STRING_LITERAL",exclude_match=False,
+        delegate="pike::string_literal",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def pike_rule5(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="#\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="STRING_LITERAL",exclude_match=False,
+        delegate="pike::string_literal",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def pike_rule6(colorer, s, i):
@@ -210,7 +210,7 @@ def pike_rule6(colorer, s, i):
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def pike_rule7(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="#.*?(?=($|/\\*|//))", hash_char="#",
+    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="#.*?(?=($|/\\*|//))",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def pike_rule8(colorer, s, i):
@@ -473,12 +473,12 @@ rulesDict2 = {
 def pike_rule33(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="null", seq="@decl",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="MAIN", exclude_match=True)
+        delegate="pike::main", exclude_match=True)
 
 def pike_rule34(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="@xml{", end="@}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="xml::TAGS",exclude_match=False,
+        delegate="xml::tags",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def pike_rule35(colorer, s, i):
@@ -488,7 +488,7 @@ def pike_rule35(colorer, s, i):
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def pike_rule36(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="function", regexp="@(b|i|u|tt|url|pre|ref|code|expr|image)?(\\{.*@\\})", hash_char="@",
+    return colorer.match_seq_regexp(s, i, kind="function", regexp="@(b|i|u|tt|url|pre|ref|code|expr|image)?(\\{.*@\\})",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def pike_rule37(colorer, s, i):
@@ -497,7 +497,7 @@ def pike_rule37(colorer, s, i):
 def pike_rule38(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="null", seq="@decl",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="MAIN", exclude_match=False)
+        delegate="pike::main", exclude_match=False)
 
 # Rules dict for pike_autodoc ruleset.
 rulesDict3 = {
@@ -569,11 +569,11 @@ rulesDict3 = {
 # Rules for pike_string_literal ruleset.
 
 def pike_rule39(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="%([^ a-z]*[a-z]|\\[[^\\]]*\\])", hash_char="%",
+    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="%([^ a-z]*[a-z]|\\[[^\\]]*\\])",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def pike_rule40(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="comment2", regexp="DEBUG:", hash_char="D",
+    return colorer.match_seq_regexp(s, i, kind="comment2", regexp="DEBUG:",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules dict for pike_string_literal ruleset.

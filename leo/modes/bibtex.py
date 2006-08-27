@@ -906,181 +906,181 @@ def bibtex_rule0(colorer, s, i):
 def bibtex_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="function", begin="@article{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="article",exclude_match=False,
+        delegate="bibtex::article",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="function", begin="@article(", end=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="article",exclude_match=False,
+        delegate="bibtex::article",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="function", begin="@book{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="book",exclude_match=False,
+        delegate="bibtex::book",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule4(colorer, s, i):
     return colorer.match_span(s, i, kind="function", begin="@book(", end=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="book",exclude_match=False,
+        delegate="bibtex::book",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule5(colorer, s, i):
     return colorer.match_span(s, i, kind="function", begin="@booklet{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="booklet",exclude_match=False,
+        delegate="bibtex::booklet",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule6(colorer, s, i):
     return colorer.match_span(s, i, kind="function", begin="@booklet(", end=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="booklet",exclude_match=False,
+        delegate="bibtex::booklet",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule7(colorer, s, i):
     return colorer.match_span(s, i, kind="function", begin="@conference{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="conference",exclude_match=False,
+        delegate="bibtex::conference",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule8(colorer, s, i):
     return colorer.match_span(s, i, kind="function", begin="@conference(", end=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="conference",exclude_match=False,
+        delegate="bibtex::conference",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule9(colorer, s, i):
     return colorer.match_span(s, i, kind="function", begin="@inbook{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="inbook",exclude_match=False,
+        delegate="bibtex::inbook",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule10(colorer, s, i):
     return colorer.match_span(s, i, kind="function", begin="@inbook(", end=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="inbook",exclude_match=False,
+        delegate="bibtex::inbook",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule11(colorer, s, i):
     return colorer.match_span(s, i, kind="function", begin="@incollection{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="incollection",exclude_match=False,
+        delegate="bibtex::incollection",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule12(colorer, s, i):
     return colorer.match_span(s, i, kind="function", begin="@incollection(", end=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="incollection",exclude_match=False,
+        delegate="bibtex::incollection",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule13(colorer, s, i):
     return colorer.match_span(s, i, kind="function", begin="@inproceedings{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="inproceedings",exclude_match=False,
+        delegate="bibtex::inproceedings",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule14(colorer, s, i):
     return colorer.match_span(s, i, kind="function", begin="@inproceedings(", end=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="inproceedings",exclude_match=False,
+        delegate="bibtex::inproceedings",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule15(colorer, s, i):
     return colorer.match_span(s, i, kind="function", begin="@manual{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="manual",exclude_match=False,
+        delegate="bibtex::manual",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule16(colorer, s, i):
     return colorer.match_span(s, i, kind="function", begin="@manual(", end=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="manual",exclude_match=False,
+        delegate="bibtex::manual",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule17(colorer, s, i):
     return colorer.match_span(s, i, kind="function", begin="@mastersthesis{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="mastersthesis",exclude_match=False,
+        delegate="bibtex::mastersthesis",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule18(colorer, s, i):
     return colorer.match_span(s, i, kind="function", begin="@mastersthesis(", end=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="mastersthesis",exclude_match=False,
+        delegate="bibtex::mastersthesis",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule19(colorer, s, i):
     return colorer.match_span(s, i, kind="function", begin="@misc{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="misc",exclude_match=False,
+        delegate="bibtex::misc",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule20(colorer, s, i):
     return colorer.match_span(s, i, kind="function", begin="@misc(", end=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="misc",exclude_match=False,
+        delegate="bibtex::misc",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule21(colorer, s, i):
     return colorer.match_span(s, i, kind="function", begin="@phdthesis{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="phdthesis",exclude_match=False,
+        delegate="bibtex::phdthesis",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule22(colorer, s, i):
     return colorer.match_span(s, i, kind="function", begin="@phdthesis(", end=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="phdthesis",exclude_match=False,
+        delegate="bibtex::phdthesis",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule23(colorer, s, i):
     return colorer.match_span(s, i, kind="function", begin="@proceedings{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="proceedings",exclude_match=False,
+        delegate="bibtex::proceedings",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule24(colorer, s, i):
     return colorer.match_span(s, i, kind="function", begin="@proceedings(", end=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="proceedings",exclude_match=False,
+        delegate="bibtex::proceedings",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule25(colorer, s, i):
     return colorer.match_span(s, i, kind="function", begin="@techreport{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="techreport",exclude_match=False,
+        delegate="bibtex::techreport",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule26(colorer, s, i):
     return colorer.match_span(s, i, kind="function", begin="@techreport(", end=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="techreport",exclude_match=False,
+        delegate="bibtex::techreport",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule27(colorer, s, i):
     return colorer.match_span(s, i, kind="function", begin="@unpublished{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="unpublished",exclude_match=False,
+        delegate="bibtex::unpublished",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule28(colorer, s, i):
     return colorer.match_span(s, i, kind="function", begin="@unpublished(", end=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="unpublished",exclude_match=False,
+        delegate="bibtex::unpublished",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule29(colorer, s, i):
     return colorer.match_span(s, i, kind="function", begin="@string{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="string",exclude_match=False,
+        delegate="bibtex::string",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule30(colorer, s, i):
     return colorer.match_span(s, i, kind="function", begin="@string(", end=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="string",exclude_match=False,
+        delegate="bibtex::string",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 # Rules dict for bibtex_main ruleset.
@@ -1094,13 +1094,13 @@ rulesDict1 = {
 def bibtex_rule31(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="textquoted",exclude_match=False,
+        delegate="bibtex::textquoted",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule32(colorer, s, i):
     return colorer.match_span(s, i, kind="literal2", begin="{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="textbraced",exclude_match=False,
+        delegate="bibtex::textbraced",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule33(colorer, s, i):
@@ -1112,39 +1112,39 @@ def bibtex_rule34(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule35(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*", hash_char="1",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule36(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*", hash_char="2",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule37(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*", hash_char="3",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule38(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*", hash_char="4",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule39(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*", hash_char="5",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule40(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*", hash_char="6",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule41(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*", hash_char="7",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule42(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*", hash_char="8",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule43(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*", hash_char="9",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule44(colorer, s, i):
@@ -1226,13 +1226,13 @@ rulesDict2 = {
 def bibtex_rule45(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="textquoted",exclude_match=False,
+        delegate="bibtex::textquoted",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule46(colorer, s, i):
     return colorer.match_span(s, i, kind="literal2", begin="{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="textbraced",exclude_match=False,
+        delegate="bibtex::textbraced",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule47(colorer, s, i):
@@ -1244,39 +1244,39 @@ def bibtex_rule48(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule49(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*", hash_char="1",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule50(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*", hash_char="2",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule51(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*", hash_char="3",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule52(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*", hash_char="4",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule53(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*", hash_char="5",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule54(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*", hash_char="6",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule55(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*", hash_char="7",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule56(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*", hash_char="8",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule57(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*", hash_char="9",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule58(colorer, s, i):
@@ -1358,13 +1358,13 @@ rulesDict3 = {
 def bibtex_rule59(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="textquoted",exclude_match=False,
+        delegate="bibtex::textquoted",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule60(colorer, s, i):
     return colorer.match_span(s, i, kind="literal2", begin="{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="textbraced",exclude_match=False,
+        delegate="bibtex::textbraced",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule61(colorer, s, i):
@@ -1376,39 +1376,39 @@ def bibtex_rule62(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule63(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*", hash_char="1",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule64(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*", hash_char="2",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule65(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*", hash_char="3",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule66(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*", hash_char="4",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule67(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*", hash_char="5",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule68(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*", hash_char="6",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule69(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*", hash_char="7",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule70(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*", hash_char="8",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule71(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*", hash_char="9",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule72(colorer, s, i):
@@ -1490,13 +1490,13 @@ rulesDict4 = {
 def bibtex_rule73(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="textquoted",exclude_match=False,
+        delegate="bibtex::textquoted",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule74(colorer, s, i):
     return colorer.match_span(s, i, kind="literal2", begin="{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="textbraced",exclude_match=False,
+        delegate="bibtex::textbraced",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule75(colorer, s, i):
@@ -1508,39 +1508,39 @@ def bibtex_rule76(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule77(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*", hash_char="1",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule78(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*", hash_char="2",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule79(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*", hash_char="3",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule80(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*", hash_char="4",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule81(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*", hash_char="5",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule82(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*", hash_char="6",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule83(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*", hash_char="7",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule84(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*", hash_char="8",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule85(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*", hash_char="9",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule86(colorer, s, i):
@@ -1622,13 +1622,13 @@ rulesDict5 = {
 def bibtex_rule87(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="textquoted",exclude_match=False,
+        delegate="bibtex::textquoted",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule88(colorer, s, i):
     return colorer.match_span(s, i, kind="literal2", begin="{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="textbraced",exclude_match=False,
+        delegate="bibtex::textbraced",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule89(colorer, s, i):
@@ -1640,39 +1640,39 @@ def bibtex_rule90(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule91(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*", hash_char="1",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule92(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*", hash_char="2",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule93(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*", hash_char="3",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule94(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*", hash_char="4",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule95(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*", hash_char="5",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule96(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*", hash_char="6",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule97(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*", hash_char="7",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule98(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*", hash_char="8",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule99(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*", hash_char="9",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule100(colorer, s, i):
@@ -1754,13 +1754,13 @@ rulesDict6 = {
 def bibtex_rule101(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="textquoted",exclude_match=False,
+        delegate="bibtex::textquoted",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule102(colorer, s, i):
     return colorer.match_span(s, i, kind="literal2", begin="{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="textbraced",exclude_match=False,
+        delegate="bibtex::textbraced",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule103(colorer, s, i):
@@ -1772,39 +1772,39 @@ def bibtex_rule104(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule105(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*", hash_char="1",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule106(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*", hash_char="2",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule107(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*", hash_char="3",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule108(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*", hash_char="4",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule109(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*", hash_char="5",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule110(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*", hash_char="6",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule111(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*", hash_char="7",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule112(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*", hash_char="8",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule113(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*", hash_char="9",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule114(colorer, s, i):
@@ -1886,13 +1886,13 @@ rulesDict7 = {
 def bibtex_rule115(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="textquoted",exclude_match=False,
+        delegate="bibtex::textquoted",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule116(colorer, s, i):
     return colorer.match_span(s, i, kind="literal2", begin="{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="textbraced",exclude_match=False,
+        delegate="bibtex::textbraced",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule117(colorer, s, i):
@@ -1904,39 +1904,39 @@ def bibtex_rule118(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule119(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*", hash_char="1",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule120(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*", hash_char="2",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule121(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*", hash_char="3",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule122(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*", hash_char="4",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule123(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*", hash_char="5",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule124(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*", hash_char="6",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule125(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*", hash_char="7",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule126(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*", hash_char="8",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule127(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*", hash_char="9",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule128(colorer, s, i):
@@ -2018,13 +2018,13 @@ rulesDict8 = {
 def bibtex_rule129(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="textquoted",exclude_match=False,
+        delegate="bibtex::textquoted",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule130(colorer, s, i):
     return colorer.match_span(s, i, kind="literal2", begin="{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="textbraced",exclude_match=False,
+        delegate="bibtex::textbraced",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule131(colorer, s, i):
@@ -2036,39 +2036,39 @@ def bibtex_rule132(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule133(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*", hash_char="1",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule134(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*", hash_char="2",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule135(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*", hash_char="3",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule136(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*", hash_char="4",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule137(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*", hash_char="5",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule138(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*", hash_char="6",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule139(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*", hash_char="7",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule140(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*", hash_char="8",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule141(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*", hash_char="9",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule142(colorer, s, i):
@@ -2150,13 +2150,13 @@ rulesDict9 = {
 def bibtex_rule143(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="textquoted",exclude_match=False,
+        delegate="bibtex::textquoted",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule144(colorer, s, i):
     return colorer.match_span(s, i, kind="literal2", begin="{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="textbraced",exclude_match=False,
+        delegate="bibtex::textbraced",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule145(colorer, s, i):
@@ -2168,39 +2168,39 @@ def bibtex_rule146(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule147(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*", hash_char="1",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule148(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*", hash_char="2",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule149(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*", hash_char="3",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule150(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*", hash_char="4",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule151(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*", hash_char="5",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule152(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*", hash_char="6",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule153(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*", hash_char="7",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule154(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*", hash_char="8",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule155(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*", hash_char="9",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule156(colorer, s, i):
@@ -2282,13 +2282,13 @@ rulesDict10 = {
 def bibtex_rule157(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="textquoted",exclude_match=False,
+        delegate="bibtex::textquoted",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule158(colorer, s, i):
     return colorer.match_span(s, i, kind="literal2", begin="{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="textbraced",exclude_match=False,
+        delegate="bibtex::textbraced",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule159(colorer, s, i):
@@ -2300,39 +2300,39 @@ def bibtex_rule160(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule161(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*", hash_char="1",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule162(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*", hash_char="2",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule163(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*", hash_char="3",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule164(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*", hash_char="4",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule165(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*", hash_char="5",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule166(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*", hash_char="6",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule167(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*", hash_char="7",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule168(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*", hash_char="8",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule169(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*", hash_char="9",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule170(colorer, s, i):
@@ -2414,13 +2414,13 @@ rulesDict11 = {
 def bibtex_rule171(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="textquoted",exclude_match=False,
+        delegate="bibtex::textquoted",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule172(colorer, s, i):
     return colorer.match_span(s, i, kind="literal2", begin="{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="textbraced",exclude_match=False,
+        delegate="bibtex::textbraced",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule173(colorer, s, i):
@@ -2432,39 +2432,39 @@ def bibtex_rule174(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule175(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*", hash_char="1",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule176(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*", hash_char="2",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule177(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*", hash_char="3",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule178(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*", hash_char="4",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule179(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*", hash_char="5",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule180(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*", hash_char="6",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule181(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*", hash_char="7",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule182(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*", hash_char="8",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule183(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*", hash_char="9",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule184(colorer, s, i):
@@ -2546,13 +2546,13 @@ rulesDict12 = {
 def bibtex_rule185(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="textquoted",exclude_match=False,
+        delegate="bibtex::textquoted",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule186(colorer, s, i):
     return colorer.match_span(s, i, kind="literal2", begin="{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="textbraced",exclude_match=False,
+        delegate="bibtex::textbraced",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule187(colorer, s, i):
@@ -2564,39 +2564,39 @@ def bibtex_rule188(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule189(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*", hash_char="1",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule190(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*", hash_char="2",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule191(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*", hash_char="3",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule192(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*", hash_char="4",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule193(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*", hash_char="5",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule194(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*", hash_char="6",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule195(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*", hash_char="7",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule196(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*", hash_char="8",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule197(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*", hash_char="9",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule198(colorer, s, i):
@@ -2678,13 +2678,13 @@ rulesDict13 = {
 def bibtex_rule199(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="textquoted",exclude_match=False,
+        delegate="bibtex::textquoted",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule200(colorer, s, i):
     return colorer.match_span(s, i, kind="literal2", begin="{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="textbraced",exclude_match=False,
+        delegate="bibtex::textbraced",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule201(colorer, s, i):
@@ -2696,39 +2696,39 @@ def bibtex_rule202(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule203(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*", hash_char="1",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule204(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*", hash_char="2",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule205(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*", hash_char="3",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule206(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*", hash_char="4",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule207(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*", hash_char="5",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule208(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*", hash_char="6",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule209(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*", hash_char="7",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule210(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*", hash_char="8",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule211(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*", hash_char="9",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule212(colorer, s, i):
@@ -2810,13 +2810,13 @@ rulesDict14 = {
 def bibtex_rule213(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="textquoted",exclude_match=False,
+        delegate="bibtex::textquoted",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule214(colorer, s, i):
     return colorer.match_span(s, i, kind="literal2", begin="{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="textbraced",exclude_match=False,
+        delegate="bibtex::textbraced",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule215(colorer, s, i):
@@ -2828,39 +2828,39 @@ def bibtex_rule216(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule217(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*", hash_char="1",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="1[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule218(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*", hash_char="2",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="2[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule219(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*", hash_char="3",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="3[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule220(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*", hash_char="4",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="4[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule221(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*", hash_char="5",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="5[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule222(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*", hash_char="6",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="6[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule223(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*", hash_char="7",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="7[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule224(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*", hash_char="8",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="8[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule225(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*", hash_char="9",
+    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="9[0-9]*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def bibtex_rule226(colorer, s, i):
@@ -2948,13 +2948,13 @@ def bibtex_rule227(colorer, s, i):
 def bibtex_rule228(colorer, s, i):
     return colorer.match_span(s, i, kind="literal2", begin="{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="textbraced",exclude_match=False,
+        delegate="bibtex::textbraced",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule229(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="textquoted",exclude_match=False,
+        delegate="bibtex::textquoted",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule230(colorer, s, i):
@@ -2973,13 +2973,13 @@ rulesDict16 = {
 def bibtex_rule231(colorer, s, i):
     return colorer.match_span(s, i, kind="literal3", begin="\\{", end="\\}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="textbraced",exclude_match=False,
+        delegate="bibtex::textbraced",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule232(colorer, s, i):
     return colorer.match_span(s, i, kind="literal2", begin="{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="textbraced",exclude_match=False,
+        delegate="bibtex::textbraced",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule233(colorer, s, i):
@@ -2997,13 +2997,13 @@ rulesDict17 = {
 def bibtex_rule234(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="textquoted",exclude_match=False,
+        delegate="bibtex::textquoted",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule235(colorer, s, i):
     return colorer.match_span(s, i, kind="literal2", begin="{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="textbraced",exclude_match=False,
+        delegate="bibtex::textbraced",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def bibtex_rule236(colorer, s, i):

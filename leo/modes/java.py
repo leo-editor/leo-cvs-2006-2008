@@ -154,7 +154,7 @@ def java_rule0(colorer, s, i):
 def java_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="comment3", begin="/**", end="*/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="JAVADOC",exclude_match=False,
+        delegate="java::javadoc",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def java_rule2(colorer, s, i):
@@ -385,7 +385,7 @@ def java_rule33(colorer, s, i):
 def java_rule34(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="xml::TAGS",exclude_match=False,
+        delegate="xml::tags",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def java_rule35(colorer, s, i):

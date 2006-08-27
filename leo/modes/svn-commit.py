@@ -44,7 +44,7 @@ keywordsDictDict = {
 
 def svn-commit_rule0(colorer, s, i):
     return colorer.match_seq(s, i, kind="comment1", seq="--This line, and those below, will be ignored--",
-        at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="CHANGED")
+        at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="svn-commit::changed")
 
 # Rules dict for svn_commit_main ruleset.
 rulesDict1 = {

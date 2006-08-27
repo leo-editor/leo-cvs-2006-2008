@@ -363,79 +363,79 @@ def latex_rule62(colorer, s, i):
 def latex_rule63(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="$", end="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="MathMode",exclude_match=False,
+        delegate="latex::mathmode",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def latex_rule64(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="\\(", end="\\)",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="MathMode",exclude_match=False,
+        delegate="latex::mathmode",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def latex_rule65(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="\\[", end="\\]",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="MathMode",exclude_match=False,
+        delegate="latex::mathmode",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def latex_rule66(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="\\begin{math}", end="\\end{math}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="MathMode",exclude_match=False,
+        delegate="latex::mathmode",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def latex_rule67(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="\\begin{displaymath}", end="\\end{displaymath}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="MathMode",exclude_match=False,
+        delegate="latex::mathmode",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def latex_rule68(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="\\begin{equation}", end="\\end{equation}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="MathMode",exclude_match=False,
+        delegate="latex::mathmode",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def latex_rule69(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="\\ensuremath{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="MathMode",exclude_match=False,
+        delegate="latex::mathmode",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def latex_rule70(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="\\begin{eqnarray}", end="\\end{eqnarray}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="ArrayMode",exclude_match=False,
+        delegate="latex::arraymode",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def latex_rule71(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="\\begin{eqnarray*}", end="\\end{eqnarray*}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="ArrayMode",exclude_match=False,
+        delegate="latex::arraymode",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def latex_rule72(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="\\begin{tabular}", end="\\end{tabular}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="TabularMode",exclude_match=False,
+        delegate="latex::tabularmode",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def latex_rule73(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="\\begin{tabular*}", end="\\end{tabular*}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="TabularMode",exclude_match=False,
+        delegate="latex::tabularmode",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def latex_rule74(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="\\begin{tabbing}", end="\\end{tabbing}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="TabbingMode",exclude_match=False,
+        delegate="latex::tabbingmode",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def latex_rule75(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="\\begin{picture}", end="\\end{picture}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="PictureMode",exclude_match=False,
+        delegate="latex::picturemode",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def latex_rule76(colorer, s, i):
@@ -3949,7 +3949,7 @@ def latex_rule946(colorer, s, i):
 def latex_rule947(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="\\begin{array}", end="\\end{array}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="ArrayMode",exclude_match=False,
+        delegate="latex::arraymode",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def latex_rule948(colorer, s, i):

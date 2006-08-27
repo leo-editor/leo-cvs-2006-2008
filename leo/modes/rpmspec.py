@@ -137,13 +137,13 @@ def rpmspec_rule3(colorer, s, i):
 def rpmspec_rule4(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="%attr(", end=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="ATTR",exclude_match=False,
+        delegate="rpmspec::attr",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rpmspec_rule5(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="%verify(", end=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="VERIFY",exclude_match=False,
+        delegate="rpmspec::verify",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def rpmspec_rule6(colorer, s, i):

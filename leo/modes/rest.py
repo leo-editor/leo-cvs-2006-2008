@@ -42,59 +42,59 @@ def rest_rule1(colorer, s, i):
         delegate="", exclude_match=False)
 
 def rest_rule2(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="label", regexp="={3,}", hash_char="=",
+    return colorer.match_seq_regexp(s, i, kind="label", regexp="={3,}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rest_rule3(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="label", regexp="-{3,}", hash_char="-",
+    return colorer.match_seq_regexp(s, i, kind="label", regexp="-{3,}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rest_rule4(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="label", regexp="~{3,}", hash_char="~",
+    return colorer.match_seq_regexp(s, i, kind="label", regexp="~{3,}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rest_rule5(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="label", regexp="`{3,}", hash_char="`",
+    return colorer.match_seq_regexp(s, i, kind="label", regexp="`{3,}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rest_rule6(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="label", regexp="#{3,}", hash_char="#",
+    return colorer.match_seq_regexp(s, i, kind="label", regexp="#{3,}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rest_rule7(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="label", regexp="\"{3,}", hash_char="\"",
+    return colorer.match_seq_regexp(s, i, kind="label", regexp="\"{3,}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rest_rule8(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="label", regexp="\\^{3,}", hash_char="^",
+    return colorer.match_seq_regexp(s, i, kind="label", regexp="\\^{3,}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rest_rule9(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="label", regexp="\\+{3,}", hash_char="+",
+    return colorer.match_seq_regexp(s, i, kind="label", regexp="\\+{3,}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rest_rule10(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="label", regexp="\\*{3,}", hash_char="*",
+    return colorer.match_seq_regexp(s, i, kind="label", regexp="\\*{3,}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rest_rule11(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal3", regexp="\\.\\.\\s\\|[^|]+\\|", hash_char=".",
+    return colorer.match_seq_regexp(s, i, kind="literal3", regexp="\\.\\.\\s\\|[^|]+\\|",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rest_rule12(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal4", regexp="\\|[^|]+\\|", hash_char="|",
+    return colorer.match_seq_regexp(s, i, kind="literal4", regexp="\\|[^|]+\\|",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rest_rule13(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="\\.\\.\\s[A-z][A-z0-9-_]+::", hash_char=".",
+    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="\\.\\.\\s[A-z][A-z0-9-_]+::",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rest_rule14(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="\\*\\*[^*]+\\*\\*", hash_char="*",
+    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="\\*\\*[^*]+\\*\\*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rest_rule15(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword4", regexp="\\*[^\\s*][^*]*\\*", hash_char="*",
+    return colorer.match_seq_regexp(s, i, kind="keyword4", regexp="\\*[^\\s*][^*]*\\*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rest_rule16(colorer, s, i):
@@ -103,23 +103,23 @@ def rest_rule16(colorer, s, i):
         delegate="", exclude_match=False)
 
 def rest_rule17(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="label", regexp="`[A-z0-9]+[^`]+`_{1,2}", hash_char="`",
+    return colorer.match_seq_regexp(s, i, kind="label", regexp="`[A-z0-9]+[^`]+`_{1,2}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rest_rule18(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="label", regexp="\\[[0-9]+\\]_", hash_char="[",
+    return colorer.match_seq_regexp(s, i, kind="label", regexp="\\[[0-9]+\\]_",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rest_rule19(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="label", regexp="\\[#[A-z0-9_]*\\]_", hash_char="[",
+    return colorer.match_seq_regexp(s, i, kind="label", regexp="\\[#[A-z0-9_]*\\]_",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rest_rule20(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="label", regexp="\\[*\\]_", hash_char="[",
+    return colorer.match_seq_regexp(s, i, kind="label", regexp="\\[*\\]_",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rest_rule21(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="label", regexp="\\[[A-z][A-z0-9_-]*\\]_", hash_char="[",
+    return colorer.match_seq_regexp(s, i, kind="label", regexp="\\[[A-z][A-z0-9_-]*\\]_",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rest_rule22(colorer, s, i):
@@ -129,19 +129,19 @@ def rest_rule22(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rest_rule23(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="`[^`]+`", hash_char="`",
+    return colorer.match_seq_regexp(s, i, kind="keyword1", regexp="`[^`]+`",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rest_rule24(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword1", regexp=":[A-z][A-z0-9 \t=\\s\\t_]*:", hash_char=":",
+    return colorer.match_seq_regexp(s, i, kind="keyword1", regexp=":[A-z][A-z0-9 \t=\\s\\t_]*:",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rest_rule25(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="label", regexp="\\+-[+-]+", hash_char="+",
+    return colorer.match_seq_regexp(s, i, kind="label", regexp="\\+-[+-]+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def rest_rule26(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="label", regexp="\\+=[+=]+", hash_char="+",
+    return colorer.match_seq_regexp(s, i, kind="label", regexp="\\+=[+=]+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 # Rules dict for rest_main ruleset.

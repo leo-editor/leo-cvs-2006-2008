@@ -68,13 +68,13 @@ def rhtml_rule0(colorer, s, i):
 def rhtml_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<%=", end="%>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="ruby::MAIN",exclude_match=False,
+        delegate="ruby::main",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rhtml_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<%", end="%>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="ruby::MAIN",exclude_match=False,
+        delegate="ruby::main",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rhtml_rule3(colorer, s, i):
@@ -86,25 +86,25 @@ def rhtml_rule3(colorer, s, i):
 def rhtml_rule4(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<SCRIPT", end="</SCRIPT>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="html::JAVASCRIPT",exclude_match=False,
+        delegate="html::javascript",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rhtml_rule5(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<STYLE", end="</STYLE>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="html::CSS",exclude_match=False,
+        delegate="html::css",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rhtml_rule6(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="<!", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="xml::DTD-TAGS",exclude_match=False,
+        delegate="xml::dtd-tags",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rhtml_rule7(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="TAGS",exclude_match=False,
+        delegate="rhtml::tags",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rhtml_rule8(colorer, s, i):
@@ -136,13 +136,13 @@ def rhtml_rule10(colorer, s, i):
 def rhtml_rule11(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="TAGS_LITERAL",exclude_match=False,
+        delegate="rhtml::tags_literal",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rhtml_rule12(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="TAGS_LITERAL",exclude_match=False,
+        delegate="rhtml::tags_literal",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def rhtml_rule13(colorer, s, i):

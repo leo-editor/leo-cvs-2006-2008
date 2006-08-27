@@ -124,19 +124,19 @@ def dsssl_rule7(colorer, s, i):
 def dsssl_rule8(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="<!ENTITY", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="xml::ENTITY-TAGS",exclude_match=False,
+        delegate="xml::entity-tags",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def dsssl_rule9(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="<![CDATA[", end="]]>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="xml::CDATA",exclude_match=False,
+        delegate="xml::cdata",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def dsssl_rule10(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="<!", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="xml::DTD-TAGS",exclude_match=False,
+        delegate="xml::dtd-tags",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def dsssl_rule11(colorer, s, i):
@@ -146,31 +146,31 @@ def dsssl_rule11(colorer, s, i):
 def dsssl_rule12(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="</style-specification", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="xml::TAGS",exclude_match=False,
+        delegate="xml::tags",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def dsssl_rule13(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="</style-sheet", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="xml::TAGS",exclude_match=False,
+        delegate="xml::tags",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def dsssl_rule14(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<style-specification", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="xml::TAGS",exclude_match=False,
+        delegate="xml::tags",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def dsssl_rule15(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<external-specification", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="xml::TAGS",exclude_match=False,
+        delegate="xml::tags",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def dsssl_rule16(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<style-sheet", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="xml::TAGS",exclude_match=False,
+        delegate="xml::tags",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def dsssl_rule17(colorer, s, i):

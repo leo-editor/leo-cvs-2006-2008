@@ -964,15 +964,15 @@ def apacheconf_rule1(colorer, s, i):
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def apacheconf_rule2(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="markup", begin="<(VirtualHost)[^>]*>", end="</$1>", hash_char="< ",
+    return colorer.match_span_regexp(s, i, kind="markup", begin="<(VirtualHost)[^>]*>", end="</$1>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="VHOST",exclude_match=False,
+        delegate="apacheconf::vhost",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def apacheconf_rule3(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="markup", begin="<(\\w+)[^>]*>", end="</$1>", hash_char="< ",
+    return colorer.match_span_regexp(s, i, kind="markup", begin="<(\\w+)[^>]*>", end="</$1>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="DIRECTIVE",exclude_match=False,
+        delegate="apacheconf::directive",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def apacheconf_rule4(colorer, s, i):
@@ -1063,15 +1063,15 @@ def apacheconf_rule6(colorer, s, i):
         no_escape=False, no_line_break=True, no_word_break=False)
 
 def apacheconf_rule7(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="markup", begin="<(VirtualHost)[^>]*>", end="</$1>", hash_char="< ",
+    return colorer.match_span_regexp(s, i, kind="markup", begin="<(VirtualHost)[^>]*>", end="</$1>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="VHOST",exclude_match=False,
+        delegate="apacheconf::vhost",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def apacheconf_rule8(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="markup", begin="<(\\w+)[^>]*>", end="</$1>", hash_char="< ",
+    return colorer.match_span_regexp(s, i, kind="markup", begin="<(\\w+)[^>]*>", end="</$1>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="DIRECTIVE",exclude_match=False,
+        delegate="apacheconf::directive",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def apacheconf_rule9(colorer, s, i):

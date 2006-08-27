@@ -116,7 +116,7 @@ def postscript_rule3(colorer, s, i):
 def postscript_rule4(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="(", end=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="LITERAL",exclude_match=False,
+        delegate="postscript::literal",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def postscript_rule5(colorer, s, i):
@@ -228,7 +228,7 @@ rulesDict1 = {
 def postscript_rule12(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="(", end=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="LITERAL",exclude_match=False,
+        delegate="postscript::literal",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 # Rules dict for postscript_literal ruleset.

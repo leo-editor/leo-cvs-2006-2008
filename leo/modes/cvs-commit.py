@@ -45,7 +45,7 @@ keywordsDictDict = {
 def cvs-commit_rule0(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="CVS:",
         at_line_start=True, at_whitespace_end=False, at_word_start=False,
-        delegate="CHANGED", exclude_match=False)
+        delegate="cvs-commit::changed", exclude_match=False)
 
 # Rules dict for cvs_commit_main ruleset.
 rulesDict1 = {

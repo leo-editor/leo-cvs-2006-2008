@@ -137,7 +137,7 @@ def csharp_rule0(colorer, s, i):
 def csharp_rule1(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment3", seq="///",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="DOC_COMMENT", exclude_match=False)
+        delegate="csharp::doc_comment", exclude_match=False)
 
 def csharp_rule2(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment2", seq="//",
@@ -425,7 +425,7 @@ def csharp_rule43(colorer, s, i):
 def csharp_rule44(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="xml::TAGS",exclude_match=False,
+        delegate="xml::tags",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 # Rules dict for csharp_doc_comment ruleset.

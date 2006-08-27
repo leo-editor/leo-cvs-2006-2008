@@ -154,19 +154,19 @@ def assembly-parrot_rule3(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def assembly-parrot_rule4(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="I\\d{1,2}", hash_char="I",
+    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="I\\d{1,2}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def assembly-parrot_rule5(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="S\\d{1,2}", hash_char="S",
+    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="S\\d{1,2}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def assembly-parrot_rule6(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="N\\d{1,2}", hash_char="N",
+    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="N\\d{1,2}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def assembly-parrot_rule7(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="P\\d{1,2}", hash_char="P",
+    return colorer.match_seq_regexp(s, i, kind="literal2", regexp="P\\d{1,2}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
 def assembly-parrot_rule8(colorer, s, i):

@@ -129,31 +129,31 @@ def shell_rule10(colorer, s, i):
 def shell_rule11(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword3", begin="$((", end="))",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="EXEC",exclude_match=False,
+        delegate="shell::exec",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def shell_rule12(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword3", begin="$(", end=")",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="EXEC",exclude_match=False,
+        delegate="shell::exec",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def shell_rule13(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword3", begin="$[", end="]",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="EXEC",exclude_match=False,
+        delegate="shell::exec",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def shell_rule14(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword3", begin="`", end="`",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="EXEC",exclude_match=False,
+        delegate="shell::exec",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def shell_rule15(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="LITERAL",exclude_match=False,
+        delegate="shell::literal",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def shell_rule16(colorer, s, i):
@@ -163,9 +163,9 @@ def shell_rule16(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def shell_rule17(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="literal1", begin="<<[[:space:]'\"]*([[:alnum:]_]+)[[:space:]'\"]*", end="$1", hash_char="< ",
+    return colorer.match_span_regexp(s, i, kind="literal1", begin="<<[[:space:]'\"]*([[:alnum:]_]+)[[:space:]'\"]*", end="$1",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="LITERAL",exclude_match=False,
+        delegate="shell::literal",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def shell_rule18(colorer, s, i):

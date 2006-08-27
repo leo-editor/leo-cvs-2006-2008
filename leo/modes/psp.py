@@ -65,7 +65,7 @@ keywordsDictDict = {
 def psp_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="literal4", begin="<%@", end="%>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="DIRECTIVE",exclude_match=False,
+        delegate="psp::directive",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def psp_rule1(colorer, s, i):
@@ -77,25 +77,25 @@ def psp_rule1(colorer, s, i):
 def psp_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="literal3", begin="<%", end="%>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="python::MAIN",exclude_match=False,
+        delegate="python::main",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def psp_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<script language=\"jscript\">", end="</script>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="javascript::MAIN",exclude_match=False,
+        delegate="javascript::main",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def psp_rule4(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<script language=\"javascript\">", end="</script>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="javascript::MAIN",exclude_match=False,
+        delegate="javascript::main",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def psp_rule5(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<script>", end="</script>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="javascript::MAIN",exclude_match=False,
+        delegate="javascript::main",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def psp_rule6(colorer, s, i):
@@ -113,13 +113,13 @@ def psp_rule7(colorer, s, i):
 def psp_rule8(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<STYLE>", end="</STYLE>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="css::MAIN",exclude_match=False,
+        delegate="css::main",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def psp_rule9(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="TAGS",exclude_match=False,
+        delegate="psp::tags",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def psp_rule10(colorer, s, i):
@@ -161,7 +161,7 @@ def psp_rule14(colorer, s, i):
 def psp_rule15(colorer, s, i):
     return colorer.match_span(s, i, kind="literal3", begin="<%", end="%>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="python::MAIN",exclude_match=False,
+        delegate="python::main",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 # Rules dict for psp_tags ruleset.

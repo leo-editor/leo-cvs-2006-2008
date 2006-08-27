@@ -226,31 +226,31 @@ keywordsDictDict = {
 def xsl_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="<!--", end="-->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="TASKS",exclude_match=False,
+        delegate="xsl::tasks",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def xsl_rule1(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword2", begin="<(?=xsl:)", end=">", hash_char="<",
+    return colorer.match_span_regexp(s, i, kind="keyword2", begin="<(?=xsl:)", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="XSLTAGS",exclude_match=False,
+        delegate="xsl::xsltags",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def xsl_rule2(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword2", begin="<(?=/xsl:)", end=">", hash_char="<",
+    return colorer.match_span_regexp(s, i, kind="keyword2", begin="<(?=/xsl:)", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="XSLTAGS",exclude_match=False,
+        delegate="xsl::xsltags",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def xsl_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="<![CDATA[", end="]]>",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="xml::CDATA",exclude_match=False,
+        delegate="xml::cdata",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def xsl_rule4(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="<!", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="xml::DTD-TAGS",exclude_match=False,
+        delegate="xml::dtd-tags",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def xsl_rule5(colorer, s, i):
@@ -268,7 +268,7 @@ def xsl_rule6(colorer, s, i):
 def xsl_rule7(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="<", end=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="TAGS",exclude_match=False,
+        delegate="xsl::tags",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 # Rules dict for xsl_main ruleset.
@@ -357,13 +357,13 @@ rulesDict2 = {
 def xsl_rule9(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="AVT",exclude_match=False,
+        delegate="xsl::avt",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def xsl_rule10(colorer, s, i):
     return colorer.match_span(s, i, kind="markup", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="AVT",exclude_match=False,
+        delegate="xsl::avt",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def xsl_rule11(colorer, s, i):
@@ -399,7 +399,7 @@ def xsl_rule15(colorer, s, i):
 def xsl_rule16(colorer, s, i):
     return colorer.match_span(s, i, kind="operator", begin="{", end="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="XPATH",exclude_match=False,
+        delegate="xsl::xpath",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def xsl_rule17(colorer, s, i):
@@ -420,133 +420,133 @@ rulesDict4 = {
 def xsl_rule18(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="AVT",exclude_match=False,
+        delegate="xsl::avt",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def xsl_rule19(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="AVT",exclude_match=False,
+        delegate="xsl::avt",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def xsl_rule20(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword2", begin="count[[:space:]]*=[[:space:]]*\"", end="\"", hash_char="c",
+    return colorer.match_span_regexp(s, i, kind="keyword2", begin="count[[:space:]]*=[[:space:]]*\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="XPATH",exclude_match=False,
+        delegate="xsl::xpath",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def xsl_rule21(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword2", begin="count[[:space:]]*=[[:space:]]*'", end="'", hash_char="c",
+    return colorer.match_span_regexp(s, i, kind="keyword2", begin="count[[:space:]]*=[[:space:]]*'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="XPATH",exclude_match=False,
+        delegate="xsl::xpath",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def xsl_rule22(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword2", begin="from[[:space:]]*=[[:space:]]*\"", end="\"", hash_char="f",
+    return colorer.match_span_regexp(s, i, kind="keyword2", begin="from[[:space:]]*=[[:space:]]*\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="XPATH",exclude_match=False,
+        delegate="xsl::xpath",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def xsl_rule23(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword2", begin="from[[:space:]]*=[[:space:]]*'", end="'", hash_char="f",
+    return colorer.match_span_regexp(s, i, kind="keyword2", begin="from[[:space:]]*=[[:space:]]*'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="XPATH",exclude_match=False,
+        delegate="xsl::xpath",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def xsl_rule24(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword2", begin="group-adjacent[[:space:]]*=[[:space:]]*\"", end="\"", hash_char="g",
+    return colorer.match_span_regexp(s, i, kind="keyword2", begin="group-adjacent[[:space:]]*=[[:space:]]*\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="XPATH",exclude_match=False,
+        delegate="xsl::xpath",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def xsl_rule25(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword2", begin="group-adjacent[[:space:]]*=[[:space:]]*'", end="'", hash_char="g",
+    return colorer.match_span_regexp(s, i, kind="keyword2", begin="group-adjacent[[:space:]]*=[[:space:]]*'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="XPATH",exclude_match=False,
+        delegate="xsl::xpath",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def xsl_rule26(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword2", begin="group-by[[:space:]]*=[[:space:]]*\"", end="\"", hash_char="g",
+    return colorer.match_span_regexp(s, i, kind="keyword2", begin="group-by[[:space:]]*=[[:space:]]*\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="XPATH",exclude_match=False,
+        delegate="xsl::xpath",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def xsl_rule27(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword2", begin="group-by[[:space:]]*=[[:space:]]*'", end="'", hash_char="g",
+    return colorer.match_span_regexp(s, i, kind="keyword2", begin="group-by[[:space:]]*=[[:space:]]*'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="XPATH",exclude_match=False,
+        delegate="xsl::xpath",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def xsl_rule28(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword2", begin="group-ending-with[[:space:]]*=[[:space:]]*\"", end="\"", hash_char="g",
+    return colorer.match_span_regexp(s, i, kind="keyword2", begin="group-ending-with[[:space:]]*=[[:space:]]*\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="XPATH",exclude_match=False,
+        delegate="xsl::xpath",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def xsl_rule29(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword2", begin="group-ending-with[[:space:]]*=[[:space:]]*'", end="'", hash_char="g",
+    return colorer.match_span_regexp(s, i, kind="keyword2", begin="group-ending-with[[:space:]]*=[[:space:]]*'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="XPATH",exclude_match=False,
+        delegate="xsl::xpath",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def xsl_rule30(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword2", begin="group-starting-with[[:space:]]*=[[:space:]]*\"", end="\"", hash_char="g",
+    return colorer.match_span_regexp(s, i, kind="keyword2", begin="group-starting-with[[:space:]]*=[[:space:]]*\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="XPATH",exclude_match=False,
+        delegate="xsl::xpath",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def xsl_rule31(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword2", begin="group-starting-with[[:space:]]*=[[:space:]]*'", end="'", hash_char="g",
+    return colorer.match_span_regexp(s, i, kind="keyword2", begin="group-starting-with[[:space:]]*=[[:space:]]*'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="XPATH",exclude_match=False,
+        delegate="xsl::xpath",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def xsl_rule32(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword2", begin="match[[:space:]]*=[[:space:]]*\"", end="\"", hash_char="m",
+    return colorer.match_span_regexp(s, i, kind="keyword2", begin="match[[:space:]]*=[[:space:]]*\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="XPATH",exclude_match=False,
+        delegate="xsl::xpath",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def xsl_rule33(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword2", begin="match[[:space:]]*=[[:space:]]*'", end="'", hash_char="m",
+    return colorer.match_span_regexp(s, i, kind="keyword2", begin="match[[:space:]]*=[[:space:]]*'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="XPATH",exclude_match=False,
+        delegate="xsl::xpath",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def xsl_rule34(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword2", begin="select[[:space:]]*=[[:space:]]*\"", end="\"", hash_char="s",
+    return colorer.match_span_regexp(s, i, kind="keyword2", begin="select[[:space:]]*=[[:space:]]*\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="XPATH",exclude_match=False,
+        delegate="xsl::xpath",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def xsl_rule35(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword2", begin="select[[:space:]]*=[[:space:]]*'", end="'", hash_char="s",
+    return colorer.match_span_regexp(s, i, kind="keyword2", begin="select[[:space:]]*=[[:space:]]*'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="XPATH",exclude_match=False,
+        delegate="xsl::xpath",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def xsl_rule36(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword2", begin="test[[:space:]]*=[[:space:]]*\"", end="\"", hash_char="t",
+    return colorer.match_span_regexp(s, i, kind="keyword2", begin="test[[:space:]]*=[[:space:]]*\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="XPATH",exclude_match=False,
+        delegate="xsl::xpath",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def xsl_rule37(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword2", begin="test[[:space:]]*=[[:space:]]*'", end="'", hash_char="t",
+    return colorer.match_span_regexp(s, i, kind="keyword2", begin="test[[:space:]]*=[[:space:]]*'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="XPATH",exclude_match=False,
+        delegate="xsl::xpath",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def xsl_rule38(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword2", begin="use[[:space:]]*=[[:space:]]*\"", end="\"", hash_char="u",
+    return colorer.match_span_regexp(s, i, kind="keyword2", begin="use[[:space:]]*=[[:space:]]*\"", end="\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="XPATH",exclude_match=False,
+        delegate="xsl::xpath",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def xsl_rule39(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword2", begin="use[[:space:]]*=[[:space:]]*'", end="'", hash_char="u",
+    return colorer.match_span_regexp(s, i, kind="keyword2", begin="use[[:space:]]*=[[:space:]]*'", end="'",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="XPATH",exclude_match=False,
+        delegate="xsl::xpath",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def xsl_rule40(colorer, s, i):
@@ -653,7 +653,7 @@ def xsl_rule45(colorer, s, i):
 def xsl_rule46(colorer, s, i):
     return colorer.match_span(s, i, kind="comment2", begin="(:", end=":)",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="XPATHCOMMENT2",exclude_match=False,
+        delegate="xsl::xpathcomment2",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def xsl_rule47(colorer, s, i):
@@ -711,7 +711,7 @@ def xsl_rule59(colorer, s, i):
 def xsl_rule60(colorer, s, i):
     return colorer.match_span(s, i, kind="operator", begin="[", end="]",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="XPATH",exclude_match=False,
+        delegate="xsl::xpath",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def xsl_rule61(colorer, s, i):
@@ -824,7 +824,7 @@ rulesDict6 = {
 def xsl_rule66(colorer, s, i):
     return colorer.match_span(s, i, kind="comment3", begin="(:", end=":)",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="XPATHCOMMENT3",exclude_match=False,
+        delegate="xsl::xpathcomment3",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 # Rules dict for xsl_xpathcomment2 ruleset.
@@ -837,7 +837,7 @@ rulesDict7 = {
 def xsl_rule67(colorer, s, i):
     return colorer.match_span(s, i, kind="comment2", begin="(:", end=":)",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="XPATHCOMMENT2",exclude_match=False,
+        delegate="xsl::xpathcomment2",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 # Rules dict for xsl_xpathcomment3 ruleset.

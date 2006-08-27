@@ -132,13 +132,13 @@ keywordsDictDict = {
 def c_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment3", begin="/**", end="*/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="doxygen::DOXYGEN",exclude_match=False,
+        delegate="doxygen::doxygen",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def c_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="comment3", begin="/*!", end="*/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="doxygen::DOXYGEN",exclude_match=False,
+        delegate="doxygen::doxygen",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def c_rule2(colorer, s, i):
@@ -166,7 +166,7 @@ def c_rule5(colorer, s, i):
 def c_rule6(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="keyword2", seq="#",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="CPP", exclude_match=False)
+        delegate="c::cpp", exclude_match=False)
 
 def c_rule7(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment2", seq="//",
@@ -351,7 +351,7 @@ def c_rule28(colorer, s, i):
 def c_rule29(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="markup", seq="include",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="INCLUDE", exclude_match=False)
+        delegate="c::include", exclude_match=False)
 
 def c_rule30(colorer, s, i):
     return colorer.match_keywords(s, i)

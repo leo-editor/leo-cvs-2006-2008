@@ -52,22 +52,22 @@ def props_rule0(colorer, s, i):
 def props_rule1(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="null", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="PROP_VALUE", exclude_match=False)
+        delegate="props::prop_value", exclude_match=False)
 
 def props_rule2(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="null", seq=":",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="PROP_VALUE", exclude_match=False)
+        delegate="props::prop_value", exclude_match=False)
 
 def props_rule3(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="null", seq=" ",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="PROP_VALUE", exclude_match=False)
+        delegate="props::prop_value", exclude_match=False)
 
 def props_rule4(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="null", seq="\t",
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="PROP_VALUE", exclude_match=False)
+        delegate="props::prop_value", exclude_match=False)
 
 # Rules dict for props_main ruleset.
 rulesDict1 = {
