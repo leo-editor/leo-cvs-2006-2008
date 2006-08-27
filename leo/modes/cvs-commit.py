@@ -47,7 +47,7 @@ def cvs-commit_rule0(colorer, s, i):
         at_line_start=True, at_whitespace_end=False, at_word_start=False,
         delegate="CHANGED", exclude_match=False)
 
-# Rules dict for main ruleset.
+# Rules dict for cvs_commit_main ruleset.
 rulesDict1 = {
 	"C": [cvs-commit_rule0,],
 }
@@ -74,7 +74,7 @@ def cvs-commit_rule5(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="Removed Files:",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules dict for changed ruleset.
+# Rules dict for cvs_commit_changed ruleset.
 rulesDict2 = {
 	"A": [cvs-commit_rule3,],
 	"C": [cvs-commit_rule1,cvs-commit_rule2,],

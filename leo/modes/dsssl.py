@@ -182,7 +182,7 @@ def dsssl_rule17(colorer, s, i):
 def dsssl_rule18(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for dsssl_main ruleset.
 rulesDict1 = {
 	"\"": [dsssl_rule4,],
 	"#": [dsssl_rule7,],

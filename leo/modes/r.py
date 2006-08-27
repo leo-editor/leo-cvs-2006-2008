@@ -4576,7 +4576,7 @@ def r_rule35(colorer, s, i):
 def r_rule36(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for r_main ruleset.
 rulesDict1 = {
 	"!": [r_rule10,r_rule12,],
 	"\"": [r_rule0,],

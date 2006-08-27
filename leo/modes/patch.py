@@ -78,7 +78,7 @@ def patch_rule9(colorer, s, i):
         at_line_start=True, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-# Rules dict for main ruleset.
+# Rules dict for patch_main ruleset.
 rulesDict1 = {
 	"!": [patch_rule7,],
 	"*": [patch_rule9,],

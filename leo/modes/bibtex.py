@@ -1083,7 +1083,7 @@ def bibtex_rule30(colorer, s, i):
         delegate="string",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules dict for main ruleset.
+# Rules dict for bibtex_main ruleset.
 rulesDict1 = {
 	"%": [bibtex_rule0,],
 	"@": [bibtex_rule1,bibtex_rule2,bibtex_rule3,bibtex_rule4,bibtex_rule5,bibtex_rule6,bibtex_rule7,bibtex_rule8,bibtex_rule9,bibtex_rule10,bibtex_rule11,bibtex_rule12,bibtex_rule13,bibtex_rule14,bibtex_rule15,bibtex_rule16,bibtex_rule17,bibtex_rule18,bibtex_rule19,bibtex_rule20,bibtex_rule21,bibtex_rule22,bibtex_rule23,bibtex_rule24,bibtex_rule25,bibtex_rule26,bibtex_rule27,bibtex_rule28,bibtex_rule29,bibtex_rule30,],
@@ -1150,7 +1150,7 @@ def bibtex_rule43(colorer, s, i):
 def bibtex_rule44(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for article ruleset.
+# Rules dict for bibtex_article ruleset.
 rulesDict2 = {
 	"\"": [bibtex_rule31,],
 	",": [bibtex_rule34,],
@@ -1282,7 +1282,7 @@ def bibtex_rule57(colorer, s, i):
 def bibtex_rule58(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for book ruleset.
+# Rules dict for bibtex_book ruleset.
 rulesDict3 = {
 	"\"": [bibtex_rule45,],
 	",": [bibtex_rule48,],
@@ -1414,7 +1414,7 @@ def bibtex_rule71(colorer, s, i):
 def bibtex_rule72(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for booklet ruleset.
+# Rules dict for bibtex_booklet ruleset.
 rulesDict4 = {
 	"\"": [bibtex_rule59,],
 	",": [bibtex_rule62,],
@@ -1546,7 +1546,7 @@ def bibtex_rule85(colorer, s, i):
 def bibtex_rule86(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for conference ruleset.
+# Rules dict for bibtex_conference ruleset.
 rulesDict5 = {
 	"\"": [bibtex_rule73,],
 	",": [bibtex_rule76,],
@@ -1678,7 +1678,7 @@ def bibtex_rule99(colorer, s, i):
 def bibtex_rule100(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for inbook ruleset.
+# Rules dict for bibtex_inbook ruleset.
 rulesDict6 = {
 	"\"": [bibtex_rule87,],
 	",": [bibtex_rule90,],
@@ -1810,7 +1810,7 @@ def bibtex_rule113(colorer, s, i):
 def bibtex_rule114(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for incollection ruleset.
+# Rules dict for bibtex_incollection ruleset.
 rulesDict7 = {
 	"\"": [bibtex_rule101,],
 	",": [bibtex_rule104,],
@@ -1942,7 +1942,7 @@ def bibtex_rule127(colorer, s, i):
 def bibtex_rule128(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for inproceedings ruleset.
+# Rules dict for bibtex_inproceedings ruleset.
 rulesDict8 = {
 	"\"": [bibtex_rule115,],
 	",": [bibtex_rule118,],
@@ -2074,7 +2074,7 @@ def bibtex_rule141(colorer, s, i):
 def bibtex_rule142(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for manual ruleset.
+# Rules dict for bibtex_manual ruleset.
 rulesDict9 = {
 	"\"": [bibtex_rule129,],
 	",": [bibtex_rule132,],
@@ -2206,7 +2206,7 @@ def bibtex_rule155(colorer, s, i):
 def bibtex_rule156(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for mastersthesis ruleset.
+# Rules dict for bibtex_mastersthesis ruleset.
 rulesDict10 = {
 	"\"": [bibtex_rule143,],
 	",": [bibtex_rule146,],
@@ -2338,7 +2338,7 @@ def bibtex_rule169(colorer, s, i):
 def bibtex_rule170(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for misc ruleset.
+# Rules dict for bibtex_misc ruleset.
 rulesDict11 = {
 	"\"": [bibtex_rule157,],
 	",": [bibtex_rule160,],
@@ -2470,7 +2470,7 @@ def bibtex_rule183(colorer, s, i):
 def bibtex_rule184(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for phdthesis ruleset.
+# Rules dict for bibtex_phdthesis ruleset.
 rulesDict12 = {
 	"\"": [bibtex_rule171,],
 	",": [bibtex_rule174,],
@@ -2602,7 +2602,7 @@ def bibtex_rule197(colorer, s, i):
 def bibtex_rule198(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for proceedings ruleset.
+# Rules dict for bibtex_proceedings ruleset.
 rulesDict13 = {
 	"\"": [bibtex_rule185,],
 	",": [bibtex_rule188,],
@@ -2734,7 +2734,7 @@ def bibtex_rule211(colorer, s, i):
 def bibtex_rule212(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for techreport ruleset.
+# Rules dict for bibtex_techreport ruleset.
 rulesDict14 = {
 	"\"": [bibtex_rule199,],
 	",": [bibtex_rule202,],
@@ -2866,7 +2866,7 @@ def bibtex_rule225(colorer, s, i):
 def bibtex_rule226(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for unpublished ruleset.
+# Rules dict for bibtex_unpublished ruleset.
 rulesDict15 = {
 	"\"": [bibtex_rule213,],
 	",": [bibtex_rule216,],
@@ -2961,7 +2961,7 @@ def bibtex_rule230(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal3", seq="\\\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules dict for textbraced ruleset.
+# Rules dict for bibtex_textbraced ruleset.
 rulesDict16 = {
 	"\"": [bibtex_rule229,],
 	"\\": [bibtex_rule227,bibtex_rule230,],
@@ -2986,7 +2986,7 @@ def bibtex_rule233(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal3", seq="\\\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules dict for textquoted ruleset.
+# Rules dict for bibtex_textquoted ruleset.
 rulesDict17 = {
 	"\\": [bibtex_rule231,bibtex_rule233,],
 	"{": [bibtex_rule232,],
@@ -3024,7 +3024,7 @@ def bibtex_rule239(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal3", seq="\\\"",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules dict for string ruleset.
+# Rules dict for bibtex_string ruleset.
 rulesDict18 = {
 	"\"": [bibtex_rule234,],
 	",": [bibtex_rule238,],

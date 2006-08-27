@@ -109,7 +109,7 @@ def eiffel_rule2(colorer, s, i):
 def eiffel_rule3(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for eiffel_main ruleset.
 rulesDict1 = {
 	"\"": [eiffel_rule1,],
 	"'": [eiffel_rule2,],

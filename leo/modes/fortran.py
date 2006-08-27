@@ -285,7 +285,7 @@ def fortran_rule21(colorer, s, i):
 def fortran_rule22(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for fortran_main ruleset.
 rulesDict1 = {
 	"!": [fortran_rule1,fortran_rule3,],
 	"\"": [fortran_rule5,],

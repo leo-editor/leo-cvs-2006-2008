@@ -192,7 +192,7 @@ def awk_rule20(colorer, s, i):
 def awk_rule21(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for awk_main ruleset.
 rulesDict1 = {
 	"!": [awk_rule4,],
 	"\"": [awk_rule0,],

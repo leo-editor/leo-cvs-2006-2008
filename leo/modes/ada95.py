@@ -558,7 +558,7 @@ def ada95_rule109(colorer, s, i):
 def ada95_rule110(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for ada95_main ruleset.
 rulesDict1 = {
 	"\"": [ada95_rule1,],
 	"&": [ada95_rule17,],

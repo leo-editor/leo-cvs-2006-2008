@@ -123,7 +123,7 @@ def html_rule5(colorer, s, i):
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=True)
 
-# Rules dict for main ruleset.
+# Rules dict for html_main ruleset.
 rulesDict1 = {
 	"&": [html_rule5,],
 	"<": [html_rule0,html_rule1,html_rule2,html_rule3,html_rule4,],
@@ -147,7 +147,7 @@ def html_rule8(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules dict for tags ruleset.
+# Rules dict for html_tags ruleset.
 rulesDict2 = {
 	"\"": [html_rule6,],
 	"'": [html_rule7,],
@@ -164,7 +164,7 @@ def html_rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq="SRC=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="BACK_TO_HTML")
 
-# Rules dict for javascript ruleset.
+# Rules dict for html_javascript ruleset.
 rulesDict3 = {
 	">": [html_rule9,],
 	"S": [html_rule10,],
@@ -176,7 +176,7 @@ def html_rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="html::MAIN")
 
-# Rules dict for back_to_html ruleset.
+# Rules dict for html_back_to_html ruleset.
 rulesDict4 = {
 	">": [html_rule11,],
 }
@@ -187,7 +187,7 @@ def html_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="css::MAIN")
 
-# Rules dict for css ruleset.
+# Rules dict for html_css ruleset.
 rulesDict5 = {
 	">": [html_rule12,],
 }

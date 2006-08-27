@@ -28,7 +28,7 @@ keywordsDictDict = {
 
 # Rules for plain_main ruleset.
 
-# Rules dict for main ruleset.
+# Rules dict for plain_main ruleset.
 rulesDict1 = {}
 
 # x.rulesDictDict for plain mode.

@@ -254,7 +254,7 @@ def vhdl_rule22(colorer, s, i):
 def vhdl_rule23(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for vhdl_main ruleset.
 rulesDict1 = {
 	"!": [vhdl_rule6,],
 	"\"": [vhdl_rule0,],

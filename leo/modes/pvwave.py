@@ -806,7 +806,7 @@ def pvwave_rule24(colorer, s, i):
 def pvwave_rule25(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for pvwave_main ruleset.
 rulesDict1 = {
 	"!": [pvwave_rule24,],
 	"\"": [pvwave_rule0,],

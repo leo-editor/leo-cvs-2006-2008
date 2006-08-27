@@ -128,7 +128,7 @@ def psp_rule10(colorer, s, i):
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=True)
 
-# Rules dict for main ruleset.
+# Rules dict for psp_main ruleset.
 rulesDict1 = {
 	"&": [psp_rule10,],
 	"<": [psp_rule0,psp_rule1,psp_rule2,psp_rule3,psp_rule4,psp_rule5,psp_rule6,psp_rule7,psp_rule8,psp_rule9,],
@@ -164,7 +164,7 @@ def psp_rule15(colorer, s, i):
         delegate="python::MAIN",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules dict for tags ruleset.
+# Rules dict for psp_tags ruleset.
 rulesDict2 = {
 	"\"": [psp_rule11,],
 	"'": [psp_rule12,],
@@ -193,7 +193,7 @@ def psp_rule18(colorer, s, i):
 def psp_rule19(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for directive ruleset.
+# Rules dict for psp_directive ruleset.
 rulesDict3 = {
 	"\"": [psp_rule16,],
 	"'": [psp_rule17,],

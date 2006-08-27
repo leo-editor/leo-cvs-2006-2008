@@ -148,7 +148,7 @@ def postscript_rule10(colorer, s, i):
 def postscript_rule11(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for postscript_main ruleset.
 rulesDict1 = {
 	"%": [postscript_rule0,postscript_rule1,postscript_rule2,postscript_rule3,],
 	"(": [postscript_rule4,],
@@ -231,7 +231,7 @@ def postscript_rule12(colorer, s, i):
         delegate="LITERAL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules dict for literal ruleset.
+# Rules dict for postscript_literal ruleset.
 rulesDict2 = {
 	"(": [postscript_rule12,],
 }

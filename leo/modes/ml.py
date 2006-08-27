@@ -196,7 +196,7 @@ def ml_rule16(colorer, s, i):
 def ml_rule17(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for ml_main ruleset.
 rulesDict1 = {
 	"\"": [ml_rule2,],
 	"#": [ml_rule1,],

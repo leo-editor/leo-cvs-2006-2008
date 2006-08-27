@@ -296,7 +296,7 @@ def groovy_rule20(colorer, s, i):
 def groovy_rule21(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for groovy_main ruleset.
 rulesDict1 = {
 	"!": [groovy_rule9,],
 	"\"": [groovy_rule3,],
@@ -389,7 +389,7 @@ def groovy_rule23(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword2", pattern="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-# Rules dict for literal ruleset.
+# Rules dict for groovy_literal ruleset.
 rulesDict2 = {
 	"$": [groovy_rule22,groovy_rule23,],
 }
@@ -432,7 +432,7 @@ def groovy_rule31(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="label", pattern="@",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-# Rules dict for groovydoc ruleset.
+# Rules dict for groovy_groovydoc ruleset.
 rulesDict3 = {
 	"*": [groovy_rule25,],
 	"<": [groovy_rule26,groovy_rule27,groovy_rule28,groovy_rule29,groovy_rule30,],

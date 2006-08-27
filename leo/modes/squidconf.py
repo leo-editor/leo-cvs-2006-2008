@@ -247,7 +247,7 @@ def squidconf_rule0(colorer, s, i):
 def squidconf_rule1(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for squidconf_main ruleset.
 rulesDict1 = {
 	"#": [squidconf_rule0,],
 	"0": [squidconf_rule1,],

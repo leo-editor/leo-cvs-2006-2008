@@ -640,7 +640,7 @@ def assembly-macro32_rule25(colorer, s, i):
 def assembly-macro32_rule26(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for assembly_macro32_main ruleset.
 rulesDict1 = {
 	"!": [assembly-macro32_rule24,],
 	"\"": [assembly-macro32_rule2,],

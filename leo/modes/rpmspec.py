@@ -193,7 +193,7 @@ def rpmspec_rule15(colorer, s, i):
 def rpmspec_rule16(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for rpmspec_main ruleset.
 rulesDict1 = {
 	"#": [rpmspec_rule0,],
 	"$": [rpmspec_rule9,rpmspec_rule11,rpmspec_rule12,rpmspec_rule13,rpmspec_rule14,rpmspec_rule15,],
@@ -277,7 +277,7 @@ def rpmspec_rule18(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules dict for attr ruleset.
+# Rules dict for rpmspec_attr ruleset.
 rulesDict2 = {
 	",": [rpmspec_rule17,],
 	"-": [rpmspec_rule18,],
@@ -288,7 +288,7 @@ rulesDict2 = {
 def rpmspec_rule19(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for verify ruleset.
+# Rules dict for rpmspec_verify ruleset.
 rulesDict3 = {
 	"%": [rpmspec_rule19,],
 	"0": [rpmspec_rule19,],

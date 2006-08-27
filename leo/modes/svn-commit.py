@@ -46,7 +46,7 @@ def svn-commit_rule0(colorer, s, i):
     return colorer.match_seq(s, i, kind="comment1", seq="--This line, and those below, will be ignored--",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, delegate="CHANGED")
 
-# Rules dict for main ruleset.
+# Rules dict for svn_commit_main ruleset.
 rulesDict1 = {
 	"-": [svn-commit_rule0,],
 }
@@ -73,7 +73,7 @@ def svn-commit_rule4(colorer, s, i):
         at_line_start=True, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-# Rules dict for changed ruleset.
+# Rules dict for svn_commit_changed ruleset.
 rulesDict2 = {
 	"A": [svn-commit_rule1,],
 	"D": [svn-commit_rule2,],

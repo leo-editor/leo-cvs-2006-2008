@@ -328,7 +328,7 @@ def erlang_rule39(colorer, s, i):
 def erlang_rule40(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for erlang_main ruleset.
 rulesDict1 = {
 	"!": [erlang_rule27,],
 	"\"": [erlang_rule1,],

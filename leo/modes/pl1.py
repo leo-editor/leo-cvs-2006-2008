@@ -645,7 +645,7 @@ def pl1_rule20(colorer, s, i):
 def pl1_rule21(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for pl1_main ruleset.
 rulesDict1 = {
 	"\"": [pl1_rule2,],
 	"%": [pl1_rule21,],

@@ -207,7 +207,7 @@ def sqr_rule17(colorer, s, i):
 def sqr_rule18(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for sqr_main ruleset.
 rulesDict1 = {
 	"!": [sqr_rule0,],
 	"#": [sqr_rule16,],

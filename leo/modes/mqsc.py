@@ -239,7 +239,7 @@ def mqsc_rule3(colorer, s, i):
 def mqsc_rule4(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for mqsc_main ruleset.
 rulesDict1 = {
 	"(": [mqsc_rule1,mqsc_rule2,],
 	"*": [mqsc_rule0,],

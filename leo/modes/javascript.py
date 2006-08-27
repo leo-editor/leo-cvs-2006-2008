@@ -327,7 +327,7 @@ def javascript_rule30(colorer, s, i):
 def javascript_rule31(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for javascript_main ruleset.
 rulesDict1 = {
 	"!": [javascript_rule7,],
 	"\"": [javascript_rule1,],

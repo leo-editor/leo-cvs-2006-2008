@@ -282,7 +282,7 @@ def inform_rule31(colorer, s, i):
 def inform_rule32(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for inform_main ruleset.
 rulesDict1 = {
 	"!": [inform_rule0,inform_rule4,],
 	"\"": [inform_rule1,],
@@ -396,7 +396,7 @@ def inform_rule37(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal2", seq="@@",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules dict for informinnertext ruleset.
+# Rules dict for inform_informinnertext ruleset.
 rulesDict2 = {
 	"@": [inform_rule35,inform_rule37,],
 	"\\": [inform_rule36,],

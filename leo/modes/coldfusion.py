@@ -566,7 +566,7 @@ def coldfusion_rule10(colorer, s, i):
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=True)
 
-# Rules dict for main ruleset.
+# Rules dict for coldfusion_main ruleset.
 rulesDict1 = {
 	"&": [coldfusion_rule10,],
 	"/": [coldfusion_rule1,coldfusion_rule2,],
@@ -609,7 +609,7 @@ def coldfusion_rule16(colorer, s, i):
         delegate="CFSCRIPT",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules dict for tags ruleset.
+# Rules dict for coldfusion_tags ruleset.
 rulesDict2 = {
 	"\"": [coldfusion_rule11,],
 	"'": [coldfusion_rule12,],
@@ -693,7 +693,7 @@ def coldfusion_rule32(colorer, s, i):
 def coldfusion_rule33(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for cfscript ruleset.
+# Rules dict for coldfusion_cfscript ruleset.
 rulesDict3 = {
 	"!": [coldfusion_rule31,],
 	"\"": [coldfusion_rule19,],
@@ -806,7 +806,7 @@ def coldfusion_rule38(colorer, s, i):
 def coldfusion_rule39(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for cftags ruleset.
+# Rules dict for coldfusion_cftags ruleset.
 rulesDict4 = {
 	"\"": [coldfusion_rule34,],
 	"#": [coldfusion_rule37,coldfusion_rule38,],

@@ -235,7 +235,7 @@ def aspect-j_rule25(colorer, s, i):
 def aspect-j_rule26(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for aspect_j_main ruleset.
 rulesDict1 = {
 	"!": [aspect-j_rule7,],
 	"\"": [aspect-j_rule3,],

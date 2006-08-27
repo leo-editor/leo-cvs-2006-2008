@@ -252,7 +252,7 @@ def d_rule26(colorer, s, i):
 def d_rule27(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for d_main ruleset.
 rulesDict1 = {
 	"!": [d_rule8,],
 	"\"": [d_rule4,],

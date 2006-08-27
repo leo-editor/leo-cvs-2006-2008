@@ -207,7 +207,7 @@ def jsp_rule14(colorer, s, i):
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=True)
 
-# Rules dict for main ruleset.
+# Rules dict for jsp_main ruleset.
 rulesDict1 = {
 	"&": [jsp_rule14,],
 	"<": [jsp_rule0,jsp_rule1,jsp_rule2,jsp_rule3,jsp_rule4,jsp_rule5,jsp_rule6,jsp_rule7,jsp_rule8,jsp_rule9,jsp_rule10,jsp_rule11,jsp_rule12,jsp_rule13,],
@@ -233,7 +233,7 @@ def jsp_rule17(colorer, s, i):
         delegate="java::MAIN",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules dict for comment ruleset.
+# Rules dict for jsp_comment ruleset.
 rulesDict2 = {
 	"<": [jsp_rule15,jsp_rule16,jsp_rule17,],
 }
@@ -273,7 +273,7 @@ def jsp_rule23(colorer, s, i):
 def jsp_rule24(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for directives ruleset.
+# Rules dict for jsp_directives ruleset.
 rulesDict3 = {
 	"\"": [jsp_rule19,],
 	"'": [jsp_rule20,],
@@ -383,7 +383,7 @@ def jsp_rule31(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=":",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules dict for tags ruleset.
+# Rules dict for jsp_tags ruleset.
 rulesDict4 = {
 	"\"": [jsp_rule27,],
 	"'": [jsp_rule28,],
@@ -400,7 +400,7 @@ def jsp_rule32(colorer, s, i):
         delegate="java::MAIN",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules dict for attrvalue ruleset.
+# Rules dict for jsp_attrvalue ruleset.
 rulesDict5 = {
 	"<": [jsp_rule32,],
 }

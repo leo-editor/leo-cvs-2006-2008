@@ -87,7 +87,7 @@ def jcl_rule7(colorer, s, i):
 def jcl_rule8(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for jcl_main ruleset.
 rulesDict1 = {
 	"&": [jcl_rule5,],
 	"'": [jcl_rule1,],

@@ -180,7 +180,7 @@ def rview_rule8(colorer, s, i):
 def rview_rule9(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for rview_main ruleset.
 rulesDict1 = {
 	"\"": [rview_rule3,],
 	"(": [rview_rule7,],
@@ -320,7 +320,7 @@ def rview_rule24(colorer, s, i):
 def rview_rule25(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for rviewstmt ruleset.
+# Rules dict for rview_rviewstmt ruleset.
 rulesDict2 = {
 	"'": [rview_rule10,],
 	"(": [rview_rule24,],

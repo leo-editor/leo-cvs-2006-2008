@@ -2595,7 +2595,7 @@ def php_rule9(colorer, s, i):
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=True)
 
-# Rules dict for main ruleset.
+# Rules dict for php_main ruleset.
 rulesDict1 = {
 	"&": [php_rule9,],
 	"<": [php_rule0,php_rule1,php_rule2,php_rule3,php_rule4,php_rule5,php_rule6,php_rule7,php_rule8,],
@@ -2637,7 +2637,7 @@ def php_rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules dict for tags ruleset.
+# Rules dict for php_tags ruleset.
 rulesDict2 = {
 	"\"": [php_rule13,],
 	"'": [php_rule14,],
@@ -2665,7 +2665,7 @@ def php_rule18(colorer, s, i):
         delegate="PHP",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules dict for tags_literal ruleset.
+# Rules dict for php_tags_literal ruleset.
 rulesDict3 = {
 	"<": [php_rule16,php_rule17,php_rule18,],
 }
@@ -2837,7 +2837,7 @@ def php_rule55(colorer, s, i):
 def php_rule56(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for php ruleset.
+# Rules dict for php_php ruleset.
 rulesDict4 = {
 	"!": [php_rule30,],
 	"\"": [php_rule21,],
@@ -2939,7 +2939,7 @@ def php_rule57(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword3", pattern="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-# Rules dict for php_literal ruleset.
+# Rules dict for php_php_literal ruleset.
 rulesDict5 = {
 	"$": [php_rule57,],
 }
@@ -2954,7 +2954,7 @@ def php_rule59(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq="SRC=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="BACK_TO_HTML")
 
-# Rules dict for javascript ruleset.
+# Rules dict for php_javascript ruleset.
 rulesDict6 = {
 	">": [php_rule58,],
 	"S": [php_rule59,],
@@ -2981,7 +2981,7 @@ def php_rule62(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 
-# Rules dict for javascript_php ruleset.
+# Rules dict for php_javascript_php ruleset.
 rulesDict7 = {
 	"<": [php_rule60,php_rule61,php_rule62,],
 }
@@ -3023,7 +3023,7 @@ def php_rule69(colorer, s, i):
 def php_rule70(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for phpdoc ruleset.
+# Rules dict for php_phpdoc ruleset.
 rulesDict8 = {
 	"*": [php_rule64,],
 	"0": [php_rule70,],

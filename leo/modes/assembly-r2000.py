@@ -267,7 +267,7 @@ def assembly-r2000_rule3(colorer, s, i):
 def assembly-r2000_rule4(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for assembly_r2000_main ruleset.
 rulesDict1 = {
 	"\"": [assembly-r2000_rule2,],
 	"#": [assembly-r2000_rule0,],

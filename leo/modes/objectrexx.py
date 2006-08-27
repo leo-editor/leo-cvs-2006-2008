@@ -318,7 +318,7 @@ def objectrexx_rule24(colorer, s, i):
 def objectrexx_rule25(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for objectrexx_main ruleset.
 rulesDict1 = {
 	"!": [objectrexx_rule6,],
 	"\"": [objectrexx_rule1,],

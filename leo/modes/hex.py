@@ -37,7 +37,7 @@ def hex_rule1(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-# Rules dict for main ruleset.
+# Rules dict for hex_main ruleset.
 rulesDict1 = {
 	":": [hex_rule0,],
 	";": [hex_rule1,],

@@ -188,7 +188,7 @@ def io_rule26(colorer, s, i):
 def io_rule27(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for io_main ruleset.
 rulesDict1 = {
 	"\"": [io_rule3,io_rule4,],
 	"#": [io_rule0,],

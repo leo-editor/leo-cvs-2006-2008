@@ -96,7 +96,7 @@ def gettext_rule8(colorer, s, i):
 def gettext_rule9(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for gettext_main ruleset.
 rulesDict1 = {
 	"\"": [gettext_rule8,],
 	"#": [gettext_rule0,gettext_rule1,gettext_rule2,gettext_rule3,gettext_rule4,],
@@ -189,7 +189,7 @@ def gettext_rule13(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword3", pattern="@",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-# Rules dict for quoted ruleset.
+# Rules dict for gettext_quoted ruleset.
 rulesDict2 = {
 	"$": [gettext_rule12,],
 	"%": [gettext_rule11,],

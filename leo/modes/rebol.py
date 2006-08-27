@@ -598,7 +598,7 @@ def rebol_rule14(colorer, s, i):
 def rebol_rule15(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for rebol_main ruleset.
 rulesDict1 = {
 	"!": [rebol_rule15,],
 	"\"": [rebol_rule2,],

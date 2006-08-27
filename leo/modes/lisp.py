@@ -1056,7 +1056,7 @@ def lisp_rule11(colorer, s, i):
 def lisp_rule12(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for lisp_main ruleset.
 rulesDict1 = {
 	"\"": [lisp_rule11,],
 	"#": [lisp_rule0,],

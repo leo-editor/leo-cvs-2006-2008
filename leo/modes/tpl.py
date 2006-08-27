@@ -100,7 +100,7 @@ def tpl_rule5(colorer, s, i):
         delegate="TPL",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules dict for main ruleset.
+# Rules dict for tpl_main ruleset.
 rulesDict1 = {
 	"&": [tpl_rule4,],
 	"<": [tpl_rule0,tpl_rule1,tpl_rule2,tpl_rule3,],
@@ -128,7 +128,7 @@ def tpl_rule8(colorer, s, i):
 def tpl_rule9(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for tpl ruleset.
+# Rules dict for tpl_tpl ruleset.
 rulesDict2 = {
 	"\"": [tpl_rule6,],
 	"'": [tpl_rule7,],
@@ -217,7 +217,7 @@ def tpl_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules dict for tags ruleset.
+# Rules dict for tpl_tags ruleset.
 rulesDict3 = {
 	"\"": [tpl_rule10,],
 	"'": [tpl_rule11,],

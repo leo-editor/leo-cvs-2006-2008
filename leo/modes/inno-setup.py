@@ -555,7 +555,7 @@ def inno-setup_rule44(colorer, s, i):
 def inno-setup_rule45(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for inno_setup_main ruleset.
 rulesDict1 = {
 	"\"": [inno-setup_rule40,],
 	"#": [inno-setup_rule18,inno-setup_rule19,inno-setup_rule20,inno-setup_rule21,inno-setup_rule22,inno-setup_rule23,inno-setup_rule24,inno-setup_rule25,inno-setup_rule26,inno-setup_rule27,inno-setup_rule28,inno-setup_rule29,inno-setup_rule30,inno-setup_rule31,inno-setup_rule32,inno-setup_rule33,inno-setup_rule34,inno-setup_rule35,inno-setup_rule36,inno-setup_rule37,inno-setup_rule44,],
@@ -643,7 +643,7 @@ def inno-setup_rule47(colorer, s, i):
         delegate="CONSTANT",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules dict for string ruleset.
+# Rules dict for inno_setup_string ruleset.
 rulesDict2 = {
 	"{": [inno-setup_rule46,inno-setup_rule47,],
 }
@@ -658,7 +658,7 @@ def inno-setup_rule49(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="|",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules dict for constant ruleset.
+# Rules dict for inno_setup_constant ruleset.
 rulesDict3 = {
 	"c": [inno-setup_rule48,],
 	"|": [inno-setup_rule49,],
@@ -686,7 +686,7 @@ def inno-setup_rule52(colorer, s, i):
 def inno-setup_rule53(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for directive ruleset.
+# Rules dict for inno_setup_directive ruleset.
 rulesDict4 = {
 	"\"": [inno-setup_rule52,],
 	"/": [inno-setup_rule51,],

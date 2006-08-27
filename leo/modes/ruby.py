@@ -244,7 +244,7 @@ def ruby_rule34(colorer, s, i):
 def ruby_rule35(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for ruby_main ruleset.
 rulesDict1 = {
 	"!": [ruby_rule23,],
 	"\"": [ruby_rule2,],
@@ -345,7 +345,7 @@ def ruby_rule36(colorer, s, i):
         delegate="",exclude_match=True,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules dict for doublequoteliteral ruleset.
+# Rules dict for ruby_doublequoteliteral ruleset.
 rulesDict2 = {
 	"#": [ruby_rule36,],
 }

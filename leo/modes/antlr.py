@@ -123,7 +123,7 @@ def antlr_rule5(colorer, s, i):
 def antlr_rule6(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for antlr_main ruleset.
 rulesDict1 = {
 	"\"": [antlr_rule3,],
 	"/": [antlr_rule0,antlr_rule1,antlr_rule2,],

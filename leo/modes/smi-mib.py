@@ -152,7 +152,7 @@ def smi-mib_rule7(colorer, s, i):
 def smi-mib_rule8(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for smi_mib_main ruleset.
 rulesDict1 = {
 	"\"": [smi-mib_rule1,],
 	"-": [smi-mib_rule0,smi-mib_rule8,],

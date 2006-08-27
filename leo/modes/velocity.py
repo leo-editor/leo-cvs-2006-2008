@@ -164,7 +164,7 @@ def velocity_rule5(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=True)
 
 
-# Rules dict for main ruleset.
+# Rules dict for velocity_main ruleset.
 rulesDict1 = {
 	"&": [velocity_rule5,],
 	"<": [velocity_rule0,velocity_rule1,velocity_rule2,velocity_rule3,velocity_rule4,],
@@ -200,7 +200,7 @@ def velocity_rule10(colorer, s, i):
 def velocity_rule11(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for velocity ruleset.
+# Rules dict for velocity_velocity ruleset.
 rulesDict2 = {
 	"#": [velocity_rule6,velocity_rule7,velocity_rule11,],
 	"$": [velocity_rule8,velocity_rule9,velocity_rule10,],
@@ -279,7 +279,7 @@ def velocity_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq="SRC=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="BACK_TO_HTML")
 
-# Rules dict for javascript ruleset.
+# Rules dict for velocity_javascript ruleset.
 rulesDict3 = {
 	">": [velocity_rule12,],
 	"S": [velocity_rule13,],
@@ -289,7 +289,7 @@ rulesDict3 = {
 
 
 
-# Rules dict for javascript2 ruleset.
+# Rules dict for velocity_javascript2 ruleset.
 rulesDict4 = {}
 
 # Rules for velocity_back_to_html ruleset.
@@ -298,7 +298,7 @@ def velocity_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="MAIN")
 
-# Rules dict for back_to_html ruleset.
+# Rules dict for velocity_back_to_html ruleset.
 rulesDict5 = {
 	">": [velocity_rule14,],
 }
@@ -309,7 +309,7 @@ def velocity_rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="CSS2")
 
-# Rules dict for css ruleset.
+# Rules dict for velocity_css ruleset.
 rulesDict6 = {
 	">": [velocity_rule15,],
 }
@@ -318,7 +318,7 @@ rulesDict6 = {
 
 
 
-# Rules dict for css2 ruleset.
+# Rules dict for velocity_css2 ruleset.
 rulesDict7 = {}
 
 # x.rulesDictDict for velocity mode.

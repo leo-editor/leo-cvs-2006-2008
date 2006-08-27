@@ -223,7 +223,7 @@ def redcode_rule36(colorer, s, i):
 def redcode_rule37(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for redcode_main ruleset.
 rulesDict1 = {
 	"!": [redcode_rule22,redcode_rule29,],
 	"#": [redcode_rule33,],

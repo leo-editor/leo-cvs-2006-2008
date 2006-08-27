@@ -1075,7 +1075,7 @@ def tsql_rule23(colorer, s, i):
 def tsql_rule24(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for tsql_main ruleset.
 rulesDict1 = {
 	"!": [tsql_rule18,tsql_rule19,tsql_rule20,],
 	"\"": [tsql_rule1,],

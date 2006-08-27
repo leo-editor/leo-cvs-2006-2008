@@ -567,7 +567,7 @@ def css_rule9(colorer, s, i):
 def css_rule10(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for css_main ruleset.
 rulesDict1 = {
 	"!": [css_rule7,],
 	"#": [css_rule8,],
@@ -647,7 +647,7 @@ rulesDict1 = {
 
 # Rules for css_literal ruleset.
 
-# Rules dict for literal ruleset.
+# Rules dict for css_literal ruleset.
 rulesDict2 = {}
 
 # x.rulesDictDict for css mode.

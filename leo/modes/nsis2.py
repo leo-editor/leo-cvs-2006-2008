@@ -495,7 +495,7 @@ def nsis2_rule7(colorer, s, i):
 def nsis2_rule8(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for nsis2_main ruleset.
 rulesDict1 = {
 	"!": [nsis2_rule8,],
 	"\"": [nsis2_rule5,],
@@ -582,7 +582,7 @@ def nsis2_rule9(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword3", pattern="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-# Rules dict for nsis_literal ruleset.
+# Rules dict for nsis2_nsis_literal ruleset.
 rulesDict2 = {
 	"$": [nsis2_rule9,],
 }

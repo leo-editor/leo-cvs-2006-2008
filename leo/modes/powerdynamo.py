@@ -450,7 +450,7 @@ def powerdynamo_rule26(colorer, s, i):
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=True)
 
-# Rules dict for main ruleset.
+# Rules dict for powerdynamo_main ruleset.
 rulesDict1 = {
 	"&": [powerdynamo_rule26,],
 	"<": [powerdynamo_rule0,powerdynamo_rule1,powerdynamo_rule2,powerdynamo_rule3,powerdynamo_rule4,powerdynamo_rule5,powerdynamo_rule6,powerdynamo_rule7,powerdynamo_rule8,powerdynamo_rule9,powerdynamo_rule10,powerdynamo_rule11,powerdynamo_rule12,powerdynamo_rule13,powerdynamo_rule14,powerdynamo_rule15,powerdynamo_rule16,powerdynamo_rule17,powerdynamo_rule18,powerdynamo_rule19,powerdynamo_rule20,powerdynamo_rule21,powerdynamo_rule22,powerdynamo_rule23,powerdynamo_rule24,powerdynamo_rule25,],
@@ -480,7 +480,7 @@ def powerdynamo_rule30(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules dict for tags ruleset.
+# Rules dict for powerdynamo_tags ruleset.
 rulesDict2 = {
 	"\"": [powerdynamo_rule28,],
 	"'": [powerdynamo_rule29,],
@@ -496,7 +496,7 @@ def powerdynamo_rule31(colorer, s, i):
         delegate="powerdynamo-script",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules dict for tags_literal ruleset.
+# Rules dict for powerdynamo_tags_literal ruleset.
 rulesDict3 = {
 	"<": [powerdynamo_rule31,],
 }
@@ -637,7 +637,7 @@ def powerdynamo_rule62(colorer, s, i):
 def powerdynamo_rule63(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for powerdynamo_script ruleset.
+# Rules dict for powerdynamo_powerdynamo_script ruleset.
 rulesDict4 = {
 	"!": [powerdynamo_rule37,],
 	"\"": [powerdynamo_rule33,],
@@ -747,7 +747,7 @@ def powerdynamo_rule65(colorer, s, i):
 def powerdynamo_rule66(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for powerdynamo_tag_general ruleset.
+# Rules dict for powerdynamo_powerdynamo_tag_general ruleset.
 rulesDict5 = {
 	"\"": [powerdynamo_rule64,],
 	"'": [powerdynamo_rule65,],
@@ -834,7 +834,7 @@ def powerdynamo_rule68(colorer, s, i):
 def powerdynamo_rule69(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for powerdynamo_tag_data ruleset.
+# Rules dict for powerdynamo_powerdynamo_tag_data ruleset.
 rulesDict6 = {
 	"\"": [powerdynamo_rule67,],
 	"'": [powerdynamo_rule68,],
@@ -921,7 +921,7 @@ def powerdynamo_rule71(colorer, s, i):
 def powerdynamo_rule72(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for powerdynamo_tag_document ruleset.
+# Rules dict for powerdynamo_powerdynamo_tag_document ruleset.
 rulesDict7 = {
 	"\"": [powerdynamo_rule70,],
 	"'": [powerdynamo_rule71,],

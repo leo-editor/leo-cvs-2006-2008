@@ -309,7 +309,7 @@ def applescript_rule23(colorer, s, i):
 def applescript_rule24(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for applescript_main ruleset.
 rulesDict1 = {
 	"\"": [applescript_rule2,],
 	"&": [applescript_rule11,],

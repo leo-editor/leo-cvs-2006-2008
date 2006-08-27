@@ -129,7 +129,7 @@ def shtml_rule6(colorer, s, i):
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=True)
 
-# Rules dict for main ruleset.
+# Rules dict for shtml_main ruleset.
 rulesDict1 = {
 	"&": [shtml_rule6,],
 	"<": [shtml_rule0,shtml_rule1,shtml_rule2,shtml_rule3,shtml_rule4,shtml_rule5,],
@@ -153,7 +153,7 @@ def shtml_rule9(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules dict for tags ruleset.
+# Rules dict for shtml_tags ruleset.
 rulesDict2 = {
 	"\"": [shtml_rule7,],
 	"'": [shtml_rule8,],
@@ -175,7 +175,7 @@ def shtml_rule11(colorer, s, i):
 def shtml_rule12(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for ssi ruleset.
+# Rules dict for shtml_ssi ruleset.
 rulesDict3 = {
 	"\"": [shtml_rule10,],
 	"0": [shtml_rule12,],
@@ -282,7 +282,7 @@ def shtml_rule21(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="||",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules dict for ssi_expression ruleset.
+# Rules dict for shtml_ssi_expression ruleset.
 rulesDict4 = {
 	"!": [shtml_rule15,],
 	"$": [shtml_rule13,],

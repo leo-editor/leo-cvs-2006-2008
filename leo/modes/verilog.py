@@ -277,7 +277,7 @@ def verilog_rule22(colorer, s, i):
 def verilog_rule23(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for verilog_main ruleset.
 rulesDict1 = {
 	"!": [verilog_rule9,],
 	"\"": [verilog_rule2,],

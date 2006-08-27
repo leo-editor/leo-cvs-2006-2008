@@ -224,7 +224,7 @@ def modula3_rule16(colorer, s, i):
 def modula3_rule17(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for modula3_main ruleset.
 rulesDict1 = {
 	"\"": [modula3_rule2,],
 	"'": [modula3_rule3,],

@@ -524,7 +524,7 @@ def omnimark_rule20(colorer, s, i):
 def omnimark_rule21(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for omnimark_main ruleset.
 rulesDict1 = {
 	"!": [omnimark_rule20,omnimark_rule21,],
 	"\"": [omnimark_rule2,omnimark_rule3,],

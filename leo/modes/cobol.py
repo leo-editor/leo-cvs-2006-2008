@@ -749,7 +749,7 @@ def cobol_rule18(colorer, s, i):
 def cobol_rule19(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for cobol_main ruleset.
 rulesDict1 = {
 	" ": [cobol_rule4,cobol_rule5,cobol_rule11,cobol_rule12,cobol_rule14,],
 	"\"": [cobol_rule1,],

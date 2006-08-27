@@ -370,7 +370,7 @@ def interlis_rule47(colorer, s, i):
 def interlis_rule48(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for interlis_main ruleset.
 rulesDict1 = {
 	"!": [interlis_rule1,interlis_rule18,],
 	"\"": [interlis_rule2,],

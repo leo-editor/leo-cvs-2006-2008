@@ -112,7 +112,7 @@ def makefile_rule7(colorer, s, i):
 def makefile_rule8(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for makefile_main ruleset.
 rulesDict1 = {
 	"\"": [makefile_rule4,],
 	"#": [makefile_rule0,],
@@ -205,7 +205,7 @@ def makefile_rule11(colorer, s, i):
         delegate="VARIABLE",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-# Rules dict for variable ruleset.
+# Rules dict for makefile_variable ruleset.
 rulesDict2 = {
 	"#": [makefile_rule9,],
 	"$": [makefile_rule10,makefile_rule11,],

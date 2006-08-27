@@ -241,7 +241,7 @@ def cplusplus_rule27(colorer, s, i):
 def cplusplus_rule28(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for cplusplus_main ruleset.
 rulesDict1 = {
 	"!": [cplusplus_rule9,],
 	"\"": [cplusplus_rule3,],

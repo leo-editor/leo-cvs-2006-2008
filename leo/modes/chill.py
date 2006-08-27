@@ -205,7 +205,7 @@ def chill_rule24(colorer, s, i):
 def chill_rule25(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for chill_main ruleset.
 rulesDict1 = {
 	"'": [chill_rule2,],
 	"(": [chill_rule5,],

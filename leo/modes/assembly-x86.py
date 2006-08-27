@@ -904,7 +904,7 @@ def assembly-x86_rule18(colorer, s, i):
 def assembly-x86_rule19(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for assembly_x86_main ruleset.
 rulesDict1 = {
 	"!": [assembly-x86_rule15,],
 	"\"": [assembly-x86_rule2,],

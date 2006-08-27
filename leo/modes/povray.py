@@ -596,7 +596,7 @@ def povray_rule22(colorer, s, i):
 def povray_rule23(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for povray_main ruleset.
 rulesDict1 = {
 	"!": [povray_rule5,],
 	"\"": [povray_rule1,],

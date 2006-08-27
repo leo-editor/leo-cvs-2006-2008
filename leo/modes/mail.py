@@ -124,7 +124,7 @@ def mail_rule14(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="label", pattern=":",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-# Rules dict for main ruleset.
+# Rules dict for mail_main ruleset.
 rulesDict1 = {
 	"-": [mail_rule5,],
 	":": [mail_rule4,mail_rule6,mail_rule7,mail_rule8,mail_rule9,mail_rule14,],
@@ -135,7 +135,7 @@ rulesDict1 = {
 
 # Rules for mail_signature ruleset.
 
-# Rules dict for signature ruleset.
+# Rules dict for mail_signature ruleset.
 rulesDict2 = {}
 
 # Rules for mail_header ruleset.
@@ -146,7 +146,7 @@ def mail_rule15(colorer, s, i):
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-# Rules dict for header ruleset.
+# Rules dict for mail_header ruleset.
 rulesDict3 = {
 	"<": [mail_rule15,],
 }

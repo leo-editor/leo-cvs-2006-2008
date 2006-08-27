@@ -128,7 +128,7 @@ def factor_rule12(colorer, s, i):
 def factor_rule13(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for factor_main ruleset.
 rulesDict1 = {
 	"!": [factor_rule1,],
 	"\"": [factor_rule12,],
@@ -216,7 +216,7 @@ def factor_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="comment3", seq="--",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules dict for stack_effect ruleset.
+# Rules dict for factor_stack_effect ruleset.
 rulesDict2 = {
 	"-": [factor_rule14,],
 }

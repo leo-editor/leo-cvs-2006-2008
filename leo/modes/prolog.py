@@ -314,7 +314,7 @@ def prolog_rule43(colorer, s, i):
 def prolog_rule44(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for prolog_main ruleset.
 rulesDict1 = {
 	"!": [prolog_rule44,],
 	"\"": [prolog_rule3,],
@@ -413,7 +413,7 @@ def prolog_rule45(colorer, s, i):
         delegate="LIST",exclude_match=False,
         no_escape=False, no_line_break=True, no_word_break=False)
 
-# Rules dict for list ruleset.
+# Rules dict for prolog_list ruleset.
 rulesDict2 = {
 	"[": [prolog_rule45,],
 }

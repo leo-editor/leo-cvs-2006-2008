@@ -318,7 +318,7 @@ def icon_rule43(colorer, s, i):
 def icon_rule44(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for icon_main ruleset.
 rulesDict1 = {
 	"!": [icon_rule30,],
 	"\"": [icon_rule1,],

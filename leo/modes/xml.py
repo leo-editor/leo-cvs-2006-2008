@@ -140,7 +140,7 @@ def xml_rule6(colorer, s, i):
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=True)
 
-# Rules dict for main ruleset.
+# Rules dict for xml_main ruleset.
 rulesDict1 = {
 	"&": [xml_rule6,],
 	"<": [xml_rule0,xml_rule1,xml_rule2,xml_rule3,xml_rule4,xml_rule5,],
@@ -178,7 +178,7 @@ def xml_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=":",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules dict for tags ruleset.
+# Rules dict for xml_tags ruleset.
 rulesDict2 = {
 	"\"": [xml_rule8,],
 	"'": [xml_rule9,],
@@ -256,7 +256,7 @@ def xml_rule25(colorer, s, i):
 def xml_rule26(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for dtd_tags ruleset.
+# Rules dict for xml_dtd_tags ruleset.
 rulesDict3 = {
 	"\"": [xml_rule16,],
 	"#": [xml_rule26,],
@@ -374,7 +374,7 @@ def xml_rule32(colorer, s, i):
 def xml_rule33(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for entity_tags ruleset.
+# Rules dict for xml_entity_tags ruleset.
 rulesDict4 = {
 	"\"": [xml_rule29,],
 	"#": [xml_rule33,],
@@ -450,7 +450,7 @@ rulesDict4 = {
 
 # Rules for xml_cdata ruleset.
 
-# Rules dict for cdata ruleset.
+# Rules dict for xml_cdata ruleset.
 rulesDict5 = {}
 
 # x.rulesDictDict for xml mode.

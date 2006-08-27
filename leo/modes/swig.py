@@ -49,7 +49,7 @@ def swig_rule1(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
 
-# Rules dict for main ruleset.
+# Rules dict for swig_main ruleset.
 rulesDict1 = {
 	"%": [swig_rule0,swig_rule1,],
 }

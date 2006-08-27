@@ -308,7 +308,7 @@ def haskell_rule45(colorer, s, i):
 def haskell_rule46(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for haskell_main ruleset.
 rulesDict1 = {
 	"!": [haskell_rule44,],
 	"\"": [haskell_rule3,],

@@ -481,7 +481,7 @@ def plsql_rule23(colorer, s, i):
 def plsql_rule24(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for plsql_main ruleset.
 rulesDict1 = {
 	"!": [plsql_rule19,plsql_rule20,plsql_rule21,],
 	"\"": [plsql_rule2,],

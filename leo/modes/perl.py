@@ -583,7 +583,7 @@ def perl_rule53(colorer, s, i):
 def perl_rule54(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for perl_main ruleset.
 rulesDict1 = {
 	"!": [perl_rule37,perl_rule43,],
 	"\"": [perl_rule21,],
@@ -679,7 +679,7 @@ def perl_rule55(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="label", pattern="=",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-# Rules dict for pod ruleset.
+# Rules dict for perl_pod ruleset.
 rulesDict2 = {
 	"=": [perl_rule55,],
 }
@@ -816,7 +816,7 @@ def perl_rule86(colorer, s, i):
     return colorer.match_seq(s, i, kind="literal1", seq=":",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules dict for literal ruleset.
+# Rules dict for perl_literal ruleset.
 rulesDict3 = {
 	"!": [perl_rule65,perl_rule71,],
 	"$": [perl_rule56,perl_rule57,perl_rule58,],
@@ -887,7 +887,7 @@ def perl_rule94(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword2", pattern="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-# Rules dict for exec ruleset.
+# Rules dict for perl_exec ruleset.
 rulesDict4 = {
 	"#": [perl_rule87,],
 	"$": [perl_rule88,perl_rule89,perl_rule90,],
@@ -907,7 +907,7 @@ def perl_rule96(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="->",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules dict for variable ruleset.
+# Rules dict for perl_variable ruleset.
 rulesDict5 = {
 	"-": [perl_rule96,],
 	"{": [perl_rule95,],
@@ -969,7 +969,7 @@ def perl_rule108(colorer, s, i):
         delegate="REGEXP",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules dict for regexp ruleset.
+# Rules dict for perl_regexp ruleset.
 rulesDict6 = {
 	"(": [perl_rule106,],
 	")": [perl_rule97,perl_rule98,perl_rule99,],

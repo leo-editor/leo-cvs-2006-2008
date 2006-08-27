@@ -267,7 +267,7 @@ def java_rule26(colorer, s, i):
 def java_rule27(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for java_main ruleset.
 rulesDict1 = {
 	"!": [java_rule7,],
 	"\"": [java_rule3,],
@@ -391,7 +391,7 @@ def java_rule34(colorer, s, i):
 def java_rule35(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for javadoc ruleset.
+# Rules dict for java_javadoc ruleset.
 rulesDict2 = {
 	"*": [java_rule29,],
 	"0": [java_rule35,],

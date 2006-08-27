@@ -4432,7 +4432,7 @@ def apdl_rule358(colorer, s, i):
 def apdl_rule359(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for apdl_main ruleset.
 rulesDict1 = {
 	"!": [apdl_rule1,],
 	"$": [apdl_rule346,],

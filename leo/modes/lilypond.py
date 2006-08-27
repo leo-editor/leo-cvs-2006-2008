@@ -1543,7 +1543,7 @@ def lilypond_rule343(colorer, s, i):
 def lilypond_rule344(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for lilypond_main ruleset.
 rulesDict1 = {
 	"\"": [lilypond_rule20,],
 	"#": [lilypond_rule10,],

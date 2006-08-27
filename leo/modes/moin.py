@@ -193,7 +193,7 @@ def moin_rule36(colorer, s, i):
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules dict for main ruleset.
+# Rules dict for moin_main ruleset.
 rulesDict1 = {
 	"#": [moin_rule0,moin_rule1,],
 	"(": [moin_rule6,moin_rule8,],

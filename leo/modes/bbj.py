@@ -378,7 +378,7 @@ def bbj_rule18(colorer, s, i):
 def bbj_rule19(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for bbj_main ruleset.
 rulesDict1 = {
 	"\"": [bbj_rule1,],
 	"(": [bbj_rule18,],

@@ -320,7 +320,7 @@ def csharp_rule41(colorer, s, i):
 def csharp_rule42(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for csharp_main ruleset.
 rulesDict1 = {
 	"!": [csharp_rule18,csharp_rule25,],
 	"\"": [csharp_rule4,],
@@ -428,7 +428,7 @@ def csharp_rule44(colorer, s, i):
         delegate="xml::TAGS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules dict for doc_comment ruleset.
+# Rules dict for csharp_doc_comment ruleset.
 rulesDict2 = {
 	"<": [csharp_rule43,csharp_rule44,],
 }

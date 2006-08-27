@@ -286,7 +286,7 @@ def sdl_pr_rule24(colorer, s, i):
 def sdl_pr_rule25(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for sdl_pr_main ruleset.
 rulesDict1 = {
 	"!": [sdl_pr_rule17,],
 	"\"": [sdl_pr_rule3,],

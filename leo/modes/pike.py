@@ -308,7 +308,7 @@ def pike_rule30(colorer, s, i):
 def pike_rule31(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for pike_main ruleset.
 rulesDict1 = {
 	"!": [pike_rule15,],
 	"\"": [pike_rule4,],
@@ -401,7 +401,7 @@ rulesDict1 = {
 def pike_rule32(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for comment ruleset.
+# Rules dict for pike_comment ruleset.
 rulesDict2 = {
 	"0": [pike_rule32,],
 	"1": [pike_rule32,],
@@ -499,7 +499,7 @@ def pike_rule38(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="MAIN", exclude_match=False)
 
-# Rules dict for autodoc ruleset.
+# Rules dict for pike_autodoc ruleset.
 rulesDict3 = {
 	"0": [pike_rule37,],
 	"1": [pike_rule37,],
@@ -576,7 +576,7 @@ def pike_rule40(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="comment2", regexp="DEBUG:", hash_char="D",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules dict for string_literal ruleset.
+# Rules dict for pike_string_literal ruleset.
 rulesDict4 = {
 	"%": [pike_rule39,],
 	"D": [pike_rule40,],

@@ -52,7 +52,7 @@ def texinfo_rule4(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="}",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules dict for main ruleset.
+# Rules dict for texinfo_main ruleset.
 rulesDict1 = {
 	"@": [texinfo_rule0,texinfo_rule1,texinfo_rule2,],
 	"{": [texinfo_rule3,],

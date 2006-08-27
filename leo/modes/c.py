@@ -252,7 +252,7 @@ def c_rule26(colorer, s, i):
 def c_rule27(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for c_main ruleset.
 rulesDict1 = {
 	"!": [c_rule9,],
 	"\"": [c_rule3,],
@@ -356,7 +356,7 @@ def c_rule29(colorer, s, i):
 def c_rule30(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for cpp ruleset.
+# Rules dict for c_cpp ruleset.
 rulesDict2 = {
 	"/": [c_rule28,],
 	"0": [c_rule30,],
@@ -427,7 +427,7 @@ rulesDict2 = {
 
 # Rules for c_include ruleset.
 
-# Rules dict for include ruleset.
+# Rules dict for c_include ruleset.
 rulesDict3 = {}
 
 # x.rulesDictDict for c mode.

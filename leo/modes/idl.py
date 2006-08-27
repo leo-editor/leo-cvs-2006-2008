@@ -116,7 +116,7 @@ def idl_rule7(colorer, s, i):
 def idl_rule8(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for idl_main ruleset.
 rulesDict1 = {
 	"\"": [idl_rule1,],
 	"'": [idl_rule2,],

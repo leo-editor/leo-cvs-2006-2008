@@ -235,7 +235,7 @@ def uscript_rule25(colorer, s, i):
 def uscript_rule26(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for uscript_main ruleset.
 rulesDict1 = {
 	"!": [uscript_rule6,],
 	"\"": [uscript_rule2,],

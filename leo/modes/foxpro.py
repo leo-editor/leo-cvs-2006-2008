@@ -1880,7 +1880,7 @@ def foxpro_rule33(colorer, s, i):
 def foxpro_rule34(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for foxpro_main ruleset.
 rulesDict1 = {
 	"\"": [foxpro_rule0,],
 	"#": [foxpro_rule2,foxpro_rule3,foxpro_rule4,foxpro_rule5,foxpro_rule6,foxpro_rule7,foxpro_rule8,foxpro_rule9,foxpro_rule10,foxpro_rule11,foxpro_rule12,foxpro_rule13,foxpro_rule14,foxpro_rule15,foxpro_rule16,],

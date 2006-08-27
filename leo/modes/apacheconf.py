@@ -978,7 +978,7 @@ def apacheconf_rule3(colorer, s, i):
 def apacheconf_rule4(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for apacheconf_main ruleset.
 rulesDict1 = {
 	"\"": [apacheconf_rule1,],
 	"#": [apacheconf_rule0,],
@@ -1077,7 +1077,7 @@ def apacheconf_rule8(colorer, s, i):
 def apacheconf_rule9(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for directive ruleset.
+# Rules dict for apacheconf_directive ruleset.
 rulesDict2 = {
 	"\"": [apacheconf_rule6,],
 	"#": [apacheconf_rule5,],
@@ -1164,7 +1164,7 @@ def apacheconf_rule11(colorer, s, i):
 def apacheconf_rule12(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for vhost ruleset.
+# Rules dict for apacheconf_vhost ruleset.
 rulesDict3 = {
 	"\"": [apacheconf_rule11,],
 	"#": [apacheconf_rule10,],

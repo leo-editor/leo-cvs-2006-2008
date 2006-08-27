@@ -810,7 +810,7 @@ def actionscript_rule31(colorer, s, i):
 def actionscript_rule32(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for actionscript_main ruleset.
 rulesDict1 = {
 	"!": [actionscript_rule8,],
 	"\"": [actionscript_rule1,],

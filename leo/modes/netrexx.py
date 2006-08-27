@@ -452,7 +452,7 @@ def netrexx_rule22(colorer, s, i):
 def netrexx_rule23(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for netrexx_main ruleset.
 rulesDict1 = {
 	"!": [netrexx_rule6,],
 	"\"": [netrexx_rule2,],

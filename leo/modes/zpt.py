@@ -183,7 +183,7 @@ def zpt_rule5(colorer, s, i):
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=True)
 
-# Rules dict for main ruleset.
+# Rules dict for zpt_main ruleset.
 rulesDict1 = {
 	"&": [zpt_rule5,],
 	"<": [zpt_rule0,zpt_rule1,zpt_rule2,zpt_rule3,zpt_rule4,],
@@ -210,7 +210,7 @@ def zpt_rule8(colorer, s, i):
 def zpt_rule9(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for tags ruleset.
+# Rules dict for zpt_tags ruleset.
 rulesDict2 = {
 	"\"": [zpt_rule6,],
 	"'": [zpt_rule7,],
@@ -316,7 +316,7 @@ def zpt_rule16(colorer, s, i):
 def zpt_rule17(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for attribute ruleset.
+# Rules dict for zpt_attribute ruleset.
 rulesDict3 = {
 	"$": [zpt_rule14,zpt_rule15,zpt_rule16,],
 	"-": [zpt_rule17,],
@@ -399,7 +399,7 @@ def zpt_rule19(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq="SRC=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="BACK_TO_HTML")
 
-# Rules dict for javascript ruleset.
+# Rules dict for zpt_javascript ruleset.
 rulesDict4 = {
 	">": [zpt_rule18,],
 	"S": [zpt_rule19,],
@@ -411,7 +411,7 @@ def zpt_rule20(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="zpt::MAIN")
 
-# Rules dict for back_to_html ruleset.
+# Rules dict for zpt_back_to_html ruleset.
 rulesDict5 = {
 	">": [zpt_rule20,],
 }
@@ -422,7 +422,7 @@ def zpt_rule21(colorer, s, i):
     return colorer.match_seq(s, i, kind="markup", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="css::MAIN")
 
-# Rules dict for css ruleset.
+# Rules dict for zpt_css ruleset.
 rulesDict6 = {
 	">": [zpt_rule21,],
 }

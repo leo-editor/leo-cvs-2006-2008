@@ -131,7 +131,7 @@ def tex_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="]",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules dict for main ruleset.
+# Rules dict for tex_main ruleset.
 rulesDict1 = {
 	"$": [tex_rule0,tex_rule1,],
 	"%": [tex_rule10,],
@@ -269,7 +269,7 @@ def tex_rule45(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="", exclude_match=False)
 
-# Rules dict for math ruleset.
+# Rules dict for tex_math ruleset.
 rulesDict2 = {
 	"!": [tex_rule26,],
 	"\"": [tex_rule43,],
@@ -303,7 +303,7 @@ rulesDict2 = {
 
 # Rules for tex_verbatim ruleset.
 
-# Rules dict for verbatim ruleset.
+# Rules dict for tex_verbatim ruleset.
 rulesDict3 = {}
 
 # x.rulesDictDict for tex mode.

@@ -137,7 +137,7 @@ def jhtml_rule8(colorer, s, i):
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=True)
 
-# Rules dict for main ruleset.
+# Rules dict for jhtml_main ruleset.
 rulesDict1 = {
 	"&": [jhtml_rule8,],
 	"<": [jhtml_rule0,jhtml_rule1,jhtml_rule3,jhtml_rule4,jhtml_rule5,jhtml_rule6,jhtml_rule7,],
@@ -171,7 +171,7 @@ def jhtml_rule12(colorer, s, i):
 def jhtml_rule13(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for jhtml ruleset.
+# Rules dict for jhtml_jhtml ruleset.
 rulesDict2 = {
 	"\"": [jhtml_rule10,],
 	"'": [jhtml_rule11,],
@@ -258,7 +258,7 @@ def jhtml_rule16(colorer, s, i):
     return colorer.match_seq(s, i, kind="label", seq="bean:",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules dict for attrvalue ruleset.
+# Rules dict for jhtml_attrvalue ruleset.
 rulesDict3 = {
 	"`": [jhtml_rule14,],
 	"b": [jhtml_rule16,],

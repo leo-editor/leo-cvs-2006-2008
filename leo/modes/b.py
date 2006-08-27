@@ -291,7 +291,7 @@ def b_rule30(colorer, s, i):
 def b_rule31(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for b_main ruleset.
 rulesDict1 = {
 	"!": [b_rule5,],
 	"\"": [b_rule2,],

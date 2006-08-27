@@ -281,7 +281,7 @@ def scheme_rule9(colorer, s, i):
 def scheme_rule10(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for scheme_main ruleset.
 rulesDict1 = {
 	"!": [scheme_rule10,],
 	"\"": [scheme_rule9,],

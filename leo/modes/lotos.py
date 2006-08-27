@@ -140,7 +140,7 @@ def lotos_rule7(colorer, s, i):
 def lotos_rule8(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for lotos_main ruleset.
 rulesDict1 = {
 	"(": [lotos_rule0,],
 	"0": [lotos_rule8,],

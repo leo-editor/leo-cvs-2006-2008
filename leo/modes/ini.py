@@ -50,7 +50,7 @@ def ini_rule3(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="keyword1", pattern="=",
         at_line_start=True, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-# Rules dict for main ruleset.
+# Rules dict for ini_main ruleset.
 rulesDict1 = {
 	"#": [ini_rule2,],
 	";": [ini_rule1,],

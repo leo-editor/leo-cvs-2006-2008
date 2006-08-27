@@ -67,7 +67,7 @@ def sgml_rule5(colorer, s, i):
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=True)
 
-# Rules dict for main ruleset.
+# Rules dict for sgml_main ruleset.
 rulesDict1 = {
 	"&": [sgml_rule5,],
 	"<": [sgml_rule0,sgml_rule1,sgml_rule2,sgml_rule3,sgml_rule4,],

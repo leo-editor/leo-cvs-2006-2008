@@ -264,7 +264,7 @@ def ssharp_rule39(colorer, s, i):
 def ssharp_rule40(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for ssharp_main ruleset.
 rulesDict1 = {
 	"!": [ssharp_rule33,ssharp_rule35,],
 	"\"": [ssharp_rule2,ssharp_rule3,],

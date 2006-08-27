@@ -272,7 +272,7 @@ def nqc_rule23(colorer, s, i):
 def nqc_rule24(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for nqc_main ruleset.
 rulesDict1 = {
 	"!": [nqc_rule6,],
 	"\"": [nqc_rule1,],

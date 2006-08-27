@@ -50,7 +50,7 @@ def ptl_rule1(colorer, s, i):
 def ptl_rule2(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for ptl_main ruleset.
 rulesDict1 = {
 	"0": [ptl_rule2,],
 	"1": [ptl_rule2,],

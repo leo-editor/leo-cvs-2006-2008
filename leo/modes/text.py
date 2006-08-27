@@ -31,7 +31,7 @@ keywordsDictDict = {
 def text_rule0(colorer, s, i):
     return colorer.match_terminate(s, i, kind="", at_char=0)
 
-# Rules dict for main ruleset.
+# Rules dict for text_main ruleset.
 rulesDict1 = {}
 
 # x.rulesDictDict for text mode.

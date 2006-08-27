@@ -332,7 +332,7 @@ def pop11_rule31(colorer, s, i):
 def pop11_rule32(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for pop11_main ruleset.
 rulesDict1 = {
 	"!": [pop11_rule7,],
 	"\"": [pop11_rule3,],
@@ -487,7 +487,7 @@ def pop11_rule44(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="literal2", pattern="?",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-# Rules dict for list ruleset.
+# Rules dict for pop11_list ruleset.
 rulesDict2 = {
 	"!": [pop11_rule35,],
 	"\"": [pop11_rule37,],
@@ -504,7 +504,7 @@ rulesDict2 = {
 
 # Rules for pop11_string ruleset.
 
-# Rules dict for string ruleset.
+# Rules dict for pop11_string ruleset.
 rulesDict3 = {}
 
 # Rules for pop11_comment ruleset.
@@ -517,7 +517,7 @@ def pop11_rule46(colorer, s, i):
     return colorer.match_seq(s, i, kind="comment1", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules dict for comment ruleset.
+# Rules dict for pop11_comment ruleset.
 rulesDict4 = {
 	"*": [pop11_rule46,],
 	":": [pop11_rule45,],

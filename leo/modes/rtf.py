@@ -48,7 +48,7 @@ def rtf_rule4(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword1", pattern="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-# Rules dict for main ruleset.
+# Rules dict for rtf_main ruleset.
 rulesDict1 = {
 	"\\": [rtf_rule2,rtf_rule3,rtf_rule4,],
 	"{": [rtf_rule0,],

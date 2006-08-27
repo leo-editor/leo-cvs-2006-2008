@@ -109,7 +109,7 @@ def jmk_rule8(colorer, s, i):
 def jmk_rule9(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for jmk_main ruleset.
 rulesDict1 = {
 	"\"": [jmk_rule1,],
 	"#": [jmk_rule0,],

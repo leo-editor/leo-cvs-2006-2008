@@ -320,7 +320,7 @@ def bcel_rule10(colorer, s, i):
 def bcel_rule11(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for bcel_main ruleset.
 rulesDict1 = {
 	"\"": [bcel_rule5,],
 	"#": [bcel_rule7,],

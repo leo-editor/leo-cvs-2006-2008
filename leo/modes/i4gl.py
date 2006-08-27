@@ -736,7 +736,7 @@ def i4gl_rule25(colorer, s, i):
 def i4gl_rule26(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for i4gl_main ruleset.
 rulesDict1 = {
 	"!": [i4gl_rule14,],
 	"\"": [i4gl_rule1,],

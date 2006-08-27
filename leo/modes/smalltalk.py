@@ -130,7 +130,7 @@ def smalltalk_rule16(colorer, s, i):
 def smalltalk_rule17(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for smalltalk_main ruleset.
 rulesDict1 = {
 	"\"": [smalltalk_rule1,],
 	"#": [smalltalk_rule15,],

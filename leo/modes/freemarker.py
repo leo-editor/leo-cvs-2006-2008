@@ -224,7 +224,7 @@ def freemarker_rule21(colorer, s, i):
         delegate="TAGS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules dict for main ruleset.
+# Rules dict for freemarker_main ruleset.
 rulesDict1 = {
 	"#": [freemarker_rule9,],
 	"$": [freemarker_rule8,],
@@ -344,7 +344,7 @@ def freemarker_rule46(colorer, s, i):
 def freemarker_rule47(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for expression ruleset.
+# Rules dict for freemarker_expression ruleset.
 rulesDict2 = {
 	"!": [freemarker_rule27,],
 	"\"": [freemarker_rule24,],
@@ -450,7 +450,7 @@ def freemarker_rule50(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules dict for tags ruleset.
+# Rules dict for freemarker_tags ruleset.
 rulesDict3 = {
 	"\"": [freemarker_rule48,],
 	"'": [freemarker_rule49,],
@@ -471,7 +471,7 @@ def freemarker_rule52(colorer, s, i):
         delegate="EXPRESSION",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules dict for inquote ruleset.
+# Rules dict for freemarker_inquote ruleset.
 rulesDict4 = {
 	"#": [freemarker_rule52,],
 	"$": [freemarker_rule51,],
@@ -479,7 +479,7 @@ rulesDict4 = {
 
 # Rules for freemarker_invalid ruleset.
 
-# Rules dict for invalid ruleset.
+# Rules dict for freemarker_invalid ruleset.
 rulesDict5 = {}
 
 # x.rulesDictDict for freemarker mode.

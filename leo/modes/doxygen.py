@@ -331,7 +331,7 @@ def doxygen_rule5(colorer, s, i):
 def doxygen_rule6(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for doxygen_main ruleset.
 rulesDict1 = {
 	"\"": [doxygen_rule3,],
 	"#": [doxygen_rule0,doxygen_rule6,],
@@ -447,7 +447,7 @@ def doxygen_rule12(colorer, s, i):
 def doxygen_rule13(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for doxygen ruleset.
+# Rules dict for doxygen_doxygen ruleset.
 rulesDict2 = {
 	"#": [doxygen_rule13,],
 	"$": [doxygen_rule13,],

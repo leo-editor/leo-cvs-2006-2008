@@ -113,7 +113,7 @@ def rhtml_rule8(colorer, s, i):
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=True)
 
-# Rules dict for main ruleset.
+# Rules dict for rhtml_main ruleset.
 rulesDict1 = {
 	"&": [rhtml_rule8,],
 	"<": [rhtml_rule0,rhtml_rule1,rhtml_rule2,rhtml_rule3,rhtml_rule4,rhtml_rule5,rhtml_rule6,rhtml_rule7,],
@@ -149,7 +149,7 @@ def rhtml_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules dict for tags ruleset.
+# Rules dict for rhtml_tags ruleset.
 rulesDict2 = {
 	"\"": [rhtml_rule11,],
 	"'": [rhtml_rule12,],
@@ -171,7 +171,7 @@ def rhtml_rule15(colorer, s, i):
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules dict for tags_literal ruleset.
+# Rules dict for rhtml_tags_literal ruleset.
 rulesDict3 = {
 	"<": [rhtml_rule14,rhtml_rule15,],
 }

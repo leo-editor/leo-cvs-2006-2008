@@ -172,7 +172,7 @@ def assembly-parrot_rule7(colorer, s, i):
 def assembly-parrot_rule8(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for assembly_parrot_main ruleset.
 rulesDict1 = {
 	"\"": [assembly-parrot_rule0,],
 	"#": [assembly-parrot_rule1,],

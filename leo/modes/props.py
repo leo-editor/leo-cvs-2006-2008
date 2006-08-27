@@ -69,7 +69,7 @@ def props_rule4(colorer, s, i):
         at_line_start=False, at_whitespace_end=False, at_word_start=False,
         delegate="PROP_VALUE", exclude_match=False)
 
-# Rules dict for main ruleset.
+# Rules dict for props_main ruleset.
 rulesDict1 = {
 	"\t": [props_rule4,],
 	" ": [props_rule3,],
@@ -90,7 +90,7 @@ def props_rule6(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="digit", pattern="#",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-# Rules dict for prop_value ruleset.
+# Rules dict for props_prop_value ruleset.
 rulesDict2 = {
 	"#": [props_rule6,],
 	"{": [props_rule5,],

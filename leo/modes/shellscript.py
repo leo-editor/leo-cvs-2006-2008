@@ -199,7 +199,7 @@ def shellscript_rule24(colorer, s, i):
 def shellscript_rule25(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for shellscript_main ruleset.
 rulesDict1 = {
 	"!": [shellscript_rule20,],
 	"\"": [shellscript_rule15,],
@@ -292,7 +292,7 @@ def shellscript_rule27(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword2", pattern="$",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-# Rules dict for literal ruleset.
+# Rules dict for shellscript_literal ruleset.
 rulesDict2 = {
 	"$": [shellscript_rule26,shellscript_rule27,],
 }
@@ -347,7 +347,7 @@ def shellscript_rule37(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules dict for exec ruleset.
+# Rules dict for shellscript_exec ruleset.
 rulesDict3 = {
 	"!": [shellscript_rule35,],
 	"$": [shellscript_rule28,shellscript_rule29,shellscript_rule30,shellscript_rule31,shellscript_rule32,],

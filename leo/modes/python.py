@@ -394,7 +394,7 @@ def python_rule22(colorer, s, i):
 def python_rule23(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for python_main ruleset.
 rulesDict1 = {
 	"!": [python_rule8,],
 	"\"": [python_rule1,python_rule3,python_rule5,],

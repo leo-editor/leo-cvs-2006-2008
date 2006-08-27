@@ -299,7 +299,7 @@ def lua_rule22(colorer, s, i):
 def lua_rule23(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for lua_main ruleset.
 rulesDict1 = {
 	"\"": [lua_rule3,lua_rule21,],
 	"#": [lua_rule2,],

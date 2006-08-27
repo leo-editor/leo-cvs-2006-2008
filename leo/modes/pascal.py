@@ -292,7 +292,7 @@ def pascal_rule26(colorer, s, i):
 def pascal_rule27(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for pascal_main ruleset.
 rulesDict1 = {
 	"'": [pascal_rule5,],
 	"(": [pascal_rule1,pascal_rule3,pascal_rule7,],

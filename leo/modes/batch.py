@@ -200,7 +200,7 @@ def batch_rule21(colorer, s, i):
 def batch_rule22(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for batch_main ruleset.
 rulesDict1 = {
 	"!": [batch_rule4,],
 	"\"": [batch_rule9,],

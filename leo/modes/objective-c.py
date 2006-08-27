@@ -235,7 +235,7 @@ def objective-c_rule27(colorer, s, i):
 def objective-c_rule28(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for objective_c_main ruleset.
 rulesDict1 = {
 	"!": [objective-c_rule10,],
 	"\"": [objective-c_rule3,],

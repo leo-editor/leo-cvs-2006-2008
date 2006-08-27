@@ -62,7 +62,7 @@ def embperl_rule4(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 
-# Rules dict for main ruleset.
+# Rules dict for embperl_main ruleset.
 rulesDict1 = {
 	"[": [embperl_rule0,embperl_rule1,embperl_rule2,embperl_rule3,embperl_rule4,],
 }

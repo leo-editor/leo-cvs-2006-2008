@@ -271,7 +271,7 @@ def xsl_rule7(colorer, s, i):
         delegate="TAGS",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules dict for main ruleset.
+# Rules dict for xsl_main ruleset.
 rulesDict1 = {
 	"&": [xsl_rule5,],
 	"<": [xsl_rule0,xsl_rule1,xsl_rule2,xsl_rule3,xsl_rule4,xsl_rule6,xsl_rule7,],
@@ -282,7 +282,7 @@ rulesDict1 = {
 def xsl_rule8(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for tasks ruleset.
+# Rules dict for xsl_tasks ruleset.
 rulesDict2 = {
 	"-": [xsl_rule8,],
 	"0": [xsl_rule8,],
@@ -378,7 +378,7 @@ def xsl_rule13(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="label", pattern=":",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-# Rules dict for tags ruleset.
+# Rules dict for xsl_tags ruleset.
 rulesDict3 = {
 	"\"": [xsl_rule9,],
 	"'": [xsl_rule10,],
@@ -408,7 +408,7 @@ def xsl_rule17(colorer, s, i):
         delegate="",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=True)
 
-# Rules dict for avt ruleset.
+# Rules dict for xsl_avt ruleset.
 rulesDict4 = {
 	"&": [xsl_rule17,],
 	"{": [xsl_rule14,xsl_rule16,],
@@ -564,7 +564,7 @@ def xsl_rule42(colorer, s, i):
 def xsl_rule43(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for xsltags ruleset.
+# Rules dict for xsl_xsltags ruleset.
 rulesDict5 = {
 	"\"": [xsl_rule18,],
 	"'": [xsl_rule19,],
@@ -735,7 +735,7 @@ def xsl_rule64(colorer, s, i):
 def xsl_rule65(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for xpath ruleset.
+# Rules dict for xsl_xpath ruleset.
 rulesDict6 = {
 	"!": [xsl_rule50,],
 	"\"": [xsl_rule44,],
@@ -827,7 +827,7 @@ def xsl_rule66(colorer, s, i):
         delegate="XPATHCOMMENT3",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules dict for xpathcomment2 ruleset.
+# Rules dict for xsl_xpathcomment2 ruleset.
 rulesDict7 = {
 	"(": [xsl_rule66,],
 }
@@ -840,7 +840,7 @@ def xsl_rule67(colorer, s, i):
         delegate="XPATHCOMMENT2",exclude_match=False,
         no_escape=False, no_line_break=False, no_word_break=False)
 
-# Rules dict for xpathcomment3 ruleset.
+# Rules dict for xsl_xpathcomment3 ruleset.
 rulesDict8 = {
 	"(": [xsl_rule67,],
 }

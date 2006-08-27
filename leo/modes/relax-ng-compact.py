@@ -126,7 +126,7 @@ def relax-ng-compact_rule14(colorer, s, i):
 def relax-ng-compact_rule15(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for relax_ng_compact_main ruleset.
 rulesDict1 = {
 	"\"": [relax-ng-compact_rule1,relax-ng-compact_rule3,],
 	"#": [relax-ng-compact_rule0,],

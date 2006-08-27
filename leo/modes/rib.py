@@ -260,7 +260,7 @@ def rib_rule6(colorer, s, i):
 def rib_rule7(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for rib_main ruleset.
 rulesDict1 = {
 	"\"": [rib_rule6,],
 	"#": [rib_rule0,rib_rule1,],
@@ -339,7 +339,7 @@ rulesDict1 = {
 def rib_rule8(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for literals ruleset.
+# Rules dict for rib_literals ruleset.
 rulesDict2 = {
 	"-": [rib_rule8,],
 	"0": [rib_rule8,],

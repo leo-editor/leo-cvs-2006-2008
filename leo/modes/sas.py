@@ -362,7 +362,7 @@ def sas_rule16(colorer, s, i):
 def sas_rule17(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for sas_main ruleset.
 rulesDict1 = {
 	"!": [sas_rule16,],
 	"$": [sas_rule17,],

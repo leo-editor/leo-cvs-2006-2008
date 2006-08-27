@@ -144,7 +144,7 @@ def rest_rule26(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="label", regexp="\\+=[+=]+", hash_char="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-# Rules dict for main ruleset.
+# Rules dict for rest_main ruleset.
 rulesDict1 = {
 	"\"": [rest_rule7,],
 	"#": [rest_rule6,],

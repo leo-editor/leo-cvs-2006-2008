@@ -429,7 +429,7 @@ def vbscript_rule20(colorer, s, i):
 def vbscript_rule21(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for vbscript_main ruleset.
 rulesDict1 = {
 	"\"": [vbscript_rule0,],
 	"#": [vbscript_rule1,vbscript_rule2,vbscript_rule3,],

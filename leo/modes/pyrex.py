@@ -55,7 +55,7 @@ keywordsDictDict = {
 def pyrex_rule0(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for pyrex_main ruleset.
 rulesDict1 = {
 	"0": [pyrex_rule0,],
 	"1": [pyrex_rule0,],

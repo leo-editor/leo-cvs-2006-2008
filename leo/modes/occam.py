@@ -323,7 +323,7 @@ def occam_rule23(colorer, s, i):
 def occam_rule24(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for occam_main ruleset.
 rulesDict1 = {
 	"!": [occam_rule20,],
 	"\"": [occam_rule3,],

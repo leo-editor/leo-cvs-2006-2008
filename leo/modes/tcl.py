@@ -507,7 +507,7 @@ def tcl_rule18(colorer, s, i):
 def tcl_rule19(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for tcl_main ruleset.
 rulesDict1 = {
 	"!": [tcl_rule3,],
 	"\"": [tcl_rule0,],

@@ -6023,7 +6023,7 @@ def progress_rule797(colorer, s, i):
 def progress_rule798(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-# Rules dict for main ruleset.
+# Rules dict for progress_main ruleset.
 rulesDict1 = {
 	"\"": [progress_rule2,],
 	"&": [progress_rule798,],

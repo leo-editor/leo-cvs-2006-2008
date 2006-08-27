@@ -1846,7 +1846,7 @@ def latex_rule427(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword4", pattern="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-# Rules dict for main ruleset.
+# Rules dict for latex_main ruleset.
 rulesDict1 = {
 	"\"": [latex_rule4,latex_rule5,],
 	"#": [latex_rule7,latex_rule8,latex_rule9,latex_rule10,latex_rule11,latex_rule12,latex_rule13,latex_rule14,latex_rule15,latex_rule59,],
@@ -3956,7 +3956,7 @@ def latex_rule948(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword4", pattern="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-# Rules dict for mathmode ruleset.
+# Rules dict for latex_mathmode ruleset.
 rulesDict2 = {
 	"%": [latex_rule429,],
 	"'": [latex_rule946,],
@@ -6068,7 +6068,7 @@ def latex_rule1473(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword4", pattern="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-# Rules dict for arraymode ruleset.
+# Rules dict for latex_arraymode ruleset.
 rulesDict3 = {
 	"%": [latex_rule950,],
 	"&": [latex_rule1472,],
@@ -7543,7 +7543,7 @@ def latex_rule1837(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword4", pattern="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-# Rules dict for tabularmode ruleset.
+# Rules dict for latex_tabularmode ruleset.
 rulesDict4 = {
 	"\"": [latex_rule1478,latex_rule1479,],
 	"%": [latex_rule1475,],
@@ -9063,7 +9063,7 @@ def latex_rule2210(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword4", pattern="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-# Rules dict for tabbingmode ruleset.
+# Rules dict for latex_tabbingmode ruleset.
 rulesDict5 = {
 	"\"": [latex_rule1842,latex_rule1843,],
 	"%": [latex_rule1839,],
@@ -9184,7 +9184,7 @@ def latex_rule2235(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword4", pattern="\\",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=False)
 
-# Rules dict for picturemode ruleset.
+# Rules dict for latex_picturemode ruleset.
 rulesDict6 = {
 	"%": [latex_rule2212,],
 	"\\": [latex_rule2213,latex_rule2214,latex_rule2215,latex_rule2216,latex_rule2217,latex_rule2218,latex_rule2219,latex_rule2220,latex_rule2221,latex_rule2222,latex_rule2223,latex_rule2224,latex_rule2225,latex_rule2226,latex_rule2227,latex_rule2228,latex_rule2229,latex_rule2230,latex_rule2231,latex_rule2232,latex_rule2233,latex_rule2234,latex_rule2235,],
