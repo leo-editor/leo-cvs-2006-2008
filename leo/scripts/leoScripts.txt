@@ -13757,6 +13757,7 @@ both elements has the same effect as setting them on the SPAN element.
 7/30/06 EKR: Compute keywordChars properly.  This fixes erlang bug, e.g.
 8/24/06 EKR: Lowercase all keywords if ignore_case is true.
 8/25/06 EKR: Prefixed all rule names with fileName (w/o extension) so I can makes sense of imported rules.
+8/26/06 EKR: No need for hash_char in pattern matchers, because they are called only if the hash_char matches.
 #@nonl
 #@-node:<< version history >>
 #@+node:<< set files to convert >>
@@ -13919,6 +13920,20 @@ __repr__ = __str__
 #@+node: Output...
 # Similar to printing, but generates the output file.
 #@nonl
+#@+node:fullDelegate
+def fullDelegate (self,delegate):
+    
+    if delegate:
+        delegate = delegate.lower()
+        i = delegate.find('::')
+        if i == -1:
+            return '%s::%s' % (self.fileModeName.lower(),delegate)
+        else:
+            return delegate
+    else:
+        return ''
+#@nonl
+#@-node:fullDelegate
 #@+node:escapeString & quoteString
 def escapeString (self,s):
     
@@ -14004,7 +14019,7 @@ def putDictOfLists (self,name,theDict,strings=False):
 #@-node:putDict & putDictOfLists
 #@+node:putImportDict
 def putImportDict (self):
-    
+
     d = {}
     for ruleset in self.rulesets:
         prefix = '%s_%s' % (self.modeName,ruleset.name)
@@ -14014,16 +14029,12 @@ def putImportDict (self):
                 if delegate:
                     i = delegate.find('::')
                     delegate_name = g.choose(i==-1,
-                        '%s_%s' % (prefix,delegate), # Should never happen.
-                        '%s_%s' % (delegate[:i],delegate[i+2:]))
+                        '%s::%s' % (prefix,delegate), # Can indeed happen.
+                        '%s' % (delegate))
                     theList = d.get(prefix,[])
                     if delegate_name not in theList:
                         theList.append(delegate_name)
                         d [prefix] = theList
-                    if 0:
-                        if len(theList) > 1:
-                            g.es('Warning: multiple import rules for %s ruleset in %s mode' % (
-                                ruleset,self.modeName),color='red')
 
     self.put('# Import dict for %s mode.\n' % (self.modeName))
     self.putDictOfLists('importDict',d,strings=True)
@@ -14156,7 +14167,7 @@ def %s_rule%d(colorer, s, i):
         rule.getBoolAttrib('at_line_start'),
         rule.getBoolAttrib('at_whitespace_end'),
         rule.getBoolAttrib('at_word_end'),
-        quote(rule.getStrAttrib('delegate')),
+        quote(self.fullDelegate(rule.getStrAttrib('delegate'))),
         rule.getBoolAttrib('exclude_match'),
     )
 
@@ -14172,18 +14183,18 @@ def putEolSpanRegexp (self,rule):
 
     s = '''\n\
 def %s_rule%d(colorer, s, i):
-    return colorer.match_eol_span_regexp(s, i, kind=%s, regexp=%s, hash_char=%s,
+    return colorer.match_eol_span_regexp(s, i, kind=%s, regexp=%s,
         at_line_start=%s, at_whitespace_end=%s, at_word_start=%s,
         delegate=%s, exclude_match=%s)''' % (
         self.fileModeName,
         self.handlerCount,
         quote(rule.getStrAttrib('type').lower()),
         quote(seq),
-        quote(rule.getStrAttrib('hash_char')),
+        # quote(rule.getStrAttrib('hash_char')),
         rule.getBoolAttrib('at_line_start'),
         rule.getBoolAttrib('at_whitespace_end'),
         rule.getBoolAttrib('at_word_end'),
-        quote(rule.getStrAttrib('delegate')),
+        quote(self.fullDelegate(rule.getStrAttrib('delegate'))),
         rule.getBoolAttrib('exclude_match'),
     )
 
@@ -14279,7 +14290,7 @@ def %s_rule%d(colorer, s, i):
         rule.getBoolAttrib('at_line_start'),
         rule.getBoolAttrib('at_whitespace_end'),
         rule.getBoolAttrib('at_word_end'),
-        quote(rule.getStrAttrib('delegate')),
+        quote(self.fullDelegate(rule.getStrAttrib('delegate'))),
     )
 
     self.putTripleString(s)
@@ -14294,17 +14305,17 @@ def putSeqRegexp (self,rule):
 
     s = '''\n\
 def %s_rule%d(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind=%s, regexp=%s, hash_char=%s,
+    return colorer.match_seq_regexp(s, i, kind=%s, regexp=%s,
         at_line_start=%s, at_whitespace_end=%s, at_word_start=%s, delegate=%s)''' % (
         self.fileModeName,
         self.handlerCount,
         quote(rule.getStrAttrib('type').lower()),
         quote(seq),
-        quote(rule.getStrAttrib('hash_char')),
+        # quote(rule.getStrAttrib('hash_char')),
         rule.getBoolAttrib('at_line_start'),
         rule.getBoolAttrib('at_whitespace_end'),
         rule.getBoolAttrib('at_word_end'),
-        quote(rule.getStrAttrib('delegate')),
+        quote(self.fullDelegate(rule.getStrAttrib('delegate'))),
     )
 
     self.putTripleString(s)
@@ -14330,7 +14341,7 @@ def %s_rule%d(colorer, s, i):
         rule.getBoolAttrib('at_line_start'),
         rule.getBoolAttrib('at_whitespace_end'),
         rule.getBoolAttrib('at_word_end'),
-        quote(rule.getStrAttrib('delegate')),
+        quote(self.fullDelegate(rule.getStrAttrib('delegate'))),
         rule.getBoolAttrib('exclude_match'),
         rule.getBoolAttrib('no_escape'),
         rule.getBoolAttrib('no_line_break'),
@@ -14349,7 +14360,7 @@ def putSpanRegexp (self,rule):
 
     s = '''\n\
 def %s_rule%d(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind=%s, begin=%s, end=%s, hash_char=%s,
+    return colorer.match_span_regexp(s, i, kind=%s, begin=%s, end=%s,
         at_line_start=%s, at_whitespace_end=%s, at_word_start=%s,
         delegate=%s,exclude_match=%s,
         no_escape=%s, no_line_break=%s, no_word_break=%s)''' % (
@@ -14357,11 +14368,11 @@ def %s_rule%d(colorer, s, i):
         self.handlerCount,
         quote(rule.getStrAttrib('type').lower()),
         quote(begin),quote(end),
-        quote(rule.getStrAttrib('hash_char')),
+        # quote(rule.getStrAttrib('hash_char')),
         rule.getBoolAttrib('at_line_start'),
         rule.getBoolAttrib('at_whitespace_end'),
         rule.getBoolAttrib('at_word_end'),
-        quote(rule.getStrAttrib('delegate')),
+        quote(self.fullDelegate(rule.getStrAttrib('delegate'))),
         rule.getBoolAttrib('exclude_match'),
         rule.getBoolAttrib('no_escape'),
         rule.getBoolAttrib('no_line_break'),
@@ -14418,7 +14429,7 @@ def putRules (self):
                 theList.append('%s_rule%d' % (self.fileModeName,self.handlerCount-1))
                 d2 [ch] = theList
         # Create the rules dict for the ruleset.
-        self.put('\n# Rules dict for %s ruleset.\n' % (ruleset.name))
+        self.put('\n# Rules dict for %s ruleset.\n' % (prefix3))
         d2Count += 1 ; name = 'rulesDict%d' % d2Count
         self.putDictOfLists(name,d2)
         d [prefix3] = name
