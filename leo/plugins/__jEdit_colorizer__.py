@@ -57,6 +57,8 @@ php_re = re.compile("<?(\s[pP][hH][pP])")
 # - Fixed bug in match_span_regexp.
 # 0.33 EKR: Fixed big performance bug.  initModeFromBunch was calling 
 # setKeywords, which is way too slow.
+# 0.34 EKR: Colorizer returns 'ok' if there is colorizer for a language.  
+# Keeps unit tests happy.
 #@-at
 #@nonl
 #@-node:ekr.20060530091119.22:<< version history >>
@@ -580,7 +582,7 @@ class baseColorizer:
                     properties      = {},
                     rulesDict       = {},
                     rulesetName     = rulesetName)
-                g.trace('Not found: %s for language %s = %s' % (rulesetName,language,name))
+                g.trace('No colorizer file: %s.py' % language)
                 return False
             self.language = language
             self.rulesetName = rulesetName
@@ -604,7 +606,7 @@ class baseColorizer:
                 rulesDict       = self.rulesDict,
                 rulesetName     = self.rulesetName)
             # Do this after 'officially' initing the mode, to limit recursion.
-            self.addImportedRules(mode,self.rulesDict,rulesetName) ## ,language,delegate)
+            self.addImportedRules(mode,self.rulesDict,rulesetName)
             self.updateDelimsTables()
             return True
     #@nonl
@@ -920,10 +922,11 @@ class baseColorizer:
     
         # g.trace(p and p.headString(), self.killcolorFlag or not self.mode)
     
-        self.init_mode(self.language) ## language=self.language)
+        self.init_mode(self.language)
         self.configure_tags() # Must do this every time to support multiple editors.
         if self.killcolorFlag or not self.mode:
-            self.removeAllTags() ; return
+            self.removeAllTags()
+            return 'ok'
         try:
             c = self.c ; self.p = p
             # g.trace(c.frame.body.bodyCtrl,g.callers())
@@ -985,11 +988,11 @@ class baseColorizer:
     def colorRangeWithTag (self,s,i,j,tag,delegate='',exclude_match=False):
     
         '''Add an item to the tagList if colorizing is enabled.'''
-        
-        # toGuiIndex could be slow for large s.
+    
         w = self.body.bodyCtrl 
         if not self.flag: return
         
+        # toGuiIndex could be slow for large s...
         x1 = g.app.gui.toGuiIndex(s,w,i)
         x2 = g.app.gui.toGuiIndex(s,w,j)
     
@@ -997,9 +1000,7 @@ class baseColorizer:
             # g.trace(delegate,i,j)
             self.modeStack.append(self.modeBunch)
             self.init_mode(delegate)
-            # color everything at once.
-            # We must use the same indices here as in the caller.
-            # g.trace('******',self.rulesetName,tag,i,j) # self.dump(s[i:j])) 
+            # Color everything at once, using the same indices as the caller.
             while i < j:
                 for f in self.rulesDict.get(s[i],[]):
                     n = f(self,s,i)
