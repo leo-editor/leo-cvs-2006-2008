@@ -6,7 +6,7 @@
 #@@tabwidth -4
 #@@pagewidth 80
 
-__version__ = '0.32'
+__version__ = '0.33'
 #@<< imports >>
 #@+node:ekr.20060530091119.21:<< imports >>
 import leoGlobals as g
@@ -55,6 +55,8 @@ php_re = re.compile("<?(\s[pP][hH][pP])")
 # be a language or a delegate.
 # - Removed hash_char and associated logic from regex matchers.
 # - Fixed bug in match_span_regexp.
+# 0.33 EKR: Fixed big performance bug.  initModeFromBunch was calling 
+# setKeywords, which is way too slow.
 #@-at
 #@nonl
 #@-node:ekr.20060530091119.22:<< version history >>
@@ -556,13 +558,15 @@ class baseColorizer:
         
         '''Name may be a language name or a delegate name.'''
     
+        if not name: return False
         language,rulesetName = self.nameToRulesetName(name)
         bunch = self.modes.get(rulesetName)
         if bunch:
+            # g.trace('found',language,rulesetName)
             self.initModeFromBunch(bunch)
             return True
         else:
-            # g.trace('****',rulesetName)
+            # g.trace('****',language,rulesetName)
             path = g.os_path_join(g.app.loadDir,'..','modes')
             mode = g.importFromPath (language,path)
             if not mode:
@@ -609,7 +613,7 @@ class baseColorizer:
         
         '''Compute language and rulesetName from name, which is either a language or a delegate name.'''
         
-        assert(name)
+        if not name: return ''
         
         i = name.find('::')
         if i == -1:
@@ -689,14 +693,13 @@ class baseColorizer:
         self.setModeAttributes()
         self.defaultColor   = bunch.defaultColor
         self.keywordsDict   = bunch.keywordsDict
-        self.setKeywords()
         self.language       = bunch.language
         self.mode           = bunch.mode
         self.properties     = bunch.properties
         self.rulesDict      = bunch.rulesDict
         self.rulesetName    = bunch.rulesetName
         
-        # g.trace(self.rulesetName) # ,'rulesDict',id(self.rulesDict),g.callers(9))
+        # g.trace(self.rulesetName)
     #@nonl
     #@-node:ekr.20060703110708:initModeFromBunch
     #@+node:ekr.20060727084423:updateDelimsTables
@@ -944,6 +947,7 @@ class baseColorizer:
         If not done, queue this method again to continue coloring later.'''
         if self.chunks_done: return
         s, i = self.chunk_s, self.chunk_i
+        # g.trace('*'*10,i,len(s),repr(s[i:i+20]))
         limit = self.interrupt_count1 # Number of times through the loop before a pause. 10 is reasonable.
         limit2 = self.interrupt_count2 # Number of times throught the loop before a recolor. 5000 is reasonable.
         w = self.c.frame.body.bodyCtrl
@@ -961,7 +965,7 @@ class baseColorizer:
                     w.after_idle(self.colorOneChunk)
                     return 'break'
             for f in self.rulesDict.get(s[i],[]):
-                # g.trace(f.__name__)
+                # if f.__name__ != 'match_blanks': g.trace(delegate,i,f.__name__)
                 n = f(self,s,i)
                 if n > 0:
                     i += n ; break
@@ -990,24 +994,19 @@ class baseColorizer:
         x2 = g.app.gui.toGuiIndex(s,w,j)
     
         if delegate:
-            oldRulesetName = self.rulesetName
+            # g.trace(delegate,i,j)
             self.modeStack.append(self.modeBunch)
             self.init_mode(delegate)
-            
-            # Similar logic as colorOneChunk, but we color everything at once.
+            # color everything at once.
             # We must use the same indices here as in the caller.
-            # g.trace('****',oldRulesetName,'-->',self.rulesetName,tag,self.dump(s[i:j]))
+            # g.trace('******',self.rulesetName,tag,i,j) # self.dump(s[i:j])) 
             while i < j:
                 for f in self.rulesDict.get(s[i],[]):
                     n = f(self,s,i)
                     if n > 0:
-                        if 0:
-                            if f.__name__ != 'match_blanks':
-                                g.trace(delegate,i,f.__name__)
+                        # if f.__name__ != 'match_blanks': g.trace(delegate,i,f.__name__)
                         i += n ; break
                 else: i += 1
-            # g.trace('*** end',self.rulesetName)
-            
             bunch = self.modeStack.pop()
             self.initModeFromBunch(bunch)
         elif not exclude_match:
