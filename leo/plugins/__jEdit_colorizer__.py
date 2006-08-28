@@ -6,7 +6,7 @@
 #@@tabwidth -4
 #@@pagewidth 80
 
-__version__ = '0.33'
+__version__ = '0.35'
 #@<< imports >>
 #@+node:ekr.20060530091119.21:<< imports >>
 import leoGlobals as g
@@ -59,6 +59,9 @@ php_re = re.compile("<?(\s[pP][hH][pP])")
 # setKeywords, which is way too slow.
 # 0.34 EKR: Colorizer returns 'ok' if there is colorizer for a language.  
 # Keeps unit tests happy.
+# 0.35 EKR: Support for per-language colors.
+# 0.36 EKR: Support for font settings, including per-language font settings, 
+# using @font nodes.
 #@-at
 #@nonl
 #@-node:ekr.20060530091119.22:<< version history >>
@@ -129,6 +132,48 @@ default_colors_dict = {
     }
 #@nonl
 #@-node:ekr.20060530091119.25:<< define default_colors_dict >>
+#@-middle:ekr.20060530091119.23:module-level
+#@nl
+#@<< define default_font_dict >>
+#@+middle:ekr.20060530091119.23:module-level
+#@+node:ekr.20060828111513:<< define default_font_dict >>
+# These defaults are sure to exist.
+
+default_font_dict = {
+    # tag name       : option name
+    'comment'        :'comment_font',
+    'cwebName'       :'cweb_section_name_font',
+    'pp'             :'directive_font',
+    'docPart'        :'doc_part_font',
+    'keyword'        :'keyword_font',
+    'leoKeyword'     :'leo_keyword_font',
+    'link'           :'section_name_font',
+    'nameBrackets'   :'section_name_brackets_font',
+    'string'         :'string_font',
+    'name'           :'undefined_section_name_font',
+    'latexBackground':'latex_background_font',
+    
+    # jEdit tags.
+    'comment1'  :'comment1_font',
+    'comment2'  :'comment2_font',
+    'comment3'  :'comment3_font',
+    'comment4'  :'comment4_font',
+    'function'  :'function_font',
+    'keyword1'  :'keyword1_font',
+    'keyword2'  :'keyword2_font',
+    'keyword3'  :'keyword3_font',
+    'keyword4'  :'keyword4_font',
+    'label'     :'label_font',
+    'literal1'  :'literal1_font',
+    'literal2'  :'literal2_font',
+    'literal3'  :'literal3_font',
+    'literal4'  :'literal4_font',
+    'markup'    :'markup_font',
+    'null'      :'null_font',
+    'operator'  :'operator_font',
+    }
+#@nonl
+#@-node:ekr.20060828111513:<< define default_font_dict >>
 #@-middle:ekr.20060530091119.23:module-level
 #@nl
 
@@ -392,6 +437,7 @@ class baseColorizer:
         self.redoingColoring = False
         self.was_non_incremental = False # True: we are coloring as the result of a non-incremental call.
         # Data...
+        self.fonts = {} # Keys are config names.  Values are actual fonts.
         self.keywords = {} # Keys are keywords, values are 0..5.
         self.modes = {} # Keys are languages, values are modes.
         self.mode = None # The mode object for the present language.
@@ -479,15 +525,58 @@ class baseColorizer:
     #@+node:ekr.20060530091119.37:configure_tags
     def configure_tags (self):
     
-        c = self.c
+        c = self.c ; w = c.frame.body.bodyCtrl
         
-        # g.trace(self.body.bodyCtrl)
+        # Get the default body font.
+        defaultBodyfont = self.fonts.get('default_body_font')
+        if not defaultBodyfont:
+            defaultBodyfont = c.config.getFontFromParams(
+                "body_text_font_family", "body_text_font_size",
+                "body_text_font_slant",  "body_text_font_weight",
+                c.config.defaultBodyFontSize)
+            self.fonts['default_body_font'] = defaultBodyfont
+        
+        # Configure fonts.
+        keys = default_font_dict.keys() ; keys.sort()
+        for key in keys:
+            option_name = default_font_dict[key]
+            # First, look for the language-specific setting, then the general setting.
+            for name in ('%s_%s' % (self.language,option_name),(option_name)):
+                font = self.fonts.get(name)
+                if font:
+                    # g.trace('found',name,id(font))
+                    w.tag_config(key,font=font)
+                    break
+                else:
+                    family = c.config.get(name + '_family','family')
+                    size   = c.config.get(name + '_size',  'size')   
+                    slant  = c.config.get(name + '_slant', 'slant')
+                    weight = c.config.get(name + '_weight','weight')
+                    if family or slant or weight or size:
+                        family = family or g.app.config.defaultFontFamily
+                        size   = size or c.config.defaultBodyFontSize
+                        slant  = slant or 'roman'
+                        weight = weight or 'normal'
+                        font = g.app.gui.getFontFromParams(family,size,slant,weight)
+                        # Save a reference to the font so it 'sticks'.
+                        self.fonts[name] = font 
+                        # g.trace(key,name,family,size,slant,weight,id(font))
+                        w.tag_config(key,font=font)
+                        break
+            else: # Neither the general setting nor the language-specific setting exists.
+                if self.fonts.keys(): # Restore the default font.
+                    # g.trace('default',key)
+                    w.tag_config(key,font=defaultBodyfont)
     
         keys = default_colors_dict.keys() ; keys.sort()
         for name in keys:
             option_name,default_color = default_colors_dict[name]
-            color = c.config.getColor(option_name) or default_color
-            # g.trace(name,option_name,color)
+            color = (
+                c.config.getColor('%s_%s' % (self.language,option_name)) or
+                c.config.getColor(option_name) or
+                default_color
+            )
+            # g.trace(option_name,color)
                 
             # Must use foreground, not fg.
             try:
