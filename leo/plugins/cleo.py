@@ -1,5 +1,5 @@
 #@+leo-ver=4-thin
-#@+node:ekr.20050227071948.33:@thin cleo.py
+#@+node:tbrown.20060828111141:@thin cleo.py
 #@<< docstring >>
 #@+node:ekr.20050227071948.34:<< docstring >>
 '''cleo.py  -- Coloured LEo Outlines
@@ -8,6 +8,11 @@ Cleo allows you to annotate or colour leo outlines based on priority, code
 archetype, node types or some arbitary criteria. The annotations and colour
 coding can play a similar role like that of syntax highlighting. Right-click on
 the icon area to popup its menu to play with it.
+
+@settings for priority arrow colours:
+    @color cleo_color_pri_1 = pink
+    @color cleo_color_pri_2 = #123abc
+etc.
 
 Requires Leo 4.2a3 or greater, as it uses new drawing hooks.
 '''
@@ -30,7 +35,7 @@ import sys
 #@nonl
 #@-node:ekr.20050227071948.35:<< imports >>
 #@nl
-__version__ = "0.14"
+__version__ = "0.15"
 #@<< version history >>
 #@+node:ekr.20050227071948.36:<< version history >>
 #@@killcolor
@@ -71,56 +76,20 @@ __version__ = "0.14"
 # headlines happen immediately.
 # - Removed checkmark menu item because there is no easy way to clear it.
 # 0.14 EKR: Installed further patch to clear checkmark.
+# 0.15 Rich Ries
 #@-at
 #@nonl
 #@-node:ekr.20050227071948.36:<< version history >>
 #@nl
 
 ok = Tk is not None
-    
+
 #@+others
-#@+node:ekr.20050227071948.69:init
-def init():
-
-    if ok:
-        leoPlugins.registerHandler(('open2',"new"),onCreate)
-        g.plugin_signon(__name__)
-
-    return ok
-#@nonl
-#@-node:ekr.20050227071948.69:init
-#@+node:ekr.20050227085542:onCreate
-def onCreate (tag,keywords):
-    
-    c = keywords.get('c')
-    
-    cc = cleoController(c)
-    cc.install_drawing_overrides()
-    
-    leoPlugins.registerHandler("draw-outline-text-box",cc.draw)
-    leoPlugins.registerHandler("iconrclick1",cc.show_menu)
-#@nonl
-#@-node:ekr.20050227085542:onCreate
-#@+node:ekr.20050227071948.32:class TkPickleVar(Tk.Variable)
-if ok: # Don't define this if import Tkinter failed.
-
-    class TkPickleVar (Tk.Variable):
-        
-        def __setstate__(self,state):
-            Tk.Variable.__init__(self)
-            Tk.Variable.set(self,state)
-
-        def __getstate__(self):
-            p = Tk.Variable.get(self)
-            # Beware of returning False!
-            return p
-#@nonl
-#@-node:ekr.20050227071948.32:class TkPickleVar(Tk.Variable)
 #@+node:ekr.20050227085542.1:class cleoController
 class cleoController:
     
     '''A per-commander class that recolors outlines.'''
-    
+
     #@    @+others
     #@+node:ekr.20050227085542.2: birth
     def __init__ (self,c):
@@ -130,12 +99,18 @@ class cleoController:
         self.donePriority = 100
         self.smiley = None
     
+        self.marks = []   # list of marks made on canvas
+        self.tree = None  # tree tracking
+    
         # image ids should be a property of the node
         # use {marking,image id} as the kv pair.
         self.images = {}
         
         #@    << define colors >>
         #@+node:ekr.20050227085542.3:<< define colors >>
+        
+        # see docstring for related @settings
+        
         self.colours = [
             'Black',
             'Brown', 'Purple', 'Red', 'Pink',
@@ -168,8 +143,11 @@ class cleoController:
             5 : 'background-colour'
         }
         
+        for pri in self.priority_colours.iterkeys():
+            if self.c.config.getColor('cleo_color_pri_'+str(pri)):
+                self.priority_colours[pri] = self.c.config.getColor('cleo_color_pri_'+str(pri))
+        
         self.background_colour = c.frame.tree.canvas.cget('background')
-        #@nonl
         #@-node:ekr.20050227085542.3:<< define colors >>
         #@nl
     #@nonl
@@ -319,9 +297,12 @@ class cleoController:
     #@+node:ekr.20050227071948.39:redraw
     def redraw(self):
         
-        c = self.c ; tree = c.frame.tree
+        # if self.c.__dict__.has_key("frame"):
+        c = self.c ; tree = self.tree
         c.setChanged(True)
+        self.clear_marks()
         c.redraw_now()
+        
     #@nonl
     #@-node:ekr.20050227071948.39:redraw
     #@+node:ekr.20050227071948.37:clear_all
@@ -331,11 +312,28 @@ class cleoController:
         self.redraw()
     #@nonl
     #@-node:ekr.20050227071948.37:clear_all
+    #@+node:tbrown.20060827193252:clear_marks
+    def clear_marks(self, *args, **dict):
+        "Remove all marks placed on canvas previously"
+        if self.tree:
+            
+            for mark in self.marks:
+                self.tree.canvas.delete(mark)
+                # print "deleted " + str(mark)
+            
+            self.marks = []
+    #@nonl
+    #@-node:tbrown.20060827193252:clear_marks
     #@+node:ekr.20050227071948.44:draw box area
     #@+node:ekr.20050227091634:draw
     def draw (self,tag,key):
     
         ''' Redraws all the indicators for the markups of v '''
+    
+        self.tree = key.get("tree")
+    
+        if not self.tree:
+            return
     
         v = key['p'].v
     
@@ -391,7 +389,9 @@ class cleoController:
         
         if v.isVisible():
             x, y = v.iconx, v.icony 
-            canvas.create_rectangle(x,y,x+10,y+10,fill=color)
+            self.marks.append(
+                canvas.create_rectangle(x,y,x+10,y+10,fill=color)
+                )
     #@nonl
     #@-node:ekr.20050227071948.46:draw_box
     #@+node:ekr.20050227071948.47:draw_arrow
@@ -399,39 +399,23 @@ class cleoController:
     
     def draw_arrow (self,v,colour='darkgreen'):
     
-        # print ">> Action"
-        c = self.c ; tree = c.frame.tree ; canvas = tree.canvas
+        c = self.c
+        # tree = c.frame.tree
+        tree = self.tree  # TNB
+        canvas = tree.canvas
         clear = colour == 'background-colour'
     
-        if clear:
-            colour = self.background_colour
-    
-        canvas.create_line(v.iconx-10,v.icony+8,v.iconx+5,v.icony+8,
-            arrow = "last", fill = colour, width = 4)
-    
-        if clear:
-            # canvas.create_line(v.iconx-10,v.icony+7,v.iconx+5,v.icony+7,
-                # fill = 'Gray50',width=1)
-    
-            # Define the 3 points of a check mark to allow quick adjustment.
-            XpointA = v.iconx-15 + 3
-            YpointA = v.icony + 8-2
-            XpointB = v.iconx-7
-            YpointB = v.icony + 13
-            XpointC = v.iconx + 5
-            YpointC = v.icony-2
-            # "white-out" the check mark.
-            canvas.create_line(XpointA,YpointA,XpointB,YpointB,fill=colour,width=2)
-            canvas.create_line(XpointB,YpointB,XpointC,YpointC,fill=colour,width=2)
-            # restore line 
-            canvas.create_line(v.iconx-12,v.icony+7,v.iconx+6,v.icony+7,fill='Gray50',width=1)
+        if not clear:
+           self.marks.append(canvas.create_line(v.iconx-10,v.icony+8,v.iconx+5,v.icony+8,
+                arrow = "last", fill = colour, width = 4))
     #@nonl
     #@-node:ekr.20050227071948.47:draw_arrow
     #@+node:ekr.20050227071948.48:draw_tick
     def draw_tick (self,v,colour='salmon'):
     
-        canvas = self.c.frame.tree.canvas
-    
+        # canvas = self.c.frame.tree.canvas
+        canvas = self.tree.canvas  # TNB
+      
         # canvas.create_line(v.iconx+13-5,v.icony+8,v.iconx+13,v.icony+13,fill=colour,width=2)
         # canvas.create_line(v.iconx+13,v.icony+13,v.iconx+13+12,v.icony-2,fill=colour,width=2)
     
@@ -443,8 +427,12 @@ class cleoController:
         XpointC = v.iconx + 5
         YpointC = v.icony-2
         # draw the check-mark
-        canvas.create_line(XpointA,YpointA,XpointB,YpointB,fill=colour,width=2)
-        canvas.create_line(XpointB,YpointB,XpointC,YpointC,fill=colour,width=2)
+        self.marks.append(
+            canvas.create_line(XpointA,YpointA,XpointB,YpointB,fill=colour,width=2)
+        )
+        self.marks.append(
+            canvas.create_line(XpointB,YpointB,XpointC,YpointC,fill=colour,width=2)
+        )
     #@nonl
     #@-node:ekr.20050227071948.48:draw_tick
     #@+node:ekr.20050227074440.3:draw_invertedT
@@ -457,10 +445,14 @@ class cleoController:
             x, y = v.iconx, v.icony ; bottom = y+13
             
             # Draw horizontal line.
-            canvas.create_line(x,bottom,x+10,bottom,fill=color,width=2)
+            self.marks.append(   
+                canvas.create_line(x,bottom,x+10,bottom,fill=color,width=2)
+            )
             
             # Draw vertical line.
-            canvas.create_line(x+5,bottom-5,x+5,bottom,fill=color,width=2)
+            self.marks.append(
+                canvas.create_line(x+5,bottom-5,x+5,bottom,fill=color,width=2)
+            )
     #@nonl
     #@-node:ekr.20050227074440.3:draw_invertedT
     #@+node:ekr.20050227074440.4:draw_topT
@@ -473,10 +465,14 @@ class cleoController:
             x, y = v.iconx, v.icony ; topl = y 
     
             # Draw the horizontal line.
-            canvas.create_line(x,topl,x+10,topl,fill=color,width=2)
+            self.marks.append(
+                canvas.create_line(x,topl,x+10,topl,fill=color,width=2)
+            )
     
             # Draw the vertical line.
-            canvas.create_line(x+5,topl,x+5,topl+15,fill=color,width=2)
+            self.marks.append(
+                canvas.create_line(x+5,topl,x+5,topl+15,fill=color,width=2)
+            )
     #@nonl
     #@-node:ekr.20050227074440.4:draw_topT
     #@-node:ekr.20050227071948.44:draw box area
@@ -670,7 +666,7 @@ class cleoController:
     #@+node:ekr.20050227071948.43:priority_clear
     def priority_clear(self,v):
         
-        g.trace(v)
+        # g.trace(v)
     
         d = self.getUD(v)
         del d['priority']
@@ -680,7 +676,45 @@ class cleoController:
     #@-others
 #@nonl
 #@-node:ekr.20050227085542.1:class cleoController
+#@+node:ekr.20050227071948.32:class TkPickleVar(Tk.Variable)
+if ok: # Don't define this if import Tkinter failed.
+
+    class TkPickleVar (Tk.Variable):
+        
+        def __setstate__(self,state):
+            Tk.Variable.__init__(self)
+            Tk.Variable.set(self,state)
+
+        def __getstate__(self):
+            p = Tk.Variable.get(self)
+            # Beware of returning False!
+            return p
+#@nonl
+#@-node:ekr.20050227071948.32:class TkPickleVar(Tk.Variable)
+#@+node:ekr.20050227085542:onCreate
+def onCreate (tag,keywords):
+
+    c = keywords.get('c')
+
+    cc = cleoController(c)
+    cc.install_drawing_overrides()
+
+    leoPlugins.registerHandler("draw-outline-text-box",cc.draw)
+    leoPlugins.registerHandler("redraw-entire-outline",cc.clear_marks)
+    leoPlugins.registerHandler("iconrclick1",cc.show_menu)
+#@nonl
+#@-node:ekr.20050227085542:onCreate
+#@+node:ekr.20050227071948.69:init
+def init():
+
+    if ok:
+        leoPlugins.registerHandler(('open2',"new"),onCreate)
+        g.plugin_signon(__name__)
+
+    return ok
+#@nonl
+#@-node:ekr.20050227071948.69:init
 #@-others
 #@nonl
-#@-node:ekr.20050227071948.33:@thin cleo.py
+#@-node:tbrown.20060828111141:@thin cleo.py
 #@-leo
