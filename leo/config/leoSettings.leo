@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="300" clone_windows="0"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="305" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="196" left="280" height="549" width="937"/>
+	<global_window_position top="196" left="280" height="535" width="907"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -82,9 +82,8 @@
 <v t="ekr.20041119050749.12"><vh>@color outline_pane_background_color = #ffffec</vh></v>
 </v>
 <v t="ekr.20041119034357.70"><vh>Syntax colors &amp; options</vh>
-<v t="ekr.20060513100933"><vh>@int colorizer_interrupt_count1 = 10</vh></v>
-<v t="ekr.20060513100933.1"><vh>@int colorizer_interrupt_count2 = 5000</vh></v>
 <v t="ekr.20060201111002"><vh>@bool use_syntax_coloring = True</vh></v>
+<v t="ekr.20060828145228"><vh>Options for old colorizer</vh>
 <v t="ekr.20041119034357.78"><vh>@color comment_color = firebrick3</vh></v>
 <v t="ekr.20041119034357.79"><vh>@color cweb_section_name_color = red</vh></v>
 <v t="ekr.20041119034357.80"><vh>@color directive_color = blue</vh></v>
@@ -103,18 +102,34 @@
 <v t="ekr.20041119034357.74"><vh>@bool color_directives_in_plain_text = True</vh></v>
 <v t="ekr.20041119034357.75"><vh>@bool underline_undefined_section_names = True</vh></v>
 <v t="ekr.20041119034357.76"><vh>@bool use_hyperlinks = False</vh></v>
+</v>
 <v t="ekr.20060504131831"><vh>Options for jEdit colorer</vh>
+<v t="ekr.20060513100933"><vh>@int colorizer_interrupt_count1 = 10</vh></v>
+<v t="ekr.20060513100933.1"><vh>@int colorizer_interrupt_count2 = 5000</vh></v>
+<v t="ekr.20060828110551"><vh>Default colors, used if no language-specific color are in effect</vh>
 <v t="ekr.20060704090341"><vh>@color label_color = green</vh></v>
 <v t="ekr.20060504131831.1"><vh>@color keyword1_color = blue</vh></v>
+<v t="ekr.20060827102902"><vh>@color keyword2_color = blue</vh></v>
+<v t="ekr.20060827102902.1"><vh>@color keyword3_color = blue</vh></v>
+<v t="ekr.20060827102902.2"><vh>@color keyword4_color = blue</vh></v>
 <v t="ekr.20060504131831.2"><vh>@color literal1_color = #00aa00</vh></v>
 <v t="ekr.20060504134056"><vh>@color literal2_color = #00aa00</vh></v>
 <v t="ekr.20060504134056.1"><vh>@color literal3_color = #00aa00</vh></v>
 <v t="ekr.20060504134056.2"><vh>@color literal4_color = #00aa00</vh></v>
+<v t="ekr.20060826152759"><vh>@color markup_color = blue</vh></v>
 <v t="ekr.20060504140351"><vh>@color comment1_color = firebrick3</vh></v>
 <v t="ekr.20060504140408"><vh>@color comment2_color = firebrick3</vh></v>
 <v t="ekr.20060504140408.1"><vh>@color comment3_color = plum3</vh></v>
 <v t="ekr.20060504140408.2"><vh>@color comment4_color = orchid1</vh></v>
-<v t="ekr.20060713101831"><vh>@color operator_color = None</vh></v>
+<v t="ekr.20060713101831"><vh>@color operator_color = black</vh></v>
+</v>
+<v t="ekr.20060828110551.1"><vh>Langauge-specific colors</vh>
+<v t="ekr.20060828110551.2" a="E"><vh>php</vh>
+<v t="ekr.20060828110551.3"><vh>@color php_operator_color = DodgerBlue1</vh></v>
+<v t="ekr.20060828145228.1"><vh>@font php keyword fonts (new colorizer)</vh></v>
+<v t="ekr.20060829085840"><vh>@font php keyword fonts (old colorizer)</vh></v>
+</v>
+</v>
 </v>
 </v>
 <v t="ekr.20041119034357.67"><vh>@color split_bar_color = LightSteelBlue2</vh></v>
@@ -349,8 +364,8 @@
 <v t="ekr.20060112093227.1"><vh>@shortcuts No bindings: E-M</vh></v>
 <v t="ekr.20060112093227.2"><vh>@shortcuts No bindings: N-Z</vh></v>
 </v>
-<v t="ekr.20060603215208" a="E"><vh>@keys EKR bindings: Emacs keys + modes</vh>
-<v t="ekr.20060608065207" a="E"><vh>Settings related to key bindings</vh>
+<v t="ekr.20060603215208"><vh>@keys EKR bindings: Emacs keys + modes</vh>
+<v t="ekr.20060608065207"><vh>Settings related to key bindings</vh>
 <v t="ekr.20060624072653"><vh>@bool warn_about_redefined_shortcuts = True</vh></v>
 <v t="ekr.20060604080653" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
 </v>
@@ -489,7 +504,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060512084639" a="V"><vh>Recent</vh>
+<v t="ekr.20060512084639"><vh>Recent</vh>
 <v t="ekr.20060216135834"><vh>@bool enable_autocompleter_initially = False</vh></v>
 <v t="ekr.20060603070801"><vh>@bool enable_calltips_initially = False</vh></v>
 <v t="ekr.20060627084739"><vh>@bool flash_matching_brackets = True</vh></v>
@@ -505,8 +520,8 @@
 <v t="ekr.20060210105437"><vh>@bool trace_select = False</vh></v>
 <v t="ekr.20041119050749.18"><vh>@bool outline_pane_scrolls_horizontally = True</vh></v>
 </v>
-<v t="ekr.20060603215208"><vh>@keys EKR bindings: Emacs keys + modes</vh>
-<v t="ekr.20060608065207" a="E"><vh>Settings related to key bindings</vh>
+<v t="ekr.20060603215208" a="E"><vh>@keys EKR bindings: Emacs keys + modes</vh>
+<v t="ekr.20060608065207"><vh>Settings related to key bindings</vh>
 <v t="ekr.20060624072653"><vh>@bool warn_about_redefined_shortcuts = True</vh></v>
 <v t="ekr.20060604080653" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
 </v>
@@ -537,6 +552,13 @@
 <v t="ekr.20060603215208.21" annotate="7d71002e"><vh>@shortcuts EKR: A-E</vh></v>
 <v t="ekr.20060603215208.22"><vh>@shortcuts EKR: F-M</vh></v>
 <v t="ekr.20060603215208.23" annotate="7d71002e"><vh>@shortcuts EKR: N-Z</vh></v>
+</v>
+</v>
+<v t="ekr.20060828110551.1" a="E"><vh>Langauge-specific colors</vh>
+<v t="ekr.20060828110551.2" a="E"><vh>php</vh>
+<v t="ekr.20060828110551.3"><vh>@color php_operator_color = DodgerBlue1</vh></v>
+<v t="ekr.20060828145228.1" a="TV"><vh>@font php keyword fonts (new colorizer)</vh></v>
+<v t="ekr.20060829085840"><vh>@font php keyword fonts (old colorizer)</vh></v>
 </v>
 </v>
 </vnodes>
@@ -5597,5 +5619,28 @@ menu_text_font_weight = None</t>
 <t tx="ekr.20060822101942">Overrides body_text_background_color.</t>
 <t tx="ekr.20060822101942.1">Overrides body_text_foreground_color.</t>
 <t tx="ekr.20060822101942.2">Overrides body_text_background_color.</t>
+<t tx="ekr.20060826152759"></t>
+<t tx="ekr.20060827102902"></t>
+<t tx="ekr.20060827102902.1"></t>
+<t tx="ekr.20060827102902.2"></t>
+<t tx="ekr.20060828110551"></t>
+<t tx="ekr.20060828110551.1">Valid settings for _style strings are None, normal, bold, italic, bold-italic.</t>
+<t tx="ekr.20060828110551.2"></t>
+<t tx="ekr.20060828110551.3"></t>
+<t tx="ekr.20060828145228"></t>
+<t tx="ekr.20060828145228.1"># For new colorizer
+
+# php_keyword1_font_family = None
+php_keyword1_font_size = 16
+php_keyword1_font_slant = roman
+    # roman, italic
+php_keyword1_font_weight = normal
+    # normal, bold</t>
+<t tx="ekr.20060829085840"># php_keyword_font_family = None
+php_keyword_font_size = 16
+php_keyword_font_slant = roman
+    # roman, italic
+php_keyword_font_weight = bold
+    # normal, bold</t>
 </tnodes>
 </leo_file>
