@@ -137,8 +137,6 @@ default_colors_dict = {
 #@<< define default_font_dict >>
 #@+middle:ekr.20060530091119.23:module-level
 #@+node:ekr.20060828111513:<< define default_font_dict >>
-# These defaults are sure to exist.
-
 default_font_dict = {
     # tag name       : option name
     'comment'        :'comment_font',
