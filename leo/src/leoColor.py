@@ -46,7 +46,24 @@ default_colors_dict = {
     "nameBrackets"   :("section_name_brackets_color", "blue"),
     "string"         :("string_color",                "#00aa00"), # Used by IDLE.
     "name"           :("undefined_section_name_color","red"),
-    "latexBackground":("latex_background_color","white") }
+    "latexBackground":("latex_background_color","white"),
+}
+
+default_font_dict = {
+    # tag name       : option name
+    'comment'        :'comment_font',
+    'cwebName'       :'cweb_section_name_font',
+    'pp'             :'directive_font',
+    'docPart'        :'doc_part_font',
+    'keyword'        :'keyword_font',
+    'leoKeyword'     :'leo_keyword_font',
+    'link'           :'section_name_font',
+    'nameBrackets'   :'section_name_brackets_font',
+    'string'         :'string_font',
+    'name'           :'undefined_section_name_font',
+    'latexBackground':'latex_background_font',
+}
+#@nonl
 #@-node:ekr.20031218072017.2795:<< define colorizer constants >>
 #@nl
 #@<< define global colorizer data >>
@@ -1096,6 +1113,7 @@ class baseColorizer:
         self.count = 0 # how many times this has been called.
         self.use_hyperlinks = False # True: use hyperlinks and underline "live" links.
         self.enabled = True # True: syntax coloring enabled
+        self.fonts = {}
         self.showInvisibles = False # True: show "invisible" characters.
         self.comment_string = None # Set by scanColorDirectives on @comment
         # For incremental coloring.
@@ -1364,6 +1382,52 @@ class baseColorizer:
             self.redoColoring = False
             self.redoingColoring = False
             
+            #@<< configure fonts >>
+            #@+node:ekr.20060829084924:<< configure fonts >>
+            # Get the default body font.
+            defaultBodyfont = self.fonts.get('default_body_font')
+            if not defaultBodyfont:
+                defaultBodyfont = c.config.getFontFromParams(
+                    "body_text_font_family", "body_text_font_size",
+                    "body_text_font_slant",  "body_text_font_weight",
+                    c.config.defaultBodyFontSize)
+                self.fonts['default_body_font'] = defaultBodyfont
+            
+            # Configure fonts.
+            w = c.frame.body.bodyCtrl
+            keys = default_font_dict.keys() ; keys.sort()
+            for key in keys:
+                option_name = default_font_dict[key]
+                # First, look for the language-specific setting, then the general setting.
+                for name in ('%s_%s' % (self.language,option_name),(option_name)):
+                    font = self.fonts.get(name)
+                    if font:
+                        # g.trace('found',name,id(font))
+                        w.tag_config(key,font=font)
+                        break
+                    else:
+                        family = c.config.get(name + '_family','family')
+                        size   = c.config.get(name + '_size',  'size')   
+                        slant  = c.config.get(name + '_slant', 'slant')
+                        weight = c.config.get(name + '_weight','weight')
+                        if family or slant or weight or size:
+                            family = family or g.app.config.defaultFontFamily
+                            size   = size or c.config.defaultBodyFontSize
+                            slant  = slant or 'roman'
+                            weight = weight or 'normal'
+                            font = g.app.gui.getFontFromParams(family,size,slant,weight)
+                            # Save a reference to the font so it 'sticks'.
+                            self.fonts[name] = font 
+                            # g.trace(key,name,family,size,slant,weight,id(font))
+                            w.tag_config(key,font=font)
+                            break
+                else: # Neither the general setting nor the language-specific setting exists.
+                    if len(self.fonts.keys()) > 1: # Restore the default font.
+                        # g.trace('default',key)
+                        w.tag_config(key,font=defaultBodyfont)
+            #@nonl
+            #@-node:ekr.20060829084924:<< configure fonts >>
+            #@nl
             #@<< configure tags >>
             #@+node:ekr.20031218072017.1603:<< configure tags >>
             # g.trace('configure tags',self.body.bodyCtrl)
