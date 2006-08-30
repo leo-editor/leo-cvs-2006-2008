@@ -1616,7 +1616,7 @@ class baseColorizer:
     def trace_match(self,kind,s,i,j):
         
         if j != i and self.trace_match_flag:
-            g.trace(kind,i,j,self.dump(s[i:j]))
+            g.trace(kind,i,j,g.callers(4),self.dump(s[i:j]))
     #@nonl
     #@-node:ekr.20060827121307:trace_match
     #@-node:ekr.20060530091119.59:Utils

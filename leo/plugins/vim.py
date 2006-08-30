@@ -4,11 +4,11 @@
 #@+node:ekr.20050226184411:<< docstring >>
 '''A plugin that communicates with VIM.
 
-Important: the open_with plugin must be enabled for this plugin to work properly.
+*** The open_with plugin must be enabled for this plugin to work properly!***
 
 When properly installed, this plugin does the following:
     
-- Double clickin on a node's icon opens that node in VIM. You can open nodes in
+- Double clicking on a node's icon opens that node in VIM. You can open nodes in
 VIM with a single-click if you set useDoubleClick = False. However, that
 interfere's with Leo's dragging logic.
 
@@ -16,9 +16,11 @@ interfere's with Leo's dragging logic.
 
 To install this plugin do the following:
     
-1. Set the vim_cmd and vim_exe settings to the path to vim or gvim as shown in leoSettings.leo.
+1. Make sure to enable open_with plugin.
+    
+2. Set the vim_cmd and vim_exe settings to the path to vim or gvim as shown in leoSettings.leo.
 
-2. If you are using Python 2.4 or above, that's all you need to do. Jim
+3. If you are using Python 2.4 or above, that's all you need to do. Jim
 Sizelove's new code will start vim automatically using Python's subprocess
 module. The subprocess module comes standard with Python 2.4. For Linux systems,
 Leo will use subprocess.py in Leo's extensions folder if necessary.
@@ -33,7 +35,7 @@ On Windows, you can install Python's subprocess module in Python 2.2 or 2.3 as f
         
 This installer installs the subprocess sources and also _subprocess.pyd in Python's site-packages folder.
         
-3. If you **don't** have Python's subprocess module available you must start the vim server in one of two ways:
+4. If you **don't** have Python's subprocess module available you must start the vim server in one of two ways:
             
 - **Manually**, from a console::
     
@@ -65,7 +67,6 @@ __version__ = "1.13"
 #     - Added useDoubleClick variable.
 #     - Added init function.
 #     - Init _vim_cmd depending on sys.platform.
-# 
 # 1.6 EKR:
 #     - Use keywords to get c, not g.top().
 #     - Don't use during unit testing: prefer xemacs instead.
@@ -73,12 +74,9 @@ __version__ = "1.13"
 #     - Use "os.spawnv" instead of os.system.
 #     - Simplified the search of g.app.openWithFiles.
 #     - Fixed bug in open_in_vim: hanged v.bodyString to v.bodyString()
-# 
-# 1.7 EKR:
-#     - Excellent new code by Jim Sizelove solves weird message on first open 
-# of vim.
-# 1.8 EKR:
-#     - Set subprocess = None if import fails.
+# 1.7 EKR: Excellent new code by Jim Sizelove solves weird message on first 
+# open of vim.
+# 1.8 EKR: Set subprocess = None if import fails.
 # 1.9 EKR:
 #     - Document how install subproces, and use g.importExtension to import 
 # subprocess.
@@ -86,16 +84,15 @@ __version__ = "1.13"
 # 1.10 EKR:
 #     - Support 'vim_cmd' and 'vim_exe' settings.
 #     - These override the default _vim_cmd and _vim_exe settings.
-# 1.11 EKR:
-#     - Emergency default for window is now the default location: c:\Program 
-# Files\vim\vim63
+# 1.11 EKR: Emergency default for window is now the default location: 
+# c:\Program Files\vim\vim63
 # 1.12 EKR:
 #     - Added emergency default for 'darwin'.
 #     - Corrected the call to openWith.  It must now use data=data due to a 
 # new event param.
-# 1.13 EKR:
-# - The docstring now states that the open_with plugin must be enabled for 
-# this to work.
+# 1.13 EKR: The docstring now states that the open_with plugin must be enabled 
+# for this to work.
+# 1.14 EKR: Emphasized that the open_with plugin must be enabled.
 #@-at
 #@nonl
 #@-node:ekr.20050226184411.1:<< version history >>

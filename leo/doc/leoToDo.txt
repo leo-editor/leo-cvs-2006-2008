@@ -384,6 +384,27 @@ other?
 #@-node:ekr.20060601073503:Postings
 #@-node:ekr.20051202094427:Resolve cvs conflicts
 #@+node:ekr.20060823110428:Could Leo run a slide show?
+#@+node:ekr.20060829103523:Packages that might render a Leo slideshow
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3889246
+By: terry_n_brown
+
+Three packages that might be candidates for "rendering" slides authored in Leo:
+
+MagicPoint: http://member.wide.ad.jp/wg/mgp/
+
+  uses a text file format that leo could produce
+
+Slidy: http://www.w3.org/Talks/Tools/Slidy/
+
+  uses XHTML / canned Java script
+
+S5: http://meyerweb.com/eric/tools/s5/
+
+  Similar to Slidy I think, haven't looked at it
+#@nonl
+#@-node:ekr.20060829103523:Packages that might render a Leo slideshow
 #@-node:ekr.20060823110428:Could Leo run a slide show?
 #@+node:ekr.20060306194040:Video and more screen shots Leo's web site
 @nocolor
@@ -1092,10 +1113,6 @@ Scott
 # Don't use body wrappers, use g.app.gui methods instead
 #@-node:ekr.20041228084830.3:Finish wxWindows plugin
 #@-node:ekr.20060822174843:Most important
-#@+node:ekr.20060824112937:To do: 4.4.1
-#@+node:ekr.20060527204444:Finish new colorizer plugin
-#@-node:ekr.20060527204444:Finish new colorizer plugin
-#@-node:ekr.20060824112937:To do: 4.4.1
 #@+node:ekr.20060531161030:To do: 4.4.2
 #@+node:ekr.20060822162521:Make headlines scroll
 Limit the with of the headline to the width of the outline pane.
@@ -1735,6 +1752,244 @@ if not setTop and len(self.topVnodeStack) > 0 and appendToTopStack:
 #@-node:ekr.20040326055828:<< Append to current or top stack >>
 #@-node:ekr.20031218072017.1566:getVnode changed for 4.2 & 4.4)
 #@-node:ekr.20060724071225:Look at Paste Node As Clone
+#@+node:ekr.20060824112937.1:Fix unicode problem with double-click word Stéphane
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3882798
+By: jujusl
+
+When I double-click in the body on a word with accents, only a part of the word
+is selected (up to the accentuated char, forward and backward)
+
+This does not happen in headlines.
+
+I saw that using Windows ; I will test it on Linux machine.
+
+Maybe is it a Tk problem, may be not. You'll tell me...
+
+Stéphane
+
+@color
+#@nonl
+#@+node:ekr.20051218121447:moveWordHelper
+def moveWordHelper (self,event,extend,forward):
+
+    '''This function moves the cursor to the next word, direction dependent on the way parameter'''
+
+    c = self.c ; w = event.widget
+    if not g.app.gui.isTextWidget(w): return
+    
+    c.widgetWantsFocus(w)
+    if forward:
+         ind = w.search('\\W','insert',stopindex='end',regexp=True)
+         if ind: nind = '%s wordend' % ind
+         else:   nind = 'end'
+    else:
+         ind = w.search('\\W','insert -1c',stopindex='1.0',regexp=True,backwards=True)
+         if ind: nind = '%s wordstart' % ind
+         else:   nind = '1.0'
+    self.moveToHelper(event,nind,extend)
+#@-node:ekr.20051218121447:moveWordHelper
+#@+node:ekr.20060131084938:masterDoubleClickHandler
+def masterDoubleClickHandler (self,event,func=None):
+    
+    k = self ; c = k.c ; w = event and event.widget
+    
+    if c.config.getBool('trace_masterClickHandler'):
+        g.trace(c.widget_name(w),func and func.__name__)
+
+    if event and func:
+        # Don't event *think* of overriding this.
+        return func(event)
+    else:
+        i = w.index("@%d,%d" % (event.x,event.y))
+        start = w.index(i+' wordstart')
+        end = w.index(i+' wordend')
+        g.app.gui.setTextSelection(w,start,end)
+        return 'break'
+#@-node:ekr.20060131084938:masterDoubleClickHandler
+#@+node:ekr.20031218072017.3978:OnBodyDoubleClick (Events)
+def OnBodyDoubleClick (self,event=None):
+
+    try:
+        c = self.c ; p = c.currentPosition()
+        if not g.doHook("bodydclick1",c=c,p=p,v=p,event=event):
+            if event: # Prevent wandering insertion point.
+                w = self.bodyCtrl
+                index = w.index("@%d,%d" % (event.x, event.y)) # Find where we clicked.
+                start = w.index(index + " wordstart")
+                end   = w.index(index + " wordend")
+                # g.trace(index,start,end,w.get('1.0','end'))
+                self.body.setTextSelection(start,end)
+        g.doHook("bodydclick2",c=c,p=p,v=p,event=event)
+    except:
+        g.es_event_exception("bodydclick")
+        
+    return "break" # Restore this to handle proper double-click logic.
+#@-node:ekr.20031218072017.3978:OnBodyDoubleClick (Events)
+#@+node:ekr.20060203114017:f.setMinibufferBindings
+def setMinibufferBindings (self):
+    
+    '''Create bindings for the minibuffer..'''
+    
+    f = self ; c = f.c ; k = c.k ; t = f.miniBufferWidget
+    
+    if not c.useTextMinibuffer: return
+    
+    for kind,callback in (
+        ('<Key>',           k.masterKeyHandler),
+        ('<Button-1>',      k.masterClickHandler),
+        ('<Button-3>',      k.masterClick3Handler),
+        ('<Double-1>',      k.masterDoubleClickHandler),
+        ('<Double-3>',      k.masterDoubleClick3Handler),
+    ):
+        t.bind(kind,callback)
+
+    if 0:
+        if sys.platform.startswith('win'):
+            # Support Linux middle-button paste easter egg.
+            t.bind("<Button-2>",frame.OnPaste)
+#@-node:ekr.20060203114017:f.setMinibufferBindings
+#@+node:ekr.20040803072955.87:onHeadlineClick
+def onHeadlineClick (self,event,p=None):
+    
+    c = self.c ; w = event.widget
+    
+    if not p:
+        try:
+            p = w.leo_position
+        except AttributeError:
+            g.trace('*'*20,'oops')
+    if not p: return 'break'
+        
+    # g.trace(p.headString())
+    
+    c.setLog()
+
+    try:
+        if not g.doHook("headclick1",c=c,p=p,v=p,event=event):
+            returnVal = self.OnActivateHeadline(p)
+        g.doHook("headclick2",c=c,p=p,v=p,event=event)
+    except:
+        returnVal = 'break'
+        g.es_event_exception("headclick")
+
+    # 'continue' is sometimes correct here.
+    # 'break' would make it impossible to unselect the headline text.
+    # g.trace('returnVal',returnVal,'stayInTree',self.stayInTree)
+    return returnVal
+#@-node:ekr.20040803072955.87:onHeadlineClick
+#@+node:ekr.20040803072955.105:OnActivateHeadline (tkTree)
+def OnActivateHeadline (self,p,event=None):
+    
+    '''Handle common process when any part of a headline is clicked.'''
+    
+    # g.trace(p.headString())
+    
+    returnVal = 'break' # Default: do nothing more.
+
+    try:
+        c = self.c
+        c.setLog()
+        << activate this window >>
+    except:
+        g.es_event_exception("activate tree")
+        
+    return returnVal
+#@+node:ekr.20040803072955.106:<< activate this window >>
+if p == c.currentPosition():
+    # g.trace("is current")
+    # The *second* click in the headline starts editing.
+    if self.active:
+        self.editLabel(p)
+        returnVal = 'continue'
+    else:
+        # Set the focus immediately.  This is essential for proper editing.
+        c.treeWantsFocusNow()
+        returnVal = 'break'
+else:
+    # g.trace("not current")
+    self.select(p)
+    if c.frame.findPanel:
+        c.frame.findPanel.handleUserClick(p)
+    if p.v.t.insertSpot != None:
+        c.frame.bodyCtrl.mark_set("insert",p.v.t.insertSpot)
+        c.frame.bodyCtrl.see(p.v.t.insertSpot)
+    else:
+        c.frame.bodyCtrl.mark_set("insert","1.0")
+        
+    if self.stayInTree:
+        c.treeWantsFocusNow()
+    else:
+        c.bodyWantsFocusNow()
+    returnVal = 'break'
+
+# The next click *in the same headline* will start editing.
+self.active = True
+#@-node:ekr.20040803072955.106:<< activate this window >>
+#@-node:ekr.20040803072955.105:OnActivateHeadline (tkTree)
+#@+node:ekr.20051024102724:tkTtree.setBindings
+def setBindings (self):
+    
+    '''Create master bindings for all headlines.'''
+    
+    tree = self ; k = self.c.k
+    
+    << make bindings for a common binding widget >>
+
+    self.canvas.bind('<Key>',k.masterKeyHandler)
+    self.canvas.bind('<Button-1>',self.onTreeClick)
+
+    << make bindings for tagged items on the canvas >>
+    << create baloon bindings for tagged items on the canvas >>
+#@+node:ekr.20060131173440:<< make bindings for a common binding widget >>
+self.bindingWidget = t = Tk.Text(self.canvas,name='bindingWidget')
+
+t.bind('<Key>',k.masterKeyHandler)
+
+table = (
+    ('<Button-1>',       k.masterClickHandler,          tree.onHeadlineClick),
+    ('<Button-3>',       k.masterClick3Handler,         tree.onHeadlineRightClick),
+    ('<Double-Button-1>',k.masterDoubleClickHandler,    tree.onHeadlineClick),
+    ('<Double-Button-3>',k.masterDoubleClick3Handler,   tree.onHeadlineRightClick),
+)
+
+for a,handler,func in table:
+    def treeBindingCallback(event,handler=handler,func=func):
+        return handler(event,func)
+    t.bind(a,treeBindingCallback)
+    
+self.textBindings = t.bindtags()
+#@-node:ekr.20060131173440:<< make bindings for a common binding widget >>
+#@+node:ekr.20060131173440.2:<< make bindings for tagged items on the canvas >>
+where = g.choose(self.expanded_click_area,'clickBox','plusBox')
+
+table = (
+    (where,    '<Button-1>',self.onClickBoxClick),
+    ('iconBox','<Button-1>',self.onIconBoxClick),
+    ('iconBox','<Double-1>',self.onIconBoxDoubleClick),
+    ('iconBox','<Button-3>',self.onIconBoxRightClick),
+    ('iconBox','<Double-3>',self.onIconBoxRightClick),
+    ('iconBox','<B1-Motion>',self.onDrag),
+    ('iconBox','<Any-ButtonRelease-1>',self.onEndDrag),
+)
+for tag,event,callback in table:
+    self.canvas.tag_bind(tag,event,callback)
+#@-node:ekr.20060131173440.2:<< make bindings for tagged items on the canvas >>
+#@+node:ekr.20060307080642:<< create baloon bindings for tagged items on the canvas >>
+if 0: # I find these very irritating.
+    for tag,text in (
+        # ('plusBox','plusBox'),
+        ('iconBox','Icon Box'),
+        ('selectBox','Click to select'),
+        ('clickBox','Click to expand or contract'),
+        # ('textBox','Headline'),
+    ):
+        # A fairly long wait is best.
+        balloon = Pmw.Balloon(self.canvas,initwait=700)
+        balloon.tagbind(self.canvas,tag,balloonHelp=text)
+#@-node:ekr.20060307080642:<< create baloon bindings for tagged items on the canvas >>
+#@-node:ekr.20051024102724:tkTtree.setBindings
+#@-node:ekr.20060824112937.1:Fix unicode problem with double-click word Stéphane
 #@-node:ekr.20060531161030:To do: 4.4.2
 #@+node:ekr.20060527164612:Important 1-2 day projects
 #@+node:ekr.20050831131028:opml
