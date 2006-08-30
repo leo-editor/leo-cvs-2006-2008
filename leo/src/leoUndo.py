@@ -1451,10 +1451,13 @@ class baseUndoer:
     
         u.updateMarks('new')
         
-        for v in u.dirtyVnodeList:
-            v.t.setDirty()
+        if u.groupCount == 0:
         
-        c.selectPosition(u.p)
+            for v in u.dirtyVnodeList:
+                v.t.setDirty()
+            
+            c.selectPosition(u.p)
+    #@nonl
     #@-node:ekr.20050526125801:redoMark
     #@+node:ekr.20050411111847:redoMove
     def redoMove (self):
@@ -1678,10 +1681,11 @@ class baseUndoer:
     
         u.updateMarks('old')
         
-        for v in u.dirtyVnodeList:
-            v.t.clearDirty()
-            
-        c.selectPosition(u.p)
+        if u.groupCount == 0:
+    
+            for v in u.dirtyVnodeList:
+                v.t.clearDirty()
+            c.selectPosition(u.p)
     #@-node:ekr.20050526124906:undoMark
     #@+node:ekr.20050411112033:undoMove
     def undoMove (self):

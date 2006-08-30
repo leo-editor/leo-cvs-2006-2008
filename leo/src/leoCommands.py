@@ -4740,18 +4740,19 @@ class baseCommands:
         c.beginUpdate()
         u.beforeChangeGroup(current,undoType)
         try: # In update...
-            dirtyVnodeList = []
+            changed = False
             for p in c.allNodes_iter():
                 if p.isMarked():
                     bunch = u.beforeMark(p,undoType)
                     p.clearMarked()
-                    dirtyVnodeList2 = p.setDirty()
-                    dirtyVnodeList.extend(dirtyVnodeList2)
-                    c.setChanged(True)
+                    p.v.t.setDirty()
                     u.afterMark(p,undoType,bunch)
+            dirtyVnodeList = [p.v for p in c.allNodes_iter() if p.v.isDirty()]
+            if changed: c.setChanged(True)
         finally:
             u.afterChangeGroup(current,undoType,dirtyVnodeList=dirtyVnodeList)
             c.endUpdate()
+    #@nonl
     #@-node:ekr.20031218072017.2930:unmarkAll
     #@-node:ekr.20031218072017.2922:Mark...
     #@+node:ekr.20031218072017.1766:Move... (Commands)
