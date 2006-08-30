@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="25821" clone_windows="0"/>
-<globals body_outline_ratio="0.666129032258">
-	<global_window_position top="69" left="269" height="620" width="799"/>
+<globals body_outline_ratio="0.5">
+	<global_window_position top="69" left="269" height="768" width="879"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -634,6 +634,7 @@
 <v t="ekr.20060509104553.4"><vh>Aha 4: Use character-specific rules lists to speed coloring</vh></v>
 <v t="ekr.20060509104553.5"><vh>Conclusion</vh></v>
 </v>
+<v t="ekr.20060830142929"><vh>Syntax coloring settings</vh></v>
 <v t="ekr.20060430223116"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
@@ -26574,13 +26575,7 @@ verbose=True
 Chapter 15: Controlling Syntax Coloring
 #########################################
 
-**Note Note Note Note Note**
-
-This Chapter is preliminary.  The new colorizer will be released no earlier than Leo 4.4.1.
-
-**Note Note Note Note Note**
-
-This chapter discusses how to control Leo's new syntax colorer using Python files derived from jEdit_'s xml language description files.
+This chapter discusses how to control Leo's new syntax colorer using Python files derived from jEdit_'s xml language description files.  It also discusses settings related to syntax coloring.
 
 .. contents::
 </t>
@@ -26592,6 +26587,7 @@ This chapter discusses how to control Leo's new syntax colorer using Python file
 .. Relative links...
 
 .. _`Ruleset name`:      `Ruleset names`_
+.. _`Chapter 8`:           customizing.html
 
 .. WARNING: image targets may not have upper case letters!
 
@@ -26640,7 +26636,7 @@ The inner loop of the colorizer is this code::
 
 - i is the position within s is to be colorized.
 
-Rules methods (and functions) return n &gt; 0 if they match,</t>
+Rules methods (and functions) return n &gt; 0 if they match, and n == 0 if they fail.</t>
 <t tx="ekr.20060502084233.1">The following sections describe the top-level data in ``x.py``.</t>
 <t tx="ekr.20060502090516">**x.properties** is a Python dictionary corresponding to the &lt;PROPS&gt; element in ``x.xml``.
 Keys are property names; values are strings, namely the contents of ``&lt;PROPERTY&gt;`` elements in ``x.xml``.
@@ -26734,14 +26730,14 @@ For example, the first rule in php.xml is::
 
 and the corresponding rule function is::
 
-    def rule0(colorer, s, i):
+    def php_rule0(colorer, s, i):
         return colorer.match_span(s, i, kind="markup", begin="&lt;?php", end="?&gt;",
             at_line_start=False, at_whitespace_end=False, at_word_start=False,
             delegate="PHP",exclude_match=False,
             no_escape=False, no_line_break=False, no_word_break=False)
     
 
-``rule0`` calls ``colorer.match_span`` because the corresponding xml rule is a ``&lt;SPAN&gt;`` element.
+``php_rule0`` calls ``colorer.match_span`` because the corresponding xml rule is a ``&lt;SPAN&gt;`` element.
 
 For each ruleset, ``x.py`` also contains a **rules dictionary**,
 a Python dictionary whose keys are characters and whose values are all lists
@@ -26854,7 +26850,7 @@ If the ``exclude_match`` argument is ``True``, only the text before the matched 
 The ``delegate`` argument, if present, specifies the ruleset to color the colored text.</t>
 <t tx="ekr.20060502122950.10">::
 
-    def match_eol_span_regexp (self,s,i,kind,regex,hash_char,
+    def match_eol_span_regexp (self,s,i,kind,regex,
         at_line_start = False,
         at_whitespace_end = False,
         at_word_start = False,
@@ -26863,7 +26859,7 @@ The ``delegate`` argument, if present, specifies the ruleset to color the colore
 
 ``match_eol_span_exp`` succeeds if:
 
-1. ``s[i] == hash_char`` and the regular expression ``regex`` matches at ``s[i:]``,
+1. The regular expression ``regex`` matches at ``s[i:]``, and
 
 2. The ``at_line_start``, ``at_whitespace_end`` and ``at_word_start`` conditions are all satisfied.
 
@@ -26909,7 +26905,7 @@ with the color specified by ``kind``.
 The ``delegate`` argument, if present, specifies the ruleset to color the colored text.</t>
 <t tx="ekr.20060502122950.41">::
 
-    def match_seq_regexp (self,s,i,kind,regex,hash_char,
+    def match_seq_regexp (self,s,i,kind,regex,
         at_line_start = False,
         at_whitespace_end = False,
         at_word_start = False,
@@ -26917,7 +26913,7 @@ The ``delegate`` argument, if present, specifies the ruleset to color the colore
 
 ``match_seq`` succeeds if:
 
-1. ``s[i] == hash_char`` and the regular expression ``regex`` matches at ``s[i:]``,
+1. The regular expression ``regex`` matches at ``s[i:]``, and
 
 2. The ``at_line_start``, ``at_whitespace_end`` and ``at_word_start`` conditions are all satisfied.
 
@@ -26947,7 +26943,7 @@ but if the ``exclude_match`` argument is ``True``, the ``begin`` and ``end`` tex
 The ``delegate`` argument, if present, specifies the ruleset to color the colored text.</t>
 <t tx="ekr.20060502122950.47">::
 
-    def match_span (self,s,i,kind,regex,hash_char,end,
+    def match_span (self,s,i,kind,regex,end,
         at_line_start = False,
         at_whitespace_end = False,
         at_word_start = False,
@@ -26959,7 +26955,7 @@ The ``delegate`` argument, if present, specifies the ruleset to color the colore
 
 ``match_span_regex`` succeeds if:
 
-1. ``s[i] == hash_char`` and the regular expression ``regex`` matches at ``s[i:]``,
+1. The regular expression ``regex`` matches at ``s[i:]``,
 
 2. There is an index ``j &gt; i`` such that ``s[i:j].endswith(end)``,
 
@@ -27036,14 +27032,17 @@ Here is a list of all optional keyword arguments and their meaning:
   If ``True``, the match will not succeed across line breaks.
 
 - **no_word_break**:
-  If ``True``, the match will not cross word breaks.</t>
+  If ``True``, the match will not cross word breaks.
+  
+New in Leo 4.4.1 final: the regular expression rule matchers no longer get a ``hash_char`` argument
+because such matchers are called only if the present search pattern starts with ``hash_char``.</t>
 <t tx="ekr.20060503072213">``x.importDict`` is a Python dictionary.
 Keys are ruleset names; values are a list of ruleset names.
 For example::
 
     # Import dict for php mode.
     importDict = {
-        "php_javascript_php": ["javascript_main"],
+        "php_javascript_php": ["javascript::main"],
     }
 
 For any ruleset ``R`` whose ruleset name is ``N``, ``x.importDict.get(N)``
@@ -31384,5 +31383,47 @@ All, that takes forever (1-2 minutes :-) running 100% CPU all the while.</t>
             v.t.clearDirty()
         c.selectPosition(u.p)
 </t>
+<t tx="ekr.20060830142929">This section discusses only those settings that affect syntax coloring.
+See `Chapter 8`_ for a general discussion of Leo's settings.
+
+Both the old colorizer (in Leo's core) and the new colorizer (the __jEdit_colorizer plugin)
+now support @font settings for colorizing options.
+The settings for the old colorizer are::
+
+    comment_font, cweb_section_name_font, directive_font,
+    doc_part_font, keyword_font, leo_keyword_font, section_name_font,
+    section_name_brackets_font, string_font, undefined_section_name_font,
+    latexBackground_font, and latex_background_font.
+
+The settings for the new colorizer are all of the above (except keyword_font) plus the following::
+
+    comment1, comment2_font, comment3_font, comment4_font, function_font,
+    keyword1_font, keyword2_font, keyword3_font, keyword4_font, label_font,
+    literal1_font, literal2_font, literal3_font, literal4_font, markup_font,
+    null_font, and operator_font.
+    
+To specify a font, say for keyword_font, to be used as the default font for **all** languages,
+put the following in the body text of an @font node in leoSettings.leo::
+
+    # keyword_font_family = None
+    keyword_font_size = 16
+    keyword_font_slant = roman
+        # roman, italic
+    keyword_font_weight = bold
+        # normal, bold
+        
+Comments are allowed and undefined settings are set to reasonable defaults. 
+At present, comments can not follow a setting: comments must start a line.
+
+You can specify per-language settings by preceding the settings names by a prefix x.
+Such settings affect only colorizing for language x (i.e., all the modes in modes/x.py when using the new colorizer).
+For example, to specify a font for php (only), put the following in the body text of an @font node in leoSettings.leo::
+
+    # php_keyword_font_family = None
+    php_keyword_font_size = 16
+    php_keyword_font_slant = roman
+        # roman, italic
+    php_keyword_font_weight = bold
+        # normal, bold</t>
 </tnodes>
 </leo_file>
