@@ -60,7 +60,7 @@ def init ():
 
     if ok:
         # No hooks, we just use the cmd_Export to trigger an export
-        g.plugin_signon("word_export")
+        g.plugin_signon(__name__)
         
     return ok
 #@nonl

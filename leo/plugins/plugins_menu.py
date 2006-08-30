@@ -167,11 +167,13 @@ def createPluginsMenu (tag,keywords):
         files.sort()
         plugins = [PlugIn(file) for file in files]
         PluginDatabase.storeAllPlugins(files)
-        # items = [(p.name,p) for p in plugins if p.version]
         loaded = [z.lower() for z in g.app.loadedPlugins]
-        items = [(p.name,p) for p in plugins if p.realname and p.realname.lower() in loaded]
+        # items = [(p.name,p) for p in plugins if p.version]
+        items = [(p.name,p) for p in plugins if p.moduleName and p.moduleName.lower() in loaded]
         # g.trace('loaded',g.app.loadedPlugins)
         # g.trace('realnames',[p.realname for p in plugins if p.realname])
+        # g.trace('names',[p.name for p in plugins if p.name])
+        # g.trace('moduleNamesnames',[p.moduleName for p in plugins if p.moduleName])
         if items:
             #@            << Sort items >>
             #@+node:pap.20041009133925:<< sort items >>
@@ -266,7 +268,7 @@ class PlugIn:
     
         # Import the file to find out some interesting stuff
         # Do not use the imp module: we only want to import these files once!
-        self.name = self.realname = None
+        self.name = self.realname = self.moduleName = None
         self.mod = self.doc = self.version = None
         self.filename = g.os_path_abspath(filename)
         try:
@@ -277,6 +279,7 @@ class PlugIn:
                 name = self.mod.__plugin_name__
             except AttributeError:
                 name = self.mod.__name__
+            self.moduleName = self.mod.__name__
             self.realname = name
             self.name = self.getNiceName(name)
             #

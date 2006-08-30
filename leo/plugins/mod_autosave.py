@@ -56,6 +56,7 @@ def init ():
         # Register the handlers...
         leoPlugins.registerHandler("idle", autosave)
         g.es("auto save enabled",color="orange")
+        g.plugin_signon( __name__ )
         
     return ok
 #@nonl
