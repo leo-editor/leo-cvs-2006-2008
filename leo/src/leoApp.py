@@ -436,7 +436,7 @@ class LeoApp:
                     s = f.readline()
                     f.close()
                     if s and len(s) > 0:
-                        g.app.leoID = s
+                        g.app.leoID = s.strip()
                         if verbose:
                             g.es_print("leoID = %s (in %s)" % (g.app.leoID,theDir), color="red")
                         return
