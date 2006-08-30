@@ -37,7 +37,7 @@ plugins_menu.py
 #vim.py
 #bibtex.py
 #autotrees.py
-mod_autosave.py
+#mod_autosave.py
 #image.py
 #pie_menus.py
 #leoupdate.py
