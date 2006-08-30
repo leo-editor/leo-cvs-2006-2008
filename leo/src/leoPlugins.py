@@ -29,6 +29,7 @@ loadingModuleNameStack = [] # The stack of module names.  Top is the module bein
 #@+others
 #@+node:ekr.20050102094729:callTagHandler
 def callTagHandler (bunch,tag,keywords):
+
     
     handler = bunch.fn ; moduleName = bunch.moduleName
 
@@ -79,8 +80,12 @@ def doHandlersForTag (tag,keywords):
 #@-node:ekr.20031218072017.3442:doHandlersForTag
 #@+node:ekr.20041001161108:doPlugins
 def doPlugins(tag,keywords):
+    
     if g.app.killed:
         return
+        
+    # g.trace(tag)
+    
     if tag == "start1":
         loadHandlers()
 
@@ -181,6 +186,8 @@ def loadOnePlugin (moduleOrFileName, verbose=False):
     
     global loadedModules,loadingModuleNameStack
     
+    # g.trace(moduleOrFileName, g.callers())
+    
     if moduleOrFileName [-3:] == ".py":
         moduleName = moduleOrFileName [:-3]
     else:
@@ -227,6 +234,7 @@ def loadOnePlugin (moduleOrFileName, verbose=False):
         g.es_print(s,color="blue")
     
     return result
+#@nonl
 #@-node:ekr.20041113113140:loadOnePlugin
 #@+node:ekr.20050110191444:printHandlers
 def printHandlers (moduleName=None):

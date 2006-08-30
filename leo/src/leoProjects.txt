@@ -994,6 +994,24 @@ for theDir in (homeDir,globalConfigDir,loadDir):
 #@-node:ekr.20031218072017.1978:app.setLeoID
 #@-node:ekr.20060829091456:Fixed minor .leoID.txt bug
 #@+node:ekr.20060830063143:Improved speed of unmark-all and corresponding undo/redo
+#@+node:ekr.20060830065450:Report
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3890031
+By: terry_n_brown
+
+I have a tree of some 2500 nodes, run a script that marks
+probably 1500-2000 of them, and that's quick (2-3 seconds max.).
+
+I can clear all the marks with:
+
+for p in c.allNodes_iter():
+    p.v.clearMarked()
+
+and that also is quick (2-3 seconds max.).  But when I use the menu option Unmark
+All, that takes forever (1-2 minutes :-) running 100% CPU all the while.
+#@nonl
+#@-node:ekr.20060830065450:Report
 #@+node:ekr.20031218072017.2930:unmarkAll
 def unmarkAll (self,event=None):
     

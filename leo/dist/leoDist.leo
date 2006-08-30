@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="1131" clone_windows="0"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="1132" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
 	<global_window_position top="27" left="317" height="862" width="863"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
@@ -16,7 +16,7 @@
 <v t="ekr.20050315084922"><vh>@button Spell</vh></v>
 <v t="ekr.20051015172713"><vh>@button Save</vh></v>
 </v>
-<v t="EKR.20040519091259" a="E"><vh>Annoucnements (don't split into lines)</vh>
+<v t="EKR.20040519091259" a="TV"><vh>Annoucnements (don't split into lines)</vh>
 <v t="EKR.20040519091259.1"><vh>Download statistics</vh></v>
 <v t="EKR.20040519091259.2"><vh>Quotes of the month</vh>
 <v t="ekr.20060823090437"><vh>August 2006</vh></v>
@@ -26,7 +26,8 @@
 <v t="EKR.20040519091259.3"><vh>November 2003</vh></v>
 <v t="EKR.20040519091259.4"><vh>October 2003</vh></v>
 </v>
-<v t="ekr.20060823090544" a="TV"><vh>ANN: Leo 4.4.1 beta 4</vh></v>
+<v t="ekr.20060830085819"><vh>ANN: Leo 4.4.1 final</vh></v>
+<v t="ekr.20060823090544"><vh>ANN: Leo 4.4.1 beta 4</vh></v>
 <v t="ekr.20060629090118"><vh>ANN: Leo 4.4.1 beta 3</vh></v>
 <v t="ekr.20060622182003"><vh>ANN: Leo 4.4.1 beta 2</vh></v>
 <v t="ekr.20060603080748"><vh>ANN: Leo 4.4.1 beta 1</vh></v>
@@ -182,7 +183,7 @@
 </v>
 <v t="ekr.20050118092706"><vh>@thin leo-4-3.nsi</vh></v>
 </v>
-<v t="EKR.20040519090846" a="E"><vh>Distribution files (update for each release)</vh>
+<v t="EKR.20040519090846"><vh>Distribution files (update for each release)</vh>
 <v t="EKR.20040519090846.2"><vh>@asis ../doc/INSTALL.TXT</vh>
 <v t="EKR.20040519090846.3"><vh>System requirements</vh></v>
 <v t="EKR.20040519090846.4"><vh>Linux installation</vh></v>
@@ -676,9 +677,9 @@ Description: Leo is an outline-oriented editor written in 100% pure Python.
 		Download tkIcon from http://www.effbot.org/downloads/#tkIcon
 Platform: Windows, Linux, Macintosh
 </t>
-<t tx="EKR.20040519090846.9">Leo 4.4.1 beta 4                                            August 24, 2006
+<t tx="EKR.20040519090846.9">Leo 4.4.1 final                                            August 30, 2006
 
-Leo 4.4.1 beta 4 is available at:
+Leo 4.4.1 final is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
 
 Leo is a text editor, data organizer, project manager and much more. See:
@@ -4729,6 +4730,43 @@ I've come across in years. I use Leo every day.</t>
 <t tx="ekr.20060823090544">Leo 4.4.1 beta 4                                           August 23, 2006
 
 Leo 4.4.1 beta 4 is now available at:
+http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+
+Leo is a text editor, data organizer, project manager and much more. See:
+http://webpages.charter.net/edreamleo/intro.html
+
+The highlights of Leo 4.4.1:
+----------------------------
+- Leo outputs decorators correctly, provided that the decorator is not a Leo directive.
+- A new colorizer plugin controlled by jEdit language description files.
+- A new shadow files plugin that allows derived files not to have sentinel lines.
+- Multiple editors in Leo's body pane.
+- Search commands now support regex replace patterns: \1, \2, etc.
+- Support for external debuggers: see http://webpages.charter.net/edreamleo/debuggers.html
+- The scripting plugin now creates a Debug Script button.
+- Several new commands including run-unit-test, python-help, toggle-invisibles,
+  and scroll-outline-left/right.
+- The help-for-command commands now contains information for almost all commands.
+- A new shortcut_button plugin.
+
+Quote of the month:
+-------------------
+Thanks for creating the most useful and amazing application that
+I've come across in years. I use Leo every day.
+
+Links:
+------
+4.4.1:    http://webpages.charter.net/edreamleo/new-4-4-1.html
+4.4:      http://webpages.charter.net/edreamleo/new-4-4.html
+Leo:      http://webpages.charter.net/edreamleo/front.html
+Home:     http://sourceforge.net/projects/leo/
+Download: http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:      http://leo.tigris.org/source/browse/leo/
+Quotes:   http://webpages.charter.net/edreamleo/testimonials.html
+</t>
+<t tx="ekr.20060830085819">Leo 4.4.1 final                                           August 30, 2006
+
+Leo 4.4.1 final is now available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
 
 Leo is a text editor, data organizer, project manager and much more. See:
