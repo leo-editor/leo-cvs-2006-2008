@@ -57,7 +57,7 @@ import sys
 #@nonl
 #@-node:ekr.20050101090207.10:<< imports >>
 #@nl
-__version__ = "1.12"
+__version__ = "1.13"
 #@<< version history >>
 #@+node:ekr.20050101100033:<< version history >>
 #@@nocolor
@@ -87,6 +87,11 @@ __version__ = "1.12"
 # several plugins.
 # 1.12 EKR: Fixed bug per 
 # http://sourceforge.net/forum/message.php?msg_id=3810157
+# 1.13 EKR:
+# - Always Plugin.name and Plugin.realname for use by createPluginsMenu.
+# - Add plugins to Plugins menu *only* if they have been explicitly enabled.
+#   This solves the HTTP mystery: HTTP was being imported by mod_scripting 
+# plugin.
 #@-at
 #@nonl
 #@-node:ekr.20050101100033:<< version history >>
@@ -100,6 +105,8 @@ __plugin_group__ = "Core"
 #@+node:ekr.20060107091318:Functions
 #@+node:EKR.20040517080555.24:addPluginMenuItem
 def addPluginMenuItem (p,c):
+    
+    # g.trace(p.name,g.callers())
 
     if p.hastoplevel:
         # Check at runtime to see if the plugin has actually been loaded.
@@ -160,7 +167,11 @@ def createPluginsMenu (tag,keywords):
         files.sort()
         plugins = [PlugIn(file) for file in files]
         PluginDatabase.storeAllPlugins(files)
-        items = [(p.name,p) for p in plugins if p.version]
+        # items = [(p.name,p) for p in plugins if p.version]
+        loaded = [z.lower() for z in g.app.loadedPlugins]
+        items = [(p.name,p) for p in plugins if p.realname and p.realname.lower() in loaded]
+        # g.trace('loaded',g.app.loadedPlugins)
+        # g.trace('realnames',[p.realname for p in plugins if p.realname])
         if items:
             #@            << Sort items >>
             #@+node:pap.20041009133925:<< sort items >>
@@ -255,6 +266,7 @@ class PlugIn:
     
         # Import the file to find out some interesting stuff
         # Do not use the imp module: we only want to import these files once!
+        self.name = self.realname = None
         self.mod = self.doc = self.version = None
         self.filename = g.os_path_abspath(filename)
         try:
