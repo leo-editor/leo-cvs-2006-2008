@@ -64,15 +64,16 @@ import urlparse
 #@<< version history >>
 #@+node:ekr.20050328104558:<< version history >>
 #@@killcolor
-
 #@+at
 # 
 # 0.93 EKR:
 #     - Added 'version history' section.
 #     - Removed vestigial sections.
-#     - Changed docstring to mention
-#         @string rst_http_attributename = 'rst_http_attribute'
-#       (Not sure if this is correct.)
+#     - Changed docstring to mention @string rst_http_attributename = 
+# 'rst_http_attribute'
+# 0.93 EKR: Added init function.
+# But http was in the Plugins menu because the rst3 plugin imports it.
+# The fix was to the plugins manager, not this plugin or rst3.
 #@-at
 #@nonl
 #@-node:ekr.20050328104558:<< version history >>
@@ -90,12 +91,20 @@ class config:
 #@-node:bwmulder.20050326191345:<< config >>
 #@nl
 #@+others
+#@+node:ekr.20060830091349:init
+def init ():
+    
+    leoPlugins.registerHandler("open2", onFileOpen)
+    
+    return True
+#@nonl
+#@-node:ekr.20060830091349:init
 #@+node:bwmulder.20050326191345.1:onFileOpen
 def onFileOpen(tag, keywords):
     c = keywords.get("new_c")
 
     wasactive = config.http_active
-    applyConfiguration(c)
+    getConfiguration(c)
 
     if config.http_active and not wasactive: # Ok for unit testing:
     
@@ -836,7 +845,7 @@ def a_read(obj):
 #@-node:EKR.20040517080250.47:a_read
 #@-node:EKR.20040517080250.46:asynchore_overrides
 #@+node:EKR.20040517080250.48:applyConfiguration
-def applyConfiguration(c):
+def getConfiguration(c):
 
     """Called when the user opens a new file."""
 
@@ -847,6 +856,7 @@ def applyConfiguration(c):
     if newport:
         config.port = newport
     newactive = c.config.getBool("http_active")
+    # g.trace('http',newactive)
     if newactive is not None:
         config.http_active = newactive
     new_rst2_http_attributename = c.config.getString("rst2_http_attributename")
@@ -855,7 +865,6 @@ def applyConfiguration(c):
 #@nonl
 #@-node:EKR.20040517080250.48:applyConfiguration
 #@-others
-leoPlugins.registerHandler("open2", onFileOpen)
-    
+#@nonl
 #@-node:EKR.20040517080250.1:@thin mod_http.py
 #@-leo
