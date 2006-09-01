@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="305" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="196" left="280" height="535" width="907"/>
+	<global_window_position top="121" left="256" height="605" width="938"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -44,7 +44,7 @@
 <v t="ekr.20060112104823"><vh>main</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
@@ -124,7 +124,7 @@
 <v t="ekr.20060713101831"><vh>@color operator_color = black</vh></v>
 </v>
 <v t="ekr.20060828110551.1"><vh>Langauge-specific colors</vh>
-<v t="ekr.20060828110551.2" a="E"><vh>php</vh>
+<v t="ekr.20060828110551.2"><vh>php</vh>
 <v t="ekr.20060828110551.3"><vh>@color php_operator_color = DodgerBlue1</vh></v>
 <v t="ekr.20060828145228.1"><vh>@font php keyword fonts (new colorizer)</vh></v>
 <v t="ekr.20060829085840"><vh>@font php keyword fonts (old colorizer)</vh></v>
@@ -283,7 +283,7 @@
 <v t="ekr.20060804095015"><vh>@string open_flash_brackets = ([{</vh></v>
 <v t="ekr.20060804095015.1"><vh>@string close_flash_brackets = )]}</vh></v>
 </v>
-<v t="ekr.20051007200824" annotate="7d71002e"><vh>Keyboard shortcuts</vh>
+<v t="ekr.20051007200824" a="E" annotate="7d71002e"><vh>Keyboard shortcuts</vh>
 <v t="ekr.20051101160257" annotate="7d71002e"><vh>About keyboard shortcuts</vh>
 <v t="ekr.20051007200824.1" annotate="7d71002e"><vh>About shortcut specifiers</vh></v>
 <v t="ekr.20060116090646"><vh>Reference for function keys</vh></v>
@@ -359,10 +359,10 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060110141538.1" annotate="7d71002e"><vh>@keys No bindings</vh>
+<v t="ekr.20060110141538.1" a="E" annotate="7d71002e"><vh>@keys No bindings</vh>
 <v t="ekr.20051218202206" annotate="7d71002e"><vh>@shortcuts No bindings: A-E</vh></v>
 <v t="ekr.20060112093227.1"><vh>@shortcuts No bindings: E-M</vh></v>
-<v t="ekr.20060112093227.2"><vh>@shortcuts No bindings: N-Z</vh></v>
+<v t="ekr.20060112093227.2" a="V"><vh>@shortcuts No bindings: N-Z</vh></v>
 </v>
 <v t="ekr.20060603215208"><vh>@keys EKR bindings: Emacs keys + modes</vh>
 <v t="ekr.20060608065207"><vh>Settings related to key bindings</vh>
@@ -552,13 +552,6 @@
 <v t="ekr.20060603215208.21" annotate="7d71002e"><vh>@shortcuts EKR: A-E</vh></v>
 <v t="ekr.20060603215208.22"><vh>@shortcuts EKR: F-M</vh></v>
 <v t="ekr.20060603215208.23" annotate="7d71002e"><vh>@shortcuts EKR: N-Z</vh></v>
-</v>
-</v>
-<v t="ekr.20060828110551.1" a="E"><vh>Langauge-specific colors</vh>
-<v t="ekr.20060828110551.2" a="E"><vh>php</vh>
-<v t="ekr.20060828110551.3"><vh>@color php_operator_color = DodgerBlue1</vh></v>
-<v t="ekr.20060828145228.1" a="TV"><vh>@font php keyword fonts (new colorizer)</vh></v>
-<v t="ekr.20060829085840"><vh>@font php keyword fonts (old colorizer)</vh></v>
 </v>
 </v>
 </vnodes>
@@ -3403,6 +3396,8 @@ new                                 = None
 newline-and-indent                  = None
 next-line                           = None
 next-line-extend-selection          = None
+next-slide                          = None
+next-slide-show                     = None
 number-command                      = None
 number-command-0                    = None
 number-command-1                    = None
@@ -3439,6 +3434,8 @@ prepend-to-buffer                   = None
 prepend-to-register                 = None
 pretty-print-all-python-code        = None
 pretty-print-python-code            = None
+prev-slide                          = None
+prev-slide-show                     = None
 previous-line                       = None
 previous-line-extend-selection      = None
 print-bindings                      = None
