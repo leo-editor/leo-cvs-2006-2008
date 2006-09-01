@@ -4,24 +4,26 @@
 #@+node:ekr.20060831165845.1:<< docstring >>
 '''A plugin to support slideshows in Leo outlines.
 
-It defines three new commands:
-    
-- slide-show-start: start a slide show
-- slide-show-next:  move to the next slide of a slide show.
-- slide-show-back:  move to the previous slide of a slide show.
+It defines four new commands:
 
-Slides shows consist of a root @slides node with descendent @slide nodes.
+- next-slide-show:  move to the start of the next slide show,
+  or the first slide show if no slide show has been seen yet.
+- prev-slide-show:  move to the start of the previous slide show,
+  or the first slide show if no slide show has been seen yet.
+- next-slide: move to the next slide of a present slide show.
+- prev-slide: move to the previous slide of the present slide show.
+
+Slides shows consist of a root @slideshow node with descendent @slide nodes.
 @slide nodes may be organized via non-@slide nodes that do not appear in the slideshow.
 '''
+#@nonl
 #@-node:ekr.20060831165845.1:<< docstring >>
 #@nl
 
-__version__ = '0.02'
+__version__ = '0.1'
 
 #@+at
 # To do:
-# - Support multiple slideshows: slide-show-start prompts for a slideshow name 
-# somehow.
 # - Add sound/script support for slides.
 # - Save/restore changes to slides when entering/leaving a slide.
 #@-at
@@ -35,6 +37,9 @@ __version__ = '0.02'
 # 0.01 EKR: Initial version.
 # 0.02 EKR: Improved docstring and added todo notes.
 # 0.03 EKR: Simplified createCommands.
+# 0.1  EKR: A big step forward.
+# The next/prve-slide-show commands allow easy management of multiple 
+# slideshows.
 #@-at
 #@nonl
 #@-node:ekr.20060831165845.2:<< version history >>
@@ -52,19 +57,10 @@ Tk  = g.importExtension('Tkinter',pluginName=__name__,verbose=True,required=True
 #@+node:ekr.20060831165845.4:init
 def init ():
     
-    ok = Tk is not None
-    
-    if ok:
-        if g.app.gui is None:
-            g.app.createTkGui(__file__)
-            
-        ok = g.app.gui.guiName() == "tkinter"
+    leoPlugins.registerHandler(('open2','new2'),onCreate)
+    g.plugin_signon(__name__)
 
-        if ok:
-            leoPlugins.registerHandler('after-create-leo-frame',onCreate)
-            g.plugin_signon(__name__)
-        
-    return ok
+    return True
 #@nonl
 #@-node:ekr.20060831165845.4:init
 #@+node:ekr.20060831165845.5:onCreate
@@ -84,10 +80,20 @@ class slideshowController:
     def __init__ (self,c):
         
         self.c = c
-        self.slides = None
+        self.slideShowRoot = None
         self.slide = None
         
         self.createCommands()
+        
+        # Find the first slide show.
+        self.firstSlideShow = None
+        for p in c.allNodes_iter():
+            h = p.headString().strip()
+            if h.startswith('@slideshow'):
+                self.firstSlideShow = p.copy()
+                self.select(p)
+                break
+                
     #@nonl
     #@-node:ekr.20060831165845.7:__init__
     #@+node:ekr.20060831171016:createCommands
@@ -96,72 +102,112 @@ class slideshowController:
         c = self.c ; k = c.k
             
         for name,func in (
-            ('slide-show-back',self.back),
-            ('slide-show-next',self.next),
-            ('slide-show-start',self.start),
+            ('next-slide',      self.nextSlide),
+            ('next-slide-show', self.nextSlideShow),
+            ('prev-slide',      self.prevSlide),
+            ('prev-slide-show', self.prevSlideShow),
         ):
             k.registerCommand (name,shortcut=None,func=func,pane='all',verbose=False)
     #@nonl
     #@-node:ekr.20060831171016:createCommands
-    #@+node:ekr.20060831172205:start
-    def start (self,event=None):
+    #@+node:ekr.20060901145257:select
+    def select (self,p):
+        
+        '''Make p the present slide, and set self.slide and maybe self.slideShowRoot.'''
+    
+        c = self.c ; h = p.headString().strip()
+    
+        g.es_print('%s' % h)
+        c.frame.tree.expandAllAncestors(p)
+        c.selectPosition(p)
+    
+        if h.startswith('@slideshow'):
+            self.slideShowRoot = p.copy()
+    
+        self.slide = p.copy()
+    #@nonl
+    #@-node:ekr.20060901145257:select
+    #@+node:ekr.20060901142848:nextSlideShow
+    def nextSlideShow (self,event=None):
+    
+        if not self.firstSlideShow:
+            return g.es('No slide show found') 
+        elif not self.slideShowRoot:
+            return self.select(self.firstSlideShow)
+    
+        p = self.slideShowRoot.threadNext()
+        while p:
+            h = p.headString().strip()
+            if h.startswith('@slideshow'):
+                return self.select(p)
+            else:
+                p = p.threadNext()
+        else:
+            self.select(self.slideShowRoot)
+            g.es('At start of last slide show')
+           
+    #@nonl
+    #@-node:ekr.20060901142848:nextSlideShow
+    #@+node:ekr.20060901142848.1:prevSlideShow
+    def prevSlideShow (self,event=None):
+        
+        if not self.firstSlideShow:
+            return g.es('No slide show found') 
+        elif not self.slideShowRoot:
+            return self.select(self.firstSlideShow)
+    
+        p = self.slideShowRoot.threadBack()
+        while p:
+            h = p.headString().strip()
+            if h.startswith('@slideshow'):
+                return self.select(p)
+            else:
+                p = p.threadBack()
+        else:
+            self.select(self.firstSlideShow)
+            g.es('At start of first slide show')
+    #@nonl
+    #@-node:ekr.20060901142848.1:prevSlideShow
+    #@+node:ekr.20060831171016.4:prevSlide
+    def prevSlide (self,event=None):
+        
+        c = self.c
+        if not self.slideShowRoot:
+            return g.es('Not in any slide show.')
+        if self.slide == self.slideShowRoot:
+            return g.es('At start of slide show')
+    
+        p = self.slide.threadBack()
+        while p:
+            h = p.headString().strip()
+            if h.startswith('@slideshow'):
+                self.select(p)
+                return g.es('At start of slide show')
+            elif h.startswith('@slide'):
+                return self.select(p)
+            else: p = p.threadBack()
+        else:
+            return g.es('Not in any slide show.')
+    #@nonl
+    #@-node:ekr.20060831171016.4:prevSlide
+    #@+node:ekr.20060831171016.5:nextSlide
+    def nextSlide (self,event=None):
         
         c = self.c ; p = c.currentPosition()
-    
-        self.slides = g.findNodeAnywhere(c,'@slides')
-        if self.slides:
-            self.next()
-            if not self.slide:
-                g.es('No slide show found')
-    #@nonl
-    #@-node:ekr.20060831172205:start
-    #@+node:ekr.20060831171016.4:back
-    def back (self,event=None):
-        
-        c = self.c ; slide = self.slide
-        if not slide: return
-        p = slide.threadBack()
-        done = False
-        while p and not done:
+        if not self.slideShowRoot:
+            return g.es('Not in any slide show.')
+            
+        p = self.slide.threadNext()
+        while p:
             h = p.headString().strip()
-            if h.startswith('@slides'):
-                done = True
+            if h.startswith('@slideshow'):
+                return g.es('At end of slide show')
             elif h.startswith('@slide'):
-                self.slide = p.copy()
-                g.es_print('%s' % h)
-                c.frame.tree.expandAllAncestors(p)
-                c.selectPosition(p)
-                break
-            else: p = p.threadBack()
-        else: done = True
-        if done:
-            g.es('Start of slide show')
-            self.slide = None
-    #@nonl
-    #@-node:ekr.20060831171016.4:back
-    #@+node:ekr.20060831171016.5:next
-    def next (self,event=None):
-        
-        c = self.c ; slide = self.slide or self.slides
-        if not slide: return
-        p = slide.threadNext()
-        done = False
-        while p and not done:
-            h = p.headString().strip()
-            if h.startswith('@slides'):
-                done = True
-            elif h.startswith('@slide'):
-                self.slide = p.copy()
-                g.es_print('%s' % h)
-                c.frame.tree.expandAllAncestors(p)
-                c.selectPosition(p)
-                return
+                return self.select(p)
             else: p = p.threadNext()
-        else: done = True 
-        if done and self.slide:
-            g.es('End of slide show')
-    #@nonl
-    #@-node:ekr.20060831171016.5:next
+        else:
+            return g.es('At end of slide show')
+    #@-node:ekr.20060831171016.5:nextSlide
     #@-others
 #@nonl
 #@-node:ekr.20060831165845.6:class slideshowController
