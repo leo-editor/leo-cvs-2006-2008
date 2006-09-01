@@ -2751,11 +2751,12 @@ class editCommandsClass (baseEditCommandsClass):
         if event and event.keysym == 'Return': ch = '\n' # This fixes the MacOS return bug.
         w = event and event.widget
         name = c.widget_name(w)
-        oldSel =  name.startswith('body') and g.app.gui.getTextSelection(w)
-        oldText = name.startswith('body') and p.bodyString()
+        oldSel =  name.startswith('body') and g.app.gui.getTextSelection(w) or (None,None)
+        oldText = name.startswith('body') and p.bodyString() or ''
         undoType = 'Typing'
         trace = c.config.getBool('trace_masterCommand')
         brackets = self.openBracketsList + self.closeBracketsList
+        inBrackets = g.toUnicode(ch,g.app.tkEncoding) in brackets
         
         if trace: g.trace(name,repr(ch),ch in brackets)
         
@@ -2788,14 +2789,14 @@ class editCommandsClass (baseEditCommandsClass):
                     self.updateAutoIndent(p,w)
             #@-node:ekr.20051026171121:<< handle newline >>
             #@nl
-        elif ch in brackets and self.autocompleteBrackets:
+        elif inBrackets and self.autocompleteBrackets:
             self.updateAutomatchBracket(p,w,ch,oldSel)
         elif ch: # Null chars must not delete the selection.
             i,j = oldSel
             if i != j:                  w.delete(i,j)
             elif action == 'overwrite': w.delete(i,'%s+1c' % i)
             w.insert(i,ch)
-            if ch in brackets and self.flashMatchingBrackets: # New in 4.4.1.
+            if inBrackets and self.flashMatchingBrackets: # New in 4.4.1.
                self.flashMatchingBracketsHelper(w,i,ch)               
         else:
             return 'break' # New in 4.4a5: this method *always* returns 'break'
@@ -2814,6 +2815,17 @@ class editCommandsClass (baseEditCommandsClass):
                 
         g.doHook("bodykey2",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType)
         return 'break'
+    #@nonl
+    #@+node:ekr.20060831163241:test_selfInsertCommand
+    def test_selfInsertCommand(self):
+        
+        self = c.editCommands
+        import Tkinter as Tk
+    
+        event = g.Bunch(char='É',keysym=None,widget=c.frame.body.bodyCtrl)
+        self.selfInsertCommand(event)
+    #@nonl
+    #@-node:ekr.20060831163241:test_selfInsertCommand
     #@+node:ekr.20060804095512:initBracketMatcher
     def initBracketMatcher (self,c):
     
