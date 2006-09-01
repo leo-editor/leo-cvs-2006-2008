@@ -20,7 +20,7 @@ Slides shows consist of a root @slideshow node with descendent @slide nodes.
 #@-node:ekr.20060831165845.1:<< docstring >>
 #@nl
 
-__version__ = '0.1'
+__version__ = '0.2'
 
 #@+at
 # To do:
@@ -38,8 +38,11 @@ __version__ = '0.1'
 # 0.02 EKR: Improved docstring and added todo notes.
 # 0.03 EKR: Simplified createCommands.
 # 0.1  EKR: A big step forward.
-# The next/prve-slide-show commands allow easy management of multiple 
+# The next/prev-slide-show commands allow easy management of multiple 
 # slideshows.
+# 0.2  EKR: next/pref-slide-show commands work properly when
+# a) c.currentPosition changes and
+# b) @slideshow nodes inserted or deleted.
 #@-at
 #@nonl
 #@-node:ekr.20060831165845.2:<< version history >>
@@ -80,20 +83,10 @@ class slideshowController:
     def __init__ (self,c):
         
         self.c = c
+        self.firstSlideShow = None
         self.slideShowRoot = None
         self.slide = None
-        
         self.createCommands()
-        
-        # Find the first slide show.
-        self.firstSlideShow = None
-        for p in c.allNodes_iter():
-            h = p.headString().strip()
-            if h.startswith('@slideshow'):
-                self.firstSlideShow = p.copy()
-                self.select(p)
-                break
-                
     #@nonl
     #@-node:ekr.20060831165845.7:__init__
     #@+node:ekr.20060831171016:createCommands
@@ -110,6 +103,19 @@ class slideshowController:
             k.registerCommand (name,shortcut=None,func=func,pane='all',verbose=False)
     #@nonl
     #@-node:ekr.20060831171016:createCommands
+    #@+node:ekr.20060901182318:findFirstSlideShow
+    def findFirstSlideShow (self):
+    
+        c = self.c
+        for p in c.allNodes_iter():
+            h = p.headString().strip()
+            if h.startswith('@slideshow'):
+                self.firstSlideShow = p.copy()
+                return
+    
+        self.firstSlideShow = None
+    #@nonl
+    #@-node:ekr.20060901182318:findFirstSlideShow
     #@+node:ekr.20060901145257:select
     def select (self,p):
         
@@ -117,7 +123,7 @@ class slideshowController:
     
         c = self.c ; h = p.headString().strip()
     
-        g.es_print('%s' % h)
+        g.es('%s' % h)
         c.frame.tree.expandAllAncestors(p)
         c.selectPosition(p)
     
@@ -129,43 +135,49 @@ class slideshowController:
     #@-node:ekr.20060901145257:select
     #@+node:ekr.20060901142848:nextSlideShow
     def nextSlideShow (self,event=None):
-    
+        
+        c = self.c
+        self.findFirstSlideShow()
         if not self.firstSlideShow:
             return g.es('No slide show found') 
         elif not self.slideShowRoot:
             return self.select(self.firstSlideShow)
-    
-        p = self.slideShowRoot.threadNext()
+        p = c.currentPosition()
+        h = p.headString().strip()
+        if h.startswith('@slideshow'):
+            p = p.threadNext()
         while p:
             h = p.headString().strip()
             if h.startswith('@slideshow'):
                 return self.select(p)
             else:
                 p = p.threadNext()
-        else:
-            self.select(self.slideShowRoot)
-            g.es('At start of last slide show')
+        self.select(self.slideShowRoot)
+        g.es('At start of last slide show')
            
     #@nonl
     #@-node:ekr.20060901142848:nextSlideShow
     #@+node:ekr.20060901142848.1:prevSlideShow
     def prevSlideShow (self,event=None):
         
+        c = self.c
+        self.findFirstSlideShow()
         if not self.firstSlideShow:
             return g.es('No slide show found') 
         elif not self.slideShowRoot:
             return self.select(self.firstSlideShow)
-    
-        p = self.slideShowRoot.threadBack()
+        p = c.currentPosition()
+        h = p.headString().strip()
+        if h.startswith('@slideshow'):
+            p = p.threadBack()
         while p:
             h = p.headString().strip()
             if h.startswith('@slideshow'):
                 return self.select(p)
             else:
                 p = p.threadBack()
-        else:
-            self.select(self.firstSlideShow)
-            g.es('At start of first slide show')
+        self.select(self.firstSlideShow)
+        g.es('At start of first slide show')
     #@nonl
     #@-node:ekr.20060901142848.1:prevSlideShow
     #@+node:ekr.20060831171016.4:prevSlide
