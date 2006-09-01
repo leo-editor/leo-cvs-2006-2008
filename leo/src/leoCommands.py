@@ -5394,7 +5394,7 @@ class baseCommands:
         
         c = self
         
-        return c.gui.widget_name(widget)
+        return c.gui.widget_name(widget) or ''
     #@-node:ekr.20060205111103:c.widget_name
     #@+node:ekr.20060207142332:c.traceFocus
     trace_focus_count = 0
