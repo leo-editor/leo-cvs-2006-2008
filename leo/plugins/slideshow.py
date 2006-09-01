@@ -2,12 +2,30 @@
 #@+node:ekr.20060831165821:@thin slideshow.py
 #@<< docstring >>
 #@+node:ekr.20060831165845.1:<< docstring >>
-'''A plugin to support Leo outlines representing slideshows.
+'''A plugin to support slideshows in Leo outlines.
+
+It defines three new commands:
+    
+- slide-show-start: start a slide show
+- slide-show-next:  move to the next slide of a slide show.
+- slide-show-back:  move to the previous slide of a slide show.
+
+Slides shows consist of a root @slides node with descendent @slide nodes.
+@slide nodes may be organized via non-@slide nodes that do not appear in the slideshow.
 '''
 #@-node:ekr.20060831165845.1:<< docstring >>
 #@nl
 
-__version__ = '0.01'
+__version__ = '0.02'
+
+#@+at
+# To do:
+# - Support multiple slideshows: slide-show-start prompts for a slideshow name 
+# somehow.
+# - Add sound/script support for slides.
+# - Save/restore changes to slides when entering/leaving a slide.
+#@-at
+#@@c
 
 #@<< version history >>
 #@+node:ekr.20060831165845.2:<< version history >>
@@ -15,6 +33,7 @@ __version__ = '0.01'
 #@+at
 # 
 # 0.01 EKR: Initial version.
+# 0.02 EKR: Improved docstring and added todo notes.
 #@-at
 #@nonl
 #@-node:ekr.20060831165845.2:<< version history >>
