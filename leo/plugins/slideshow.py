@@ -34,6 +34,7 @@ __version__ = '0.02'
 # 
 # 0.01 EKR: Initial version.
 # 0.02 EKR: Improved docstring and added todo notes.
+# 0.03 EKR: Simplified createCommands.
 #@-at
 #@nonl
 #@-node:ekr.20060831165845.2:<< version history >>
@@ -93,26 +94,17 @@ class slideshowController:
     def createCommands (self):
         
         c = self.c ; k = c.k
-        
-        def slideshowBackCallback(event,self=self):
-            self.back()
-            
-        def slideshowNextCallback(event,self=self):
-            self.next()
-            
-        def slideshowStartCallback(event,self=self):
-            self.start()
             
         for name,func in (
-            ('slide-show-back',slideshowBackCallback),
-            ('slide-show-next',slideshowNextCallback),
-            ('slide-show-start',slideshowStartCallback),
+            ('slide-show-back',self.back),
+            ('slide-show-next',self.next),
+            ('slide-show-start',self.start),
         ):
             k.registerCommand (name,shortcut=None,func=func,pane='all',verbose=False)
     #@nonl
     #@-node:ekr.20060831171016:createCommands
     #@+node:ekr.20060831172205:start
-    def start (self):
+    def start (self,event=None):
         
         c = self.c ; p = c.currentPosition()
     
@@ -124,7 +116,7 @@ class slideshowController:
     #@nonl
     #@-node:ekr.20060831172205:start
     #@+node:ekr.20060831171016.4:back
-    def back (self):
+    def back (self,event=None):
         
         c = self.c ; slide = self.slide
         if not slide: return
@@ -148,7 +140,7 @@ class slideshowController:
     #@nonl
     #@-node:ekr.20060831171016.4:back
     #@+node:ekr.20060831171016.5:next
-    def next (self):
+    def next (self,event=None):
         
         c = self.c ; slide = self.slide or self.slides
         if not slide: return
