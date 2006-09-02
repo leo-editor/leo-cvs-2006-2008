@@ -20,7 +20,7 @@ Slides shows consist of a root @slideshow node with descendent @slide nodes.
 #@-node:ekr.20060831165845.1:<< docstring >>
 #@nl
 
-__version__ = '0.2'
+__version__ = '0.3'
 
 #@+at
 # To do:
@@ -43,16 +43,18 @@ __version__ = '0.2'
 # 0.2  EKR: next/pref-slide-show commands work properly when
 # a) c.currentPosition changes and
 # b) @slideshow nodes inserted or deleted.
+# 0.3 EKR:
+# - Removed Tkinter import.
+# - next-slide and prev-slide now work more intuitively when current position 
+# changes.
 #@-at
-#@nonl
 #@-node:ekr.20060831165845.2:<< version history >>
 #@nl
 #@<< imports >>
 #@+node:ekr.20060831165845.3:<< imports >>
 import leoGlobals as g
 import leoPlugins
-
-Tk  = g.importExtension('Tkinter',pluginName=__name__,verbose=True,required=True)
+#@nonl
 #@-node:ekr.20060831165845.3:<< imports >>
 #@nl
 
@@ -111,9 +113,10 @@ class slideshowController:
             h = p.headString().strip()
             if h.startswith('@slideshow'):
                 self.firstSlideShow = p.copy()
-                return
+                return p
     
         self.firstSlideShow = None
+        return None
     #@nonl
     #@-node:ekr.20060901182318:findFirstSlideShow
     #@+node:ekr.20060901145257:select
@@ -183,13 +186,11 @@ class slideshowController:
     #@+node:ekr.20060831171016.4:prevSlide
     def prevSlide (self,event=None):
         
-        c = self.c
-        if not self.slideShowRoot:
-            return g.es('Not in any slide show.')
-        if self.slide == self.slideShowRoot:
+        c = self.c ; p = c.currentPosition()
+        if self.slide and self.slide == self.slideShowRoot:
             return g.es('At start of slide show')
-    
-        p = self.slide.threadBack()
+        if p == self.slide:
+            p = self.slide.threadBack()
         while p:
             h = p.headString().strip()
             if h.startswith('@slideshow'):
@@ -199,26 +200,36 @@ class slideshowController:
                 return self.select(p)
             else: p = p.threadBack()
         else:
-            return g.es('Not in any slide show.')
+            p = self.findFirstSlideShow()
+            if p:
+                self.select(p)
+                return g.es('At start of first slide show')
+            else:
+                return g.es('No slide show found')
     #@nonl
     #@-node:ekr.20060831171016.4:prevSlide
     #@+node:ekr.20060831171016.5:nextSlide
     def nextSlide (self,event=None):
         
         c = self.c ; p = c.currentPosition()
-        if not self.slideShowRoot:
-            return g.es('Not in any slide show.')
-            
-        p = self.slide.threadNext()
+        if p == self.slide:
+            p = self.slide.threadNext()
+            oldSlide = self.slide
+        else:
+            oldSlide = None
         while p:
             h = p.headString().strip()
             if h.startswith('@slideshow'):
-                return g.es('At end of slide show')
+                self.select(p)
+                return g.es('At %s of slide show' % g.choose(oldSlide,'end','start'))
             elif h.startswith('@slide'):
                 return self.select(p)
             else: p = p.threadNext()
         else:
-            return g.es('At end of slide show')
+            return g.es(g.choose(self.slideShowRoot,
+                'At end of slide show',
+                'Not in any slide show'))
+    #@nonl
     #@-node:ekr.20060831171016.5:nextSlide
     #@-others
 #@nonl
