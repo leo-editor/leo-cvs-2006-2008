@@ -9,8 +9,9 @@
 <preferences/>
 <find_panel_settings/>
 <vnodes>
-<v t="ekr.20060901142356" a="ETV"><vh>Slides shows about Leo</vh>
+<v t="ekr.20060901142356" a="V"><vh>Read me first</vh>
 <v t="ekr.20060901144246"><vh>buttons</vh>
+<v t="ekr.20060902075743"><vh>@button Save</vh></v>
 <v t="ekr.20060901144331"><vh>@button Show &lt;--</vh></v>
 <v t="ekr.20060901144149.3"><vh>@button Show --&gt;</vh></v>
 <v t="ekr.20060901144149.2"><vh>@button Slide &lt;--</vh></v>
@@ -21,30 +22,40 @@
 <v t="ekr.20060901144149.6"><vh>@url c:\prog\Sounds\s1.wav</vh></v>
 <v t="ekr.20060901144149.7"><vh>@url c:\prog\Sounds\s2.wav</vh></v>
 </v>
-<v t="ekr.20060901144149.8"><vh>@slideshow 1</vh>
-<v t="ekr.20060901144149.9"><vh>Group 1</vh>
-<v t="ekr.20060901144149.10"><vh>@slide 1-1</vh></v>
-<v t="ekr.20060901144149.11"><vh>@slide 1-2</vh></v>
 </v>
-<v t="ekr.20060901144149.12"><vh>Group 2</vh>
-<v t="ekr.20060901144149.13"><vh>@slide 1-3</vh></v>
-<v t="ekr.20060901144149.14"><vh>@slide 1-4</vh></v>
-</v>
-</v>
-<v t="ekr.20060901153101"><vh>@slideshow 2</vh>
-<v t="ekr.20060901153101.1"><vh>Group 1</vh>
+<v t="ekr.20060901153101"><vh>@slideshow Introduction to Leo</vh>
+<v t="ekr.20060901153101.1"><vh>@slide topic 1</vh>
 <v t="ekr.20060901153101.2"><vh>@slide 2-1</vh></v>
 <v t="ekr.20060901153101.3"><vh>@slide 2-2</vh></v>
 </v>
-<v t="ekr.20060901153101.4"><vh>Group 2</vh>
+<v t="ekr.20060901153101.4"><vh>@slide topic 2</vh>
 <v t="ekr.20060901153101.5"><vh>@slide 2-3</vh></v>
 <v t="ekr.20060901153101.6"><vh>@slide 2-4</vh></v>
 </v>
 </v>
+<v t="ekr.20060901144149.8"><vh>@slideshow Using derived files</vh>
+<v t="ekr.20060901144149.9"><vh>@slide Group 1</vh>
+<v t="ekr.20060901144149.10"><vh>@slide 1-1</vh></v>
+<v t="ekr.20060901144149.11"><vh>@slide 1-2</vh></v>
+</v>
+<v t="ekr.20060901144149.12"><vh>@slide Group 2</vh>
+<v t="ekr.20060901144149.13"><vh>@slide 1-3</vh></v>
+<v t="ekr.20060901144149.14"><vh>@slide 1-4</vh></v>
+</v>
 </v>
 </vnodes>
 <tnodes>
-<t tx="ekr.20060901142356"></t>
+<t tx="ekr.20060901142356">@nocolor
+
+This file contains several slideshows illustrating Leo's features.
+
+You control these slides shows using four buttons in the icon bar:
+
+- 'Show --&gt;' and 'Show &lt;--' move backward and forward to the start of a slideshow.
+
+- 'Slide --&gt;' and 'Slide &lt;--' move backward and forward to slides *within* a slideshow.
+
+Now press the 'Slide --&gt;' to take you to the first slideshow: 'Introduction to Leo'.</t>
 <t tx="ekr.20060901144149.2">c.k.simulateCommand('prev-slide')</t>
 <t tx="ekr.20060901144149.3">c.k.simulateCommand('next-slide-show')</t>
 <t tx="ekr.20060901144149.4">from PMIDI import * 
@@ -63,7 +74,9 @@ from time import sleep </t>
 <t tx="ekr.20060901144246"></t>
 <t tx="ekr.20060901144331">c.k.simulateCommand('prev-slide-show')</t>
 <t tx="ekr.20060901144359">c.k.simulateCommand('next-slide')</t>
-<t tx="ekr.20060901153101"></t>
+<t tx="ekr.20060901153101">@nocolor 
+
+This is the start </t>
 <t tx="ekr.20060901153101.1"></t>
 <t tx="ekr.20060901153101.2"># This is the first slide.</t>
 <t tx="ekr.20060901153101.3"># This is the second slide.</t>
@@ -71,5 +84,6 @@ from time import sleep </t>
 <t tx="ekr.20060901153101.5">Slide 3</t>
 <t tx="ekr.20060901153101.6">Slide 4
 </t>
+<t tx="ekr.20060902075743">c.save()</t>
 </tnodes>
 </leo_file>
