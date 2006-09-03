@@ -458,9 +458,9 @@ modes\patch.xml
 modes\perl.xml
 modes\php.xml
 modes\pike.xml
-modes\pl-sql.xml
 modes\pl1.xml
 modes\plain.xml
+modes\plsql.xml
 modes\pop11.xml
 modes\postscript.xml
 modes\povray.xml
@@ -542,6 +542,7 @@ plugins\bibtex.py
 plugins\chapter_hoist.py
 plugins\chinese_menu.py
 plugins\cleo.py
+plugins\cleoOLD.py
 plugins\color_markup.py
 plugins\datenodes.ini
 plugins\datenodes.py
