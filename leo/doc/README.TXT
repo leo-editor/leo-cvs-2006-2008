@@ -1,7 +1,10 @@
-Leo 4.4.1 final                                            August 30, 2006
+Leo 4.4.1.1 final                                       September 3, 2006
 
-Leo 4.4.1 final is available at:
+Leo 4.4.1.1 final is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&package_id=29106
+
+Leo 4.4.1.1 corrects a serious last-minute unicode bug in Leo 4.4.1.
+This version also adds the new slideshow plugin.
 
 Leo is a text editor, data organizer, project manager and much more. See:
 http://webpages.charter.net/edreamleo/intro.html
@@ -11,6 +14,7 @@ The highlights of Leo 4.4.1:
 - Leo outputs decorators correctly, provided that the decorator is not a Leo directive.
 - A new colorizer plugin controlled by jEdit language description files.
 - A new shadow files plugin that allows derived files not to have sentinel lines.
+- A new slide show plugin allows you to use Leo outlines as slide shows.
 - Multiple editors in Leo's body pane.
 - Search commands now support regex replace patterns: \1, \2, etc.
 - Support for external debuggers: see http://webpages.charter.net/edreamleo/debuggers.html

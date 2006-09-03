@@ -125,10 +125,12 @@ class slideshowController:
         '''Make p the present slide, and set self.slide and maybe self.slideShowRoot.'''
     
         c = self.c ; h = p.headString().strip()
+        w = c.frame.body.bodyCtrl
     
         g.es('%s' % h)
         c.frame.tree.expandAllAncestors(p)
         c.selectPosition(p)
+        w.see('1.0')
     
         if h.startswith('@slideshow'):
             self.slideShowRoot = p.copy()

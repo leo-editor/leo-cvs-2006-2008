@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="25821" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="69" left="269" height="768" width="879"/>
+	<global_window_position top="69" left="269" height="730" width="879"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -672,7 +672,7 @@
 </v>
 <v t="ekr.20060620094033"><vh>What's New...</vh>
 <v t="ekr.20060620141510"><vh>Patterns</vh></v>
-<v t="ekr.20060620094033.1"><vh>What's New in Leo 4.4.1</vh>
+<v t="ekr.20060620094033.1"><vh>What's New in Leo 4.4.1 and 4.4.1.1</vh>
 <v t="ekr.20060620094645.310"><vh>@rst html\new-4-4-1.html</vh>
 <v t="ekr.20060621132547"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20060620130636"><vh>New commands</vh></v>
@@ -2812,7 +2812,83 @@
 </v>
 <v t="ekr.20060511074853"><vh>4.4 final</vh></v>
 </v>
-<v t="ekr.20060822140418"><vh>4.4.1</vh>
+<v t="ekr.20060822140418"><vh>4.4.1...</vh>
+<v t="ekr.20060830141224"><vh>4.4.1 final</vh>
+<v t="ekr.20060830141224.2"><vh>Removed warning about changed nodes</vh>
+<v t="ekr.20060830141224.3"><vh>readEndNode (4.x)</vh>
+<v t="ekr.20060830141224.4"><vh>&lt;&lt; indicate that the node has been changed &gt;&gt;</vh>
+<v t="ekr.20060830141224.5"><vh>&lt;&lt; bump at.correctedLines and tell about the correction &gt;&gt;</vh></v>
+</v>
+</v>
+<v t="ekr.20060830141224.6"><vh>Found: tempBodyString</vh>
+<v t="ekr.20060830141224.7"><vh>&lt;&lt; warn about non-empty unvisited nodes &gt;&gt;</vh></v>
+<v t="ekr.20060830141224.8"><vh>&lt;&lt; copy all tempBodyStrings to tnodes &gt;&gt;</vh></v>
+<v t="ekr.20060830141224.9"><vh>&lt;&lt; delete all tempBodyStrings &gt;&gt;</vh></v>
+<v t="ekr.20060830141224.10"><vh>&lt;&lt; handle first and last lines &gt;&gt;</vh></v>
+<v t="ekr.20060830141224.11"><vh>&lt;&lt; scan @+body &gt;&gt; 3.x</vh></v>
+<v t="ekr.20060830141224.3"><vh>readEndNode (4.x)</vh>
+<v t="ekr.20060830141224.4"><vh>&lt;&lt; indicate that the node has been changed &gt;&gt;</vh>
+<v t="ekr.20060830141224.5"><vh>&lt;&lt; bump at.correctedLines and tell about the correction &gt;&gt;</vh></v>
+</v>
+</v>
+<v t="ekr.20060830141224.4"><vh>&lt;&lt; indicate that the node has been changed &gt;&gt;</vh>
+<v t="ekr.20060830141224.5"><vh>&lt;&lt; bump at.correctedLines and tell about the correction &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20060830141224.12"><vh>copyAllTempBodyStringsToTnodes</vh></v>
+</v>
+</v>
+<v t="ekr.20060830141224.13"><vh>Bugs fixed</vh>
+<v t="ekr.20060830141224.14"><vh>Fixed serious bug in Paste Node as Clone</vh>
+<v t="ekr.20060830141224.15"><vh>Report</vh></v>
+<v t="ekr.20060830141224.16"><vh>What I did</vh></v>
+<v t="ekr.20060830141224.17"><vh>Changed:</vh>
+<v t="ekr.20060830141224.18"><vh>getLeoFile</vh>
+<v t="ekr.20060830141224.19"><vh>&lt;&lt; warn on read-only files &gt;&gt;</vh></v>
+<v t="ekr.20060830141224.20"><vh>&lt;&lt; scan all the xml elements &gt;&gt;</vh></v>
+<v t="ekr.20060830141224.21"><vh>&lt;&lt; raise an alert &gt;&gt;</vh></v>
+<v t="ekr.20060830141224.22"><vh>&lt;&lt; set current and top positions &gt;&gt;</vh></v>
+<v t="ekr.20060830141224.23"><vh>&lt;&lt; restore attributes in descendent tnodes &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20060830141224.24"><vh>getLeoOutline (from clipboard)</vh>
+<v t="ekr.20060830141224.25"><vh>getLeoOutlineHelper</vh>
+<v t="ekr.20060830141224.26"><vh>&lt;&lt; recreate tnodesDict &gt;&gt;</vh></v>
+</v>
+</v>
+<v t="ekr.20060830141224.27"><vh>getVnodes</vh>
+<v t="ekr.20060830141224.28"><vh>&lt;&lt; set self.forbiddenTnodes to tnodes than must not be pasted &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20060830141224.29"><vh>getVnode changed for 4.2 &amp; 4.4)</vh>
+<v t="ekr.20060830141224.30"><vh>&lt;&lt; Handle vnode attribute bits  &gt;&gt;</vh></v>
+<v t="ekr.20060830141224.31"><vh>&lt;&lt; raise invalidPaste if the tnode is in self.forbiddenTnodes &gt;&gt;</vh></v>
+<v t="ekr.20060830141224.32"><vh>&lt;&lt; Set the remembered status bits &gt;&gt;</vh></v>
+<v t="ekr.20060830141224.33"><vh>&lt;&lt; Append to current or top stack &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20060830141224.34"><vh>leoFileCommands._init_</vh></v>
+<v t="ekr.20060830141224.35"><vh>createVnode (changed for 4.2) sets skip</vh>
+<v t="ekr.20060830141224.36"><vh>&lt;&lt; handle unknown vnode attributes &gt;&gt;</vh></v>
+</v>
+</v>
+</v>
+<v t="ekr.20060830141224.37"><vh>Fixed minor .leoID.txt bug</vh>
+<v t="ekr.20060830141224.38"><vh>Report</vh></v>
+<v t="ekr.20060830141224.39"><vh>app.setLeoID</vh>
+<v t="ekr.20060830141224.40"><vh>&lt;&lt; return if we can set leoID from sys.leoID&gt;&gt;</vh></v>
+<v t="ekr.20060830141224.41"><vh>&lt;&lt; return if we can set leoID from "leoID.txt" &gt;&gt;</vh></v>
+<v t="ekr.20060830141224.42"><vh>&lt;&lt; return if we can set leoID from os.getenv('USER') &gt;&gt;</vh></v>
+<v t="ekr.20060830141224.43"><vh>&lt;&lt; put up a dialog requiring a valid id &gt;&gt;</vh></v>
+<v t="ekr.20060830141224.44"><vh>&lt;&lt; attempt to create leoID.txt &gt;&gt;</vh></v>
+</v>
+</v>
+<v t="ekr.20060830141224.45"><vh>Improved speed of unmark-all and corresponding undo/redo</vh>
+<v t="ekr.20060830141224.46"><vh>Report</vh></v>
+<v t="ekr.20060830141224.47"><vh>unmarkAll</vh></v>
+<v t="ekr.20060830141224.48"><vh>undoGroup</vh></v>
+<v t="ekr.20060830141224.49"><vh>updateMarks</vh></v>
+<v t="ekr.20060830141224.50"><vh>afterMark</vh></v>
+<v t="ekr.20060830141224.51"><vh>undoMark</vh></v>
+</v>
+</v>
+</v>
 <v t="ekr.20060822140418.1"><vh>4.4.1 b4</vh>
 <v t="ekr.20060822140418.3"><vh>Bugs fixed</vh>
 <v t="ekr.20060822140418.4"><vh>Added bindings to text panes for show-font command</vh></v>
@@ -2948,82 +3024,7 @@
 </v>
 </v>
 <v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20060830141224" a="ETV"><vh>4.4.1 final</vh>
-<v t="ekr.20060830141224.2"><vh>Removed warning about changed nodes</vh>
-<v t="ekr.20060830141224.3"><vh>readEndNode (4.x)</vh>
-<v t="ekr.20060830141224.4"><vh>&lt;&lt; indicate that the node has been changed &gt;&gt;</vh>
-<v t="ekr.20060830141224.5"><vh>&lt;&lt; bump at.correctedLines and tell about the correction &gt;&gt;</vh></v>
-</v>
-</v>
-<v t="ekr.20060830141224.6"><vh>Found: tempBodyString</vh>
-<v t="ekr.20060830141224.7"><vh>&lt;&lt; warn about non-empty unvisited nodes &gt;&gt;</vh></v>
-<v t="ekr.20060830141224.8"><vh>&lt;&lt; copy all tempBodyStrings to tnodes &gt;&gt;</vh></v>
-<v t="ekr.20060830141224.9"><vh>&lt;&lt; delete all tempBodyStrings &gt;&gt;</vh></v>
-<v t="ekr.20060830141224.10"><vh>&lt;&lt; handle first and last lines &gt;&gt;</vh></v>
-<v t="ekr.20060830141224.11"><vh>&lt;&lt; scan @+body &gt;&gt; 3.x</vh></v>
-<v t="ekr.20060830141224.3"><vh>readEndNode (4.x)</vh>
-<v t="ekr.20060830141224.4"><vh>&lt;&lt; indicate that the node has been changed &gt;&gt;</vh>
-<v t="ekr.20060830141224.5"><vh>&lt;&lt; bump at.correctedLines and tell about the correction &gt;&gt;</vh></v>
-</v>
-</v>
-<v t="ekr.20060830141224.4"><vh>&lt;&lt; indicate that the node has been changed &gt;&gt;</vh>
-<v t="ekr.20060830141224.5"><vh>&lt;&lt; bump at.correctedLines and tell about the correction &gt;&gt;</vh></v>
-</v>
-<v t="ekr.20060830141224.12"><vh>copyAllTempBodyStringsToTnodes</vh></v>
-</v>
-</v>
-<v t="ekr.20060830141224.13"><vh>Bugs fixed</vh>
-<v t="ekr.20060830141224.14"><vh>Fixed serious bug in Paste Node as Clone</vh>
-<v t="ekr.20060830141224.15"><vh>Report</vh></v>
-<v t="ekr.20060830141224.16"><vh>What I did</vh></v>
-<v t="ekr.20060830141224.17"><vh>Changed:</vh>
-<v t="ekr.20060830141224.18"><vh>getLeoFile</vh>
-<v t="ekr.20060830141224.19"><vh>&lt;&lt; warn on read-only files &gt;&gt;</vh></v>
-<v t="ekr.20060830141224.20"><vh>&lt;&lt; scan all the xml elements &gt;&gt;</vh></v>
-<v t="ekr.20060830141224.21"><vh>&lt;&lt; raise an alert &gt;&gt;</vh></v>
-<v t="ekr.20060830141224.22"><vh>&lt;&lt; set current and top positions &gt;&gt;</vh></v>
-<v t="ekr.20060830141224.23"><vh>&lt;&lt; restore attributes in descendent tnodes &gt;&gt;</vh></v>
-</v>
-<v t="ekr.20060830141224.24"><vh>getLeoOutline (from clipboard)</vh>
-<v t="ekr.20060830141224.25"><vh>getLeoOutlineHelper</vh>
-<v t="ekr.20060830141224.26"><vh>&lt;&lt; recreate tnodesDict &gt;&gt;</vh></v>
-</v>
-</v>
-<v t="ekr.20060830141224.27"><vh>getVnodes</vh>
-<v t="ekr.20060830141224.28"><vh>&lt;&lt; set self.forbiddenTnodes to tnodes than must not be pasted &gt;&gt;</vh></v>
-</v>
-<v t="ekr.20060830141224.29"><vh>getVnode changed for 4.2 &amp; 4.4)</vh>
-<v t="ekr.20060830141224.30"><vh>&lt;&lt; Handle vnode attribute bits  &gt;&gt;</vh></v>
-<v t="ekr.20060830141224.31"><vh>&lt;&lt; raise invalidPaste if the tnode is in self.forbiddenTnodes &gt;&gt;</vh></v>
-<v t="ekr.20060830141224.32"><vh>&lt;&lt; Set the remembered status bits &gt;&gt;</vh></v>
-<v t="ekr.20060830141224.33"><vh>&lt;&lt; Append to current or top stack &gt;&gt;</vh></v>
-</v>
-<v t="ekr.20060830141224.34"><vh>leoFileCommands._init_</vh></v>
-<v t="ekr.20060830141224.35"><vh>createVnode (changed for 4.2) sets skip</vh>
-<v t="ekr.20060830141224.36"><vh>&lt;&lt; handle unknown vnode attributes &gt;&gt;</vh></v>
-</v>
-</v>
-</v>
-<v t="ekr.20060830141224.37"><vh>Fixed minor .leoID.txt bug</vh>
-<v t="ekr.20060830141224.38"><vh>Report</vh></v>
-<v t="ekr.20060830141224.39"><vh>app.setLeoID</vh>
-<v t="ekr.20060830141224.40"><vh>&lt;&lt; return if we can set leoID from sys.leoID&gt;&gt;</vh></v>
-<v t="ekr.20060830141224.41"><vh>&lt;&lt; return if we can set leoID from "leoID.txt" &gt;&gt;</vh></v>
-<v t="ekr.20060830141224.42"><vh>&lt;&lt; return if we can set leoID from os.getenv('USER') &gt;&gt;</vh></v>
-<v t="ekr.20060830141224.43"><vh>&lt;&lt; put up a dialog requiring a valid id &gt;&gt;</vh></v>
-<v t="ekr.20060830141224.44"><vh>&lt;&lt; attempt to create leoID.txt &gt;&gt;</vh></v>
-</v>
-</v>
-<v t="ekr.20060830141224.45"><vh>Improved speed of unmark-all and corresponding undo/redo</vh>
-<v t="ekr.20060830141224.46"><vh>Report</vh></v>
-<v t="ekr.20060830141224.47"><vh>unmarkAll</vh></v>
-<v t="ekr.20060830141224.48"><vh>undoGroup</vh></v>
-<v t="ekr.20060830141224.49"><vh>updateMarks</vh></v>
-<v t="ekr.20060830141224.50"><vh>afterMark</vh></v>
-<v t="ekr.20060830141224.51"><vh>undoMark</vh></v>
-</v>
-</v>
-</v>
+<v t="ekr.20060903102158" a="V"><vh>4.4.1.1 final</vh></v>
 </v>
 </v>
 </vnodes>
@@ -29798,7 +29799,11 @@ Added in Leo 4.4.1 b1::
     python-help
     run-unit-test
     toggle-invisibles</t>
-<t tx="ekr.20060620130943">New in Leo 4.4.1 b2:
+<t tx="ekr.20060620130943">New in Leo 4.4.1.1 final:
+    
+- The slideshow plugin
+
+New in Leo 4.4.1 b2:
     
 - The mod_scripting plugin now creates a press-x-button command for every button 'x'.
   You can specify settings for such commands using @shortcuts nodes.
@@ -31425,5 +31430,38 @@ For example, to specify a font for php (only), put the following in the body tex
         # roman, italic
     php_keyword_font_weight = bold
         # normal, bold</t>
+<t tx="ekr.20060903102158">Leo 4.4.1.1 final                                       September 3, 2006
+
+Leo 4.4.1.1 final is available at:
+http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+
+Leo 4.4.1.1 corrects a serious last-minute unicode bug in Leo 4.4.1.
+This version also adds the new slideshow plugin.
+
+Leo is a text editor, data organizer, project manager and much more. See:
+http://webpages.charter.net/edreamleo/intro.html
+
+The highlights of Leo 4.4.1:
+----------------------------
+- Leo outputs decorators correctly, provided that the decorator is not a Leo directive.
+- A new colorizer plugin controlled by jEdit language description files.
+- A new shadow files plugin that allows derived files not to have sentinel lines.
+- A new slide show plugin allows you to use Leo outlines as slide shows.
+- Multiple editors in Leo's body pane.
+- Search commands now support regex replace patterns: \1, \2, etc.
+- Support for external debuggers: see http://webpages.charter.net/edreamleo/debuggers.html
+- The scripting plugin now creates a Debug Script button.
+- Several new commands including run-unit-test, python-help, toggle-invisibles,
+  and scroll-outline-left/right.
+- The help-for-command commands now contains information for almost all commands.
+- A new shortcut_button plugin.
+
+Links:
+------
+Leo:      http://webpages.charter.net/edreamleo/front.html
+Home:     http://sourceforge.net/projects/leo/
+Download: http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:      http://leo.tigris.org/source/browse/leo/
+Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
 </tnodes>
 </leo_file>

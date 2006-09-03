@@ -4493,7 +4493,7 @@ def pasteText (self,event=None):
     oldText = w.get('1.0','end')
     i,j = g.app.gui.getTextSelection(w)
     s = s1 = g.app.gui.getTextFromClipboard()
-    # g.trace(wname,s,i,j)
+    # g.trace(wname,s,repr(s))
     
     singleLine = wname.startswith('head') or wname.startswith('minibuffer')
     
@@ -7754,7 +7754,7 @@ def pasteText (self,event=None):
     oldText = w.get('1.0','end')
     i,j = g.app.gui.getTextSelection(w)
     s = s1 = g.app.gui.getTextFromClipboard()
-    # g.trace(wname,s,i,j)
+    # g.trace(wname,s,repr(s))
     
     singleLine = wname.startswith('head') or wname.startswith('minibuffer')
     

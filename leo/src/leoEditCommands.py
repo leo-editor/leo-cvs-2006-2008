@@ -3239,14 +3239,23 @@ class editCommandsClass (baseEditCommandsClass):
         
         c.widgetWantsFocus(w)
         if forward:
-             ind = w.search('\\W','insert',stopindex='end',regexp=True)
-             if ind: nind = '%s wordend' % ind
-             else:   nind = 'end'
+            if 1:
+                 ind = w.search('\\W','insert',stopindex='end',regexp=True)
+                 if ind: nind = '%s wordend' % ind
+                 else:   nind = 'end'
+            else:
+                ind = w.search('\\W\\w','insert',stopindex='end',regexp=True)
+                if ind: nind = '%s +1c' % ind
+                else:   nind = 'end'
         else:
-             ind = w.search('\\W','insert -1c',stopindex='1.0',regexp=True,backwards=True)
-             if ind: nind = '%s wordstart' % ind
-             else:   nind = '1.0'
+            if 1:
+                ind = w.search('\\W','insert -1c',stopindex='1.0',regexp=True,backwards=True)
+            else:
+                ind = w.search('\\w(\\W|$)','insert',stopindex='1.0',regexp=True,backwards=True)
+            if ind: nind = '%s wordstart' % ind
+            else:   nind = '1.0'
         self.moveToHelper(event,nind,extend)
+    #@nonl
     #@-node:ekr.20051218121447:moveWordHelper
     #@+node:ekr.20051218171457:movePastCloseHelper
     def movePastCloseHelper (self,event,extend):

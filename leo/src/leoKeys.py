@@ -2767,7 +2767,7 @@ class keyHandlerClass:
         
         k = self ; c = k.c
         f = c.commandsDict.get(commandName)
-        if f and f.__name__ != 'dummyCallback':
+        if f and f.__name__ != 'dummyCallback' and verbose:
             g.es_print('Redefining %s' % (commandName), color='red')
             
         c.commandsDict [commandName] = func

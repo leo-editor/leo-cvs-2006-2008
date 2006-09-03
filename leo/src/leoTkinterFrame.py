@@ -1535,7 +1535,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
         oldText = w.get('1.0','end')
         i,j = g.app.gui.getTextSelection(w)
         s = s1 = g.app.gui.getTextFromClipboard()
-        g.trace(wname,s,repr(s))
+        # g.trace(wname,s,repr(s))
         
         singleLine = wname.startswith('head') or wname.startswith('minibuffer')
         
