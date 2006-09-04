@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="7417" clone_windows="0"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="7439" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="24" left="335" height="766" width="940"/>
+	<global_window_position top="90" left="317" height="697" width="879"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -422,9 +422,6 @@
 </v>
 <v t="ekr.20060513122450"><vh>@thin xcc_nodes.py</vh></v>
 </v>
-<v t="ekr.20050830091910"><vh>Zodb</vh>
-<v t="ekr.20050825154553"><vh>@thin zodb.py</vh></v>
-</v>
 </v>
 <v t="EKR.20040517075715"><vh>External editors &amp; Open With</vh>
 <v t="EKR.20040517075715.1"><vh>@thin mod_tempfname.py</vh></v>
@@ -484,7 +481,7 @@
 <v t="EKR.20040517080555.36"><vh>@thin scripts_menu.py</vh></v>
 <v t="ekr.20040828122150"><vh>@thin pie_menus.py</vh></v>
 </v>
-<v t="edream.110203113231.872"><vh>Nodes...</vh>
+<v t="edream.110203113231.872" a="E"><vh>Nodes...</vh>
 <v t="edream.110203113231.873"><vh>@thin at_folder.py</vh></v>
 <v t="ekr.20040915085351"><vh>@thin at_produce.py</vh></v>
 <v t="ktenney.20041211072654.1"><vh>@thin at_view.py</vh></v>
@@ -967,7 +964,7 @@
 <v t="ekr.20050227071948.29" annotate="7d71002e"><vh>drawing hooks</vh></v>
 </v>
 </v>
-<v t="ekr.20050227071948.33" annotate="540c0100003764373130303238353530383730373236393666373236393734373937313031323836333631366536653666373436313734363530613534366235303639363336623663363535363631373230613731303236663731303334643066323736323535303436653666363436353731303532383638303236663731303635353034363636393663363537313037363235353032363236373731303832383638303236663731303935353030373130613632353530393631373236333638363537343739373036353731306232383638303236663731306335353035346637343638363537323731306436323535303236363637373130653238363830323666373130663638306136323735326571002e"><vh>@thin cleo.py</vh></v>
+<v t="tbrown.20060828111141"><vh>@thin cleo.py</vh></v>
 </v>
 <v t="ekr.20050303080042"><vh> footprints</vh>
 <v t="ekr.20050303080236"><vh>To do</vh></v>
@@ -983,11 +980,12 @@
 <v t="ekr.20040831115238"><vh>@thin URLloader.py</vh></v>
 </v>
 </v>
-<v t="ekr.20060530091119" a="TV"><vh>New colorizer</vh>
+<v t="ekr.20060904092124"><vh>Handle @ignore in slideshow</vh></v>
+<v t="ekr.20060831165821" a="TV"
+expanded="ekr.20060831165845.6,"><vh>@thin slideshow.py</vh></v>
+<v t="ekr.20060530091119"><vh>New colorizer</vh>
 <v t="ekr.20060623075925.1"><vh>To do</vh></v>
 <v t="ekr.20060530091119.2"><vh>@url http://www.jedit.org/42docs/users-guide/writing-modes-part.html</vh></v>
-<v t="ekr.20060530091119.20" a="E"
-expanded="ekr.20060530091119.9,ekr.20060530091119.38,ekr.20060530091119.46,"><vh>@thin __jEdit_colorizer__.py</vh></v>
 <v t="ekr.20060824131842"><vh>Recent</vh>
 <v t="ekr.20060530091119.8"><vh>__init__</vh></v>
 <v t="ekr.20060530091119.9"><vh>init_mode &amp; helpers</vh>
@@ -999,7 +997,15 @@ expanded="ekr.20060530091119.9,ekr.20060530091119.38,ekr.20060530091119.46,"><vh
 </v>
 <v t="ekr.20060530091119.48"><vh>colorRangeWithTag</vh></v>
 <v t="ekr.20060530091119.13"><vh>colorOneChunk</vh></v>
+<v t="ekr.20060530091119.37"><vh>configure_tags</vh></v>
+<v t="ekr.20060829121534"><vh>Handle no_escape arg</vh>
+<v t="ekr.20060530091119.57"><vh>match_span &amp; helper</vh>
+<v t="ekr.20060904084624"><vh>match_span_helper</vh></v>
 </v>
+<v t="ekr.20060530091119.58"><vh>match_span_regexp</vh></v>
+</v>
+</v>
+<v t="ekr.20060530091119.20"><vh>@thin __jEdit_colorizer__.py</vh></v>
 </v>
 </vnodes>
 <tnodes>
@@ -9375,7 +9381,6 @@ Edward K. Ream:  Aug 22, 2005.</t>
 - Added warning to docstring that this is not a valid Leo plugin.
 
 - Added init function that always returns False.  This helps Leo's unit tests.</t>
-<t tx="ekr.20050830091910"></t>
 <t tx="ekr.20051025144116">c.spellCommands.openSpellTab()</t>
 <t tx="ekr.20051109021852">@ Not ready for prime time yet.</t>
 <t tx="ekr.20060109114710">c.openLeoSettings()</t>
@@ -11835,6 +11840,7 @@ return(0);
     # Attributes dict ivars: defaults are as shown.
     self.default = 'null'
     self.digit_re = ''
+    self.escape = ''
     self.highlight_digits = True
     self.ignore_case = True
     self.no_word_sep = ''
@@ -11869,6 +11875,7 @@ return(0);
     self.redoingColoring = False
     self.was_non_incremental = False # True: we are coloring as the result of a non-incremental call.
     # Data...
+    self.fonts = {} # Keys are config names.  Values are actual fonts.
     self.keywords = {} # Keys are keywords, values are 0..5.
     self.modes = {} # Keys are languages, values are modes.
     self.mode = None # The mode object for the present language.
@@ -12016,6 +12023,100 @@ return(0);
             self.word_chars.remove(ch)
                 
     # g.trace(len(d.keys()))</t>
+<t tx="ekr.20060530091119.37">def configure_tags (self):
+
+    c = self.c ; w = c.frame.body.bodyCtrl
+    
+    # Get the default body font.
+    defaultBodyfont = self.fonts.get('default_body_font')
+    if not defaultBodyfont:
+        defaultBodyfont = c.config.getFontFromParams(
+            "body_text_font_family", "body_text_font_size",
+            "body_text_font_slant",  "body_text_font_weight",
+            c.config.defaultBodyFontSize)
+        self.fonts['default_body_font'] = defaultBodyfont
+    
+    # Configure fonts.
+    keys = default_font_dict.keys() ; keys.sort()
+    for key in keys:
+        option_name = default_font_dict[key]
+        # First, look for the language-specific setting, then the general setting.
+        for name in ('%s_%s' % (self.language,option_name),(option_name)):
+            font = self.fonts.get(name)
+            if font:
+                # g.trace('found',name,id(font))
+                w.tag_config(key,font=font)
+                break
+            else:
+                family = c.config.get(name + '_family','family')
+                size   = c.config.get(name + '_size',  'size')   
+                slant  = c.config.get(name + '_slant', 'slant')
+                weight = c.config.get(name + '_weight','weight')
+                if family or slant or weight or size:
+                    family = family or g.app.config.defaultFontFamily
+                    size   = size or c.config.defaultBodyFontSize
+                    slant  = slant or 'roman'
+                    weight = weight or 'normal'
+                    font = g.app.gui.getFontFromParams(family,size,slant,weight)
+                    # Save a reference to the font so it 'sticks'.
+                    self.fonts[name] = font 
+                    # g.trace(key,name,family,size,slant,weight,id(font))
+                    w.tag_config(key,font=font)
+                    break
+        else: # Neither the general setting nor the language-specific setting exists.
+            if self.fonts.keys(): # Restore the default font.
+                # g.trace('default',key)
+                w.tag_config(key,font=defaultBodyfont)
+
+    keys = default_colors_dict.keys() ; keys.sort()
+    for name in keys:
+        option_name,default_color = default_colors_dict[name]
+        color = (
+            c.config.getColor('%s_%s' % (self.language,option_name)) or
+            c.config.getColor(option_name) or
+            default_color
+        )
+        # g.trace(option_name,color)
+            
+        # Must use foreground, not fg.
+        try:
+            self.body.tag_configure(name, foreground=color)
+        except: # Recover after a user error.
+            g.es_exception()
+            self.body.tag_configure(name, foreground=default_color)
+    
+    # underline=var doesn't seem to work.
+    if 0: # self.use_hyperlinks: # Use the same coloring, even when hyperlinks are in effect.
+        self.body.tag_configure("link",underline=1) # defined
+        self.body.tag_configure("name",underline=0) # undefined
+    else:
+        self.body.tag_configure("link",underline=0)
+        if self.underline_undefined:
+            self.body.tag_configure("name",underline=1)
+        else:
+            self.body.tag_configure("name",underline=0)
+            
+    self.configure_variable_tags()
+        
+    # Colors for latex characters.  Should be user options...
+    
+    if 1: # Alas, the selection doesn't show if a background color is specified.
+        self.body.tag_configure("latexModeBackground",foreground="black")
+        self.body.tag_configure("latexModeKeyword",foreground="blue")
+        self.body.tag_configure("latexBackground",foreground="black")
+        self.body.tag_configure("latexKeyword",foreground="blue")
+    else: # Looks cool, and good for debugging.
+        self.body.tag_configure("latexModeBackground",foreground="black",background="seashell1")
+        self.body.tag_configure("latexModeKeyword",foreground="blue",background="seashell1")
+        self.body.tag_configure("latexBackground",foreground="black",background="white")
+        self.body.tag_configure("latexKeyword",foreground="blue",background="white")
+        
+    # Tags for wiki coloring.
+    self.body.tag_configure("bold",font=self.bold_font)
+    self.body.tag_configure("italic",font=self.italic_font)
+    self.body.tag_configure("bolditalic",font=self.bolditalic_font)
+    for name in self.color_tags_list:
+        self.body.tag_configure(name,foreground=name)</t>
 <t tx="ekr.20060530091119.48">def colorRangeWithTag (self,s,i,j,tag,delegate='',exclude_match=False):
 
     '''Add an item to the tagList if colorizing is enabled.'''
@@ -12044,9 +12145,73 @@ return(0);
     elif not exclude_match:
         # if tag != 'blank': g.trace('***',self.rulesetName,tag,x1,x2,s[i:j])
         self.tagList.append((tag,x1,x2),)</t>
-<t tx="ekr.20060623075925.1">@nocolor
+<t tx="ekr.20060530091119.57">def match_span (self,s,i,
+    kind='',begin='',end='',
+    at_line_start=False,at_whitespace_end=False,at_word_start=False,
+    delegate='',exclude_match=False,
+    no_escape=False,no_line_break=False,no_word_break=False):
 
-- Allow per-language colors including bold/italic.
+    '''Succeed if s[i:] starts with 'begin' and contains a following 'end'.'''
+    
+    if at_line_start and i != 0 and s[i-1] != '\n':
+        j = i
+    elif at_whitespace_end and i != g.skip_ws(s,0):
+        j = i
+    elif at_word_start and i &gt; 0 and s[i-1] not in self.word_chars:
+        j = i
+    elif not g.match(s,i,begin):
+        j = i
+    else:
+        j = self.match_span_helper(i+len(begin),end,no_escape,no_line_break)
+        if j == -1:
+            j = i
+        else:
+            # g.trace(i,j,s[i:j],kind,no_line_break)
+            i2 = i + len(begin) ; j2 = j + len(end)
+            self.colorRangeWithTag(s,i,i2,kind,delegate=None,    exclude_match=exclude_match)
+            self.colorRangeWithTag(s,i2,j,kind,delegate=delegate,exclude_match=exclude_match)
+            self.colorRangeWithTag(s,j,j2,kind,delegate=None,    exclude_match=exclude_match)
+            j = j2
+            self.prev = (i,j,kind)
+
+    self.trace_match(kind,s,i,j)
+    return j - i</t>
+<t tx="ekr.20060530091119.58">def match_span_regexp (self,s,i,
+    kind='',begin='',end='',
+    at_line_start=False,at_whitespace_end=False,at_word_start=False,
+    delegate='',exclude_match=False,
+    no_escape=False,no_line_break=False, no_word_break=False,
+):
+        
+    '''Succeed if s[i:] starts with 'begin' ( a regular expression) and contains a following 'end'.'''
+    
+    if self.trace_match_flag:
+        g.trace('begin',repr(begin),'end',repr(end),self.dump(s[i:]))
+    
+    if at_line_start and i != 0 and s[i-1] != '\n': return 0
+    if at_whitespace_end and i != g.skip_ws(s,0): return 0
+    if at_word_start and i &gt; 0 and s[i-1] not in self.word_chars: return 0
+    
+    n = self.match_regexp_helper(s,i,begin)
+    # We may have to allow $n here, in which case we must use a regex object?
+    if n &gt; 0:
+        j = i + n
+        j2 = s.find(end,j)
+        if j2 == -1: return 0
+        if self.escape and not no_escape and g.match(s,j2-1,self.escape):
+            # An escaped end **aborts the entire match**:
+            # there is no way to 'restart' the regex.
+            return 0
+        i2 = j2 - len(end)
+        self.colorRangeWithTag(s,i,j,kind, delegate=None,     exclude_match=exclude_match)
+        self.colorRangeWithTag(s,j,i2,kind, delegate=delegate,exclude_match=False)
+        self.colorRangeWithTag(s,i2,j2,kind,delegate=None,    exclude_match=exclude_match)
+        self.prev = (i,j,kind)
+        self.trace_match(kind,s,i,j2)
+        return j2 - i
+    else: return 0
+   </t>
+<t tx="ekr.20060623075925.1">@nocolor
 
 - Rewrite recolor_all to handle images.</t>
 <t tx="ekr.20060629124102">@nocolor
@@ -12071,6 +12236,7 @@ Cleanup:
     aList = (
         ('default',         'null'),
 	    ('digit_re',        ''),
+        ('escape',          ''), # New in Leo 4.4.2.
 	    ('highlight_digits',True),
 	    ('ignore_case',     True),
 	    ('no_word_sep',     ''),
@@ -12180,5 +12346,34 @@ if not ok:
     
     # g.trace(name,language,rulesetName)
     return language,rulesetName</t>
+<t tx="ekr.20060829121534">@nocolor
+
+&lt;RULES ESCAPE="\" IGNORE_CASE="FALSE" HIGHLIGHT_DIGITS="TRUE"&gt;
+
+This affects the no_escape param:
+    
+NO_ESCAPE - If TRUE, the ruleset's escape character will have no effect
+before the span's end string. Otherwise, the presence of the escape character
+will cause that occurrence of the end string to be ignored.
+
+@color</t>
+<t tx="ekr.20060904084624">def match_span_helper (self,i,begin,end,no_escape,no_line_break):
+    
+    '''Return n &gt;= 0 if s[i] ends with a non-escaped 'end' string.'''
+    
+    esc = self.escape
+        
+    while 1:
+        j = s.find(end,i)
+        if j == -1:
+            return -1
+        elif no_line_break and '\n' in s[i:j]:
+            return -1
+        elif esc and not no_escape and g.match(s,j-1,esc):
+            # Continue searching past the escaped end string.
+            i = j + len(end) + 1
+        else:
+            return j</t>
+<t tx="ekr.20060904092124"></t>
 </tnodes>
 </leo_file>
