@@ -11,6 +11,7 @@ properties = {
 python_main_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": "",
@@ -318,165 +319,155 @@ def python_rule4(colorer, s, i):
         no_escape=False, no_line_break=False, no_word_break=False)
 
 def python_rule5(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="literal1", seq="\"",
-        at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="", exclude_match=False)
-
-def python_rule6(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="literal1", seq="'",
-        at_line_start=False, at_whitespace_end=False, at_word_start=False,
-        delegate="", exclude_match=False)
-
-def python_rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def python_rule8(colorer, s, i):
+def python_rule6(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="!",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def python_rule9(colorer, s, i):
+def python_rule7(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def python_rule10(colorer, s, i):
+def python_rule8(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<=",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def python_rule11(colorer, s, i):
+def python_rule9(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="+",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def python_rule12(colorer, s, i):
+def python_rule10(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="-",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def python_rule13(colorer, s, i):
+def python_rule11(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="/",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def python_rule14(colorer, s, i):
+def python_rule12(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="*",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def python_rule15(colorer, s, i):
+def python_rule13(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq=">",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def python_rule16(colorer, s, i):
+def python_rule14(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="<",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def python_rule17(colorer, s, i):
+def python_rule15(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="%",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def python_rule18(colorer, s, i):
+def python_rule16(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="&",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def python_rule19(colorer, s, i):
+def python_rule17(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="|",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def python_rule20(colorer, s, i):
+def python_rule18(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="^",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def python_rule21(colorer, s, i):
+def python_rule19(colorer, s, i):
     return colorer.match_seq(s, i, kind="operator", seq="~",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate="")
 
-def python_rule22(colorer, s, i):
+def python_rule20(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind="function", pattern="(",
         at_line_start=False, at_whitespace_end=False, at_word_start=False, exclude_match=True)
 
-def python_rule23(colorer, s, i):
+def python_rule21(colorer, s, i):
     return colorer.match_keywords(s, i)
 
 # Rules dict for python_main ruleset.
 rulesDict1 = {
-	"!": [python_rule8,],
-	"\"": [python_rule1,python_rule3,python_rule5,],
+	"!": [python_rule6,],
+	"\"": [python_rule1,python_rule3,],
 	"#": [python_rule0,],
-	"%": [python_rule17,],
-	"&": [python_rule18,],
-	"'": [python_rule2,python_rule4,python_rule6,],
-	"(": [python_rule22,],
-	"*": [python_rule14,],
-	"+": [python_rule11,],
-	"-": [python_rule12,],
-	"/": [python_rule13,],
-	"0": [python_rule23,],
-	"1": [python_rule23,],
-	"2": [python_rule23,],
-	"3": [python_rule23,],
-	"4": [python_rule23,],
-	"5": [python_rule23,],
-	"6": [python_rule23,],
-	"7": [python_rule23,],
-	"8": [python_rule23,],
-	"9": [python_rule23,],
-	"<": [python_rule10,python_rule16,],
-	"=": [python_rule7,],
-	">": [python_rule9,python_rule15,],
-	"@": [python_rule23,],
-	"A": [python_rule23,],
-	"B": [python_rule23,],
-	"C": [python_rule23,],
-	"D": [python_rule23,],
-	"E": [python_rule23,],
-	"F": [python_rule23,],
-	"G": [python_rule23,],
-	"H": [python_rule23,],
-	"I": [python_rule23,],
-	"J": [python_rule23,],
-	"K": [python_rule23,],
-	"L": [python_rule23,],
-	"M": [python_rule23,],
-	"N": [python_rule23,],
-	"O": [python_rule23,],
-	"P": [python_rule23,],
-	"Q": [python_rule23,],
-	"R": [python_rule23,],
-	"S": [python_rule23,],
-	"T": [python_rule23,],
-	"U": [python_rule23,],
-	"V": [python_rule23,],
-	"W": [python_rule23,],
-	"X": [python_rule23,],
-	"Y": [python_rule23,],
-	"Z": [python_rule23,],
-	"^": [python_rule20,],
-	"_": [python_rule23,],
-	"a": [python_rule23,],
-	"b": [python_rule23,],
-	"c": [python_rule23,],
-	"d": [python_rule23,],
-	"e": [python_rule23,],
-	"f": [python_rule23,],
-	"g": [python_rule23,],
-	"h": [python_rule23,],
-	"i": [python_rule23,],
-	"j": [python_rule23,],
-	"k": [python_rule23,],
-	"l": [python_rule23,],
-	"m": [python_rule23,],
-	"n": [python_rule23,],
-	"o": [python_rule23,],
-	"p": [python_rule23,],
-	"q": [python_rule23,],
-	"r": [python_rule23,],
-	"s": [python_rule23,],
-	"t": [python_rule23,],
-	"u": [python_rule23,],
-	"v": [python_rule23,],
-	"w": [python_rule23,],
-	"x": [python_rule23,],
-	"y": [python_rule23,],
-	"z": [python_rule23,],
-	"|": [python_rule19,],
-	"~": [python_rule21,],
+	"%": [python_rule15,],
+	"&": [python_rule16,],
+	"'": [python_rule2,python_rule4,],
+	"(": [python_rule20,],
+	"*": [python_rule12,],
+	"+": [python_rule9,],
+	"-": [python_rule10,],
+	"/": [python_rule11,],
+	"0": [python_rule21,],
+	"1": [python_rule21,],
+	"2": [python_rule21,],
+	"3": [python_rule21,],
+	"4": [python_rule21,],
+	"5": [python_rule21,],
+	"6": [python_rule21,],
+	"7": [python_rule21,],
+	"8": [python_rule21,],
+	"9": [python_rule21,],
+	"<": [python_rule8,python_rule14,],
+	"=": [python_rule5,],
+	">": [python_rule7,python_rule13,],
+	"@": [python_rule21,],
+	"A": [python_rule21,],
+	"B": [python_rule21,],
+	"C": [python_rule21,],
+	"D": [python_rule21,],
+	"E": [python_rule21,],
+	"F": [python_rule21,],
+	"G": [python_rule21,],
+	"H": [python_rule21,],
+	"I": [python_rule21,],
+	"J": [python_rule21,],
+	"K": [python_rule21,],
+	"L": [python_rule21,],
+	"M": [python_rule21,],
+	"N": [python_rule21,],
+	"O": [python_rule21,],
+	"P": [python_rule21,],
+	"Q": [python_rule21,],
+	"R": [python_rule21,],
+	"S": [python_rule21,],
+	"T": [python_rule21,],
+	"U": [python_rule21,],
+	"V": [python_rule21,],
+	"W": [python_rule21,],
+	"X": [python_rule21,],
+	"Y": [python_rule21,],
+	"Z": [python_rule21,],
+	"^": [python_rule18,],
+	"_": [python_rule21,],
+	"a": [python_rule21,],
+	"b": [python_rule21,],
+	"c": [python_rule21,],
+	"d": [python_rule21,],
+	"e": [python_rule21,],
+	"f": [python_rule21,],
+	"g": [python_rule21,],
+	"h": [python_rule21,],
+	"i": [python_rule21,],
+	"j": [python_rule21,],
+	"k": [python_rule21,],
+	"l": [python_rule21,],
+	"m": [python_rule21,],
+	"n": [python_rule21,],
+	"o": [python_rule21,],
+	"p": [python_rule21,],
+	"q": [python_rule21,],
+	"r": [python_rule21,],
+	"s": [python_rule21,],
+	"t": [python_rule21,],
+	"u": [python_rule21,],
+	"v": [python_rule21,],
+	"w": [python_rule21,],
+	"x": [python_rule21,],
+	"y": [python_rule21,],
+	"z": [python_rule21,],
+	"|": [python_rule17,],
+	"~": [python_rule19,],
 }
 
 # x.rulesDictDict for python mode.

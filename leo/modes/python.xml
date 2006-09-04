@@ -37,19 +37,15 @@
 			<END>'''</END>
 		</SPAN>
 
-		<!-- Standard literals-->
-		<!-- EKR: added NO_LINE_BREAK="False"-->
-		<SPAN TYPE="LITERAL1" NO_LINE_BREAK="False">
+		<!-- Standard literals -->
+		<SPAN TYPE="LITERAL1">
 			<BEGIN>"</BEGIN>
 			<END>"</END>
 		</SPAN>
-		<SPAN TYPE="LITERAL1" NO_LINE_BREAK="False">
+		<SPAN TYPE="LITERAL1">
 			<BEGIN>'</BEGIN>
 			<END>'</END>
 		</SPAN>
-		<!-- EKR: added these 'partial' strings.-->
-		<EOL_SPAN TYPE="LITERAL1">"</EOL_SPAN>
-		<EOL_SPAN TYPE="LITERAL1">'</EOL_SPAN>
 
 		<SEQ TYPE="OPERATOR">=</SEQ>
 		<SEQ TYPE="OPERATOR">!</SEQ>
