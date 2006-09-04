@@ -6,7 +6,7 @@
 #@@tabwidth -4
 #@@pagewidth 80
 
-__version__ = '0.35'
+__version__ = '0.37'
 #@<< imports >>
 #@+node:ekr.20060530091119.21:<< imports >>
 import leoGlobals as g
@@ -62,6 +62,8 @@ php_re = re.compile("<?(\s[pP][hH][pP])")
 # 0.35 EKR: Support for per-language colors.
 # 0.36 EKR: Support for font settings, including per-language font settings, 
 # using @font nodes.
+# 0.37 EKR: Support for module 'escape' attribute and no_escape attribute of 
+# span matchers.
 #@-at
 #@nonl
 #@-node:ekr.20060530091119.22:<< version history >>
@@ -401,6 +403,7 @@ class baseColorizer:
         # Attributes dict ivars: defaults are as shown.
         self.default = 'null'
         self.digit_re = ''
+        self.escape = ''
         self.highlight_digits = True
         self.ignore_case = True
         self.no_word_sep = ''
@@ -761,6 +764,7 @@ class baseColorizer:
         aList = (
             ('default',         'null'),
     	    ('digit_re',        ''),
+            ('escape',          ''), # New in Leo 4.4.2.
     	    ('highlight_digits',True),
     	    ('ignore_case',     True),
     	    ('no_word_sep',     ''),
@@ -1371,7 +1375,7 @@ class baseColorizer:
         return j - i
     #@nonl
     #@-node:ekr.20060530091119.56:match_seq_regexp
-    #@+node:ekr.20060530091119.57:match_span
+    #@+node:ekr.20060530091119.57:match_span & helper
     def match_span (self,s,i,
         kind='',begin='',end='',
         at_line_start=False,at_whitespace_end=False,at_word_start=False,
@@ -1386,9 +1390,11 @@ class baseColorizer:
             j = i
         elif at_word_start and i > 0 and s[i-1] not in self.word_chars:
             j = i
-        elif g.match(s,i,begin):
-            j = s.find(end,i+len(begin))
-            if j == -1 or no_line_break and '\n' in s[i:j]:
+        elif not g.match(s,i,begin):
+            j = i
+        else:
+            j = self.match_span_helper(i+len(begin),end,no_escape,no_line_break)
+            if j == -1:
                 j = i
             else:
                 # g.trace(i,j,s[i:j],kind,no_line_break)
@@ -1398,13 +1404,31 @@ class baseColorizer:
                 self.colorRangeWithTag(s,j,j2,kind,delegate=None,    exclude_match=exclude_match)
                 j = j2
                 self.prev = (i,j,kind)
-        else:
-            j = i
     
         self.trace_match(kind,s,i,j)
         return j - i
     #@nonl
-    #@-node:ekr.20060530091119.57:match_span
+    #@+node:ekr.20060904084624:match_span_helper
+    def match_span_helper (self,i,begin,end,no_escape,no_line_break):
+        
+        '''Return n >= 0 if s[i] ends with a non-escaped 'end' string.'''
+        
+        esc = self.escape
+            
+        while 1:
+            j = s.find(end,i)
+            if j == -1:
+                return -1
+            elif no_line_break and '\n' in s[i:j]:
+                return -1
+            elif esc and not no_escape and g.match(s,j-1,esc):
+                # Continue searching past the escaped end string.
+                i = j + len(end) + 1
+            else:
+                return j
+    #@nonl
+    #@-node:ekr.20060904084624:match_span_helper
+    #@-node:ekr.20060530091119.57:match_span & helper
     #@+node:ekr.20060530091119.58:match_span_regexp
     def match_span_regexp (self,s,i,
         kind='',begin='',end='',
@@ -1428,6 +1452,10 @@ class baseColorizer:
             j = i + n
             j2 = s.find(end,j)
             if j2 == -1: return 0
+            if self.escape and not no_escape and g.match(s,j2-1,self.escape):
+                # An escaped end **aborts the entire match**:
+                # there is no way to 'restart' the regex.
+                return 0
             i2 = j2 - len(end)
             self.colorRangeWithTag(s,i,j,kind, delegate=None,     exclude_match=exclude_match)
             self.colorRangeWithTag(s,j,i2,kind, delegate=delegate,exclude_match=False)
