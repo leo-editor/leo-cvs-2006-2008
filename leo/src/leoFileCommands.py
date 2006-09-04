@@ -1688,6 +1688,14 @@ class baseFileCommands:
     
         self.put("<leo_file>") ; self.put_nl()
     #@-node:ekr.20031218072017.1246:putProlog
+    #@+node:ekr.20060904113842.1:putToOPML
+    def putToOPML (self):
+        
+        '''Must be overridden in a subclass to be functional.'''
+        
+        pass
+    #@nonl
+    #@-node:ekr.20060904113842.1:putToOPML
     #@+node:ekr.20031218072017.1577:putTnode
     def putTnode (self,t):
     
@@ -2023,7 +2031,7 @@ class baseFileCommands:
                 c.openDirectory = theDir
     #@-node:ekr.20031218072017.3045:setDefaultDirectoryForNewFiles
     #@+node:ekr.20031218072017.3046:write_Leo_file
-    def write_Leo_file(self,fileName,outlineOnlyFlag,toString=False):
+    def write_Leo_file(self,fileName,outlineOnlyFlag,toString=False,toOPML=False):
     
         c = self.c
         self.assignFileIndices()
@@ -2075,24 +2083,29 @@ class baseFileCommands:
                 #@-node:ekr.20031218072017.3047:<< create backup file >>
                 #@nl
             self.mFileName = fileName
+            if toOPML:
+                fileName = self.mFileName = self.mFileName + '.opml'
             self.outputFile = cStringIO.StringIO() # or g.fileLikeObject()
             if not toString:
                 theActualFile = open(fileName, 'wb')
-            #@        << put the .leo file >>
-            #@+node:ekr.20040324080819.1:<< put the .leo file >>
-            self.putProlog()
-            self.putHeader()
-            self.putGlobals()
-            self.putPrefs()
-            self.putFindSettings()
-            #start = g.getTime()
-            self.putVnodes()
-            #start = g.printDiffTime("vnodes ",start)
-            self.putTnodes()
-            #start = g.printDiffTime("tnodes ",start)
-            self.putPostlog()
-            #@-node:ekr.20040324080819.1:<< put the .leo file >>
-            #@nl
+            if toOPML:
+                self.putToOPML()
+            else:
+                #@            << put the .leo file >>
+                #@+node:ekr.20040324080819.1:<< put the .leo file >>
+                self.putProlog()
+                self.putHeader()
+                self.putGlobals()
+                self.putPrefs()
+                self.putFindSettings()
+                #start = g.getTime()
+                self.putVnodes()
+                #start = g.printDiffTime("vnodes ",start)
+                self.putTnodes()
+                #start = g.printDiffTime("tnodes ",start)
+                self.putPostlog()
+                #@-node:ekr.20040324080819.1:<< put the .leo file >>
+                #@nl
             s = self.outputFile.getvalue()
             if toString:
                 # For support of chapters plugin.
