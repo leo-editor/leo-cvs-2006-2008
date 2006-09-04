@@ -621,6 +621,7 @@ plugins\script_io_to_body.py
 plugins\scripts_menu.py
 plugins\searchbox.py
 plugins\shortcut_button.py
+plugins\slideshow.py
 plugins\spellpyx.txt
 plugins\startfile.py
 plugins\table.py
