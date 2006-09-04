@@ -10,6 +10,7 @@ properties = {
 postscript_main_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": "",
@@ -19,6 +20,7 @@ postscript_main_attributes_dict = {
 postscript_literal_attributes_dict = {
 	"default": "LITERAL1",
 	"digit_re": "",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": "",

@@ -18,6 +18,7 @@ properties = {
 d_main_attributes_dict = {
 	"default": "null",
 	"digit_re": "(0x[0-9a-fA-F_]+[uUlL]?|[0-9_]+(e[0-9_]*)?[uUlLdDfF]?)",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": "",

@@ -15,6 +15,7 @@ properties = {
 css_main_attributes_dict = {
 	"default": "null",
 	"digit_re": "-?[[:digit:]]+(pt|pc|in|mm|cm|em|ex|px|ms|s|%)",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "-_%",
@@ -24,6 +25,7 @@ css_main_attributes_dict = {
 css_literal_attributes_dict = {
 	"default": "LITERAL1",
 	"digit_re": "-?[[:digit:]]+(pt|pc|in|mm|cm|em|ex|px|ms|s|%)",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "-_%",

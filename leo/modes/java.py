@@ -18,6 +18,7 @@ properties = {
 java_main_attributes_dict = {
 	"default": "null",
 	"digit_re": "(0x[[:xdigit:]]+[lL]?|[[:digit:]]+(e[[:digit:]]*)?[lLdDfF]?)",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": "",
@@ -27,6 +28,7 @@ java_main_attributes_dict = {
 java_javadoc_attributes_dict = {
 	"default": "COMMENT3",
 	"digit_re": "(0x[[:xdigit:]]+[lL]?|[[:digit:]]+(e[[:digit:]]*)?[lLdDfF]?)",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",

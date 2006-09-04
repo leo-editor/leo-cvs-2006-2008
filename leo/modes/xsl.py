@@ -11,6 +11,7 @@ properties = {
 xsl_main_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "false",
 	"ignore_case": "false",
 	"no_word_sep": "",
@@ -20,6 +21,7 @@ xsl_main_attributes_dict = {
 xsl_tasks_attributes_dict = {
 	"default": "COMMENT1",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "false",
 	"ignore_case": "false",
 	"no_word_sep": "",
@@ -29,6 +31,7 @@ xsl_tasks_attributes_dict = {
 xsl_tags_attributes_dict = {
 	"default": "MARKUP",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "false",
 	"ignore_case": "false",
 	"no_word_sep": ".-_:",
@@ -38,6 +41,7 @@ xsl_tags_attributes_dict = {
 xsl_avt_attributes_dict = {
 	"default": "KEYWORD3",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "false",
 	"ignore_case": "false",
 	"no_word_sep": ".-_:",
@@ -47,6 +51,7 @@ xsl_avt_attributes_dict = {
 xsl_xsltags_attributes_dict = {
 	"default": "KEYWORD2",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "false",
 	"ignore_case": "false",
 	"no_word_sep": ".-_:",
@@ -56,6 +61,7 @@ xsl_xsltags_attributes_dict = {
 xsl_xpath_attributes_dict = {
 	"default": "KEYWORD3",
 	"digit_re": "[[:digit:]]+([[:punct:]][[:digit:]]+)?",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": ".-_",
@@ -65,6 +71,7 @@ xsl_xpath_attributes_dict = {
 xsl_xpathcomment2_attributes_dict = {
 	"default": "COMMENT2",
 	"digit_re": "[[:digit:]]+([[:punct:]][[:digit:]]+)?",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": ".-_",
@@ -74,6 +81,7 @@ xsl_xpathcomment2_attributes_dict = {
 xsl_xpathcomment3_attributes_dict = {
 	"default": "COMMENT3",
 	"digit_re": "[[:digit:]]+([[:punct:]][[:digit:]]+)?",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": ".-_",

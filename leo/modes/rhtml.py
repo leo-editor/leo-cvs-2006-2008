@@ -11,6 +11,7 @@ properties = {
 rhtml_main_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -20,6 +21,7 @@ rhtml_main_attributes_dict = {
 rhtml_tags_attributes_dict = {
 	"default": "MARKUP",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -29,6 +31,7 @@ rhtml_tags_attributes_dict = {
 rhtml_tags_literal_attributes_dict = {
 	"default": "LITERAL1",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",

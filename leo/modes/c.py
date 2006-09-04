@@ -18,6 +18,7 @@ properties = {
 c_main_attributes_dict = {
 	"default": "null",
 	"digit_re": "(0x[[:xdigit:]]+[lL]?|[[:digit:]]+(e[[:digit:]]*)?[lLdDfF]?)",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": "",
@@ -27,6 +28,7 @@ c_main_attributes_dict = {
 c_cpp_attributes_dict = {
 	"default": "KEYWORD2",
 	"digit_re": "(0x[[:xdigit:]]+[lL]?|[[:digit:]]+(e[[:digit:]]*)?[lLdDfF]?)",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": "",
@@ -36,6 +38,7 @@ c_cpp_attributes_dict = {
 c_include_attributes_dict = {
 	"default": "KEYWORD2",
 	"digit_re": "(0x[[:xdigit:]]+[lL]?|[[:digit:]]+(e[[:digit:]]*)?[lLdDfF]?)",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": "",

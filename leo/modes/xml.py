@@ -11,6 +11,7 @@ properties = {
 xml_main_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -20,6 +21,7 @@ xml_main_attributes_dict = {
 xml_tags_attributes_dict = {
 	"default": "MARKUP",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "-_",
@@ -29,6 +31,7 @@ xml_tags_attributes_dict = {
 xml_dtd_tags_attributes_dict = {
 	"default": "KEYWORD2",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": "-_",
@@ -38,6 +41,7 @@ xml_dtd_tags_attributes_dict = {
 xml_entity_tags_attributes_dict = {
 	"default": "KEYWORD2",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": "-_",
@@ -47,6 +51,7 @@ xml_entity_tags_attributes_dict = {
 xml_cdata_attributes_dict = {
 	"default": "COMMENT2",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": "-_",

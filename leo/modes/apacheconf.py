@@ -10,6 +10,7 @@ properties = {
 apacheconf_main_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "\\",
 	"highlight_digits": "false",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -19,6 +20,7 @@ apacheconf_main_attributes_dict = {
 apacheconf_directive_attributes_dict = {
 	"default": "NULL",
 	"digit_re": "",
+	"escape": "\\",
 	"highlight_digits": "false",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -28,6 +30,7 @@ apacheconf_directive_attributes_dict = {
 apacheconf_vhost_attributes_dict = {
 	"default": "NULL",
 	"digit_re": "",
+	"escape": "\\",
 	"highlight_digits": "false",
 	"ignore_case": "true",
 	"no_word_sep": "",

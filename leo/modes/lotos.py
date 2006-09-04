@@ -12,6 +12,7 @@ properties = {
 lotos_main_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "false",
 	"ignore_case": "true",
 	"no_word_sep": "",

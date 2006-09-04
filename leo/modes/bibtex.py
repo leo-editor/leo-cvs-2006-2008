@@ -10,6 +10,7 @@ properties = {
 bibtex_main_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -19,6 +20,7 @@ bibtex_main_attributes_dict = {
 bibtex_article_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -28,6 +30,7 @@ bibtex_article_attributes_dict = {
 bibtex_book_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -37,6 +40,7 @@ bibtex_book_attributes_dict = {
 bibtex_booklet_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -46,6 +50,7 @@ bibtex_booklet_attributes_dict = {
 bibtex_conference_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -55,6 +60,7 @@ bibtex_conference_attributes_dict = {
 bibtex_inbook_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -64,6 +70,7 @@ bibtex_inbook_attributes_dict = {
 bibtex_incollection_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -73,6 +80,7 @@ bibtex_incollection_attributes_dict = {
 bibtex_inproceedings_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -82,6 +90,7 @@ bibtex_inproceedings_attributes_dict = {
 bibtex_manual_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -91,6 +100,7 @@ bibtex_manual_attributes_dict = {
 bibtex_mastersthesis_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -100,6 +110,7 @@ bibtex_mastersthesis_attributes_dict = {
 bibtex_misc_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -109,6 +120,7 @@ bibtex_misc_attributes_dict = {
 bibtex_phdthesis_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -118,6 +130,7 @@ bibtex_phdthesis_attributes_dict = {
 bibtex_proceedings_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -127,6 +140,7 @@ bibtex_proceedings_attributes_dict = {
 bibtex_techreport_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -136,6 +150,7 @@ bibtex_techreport_attributes_dict = {
 bibtex_unpublished_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -145,6 +160,7 @@ bibtex_unpublished_attributes_dict = {
 bibtex_textbraced_attributes_dict = {
 	"default": "LITERAL2",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -154,6 +170,7 @@ bibtex_textbraced_attributes_dict = {
 bibtex_textquoted_attributes_dict = {
 	"default": "LITERAL1",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -163,6 +180,7 @@ bibtex_textquoted_attributes_dict = {
 bibtex_string_attributes_dict = {
 	"default": "LITERAL1",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",

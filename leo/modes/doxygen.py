@@ -10,6 +10,7 @@ properties = {
 doxygen_main_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": "",
@@ -19,6 +20,7 @@ doxygen_main_attributes_dict = {
 doxygen_doxygen_attributes_dict = {
 	"default": "COMMENT3",
 	"digit_re": "",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",

@@ -10,6 +10,7 @@ properties = {
 redcode_main_attributes_dict = {
 	"default": "MARKUP",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",

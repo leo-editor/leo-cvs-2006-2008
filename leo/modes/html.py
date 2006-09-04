@@ -11,6 +11,7 @@ properties = {
 html_main_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -20,6 +21,7 @@ html_main_attributes_dict = {
 html_tags_attributes_dict = {
 	"default": "MARKUP",
 	"digit_re": "",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -29,6 +31,7 @@ html_tags_attributes_dict = {
 html_javascript_attributes_dict = {
 	"default": "MARKUP",
 	"digit_re": "",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -38,6 +41,7 @@ html_javascript_attributes_dict = {
 html_back_to_html_attributes_dict = {
 	"default": "MARKUP",
 	"digit_re": "",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -47,6 +51,7 @@ html_back_to_html_attributes_dict = {
 html_css_attributes_dict = {
 	"default": "MARKUP",
 	"digit_re": "",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",

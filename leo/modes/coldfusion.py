@@ -11,6 +11,7 @@ properties = {
 coldfusion_main_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -20,6 +21,7 @@ coldfusion_main_attributes_dict = {
 coldfusion_tags_attributes_dict = {
 	"default": "MARKUP",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -29,6 +31,7 @@ coldfusion_tags_attributes_dict = {
 coldfusion_cfscript_attributes_dict = {
 	"default": "KEYWORD1",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -38,6 +41,7 @@ coldfusion_cfscript_attributes_dict = {
 coldfusion_cftags_attributes_dict = {
 	"default": "KEYWORD3",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",

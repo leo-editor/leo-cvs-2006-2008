@@ -12,6 +12,7 @@ properties = {
 pop11_main_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": "",
@@ -21,6 +22,7 @@ pop11_main_attributes_dict = {
 pop11_list_attributes_dict = {
 	"default": "LITERAL1",
 	"digit_re": "",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": "",
@@ -30,6 +32,7 @@ pop11_list_attributes_dict = {
 pop11_string_attributes_dict = {
 	"default": "LITERAL1",
 	"digit_re": "",
+	"escape": "\\",
 	"highlight_digits": "false",
 	"ignore_case": "false",
 	"no_word_sep": "",
@@ -39,6 +42,7 @@ pop11_string_attributes_dict = {
 pop11_comment_attributes_dict = {
 	"default": "COMMENT1",
 	"digit_re": "",
+	"escape": "\\",
 	"highlight_digits": "false",
 	"ignore_case": "false",
 	"no_word_sep": ".",

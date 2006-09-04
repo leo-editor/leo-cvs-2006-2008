@@ -11,6 +11,7 @@ properties = {
 zpt_main_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -20,6 +21,7 @@ zpt_main_attributes_dict = {
 zpt_tags_attributes_dict = {
 	"default": "MARKUP",
 	"digit_re": "",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -29,6 +31,7 @@ zpt_tags_attributes_dict = {
 zpt_attribute_attributes_dict = {
 	"default": "LITERAL1",
 	"digit_re": "",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -38,6 +41,7 @@ zpt_attribute_attributes_dict = {
 zpt_javascript_attributes_dict = {
 	"default": "MARKUP",
 	"digit_re": "",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -47,6 +51,7 @@ zpt_javascript_attributes_dict = {
 zpt_back_to_html_attributes_dict = {
 	"default": "MARKUP",
 	"digit_re": "",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -56,6 +61,7 @@ zpt_back_to_html_attributes_dict = {
 zpt_css_attributes_dict = {
 	"default": "MARKUP",
 	"digit_re": "",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",

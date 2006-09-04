@@ -12,6 +12,7 @@ properties = {
 jhtml_main_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -21,6 +22,7 @@ jhtml_main_attributes_dict = {
 jhtml_jhtml_attributes_dict = {
 	"default": "MARKUP",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -30,6 +32,7 @@ jhtml_jhtml_attributes_dict = {
 jhtml_attrvalue_attributes_dict = {
 	"default": "LITERAL1",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",

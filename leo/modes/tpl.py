@@ -11,6 +11,7 @@ properties = {
 tpl_main_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -20,6 +21,7 @@ tpl_main_attributes_dict = {
 tpl_tpl_attributes_dict = {
 	"default": "KEYWORD1",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -29,6 +31,7 @@ tpl_tpl_attributes_dict = {
 tpl_tags_attributes_dict = {
 	"default": "MARKUP",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",

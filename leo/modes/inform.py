@@ -17,6 +17,7 @@ properties = {
 inform_main_attributes_dict = {
 	"default": "null",
 	"digit_re": "(\\$[[:xdigit:]]|[[:digit:]])",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": "",
@@ -26,6 +27,7 @@ inform_main_attributes_dict = {
 inform_informinnertext_attributes_dict = {
 	"default": "LITERAL1",
 	"digit_re": "(\\$[[:xdigit:]]|[[:digit:]])",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": "",

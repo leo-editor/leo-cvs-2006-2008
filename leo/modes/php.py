@@ -14,6 +14,7 @@ properties = {
 php_main_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -23,6 +24,7 @@ php_main_attributes_dict = {
 php_tags_attributes_dict = {
 	"default": "MARKUP",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -32,6 +34,7 @@ php_tags_attributes_dict = {
 php_tags_literal_attributes_dict = {
 	"default": "LITERAL1",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -41,6 +44,7 @@ php_tags_literal_attributes_dict = {
 php_php_attributes_dict = {
 	"default": "LITERAL1",
 	"digit_re": "",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -50,6 +54,7 @@ php_php_attributes_dict = {
 php_php_literal_attributes_dict = {
 	"default": "LITERAL1",
 	"digit_re": "",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -59,6 +64,7 @@ php_php_literal_attributes_dict = {
 php_javascript_attributes_dict = {
 	"default": "MARKUP",
 	"digit_re": "",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -68,6 +74,7 @@ php_javascript_attributes_dict = {
 php_javascript_php_attributes_dict = {
 	"default": "MARKUP",
 	"digit_re": "",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -77,6 +84,7 @@ php_javascript_php_attributes_dict = {
 php_phpdoc_attributes_dict = {
 	"default": "COMMENT3",
 	"digit_re": "",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",

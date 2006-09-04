@@ -11,6 +11,7 @@ properties = {
 jsp_main_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -20,6 +21,7 @@ jsp_main_attributes_dict = {
 jsp_comment_attributes_dict = {
 	"default": "COMMENT1",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -29,6 +31,7 @@ jsp_comment_attributes_dict = {
 jsp_directives_attributes_dict = {
 	"default": "MARKUP",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -38,6 +41,7 @@ jsp_directives_attributes_dict = {
 jsp_tags_attributes_dict = {
 	"default": "MARKUP",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -47,6 +51,7 @@ jsp_tags_attributes_dict = {
 jsp_attrvalue_attributes_dict = {
 	"default": "LITERAL1",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",

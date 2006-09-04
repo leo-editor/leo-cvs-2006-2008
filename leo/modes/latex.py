@@ -11,6 +11,7 @@ properties = {
 latex_main_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": "",
@@ -20,6 +21,7 @@ latex_main_attributes_dict = {
 latex_mathmode_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": "",
@@ -29,6 +31,7 @@ latex_mathmode_attributes_dict = {
 latex_arraymode_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": "",
@@ -38,6 +41,7 @@ latex_arraymode_attributes_dict = {
 latex_tabularmode_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": "",
@@ -47,6 +51,7 @@ latex_tabularmode_attributes_dict = {
 latex_tabbingmode_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": "",
@@ -56,6 +61,7 @@ latex_tabbingmode_attributes_dict = {
 latex_picturemode_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": "",

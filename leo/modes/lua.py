@@ -17,6 +17,7 @@ properties = {
 lua_main_attributes_dict = {
 	"default": "null",
 	"digit_re": "[[:digit:]]*(\\.[[:digit:]]*)?([eE][+-]?[[:digit:]]*)?",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": "_:.",

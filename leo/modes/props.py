@@ -10,6 +10,7 @@ properties = {
 props_main_attributes_dict = {
 	"default": "KEYWORD1",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -19,6 +20,7 @@ props_main_attributes_dict = {
 props_prop_value_attributes_dict = {
 	"default": "KEYWORD1",
 	"digit_re": "([[:digit:]]+|#[[:xdigit:]]+)",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "#",

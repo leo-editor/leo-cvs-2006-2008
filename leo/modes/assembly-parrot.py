@@ -10,6 +10,7 @@ properties = {
 assembly_parrot_main_attributes_dict = {
 	"default": "null",
 	"digit_re": "(0x[[:xdigit:]]+|[[:digit:]]+)",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": "",

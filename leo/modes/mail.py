@@ -11,6 +11,7 @@ properties = {
 mail_main_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "false",
 	"ignore_case": "true",
 	"no_word_sep": "-_:)",
@@ -20,6 +21,7 @@ mail_main_attributes_dict = {
 mail_signature_attributes_dict = {
 	"default": "COMMENT2",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "false",
 	"ignore_case": "true",
 	"no_word_sep": "-_:)",
@@ -29,6 +31,7 @@ mail_signature_attributes_dict = {
 mail_header_attributes_dict = {
 	"default": "MARKUP",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "false",
 	"ignore_case": "true",
 	"no_word_sep": "-_:)",

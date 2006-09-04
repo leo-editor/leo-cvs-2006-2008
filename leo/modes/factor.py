@@ -18,6 +18,7 @@ properties = {
 factor_main_attributes_dict = {
 	"default": "null",
 	"digit_re": "-?\\d+([./]\\d+)?",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": "+-*=><;.?/'",
@@ -27,6 +28,7 @@ factor_main_attributes_dict = {
 factor_stack_effect_attributes_dict = {
 	"default": "COMMENT4",
 	"digit_re": "-?\\d+([./]\\d+)?",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": "+-*=><;.?/'",

@@ -18,6 +18,7 @@ properties = {
 pike_main_attributes_dict = {
 	"default": "null",
 	"digit_re": "(0x[[:xdigit:]]+|[[:digit]]+|0[bB][01]+)[lLdDfF]?",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": "",
@@ -27,6 +28,7 @@ pike_main_attributes_dict = {
 pike_comment_attributes_dict = {
 	"default": "COMMENT1",
 	"digit_re": "(0x[[:xdigit:]]+|[[:digit]]+|0[bB][01]+)[lLdDfF]?",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": "",
@@ -36,6 +38,7 @@ pike_comment_attributes_dict = {
 pike_autodoc_attributes_dict = {
 	"default": "COMMENT1",
 	"digit_re": "(0x[[:xdigit:]]+|[[:digit]]+|0[bB][01]+)[lLdDfF]?",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -45,6 +48,7 @@ pike_autodoc_attributes_dict = {
 pike_string_literal_attributes_dict = {
 	"default": "LITERAL1",
 	"digit_re": "(0x[[:xdigit:]]+|[[:digit]]+|0[bB][01]+)[lLdDfF]?",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",

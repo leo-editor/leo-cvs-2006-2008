@@ -11,6 +11,7 @@ properties = {
 nsis2_main_attributes_dict = {
 	"default": "NULL",
 	"digit_re": "",
+	"escape": "$\\",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -20,6 +21,7 @@ nsis2_main_attributes_dict = {
 nsis2_nsis_literal_attributes_dict = {
 	"default": "LITERAL1",
 	"digit_re": "",
+	"escape": "$\\",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "-{}_",

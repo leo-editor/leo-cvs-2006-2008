@@ -8,6 +8,7 @@ properties = {}
 freemarker_main_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": "",
@@ -17,6 +18,7 @@ freemarker_main_attributes_dict = {
 freemarker_expression_attributes_dict = {
 	"default": "KEYWORD2",
 	"digit_re": "",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": "",
@@ -26,6 +28,7 @@ freemarker_expression_attributes_dict = {
 freemarker_tags_attributes_dict = {
 	"default": "MARKUP",
 	"digit_re": "",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": "",
@@ -35,6 +38,7 @@ freemarker_tags_attributes_dict = {
 freemarker_inquote_attributes_dict = {
 	"default": "MARKUP",
 	"digit_re": "",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": "",
@@ -44,6 +48,7 @@ freemarker_inquote_attributes_dict = {
 freemarker_invalid_attributes_dict = {
 	"default": "INVALID",
 	"digit_re": "",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": "",

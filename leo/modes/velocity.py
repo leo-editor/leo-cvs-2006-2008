@@ -12,6 +12,7 @@ properties = {
 velocity_main_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -21,6 +22,7 @@ velocity_main_attributes_dict = {
 velocity_velocity_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -30,6 +32,7 @@ velocity_velocity_attributes_dict = {
 velocity_javascript_attributes_dict = {
 	"default": "MARKUP",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -39,6 +42,7 @@ velocity_javascript_attributes_dict = {
 velocity_javascript2_attributes_dict = {
 	"default": "MARKUP",
 	"digit_re": "(0x[[:xdigit:]]+[lL]?|[[:digit:]]+(e[[:digit:]]*)?[lLdDfF]?)",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": "",
@@ -48,6 +52,7 @@ velocity_javascript2_attributes_dict = {
 velocity_back_to_html_attributes_dict = {
 	"default": "MARKUP",
 	"digit_re": "(0x[[:xdigit:]]+[lL]?|[[:digit:]]+(e[[:digit:]]*)?[lLdDfF]?)",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": "",
@@ -57,6 +62,7 @@ velocity_back_to_html_attributes_dict = {
 velocity_css_attributes_dict = {
 	"default": "MARKUP",
 	"digit_re": "(0x[[:xdigit:]]+[lL]?|[[:digit:]]+(e[[:digit:]]*)?[lLdDfF]?)",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": "",
@@ -66,6 +72,7 @@ velocity_css_attributes_dict = {
 velocity_css2_attributes_dict = {
 	"default": "MARKUP",
 	"digit_re": "[[:digit:]]+(pt|pc|in|mm|cm|em|ex|px|ms|s|%)",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "-_",

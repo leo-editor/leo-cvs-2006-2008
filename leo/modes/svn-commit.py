@@ -8,6 +8,7 @@ properties = {}
 svn_commit_main_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "false",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -17,6 +18,7 @@ svn_commit_main_attributes_dict = {
 svn_commit_changed_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "false",
 	"ignore_case": "true",
 	"no_word_sep": "",

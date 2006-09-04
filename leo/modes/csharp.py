@@ -17,6 +17,7 @@ properties = {
 csharp_main_attributes_dict = {
 	"default": "null",
 	"digit_re": "(0x[[:xdigit:]]+[lL]?|[[:digit:]]+(e[[:digit:]]*)?[lLdDfF]?)",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "false",
 	"no_word_sep": "",
@@ -26,6 +27,7 @@ csharp_main_attributes_dict = {
 csharp_doc_comment_attributes_dict = {
 	"default": "COMMENT3",
 	"digit_re": "(0x[[:xdigit:]]+[lL]?|[[:digit:]]+(e[[:digit:]]*)?[lLdDfF]?)",
+	"escape": "\\",
 	"highlight_digits": "true",
 	"ignore_case": "true",
 	"no_word_sep": "",

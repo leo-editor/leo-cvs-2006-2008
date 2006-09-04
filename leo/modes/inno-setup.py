@@ -10,6 +10,7 @@ properties = {
 inno_setup_main_attributes_dict = {
 	"default": "null",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "false",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -19,6 +20,7 @@ inno_setup_main_attributes_dict = {
 inno_setup_string_attributes_dict = {
 	"default": "LITERAL1",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "false",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -28,6 +30,7 @@ inno_setup_string_attributes_dict = {
 inno_setup_constant_attributes_dict = {
 	"default": "KEYWORD3",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "false",
 	"ignore_case": "true",
 	"no_word_sep": "",
@@ -37,6 +40,7 @@ inno_setup_constant_attributes_dict = {
 inno_setup_directive_attributes_dict = {
 	"default": "LITERAL4",
 	"digit_re": "",
+	"escape": "",
 	"highlight_digits": "false",
 	"ignore_case": "true",
 	"no_word_sep": "",
