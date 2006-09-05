@@ -4,22 +4,18 @@
 #@+node:ekr.20050825154605:<< docstring >>
 '''A plugin to use a ZODB database instead of the file system. 
 
-This plugin replaces the Open, Save and Revert commands with methods that access the ZODB database.
+This plugin creates the read/write-zodb-file commands.
 '''
 #@nonl
 #@-node:ekr.20050825154605:<< docstring >>
 #@nl
 
-# WARNING:
-# WARNING: highly experimental code:  USE AT YOUR OWN RISK.
-# WARNING:
-    
-from __future__ import generators # To make this plugin work with Python 2.2.
-
-__version__ = '0.0.5'
+__version__ = '0.0.6'
 
 #@<< imports >>
 #@+node:ekr.20050825154553.1:<< imports >>
+from __future__ import generators # To make this plugin work with Python 2.2.
+
 import leoGlobals as g
 import leoPlugins
 
@@ -55,22 +51,23 @@ except ImportError:
 # Leo's core.
 # - Removed zodbControllerClass: the read/write commands open and close the 
 # zodb.
+# 0.0.6 EKR:
+# - Improved the docstring.
+# - Replaced global zodb_file with self.storageName ivar.
 #@-at
 #@nonl
 #@-node:ekr.20050825154553.2:<< change log >>
 #@nl
 
-# This should be a user option, and should NOT be a module-level symbol.
+# This should be a user option, NOT a module-level symbol.
 
-zodb_controller = None
-zodb_filename = r"c:\prog\zopeTemp\leo.fs"
 
 #@+others
 #@+node:ekr.20050825165419:Module level...
 #@+node:ekr.20050825155043:init
 def init ():
     
-    global ZODB,zodb_filename
+    global ZODB
     
     if g.app.unitTesting:
         return False
@@ -105,14 +102,19 @@ class zodbCommandsClass:
     def __init__ (self,c):
         
         self.c = c
-    
+        
         # Set by open, used by close.
         self.connection = None
         self.db = None
         self.root = None
         self.storage = None
-    
-        self.createCommands()
+        
+        # The path to the zodb file.
+        self.storageName = c.config.getString('zodb_storage_file')
+        if self.storageName:
+            self.createCommands()
+        else:
+            g.es_print('No setting: @string zodb_storage_file')
     #@nonl
     #@-node:ekr.20060904192907.2:__init__
     #@+node:ekr.20060904204806.1:close
@@ -149,10 +151,10 @@ class zodbCommandsClass:
         
         try:
             self.root = self.storage = self.db = self.connection = None
-            self.storage = ZODB.FileStorage.FileStorage(zodb_filename)
-            self.db = ZODB.DB(self.storage)
+            self.storage    = ZODB.FileStorage.FileStorage(self.storageName)
+            self.db         = ZODB.DB(self.storage)
             self.connection = self.db.open()
-            self.root = self.connection.root()
+            self.root       = self.connection.root()
             return True
         except Exception:
             g.es_exception()
