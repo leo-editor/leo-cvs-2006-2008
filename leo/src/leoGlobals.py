@@ -3835,13 +3835,17 @@ def isUnicode(s):
 #@+node:ekr.20031218072017.1500:isValidEncoding
 def isValidEncoding (encoding):
     
-    try:
-        if len(encoding) == 0:
-            return False
-        unicode("a",encoding)
-        return True
-    except:
+    if not encoding:
         return False
+
+    import codecs
+
+    try:
+        codecs.lookup(encoding)
+        return True
+    except LookupError:
+        return False
+#@nonl
 #@-node:ekr.20031218072017.1500:isValidEncoding
 #@+node:ekr.20031218072017.1501:reportBadChars
 def reportBadChars (s,encoding):
