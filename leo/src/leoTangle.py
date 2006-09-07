@@ -1170,9 +1170,9 @@ class baseTangleCommands:
             else:
                 i = g.skip_line(s,i)
             assert(progress < i) # we must make progress!
-        # 3/4/02: Only call p.trimTrailingLines if we have changed its body.
+        # Only call trimTrailingLines if we have changed its body.
         if anyChanged:
-            p.trimTrailingLines(c)
+            c.trimTrailingLines(p)
     #@+node:ekr.20031218072017.3492:The interface between tangle and untangle
     #@+at 
     #@nonl

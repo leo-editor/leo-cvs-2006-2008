@@ -2158,7 +2158,7 @@ class leoTkinterBody (leoFrame.leoBody):
                 if trace: g.trace('no active editor!')
         
             # Careful, leo_p may not exist.
-            if not w.leo_p.exists(c):
+            if not c.positionExists(w.leo_p):
                 g.trace('does not exist',w.leo_name)
                 for p2 in c.allNodes_iter():
                     if p2.v == w.leo_v:

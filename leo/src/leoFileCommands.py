@@ -127,7 +127,6 @@ class baseFileCommands:
                     else:
                         p2.moveToParent()
                 if p2:
-                    # g.trace('exists',p.exists(c),p)
                     return p
     
         return None

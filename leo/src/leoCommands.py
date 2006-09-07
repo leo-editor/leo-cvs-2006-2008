@@ -323,12 +323,51 @@ class baseCommands:
     #@-node:ekr.20031218072017.2582: version & signon stuff
     #@+node:ekr.20040312090934:c.iterators
     #@+node:EKR.20040529091232:c.all_positions_iter == allNodes_iter
-    def allNodes_iter(self,copy=False):
+    # New in Leo 4.4.2 (It used to be defined in terms of p.allNodes_iter.)
+    
+    class allNodes_iter_class:
+    
+        """Returns a list of positions in the entire outline."""
+    
+        #@    @+others
+        #@+node:ekr.20060907085906.1:__init__ & __iter__ (p.allNodesIter)
+        def __init__(self,c,copy):
+            
+            # g.trace('c.allNodes_iter.__init','p',p,'c',c)
+        
+            self.c = c
+            self.first = c.rootPosition()
+            self.p = None
+            self.copy = copy
+            
+        def __iter__(self):
+        
+            return self
+        #@-node:ekr.20060907085906.1:__init__ & __iter__ (p.allNodesIter)
+        #@+node:ekr.20060907085906.2:next
+        def next(self):
+            
+            if self.first:
+                self.p = self.first
+                self.first = None
+        
+            elif self.p:
+                self.p.moveToThreadNext()
+        
+            if self.p:
+                if self.copy: return self.p.copy()
+                else:         return self.p
+            else: raise StopIteration
+        #@-node:ekr.20060907085906.2:next
+        #@-others
+    
+    def allNodes_iter (self,copy=False):
         
         c = self
-        return c.rootPosition().allNodes_iter(c,copy)
-        
+        return self.allNodes_iter_class(c,copy)
+    
     all_positions_iter = allNodes_iter
+    #@nonl
     #@-node:EKR.20040529091232:c.all_positions_iter == allNodes_iter
     #@+node:EKR.20040529091232.1:c.all_tnodes_iter
     def all_tnodes_iter(self):
@@ -4247,7 +4286,7 @@ class baseCommands:
         while c.beadPointer + 1 < len(c.beadList):
             c.beadPointer += 1
             v = c.beadList[c.beadPointer]
-            if v.exists(c):
+            if c.positionExists(v):
                 c.beginUpdate()
                 try:
                     c.frame.tree.expandAllAncestors(v)
@@ -4266,7 +4305,7 @@ class baseCommands:
         while c.beadPointer > 0:
             c.beadPointer -= 1
             v = c.beadList[c.beadPointer]
-            if v.exists(c):
+            if c.positionExists(v):
                 c.beginUpdate()
                 try:
                     c.frame.tree.expandAllAncestors(v)
@@ -5966,9 +6005,6 @@ class baseCommands:
         # g.trace(p and p.headString())
     
         return p
-    
-        
-        
     #@nonl
     #@-node:ekr.20060906134053:c.findRootPosition New in 4.4.2
     #@+node:ekr.20040803112200:c.is...Position
@@ -6050,51 +6086,73 @@ class baseCommands:
         c = self ; v = None
         return leoNodes.position(v,[])
     #@-node:ekr.20040311094927:c.nullPosition
-    #@+node:ekr.20040803140033.2:rootPosition
+    #@+node:ekr.20040307104131.3:c.positionExists
+    def positionExists(self,p):
+        
+        """Return True if a position exists in c's tree"""
+        
+        c = self ; p = p.copy()
+    
+        # This code must be fast.
+        root = c.rootPosition()
+    
+        while p:
+            # g.trace(p.headString(),'parent',p.parent(),'back',p.back())
+            if p.equal(root):
+                return True
+            if p.hasParent():
+                p.moveToParent()
+            else:
+                p.moveToBack()
+            
+        # g.trace('does not exist in root:',root.headString())
+        return False
+    #@-node:ekr.20040307104131.3:c.positionExists
+    #@+node:ekr.20040803140033.2:c.rootPosition
     def rootPosition(self):
         
         """Return the root position."""
         
         c = self
         
-        if self._rootPosition:
-            return self._rootPosition.copy()
+        if 0: # Setting the current position 'early' ends up marking the outline dirty on reads.
+            p = c.findRootPosition(c.currentPosition())
+            if p:
+                return p
+            else:
+                return c.nullPosition()
         else:
-            return  c.nullPosition()
+            if self._rootPosition:
+                return self._rootPosition.copy()
+            else:
+                return  c.nullPosition()
     
     # For compatibiility with old scripts.
     rootVnode = rootPosition
-    #@-node:ekr.20040803140033.2:rootPosition
+    #@nonl
+    #@-node:ekr.20040803140033.2:c.rootPosition
     #@-node:ekr.20060906211747:Getters
     #@+node:ekr.20060906211747.1:Setters
-    #@+node:ekr.20040803140033.1:c.setCurrentPosition
-    def setCurrentPosition (self,p):
-        
-        """Set the presently selected position. For internal use only.
-        
-        Client code should use c.selectPosition instead."""
+    #@+node:ekr.20040315032503:c.appendStringToBody
+    def appendStringToBody (self,p,s,encoding="utf-8"):
         
         c = self
+        if not s: return
         
-        if p:
-            if p.equal(c._currentPosition):
-                pass # We have already made a copy.
-            else: # Must make a copy _now_
-                c._currentPosition = p.copy()
-        else:
-            c._currentPosition = None
-        
-    # For compatibiility with old scripts.
-    setCurrentVnode = setCurrentPosition
-    #@-node:ekr.20040803140033.1:c.setCurrentPosition
-    #@+node:ekr.20060906211138:c.clearMarked
-    def clearMarked  (self,p):
+        body = p.bodyString()
+        assert(g.isUnicode(body))
+        s = g.toUnicode(s,encoding)
+    
+        c.setBodyString(p,body + s,encoding)
+    #@-node:ekr.20040315032503:c.appendStringToBody
+    #@+node:ekr.20031218072017.2984:c.clearAllMarked
+    def clearAllMarked (self):
         
         c = self
-        p.v.clearMarked()
-        g.doHook("clear-mark",c=c,p=p,v=p)
-    #@nonl
-    #@-node:ekr.20060906211138:c.clearMarked
+    
+        for p in c.allNodes_iter():
+            p.v.clearMarked()
+    #@-node:ekr.20031218072017.2984:c.clearAllMarked
     #@+node:ekr.20031218072017.2985:c.clearAllVisited
     def clearAllVisited (self):
     
@@ -6105,14 +6163,40 @@ class baseCommands:
             p.v.t.clearVisited()
             p.v.t.clearWriteBit()
     #@-node:ekr.20031218072017.2985:c.clearAllVisited
-    #@+node:ekr.20031218072017.2984:c.clearAllMarked
-    def clearAllMarked (self):
+    #@+node:ekr.20060906211138:c.clearMarked
+    def clearMarked  (self,p):
         
         c = self
+        p.v.clearMarked()
+        g.doHook("clear-mark",c=c,p=p,v=p)
+    #@nonl
+    #@-node:ekr.20060906211138:c.clearMarked
+    #@+node:ekr.20040305223522:c.setBodyString
+    def setBodyString (self,p,s,encoding="utf-8"):
     
-        for p in c.allNodes_iter():
-            p.v.clearMarked()
-    #@-node:ekr.20031218072017.2984:c.clearAllMarked
+        c = self ; v = p.v
+        if not c or not v: return
+    
+        s = g.toUnicode(s,encoding)
+        current = c.currentPosition()
+        # 1/22/05: Major change: the previous test was: 'if p == current:'
+        # This worked because commands work on the presently selected node.
+        # But setRecentFiles may change a _clone_ of the selected node!
+        if current and p.v.t==current.v.t:
+            # Revert to previous code, but force an empty selection.
+            c.frame.body.setSelectionAreas(s,None,None)
+            c.frame.body.setTextSelection(None)
+            # This code destoys all tags, so we must recolor.
+            c.recolor()
+            
+        # Keep the body text in the tnode up-to-date.
+        if v.t.bodyString != s:
+            v.setTnodeText(s)
+            v.t.setSelection(0,0)
+            p.setDirty()
+            if not c.isChanged():
+                c.setChanged(True)
+    #@-node:ekr.20040305223522:c.setBodyString
     #@+node:ekr.20031218072017.2989:c.setChanged
     def setChanged (self,changedFlag):
     
@@ -6136,6 +6220,44 @@ class baseCommands:
             else:
                 if s[0:2]=="* ": c.frame.setTitle(s[2:])
     #@-node:ekr.20031218072017.2989:c.setChanged
+    #@+node:ekr.20040803140033.1:c.setCurrentPosition
+    def setCurrentPosition (self,p):
+        
+        """Set the presently selected position. For internal use only.
+        
+        Client code should use c.selectPosition instead."""
+        
+        c = self
+        
+        if p:
+            if p.equal(c._currentPosition):
+                pass # We have already made a copy.
+            else: # Must make a copy _now_
+                c._currentPosition = p.copy()
+        else:
+            c._currentPosition = None
+        
+    # For compatibiility with old scripts.
+    setCurrentVnode = setCurrentPosition
+    #@-node:ekr.20040803140033.1:c.setCurrentPosition
+    #@+node:ekr.20040305223225:c.setHeadString
+    def setHeadString (self,p,s,encoding="utf-8"):
+    
+        c = self ; t = c.edit_widget(p)
+        
+        p.initHeadString(s,encoding)
+    
+        if t:
+            state = t.cget("state")
+            # g.trace(state,s)
+            t.configure(state="normal")
+            t.delete("1.0","end")
+            t.insert("end",s)
+            t.configure(state=state)
+    
+        p.setDirty()
+    #@nonl
+    #@-node:ekr.20040305223225:c.setHeadString
     #@+node:ekr.20060109164136:c.setLog
     def setLog (self):
         
@@ -6156,6 +6278,26 @@ class baseCommands:
         g.doHook("set-mark",c=c,p=p,v=p)
     #@nonl
     #@-node:ekr.20060906211138.1:c.setMarked
+    #@+node:ekr.20040803140033.3:c.setRootPosition
+    def setRootPosition(self,p):
+        
+        """Set the root positioin."""
+    
+        c = self
+        
+        # g.trace(p.headString())
+        
+        if p:
+            if p.equal(c._rootPosition):
+                pass # We have already made a copy.
+            else:
+                # We must make a copy _now_.
+                c._rootPosition = p.copy()
+                # c._currentPosition = p.copy() # New in Leo 4.4.2.
+        else:
+            c._rootPosition = None
+    #@nonl
+    #@-node:ekr.20040803140033.3:c.setRootPosition
     #@+node:ekr.20060906131836:c.setRootVnode New in 4.4.2
     def setRootVnode (self, v):
         
@@ -6191,67 +6333,31 @@ class baseCommands:
     topVnode = topPosition
     setTopVnode = setTopPosition
     #@-node:ekr.20040311173238:c.topPosition & c.setTopPosition
-    #@+node:ekr.20040305223522:c.setBodyString
-    def setBodyString (self,p,s,encoding="utf-8"):
+    #@+node:ekr.20031218072017.3404:c.trimTrailingLines
+    def trimTrailingLines (self,p):
     
-        c = self ; v = p.v
-        if not c or not v: return
-    
-        s = g.toUnicode(s,encoding)
-        current = c.currentPosition()
-        # 1/22/05: Major change: the previous test was: 'if p == current:'
-        # This worked because commands work on the presently selected node.
-        # But setRecentFiles may change a _clone_ of the selected node!
-        if current and p.v.t==current.v.t:
-            # Revert to previous code, but force an empty selection.
-            c.frame.body.setSelectionAreas(s,None,None)
-            c.frame.body.setTextSelection(None)
-            # This code destoys all tags, so we must recolor.
-            c.recolor()
-            
-        # Keep the body text in the tnode up-to-date.
-        if v.t.bodyString != s:
-            v.setTnodeText(s)
-            v.t.setSelection(0,0)
-            p.setDirty()
-            if not c.isChanged():
-                c.setChanged(True)
-    #@-node:ekr.20040305223522:c.setBodyString
-    #@+node:ekr.20040803140033.3:setRootPosition
-    def setRootPosition(self,p):
+        """Trims trailing blank lines from a node.
         
-        """Set the root positioin."""
+        It is surprising difficult to do this during Untangle."""
     
         c = self
-        
-        if p:
-            if p.equal(c._rootPosition):
-                pass # We have already made a copy.
-            else:
-                # We must make a copy _now_.
-                c._rootPosition = p.copy()
-        else:
-            c._rootPosition = None
+        body = p.bodyString()
+        lines = string.split(body,'\n')
+        i = len(lines) - 1 ; changed = False
+        while i >= 0:
+            line = lines[i]
+            j = g.skip_ws(line,0)
+            if j + 1 == len(line):
+                del lines[i]
+                i -= 1 ; changed = True
+            else: break
+        if changed:
+            body = string.join(body,'') + '\n' # Add back one last newline.
+            # g.trace(body)
+            c.setBodyString(p,body)
+            # Don't set the dirty bit: it would just be annoying.
     #@nonl
-    #@-node:ekr.20040803140033.3:setRootPosition
-    #@+node:ekr.20040305223225:c.setHeadString
-    def setHeadString (self,p,s,encoding="utf-8"):
-    
-        c = self ; t = c.edit_widget(p)
-        
-        p.initHeadString(s,encoding)
-    
-        if t:
-            state = t.cget("state")
-            # g.trace(state,s)
-            t.configure(state="normal")
-            t.delete("1.0","end")
-            t.insert("end",s)
-            t.configure(state=state)
-    
-        p.setDirty()
-    #@nonl
-    #@-node:ekr.20040305223225:c.setHeadString
+    #@-node:ekr.20031218072017.3404:c.trimTrailingLines
     #@-node:ekr.20060906211747.1:Setters
     #@-node:ekr.20031218072017.2982:Getters & Setters
     #@+node:ekr.20031218072017.2990:Selecting & Updating (commands)

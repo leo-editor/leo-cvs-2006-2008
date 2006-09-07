@@ -1356,8 +1356,6 @@ class baseUndoer:
         else:
             oldRoot = c.rootPosition()
             u.newP.linkAsRoot(oldRoot)
-    
-        # assert(u.newP.exists(c))
             
         # Restore all vnodeLists (and thus all clone marks).
         u.newP.restoreLinksInTree()

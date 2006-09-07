@@ -1282,12 +1282,12 @@ class leoTkinterTree (leoFrame.leoTree):
         __pychecker__ = '--no-argsused' # event not used.
     
         c = self.c ; frame = c.frame
-        if not p or not p.exists(c):
+        if not p or not c.positionExists(p):
             p = c.currentPosition()
-        if not p or not p.exists(c):
+        if not p or not c.positionExists(p):
             # g.trace('current p does not exist',p)
             p = c.rootPosition()
-        if not p or not p.exists(c):
+        if not p or not c.positionExists(p):
             # g.trace('no position')
             return
         try:
@@ -1365,7 +1365,7 @@ class leoTkinterTree (leoFrame.leoTree):
     
     def yoffsetTree(self,p,p1):
         h = 0
-        if not p.exists(self.c):
+        if not self.c.positionExists(p):
             # g.trace('does not exist',p.headString())
             return h,False # An extra precaution.
         p = p.copy()
@@ -2426,7 +2426,7 @@ class leoTkinterTree (leoFrame.leoTree):
         
         c = self.c ; frame = c.frame ; body = frame.bodyCtrl
         old_p = c.currentPosition()
-        if not p or not p.exists(c):
+        if not p or not c.positionExists(p):
             # g.trace('does not exist',p.headString())
             return # Not an error.
         

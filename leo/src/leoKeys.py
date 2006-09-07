@@ -1117,7 +1117,7 @@ class autoCompleterClass:
         if verbose: g.es_print('Scanning for auto-completer...')
     
         c = self.c ; k = self.k ; count = 0
-        for p in c.rootPosition().allNodes_iter():
+        for p in c.allNodes_iter():
             if verbose:
                 count += 1 ;
                 if (count % 200) == 0: g.es('.',newline=False)

@@ -794,13 +794,13 @@ class reformatParagraphTest:
         # self.undoMark = c.undoer.getMark()
         c.undoer.clearUndoState()
     
-        assert(p.exists(c))
+        assert(c.positionExists(p))
         self.before = u.findNodeInTree(p,"before")
         self.after  = u.findNodeInTree(p,"after")
         self.tempNode = u.findNodeInTree(p,"tempNode")
     
         assert self.tempNode,'no tempNode: ' + p
-        assert self.tempNode.exists(c),'tempNode does not exist'
+        assert c.positionExists(self.tempNode),'tempNode does not exist'
         self.tempChild = None
     
         self.copyBeforeToTemp()
@@ -955,7 +955,7 @@ def makeEditBodySuite(c):
 
     p = c.currentPosition()
     u = testUtils(c)
-    assert p.exists(c)
+    assert c.positionExists(p)
     data_p = u.findNodeInTree(p,"editBodyTests")
     assert(data_p)
     temp_p = u.findNodeInTree(data_p,"tempNode")

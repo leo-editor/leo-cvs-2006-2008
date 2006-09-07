@@ -13662,7 +13662,7 @@ def printFindList( findList, bodyFlag = 1 ):
 #@nonl
 #@+node:Clean unused tnodeLists
 count = 0
-for p in c.rootPosition().allNodes_iter():
+for p in c.allNodes_iter():
     count += 1
     # Empty tnodeLists are not errors because they never get written to the .leo file.
     v = p.v
