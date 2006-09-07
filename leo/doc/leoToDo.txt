@@ -1444,6 +1444,7 @@ def pasteOutline(self,event=None,reassignIndices=True):
         back = pasted.back()
         if back and back.isExpanded():
             pasted.moveToNthChildOf(back,0)
+        c.setRootPosition(c.findRootPosition(pasted)) # New in 4.4.2.
         u.afterInsertNode(pasted,undoType,undoData)
     finally:
         c.endUpdate()

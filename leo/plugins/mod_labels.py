@@ -297,7 +297,8 @@ class labelsController(object):
         
         Returns the inserted child or existing child.
         """
-        self.c.selectVnode(v)
+        c = self.c
+        c.selectVnode(v)
         # Before inserting, check if we have a child with the
         # same name
         child = v.firstChild()
@@ -310,8 +311,8 @@ class labelsController(object):
             pass
         else:
             self.c.moveOutlineRight()
-        child.setHeadStringOrHeadline(labelname)
-        child.setBodyStringOrPane(labelcontent)
+        child.setHeadStringOrHeadline(c,labelname)
+        child.setBodyStringOrPane(c,labelcontent)
         return child
     #@nonl
     #@-node:ekr.20050301095332.26:insert_node_for_label_as_child

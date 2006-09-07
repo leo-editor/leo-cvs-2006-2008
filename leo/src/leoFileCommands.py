@@ -153,8 +153,9 @@ class baseFileCommands:
         elif parent: # create v as the parent's first child.
             v = parent.insertAsNthChild(0,t)
         else: # create a root vnode
-            v = leoNodes.vnode(c,t)
-            v.moveToRoot()
+            v = leoNodes.vnode(t)
+            v.moveToRoot(oldRoot=None)
+            c.setRootVnode(v) # New in Leo 4.4.2.
     
         if v not in v.t.vnodeList:
             v.t.vnodeList.append(v) # New in 4.2.
@@ -1280,7 +1281,7 @@ class baseFileCommands:
             c.endUpdate()
         
         # Force an update of the body pane.
-        p.setBodyStringOrPane(p.bodyString())
+        p.setBodyStringOrPane(c,p.bodyString())
         c.frame.body.onBodyChanged(undoType=None)
     #@-node:ekr.20031218072017.3029:readAtFileNodes (leoAtFile)
     #@+node:ekr.20031218072017.2297:open (leoFileCommands)

@@ -326,7 +326,7 @@ class baseCommands:
     def allNodes_iter(self,copy=False):
         
         c = self
-        return c.rootPosition().allNodes_iter(copy)
+        return c.rootPosition().allNodes_iter(c,copy)
         
     all_positions_iter = allNodes_iter
     #@-node:EKR.20040529091232:c.all_positions_iter == allNodes_iter
@@ -402,10 +402,11 @@ class baseCommands:
             frame.lift()
             frame.resizePanesToRatio(frame.ratio,frame.secondary_ratio) # Resize the _new_ frame.
             t = leoNodes.tnode()
-            v = leoNodes.vnode(c,t)
-            p = leoNodes.position(c,v,[])
+            v = leoNodes.vnode(t)
+            p = leoNodes.position(v,[])
             v.initHeadString("NewHeadline")
-            v.moveToRoot()
+            v.moveToRoot(oldRoot=None)
+            c.setRootVnode(v) # New in Leo 4.4.2.
             c.editPosition(p)
         finally:
             c.endUpdate()
@@ -2742,7 +2743,7 @@ class baseCommands:
             s = g.angleBrackets(' ' + s + ' ')
         
         c.frame.tree.editLabel(v)
-        w = v.edit_widget()
+        w = v.edit_widget(c)
         if w:
             w.delete("1.0","end")
             w.insert("1.0",s)
@@ -2938,6 +2939,7 @@ class baseCommands:
             back = pasted.back()
             if back and back.isExpanded():
                 pasted.moveToNthChildOf(back,0)
+            c.setRootPosition(c.findRootPosition(pasted)) # New in 4.4.2.
             u.afterInsertNode(pasted,undoType,undoData)
         finally:
             c.endUpdate()
@@ -3038,6 +3040,7 @@ class baseCommands:
            undoData = u.beforeDeleteNode(p)
            dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
            p.doDelete()
+           c.setRootPosition(c.findRootPosition(newNode)) # New in 4.4.2.
            c.selectPosition(newNode)
            c.setChanged(True)
            u.afterDeleteNode(newNode,op_name,undoData,dirtyVnodeList=dirtyVnodeList)
@@ -3089,7 +3092,7 @@ class baseCommands:
         c.beginUpdate()
         try: # In update...
             undoData = c.undoer.beforeCloneNode(p)
-            clone = p.clone(p)
+            clone = p.clone()
             dirtyVnodeList = clone.setAllAncestorAtFileNodesDirty()
             c.setChanged(True)
             if c.validateOutline():
@@ -3155,6 +3158,7 @@ class baseCommands:
             child.moveToNthChildOf(p,index)
             u.afterMoveNode(child,'Sort',undoData)
             index += 1
+    #@nonl
     #@-node:ekr.20040303175026.12:c.sortChildrenHelper
     #@+node:ekr.20050415134809.1:c.sortSiblings
     def sortSiblings (self,event=None):
@@ -3213,6 +3217,7 @@ class baseCommands:
                     next.moveAfter(p)
                     u.afterMoveNode(next,'Sort',undoData)
                     p = next
+                c.setRootPosition(c.findRootPosition(root)) # New in 4.4.2.
             u.afterChangeGroup(root,undoType,dirtyVnodeList=dirtyVnodeList)
         finally:
             c.endUpdate()
@@ -3238,8 +3243,8 @@ class baseCommands:
         if 0:
             g.app.debug = True
         
-            p1 = p.oldLastVisible()
-            p2 = p.lastVisible()
+            p1 = p.oldLastVisible(c)
+            p2 = p.lastVisible(c)
             
             if p1 != p2:
                 print "oldLastVisible",p1
@@ -3372,7 +3377,7 @@ class baseCommands:
                     # This test may fail if a joined node is being editred.
                     
                     if isTkinter:
-                        t = p.edit_widget()
+                        t = p.edit_widget(c)
                         if t:
                             s = t.get("1.0","end")
                             assert p.headString().strip() == s.strip(), "May fail if joined node is being edited"
@@ -3504,7 +3509,7 @@ class baseCommands:
             if unittest: raise
             else:
                 g.es_exception(full=False,color="black")
-                p.setMarked()
+                p.setMarked(c)
     
         c.tabNannyNode(p,h,body,unittest,suppressErrors)
     #@-node:ekr.20040723094220.5:checkPythonNode
@@ -3514,6 +3519,8 @@ class baseCommands:
     def tabNannyNode (self,p,headline,body,unittest=False,suppressErrors=False):
     
         """Check indentation using tabnanny."""
+        
+        c = self
     
         try:
             # readline = g.readLinesGenerator(body).next
@@ -3545,7 +3552,7 @@ class baseCommands:
             g.es_exception()
     
         if unittest: raise
-        else: p.setMarked()
+        else: p.setMarked(c)
     #@-node:ekr.20040723094220.6:tabNannyNode
     #@-node:ekr.20040723094220:Check Outline commands & allies
     #@+node:ekr.20040412060927:c.dumpOutline
@@ -3982,7 +3989,7 @@ class baseCommands:
                     self.changed = True
                     self.dirtyVnodeList = []
                 undoData = u.beforeChangeNodeContents(p)
-                p.setBodyStringOrPane(body)
+                p.setBodyStringOrPane(c,body)
                 dirtyVnodeList2 = p.setDirty()
                 self.dirtyVnodeList.extend(dirtyVnodeList2)
                 u.afterChangeNodeContents(p,undoType,undoData,dirtyVnodeList=self.dirtyVnodeList)
@@ -4580,7 +4587,7 @@ class baseCommands:
             for p in c.allNodes_iter():
                 if p.isDirty()and not p.isMarked():
                     bunch = u.beforeMark(p,undoType)
-                    p.setMarked()
+                    p.setMarked(c)
                     c.setChanged(True)
                     u.afterMark(p,undoType,bunch)
             u.afterChangeGroup(current,undoType)
@@ -4605,7 +4612,7 @@ class baseCommands:
                     flag, i = g.is_special(s,0,"@root")
                     if flag:
                         bunch = u.beforeMark(p,undoType)
-                        p.setMarked()
+                        p.setMarked(c)
                         c.setChanged(True)
                         u.afterMark(p,undoType,bunch)
             u.afterChangeGroup(current,undoType)
@@ -4672,7 +4679,7 @@ class baseCommands:
             for p in c.allNodes_iter():
                 if p.v.t == current.v.t:
                     bunch = u.beforeMark(p,undoType)
-                    p.setMarked()
+                    p.setMarked(c)
                     c.setChanged(True)
                     dirtyVnodeList2 = p.setDirty()
                     dirtyVnodeList.extend(dirtyVnodeList2)
@@ -4694,9 +4701,9 @@ class baseCommands:
             undoType = g.choose(p.isMarked(),'Unmark','Mark')
             bunch = u.beforeMark(p,undoType)
             if p.isMarked():
-                p.clearMarked()
+                p.clearMarked(c)
             else:
-                p.setMarked()
+                p.setMarked(c)
             dirtyVnodeList = p.setDirty()
             c.setChanged(True)
             u.afterMark(p,undoType,bunch,dirtyVnodeList=dirtyVnodeList)
@@ -4719,7 +4726,7 @@ class baseCommands:
             for p in current.children_iter():
                 if not p.isMarked():
                     bunch = u.beforeMark(p,undoType)
-                    p.setMarked()
+                    p.setMarked(c)
                     dirtyVnodeList2 = p.setDirty()
                     dirtyVnodeList.extend(dirtyVnodeList2)
                     c.setChanged(True)
@@ -4744,7 +4751,7 @@ class baseCommands:
             for p in c.allNodes_iter():
                 if p.isMarked():
                     bunch = u.beforeMark(p,undoType)
-                    p.clearMarked()
+                    p.clearMarked(c)
                     p.v.t.setDirty()
                     u.afterMark(p,undoType,bunch)
             dirtyVnodeList = [p.v for p in c.allNodes_iter() if p.v.isDirty()]
@@ -4829,6 +4836,7 @@ class baseCommands:
                 if moved:
                     dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
                     p.moveToNthChildOf(next,0)
+                    c.setRootPosition(c.findRootPosition(p)) # New in 4.4.2.
                     
             else:
                 # Attempt to move p after next.
@@ -4836,6 +4844,7 @@ class baseCommands:
                 if moved:
                     dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
                     p.moveAfter(next)
+                    c.setRootPosition(c.findRootPosition(p)) # New in 4.4.2.
             #@-node:ekr.20031218072017.1769:<< Move p down & set moved if successful >>
             #@nl
             if moved:
@@ -4953,7 +4962,7 @@ class baseCommands:
             if not back2:
                 # p will be the new root node
                 moved = True
-                p.moveToRoot(c.rootPosition())
+                p.moveToRoot(oldRoot=c.rootPosition())
             
             elif back2.hasChildren() and back2.isExpanded():
                 if c.checkMoveWithParentWithWarning(p,back2,True):
@@ -4964,6 +4973,8 @@ class baseCommands:
                 if c.checkMoveWithParentWithWarning(p,back2.parent(),True):
                     moved = True
                     p.moveAfter(back2)
+                    
+            c.setRootPosition(c.findRootPosition(p)) # New in 4.4.2.
             #@-node:ekr.20031218072017.1773:<< Move p up >>
             #@nl
             if moved:
@@ -5174,7 +5185,7 @@ class baseCommands:
         try: # In update...
             c.endEditing()
             undoData = u.beforeMoveNode(current)
-            dirtyVnodeList = p.setAllAncestorAtFileNodesDirty() # 1/12/04
+            dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
             p.moveAfter(after)
             if inAtIgnoreRange and not p.inAtIgnoreRange():
                 # The moved nodes have just become newly unignored.
@@ -5183,6 +5194,7 @@ class baseCommands:
             else: # No need to mark descendents dirty.
                 dirtyVnodeList2 = p.setAllAncestorAtFileNodesDirty()
                 dirtyVnodeList.extend(dirtyVnodeList2)
+            c.setRootPosition(c.findRootPosition(p)) # New in 4.4.2.
             c.setChanged(True)
             u.afterMoveNode(p,undoType,undoData,dirtyVnodeList=dirtyVnodeList)
             c.selectPosition(p)
@@ -5200,9 +5212,10 @@ class baseCommands:
         c.beginUpdate()
         try: # In update...
             # g.trace("p,parent,n:",p.headString(),parent.headString(),n)
-            clone = p.clone(p) # Creates clone & dependents, does not set undo.
+            clone = p.clone() # Creates clone & dependents, does not set undo.
             if not c.checkMoveWithParentWithWarning(clone,parent,True):
                 clone.doDelete() # Destroys clone and makes p the current node.
+                c.setRootPosition(c.findRootPosition(p)) # New in 4.4.2.
                 c.selectPosition(p)
                 c.endUpdate(False) # Nothing has changed.
                 return
@@ -5218,6 +5231,7 @@ class baseCommands:
                dirtyVnodeList2 =  p.setAllAncestorAtFileNodesDirty()
                dirtyVnodeList.extend(dirtyVnodeList2)
             c.setChanged(True)
+            c.setRootPosition(c.findRootPosition(clone)) # New in 4.4.2.
             u.afterInsertNode(clone,undoType,undoData,dirtyVnodeList=dirtyVnodeList)
             c.selectPosition(clone)
         finally:
@@ -5246,6 +5260,7 @@ class baseCommands:
                 dirtyVnodeList2 = p.setAllAncestorAtFileNodesDirty()
                 dirtyVnodeList.extend(dirtyVnodeList2)
             c.setChanged(True)
+            c.setRootPosition(c.findRootPosition(p)) # New in 4.4.2.
             u.afterMoveNode(p,undoType,undoData,dirtyVnodeList=dirtyVnodeList)
             c.selectPosition(p)
         finally:
@@ -5260,11 +5275,12 @@ class baseCommands:
     
         c.beginUpdate()
         try: # In update...
-            clone = p.clone(p) # Creates clone.  Does not set undo.
+            clone = p.clone() # Creates clone.  Does not set undo.
             # g.trace("p,after:",p.headString(),after.headString())
             if not c.checkMoveWithParentWithWarning(clone,after.parent(),True):
                 # g.trace("invalid clone drag")
                 clone.doDelete()
+                c.setRootPosition(c.findRootPosition(p)) # New in 4.4.2.
                 c.selectPosition(p)
                 c.endUpdate(False) # Nothing has changed.
                 return
@@ -5280,6 +5296,7 @@ class baseCommands:
             else: # No need to mark descendents dirty.
                 dirtyVnodeList2 = clone.setAllAncestorAtFileNodesDirty()
                 dirtyVnodeList.extend(dirtyVnodeList2)
+            c.setRootPosition(c.findRootPosition(clone)) # New in 4.4.2.
             c.setChanged(True)
             u.afterInsertNode(clone,undoType,undoData,dirtyVnodeList=dirtyVnodeList)
             c.selectPosition(clone)
@@ -5348,7 +5365,7 @@ class baseCommands:
         
     def headlineWantsFocusNow(self,p):
         c = self
-        c.set_focus(p and p.edit_widget())
+        c.set_focus(p and p.edit_widget(c))
         
     def logWantsFocusNow(self):
         c = self ; log = c.frame.log
@@ -5372,7 +5389,7 @@ class baseCommands:
         
     def headlineWantsFocus(self,p):
         c = self
-        c.request_focus(p and p.edit_widget())
+        c.request_focus(p and p.edit_widget(c))
         
     def logWantsFocus(self):
         c = self ; log = c.frame.log
@@ -5741,7 +5758,7 @@ class baseCommands:
         # N.B.  This is called at idle time, so minimizing positions is crucial!
         if c.hoistStack:
             bunch = c.hoistStack[-1]
-            return bunch.p and not bunch.p.isCurrentPosition()
+            return bunch.p and not c.isCurrentPosition(bunch.p)
         elif c.currentPositionIsRootPosition():
             return c.currentPositionHasNext()
         else:
@@ -5897,7 +5914,7 @@ class baseCommands:
     #@+node:ekr.20031218072017.2982:Getters & Setters
     #@+node:ekr.20031218072017.2984:c.clearAllMarked
     def clearAllMarked (self):
-    
+        
         c = self
     
         for p in c.allNodes_iter():
@@ -5969,6 +5986,40 @@ class baseCommands:
     
     shortFilename = shortFileName
     #@-node:ekr.20031218072017.2986:c.fileName & shortFileName
+    #@+node:ekr.20060906134053:c.findRootPosition New in 4.4.2
+    #@+at 
+    #@nonl
+    # Aha! The Commands class can easily recompute the root position::
+    # 
+    #     c.setRootPosition(c.findRootPosition(p))
+    # 
+    # Any command that changes the outline should call this code.
+    # 
+    # As a result, the fundamental p and v methods that alter trees need never
+    # convern themselves about reporting the changed root.  A big improvement.
+    #@-at
+    #@@c
+    
+    def findRootPosition (self,p):
+        
+        '''Return the root position of the outline containing p.'''
+        
+        c = self ; p = p.copy()
+        
+        while p and p.hasParent():
+            p.moveToParent()
+            
+        while p and p.hasBack():
+            p.moveToBack()
+            
+        # g.trace(p and p.headString())
+    
+        return p
+    
+        
+        
+    #@nonl
+    #@-node:ekr.20060906134053:c.findRootPosition New in 4.4.2
     #@+node:ekr.20031218072017.2987:c.isChanged
     def isChanged (self):
     
@@ -6028,7 +6079,7 @@ class baseCommands:
     def nullPosition (self):
         
         c = self ; v = None
-        return leoNodes.position(c,v,[])
+        return leoNodes.position(v,[])
     #@-node:ekr.20040311094927:c.nullPosition
     #@+node:ekr.20031218072017.2988:c.rootPosition & c.setRootPosition
     #@+node:ekr.20040803140033.2:rootPosition
@@ -6101,6 +6152,14 @@ class baseCommands:
             except AttributeError:
                 pass
     #@-node:ekr.20060109164136:c.setLog
+    #@+node:ekr.20060906131836:c.setRootVnode New in 4.4.2
+    def setRootVnode (self, v):
+        
+        c = self
+        newRoot = leoNodes.position(v,[])
+        c.setRootPosition(newRoot)
+    #@nonl
+    #@-node:ekr.20060906131836:c.setRootVnode New in 4.4.2
     #@+node:ekr.20040311173238:c.topPosition & c.setTopPosition
     def topPosition(self):
         

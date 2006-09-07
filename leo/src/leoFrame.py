@@ -1501,7 +1501,7 @@ class nullTree (leoTree):
         pass
     #@-node:ekr.20031218072017.2240:Tree operations
     #@+node:ekr.20040725044521:edit_widget
-    def edit_widget (self,p):
+    def edit_widget (self,c,p):
         
         self.oops()
         

@@ -361,8 +361,10 @@ class leoTkinterTree (leoFrame.leoTree):
         #@-node:ekr.20060307080642:<< create baloon bindings for tagged items on the canvas >>
         #@nl
     #@-node:ekr.20051024102724:tkTtree.setBindings
-    #@+node:ekr.20040803072955.21:injectCallbacks
+    #@+node:ekr.20040803072955.21:tkTree.injectCallbacks
     def injectCallbacks(self):
+        
+        c = self.c
         
         #@    << define tkinter callbacks to be injected in the position class >>
         #@+node:ekr.20040803072955.22:<< define tkinter callbacks to be injected in the position class >>
@@ -370,11 +372,11 @@ class leoTkinterTree (leoFrame.leoTree):
         
         #@+others
         #@+node:ekr.20040803072955.23:OnHyperLinkControlClick
-        def OnHyperLinkControlClick (self,event):
+        def OnHyperLinkControlClick (self,event=None,c=c):
             
             """Callback injected into position class."""
             
-            p = self ; c = p.c
+            p = self
             try:
                 if not g.doHook("hypercclick1",c=c,p=p,v=p,event=event):
                     c.beginUpdate()
@@ -388,12 +390,12 @@ class leoTkinterTree (leoFrame.leoTree):
                 g.es_event_exception("hypercclick")
         #@-node:ekr.20040803072955.23:OnHyperLinkControlClick
         #@+node:ekr.20040803072955.24:OnHyperLinkEnter
-        def OnHyperLinkEnter (self,event=None):
+        def OnHyperLinkEnter (self,event=None,c=c):
             
             """Callback injected into position class."""
         
             try:
-                p = self ; c = p.c
+                p = self
                 if not g.doHook("hyperenter1",c=c,p=p,v=p,event=event):
                     if 0: # This works, and isn't very useful.
                         c.frame.bodyCtrl.tag_config(p.tagName,background="green")
@@ -402,12 +404,12 @@ class leoTkinterTree (leoFrame.leoTree):
                 g.es_event_exception("hyperenter")
         #@-node:ekr.20040803072955.24:OnHyperLinkEnter
         #@+node:ekr.20040803072955.25:OnHyperLinkLeave
-        def OnHyperLinkLeave (self,event=None):
+        def OnHyperLinkLeave (self,event=None,c=c):
             
             """Callback injected into position class."""
         
             try:
-                p = self ; c = p.c
+                p = self
                 if not g.doHook("hyperleave1",c=c,p=p,v=p,event=event):
                     if 0: # This works, and isn't very useful.
                         c.frame.bodyCtrl.tag_config(p.tagName,background="white")
@@ -422,7 +424,7 @@ class leoTkinterTree (leoFrame.leoTree):
         for f in (OnHyperLinkControlClick,OnHyperLinkEnter,OnHyperLinkLeave):
             
             g.funcToMethod(f,leoNodes.position)
-    #@-node:ekr.20040803072955.21:injectCallbacks
+    #@-node:ekr.20040803072955.21:tkTree.injectCallbacks
     #@-node:ekr.20040803072955.15: Birth... (tkTree)
     #@+node:ekr.20040803072955.6:Allocation...
     #@+node:ekr.20040803072955.7:newBox
@@ -1289,7 +1291,7 @@ class leoTkinterTree (leoFrame.leoTree):
             # g.trace('no position')
             return
         try:
-            last = p.lastVisible()
+            last = p.lastVisible(c)
             nextToLast = last.visBack()
             h1 = self.yoffset(p)
             h2 = self.yoffset(last)
@@ -1951,11 +1953,13 @@ class leoTkinterTree (leoFrame.leoTree):
     #@+node:ekr.20040803072955.85:configureTextState
     def configureTextState (self,p):
         
+        c = self.c
+        
         if not p: return
         
         # g.trace(p.headString(),self.c._currentPosition)
         
-        if p.isCurrentPosition():
+        if c.isCurrentPosition(p):
             if p == self.editPosition():
                 self.setEditLabelState(p) # selected, editing.
             else:
@@ -2278,10 +2282,12 @@ class leoTkinterTree (leoFrame.leoTree):
     def updateNode (self,v,x,y):
         
         """Draw a node that may have become visible as a result of a scrolling operation"""
+        
+        c = self.c
     
         if self.inExpandedVisibleArea(y):
             # This check is a major optimization.
-            if not v.edit_widget():
+            if not v.edit_widget(c):
                 return self.force_draw_node(v,x,y)
             else:
                 return self.line_height
@@ -2365,9 +2371,9 @@ class leoTkinterTree (leoFrame.leoTree):
         self.setEditPosition(p) # That is, self._editPosition = p
         
         if self.trace_edit and not g.app.unitTesting:
-            g.trace(p.headString(),g.choose(p.edit_widget(),'','no edit widget'))
+            g.trace(p.headString(),g.choose(p.edit_widget(c),'','no edit widget'))
     
-        if p and p.edit_widget():
+        if p and p.edit_widget(c):
             self.revertHeadline = p.headString() # New in 4.4b2: helps undo.
             self.setEditLabelState(p) # Sets the focus immediately.
             c.headlineWantsFocus(p) # Make sure the focus sticks.
@@ -2439,7 +2445,7 @@ class leoTkinterTree (leoFrame.leoTree):
                     self.endEditLabel() # sets editPosition = None
                     self.setUnselectedLabelState(old_p) # 12/17/04
                 
-                if old_p.edit_widget():
+                if old_p.edit_widget(c):
                     old_p.v.t.scrollBarSpot = yview
                     old_p.v.t.insertSpot = insertSpot
                 #@-node:ekr.20040803072955.129:<< unselect the old node >>
@@ -2551,7 +2557,7 @@ class leoTkinterTree (leoFrame.leoTree):
     #@+node:ekr.20040803072955.135:setEditLabelState
     def setEditLabelState (self,p): # selected, editing
     
-        c = self.c ; w = p.edit_widget()
+        c = self.c ; w = p.edit_widget(c)
     
         if p and w:
             c.widgetWantsFocusNow(w)
@@ -2567,20 +2573,24 @@ class leoTkinterTree (leoFrame.leoTree):
     def setSelectedLabelState (self,p): # selected, disabled
     
         # g.trace(p.headString(),g.callers())
+        
+        c = self.c
     
-        if p and p.edit_widget():
+        if p and p.edit_widget(c):
             self.setDisabledHeadlineColors(p)
     #@-node:ekr.20040803072955.136:setSelectedLabelState
     #@+node:ekr.20040803072955.138:setUnselectedLabelState
     def setUnselectedLabelState (self,p): # not selected.
     
-        if p and p.edit_widget():
+        c = self.c
+    
+        if p and p.edit_widget(c):
             self.setUnselectedHeadlineColors(p)
     #@-node:ekr.20040803072955.138:setUnselectedLabelState
     #@+node:ekr.20040803072955.139:setDisabledHeadlineColors
     def setDisabledHeadlineColors (self,p):
     
-        c = self.c ; w = p.edit_widget()
+        c = self.c ; w = p.edit_widget(c)
     
         if self.trace and self.verbose:
             if not self.redrawing:
@@ -2602,7 +2612,7 @@ class leoTkinterTree (leoFrame.leoTree):
     #@+node:ekr.20040803072955.140:setEditHeadlineColors
     def setEditHeadlineColors (self,p):
     
-        c = self.c ; w = p.edit_widget()
+        c = self.c ; w = p.edit_widget(c)
         
         if self.trace and self.verbose:
             if not self.redrawing:
@@ -2622,7 +2632,7 @@ class leoTkinterTree (leoFrame.leoTree):
     #@+node:ekr.20040803072955.141:setUnselectedHeadlineColors
     def setUnselectedHeadlineColors (self,p):
         
-        c = self.c ; w = p.edit_widget()
+        c = self.c ; w = p.edit_widget(c)
         
         if self.trace and self.verbose:
             if not self.redrawing:

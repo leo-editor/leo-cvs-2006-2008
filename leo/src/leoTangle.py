@@ -1021,6 +1021,7 @@ class baseTangleCommands:
     def skip_body (self,p):
     
         # g.trace(p)
+        c = self.c
         s = p.bodyString()
         code_seen = False ; code = doc = None ; i = 0
         anyChanged = False
@@ -1171,7 +1172,7 @@ class baseTangleCommands:
             assert(progress < i) # we must make progress!
         # 3/4/02: Only call p.trimTrailingLines if we have changed its body.
         if anyChanged:
-            p.trimTrailingLines()
+            p.trimTrailingLines(c)
     #@+node:ekr.20031218072017.3492:The interface between tangle and untangle
     #@+at 
     #@nonl
@@ -2961,13 +2962,13 @@ class baseTangleCommands:
     
         c = self.c ; p = self.p
         assert(self.p)
-        p.setBodyStringOrPane(s)
+        p.setBodyStringOrPane(c,s)
     
         c.beginUpdate()
         try:
             c.setChanged(True)
             p.setDirty()
-            p.setMarked()
+            p.setMarked(c)
         finally:
             c.endUpdate()
     #@-node:ekr.20031218072017.3575:update_current_vnode

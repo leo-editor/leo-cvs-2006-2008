@@ -170,10 +170,11 @@ class leoTkinterFrame (leoFrame.leoFrame):
         f = self ; c = f.c
     
         t = leoNodes.tnode()
-        v = leoNodes.vnode(c,t)
-        p = leoNodes.position(c,v,[])
+        v = leoNodes.vnode(t)
+        p = leoNodes.position(v,[])
         v.initHeadString("NewHeadline")
-        p.moveToRoot()
+        p.moveToRoot(oldRoot=None)
+        c.setRootPosition(p) # New in 4.4.2.
         c.editPosition(p)
     #@-node:ekr.20051009045404:createFirstTreeNode
     #@+node:ekr.20051121092320:f.enableTclTraces
@@ -1455,7 +1456,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
         '''End editing of a headline and revert to its previous value.'''
         
         frame = self ; c = frame.c ; tree = frame.tree
-        p = c.currentPosition() ; w = p.edit_widget()
+        p = c.currentPosition() ; w = p.edit_widget(c)
         
         if g.app.batchMode:
             c.notValidInBatchMode("Abort Edit Headline")
@@ -1595,7 +1596,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
             
         c.editPosition(p)
         c.frame.tree.setEditLabelState(p)
-        w = p.edit_widget()
+        w = p.edit_widget(c)
         if w:
             time = c.getTime(body=False)
             if 1: # We can't know if we were already editing, so insert at end.

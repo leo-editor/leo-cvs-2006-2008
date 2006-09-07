@@ -2424,6 +2424,7 @@ class baseColorizer:
     #@+node:ekr.20031218072017.1914:doNowebSecRef
     def doNowebSecRef (self,s,i):
     
+        c = self.c
         self.tag("nameBrackets",i,i+2)
         
         # See if the line contains the right name bracket.
@@ -2435,7 +2436,7 @@ class baseColorizer:
             return i + 2
         else:
             searchName = self.body.getTextRange(self.index(i),self.index(j+k)) # includes brackets
-            ref = g.findReference(searchName,self.p)
+            ref = g.findReference(c,searchName,self.p)
             if ref:
                 self.tag("link",i+2,j)
                 if self.use_hyperlinks:

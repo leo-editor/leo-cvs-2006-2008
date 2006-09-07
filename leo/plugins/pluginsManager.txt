@@ -22,7 +22,8 @@
 plugins_menu.py
 
 #################
-leoOPML.py
+zodb.py
+#leoOPML.py
 #slideshow.py
 #mod_shadow.py
 #print_cp.py
@@ -46,7 +47,6 @@ leoOPML.py
 
 #pretty_print.py
 rst3.py
-# zodb.py
 #rClick.py
 #TabWindow.py
 #rowcol.py

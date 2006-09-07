@@ -466,18 +466,18 @@ class testUtils:
             p.moveToParent()
         return p
     #@-node:ekr.20051104075904.29:findNodeInRootTree
-    #@+node:ekr.20051104075904.30:findNodeInTree
+    #@+node:ekr.20051104075904.30:u.findNodeInTree
     def findNodeInTree(self,p,headline):
     
         """Search for a node in p's tree matching the given headline."""
     
-        c = p.c
+        c = self.c
         for p in p.subtree_iter():
             h = headline.strip().lower()
             if p.headString().strip().lower() == h:
                 return p.copy()
         return c.nullPosition()
-    #@-node:ekr.20051104075904.30:findNodeInTree
+    #@-node:ekr.20051104075904.30:u.findNodeInTree
     #@+node:ekr.20051104075904.31:findNodeAnywhere
     def findNodeAnywhere(self,headline):
         
@@ -507,22 +507,6 @@ class testUtils:
     
         return len([p for p in self.c.allNodes_iter()])
     #@-node:ekr.20051104075904.34:numberOfNodesInOutline
-    #@+node:ekr.20051104075904.35:replaceOutline
-    def replaceOutline (self,outline1,outline2):
-    
-        """Replace outline1 by a copy of outline 2,
-    
-        retaining the headline of outline1."""
-    
-        c = outline1.c
-        h = outline1.headString()
-        copy = outline2.copyTreeAfter()
-        copy.initHeadString(h)
-        copy.unlink()
-        copy.linkAfter(outline1)
-        outline1.doDelete()
-        c.selectPosition(copy)
-    #@-node:ekr.20051104075904.35:replaceOutline
     #@+node:ekr.20051104075904.36:testUtils.writeNode/sToNode
     #@+node:ekr.20051104075904.37:writeNodesToNode
     def writeNodesToNode (self,c,input,output,sentinels=True):
@@ -1212,7 +1196,7 @@ class importExportTestCase(unittest.TestCase):
         # Create a node under temp_v.
         child = temp_v.insertAsLastChild()
         assert(child)
-        child.setHeadString("import test: " + self.v.headString())
+        child.setHeadString(c,"import test: " + self.v.headString())
         c.selectVnode(child)
     
         assert(d)

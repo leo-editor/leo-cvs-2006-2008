@@ -134,11 +134,14 @@ class DateNodes:
     #@@c
     
     def _insert_date_node(self, parent, date, format):
+        
+        c = self.c
+    
         node = parent.insertAsLastChild()
     
         label = self._format_node_label(date, format)
     
-        node.setHeadStringOrHeadline(label)
+        node.setHeadStringOrHeadline(c,label)
         
         return node
         
@@ -149,7 +152,7 @@ class DateNodes:
     def _insert_day_node(self, parent, date, day_fmt):
         day_node = self._insert_date_node(parent, date, day_fmt)
         
-        day_node.setBodyStringOrPane(self.settings["body_text"])
+        day_node.setBodyStringOrPane(self.c,self.settings["body_text"])
     
         return day_node
     #@nonl

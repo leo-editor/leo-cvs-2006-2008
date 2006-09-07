@@ -227,7 +227,7 @@ def onHeadKey(tag,keywords):
             if p.headString()[:8] == '@bibtex ':
                 #@                << write template >>
                 #@+node:timo.20050215232157:<< write template >>
-                v.setBodyStringOrPane(templates[h[:h.find(' ')]])
+                v.setBodyStringOrPane(c,templates[h[:h.find(' ')]])
                 c.frame.body.setInsertionPoint('1.16')
                 return
                 #@nonl
@@ -299,8 +299,8 @@ def readBibTexFileIntoTree(bibFile, c):
     p = c.currentPosition()
     for i in biblist:
         v = p.insertAsLastChild()
-        v.setHeadStringOrHeadline(str(i[0]))
-        v.setBodyStringOrPane(str(i[1]))
+        v.setHeadStringOrHeadline(c,str(i[0]))
+        v.setBodyStringOrPane(c,str(i[1]))
           
 
 

@@ -52,7 +52,7 @@ def sync_node_to_folder(parent,d):
     newlist.reverse()
     for name in newlist:
         v = parent.insertAsNthChild(0)
-        v.setHeadStringOrHeadline(name)
+        v.setHeadStringOrHeadline(c,name)
         v.setMarked()
     #warn for orphan oldlist
     if len(oldlist)>0:

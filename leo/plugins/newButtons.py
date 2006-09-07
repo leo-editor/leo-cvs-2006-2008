@@ -562,8 +562,8 @@ class Template:
             c.insertHeadline()
             c.endEditing()
             p = c.currentPosition()
-            p.setHeadString(self.convert(self.headline,parameter,parent))
-            p.setBodyString(self.convert(self.body,parameter,parent))
+            p.setHeadString(c,self.convert(self.headline,parameter,parent))
+            p.setBodyString(c,self.convert(self.body,parameter,parent))
         
             # Move it to the proper place.
             if top and not parent.isExpanded():

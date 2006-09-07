@@ -102,6 +102,7 @@ class zodbCommandsClass:
     def __init__ (self,c):
         
         self.c = c
+        self.clearedVnodes = []
         
         # Set by open, used by close.
         self.connection = None
@@ -117,6 +118,20 @@ class zodbCommandsClass:
             g.es_print('No setting: @string zodb_storage_file')
     #@nonl
     #@-node:ekr.20060904192907.2:__init__
+    #@+node:ekr.20060905094242:clear/setCommanders
+    def clearCommanders (self,c):
+    
+        self.clearedVnodes = [p.v for p in c.allNodes_iter()]
+        for v in self.clearedVnodes:
+            v.c = None
+            
+    def setCommanders (self,c):
+        
+        for v in self.clearedVnodes:
+            v.c = c
+            
+        self.clearedVnodes = []
+    #@-node:ekr.20060905094242:clear/setCommanders
     #@+node:ekr.20060904204806.1:close
     def close (self):
         
@@ -163,7 +178,9 @@ class zodbCommandsClass:
     #@nonl
     #@-node:ekr.20060904204806:open
     #@+node:ekr.20060904192907.4:readFile
-    def readFile (self,event=None,fileName=None):
+    def readFile (self,event=None):
+        
+        c = self.c
         
         try:
             self.open()
@@ -173,14 +190,20 @@ class zodbCommandsClass:
     #@nonl
     #@-node:ekr.20060904192907.4:readFile
     #@+node:ekr.20060904192907.5:writeFile
-    def writeFile (self,event=None,fileName=None):
+    def writeFile (self,event=None):
+        
+        c = self.c ; p = c.rootPosition()
     
         try:
             self.open()
-            g.trace(self.root)
             self.root['count'] = self.root.get('count',0) + 1
+            # self.clearCommanders(c)
+            self.root['root_vnode'] = p.v
+            # self.root['root_tnode'] = p.v.t
+            g.trace(self.root)
             get_transaction().commit() # get_transaction is a builtin(!)
         finally:
+            # self.setCommanders(c)
             self.close()
     #@nonl
     #@-node:ekr.20060904192907.5:writeFile

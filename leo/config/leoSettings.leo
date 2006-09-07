@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="305" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="121" left="256" height="605" width="938"/>
+	<global_window_position top="121" left="256" height="548" width="938"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -247,7 +247,7 @@
 <v t="ekr.20060702100257"><vh>@font menu text font</vh></v>
 <v t="ekr.20041119051246.4"><vh>@font outline font</vh></v>
 </v>
-<v t="ekr.20041119034357.3" annotate="7d71002e"><vh>General options</vh>
+<v t="ekr.20041119034357.3" a="E" annotate="7d71002e"><vh>General options</vh>
 <v t="ekr.20041119034357.5"><vh>@bool read_only = False</vh></v>
 <v t="ekr.20041119034357.7"><vh>.leo file options</vh>
 <v t="ekr.20041119034357.8"><vh>@string output_initial_comment = None</vh></v>
@@ -262,9 +262,9 @@
 <v t="ekr.20041119041747.1"><vh>@string trailing_body_newlines = one</vh></v>
 <v t="ekr.20041119041747.4"><vh>@bool write_strips_blank_lines = True</vh></v>
 </v>
-<v t="ekr.20041119034357.15"><vh>unicode encoding options</vh>
-<v t="ekr.20041119042929.9"><vh>@string default_derived_file_encoding = UTF-8</vh></v>
-<v t="ekr.20041119042929.10"><vh>@string new_leo_file_encoding = UTF-8</vh></v>
+<v t="ekr.20041119034357.15" a="E"><vh>unicode encoding options</vh>
+<v t="ekr.20041119042929.9"><vh>@string default_derived_file_encoding = utf-8</vh></v>
+<v t="ekr.20041119042929.10" a="TV"><vh>@string new_leo_file_encoding = utf-8</vh></v>
 <v t="ekr.20041119042929.11"><vh>@string tk_encoding = None</vh></v>
 </v>
 <v t="ekr.20060127050605"><vh>@int max_undo_stack_size = 50</vh></v>
@@ -283,7 +283,7 @@
 <v t="ekr.20060804095015"><vh>@string open_flash_brackets = ([{</vh></v>
 <v t="ekr.20060804095015.1"><vh>@string close_flash_brackets = )]}</vh></v>
 </v>
-<v t="ekr.20051007200824" a="E" annotate="7d71002e"><vh>Keyboard shortcuts</vh>
+<v t="ekr.20051007200824" annotate="7d71002e"><vh>Keyboard shortcuts</vh>
 <v t="ekr.20051101160257" annotate="7d71002e"><vh>About keyboard shortcuts</vh>
 <v t="ekr.20051007200824.1" annotate="7d71002e"><vh>About shortcut specifiers</vh></v>
 <v t="ekr.20060116090646"><vh>Reference for function keys</vh></v>
@@ -359,10 +359,10 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060110141538.1" a="E" annotate="7d71002e"><vh>@keys No bindings</vh>
+<v t="ekr.20060110141538.1" annotate="7d71002e"><vh>@keys No bindings</vh>
 <v t="ekr.20051218202206" annotate="7d71002e"><vh>@shortcuts No bindings: A-E</vh></v>
 <v t="ekr.20060112093227.1"><vh>@shortcuts No bindings: E-M</vh></v>
-<v t="ekr.20060112093227.2" a="V"><vh>@shortcuts No bindings: N-Z</vh></v>
+<v t="ekr.20060112093227.2"><vh>@shortcuts No bindings: N-Z</vh></v>
 </v>
 <v t="ekr.20060603215208"><vh>@keys EKR bindings: Emacs keys + modes</vh>
 <v t="ekr.20060608065207"><vh>Settings related to key bindings</vh>
@@ -436,6 +436,9 @@
 <v t="ekr.20060730101451.5"><vh>@string shadow_subdir = LeoShadow</vh></v>
 <v t="ekr.20060730101451.6"><vh>@bool shadow_testing = True</vh></v>
 <v t="ekr.20060730101451.7"><vh>@int shadow_verbose = 3</vh></v>
+</v>
+<v t="ekr.20060904211808"><vh>zodb plugin</vh>
+<v t="ekr.20060904211808.1"><vh>@string zodb_storage_file = c:\prog\zopeTemp\leo.fs</vh></v>
 </v>
 </v>
 <v t="ekr.20041119034357.28" annotate="7d71002e"><vh>Preferences panel</vh>
@@ -5639,5 +5642,7 @@ php_keyword_font_slant = roman
     # roman, italic
 php_keyword_font_weight = bold
     # normal, bold</t>
+<t tx="ekr.20060904211808"></t>
+<t tx="ekr.20060904211808.1">The path to the zodb storage.</t>
 </tnodes>
 </leo_file>

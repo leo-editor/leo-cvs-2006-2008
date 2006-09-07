@@ -60,7 +60,7 @@ def onPreSave(tag=None, keywords=None):
                     s = p2.bodyString()
                     lastline = s.split("\n")[-1]
                     if lastline.strip():
-                        p2.setBodyStringOrPane(s+"\n")
+                        p2.setBodyStringOrPane(c,s+"\n")
 #@nonl
 #@-node:ekr.20040331151007.1:onPreSave
 #@+node:ekr.20040331151007.2:onPostSave

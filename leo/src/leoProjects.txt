@@ -315,7 +315,7 @@ def readEndNode (self,s,i,middle=False):
 #@+node:ekr.20041005105605.96:<< indicate that the node has been changed >>
 if at.perfectImportRoot:
     << bump at.correctedLines and tell about the correction >>
-    # p.setMarked()
+    # p.setMarked(c)
     at.t.bodyString = s # Just setting at.t.tempBodyString won't work here.
     at.t.setDirty() # Mark the node dirty.  Ancestors will be marked dirty later.
     at.c.setChanged(True)
@@ -390,11 +390,11 @@ for p in root.self_and_subtree_iter():
             if p.v.isDirty():
                 p.setAllAncestorAtFileNodesDirty()
         else:
-            p.setBodyStringOrPane(s) # Sets v and v.c dirty.
+            p.setBodyStringOrPane(c,s) # Sets v and v.c dirty.
             
         if not thinFile or (thinFile and p.v.isDirty()):
             g.es("changed: " + p.headString(),color="blue")
-            p.setMarked()
+            p.setMarked(c)
 #@-node:ekr.20041005105605.24:<< copy all tempBodyStrings to tnodes >>
 #@+node:ekr.20041005105605.25:<< delete all tempBodyStrings >>
 for p in c.allNodes_iter():
@@ -480,7 +480,7 @@ def readEndNode (self,s,i,middle=False):
 #@+node:ekr.20041005105605.96:<< indicate that the node has been changed >>
 if at.perfectImportRoot:
     << bump at.correctedLines and tell about the correction >>
-    # p.setMarked()
+    # p.setMarked(c)
     at.t.bodyString = s # Just setting at.t.tempBodyString won't work here.
     at.t.setDirty() # Mark the node dirty.  Ancestors will be marked dirty later.
     at.c.setChanged(True)
@@ -533,7 +533,7 @@ else:
 #@+node:ekr.20041005105605.96:<< indicate that the node has been changed >>
 if at.perfectImportRoot:
     << bump at.correctedLines and tell about the correction >>
-    # p.setMarked()
+    # p.setMarked(c)
     at.t.bodyString = s # Just setting at.t.tempBodyString won't work here.
     at.t.setDirty() # Mark the node dirty.  Ancestors will be marked dirty later.
     at.c.setChanged(True)
@@ -600,7 +600,7 @@ def  copyAllTempBodyStringsToTnodes (self,root,thinFile):
                 if p.v.isDirty():
                     p.setAllAncestorAtFileNodesDirty()
             else:
-                p.setBodyStringOrPane(s) # Sets v and v.c dirty.
+                p.setBodyStringOrPane(c,s) # Sets v and v.c dirty.
 
             if not thinFile or (thinFile and p.v.isDirty()):
                 # New in Leo 4.3: support for mod_labels plugin:
@@ -609,7 +609,7 @@ def  copyAllTempBodyStringsToTnodes (self,root,thinFile):
                 except Exception:
                     pass
                 g.es("changed: " + p.headString(),color="blue")
-                p.setMarked()
+                p.setMarked(c)
 #@-node:ekr.20050301105854:copyAllTempBodyStringsToTnodes
 #@-node:ekr.20060824130443:Found: tempBodyString
 #@-node:ekr.20060826062302:Removed warning about changed nodes
@@ -1083,8 +1083,9 @@ def createVnode (self,parent,back,tref,headline,attrDict):
     elif parent: # create v as the parent's first child.
         v = parent.insertAsNthChild(0,t)
     else: # create a root vnode
-        v = leoNodes.vnode(c,t)
-        v.moveToRoot()
+        v = leoNodes.vnode(t)
+        v.moveToRoot(oldRoot=None)
+        c.setRootVnode(v) # New in Leo 4.4.2.
 
     if v not in v.t.vnodeList:
         v.t.vnodeList.append(v) # New in 4.2.
@@ -1255,7 +1256,7 @@ def unmarkAll (self,event=None):
         for p in c.allNodes_iter():
             if p.isMarked():
                 bunch = u.beforeMark(p,undoType)
-                p.clearMarked()
+                p.clearMarked(c)
                 p.v.t.setDirty()
                 u.afterMark(p,undoType,bunch)
         dirtyVnodeList = [p.v for p in c.allNodes_iter() if p.v.isDirty()]
@@ -1307,7 +1308,7 @@ def updateMarks (self,oldOrNew):
     
     '''Update dirty and marked bits.'''
     
-    u = self
+    u = self ; c = u.c
     
     if oldOrNew not in ('new','old'):
         g.trace("can't happen")
@@ -1321,8 +1322,8 @@ def updateMarks (self,oldOrNew):
     if dirty:   u.p.setDirty(setDescendentsDirty=False)
     else:       u.p.clearDirty()
         
-    if marked:  u.p.setMarked()
-    else:       u.p.clearMarked()
+    if marked:  u.p.setMarked(c)
+    else:       u.p.clearMarked(c)
 
     u.c.setChanged(changed)
 #@-node:ekr.20050410095424:updateMarks
@@ -1364,6 +1365,201 @@ def undoMark (self):
 #@-node:ekr.20060830063143:Improved speed of unmark-all and corresponding undo/redo
 #@-node:ekr.20060830064138:Bugs fixed
 #@-node:ekr.20060824095221:4.4.1 final projects
+#@+node:ekr.20060904165452:4.4.2 projects
+#@+node:ekr.20060905091234:Code level
+#@+node:ekr.20060904114302:Added OPML support to fileCommands
+#@+node:ekr.20031218072017.3046:write_Leo_file
+def write_Leo_file(self,fileName,outlineOnlyFlag,toString=False,toOPML=False):
+
+    c = self.c
+    self.assignFileIndices()
+    if not outlineOnlyFlag:
+        # Update .leoRecentFiles.txt if possible.
+        g.app.config.writeRecentFilesFile(c)
+        << write all @file nodes >>
+    << return if the .leo file is read-only >>
+    try:
+        theActualFile = None
+        if not toString:
+            << create backup file >>
+        self.mFileName = fileName
+        if toOPML:
+            fileName = self.mFileName = self.mFileName + '.opml'
+        self.outputFile = cStringIO.StringIO() # or g.fileLikeObject()
+        if not toString:
+            theActualFile = open(fileName, 'wb')
+        if toOPML:
+            self.putToOPML()
+        else:
+            << put the .leo file >>
+        s = self.outputFile.getvalue()
+        if toString:
+            # For support of chapters plugin.
+            g.app.write_Leo_file_string = s
+        else:
+            theActualFile.write(s)
+            theActualFile.close()
+            << delete backup file >>
+        self.outputFile = None
+        return True
+    except Exception:
+        g.es("exception writing: " + fileName)
+        g.es_exception(full=False)
+        if theActualFile: theActualFile.close()
+        self.outputFile = None
+        << delete fileName >>
+        << rename backupName to fileName >>
+        return False
+
+write_LEO_file = write_Leo_file # For compatibility with old plugins.
+#@+node:ekr.20040324080359:<< write all @file nodes >>
+try:
+    # Write all @file nodes and set orphan bits.
+    c.atFileCommands.writeAll()
+except Exception:
+    g.es_error("exception writing derived files")
+    g.es_exception()
+    return False
+#@-node:ekr.20040324080359:<< write all @file nodes >>
+#@+node:ekr.20040324080359.1:<< return if the .leo file is read-only >>
+# self.read_only is not valid for Save As and Save To commands.
+
+if g.os_path_exists(fileName):
+    try:
+        if not os.access(fileName,os.W_OK):
+            g.es("can not create: read only: " + fileName,color="red")
+            return False
+    except:
+        pass # os.access() may not exist on all platforms.
+#@-node:ekr.20040324080359.1:<< return if the .leo file is read-only >>
+#@+node:ekr.20031218072017.3047:<< create backup file >>
+# rename fileName to fileName.bak if fileName exists.
+if g.os_path_exists(fileName):
+    backupName = g.os_path_join(g.app.loadDir,fileName)
+    backupName = fileName + ".bak"
+    if g.os_path_exists(backupName):
+        g.utils_remove(backupName)
+    ok = g.utils_rename(fileName,backupName)
+    if not ok:
+        if self.read_only:
+            g.es("read only",color="red")
+        return False
+else:
+    backupName = None
+#@-node:ekr.20031218072017.3047:<< create backup file >>
+#@+node:ekr.20040324080819.1:<< put the .leo file >>
+self.putProlog()
+self.putHeader()
+self.putGlobals()
+self.putPrefs()
+self.putFindSettings()
+#start = g.getTime()
+self.putVnodes()
+#start = g.printDiffTime("vnodes ",start)
+self.putTnodes()
+#start = g.printDiffTime("tnodes ",start)
+self.putPostlog()
+#@-node:ekr.20040324080819.1:<< put the .leo file >>
+#@+node:ekr.20031218072017.3048:<< delete backup file >>
+if backupName and g.os_path_exists(backupName):
+
+    self.deleteFileWithMessage(backupName,'backup')
+#@-node:ekr.20031218072017.3048:<< delete backup file >>
+#@+node:ekr.20050405103712:<< delete fileName >>
+if fileName and g.os_path_exists(fileName):
+    self.deleteFileWithMessage(fileName,'')
+#@-node:ekr.20050405103712:<< delete fileName >>
+#@+node:ekr.20050405103712.1:<< rename backupName to fileName >>
+if backupName:
+    g.es("restoring " + fileName + " from " + backupName)
+    g.utils_rename(backupName,fileName)
+#@-node:ekr.20050405103712.1:<< rename backupName to fileName >>
+#@-node:ekr.20031218072017.3046:write_Leo_file
+#@+node:ekr.20060904113842.1:putToOPML
+def putToOPML (self):
+    
+    '''Must be overridden in a subclass to be functional.'''
+    
+    pass
+#@nonl
+#@-node:ekr.20060904113842.1:putToOPML
+#@-node:ekr.20060904114302:Added OPML support to fileCommands
+#@+node:ekr.20060905103748:Removed methods using v.c or p.c
+#@+node:ekr.20060905090957:removed findRoot methods
+# A step towards removing c ivars from vnode and position classes.
+#@nonl
+#@+node:ekr.20031218072017.3381:v.findRoot (4.2)
+def findRoot (self):
+    
+    return self.c.rootPosition()
+#@-node:ekr.20031218072017.3381:v.findRoot (4.2)
+#@+node:ekr.20040306215548:p.findRoot
+def findRoot (self):
+    
+    return self.c.frame.rootPosition()
+#@-node:ekr.20040306215548:p.findRoot
+#@-node:ekr.20060905090957:removed findRoot methods
+#@+node:ekr.20031218072017.3379:v.currentVnode (and c.currentPosition 4.2)
+if 0:
+    def currentPosition (self):
+        return self.c.currentPosition()
+            
+    def currentVnode (self):
+        return self.c.currentVnode()
+#@nonl
+#@-node:ekr.20031218072017.3379:v.currentVnode (and c.currentPosition 4.2)
+#@+node:ekr.20051104075904.35:replaceOutline (leoTest)
+def replaceOutline (self,outline1,outline2):
+
+    """Replace outline1 by a copy of outline 2,
+
+    retaining the headline of outline1."""
+
+    c = outline1.c
+    h = outline1.headString()
+    copy = outline2.copyTreeAfter()
+    copy.initHeadString(h)
+    copy.unlink()
+    copy.linkAfter(outline1)
+    outline1.doDelete()
+    c.setRootPosition(c.findRootPosition(copy)) # New in 4.4.2.
+    c.selectPosition(copy)
+#@-node:ekr.20051104075904.35:replaceOutline (leoTest)
+#@+node:ekr.20060905121515:v.clearDirtyJoined
+def clearDirtyJoined (self,c):
+
+    v = self
+    c.beginUpdate()
+    try:
+        v.t.clearDirty()
+    finally:
+        c.endUpdate() # recomputes all icons
+#@-node:ekr.20060905121515:v.clearDirtyJoined
+#@+node:ekr.20040803140033.4:isCurrentPosition
+def isCurrentPosition (self,c):
+    
+    p = self
+    
+    return c.isCurrentPosition(p)
+#@-node:ekr.20040803140033.4:isCurrentPosition
+#@+node:ekr.20040803140033.5:p.isRootPosition
+def isRootPosition (self):
+    
+    p = self ; c = p.c
+    
+    return c.isRootPosition(p)
+#@-node:ekr.20040803140033.5:p.isRootPosition
+#@+node:ekr.20040312015705:p.clearAllVisited
+# Compatibility routine for scripts.
+
+def clearAllVisited (self):
+    
+    for p in self.allNodes_iter():
+        p.clearVisited()
+#@-node:ekr.20040312015705:p.clearAllVisited
+#@-node:ekr.20060905103748:Removed methods using v.c or p.c
+#@-node:ekr.20060905091234:Code level
+#@-node:ekr.20060904165452:4.4.2 projects
 #@-all
 #@nonl
 #@-node:EKR.20040429143933:@thin leoProjects.txt

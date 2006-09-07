@@ -370,7 +370,7 @@ def set_language(s,i,issue_errors_flag=False):
     return None, None, None, None,
 #@-node:ekr.20031218072017.1384:set_language
 #@-node:ekr.20031218072017.1381:@language and @comment directives (leoUtils)
-#@+node:ekr.20031218072017.1385:findReference
+#@+node:ekr.20031218072017.1385:g.findReference
 #@+at 
 #@nonl
 # We search the descendents of v looking for the definition node matching 
@@ -380,7 +380,7 @@ def set_language(s,i,issue_errors_flag=False):
 #@-at
 #@@c
 
-def findReference(name,root):
+def findReference(c,name,root):
 
     for p in root.subtree_iter():
         assert(p!=root)
@@ -388,8 +388,8 @@ def findReference(name,root):
             return p
 
     # g.trace("not found:",name,root)
-    return root.c.nullPosition()
-#@-node:ekr.20031218072017.1385:findReference
+    return c.nullPosition()
+#@-node:ekr.20031218072017.1385:g.findReference
 #@+node:ekr.20031218072017.1260:get_directives_dict & globalDirectiveList
 # The caller passes [root_node] or None as the second arg.  This allows us to distinguish between None and [None].
 

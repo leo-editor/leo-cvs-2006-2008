@@ -109,7 +109,7 @@ def importCiscoConfig(c):
     
     p = current.insertAsNthChild(0)
     c.beginUpdate()
-    p.setHeadString("cisco config: %s" % name)
+    p.setHeadString(c,"cisco config: %s" % name)
     c.endUpdate()
     
     try:
@@ -147,7 +147,7 @@ def importCiscoConfig(c):
                     out.append(g.angleBrackets(customLine))
                     # create first-level child
                     child = p.insertAsNthChild(0)
-                    child.setHeadStringOrHeadline(g.angleBrackets(customLine))
+                    child.setHeadStringOrHeadline(c,g.angleBrackets(customLine))
                     children.append(child)
                 
                 blocks[customLine].append(linelist[i])
@@ -171,7 +171,7 @@ def importCiscoConfig(c):
                     out.append(g.angleBrackets(key))
                     # create first-level child
                     child = p.insertAsNthChild(0)
-                    child.setHeadStringOrHeadline(g.angleBrackets(key))
+                    child.setHeadStringOrHeadline(c,g.angleBrackets(key))
                     children.append(child)
                 
                 value = [linelist[i]]
@@ -207,7 +207,7 @@ def importCiscoConfig(c):
         else:
             outClean.append(line)
         prev = line
-    p.setBodyStringOrPane('\n'.join(outClean))
+    p.setBodyStringOrPane(c,'\n'.join(outClean))
     
     # scan through the created outline and add children
     for child in children:
@@ -217,14 +217,14 @@ def importCiscoConfig(c):
         if blocks.has_key(key):
             if type(blocks[key][0]) == type(''):
                 # it's a string, no sub-children, so just print the text
-                child.setBodyStringOrPane('\n'.join(blocks[key]))
+                child.setBodyStringOrPane(c,'\n'.join(blocks[key]))
             else:
                 # it's a multi-level node
                 for value in blocks[key]:
                     # each value is a list containing the headline and then the text
                     subchild = child.insertAsNthChild(0)
-                    subchild.setHeadStringOrHeadline(value[0])
-                    subchild.setBodyStringOrPane('\n'.join(value))
+                    subchild.setHeadStringOrHeadline(c,value[0])
+                    subchild.setBodyStringOrPane(c,'\n'.join(value))
             child.sortChildren()
         else:
             # this should never happen

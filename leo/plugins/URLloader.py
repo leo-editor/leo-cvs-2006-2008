@@ -85,7 +85,7 @@ def load( event, entry, c ):
     c.importCommands.importFilesCommand( [ tname ], '@file')
     cv = c.currentVnode()
     cv = cv.nthChild( 0 )
-    cv.setHeadString( txt )
+    cv.setHeadString(c,txt )
     os.remove( tname )
 #@nonl
 #@-node:ekr.20040831115238.2:load

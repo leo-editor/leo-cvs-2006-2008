@@ -82,7 +82,7 @@ class baseLeoImportCommands:
             body = "@ignore\n"
             if ext in (".html",".htm"): body += "@language html\n"
             if ext in (".txt",".text"): body += "@nocolor\n"
-            p.setBodyStringOrPane(body + self.rootLine + s)
+            p.setBodyStringOrPane(c,body + self.rootLine + s)
         elif ext in (".c", ".cpp", ".cxx"):
             self.scanCText(s,p)
         elif ext == ".el":
@@ -415,7 +415,7 @@ class baseLeoImportCommands:
         p = parent.insertAsLastChild()
         p.initHeadString(fileName)
         if self.webType=="cweb":
-            p.setBodyStringOrPane("@ignore\n" + self.rootLine + "@language cweb")
+            p.setBodyStringOrPane(c,"@ignore\n" + self.rootLine + "@language cweb")
     
         # Scan the file, creating one section for each function definition.
         self.scanWebFile(path,p)
@@ -750,7 +750,8 @@ class baseLeoImportCommands:
         #@-at
         #@-node:ekr.20040717112739:<< about this algorithm >>
         #@nl
-        c = p.c ; root = p.copy()
+        c = self.c
+        root = p.copy()
         at = c.atFileCommands
         if testing:
             #@        << clear all dirty bits >>
@@ -917,6 +918,7 @@ class baseLeoImportCommands:
         """Creates a child node c of parent for the class, and children of c for each def in the class."""
     
         # g.trace(g.get_line(s,i))
+        c = self.c
         class_indent = self.getLeadingIndent(s,i)
         #@    << set class_name and headline >>
         #@+node:ekr.20031218072017.2258:<< set class_name and headline >>
@@ -943,7 +945,7 @@ class baseLeoImportCommands:
         i = self.scanPythonDecls(s,i,class_vnode,class_indent,indent_parent_ref_flag=True)
         start,i = self.scanPythonClassHelper(s,i,class_indent,class_name,class_vnode)
         s2 = s[start:i]
-        if s2: class_vnode.appendStringToBody(s2)
+        if s2: class_vnode.appendStringToBody(c,s2)
         self.methodName = savedMethodName
         return i
     #@+node:ekr.20060626100102:scanPythonClassHelper
@@ -991,12 +993,14 @@ class baseLeoImportCommands:
     
         '''Insert the proper body text in the class_vnode.'''
         
+        c = self.c
+        
         # This must be done after the declaration reference is generated.
         if self.treeType == "@file":
-            class_vnode.appendStringToBody("\t@others\n")
+            class_vnode.appendStringToBody(c,"\t@others\n")
         else:
             ref = g.angleBrackets(' class %s methods ' % (class_name))
-            class_vnode.appendStringToBody("\t" + ref + "\n\n")
+            class_vnode.appendStringToBody(c,"\t" + ref + "\n\n")
     #@-node:ekr.20060626101103.1:createParentText
     #@+node:ekr.20060626103415:createClassNodeText
     def createClassNodeText (self,s,i,start):
@@ -1071,6 +1075,7 @@ class baseLeoImportCommands:
     #@+node:ekr.20031218072017.2267:scanPythonDecls
     def scanPythonDecls (self,s,i,parent,indent,indent_parent_ref_flag=True):
         
+        c = self.c
         done = False ; start = i
         while not done and i < len(s):
             progress = i
@@ -1110,7 +1115,7 @@ class baseLeoImportCommands:
             leading_tab = g.choose(indent_parent_ref_flag,"\t","")
             
             # Append the reference to the parent's body.
-            parent.appendStringToBody(leading_tab + ref + "\n") # 7/6/02
+            parent.appendStringToBody(c,leading_tab + ref + "\n") # 7/6/02
             
             # Create the node for the decls.
             body = self.undentBody(s[j:i])
@@ -1128,6 +1133,7 @@ class baseLeoImportCommands:
     
         """Creates a child of parent for each Python function definition seen."""
     
+        c = self.c
         decls_seen = False ; start = i = 0
         self.methodsSeen = False
         while i < len(s):
@@ -1143,11 +1149,11 @@ class baseLeoImportCommands:
                 if g.match_c_word(s,i,"def") or g.match_word(s,i,"class"):
                     isDef = g.match_c_word(s,i,"def")
                     if not decls_seen:
-                        parent.appendStringToBody("@ignore\n" + self.rootLine + "@language python\n")
+                        parent.appendStringToBody(c,"@ignore\n" + self.rootLine + "@language python\n")
                         i = start = self.scanPythonDecls(s,start,parent,-1,indent_parent_ref_flag=False)
                         decls_seen = True
                         if self.treeType == "@file": # 7/29/02
-                            parent.appendStringToBody("@others\n") # 7/29/02
+                            parent.appendStringToBody(c,"@others\n") # 7/29/02
                     if isDef:
                         i = start = self.scanPythonDef(s,i,start,parent)
                     else:
@@ -1159,11 +1165,11 @@ class baseLeoImportCommands:
             else: i += 1
             assert(progress < i)
         if not decls_seen: # 2/17/03
-            parent.appendStringToBody("@ignore\n" + self.rootLine + "@language python\n")
+            parent.appendStringToBody(c,"@ignore\n" + self.rootLine + "@language python\n")
         #@    << Append a reference to the methods of this file >>
         #@+node:ekr.20031218072017.2272:<< Append a reference to the methods of this file >>
         if self.treeType == "@root" and self.methodsSeen:
-            parent.appendStringToBody(
+            parent.appendStringToBody(c,
                 g.angleBrackets(" " + self.methodName + " methods ") + "\n\n")
         #@-node:ekr.20031218072017.2272:<< Append a reference to the methods of this file >>
         #@nl
@@ -1172,7 +1178,7 @@ class baseLeoImportCommands:
         # Do nothing if only whitespace is left.
         i = start ; i = g.skip_ws_and_nl(s,i)
         if i < len(s):
-            parent.appendStringToBody(s[start:])
+            parent.appendStringToBody(c,s[start:])
         #@-node:ekr.20031218072017.2273:<< Append any unused python text to the parent's body text >>
         #@nl
     #@-node:ekr.20031218072017.2270:scanPythonText
@@ -1471,17 +1477,17 @@ class baseLeoImportCommands:
                     body = self.undentBody(body)
                     prefix = g.choose(self.treeType == "@file","","@code\n\n")
                     self.createHeadline(parent,prefix + body,headline)
-                    parent.appendStringToBody("@ignore\n" + self.rootLine + "@language c\n")
+                    parent.appendStringToBody(c,"@ignore\n" + self.rootLine + "@language c\n")
                     
                     # Append any previous text to the parent's body.
                     save_ip = i ; i = scan_start
                     while i < include_start and g.is_ws_or_nl(s,i):
                         i += 1
                     if i < include_start:
-                        parent.appendStringToBody(s[i:include_start])
+                        parent.appendStringToBody(c,s[i:include_start])
                     scan_start = function_start = i = save_ip
                     # Append the headline to the parent's body.
-                    parent.appendStringToBody(headline + "\n")
+                    parent.appendStringToBody(c,headline + "\n")
                     #@-node:ekr.20031218072017.3253:<< create a child node for all #include statements >>
                     #@nl
                 else:
@@ -1514,7 +1520,7 @@ class baseLeoImportCommands:
                         if i < function_start:
                             headline = g.angleBrackets(" " + self.methodName + " declarations ")
                             # Append the headline to the parent's body.
-                            parent.appendStringToBody(headline + "\n")
+                            parent.appendStringToBody(c,headline + "\n")
                             decls = s[scan_start:function_start]
                             decls = self.undentBody(decls)
                             if self.treeType == "@file":
@@ -1529,12 +1535,12 @@ class baseLeoImportCommands:
                         #@        << append C function/method reference to parent node >>
                         #@+node:ekr.20031218072017.3256:<< append C function/method reference to parent node >>
                         if self.treeType == "@file":
-                            parent.appendStringToBody("@others\n")
+                            parent.appendStringToBody(c,"@others\n")
                         else:
                             cweb = c.target_language == "cweb"
                             lb = g.choose(cweb,"@<","<<")
                             rb = g.choose(cweb,"@>",">>")
-                            parent.appendStringToBody(
+                            parent.appendStringToBody(c,
                                 lb + " " + self.methodName + " " + methodKind + " " + rb + "\n")
                         #@-node:ekr.20031218072017.3256:<< append C function/method reference to parent node >>
                         #@nl
@@ -1595,7 +1601,7 @@ class baseLeoImportCommands:
                         if g.match(s,i,'}'):
                             # Append everything so far to the body.
                             if inner_ip > scan_start:
-                                parent.appendStringToBody(s[scan_start:inner_ip])
+                                parent.appendStringToBody(c,s[scan_start:inner_ip])
                             # Save and change self.moduleName to namespaceName
                             savedMethodName = self.methodName
                             namespaceName = s[namespace_name_start:namespace_name_end+1]
@@ -1639,14 +1645,15 @@ class baseLeoImportCommands:
         
         i = g.skip_ws_and_nl(s,scan_start)
         if i < len(s):
-            parent.appendStringToBody(s[scan_start:])
+            parent.appendStringToBody(c,s[scan_start:])
         #@-node:ekr.20031218072017.3264:<< Append any unused text to the parent's body text >>
         #@nl
     #@-node:ekr.20031218072017.3250:scanCText
     #@+node:ekr.20031218072017.3265:scanElispText & allies
     def scanElispText(self,s,p):
     
-        p.appendStringToBody("@ignore\n@language elisp\n")
+        c = self.c
+        p.appendStringToBody(c,"@ignore\n@language elisp\n")
         i = 0 ; start = 0
         while i < len(s):
             progress = i
@@ -1756,7 +1763,7 @@ class baseLeoImportCommands:
         
         """Minimal forth scanner - leave it to user to create nodes as they see fit."""
     
-        parent.setBodyStringOrPane("@ignore\n" + "@language forth\n" + self.rootLine + s)
+        parent.setBodyStringOrPane(self.c,"@ignore\n" + "@language forth\n" + self.rootLine + s)
     #@-node:ekr.20041107094641:scanForthText
     #@+node:ekr.20031218072017.3270:scanJavaText
     # Creates a child of parent for each Java function definition seen.
@@ -1767,6 +1774,7 @@ class baseLeoImportCommands:
     
         #@    << define scanJavaText vars >>
         #@+node:ekr.20031218072017.3271:<< define scanJavaText vars >>
+        c = self.c
         method_seen = False
         class_seen = False # True: class keyword seen at outer level.
         interface_seen = False # True: interface keyword seen at outer level.
@@ -1897,13 +1905,13 @@ class baseLeoImportCommands:
                             i += 1
                             
                         if outerFlag:
-                            parent.appendStringToBody("@ignore\n" + self.rootLine + "@language java\n")
+                            parent.appendStringToBody(c,"@ignore\n" + self.rootLine + "@language java\n")
                         
                         if i < function_start:
                             decl_headline = g.angleBrackets(" " + self.methodName + " declarations ")
                         
                             # Append the headline to the parent's body.
-                            parent.appendStringToBody(decl_leader + leader + decl_headline + "\n")
+                            parent.appendStringToBody(c,decl_leader + leader + decl_headline + "\n")
                             scan_start = g.find_line_start(s,scan_start) # Backtrack so we remove leading whitespace.
                             decls = s[scan_start:function_start]
                             decls = self.undentBody(decls)
@@ -1918,13 +1926,13 @@ class baseLeoImportCommands:
                         #@+node:ekr.20031218072017.3274:<< append Java method reference to parent node >>
                         if self.treeType == "@file":
                             if outerFlag:
-                                parent.appendStringToBody("\n@others\n")
+                                parent.appendStringToBody(c,"\n@others\n")
                             else:
-                                parent.appendStringToBody("\n\t@others\n")
+                                parent.appendStringToBody(c,"\n\t@others\n")
                         else:
                             kind = g.choose(outerFlag,"classes","methods")
                             ref_name = g.angleBrackets(" " + self.methodName + " " + kind + " ")
-                            parent.appendStringToBody(leader + ref_name + "\n")
+                            parent.appendStringToBody(c,leader + ref_name + "\n")
                         #@-node:ekr.20031218072017.3274:<< append Java method reference to parent node >>
                         #@nl
                     if outerFlag: # Create a class.
@@ -1945,7 +1953,7 @@ class baseLeoImportCommands:
                         #@-node:ekr.20031218072017.3275:<< recursively scan the text >>
                         #@nl
                         # Append the brace to the parent.
-                        v.appendStringToBody("}")
+                        v.appendStringToBody(c,"}")
                         i = brace_ip2 + 1 # Start after the closing brace.
                     else: # Create a method.
                         # Backtrack so we remove leading whitespace.
@@ -1987,7 +1995,7 @@ class baseLeoImportCommands:
         
         i = g.skip_ws_and_nl(s,scan_start)
         if i < len(s):
-            parent.appendStringToBody(s[scan_start:])
+            parent.appendStringToBody(c,s[scan_start:])
         #@-node:ekr.20031218072017.3264:<< Append any unused text to the parent's body text >>
         #@nl
     #@-node:ekr.20031218072017.3270:scanJavaText
@@ -1996,13 +2004,14 @@ class baseLeoImportCommands:
          
         """Minimal Lua scanner - leave it to user to create nodes as they see fit."""
      
-        parent.setBodyStringOrPane("@ignore\n" + "@language lua\n" + self.rootLine + s)
+        parent.setBodyStringOrPane(self.c,"@ignore\n" + "@language lua\n" + self.rootLine + s)
     #@-node:ekr.20060328112327:scanLuaText
     #@+node:ekr.20031218072017.3281:scanPascalText
     # Creates a child of parent for each Pascal function definition seen.
     
     def scanPascalText (self,s,parent):
     
+        c = self.c
         method_seen = False ; methodKind = "methods"
         scan_start = function_start = i = 0
         name = None
@@ -2096,10 +2105,10 @@ class baseLeoImportCommands:
                         while i < start and g.is_ws_or_nl(s,i):
                             i += 1
                         if i < start:
-                            parent.appendStringToBody("@ignore\n" + self.rootLine + "@language pascal\n")
+                            parent.appendStringToBody(c,"@ignore\n" + self.rootLine + "@language pascal\n")
                             headline = g.angleBrackets(self.methodName + " declarations ")
                             # Append the headline to the parent's body.
-                            parent.appendStringToBody(headline + "\n")
+                            parent.appendStringToBody(c,headline + "\n")
                             if self.treeType == "@file":
                                 body = s[scan_start:start]
                             else:
@@ -2114,9 +2123,9 @@ class baseLeoImportCommands:
                         #@+node:ekr.20031218072017.3288:<< append noweb method reference to the parent node >>
                         # Append the headline to the parent's body.
                         if self.treeType == "@file":
-                            parent.appendStringToBody("@others\n")
+                            parent.appendStringToBody(c,"@others\n")
                         else:
-                            parent.appendStringToBody(
+                            parent.appendStringToBody(c,
                                 g.angleBrackets(" " + self.methodName + " methods ") + "\n")
                         #@-node:ekr.20031218072017.3288:<< append noweb method reference to the parent node >>
                         #@nl
@@ -2147,7 +2156,7 @@ class baseLeoImportCommands:
         
         i = g.skip_ws_and_nl(s,scan_start)
         if i < len(s):
-            parent.appendStringToBody(s[scan_start:])
+            parent.appendStringToBody(c,s[scan_start:])
         #@-node:ekr.20031218072017.3264:<< Append any unused text to the parent's body text >>
         #@nl
     #@-node:ekr.20031218072017.3281:scanPascalText
@@ -2162,6 +2171,23 @@ class baseLeoImportCommands:
     
         """Creates a child of parent for each class and function definition seen."""
     
+        #@    << define scanPHPText vars >>
+        #@+node:ekr.20031218072017.3244:<< define scanPHPText vars >>
+        c = self.c
+        scan_start = 0
+        class_start = 0
+        function_start = 0
+        i = 0
+        class_body = ""
+        class_node = ""
+        phpClassName = re.compile("class\s+([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)")
+        phpFunctionName = re.compile("function\s+([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)")
+        
+        # 14-SEP-2002 DTHEIN: added these 2 variables to allow use of @first/last
+        startOfCode = s.find("\n") + 1 # this should be the line containing the initial <?php
+        endOfCode = s.rfind("?>") # this should be the line containing the last ?>
+        #@-node:ekr.20031218072017.3244:<< define scanPHPText vars >>
+        #@nl
         #@    << Append file if not pure PHP >>
         #@+node:ekr.20031218072017.3243:<< Append file if not pure PHP >>
         # If the file does not begin with <?php or end with ?> then
@@ -2185,27 +2211,11 @@ class baseLeoImportCommands:
             )
         ):
             g.es("File seems to be mixed HTML and PHP; importing as plain text file.")
-            parent.setBodyStringOrPane("@ignore\n" + self.rootLine + s)
+            parent.setBodyStringOrPane(c,"@ignore\n" + self.rootLine + s)
             return
         #@-node:ekr.20031218072017.3243:<< Append file if not pure PHP >>
         #@nl
-    
-        #@    << define scanPHPText vars >>
-        #@+node:ekr.20031218072017.3244:<< define scanPHPText vars >>
-        scan_start = 0
-        class_start = 0
-        function_start = 0
-        i = 0
-        class_body = ""
-        class_node = ""
-        phpClassName = re.compile("class\s+([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)")
-        phpFunctionName = re.compile("function\s+([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)")
         
-        # 14-SEP-2002 DTHEIN: added these 2 variables to allow use of @first/last
-        startOfCode = s.find("\n") + 1 # this should be the line containing the initial <?php
-        endOfCode = s.rfind("?>") # this should be the line containing the last ?>
-        #@-node:ekr.20031218072017.3244:<< define scanPHPText vars >>
-        #@nl
         # 14-SEP-2002 DTHEIN: Make leading <?php use the @first directive
         parent.appendStringToBody("@first ")
         parent.appendStringToBody(s[:startOfCode])
@@ -2272,12 +2282,12 @@ class baseLeoImportCommands:
                         if class_start:
                             class_body += s[scan_start:function_start]
                         else:
-                            parent.appendStringToBody(s[scan_start:function_start])
+                            parent.appendStringToBody(c,s[scan_start:function_start])
                         # Append the headline to the parent's body.
                         if class_start:
                             class_body += (headline + "\n")
                         else:
-                            parent.appendStringToBody(headline + "\n")
+                            parent.appendStringToBody(c,headline + "\n")
                         # Backup to capture leading whitespace (for undent purposes)
                         while (function_start > 0) and (s[function_start - 1] in [" ", "\t"]):
                             function_start -= 1
@@ -2309,7 +2319,7 @@ class baseLeoImportCommands:
                         i += len("class ")
                     else:
                         # Insert skipped text into parent's body.
-                        parent.appendStringToBody(s[scan_start:class_start])
+                        parent.appendStringToBody(c,s[scan_start:class_start])
                         # create the headline name
                         headline = g.angleBrackets(" class " + m.group(1) + " ")
                         # find the place to start looking for methods (functions)
@@ -2318,7 +2328,7 @@ class baseLeoImportCommands:
                         class_end = g.skip_php_braces(s,openingBrace)
                         class_end = g.skip_to_end_of_line(s,class_end - 1) + 1 # include the line end
                         # Append the headline to the parent's body.
-                        parent.appendStringToBody(headline + "\n")
+                        parent.appendStringToBody(c,headline + "\n")
                         # Backup to capture leading whitespace (for undent purposes)
                         while (class_start > 0) and (s[class_start - 1] in [" ", "\t"]):
                             class_start -= 1
@@ -2340,7 +2350,7 @@ class baseLeoImportCommands:
                 if self.treeType != "@file":
                     class_body = "@code\n\n" + class_body
                 class_body = self.undentBody(class_body)
-                class_node.appendStringToBody(class_body)
+                class_node.appendStringToBody(c,class_body)
                 # reset the indices
                 i = class_end
                 scan_start = i
@@ -2352,7 +2362,7 @@ class baseLeoImportCommands:
             else: i += 1
         #@    << Append any unused text to the parent's body text >>
         #@+node:ekr.20031218072017.3249:<< Append any unused text to the parent's body text >>
-        parent.appendStringToBody(s[scan_start:endOfCode])
+        parent.appendStringToBody(c,s[scan_start:endOfCode])
         #@-node:ekr.20031218072017.3249:<< Append any unused text to the parent's body text >>
         #@nl
         # 14-SEP-2002 DTHEIN: Make leading <?php use the @first directive
@@ -2869,7 +2879,7 @@ class baseLeoImportCommands:
         v.initHeadString(headline,self.encoding)
         # Set the body.
         if len(body) > 0:
-            v.setBodyStringOrPane(body,self.encoding)
+            v.setBodyStringOrPane(self.c,body,self.encoding)
         return v
     #@-node:ekr.20031218072017.3306:createHeadline
     #@+node:ekr.20031218072017.3307:error

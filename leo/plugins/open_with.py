@@ -142,7 +142,7 @@ def on_idle (tag,keywords):
                     
                     if update:
                         g.es("updated from: " + g.shortFileName(path),color="blue")
-                        p.setBodyStringOrPane(s,encoding)
+                        p.setBodyStringOrPane(c,s,encoding)
                         c.selectPosition(p)
                         dict["body"] = s
                     elif conflict:

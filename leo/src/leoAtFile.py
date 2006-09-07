@@ -459,11 +459,11 @@ class atFile:
                             if p.v.isDirty():
                                 p.setAllAncestorAtFileNodesDirty()
                         else:
-                            p.setBodyStringOrPane(s) # Sets v and v.c dirty.
+                            p.setBodyStringOrPane(c,s) # Sets v and v.c dirty.
                             
                         if not thinFile or (thinFile and p.v.isDirty()):
                             g.es("changed: " + p.headString(),color="blue")
-                            p.setMarked()
+                            p.setMarked(c)
                 #@-node:ekr.20041005105605.24:<< copy all tempBodyStrings to tnodes >>
                 #@nl
         #@    << delete all tempBodyStrings >>
@@ -1387,7 +1387,7 @@ class atFile:
                 t.fileIndex = gnx
                 tnodesDict[gnxString] = t
             parent = at.lastThinNode
-            child = leoNodes.vnode(c,t)
+            child = leoNodes.vnode(t)
             t.vnodeList.append(child)
             child.linkAsNthChild(parent,parent.numberOfChildren())
             # g.trace('creating last child %s\nof parent%s\n' % (child,parent))
@@ -1828,7 +1828,7 @@ class atFile:
                         g.es("Correcting hidden node: t=%s" % repr(at.t),color="red")
                     #@-node:ekr.20041005105605.97:<< bump at.correctedLines and tell about the correction >>
                     #@nl
-                    # p.setMarked()
+                    # p.setMarked(c)
                     at.t.bodyString = s # Just setting at.t.tempBodyString won't work here.
                     at.t.setDirty() # Mark the node dirty.  Ancestors will be marked dirty later.
                     at.c.setChanged(True)
@@ -2342,7 +2342,7 @@ class atFile:
                     if p.v.isDirty():
                         p.setAllAncestorAtFileNodesDirty()
                 else:
-                    p.setBodyStringOrPane(s) # Sets v and v.c dirty.
+                    p.setBodyStringOrPane(c,s) # Sets v and v.c dirty.
     
                 if not thinFile or (thinFile and p.v.isDirty()):
                     # New in Leo 4.3: support for mod_labels plugin:
@@ -2351,7 +2351,7 @@ class atFile:
                     except Exception:
                         pass
                     g.es("changed: " + p.headString(),color="blue")
-                    p.setMarked()
+                    p.setMarked(c)
     #@-node:ekr.20050301105854:copyAllTempBodyStringsToTnodes
     #@+node:ekr.20041005105605.119:createImportedNode
     def createImportedNode (self,root,headline):
@@ -2505,6 +2505,8 @@ class atFile:
     #@-node:ekr.20041005105605.120:parseLeoSentinel
     #@+node:ekr.20041005105605.127:readError
     def readError(self,message):
+        
+        c = self.c
     
         # This is useful now that we don't print the actual messages.
         if self.errors == 0:
@@ -2724,7 +2726,7 @@ class atFile:
     #@+node:ekr.20041005105605.142:openFileForWriting & openFileForWritingHelper
     def openFileForWriting (self,root,fileName,toString):
     
-        at = self
+        at = self ; c = at.c
         at.outputFile = None
         
         if toString:
@@ -3403,9 +3405,9 @@ class atFile:
         
         """Put a reference at s[n1:n2+2] from p."""
         
-        at = self ; name = s[n1:n2+2]
+        at = self ; c = at.c ; name = s[n1:n2+2]
     
-        ref = g.findReference(name,p)
+        ref = g.findReference(c,name,p)
         if not ref:
             at.writeError(
                 "undefined section: %s\n\treferenced from: %s" %
@@ -4260,6 +4262,8 @@ class atFile:
     #@-node:ekr.20041005105605.216:warnAboutOrpanAndIgnoredNodes
     #@+node:ekr.20041005105605.217:writeError
     def writeError(self,message=None):
+        
+        c = self.c
     
         if self.errors == 0:
             g.es_error("errors writing: " + self.targetFileName)
@@ -4271,6 +4275,8 @@ class atFile:
     #@-node:ekr.20041005105605.217:writeError
     #@+node:ekr.20041005105605.218:writeException
     def writeException (self,root=None):
+        
+        c = self.c
         
         g.es("exception writing:" + self.targetFileName,color="red")
         g.es_exception()

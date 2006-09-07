@@ -3237,7 +3237,7 @@ class wxLeoTree (leoFrame.leoTree):
         # Update all joined headlines.
         j = v.joinList()
         while j != v:
-            j.setHeadString(s)
+            j.setHeadString(c,s)
             j = j.joinList()
     #@nonl
     #@-node:edream.110203113231.287:onTreeEndLabelEdit

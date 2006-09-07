@@ -217,6 +217,8 @@
 #@-at
 #@-node:ekr.20031218072017.2408:<< About clones >>
 #@nl
+#@<< imports >>
+#@+node:ekr.20060904165452.1:<< imports >>
 
 from __future__ import generators # To make the code work in Python 2.2.
 
@@ -230,9 +232,18 @@ if g.app and g.app.use_psyco:
 import string
 import time
 
+try:
+    import ZODB
+    import ZODB.FileStorage
+except ImportError:
+    ZODB = None
+#@nonl
+#@-node:ekr.20060904165452.1:<< imports >>
+#@nl
+
 #@+others
 #@+node:ekr.20031218072017.3321:class tnode
-class baseTnode (object):
+class baseTnode:
     """The base class of the tnode class."""
     #@    << tnode constants >>
     #@+node:ekr.20031218072017.3322:<< tnode constants >>
@@ -247,6 +258,10 @@ class baseTnode (object):
     # All params have defaults, so t = tnode() is valid.
     
     def __init__ (self,bodyString=None,headString=None):
+    
+        self._p_changed = False
+            # To support ZODB the code **must** set p._p_changed = True whenever
+            # vnodeList (or any mutable type) changes.
     
         self.cloneIndex = 0 # For Pre-3.12 files.  Zero for @file nodes
         self.fileIndex = None # The immutable file index for this tnode.
@@ -328,7 +343,7 @@ class baseTnode (object):
                 s = s.rstrip() + '\n'
             elif option == "zero":
                 s = s.rstrip()
-        
+    
         self.bodyString = s
         
         # g.trace(repr(s))
@@ -406,9 +421,16 @@ class baseTnode (object):
 class tnode (baseTnode):
     """A class that implements tnodes."""
     pass
+
+if 0:
+    if ZODB:
+        class persistent_tnode (baseTnode, ZODB.Persistence.Persistent):
+            """A class that implements persistent tnodes."""
+            pass
+#@nonl
 #@-node:ekr.20031218072017.3321:class tnode
 #@+node:ekr.20031218072017.3341:class vnode
-class baseVnode (object):
+class baseVnode:
     """The base class of the vnode class."""
     #@    << vnode constants >>
     #@+node:ekr.20031218072017.951:<< vnode constants >>
@@ -440,19 +462,16 @@ class baseVnode (object):
             return not (self is other) # Must return 0, 1 or -1
     #@-node:ekr.20031218072017.3343:v.__cmp__ (not used)
     #@+node:ekr.20031218072017.3344:v.__init__
-    def __init__ (self,c,t):
+    def __init__ (self,t):
     
         assert(t)
-        #@    << initialize vnode data members >>
-        #@+node:ekr.20031218072017.1968:<< initialize vnode data members >>
-        self.c = c # The commander for this vnode.
+    
         self.t = t # The tnode.
         self.statusBits = 0 # status bits
         
         # Structure links.
         self._parent = self._next = self._back = None
-        #@-node:ekr.20031218072017.1968:<< initialize vnode data members >>
-        #@nl
+    #@nonl
     #@-node:ekr.20031218072017.3344:v.__init__
     #@+node:ekr.20031218072017.3345:v.__repr__ & v.__str__
     def __repr__ (self):
@@ -765,18 +784,6 @@ class baseVnode (object):
         # Make _sure_ we return a unicode string.
         return g.toUnicode(self.t.bodyString,g.app.tkEncoding)
     #@-node:ekr.20031218072017.3378:v.bodyString
-    #@+node:ekr.20031218072017.3379:v.currentVnode (and c.currentPosition 4.2)
-    def currentPosition (self):
-        return self.c.currentPosition()
-            
-    def currentVnode (self):
-        return self.c.currentVnode()
-    #@-node:ekr.20031218072017.3379:v.currentVnode (and c.currentPosition 4.2)
-    #@+node:ekr.20031218072017.3381:v.findRoot (4.2)
-    def findRoot (self):
-        
-        return self.c.rootPosition()
-    #@-node:ekr.20031218072017.3381:v.findRoot (4.2)
     #@+node:ekr.20031218072017.1581:v.headString & v.cleanHeadString
     def headString (self):
         
@@ -820,7 +827,7 @@ class baseVnode (object):
         if not t:
             t = tnode(headString="NewHeadline")
     
-        v = vnode(self.c,t)
+        v = vnode(t)
         v.linkAfter(self)
     
         return v
@@ -834,7 +841,7 @@ class baseVnode (object):
         if not t:
             t = tnode(headString="NewHeadline")
     
-        v = vnode(self.c,t)
+        v = vnode(t)
         v.linkAsNthChild(self,n)
     
         return v
@@ -879,7 +886,7 @@ class baseVnode (object):
         
         """Link a vnode as the root node and set the root _position_."""
     
-        v = self ; c = v.c
+        v = self
     
         # Clear all links except the child link.
         v._parent = None
@@ -889,14 +896,16 @@ class baseVnode (object):
         # Add v to it's tnode's vnodeList. Bug fix: 5/02/04.
         if v not in v.t.vnodeList:
             v.t.vnodeList.append(v)
+            v.t._p_changed = True
     
         # Link in the rest of the tree only when oldRoot != None.
         # Otherwise, we are calling this routine from init code and
         # we want to start with a pristine tree.
         if oldRoot: oldRoot._back = v
     
-        newRoot = position(c,v,[])
-        c.setRootPosition(newRoot)
+        # newRoot = position(v,[])
+        # c.setRootPosition(newRoot)
+    #@nonl
     #@-node:ekr.20031218072017.3426:v.linkAsRoot
     #@+node:ekr.20031218072017.3422:v.moveToRoot
     def moveToRoot (self,oldRoot=None):
@@ -911,21 +920,22 @@ class baseVnode (object):
         v.linkAsRoot(oldRoot)
         
         return v
+    #@nonl
     #@-node:ekr.20031218072017.3422:v.moveToRoot
     #@+node:ekr.20031218072017.3438:v.unlink
     def unlink (self):
     
         """Unlinks a vnode from the tree."""
     
-        v = self ; c = v.c
+        v = self
     
         # g.trace(v._parent," child: ",v.t._firstChild," back: ", v._back, " next: ", v._next)
         
         # Special case the root.
-        if v == c.rootPosition().v: # 3/11/04
-            assert(v._next)
-            newRoot = position(c,v._next,[])
-            c.setRootPosition(newRoot)
+        # if v == c.rootPosition().v: # 3/11/04
+            # assert(v._next)
+            # newRoot = position(v._next,[])
+            # c.setRootPosition(newRoot)
     
         # Clear the links in other nodes.
         if v._back:
@@ -939,6 +949,7 @@ class baseVnode (object):
         # Clear the links in this node.
         v._parent = v._next = v._back = None
         # v.parentsList = []
+    #@nonl
     #@-node:ekr.20031218072017.3438:v.unlink
     #@-node:ekr.20040301071824:v.Link/Unlink/Insert methods (used by file read logic)
     #@+node:ekr.20031218072017.3384:Setters
@@ -948,24 +959,15 @@ class baseVnode (object):
     
         self.statusBits &= ~ self.clonedBit
     #@-node:ekr.20031218072017.3389:clearClonedBit
-    #@+node:ekr.20031218072017.3390:clearDirty & clearDirtyJoined (redundant code)
+    #@+node:ekr.20031218072017.3390:v.clearDirty (no change needed)
     def clearDirty (self):
     
         v = self
         v.t.clearDirty()
-    
-    def clearDirtyJoined (self):
-    
-        g.trace()
-        v = self ; c = v.c
-        c.beginUpdate()
-        try:
-            v.t.clearDirty()
-        finally:
-            c.endUpdate() # recomputes all icons
-    #@-node:ekr.20031218072017.3390:clearDirty & clearDirtyJoined (redundant code)
+    #@nonl
+    #@-node:ekr.20031218072017.3390:v.clearDirty (no change needed)
     #@+node:ekr.20031218072017.3391:v.clearMarked
-    def clearMarked (self):
+    def clearMarked (self,c=None):
     
         self.statusBits &= ~ self.markedBit
     #@-node:ekr.20031218072017.3391:v.clearMarked
@@ -1014,7 +1016,7 @@ class baseVnode (object):
             self.statusBits &= ~ self.clonedBit
     #@-node:ekr.20031218072017.3397:setClonedBit & initClonedBit
     #@+node:ekr.20031218072017.3398:v.setMarked & initMarkedBit
-    def setMarked (self):
+    def setMarked (self,c=None):
     
         self.statusBits |= self.markedBit
     
@@ -1076,7 +1078,7 @@ class baseVnode (object):
         return self.t.setTnodeText(s,encoding)
     #@-node:ekr.20040315042106:v.setTnodeText
     #@+node:ekr.20031218072017.3404:v.trimTrailingLines
-    def trimTrailingLines (self):
+    def trimTrailingLines (self,c):
     
         """Trims trailing blank lines from a node.
         
@@ -1097,7 +1099,7 @@ class baseVnode (object):
         if changed:
             body = string.join(body,'') + '\n' # Add back one last newline.
             # g.trace(body)
-            v.setBodyStringOrPane(body)
+            v.setBodyStringOrPane(c,body)
             # Don't set the dirty bit: it would just be annoying.
     #@-node:ekr.20031218072017.3404:v.trimTrailingLines
     #@-node:ekr.20031218072017.3384:Setters
@@ -1148,6 +1150,12 @@ class baseVnode (object):
 class vnode (baseVnode):
     """A class that implements vnodes."""
     pass
+
+if 0:
+    if ZODB:
+        class persistent_vnode (baseVnode, ZODB.Persistence.Persistent):
+            pass
+#@nonl
 #@-node:ekr.20031218072017.3341:class vnode
 #@+node:ekr.20031218072017.1991:class nodeIndices
 # Indices are Python dicts containing 'id','loc','time' and 'n' keys.
@@ -1279,9 +1287,7 @@ class nodeIndices (object):
     #@-others
 #@-node:ekr.20031218072017.1991:class nodeIndices
 #@+node:ekr.20031218072017.889:class position
-# Warning: this code implies substantial changes to code that uses them, both core and scripts.
-
-class position (object):
+class basePosition:
     
     """A class representing a position in a traversal of a tree containing shared tnodes."""
 
@@ -1351,7 +1357,6 @@ class position (object):
     #@-at
     #@-node:ekr.20050524082843:<< positions may become invalid when outlines change >>
     #@nl
-    
     #@    @+others
     #@+node:ekr.20040228094013: ctor & other special methods...
     #@+node:ekr.20031218072017.893:p.__cmp__
@@ -1400,13 +1405,16 @@ class position (object):
                 raise AttributeError,attr
     #@-node:ekr.20040117170612:p.__getattr__  ON:  must be ON if use_plugins
     #@+node:ekr.20031218072017.892:p.__init__
-    def __init__ (self,c,v,stack,trace=True):
+    def __init__ (self,v,stack,trace=True):
     
         """Create a new position."""
         
         __pychecker__ = '--no-argsused' # trace not used.
     
-        self.c = c
+        self._p_changed = False
+            # To support ZODB the code **must** set p._p_changed = True whenever
+            # stack (or any mutable type) changes.
+    
         self.v = v
         # assert(v is None or v.t)
         self.stack = stack[:] # Creating a copy here is safest and best.
@@ -1415,6 +1423,7 @@ class position (object):
         # if g.app.tracePositions and trace: g.trace(g.callers())
         
         # Note: __getattr__ implements p.t.
+    #@nonl
     #@-node:ekr.20031218072017.892:p.__init__
     #@+node:ekr.20040117173448:p.__nonzero__
     #@+at
@@ -1454,7 +1463,7 @@ class position (object):
         
         # if g.app.tracePositions: g.trace(g.callers())
     
-        return position(self.c,self.v,self.stack,trace=False)
+        return position(self.v,self.stack,trace=False)
     #@-node:ekr.20040117171654:p.copy
     #@+node:ekr.20040310153624:p.dump & p.vnodeListIds
     def dumpLink (self,link):
@@ -1573,11 +1582,11 @@ class position (object):
     def status      (self): return self.v.status()
     #@-node:ekr.20040306214401:p.Status bits
     #@+node:ekr.20040306220230.1:p.edit_widget
-    def edit_widget (self):
+    def edit_widget (self,c):
         
         # New in 4.3 beta 3: let the tree classes do all the work.
         
-        p = self ; c = p.c
+        p = self
         
         return p and c.frame.tree.edit_widget(p)
         
@@ -1643,11 +1652,6 @@ class position (object):
         # g.trace('does not exist in root:',root.headString())
         return False
     #@-node:ekr.20040307104131.3:p.exists
-    #@+node:ekr.20040306215548:p.findRoot
-    def findRoot (self):
-        
-        return self.c.frame.rootPosition()
-    #@-node:ekr.20040306215548:p.findRoot
     #@+node:ekr.20031218072017.915:p.getX & vnode compatibility traversal routines
     # These methods are useful abbreviations.
     # Warning: they make copies of positions, so they should be used _sparingly_
@@ -1739,22 +1743,6 @@ class position (object):
     
         return False
     #@-node:ekr.20040307104131.1:p.isAncestorOf
-    #@+node:ekr.20040803111240:p.isCurrentPosition & isRootPosition
-    #@+node:ekr.20040803140033.4:isCurrentPosition
-    def isCurrentPosition (self):
-        
-        p = self ; c = p.c
-        
-        return c.isCurrentPosition(p)
-    #@-node:ekr.20040803140033.4:isCurrentPosition
-    #@+node:ekr.20040803140033.5:isRootPosition
-    def isRootPosition (self):
-        
-        p = self ; c = p.c
-        
-        return c.isRootPosition(p)
-    #@-node:ekr.20040803140033.5:isRootPosition
-    #@-node:ekr.20040803111240:p.isCurrentPosition & isRootPosition
     #@+node:ekr.20040306215056:p.isCloned
     def isCloned (self):
         
@@ -1787,9 +1775,9 @@ class position (object):
         return True
     #@-node:ekr.20040117162509.16:p.isVisible
     #@+node:ekr.20031218072017.4146:p.lastVisible & oldLastVisible
-    def oldLastVisible(self):
+    def oldLastVisible(self,c):
         """Move to the last visible node of the entire tree."""
-        p = self.c.rootPosition()
+        p = c.rootPosition()
         assert(p.isVisible())
         last = p.copy()
         while 1:
@@ -1799,9 +1787,9 @@ class position (object):
             last = p.copy()
         return last
             
-    def lastVisible(self):
+    def lastVisible(self,c):
         """Move to the last visible node of the entire tree."""
-        p = self.c.rootPosition()
+        p = c.rootPosition()
         # Move to the last top-level node.
         while p.hasNext():
             if g.app.debug: g.trace(p)
@@ -1843,13 +1831,13 @@ class position (object):
     #@-node:ekr.20040306212636:Getters
     #@+node:ekr.20040305222924:Setters
     #@+node:ekr.20040306220634:vnode proxies
-    #@+node:ekr.20040306220634.9: Status bits (position)
+    #@+node:ekr.20040306220634.9: Status bits (position) (DEFINE c.clearMarked etc)
     # Clone bits are no longer used.
     # Dirty bits are handled carefully by the position class.
     
-    def clearMarked  (self):
+    def clearMarked  (self,c):
         self.v.clearMarked()
-        g.doHook("clear-mark",c=self.c,p=self,v=self)
+        g.doHook("clear-mark",c=c,p=self,v=self)
     
     def clearOrphan  (self): return self.v.clearOrphan()
     def clearVisited (self): return self.v.clearVisited()
@@ -1861,14 +1849,14 @@ class position (object):
     def initMarkedBit      (self): return self.v.initMarkedBit()
     def initStatus (self, status): return self.v.initStatus(status)
         
-    def setMarked (self):
+    def setMarked (self,c):
         self.v.setMarked()
-        g.doHook("set-mark",c=self.c,p=self,v=self)
+        g.doHook("set-mark",c=c,p=self,v=self)
     
     def setOrphan   (self): return self.v.setOrphan()
     def setSelected (self): return self.v.setSelected()
     def setVisited  (self): return self.v.setVisited()
-    #@-node:ekr.20040306220634.9: Status bits (position)
+    #@-node:ekr.20040306220634.9: Status bits (position) (DEFINE c.clearMarked etc)
     #@+node:ekr.20040306220634.8:p.computeIcon & p.setIcon
     def computeIcon (self):
         
@@ -1884,9 +1872,9 @@ class position (object):
         return self.v.setSelection(start,length)
     #@-node:ekr.20040306220634.29:p.setSelection
     #@+node:ekr.20040306220634.31:p.trimTrailingLines
-    def trimTrailingLines (self):
+    def trimTrailingLines (self,c):
     
-        return self.v.trimTrailingLines()
+        return self.v.trimTrailingLines(c)
     #@-node:ekr.20040306220634.31:p.trimTrailingLines
     #@+node:ekr.20040315034158:p.setTnodeText
     def setTnodeText (self,s,encoding="utf-8"):
@@ -1896,7 +1884,7 @@ class position (object):
     #@-node:ekr.20040306220634:vnode proxies
     #@+node:ekr.20040315031401:Head & body text (position)
     #@+node:ekr.20040315032503:p.appendStringToBody
-    def appendStringToBody (self,s,encoding="utf-8"):
+    def appendStringToBody (self,c,s,encoding="utf-8"):
         
         p = self
         if not s: return
@@ -1905,12 +1893,12 @@ class position (object):
         assert(g.isUnicode(body))
         s = g.toUnicode(s,encoding)
     
-        p.setBodyStringOrPane(body + s,encoding)
+        p.setBodyStringOrPane(c,body + s,encoding)
     #@-node:ekr.20040315032503:p.appendStringToBody
     #@+node:ekr.20040305223522:p.setBodyStringOrPane & setBodyString
-    def setBodyStringOrPane (self,s,encoding="utf-8"):
+    def setBodyStringOrPane (self,c,s,encoding="utf-8"):
     
-        p = self ; v = p.v ; c = p.c
+        p = self ; v = p.v
         if not c or not v: return
     
         s = g.toUnicode(s,encoding)
@@ -1937,7 +1925,7 @@ class position (object):
     setBodyString = setBodyStringOrPane
     #@-node:ekr.20040305223522:p.setBodyStringOrPane & setBodyString
     #@+node:ekr.20040305222924.1:p.setHeadString & p.initHeadString
-    def setHeadString (self,s,encoding="utf-8"):
+    def setHeadString (self,c,s,encoding="utf-8"):
         
         p = self
         p.v.initHeadString(s,encoding)
@@ -1949,9 +1937,9 @@ class position (object):
         p.v.initHeadString(s,encoding)
     #@-node:ekr.20040305222924.1:p.setHeadString & p.initHeadString
     #@+node:ekr.20040305223225:p.setHeadStringOrHeadline
-    def setHeadStringOrHeadline (self,s,encoding="utf-8"):
+    def setHeadStringOrHeadline (self,c,s,encoding="utf-8"):
     
-        p = self ; t = p.edit_widget()
+        p = self ; t = p.edit_widget(c)
         
         p.initHeadString(s,encoding)
     
@@ -1964,6 +1952,7 @@ class position (object):
             t.configure(state=state)
     
         p.setDirty()
+    #@nonl
     #@-node:ekr.20040305223225:p.setHeadStringOrHeadline
     #@+node:ekr.20040315031445:p.scriptSetBodyString
     def scriptSetBodyString (self,s,encoding="utf-8"):
@@ -1976,14 +1965,6 @@ class position (object):
     #@-node:ekr.20040315031445:p.scriptSetBodyString
     #@-node:ekr.20040315031401:Head & body text (position)
     #@+node:ekr.20040312015908:Visited bits
-    #@+node:ekr.20040312015705:p.clearAllVisited
-    # Compatibility routine for scripts.
-    
-    def clearAllVisited (self):
-        
-        for p in self.allNodes_iter():
-            p.clearVisited()
-    #@-node:ekr.20040312015705:p.clearAllVisited
     #@+node:ekr.20040306220634.17:p.clearVisitedInTree
     # Compatibility routine for scripts.
     
@@ -2036,7 +2017,7 @@ class position (object):
     #@+node:ekr.20040303214038:p.setAllAncestorAtFileNodesDirty
     def setAllAncestorAtFileNodesDirty (self,setDescendentsDirty=False):
     
-        p = self ; c = p.c
+        p = self
         dirtyVnodeList = []
         
         # Calculate all nodes that are joined to p or parents of such nodes.
@@ -2053,22 +2034,26 @@ class position (object):
         dirtyVnodeList = [v for v in nodes
             if not v.t.isDirty() and v.isAnyAtFileNode()]
         changed = len(dirtyVnodeList) > 0
+        
+        for v in dirtyVnodeList:
+            v.t.setDirty() # Do not call v.setDirty here!
     
-        c.beginUpdate()
-        try:
-            for v in dirtyVnodeList:
-                v.t.setDirty() # Do not call v.setDirty here!
-        finally:
-            c.endUpdate(changed)
+        # c.beginUpdate()
+        # try:
+            # for v in dirtyVnodeList:
+                # v.t.setDirty() # Do not call v.setDirty here!
+        # finally:
+            # c.endUpdate(changed)
     
         return dirtyVnodeList
+    #@nonl
     #@-node:ekr.20040303214038:p.setAllAncestorAtFileNodesDirty
     #@+node:ekr.20040303163330:p.setDirty
     def setDirty (self,setDescendentsDirty=True):
         
         '''Mark a node and all ancestor @file nodes dirty.'''
     
-        p = self ; c = p.c ; dirtyVnodeList = []
+        p = self ; dirtyVnodeList = []
     
         if not p.v.t.isDirty():
             p.v.t.setDirty()
@@ -2216,17 +2201,19 @@ class position (object):
         """Returns a list of positions in the entire outline."""
     
         #@    @+others
-        #@+node:ekr.20040305171133.1:__init__ & __iter__
-        def __init__(self,p,copy):
+        #@+node:ekr.20040305171133.1:__init__ & __iter__ (p.allNodesIter)
+        def __init__(self,p,c,copy):
+            
+            # g.trace('p.allNodes_iter.__init','p',p,'c',c)
         
-            self.first = p.c.rootPosition().copy()
+            self.first = c.rootPosition().copy()
             self.p = None
             self.copy = copy
             
         def __iter__(self):
         
             return self
-        #@-node:ekr.20040305171133.1:__init__ & __iter__
+        #@-node:ekr.20040305171133.1:__init__ & __iter__ (p.allNodesIter)
         #@+node:ekr.20040305171133.3:next
         def next(self):
             
@@ -2244,9 +2231,9 @@ class position (object):
         #@-node:ekr.20040305171133.3:next
         #@-others
     
-    def allNodes_iter (self,copy=False):
+    def allNodes_iter (self,c,copy=False):
         
-        return self.allNodes_iter_class(self,copy)
+        return self.allNodes_iter_class(self,c,copy)
     #@-node:ekr.20040305171133:p.allNodes_iter
     #@+node:ekr.20040305173559:p.subtree_iter
     class subtree_iter_class:
@@ -2447,6 +2434,39 @@ class position (object):
     #@-others
     #@-node:ekr.20040305162628.1:p.Iterators
     #@+node:ekr.20040303175026:p.Moving, Inserting, Deleting, Cloning, Sorting (position)
+    #@+node:ekr.20040303175026.8:p.clone (does not need any args)
+    def clone (self):
+        
+        """Create a clone of back.
+        
+        Returns the newly created position."""
+        
+        p = self
+    
+        p2 = p.copy()
+        p2.v = vnode(p.v.t)
+        p2.linkAfter(p)
+    
+        return p2
+    #@nonl
+    #@-node:ekr.20040303175026.8:p.clone (does not need any args)
+    #@+node:ekr.20040303175026.9:p.copyTreeAfter, copyTreeTo
+    # These used by unit tests and by the group_operations plugin.
+    
+    def copyTreeAfter(self):
+        p = self
+        p2 = p.insertAfter()
+        p.copyTreeFromSelfTo(p2)
+        return p2
+        
+    def copyTreeFromSelfTo(self,p2):
+        p = self
+        p2.v.t.headString = p.headString()
+        p2.v.t.bodyString = p.bodyString()
+        for child in p.children_iter(copy=True):
+            child2 = p2.insertAsLastChild()
+            child.copyTreeFromSelfTo(child2)
+    #@-node:ekr.20040303175026.9:p.copyTreeAfter, copyTreeTo
     #@+node:ekr.20040303175026.2:p.doDelete
     #@+at 
     #@nonl
@@ -2458,11 +2478,9 @@ class position (object):
     
     def doDelete (self):
     
-        """Deletes position p from the outline.  May be undone.
+        """Deletes position p from the outline."""
     
-        Returns newPosition."""
-    
-        p = self ; c = p.c
+        p = self
         p.setDirty() # Mark @file nodes dirty!
         p.unlink()
         p.deleteLinksInTree()
@@ -2474,13 +2492,13 @@ class position (object):
         
         Returns the newly created position."""
         
-        p = self ; c = p.c
+        p = self
         p2 = self.copy()
     
         if not t:
             t = tnode(headString="NewHeadline")
     
-        p2.v = vnode(c,t)
+        p2.v = vnode(t)
         p2.v.iconVal = 0
         p2.linkAfter(p)
     
@@ -2509,79 +2527,44 @@ class position (object):
         
         Returns the newly created position."""
         
-        p = self ; c = p.c
-        p2 = self.copy()
+        p = self ; p2 = self.copy()
     
         if not t:
             t = tnode(headString="NewHeadline")
-        
-        p2.v = vnode(c,t)
+    
+        p2.v = vnode(t)
         p2.v.iconVal = 0
         p2.linkAsNthChild(p,n)
     
         return p2
     #@-node:ekr.20040303175026.5:p.insertAsNthChild
-    #@+node:ekr.20040303175026.6:p.moveToRoot
-    def moveToRoot (self,oldRoot=None):
-    
-        '''Moves a position to the root position.
+    #@+node:ekr.20040310062332.1:p.invalidOutline
+    def invalidOutline (self, message):
         
-        Important: oldRoot must the previous root position if it exists.'''
-    
-        p = self # Do NOT copy the position!
-        p.unlink()
-        p.linkAsRoot(oldRoot)
-        
-        return p
-    #@-node:ekr.20040303175026.6:p.moveToRoot
-    #@+node:ekr.20040303175026.8:p.clone
-    def clone (self,back):
-        
-        """Create a clone of back.
-        
-        Returns the newly created position."""
-        
-        p = self ; c = p.c
-        
-        # g.trace(p,back)
-    
-        p2 = back.copy()
-        p2.v = vnode(c,back.v.t)
-        p2.linkAfter(back)
-    
-        return p2
-    #@-node:ekr.20040303175026.8:p.clone
-    #@+node:ekr.20040303175026.9:p.copyTreeAfter, copyTreeTo
-    # This is used by unit tests.
-    
-    def copyTreeAfter(self):
         p = self
-        p2 = p.insertAfter()
-        p.copyTreeFromSelfTo(p2)
-        return p2
-        
-    def copyTreeFromSelfTo(self,p2):
-        p = self
-        p2.v.t.headString = p.headString()
-        p2.v.t.bodyString = p.bodyString()
-        for child in p.children_iter(copy=True):
-            child2 = p2.insertAsLastChild()
-            child.copyTreeFromSelfTo(child2)
-    #@-node:ekr.20040303175026.9:p.copyTreeAfter, copyTreeTo
+    
+        if p.hasParent():
+            node = p.parent()
+        else:
+            node = p
+    
+        g.alert("invalid outline: %s\n%s" % (message,node))
+    #@-node:ekr.20040310062332.1:p.invalidOutline
     #@+node:ekr.20040303175026.10:p.moveAfter
     def moveAfter (self,a):
     
         """Move a position after position a."""
         
-        p = self ; c = p.c # Do NOT copy the position!
+        p = self # Do NOT copy the position!
         p.unlink()
         p.linkAfter(a)
         
         # Moving a node after another node can create a new root node.
-        if not a.hasParent() and not a.hasBack():
-            c.setRootPosition(a)
+        # if not a.hasParent() and not a.hasBack():
+            # c.setRootPosition(a)
     
         return p
+    #@nonl
     #@-node:ekr.20040303175026.10:p.moveAfter
     #@+node:ekr.20040306060312:p.moveToLastChildOf
     def moveToLastChildOf (self,parent):
@@ -2595,17 +2578,18 @@ class position (object):
         p.linkAsNthChild(parent,n)
     
         # Moving a node can create a new root node.
-        if not parent.hasParent() and not parent.hasBack():
-            p.c.setRootPosition(parent)
+        # if not parent.hasParent() and not parent.hasBack():
+            # c.setRootPosition(parent)
             
         return p
+    #@nonl
     #@-node:ekr.20040306060312:p.moveToLastChildOf
     #@+node:ekr.20040303175026.11:p.moveToNthChildOf
     def moveToNthChildOf (self,parent,n):
     
         """Move a position to the nth child of parent."""
     
-        p = self ; c = p.c # Do NOT copy the position!
+        p = self # Do NOT copy the position!
         
         # g.trace(p,parent,n)
     
@@ -2613,13 +2597,27 @@ class position (object):
         p.linkAsNthChild(parent,n)
         
         # Moving a node can create a new root node.
-        if not parent.hasParent() and not parent.hasBack():
-            if not parent.equal(c.rootPosition()):
-                # g.trace('old root',c.rootPosition(),'new root',parent())
-                c.setRootPosition(parent)
+        # if not parent.hasParent() and not parent.hasBack():
+            # if not parent.equal(c.rootPosition()):
+                # # g.trace('old root',c.rootPosition(),'new root',parent())
+                # c.setRootPosition(parent)
     
         return p
+    #@nonl
     #@-node:ekr.20040303175026.11:p.moveToNthChildOf
+    #@+node:ekr.20040303175026.6:p.moveToRoot
+    def moveToRoot (self,oldRoot=None):
+    
+        '''Moves a position to the root position.
+        
+        Important: oldRoot must the previous root position if it exists.'''
+    
+        p = self # Do NOT copy the position!
+        p.unlink()
+        p.linkAsRoot(oldRoot)
+        
+        return p
+    #@-node:ekr.20040303175026.6:p.moveToRoot
     #@+node:ekr.20040303175026.13:p.validateOutlineWithParent
     # This routine checks the structure of the receiver's tree.
     
@@ -2662,18 +2660,6 @@ class position (object):
     
         return result
     #@-node:ekr.20040303175026.13:p.validateOutlineWithParent
-    #@+node:ekr.20040310062332.1:p.invalidOutline
-    def invalidOutline (self, message):
-        
-        p = self
-    
-        if p.hasParent():
-            node = p.parent()
-        else:
-            node = p
-    
-        g.alert("invalid outline: %s\n%s" % (message,node))
-    #@-node:ekr.20040310062332.1:p.invalidOutline
     #@-node:ekr.20040303175026:p.Moving, Inserting, Deleting, Cloning, Sorting (position)
     #@+node:ekr.20031218072017.928:p.moveToX
     #@+at
@@ -2713,12 +2699,14 @@ class position (object):
             if child:
                 if p.isCloned():
                     p.stack.append(p.v)
+                    p._p_changed = True
                     # g.trace("push",p.v,p)
                 p.v = child
             else:
                 p.v = None
             
         return p
+    
     #@-node:ekr.20031218072017.931:p.moveToFirstChild (pushes stack for cloned nodes)
     #@+node:ekr.20031218072017.932:p.moveToLastChild (pushes stack for cloned nodes)
     def moveToLastChild (self):
@@ -2732,6 +2720,7 @@ class position (object):
                 child = p.v.lastChild()
                 if p.isCloned():
                     p.stack.append(p.v)
+                    p._p_changed = True
                     # g.trace("push",p.v,p)
                 p.v = child
             else:
@@ -2790,6 +2779,7 @@ class position (object):
             if child:
                 if p.isCloned():
                     p.stack.append(p.v)
+                    p._p_changed = True
                     # g.trace("push",p.v,p)
                 p.v = child
             else:
@@ -2810,6 +2800,7 @@ class position (object):
             p.v = p.v._parent
         elif p.stack:
             p.v = p.stack.pop()
+            p._p_changed = True
         else:
             p.v = None
         return p
@@ -2941,6 +2932,7 @@ class position (object):
     
         if p.v not in p.v.t.vnodeList:
             p.v.t.vnodeList.append(p.v)
+            p.v.t._p_changed = True
             
         for p in root.children_iter():
             p.restoreLinksInTree()
@@ -2964,6 +2956,7 @@ class position (object):
         # Delete p.v from the vnodeList
         if p.v in p.v.t.vnodeList:
             p.v.t.vnodeList.remove(p.v)
+            p.v.t._p_changed = True
             assert(p.v not in p.v.t.vnodeList)
             # g.trace("deleted",p.v,p.vnodeListIds())
         else:
@@ -3003,11 +2996,13 @@ class position (object):
         # g.trace(p,after)
         
         p.stack = after.stack[:] # 3/12/04
+        p._p_changed = True
         p.v._parent = after.v._parent
         
         # Add v to it's tnode's vnodeList.
         if p.v not in p.v.t.vnodeList:
             p.v.t.vnodeList.append(p.v)
+            p.v.t._p_changed = True
         
         p.v._back = after.v
         p.v._next = after.v._next
@@ -3033,7 +3028,9 @@ class position (object):
         p = self
     
         # Recreate the stack using the parent.
-        p.stack = parent.stack[:] 
+        p.stack = parent.stack[:]
+        p._p_changed = True
+    
         if parent.isCloned():
             p.stack.append(parent.v)
     
@@ -3042,6 +3039,7 @@ class position (object):
         # Add v to it's tnode's vnodeList.
         if p.v not in p.v.t.vnodeList:
             p.v.t.vnodeList.append(p.v)
+            p.v.t._p_changed = True
     
         if n == 0:
             child1 = parent.v.t._firstChild
@@ -3076,6 +3074,7 @@ class position (object):
         else:       oldRootVnode = None
         
         p.stack = [] # Clear the stack.
+        p._p_changed = True
         
         # Clear all links except the child link.
         v._parent = None
@@ -3085,6 +3084,7 @@ class position (object):
         # Add v to it's tnode's vnodeList. Bug fix: 5/02/04.
         if v not in v.t.vnodeList:
             v.t.vnodeList.append(v)
+            v.t._p_changed = True
     
         # Link in the rest of the tree only when oldRoot != None.
         # Otherwise, we are calling this routine from init code and
@@ -3092,10 +3092,9 @@ class position (object):
         if oldRoot:
             oldRoot.v._back = v # Bug fix: 3/12/04
     
-        p.c.setRootPosition(p)
+        # c.setRootPosition(p)
         
-        if 0:
-            p.dump(label="root")
+        # p.dump(label="root")
     #@-node:ekr.20040310062332.4:p.linkAsRoot
     #@+node:ekr.20040310062332.5:p.unlink
     def unlink (self):
@@ -3111,14 +3110,15 @@ class position (object):
         # g.trace('p.v._parent',p.v._parent," child:",v.t._firstChild," back:",v._back, " next:",v._next)
         
         # Special case the root.
-        if p == p.c.rootPosition():
-            assert(p.v._next)
-            p.c.setRootPosition(p.next())
+        # if p == c.rootPosition():
+            # assert(p.v._next)
+            # c.setRootPosition(p.next())
         
         # Remove v from it's tnode's vnodeList.
         vnodeList = v.t.vnodeList
         if v in vnodeList:
             vnodeList.remove(v)
+            v.t._p_changed = True
         assert(v not in vnodeList)
         
         # Reset the firstChild link in its direct father.
@@ -3150,10 +3150,26 @@ class position (object):
             g.trace('-'*20)
             p.dump(label="p")
             if parent: parent.dump(label="parent")
+    #@nonl
     #@-node:ekr.20040310062332.5:p.unlink
     #@-node:ekr.20040310062332:p.Link/Unlink methods
     #@-others
+    
+class position (basePosition):
+    """A class that implements vnodes."""
+    pass
+
+if 0:
+    if ZODB:
+        class persistent_position (basePosition, ZODB.Persistence.Persistent):
+            pass
+        
+#TypeError: Error when calling the metaclass bases
+# metaclass conflict: the metaclass of a derived class must be a
+# (non-strict) subclass of the metaclasses of all its bases
+#@nonl
 #@-node:ekr.20031218072017.889:class position
 #@-others
+#@nonl
 #@-node:ekr.20031218072017.3320:@thin leoNodes.py
 #@-leo
