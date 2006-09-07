@@ -5940,15 +5940,10 @@ class baseCommands:
         """Return the presently selected position."""
         
         c = self
-        
+    
         if c._currentPosition:
-            if copy:
-                return c._currentPosition.copy() # Must make a second copy now.
-            else:
-                # The caller MUST copy the position if it is passed to any other method.
-                # At present no core method uses copy = False.
-                g.trace("copy=False")
-                return c._currentPosition
+            # New in Leo 4.4.2: *always* return a copy.
+            return c._currentPosition.copy()
         else:
             return c.nullPosition()
         
@@ -6115,17 +6110,24 @@ class baseCommands:
         
         c = self
         
-        if 0: # Setting the current position 'early' ends up marking the outline dirty on reads.
+        if self._rootPosition:
+            return self._rootPosition.copy()
+        else:
+            return  c.nullPosition()
+        
+        # Computing the root position here would be extrememly dangerous,
+        # it relies on c.currentPosition() being accurate in **all** situations.
+        # This is an intolerable constraint on all code that uses the Commands class.
+        if 0:
             p = c.findRootPosition(c.currentPosition())
+            current = c.currentPosition()
             if p:
+                if p != self._rootPosition:
+                    g.trace('*** mismatch',p.headString(),current)
                 return p
             else:
+                g.trace('No root!',current and current.headString())
                 return c.nullPosition()
-        else:
-            if self._rootPosition:
-                return self._rootPosition.copy()
-            else:
-                return  c.nullPosition()
     
     # For compatibiility with old scripts.
     rootVnode = rootPosition
@@ -6229,6 +6231,8 @@ class baseCommands:
         
         c = self
         
+        # g.trace(p.headString(),g.callers())
+        
         if p:
             if p.equal(c._currentPosition):
                 pass # We have already made a copy.
@@ -6285,7 +6289,7 @@ class baseCommands:
     
         c = self
         
-        # g.trace(p.headString())
+        # g.trace(p.headString(),g.callers())
         
         if p:
             if p.equal(c._rootPosition):
@@ -6293,7 +6297,7 @@ class baseCommands:
             else:
                 # We must make a copy _now_.
                 c._rootPosition = p.copy()
-                # c._currentPosition = p.copy() # New in Leo 4.4.2.
+                c._currentPosition = p.copy() # New in Leo 4.4.2.
         else:
             c._rootPosition = None
     #@nonl
@@ -6390,8 +6394,15 @@ class baseCommands:
         """Select a new position."""
     
         c = self
+        
+        # g.trace(p.headString(),g.callers())
     
         c.frame.tree.select(p,updateBeadList)
+        
+        # New in Leo 4.4.2.
+        c.setCurrentPosition(p)
+            # Do *not* test whether the position exists!
+            # We may be in the midst of an undo.
     
     selectVnode = selectPosition
     #@-node:ekr.20031218072017.2997:c.selectPosition

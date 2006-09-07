@@ -1881,6 +1881,8 @@ class basePosition:
         '''Mark a node and all ancestor @file nodes dirty.'''
     
         p = self ; dirtyVnodeList = []
+        
+        # g.trace(p.headString(),g.callers())
     
         if not p.v.t.isDirty():
             p.v.t.setDirty()

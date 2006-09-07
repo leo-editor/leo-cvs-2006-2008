@@ -482,7 +482,9 @@ class atFile:
         """Scan vnodes, looking for @file nodes to read."""
     
         at = self ; c = at.c
-        c.endEditing() # Capture the current headline.
+        if partialFlag:
+            # Capture the current headline only if we aren't doing the initial read.
+            c.endEditing() 
         anyRead = False
         p = root.copy()
         if partialFlag: after = p.nodeAfterTree()

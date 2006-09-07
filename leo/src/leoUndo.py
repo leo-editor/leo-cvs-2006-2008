@@ -1296,7 +1296,7 @@ class baseUndoer:
         finally:
             # New in 4.4a3: Almost any change could change an icon,
             # So we always request a redraw.
-            c.setRootPosition(c.findRootPosition(c.currentPosition())) # New in 4.4.2.
+            # c.setRootPosition(c.findRootPosition(c.currentPosition())) # New in 4.4.2.
             c.setChanged(True)
             c.endUpdate()
             c.recolor_now()
@@ -1551,12 +1551,11 @@ class baseUndoer:
                 u.undoHelper()
             else:
                 g.trace('no undo helper for %s %s' % (u.kind,u.undoType))
-    
             c.selectPosition(c.currentPosition())
         finally:
             # New in 4.4a3: Almost any change could change an icon,
             # So we always request a redraw.
-            c.setRootPosition(c.findRootPosition(c.currentPosition())) # New in 4.4.2.
+            # c.setRootPosition(c.findRootPosition(c.currentPosition())) # New in 4.4.2.
             c.setChanged(True)
             c.endUpdate()
             c.recolor_now()
@@ -1677,7 +1676,7 @@ class baseUndoer:
                 else:
                     t.setTnodeText(bunch.body)
                     t.setHeadString(bunch.head)
-                
+    
         c.selectPosition(u.p)
     #@-node:ekr.20050412085112:undoInsertNode
     #@+node:ekr.20050526124906:undoMark

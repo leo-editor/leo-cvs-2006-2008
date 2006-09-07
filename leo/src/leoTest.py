@@ -758,7 +758,7 @@ class reformatParagraphTest:
         self.tempChild.setTnodeText(text,g.app.tkEncoding)
     
         # Make the temp child node current, and put the cursor at the beginning.
-        c.selectVnode(self.tempChild)
+        c.selectPosition(self.tempChild)
         c.frame.body.setInsertPointToStartOfLine( 0 )
         c.frame.body.setTextSelection(None,None)
     #@-node:ekr.20051104075904.52:copyBeforeToTemp
