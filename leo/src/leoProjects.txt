@@ -315,7 +315,7 @@ def readEndNode (self,s,i,middle=False):
 #@+node:ekr.20041005105605.96:<< indicate that the node has been changed >>
 if at.perfectImportRoot:
     << bump at.correctedLines and tell about the correction >>
-    # p.setMarked(c)
+    # p.setMarked()
     at.t.bodyString = s # Just setting at.t.tempBodyString won't work here.
     at.t.setDirty() # Mark the node dirty.  Ancestors will be marked dirty later.
     at.c.setChanged(True)
@@ -390,11 +390,11 @@ for p in root.self_and_subtree_iter():
             if p.v.isDirty():
                 p.setAllAncestorAtFileNodesDirty()
         else:
-            p.setBodyStringOrPane(c,s) # Sets v and v.c dirty.
+            c.setBodyString(p,s) # Sets c and p dirty.
             
         if not thinFile or (thinFile and p.v.isDirty()):
             g.es("changed: " + p.headString(),color="blue")
-            p.setMarked(c)
+            p.setMarked()
 #@-node:ekr.20041005105605.24:<< copy all tempBodyStrings to tnodes >>
 #@+node:ekr.20041005105605.25:<< delete all tempBodyStrings >>
 for p in c.allNodes_iter():
@@ -480,7 +480,7 @@ def readEndNode (self,s,i,middle=False):
 #@+node:ekr.20041005105605.96:<< indicate that the node has been changed >>
 if at.perfectImportRoot:
     << bump at.correctedLines and tell about the correction >>
-    # p.setMarked(c)
+    # p.setMarked()
     at.t.bodyString = s # Just setting at.t.tempBodyString won't work here.
     at.t.setDirty() # Mark the node dirty.  Ancestors will be marked dirty later.
     at.c.setChanged(True)
@@ -533,7 +533,7 @@ else:
 #@+node:ekr.20041005105605.96:<< indicate that the node has been changed >>
 if at.perfectImportRoot:
     << bump at.correctedLines and tell about the correction >>
-    # p.setMarked(c)
+    # p.setMarked()
     at.t.bodyString = s # Just setting at.t.tempBodyString won't work here.
     at.t.setDirty() # Mark the node dirty.  Ancestors will be marked dirty later.
     at.c.setChanged(True)
@@ -600,7 +600,7 @@ def  copyAllTempBodyStringsToTnodes (self,root,thinFile):
                 if p.v.isDirty():
                     p.setAllAncestorAtFileNodesDirty()
             else:
-                p.setBodyStringOrPane(c,s) # Sets v and v.c dirty.
+                c.setBodyString(p,s) # Sets c and p dirty.
 
             if not thinFile or (thinFile and p.v.isDirty()):
                 # New in Leo 4.3: support for mod_labels plugin:
@@ -609,7 +609,7 @@ def  copyAllTempBodyStringsToTnodes (self,root,thinFile):
                 except Exception:
                     pass
                 g.es("changed: " + p.headString(),color="blue")
-                p.setMarked(c)
+                p.setMarked()
 #@-node:ekr.20050301105854:copyAllTempBodyStringsToTnodes
 #@-node:ekr.20060824130443:Found: tempBodyString
 #@-node:ekr.20060826062302:Removed warning about changed nodes
@@ -1256,7 +1256,7 @@ def unmarkAll (self,event=None):
         for p in c.allNodes_iter():
             if p.isMarked():
                 bunch = u.beforeMark(p,undoType)
-                p.clearMarked(c)
+                c.clearMarked(p)
                 p.v.t.setDirty()
                 u.afterMark(p,undoType,bunch)
         dirtyVnodeList = [p.v for p in c.allNodes_iter() if p.v.isDirty()]
@@ -1322,8 +1322,8 @@ def updateMarks (self,oldOrNew):
     if dirty:   u.p.setDirty(setDescendentsDirty=False)
     else:       u.p.clearDirty()
         
-    if marked:  u.p.setMarked(c)
-    else:       u.p.clearMarked(c)
+    if marked:  c.setMarked(u.p)
+    else:       c.clearMarked(u.p)
 
     u.c.setChanged(changed)
 #@-node:ekr.20050410095424:updateMarks

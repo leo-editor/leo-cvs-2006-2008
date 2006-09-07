@@ -1196,7 +1196,7 @@ class importExportTestCase(unittest.TestCase):
         # Create a node under temp_v.
         child = temp_v.insertAsLastChild()
         assert(child)
-        child.setHeadString(c,"import test: " + self.v.headString())
+        c.setHeadString(child,"import test: " + self.v.headString())
         c.selectVnode(child)
     
         assert(d)

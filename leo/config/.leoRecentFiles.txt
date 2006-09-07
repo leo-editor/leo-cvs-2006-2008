@@ -1,0 +1,3 @@
+C:\prog\tigris-cvs\leo\plugins\leoPlugins.leo
+C:\prog\tigris-cvs\leo\scripts\scripts.leo
+C:\prog\tigris-cvs\leo\src\LeoPy.leo

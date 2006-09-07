@@ -334,7 +334,7 @@ def insert_read_only_node (c,v,name):
             filetypes=[("All files", "*")]
             )
         c.beginUpdate()
-        v.setHeadString(c,"@read-only %s" % name)
+        c.setHeadString(v,"@read-only %s" % name)
         c.endUpdate()
     parse = urlparse.urlparse(name)
     try:
@@ -350,7 +350,7 @@ def insert_read_only_node (c,v,name):
     except IOError,msg:
         # g.es("error reading %s: %s" % (name, msg))
         # g.es("...not found: " + name)
-        v.setBodyStringOrPane(c,"") # Clear the body text.
+        c.setBodyString(v,"") # Clear the body text.
         return True # Mark the node as changed.
     else:
         ext = os.path.splitext(parse[2])[1]
@@ -382,7 +382,7 @@ def insert_read_only_node (c,v,name):
             #@-node:edream.110203113231.895:<< convert HTML to text >>
             #@nl
         previous = v.t.bodyString
-        v.setBodyStringOrPane(c,new)
+        c.setBodyString(v,new)
         changed = (g.toUnicode(new,'ascii') != g.toUnicode(previous,'ascii'))
         if changed and previous != "":
             g.es("changed: %s" % name) # A real change.

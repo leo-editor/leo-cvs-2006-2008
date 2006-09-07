@@ -1581,11 +1581,11 @@ class wxLeoFrame(wx.wxFrame,leoFrame.leoFrame):
         
         c = self.c ; v = c.currentVnode ; tree = self.tree
         # g.trace(v)
-        if self.revertHeadline and v.edit_widget() and v == self.editVnode:
+        if self.revertHeadline and c.edit_widget(v) and v == self.editVnode:
             
             # g.trace(`self.revertHeadline`)
-            v.edit_widget().delete("1.0","end")
-            v.edit_widget().insert("end",self.revertHeadline)
+            c.edit_widget(v).delete("1.0","end")
+            c.edit_widget(v).insert("end",self.revertHeadline)
             tree.idle_head_key(v) # Must be done immediately.
             tree.revertHeadline = None
             tree.select(v)
@@ -1602,7 +1602,7 @@ class wxLeoFrame(wx.wxFrame,leoFrame.leoFrame):
     
         c = self.c ; tree = self.tree ; v = self.editVnode
     
-        if v and v.edit_widget():
+        if v and c.edit_widget(v):
             tree.select(v)
     
         if v: # Bug fix 10/9/02: also redraw ancestor headlines.
@@ -1621,11 +1621,11 @@ class wxLeoFrame(wx.wxFrame,leoFrame.leoFrame):
         frame = self ; c = frame.c ; v = c.currentVnode()
         h = v.headString() # Remember the old value.
     
-        if v.edit_widget():
-            sel1,sel2 = g.app.gui.getTextSelection(v.edit_widget())
+        if c.edit_widget(v):
+            sel1,sel2 = g.app.gui.getTextSelection(c.edit_widget(v))
             if sel1 and sel2 and sel1 != sel2: # 7/7/03
-                v.edit_widget().delete(sel1,sel2)
-            v.edit_widget().insert("insert",c.getTime(body=False))
+                c.edit_widget(v).delete(sel1,sel2)
+            c.edit_widget(v).insert("insert",c.getTime(body=False))
             frame.idle_head_key(v)
     
         # A kludge to get around not knowing whether we are editing or not.
@@ -2708,7 +2708,7 @@ class wxLeoTree (leoFrame.leoTree):
                 # Remember the old body text
                 old_body = body.getAllText()
                 
-                if old and old != v and old.edit_widget():
+                if old and old != v and c.edit_widget(old):
                     old.t.scrollBarSpot = yview
                     old.t.insertSpot = insertSpot
                 #@-node:edream.111603221343.3:<< unselect the old node >>
@@ -2828,7 +2828,7 @@ class wxLeoTree (leoFrame.leoTree):
                         self.endEditLabel() # sets editPosition = None
                         self.setUnselectedLabelState(old_p)
                     
-                    if old_p.edit_widget():
+                    if c.edit_widget(old_p):
                         old_p.v.t.scrollBarSpot = yview
                         old_p.v.t.insertSpot = insertSpot
             #@nonl
@@ -2937,7 +2937,7 @@ class wxLeoTree (leoFrame.leoTree):
         
         p = self.editPosition()
     
-        if p and p.edit_widget():
+        if p and c.edit_widget(p):
             if 0: # New in recycled widgets scheme: this could cause a race condition.
                 # This will be done in the redraw code becaused editPosition will be None.
                 self.setUnselectedLabelState(p)
@@ -2966,7 +2966,7 @@ class wxLeoTree (leoFrame.leoTree):
         self.setEditPosition(p)
     
         # Start editing
-        if p and p.edit_widget():
+        if p and c.edit_widget(p):
             self.setNormalLabelState(p)
             self.frame.revertHeadline = p.headString()
             self.setEditPosition(p)
@@ -2982,12 +2982,12 @@ class wxLeoTree (leoFrame.leoTree):
         # This prevents race conditions.
         if self.redrawScheduled: return 
         
-        if p and p.edit_widget():
+        if p and c.edit_widget(p):
             self.setEditHeadlineColors(p)
-            p.edit_widget().tag_remove("sel","1.0","end")
-            p.edit_widget().tag_add("sel","1.0","end")
+            c.edit_widget(p).tag_remove("sel","1.0","end")
+            c.edit_widget(p).tag_add("sel","1.0","end")
             # Set the focus immediately
-            self.frame.widgetWantsFocus(p.edit_widget())
+            self.frame.widgetWantsFocus(c.edit_widget(p))
     #@nonl
     #@-node:ekr.20050719121701.11:setNormalLabelState
     #@+node:ekr.20050719121701.12:setDisabledLabelState
@@ -2999,7 +2999,7 @@ class wxLeoTree (leoFrame.leoTree):
         # This prevents race conditions.
         if self.redrawScheduled: return
     
-        if p and p.edit_widget():
+        if p and c.edit_widget(p):
             self.setDisabledHeadlineColors(p)
     #@nonl
     #@-node:ekr.20050719121701.12:setDisabledLabelState
@@ -3025,7 +3025,7 @@ class wxLeoTree (leoFrame.leoTree):
         # This prevents race conditions.
         if self.redrawScheduled: return 
     
-        if p and p.edit_widget():
+        if p and c.edit_widget(p):
             self.setUnselectedHeadlineColors(p)
     #@nonl
     #@-node:ekr.20050719121701.14:setUnselectedLabelState
@@ -3034,7 +3034,7 @@ class wxLeoTree (leoFrame.leoTree):
         
         return ###
     
-        c = self.c ; w = p.edit_widget()
+        c = self.c ; w = c.edit_widget(p)
     
         if self.trace and self.verbose:
             if not self.redrawing:
@@ -3055,7 +3055,7 @@ class wxLeoTree (leoFrame.leoTree):
         
         return ###
     
-        c = self.c ; w = p.edit_widget()
+        c = self.c ; w = c.edit_widget(p)
         
         if self.trace and self.verbose:
             if not self.redrawing:
@@ -3091,7 +3091,7 @@ class wxLeoTree (leoFrame.leoTree):
         
         return ###
         
-        c = self.c ; w = p.edit_widget()
+        c = self.c ; w = c.edit_widget(p)
         
         if self.trace and self.verbose:
             if not self.redrawing:
@@ -3237,7 +3237,7 @@ class wxLeoTree (leoFrame.leoTree):
         # Update all joined headlines.
         j = v.joinList()
         while j != v:
-            j.setHeadString(c,s)
+            c.setHeadString(j,s)
             j = j.joinList()
     #@nonl
     #@-node:edream.110203113231.287:onTreeEndLabelEdit

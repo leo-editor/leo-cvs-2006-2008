@@ -410,7 +410,7 @@ class leoFind:
             
                 p.initHeadString(s)
                 if self.mark_changes:
-                    p.setMarked(c)
+                    p.setMarked()
                 p.setDirty()
                 if not c.isChanged():
                     c.setChanged(True)
@@ -427,9 +427,9 @@ class leoFind:
                 
                 undoData = u.beforeChangeNodeContents(p)
             
-                p.setBodyStringOrPane(c,s)
+                c.setBodyString(p,s)
                 if self.mark_changes:
-                    p.setMarked(c)
+                    p.setMarked()
                 p.setDirty()
                 if not c.isChanged():
                     c.setChanged(True)
@@ -481,7 +481,7 @@ class leoFind:
     
         c = self.c ; p = self.p ; gui = g.app.gui
         # g.trace(self.in_headline)
-        t = g.choose(self.in_headline,p.edit_widget(c),c.frame.bodyCtrl)
+        t = g.choose(self.in_headline,c.edit_widget(p),c.frame.bodyCtrl)
         oldSel = sel = gui.getTextSelection(t)
         if sel and len(sel) == 2:
             start,end = sel
@@ -513,7 +513,7 @@ class leoFind:
         c.beginUpdate()
         try:
             if self.mark_changes:
-                p.setMarked(c)
+                p.setMarked()
             if self.in_headline:
                 c.frame.tree.onHeadChanged(p,'Change')
             else:
@@ -643,7 +643,7 @@ class leoFind:
                     oldRoot = c.rootPosition()
                     found = oldRoot.insertAfter()
                     found.moveToRoot(oldRoot)
-                    found.setHeadString(c,'Found: ' + self.find_text)
+                    c.setHeadString(found,'Found: ' + self.find_text)
                     
                     u.afterInsertNode(found,undoType,undoData,dirtyVnodeList=[])
                     #@-node:ekr.20051113110735:<< create the found node and begin the undo group >>
@@ -709,7 +709,7 @@ class leoFind:
             pos, newpos = self.search()
             if pos:
                 if self.mark_finds:
-                    p.setMarked(c)
+                    p.setMarked()
                     c.frame.tree.drawIcon(p) # redraw only the icon.
                 return pos, newpos
             elif self.errors:
@@ -1033,7 +1033,7 @@ class leoFind:
         self.errors = 0
         if self.in_headline:
             c.frame.tree.setEditPosition(p)
-            t = p.edit_widget(c)
+            t = c.edit_widget(p)
             sel = None
         else:
             t = c.frame.bodyCtrl
@@ -1100,7 +1100,7 @@ class leoFind:
     def save (self):
     
         c = self.c ; p = self.p ; gui = g.app.gui
-        t = g.choose(self.in_headline,p.edit_widget(c),c.frame.bodyCtrl)
+        t = g.choose(self.in_headline,c.edit_widget(p),c.frame.bodyCtrl)
         insert = gui.getInsertPoint(t)
         sel = gui.getSelectionRange(t)
         if len(sel) == 2:
@@ -1114,7 +1114,7 @@ class leoFind:
     
         """Displays the final result.
     
-        Returns self.dummy_vnode, p.edit_widget() or c.frame.bodyCtrl with
+        Returns self.dummy_vnode, c.edit_widget(p) or c.frame.bodyCtrl with
         "insert" and "sel" points set properly."""
     
         c = self.c ; p = self.p ; gui = g.app.gui
@@ -1128,7 +1128,7 @@ class leoFind:
         if self.in_headline:
             c.editPosition(p)
         # Set the focus and selection after the redraw.
-        t = g.choose(self.in_headline,p.edit_widget(c),c.frame.bodyCtrl)
+        t = g.choose(self.in_headline,c.edit_widget(p),c.frame.bodyCtrl)
         insert = g.choose(self.reverse,pos,newpos)
         # New in 4.4a3: a much better way to ensure progress in backward searches.
         # g.trace(id(t),pos,newpos)

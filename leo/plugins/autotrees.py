@@ -238,8 +238,8 @@ class BaseTreeHandler:
         #import pdb; pdb.set_trace()
         for child in child_list:
             new_node = add_to_node.insertAsLastChild()
-            new_node.setHeadStringOrHeadline(c,child.headline)
-            new_node.setBodyStringOrPane(c,child.body)
+            c.setHeadString(new_node,child.headline)
+            c.setBodyString(new_node,child.body)
             self.addChildren(child.children, new_node)
      
     #@nonl

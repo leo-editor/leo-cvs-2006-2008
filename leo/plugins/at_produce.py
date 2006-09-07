@@ -150,8 +150,8 @@ def exeProduce(  c, root = True ):
         f.seek( 0 )
         rv = c.rootVnode()
         nv = rv.insertAfter()
-        nv.setBodyStringOrPane(c,f.read() )
-        nv.setHeadString(c,'produce.log from %s' % time.asctime() )
+        c.setBodyString(nv,f.read() )
+        c.setHeadString(nv,'produce.log from %s' % time.asctime() )
         f.close()
         os.remove( 'produce.log' )
     #@nonl

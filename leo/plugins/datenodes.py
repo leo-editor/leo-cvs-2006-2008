@@ -141,18 +141,18 @@ class DateNodes:
     
         label = self._format_node_label(date, format)
     
-        node.setHeadStringOrHeadline(c,label)
+        c.setHeadString(node,label)
         
         return node
         
     #@-node:dcb.20060806185031:_insert_date_node
     #@+node:dcb.20060806183810:_insert_day_node
-    #@@c
-    
     def _insert_day_node(self, parent, date, day_fmt):
+        
+        c = self.c
         day_node = self._insert_date_node(parent, date, day_fmt)
         
-        day_node.setBodyStringOrPane(self.c,self.settings["body_text"])
+        c.setBodyString(day_node,self.settings["body_text"])
     
         return day_node
     #@nonl

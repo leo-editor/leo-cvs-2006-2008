@@ -1456,7 +1456,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
         '''End editing of a headline and revert to its previous value.'''
         
         frame = self ; c = frame.c ; tree = frame.tree
-        p = c.currentPosition() ; w = p.edit_widget(c)
+        p = c.currentPosition() ; w = c.edit_widget(p)
         
         if g.app.batchMode:
             c.notValidInBatchMode("Abort Edit Headline")
@@ -1596,7 +1596,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
             
         c.editPosition(p)
         c.frame.tree.setEditLabelState(p)
-        w = p.edit_widget(c)
+        w = c.edit_widget(p)
         if w:
             time = c.getTime(body=False)
             if 1: # We can't know if we were already editing, so insert at end.

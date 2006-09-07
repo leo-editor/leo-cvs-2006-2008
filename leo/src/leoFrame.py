@@ -1504,8 +1504,7 @@ class nullTree (leoTree):
     def edit_widget (self,c,p):
         
         self.oops()
-        
-    edit_text = edit_widget # For compatibility.
+    #@nonl
     #@-node:ekr.20040725044521:edit_widget
     #@-node:ekr.20031218072017.2236:Dummy operations...
     #@+node:ekr.20031218072017.2241:getFont & setFont

@@ -311,8 +311,8 @@ class labelsController(object):
             pass
         else:
             self.c.moveOutlineRight()
-        child.setHeadStringOrHeadline(c,labelname)
-        child.setBodyStringOrPane(c,labelcontent)
+        c.setHeadString(child,labelname)
+        c.setBodyString(child,labelcontent)
         return child
     #@nonl
     #@-node:ekr.20050301095332.26:insert_node_for_label_as_child

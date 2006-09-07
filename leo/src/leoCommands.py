@@ -2743,7 +2743,7 @@ class baseCommands:
             s = g.angleBrackets(' ' + s + ' ')
         
         c.frame.tree.editLabel(v)
-        w = v.edit_widget(c)
+        w = c.edit_widget(v)
         if w:
             w.delete("1.0","end")
             w.insert("1.0",s)
@@ -3238,24 +3238,6 @@ class baseCommands:
             g.es("all tests enabled: this may take awhile",color="blue")
     
         p = c.rootPosition()
-        #@    << assert equivalence of lastVisible methods >>
-        #@+node:ekr.20040314062338:<< assert equivalence of lastVisible methods >>
-        if 0:
-            g.app.debug = True
-        
-            p1 = p.oldLastVisible(c)
-            p2 = p.lastVisible(c)
-            
-            if p1 != p2:
-                print "oldLastVisible",p1
-                print "   lastVisible",p2
-            
-            assert p1 and p2 and p1 == p2, "oldLastVisible==lastVisible"
-            assert p1.isVisible() and p2.isVisible(), "p1.isVisible() and p2.isVisible()"
-            
-            g.app.debug = False
-        #@-node:ekr.20040314062338:<< assert equivalence of lastVisible methods >>
-        #@nl
         for p in c.allNodes_iter():
             try:
                 count += 1
@@ -3377,7 +3359,7 @@ class baseCommands:
                     # This test may fail if a joined node is being editred.
                     
                     if isTkinter:
-                        t = p.edit_widget(c)
+                        t = c.edit_widget(p)
                         if t:
                             s = t.get("1.0","end")
                             assert p.headString().strip() == s.strip(), "May fail if joined node is being edited"
@@ -3509,7 +3491,7 @@ class baseCommands:
             if unittest: raise
             else:
                 g.es_exception(full=False,color="black")
-                p.setMarked(c)
+                c.setMarked(p)
     
         c.tabNannyNode(p,h,body,unittest,suppressErrors)
     #@-node:ekr.20040723094220.5:checkPythonNode
@@ -3552,7 +3534,7 @@ class baseCommands:
             g.es_exception()
     
         if unittest: raise
-        else: p.setMarked(c)
+        else: c.setMarked(p)
     #@-node:ekr.20040723094220.6:tabNannyNode
     #@-node:ekr.20040723094220:Check Outline commands & allies
     #@+node:ekr.20040412060927:c.dumpOutline
@@ -3989,7 +3971,7 @@ class baseCommands:
                     self.changed = True
                     self.dirtyVnodeList = []
                 undoData = u.beforeChangeNodeContents(p)
-                p.setBodyStringOrPane(c,body)
+                c.setBodyString(p,body)
                 dirtyVnodeList2 = p.setDirty()
                 self.dirtyVnodeList.extend(dirtyVnodeList2)
                 u.afterChangeNodeContents(p,undoType,undoData,dirtyVnodeList=self.dirtyVnodeList)
@@ -4587,7 +4569,7 @@ class baseCommands:
             for p in c.allNodes_iter():
                 if p.isDirty()and not p.isMarked():
                     bunch = u.beforeMark(p,undoType)
-                    p.setMarked(c)
+                    c.setMarked(p)
                     c.setChanged(True)
                     u.afterMark(p,undoType,bunch)
             u.afterChangeGroup(current,undoType)
@@ -4612,7 +4594,7 @@ class baseCommands:
                     flag, i = g.is_special(s,0,"@root")
                     if flag:
                         bunch = u.beforeMark(p,undoType)
-                        p.setMarked(c)
+                        c.setMarked(p)
                         c.setChanged(True)
                         u.afterMark(p,undoType,bunch)
             u.afterChangeGroup(current,undoType)
@@ -4630,7 +4612,7 @@ class baseCommands:
         c.beginUpdate()
         try: # In update...
             while p:
-                if p.isAtFileNode()and not p.isDirty():
+                if p.isAtFileNode() and not p.isDirty():
                     p.setDirty()
                     c.setChanged(True)
                     p.moveToNodeAfterTree()
@@ -4679,7 +4661,7 @@ class baseCommands:
             for p in c.allNodes_iter():
                 if p.v.t == current.v.t:
                     bunch = u.beforeMark(p,undoType)
-                    p.setMarked(c)
+                    c.setMarked(p)
                     c.setChanged(True)
                     dirtyVnodeList2 = p.setDirty()
                     dirtyVnodeList.extend(dirtyVnodeList2)
@@ -4701,9 +4683,9 @@ class baseCommands:
             undoType = g.choose(p.isMarked(),'Unmark','Mark')
             bunch = u.beforeMark(p,undoType)
             if p.isMarked():
-                p.clearMarked(c)
+                c.clearMarked(p)
             else:
-                p.setMarked(c)
+                c.setMarked(p)
             dirtyVnodeList = p.setDirty()
             c.setChanged(True)
             u.afterMark(p,undoType,bunch,dirtyVnodeList=dirtyVnodeList)
@@ -4726,7 +4708,7 @@ class baseCommands:
             for p in current.children_iter():
                 if not p.isMarked():
                     bunch = u.beforeMark(p,undoType)
-                    p.setMarked(c)
+                    c.setMarked(p)
                     dirtyVnodeList2 = p.setDirty()
                     dirtyVnodeList.extend(dirtyVnodeList2)
                     c.setChanged(True)
@@ -4751,7 +4733,7 @@ class baseCommands:
             for p in c.allNodes_iter():
                 if p.isMarked():
                     bunch = u.beforeMark(p,undoType)
-                    p.clearMarked(c)
+                    c.clearMarked(p)
                     p.v.t.setDirty()
                     u.afterMark(p,undoType,bunch)
             dirtyVnodeList = [p.v for p in c.allNodes_iter() if p.v.isDirty()]
@@ -5365,7 +5347,7 @@ class baseCommands:
         
     def headlineWantsFocusNow(self,p):
         c = self
-        c.set_focus(p and p.edit_widget(c))
+        c.set_focus(p and c.edit_widget(p))
         
     def logWantsFocusNow(self):
         c = self ; log = c.frame.log
@@ -5389,7 +5371,7 @@ class baseCommands:
         
     def headlineWantsFocus(self,p):
         c = self
-        c.request_focus(p and p.edit_widget(c))
+        c.request_focus(p and c.edit_widget(p))
         
     def logWantsFocus(self):
         c = self ; log = c.frame.log
@@ -5912,26 +5894,8 @@ class baseCommands:
     #@-node:ekr.20031218072017.2981:canUnmarkAll
     #@-node:ekr.20031218072017.2955:Enabling Menu Items
     #@+node:ekr.20031218072017.2982:Getters & Setters
-    #@+node:ekr.20031218072017.2984:c.clearAllMarked
-    def clearAllMarked (self):
-        
-        c = self
-    
-        for p in c.allNodes_iter():
-            p.v.clearMarked()
-    #@-node:ekr.20031218072017.2984:c.clearAllMarked
-    #@+node:ekr.20031218072017.2985:c.clearAllVisited
-    def clearAllVisited (self):
-    
-        c = self
-    
-        for p in c.allNodes_iter():
-            p.v.clearVisited()
-            p.v.t.clearVisited()
-            p.v.t.clearWriteBit()
-    #@-node:ekr.20031218072017.2985:c.clearAllVisited
-    #@+node:ekr.20031218072017.2983:c.currentPosition & c.setCurrentPosition
-    #@+node:ekr.20040803140033:currentPosition
+    #@+node:ekr.20060906211747:Getters
+    #@+node:ekr.20040803140033:c.currentPosition
     def currentPosition (self,copy=True):
         
         """Return the presently selected position."""
@@ -5951,28 +5915,15 @@ class baseCommands:
         
     # For compatibiility with old scripts.
     currentVnode = currentPosition
-    #@-node:ekr.20040803140033:currentPosition
-    #@+node:ekr.20040803140033.1:setCurrentPosition
-    def setCurrentPosition (self,p):
-        
-        """Set the presently selected position. For internal use only.
-        
-        Client code should use c.selectPosition instead."""
+    #@-node:ekr.20040803140033:c.currentPosition
+    #@+node:ekr.20040306220230.1:c.edit_widget
+    def edit_widget (self,p):
         
         c = self
         
-        if p:
-            if p.equal(c._currentPosition):
-                pass # We have already made a copy.
-            else: # Must make a copy _now_
-                c._currentPosition = p.copy()
-        else:
-            c._currentPosition = None
-        
-    # For compatibiility with old scripts.
-    setCurrentVnode = setCurrentPosition
-    #@-node:ekr.20040803140033.1:setCurrentPosition
-    #@-node:ekr.20031218072017.2983:c.currentPosition & c.setCurrentPosition
+        return p and c.frame.tree.edit_widget(p)
+    #@nonl
+    #@-node:ekr.20040306220230.1:c.edit_widget
     #@+node:ekr.20031218072017.2986:c.fileName & shortFileName
     # Compatibility with scripts
     
@@ -6020,11 +5971,6 @@ class baseCommands:
         
     #@nonl
     #@-node:ekr.20060906134053:c.findRootPosition New in 4.4.2
-    #@+node:ekr.20031218072017.2987:c.isChanged
-    def isChanged (self):
-    
-        return self.changed
-    #@-node:ekr.20031218072017.2987:c.isChanged
     #@+node:ekr.20040803112200:c.is...Position
     #@+node:ekr.20040803155551:c.currentPositionIsRootPosition
     def currentPositionIsRootPosition (self):
@@ -6075,13 +6021,35 @@ class baseCommands:
             return p.isEqual(c._rootPosition)
     #@-node:ekr.20040803112450.1:c.isRootPosition
     #@-node:ekr.20040803112200:c.is...Position
+    #@+node:ekr.20031218072017.2987:c.isChanged
+    def isChanged (self):
+    
+        return self.changed
+    #@-node:ekr.20031218072017.2987:c.isChanged
+    #@+node:ekr.20031218072017.4146:c.lastVisible
+    def lastVisible(self):
+        
+        """Move to the last visible node of the entire tree."""
+    
+        c = self ; p = c.rootPosition()
+        
+        # Move to the last top-level node.
+        while p.hasNext():
+            p.moveToNext()
+        assert(p.isVisible())
+    
+        # Move to the last visible child.
+        while p.hasChildren() and p.isExpanded():
+            p.moveToLastChild()
+        
+        return p
+    #@-node:ekr.20031218072017.4146:c.lastVisible
     #@+node:ekr.20040311094927:c.nullPosition
     def nullPosition (self):
         
         c = self ; v = None
         return leoNodes.position(v,[])
     #@-node:ekr.20040311094927:c.nullPosition
-    #@+node:ekr.20031218072017.2988:c.rootPosition & c.setRootPosition
     #@+node:ekr.20040803140033.2:rootPosition
     def rootPosition(self):
         
@@ -6097,26 +6065,54 @@ class baseCommands:
     # For compatibiility with old scripts.
     rootVnode = rootPosition
     #@-node:ekr.20040803140033.2:rootPosition
-    #@+node:ekr.20040803140033.3:setRootPosition
-    def setRootPosition(self,p):
+    #@-node:ekr.20060906211747:Getters
+    #@+node:ekr.20060906211747.1:Setters
+    #@+node:ekr.20040803140033.1:c.setCurrentPosition
+    def setCurrentPosition (self,p):
         
-        """Set the root positioin."""
-    
+        """Set the presently selected position. For internal use only.
+        
+        Client code should use c.selectPosition instead."""
+        
         c = self
         
         if p:
-            if p.equal(c._rootPosition):
+            if p.equal(c._currentPosition):
                 pass # We have already made a copy.
-            else:
-                # We must make a copy _now_.
-                c._rootPosition = p.copy()
+            else: # Must make a copy _now_
+                c._currentPosition = p.copy()
         else:
-            c._rootPosition = None
+            c._currentPosition = None
         
     # For compatibiility with old scripts.
-    setRootVnode = setRootPosition
-    #@-node:ekr.20040803140033.3:setRootPosition
-    #@-node:ekr.20031218072017.2988:c.rootPosition & c.setRootPosition
+    setCurrentVnode = setCurrentPosition
+    #@-node:ekr.20040803140033.1:c.setCurrentPosition
+    #@+node:ekr.20060906211138:c.clearMarked
+    def clearMarked  (self,p):
+        
+        c = self
+        p.v.clearMarked()
+        g.doHook("clear-mark",c=c,p=p,v=p)
+    #@nonl
+    #@-node:ekr.20060906211138:c.clearMarked
+    #@+node:ekr.20031218072017.2985:c.clearAllVisited
+    def clearAllVisited (self):
+    
+        c = self
+    
+        for p in c.allNodes_iter():
+            p.v.clearVisited()
+            p.v.t.clearVisited()
+            p.v.t.clearWriteBit()
+    #@-node:ekr.20031218072017.2985:c.clearAllVisited
+    #@+node:ekr.20031218072017.2984:c.clearAllMarked
+    def clearAllMarked (self):
+        
+        c = self
+    
+        for p in c.allNodes_iter():
+            p.v.clearMarked()
+    #@-node:ekr.20031218072017.2984:c.clearAllMarked
     #@+node:ekr.20031218072017.2989:c.setChanged
     def setChanged (self,changedFlag):
     
@@ -6152,6 +6148,14 @@ class baseCommands:
             except AttributeError:
                 pass
     #@-node:ekr.20060109164136:c.setLog
+    #@+node:ekr.20060906211138.1:c.setMarked
+    def setMarked (self,p):
+        
+        c = self
+        p.v.setMarked()
+        g.doHook("set-mark",c=c,p=p,v=p)
+    #@nonl
+    #@-node:ekr.20060906211138.1:c.setMarked
     #@+node:ekr.20060906131836:c.setRootVnode New in 4.4.2
     def setRootVnode (self, v):
         
@@ -6187,6 +6191,68 @@ class baseCommands:
     topVnode = topPosition
     setTopVnode = setTopPosition
     #@-node:ekr.20040311173238:c.topPosition & c.setTopPosition
+    #@+node:ekr.20040305223522:c.setBodyString
+    def setBodyString (self,p,s,encoding="utf-8"):
+    
+        c = self ; v = p.v
+        if not c or not v: return
+    
+        s = g.toUnicode(s,encoding)
+        current = c.currentPosition()
+        # 1/22/05: Major change: the previous test was: 'if p == current:'
+        # This worked because commands work on the presently selected node.
+        # But setRecentFiles may change a _clone_ of the selected node!
+        if current and p.v.t==current.v.t:
+            # Revert to previous code, but force an empty selection.
+            c.frame.body.setSelectionAreas(s,None,None)
+            c.frame.body.setTextSelection(None)
+            # This code destoys all tags, so we must recolor.
+            c.recolor()
+            
+        # Keep the body text in the tnode up-to-date.
+        if v.t.bodyString != s:
+            v.setTnodeText(s)
+            v.t.setSelection(0,0)
+            p.setDirty()
+            if not c.isChanged():
+                c.setChanged(True)
+    #@-node:ekr.20040305223522:c.setBodyString
+    #@+node:ekr.20040803140033.3:setRootPosition
+    def setRootPosition(self,p):
+        
+        """Set the root positioin."""
+    
+        c = self
+        
+        if p:
+            if p.equal(c._rootPosition):
+                pass # We have already made a copy.
+            else:
+                # We must make a copy _now_.
+                c._rootPosition = p.copy()
+        else:
+            c._rootPosition = None
+    #@nonl
+    #@-node:ekr.20040803140033.3:setRootPosition
+    #@+node:ekr.20040305223225:c.setHeadString
+    def setHeadString (self,p,s,encoding="utf-8"):
+    
+        c = self ; t = c.edit_widget(p)
+        
+        p.initHeadString(s,encoding)
+    
+        if t:
+            state = t.cget("state")
+            # g.trace(state,s)
+            t.configure(state="normal")
+            t.delete("1.0","end")
+            t.insert("end",s)
+            t.configure(state=state)
+    
+        p.setDirty()
+    #@nonl
+    #@-node:ekr.20040305223225:c.setHeadString
+    #@-node:ekr.20060906211747.1:Setters
     #@-node:ekr.20031218072017.2982:Getters & Setters
     #@+node:ekr.20031218072017.2990:Selecting & Updating (commands)
     #@+node:ekr.20031218072017.2991:c.editPosition

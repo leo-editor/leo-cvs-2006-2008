@@ -790,7 +790,7 @@ class bufferCommandsClass (baseEditCommandsClass):
         if p:
             c.endEditing()
             c.beginUpdate()
-            p.setHeadStringOrHeadline(c,name)
+            c.setHeadString(p,name)
             c.endUpdate()
     #@-node:ekr.20050920084036.43:renameBuffer
     #@+node:ekr.20050920084036.40:switchToBuffer

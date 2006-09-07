@@ -553,7 +553,7 @@ def setFileDirective( c , directive, names ):
     hS = directive + " " + hS
     c.beginUpdate()
     try:
-        p.setHeadString(c,hS )
+        c.setHeadString(p,hS )
         c.frame.body.bodyCtrl.focus_set()  
         c.frame.body.bodyCtrl.update_idletasks()
     finally:
@@ -568,7 +568,7 @@ def removeFileDirective (c,names):
     hS = getCleanHeadString(hS,names)
     c.beginUpdate()
     try:
-        p.setHeadString(c,hS)
+        c.setHeadString(p,hS)
         c.frame.body.bodyCtrl.focus_set()
         c.frame.body.bodyCtrl.update_idletasks()
     finally:
@@ -582,7 +582,7 @@ def addGL (c):
     nhs = "<" + "<" + hs + ">" + ">"
     c.beginUpdate()
     try:
-        vnode.setHeadString(c,nhs)
+        c.setHeadString(vnode,nhs)
         c.frame.body.bodyCtrl.focus_set()
         c.frame.body.bodyCtrl.update_idletasks()
     finally:
@@ -596,7 +596,7 @@ def insertHeadline (directive,c):
     nhs = directive + " " + hs
     c.beginUpdate()
     try:
-        vnode.setHeadString(c,nhs)
+        c.setHeadString(vnode,nhs)
     finally:
         c.endUpdate()
 #@nonl

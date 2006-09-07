@@ -488,8 +488,8 @@ class baseUndoer:
         if dirty:   u.p.setDirty(setDescendentsDirty=False)
         else:       u.p.clearDirty()
             
-        if marked:  u.p.setMarked(c)
-        else:       u.p.clearMarked(c)
+        if marked:  c.setMarked(u.p)
+        else:       c.clearMarked(u.p)
     
         u.c.setChanged(changed)
     #@-node:ekr.20050410095424:updateMarks
@@ -1366,8 +1366,8 @@ class baseUndoer:
             for bunch in u.afterTree:
                 t = bunch.t
                 if u.newP.v.t == t:
-                    u.newP.setBodyStringOrPane(c,bunch.body)
-                    u.newP.setHeadString(c,bunch.head)
+                    c.setBodyString(u.newP,bunch.body)
+                    c.setHeadString(u.newP,bunch.head)
                 else:
                     t.setTnodeText(bunch.body)
                     t.setHeadString(bunch.head)
@@ -1674,8 +1674,8 @@ class baseUndoer:
             for bunch in u.beforeTree:
                 t = bunch.t
                 if u.p.v.t == t:
-                    u.p.setBodyStringOrPane(c,bunch.body)
-                    u.p.setHeadString(c,bunch.head)
+                    c.setBodyString(u.p,bunch.body)
+                    c.setHeadString(u.p,bunch.head)
                 else:
                     t.setTnodeText(bunch.body)
                     t.setHeadString(bunch.head)
@@ -1767,7 +1767,7 @@ class baseUndoer:
         
         # Replace data in tree with old data.
         u.restoreTree(old_data)
-        p.setBodyStringOrPane(c,p.bodyString())
+        c.setBodyString(p,p.bodyString())
         
         return p # Nothing really changes.
     #@-node:ekr.20050408100042:undoRedoTree
@@ -1895,7 +1895,7 @@ class baseUndoer:
                 print "actual  :",textResult
                 #@-node:ekr.20031218072017.1497:<< print mismatch trace >>
                 #@nl
-            p.setBodyStringOrPane(c,result)
+            c.setBodyString(p,result)
     #@-node:ekr.20031218072017.1493:undoRedoText
     #@-node:ekr.20031218072017.2039:undo & helpers...
     #@-others

@@ -1291,7 +1291,7 @@ class leoTkinterTree (leoFrame.leoTree):
             # g.trace('no position')
             return
         try:
-            last = p.lastVisible(c)
+            last = c.lastVisible()
             nextToLast = last.visBack()
             h1 = self.yoffset(p)
             h2 = self.yoffset(last)
@@ -1432,8 +1432,7 @@ class leoTkinterTree (leoFrame.leoTree):
         """Returns the Tk.Edit widget for position p."""
     
         return self.findEditWidget(p)
-        
-    edit_text = edit_widget # For compatibility.
+    #@nonl
     #@-node:ekr.20040803072955.75:edit_widget
     #@+node:ekr.20040803072955.74:eventToPosition
     def eventToPosition (self,event):
@@ -1773,7 +1772,7 @@ class leoTkinterTree (leoFrame.leoTree):
         '''Officially change a headline.
         Set the old undo text to the previous revert point.'''
         
-        c = self.c ; u = c.undoer ; w = self.edit_widget(p)
+        c = self.c ; u = c.undoer ; w = c.edit_widget(p)
         if not w: return
         
         ch = '\r' # New in 4.4: we only report the final keystroke.
@@ -2279,7 +2278,7 @@ class leoTkinterTree (leoFrame.leoTree):
             self.allocateNodes(where=where,lines=lines)
     #@-node:ekr.20040803072955.120:allocateNodesBeforeScrolling
     #@+node:ekr.20040803072955.121:updateNode
-    def updateNode (self,v,x,y):
+    def updateNode (self,p,x,y):
         
         """Draw a node that may have become visible as a result of a scrolling operation"""
         
@@ -2287,8 +2286,8 @@ class leoTkinterTree (leoFrame.leoTree):
     
         if self.inExpandedVisibleArea(y):
             # This check is a major optimization.
-            if not v.edit_widget(c):
-                return self.force_draw_node(v,x,y)
+            if not c.edit_widget(p):
+                return self.force_draw_node(p,x,y)
             else:
                 return self.line_height
     
@@ -2371,9 +2370,9 @@ class leoTkinterTree (leoFrame.leoTree):
         self.setEditPosition(p) # That is, self._editPosition = p
         
         if self.trace_edit and not g.app.unitTesting:
-            g.trace(p.headString(),g.choose(p.edit_widget(c),'','no edit widget'))
+            g.trace(p.headString(),g.choose(c.edit_widget(p),'','no edit widget'))
     
-        if p and p.edit_widget(c):
+        if p and c.edit_widget(p):
             self.revertHeadline = p.headString() # New in 4.4b2: helps undo.
             self.setEditLabelState(p) # Sets the focus immediately.
             c.headlineWantsFocus(p) # Make sure the focus sticks.
@@ -2445,7 +2444,7 @@ class leoTkinterTree (leoFrame.leoTree):
                     self.endEditLabel() # sets editPosition = None
                     self.setUnselectedLabelState(old_p) # 12/17/04
                 
-                if old_p.edit_widget(c):
+                if c.edit_widget(old_p):
                     old_p.v.t.scrollBarSpot = yview
                     old_p.v.t.insertSpot = insertSpot
                 #@-node:ekr.20040803072955.129:<< unselect the old node >>
@@ -2557,7 +2556,7 @@ class leoTkinterTree (leoFrame.leoTree):
     #@+node:ekr.20040803072955.135:setEditLabelState
     def setEditLabelState (self,p): # selected, editing
     
-        c = self.c ; w = p.edit_widget(c)
+        c = self.c ; w = c.edit_widget(p)
     
         if p and w:
             c.widgetWantsFocusNow(w)
@@ -2576,7 +2575,7 @@ class leoTkinterTree (leoFrame.leoTree):
         
         c = self.c
     
-        if p and p.edit_widget(c):
+        if p and c.edit_widget(p):
             self.setDisabledHeadlineColors(p)
     #@-node:ekr.20040803072955.136:setSelectedLabelState
     #@+node:ekr.20040803072955.138:setUnselectedLabelState
@@ -2584,13 +2583,13 @@ class leoTkinterTree (leoFrame.leoTree):
     
         c = self.c
     
-        if p and p.edit_widget(c):
+        if p and c.edit_widget(p):
             self.setUnselectedHeadlineColors(p)
     #@-node:ekr.20040803072955.138:setUnselectedLabelState
     #@+node:ekr.20040803072955.139:setDisabledHeadlineColors
     def setDisabledHeadlineColors (self,p):
     
-        c = self.c ; w = p.edit_widget(c)
+        c = self.c ; w = c.edit_widget(p)
     
         if self.trace and self.verbose:
             if not self.redrawing:
@@ -2612,7 +2611,7 @@ class leoTkinterTree (leoFrame.leoTree):
     #@+node:ekr.20040803072955.140:setEditHeadlineColors
     def setEditHeadlineColors (self,p):
     
-        c = self.c ; w = p.edit_widget(c)
+        c = self.c ; w = c.edit_widget(p)
         
         if self.trace and self.verbose:
             if not self.redrawing:
@@ -2632,7 +2631,7 @@ class leoTkinterTree (leoFrame.leoTree):
     #@+node:ekr.20040803072955.141:setUnselectedHeadlineColors
     def setUnselectedHeadlineColors (self,p):
         
-        c = self.c ; w = p.edit_widget(c)
+        c = self.c ; w = c.edit_widget(p)
         
         if self.trace and self.verbose:
             if not self.redrawing:

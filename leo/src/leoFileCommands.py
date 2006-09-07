@@ -1281,7 +1281,7 @@ class baseFileCommands:
             c.endUpdate()
         
         # Force an update of the body pane.
-        p.setBodyStringOrPane(c,p.bodyString())
+        c.setBodyString(p,p.bodyString())
         c.frame.body.onBodyChanged(undoType=None)
     #@-node:ekr.20031218072017.3029:readAtFileNodes (leoAtFile)
     #@+node:ekr.20031218072017.2297:open (leoFileCommands)

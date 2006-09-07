@@ -82,7 +82,7 @@ class baseLeoImportCommands:
             body = "@ignore\n"
             if ext in (".html",".htm"): body += "@language html\n"
             if ext in (".txt",".text"): body += "@nocolor\n"
-            p.setBodyStringOrPane(c,body + self.rootLine + s)
+            c.setBodyString(p,body + self.rootLine + s)
         elif ext in (".c", ".cpp", ".cxx"):
             self.scanCText(s,p)
         elif ext == ".el":
@@ -415,7 +415,7 @@ class baseLeoImportCommands:
         p = parent.insertAsLastChild()
         p.initHeadString(fileName)
         if self.webType=="cweb":
-            p.setBodyStringOrPane(c,"@ignore\n" + self.rootLine + "@language cweb")
+            c.setBodyString(p,"@ignore\n" + self.rootLine + "@language cweb")
     
         # Scan the file, creating one section for each function definition.
         self.scanWebFile(path,p)
@@ -1763,7 +1763,7 @@ class baseLeoImportCommands:
         
         """Minimal forth scanner - leave it to user to create nodes as they see fit."""
     
-        parent.setBodyStringOrPane(self.c,"@ignore\n" + "@language forth\n" + self.rootLine + s)
+        self.c.setBodyString(parent,"@ignore\n" + "@language forth\n" + self.rootLine + s)
     #@-node:ekr.20041107094641:scanForthText
     #@+node:ekr.20031218072017.3270:scanJavaText
     # Creates a child of parent for each Java function definition seen.
@@ -2004,7 +2004,7 @@ class baseLeoImportCommands:
          
         """Minimal Lua scanner - leave it to user to create nodes as they see fit."""
      
-        parent.setBodyStringOrPane(self.c,"@ignore\n" + "@language lua\n" + self.rootLine + s)
+        self.c.setBodyString(parent,"@ignore\n" + "@language lua\n" + self.rootLine + s)
     #@-node:ekr.20060328112327:scanLuaText
     #@+node:ekr.20031218072017.3281:scanPascalText
     # Creates a child of parent for each Pascal function definition seen.
@@ -2211,7 +2211,7 @@ class baseLeoImportCommands:
             )
         ):
             g.es("File seems to be mixed HTML and PHP; importing as plain text file.")
-            parent.setBodyStringOrPane(c,"@ignore\n" + self.rootLine + s)
+            c.setBodyString(parent,"@ignore\n" + self.rootLine + s)
             return
         #@-node:ekr.20031218072017.3243:<< Append file if not pure PHP >>
         #@nl
@@ -2879,7 +2879,7 @@ class baseLeoImportCommands:
         v.initHeadString(headline,self.encoding)
         # Set the body.
         if len(body) > 0:
-            v.setBodyStringOrPane(self.c,body,self.encoding)
+            self.c.setBodyString(v,body,self.encoding)
         return v
     #@-node:ekr.20031218072017.3306:createHeadline
     #@+node:ekr.20031218072017.3307:error

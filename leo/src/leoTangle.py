@@ -2962,13 +2962,13 @@ class baseTangleCommands:
     
         c = self.c ; p = self.p
         assert(self.p)
-        p.setBodyStringOrPane(c,s)
+        c.setBodyString(p,s)
     
         c.beginUpdate()
         try:
             c.setChanged(True)
             p.setDirty()
-            p.setMarked(c)
+            p.setMarked()
         finally:
             c.endUpdate()
     #@-node:ekr.20031218072017.3575:update_current_vnode

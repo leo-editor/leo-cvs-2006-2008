@@ -480,7 +480,7 @@ class cleoController:
     #@+node:ekr.20050227081640.8:setUnselectedHeadlineColors
     def setUnselectedHeadlineColors (self,p):
     
-        c = self.c ; w = p.edit_widget()
+        c = self.c ; w = c.edit_widget(p)
     
         fg, bg = self.custom_colours(p.v)
     
@@ -496,7 +496,7 @@ class cleoController:
     #@+node:ekr.20060112060601:setDisabledHeadlineColors
     def setDisabledHeadlineColors (self,p):
     
-        c = self.c ; w = p.edit_widget()
+        c = self.c ; w = c.edit_widget(p)
     
         fg, bg = self.custom_colours(p.v)
     

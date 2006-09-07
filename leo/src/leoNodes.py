@@ -407,14 +407,14 @@ class baseTnode:
     
         self.fileIndex = index
     #@-node:ekr.20031218072017.3340:setFileIndex
-    #@+node:ekr.20050418101546:setHeadString (new in 4.3)
+    #@+node:ekr.20050418101546:t.setHeadString (new in 4.3)
     def setHeadString (self,s,encoding="utf-8"):
         
         t = self
     
         s = g.toUnicode(s,encoding,reportErrors=True)
         t.headString = s
-    #@-node:ekr.20050418101546:setHeadString (new in 4.3)
+    #@-node:ekr.20050418101546:t.setHeadString (new in 4.3)
     #@-node:ekr.20031218072017.3331:Setters
     #@-others
     
@@ -510,7 +510,7 @@ class baseVnode:
     #@-node:ekr.20040312145256:v.dump
     #@-node:ekr.20031218072017.3342:Birth & death
     #@+node:ekr.20031218072017.3346:v.Comparisons
-    #@+node:ekr.20040705201018:findAtFileName (new in 4.2 b3)
+    #@+node:ekr.20040705201018:v.findAtFileName (new in 4.2 b3)
     def findAtFileName (self,names):
         
         """Return the name following one of the names in nameList.
@@ -529,7 +529,7 @@ class baseVnode:
             return name
         else:
             return ""
-    #@-node:ekr.20040705201018:findAtFileName (new in 4.2 b3)
+    #@-node:ekr.20040705201018:v.findAtFileName (new in 4.2 b3)
     #@+node:ekr.20031218072017.3350:anyAtFileNodeName
     def anyAtFileNodeName (self):
         
@@ -592,7 +592,7 @@ class baseVnode:
         h = self.headString()
         return h and h[0] == '@' and self.anyAtFileNodeName()
     #@-node:ekr.20040326031436:isAnyAtFileNode good
-    #@+node:ekr.20040325073709:isAt...FileNode
+    #@+node:ekr.20040325073709:isAt...FileNode (vnode)
     def isAtFileNode (self):
         return g.choose(self.atFileNodeName(),True,False)
         
@@ -612,7 +612,7 @@ class baseVnode:
     isAtNoSentFileNode = isAtNoSentinelsFileNode
     isAtNorefFileNode  = isAtRawFileNode
     isAtAsisFileNode   = isAtSilentFileNode
-    #@-node:ekr.20040325073709:isAt...FileNode
+    #@-node:ekr.20040325073709:isAt...FileNode (vnode)
     #@+node:ekr.20031218072017.3351:isAtIgnoreNode
     def isAtIgnoreNode (self):
     
@@ -778,7 +778,7 @@ class baseVnode:
     
         # This message should never be printed and we want to avoid crashing here!
         if not g.isUnicode(self.t.bodyString):
-            s = "Leo internal error: not unicode:" + repr(self.t.bodyString)
+            s = "v.bodyString: Leo internal error: not unicode:" + repr(self.t.bodyString)
             g.es_print(s,color="red")
     
         # Make _sure_ we return a unicode string.
@@ -1099,7 +1099,7 @@ class baseVnode:
         if changed:
             body = string.join(body,'') + '\n' # Add back one last newline.
             # g.trace(body)
-            v.setBodyStringOrPane(c,body)
+            c.setBodyString(v,body)
             # Don't set the dirty bit: it would just be annoying.
     #@-node:ekr.20031218072017.3404:v.trimTrailingLines
     #@-node:ekr.20031218072017.3384:Setters
@@ -1581,17 +1581,6 @@ class basePosition:
     def isVisited   (self): return self.v.isVisited()
     def status      (self): return self.v.status()
     #@-node:ekr.20040306214401:p.Status bits
-    #@+node:ekr.20040306220230.1:p.edit_widget
-    def edit_widget (self,c):
-        
-        # New in 4.3 beta 3: let the tree classes do all the work.
-        
-        p = self
-        
-        return p and c.frame.tree.edit_widget(p)
-        
-    edit_text = edit_widget # For compatibility.
-    #@-node:ekr.20040306220230.1:p.edit_widget
     #@+node:ekr.20040323160302:p.directParents
     def directParents (self):
         
@@ -1774,36 +1763,6 @@ class basePosition:
     
         return True
     #@-node:ekr.20040117162509.16:p.isVisible
-    #@+node:ekr.20031218072017.4146:p.lastVisible & oldLastVisible
-    def oldLastVisible(self,c):
-        """Move to the last visible node of the entire tree."""
-        p = c.rootPosition()
-        assert(p.isVisible())
-        last = p.copy()
-        while 1:
-            if g.app.debug: g.trace(last)
-            p.moveToVisNext()
-            if not p: break
-            last = p.copy()
-        return last
-            
-    def lastVisible(self,c):
-        """Move to the last visible node of the entire tree."""
-        p = c.rootPosition()
-        # Move to the last top-level node.
-        while p.hasNext():
-            if g.app.debug: g.trace(p)
-            p.moveToNext()
-        assert(p.isVisible())
-        # Move to the last visible child.
-        while p.hasChildren() and p.isExpanded():
-            if g.app.debug: g.trace(p)
-            p.moveToLastChild()
-        if 0: # This assert is invalid.
-            assert(p.isVisible())
-        if g.app.debug: g.trace(p)
-        return p
-    #@-node:ekr.20031218072017.4146:p.lastVisible & oldLastVisible
     #@+node:ekr.20040227214711:p.level & simpleLevel
     def simpleLevel(self):
         
@@ -1831,14 +1790,11 @@ class basePosition:
     #@-node:ekr.20040306212636:Getters
     #@+node:ekr.20040305222924:Setters
     #@+node:ekr.20040306220634:vnode proxies
-    #@+node:ekr.20040306220634.9: Status bits (position) (DEFINE c.clearMarked etc)
+    #@+node:ekr.20040306220634.9: Status bits (position)
     # Clone bits are no longer used.
     # Dirty bits are handled carefully by the position class.
     
-    def clearMarked  (self,c):
-        self.v.clearMarked()
-        g.doHook("clear-mark",c=c,p=self,v=self)
-    
+    def clearMarked  (self): return self.v.clearMarked()
     def clearOrphan  (self): return self.v.clearOrphan()
     def clearVisited (self): return self.v.clearVisited()
     
@@ -1849,14 +1805,11 @@ class basePosition:
     def initMarkedBit      (self): return self.v.initMarkedBit()
     def initStatus (self, status): return self.v.initStatus(status)
         
-    def setMarked (self,c):
-        self.v.setMarked()
-        g.doHook("set-mark",c=c,p=self,v=self)
-    
+    def setMarked   (self): return self.v.setMarked()
     def setOrphan   (self): return self.v.setOrphan()
     def setSelected (self): return self.v.setSelected()
     def setVisited  (self): return self.v.setVisited()
-    #@-node:ekr.20040306220634.9: Status bits (position) (DEFINE c.clearMarked etc)
+    #@-node:ekr.20040306220634.9: Status bits (position)
     #@+node:ekr.20040306220634.8:p.computeIcon & p.setIcon
     def computeIcon (self):
         
@@ -1893,39 +1846,10 @@ class basePosition:
         assert(g.isUnicode(body))
         s = g.toUnicode(s,encoding)
     
-        p.setBodyStringOrPane(c,body + s,encoding)
+        c.setBodyString(p,body + s,encoding)
     #@-node:ekr.20040315032503:p.appendStringToBody
-    #@+node:ekr.20040305223522:p.setBodyStringOrPane & setBodyString
-    def setBodyStringOrPane (self,c,s,encoding="utf-8"):
-    
-        p = self ; v = p.v
-        if not c or not v: return
-    
-        s = g.toUnicode(s,encoding)
-        current = c.currentPosition()
-        # 1/22/05: Major change: the previous test was: 'if p == current:'
-        # This worked because commands work on the presently selected node.
-        # But setRecentFiles may change a _clone_ of the selected node!
-        if current and p.v.t==current.v.t:
-            # Revert to previous code, but force an empty selection.
-            c.frame.body.setSelectionAreas(s,None,None)
-            c.frame.body.setTextSelection(None)
-            # This code destoys all tags, so we must recolor.
-            c.recolor()
-            
-        # Keep the body text in the tnode up-to-date.
-        if v.t.bodyString != s:
-            v.setTnodeText(s)
-            v.t.setSelection(0,0)
-            p.setDirty()
-            if not c.isChanged():
-                c.setChanged(True)
-    
-    setBodyTextOrPane = setBodyStringOrPane # Compatibility with old scripts
-    setBodyString = setBodyStringOrPane
-    #@-node:ekr.20040305223522:p.setBodyStringOrPane & setBodyString
     #@+node:ekr.20040305222924.1:p.setHeadString & p.initHeadString
-    def setHeadString (self,c,s,encoding="utf-8"):
+    def setHeadString (self,s,encoding="utf-8"):
         
         p = self
         p.v.initHeadString(s,encoding)
@@ -1936,24 +1860,6 @@ class basePosition:
         p = self
         p.v.initHeadString(s,encoding)
     #@-node:ekr.20040305222924.1:p.setHeadString & p.initHeadString
-    #@+node:ekr.20040305223225:p.setHeadStringOrHeadline
-    def setHeadStringOrHeadline (self,c,s,encoding="utf-8"):
-    
-        p = self ; t = p.edit_widget(c)
-        
-        p.initHeadString(s,encoding)
-    
-        if t:
-            state = t.cget("state")
-            # g.trace(state,s)
-            t.configure(state="normal")
-            t.delete("1.0","end")
-            t.insert("end",s)
-            t.configure(state=state)
-    
-        p.setDirty()
-    #@nonl
-    #@-node:ekr.20040305223225:p.setHeadStringOrHeadline
     #@+node:ekr.20040315031445:p.scriptSetBodyString
     def scriptSetBodyString (self,s,encoding="utf-8"):
         

@@ -459,11 +459,11 @@ class atFile:
                             if p.v.isDirty():
                                 p.setAllAncestorAtFileNodesDirty()
                         else:
-                            p.setBodyStringOrPane(c,s) # Sets v and v.c dirty.
+                            c.setBodyString(p,s) # Sets c and p dirty.
                             
                         if not thinFile or (thinFile and p.v.isDirty()):
                             g.es("changed: " + p.headString(),color="blue")
-                            p.setMarked(c)
+                            p.setMarked()
                 #@-node:ekr.20041005105605.24:<< copy all tempBodyStrings to tnodes >>
                 #@nl
         #@    << delete all tempBodyStrings >>
@@ -1828,7 +1828,7 @@ class atFile:
                         g.es("Correcting hidden node: t=%s" % repr(at.t),color="red")
                     #@-node:ekr.20041005105605.97:<< bump at.correctedLines and tell about the correction >>
                     #@nl
-                    # p.setMarked(c)
+                    # p.setMarked()
                     at.t.bodyString = s # Just setting at.t.tempBodyString won't work here.
                     at.t.setDirty() # Mark the node dirty.  Ancestors will be marked dirty later.
                     at.c.setChanged(True)
@@ -2342,7 +2342,7 @@ class atFile:
                     if p.v.isDirty():
                         p.setAllAncestorAtFileNodesDirty()
                 else:
-                    p.setBodyStringOrPane(c,s) # Sets v and v.c dirty.
+                    c.setBodyString(p,s) # Sets c and p dirty.
     
                 if not thinFile or (thinFile and p.v.isDirty()):
                     # New in Leo 4.3: support for mod_labels plugin:
@@ -2351,7 +2351,7 @@ class atFile:
                     except Exception:
                         pass
                     g.es("changed: " + p.headString(),color="blue")
-                    p.setMarked(c)
+                    p.setMarked()
     #@-node:ekr.20050301105854:copyAllTempBodyStringsToTnodes
     #@+node:ekr.20041005105605.119:createImportedNode
     def createImportedNode (self,root,headline):
