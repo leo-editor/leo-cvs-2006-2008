@@ -379,7 +379,7 @@ class recentSectionsDialog (tkinterListBoxDialog):
         c = self.c ; i = 0
         self.positionList = [] ; tnodeList = []
         for p in c.visitedList:
-            if p.exists(c) and p.v.t not in tnodeList:
+            if c.positionExists(p) and p.v.t not in tnodeList:
                 self.box.insert(i,p.headString().strip())
                 tnodeList.append(p.v.t)
                 self.positionList.append(p.copy())

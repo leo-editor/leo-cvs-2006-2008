@@ -237,7 +237,7 @@ class Navigator:
     
         """Callback that selects position p."""
     
-        if p.exists(c):
+        if c.positionExists(p):
             c.beginUpdate()
             c.frame.tree.expandAllAncestors(p)
             c.selectPosition(p)
@@ -260,7 +260,7 @@ class Navigator:
         menu.delete(0,"end")
     
         for p in c.visitedList[:25]:
-            if p.exists(c):
+            if c.positionExists(p):
                 def callback(event=None,self=self,c=c,p=p):
                     self.select(c,p)
                 menu.add_command(label=p.headString()[:40],command=callback)

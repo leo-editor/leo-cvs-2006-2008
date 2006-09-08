@@ -215,7 +215,7 @@ def drawImages (tag,keywords):
     mc = ((lassoer.mvForM,movePI),(lassoer.mvForCopy,copyPI),(lassoer.mvForClone,clonePI))
     for l, col in mc:
         for z in l:
-            if z.exists(c):
+            if c.positionExists(z):
                 drawArrowImages(z,col,canvas)
 
     canvas.delete('movenode')
@@ -223,7 +223,7 @@ def drawImages (tag,keywords):
         mN = lassoer.moveNode.v
         x = mN.iconx
         y = mN.icony
-        if lassoer.moveNode.exists(c):
+        if c.positionExists(lassoer.moveNode):
             canvas.create_image(x-5,y+7,image=bullseyePI,tag='movenode')
             #canvas.create_polygon( x -10 , y + 2  , x , y + 7, x -10, y + 12, fill = 'red', tag = 'movenode' )
     return None
@@ -518,7 +518,7 @@ class Lassoer(object):
     #@+node:mork.20041019151511:validMove
     def validMove (self):
     
-        return self.moveNode and self.moveNode.exists(self.c)
+        return self.moveNode and self.c.positionExists(self.moveNode)
     #@nonl
     #@-node:mork.20041019151511:validMove
     #@-node:ekr.20060325103727:Utils
