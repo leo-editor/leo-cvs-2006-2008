@@ -75,7 +75,7 @@ def init ():
     ok = ZODB is not None
         
     if ok:
-        leoPlugins.registerHandler(('open2','new2'),onCreate)
+        leoPlugins.registerHandler(('open2','new'),onCreate)
         g.plugin_signon(__name__)
     else:
         s = 'zodb plugin: can not import zodb'
@@ -86,6 +86,8 @@ def init ():
 #@-node:ekr.20050825155043:init
 #@+node:ekr.20060904192907:onCreate
 def onCreate (tag, keys):
+    
+    # g.trace('tag',tag,'keys',keys)
     
     c = keys.get('c')
     if c:
@@ -119,18 +121,22 @@ class zodbCommandsClass:
     #@nonl
     #@-node:ekr.20060904192907.2:__init__
     #@+node:ekr.20060905094242:clear/setCommanders
-    def clearCommanders (self,c):
+    if 0: # No longer needed.  neither vnodes nor positions have a 'c' ivar.
     
-        self.clearedVnodes = [p.v for p in c.allNodes_iter()]
-        for v in self.clearedVnodes:
-            v.c = None
+        def clearCommanders (self,c):
+    
+            self.clearedVnodes = [p.v for p in c.allNodes_iter()]
+            for v in self.clearedVnodes:
+                v.c = None
+                
+        def setCommanders (self,c):
             
-    def setCommanders (self,c):
+            for v in self.clearedVnodes:
+                v.c = c
+                
+            self.clearedVnodes = []
         
-        for v in self.clearedVnodes:
-            v.c = c
-            
-        self.clearedVnodes = []
+    #@nonl
     #@-node:ekr.20060905094242:clear/setCommanders
     #@+node:ekr.20060904204806.1:close
     def close (self):
@@ -181,10 +187,20 @@ class zodbCommandsClass:
     def readFile (self,event=None):
         
         c = self.c
-        
         try:
             self.open()
-            g.trace(self.root)
+            root = self.root
+            rv = root.get('root_vnode')
+            if not rv: return
+            c2 = c.new()
+            c2.openDirectory=c.openDirectory # A hack.
+            c2.beginUpdate()
+            try:
+                c2.setRootVnode(rv)
+                c2Root = c2.rootPosition()
+                c2.atFileCommands.readAll(c2Root)
+            finally:
+                c2.endUpdate()
         finally:
             self.close()
     #@nonl
@@ -196,14 +212,11 @@ class zodbCommandsClass:
     
         try:
             self.open()
-            self.root['count'] = self.root.get('count',0) + 1
-            # self.clearCommanders(c)
+            # self.root['count'] = self.root.get('count',0) + 1
             self.root['root_vnode'] = p.v
-            # self.root['root_tnode'] = p.v.t
-            g.trace(self.root)
             get_transaction().commit() # get_transaction is a builtin(!)
+            g.es_print('write-zodb-file complete')
         finally:
-            # self.setCommanders(c)
             self.close()
     #@nonl
     #@-node:ekr.20060904192907.5:writeFile
