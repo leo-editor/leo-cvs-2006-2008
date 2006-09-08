@@ -1484,30 +1484,824 @@ def putToOPML (self):
 #@nonl
 #@-node:ekr.20060904113842.1:putToOPML
 #@-node:ekr.20060904114302:Added OPML support to fileCommands
-#@+node:ekr.20060905103748:Removed methods using v.c or p.c
-#@+node:ekr.20060905090957:removed findRoot methods
-# A step towards removing c ivars from vnode and position classes.
-#@nonl
-#@+node:ekr.20031218072017.3381:v.findRoot (4.2)
-def findRoot (self):
+#@+node:ekr.20060905092512.2:Eliminated v.c and p.c
+@nocolor
+
+To do:
     
-    return self.c.rootPosition()
-#@-node:ekr.20031218072017.3381:v.findRoot (4.2)
-#@+node:ekr.20040306215548:p.findRoot
-def findRoot (self):
+- Eliminate most calls to c.setRootPosition(c.findRootPosition(p))
+    ** Just have c.rootPosition call c.findRootPosition(c.currentPosition())
     
-    return self.c.frame.rootPosition()
-#@-node:ekr.20040306215548:p.findRoot
-#@-node:ekr.20060905090957:removed findRoot methods
-#@+node:ekr.20031218072017.3379:v.currentVnode (and c.currentPosition 4.2)
-if 0:
-    def currentPosition (self):
-        return self.c.currentPosition()
-            
-    def currentVnode (self):
-        return self.c.currentVnode()
+What I did:
+
+- Removed c argument from t, v and p ctors.
+- Removed c argument from most position methods.
+    - In particular, p.link, p.unlink, v.link and v.unlink no longer update c.currentPosition()
+    - Moved all position methods that still had a c argument to the Commands class.
+- Removed p.allNodes_iter.
+- Added c.findRootPosition and c.findRootVnode.
+- c.rootPosition now returns c.findRootPosition(c.currentPosition())
+
+As a result:
+    
+- The tnode, vnode and position classes are *completely* independent of Leo.
+  In particular, no tnode, vnode or position method gets a c argument.
+- The p.link, p.unlink, v.link and v.unlink are significantly simpler.
+- The machinery for keeping the root position up-to-date is
+  simple and confined to one place in the Commands class.
+  
+@color
 #@nonl
-#@-node:ekr.20031218072017.3379:v.currentVnode (and c.currentPosition 4.2)
+#@+node:ekr.20060905181927:Added new methods
+#@+node:ekr.20060906134053:c.findRootPosition New in 4.4.2
+@ Aha! The Commands class can easily recompute the root position::
+
+    c.setRootPosition(c.findRootPosition(p))
+
+Any command that changes the outline should call this code.
+
+As a result, the fundamental p and v methods that alter trees need never
+convern themselves about reporting the changed root.  A big improvement.
+@c
+
+def findRootPosition (self,p):
+    
+    '''Return the root position of the outline containing p.'''
+    
+    c = self ; p = p.copy()
+    
+    while p and p.hasParent():
+        p.moveToParent()
+        
+    while p and p.hasBack():
+        p.moveToBack()
+        
+    # g.trace(p and p.headString())
+
+    return p
+#@nonl
+#@-node:ekr.20060906134053:c.findRootPosition New in 4.4.2
+#@+node:ekr.20060906131836:c.setRootVnode New in 4.4.2
+def setRootVnode (self, v):
+    
+    c = self
+    newRoot = leoNodes.position(v,[])
+    c.setRootPosition(newRoot)
+#@nonl
+#@-node:ekr.20060906131836:c.setRootVnode New in 4.4.2
+#@-node:ekr.20060905181927:Added new methods
+#@+node:ekr.20060905165341.1:Unchanged signatures (just removed v.c or other minor changes)
+#@+node:ekr.20031218072017.3419:v.insertAfter
+def insertAfter (self,t=None):
+
+    """Inserts a new vnode after self"""
+
+    if not t:
+        t = tnode(headString="NewHeadline")
+
+    v = vnode(t)
+    v.linkAfter(self)
+
+    return v
+#@-node:ekr.20031218072017.3419:v.insertAfter
+#@+node:ekr.20031218072017.3421:v.insertAsNthChild
+def insertAsNthChild (self,n,t=None):
+
+    """Inserts a new node as the the nth child of the receiver.
+    The receiver must have at least n-1 children"""
+
+    if not t:
+        t = tnode(headString="NewHeadline")
+
+    v = vnode(t)
+    v.linkAsNthChild(self,n)
+
+    return v
+#@-node:ekr.20031218072017.3421:v.insertAsNthChild
+#@+node:ekr.20040117171654:p.copy
+# Using this routine can generate huge numbers of temporary positions during a tree traversal.
+
+def copy (self):
+    
+    """"Return an independent copy of a position."""
+    
+    # if g.app.tracePositions: g.trace(g.callers())
+
+    return position(self.v,self.stack,trace=False)
+#@-node:ekr.20040117171654:p.copy
+#@+node:ekr.20040303175026.3:p.insertAfter
+def insertAfter (self,t=None):
+
+    """Inserts a new position after self.
+    
+    Returns the newly created position."""
+    
+    p = self
+    p2 = self.copy()
+
+    if not t:
+        t = tnode(headString="NewHeadline")
+
+    p2.v = vnode(t)
+    p2.v.iconVal = 0
+    p2.linkAfter(p)
+
+    return p2
+#@-node:ekr.20040303175026.3:p.insertAfter
+#@+node:ekr.20040303175026.5:p.insertAsNthChild
+def insertAsNthChild (self,n,t=None):
+
+    """Inserts a new node as the the nth child of self.
+    self must have at least n-1 children.
+    
+    Returns the newly created position."""
+    
+    p = self ; p2 = self.copy()
+
+    if not t:
+        t = tnode(headString="NewHeadline")
+
+    p2.v = vnode(t)
+    p2.v.iconVal = 0
+    p2.linkAsNthChild(p,n)
+
+    return p2
+#@-node:ekr.20040303175026.5:p.insertAsNthChild
+#@+node:ekr.20051104075904.30:u.findNodeInTree
+def findNodeInTree(self,p,headline):
+
+    """Search for a node in p's tree matching the given headline."""
+
+    c = self.c
+    for p in p.subtree_iter():
+        h = headline.strip().lower()
+        if p.headString().strip().lower() == h:
+            return p.copy()
+    return c.nullPosition()
+#@-node:ekr.20051104075904.30:u.findNodeInTree
+#@+node:ekr.20040303214038:p.setAllAncestorAtFileNodesDirty
+def setAllAncestorAtFileNodesDirty (self,setDescendentsDirty=False):
+
+    p = self
+    dirtyVnodeList = []
+    
+    # Calculate all nodes that are joined to p or parents of such nodes.
+    nodes = p.findAllPotentiallyDirtyNodes()
+    
+    if setDescendentsDirty:
+        # N.B. Only mark _direct_ descendents of nodes.
+        # Using the findAllPotentiallyDirtyNodes algorithm would mark way too many nodes.
+        for p2 in p.subtree_iter():
+            # Only @thin nodes need to be marked.
+            if p2.v not in nodes and p2.isAtThinFileNode():
+                nodes.append(p2.v)
+                
+    dirtyVnodeList = [v for v in nodes
+        if not v.t.isDirty() and v.isAnyAtFileNode()]
+    changed = len(dirtyVnodeList) > 0
+    
+    for v in dirtyVnodeList:
+        v.t.setDirty() # Do not call v.setDirty here!
+
+    return dirtyVnodeList
+#@nonl
+#@-node:ekr.20040303214038:p.setAllAncestorAtFileNodesDirty
+#@+node:ekr.20040303163330:p.setDirty
+def setDirty (self,setDescendentsDirty=True):
+    
+    '''Mark a node and all ancestor @file nodes dirty.'''
+
+    p = self ; dirtyVnodeList = []
+    
+    # g.trace(p.headString(),g.callers())
+
+    if not p.v.t.isDirty():
+        p.v.t.setDirty()
+        dirtyVnodeList.append(p.v)
+
+    # Important: this must be called even if p.v is already dirty.
+    # Typing can change the @ignore state!
+    dirtyVnodeList2 = p.setAllAncestorAtFileNodesDirty(setDescendentsDirty)
+    dirtyVnodeList.extend(dirtyVnodeList2)
+   
+    return dirtyVnodeList
+#@-node:ekr.20040303163330:p.setDirty
+#@+node:EKR.20040506075328.2:perfectImport
+def perfectImport (self,fileName,p,testing=False,verbose=False,convertBlankLines=True,verify=True):
+    
+    __pychecker__ = 'maxlines=500'
+    
+    << about this algorithm >>
+    c = self.c
+    root = p.copy()
+    at = c.atFileCommands
+    if testing:
+        << clear all dirty bits >>
+    << Assign file indices >>
+    << Write root's tree to to string s >>
+
+    # Set up the data for the algorithm.
+    mu = g.mulderUpdateAlgorithm(testing=testing,verbose=verbose)
+    delims = g.comment_delims_from_extension(fileName)
+    fat_lines = g.splitLines(s) # Keep the line endings.
+    i_lines,mapping = mu.create_mapping(fat_lines,delims)
+    j_lines = file(fileName).readlines()
+    
+    # Correct write_lines using the algorihm.
+    if i_lines != j_lines:
+        if verbose:
+            g.es("Running Perfect Import",color="blue")
+        write_lines = mu.propagateDiffsToSentinelsLines(i_lines,j_lines,fat_lines,mapping)
+        if 1: # For testing.
+            << put the corrected fat lines in a new node >>
+        << correct root's tree using write_lines >>
+    if verify:
+        << verify that writing the tree would produce the original file >>
+#@+node:ekr.20040717112739:<< about this algorithm >>
+@nocolor
+@
+
+This algorithm corrects the result of an Import To @file command so that it is guaranteed that the result of writing the imported file will be identical to the original file except for any sentinels that have been inserted.
+
+On entry, p points to the newly imported outline.
+
+We correct the outline by applying Bernhard Mulder's algorithm.
+
+1.  We use the atFile.write code to write the newly imported outline to a string s.  This string contains represents a thin derived file, so it can be used to recreate then entire outline structure without any other information.
+
+Splitting s into lines creates the fat_lines argument to mu methods.
+
+2. We make corrections to fat_lines using Mulder's algorithm.  The corrected fat_lines represents the corrected outline.  To do this, we set the arguments as follows:
+
+- i_lines: fat_lines stripped of sentinels
+- j_lines to the lines of the original imported file.
+
+The algorithm updates fat_lines using diffs between i_lines and j_lines.
+
+3. Mulder's algorithm doesn't specify which nodes have been changed.  In fact, it Mulder's algorithm doesn't really understand nodes at all.  Therefore, if we want to mark changed nodes we do so by comparing the original version of the imported outline with the corrected version of the outline.
+#@-node:ekr.20040717112739:<< about this algorithm >>
+#@+node:ekr.20040716065356:<< clear all dirty bits >>
+for p2 in p.self_and_subtree_iter():
+    p2.clearDirty()
+#@-node:ekr.20040716065356:<< clear all dirty bits >>
+#@+node:ekr.20040716064333:<< Assign file indices  >>
+nodeIndices = g.app.nodeIndices
+
+nodeIndices.setTimestamp()
+
+for p2 in root.self_and_subtree_iter():
+    try: # Will fail for None or any pre 4.1 file index.
+        theId,time,n = p2.v.t.fileIndex
+    except TypeError:
+        p2.v.t.fileIndex = nodeIndices.getNewIndex()
+#@-node:ekr.20040716064333:<< Assign file indices  >>
+#@+node:ekr.20040716064333.1:<< Write root's tree to to string s >>
+at.write(root,thinFile=True,toString=True)
+s = at.stringOutput
+if not s: return
+#@-node:ekr.20040716064333.1:<< Write root's tree to to string s >>
+#@+node:ekr.20040717132539:<< put the corrected fat lines in a new node >>
+write_lines_node = root.insertAfter()
+write_lines_node.initHeadString("write_lines")
+s = ''.join(write_lines)
+write_lines_node.scriptSetBodyString(s,encoding=g.app.tkEncoding)
+#@-node:ekr.20040717132539:<< put the corrected fat lines in a new node >>
+#@+node:ekr.20040717113036:<< correct root's tree using write_lines >>
+@ Notes:
+1. This code must overwrite the newly-imported tree because the gnx's in
+write_lines refer to those nodes.
+
+2. The code in readEndNode now reports when nodes change during importing. This
+code also marks changed nodes.
+@c
+
+try:
+    at.correctedLines = 0
+    at.targetFileName = "<perfectImport string-file>"
+    at.inputFile = fo = g.fileLikeObject()
+    at.file = fo # Strange, that this is needed.  Should be cleaned up.
+    for line in write_lines:
+        fo.write(line)
+    firstLines,junk,junk = c.atFileCommands.scanHeader(fo,at.targetFileName)
+    # To do: pass params to readEndNode.
+    at.readOpenFile(root,fo,firstLines,perfectImportRoot=root)
+    n = at.correctedLines
+    if verbose:
+        g.es("%d marked node%s corrected" % (n,g.choose(n==1,'','s')),color="blue")
+except:
+    g.es("Exception in Perfect Import",color="red")
+    g.es_exception()
+    s = None
+#@-node:ekr.20040717113036:<< correct root's tree using write_lines >>
+#@+node:ekr.20040718035658:<< verify that writing the tree would produce the original file >>
+try:
+    # Read the original file into before_lines.
+    before = file(fileName)
+    before_lines = before.readlines()
+    before.close()
+    
+    # Write the tree into after_lines.
+    at.write(root,thinFile=True,toString=True)
+    after_lines1 = g.splitLines(at.stringOutput)
+    
+    # Strip sentinels from after_lines and compare.
+    after_lines = mu.removeSentinelsFromLines(after_lines1,delims)
+    
+    # A major kludge: Leo can not represent unindented blank lines in indented nodes!
+    # We ignore the problem here by stripping whitespace from blank lines.
+    # We shall need output options to handle such lines.
+    if convertBlankLines:
+        mu.stripWhitespaceFromBlankLines(before_lines)
+        mu.stripWhitespaceFromBlankLines(after_lines)
+    if before_lines == after_lines:
+        if verbose:
+            g.es("Perfect Import verified",color="blue")
+    else:
+        leoTest.fail()
+        if verbose:
+            g.es("Perfect Import failed verification test!",color="red")
+            << dump the files >>
+except IOError:
+    g.es("Can not reopen %s!" % fileName,color="red")
+    leoTest.fail()
+#@+node:ekr.20040718045423:<< dump the files >>
+print len(before_lines),len(after_lines)
+
+if len(before_lines)==len(after_lines):
+    for i in xrange(len(before_lines)):
+        extra = 3
+        if before_lines[i] != after_lines[i]:
+            j = max(0,i-extra)
+            print '-' * 20
+            while j < i + extra + 1:
+                leader = g.choose(i == j,"* ","  ")
+                print "%s%3d" % (leader,j), repr(before_lines[j])
+                print "%s%3d" % (leader,j), repr(after_lines[j])
+                j += 1
+else:
+    for i in xrange(min(len(before_lines),len(after_lines))):
+        if before_lines[i] != after_lines[i]:
+            extra = 5
+            print "first mismatch at line %d" % i
+            print "printing %d lines after mismatch" % extra
+            print "before..."
+            for j in xrange(i+1+extra):
+                print "%3d" % j, repr(before_lines[j])
+            print
+            print "after..."
+            for k in xrange(1+extra):
+                print "%3d" % (i+k), repr(after_lines[i+k])
+            print
+            print "with sentinels"
+            j = 0 ; k = 0
+            while k < i + 1 + extra:
+                print "%3d" % k,repr(after_lines1[j])
+                if not g.is_sentinel(after_lines1[j],delims):
+                    k += 1
+                j += 1
+            break
+#@-node:ekr.20040718045423:<< dump the files >>
+#@-node:ekr.20040718035658:<< verify that writing the tree would produce the original file >>
+#@-node:EKR.20040506075328.2:perfectImport
+#@+node:ekr.20040803072955.21:tkTree.injectCallbacks
+def injectCallbacks(self):
+    
+    c = self.c
+    
+    << define tkinter callbacks to be injected in the position class >>
+
+    for f in (OnHyperLinkControlClick,OnHyperLinkEnter,OnHyperLinkLeave):
+        
+        g.funcToMethod(f,leoNodes.position)
+#@+node:ekr.20040803072955.22:<< define tkinter callbacks to be injected in the position class >>
+# N.B. These vnode methods are entitled to know about details of the leoTkinterTree class.
+
+@others
+#@+node:ekr.20040803072955.23:OnHyperLinkControlClick
+def OnHyperLinkControlClick (self,event=None,c=c):
+    
+    """Callback injected into position class."""
+    
+    p = self
+    try:
+        if not g.doHook("hypercclick1",c=c,p=p,v=p,event=event):
+            c.beginUpdate()
+            try:
+                c.selectPosition(p)
+            finally:
+                c.endUpdate()
+            c.frame.bodyCtrl.mark_set("insert","1.0")
+        g.doHook("hypercclick2",c=c,p=p,v=p,event=event)
+    except:
+        g.es_event_exception("hypercclick")
+#@-node:ekr.20040803072955.23:OnHyperLinkControlClick
+#@+node:ekr.20040803072955.24:OnHyperLinkEnter
+def OnHyperLinkEnter (self,event=None,c=c):
+    
+    """Callback injected into position class."""
+
+    try:
+        p = self
+        if not g.doHook("hyperenter1",c=c,p=p,v=p,event=event):
+            if 0: # This works, and isn't very useful.
+                c.frame.bodyCtrl.tag_config(p.tagName,background="green")
+        g.doHook("hyperenter2",c=c,p=p,v=p,event=event)
+    except:
+        g.es_event_exception("hyperenter")
+#@-node:ekr.20040803072955.24:OnHyperLinkEnter
+#@+node:ekr.20040803072955.25:OnHyperLinkLeave
+def OnHyperLinkLeave (self,event=None,c=c):
+    
+    """Callback injected into position class."""
+
+    try:
+        p = self
+        if not g.doHook("hyperleave1",c=c,p=p,v=p,event=event):
+            if 0: # This works, and isn't very useful.
+                c.frame.bodyCtrl.tag_config(p.tagName,background="white")
+        g.doHook("hyperleave2",c=c,p=p,v=p,event=event)
+    except:
+        g.es_event_exception("hyperleave")
+#@-node:ekr.20040803072955.25:OnHyperLinkLeave
+#@-node:ekr.20040803072955.22:<< define tkinter callbacks to be injected in the position class >>
+#@-node:ekr.20040803072955.21:tkTree.injectCallbacks
+#@-node:ekr.20060905165341.1:Unchanged signatures (just removed v.c or other minor changes)
+#@+node:ekr.20060907085253:Removed p.allNodes_iter
+#@+node:ekr.20040305171133:p.allNodes_iter
+class allNodes_iter_class:
+
+    """Returns a list of positions in the entire outline."""
+
+    @others
+
+def allNodes_iter (self,c,copy=False):
+    
+    return self.allNodes_iter_class(self,c,copy)
+#@+node:ekr.20040305171133.1:__init__ & __iter__ (p.allNodesIter)
+def __init__(self,p,c,copy):
+    
+    # g.trace('p.allNodes_iter.__init','p',p,'c',c)
+
+    self.first = c.rootPosition().copy()
+    self.p = None
+    self.copy = copy
+    
+def __iter__(self):
+
+    return self
+#@-node:ekr.20040305171133.1:__init__ & __iter__ (p.allNodesIter)
+#@+node:ekr.20040305171133.3:next
+def next(self):
+    
+    if self.first:
+        self.p = self.first
+        self.first = None
+
+    elif self.p:
+        self.p.moveToThreadNext()
+
+    if self.p:
+        if self.copy: return self.p.copy()
+        else:         return self.p
+    else: raise StopIteration
+#@-node:ekr.20040305171133.3:next
+#@-node:ekr.20040305171133:p.allNodes_iter
+#@+node:EKR.20040529091232:c.all_positions_iter == allNodes_iter
+# New in Leo 4.4.2 (It used to be defined in terms of p.allNodes_iter.)
+
+class allNodes_iter_class:
+
+    """Returns a list of positions in the entire outline."""
+
+    @others
+
+def allNodes_iter (self,copy=False):
+    
+    c = self
+    return self.allNodes_iter_class(c,copy)
+
+all_positions_iter = allNodes_iter
+#@nonl
+#@+node:ekr.20060907085906.1:__init__ & __iter__ (p.allNodesIter)
+def __init__(self,c,copy):
+    
+    # g.trace('c.allNodes_iter.__init','p',p,'c',c)
+
+    self.c = c
+    self.first = c.rootPosition()
+    self.p = None
+    self.copy = copy
+    
+def __iter__(self):
+
+    return self
+#@-node:ekr.20060907085906.1:__init__ & __iter__ (p.allNodesIter)
+#@+node:ekr.20060907085906.2:next
+def next(self):
+    
+    if self.first:
+        self.p = self.first
+        self.first = None
+
+    elif self.p:
+        self.p.moveToThreadNext()
+
+    if self.p:
+        if self.copy: return self.p.copy()
+        else:         return self.p
+    else: raise StopIteration
+#@-node:ekr.20060907085906.2:next
+#@-node:EKR.20040529091232:c.all_positions_iter == allNodes_iter
+#@-node:ekr.20060907085253:Removed p.allNodes_iter
+#@+node:ekr.20060906130502:Removed p arg
+#@+node:ekr.20040303175026.8:p.clone (does not need any args)
+def clone (self):
+    
+    """Create a clone of back.
+    
+    Returns the newly created position."""
+    
+    p = self
+
+    p2 = p.copy()
+    p2.v = vnode(p.v.t)
+    p2.linkAfter(p)
+
+    return p2
+#@nonl
+#@-node:ekr.20040303175026.8:p.clone (does not need any args)
+#@+node:ekr.20060905104612:Found: .clone
+#@+node:ekr.20031218072017.1762:c.clone
+def clone (self,event=None):
+    
+    '''Create a clone of the selected outline.'''
+
+    c = self ; u = c.undoer ; p = c.currentPosition()
+    if not p: return
+    
+    c.beginUpdate()
+    try: # In update...
+        undoData = c.undoer.beforeCloneNode(p)
+        clone = p.clone()
+        dirtyVnodeList = clone.setAllAncestorAtFileNodesDirty()
+        c.setChanged(True)
+        if c.validateOutline():
+            u.afterCloneNode(clone,'Clone Node',undoData,dirtyVnodeList=dirtyVnodeList)
+            c.selectPosition(clone)
+    finally:
+        c.endUpdate()
+
+    return clone # For mod_labels and chapters plugins.
+#@-node:ekr.20031218072017.1762:c.clone
+#@+node:ekr.20031218072017.2946:c.dragCloneToNthChildOf
+def dragCloneToNthChildOf (self,p,parent,n):
+
+    c = self ; u = c.undoer ; undoType = 'Clone Drag'
+    current = c.currentPosition()
+    inAtIgnoreRange = p.inAtIgnoreRange()
+    
+    c.beginUpdate()
+    try: # In update...
+        # g.trace("p,parent,n:",p.headString(),parent.headString(),n)
+        clone = p.clone() # Creates clone & dependents, does not set undo.
+        if not c.checkMoveWithParentWithWarning(clone,parent,True):
+            clone.doDelete() # Destroys clone and makes p the current node.
+            c.setRootPosition(c.findRootPosition(p)) # New in 4.4.2.
+            c.selectPosition(p)
+            c.endUpdate(False) # Nothing has changed.
+            return
+        c.endEditing()
+        undoData = u.beforeInsertNode(current)
+        dirtyVnodeList = clone.setAllAncestorAtFileNodesDirty()
+        clone.moveToNthChildOf(parent,n)
+        if inAtIgnoreRange and not p.inAtIgnoreRange():
+            # The moved nodes have just become newly unignored.
+            dirtyVnodeList2 = p.setDirty() # Mark descendent @thin nodes dirty.
+            dirtyVnodeList.extend(dirtyVnodeList2)
+        else: # No need to mark descendents dirty.
+           dirtyVnodeList2 =  p.setAllAncestorAtFileNodesDirty()
+           dirtyVnodeList.extend(dirtyVnodeList2)
+        c.setChanged(True)
+        c.setRootPosition(c.findRootPosition(clone)) # New in 4.4.2.
+        u.afterInsertNode(clone,undoType,undoData,dirtyVnodeList=dirtyVnodeList)
+        c.selectPosition(clone)
+    finally:
+        c.endUpdate()
+    c.updateSyntaxColorer(clone) # Dragging can change syntax coloring.
+#@-node:ekr.20031218072017.2946:c.dragCloneToNthChildOf
+#@+node:ekr.20031218072017.2948:c.dragCloneAfter
+def dragCloneAfter (self,p,after):
+
+    c = self ; u = c.undoer ; undoType = 'Clone Drag'
+    current = c.currentPosition()
+
+    c.beginUpdate()
+    try: # In update...
+        clone = p.clone() # Creates clone.  Does not set undo.
+        # g.trace("p,after:",p.headString(),after.headString())
+        if not c.checkMoveWithParentWithWarning(clone,after.parent(),True):
+            # g.trace("invalid clone drag")
+            clone.doDelete()
+            c.setRootPosition(c.findRootPosition(p)) # New in 4.4.2.
+            c.selectPosition(p)
+            c.endUpdate(False) # Nothing has changed.
+            return
+        inAtIgnoreRange = clone.inAtIgnoreRange()
+        c.endEditing()
+        undoData = u.beforeInsertNode(current)
+        dirtyVnodeList = clone.setAllAncestorAtFileNodesDirty()
+        clone.moveAfter(after)
+        if inAtIgnoreRange and not clone.inAtIgnoreRange():
+            # The moved node have just become newly unignored.
+            dirtyVnodeList2 = clone.setDirty() # Mark descendent @thin nodes dirty.
+            dirtyVnodeList.extend(dirtyVnodeList2)
+        else: # No need to mark descendents dirty.
+            dirtyVnodeList2 = clone.setAllAncestorAtFileNodesDirty()
+            dirtyVnodeList.extend(dirtyVnodeList2)
+        c.setRootPosition(c.findRootPosition(clone)) # New in 4.4.2.
+        c.setChanged(True)
+        u.afterInsertNode(clone,undoType,undoData,dirtyVnodeList=dirtyVnodeList)
+        c.selectPosition(clone)
+    finally:
+        c.endUpdate()
+    c.updateSyntaxColorer(clone) # Dragging can change syntax coloring.
+#@-node:ekr.20031218072017.2948:c.dragCloneAfter
+#@+node:ekr.20051113110851:<< create a clone of p under the find node >>
+clones.append(self.p.v.t)
+undoData = u.beforeCloneNode(self.p)
+q = self.p.clone()
+q.moveToLastChildOf(found)
+u.afterCloneNode(q,undoType,undoData,dirtyVnodeList=[])
+#@-node:ekr.20051113110851:<< create a clone of p under the find node >>
+#@-node:ekr.20060905104612:Found: .clone
+#@-node:ekr.20060906130502:Removed p arg
+#@+node:ekr.20060905165341.2:Removed c arg
+#@+node:ekr.20031218072017.892:p.__init__
+def __init__ (self,v,stack,trace=True):
+
+    """Create a new position."""
+    
+    __pychecker__ = '--no-argsused' # trace not used.
+
+    self._p_changed = False
+        # To support ZODB the code **must** set p._p_changed = True whenever
+        # stack (or any mutable type) changes.
+
+    self.v = v
+    # assert(v is None or v.t)
+    self.stack = stack[:] # Creating a copy here is safest and best.
+    g.app.positions += 1
+    
+    # if g.app.tracePositions and trace: g.trace(g.callers())
+    
+    # Note: __getattr__ implements p.t.
+#@nonl
+#@-node:ekr.20031218072017.892:p.__init__
+#@+node:ekr.20040303175026.2:p.doDelete
+@ This is the main delete routine.  It deletes the receiver's entire tree from the screen.  Because of the undo command we never actually delete vnodes or tnodes.
+@c
+
+def doDelete (self):
+
+    """Deletes position p from the outline."""
+
+    p = self
+    p.setDirty() # Mark @file nodes dirty!
+    p.unlink()
+    p.deleteLinksInTree()
+#@-node:ekr.20040303175026.2:p.doDelete
+#@+node:ekr.20040310062332.4:p.linkAsRoot
+def linkAsRoot (self,oldRoot):
+    
+    """Link self as the root node."""
+
+    p = self ; v = p.v
+    if oldRoot: oldRootVnode = oldRoot.v
+    else:       oldRootVnode = None
+    
+    p.stack = [] # Clear the stack.
+    p._p_changed = True
+    
+    # Clear all links except the child link.
+    v._parent = None
+    v._back = None
+    v._next = oldRootVnode
+    
+    # Add v to it's tnode's vnodeList.
+    if v not in v.t.vnodeList:
+        v.t.vnodeList.append(v)
+        v.t._p_changed = True
+
+    # Link in the rest of the tree only when oldRoot != None.
+    # Otherwise, we are calling this routine from init code and
+    # we want to start with a pristine tree.
+    if oldRoot:
+        oldRoot.v._back = v
+    
+    # p.dump(label="root")
+#@-node:ekr.20040310062332.4:p.linkAsRoot
+#@+node:ekr.20040303175026.10:p.moveAfter
+def moveAfter (self,a):
+
+    """Move a position after position a."""
+    
+    p = self # Do NOT copy the position!
+    p.unlink()
+    p.linkAfter(a)
+
+    return p
+#@nonl
+#@-node:ekr.20040303175026.10:p.moveAfter
+#@+node:ekr.20040306060312:p.moveToLastChildOf
+def moveToLastChildOf (self,parent):
+
+    """Move a position to the last child of parent."""
+
+    p = self # Do NOT copy the position!
+
+    p.unlink()
+    n = parent.numberOfChildren()
+    p.linkAsNthChild(parent,n)
+        
+    return p
+#@nonl
+#@-node:ekr.20040306060312:p.moveToLastChildOf
+#@+node:ekr.20040303175026.11:p.moveToNthChildOf
+def moveToNthChildOf (self,parent,n):
+
+    """Move a position to the nth child of parent."""
+
+    p = self # Do NOT copy the position!
+    p.unlink()
+    p.linkAsNthChild(parent,n)
+
+    return p
+#@nonl
+#@-node:ekr.20040303175026.11:p.moveToNthChildOf
+#@+node:ekr.20040303175026.6:p.moveToRoot
+def moveToRoot (self,oldRoot=None):
+
+    '''Moves a position to the root position.
+    
+    Important: oldRoot must the previous root position if it exists.'''
+
+    p = self # Do NOT copy the position!
+    p.unlink()
+    p.linkAsRoot(oldRoot)
+    
+    return p
+#@-node:ekr.20040303175026.6:p.moveToRoot
+#@+node:ekr.20040310062332.5:p.unlink
+def unlink (self):
+
+    """Unlinks a position p from the tree before moving or deleting.
+    
+    The p.v._fistChild link does NOT change."""
+    
+    # Warning: p.parent() is NOT necessarily the same as p.v._parent!
+
+    p = self ; v = p.v
+    
+    # g.trace('p.v._parent',p.v._parent," child:",v.t._firstChild," back:",v._back, " next:",v._next)
+    
+    # Remove v from it's tnode's vnodeList.
+    vnodeList = v.t.vnodeList
+    if v in vnodeList:
+        vnodeList.remove(v)
+        v.t._p_changed = True
+    assert(v not in vnodeList)
+    
+    # Reset the firstChild link in its direct father.
+    if p.v._parent:
+        if 0: # This can fail.  I have no idea why it was present.
+            assert(p.v and p.v._parent in p.v.directParents())
+        if p.v._parent.t._firstChild == v:
+            #g.trace('resetting _parent.v.t._firstChild to',v._next)
+            p.v._parent.t._firstChild = v._next
+    else:
+        parent = p.parent()
+        if parent:
+            if 0: # This can fail.  I have no idea why it was present.
+                assert(parent.v in p.v.directParents())
+            if parent.v.t._firstChild == v:
+                #g.trace('resetting parent().v.t._firstChild to',v._next)
+                parent.v.t._firstChild = v._next
+
+    # Do NOT delete the links in any child nodes.
+
+    # Clear the links in other nodes.
+    if v._back: v._back._next = v._next
+    if v._next: v._next._back = v._back
+
+    # Unlink _this_ node.
+    v._parent = v._next = v._back = None
+
+    if 0:
+        g.trace('-'*20)
+        p.dump(label="p")
+        if parent: parent.dump(label="parent")
+#@nonl
+#@-node:ekr.20040310062332.5:p.unlink
 #@+node:ekr.20051104075904.35:replaceOutline (leoTest)
 def replaceOutline (self,outline1,outline2):
 
@@ -1525,6 +2319,275 @@ def replaceOutline (self,outline1,outline2):
     c.setRootPosition(c.findRootPosition(copy)) # New in 4.4.2.
     c.selectPosition(copy)
 #@-node:ekr.20051104075904.35:replaceOutline (leoTest)
+#@+node:ekr.20031218072017.3344:v.__init__
+def __init__ (self,t):
+
+    assert(t)
+
+    self.t = t # The tnode.
+    self.statusBits = 0 # status bits
+    
+    # Structure links.
+    self._parent = self._next = self._back = None
+#@nonl
+#@-node:ekr.20031218072017.3344:v.__init__
+#@+node:ekr.20031218072017.3426:v.linkAsRoot
+def linkAsRoot (self,oldRoot):
+    
+    """Link a vnode as the root node and set the root _position_."""
+
+    v = self
+
+    # Clear all links except the child link.
+    v._parent = None
+    v._back = None
+    v._next = oldRoot
+    
+    # Add v to it's tnode's vnodeList. Bug fix: 5/02/04.
+    if v not in v.t.vnodeList:
+        v.t.vnodeList.append(v)
+        v.t._p_changed = True
+
+    # Link in the rest of the tree only when oldRoot != None.
+    # Otherwise, we are calling this routine from init code and
+    # we want to start with a pristine tree.
+    if oldRoot: oldRoot._back = v
+#@nonl
+#@-node:ekr.20031218072017.3426:v.linkAsRoot
+#@+node:ekr.20031218072017.3422:v.moveToRoot
+def moveToRoot (self,oldRoot=None):
+
+    '''Moves a vnode to the root position.
+    
+    Important: oldRoot must the previous root vnode if it exists.'''
+
+    v = self
+
+    v.unlink()
+    v.linkAsRoot(oldRoot)
+    
+    return v
+#@nonl
+#@-node:ekr.20031218072017.3422:v.moveToRoot
+#@+node:ekr.20031218072017.3438:v.unlink
+def unlink (self):
+
+    """Unlinks a vnode from the tree."""
+
+    v = self
+
+    # g.trace(v._parent," child: ",v.t._firstChild," back: ", v._back, " next: ", v._next)
+
+    # Clear the links in other nodes.
+    if v._back:
+        v._back._next = v._next
+    if v._next:
+        v._next._back = v._back
+
+    if v._parent and v == v._parent.t._firstChild:
+        v._parent.t._firstChild = v._next
+
+    # Clear the links in this node.
+    v._parent = v._next = v._back = None
+    # v.parentsList = []
+#@nonl
+#@-node:ekr.20031218072017.3438:v.unlink
+#@-node:ekr.20060905165341.2:Removed c arg
+#@+node:ekr.20060905114409:Added c arg
+#@+node:ekr.20031218072017.1385:g.findReference
+@ We search the descendents of v looking for the definition node matching name.
+There should be exactly one such node (descendents of other definition nodes are not searched).
+@c
+
+def findReference(c,name,root):
+
+    for p in root.subtree_iter():
+        assert(p!=root)
+        if p.matchHeadline(name) and not p.isAtIgnoreNode():
+            return p
+
+    # g.trace("not found:",name,root)
+    return c.nullPosition()
+#@-node:ekr.20031218072017.1385:g.findReference
+#@-node:ekr.20060905114409:Added c arg
+#@+node:ekr.20060905172505.1:Converted p.x(c) to c.x(p)
+#@+node:ekr.20040306220230.1:c.edit_widget
+def edit_widget (self,p):
+    
+    c = self
+    
+    return p and c.frame.tree.edit_widget(p)
+#@nonl
+#@-node:ekr.20040306220230.1:c.edit_widget
+#@+node:ekr.20031218072017.4146:c.lastVisible
+def lastVisible(self):
+    
+    """Move to the last visible node of the entire tree."""
+
+    c = self ; p = c.rootPosition()
+    
+    # Move to the last top-level node.
+    while p.hasNext():
+        p.moveToNext()
+    assert(p.isVisible())
+
+    # Move to the last visible child.
+    while p.hasChildren() and p.isExpanded():
+        p.moveToLastChild()
+    
+    return p
+#@-node:ekr.20031218072017.4146:c.lastVisible
+#@+node:ekr.20060906211138:c.clearMarked
+def clearMarked  (self,p):
+    
+    c = self
+    p.v.clearMarked()
+    g.doHook("clear-mark",c=c,p=p,v=p)
+#@nonl
+#@-node:ekr.20060906211138:c.clearMarked
+#@+node:ekr.20060906211138.1:c.setMarked
+def setMarked (self,p):
+    
+    c = self
+    p.v.setMarked()
+    g.doHook("set-mark",c=c,p=p,v=p)
+#@nonl
+#@-node:ekr.20060906211138.1:c.setMarked
+#@+node:ekr.20040305223522:c.setBodyString
+def setBodyString (self,p,s,encoding="utf-8"):
+
+    c = self ; v = p.v
+    if not c or not v: return
+
+    s = g.toUnicode(s,encoding)
+    current = c.currentPosition()
+    # 1/22/05: Major change: the previous test was: 'if p == current:'
+    # This worked because commands work on the presently selected node.
+    # But setRecentFiles may change a _clone_ of the selected node!
+    if current and p.v.t==current.v.t:
+        # Revert to previous code, but force an empty selection.
+        c.frame.body.setSelectionAreas(s,None,None)
+        c.frame.body.setTextSelection(None)
+        # This code destoys all tags, so we must recolor.
+        c.recolor()
+        
+    # Keep the body text in the tnode up-to-date.
+    if v.t.bodyString != s:
+        v.setTnodeText(s)
+        v.t.setSelection(0,0)
+        p.setDirty()
+        if not c.isChanged():
+            c.setChanged(True)
+#@-node:ekr.20040305223522:c.setBodyString
+#@+node:ekr.20040305222924.1:p.setHeadString & p.initHeadString
+def setHeadString (self,s,encoding="utf-8"):
+    
+    p = self
+    p.v.initHeadString(s,encoding)
+    p.setDirty()
+    
+def initHeadString (self,s,encoding="utf-8"):
+    
+    p = self
+    p.v.initHeadString(s,encoding)
+#@-node:ekr.20040305222924.1:p.setHeadString & p.initHeadString
+#@+node:ekr.20040315032503:c.appendStringToBody
+def appendStringToBody (self,p,s,encoding="utf-8"):
+    
+    c = self
+    if not s: return
+    
+    body = p.bodyString()
+    assert(g.isUnicode(body))
+    s = g.toUnicode(s,encoding)
+
+    c.setBodyString(p,body + s,encoding)
+#@-node:ekr.20040315032503:c.appendStringToBody
+#@+node:ekr.20031218072017.3404:c.trimTrailingLines
+def trimTrailingLines (self,p):
+
+    """Trims trailing blank lines from a node.
+    
+    It is surprising difficult to do this during Untangle."""
+
+    c = self
+    body = p.bodyString()
+    lines = string.split(body,'\n')
+    i = len(lines) - 1 ; changed = False
+    while i >= 0:
+        line = lines[i]
+        j = g.skip_ws(line,0)
+        if j + 1 == len(line):
+            del lines[i]
+            i -= 1 ; changed = True
+        else: break
+    if changed:
+        body = string.join(body,'') + '\n' # Add back one last newline.
+        # g.trace(body)
+        c.setBodyString(p,body)
+        # Don't set the dirty bit: it would just be annoying.
+#@nonl
+#@-node:ekr.20031218072017.3404:c.trimTrailingLines
+#@+node:ekr.20040307104131.3:c.positionExists
+def positionExists(self,p):
+    
+    """Return True if a position exists in c's tree"""
+    
+    c = self ; p = p.copy()
+
+    # This code must be fast.
+    root = c.rootPosition()
+
+    while p:
+        # g.trace(p.headString(),'parent',p.parent(),'back',p.back())
+        if p.equal(root):
+            return True
+        if p.hasParent():
+            p.moveToParent()
+        else:
+            p.moveToBack()
+        
+    # g.trace('does not exist in root:',root.headString())
+    return False
+#@-node:ekr.20040307104131.3:c.positionExists
+#@-node:ekr.20060905172505.1:Converted p.x(c) to c.x(p)
+#@+node:ekr.20060905103748:Removed p and v methods using v.c or p.c
+#@+node:ekr.20040312015705:p.clearAllVisited
+# Compatibility routine for scripts.
+
+def clearAllVisited (self):
+    
+    for p in self.allNodes_iter():
+        p.clearVisited()
+#@-node:ekr.20040312015705:p.clearAllVisited
+#@+node:ekr.20040803140033.4:p.isCurrentPosition
+def isCurrentPosition (self,c):
+    
+    p = self
+    
+    return c.isCurrentPosition(p)
+#@-node:ekr.20040803140033.4:p.isCurrentPosition
+#@+node:ekr.20040803140033.5:p.isRootPosition
+def isRootPosition (self):
+    
+    p = self ; c = p.c
+    
+    return c.isRootPosition(p)
+#@-node:ekr.20040803140033.5:p.isRootPosition
+#@+node:ekr.20060905090957:removed findRoot methods
+# A step towards removing c ivars from vnode and position classes.
+#@nonl
+#@+node:ekr.20031218072017.3381:v.findRoot (4.2)
+def findRoot (self):
+    
+    return self.c.rootPosition()
+#@-node:ekr.20031218072017.3381:v.findRoot (4.2)
+#@+node:ekr.20040306215548:p.findRoot
+def findRoot (self):
+    
+    return self.c.frame.rootPosition()
+#@-node:ekr.20040306215548:p.findRoot
+#@-node:ekr.20060905090957:removed findRoot methods
 #@+node:ekr.20060905121515:v.clearDirtyJoined
 def clearDirtyJoined (self,c):
 
@@ -1535,29 +2598,144 @@ def clearDirtyJoined (self,c):
     finally:
         c.endUpdate() # recomputes all icons
 #@-node:ekr.20060905121515:v.clearDirtyJoined
-#@+node:ekr.20040803140033.4:isCurrentPosition
-def isCurrentPosition (self,c):
-    
-    p = self
-    
-    return c.isCurrentPosition(p)
-#@-node:ekr.20040803140033.4:isCurrentPosition
-#@+node:ekr.20040803140033.5:p.isRootPosition
-def isRootPosition (self):
-    
-    p = self ; c = p.c
-    
-    return c.isRootPosition(p)
-#@-node:ekr.20040803140033.5:p.isRootPosition
-#@+node:ekr.20040312015705:p.clearAllVisited
-# Compatibility routine for scripts.
+#@+node:ekr.20031218072017.3379:v.currentVnode (and c.currentPosition 4.2)
+if 0:
+    def currentPosition (self):
+        return self.c.currentPosition()
+            
+    def currentVnode (self):
+        return self.c.currentVnode()
+#@nonl
+#@-node:ekr.20031218072017.3379:v.currentVnode (and c.currentPosition 4.2)
+#@-node:ekr.20060905103748:Removed p and v methods using v.c or p.c
+#@-node:ekr.20060905092512.2:Eliminated v.c and p.c
+#@+node:ekr.20060907101636:Call c.findRootPosition in c.setCurrentPosition
+# Very important: it guarantees that c.rootPosition always returns the proper value.
+#@nonl
+#@+node:ekr.20060906134053:c.findRootPosition New in 4.4.2
+@ Aha! The Commands class can easily recompute the root position::
 
-def clearAllVisited (self):
+    c.setRootPosition(c.findRootPosition(p))
+
+Any command that changes the outline should call this code.
+
+As a result, the fundamental p and v methods that alter trees need never
+convern themselves about reporting the changed root.  A big improvement.
+@c
+
+def findRootPosition (self,p):
     
-    for p in self.allNodes_iter():
-        p.clearVisited()
-#@-node:ekr.20040312015705:p.clearAllVisited
-#@-node:ekr.20060905103748:Removed methods using v.c or p.c
+    '''Return the root position of the outline containing p.'''
+    
+    c = self ; p = p.copy()
+    
+    while p and p.hasParent():
+        p.moveToParent()
+        
+    while p and p.hasBack():
+        p.moveToBack()
+        
+    # g.trace(p and p.headString())
+
+    return p
+#@nonl
+#@-node:ekr.20060906134053:c.findRootPosition New in 4.4.2
+#@+node:ekr.20040803140033:c.currentPosition
+def currentPosition (self,copy=True):
+    
+    """Return the presently selected position."""
+    
+    c = self
+
+    if c._currentPosition:
+        # New in Leo 4.4.2: *always* return a copy.
+        return c._currentPosition.copy()
+    else:
+        return c.nullPosition()
+    
+# For compatibiility with old scripts.
+currentVnode = currentPosition
+#@-node:ekr.20040803140033:c.currentPosition
+#@+node:ekr.20040803140033.3:c.setRootPosition
+def setRootPosition(self,p):
+    
+    """Set the root positioin."""
+
+    c = self
+    
+    # g.trace(p.headString(),g.callers())
+    
+    if p:
+        if p.equal(c._rootPosition):
+            pass # We have already made a copy.
+        else:
+            # We must make a copy _now_.
+            c._rootPosition = p.copy()
+    else:
+        c._rootPosition = None
+#@nonl
+#@-node:ekr.20040803140033.3:c.setRootPosition
+#@+node:ekr.20031218072017.2997:c.selectPosition
+def selectPosition(self,p,updateBeadList=True):
+    
+    """Select a new position."""
+
+    c = self
+    
+    # g.trace(p.headString(),g.callers())
+
+    c.frame.tree.select(p,updateBeadList)
+    
+    # New in Leo 4.4.2.
+    c.setCurrentPosition(p)
+        # Do *not* test whether the position exists!
+        # We may be in the midst of an undo.
+
+selectVnode = selectPosition
+#@-node:ekr.20031218072017.2997:c.selectPosition
+#@+node:ekr.20040803140033.2:c.rootPosition
+def rootPosition(self):
+    
+    """Return the root position."""
+    
+    c = self
+    
+    if self._rootPosition:
+        return self._rootPosition.copy()
+    else:
+        return  c.nullPosition()
+
+# For compatibiility with old scripts.
+rootVnode = rootPosition
+#@nonl
+#@-node:ekr.20040803140033.2:c.rootPosition
+#@+node:ekr.20040803140033.1:c.setCurrentPosition
+def setCurrentPosition (self,p):
+    
+    """Set the presently selected position. For internal use only.
+    
+    Client code should use c.selectPosition instead."""
+    
+    c = self
+    
+    # g.trace(p.headString(),g.callers())
+    
+    if p:
+        if p.equal(c._currentPosition):
+            pass # We have already made a copy.
+        else: # Must make a copy _now_
+            c._currentPosition = p.copy()
+            
+        # New in Leo 4.4.2: always recompute the root position here.
+        # This *guarantees* that c.rootPosition always returns the proper value.
+        c.setRootPosition(c.findRootPosition(c._currentPosition))
+    else:
+        c._currentPosition = None
+
+# For compatibiility with old scripts.
+setCurrentVnode = setCurrentPosition
+#@-node:ekr.20040803140033.1:c.setCurrentPosition
+#@-node:ekr.20060907101636:Call c.findRootPosition in c.setCurrentPosition
 #@-node:ekr.20060905091234:Code level
 #@-node:ekr.20060904165452:4.4.2 projects
 #@-all

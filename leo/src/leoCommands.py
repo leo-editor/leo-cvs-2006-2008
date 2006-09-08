@@ -6110,25 +6110,10 @@ class baseCommands:
         
         c = self
         
-        if 1:
-            if self._rootPosition:
-                return self._rootPosition.copy()
-            else:
-                return  c.nullPosition()
-        
-        # Computing the root position here would be extrememly dangerous,
-        # it relies on c.currentPosition() being accurate in **all** situations.
-        # This is an intolerable constraint on all code that uses the Commands class.
+        if self._rootPosition:
+            return self._rootPosition.copy()
         else:
-            p = c.findRootPosition(c.currentPosition())
-            current = c.currentPosition()
-            if p:
-                if p != self._rootPosition:
-                    g.trace('*** mismatch',p.headString(),current)
-                return p
-            else:
-                g.trace('No root!',current and current.headString())
-                return c.nullPosition()
+            return  c.nullPosition()
     
     # For compatibiility with old scripts.
     rootVnode = rootPosition
@@ -6240,13 +6225,12 @@ class baseCommands:
             else: # Must make a copy _now_
                 c._currentPosition = p.copy()
                 
-            # New in Leo 4.4.2: always recompute root position here.
-            #g.trace('set root')
+            # New in Leo 4.4.2: always recompute the root position here.
+            # This *guarantees* that c.rootPosition always returns the proper value.
             c.setRootPosition(c.findRootPosition(c._currentPosition))
         else:
             c._currentPosition = None
-            
-        
+    
     # For compatibiility with old scripts.
     setCurrentVnode = setCurrentPosition
     #@-node:ekr.20040803140033.1:c.setCurrentPosition
