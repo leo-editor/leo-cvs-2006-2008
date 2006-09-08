@@ -2806,7 +2806,7 @@ class wxLeoTree (leoFrame.leoTree):
         old_p = c.currentPosition()
     
         if not p: return
-        if not p.exists(c):
+        if not c.positionExists(p):
             g.trace('does not exist',p)
             return
     
