@@ -58,24 +58,21 @@ navigate to the nodes 'by hand' by following the arrows in the UNL.
 #@@language python
 #@@tabwidth -4
 
-__version__ = "0.5"
+__version__ = "0.6"
 #@<< version history >>
 #@+node:rogererens.20041014104353:<< version history >>
 #@+at
 # 
-# 0.1 rogererens: Initial version.
-# 
-# PS: wouldn't it be more handy to define __version__ in this section?
-# 
-# 0.2 ekr:  changes for new status line class.
-# 
-# 0.3 ekr: Added support for url keyword in '@url1' hook.
-# As a result, this plugin now support single and double quoted urls.
-# 
-# 0.4 ekr: Fixed crasher by adding c argument to g.findTopLevelNode and 
+# - 0.1 rogererens: Initial version.
+# - 0.2 ekr:  changes for new status line class.
+# - 0.3 ekr: Added support for url keyword in '@url1' hook.
+#            As a result, this plugin supports single and double quoted urls.
+# - 0.4 ekr: Fixed crasher by adding c argument to g.findTopLevelNode and 
 # g.findNodeInTree.
-# 
-# 0.5 EKR: Convert %20 to ' ' in url's.
+# - 0.5 EKR: Convert %20 to ' ' in url's.
+# - 0.6 EKR:
+#     - Solved focus problem in external .leo files.
+#     - Made local UNL's work.
 #@-at
 #@nonl
 #@-node:rogererens.20041014104353:<< version history >>
@@ -187,27 +184,42 @@ def onUrl1 (tag,keywords):
         else:
             urlProtocol = urlTuple[0]
         
-        if urlProtocol == "file" and urlTuple[2].endswith(".leo"):
-            ok,frame = g.openWithFileName(urlTuple[2], c)
-            if ok:
-                #@                << go to the node>>
-                #@+node:rogererens.20041125015212.1:<<go to the node>>
-                c2 = frame.c
-                
-                if urlTuple [4]: # we have a UNL!
-                    nodeList = urlTuple [4].split("-->")
-                    p = g.findTopLevelNode(c2,nodeList[0])
-                    for headline in nodeList [1:]:
-                        p = g.findNodeInTree(c2,p,headline)
-                    c2.selectPosition(p)
-                #@+at
-                # 
-                # EKR: The reason there are problems with selection is that 
-                # button-1 is bound to
-                # OnActivateTree, which calls g.app.gui.set_focus.
-                #@-at
+        if urlProtocol == "file":
+            if urlTuple[2].endswith(".leo"):
+                ok,frame = g.openWithFileName(urlTuple[2], c)
+                if ok:
+                    #@                    << go to the node>>
+                    #@+node:rogererens.20041125015212.1:<<go to the node>>
+                    c2 = frame.c
+                    
+                    if urlTuple [4]: # we have a UNL!
+                        nodeList = urlTuple [4].split("-->")
+                        p = g.findTopLevelNode(c2,nodeList[0])
+                        for headline in nodeList [1:]:
+                            p = g.findNodeInTree(c2,p,headline)
+                        if p:
+                            c2.frame.tree.expandAllAncestors(p)
+                            c2.selectPosition(p)
+                            c2.redraw() # Solves focus problem.
+                    #@nonl
+                    #@-node:rogererens.20041125015212.1:<<go to the node>>
+                    #@nl
+            else:
+                #@                << go to node in present outline >>
+                #@+node:ekr.20060908105814:<< go to node in present outline >>
+                if urlTuple [2]:
+                    nodeList = urlTuple [2].split("-->")
+                    p = g.findTopLevelNode(c,nodeList[0])
+                    if p:
+                        for headline in nodeList [1:]:
+                            p = g.findNodeInTree(c,p,headline)
+                            if not p: break
+                    if p:
+                        c.frame.tree.expandAllAncestors(p)
+                        c.selectPosition(p)
+                        c.redraw()
                 #@nonl
-                #@-node:rogererens.20041125015212.1:<<go to the node>>
+                #@-node:ekr.20060908105814:<< go to node in present outline >>
                 #@nl
         else:
             import webbrowser
