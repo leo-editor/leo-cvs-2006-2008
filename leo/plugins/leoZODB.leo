@@ -13,8 +13,7 @@
 <v t="ekr.20060904171303"><vh>@url http://www.zope.org/Documentation/Books/ZDG/current/Persistence.stx</vh></v>
 <v t="ekr.20060904174727"><vh>Exception in unit tests</vh></v>
 </v>
-<v t="ekr.20050825154553" a="ETV"
-expanded="ekr.20060904192907.1,"><vh>@thin zodb.py</vh></v>
+<v t="ekr.20050825154553" a="E"><vh>@thin zodb.py</vh></v>
 </vnodes>
 <tnodes>
 <t tx="ekr.20060904171303"></t>

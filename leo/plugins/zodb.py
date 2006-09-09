@@ -10,7 +10,7 @@ This plugin creates the read/write-zodb-file commands.
 #@-node:ekr.20050825154605:<< docstring >>
 #@nl
 
-__version__ = '0.0.7'
+__version__ = '0.0.8'
 
 #@<< imports >>
 #@+node:ekr.20050825154553.1:<< imports >>
@@ -60,6 +60,10 @@ except ImportError:
 # - Added new commands, and leave connection open more often.
 # - zodb_storage is now opened just once at the module level.
 # - Problems remain with interactions between multiple zodbController objects.
+# 0.0.8 EKR: zodb_db and zodb_connection are now globals.
+# - Removed open and isOpen: the connection should probably stay open till 
+# shutdown.
+# - The interaction model is starting to work reliably.
 #@-at
 #@nonl
 #@-node:ekr.20050825154553.2:<< change log >>
@@ -67,8 +71,10 @@ except ImportError:
 
 # These globals are inited by first instances of zodbCommandsClass.
 
-zodb_storage = None # Global instance of ZODB.FileStorage.FileStorage.
-zodb_storage_name = None # Name of zodb_storage file.
+zodb_storage        = None  # Global instance of ZODB.FileStorage.FileStorage.
+zodb_storage_name   = None  # Name of global zodb_storage file.
+zodb_db             = None  # Global db instance.
+zodb_connection     = None  # Global connection instance.  How is this closed??
 
 #@+others
 #@+node:ekr.20050825165419:Module level...
@@ -109,15 +115,10 @@ class zodbCommandsClass:
     
     #@    @+others
     #@+node:ekr.20060904192907.2:__init__
-    def __init__ (self,c):
+    def __init__ (self,c,fileName = None):
         
         self.c = c
-        self.clearedVnodes = []
-        
-        # Set by open, used by close.
-        self.connection = None
-        self.db = None
-        self.root = None
+        self.fileName = (fileName and fileName.strip()) or c.shortFileName()
         
         ok = self.init_zodb()
     
@@ -128,53 +129,37 @@ class zodbCommandsClass:
     #@+node:ekr.20060909115750:init_zodb
     def init_zodb (self):
         
-        global zodb_storage, zodb_storage_name
-        c = self.c
+        global zodb_storage, zodb_storage_name, zodb_db, zodb_connection
         
-        if not zodb_storage:
-        
+        if zodb_storage:
+            return zodb_connection is not None
+        else:
             # The path to the zodb file must exist.  No reasonable default is possible.
-            zodb_storage_name = c.config.getString('zodb_storage_file')
-            
-            if zodb_storage_name.strip():
+            zodb_storage_name = self.c.config.getString('zodb_storage_file')
+            if not zodb_storage_name.strip():
+                self.es('zodb init failed. No setting: @string zodb_storage_file')
+                return False
+            try:
                 zodb_storage = ZODB.FileStorage.FileStorage(zodb_storage_name)
-            else:
-                self.es('No setting: @string zodb_storage_file')
-            
-        g.trace(zodb_storage)
-        return zodb_storage is not None
+                zodb_db = ZODB.DB(zodb_storage)
+                zodb_connection = zodb_db.open()
+                self.es('zodb inited: %s' % self.fileName) # zodb_storage, zodb_db, zodb_connection)
+                return zodb_connection is not None
+            except Exception:
+                self.es('zodb init failed')
+                g.es_exception()
+                return False
     #@nonl
     #@-node:ekr.20060909115750:init_zodb
-    #@+node:ekr.20060905094242:clear/setCommanders
-    if 0: # No longer needed.  neither vnodes nor positions have a 'c' ivar.
-    
-        def clearCommanders (self,c):
-    
-            self.clearedVnodes = [p.v for p in c.allNodes_iter()]
-            for v in self.clearedVnodes:
-                v.c = None
-                
-        def setCommanders (self,c):
-            
-            for v in self.clearedVnodes:
-                v.c = c
-                
-            self.clearedVnodes = []
-        
-    #@nonl
-    #@-node:ekr.20060905094242:clear/setCommanders
     #@+node:ekr.20060904204806.1:close
     def close (self):
         
-        if self.connection:
-            self.connection.close()
-    
-        if self.db:
-            self.db.close()
-    
-        self.root = self.db = self.connection = None
+        global zodb_connection
         
-        self.es('zodb close: %s ' % (self.c.shortFileName()))
+        if zodb_connection:
+            zodb_connection.close()
+            zodb_connection = None
+            self.es('zodb close connection')
     #@nonl
     #@-node:ekr.20060904204806.1:close
     #@+node:ekr.20060904192907.3:createCommands
@@ -208,68 +193,38 @@ class zodbCommandsClass:
     #@+node:ekr.20060904192907.5:initFile
     def initFile (self,event=None):
         
-        c = self.c ; p = c.rootPosition()
-        fileName = c.shortFileName()
+        global zodb_connection
     
-        if self.isOpen():
-            self.es('zodb init: file already open: %s' % fileName)
-            return
-            
-        try:
-            self.open(fileName)
-            self.root[fileName] = p.v
-            get_transaction().commit() # get_transaction is a builtin(!)
+        c = self.c ; fileName = self.fileName
+        
+        if zodb_connection:
+            root = zodb_connection.root()
+            root[fileName] = c.rootPosition().v
+            get_transaction().commit()
             self.es('zodb init: %s' % fileName)
-        finally:
-            self.close()
+        else:
+            self.es('zodb init: no connection')
     #@nonl
     #@-node:ekr.20060904192907.5:initFile
-    #@+node:ekr.20060909072915.1:isOpen
-    def isOpen(self):
-        
-        return self.root is not None
-    #@nonl
-    #@-node:ekr.20060909072915.1:isOpen
-    #@+node:ekr.20060904204806:open
-    def open (self,fileName):
-        
-        global zodb_storage
-        
-        if self.root: return
-        
-        try:
-            self.root = self.db = self.connection = None
-            self.db         = ZODB.DB(zodb_storage)
-            self.connection = self.db.open()
-            self.root       = self.connection.root()
-            self.es('zodb open: %s' % fileName)
-            return True
-        except Exception:
-            g.es_exception()
-            self.close()
-            return False
-    #@nonl
-    #@-node:ekr.20060904204806:open
     #@+node:ekr.20060909075604:openFile
     def openFile (self,event=None,fileName=None):
         
-        c = self.c
+        global zodb_connection
         
-        if not self.isOpen():
-            self.open(fileName)
-        
-        self.readFile(fileName=fileName)
-        
-        
-            
+        if not fileName:
+            self.es('zodb open: no file name')
+        elif zodb_connection:
+            self.readFile(fileName=fileName)
+        else:
+            self.es('zodb open file: no connection')
     #@nonl
     #@-node:ekr.20060909075604:openFile
     #@+node:ekr.20060909073917:quitFile
     def quitFile (self,event=None):
         
-        c = self.c
+        global zodb_connection
         
-        if self.isOpen():
+        if zodb_connection:
             get_transaction().commit()
             self.close()
     #@nonl
@@ -277,16 +232,16 @@ class zodbCommandsClass:
     #@+node:ekr.20060904192907.4:readFile
     def readFile (self,event=None,fileName=None):
         
+        global zodb_connection
         c = self.c
         if not fileName:
-            return self.es('zodb readFile: no file name')
-        try:
-            self.isOpen() or self.open(fileName)
-            root = self.root
-            rv = root.get(fileName)
-            if not rv: return self.es('zodb key not found: %s' % (fileName))
+            return self.es('zodb read file: no file name')
+        if not zodb_connection:
+            return self.es('zodb read file: no connection')
+        rv = zodb_connection.root().get(fileName)
+        if rv:
             c2 = c.new()
-            hasattr(c2,'zodbCommands') or zodbCommandsClass(c2)
+            hasattr(c2,'zodbCommands') or zodbCommandsClass(c2,fileName)
             c2.openDirectory=c.openDirectory # A hack.
             c2.beginUpdate()
             try:
@@ -296,26 +251,25 @@ class zodbCommandsClass:
                 self.es('zodb read: %s' % (fileName))
             finally:
                 c2.endUpdate()
-        finally:
-            pass
-            # get_transaction().commit()
-            # Close the connection: we are about to move to a different outline.
-            # self.close()
+        else:
+            self.es('zodb read file: key not found: %s' % (fileName))
     #@nonl
     #@-node:ekr.20060904192907.4:readFile
     #@+node:ekr.20060908210902:saveFile
     def saveFile (self,event=None):
     
-        c = self.c ; p = c.rootPosition()
-        fileName = c.shortFileName()
-        
-        if not self.isOpen():
-            self.open(fileName)
+        global zodb_connection
     
-        get_transaction().commit()
-        self.root[fileName] = p.v
-        get_transaction().commit()
-        self.es('zodb saved: %s' % fileName)
+        c = self.c ; fileName = self.fileName
+        
+        if zodb_connection:
+            get_transaction().commit()
+            root = zodb_connection.root()
+            root[fileName] = c.rootPosition().v
+            get_transaction().commit()
+            self.es('zodb saved: %s' % fileName)
+        else:
+            self.es('zodb save: no connection')
     #@nonl
     #@-node:ekr.20060908210902:saveFile
     #@-others
