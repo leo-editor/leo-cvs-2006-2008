@@ -659,8 +659,10 @@ class leoFind:
                 #@nl
         if self.clone_find_all and clones:
             c.setRootPosition(c.findRootPosition(found)) # New in 4.4.2.
+            u.afterChangeGroup(found,undoType,reportFlag=True) 
+            c.selectPosition(found) # Recomputes root.
             c.setChanged(True)
-            u.afterChangeGroup(c.currentPosition(),undoType,reportFlag=True)   
+              
         c.redraw_now()
         g.es("found: %d matches" % (count))
         self.restore(data)
