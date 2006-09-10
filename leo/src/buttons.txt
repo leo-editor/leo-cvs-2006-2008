@@ -219,6 +219,31 @@ for p in p.self_and_subtree_iter():
        g.es("File %s is now shadowed" % filename)
 #@nonl
 #@-node:ekr.20060815164203:@@button shadow
+#@+node:ekr.20060910141935:ZODB plugin buttons
+#@+node:ekr.20060910141935.1:@@button zodb-read
+# c.k.simulateCommand('read-zodb-file')
+
+path = r'c:\prog\tigris-cvs\leo\test\test2.leo'
+
+if g.os_path_exists(path):
+    c.zodbCommands.readFile()
+else:
+    g.es_print('not found: %s' % path)
+#@nonl
+#@-node:ekr.20060910141935.1:@@button zodb-read
+#@+node:ekr.20060910141935.2:@@button zodb-write
+# c.k.simulateCommand('write-zodb-file')
+
+path = c.fileName()
+# path = r'c:\prog\tigris-cvs\leo\test\test2.leo'
+
+if g.os_path_exists(path):
+    c.zodbCommands.writeFile()
+else:
+    g.es_print('not found: %s' % path)
+#@nonl
+#@-node:ekr.20060910141935.2:@@button zodb-write
+#@-node:ekr.20060910141935:ZODB plugin buttons
 #@-all
 #@nonl
 #@-node:ekr.20051027111215:@thin buttons.txt

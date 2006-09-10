@@ -757,9 +757,11 @@ for resultDict in self.descendentUnknownAttributesDictList:
     for gnx in resultDict.keys():
         tref = self.canonicalTnodeIndex(gnx)
         t = self.tnodesDict.get(tref)
-        if t: t.unknownAttributes = resultDict[gnx]
+        if t:
+            t.unknownAttributes = resultDict[gnx]
+            t._p_changed = 1
         # else: g.trace("can not find tnode: gnx = %s" % gnx,color="red")
-            
+
 marks = {} ; expanded = {}
 for gnx in self.descendentExpandedList:
     t = self.tnodesDict.get(gnx)
@@ -1100,6 +1102,7 @@ def createVnode (self,parent,back,tref,headline,attrDict):
 keys = attrDict.keys()
 if keys:
     v.unknownAttributes = attrDict
+    v._p_changed = 1
 
     if 0: # For debugging.
         s = "unknown attributes for " + v.headString()
@@ -1286,12 +1289,20 @@ def undoGroup (self):
     if not hasattr(bunch,'items'):
         g.trace('oops: expecting bunch.items.  bunch.kind = %s' % bunch.kind)
     else:
-        for z in bunch.items:
-            self.setIvarsFromBunch(z)
-            if z.undoHelper:
-                z.undoHelper() ; count += 1
-            else:
-                g.trace('oops: no undo helper for %s' % u.undoType)
+        # Important bug fix: 9/8/06: reverse the items first.
+        reversedItems = bunch.items[:]
+        reversedItems.reverse()
+        c.beginUpdate()
+        try:
+            for z in reversedItems:
+                self.setIvarsFromBunch(z)
+                # g.trace(z.undoHelper)
+                if z.undoHelper:
+                    z.undoHelper() ; count += 1
+                else:
+                    g.trace('oops: no undo helper for %s' % u.undoType)
+        finally:
+            c.endUpdate(False)
         
     u.groupCount -= 1
                
@@ -1302,6 +1313,7 @@ def undoGroup (self):
     
     c.selectPosition(p)
     oldSel and c.frame.body.setTextSelection(oldSel)
+#@nonl
 #@-node:ekr.20050318085713:undoGroup
 #@+node:ekr.20050410095424:updateMarks
 def updateMarks (self,oldOrNew):
@@ -1366,6 +1378,393 @@ def undoMark (self):
 #@-node:ekr.20060830064138:Bugs fixed
 #@-node:ekr.20060824095221:4.4.1 final projects
 #@+node:ekr.20060904165452:4.4.2 projects
+#@+node:ekr.20060908092306:Bugs
+#@+node:ekr.20060906220124:Clone-find-all doesn't put focus in minibuffer
+# getArg now has:
+    
+if k.useTextWidget: c.minibufferWantsFocusNow() # 9/8/06
+
+instead of:
+    
+if k.useTextWidget: c.minibufferWantsFocus()
+#@nonl
+#@+node:ekr.20050920085536.62:getArg
+def getArg (self,event,
+    returnKind=None,returnState=None,handler=None,
+    prefix=None,tabList=[],completion=True,oneCharacter=False,
+    stroke=None, # New in 4.4.1.
+):
+    
+    '''Accumulate an argument until the user hits return (or control-g).
+    Enter the given return state when done.
+    The prefix is does not form the arg.  The prefix defaults to the k.getLabel().
+    '''
+
+    k = self ; c = k.c ; state = k.getState('getArg')
+    keysym = (event and event.keysym) or ''
+    trace = c.config.getBool('trace_modes') and not g.app.unitTesting
+    if trace: g.trace(
+        'state',state,'keysym',keysym,'stroke',stroke,'escapes',k.getArgEscapes,
+        'completion', state==0 and completion or state!=0 and k.arg_completion)
+    if state == 0:
+        k.arg = ''
+        << init altX vars >>
+        # Set the states.
+        bodyCtrl = c.frame.body.bodyCtrl
+        c.widgetWantsFocus(bodyCtrl)
+        k.afterGetArgState=returnKind,returnState,handler
+        k.setState('getArg',1,k.getArg)
+        k.afterArgWidget = event and event.widget or c.frame.body.bodyCtrl
+        if k.useTextWidget: c.minibufferWantsFocusNow() # 9/8/06
+    elif keysym == 'Return' or k.oneCharacterArg or stroke in k.getArgEscapes:
+        if stroke in k.getArgEscapes: k.getArgEscape = stroke
+        if k.oneCharacterArg:
+            k.arg = event.char
+        else:
+            k.arg = k.getLabel(ignorePrompt=True)
+        kind,n,handler = k.afterGetArgState
+        if kind: k.setState(kind,n,handler)
+        c.frame.log.deleteTab('Completion')
+        trace and g.trace('kind',kind,'n',n,'handler',handler and handler.__name__)
+        if handler: handler(event)
+    elif keysym == 'Tab':
+        k.doTabCompletion(k.argTabList,k.arg_completion)
+    elif keysym == 'BackSpace':
+        k.doBackSpace(k.argTabList,k.arg_completion)
+        c.minibufferWantsFocus()
+    else:
+        # Clear the list, any other character besides tab indicates that a new prefix is in effect.
+        k.mb_tabList = []
+        k.updateLabel(event)
+        k.mb_tabListPrefix = k.getLabel()
+    return 'break'
+#@+node:ekr.20050928092516:<< init altX vars >>
+k.argTabList = tabList and tabList[:] or []
+k.arg_completion = completion
+
+k.mb_prefix = prefix or k.getLabel()
+k.mb_prompt = prefix or ''
+k.mb_tabList = []
+
+# Clear the list: any non-tab indicates that a new prefix is in effect.
+k.mb_tabListPrefix = k.getLabel()
+k.oneCharacterArg = oneCharacter
+#@-node:ekr.20050928092516:<< init altX vars >>
+#@-node:ekr.20050920085536.62:getArg
+#@-node:ekr.20060906220124:Clone-find-all doesn't put focus in minibuffer
+#@+node:ekr.20060908091132:Fixed undo clone-find-all 
+#@+node:ekr.20060908095225:Notes
+@nocolor
+
+Undo crashed or didn't work.  Redo clone-find-all could hang.
+#@-node:ekr.20060908095225:Notes
+#@+node:ekr.20060128080201:cloneFindAll
+def cloneFindAll (self,event):
+
+    c = self.c ; k = self.k ; tag = 'clone-find-all'
+    state = k.getState(tag)
+
+    if state == 0:
+        self.w = event and event.widget
+        self.setupArgs(forward=None,regexp=None,word=None)
+        k.setLabelBlue('Clone Find All: ',protect=True)
+        k.getArg(event,tag,1,self.cloneFindAll)
+    else:
+        k.clearState()
+        k.resetLabel()
+        k.showStateAndMode()
+        self.generalSearchHelper(k.arg,cloneFindAll=True)
+#@-node:ekr.20060128080201:cloneFindAll
+#@+node:ekr.20060128075225:cloneFindAllCommand
+def cloneFindAllCommand (self,event=None):
+    
+    self.setup_command()
+    self.clone_find_all = True
+    self.findAll()
+    self.clone_find_all = False
+#@-node:ekr.20060128075225:cloneFindAllCommand
+#@+node:ekr.20031218072017.3073:findAll
+def findAll(self):
+
+    c = self.c ; t = self.s_ctrl ; u = c.undoer
+    gui = g.app.gui ; undoType = 'Clone Find All'
+    if not self.checkArgs():
+        return
+    self.initInHeadline()
+    data = self.save()
+    self.initBatchCommands()
+    count = 0 ; clones = []
+    while 1:
+        pos, newpos = self.findNextMatch()
+        if not pos: break
+        count += 1
+        line = gui.getLineContainingIndex(t,pos)
+        self.printLine(line,allFlag=True)
+        if self.clone_find_all and self.p.v.t not in clones:
+            if not clones:
+                << create the found node and begin the undo group >>
+            << create a clone of p under the find node >>
+    if self.clone_find_all and clones:
+        c.setRootPosition(c.findRootPosition(found)) # New in 4.4.2.
+        u.afterChangeGroup(found,undoType,reportFlag=True) 
+        c.selectPosition(found) # Recomputes root.
+        c.setChanged(True)
+          
+    c.redraw_now()
+    g.es("found: %d matches" % (count))
+    self.restore(data)
+#@+node:ekr.20051113110735:<< create the found node and begin the undo group >>
+u.beforeChangeGroup(c.currentPosition(),undoType)
+
+undoData = u.beforeInsertNode(c.currentPosition())
+
+oldRoot = c.rootPosition()
+found = oldRoot.insertAfter()
+found.moveToRoot(oldRoot)
+c.setHeadString(found,'Found: ' + self.find_text)
+
+u.afterInsertNode(found,undoType,undoData,dirtyVnodeList=[])
+#@-node:ekr.20051113110735:<< create the found node and begin the undo group >>
+#@+node:ekr.20051113110851:<< create a clone of p under the find node >>
+clones.append(self.p.v.t)
+undoData = u.beforeCloneNode(self.p)
+q = self.p.clone()
+q.moveToLastChildOf(found)
+u.afterCloneNode(q,undoType,undoData,dirtyVnodeList=[])
+#@-node:ekr.20051113110851:<< create a clone of p under the find node >>
+#@-node:ekr.20031218072017.3073:findAll
+#@+node:ekr.20040803140033.3:c.setRootPosition
+def setRootPosition(self,p):
+    
+    """Set the root positioin."""
+
+    c = self
+    
+    # g.trace(p.headString(),g.callers())
+    
+    if p:
+        # Important: p.equal requires c._rootPosition to be non-None.
+        if c._rootPosition and p.equal(c._rootPosition):
+            pass # We have already made a copy.
+        else:
+            # We must make a copy _now_.
+            c._rootPosition = p.copy()
+    else:
+        c._rootPosition = None
+#@nonl
+#@-node:ekr.20040803140033.3:c.setRootPosition
+#@+node:ekr.20040803140033.1:c.setCurrentPosition
+def setCurrentPosition (self,p):
+    
+    """Set the presently selected position. For internal use only.
+    
+    Client code should use c.selectPosition instead."""
+    
+    c = self
+    
+    # g.trace(p.headString(),g.callers())
+    
+    if p:
+        # Important: p.equal requires c._currentPosition to be non-None.
+        if c._currentPosition and p.equal(c._currentPosition):
+            pass # We have already made a copy.
+        else: # Must make a copy _now_
+            c._currentPosition = p.copy()
+            
+        # New in Leo 4.4.2: always recompute the root position here.
+        # This *guarantees* that c.rootPosition always returns the proper value.
+        c.setRootPosition(c.findRootPosition(c._currentPosition))
+    else:
+        c._currentPosition = None
+
+# For compatibiility with old scripts.
+setCurrentVnode = setCurrentPosition
+#@-node:ekr.20040803140033.1:c.setCurrentPosition
+#@+node:ekr.20050318085713:undoGroup
+def undoGroup (self):
+    
+    '''Process beads until the matching 'beforeGroup' bead is seen.'''
+
+    u = self
+    
+    # Remember these values.
+    c = u.c
+    dirtyVnodeList = u.dirtyVnodeList or []
+    oldSel = u.oldSel
+    p = u.p.copy()
+
+    u.groupCount += 1
+    
+    bunch = u.beads[u.bead] ; count = 0
+    
+    if not hasattr(bunch,'items'):
+        g.trace('oops: expecting bunch.items.  bunch.kind = %s' % bunch.kind)
+    else:
+        # Important bug fix: 9/8/06: reverse the items first.
+        reversedItems = bunch.items[:]
+        reversedItems.reverse()
+        c.beginUpdate()
+        try:
+            for z in reversedItems:
+                self.setIvarsFromBunch(z)
+                # g.trace(z.undoHelper)
+                if z.undoHelper:
+                    z.undoHelper() ; count += 1
+                else:
+                    g.trace('oops: no undo helper for %s' % u.undoType)
+        finally:
+            c.endUpdate(False)
+        
+    u.groupCount -= 1
+               
+    for v in dirtyVnodeList:
+        v.t.clearDirty()
+
+    g.es("undo %d instances" % count)
+    
+    c.selectPosition(p)
+    oldSel and c.frame.body.setTextSelection(oldSel)
+#@nonl
+#@-node:ekr.20050318085713:undoGroup
+#@+node:ekr.20050318085432.6:redoGroup
+def redoGroup (self):
+    
+    '''Process beads until the matching 'afterGroup' bead is seen.'''
+    
+    u = self
+
+    # Remember these values.
+    c = u.c
+    dirtyVnodeList = u.dirtyVnodeList or []
+    newSel = u.newSel
+    p = u.p.copy()
+    
+    u.groupCount += 1
+
+    
+    bunch = u.beads[u.bead] ; count = 0
+    if not hasattr(bunch,'items'):
+        g.trace('oops: expecting bunch.items.  bunch.kind = %s' % bunch.kind)
+    else:
+        c.beginUpdate()
+        try:
+            for z in bunch.items:
+                self.setIvarsFromBunch(z)
+                if z.redoHelper:
+                    # g.trace(z.redoHelper)
+                    z.redoHelper() ; count += 1
+                else:
+                    g.trace('oops: no redo helper for %s' % u.undoType)
+        finally:
+            c.endUpdate(False)
+
+    u.groupCount -= 1
+    
+    for v in dirtyVnodeList:
+        v.t.setDirty()
+
+    g.es("redo %d instances" % count)
+        
+    c.selectPosition(p)
+    newSel and c.frame.body.setTextSelection(newSel)
+#@nonl
+#@-node:ekr.20050318085432.6:redoGroup
+#@+node:ekr.20031218072017.1193:c.deleteOutline
+def deleteOutline (self,event=None,op_name="Delete Node"):
+    
+    """Deletes the selected outline."""
+
+    c = self ; u = c.undoer ; p = c.currentPosition()
+    if not p: return
+
+    if p.hasVisBack(): newNode = p.visBack()
+    else: newNode = p.next() # _not_ p.visNext(): we are at the top level.
+    if not newNode: return
+
+    c.beginUpdate()
+    try:
+       c.endEditing() # Make sure we capture the headline for Undo.
+       undoData = u.beforeDeleteNode(p)
+       dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+       p.doDelete()
+       c.selectPosition(newNode)
+       c.setChanged(True)
+       u.afterDeleteNode(newNode,op_name,undoData,dirtyVnodeList=dirtyVnodeList)
+    finally:
+        c.endUpdate()
+
+    c.validateOutline()
+#@-node:ekr.20031218072017.1193:c.deleteOutline
+#@+node:ekr.20050412085112:undoInsertNode
+def undoInsertNode (self):
+    
+    u = self ; c = u.c
+
+    c.selectPosition(u.newP)
+    c.deleteOutline()
+    
+    if u.pasteAsClone:
+        for bunch in u.beforeTree:
+            t = bunch.t
+            if u.p.v.t == t:
+                c.setBodyString(u.p,bunch.body)
+                c.setHeadString(u.p,bunch.head)
+            else:
+                t.setTnodeText(bunch.body)
+                t.setHeadString(bunch.head)
+
+    c.selectPosition(u.p)
+#@-node:ekr.20050412085112:undoInsertNode
+#@+node:ekr.20040409203454.1:p.deleteLinksInTree & allies
+def deleteLinksInTree (self):
+    
+    """Delete and otherwise adjust links when deleting node."""
+    
+    root = self
+
+    root.deleteLinksInSubtree()
+    
+    for p in root.children_iter():
+        p.adjustParentLinksInSubtree(parent=root)
+#@+node:ekr.20040410170806:p.deleteLinksInSubtree
+def deleteLinksInSubtree (self):
+
+    root = p = self
+
+    # Delete p.v from the vnodeList
+    if p.v in p.v.t.vnodeList:
+        # g.trace('**** remove p.v from %s' % p.headString())
+        p.v.t.vnodeList.remove(p.v)
+        p.v.t._p_changed = 1  # Support for tnode class.
+        assert(p.v not in p.v.t.vnodeList)
+    else:
+        # g.trace("not in vnodeList",p.v,p.vnodeListIds())
+        pass
+
+    if len(p.v.t.vnodeList) == 0:
+        # This node is not shared by other nodes.
+        for p in root.children_iter():
+            p.deleteLinksInSubtree()
+#@-node:ekr.20040410170806:p.deleteLinksInSubtree
+#@+node:ekr.20040410170806.1:p.adjustParentLinksInSubtree
+def adjustParentLinksInSubtree (self,parent):
+    
+    root = p = self
+    
+    assert(parent)
+    
+    if p.v._parent and parent.v.t.vnodeList and p.v._parent not in parent.v.t.vnodeList:
+        # g.trace('**** adjust parent in %s' % p.headString())
+        p.v._parent = parent.v.t.vnodeList[0]
+        
+    for p in root.children_iter():
+        p.adjustParentLinksInSubtree(parent=root)
+#@-node:ekr.20040410170806.1:p.adjustParentLinksInSubtree
+#@-node:ekr.20040409203454.1:p.deleteLinksInTree & allies
+#@-node:ekr.20060908091132:Fixed undo clone-find-all 
+#@+node:ekr.20060908104646:Fixed several bugs in UNL plugin
+#@-node:ekr.20060908104646:Fixed several bugs in UNL plugin
+#@-node:ekr.20060908092306:Bugs
 #@+node:ekr.20060905091234:Code level
 #@+node:ekr.20060904114302:Added OPML support to fileCommands
 #@+node:ekr.20031218072017.3046:write_Leo_file
@@ -2066,8 +2465,8 @@ def dragCloneToNthChildOf (self,p,parent,n):
         clone = p.clone() # Creates clone & dependents, does not set undo.
         if not c.checkMoveWithParentWithWarning(clone,parent,True):
             clone.doDelete() # Destroys clone and makes p the current node.
-            c.setRootPosition(c.findRootPosition(p)) # New in 4.4.2.
-            c.selectPosition(p)
+            # c.setRootPosition(c.findRootPosition(p)) # New in 4.4.2.
+            c.selectPosition(p) # Also sets root position.
             c.endUpdate(False) # Nothing has changed.
             return
         c.endEditing()
@@ -2082,10 +2481,10 @@ def dragCloneToNthChildOf (self,p,parent,n):
            dirtyVnodeList2 =  p.setAllAncestorAtFileNodesDirty()
            dirtyVnodeList.extend(dirtyVnodeList2)
         c.setChanged(True)
-        c.setRootPosition(c.findRootPosition(clone)) # New in 4.4.2.
+        # c.setRootPosition(c.findRootPosition(clone)) # New in 4.4.2.
         u.afterInsertNode(clone,undoType,undoData,dirtyVnodeList=dirtyVnodeList)
-        c.selectPosition(clone)
     finally:
+        c.selectPosition(clone) # Also sets root position.
         c.endUpdate()
     c.updateSyntaxColorer(clone) # Dragging can change syntax coloring.
 #@-node:ekr.20031218072017.2946:c.dragCloneToNthChildOf
@@ -2098,33 +2497,31 @@ def dragCloneAfter (self,p,after):
     c.beginUpdate()
     try: # In update...
         clone = p.clone() # Creates clone.  Does not set undo.
-        # g.trace("p,after:",p.headString(),after.headString())
-        if not c.checkMoveWithParentWithWarning(clone,after.parent(),True):
+        if c.checkMoveWithParentWithWarning(clone,after.parent(),True):
+            inAtIgnoreRange = clone.inAtIgnoreRange()
+            c.endEditing()
+            undoData = u.beforeInsertNode(current)
+            dirtyVnodeList = clone.setAllAncestorAtFileNodesDirty()
+            clone.moveAfter(after)
+            if inAtIgnoreRange and not clone.inAtIgnoreRange():
+                # The moved node have just become newly unignored.
+                dirtyVnodeList2 = clone.setDirty() # Mark descendent @thin nodes dirty.
+                dirtyVnodeList.extend(dirtyVnodeList2)
+            else: # No need to mark descendents dirty.
+                dirtyVnodeList2 = clone.setAllAncestorAtFileNodesDirty()
+                dirtyVnodeList.extend(dirtyVnodeList2)
+            # c.setRootPosition(c.findRootPosition(clone)) # New in 4.4.2.
+            c.setChanged(True)
+            u.afterInsertNode(clone,undoType,undoData,dirtyVnodeList=dirtyVnodeList)
+            p = clone
+        else:
             # g.trace("invalid clone drag")
             clone.doDelete()
-            c.setRootPosition(c.findRootPosition(p)) # New in 4.4.2.
-            c.selectPosition(p)
-            c.endUpdate(False) # Nothing has changed.
-            return
-        inAtIgnoreRange = clone.inAtIgnoreRange()
-        c.endEditing()
-        undoData = u.beforeInsertNode(current)
-        dirtyVnodeList = clone.setAllAncestorAtFileNodesDirty()
-        clone.moveAfter(after)
-        if inAtIgnoreRange and not clone.inAtIgnoreRange():
-            # The moved node have just become newly unignored.
-            dirtyVnodeList2 = clone.setDirty() # Mark descendent @thin nodes dirty.
-            dirtyVnodeList.extend(dirtyVnodeList2)
-        else: # No need to mark descendents dirty.
-            dirtyVnodeList2 = clone.setAllAncestorAtFileNodesDirty()
-            dirtyVnodeList.extend(dirtyVnodeList2)
-        c.setRootPosition(c.findRootPosition(clone)) # New in 4.4.2.
-        c.setChanged(True)
-        u.afterInsertNode(clone,undoType,undoData,dirtyVnodeList=dirtyVnodeList)
-        c.selectPosition(clone)
     finally:
+        c.selectPosition(p) # Also sets root position.
         c.endUpdate()
     c.updateSyntaxColorer(clone) # Dragging can change syntax coloring.
+#@nonl
 #@-node:ekr.20031218072017.2948:c.dragCloneAfter
 #@+node:ekr.20051113110851:<< create a clone of p under the find node >>
 clones.append(self.p.v.t)
@@ -2143,13 +2540,14 @@ def __init__ (self,v,stack,trace=True):
     
     __pychecker__ = '--no-argsused' # trace not used.
 
-    self._p_changed = False
-        # To support ZODB the code **must** set p._p_changed = True whenever
-        # stack (or any mutable type) changes.
+    # To support ZODB the code must set p._p_changed = 1 whenever
+    # t.vnodeList (or any mutable tnode or vnode object) changes.
 
     self.v = v
     # assert(v is None or v.t)
+
     self.stack = stack[:] # Creating a copy here is safest and best.
+    
     g.app.positions += 1
     
     # if g.app.tracePositions and trace: g.trace(g.callers())
@@ -2180,7 +2578,6 @@ def linkAsRoot (self,oldRoot):
     else:       oldRootVnode = None
     
     p.stack = [] # Clear the stack.
-    p._p_changed = True
     
     # Clear all links except the child link.
     v._parent = None
@@ -2190,7 +2587,7 @@ def linkAsRoot (self,oldRoot):
     # Add v to it's tnode's vnodeList.
     if v not in v.t.vnodeList:
         v.t.vnodeList.append(v)
-        v.t._p_changed = True
+        v.t._p_changed = 1 # Support for tnode class.
 
     # Link in the rest of the tree only when oldRoot != None.
     # Otherwise, we are calling this routine from init code and
@@ -2268,7 +2665,7 @@ def unlink (self):
     vnodeList = v.t.vnodeList
     if v in vnodeList:
         vnodeList.remove(v)
-        v.t._p_changed = True
+        v.t._p_changed = 1 # Support for tnode class.
     assert(v not in vnodeList)
     
     # Reset the firstChild link in its direct father.
@@ -2346,7 +2743,7 @@ def linkAsRoot (self,oldRoot):
     # Add v to it's tnode's vnodeList. Bug fix: 5/02/04.
     if v not in v.t.vnodeList:
         v.t.vnodeList.append(v)
-        v.t._p_changed = True
+        v.t._p_changed = 1
 
     # Link in the rest of the tree only when oldRoot != None.
     # Otherwise, we are calling this routine from init code and
@@ -2411,6 +2808,26 @@ def findReference(c,name,root):
 #@-node:ekr.20031218072017.1385:g.findReference
 #@-node:ekr.20060905114409:Added c arg
 #@+node:ekr.20060905172505.1:Converted p.x(c) to c.x(p)
+#@+node:ekr.20040315032503:c.appendStringToBody
+def appendStringToBody (self,p,s,encoding="utf-8"):
+    
+    c = self
+    if not s: return
+    
+    body = p.bodyString()
+    assert(g.isUnicode(body))
+    s = g.toUnicode(s,encoding)
+
+    c.setBodyString(p,body + s,encoding)
+#@-node:ekr.20040315032503:c.appendStringToBody
+#@+node:ekr.20060906211138:c.clearMarked
+def clearMarked  (self,p):
+    
+    c = self
+    p.v.clearMarked()
+    g.doHook("clear-mark",c=c,p=p,v=p)
+#@nonl
+#@-node:ekr.20060906211138:c.clearMarked
 #@+node:ekr.20040306220230.1:c.edit_widget
 def edit_widget (self,p):
     
@@ -2437,22 +2854,28 @@ def lastVisible(self):
     
     return p
 #@-node:ekr.20031218072017.4146:c.lastVisible
-#@+node:ekr.20060906211138:c.clearMarked
-def clearMarked  (self,p):
+#@+node:ekr.20040307104131.3:c.positionExists
+def positionExists(self,p):
     
-    c = self
-    p.v.clearMarked()
-    g.doHook("clear-mark",c=c,p=p,v=p)
-#@nonl
-#@-node:ekr.20060906211138:c.clearMarked
-#@+node:ekr.20060906211138.1:c.setMarked
-def setMarked (self,p):
+    """Return True if a position exists in c's tree"""
     
-    c = self
-    p.v.setMarked()
-    g.doHook("set-mark",c=c,p=p,v=p)
-#@nonl
-#@-node:ekr.20060906211138.1:c.setMarked
+    c = self ; p = p.copy()
+
+    # This code must be fast.
+    root = c.rootPosition()
+
+    while p:
+        # g.trace(p.headString(),'parent',p.parent(),'back',p.back())
+        if p.equal(root):
+            return True
+        if p.hasParent():
+            p.moveToParent()
+        else:
+            p.moveToBack()
+        
+    # g.trace('does not exist in root:',root.headString())
+    return False
+#@-node:ekr.20040307104131.3:c.positionExists
 #@+node:ekr.20040305223522:c.setBodyString
 def setBodyString (self,p,s,encoding="utf-8"):
 
@@ -2479,30 +2902,14 @@ def setBodyString (self,p,s,encoding="utf-8"):
         if not c.isChanged():
             c.setChanged(True)
 #@-node:ekr.20040305223522:c.setBodyString
-#@+node:ekr.20040305222924.1:p.setHeadString & p.initHeadString
-def setHeadString (self,s,encoding="utf-8"):
-    
-    p = self
-    p.v.initHeadString(s,encoding)
-    p.setDirty()
-    
-def initHeadString (self,s,encoding="utf-8"):
-    
-    p = self
-    p.v.initHeadString(s,encoding)
-#@-node:ekr.20040305222924.1:p.setHeadString & p.initHeadString
-#@+node:ekr.20040315032503:c.appendStringToBody
-def appendStringToBody (self,p,s,encoding="utf-8"):
+#@+node:ekr.20060906211138.1:c.setMarked
+def setMarked (self,p):
     
     c = self
-    if not s: return
-    
-    body = p.bodyString()
-    assert(g.isUnicode(body))
-    s = g.toUnicode(s,encoding)
-
-    c.setBodyString(p,body + s,encoding)
-#@-node:ekr.20040315032503:c.appendStringToBody
+    p.v.setMarked()
+    g.doHook("set-mark",c=c,p=p,v=p)
+#@nonl
+#@-node:ekr.20060906211138.1:c.setMarked
 #@+node:ekr.20031218072017.3404:c.trimTrailingLines
 def trimTrailingLines (self,p):
 
@@ -2528,28 +2935,18 @@ def trimTrailingLines (self,p):
         # Don't set the dirty bit: it would just be annoying.
 #@nonl
 #@-node:ekr.20031218072017.3404:c.trimTrailingLines
-#@+node:ekr.20040307104131.3:c.positionExists
-def positionExists(self,p):
+#@+node:ekr.20040305222924.1:p.setHeadString & p.initHeadString
+def setHeadString (self,s,encoding="utf-8"):
     
-    """Return True if a position exists in c's tree"""
+    p = self
+    p.v.initHeadString(s,encoding)
+    p.setDirty()
     
-    c = self ; p = p.copy()
-
-    # This code must be fast.
-    root = c.rootPosition()
-
-    while p:
-        # g.trace(p.headString(),'parent',p.parent(),'back',p.back())
-        if p.equal(root):
-            return True
-        if p.hasParent():
-            p.moveToParent()
-        else:
-            p.moveToBack()
-        
-    # g.trace('does not exist in root:',root.headString())
-    return False
-#@-node:ekr.20040307104131.3:c.positionExists
+def initHeadString (self,s,encoding="utf-8"):
+    
+    p = self
+    p.v.initHeadString(s,encoding)
+#@-node:ekr.20040305222924.1:p.setHeadString & p.initHeadString
 #@-node:ekr.20060905172505.1:Converted p.x(c) to c.x(p)
 #@+node:ekr.20060905103748:Removed p and v methods using v.c or p.c
 #@+node:ekr.20040312015705:p.clearAllVisited
@@ -2666,7 +3063,8 @@ def setRootPosition(self,p):
     # g.trace(p.headString(),g.callers())
     
     if p:
-        if p.equal(c._rootPosition):
+        # Important: p.equal requires c._rootPosition to be non-None.
+        if c._rootPosition and p.equal(c._rootPosition):
             pass # We have already made a copy.
         else:
             # We must make a copy _now_.
@@ -2721,7 +3119,8 @@ def setCurrentPosition (self,p):
     # g.trace(p.headString(),g.callers())
     
     if p:
-        if p.equal(c._currentPosition):
+        # Important: p.equal requires c._currentPosition to be non-None.
+        if c._currentPosition and p.equal(c._currentPosition):
             pass # We have already made a copy.
         else: # Must make a copy _now_
             c._currentPosition = p.copy()
@@ -2736,6 +3135,71 @@ def setCurrentPosition (self,p):
 setCurrentVnode = setCurrentPosition
 #@-node:ekr.20040803140033.1:c.setCurrentPosition
 #@-node:ekr.20060907101636:Call c.findRootPosition in c.setCurrentPosition
+#@+node:ekr.20060908075800.1:Removed redundant calls to c.findRootPosition
+#@-node:ekr.20060908075800.1:Removed redundant calls to c.findRootPosition
+#@+node:ekr.20060908115325:Reviewed p.deleteLinksInTree
+# In fact, p.deleteLinksInTree is needed: as unit tests show that some adjustments are made.
+#@nonl
+#@+node:ekr.20040303175026.2:p.doDelete
+@ This is the main delete routine.  It deletes the receiver's entire tree from the screen.  Because of the undo command we never actually delete vnodes or tnodes.
+@c
+
+def doDelete (self):
+
+    """Deletes position p from the outline."""
+
+    p = self
+    p.setDirty() # Mark @file nodes dirty!
+    p.unlink()
+    p.deleteLinksInTree()
+#@-node:ekr.20040303175026.2:p.doDelete
+#@+node:ekr.20040409203454.1:p.deleteLinksInTree & allies
+def deleteLinksInTree (self):
+    
+    """Delete and otherwise adjust links when deleting node."""
+    
+    root = self
+
+    root.deleteLinksInSubtree()
+    
+    for p in root.children_iter():
+        p.adjustParentLinksInSubtree(parent=root)
+#@+node:ekr.20040410170806:p.deleteLinksInSubtree
+def deleteLinksInSubtree (self):
+
+    root = p = self
+
+    # Delete p.v from the vnodeList
+    if p.v in p.v.t.vnodeList:
+        # g.trace('**** remove p.v from %s' % p.headString())
+        p.v.t.vnodeList.remove(p.v)
+        p.v.t._p_changed = 1  # Support for tnode class.
+        assert(p.v not in p.v.t.vnodeList)
+    else:
+        # g.trace("not in vnodeList",p.v,p.vnodeListIds())
+        pass
+
+    if len(p.v.t.vnodeList) == 0:
+        # This node is not shared by other nodes.
+        for p in root.children_iter():
+            p.deleteLinksInSubtree()
+#@-node:ekr.20040410170806:p.deleteLinksInSubtree
+#@+node:ekr.20040410170806.1:p.adjustParentLinksInSubtree
+def adjustParentLinksInSubtree (self,parent):
+    
+    root = p = self
+    
+    assert(parent)
+    
+    if p.v._parent and parent.v.t.vnodeList and p.v._parent not in parent.v.t.vnodeList:
+        # g.trace('**** adjust parent in %s' % p.headString())
+        p.v._parent = parent.v.t.vnodeList[0]
+        
+    for p in root.children_iter():
+        p.adjustParentLinksInSubtree(parent=root)
+#@-node:ekr.20040410170806.1:p.adjustParentLinksInSubtree
+#@-node:ekr.20040409203454.1:p.deleteLinksInTree & allies
+#@-node:ekr.20060908115325:Reviewed p.deleteLinksInTree
 #@-node:ekr.20060905091234:Code level
 #@-node:ekr.20060904165452:4.4.2 projects
 #@-all
