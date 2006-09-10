@@ -4856,7 +4856,6 @@ class baseCommands:
                 if moved:
                     dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
                     p.moveToNthChildOf(next,0)
-                    # c.setRootPosition(c.findRootPosition(p)) # New in 4.4.2.
                     
             else:
                 # Attempt to move p after next.
@@ -4864,7 +4863,6 @@ class baseCommands:
                 if moved:
                     dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
                     p.moveAfter(next)
-                    # c.setRootPosition(c.findRootPosition(p)) # New in 4.4.2.
             #@-node:ekr.20031218072017.1769:<< Move p down & set moved if successful >>
             #@nl
             if moved:
@@ -4994,8 +4992,6 @@ class baseCommands:
                 if c.checkMoveWithParentWithWarning(p,back2.parent(),True):
                     moved = True
                     p.moveAfter(back2)
-                    
-            # c.setRootPosition(c.findRootPosition(p)) # New in 4.4.2.
             #@-node:ekr.20031218072017.1773:<< Move p up >>
             #@nl
             if moved:
@@ -5216,7 +5212,6 @@ class baseCommands:
             else: # No need to mark descendents dirty.
                 dirtyVnodeList2 = p.setAllAncestorAtFileNodesDirty()
                 dirtyVnodeList.extend(dirtyVnodeList2)
-            # c.setRootPosition(c.findRootPosition(p)) # New in 4.4.2.
             c.setChanged(True)
             u.afterMoveNode(p,undoType,undoData,dirtyVnodeList=dirtyVnodeList)
         finally:
@@ -5237,7 +5232,6 @@ class baseCommands:
             clone = p.clone() # Creates clone & dependents, does not set undo.
             if not c.checkMoveWithParentWithWarning(clone,parent,True):
                 clone.doDelete() # Destroys clone and makes p the current node.
-                # c.setRootPosition(c.findRootPosition(p)) # New in 4.4.2.
                 c.selectPosition(p) # Also sets root position.
                 c.endUpdate(False) # Nothing has changed.
                 return
@@ -5253,7 +5247,6 @@ class baseCommands:
                dirtyVnodeList2 =  p.setAllAncestorAtFileNodesDirty()
                dirtyVnodeList.extend(dirtyVnodeList2)
             c.setChanged(True)
-            # c.setRootPosition(c.findRootPosition(clone)) # New in 4.4.2.
             u.afterInsertNode(clone,undoType,undoData,dirtyVnodeList=dirtyVnodeList)
         finally:
             c.selectPosition(clone) # Also sets root position.
@@ -5282,7 +5275,6 @@ class baseCommands:
                 dirtyVnodeList2 = p.setAllAncestorAtFileNodesDirty()
                 dirtyVnodeList.extend(dirtyVnodeList2)
             c.setChanged(True)
-            # c.setRootPosition(c.findRootPosition(p)) # New in 4.4.2.
             u.afterMoveNode(p,undoType,undoData,dirtyVnodeList=dirtyVnodeList)
         finally:
             c.selectPosition(p) # Also sets root position.
@@ -5311,7 +5303,6 @@ class baseCommands:
                 else: # No need to mark descendents dirty.
                     dirtyVnodeList2 = clone.setAllAncestorAtFileNodesDirty()
                     dirtyVnodeList.extend(dirtyVnodeList2)
-                # c.setRootPosition(c.findRootPosition(clone)) # New in 4.4.2.
                 c.setChanged(True)
                 u.afterInsertNode(clone,undoType,undoData,dirtyVnodeList=dirtyVnodeList)
                 p = clone

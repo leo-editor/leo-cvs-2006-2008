@@ -2465,7 +2465,6 @@ def dragCloneToNthChildOf (self,p,parent,n):
         clone = p.clone() # Creates clone & dependents, does not set undo.
         if not c.checkMoveWithParentWithWarning(clone,parent,True):
             clone.doDelete() # Destroys clone and makes p the current node.
-            # c.setRootPosition(c.findRootPosition(p)) # New in 4.4.2.
             c.selectPosition(p) # Also sets root position.
             c.endUpdate(False) # Nothing has changed.
             return
@@ -2481,7 +2480,6 @@ def dragCloneToNthChildOf (self,p,parent,n):
            dirtyVnodeList2 =  p.setAllAncestorAtFileNodesDirty()
            dirtyVnodeList.extend(dirtyVnodeList2)
         c.setChanged(True)
-        # c.setRootPosition(c.findRootPosition(clone)) # New in 4.4.2.
         u.afterInsertNode(clone,undoType,undoData,dirtyVnodeList=dirtyVnodeList)
     finally:
         c.selectPosition(clone) # Also sets root position.
@@ -2510,7 +2508,6 @@ def dragCloneAfter (self,p,after):
             else: # No need to mark descendents dirty.
                 dirtyVnodeList2 = clone.setAllAncestorAtFileNodesDirty()
                 dirtyVnodeList.extend(dirtyVnodeList2)
-            # c.setRootPosition(c.findRootPosition(clone)) # New in 4.4.2.
             c.setChanged(True)
             u.afterInsertNode(clone,undoType,undoData,dirtyVnodeList=dirtyVnodeList)
             p = clone

@@ -1329,7 +1329,6 @@ class baseUndoer:
         for v in u.dirtyVnodeList: # New in 4.4b3.
             v.t.setDirty()
     
-        # c.setRootPosition(c.findRootPosition(u.newP)) # New in 4.4.2.
         c.selectPosition(u.newP)
     #@-node:ekr.20050412083057:redoCloneNode
     #@+node:EKR.20040526072519.2:redoDeleteNode
@@ -1370,7 +1369,6 @@ class baseUndoer:
                     t.setHeadString(bunch.head)
                 # g.trace(t,bunch.head,bunch.body)
     
-        # c.setRootPosition(c.findRootPosition(u.newP)) # New in 4.4.2.
         c.selectPosition(u.newP)
     #@-node:ekr.20050412084532:redoInsertNode
     #@+node:ekr.20050412085138.1:redoHoistNode & redoDehoistNode
@@ -1479,8 +1477,6 @@ class baseUndoer:
         else:
             oldRoot = c.rootPosition()
             u.p.moveToRoot(oldRoot=oldRoot)
-    
-        # c.setRootPosition(c.findRootPosition(u.p)) # New in 4.4.2.
             
         u.updateMarks('new')
     
@@ -1605,8 +1601,6 @@ class baseUndoer:
         # Restore all vnodeLists (and thus all clone marks).
         u.p.restoreLinksInTree()
         u.p.setAllAncestorAtFileNodesDirty() # New in 4.4b3.
-        
-        # c.setRootPosition(c.findRootPosition(u.p)) # New in 4.4.2.
         c.selectPosition(u.p)
     #@-node:ekr.20050412084055:undoDeleteNode
     #@+node:ekr.20050318085713:undoGroup
