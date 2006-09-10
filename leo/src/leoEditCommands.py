@@ -6628,7 +6628,7 @@ class minibufferFind:
     #@+node:ekr.20060128080201:cloneFindAll
     def cloneFindAll (self,event):
     
-        k = self.k ; tag = 'clone-find-all'
+        c = self.c ; k = self.k ; tag = 'clone-find-all'
         state = k.getState(tag)
     
         if state == 0:
