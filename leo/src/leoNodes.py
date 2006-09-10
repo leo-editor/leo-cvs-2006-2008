@@ -301,16 +301,9 @@ class tnode (baseTnode):
     #@+node:ekr.20060908205857:t.__hash__ (only for zodb)
     if use_zodb:
         def __hash__(self):
-    
-            return id(self)
-                # Will fail badly if zodb moves this object.
-                # Or maybe not: id(persistentObject) might return a database id.
-            
-            # self.fileIndex is a string: id(o) must return an int.
-            if self.fileIndex:
-                return self.fileIndex
-            else:
-                g.trace('*** using id for t.__hash__')
+            # The only required property is that objects
+            # which compare equal have the same hash value.
+            return sum(map(ord,self.fileIndex))
     #@nonl
     #@-node:ekr.20060908205857:t.__hash__ (only for zodb)
     #@+node:ekr.20031218072017.3325:Getters
@@ -536,9 +529,9 @@ class vnode (baseVnode):
     #@+node:ekr.20060910100316:v.__hash__ (only for zodb)
     if use_zodb:
         def __hash__(self):
-            return id(self)
-                # Will fail badly if zodb moves this object.
-                # Or maybe not: id(persistentObject) might return a database id. 
+            # The only required property is that objects
+            # which compare equal have the same hash value.
+            return self.t.__hash__()
     #@nonl
     #@-node:ekr.20060910100316:v.__hash__ (only for zodb)
     #@-node:ekr.20031218072017.3342:Birth & death
