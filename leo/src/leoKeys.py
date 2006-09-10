@@ -2699,7 +2699,7 @@ class keyHandlerClass:
             k.afterGetArgState=returnKind,returnState,handler
             k.setState('getArg',1,k.getArg)
             k.afterArgWidget = event and event.widget or c.frame.body.bodyCtrl
-            if k.useTextWidget: c.minibufferWantsFocus()
+            if k.useTextWidget: c.minibufferWantsFocusNow() # 9/8/06
         elif keysym == 'Return' or k.oneCharacterArg or stroke in k.getArgEscapes:
             if stroke in k.getArgEscapes: k.getArgEscape = stroke
             if k.oneCharacterArg:
