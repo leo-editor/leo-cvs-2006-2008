@@ -166,7 +166,7 @@ class baseFileCommands:
         keys = attrDict.keys()
         if keys:
             v.unknownAttributes = attrDict
-            v._p_changed = 1
+            # v._p_changed = 1
         
             if 0: # For debugging.
                 s = "unknown attributes for " + v.headString()
@@ -666,7 +666,7 @@ class baseFileCommands:
                 t = self.tnodesDict.get(tref)
                 if t:
                     t.unknownAttributes = resultDict[gnx]
-                    t._p_changed = 1
+                    # t._p_changed = 1
                 # else: g.trace("can not find tnode: gnx = %s" % gnx,color="red")
         
         marks = {} ; expanded = {}
@@ -923,7 +923,7 @@ class baseFileCommands:
         keys = attrDict.keys()
         if keys:
             t.unknownAttributes = attrDict
-            t._p_changed = 1
+            # t._p_changed = 1
             if 0: # For debugging.
                 s = "unknown attributes for tnode"
                 g.es_print(s, color = "blue")
