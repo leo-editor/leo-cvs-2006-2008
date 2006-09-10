@@ -4423,9 +4423,16 @@ xwem-worklog-tasks-description
 @language python
 @color
 #@nonl
+#@+node:ekr.20040306212151:p.Extra Attributes
+def extraAttributes (self):
+    
+    return self.v.extraAttributes()
+
+def setExtraAttributes (self,data):
+
+    return self.v.setExtraAttributes(data)
+#@-node:ekr.20040306212151:p.Extra Attributes
 #@-node:ekr.20031218072017.434:Unused code
-#@+node:ekr.20060905101710:@url http://docs.python.org/lib/module-re.html
-#@-node:ekr.20060905101710:@url http://docs.python.org/lib/module-re.html
 #@-all
 #@nonl
 #@-node:ekr.20031218072017.329:@thin ../doc/leoNotes.txt

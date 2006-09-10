@@ -273,7 +273,7 @@ class tnode (baseTnode):
     def __init__ (self,bodyString=None,headString=None):
     
         # To support ZODB the code must set p._p_changed = 1 whenever
-        # t.vnodeList (or any mutable tnode object) changes.
+        # t.vnodeList, t.unknownAttributes or any mutable tnode object changes.
     
         self.cloneIndex = 0 # For Pre-3.12 files.  Zero for @file nodes
         self.fileIndex = None # The immutable file index for this tnode.
@@ -483,6 +483,9 @@ class vnode (baseVnode):
     def __init__ (self,t):
     
         assert(t)
+        
+        # To support ZODB the code must set p._p_changed = 1 whenever
+        # v.unknownAttributes or any mutable vnode object changes.
     
         self.t = t # The tnode.
         self.statusBits = 0 # status bits
@@ -922,7 +925,7 @@ class vnode (baseVnode):
         # Add v to it's tnode's vnodeList. Bug fix: 5/02/04.
         if v not in v.t.vnodeList:
             v.t.vnodeList.append(v)
-            v.t._p_changed = 1
+            # v.t._p_changed = 1
     
         # Link in the rest of the tree only when oldRoot != None.
         # Otherwise, we are calling this routine from init code and
@@ -2709,7 +2712,7 @@ class basePosition (object):
     
         if p.v not in p.v.t.vnodeList:
             p.v.t.vnodeList.append(p.v)
-            p.v.t._p_changed = 1 # Support for tnode class.
+            # p.v.t._p_changed = 1 # Support for tnode class.
             
         for p in root.children_iter():
             p.restoreLinksInTree()
@@ -2734,7 +2737,7 @@ class basePosition (object):
         if p.v in p.v.t.vnodeList:
             # g.trace('**** remove p.v from %s' % p.headString())
             p.v.t.vnodeList.remove(p.v)
-            p.v.t._p_changed = 1  # Support for tnode class.
+            # p.v.t._p_changed = 1  # Support for tnode class.
             assert(p.v not in p.v.t.vnodeList)
         else:
             # g.trace("not in vnodeList",p.v,p.vnodeListIds())
@@ -2779,7 +2782,7 @@ class basePosition (object):
         # Add v to it's tnode's vnodeList.
         if p.v not in p.v.t.vnodeList:
             p.v.t.vnodeList.append(p.v)
-            p.v.t._p_changed = 1 # Support for tnode class.
+            # p.v.t._p_changed = 1 # Support for tnode class.
         
         p.v._back = after.v
         p.v._next = after.v._next
@@ -2815,7 +2818,7 @@ class basePosition (object):
         # Add v to it's tnode's vnodeList.
         if p.v not in p.v.t.vnodeList:
             p.v.t.vnodeList.append(p.v)
-            p.v.t._p_changed = 1 # Support for tnode class.
+            # p.v.t._p_changed = 1 # Support for tnode class.
     
         if n == 0:
             child1 = parent.v.t._firstChild
@@ -2857,7 +2860,7 @@ class basePosition (object):
         # Add v to it's tnode's vnodeList.
         if v not in v.t.vnodeList:
             v.t.vnodeList.append(v)
-            v.t._p_changed = 1 # Support for tnode class.
+            # v.t._p_changed = 1 # Support for tnode class.
     
         # Link in the rest of the tree only when oldRoot != None.
         # Otherwise, we are calling this routine from init code and
@@ -2884,7 +2887,7 @@ class basePosition (object):
         vnodeList = v.t.vnodeList
         if v in vnodeList:
             vnodeList.remove(v)
-            v.t._p_changed = 1 # Support for tnode class.
+            # v.t._p_changed = 1 # Support for tnode class.
         assert(v not in vnodeList)
         
         # Reset the firstChild link in its direct father.
