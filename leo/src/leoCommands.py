@@ -3079,7 +3079,6 @@ class baseCommands:
            undoData = u.beforeDeleteNode(p)
            dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
            p.doDelete()
-           c.setRootPosition(c.findRootPosition(newNode)) # New in 4.4.2.
            c.selectPosition(newNode)
            c.setChanged(True)
            u.afterDeleteNode(newNode,op_name,undoData,dirtyVnodeList=dirtyVnodeList)
@@ -4813,8 +4812,8 @@ class baseCommands:
             dirtyVnodeList = current.setAllAncestorAtFileNodesDirty()
             c.setChanged(True)
             u.afterChangeGroup(current,command,dirtyVnodeList=dirtyVnodeList)
-            c.selectPosition(current)
         finally:
+            c.selectPosition(current)  # Also sets rootPosition.
             c.endUpdate()
         c.updateSyntaxColorer(current) # Moving can change syntax coloring.
     #@-node:ekr.20031218072017.1767:demote
@@ -4857,7 +4856,7 @@ class baseCommands:
                 if moved:
                     dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
                     p.moveToNthChildOf(next,0)
-                    c.setRootPosition(c.findRootPosition(p)) # New in 4.4.2.
+                    # c.setRootPosition(c.findRootPosition(p)) # New in 4.4.2.
                     
             else:
                 # Attempt to move p after next.
@@ -4865,7 +4864,7 @@ class baseCommands:
                 if moved:
                     dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
                     p.moveAfter(next)
-                    c.setRootPosition(c.findRootPosition(p)) # New in 4.4.2.
+                    # c.setRootPosition(c.findRootPosition(p)) # New in 4.4.2.
             #@-node:ekr.20031218072017.1769:<< Move p down & set moved if successful >>
             #@nl
             if moved:
@@ -4877,8 +4876,8 @@ class baseCommands:
                     dirtyVnodeList.extend(dirtyVnodeList2)
                 c.setChanged(True)
                 u.afterMoveNode(p,'Move Down',undoData,dirtyVnodeList)
-                c.selectPosition(p)
         finally:
+            c.selectPosition(p) # Also sets rootPosition.
             c.endUpdate()
         c.updateSyntaxColorer(p) # Moving can change syntax coloring.
     #@-node:ekr.20031218072017.1768:moveOutlineDown
@@ -4910,8 +4909,9 @@ class baseCommands:
                 dirtyVnodeList.extend(dirtyVnodeList2)
             c.setChanged(True)
             u.afterMoveNode(p,'Move Left',undoData,dirtyVnodeList)
-            c.selectPosition(p)
+            
         finally:
+            c.selectPosition(p) # Also sets rootPosition.
             c.endUpdate()
         c.updateSyntaxColorer(p) # Moving can change syntax coloring.
     #@-node:ekr.20031218072017.1770:moveOutlineLeft
@@ -4942,8 +4942,8 @@ class baseCommands:
             dirtyVnodeList.extend(dirtyVnodeList2)
             c.setChanged(True)
             u.afterMoveNode(p,'Move Right',undoData,dirtyVnodeList)
-            c.selectPosition(p)
         finally:
+            c.selectPosition(p) # Also sets root position.
             c.endUpdate()
         c.updateSyntaxColorer(p) # Moving can change syntax coloring.
     #@-node:ekr.20031218072017.1771:moveOutlineRight
@@ -4995,7 +4995,7 @@ class baseCommands:
                     moved = True
                     p.moveAfter(back2)
                     
-            c.setRootPosition(c.findRootPosition(p)) # New in 4.4.2.
+            # c.setRootPosition(c.findRootPosition(p)) # New in 4.4.2.
             #@-node:ekr.20031218072017.1773:<< Move p up >>
             #@nl
             if moved:
@@ -5007,8 +5007,9 @@ class baseCommands:
                 dirtyVnodeList.extend(dirtyVnodeList2)
                 c.setChanged(True)
                 u.afterMoveNode(p,'Move Right',undoData,dirtyVnodeList)
-                c.selectPosition(p)
+                
         finally:
+            c.selectPosition(p) # Also sets root position.
             c.endUpdate()
         c.updateSyntaxColorer(p) # Moving can change syntax coloring.
     #@-node:ekr.20031218072017.1772:moveOutlineUp
@@ -5215,11 +5216,11 @@ class baseCommands:
             else: # No need to mark descendents dirty.
                 dirtyVnodeList2 = p.setAllAncestorAtFileNodesDirty()
                 dirtyVnodeList.extend(dirtyVnodeList2)
-            c.setRootPosition(c.findRootPosition(p)) # New in 4.4.2.
+            # c.setRootPosition(c.findRootPosition(p)) # New in 4.4.2.
             c.setChanged(True)
             u.afterMoveNode(p,undoType,undoData,dirtyVnodeList=dirtyVnodeList)
-            c.selectPosition(p)
         finally:
+            c.selectPosition(p) # Also sets root position.
             c.endUpdate()
         c.updateSyntaxColorer(p) # Dragging can change syntax coloring.
     #@-node:ekr.20031218072017.2353:c.dragAfter
@@ -5236,8 +5237,8 @@ class baseCommands:
             clone = p.clone() # Creates clone & dependents, does not set undo.
             if not c.checkMoveWithParentWithWarning(clone,parent,True):
                 clone.doDelete() # Destroys clone and makes p the current node.
-                c.setRootPosition(c.findRootPosition(p)) # New in 4.4.2.
-                c.selectPosition(p)
+                # c.setRootPosition(c.findRootPosition(p)) # New in 4.4.2.
+                c.selectPosition(p) # Also sets root position.
                 c.endUpdate(False) # Nothing has changed.
                 return
             c.endEditing()
@@ -5252,10 +5253,10 @@ class baseCommands:
                dirtyVnodeList2 =  p.setAllAncestorAtFileNodesDirty()
                dirtyVnodeList.extend(dirtyVnodeList2)
             c.setChanged(True)
-            c.setRootPosition(c.findRootPosition(clone)) # New in 4.4.2.
+            # c.setRootPosition(c.findRootPosition(clone)) # New in 4.4.2.
             u.afterInsertNode(clone,undoType,undoData,dirtyVnodeList=dirtyVnodeList)
-            c.selectPosition(clone)
         finally:
+            c.selectPosition(clone) # Also sets root position.
             c.endUpdate()
         c.updateSyntaxColorer(clone) # Dragging can change syntax coloring.
     #@-node:ekr.20031218072017.2946:c.dragCloneToNthChildOf
@@ -5281,10 +5282,10 @@ class baseCommands:
                 dirtyVnodeList2 = p.setAllAncestorAtFileNodesDirty()
                 dirtyVnodeList.extend(dirtyVnodeList2)
             c.setChanged(True)
-            c.setRootPosition(c.findRootPosition(p)) # New in 4.4.2.
+            # c.setRootPosition(c.findRootPosition(p)) # New in 4.4.2.
             u.afterMoveNode(p,undoType,undoData,dirtyVnodeList=dirtyVnodeList)
-            c.selectPosition(p)
         finally:
+            c.selectPosition(p) # Also sets root position.
             c.endUpdate()
         c.updateSyntaxColorer(p) # Dragging can change syntax coloring.
     #@-node:ekr.20031218072017.2947:c.dragToNthChildOf
@@ -5297,33 +5298,31 @@ class baseCommands:
         c.beginUpdate()
         try: # In update...
             clone = p.clone() # Creates clone.  Does not set undo.
-            # g.trace("p,after:",p.headString(),after.headString())
-            if not c.checkMoveWithParentWithWarning(clone,after.parent(),True):
+            if c.checkMoveWithParentWithWarning(clone,after.parent(),True):
+                inAtIgnoreRange = clone.inAtIgnoreRange()
+                c.endEditing()
+                undoData = u.beforeInsertNode(current)
+                dirtyVnodeList = clone.setAllAncestorAtFileNodesDirty()
+                clone.moveAfter(after)
+                if inAtIgnoreRange and not clone.inAtIgnoreRange():
+                    # The moved node have just become newly unignored.
+                    dirtyVnodeList2 = clone.setDirty() # Mark descendent @thin nodes dirty.
+                    dirtyVnodeList.extend(dirtyVnodeList2)
+                else: # No need to mark descendents dirty.
+                    dirtyVnodeList2 = clone.setAllAncestorAtFileNodesDirty()
+                    dirtyVnodeList.extend(dirtyVnodeList2)
+                # c.setRootPosition(c.findRootPosition(clone)) # New in 4.4.2.
+                c.setChanged(True)
+                u.afterInsertNode(clone,undoType,undoData,dirtyVnodeList=dirtyVnodeList)
+                p = clone
+            else:
                 # g.trace("invalid clone drag")
                 clone.doDelete()
-                c.setRootPosition(c.findRootPosition(p)) # New in 4.4.2.
-                c.selectPosition(p)
-                c.endUpdate(False) # Nothing has changed.
-                return
-            inAtIgnoreRange = clone.inAtIgnoreRange()
-            c.endEditing()
-            undoData = u.beforeInsertNode(current)
-            dirtyVnodeList = clone.setAllAncestorAtFileNodesDirty()
-            clone.moveAfter(after)
-            if inAtIgnoreRange and not clone.inAtIgnoreRange():
-                # The moved node have just become newly unignored.
-                dirtyVnodeList2 = clone.setDirty() # Mark descendent @thin nodes dirty.
-                dirtyVnodeList.extend(dirtyVnodeList2)
-            else: # No need to mark descendents dirty.
-                dirtyVnodeList2 = clone.setAllAncestorAtFileNodesDirty()
-                dirtyVnodeList.extend(dirtyVnodeList2)
-            c.setRootPosition(c.findRootPosition(clone)) # New in 4.4.2.
-            c.setChanged(True)
-            u.afterInsertNode(clone,undoType,undoData,dirtyVnodeList=dirtyVnodeList)
-            c.selectPosition(clone)
         finally:
+            c.selectPosition(p) # Also sets root position.
             c.endUpdate()
         c.updateSyntaxColorer(clone) # Dragging can change syntax coloring.
+    #@nonl
     #@-node:ekr.20031218072017.2948:c.dragCloneAfter
     #@-node:ekr.20031218072017.2945:Dragging (commands)
     #@+node:ekr.20031218072017.2949:Drawing Utilities (commands)
@@ -6220,7 +6219,8 @@ class baseCommands:
         # g.trace(p.headString(),g.callers())
         
         if p:
-            if p.equal(c._currentPosition):
+            # Important: p.equal requires c._currentPosition to be non-None.
+            if c._currentPosition and p.equal(c._currentPosition):
                 pass # We have already made a copy.
             else: # Must make a copy _now_
                 c._currentPosition = p.copy()
@@ -6282,7 +6282,8 @@ class baseCommands:
         # g.trace(p.headString(),g.callers())
         
         if p:
-            if p.equal(c._rootPosition):
+            # Important: p.equal requires c._rootPosition to be non-None.
+            if c._rootPosition and p.equal(c._rootPosition):
                 pass # We have already made a copy.
             else:
                 # We must make a copy _now_.
