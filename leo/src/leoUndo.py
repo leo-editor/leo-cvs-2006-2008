@@ -357,6 +357,7 @@ class baseUndoer:
         uA = bunch.get('unknownAttributes')
         if uA is not None:
             v.unknownAttributes = uA
+            v._p_changed = 1
     #@-node:ekr.20050415170737.2:restoreVnodeUndoInfo
     #@+node:ekr.20050415170812.2:restoreTnodeUndoInfo
     def restoreTnodeUndoInfo (self,bunch):
@@ -372,6 +373,7 @@ class baseUndoer:
         uA = bunch.get('unknownAttributes')
         if uA is not None:
             t.unknownAttributes = uA
+            t._p_changed = 1
     #@-node:ekr.20050415170812.2:restoreTnodeUndoInfo
     #@-node:EKR.20040530121329:u.restoreTree & helpers
     #@+node:EKR.20040528075307:u.saveTree & helpers
@@ -1288,22 +1290,19 @@ class baseUndoer:
         c.beginUpdate()
         try:
             c.endEditing()
-            if u.redoHelper:
-                u.redoHelper()
-            else:
-                g.trace('no redo helper for %s %s' % (u.kind,u.undoType))
-            c.selectPosition(c.currentPosition())
+            if u.redoHelper: u.redoHelper()
+            else: g.trace('no redo helper for %s %s' % (u.kind,u.undoType))
         finally:
-            # New in 4.4a3: Almost any change could change an icon,
-            # So we always request a redraw.
-            # c.setRootPosition(c.findRootPosition(c.currentPosition())) # New in 4.4.2.
+            # This strange code forces a recomputation of the root position.
+            c.selectPosition(c.currentPosition())
             c.setChanged(True)
             c.endUpdate()
             c.recolor_now()
             c.bodyWantsFocusNow()
-        u.redoing = False
-        u.bead += 1
-        u.setUndoTypes()
+            u.redoing = False
+            u.bead += 1
+            u.setUndoTypes()
+    #@nonl
     #@+node:ekr.20050424170219:redoClearRecentFiles
     def redoClearRecentFiles (self):
         
@@ -1330,7 +1329,7 @@ class baseUndoer:
         for v in u.dirtyVnodeList: # New in 4.4b3.
             v.t.setDirty()
     
-        c.setRootPosition(c.findRootPosition(u.newP)) # New in 4.4.2.
+        # c.setRootPosition(c.findRootPosition(u.newP)) # New in 4.4.2.
         c.selectPosition(u.newP)
     #@-node:ekr.20050412083057:redoCloneNode
     #@+node:EKR.20040526072519.2:redoDeleteNode
@@ -1371,7 +1370,7 @@ class baseUndoer:
                     t.setHeadString(bunch.head)
                 # g.trace(t,bunch.head,bunch.body)
     
-        c.setRootPosition(c.findRootPosition(u.newP)) # New in 4.4.2.
+        # c.setRootPosition(c.findRootPosition(u.newP)) # New in 4.4.2.
         c.selectPosition(u.newP)
     #@-node:ekr.20050412084532:redoInsertNode
     #@+node:ekr.20050412085138.1:redoHoistNode & redoDehoistNode
@@ -1403,17 +1402,23 @@ class baseUndoer:
         p = u.p.copy()
         
         u.groupCount += 1
+    
         
         bunch = u.beads[u.bead] ; count = 0
         if not hasattr(bunch,'items'):
             g.trace('oops: expecting bunch.items.  bunch.kind = %s' % bunch.kind)
         else:
-            for z in bunch.items:
-                self.setIvarsFromBunch(z)
-                if z.redoHelper:
-                    z.redoHelper() ; count += 1
-                else:
-                    g.trace('oops: no redo helper for %s' % u.undoType)
+            c.beginUpdate()
+            try:
+                for z in bunch.items:
+                    self.setIvarsFromBunch(z)
+                    if z.redoHelper:
+                        # g.trace(z.redoHelper)
+                        z.redoHelper() ; count += 1
+                    else:
+                        g.trace('oops: no redo helper for %s' % u.undoType)
+            finally:
+                c.endUpdate(False)
     
         u.groupCount -= 1
         
@@ -1424,6 +1429,7 @@ class baseUndoer:
             
         c.selectPosition(p)
         newSel and c.frame.body.setTextSelection(newSel)
+    #@nonl
     #@-node:ekr.20050318085432.6:redoGroup
     #@+node:ekr.20050318085432.7:redoNodeContents
     def redoNodeContents (self):
@@ -1474,7 +1480,7 @@ class baseUndoer:
             oldRoot = c.rootPosition()
             u.p.moveToRoot(oldRoot=oldRoot)
     
-        c.setRootPosition(c.findRootPosition(u.p)) # New in 4.4.2.
+        # c.setRootPosition(c.findRootPosition(u.p)) # New in 4.4.2.
             
         u.updateMarks('new')
     
@@ -1547,23 +1553,19 @@ class baseUndoer:
         c.beginUpdate()
         try:
             c.endEditing()
-            if u.undoHelper:
-                u.undoHelper()
-            else:
-                g.trace('no undo helper for %s %s' % (u.kind,u.undoType))
-            c.selectPosition(c.currentPosition())
+            if u.undoHelper: u.undoHelper()
+            else: g.trace('no undo helper for %s %s' % (u.kind,u.undoType))
         finally:
-            # New in 4.4a3: Almost any change could change an icon,
-            # So we always request a redraw.
-            # c.setRootPosition(c.findRootPosition(c.currentPosition())) # New in 4.4.2.
+            # This strange code forces a recomputation of the root position.
+            c.selectPosition(c.currentPosition())
             c.setChanged(True)
             c.endUpdate()
             c.recolor_now()
             c.bodyWantsFocusNow()
-    
-        u.undoing = False
-        u.bead -= 1
-        u.setUndoTypes()
+            u.undoing = False
+            u.bead -= 1
+            u.setUndoTypes()
+    #@nonl
     #@+node:ekr.20050424170219.1:undoClearRecentFiles
     def undoClearRecentFiles (self):
         
@@ -1604,7 +1606,7 @@ class baseUndoer:
         u.p.restoreLinksInTree()
         u.p.setAllAncestorAtFileNodesDirty() # New in 4.4b3.
         
-        c.setRootPosition(c.findRootPosition(u.p)) # New in 4.4.2.
+        # c.setRootPosition(c.findRootPosition(u.p)) # New in 4.4.2.
         c.selectPosition(u.p)
     #@-node:ekr.20050412084055:undoDeleteNode
     #@+node:ekr.20050318085713:undoGroup
@@ -1627,12 +1629,20 @@ class baseUndoer:
         if not hasattr(bunch,'items'):
             g.trace('oops: expecting bunch.items.  bunch.kind = %s' % bunch.kind)
         else:
-            for z in bunch.items:
-                self.setIvarsFromBunch(z)
-                if z.undoHelper:
-                    z.undoHelper() ; count += 1
-                else:
-                    g.trace('oops: no undo helper for %s' % u.undoType)
+            # Important bug fix: 9/8/06: reverse the items first.
+            reversedItems = bunch.items[:]
+            reversedItems.reverse()
+            c.beginUpdate()
+            try:
+                for z in reversedItems:
+                    self.setIvarsFromBunch(z)
+                    # g.trace(z.undoHelper)
+                    if z.undoHelper:
+                        z.undoHelper() ; count += 1
+                    else:
+                        g.trace('oops: no undo helper for %s' % u.undoType)
+            finally:
+                c.endUpdate(False)
             
         u.groupCount -= 1
                    
@@ -1643,6 +1653,7 @@ class baseUndoer:
         
         c.selectPosition(p)
         oldSel and c.frame.body.setTextSelection(oldSel)
+    #@nonl
     #@-node:ekr.20050318085713:undoGroup
     #@+node:ekr.20050412083244:undoHoistNode & undoDehoistNode
     def undoHoistNode (self):
