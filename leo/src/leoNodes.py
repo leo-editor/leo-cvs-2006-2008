@@ -217,10 +217,22 @@
 #@-at
 #@-node:ekr.20031218072017.2408:<< About clones >>
 #@nl
+
+use_zodb = False
+
 #@<< imports >>
 #@+node:ekr.20060904165452.1:<< imports >>
-
 from __future__ import generators # To make the code work in Python 2.2.
+
+if use_zodb:
+    # It may be important to import ZODB first.
+    try:
+        import ZODB
+        import ZODB.FileStorage
+    except ImportError:
+        ZODB = None
+else:
+    ZODB = None
 
 import leoGlobals as g
 
@@ -231,20 +243,21 @@ if g.app and g.app.use_psyco:
 
 import string
 import time
-
-try:
-    import ZODB
-    import ZODB.FileStorage
-except ImportError:
-    ZODB = None
 #@nonl
 #@-node:ekr.20060904165452.1:<< imports >>
 #@nl
 
 #@+others
 #@+node:ekr.20031218072017.3321:class tnode
-class baseTnode:
-    """The base class of the tnode class."""
+if use_zodb:
+    class baseTnode (ZODB.Persistence.Persistent):
+        pass
+else:
+    class baseTnode (object):
+        pass
+    
+class tnode (baseTnode):
+    """A class that implements tnodes."""
     #@    << tnode constants >>
     #@+node:ekr.20031218072017.3322:<< tnode constants >>
     dirtyBit    = 0x01
@@ -259,9 +272,8 @@ class baseTnode:
     
     def __init__ (self,bodyString=None,headString=None):
     
-        self._p_changed = False
-            # To support ZODB the code **must** set p._p_changed = True whenever
-            # vnodeList (or any mutable type) changes.
+        # To support ZODB the code must set p._p_changed = 1 whenever
+        # t.vnodeList (or any mutable tnode object) changes.
     
         self.cloneIndex = 0 # For Pre-3.12 files.  Zero for @file nodes
         self.fileIndex = None # The immutable file index for this tnode.
@@ -277,6 +289,7 @@ class baseTnode:
         
         self.vnodeList = [] # List of all vnodes pointing to this tnode.
         self._firstChild = None
+    #@nonl
     #@-node:ekr.20031218072017.2006:t.__init__
     #@+node:ekr.20031218072017.3323:t.__repr__ & t.__str__
     def __repr__ (self):
@@ -285,6 +298,21 @@ class baseTnode:
             
     __str__ = __repr__
     #@-node:ekr.20031218072017.3323:t.__repr__ & t.__str__
+    #@+node:ekr.20060908205857:t.__hash__ (only for zodb)
+    if use_zodb:
+        def __hash__(self):
+    
+            return id(self)
+                # Will fail badly if zodb moves this object.
+                # Or maybe not: id(persistentObject) might return a database id.
+            
+            # self.fileIndex is a string: id(o) must return an int.
+            if self.fileIndex:
+                return self.fileIndex
+            else:
+                g.trace('*** using id for t.__hash__')
+    #@nonl
+    #@-node:ekr.20060908205857:t.__hash__ (only for zodb)
     #@+node:ekr.20031218072017.3325:Getters
     #@+node:EKR.20040625161602:getBody
     def getBody (self):
@@ -418,21 +446,17 @@ class baseTnode:
     #@-node:ekr.20050418101546:t.setHeadString (new in 4.3)
     #@-node:ekr.20031218072017.3331:Setters
     #@-others
-    
-class tnode (baseTnode):
-    """A class that implements tnodes."""
-    pass
-
-if 0:
-    if ZODB:
-        class persistent_tnode (baseTnode, ZODB.Persistence.Persistent):
-            """A class that implements persistent tnodes."""
-            pass
 #@nonl
 #@-node:ekr.20031218072017.3321:class tnode
 #@+node:ekr.20031218072017.3341:class vnode
-class baseVnode:
-    """The base class of the vnode class."""
+if use_zodb:
+    class baseVnode (ZODB.Persistence.Persistent):
+        pass
+else:
+    class baseVnode (object):
+       pass
+    
+class vnode (baseVnode):
     #@    << vnode constants >>
     #@+node:ekr.20031218072017.951:<< vnode constants >>
     # Define the meaning of status bits in new vnodes.
@@ -509,6 +533,14 @@ class baseVnode:
             for v in v.t.vnodeList:
                 print v
     #@-node:ekr.20040312145256:v.dump
+    #@+node:ekr.20060910100316:v.__hash__ (only for zodb)
+    if use_zodb:
+        def __hash__(self):
+            return id(self)
+                # Will fail badly if zodb moves this object.
+                # Or maybe not: id(persistentObject) might return a database id. 
+    #@nonl
+    #@-node:ekr.20060910100316:v.__hash__ (only for zodb)
     #@-node:ekr.20031218072017.3342:Birth & death
     #@+node:ekr.20031218072017.3346:v.Comparisons
     #@+node:ekr.20040705201018:v.findAtFileName (new in 4.2 b3)
@@ -897,7 +929,7 @@ class baseVnode:
         # Add v to it's tnode's vnodeList. Bug fix: 5/02/04.
         if v not in v.t.vnodeList:
             v.t.vnodeList.append(v)
-            v.t._p_changed = True
+            v.t._p_changed = 1
     
         # Link in the rest of the tree only when oldRoot != None.
         # Otherwise, we are calling this routine from init code and
@@ -1113,15 +1145,6 @@ class baseVnode:
     #@-node:EKR.20040528151551.3:unique_subtree_iter
     #@-node:EKR.20040528151551:v.Iterators
     #@-others
-    
-class vnode (baseVnode):
-    """A class that implements vnodes."""
-    pass
-
-if 0:
-    if ZODB:
-        class persistent_vnode (baseVnode, ZODB.Persistence.Persistent):
-            pass
 #@nonl
 #@-node:ekr.20031218072017.3341:class vnode
 #@+node:ekr.20031218072017.1991:class nodeIndices
@@ -1254,76 +1277,74 @@ class nodeIndices (object):
     #@-others
 #@-node:ekr.20031218072017.1991:class nodeIndices
 #@+node:ekr.20031218072017.889:class position
-class basePosition:
-    
-    """A class representing a position in a traversal of a tree containing shared tnodes."""
+#@<< about the position class >>
+#@+node:ekr.20031218072017.890:<< about the position class >>
+#@@killcolor
 
-    #@    << about the position class >>
-    #@+node:ekr.20031218072017.890:<< about the position class >>
-    #@@killcolor
-    
-    #@+at 
-    #@nonl
-    # This class provides tree traversal methods that operate on positions, 
-    # not vnodes.  Positions encapsulate the notion of present position within 
-    # a traversal.
-    # 
-    # Positions consist of a vnode and a stack of parent nodes used to 
-    # determine the next parent when a vnode has mutliple parents.
-    # 
-    # Calling, e.g., p.moveToThreadNext() results in p being an invalid 
-    # position.  That is, p represents the position following the last node of 
-    # the outline.  The test "if p" is the _only_ correct way to test whether 
-    # a position p is valid.  In particular, tests like "if p is None" or "if 
-    # p is not None" will not work properly.
-    # 
-    # The only changes to vnodes and tnodes needed to implement shared tnodes 
-    # are:
-    # 
-    # - The firstChild field becomes part of tnodes.
-    # - t.vnodes contains a list of all vnodes sharing the tnode.
-    # 
-    # The advantages of using shared tnodes:
-    # 
-    # - Leo no longer needs to create or destroy "dependent" trees when 
-    # changing descendents of cloned trees.
-    # - There is no need for join links and no such things as joined nodes.
-    # 
-    # These advantages are extremely important: Leo is now scalable to very 
-    # large outlines.
-    # 
-    # An important complication is the need to avoid creating temporary 
-    # positions while traversing trees:
-    # - Several routines use p.vParentWithStack to avoid having to call 
-    # tempPosition.moveToParent().
-    #   These include p.level, p.isVisible and p.hasThreadNext.
-    # - p.moveToLastNode and p.moveToThreadBack use new algorithms that don't 
-    # use temporary data.
-    # - Several lookahead routines compute whether a position exists without 
-    # computing the actual position.
-    #@-at
-    #@-node:ekr.20031218072017.890:<< about the position class >>
-    #@nl
-    #@    << positions may become invalid when outlines change >>
-    #@+node:ekr.20050524082843:<< positions may become invalid when outlines change >>
-    #@@killcolor
-    
-    #@+at 
-    #@nonl
-    # If a vnode has only one parent, v._parent is that parent. Otherwise,
-    # v.t.vnodeList is the list of vnodes v2 such that v2._firstChild == v. 
-    # Alas, this
-    # means that positions can become invalid when vnodeList's change!
-    # 
-    # There is no use trying to solve the problem in p.moveToParent or
-    # p.vParentWithStack: the invalidated positions simply don't have the 
-    # stack
-    # entries needed to compute parent fields properly. In short, changing 
-    # t.vnodeList
-    # may invalidate existing positions!
-    #@-at
-    #@-node:ekr.20050524082843:<< positions may become invalid when outlines change >>
-    #@nl
+#@+at 
+#@nonl
+# This class provides tree traversal methods that operate on positions, not 
+# vnodes.  Positions encapsulate the notion of present position within a 
+# traversal.
+# 
+# Positions consist of a vnode and a stack of parent nodes used to determine 
+# the next parent when a vnode has mutliple parents.
+# 
+# Calling, e.g., p.moveToThreadNext() results in p being an invalid position.  
+# That is, p represents the position following the last node of the outline.  
+# The test "if p" is the _only_ correct way to test whether a position p is 
+# valid.  In particular, tests like "if p is None" or "if p is not None" will 
+# not work properly.
+# 
+# The only changes to vnodes and tnodes needed to implement shared tnodes are:
+# 
+# - The firstChild field becomes part of tnodes.
+# - t.vnodes contains a list of all vnodes sharing the tnode.
+# 
+# The advantages of using shared tnodes:
+# 
+# - Leo no longer needs to create or destroy "dependent" trees when changing 
+# descendents of cloned trees.
+# - There is no need for join links and no such things as joined nodes.
+# 
+# These advantages are extremely important: Leo is now scalable to very large 
+# outlines.
+# 
+# An important complication is the need to avoid creating temporary positions 
+# while traversing trees:
+# - Several routines use p.vParentWithStack to avoid having to call 
+# tempPosition.moveToParent().
+#   These include p.level, p.isVisible and p.hasThreadNext.
+# - p.moveToLastNode and p.moveToThreadBack use new algorithms that don't use 
+# temporary data.
+# - Several lookahead routines compute whether a position exists without 
+# computing the actual position.
+#@-at
+#@-node:ekr.20031218072017.890:<< about the position class >>
+#@nl
+#@<< positions may become invalid when outlines change >>
+#@+node:ekr.20050524082843:<< positions may become invalid when outlines change >>
+#@@killcolor
+
+#@+at 
+#@nonl
+# If a vnode has only one parent, v._parent is that parent. Otherwise,
+# v.t.vnodeList is the list of vnodes v2 such that v2._firstChild == v. Alas, 
+# this
+# means that positions can become invalid when vnodeList's change!
+# 
+# There is no use trying to solve the problem in p.moveToParent or
+# p.vParentWithStack: the invalidated positions simply don't have the stack
+# entries needed to compute parent fields properly. In short, changing 
+# t.vnodeList
+# may invalidate existing positions!
+#@-at
+#@-node:ekr.20050524082843:<< positions may become invalid when outlines change >>
+#@nl
+
+# Positions should *never* be saved by the ZOBD.
+
+class basePosition (object):
     #@    @+others
     #@+node:ekr.20040228094013: ctor & other special methods...
     #@+node:ekr.20031218072017.893:p.__cmp__
@@ -1355,21 +1376,24 @@ class basePosition:
     #@+node:ekr.20040117170612:p.__getattr__  ON:  must be ON if use_plugins
     if 1: # Good for compatibility, bad for finding conversion problems.
     
-        def __getattr__ (self,attr):
-            
-            """Convert references to p.t into references to p.v.t.
-            
-            N.B. This automatically keeps p.t in synch with p.v.t."""
+        # if not use_zodb: # Can not use __getattr__ or __setattr__ when using zodb!
     
-            if attr=="t":
-                return self.v.t
-            else:
-                # New in 4.3: _silently_ raise the attribute error.
-                # This allows plugin code to use hasattr(p,attr) !
-                if 0:
-                    print "unknown position attribute:",attr
-                    import traceback ; traceback.print_stack()
-                raise AttributeError,attr
+            def __getattr__ (self,attr):
+                
+                """Convert references to p.t into references to p.v.t.
+                
+                N.B. This automatically keeps p.t in synch with p.v.t."""
+        
+                if attr=="t":
+                    return self.v.t
+                else:
+                    # New in 4.3: _silently_ raise the attribute error.
+                    # This allows plugin code to use hasattr(p,attr) !
+                    if 0:
+                        print "unknown position attribute:",attr
+                        import traceback ; traceback.print_stack()
+                    raise AttributeError,attr
+    #@nonl
     #@-node:ekr.20040117170612:p.__getattr__  ON:  must be ON if use_plugins
     #@+node:ekr.20031218072017.892:p.__init__
     def __init__ (self,v,stack,trace=True):
@@ -1378,13 +1402,14 @@ class basePosition:
         
         __pychecker__ = '--no-argsused' # trace not used.
     
-        self._p_changed = False
-            # To support ZODB the code **must** set p._p_changed = True whenever
-            # stack (or any mutable type) changes.
+        # To support ZODB the code must set p._p_changed = 1 whenever
+        # t.vnodeList (or any mutable tnode or vnode object) changes.
     
         self.v = v
         # assert(v is None or v.t)
+    
         self.stack = stack[:] # Creating a copy here is safest and best.
+        
         g.app.positions += 1
         
         # if g.app.tracePositions and trace: g.trace(g.callers())
@@ -1516,15 +1541,6 @@ class basePosition:
     def matchHeadline (self,pattern): return self.v.matchHeadline(pattern)
     ## def afterHeadlineMatch (self,s): return self.v.afterHeadlineMatch(s)
     #@-node:ekr.20040306211032:p.Comparisons
-    #@+node:ekr.20040306212151:p.Extra Attributes
-    def extraAttributes (self):
-        
-        return self.v.extraAttributes()
-    
-    def setExtraAttributes (self,data):
-    
-        return self.v.setExtraAttributes(data)
-    #@-node:ekr.20040306212151:p.Extra Attributes
     #@+node:ekr.20040306220230:p.Headline & body strings
     def bodyString (self):
         
@@ -2471,7 +2487,6 @@ class basePosition:
             if child:
                 if p.isCloned():
                     p.stack.append(p.v)
-                    p._p_changed = True
                     # g.trace("push",p.v,p)
                 p.v = child
             else:
@@ -2492,7 +2507,6 @@ class basePosition:
                 child = p.v.lastChild()
                 if p.isCloned():
                     p.stack.append(p.v)
-                    p._p_changed = True
                     # g.trace("push",p.v,p)
                 p.v = child
             else:
@@ -2551,7 +2565,6 @@ class basePosition:
             if child:
                 if p.isCloned():
                     p.stack.append(p.v)
-                    p._p_changed = True
                     # g.trace("push",p.v,p)
                 p.v = child
             else:
@@ -2572,7 +2585,6 @@ class basePosition:
             p.v = p.v._parent
         elif p.stack:
             p.v = p.stack.pop()
-            p._p_changed = True
         else:
             p.v = None
         return p
@@ -2704,7 +2716,7 @@ class basePosition:
     
         if p.v not in p.v.t.vnodeList:
             p.v.t.vnodeList.append(p.v)
-            p.v.t._p_changed = True
+            p.v.t._p_changed = 1 # Support for tnode class.
             
         for p in root.children_iter():
             p.restoreLinksInTree()
@@ -2727,10 +2739,10 @@ class basePosition:
     
         # Delete p.v from the vnodeList
         if p.v in p.v.t.vnodeList:
+            # g.trace('**** remove p.v from %s' % p.headString())
             p.v.t.vnodeList.remove(p.v)
-            p.v.t._p_changed = True
+            p.v.t._p_changed = 1  # Support for tnode class.
             assert(p.v not in p.v.t.vnodeList)
-            # g.trace("deleted",p.v,p.vnodeListIds())
         else:
             # g.trace("not in vnodeList",p.v,p.vnodeListIds())
             pass
@@ -2748,6 +2760,7 @@ class basePosition:
         assert(parent)
         
         if p.v._parent and parent.v.t.vnodeList and p.v._parent not in parent.v.t.vnodeList:
+            # g.trace('**** adjust parent in %s' % p.headString())
             p.v._parent = parent.v.t.vnodeList[0]
             
         for p in root.children_iter():
@@ -2767,14 +2780,13 @@ class basePosition:
         p = self
         # g.trace(p,after)
         
-        p.stack = after.stack[:] # 3/12/04
-        p._p_changed = True
+        p.stack = after.stack[:]
         p.v._parent = after.v._parent
         
         # Add v to it's tnode's vnodeList.
         if p.v not in p.v.t.vnodeList:
             p.v.t.vnodeList.append(p.v)
-            p.v.t._p_changed = True
+            p.v.t._p_changed = 1 # Support for tnode class.
         
         p.v._back = after.v
         p.v._next = after.v._next
@@ -2801,7 +2813,6 @@ class basePosition:
     
         # Recreate the stack using the parent.
         p.stack = parent.stack[:]
-        p._p_changed = True
     
         if parent.isCloned():
             p.stack.append(parent.v)
@@ -2811,7 +2822,7 @@ class basePosition:
         # Add v to it's tnode's vnodeList.
         if p.v not in p.v.t.vnodeList:
             p.v.t.vnodeList.append(p.v)
-            p.v.t._p_changed = True
+            p.v.t._p_changed = 1 # Support for tnode class.
     
         if n == 0:
             child1 = parent.v.t._firstChild
@@ -2844,7 +2855,6 @@ class basePosition:
         else:       oldRootVnode = None
         
         p.stack = [] # Clear the stack.
-        p._p_changed = True
         
         # Clear all links except the child link.
         v._parent = None
@@ -2854,7 +2864,7 @@ class basePosition:
         # Add v to it's tnode's vnodeList.
         if v not in v.t.vnodeList:
             v.t.vnodeList.append(v)
-            v.t._p_changed = True
+            v.t._p_changed = 1 # Support for tnode class.
     
         # Link in the rest of the tree only when oldRoot != None.
         # Otherwise, we are calling this routine from init code and
@@ -2881,7 +2891,7 @@ class basePosition:
         vnodeList = v.t.vnodeList
         if v in vnodeList:
             vnodeList.remove(v)
-            v.t._p_changed = True
+            v.t._p_changed = 1 # Support for tnode class.
         assert(v not in vnodeList)
         
         # Reset the firstChild link in its direct father.
@@ -2917,19 +2927,9 @@ class basePosition:
     #@-node:ekr.20040310062332.5:p.unlink
     #@-node:ekr.20040310062332:p.Link/Unlink methods
     #@-others
-    
-class position (basePosition):
-    """A class that implements vnodes."""
-    pass
 
-if 0:
-    if ZODB:
-        class persistent_position (basePosition, ZODB.Persistence.Persistent):
-            pass
-        
-#TypeError: Error when calling the metaclass bases
-# metaclass conflict: the metaclass of a derived class must be a
-# (non-strict) subclass of the metaclasses of all its bases
+class position (basePosition):
+    pass
 #@nonl
 #@-node:ekr.20031218072017.889:class position
 #@-others
