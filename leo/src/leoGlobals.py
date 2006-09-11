@@ -1561,8 +1561,9 @@ def trace (*args,**keys):
     s = ""
     for arg in args:
         if type(arg) == type(u""):
-            try:    arg = str(arg)
-            except: arg = repr(arg)
+            pass
+            # try:    arg = str(arg) 
+            # except: arg = repr(arg)
         elif type(arg) != type(""):
             arg = repr(arg)
         if len(s) > 0:
@@ -1590,6 +1591,7 @@ def trace (*args,**keys):
         print name + ": " + message
     else:
         print name + ": " + message,
+#@nonl
 #@-node:ekr.20031218072017.2317:trace
 #@+node:ekr.20031218072017.2318:trace_tag
 # Convert all args to strings.
