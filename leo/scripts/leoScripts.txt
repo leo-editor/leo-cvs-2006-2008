@@ -355,7 +355,7 @@ def prependNamesInTree(p,nameList,prefix,replace=False):
                 if count and replace:
                     if 0:
                         << print before and after >>
-                    p.setBodyStringOrPane(s)
+                    c.setBodyString(p,s)
                     p.setDirty()
             g.es("%3d %s" % (count,p.headString()))
             total += count
@@ -582,7 +582,7 @@ if 0:
             if i == -1: break
             c = s[i+4].lower()
             s = s[:i] + 'c.' + c + s[i+5:]
-            v.setBodyStringOrPane(s)
+            c.setBodyString(v,s)
             count += 1
         v = v.threadNext()
     print count
@@ -612,7 +612,7 @@ if 0:
                 c = s[i+6].lower()
                 s = s[:i] + "def " + c + s[i+7:]
                 print v.headString()
-                v.setBodyStringOrPane(s)
+                c.setBodyString(v,s)
         v = v.threadNext()
 #@nonl
 #@-node:Find scripts to change OnX to x in headline
@@ -1980,7 +1980,7 @@ def convertLeoTree(v,c):
         s=v.bodyString()
         print "converting:", v.headString()
         s=convertCStringToPython(s, doLeoTranslations )
-        v.setBodyStringOrPane(s)
+        c.setBodyString(v,s)
         v=v.threadNext()
     c.Repaint() # for backward compatibility.
     print "end of c2py"
@@ -6408,7 +6408,7 @@ def convertLeo1to2(v,c):
         s=v.bodyString()
         print "converting:", v.headString()
         s=convertStringLeo1to2(s)
-        v.setBodyStringOrPane(s)
+        c.setBodyString(v,s)
         v=v.threadNext()
 
     c.Repaint() # for backward compatibility
@@ -6479,7 +6479,7 @@ def convertLeoTree(v,c):
         s=v.bodyString()
         print "converting:", v.headString()
         s=convertCStringToPython(s, doLeoTranslations )
-        v.setBodyStringOrPane(s)
+        c.setBodyString(v,s)
         v=v.threadNext()
     c.Repaint() # for backward compatibility.
     print "end of c2py"
@@ -9197,7 +9197,7 @@ for line in lines:
         entries.append(line)
 
 result = ''.join(result)
-p.setBodyStringOrPane(result)
+c.setBodyString(p,result)
 print 'done!'
 #@nonl
 #@+node:@killcolor
@@ -9241,7 +9241,7 @@ for line in lines:
             result.append(line)
 
 result = ''.join(result)
-p.setBodyStringOrPane(result)
+c.setBodyString(p,result)
 print 'done!'
 #@nonl
 #@+node:@killcolor
@@ -9276,7 +9276,7 @@ for child in address_p.children_iter():
 
 result.sort()
 result = '\n'.join(result)
-result_p.setBodyStringOrPane(result)
+c.setBodyString(result_p,result)
 print 'done!'
 #@nonl
 #@+node:address
@@ -11635,7 +11635,7 @@ def replaceBody (self,p,lines):
     oldBody = p.bodyString()
     body = string.join(lines,'')
     
-    p.setBodyStringOrPane(body)
+    c.setBodyString(p,body)
     
     if not self.changed:
 
@@ -13109,7 +13109,7 @@ if v:
     lines = [line.rstrip() for line in lines]
     s = '\n'.join(lines)
     if s != oldText:
-        v.setBodyStringOrPane(s,encoding=g.app.tkEncoding)
+        c.setBodyString(v,s,encoding=g.app.tkEncoding)
         if changeAll:
             g.es(v.headString()) ; d["count"] = count + 1
         else:
@@ -13191,7 +13191,7 @@ if c and v and m:
     oldText = v.bodyString()
     s = replaceDocPart(m,body)
     if s: # Don't make a replacement if there was an error.
-        v.setBodyStringOrPane(s,encoding=g.app.tkEncoding)
+        c.setBodyString(v,s,encoding=g.app.tkEncoding)
         body.onBodyChanged(v,"Change",oldText=oldText) # Handles undo.
 #@nonl
 #@-node:Change script
@@ -13296,12 +13296,12 @@ def changeNext ( v, pos, findPat, changePat, bodyFlag = 1 ):
         s = v.bodyString()
         # s[pos:pos+n] = changePat
         s = s[:pos] + changePat + s[pos+n:]
-        v.setBodyStringOrPane(s)
+        c.setBodyString(v,s)
     else:
         s = v.headString()
         # s[pos:pos+n] = changePat
         s = s[:pos] + changePat + s[pos+n:]
-        v.setHeadStringOrHeadline(s)
+        c.setHeadString(v,s)
         print "setting head string: ", result
     return v, pos
 #@nonl
@@ -13332,12 +13332,12 @@ def changePrev ( v, pos, findPat, changePat, bodyFlag = 1 ):
         s = v.bodyString()
         # s[pos:pos+n] = changePat
         s = s[:pos] + changePat + s[pos+n:]
-        v.setBodyStringOrPane(s)
+        c.setBodyString(v,s)
     else:
         s = v.headString()
         #s[pos:pos+n] = changePat
         s = s[:pos] + changePat + s[pos+n:]
-        v.setHeadStringOrHeadline(s)
+        c.setHeadString(v,s)
     return v, pos
 #@nonl
 #@-node:changePrev
@@ -13470,12 +13470,12 @@ def reChangeNext ( v, pos, findPat, changePat, bodyFlag, reFlags = None ):
         print s, findPat, changePat
         # s[pos:pos+n] = changePat
         s = s[:pos] + changePat + s[pos+n:]
-        v.setBodyStringOrPane(s)
+        c.setBodyString(v,s)
     else:
         s = v.headString()
         # s[pos:pos+n] = changePat
         s = s[:pos] + changePat + s[pos+n:]
-        v.setHeadStringOrHeadline(s)
+        c.setHeadString(v,s)
     return v, mo, pos
 #@nonl
 #@-node:reChangeNext
@@ -13506,12 +13506,12 @@ def reChangePrev ( v, pos, findPat, changePat, bodyFlag, reFlags = None ):
         s = v.bodyString()
         # s[pos:pos+n] = changePat
         s = s[:pos] + changePat + s[pos+n:]
-        v.setBodyStringOrPane(s)
+        c.setBodString(v,s)
     else:
         s = v.headString()
         # s[pos:pos+n] = changePat
         s = s[:pos] + changePat + s[pos+n:]
-        v.setHeadStringOrHeadline(s)
+        c.setHeadString(v,s)
     return v, mo, pos
 #@nonl
 #@-node:reChangePrev
@@ -13892,7 +13892,7 @@ for line in lines:
         result.append(line)
 
 s = ''.join(result)
-p.setBodyString(s)
+c.setBodyString(p,s)
 #@nonl
 #@-node:delete from ':' to end (script)
 #@+node:delete from first blank
@@ -13912,7 +13912,7 @@ for line in lines:
         result.append(line)
 
 s = ''.join(result)
-p.setBodyString(s)
+c.setBodyString(p,s)
 #@nonl
 #@-node:delete from first blank
 #@+node:replace =.* with = None
@@ -13932,7 +13932,7 @@ for line in lines:
         result.append(line)
 
 s = ''.join(result)
-p.setBodyString(s)
+c.setBodyString(p,s)
 #@nonl
 #@-node:replace =.* with = None
 #@+node:stripBlankLines
@@ -13948,7 +13948,7 @@ for p in c.currentPosition().self_and_subtree_iter():
     s = g.stripBlankLines(body)
     if s != body:
         n += 1
-        p.setBodyStringOrPane(s,g.app.tkEncoding)
+        c.setBodyString(p,s,g.app.tkEncoding)
         c.undoer.setUndoParams("Change",p,
             oldText=body,newText=s,oldSel=None, newSel=None)
 
@@ -13984,7 +13984,7 @@ for line in lines:
 
 s = ''.join(result)
 g.trace(s)
-# p.setBodyString(s)
+# c.setBodyString(p,s)
 #@nonl
 #@-node:add tab before each =
 #@+node:add tab after each :
@@ -14003,7 +14003,7 @@ for line in lines:
 
 s = ''.join(result)
 g.trace(s)
-p.setBodyString(s)
+c.setBodyString(p,s)
 #@-node:add tab after each :
 #@+node:insert begin/endUpdate
 u = c.undoer ; w = c.frame.body.bodyCtrl
@@ -14041,7 +14041,7 @@ for p in p.self_and_subtree_iter():
     s = p.bodyString()
     target = s.rstrip()
     if s != target:
-        p.setBodyStringOrPane(target)
+        c.setBodyString(p,target)
         g.es(p.headString())
 #@nonl
 #@-node:Remove blank trailing lines
