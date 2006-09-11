@@ -138,7 +138,7 @@ def OnBodyKey(tag,keywords):
         except IOError,ioerr:
             g.es("[@run] IOError: "+str(ioerr),color="red")
             return
-        p.setBodyTextOrPane("")
+        c.setBodyText(p,"")
 #@nonl
 #@-node:ekr.20040910070811.12:OnBodyKey
 #@+node:ekr.20040910070811.13:OnIconDoubleClick

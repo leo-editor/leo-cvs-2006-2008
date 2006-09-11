@@ -153,8 +153,8 @@ class View:
         if not win32clipboard:
             return
     
+        c = self.c
         divider = '\n' + ('_-' * 34) + '\n'
-            
         win32clipboard.OpenClipboard()
         clipboard = ""
         if win32clipboard.IsClipboardFormatAvailable(win32clipboard.CF_TEXT):
@@ -169,9 +169,7 @@ class View:
         if not body[0] == clipboard:
             g.es('clipboard now holds %s' % clipboard)
             body.insert(0, clipboard)
-            self.current.setBodyTextOrPane(divider.join(body))
-        
-        
+            c.setBodyText(self.current,divider.join(body))
     #@nonl
     #@-node:ktenney.20041212102137:clip
     #@+node:ktenney.20041211072654.15:strip
@@ -180,6 +178,7 @@ class View:
         '''Display a file with all sentinel lines removed'''
         
         # get a path object for this position
+        c = self.c
         currentPath = self.getCurrentPath()
         
         # g.trace(currentPath.exists(),currentPath)
@@ -200,7 +199,7 @@ class View:
                     verbatim = True
                 elif not line.strip().startswith('#@'):
                     lines.append(line)
-            self.current.setBodyTextOrPane(''.join(lines))
+            c.setBodyText(self.current,''.join(lines))
         else:
             g.es('path does not exist: %s' % (str(currentPath)),color='blue')
     #@nonl
@@ -256,7 +255,7 @@ class View:
         
         g.trace(node)
     
-        node.setBodyTextOrPane(''.join(path.lines()))
+        self.c.setBodyText(node,''.join(path.lines()))
     #@nonl
     #@-node:ktenney.20041211072654.13:processFile
     #@+node:ktenney.20041211072654.14:processDirectory

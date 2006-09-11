@@ -22,8 +22,8 @@
 plugins_menu.py
 
 #################
-zodb.py
-#leoOPML.py
+#zodb.py
+leoOPML.py
 #slideshow.py
 #mod_shadow.py
 #print_cp.py

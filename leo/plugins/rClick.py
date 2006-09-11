@@ -202,7 +202,7 @@ def rClicker(tag,keywords):
         p=c.currentPosition()
         for match in re.finditer(scan_jump_re,text):
             name=match.group()
-            ref=g.findReference(name,p)
+            ref=g.findReference(c,name,p)
             if ref:
                 # Bug fix 1/8/06: bind c here.
                 # This is safe because we only get called from the proper commander.

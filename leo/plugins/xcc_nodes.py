@@ -549,7 +549,7 @@ def linPause(pid):	# theorical way to do it, untested!
 #@+node:ekr.20060513122450.33:AddText
 def AddText(text,node):
 
-	node.setBodyTextOrPane(node.bodyString()+text)
+	c.setBodyText(node,node.bodyString()+text)
 	l,c = LeoBody.index("end").split(".")
 	LeoBody.see(l+".0")
 #@nonl
@@ -1430,14 +1430,14 @@ class controllerClass:
         
         cc = self
         
-        cc.SELECTED_NODE.setBodyTextOrPane(text)
+        cc.setBodyText(SELECTED_NODE,text)
     #@-node:ekr.20060513122450.320:sSetText
     #@+node:ekr.20060513122450.321:sAddText
     def sAddText(self,text):
         
         cc = self
         
-        cc.SELECTED_NODE.setBodyTextOrPane(cc.SELECTED_NODE.bodyString()+text)
+        cc.setBodyText(SELECTED_NODE,cc.SELECTED_NODE.bodyString()+text)
     
         if not cc.CHILD_NODE:
             l,c = cc.LeoBodyText.index("end").split(".")
@@ -1617,7 +1617,7 @@ class controllerClass:
         cc = self
         
         if cc.ACTIVE_NODE:
-            cc.ACTIVE_NODE.setBodyTextOrPane(text)
+            cc.setBodyText(ACTIVE_NODE,text)
     #@nonl
     #@-node:ekr.20060513122450.293:aSetText
     #@+node:ekr.20060513122450.294:aAddText
@@ -1626,7 +1626,7 @@ class controllerClass:
         cc = self
         
         if cc.ACTIVE_NOD:
-            cc.ACTIVE_NODE.setBodyTextOrPane(cc.ACTIVE_NODE.bodyString()+text)
+            cc.setBodyText(cc.ACTIVE_NODE,cc.ACTIVE_NODE.bodyString()+text)
         
             if cc.SELECTED_NODE == cc.ACTIVE_NODE and cc.CHILD_NODE:
                 l,c = LeoBodyText.index("end").split(".")

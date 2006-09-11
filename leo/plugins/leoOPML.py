@@ -15,10 +15,13 @@ It defines the read-opml-file and write-opml-file commands and corresponding but
 #@@tabwidth -4
 #@@pagewidth 80
 
+# To do: handle unicode properly.
+
 __version__ = '0.03'
 
-opt_print_elements = True
+opt_print_elements = False
 opt_print_summary = False
+opt_print_attributes = True
 
 #@<< version history >>
 #@+node:ekr.20060904103412.2:<< version history >>
@@ -57,7 +60,7 @@ def init ():
     leoPlugins.registerHandler('start1',onStart2)
 
     # Register the commands.
-    leoPlugins.registerHandler(('open2','new2'),onCreate)
+    leoPlugins.registerHandler(('open2','new'),onCreate)
     
     g.plugin_signon(__name__)
 
@@ -215,7 +218,8 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         # Options...
         self.ignoreWs = True # True: don't print contents with only ws.
         self.newLineAfterStartElement = ['outline','head','body',]
-        self.printCharacters = self.printAttributes = opt_print_elements
+        self.printCharacters = opt_print_elements
+        self.printAttributes = opt_print_attributes
         if opt_print_elements:
             self.printElements =   ['outline','head','body',]
             self.suppressContent = ['outline','head','body','opml']
@@ -241,8 +245,10 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         
         attrs: an Attributes item passed to startElement.'''
         
+        # g.trace(g.listToString([attrs.getValue(name) for name in attrs.getNames()]))
+        
         return [
-            g.Bunch(name=name,val=attrs.getValue(name))
+            g.Bunch(name=name,val=g.toUnicode(attrs.getValue(name),encoding='utf-8'))
                 for name in attrs.getNames()]
     #@nonl
     #@-node:ekr.20060904134958.167:attrsToList
@@ -334,9 +340,10 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
     #@+node:ekr.20060904134958.178:characters
     def characters(self,content):
     
+        content = g.toUnicode(content,encoding='utf-8')
         content = content.replace('\r','')
         if content.strip(): content = content.strip()
-        content = self.clean(content)
+        # content = self.clean(content)
     
         elementName = self.elementStack and self.elementStack[-1].lower() or '<no element name>'
         
@@ -418,6 +425,55 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
     #@-others
 #@nonl
 #@-node:ekr.20060904134958.164:class contentHandler (XMLGenerator)
+#@+node:ekr.20060904103412.6:class opmlController
+class opmlController:
+    
+    #@    @+others
+    #@+node:ekr.20060904103412.7:__init__
+    def __init__ (self,c):
+        
+        self.c = c
+        
+        self.createCommands()
+    #@nonl
+    #@-node:ekr.20060904103412.7:__init__
+    #@+node:ekr.20060904103412.8:createCommands
+    def createCommands (self):
+        
+        c = self.c
+        c.opmlCommands = self
+    
+        if 0:
+            for name,func in (
+                ('read-opml-file',  self.readFile),
+                ('write-opml-file', self.writeFile),
+            ):
+                c.k.registerCommand (name,shortcut=None,func=func,pane='all',verbose=False)
+    #@nonl
+    #@-node:ekr.20060904103412.8:createCommands
+    #@+node:ekr.20060904103721:readFile
+    def readFile (self,event=None,fileName=None):
+        
+        if fileName: 
+    
+            node = self.c.fileCommands.parse_opml_file(fileName)
+        
+            g.trace(fileName,node)
+    #@nonl
+    #@-node:ekr.20060904103721:readFile
+    #@+node:ekr.20060904103721.1:writeFile
+    def writeFile (self,event=None,fileName=None):
+        
+        if fileName:
+        
+            g.trace(fileName)
+    
+            self.c.fileCommands.write_Leo_file(fileName,outlineOnlyFlag=True,toString=False,toOPML=True)
+    #@nonl
+    #@-node:ekr.20060904103721.1:writeFile
+    #@-others
+#@nonl
+#@-node:ekr.20060904103412.6:class opmlController
 #@+node:ekr.20060904141220:class nodeClass
 class nodeClass:
     
@@ -435,7 +491,6 @@ class nodeClass:
         self.c = contentHandler.c
         self.parent = None
         self.children = []
-    
     
         # Mode statistics...
         self.numberOfAttributes = 0
@@ -476,8 +531,8 @@ class nodeClass:
     #@+node:ekr.20060904141220.34:doAttribute
     def doAttribute (self,name,val):
         
-        name = str(name.lower())
-        
+        name = g.toUnicode(name,encoding='utf-8').lower()
+        val  = g.toUnicode(val,encoding='utf-8')
         g.trace(name,val)
         return ###
         
@@ -571,10 +626,10 @@ class nodeClass:
     def getAttributesForRuleset (self,ruleset):
         bunch = ruleset
         return bunch.attributes
-        
+    
     def getFileName (self):
         return self.fileName
-        
+    
     def getKeywords (self,n,ruleset):
         bunch = ruleset
         keywords = bunch.keywords
@@ -621,7 +676,6 @@ class nodeClass:
         
         g.trace(elementName)
         
-        
         return ####
     
         name = elementName.lower()
@@ -651,53 +705,6 @@ class nodeClass:
     #@-others
 #@nonl
 #@-node:ekr.20060904141220:class nodeClass
-#@+node:ekr.20060904103412.6:class opmlController
-class opmlController:
-    
-    #@    @+others
-    #@+node:ekr.20060904103412.7:__init__
-    def __init__ (self,c):
-        
-        self.c = c
-        
-        self.createCommands()
-    #@nonl
-    #@-node:ekr.20060904103412.7:__init__
-    #@+node:ekr.20060904103412.8:createCommands
-    def createCommands (self):
-        
-        c = self.c
-            
-        for name,func in (
-            ('read-opml-file',  self.readFile),
-            ('write-opml-file', self.writeFile),
-        ):
-            c.k.registerCommand (name,shortcut=None,func=func,pane='all',verbose=False)
-    #@nonl
-    #@-node:ekr.20060904103412.8:createCommands
-    #@+node:ekr.20060904103721:readFile
-    def readFile (self,event=None):
-        
-        fileName = r'c:\prog\test\OPMLtest.leo.opml'
-    
-        node = self.c.fileCommands.parse_opml_file(fileName)
-        
-        g.trace(fileName,node)
-    #@nonl
-    #@-node:ekr.20060904103721:readFile
-    #@+node:ekr.20060904103721.1:writeFile
-    def writeFile (self,event=None):
-        
-        fileName = r'c:\prog\test\OPMLtest.leo'
-        
-        g.trace(fileName)
-    
-        self.c.fileCommands.write_Leo_file(fileName,outlineOnlyFlag=True,toString=False,toOPML=True)
-    #@nonl
-    #@-node:ekr.20060904103721.1:writeFile
-    #@-others
-#@nonl
-#@-node:ekr.20060904103412.6:class opmlController
 #@-others
 #@nonl
 #@-node:ekr.20060904103412:@thin leoOPML.py

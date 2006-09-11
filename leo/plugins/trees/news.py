@@ -123,7 +123,7 @@ class NewsItem(BaseTreeHandler):
         # Now get the article 
         id = self.node.headString().split(" - ", 1)[0][15:]
         article = connection.body(id)
-        self.node.setBodyTextOrPane("\n".join(article[-1]))
+        self.c.setBodyText(self.node,"\n".join(article[-1]))
         #
         connection.quit()
     

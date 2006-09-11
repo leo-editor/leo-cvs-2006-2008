@@ -319,7 +319,7 @@ def match_section_ref (self,s,i):
     if k is not None:
         j = k + 2
         self.colorRangeWithTag(s,i,i+2,'nameBrackets')
-        ref = g.findReference(s[i:j],self.p)
+        ref = g.findReference(c,s[i:j],self.p)
         if ref:
             if self.use_hyperlinks:
                 #@                << set the hyperlink >>

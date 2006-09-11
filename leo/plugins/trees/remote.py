@@ -58,7 +58,7 @@ class Remote(BaseTreeHandler):
         #
         else:
             g.es("Done!", color="blue")
-            self.node.setBodyTextOrPane(content.getvalue())
+            self.c.setBodyText(self.node,content.getvalue())
 #@nonl
 #@-node:ekr.20050329082101.162:@thin trees\remote.py
 #@-leo
