@@ -3889,7 +3889,7 @@ class editCommandsClass (baseEditCommandsClass):
             if not p.hasThreadNext(): return
             if not moved.endswith('\n'): moved = moved + '\n'
             w.delete(i,j) # Deleted the old selection.
-            p.setBodyString(w.get('1.0','end')) # Doesn't really work: undo doesn't work.
+            c.setBodyString(p,w.get('1.0','end')) # Doesn't really work: undo doesn't work.
             p = p.threadNext()
             c.beginUpdate()
             c.selectPosition(p)
@@ -3937,7 +3937,7 @@ class editCommandsClass (baseEditCommandsClass):
             p = c.currentPosition()
             if not p.hasThreadBack(): return
             w.delete(i,j+'+1c')
-            p.setBodyString(w.get('1.0','end'))
+            c.setBodyString(p,w.get('1.0','end'))
             p = p.threadBack()
             c.beginUpdate()
             c.selectPosition(p)
