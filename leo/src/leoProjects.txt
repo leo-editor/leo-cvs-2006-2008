@@ -1764,6 +1764,549 @@ def adjustParentLinksInSubtree (self,parent):
 #@-node:ekr.20060908091132:Fixed undo clone-find-all 
 #@+node:ekr.20060908104646:Fixed several bugs in UNL plugin
 #@-node:ekr.20060908104646:Fixed several bugs in UNL plugin
+#@+node:ekr.20060912073120:Fixed crasher with multiple editors
+#@+node:ekr.20060912073340:Report
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3910237
+Kam-Yung
+Python 2.4.3, Tk 8.4.12, Pmw 1.2
+
+I'm getting "TclError Exception in Tk" callback with the new multi-editor
+feature.
+
+Steps to reproduce:
+
+* start up Leo with no files
+* execute "add-editor"
+* make sure the left-most body pane is selected
+* execute "delete-editor"
+
+Up comes a TK error box.
+#@nonl
+#@-node:ekr.20060912073340:Report
+#@+node:ekr.20060912073340.1:Traceback
+TclError Exception in Tk callback
+  Function: <function masterBindKeyCallback at 0x0164DBB0> (type: <type 'function'>)
+  Args: (<Tkinter.Event instance at 0x01840FD0>,)
+  Event type: KeyPress (type num: 2)
+Traceback (innermost last):
+  File "C:\prog\tigris-cvs\leo\extensions\Pmw\Pmw_1_2\lib\PmwBase.py", line 1752, in __call__
+    return apply(self.func, args)
+  File "C:\prog\tigris-cvs\leo\src\leoKeys.py", line 2117, in masterBindKeyCallback
+    return k.masterKeyHandler(event,stroke=stroke)
+  File "C:\prog\tigris-cvs\leo\src\leoKeys.py", line 3096, in masterKeyHandler
+    val = k.callStateFunction(event) # Calls end-command.
+  File "C:\prog\tigris-cvs\leo\src\leoKeys.py", line 2241, in callStateFunction
+    val = k.state.handler(event)
+  File "C:\prog\tigris-cvs\leo\src\leoKeys.py", line 2318, in fullCommand
+    k.callAltXFunction(k.mb_event)
+  File "C:\prog\tigris-cvs\leo\src\leoKeys.py", line 2355, in callAltXFunction
+    func(event)
+  File "C:\prog\tigris-cvs\leo\src\leoTkinterFrame.py", line 2124, in deleteEditor
+    self.onFocusIn(w)
+  File "C:\prog\tigris-cvs\leo\src\leoTkinterFrame.py", line 2173, in onFocusIn
+    c.selectPosition(w.leo_p,updateBeadList=True) # Calls selectMainEditor.
+  File "C:\prog\tigris-cvs\leo\src\leoCommands.py", line 6381, in selectPosition
+    c.frame.tree.select(p,updateBeadList)
+  File "C:\prog\tigris-cvs\leo\src\leoTkinterTree.py", line 2548, in select
+    c.frame.updateStatusLine() # New in Leo 4.4.1.
+  File "C:\prog\tigris-cvs\leo\src\leoTkinterFrame.py", line 1002, in updateStatusLine
+    if self.statusLine: self.statusLine.update()
+  File "C:\prog\tigris-cvs\leo\src\leoTkinterFrame.py", line 727, in update
+    index = w.index("insert")
+  File "c:\python24\lib\lib-tk\Tkinter.py", line 2938, in index
+    return self.tk.call(self._w, 'index', index)
+TclError: invalid command name ".20195728.20196288.22611848.22611928.23069560.23069920.body-pane"
+
+================================================
+  Event contents:
+    char:
+    delta: 13
+    height: ??
+    keycode: 13
+    keysym: Return
+    keysym_num: 65293
+    num: ??
+    serial: 1356
+    state: 8
+    time: 3053230
+    type: 2
+    widget: .20195728.20196288.22412264.minibuffer
+    width: ??
+    x: 244
+    x_root: 678
+    y: -164
+    y_root: 518
+
+#@-node:ekr.20060912073340.1:Traceback
+#@+node:ekr.20060912083415:What I did
+@nocolor
+
+- in statusLine.update:
+    
+replace self.bodyCtrl with c.frame.bodyCtrl.
+
+- Removed bodyCtrl ivar from statusLine class.  This value can not be cached!
+
+- in deleteEditor: add:
+
+self.bodyCtrl = self.frame.bodyCtrl = w
+
+just before the call to self.onFocusIn(w).
+#@nonl
+#@-node:ekr.20060912083415:What I did
+#@+node:ekr.20060528113806:deleteEditor
+def deleteEditor (self,event=None):
+    
+    '''Delete the presently selected body text editor.'''
+    
+    w = self.bodyCtrl ; d = self.editorWidgets
+    
+    if len(d.keys()) == 1: return
+    
+    name = w.leo_name
+    
+    del d [name] 
+    self.pb.delete(name)
+    panes = self.pb.panes()
+    minSize = float(1.0/float(len(panes)))
+    
+    for pane in panes:
+        self.pb.configurepane(pane,size=minSize)
+        
+    # Select another editor.
+    w = d.values()[0]
+    self.bodyCtrl = self.frame.bodyCtrl = w # Bug fix: 9/12/06
+    self.onFocusIn(w)
+#@-node:ekr.20060528113806:deleteEditor
+#@+node:ekr.20031218072017.1733:update (statusLine)
+def update (self):
+    
+    c = self.c ; w = c.frame.bodyCtrl ; lab = self.labelWidget
+
+    if g.app.killed or not self.isVisible:
+        return
+
+    index = w.index("insert")
+    row,col = g.app.gui.getindex(w,index)
+
+    if col > 0:
+        s = w.get("%d.0" % (row),index)
+        s = g.toUnicode(s,g.app.tkEncoding)
+        col = g.computeWidth (s,c.tab_width)
+    
+    s = "line %d, col %d " % (row,col)
+    # Important: this does not change the focus because labels never get focus.
+    lab.configure(text=s)
+    self.lastRow = row
+    self.lastCol = col
+#@-node:ekr.20031218072017.1733:update (statusLine)
+#@+node:ekr.20060528100747:Editors
+@ **Important**: body.bodyCtrl and body.frame.bodyCtrl must always be the same.
+#@+node:ekr.20060530204135:recolorWidget
+def recolorWidget (self,w):
+
+    c = self.c ; old_w = self.bodyCtrl
+    
+    # g.trace(id(w),c.currentPosition().headString())
+    
+    # Save.
+    self.bodyCtrl = self.frame.bodyCtrl = w
+    
+    c.recolor_now(interruptable=False) # Force a complete recoloring.
+    
+    # Restore.
+    self.bodyCtrl = self.frame.bodyCtrl = old_w
+#@nonl
+#@-node:ekr.20060530204135:recolorWidget
+#@+node:ekr.20060530210057:create/select/unselect/Label
+def unselectLabel (self,w):
+    
+    # g.trace(w.leo_name,w.leo_label_s)
+    if not w.leo_label: self.createLabel(w)
+    w.leo_label.configure(text=w.leo_label_s,bg='LightSteelBlue1')
+        
+def selectLabel (self,w):
+    
+    # g.trace(w.leo_name,w.leo_label_s)
+    if not w.leo_label: self.createLabel(w)
+    w.leo_label.configure(text=w.leo_label_s,bg='white')
+        
+def createLabel (self,w):
+
+    w.leo_label = Tk.Label(w.leo_frame)
+    w.pack_forget()
+    w.leo_label.pack(side='top')
+    w.pack(expand=1,fill='both')
+#@-node:ekr.20060530210057:create/select/unselect/Label
+#@+node:ekr.20060528100747.1:addEditor
+def addEditor (self,event=None):
+    
+    '''Add another editor to the body pane.'''
+    
+    c = self.c ; p = c.currentPosition()
+     
+    if self.numberOfEditors == 1:
+        # Inject the ivars into the first editor.
+        w = self.editorWidgets.get('1')
+        w.leo_p = p.copy()
+        w.leo_v = w.leo_p.v
+        w.leo_label_s = p.headString()
+
+    self.numberOfEditors += 1
+    name = '%d' % self.numberOfEditors
+    pane = self.pb.add(name)
+    panes = self.pb.panes()
+    minSize = float(1.0/float(len(panes)))
+    
+    << create label and text widgets >>
+    self.editorWidgets[name] = w
+
+    for pane in panes:
+        self.pb.configurepane(pane,size=minSize)
+    
+    self.pb.updatelayout()
+    self.bodyCtrl = self.frame.bodyCtrl = w
+    self.updateEditors()
+    # self.onFocusIn(w,setFocus=True)
+    c.bodyWantsFocusNow()
+#@+node:ekr.20060528110922:<< create label and text widgets >>
+f = Tk.Frame(pane)
+f.pack(side='top',expand=1,fill='both')
+
+w = self.createTextWidget(self.frame,f,name=name,p=p)
+
+w.delete('1.0','end')
+w.insert('end',p.bodyString())
+w.see('1.0')
+self.setFontFromConfig(w=w)
+self.setColorFromConfig(w=w)
+self.createBindings(w=w)
+c.k.completeAllBindingsForWidget(w)
+
+self.recolorWidget(w)
+#@-node:ekr.20060528110922:<< create label and text widgets >>
+#@-node:ekr.20060528100747.1:addEditor
+#@+node:ekr.20060606090542:setEditorColors
+def setEditorColors (self,bg,fg):
+    
+    c = self.c ; d = self.editorWidgets
+
+    for key in d.keys():
+        w2 = d.get(key)
+        # g.trace(id(w2),bg,fg)
+        try:
+            w2.configure(bg=bg,fg=fg)
+        except Exception:
+            g.es_exception()
+            pass
+#@-node:ekr.20060606090542:setEditorColors
+#@+node:ekr.20060528170438:cycleEditorFocus
+def cycleEditorFocus (self,event=None):
+    
+    '''Cycle keyboard focus between the body text editors.'''
+    
+    c = self.c ; d = self.editorWidgets ; w = self.bodyCtrl
+    values = d.values()
+    if len(values) > 1:
+        i = values.index(w) + 1
+        if i == len(values): i = 0
+        w2 = d.values()[i]
+        assert(w!=w2)
+        self.onFocusIn(w2,setFocus=True)
+        self.bodyCtrl = self.frame.bodyCtrl = w2
+        # g.trace('***',g.app.gui.widget_name(w2),id(w2))
+
+    return 'break'
+#@-node:ekr.20060528170438:cycleEditorFocus
+#@+node:ekr.20060528113806:deleteEditor
+def deleteEditor (self,event=None):
+    
+    '''Delete the presently selected body text editor.'''
+    
+    w = self.bodyCtrl ; d = self.editorWidgets
+    
+    if len(d.keys()) == 1: return
+    
+    name = w.leo_name
+    
+    del d [name] 
+    self.pb.delete(name)
+    panes = self.pb.panes()
+    minSize = float(1.0/float(len(panes)))
+    
+    for pane in panes:
+        self.pb.configurepane(pane,size=minSize)
+        
+    # Select another editor.
+    w = d.values()[0]
+    self.bodyCtrl = self.frame.bodyCtrl = w # Bug fix: 9/12/06
+    self.onFocusIn(w)
+#@-node:ekr.20060528113806:deleteEditor
+#@+node:ekr.20060528104554:onFocusIn
+lockout_onFocusIn = False
+
+def onFocusIn(self,w,setFocus=False):
+
+    c = self.c ; d = self.editorWidgets
+    trace = False
+    if trace: g.trace(g.callers())
+    if self.lockout_onFocusIn:
+        if trace: g.trace('lockout')
+        return 'break'
+    if w.leo_p is None:
+        if trace: g.trace('no w.leo_p') 
+        return 'break'
+    
+    # Disable recursive calls: some of the calls below generate OnFocusInEvents.
+    self.lockout_onFocusIn = True
+    try:
+        if trace: g.trace(w)
+    
+        # Inactivate the previously active editor.
+        # Don't capture ivars here! selectMainEditor keeps them up-to-date.
+        for key in d.keys():
+            w2 = d.get(key)
+            if w2 != w and w2.leo_active:
+                w2.leo_active = False
+                self.unselectLabel(w2)
+                w2.leo_scrollBarSpot = w2.yview()
+                w2.leo_insertSpot = g.app.gui.getInsertPoint(w2)
+                w2.leo_selection = g.app.gui.getSelectionRange(w2)
+                break
+        else:
+            if trace: g.trace('no active editor!')
+    
+        # Careful, leo_p may not exist.
+        if not c.positionExists(w.leo_p):
+            g.trace('does not exist',w.leo_name)
+            for p2 in c.allNodes_iter():
+                if p2.v == w.leo_v:
+                    w.leo_p = p2.copy()
+                    break
+            else:
+                if trace: g.trace("Can't happen")
+                return 'break'
+
+        self.frame.bodyCtrl = self.bodyCtrl = w # Must change both ivars!
+        w.leo_active = True
+        c.selectPosition(w.leo_p,updateBeadList=True) # Calls selectMainEditor.
+        c.recolor_now()
+        << restore the selection, insertion point and the scrollbar >>
+        w3 = g.app.gui.get_focus(c)
+        if setFocus or w3 and not g.app.gui.widget_name(w3).startswith('body'):
+            if trace: g.trace(g.app.gui.widget_name(w),id(w))
+            c.bodyWantsFocusNow()
+    finally:
+        self.lockout_onFocusIn = False
+
+    return 'break'
+#@+node:ekr.20060605190146:<< restore the selection, insertion point and the scrollbar >>
+if w.leo_insertSpot:
+    g.app.gui.setInsertPoint(w,w.leo_insertSpot)
+    w.see(w.leo_insertSpot)
+else:
+    g.app.gui.setInsertPoint(w,'1.0')
+    
+if w.leo_scrollBarSpot:
+    first,last = w.leo_scrollBarSpot
+    w.yview('moveto',first)
+
+if w.leo_selection:
+    try:
+        start,end = w.leo_selection
+        g.app.gui.setSelectionRange(w,start,end)
+    except Exception:
+        pass
+#@-node:ekr.20060605190146:<< restore the selection, insertion point and the scrollbar >>
+#@-node:ekr.20060528104554:onFocusIn
+#@+node:ekr.20060528132829:selectMainEditor
+def selectMainEditor (self,p):
+
+    c = self.c ; p = c.currentPosition() ; w = self.bodyCtrl
+
+    # Don't inject ivars if there is only one editor.
+    if w.leo_p is not None:
+        # Keep w's ivars up-to-date.
+        w.leo_p = p.copy()
+        w.leo_v = p.v
+        w.leo_label_s = p.headString()
+        self.selectLabel(w)
+        # g.trace(w.leo_name,p.headString())
+#@-node:ekr.20060528132829:selectMainEditor
+#@+node:ekr.20060528131618:updateEditors
+def updateEditors (self):
+    
+    c = self.c ; p = c.currentPosition()
+    d = self.editorWidgets
+    if len(d.keys()) < 2: return # There is only the main widget.
+
+    for key in d.keys():
+        w = d.get(key)
+        v = w.leo_v
+        if v and v == p.v and w != self.bodyCtrl:
+            w.delete('1.0','end')
+            w.insert('end',p.bodyString())
+            # g.trace('update',w,v)
+            self.recolorWidget(w)
+    c.frame.bodyWantsFocus()
+#@-node:ekr.20060528131618:updateEditors
+#@-node:ekr.20060528100747:Editors
+#@+node:ekr.20041223104933:class statusLineClass
+class statusLineClass:
+    
+    '''A class representing the status line.'''
+    
+    @others
+#@+node:ekr.20031218072017.3961: ctor
+def __init__ (self,c,parentFrame):
+    
+    self.c = c
+    self.colorTags = [] # list of color names used as tags.
+    self.enabled = False
+    self.isVisible = False
+    self.lastRow = self.lastCol = 0
+    self.log = c.frame.log
+    #if 'black' not in self.log.colorTags:
+    #    self.log.colorTags.append("black")
+    self.parentFrame = parentFrame
+    self.statusFrame = Tk.Frame(parentFrame,bd=2)
+    text = "line 0, col 0"
+    width = len(text) + 4
+    self.labelWidget = Tk.Label(self.statusFrame,text=text,width=width,anchor="w")
+    self.labelWidget.pack(side="left",padx=1)
+    
+    bg = self.statusFrame.cget("background")
+    self.textWidget = Tk.Text(self.statusFrame,
+        height=1,state="disabled",bg=bg,relief="groove",name='status-line')
+    self.textWidget.pack(side="left",expand=1,fill="x")
+    self.textWidget.bind("<Button-1>", self.onActivate)
+#@-node:ekr.20031218072017.3961: ctor
+#@+node:ekr.20031218072017.3962:clear
+def clear (self):
+    
+    t = self.textWidget
+    if not t: return
+    
+    trace = self.c.frame.trace_status_line and not g.app.unitTesting
+    if trace: g.trace(g.callers())
+    
+    t.configure(state="normal")
+    t.delete("1.0","end")
+    t.configure(state="disabled")
+#@-node:ekr.20031218072017.3962:clear
+#@+node:EKR.20040424153344:enable, disable & isEnabled
+def disable (self,background=None):
+    
+    c = self.c ; t = self.textWidget
+    if t:
+        if not background:
+            background = self.statusFrame.cget("background")
+        t.configure(state="disabled",background=background)
+    self.enabled = False
+    c.bodyWantsFocus()
+    
+def enable (self,background="white"):
+    
+    # g.trace()
+    c = self.c ; t = self.textWidget
+    if t:
+        t.configure(state="normal",background=background)
+        c.widgetWantsFocus(t)
+    self.enabled = True
+        
+def isEnabled(self):
+    return self.enabled
+#@nonl
+#@-node:EKR.20040424153344:enable, disable & isEnabled
+#@+node:ekr.20041026132435:get
+def get (self):
+    
+    t = self.textWidget
+    if t:
+        return t.get("1.0","end")
+    else:
+        return ""
+#@-node:ekr.20041026132435:get
+#@+node:ekr.20041223114744:getFrame
+def getFrame (self):
+    
+    return self.statusFrame
+#@-node:ekr.20041223114744:getFrame
+#@+node:ekr.20050120093555:onActivate
+def onActivate (self,event=None):
+    
+    # Don't change background as the result of simple mouse clicks.
+    background = self.statusFrame.cget("background")
+    self.enable(background=background)
+#@-node:ekr.20050120093555:onActivate
+#@+node:ekr.20041223111916:pack & show
+def pack (self):
+    
+    if not self.isVisible:
+        self.isVisible = True
+        self.statusFrame.pack(fill="x",pady=1)
+        
+show = pack
+#@-node:ekr.20041223111916:pack & show
+#@+node:ekr.20031218072017.3963:put (leoTkinterFrame:statusLineClass)
+def put(self,s,color=None):
+    
+    t = self.textWidget
+    if not t: return
+    
+    trace = self.c.frame.trace_status_line and not g.app.unitTesting
+    if trace: g.trace(s,g.callers())
+    
+    t.configure(state="normal")
+        
+    if color and color not in self.colorTags:
+        self.colorTags.append(color)
+        t.tag_config(color,foreground=color)
+
+    if color:
+        t.insert("end",s)
+        t.tag_add(color,"end-%dc" % (len(s)+1),"end-1c")
+        t.tag_config("black",foreground="black")
+        t.tag_add("black","end")
+    else:
+        t.insert("end",s)
+    
+    t.configure(state="disabled")
+#@-node:ekr.20031218072017.3963:put (leoTkinterFrame:statusLineClass)
+#@+node:ekr.20041223111916.1:unpack & hide
+def unpack (self):
+    
+    if self.isVisible:
+        self.isVisible = False
+        self.statusFrame.pack_forget()
+
+hide = unpack
+#@-node:ekr.20041223111916.1:unpack & hide
+#@+node:ekr.20031218072017.1733:update (statusLine)
+def update (self):
+    
+    c = self.c ; w = c.frame.bodyCtrl ; lab = self.labelWidget
+
+    if g.app.killed or not self.isVisible:
+        return
+
+    index = w.index("insert")
+    row,col = g.app.gui.getindex(w,index)
+
+    if col > 0:
+        s = w.get("%d.0" % (row),index)
+        s = g.toUnicode(s,g.app.tkEncoding)
+        col = g.computeWidth (s,c.tab_width)
+    
+    s = "line %d, col %d " % (row,col)
+    # Important: this does not change the focus because labels never get focus.
+    lab.configure(text=s)
+    self.lastRow = row
+    self.lastCol = col
+#@-node:ekr.20031218072017.1733:update (statusLine)
+#@-node:ekr.20041223104933:class statusLineClass
+#@-node:ekr.20060912073120:Fixed crasher with multiple editors
 #@-node:ekr.20060908092306:Bugs
 #@+node:ekr.20060905091234:Code level
 #@+node:ekr.20060904114302:Added OPML support to fileCommands
@@ -3201,6 +3744,237 @@ def adjustParentLinksInSubtree (self,parent):
 #@-node:ekr.20040409203454.1:p.deleteLinksInTree & allies
 #@-node:ekr.20060908115325:Reviewed p.deleteLinksInTree
 #@-node:ekr.20060905091234:Code level
+#@+node:ekr.20060912093334:New features
+#@+node:ekr.20060911160213:Added multiple editor commands to Cmds menu
+#@+node:ekr.20060912093334.1:Request
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3909651
+
+Could the multiple editor activation be added to the standard Leo menus?
+#@nonl
+#@-node:ekr.20060912093334.1:Request
+#@+node:ekr.20050921103736:createCmndsMenuFromTable
+def createCmndsMenuFromTable (self):
+    
+    cmdsMenu = self.createNewMenu('C&mds')
+    self.createMenuEntries(cmdsMenu,self.cmdsMenuTopTable)
+
+    for name,table in (
+        # &: a,b,c,e,g,h,i,m,n,p,r,s
+        ('&Abbrev...',          self.cmdsMenuAbbrevTable),
+        ('Body &Editors',       self.cmdsMenuBodyEditorsTable),
+        ('&Buffers...',         self.cmdsMenuBuffersTable),
+        ('&Center...',          self.cmdsMenuCenterTable),
+        ('Cha&nge Case...',     self.cmdsMenuChangeCaseTable),
+        ('&Help For Commands...',self.cmdsMenuHelpTable),
+        ('&Indent...',          self.cmdsMenuIndentTable),
+        ('&Macro...',           self.cmdsMenuMacroTable),
+        ('&Rectangles...',      self.cmdsMenuRectanglesTable),
+        ('Re&gisters...',       self.cmdsMenuRegistersTable),
+        ('&Sort...',            self.cmdsMenuSortTable),
+        ('S&pell Check...',     self.cmdsMenuSpellCheckTable),
+    ):
+        menu = self.createNewMenu(name,'Cmds')
+        self.createMenuEntries(menu,table)
+#@-node:ekr.20050921103736:createCmndsMenuFromTable
+#@+node:ekr.20050921103230:defineCmdsMenuTables & helpers
+def defineCmdsMenuTables (self):
+    
+    self.defineCmdsMenuTopTable()
+
+    self.defineCmdsMenuAbbrevTable()
+    self.defineCmdsMenuBodyEditorsTable()
+    self.defineCmdsMenuBuffersTable()
+    self.defineCmdsMenuCenterTable()
+    self.defineCmdsMenuChangeCaseTable()
+    self.defineCmdsMenuHelpTable()
+    self.defineCmdsMenuIndentTable()
+    self.defineCmdsMenuMacroTable()
+    self.defineCmdsMenuRectanglesTable()
+    self.defineCmdsMenuRegistersTable()
+    self.defineCmdsMenuSortTable()
+    self.defineCmdsMenuSpellCheckTable()
+#@+node:ekr.20060117094955: defineCmdsMenuTopTable
+def defineCmdsMenuTopTable (self):
+    
+    self.cmdsMenuTopTable = [
+        ('Repeat &Last Complex Command',    'repeat-complex-command'),
+        ('&Execute Named Command',          'full-command'),
+        ('Keyboard &Quit',                  'keyboard-quit'),
+        ('-', None),
+    ]
+#@-node:ekr.20060117094955: defineCmdsMenuTopTable
+#@+node:ekr.20060912093104:defineCmdsMenuBodyEditorsTable
+def defineCmdsMenuBodyEditorsTable (self):
+
+    self.cmdsMenuBodyEditorsTable = [
+        # &: a,c,d
+        ('&Add Body Editor',    'add-editor'),
+        ('&Change Body Editor', 'cycle-editor-focus'),
+        ('&Delete Body Editor', 'delete-editor'),
+    ]
+#@nonl
+#@-node:ekr.20060912093104:defineCmdsMenuBodyEditorsTable
+#@+node:ekr.20060117094955.1:defineCmdsMenuAbbrevTable
+def defineCmdsMenuAbbrevTable (self):
+    
+    c = self.c
+    
+    self.cmdsMenuAbbrevTable = [
+        ('&Toggle Abbreviation Mode',    'abbrev-mode'),
+        ('-', None),
+        ('&List Abbrevs',                'list-abbrevs'),
+        ('&Read Abbrevs',                'read-abbrev-file'),
+        ('&Write Abbrevs',               'write-abbrev-file'),
+        ('-', None),
+        ('&Add Global Abbrev',           'add-global-abbrev'),
+        ('&Inverse Add Global Abbrev',   'inverse-add-global-abbrev'),
+        ('&Kill All Abbrevs',            'kill-all-abbrevs'),
+        ('-', None),
+        # ('&Expand Abbrev',             'expand-abbrev'), # Not a command
+        ('&Expand Abbrev in Region',     'expand-region-abbrevs'),
+    ]
+#@-node:ekr.20060117094955.1:defineCmdsMenuAbbrevTable
+#@+node:ekr.20060117095212:defineCmdsMenuBufferTable
+def defineCmdsMenuBuffersTable (self):
+
+    self.cmdsMenuBuffersTable = [
+        ('&Append To Buffer',             'append-to-buffer'),
+        ('&Kill Buffer',                  'kill-buffer'),
+        ('List &Buffers',                 'list-buffers'),
+        ('&List Buffers Alphbetically',   'list-buffers-alphabetically'),
+        ('&Prepend To Buffer',            'prepend-to-buffer'),
+        ('&Rename Buffer',                'rename-buffer'),
+        ('&Switch To Buffer',             'switch-to-buffer'),
+    ]
+#@-node:ekr.20060117095212:defineCmdsMenuBufferTable
+#@+node:ekr.20060117095212.5:defineCmdsMenuCenterTable
+def defineCmdsMenuCenterTable (self):
+
+    c = self.c
+
+    self.cmdsMenuCenterTable = [
+        ('Center &Line',     'center-line'),
+        ('Center &Region',   'center-region'),
+    ]
+#@-node:ekr.20060117095212.5:defineCmdsMenuCenterTable
+#@+node:ekr.20060117095212.4:defineCmdsMenuChangeCaseTable
+def defineCmdsMenuChangeCaseTable (self):
+
+    c = self.c
+
+    self.cmdsMenuChangeCaseTable = [
+        ('&Capitalize Word', 'capitalize-word'),
+        ('&Downcase Word',   'downcase-word'),
+        ('&Upcase Word',     'upcase-word'),
+        ('-', None),
+        ('D&owncase Region', 'downcase-region'),
+        ('U&pcase Region',   'upcase-region'),
+    ]
+#@-node:ekr.20060117095212.4:defineCmdsMenuChangeCaseTable
+#@+node:ekr.20060529170949:defineCmdsMenuHelpTable
+def defineCmdsMenuHelpTable (self):
+
+    c = self.c
+
+    self.cmdsMenuHelpTable = [
+        ('&Getting Started',         'help'),
+        ('&Help For Command',        'help-for-command'),
+        ('-', None),
+        ('Apropos &Autocompletion',  'apropos-autocompletion'),
+        ('Apropos &Bindings',        'apropos-bindings'),
+        ('Apropos &Find Commands',   'apropos-find-commands'),
+    ]
+#@-node:ekr.20060529170949:defineCmdsMenuHelpTable
+#@+node:ekr.20060117095212.6:defineCmdsMenuIndentTable
+def defineCmdsMenuIndentTable (self):
+
+    c = self.c
+
+    self.cmdsMenuIndentTable = [
+        ('&Indent Region',   'indent-region'),
+        ('Indent R&elative', 'indent-relative'),
+        ('Indent Ri&gidly',  'indent-rigidly'),
+        ('&Unindent Region', 'unindent-region'),
+    ]
+#@-node:ekr.20060117095212.6:defineCmdsMenuIndentTable
+#@+node:ekr.20060117114315:defineCmdsMenuMacroTable
+def defineCmdsMenuMacroTable (self):
+
+    c = self.c
+
+    self.cmdsMenuMacroTable = [
+        ('&Load Macro File',     'load-file'),
+        ("-", None),
+        ('&Start Macro',         'start-kbd-macro'),
+        ('&End Macro',           'end-kbd-macro'),
+        ('&Name Last Macro',     'name-last-kbd-macro'),
+        ("-", None),
+        ('&Call Last Macro',     'call-last-keyboard-macro'),
+        ('&Insert Macro',        'insert-keyboard-macro'),
+    ]
+#@-node:ekr.20060117114315:defineCmdsMenuMacroTable
+#@+node:ekr.20060117095212.2:defineCmdsMenuRectanglesTable
+def defineCmdsMenuRectanglesTable (self):
+
+    c = self.c
+
+    self.cmdsMenuRectanglesTable = [
+        ('&Clear Rect',  'clear-rectangle'),
+        ('C&lose Rect',  'close-rectangle'),
+        ('&Delete Rect', 'delete-rectangle'),
+        ('&Kill Rect',   'kill-rectangle'),
+        ('&Open Rect',   'open-rectangle'),
+        ('&String Rect', 'string-rectangle'),
+        ('&Yank Rect',   'yank-rectangle'),
+    ]
+#@-node:ekr.20060117095212.2:defineCmdsMenuRectanglesTable
+#@+node:ekr.20060117095212.1:defineCmdsMenuRegistersTable
+def defineCmdsMenuRegistersTable (self):
+
+    c = self.c
+
+    self.cmdsMenuRegistersTable = [
+        ('&Append To Reg',   'append-to-register'),
+        ('Copy R&ect To Reg','copy-rectangle-to-register'),
+        ('&Copy To Reg',     'copy-to-register'),
+        ('I&nc Reg',         'increment-register'),
+        ('&Insert Reg',      'insert-register'),
+        ('&Jump To Reg',     'jump-to-register'),
+        # ('xxx',           'number-to-register'),
+        ('&Point to Reg',    'point-to-register'),
+        ('P&repend To Reg',  'prepend-to-register'),
+        ('&View Reg',        'view-register'),
+    ]
+#@-node:ekr.20060117095212.1:defineCmdsMenuRegistersTable
+#@+node:ekr.20060117095212.3:defineCmdsMenuSortTable
+def defineCmdsMenuSortTable (self):
+
+    c = self.c
+
+    self.cmdsMenuSortTable = [
+        ('Sort &Columns',    'sort-columns'),
+        ('Sort &Fields',     'sort-fields'),
+        ('Sort &Lines',      'sort-lines'),
+    ]
+#@-node:ekr.20060117095212.3:defineCmdsMenuSortTable
+#@+node:ekr.20060117095212.7:defineCmdsMenuSpellCheckTable
+def defineCmdsMenuSpellCheckTable (self):
+
+    c = self.c
+
+    self.cmdsMenuSpellCheckTable = [
+        ('Check &Spelling',      'open-spell-tab'),
+        ('&Change',              'spell-change'),
+        ('Change, &Then Find',   'spell-change-then-find'),
+        ('&Find',                'spell-find'),
+        ('&Ignore',              'spell-ignore'),
+    ]
+#@-node:ekr.20060117095212.7:defineCmdsMenuSpellCheckTable
+#@-node:ekr.20050921103230:defineCmdsMenuTables & helpers
+#@-node:ekr.20060911160213:Added multiple editor commands to Cmds menu
+#@-node:ekr.20060912093334:New features
 #@-node:ekr.20060904165452:4.4.2 projects
 #@-all
 #@nonl

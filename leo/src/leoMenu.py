@@ -399,10 +399,12 @@ class leoMenu:
         self.createMenuEntries(cmdsMenu,self.cmdsMenuTopTable)
     
         for name,table in (
+            # &: a,b,c,e,g,h,i,m,n,p,r,s
             ('&Abbrev...',          self.cmdsMenuAbbrevTable),
+            ('Body &Editors',       self.cmdsMenuBodyEditorsTable),
             ('&Buffers...',         self.cmdsMenuBuffersTable),
             ('&Center...',          self.cmdsMenuCenterTable),
-            ('C&hange Case...',     self.cmdsMenuChangeCaseTable),
+            ('Cha&nge Case...',     self.cmdsMenuChangeCaseTable),
             ('&Help For Commands...',self.cmdsMenuHelpTable),
             ('&Indent...',          self.cmdsMenuIndentTable),
             ('&Macro...',           self.cmdsMenuMacroTable),
@@ -1018,6 +1020,7 @@ class leoMenu:
         self.defineCmdsMenuTopTable()
     
         self.defineCmdsMenuAbbrevTable()
+        self.defineCmdsMenuBodyEditorsTable()
         self.defineCmdsMenuBuffersTable()
         self.defineCmdsMenuCenterTable()
         self.defineCmdsMenuChangeCaseTable()
@@ -1038,6 +1041,17 @@ class leoMenu:
             ('-', None),
         ]
     #@-node:ekr.20060117094955: defineCmdsMenuTopTable
+    #@+node:ekr.20060912093104:defineCmdsMenuBodyEditorsTable
+    def defineCmdsMenuBodyEditorsTable (self):
+    
+        self.cmdsMenuBodyEditorsTable = [
+            # &: a,c,d
+            ('&Add Body Editor',    'add-editor'),
+            ('&Change Body Editor', 'cycle-editor-focus'),
+            ('&Delete Body Editor', 'delete-editor'),
+        ]
+    #@nonl
+    #@-node:ekr.20060912093104:defineCmdsMenuBodyEditorsTable
     #@+node:ekr.20060117094955.1:defineCmdsMenuAbbrevTable
     def defineCmdsMenuAbbrevTable (self):
         
