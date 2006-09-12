@@ -595,7 +595,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
         def __init__ (self,c,parentFrame):
             
             self.c = c
-            self.bodyCtrl = c.frame.bodyCtrl
             self.colorTags = [] # list of color names used as tags.
             self.enabled = False
             self.isVisible = False
@@ -717,10 +716,11 @@ class leoTkinterFrame (leoFrame.leoFrame):
         
         hide = unpack
         #@-node:ekr.20041223111916.1:unpack & hide
-        #@+node:ekr.20031218072017.1733:update
+        #@+node:ekr.20031218072017.1733:update (statusLine)
         def update (self):
             
-            c = self.c ; w = self.bodyCtrl ; lab = self.labelWidget
+            c = self.c ; w = c.frame.bodyCtrl ; lab = self.labelWidget
+        
             if g.app.killed or not self.isVisible:
                 return
         
@@ -737,7 +737,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
             lab.configure(text=s)
             self.lastRow = row
             self.lastCol = col
-        #@-node:ekr.20031218072017.1733:update
+        #@-node:ekr.20031218072017.1733:update (statusLine)
         #@-others
     #@-node:ekr.20041223104933:class statusLineClass
     #@+node:ekr.20041223102225:class iconBarClass
@@ -2111,7 +2111,7 @@ class leoTkinterBody (leoFrame.leoBody):
         
         name = w.leo_name
         
-        del d [name]
+        del d [name] 
         self.pb.delete(name)
         panes = self.pb.panes()
         minSize = float(1.0/float(len(panes)))
@@ -2121,6 +2121,7 @@ class leoTkinterBody (leoFrame.leoBody):
             
         # Select another editor.
         w = d.values()[0]
+        self.bodyCtrl = self.frame.bodyCtrl = w # Bug fix: 9/12/06
         self.onFocusIn(w)
     #@-node:ekr.20060528113806:deleteEditor
     #@+node:ekr.20060528104554:onFocusIn
