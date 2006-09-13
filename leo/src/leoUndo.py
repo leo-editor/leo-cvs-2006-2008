@@ -357,7 +357,7 @@ class baseUndoer:
         uA = bunch.get('unknownAttributes')
         if uA is not None:
             v.unknownAttributes = uA
-            # v._p_changed = 1
+            v._p_changed = 1
     #@-node:ekr.20050415170737.2:restoreVnodeUndoInfo
     #@+node:ekr.20050415170812.2:restoreTnodeUndoInfo
     def restoreTnodeUndoInfo (self,bunch):
@@ -373,7 +373,7 @@ class baseUndoer:
         uA = bunch.get('unknownAttributes')
         if uA is not None:
             t.unknownAttributes = uA
-            # t._p_changed = 1
+            t._p_changed = 1
     #@-node:ekr.20050415170812.2:restoreTnodeUndoInfo
     #@-node:EKR.20040530121329:u.restoreTree & helpers
     #@+node:EKR.20040528075307:u.saveTree & helpers
