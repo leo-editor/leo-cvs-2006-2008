@@ -5578,17 +5578,24 @@ def stripBlankLines(s):
 #@-node:ekr.20031218072017.3197:Whitespace...
 #@+node:ekr.20060913091602:ZODB support
 #@+node:ekr.20060913090832.1:g.init_zodb
-init_zodb_failed = False
-init_zodb_db = None
+init_zodb_import_failed = False
+init_zodb_failed = {} # Keys are paths, values are True.
+init_zodb_db = {} # Keys are paths, values are ZODB.DB instances.
 
 def init_zodb (pathToZodbStorage,verbose=True):
     
     '''Return an ZODB.DB instance from ZODB.FileStorage.FileStorage(pathToZodbStorage)
     return None on any error.'''
     
-    global init_zodb_db, init_zodb_failed
-    if init_zodb_db: return init_zodb_db
-    if init_zodb_failed: return True
+    global init_zodb_db, init_zodb_failed, init_zodb_import_failed
+    
+    db = init_zodb_db.get(pathToZodbStorage)
+    if db: return db
+    
+    if init_zodb_import_failed: return None
+
+    failed = init_zodb_failed.get(pathToZodbStorage)
+    if failed: return None
 
     try:
         import ZODB
@@ -5596,18 +5603,18 @@ def init_zodb (pathToZodbStorage,verbose=True):
         if verbose:
             g.es('g.init_zodb: can not import ZODB')
             g.es_exception()
-        init_zodb_failed = True
+        init_zodb_import_failed = True
         return None
     
     try:
         storage = ZODB.FileStorage.FileStorage(pathToZodbStorage)
-        init_zodb_db = ZODB.DB(storage)
-        return init_zodb_db
+        init_zodb_db [pathToZodbStorage] = db = ZODB.DB(storage)
+        return db
     except Exception:
         if verbose:
             g.es('g.init_zodb: exception creating ZODB.DB instance')
             g.es_exception()
-        init_zodb_failed = True
+        init_zodb_failed [pathToZodbStorage] = True
         return None
 #@nonl
 #@-node:ekr.20060913090832.1:g.init_zodb
