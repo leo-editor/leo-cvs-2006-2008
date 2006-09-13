@@ -249,7 +249,7 @@ import time
 
 #@+others
 #@+node:ekr.20031218072017.3321:class tnode
-if use_zodb:
+if use_zodb and ZODB:
     class baseTnode (ZODB.Persistence.Persistent):
         pass
 else:
@@ -299,7 +299,7 @@ class tnode (baseTnode):
     __str__ = __repr__
     #@-node:ekr.20031218072017.3323:t.__repr__ & t.__str__
     #@+node:ekr.20060908205857:t.__hash__ (only for zodb)
-    if use_zodb:
+    if use_zodb and ZODB:
         def __hash__(self):
             # The only required property is that objects
             # which compare equal have the same hash value.
@@ -442,7 +442,7 @@ class tnode (baseTnode):
 #@nonl
 #@-node:ekr.20031218072017.3321:class tnode
 #@+node:ekr.20031218072017.3341:class vnode
-if use_zodb:
+if use_zodb and ZODB:
     class baseVnode (ZODB.Persistence.Persistent):
         pass
 else:
@@ -530,7 +530,7 @@ class vnode (baseVnode):
                 print v
     #@-node:ekr.20040312145256:v.dump
     #@+node:ekr.20060910100316:v.__hash__ (only for zodb)
-    if use_zodb:
+    if use_zodb and ZODB:
         def __hash__(self):
             # The only required property is that objects
             # which compare equal have the same hash value.
@@ -1388,23 +1388,21 @@ class basePosition (object):
     #@+node:ekr.20040117170612:p.__getattr__  ON:  must be ON if use_plugins
     if 1: # Good for compatibility, bad for finding conversion problems.
     
-        # if not use_zodb: # Can not use __getattr__ or __setattr__ when using zodb!
+        def __getattr__ (self,attr):
+            
+            """Convert references to p.t into references to p.v.t.
+            
+            N.B. This automatically keeps p.t in synch with p.v.t."""
     
-            def __getattr__ (self,attr):
-                
-                """Convert references to p.t into references to p.v.t.
-                
-                N.B. This automatically keeps p.t in synch with p.v.t."""
-        
-                if attr=="t":
-                    return self.v.t
-                else:
-                    # New in 4.3: _silently_ raise the attribute error.
-                    # This allows plugin code to use hasattr(p,attr) !
-                    if 0:
-                        print "unknown position attribute:",attr
-                        import traceback ; traceback.print_stack()
-                    raise AttributeError,attr
+            if attr=="t":
+                return self.v.t
+            else:
+                # New in 4.3: _silently_ raise the attribute error.
+                # This allows plugin code to use hasattr(p,attr) !
+                if 0:
+                    print "unknown position attribute:",attr
+                    import traceback ; traceback.print_stack()
+                raise AttributeError,attr
     #@nonl
     #@-node:ekr.20040117170612:p.__getattr__  ON:  must be ON if use_plugins
     #@+node:ekr.20031218072017.892:p.__init__
