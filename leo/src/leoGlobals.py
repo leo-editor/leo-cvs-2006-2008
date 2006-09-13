@@ -5576,6 +5576,42 @@ def stripBlankLines(s):
     return ''.join(lines)
 #@-node:ekr.20040723093558.1:stripBlankLines
 #@-node:ekr.20031218072017.3197:Whitespace...
+#@+node:ekr.20060913091602:ZODB support
+#@+node:ekr.20060913090832.1:g.init_zodb
+init_zodb_failed = False
+init_zodb_db = None
+
+def init_zodb (pathToZodbStorage,verbose=True):
+    
+    '''Return an ZODB.DB instance from ZODB.FileStorage.FileStorage(pathToZodbStorage)
+    return None on any error.'''
+    
+    global init_zodb_db, init_zodb_failed
+    if init_zodb_db: return init_zodb_db
+    if init_zodb_failed: return True
+
+    try:
+        import ZODB
+    except ImportError:
+        if verbose:
+            g.es('g.init_zodb: can not import ZODB')
+            g.es_exception()
+        init_zodb_failed = True
+        return None
+    
+    try:
+        storage = ZODB.FileStorage.FileStorage(pathToZodbStorage)
+        init_zodb_db = ZODB.DB(storage)
+        return init_zodb_db
+    except Exception:
+        if verbose:
+            g.es('g.init_zodb: exception creating ZODB.DB instance')
+            g.es_exception()
+        init_zodb_failed = True
+        return None
+#@nonl
+#@-node:ekr.20060913090832.1:g.init_zodb
+#@-node:ekr.20060913091602:ZODB support
 #@-others
 #@-node:ekr.20031218072017.3093:@thin leoGlobals.py
 #@-leo
