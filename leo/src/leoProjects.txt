@@ -2815,6 +2815,7 @@ def injectCallbacks(self):
     for f in (OnHyperLinkControlClick,OnHyperLinkEnter,OnHyperLinkLeave):
         
         g.funcToMethod(f,leoNodes.position)
+#@nonl
 #@+node:ekr.20040803072955.22:<< define tkinter callbacks to be injected in the position class >>
 # N.B. These vnode methods are entitled to know about details of the leoTkinterTree class.
 
@@ -3074,7 +3075,9 @@ u.afterCloneNode(q,undoType,undoData,dirtyVnodeList=[])
 #@-node:ekr.20060906130502:Removed p arg
 #@+node:ekr.20060905165341.2:Removed c arg
 #@+node:ekr.20031218072017.892:p.__init__
-def __init__ (self,v,stack,trace=True):
+# New in Leo 4.4.2: make stack default to None.
+
+def __init__ (self,v,stack=None,trace=True):
 
     """Create a new position."""
     
@@ -3085,8 +3088,11 @@ def __init__ (self,v,stack,trace=True):
 
     self.v = v
     # assert(v is None or v.t)
-
-    self.stack = stack[:] # Creating a copy here is safest and best.
+    
+    if stack:
+        self.stack = stack[:] # Creating a copy here is safest and best.
+    else:
+        self.stack = []
     
     g.app.positions += 1
     
@@ -3993,6 +3999,71 @@ def defineCmdsMenuSpellCheckTable (self):
 #@-node:ekr.20050921103230:defineCmdsMenuTables & helpers
 #@-node:ekr.20060911160213:Added multiple editor commands to Cmds menu
 #@-node:ekr.20060912093334:New features
+#@+node:ekr.20041228084018.5:Finished/retired zodb plugin
+@nocolor
+
+My present thinking is that scripts should be able to store/retrieve persistent
+objects to/from the zodb. That is, the zodb plugin is likely to be retired.
+
+Leo's vnode and tnode classes now derive from ZODB.Persistence.Persistent if
+leoNodes.use_zodb is True. It remains to be seen whether having use_zodb = True
+will cause any serious problems.
+
+See the posting below (Scripting using zodb) for latest details.
+#@nonl
+#@+node:ekr.20060913084832:@ulr http://www.zope.org/Wikis/ZODB/guide/zodb.html
+#@-node:ekr.20060913084832:@ulr http://www.zope.org/Wikis/ZODB/guide/zodb.html
+#@+node:ekr.20060913085557:Scripting using zodb
+> Do you see zodb as persisting Leo files or Leo nodes?
+
+Interesting question.  I now see the zodb plugin as a proof-of-concept for *user-defined* scripts.  The zodb plugin is probably going to go away.
+
+Let us suppose that db is a ZODB.DB instance. (To see how to create such an instance, see the init_zodb method in the zodb plugin.  Perhaps I'll defines something like g.openZodb to make this easier.)  Then the statements:
+
+connection = db.open()
+root = connection.root()
+root[aKey] = v
+get_transaction().commit()
+connection.close()
+
+will write all of v's data (all vnodes and tnodes) to the zodb.  This is true whatever v is: it can be the root of an entire outline, or any suboutline.  If you want to write a single node, you would have to 'detach' that node from the outline.  You can do this by copying the node and then unlinking the node from its descendents. Perhaps I could add a convenience method to the vnode class to make this easier.
+
+>Do you see zodb work as providing enhanced access to nodes across multiple files?
+
+Scripts could do so easily.  Happily, the distinction between 'long-lived' and 'short-lived' connections is not important for scripts: a script should hold a connection open only for as long as needed.  So it would be easy to write any number of vnode trees to the zodb.  Later, another script could access any of the data in the zodb by zodb key.  Like this:
+
+connection = db.open()
+root = connection.root()
+v = root.get(aKey)
+p = leoNodes.position(v,[])
+
+After running this script, p is a position representing the root of the tree of 'imported' vnodes.  The script above does not 'connect' the imported trees to an outline, nor should it do so.  As I write this, I realize that the position ctor should make the second argument optional, so that leoNodes.position(v) would be equivalent to leoNodes.position(v,[]).
+
+Each script should open at most connection at a time and be sure to close any zodb connection it creates.  The proper way to do this is in a finally statement, like this:
+
+try:
+....connection = db.open()
+....root = connection.root()
+....v = root.get(aKey)
+....p = leoNodes.position(v,[])
+....<< do something with the nodes in p's tree>>
+finally:
+....get_transaction().commit()
+....connection.close()
+
+In short, the recent changes to Leo's vnode and tnode classes give scripts the ability to save/retrieve Leo data to/from the zodb in any way a script wants, without any further support from Leo, or from me.
+
+I shall spend an hour or two more with the zodb plugin, but it looks to me that the plugin has served its purpose.  Rather than trying to guess how people will want to use the zodb, it will be simpler and more general to have people write scripts that do exactly what they want.  In particular, such scripts can easily sidestep the problems with multiple open connections.
+
+Edward
+
+P.S. Please note that the scripts shown above could not have been written without all the recent work with the zodb plugin and the big code reorg.
+
+P.P.S. A couple of unit tests involving the new v/t.__hash__ methods just failed, so it may be just a little bit longer before the code on cvs is truly zodb ready.  I'll also be working on example scripts and the convenience methods described above.
+
+EKR
+#@-node:ekr.20060913085557:Scripting using zodb
+#@-node:ekr.20041228084018.5:Finished/retired zodb plugin
 #@-node:ekr.20060904165452:4.4.2 projects
 #@-all
 #@nonl

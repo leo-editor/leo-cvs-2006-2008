@@ -424,6 +424,7 @@ class leoTkinterTree (leoFrame.leoTree):
         for f in (OnHyperLinkControlClick,OnHyperLinkEnter,OnHyperLinkLeave):
             
             g.funcToMethod(f,leoNodes.position)
+    #@nonl
     #@-node:ekr.20040803072955.21:tkTree.injectCallbacks
     #@-node:ekr.20040803072955.15: Birth... (tkTree)
     #@+node:ekr.20040803072955.6:Allocation...
