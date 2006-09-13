@@ -759,7 +759,7 @@ for resultDict in self.descendentUnknownAttributesDictList:
         t = self.tnodesDict.get(tref)
         if t:
             t.unknownAttributes = resultDict[gnx]
-            # t._p_changed = 1
+            t._p_changed = 1
         # else: g.trace("can not find tnode: gnx = %s" % gnx,color="red")
 
 marks = {} ; expanded = {}
@@ -1102,7 +1102,7 @@ def createVnode (self,parent,back,tref,headline,attrDict):
 keys = attrDict.keys()
 if keys:
     v.unknownAttributes = attrDict
-    # v._p_changed = 1
+    v._p_changed = 1
 
     if 0: # For debugging.
         s = "unknown attributes for " + v.headString()
@@ -1735,7 +1735,7 @@ def deleteLinksInSubtree (self):
     if p.v in p.v.t.vnodeList:
         # g.trace('**** remove p.v from %s' % p.headString())
         p.v.t.vnodeList.remove(p.v)
-        # p.v.t._p_changed = 1  # Support for tnode class.
+        p.v.t._p_changed = 1  # Support for tnode class.
         assert(p.v not in p.v.t.vnodeList)
     else:
         # g.trace("not in vnodeList",p.v,p.vnodeListIds())
@@ -3080,7 +3080,7 @@ def __init__ (self,v,stack,trace=True):
     
     __pychecker__ = '--no-argsused' # trace not used.
 
-    # To support ZODB the code must set p._p_changed = 1 whenever
+    # To support ZODB the code must set vort._p_changed = 1 whenever
     # t.vnodeList (or any mutable tnode or vnode object) changes.
 
     self.v = v
@@ -3127,7 +3127,7 @@ def linkAsRoot (self,oldRoot):
     # Add v to it's tnode's vnodeList.
     if v not in v.t.vnodeList:
         v.t.vnodeList.append(v)
-        # v.t._p_changed = 1 # Support for tnode class.
+        v.t._p_changed = 1 # Support for tnode class.
 
     # Link in the rest of the tree only when oldRoot != None.
     # Otherwise, we are calling this routine from init code and
@@ -3205,7 +3205,7 @@ def unlink (self):
     vnodeList = v.t.vnodeList
     if v in vnodeList:
         vnodeList.remove(v)
-        # v.t._p_changed = 1 # Support for tnode class.
+        v.t._p_changed = 1 # Support for tnode class.
     assert(v not in vnodeList)
     
     # Reset the firstChild link in its direct father.
@@ -3261,7 +3261,7 @@ def __init__ (self,t):
 
     assert(t)
     
-    # To support ZODB the code must set p._p_changed = 1 whenever
+    # To support ZODB the code must set v._p_changed = 1 whenever
     # v.unknownAttributes or any mutable vnode object changes.
 
     self.t = t # The tnode.
@@ -3286,7 +3286,7 @@ def linkAsRoot (self,oldRoot):
     # Add v to it's tnode's vnodeList. Bug fix: 5/02/04.
     if v not in v.t.vnodeList:
         v.t.vnodeList.append(v)
-        # v.t._p_changed = 1
+        v.t._p_changed = 1
 
     # Link in the rest of the tree only when oldRoot != None.
     # Otherwise, we are calling this routine from init code and
@@ -3716,7 +3716,7 @@ def deleteLinksInSubtree (self):
     if p.v in p.v.t.vnodeList:
         # g.trace('**** remove p.v from %s' % p.headString())
         p.v.t.vnodeList.remove(p.v)
-        # p.v.t._p_changed = 1  # Support for tnode class.
+        p.v.t._p_changed = 1  # Support for tnode class.
         assert(p.v not in p.v.t.vnodeList)
     else:
         # g.trace("not in vnodeList",p.v,p.vnodeListIds())
@@ -3743,6 +3743,24 @@ def adjustParentLinksInSubtree (self,parent):
 #@-node:ekr.20040410170806.1:p.adjustParentLinksInSubtree
 #@-node:ekr.20040409203454.1:p.deleteLinksInTree & allies
 #@-node:ekr.20060908115325:Reviewed p.deleteLinksInTree
+#@+node:ekr.20060913082305:Fix problem with t.hash
+#@+node:ekr.20060908205857:t.__hash__ (only for zodb)
+if use_zodb:
+    def __hash__(self):
+        # The only required property is that objects
+        # which compare equal have the same hash value.
+        return sum([ord(ch) for ch in g.app.nodeIndices.toString(self.fileIndex)])
+#@nonl
+#@-node:ekr.20060908205857:t.__hash__ (only for zodb)
+#@+node:ekr.20060910100316:v.__hash__ (only for zodb)
+if use_zodb:
+    def __hash__(self):
+        # The only required property is that objects
+        # which compare equal have the same hash value.
+        return self.t.__hash__()
+#@nonl
+#@-node:ekr.20060910100316:v.__hash__ (only for zodb)
+#@-node:ekr.20060913082305:Fix problem with t.hash
 #@-node:ekr.20060905091234:Code level
 #@+node:ekr.20060912093334:New features
 #@+node:ekr.20060911160213:Added multiple editor commands to Cmds menu
