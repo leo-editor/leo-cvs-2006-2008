@@ -848,6 +848,22 @@ class vnode (baseVnode):
     #@-node:ekr.20031218072017.3359:Getters (vnode)
     #@+node:ekr.20040301071824:v.Link/Unlink/Insert methods (used by file read logic)
     # These remain in 4.2: the file read logic calls these before creating positions.
+    #@+node:ekr.20060913091805.1:v.detach
+    def detach (self):
+        
+        '''Return a standalone copy of a vnode,
+        detached from all other nodes and with a new tnode.'''
+        
+        v = self
+        
+        # Create a completely separate tnode.
+        t2 = tnode(
+            bodyString=v.bodyString(),
+            headString=v.headString())
+        
+        return vnode(t2)
+    #@nonl
+    #@-node:ekr.20060913091805.1:v.detach
     #@+node:ekr.20031218072017.3419:v.insertAfter
     def insertAfter (self,t=None):
     
@@ -1392,7 +1408,9 @@ class basePosition (object):
     #@nonl
     #@-node:ekr.20040117170612:p.__getattr__  ON:  must be ON if use_plugins
     #@+node:ekr.20031218072017.892:p.__init__
-    def __init__ (self,v,stack,trace=True):
+    # New in Leo 4.4.2: make stack default to None.
+    
+    def __init__ (self,v,stack=None,trace=True):
     
         """Create a new position."""
         
@@ -1403,8 +1421,11 @@ class basePosition (object):
     
         self.v = v
         # assert(v is None or v.t)
-    
-        self.stack = stack[:] # Creating a copy here is safest and best.
+        
+        if stack:
+            self.stack = stack[:] # Creating a copy here is safest and best.
+        else:
+            self.stack = []
         
         g.app.positions += 1
         
