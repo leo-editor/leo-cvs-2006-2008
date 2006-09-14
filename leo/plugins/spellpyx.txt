@@ -333,6 +333,7 @@ Voth
 WXUNUSED
 Wenshan
 Wijnders
+Wikis
 Wim
 Winkler
 Word97
@@ -349,6 +350,7 @@ XSave
 Xtools
 YellowBox
 Ying
+ZODB's
 Z_a
 Zatz
 Zeitlin
@@ -365,6 +367,7 @@ a7
 aClass
 aColor
 aDirectory
+aKey
 aList
 aMethod
 aScriptFile
@@ -505,6 +508,8 @@ btw
 bytecode
 bz2
 c's
+c2
+c2Root
 c2py
 c_language
 c``'s
@@ -934,6 +939,7 @@ get_lineno
 get_objects
 get_referrers
 get_suffixes
+get_transaction
 getargspec
 getattr
 getcwd
@@ -1050,6 +1056,7 @@ incompletions
 indices
 initMarked
 initWriteIvars
+init_zodb
 initing
 inits
 inline
@@ -1181,6 +1188,7 @@ leoProjects
 leoRecentFiles
 leoScripts
 leoSettings
+leoSetttings
 leoTangle
 leoTest
 leoTests
@@ -1241,6 +1249,7 @@ mCommands
 mCurrentVnode
 mErrors
 mFileIndex
+mFileName
 mIconVal
 mJoinHead
 mJoinList
@@ -1369,6 +1378,7 @@ no_escape
 no_line_break
 no_word_break
 nocolor
+node3
 nodeAfterTree
 nodeIndices
 node_begin_marker
@@ -1433,6 +1443,7 @@ oodb
 open1
 open2
 openDir
+openDirectory
 openFileDialog
 openLeo
 openPipes
@@ -1747,6 +1758,7 @@ setLeoID
 setLog
 setMarked
 setRevertVars
+setRootVnode
 setTabWidth
 setTimestamp
 setTnodeText
@@ -1812,6 +1824,7 @@ skip_to_char
 skip_ws
 skipwhite
 slashdot
+slideshow
 sn
 someScan
 someValue
@@ -2054,6 +2067,7 @@ use_gnx
 use_header_flag
 use_hyperlinks
 use_plugins
+use_zodb
 useauto
 usecalltips
 user_name
@@ -2133,6 +2147,7 @@ writeNormalTree
 writeTree
 writeTreeAsRst
 write_Leo_file
+writingPlugins
 ws
 wsToString
 wx
