@@ -17,11 +17,10 @@ It defines the read-opml-file and write-opml-file commands and corresponding but
 
 # To do: handle unicode properly.
 
-__version__ = '0.03'
+__version__ = '0.04'
 
-opt_print_elements = False
-opt_print_summary = False
-opt_print_attributes = True
+# For traces.
+printElements = [] # ['outline','head','body',]
 
 #@<< version history >>
 #@+node:ekr.20060904103412.2:<< version history >>
@@ -36,6 +35,11 @@ opt_print_attributes = True
 # - This plugin overrides leoFileCommands.fileCommands.putToOPML.
 # 0.03 EKR: Use SAX to read .opml files.  Parsing works.  More semantics are 
 # needed.
+# 0.04 EKR:
+# - Removed most options.
+# - Removed nodeClass.startElement and nodeClass.endElement.
+# - Simplified nodeClass.doAttribute.
+# - Removed several nodeClass ivars.
 #@-at
 #@-node:ekr.20060904103412.2:<< version history >>
 #@nl
@@ -163,6 +167,8 @@ class opmlFileCommandsClass (leoFileCommands.fileCommands):
     #@-node:ekr.20060904132527.13:putToOPML & helpers
     #@+node:ekr.20060904134958.116:parse_opml_file
     def parse_opml_file (self,inputFileName):
+        
+        g.trace(inputFileName)
     
         if not inputFileName or not inputFileName.endswith('.opml'):
             return None
@@ -196,6 +202,66 @@ class opmlFileCommandsClass (leoFileCommands.fileCommands):
     #@-others
 #@nonl
 #@-node:ekr.20060904132527.11:class opmlFileCommandsClass (fileCommands)
+#@+node:ekr.20060904103412.6:class opmlController
+class opmlController:
+    
+    #@    @+others
+    #@+node:ekr.20060904103412.7:__init__
+    def __init__ (self,c):
+        
+        self.c = c
+        
+        self.createCommands()
+    #@nonl
+    #@-node:ekr.20060904103412.7:__init__
+    #@+node:ekr.20060904103412.8:createCommands
+    def createCommands (self):
+        
+        c = self.c
+        c.opmlCommands = self
+    
+        if 0:
+            for name,func in (
+                ('read-opml-file',  self.readFile),
+                ('write-opml-file', self.writeFile),
+            ):
+                c.k.registerCommand (name,shortcut=None,func=func,pane='all',verbose=False)
+    #@nonl
+    #@-node:ekr.20060904103412.8:createCommands
+    #@+node:ekr.20060913220707:dumpTree
+    def dumpTree (self,root,dummy):
+        
+        if not dummy:
+            root.dump()
+        for child in root.children:
+            self.dumpTree(child,dummy=False)
+    #@nonl
+    #@-node:ekr.20060913220707:dumpTree
+    #@+node:ekr.20060904103721:readFile
+    def readFile (self,event=None,fileName=None):
+        
+        if fileName: 
+    
+            node = self.c.fileCommands.parse_opml_file(fileName)
+        
+            g.trace('done',fileName,node)
+            
+            self.dumpTree(node,dummy=True)
+    #@nonl
+    #@-node:ekr.20060904103721:readFile
+    #@+node:ekr.20060904103721.1:writeFile
+    def writeFile (self,event=None,fileName=None):
+        
+        if fileName:
+        
+            g.trace(fileName)
+    
+            self.c.fileCommands.write_Leo_file(fileName,outlineOnlyFlag=True,toString=False,toOPML=True)
+    #@nonl
+    #@-node:ekr.20060904103721.1:writeFile
+    #@-others
+#@nonl
+#@-node:ekr.20060904103412.6:class opmlController
 #@+node:ekr.20060904134958.164:class contentHandler (XMLGenerator)
 class contentHandler (xml.sax.saxutils.XMLGenerator):
     
@@ -210,22 +276,6 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
     
         # Init the base class.
         xml.sax.saxutils.XMLGenerator.__init__(self)
-        
-        # Statistics.
-        self.numberOfAttributes = 0
-        self.numberOfElements = 0
-        
-        # Options...
-        self.ignoreWs = True # True: don't print contents with only ws.
-        self.newLineAfterStartElement = ['outline','head','body',]
-        self.printCharacters = opt_print_elements
-        self.printAttributes = opt_print_attributes
-        if opt_print_elements:
-            self.printElements =   ['outline','head','body',]
-            self.suppressContent = ['outline','head','body','opml']
-        else:
-            self.printElements = []
-            self.suppressContent = []
       
         # Semantics.
         self.elementStack = []
@@ -299,7 +349,7 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
                 indent,
                 self.clean(name).strip()),
     
-        if name.lower() in self.newLineAfterStartElement:
+        if name.lower() in ['outline','head','body',]:
             print
     #@nonl
     #@-node:ekr.20060904134958.171:printStartElement
@@ -340,20 +390,13 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
     #@+node:ekr.20060904134958.178:characters
     def characters(self,content):
     
-        content = g.toUnicode(content,encoding='utf-8')
-        content = content.replace('\r','')
-        if content.strip(): content = content.strip()
-        # content = self.clean(content)
+        content = g.toUnicode(content,encoding='utf-8') or ''
+        content = content.replace('\r','').strip()
     
         elementName = self.elementStack and self.elementStack[-1].lower() or '<no element name>'
         
-        if self.printCharacters and content and elementName not in self.suppressContent:
+        if content:
             print 'content:',elementName,repr(content)
-    
-        # if self.node:
-            # self.node.doContent(elementName,content)
-        # else:
-            # self.error('characters outside of node')
     #@nonl
     #@-node:ekr.20060904134958.178:characters
     #@+node:ekr.20060904134958.179:endElement
@@ -367,9 +410,7 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
     #@-node:ekr.20060904134958.179:endElement
     #@+node:ekr.20060904134958.180:startElement
     def startElement(self,name,attrs):
-        
-        self.numberOfElements += 1
-            
+    
         self.elementStack.append(name)
         self.doStartElement(name,attrs)
     #@nonl
@@ -379,8 +420,8 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
     def doStartElement (self,elementName,attrs):
         
         elementName = elementName.lower()
-        
-        if elementName in self.printElements:
+    
+        if elementName in printElements:
             self.printStartElement(elementName,attrs)
     
         if elementName == 'body':
@@ -388,14 +429,22 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         elif elementName == 'head':
             self.inHead = True
         elif elementName == 'outline':
+            if self.inHead:     self.error('<outline> inside <head>')
+            if not self.inBody: self.error('<outline> outside <body>')
             self.level += 1
-            self.node = nodeClass(contentHandler=self)
-            self.nodeStack.append(self.node)
-            self.node.startElement(elementName)
+            parent = self.node
+            self.node = nodeClass()
+            if parent:
+                self.node.parent = parent
+            else:
+                parent = nodeClass() # This is a dummy parent node.
+            parent.children.append(self.node)
+            if not self.rootNode:
+                self.rootNode = self.node
+            
             for bunch in self.attrsToList(attrs):
-                if self.printAttributes:
-                    print 'attr:',elementName,bunch.name,'=',bunch.val
                 self.node.doAttribute(bunch.name,bunch.val)
+            self.nodeStack.append(self.node)
     #@nonl
     #@-node:ekr.20060904134958.181:doStartElement
     #@+node:ekr.20060904134958.182:doEndElement
@@ -403,7 +452,7 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         
         elementName = elementName.lower()
         
-        if elementName in self.printElements:
+        if elementName in printElements:
             indent = '\t' * (self.level-1) or ''
             print '%s</%s>' % (indent,self.clean(elementName).strip())
             
@@ -413,7 +462,7 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
             self.inHead = False
         elif elementName == 'outline':
             self.level -= 1
-            self.nodeStack.pop()
+            self.node = self.nodeStack.pop()
     #@nonl
     #@-node:ekr.20060904134958.182:doEndElement
     #@+node:ekr.20060904134958.183:getNode
@@ -425,55 +474,6 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
     #@-others
 #@nonl
 #@-node:ekr.20060904134958.164:class contentHandler (XMLGenerator)
-#@+node:ekr.20060904103412.6:class opmlController
-class opmlController:
-    
-    #@    @+others
-    #@+node:ekr.20060904103412.7:__init__
-    def __init__ (self,c):
-        
-        self.c = c
-        
-        self.createCommands()
-    #@nonl
-    #@-node:ekr.20060904103412.7:__init__
-    #@+node:ekr.20060904103412.8:createCommands
-    def createCommands (self):
-        
-        c = self.c
-        c.opmlCommands = self
-    
-        if 0:
-            for name,func in (
-                ('read-opml-file',  self.readFile),
-                ('write-opml-file', self.writeFile),
-            ):
-                c.k.registerCommand (name,shortcut=None,func=func,pane='all',verbose=False)
-    #@nonl
-    #@-node:ekr.20060904103412.8:createCommands
-    #@+node:ekr.20060904103721:readFile
-    def readFile (self,event=None,fileName=None):
-        
-        if fileName: 
-    
-            node = self.c.fileCommands.parse_opml_file(fileName)
-        
-            g.trace(fileName,node)
-    #@nonl
-    #@-node:ekr.20060904103721:readFile
-    #@+node:ekr.20060904103721.1:writeFile
-    def writeFile (self,event=None,fileName=None):
-        
-        if fileName:
-        
-            g.trace(fileName)
-    
-            self.c.fileCommands.write_Leo_file(fileName,outlineOnlyFlag=True,toString=False,toOPML=True)
-    #@nonl
-    #@-node:ekr.20060904103721.1:writeFile
-    #@-others
-#@nonl
-#@-node:ekr.20060904103412.6:class opmlController
 #@+node:ekr.20060904141220:class nodeClass
 class nodeClass:
     
@@ -483,41 +483,14 @@ class nodeClass:
     
     #@    @+others
     #@+node:ekr.20060904141220.1: node.__init__
-    def __init__ (self,contentHandler):
-        
-        # g.trace('mode',fileName)
+    def __init__ (self):
     
-        self.contentHandler = contentHandler
-        self.c = contentHandler.c
-        self.parent = None
-        self.children = []
-    
-        # Mode statistics...
-        self.numberOfAttributes = 0
-        self.numberOfElements = 0
-        self.numberOfErrors = 0
-    
-        
-        # # List of boolean attributes.
-        # self.boolAttrs = [
-            # 'at_line_start','at_whitespace_end','at_word_start',
-            # 'exclude_match','highlight_digits','ignore_case',
-            # 'no_escape','no_line_break','no_word_break',]
-     
-        # # List of elements that start a rule.
-        # self.ruleElements = [
-            # 'eol_span','eol_span_regexp','import','keywords',
-            # 'mark_following','mark_previous','seq','seq_regexp',
-            # 'span','span_regexp','terminate',]
-     
-        # if 0: # Not used at present.
-            # self.seqSpanElements = [
-                # 'eol_span','eol_span_regexp','seq','seq_regexp',
-                # 'span','span_regexp',]
-    
-        # Node semantics.
         self.attributes = {}
-        self.handlerCount = 0
+        self.bodyString = ''
+        self.headString = ''
+        self.children = []
+        self.parent = None
+        self.tnx = None
     #@nonl
     #@-node:ekr.20060904141220.1: node.__init__
     #@+node:ekr.20060904141220.2: node.__str__ & __repr__
@@ -533,175 +506,21 @@ class nodeClass:
         
         name = g.toUnicode(name,encoding='utf-8').lower()
         val  = g.toUnicode(val,encoding='utf-8')
-        g.trace(name,val)
-        return ###
+        # g.trace(name,val)
+        self.attributes[name] = val
         
-        if name in self.boolAttrs:
-            val = g.choose(val.lower()=='true',True,False)
-        else:
-            val = str(val) # Do NOT lower this value!
-    
-        if self.rule:
-            d = self.rule.attributes
-            d [name] = val
-            self.numberOfRuleAttributes += 1
-        elif self.presentProperty:
-            d = self.presentProperty.get('attributes')
-            d [name] = val
-            self.numberOfPropertyAttributes += 1
-        elif self.inRules:
-            self.rulesetAttributes[name] = val
-            self.numberOfAttributes += 1
-        else:
-            self.attributes[name] = val
-            self.numberOfAttributes += 1
-    #@nonl
+        # To do: special cases for tx, head, body attributes.
     #@-node:ekr.20060904141220.34:doAttribute
-    #@+node:ekr.20060904141220.35:doContent
-    def doContent (self,elementName,content):
+    #@+node:ekr.20060913220507:dump
+    def dump (self):
         
-        if not content:
-            return
-        
-        name = str(elementName.lower())
-        
-        g.trace(name)
-        return ###
-        
-        if self.inRule('keywords'):
-            # g.trace('in keywords',name,content)
-            d = self.rule.keywordsDict
-            d [ content ] = name
-    
-        elif self.rule:
-            d = self.rule.contents
-            s = d.get(name,'')
-            d [name] = s + content
-            self.contents = d
+        print
+        print 'node: %d' % id(self)
+        print 'parent: %s' % g.choose(self.parent,id(self.parent),'None')
+        print 'children:',[id(child) for child in self.children]
+        print 'attrs:',self.attributes.values()
     #@nonl
-    #@-node:ekr.20060904141220.35:doContent
-    #@+node:ekr.20060904141220.36:endElement
-    def endElement (self,elementName):
-    
-        name = elementName.lower()
-        
-        if name == 'props':
-            self.inProps = True
-        if name == 'rules':
-            self.inRules = False
-            ruleset = rulesetClass(self.rulesetAttributes,self.keywords,self.rulesetProperties,self.rules)
-            self.rulesets.append(ruleset)
-            #g.trace('rules...\n',g.listToString(self.rules))
-            #g.trace('ruleset attributes...\n',g.dictToString(self.rulesetAttributes))
-        if name == 'property':
-            bunch = self.presentProperty
-            if bunch:
-                if self.inRules:
-                    self.rulesetProperties.append(bunch)
-                else:
-                    self.modeProperties.append(bunch)
-            else:
-                self.error('end %s not matched by start %s' % (name,name))
-            self.presentProperty = None
-        if name in self.ruleElements:
-            if self.inRule(name):
-                self.rules.append(self.rule)
-                self.rule = None
-            else:
-                self.error('end %s not matched by start %s' % (name,name))
-    #@nonl
-    #@-node:ekr.20060904141220.36:endElement
-    #@+node:ekr.20060904141220.37:error
-    def error (self,message):
-        
-        self.numberOfErrors += 1
-    
-        self.contentHandler.error(message)
-    #@nonl
-    #@-node:ekr.20060904141220.37:error
-    #@+node:ekr.20060904141220.38:getters
-    def getAttributes (self):
-        return self.attributes
-        
-    def getAttributesForRuleset (self,ruleset):
-        bunch = ruleset
-        return bunch.attributes
-    
-    def getFileName (self):
-        return self.fileName
-    
-    def getKeywords (self,n,ruleset):
-        bunch = ruleset
-        keywords = bunch.keywords
-        if keywords:
-            return keywords.get('keyword%d'%(n),[])
-        return []
-    
-    def getLanguage (self):
-        path,name = g.os_path_split(self.fileName)
-        language,ext = g.os_path_splitext(name)
-        return language
-    
-    def getPropertiesForMode (self):
-        return self.props
-        
-    def getPropertiesForRuleset (self,name=''):
-        bunch = self.getRuleset(name)
-        if bunch:
-            return bunch.properties
-        else:
-            return []
-        
-    def getRuleset(self,name=''):
-        if not name:
-            return self.rulesets[0] # Return the main ruleset.
-        for ruleset in self.rulesets:
-            if ruleset.name.lower()==name.lower():
-                return ruleset
-        else: return None
-    
-    def getRulesets(self):
-        return self.rulesets
-        
-    def getRulesForRuleset (self,name=''):
-        bunch = self.getRuleset(name)
-        if bunch:
-            return bunch.rules
-        else:
-            return []
-    #@nonl
-    #@-node:ekr.20060904141220.38:getters
-    #@+node:ekr.20060904141220.40:startElement
-    def startElement (self,elementName):
-        
-        g.trace(elementName)
-        
-        return ####
-    
-        name = elementName.lower()
-        
-        if name == 'props':
-            self.inProps = True
-        if name == 'rules':
-            self.inRules = True
-            self.attributes=[]
-            self.keywords=[]
-            self.rulesetProperties=[]
-            self.rules=[]
-        if name == 'property':
-            if self.inProps:
-                self.presentProperty = g.bunch(name=name,attributes={})
-            else:
-                self.error('property not in props element')
-        if name in self.ruleElements:
-            if self.inRules:
-                self.rule = ruleClass(name=name)
-                if name == 'keywords':
-                    self.keywords = self.rule
-            else:
-                self.error('%s not in rules element' % name)
-    #@nonl
-    #@-node:ekr.20060904141220.40:startElement
+    #@-node:ekr.20060913220507:dump
     #@-others
 #@nonl
 #@-node:ekr.20060904141220:class nodeClass
