@@ -41,7 +41,7 @@
 <v t="ekr.20051025144116"><vh>@button Spell</vh></v>
 <v t="ekr.20050819055746"><vh>@button Save</vh></v>
 </v>
-<v t="edream.110203113231.618" a="TV"><vh>Plugins</vh>
+<v t="edream.110203113231.618"><vh>Plugins</vh>
 <v t="EKR.20040517090508"><vh>  Enable plugins by changing pluginsManager.txt or using plugin_manager plugin</vh>
 <v t="edream.120603093808"><vh>@thin pluginsManager.txt</vh></v>
 </v>
@@ -157,6 +157,7 @@
 <v t="ekr.20041021120118"><vh>@thin pretty_print.py</vh></v>
 <v t="ekr.20040331153923"><vh>@thin scheduler.py</vh></v>
 <v t="mork.20041022090036.1"><vh>@thin templates.py</vh></v>
+<v t="danr7.20061010105952.1"><vh>@thin word_count.py</vh></v>
 <v t="edream.110203113231.722"><vh>mod_autosave</vh>
 <v t="edream.110203113231.723" tnodeList="edream.110203113231.723"><vh>@file-nosent mod_autosave.ini</vh></v>
 <v t="edream.110203113231.724"><vh>@thin mod_autosave.py</vh></v>
@@ -439,8 +440,7 @@
 <v t="ekr.20040419105219"><vh>@thin lineNumbers.py</vh></v>
 <v t="mork.20041018204908.1"><vh>@thin multifile.py</vh></v>
 <v t="ekr.20040331151007"><vh>@thin niceNosent.py</vh></v>
-<v t="danr7.20060902083957"
-expanded="danr7.20060902083957.3,"><vh>@thin leo_to_rtf.py</vh></v>
+<v t="danr7.20060902083957"><vh>@thin leo_to_rtf.py</vh></v>
 <v t="danr7.20060902215215.1"><vh>@thin leo_to_html.py</vh></v>
 </v>
 <v t="ekr.20040722135402"><vh>Icon and status areas</vh>
@@ -983,7 +983,7 @@ expanded="danr7.20060902083957.3,"><vh>@thin leo_to_rtf.py</vh></v>
 <v t="ekr.20040831115238"><vh>@thin URLloader.py</vh></v>
 </v>
 </v>
-<v t="ekr.20060831165821"><vh>@thin slideshow.py</vh></v>
+<v t="ekr.20060831165821" a="TV"><vh>@thin slideshow.py</vh></v>
 <v t="ekr.20060530091119"><vh>New colorizer</vh>
 <v t="ekr.20060623075925.1"><vh>To do</vh></v>
 <v t="ekr.20060530091119.2"><vh>@url http://www.jedit.org/42docs/users-guide/writing-modes-part.html</vh></v>
