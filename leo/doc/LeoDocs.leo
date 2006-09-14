@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="25829" clone_windows="0"/>
-<globals body_outline_ratio="0.5">
-	<global_window_position top="129" left="393" height="673" width="879"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="25831" clone_windows="0"/>
+<globals body_outline_ratio="0.529133858268">
+	<global_window_position top="128" left="278" height="635" width="879"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -46,7 +46,7 @@
 <v t="ekr.20060525110217"><vh>@@button rst-&gt;rst</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="TV"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -648,6 +648,22 @@
 <v t="ekr.20060601104756"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
+<v t="ekr.20060913164304"><vh>Chapter 17: Using Zodb with Leo</vh>
+<v t="ekr.20060913164304.1"><vh>@rst html\zodb.html</vh>
+<v t="ekr.20060913164311"><vh>@rst-no-head links</vh></v>
+<v t="ekr.20060913170145"><vh>Configuring Leo to use zodb</vh></v>
+<v t="ekr.20060913170403"><vh>Initing zodb</vh></v>
+<v t="ekr.20060913170403.1"><vh>Writing data to zodb</vh></v>
+<v t="ekr.20060913175437"><vh>Defining zodb keys</vh></v>
+<v t="ekr.20060913170403.2"><vh>Reading data from zodb</vh></v>
+<v t="ekr.20060913175437.1"><vh>About connections</vh></v>
+<v t="ekr.20060913165542.1"><vh>Convenience routines</vh>
+<v t="ekr.20060913165542.2"><vh>g.init_zodb (pathToZodbStorage,verbose=True)</vh></v>
+<v t="ekr.20060913165542.3"><vh>v.detach()</vh></v>
+</v>
+<v t="ekr.20060913164729"><vh>@rst-no-head end stuff</vh></v>
+</v>
+</v>
 <v t="EKR.20040524104904.274"><vh>Appendices</vh>
 <v t="ekr.20050831231852"><vh>@rst html\appendices.html</vh>
 <v t="ekr.20050831232205"><vh>@rst-no-head links</vh></v>
@@ -955,7 +971,7 @@
 </v>
 <v t="ekr.20060613075343"><vh>To do: Chapter 15: Using the scripting plugin</vh></v>
 </v>
-<v t="edream.110203163054.46" a="ETV"><vh>Release Notes</vh>
+<v t="edream.110203163054.46"><vh>Release Notes</vh>
 <v t="edream.110203163054.117"><vh>Previous versions...</vh>
 <v t="ekr.20060206111717"><vh>Ancient...</vh>
 <v t="edream.110203163054.118"><vh>3.x...</vh>
@@ -3498,9 +3514,9 @@ set the value of ``name`` to ``val``, with the indicated type.
 
 &lt;type&gt; may be one of the following:
 
-=============== ================================================================================
+=============== =========================================================================================
 &lt;type&gt;          Valid values
---------------- --------------------------------------------------------------------------------
+--------------- -----------------------------------------------------------------------------------------
 \@bool           True, False, 0, 1
 \@color          A Tk color name or value, such as 'red' or 'xf2fddff' (without the quotes)
 \@directory      A path to a directory
@@ -3508,12 +3524,13 @@ set the value of ``name`` to ``val``, with the indicated type.
 \@int            An integer
 \@ints[list]     An integer (must be one of the ints in the list).
                  Example: @ints meaningOfLife[0,42,666]=42
+\@keys[name]     Gives a name to a set of bindings for the Check Bindings script in leoSettings.leo.
 \@path           A path to a directory or file
 \@ratio          A floating point number between 0.0 and 1.0, inclusive.
 \@string         A string
 \@strings[list]  A string (must be one of the strings in the list).
                  Example: @strings tk_relief['flat','groove','raised']='groove'
-=============== ================================================================================
+=============== =========================================================================================
 
 **Note**: For a list of Tk color specifiers see:
 
@@ -10679,6 +10696,8 @@ Leo's Users Guide
 
 `Chapter 16: Using External Debuggers`_
 
+`Chapter 17: Using ZODB with Leo`_
+
 Appendices_
 
 Glossary_
@@ -15096,6 +15115,7 @@ Just use ``@thin`` to create your `derived files`_.</t>
 .. _`Chapter 14\: Using the Rst3 Plugin`:           rstplugin3.html
 .. _`Chapter 15\: Controlling Syntax Coloring`:     coloring.html
 .. _`Chapter 16\: Using External Debuggers`:        debuggers.html
+.. _`Chapter 17\: Using ZODB with Leo`:             zodb.html
 .. _`Appendices`:                                   appendices.html
 .. _`Glossary`:                                     glossary.html
 .. _`What's new in Leo 4.4.1`:                      new-4-4-1.html
@@ -17437,7 +17457,7 @@ Appendices
 .. WARNING: image targets may not have upper case letters!
 
 .. |back| image:: arrow_lt.gif
-	:target: debuggers.html
+	:target: zodb.html
 
 .. |next| image:: arrow_rt.gif
 	:target: glossary.html
@@ -25077,7 +25097,7 @@ I would *still* want to run the modified winpdb in a separate process.</t>
 
 .. _back:   coloring.html
 .. _home:   front.html
-.. _next:   appendices.html
+.. _next:   zodb.html
 
 .. |back| image:: arrow_lt.gif
     :target: back_
@@ -28245,5 +28265,191 @@ Home:     http://sourceforge.net/projects/leo/
 Download: http://sourceforge.net/project/showfiles.php?group_id=3458
 CVS:      http://leo.tigris.org/source/browse/leo/
 Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
+<t tx="ekr.20060913164304"></t>
+<t tx="ekr.20060913164304.1">@ @rst-options
+code_mode=False
+generate_rst=True
+http_server_support = False
+show_organizer_nodes=True
+show_headlines=True
+show_leo_directives=True
+stylesheet_path=..\doc
+write_intermediate_file = False
+verbose=True
+@c
+
+.. September 13, 2006
+
+|back| |leo| |next|
+
+#######################################
+Chapter 17: Using ZODB with Leo
+#######################################
+
+This chapter discusses how to write Leo scripts that store and retrieve data using ZODB_.
+
+.. contents::
+</t>
+<t tx="ekr.20060913164311">.. External links...
+
+.. _ZODB:               http://www.zope.org/Wikis/ZODB/guide/zodb.html
+.. _`Installing ZODB`:  http://www.zope.org/Wikis/ZODB/guide/node3.html#SECTION000310000000000000000
+
+.. Relative links...
+
+.. _`Chapter 8\: Settings, Modes and Key Bindings`:  customizing.html
+
+.. WARNING: image targets may not have upper case letters!
+
+.. _back:   debuggers.html
+.. _home:   front.html
+.. _next:   appendices.html
+
+.. |back| image:: arrow_lt.gif
+    :target: back_
+
+.. |leo|  image:: leo.gif
+    :target: home_
+
+.. |next| image:: arrow_rt.gif
+    :target: next_</t>
+<t tx="ekr.20060913164729">-----------------------
+
+|back| |leo| |next|</t>
+<t tx="ekr.20060913165542.1"></t>
+<t tx="ekr.20060913165542.2">This function inits the zodb.
+pathToZodbStorage is the full path to the zodb storage file.
+You can call g.init_zodb as many times as you like.
+Only the first call for any path actually does anything:
+subsequent calls for a previously opened path simply return the same value as the first call.</t>
+<t tx="ekr.20060913165542.3">This vnode method returns v2, a copy of v that is completely detached from the outline.
+v2.t is a completely new tnode.
+v2.fileIndex is None initially, but is may be convenient to copy this field::
+    
+    v2 = v.detach()
+    v2.t.fileIndex = v.t.fileIndex</t>
+<t tx="ekr.20060913170145">To enable zodb scripting within Leo, you must set ``use_zodb = True`` in the root node of leoNodes.py.
+You must also install ZODB itself.  See `Installing ZODB`_ for details.
+
+When ZODB is installed and ``use_zodb`` is ``True``
+Leo's vnode and tnode classes become subclasses of ZODB.Persistence.Persistent.
+This is all that is needed to save/retrieve vnodes or tnodes to/from the ZODB.
+
+**Important notes**:
+    
+- Scripts **should not** store or retrieve positions using the ZODB!
+  Doing so makes sense neither from Leo's point of view nor from ZODB's point of view.
+
+- The examples below show how to store or retrieve Leo data by accessing
+  the so-called root of a ZODB connection.
+  However, these are only examples.
+  Scripts are free to do with Leo's vnodes and tnodes *anything* that can
+  be done with ZODB.Persistence.Persistent objects.</t>
+<t tx="ekr.20060913170403">Scripts should call g.init_zodb to open a ZODB.Storage file.
+g.init_zodb returns an instance of ZODB.DB.  For example::
+    
+    db = g.init_zodb (zodbStorageFileName)
+
+You can call g.init_zodb as many times as you like.
+Only the first call for any path actually does anything:
+subsequent calls for a previously opened path simply return the same value as the first call.</t>
+<t tx="ekr.20060913170403.1">The following script writes v, a tree of vnodes, to zodb::
+
+    db = g.init_zodb (zodbStorageFileName)
+    connection = db.open()
+    try:
+        root = connection.root()
+        root[aKey] = v # See next section for how to define aKey.
+    finally:
+        get_transaction().commit()
+        connection.close()
+    
+Notes:
+
+- v must be a vnode (or a tnode).
+  Scripts should *not* attempt to store Leo positions in the zodb.
+  v can be the root of an entire outline or a subtree.
+  For example, either of the following would be reasonable::
+  
+    root[aKey] = c.rootPosition().v
+    root[aKey] = c.currentPosition().v
+
+- To write a single vnode without writing any of its children you can use v.detach.
+  For example::
+      
+    root[aKey] = v.detach()
+  
+- **Important**: It is simplest if only one zodb connection is open at any one time,
+  so scripts would typically close the zodb connection immediately after processing the data.
+  The correct way to do this is in a finally statement, as shown above.
+  
+- The script above does not define aKey.
+  The following section discusses how to define reasonable zodb keys.</t>
+<t tx="ekr.20060913170403.2">The following script reads a tree of vnodes from zodb and sets p as the root position of the tree::
+
+    try:
+        connection = db.open()
+        root = connection.root()
+        v = root.get(aKey)
+        p = leoNodes.position(v)
+    finally:
+        get_transaction().commit()
+        connection.close()
+</t>
+<t tx="ekr.20060913175437">The keys used to store and retrieve data in connection.root() can be any string that uniquely identifies the data.
+The following are only suggestions: you are free to use any string you like.
+
+1. When saving a file, you would probably use a key that is similar to a real file path.
+   For example::
+       
+        aKey = c.fileName()
+   
+2. When saving a single vnode or tree of vnodes, say v,
+   a good choice would be to use v's gnx, namely::
+    
+        aKey = g.app.nodeIndices.toString(v.t.fileIndex)
+
+   Note that v.detach() does not automatically copy v.t.fileIndex to the detached node,
+   so when writing a detached node you would typically do the following::
+       
+       v2 = v.detach()
+       v2.t.fileIndex = v.t.fileIndex
+       aKey = g.app.nodeIndices.toString(v2.t.fileIndex)</t>
+<t tx="ekr.20060913175437.1">The scripts shown above close the zodb connection after processing the data.
+This is by far the simplest strategy.
+I recommend it for typical scripts.
+
+**Important**: if must **leave the connection open** if your script modifies persistent data in any way.
+(Actually, this statement is not really true,
+but you must define zodb transaction managers if you intend to use multiple connections simultaneously.
+This complication is beyond the scope of this documentation.)
+For example, it would be possible to create a new Leo outline from the data just read,
+but the script must leave the connection open.
+I do not recommend this tactic, but for the adventurous here is some sample code::
+    
+    connection = self.db.open()
+    root = connection.root()
+    v = root.get(fileName)
+    if v:
+        c2 = c.new()
+        c2.openDirectory = c.openDirectory # A hack.
+        c2.mFileName = fileName # Another hack.
+        c2.beginUpdate()
+        try:
+            c2.setRootVnode(v)
+            c2Root = c2.rootPosition()
+            c2.atFileCommands.readAll(c2Root)
+            g.es_print('zodb read: %s' % (fileName))
+        finally:
+            c2.endUpdate()
+        # Do *not* close the connection while the new Leo window is open!
+    else:
+        g.es_print('zodb read: not found: %s' % (fileName))
+    
+        
+This will work **provided** that no other zodb connection is ever opened while this connection is opened.
+Unless special zodb precautions are taken (like defining zodb transaction managers)
+calling get_transaction().commit() will affect **all** open connections.
+You have been warned.</t>
 </tnodes>
 </leo_file>
