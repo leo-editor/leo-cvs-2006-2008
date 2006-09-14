@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="7439" clone_windows="0"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="7447" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="90" left="317" height="697" width="879"/>
+	<global_window_position top="171" left="258" height="766" width="879"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -41,7 +41,7 @@
 <v t="ekr.20051025144116"><vh>@button Spell</vh></v>
 <v t="ekr.20050819055746"><vh>@button Save</vh></v>
 </v>
-<v t="edream.110203113231.618"><vh>Plugins</vh>
+<v t="edream.110203113231.618" a="TV"><vh>Plugins</vh>
 <v t="EKR.20040517090508"><vh>  Enable plugins by changing pluginsManager.txt or using plugin_manager plugin</vh>
 <v t="edream.120603093808"><vh>@thin pluginsManager.txt</vh></v>
 </v>
@@ -439,6 +439,9 @@
 <v t="ekr.20040419105219"><vh>@thin lineNumbers.py</vh></v>
 <v t="mork.20041018204908.1"><vh>@thin multifile.py</vh></v>
 <v t="ekr.20040331151007"><vh>@thin niceNosent.py</vh></v>
+<v t="danr7.20060902083957"
+expanded="danr7.20060902083957.3,"><vh>@thin leo_to_rtf.py</vh></v>
+<v t="danr7.20060902215215.1"><vh>@thin leo_to_html.py</vh></v>
 </v>
 <v t="ekr.20040722135402"><vh>Icon and status areas</vh>
 <v t="ekr.20060328125925"><vh>@thin chapter_hoist.py</vh></v>
@@ -481,7 +484,7 @@
 <v t="EKR.20040517080555.36"><vh>@thin scripts_menu.py</vh></v>
 <v t="ekr.20040828122150"><vh>@thin pie_menus.py</vh></v>
 </v>
-<v t="edream.110203113231.872" a="E"><vh>Nodes...</vh>
+<v t="edream.110203113231.872"><vh>Nodes...</vh>
 <v t="edream.110203113231.873"><vh>@thin at_folder.py</vh></v>
 <v t="ekr.20040915085351"><vh>@thin at_produce.py</vh></v>
 <v t="ktenney.20041211072654.1"><vh>@thin at_view.py</vh></v>
@@ -969,7 +972,7 @@
 <v t="ekr.20050303080042"><vh> footprints</vh>
 <v t="ekr.20050303080236"><vh>To do</vh></v>
 <v t="ekr.20050303080042.1" tnodeList="ekr.20050303080042.1"><vh>@nosent footprints.ini</vh></v>
-<v t="pap.20041020001240"><vh>@thin footprints.py</vh></v>
+<v t="pap.20041020001240" a="M"><vh>@thin footprints.py</vh></v>
 </v>
 <v t="mork.20041018162155.1"><vh>@thin EditAttributes.py</vh></v>
 <v t="ekr.20040915073259.1"><vh>@thin maximizeNewWindows.py</vh></v>
@@ -980,9 +983,7 @@
 <v t="ekr.20040831115238"><vh>@thin URLloader.py</vh></v>
 </v>
 </v>
-<v t="ekr.20060904092124"><vh>Handle @ignore in slideshow</vh></v>
-<v t="ekr.20060831165821" a="TV"
-expanded="ekr.20060831165845.6,"><vh>@thin slideshow.py</vh></v>
+<v t="ekr.20060831165821"><vh>@thin slideshow.py</vh></v>
 <v t="ekr.20060530091119"><vh>New colorizer</vh>
 <v t="ekr.20060623075925.1"><vh>To do</vh></v>
 <v t="ekr.20060530091119.2"><vh>@url http://www.jedit.org/42docs/users-guide/writing-modes-part.html</vh></v>
@@ -1246,7 +1247,7 @@ if 1:
             if count and replace:
                 if 0:
                     &lt;&lt; print before and after &gt;&gt;
-                p.setBodyStringOrPane(s)
+                c.setBodyString(p,s)
                 p.setDirty()
         g.es("%3d %s" % (count,p.headString()))
         total += count
@@ -2001,11 +2002,11 @@ Made changes for 4.1 g.app.gui architecture. (More work needed).</t>
     frame = self ; c = frame.c ; v = c.currentVnode()
     h = v.headString() # Remember the old value.
 
-    if v.edit_widget():
-        sel1,sel2 = g.app.gui.getTextSelection(v.edit_widget())
+    if c.edit_widget(v):
+        sel1,sel2 = g.app.gui.getTextSelection(c.edit_widget(v))
         if sel1 and sel2 and sel1 != sel2: # 7/7/03
-            v.edit_widget().delete(sel1,sel2)
-        v.edit_widget().insert("insert",c.getTime(body=False))
+            c.edit_widget(v).delete(sel1,sel2)
+        c.edit_widget(v).insert("insert",c.getTime(body=False))
         frame.idle_head_key(v)
 
     # A kludge to get around not knowing whether we are editing or not.
@@ -2097,11 +2098,11 @@ def toggleSplitDirection(self):
     
     c = self.c ; v = c.currentVnode ; tree = self.tree
     # g.trace(v)
-    if self.revertHeadline and v.edit_widget() and v == self.editVnode:
+    if self.revertHeadline and c.edit_widget(v) and v == self.editVnode:
         
         # g.trace(`self.revertHeadline`)
-        v.edit_widget().delete("1.0","end")
-        v.edit_widget().insert("end",self.revertHeadline)
+        c.edit_widget(v).delete("1.0","end")
+        c.edit_widget(v).insert("end",self.revertHeadline)
         tree.idle_head_key(v) # Must be done immediately.
         tree.revertHeadline = None
         tree.select(v)
@@ -2115,7 +2116,7 @@ def toggleSplitDirection(self):
 
     c = self.c ; tree = self.tree ; v = self.editVnode
 
-    if v and v.edit_widget():
+    if v and c.edit_widget(v):
         tree.select(v)
 
     if v: # Bug fix 10/9/02: also redraw ancestor headlines.
@@ -2346,7 +2347,7 @@ if Tk and not g.app.unitTesting: # Not (yet) for unit testing.
 <t tx="ekr.20040205071616.4">def setHeadOK(v):
 
     s = OKFLAG + v.headString()
-    v.setHeadStringOrHeadline(s)
+    c.setHeadString(v,s)
 
 </t>
 <t tx="ekr.20040205071616.5">def insertBodystamp(c,v):
@@ -5018,7 +5019,7 @@ if Tk: # Register the handlers...
                         
                         if update:
                             g.es("updated from: " + g.shortFileName(path),color="blue")
-                            v.setBodyStringOrPane(s,encoding) # 10/16/03
+                            c.setBodyString(v,s,encoding)
                             c.selectVnode(v)
                             dict["body"] = s
                         elif conflict:
@@ -6300,7 +6301,7 @@ print s ; g.es(s)</t>
             if count and replace:
                 if 0:
                     &lt;&lt; print before and after &gt;&gt;
-                p.setBodyStringOrPane(s)
+                c.setBodyString(p,s)
                 p.setDirty()
         g.es("%3d %s" % (count,p.headString()))
         total += count
@@ -10464,13 +10465,13 @@ if cc.DEBUG:
     
     cc = self
     
-    cc.SELECTED_NODE.setBodyTextOrPane(text)
+    cc.setBodyText(SELECTED_NODE,text)
 </t>
 <t tx="ekr.20060513122450.321">def sAddText(self,text):
     
     cc = self
     
-    cc.SELECTED_NODE.setBodyTextOrPane(cc.SELECTED_NODE.bodyString()+text)
+    cc.setBodyText(SELECTED_NODE,cc.SELECTED_NODE.bodyString()+text)
 
     if not cc.CHILD_NODE:
         l,c = cc.LeoBodyText.index("end").split(".")
@@ -12374,6 +12375,5 @@ will cause that occurrence of the end string to be ignored.
             i = j + len(end) + 1
         else:
             return j</t>
-<t tx="ekr.20060904092124"></t>
 </tnodes>
 </leo_file>
