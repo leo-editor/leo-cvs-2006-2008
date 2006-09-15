@@ -63,7 +63,13 @@ def createExportMenu (tag,keywords):
 #@+node:danr7.20060902215215.6:export_html
 def export_html( c ):
     # Show messagebox to ask if headline output or bullet list
-    flagHeadings = tkMessageBox.askyesno("askyesno", "Save outline as HTML headings? \n(No will save outline as bullet list)")
+    
+    if g.app.unitTesting:
+        flagHeadings = True
+    else:
+        flagHeadings = tkMessageBox.askyesno(
+            "askyesno", "Save outline as HTML headings? \n(No will save outline as bullet list)")
+
     g.es("Exporting HTML...")
 
     # Get user preferences from INI file 

@@ -138,7 +138,7 @@ maxButtonSize = 18
 #@+node:ekr.20060328125248.4:init
 def init ():
     
-    ok = Tk and not g.app.unitTesting
+    ok = Tk is not None # OK for unit tests.
     
     if ok:
         if g.app.gui is None:

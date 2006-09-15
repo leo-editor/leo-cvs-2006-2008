@@ -15,7 +15,7 @@ It defines the read-opml-file and write-opml-file commands and corresponding but
 #@@tabwidth -4
 #@@pagewidth 80
 
-# To do: handle clones and unicode properly.
+# To do: handle unicode properly.
 
 __version__ = '0.06'
 
@@ -343,10 +343,13 @@ class opmlController:
         # g.trace('='*60)
     
         c = self.c
+        
+        # Pass one: create the intermediate nodes.
         self.dummyRoot = dummyRoot = c.fileCommands.parse_opml_file(fileName)
     
         # self.dumpTree(dummyRoot,dummy=True)
     
+        # Pass two: create the tree of vnodes and tnodes from the intermediate nodes.
         v = self.createVnodes(dummyRoot)
         if v:
             c2 = c.new()
@@ -633,7 +636,7 @@ class nodeClass:
         h = g.toUnicode(self.headString,'utf-8') or ''
         
         print
-        print 'node: %s' % h
+        print 'node: tnx: %s %s' % (self.tnx,h)
         print 'parent: %s' % self.parent or 'None'
         print 'children:',[child for child in self.children]
         print 'attrs:',self.attributes.values()

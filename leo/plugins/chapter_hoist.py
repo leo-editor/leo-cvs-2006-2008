@@ -27,13 +27,14 @@ Tk = g.importExtension('Tkinter',pluginName=__name__,verbose=True)
 #@-node:ekr.20060328125925.2:<< imports >>
 #@nl
 
-__version__ = "0.2"
+__version__ = "0.3"
 #@<< version history >>
 #@+node:ekr.20060328125925.3:<< version history >>
 #@+at
 # 
 # 0.1 btheado: initial creation.
 # 0.2 EKR: changed to @thin.
+# 0.3 EKR: init now succeeds for unit tests.
 #@-at
 #@nonl
 #@-node:ekr.20060328125925.3:<< version history >>
@@ -43,7 +44,7 @@ __version__ = "0.2"
 #@+node:ekr.20060328125925.4:init
 def init ():
     
-    ok = Tk and not g.app.unitTesting
+    ok = Tk is not None # OK for unit tests.
     
     if ok:
         if g.app.gui is None:
