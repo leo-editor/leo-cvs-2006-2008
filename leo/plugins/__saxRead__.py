@@ -8,10 +8,10 @@ This code will soon move into Leo's core.'''
 #@@tabwidth -4
 #@@pagewidth 80
 
-__version__ = '0.2'
+__version__ = '0.3'
 
 # For traces.
-printElements = [] # 'v','t','vnodes','tnodes','leo_file','leo_header','globals','preferences']
+printElements = ['v','vh'] # 'v','t','vnodes','tnodes','leo_file','leo_header','globals','preferences']
 
 #@<< version history >>
 #@+node:ekr.20060904103412.2:<< version history >>
@@ -20,6 +20,7 @@ printElements = [] # 'v','t','vnodes','tnodes','leo_file','leo_header','globals'
 # 
 # 0.1 EKR: Initial version based on version 0.06 of the opml plugin.
 # 0.2 EKR: Beginning transition to elements found in .leo files.
+# 0.3 EKR: Most of read logic is working.
 #@-at
 #@nonl
 #@-node:ekr.20060904103412.2:<< version history >>
@@ -243,7 +244,7 @@ class saxReadController:
         # Pass one: create the intermediate nodes.
         self.dummyRoot = dummyRoot = c.fileCommands.parse_leo_file(fileName)
     
-        self.dumpTree(dummyRoot,dummy=True)
+        # self.dumpTree(dummyRoot,dummy=True)
     
         # Pass two: create the tree of vnodes and tnodes from the intermediate nodes.
         v = dummyRoot and self.createVnodes(dummyRoot)
@@ -280,6 +281,7 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         )
       
         # Semantics.
+        self.content = None
         self.elementStack = []
         self.inHead = False
         self.inTnode = False
@@ -355,7 +357,7 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
                 indent,
                 self.clean(name).strip()),
     
-        if name.lower() in ['outline','head','body',]:
+        if name.lower() in ['v','t','vnodes','tnodes',]:
             print
     #@nonl
     #@-node:ekr.20060904134958.171:printStartElement
@@ -391,23 +393,24 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         pass
     #@nonl
     #@-node:ekr.20060904134958.177:startDocument
+    #@-node:ekr.20060904134958.174: Do nothing...
     #@+node:ekr.20060904134958.178:characters
     def characters(self,content):
     
         content = g.toUnicode(content,encoding='utf-8') or ''
-        content = content.replace('\r','').strip()
+        content = content.replace('\r','')
         if not content: return
     
         elementName = self.elementStack and self.elementStack[-1].lower() or '<no element name>'
         
         if elementName == 'vh':
-            if self.node: self.node.headString = content
+            g.trace('vh:',repr(content))
+            self.content.append(content)
     
-        elif content and elementName not in ('t','v'):
+        elif content and elementName not in ('t','v','tnodes'):
             print 'unexpected content:',elementName,content
     #@nonl
     #@-node:ekr.20060904134958.178:characters
-    #@-node:ekr.20060904134958.174: Do nothing...
     #@+node:ekr.20060904134958.179:endElement & helper
     def endElement(self,name):
     
@@ -432,9 +435,14 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         elif elementName == 'v':
             self.inVnode = False
             self.level -= 1
+            # self.node.headString = ''.join(self.content)
+            # self.content = []
             self.node = self.nodeStack.pop()
         elif elementName == 'vh':
             self.inHead = False
+            if self.node:
+                self.node.headString = ''.join(self.content)
+            self.content = []
         elif elementName == 'vnodes':
             self.inVnodes= False
         elif elementName not in self.knownElements:
@@ -493,7 +501,7 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         
         # if self.inHead:     self.error('<outline> inside <head>')
         # if not self.inBody: self.error('<outline> outside <body>')
-        
+    
         parent = self.node
         self.node = nodeClass()
         if parent:
@@ -505,6 +513,8 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         
         for bunch in self.attrsToList(attrs):
             self.node.doAttribute(bunch.name,bunch.val)
+            
+        self.content = []
             
         return parent
     #@nonl
@@ -554,13 +564,10 @@ class nodeClass:
         name = g.toUnicode(name,encoding='utf-8').lower()
         val  = g.toUnicode(val,encoding='utf-8')
         
-        # g.trace(name,val)
+        if not name.startswith('xcc') and not name in ('t',):
+            g.trace(name,len(str(val)))
         
-        if name == 'head':
-            node.headString = val
-        elif name == 'body':
-            node.bodyString = val
-        elif name == 'tx':
+        if name == 't':
             node.tnx = val
         else:
             node.attributes[name] = val

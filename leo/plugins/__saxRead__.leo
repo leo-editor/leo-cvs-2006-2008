@@ -9,10 +9,10 @@
 <preferences/>
 <find_panel_settings/>
 <vnodes>
-<v t="ekr.20060904103412" a="ETV"><vh>@thin __saxRead__.py</vh></v>
-<v t="ekr.20060915095311" a="E"><vh>To change</vh>
-<v t="ekr.20060904103721"><vh>readFile</vh></v>
+<v t="ekr.20060904103412" a="E"><vh>@thin __saxRead__.py</vh></v>
+<v t="ekr.20060915095311" a="E"><vh>Recent</vh>
 <v t="ekr.20060904134958.165"><vh> __init__ &amp; helpers</vh></v>
+<v t="ekr.20060904103721"><vh>readFile</vh></v>
 <v t="ekr.20060904134958.181"><vh>doStartElement</vh></v>
 <v t="ekr.20060904134958.182"><vh>doEndElement</vh></v>
 <v t="ekr.20060904134958.178"><vh>characters</vh></v>
@@ -25,6 +25,7 @@
 <v t="ekr.20060914174806"><vh>linkParentAndChildren</vh></v>
 <v t="ekr.20060914165257"><vh>linkSiblings</vh></v>
 </v>
+<v t="ekr.20060904134958.171"><vh>printStartElement</vh></v>
 </v>
 </vnodes>
 <tnodes>
@@ -39,7 +40,7 @@
     # Pass one: create the intermediate nodes.
     self.dummyRoot = dummyRoot = c.fileCommands.parse_leo_file(fileName)
 
-    self.dumpTree(dummyRoot,dummy=True)
+    # self.dumpTree(dummyRoot,dummy=True)
 
     # Pass two: create the tree of vnodes and tnodes from the intermediate nodes.
     v = dummyRoot and self.createVnodes(dummyRoot)
@@ -64,6 +65,7 @@
     )
   
     # Semantics.
+    self.content = None
     self.elementStack = []
     self.inHead = False
     self.inTnode = False
@@ -75,18 +77,35 @@
     self.node = None
     self.nodeStack = []
     self.rootNode = None</t>
+<t tx="ekr.20060904134958.171">def printStartElement(self,name,attrs):
+    
+    indent = '\t' * self.level or ''
+
+    if attrs.getLength() &gt; 0:
+        print '%s&lt;%s %s&gt;' % (
+            indent,
+            self.clean(name).strip(),
+            self.attrsToString(attrs,sep=' ')),
+    else:
+        print '%s&lt;%s&gt;' % (
+            indent,
+            self.clean(name).strip()),
+
+    if name.lower() in ['v','t','vnodes','tnodes',]:
+        print</t>
 <t tx="ekr.20060904134958.178">def characters(self,content):
 
     content = g.toUnicode(content,encoding='utf-8') or ''
-    content = content.replace('\r','').strip()
+    content = content.replace('\r','')
     if not content: return
 
     elementName = self.elementStack and self.elementStack[-1].lower() or '&lt;no element name&gt;'
     
     if elementName == 'vh':
-        if self.node: self.node.headString = content
+        g.trace('vh:',repr(content))
+        self.content.append(content)
 
-    elif content and elementName not in ('t','v'):
+    elif content and elementName not in ('t','v','tnodes'):
         print 'unexpected content:',elementName,content</t>
 <t tx="ekr.20060904134958.181">def doStartElement (self,elementName,attrs):
     
@@ -128,9 +147,14 @@
     elif elementName == 'v':
         self.inVnode = False
         self.level -= 1
+        # self.node.headString = ''.join(self.content)
+        # self.content = []
         self.node = self.nodeStack.pop()
     elif elementName == 'vh':
         self.inHead = False
+        if self.node:
+            self.node.headString = ''.join(self.content)
+        self.content = []
     elif elementName == 'vnodes':
         self.inVnodes= False
     elif elementName not in self.knownElements:
@@ -141,13 +165,10 @@
     name = g.toUnicode(name,encoding='utf-8').lower()
     val  = g.toUnicode(val,encoding='utf-8')
     
-    # g.trace(name,val)
+    if not name.startswith('xcc') and not name in ('t',):
+        g.trace(name,len(str(val)))
     
-    if name == 'head':
-        node.headString = val
-    elif name == 'body':
-        node.bodyString = val
-    elif name == 'tx':
+    if name == 't':
         node.tnx = val
     else:
         node.attributes[name] = val</t>
