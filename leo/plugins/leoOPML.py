@@ -15,9 +15,9 @@ It defines the read-opml-file and write-opml-file commands and corresponding but
 #@@tabwidth -4
 #@@pagewidth 80
 
-# To do: handle unicode properly.
+# To do: handle clones and unicode properly.
 
-__version__ = '0.05'
+__version__ = '0.06'
 
 # For traces.
 printElements = [] # ['outline','head','body',]
@@ -37,6 +37,8 @@ printElements = [] # ['outline','head','body',]
 # 0.04 EKR: Simplified the code.
 # 0.05 EKR: Outline created with proper headlines: (wrote & debugged 
 # createVnodes & helpers)
+# 0.06 EKR: Rewrote createChildren.  It's simpler and appears to handle clones 
+# properly.
 #@-at
 #@nonl
 #@-node:ekr.20060904103412.2:<< version history >>
@@ -167,8 +169,6 @@ class opmlFileCommandsClass (leoFileCommands.fileCommands):
     #@-node:ekr.20060904132527.13:putToOPML & helpers
     #@+node:ekr.20060904134958.116:parse_opml_file
     def parse_opml_file (self,inputFileName):
-        
-        g.trace(inputFileName)
     
         if not inputFileName or not inputFileName.endswith('.opml'):
             return None
@@ -231,67 +231,58 @@ class opmlController:
     #@+node:ekr.20060914163456:createVnodes & helpers
     def createVnodes (self, dummyRoot):
         
-        '''**Important**: this method and its helpers are low-level code.
+        '''**Important**: this method and its helpers are low-level code
+        corresponding to link/unlink methods in leoNodes.py.
         Modify this with extreme care.'''
         
-        self.firstChildren = {}
+        self.generatedTnxs = {}
     
         children = self.createChildren(dummyRoot,parent_v = None)
         firstChild = children and children[0]
-        
-        g.trace(firstChild)
+    
         return firstChild
     #@+node:ekr.20060914171659.2:createChildren
     # node is a nodeClass object, parent_v is a vnode.
     
     def createChildren (self, node, parent_v):
         
-        children = node.children
-        if not children: return []
+        result = []
         
-        # g.trace('parent',parent_v,len(children))
-        
-        firstChild = children[0]
-        tnx = firstChild.tnx
-        firstChild_v = self.firstChildren.get(tnx)
-    
-        if firstChild_v:
-            g.trace('previous firstChild',firstChild_v.headString())
-            children = [firstChild_v]
-        else:
-            # Create the first child, and remember it immediately.
-            firstChild_v = self.createVnodeTree(children[0],parent_v)
-            self.firstChildren[tnx] = firstChild_v
-            # Create the other children.
-            children = [self.createVnodeTree(child,parent_v) for child in children[1:]]
-            children.insert(0,firstChild_v)
-            self.linkSiblings(children)
-            if parent_v: self.linkParentAndChildren(parent_v,children)
-    
-        return children
+        for child in node.children:
+            tnx = child.tnx
+            v = self.generatedTnxs.get(tnx)
+            if v:
+                # A clone.  Create a new clone node, but share the subtree, i.e., the tnode.
+                # g.trace('clone',child.headString)
+                v = self.createVnode(child,parent_v,t=v.t)
+            else:
+                v = self.createVnodeTree(child,parent_v)
+                self.generatedTnxs [tnx] = v
+            result.append(v)
             
-            
+        self.linkSiblings(result)
+        if parent_v: self.linkParentAndChildren(parent_v,result)
+        return result
     #@nonl
     #@-node:ekr.20060914171659.2:createChildren
     #@+node:ekr.20060914171659:createVnodeTree
     def createVnodeTree (self,node,parent_v):
     
         v = self.createVnode(node,parent_v)
-        self.createChildren(node,v)
         
-        # children = self.createChildren(node,v)
-        # firstChild = children and children[0]
-        # self.linkParentAndChildren(v,children)
+        # To do: create the children only if v is not a clone.
+        self.createChildren(node,v)
     
         return v
     #@nonl
     #@-node:ekr.20060914171659:createVnodeTree
     #@+node:ekr.20060914171659.1:createVnode
-    def createVnode (self,node,parent_v):
+    def createVnode (self,node,parent_v,t=None):
         
         h = node.headString
         b = node.bodyString
-        t = leoNodes.tnode(bodyString=b,headString=h)
+        if not t:
+            t = leoNodes.tnode(bodyString=b,headString=h)
         v = leoNodes.vnode(t)
         v.t.vnodeList.append(v)
         v._parent = parent_v
@@ -315,9 +306,6 @@ class opmlController:
         
         for child in children:
             child._parent = parent_v
-    
-        # if firstChild_v:
-            # firstChild_v._parent = parent_v
         
         v = parent_v
         if v not in v.t.vnodeList:
@@ -352,12 +340,11 @@ class opmlController:
         
         if not fileName: return
         
-        g.trace('='*60)
+        # g.trace('='*60)
     
         c = self.c
         self.dummyRoot = dummyRoot = c.fileCommands.parse_opml_file(fileName)
-        
-        # g.trace('dummyRoot.children',dummyRoot.children)
+    
         # self.dumpTree(dummyRoot,dummy=True)
     
         v = self.createVnodes(dummyRoot)
