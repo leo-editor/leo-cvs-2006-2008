@@ -2088,7 +2088,9 @@ class baseFileCommands:
                 #@nl
             self.mFileName = fileName
             if toOPML:
-                fileName = self.mFileName = self.mFileName + '.opml'
+                if not self.mFileName.endswith('opml'):
+                    self.mFileName = self.mFileName + '.opml'
+                fileName = self.mFileName
             self.outputFile = cStringIO.StringIO() # or g.fileLikeObject()
             if not toString:
                 theActualFile = open(fileName, 'wb')
