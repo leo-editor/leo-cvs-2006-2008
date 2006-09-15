@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="25831" clone_windows="0"/>
-<globals body_outline_ratio="0.529133858268">
-	<global_window_position top="128" left="278" height="635" width="879"/>
+<globals body_outline_ratio="0.5">
+	<global_window_position top="128" left="278" height="616" width="879"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -95,6 +95,7 @@
 <v t="ekr.20050830115714.30"><vh>How do I submit a plugin?</vh></v>
 <v t="ekr.20050830120844"><vh>How do I add a new menu item from a plugin?</vh></v>
 <v t="ekr.20060805094325"><vh>How can I use Leo's legacy key bindings?</vh></v>
+<v t="ekr.20060915112109"><vh>How can I enable and disable support for psyco?</vh></v>
 </v>
 <v t="ekr.20050830115714.118"><vh>Tips and techniques</vh>
 <v t="ekr.20050830120857"><vh>How can I use Leo to develop Leo itself?</vh></v>
@@ -28451,5 +28452,13 @@ This will work **provided** that no other zodb connection is ever opened while t
 Unless special zodb precautions are taken (like defining zodb transaction managers)
 calling get_transaction().commit() will affect **all** open connections.
 You have been warned.</t>
+<t tx="ekr.20060915112109">Find the @thin leoApp.py node in leoPy.leo.
+In the ctor for the LeoApp class set ``self.use_psyco`` to True or False.
+You will find this ctor in the node::
+    
+    Code--&gt;Core classes...--&gt;@thin leoApp.py--&gt;app.__init__
+    
+Note that this ivar can not be set using settings in leoSettings.leo because
+Leo uses g.app.use_psyco before processing configuration settings.</t>
 </tnodes>
 </leo_file>

@@ -2307,6 +2307,53 @@ def update (self):
 #@-node:ekr.20031218072017.1733:update (statusLine)
 #@-node:ekr.20041223104933:class statusLineClass
 #@-node:ekr.20060912073120:Fixed crasher with multiple editors
+#@+node:ekr.20060915113237:Fixed problem with body/outline ratio
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3914969
+
+This body-outline ratio in the .leo file is not used, regardless of orientation.
+
+The problem that tkFrame.resizePanesToRatio got deleted sometime after 4.4 final,
+so the do-nothing base class method was executed instead.
+@color
+#@nonl
+#@+node:ekr.20031218072017.2306:getGlobals
+def getGlobals (self):
+
+    if self.getOpenTag("<globals"):
+        # <globals/> seen: set reasonable defaults:
+        self.ratio = 0.5
+        y,x,h,w = 50,50,500,700
+    else:
+        self.getTag("body_outline_ratio=\"")
+        self.ratio = self.getDouble() ; self.getDquote() ; self.getTag(">")
+
+        self.getTag("<global_window_position")
+        y,x,h,w = self.getPosition()
+        self.getTag("/>")
+
+        self.getTag("<global_log_window_position")
+        self.getPosition()
+        self.getTag("/>") # no longer used.
+
+        self.getTag("</globals>")
+
+    # Redraw the window before writing into it.
+    self.frame.setTopGeometry(w,h,x,y)
+    self.frame.deiconify()
+    self.frame.lift()
+    self.frame.update()
+#@-node:ekr.20031218072017.2306:getGlobals
+#@+node:ekr.20060915124834:resizePanesToRatio
+def resizePanesToRatio(self,ratio,ratio2):
+    
+    # g.trace(ratio,ratio2,g.callers())
+    
+    self.divideLeoSplitter(self.splitVerticalFlag,ratio)
+    self.divideLeoSplitter(not self.splitVerticalFlag,ratio2)
+#@nonl
+#@-node:ekr.20060915124834:resizePanesToRatio
+#@-node:ekr.20060915113237:Fixed problem with body/outline ratio
 #@-node:ekr.20060908092306:Bugs
 #@+node:ekr.20060905091234:Code level
 #@+node:ekr.20060904114302:Added OPML support to fileCommands
@@ -2326,7 +2373,9 @@ def write_Leo_file(self,fileName,outlineOnlyFlag,toString=False,toOPML=False):
             << create backup file >>
         self.mFileName = fileName
         if toOPML:
-            fileName = self.mFileName = self.mFileName + '.opml'
+            if not self.mFileName.endswith('opml'):
+                self.mFileName = self.mFileName + '.opml'
+            fileName = self.mFileName
         self.outputFile = cStringIO.StringIO() # or g.fileLikeObject()
         if not toString:
             theActualFile = open(fileName, 'wb')
@@ -3749,9 +3798,9 @@ def adjustParentLinksInSubtree (self,parent):
 #@-node:ekr.20040410170806.1:p.adjustParentLinksInSubtree
 #@-node:ekr.20040409203454.1:p.deleteLinksInTree & allies
 #@-node:ekr.20060908115325:Reviewed p.deleteLinksInTree
-#@+node:ekr.20060913082305:Fix problem with t.hash
+#@+node:ekr.20060913082305:Fixed problem with t.hash
 #@+node:ekr.20060908205857:t.__hash__ (only for zodb)
-if use_zodb:
+if use_zodb and ZODB:
     def __hash__(self):
         # The only required property is that objects
         # which compare equal have the same hash value.
@@ -3759,14 +3808,14 @@ if use_zodb:
 #@nonl
 #@-node:ekr.20060908205857:t.__hash__ (only for zodb)
 #@+node:ekr.20060910100316:v.__hash__ (only for zodb)
-if use_zodb:
+if use_zodb and ZODB:
     def __hash__(self):
         # The only required property is that objects
         # which compare equal have the same hash value.
         return self.t.__hash__()
 #@nonl
 #@-node:ekr.20060910100316:v.__hash__ (only for zodb)
-#@-node:ekr.20060913082305:Fix problem with t.hash
+#@-node:ekr.20060913082305:Fixed problem with t.hash
 #@-node:ekr.20060905091234:Code level
 #@+node:ekr.20060912093334:New features
 #@+node:ekr.20060911160213:Added multiple editor commands to Cmds menu
@@ -3998,6 +4047,94 @@ def defineCmdsMenuSpellCheckTable (self):
 #@-node:ekr.20060117095212.7:defineCmdsMenuSpellCheckTable
 #@-node:ekr.20050921103230:defineCmdsMenuTables & helpers
 #@-node:ekr.20060911160213:Added multiple editor commands to Cmds menu
+#@+node:ekr.20060913090832:Created convenience methods for zodb scripts
+# Also, the 'stack' arg to the position ctor now defaults to None.
+#@nonl
+#@+node:ekr.20060913090832.1:g.init_zodb
+init_zodb_import_failed = False
+init_zodb_failed = {} # Keys are paths, values are True.
+init_zodb_db = {} # Keys are paths, values are ZODB.DB instances.
+
+def init_zodb (pathToZodbStorage,verbose=True):
+    
+    '''Return an ZODB.DB instance from ZODB.FileStorage.FileStorage(pathToZodbStorage)
+    return None on any error.'''
+    
+    global init_zodb_db, init_zodb_failed, init_zodb_import_failed
+    
+    db = init_zodb_db.get(pathToZodbStorage)
+    if db: return db
+    
+    if init_zodb_import_failed: return None
+
+    failed = init_zodb_failed.get(pathToZodbStorage)
+    if failed: return None
+
+    try:
+        import ZODB
+    except ImportError:
+        if verbose:
+            g.es('g.init_zodb: can not import ZODB')
+            g.es_exception()
+        init_zodb_import_failed = True
+        return None
+    
+    try:
+        storage = ZODB.FileStorage.FileStorage(pathToZodbStorage)
+        init_zodb_db [pathToZodbStorage] = db = ZODB.DB(storage)
+        return db
+    except Exception:
+        if verbose:
+            g.es('g.init_zodb: exception creating ZODB.DB instance')
+            g.es_exception()
+        init_zodb_failed [pathToZodbStorage] = True
+        return None
+#@nonl
+#@-node:ekr.20060913090832.1:g.init_zodb
+#@+node:ekr.20031218072017.892:p.__init__
+# New in Leo 4.4.2: make stack default to None.
+
+def __init__ (self,v,stack=None,trace=True):
+
+    """Create a new position."""
+    
+    __pychecker__ = '--no-argsused' # trace not used.
+
+    # To support ZODB the code must set vort._p_changed = 1 whenever
+    # t.vnodeList (or any mutable tnode or vnode object) changes.
+
+    self.v = v
+    # assert(v is None or v.t)
+    
+    if stack:
+        self.stack = stack[:] # Creating a copy here is safest and best.
+    else:
+        self.stack = []
+    
+    g.app.positions += 1
+    
+    # if g.app.tracePositions and trace: g.trace(g.callers())
+    
+    # Note: __getattr__ implements p.t.
+#@nonl
+#@-node:ekr.20031218072017.892:p.__init__
+#@+node:ekr.20060913091805.1:v.detach
+def detach (self):
+    
+    '''Return a standalone copy of a vnode,
+    detached from all other nodes and with a new tnode.'''
+    
+    v = self
+    
+    # Create a completely separate tnode.
+    t2 = tnode(
+        bodyString=v.bodyString(),
+        headString=v.headString())
+    
+    return vnode(t2)
+#@nonl
+#@-node:ekr.20060913091805.1:v.detach
+#@-node:ekr.20060913090832:Created convenience methods for zodb scripts
 #@-node:ekr.20060912093334:New features
 #@+node:ekr.20041228084018.5:Finished/retired zodb plugin
 @nocolor
@@ -4010,6 +4147,8 @@ leoNodes.use_zodb is True. It remains to be seen whether having use_zodb = True
 will cause any serious problems.
 
 See the posting below (Scripting using zodb) for latest details.
+
+See the node 'zodb get/put buttons' in test.leo for examples of how scripts can access zodb easily.
 #@nonl
 #@+node:ekr.20060913084832:@ulr http://www.zope.org/Wikis/ZODB/guide/zodb.html
 #@-node:ekr.20060913084832:@ulr http://www.zope.org/Wikis/ZODB/guide/zodb.html

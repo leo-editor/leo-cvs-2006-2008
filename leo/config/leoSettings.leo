@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="305" clone_windows="0"/>
-<globals body_outline_ratio="0.5">
-	<global_window_position top="121" left="256" height="548" width="938"/>
+<globals body_outline_ratio="0.4">
+	<global_window_position top="121" left="256" height="699" width="938"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -25,6 +25,7 @@
 <v t="ekr.20041119042929.7"><vh>@string</vh></v>
 </v>
 <v t="ekr.20041119035704.1"><vh> Organizer nodes</vh></v>
+<v t="ekr.20060913144412"><vh>@keys keyset-name</vh></v>
 <v t="ekr.20041119035931"><vh>@if expression</vh></v>
 <v t="ekr.20041119110141"><vh>@ifplatform platform-name</vh></v>
 <v t="ekr.20041119035704.2"><vh>@ignore comment</vh></v>
@@ -247,7 +248,7 @@
 <v t="ekr.20060702100257"><vh>@font menu text font</vh></v>
 <v t="ekr.20041119051246.4"><vh>@font outline font</vh></v>
 </v>
-<v t="ekr.20041119034357.3" a="E" annotate="7d71002e"><vh>General options</vh>
+<v t="ekr.20041119034357.3" annotate="7d71002e"><vh>General options</vh>
 <v t="ekr.20041119034357.5"><vh>@bool read_only = False</vh></v>
 <v t="ekr.20041119034357.7"><vh>.leo file options</vh>
 <v t="ekr.20041119034357.8"><vh>@string output_initial_comment = None</vh></v>
@@ -262,9 +263,9 @@
 <v t="ekr.20041119041747.1"><vh>@string trailing_body_newlines = one</vh></v>
 <v t="ekr.20041119041747.4"><vh>@bool write_strips_blank_lines = True</vh></v>
 </v>
-<v t="ekr.20041119034357.15" a="E"><vh>unicode encoding options</vh>
+<v t="ekr.20041119034357.15"><vh>unicode encoding options</vh>
 <v t="ekr.20041119042929.9"><vh>@string default_derived_file_encoding = utf-8</vh></v>
-<v t="ekr.20041119042929.10" a="TV"><vh>@string new_leo_file_encoding = utf-8</vh></v>
+<v t="ekr.20041119042929.10"><vh>@string new_leo_file_encoding = utf-8</vh></v>
 <v t="ekr.20041119042929.11"><vh>@string tk_encoding = None</vh></v>
 </v>
 <v t="ekr.20060127050605"><vh>@int max_undo_stack_size = 50</vh></v>
@@ -461,7 +462,7 @@
 <v t="ekr.20050203090810" annotate="7d71002e"><vh>Unit test</vh>
 <v t="ekr.20050203085250"><vh>@int global_setting_for_unit_tests = 132</vh></v>
 </v>
-<v t="ekr.20041213105954" annotate="7d71002e"><vh>Window</vh>
+<v t="ekr.20041213105954" a="E" annotate="7d71002e"><vh>Window</vh>
 <v t="ekr.20041119034357.38"><vh>Body pane options</vh>
 <v t="ekr.20060531094310"><vh>@bool autoindent_in_nocolor_mode = True</vh></v>
 <v t="ekr.20041119034357.43"><vh>@bool body_gmt_time = False</vh></v>
@@ -481,8 +482,8 @@
 <v t="ekr.20041213105954.1"><vh>Log pane options</vh>
 <v t="ekr.20041119052015.1"><vh>@bool log_pane_wraps = False</vh></v>
 </v>
-<v t="ekr.20041119034357.56"><vh>Options for new windows</vh>
-<v t="ekr.20041119034357.59"><vh>@strings[vertical,horizontal] initial_splitter_orientation = vertical</vh></v>
+<v t="ekr.20041119034357.56" a="E"><vh>Options for new windows</vh>
+<v t="ekr.20041119034357.59" a="V"><vh>@strings[vertical,horizontal] initial_splitter_orientation = vertical</vh></v>
 <v t="ekr.20041119034357.57"><vh>@ratio initial_horizontal_ratio = 0.4</vh></v>
 <v t="ekr.20041119034357.58"><vh>@ratio initial_horizontal_secondary_ratio = 0.8</vh></v>
 <v t="ekr.20041119034357.60"><vh>@ratio initial_vertical_ratio = 0.5</vh></v>
@@ -523,7 +524,7 @@
 <v t="ekr.20060210105437"><vh>@bool trace_select = False</vh></v>
 <v t="ekr.20041119050749.18"><vh>@bool outline_pane_scrolls_horizontally = True</vh></v>
 </v>
-<v t="ekr.20060603215208" a="E"><vh>@keys EKR bindings: Emacs keys + modes</vh>
+<v t="ekr.20060603215208"><vh>@keys EKR bindings: Emacs keys + modes</vh>
 <v t="ekr.20060608065207"><vh>Settings related to key bindings</vh>
 <v t="ekr.20060624072653"><vh>@bool warn_about_redefined_shortcuts = True</vh></v>
 <v t="ekr.20060604080653" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
@@ -5644,5 +5645,10 @@ php_keyword_font_weight = bold
     # normal, bold</t>
 <t tx="ekr.20060904211808"></t>
 <t tx="ekr.20060904211808.1">The path to the zodb storage.</t>
+<t tx="ekr.20060913144412">@keys nodes mark as set of @shortcuts nodes.  @keys nodes are used only by the script in the node:
+    
+    @button Check Bindings
+    
+in this file.  This makes it possible for the script to produce better error messages.</t>
 </tnodes>
 </leo_file>
