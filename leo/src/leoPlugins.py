@@ -5,7 +5,6 @@
 On startup:
 - doPlugins() calls loadHandlers() to import all
   mod_XXXX.py files in the Leo directory.
-
 - Imported files should register hook handlers using the
   registerHandler and registerExclusiveHandler functions.
   Only one "exclusive" function is allowed per hook.
@@ -122,6 +121,8 @@ def getPluginModule (moduleName):
 #@+node:ekr.20041001160216:isLoaded
 def isLoaded (name):
     
+    if name.endswith('.py'): name = name[:-3]
+    
     return name in g.app.loadedPlugins
 #@-node:ekr.20041001160216:isLoaded
 #@+node:ekr.20031218072017.3440:loadHandlers
@@ -188,7 +189,7 @@ def loadOnePlugin (moduleOrFileName, verbose=False):
     
     # g.trace(moduleOrFileName, g.callers())
     
-    if moduleOrFileName [-3:] == ".py":
+    if moduleOrFileName.endswith('.py'):
         moduleName = moduleOrFileName [:-3]
     else:
         moduleName = moduleOrFileName
@@ -215,10 +216,10 @@ def loadOnePlugin (moduleOrFileName, verbose=False):
         try:
             # Indicate success only if init_result is True.
             init_result = result.init()
-            # g.trace('%s.init() returns %s' % (moduleName,init_result))
             if init_result:
                 loadedModules[moduleName] = result
             else:
+                g.es_print('%s.%s failed' % (moduleName,init_result),color="red")
                 result = None
         except AttributeError:
             # No top-level init function.
