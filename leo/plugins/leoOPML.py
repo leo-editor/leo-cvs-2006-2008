@@ -17,7 +17,7 @@ It defines the read-opml-file and write-opml-file commands and corresponding but
 
 # To do: handle unicode properly.
 
-__version__ = '0.04'
+__version__ = '0.05'
 
 # For traces.
 printElements = [] # ['outline','head','body',]
@@ -28,25 +28,25 @@ printElements = [] # ['outline','head','body',]
 #@+at
 # 
 # 0.01 EKR: Initial version.
-# 0.02 EKR:
+# 0.02 EKR: This plugin overrides leoFileCommands.fileCommands.putToOPML.
 # - Changes to Leo's core:
 #     - Added toOPML=False keyword argument to write_Leo_file.
 #     - Added dummy putToOPML method.
-# - This plugin overrides leoFileCommands.fileCommands.putToOPML.
 # 0.03 EKR: Use SAX to read .opml files.  Parsing works.  More semantics are 
 # needed.
-# 0.04 EKR:
-# - Removed most options.
-# - Removed nodeClass.startElement and nodeClass.endElement.
-# - Simplified nodeClass.doAttribute.
-# - Removed several nodeClass ivars.
+# 0.04 EKR: Simplified the code.
+# 0.05 EKR: Outline created with proper headlines: (wrote & debugged 
+# createVnodes & helpers)
 #@-at
+#@nonl
 #@-node:ekr.20060904103412.2:<< version history >>
 #@nl
 #@<< imports >>
 #@+node:ekr.20060904103412.3:<< imports >>
 import leoGlobals as g
 import leoPlugins
+
+import leoNodes
 import leoFileCommands
 
 import xml.sax
@@ -228,6 +228,116 @@ class opmlController:
                 c.k.registerCommand (name,shortcut=None,func=func,pane='all',verbose=False)
     #@nonl
     #@-node:ekr.20060904103412.8:createCommands
+    #@+node:ekr.20060914163456:createVnodes & helpers
+    def createVnodes (self, dummyRoot):
+        
+        '''**Important**: this method and its helpers are low-level code.
+        Modify this with extreme care.'''
+        
+        self.firstChildren = {}
+    
+        children = self.createChildren(dummyRoot,parent_v = None)
+        firstChild = children and children[0]
+        
+        g.trace(firstChild)
+        return firstChild
+    #@+node:ekr.20060914171659.2:createChildren
+    # node is a nodeClass object, parent_v is a vnode.
+    
+    def createChildren (self, node, parent_v):
+        
+        children = node.children
+        if not children: return []
+        
+        # g.trace('parent',parent_v,len(children))
+        
+        firstChild = children[0]
+        tnx = firstChild.tnx
+        firstChild_v = self.firstChildren.get(tnx)
+    
+        if firstChild_v:
+            g.trace('previous firstChild',firstChild_v.headString())
+            children = [firstChild_v]
+        else:
+            # Create the first child, and remember it immediately.
+            firstChild_v = self.createVnodeTree(children[0],parent_v)
+            self.firstChildren[tnx] = firstChild_v
+            # Create the other children.
+            children = [self.createVnodeTree(child,parent_v) for child in children[1:]]
+            children.insert(0,firstChild_v)
+            self.linkSiblings(children)
+            if parent_v: self.linkParentAndChildren(parent_v,children)
+    
+        return children
+            
+            
+    #@nonl
+    #@-node:ekr.20060914171659.2:createChildren
+    #@+node:ekr.20060914171659:createVnodeTree
+    def createVnodeTree (self,node,parent_v):
+    
+        v = self.createVnode(node,parent_v)
+        self.createChildren(node,v)
+        
+        # children = self.createChildren(node,v)
+        # firstChild = children and children[0]
+        # self.linkParentAndChildren(v,children)
+    
+        return v
+    #@nonl
+    #@-node:ekr.20060914171659:createVnodeTree
+    #@+node:ekr.20060914171659.1:createVnode
+    def createVnode (self,node,parent_v):
+        
+        h = node.headString
+        b = node.bodyString
+        t = leoNodes.tnode(bodyString=b,headString=h)
+        v = leoNodes.vnode(t)
+        v.t.vnodeList.append(v)
+        v._parent = parent_v
+        
+        if 0:
+            h1 = v.headString()
+            h2 = parent_v and parent_v.headString() or 'None'
+            g.trace('node: %12s parent: %12s' % (h1[:12],h2[:12]))
+        
+        return v
+    #@nonl
+    #@-node:ekr.20060914171659.1:createVnode
+    #@+node:ekr.20060914174806:linkParentAndChildren
+    def linkParentAndChildren (self, parent_v, children):
+        
+        # if children: g.trace(parent_v,len(children))
+        
+        firstChild_v = children and children[0] or None
+    
+        parent_v.t._firstChild = firstChild_v
+        
+        for child in children:
+            child._parent = parent_v
+    
+        # if firstChild_v:
+            # firstChild_v._parent = parent_v
+        
+        v = parent_v
+        if v not in v.t.vnodeList:
+            v.t.vnodeList.append(v)
+    #@nonl
+    #@-node:ekr.20060914174806:linkParentAndChildren
+    #@+node:ekr.20060914165257:linkSiblings
+    def linkSiblings (self, sibs):
+        
+        '''Set the v._back and v._next links for all vnodes v in sibs.'''
+        
+        n = len(sibs)
+    
+        for i in xrange(n):
+            v = sibs[i]
+            v._back = (i-1 >= 0 and sibs[i-1]) or None
+            v._next = (i+1 <  n and sibs[i+1]) or None
+    #@nonl
+    #@-node:ekr.20060914165257:linkSiblings
+    #@-node:ekr.20060914163456:createVnodes & helpers
     #@+node:ekr.20060913220707:dumpTree
     def dumpTree (self,root,dummy):
         
@@ -240,13 +350,22 @@ class opmlController:
     #@+node:ekr.20060904103721:readFile
     def readFile (self,event=None,fileName=None):
         
-        if fileName: 
-    
-            node = self.c.fileCommands.parse_opml_file(fileName)
+        if not fileName: return
         
-            g.trace('done',fileName,node)
-            
-            self.dumpTree(node,dummy=True)
+        g.trace('='*60)
+    
+        c = self.c
+        self.dummyRoot = dummyRoot = c.fileCommands.parse_opml_file(fileName)
+        
+        # g.trace('dummyRoot.children',dummyRoot.children)
+        # self.dumpTree(dummyRoot,dummy=True)
+    
+        v = self.createVnodes(dummyRoot)
+        if v:
+            c2 = c.new()
+            c2.setRootVnode(v)
+            c2.checkOutline()
+            c2.redraw()
     #@nonl
     #@-node:ekr.20060904103721:readFile
     #@+node:ekr.20060904103721.1:writeFile
@@ -437,14 +556,14 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
             if parent:
                 self.node.parent = parent
             else:
-                parent = nodeClass() # This is a dummy parent node.
+                self.rootNode = parent = nodeClass() # This is a dummy parent node.
+                parent.headString = 'dummyNode'
             parent.children.append(self.node)
-            if not self.rootNode:
-                self.rootNode = self.node
             
             for bunch in self.attrsToList(attrs):
                 self.node.doAttribute(bunch.name,bunch.val)
-            self.nodeStack.append(self.node)
+    
+            self.nodeStack.append(parent)
     #@nonl
     #@-node:ekr.20060904134958.181:doStartElement
     #@+node:ekr.20060904134958.182:doEndElement
@@ -496,7 +615,8 @@ class nodeClass:
     #@+node:ekr.20060904141220.2: node.__str__ & __repr__
     def __str__ (self):
         
-        return '<nodeClass %s>' % id(self)
+        h = g.toUnicode(self.headString,'utf-8') or ''
+        return '<node: %s>' % h
         
     __repr__ = __str__
     #@nonl
@@ -504,20 +624,31 @@ class nodeClass:
     #@+node:ekr.20060904141220.34:doAttribute
     def doAttribute (self,name,val):
         
+        node = self
         name = g.toUnicode(name,encoding='utf-8').lower()
         val  = g.toUnicode(val,encoding='utf-8')
-        # g.trace(name,val)
-        self.attributes[name] = val
         
-        # To do: special cases for tx, head, body attributes.
+        # g.trace(name,val)
+        
+        if name == 'head':
+            node.headString = val
+        elif name == 'body':
+            node.bodyString = val
+        elif name == 'tx':
+            node.tnx = val
+        else:
+            node.attributes[name] = val
+    #@nonl
     #@-node:ekr.20060904141220.34:doAttribute
     #@+node:ekr.20060913220507:dump
     def dump (self):
         
+        h = g.toUnicode(self.headString,'utf-8') or ''
+        
         print
-        print 'node: %d' % id(self)
-        print 'parent: %s' % g.choose(self.parent,id(self.parent),'None')
-        print 'children:',[id(child) for child in self.children]
+        print 'node: %s' % h
+        print 'parent: %s' % self.parent or 'None'
+        print 'children:',[child for child in self.children]
         print 'attrs:',self.attributes.values()
     #@nonl
     #@-node:ekr.20060913220507:dump
