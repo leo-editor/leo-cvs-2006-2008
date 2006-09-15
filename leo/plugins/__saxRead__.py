@@ -8,10 +8,10 @@ This code will soon move into Leo's core.'''
 #@@tabwidth -4
 #@@pagewidth 80
 
-__version__ = '0.1'
+__version__ = '0.2'
 
 # For traces.
-printElements = [] # ['v','t','head','body','leo_file','globals','preferences']
+printElements = [] # 'v','t','vnodes','tnodes','leo_file','leo_header','globals','preferences']
 
 #@<< version history >>
 #@+node:ekr.20060904103412.2:<< version history >>
@@ -19,6 +19,7 @@ printElements = [] # ['v','t','head','body','leo_file','globals','preferences']
 #@+at
 # 
 # 0.1 EKR: Initial version based on version 0.06 of the opml plugin.
+# 0.2 EKR: Beginning transition to elements found in .leo files.
 #@-at
 #@nonl
 #@-node:ekr.20060904103412.2:<< version history >>
@@ -64,7 +65,7 @@ def onCreate (tag, keys):
 #@+node:ekr.20060904132527.10:onStart2 (overrides leoFileCommands.fileCommands)
 def onStart2 (tag,keys):
 
-    # Override the fileCommands class by opmlFileCommandsClass.
+    # Override the fileCommands class with the saxReadCommandsClass.
     leoFileCommands.fileCommands = saxReadCommandsClass
 #@nonl
 #@-node:ekr.20060904132527.10:onStart2 (overrides leoFileCommands.fileCommands)
@@ -73,10 +74,10 @@ def onStart2 (tag,keys):
 class saxReadCommandsClass (leoFileCommands.fileCommands):
     
     #@    @+others
-    #@+node:ekr.20060904134958.116:parse_opml_file
-    def parse_opml_file (self,inputFileName):
+    #@+node:ekr.20060904134958.116:parse_leo_file
+    def parse_leo_file (self,inputFileName):
     
-        if not inputFileName or not inputFileName.endswith('.opml'):
+        if not inputFileName or not inputFileName.endswith('.leo'):
             return None
             
         c = self.c
@@ -104,7 +105,7 @@ class saxReadCommandsClass (leoFileCommands.fileCommands):
             f.close()
             return node
     #@nonl
-    #@-node:ekr.20060904134958.116:parse_opml_file
+    #@-node:ekr.20060904134958.116:parse_leo_file
     #@-others
 #@nonl
 #@-node:ekr.20060904132527.11:class saxReadCommandsClass (fileCommands)
@@ -240,7 +241,7 @@ class saxReadController:
         c = self.c
         
         # Pass one: create the intermediate nodes.
-        self.dummyRoot = dummyRoot = c.fileCommands.parse_opml_file(fileName)
+        self.dummyRoot = dummyRoot = c.fileCommands.parse_leo_file(fileName)
     
         self.dumpTree(dummyRoot,dummy=True)
     
@@ -259,7 +260,7 @@ class saxReadController:
 #@+node:ekr.20060904134958.164:class contentHandler (XMLGenerator)
 class contentHandler (xml.sax.saxutils.XMLGenerator):
     
-    '''A sax content handler class that reads OPML files.'''
+    '''A sax content handler class that reads Leo files.'''
 
     #@    @+others
     #@+node:ekr.20060904134958.165: __init__ & helpers
@@ -270,11 +271,22 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
     
         # Init the base class.
         xml.sax.saxutils.XMLGenerator.__init__(self)
+        
+        # Parsing.
+        self.knownElements = (
+            'find_panel_settings','globals',
+            'global_log_window_position','global_window_position',
+            'leo_file','leo_header','preferences',
+        )
       
         # Semantics.
         self.elementStack = []
-        self.inBody = False
         self.inHead = False
+        self.inTnode = False
+        self.inTnodes = False
+        self.inVnode = False
+        self.inVnodes = False
+        
         self.level = 0
         self.node = None
         self.nodeStack = []
@@ -384,11 +396,15 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
     
         content = g.toUnicode(content,encoding='utf-8') or ''
         content = content.replace('\r','').strip()
+        if not content: return
     
         elementName = self.elementStack and self.elementStack[-1].lower() or '<no element name>'
         
-        if content:
-            print 'content:',elementName,repr(content)
+        if elementName == 'vh':
+            if self.node: self.node.headString = content
+    
+        elif content and elementName not in ('t','v'):
+            print 'unexpected content:',elementName,content
     #@nonl
     #@-node:ekr.20060904134958.178:characters
     #@-node:ekr.20060904134958.174: Do nothing...
@@ -409,17 +425,24 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
             indent = '\t' * (self.level-1) or ''
             print '%s</%s>' % (indent,self.clean(elementName).strip())
             
-        if elementName == 'body':
-            self.inBody= False
-        elif elementName == 'head':
-            self.inHead = False
-        elif elementName == 'outline':
+        if elementName == 't':
+            self.inTnode = False
+        elif elementName == 'tnodes':
+            self.inTnodes = False
+        elif elementName == 'v':
+            self.inVnode = False
             self.level -= 1
             self.node = self.nodeStack.pop()
+        elif elementName == 'vh':
+            self.inHead = False
+        elif elementName == 'vnodes':
+            self.inVnodes= False
+        elif elementName not in self.knownElements:
+            g.trace('unknown element',elementName)
     #@nonl
     #@-node:ekr.20060904134958.182:doEndElement
     #@-node:ekr.20060904134958.179:endElement & helper
-    #@+node:ekr.20060904134958.180:startElement & helper
+    #@+node:ekr.20060904134958.180:startElement & helpers
     def startElement(self,name,attrs):
     
         self.elementStack.append(name)
@@ -432,31 +455,61 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
     
         if elementName in printElements:
             self.printStartElement(elementName,attrs)
-    
-        if elementName == 'body':
-            self.inBody= True
-        elif elementName == 'head':
-            self.inHead = True
-        elif elementName == 'outline':
-            if self.inHead:     self.error('<outline> inside <head>')
-            if not self.inBody: self.error('<outline> outside <body>')
-            self.level += 1
-            parent = self.node
-            self.node = nodeClass()
-            if parent:
-                self.node.parent = parent
-            else:
-                self.rootNode = parent = nodeClass() # This is a dummy parent node.
-                parent.headString = 'dummyNode'
-            parent.children.append(self.node)
             
-            for bunch in self.attrsToList(attrs):
-                self.node.doAttribute(bunch.name,bunch.val)
-    
-            self.nodeStack.append(parent)
+        if elementName == 't':
+            self.inTnode = True
+            self.startTnode(attrs)
+        elif elementName == 'tnodes':
+            self.inTnodes = True
+        elif elementName == 'v':
+            self.inVnode = True
+            self.level += 1
+            node = self.startVnode(attrs)
+            self.nodeStack.append(node)
+        elif elementName == 'vh':
+            self.inHead = True
+            self.startHead(attrs)
+        elif elementName == 'vnodes':
+            self.inVnodes= True
+        elif elementName not in self.knownElements:
+            g.trace('unknown element',elementName)
+       
     #@nonl
     #@-node:ekr.20060904134958.181:doStartElement
-    #@-node:ekr.20060904134958.180:startElement & helper
+    #@+node:ekr.20060915104021:startHead
+    def startHead(self,attrs):
+    
+        pass
+    #@nonl
+    #@-node:ekr.20060915104021:startHead
+    #@+node:ekr.20060915101510:startTnode
+    def startTnode (self,attrs):
+        
+        pass
+    #@nonl
+    #@-node:ekr.20060915101510:startTnode
+    #@+node:ekr.20060915101510.1:startVnode
+    def startVnode (self,attrs):
+        
+        # if self.inHead:     self.error('<outline> inside <head>')
+        # if not self.inBody: self.error('<outline> outside <body>')
+        
+        parent = self.node
+        self.node = nodeClass()
+        if parent:
+            self.node.parent = parent
+        else:
+            self.rootNode = parent = nodeClass() # This is a dummy parent node.
+            parent.headString = 'dummyNode'
+        parent.children.append(self.node)
+        
+        for bunch in self.attrsToList(attrs):
+            self.node.doAttribute(bunch.name,bunch.val)
+            
+        return parent
+    #@nonl
+    #@-node:ekr.20060915101510.1:startVnode
+    #@-node:ekr.20060904134958.180:startElement & helpers
     #@+node:ekr.20060904134958.183:getNode
     def getNode (self):
         
