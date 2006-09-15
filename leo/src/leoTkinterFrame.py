@@ -1170,6 +1170,15 @@ class leoTkinterFrame (leoFrame.leoFrame):
         border = g.choose(self.splitVerticalFlag,4,2) 
         self.log.configureBorder(border)
     #@-node:ekr.20031218072017.3970:reconfigurePanes (use config bar_width)
+    #@+node:ekr.20060915124834:resizePanesToRatio
+    def resizePanesToRatio(self,ratio,ratio2):
+        
+        # g.trace(ratio,ratio2,g.callers())
+        
+        self.divideLeoSplitter(self.splitVerticalFlag,ratio)
+        self.divideLeoSplitter(not self.splitVerticalFlag,ratio2)
+    #@nonl
+    #@-node:ekr.20060915124834:resizePanesToRatio
     #@-node:ekr.20031218072017.3967:Configuration (tkFrame)
     #@+node:ekr.20031218072017.3971:Event handlers (tkFrame)
     #@+node:ekr.20031218072017.3972:frame.OnCloseLeoEvent
