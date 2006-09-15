@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="7447" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="171" left="258" height="766" width="879"/>
+	<global_window_position top="171" left="258" height="728" width="879"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -190,73 +190,6 @@
 <v t="ekr.20040205071616.9"><vh>insertUser</vh></v>
 <v t="ekr.20040205071616.10"><vh>create_UserMenu</vh></v>
 </v>
-</v>
-<v t="ekr.20060703162826"><vh>Dialogs</vh>
-<v t="ekr.20060703162506"><vh>@thin keybindings.py</vh></v>
-</v>
-<v t="ekr.20041030092101"><vh>Dyna plugins by e</vh>
-<v t="ekr.20060110125615"><vh>@url http://rclick.netfirms.com/dyna_menu.py.html  (dyna plugin)</vh></v>
-</v>
-<v t="ekr.20040722141148"><vh>Example code</vh>
-<v t="edream.110203113231.916"><vh>@thin __overrideClasses.py</vh></v>
-<v t="edream.110203113231.919"><vh>@thin override_commands.py</vh></v>
-<v t="edream.110203113231.921"><vh>@thin redefine_put.py</vh></v>
-<v t="ekr.20060621123339"><vh>@thin print_cp.py</vh></v>
-</v>
-<v t="ekr.20040722134535"><vh>Experimental/unfinished/abandoned</vh>
-<v t="ekr.20040918165427.4"><vh>Autocompletion dictionary files</vh></v>
-<v t="ekr.20051109021852"><vh>Tk Notebook</vh>
-<v t="leo4u.20040924131405.1"><vh>@thin Tknotebook.py</vh></v>
-<v t="leo4u.20040924130601.1"><vh>@thin TabWindow.py</vh></v>
-</v>
-<v t="edream.110203113231.233"><vh>wxPython plugin (pre-alpha quality)</vh>
-<v t="ekr.20060629124102"><vh>To do</vh>
-<v t="edream.111303184347"><vh>(delete_range) doesn't work</vh>
-<v t="edream.111303103141.3"><vh>delete_range</vh></v>
-</v>
-<v t="edream.111303100039"><vh>Gui-dependent commands (to do)</vh>
-<v t="edream.111303100039.1"><vh>Edit Menu...</vh>
-<v t="edream.111303101257"><vh>abortEditLabelCommand</vh></v>
-<v t="edream.111303101257.1"><vh>endEditLabelCommand</vh></v>
-<v t="edream.111303100039.6"><vh>insertHeadlineTime</vh></v>
-</v>
-<v t="edream.111303100039.7"><vh>Window Menu</vh>
-<v t="edream.111303100039.8"><vh>cascade</vh></v>
-<v t="edream.111303100039.9"><vh>equalSizedPanes</vh></v>
-<v t="edream.111303100039.10"><vh>hideLogWindow</vh></v>
-<v t="edream.111303100039.11"><vh>minimizeAll</vh></v>
-<v t="edream.111303101709"><vh>toggleActivePane</vh></v>
-<v t="edream.111303100039.12"><vh>toggleSplitDirection</vh></v>
-</v>
-<v t="edream.111703103908"><vh>Help Menu...</vh>
-<v t="edream.111703103908.2"><vh>leoHelp</vh>
-<v t="edream.111703103908.3"><vh>showProgressBar</vh>
-<v t="edream.111703103908.4"><vh>&lt;&lt; create the scale widget &gt;&gt;</vh></v>
-</v>
-</v>
-</v>
-</v>
-<v t="edream.111303205442"><vh>(colorizing) (demo only)</vh>
-<v t="edream.111303204025"><vh>Indices (wxLeoBody)</vh>
-<v t="edream.111303204025.1"><vh>adjustIndex</vh></v>
-<v t="edream.111303204025.2"><vh>compareIndices</vh></v>
-<v t="edream.111303204025.3"><vh>convertRowColumnToIndex</vh></v>
-<v t="edream.111303204025.4"><vh>convertIndexToRowColumn</vh></v>
-<v t="edream.111303204025.5"><vh>getImageIndex</vh></v>
-<v t="edream.111403080609"><vh>maxWxIndex (internal use)</vh></v>
-</v>
-<v t="edream.111303204517"><vh>Color tags (hacks for styles)</vh>
-<v t="edream.111403082513"><vh>tkColorToWxColor (internal use)</vh></v>
-<v t="edream.111303205611"><vh>tag_add</vh></v>
-<v t="edream.111303205611.1"><vh>tag_bind</vh></v>
-<v t="edream.111303205611.2"><vh>tag_configure (hack for wxStyles)</vh></v>
-<v t="edream.111303205611.3"><vh>tag_delete</vh></v>
-<v t="edream.111303205611.4"><vh>tag_remove</vh></v>
-</v>
-</v>
-</v>
-<v t="edream.110203113231.302"><vh>@thin __wx_gui.py</vh></v>
-</v>
 <v t="ekr.20060513122613"><vh>xcc plugin</vh>
 <v t="ekr.20060513122613.1"><vh>Examples</vh>
 <v t="ekr.20060513122613.2" xcc_cfg="7d710028550a45786563757461626c6571017d710228550a446c6c2063616c6c65727103550071045513457865637574696f6e20617267756d656e747371056804755504436f64657106680455074144445f4c4f477107680455055469746c65710868045508446562756767657271097d710a28550e4964656e7469667920627265616b710b6804550f54617267657420706964207461736b710c680455085069706520656f6c710d68045509417267756d656e7473710e6804550e50726f6d7074207061747465726e710f6804550e5175657279206c6f636174696f6e71106804550846696e642070696471116804550b436c65617220627265616b7112680455084576616c7561746571136804550453746f707114680455045374657071156804550b4c69737420627265616b737116680455045461736b71176804550f427265616b20646574656374696f6e71186804550853746570206f757471196804550953657420627265616b711a6804550d46696e64206c6f636174696f6e711b680455075374657020696e711c6804680968045512526567756c61722065787072657373696f6e711d68045508436f6e74696e7565711e68045502476f711f6804550c53746172747570207461736b71206804550953746570206f766572712155046e65787471227555075345545f4c4f47712368045506494e495445447124550454727565712555074f7074696f6e7371267d712728550b58636320766572626f73657128550546616c73657129550745786563757465712a550546616c7365712b550c4372656174652066696c6573712c550454727565712d55105365656b20627265616b706f696e7473712e550546616c7365712f550f436f6e6e65637420746f20706970657130550546616c736571315507436f6d70696c657132550546616c73657133550d46696c746572206f75747075747134550546616c7365713555134175746f20696e636c756465206865616465727136550546616c73657137550544656275677138550546616c7365713955105365656b206669727374206572726f72713a550546616c7365713b550c436f6c6f72697a65206c6f67713c550546616c7365713d755508436f6d70696c6572713e7d713f285514496e636c7564652073656172636820706174687371406804550f4572726f7220646574656374696f6e71416804550b557365206c69627261727971426804550e55736564206c696272617269657371436804550f446562756720617267756d656e747371446804550d436865636b2073796e7461786571456804550c4c696272617279207061746871466804680e680455094275696c6420646c6c714768045507557365207063687148680455094275696c64206578657149680455144c69627261727920736561726368207061746873714a6804550c496e636c7564652070617468714b6804550b436f6d70696c6520706368714c6804683e680475752e"><vh>@xcc OpenGl.h</vh>
@@ -425,6 +358,69 @@
 <v t="ekr.20060513122450"><vh>@thin xcc_nodes.py</vh></v>
 </v>
 </v>
+<v t="ekr.20060703162826"><vh>Dialogs</vh>
+<v t="ekr.20060703162506"><vh>@thin keybindings.py</vh></v>
+</v>
+<v t="ekr.20041030092101"><vh>Dyna plugins by e</vh>
+<v t="ekr.20060110125615"><vh>@url http://rclick.netfirms.com/dyna_menu.py.html  (dyna plugin)</vh></v>
+</v>
+<v t="ekr.20040722141148"><vh>Example code</vh>
+<v t="edream.110203113231.916"><vh>@thin __overrideClasses.py</vh></v>
+<v t="edream.110203113231.919"><vh>@thin override_commands.py</vh></v>
+<v t="edream.110203113231.921"><vh>@thin redefine_put.py</vh></v>
+<v t="ekr.20060621123339"><vh>@thin print_cp.py</vh></v>
+</v>
+<v t="ekr.20040722134535"><vh>Experimental/unfinished/abandoned</vh>
+<v t="ekr.20040918165427.4"><vh>Autocompletion dictionary files</vh></v>
+<v t="edream.110203113231.233"><vh>wxPython plugin (pre-alpha quality)</vh>
+<v t="ekr.20060629124102"><vh>To do</vh>
+<v t="edream.111303184347"><vh>(delete_range) doesn't work</vh>
+<v t="edream.111303103141.3"><vh>delete_range</vh></v>
+</v>
+<v t="edream.111303100039"><vh>Gui-dependent commands (to do)</vh>
+<v t="edream.111303100039.1"><vh>Edit Menu...</vh>
+<v t="edream.111303101257"><vh>abortEditLabelCommand</vh></v>
+<v t="edream.111303101257.1"><vh>endEditLabelCommand</vh></v>
+<v t="edream.111303100039.6"><vh>insertHeadlineTime</vh></v>
+</v>
+<v t="edream.111303100039.7"><vh>Window Menu</vh>
+<v t="edream.111303100039.8"><vh>cascade</vh></v>
+<v t="edream.111303100039.9"><vh>equalSizedPanes</vh></v>
+<v t="edream.111303100039.10"><vh>hideLogWindow</vh></v>
+<v t="edream.111303100039.11"><vh>minimizeAll</vh></v>
+<v t="edream.111303101709"><vh>toggleActivePane</vh></v>
+<v t="edream.111303100039.12"><vh>toggleSplitDirection</vh></v>
+</v>
+<v t="edream.111703103908"><vh>Help Menu...</vh>
+<v t="edream.111703103908.2"><vh>leoHelp</vh>
+<v t="edream.111703103908.3"><vh>showProgressBar</vh>
+<v t="edream.111703103908.4"><vh>&lt;&lt; create the scale widget &gt;&gt;</vh></v>
+</v>
+</v>
+</v>
+</v>
+<v t="edream.111303205442"><vh>(colorizing) (demo only)</vh>
+<v t="edream.111303204025"><vh>Indices (wxLeoBody)</vh>
+<v t="edream.111303204025.1"><vh>adjustIndex</vh></v>
+<v t="edream.111303204025.2"><vh>compareIndices</vh></v>
+<v t="edream.111303204025.3"><vh>convertRowColumnToIndex</vh></v>
+<v t="edream.111303204025.4"><vh>convertIndexToRowColumn</vh></v>
+<v t="edream.111303204025.5"><vh>getImageIndex</vh></v>
+<v t="edream.111403080609"><vh>maxWxIndex (internal use)</vh></v>
+</v>
+<v t="edream.111303204517"><vh>Color tags (hacks for styles)</vh>
+<v t="edream.111403082513"><vh>tkColorToWxColor (internal use)</vh></v>
+<v t="edream.111303205611"><vh>tag_add</vh></v>
+<v t="edream.111303205611.1"><vh>tag_bind</vh></v>
+<v t="edream.111303205611.2"><vh>tag_configure (hack for wxStyles)</vh></v>
+<v t="edream.111303205611.3"><vh>tag_delete</vh></v>
+<v t="edream.111303205611.4"><vh>tag_remove</vh></v>
+</v>
+</v>
+</v>
+<v t="edream.110203113231.302"><vh>@thin __wx_gui.py</vh></v>
+</v>
+</v>
 <v t="EKR.20040517075715"><vh>External editors &amp; Open With</vh>
 <v t="EKR.20040517075715.1"><vh>@thin mod_tempfname.py</vh></v>
 <v t="EKR.20040517080049.4"><vh>@thin open_shell.py</vh></v>
@@ -485,6 +481,30 @@
 <v t="EKR.20040517080555.36"><vh>@thin scripts_menu.py</vh></v>
 <v t="ekr.20040828122150"><vh>@thin pie_menus.py</vh></v>
 </v>
+<v t="ekr.20060530091119"><vh>New colorizer</vh>
+<v t="ekr.20060623075925.1"><vh>To do</vh></v>
+<v t="ekr.20060530091119.2"><vh>@url http://www.jedit.org/42docs/users-guide/writing-modes-part.html</vh></v>
+<v t="ekr.20060824131842"><vh>Recent</vh>
+<v t="ekr.20060530091119.8"><vh>__init__</vh></v>
+<v t="ekr.20060530091119.9"><vh>init_mode &amp; helpers</vh>
+<v t="ekr.20060827170228"><vh>nameToRulesetName</vh></v>
+<v t="ekr.20060530091119.18"><vh>setKeywords</vh></v>
+<v t="ekr.20060703070148"><vh>setModeAttributes</vh></v>
+<v t="ekr.20060703110708"><vh>initModeFromBunch</vh></v>
+<v t="ekr.20060727084423"><vh>updateDelimsTables</vh></v>
+</v>
+<v t="ekr.20060530091119.48"><vh>colorRangeWithTag</vh></v>
+<v t="ekr.20060530091119.13"><vh>colorOneChunk</vh></v>
+<v t="ekr.20060530091119.37"><vh>configure_tags</vh></v>
+<v t="ekr.20060829121534"><vh>Handle no_escape arg</vh>
+<v t="ekr.20060530091119.57"><vh>match_span &amp; helper</vh>
+<v t="ekr.20060904084624"><vh>match_span_helper</vh></v>
+</v>
+<v t="ekr.20060530091119.58"><vh>match_span_regexp</vh></v>
+</v>
+</v>
+<v t="ekr.20060530091119.20"><vh>@thin __jEdit_colorizer__.py</vh></v>
+</v>
 <v t="edream.110203113231.872"><vh>Nodes...</vh>
 <v t="edream.110203113231.873"><vh>@thin at_folder.py</vh></v>
 <v t="ekr.20040915085351"><vh>@thin at_produce.py</vh></v>
@@ -495,6 +515,7 @@
 <v t="ekr.20050301095332"><vh>@thin mod_labels.py</vh></v>
 <v t="edream.110203113231.876"><vh>@thin read_only_nodes.py</vh></v>
 <v t="ekr.20040910070811.1"><vh>@thin run_nodes.py</vh></v>
+<v t="ekr.20060831165821"><vh>@thin slideshow.py</vh></v>
 <v t="ekr.20040828103325"><vh>@thin startfile.py</vh></v>
 <v t="ekr.20050329082101"><vh>AutoTrees</vh>
 <v t="ekr.20050329082101.1"><vh>AutoTrees plugin</vh>
@@ -983,31 +1004,6 @@
 <v t="ekr.20040831122004"><vh>@thin UniversalScrolling.py</vh></v>
 <v t="ekr.20040831115238"><vh>@thin URLloader.py</vh></v>
 </v>
-</v>
-<v t="ekr.20060831165821"><vh>@thin slideshow.py</vh></v>
-<v t="ekr.20060530091119"><vh>New colorizer</vh>
-<v t="ekr.20060623075925.1"><vh>To do</vh></v>
-<v t="ekr.20060530091119.2"><vh>@url http://www.jedit.org/42docs/users-guide/writing-modes-part.html</vh></v>
-<v t="ekr.20060824131842"><vh>Recent</vh>
-<v t="ekr.20060530091119.8"><vh>__init__</vh></v>
-<v t="ekr.20060530091119.9"><vh>init_mode &amp; helpers</vh>
-<v t="ekr.20060827170228"><vh>nameToRulesetName</vh></v>
-<v t="ekr.20060530091119.18"><vh>setKeywords</vh></v>
-<v t="ekr.20060703070148"><vh>setModeAttributes</vh></v>
-<v t="ekr.20060703110708"><vh>initModeFromBunch</vh></v>
-<v t="ekr.20060727084423"><vh>updateDelimsTables</vh></v>
-</v>
-<v t="ekr.20060530091119.48"><vh>colorRangeWithTag</vh></v>
-<v t="ekr.20060530091119.13"><vh>colorOneChunk</vh></v>
-<v t="ekr.20060530091119.37"><vh>configure_tags</vh></v>
-<v t="ekr.20060829121534"><vh>Handle no_escape arg</vh>
-<v t="ekr.20060530091119.57"><vh>match_span &amp; helper</vh>
-<v t="ekr.20060904084624"><vh>match_span_helper</vh></v>
-</v>
-<v t="ekr.20060530091119.58"><vh>match_span_regexp</vh></v>
-</v>
-</v>
-<v t="ekr.20060530091119.20"><vh>@thin __jEdit_colorizer__.py</vh></v>
 </v>
 </vnodes>
 <tnodes>
@@ -9384,7 +9380,6 @@ Edward K. Ream:  Aug 22, 2005.</t>
 
 - Added init function that always returns False.  This helps Leo's unit tests.</t>
 <t tx="ekr.20051025144116">c.spellCommands.openSpellTab()</t>
-<t tx="ekr.20051109021852">@ Not ready for prime time yet.</t>
 <t tx="ekr.20060109114710">c.openLeoSettings()</t>
 <t tx="ekr.20060110125615"></t>
 <t tx="ekr.20060513122450.53">class ConfigClass:
