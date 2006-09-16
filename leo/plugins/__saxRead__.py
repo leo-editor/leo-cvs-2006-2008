@@ -1,17 +1,19 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20060904103412:@thin __saxRead__.py
-'''A *temporary* plugin to read Leo outlines using a SAX parser.
-
-This code will soon move into Leo's core.'''
+'''A *temporary* plugin to read Leo outlines using a SAX parser.'''
 
 #@@language python
 #@@tabwidth -4
 #@@pagewidth 80
 
-__version__ = '0.4'
+__version__ = '0.5'
+
+# To do:
+# - Handle <leo_header>, <globals>, etc.
+# - Handle unicode encoding, esp utf-16.
 
 # For traces.
-printElements = [] # 'v','vh'] # 't','vnodes','tnodes','leo_file','leo_header','globals','preferences']
+printElements = [] # 'v', 'all',
 
 #@<< version history >>
 #@+node:ekr.20060904103412.2:<< version history >>
@@ -21,7 +23,10 @@ printElements = [] # 'v','vh'] # 't','vnodes','tnodes','leo_file','leo_header','
 # 0.1 EKR: Initial version based on version 0.06 of the opml plugin.
 # 0.2 EKR: Beginning transition to elements found in .leo files.
 # 0.3 EKR: Most of read logic is working.
-# 0.4 EKR: Refactored using start/end methods called via dispatch table.
+# 0.4 EKR:
+# - Refactored using start/end methods called via dispatch table.
+# - Added inElement method and removed all inX flags and knownElements list.
+# 0.5 EKR: tnodes now handled properly, so body text is read correctly.
 #@-at
 #@nonl
 #@-node:ekr.20060904103412.2:<< version history >>
@@ -130,7 +135,7 @@ class saxReadController:
         corresponding to link/unlink methods in leoNodes.py.
         Modify this with extreme care.'''
         
-        self.generatedTnxs = {}
+        self.txnToVnodeDict = {}
     
         children = self.createChildren(dummyRoot,parent_v = None)
         firstChild = children and children[0]
@@ -145,14 +150,14 @@ class saxReadController:
         
         for child in node.children:
             tnx = child.tnx
-            v = self.generatedTnxs.get(tnx)
+            v = self.txnToVnodeDict.get(tnx)
             if v:
                 # A clone.  Create a new clone node, but share the subtree, i.e., the tnode.
                 # g.trace('clone',child.headString)
                 v = self.createVnode(child,parent_v,t=v.t)
             else:
                 v = self.createVnodeTree(child,parent_v)
-                self.generatedTnxs [tnx] = v
+                self.txnToVnodeDict [tnx] = v
             result.append(v)
             
         self.linkSiblings(result)
@@ -259,6 +264,49 @@ class saxReadController:
     #@-others
 #@nonl
 #@-node:ekr.20060904103412.6:class saxReadController
+#@+node:ekr.20060904141220:class nodeClass
+class nodeClass:
+    
+    '''A class representing one <v> element.
+    
+    Use getters to access the attributes, properties and rules of this mode.'''
+    
+    #@    @+others
+    #@+node:ekr.20060904141220.1: node.__init__
+    def __init__ (self):
+    
+        self.attributes = {}
+        self.bodyString = ''
+        self.headString = ''
+        self.children = []
+        self.parent = None
+        self.tnx = None
+    #@nonl
+    #@-node:ekr.20060904141220.1: node.__init__
+    #@+node:ekr.20060904141220.2: node.__str__ & __repr__
+    def __str__ (self):
+        
+        h = g.toUnicode(self.headString,'utf-8') or ''
+        return '<v: %s>' % h
+    
+    __repr__ = __str__
+    #@nonl
+    #@-node:ekr.20060904141220.2: node.__str__ & __repr__
+    #@+node:ekr.20060913220507:node.dump
+    def dump (self):
+        
+        h = g.toUnicode(self.headString,'utf-8') or ''
+        
+        print
+        print 'node: tnx: %s %s' % (self.tnx,h)
+        print 'parent: %s' % self.parent or 'None'
+        print 'children:',[child for child in self.children]
+        print 'attrs:',self.attributes.values()
+    #@nonl
+    #@-node:ekr.20060913220507:node.dump
+    #@-others
+#@nonl
+#@-node:ekr.20060904141220:class nodeClass
 #@+node:ekr.20060904134958.164:class contentHandler (XMLGenerator)
 class contentHandler (xml.sax.saxutils.XMLGenerator):
     
@@ -274,13 +322,6 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         # Init the base class.
         xml.sax.saxutils.XMLGenerator.__init__(self)
         
-        # Parsing.
-        self.knownElements = (
-            'find_panel_settings','globals',
-            'global_log_window_position','global_window_position',
-            'leo_file','leo_header','preferences',
-        )
-        
         #@    << define dispatch dict >>
         #@+node:ekr.20060915210537:<< define dispatch dict >>
         # There is no need for an 'end' method if all info is carried in attributes.
@@ -293,7 +334,7 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
             'leo_file':                    (None,None),
             'leo_header':                  (self.startLeoHeader,None),
             'preferences':                 (None,None),
-            't':                           (None,None),
+            't':                           (self.startTnode,self.endTnode),
             'tnodes':                      (None,None),
             'v':                           (self.startVnode,self.endVnode),
             'vh':                          (self.startVH,self.endVH),
@@ -306,12 +347,9 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         # Semantics.
         self.content = None
         self.elementStack = []
-        # self.inHead = False
-        # self.inTnode = False
-        # self.inTnodes = False
-        # self.inVnode = False
-        # self.inVnodes = False
-        
+        self.txnToVnodeDict = {} # Keys are tnx's (strings), values are vnodes.
+        self.txnToNodeDict = {}  # Keys are tnx's (strings), values are nodeClass objects
+        self
         self.level = 0
         self.node = None
         self.nodeStack = []
@@ -329,8 +367,11 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         # g.trace(g.listToString([attrs.getValue(name) for name in attrs.getNames()]))
         
         return [
-            g.Bunch(name=name,val=g.toUnicode(attrs.getValue(name),encoding='utf-8'))
-                for name in attrs.getNames()]
+            g.Bunch(
+                name=g.toUnicode(name,encoding='utf-8'),
+                val=g.toUnicode(attrs.getValue(name),encoding='utf-8'),
+            )
+            for name in attrs.getNames()]
     #@nonl
     #@-node:ekr.20060904134958.167:attrsToList
     #@+node:ekr.20060904134958.168:attrsToString
@@ -432,11 +473,11 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
     
         elementName = self.elementStack and self.elementStack[-1].lower() or '<no element name>'
         
-        if elementName == 'vh':
-            # g.trace('vh:',repr(content))
+        if elementName in ('t','vh'):
+            # if elementName == 'vh': g.trace(elementName,repr(content))
             self.content.append(content)
     
-        elif content.strip() and elementName not in ('t','v','tnodes'):
+        elif content.strip():
             print 'unexpected content:',elementName,repr(content)
     #@nonl
     #@-node:ekr.20060904134958.178:characters
@@ -444,7 +485,7 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
     def endElement(self,name):
         
         name = name.lower()
-        if name in printElements:
+        if name in printElements or 'all' in printElements:
             indent = '\t' * (self.level-1) or ''
             print '%s</%s>' % (indent,self.clean(name).strip())
         
@@ -460,6 +501,15 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         name2 = self.elementStack.pop()
         assert name == name2
     #@nonl
+    #@+node:ekr.20060916074444:endTnode
+    def endTnode (self):
+        
+        if self.node:
+            self.node.bodyString = ''.join(self.content)
+    
+        self.content = []
+    #@nonl
+    #@-node:ekr.20060916074444:endTnode
     #@+node:ekr.20060915211611:endVnode
     def endVnode (self):
         
@@ -481,7 +531,7 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
     def startElement(self,name,attrs):
         
         name = name.lower()
-        if name in printElements:
+        if name in printElements or 'all' in printElements:
             self.printStartElement(name,attrs)
     
         self.elementStack.append(name)
@@ -510,7 +560,7 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
     #@+node:ekr.20060915210537.5:startLeoHeader
     def startLeoHeader (self,attrs):
         
-        pass
+        self.txnToNodeDict = {}
     #@nonl
     #@-node:ekr.20060915210537.5:startLeoHeader
     #@+node:ekr.20060915104021:startVH
@@ -524,7 +574,32 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         
         if not self.inElement('tnodes'):
             self.error('<t> outside <tnodes>')
+            
+        self.content = []
+        
+        self.tnodeAttributes(attrs)
     #@nonl
+    #@+node:ekr.20060916071326:tnodeAttributes
+    def tnodeAttributes (self,attrs):
+        
+        # The tnode must have a tx attribute to associate content with the proper node.
+            
+        self.node = None
+    
+        for bunch in self.attrsToList(attrs):
+            name = bunch.name ; val = bunch.val
+            if name == 'tx':
+                self.node = self.txnToNodeDict.get(val)
+                if not self.node:
+                    self.error('Bad leo file: no node for <t tx=%s>' % (val))
+            else:
+                # Do **not** set any nodeClass attributes here!
+                self.error('Unexpected tnode attribute %s = %s' % (name,val))
+                
+        if not self.node:
+            self.error('Bad leo file: no tx attribute for tnode')
+    #@nonl
+    #@-node:ekr.20060916071326:tnodeAttributes
     #@-node:ekr.20060915101510:startTnode
     #@+node:ekr.20060915101510.1:startVnode
     def startVnode (self,attrs):
@@ -534,21 +609,34 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
     
         parent = self.node
         self.node = nodeClass()
+    
         if parent:
             self.node.parent = parent
         else:
             self.rootNode = parent = nodeClass() # This is a dummy parent node.
             parent.headString = 'dummyNode'
-        parent.children.append(self.node)
         
-        for bunch in self.attrsToList(attrs):
-            self.node.doAttribute(bunch.name,bunch.val)
-            
-        self.content = []
+        parent.children.append(self.node)
+        self.vnodeAttributes(attrs)
         self.nodeStack.append(parent)
             
         return parent
     #@nonl
+    #@+node:ekr.20060916064339:vnodeAttributes
+    def vnodeAttributes (self,attrs):
+        
+        node = self.node
+    
+        for bunch in self.attrsToList(attrs):
+            name = bunch.name ; val = bunch.val
+            if name == 't':
+                self.txnToNodeDict[val] = self.node
+                node.tnx = val
+            else:
+                node.attributes[name] = val
+                # g.trace(name,len(val))
+    #@nonl
+    #@-node:ekr.20060916064339:vnodeAttributes
     #@-node:ekr.20060915101510.1:startVnode
     #@-node:ekr.20060904134958.180:startElement & helpers
     #@+node:ekr.20060904134958.183:getNode
@@ -560,65 +648,6 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
     #@-others
 #@nonl
 #@-node:ekr.20060904134958.164:class contentHandler (XMLGenerator)
-#@+node:ekr.20060904141220:class nodeClass
-class nodeClass:
-    
-    '''A class representing one <v> element.
-    
-    Use getters to access the attributes, properties and rules of this mode.'''
-    
-    #@    @+others
-    #@+node:ekr.20060904141220.1: node.__init__
-    def __init__ (self):
-    
-        self.attributes = {}
-        self.bodyString = ''
-        self.headString = ''
-        self.children = []
-        self.parent = None
-        self.tnx = None
-    #@nonl
-    #@-node:ekr.20060904141220.1: node.__init__
-    #@+node:ekr.20060904141220.2: node.__str__ & __repr__
-    def __str__ (self):
-        
-        h = g.toUnicode(self.headString,'utf-8') or ''
-        return '<v: %s>' % h
-    
-    __repr__ = __str__
-    #@nonl
-    #@-node:ekr.20060904141220.2: node.__str__ & __repr__
-    #@+node:ekr.20060904141220.34:node.doAttribute
-    def doAttribute (self,name,val):
-        
-        node = self
-        name = g.toUnicode(name,encoding='utf-8').lower()
-        val  = g.toUnicode(val,encoding='utf-8')
-        
-        if not name.startswith('xcc') and not name in ('t',):
-            g.trace(name,len(str(val)))
-        
-        if name == 't':
-            node.tnx = val
-        else:
-            node.attributes[name] = val
-    #@nonl
-    #@-node:ekr.20060904141220.34:node.doAttribute
-    #@+node:ekr.20060913220507:node.dump
-    def dump (self):
-        
-        h = g.toUnicode(self.headString,'utf-8') or ''
-        
-        print
-        print 'node: tnx: %s %s' % (self.tnx,h)
-        print 'parent: %s' % self.parent or 'None'
-        print 'children:',[child for child in self.children]
-        print 'attrs:',self.attributes.values()
-    #@nonl
-    #@-node:ekr.20060913220507:node.dump
-    #@-others
-#@nonl
-#@-node:ekr.20060904141220:class nodeClass
 #@-others
 #@nonl
 #@-node:ekr.20060904103412:@thin __saxRead__.py
