@@ -8,10 +8,10 @@ This code will soon move into Leo's core.'''
 #@@tabwidth -4
 #@@pagewidth 80
 
-__version__ = '0.3'
+__version__ = '0.4'
 
 # For traces.
-printElements = ['v','vh'] # 'v','t','vnodes','tnodes','leo_file','leo_header','globals','preferences']
+printElements = [] # 'v','vh'] # 't','vnodes','tnodes','leo_file','leo_header','globals','preferences']
 
 #@<< version history >>
 #@+node:ekr.20060904103412.2:<< version history >>
@@ -21,6 +21,7 @@ printElements = ['v','vh'] # 'v','t','vnodes','tnodes','leo_file','leo_header','
 # 0.1 EKR: Initial version based on version 0.06 of the opml plugin.
 # 0.2 EKR: Beginning transition to elements found in .leo files.
 # 0.3 EKR: Most of read logic is working.
+# 0.4 EKR: Refactored using start/end methods called via dispatch table.
 #@-at
 #@nonl
 #@-node:ekr.20060904103412.2:<< version history >>
@@ -279,15 +280,37 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
             'global_log_window_position','global_window_position',
             'leo_file','leo_header','preferences',
         )
-      
+        
+        #@    << define dispatch dict >>
+        #@+node:ekr.20060915210537:<< define dispatch dict >>
+        # There is no need for an 'end' method if all info is carried in attributes.
+        
+        self.dispatchDict = {
+            'find_panel_settings':         (None,None),
+            'globals':                     (None,None),
+            'global_log_window_position':  (self.startLogPos,None),
+            'global_window_position':      (self.startWinPos,None),
+            'leo_file':                    (None,None),
+            'leo_header':                  (self.startLeoHeader,None),
+            'preferences':                 (None,None),
+            't':                           (None,None),
+            'tnodes':                      (None,None),
+            'v':                           (self.startVnode,self.endVnode),
+            'vh':                          (self.startVH,self.endVH),
+            'vnodes':                      (None,None),
+        }
+        #@nonl
+        #@-node:ekr.20060915210537:<< define dispatch dict >>
+        #@nl
+          
         # Semantics.
         self.content = None
         self.elementStack = []
-        self.inHead = False
-        self.inTnode = False
-        self.inTnodes = False
-        self.inVnode = False
-        self.inVnodes = False
+        # self.inHead = False
+        # self.inTnode = False
+        # self.inTnodes = False
+        # self.inVnode = False
+        # self.inVnodes = False
         
         self.level = 0
         self.node = None
@@ -342,6 +365,12 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         print
     #@nonl
     #@-node:ekr.20060904134958.170:error
+    #@+node:ekr.20060915211757:inElement
+    def inElement (self,name):
+        
+        return self.elementStack and name in self.elementStack
+    #@nonl
+    #@-node:ekr.20060915211757:inElement
     #@+node:ekr.20060904134958.171:printStartElement
     def printStartElement(self,name,attrs):
         
@@ -404,103 +433,104 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         elementName = self.elementStack and self.elementStack[-1].lower() or '<no element name>'
         
         if elementName == 'vh':
-            g.trace('vh:',repr(content))
+            # g.trace('vh:',repr(content))
             self.content.append(content)
     
-        elif content and elementName not in ('t','v','tnodes'):
-            print 'unexpected content:',elementName,content
+        elif content.strip() and elementName not in ('t','v','tnodes'):
+            print 'unexpected content:',elementName,repr(content)
     #@nonl
     #@-node:ekr.20060904134958.178:characters
-    #@+node:ekr.20060904134958.179:endElement & helper
+    #@+node:ekr.20060904134958.179:endElement & helpers
     def endElement(self,name):
+        
+        name = name.lower()
+        if name in printElements:
+            indent = '\t' * (self.level-1) or ''
+            print '%s</%s>' % (indent,self.clean(name).strip())
+        
+        data = self.dispatchDict.get(name)
     
-        self.doEndElement(name)
+        if data is None:
+            g.trace('unknown element',name)
+        else:
+            junk,func = data
+            if func:
+                func()
     
         name2 = self.elementStack.pop()
         assert name == name2
     #@nonl
-    #@+node:ekr.20060904134958.182:doEndElement
-    def doEndElement (self,elementName):
+    #@+node:ekr.20060915211611:endVnode
+    def endVnode (self):
         
-        elementName = elementName.lower()
-        
-        if elementName in printElements:
-            indent = '\t' * (self.level-1) or ''
-            print '%s</%s>' % (indent,self.clean(elementName).strip())
-            
-        if elementName == 't':
-            self.inTnode = False
-        elif elementName == 'tnodes':
-            self.inTnodes = False
-        elif elementName == 'v':
-            self.inVnode = False
-            self.level -= 1
-            # self.node.headString = ''.join(self.content)
-            # self.content = []
-            self.node = self.nodeStack.pop()
-        elif elementName == 'vh':
-            self.inHead = False
-            if self.node:
-                self.node.headString = ''.join(self.content)
-            self.content = []
-        elif elementName == 'vnodes':
-            self.inVnodes= False
-        elif elementName not in self.knownElements:
-            g.trace('unknown element',elementName)
+        self.level -= 1
+        self.node = self.nodeStack.pop()
     #@nonl
-    #@-node:ekr.20060904134958.182:doEndElement
-    #@-node:ekr.20060904134958.179:endElement & helper
+    #@-node:ekr.20060915211611:endVnode
+    #@+node:ekr.20060915211611.1:endVH
+    def endVH (self):
+          
+        if self.node:
+            self.node.headString = ''.join(self.content)
+    
+        self.content = []
+    #@nonl
+    #@-node:ekr.20060915211611.1:endVH
+    #@-node:ekr.20060904134958.179:endElement & helpers
     #@+node:ekr.20060904134958.180:startElement & helpers
     def startElement(self,name,attrs):
+        
+        name = name.lower()
+        if name in printElements:
+            self.printStartElement(name,attrs)
     
         self.elementStack.append(name)
-        self.doStartElement(name,attrs)
-    #@nonl
-    #@+node:ekr.20060904134958.181:doStartElement
-    def doStartElement (self,elementName,attrs):
         
-        elementName = elementName.lower()
+        data = self.dispatchDict.get(name)
     
-        if elementName in printElements:
-            self.printStartElement(elementName,attrs)
-            
-        if elementName == 't':
-            self.inTnode = True
-            self.startTnode(attrs)
-        elif elementName == 'tnodes':
-            self.inTnodes = True
-        elif elementName == 'v':
-            self.inVnode = True
-            self.level += 1
-            node = self.startVnode(attrs)
-            self.nodeStack.append(node)
-        elif elementName == 'vh':
-            self.inHead = True
-            self.startHead(attrs)
-        elif elementName == 'vnodes':
-            self.inVnodes= True
-        elif elementName not in self.knownElements:
-            g.trace('unknown element',elementName)
-       
+        if data is None:
+            g.trace('unknown element',name)
+        else:
+            func,junk = data
+            if func:
+                func(attrs)
     #@nonl
-    #@-node:ekr.20060904134958.181:doStartElement
-    #@+node:ekr.20060915104021:startHead
-    def startHead(self,attrs):
-    
+    #@+node:ekr.20060915210537.3:startLogPos
+    def startLogPos (self,attrs):
+        
         pass
     #@nonl
-    #@-node:ekr.20060915104021:startHead
+    #@-node:ekr.20060915210537.3:startLogPos
+    #@+node:ekr.20060915210537.4:startWinPos
+    def startWinPos (self,attrs):
+        
+        pass
+    #@nonl
+    #@-node:ekr.20060915210537.4:startWinPos
+    #@+node:ekr.20060915210537.5:startLeoHeader
+    def startLeoHeader (self,attrs):
+        
+        pass
+    #@nonl
+    #@-node:ekr.20060915210537.5:startLeoHeader
+    #@+node:ekr.20060915104021:startVH
+    def startVH (self,attrs):
+    
+        self.content = []
+    #@nonl
+    #@-node:ekr.20060915104021:startVH
     #@+node:ekr.20060915101510:startTnode
     def startTnode (self,attrs):
         
-        pass
+        if not self.inElement('tnodes'):
+            self.error('<t> outside <tnodes>')
     #@nonl
     #@-node:ekr.20060915101510:startTnode
     #@+node:ekr.20060915101510.1:startVnode
     def startVnode (self,attrs):
         
-        # if self.inHead:     self.error('<outline> inside <head>')
-        # if not self.inBody: self.error('<outline> outside <body>')
+        if not self.inElement('vnodes'):
+            self.error('<v> outside <vnodes>')
     
         parent = self.node
         self.node = nodeClass()
@@ -515,6 +545,7 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
             self.node.doAttribute(bunch.name,bunch.val)
             
         self.content = []
+        self.nodeStack.append(parent)
             
         return parent
     #@nonl
