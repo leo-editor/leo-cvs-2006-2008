@@ -6,11 +6,9 @@
 #@@tabwidth -4
 #@@pagewidth 80
 
-__version__ = '0.5'
+__version__ = '0.6'
 
-# To do:
-# - Handle <leo_header>, <globals>, etc.
-# - Handle unicode encoding, esp utf-16.
+# To do: Handle <leo_header>, <globals>, etc.
 
 # For traces.
 printElements = [] # 'v', 'all',
@@ -27,8 +25,11 @@ printElements = [] # 'v', 'all',
 # - Refactored using start/end methods called via dispatch table.
 # - Added inElement method and removed all inX flags and knownElements list.
 # 0.5 EKR: tnodes now handled properly, so body text is read correctly.
+# 0.6 EKR: Removed all calls to g.toUnicode.
+# All contentHandler data is unicode.
+# Hopefully the content handler can determine the encoding from the <?xml> 
+# element.
 #@-at
-#@nonl
 #@-node:ekr.20060904103412.2:<< version history >>
 #@nl
 #@<< imports >>
@@ -101,6 +102,7 @@ class saxReadCommandsClass (leoFileCommands.fileCommands):
                 # Do not include external general entities.
                 # The actual feature name is "http://xml.org/sax/features/external-general-entities"
                 parser.setFeature(xml.sax.handler.feature_external_ges,0)
+                # Hopefully the content handler can figure out the encoding from the <?xml> element.
                 handler = contentHandler(c,inputFileName)
                 parser.setContentHandler(handler)
                 parser.parse(f)
@@ -242,8 +244,6 @@ class saxReadController:
     def readFile (self,event=None,fileName=None):
         
         if not fileName: return
-        
-        # g.trace('='*60)
     
         c = self.c
         
@@ -279,28 +279,23 @@ class nodeClass:
         self.bodyString = ''
         self.headString = ''
         self.children = []
-        self.parent = None
         self.tnx = None
     #@nonl
     #@-node:ekr.20060904141220.1: node.__init__
     #@+node:ekr.20060904141220.2: node.__str__ & __repr__
     def __str__ (self):
-        
-        h = g.toUnicode(self.headString,'utf-8') or ''
-        return '<v: %s>' % h
+    
+        return '<v: %s>' % self.headString
     
     __repr__ = __str__
     #@nonl
     #@-node:ekr.20060904141220.2: node.__str__ & __repr__
     #@+node:ekr.20060913220507:node.dump
     def dump (self):
-        
-        h = g.toUnicode(self.headString,'utf-8') or ''
-        
+         
         print
-        print 'node: tnx: %s %s' % (self.tnx,h)
-        print 'parent: %s' % self.parent or 'None'
-        print 'children:',[child for child in self.children]
+        print 'node: tnx: %s %s' % (self.tnx,self.headString)
+        print 'children:',g.listToString([child for child in self.children])
         print 'attrs:',self.attributes.values()
     #@nonl
     #@-node:ekr.20060913220507:node.dump
@@ -347,9 +342,9 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         # Semantics.
         self.content = None
         self.elementStack = []
+        self.errors = 0
         self.txnToVnodeDict = {} # Keys are tnx's (strings), values are vnodes.
         self.txnToNodeDict = {}  # Keys are tnx's (strings), values are nodeClass objects
-        self
         self.level = 0
         self.node = None
         self.nodeStack = []
@@ -364,14 +359,17 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         
         attrs: an Attributes item passed to startElement.'''
         
-        # g.trace(g.listToString([attrs.getValue(name) for name in attrs.getNames()]))
+        if 1:
+            for name in attrs.getNames():
+                val = attrs.getValue(name)
+                if type(val) != type(u''):
+                    g.trace('Non-unicode attribute',name,val)
+    
+        # g.trace(g.listToString([repr() for name in attrs.getNames()]))
         
         return [
-            g.Bunch(
-                name=g.toUnicode(name,encoding='utf-8'),
-                val=g.toUnicode(attrs.getValue(name),encoding='utf-8'),
-            )
-            for name in attrs.getNames()]
+            g.Bunch(name=name,val=attrs.getValue(name))
+                for name in attrs.getNames()]
     #@nonl
     #@-node:ekr.20060904134958.167:attrsToList
     #@+node:ekr.20060904134958.168:attrsToString
@@ -404,6 +402,8 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         print
         print 'XML error: %s' % (message)
         print
+        
+        self.errors += 1
     #@nonl
     #@-node:ekr.20060904134958.170:error
     #@+node:ekr.20060915211757:inElement
@@ -466,8 +466,11 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
     #@-node:ekr.20060904134958.174: Do nothing...
     #@+node:ekr.20060904134958.178:characters
     def characters(self,content):
+        
+        if 1:
+            if content and type(content) != type(u''):
+                g.trace('Non-unicode content',repr(content))
     
-        content = g.toUnicode(content,encoding='utf-8') or ''
         content = content.replace('\r','')
         if not content: return
     
@@ -607,15 +610,14 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         if not self.inElement('vnodes'):
             self.error('<v> outside <vnodes>')
     
-        parent = self.node
+        if self.rootNode:
+            parent = self.node
+        else:
+            self.rootNode = parent = nodeClass() # The dummy parent node.
+            parent.headString = 'dummyNode'
+    
         self.node = nodeClass()
     
-        if parent:
-            self.node.parent = parent
-        else:
-            self.rootNode = parent = nodeClass() # This is a dummy parent node.
-            parent.headString = 'dummyNode'
-        
         parent.children.append(self.node)
         self.vnodeAttributes(attrs)
         self.nodeStack.append(parent)

@@ -9,9 +9,11 @@
 <preferences/>
 <find_panel_settings/>
 <vnodes>
-<v t="ekr.20060904103412" a="ETV"><vh>@thin __saxRead__.py</vh></v>
+<v t="ekr.20060904103412" a="E"
+expanded="ekr.20060904132527.11,"><vh>@thin __saxRead__.py</vh></v>
 <v t="ekr.20060915095311" a="E"><vh>Recent</vh>
 <v t="ekr.20060915210537"><vh>&lt;&lt; define dispatch dict &gt;&gt;</vh></v>
+<v t="ekr.20060904134958.116"><vh>parse_leo_file</vh></v>
 <v t="ekr.20060904103721"><vh>readFile</vh></v>
 <v t="ekr.20060904134958.178"><vh>characters</vh></v>
 <v t="ekr.20060914163456"><vh>createVnodes &amp; helpers</vh>
@@ -21,7 +23,7 @@
 <v t="ekr.20060914174806"><vh>linkParentAndChildren</vh></v>
 <v t="ekr.20060914165257"><vh>linkSiblings</vh></v>
 </v>
-<v t="ekr.20060904134958.180"><vh>startElement &amp; helpers</vh>
+<v t="ekr.20060904134958.180" a="E"><vh>startElement &amp; helpers</vh>
 <v t="ekr.20060915210537.3"><vh>startLogPos</vh></v>
 <v t="ekr.20060915210537.4"><vh>startWinPos</vh></v>
 <v t="ekr.20060915210537.5"><vh>startLeoHeader</vh></v>
@@ -44,8 +46,6 @@
 <t tx="ekr.20060904103721">def readFile (self,event=None,fileName=None):
     
     if not fileName: return
-    
-    # g.trace('='*60)
 
     c = self.c
     
@@ -61,9 +61,42 @@
         c2.setRootVnode(v)
         c2.checkOutline()
         c2.redraw()</t>
-<t tx="ekr.20060904134958.178">def characters(self,content):
+<t tx="ekr.20060904134958.116">def parse_leo_file (self,inputFileName):
 
-    content = g.toUnicode(content,encoding='utf-8') or ''
+    if not inputFileName or not inputFileName.endswith('.leo'):
+        return None
+        
+    c = self.c
+    path = g.os_path_normpath(g.os_path_join(g.app.loadDir,inputFileName))
+    
+    try: f = open(path)
+    except IOError:
+        g.trace('can not open %s'%path)
+        return None
+    try:
+        try:
+            node = None
+            parser = xml.sax.make_parser()
+            # Do not include external general entities.
+            # The actual feature name is "http://xml.org/sax/features/external-general-entities"
+            parser.setFeature(xml.sax.handler.feature_external_ges,0)
+            # Hopefully the content handler can figure out the encoding from the &lt;?xml&gt; element.
+            handler = contentHandler(c,inputFileName)
+            parser.setContentHandler(handler)
+            parser.parse(f)
+            node = handler.getNode()
+        except:
+            g.es('unexpected exception parsing %s' % (inputFileName),color='red')
+            g.es_exception()
+    finally:
+        f.close()
+        return node</t>
+<t tx="ekr.20060904134958.178">def characters(self,content):
+    
+    if 1:
+        if content and type(content) != type(u''):
+            g.trace('Non-unicode content',repr(content))
+
     content = content.replace('\r','')
     if not content: return
 
@@ -205,15 +238,14 @@ def createChildren (self, node, parent_v):
     if not self.inElement('vnodes'):
         self.error('&lt;v&gt; outside &lt;vnodes&gt;')
 
-    parent = self.node
+    if self.rootNode:
+        parent = self.node
+    else:
+        self.rootNode = parent = nodeClass() # The dummy parent node.
+        parent.headString = 'dummyNode'
+
     self.node = nodeClass()
 
-    if parent:
-        self.node.parent = parent
-    else:
-        self.rootNode = parent = nodeClass() # This is a dummy parent node.
-        parent.headString = 'dummyNode'
-    
     parent.children.append(self.node)
     self.vnodeAttributes(attrs)
     self.nodeStack.append(parent)
