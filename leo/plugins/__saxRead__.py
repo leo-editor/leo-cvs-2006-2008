@@ -6,9 +6,9 @@
 #@@tabwidth -4
 #@@pagewidth 80
 
-__version__ = '0.6'
+__version__ = '0.8'
 
-# To do: Handle <leo_header>, <globals>, etc.
+# To do: Handle uA's
 
 # For traces.
 printElements = [] # 'v', 'all',
@@ -29,7 +29,10 @@ printElements = [] # 'v', 'all',
 # All contentHandler data is unicode.
 # Hopefully the content handler can determine the encoding from the <?xml> 
 # element.
+# 0.7 EKR: Handled <globals> and <global_window_position> elements.
+# 0.8 EKR: Handled 'a' attributes (marked, etc) of vnodes.
 #@-at
+#@nonl
 #@-node:ekr.20060904103412.2:<< version history >>
 #@nl
 #@<< imports >>
@@ -107,8 +110,11 @@ class saxReadCommandsClass (leoFileCommands.fileCommands):
                 parser.setContentHandler(handler)
                 parser.parse(f)
                 node = handler.getNode()
-            except:
-                g.es('unexpected exception parsing %s' % (inputFileName),color='red')
+            except xml.sax.SAXParseException:
+                g.es_print('Error parsing %s' % (inputFileName),color='red')
+                g.es_exception()
+            except Exception:
+                g.es_print('Unexpected exception parsing %s' % (inputFileName),color='red')
                 g.es_exception()
         finally:
             f.close()
@@ -128,6 +134,9 @@ class saxReadController:
         self.c = c
         
         c.saxReadCommands = self # Override Leo's core commands.
+        
+        self.currentVnode = None
+        self.topVnode = None
     #@nonl
     #@-node:ekr.20060904103412.7:__init__
     #@+node:ekr.20060914163456:createVnodes & helpers
@@ -183,11 +192,14 @@ class saxReadController:
         
         h = node.headString
         b = node.bodyString
+    
         if not t:
             t = leoNodes.tnode(bodyString=b,headString=h)
         v = leoNodes.vnode(t)
         v.t.vnodeList.append(v)
         v._parent = parent_v
+        
+        self.handleVnodeAttributes(node,v)
         
         if 0:
             h1 = v.headString()
@@ -196,6 +208,28 @@ class saxReadController:
         
         return v
     #@nonl
+    #@+node:ekr.20060916115633:handleVnodeAttributes
+    def handleVnodeAttributes (self,node,v):
+    
+        attrs = node.attributes.get('a')
+        if attrs:
+            g.trace('a=%s %s' % (attrs,v.headString()))
+            # 'C' (clone) and 'D' bits are not used.
+            if 'M' in attrs: v.setMarked()
+            if 'E' in attrs: v.expand()
+            if 'O' in attrs: v.setOrphan()
+            if 'T' in attrs: self.topVnode = v
+            if 'V' in attrs: self.currentVnode = v
+            
+        # if   self.matchChar('C'): pass # Not used: clone bits are recomputed later.
+        # elif self.matchChar('D'): pass # Not used.
+        # elif self.matchChar('E'): setExpanded = True
+        # elif self.matchChar('M'): setMarked = True
+        # elif self.matchChar('O'): setOrphan = True
+        # elif self.matchChar('T'): setTop = True
+        # elif self.matchChar('V'): setCurrent = True
+    #@nonl
+    #@-node:ekr.20060916115633:handleVnodeAttributes
     #@-node:ekr.20060914171659.1:createVnode
     #@+node:ekr.20060914174806:linkParentAndChildren
     def linkParentAndChildren (self, parent_v, children):
@@ -258,9 +292,22 @@ class saxReadController:
             c2 = c.new()
             c2.setRootVnode(v)
             c2.checkOutline()
+            self.setCurrentPosition(c2)
             c2.redraw()
     #@nonl
     #@-node:ekr.20060904103721:readFile
+    #@+node:ekr.20060916120609:setCurrentPosition
+    def setCurrentPosition (self,c):
+        
+        v = self.currentVnode
+        if not v: return
+    
+        for p in c.allNodes_iter():
+            if p.v == v:
+                c.selectPosition(p)
+                break
+    #@nonl
+    #@-node:ekr.20060916120609:setCurrentPosition
     #@-others
 #@nonl
 #@-node:ekr.20060904103412.6:class saxReadController
@@ -323,8 +370,8 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         
         self.dispatchDict = {
             'find_panel_settings':         (None,None),
-            'globals':                     (None,None),
-            'global_log_window_position':  (self.startLogPos,None),
+            'globals':                     (self.startGlobals,None),
+            'global_log_window_position':  (None,None), # The position of the log window is no longer used.
             'global_window_position':      (self.startWinPos,None),
             'leo_file':                    (None,None),
             'leo_header':                  (self.startLeoHeader,None),
@@ -338,7 +385,14 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         #@nonl
         #@-node:ekr.20060915210537:<< define dispatch dict >>
         #@nl
-          
+        
+        # Global attributes of the .leo file.
+        self.body_outline_ratio = None
+        
+        self.global_window_position = {}
+        self.encoding = 'utf-8'
+        
+        
         # Semantics.
         self.content = None
         self.elementStack = []
@@ -349,7 +403,6 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         self.node = None
         self.nodeStack = []
         self.rootNode = None
-    #@nonl
     #@-node:ekr.20060904134958.165: __init__ & helpers
     #@+node:ekr.20060904134958.166:helpers
     #@+node:ekr.20060904134958.167:attrsToList
@@ -548,16 +601,42 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
             if func:
                 func(attrs)
     #@nonl
-    #@+node:ekr.20060915210537.3:startLogPos
-    def startLogPos (self,attrs):
+    #@+node:ekr.20060916112053:getPositionAttributes
+    def getPositionAttributes (self,attrs):
         
-        pass
+        d = {}
+        
+        for bunch in self.attrsToList(attrs):
+            name = bunch.name ; val = bunch.val
+            if name in ('top','left','width','height'):
+                try:
+                    d[name] = int(val)
+                except ValueError:
+                    d[name] = 100 # A reasonable emergency default.
+            else:
+                g.trace(name,len(val))
+                
+        return d
     #@nonl
-    #@-node:ekr.20060915210537.3:startLogPos
+    #@-node:ekr.20060916112053:getPositionAttributes
+    #@+node:ekr.20060916111049:startGlobals
+    def startGlobals (self,attrs):
+        
+        for bunch in self.attrsToList(attrs):
+            name = bunch.name ; val = bunch.val
+            
+            if name == 'body_outline_ratio':
+                self.body_outline_ratio = val
+                # g.trace(name,val)
+            else:
+                g.trace(name,len(val))
+    #@nonl
+    #@-node:ekr.20060916111049:startGlobals
     #@+node:ekr.20060915210537.4:startWinPos
     def startWinPos (self,attrs):
         
-        pass
+        self.global_window_position = self.getPositionAttributes(attrs)
+        # g.trace(self.global_window_position)
     #@nonl
     #@-node:ekr.20060915210537.4:startWinPos
     #@+node:ekr.20060915210537.5:startLeoHeader
