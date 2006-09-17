@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="25831" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="128" left="278" height="616" width="879"/>
+	<global_window_position top="128" left="278" height="597" width="879"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -120,6 +120,7 @@
 <v t="ekr.20050830115714.114"><vh>Control-Shift backspace doesn't work.  What should I do?</vh></v>
 <v t="ekr.20050830115714.115"><vh>Error messages from the rst3 plugin aren't helpful. What can I do?</vh></v>
 <v t="ekr.20050830115714.117"><vh>The new Python decorator syntax causes problems.  What can I do?</vh></v>
+<v t="ekr.20060917130130"><vh>I get weird results when defining unicode strings in scripts.  What is going on?</vh></v>
 </v>
 <v t="ekr.20050906105946"><vh>@rst-no-head end stuff</vh></v>
 </v>
@@ -28460,5 +28461,27 @@ You will find this ctor in the node::
     
 Note that this ivar can not be set using settings in leoSettings.leo because
 Leo uses g.app.use_psyco before processing configuration settings.</t>
+<t tx="ekr.20060917130130">Constructs such as::
+
+    u = u'a-é-賢-z'
+    u = 'a-é-賢-z'
+
+will not work when executed with Leo's execute script command. Indeed, the
+Execute Script command creates the script by writing the tree containing the
+script to a string. This is done using Leo's write logic, and this logic
+converts the unicode input to a utf-8 encoded string. So *all non-ascii
+characters* (including both the é and 賢 characters) get converted to their
+equivalent in the utf-8 encoding. Call these encoding &lt;e1&gt; and &lt;e2&gt;. In effect
+the script becomes::
+
+    u = u'a-&lt;e1&gt;-&lt;e2&gt;-z'
+    u = 'a-&lt;e2&gt;-&lt;e&gt;-z'
+
+which is certainly *not* what the script writer intended!
+Rather than defining strings using actual characters, Instead, one should use
+the equivalent escape sequences. For example::
+
+    u = u'a-\u0233-\u8ce2-z'
+    u = 'a-\u0233-\u8ce2-z'</t>
 </tnodes>
 </leo_file>
