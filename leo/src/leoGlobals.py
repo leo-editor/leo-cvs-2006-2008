@@ -996,6 +996,18 @@ def oldDump(s):
         else: out += i
     return out
 #@-node:ekr.20031218072017.3109:dump
+#@+node:ekr.20060917120951:es_dump
+def es_dump (s,n = 30,title=None):
+    
+    if title:
+        g.es_print(title)
+
+    i = 0
+    while i < len(s):
+        g.es_print(''.join(['%2x ' % (ord(ch)) for ch in s[i:i+n]]))
+        i += n
+#@nonl
+#@-node:ekr.20060917120951:es_dump
 #@+node:ekr.20031218072017.3110:es_error
 def es_error (s,color=None):
 
@@ -1431,7 +1443,7 @@ def listToString(aList,tag=None,sort=False,indent=''):
 
     if not aList:
         if tag: return '%s...{}' % tag
-        else:   return '{}'
+        else:   return '[]'
     if sort:
         aList = aList[:] # Sort a copy! Pychecker incorrectly complains.
         aList.sort()
