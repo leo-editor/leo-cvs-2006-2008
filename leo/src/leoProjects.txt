@@ -1042,6 +1042,7 @@ def initIvars(self):
     self.mFileName = ""
     self.fileDate = -1
     self.leo_file_encoding = c.config.new_leo_file_encoding
+    # g.trace('self.leo_file_encoding',self.leo_file_encoding)
     # For reading
     self.checking = False # True: checking only: do *not* alter the outline.
     self.descendentExpandedList = []
@@ -1579,6 +1580,7 @@ def setCurrentPosition (self,p):
 
 # For compatibiility with old scripts.
 setCurrentVnode = setCurrentPosition
+#@nonl
 #@-node:ekr.20040803140033.1:c.setCurrentPosition
 #@+node:ekr.20050318085713:undoGroup
 def undoGroup (self):
@@ -2382,7 +2384,7 @@ def write_Leo_file(self,fileName,outlineOnlyFlag,toString=False,toOPML=False):
         if toOPML:
             self.putToOPML()
         else:
-            << put the .leo file >>
+             << put the .leo file >>
         s = self.outputFile.getvalue()
         if toString:
             # For support of chapters plugin.
@@ -3731,6 +3733,7 @@ def setCurrentPosition (self,p):
 
 # For compatibiility with old scripts.
 setCurrentVnode = setCurrentPosition
+#@nonl
 #@-node:ekr.20040803140033.1:c.setCurrentPosition
 #@-node:ekr.20060907101636:Call c.findRootPosition in c.setCurrentPosition
 #@+node:ekr.20060908075800.1:Removed redundant calls to c.findRootPosition

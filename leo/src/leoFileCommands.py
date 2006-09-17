@@ -72,6 +72,7 @@ class baseFileCommands:
         self.mFileName = ""
         self.fileDate = -1
         self.leo_file_encoding = c.config.new_leo_file_encoding
+        # g.trace('self.leo_file_encoding',self.leo_file_encoding)
         # For reading
         self.checking = False # True: checking only: do *not* alter the outline.
         self.descendentExpandedList = []
@@ -1220,7 +1221,7 @@ class baseFileCommands:
     
         if g.isValidEncoding(encoding):
             self.leo_file_encoding = encoding
-            # g.es("File encoding: " + encoding, color="blue")
+            # g.trace('self.leo_file_encoding:',encoding, color="blue")
         else:
             g.es("invalid encoding in .leo file: " + encoding, color="red")
     #@-node:ekr.20031218072017.1468:getXmlVersionTag
@@ -1670,6 +1671,7 @@ class baseFileCommands:
         #@+node:ekr.20031218072017.1247:<< Put the <?xml...?> line >>
         # 1/22/03: use self.leo_file_encoding encoding.
         self.put(g.app.prolog_prefix_string)
+        # g.trace('self.leo_file_encoding',self.leo_file_encoding)
         self.put_dquote() ; self.put(self.leo_file_encoding) ; self.put_dquote()
         self.put(g.app.prolog_postfix_string) ; self.put_nl()
         #@-node:ekr.20031218072017.1247:<< Put the <?xml...?> line >>
@@ -2097,21 +2099,21 @@ class baseFileCommands:
             if toOPML:
                 self.putToOPML()
             else:
-                #@            << put the .leo file >>
-                #@+node:ekr.20040324080819.1:<< put the .leo file >>
-                self.putProlog()
-                self.putHeader()
-                self.putGlobals()
-                self.putPrefs()
-                self.putFindSettings()
-                #start = g.getTime()
-                self.putVnodes()
-                #start = g.printDiffTime("vnodes ",start)
-                self.putTnodes()
-                #start = g.printDiffTime("tnodes ",start)
-                self.putPostlog()
-                #@-node:ekr.20040324080819.1:<< put the .leo file >>
-                #@nl
+                 #@             << put the .leo file >>
+                 #@+node:ekr.20040324080819.1:<< put the .leo file >>
+                 self.putProlog()
+                 self.putHeader()
+                 self.putGlobals()
+                 self.putPrefs()
+                 self.putFindSettings()
+                 #start = g.getTime()
+                 self.putVnodes()
+                 #start = g.printDiffTime("vnodes ",start)
+                 self.putTnodes()
+                 #start = g.printDiffTime("tnodes ",start)
+                 self.putPostlog()
+                 #@-node:ekr.20040324080819.1:<< put the .leo file >>
+                 #@nl
             s = self.outputFile.getvalue()
             if toString:
                 # For support of chapters plugin.

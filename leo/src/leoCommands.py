@@ -6224,6 +6224,7 @@ class baseCommands:
     
     # For compatibiility with old scripts.
     setCurrentVnode = setCurrentPosition
+    #@nonl
     #@-node:ekr.20040803140033.1:c.setCurrentPosition
     #@+node:ekr.20040305223225:c.setHeadString
     def setHeadString (self,p,s,encoding="utf-8"):
