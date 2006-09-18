@@ -15,9 +15,10 @@ It defines the read-opml-file and write-opml-file commands and corresponding but
 #@@tabwidth -4
 #@@pagewidth 80
 
-# To do: read and write a and uA attributes
+# To do:       read/write tnodeList attributes. (Important for @file nodes.)
+# Maybe never: read/write uA's.
 
-__version__ = '0.08'
+__version__ = '0.1'
 
 # For traces.
 printElements = [] # ['all','outline','head','body',]
@@ -44,6 +45,7 @@ printElements = [] # ['all','outline','head','body',]
 # 0.08 EKR: Leo can now read and write body and headline text properly.
 # - Use xml.sax.saxutils to quote attributes properly.
 # - Improved error handling in parse_opml_file.
+# 0.1 EKR: Write and read a attributes (marks, expanded, etc.)
 #@-at
 #@nonl
 #@-node:ekr.20060904103412.2:<< version history >>
@@ -142,9 +144,14 @@ class opmlFileCommandsClass (leoFileCommands.fileCommands):
         c = self.c ; indent = '\t' * p.level()
         body = p.bodyString() or '' ; head = p.headString() or ''
         
-        self.put('%s<outline tx="%s" head=%s body=%s' % (
+        a = self.aAttributes(p)
+        uA = self.uAAttributes(p)
+        
+        self.put('%s<outline tx="%s" %s %s head=%s body=%s' % (
             indent,
             g.app.nodeIndices.toString(p.v.t.fileIndex),
+            g.choose(a,'a="%s"' % (a),''),
+            uA,
             xml.sax.saxutils.quoteattr(head),
             xml.sax.saxutils.quoteattr(body),
         ))
@@ -157,6 +164,28 @@ class opmlFileCommandsClass (leoFileCommands.fileCommands):
         else:
             self.put('/>\n')
     #@nonl
+    #@+node:ekr.20060917212351:aAttributes
+    def aAttributes (self,p):
+        
+        c = self.c
+        attr = []
+    
+        if p.isExpanded():          attr.append('E')
+        if p.isMarked():            attr.append('M')
+        if c.isCurrentPosition(p):  attr.append('V')
+    
+        #if p.v.isOrphan():              attr.append('O')
+        #if p.equal(self.topPosition):   attr.append('T')
+    
+        return ''.join(attr)
+    #@nonl
+    #@-node:ekr.20060917212351:aAttributes
+    #@+node:ekr.20060917214639:uAAttributes (Not yet, and maybe never)
+    def uAAttributes (self,p):
+        
+        return ''
+    #@nonl
+    #@-node:ekr.20060917214639:uAAttributes (Not yet, and maybe never)
     #@-node:ekr.20060904132527.17:putOPMLNode
     #@+node:ekr.20060904132527.18:putOPMLPostlog
     def putOPMLPostlog (self):
@@ -214,10 +243,13 @@ class opmlController:
         
         self.c = c
         
-        self.createCommands()
+        c.opmlCommands = self
+        
+        self.currentVnode = None
+        self.topVnode = None
     #@nonl
     #@-node:ekr.20060904103412.7:__init__
-    #@+node:ekr.20060904103412.8:createCommands
+    #@+node:ekr.20060904103412.8:createCommands (not used)
     def createCommands (self):
         
         c = self.c
@@ -230,7 +262,7 @@ class opmlController:
             ):
                 c.k.registerCommand (name,shortcut=None,func=func,pane='all',verbose=False)
     #@nonl
-    #@-node:ekr.20060904103412.8:createCommands
+    #@-node:ekr.20060904103412.8:createCommands (not used)
     #@+node:ekr.20060914163456:createVnodes & helpers
     def createVnodes (self, dummyRoot):
         
@@ -290,6 +322,8 @@ class opmlController:
         v.t.vnodeList.append(v)
         v._parent = parent_v
         
+        self.handleVnodeAttributes(node,v)
+        
         if 0:
             h1 = v.headString()
             h2 = parent_v and parent_v.headString() or 'None'
@@ -297,6 +331,21 @@ class opmlController:
         
         return v
     #@nonl
+    #@+node:ekr.20060917213611:handleVnodeAttributes
+    def handleVnodeAttributes (self,node,v):
+    
+        attrs = node.attributes.get('a')
+        if attrs:
+            # g.trace('a=%s %s' % (attrs,v.headString()))
+            
+            # 'C' (clone) and 'D' bits are not used.
+            if 'M' in attrs: v.setMarked()
+            if 'E' in attrs: v.expand()
+            if 'O' in attrs: v.setOrphan()
+            if 'T' in attrs: self.topVnode = v
+            if 'V' in attrs: self.currentVnode = v
+    #@nonl
+    #@-node:ekr.20060917213611:handleVnodeAttributes
     #@-node:ekr.20060914171659.1:createVnode
     #@+node:ekr.20060914174806:linkParentAndChildren
     def linkParentAndChildren (self, parent_v, children):
@@ -358,8 +407,21 @@ class opmlController:
             c2 = c.new()
             c2.setRootVnode(v)
             c2.checkOutline()
+            self.setCurrentPosition(c2)
             c2.redraw()
+            return c2 # for testing.
+    #@+node:ekr.20060917214140:setCurrentPosition
+    def setCurrentPosition (self,c):
+        
+        v = self.currentVnode
+        if not v: return
+    
+        for p in c.allNodes_iter():
+            if p.v == v:
+                c.selectPosition(p)
+                break
     #@nonl
+    #@-node:ekr.20060917214140:setCurrentPosition
     #@-node:ekr.20060904103721:readFile
     #@+node:ekr.20060904103721.1:writeFile
     def writeFile (self,event=None,fileName=None):

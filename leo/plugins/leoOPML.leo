@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="603" clone_windows="0"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="605" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
 	<global_window_position top="75" left="378" height="835" width="872"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
@@ -9,9 +9,7 @@
 <preferences/>
 <find_panel_settings/>
 <vnodes>
-<v t="ekr.20060904103412" a="E"
-marks="ekr.20060904132527.17,"
-expanded="ekr.20060904132527.11,ekr.20060904132527.13,ekr.20060904134958.180,"><vh>@thin leoOPML.py</vh></v>
+<v t="ekr.20060904103412" a="E"><vh>@thin leoOPML.py</vh></v>
 </vnodes>
 <tnodes>
 </tnodes>
