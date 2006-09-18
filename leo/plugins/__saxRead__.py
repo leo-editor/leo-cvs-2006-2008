@@ -35,6 +35,8 @@ printElements = [] # 'v', 'all',
 # 0.9 EKR: Handle clones properly.
 # - self.nodeList is a list of vnodes having a tnode's gnx.
 # - The value of txnToNodesDict entries are correspond to self.nodeList.
+# 0.10 EKR: Added resolveTnodeLists and related logic. Everything except uA's 
+# works.
 #@-at
 #@nonl
 #@-node:ekr.20060904103412.2:<< version history >>
@@ -141,6 +143,8 @@ class saxReadController:
         
         self.currentVnode = None
         self.topVnode = None
+        
+        self.txnToVnodeDict = {} # Keys are tnx's (strings).  Values are vnodes.
     #@nonl
     #@-node:ekr.20060904103412.7:__init__
     #@+node:ekr.20060914163456:createVnodes & helpers
@@ -156,6 +160,7 @@ class saxReadController:
         firstChild = children and children[0]
     
         return firstChild
+    
     #@+node:ekr.20060914171659.2:createChildren
     # node is a nodeClass object, parent_v is a vnode.
     
@@ -168,7 +173,7 @@ class saxReadController:
             v = self.txnToVnodeDict.get(tnx)
             if v:
                 # A clone.  Create a new clone node, but share the subtree, i.e., the tnode.
-                g.trace('clone',child.headString,v.t,v.t.bodyString)
+                # g.trace('clone',child.headString,v.t,v.t.bodyString)
                 v = self.createVnode(child,parent_v,t=v.t)
             else:
                 v = self.createVnodeTree(child,parent_v)
@@ -223,6 +228,13 @@ class saxReadController:
             if 'O' in attrs: v.setOrphan()
             if 'T' in attrs: self.topVnode = v
             if 'V' in attrs: self.currentVnode = v
+            
+        s = node.attributes.get('tnodeList')
+        tnodeList = s and s.split(',')
+        if tnodeList:
+            # This tnode list will be resolved later.
+            g.trace(v.headString(),len(tnodeList))
+            v.tempTnodeList = tnodeList
     #@nonl
     #@-node:ekr.20060916115633:handleVnodeAttributes
     #@-node:ekr.20060914171659.1:createVnode
@@ -269,7 +281,7 @@ class saxReadController:
             self.dumpTree(child,dummy=False)
     #@nonl
     #@-node:ekr.20060913220707:dumpTree
-    #@+node:ekr.20060904103721:readFile
+    #@+node:ekr.20060904103721:readFile & helper
     def readFile (self,event=None,fileName=None):
         
         if not fileName: return
@@ -278,7 +290,6 @@ class saxReadController:
         
         # Pass one: create the intermediate nodes.
         self.dummyRoot = dummyRoot = c.fileCommands.parse_leo_file(fileName)
-    
         # self.dumpTree(dummyRoot,dummy=True)
     
         # Pass two: create the tree of vnodes and tnodes from the intermediate nodes.
@@ -286,13 +297,31 @@ class saxReadController:
         if v:
             c2 = c.new()
             c2.setRootVnode(v)
-            c2.checkOutline()
+            self.resolveTnodeLists(c2)
+            c2.checkOutline() 
             self.setCurrentPosition(c2)
             c2.redraw()
             return c2 # For testing.
         return None
     #@nonl
-    #@-node:ekr.20060904103721:readFile
+    #@+node:ekr.20060918110538:resolveTnodeLists
+    def resolveTnodeLists (self,c):
+        
+        for p in c.allNodes_iter():
+            if hasattr(p.v,'tempTnodeList'):
+                result = []
+                for tnx in p.v.tempTnodeList:
+                    v = self.txnToVnodeDict.get(tnx)
+                    if v:
+                        g.trace(v,tnx,v.t)
+                        result.append(v.t)
+                    else:
+                        g.trace('No tnode for %s' % tnx)
+                p.v.t.tnodeList = result
+                delattr(p.v,'tempTnodeList')
+    #@nonl
+    #@-node:ekr.20060918110538:resolveTnodeLists
+    #@-node:ekr.20060904103721:readFile & helper
     #@+node:ekr.20060916120609:setCurrentPosition
     def setCurrentPosition (self,c):
         
@@ -483,44 +512,34 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
     #@nonl
     #@-node:ekr.20060904134958.171:printStartElement
     #@-node:ekr.20060904134958.166:helpers
-    #@+node:ekr.20060904134958.174: Do nothing...
-    #@+node:ekr.20060904134958.175:other methods
+    #@+node:ekr.20060904134958.174: Do nothing
+    def endElementNS(self,name,qname):
+        g.trace(name)
+        
+    def endDocument(self):
+        pass
+    
     def ignorableWhitespace(self):
-        g.trace()
+        pass
     
     def processingInstruction (self,target,data):
-        g.trace()
+        pass # For <?xml-stylesheet ekr_stylesheet?>
     
     def skippedEntity(self,name):
         g.trace(name)
     
     def startElementNS(self,name,qname,attrs):
         g.trace(name)
-    
-    def endElementNS(self,name,qname):
-        g.trace(name)
-    #@nonl
-    #@-node:ekr.20060904134958.175:other methods
-    #@+node:ekr.20060904134958.176:endDocument
-    def endDocument(self):
-    
-        pass
-    
-    
-    #@-node:ekr.20060904134958.176:endDocument
-    #@+node:ekr.20060904134958.177:startDocument
-    def startDocument(self):
         
+    def startDocument(self):
         pass
     #@nonl
-    #@-node:ekr.20060904134958.177:startDocument
-    #@-node:ekr.20060904134958.174: Do nothing...
+    #@-node:ekr.20060904134958.174: Do nothing
     #@+node:ekr.20060904134958.178:characters
     def characters(self,content):
         
-        if 1:
-            if content and type(content) != type(u''):
-                g.trace('Non-unicode content',repr(content))
+        if content and type(content) != type(u''):
+            g.trace('Non-unicode content',repr(content))
     
         content = content.replace('\r','')
         if not content: return
@@ -557,8 +576,6 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
     #@nonl
     #@+node:ekr.20060916074444:endTnode
     def endTnode (self):
-        
-        g.trace(self.nodeList)
         
         for node in self.nodeList:
             node.bodyString = ''.join(self.content)
