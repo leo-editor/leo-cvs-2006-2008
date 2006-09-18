@@ -146,11 +146,13 @@ class opmlFileCommandsClass (leoFileCommands.fileCommands):
         
         a = self.aAttributes(p)
         uA = self.uAAttributes(p)
+        tnodeList = self.tnodeListAttributes(p)
         
-        self.put('%s<outline tx="%s" %s %s head=%s body=%s' % (
+        self.put('%s<outline tx="%s" %s%s%shead=%s body=%s' % (
             indent,
             g.app.nodeIndices.toString(p.v.t.fileIndex),
-            g.choose(a,'a="%s"' % (a),''),
+            g.choose(a,'a="%s" ' % (a),''),
+            g.choose(tnodeList,'tnodeList="%s" ' % (tnodeList),''),
             uA,
             xml.sax.saxutils.quoteattr(head),
             xml.sax.saxutils.quoteattr(body),
@@ -180,6 +182,32 @@ class opmlFileCommandsClass (leoFileCommands.fileCommands):
         return ''.join(attr)
     #@nonl
     #@-node:ekr.20060917212351:aAttributes
+    #@+node:ekr.20060917215752:tnodeListAttributes
+    # Based on fileCommands.putTnodeList.
+    
+    def tnodeListAttributes (self,p):
+        
+        '''Put the tnodeList attribute of p.v.t'''
+    
+        # Remember: entries in the tnodeList correspond to @+node sentinels, _not_ to tnodes!
+        
+        if not hasattr(p.v.t,'tnodeList') or not p.v.t.tnodeList:
+            return ''
+            
+        g.trace('tnodeList',p.v.t.tnodeList)
+    
+        # Assign fileIndices.
+        for t in p.v.t.tnodeList:
+            try: # Will fail for None or any pre 4.1 file index.
+                theId,time,n = p.v.t.fileIndex
+            except:
+                g.trace("assigning gnx for ",p.v.t)
+                gnx = g.app.nodeIndices.getNewIndex()
+                p.v.t.setFileIndex(gnx) # Don't convert to string until the actual write.
+    
+        s = ','.join([nodeIndices.toString(t.fileIndex) for t in p.v.t.tnodeList])
+    #@nonl
+    #@-node:ekr.20060917215752:tnodeListAttributes
     #@+node:ekr.20060917214639:uAAttributes (Not yet, and maybe never)
     def uAAttributes (self,p):
         
@@ -247,6 +275,9 @@ class opmlController:
         
         self.currentVnode = None
         self.topVnode = None
+    
+        self.generatedTnxs = {}  # Keys are tnx's (strings).  Values are vnodes.
+        self.txnToTnodeDict = {} # Keys are tnx's (strings).  Values are tnodes.
     #@nonl
     #@-node:ekr.20060904103412.7:__init__
     #@+node:ekr.20060904103412.8:createCommands (not used)
@@ -271,6 +302,7 @@ class opmlController:
         Modify this with extreme care.'''
         
         self.generatedTnxs = {}
+        self.txnToTnodeDict = {}
     
         children = self.createChildren(dummyRoot,parent_v = None)
         firstChild = children and children[0]
@@ -311,7 +343,7 @@ class opmlController:
         return v
     #@nonl
     #@-node:ekr.20060914171659:createVnodeTree
-    #@+node:ekr.20060914171659.1:createVnode
+    #@+node:ekr.20060914171659.1:createVnode & helpers
     def createVnode (self,node,parent_v,t=None):
         
         h = node.headString
@@ -323,30 +355,59 @@ class opmlController:
         v._parent = parent_v
         
         self.handleVnodeAttributes(node,v)
-        
-        if 0:
-            h1 = v.headString()
-            h2 = parent_v and parent_v.headString() or 'None'
-            g.trace('node: %12s parent: %12s' % (h1[:12],h2[:12]))
+    
+        tnodeList = self.getTnodeList(node,v)
+        if tnodeList:
+            v.t.tnodeList = tnodeList
         
         return v
     #@nonl
     #@+node:ekr.20060917213611:handleVnodeAttributes
     def handleVnodeAttributes (self,node,v):
     
-        attrs = node.attributes.get('a')
-        if attrs:
-            # g.trace('a=%s %s' % (attrs,v.headString()))
-            
+        a = node.attributes.get('a')
+        if a:
             # 'C' (clone) and 'D' bits are not used.
-            if 'M' in attrs: v.setMarked()
-            if 'E' in attrs: v.expand()
-            if 'O' in attrs: v.setOrphan()
-            if 'T' in attrs: self.topVnode = v
-            if 'V' in attrs: self.currentVnode = v
+            if 'M' in a: v.setMarked()
+            if 'E' in a: v.expand()
+            if 'O' in a: v.setOrphan()
+            if 'T' in a: self.topVnode = v
+            if 'V' in a: self.currentVnode = v
+            
+        tnx = node.tnx
+        if tnx:
+            self.txnToTnodeDict[tnx] = v.t
     #@nonl
     #@-node:ekr.20060917213611:handleVnodeAttributes
-    #@-node:ekr.20060914171659.1:createVnode
+    #@+node:ekr.20060917221112.1:getTnodeList
+    # Based on fileCommands.getTnodeList
+    
+    def getTnodeList (self,node,v):
+        
+        """Parse a list of tnode indices in the tnodeList attribute."""
+        
+        s = node.attributes.get('tnodeList')
+        if not s: return None
+        
+        # Remember: entries in the tnodeList correspond to @+node sentinels, _not_ to tnodes!
+        # fc = self.c.fileCommands
+        indexList = s.split(',') # The list never ends in a comma.
+        tnodeList = []
+        for index in indexList:
+            index = self.canonicalTnodeIndex(index)
+            # t = fc.tnodesDict.get(index)
+            t = self.txnToTnodeDict.get(index)
+            if not t:
+                # Not an error: create a new tnode and put it in fc.tnodesDict.
+                g.trace("not allocated: %s" % index)
+                t = fc.newTnode(index)
+            tnodeList.append(t)
+            
+        g.trace(len(tnodeList))
+        return tnodeList
+    #@nonl
+    #@-node:ekr.20060917221112.1:getTnodeList
+    #@-node:ekr.20060914171659.1:createVnode & helpers
     #@+node:ekr.20060914174806:linkParentAndChildren
     def linkParentAndChildren (self, parent_v, children):
         
@@ -510,8 +571,8 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         self.node = None
         self.nodeStack = []
         self.rootNode = None
-        self.txnToVnodeDict = {} # Keys are tnx's (strings), values are vnodes.
-        self.txnToNodeDict = {}  # Keys are tnx's (strings), values are nodeClass objects
+        # self.txnToVnodeDict = {} # Keys are tnx's (strings), values are vnodes.
+        # self.txnToNodeDict = {}  # Keys are tnx's (strings), values are nodeClass objects
     #@nonl
     #@-node:ekr.20060904134958.165: __init__ & helpers
     #@+node:ekr.20060904134958.166:helpers
@@ -713,7 +774,7 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
             elif name == 'body':
                 node.bodyString = val
             elif name == 'tx':
-                self.txnToNodeDict[val] = self.node
+                # self.txnToNodeDict[val] = self.node
                 node.tnx = val
             else:
                 node.attributes[name] = val
