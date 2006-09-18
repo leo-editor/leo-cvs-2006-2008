@@ -13657,7 +13657,7 @@ def printFindList( findList, bodyFlag = 1 ):
 #@-node:Other find scripts
 #@-node:Find/change scripts
 #@-node:Scripts used by commands
-#@+node:Setters
+#@+node:Clear all uA's, tnodeLists, etc.
 # Use these with caution.
 #@nonl
 #@+node:Clean unused tnodeLists
@@ -13705,14 +13705,23 @@ if 0: # This is usually a very bad idea.
 #@nonl
 #@-node:Clear all timestamps
 #@+node:Clear all uAs (unknown attributes)
+put = g.es_print
 for p in c.allNodes_iter():
+    if hasattr(p.v,"unknownAttributes"):
+        put("deleting v.unknownAttributes:",
+            p.headString(),
+            g.listToString(p.v.unknownAttributes.keys()))
+        delattr(p.v,"unknownAttributes")
     if hasattr(p.v.t,"unknownAttributes"):
-        print "deleting unknownAttributes:",p
+        put("deleting t.unknownAttributes:",
+            p.headString(),
+            g.listToString(p.v.t.unknownAttributes.keys()))
         delattr(p.v.t,"unknownAttributes")
-            
+put('done') 
 c.redraw()
+#@nonl
 #@-node:Clear all uAs (unknown attributes)
-#@-node:Setters
+#@-node:Clear all uA's, tnodeLists, etc.
 #@+node:Tests
 #@+node:test of Python's parser module
 # This works, and doesn't seem convenient for Leo's importers.
