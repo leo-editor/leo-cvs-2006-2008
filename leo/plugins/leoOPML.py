@@ -15,9 +15,9 @@ It defines the read-opml-file and write-opml-file commands and corresponding but
 #@@tabwidth -4
 #@@pagewidth 80
 
-# Read and write a and uA attributes
+# To do: read and write a and uA attributes
 
-__version__ = '0.07'
+__version__ = '0.08'
 
 # For traces.
 printElements = [] # ['all','outline','head','body',]
@@ -41,6 +41,9 @@ printElements = [] # ['all','outline','head','body',]
 # properly.
 # 0.07 EKR: Revised code using saxRead plugin as a model.
 # All strings are now assumed to be unicode.
+# 0.08 EKR: Leo can now read and write body and headline text properly.
+# - Use xml.sax.saxutils to quote attributes properly.
+# - Improved error handling in parse_opml_file.
 #@-at
 #@nonl
 #@-node:ekr.20060904103412.2:<< version history >>
@@ -136,22 +139,15 @@ class opmlFileCommandsClass (leoFileCommands.fileCommands):
     #@+node:ekr.20060904132527.17:putOPMLNode
     def putOPMLNode (self,p):
         
-        c = self.c ; indent = '\t' * p.level() ; body = p.bodyString()
+        c = self.c ; indent = '\t' * p.level()
+        body = p.bodyString() or '' ; head = p.headString() or ''
         
-        # g.trace(p.headString())
-        
-        self.put('%s<outline tx="%s" head="%s"' % (
+        self.put('%s<outline tx="%s" head=%s body=%s' % (
             indent,
             g.app.nodeIndices.toString(p.v.t.fileIndex),
-            self.xmlEscape(p.headString()),
-            # str(len(p.bodyString()))
+            xml.sax.saxutils.quoteattr(head),
+            xml.sax.saxutils.quoteattr(body),
         ))
-    
-        if 0: # Probably works, but complicates debugging.
-            if body:
-                self.put(' body="%s"' % self.xmlEscape(body))
-            else:
-                self.put(' body=""')
     
         if p.hasChildren():
             self.put('>\n')
@@ -193,9 +189,14 @@ class opmlFileCommandsClass (leoFileCommands.fileCommands):
                 parser.setContentHandler(handler)
                 parser.parse(f)
                 node = handler.getNode()
-            except:
-                g.es('unexpected exception parsing %s' % (inputFileName),color='red')
+            except xml.sax.SAXParseException:
+                g.es_print('Error parsing %s' % (inputFileName),color='red')
                 g.es_exception()
+                return None
+            except Exception:
+                g.es_print('Unexpected exception parsing %s' % (inputFileName),color='red')
+                g.es_exception()
+                return None
         finally:
             f.close()
             return node
@@ -247,9 +248,7 @@ class opmlController:
     # node is a nodeClass object, parent_v is a vnode.
     
     def createChildren (self, node, parent_v):
-        
-        g.trace(node)
-        
+    
         result = []
         
         for child in node.children:
@@ -645,7 +644,7 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
     
         for bunch in self.attrsToList(attrs):
             name = bunch.name ; val = bunch.val
-            g.trace(name,val)
+            # g.trace(name,val)
             
             if name == 'head':
                 node.headString = val
