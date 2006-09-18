@@ -8,6 +8,7 @@
 
 __version__ = '0.8'
 
+# To do: body text in cloned trees not set properly.
 # To do: Handle uA's
 
 # For traces.
@@ -164,7 +165,7 @@ class saxReadController:
             v = self.txnToVnodeDict.get(tnx)
             if v:
                 # A clone.  Create a new clone node, but share the subtree, i.e., the tnode.
-                # g.trace('clone',child.headString)
+                g.trace('clone',child.headString,v.t) # len(v.t.bodyString))
                 v = self.createVnode(child,parent_v,t=v.t)
             else:
                 v = self.createVnodeTree(child,parent_v)
@@ -213,21 +214,14 @@ class saxReadController:
     
         attrs = node.attributes.get('a')
         if attrs:
-            g.trace('a=%s %s' % (attrs,v.headString()))
+            # g.trace('a=%s %s' % (attrs,v.headString()))
+            
             # 'C' (clone) and 'D' bits are not used.
             if 'M' in attrs: v.setMarked()
             if 'E' in attrs: v.expand()
             if 'O' in attrs: v.setOrphan()
             if 'T' in attrs: self.topVnode = v
             if 'V' in attrs: self.currentVnode = v
-            
-        # if   self.matchChar('C'): pass # Not used: clone bits are recomputed later.
-        # elif self.matchChar('D'): pass # Not used.
-        # elif self.matchChar('E'): setExpanded = True
-        # elif self.matchChar('M'): setMarked = True
-        # elif self.matchChar('O'): setOrphan = True
-        # elif self.matchChar('T'): setTop = True
-        # elif self.matchChar('V'): setCurrent = True
     #@nonl
     #@-node:ekr.20060916115633:handleVnodeAttributes
     #@-node:ekr.20060914171659.1:createVnode
@@ -294,6 +288,8 @@ class saxReadController:
             c2.checkOutline()
             self.setCurrentPosition(c2)
             c2.redraw()
+            return c2 # For testing.
+        return None
     #@nonl
     #@-node:ekr.20060904103721:readFile
     #@+node:ekr.20060916120609:setCurrentPosition
