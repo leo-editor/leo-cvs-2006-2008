@@ -6,10 +6,10 @@
 #@@tabwidth -4
 #@@pagewidth 80
 
-__version__ = '0.8'
+__version__ = '0.9'
 
-# To do: body text in cloned trees not set properly.
-# To do: Handle uA's
+# To do: read/write tnodeList attributes. (Important for @file nodes.)
+# Maybe: read/write uA's.
 
 # For traces.
 printElements = [] # 'v', 'all',
@@ -32,6 +32,9 @@ printElements = [] # 'v', 'all',
 # element.
 # 0.7 EKR: Handled <globals> and <global_window_position> elements.
 # 0.8 EKR: Handled 'a' attributes (marked, etc) of vnodes.
+# 0.9 EKR: Handle clones properly.
+# - self.nodeList is a list of vnodes having a tnode's gnx.
+# - The value of txnToNodesDict entries are correspond to self.nodeList.
 #@-at
 #@nonl
 #@-node:ekr.20060904103412.2:<< version history >>
@@ -165,11 +168,10 @@ class saxReadController:
             v = self.txnToVnodeDict.get(tnx)
             if v:
                 # A clone.  Create a new clone node, but share the subtree, i.e., the tnode.
-                g.trace('clone',child.headString,v.t) # len(v.t.bodyString))
+                g.trace('clone',child.headString,v.t,v.t.bodyString)
                 v = self.createVnode(child,parent_v,t=v.t)
             else:
                 v = self.createVnodeTree(child,parent_v)
-                self.txnToVnodeDict [tnx] = v
             result.append(v)
             
         self.linkSiblings(result)
@@ -200,12 +202,11 @@ class saxReadController:
         v.t.vnodeList.append(v)
         v._parent = parent_v
         
-        self.handleVnodeAttributes(node,v)
+        self.txnToVnodeDict [node.tnx] = v
         
-        if 0:
-            h1 = v.headString()
-            h2 = parent_v and parent_v.headString() or 'None'
-            g.trace('node: %12s parent: %12s' % (h1[:12],h2[:12]))
+        # g.trace('tnx','%-22s' % (node.tnx),'v',id(v),'v.t',id(v.t),'body','%-4d' % (len(b)),h)
+        
+        self.handleVnodeAttributes(node,v)
         
         return v
     #@nonl
@@ -337,7 +338,7 @@ class nodeClass:
     def dump (self):
          
         print
-        print 'node: tnx: %s %s' % (self.tnx,self.headString)
+        print 'node: tnx: %s body: %d %s' % (self.tnx,len(self.bodyString),self.headString)
         print 'children:',g.listToString([child for child in self.children])
         print 'attrs:',self.attributes.values()
     #@nonl
@@ -394,9 +395,10 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         self.elementStack = []
         self.errors = 0
         self.txnToVnodeDict = {} # Keys are tnx's (strings), values are vnodes.
-        self.txnToNodeDict = {}  # Keys are tnx's (strings), values are nodeClass objects
+        self.txnToNodesDict = {} # Keys are tnx's (strings), values are *lists* of nodeClass objects.
         self.level = 0
         self.node = None
+        self.nodeList = [] # List of nodeClass objects with the present tnode.
         self.nodeStack = []
         self.rootNode = None
     #@-node:ekr.20060904134958.165: __init__ & helpers
@@ -556,8 +558,10 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
     #@+node:ekr.20060916074444:endTnode
     def endTnode (self):
         
-        if self.node:
-            self.node.bodyString = ''.join(self.content)
+        g.trace(self.nodeList)
+        
+        for node in self.nodeList:
+            node.bodyString = ''.join(self.content)
     
         self.content = []
     #@nonl
@@ -638,7 +642,7 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
     #@+node:ekr.20060915210537.5:startLeoHeader
     def startLeoHeader (self,attrs):
         
-        self.txnToNodeDict = {}
+        self.txnToNodesDict = {}
     #@nonl
     #@-node:ekr.20060915210537.5:startLeoHeader
     #@+node:ekr.20060915104021:startVH
@@ -662,19 +666,19 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         
         # The tnode must have a tx attribute to associate content with the proper node.
             
-        self.node = None
+        self.nodeList = []
     
         for bunch in self.attrsToList(attrs):
             name = bunch.name ; val = bunch.val
             if name == 'tx':
-                self.node = self.txnToNodeDict.get(val)
-                if not self.node:
+                self.nodeList = self.txnToNodesDict.get(val,[])
+                if not self.nodeList:
                     self.error('Bad leo file: no node for <t tx=%s>' % (val))
             else:
                 # Do **not** set any nodeClass attributes here!
                 self.error('Unexpected tnode attribute %s = %s' % (name,val))
                 
-        if not self.node:
+        if not self.nodeList:
             self.error('Bad leo file: no tx attribute for tnode')
     #@nonl
     #@-node:ekr.20060916071326:tnodeAttributes
@@ -707,7 +711,9 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         for bunch in self.attrsToList(attrs):
             name = bunch.name ; val = bunch.val
             if name == 't':
-                self.txnToNodeDict[val] = self.node
+                aList = self.txnToNodesDict.get(val,[])
+                aList.append(self.node)
+                self.txnToNodesDict[val] = aList
                 node.tnx = val
             else:
                 node.attributes[name] = val

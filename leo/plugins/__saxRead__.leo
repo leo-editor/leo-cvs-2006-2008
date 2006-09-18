@@ -9,8 +9,9 @@
 <preferences/>
 <find_panel_settings/>
 <vnodes>
-<v t="ekr.20060904103412" a="E"
-expanded="ekr.20060914171659.1,ekr.20060904134958.166,ekr.20060915101510.1,"><vh>@thin __saxRead__.py</vh></v>
+<v t="ekr.20060904103412" a="ETV"
+marks="ekr.20060904103412.6,"
+expanded="ekr.20060904134958.164,"><vh>@thin __saxRead__.py</vh></v>
 </vnodes>
 <tnodes>
 </tnodes>
