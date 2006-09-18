@@ -15,12 +15,12 @@ It defines the read-opml-file and write-opml-file commands and corresponding but
 #@@tabwidth -4
 #@@pagewidth 80
 
-# To do: handle unicode properly.
+# Read and write a and uA attributes
 
-__version__ = '0.06'
+__version__ = '0.07'
 
 # For traces.
-printElements = [] # ['outline','head','body',]
+printElements = [] # ['all','outline','head','body',]
 
 #@<< version history >>
 #@+node:ekr.20060904103412.2:<< version history >>
@@ -39,6 +39,8 @@ printElements = [] # ['outline','head','body',]
 # createVnodes & helpers)
 # 0.06 EKR: Rewrote createChildren.  It's simpler and appears to handle clones 
 # properly.
+# 0.07 EKR: Revised code using saxRead plugin as a model.
+# All strings are now assumed to be unicode.
 #@-at
 #@nonl
 #@-node:ekr.20060904103412.2:<< version history >>
@@ -246,6 +248,8 @@ class opmlController:
     
     def createChildren (self, node, parent_v):
         
+        g.trace(node)
+        
         result = []
         
         for child in node.children:
@@ -371,6 +375,44 @@ class opmlController:
     #@-others
 #@nonl
 #@-node:ekr.20060904103412.6:class opmlController
+#@+node:ekr.20060904141220:class nodeClass
+class nodeClass:
+    
+    '''A class representing one outline element.
+    
+    Use getters to access the attributes, properties and rules of this mode.'''
+    
+    #@    @+others
+    #@+node:ekr.20060904141220.1: node.__init__
+    def __init__ (self):
+    
+        self.attributes = {}
+        self.bodyString = ''
+        self.headString = ''
+        self.children = []
+        self.tnx = None
+    #@nonl
+    #@-node:ekr.20060904141220.1: node.__init__
+    #@+node:ekr.20060904141220.2: node.__str__ & __repr__
+    def __str__ (self):
+    
+        return '<node: %s>' % self.headString
+        
+    __repr__ = __str__
+    #@nonl
+    #@-node:ekr.20060904141220.2: node.__str__ & __repr__
+    #@+node:ekr.20060913220507:dump
+    def dump (self):
+        
+        print
+        print 'node: tnx: %s %s' % (self.tnx,self.headString)
+        print 'children:',[child for child in self.children]
+        print 'attrs:',self.attributes.values()
+    #@nonl
+    #@-node:ekr.20060913220507:dump
+    #@-others
+#@nonl
+#@-node:ekr.20060904141220:class nodeClass
 #@+node:ekr.20060904134958.164:class contentHandler (XMLGenerator)
 class contentHandler (xml.sax.saxutils.XMLGenerator):
     
@@ -385,15 +427,30 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
     
         # Init the base class.
         xml.sax.saxutils.XMLGenerator.__init__(self)
+        
+        #@    << define dispatch dict >>
+        #@+node:ekr.20060917185525:<< define dispatch dict >>
+        # There is no need for an 'end' method if all info is carried in attributes.
+        
+        self.dispatchDict = {
+            'body':     (None,None),
+            'head':     (None,None),
+            'opml':     (None,None),
+            'outline':  (self.startOutline,self.endOutline),
+        }
+        #@nonl
+        #@-node:ekr.20060917185525:<< define dispatch dict >>
+        #@nl
       
         # Semantics.
         self.elementStack = []
-        self.inBody = False
-        self.inHead = False
+        self.errors = 0
         self.level = 0
         self.node = None
         self.nodeStack = []
         self.rootNode = None
+        self.txnToVnodeDict = {} # Keys are tnx's (strings), values are vnodes.
+        self.txnToNodeDict = {}  # Keys are tnx's (strings), values are nodeClass objects
     #@nonl
     #@-node:ekr.20060904134958.165: __init__ & helpers
     #@+node:ekr.20060904134958.166:helpers
@@ -441,8 +498,16 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         print
         print 'XML error: %s' % (message)
         print
+        
+        self.errors += 1
     #@nonl
     #@-node:ekr.20060904134958.170:error
+    #@+node:ekr.20060917185525.1:inElement
+    def inElement (self,name):
+        
+        return self.elementStack and name in self.elementStack
+    #@nonl
+    #@-node:ekr.20060917185525.1:inElement
     #@+node:ekr.20060904134958.171:printStartElement
     def printStartElement(self,name,attrs):
         
@@ -463,7 +528,6 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
     #@nonl
     #@-node:ekr.20060904134958.171:printStartElement
     #@-node:ekr.20060904134958.166:helpers
-    #@+node:ekr.20060904134958.173:sax over-rides
     #@+node:ekr.20060904134958.174: Do nothing...
     #@+node:ekr.20060904134958.175:other methods
     def ignorableWhitespace(self):
@@ -508,72 +572,93 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
             print 'content:',elementName,repr(content)
     #@nonl
     #@-node:ekr.20060904134958.178:characters
-    #@+node:ekr.20060904134958.179:endElement
+    #@+node:ekr.20060904134958.179:endElement & helpers
     def endElement(self,name):
+        
+        name = name.lower()
+        if name in printElements or 'all' in printElements:
+            indent = '\t' * (self.level-1) or ''
+            print '%s</%s>' % (indent,self.clean(name).strip())
+        
+        data = self.dispatchDict.get(name)
     
-        self.doEndElement(name)
+        if data is None:
+            g.trace('unknown element',name)
+        else:
+            junk,func = data
+            if func:
+                func()
     
         name2 = self.elementStack.pop()
         assert name == name2
     #@nonl
-    #@-node:ekr.20060904134958.179:endElement
-    #@+node:ekr.20060904134958.180:startElement
+    #@+node:ekr.20060917185948:endOutline
+    def endOutline (self):
+        
+        self.level -= 1
+        self.node = self.nodeStack.pop()
+    #@nonl
+    #@-node:ekr.20060917185948:endOutline
+    #@-node:ekr.20060904134958.179:endElement & helpers
+    #@+node:ekr.20060904134958.180:startElement & helpers
     def startElement(self,name,attrs):
+        
+        name = name.lower()
+        if name in printElements or 'all' in printElements:
+            self.printStartElement(name,attrs)
     
         self.elementStack.append(name)
-        self.doStartElement(name,attrs)
-    #@nonl
-    #@-node:ekr.20060904134958.180:startElement
-    #@-node:ekr.20060904134958.173:sax over-rides
-    #@+node:ekr.20060904134958.181:doStartElement
-    def doStartElement (self,elementName,attrs):
         
-        elementName = elementName.lower()
+        data = self.dispatchDict.get(name)
     
-        if elementName in printElements:
-            self.printStartElement(elementName,attrs)
+        if data is None:
+            g.trace('unknown element',name)
+        else:
+            func,junk = data
+            if func:
+                func(attrs)
+    #@nonl
+    #@+node:ekr.20060917190349:startOutline
+    def startOutline (self,attrs):
+        
+        if self.inElement('head'):     self.error('<outline> inside <head>')
+        if not self.inElement('body'): self.error('<outline> outside <body>')
     
-        if elementName == 'body':
-            self.inBody= True
-        elif elementName == 'head':
-            self.inHead = True
-        elif elementName == 'outline':
-            if self.inHead:     self.error('<outline> inside <head>')
-            if not self.inBody: self.error('<outline> outside <body>')
-            self.level += 1
+        self.level += 1
+        
+        if self.rootNode:
             parent = self.node
-            self.node = nodeClass()
-            if parent:
-                self.node.parent = parent
-            else:
-                self.rootNode = parent = nodeClass() # This is a dummy parent node.
-                parent.headString = 'dummyNode'
-            parent.children.append(self.node)
-            
-            for bunch in self.attrsToList(attrs):
-                self.node.doAttribute(bunch.name,bunch.val)
+        else:
+            self.rootNode = parent = nodeClass() # The dummy parent node.
+            parent.headString = 'dummyNode'
     
-            self.nodeStack.append(parent)
+        self.node = nodeClass()
+        parent.children.append(self.node)
+        self.doOutlineAttributes(attrs)
+        self.nodeStack.append(parent)
     #@nonl
-    #@-node:ekr.20060904134958.181:doStartElement
-    #@+node:ekr.20060904134958.182:doEndElement
-    def doEndElement (self,elementName):
+    #@-node:ekr.20060917190349:startOutline
+    #@+node:ekr.20060904141220.34:doOutlineAttributes
+    def doOutlineAttributes (self,attrs):
         
-        elementName = elementName.lower()
-        
-        if elementName in printElements:
-            indent = '\t' * (self.level-1) or ''
-            print '%s</%s>' % (indent,self.clean(elementName).strip())
+        node = self.node
+    
+        for bunch in self.attrsToList(attrs):
+            name = bunch.name ; val = bunch.val
+            g.trace(name,val)
             
-        if elementName == 'body':
-            self.inBody= False
-        elif elementName == 'head':
-            self.inHead = False
-        elif elementName == 'outline':
-            self.level -= 1
-            self.node = self.nodeStack.pop()
+            if name == 'head':
+                node.headString = val
+            elif name == 'body':
+                node.bodyString = val
+            elif name == 'tx':
+                self.txnToNodeDict[val] = self.node
+                node.tnx = val
+            else:
+                node.attributes[name] = val
     #@nonl
-    #@-node:ekr.20060904134958.182:doEndElement
+    #@-node:ekr.20060904141220.34:doOutlineAttributes
+    #@-node:ekr.20060904134958.180:startElement & helpers
     #@+node:ekr.20060904134958.183:getNode
     def getNode (self):
         
@@ -583,68 +668,6 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
     #@-others
 #@nonl
 #@-node:ekr.20060904134958.164:class contentHandler (XMLGenerator)
-#@+node:ekr.20060904141220:class nodeClass
-class nodeClass:
-    
-    '''A class representing one outline element.
-    
-    Use getters to access the attributes, properties and rules of this mode.'''
-    
-    #@    @+others
-    #@+node:ekr.20060904141220.1: node.__init__
-    def __init__ (self):
-    
-        self.attributes = {}
-        self.bodyString = ''
-        self.headString = ''
-        self.children = []
-        self.parent = None
-        self.tnx = None
-    #@nonl
-    #@-node:ekr.20060904141220.1: node.__init__
-    #@+node:ekr.20060904141220.2: node.__str__ & __repr__
-    def __str__ (self):
-        
-        h = g.toUnicode(self.headString,'utf-8') or ''
-        return '<node: %s>' % h
-        
-    __repr__ = __str__
-    #@nonl
-    #@-node:ekr.20060904141220.2: node.__str__ & __repr__
-    #@+node:ekr.20060904141220.34:doAttribute
-    def doAttribute (self,name,val):
-        
-        node = self
-        name = g.toUnicode(name,encoding='utf-8').lower()
-        val  = g.toUnicode(val,encoding='utf-8')
-        
-        # g.trace(name,val)
-        
-        if name == 'head':
-            node.headString = val
-        elif name == 'body':
-            node.bodyString = val
-        elif name == 'tx':
-            node.tnx = val
-        else:
-            node.attributes[name] = val
-    #@nonl
-    #@-node:ekr.20060904141220.34:doAttribute
-    #@+node:ekr.20060913220507:dump
-    def dump (self):
-        
-        h = g.toUnicode(self.headString,'utf-8') or ''
-        
-        print
-        print 'node: tnx: %s %s' % (self.tnx,h)
-        print 'parent: %s' % self.parent or 'None'
-        print 'children:',[child for child in self.children]
-        print 'attrs:',self.attributes.values()
-    #@nonl
-    #@-node:ekr.20060913220507:dump
-    #@-others
-#@nonl
-#@-node:ekr.20060904141220:class nodeClass
 #@-others
 #@nonl
 #@-node:ekr.20060904103412:@thin leoOPML.py
