@@ -477,7 +477,7 @@ class atFile:
         return at.errors == 0
     #@-node:ekr.20041005105605.21:read
     #@+node:ekr.20041005105605.26:readAll
-    def readAll(self,root,partialFlag=False):
+    def readAll(self,root,partialFlag=False,forceGnx=False):
         
         """Scan vnodes, looking for @file nodes to read."""
     
@@ -495,6 +495,8 @@ class atFile:
                 p.moveToNodeAfterTree()
             elif p.isAtThinFileNode():
                 anyRead = True
+                if forceGnx: # New in Leo 4.4.2 b1: support for sax read.
+                    at.forceGnxOnPosition(p)
                 at.read(p,thinFile=True)
                 p.moveToNodeAfterTree()
             elif p.isAtFileNode() or p.isAtNorefFileNode():
@@ -4458,6 +4460,8 @@ class atFile:
     #@-node:ekr.20041005105605.220:atFile.error
     #@+node:ekr.20051219122720:atFile.forceGnxOnPosition
     def forceGnxOnPosition (self,p):
+        
+        # g.trace(p.headString())
         
         self._forcedGnxPositionList.append(p.v)
     #@-node:ekr.20051219122720:atFile.forceGnxOnPosition
