@@ -218,7 +218,7 @@
 #@-node:ekr.20031218072017.2408:<< About clones >>
 #@nl
 
-use_zodb = True
+use_zodb = False
 
 #@<< imports >>
 #@+node:ekr.20060904165452.1:<< imports >>
@@ -300,10 +300,15 @@ class tnode (baseTnode):
     #@-node:ekr.20031218072017.3323:t.__repr__ & t.__str__
     #@+node:ekr.20060908205857:t.__hash__ (only for zodb)
     if use_zodb and ZODB:
+        
+        # The only required property is that objects
+        # which compare equal have the same hash value.
+        
         def __hash__(self):
-            # The only required property is that objects
-            # which compare equal have the same hash value.
-            return sum([ord(ch) for ch in g.app.nodeIndices.toString(self.fileIndex)])
+    
+            return hash(g.app.nodeIndices.toString(self.fileIndex))
+            
+            # return sum([ord(ch) for ch in g.app.nodeIndices.toString(self.fileIndex)])
     #@nonl
     #@-node:ekr.20060908205857:t.__hash__ (only for zodb)
     #@+node:ekr.20031218072017.3325:Getters
@@ -532,8 +537,6 @@ class vnode (baseVnode):
     #@+node:ekr.20060910100316:v.__hash__ (only for zodb)
     if use_zodb and ZODB:
         def __hash__(self):
-            # The only required property is that objects
-            # which compare equal have the same hash value.
             return self.t.__hash__()
     #@nonl
     #@-node:ekr.20060910100316:v.__hash__ (only for zodb)
@@ -1276,15 +1279,18 @@ class nodeIndices (object):
         
         """Convert a gnx (a tuple) to its string representation"""
     
-        theId,t,n = index
-    
-        if removeDefaultId and theId == self.defaultId:
-            theId = ""
-    
-        if not n: # None or ""
-            return "%s.%s" % (theId,t)
-        else:
-            return "%s.%s.%d" % (theId,t,n)
+        try:
+            theId,t,n = index
+            if removeDefaultId and theId == self.defaultId:
+                theId = ""
+            if not n: # None or ""
+                return "%s.%s" % (theId,t)
+            else:
+                return "%s.%s.%d" % (theId,t,n)
+        except TypeError:
+            g.trace('unusual gnx',repr(index))
+            return repr(index)
+    #@nonl
     #@-node:ekr.20031218072017.1999:toString
     #@-others
 #@-node:ekr.20031218072017.1991:class nodeIndices
