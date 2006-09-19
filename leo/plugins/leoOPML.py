@@ -15,10 +15,9 @@ It defines the read-opml-file and write-opml-file commands and corresponding but
 #@@tabwidth -4
 #@@pagewidth 80
 
-# To do:       read/write tnodeList attributes. (Important for @file nodes.)
-# Maybe never: read/write uA's.
+# To do: read/write uA's.
 
-__version__ = '0.1'
+__version__ = '0.1.1'
 
 # For traces.
 printElements = [] # ['all','outline','head','body',]
@@ -46,6 +45,10 @@ printElements = [] # ['all','outline','head','body',]
 # - Use xml.sax.saxutils to quote attributes properly.
 # - Improved error handling in parse_opml_file.
 # 0.1 EKR: Write and read a attributes (marks, expanded, etc.)
+# 0.1.1 EKR: Added resolveTnodeLists and related logic.
+# 0.1.2 EKR: Moved parse_opml_file into opmlController class, as is done in 
+# the saxRead plugin.
+# Unlike the saxRead plugin, we do need to subclass c.fileCommands.
 #@-at
 #@nonl
 #@-node:ekr.20060904103412.2:<< version history >>
@@ -139,6 +142,17 @@ class opmlFileCommandsClass (leoFileCommands.fileCommands):
     #@nonl
     #@-node:ekr.20060904132527.16:putOPMLNodes
     #@+node:ekr.20060904132527.17:putOPMLNode
+    #@+at 
+    #@nonl
+    # Native xml attributes are the attributes of <v> and <t> elements that
+    # are known (treated specially) by Leo's read/write code. The only native
+    # attribute of <t> elements is tx. The native attributes of <v> elements 
+    # are: a,
+    # t, vtag, tnodeList, marks, expanded and 
+    # descendentTnodeUnknownAttributes.
+    #@-at
+    #@@c
+    
     def putOPMLNode (self,p):
         
         c = self.c ; indent = '\t' * p.level()
@@ -222,43 +236,6 @@ class opmlFileCommandsClass (leoFileCommands.fileCommands):
     #@nonl
     #@-node:ekr.20060904132527.18:putOPMLPostlog
     #@-node:ekr.20060904132527.13:putToOPML & helpers
-    #@+node:ekr.20060904134958.116:parse_opml_file
-    def parse_opml_file (self,inputFileName):
-    
-        if not inputFileName or not inputFileName.endswith('.opml'):
-            return None
-            
-        c = self.c
-        path = g.os_path_normpath(g.os_path_join(g.app.loadDir,inputFileName))
-        
-        try: f = open(path)
-        except IOError:
-            g.trace('can not open %s'%path)
-            return None
-        try:
-            try:
-                node = None
-                parser = xml.sax.make_parser()
-                # Do not include external general entities.
-                # The actual feature name is "http://xml.org/sax/features/external-general-entities"
-                parser.setFeature(xml.sax.handler.feature_external_ges,0)
-                handler = contentHandler(c,inputFileName)
-                parser.setContentHandler(handler)
-                parser.parse(f)
-                node = handler.getNode()
-            except xml.sax.SAXParseException:
-                g.es_print('Error parsing %s' % (inputFileName),color='red')
-                g.es_exception()
-                return None
-            except Exception:
-                g.es_print('Unexpected exception parsing %s' % (inputFileName),color='red')
-                g.es_exception()
-                return None
-        finally:
-            f.close()
-            return node
-    #@nonl
-    #@-node:ekr.20060904134958.116:parse_opml_file
     #@-others
 #@nonl
 #@-node:ekr.20060904132527.11:class opmlFileCommandsClass (fileCommands)
@@ -277,7 +254,6 @@ class opmlController:
         self.topVnode = None
     
         self.generatedTnxs = {}  # Keys are tnx's (strings).  Values are vnodes.
-        self.txnToTnodeDict = {} # Keys are tnx's (strings).  Values are tnodes.
     #@nonl
     #@-node:ekr.20060904103412.7:__init__
     #@+node:ekr.20060904103412.8:createCommands (not used)
@@ -302,7 +278,6 @@ class opmlController:
         Modify this with extreme care.'''
         
         self.generatedTnxs = {}
-        self.txnToTnodeDict = {}
     
         children = self.createChildren(dummyRoot,parent_v = None)
         firstChild = children and children[0]
@@ -355,10 +330,6 @@ class opmlController:
         v._parent = parent_v
         
         self.handleVnodeAttributes(node,v)
-    
-        tnodeList = self.getTnodeList(node,v)
-        if tnodeList:
-            v.t.tnodeList = tnodeList
         
         return v
     #@nonl
@@ -374,39 +345,14 @@ class opmlController:
             if 'T' in a: self.topVnode = v
             if 'V' in a: self.currentVnode = v
             
-        tnx = node.tnx
-        if tnx:
-            self.txnToTnodeDict[tnx] = v.t
+        s = node.attributes.get('tnodeList')
+        tnodeList = s and s.split(',')
+        if tnodeList:
+            # This tnode list will be resolved later.
+            g.trace(v.headString(),len(tnodeList))
+            v.tempTnodeList = tnodeList
     #@nonl
     #@-node:ekr.20060917213611:handleVnodeAttributes
-    #@+node:ekr.20060917221112.1:getTnodeList
-    # Based on fileCommands.getTnodeList
-    
-    def getTnodeList (self,node,v):
-        
-        """Parse a list of tnode indices in the tnodeList attribute."""
-        
-        s = node.attributes.get('tnodeList')
-        if not s: return None
-        
-        # Remember: entries in the tnodeList correspond to @+node sentinels, _not_ to tnodes!
-        # fc = self.c.fileCommands
-        indexList = s.split(',') # The list never ends in a comma.
-        tnodeList = []
-        for index in indexList:
-            index = self.canonicalTnodeIndex(index)
-            # t = fc.tnodesDict.get(index)
-            t = self.txnToTnodeDict.get(index)
-            if not t:
-                # Not an error: create a new tnode and put it in fc.tnodesDict.
-                g.trace("not allocated: %s" % index)
-                t = fc.newTnode(index)
-            tnodeList.append(t)
-            
-        g.trace(len(tnodeList))
-        return tnodeList
-    #@nonl
-    #@-node:ekr.20060917221112.1:getTnodeList
     #@-node:ekr.20060914171659.1:createVnode & helpers
     #@+node:ekr.20060914174806:linkParentAndChildren
     def linkParentAndChildren (self, parent_v, children):
@@ -448,6 +394,43 @@ class opmlController:
             self.dumpTree(child,dummy=False)
     #@nonl
     #@-node:ekr.20060913220707:dumpTree
+    #@+node:ekr.20060904134958.116:parse_opml_file
+    def parse_opml_file (self,inputFileName):
+    
+        if not inputFileName or not inputFileName.endswith('.opml'):
+            return None
+            
+        c = self.c
+        path = g.os_path_normpath(g.os_path_join(g.app.loadDir,inputFileName))
+        
+        try: f = open(path)
+        except IOError:
+            g.trace('can not open %s'%path)
+            return None
+        try:
+            try:
+                node = None
+                parser = xml.sax.make_parser()
+                # Do not include external general entities.
+                # The actual feature name is "http://xml.org/sax/features/external-general-entities"
+                parser.setFeature(xml.sax.handler.feature_external_ges,0)
+                handler = contentHandler(c,inputFileName)
+                parser.setContentHandler(handler)
+                parser.parse(f)
+                node = handler.getNode()
+            except xml.sax.SAXParseException:
+                g.es_print('Error parsing %s' % (inputFileName),color='red')
+                g.es_exception()
+                return None
+            except Exception:
+                g.es_print('Unexpected exception parsing %s' % (inputFileName),color='red')
+                g.es_exception()
+                return None
+        finally:
+            f.close()
+            return node
+    #@nonl
+    #@-node:ekr.20060904134958.116:parse_opml_file
     #@+node:ekr.20060904103721:readFile
     def readFile (self,event=None,fileName=None):
         
@@ -458,7 +441,7 @@ class opmlController:
         c = self.c
         
         # Pass one: create the intermediate nodes.
-        self.dummyRoot = dummyRoot = c.fileCommands.parse_opml_file(fileName)
+        self.dummyRoot = dummyRoot = self.parse_opml_file(fileName)
     
         # self.dumpTree(dummyRoot,dummy=True)
     
@@ -467,6 +450,7 @@ class opmlController:
         if v:
             c2 = c.new()
             c2.setRootVnode(v)
+            self.resolveTnodeLists(c2)
             c2.checkOutline()
             self.setCurrentPosition(c2)
             c2.redraw()
@@ -483,6 +467,23 @@ class opmlController:
                 break
     #@nonl
     #@-node:ekr.20060917214140:setCurrentPosition
+    #@+node:ekr.20060918132045:resolveTnodeLists
+    def resolveTnodeLists (self,c):
+        
+        for p in c.allNodes_iter():
+            if hasattr(p.v,'tempTnodeList'):
+                result = []
+                for tnx in p.v.tempTnodeList:
+                    v = self.txnToVnodeDict.get(tnx)
+                    if v:
+                        g.trace(v,tnx,v.t)
+                        result.append(v.t)
+                    else:
+                        g.trace('No tnode for %s' % tnx)
+                p.v.t.tnodeList = result
+                delattr(p.v,'tempTnodeList')
+    #@nonl
+    #@-node:ekr.20060918132045:resolveTnodeLists
     #@-node:ekr.20060904103721:readFile
     #@+node:ekr.20060904103721.1:writeFile
     def writeFile (self,event=None,fileName=None):
