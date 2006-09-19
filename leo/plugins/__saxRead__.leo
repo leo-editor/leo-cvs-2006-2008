@@ -16,9 +16,9 @@
 <v t="ekr.20060918135304"><vh>restoreDescendentAttributes</vh></v>
 </v>
 <v t="ekr.20060918154842"><vh>Dump</vh></v>
-<v t="ekr.20060904103412" a="ETV"
+<v t="ekr.20060904103412" a="E"
 marks="ekr.20060904103412.6,ekr.20060916115633,ekr.20060916064339,"
-expanded="ekr.20060904103412.6,ekr.20060904134958.179,"><vh>@thin __saxRead__.py</vh></v>
+expanded="ekr.20060904103412.6,ekr.20060904103721,ekr.20060904134958.179,"><vh>@thin __saxRead__.py</vh></v>
 </vnodes>
 <tnodes>
 <t tx="ekr.20060904103412.7">def __init__ (self,c):

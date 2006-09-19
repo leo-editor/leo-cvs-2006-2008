@@ -6,10 +6,10 @@
 #@@tabwidth -4
 #@@pagewidth 80
 
-__version__ = '0.10'
+__version__ = '0.11'
 
-# To do: read/write tnodeList attributes. (Important for @file nodes.)
-# Maybe: read/write uA's.
+# To do: read descendent attributes. (Important for @file nodes.)
+# Maybe: read uA's.
 
 # For traces.
 printElements = [] # 'v', 'all',
