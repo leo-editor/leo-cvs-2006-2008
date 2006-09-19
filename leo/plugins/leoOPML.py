@@ -17,7 +17,7 @@ It defines the read-opml-file and write-opml-file commands and corresponding but
 
 # To do: read/write uA's.
 
-__version__ = '0.1.1'
+__version__ = '0.2'
 
 # For traces.
 printElements = [] # ['all','outline','head','body',]
@@ -48,7 +48,15 @@ printElements = [] # ['all','outline','head','body',]
 # 0.1.1 EKR: Added resolveTnodeLists and related logic.
 # 0.1.2 EKR: Moved parse_opml_file into opmlController class, as is done in 
 # the saxRead plugin.
-# Unlike the saxRead plugin, we do need to subclass c.fileCommands.
+# 0.2 EKR: Moved putToOPML and its helpers to Leo's core, so there is no need 
+# to subclass any fileCommands class.
+# Future plugins could customize these methods, but configuration settings 
+# would be better.
+# 0.3 EKR: Do not call toUnicode: sax should already have done that.
+# 0.4 EKR: No change to opml plugin, but defined fc.attributeEscape to convert 
+# newlines to '&#10;\n'
+# This overcomes the sax parser's tendency to strip newlines from attributes.  
+# Sheesh.
 #@-at
 #@nonl
 #@-node:ekr.20060904103412.2:<< version history >>
@@ -73,7 +81,7 @@ import xml.sax.saxutils
 def init ():
     
     # override the base class
-    leoPlugins.registerHandler('start1',onStart2)
+    # leoPlugins.registerHandler('start1',onStart2)
 
     # Register the commands.
     leoPlugins.registerHandler(('open2','new'),onCreate)
@@ -91,154 +99,7 @@ def onCreate (tag, keys):
         opmlController(c)
 #@nonl
 #@-node:ekr.20060904103412.5:onCreate
-#@+node:ekr.20060904132527.10:onStart2
-def onStart2 (tag,keys):
-
-    # Override the fileCommands class by opmlFileCommandsClass.
-    leoFileCommands.fileCommands = opmlFileCommandsClass
-#@nonl
-#@-node:ekr.20060904132527.10:onStart2
 #@-node:ekr.20060904132527.9:Module level
-#@+node:ekr.20060904132527.11:class opmlFileCommandsClass (fileCommands)
-class opmlFileCommandsClass (leoFileCommands.fileCommands):
-    
-    #@    @+others
-    #@+node:ekr.20060904132527.13:putToOPML & helpers
-    def putToOPML (self):
-    
-        self.putOPMLProlog()
-        self.putOPMLHeader()
-        self.putOPMLNodes()
-        self.putOPMLPostlog()
-        g.trace('wrote',self.mFileName)
-    #@nonl
-    #@+node:ekr.20060904132527.14:putOPMLProlog
-    def putOPMLProlog (self):
-        
-        self.put('<opml version="1.0">\n')
-    #@nonl
-    #@-node:ekr.20060904132527.14:putOPMLProlog
-    #@+node:ekr.20060904132527.15:putOPMLHeader
-    def putOPMLHeader (self):
-        
-        '''Put the OPML header, including attributes for globals, prefs and  find settings.'''
-        
-        self.put('<head>\n')
-        
-        self.put('</head>\n')
-    #@nonl
-    #@-node:ekr.20060904132527.15:putOPMLHeader
-    #@+node:ekr.20060904132527.16:putOPMLNodes
-    def putOPMLNodes (self):
-        
-        c = self.c ; root = c.rootPosition()
-        
-        self.put('<body>\n')
-        
-        for p in root.self_and_siblings_iter():
-            self.putOPMLNode(p)
-        
-        self.put('</body>\n')
-    #@nonl
-    #@-node:ekr.20060904132527.16:putOPMLNodes
-    #@+node:ekr.20060904132527.17:putOPMLNode
-    #@+at 
-    #@nonl
-    # Native xml attributes are the attributes of <v> and <t> elements that
-    # are known (treated specially) by Leo's read/write code. The only native
-    # attribute of <t> elements is tx. The native attributes of <v> elements 
-    # are: a,
-    # t, vtag, tnodeList, marks, expanded and 
-    # descendentTnodeUnknownAttributes.
-    #@-at
-    #@@c
-    
-    def putOPMLNode (self,p):
-        
-        c = self.c ; indent = '\t' * p.level()
-        body = p.bodyString() or '' ; head = p.headString() or ''
-        
-        a = self.aAttributes(p)
-        uA = self.uAAttributes(p)
-        tnodeList = self.tnodeListAttributes(p)
-        
-        self.put('%s<outline tx="%s" %s%s%shead=%s body=%s' % (
-            indent,
-            g.app.nodeIndices.toString(p.v.t.fileIndex),
-            g.choose(a,'a="%s" ' % (a),''),
-            g.choose(tnodeList,'tnodeList="%s" ' % (tnodeList),''),
-            uA,
-            xml.sax.saxutils.quoteattr(head),
-            xml.sax.saxutils.quoteattr(body),
-        ))
-    
-        if p.hasChildren():
-            self.put('>\n')
-            for p2 in p.children_iter():
-                self.putOPMLNode(p2)
-            self.put('%s</outline>\n' % indent)
-        else:
-            self.put('/>\n')
-    #@nonl
-    #@+node:ekr.20060917212351:aAttributes
-    def aAttributes (self,p):
-        
-        c = self.c
-        attr = []
-    
-        if p.isExpanded():          attr.append('E')
-        if p.isMarked():            attr.append('M')
-        if c.isCurrentPosition(p):  attr.append('V')
-    
-        #if p.v.isOrphan():              attr.append('O')
-        #if p.equal(self.topPosition):   attr.append('T')
-    
-        return ''.join(attr)
-    #@nonl
-    #@-node:ekr.20060917212351:aAttributes
-    #@+node:ekr.20060917215752:tnodeListAttributes
-    # Based on fileCommands.putTnodeList.
-    
-    def tnodeListAttributes (self,p):
-        
-        '''Put the tnodeList attribute of p.v.t'''
-    
-        # Remember: entries in the tnodeList correspond to @+node sentinels, _not_ to tnodes!
-        
-        if not hasattr(p.v.t,'tnodeList') or not p.v.t.tnodeList:
-            return ''
-            
-        g.trace('tnodeList',p.v.t.tnodeList)
-    
-        # Assign fileIndices.
-        for t in p.v.t.tnodeList:
-            try: # Will fail for None or any pre 4.1 file index.
-                theId,time,n = p.v.t.fileIndex
-            except:
-                g.trace("assigning gnx for ",p.v.t)
-                gnx = g.app.nodeIndices.getNewIndex()
-                p.v.t.setFileIndex(gnx) # Don't convert to string until the actual write.
-    
-        s = ','.join([nodeIndices.toString(t.fileIndex) for t in p.v.t.tnodeList])
-    #@nonl
-    #@-node:ekr.20060917215752:tnodeListAttributes
-    #@+node:ekr.20060917214639:uAAttributes (Not yet, and maybe never)
-    def uAAttributes (self,p):
-        
-        return ''
-    #@nonl
-    #@-node:ekr.20060917214639:uAAttributes (Not yet, and maybe never)
-    #@-node:ekr.20060904132527.17:putOPMLNode
-    #@+node:ekr.20060904132527.18:putOPMLPostlog
-    def putOPMLPostlog (self):
-        
-        self.put('</opml>\n')
-    #@nonl
-    #@-node:ekr.20060904132527.18:putOPMLPostlog
-    #@-node:ekr.20060904132527.13:putToOPML & helpers
-    #@-others
-#@nonl
-#@-node:ekr.20060904132527.11:class opmlFileCommandsClass (fileCommands)
 #@+node:ekr.20060904103412.6:class opmlController
 class opmlController:
     
@@ -489,10 +350,10 @@ class opmlController:
     def writeFile (self,event=None,fileName=None):
         
         if fileName:
-        
-            g.trace(fileName)
     
             self.c.fileCommands.write_Leo_file(fileName,outlineOnlyFlag=True,toString=False,toOPML=True)
+            
+            g.es_print('wrote %s' % fileName)
     #@nonl
     #@-node:ekr.20060904103721.1:writeFile
     #@-others
@@ -586,11 +447,44 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         
         # g.trace(g.listToString([attrs.getValue(name) for name in attrs.getNames()]))
         
-        return [
-            g.Bunch(name=name,val=g.toUnicode(attrs.getValue(name),encoding='utf-8'))
-                for name in attrs.getNames()]
+        return [g.Bunch(name=name,val=attrs.getValue(name)) for name in attrs.getNames()]
     #@nonl
     #@-node:ekr.20060904134958.167:attrsToList
+    #@+node:ekr.20060904134958.170:error
+    def error (self, message):
+        
+        print
+        print
+        print 'XML error: %s' % (message)
+        print
+        
+        self.errors += 1
+    #@nonl
+    #@-node:ekr.20060904134958.170:error
+    #@+node:ekr.20060917185525.1:inElement
+    def inElement (self,name):
+        
+        return self.elementStack and name in self.elementStack
+    #@nonl
+    #@-node:ekr.20060917185525.1:inElement
+    #@+node:ekr.20060904134958.171:printStartElement & helpers
+    def printStartElement(self,name,attrs):
+        
+        indent = '\t' * self.level or ''
+    
+        if attrs.getLength() > 0:
+            print '%s<%s %s>' % (
+                indent,
+                self.clean(name).strip(),
+                self.attrsToString(attrs,sep=' ')),
+        else:
+            print '%s<%s>' % (
+                indent,
+                self.clean(name).strip()),
+    
+        if name.lower() in ['outline','head','body',]:
+            print
+    #@nonl
     #@+node:ekr.20060904134958.168:attrsToString
     def attrsToString (self,attrs,sep='\n'):
         
@@ -610,46 +504,11 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
     #@-node:ekr.20060904134958.168:attrsToString
     #@+node:ekr.20060904134958.169:clean
     def clean(self,s):
-    
+        
         return g.toEncodedString(s,"ascii")
     #@nonl
     #@-node:ekr.20060904134958.169:clean
-    #@+node:ekr.20060904134958.170:error
-    def error (self, message):
-        
-        print
-        print
-        print 'XML error: %s' % (message)
-        print
-        
-        self.errors += 1
-    #@nonl
-    #@-node:ekr.20060904134958.170:error
-    #@+node:ekr.20060917185525.1:inElement
-    def inElement (self,name):
-        
-        return self.elementStack and name in self.elementStack
-    #@nonl
-    #@-node:ekr.20060917185525.1:inElement
-    #@+node:ekr.20060904134958.171:printStartElement
-    def printStartElement(self,name,attrs):
-        
-        indent = '\t' * self.level or ''
-    
-        if attrs.getLength() > 0:
-            print '%s<%s %s>' % (
-                indent,
-                self.clean(name).strip(),
-                self.attrsToString(attrs,sep=' ')),
-        else:
-            print '%s<%s>' % (
-                indent,
-                self.clean(name).strip()),
-    
-        if name.lower() in ['outline','head','body',]:
-            print
-    #@nonl
-    #@-node:ekr.20060904134958.171:printStartElement
+    #@-node:ekr.20060904134958.171:printStartElement & helpers
     #@-node:ekr.20060904134958.166:helpers
     #@+node:ekr.20060904134958.174: Do nothing...
     #@+node:ekr.20060904134958.175:other methods
@@ -686,12 +545,11 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
     #@+node:ekr.20060904134958.178:characters
     def characters(self,content):
     
-        content = g.toUnicode(content,encoding='utf-8') or ''
-        content = content.replace('\r','').strip()
-    
         elementName = self.elementStack and self.elementStack[-1].lower() or '<no element name>'
         
-        if content:
+        # Opml elements should not have content: everything is carried in attributes.
+        
+        if content.strip():
             print 'content:',elementName,repr(content)
     #@nonl
     #@-node:ekr.20060904134958.178:characters
@@ -768,11 +626,12 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
     
         for bunch in self.attrsToList(attrs):
             name = bunch.name ; val = bunch.val
-            # g.trace(name,val)
-            
+    
             if name == 'head':
                 node.headString = val
             elif name == 'body':
+                #g.trace(repr(val))
+                #g.es_dump (val[:30])
                 node.bodyString = val
             elif name == 'tx':
                 # self.txnToNodeDict[val] = self.node
