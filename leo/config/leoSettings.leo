@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="305" clone_windows="0"/>
-<globals body_outline_ratio="0.4">
-	<global_window_position top="121" left="256" height="699" width="938"/>
+<globals body_outline_ratio="0.717647058824">
+	<global_window_position top="121" left="256" height="680" width="938"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -263,11 +263,6 @@
 <v t="ekr.20041119041747.1"><vh>@string trailing_body_newlines = one</vh></v>
 <v t="ekr.20041119041747.4"><vh>@bool write_strips_blank_lines = True</vh></v>
 </v>
-<v t="ekr.20041119034357.15"><vh>unicode encoding options</vh>
-<v t="ekr.20041119042929.9"><vh>@string default_derived_file_encoding = utf-8</vh></v>
-<v t="ekr.20041119042929.10"><vh>@string new_leo_file_encoding = utf-8</vh></v>
-<v t="ekr.20041119042929.11"><vh>@string tk_encoding = None</vh></v>
-</v>
 <v t="ekr.20060127050605"><vh>@int max_undo_stack_size = 50</vh></v>
 </v>
 <v t="ekr.20060122105527.3"><vh>Keyboard and minibuffer options</vh>
@@ -459,10 +454,15 @@
 <v t="ekr.20051025085144"><vh>@string aspell_dir = c:\aspell</vh></v>
 <v t="ekr.20051025085144.1"><vh>@string aspell_bin_dir = c:\aspell\bin</vh></v>
 </v>
+<v t="ekr.20041119034357.15" a="E"><vh>Unicode options</vh>
+<v t="ekr.20041119042929.9"><vh>@string default_derived_file_encoding = utf-8</vh></v>
+<v t="ekr.20041119042929.10" a="TV"><vh>@string new_leo_file_encoding = utf-8</vh></v>
+<v t="ekr.20041119042929.11"><vh>@string tk_encoding = None</vh></v>
+</v>
 <v t="ekr.20050203090810" annotate="7d71002e"><vh>Unit test</vh>
 <v t="ekr.20050203085250"><vh>@int global_setting_for_unit_tests = 132</vh></v>
 </v>
-<v t="ekr.20041213105954" a="E" annotate="7d71002e"><vh>Window</vh>
+<v t="ekr.20041213105954" annotate="7d71002e"><vh>Window</vh>
 <v t="ekr.20041119034357.38"><vh>Body pane options</vh>
 <v t="ekr.20060531094310"><vh>@bool autoindent_in_nocolor_mode = True</vh></v>
 <v t="ekr.20041119034357.43"><vh>@bool body_gmt_time = False</vh></v>
@@ -483,7 +483,7 @@
 <v t="ekr.20041119052015.1"><vh>@bool log_pane_wraps = False</vh></v>
 </v>
 <v t="ekr.20041119034357.56" a="E"><vh>Options for new windows</vh>
-<v t="ekr.20041119034357.59" a="V"><vh>@strings[vertical,horizontal] initial_splitter_orientation = vertical</vh></v>
+<v t="ekr.20041119034357.59"><vh>@strings[vertical,horizontal] initial_splitter_orientation = vertical</vh></v>
 <v t="ekr.20041119034357.57"><vh>@ratio initial_horizontal_ratio = 0.4</vh></v>
 <v t="ekr.20041119034357.58"><vh>@ratio initial_horizontal_secondary_ratio = 0.8</vh></v>
 <v t="ekr.20041119034357.60"><vh>@ratio initial_vertical_ratio = 0.5</vh></v>
@@ -916,12 +916,9 @@ False: Leo retains whitespace even in otherwise blank lines.</t>
 <t tx="ekr.20041119042929.5"></t>
 <t tx="ekr.20041119042929.6">Not supported at present.</t>
 <t tx="ekr.20041119042929.7"></t>
-<t tx="ekr.20041119042929.9">
-The encoding used for derived files if no @encoding directive is in effect.
+<t tx="ekr.20041119042929.9">The encoding used for derived files if no @encoding directive is in effect.
 This setting is also used to encode files created by the Tangle commands.
-Default is UTF-8 (case not important).
-
-</t>
+Default is UTF-8 (case not important).</t>
 <t tx="ekr.20041119042929.10">The encoding specified in the following line of new .leo files:
 
 &lt;?xml version="1.0" encoding="UTF-8"&gt;

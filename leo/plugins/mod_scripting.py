@@ -129,6 +129,8 @@ atPluginNodes = False
     # True: dynamically loads plugins in @plugins nodes when a window is created.
 atScriptNodes = False
     # True: dynamically executes script in @script nodes when a window is created.  DANGEROUS!
+createDebugButton = False
+    # True: create Debug Script button.
 useBaloons = True
     # True: add Pmw baloons.
 maxButtonSize = 18
@@ -196,7 +198,8 @@ class scriptingController:
             self.scanned = True
             self.createRunScriptIconButton()
             self.createScriptButtonIconButton()
-            self.createDebugIconButton()
+            if createDebugButton:
+                self.createDebugIconButton()
     
             # scan for user-defined nodes.
             for p in c.allNodes_iter():

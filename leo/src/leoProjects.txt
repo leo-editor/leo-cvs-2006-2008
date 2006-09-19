@@ -782,6 +782,7 @@ if marks or expanded:
                 # There was a big performance bug in the mark hook in the Node Navigator plugin.
         if expanded.get(p.v.t):
             p.expand()
+#@nonl
 #@-node:EKR.20040627120120:<< restore attributes in descendent tnodes >>
 #@-node:ekr.20031218072017.1553:getLeoFile
 #@+node:ekr.20031218072017.1559:getLeoOutline (from clipboard)
@@ -1064,6 +1065,7 @@ def initIvars(self):
     # New in 3.12
     self.copiedTree = None
     self.tnodesDict = {}  # keys are gnx strings as returned by canonicalTnodeIndex.
+#@nonl
 #@-node:ekr.20031218072017.3019:leoFileCommands._init_
 #@+node:ekr.20031218072017.1860:createVnode (changed for 4.2) sets skip
 def createVnode (self,parent,back,tref,headline,attrDict):
@@ -2356,6 +2358,26 @@ def resizePanesToRatio(self,ratio,ratio2):
 #@nonl
 #@-node:ekr.20060915124834:resizePanesToRatio
 #@-node:ekr.20060915113237:Fixed problem with body/outline ratio
+#@+node:ekr.20060918091042:Guarded against strange crasher
+#@+node:ekr.20031218072017.1999:toString
+def toString (self,index,removeDefaultId=False):
+    
+    """Convert a gnx (a tuple) to its string representation"""
+
+    try:
+        theId,t,n = index
+        if removeDefaultId and theId == self.defaultId:
+            theId = ""
+        if not n: # None or ""
+            return "%s.%s" % (theId,t)
+        else:
+            return "%s.%s.%d" % (theId,t,n)
+    except TypeError:
+        g.trace('unusual gnx',repr(index))
+        return repr(index)
+#@nonl
+#@-node:ekr.20031218072017.1999:toString
+#@-node:ekr.20060918091042:Guarded against strange crasher
 #@-node:ekr.20060908092306:Bugs
 #@+node:ekr.20060905091234:Code level
 #@+node:ekr.20060904114302:Added OPML support to fileCommands
@@ -2364,7 +2386,7 @@ def write_Leo_file(self,fileName,outlineOnlyFlag,toString=False,toOPML=False):
 
     c = self.c
     self.assignFileIndices()
-    if not outlineOnlyFlag:
+    if not outlineOnlyFlag or toOPML:
         # Update .leoRecentFiles.txt if possible.
         g.app.config.writeRecentFilesFile(c)
         << write all @file nodes >>
@@ -2375,16 +2397,14 @@ def write_Leo_file(self,fileName,outlineOnlyFlag,toString=False,toOPML=False):
             << create backup file >>
         self.mFileName = fileName
         if toOPML:
-            if not self.mFileName.endswith('opml'):
-                self.mFileName = self.mFileName + '.opml'
-            fileName = self.mFileName
-        self.outputFile = cStringIO.StringIO() # or g.fileLikeObject()
+            << ensure that filename ends with .opml >>
+        self.outputFile = cStringIO.StringIO()
         if not toString:
             theActualFile = open(fileName, 'wb')
         if toOPML:
             self.putToOPML()
         else:
-             << put the .leo file >>
+            self.putLeoFile()
         s = self.outputFile.getvalue()
         if toString:
             # For support of chapters plugin.
@@ -2405,6 +2425,7 @@ def write_Leo_file(self,fileName,outlineOnlyFlag,toString=False,toOPML=False):
         return False
 
 write_LEO_file = write_Leo_file # For compatibility with old plugins.
+#@nonl
 #@+node:ekr.20040324080359:<< write all @file nodes >>
 try:
     # Write all @file nodes and set orphan bits.
@@ -2425,6 +2446,12 @@ if g.os_path_exists(fileName):
     except:
         pass # os.access() may not exist on all platforms.
 #@-node:ekr.20040324080359.1:<< return if the .leo file is read-only >>
+#@+node:ekr.20060919070145:<< ensure that filename ends with .opml >>
+if not self.mFileName.endswith('opml'):
+    self.mFileName = self.mFileName + '.opml'
+fileName = self.mFileName
+#@nonl
+#@-node:ekr.20060919070145:<< ensure that filename ends with .opml >>
 #@+node:ekr.20031218072017.3047:<< create backup file >>
 # rename fileName to fileName.bak if fileName exists.
 if g.os_path_exists(fileName):
@@ -2440,19 +2467,6 @@ if g.os_path_exists(fileName):
 else:
     backupName = None
 #@-node:ekr.20031218072017.3047:<< create backup file >>
-#@+node:ekr.20040324080819.1:<< put the .leo file >>
-self.putProlog()
-self.putHeader()
-self.putGlobals()
-self.putPrefs()
-self.putFindSettings()
-#start = g.getTime()
-self.putVnodes()
-#start = g.printDiffTime("vnodes ",start)
-self.putTnodes()
-#start = g.printDiffTime("tnodes ",start)
-self.putPostlog()
-#@-node:ekr.20040324080819.1:<< put the .leo file >>
 #@+node:ekr.20031218072017.3048:<< delete backup file >>
 if backupName and g.os_path_exists(backupName):
 
@@ -2468,14 +2482,6 @@ if backupName:
     g.utils_rename(backupName,fileName)
 #@-node:ekr.20050405103712.1:<< rename backupName to fileName >>
 #@-node:ekr.20031218072017.3046:write_Leo_file
-#@+node:ekr.20060904113842.1:putToOPML
-def putToOPML (self):
-    
-    '''Must be overridden in a subclass to be functional.'''
-    
-    pass
-#@nonl
-#@-node:ekr.20060904113842.1:putToOPML
 #@-node:ekr.20060904114302:Added OPML support to fileCommands
 #@+node:ekr.20060905092512.2:Eliminated v.c and p.c
 @nocolor
@@ -3804,17 +3810,20 @@ def adjustParentLinksInSubtree (self,parent):
 #@+node:ekr.20060913082305:Fixed problem with t.hash
 #@+node:ekr.20060908205857:t.__hash__ (only for zodb)
 if use_zodb and ZODB:
+    
+    # The only required property is that objects
+    # which compare equal have the same hash value.
+    
     def __hash__(self):
-        # The only required property is that objects
-        # which compare equal have the same hash value.
-        return sum([ord(ch) for ch in g.app.nodeIndices.toString(self.fileIndex)])
+
+        return hash(g.app.nodeIndices.toString(self.fileIndex))
+        
+        # return sum([ord(ch) for ch in g.app.nodeIndices.toString(self.fileIndex)])
 #@nonl
 #@-node:ekr.20060908205857:t.__hash__ (only for zodb)
 #@+node:ekr.20060910100316:v.__hash__ (only for zodb)
 if use_zodb and ZODB:
     def __hash__(self):
-        # The only required property is that objects
-        # which compare equal have the same hash value.
         return self.t.__hash__()
 #@nonl
 #@-node:ekr.20060910100316:v.__hash__ (only for zodb)
