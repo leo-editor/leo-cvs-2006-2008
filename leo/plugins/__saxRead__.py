@@ -6,7 +6,7 @@
 #@@tabwidth -4
 #@@pagewidth 80
 
-__version__ = '0.9'
+__version__ = '0.10'
 
 # To do: read/write tnodeList attributes. (Important for @file nodes.)
 # Maybe: read/write uA's.
@@ -18,7 +18,6 @@ printElements = [] # 'v', 'all',
 #@+node:ekr.20060904103412.2:<< version history >>
 #@@killcolor
 #@+at
-# 
 # 0.1 EKR: Initial version based on version 0.06 of the opml plugin.
 # 0.2 EKR: Beginning transition to elements found in .leo files.
 # 0.3 EKR: Most of read logic is working.
@@ -37,6 +36,9 @@ printElements = [] # 'v', 'all',
 # - The value of txnToNodesDict entries are correspond to self.nodeList.
 # 0.10 EKR: Added resolveTnodeLists and related logic. Everything except uA's 
 # works.
+# 0.11 EKR: Preparing to move the sax code into Leo's core:
+# Eliminated saxReadCommandsClass: there is no need to override 
+# c.fileCommands!
 #@-at
 #@nonl
 #@-node:ekr.20060904103412.2:<< version history >>
@@ -61,7 +63,7 @@ import xml.sax.saxutils
 def init ():
     
     # override the base class
-    leoPlugins.registerHandler('start1',onStart2)
+    # leoPlugins.registerHandler('start1',onStart2)
 
     # Register the commands.
     leoPlugins.registerHandler(('open2','new'),onCreate)
@@ -76,60 +78,10 @@ def onCreate (tag, keys):
     
     c = keys.get('c')
     if c:
-        saxReadController(c)
+        c.saxReadCommands = saxReadController(c)
 #@nonl
 #@-node:ekr.20060904103412.5:onCreate
-#@+node:ekr.20060904132527.10:onStart2 (overrides leoFileCommands.fileCommands)
-def onStart2 (tag,keys):
-
-    # Override the fileCommands class with the saxReadCommandsClass.
-    leoFileCommands.fileCommands = saxReadCommandsClass
-#@nonl
-#@-node:ekr.20060904132527.10:onStart2 (overrides leoFileCommands.fileCommands)
 #@-node:ekr.20060904132527.9:Module level
-#@+node:ekr.20060904132527.11:class saxReadCommandsClass (fileCommands)
-class saxReadCommandsClass (leoFileCommands.fileCommands):
-    
-    #@    @+others
-    #@+node:ekr.20060904134958.116:parse_leo_file
-    def parse_leo_file (self,inputFileName):
-    
-        if not inputFileName or not inputFileName.endswith('.leo'):
-            return None
-            
-        c = self.c
-        path = g.os_path_normpath(g.os_path_join(g.app.loadDir,inputFileName))
-        
-        try: f = open(path)
-        except IOError:
-            g.trace('can not open %s'%path)
-            return None
-        try:
-            try:
-                node = None
-                parser = xml.sax.make_parser()
-                # Do not include external general entities.
-                # The actual feature name is "http://xml.org/sax/features/external-general-entities"
-                parser.setFeature(xml.sax.handler.feature_external_ges,0)
-                # Hopefully the content handler can figure out the encoding from the <?xml> element.
-                handler = contentHandler(c,inputFileName)
-                parser.setContentHandler(handler)
-                parser.parse(f)
-                node = handler.getNode()
-            except xml.sax.SAXParseException:
-                g.es_print('Error parsing %s' % (inputFileName),color='red')
-                g.es_exception()
-            except Exception:
-                g.es_print('Unexpected exception parsing %s' % (inputFileName),color='red')
-                g.es_exception()
-        finally:
-            f.close()
-            return node
-    #@nonl
-    #@-node:ekr.20060904134958.116:parse_leo_file
-    #@-others
-#@nonl
-#@-node:ekr.20060904132527.11:class saxReadCommandsClass (fileCommands)
 #@+node:ekr.20060904103412.6:class saxReadController
 class saxReadController:
     
@@ -139,11 +91,19 @@ class saxReadController:
         
         self.c = c
         
-        c.saxReadCommands = self # Override Leo's core commands.
+        nativeTnodeAttributes = ('tx',)
+        self.nativeVnodeAttributes = (
+            'a','descendentTnodeUnknownAttributes',
+            'expanded','marks','t','tnodeList',
+            # 'vtag',
+        )
         
+        # Semantics
         self.currentVnode = None
+        self.descendentExpandedList = []
+        self.descendentMarksList = []
+        self.descendentUnknownAttributesDictList = []
         self.topVnode = None
-        
         self.txnToVnodeDict = {} # Keys are tnx's (strings).  Values are vnodes.
     #@nonl
     #@-node:ekr.20060904103412.7:__init__
@@ -154,13 +114,16 @@ class saxReadController:
         corresponding to link/unlink methods in leoNodes.py.
         Modify this with extreme care.'''
         
+        self.descendentExpandedList = []
+        self.descendentMarksList = []
+        self.descendentUnknownAttributesDictList = {}
         self.txnToVnodeDict = {}
     
         children = self.createChildren(dummyRoot,parent_v = None)
         firstChild = children and children[0]
     
         return firstChild
-    
+    #@nonl
     #@+node:ekr.20060914171659.2:createChildren
     # node is a nodeClass object, parent_v is a vnode.
     
@@ -209,32 +172,50 @@ class saxReadController:
         
         self.txnToVnodeDict [node.tnx] = v
         
-        # g.trace('tnx','%-22s' % (node.tnx),'v',id(v),'v.t',id(v.t),'body','%-4d' % (len(b)),h)
+        g.trace('tnx','%-22s' % (node.tnx),'v',id(v),'v.t',id(v.t),'body','%-4d' % (len(b)),h)
         
         self.handleVnodeAttributes(node,v)
         
         return v
     #@nonl
     #@+node:ekr.20060916115633:handleVnodeAttributes
-    def handleVnodeAttributes (self,node,v):
+    # The native attributes of <v> elements are a, t, vtag, tnodeList,
+    # marks, expanded and descendentTnodeUnknownAttributes.
     
-        attrs = node.attributes.get('a')
-        if attrs:
+    def handleVnodeAttributes (self,node,v):
+        
+        d = node.attributes
+        a = d.get('a')
+        if a:
             # g.trace('a=%s %s' % (attrs,v.headString()))
-            
             # 'C' (clone) and 'D' bits are not used.
-            if 'M' in attrs: v.setMarked()
-            if 'E' in attrs: v.expand()
-            if 'O' in attrs: v.setOrphan()
-            if 'T' in attrs: self.topVnode = v
-            if 'V' in attrs: self.currentVnode = v
-            
-        s = node.attributes.get('tnodeList')
+            if 'M' in a: v.setMarked()
+            if 'E' in a: v.expand()
+            if 'O' in a: v.setOrphan()
+            if 'T' in a: self.topVnode = v
+            if 'V' in a: self.currentVnode = v
+    
+        s = d.get('tnodeList','')
         tnodeList = s and s.split(',')
         if tnodeList:
             # This tnode list will be resolved later.
             g.trace(v.headString(),len(tnodeList))
             v.tempTnodeList = tnodeList
+            
+        aDict = d.get('descendentTnodeUnknownAttributes')
+        if aDict: self.descendentUnknownAttributesDictList.append(aDict)
+        
+        aList = d.get('expanded')
+        if aList: self.descendentExpandedList.append(aList)
+        
+        aList = d.get('marks')
+        if aList: self.descendentMarksList.append(aList)
+            
+        aDict = {}
+        for key in d.keys():
+            if key not in self.nativeVnodeAttributes:
+                aDict[key] = d.get(key)
+        if aDict: v.unknownAttributes = aDict
     #@nonl
     #@-node:ekr.20060916115633:handleVnodeAttributes
     #@-node:ekr.20060914171659.1:createVnode
@@ -281,7 +262,43 @@ class saxReadController:
             self.dumpTree(child,dummy=False)
     #@nonl
     #@-node:ekr.20060913220707:dumpTree
-    #@+node:ekr.20060904103721:readFile & helper
+    #@+node:ekr.20060904134958.116:parse_leo_file
+    def parse_leo_file (self,inputFileName):
+    
+        if not inputFileName or not inputFileName.endswith('.leo'):
+            return None
+            
+        c = self.c
+        path = g.os_path_normpath(g.os_path_join(g.app.loadDir,inputFileName))
+        
+        try: f = open(path)
+        except IOError:
+            g.trace('can not open %s'%path)
+            return None
+        try:
+            try:
+                node = None
+                parser = xml.sax.make_parser()
+                # Do not include external general entities.
+                # The actual feature name is "http://xml.org/sax/features/external-general-entities"
+                parser.setFeature(xml.sax.handler.feature_external_ges,0)
+                # Hopefully the content handler can figure out the encoding from the <?xml> element.
+                handler = contentHandler(c,inputFileName)
+                parser.setContentHandler(handler)
+                parser.parse(f)
+                node = handler.getNode()
+            except xml.sax.SAXParseException:
+                g.es_print('Error parsing %s' % (inputFileName),color='red')
+                g.es_exception()
+            except Exception:
+                g.es_print('Unexpected exception parsing %s' % (inputFileName),color='red')
+                g.es_exception()
+        finally:
+            f.close()
+            return node
+    #@nonl
+    #@-node:ekr.20060904134958.116:parse_leo_file
+    #@+node:ekr.20060904103721:readFile & helpers
     def readFile (self,event=None,fileName=None):
         
         if not fileName: return
@@ -289,7 +306,7 @@ class saxReadController:
         c = self.c
         
         # Pass one: create the intermediate nodes.
-        self.dummyRoot = dummyRoot = c.fileCommands.parse_leo_file(fileName)
+        self.dummyRoot = dummyRoot = self.parse_leo_file(fileName)
         # self.dumpTree(dummyRoot,dummy=True)
     
         # Pass two: create the tree of vnodes and tnodes from the intermediate nodes.
@@ -298,6 +315,7 @@ class saxReadController:
             c2 = c.new()
             c2.setRootVnode(v)
             self.resolveTnodeLists(c2)
+            self.restoreDescendentAttributes(c2)
             c2.checkOutline() 
             self.setCurrentPosition(c2)
             c2.redraw()
@@ -321,7 +339,39 @@ class saxReadController:
                 delattr(p.v,'tempTnodeList')
     #@nonl
     #@-node:ekr.20060918110538:resolveTnodeLists
-    #@-node:ekr.20060904103721:readFile & helper
+    #@+node:ekr.20060918135304:restoreDescendentAttributes
+    def restoreDescendentAttributes (self,c):
+    
+        for aDict in self.descendentUnknownAttributesDictList:
+            for tnx in aDict.keys():
+                v = self.txnToVnodeDict.get(tnx)
+                if v:
+                    v.t.unknownAttributes = aDict[tnx]
+                    b.t._p_changed = 1
+                else: g.trace("can not find tnode: tnx = %s" % tnx,color="red")
+        
+        marks = {} ; expanded = {}
+        for tnx in self.descendentExpandedList:
+            v = self.txnToVnodeDict.get(tnx)
+            if v: expanded[v.t]=v.t
+            else: g.trace("can not find tnode: tnx = %s" % tnx,color="red")
+            
+        for tnx in self.descendentMarksList:
+            v = self.txnToVnodeDict.get(tnx)
+            if v: marks[v.t]=v.t
+            else: g.trace("can not find tnode: tnx = %s" % tnx,color="red")
+        
+        if marks or expanded:
+            # g.trace("marks",len(marks),"expanded",len(expanded))
+            for p in c.all_positions_iter():
+                if marks.get(p.v.t):
+                    p.v.initMarkedBit()
+                        # This was the problem: was p.setMark.
+                        # There was a big performance bug in the mark hook in the Node Navigator plugin.
+                if expanded.get(p.v.t):
+                    p.expand()
+    #@nonl
+    #@-node:ekr.20060918135304:restoreDescendentAttributes
     #@+node:ekr.20060916120609:setCurrentPosition
     def setCurrentPosition (self,c):
         
@@ -334,6 +384,7 @@ class saxReadController:
                 break
     #@nonl
     #@-node:ekr.20060916120609:setCurrentPosition
+    #@-node:ekr.20060904103721:readFile & helpers
     #@-others
 #@nonl
 #@-node:ekr.20060904103412.6:class saxReadController
@@ -352,6 +403,7 @@ class nodeClass:
         self.bodyString = ''
         self.headString = ''
         self.children = []
+        self.tnodeList = []
         self.tnx = None
     #@nonl
     #@-node:ekr.20060904141220.1: node.__init__
@@ -416,8 +468,7 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         self.body_outline_ratio = None
         
         self.global_window_position = {}
-        self.encoding = 'utf-8'
-        
+        self.encoding = 'utf-8' 
         
         # Semantics.
         self.content = None
@@ -721,6 +772,9 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         return parent
     #@nonl
     #@+node:ekr.20060916064339:vnodeAttributes
+    # The native attributes of <v> elements are a, t, vtag, tnodeList,
+    # marks, expanded and descendentTnodeUnknownAttributes.
+    
     def vnodeAttributes (self,attrs):
         
         node = self.node
