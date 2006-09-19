@@ -42,6 +42,446 @@ class invalidPaste(Exception):
 #@nonl
 #@-node:ekr.20060918164811:<< define exception classes >>
 #@nl
+#@<< define sax classes >>
+#@+node:ekr.20060919145406:<< define sax classes >>
+#@+others
+#@+node:ekr.20060919110638.19:class saxContentHandler (XMLGenerator)
+class saxContentHandler (xml.sax.saxutils.XMLGenerator):
+    
+    '''A sax content handler class that reads Leo files.'''
+
+    #@    @+others
+    #@+node:ekr.20060919110638.20: __init__ & helpers
+    def __init__ (self,c,fileName,silent):
+    
+        self.c = c
+        self.fileName = fileName
+        self.silent = silent
+    
+        # Init the base class.
+        xml.sax.saxutils.XMLGenerator.__init__(self)
+        
+        #@    << define dispatch dict >>
+        #@+node:ekr.20060919110638.21:<< define dispatch dict >>
+        # There is no need for an 'end' method if all info is carried in attributes.
+        
+        self.dispatchDict = {
+            'find_panel_settings':         (None,None),
+            'globals':                     (self.startGlobals,None),
+            'global_log_window_position':  (None,None), # The position of the log window is no longer used.
+            'global_window_position':      (self.startWinPos,None),
+            'leo_file':                    (None,None),
+            'leo_header':                  (self.startLeoHeader,None),
+            'preferences':                 (None,None),
+            't':                           (self.startTnode,self.endTnode),
+            'tnodes':                      (None,None),
+            'v':                           (self.startVnode,self.endVnode),
+            'vh':                          (self.startVH,self.endVH),
+            'vnodes':                      (self.startVnodes,None), # Causes window to appear.
+        }
+        #@nonl
+        #@-node:ekr.20060919110638.21:<< define dispatch dict >>
+        #@nl
+        
+        self.printElements = [] # 'all', 'v'
+        
+        # Global attributes of the .leo file...
+        self.body_outline_ratio = None
+        self.global_window_position = {}
+        self.encoding = 'utf-8' 
+    
+        # Semantics...
+        self.content = None
+        self.currentNode = None
+        self.elementStack = []
+        self.errors = 0
+        self.tnxToListDict = {} # Keys are tnx's (strings), values are *lists* of saxNodeClass objects.
+        self.level = 0
+        self.node = None
+        self.nodeList = [] # List of saxNodeClass objects with the present tnode.
+        self.nodeStack = []
+        self.rootNode = None
+        self.topNode = None
+    #@nonl
+    #@-node:ekr.20060919110638.20: __init__ & helpers
+    #@+node:ekr.20060919110638.29: Do nothing
+    def endElementNS(self,name,qname):
+        g.trace(name)
+        
+    def endDocument(self):
+        pass
+    
+    def ignorableWhitespace(self):
+        pass
+    
+    def processingInstruction (self,target,data):
+        pass # For <?xml-stylesheet ekr_stylesheet?>
+    
+    def skippedEntity(self,name):
+        g.trace(name)
+    
+    def startElementNS(self,name,qname,attrs):
+        g.trace(name)
+        
+    def startDocument(self):
+        pass
+    #@nonl
+    #@-node:ekr.20060919110638.29: Do nothing
+    #@+node:ekr.20060919134313: Utils
+    #@+node:ekr.20060919110638.23:attrsToList
+    def attrsToList (self,attrs):
+        
+        '''Convert the attributes to a list of g.Bunches.
+        
+        attrs: an Attributes item passed to startElement.'''
+        
+        if 1:
+            for name in attrs.getNames():
+                val = attrs.getValue(name)
+                if type(val) != type(u''):
+                    g.trace('Non-unicode attribute',name,val)
+    
+        # g.trace(g.listToString([repr() for name in attrs.getNames()]))
+        
+        return [
+            g.Bunch(name=name,val=attrs.getValue(name))
+                for name in attrs.getNames()]
+    #@nonl
+    #@-node:ekr.20060919110638.23:attrsToList
+    #@+node:ekr.20060919110638.26:error
+    def error (self, message):
+        
+        print
+        print
+        print 'XML error: %s' % (message)
+        print
+        
+        self.errors += 1
+    #@nonl
+    #@-node:ekr.20060919110638.26:error
+    #@+node:ekr.20060919110638.27:inElement
+    def inElement (self,name):
+        
+        return self.elementStack and name in self.elementStack
+    #@nonl
+    #@-node:ekr.20060919110638.27:inElement
+    #@+node:ekr.20060919110638.28:printStartElement
+    def printStartElement(self,name,attrs):
+        
+        indent = '\t' * self.level or ''
+    
+        if attrs.getLength() > 0:
+            print '%s<%s %s>' % (
+                indent,
+                self.clean(name).strip(),
+                self.attrsToString(attrs,sep=' ')),
+        else:
+            print '%s<%s>' % (
+                indent,
+                self.clean(name).strip()),
+    
+        if name.lower() in ['v','t','vnodes','tnodes',]:
+            print
+    #@nonl
+    #@+node:ekr.20060919110638.24:attrsToString
+    def attrsToString (self,attrs,sep='\n'):
+        
+        '''Convert the attributes to a string.
+        
+        attrs: an Attributes item passed to startElement.
+        
+        sep: the separator charater between attributes.'''
+    
+        result = [
+            '%s="%s"' % (bunch.name,bunch.val)
+            for bunch in self.attrsToList(attrs)
+        ]
+    
+        return sep.join(result)
+    #@nonl
+    #@-node:ekr.20060919110638.24:attrsToString
+    #@+node:ekr.20060919110638.25:clean
+    def clean(self,s):
+    
+        return g.toEncodedString(s,"ascii")
+    #@nonl
+    #@-node:ekr.20060919110638.25:clean
+    #@-node:ekr.20060919110638.28:printStartElement
+    #@-node:ekr.20060919134313: Utils
+    #@+node:ekr.20060919110638.30:characters
+    def characters(self,content):
+        
+        if content and type(content) != type(u''):
+            g.trace('Non-unicode content',repr(content))
+    
+        content = content.replace('\r','')
+        if not content: return
+    
+        elementName = self.elementStack and self.elementStack[-1].lower() or '<no element name>'
+        
+        if elementName in ('t','vh'):
+            # if elementName == 'vh': g.trace(elementName,repr(content))
+            self.content.append(content)
+    
+        elif content.strip():
+            print 'unexpected content:',elementName,repr(content)
+    #@nonl
+    #@-node:ekr.20060919110638.30:characters
+    #@+node:ekr.20060919110638.31:endElement & helpers
+    def endElement(self,name):
+        
+        name = name.lower()
+        if name in self.printElements or 'all' in self.printElements:
+            indent = '\t' * (self.level-1) or ''
+            print '%s</%s>' % (indent,self.clean(name).strip())
+        
+        data = self.dispatchDict.get(name)
+    
+        if data is None:
+            g.trace('unknown element',name)
+        else:
+            junk,func = data
+            if func:
+                func()
+    
+        name2 = self.elementStack.pop()
+        assert name == name2
+    #@nonl
+    #@+node:ekr.20060919110638.32:endTnode
+    def endTnode (self):
+        
+        for node in self.nodeList:
+            node.bodyString = ''.join(self.content)
+    
+        self.content = []
+    #@nonl
+    #@-node:ekr.20060919110638.32:endTnode
+    #@+node:ekr.20060919110638.33:endVnode
+    def endVnode (self):
+        
+        self.level -= 1
+        self.node = self.nodeStack.pop()
+    #@nonl
+    #@-node:ekr.20060919110638.33:endVnode
+    #@+node:ekr.20060919110638.34:endVH
+    def endVH (self):
+          
+        if self.node:
+            self.node.headString = ''.join(self.content)
+    
+        self.content = []
+    #@nonl
+    #@-node:ekr.20060919110638.34:endVH
+    #@-node:ekr.20060919110638.31:endElement & helpers
+    #@+node:ekr.20060919110638.45:getters
+    def getCurrentNode (self):
+        return self.currentNode
+        
+    def getRootNode (self):
+        return self.rootNode
+        
+    def getTopNode (self):
+        return self.topNode
+    #@nonl
+    #@-node:ekr.20060919110638.45:getters
+    #@+node:ekr.20060919110638.35:startElement & helpers
+    def startElement(self,name,attrs):
+        
+        name = name.lower()
+        if name in self.printElements or 'all' in self.printElements:
+            self.printStartElement(name,attrs)
+    
+        self.elementStack.append(name)
+        
+        data = self.dispatchDict.get(name)
+    
+        if data is None:
+            g.trace('unknown element',name)
+        else:
+            func,junk = data
+            if func:
+                func(attrs)
+    #@nonl
+    #@+node:ekr.20060919110638.36:getPositionAttributes
+    def getPositionAttributes (self,attrs):
+        
+        d = {}
+        
+        for bunch in self.attrsToList(attrs):
+            name = bunch.name ; val = bunch.val
+            if name in ('top','left','width','height'):
+                try:
+                    d[name] = int(val)
+                except ValueError:
+                    d[name] = 100 # A reasonable emergency default.
+            else:
+                g.trace(name,len(val))
+                
+        return d
+    #@nonl
+    #@-node:ekr.20060919110638.36:getPositionAttributes
+    #@+node:ekr.20060919110638.37:startGlobals
+    def startGlobals (self,attrs):
+        
+        for bunch in self.attrsToList(attrs):
+            name = bunch.name ; val = bunch.val
+            
+            if name == 'body_outline_ratio':
+                self.body_outline_ratio = val
+                # g.trace(name,val)
+            else:
+                g.trace(name,len(val))
+    #@nonl
+    #@-node:ekr.20060919110638.37:startGlobals
+    #@+node:ekr.20060919110638.38:startWinPos
+    def startWinPos (self,attrs):
+        
+        self.global_window_position = self.getPositionAttributes(attrs)
+        # g.trace(self.global_window_position)
+    #@nonl
+    #@-node:ekr.20060919110638.38:startWinPos
+    #@+node:ekr.20060919110638.39:startLeoHeader
+    def startLeoHeader (self,attrs):
+        
+        self.tnxToListDict = {}
+    #@-node:ekr.20060919110638.39:startLeoHeader
+    #@+node:ekr.20060919112118:startVnodes
+    def startVnodes (self,attrs):
+        
+        c = self.c
+    
+        # Causes window to appear.
+        c.frame.resizePanesToRatio(c.frame.ratio,c.frame.secondary_ratio)
+        if not self.silent:
+            g.es("reading: " + self.fileName)
+    #@nonl
+    #@-node:ekr.20060919112118:startVnodes
+    #@+node:ekr.20060919110638.40:startVH
+    def startVH (self,attrs):
+    
+        self.content = []
+    #@nonl
+    #@-node:ekr.20060919110638.40:startVH
+    #@+node:ekr.20060919110638.41:startTnode
+    def startTnode (self,attrs):
+        
+        if not self.inElement('tnodes'):
+            self.error('<t> outside <tnodes>')
+            
+        self.content = []
+        
+        self.tnodeAttributes(attrs)
+    #@nonl
+    #@+node:ekr.20060919110638.42:tnodeAttributes
+    def tnodeAttributes (self,attrs):
+        
+        # The tnode must have a tx attribute to associate content with the proper node.
+            
+        self.nodeList = []
+    
+        for bunch in self.attrsToList(attrs):
+            name = bunch.name ; val = bunch.val
+            if name == 'tx':
+                self.nodeList = self.tnxToListDict.get(val,[])
+                if not self.nodeList:
+                    self.error('Bad leo file: no node for <t tx=%s>' % (val))
+            else:
+                # Do **not** set any saxNodeClass attributes here!
+                self.error('Unexpected tnode attribute %s = %s' % (name,val))
+                
+        if not self.nodeList:
+            self.error('Bad leo file: no tx attribute for tnode')
+    #@nonl
+    #@-node:ekr.20060919110638.42:tnodeAttributes
+    #@-node:ekr.20060919110638.41:startTnode
+    #@+node:ekr.20060919110638.43:startVnode
+    def startVnode (self,attrs):
+        
+        if not self.inElement('vnodes'):
+            self.error('<v> outside <vnodes>')
+    
+        if self.rootNode:
+            parent = self.node
+        else:
+            self.rootNode = parent = saxNodeClass() # The dummy parent node.
+            parent.headString = 'dummyNode'
+    
+        self.node = saxNodeClass()
+    
+        parent.children.append(self.node)
+        self.vnodeAttributes(attrs)
+        self.nodeStack.append(parent)
+            
+        return parent
+    #@nonl
+    #@+node:ekr.20060919110638.44:vnodeAttributes
+    # The native attributes of <v> elements are a, t, vtag, tnodeList,
+    # marks, expanded and descendentTnodeUnknownAttributes.
+    
+    def vnodeAttributes (self,attrs):
+        
+        node = self.node
+    
+        for bunch in self.attrsToList(attrs):
+            name = bunch.name ; val = bunch.val
+            if name == 't':
+                aList = self.tnxToListDict.get(val,[])
+                aList.append(self.node)
+                self.tnxToListDict[val] = aList
+                node.tnx = val
+            else:
+                node.attributes[name] = val
+                # g.trace(name,len(val))
+    #@nonl
+    #@-node:ekr.20060919110638.44:vnodeAttributes
+    #@-node:ekr.20060919110638.43:startVnode
+    #@-node:ekr.20060919110638.35:startElement & helpers
+    #@-others
+#@nonl
+#@-node:ekr.20060919110638.19:class saxContentHandler (XMLGenerator)
+#@+node:ekr.20060919110638.15:class saxNodeClass
+class saxNodeClass:
+    
+    '''A class representing one <v> element.
+    
+    Use getters to access the attributes, properties and rules of this mode.'''
+    
+    #@    @+others
+    #@+node:ekr.20060919110638.16: node.__init__
+    def __init__ (self):
+    
+        self.attributes = {}
+        self.bodyString = ''
+        self.headString = ''
+        self.children = []
+        self.tnodeList = []
+        self.tnx = None
+    #@nonl
+    #@-node:ekr.20060919110638.16: node.__init__
+    #@+node:ekr.20060919110638.17: node.__str__ & __repr__
+    def __str__ (self):
+    
+        return '<v: %s>' % self.headString
+    
+    __repr__ = __str__
+    #@nonl
+    #@-node:ekr.20060919110638.17: node.__str__ & __repr__
+    #@+node:ekr.20060919110638.18:node.dump
+    def dump (self):
+         
+        print
+        print 'node: tnx: %s body: %d %s' % (self.tnx,len(self.bodyString),self.headString)
+        print 'children:',g.listToString([child for child in self.children])
+        print 'attrs:',self.attributes.values()
+    #@nonl
+    #@-node:ekr.20060919110638.18:node.dump
+    #@-others
+#@nonl
+#@-node:ekr.20060919110638.15:class saxNodeClass
+#@-others
+#@nonl
+#@-node:ekr.20060919145406:<< define sax classes >>
+#@nl
 
 class baseFileCommands:
     """A base class for the fileCommands subcommander."""
@@ -69,7 +509,6 @@ class baseFileCommands:
         self.mFileName = ""
         self.fileDate = -1
         self.leo_file_encoding = c.config.new_leo_file_encoding
-        # g.trace('self.leo_file_encoding',self.leo_file_encoding)
         # For reading
         self.checking = False # True: checking only: do *not* alter the outline.
         self.descendentExpandedList = []
@@ -78,8 +517,12 @@ class baseFileCommands:
         self.forbiddenTnodes = []
         self.descendentUnknownAttributesDictList = []
         self.ratio = 0.5
-        self.fileBuffer = None ; self.fileIndex = 0
-        if not use_sax:
+        if use_sax:
+            self.currentVnode = None
+            self.rootVnode = None
+        else:
+            self.fileBuffer = None
+            self.fileIndex = 0
             self.currentVnodeStack = [] # A stack of vnodes giving the current position.
             self.topVnodeStack     = [] # A stack of vnodes giving the top position.
             self.topPosition = None
@@ -221,7 +664,7 @@ class baseFileCommands:
     #@+node:ekr.20031218072017.1553:getLeoFile
     # The caller should enclose this in begin/endUpdate.
     
-    def getLeoFile (self,fileName,readAtFileNodesFlag=True,silent=False):
+    def getLeoFile (self,theFile,fileName,readAtFileNodesFlag=True,silent=False):
     
         c = self.c
         c.setChanged(False) # May be set when reading @file nodes.
@@ -248,9 +691,12 @@ class baseFileCommands:
         try:
             ok = True
             if use_sax:
-                self.readSaxFile(fileName=fileName,silent=silent)
+                v = self.readSaxFile(theFile,fileName,silent)
+                c.setRootVnode(v)
+                self.rootVnode = v
+                # readAtFileNodesFlag = False ### testing
             else:
-                self.getAllLeoElements(fileName=fileName,silent=silent)
+                self.getAllLeoElements(fileName,silent)
         except BadLeoFile, message:
             if not silent:
                 g.es_exception()
@@ -265,9 +711,9 @@ class baseFileCommands:
         
         # New in 4.3.1: do this after reading derived files.
         if use_sax:
-            self.resolveTnodeLists(c)
-            self.restoreDescendentAttributes(c)
-            setPositionsFromVnodes()
+            self.resolveTnodeLists()
+            self.restoreDescendentAttributes()
+            self.setPositionsFromVnodes()
         else:
             if not self.usingClipboard:
                 self.setPositionsFromStacks()
@@ -345,7 +791,7 @@ class baseFileCommands:
         #@nl
         self.topPosition = None
         ok, ratio = self.getLeoFile(
-            fileName,
+            theFile,fileName,
             readAtFileNodesFlag=readAtFileNodesFlag,
             silent=silent)
         frame.resizePanesToRatio(ratio,frame.secondary_ratio)
@@ -383,7 +829,7 @@ class baseFileCommands:
         #@nl
         c.beginUpdate()
         try:
-            ok, ratio = self.getLeoFile(fileName,readAtFileNodesFlag=False)
+            ok, ratio = self.getLeoFile(theFile,fileName,readAtFileNodesFlag=False)
         finally:
             c.endUpdate()
         c.frame.deiconify()
@@ -461,8 +907,10 @@ class baseFileCommands:
     #@nonl
     #@-node:EKR.20040627120120:restoreDescendentAttributes
     #@+node:ekr.20060919110638.11:resolveTnodeLists (SAX)
-    def resolveTnodeLists (self,c):
-        
+    def resolveTnodeLists (self):
+    
+        c = self.c
+    
         for p in c.allNodes_iter():
             if hasattr(p.v,'tempTnodeList'):
                 result = []
@@ -470,7 +918,7 @@ class baseFileCommands:
                     index = self.canonicalTnodeIndex(tnx)
                     t = self.tnodesDict.get(index)
                     if t:
-                        g.trace(v,tnx,t)
+                        g.trace(tnx,t)
                         result.append(t)
                     else:
                         g.trace('No tnode for %s' % tnx)
@@ -479,7 +927,9 @@ class baseFileCommands:
     #@nonl
     #@-node:ekr.20060919110638.11:resolveTnodeLists (SAX)
     #@+node:ekr.20060919110638.13:setPositionsFromVnodes (Sax)
-    def setPositionsFromVnodes (self,c):
+    def setPositionsFromVnodes (self):
+        
+        c = self.c
         
         v = self.currentVnode
         if not v: return
@@ -1458,21 +1908,23 @@ class baseFileCommands:
         #@nonl
         #@-node:ekr.20060919110638.2:dumpSaxTree
         #@+node:ekr.20060919110638.3:readSaxFile
-        def readSaxFile (self,fileName,silent=False):
+        def readSaxFile (self,theFile,fileName,silent):
         
             c = self.c
         
             # Pass one: create the intermediate nodes.
-            self.dummyRoot = dummyRoot = self.parse_leo_file(fileName,silent=silent)
+            self.dummyRoot = dummyRoot = self.parse_leo_file(theFile,fileName,silent=silent)
             # self.dumpSaxTree(dummyRoot,dummy=True)
         
             # Pass two: create the tree of vnodes and tnodes from the intermediate nodes.
             v = dummyRoot and self.createVnodes(dummyRoot)
+            return v
+        
             if 0:  #########  Much of this is presently in getLeoFile
                 c2 = c.new()
                 c2.setRootVnode(v)
-                self.resolveTnodeLists(c2)
-                self.restoreDescendentAttributes(c2)
+                self.resolveTnodeLists()
+                self.restoreDescendentAttributes()
                 c2.checkOutline() 
                 self.setCurrentPosition(c2)
         #@nonl
@@ -1504,7 +1956,7 @@ class baseFileCommands:
             
             for child in node.children:
                 tnx = child.tnx
-                t = self.txnToVnodeDict.get(tnx)
+                t = self.tnodesDict.get(tnx)
                 if t:
                     # A clone.  Create a new clone node, but share the subtree, i.e., the tnode.
                     # g.trace('clone',child.headString,v.t,v.t.bodyString)
@@ -1544,7 +1996,7 @@ class baseFileCommands:
             index = self.canonicalTnodeIndex(node.tnx)
             self.tnodesDict [index] = t
             
-            g.trace('tnx','%-22s' % (index),'v',id(v),'v.t',id(v.t),'body','%-4d' % (len(b)),h)
+            # g.trace('tnx','%-22s' % (index),'v',id(v),'v.t',id(v.t),'body','%-4d' % (len(b)),h)
             
             self.handleVnodeAttributes(node,v)
             
@@ -1637,7 +2089,7 @@ class baseFileCommands:
                 handler = saxContentHandler(c,inputFileName,silent)
                 parser.setContentHandler(handler)
                 parser.parse(theFile)
-                node = handler.getNode()
+                node = handler.getRootNode()
             except xml.sax.SAXParseException:
                 g.es_print('Error parsing %s' % (inputFileName),color='red')
                 g.es_exception()
@@ -1648,438 +2100,6 @@ class baseFileCommands:
             return node
         #@nonl
         #@-node:ekr.20060919110638.14:parse_leo_file
-        #@+node:ekr.20060919110638.19:class saxContentHandler (XMLGenerator)
-        class saxContentHandler (xml.sax.saxutils.XMLGenerator):
-            
-            '''A sax content handler class that reads Leo files.'''
-        
-            #@    @+others
-            #@+node:ekr.20060919110638.20: __init__ & helpers
-            def __init__ (self,c,fileName,silent):
-            
-                self.c = c
-                self.fileName = fileName
-                self.silent = silent
-            
-                # Init the base class.
-                xml.sax.saxutils.XMLGenerator.__init__(self)
-                
-                #@    << define dispatch dict >>
-                #@+node:ekr.20060919110638.21:<< define dispatch dict >>
-                # There is no need for an 'end' method if all info is carried in attributes.
-                
-                self.dispatchDict = {
-                    'find_panel_settings':         (None,None),
-                    'globals':                     (self.startGlobals,None),
-                    'global_log_window_position':  (None,None), # The position of the log window is no longer used.
-                    'global_window_position':      (self.startWinPos,None),
-                    'leo_file':                    (None,None),
-                    'leo_header':                  (self.startLeoHeader,None),
-                    'preferences':                 (None,None),
-                    't':                           (self.startTnode,self.endTnode),
-                    'tnodes':                      (None,None),
-                    'v':                           (self.startVnode,self.endVnode),
-                    'vh':                          (self.startVH,self.endVH),
-                    'vnodes':                      (self.startVnodes,None), # Causes window to appear.
-                }
-                #@nonl
-                #@-node:ekr.20060919110638.21:<< define dispatch dict >>
-                #@nl
-                
-                # Global attributes of the .leo file...
-                self.body_outline_ratio = None
-                self.global_window_position = {}
-                self.encoding = 'utf-8' 
-            
-                # Semantics...
-                self.content = None
-                self.currentNode = None
-                self.elementStack = []
-                self.errors = 0
-                self.txnToNodesDict = {} # Keys are tnx's (strings), values are *lists* of saxNodeClass objects.
-                self.level = 0
-                self.node = None
-                self.nodeList = [] # List of saxNodeClass objects with the present tnode.
-                self.nodeStack = []
-                self.rootNode = None
-                self.topNode = None
-            #@nonl
-            #@-node:ekr.20060919110638.20: __init__ & helpers
-            #@+node:ekr.20060919110638.29: Do nothing
-            def endElementNS(self,name,qname):
-                g.trace(name)
-                
-            def endDocument(self):
-                pass
-            
-            def ignorableWhitespace(self):
-                pass
-            
-            def processingInstruction (self,target,data):
-                pass # For <?xml-stylesheet ekr_stylesheet?>
-            
-            def skippedEntity(self,name):
-                g.trace(name)
-            
-            def startElementNS(self,name,qname,attrs):
-                g.trace(name)
-                
-            def startDocument(self):
-                pass
-            #@nonl
-            #@-node:ekr.20060919110638.29: Do nothing
-            #@+node:ekr.20060919134313: Utils
-            #@+node:ekr.20060919110638.23:attrsToList
-            def attrsToList (self,attrs):
-                
-                '''Convert the attributes to a list of g.Bunches.
-                
-                attrs: an Attributes item passed to startElement.'''
-                
-                if 1:
-                    for name in attrs.getNames():
-                        val = attrs.getValue(name)
-                        if type(val) != type(u''):
-                            g.trace('Non-unicode attribute',name,val)
-            
-                # g.trace(g.listToString([repr() for name in attrs.getNames()]))
-                
-                return [
-                    g.Bunch(name=name,val=attrs.getValue(name))
-                        for name in attrs.getNames()]
-            #@nonl
-            #@-node:ekr.20060919110638.23:attrsToList
-            #@+node:ekr.20060919110638.26:error
-            def error (self, message):
-                
-                print
-                print
-                print 'XML error: %s' % (message)
-                print
-                
-                self.errors += 1
-            #@nonl
-            #@-node:ekr.20060919110638.26:error
-            #@+node:ekr.20060919110638.27:inElement
-            def inElement (self,name):
-                
-                return self.elementStack and name in self.elementStack
-            #@nonl
-            #@-node:ekr.20060919110638.27:inElement
-            #@+node:ekr.20060919110638.28:printStartElement
-            def printStartElement(self,name,attrs):
-                
-                indent = '\t' * self.level or ''
-            
-                if attrs.getLength() > 0:
-                    print '%s<%s %s>' % (
-                        indent,
-                        self.clean(name).strip(),
-                        self.attrsToString(attrs,sep=' ')),
-                else:
-                    print '%s<%s>' % (
-                        indent,
-                        self.clean(name).strip()),
-            
-                if name.lower() in ['v','t','vnodes','tnodes',]:
-                    print
-            #@nonl
-            #@+node:ekr.20060919110638.24:attrsToString
-            def attrsToString (self,attrs,sep='\n'):
-                
-                '''Convert the attributes to a string.
-                
-                attrs: an Attributes item passed to startElement.
-                
-                sep: the separator charater between attributes.'''
-            
-                result = [
-                    '%s="%s"' % (bunch.name,bunch.val)
-                    for bunch in self.attrsToList(attrs)
-                ]
-            
-                return sep.join(result)
-            #@nonl
-            #@-node:ekr.20060919110638.24:attrsToString
-            #@+node:ekr.20060919110638.25:clean
-            def clean(self,s):
-            
-                return g.toEncodedString(s,"ascii")
-            #@nonl
-            #@-node:ekr.20060919110638.25:clean
-            #@-node:ekr.20060919110638.28:printStartElement
-            #@-node:ekr.20060919134313: Utils
-            #@+node:ekr.20060919110638.30:characters
-            def characters(self,content):
-                
-                if content and type(content) != type(u''):
-                    g.trace('Non-unicode content',repr(content))
-            
-                content = content.replace('\r','')
-                if not content: return
-            
-                elementName = self.elementStack and self.elementStack[-1].lower() or '<no element name>'
-                
-                if elementName in ('t','vh'):
-                    # if elementName == 'vh': g.trace(elementName,repr(content))
-                    self.content.append(content)
-            
-                elif content.strip():
-                    print 'unexpected content:',elementName,repr(content)
-            #@nonl
-            #@-node:ekr.20060919110638.30:characters
-            #@+node:ekr.20060919110638.31:endElement & helpers
-            def endElement(self,name):
-                
-                name = name.lower()
-                if name in printElements or 'all' in printElements:
-                    indent = '\t' * (self.level-1) or ''
-                    print '%s</%s>' % (indent,self.clean(name).strip())
-                
-                data = self.dispatchDict.get(name)
-            
-                if data is None:
-                    g.trace('unknown element',name)
-                else:
-                    junk,func = data
-                    if func:
-                        func()
-            
-                name2 = self.elementStack.pop()
-                assert name == name2
-            #@nonl
-            #@+node:ekr.20060919110638.32:endTnode
-            def endTnode (self):
-                
-                for node in self.nodeList:
-                    node.bodyString = ''.join(self.content)
-            
-                self.content = []
-            #@nonl
-            #@-node:ekr.20060919110638.32:endTnode
-            #@+node:ekr.20060919110638.33:endVnode
-            def endVnode (self):
-                
-                self.level -= 1
-                self.node = self.nodeStack.pop()
-            #@nonl
-            #@-node:ekr.20060919110638.33:endVnode
-            #@+node:ekr.20060919110638.34:endVH
-            def endVH (self):
-                  
-                if self.node:
-                    self.node.headString = ''.join(self.content)
-            
-                self.content = []
-            #@nonl
-            #@-node:ekr.20060919110638.34:endVH
-            #@-node:ekr.20060919110638.31:endElement & helpers
-            #@+node:ekr.20060919110638.45:getters
-            def getCurrentNode (self):
-                return self.currentNode
-                
-            def getRootNode (self):
-                return self.rootNode
-                
-            def getTopNode (self):
-                return self.topNode
-            #@nonl
-            #@-node:ekr.20060919110638.45:getters
-            #@+node:ekr.20060919110638.35:startElement & helpers
-            def startElement(self,name,attrs):
-                
-                name = name.lower()
-                if name in printElements or 'all' in printElements:
-                    self.printStartElement(name,attrs)
-            
-                self.elementStack.append(name)
-                
-                data = self.dispatchDict.get(name)
-            
-                if data is None:
-                    g.trace('unknown element',name)
-                else:
-                    func,junk = data
-                    if func:
-                        func(attrs)
-            #@nonl
-            #@+node:ekr.20060919110638.36:getPositionAttributes
-            def getPositionAttributes (self,attrs):
-                
-                d = {}
-                
-                for bunch in self.attrsToList(attrs):
-                    name = bunch.name ; val = bunch.val
-                    if name in ('top','left','width','height'):
-                        try:
-                            d[name] = int(val)
-                        except ValueError:
-                            d[name] = 100 # A reasonable emergency default.
-                    else:
-                        g.trace(name,len(val))
-                        
-                return d
-            #@nonl
-            #@-node:ekr.20060919110638.36:getPositionAttributes
-            #@+node:ekr.20060919110638.37:startGlobals
-            def startGlobals (self,attrs):
-                
-                for bunch in self.attrsToList(attrs):
-                    name = bunch.name ; val = bunch.val
-                    
-                    if name == 'body_outline_ratio':
-                        self.body_outline_ratio = val
-                        # g.trace(name,val)
-                    else:
-                        g.trace(name,len(val))
-            #@nonl
-            #@-node:ekr.20060919110638.37:startGlobals
-            #@+node:ekr.20060919110638.38:startWinPos
-            def startWinPos (self,attrs):
-                
-                self.global_window_position = self.getPositionAttributes(attrs)
-                # g.trace(self.global_window_position)
-            #@nonl
-            #@-node:ekr.20060919110638.38:startWinPos
-            #@+node:ekr.20060919110638.39:startLeoHeader
-            def startLeoHeader (self,attrs):
-                
-                self.txnToNodesDict = {}
-            #@nonl
-            #@-node:ekr.20060919110638.39:startLeoHeader
-            #@+node:ekr.20060919112118:startVnodes
-            def startVnodes (self,attrs):
-                
-                c = self.c
-            
-                # Causes window to appear.
-                c.frame.resizePanesToRatio(c.frame.ratio,c.frame.secondary_ratio)
-                if not self.silent:
-                    g.es("reading: " + self.fileName)
-            #@nonl
-            #@-node:ekr.20060919112118:startVnodes
-            #@+node:ekr.20060919110638.40:startVH
-            def startVH (self,attrs):
-            
-                self.content = []
-            #@nonl
-            #@-node:ekr.20060919110638.40:startVH
-            #@+node:ekr.20060919110638.41:startTnode
-            def startTnode (self,attrs):
-                
-                if not self.inElement('tnodes'):
-                    self.error('<t> outside <tnodes>')
-                    
-                self.content = []
-                
-                self.tnodeAttributes(attrs)
-            #@nonl
-            #@+node:ekr.20060919110638.42:tnodeAttributes
-            def tnodeAttributes (self,attrs):
-                
-                # The tnode must have a tx attribute to associate content with the proper node.
-                    
-                self.nodeList = []
-            
-                for bunch in self.attrsToList(attrs):
-                    name = bunch.name ; val = bunch.val
-                    if name == 'tx':
-                        self.nodeList = self.txnToNodesDict.get(val,[])
-                        if not self.nodeList:
-                            self.error('Bad leo file: no node for <t tx=%s>' % (val))
-                    else:
-                        # Do **not** set any saxNodeClass attributes here!
-                        self.error('Unexpected tnode attribute %s = %s' % (name,val))
-                        
-                if not self.nodeList:
-                    self.error('Bad leo file: no tx attribute for tnode')
-            #@nonl
-            #@-node:ekr.20060919110638.42:tnodeAttributes
-            #@-node:ekr.20060919110638.41:startTnode
-            #@+node:ekr.20060919110638.43:startVnode
-            def startVnode (self,attrs):
-                
-                if not self.inElement('vnodes'):
-                    self.error('<v> outside <vnodes>')
-            
-                if self.rootNode:
-                    parent = self.node
-                else:
-                    self.rootNode = parent = saxNodeClass() # The dummy parent node.
-                    parent.headString = 'dummyNode'
-            
-                self.node = saxNodeClass()
-            
-                parent.children.append(self.node)
-                self.vnodeAttributes(attrs)
-                self.nodeStack.append(parent)
-                    
-                return parent
-            #@nonl
-            #@+node:ekr.20060919110638.44:vnodeAttributes
-            # The native attributes of <v> elements are a, t, vtag, tnodeList,
-            # marks, expanded and descendentTnodeUnknownAttributes.
-            
-            def vnodeAttributes (self,attrs):
-                
-                node = self.node
-            
-                for bunch in self.attrsToList(attrs):
-                    name = bunch.name ; val = bunch.val
-                    if name == 't':
-                        aList = self.txnToNodesDict.get(val,[])
-                        aList.append(self.node)
-                        self.txnToNodesDict[val] = aList
-                        node.tnx = val
-                    else:
-                        node.attributes[name] = val
-                        # g.trace(name,len(val))
-            #@nonl
-            #@-node:ekr.20060919110638.44:vnodeAttributes
-            #@-node:ekr.20060919110638.43:startVnode
-            #@-node:ekr.20060919110638.35:startElement & helpers
-            #@-others
-        #@nonl
-        #@-node:ekr.20060919110638.19:class saxContentHandler (XMLGenerator)
-        #@+node:ekr.20060919110638.15:class saxNodeClass
-        class saxNodeClass:
-            
-            '''A class representing one <v> element.
-            
-            Use getters to access the attributes, properties and rules of this mode.'''
-            
-            #@    @+others
-            #@+node:ekr.20060919110638.16: node.__init__
-            def __init__ (self):
-            
-                self.attributes = {}
-                self.bodyString = ''
-                self.headString = ''
-                self.children = []
-                self.tnodeList = []
-                self.tnx = None
-            #@nonl
-            #@-node:ekr.20060919110638.16: node.__init__
-            #@+node:ekr.20060919110638.17: node.__str__ & __repr__
-            def __str__ (self):
-            
-                return '<v: %s>' % self.headString
-            
-            __repr__ = __str__
-            #@nonl
-            #@-node:ekr.20060919110638.17: node.__str__ & __repr__
-            #@+node:ekr.20060919110638.18:node.dump
-            def dump (self):
-                 
-                print
-                print 'node: tnx: %s body: %d %s' % (self.tnx,len(self.bodyString),self.headString)
-                print 'children:',g.listToString([child for child in self.children])
-                print 'attrs:',self.attributes.values()
-            #@nonl
-            #@-node:ekr.20060919110638.18:node.dump
-            #@-others
-        #@nonl
-        #@-node:ekr.20060919110638.15:class saxNodeClass
         #@-others
     #@nonl
     #@-node:ekr.20060919104530:Sax
