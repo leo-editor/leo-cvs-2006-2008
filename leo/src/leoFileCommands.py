@@ -66,7 +66,6 @@ class baseFileCommands:
         c = self.c
         self.maxTnodeIndex = 0
         self.numberOfTnodes = 0
-        self.topPosition = None
         self.mFileName = ""
         self.fileDate = -1
         self.leo_file_encoding = c.config.new_leo_file_encoding
@@ -80,8 +79,10 @@ class baseFileCommands:
         self.descendentUnknownAttributesDictList = []
         self.ratio = 0.5
         self.fileBuffer = None ; self.fileIndex = 0
-        self.currentVnodeStack = [] # A stack of vnodes giving the current position.
-        self.topVnodeStack     = [] # A stack of vnodes giving the top position.
+        if not use_sax:
+            self.currentVnodeStack = [] # A stack of vnodes giving the current position.
+            self.topVnodeStack     = [] # A stack of vnodes giving the top position.
+            self.topPosition = None
         # For writing
         self.read_only = False
         self.outputFile = None
@@ -91,7 +92,9 @@ class baseFileCommands:
         self.currentPosition = None
         # New in 3.12
         self.copiedTree = None
-        self.tnodesDict = {}  # keys are gnx strings as returned by canonicalTnodeIndex.
+        self.tnodesDict = {}
+            # keys are gnx strings as returned by canonicalTnodeIndex.
+            # Values are gnx's.
     #@nonl
     #@-node:ekr.20031218072017.3019:leoFileCommands._init_
     #@+node:ekr.20031218072017.3020:Reading
@@ -239,14 +242,11 @@ class baseFileCommands:
         #@nl
         self.checking = False
         self.mFileName = c.mFileName
-        self.tnodesDict = {}
-        self.descendentExpandedList = []
-        self.descendentMarksList = []
-        self.descendentUnknownAttributesDictList = []
-        ok = True
+        self.initReadIvars()
         c.loading = True # disable c.changed
         
         try:
+            ok = True
             if use_sax:
                 self.readSaxFile(fileName=fileName,silent=silent)
             else:
@@ -264,38 +264,22 @@ class baseFileCommands:
             c.atFileCommands.readAll(c.rootVnode(),partialFlag=False)
         
         # New in 4.3.1: do this after reading derived files.
-        if not self.usingClipboard:
-            if not use_sax:
-                #@            << set current and top positions >>
-                #@+node:ekr.20040326054052:<< set current and top positions >>
-                current = self.convertStackToPosition(self.currentVnodeStack)
-                
-                if current:
-                    # g.trace('using convertStackToPosition',current)
-                    c.setCurrentPosition(current)
-                else:
-                    # g.trace(self.currentVnodeStack)
-                    c.setCurrentPosition(c.rootPosition())
-                    
-                # At present this is useless: the drawing code doesn't set the top position properly.
-                if 0:
-                    top = self.convertStackToPosition(self.topVnodeStack)
-                    if top:
-                        c.setTopPosition(top)
-                #@-node:ekr.20040326054052:<< set current and top positions >>
-                #@nl
-    
-        if not c.currentPosition():
-            c.setCurrentPosition(c.rootPosition())
+        if use_sax:
+            self.resolveTnodeLists(c)
+            self.restoreDescendentAttributes(c)
+            setPositionsFromVnodes()
+        else:
+            if not self.usingClipboard:
+                self.setPositionsFromStacks()
+            if not c.currentPosition():
+                c.setCurrentPosition(c.rootPosition())
     
         c.selectVnode(c.currentPosition()) # load body pane
         c.loading = False # reenable c.changed
         c.setChanged(c.changed) # Refresh the changed marker.
-        self.restoreDescendentAttributes()
-        self.descendentUnknownAttributesDictList = []
-        self.descendentExpandedList = []
-        self.descendentMarksList = []
-        self.tnodesDict = {}
+        if not use_sax:
+            self.restoreDescendentAttributes()
+        self.initReadIvars()
         return ok, self.ratio
     #@nonl
     #@-node:ekr.20031218072017.1553:getLeoFile
@@ -415,10 +399,146 @@ class baseFileCommands:
         return ok
     #@-node:ekr.20031218072017.3030:readOutlineOnly
     #@-node:ekr.20060919104836: Top-level
+    #@+node:ekr.20060919133249:Common
+    # Methods common to both the sax and non-sax code.
+    #@nonl
+    #@+node:ekr.20060919142200.1:initReadIvars
+    def initReadIvars (self):
+    
+        self.descendentUnknownAttributesDictList = []
+        self.descendentExpandedList = []
+        self.descendentMarksList = []
+        self.tnodesDict = {}
+    #@nonl
+    #@-node:ekr.20060919142200.1:initReadIvars
+    #@+node:ekr.20031218072017.2004:canonicalTnodeIndex
+    def canonicalTnodeIndex(self,index):
+        
+        """Convert Tnnn to nnn, leaving gnx's unchanged."""
+    
+        # index might be Tnnn, nnn, or gnx.
+        theId,time,n = g.app.nodeIndices.scanGnx(index,0)
+        if time == None: # A pre-4.1 file index.
+            if index[0] == "T":
+                index = index[1:]
+    
+        return index
+    #@-node:ekr.20031218072017.2004:canonicalTnodeIndex
+    #@+node:EKR.20040627120120:restoreDescendentAttributes
+    def restoreDescendentAttributes (self):
+        
+        c = self.c
+    
+        for resultDict in self.descendentUnknownAttributesDictList:
+            for gnx in resultDict.keys():
+                tref = self.canonicalTnodeIndex(gnx)
+                t = self.tnodesDict.get(tref)
+                if t:
+                    t.unknownAttributes = resultDict[gnx]
+                    t._p_changed = 1
+                # else: g.trace("can not find tnode: gnx = %s" % gnx,color="red")
+        
+        marks = {} ; expanded = {}
+        for gnx in self.descendentExpandedList:
+            t = self.tnodesDict.get(gnx)
+            if t: expanded[t]=t
+            # else: g.trace("can not find tnode: gnx = %s" % gnx,color="red")
+            
+        for gnx in self.descendentMarksList:
+            t = self.tnodesDict.get(gnx)
+            if t: marks[t]=t
+            # else: g.trace("can not find tnode: gnx = %s" % gnx,color="red")
+        
+        if marks or expanded:
+            # g.trace("marks",len(marks),"expanded",len(expanded))
+            for p in c.all_positions_iter():
+                if marks.get(p.v.t):
+                    p.v.initMarkedBit()
+                        # This was the problem: was p.setMark.
+                        # There was a big performance bug in the mark hook in the Node Navigator plugin.
+                if expanded.get(p.v.t):
+                    p.expand()
+    #@nonl
+    #@-node:EKR.20040627120120:restoreDescendentAttributes
+    #@+node:ekr.20060919110638.11:resolveTnodeLists (SAX)
+    def resolveTnodeLists (self,c):
+        
+        for p in c.allNodes_iter():
+            if hasattr(p.v,'tempTnodeList'):
+                result = []
+                for tnx in p.v.tempTnodeList:
+                    index = self.canonicalTnodeIndex(tnx)
+                    t = self.tnodesDict.get(index)
+                    if t:
+                        g.trace(v,tnx,t)
+                        result.append(t)
+                    else:
+                        g.trace('No tnode for %s' % tnx)
+                p.v.t.tnodeList = result
+                delattr(p.v,'tempTnodeList')
+    #@nonl
+    #@-node:ekr.20060919110638.11:resolveTnodeLists (SAX)
+    #@+node:ekr.20060919110638.13:setPositionsFromVnodes (Sax)
+    def setPositionsFromVnodes (self,c):
+        
+        v = self.currentVnode
+        if not v: return
+    
+        for p in c.allNodes_iter():
+            if p.v == v:
+                c.selectPosition(p)
+                break
+    #@nonl
+    #@-node:ekr.20060919110638.13:setPositionsFromVnodes (Sax)
+    #@-node:ekr.20060919133249:Common
     #@+node:ekr.20031218072017.3021:Non-sax
     if not use_sax:
         #@    @+others
-        #@+node:ekr.20031218072017.1243:get, match & skip
+        #@+node:ekr.20040326054052:setPositionsFromStacks (silly)
+        def setPositionsFromStacks (self):
+            
+            c = self.c
+        
+            current = self.convertStackToPosition(self.currentVnodeStack)
+            
+            if current:
+                # g.trace('using convertStackToPosition',current)
+                c.setCurrentPosition(current)
+            else:
+                # g.trace(self.currentVnodeStack)
+                c.setCurrentPosition(c.rootPosition())
+                
+            # At present this is useless: the drawing code doesn't set the top position properly.
+            if 0:
+                top = self.convertStackToPosition(self.topVnodeStack)
+                if top:
+                    c.setTopPosition(top)
+        #@nonl
+        #@-node:ekr.20040326054052:setPositionsFromStacks (silly)
+        #@+node:ekr.20040326052245:convertStackToPosition (silly)
+        def convertStackToPosition (self,stack):
+        
+            c = self.c ; p2 = None
+            if not stack: return None
+        
+            for p in c.allNodes_iter():
+                if p.v == stack[0]:
+                    p2 = p.copy()
+                    for n in xrange(len(stack)):
+                        if not p2: break
+                        # g.trace("compare",n,p2.v,stack[n])
+                        if p2.v != stack[n]:
+                            p2 = None
+                        elif n + 1 == len(stack):
+                            break
+                        else:
+                            p2.moveToParent()
+                    if p2:
+                        return p
+        
+            return None
+        #@-node:ekr.20040326052245:convertStackToPosition (silly)
+        #@+node:ekr.20031218072017.1243:get, match & skip (basic)
         #@+node:ekr.20031218072017.1244:get routines (basic)
         #@+node:EKR.20040526204706:getBool
         def getBool (self):
@@ -652,44 +772,7 @@ class baseFileCommands:
                 s = string.replace(s, "&amp;", '&')
             return s
         #@-node:ekr.20031218072017.3031:xmlUnescape
-        #@-node:ekr.20031218072017.1243:get, match & skip
-        #@+node:ekr.20060919104836.1:Helpers for getLeoFile
-        #@+node:ekr.20031218072017.2004:canonicalTnodeIndex
-        def canonicalTnodeIndex(self,index):
-            
-            """Convert Tnnn to nnn, leaving gnx's unchanged."""
-        
-            # index might be Tnnn, nnn, or gnx.
-            theId,time,n = g.app.nodeIndices.scanGnx(index,0)
-            if time == None: # A pre-4.1 file index.
-                if index[0] == "T":
-                    index = index[1:]
-        
-            return index
-        #@-node:ekr.20031218072017.2004:canonicalTnodeIndex
-        #@+node:ekr.20040326052245:convertStackToPosition
-        def convertStackToPosition (self,stack):
-        
-            c = self.c ; p2 = None
-            if not stack: return None
-        
-            for p in c.allNodes_iter():
-                if p.v == stack[0]:
-                    p2 = p.copy()
-                    for n in xrange(len(stack)):
-                        if not p2: break
-                        # g.trace("compare",n,p2.v,stack[n])
-                        if p2.v != stack[n]:
-                            p2 = None
-                        elif n + 1 == len(stack):
-                            break
-                        else:
-                            p2.moveToParent()
-                    if p2:
-                        return p
-        
-            return None
-        #@-node:ekr.20040326052245:convertStackToPosition
+        #@-node:ekr.20031218072017.1243:get, match & skip (basic)
         #@+node:ekr.20031218072017.1555:getAllLeoElements
         def getAllLeoElements (self,fileName,silent):
             c = self.c
@@ -1356,64 +1439,12 @@ class baseFileCommands:
             else:
                 g.es("invalid encoding in .leo file: " + encoding, color="red")
         #@-node:ekr.20031218072017.1468:getXmlVersionTag
-        #@+node:EKR.20040627120120:restoreDescendentAttributes
-        def restoreDescendentAttributes (self):
-            
-            c = self.c
-        
-            for resultDict in self.descendentUnknownAttributesDictList:
-                for gnx in resultDict.keys():
-                    tref = self.canonicalTnodeIndex(gnx)
-                    t = self.tnodesDict.get(tref)
-                    if t:
-                        t.unknownAttributes = resultDict[gnx]
-                        t._p_changed = 1
-                    # else: g.trace("can not find tnode: gnx = %s" % gnx,color="red")
-            
-            marks = {} ; expanded = {}
-            for gnx in self.descendentExpandedList:
-                t = self.tnodesDict.get(gnx)
-                if t: expanded[t]=t
-                # else: g.trace("can not find tnode: gnx = %s" % gnx,color="red")
-                
-            for gnx in self.descendentMarksList:
-                t = self.tnodesDict.get(gnx)
-                if t: marks[t]=t
-                # else: g.trace("can not find tnode: gnx = %s" % gnx,color="red")
-            
-            if marks or expanded:
-                # g.trace("marks",len(marks),"expanded",len(expanded))
-                for p in c.all_positions_iter():
-                    if marks.get(p.v.t):
-                        p.v.initMarkedBit()
-                            # This was the problem: was p.setMark.
-                            # There was a big performance bug in the mark hook in the Node Navigator plugin.
-                    if expanded.get(p.v.t):
-                        p.expand()
-        #@nonl
-        #@-node:EKR.20040627120120:restoreDescendentAttributes
-        #@-node:ekr.20060919104836.1:Helpers for getLeoFile
         #@-others
     #@nonl
     #@-node:ekr.20031218072017.3021:Non-sax
     #@+node:ekr.20060919104530:Sax
     if use_sax:
         #@    @+others
-        #@+node:ekr.20060919110638:__init__ (to be removed)
-        if 0:
-            def __init__ (self,c):  # Was the ctor for saxReadController.
-            
-                self.c = c
-        
-                # Semantics
-                self.currentVnode = None
-                self.descendentExpandedList = []
-                self.descendentMarksList = []
-                self.descendentUnknownAttributesDictList = []
-                self.topVnode = None
-                self.txnToVnodeDict = {} # Keys are tnx's (strings).  Values are vnodes.
-        #@nonl
-        #@-node:ekr.20060919110638:__init__ (to be removed)
         #@+node:ekr.20060919110638.2:dumpSaxTree
         def dumpSaxTree (self,root,dummy):
             
@@ -1426,30 +1457,26 @@ class baseFileCommands:
                 self.dumpSaxTree(child,dummy=False)
         #@nonl
         #@-node:ekr.20060919110638.2:dumpSaxTree
-        #@+node:ekr.20060919110638.3:readSaxFile & helpers TO BE REVISED
-        def readSaxFile (self,fileName=fileName,silent=silent):
+        #@+node:ekr.20060919110638.3:readSaxFile
+        def readSaxFile (self,fileName,silent=False):
         
             c = self.c
-            self.fileName = fileName
-            self.silent = silent
         
             # Pass one: create the intermediate nodes.
-            self.dummyRoot = dummyRoot = self.parse_leo_file(fileName)
+            self.dummyRoot = dummyRoot = self.parse_leo_file(fileName,silent=silent)
             # self.dumpSaxTree(dummyRoot,dummy=True)
         
             # Pass two: create the tree of vnodes and tnodes from the intermediate nodes.
             v = dummyRoot and self.createVnodes(dummyRoot)
-            if v:  #########  Much of this is presently in getLeoFile
+            if 0:  #########  Much of this is presently in getLeoFile
                 c2 = c.new()
                 c2.setRootVnode(v)
                 self.resolveTnodeLists(c2)
                 self.restoreDescendentAttributes(c2)
                 c2.checkOutline() 
                 self.setCurrentPosition(c2)
-                c2.redraw()
-                return c2 # For testing.
-            return None
         #@nonl
+        #@-node:ekr.20060919110638.3:readSaxFile
         #@+node:ekr.20060919110638.4:createVnodes & helpers
         def createVnodes (self, dummyRoot):
             
@@ -1457,10 +1484,11 @@ class baseFileCommands:
             corresponding to link/unlink methods in leoNodes.py.
             Modify this with extreme care.'''
             
-            self.descendentExpandedList = []
-            self.descendentMarksList = []
-            self.descendentUnknownAttributesDictList = {}
-            self.txnToVnodeDict = {}
+            if 0: # inited by top-level methods...
+                self.descendentExpandedList = []
+                self.descendentMarksList = []
+                self.descendentUnknownAttributesDictList = {}
+                self.tnodesDict = {} # Keys are tnx's (strings).  Values are tnodes.
         
             children = self.createChildren(dummyRoot,parent_v = None)
             firstChild = children and children[0]
@@ -1468,7 +1496,7 @@ class baseFileCommands:
             return firstChild
         #@nonl
         #@+node:ekr.20060919110638.5:createChildren
-        # node is a nodeClass object, parent_v is a vnode.
+        # node is a saxNodeClass object, parent_v is a vnode.
         
         def createChildren (self, node, parent_v):
             
@@ -1476,11 +1504,11 @@ class baseFileCommands:
             
             for child in node.children:
                 tnx = child.tnx
-                v = self.txnToVnodeDict.get(tnx)
-                if v:
+                t = self.txnToVnodeDict.get(tnx)
+                if t:
                     # A clone.  Create a new clone node, but share the subtree, i.e., the tnode.
                     # g.trace('clone',child.headString,v.t,v.t.bodyString)
-                    v = self.createVnode(child,parent_v,t=v.t)
+                    v = self.createVnode(child,parent_v,t=t)
                 else:
                     v = self.createVnodeTree(child,parent_v)
                 result.append(v)
@@ -1512,10 +1540,11 @@ class baseFileCommands:
             v = leoNodes.vnode(t)
             v.t.vnodeList.append(v)
             v._parent = parent_v
+        
+            index = self.canonicalTnodeIndex(node.tnx)
+            self.tnodesDict [index] = t
             
-            self.txnToVnodeDict [node.tnx] = v
-            
-            g.trace('tnx','%-22s' % (node.tnx),'v',id(v),'v.t',id(v.t),'body','%-4d' % (len(b)),h)
+            g.trace('tnx','%-22s' % (index),'v',id(v),'v.t',id(v.t),'body','%-4d' % (len(b)),h)
             
             self.handleVnodeAttributes(node,v)
             
@@ -1593,70 +1622,8 @@ class baseFileCommands:
         #@nonl
         #@-node:ekr.20060919110638.10:linkSiblings
         #@-node:ekr.20060919110638.4:createVnodes & helpers
-        #@+node:ekr.20060919110638.11:resolveTnodeLists
-        def resolveTnodeLists (self,c):
-            
-            for p in c.allNodes_iter():
-                if hasattr(p.v,'tempTnodeList'):
-                    result = []
-                    for tnx in p.v.tempTnodeList:
-                        v = self.txnToVnodeDict.get(tnx)
-                        if v:
-                            g.trace(v,tnx,v.t)
-                            result.append(v.t)
-                        else:
-                            g.trace('No tnode for %s' % tnx)
-                    p.v.t.tnodeList = result
-                    delattr(p.v,'tempTnodeList')
-        #@nonl
-        #@-node:ekr.20060919110638.11:resolveTnodeLists
-        #@+node:ekr.20060919110638.12:restoreDescendentAttributes
-        def restoreDescendentAttributes (self,c):
-        
-            for aDict in self.descendentUnknownAttributesDictList:
-                for tnx in aDict.keys():
-                    v = self.txnToVnodeDict.get(tnx)
-                    if v:
-                        v.t.unknownAttributes = aDict[tnx]
-                        b.t._p_changed = 1
-                    else: g.trace("can not find tnode: tnx = %s" % tnx,color="red")
-            
-            marks = {} ; expanded = {}
-            for tnx in self.descendentExpandedList:
-                v = self.txnToVnodeDict.get(tnx)
-                if v: expanded[v.t]=v.t
-                else: g.trace("can not find tnode: tnx = %s" % tnx,color="red")
-                
-            for tnx in self.descendentMarksList:
-                v = self.txnToVnodeDict.get(tnx)
-                if v: marks[v.t]=v.t
-                else: g.trace("can not find tnode: tnx = %s" % tnx,color="red")
-            
-            if marks or expanded:
-                # g.trace("marks",len(marks),"expanded",len(expanded))
-                for p in c.all_positions_iter():
-                    if marks.get(p.v.t):
-                        p.v.initMarkedBit()
-                            # This was the problem: was p.setMark.
-                            # There was a big performance bug in the mark hook in the Node Navigator plugin.
-                    if expanded.get(p.v.t):
-                        p.expand()
-        #@nonl
-        #@-node:ekr.20060919110638.12:restoreDescendentAttributes
-        #@+node:ekr.20060919110638.13:setCurrentPosition
-        def setCurrentPosition (self,c):
-            
-            v = self.currentVnode
-            if not v: return
-        
-            for p in c.allNodes_iter():
-                if p.v == v:
-                    c.selectPosition(p)
-                    break
-        #@nonl
-        #@-node:ekr.20060919110638.13:setCurrentPosition
         #@+node:ekr.20060919110638.14:parse_leo_file
-        def parse_leo_file (self,theFile,inputFileName):
+        def parse_leo_file (self,theFile,inputFileName,silent):
             
             c = self.c
         
@@ -1667,7 +1634,7 @@ class baseFileCommands:
                 # The actual feature name is "http://xml.org/sax/features/external-general-entities"
                 parser.setFeature(xml.sax.handler.feature_external_ges,0)
                 # Hopefully the content handler can figure out the encoding from the <?xml> element.
-                handler = contentHandler(c,inputFileName)
+                handler = saxContentHandler(c,inputFileName,silent)
                 parser.setContentHandler(handler)
                 parser.parse(theFile)
                 node = handler.getNode()
@@ -1681,57 +1648,18 @@ class baseFileCommands:
             return node
         #@nonl
         #@-node:ekr.20060919110638.14:parse_leo_file
-        #@-node:ekr.20060919110638.3:readSaxFile & helpers TO BE REVISED
-        #@+node:ekr.20060919110638.15:class nodeClass
-        class nodeClass:
-            
-            '''A class representing one <v> element.
-            
-            Use getters to access the attributes, properties and rules of this mode.'''
-            
-            #@    @+others
-            #@+node:ekr.20060919110638.16: node.__init__
-            def __init__ (self):
-            
-                self.attributes = {}
-                self.bodyString = ''
-                self.headString = ''
-                self.children = []
-                self.tnodeList = []
-                self.tnx = None
-            #@nonl
-            #@-node:ekr.20060919110638.16: node.__init__
-            #@+node:ekr.20060919110638.17: node.__str__ & __repr__
-            def __str__ (self):
-            
-                return '<v: %s>' % self.headString
-            
-            __repr__ = __str__
-            #@nonl
-            #@-node:ekr.20060919110638.17: node.__str__ & __repr__
-            #@+node:ekr.20060919110638.18:node.dump
-            def dump (self):
-                 
-                print
-                print 'node: tnx: %s body: %d %s' % (self.tnx,len(self.bodyString),self.headString)
-                print 'children:',g.listToString([child for child in self.children])
-                print 'attrs:',self.attributes.values()
-            #@nonl
-            #@-node:ekr.20060919110638.18:node.dump
-            #@-others
-        #@nonl
-        #@-node:ekr.20060919110638.15:class nodeClass
-        #@+node:ekr.20060919110638.19:class contentHandler (XMLGenerator)
-        class contentHandler (xml.sax.saxutils.XMLGenerator):
+        #@+node:ekr.20060919110638.19:class saxContentHandler (XMLGenerator)
+        class saxContentHandler (xml.sax.saxutils.XMLGenerator):
             
             '''A sax content handler class that reads Leo files.'''
         
             #@    @+others
             #@+node:ekr.20060919110638.20: __init__ & helpers
-            def __init__ (self,c,inputFileName):
+            def __init__ (self,c,fileName,silent):
             
                 self.c = c
-                self.inputFileName = inputFileName
+                self.fileName = fileName
+                self.silent = silent
             
                 # Init the base class.
                 xml.sax.saxutils.XMLGenerator.__init__(self)
@@ -1758,25 +1686,49 @@ class baseFileCommands:
                 #@-node:ekr.20060919110638.21:<< define dispatch dict >>
                 #@nl
                 
-                # Global attributes of the .leo file.
+                # Global attributes of the .leo file...
                 self.body_outline_ratio = None
-                
                 self.global_window_position = {}
                 self.encoding = 'utf-8' 
-                
-                # Semantics.
+            
+                # Semantics...
                 self.content = None
+                self.currentNode = None
                 self.elementStack = []
                 self.errors = 0
-                self.txnToVnodeDict = {} # Keys are tnx's (strings), values are vnodes.
-                self.txnToNodesDict = {} # Keys are tnx's (strings), values are *lists* of nodeClass objects.
+                self.txnToNodesDict = {} # Keys are tnx's (strings), values are *lists* of saxNodeClass objects.
                 self.level = 0
                 self.node = None
-                self.nodeList = [] # List of nodeClass objects with the present tnode.
+                self.nodeList = [] # List of saxNodeClass objects with the present tnode.
                 self.nodeStack = []
                 self.rootNode = None
+                self.topNode = None
+            #@nonl
             #@-node:ekr.20060919110638.20: __init__ & helpers
-            #@+node:ekr.20060919110638.22:helpers
+            #@+node:ekr.20060919110638.29: Do nothing
+            def endElementNS(self,name,qname):
+                g.trace(name)
+                
+            def endDocument(self):
+                pass
+            
+            def ignorableWhitespace(self):
+                pass
+            
+            def processingInstruction (self,target,data):
+                pass # For <?xml-stylesheet ekr_stylesheet?>
+            
+            def skippedEntity(self,name):
+                g.trace(name)
+            
+            def startElementNS(self,name,qname,attrs):
+                g.trace(name)
+                
+            def startDocument(self):
+                pass
+            #@nonl
+            #@-node:ekr.20060919110638.29: Do nothing
+            #@+node:ekr.20060919134313: Utils
             #@+node:ekr.20060919110638.23:attrsToList
             def attrsToList (self,attrs):
                 
@@ -1797,29 +1749,6 @@ class baseFileCommands:
                         for name in attrs.getNames()]
             #@nonl
             #@-node:ekr.20060919110638.23:attrsToList
-            #@+node:ekr.20060919110638.24:attrsToString
-            def attrsToString (self,attrs,sep='\n'):
-                
-                '''Convert the attributes to a string.
-                
-                attrs: an Attributes item passed to startElement.
-                
-                sep: the separator charater between attributes.'''
-            
-                result = [
-                    '%s="%s"' % (bunch.name,bunch.val)
-                    for bunch in self.attrsToList(attrs)
-                ]
-            
-                return sep.join(result)
-            #@nonl
-            #@-node:ekr.20060919110638.24:attrsToString
-            #@+node:ekr.20060919110638.25:clean
-            def clean(self,s):
-            
-                return g.toEncodedString(s,"ascii")
-            #@nonl
-            #@-node:ekr.20060919110638.25:clean
             #@+node:ekr.20060919110638.26:error
             def error (self, message):
                 
@@ -1855,31 +1784,31 @@ class baseFileCommands:
                 if name.lower() in ['v','t','vnodes','tnodes',]:
                     print
             #@nonl
-            #@-node:ekr.20060919110638.28:printStartElement
-            #@-node:ekr.20060919110638.22:helpers
-            #@+node:ekr.20060919110638.29: Do nothing
-            def endElementNS(self,name,qname):
-                g.trace(name)
+            #@+node:ekr.20060919110638.24:attrsToString
+            def attrsToString (self,attrs,sep='\n'):
                 
-            def endDocument(self):
-                pass
-            
-            def ignorableWhitespace(self):
-                pass
-            
-            def processingInstruction (self,target,data):
-                pass # For <?xml-stylesheet ekr_stylesheet?>
-            
-            def skippedEntity(self,name):
-                g.trace(name)
-            
-            def startElementNS(self,name,qname,attrs):
-                g.trace(name)
+                '''Convert the attributes to a string.
                 
-            def startDocument(self):
-                pass
+                attrs: an Attributes item passed to startElement.
+                
+                sep: the separator charater between attributes.'''
+            
+                result = [
+                    '%s="%s"' % (bunch.name,bunch.val)
+                    for bunch in self.attrsToList(attrs)
+                ]
+            
+                return sep.join(result)
             #@nonl
-            #@-node:ekr.20060919110638.29: Do nothing
+            #@-node:ekr.20060919110638.24:attrsToString
+            #@+node:ekr.20060919110638.25:clean
+            def clean(self,s):
+            
+                return g.toEncodedString(s,"ascii")
+            #@nonl
+            #@-node:ekr.20060919110638.25:clean
+            #@-node:ekr.20060919110638.28:printStartElement
+            #@-node:ekr.20060919134313: Utils
             #@+node:ekr.20060919110638.30:characters
             def characters(self,content):
                 
@@ -1945,6 +1874,17 @@ class baseFileCommands:
             #@nonl
             #@-node:ekr.20060919110638.34:endVH
             #@-node:ekr.20060919110638.31:endElement & helpers
+            #@+node:ekr.20060919110638.45:getters
+            def getCurrentNode (self):
+                return self.currentNode
+                
+            def getRootNode (self):
+                return self.rootNode
+                
+            def getTopNode (self):
+                return self.topNode
+            #@nonl
+            #@-node:ekr.20060919110638.45:getters
             #@+node:ekr.20060919110638.35:startElement & helpers
             def startElement(self,name,attrs):
                 
@@ -2048,7 +1988,7 @@ class baseFileCommands:
                         if not self.nodeList:
                             self.error('Bad leo file: no node for <t tx=%s>' % (val))
                     else:
-                        # Do **not** set any nodeClass attributes here!
+                        # Do **not** set any saxNodeClass attributes here!
                         self.error('Unexpected tnode attribute %s = %s' % (name,val))
                         
                 if not self.nodeList:
@@ -2065,10 +2005,10 @@ class baseFileCommands:
                 if self.rootNode:
                     parent = self.node
                 else:
-                    self.rootNode = parent = nodeClass() # The dummy parent node.
+                    self.rootNode = parent = saxNodeClass() # The dummy parent node.
                     parent.headString = 'dummyNode'
             
-                self.node = nodeClass()
+                self.node = saxNodeClass()
             
                 parent.children.append(self.node)
                 self.vnodeAttributes(attrs)
@@ -2098,15 +2038,48 @@ class baseFileCommands:
             #@-node:ekr.20060919110638.44:vnodeAttributes
             #@-node:ekr.20060919110638.43:startVnode
             #@-node:ekr.20060919110638.35:startElement & helpers
-            #@+node:ekr.20060919110638.45:getNode
-            def getNode (self):
-                
-                return self.rootNode
-            #@nonl
-            #@-node:ekr.20060919110638.45:getNode
             #@-others
         #@nonl
-        #@-node:ekr.20060919110638.19:class contentHandler (XMLGenerator)
+        #@-node:ekr.20060919110638.19:class saxContentHandler (XMLGenerator)
+        #@+node:ekr.20060919110638.15:class saxNodeClass
+        class saxNodeClass:
+            
+            '''A class representing one <v> element.
+            
+            Use getters to access the attributes, properties and rules of this mode.'''
+            
+            #@    @+others
+            #@+node:ekr.20060919110638.16: node.__init__
+            def __init__ (self):
+            
+                self.attributes = {}
+                self.bodyString = ''
+                self.headString = ''
+                self.children = []
+                self.tnodeList = []
+                self.tnx = None
+            #@nonl
+            #@-node:ekr.20060919110638.16: node.__init__
+            #@+node:ekr.20060919110638.17: node.__str__ & __repr__
+            def __str__ (self):
+            
+                return '<v: %s>' % self.headString
+            
+            __repr__ = __str__
+            #@nonl
+            #@-node:ekr.20060919110638.17: node.__str__ & __repr__
+            #@+node:ekr.20060919110638.18:node.dump
+            def dump (self):
+                 
+                print
+                print 'node: tnx: %s body: %d %s' % (self.tnx,len(self.bodyString),self.headString)
+                print 'children:',g.listToString([child for child in self.children])
+                print 'attrs:',self.attributes.values()
+            #@nonl
+            #@-node:ekr.20060919110638.18:node.dump
+            #@-others
+        #@nonl
+        #@-node:ekr.20060919110638.15:class saxNodeClass
         #@-others
     #@nonl
     #@-node:ekr.20060919104530:Sax
