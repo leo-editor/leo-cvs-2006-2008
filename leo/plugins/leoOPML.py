@@ -17,7 +17,7 @@ It defines the read-opml-file and write-opml-file commands and corresponding but
 
 # To do: read/write uA's.
 
-__version__ = '0.2'
+__version__ = '0.6'
 
 # For traces.
 printElements = [] # ['all','outline','head','body',]
@@ -57,6 +57,13 @@ printElements = [] # ['all','outline','head','body',]
 # newlines to '&#10;\n'
 # This overcomes the sax parser's tendency to strip newlines from attributes.  
 # Sheesh.
+# 0.5 EKR: Added support for namespaces.  The beginnings of opml settings.
+# 0.6 EKR: Moved write code back into plugin.  It is more convenient and 
+# flexible.
+# - Added support for opml_use_outline_elements, opml_write_leo_details and 
+# opml_write_body_text
+#   settings in leoSettings.leo.
+# - The read code no longer requires tnx fields.
 #@-at
 #@nonl
 #@-node:ekr.20060904103412.2:<< version history >>
@@ -80,8 +87,8 @@ import xml.sax.saxutils
 #@+node:ekr.20060904103412.4:init
 def init ():
     
-    # override the base class
-    # leoPlugins.registerHandler('start1',onStart2)
+    # Override the base class
+    leoPlugins.registerHandler('start1',onStart2)
 
     # Register the commands.
     leoPlugins.registerHandler(('open2','new'),onCreate)
@@ -99,7 +106,189 @@ def onCreate (tag, keys):
         opmlController(c)
 #@nonl
 #@-node:ekr.20060904103412.5:onCreate
+#@+node:ekr.20060919172012:onStart2
+def onStart2 (tag,keys):
+
+    # Override the fileCommands class by opmlFileCommandsClass.
+    leoFileCommands.fileCommands = opmlFileCommandsClass
+#@nonl
+#@-node:ekr.20060919172012:onStart2
 #@-node:ekr.20060904132527.9:Module level
+#@+node:ekr.20060919172012.1:class opmlFileCommandsClass (fileCommands)
+class opmlFileCommandsClass (leoFileCommands.fileCommands):
+    
+    '''An subclass of Leo's core fileCommands class that
+    should do *nothing* other than override putToOPML.'''
+    
+    #@    @+others
+    #@+node:ekr.20060919172012.2:putToOPML & helpers
+    # All elements and attributes prefixed by ':' are leo-specific.
+    # All other elements and attributes are specified by the OPML 1 spec.
+    
+    def putToOPML (self):
+        
+        c = self.c
+        
+        self.opml_use_outline_elements = c.config.getBool('opml_use_outline_elements')
+        self.opml_write_leo_details    = c.config.getBool('opml_write_leo_details')
+        self.opml_write_body_text      = c.config.getBool('opml_write_body_text')
+        
+        self.putXMLLine()
+        self.putOPMLProlog()
+        self.putOPMLHeader()
+        self.putOPMLNodes()
+        self.putOPMLPostlog()
+    #@nonl
+    #@+node:ekr.20060919172012.3:putOPMLProlog
+    def putOPMLProlog (self):
+        
+        s = self.c.config.getString('opml_namespace') or 'leo:com:leo-opml'
+        
+        g.trace(s)
+    
+        self.put('<opml version="1.0" xmlns="%s">\n' % s)
+    #@-node:ekr.20060919172012.3:putOPMLProlog
+    #@+node:ekr.20060919172012.4:putOPMLHeader
+    def putOPMLHeader (self):
+        
+        '''Put the OPML header, including attributes for globals, prefs and  find settings.'''
+        
+        self.put('<head>\n')
+        
+        self.put('</head>\n')
+    #@nonl
+    #@-node:ekr.20060919172012.4:putOPMLHeader
+    #@+node:ekr.20060919172012.5:putOPMLNodes
+    def putOPMLNodes (self):
+        
+        c = self.c ; root = c.rootPosition()
+        
+        self.put('<body>\n')
+        
+        for p in root.self_and_siblings_iter():
+            self.putOPMLNode(p)
+        
+        self.put('</body>\n')
+    #@nonl
+    #@-node:ekr.20060919172012.5:putOPMLNodes
+    #@+node:ekr.20060919172012.6:putOPMLNode
+    def putOPMLNode (self,p):
+        
+        c = self.c
+        indent = ' ' * (4 * p.level()) # Always use 4-space indents.
+        body = p.bodyString() or '' ; head = p.headString() or ''
+        attrFormat = ' %s="%s"'
+    
+        self.put('%s<outline' % indent)
+    
+        if 1: #self.opml_write_leo_details: # Put leo-specific attributes.
+            for name,val in (
+                (':a', self.aAttributes(p)),
+                (':tnodeList',self.tnodeListAttributes(p)),
+            ):
+                # g.trace(name,val)
+                if val: self.put(attrFormat % (name,val))
+            
+            data = self.uAAttributes(p)
+            if data:
+                for name,val in data:
+                    self.put(attrFormat % (name,val))
+        
+        self.put(attrFormat % ('text',self.attributeEscape(head)))
+        
+        closed = False
+        if body and self.opml_write_body_text:
+            if self.opml_use_outline_elements:
+                self.put('>') ; closed = True
+                self.put('<:body>%s' % self.xmlEscape(body))
+                self.put('\n</:body>')
+            else:
+                self.put(attrFormat % (':body',self.attributeEscape(body)))
+    
+        if p.hasChildren():
+            if not closed:
+                self.put('>\n') ; closed = True
+            for p2 in p.children_iter():
+                self.putOPMLNode(p2)
+                
+        if closed:
+            self.put('%s</outline>\n' % indent)
+        else:
+            self.put('/>\n')
+    #@nonl
+    #@+node:ekr.20060919172012.7:attributeEscape
+    def attributeEscape(self,s):
+    
+        # Unlike xmlEscape, replace " by &quot; and replace newlines by character reference.
+        s = s or ''
+        return (
+            s.replace('&','&amp;')
+            .replace('<','&lt;')
+            .replace('>','&gt;')
+            .replace('"','&quot;')
+            .replace('\n','&#10;\n')
+        )
+    #@-node:ekr.20060919172012.7:attributeEscape
+    #@+node:ekr.20060919172012.8:aAttributes
+    def aAttributes (self,p):
+        
+        c = self.c
+        attr = []
+    
+        if p.isExpanded():          attr.append('E')
+        if p.isMarked():            attr.append('M')
+        if c.isCurrentPosition(p):  attr.append('V')
+    
+        #if p.v.isOrphan():              attr.append('O')
+        #if p.equal(self.topPosition):   attr.append('T')
+    
+        return ''.join(attr)
+    #@nonl
+    #@-node:ekr.20060919172012.8:aAttributes
+    #@+node:ekr.20060919172012.9:tnodeListAttributes
+    # Based on fileCommands.putTnodeList.
+    
+    def tnodeListAttributes (self,p):
+        
+        '''Put the tnodeList attribute of p.v.t'''
+    
+        # Remember: entries in the tnodeList correspond to @+node sentinels, _not_ to tnodes!
+        
+        if not hasattr(p.v.t,'tnodeList') or not p.v.t.tnodeList:
+            return None
+            
+        # g.trace('tnodeList',p.v.t.tnodeList)
+    
+        # Assign fileIndices.
+        for t in p.v.t.tnodeList:
+            try: # Will fail for None or any pre 4.1 file index.
+                theId,time,n = p.v.t.fileIndex
+            except:
+                g.trace("assigning gnx for ",p.v.t)
+                gnx = g.app.nodeIndices.getNewIndex()
+                p.v.t.setFileIndex(gnx) # Don't convert to string until the actual write.
+    
+        s = ','.join([g.app.nodeIndices.toString(t.fileIndex) for t in p.v.t.tnodeList])
+        return s
+    #@nonl
+    #@-node:ekr.20060919172012.9:tnodeListAttributes
+    #@+node:ekr.20060919172012.10:uAAttributes (Not yet, and maybe never)
+    def uAAttributes (self,p):
+        
+        return ''
+    #@nonl
+    #@-node:ekr.20060919172012.10:uAAttributes (Not yet, and maybe never)
+    #@-node:ekr.20060919172012.6:putOPMLNode
+    #@+node:ekr.20060919172012.11:putOPMLPostlog
+    def putOPMLPostlog (self):
+        
+        self.put('</opml>\n')
+    #@nonl
+    #@-node:ekr.20060919172012.11:putOPMLPostlog
+    #@-node:ekr.20060919172012.2:putToOPML & helpers
+    #@-others
+#@nonl
+#@-node:ekr.20060919172012.1:class opmlFileCommandsClass (fileCommands)
 #@+node:ekr.20060904103412.6:class opmlController
 class opmlController:
     
@@ -153,14 +342,14 @@ class opmlController:
         
         for child in node.children:
             tnx = child.tnx
-            v = self.generatedTnxs.get(tnx)
+            v = tnx and self.generatedTnxs.get(tnx)
             if v:
                 # A clone.  Create a new clone node, but share the subtree, i.e., the tnode.
                 # g.trace('clone',child.headString)
                 v = self.createVnode(child,parent_v,t=v.t)
             else:
                 v = self.createVnodeTree(child,parent_v)
-                self.generatedTnxs [tnx] = v
+                if tnx: self.generatedTnxs [tnx] = v
             result.append(v)
             
         self.linkSiblings(result)
@@ -184,7 +373,7 @@ class opmlController:
         
         h = node.headString
         b = node.bodyString
-        if not t:
+        if not node.tnx or not t:
             t = leoNodes.tnode(bodyString=b,headString=h)
         v = leoNodes.vnode(t)
         v.t.vnodeList.append(v)
@@ -197,7 +386,7 @@ class opmlController:
     #@+node:ekr.20060917213611:handleVnodeAttributes
     def handleVnodeAttributes (self,node,v):
     
-        a = node.attributes.get('a')
+        a = node.attributes.get(':a')
         if a:
             # 'C' (clone) and 'D' bits are not used.
             if 'M' in a: v.setMarked()
@@ -206,7 +395,7 @@ class opmlController:
             if 'T' in a: self.topVnode = v
             if 'V' in a: self.currentVnode = v
             
-        s = node.attributes.get('tnodeList')
+        s = node.attributes.get(':tnodeList')
         tnodeList = s and s.split(',')
         if tnodeList:
             # This tnode list will be resolved later.
@@ -335,7 +524,7 @@ class opmlController:
             if hasattr(p.v,'tempTnodeList'):
                 result = []
                 for tnx in p.v.tempTnodeList:
-                    v = self.txnToVnodeDict.get(tnx)
+                    v = self.generatedTnxs.get(tnx)
                     if v:
                         g.trace(v,tnx,v.t)
                         result.append(v.t)
@@ -433,8 +622,6 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         self.node = None
         self.nodeStack = []
         self.rootNode = None
-        # self.txnToVnodeDict = {} # Keys are tnx's (strings), values are vnodes.
-        # self.txnToNodeDict = {}  # Keys are tnx's (strings), values are nodeClass objects
     #@nonl
     #@-node:ekr.20060904134958.165: __init__ & helpers
     #@+node:ekr.20060904134958.166:helpers
@@ -444,8 +631,6 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         '''Convert the attributes to a list of g.Bunches.
         
         attrs: an Attributes item passed to startElement.'''
-        
-        # g.trace(g.listToString([attrs.getValue(name) for name in attrs.getNames()]))
         
         return [g.Bunch(name=name,val=attrs.getValue(name)) for name in attrs.getNames()]
     #@nonl
@@ -627,14 +812,13 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         for bunch in self.attrsToList(attrs):
             name = bunch.name ; val = bunch.val
     
-            if name == 'head':
+            if name == 'text': # Text is the 'official' opml attribute for headlines.
                 node.headString = val
-            elif name == 'body':
+            elif name == ':body':
                 #g.trace(repr(val))
                 #g.es_dump (val[:30])
                 node.bodyString = val
-            elif name == 'tx':
-                # self.txnToNodeDict[val] = self.node
+            elif name == ':t':
                 node.tnx = val
             else:
                 node.attributes[name] = val
