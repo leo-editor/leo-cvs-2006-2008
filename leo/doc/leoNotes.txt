@@ -4432,6 +4432,22 @@ def setExtraAttributes (self,data):
 
     return self.v.setExtraAttributes(data)
 #@-node:ekr.20040306212151:p.Extra Attributes
+#@+node:ekr.20060919105703:from leoFileCommands.py
+#@+node:ekr.20050405141130.1:<< xml_language_names >>
+@
+
+The list of language names that are written differently from the names in language_delims_dict in leoGlobals.py.  This is needed for compatibility with the borland version of Leo.
+
+We convert from names in xml_language_names to names in language_delims_dict by converting the name to lowercase and by removing slashes.
+@c
+
+if 0:
+    xml_language_names = (
+        "CWEB","C","HTML","Java","LaTeX","Lua",
+        "Pascal","PerlPod","Perl","Plain","Python","tcl/tk")
+#@nonl
+#@-node:ekr.20050405141130.1:<< xml_language_names >>
+#@-node:ekr.20060919105703:from leoFileCommands.py
 #@-node:ekr.20031218072017.434:Unused code
 #@-all
 #@nonl

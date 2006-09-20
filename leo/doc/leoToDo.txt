@@ -884,8 +884,8 @@ for t in tnodeInfoDict.keys():
 # g.trace('copiedBunchList',copiedBunchList)
 #@-node:ekr.20050418084539.2:<< put only needed info in copiedBunchList >>
 #@-node:ekr.20031218072017.1551:pasteOutline
-#@+node:ekr.20031218072017.1559:getLeoOutline (from clipboard)
-def getLeoOutline (self,s,reassignIndices=True):
+#@+node:ekr.20031218072017.1559:getLeoOutlineFromClipboard & helpers
+def getLeoOutlineFromClipboard (self,s,reassignIndices=True):
     
     '''Read a Leo outline from string s in clipboard format.'''
 
@@ -900,7 +900,37 @@ def getLeoOutline (self,s,reassignIndices=True):
         g.es("The clipboard is not valid ",color="blue")
 
     return v
+    
+getLeoOutline = getLeoOutlineFromClipboard # for compatibility
 #@nonl
+#@+node:ekr.20031218072017.1557:finishPaste
+def finishPaste(self,reassignIndices=True):
+    
+    """Finish pasting an outline from the clipboard.
+    
+    Retain clone links if reassignIndices is False."""
+
+    c = self.c
+    current = c.currentPosition()
+    if reassignIndices:
+        << reassign tnode indices >>
+    c.selectPosition(current)
+    return current
+#@+node:ekr.20031218072017.1558:<< reassign tnode indices >>
+@ putLeoOutline calls assignFileIndices (when copying nodes) so that vnode can be associated with tnodes.
+However, we must _reassign_ the indices here so that no "False clones" are created.
+@c
+
+current.clearVisitedInTree()
+
+for p in current.self_and_subtree_iter():
+    t = p.v.t
+    if not t.isVisited():
+        t.setVisited()
+        self.maxTnodeIndex += 1
+        t.setFileIndex(self.maxTnodeIndex)
+#@-node:ekr.20031218072017.1558:<< reassign tnode indices >>
+#@-node:ekr.20031218072017.1557:finishPaste
 #@+node:ekr.20060826052453.1:getLeoOutlineHelper
 def getLeoOutlineHelper (self,s,reassignIndices,checking):
     
@@ -946,7 +976,26 @@ if 0:
         print key,self.tnodesDict[key]
 #@-node:EKR.20040610134756:<< recreate tnodesDict >>
 #@-node:ekr.20060826052453.1:getLeoOutlineHelper
-#@-node:ekr.20031218072017.1559:getLeoOutline (from clipboard)
+#@+node:ekr.20031218072017.3022:getClipboardHeader
+def getClipboardHeader (self):
+
+    if self.getOpenTag("<leo_header"):
+        return # <leo_header> or <leo_header/> has been seen.
+
+    while 1:
+        if self.matchTag("file_format="):
+            self.getDquote() ; self.fileFormatNumber = self.getLong() ; self.getDquote()
+        elif self.matchTag("tnodes="):
+            self.getDquote() ; self.getLong() ; self.getDquote() # no longer used
+        elif self.matchTag("max_tnode_index="):
+            self.getDquote() ; self.getLong() ; self.getDquote() # no longer used
+        elif self.matchTag("></leo_header>"): # new in 4.2: allow this form.
+            break
+        else:
+            self.getTag("/>")
+            break
+#@-node:ekr.20031218072017.3022:getClipboardHeader
+#@-node:ekr.20031218072017.1559:getLeoOutlineFromClipboard & helpers
 #@+node:ekr.20031218072017.1565:getVnodes
 def getVnodes (self,reassignIndices=True):
 
@@ -992,7 +1041,8 @@ for p in oldCurrent.self_and_parents_iter():
 # g.trace("forbiddenTnodes",self.forbiddenTnodes)
 #@-node:ekr.20041023105832:<< set self.forbiddenTnodes to tnodes than must not be pasted >>
 #@-node:ekr.20031218072017.1565:getVnodes
-#@+node:ekr.20031218072017.1566:getVnode changed for 4.2 & 4.4)
+#@+node:ekr.20031218072017.1566:getVnode & helpers
+# changed for 4.2 & 4.4
 def getVnode (self,parent,back,skip,appendToCurrentStack,appendToTopStack):
 
     v = None
@@ -1123,7 +1173,101 @@ if not setTop and len(self.topVnodeStack) > 0 and appendToTopStack:
     #g.trace("append top",v)
     self.topVnodeStack.append(v)
 #@-node:ekr.20040326055828:<< Append to current or top stack >>
-#@-node:ekr.20031218072017.1566:getVnode changed for 4.2 & 4.4)
+#@+node:ekr.20031218072017.1860:createVnode
+# (changed for 4.2) sets skip
+
+def createVnode (self,parent,back,tref,headline,attrDict):
+    
+    # g.trace(parent,headline)
+    v = None ; c = self.c
+    # Shared tnodes are placed in the file even if empty.
+    if tref == -1:
+        t = leoNodes.tnode()
+    else:
+        tref = self.canonicalTnodeIndex(tref)
+        t = self.tnodesDict.get(tref)
+        if not t:
+            t = self.newTnode(tref)
+            
+    if self.checking: return None,False
+    
+    if back: # create v after back.
+        v = back.insertAfter(t)
+    elif parent: # create v as the parent's first child.
+        v = parent.insertAsNthChild(0,t)
+    else: # create a root vnode
+        v = leoNodes.vnode(t)
+        v.moveToRoot(oldRoot=None)
+        c.setRootVnode(v) # New in Leo 4.4.2.
+
+    if v not in v.t.vnodeList:
+        v.t.vnodeList.append(v) # New in 4.2.
+
+    skip = len(v.t.vnodeList) > 1
+    v.initHeadString(headline,encoding=self.leo_file_encoding)
+    << handle unknown vnode attributes >>
+    # g.trace(skip,tref,v,v.t,len(v.t.vnodeList))
+    return v,skip
+#@nonl
+#@+node:ekr.20031218072017.1861:<< handle unknown vnode attributes >>
+keys = attrDict.keys()
+if keys:
+    v.unknownAttributes = attrDict
+    v._p_changed = 1
+
+    if 0: # For debugging.
+        s = "unknown attributes for " + v.headString()
+        g.es_print(s,color="blue")
+        for key in keys:
+            s = "%s = %s" % (key,attrDict.get(key))
+            g.es_print(s)
+#@-node:ekr.20031218072017.1861:<< handle unknown vnode attributes >>
+#@-node:ekr.20031218072017.1860:createVnode
+#@+node:ekr.20040701065235.1:getDescendentAttributes
+def getDescendentAttributes (self,s,tag=""):
+    
+    '''s is a list of gnx's, separated by commas from a <v> or <t> element.
+    Parses s into a list.
+    
+    This is used to record marked and expanded nodes.
+    '''
+    
+    __pychecker__ = '--no-argsused' # tag used only for debugging.
+
+    gnxs = s.split(',')
+    result = [gnx for gnx in gnxs if len(gnx) > 0]
+    # g.trace(tag,result)
+    return result
+#@-node:ekr.20040701065235.1:getDescendentAttributes
+#@+node:EKR.20040627114602:getDescendentUnknownAttributes
+# Only @thin vnodes have the descendentTnodeUnknownAttributes field.
+# The question is: what are we to do about this?
+
+def getDescendentUnknownAttributes (self,s):
+    
+    try:
+        bin = binascii.unhexlify(s) # Throws a TypeError if val is not a hex string.
+        val = pickle.loads(bin)
+        return val
+
+    except (TypeError,pickle.UnpicklingError,ImportError):
+        g.trace('oops: getDescendentUnknownAttributes')
+        return None
+#@-node:EKR.20040627114602:getDescendentUnknownAttributes
+#@+node:ekr.20040326063413:getExistingVnode
+def getExistingVnode (self,tref,headline):
+
+    assert(tref > -1)
+    tref = self.canonicalTnodeIndex(tref)
+    t = self.tnodesDict.get(tref)
+    try:
+        return t.vnodeList[0]
+    except (IndexError,AttributeError):
+        g.es("Missing vnode:",headline,color="red")
+        g.es("Probably an outline topology error.")
+        return None
+#@-node:ekr.20040326063413:getExistingVnode
+#@-node:ekr.20031218072017.1566:getVnode & helpers
 #@-node:ekr.20060724071225:Look at Paste Node As Clone
 #@+node:ekr.20060824112937.1:Fix unicode problem with double-click word Stéphane
 @nocolor
@@ -1584,22 +1728,23 @@ What do you think of this?
 def open(self,theFile,fileName,readAtFileNodesFlag=True,silent=False):
 
     c = self.c ; frame = c.frame
-    # Read the entire file into the buffer
-    self.fileBuffer = theFile.read() ; theFile.close()
-    self.fileIndex = 0
+    if not use_sax: # Read the entire file into the buffer
+        self.fileBuffer = theFile.read() ; theFile.close()
+        self.fileIndex = 0
     << Set the default directory >>
     self.topPosition = None
     ok, ratio = self.getLeoFile(
-        fileName,
+        theFile,fileName,
         readAtFileNodesFlag=readAtFileNodesFlag,
         silent=silent)
     frame.resizePanesToRatio(ratio,frame.secondary_ratio)
     if 0: # 1/30/04: this is useless.
         if self.topPosition: 
             c.setTopVnode(self.topPosition)
-    # Delete the file buffer
-    self.fileBuffer = ""
+    if not use_sax: # Delete the file buffer
+        self.fileBuffer = ""
     return ok
+#@nonl
 #@+node:ekr.20031218072017.2298:<< Set the default directory >>
 @ The most natural default directory is the directory containing the .leo file that we are about to open.  If the user has specified the "Default Directory" preference that will over-ride what we are about to set.
 @c

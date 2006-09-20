@@ -653,25 +653,29 @@ Warning:  DO NOT SAVE NOW.  It will erase all other nodes.
 #@+node:ekr.20031218072017.1553:getLeoFile
 # The caller should enclose this in begin/endUpdate.
 
-def getLeoFile (self,fileName,readAtFileNodesFlag=True,silent=False):
+def getLeoFile (self,theFile,fileName,readAtFileNodesFlag=True,silent=False):
 
     c = self.c
-    c.setChanged(False) # 10/1/03: May be set when reading @file nodes.
+    c.setChanged(False) # May be set when reading @file nodes.
     << warn on read-only files >>
     self.checking = False
     self.mFileName = c.mFileName
-    self.tnodesDict = {}
-    self.descendentExpandedList = []
-    self.descendentMarksList = []
-    self.descendentUnknownAttributesDictList = []
-    ok = True
+    self.initReadIvars()
     c.loading = True # disable c.changed
     
     try:
-        << scan all the xml elements >>
+        ok = True
+        if use_sax:
+            v = self.readSaxFile(theFile,fileName,silent)
+            c.setRootVnode(v)
+            self.rootVnode = v
+            # readAtFileNodesFlag = False ### testing
+        else:
+            self.getAllLeoElements(fileName,silent)
     except BadLeoFile, message:
         if not silent:
-            << raise an alert >>
+            g.es_exception()
+            g.alert(self.mFileName + " is not a valid Leo file: " + str(message))
         ok = False
 
     if ok and readAtFileNodesFlag:
@@ -679,25 +683,26 @@ def getLeoFile (self,fileName,readAtFileNodesFlag=True,silent=False):
         # This is important for big files like LeoPy.leo.
         c.redraw_now()
         c.atFileCommands.readAll(c.rootVnode(),partialFlag=False)
-        
-    # g.trace(c.currentPosition())
     
     # New in 4.3.1: do this after reading derived files.
-    if not self.usingClipboard:
-        << set current and top positions >>
-
-    if not c.currentPosition():
-        c.setCurrentPosition(c.rootPosition())
+    if use_sax:
+        self.resolveTnodeLists()
+        self.restoreDescendentAttributes()
+        self.setPositionsFromVnodes()
+    else:
+        if not self.usingClipboard:
+            self.setPositionsFromStacks()
+        if not c.currentPosition():
+            c.setCurrentPosition(c.rootPosition())
 
     c.selectVnode(c.currentPosition()) # load body pane
     c.loading = False # reenable c.changed
     c.setChanged(c.changed) # Refresh the changed marker.
-    << restore attributes in descendent tnodes >>
-    self.descendentUnknownAttributesDictList = []
-    self.descendentExpandedList = []
-    self.descendentMarksList = []
-    self.tnodesDict = {}
+    if not use_sax:
+        self.restoreDescendentAttributes()
+    self.initReadIvars()
     return ok, self.ratio
+#@nonl
 #@+node:ekr.20031218072017.1554:<< warn on read-only files >>
 # os.access may not exist on all platforms.
 
@@ -711,82 +716,9 @@ except UnicodeError:
 if self.read_only:
     g.es("read only: " + fileName,color="red")
 #@-node:ekr.20031218072017.1554:<< warn on read-only files >>
-#@+node:ekr.20031218072017.1555:<< scan all the xml elements >>
-self.getXmlVersionTag()
-self.getXmlStylesheetTag()
-
-self.getTag("<leo_file>") # Must match exactly.
-self.getLeoHeader()
-self.getGlobals()
-self.getPrefs()
-self.getFindPanelSettings()
-
-# Causes window to appear.
-c.frame.resizePanesToRatio(c.frame.ratio,c.frame.secondary_ratio)
-if not silent:
-    g.es("reading: " + fileName)
-
-self.getVnodes()
-self.getTnodes()
-self.getCloneWindows()
-self.getTag("</leo_file>")
-#@-node:ekr.20031218072017.1555:<< scan all the xml elements >>
-#@+node:ekr.20031218072017.1556:<< raise an alert >>
-# All other exceptions are Leo bugs.
-
-g.es_exception()
-g.alert(self.mFileName + " is not a valid Leo file: " + str(message))
-#@-node:ekr.20031218072017.1556:<< raise an alert >>
-#@+node:ekr.20040326054052:<< set current and top positions >>
-current = self.convertStackToPosition(self.currentVnodeStack)
-if current:
-    # g.trace('using convertStackToPosition',current)
-    c.setCurrentPosition(current)
-else:
-    # g.trace(self.currentVnodeStack)
-    c.setCurrentPosition(c.rootPosition())
-    
-# At present this is useless: the drawing code doesn't set the top position properly.
-if 0:
-    top = self.convertStackToPosition(self.topVnodeStack)
-    if top:
-        c.setTopPosition(top)
-#@-node:ekr.20040326054052:<< set current and top positions >>
-#@+node:EKR.20040627120120:<< restore attributes in descendent tnodes >>
-for resultDict in self.descendentUnknownAttributesDictList:
-    for gnx in resultDict.keys():
-        tref = self.canonicalTnodeIndex(gnx)
-        t = self.tnodesDict.get(tref)
-        if t:
-            t.unknownAttributes = resultDict[gnx]
-            t._p_changed = 1
-        # else: g.trace("can not find tnode: gnx = %s" % gnx,color="red")
-
-marks = {} ; expanded = {}
-for gnx in self.descendentExpandedList:
-    t = self.tnodesDict.get(gnx)
-    if t: expanded[t]=t
-    # else: g.trace("can not find tnode: gnx = %s" % gnx,color="red")
-    
-for gnx in self.descendentMarksList:
-    t = self.tnodesDict.get(gnx)
-    if t: marks[t]=t
-    # else: g.trace("can not find tnode: gnx = %s" % gnx,color="red")
-
-if marks or expanded:
-    # g.trace("marks",len(marks),"expanded",len(expanded))
-    for p in c.all_positions_iter():
-        if marks.get(p.v.t):
-            p.v.initMarkedBit()
-                # This was the problem: was p.setMark.
-                # There was a big performance bug in the mark hook in the Node Navigator plugin.
-        if expanded.get(p.v.t):
-            p.expand()
-#@nonl
-#@-node:EKR.20040627120120:<< restore attributes in descendent tnodes >>
 #@-node:ekr.20031218072017.1553:getLeoFile
-#@+node:ekr.20031218072017.1559:getLeoOutline (from clipboard)
-def getLeoOutline (self,s,reassignIndices=True):
+#@+node:ekr.20031218072017.1559:getLeoOutlineFromClipboard & helpers
+def getLeoOutlineFromClipboard (self,s,reassignIndices=True):
     
     '''Read a Leo outline from string s in clipboard format.'''
 
@@ -801,7 +733,37 @@ def getLeoOutline (self,s,reassignIndices=True):
         g.es("The clipboard is not valid ",color="blue")
 
     return v
+    
+getLeoOutline = getLeoOutlineFromClipboard # for compatibility
 #@nonl
+#@+node:ekr.20031218072017.1557:finishPaste
+def finishPaste(self,reassignIndices=True):
+    
+    """Finish pasting an outline from the clipboard.
+    
+    Retain clone links if reassignIndices is False."""
+
+    c = self.c
+    current = c.currentPosition()
+    if reassignIndices:
+        << reassign tnode indices >>
+    c.selectPosition(current)
+    return current
+#@+node:ekr.20031218072017.1558:<< reassign tnode indices >>
+@ putLeoOutline calls assignFileIndices (when copying nodes) so that vnode can be associated with tnodes.
+However, we must _reassign_ the indices here so that no "False clones" are created.
+@c
+
+current.clearVisitedInTree()
+
+for p in current.self_and_subtree_iter():
+    t = p.v.t
+    if not t.isVisited():
+        t.setVisited()
+        self.maxTnodeIndex += 1
+        t.setFileIndex(self.maxTnodeIndex)
+#@-node:ekr.20031218072017.1558:<< reassign tnode indices >>
+#@-node:ekr.20031218072017.1557:finishPaste
 #@+node:ekr.20060826052453.1:getLeoOutlineHelper
 def getLeoOutlineHelper (self,s,reassignIndices,checking):
     
@@ -847,7 +809,26 @@ if 0:
         print key,self.tnodesDict[key]
 #@-node:EKR.20040610134756:<< recreate tnodesDict >>
 #@-node:ekr.20060826052453.1:getLeoOutlineHelper
-#@-node:ekr.20031218072017.1559:getLeoOutline (from clipboard)
+#@+node:ekr.20031218072017.3022:getClipboardHeader
+def getClipboardHeader (self):
+
+    if self.getOpenTag("<leo_header"):
+        return # <leo_header> or <leo_header/> has been seen.
+
+    while 1:
+        if self.matchTag("file_format="):
+            self.getDquote() ; self.fileFormatNumber = self.getLong() ; self.getDquote()
+        elif self.matchTag("tnodes="):
+            self.getDquote() ; self.getLong() ; self.getDquote() # no longer used
+        elif self.matchTag("max_tnode_index="):
+            self.getDquote() ; self.getLong() ; self.getDquote() # no longer used
+        elif self.matchTag("></leo_header>"): # new in 4.2: allow this form.
+            break
+        else:
+            self.getTag("/>")
+            break
+#@-node:ekr.20031218072017.3022:getClipboardHeader
+#@-node:ekr.20031218072017.1559:getLeoOutlineFromClipboard & helpers
 #@+node:ekr.20031218072017.1565:getVnodes
 def getVnodes (self,reassignIndices=True):
 
@@ -893,7 +874,8 @@ for p in oldCurrent.self_and_parents_iter():
 # g.trace("forbiddenTnodes",self.forbiddenTnodes)
 #@-node:ekr.20041023105832:<< set self.forbiddenTnodes to tnodes than must not be pasted >>
 #@-node:ekr.20031218072017.1565:getVnodes
-#@+node:ekr.20031218072017.1566:getVnode changed for 4.2 & 4.4)
+#@+node:ekr.20031218072017.1566:getVnode & helpers
+# changed for 4.2 & 4.4
 def getVnode (self,parent,back,skip,appendToCurrentStack,appendToTopStack):
 
     v = None
@@ -1024,50 +1006,9 @@ if not setTop and len(self.topVnodeStack) > 0 and appendToTopStack:
     #g.trace("append top",v)
     self.topVnodeStack.append(v)
 #@-node:ekr.20040326055828:<< Append to current or top stack >>
-#@-node:ekr.20031218072017.1566:getVnode changed for 4.2 & 4.4)
-#@+node:ekr.20031218072017.3019:leoFileCommands._init_
-def __init__(self,c):
+#@+node:ekr.20031218072017.1860:createVnode
+# (changed for 4.2) sets skip
 
-    # g.trace("__init__", "fileCommands.__init__")
-    self.c = c
-    self.frame = c.frame
-    self.initIvars()
-
-def initIvars(self):
-
-    # General
-    c = self.c
-    self.maxTnodeIndex = 0
-    self.numberOfTnodes = 0
-    self.topPosition = None
-    self.mFileName = ""
-    self.fileDate = -1
-    self.leo_file_encoding = c.config.new_leo_file_encoding
-    # g.trace('self.leo_file_encoding',self.leo_file_encoding)
-    # For reading
-    self.checking = False # True: checking only: do *not* alter the outline.
-    self.descendentExpandedList = []
-    self.descendentMarksList = []
-    self.fileFormatNumber = 0
-    self.forbiddenTnodes = []
-    self.descendentUnknownAttributesDictList = []
-    self.ratio = 0.5
-    self.fileBuffer = None ; self.fileIndex = 0
-    self.currentVnodeStack = [] # A stack of vnodes giving the current position.
-    self.topVnodeStack     = [] # A stack of vnodes giving the top position.
-    # For writing
-    self.read_only = False
-    self.outputFile = None
-    self.openDirectory = None
-    self.topVnode = None
-    self.usingClipboard = False
-    self.currentPosition = None
-    # New in 3.12
-    self.copiedTree = None
-    self.tnodesDict = {}  # keys are gnx strings as returned by canonicalTnodeIndex.
-#@nonl
-#@-node:ekr.20031218072017.3019:leoFileCommands._init_
-#@+node:ekr.20031218072017.1860:createVnode (changed for 4.2) sets skip
 def createVnode (self,parent,back,tref,headline,attrDict):
     
     # g.trace(parent,headline)
@@ -1114,7 +1055,156 @@ if keys:
             s = "%s = %s" % (key,attrDict.get(key))
             g.es_print(s)
 #@-node:ekr.20031218072017.1861:<< handle unknown vnode attributes >>
-#@-node:ekr.20031218072017.1860:createVnode (changed for 4.2) sets skip
+#@-node:ekr.20031218072017.1860:createVnode
+#@+node:ekr.20040701065235.1:getDescendentAttributes
+def getDescendentAttributes (self,s,tag=""):
+    
+    '''s is a list of gnx's, separated by commas from a <v> or <t> element.
+    Parses s into a list.
+    
+    This is used to record marked and expanded nodes.
+    '''
+    
+    __pychecker__ = '--no-argsused' # tag used only for debugging.
+
+    gnxs = s.split(',')
+    result = [gnx for gnx in gnxs if len(gnx) > 0]
+    # g.trace(tag,result)
+    return result
+#@-node:ekr.20040701065235.1:getDescendentAttributes
+#@+node:EKR.20040627114602:getDescendentUnknownAttributes
+# Only @thin vnodes have the descendentTnodeUnknownAttributes field.
+# The question is: what are we to do about this?
+
+def getDescendentUnknownAttributes (self,s):
+    
+    try:
+        bin = binascii.unhexlify(s) # Throws a TypeError if val is not a hex string.
+        val = pickle.loads(bin)
+        return val
+
+    except (TypeError,pickle.UnpicklingError,ImportError):
+        g.trace('oops: getDescendentUnknownAttributes')
+        return None
+#@-node:EKR.20040627114602:getDescendentUnknownAttributes
+#@+node:ekr.20040326063413:getExistingVnode
+def getExistingVnode (self,tref,headline):
+
+    assert(tref > -1)
+    tref = self.canonicalTnodeIndex(tref)
+    t = self.tnodesDict.get(tref)
+    try:
+        return t.vnodeList[0]
+    except (IndexError,AttributeError):
+        g.es("Missing vnode:",headline,color="red")
+        g.es("Probably an outline topology error.")
+        return None
+#@-node:ekr.20040326063413:getExistingVnode
+#@-node:ekr.20031218072017.1566:getVnode & helpers
+#@+node:ekr.20031218072017.3019:leoFileCommands._init_
+def __init__(self,c):
+
+    # g.trace("__init__", "fileCommands.__init__")
+    self.c = c
+    self.frame = c.frame
+    self.nativeTnodeAttributes = ('tx',)
+    self.nativeVnodeAttributes = (
+        'a','descendentTnodeUnknownAttributes',
+        'expanded','marks','t','tnodeList',
+        # 'vtag',
+    )
+    self.initIvars()
+
+def initIvars(self):
+
+    # General
+    c = self.c
+    self.maxTnodeIndex = 0
+    self.numberOfTnodes = 0
+    self.mFileName = ""
+    self.fileDate = -1
+    self.leo_file_encoding = c.config.new_leo_file_encoding
+    # For reading
+    self.checking = False # True: checking only: do *not* alter the outline.
+    self.descendentExpandedList = []
+    self.descendentMarksList = []
+    self.fileFormatNumber = 0
+    self.forbiddenTnodes = []
+    self.descendentUnknownAttributesDictList = []
+    self.ratio = 0.5
+    if use_sax:
+        self.currentVnode = None
+        self.rootVnode = None
+    else:
+        self.fileBuffer = None
+        self.fileIndex = 0
+        self.currentVnodeStack = [] # A stack of vnodes giving the current position.
+        self.topVnodeStack     = [] # A stack of vnodes giving the top position.
+        self.topPosition = None
+    # For writing
+    self.read_only = False
+    self.outputFile = None
+    self.openDirectory = None
+    self.topVnode = None
+    self.usingClipboard = False
+    self.currentPosition = None
+    # New in 3.12
+    self.copiedTree = None
+    self.tnodesDict = {}
+        # keys are gnx strings as returned by canonicalTnodeIndex.
+        # Values are gnx's.
+#@nonl
+#@-node:ekr.20031218072017.3019:leoFileCommands._init_
+#@+node:ekr.20031218072017.1860:createVnode
+# (changed for 4.2) sets skip
+
+def createVnode (self,parent,back,tref,headline,attrDict):
+    
+    # g.trace(parent,headline)
+    v = None ; c = self.c
+    # Shared tnodes are placed in the file even if empty.
+    if tref == -1:
+        t = leoNodes.tnode()
+    else:
+        tref = self.canonicalTnodeIndex(tref)
+        t = self.tnodesDict.get(tref)
+        if not t:
+            t = self.newTnode(tref)
+            
+    if self.checking: return None,False
+    
+    if back: # create v after back.
+        v = back.insertAfter(t)
+    elif parent: # create v as the parent's first child.
+        v = parent.insertAsNthChild(0,t)
+    else: # create a root vnode
+        v = leoNodes.vnode(t)
+        v.moveToRoot(oldRoot=None)
+        c.setRootVnode(v) # New in Leo 4.4.2.
+
+    if v not in v.t.vnodeList:
+        v.t.vnodeList.append(v) # New in 4.2.
+
+    skip = len(v.t.vnodeList) > 1
+    v.initHeadString(headline,encoding=self.leo_file_encoding)
+    << handle unknown vnode attributes >>
+    # g.trace(skip,tref,v,v.t,len(v.t.vnodeList))
+    return v,skip
+#@nonl
+#@+node:ekr.20031218072017.1861:<< handle unknown vnode attributes >>
+keys = attrDict.keys()
+if keys:
+    v.unknownAttributes = attrDict
+    v._p_changed = 1
+
+    if 0: # For debugging.
+        s = "unknown attributes for " + v.headString()
+        g.es_print(s,color="blue")
+        for key in keys:
+            s = "%s = %s" % (key,attrDict.get(key))
+            g.es_print(s)
+#@-node:ekr.20031218072017.1861:<< handle unknown vnode attributes >>
+#@-node:ekr.20031218072017.1860:createVnode
 #@-node:ekr.20060826061038:Changed:
 #@-node:ekr.20060825181348.1:Fixed serious bug in Paste Node as Clone
 #@+node:ekr.20060829091456:Fixed minor .leoID.txt bug

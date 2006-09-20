@@ -2354,7 +2354,7 @@ class baseFileCommands:
     
         self.put("</t>") ; self.put_nl()
     #@-node:ekr.20031218072017.1577:putTnode
-    #@+node:ekr.20031218072017.1575:putTnodes 
+    #@+node:ekr.20031218072017.1575:putTnodes
     def putTnodes (self):
         
         """Puts all tnodes as required for copy or save commands"""
@@ -2390,7 +2390,7 @@ class baseFileCommands:
         #@-node:ekr.20031218072017.1576:<< write only those tnodes that were referenced >>
         #@nl
         self.put("</tnodes>") ; self.put_nl()
-    #@-node:ekr.20031218072017.1575:putTnodes 
+    #@-node:ekr.20031218072017.1575:putTnodes
     #@+node:EKR.20040526202501:putUnknownAttributes & helper
     def putUnknownAttributes (self,torv):
         
@@ -2714,152 +2714,15 @@ class baseFileCommands:
     #@-node:ekr.20031218072017.1971:putClipboardHeader
     #@-node:ekr.20031218072017.1573:putLeoOutline (to clipboard) & helper
     #@+node:ekr.20060919064401:putToOPML & helpers
+    # All elements and attributes prefixed by ':' are leo-specific.
+    # All other elements and attributes are specified by the OPML 1 spec.
+    
     def putToOPML (self):
         
-        self.putXMLLine()
-        self.putOPMLProlog()
-        self.putOPMLHeader()
-        self.putOPMLNodes()
-        self.putOPMLPostlog()
+        '''Should be overridden by the opml plugin.'''
+        
+        return None
     #@nonl
-    #@+node:ekr.20060919064401.1:putOPMLProlog
-    def putOPMLProlog (self):
-    
-        self.put('<opml version="1.0">\n')
-    #@nonl
-    #@-node:ekr.20060919064401.1:putOPMLProlog
-    #@+node:ekr.20060919064401.2:putOPMLHeader
-    def putOPMLHeader (self):
-        
-        '''Put the OPML header, including attributes for globals, prefs and  find settings.'''
-        
-        self.put('<head>\n')
-        
-        self.put('</head>\n')
-    #@nonl
-    #@-node:ekr.20060919064401.2:putOPMLHeader
-    #@+node:ekr.20060919064401.3:putOPMLNodes
-    def putOPMLNodes (self):
-        
-        c = self.c ; root = c.rootPosition()
-        
-        self.put('<body>\n')
-        
-        for p in root.self_and_siblings_iter():
-            self.putOPMLNode(p)
-        
-        self.put('</body>\n')
-    #@nonl
-    #@-node:ekr.20060919064401.3:putOPMLNodes
-    #@+node:ekr.20060919064401.4:putOPMLNode
-    #@+at 
-    #@nonl
-    # Native xml attributes are the attributes of <v> and <t> elements that
-    # are known (treated specially) by Leo's read/write code. The only native
-    # attribute of <t> elements is tx. The native attributes of <v> elements 
-    # are: a,
-    # t, vtag, tnodeList, marks, expanded and 
-    # descendentTnodeUnknownAttributes.
-    #@-at
-    #@@c
-    
-    def putOPMLNode (self,p):
-        
-        c = self.c ; indent = '\t' * p.level()
-        body = p.bodyString() or '' ; head = p.headString() or ''
-        
-        a = self.aAttributes(p)
-        uA = self.uAAttributes(p)
-        tnodeList = self.tnodeListAttributes(p)
-        
-        self.put('%s<outline tx="%s" %s%s%s' % (
-            indent,
-            g.app.nodeIndices.toString(p.v.t.fileIndex),
-            g.choose(a,'a="%s" ' % (a),''),
-            g.choose(tnodeList,'tnodeList="%s" ' % (tnodeList),''),
-            uA
-        ))
-        
-        # python's xml.sax.saxutils.
-        for tag,val in (('head',head),('body',body)):
-            self.put(' %s="%s" ' % (tag,self.attributeEscape(val)))
-        
-        if p.hasChildren():
-            self.put('>\n')
-            for p2 in p.children_iter():
-                self.putOPMLNode(p2)
-            self.put('%s</outline>\n' % indent)
-        else:
-            self.put('/>\n')
-    #@nonl
-    #@+node:ekr.20060919085443:attributeEscape
-    def attributeEscape(self,s):
-    
-        # Unlike xmlEscape, replace " by &quot; and replace newlines by character reference.
-        s = s or ''
-        return (
-            s.replace('&','&amp;')
-            .replace('<','&lt;')
-            .replace('>','&gt;')
-            .replace('"','&quot;')
-            .replace('\n','&#10;\n')
-        )
-    #@-node:ekr.20060919085443:attributeEscape
-    #@+node:ekr.20060919064401.5:aAttributes
-    def aAttributes (self,p):
-        
-        c = self.c
-        attr = []
-    
-        if p.isExpanded():          attr.append('E')
-        if p.isMarked():            attr.append('M')
-        if c.isCurrentPosition(p):  attr.append('V')
-    
-        #if p.v.isOrphan():              attr.append('O')
-        #if p.equal(self.topPosition):   attr.append('T')
-    
-        return ''.join(attr)
-    #@nonl
-    #@-node:ekr.20060919064401.5:aAttributes
-    #@+node:ekr.20060919064401.6:tnodeListAttributes
-    # Based on fileCommands.putTnodeList.
-    
-    def tnodeListAttributes (self,p):
-        
-        '''Put the tnodeList attribute of p.v.t'''
-    
-        # Remember: entries in the tnodeList correspond to @+node sentinels, _not_ to tnodes!
-        
-        if not hasattr(p.v.t,'tnodeList') or not p.v.t.tnodeList:
-            return ''
-            
-        # g.trace('tnodeList',p.v.t.tnodeList)
-    
-        # Assign fileIndices.
-        for t in p.v.t.tnodeList:
-            try: # Will fail for None or any pre 4.1 file index.
-                theId,time,n = p.v.t.fileIndex
-            except:
-                g.trace("assigning gnx for ",p.v.t)
-                gnx = g.app.nodeIndices.getNewIndex()
-                p.v.t.setFileIndex(gnx) # Don't convert to string until the actual write.
-    
-        s = ','.join([g.app.nodeIndices.toString(t.fileIndex) for t in p.v.t.tnodeList])
-    #@nonl
-    #@-node:ekr.20060919064401.6:tnodeListAttributes
-    #@+node:ekr.20060919064401.7:uAAttributes (Not yet, and maybe never)
-    def uAAttributes (self,p):
-        
-        return ''
-    #@nonl
-    #@-node:ekr.20060919064401.7:uAAttributes (Not yet, and maybe never)
-    #@-node:ekr.20060919064401.4:putOPMLNode
-    #@+node:ekr.20060919064401.8:putOPMLPostlog
-    def putOPMLPostlog (self):
-        
-        self.put('</opml>\n')
-    #@nonl
-    #@-node:ekr.20060919064401.8:putOPMLPostlog
     #@-node:ekr.20060919064401:putToOPML & helpers
     #@+node:ekr.20031218072017.1720:save
     def save(self,fileName):
