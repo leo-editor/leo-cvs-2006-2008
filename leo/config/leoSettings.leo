@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="305" clone_windows="0"/>
 <globals body_outline_ratio="0.717647058824">
-	<global_window_position top="121" left="256" height="680" width="938"/>
+	<global_window_position top="143" left="251" height="642" width="938"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -395,7 +395,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20051123100536" annotate="7d71002e"><vh>Plugins</vh>
+<v t="ekr.20051123100536" a="E" annotate="7d71002e"><vh>Plugins</vh>
 <v t="ekr.20041119034357.13"><vh>@bool use_plugins = True</vh></v>
 <v t="ekr.20060807103220"><vh>datenodes plugin</vh>
 <v t="ekr.20060807103220.1"><vh>@string datenodes_body_text = To do...</vh></v>
@@ -419,6 +419,15 @@
 <v t="ekr.20060109115046.2"><vh>@string library_lib = default</vh></v>
 <v t="ekr.20060109115046.3"><vh>@string library_lib0 = default/library.dbm</vh></v>
 <v t="ekr.20060109121753"><vh>@string library_lib1 = default/libraryS.dbm</vh></v>
+</v>
+<v t="ekr.20060919171527" a="ETV"><vh>opml plugin</vh>
+<v t="ekr.20060919171527.1"><vh>@bool opml_use_outline_elements = True</vh></v>
+<v t="ekr.20060919195145"><vh>@string opml_version = 2.0</vh></v>
+<v t="ekr.20060919181622"><vh>@bool opml_write_body_text = True</vh></v>
+<v t="ekr.20060919173031"><vh>@bool opml_write_leo_details = True</vh></v>
+<v t="ekr.20060919173031.1"><vh>@bool opml_write_leo_globals_attributes = True</vh></v>
+<v t="ekr.20060919173704"><vh>@bool opml_write_leo_header_attributes = True</vh></v>
+<v t="ekr.20060919171527.2"><vh>@string opml_namespace = leo:com:leo-opml-version-1</vh></v>
 </v>
 <v t="ekr.20051123100536.1"><vh>vim plugin</vh>
 <v t="ekr.20051123100536.2"><vh>@string vim_cmd = c:\Program Files\vim\vim63\gvim --servername LEO</vh></v>
@@ -454,9 +463,9 @@
 <v t="ekr.20051025085144"><vh>@string aspell_dir = c:\aspell</vh></v>
 <v t="ekr.20051025085144.1"><vh>@string aspell_bin_dir = c:\aspell\bin</vh></v>
 </v>
-<v t="ekr.20041119034357.15" a="E"><vh>Unicode options</vh>
+<v t="ekr.20041119034357.15"><vh>Unicode options</vh>
 <v t="ekr.20041119042929.9"><vh>@string default_derived_file_encoding = utf-8</vh></v>
-<v t="ekr.20041119042929.10" a="TV"><vh>@string new_leo_file_encoding = utf-8</vh></v>
+<v t="ekr.20041119042929.10"><vh>@string new_leo_file_encoding = utf-8</vh></v>
 <v t="ekr.20041119042929.11"><vh>@string tk_encoding = None</vh></v>
 </v>
 <v t="ekr.20050203090810" annotate="7d71002e"><vh>Unit test</vh>
@@ -5647,5 +5656,26 @@ php_keyword_font_weight = bold
     @button Check Bindings
     
 in this file.  This makes it possible for the script to produce better error messages.</t>
+<t tx="ekr.20060919171527"></t>
+<t tx="ekr.20060919171527.1">True:  Use &lt;:body&gt; elements to hold body text in &lt;outline&gt; elements.
+False: Use :body attributes to hold body text in &lt;outline&gt; elements.</t>
+<t tx="ekr.20060919171527.2">The namespace urn for the xmlns attribute of &lt;opml&gt; elements.
+This value typically is not used, but it should refer to Leo in some way.</t>
+<t tx="ekr.20060919173031">True: Write (as attributes of the opml &lt;outline&gt; elements) the Leo-specific
+      attributes written in Leo's &lt;v&gt; elements, namely 'a',
+      'descendentTnodeUnknownAttributes', 'expanded', 'marks','t', and
+      'tnodeList' elements.
+    
+False: Do not write such attributes.</t>
+<t tx="ekr.20060919173031.1">True:  Write (as attributes of the opml &lt;head&gt; element) the attributes in Leo's &lt;globals&gt; element.
+False: Do not write such attributes.</t>
+<t tx="ekr.20060919173704">True:  Write (as attributes of the opml &lt;head&gt; element) the attributes in the &lt;leo_header_file&gt; element.
+False: Do not write such attributes.</t>
+<t tx="ekr.20060919181622">True:  Write body text in either &lt;:body&gt; elements or :body attributes,
+       depending on the opml_use_outline_elements setting.
+
+False: Write only outlines.</t>
+<t tx="ekr.20060919195145">This should be either 2.0 or 1.0.
+Version 2.0 is more flexible, and should be used unless there are problems.</t>
 </tnodes>
 </leo_file>
