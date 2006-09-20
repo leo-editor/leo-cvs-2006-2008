@@ -2,10 +2,49 @@
 #@+node:ekr.20060904103412:@thin leoOPML.py
 #@<< docstring >>
 #@+node:ekr.20060904103412.1:<< docstring >>
-'''A plugin to read and write Leo outlines in .opml format.
+'''A plugin to read and write Leo outlines in .opml (http://en.wikipedia.org/wiki/OPML) format.
 
-It defines the read-opml-file and write-opml-file commands and corresponding buttons.
+Warning: the OPML plugin is not fully functional at present. Use with caution.
 
+The OPML plugin creates two new commands that read and write Leo outlines in OPML format.
+The read-opml-file command creates a Leo outline from an .opml file.
+The write-opml-file command writes the present Leo outline to an .opml file.
+
+Various settings control what gets written to .opml files, and in what format.
+As usual, you specify settings for the OPML plugin using leoSettings.leo.
+The settigns for the OPML are found in the node: @settings-->Plugins-->opml plugin
+
+Here are the settings that control the format of .opml files. The default values are shown.
+
+- @string opml_namespace = leo:com:leo-opml-version-1
+
+The namespace urn for the xmlns attribute of <opml> elements.
+This value typically is not used, but it should refer to Leo in some way.
+
+- @bool opml_use_outline_elements = True
+
+- If True, Leo writes body text to <:body> elements nested in <outline> elements.
+Otherwise, Leo writes body text to :body attributes of <outline> elements.
+
+- @string opml_version = 2.0
+
+The opml version string written to the <OPML> element.
+Use 2.0 unless there is a specific reason to use 1.0.
+
+- @bool opml_write_body_text = True
+
+Leo writes body text to the OPML file only if this is True.
+
+- @bool opml_write_leo_details = True
+
+If True, Leo writes the native attributes of Leo's <v> elements as attributes of
+the opml <outline> elements. The native attributes of <v> elements are a,
+descendentTnodeUnknownAttributes, expanded, marks, t, and tnodeList.
+
+- @bool opml_write_leo_globals_attributes = True
+
+If True, Leo writes body_outline_ratio` and global_window_position attributes to
+the <head> element of the .opml file.
 '''
 #@nonl
 #@-node:ekr.20060904103412.1:<< docstring >>
@@ -68,6 +107,7 @@ printElements = [] # ['all','outline','head','body',]
 # 0.7 EKR: Support for opml_version.  Reading and writing works (except for 
 # tnodeLists) regardless of settings.
 # 0.8 EKR: This plugin now creates the read/write-opml-file commands.
+# 0.9 EKR: Improved docstring.
 #@-at
 #@nonl
 #@-node:ekr.20060904103412.2:<< version history >>
