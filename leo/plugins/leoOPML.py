@@ -16,8 +16,9 @@ It defines the read-opml-file and write-opml-file commands and corresponding but
 #@@pagewidth 80
 
 # To do: read/write uA's.
+# To do: handle problems resolving tnodeLists, or get rid of this logic.
 
-__version__ = '0.6'
+__version__ = '0.7'
 
 # For traces.
 printElements = [] # ['all','outline','head','body',]
@@ -64,6 +65,8 @@ printElements = [] # ['all','outline','head','body',]
 # opml_write_body_text
 #   settings in leoSettings.leo.
 # - The read code no longer requires tnx fields.
+# 0.7 EKR: Support for opml_version.  Reading and writing works (except for 
+# tnodeLists) regardless of settings.
 #@-at
 #@nonl
 #@-node:ekr.20060904103412.2:<< version history >>
@@ -142,20 +145,19 @@ class opmlFileCommandsClass (leoFileCommands.fileCommands):
     #@+node:ekr.20060919172012.3:putOPMLProlog
     def putOPMLProlog (self):
         
-        s = self.c.config.getString('opml_namespace') or 'leo:com:leo-opml'
-        
-        g.trace(s)
+        s   = self.c.config.getString('opml_namespace') or 'leo:com:leo-opml'
+        ver = self.c.config.getString('opml_version') or '2.0'
     
-        self.put('<opml version="1.0" xmlns="%s">\n' % s)
+        self.put('<opml version="%s" xmlns="%s">' % (ver,s))
     #@-node:ekr.20060919172012.3:putOPMLProlog
     #@+node:ekr.20060919172012.4:putOPMLHeader
     def putOPMLHeader (self):
         
         '''Put the OPML header, including attributes for globals, prefs and  find settings.'''
         
-        self.put('<head>\n')
+        self.put('\n<head>')
         
-        self.put('</head>\n')
+        self.put('\n</head>')
     #@nonl
     #@-node:ekr.20060919172012.4:putOPMLHeader
     #@+node:ekr.20060919172012.5:putOPMLNodes
@@ -163,12 +165,12 @@ class opmlFileCommandsClass (leoFileCommands.fileCommands):
         
         c = self.c ; root = c.rootPosition()
         
-        self.put('<body>\n')
+        self.put('\n<body>')
         
         for p in root.self_and_siblings_iter():
             self.putOPMLNode(p)
         
-        self.put('</body>\n')
+        self.put('\n</body>')
     #@nonl
     #@-node:ekr.20060919172012.5:putOPMLNodes
     #@+node:ekr.20060919172012.6:putOPMLNode
@@ -179,14 +181,14 @@ class opmlFileCommandsClass (leoFileCommands.fileCommands):
         body = p.bodyString() or '' ; head = p.headString() or ''
         attrFormat = ' %s="%s"'
     
-        self.put('%s<outline' % indent)
+        self.put('\n%s<outline' % indent)
     
-        if 1: #self.opml_write_leo_details: # Put leo-specific attributes.
+        if self.opml_write_leo_details: # Put leo-specific attributes.
             for name,val in (
+                (':t', g.app.nodeIndices.toString(p.v.t.fileIndex)),
                 (':a', self.aAttributes(p)),
                 (':tnodeList',self.tnodeListAttributes(p)),
             ):
-                # g.trace(name,val)
                 if val: self.put(attrFormat % (name,val))
             
             data = self.uAAttributes(p)
@@ -200,21 +202,21 @@ class opmlFileCommandsClass (leoFileCommands.fileCommands):
         if body and self.opml_write_body_text:
             if self.opml_use_outline_elements:
                 self.put('>') ; closed = True
-                self.put('<:body>%s' % self.xmlEscape(body))
-                self.put('\n</:body>')
+                self.put('<:body>%s</:body>' % self.xmlEscape(body))
             else:
                 self.put(attrFormat % (':body',self.attributeEscape(body)))
     
         if p.hasChildren():
             if not closed:
-                self.put('>\n') ; closed = True
+                self.put('>') ; closed = True
             for p2 in p.children_iter():
                 self.putOPMLNode(p2)
                 
         if closed:
-            self.put('%s</outline>\n' % indent)
+            self.put('\n%s</outline>' % indent)
+            # self.put('</outline>\n')
         else:
-            self.put('/>\n')
+            self.put('/>')
     #@nonl
     #@+node:ekr.20060919172012.7:attributeEscape
     def attributeEscape(self,s):
@@ -282,7 +284,7 @@ class opmlFileCommandsClass (leoFileCommands.fileCommands):
     #@+node:ekr.20060919172012.11:putOPMLPostlog
     def putOPMLPostlog (self):
         
-        self.put('</opml>\n')
+        self.put('\n</opml>\n')
     #@nonl
     #@-node:ekr.20060919172012.11:putOPMLPostlog
     #@-node:ekr.20060919172012.2:putToOPML & helpers
@@ -610,12 +612,14 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
             'head':     (None,None),
             'opml':     (None,None),
             'outline':  (self.startOutline,self.endOutline),
+            ':body':    (self.startBodyText,self.endBodyText)
         }
         #@nonl
         #@-node:ekr.20060917185525:<< define dispatch dict >>
         #@nl
       
         # Semantics.
+        self.content = []
         self.elementStack = []
         self.errors = 0
         self.level = 0
@@ -730,12 +734,18 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
     #@+node:ekr.20060904134958.178:characters
     def characters(self,content):
     
-        elementName = self.elementStack and self.elementStack[-1].lower() or '<no element name>'
+        name = self.elementStack and self.elementStack[-1].lower() or '<no element name>'
         
         # Opml elements should not have content: everything is carried in attributes.
         
         if content.strip():
-            print 'content:',elementName,repr(content)
+            if name == ':body':
+                if self.node:
+                    self.node.bodyString = content
+                else:
+                    self.error('No node for :body content')
+            else:
+                print 'content:',name,repr(content)
     #@nonl
     #@-node:ekr.20060904134958.178:characters
     #@+node:ekr.20060904134958.179:endElement & helpers
@@ -758,6 +768,17 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         name2 = self.elementStack.pop()
         assert name == name2
     #@nonl
+    #@+node:ekr.20060919193501:endBodyText
+    def endBodyText (self):
+        
+        '''End a <:body> element.'''
+        
+        if self.content:
+            self.node.bodyString = ''.join(self.content)
+        
+        self.content = []
+    #@nonl
+    #@-node:ekr.20060919193501:endBodyText
     #@+node:ekr.20060917185948:endOutline
     def endOutline (self):
         
@@ -804,6 +825,14 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         self.nodeStack.append(parent)
     #@nonl
     #@-node:ekr.20060917190349:startOutline
+    #@+node:ekr.20060919193501.1:startBodyText
+    def startBodyText (self,attrs):
+        
+        '''Start a <:body> element.'''
+        
+        self.content = []
+    #@nonl
+    #@-node:ekr.20060919193501.1:startBodyText
     #@+node:ekr.20060904141220.34:doOutlineAttributes
     def doOutlineAttributes (self,attrs):
         
