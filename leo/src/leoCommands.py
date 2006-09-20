@@ -3290,6 +3290,7 @@ class baseCommands:
                         s = "deleting tnodeList for " + repr(v)
                         print ; g.es_print(s,color="blue")
                     delattr(v.t,"tnodeList")
+                    v.t._p_changed = True
                 #@-node:ekr.20040313150633:<< remove unused tnodeList >>
                 #@nl
                 if full: # Unit tests usually set this false.

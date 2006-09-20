@@ -349,6 +349,7 @@ class atFile:
         # Init all other ivars even if there is an error.
         if not self.errors and self.root:
             self.root.v.t.tnodeList = []
+            self.root.v.t._p_changed = True
     #@-node:ekr.20041005105605.15:initWriteIvars
     #@-node:ekr.20041005105605.7:Birth & init
     #@+node:ekr.20041005105605.17:Reading...
@@ -2815,7 +2816,8 @@ class atFile:
                 at.closeWriteFile()
                 # Major bug: failure to clear this wipes out headlines!
                 # Minor bug: sometimes this causes slight problems...
-                at.root.v.t.tnodeList = [] 
+                at.root.v.t.tnodeList = []
+                at.root.v.t._p_changed = True
             else:
                 at.closeWriteFile()
                 #@            << set dirty and orphan bits on error >>
@@ -2837,6 +2839,7 @@ class atFile:
             if toString:
                 at.exception("exception preprocessing script")
                 at.root.v.t.tnodeList = []
+                at.root.v.t._p_changed = True
             else:
                 at.writeException() # Sets dirty and orphan bits.
     #@-node:ekr.20041005105605.144:write
@@ -2863,7 +2866,9 @@ class atFile:
             at.closeWriteFile()
             # Major bug: failure to clear this wipes out headlines!
             # Minor bug: sometimes this causes slight problems...
-            if root: root.v.t.tnodeList = [] 
+            if root:
+                root.v.t.tnodeList = []
+                root.v.t._p_changed = True
         except:
             at.exception("exception preprocessing script")
     
@@ -3790,6 +3795,7 @@ class atFile:
                 # Pychecker doesn't like so many references in a row...
                 t = at.root.v.t
                 t.tnodeList.append(p.v.t)
+                t._p_changed = True
             except AttributeError:
                 pass # Do nothing.  We are creating a script.
     #@-node:ekr.20041005105605.193:putOpenNodeSentinel (sets tnodeList) 4.x
