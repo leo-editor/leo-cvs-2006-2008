@@ -131,25 +131,20 @@ class baseLeoCompare:
         dir2 = g.os_path_normpath(dir2)
         
         if dir1 == dir2:
-            self.show("Directory names are identical.\nPlease pick distinct directories.")
-            return
-            
+            return self.show("Please pick distinct directories.")
         try:
             list1 = os.listdir(dir1)
         except:
-            self.show("invalid directory:" + dir1)
-            return
+            return self.show("invalid directory:" + dir1)
         try:
             list2 = os.listdir(dir2)
         except:
-            self.show("invalid directory:" + dir2)
-            return
+            return self.show("invalid directory:" + dir2)
             
         if self.outputFileName:
             self.openOutputFile()
         ok = self.outputFileName == None or self.outputFile
-        if not ok:
-            return
+        if not ok: return
     
         # Create files and files2, the lists of files to be compared.
         files1 = []
@@ -169,8 +164,8 @@ class baseLeoCompare:
             else:
                 files2.append(f)
     
-        # Compare the files and set the yes, no and fail lists.
-        yes = [] ; no = [] ; fail = []
+        # Compare the files and set the yes, no and missing lists.
+        yes = [] ; no = [] ; missing1 = [] ; missing2 = []
         for f1 in files1:
             head,f2 = g.os_path_split(f1)
             if f2 in files2:
@@ -183,15 +178,21 @@ class baseLeoCompare:
                 except:
                     self.show("exception in filecmp.cmp")
                     g.es_exception()
-                    fail.append(f1)
+                    missing1.append(f1)
             else:
-                fail.append(f1)
+                missing1.append(f1)
+        for f2 in files2:
+            head,f1 = g.os_path_split(f2)
+            if f1 not in files1:
+                missing2.append(f1)
         
         # Print the results.
         for kind, files in (
             ("----- matches --------",yes),
             ("----- mismatches -----",no),
-            ("----- not found ------",fail)):
+            ("----- not found 1 ------",missing1),
+            ("----- not found 2 ------",missing2),
+        ):
             self.show(kind)
             for f in files:
                 self.show(f)
