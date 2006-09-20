@@ -18,7 +18,7 @@ It defines the read-opml-file and write-opml-file commands and corresponding but
 # To do: read/write uA's.
 # To do: handle problems resolving tnodeLists, or get rid of this logic.
 
-__version__ = '0.7'
+__version__ = '0.8'
 
 # For traces.
 printElements = [] # ['all','outline','head','body',]
@@ -67,6 +67,7 @@ printElements = [] # ['all','outline','head','body',]
 # - The read code no longer requires tnx fields.
 # 0.7 EKR: Support for opml_version.  Reading and writing works (except for 
 # tnodeLists) regardless of settings.
+# 0.8 EKR: This plugin now creates the read/write-opml-file commands.
 #@-at
 #@nonl
 #@-node:ekr.20060904103412.2:<< version history >>
@@ -301,6 +302,8 @@ class opmlController:
         self.c = c
         
         c.opmlCommands = self
+        c.k.registerCommand('read-opml-file',None,self.readOpmlCommand,pane='all',verbose=False)
+        c.k.registerCommand('write-opml-file',None,self.writeOpmlCommand,pane='all',verbose=False)
         
         self.currentVnode = None
         self.topVnode = None
@@ -484,11 +487,9 @@ class opmlController:
     #@nonl
     #@-node:ekr.20060904134958.116:parse_opml_file
     #@+node:ekr.20060904103721:readFile
-    def readFile (self,event=None,fileName=None):
+    def readFile (self,fileName):
         
         if not fileName: return
-        
-        # g.trace('='*60)
     
         c = self.c
         
@@ -507,6 +508,7 @@ class opmlController:
             self.setCurrentPosition(c2)
             c2.redraw()
             return c2 # for testing.
+    #@nonl
     #@+node:ekr.20060917214140:setCurrentPosition
     def setCurrentPosition (self,c):
         
@@ -537,8 +539,27 @@ class opmlController:
     #@nonl
     #@-node:ekr.20060918132045:resolveTnodeLists
     #@-node:ekr.20060904103721:readFile
+    #@+node:ekr.20060919201810:readOpmlCommand
+    def readOpmlCommand (self,event=None):
+        
+        '''Open a Leo window containing the contents of an .opml file.'''
+    
+        c = self.c
+    
+        fileName = g.app.gui.runOpenFileDialog(
+            title = "Read OPML",
+            filetypes = [("OPML files","*.opml"), ("All files","*")],
+            defaultextension = ".opml")
+        c.bringToFront()
+    
+        if fileName and len(fileName) > 0:
+            c2 = self.readFile(fileName)
+        else:
+            c.bodyWantsFocus()
+    #@nonl
+    #@-node:ekr.20060919201810:readOpmlCommand
     #@+node:ekr.20060904103721.1:writeFile
-    def writeFile (self,event=None,fileName=None):
+    def writeFile (self,fileName):
         
         if fileName:
     
@@ -547,6 +568,36 @@ class opmlController:
             g.es_print('wrote %s' % fileName)
     #@nonl
     #@-node:ekr.20060904103721.1:writeFile
+    #@+node:ekr.20060919201330:writeOpmlCommand
+    def writeOpmlCommand (self,event=None):
+        
+        '''Save a Leo outline to an OPMLfile.'''
+        
+        c = self.c
+        
+        if g.app.disableSave:
+            g.es("Save commands disabled",color="purple")
+            return
+    
+        # Make sure we never pass None to the ctor.
+        if not c.mFileName:
+            c.frame.title = ""
+            
+        initialfile = g.ensure_extension(c.mFileName, ".opml")
+    
+        # set local fileName, _not_ c.mFileName
+        fileName = g.app.gui.runSaveFileDialog(
+            initialfile = initialfile,
+            title="Write OPML",
+            filetypes=[("OPML files", "*.opml")],
+            defaultextension=".opml")
+        c.bringToFront()
+    
+        if fileName:
+            fileName = g.ensure_extension(fileName, ".opml")
+            c.opmlCommands.writeFile(fileName)
+    #@nonl
+    #@-node:ekr.20060919201330:writeOpmlCommand
     #@-others
 #@nonl
 #@-node:ekr.20060904103412.6:class opmlController
