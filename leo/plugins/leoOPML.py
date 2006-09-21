@@ -54,8 +54,24 @@ the <head> element of the .opml file.
 #@@tabwidth -4
 #@@pagewidth 80
 
-# To do: read/write uA's.
-# To do: handle problems resolving tnodeLists, or get rid of this logic.
+#@<< to do >>
+#@+node:ekr.20060920112018:<< to do >>
+#@@nocolor
+#@+at
+# 
+# - Finish opml_write_leo_globals_attributes
+# 
+# - Support opml_read_derived_files & opml_write_derived_files
+# 
+# ** Make sure reading derived files works.
+#     - handle problems resolving tnodeLists.
+# 
+# - Enhanse open/save commands when this plugin is active.
+# 
+# - read/write uA's.
+#@-at
+#@-node:ekr.20060920112018:<< to do >>
+#@nl
 
 __version__ = '0.8'
 
