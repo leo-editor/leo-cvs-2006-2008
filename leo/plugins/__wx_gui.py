@@ -800,24 +800,26 @@ class wxGui(leoGui.leoGui):
 #@nonl
 #@-node:edream.110203113231.305:wxGui class
 #@+node:edream.110203113231.346:wxLeoApp class
-class wxLeoApp (wx.wxApp):
-    
-    #@    @+others
-    #@+node:edream.110203113231.347:OnInit  (wxLeoApp)
-    def OnInit(self):
-    
-        self.SetAppName("Leo")
-    
-        return True
-    #@nonl
-    #@-node:edream.110203113231.347:OnInit  (wxLeoApp)
-    #@+node:edream.110203113231.348:OnExit
-    def OnExit(self):
+if wx:
+    class wxLeoApp (wx.wxApp):
+        #@        @+others
+        #@+node:edream.110203113231.347:OnInit  (wxLeoApp)
+        def OnInit(self):
         
-        # g.trace()
-        return True
-    #@-node:edream.110203113231.348:OnExit
-    #@-others
+            self.SetAppName("Leo")
+        
+            return True
+        #@nonl
+        #@-node:edream.110203113231.347:OnInit  (wxLeoApp)
+        #@+node:edream.110203113231.348:OnExit
+        def OnExit(self):
+            
+            # g.trace()
+            return True
+        #@-node:edream.110203113231.348:OnExit
+        #@-others
+    
+#@nonl
 #@-node:edream.110203113231.346:wxLeoApp class
 #@+node:edream.110203113231.539:wxLeoBody class
 class wxLeoBody (leoFrame.leoBody):
@@ -1272,545 +1274,547 @@ class wxLeoBody (leoFrame.leoBody):
 #@nonl
 #@-node:edream.110203113231.539:wxLeoBody class
 #@+node:edream.110203113231.349:wxLeoFrame class
-class wxLeoFrame(wx.wxFrame,leoFrame.leoFrame):
-    
-    """A class to create a wxPython from for the main Leo window."""
+if wx:
 
-    #@    @+others
-    #@+node:edream.110203113231.350:Birth & death (wxLeoFrame)
-    #@+node:edream.110203113231.266:__init__
-    def __init__ (self,title):
+    class wxLeoFrame(wx.wxFrame,leoFrame.leoFrame):
         
-        # Init the leoFrame base class.
-        # We will init the wxFrame base class in finishCreate.
-        leoFrame.leoFrame.__init__(self,g.app.gui)
-        
-        self.c = None # set in finishCreate.
-        self.bodyCtrl = None # set in finishCreate
-        self.title = title
-        
-        # g.trace("wxLeoFrame",title)
-        self.activeFrame = None
-        self.lockout = 0 # Suppress further events
-        self.quitting = False
-        self.updateCount = 0
-        self.treeIniting = False
-        self.drawing = False # Lockout recursive draws.
-        self.menuIdDict = {}
-        self.menuBar = None
-        self.ratio = 0.5
-        self.secondary_ratio = 0.5
-        self.startupWindow=False
-        self.use_coloring = False # set True to enable coloring
-        
-        # These vars have corresponding getters/setters.
-        if 0: # now defined in base tree class.
-            self.mDragging = False
-            self.mRootVnode = None
-            self.mTopVnode = None
-            self.mCurrentVnode = None
-    #@nonl
-    #@-node:edream.110203113231.266:__init__
-    #@+node:edream.110203113231.351:__repr__
-    def __repr__ (self):
-        
-        return "wxLeoFrame: " + self.title
-    #@nonl
-    #@-node:edream.110203113231.351:__repr__
-    #@+node:edream.110203113231.260:finishCreate (wxLeoFrame)
-    def finishCreate (self,c):
-        
-        # g.trace('wxLeoFrame')
-        
-        frame = self
-        frame.c = c
-        c.frame = frame
-        
-        # Init the wxFrame base class.  The leoFrame base class has already been inited.
-        wx.wxFrame.__init__(self, None, -1, self.title) # wx.wxNO_3D # hangs.
-        #self.outerPanel = wx.wxPanel(self,-1)
-        #self.iconPanel = wx.wxPanel(self.outerPanel, -1, "iconPanel")
+        """A class to create a wxPython from for the main Leo window."""
     
-        self.CreateStatusBar()
-        #@    << create the splitters >>
-        #@+node:edream.110203113231.261:<< create the splitters >>
-        self.splitter1 = wx.wxSplitterWindow(self,
-            const("cSplitterWindow"),
-            wx.wxDefaultPosition, wx.wxDefaultSize,
-            wx.wxSP_NOBORDER)
-        
-        # No effect, except to create a red flash.
-        if 0:
-            self.splitter1.SetForegroundColour(wx.wxRED)
-            self.splitter1.SetBackgroundColour(wx.wxRED)
-        
-        self.splitter2 = wx.wxSplitterWindow(self.splitter1, -1,
-            wx.wxDefaultPosition, wx.wxDefaultSize,
-            wx.wxSP_NOBORDER)
-            # wx.wxSP_BORDER | wx.wxSP_3D, "splitterWindow");
-        
-        self.splitter1.SetMinimumPaneSize(4)
-        self.splitter2.SetMinimumPaneSize(4)
+        #@        @+others
+        #@+node:edream.110203113231.350:Birth & death (wxLeoFrame)
+        #@+node:edream.110203113231.266:__init__
+        def __init__ (self,title):
+            
+            # Init the leoFrame base class.
+            # We will init the wxFrame base class in finishCreate.
+            leoFrame.leoFrame.__init__(self,g.app.gui)
+            
+            self.c = None # set in finishCreate.
+            self.bodyCtrl = None # set in finishCreate
+            self.title = title
+            
+            # g.trace("wxLeoFrame",title)
+            self.activeFrame = None
+            self.lockout = 0 # Suppress further events
+            self.quitting = False
+            self.updateCount = 0
+            self.treeIniting = False
+            self.drawing = False # Lockout recursive draws.
+            self.menuIdDict = {}
+            self.menuBar = None
+            self.ratio = 0.5
+            self.secondary_ratio = 0.5
+            self.startupWindow=False
+            self.use_coloring = False # set True to enable coloring
+            
+            # These vars have corresponding getters/setters.
+            if 0: # now defined in base tree class.
+                self.mDragging = False
+                self.mRootVnode = None
+                self.mTopVnode = None
+                self.mCurrentVnode = None
         #@nonl
-        #@-node:edream.110203113231.261:<< create the splitters >>
-        #@nl
-        frame.tree = wxLeoTree(frame,self.splitter2)
-        frame.log = wxLeoLog(frame,self.splitter2)
-        frame.body = wxLeoBody(frame,self.splitter1)
-        frame.bodyCtrl = frame.body
-        g.app.setLog(frame.log) # writeWaitingLog hangs without this(!)
-    
-        # Attach the controls to the splitter.
-        self.splitter1.SplitHorizontally(self.splitter2,self.body.bodyCtrl,0)
-        self.splitter2.SplitVertically(self.tree.treeCtrl,self.log.logCtrl,cSplitterWidth/2)
-        
-        self.menu = wxLeoMenu(frame)
-        ###self.menu.createMenuBar()
-        
-        #@    << set the window icon >>
-        #@+node:edream.110203113231.265:<< set the window icon >>
-        if wx.wxPlatform == "__WXMSW__":
-        
-            path = os.path.join(g.app.loadDir,"..","Icons","LeoApp16.ico")
-            icon = wx.wxIcon(path,wx.wxBITMAP_TYPE_ICO,16,16)
-            self.SetIcon(icon)
-        #@-node:edream.110203113231.265:<< set the window icon >>
-        #@nl
-        #@    << declare event handlers for frame >>
-        #@+node:edream.110203113231.264:<< declare event handlers for frame >>
-        if wx.wxPlatform == "__WXMSW__": # Activate events exist only on Windows.
-            wx.EVT_ACTIVATE(self,self.onActivate)
-        else:
-            wx.EVT_SET_FOCUS(self,self.OnSetFocus)
-        
-        wx.EVT_CLOSE(self,self.onCloseLeoFrame)
-        
-        wx.EVT_MENU_OPEN(self,self.updateAllMenus) 
-        
-        if 0: # Causes problems at present.  The screen isn't drawn properly.
-            wx.EVT_SIZE(self,self.onResize)
+        #@-node:edream.110203113231.266:__init__
+        #@+node:edream.110203113231.351:__repr__
+        def __repr__ (self):
+            
+            return "wxLeoFrame: " + self.title
         #@nonl
-        #@-node:edream.110203113231.264:<< declare event handlers for frame >>
-        #@nl
+        #@-node:edream.110203113231.351:__repr__
+        #@+node:edream.110203113231.260:finishCreate (wxLeoFrame)
+        def finishCreate (self,c):
+            
+            # g.trace('wxLeoFrame')
+            
+            frame = self
+            frame.c = c
+            c.frame = frame
+            
+            # Init the wxFrame base class.  The leoFrame base class has already been inited.
+            wx.wxFrame.__init__(self, None, -1, self.title) # wx.wxNO_3D # hangs.
+            #self.outerPanel = wx.wxPanel(self,-1)
+            #self.iconPanel = wx.wxPanel(self.outerPanel, -1, "iconPanel")
         
-        if 0: # Not ready yet...
-            self.wxApp.SetTopWindow(self.wxFrame)
-            self.wxFrame.Show(True)
-            if not g.app.root:
-                g.app.root = self.wxFrame
-                
-        self.colorizer = self.body.colorizer
-                
-        c.initVersion()
-        self.signOnWithVersion()
+            self.CreateStatusBar()
+            #@    << create the splitters >>
+            #@+node:edream.110203113231.261:<< create the splitters >>
+            self.splitter1 = wx.wxSplitterWindow(self,
+                const("cSplitterWindow"),
+                wx.wxDefaultPosition, wx.wxDefaultSize,
+                wx.wxSP_NOBORDER)
+            
+            # No effect, except to create a red flash.
+            if 0:
+                self.splitter1.SetForegroundColour(wx.wxRED)
+                self.splitter1.SetBackgroundColour(wx.wxRED)
+            
+            self.splitter2 = wx.wxSplitterWindow(self.splitter1, -1,
+                wx.wxDefaultPosition, wx.wxDefaultSize,
+                wx.wxSP_NOBORDER)
+                # wx.wxSP_BORDER | wx.wxSP_3D, "splitterWindow");
+            
+            self.splitter1.SetMinimumPaneSize(4)
+            self.splitter2.SetMinimumPaneSize(4)
+            #@nonl
+            #@-node:edream.110203113231.261:<< create the splitters >>
+            #@nl
+            frame.tree = wxLeoTree(frame,self.splitter2)
+            frame.log = wxLeoLog(frame,self.splitter2)
+            frame.body = wxLeoBody(frame,self.splitter1)
+            frame.bodyCtrl = frame.body
+            g.app.setLog(frame.log) # writeWaitingLog hangs without this(!)
         
-        self.injectCallbacks()
-    
-        # Add the frame to the global window list.
-        g.app.windowList.append(self)
-        self.tree.redraw()
-        self.Show(True) # required on some platforms: a cross-platform bug.
-    #@nonl
-    #@-node:edream.110203113231.260:finishCreate (wxLeoFrame)
-    #@+node:edream.111403141810:initialRatios
-    def initialRatios (self):
-    
-        config = g.app.config
-        s = config.getWindowPref("initial_splitter_orientation")
-        verticalFlag = s == None or (s != "h" and s != "horizontal")
+            # Attach the controls to the splitter.
+            self.splitter1.SplitHorizontally(self.splitter2,self.body.bodyCtrl,0)
+            self.splitter2.SplitVertically(self.tree.treeCtrl,self.log.logCtrl,cSplitterWidth/2)
+            
+            self.menu = wxLeoMenu(frame)
+            ###self.menu.createMenuBar()
+            
+            #@    << set the window icon >>
+            #@+node:edream.110203113231.265:<< set the window icon >>
+            if wx.wxPlatform == "__WXMSW__":
+            
+                path = os.path.join(g.app.loadDir,"..","Icons","LeoApp16.ico")
+                icon = wx.wxIcon(path,wx.wxBITMAP_TYPE_ICO,16,16)
+                self.SetIcon(icon)
+            #@-node:edream.110203113231.265:<< set the window icon >>
+            #@nl
+            #@    << declare event handlers for frame >>
+            #@+node:edream.110203113231.264:<< declare event handlers for frame >>
+            if wx.wxPlatform == "__WXMSW__": # Activate events exist only on Windows.
+                wx.EVT_ACTIVATE(self,self.onActivate)
+            else:
+                wx.EVT_SET_FOCUS(self,self.OnSetFocus)
+            
+            wx.EVT_CLOSE(self,self.onCloseLeoFrame)
+            
+            wx.EVT_MENU_OPEN(self,self.updateAllMenus) 
+            
+            if 0: # Causes problems at present.  The screen isn't drawn properly.
+                wx.EVT_SIZE(self,self.onResize)
+            #@nonl
+            #@-node:edream.110203113231.264:<< declare event handlers for frame >>
+            #@nl
+            
+            if 0: # Not ready yet...
+                self.wxApp.SetTopWindow(self.wxFrame)
+                self.wxFrame.Show(True)
+                if not g.app.root:
+                    g.app.root = self.wxFrame
+                    
+            self.colorizer = self.body.colorizer
+                    
+            c.initVersion()
+            self.signOnWithVersion()
+            
+            self.injectCallbacks()
         
-        # Tweaked for tk.  Other tweaks may be best for wx.
-        if verticalFlag:
-            r = config.getFloatWindowPref("initial_vertical_ratio")
-            if r == None or r < 0.0 or r > 1.0: r = 0.5
-            r2 = config.getFloatWindowPref("initial_vertical_secondary_ratio")
-            if r2 == None or r2 < 0.0 or r2 > 1.0: r2 = 0.8
+            # Add the frame to the global window list.
+            g.app.windowList.append(self)
+            self.tree.redraw()
+            self.Show(True) # required on some platforms: a cross-platform bug.
+        #@nonl
+        #@-node:edream.110203113231.260:finishCreate (wxLeoFrame)
+        #@+node:edream.111403141810:initialRatios
+        def initialRatios (self):
+        
+            config = g.app.config
+            s = config.getWindowPref("initial_splitter_orientation")
+            verticalFlag = s == None or (s != "h" and s != "horizontal")
+            
+            # Tweaked for tk.  Other tweaks may be best for wx.
+            if verticalFlag:
+                r = config.getFloatWindowPref("initial_vertical_ratio")
+                if r == None or r < 0.0 or r > 1.0: r = 0.5
+                r2 = config.getFloatWindowPref("initial_vertical_secondary_ratio")
+                if r2 == None or r2 < 0.0 or r2 > 1.0: r2 = 0.8
+            else:
+                r = config.getFloatWindowPref("initial_horizontal_ratio")
+                if r == None or r < 0.0 or r > 1.0: r = 0.3
+                r2 = config.getFloatWindowPref("initial_horizontal_secondary_ratio")
+                if r2 == None or r2 < 0.0 or r2 > 1.0: r2 = 0.8
+        
+            return verticalFlag,r,r2
+        #@nonl
+        #@-node:edream.111403141810:initialRatios
+        #@+node:edream.111503105816:injectCallbacks
+        def injectCallbacks(self):
+            
+            import leoNodes
+            
+            # Some callback is required.
+            def doNothingCallback(*args,**keys):
+                pass
+        
+            for name in (
+                "OnBoxClick","OnDrag","OnEndDrag",
+                "OnHeadlineClick","OnHeadlineRightClick","OnHeadlineKey",
+                "OnHyperLinkControlClick","OnHyperLinkEnter","OnHyperLinkLeave",
+                "OnIconClick","OnIconDoubleClick","OnIconRightClick"):
+        
+                # g.trace(f)
+                g.funcToMethod(doNothingCallback,leoNodes.vnode,name=name)
+        #@nonl
+        #@-node:edream.111503105816:injectCallbacks
+        #@+node:edream.111303141147:signOnWithVersion
+        def signOnWithVersion (self):
+        
+            c = self.c
+            color = c.config.getColor("log_error_color")
+            signon = c.getSignOnLine()
+            n1,n2,n3,junk,junk=sys.version_info
+            
+            g.es("Leo Log Window...",color=color)
+            g.es(signon)
+            g.es("Python %d.%d.%d wxWindows %s" % (n1,n2,n3,wx.wxVERSION_STRING))
+            g.enl()
+        #@nonl
+        #@-node:edream.111303141147:signOnWithVersion
+        #@+node:edream.111503213533:destroySelf
+        def destroySelf(self):
+            
+            self.Destroy()
+        #@nonl
+        #@-node:edream.111503213533:destroySelf
+        #@-node:edream.110203113231.350:Birth & death (wxLeoFrame)
+        #@+node:edream.110203113231.267:event handlers
+        #@+node:edream.110203113231.268:Frame events
+        #@+node:edream.110203113231.269:onActivate & OnSetFocus
+        if wx.wxPlatform == '__WXMSW__':
+            
+            def onActivate(self,event):
+                if event.GetActive():
+                    self.activeFrame = self
+                    if self.c:
+                        pass ## self.c.checkAllFileDates()
         else:
-            r = config.getFloatWindowPref("initial_horizontal_ratio")
-            if r == None or r < 0.0 or r > 1.0: r = 0.3
-            r2 = config.getFloatWindowPref("initial_horizontal_secondary_ratio")
-            if r2 == None or r2 < 0.0 or r2 > 1.0: r2 = 0.8
-    
-        return verticalFlag,r,r2
-    #@nonl
-    #@-node:edream.111403141810:initialRatios
-    #@+node:edream.111503105816:injectCallbacks
-    def injectCallbacks(self):
-        
-        import leoNodes
-        
-        # Some callback is required.
-        def doNothingCallback(*args,**keys):
-            pass
-    
-        for name in (
-            "OnBoxClick","OnDrag","OnEndDrag",
-            "OnHeadlineClick","OnHeadlineRightClick","OnHeadlineKey",
-            "OnHyperLinkControlClick","OnHyperLinkEnter","OnHyperLinkLeave",
-            "OnIconClick","OnIconDoubleClick","OnIconRightClick"):
-    
-            # g.trace(f)
-            g.funcToMethod(doNothingCallback,leoNodes.vnode,name=name)
-    #@nonl
-    #@-node:edream.111503105816:injectCallbacks
-    #@+node:edream.111303141147:signOnWithVersion
-    def signOnWithVersion (self):
-    
-        c = self.c
-        color = c.config.getColor("log_error_color")
-        signon = c.getSignOnLine()
-        n1,n2,n3,junk,junk=sys.version_info
-        
-        g.es("Leo Log Window...",color=color)
-        g.es(signon)
-        g.es("Python %d.%d.%d wxWindows %s" % (n1,n2,n3,wx.wxVERSION_STRING))
-        g.enl()
-    #@nonl
-    #@-node:edream.111303141147:signOnWithVersion
-    #@+node:edream.111503213533:destroySelf
-    def destroySelf(self):
-        
-        self.Destroy()
-    #@nonl
-    #@-node:edream.111503213533:destroySelf
-    #@-node:edream.110203113231.350:Birth & death (wxLeoFrame)
-    #@+node:edream.110203113231.267:event handlers
-    #@+node:edream.110203113231.268:Frame events
-    #@+node:edream.110203113231.269:onActivate & OnSetFocus
-    if wx.wxPlatform == '__WXMSW__':
-        
-        def onActivate(self,event):
-            if event.GetActive():
+            
+            def OnSetFocus(self,event):
                 self.activeFrame = self
                 if self.c:
-                    pass ## self.c.checkAllFileDates()
-    else:
+                    self.c.checkAllFileDates()
+        #@-node:edream.110203113231.269:onActivate & OnSetFocus
+        #@+node:edream.110203113231.270:onCloseLeoFrame
+        def onCloseLeoFrame(self,event):
         
-        def OnSetFocus(self,event):
-            self.activeFrame = self
-            if self.c:
-                self.c.checkAllFileDates()
-    #@-node:edream.110203113231.269:onActivate & OnSetFocus
-    #@+node:edream.110203113231.270:onCloseLeoFrame
-    def onCloseLeoFrame(self,event):
-    
-        frame = self
-        
-        # The g.app class does all the hard work now.
-        if not g.app.closeLeoWindow(frame):
-            if event.CanVeto():
-                event.Veto()
-    #@nonl
-    #@-node:edream.110203113231.270:onCloseLeoFrame
-    #@+node:edream.110203113231.273:onResize
-    def onResize(self,event):
-    
-        if mIniting:
-            return # Can be called during initialization.
-    
-        # Resize splitter1 with equal sized panes.
-        size = self.splitter1.GetClientSize()
-        self.splitter1.SetClientSize(size)
-        w = size.GetWidth() ; h = size.GetHeight()
-        if self.splitter1.GetSplitMode()== wx.wxSPLIT_VERTICAL:
-            self.splitter1.SetSashPosition(w/2,True)
-        else:
-            self.splitter1.SetSashPosition(h/2,True)
-    
-        # Resize splitter2 with equal sized panes.
-        size = self.splitter2.GetClientSize()
-        w = size.GetWidth() ; h = size.GetHeight()
-        if self.splitter2.GetSplitMode()== wx.wxSPLIT_VERTICAL:
-            self.splitter2.SetSashPosition((3*w)/5,True)
-        else:
-            self.splitter2.SetSashPosition((3*h)/5,True)
-    #@-node:edream.110203113231.273:onResize
-    #@-node:edream.110203113231.268:Frame events
-    #@-node:edream.110203113231.267:event handlers
-    #@+node:edream.110203113231.379:wxFrame dummy routines: (to do: minor)
-    def after_idle(*args):
-        pass
-    
-    def get_window_info (self):
-        """Return the window information."""
-        return g.app.gui.get_window_info(self)
-    
-    def resizePanesToRatio(self,ratio1,ratio2):
-        pass
-    
-    def setInitialWindowGeometry (self):
-        pass
-    
-    def setTopGeometry (self,w,h,x,y,adjustSize=True):
-        pass
-    
-    def lift (self):
-        self.Raise()
-    
-    def update (self):
-        pass
-    #@nonl
-    #@-node:edream.110203113231.379:wxFrame dummy routines: (to do: minor)
-    #@+node:edream.110203113231.378:Externally visible routines...
-    #@+node:edream.110203113231.380:deiconify
-    def deiconify (self):
-    
-        self.Iconize(False)
-    #@nonl
-    #@-node:edream.110203113231.380:deiconify
-    #@+node:edream.110203113231.381:getTitle
-    def getTitle (self):
-        
-        return self.title
-    #@-node:edream.110203113231.381:getTitle
-    #@+node:edream.111303135410:setTitle
-    def setTitle (self,title):
-    
-        self.title = title
-        self.SetTitle(title) # Call the wx code.
-    #@nonl
-    #@-node:edream.111303135410:setTitle
-    #@-node:edream.110203113231.378:Externally visible routines...
-    #@+node:edream.111303100039:Gui-dependent commands (to do)
-    #@+node:edream.111303100039.1:Edit Menu...
-    #@+node:edream.111303101257:abortEditLabelCommand
-    def abortEditLabelCommand (self):
-    
-        g.es("abortEditLabelCommand not ready yet")
-        return
-        
-        c = self.c ; v = c.currentVnode ; tree = self.tree
-        # g.trace(v)
-        if self.revertHeadline and c.edit_widget(v) and v == self.editVnode:
+            frame = self
             
-            # g.trace(`self.revertHeadline`)
-            c.edit_widget(v).delete("1.0","end")
-            c.edit_widget(v).insert("end",self.revertHeadline)
-            tree.idle_head_key(v) # Must be done immediately.
-            tree.revertHeadline = None
-            tree.select(v)
-            if v and len(v.t.joinList) > 0:
+            # The g.app class does all the hard work now.
+            if not g.app.closeLeoWindow(frame):
+                if event.CanVeto():
+                    event.Veto()
+        #@nonl
+        #@-node:edream.110203113231.270:onCloseLeoFrame
+        #@+node:edream.110203113231.273:onResize
+        def onResize(self,event):
+        
+            if mIniting:
+                return # Can be called during initialization.
+        
+            # Resize splitter1 with equal sized panes.
+            size = self.splitter1.GetClientSize()
+            self.splitter1.SetClientSize(size)
+            w = size.GetWidth() ; h = size.GetHeight()
+            if self.splitter1.GetSplitMode()== wx.wxSPLIT_VERTICAL:
+                self.splitter1.SetSashPosition(w/2,True)
+            else:
+                self.splitter1.SetSashPosition(h/2,True)
+        
+            # Resize splitter2 with equal sized panes.
+            size = self.splitter2.GetClientSize()
+            w = size.GetWidth() ; h = size.GetHeight()
+            if self.splitter2.GetSplitMode()== wx.wxSPLIT_VERTICAL:
+                self.splitter2.SetSashPosition((3*w)/5,True)
+            else:
+                self.splitter2.SetSashPosition((3*h)/5,True)
+        #@-node:edream.110203113231.273:onResize
+        #@-node:edream.110203113231.268:Frame events
+        #@-node:edream.110203113231.267:event handlers
+        #@+node:edream.110203113231.379:wxFrame dummy routines: (to do: minor)
+        def after_idle(*args):
+            pass
+        
+        def get_window_info (self):
+            """Return the window information."""
+            return g.app.gui.get_window_info(self)
+        
+        def resizePanesToRatio(self,ratio1,ratio2):
+            pass
+        
+        def setInitialWindowGeometry (self):
+            pass
+        
+        def setTopGeometry (self,w,h,x,y,adjustSize=True):
+            pass
+        
+        def lift (self):
+            self.Raise()
+        
+        def update (self):
+            pass
+        #@nonl
+        #@-node:edream.110203113231.379:wxFrame dummy routines: (to do: minor)
+        #@+node:edream.110203113231.378:Externally visible routines...
+        #@+node:edream.110203113231.380:deiconify
+        def deiconify (self):
+        
+            self.Iconize(False)
+        #@nonl
+        #@-node:edream.110203113231.380:deiconify
+        #@+node:edream.110203113231.381:getTitle
+        def getTitle (self):
+            
+            return self.title
+        #@-node:edream.110203113231.381:getTitle
+        #@+node:edream.111303135410:setTitle
+        def setTitle (self,title):
+        
+            self.title = title
+            self.SetTitle(title) # Call the wx code.
+        #@nonl
+        #@-node:edream.111303135410:setTitle
+        #@-node:edream.110203113231.378:Externally visible routines...
+        #@+node:edream.111303100039:Gui-dependent commands (to do)
+        #@+node:edream.111303100039.1:Edit Menu...
+        #@+node:edream.111303101257:abortEditLabelCommand
+        def abortEditLabelCommand (self):
+        
+            g.es("abortEditLabelCommand not ready yet")
+            return
+            
+            c = self.c ; v = c.currentVnode ; tree = self.tree
+            # g.trace(v)
+            if self.revertHeadline and c.edit_widget(v) and v == self.editVnode:
+                
+                # g.trace(`self.revertHeadline`)
+                c.edit_widget(v).delete("1.0","end")
+                c.edit_widget(v).insert("end",self.revertHeadline)
+                tree.idle_head_key(v) # Must be done immediately.
+                tree.revertHeadline = None
+                tree.select(v)
+                if v and len(v.t.joinList) > 0:
+                    # 3/26/03: changed redraw_now to force_redraw.
+                    tree.force_redraw() # force a redraw of joined headlines.
+        #@nonl
+        #@-node:edream.111303101257:abortEditLabelCommand
+        #@+node:edream.111303101257.1:endEditLabelCommand
+        def endEditLabelCommand (self):
+            
+            g.es("endEditLabelCommand not ready yet")
+            return
+        
+            c = self.c ; tree = self.tree ; v = self.editVnode
+        
+            if v and c.edit_widget(v):
+                tree.select(v)
+        
+            if v: # Bug fix 10/9/02: also redraw ancestor headlines.
                 # 3/26/03: changed redraw_now to force_redraw.
                 tree.force_redraw() # force a redraw of joined headlines.
-    #@nonl
-    #@-node:edream.111303101257:abortEditLabelCommand
-    #@+node:edream.111303101257.1:endEditLabelCommand
-    def endEditLabelCommand (self):
         
-        g.es("endEditLabelCommand not ready yet")
-        return
-    
-        c = self.c ; tree = self.tree ; v = self.editVnode
-    
-        if v and c.edit_widget(v):
-            tree.select(v)
-    
-        if v: # Bug fix 10/9/02: also redraw ancestor headlines.
-            # 3/26/03: changed redraw_now to force_redraw.
-            tree.force_redraw() # force a redraw of joined headlines.
-    
-        gui.set_focus(c,c.frame.bodyCtrl) # 10/14/02
-    #@nonl
-    #@-node:edream.111303101257.1:endEditLabelCommand
-    #@+node:edream.111303100039.6:insertHeadlineTime
-    def insertHeadlineTime (self):
+            gui.set_focus(c,c.frame.bodyCtrl) # 10/14/02
+        #@nonl
+        #@-node:edream.111303101257.1:endEditLabelCommand
+        #@+node:edream.111303100039.6:insertHeadlineTime
+        def insertHeadlineTime (self):
+            
+            g.es("insertHeadlineTime not ready yet")
+            return
         
-        g.es("insertHeadlineTime not ready yet")
-        return
-    
-        frame = self ; c = frame.c ; v = c.currentVnode()
-        h = v.headString() # Remember the old value.
-    
-        if c.edit_widget(v):
-            sel1,sel2 = g.app.gui.getTextSelection(c.edit_widget(v))
-            if sel1 and sel2 and sel1 != sel2: # 7/7/03
-                c.edit_widget(v).delete(sel1,sel2)
-            c.edit_widget(v).insert("insert",c.getTime(body=False))
-            frame.idle_head_key(v)
-    
-        # A kludge to get around not knowing whether we are editing or not.
-        if h.strip() == v.headString().strip():
-            g.es("Edit headline to append date/time")
-    #@nonl
-    #@-node:edream.111303100039.6:insertHeadlineTime
-    #@-node:edream.111303100039.1:Edit Menu...
-    #@+node:edream.111303100039.7:Window Menu
-    #@+node:edream.111303100039.8:cascade
-    def cascade(self):
+            frame = self ; c = frame.c ; v = c.currentVnode()
+            h = v.headString() # Remember the old value.
         
-        g.es("cascade not ready yet")
-        return
-    
-        x,y,delta = 10,10,10
-        for frame in g.app.windowList:
-            top = frame.top
-            # Compute w,h
-            top.update_idletasks() # Required to get proper info.
-            geom = top.geometry() # geom = "WidthxHeight+XOffset+YOffset"
-            dim,junkx,junky = string.split(geom,'+')
-            w,h = string.split(dim,'x')
-            w,h = int(w),int(h)
-            # Set new x,y and old w,h
-            frame.setTopGeometry(w,h,x,y)
-            # Compute the new offsets.
-            x += 30 ; y += 30
-            if x > 200:
-                x = 10 + delta ; y = 40 + delta
-                delta += 10
-    #@nonl
-    #@-node:edream.111303100039.8:cascade
-    #@+node:edream.111303100039.9:equalSizedPanes
-    def equalSizedPanes(self):
+            if c.edit_widget(v):
+                sel1,sel2 = g.app.gui.getTextSelection(c.edit_widget(v))
+                if sel1 and sel2 and sel1 != sel2: # 7/7/03
+                    c.edit_widget(v).delete(sel1,sel2)
+                c.edit_widget(v).insert("insert",c.getTime(body=False))
+                frame.idle_head_key(v)
         
-        g.es("equalSizedPanes not ready yet")
-        return
-    
-        frame = self
-        frame.resizePanesToRatio(0.5,frame.secondary_ratio)
-    #@-node:edream.111303100039.9:equalSizedPanes
-    #@+node:edream.111303100039.10:hideLogWindow
-    def hideLogWindow (self):
+            # A kludge to get around not knowing whether we are editing or not.
+            if h.strip() == v.headString().strip():
+                g.es("Edit headline to append date/time")
+        #@nonl
+        #@-node:edream.111303100039.6:insertHeadlineTime
+        #@-node:edream.111303100039.1:Edit Menu...
+        #@+node:edream.111303100039.7:Window Menu
+        #@+node:edream.111303100039.8:cascade
+        def cascade(self):
+            
+            g.es("cascade not ready yet")
+            return
         
-        g.es("hideLogWindow not ready yet")
-        return
+            x,y,delta = 10,10,10
+            for frame in g.app.windowList:
+                top = frame.top
+                # Compute w,h
+                top.update_idletasks() # Required to get proper info.
+                geom = top.geometry() # geom = "WidthxHeight+XOffset+YOffset"
+                dim,junkx,junky = string.split(geom,'+')
+                w,h = string.split(dim,'x')
+                w,h = int(w),int(h)
+                # Set new x,y and old w,h
+                frame.setTopGeometry(w,h,x,y)
+                # Compute the new offsets.
+                x += 30 ; y += 30
+                if x > 200:
+                    x = 10 + delta ; y = 40 + delta
+                    delta += 10
+        #@nonl
+        #@-node:edream.111303100039.8:cascade
+        #@+node:edream.111303100039.9:equalSizedPanes
+        def equalSizedPanes(self):
+            
+            g.es("equalSizedPanes not ready yet")
+            return
         
-        frame = self
-        frame.divideLeoSplitter2(0.99, not frame.splitVerticalFlag)
-    #@nonl
-    #@-node:edream.111303100039.10:hideLogWindow
-    #@+node:edream.111303100039.11:minimizeAll
-    def minimizeAll(self):
+            frame = self
+            frame.resizePanesToRatio(0.5,frame.secondary_ratio)
+        #@-node:edream.111303100039.9:equalSizedPanes
+        #@+node:edream.111303100039.10:hideLogWindow
+        def hideLogWindow (self):
+            
+            g.es("hideLogWindow not ready yet")
+            return
+            
+            frame = self
+            frame.divideLeoSplitter2(0.99, not frame.splitVerticalFlag)
+        #@nonl
+        #@-node:edream.111303100039.10:hideLogWindow
+        #@+node:edream.111303100039.11:minimizeAll
+        def minimizeAll(self):
+            
+            g.es("minimizeAll not ready yet")
+            return
         
-        g.es("minimizeAll not ready yet")
-        return
-    
-        self.minimize(g.app.findFrame)
-        self.minimize(g.app.pythonFrame)
-        for frame in g.app.windowList:
-            self.minimize(frame)
+            self.minimize(g.app.findFrame)
+            self.minimize(g.app.pythonFrame)
+            for frame in g.app.windowList:
+                self.minimize(frame)
+            
+        def minimize(self, frame):
         
-    def minimize(self, frame):
-    
-        if frame:
-            frame.Show(False)
-    #@nonl
-    #@-node:edream.111303100039.11:minimizeAll
-    #@+node:edream.111303101709:toggleActivePane
-    def toggleActivePane(self):
+            if frame:
+                frame.Show(False)
+        #@nonl
+        #@-node:edream.111303100039.11:minimizeAll
+        #@+node:edream.111303101709:toggleActivePane
+        def toggleActivePane(self):
+            
+            # This can't work from the menu...
+            
+            g.es("toggleActivePane not ready yet")
+            return
         
-        # This can't work from the menu...
+            if self.FindFocus() == self.body.bodyCtrl:
+                self.tree.SetFocus()
+            else:
+                self.body.bodyCtrl.SetFocus()
+        #@nonl
+        #@-node:edream.111303101709:toggleActivePane
+        #@+node:edream.111303100039.12:toggleSplitDirection
+        # The key invariant: self.splitVerticalFlag tells the alignment of the main splitter.
+        def toggleSplitDirection(self):
+            
+            g.es("toggleSplitDirection not ready yet")
+            return
         
-        g.es("toggleActivePane not ready yet")
-        return
-    
-        if self.FindFocus() == self.body.bodyCtrl:
-            self.tree.SetFocus()
-        else:
-            self.body.bodyCtrl.SetFocus()
-    #@nonl
-    #@-node:edream.111303101709:toggleActivePane
-    #@+node:edream.111303100039.12:toggleSplitDirection
-    # The key invariant: self.splitVerticalFlag tells the alignment of the main splitter.
-    def toggleSplitDirection(self):
+            # Abbreviations.
+            frame = self
+            bar1 = self.bar1 ; bar2 = self.bar2
+            split1Pane1,split1Pane2 = self.split1Pane1,self.split1Pane2
+            split2Pane1,split2Pane2 = self.split2Pane1,self.split2Pane2
+            # Switch directions.
+            verticalFlag = self.splitVerticalFlag = not self.splitVerticalFlag
+            orientation = g.choose(verticalFlag,"vertical","horizontal")
+            g.app.config.setWindowPref("initial_splitter_orientation",orientation)
+            # Reconfigure the bars.
+            bar1.place_forget()
+            bar2.place_forget()
+            self.configureBar(bar1,verticalFlag)
+            self.configureBar(bar2,not verticalFlag)
+            # Make the initial placements again.
+            self.placeSplitter(bar1,split1Pane1,split1Pane2,verticalFlag)
+            self.placeSplitter(bar2,split2Pane1,split2Pane2,not verticalFlag)
+            # Adjust the log and body panes to give more room around the bars.
+            self.reconfigurePanes()
+            # Redraw with an appropriate ratio.
+            vflag,ratio,secondary_ratio = frame.initialRatios()
+            self.resizePanesToRatio(ratio,secondary_ratio)
+        #@nonl
+        #@-node:edream.111303100039.12:toggleSplitDirection
+        #@-node:edream.111303100039.7:Window Menu
+        #@+node:edream.111703103908:Help Menu...
+        #@+node:edream.111703103908.2:leoHelp
+        def leoHelp (self):
+            
+            g.es("leoHelp not ready yet")
+            
+            return ##
+            
+            file = os.path.join(g.app.loadDir,"..","doc","sbooks.chm")
+            file = g.toUnicode(file,g.app.tkEncoding) # 10/20/03
         
-        g.es("toggleSplitDirection not ready yet")
-        return
-    
-        # Abbreviations.
-        frame = self
-        bar1 = self.bar1 ; bar2 = self.bar2
-        split1Pane1,split1Pane2 = self.split1Pane1,self.split1Pane2
-        split2Pane1,split2Pane2 = self.split2Pane1,self.split2Pane2
-        # Switch directions.
-        verticalFlag = self.splitVerticalFlag = not self.splitVerticalFlag
-        orientation = g.choose(verticalFlag,"vertical","horizontal")
-        g.app.config.setWindowPref("initial_splitter_orientation",orientation)
-        # Reconfigure the bars.
-        bar1.place_forget()
-        bar2.place_forget()
-        self.configureBar(bar1,verticalFlag)
-        self.configureBar(bar2,not verticalFlag)
-        # Make the initial placements again.
-        self.placeSplitter(bar1,split1Pane1,split1Pane2,verticalFlag)
-        self.placeSplitter(bar2,split2Pane1,split2Pane2,not verticalFlag)
-        # Adjust the log and body panes to give more room around the bars.
-        self.reconfigurePanes()
-        # Redraw with an appropriate ratio.
-        vflag,ratio,secondary_ratio = frame.initialRatios()
-        self.resizePanesToRatio(ratio,secondary_ratio)
-    #@nonl
-    #@-node:edream.111303100039.12:toggleSplitDirection
-    #@-node:edream.111303100039.7:Window Menu
-    #@+node:edream.111703103908:Help Menu...
-    #@+node:edream.111703103908.2:leoHelp
-    def leoHelp (self):
+            if os.path.exists(file):
+                os.startfile(file)
+            else:	
+                answer = g.app.gui.runAskYesNoDialog(c,
+                    "Download Tutorial?",
+                    "Download tutorial (sbooks.chm) from SourceForge?")
         
-        g.es("leoHelp not ready yet")
-        
-        return ##
-        
-        file = os.path.join(g.app.loadDir,"..","doc","sbooks.chm")
-        file = g.toUnicode(file,g.app.tkEncoding) # 10/20/03
-    
-        if os.path.exists(file):
-            os.startfile(file)
-        else:	
-            answer = g.app.gui.runAskYesNoDialog(c,
-                "Download Tutorial?",
-                "Download tutorial (sbooks.chm) from SourceForge?")
-    
-            if answer == "yes":
-                try:
-                    if 0: # Download directly.  (showProgressBar needs a lot of work)
-                        url = "http://umn.dl.sourceforge.net/sourceforge/leo/sbooks.chm"
-                        import urllib
-                        self.scale = None
-                        urllib.urlretrieve(url,file,self.showProgressBar)
-                        if self.scale:
-                            self.scale.destroy()
+                if answer == "yes":
+                    try:
+                        if 0: # Download directly.  (showProgressBar needs a lot of work)
+                            url = "http://umn.dl.sourceforge.net/sourceforge/leo/sbooks.chm"
+                            import urllib
                             self.scale = None
-                    else:
-                        url = "http://prdownloads.sourceforge.net/leo/sbooks.chm?download"
-                        import webbrowser
-                        os.chdir(g.app.loadDir)
-                        webbrowser.open_new(url)
-                except:
-                    g.es("exception dowloading sbooks.chm")
-                    g.es_exception()
-    #@nonl
-    #@+node:edream.111703103908.3:showProgressBar
-    def showProgressBar (self,count,size,total):
-    
-        # g.trace("count,size,total:" + `count` + "," + `size` + "," + `total`)
-        if self.scale == None:
-            #@        << create the scale widget >>
-            #@+node:edream.111703103908.4:<< create the scale widget >>
-            top = Tk.Toplevel()
-            top.title("Download progress")
-            self.scale = scale = Tk.Scale(top,state="normal",orient="horizontal",from_=0,to=total)
-            scale.pack()
-            top.lift()
-            #@nonl
-            #@-node:edream.111703103908.4:<< create the scale widget >>
-            #@nl
-        self.scale.set(count*size)
-        self.scale.update_idletasks()
-    #@nonl
-    #@-node:edream.111703103908.3:showProgressBar
-    #@-node:edream.111703103908.2:leoHelp
-    #@-node:edream.111703103908:Help Menu...
-    #@-node:edream.111303100039:Gui-dependent commands (to do)
-    #@+node:edream.110203113231.384:updateAllMenus (wxFrame)
-    def updateAllMenus(self,event):
+                            urllib.urlretrieve(url,file,self.showProgressBar)
+                            if self.scale:
+                                self.scale.destroy()
+                                self.scale = None
+                        else:
+                            url = "http://prdownloads.sourceforge.net/leo/sbooks.chm?download"
+                            import webbrowser
+                            os.chdir(g.app.loadDir)
+                            webbrowser.open_new(url)
+                    except:
+                        g.es("exception dowloading sbooks.chm")
+                        g.es_exception()
+        #@nonl
+        #@+node:edream.111703103908.3:showProgressBar
+        def showProgressBar (self,count,size,total):
         
-        """Called whenever any menu is pulled down."""
-        
-        # We define this routine to strip off the even param.
-        
-        self.menu.updateAllMenus()
-    #@nonl
-    #@-node:edream.110203113231.384:updateAllMenus (wxFrame)
-    #@-others
+            # g.trace("count,size,total:" + `count` + "," + `size` + "," + `total`)
+            if self.scale == None:
+                #@        << create the scale widget >>
+                #@+node:edream.111703103908.4:<< create the scale widget >>
+                top = Tk.Toplevel()
+                top.title("Download progress")
+                self.scale = scale = Tk.Scale(top,state="normal",orient="horizontal",from_=0,to=total)
+                scale.pack()
+                top.lift()
+                #@nonl
+                #@-node:edream.111703103908.4:<< create the scale widget >>
+                #@nl
+            self.scale.set(count*size)
+            self.scale.update_idletasks()
+        #@nonl
+        #@-node:edream.111703103908.3:showProgressBar
+        #@-node:edream.111703103908.2:leoHelp
+        #@-node:edream.111703103908:Help Menu...
+        #@-node:edream.111303100039:Gui-dependent commands (to do)
+        #@+node:edream.110203113231.384:updateAllMenus (wxFrame)
+        def updateAllMenus(self,event):
+            
+            """Called whenever any menu is pulled down."""
+            
+            # We define this routine to strip off the even param.
+            
+            self.menu.updateAllMenus()
+        #@nonl
+        #@-node:edream.110203113231.384:updateAllMenus (wxFrame)
+        #@-others
 #@nonl
 #@-node:edream.110203113231.349:wxLeoFrame class
 #@+node:edream.110203113231.553:wxLeoLog class
@@ -2160,340 +2164,342 @@ class wxLeoMenu (leoMenu.leoMenu):
 #@nonl
 #@-node:edream.111303095242:wxLeoMenu class
 #@+node:edream.110203113231.598:wxLeoPrefs class
-class wxLeoPrefs (wx.wxFrame):
-    #@    @+others
-    #@+node:edream.110203113231.599:wxLeoPrefs.__init__
-    def __init__(c):
-        
-        # Init the base frame.
-        wxFrame.__init__(None,-1,"Leo Preferences",
-            wx.wxPoint(50,50),wxDefaultSize,
-            wxMINIMIZE_BOX | wxTHICK_FRAME | wxSYSTEM_MENU | wxCAPTION)
-    
-        self.c = c
-        mPrefsPanel = PrefsPanel(self)
-    
-        # Resize to fit the panel.
-        sizer = wxBoxSizer(wxVERTICAL)
-        sizer.Add(mPrefsPanel)
-        SetAutoLayout(True)# tell dialog to use sizer
-        SetSizer(sizer) # actually set the sizer
-        sizer.Fit(self)# set size to minimum size as calculated by the sizer
-        sizer.SetSizeHints(self)# set size hints to honour mininum size
-    
-        # Set the window icon.
-        if wx.wxPlatform == '__WXMSW__':
-            self.SetIcon(wxIcon("LeoIcon"))
+if wx:
+    class wxLeoPrefs (wx.wxFrame):
+        #@        @+others
+        #@+node:edream.110203113231.599:wxLeoPrefs.__init__
+        def __init__(c):
             
-        #@    << define event handlers for wxLeoPrefsFrame >>
-        #@+node:edream.110203113231.600:<< define event handlers for wxLeoPrefsFrame >>
-        wx.EVT_ACTIVATE(self,self.OnActivatePrefsFrame)
-        wx.EVT_CLOSE(self,self.OnClosePrefsFrame)
+            # Init the base frame.
+            wxFrame.__init__(None,-1,"Leo Preferences",
+                wx.wxPoint(50,50),wxDefaultSize,
+                wxMINIMIZE_BOX | wxTHICK_FRAME | wxSYSTEM_MENU | wxCAPTION)
         
-        # Global options panel...
-        wx.EVT_TEXT(self,cPrefsPageWidthText,self.OnPageWidthText)
-        wx.EVT_CHECKBOX(self,cPrefsDoneBatCheckBox,self.OnDoneBatCheckBox)
-        wx.EVT_CHECKBOX(self,cPrefsUnBatCheckBox,self.OnUnBatCheckBox)
+            self.c = c
+            mPrefsPanel = PrefsPanel(self)
         
-        # Tangle options panel...
-        wx.EVT_TEXT(self,cPrefsTangleDirectoryText,self.OnTangleDirectoryText)
-        wx.EVT_CHECKBOX(self,cPrefsHeaderCheckBox,self.OnHeaderCheckBox)
-        wx.EVT_CHECKBOX(self,cPrefsDocChunksCheckBox,self.OnDocChunksCheckBox)
+            # Resize to fit the panel.
+            sizer = wxBoxSizer(wxVERTICAL)
+            sizer.Add(mPrefsPanel)
+            SetAutoLayout(True)# tell dialog to use sizer
+            SetSizer(sizer) # actually set the sizer
+            sizer.Fit(self)# set size to minimum size as calculated by the sizer
+            sizer.SetSizeHints(self)# set size hints to honour mininum size
         
-        # Target language panel...
-        wx.EVT_RADIOBOX(self,cPrefsTargetLanguageRadioBox,self.OnTargetLanguageRadioBox)
+            # Set the window icon.
+            if wx.wxPlatform == '__WXMSW__':
+                self.SetIcon(wxIcon("LeoIcon"))
+                
+            #@    << define event handlers for wxLeoPrefsFrame >>
+            #@+node:edream.110203113231.600:<< define event handlers for wxLeoPrefsFrame >>
+            wx.EVT_ACTIVATE(self,self.OnActivatePrefsFrame)
+            wx.EVT_CLOSE(self,self.OnClosePrefsFrame)
+            
+            # Global options panel...
+            wx.EVT_TEXT(self,cPrefsPageWidthText,self.OnPageWidthText)
+            wx.EVT_CHECKBOX(self,cPrefsDoneBatCheckBox,self.OnDoneBatCheckBox)
+            wx.EVT_CHECKBOX(self,cPrefsUnBatCheckBox,self.OnUnBatCheckBox)
+            
+            # Tangle options panel...
+            wx.EVT_TEXT(self,cPrefsTangleDirectoryText,self.OnTangleDirectoryText)
+            wx.EVT_CHECKBOX(self,cPrefsHeaderCheckBox,self.OnHeaderCheckBox)
+            wx.EVT_CHECKBOX(self,cPrefsDocChunksCheckBox,self.OnDocChunksCheckBox)
+            
+            # Target language panel...
+            wx.EVT_RADIOBOX(self,cPrefsTargetLanguageRadioBox,self.OnTargetLanguageRadioBox)
+            #@nonl
+            #@-node:edream.110203113231.600:<< define event handlers for wxLeoPrefsFrame >>
+            #@nl
         #@nonl
-        #@-node:edream.110203113231.600:<< define event handlers for wxLeoPrefsFrame >>
-        #@nl
-    #@nonl
-    #@-node:edream.110203113231.599:wxLeoPrefs.__init__
-    #@+node:edream.110203113231.601:initialize
-    def initialize (self,void):
+        #@-node:edream.110203113231.599:wxLeoPrefs.__init__
+        #@+node:edream.110203113231.601:initialize
+        def initialize (self,void):
+            
+            # This may be called during construction.
+            if not gPrefsFrame:  return
+            s = ""
+            if self.activeFrame:
+                s += "%d" % self.activeFrame.mPageWidth
+                mPrefsPanel.mPrefsPageWidthText.SetValue(s)
+                mPrefsPanel.mPrefsDoneBatCheckBox.SetValue(self.activeFrame.mTangleBatchFlag)
+                mPrefsPanel.mPrefsUnBatCheckBox.SetValue(self.activeFrame.mUntangleBatchFlag)
+                mPrefsPanel.mPrefsTangleDirectoryText.SetValue(self.activeFrame.mDefaultDirectory)
+                mPrefsPanel.mPrefsHeaderCheckBox.SetValue(self.activeFrame.mUseHeaderFlag)
+                mPrefsPanel.mPrefsDocChunksCheckBox.SetValue(self.activeFrame.mOutputDocFlag)
+                mPrefsPanel.mTargetLanguageRadioBox.SetSelection(languageToTarget(self.activeFrame.mTargetLanguage))
+            else:
+                s += "%d" % arg_page_width
+                mPrefsPanel.mPrefsPageWidthText.SetValue(s)
+                mPrefsPanel.mPrefsDoneBatCheckBox.SetValue(arg_tangle_batch)
+                mPrefsPanel.mPrefsUnBatCheckBox.SetValue(arg_untangle_batch)
+                # No global setting for director.
+                mPrefsPanel.mPrefsHeaderCheckBox.SetValue(arg_use_header_flag)
+                mPrefsPanel.mPrefsDocChunksCheckBox.SetValue(arg_output_doc_flag)
+                mPrefsPanel.mTargetLanguageRadioBox.SetSelection(languageToTarget(arg_target_language))
+        #@nonl
+        #@-node:edream.110203113231.601:initialize
+        #@+node:edream.110203113231.602:targetToLanguage (should be in Leo's core)
+        if 0:
+            def targetToLanguage(self,target):
+                
+                pass
         
-        # This may be called during construction.
-        if not gPrefsFrame:  return
-        s = ""
-        if self.activeFrame:
-            s += "%d" % self.activeFrame.mPageWidth
-            mPrefsPanel.mPrefsPageWidthText.SetValue(s)
-            mPrefsPanel.mPrefsDoneBatCheckBox.SetValue(self.activeFrame.mTangleBatchFlag)
-            mPrefsPanel.mPrefsUnBatCheckBox.SetValue(self.activeFrame.mUntangleBatchFlag)
-            mPrefsPanel.mPrefsTangleDirectoryText.SetValue(self.activeFrame.mDefaultDirectory)
-            mPrefsPanel.mPrefsHeaderCheckBox.SetValue(self.activeFrame.mUseHeaderFlag)
-            mPrefsPanel.mPrefsDocChunksCheckBox.SetValue(self.activeFrame.mOutputDocFlag)
-            mPrefsPanel.mTargetLanguageRadioBox.SetSelection(languageToTarget(self.activeFrame.mTargetLanguage))
-        else:
-            s += "%d" % arg_page_width
-            mPrefsPanel.mPrefsPageWidthText.SetValue(s)
-            mPrefsPanel.mPrefsDoneBatCheckBox.SetValue(arg_tangle_batch)
-            mPrefsPanel.mPrefsUnBatCheckBox.SetValue(arg_untangle_batch)
-            # No global setting for director.
-            mPrefsPanel.mPrefsHeaderCheckBox.SetValue(arg_use_header_flag)
-            mPrefsPanel.mPrefsDocChunksCheckBox.SetValue(arg_output_doc_flag)
-            mPrefsPanel.mTargetLanguageRadioBox.SetSelection(languageToTarget(arg_target_language))
-    #@nonl
-    #@-node:edream.110203113231.601:initialize
-    #@+node:edream.110203113231.602:targetToLanguage (should be in Leo's core)
-    if 0:
-        def targetToLanguage(self,target):
+                # switch(target)
+                # case c_target: return c_language
+                # case cweb_target: return cweb_language
+                # case html_target: return html_language
+                # case java_target: return java_language
+                # case perl_target: return perl_language
+                # case perlpod_target: return perlpod_language
+                # case pascal_target: return pascal_language
+                # case plain_text_target: return plain_text_language
+                # case python_target: return python_language
+                # default: return plain_text_language
+        #@-node:edream.110203113231.602:targetToLanguage (should be in Leo's core)
+        #@+node:edream.110203113231.603:languageToTarget (should be in Leo's core)
+        def languageToTarget(self,language):
             
             pass
-    
-            # switch(target)
-            # case c_target: return c_language
-            # case cweb_target: return cweb_language
-            # case html_target: return html_language
-            # case java_target: return java_language
-            # case perl_target: return perl_language
-            # case perlpod_target: return perlpod_language
-            # case pascal_target: return pascal_language
-            # case plain_text_target: return plain_text_language
-            # case python_target: return python_language
-            # default: return plain_text_language
-    #@-node:edream.110203113231.602:targetToLanguage (should be in Leo's core)
-    #@+node:edream.110203113231.603:languageToTarget (should be in Leo's core)
-    def languageToTarget(self,language):
         
-        pass
-    
-        # switch(language)
-        # case c_language: return c_target
-        # case cweb_language: return cweb_target
-        # case html_language: return html_target
-        # case java_language: return java_target
-        # case pascal_language: return pascal_target
-        # case perl_language: return perl_target
-        # case perlpod_language: return perlpod_target
-        # case plain_text_language: return plain_text_target
-        # case python_language: return python_target
-        # default: return plain_text_target
-    #@nonl
-    #@-node:edream.110203113231.603:languageToTarget (should be in Leo's core)
-    #@+node:edream.110203113231.604:Event handlers
-    #@+node:edream.110203113231.605:OnActivatePrefsFrame
-    def OnActivatePrefsFrame(self,event):
-    
-        if gPrefsFrame and event.GetActive():
-            gPrefsFrame.initialize()
-    #@-node:edream.110203113231.605:OnActivatePrefsFrame
-    #@+node:edream.110203113231.606:OnClosePrefsFrame
-    #@+at 
-    #@nonl
-    # This is an event handler function called when the user has tried to 
-    # close a frame or dialog box.
-    # 
-    # It is called via the  wxWindow::Close function, so that the application 
-    # can also invoke the handler programmatically.  You should check whether 
-    # the application is forcing the deletion of the window using CanVeto. If 
-    # CanVeto returns FALSE, it is  not possible to skip window deletion; 
-    # destroy the window using wxWindow::Destroy. If not, it is up to you 
-    # whether you respond  by destroying the window.  If you don't destroy the 
-    # window, you should call wxCloseEvent::Veto to let the calling code know 
-    # that you did not destroy the  window. This allows the wxWindow::Close 
-    # function to return TRUE or FALSE depending on whether the close 
-    # instruction was  honoured or not.
-    #@-at
-    #@@c
-    
-    def OnClosePrefsFrame(self,event):
-    
-        if event.CanVeto():
-            event.Veto()# Did not destroy the window.
-            self.Show(False) # Just hide the window.
-        else:
-            self.Destroy()
-            gPrefsFrame = None
-    #@-node:edream.110203113231.606:OnClosePrefsFrame
-    #@+node:edream.110203113231.607:OnPageWidthText
-    def OnPageWidthText(self,event):
-        
-        text = event.GetEventObject()
-        s = text.GetValue()
-    
-        try:
-            n = int(s)
-            arg_page_width = default_page_width = n
-            if self.activeFrame:
-                self.activeFrame.mPageWidth = arg_page_width
-        except: pass
-    
-    #@-node:edream.110203113231.607:OnPageWidthText
-    #@+node:edream.110203113231.608:OnDoneBatCheckBox
-    def OnDoneBatCheckBox(self,event):
-        
-        box =event.GetEventObject()
-        arg_tangle_batch = default_tangle_batch = box.GetValue()
-        if self.activeFrame:
-            self.activeFrame.mTangleBatchFlag = arg_tangle_batch
-    
-    #@-node:edream.110203113231.608:OnDoneBatCheckBox
-    #@+node:edream.110203113231.609:OnUnBatCheckBox
-    def OnUnBatCheckBox(self,event):
-        
-        box = event.GetEventObject()
-        arg_untangle_batch = default_untangle_batch = box.GetValue()
-        if self.activeFrame:
-            self.activeFrame.mUntangleBatchFlag = arg_untangle_batch
-    
-    #@-node:edream.110203113231.609:OnUnBatCheckBox
-    #@+node:edream.110203113231.610:OnTangleDirectoryText
-    def OnTangleDirectoryText(self,event):
-    
-        text = event.GetEventObject()
-        s = text.GetValue()
-        if self.activeFrame:
-            self.activeFrame.mDefaultDirectory = s
-            if self.activeFrame.mDefaultDirectory.Length()> 0:
-                wxSetWorkingDirectory(self.activeFrame.mDefaultDirectory)
-            elif self.activeFrame.mOpenDirectory.Length()> 0:
-                wxSetWorkingDirectory(self.activeFrame.mOpenDirectory)
-    #@nonl
-    #@-node:edream.110203113231.610:OnTangleDirectoryText
-    #@+node:edream.110203113231.611:OnHeaderCheckBox
-    def OnHeaderCheckBox(self,event):
-        
-        box = event.GetEventObject()
-        arg_use_header_flag = default_use_header_flag = box.GetValue()
-        if self.activeFrame:
-            self.activeFrame.mUseHeaderFlag = arg_use_header_flag
-    
-    #@-node:edream.110203113231.611:OnHeaderCheckBox
-    #@+node:edream.110203113231.612:OnDocChunksCheckBox
-    def OnDocChunksCheckBox(self,event):
-        
-        box = event.GetEventObject()
-        arg_output_doc_flag = default_output_doc_flag = box.GetValue()
-        if self.activeFrame:
-            self.activeFrame.mOutputDocFlag = arg_output_doc_flag
-    
-    #@-node:edream.110203113231.612:OnDocChunksCheckBox
-    #@+node:edream.110203113231.613:OnTargetLanguageRadioBox
-    def OnTargetLanguageRadioBox(self,event):
-        
-        box = event.GetEventObject()
-        targetIndex = box.GetSelection()
-        default_target_language = arg_target_language = targetToLanguage(targetIndex)
-    
-        # Careful:  The @language or @nocolor will override this.
-        if self.activeFrame:
-            self.activeFrame.mTargetLanguage = arg_target_language
-            c = self.activeFrame.c
-            v = c.currentVnode()
-            self.activeFrame.c.scanAllDirectives(v,cDontRequirePath,cDontIssueErrors)
-    #@nonl
-    #@-node:edream.110203113231.613:OnTargetLanguageRadioBox
-    #@-node:edream.110203113231.604:Event handlers
-    #@+node:edream.110203113231.614:PrefsPanel.__init__
-    def __init__(frame):
-        
-        # Init the base class.
-        wxPanel.__init__(frame,-1)
-        
-        topSizer = wxBoxSizer(wxVERTICAL)
-        #@    << Create the Global Options static box >>
-        #@+node:edream.110203113231.615:<< Create the Global Options static box >>
-        globalOptionsBox = wxStaticBox(self,-1,
-            "Global Options",(10,10),(250,110),0,"")
-        sizer = wxStaticBoxSizer(globalOptionsBox,wxVERTICAL)
-        lineSizer = wxBoxSizer(wxHORIZONTAL)
-        sizer.Add(0,5)# Extra vertical space.
-        
-        # Text control.
-        mPrefsPageWidthText = wxTextCtrl(self,
-            cPrefsPageWidthText,"132",
-            wxDefaultPosition,wx.wxSize(50,25),0,wxDefaultValidator,"")
-        
-        lineSizer.Add(mPrefsPageWidthText)
-        lineSizer.Add(20,0)# Width.
-        
-        # Label for text control.
-        lineSizer.Add(
-            wxStaticText(self,-1,"Page Width",
-                (-1,10),(100,25),0,""),
-            0,wxBORDER | wxTOP,5)# Vertical offset 5.
-        sizer.Add(lineSizer)
-        
-        mPrefsDoneBatCheckBox = wxCheckBox(self,
-            cPrefsDoneBatCheckBox,
-            "Execute Leo_done.bat after Tangle",
-            wxDefaultPosition,(235,25),0,wxDefaultValidator,"")
-        sizer.Add(mPrefsDoneBatCheckBox)
-        
-        mPrefsUnBatCheckBox = wxCheckBox(self,
-            cPrefsUnBatCheckBox,
-            "Execute Leo_un.bat after Untangle",
-            wxDefaultPosition,(235,25),0,wxDefaultValidator,"")
-        sizer.Add(mPrefsUnBatCheckBox)
+            # switch(language)
+            # case c_language: return c_target
+            # case cweb_language: return cweb_target
+            # case html_language: return html_target
+            # case java_language: return java_target
+            # case pascal_language: return pascal_target
+            # case perl_language: return perl_target
+            # case perlpod_language: return perlpod_target
+            # case plain_text_language: return plain_text_target
+            # case python_language: return python_target
+            # default: return plain_text_target
         #@nonl
-        #@-node:edream.110203113231.615:<< Create the Global Options static box >>
-        #@nl
-        topSizer.Add(sizer)
-        topSizer.Add(0,10)
-        #@    << Create the Default Tangle Options static box >>
-        #@+node:edream.110203113231.616:<< Create the Default Tangle Options static box >>
-        optionsBox = wxStaticBox(self,-1,
-            "Default Tangle Options",
-            wxDefaultPosition,wx.wxSize(250,210),
-            0,"zzzz")
+        #@-node:edream.110203113231.603:languageToTarget (should be in Leo's core)
+        #@+node:edream.110203113231.604:Event handlers
+        #@+node:edream.110203113231.605:OnActivatePrefsFrame
+        def OnActivatePrefsFrame(self,event):
         
-        sizer2 = wxStaticBoxSizer(optionsBox,wxVERTICAL)
-        sizer2.Add(0,10)# Vertical space.
-        # Label.
-        sizer2.Add(
-            wxStaticText(self,-1,
-                "Default Tangle directory",
-                wxDefaultPosition,wx.wxSize(165,25),0,""),
-            0,wxBORDER | wxLEFT,30)# Indent 30.
-        
-        mPrefsTangleDirectoryText = wxTextCtrl(self,
-            cPrefsTangleDirectoryText,"",
-            wxDefaultPosition,wx.wxSize(230,25),0,
-            wxDefaultValidator,"")
-        sizer2.Add(mPrefsTangleDirectoryText)
-        
-        mPrefsHeaderCheckBox = wxCheckBox(self,
-            cPrefsHeaderCheckBox,
-            "Tangle outputs header line",
-            wxDefaultPosition,wx.wxSize(235,25),0,
-            wxDefaultValidator,"")
-        sizer2.Add(mPrefsHeaderCheckBox)
-        
-        mPrefsDocChunksCheckBox = wxCheckBox(self,
-            cPrefsDocChunksCheckBox,
-            "Tangle outputs document chunks",
-            wxDefaultPosition,wx.wxSize(235,25),0,
-            wxDefaultValidator,"")
-        sizer2.Add(mPrefsDocChunksCheckBox)
+            if gPrefsFrame and event.GetActive():
+                gPrefsFrame.initialize()
+        #@-node:edream.110203113231.605:OnActivatePrefsFrame
+        #@+node:edream.110203113231.606:OnClosePrefsFrame
+        #@+at 
         #@nonl
-        #@-node:edream.110203113231.616:<< Create the Default Tangle Options static box >>
-        #@nl
-        topSizer.Add(sizer2)
-        topSizer.Add(0,10)
-        #@    << Create the Default Target Language radio buttons >>
-        #@+node:edream.110203113231.617:<< Create the Default Target Language radio buttons >>
-        targetLanguageChoices= [
-            "C/C++","CWEB","HTML","Java",
-            "Pascal","Perl","Perl + POD","Plain text","Python"]
+        # This is an event handler function called when the user has tried to 
+        # close a frame or dialog box.
+        # 
+        # It is called via the  wxWindow::Close function, so that the 
+        # application can also invoke the handler programmatically.  You 
+        # should check whether the application is forcing the deletion of the 
+        # window using CanVeto. If CanVeto returns FALSE, it is  not possible 
+        # to skip window deletion; destroy the window using wxWindow::Destroy. 
+        # If not, it is up to you whether you respond  by destroying the 
+        # window.  If you don't destroy the window, you should call 
+        # wxCloseEvent::Veto to let the calling code know that you did not 
+        # destroy the  window. This allows the wxWindow::Close function to 
+        # return TRUE or FALSE depending on whether the close instruction was  
+        # honoured or not.
+        #@-at
+        #@@c
+        
+        def OnClosePrefsFrame(self,event):
+        
+            if event.CanVeto():
+                event.Veto()# Did not destroy the window.
+                self.Show(False) # Just hide the window.
+            else:
+                self.Destroy()
+                gPrefsFrame = None
+        #@-node:edream.110203113231.606:OnClosePrefsFrame
+        #@+node:edream.110203113231.607:OnPageWidthText
+        def OnPageWidthText(self,event):
             
-        # We specify rows so that items will be sorted down the columns.
-        mTargetLanguageRadioBox = wxRadioBox(self,
-            cPrefsTargetLanguageRadioBox,
-            "Default Target Language",
-            wxDefaultPosition,wx.wxSize(245,145),
-            WXSIZEOF(targetLanguageChoices),
-            targetLanguageChoices,
-            5,wxRA_SPECIFY_ROWS)
+            text = event.GetEventObject()
+            s = text.GetValue()
+        
+            try:
+                n = int(s)
+                arg_page_width = default_page_width = n
+                if self.activeFrame:
+                    self.activeFrame.mPageWidth = arg_page_width
+            except: pass
+        
+        #@-node:edream.110203113231.607:OnPageWidthText
+        #@+node:edream.110203113231.608:OnDoneBatCheckBox
+        def OnDoneBatCheckBox(self,event):
+            
+            box =event.GetEventObject()
+            arg_tangle_batch = default_tangle_batch = box.GetValue()
+            if self.activeFrame:
+                self.activeFrame.mTangleBatchFlag = arg_tangle_batch
+        
+        #@-node:edream.110203113231.608:OnDoneBatCheckBox
+        #@+node:edream.110203113231.609:OnUnBatCheckBox
+        def OnUnBatCheckBox(self,event):
+            
+            box = event.GetEventObject()
+            arg_untangle_batch = default_untangle_batch = box.GetValue()
+            if self.activeFrame:
+                self.activeFrame.mUntangleBatchFlag = arg_untangle_batch
+        
+        #@-node:edream.110203113231.609:OnUnBatCheckBox
+        #@+node:edream.110203113231.610:OnTangleDirectoryText
+        def OnTangleDirectoryText(self,event):
+        
+            text = event.GetEventObject()
+            s = text.GetValue()
+            if self.activeFrame:
+                self.activeFrame.mDefaultDirectory = s
+                if self.activeFrame.mDefaultDirectory.Length()> 0:
+                    wxSetWorkingDirectory(self.activeFrame.mDefaultDirectory)
+                elif self.activeFrame.mOpenDirectory.Length()> 0:
+                    wxSetWorkingDirectory(self.activeFrame.mOpenDirectory)
         #@nonl
-        #@-node:edream.110203113231.617:<< Create the Default Target Language radio buttons >>
-        #@nl
-        topSizer.Add(mTargetLanguageRadioBox)
-        SetAutoLayout(True)# tell dialog to use sizer
-        SetSizer(topSizer) # actually set the sizer
-        topSizer.Fit(self)# set size to minimum size as calculated by the sizer
-        topSizer.SetSizeHints(self)# set size hints to honour mininum size
-    #@nonl
-    #@-node:edream.110203113231.614:PrefsPanel.__init__
-    #@-others
+        #@-node:edream.110203113231.610:OnTangleDirectoryText
+        #@+node:edream.110203113231.611:OnHeaderCheckBox
+        def OnHeaderCheckBox(self,event):
+            
+            box = event.GetEventObject()
+            arg_use_header_flag = default_use_header_flag = box.GetValue()
+            if self.activeFrame:
+                self.activeFrame.mUseHeaderFlag = arg_use_header_flag
+        
+        #@-node:edream.110203113231.611:OnHeaderCheckBox
+        #@+node:edream.110203113231.612:OnDocChunksCheckBox
+        def OnDocChunksCheckBox(self,event):
+            
+            box = event.GetEventObject()
+            arg_output_doc_flag = default_output_doc_flag = box.GetValue()
+            if self.activeFrame:
+                self.activeFrame.mOutputDocFlag = arg_output_doc_flag
+        
+        #@-node:edream.110203113231.612:OnDocChunksCheckBox
+        #@+node:edream.110203113231.613:OnTargetLanguageRadioBox
+        def OnTargetLanguageRadioBox(self,event):
+            
+            box = event.GetEventObject()
+            targetIndex = box.GetSelection()
+            default_target_language = arg_target_language = targetToLanguage(targetIndex)
+        
+            # Careful:  The @language or @nocolor will override this.
+            if self.activeFrame:
+                self.activeFrame.mTargetLanguage = arg_target_language
+                c = self.activeFrame.c
+                v = c.currentVnode()
+                self.activeFrame.c.scanAllDirectives(v,cDontRequirePath,cDontIssueErrors)
+        #@nonl
+        #@-node:edream.110203113231.613:OnTargetLanguageRadioBox
+        #@-node:edream.110203113231.604:Event handlers
+        #@+node:edream.110203113231.614:PrefsPanel.__init__
+        def __init__(frame):
+            
+            # Init the base class.
+            wxPanel.__init__(frame,-1)
+            
+            topSizer = wxBoxSizer(wxVERTICAL)
+            #@    << Create the Global Options static box >>
+            #@+node:edream.110203113231.615:<< Create the Global Options static box >>
+            globalOptionsBox = wxStaticBox(self,-1,
+                "Global Options",(10,10),(250,110),0,"")
+            sizer = wxStaticBoxSizer(globalOptionsBox,wxVERTICAL)
+            lineSizer = wxBoxSizer(wxHORIZONTAL)
+            sizer.Add(0,5)# Extra vertical space.
+            
+            # Text control.
+            mPrefsPageWidthText = wxTextCtrl(self,
+                cPrefsPageWidthText,"132",
+                wxDefaultPosition,wx.wxSize(50,25),0,wxDefaultValidator,"")
+            
+            lineSizer.Add(mPrefsPageWidthText)
+            lineSizer.Add(20,0)# Width.
+            
+            # Label for text control.
+            lineSizer.Add(
+                wxStaticText(self,-1,"Page Width",
+                    (-1,10),(100,25),0,""),
+                0,wxBORDER | wxTOP,5)# Vertical offset 5.
+            sizer.Add(lineSizer)
+            
+            mPrefsDoneBatCheckBox = wxCheckBox(self,
+                cPrefsDoneBatCheckBox,
+                "Execute Leo_done.bat after Tangle",
+                wxDefaultPosition,(235,25),0,wxDefaultValidator,"")
+            sizer.Add(mPrefsDoneBatCheckBox)
+            
+            mPrefsUnBatCheckBox = wxCheckBox(self,
+                cPrefsUnBatCheckBox,
+                "Execute Leo_un.bat after Untangle",
+                wxDefaultPosition,(235,25),0,wxDefaultValidator,"")
+            sizer.Add(mPrefsUnBatCheckBox)
+            #@nonl
+            #@-node:edream.110203113231.615:<< Create the Global Options static box >>
+            #@nl
+            topSizer.Add(sizer)
+            topSizer.Add(0,10)
+            #@    << Create the Default Tangle Options static box >>
+            #@+node:edream.110203113231.616:<< Create the Default Tangle Options static box >>
+            optionsBox = wxStaticBox(self,-1,
+                "Default Tangle Options",
+                wxDefaultPosition,wx.wxSize(250,210),
+                0,"zzzz")
+            
+            sizer2 = wxStaticBoxSizer(optionsBox,wxVERTICAL)
+            sizer2.Add(0,10)# Vertical space.
+            # Label.
+            sizer2.Add(
+                wxStaticText(self,-1,
+                    "Default Tangle directory",
+                    wxDefaultPosition,wx.wxSize(165,25),0,""),
+                0,wxBORDER | wxLEFT,30)# Indent 30.
+            
+            mPrefsTangleDirectoryText = wxTextCtrl(self,
+                cPrefsTangleDirectoryText,"",
+                wxDefaultPosition,wx.wxSize(230,25),0,
+                wxDefaultValidator,"")
+            sizer2.Add(mPrefsTangleDirectoryText)
+            
+            mPrefsHeaderCheckBox = wxCheckBox(self,
+                cPrefsHeaderCheckBox,
+                "Tangle outputs header line",
+                wxDefaultPosition,wx.wxSize(235,25),0,
+                wxDefaultValidator,"")
+            sizer2.Add(mPrefsHeaderCheckBox)
+            
+            mPrefsDocChunksCheckBox = wxCheckBox(self,
+                cPrefsDocChunksCheckBox,
+                "Tangle outputs document chunks",
+                wxDefaultPosition,wx.wxSize(235,25),0,
+                wxDefaultValidator,"")
+            sizer2.Add(mPrefsDocChunksCheckBox)
+            #@nonl
+            #@-node:edream.110203113231.616:<< Create the Default Tangle Options static box >>
+            #@nl
+            topSizer.Add(sizer2)
+            topSizer.Add(0,10)
+            #@    << Create the Default Target Language radio buttons >>
+            #@+node:edream.110203113231.617:<< Create the Default Target Language radio buttons >>
+            targetLanguageChoices= [
+                "C/C++","CWEB","HTML","Java",
+                "Pascal","Perl","Perl + POD","Plain text","Python"]
+                
+            # We specify rows so that items will be sorted down the columns.
+            mTargetLanguageRadioBox = wxRadioBox(self,
+                cPrefsTargetLanguageRadioBox,
+                "Default Target Language",
+                wxDefaultPosition,wx.wxSize(245,145),
+                WXSIZEOF(targetLanguageChoices),
+                targetLanguageChoices,
+                5,wxRA_SPECIFY_ROWS)
+            #@nonl
+            #@-node:edream.110203113231.617:<< Create the Default Target Language radio buttons >>
+            #@nl
+            topSizer.Add(mTargetLanguageRadioBox)
+            SetAutoLayout(True)# tell dialog to use sizer
+            SetSizer(topSizer) # actually set the sizer
+            topSizer.Fit(self)# set size to minimum size as calculated by the sizer
+            topSizer.SetSizeHints(self)# set size hints to honour mininum size
+        #@nonl
+        #@-node:edream.110203113231.614:PrefsPanel.__init__
+        #@-others
 #@-node:edream.110203113231.598:wxLeoPrefs class
 #@+node:edream.111603213219:wxLeoTree class
 class wxLeoTree (leoFrame.leoTree):
@@ -3418,481 +3424,481 @@ class wxSearchWidget:
 #@nonl
 #@-node:edream.111503093140:wxSearchWidget
 #@+node:edream.110203113231.561:wxFindFrame class
-class wxFindFrame (wx.wxFrame,leoFind.leoFind):
-
-    #@    @+others
-    #@+node:edream.110203113231.563:FindFrame.__init__
-    def __init__ (self,c):
-    
-        # Init the base classes
-        wx.wxFrame.__init__(self,None,-1,"Leo Find/Change",
-            wx.wxPoint(50,50), wx.wxDefaultSize,
-            wx.wxMINIMIZE_BOX | wx.wxTHICK_FRAME | wx.wxSYSTEM_MENU | wx.wxCAPTION)
-    
-        # At present this is a global window, so the c param doesn't make sense.
-        # This must be changed to match how Leo presently works.
-        leoFind.leoFind.__init__(self,c)
+if wx:
+    class wxFindFrame (wx.wxFrame,leoFind.leoFind):
+        #@        @+others
+        #@+node:edream.110203113231.563:FindFrame.__init__
+        def __init__ (self,c):
         
-        self.dict = {} # For communication between panel and frame.
-        self.findPanel = wxFindPanel(self)
+            # Init the base classes
+            wx.wxFrame.__init__(self,None,-1,"Leo Find/Change",
+                wx.wxPoint(50,50), wx.wxDefaultSize,
+                wx.wxMINIMIZE_BOX | wx.wxTHICK_FRAME | wx.wxSYSTEM_MENU | wx.wxCAPTION)
         
-        self.s_text = wxSearchWidget() # wx.wxTextCtrl(self,-1) # Working text widget.
-    
-        #@    << resize the frame to fit the panel >>
-        #@+node:edream.111503074302:<< resize the frame to fit the panel >>
-        sizer = wx.wxBoxSizer(wx.wxVERTICAL)
-        sizer.Add(self.findPanel)
-        self.SetAutoLayout(True)# tell dialog to use sizer
-        self.SetSizer(sizer) # actually set the sizer
-        sizer.Fit(self)# set size to minimum size as calculated by the sizer
-        sizer.SetSizeHints(self)# set size hints to honour mininum size
-        #@nonl
-        #@-node:edream.111503074302:<< resize the frame to fit the panel >>
-        #@nl
-    
-        # Set the window icon.
-        if wx.wxPlatform == '__WXMSW__':
-            pass ## self.SetIcon(wx.wxIcon("LeoIcon"))
-    
-        # Set the focus.
-        self.findPanel.findText.SetFocus()
-    
-        #@    << define event handlers >>
-        #@+node:edream.110203113231.564:<< define event handlers >>
-        wx.EVT_CLOSE(self,self.onCloseFindFrame)
-        
-        #@<< create event handlers for buttons >>
-        #@+node:edream.111503085739:<< create event handlers for buttons >>
-        for name,command in (
-            ("changeButton",self.changeButton),
-            ("changeAllButton",self.changeAllButton),
-            ("changeThenFindButton",self.changeThenFindButton),
-            ("findButton",self.findButton),
-            ("findAllButton",self.findAllButton)):
-                
-            def eventHandler(event,command=command):
-                # g.trace(command)
-                command()
-        
-            id = const_dict.get(name)
-            assert(id)
-            wx.EVT_BUTTON(self,id,eventHandler)
-        #@nonl
-        #@-node:edream.111503085739:<< create event handlers for buttons >>
-        #@nl
-        
-        #@<< create event handlers for check boxes and text >>
-        #@+node:edream.111503085739.1:<< create event handlers for check boxes and text >>
-        textKeys = ["find_text","change_text"]
-        keys = textKeys[:]
-        for item in self.intKeys:
-            keys.append(item)
-        
-        for name in keys:
-        
-            if name not in textKeys:
-                name += "_flag"
-        
-            def eventHandler(event,self=self,name=name):
-                box = event.GetEventObject()
-                val = box.GetValue()
-                # g.trace(name,val)
-                setattr(self.c,name,val)
-        
-            id = const_dict.get(name)
-            if id:
-                if name in textKeys:
-                    wx.EVT_TEXT(self,id,eventHandler)
-                else:
-                    wx.EVT_CHECKBOX(self,id,eventHandler)
-        #@nonl
-        #@-node:edream.111503085739.1:<< create event handlers for check boxes and text >>
-        #@nl
-        #@nonl
-        #@-node:edream.110203113231.564:<< define event handlers >>
-        #@nl
-    #@-node:edream.110203113231.563:FindFrame.__init__
-    #@+node:edream.111403151611.1:bringToFront
-    def bringToFront (self):
-        
-        g.app.gui.bringToFront(self)
-        self.init(self.c)
-        self.findPanel.findText.SetFocus()
-        self.findPanel.findText.SetSelection(-1,-1)
-    #@nonl
-    #@-node:edream.111403151611.1:bringToFront
-    #@+node:edream.111503213733:destroySelf
-    def destroySelf (self):
-        
-        self.Destroy()
-    #@nonl
-    #@-node:edream.111503213733:destroySelf
-    #@+node:edream.111503211508:onCloseFindFrame
-    def onCloseFindFrame (self,event):
-    
-        if event.CanVeto():
-            event.Veto()
-            self.Hide()
-    #@nonl
-    #@-node:edream.111503211508:onCloseFindFrame
-    #@+node:edream.111403135745:set_ivars
-    def set_ivars (self,c):
-        
-        """Init the commander ivars from the find panel."""
-        
-        g.trace()
-    
-        # N.B.: separate c.ivars are much more convenient than a dict.
-        for key in self.intKeys:
-            key = key + "_flag"
-            data = self.dict.get(key)
-            if data:
-                box,id = data
-                val = box.GetValue()
-                #g.trace(key,val)
-                setattr(c,key,val)
-            else:
-                #g.trace("no data",key)
-                setattr(c,key,False)
-    
-        fp = self.findPanel
-        c.find_text = fp.findText.GetValue()
-        c.change_text = fp.changeText.GetValue()
-    #@nonl
-    #@-node:edream.111403135745:set_ivars
-    #@+node:edream.111503091617:init_s_ctrl
-    def init_s_ctrl (self,s):
-        
-        c = self.c
-        t = self.s_text # the dummy widget
-    
-        # Set the text for searching.
-        t.text = s
-        
-        # Set the insertion point.
-        if c.reverse_flag:
-            t.SetInsertionPointEnd()
-        else:
-            t.SetInsertionPoint(0)
-        return t
-    #@nonl
-    #@-node:edream.111503091617:init_s_ctrl
-    #@+node:edream.111503093522:gui_search
-    def gui_search (self,t,find_text,index,
-        stopindex,backwards,regexp,nocase):
+            # At present this is a global window, so the c param doesn't make sense.
+            # This must be changed to match how Leo presently works.
+            leoFind.leoFind.__init__(self,c)
             
-        g.trace(index,stopindex,backwards,regexp,nocase)
+            self.dict = {} # For communication between panel and frame.
+            self.findPanel = wxFindPanel(self)
+            
+            self.s_text = wxSearchWidget() # wx.wxTextCtrl(self,-1) # Working text widget.
         
-        s = t.text # t is the dummy text widget
+            #@    << resize the frame to fit the panel >>
+            #@+node:edream.111503074302:<< resize the frame to fit the panel >>
+            sizer = wx.wxBoxSizer(wx.wxVERTICAL)
+            sizer.Add(self.findPanel)
+            self.SetAutoLayout(True)# tell dialog to use sizer
+            self.SetSizer(sizer) # actually set the sizer
+            sizer.Fit(self)# set size to minimum size as calculated by the sizer
+            sizer.SetSizeHints(self)# set size hints to honour mininum size
+            #@nonl
+            #@-node:edream.111503074302:<< resize the frame to fit the panel >>
+            #@nl
         
-        if index is None:
-            index = 0
-    
-        pos = s.find(find_text,index)
-    
-        if pos == -1:
-            pos = None
+            # Set the window icon.
+            if wx.wxPlatform == '__WXMSW__':
+                pass ## self.SetIcon(wx.wxIcon("LeoIcon"))
         
-        return pos
-    #@nonl
-    #@-node:edream.111503093522:gui_search
-    #@+node:edream.111503204508:init
-    def init (self,c):
-    
-        """Init the find panel from c.
+            # Set the focus.
+            self.findPanel.findText.SetFocus()
         
-        (The opposite of set_ivars)."""
-    
-        # N.B.: separate c.ivars are much more convenient than a dict.
-        for key in self.intKeys:
-            key = key + "_flag"
-            val = getattr(c,key)
-            data = self.dict.get(key)
-            if data:
-                box,id = data
-                box.SetValue(val)
-                # g.trace(key,`val`)
-    
-        self.findPanel.findText.SetValue(c.find_text)
-        self.findPanel.changeText.SetValue(c.change_text)
-    #@nonl
-    #@-node:edream.111503204508:init
-    #@-others
+            #@    << define event handlers >>
+            #@+node:edream.110203113231.564:<< define event handlers >>
+            wx.EVT_CLOSE(self,self.onCloseFindFrame)
+            
+            #@<< create event handlers for buttons >>
+            #@+node:edream.111503085739:<< create event handlers for buttons >>
+            for name,command in (
+                ("changeButton",self.changeButton),
+                ("changeAllButton",self.changeAllButton),
+                ("changeThenFindButton",self.changeThenFindButton),
+                ("findButton",self.findButton),
+                ("findAllButton",self.findAllButton)):
+                    
+                def eventHandler(event,command=command):
+                    # g.trace(command)
+                    command()
+            
+                id = const_dict.get(name)
+                assert(id)
+                wx.EVT_BUTTON(self,id,eventHandler)
+            #@nonl
+            #@-node:edream.111503085739:<< create event handlers for buttons >>
+            #@nl
+            
+            #@<< create event handlers for check boxes and text >>
+            #@+node:edream.111503085739.1:<< create event handlers for check boxes and text >>
+            textKeys = ["find_text","change_text"]
+            keys = textKeys[:]
+            for item in self.intKeys:
+                keys.append(item)
+            
+            for name in keys:
+            
+                if name not in textKeys:
+                    name += "_flag"
+            
+                def eventHandler(event,self=self,name=name):
+                    box = event.GetEventObject()
+                    val = box.GetValue()
+                    # g.trace(name,val)
+                    setattr(self.c,name,val)
+            
+                id = const_dict.get(name)
+                if id:
+                    if name in textKeys:
+                        wx.EVT_TEXT(self,id,eventHandler)
+                    else:
+                        wx.EVT_CHECKBOX(self,id,eventHandler)
+            #@nonl
+            #@-node:edream.111503085739.1:<< create event handlers for check boxes and text >>
+            #@nl
+            #@nonl
+            #@-node:edream.110203113231.564:<< define event handlers >>
+            #@nl
+        #@-node:edream.110203113231.563:FindFrame.__init__
+        #@+node:edream.111403151611.1:bringToFront
+        def bringToFront (self):
+            
+            g.app.gui.bringToFront(self)
+            self.init(self.c)
+            self.findPanel.findText.SetFocus()
+            self.findPanel.findText.SetSelection(-1,-1)
+        #@nonl
+        #@-node:edream.111403151611.1:bringToFront
+        #@+node:edream.111503213733:destroySelf
+        def destroySelf (self):
+            
+            self.Destroy()
+        #@nonl
+        #@-node:edream.111503213733:destroySelf
+        #@+node:edream.111503211508:onCloseFindFrame
+        def onCloseFindFrame (self,event):
+        
+            if event.CanVeto():
+                event.Veto()
+                self.Hide()
+        #@nonl
+        #@-node:edream.111503211508:onCloseFindFrame
+        #@+node:edream.111403135745:set_ivars
+        def set_ivars (self,c):
+            
+            """Init the commander ivars from the find panel."""
+            
+            g.trace()
+        
+            # N.B.: separate c.ivars are much more convenient than a dict.
+            for key in self.intKeys:
+                key = key + "_flag"
+                data = self.dict.get(key)
+                if data:
+                    box,id = data
+                    val = box.GetValue()
+                    #g.trace(key,val)
+                    setattr(c,key,val)
+                else:
+                    #g.trace("no data",key)
+                    setattr(c,key,False)
+        
+            fp = self.findPanel
+            c.find_text = fp.findText.GetValue()
+            c.change_text = fp.changeText.GetValue()
+        #@nonl
+        #@-node:edream.111403135745:set_ivars
+        #@+node:edream.111503091617:init_s_ctrl
+        def init_s_ctrl (self,s):
+            
+            c = self.c
+            t = self.s_text # the dummy widget
+        
+            # Set the text for searching.
+            t.text = s
+            
+            # Set the insertion point.
+            if c.reverse_flag:
+                t.SetInsertionPointEnd()
+            else:
+                t.SetInsertionPoint(0)
+            return t
+        #@nonl
+        #@-node:edream.111503091617:init_s_ctrl
+        #@+node:edream.111503093522:gui_search
+        def gui_search (self,t,find_text,index,
+            stopindex,backwards,regexp,nocase):
+                
+            g.trace(index,stopindex,backwards,regexp,nocase)
+            
+            s = t.text # t is the dummy text widget
+            
+            if index is None:
+                index = 0
+        
+            pos = s.find(find_text,index)
+        
+            if pos == -1:
+                pos = None
+            
+            return pos
+        #@nonl
+        #@-node:edream.111503093522:gui_search
+        #@+node:edream.111503204508:init
+        def init (self,c):
+        
+            """Init the find panel from c.
+            
+            (The opposite of set_ivars)."""
+        
+            # N.B.: separate c.ivars are much more convenient than a dict.
+            for key in self.intKeys:
+                key = key + "_flag"
+                val = getattr(c,key)
+                data = self.dict.get(key)
+                if data:
+                    box,id = data
+                    box.SetValue(val)
+                    # g.trace(key,`val`)
+        
+            self.findPanel.findText.SetValue(c.find_text)
+            self.findPanel.changeText.SetValue(c.change_text)
+        #@nonl
+        #@-node:edream.111503204508:init
+        #@-others
 #@nonl
 #@-node:edream.110203113231.561:wxFindFrame class
 #@+node:edream.110203113231.588:wxFindPanel class
-class wxFindPanel (wx.wxPanel):
-
-    #@    @+others
-    #@+node:edream.110203113231.589:FindPanel.__init__
-    def __init__(self,frame):
-         
-        # Init the base class.
-        wx.wxPanel.__init__(self,frame,-1)
-        self.frame = frame
-    
-        topSizer = wx.wxBoxSizer(wx.wxVERTICAL)
-        topSizer.Add(0,10)
-    
-        #@    << Create the find text box >>
-        #@+node:edream.110203113231.590:<< Create the find text box >>
-        findSizer = wx.wxBoxSizer(wx.wxHORIZONTAL)
-        findSizer.Add(5,5)# Extra space.
+if wx:
+    class wxFindPanel (wx.wxPanel):
+        #@        @+others
+        #@+node:edream.110203113231.589:FindPanel.__init__
+        def __init__(self,frame):
+             
+            # Init the base class.
+            wx.wxPanel.__init__(self,frame,-1)
+            self.frame = frame
         
-        # Label.
-        findSizer.Add(
-            wx.wxStaticText(self,-1,"Find:",
-                wx.wxPoint(-1,10), wx.wxSize(50,25),0,""),
-            0, wx.wxBORDER | wx.wxTOP,15) # Vertical offset.
+            topSizer = wx.wxBoxSizer(wx.wxVERTICAL)
+            topSizer.Add(0,10)
         
-        findSizer.Add(10,0) # Width.
-        
-        # Text.
-        id = const("find_text")
-        self.findText = wx.wxTextCtrl(self,
-            id,"",
-            wx.wxDefaultPosition, wx.wxSize(500,60),
-            wx.wxTE_PROCESS_TAB | wx.wxTE_MULTILINE,
-            wx.wxDefaultValidator,"")
-        
-        findSizer.Add(self.findText)
-        findSizer.Add(5,0)# Width.
-        topSizer.Add(findSizer)
-        topSizer.Add(0,10)
-        
-        self.frame.dict["find_text"] = self.findText,id
-        #@nonl
-        #@-node:edream.110203113231.590:<< Create the find text box >>
-        #@nl
-        #@    << Create the change text box >>
-        #@+node:edream.110203113231.591:<< Create the change text box >>
-        changeSizer = wx.wxBoxSizer(wx.wxHORIZONTAL)
-        changeSizer.Add(5,5)# Extra space.
-        
-        # Label.
-        changeSizer.Add(
-            wx.wxStaticText(self,-1,"Change:",
-                wx.wxPoint(-1,10),wx.wxSize(50,25),0,""),
-            0, wx.wxBORDER | wx.wxTOP,15)# Vertical offset.
-        
-        changeSizer.Add(10,0) # Width.
-        
-        # Text.
-        id = const("change_text")
-        self.changeText = wx.wxTextCtrl(self,
-            id,"",
-            wx.wxDefaultPosition, wx.wxSize(500,60),
-            wx.wxTE_PROCESS_TAB | wx.wxTE_MULTILINE,
-            wx.wxDefaultValidator,"")
-        
-        changeSizer.Add(self.changeText)
-        changeSizer.Add(5,0)# Width.
-        topSizer.Add(changeSizer)
-        topSizer.Add(0,10)
-        
-        self.frame.dict["change_text"] = self.findText,id
-        #@nonl
-        #@-node:edream.110203113231.591:<< Create the change text box >>
-        #@nl
-        #@    << Create all the find check boxes >>
-        #@+node:edream.110203113231.592:<< Create all the find check boxes >>
-        col1Sizer = wx.wxBoxSizer(wx.wxVERTICAL)
-        #@<< Create the first column of widgets >>
-        #@+node:edream.110203113231.593:<< Create the first column of widgets >>
-        # The var names must match the names in leoFind class.
-        table = (
-            ("plain-search-flag","Plain Search",wx.wxRB_GROUP),
-            ("pattern_match_flag","Pattern Match",0),
-            ("script_search_flag","Script Search",0))
-        
-        for var,label,style in table:
+            #@    << Create the find text box >>
+            #@+node:edream.110203113231.590:<< Create the find text box >>
+            findSizer = wx.wxBoxSizer(wx.wxHORIZONTAL)
+            findSizer.Add(5,5)# Extra space.
             
-            id = const(var)
-            box = wx.wxRadioButton(self,id,label,
-                wx.wxDefaultPosition,(100,25),
-                style,wx.wxDefaultValidator,"group1")
+            # Label.
+            findSizer.Add(
+                wx.wxStaticText(self,-1,"Find:",
+                    wx.wxPoint(-1,10), wx.wxSize(50,25),0,""),
+                0, wx.wxBORDER | wx.wxTOP,15) # Vertical offset.
+            
+            findSizer.Add(10,0) # Width.
+            
+            # Text.
+            id = const("find_text")
+            self.findText = wx.wxTextCtrl(self,
+                id,"",
+                wx.wxDefaultPosition, wx.wxSize(500,60),
+                wx.wxTE_PROCESS_TAB | wx.wxTE_MULTILINE,
+                wx.wxDefaultValidator,"")
+            
+            findSizer.Add(self.findText)
+            findSizer.Add(5,0)# Width.
+            topSizer.Add(findSizer)
+            topSizer.Add(0,10)
+            
+            self.frame.dict["find_text"] = self.findText,id
+            #@nonl
+            #@-node:edream.110203113231.590:<< Create the find text box >>
+            #@nl
+            #@    << Create the change text box >>
+            #@+node:edream.110203113231.591:<< Create the change text box >>
+            changeSizer = wx.wxBoxSizer(wx.wxHORIZONTAL)
+            changeSizer.Add(5,5)# Extra space.
+            
+            # Label.
+            changeSizer.Add(
+                wx.wxStaticText(self,-1,"Change:",
+                    wx.wxPoint(-1,10),wx.wxSize(50,25),0,""),
+                0, wx.wxBORDER | wx.wxTOP,15)# Vertical offset.
+            
+            changeSizer.Add(10,0) # Width.
+            
+            # Text.
+            id = const("change_text")
+            self.changeText = wx.wxTextCtrl(self,
+                id,"",
+                wx.wxDefaultPosition, wx.wxSize(500,60),
+                wx.wxTE_PROCESS_TAB | wx.wxTE_MULTILINE,
+                wx.wxDefaultValidator,"")
+            
+            changeSizer.Add(self.changeText)
+            changeSizer.Add(5,0)# Width.
+            topSizer.Add(changeSizer)
+            topSizer.Add(0,10)
+            
+            self.frame.dict["change_text"] = self.findText,id
+            #@nonl
+            #@-node:edream.110203113231.591:<< Create the change text box >>
+            #@nl
+            #@    << Create all the find check boxes >>
+            #@+node:edream.110203113231.592:<< Create all the find check boxes >>
+            col1Sizer = wx.wxBoxSizer(wx.wxVERTICAL)
+            #@<< Create the first column of widgets >>
+            #@+node:edream.110203113231.593:<< Create the first column of widgets >>
+            # The var names must match the names in leoFind class.
+            table = (
+                ("plain-search-flag","Plain Search",wx.wxRB_GROUP),
+                ("pattern_match_flag","Pattern Match",0),
+                ("script_search_flag","Script Search",0))
+            
+            for var,label,style in table:
                 
-            if style == wx.wxRB_GROUP:
-                box.SetValue(True) # The default entry.
-        
-            col1Sizer.Add(box,0,wx.wxBORDER | wx.wxLEFT,60)
-            self.frame.dict[var] = box,id
+                id = const(var)
+                box = wx.wxRadioButton(self,id,label,
+                    wx.wxDefaultPosition,(100,25),
+                    style,wx.wxDefaultValidator,"group1")
+                    
+                if style == wx.wxRB_GROUP:
+                    box.SetValue(True) # The default entry.
             
-        table = (("script_change_flag","Script Change"),)
-        
-        for var,label in table:
-            
-            id = const(var)
-            box = wx.wxCheckBox(self,id,label,
-                wx.wxDefaultPosition,(100,25),
-                0,wx.wxDefaultValidator,"")
-        
-            col1Sizer.Add(box,0,wx.wxBORDER | wx.wxLEFT,60)
-            self.frame.dict[var] = box,id
-        #@nonl
-        #@-node:edream.110203113231.593:<< Create the first column of widgets >>
-        #@nl
-        
-        col2Sizer = wx.wxBoxSizer(wx.wxVERTICAL)
-        #@<< Create the second column of widgets >>
-        #@+node:edream.110203113231.594:<< Create the second column of widgets >>
-        # The var names must match the names in leoFind class.
-        table = (
-            ("whole_word_flag","Whole Word"),
-            ("ignore_case_flag","Ignore Case"),
-            ("wrap_flag","Wrap Around"),
-            ("reverse_flag","Reverse"))
-        
-        for var,label in table:
-        
-            id = const(var)
-            box = wx.wxCheckBox(self,id,label,
-                wx.wxDefaultPosition,(100,25),
-                0,wx.wxDefaultValidator,"")
-        
-            col2Sizer.Add(box,0,wx.wxBORDER | wx.wxLEFT,20)
-            self.frame.dict[var] = box,id
-        #@nonl
-        #@-node:edream.110203113231.594:<< Create the second column of widgets >>
-        #@nl
-        
-        col3Sizer = wx.wxBoxSizer(wx.wxVERTICAL)
-        #@<< Create the third column of widgets >>
-        #@+node:edream.111503133933.2:<< Create the third column of widgets >>
-        # The var names must match the names in leoFind class.
-        table = (
-            ("Entire Outline","entire-outline",wx.wxRB_GROUP),
-            ("Suboutline Only","suboutline_only_flag",0),  
-            ("Node Only","node_only_flag",0),    
-            ("Selection Only","selection-only",0))
-            
-        for label,var,group in table:
-        
-            if var: id = const(var)
-            else:   id = const("entire-outline")
+                col1Sizer.Add(box,0,wx.wxBORDER | wx.wxLEFT,60)
+                self.frame.dict[var] = box,id
                 
-            box = wx.wxRadioButton(self,id,label,
-                wx.wxDefaultPosition,(100,25),
-                group,wx.wxDefaultValidator,"group2")
-        
-            col3Sizer.Add(box,0,wx.wxBORDER | wx.wxLEFT,20)
+            table = (("script_change_flag","Script Change"),)
             
-            self.frame.dict[var] = box,id
-        #@nonl
-        #@-node:edream.111503133933.2:<< Create the third column of widgets >>
-        #@nl
-        
-        col4Sizer = wx.wxBoxSizer(wx.wxVERTICAL)
-        #@<< Create the fourth column of widgets >>
-        #@+node:edream.111503133933.3:<< Create the fourth column of widgets >>
-        # The var names must match the names in leoFind class.
-        table = (
-            ("search_headline_flag","Search Headline Text"),
-            ("search_body_flag","Search Body Text"),
-            ("mark_finds_flag","Mark Finds"),
-            ("mark_changes_flag","Mark Changes"))
-        
-        for var,label in table:
-            
-            id = const(var)
-            box = wx.wxCheckBox(self,id,label,
-                wx.wxDefaultPosition,(100,25),
-                0,wx.wxDefaultValidator,"")
-        
-            col4Sizer.Add(box,0,wx.wxBORDER | wx.wxLEFT,20)
-            self.frame.dict[var] = box,id
-        #@nonl
-        #@-node:edream.111503133933.3:<< Create the fourth column of widgets >>
-        #@nl
-        
-        # Pack the columns
-        columnSizer = wx.wxBoxSizer(wx.wxHORIZONTAL)
-        columnSizer.Add(col1Sizer)
-        columnSizer.Add(col2Sizer)
-        columnSizer.Add(col3Sizer)
-        columnSizer.Add(col4Sizer)
-        
-        topSizer.Add(columnSizer)
-        topSizer.Add(0,10)
-        #@nonl
-        #@-node:edream.110203113231.592:<< Create all the find check boxes >>
-        #@nl
-        #@    << Create all the find buttons >>
-        #@+node:edream.110203113231.595:<< Create all the find buttons >>
-        # The row sizers are a bit dim:  they should distribute the buttons automatically.
-        
-        row1Sizer = wx.wxBoxSizer(wx.wxHORIZONTAL)
-        #@<< Create the first row of buttons >>
-        #@+node:edream.110203113231.596:<< Create the first row of buttons >>
-        row1Sizer.Add(90,0)
-        
-        table = (
-            ("findButton","Find",True),
-            ("batch_flag","Show Context",False), # Old batch_flag now means Show Context.
-            ("findAllButton","Find All",True))
-        
-        for var,label,isButton in table:
-            
-            id = const(var)
-            if isButton:
-                widget = button = wx.wxButton(self,id,label,
+            for var,label in table:
+                
+                id = const(var)
+                box = wx.wxCheckBox(self,id,label,
                     wx.wxDefaultPosition,(100,25),
                     0,wx.wxDefaultValidator,"")
-            else:
-                widget = box = wx.wxCheckBox(self,id,label,
+            
+                col1Sizer.Add(box,0,wx.wxBORDER | wx.wxLEFT,60)
+                self.frame.dict[var] = box,id
+            #@nonl
+            #@-node:edream.110203113231.593:<< Create the first column of widgets >>
+            #@nl
+            
+            col2Sizer = wx.wxBoxSizer(wx.wxVERTICAL)
+            #@<< Create the second column of widgets >>
+            #@+node:edream.110203113231.594:<< Create the second column of widgets >>
+            # The var names must match the names in leoFind class.
+            table = (
+                ("whole_word_flag","Whole Word"),
+                ("ignore_case_flag","Ignore Case"),
+                ("wrap_flag","Wrap Around"),
+                ("reverse_flag","Reverse"))
+            
+            for var,label in table:
+            
+                id = const(var)
+                box = wx.wxCheckBox(self,id,label,
                     wx.wxDefaultPosition,(100,25),
                     0,wx.wxDefaultValidator,"")
+            
+                col2Sizer.Add(box,0,wx.wxBORDER | wx.wxLEFT,20)
+                self.frame.dict[var] = box,id
+            #@nonl
+            #@-node:edream.110203113231.594:<< Create the second column of widgets >>
+            #@nl
+            
+            col3Sizer = wx.wxBoxSizer(wx.wxVERTICAL)
+            #@<< Create the third column of widgets >>
+            #@+node:edream.111503133933.2:<< Create the third column of widgets >>
+            # The var names must match the names in leoFind class.
+            table = (
+                ("Entire Outline","entire-outline",wx.wxRB_GROUP),
+                ("Suboutline Only","suboutline_only_flag",0),  
+                ("Node Only","node_only_flag",0),    
+                ("Selection Only","selection-only",0))
+                
+            for label,var,group in table:
+            
+                if var: id = const(var)
+                else:   id = const("entire-outline")
+                    
+                box = wx.wxRadioButton(self,id,label,
+                    wx.wxDefaultPosition,(100,25),
+                    group,wx.wxDefaultValidator,"group2")
+            
+                col3Sizer.Add(box,0,wx.wxBORDER | wx.wxLEFT,20)
                 
                 self.frame.dict[var] = box,id
-        
-            row1Sizer.Add(widget)
-            row1Sizer.Add((25,0),)
-        #@nonl
-        #@-node:edream.110203113231.596:<< Create the first row of buttons >>
-        #@nl
-        
-        row2Sizer = wx.wxBoxSizer(wx.wxHORIZONTAL)
-        #@<< Create the second row of buttons >>
-        #@+node:edream.110203113231.597:<< Create the second row of buttons >>
-        row2Sizer.Add(90,0)
-        
-        table = (
-            ("changeButton","Change"),
-            ("changeThenFindButton","Change,Then Find"),
-            ("changeAllButton","Change All"))
-        
-        for var,label in table:
-        
-            id = const(var)
-            button = wx.wxButton(self,id,label,
-                wx.wxDefaultPosition,(100,25),
-                0,wx.wxDefaultValidator,"")
+            #@nonl
+            #@-node:edream.111503133933.2:<< Create the third column of widgets >>
+            #@nl
             
-            row2Sizer.Add(button)
-            row2Sizer.Add((25,0),)
-        #@nonl
-        #@-node:edream.110203113231.597:<< Create the second row of buttons >>
-        #@nl
+            col4Sizer = wx.wxBoxSizer(wx.wxVERTICAL)
+            #@<< Create the fourth column of widgets >>
+            #@+node:edream.111503133933.3:<< Create the fourth column of widgets >>
+            # The var names must match the names in leoFind class.
+            table = (
+                ("search_headline_flag","Search Headline Text"),
+                ("search_body_flag","Search Body Text"),
+                ("mark_finds_flag","Mark Finds"),
+                ("mark_changes_flag","Mark Changes"))
+            
+            for var,label in table:
+                
+                id = const(var)
+                box = wx.wxCheckBox(self,id,label,
+                    wx.wxDefaultPosition,(100,25),
+                    0,wx.wxDefaultValidator,"")
+            
+                col4Sizer.Add(box,0,wx.wxBORDER | wx.wxLEFT,20)
+                self.frame.dict[var] = box,id
+            #@nonl
+            #@-node:edream.111503133933.3:<< Create the fourth column of widgets >>
+            #@nl
+            
+            # Pack the columns
+            columnSizer = wx.wxBoxSizer(wx.wxHORIZONTAL)
+            columnSizer.Add(col1Sizer)
+            columnSizer.Add(col2Sizer)
+            columnSizer.Add(col3Sizer)
+            columnSizer.Add(col4Sizer)
+            
+            topSizer.Add(columnSizer)
+            topSizer.Add(0,10)
+            #@nonl
+            #@-node:edream.110203113231.592:<< Create all the find check boxes >>
+            #@nl
+            #@    << Create all the find buttons >>
+            #@+node:edream.110203113231.595:<< Create all the find buttons >>
+            # The row sizers are a bit dim:  they should distribute the buttons automatically.
+            
+            row1Sizer = wx.wxBoxSizer(wx.wxHORIZONTAL)
+            #@<< Create the first row of buttons >>
+            #@+node:edream.110203113231.596:<< Create the first row of buttons >>
+            row1Sizer.Add(90,0)
+            
+            table = (
+                ("findButton","Find",True),
+                ("batch_flag","Show Context",False), # Old batch_flag now means Show Context.
+                ("findAllButton","Find All",True))
+            
+            for var,label,isButton in table:
+                
+                id = const(var)
+                if isButton:
+                    widget = button = wx.wxButton(self,id,label,
+                        wx.wxDefaultPosition,(100,25),
+                        0,wx.wxDefaultValidator,"")
+                else:
+                    widget = box = wx.wxCheckBox(self,id,label,
+                        wx.wxDefaultPosition,(100,25),
+                        0,wx.wxDefaultValidator,"")
+                    
+                    self.frame.dict[var] = box,id
+            
+                row1Sizer.Add(widget)
+                row1Sizer.Add((25,0),)
+            #@nonl
+            #@-node:edream.110203113231.596:<< Create the first row of buttons >>
+            #@nl
+            
+            row2Sizer = wx.wxBoxSizer(wx.wxHORIZONTAL)
+            #@<< Create the second row of buttons >>
+            #@+node:edream.110203113231.597:<< Create the second row of buttons >>
+            row2Sizer.Add(90,0)
+            
+            table = (
+                ("changeButton","Change"),
+                ("changeThenFindButton","Change,Then Find"),
+                ("changeAllButton","Change All"))
+            
+            for var,label in table:
+            
+                id = const(var)
+                button = wx.wxButton(self,id,label,
+                    wx.wxDefaultPosition,(100,25),
+                    0,wx.wxDefaultValidator,"")
+                
+                row2Sizer.Add(button)
+                row2Sizer.Add((25,0),)
+            #@nonl
+            #@-node:edream.110203113231.597:<< Create the second row of buttons >>
+            #@nl
+            
+            # Pack the two rows
+            buttonSizer = wx.wxBoxSizer(wx.wxVERTICAL)
+            buttonSizer.Add(row1Sizer)
+            buttonSizer.Add(0,10)
+            
+            buttonSizer.Add(row2Sizer)
+            topSizer.Add(buttonSizer)
+            topSizer.Add(0,10)
+            #@nonl
+            #@-node:edream.110203113231.595:<< Create all the find buttons >>
+            #@nl
         
-        # Pack the two rows
-        buttonSizer = wx.wxBoxSizer(wx.wxVERTICAL)
-        buttonSizer.Add(row1Sizer)
-        buttonSizer.Add(0,10)
-        
-        buttonSizer.Add(row2Sizer)
-        topSizer.Add(buttonSizer)
-        topSizer.Add(0,10)
+            self.SetAutoLayout(True) # tell dialog to use sizer
+            self.SetSizer(topSizer) # actually set the sizer
+            topSizer.Fit(self)# set size to minimum size as calculated by the sizer
+            topSizer.SetSizeHints(self)# set size hints to honour mininum size
         #@nonl
-        #@-node:edream.110203113231.595:<< Create all the find buttons >>
-        #@nl
-    
-        self.SetAutoLayout(True) # tell dialog to use sizer
-        self.SetSizer(topSizer) # actually set the sizer
-        topSizer.Fit(self)# set size to minimum size as calculated by the sizer
-        topSizer.SetSizeHints(self)# set size hints to honour mininum size
-    #@nonl
-    #@-node:edream.110203113231.589:FindPanel.__init__
-    #@-others
+        #@-node:edream.110203113231.589:FindPanel.__init__
+        #@-others
 #@nonl
 #@-node:edream.110203113231.588:wxFindPanel class
 #@-node:edream.110203113231.560:Find...

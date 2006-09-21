@@ -198,6 +198,7 @@ Num_Lock
 OLDconvert
 OLDfilter
 OLDsearch
+OPML
 OnActivateTree
 OnCascade
 OnCopyNode
@@ -1454,6 +1455,7 @@ openWriteFile
 opening_delim
 openwith1
 openwith2
+opml_version
 option_readfile
 optionsDict
 os
@@ -1641,6 +1643,7 @@ regedit
 regex
 registerCommand
 registerHandler
+rehoist
 reimport
 reimportself
 removeAllCComments
@@ -2169,6 +2172,7 @@ xf2fddff
 xinhuanet
 xmax
 xml
+xmlns
 xmodmap
 xpad
 xrange

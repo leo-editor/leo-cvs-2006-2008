@@ -289,9 +289,9 @@ class View:
 
 if path and win32clipboard: # Ok for unit testing.
     leoPlugins.registerHandler("after-create-leo-frame",onCreate)
-else:
-    s = 'at_view plugin not loaded'
-    print s ; g.es(s)
+elif not g.app.unitTesting:
+    s = 'at_view plugin not loaded: win32Clipboard not present.'
+    g.es_print(s)
 #@nonl
 #@-node:ktenney.20041211072654.1:@thin at_view.py
 #@-leo

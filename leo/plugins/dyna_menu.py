@@ -3,7 +3,9 @@
 #be sure and add dyna_menu.py to pluginsManager.txt
 #you don't need to enable dynacommon.py in pluginsManager.txt
 #you do need dynacommon.py in the plugins directory 
-# 
+#
+
+from __future__ import generators  # + enumerate for less than py2.3
 
 #@<< doc >>
 #@+node:ekr.20050421093045.3:<< doc >>
@@ -58,7 +60,6 @@ __plugin_files__ = ["dyna_menu.ini", "dynacommon.py", "dyna.txt"]
 
 #@<< initilize >>
 #@+node:ekr.20050421093045.4:<< initilize >>
-from __future__ import generators  # + enumerate for less than py2.3
 #@+at
 # from future has to be first...
 # but to check py version you have to import sys
