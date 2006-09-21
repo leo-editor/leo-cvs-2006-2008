@@ -1386,7 +1386,7 @@ class atFile:
             tnodesDict = c.fileCommands.tnodesDict
             t = tnodesDict.get(gnxString)
             if t:
-                assert(indices.areEqual(t.fileIndex,gnx))
+                assert indices.areEqual(t.fileIndex,gnx), 't.fileIndex: %s gnx: %s' % (t.fileIndex,gnx)
             else:
                 t = leoNodes.tnode(bodyString=None,headString=headline)
                 t.fileIndex = gnx
