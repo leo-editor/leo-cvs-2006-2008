@@ -99,7 +99,9 @@ class tkinterGui(leoGui.leoGui):
     
         try:
             version = gui.root.getvar("tk_patchLevel")
-            if g.CheckVersion(version,"8.4.3") and sys.platform == "win32": # 12/2/03
+            # g.trace(repr(version),g.CheckVersion(version,"8.4.3"))
+            if g.CheckVersion(version,"8.4.3") and sys.platform == "win32":
+                
                 # tk 8.4.3 or greater: load a 16 by 16 icon.
                 path = g.os_path_join(g.app.loadDir,"..","Icons")
                 if g.os_path_exists(path):
@@ -528,6 +530,7 @@ class tkinterGui(leoGui.leoGui):
                 #@nl
             except:
                 # import traceback ; traceback.print_exc()
+                # g.es_exception()
                 self.leoIcon = None
     #@+node:ekr.20031218072017.4070:createLeoIcon
     # This code is adapted from tkIcon.__init__

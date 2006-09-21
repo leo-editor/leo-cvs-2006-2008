@@ -167,7 +167,9 @@ You may download Python from http://python.org/download/
         import traceback ; traceback.print_exc()
         return 0
     try:
-        ok = g.CheckVersion(sys.version, "2.2.1")
+        version = '.'.join([str(sys.version_info[i]) for i in (0,1,2)])
+        # g.trace(version)
+        ok = g.CheckVersion(version, "2.2.1")
         if not ok:
             print message
             g.app.gui.runAskOkDialog(None,"Python version error",message=message,text="Exit")
@@ -176,6 +178,7 @@ You may download Python from http://python.org/download/
         print "isValidPython: unexpected exception: g.CheckVersion"
         import traceback ; traceback.print_exc()
         return 0
+#@nonl
 #@-node:ekr.20031218072017.1936:isValidPython
 #@+node:ekr.20041124083125:completeFileName (leo.py)
 def completeFileName (fileName):

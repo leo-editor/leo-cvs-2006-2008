@@ -4186,7 +4186,34 @@ def angleBrackets(s):
 
 virtual_event_name = angleBrackets
 #@-node:ekr.20031218072017.3106:angleBrackets & virtual_event_name
-#@+node:ekr.20031218072017.3097:CheckVersion (Dave Hein)
+#@+node:ekr.20031218072017.3097:CheckVersion 
+#@+node:ekr.20060921100435:checkVersion (EKR)
+# Simplified version by EKR: stringCompare not used.
+
+def CheckVersion (s1,s2,condition=">=",stringCompare=None,delimiter='.',trace=False):
+
+    vals1 = [int(s) for s in s1.split(delimiter)] ; n1 = len(vals1)
+    vals2 = [int(s) for s in s2.split(delimiter)] ; n2 = len(vals2)
+    n = max(n1,n2)
+    if n1 < n: vals1.extend([0 for i in xrange(n - n1)])
+    if n2 < n: vals2.extend([0 for i in xrange(n - n2)])
+    for cond,val in (
+        ('==', vals1 == vals2), ('!=', vals1 != vals2),
+        ('<',  vals1 <  vals2), ('<=', vals1 <= vals2),
+        ('>',  vals1 >  vals2), ('>=', vals1 >= vals2),
+    ):
+        if condition == cond:
+            result = val ; break
+    else:
+        raise EnvironmentError,"condition must be one of '>=', '>', '==', '!=', '<', or '<='."
+    
+    if trace:
+        # print '%10s' % (repr(vals1)),'%2s' % (condition),'%10s' % (repr(vals2)),result
+        print '%7s' % (s1),'%2s' % (condition),'%7s' % (s2),result
+    return result
+#@nonl
+#@-node:ekr.20060921100435:checkVersion (EKR)
+#@+node:ekr.20060921100435.1:oldCheckVersion (Dave Hein)
 #@+at
 # g.CheckVersion() is a generic version checker.  Assumes a
 # version string of up to four parts, or tokens, with
@@ -4223,9 +4250,11 @@ virtual_event_name = angleBrackets
 #@-at
 #@@c
 
-def CheckVersion( version, againstVersion, condition=">=", stringCompare="0.0.0.0", delimiter='.' ):
+def oldCheckVersion( version, againstVersion, condition=">=", stringCompare="0.0.0.0", delimiter='.' ):
 
     __pychecker__ = 'maxreturns=20'
+    
+    # g.pdb()
 
     # tokenize the stringCompare flags
     compareFlag = string.split( stringCompare, '.' )
@@ -4297,7 +4326,9 @@ def CheckVersion( version, againstVersion, condition=">=", stringCompare="0.0.0.
 
     # didn't find a condition that we expected.
     raise EnvironmentError,"condition must be one of '>=', '>', '==', '!=', '<', or '<='."
-#@-node:ekr.20031218072017.3097:CheckVersion (Dave Hein)
+#@nonl
+#@-node:ekr.20060921100435.1:oldCheckVersion (Dave Hein)
+#@-node:ekr.20031218072017.3097:CheckVersion 
 #@+node:ekr.20031218072017.3098:class Bunch (object)
 #@+at 
 #@nonl
