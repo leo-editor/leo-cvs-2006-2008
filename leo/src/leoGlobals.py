@@ -33,10 +33,9 @@ import filecmp
 import gettext
 import operator
 import os
-if 0: # Do NOT import pdb here!  We shall defined pdb as a _function_ below.
+if 0: # Do NOT import pdb here!  We shall define pdb as a _function_ below.
     import pdb
 import re
-import sre  # Unicode-aware regular expressions
 import string
 import sys
 import tempfile
@@ -4243,7 +4242,7 @@ def CheckVersion( version, againstVersion, condition=">=", stringCompare="0.0.0.
         tokenCount = len(testVersion)
 
     # Apply the stringCompare flags
-    justInteger = sre.compile("^[0-9]+")
+    justInteger = re.compile("^[0-9]+")
     for i in range(tokenCount):
         if "0" == compareFlag[i]:
             m = justInteger.match( testVersion[i] )
