@@ -64,6 +64,7 @@ the <head> element of the .opml file.
 # - Support opml_read_derived_files & opml_write_derived_files
 # 
 # ** Make sure reading derived files works.
+#     - Does generatedTnxs have to be renamed to match tnodeDict?
 #     - handle problems resolving tnodeLists.
 # 
 # - Enhanse open/save commands when this plugin is active.
@@ -73,7 +74,7 @@ the <head> element of the .opml file.
 #@-node:ekr.20060920112018:<< to do >>
 #@nl
 
-__version__ = '0.8'
+__version__ = '0.91'
 
 # For traces.
 printElements = [] # ['all','outline','head','body',]
@@ -124,6 +125,9 @@ printElements = [] # ['all','outline','head','body',]
 # tnodeLists) regardless of settings.
 # 0.8 EKR: This plugin now creates the read/write-opml-file commands.
 # 0.9 EKR: Improved docstring.
+# 0.91 EKR: reading derived files appears to work:
+# - create c.fileCommands.tnodeDict before calling c.atFileCommands.readAll.
+# - Properly init t.fileIndex to an actual gnx using scanGnx.
 #@-at
 #@nonl
 #@-node:ekr.20060904103412.2:<< version history >>
@@ -190,6 +194,7 @@ class opmlFileCommandsClass (leoFileCommands.fileCommands):
         c = self.c
         
         self.opml_use_outline_elements = c.config.getBool('opml_use_outline_elements')
+        self.opml_write_derived_files  = c.config.getBool('opml_write_derived_files')
         self.opml_write_leo_details    = c.config.getBool('opml_write_leo_details')
         self.opml_write_body_text      = c.config.getBool('opml_write_body_text')
         
@@ -361,6 +366,8 @@ class opmlController:
         c.k.registerCommand('read-opml-file',None,self.readOpmlCommand,pane='all',verbose=False)
         c.k.registerCommand('write-opml-file',None,self.writeOpmlCommand,pane='all',verbose=False)
         
+        self.opml_read_derived_files  = c.config.getBool('opml_read_derived_files')
+        
         self.currentVnode = None
         self.topVnode = None
     
@@ -436,6 +443,8 @@ class opmlController:
         b = node.bodyString
         if not node.tnx or not t:
             t = leoNodes.tnode(bodyString=b,headString=h)
+            if node.tnx:
+                t.fileIndex = g.app.nodeIndices.scanGnx(node.tnx,0)
         v = leoNodes.vnode(t)
         v.t.vnodeList.append(v)
         v._parent = parent_v
@@ -460,7 +469,7 @@ class opmlController:
         tnodeList = s and s.split(',')
         if tnodeList:
             # This tnode list will be resolved later.
-            g.trace(v.headString(),len(tnodeList))
+            # g.trace('found tnodeList',v.headString(),len(tnodeList))
             v.tempTnodeList = tnodeList
     #@nonl
     #@-node:ekr.20060917213611:handleVnodeAttributes
@@ -559,12 +568,33 @@ class opmlController:
         if v:
             c2 = c.new()
             c2.setRootVnode(v)
-            self.resolveTnodeLists(c2)
+            if self.opml_read_derived_files:
+                at = c2.atFileCommands
+                c2.fileCommands.tnodesDict = self.createTnodesDict()
+                # g.trace('c2',id(c2),'tnodesDict',id(c2.fileCommands.tnodesDict))
+                self.resolveTnodeLists(c2)
+                c2.atFileCommands.readAll(c2.rootPosition())
             c2.checkOutline()
             self.setCurrentPosition(c2)
             c2.redraw()
             return c2 # for testing.
     #@nonl
+    #@+node:ekr.20060921153603:createTnodesDict
+    def createTnodesDict (self):
+        
+        ''' c.tnodesDict by from self.generatedTnxs
+        by onverting vnode entries to tnodes.'''
+        
+        d = {}
+    
+        for key in self.generatedTnxs.keys():
+            v = self.generatedTnxs.get(key)
+            # g.trace('v.t',id(v.t),'fileIndex',v.t.fileIndex,v.headString()[:20])
+            d[key] = v.t
+    
+        return d
+    #@nonl
+    #@-node:ekr.20060921153603:createTnodesDict
     #@+node:ekr.20060917214140:setCurrentPosition
     def setCurrentPosition (self,c):
         
@@ -586,7 +616,7 @@ class opmlController:
                 for tnx in p.v.tempTnodeList:
                     v = self.generatedTnxs.get(tnx)
                     if v:
-                        g.trace(v,tnx,v.t)
+                        # g.trace('found',v,tnx,v.t)
                         result.append(v.t)
                     else:
                         g.trace('No tnode for %s' % tnx)
