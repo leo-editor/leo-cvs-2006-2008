@@ -1885,12 +1885,25 @@ class basePosition (object):
         # g.trace(len(nodes))
         return nodes
     #@-node:ekr.20040318125934:p.findAllPotentiallyDirtyNodes
+    #@+node:ekr.20040702104823:p.inAtIgnoreRange
+    def inAtIgnoreRange (self):
+        
+        """Returns True if position p or one of p's parents is an @ignore node."""
+        
+        p = self
+        
+        for p in p.self_and_parents_iter():
+            if p.isAtIgnoreNode():
+                return True
+    
+        return False
+    #@-node:ekr.20040702104823:p.inAtIgnoreRange
     #@+node:ekr.20040303214038:p.setAllAncestorAtFileNodesDirty
     def setAllAncestorAtFileNodesDirty (self,setDescendentsDirty=False):
     
         p = self
         dirtyVnodeList = []
-        
+    
         # Calculate all nodes that are joined to p or parents of such nodes.
         nodes = p.findAllPotentiallyDirtyNodes()
         
@@ -1905,7 +1918,7 @@ class basePosition (object):
         dirtyVnodeList = [v for v in nodes
             if not v.t.isDirty() and v.isAnyAtFileNode()]
         changed = len(dirtyVnodeList) > 0
-        
+    
         for v in dirtyVnodeList:
             v.t.setDirty() # Do not call v.setDirty here!
     
@@ -1932,19 +1945,6 @@ class basePosition (object):
        
         return dirtyVnodeList
     #@-node:ekr.20040303163330:p.setDirty
-    #@+node:ekr.20040702104823:p.inAtIgnoreRange
-    def inAtIgnoreRange (self):
-        
-        """Returns True if position p or one of p's parents is an @ignore node."""
-        
-        p = self
-        
-        for p in p.self_and_parents_iter():
-            if p.isAtIgnoreNode():
-                return True
-    
-        return False
-    #@-node:ekr.20040702104823:p.inAtIgnoreRange
     #@-node:ekr.20040305162628:p.Dirty bits
     #@-node:ekr.20040305222924:Setters
     #@+node:ekr.20040315023430:File Conversion
@@ -2014,7 +2014,7 @@ class basePosition (object):
     #@+node:ekr.20040305162628.1:p.Iterators
     #@+at 
     #@nonl
-    # 3/18/04: a crucial optimization:
+    # A crucial optimization:
     # 
     # Iterators make no copies at all if they would return an empty sequence.
     #@-at
