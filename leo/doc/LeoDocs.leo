@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="25831" clone_windows="0"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="25843" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="128" left="278" height="578" width="879"/>
+	<global_window_position top="104" left="160" height="741" width="1021"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -46,7 +46,7 @@
 <v t="ekr.20060525110217"><vh>@@button rst-&gt;rst</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="ETV"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -202,6 +202,7 @@
 <v t="ekr.20060227102028.111"><vh>Autocompletion and calltips</vh></v>
 <v t="EKR.20040524104904.27"><vh>Cloning nodes</vh></v>
 <v t="EKR.20040524104904.36"><vh>Creating and destroying nodes</vh></v>
+<v t="ekr.20060920145745"><vh>Creating and destroying multiple body editors</vh></v>
 <v t="EKR.20040524104904.37"><vh>Cutting, pasting and deleting nodes</vh></v>
 <v t="EKR.20040524104904.38"><vh>Dragging nodes</vh></v>
 <v t="EKR.20040524104904.39"><vh>Editing body text</vh></v>
@@ -322,21 +323,21 @@
 <v t="ekr.20050901102400.2"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20050831195331.4" a="E"><vh>Chapter 7: Scripting Leo with Python</vh>
-<v t="ekr.20040403171740" a="E"><vh>@rst html\scripting.html</vh>
+<v t="ekr.20050831195331.4"><vh>Chapter 7: Scripting Leo with Python</vh>
+<v t="ekr.20040403171740"><vh>@rst html\scripting.html</vh>
 <v t="ekr.20050812134441.1"><vh>@rst-no-head Links</vh></v>
 <v t="ekr.20050901184158"><vh>@rst-ignore Important: you can run these examples!</vh></v>
 <v t="ekr.20040403183229" rst_http_attribute="5d71002855443c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d3122206e616d653d22687474702d6e6f64652d6d61726b65722d31223e710155043c2f613e71025d710328553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710455063c2f6469763e71055d71062855063c626f64793e710755073c2f626f64793e71085d71092855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e710a55073c2f68746d6c3e710b4e65656555243c64697620636c6173733d2273656374696f6e222069643d226f76657276696577223e0a710c55493c68313e3c6120636c6173733d22746f632d6261636b7265662220687265663d222369643122206e616d653d226f76657276696577223e4f766572766965773c2f613e3c2f68313e0a710d652e"><vh>Overview</vh></v>
 <v t="ekr.20040403173920.3" rst_http_attribute="5d71002855443c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d3522206e616d653d22687474702d6e6f64652d6d61726b65722d35223e710155043c2f613e71025d71032855403c64697620636c6173733d2273656374696f6e222069643d22672d746f702d7468652d636f6d6d616e6465722d6f662d7468652d746f702d77696e646f77223e710455063c2f6469763e71055d710628553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710755063c2f6469763e71085d71092855063c626f64793e710a55073c2f626f64793e710b5d710c2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e710d55073c2f68746d6c3e710e4e6565656555073c2f6469763e0a710f55363c64697620636c6173733d2273656374696f6e222069643d22672d65732d77726974652d746f2d7468652d6c6f672d70616e65223e0a711055703c68313e3c6120636c6173733d22746f632d6261636b7265662220687265663d222369643322206e616d653d22672d65732d77726974652d746f2d7468652d6c6f672d70616e65223e672e657328293a20777269746520746f20746865206c6f672070616e653c2f613e3c2f68313e0a7111652e"><vh>g.es writes to the log pane</vh></v>
 <v t="ekr.20040403175157.1" rst_http_attribute="5d71002855443c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d3722206e616d653d22687474702d6e6f64652d6d61726b65722d37223e710155043c2f613e71025d71032855353c64697620636c6173733d2273656374696f6e222069643d22672d65732d77726974652d746f2d7468652d6c6f672d70616e65223e710455063c2f6469763e71055d710628553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710755063c2f6469763e71085d71092855063c626f64793e710a55073c2f626f64793e710b5d710c2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e710d55073c2f68746d6c3e710e4e6565656555073c2f6469763e0a710f55463c64697620636c6173733d2273656374696f6e222069643d226170702d77696e646f776c6973742d7468652d6c6973742d6f662d616c6c2d6f70656e2d6672616d6573223e0a7110558e3c68313e3c6120636c6173733d22746f632d6261636b7265662220687265663d222369643422206e616d653d226170702d77696e646f776c6973742d7468652d6c6973742d6f662d616c6c2d6f70656e2d6672616d6573223e6170702e77696e646f774c6973743a20746865206c697374206f6620616c6c206f70656e206672616d65733c2f613e3c2f68313e0a7111652e"><vh>app.windowList: the list of all open frames</vh></v>
 <v t="ekr.20040403173920.6" rst_http_attribute="5d71002855443c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d3922206e616d653d22687474702d6e6f64652d6d61726b65722d39223e710155043c2f613e71025d71032855453c64697620636c6173733d2273656374696f6e222069643d226170702d77696e646f776c6973742d7468652d6c6973742d6f662d616c6c2d6f70656e2d6672616d6573223e710455063c2f6469763e71055d710628553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710755063c2f6469763e71085d71092855063c626f64793e710a55073c2f626f64793e710b5d710c2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e710d55073c2f68746d6c3e710e4e6565656555073c2f6469763e0a710f55463c64697620636c6173733d2273656374696f6e222069643d2267657474696e672d616e642d73657474696e672d686561646c696e652d616e642d626f64792d74657874223e0a7110558d3c68313e3c6120636c6173733d22746f632d6261636b7265662220687265663d222369643522206e616d653d2267657474696e672d616e642d73657474696e672d686561646c696e652d616e642d626f64792d74657874223e47657474696e6720616e642073657474696e6720686561646c696e6520616e6420626f647920746578743c2f613e3c2f68313e0a7111652e"><vh>Getting and setting headline and body text</vh></v>
-<v t="ekr.20040403173920.9" a="E" rst_http_attribute="5d71002855463c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d313122206e616d653d22687474702d6e6f64652d6d61726b65722d3131223e710155043c2f613e71025d71032855453c64697620636c6173733d2273656374696f6e222069643d2267657474696e672d616e642d73657474696e672d686561646c696e652d616e642d626f64792d74657874223e710455063c2f6469763e71055d710628553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710755063c2f6469763e71085d71092855063c626f64793e710a55073c2f626f64793e710b5d710c2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e710d55073c2f68746d6c3e710e4e6565656555073c2f6469763e0a710f552f3c64697620636c6173733d2273656374696f6e222069643d2274726176657273696e672d6f75746c696e6573223e0a7110555f3c68313e3c6120636c6173733d22746f632d6261636b7265662220687265663d222369643622206e616d653d2274726176657273696e672d6f75746c696e6573223e54726176657273696e67206f75746c696e65733c2f613e3c2f68313e0a7111652e"><vh>Traversing outlines</vh>
+<v t="ekr.20040403173920.9" rst_http_attribute="5d71002855463c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d313122206e616d653d22687474702d6e6f64652d6d61726b65722d3131223e710155043c2f613e71025d71032855453c64697620636c6173733d2273656374696f6e222069643d2267657474696e672d616e642d73657474696e672d686561646c696e652d616e642d626f64792d74657874223e710455063c2f6469763e71055d710628553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710755063c2f6469763e71085d71092855063c626f64793e710a55073c2f626f64793e710b5d710c2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e710d55073c2f68746d6c3e710e4e6565656555073c2f6469763e0a710f552f3c64697620636c6173733d2273656374696f6e222069643d2274726176657273696e672d6f75746c696e6573223e0a7110555f3c68313e3c6120636c6173733d22746f632d6261636b7265662220687265663d222369643622206e616d653d2274726176657273696e672d6f75746c696e6573223e54726176657273696e67206f75746c696e65733c2f613e3c2f68313e0a7111652e"><vh>Traversing outlines</vh>
 <v t="ekr.20050902073404"><vh>About copying positions</vh></v>
 <v t="ekr.20040403173920.10" rst_http_attribute="5d71002855463c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d313322206e616d653d22687474702d6e6f64652d6d61726b65722d3133223e710155043c2f613e71025d710328552e3c64697620636c6173733d2273656374696f6e222069643d2274726176657273696e672d6f75746c696e6573223e710455063c2f6469763e71055d710628553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710755063c2f6469763e71085d71092855063c626f64793e710a55073c2f626f64793e710b5d710c2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e710d55073c2f68746d6c3e710e4e65656565552b3c64697620636c6173733d2273656374696f6e222069643d22632d616c6c6e6f6465732d69746572223e0a710f55573c68323e3c6120636c6173733d22746f632d6261636b7265662220687265663d222369643722206e616d653d22632d616c6c6e6f6465732d69746572223e632e616c6c4e6f6465735f697465723c2f613e3c2f68323e0a7110652e"><vh>c.allNodes_iter</vh></v>
 <v t="ekr.20040403173920.13" rst_http_attribute="5d71002855463c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d313522206e616d653d22687474702d6e6f64652d6d61726b65722d3135223e710155043c2f613e71025d710328552a3c64697620636c6173733d2273656374696f6e222069643d22632d616c6c6e6f6465732d69746572223e710455063c2f6469763e71055d710628552e3c64697620636c6173733d2273656374696f6e222069643d2274726176657273696e672d6f75746c696e6573223e710755063c2f6469763e71085d710928553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710a55063c2f6469763e710b5d710c2855063c626f64793e710d55073c2f626f64793e710e5d710f2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e711055073c2f68746d6c3e71114e656565656555073c2f6469763e0a7112552b3c64697620636c6173733d2273656374696f6e222069643d22702d6368696c6472656e2d69746572223e0a711355573c68323e3c6120636c6173733d22746f632d6261636b7265662220687265663d222369643822206e616d653d22702d6368696c6472656e2d69746572223e702e6368696c6472656e5f697465723c2f613e3c2f68323e0a7114652e"><vh>p.children_iter</vh></v>
 <v t="ekr.20040403173920.14" rst_http_attribute="5d71002855463c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d313722206e616d653d22687474702d6e6f64652d6d61726b65722d3137223e710155043c2f613e71025d710328552a3c64697620636c6173733d2273656374696f6e222069643d22702d6368696c6472656e2d69746572223e710455063c2f6469763e71055d710628552e3c64697620636c6173733d2273656374696f6e222069643d2274726176657273696e672d6f75746c696e6573223e710755063c2f6469763e71085d710928553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710a55063c2f6469763e710b5d710c2855063c626f64793e710d55073c2f626f64793e710e5d710f2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e711055073c2f68746d6c3e71114e656565656555073c2f6469763e0a711255463c64697620636c6173733d2273656374696f6e222069643d22702d706172656e74732d697465722d616e642d702d73656c662d616e642d706172656e74732d69746572223e0a7113558d3c68323e3c6120636c6173733d22746f632d6261636b7265662220687265663d222369643922206e616d653d22702d706172656e74732d697465722d616e642d702d73656c662d616e642d706172656e74732d69746572223e702e706172656e74735f6974657220616e6420702e73656c665f616e645f706172656e74735f697465723c2f613e3c2f68323e0a7114652e"><vh>p.parents_iter &amp; p.self_and_parents_iter</vh></v>
 <v t="ekr.20040403173920.15" rst_http_attribute="5d71002855463c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d313922206e616d653d22687474702d6e6f64652d6d61726b65722d3139223e710155043c2f613e71025d71032855453c64697620636c6173733d2273656374696f6e222069643d22702d706172656e74732d697465722d616e642d702d73656c662d616e642d706172656e74732d69746572223e710455063c2f6469763e71055d710628552e3c64697620636c6173733d2273656374696f6e222069643d2274726176657273696e672d6f75746c696e6573223e710755063c2f6469763e71085d710928553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710a55063c2f6469763e710b5d710c2855063c626f64793e710d55073c2f626f64793e710e5d710f2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e711055073c2f68746d6c3e71114e656565656555073c2f6469763e0a711255493c64697620636c6173733d2273656374696f6e222069643d22702d7369626c696e67732d697465722d616e642d702d666f6c6c6f77696e672d7369626c696e67732d69746572223e0a711355943c68323e3c6120636c6173733d22746f632d6261636b7265662220687265663d22236964313022206e616d653d22702d7369626c696e67732d697465722d616e642d702d666f6c6c6f77696e672d7369626c696e67732d69746572223e702e7369626c696e67735f6974657220616e6420702e666f6c6c6f77696e675f7369626c696e67735f697465723c2f613e3c2f68323e0a7114652e"><vh>p.siblings_iter &amp; p.following_siblings_iter</vh></v>
-<v t="ekr.20040403173920.16" a="V" rst_http_attribute="5d71002855463c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d323122206e616d653d22687474702d6e6f64652d6d61726b65722d3231223e710155043c2f613e71025d71032855483c64697620636c6173733d2273656374696f6e222069643d22702d7369626c696e67732d697465722d616e642d702d666f6c6c6f77696e672d7369626c696e67732d69746572223e710455063c2f6469763e71055d710628552e3c64697620636c6173733d2273656374696f6e222069643d2274726176657273696e672d6f75746c696e6573223e710755063c2f6469763e71085d710928553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710a55063c2f6469763e710b5d710c2855063c626f64793e710d55073c2f626f64793e710e5d710f2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e711055073c2f68746d6c3e71114e656565656555073c2f6469763e0a711255463c64697620636c6173733d2273656374696f6e222069643d22702d737562747265652d697465722d616e642d702d73656c662d616e642d737562747265652d69746572223e0a7113558e3c68323e3c6120636c6173733d22746f632d6261636b7265662220687265663d22236964313122206e616d653d22702d737562747265652d697465722d616e642d702d73656c662d616e642d737562747265652d69746572223e702e737562747265655f6974657220616e6420702e73656c665f616e645f737562747265655f697465723c2f613e3c2f68323e0a7114652e"><vh>p.subtree_iter &amp; p.self_and_subtree_iter</vh></v>
+<v t="ekr.20040403173920.16" rst_http_attribute="5d71002855463c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d323122206e616d653d22687474702d6e6f64652d6d61726b65722d3231223e710155043c2f613e71025d71032855483c64697620636c6173733d2273656374696f6e222069643d22702d7369626c696e67732d697465722d616e642d702d666f6c6c6f77696e672d7369626c696e67732d69746572223e710455063c2f6469763e71055d710628552e3c64697620636c6173733d2273656374696f6e222069643d2274726176657273696e672d6f75746c696e6573223e710755063c2f6469763e71085d710928553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710a55063c2f6469763e710b5d710c2855063c626f64793e710d55073c2f626f64793e710e5d710f2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e711055073c2f68746d6c3e71114e656565656555073c2f6469763e0a711255463c64697620636c6173733d2273656374696f6e222069643d22702d737562747265652d697465722d616e642d702d73656c662d616e642d737562747265652d69746572223e0a7113558e3c68323e3c6120636c6173733d22746f632d6261636b7265662220687265663d22236964313122206e616d653d22702d737562747265652d697465722d616e642d702d73656c662d616e642d737562747265652d69746572223e702e737562747265655f6974657220616e6420702e73656c665f616e645f737562747265655f697465723c2f613e3c2f68323e0a7114652e"><vh>p.subtree_iter &amp; p.self_and_subtree_iter</vh></v>
 <v t="ekr.20040903100514" rst_http_attribute="5d71002855463c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d323322206e616d653d22687474702d6e6f64652d6d61726b65722d3233223e710155043c2f613e71025d71032855453c64697620636c6173733d2273656374696f6e222069643d22702d737562747265652d697465722d616e642d702d73656c662d616e642d737562747265652d69746572223e710455063c2f6469763e71055d710628552e3c64697620636c6173733d2273656374696f6e222069643d2274726176657273696e672d6f75746c696e6573223e710755063c2f6469763e71085d710928553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710a55063c2f6469763e710b5d710c2855063c626f64793e710d55073c2f626f64793e710e5d710f2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e711055073c2f68746d6c3e71114e656565656555073c2f6469763e0a7112553f3c64697620636c6173733d2273656374696f6e222069643d2274657374696e672d776865746865722d612d706f736974696f6e2d69732d76616c6964223e0a711355803c68323e3c6120636c6173733d22746f632d6261636b7265662220687265663d22236964313222206e616d653d2274657374696e672d776865746865722d612d706f736974696f6e2d69732d76616c6964223e54657374696e672077686574686572206120706f736974696f6e2069732076616c69643c2f613e3c2f68323e0a7114652e"><vh>Testing whether a position is valid</vh></v>
 </v>
 <v t="ekr.20040403173920.17" rst_http_attribute="5d71002855463c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d323522206e616d653d22687474702d6e6f64652d6d61726b65722d3235223e710155043c2f613e71025d710328553e3c64697620636c6173733d2273656374696f6e222069643d2274657374696e672d776865746865722d612d706f736974696f6e2d69732d76616c6964223e710455063c2f6469763e71055d710628552e3c64697620636c6173733d2273656374696f6e222069643d2274726176657273696e672d6f75746c696e6573223e710755063c2f6469763e71085d710928553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710a55063c2f6469763e710b5d710c2855063c626f64793e710d55073c2f626f64793e710e5d710f2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e711055073c2f68746d6c3e71114e656565656555073c2f6469763e0a711255073c2f6469763e0a7113552f3c64697620636c6173733d2273656374696f6e222069643d227570646174696e672d7468652d73637265656e223e0a711455603c68313e3c6120636c6173733d22746f632d6261636b7265662220687265663d22236964313322206e616d653d227570646174696e672d7468652d73637265656e223e5570646174696e67207468652073637265656e3c2f613e3c2f68313e0a7115652e"><vh>Updating the screen</vh></v>
@@ -494,6 +495,7 @@
 </v>
 <v t="ekr.20050912125735.2759"><vh>Files</vh>
 <v t="ekr.20050912125735.2760"><vh>empty_leo_file.py</vh></v>
+<v t="ekr.20060920054924"><vh>leoOPML.py</vh></v>
 <v t="ekr.20050912125735.2763"><vh>lineNumbers.py</vh></v>
 <v t="ekr.20050912125735.2768"><vh>multifile.py</vh></v>
 <v t="ekr.20050912125735.2779"><vh>niceNosent.py</vh></v>
@@ -650,7 +652,7 @@
 <v t="ekr.20060601104756"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20060913164304"><vh>Chapter 17: Using Zodb with Leo</vh>
+<v t="ekr.20060913164304"><vh>Chapter 17: Using ZODB with Leo</vh>
 <v t="ekr.20060913164304.1"><vh>@rst html\zodb.html</vh>
 <v t="ekr.20060913164311"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20060913170145"><vh>Configuring Leo to use zodb</vh></v>
@@ -675,8 +677,7 @@
 <v t="EKR.20040524104904.333"><vh>Errors while reading @file nodes</vh></v>
 <v t="EKR.20040524104904.336"><vh>Errors while writing @file nodes</vh></v>
 <v t="EKR.20040524104904.357"><vh>Format of .leo files</vh></v>
-<v t="EKR.20040524104904.337"><vh>Format of derived files (3.x)</vh></v>
-<v t="EKR.20040524104904.349"><vh>Format of derived files (4.x)</vh></v>
+<v t="ekr.20060921064744.1"><vh>Format of derived files</vh></v>
 <v t="EKR.20040524104904.354"><vh>Unicode reference</vh></v>
 <v t="ekr.20050901071613"><vh>@rst-no-head end stuff</vh></v>
 </v>
@@ -4671,153 +4672,6 @@ No information is lost because all information is written to the .leo file rathe
 ``undefined section: &lt;section name&gt; referenced from: &lt;headline&gt;``
     The node given by *headline* contains a reference to *section name*
     but no section definition node for *section name* exists in the descendants of *headline*.</t>
-<t tx="EKR.20040524104904.337">**Important**: Do not alter blank lines in front of, behind or between sentinels.
-Doing so will corrupt the outline structure in older versions of Leo.
-Leo suppresses blank lines between sentinels by default.
-This is an upward compatible change in the format of derived files:
-Leo v2.0 can read derived files from all previous versions of Leo,
-but previous versions of Leo can not read derived files without blanks lines.
-
-The following sections describe the comment lines embedded in derived files.
-
-\@&lt;&lt;
-    A sentinel of the form ``@&lt;&lt;section_name&gt;&gt;`` represents a section reference.
-    If the reference does not end the line,
-    the sentinel line ending the expansion is followed by the remainder of the reference line.
-    This allows the Read code to recreate the reference line exactly.
-
-\@@
-    The ``@@`` sentinel represents any line starting with ``@`` in body text
-    except ``@``*whitespace*, ``@doc`` and ``@others``.
-    Examples::
-    
-      @@nocolor
-      @@pagewidth 80
-      @@tabwidth 4
-      @@code
-
-\@@delims
-    The ``@delims`` sentinel inserts ``@@delims`` sentinels into the derived file.
-    The new delimiter strings continue in effect until the next ``@@delims`` sentinel
-    *in the derived file* or until the end of the derived file.
-    Adding, deleting or changing ``@@delim`` *sentinels* will destroy Leo's ability to read the derived file.
-    Mistakes in using the ``@delims`` *directives* have no effect on Leo,
-    though such mistakes will thoroughly mess up a derived file as far as compilers, HTML renderers, etc. are concerned.
-
-\@at and \@doc
-    The ``@+doc`` and ``@-doc`` sentinels delimit doc parts within a node that starts with ``@doc``.
-    These sentinels are nested within ``@body`` directives.
-    Similarly, ``@+at`` and ``@-at`` sentinels delimit doc parts within a node that start with ``@`` *whitespace*.
-    We use the following **trailing whitespace convention**
-    to determine where putDocPart has inserted line breaks::
-    
-        A line in a doc part is followed by an inserted newline
-        if and only if the newline if preceded by whitespace.
-    
-    To make this convention work,
-    Leo's write code deletes the trailing whitespace of all lines that are followed by a "real" newline.
-
-\@body
-    If a node contains significant (non-whitespace) body text,
-    the ``@+body`` and ``@-body`` sentinels surround the text.
-    These sentinels are nested within ``@node`` directives.
-
-\@leo
-    A file produced by an ``@file`` node begins with an ``@+leo`` sentinel.
-    The last lines of the file should be the matching ``@-leo`` sentinel.
-    The ```@+leo`` sentinel line has the form::
-    
-        &lt;opening_delim&gt;@leo&lt;closing_delim&gt;
-    
-    The read code uses single-line comments if ``&lt;closing_delim&gt;`` is empty.
-    The write code generates single-line comments if possible.
-
-\@node
-    Suppose the parent node of a node N is P and that P has n children.  The sentinel:: 
-
-      @+node:&lt;child_index&gt;:&lt;status_fields&gt;:&lt;headline&gt;
-    
-    begins the expansion of node N.  The expansion continues until a matching::
-    
-      @-node::&lt;child_index&gt;:&lt;status_fields&gt;:&lt;headline&gt;
-      
-    sentinel.
-    ``&lt;child_index&gt;`` is a number from 1 to n indicating the index of the node in the list of its parent's children.
-    ``&lt;status_field&gt;`` is the cloneIndex field of the form: "C=nnn", where nnn is an immutable clone index.
-    ``&lt;headline&gt;`` contains *headline* text, not reference text.
-    
-    The indentation of the expansion is increased by the extra indentation of preceding the reference.
-    tree level never affects indentation level.
-
-\@others
-    The ``@+others`` sentinel indicates the start of the expansion of an ``@+others`` directive,
-    which continues until the matching ``@-others`` sentinel.
-    ``@others`` sentinels are nested within ``@body`` sentinels;
-    the expansion of the ``@others`` directive always occurs within the body text of some node.
-
-\@verbatim
-    ``@verbatim`` indicates that the next line of the derived file is not a sentinel.
-    This escape convention allows body text to contain lines that would otherwise be considered sentinel lines.
-    
-\@@verbatimAfterRef
-    ``@verbatimAfterRef`` is generated when a comment following a section reference would otherwise be treated as a sentinel.
-    In Python code, an example would be::
-    
-      &lt;&lt; ref &gt;&gt; #+others
-    
-    This sentinel is required only when blank lines are suppressed between sentinel lines.</t>
-<t tx="EKR.20040524104904.349">The 4.0 file format meets the following goals:
-
-- The minimum of sentinels needed to properly recreate the outline.
-
-- A robust way of telling whether newlines belong to sentinels or not.
-
-- A minimum of intrusion and ugliness.
-
-Changes from the 3.0 file format:
-
--   The ``@+leo`` sentinel indicates whether the format is 3.x or 4.x.
-
--   ``@+node`` and ``@-node`` sentinels no longer contain child or clone indices.
-    Therefore, such sentinels do not change when outline nodes are inserted, deleted or moved.
-    This reduces cvs conflicts involving sentinel lines.
-
--   Leo generates ``@+node`` sentinels only for nodes containing body text.
-    Leo no longer generates other ``@+node`` sentinels to indicate outline structure.
-    As a result, there is no longer any need for ``@+body`` sentinels.
-
--   The ``@nl`` and ``@nonl`` sentinels adjust the contribution of *previous* sentinels.
-    This greatly simplifies the read code.
-
--   The ``@+others`` and ``@&lt;&lt;`` sentinels indicate leading whitespace appearing before
-    ``@others`` directives and section refs.
-
--   Leo writes the ``@afterref`` whenever any non-whitespace text appears after a section references.
-
--   The ``@+doc`` and ``@+at`` sentinels now contain the whitespace that follows
-    the corresponding ``@doc`` or ``@`` directives.
-
-New in 4.2:
-
--   Files derived from ``@thin`` use gnx's in ``@+-node`` sentinels.
-    gnx's permanently and uniquely identify nodes.  Examples::
-
-        id.yyyymmddhhmmss
-        id.yyyymmddhhmmss.n
-
-    The second form is used if two gnx's would otherwise be identical.
-
-    - ``id`` is a string unique to a developer, e.g., a cvs id.
-
-    - ``yyyymmddhhmmss`` is the node's creation date.
-
-    - ``n`` is an integer.
-
--   The ``@+-all`` sentinel corresponds to the range of the ``@all`` directive.
-
--   The ``@+-middle`` sentinel indicates intermediate nodes between the node that
-    references a section and the node that defines the section.
-    Typically no such sentinels are needed: most sections are defined in a direct child of the referencing node.</t>
 <t tx="EKR.20040524104904.351">The following bugs can not be fixed:
 
 1.  The ``Untangle`` command has no way of updating a section whose name has been changed in the derived file.
@@ -17455,6 +17309,10 @@ Appendices
 
 .. _`Chapter 13: Writing plugins`:   writingPlugins.html
 
+.. References to the glossary.
+
+.. _`sentinel lines`:             glossary.html#sentinel-lines
+
 .. WARNING: image targets may not have upper case letters!
 
 .. |back| image:: arrow_lt.gif
@@ -18826,7 +18684,7 @@ about this time. Python solved *all* my programming problems. I rewrote Leo in
 Python in about two months! For the first time in my career I was no longer
 anxious while programming; it simply isn't possible to create bad bugs in
 Python. The Python version of Leo the first officially OpenSoftware version of
-Leo. The first function version of Leo in Python was 0.05 alpha, December 17,
+Leo. The first functional version of Leo in Python was 0.05 alpha, December 17,
 2001.</t>
 <t tx="ekr.20050902105852.5">I registered the Leo project on SourceForge on March 10, 2003. It is certainly
 no accident that Leo started a new life shortly thereafter. Prior to SourceForge
@@ -18854,6 +18712,9 @@ Many improvements were at last easy enough to do:
 - @first and @last appeared in 3.7
 - @asis and @nosent appeared in 3.8.
 - Incremental syntax coloring and incremental undo appeared in 3.9.
+- Paul Paterson created Leo's plugin architecture sometime during this period.
+  Plugins have been a driving force in Leo's development because people can
+  change how Leo works without altering Leo's core.
 - 3.12 fixed a huge memory leak.
 - 3.12 Final, the last 3.x version, appeared July 17, 2003.
 </t>
@@ -18867,7 +18728,7 @@ information in derived files. This made the read code much more robust, and
 eliminated all the previous unworkable error recovery schemes. At last Leo
 was on a completely firm foundation.
 </t>
-<t tx="ekr.20050902105852.10">Leo first used gnx's (global node indices) as a foolproof way of associated
+<t tx="ekr.20050902105852.10">Leo first used gnx's (global node indices) as a foolproof way of associating
 nodes in .leo files with nodes in derived files. At the time, there was
 still intense discussions about protecting the logical consistency of
 outlines. ``@thin`` was later to solve all those problems, but nobody knew
@@ -27905,7 +27766,22 @@ Home:     http://sourceforge.net/projects/leo/
 Download: http://sourceforge.net/project/showfiles.php?group_id=3458
 CVS:      http://leo.tigris.org/source/browse/leo/
 Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
-<t tx="ekr.20060629083935">Leo 4.4 was a year-long effort to incorporate an Emacs-style minibuffer and related commands into Leo.  Thinking in terms of minibuffer commands was important conceptually; it freed my thinking.  Leo 4.4 also featured many improvements in how keys are bound to commands, including per-pane bindings and user-defined key-binding modes.</t>
+<t tx="ekr.20060629083935">Leo 4.4 was a year-long effort to incorporate an Emacs-style minibuffer and
+related commands into Leo. Thinking in terms of minibuffer commands frees my
+thinking. Leo 4.4 also featured many improvements in how keys are bound to
+commands, including per-pane bindings and user-defined key-binding modes.
+
+Development on long-delayed projects accelerated after 4.4 final went out the door.
+Recent projects include:
+    
+- Controlling syntax coloring with jEdit's xml language-description files.
+  See Chapter 15.
+- Support for debugging scripts using external debutters.
+  See Chapter 16.
+- Modifying Leo's vnodes and tnodes so that Leo's data can be used with ZODB.
+  See Chapter 17.
+- Reading and writing Leo outlines in `OPML`_ format.
+  See Chapter 18.</t>
 <t tx="ekr.20060629083935.2"></t>
 <t tx="ekr.20060629083935.3"></t>
 <t tx="ekr.20060629083935.8">http://sourceforge.net/forum/message.php?msg_id=3795258
@@ -28482,5 +28358,227 @@ the equivalent escape sequences. For example::
 
     u = u'a-\u0233-\u8ce2-z'
     u = 'a-\u0233-\u8ce2-z'</t>
+<t tx="ekr.20060920054924">.. _OPML:                   http://en.wikipedia.org/wiki/OPML
+.. _`OPML 2.0 standard`:    http://www.opml.org
+
+**Warning**: the OPML plugin is not fully functional at present.  Use with caution.
+
+The OPML plugin creates two new commands that read and write
+Leo outlines in OPML_ format.
+The read-opml-file command creates a Leo outline from an .opml file.
+The write-opml-file command writes the present Leo outline to an .opml file.
+
+Various settings control what gets written to .opml files, and in what format.
+As usual, you specify settings for the OPML plugin using leoSettings.leo.
+The settings for the OPML are found in the node::
+    
+    @settings--&gt;Plugins--&gt;opml plugin
+    
+Here are the settings that control the format of .opml files.
+The default values are shown.
+
+- ``@string opml_namespace = leo:com:leo-opml-version-1``
+
+  The namespace urn for the xmlns attribute of ``&lt;opml&gt;`` elements.
+  This value typically is not used, but it should refer to Leo in some way.
+    
+- ``@bool opml_use_outline_elements = True``
+
+  If True, Leo writes body text to ``&lt;:body&gt;`` elements nested in ``&lt;outline&gt;`` elements.
+  Otherwise, Leo writes body text to ``:body`` attributes of ``&lt;outline&gt;`` elements.
+  
+  **Note**: Leo-specific attributes and elements are clearly distinguished from 'standard' opml elements:
+  they are preceded by a colon, which marks them as members of the default namespace specified specified
+  by this option.  Thus, all OPML text generated by this plugin should conform to the `OPML 2.0 standard`_.
+
+- ``@string opml_version = 2.0``
+
+  The opml version string written to the ``&lt;OPML&gt;`` element.
+  Use ``2.0`` unless there is a specific reason to use ``1.0``.
+
+- ``@bool opml_write_body_text = True``
+
+  Leo writes body text to the OPML file only if this is True.
+
+- ``@bool opml_write_leo_details = True``
+
+  If True, Leo writes the native attributes of Leo's ``&lt;v&gt;`` elements
+  as attributes of the opml ``&lt;outline&gt;`` elements.
+  The native attributes of ``&lt;v&gt;`` elements are
+  ``a``, ``descendentTnodeUnknownAttributes``, ``expanded``, ``marks``,
+  ``t``, and ``tnodeList``.
+
+- ``@bool opml_write_leo_globals_attributes = True``
+
+  If True, Leo writes `body_outline_ratio`` and ``global_window_position``
+  attributes to the ``&lt;head&gt;`` element of the .opml file.</t>
+<t tx="ekr.20060920145745">Three commands in the Cmds:Body Editors menu allow to create and destroy separate editors in the body pane.
+The Add Body Editor (add-editor) command adds a new editor in the body pane.
+The Delete Body Editor (delete-editor) command deletes the presently selected editor,
+The Change Body Editor (cycle-editor-focus) command cycles focus between editors in the body text.</t>
+<t tx="ekr.20060921064744.1">This section describe the format of derived files.
+Leo's `sentinel lines`_ are comments, and this section describes those comments.
+
+The format of derived files produced by Leo 4.0 and later meets the following goals:
+
+- The minimum of sentinels needed to properly recreate the outline.
+
+- A robust way of telling whether newlines belong to sentinels or not.
+  Prior to Leo 4.0, deleting blank lines before and after sentinel lines
+  could corrupt the outline structure of the derived file.
+  
+- A minimum of intrusion and ugliness.
+  
+**New in Leo 4.2**:
+Files derived from ``@thin`` use gnx's in ``@+node`` and ``@-node`` sentinels.
+Such gnx's permanently and uniquely identify nodes.
+Gnx's have the form::
+
+    id.yyyymmddhhmmss
+    id.yyyymmddhhmmss.n
+
+The second form is used if two gnx's would otherwise be identical.
+
+- ``id`` is a string unique to a developer, e.g., a cvs id.
+
+- ``yyyymmddhhmmss`` is the node's creation date.
+
+- ``n`` is an integer.
+
+Here are the sentinels used by Leo, in alphabetical order.
+Unless otherwise noted, the documentation applies to all versions of Leo.
+In the following discussion, ``gnx`` denotes a gnx as described above.
+
+\@&lt;&lt;
+    A sentinel of the form ``@&lt;&lt;section_name&gt;&gt;`` represents a section reference.
+    
+    If the reference does not end the line,
+    the sentinel line ending the expansion is followed by the remainder of the reference line.
+    This allows the Read code to recreate the reference line exactly.
+
+\@@
+    The ``@@`` sentinel represents any line starting with ``@`` in body text
+    except ``@``*whitespace*, ``@doc`` and ``@others``.
+    Examples::
+    
+      @@nocolor
+      @@pagewidth 80
+      @@tabwidth 4
+      @@code
+      
+\@afterref **(Leo 4.0 and later)**
+    Marks non-whitespace text appearing after a section references.
+    
+\@+all **(Leo 4.0 and later)**
+    Marks the start of text generated by the ``@all`` directive.
+    
+\@-all **(Leo 4.0 and later)**
+    Marks the end of text generated by the ``@all`` directive.
+    
+\@at and \@doc
+    The ``@+doc`` and ``@-doc`` sentinels delimit doc parts within a node that starts with ``@doc``.
+    These sentinels are nested within ``@body`` directives.
+    Similarly, ``@+at`` and ``@-at`` sentinels delimit doc parts within a node that start with ``@`` *whitespace*.
+    We use the following **trailing whitespace convention**
+    to determine where putDocPart has inserted line breaks::
+    
+        A line in a doc part is followed by an inserted newline
+        if and only if the newline if preceded by whitespace.
+    
+    To make this convention work,
+    Leo's write code deletes the trailing whitespace of all lines that are followed by a "real" newline.
+    
+    **Leo 4.0 and later**:
+    The ``@+doc`` and ``@+at`` sentinels now contain the whitespace that follows
+    the corresponding ``@doc`` or ``@`` directives.
+
+\@+body **(Leo 3.x only)**
+    Marks the start of body text.
+    
+\@-body **(Leo 3.x only)**
+    Marks the end of body text.
+    
+\@delims
+    The ``@delims`` sentinel inserts ``@@delims`` sentinels into the derived file.
+    The new delimiter strings continue in effect until the next ``@@delims`` sentinel
+    *in the derived file* or until the end of the derived file.
+    Adding, deleting or changing ``@@delim`` *sentinels* will destroy Leo's ability to read the derived file.
+    Mistakes in using the ``@delims`` *directives* have no effect on Leo,
+    though such mistakes will thoroughly mess up a derived file as far as compilers,
+    HTML renderers, etc. are concerned. 
+
+\@+leo
+    Marks the start of any derived file.
+    This sentinal has the form::
+    
+        &lt;opening_delim&gt;@leo&lt;closing_delim&gt;
+    
+    The read code uses single-line comments if ``&lt;closing_delim&gt;`` is empty.
+    The write code generates single-line comments if possible.
+    
+    **New in Leo 4.0**: The ``@+leo`` sentinel contains other information following
+    ``@leo``.  For example::
+        
+        &lt;opening_delim&gt;@leo-ver=4-thin&lt;closing_delim&gt;
+    
+\@-leo
+    Marks the end of the Leo file.
+    Nothing but whitespace should follow this directive.
+    
+\@+middle **(Leo 4.0 and later)**
+    Marks the start of intermediate nodes between the node that
+    references a section and the node that defines the section.
+    Typically no such sentinels are needed: most sections are defined in a direct child of the referencing node.
+    
+\@-middle **(Leo 4.0 and later)**
+    Marks the end of intermediate nodes between the node that
+    references a section and the node that defines the section.
+
+\@+node and \@-node
+    Mark the start and end of a node.
+    
+    **Leo 4.2 and later**::
+    ``@+node`` and ``@-node`` sentinels use gnx's as descibed above::
+    
+        @+node:gnx:&lt;headline&gt;
+        @-node:gnx:&lt;headline&gt;
+    
+    Leo generates these sentinels only for nodes containing body text.
+    Leo no longer generates other ``@+node`` sentinels to indicate outline structure.
+    As a result, there is no longer any need for ``@+body`` sentinels.
+        
+    **Before Leo 4.2**::
+    ``@+node`` and ``@-node`` sentinels used child indices, and status fields as described below::
+    
+      @+node:&lt;child_index&gt;:&lt;status_fields&gt;:&lt;headline&gt;
+      @-node::&lt;child_index&gt;:&lt;status_fields&gt;:&lt;headline&gt;
+    
+    ``&lt;child_index&gt;`` is a number from 1 to n indicating the index of the node in the list of its parent's children.
+    ``&lt;status_field&gt;`` is the cloneIndex field of the form: "C=nnn", where nnn is an immutable clone index.
+    ``&lt;headline&gt;`` contains *headline* text, not reference text.
+    
+\@nl **(Leo 4.0 and later)**
+    Adds a newline to the body text.
+    
+\@nonl **(Leo 4.0 and later)**
+    Suppresses a newline from the body text.
+    
+\@others
+    The ``@+others`` sentinel indicates the start of the expansion of an ``@+others`` directive,
+    which continues until the matching ``@-others`` sentinel.
+    ``@others`` sentinels are nested within ``@body`` sentinels;
+    the expansion of the ``@others`` directive always occurs within the body text of some node.
+
+\@verbatim
+    ``@verbatim`` indicates that the next line of the derived file is not a sentinel.
+    This escape convention allows body text to contain lines that would otherwise be considered sentinel lines.
+    
+\@@verbatimAfterRef
+    ``@verbatimAfterRef`` is generated when a comment following a section reference would otherwise be treated as a sentinel.
+    In Python code, an example would be::
+    
+      &lt;&lt; ref &gt;&gt; #+others
+    
+    This sentinel is required only when blank lines are suppressed between sentinel lines.</t>
 </tnodes>
 </leo_file>
