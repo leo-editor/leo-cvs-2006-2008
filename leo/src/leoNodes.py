@@ -218,12 +218,12 @@
 #@-node:ekr.20031218072017.2408:<< About clones >>
 #@nl
 
+from __future__ import generators # To make the code work in Python 2.2.
+
 use_zodb = False
 
 #@<< imports >>
 #@+node:ekr.20060904165452.1:<< imports >>
-from __future__ import generators # To make the code work in Python 2.2.
-
 if use_zodb:
     # It may be important to import ZODB first.
     try:
@@ -1693,6 +1693,17 @@ class basePosition (object):
     hasVisNext = hasThreadNext
     #@-node:ekr.20040227224946:hasThreadNext (the only complex hasX method)
     #@-node:ekr.20040227212621:p.hasX
+    #@+node:ekr.20060920203352:p.findRootPosition (New in 4.4.2)
+    def findRootPosition (self):
+        
+        p = self.copy()
+        while p.hasParent():
+            p.moveToParent()
+        while p.hasBack():
+            p.moveToBack()
+        return p
+    #@nonl
+    #@-node:ekr.20060920203352:p.findRootPosition (New in 4.4.2)
     #@+node:ekr.20040307104131.1:p.isAncestorOf
     def isAncestorOf (self, p2):
         
