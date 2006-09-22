@@ -59,13 +59,9 @@ the <head> element of the .opml file.
 #@@nocolor
 #@+at
 # 
-# - Finish opml_write_leo_globals_attributes
-# 
 # - Support opml_read_derived_files & opml_write_derived_files
 # 
-# ** Make sure reading derived files works.
-#     - Does generatedTnxs have to be renamed to match tnodeDict?
-#     - handle problems resolving tnodeLists.
+# - (Done) Make reading derived files work.
 # 
 # - Enhanse open/save commands when this plugin is active.
 # 
@@ -74,7 +70,7 @@ the <head> element of the .opml file.
 #@-node:ekr.20060920112018:<< to do >>
 #@nl
 
-__version__ = '0.91'
+__version__ = '0.92'
 
 # For traces.
 printElements = [] # ['all','outline','head','body',]
@@ -128,6 +124,9 @@ printElements = [] # ['all','outline','head','body',]
 # 0.91 EKR: reading derived files appears to work:
 # - create c.fileCommands.tnodeDict before calling c.atFileCommands.readAll.
 # - Properly init t.fileIndex to an actual gnx using scanGnx.
+# 0.92 EKR: Support for opml_write_leo_globals_attributes setting:
+# - Read and write :body_outline_ratio attribute and <:global_window_position> 
+# element.
 #@-at
 #@nonl
 #@-node:ekr.20060904103412.2:<< version history >>
@@ -193,10 +192,14 @@ class opmlFileCommandsClass (leoFileCommands.fileCommands):
         
         c = self.c
         
-        self.opml_use_outline_elements = c.config.getBool('opml_use_outline_elements')
-        self.opml_write_derived_files  = c.config.getBool('opml_write_derived_files')
-        self.opml_write_leo_details    = c.config.getBool('opml_write_leo_details')
-        self.opml_write_body_text      = c.config.getBool('opml_write_body_text')
+        for ivar in (
+            'opml_use_outline_elements',
+            'opml_write_derived_files',
+            'opml_write_leo_details',
+            'opml_write_leo_globals_attributes',
+            'opml_write_body_text',
+        ):
+            setattr(self,ivar,c.config.getBool(ivar))
         
         self.putXMLLine()
         self.putOPMLProlog()
@@ -217,9 +220,22 @@ class opmlFileCommandsClass (leoFileCommands.fileCommands):
         
         '''Put the OPML header, including attributes for globals, prefs and  find settings.'''
         
-        self.put('\n<head>')
+        c = self.c ; indent = ' ' * 4
+    
+        if self.opml_write_leo_globals_attributes:
+            self.put('\n<head :body_outline_ratio="%s">' % str(c.frame.ratio))
+            
+            width,height,left,top = c.frame.get_window_info()
+    
+            self.put('\n%s<:global_window_position' % indent)
+            self.put(' top="%s" left="%s" height="%s" width="%s"/>' % (
+                str(top),str(left),str(height),str(width)))
+    
+            self.put('\n</head>')
+        else:
+            self.put('\n<head/>')
         
-        self.put('\n</head>')
+        
     #@nonl
     #@-node:ekr.20060919172012.4:putOPMLHeader
     #@+node:ekr.20060919172012.5:putOPMLNodes
@@ -745,11 +761,12 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         # There is no need for an 'end' method if all info is carried in attributes.
         
         self.dispatchDict = {
-            'body':     (None,None),
-            'head':     (None,None),
-            'opml':     (None,None),
-            'outline':  (self.startOutline,self.endOutline),
-            ':body':    (self.startBodyText,self.endBodyText)
+            'body':                     (None,None),
+            'head':                     (self.startHead,None),
+            'opml':                     (None,None),
+            'outline':                  (self.startOutline,self.endOutline),
+            ':body':                    (self.startBodyText,self.endBodyText),
+            ':global_window_position':  (self.startWinPos,None)
         }
         #@nonl
         #@-node:ekr.20060917185525:<< define dispatch dict >>
@@ -762,6 +779,7 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         self.level = 0
         self.node = None
         self.nodeStack = []
+        self.ratio = 0.5 # body-outline ratio.
         self.rootNode = None
     #@nonl
     #@-node:ekr.20060904134958.165: __init__ & helpers
@@ -942,6 +960,40 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
             if func:
                 func(attrs)
     #@nonl
+    #@+node:ekr.20060919193501.1:startBodyText
+    def startBodyText (self,attrs):
+        
+        '''Start a <:body> element.'''
+        
+        self.content = []
+    #@nonl
+    #@-node:ekr.20060919193501.1:startBodyText
+    #@+node:ekr.20060922072852:startHead
+    def startHead (self,attrs):
+        
+        if not self.inElement('opml'):
+            self.error('<head> outside <opml>')
+        
+        self.doHeadAttributes(attrs)
+    #@nonl
+    #@+node:ekr.20060922072852.1:doHeadAttributes
+    def doHeadAttributes (self,attrs):
+        
+        ratio = 0.5
+        
+        for bunch in self.attrsToList(attrs):
+            name = bunch.name ; val = bunch.val
+            if name == ':body_outline_ratio':
+                try:
+                    ratio = float(val)
+                    # g.trace(ratio)
+                except ValueError:
+                    pass
+                    
+        self.ratio = ratio
+    #@nonl
+    #@-node:ekr.20060922072852.1:doHeadAttributes
+    #@-node:ekr.20060922072852:startHead
     #@+node:ekr.20060917190349:startOutline
     def startOutline (self,attrs):
         
@@ -961,15 +1013,6 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         self.doOutlineAttributes(attrs)
         self.nodeStack.append(parent)
     #@nonl
-    #@-node:ekr.20060917190349:startOutline
-    #@+node:ekr.20060919193501.1:startBodyText
-    def startBodyText (self,attrs):
-        
-        '''Start a <:body> element.'''
-        
-        self.content = []
-    #@nonl
-    #@-node:ekr.20060919193501.1:startBodyText
     #@+node:ekr.20060904141220.34:doOutlineAttributes
     def doOutlineAttributes (self,attrs):
         
@@ -990,6 +1033,38 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
                 node.attributes[name] = val
     #@nonl
     #@-node:ekr.20060904141220.34:doOutlineAttributes
+    #@-node:ekr.20060917190349:startOutline
+    #@+node:ekr.20060922071010:startWinPos
+    def startWinPos (self,attrs):
+        
+        if not self.inElement('head'):
+            self.error('<:global_window_position> outside <body>')
+    
+        self.doGlobalWindowAttributes(attrs)
+    #@+node:ekr.20060922071010.1:doGlobalWindowAttributes
+    def doGlobalWindowAttributes (self,attrs):
+        
+        c = self.c
+        top = 50 ; left = 50 ; height = 500 ; width = 700 # Reasonable defaults.
+        
+        try:
+            for bunch in self.attrsToList(attrs):
+                name = bunch.name ; val = bunch.val
+                if   name == 'top':    top = int(val)
+                elif name == 'left':   left = int(val)
+                elif name == 'height': height = int(val)
+                elif name == 'width':  width = int(val)
+        except ValueError:
+            pass
+            
+        # g.trace(top,left,height,width)
+        c.frame.setTopGeometry(width,height,left,top)
+        c.frame.deiconify()
+        c.frame.lift()
+        c.frame.update()
+    #@nonl
+    #@-node:ekr.20060922071010.1:doGlobalWindowAttributes
+    #@-node:ekr.20060922071010:startWinPos
     #@-node:ekr.20060904134958.180:startElement & helpers
     #@+node:ekr.20060904134958.183:getNode
     def getNode (self):
