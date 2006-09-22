@@ -59,18 +59,14 @@ the <head> element of the .opml file.
 #@@nocolor
 #@+at
 # 
-# - Support opml_read_derived_files & opml_write_derived_files
-# 
-# - (Done) Make reading derived files work.
-# 
-# - Enhanse open/save commands when this plugin is active.
+# - Enhance open/save commands when this plugin is active.
 # 
 # - read/write uA's.
 #@-at
 #@-node:ekr.20060920112018:<< to do >>
 #@nl
 
-__version__ = '0.92'
+__version__ = '0.93'
 
 # For traces.
 printElements = [] # ['all','outline','head','body',]
@@ -127,6 +123,7 @@ printElements = [] # ['all','outline','head','body',]
 # 0.92 EKR: Support for opml_write_leo_globals_attributes setting:
 # - Read and write :body_outline_ratio attribute and <:global_window_position> 
 # element.
+# 0.93 EKR: Support opml_read_derived_files & opml_write_derived_files
 #@-at
 #@nonl
 #@-node:ekr.20060904103412.2:<< version history >>
@@ -383,6 +380,7 @@ class opmlController:
         c.k.registerCommand('write-opml-file',None,self.writeOpmlCommand,pane='all',verbose=False)
         
         self.opml_read_derived_files  = c.config.getBool('opml_read_derived_files')
+        self.opml_write_derived_files = c.config.getBool('opml_write_derived_files')
         
         self.currentVnode = None
         self.topVnode = None
@@ -589,7 +587,8 @@ class opmlController:
                 c2.fileCommands.tnodesDict = self.createTnodesDict()
                 # g.trace('c2',id(c2),'tnodesDict',id(c2.fileCommands.tnodesDict))
                 self.resolveTnodeLists(c2)
-                c2.atFileCommands.readAll(c2.rootPosition())
+                if self.opml_read_derived_files:
+                    c2.atFileCommands.readAll(c2.rootPosition())
             c2.checkOutline()
             self.setCurrentPosition(c2)
             c2.redraw()
@@ -663,11 +662,14 @@ class opmlController:
     #@+node:ekr.20060904103721.1:writeFile
     def writeFile (self,fileName):
         
-        if fileName:
+        if not fileName: return
     
-            self.c.fileCommands.write_Leo_file(fileName,outlineOnlyFlag=True,toString=False,toOPML=True)
-            
-            g.es_print('wrote %s' % fileName)
+        self.c.fileCommands.write_Leo_file(
+            fileName,
+            outlineOnlyFlag=not self.opml_write_derived_files,
+            toString=False,toOPML=True)
+        
+        g.es_print('wrote %s' % fileName)
     #@nonl
     #@-node:ekr.20060904103721.1:writeFile
     #@+node:ekr.20060919201330:writeOpmlCommand

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="305" clone_windows="0"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="306" clone_windows="0"/>
 <globals body_outline_ratio="0.717647058824">
-	<global_window_position top="143" left="251" height="604" width="938"/>
+	<global_window_position top="143" left="251" height="585" width="938"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -422,12 +422,13 @@
 </v>
 <v t="ekr.20060919171527" a="E"><vh>opml plugin</vh>
 <v t="ekr.20060921080239"><vh>@bool opml_read_derived_files = True</vh></v>
-<v t="ekr.20060921080239.1"><vh>@bool opml_write_derived_files = True</vh></v>
 <v t="ekr.20060919171527.1"><vh>@bool opml_use_outline_elements = True</vh></v>
 <v t="ekr.20060919195145"><vh>@string opml_version = 2.0</vh></v>
 <v t="ekr.20060919181622"><vh>@bool opml_write_body_text = True</vh></v>
+<v t="ekr.20060921080239.1"><vh>@bool opml_write_derived_files = True</vh></v>
 <v t="ekr.20060919173031"><vh>@bool opml_write_leo_details = True</vh></v>
-<v t="ekr.20060919173031.1" a="TV"><vh>@bool opml_write_leo_globals_attributes = True</vh></v>
+<v t="ekr.20060919173031.1"><vh>@bool opml_write_leo_globals_attributes = True</vh></v>
+<v t="ekr.20060922110220" a="TV"><vh>@bool opml_write_uAs = True</vh></v>
 <v t="ekr.20060919171527.2"><vh>@string opml_namespace = leo:com:leo-opml-version-1</vh></v>
 </v>
 <v t="ekr.20051123100536.1"><vh>vim plugin</vh>
@@ -5676,7 +5677,14 @@ False: Do not write such attributes.</t>
 False: Write only outlines.</t>
 <t tx="ekr.20060919195145">This should be either 2.0 or 1.0.
 Version 2.0 is more flexible, and should be used unless there are problems.</t>
-<t tx="ekr.20060921080239"></t>
-<t tx="ekr.20060921080239.1"></t>
+<t tx="ekr.20060921080239">True:  Read derived files referenced from @file and @thin nodes when reading .opml files.
+
+False: Do not read derived when reading .opml files.</t>
+<t tx="ekr.20060921080239.1">True:  Write derived files when writing .opml files.
+
+False: Do not write derived when reading .opml files.</t>
+<t tx="ekr.20060922110220">True:  Write unknown attributes (uA's) in either &lt;:uA&gt; sub-elements of &lt;outline&gt; elements.
+
+False: Do not write uA's.</t>
 </tnodes>
 </leo_file>
