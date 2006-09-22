@@ -2713,7 +2713,7 @@ class baseFileCommands:
         self.put("/>") ; self.put_nl()
     #@-node:ekr.20031218072017.1971:putClipboardHeader
     #@-node:ekr.20031218072017.1573:putLeoOutline (to clipboard) & helper
-    #@+node:ekr.20060919064401:putToOPML & helpers
+    #@+node:ekr.20060919064401:putToOPML
     # All elements and attributes prefixed by ':' are leo-specific.
     # All other elements and attributes are specified by the OPML 1 spec.
     
@@ -2723,7 +2723,7 @@ class baseFileCommands:
         
         return None
     #@nonl
-    #@-node:ekr.20060919064401:putToOPML & helpers
+    #@-node:ekr.20060919064401:putToOPML
     #@+node:ekr.20031218072017.1720:save
     def save(self,fileName):
     
