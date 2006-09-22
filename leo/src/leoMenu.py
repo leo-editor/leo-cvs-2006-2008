@@ -469,26 +469,18 @@ class leoMenu:
             return None
     #@-node:ekr.20031218072017.3804:createNewMenu
     #@+node:ekr.20031218072017.4116:createOpenWithMenuFromTable & helper
-    #@+at 
-    #@nonl
-    # Entries in the table passed to createOpenWithMenuFromTable are
-    # tuples of the form (commandName,shortcut,data).
-    # 
-    # - command is one of "os.system", "os.startfile", "os.spawnl", 
-    # "os.spawnv" or "exec".
-    # - shortcut is a string describing a shortcut, just as for 
-    # createMenuItemsFromTable.
-    # - data is a tuple of the form (command,arg,ext).
-    # 
-    # Leo executes command(arg+path) where path is the full path to the temp 
-    # file.
-    # If ext is not None, the temp file has the given extension.
-    # Otherwise, Leo computes an extension based on the @language directive in 
-    # effect.
-    #@-at
-    #@@c
-    
     def createOpenWithMenuFromTable (self,table):
+        
+        '''Entries in the table passed to createOpenWithMenuFromTable are
+    tuples of the form (commandName,shortcut,data).
+    
+    - command is one of "os.system", "os.startfile", "os.spawnl", "os.spawnv" or "exec".
+    - shortcut is a string describing a shortcut, just as for createMenuItemsFromTable.
+    - data is a tuple of the form (command,arg,ext).
+    
+    Leo executes command(arg+path) where path is the full path to the temp file.
+    If ext is not None, the temp file has the given extension.
+    Otherwise, Leo computes an extension based on the @language directive in effect.'''
     
         c = self.c
         g.app.openWithTable = table # Override any previous table.
