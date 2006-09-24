@@ -227,24 +227,6 @@ class leoMenu:
     #@-node:ekr.20031218072017.3780:hasSelection
     #@-node:ekr.20031218072017.3776:Gui-independent menu enablers
     #@+node:ekr.20031218072017.3781:Gui-independent menu routines
-    #@+node:ekr.20051022053758: Top level
-    #@+node:ekr.20031218072017.3784:createMenuItemsFromTable
-    def createMenuItemsFromTable (self,menuName,table,dynamicMenu=False):
-        
-        try:
-            menu = self.getMenu(menuName)
-            if menu == None:
-                print "menu does not exist: ",menuName
-                g.es("menu does not exist: ",menuName)
-                return
-            self.createMenuEntries(menu,table,dynamicMenu=dynamicMenu)
-        except:
-            s = "exception creating items for %s menu" % menuName
-            g.es_print(s)
-            g.es_exception()
-            
-        g.app.menuWarningsGiven = True
-    #@-node:ekr.20031218072017.3784:createMenuItemsFromTable
     #@+node:ekr.20031218072017.3785:createMenusFromTables & helpers
     def createMenusFromTables (self):
         
@@ -395,25 +377,27 @@ class leoMenu:
     #@+node:ekr.20050921103736:createCmndsMenuFromTable
     def createCmndsMenuFromTable (self):
         
-        cmdsMenu = self.createNewMenu('C&mds')
+        cmdsMenu = self.createNewMenu('&Cmds')
         self.createMenuEntries(cmdsMenu,self.cmdsMenuTopTable)
     
         for name,table in (
-            # &: a,b,c,e,g,h,i,m,n,p,r,s
+            # Used in top table: l,e,q.
+            # &: a,b,c,d,f,g,i,m,n,o,p,r,s
             ('&Abbrev...',          self.cmdsMenuAbbrevTable),
-            ('Body &Editors',       self.cmdsMenuBodyEditorsTable),
+            ('Body E&ditors',       self.cmdsMenuBodyEditorsTable),
             ('&Buffers...',         self.cmdsMenuBuffersTable),
             ('&Center...',          self.cmdsMenuCenterTable),
             ('Cha&nge Case...',     self.cmdsMenuChangeCaseTable),
-            ('&Help For Commands...',self.cmdsMenuHelpTable),
+            ('&Focus...',           self.cmdsMenuFocusTable),
             ('&Indent...',          self.cmdsMenuIndentTable),
             ('&Macro...',           self.cmdsMenuMacroTable),
             ('&Rectangles...',      self.cmdsMenuRectanglesTable),
             ('Re&gisters...',       self.cmdsMenuRegistersTable),
+            ('Scr&olling...',       self.cmdsMenuScrollTable),
             ('&Sort...',            self.cmdsMenuSortTable),
             ('S&pell Check...',     self.cmdsMenuSpellCheckTable),
         ):
-            menu = self.createNewMenu(name,'Cmds')
+            menu = self.createNewMenu(name,'&Cmds')
             self.createMenuEntries(menu,table)
     #@-node:ekr.20050921103736:createCmndsMenuFromTable
     #@+node:ekr.20031218072017.3802:createWindowMenuFromTable
@@ -432,149 +416,10 @@ class leoMenu:
         else:
             helpMenu = self.createNewMenu("&Help")
         
-        self.createMenuEntries(helpMenu,self.helpMenuTopTable)
-        
-        if sys.platform=="win32":
-            self.createMenuEntries(helpMenu,self.helpMenuTop2Table)
-        
-        self.createMenuEntries(helpMenu,self.helpMenuTop3Table)
+        self.createMenuEntries(helpMenu,self.helpMenuTable)
+    #@nonl
     #@-node:ekr.20031218072017.3803:createHelpMenuFromTable
     #@-node:ekr.20031218072017.3785:createMenusFromTables & helpers
-    #@+node:ekr.20031218072017.3804:createNewMenu
-    def createNewMenu (self,menuName,parentName="top",before=None):
-    
-        try:
-            parent = self.getMenu(parentName) # parent may be None.
-            menu = self.getMenu(menuName)
-            if menu:
-                g.es("menu already exists: " + menuName,color="red")
-            else:
-                menu = self.new_menu(parent,tearoff=0)
-                self.setMenu(menuName,menu)
-                label = self.getRealMenuName(menuName)
-                amp_index = label.find("&")
-                label = label.replace("&","")
-                if before: # Insert the menu before the "before" menu.
-                    index_label = self.getRealMenuName(before)
-                    amp_index = index_label.find("&")
-                    index_label = index_label.replace("&","")
-                    index = parent.index(index_label)
-                    self.insert_cascade(parent,index=index,label=label,menu=menu,underline=amp_index)
-                else:
-                    self.add_cascade(parent,label=label,menu=menu,underline=amp_index)
-                return menu
-        except:
-            g.es("exception creating " + menuName + " menu")
-            g.es_exception()
-            return None
-    #@-node:ekr.20031218072017.3804:createNewMenu
-    #@+node:ekr.20031218072017.4116:createOpenWithMenuFromTable & helper
-    def createOpenWithMenuFromTable (self,table):
-        
-        '''Entries in the table passed to createOpenWithMenuFromTable are
-    tuples of the form (commandName,shortcut,data).
-    
-    - command is one of "os.system", "os.startfile", "os.spawnl", "os.spawnv" or "exec".
-    - shortcut is a string describing a shortcut, just as for createMenuItemsFromTable.
-    - data is a tuple of the form (command,arg,ext).
-    
-    Leo executes command(arg+path) where path is the full path to the temp file.
-    If ext is not None, the temp file has the given extension.
-    Otherwise, Leo computes an extension based on the @language directive in effect.'''
-    
-        c = self.c
-        g.app.openWithTable = table # Override any previous table.
-        # Delete the previous entry.
-        parent = self.getMenu("File")
-        label = self.getRealMenuName("Open &With...")
-        amp_index = label.find("&")
-        label = label.replace("&","")
-        try:
-            index = parent.index(label)
-            parent.delete(index)
-        except:
-            try:
-                index = parent.index("Open With...")
-                parent.delete(index)
-            except: return
-        # Create the Open With menu.
-        openWithMenu = self.createOpenWithMenu(parent,label,index,amp_index)
-        self.setMenu("Open With...",openWithMenu)
-        # Create the menu items in of the Open With menu.
-        for entry in table:
-            if len(entry) != 3: # 6/22/03
-                g.es("createOpenWithMenuFromTable: invalid data",color="red")
-                return
-        self.createOpenWithMenuItemsFromTable(openWithMenu,table)
-        for entry in table:
-            name,shortcut,data = entry
-            c.k.bindOpenWith (shortcut,name,data)
-    #@+node:ekr.20051022043608.1:createOpenWithMenuItemsFromTable
-    def createOpenWithMenuItemsFromTable (self,menu,table):
-        
-        '''Create an entry in the Open with Menu from the table.
-        
-        Each entry should be a sequence with 2 or 3 elements.'''
-        
-        c = self.c ; k = c.k
-    
-        if g.app.unitTesting: return
-    
-        for data in table:
-            #@        << get label, accelerator & command or continue >>
-            #@+node:ekr.20051022043713.1:<< get label, accelerator & command or continue >>
-            ok = (
-                type(data) in (type(()), type([])) and
-                len(data) in (2,3)
-            )
-                
-            if ok:
-                if len(data) == 2:
-                    label,openWithData = data ; accelerator = None
-                else:
-                    label,accelerator,openWithData = data
-                    accelerator = k.shortcutFromSetting(accelerator)
-                    accelerator = accelerator and g.stripBrackets(k.prettyPrintKey(accelerator))
-            else:
-                g.trace('bad data in Open With table: %s' % repr(data))
-                continue # Ignore bad data
-            #@-node:ekr.20051022043713.1:<< get label, accelerator & command or continue >>
-            #@nl
-            realLabel = self.getRealMenuName(label)
-            underline=realLabel.find("&")
-            realLabel = realLabel.replace("&","")
-            callback = self.defineOpenWithMenuCallback(openWithData)
-        
-            self.add_command(menu,label=realLabel,
-                accelerator=accelerator or '',
-                command=callback,underline=underline)
-    #@-node:ekr.20051022043608.1:createOpenWithMenuItemsFromTable
-    #@-node:ekr.20031218072017.4116:createOpenWithMenuFromTable & helper
-    #@+node:ekr.20031218072017.2078:createRecentFilesMenuItems (leoMenu)
-    def createRecentFilesMenuItems (self):
-        
-        c = self.c
-        recentFilesMenu = self.getMenu("Recent Files...")
-        
-        # Delete all previous entries.
-        self.delete_range(recentFilesMenu,0,len(c.recentFiles)+2)
-        
-        # Create the first two entries.
-        table = (
-            ("Clear Recent Files",None,c.clearRecentFiles),
-            ("-",None,None))
-        self.createMenuEntries(recentFilesMenu,table)
-        
-        # Create all the other entries.
-        i = 3
-        for name in c.recentFiles:
-            def recentFilesCallback (event=None,c=c,name=name):
-                __pychecker__ = '--no-argsused' # event not used, but must be present.
-                c.openRecentFile(name)
-            label = "%d %s" % (i-2,g.computeWindowTitle(name))
-            self.add_command(recentFilesMenu,label=label,command=recentFilesCallback,underline=0)
-            i += 1
-    #@-node:ekr.20031218072017.2078:createRecentFilesMenuItems (leoMenu)
     #@+node:ekr.20031218072017.3752:defineMenuTables & helpers
     def defineMenuTables (self):
         
@@ -1016,11 +861,12 @@ class leoMenu:
         self.defineCmdsMenuBuffersTable()
         self.defineCmdsMenuCenterTable()
         self.defineCmdsMenuChangeCaseTable()
-        self.defineCmdsMenuHelpTable()
+        self.defineCmdsMenuFocusTable()
         self.defineCmdsMenuIndentTable()
         self.defineCmdsMenuMacroTable()
         self.defineCmdsMenuRectanglesTable()
         self.defineCmdsMenuRegistersTable()
+        self.defineCmdsMenuScrollTable()
         self.defineCmdsMenuSortTable()
         self.defineCmdsMenuSpellCheckTable()
     #@+node:ekr.20060117094955: defineCmdsMenuTopTable
@@ -1101,20 +947,18 @@ class leoMenu:
             ('U&pcase Region',   'upcase-region'),
         ]
     #@-node:ekr.20060117095212.4:defineCmdsMenuChangeCaseTable
-    #@+node:ekr.20060529170949:defineCmdsMenuHelpTable
-    def defineCmdsMenuHelpTable (self):
+    #@+node:ekr.20060923060822:defineCmdsMenuFocusTable
+    def defineCmdsMenuFocusTable (self):
     
         c = self.c
     
-        self.cmdsMenuHelpTable = [
-            ('&Getting Started',         'help'),
-            ('&Help For Command',        'help-for-command'),
-            ('-', None),
-            ('Apropos &Autocompletion',  'apropos-autocompletion'),
-            ('Apropos &Bindings',        'apropos-bindings'),
-            ('Apropos &Find Commands',   'apropos-find-commands'),
+        self.cmdsMenuFocusTable = [
+            ('Focus To Body',       'focus-to-body'),          
+            ('Focus To Log',        'focus-to-log'),             
+            ('Focus To Minibuffer', 'focus-to-minibuffer'),     
+            ('Focus To Outline',    'focus-to-tree'),             
         ]
-    #@-node:ekr.20060529170949:defineCmdsMenuHelpTable
+    #@-node:ekr.20060923060822:defineCmdsMenuFocusTable
     #@+node:ekr.20060117095212.6:defineCmdsMenuIndentTable
     def defineCmdsMenuIndentTable (self):
     
@@ -1176,6 +1020,32 @@ class leoMenu:
             ('&View Reg',        'view-register'),
         ]
     #@-node:ekr.20060117095212.1:defineCmdsMenuRegistersTable
+    #@+node:ekr.20060923060822.1:defineCmdsMenuScrollTable
+    def defineCmdsMenuScrollTable (self):
+    
+        c = self.c
+    
+        self.cmdsMenuScrollTable = [
+            # ('Focus To Body',       'focus-to-body'),          
+            # ('Focus To Log',        'focus-to-log'),             
+            # ('Focus To Minibuffer', 'focus-to-minibuffer'),     
+            # ('Focus To Outline',    'focus-to-tree'),    
+        ]   
+            # scroll-down                
+    # scroll-down-extend-selection       
+    # scroll-outline-down-line text: <Next>
+    # scroll-outline-down-line tree: <Next>
+    # scroll-outline-down-page text: <Shift+Next>
+    # scroll-outline-down-page tree: <Shift+Next>
+    # scroll-outline-left        
+    # scroll-outline-right       
+    # scroll-outline-up-line       
+    # scroll-outline-up-page       
+    # scroll-up            tree: <Prior>
+    # scroll-up            text: <Prior>
+    # scroll-up-extend-selection tree: <Shift+Prior>
+    # scroll-up-extend-selection text: <Shift+Prior>
+    #@-node:ekr.20060923060822.1:defineCmdsMenuScrollTable
     #@+node:ekr.20060117095212.3:defineCmdsMenuSortTable
     def defineCmdsMenuSortTable (self):
     
@@ -1228,56 +1098,58 @@ class leoMenu:
         
         c = self.c ; f = self.frame
     
-        self.helpMenuTopTable = [
-            ("&About Leo...",c.about),
-            ("Online &Home Page",c.leoHome),
-            ("Open Online &Tutorial",c.leoTutorial),
-            ("Open &Users Guide",c.leoUsersGuide),
-        ]
-    
-        self.helpMenuTop2Table = [
-            # ("Open &Offline Tutorial",f.leoHelp),
-        ]
-    
-        self.helpMenuTop3Table = [
+        self.helpMenuTable = [
+            # &:a,b,c,d,f,h,p,r,s,t,u,
+            ("&About Leo...",           c.about),
+            ("Online &Home Page",       c.leoHome),
+            ("Open Online &Tutorial",   c.leoTutorial),
+            ("Open &Users Guide",       c.leoUsersGuide),
             ("-",None,None),
-            ("Open Leo&Docs.leo",c.leoDocumentation),
-            ("Open Leo&Plugins.leo",c.openLeoPlugins),
-            ("Open Leo&Settings.leo",c.openLeoSettings),
+            ("Open Leo&Docs.leo",       c.leoDocumentation),
+            ("Open Leo&Plugins.leo",    c.openLeoPlugins),
+            ("Open Leo&Settings.leo",   c.openLeoSettings),
+            ('-', None),
+            ('&Getting Started',         'help'),
+            ('Help For &Command',        'help-for-command'),
+            ('-', None),
+            ('Ap&ropos Autocompletion',  'apropos-autocompletion'),
+            ('Apropos &Bindings',        'apropos-bindings'),
+            ('Apropos &Find Commands',   'apropos-find-commands'),
         ]
     #@-node:ekr.20031218072017.3774:defineHelpMenuTables
     #@-node:ekr.20031218072017.3752:defineMenuTables & helpers
-    #@+node:ekr.20031218072017.3805:deleteMenu
-    def deleteMenu (self,menuName):
-    
-        try:
-            menu = self.getMenu(menuName)
-            if menu:
-                self.destroy(menu)
-                self.destroyMenu(menuName)
-            else:
-                g.es("can't delete menu: " + menuName)
-        except:
-            g.es("exception deleting " + menuName + " menu")
-            g.es_exception()
-    #@-node:ekr.20031218072017.3805:deleteMenu
-    #@+node:ekr.20031218072017.3806:deleteMenuItem
-    def deleteMenuItem (self,itemName,menuName="top"):
+    #@+node:ekr.20051022053758.1:Helpers
+    #@+node:ekr.20031218072017.3783:canonicalizeMenuName & cononicalizeTranslatedMenuName
+    def canonicalizeMenuName (self,name):
         
-        """Delete itemName from the menu whose name is menuName."""
-    
-        try:
-            menu = self.getMenu(menuName)
-            if menu:
-                realItemName = self.getRealMenuName(itemName)
-                self.delete(menu,realItemName)
-            else:
-                g.es("menu not found: " + menuName)
-        except:
-            g.es("exception deleting " + itemName + " from " + menuName + " menu")
-            g.es_exception()
-    #@-node:ekr.20031218072017.3806:deleteMenuItem
-    #@-node:ekr.20051022053758: Top level
+        name = name.lower() ; newname = ""
+        chars = string.ascii_letters + string.digits
+        for ch in name:
+            # if ch not in (' ','\t','\n','\r','&'):
+            if ch in chars:
+                newname = newname+ch
+        return newname
+        
+    def canonicalizeTranslatedMenuName (self,name):
+        
+        name = name.lower() ; newname = ""
+        for ch in name:
+            if ch not in (' ','\t','\n','\r','&'):
+            # if ch in string.ascii_letters:
+                newname = newname+ch
+        return newname
+    #@-node:ekr.20031218072017.3783:canonicalizeMenuName & cononicalizeTranslatedMenuName
+    #@+node:ekr.20051022044950:computeOldStyleShortcutKey
+    def computeOldStyleShortcutKey (self,s):
+        
+        '''Compute the old-style shortcut key for @shortcuts entries.'''
+        
+        chars = string.ascii_letters + string.digits
+        
+        result = [ch for ch in s.strip().lower() if ch in chars]
+                
+        return ''.join(result)
+    #@-node:ekr.20051022044950:computeOldStyleShortcutKey
     #@+node:ekr.20031218072017.1723:createMenuEntries
     def createMenuEntries (self,menu,table,dynamicMenu=False):
             
@@ -1402,38 +1274,158 @@ class leoMenu:
                 command=masterMenuCallback,
                 underline=amp_index)
     #@-node:ekr.20031218072017.1723:createMenuEntries
-    #@+node:ekr.20051022053758.1:Helpers
-    #@+node:ekr.20031218072017.3783:canonicalizeMenuName & cononicalizeTranslatedMenuName
-    def canonicalizeMenuName (self,name):
+    #@+node:ekr.20031218072017.3784:createMenuItemsFromTable
+    def createMenuItemsFromTable (self,menuName,table,dynamicMenu=False):
         
-        name = name.lower() ; newname = ""
-        chars = string.ascii_letters + string.digits
-        for ch in name:
-            # if ch not in (' ','\t','\n','\r','&'):
-            if ch in chars:
-                newname = newname+ch
-        return newname
+        try:
+            menu = self.getMenu(menuName)
+            if menu == None:
+                print "menu does not exist: ",menuName
+                g.es("menu does not exist: ",menuName)
+                return
+            self.createMenuEntries(menu,table,dynamicMenu=dynamicMenu)
+        except:
+            s = "exception creating items for %s menu" % menuName
+            g.es_print(s)
+            g.es_exception()
+            
+        g.app.menuWarningsGiven = True
+    #@-node:ekr.20031218072017.3784:createMenuItemsFromTable
+    #@+node:ekr.20031218072017.3804:createNewMenu
+    def createNewMenu (self,menuName,parentName="top",before=None):
+    
+        try:
+            parent = self.getMenu(parentName) # parent may be None.
+            menu = self.getMenu(menuName)
+            if menu:
+                g.es("menu already exists: " + menuName,color="red")
+            else:
+                menu = self.new_menu(parent,tearoff=0)
+                self.setMenu(menuName,menu)
+                label = self.getRealMenuName(menuName)
+                amp_index = label.find("&")
+                label = label.replace("&","")
+                if before: # Insert the menu before the "before" menu.
+                    index_label = self.getRealMenuName(before)
+                    amp_index = index_label.find("&")
+                    index_label = index_label.replace("&","")
+                    index = parent.index(index_label)
+                    self.insert_cascade(parent,index=index,label=label,menu=menu,underline=amp_index)
+                else:
+                    self.add_cascade(parent,label=label,menu=menu,underline=amp_index)
+                return menu
+        except:
+            g.es("exception creating " + menuName + " menu")
+            g.es_exception()
+            return None
+    #@-node:ekr.20031218072017.3804:createNewMenu
+    #@+node:ekr.20031218072017.4116:createOpenWithMenuFromTable & helper
+    def createOpenWithMenuFromTable (self,table):
         
-    def canonicalizeTranslatedMenuName (self,name):
+        '''Entries in the table passed to createOpenWithMenuFromTable are
+    tuples of the form (commandName,shortcut,data).
+    
+    - command is one of "os.system", "os.startfile", "os.spawnl", "os.spawnv" or "exec".
+    - shortcut is a string describing a shortcut, just as for createMenuItemsFromTable.
+    - data is a tuple of the form (command,arg,ext).
+    
+    Leo executes command(arg+path) where path is the full path to the temp file.
+    If ext is not None, the temp file has the given extension.
+    Otherwise, Leo computes an extension based on the @language directive in effect.'''
+    
+        c = self.c
+        g.app.openWithTable = table # Override any previous table.
+        # Delete the previous entry.
+        parent = self.getMenu("File")
+        label = self.getRealMenuName("Open &With...")
+        amp_index = label.find("&")
+        label = label.replace("&","")
+        try:
+            index = parent.index(label)
+            parent.delete(index)
+        except:
+            try:
+                index = parent.index("Open With...")
+                parent.delete(index)
+            except: return
+        # Create the Open With menu.
+        openWithMenu = self.createOpenWithMenu(parent,label,index,amp_index)
+        self.setMenu("Open With...",openWithMenu)
+        # Create the menu items in of the Open With menu.
+        for entry in table:
+            if len(entry) != 3: # 6/22/03
+                g.es("createOpenWithMenuFromTable: invalid data",color="red")
+                return
+        self.createOpenWithMenuItemsFromTable(openWithMenu,table)
+        for entry in table:
+            name,shortcut,data = entry
+            c.k.bindOpenWith (shortcut,name,data)
+    #@+node:ekr.20051022043608.1:createOpenWithMenuItemsFromTable
+    def createOpenWithMenuItemsFromTable (self,menu,table):
         
-        name = name.lower() ; newname = ""
-        for ch in name:
-            if ch not in (' ','\t','\n','\r','&'):
-            # if ch in string.ascii_letters:
-                newname = newname+ch
-        return newname
-    #@-node:ekr.20031218072017.3783:canonicalizeMenuName & cononicalizeTranslatedMenuName
-    #@+node:ekr.20051022044950:computeOldStyleShortcutKey
-    def computeOldStyleShortcutKey (self,s):
+        '''Create an entry in the Open with Menu from the table.
         
-        '''Compute the old-style shortcut key for @shortcuts entries.'''
+        Each entry should be a sequence with 2 or 3 elements.'''
         
-        chars = string.ascii_letters + string.digits
-        
-        result = [ch for ch in s.strip().lower() if ch in chars]
+        c = self.c ; k = c.k
+    
+        if g.app.unitTesting: return
+    
+        for data in table:
+            #@        << get label, accelerator & command or continue >>
+            #@+node:ekr.20051022043713.1:<< get label, accelerator & command or continue >>
+            ok = (
+                type(data) in (type(()), type([])) and
+                len(data) in (2,3)
+            )
                 
-        return ''.join(result)
-    #@-node:ekr.20051022044950:computeOldStyleShortcutKey
+            if ok:
+                if len(data) == 2:
+                    label,openWithData = data ; accelerator = None
+                else:
+                    label,accelerator,openWithData = data
+                    accelerator = k.shortcutFromSetting(accelerator)
+                    accelerator = accelerator and g.stripBrackets(k.prettyPrintKey(accelerator))
+            else:
+                g.trace('bad data in Open With table: %s' % repr(data))
+                continue # Ignore bad data
+            #@-node:ekr.20051022043713.1:<< get label, accelerator & command or continue >>
+            #@nl
+            realLabel = self.getRealMenuName(label)
+            underline=realLabel.find("&")
+            realLabel = realLabel.replace("&","")
+            callback = self.defineOpenWithMenuCallback(openWithData)
+        
+            self.add_command(menu,label=realLabel,
+                accelerator=accelerator or '',
+                command=callback,underline=underline)
+    #@-node:ekr.20051022043608.1:createOpenWithMenuItemsFromTable
+    #@-node:ekr.20031218072017.4116:createOpenWithMenuFromTable & helper
+    #@+node:ekr.20031218072017.2078:createRecentFilesMenuItems (leoMenu)
+    def createRecentFilesMenuItems (self):
+        
+        c = self.c
+        recentFilesMenu = self.getMenu("Recent Files...")
+        
+        # Delete all previous entries.
+        self.delete_range(recentFilesMenu,0,len(c.recentFiles)+2)
+        
+        # Create the first two entries.
+        table = (
+            ("Clear Recent Files",None,c.clearRecentFiles),
+            ("-",None,None))
+        self.createMenuEntries(recentFilesMenu,table)
+        
+        # Create all the other entries.
+        i = 3
+        for name in c.recentFiles:
+            def recentFilesCallback (event=None,c=c,name=name):
+                __pychecker__ = '--no-argsused' # event not used, but must be present.
+                c.openRecentFile(name)
+            label = "%d %s" % (i-2,g.computeWindowTitle(name))
+            self.add_command(recentFilesMenu,label=label,command=recentFilesCallback,underline=0)
+            i += 1
+    #@-node:ekr.20031218072017.2078:createRecentFilesMenuItems (leoMenu)
     #@+node:ekr.20031218072017.4117:defineMenuCallback
     def defineMenuCallback(self,command,name,minibufferCommand):
         
@@ -1471,6 +1463,36 @@ class leoMenu:
     
         return openWithMenuCallback
     #@-node:ekr.20031218072017.4118:defineOpenWithMenuCallback
+    #@+node:ekr.20031218072017.3805:deleteMenu
+    def deleteMenu (self,menuName):
+    
+        try:
+            menu = self.getMenu(menuName)
+            if menu:
+                self.destroy(menu)
+                self.destroyMenu(menuName)
+            else:
+                g.es("can't delete menu: " + menuName)
+        except:
+            g.es("exception deleting " + menuName + " menu")
+            g.es_exception()
+    #@-node:ekr.20031218072017.3805:deleteMenu
+    #@+node:ekr.20031218072017.3806:deleteMenuItem
+    def deleteMenuItem (self,itemName,menuName="top"):
+        
+        """Delete itemName from the menu whose name is menuName."""
+    
+        try:
+            menu = self.getMenu(menuName)
+            if menu:
+                realItemName = self.getRealMenuName(itemName)
+                self.delete(menu,realItemName)
+            else:
+                g.es("menu not found: " + menuName)
+        except:
+            g.es("exception deleting " + itemName + " from " + menuName + " menu")
+            g.es_exception()
+    #@-node:ekr.20031218072017.3806:deleteMenuItem
     #@+node:ekr.20031218072017.3782:get/setRealMenuName & setRealMenuNamesFromTable
     # Returns the translation of a menu name or an item name.
     

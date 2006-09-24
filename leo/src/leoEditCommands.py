@@ -4679,14 +4679,39 @@ class helpCommandsClass (baseEditCommandsClass):
     def helpForCommandFinisher (self,commandName):
     
         c = self.c
+        bindings = self.getBindingsForCommand(commandName)
         func = c.commandsDict.get(commandName)
         if func and func.__doc__:
             s = ''.join([
                 g.choose(line.strip(),line.lstrip(),'\n')
                     for line in g.splitLines(func.__doc__)])
-            g.es('%s:\n%s\n' % (commandName,s),color='blue')
         else:
-            g.es('No help available for %s' % (commandName),color='blue')
+            s = 'no docstring'
+        g.es('%s:%s\n%s\n' % (commandName,bindings,s),color='blue')
+    
+    def getBindingsForCommand(self,commandName):
+    
+        c = self.c ; k = c.k ; d = k.bindingsDict
+        keys = d.keys() ; keys.sort()
+    
+        data = [] ; n1 = 4 ; n2 = 20
+        for key in keys:
+            bunchList = d.get(key,[])
+            for b in bunchList:
+                if b.commandName == commandName:
+                    pane = g.choose(b.pane=='all','',' %s:' % (b.pane))
+                    s1 = pane
+                    s2 = k.prettyPrintKey(key,brief=True)
+                    s3 = b.commandName
+                    n1 = max(n1,len(s1))
+                    n2 = max(n2,len(s2))
+                    data.append((s1,s2,s3),)
+    
+        data.sort(lambda x,y: cmp(x[1],y[1]))
+            
+        return ','.join(['%s %s' % (s1,s2) for s1,s2,s3 in data])
+            # g.es('%*s %*s %s' % (-n1,s1,-(min(12,n2)),s2,s3))
+    #@nonl
     #@-node:ekr.20060417203717:helpForCommand
     #@+node:ekr.20060226131603.1:aproposAutocompletion
     def aproposAutocompletion (self,event=None):
