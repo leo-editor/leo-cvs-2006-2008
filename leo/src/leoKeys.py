@@ -2278,6 +2278,9 @@ class keyHandlerClass:
         elif name.startswith('head'):
             c.frame.tree.onHeadlineKey(event)
             return 'break'
+        elif name.startswith('canvas'):
+            c.frame.tree.onCanvasKey(event) # New in Leo 4.4.2
+            return 'break'
         else:
             # Let tkinter handle the event.
             # ch = event and event.char ; g.trace('to tk:',name,repr(ch))
