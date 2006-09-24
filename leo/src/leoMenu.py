@@ -382,23 +382,37 @@ class leoMenu:
     
         for name,table in (
             # Used in top table: l,e,q.
-            # &: a,b,c,d,f,g,i,m,n,o,p,r,s
+            # &: a,b,c,d,f,g,h,i,m,n,o,p,r,s,u
             ('&Abbrev...',          self.cmdsMenuAbbrevTable),
             ('Body E&ditors',       self.cmdsMenuBodyEditorsTable),
             ('&Buffers...',         self.cmdsMenuBuffersTable),
             ('&Center...',          self.cmdsMenuCenterTable),
             ('Cha&nge Case...',     self.cmdsMenuChangeCaseTable),
+            ('C&ursor/Selection...',[]),
             ('&Focus...',           self.cmdsMenuFocusTable),
             ('&Indent...',          self.cmdsMenuIndentTable),
             ('&Macro...',           self.cmdsMenuMacroTable),
+            ('&Panes...',           self.cmdsMenuPanesTable),
             ('&Rectangles...',      self.cmdsMenuRectanglesTable),
             ('Re&gisters...',       self.cmdsMenuRegistersTable),
             ('Scr&olling...',       self.cmdsMenuScrollTable),
             ('&Sort...',            self.cmdsMenuSortTable),
-            ('S&pell Check...',     self.cmdsMenuSpellCheckTable),
+            ('Spell C&heck...',     self.cmdsMenuSpellCheckTable),
         ):
             menu = self.createNewMenu(name,'&Cmds')
             self.createMenuEntries(menu,table)
+            
+        for name,table in (
+            # &: b,e,f,s,x
+            ('Cursor &Back...',                     self.cursorMenuBackTable),
+            ('Cursor Back &Extend Selection...',    self.cursorMeuuBackExtendTable),
+            ('Cursor &Forward...',                  self.cursorMenuForwardTable),
+            ('Cursor Forward E&xtend Selection...', self.cursorMenuForwardExtendTable),
+            ('Cursor &Scroll...',                   self.cursorMenuScrollTable),
+        ):
+            menu = self.createNewMenu(name,'C&ursor/Selection...')
+            self.createMenuEntries(menu,table)
+    #@nonl
     #@-node:ekr.20050921103736:createCmndsMenuFromTable
     #@+node:ekr.20031218072017.3802:createWindowMenuFromTable
     def createWindowMenuFromTable (self):
@@ -625,7 +639,6 @@ class leoMenu:
         self.fileMenuReadWriteMenuTable = [
             ("&Read Outline Only",c.readOutlineOnly),
             ("Read @file &Nodes",c.readAtFileNodes),
-            ("-",None),
             ("Write &Dirty @file Nodes",fc.writeDirtyAtFileNodes),
             ("Write &Missing @file Nodes",fc.writeMissingAtFileNodes),
             ("Write &Outline Only",fc.writeOutlineOnly),
@@ -860,10 +873,12 @@ class leoMenu:
         self.defineCmdsMenuBodyEditorsTable()
         self.defineCmdsMenuBuffersTable()
         self.defineCmdsMenuCenterTable()
+        self.defineCmdsMenuCursorTable()
         self.defineCmdsMenuChangeCaseTable()
         self.defineCmdsMenuFocusTable()
         self.defineCmdsMenuIndentTable()
         self.defineCmdsMenuMacroTable()
+        self.defineCmdsMenuPanesTable()
         self.defineCmdsMenuRectanglesTable()
         self.defineCmdsMenuRegistersTable()
         self.defineCmdsMenuScrollTable()
@@ -879,17 +894,6 @@ class leoMenu:
             ('-', None),
         ]
     #@-node:ekr.20060117094955: defineCmdsMenuTopTable
-    #@+node:ekr.20060912093104:defineCmdsMenuBodyEditorsTable
-    def defineCmdsMenuBodyEditorsTable (self):
-    
-        self.cmdsMenuBodyEditorsTable = [
-            # &: a,c,d
-            ('&Add Body Editor',    'add-editor'),
-            ('&Change Body Editor', 'cycle-editor-focus'),
-            ('&Delete Body Editor', 'delete-editor'),
-        ]
-    #@nonl
-    #@-node:ekr.20060912093104:defineCmdsMenuBodyEditorsTable
     #@+node:ekr.20060117094955.1:defineCmdsMenuAbbrevTable
     def defineCmdsMenuAbbrevTable (self):
         
@@ -910,6 +914,17 @@ class leoMenu:
             ('&Expand Abbrev in Region',     'expand-region-abbrevs'),
         ]
     #@-node:ekr.20060117094955.1:defineCmdsMenuAbbrevTable
+    #@+node:ekr.20060912093104:defineCmdsMenuBodyEditorsTable
+    def defineCmdsMenuBodyEditorsTable (self):
+    
+        self.cmdsMenuBodyEditorsTable = [
+            # &: a,c,d
+            ('&Add Body Editor',    'add-editor'),
+            ('&Change Body Editor', 'cycle-editor-focus'),
+            ('&Delete Body Editor', 'delete-editor'),
+        ]
+    #@nonl
+    #@-node:ekr.20060912093104:defineCmdsMenuBodyEditorsTable
     #@+node:ekr.20060117095212:defineCmdsMenuBufferTable
     def defineCmdsMenuBuffersTable (self):
     
@@ -947,6 +962,73 @@ class leoMenu:
             ('U&pcase Region',   'upcase-region'),
         ]
     #@-node:ekr.20060117095212.4:defineCmdsMenuChangeCaseTable
+    #@+node:ekr.20060924124119:defineCmdsMenuCursorTable
+    def defineCmdsMenuCursorTable (self):
+    
+        c = self.c
+        
+        self.cursorMenuBackTable = [
+            # &: b,c,l,p,s,v,w
+            ('Back &Character',      'back-char'),
+            ('Back &Paragraph',      'back-paragraph'),
+            ('Back &Sentence',       'back-sentence'),
+            ('Back &Word',           'back-word'),
+            ('-',None),
+            ('Beginning Of &Buffer', 'beginning-of-buffer'),
+            ('Beginning Of &Line',   'beginning-of-line'),
+            ('-',None),
+            ('Pre&vious Line',       'previous-line'),
+        ]
+        
+        self.cursorMeuuBackExtendTable = [
+            # &: b,c,l,p,s,v,w
+            ('Back &Character Extend Selection',        'back-char-extend-selection'),
+            ('Back &Paragraph Extend Selection',        'back-paragraph-extend-selection'),
+            ('Back &Sentence Extend Selection',         'back-sentence-extend-selection'),
+            ('Back &Word Extend Selection',             'back-word-extend-selection'),
+            ('-',None),
+            ('Beginning of &Buffer Extend Selection',   'beginning-of-buffer-extend-selection'),
+            ('Beginning of &Line Extend Selection',     'beginning-of-line-extend-selection'),
+            ('-',None),
+            ('Pre&vious Line Extend Selection',         'previous-line-extend-selection'),
+        ]
+        
+        self.cursorMenuForwardTable = [
+            # &: b,c,l,n,p,s,w
+            ('End Of &Buffer',      'end-of-buffer'),
+            ('End of &Line',        'end-of-line'),
+            ('-',None),
+            ('Forward &Character',  'forward-char'),
+            ('Forward &Pargraph',   'forward-paragraph'),
+            ('Forward &Sentence',   'forward-sentence'),
+            ('Forward &Word',       'forward-word'),
+            ('-',None),
+            ('&Next Line',          'next-line'),
+        ]
+        
+        self.cursorMenuForwardExtendTable = [
+            # &: b,c,l,n,p,s,w
+            ('End Of &Buffer Extend Selection',     'end-of-buffer-extend-selection'),
+            ('End Of &Line Extend Selection',       'end-of-line-extend-selection'),
+            ('-',None),
+            ('Forward &Character Extend Selection', 'forward-char-extend-selection'),
+            ('Forward &Paragraph Extend Selection', 'forward-paragraph-extend-selection'),
+            ('Forward &Sentence Extend Selection',  'forward-sentence-extend-selection'),
+            ('Forward &Word Extend Selection',      'forward-word-extend-selection'),
+            ('-',None),
+            ('&Next Line Extend Selection',         'next-line-extend-selection'),    
+        ]
+    
+        self.cursorMenuScrollTable = [
+            # &: d,e,v,x
+            ('Scroll Cursor &Down',             'scroll-down'),
+            ('Scroll Cursor &Up',               'scroll-up'),
+            ('-',None),
+            ('Scroll Down &Extend Selection',   'scroll-down-extend-selection'),
+            ('Scroll Up E&xtend Selection',     'scroll-up-extend-selection'),
+        ]
+    #@nonl
+    #@-node:ekr.20060924124119:defineCmdsMenuCursorTable
     #@+node:ekr.20060923060822:defineCmdsMenuFocusTable
     def defineCmdsMenuFocusTable (self):
     
@@ -987,6 +1069,30 @@ class leoMenu:
             ('&Insert Macro',        'insert-keyboard-macro'),
         ]
     #@-node:ekr.20060117114315:defineCmdsMenuMacroTable
+    #@+node:ekr.20060924120752:defineCmdsMenuPanesTable
+    def defineCmdsMenuPanesTable (self):
+    
+        c = self.c
+    
+        self.cmdsMenuPanesTable = [        
+            ('Contract Body',       'contract-body-pane'),
+            ('Contract Log',        'contract-log-pane'),
+            ('Contract Outline',    'contract-outline-pane'),
+            ('Contract Pane',       'contract-pane'),
+            ('-',None),
+            ('Expand Body',         'expand-body-pane'),
+            ('Expand Log',          'expand-log-pane'),
+            ('Expand Outline',      'expand-outline-pane'),
+            ('Expand Pane',         'expand-pane'),
+            ('-',None),
+            ('Fully Expand Body',   'fully-expand-body-pane'),
+            ('Fully Expand Log',    'fully-expand-log-pane'),
+            ('Fully Expand Outline','fully-expand-outline-pane'),
+            ('Fully Expand Pane',   'fully-expand-pane'),
+        ]
+        
+    #@nonl
+    #@-node:ekr.20060924120752:defineCmdsMenuPanesTable
     #@+node:ekr.20060117095212.2:defineCmdsMenuRectanglesTable
     def defineCmdsMenuRectanglesTable (self):
     
@@ -1026,25 +1132,15 @@ class leoMenu:
         c = self.c
     
         self.cmdsMenuScrollTable = [
-            # ('Focus To Body',       'focus-to-body'),          
-            # ('Focus To Log',        'focus-to-log'),             
-            # ('Focus To Minibuffer', 'focus-to-minibuffer'),     
-            # ('Focus To Outline',    'focus-to-tree'),    
-        ]   
-            # scroll-down                
-    # scroll-down-extend-selection       
-    # scroll-outline-down-line text: <Next>
-    # scroll-outline-down-line tree: <Next>
-    # scroll-outline-down-page text: <Shift+Next>
-    # scroll-outline-down-page tree: <Shift+Next>
-    # scroll-outline-left        
-    # scroll-outline-right       
-    # scroll-outline-up-line       
-    # scroll-outline-up-page       
-    # scroll-up            tree: <Prior>
-    # scroll-up            text: <Prior>
-    # scroll-up-extend-selection tree: <Shift+Prior>
-    # scroll-up-extend-selection text: <Shift+Prior>
+            ('Scroll Outline Down Line',    'scroll-outline-down-line'),
+            ('Scroll Outline Down Page',    'scroll-outline-down-page'),
+            ('Scroll Outline Left',         'scroll-outline-left'),
+            ('Scroll Outline Right',        'scroll-outline-right'),
+            ('Scroll Outline Up Line',      'scroll-outline-up-line'),
+            ('Scroll Outline Up Page',      'scroll-outline-up-page'),
+            ('-',None),
+        ]
+    #@nonl
     #@-node:ekr.20060923060822.1:defineCmdsMenuScrollTable
     #@+node:ekr.20060117095212.3:defineCmdsMenuSortTable
     def defineCmdsMenuSortTable (self):
@@ -1194,10 +1290,12 @@ class leoMenu:
                 if command:
                     rawKey,bunchList = c.config.getShortcut(commandName)
                     # Pick the first entry that is not a mode.
+                    best = None
                     for bunch in bunchList:
                         if not bunch.pane.endswith('-mode'):
                             # g.trace('1',bunch)
-                            accel = bunch and bunch.val ; break
+                            accel = bunch and bunch.val
+                            if bunch.pane  == 'text': break # New in Leo 4.4.2: prefer text bindings.
                 else:
                     if not g.app.unitTesting and not not dynamicMenu:
                         # Don't warn during unit testing.
