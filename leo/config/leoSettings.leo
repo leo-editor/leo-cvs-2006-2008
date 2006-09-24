@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="335" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="71" left="251" height="662" width="938"/>
+	<global_window_position top="71" left="251" height="643" width="938"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -369,8 +369,8 @@
 <v t="ekr.20060923114638.11"><vh>@mode emacs</vh></v>
 <v t="ekr.20060923114638.12"><vh>@mode extract</vh></v>
 <v t="ekr.20060923114638.13"><vh>@mode file</vh></v>
-<v t="ekr.20060923114638.14" a="EM"><vh>@mode gui</vh></v>
-<v t="ekr.20060923114638.15" a="E"><vh>@mode help</vh></v>
+<v t="ekr.20060923114638.14" a="M"><vh>@mode gui</vh></v>
+<v t="ekr.20060923114638.15"><vh>@mode help</vh></v>
 <v t="ekr.20060923114638.16"><vh>@mode kill</vh></v>
 <v t="ekr.20060923114638.17"><vh>@mode modes</vh></v>
 <v t="ekr.20060923114638.18"><vh>@mode move-outline</vh></v>
@@ -398,7 +398,7 @@
 <v t="ekr.20060624072653"><vh>@bool warn_about_redefined_shortcuts = True</vh></v>
 <v t="ekr.20060604080653" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
 </v>
-<v t="ekr.20060603215208.4" a="E"><vh>Modes</vh>
+<v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@@mode quick-command (Alt-C)</vh></v>
 <v t="ekr.20060604083323"><vh>@@mode apropos</vh></v>
 <v t="ekr.20060922204625"><vh>@@mode buttons</vh></v>
@@ -408,15 +408,15 @@
 <v t="ekr.20060608191518"><vh>@@mode emacs</vh></v>
 <v t="ekr.20060608185854.1"><vh>@@mode extract</vh></v>
 <v t="ekr.20060603223152.1"><vh>@@mode file</vh></v>
-<v t="ekr.20060603215208.7" a="EM"><vh>@@mode gui</vh></v>
-<v t="ekr.20060603223152" a="E"><vh>@@mode help</vh></v>
+<v t="ekr.20060603215208.7" a="M"><vh>@@mode gui</vh></v>
+<v t="ekr.20060603223152"><vh>@@mode help</vh></v>
 <v t="ekr.20060604081740"><vh>@@mode kill</vh></v>
 <v t="ekr.20060608184356"><vh>@@mode modes</vh></v>
 <v t="ekr.20060604082857.1"><vh>@@mode move-outline</vh></v>
 <v t="ekr.20060604082857"><vh>@@mode outline</vh></v>
 <v t="ekr.20060603223152.2"><vh>@@mode toggle-find</vh></v>
 </v>
-<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
 <v t="ekr.20060604081014"><vh>@@@@shortcuts top-level keys (like vim)</vh></v>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20060603215208.19"><vh>@shortcuts Find Commands</vh></v>
@@ -425,7 +425,7 @@
 <v t="ekr.20060603215208.22"><vh>@shortcuts EKR: F-M</vh></v>
 <v t="ekr.20060603215208.23" annotate="7d71002e"><vh>@shortcuts EKR: N-Z</vh></v>
 </v>
-<v t="ekr.20060923115440" a="E"><vh>Changes made</vh>
+<v t="ekr.20060923115440"><vh>Changes made</vh>
 <v t="ekr.20060923115440.1"><vh>old</vh></v>
 <v t="ekr.20060923115723"><vh>new</vh></v>
 </v>
@@ -555,7 +555,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060512084639"><vh>Recent</vh>
+<v t="ekr.20060512084639" a="E"><vh>Recent</vh>
 <v t="ekr.20060216135834"><vh>@bool enable_autocompleter_initially = False</vh></v>
 <v t="ekr.20060603070801"><vh>@bool enable_calltips_initially = False</vh></v>
 <v t="ekr.20060627084739"><vh>@bool flash_matching_brackets = True</vh></v>
@@ -565,7 +565,7 @@
 <v t="ekr.20060309022759"><vh>@bool trace_colorizer = False</vh></v>
 <v t="ekr.20060131071947"><vh>@bool trace_masterClickHandler = False</vh></v>
 <v t="ekr.20060209045356"><vh>@bool trace_masterFocusHandler = False</vh></v>
-<v t="ekr.20060131071612"><vh>@bool trace_masterKeyHandler = False</vh></v>
+<v t="ekr.20060131071612" a="V"><vh>@bool trace_masterKeyHandler = False</vh></v>
 <v t="ekr.20060121102627"><vh>@bool trace_modes = False</vh></v>
 <v t="ekr.20060620085654"><vh>@string editor_orientation = horizontal</vh></v>
 <v t="ekr.20060210105437"><vh>@bool trace_select = False</vh></v>
@@ -661,8 +661,8 @@
 <v t="ekr.20060923114638.11"><vh>@mode emacs</vh></v>
 <v t="ekr.20060923114638.12"><vh>@mode extract</vh></v>
 <v t="ekr.20060923114638.13"><vh>@mode file</vh></v>
-<v t="ekr.20060923114638.14" a="EM"><vh>@mode gui</vh></v>
-<v t="ekr.20060923114638.15" a="E"><vh>@mode help</vh></v>
+<v t="ekr.20060923114638.14" a="M"><vh>@mode gui</vh></v>
+<v t="ekr.20060923114638.15"><vh>@mode help</vh></v>
 <v t="ekr.20060923114638.16"><vh>@mode kill</vh></v>
 <v t="ekr.20060923114638.17"><vh>@mode modes</vh></v>
 <v t="ekr.20060923114638.18"><vh>@mode move-outline</vh></v>
@@ -690,7 +690,7 @@
 <v t="ekr.20060624072653"><vh>@bool warn_about_redefined_shortcuts = True</vh></v>
 <v t="ekr.20060604080653" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
 </v>
-<v t="ekr.20060603215208.4" a="E"><vh>Modes</vh>
+<v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@@mode quick-command (Alt-C)</vh></v>
 <v t="ekr.20060604083323"><vh>@@mode apropos</vh></v>
 <v t="ekr.20060922204625"><vh>@@mode buttons</vh></v>
@@ -700,15 +700,15 @@
 <v t="ekr.20060608191518"><vh>@@mode emacs</vh></v>
 <v t="ekr.20060608185854.1"><vh>@@mode extract</vh></v>
 <v t="ekr.20060603223152.1"><vh>@@mode file</vh></v>
-<v t="ekr.20060603215208.7" a="EM"><vh>@@mode gui</vh></v>
-<v t="ekr.20060603223152" a="E"><vh>@@mode help</vh></v>
+<v t="ekr.20060603215208.7" a="M"><vh>@@mode gui</vh></v>
+<v t="ekr.20060603223152"><vh>@@mode help</vh></v>
 <v t="ekr.20060604081740"><vh>@@mode kill</vh></v>
 <v t="ekr.20060608184356"><vh>@@mode modes</vh></v>
 <v t="ekr.20060604082857.1"><vh>@@mode move-outline</vh></v>
 <v t="ekr.20060604082857"><vh>@@mode outline</vh></v>
 <v t="ekr.20060603223152.2"><vh>@@mode toggle-find</vh></v>
 </v>
-<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
 <v t="ekr.20060604081014"><vh>@@@@shortcuts top-level keys (like vim)</vh></v>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20060603215208.19"><vh>@shortcuts Find Commands</vh></v>
@@ -717,18 +717,18 @@
 <v t="ekr.20060603215208.22"><vh>@shortcuts EKR: F-M</vh></v>
 <v t="ekr.20060603215208.23" annotate="7d71002e"><vh>@shortcuts EKR: N-Z</vh></v>
 </v>
-<v t="ekr.20060923115440" a="E"><vh>Changes made</vh>
+<v t="ekr.20060923115440"><vh>Changes made</vh>
 <v t="ekr.20060923115440.1"><vh>old</vh></v>
 <v t="ekr.20060923115723"><vh>new</vh></v>
 </v>
 </v>
 </v>
-<v t="ekr.20060603215208" a="E"><vh>@keys EKR bindings: Emacs keys + modes</vh>
+<v t="ekr.20060603215208"><vh>@keys EKR bindings: Emacs keys + modes</vh>
 <v t="ekr.20060608065207"><vh>Settings related to key bindings</vh>
 <v t="ekr.20060624072653"><vh>@bool warn_about_redefined_shortcuts = True</vh></v>
 <v t="ekr.20060604080653" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
 </v>
-<v t="ekr.20060603215208.4" a="E"><vh>Modes</vh>
+<v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@@mode quick-command (Alt-C)</vh></v>
 <v t="ekr.20060604083323"><vh>@@mode apropos</vh></v>
 <v t="ekr.20060922204625"><vh>@@mode buttons</vh></v>
@@ -738,24 +738,24 @@
 <v t="ekr.20060608191518"><vh>@@mode emacs</vh></v>
 <v t="ekr.20060608185854.1"><vh>@@mode extract</vh></v>
 <v t="ekr.20060603223152.1"><vh>@@mode file</vh></v>
-<v t="ekr.20060603215208.7" a="EM"><vh>@@mode gui</vh></v>
-<v t="ekr.20060603223152" a="E"><vh>@@mode help</vh></v>
+<v t="ekr.20060603215208.7" a="M"><vh>@@mode gui</vh></v>
+<v t="ekr.20060603223152"><vh>@@mode help</vh></v>
 <v t="ekr.20060604081740"><vh>@@mode kill</vh></v>
 <v t="ekr.20060608184356"><vh>@@mode modes</vh></v>
 <v t="ekr.20060604082857.1"><vh>@@mode move-outline</vh></v>
 <v t="ekr.20060604082857"><vh>@@mode outline</vh></v>
 <v t="ekr.20060603223152.2"><vh>@@mode toggle-find</vh></v>
 </v>
-<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
 <v t="ekr.20060604081014"><vh>@@@@shortcuts top-level keys (like vim)</vh></v>
-<v t="ekr.20060608191518.2" a="TV"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
+<v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20060603215208.19"><vh>@shortcuts Find Commands</vh></v>
 <v t="ekr.20060603215208.20"><vh>@shortcuts Minibuffer bindings</vh></v>
 <v t="ekr.20060603215208.21" annotate="7d71002e"><vh>@shortcuts EKR: A-E</vh></v>
 <v t="ekr.20060603215208.22"><vh>@shortcuts EKR: F-M</vh></v>
 <v t="ekr.20060603215208.23" annotate="7d71002e"><vh>@shortcuts EKR: N-Z</vh></v>
 </v>
-<v t="ekr.20060923115440" a="E"><vh>Changes made</vh>
+<v t="ekr.20060923115440"><vh>Changes made</vh>
 <v t="ekr.20060923115440.1"><vh>old</vh></v>
 <v t="ekr.20060923115723"><vh>new</vh></v>
 </v>
