@@ -1575,12 +1575,8 @@ def createHelpMenuFromTable (self):
     else:
         helpMenu = self.createNewMenu("&Help")
     
-    self.createMenuEntries(helpMenu,self.helpMenuTopTable)
-    
-    if sys.platform=="win32":
-        self.createMenuEntries(helpMenu,self.helpMenuTop2Table)
-    
-    self.createMenuEntries(helpMenu,self.helpMenuTop3Table)
+    self.createMenuEntries(helpMenu,self.helpMenuTable)
+#@nonl
 #@-node:ekr.20031218072017.3803:createHelpMenuFromTable
 #@+node:ekr.20031218072017.4113:new_menu
 def new_menu(self,parent,tearoff=False):
