@@ -1725,7 +1725,7 @@ class leoTkinterTree (leoFrame.leoTree):
         If ch is uppercase, search all headlines; otherwise search only visible headlines.
         This is modelled on Windows explorer.'''
         
-        if not event or not event.char: return
+        if not event or not event.char or not event.keysym.isalnum(): return
         c  = self.c ; p = c.currentPosition() ; p1 = p.copy()
         ch = event.char ; all = ch.isupper()
         ch = ch.lower() ; wrapped = False

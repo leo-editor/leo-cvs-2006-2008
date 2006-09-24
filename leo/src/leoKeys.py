@@ -2225,7 +2225,7 @@ class keyHandlerClass:
         elif k.inState():
             return 'break' #Ignore unbound keys in a state.
         else:
-            val = k.handleDefaultChar(event)
+            val = k.handleDefaultChar(event,stroke)
             if c.exists:
                 c.frame.updateStatusLine()
             return val
@@ -2263,7 +2263,7 @@ class keyHandlerClass:
         return func
     #@-node:ekr.20050923174229.3:callKeystrokeFunction (not used)
     #@+node:ekr.20051026083544:handleDefaultChar
-    def handleDefaultChar(self,event):
+    def handleDefaultChar(self,event,stroke):
         
         k = self ; c = k.c
         w = event and event.widget
@@ -2279,7 +2279,8 @@ class keyHandlerClass:
             c.frame.tree.onHeadlineKey(event)
             return 'break'
         elif name.startswith('canvas'):
-            c.frame.tree.onCanvasKey(event) # New in Leo 4.4.2
+            if not stroke: # Not exactly right, but it seems to be good enough.
+                c.frame.tree.onCanvasKey(event) # New in Leo 4.4.2
             return 'break'
         else:
             # Let tkinter handle the event.
