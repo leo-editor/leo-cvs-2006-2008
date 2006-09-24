@@ -1393,7 +1393,7 @@ class baseColorizer:
         elif not g.match(s,i,begin):
             j = i
         else:
-            j = self.match_span_helper(i+len(begin),end,no_escape,no_line_break)
+            j = self.match_span_helper(s,i+len(begin),end,no_escape,no_line_break)
             if j == -1:
                 j = i
             else:
@@ -1409,14 +1409,14 @@ class baseColorizer:
         return j - i
     #@nonl
     #@+node:ekr.20060904084624:match_span_helper
-    def match_span_helper (self,i,begin,end,no_escape,no_line_break):
+    def match_span_helper (self,s,i,pattern,no_escape,no_line_break):
         
         '''Return n >= 0 if s[i] ends with a non-escaped 'end' string.'''
         
         esc = self.escape
             
         while 1:
-            j = s.find(end,i)
+            j = s.find(pattern,i)
             if j == -1:
                 return -1
             elif no_line_break and '\n' in s[i:j]:
