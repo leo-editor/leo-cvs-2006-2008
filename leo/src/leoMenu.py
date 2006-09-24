@@ -382,22 +382,19 @@ class leoMenu:
     
         for name,table in (
             # Used in top table: l,e,q.
-            # &: a,b,c,d,f,g,h,i,m,n,o,p,r,s,u
+            # &: a,b,c,d,f,g,m,o,p,r,s,t
             ('&Abbrev...',          self.cmdsMenuAbbrevTable),
             ('Body E&ditors',       self.cmdsMenuBodyEditorsTable),
             ('&Buffers...',         self.cmdsMenuBuffersTable),
-            ('&Center...',          self.cmdsMenuCenterTable),
-            ('Cha&nge Case...',     self.cmdsMenuChangeCaseTable),
-            ('C&ursor/Selection...',[]),
+            ('&Cursor/Selection...',[]),
             ('&Focus...',           self.cmdsMenuFocusTable),
-            ('&Indent...',          self.cmdsMenuIndentTable),
             ('&Macro...',           self.cmdsMenuMacroTable),
             ('&Panes...',           self.cmdsMenuPanesTable),
             ('&Rectangles...',      self.cmdsMenuRectanglesTable),
             ('Re&gisters...',       self.cmdsMenuRegistersTable),
             ('Scr&olling...',       self.cmdsMenuScrollTable),
-            ('&Sort...',            self.cmdsMenuSortTable),
-            ('Spell C&heck...',     self.cmdsMenuSpellCheckTable),
+            ('S&pell Check...',     self.cmdsMenuSpellCheckTable),
+            ('&Text Commands',      self.cmdsMenuTextTable),
         ):
             menu = self.createNewMenu(name,'&Cmds')
             self.createMenuEntries(menu,table)
@@ -872,18 +869,16 @@ class leoMenu:
         self.defineCmdsMenuAbbrevTable()
         self.defineCmdsMenuBodyEditorsTable()
         self.defineCmdsMenuBuffersTable()
-        self.defineCmdsMenuCenterTable()
         self.defineCmdsMenuCursorTable()
-        self.defineCmdsMenuChangeCaseTable()
         self.defineCmdsMenuFocusTable()
-        self.defineCmdsMenuIndentTable()
         self.defineCmdsMenuMacroTable()
         self.defineCmdsMenuPanesTable()
         self.defineCmdsMenuRectanglesTable()
         self.defineCmdsMenuRegistersTable()
         self.defineCmdsMenuScrollTable()
-        self.defineCmdsMenuSortTable()
         self.defineCmdsMenuSpellCheckTable()
+        self.defineCmdsMenuTextTable()
+    #@nonl
     #@+node:ekr.20060117094955: defineCmdsMenuTopTable
     def defineCmdsMenuTopTable (self):
         
@@ -938,30 +933,6 @@ class leoMenu:
             ('&Switch To Buffer',             'switch-to-buffer'),
         ]
     #@-node:ekr.20060117095212:defineCmdsMenuBufferTable
-    #@+node:ekr.20060117095212.5:defineCmdsMenuCenterTable
-    def defineCmdsMenuCenterTable (self):
-    
-        c = self.c
-    
-        self.cmdsMenuCenterTable = [
-            ('Center &Line',     'center-line'),
-            ('Center &Region',   'center-region'),
-        ]
-    #@-node:ekr.20060117095212.5:defineCmdsMenuCenterTable
-    #@+node:ekr.20060117095212.4:defineCmdsMenuChangeCaseTable
-    def defineCmdsMenuChangeCaseTable (self):
-    
-        c = self.c
-    
-        self.cmdsMenuChangeCaseTable = [
-            ('&Capitalize Word', 'capitalize-word'),
-            ('&Downcase Word',   'downcase-word'),
-            ('&Upcase Word',     'upcase-word'),
-            ('-', None),
-            ('D&owncase Region', 'downcase-region'),
-            ('U&pcase Region',   'upcase-region'),
-        ]
-    #@-node:ekr.20060117095212.4:defineCmdsMenuChangeCaseTable
     #@+node:ekr.20060924124119:defineCmdsMenuCursorTable
     def defineCmdsMenuCursorTable (self):
     
@@ -1041,18 +1012,6 @@ class leoMenu:
             ('Focus To Outline',    'focus-to-tree'),             
         ]
     #@-node:ekr.20060923060822:defineCmdsMenuFocusTable
-    #@+node:ekr.20060117095212.6:defineCmdsMenuIndentTable
-    def defineCmdsMenuIndentTable (self):
-    
-        c = self.c
-    
-        self.cmdsMenuIndentTable = [
-            ('&Indent Region',   'indent-region'),
-            ('Indent R&elative', 'indent-relative'),
-            ('Indent Ri&gidly',  'indent-rigidly'),
-            ('&Unindent Region', 'unindent-region'),
-        ]
-    #@-node:ekr.20060117095212.6:defineCmdsMenuIndentTable
     #@+node:ekr.20060117114315:defineCmdsMenuMacroTable
     def defineCmdsMenuMacroTable (self):
     
@@ -1142,17 +1101,6 @@ class leoMenu:
         ]
     #@nonl
     #@-node:ekr.20060923060822.1:defineCmdsMenuScrollTable
-    #@+node:ekr.20060117095212.3:defineCmdsMenuSortTable
-    def defineCmdsMenuSortTable (self):
-    
-        c = self.c
-    
-        self.cmdsMenuSortTable = [
-            ('Sort &Columns',    'sort-columns'),
-            ('Sort &Fields',     'sort-fields'),
-            ('Sort &Lines',      'sort-lines'),
-        ]
-    #@-node:ekr.20060117095212.3:defineCmdsMenuSortTable
     #@+node:ekr.20060117095212.7:defineCmdsMenuSpellCheckTable
     def defineCmdsMenuSpellCheckTable (self):
     
@@ -1166,6 +1114,34 @@ class leoMenu:
             ('&Ignore',              'spell-ignore'),
         ]
     #@-node:ekr.20060117095212.7:defineCmdsMenuSpellCheckTable
+    #@+node:ekr.20060924161901:defineCmdsMenuTextTable
+    def defineCmdsMenuTextTable (self):
+    
+        c = self.c
+    
+        self.cmdsMenuTextTable = [
+            # &: c,d,e,f,g,i,l,m,n,o,p,r,s,u
+            ('Center &Line',     'center-line'),
+            ('Center &Region',   'center-region'),
+            ('-',None),
+            ('&Capitalize Word', 'capitalize-word'),
+            ('&Downcase Word',   'downcase-word'),
+            ('&Upcase Word',     'upcase-word'),
+            ('-', None),
+            ('D&owncase Region', 'downcase-region'),
+            ('U&pcase Region',   'upcase-region'),
+            ('-',None),
+            ('&Indent Region',   'indent-region'),
+            ('Indent R&elative', 'indent-relative'),
+            ('Indent Ri&gidly',  'indent-rigidly'),
+            ('U&nindent Region', 'unindent-region'),
+            ('-',None),
+            ('Sort Colu&mns',    'sort-columns'),
+            ('Sort &Fields',     'sort-fields'),
+            ('&Sort Lines',      'sort-lines'),
+        ]
+    
+    #@-node:ekr.20060924161901:defineCmdsMenuTextTable
     #@-node:ekr.20050921103230:defineCmdsMenuTables & helpers
     #@+node:ekr.20031218072017.3773:defineWindowMenuTables
     def defineWindowMenuTables (self):
