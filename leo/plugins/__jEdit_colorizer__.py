@@ -312,6 +312,7 @@ def match_leo_keywords(self,s,i):
 def match_section_ref (self,s,i):
     
     if trace_leo_matches: g.trace()
+    c=self.c
     
     if not g.match(s,i,'<<'):
         return 0
@@ -1422,8 +1423,8 @@ class baseColorizer:
             elif no_line_break and '\n' in s[i:j]:
                 return -1
             elif esc and not no_escape and g.match(s,j-1,esc):
-                # Continue searching past the escaped end string.
-                i = j + len(end) + 1
+                # Continue searching past the escaped pattern string.
+                i = j + len(pattern) + 1
             else:
                 return j
     #@nonl
