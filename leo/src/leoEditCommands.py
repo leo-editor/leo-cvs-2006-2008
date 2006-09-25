@@ -5444,6 +5444,8 @@ class leoCommandsClass (baseEditCommandsClass):
             'paste-node':                   c.pasteOutline,
             'paste-retaining-clones':       c.pasteOutlineRetainingClones,
             'paste-text':                   f.pasteText,
+            'pretty-print-all-python-code': c.prettyPrintAllPythonCode,
+            'pretty-print-python-code':     c.prettyPrintPythonCode,
             'promote':                      c.promote,
             'read-at-file-nodes':           c.readAtFileNodes,
             'read-outline-only':            c.readOutlineOnly,
