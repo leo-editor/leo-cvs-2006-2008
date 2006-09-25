@@ -6,8 +6,8 @@
 #@@tabwidth -4
 #@@pagewidth 80
 
-__version__ = '0.38
-'
+__version__ = '0.38'
+
 #@<< imports >>
 #@+node:ekr.20060530091119.21:<< imports >>
 import leoGlobals as g
