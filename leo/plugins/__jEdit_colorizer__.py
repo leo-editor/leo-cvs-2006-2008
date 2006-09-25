@@ -6,7 +6,8 @@
 #@@tabwidth -4
 #@@pagewidth 80
 
-__version__ = '0.37'
+__version__ = '0.38
+'
 #@<< imports >>
 #@+node:ekr.20060530091119.21:<< imports >>
 import leoGlobals as g
@@ -64,6 +65,7 @@ php_re = re.compile("<?(\s[pP][hH][pP])")
 # using @font nodes.
 # 0.37 EKR: Support for module 'escape' attribute and no_escape attribute of 
 # span matchers.
+# 0.38 EKR: Fixed several crashers discovered by unit tests.
 #@-at
 #@nonl
 #@-node:ekr.20060530091119.22:<< version history >>
@@ -478,7 +480,7 @@ class baseColorizer:
         else:
             self.importedRulesets [rulesetName] = True
         
-        names = mode.importDict.get(rulesetName,[])
+        names = hasattr(mode,'importDict') and mode.importDict.get(rulesetName,[]) or []
     
         for name in names:
             savedBunch = self.modeBunch
@@ -677,12 +679,12 @@ class baseColorizer:
                 return False
             self.language = language
             self.rulesetName = rulesetName
-            self.properties = mode.properties
-            self.keywordsDict = mode.keywordsDictDict.get(rulesetName,{})
+            self.properties = hasattr(mode,'properties') and mode.properties or {}
+            self.keywordsDict = hasattr(mode,'keywordsDictDict') and mode.keywordsDictDict.get(rulesetName,{}) or {}
             self.setKeywords()
-            self.attributesDict = mode.attributesDictDict.get(rulesetName)
+            self.attributesDict = hasattr(mode,'attributesDictDict') and mode.attributesDictDict.get(rulesetName) or {}
             self.setModeAttributes()
-            self.rulesDict = mode.rulesDictDict.get(rulesetName)
+            self.rulesDict = hasattr(mode,'rulesDictDict') and mode.rulesDictDict.get(rulesetName) or {}
             self.addLeoRules(self.rulesDict)
             
             self.defaultColor = 'null'
@@ -838,12 +840,12 @@ class baseColorizer:
         if c.frame.body.numberOfEditors > 1:
             interruptable = False
     
-        # g.trace(self.count,'interrupt:',g.choose(interruptable,1,0),id(p.c.frame.body.bodyCtrl))
+        # g.trace(self.count,'interrupt:',g.choose(interruptable,1,0),id(c.frame.body.bodyCtrl))
             
         if interruptable:
             self.interrupt() # New in 4.4.1
         else:
-            data = p.copy(),p.c.frame.body.bodyCtrl
+            data = p.copy(),c.frame.body.bodyCtrl
             self.queue.append(data)
     
         self.interruptable = interruptable
