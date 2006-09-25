@@ -2761,7 +2761,7 @@ class keyHandlerClass:
         c.bodyWantsFocus()
     #@-node:ekr.20050920085536.63:keyboardQuit
     #@+node:ekr.20051015110547:k.registerCommand
-    def registerCommand (self,commandName,shortcut,func,pane='all',verbose=True):
+    def registerCommand (self,commandName,shortcut,func,pane='all',verbose=False):
         
         '''Make the function available as a minibuffer command,
         and optionally attempt to bind a shortcut.
@@ -2795,8 +2795,10 @@ class keyHandlerClass:
             ok = k.bindKey (pane,stroke,func,commandName) # Must be a stroke.
             k.makeMasterGuiBinding(stroke) # Must be a stroke.
             if verbose and ok:
-                 g.es_print('%s = %s' % (
+                 g.es_print('@command: %s = %s' % (
                     commandName,k.prettyPrintKey(stroke)),color='blue')
+        elif verbose:
+            g.es_print('@command: %s' % (commandName),color='blue')
                     
         # Fixup any previous abbreviation to press-x-button commands.
         if commandName.startswith('press-') and commandName.endswith('-button'):
@@ -2807,9 +2809,7 @@ class keyHandlerClass:
                     if d.get(key) == commandName:
                         c.commandsDict [key] = c.commandsDict.get(commandName)
                         break
-                    
-        # Annoying.
-        # else: g.es_print('Registered %s' % (commandName),color='blue')
+    #@nonl
     #@-node:ekr.20051015110547:k.registerCommand
     #@-node:ekr.20051006065121:Externally visible helpers
     #@+node:ekr.20060606085637:Input State
@@ -3178,8 +3178,13 @@ class keyHandlerClass:
             # (stroke.find('Alt+') > -1 or stroke.find('Ctrl+') > -1)):
             if trace: g.trace('ignoring unbound non-ascii key')
             return 'break'
+            
+        elif event and event.keysym.find('Escape') != -1:
+            # Never insert escape characters.
+            return 'break'
         
         else:
+            # g.trace(stroke,event.char,event.keysym)
             if trace: g.trace(repr(stroke),'no func')
             return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
         #@-node:ekr.20060608070318:<< handle keys without bindings >>
