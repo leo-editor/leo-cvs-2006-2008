@@ -222,7 +222,7 @@ class LeoApp:
             w.deiconify()
             w.lift()
             w.c.setLog()
-            w.c.bodyWantsFocus()
+            w.c.bodyWantsFocusNow()
         else:
             g.app.finishQuit()
     
