@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="335" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="71" left="252" height="772" width="959"/>
+	<global_window_position top="71" left="252" height="734" width="959"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -34,8 +34,8 @@
 <v t="ekr.20041119035704.3"><vh>\@type type-name: base-type = [list of valid values]</vh></v>
 <v t="ekr.20041120155431.2"><vh>\@type type-name: script: script-name</vh></v>
 </v>
-<v t="ekr.20060112110750"><vh>Buttons</vh>
-<v t="ekr.20051010093913" annotate="7d71002e"><vh>@button Save</vh></v>
+<v t="ekr.20060112110750" a="E"><vh>Buttons</vh>
+<v t="ekr.20051010093913" annotate="7d71002e"><vh>@@button Save</vh></v>
 <v t="ekr.20051011123608" annotate="7d71002e"><vh>@@button align to col</vh></v>
 <v t="ekr.20060112103537.17"><vh>@button Check Bindings</vh>
 <v t="ekr.20060112104119"><vh>defineSetNames</vh></v>
@@ -280,7 +280,7 @@
 <v t="ekr.20060804095015.1"><vh>@string close_flash_brackets = )]}</vh></v>
 </v>
 <v t="ekr.20051007200824" annotate="7d71002e"><vh>Keyboard shortcuts</vh>
-<v t="ekr.20051101160257" a="E" annotate="7d71002e"><vh>About keyboard shortcuts</vh>
+<v t="ekr.20051101160257" annotate="7d71002e"><vh>About keyboard shortcuts</vh>
 <v t="ekr.20051007200824.1" annotate="7d71002e"><vh>About shortcut specifiers</vh></v>
 <v t="ekr.20060116090646"><vh>Reference for function keys</vh></v>
 </v>
@@ -288,7 +288,7 @@
 <v t="ekr.20060303075452"><vh>Commands for mouseless Leo</vh></v>
 <v t="ekr.20060104093101" annotate="7d71002e"><vh>@ignore Unused key bindings</vh>
 <v t="ekr.20060122105527.4" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
-<v t="ekr.20060110141538" a="E" annotate="7d71002e"><vh>@keys Default Emacs shortcuts</vh>
+<v t="ekr.20060110141538" annotate="7d71002e"><vh>@keys Default Emacs shortcuts</vh>
 <v t="ekr.20051007193321"><vh>@shortcuts Emacs: A-E</vh></v>
 <v t="ekr.20060112090844"><vh>@shortcuts Emacs: F-M</vh></v>
 <v t="ekr.20060112090844.1"><vh>@shortcuts Emads: N-Z</vh></v>
@@ -573,8 +573,8 @@
 <v t="ekr.20060210105437"><vh>@bool trace_select = False</vh></v>
 <v t="ekr.20041119050749.18"><vh>@bool outline_pane_scrolls_horizontally = True</vh></v>
 </v>
-<v t="ekr.20051007200824" a="E"><vh>Keyboard shortcuts</vh>
-<v t="ekr.20051101160257" a="E" annotate="7d71002e"><vh>About keyboard shortcuts</vh>
+<v t="ekr.20051007200824"><vh>Keyboard shortcuts</vh>
+<v t="ekr.20051101160257" annotate="7d71002e"><vh>About keyboard shortcuts</vh>
 <v t="ekr.20051007200824.1" annotate="7d71002e"><vh>About shortcut specifiers</vh></v>
 <v t="ekr.20060116090646"><vh>Reference for function keys</vh></v>
 </v>
@@ -582,7 +582,7 @@
 <v t="ekr.20060303075452"><vh>Commands for mouseless Leo</vh></v>
 <v t="ekr.20060104093101" annotate="7d71002e"><vh>@ignore Unused key bindings</vh>
 <v t="ekr.20060122105527.4" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
-<v t="ekr.20060110141538" a="E" annotate="7d71002e"><vh>@keys Default Emacs shortcuts</vh>
+<v t="ekr.20060110141538" annotate="7d71002e"><vh>@keys Default Emacs shortcuts</vh>
 <v t="ekr.20051007193321"><vh>@shortcuts Emacs: A-E</vh></v>
 <v t="ekr.20060112090844"><vh>@shortcuts Emacs: F-M</vh></v>
 <v t="ekr.20060112090844.1"><vh>@shortcuts Emads: N-Z</vh></v>
@@ -727,7 +727,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060925053958" a="E"><vh>Bindings</vh></v>
+<v t="ekr.20060925053958" a="TV"><vh>Bindings</vh></v>
 <v t="ekr.20060603215208" a="E"><vh>@keys EKR bindings: Emacs keys + modes</vh>
 <v t="ekr.20060608065207"><vh>Settings related to key bindings</vh>
 <v t="ekr.20060624072653"><vh>@bool warn_about_redefined_shortcuts = True</vh></v>
@@ -754,7 +754,7 @@
 <v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20060925060533.1"><vh>@shortcuts Cursor Moves</vh></v>
-<v t="ekr.20060925060533.2" a="TV"><vh>@shortcuts Gui operations</vh></v>
+<v t="ekr.20060925060533.2"><vh>@shortcuts Gui operations</vh></v>
 <v t="ekr.20060925061845"><vh>@shortcuts File commands</vh></v>
 <v t="ekr.20060603215208.19"><vh>@shortcuts Find commands</vh></v>
 <v t="ekr.20060603215208.20"><vh>@shortcuts Minibuffer commands/bindings</vh></v>
@@ -5263,7 +5263,8 @@ sort-siblings           = s
 # enter-extract-mode      = x</t>
 <t tx="ekr.20060603215208.17"></t>
 <t tx="ekr.20060603215208.19"># Quick finds
-find-character                      = Control-b
+find-character                      = Alt-Q
+#find-character-reverse             = Alt-P
 
 # To start finds and changes...
 search-again                        = None  # similar to search-with-present-options.
@@ -5273,9 +5274,9 @@ hide-find-tab                       = None
 open-find-tab                       = None
 
 clone-find-all                      = None
-isearch-backward                    = None
+isearch-backward                    = Alt-R
 isearch-backward-regexp             = None
-isearch-forward                     = None
+isearch-forward                     = Alt-S
 isearch-forward-regexp              = None
 isearch-with-present-options        = Alt-i
 query-replace                       = None
@@ -5292,7 +5293,8 @@ find-tab-find-prev                  = F2
 find-tab-change                     = Ctrl-=
 find-tab-change-all                 = None  # Not recommended to bind this to a shortcut.
 find-tab-change-then-find           = Ctrl--</t>
-<t tx="ekr.20060603215208.20">keyboard-quit       = Ctrl-g
+<t tx="ekr.20060603215208.20">full-command            = Alt-x
+keyboard-quit           = Ctrl-g
 negative-argument       = None      # Alt-minus conflicts with contract-all.
 repeat-complex-command  = None
 universal-argument      = Alt-u     # Usually Ctrl-u, conflicts with move-outline-up.
@@ -6363,7 +6365,7 @@ move-outline-up             ! tree = Shift-UpArrow</t>
        
        Alt+A        sort-siblings
  text: Alt+B        back-word
-#      Alt+C
+       Alt+C        @mode quick-command
        Alt+D        kill-word
  text: Alt+E        forward-sentence
  text: Alt+F        forward-word
@@ -6376,16 +6378,16 @@ move-outline-up             ! tree = Shift-UpArrow</t>
 #      Alt+M        exchange-point-mark?
        Alt+N        goto-next-clone
 #      Alt+O
-#      Alt+P
-#      Alt+Q
-#      Alt+R
-#      Alt+S
+#      Alt+P        find-character-reverse
+       Alt+Q        find-character
+       Alt+R        isearch-backword
+       Alt+S        isearch-forward
 #      Alt+T
        Alt+U        universal-argument
 #      Alt+V
        Alt+W        kill-region-save
        Alt+X        full-command
-#      Alt+Y
+       Alt+Y        cycle-all-focus
        Alt+Z        zap-to-character
 #      Alt+[        contract-node
 #      Alt+\        delete-spaces
@@ -6432,7 +6434,7 @@ move-outline-up             ! tree = Shift-UpArrow</t>
        Ctrl+.       auto-complete-force
        Ctrl+=       find-tab-change
  text: Ctrl+A       beginning-of-line
-       Ctrl+B       find-character
+#      Ctrl+B       
        Ctrl+C       copy-text
 #      Ctrl+D
  text: Ctrl+E       end-of-line
@@ -6526,8 +6528,8 @@ back-word-extend-selection          ! text = Alt-Shift-b
 back-word-extend-selection          ! text = Ctrl-Shift-LtArrow
 beginning-of-buffer                  ! text = Home
 beginning-of-buffer-extend-selection ! text = Shift-Home
-beginning-of-line                  ! text = Ctrl-a
-beginning-of-line-extend-selection ! text = Ctrl-Shift-a
+beginning-of-line                   ! text = Ctrl-a
+beginning-of-line-extend-selection  ! text = Ctrl-Shift-a
 end-of-buffer                       ! text = End
 end-of-buffer-extend-selection      ! text = Shift-End
 end-of-line                         ! text = Ctrl-e
@@ -6553,33 +6555,26 @@ next-line-extend-selection          ! text = Shift-DnArrow
 # previous-line-extend-selection    ! text = Ctrl-Shift-P
 previous-line                       ! text = UpArrow
 previous-line-extend-selection      ! text = Shift-UpArrow
+scroll-down                         ! text = PageDn 
+scroll-down-extend-selection        ! text = Shift-PageDn
+scroll-up                           ! text = PageUp
+scroll-up-extend-selection          ! text = Shift-PageUp
 select-all                          ! text =  Alt-Shift-A 
     # Shift-Ctrl-A conflicts with beginning-of-line-extend-selection.</t>
-<t tx="ekr.20060925060533.2"># close-window                      = Ctrl-w
-close-window                        = Alt-F4
-contract-log-pane                   = Alt-Ctrl-RtArrow # Alt-Ctrl-DnArrow in other orientation.
-contract-pane                       = Alt+Ctrl+-
-cycle-all-focus                     = Alt-Ctrl-p
-expand-body-pane                    = Alt-Ctrl-UpArrow  # Alt-Ctrl-LtArrow in other orientation.
-expand-log-pane                     = Alt-Ctrl-LtArrow  # Alt-Ctrl-UpArrow in other orientation.
-expand-pane                         = Alt+Ctrl-=
-expand-outline-pane                 = Alt-Ctrl-DnArrow  # Alt-Ctrl-RtArrow in other orientation.
-focus-to-tree                       = Alt-space
-full-command                        = Alt-x
-fully-expand-pane                   = Alt-Ctrl-!
-hide-pane                           = None
-print-focus                         = Alt-Ctrl-Shift-F
-scroll-down                         ! text = PageDn 
-scroll-up                           ! text = PageUp
-scroll-outline-down-line            ! tree = PageDn
-scroll-outline-down-page            ! tree = Shift-PageDn
-#scroll-outline-left                 = Alt+Shift+LtArrow
-#scroll-outline-right                = Alt+Shift+RtArrow
-scroll-outline-up-line              ! tree = PageUp
-scroll-outline-up-page              ! tree = Shift-PageUp
-scroll-down-extend-selection        ! text = Shift-PageDn
-scroll-up-extend-selection          ! text = Shift-PageUp
-toggle-active-pane                  = Ctrl-T</t>
+<t tx="ekr.20060925060533.2">cycle-all-focus             = Alt-Y
+contract-pane               = Alt+Ctrl+-
+expand-pane                 = Alt+Ctrl-=
+focus-to-tree               = Alt-space
+
+scroll-outline-down-page    = Alt-PageDn
+scroll-outline-down-page    ! tree = PageDn
+scroll-outline-up-page      = Alt-PageUp
+scroll-outline-up-page      ! tree = PageUp
+
+scroll-outline-left         = Alt+Ctrl+LtArrow
+scroll-outline-right        = Alt+Ctrl+RtArrow
+
+toggle-active-pane          = Ctrl-T</t>
 <t tx="ekr.20060925060533.3">clone-node                  = Ctrl-`
 contract-node               = None
 contract-or-go-left         = Alt-LtArrow
@@ -6625,6 +6620,7 @@ delete-comments                     = Ctrl-parenright
 delete-spaces                       = Alt-backslash
 indent-region                       = Ctrl-]
 insert-newline                      = None # = Return # for MacOs X.
+kill-line                           = Ctrl-k
 newline-and-indent                  = Ctrl-j
 paste-text                          = Ctrl-v
 reformat-paragraph                  = Shift-Ctrl-p
@@ -6632,7 +6628,8 @@ split-line                          = None
 unindent-region                     = Ctrl-[
 yank                                = Ctrl-Y
 zap-to-character                    = Alt-z</t>
-<t tx="ekr.20060925061845">exit-leo                    = Ctrl-q
+<t tx="ekr.20060925061845">close-window                = Alt-F4
+exit-leo                    = Ctrl-q
 new                         = Ctrl-n    # Ctrl-n conflicts with next-line.
 open-outline                = Ctrl-o
 save-file                   = Ctrl-s
