@@ -549,21 +549,33 @@ class leoMenu:
     #@+node:ekr.20031218072017.3756:defineEditMenuFindMenuTable
     def defineEditMenuFindMenuTable (self):
         
-        __pychecker__ = 'no-unusednames=c,f'
-        
-        c = self.c ; f = self.frame
-        
-        # Bind to the Find tab.
-        sc = c.searchCommands
         self.editMenuFindMenuTable = [
-            ("&Show Find Tab",  sc.openFindTab),
-            ("&Hide Find Tab",  sc.hideFindTab),
+            # &: a,c,d,h,i,l,n,o,p,q,r,t,u,w,x
+            ("&Open Find Tab",              'open-find-tab'),
+            ("&Hide Find Tab",              'hide-find-tab'),
+            ("Search &With Present Options",'search-with-present-options'),
             ("-",None),
-            ("Find &Next",          sc.findTabFindNext),
-            ("Find &Previous",      sc.findTabFindPrev),
-            ("&Replace",            sc.findTabChange),
-            ("Replace, &Then Find", sc.findTabChangeThenFind),
+            ("Find &Next",                  'find-tab-find'),
+            ("Find &Previous",              'find-tab-find-prev'),
+            ("&Replace",                    'find-tab-change'),
+            ("Replace, &Then Find",         'find-with-present-options'),
+            ('Find &All',                   'find-tab-find-all'),
+            ('Clone Fin&d All',             'clone-find-all'),
+            ('Change A&ll',                 'find-tab-change-all'),
+            ('-',None),
+            ('&Quick Find Character',       'find-character'),
+            ('&I-Search Forward',           'isearch-forward'),
+            ('I-Sear&ch Reverse',           'isearch-backward'),
+            ('I-Search Rege&xp Forward',    'isearch-forward-regexp'),
+            ('I-Search Regex&p Reverse',    'isearch-backward-regexp'),
+            ('-',None),
+            ('&Query Replace',              'query-replace'),
+            ('Q&uery Replace Regexp',       'query-replace-regexp'),
         ]
+    
+    # find-character-reverse            = Alt-P
+    # isearch-with-present-options      = None
+    #@nonl
     #@-node:ekr.20031218072017.3756:defineEditMenuFindMenuTable
     #@+node:ekr.20031218072017.3757:defineEditMenuTop2Table
     def defineEditMenuTop2Table (self):
