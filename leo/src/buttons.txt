@@ -1,7 +1,7 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20051027111215:@thin buttons.txt
 #@+all
-#@+node:ekr.20060531093331:@button clones-tab
+#@+node:ekr.20060531093331:@command clones-tab
 @
 Ever have a clone that is difficult to understand outside the context of its
 original parent? Here's some code to help. It displays the headline of the
@@ -100,7 +100,7 @@ self.lb.bind(g.angleBrackets("ListboxSelect"), gotoSelectedPosition)
 #@-node:ekr.20060531093331.6:<<Goto selected position when listbox selection changes>>
 #@-node:ekr.20060531093331.4:displayClones
 #@-node:ekr.20060531093331.1:class cloneNavigator
-#@-node:ekr.20060531093331:@button clones-tab
+#@-node:ekr.20060531093331:@command clones-tab
 #@+node:ekr.20050123202520.1:@@button settings.leo
 # Open leoSettings.leo
 c.openLeoSettings()
@@ -130,14 +130,14 @@ if not ok:
     g.es("not found: %s" % name)
 #@nonl
 #@-node:ekr.20060329100658:@@button docs.leo
-#@+node:ekr.20051025070441:@button Beautify
+#@+node:ekr.20051025070441:@@button Beautify
 c.prettyPrintPythonNode()
 #@nonl
-#@-node:ekr.20051025070441:@button Beautify
-#@+node:ekr.20041226080857:@button Spell
+#@-node:ekr.20051025070441:@@button Beautify
+#@+node:ekr.20041226080857:@@button Spell
 c.spellCommands.openSpellTab()
 #@nonl
-#@-node:ekr.20041226080857:@button Spell
+#@-node:ekr.20041226080857:@@button Spell
 #@+node:ekr.20051013103117:@@button Save
 c.save()
 #@nonl

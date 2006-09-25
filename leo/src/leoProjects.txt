@@ -2767,6 +2767,88 @@ You may download Python from http://python.org/download/
 #@nonl
 #@-node:ekr.20031218072017.1936:isValidPython
 #@-node:ekr.20060921113950:Fixed problem with g.CheckVersion
+#@+node:ekr.20060925080505:Added force argument to c.set_focus
+@
+This should *finally* fix the problems with focus going to limbo.
+All xWantsFocusNow methods set the force arg.
+#@nonl
+#@+node:ekr.20060210102201:c.xWantsFocusNow
+def bodyWantsFocusNow(self):
+    c = self ; body = c.frame.body
+    #g.trace(body and body.bodyCtrl)
+    c.set_focus(body and body.bodyCtrl,force=True)
+    
+def headlineWantsFocusNow(self,p):
+    c = self
+    c.set_focus(p and c.edit_widget(p),force=True)
+    
+def logWantsFocusNow(self):
+    c = self ; log = c.frame.log
+    c.set_focus(log and log.logCtrl,force=True)
+
+def minibufferWantsFocusNow(self):
+    c = self ; k = c.k
+    k and k.minibufferWantsFocusNow()
+    
+def treeWantsFocusNow(self):
+    c = self ; tree = c.frame.tree
+    c.set_focus(tree and tree.canvas,force=True)
+    
+def widgetWantsFocusNow(self,w):
+    c = self ; c.set_focus(w,force=True)
+#@-node:ekr.20060210102201:c.xWantsFocusNow
+#@+node:ekr.20060205103842:c.get/request/set_focus
+def get_focus (self):
+    
+    c = self
+    return g.app.gui.get_focus(c)
+    
+def get_requested_focus (self):
+    
+    c = self
+    return c.requestedFocusWidget or c.hasFocusWidget or g.app.gui.get_focus(c)
+    
+def request_focus(self,w):
+
+    c = self
+    if w: c.requestedFocusWidget = w
+    c.traceFocus(w)
+    
+def set_focus (self,w,force=False):
+    
+    c = self
+    
+    if force: # New in Leo 4.4.2: safer.
+        c.hasFocusWidget = c.requestedFocusWidget = w
+        g.app.gui.set_focus(c,w)
+    else: # An optimization.
+        c.requestedFocusWidget = w
+        c.masterFocusHandler()
+#@-node:ekr.20060205103842:c.get/request/set_focus
+#@+node:ekr.20050120092028:c.xWantsFocus
+def bodyWantsFocus(self):
+    c = self ; body = c.frame.body
+    c.request_focus(body and body.bodyCtrl)
+def headlineWantsFocus(self,p):
+    c = self
+    c.request_focus(p and c.edit_widget(p))
+    
+def logWantsFocus(self):
+    c = self ; log = c.frame.log
+    c.request_focus(log and log.logCtrl)
+    
+def minibufferWantsFocus(self):
+    c = self ; k = c.k
+    k and k.minibufferWantsFocus()
+    
+def treeWantsFocus(self):
+    c = self ; tree = c.frame.tree
+    c.request_focus(tree and tree.canvas)
+    
+def widgetWantsFocus(self,w):
+    c = self ; c.request_focus(w)
+#@-node:ekr.20050120092028:c.xWantsFocus
+#@-node:ekr.20060925080505:Added force argument to c.set_focus
 #@-node:ekr.20060908092306:Bugs
 #@+node:ekr.20060905091234:Code level
 #@+node:ekr.20060904114302:Added OPML support to fileCommands
@@ -4423,7 +4505,7 @@ def createCmndsMenuFromTable (self):
 
     for name,table in (
         # Used in top table: l,e,q.
-        # &: a,b,c,d,f,g,m,o,p,r,s,t
+        # &: a,b,c,d,f,g,h,m,o,p,r,s,t
         ('&Abbrev...',          self.cmdsMenuAbbrevTable),
         ('Body E&ditors',       self.cmdsMenuBodyEditorsTable),
         ('&Buffers...',         self.cmdsMenuBuffersTable),
@@ -4434,7 +4516,7 @@ def createCmndsMenuFromTable (self):
         ('&Rectangles...',      self.cmdsMenuRectanglesTable),
         ('Re&gisters...',       self.cmdsMenuRegistersTable),
         ('Scr&olling...',       self.cmdsMenuScrollTable),
-        ('S&pell Check...',     self.cmdsMenuSpellCheckTable),
+        ('Spell C&heck...',     self.cmdsMenuSpellCheckTable),
         ('&Text Commands',      self.cmdsMenuTextTable),
     ):
         menu = self.createNewMenu(name,'&Cmds')
@@ -4458,7 +4540,10 @@ def defineCmdsMenuTextTable (self):
     c = self.c
 
     self.cmdsMenuTextTable = [
-        # &: c,d,e,f,g,i,l,m,n,o,p,r,s,u
+        # &: b,c,d,e,f,g,i,l,m,n,o,p,r,s,u,y
+        ("&Beautify Python Code",c.prettyPrintPythonCode),
+        ("Beautify All P&ython Code",c.prettyPrintAllPythonCode),
+        ("-",None),
         ('Center &Line',     'center-line'),
         ('Center &Region',   'center-region'),
         ('-',None),

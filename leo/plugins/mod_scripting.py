@@ -247,7 +247,7 @@ class scriptingController:
             # The 'end-of-script command messes up tabs.
             c.executeScript(p=p,silent=True)
     
-        k.registerCommand(commandName,shortcut,atCommandCallback)
+        k.registerCommand(commandName,shortcut,atCommandCallback,verbose=True)
     #@nonl
     #@-node:ekr.20060328125248.10:createMinibufferCommand (New in 4.4)
     #@+node:ekr.20060328125248.12:createAtButtonButton (Improved for 4.4)
