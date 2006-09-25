@@ -1577,19 +1577,19 @@ class editCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20051022144825:focusTo...
     def focusToBody (self,event):
         '''Put the keyboard focus in Leo's body pane.'''
-        self.c.bodyWantsFocus()
+        self.c.bodyWantsFocusNow()
     
     def focusToLog (self,event):
         '''Put the keyboard focus in Leo's log pane.'''
-        self.c.logWantsFocus()
+        self.c.logWantsFocusNow()
         
     def focusToMinibuffer (self,event):
         '''Put the keyboard focus in Leo's minibuffer.'''
-        self.c.minibufferWantsFocus()
+        self.c.minibufferWantsFocusNow()
     
     def focusToTree (self,event):
         '''Put the keyboard focus in Leo's outline pane.'''
-        self.c.treeWantsFocus()
+        self.c.treeWantsFocusNow()
     #@-node:ekr.20051022144825:focusTo...
     #@+node:ekr.20060211063744.1:clicks in the headline
     # These call the actual event handlers so as to trigger hooks.
@@ -5333,6 +5333,8 @@ class leoCommandsClass (baseEditCommandsClass):
             'abort-edit-headline':          f.abortEditLabelCommand,
             'about-leo':                    c.about,
             'add-comments':                 c.addComments,     
+            'beautify-all-python-code':     c.prettyPrintAllPythonCode,
+            'beautify-python-code':         c.prettyPrintPythonCode,
             'cascade-windows':              f.cascade,
             'clear-recent-files':           c.clearRecentFiles,
             'close-window':                 c.close,
@@ -5442,8 +5444,6 @@ class leoCommandsClass (baseEditCommandsClass):
             'paste-node':                   c.pasteOutline,
             'paste-retaining-clones':       c.pasteOutlineRetainingClones,
             'paste-text':                   f.pasteText,
-            'pretty-print-all-python-code': c.prettyPrintAllPythonCode,
-            'pretty-print-python-code':     c.prettyPrintPythonCode,
             'promote':                      c.promote,
             'read-at-file-nodes':           c.readAtFileNodes,
             'read-outline-only':            c.readOutlineOnly,
