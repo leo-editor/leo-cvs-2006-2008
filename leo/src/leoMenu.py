@@ -382,7 +382,7 @@ class leoMenu:
     
         for name,table in (
             # Used in top table: l,e,q.
-            # &: a,b,c,d,f,g,m,o,p,r,s,t
+            # &: a,b,c,d,f,g,h,m,o,p,r,s,t
             ('&Abbrev...',          self.cmdsMenuAbbrevTable),
             ('Body E&ditors',       self.cmdsMenuBodyEditorsTable),
             ('&Buffers...',         self.cmdsMenuBuffersTable),
@@ -393,7 +393,7 @@ class leoMenu:
             ('&Rectangles...',      self.cmdsMenuRectanglesTable),
             ('Re&gisters...',       self.cmdsMenuRegistersTable),
             ('Scr&olling...',       self.cmdsMenuScrollTable),
-            ('S&pell Check...',     self.cmdsMenuSpellCheckTable),
+            ('Spell C&heck...',     self.cmdsMenuSpellCheckTable),
             ('&Text Commands',      self.cmdsMenuTextTable),
         ):
             menu = self.createNewMenu(name,'&Cmds')
@@ -744,7 +744,7 @@ class leoMenu:
             ("D&e-Hoist",f.c.dehoist),
             ("-",None),
         ]
-        # Ampersand bindings:  a,c,d,e,h,i,n,o,p,t,s,
+        # Ampersand bindings:  a,b,c,d,e,h,i,n,o,p,t,s,y
         # Bindings for entries that go to submenus: a,g,k,m,x
     #@-node:ekr.20031218072017.3768:defineOutlineMenuTopMenuTable
     #@+node:ekr.20040711140738:defineOutlineMenuCheckOutlineMenuTable
@@ -760,9 +760,6 @@ class leoMenu:
             ("-",None),
             ("Check &All Python Code",c.checkAllPythonCode),
             ("&Check Python &Code",c.checkPythonCode),
-            ("-",None),
-            ("Pretty P&rint All Python Code",c.prettyPrintAllPythonCode),
-            ("&Pretty Print Python Code",c.prettyPrintPythonCode),
         ]
         # shortcuts used: a,c,d,o,p,r
     #@-node:ekr.20040711140738:defineOutlineMenuCheckOutlineMenuTable
@@ -1120,7 +1117,10 @@ class leoMenu:
         c = self.c
     
         self.cmdsMenuTextTable = [
-            # &: c,d,e,f,g,i,l,m,n,o,p,r,s,u
+            # &: b,c,d,e,f,g,i,l,m,n,o,p,r,s,u,y
+            ("&Beautify Python Code",c.prettyPrintPythonCode),
+            ("Beautify All P&ython Code",c.prettyPrintAllPythonCode),
+            ("-",None),
             ('Center &Line',     'center-line'),
             ('Center &Region',   'center-region'),
             ('-',None),
@@ -1171,7 +1171,7 @@ class leoMenu:
         c = self.c ; f = self.frame
     
         self.helpMenuTable = [
-            # &:a,b,c,d,f,h,p,r,s,t,u,
+            # &:a,b,c,d,f,h,n,m,p,r,s,t,u,
             ("&About Leo...",           c.about),
             ("Online &Home Page",       c.leoHome),
             ("Open Online &Tutorial",   c.leoTutorial),
@@ -1180,13 +1180,16 @@ class leoMenu:
             ("Open Leo&Docs.leo",       c.leoDocumentation),
             ("Open Leo&Plugins.leo",    c.openLeoPlugins),
             ("Open Leo&Settings.leo",   c.openLeoSettings),
-            ('-', None),
+            ('-',None),
             ('&Getting Started',         'help'),
             ('Help For &Command',        'help-for-command'),
             ('-', None),
             ('Ap&ropos Autocompletion',  'apropos-autocompletion'),
             ('Apropos &Bindings',        'apropos-bindings'),
             ('Apropos &Find Commands',   'apropos-find-commands'),
+            ('-',None),
+            ('Pri&nt Bindings',           'print-bindings'),
+            ('Print Co&mmands',           'print-commands')
         ]
     #@-node:ekr.20031218072017.3774:defineHelpMenuTables
     #@-node:ekr.20031218072017.3752:defineMenuTables & helpers
