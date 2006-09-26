@@ -3158,7 +3158,7 @@ class editCommandsClass (baseEditCommandsClass):
             # Reset the move spot if needed.
             if (
                 not moveSpot or p.v.t != self.moveSpotNode or
-                not extend and (
+                (
                     i == j or # A cute trick
                     (not w.compare(moveSpot,'==',i) and
                     not w.compare(moveSpot,'==',j))
