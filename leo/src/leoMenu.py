@@ -405,7 +405,6 @@ class leoMenu:
             ('Cursor Back &Extend Selection...',    self.cursorMeuuBackExtendTable),
             ('Cursor &Forward...',                  self.cursorMenuForwardTable),
             ('Cursor Forward E&xtend Selection...', self.cursorMenuForwardExtendTable),
-            ('Cursor &Scroll...',                   self.cursorMenuScrollTable),
         ):
             menu = self.createNewMenu(name,'C&ursor/Selection...')
             self.createMenuEntries(menu,table)
@@ -1005,15 +1004,6 @@ class leoMenu:
             ('&Next Line Extend Selection',         'next-line-extend-selection'),    
         ]
     
-        self.cursorMenuScrollTable = [
-            # &: d,e,v,x
-            ('Scroll Cursor &Down',             'scroll-down'),
-            ('Scroll Cursor &Up',               'scroll-up'),
-            ('-',None),
-            ('Scroll Down &Extend Selection',   'scroll-down-extend-selection'),
-            ('Scroll Up E&xtend Selection',     'scroll-up-extend-selection'),
-        ]
-    #@nonl
     #@-node:ekr.20060924124119:defineCmdsMenuCursorTable
     #@+node:ekr.20060923060822:defineCmdsMenuFocusTable
     def defineCmdsMenuFocusTable (self):
@@ -1106,13 +1096,19 @@ class leoMenu:
         c = self.c
     
         self.cmdsMenuScrollTable = [
-            ('Scroll Outline Down Line',    'scroll-outline-down-line'),
-            ('Scroll Outline Down Page',    'scroll-outline-down-page'),
-            ('Scroll Outline Left',         'scroll-outline-left'),
-            ('Scroll Outline Right',        'scroll-outline-right'),
-            ('Scroll Outline Up Line',      'scroll-outline-up-line'),
-            ('Scroll Outline Up Page',      'scroll-outline-up-page'),
+            # &: c,d,e,f,l,o,p,r,v,x
+            ('Scroll Outline Down &Line',    'scroll-outline-down-line'),
+            ('Scroll Outline Down &Page',    'scroll-outline-down-page'),
+            ('Scroll Outline Le&ft',         'scroll-outline-left'),
+            ('Scroll Outline &Right',        'scroll-outline-right'),
+            ('S&croll Outline Up Line',      'scroll-outline-up-line'),
+            ('Scr&oll Outline Up Page',      'scroll-outline-up-page'),
             ('-',None),
+            ('Scroll Pane &Down',             'scroll-down'),
+            ('Scroll Pane &Up',               'scroll-up'),
+            ('-',None),
+            ('Scroll Down &Extend Selection',   'scroll-down-extend-selection'),
+            ('Scroll Up E&xtend Selection',     'scroll-up-extend-selection'),
         ]
     #@nonl
     #@-node:ekr.20060923060822.1:defineCmdsMenuScrollTable
