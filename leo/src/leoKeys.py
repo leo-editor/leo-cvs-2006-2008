@@ -2668,6 +2668,7 @@ class keyHandlerClass:
         returnKind=None,returnState=None,handler=None,
         prefix=None,tabList=[],completion=True,oneCharacter=False,
         stroke=None, # New in 4.4.1.
+        useMinibuffer=True # New in 4.4.1
     ):
         
         '''Accumulate an argument until the user hits return (or control-g).
@@ -2703,7 +2704,7 @@ class keyHandlerClass:
             k.afterGetArgState=returnKind,returnState,handler
             k.setState('getArg',1,k.getArg)
             k.afterArgWidget = event and event.widget or c.frame.body.bodyCtrl
-            if k.useTextWidget: c.minibufferWantsFocusNow() # 9/8/06
+            if useMinibuffer and k.useTextWidget: c.minibufferWantsFocusNow()
         elif keysym == 'Return' or k.oneCharacterArg or stroke in k.getArgEscapes:
             if stroke in k.getArgEscapes: k.getArgEscape = stroke
             if k.oneCharacterArg:
