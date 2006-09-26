@@ -3602,6 +3602,11 @@ class baseCommands:
                 pp.prettyPrintNode(p,dump=dump)
                 
         pp.endUndo()
+    
+    # For unit test of inverse commands dict.
+    def beautifyAllPythonCode (self,event=None,dump=False):
+        return self.prettyPrintAllPythonCode (event,dump)
+    #@nonl
     #@-node:ekr.20040712053025:prettyPrintAllPythonCode
     #@+node:ekr.20040712053025.1:prettyPrintPythonCode
     def prettyPrintPythonCode (self,event=None,p=None,dump=False):
@@ -3623,6 +3628,11 @@ class baseCommands:
                 pp.prettyPrintNode(p,dump=dump)
               
         pp.endUndo()
+    
+    # For unit test of inverse commands dict.
+    def beautifyPythonCode (self,event=None,dump=False):
+        return self.prettyPrintPythonCode (event,dump)
+    
     #@-node:ekr.20040712053025.1:prettyPrintPythonCode
     #@+node:ekr.20050729211526:prettyPrintPythonNode
     def prettyPrintPythonNode (self,p=None,dump=False):

@@ -302,7 +302,7 @@ def initAllEditCommanders (c):
         theInstance.init()
 #@-node:ekr.20050924100713.1:initAllEditCommanders
 #@-node:ekr.20050924100713: Module level...
-#@+node:ekr.20050920085536.84:class  Tracker (an iterator)
+#@+node:ekr.20050920085536.84:class Tracker (an iterator)
 class Tracker:
 
     '''An iterator class to allow the user to cycle through and change a list.'''
@@ -344,8 +344,8 @@ class Tracker:
         self.prefix = None
     #@-node:ekr.20050920085536.89:clear
     #@-others
-#@-node:ekr.20050920085536.84:class  Tracker (an iterator)
-#@+node:ekr.20050920084036.13:class abbrevCommandsClass (test)
+#@-node:ekr.20050920085536.84:class Tracker (an iterator)
+#@+node:ekr.20050920084036.13:abbrevCommandsClass (test)
 #@+at
 # 
 # type some text, set its abbreviation with Control-x a i g, type the text for 
@@ -575,8 +575,8 @@ class abbrevCommandsClass (baseEditCommandsClass):
         f.close()
     #@-node:ekr.20050920084036.24:writeAbbreviations
     #@-others
-#@-node:ekr.20050920084036.13:class abbrevCommandsClass (test)
-#@+node:ekr.20050920084036.31:class bufferCommandsClass
+#@-node:ekr.20050920084036.13:abbrevCommandsClass (test)
+#@+node:ekr.20050920084036.31:bufferCommandsClass
 #@+at 
 #@nonl
 # An Emacs instance does not have knowledge of what is considered a buffer in 
@@ -872,8 +872,8 @@ class bufferCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20050927093851:getBufferName
     #@-node:ekr.20050927102133.1:Utils
     #@-others
-#@-node:ekr.20050920084036.31:class bufferCommandsClass
-#@+node:ekr.20050920084036.150:class controlCommandsClass
+#@-node:ekr.20050920084036.31:bufferCommandsClass
+#@+node:ekr.20050920084036.150:controlCommandsClass
 class controlCommandsClass (baseEditCommandsClass):
     
     #@    @+others
@@ -1011,8 +1011,8 @@ class controlCommandsClass (baseEditCommandsClass):
         self.suspend(event)
     #@-node:ekr.20050920084036.153:suspend & iconifyFrame
     #@-others
-#@-node:ekr.20050920084036.150:class controlCommandsClass
-#@+node:ekr.20060127162818.1:class debugCommandsClass
+#@-node:ekr.20050920084036.150:controlCommandsClass
+#@+node:ekr.20060127162818.1:debugCommandsClass
 class debugCommandsClass (baseEditCommandsClass):
     
     #@    @+others
@@ -1198,8 +1198,8 @@ class debugCommandsClass (baseEditCommandsClass):
         leoTest.doTests(c,all=False)
     #@-node:ekr.20060328121145:runUnitTest
     #@-others
-#@-node:ekr.20060127162818.1:class debugCommandsClass
-#@+node:ekr.20050920084036.53:class editCommandsClass
+#@-node:ekr.20060127162818.1:debugCommandsClass
+#@+node:ekr.20050920084036.53:editCommandsClass
 class editCommandsClass (baseEditCommandsClass):
     
     '''Contains editing commands with little or no state.'''
@@ -1264,6 +1264,8 @@ class editCommandsClass (baseEditCommandsClass):
             'back-word-extend-selection':           self.backwardWordExtendSelection,
             'backward-delete-char':                 self.backwardDeleteCharacter,
             'backward-kill-paragraph':              self.backwardKillParagraph,
+            'backward-find-character':              self.backwardFindCharacter,
+            'backward-find-character-extend-selection': self.backwardFindCharacterExtendSelection,
             'beginning-of-buffer':                  self.beginningOfBuffer,
             'beginning-of-buffer-extend-selection': self.beginningOfBufferExtendSelection,
             'beginning-of-line':                    self.beginningOfLine,
@@ -1311,6 +1313,7 @@ class editCommandsClass (baseEditCommandsClass):
             'fill-region':                          self.fillRegion,
             'fill-region-as-paragraph':             self.fillRegionAsParagraph,
             'find-character':                       self.findCharacter,
+            'find-character-extend-selection':      self.findCharacterExtendSelection,
             'find-word':                            self.findWord,
             'flush-lines':                          self.flushLines,
             'focus-to-body':                        self.focusToBody,
@@ -2263,40 +2266,64 @@ class editCommandsClass (baseEditCommandsClass):
     #@-others
     #@-node:ekr.20050920084036.66:fill column and centering
     #@+node:ekr.20060417194232:find (quick)
-    # To do: extend selection.
-    #@+node:ekr.20060417194232.1:findCharacter
-    def findCharacter (self,event):
+    #@+node:ekr.20060925151926:backward/findCharacter & helper
+    def backwardFindCharacter (self,event):
+        return self.findCharacterHelper(event,backward=True,extend=False)
         
+    def backwardFindCharacterExtendSelection (self,event):
+        return self.findCharacterHelper(event,backward=True,extend=True)
+        
+    def findCharacter (self,event):
+        return self.findCharacterHelper(event,backward=False,extend=False)
+        
+    def findCharacterExtendSelection (self,event):
+        return self.findCharacterHelper(event,backward=False,extend=True)
+    #@nonl
+    #@+node:ekr.20060417194232.1:findCharacterHelper
+    def findCharacterHelper (self,event,backward,extend):
+    
         '''Put the cursor at the next occurance of a character on a line.'''
     
-        k = self.k ; tag = 'find-char' ; state = k.getState(tag)
-        
+        c = self.c ; k = c.k ; tag = 'find-char' ; state = k.getState(tag)
+    
         if state == 0:
-            self.widget = event.widget
-            k.setLabelBlue('Find character: ')
-            k.getArg(event,tag,1,self.findCharacter,oneCharacter=True)
+            self.event = event ; self.widget = w = event.widget
+            self.backward = backward ; self.extend = extend ;
+            self.insert = w.index('insert')
+            s = '%s character %s' % (
+                g.choose(backward,'Backward find','Find'),
+                g.choose(extend,' & extend',''))
+            c.frame.clearStatusLine()
+            c.frame.putStatusLine(s,color='blue')
+            # Get the arg without touching the focus.
+            k.getArg(event,tag,1,self.findCharacter,oneCharacter=True,useMinibuffer=False)
         else:
-            ch = k.arg ; w = self.widget
-            s = g.app.gui.getAllText(w)
-            i = w.index('insert')
-            i = g.app.gui.toPythonIndex(s,w,i)
-            end = s.find('\n',i)
-            if end == -1: end = len(s)
-            j = s.find(ch,i,end)
-            # g.trace(repr(ch),i,repr(s))
-            if j > -1:
-                i2 = g.app.gui.toGuiIndex(s,w,j+1)
-                g.app.gui.setSelectionRange(w,i2,i2)
-            else:
-                # Try case insensitive match:
-                s = s.lower() ; ch = ch.lower()
-                j = s.find(ch,i,end)
+            event = self.event ; w = self.widget
+            backward = self.backward ; extend = self.extend
+            ch = k.arg ; s = g.app.gui.getAllText(w)
+            def toGui (i): return g.app.gui.toGuiIndex(s,w,i)
+            def toPython (i): return g.app.gui.toPythonIndex(s,w,i)
+            ins = toPython(self.insert)
+            i = ins + g.choose(backward,-1,+1) # skip the present character.
+            if backward:
+                start = s.rfind('\n',0,i)
+                if start == -1: start = 0
+                j = s.rfind(ch,start,max(start,i)) # Skip the character at the cursor.
                 if j > -1:
-                    i2 = g.app.gui.toGuiIndex(s,w,j+1)
-                    g.app.gui.setSelectionRange(w,i2,i2)
-            k.resetLabel()
+                    spot = toGui(j)
+                    self.moveToHelper(event,spot,extend)
+            else:
+                end = s.find('\n',i)
+                if end == -1: end = len(s)
+                j = s.find(ch,min(i,end),end) # Skip the character at the cursor.
+                if j > -1:
+                    spot = toGui(j)
+                    self.moveToHelper(event,spot,extend)
+            c.frame.clearStatusLine()
             k.clearState()
-    #@-node:ekr.20060417194232.1:findCharacter
+    #@nonl
+    #@-node:ekr.20060417194232.1:findCharacterHelper
+    #@-node:ekr.20060925151926:backward/findCharacter & helper
     #@+node:ekr.20060417194232.2:findWord
     def findWord (self,event):
         
@@ -3125,14 +3152,17 @@ class editCommandsClass (baseEditCommandsClass):
         '''
         c = self.c ; p = c.currentPosition()
         moveSpot = self.moveSpot
+        extend = extend or self.extendMode
         if extend:
             i, j = g.app.gui.getTextSelection(w)
             # Reset the move spot if needed.
             if (
                 not moveSpot or p.v.t != self.moveSpotNode or
-                i == j or # A cute trick
-                (not w.compare(moveSpot,'==',i) and
-                 not w.compare(moveSpot,'==',j))
+                not extend and (
+                    i == j or # A cute trick
+                    (not w.compare(moveSpot,'==',i) and
+                    not w.compare(moveSpot,'==',j))
+                )
             ):
                 self.moveSpotNode = p.v.t
                 self.moveSpot = w.index(ins1)
@@ -3148,6 +3178,7 @@ class editCommandsClass (baseEditCommandsClass):
             g.app.gui.setTextSelection(w,spot,spot,insert=None)
             
         c.frame.updateStatusLine()
+    #@nonl
     #@-node:ekr.20060113130510:extendHelper
     #@+node:ekr.20060113105246.1:moveUpOrDownHelper
     def moveUpOrDownHelper (self,event,direction,extend):
@@ -3226,37 +3257,9 @@ class editCommandsClass (baseEditCommandsClass):
             spot = w.index('insert')
     
             # Handle the selection.
-            self.extendHelper(w,extend or self.extendMode,ins1,spot,setSpot=True)
+            self.extendHelper(w,extend,ins1,spot,setSpot=True)
             w.see(spot)
     #@-node:ekr.20051218122116:moveToHelper
-    #@+node:ekr.20051218121447:moveWordHelper
-    def moveWordHelper (self,event,extend,forward):
-    
-        '''This function moves the cursor to the next word, direction dependent on the way parameter'''
-    
-        c = self.c ; w = event.widget
-        if not g.app.gui.isTextWidget(w): return
-        
-        c.widgetWantsFocus(w)
-        if forward:
-            if 1:
-                 ind = w.search('\\W','insert',stopindex='end',regexp=True)
-                 if ind: nind = '%s wordend' % ind
-                 else:   nind = 'end'
-            else:
-                ind = w.search('\\W\\w','insert',stopindex='end',regexp=True)
-                if ind: nind = '%s +1c' % ind
-                else:   nind = 'end'
-        else:
-            if 1:
-                ind = w.search('\\W','insert -1c',stopindex='1.0',regexp=True,backwards=True)
-            else:
-                ind = w.search('\\w(\\W|$)','insert',stopindex='1.0',regexp=True,backwards=True)
-            if ind: nind = '%s wordstart' % ind
-            else:   nind = '1.0'
-        self.moveToHelper(event,nind,extend)
-    #@nonl
-    #@-node:ekr.20051218121447:moveWordHelper
     #@+node:ekr.20051218171457:movePastCloseHelper
     def movePastCloseHelper (self,event,extend):
     
@@ -3283,6 +3286,34 @@ class editCommandsClass (baseEditCommandsClass):
         ins = '%s+1c' % i2
         self.moveToHelper(event,ins,extend)
     #@-node:ekr.20051218171457:movePastCloseHelper
+    #@+node:ekr.20051218121447:moveWordHelper
+    def moveWordHelper (self,event,extend,forward):
+    
+        '''This function moves the cursor to the next word, direction dependent on the way parameter'''
+    
+        c = self.c ; w = event.widget
+        if not g.app.gui.isTextWidget(w): return
+        
+        c.widgetWantsFocus(w)
+        s = w.get('1.0','end') ; n = len(s)
+    
+        def toGui (i): return g.app.gui.toGuiIndex(s,w,i)
+        def toPython (i): return g.app.gui.toPythonIndex(s,w,i)
+        def isWordChar(ch): return ch in (string.letters + string.digits + '_')
+    
+        i = toPython(w.index('insert'))
+        delta = g.choose(forward,1,-1)
+        
+        if not forward: i -= 1
+        while 0 <= i < n and isWordChar(s[i]):
+            i += delta
+        while 0 <= i < n and not isWordChar(s[i]):
+            i += delta
+        if not forward: i += 1
+    
+        self.moveToHelper(event,toGui(i),extend)
+    #@nonl
+    #@-node:ekr.20051218121447:moveWordHelper
     #@+node:ekr.20051213094517:backSentenceHelper
     def backSentenceHelper (self,event,extend):
     
@@ -3391,20 +3422,21 @@ class editCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20051218174113:clear/set/ToggleExtendMode
     def clearExtendMode (self,event):
         '''Turn off extend mode: cursor movement commands do not extend the selection.'''
-        self.extendMode = False
-        c = self.c ; w = event.widget
-        c.widgetWantsFocus(w)
+        self.extendModeHelper(event,False)
     
     def setExtendMode (self,event):
         '''Turn on extend mode: cursor movement commands do extend the selection.'''
-        self.extendMode = True
-        c = self.c ; w = event.widget
-        c.widgetWantsFocus(w)
+        self.extendModeHelper(event,True)
         
     def toggleExtendMode (self,event):
         '''Toggle extend mode, i.e., toggle whether cursor movement commands extend the selections.'''
-        self.extendMode = not self.extendMode
+        self.extendModeHelper(event,not self.extendMode)
+        
+    def extendModeHelper (self,event,val):
+        
         c = self.c ; w = event.widget
+        self.extendMode = val
+        g.es('Extend mode %s' % (g.choose(val,'on','off')), color='red')
         c.widgetWantsFocus(w)
     #@-node:ekr.20051218174113:clear/set/ToggleExtendMode
     #@+node:ekr.20050920084036.148:buffers
@@ -4448,8 +4480,8 @@ class editCommandsClass (baseEditCommandsClass):
             self.endCommand(changed=True,setLabel=True)
     #@-node:ekr.20050920084036.126:tabify & untabify
     #@-others
-#@-node:ekr.20050920084036.53:class editCommandsClass
-#@+node:ekr.20050920084036.161:class editFileCommandsClass
+#@-node:ekr.20050920084036.53:editCommandsClass
+#@+node:ekr.20050920084036.161:editFileCommandsClass
 class editFileCommandsClass (baseEditCommandsClass):
     
     '''A class to load files into buffers and save buffers to files.'''
@@ -4610,8 +4642,8 @@ class editFileCommandsClass (baseEditCommandsClass):
             f.close()
     #@-node:ekr.20050920084036.170:saveFile
     #@-others
-#@-node:ekr.20050920084036.161:class editFileCommandsClass
-#@+node:ekr.20060205164707:class helpCommandsClass
+#@-node:ekr.20050920084036.161:editFileCommandsClass
+#@+node:ekr.20060205164707:helpCommandsClass
 class helpCommandsClass (baseEditCommandsClass):
     
     '''A class to load files into buffers and save buffers to files.'''
@@ -4993,8 +5025,8 @@ class helpCommandsClass (baseEditCommandsClass):
                 g.restoreStdout()
     #@-node:ekr.20060602154458:pythonHelp
     #@-others
-#@-node:ekr.20060205164707:class helpCommandsClass
-#@+node:ekr.20050920084036.171:class keyHandlerCommandsClass (add docstrings)
+#@-node:ekr.20060205164707:helpCommandsClass
+#@+node:ekr.20050920084036.171:keyHandlerCommandsClass (add docstrings)
 class keyHandlerCommandsClass (baseEditCommandsClass):
     
     '''User commands to access the keyHandler class.'''
@@ -5052,8 +5084,8 @@ class keyHandlerCommandsClass (baseEditCommandsClass):
         }
     #@-node:ekr.20050920084036.173:getPublicCommands (keyHandler)
     #@-others
-#@-node:ekr.20050920084036.171:class keyHandlerCommandsClass (add docstrings)
-#@+node:ekr.20050920084036.174:class killBufferCommandsClass (add docstrings)
+#@-node:ekr.20050920084036.171:keyHandlerCommandsClass (add docstrings)
+#@+node:ekr.20050920084036.174:killBufferCommandsClass (add docstrings)
 class killBufferCommandsClass (baseEditCommandsClass):
     
     '''A class to manage the kill buffer.'''
@@ -5308,8 +5340,8 @@ class killBufferCommandsClass (baseEditCommandsClass):
                     w.delete('insert','%s+1c' % i)
     #@-node:ekr.20050920084036.128:zapToCharacter
     #@-others
-#@-node:ekr.20050920084036.174:class killBufferCommandsClass (add docstrings)
-#@+node:ekr.20050920084036.186:class leoCommandsClass (add docstrings)
+#@-node:ekr.20050920084036.174:killBufferCommandsClass (add docstrings)
+#@+node:ekr.20050920084036.186:leoCommandsClass (add docstrings)
 class leoCommandsClass (baseEditCommandsClass):
     
     #@    @+others
@@ -5333,8 +5365,8 @@ class leoCommandsClass (baseEditCommandsClass):
             'abort-edit-headline':          f.abortEditLabelCommand,
             'about-leo':                    c.about,
             'add-comments':                 c.addComments,     
-            'beautify-all-python-code':     c.prettyPrintAllPythonCode,
-            'beautify-python-code':         c.prettyPrintPythonCode,
+            'beautify-all-python-code':     c.beautifyAllPythonCode,
+            'beautify-python-code':         c.beautifyPythonCode,
             'cascade-windows':              f.cascade,
             'clear-recent-files':           c.clearRecentFiles,
             'close-window':                 c.close,
@@ -5497,8 +5529,8 @@ class leoCommandsClass (baseEditCommandsClass):
         return d2
     #@-node:ekr.20050920084036.188:leoCommands.getPublicCommands
     #@-others
-#@-node:ekr.20050920084036.186:class leoCommandsClass (add docstrings)
-#@+node:ekr.20050920084036.190:class macroCommandsClass
+#@-node:ekr.20050920084036.186:leoCommandsClass (add docstrings)
+#@+node:ekr.20050920084036.190:macroCommandsClass
 class macroCommandsClass (baseEditCommandsClass):
 
     #@    @+others
@@ -5727,8 +5759,8 @@ class macroCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20050920085536.15:addToDoAltX
     #@-node:ekr.20051006065746:Common Helpers
     #@-others
-#@-node:ekr.20050920084036.190:class macroCommandsClass
-#@+node:ekr.20050920084036.207:class queryReplaceCommandsClass (limited to single node)
+#@-node:ekr.20050920084036.190:macroCommandsClass
+#@+node:ekr.20050920084036.207:queryReplaceCommandsClass (limited to single node)
 class queryReplaceCommandsClass (baseEditCommandsClass):
     
     '''A class to handle query replace commands.'''
@@ -5896,8 +5928,8 @@ class queryReplaceCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20050920084036.215:stateHandler
     #@-node:ekr.20051005151838:Helpers
     #@-others
-#@-node:ekr.20050920084036.207:class queryReplaceCommandsClass (limited to single node)
-#@+node:ekr.20050920084036.221:class rectangleCommandsClass
+#@-node:ekr.20050920084036.207:queryReplaceCommandsClass (limited to single node)
+#@+node:ekr.20050920084036.221:rectangleCommandsClass
 class rectangleCommandsClass (baseEditCommandsClass):
 
     #@    @+others
@@ -6113,8 +6145,8 @@ class rectangleCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20050920084036.232:stringRectangle
     #@-node:ekr.20050920084036.224:Entries
     #@-others
-#@-node:ekr.20050920084036.221:class rectangleCommandsClass
-#@+node:ekr.20050920084036.234:class registerCommandsClass
+#@-node:ekr.20050920084036.221:rectangleCommandsClass
+#@+node:ekr.20050920084036.234:registerCommandsClass
 class registerCommandsClass (baseEditCommandsClass):
 
     '''A class to represent registers a-z and the corresponding Emacs commands.'''
@@ -6471,7 +6503,7 @@ class registerCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20050920084036.246:viewRegister
     #@-node:ekr.20050920084036.236:Entries...
     #@-others
-#@-node:ekr.20050920084036.234:class registerCommandsClass
+#@-node:ekr.20050920084036.234:registerCommandsClass
 #@+node:ekr.20051023094009:Search classes
 #@+node:ekr.20060123125256:class minibufferFind (the findHandler)
 class minibufferFind:
@@ -7823,12 +7855,13 @@ class searchCommandsClass (baseEditCommandsClass):
         else:
             getOption = lambda a: False # The value isn't used.
     
+        self.event = event
         self.forward    = g.choose(forward is None,not getOption('reverse'),forward)
         self.ignoreCase = g.choose(ignoreCase is None,getOption('ignore_case'),ignoreCase)
         self.regexp     = g.choose(regexp  is None,getOption('pattern_match'),regexp)
         # Note: the word option can't be used with isearches!
         
-        ins = g.app.gui.getInsertPoint(w)
+        self.ins1 = ins = g.app.gui.getInsertPoint(w)
         sel = g.app.gui.getSelectionRange(w) or (ins,ins),
         self.isearch_stack = [(sel,ins),]
     
@@ -7946,9 +7979,12 @@ class searchCommandsClass (baseEditCommandsClass):
     
         w = self.w
         w.tag_delete('color','color1')
+        
         insert = g.choose(self.forward,'sel.end','sel.start')
         g.app.gui.setTextSelection (self.w,i,j,insert=insert)
+    
         self.k.keyboardQuit(event=None)
+    #@nonl
     #@-node:ekr.20060203072636:endSearch
     #@-node:ekr.20050920084036.261:incremental search...
     #@-others
