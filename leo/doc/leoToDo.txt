@@ -515,7 +515,7 @@ def addToKillBuffer (self,text):
     else:
         self.killBuffer.insert(0,text)
 #@-node:ekr.20050920084036.183:addToKillBuffer
-#@+node:ekr.20050920084036.174:class killBufferCommandsClass (add docstrings)
+#@+node:ekr.20050920084036.174:killBufferCommandsClass (add docstrings)
 class killBufferCommandsClass (baseEditCommandsClass):
     
     '''A class to manage the kill buffer.'''
@@ -769,7 +769,7 @@ def zapToCharacter (self,event):
                 self.addToKillBuffer(t)
                 w.delete('insert','%s+1c' % i)
 #@-node:ekr.20050920084036.128:zapToCharacter
-#@-node:ekr.20050920084036.174:class killBufferCommandsClass (add docstrings)
+#@-node:ekr.20050920084036.174:killBufferCommandsClass (add docstrings)
 #@-node:ekr.20060628095110:Fix yank and kill-line commands
 #@+node:ekr.20060628094329.2:Test/Fix macros
 #@-node:ekr.20060628094329.2:Test/Fix macros
@@ -1296,23 +1296,23 @@ def moveWordHelper (self,event,extend,forward):
     if not g.app.gui.isTextWidget(w): return
     
     c.widgetWantsFocus(w)
-    if forward:
-        if 1:
-             ind = w.search('\\W','insert',stopindex='end',regexp=True)
-             if ind: nind = '%s wordend' % ind
-             else:   nind = 'end'
-        else:
-            ind = w.search('\\W\\w','insert',stopindex='end',regexp=True)
-            if ind: nind = '%s +1c' % ind
-            else:   nind = 'end'
-    else:
-        if 1:
-            ind = w.search('\\W','insert -1c',stopindex='1.0',regexp=True,backwards=True)
-        else:
-            ind = w.search('\\w(\\W|$)','insert',stopindex='1.0',regexp=True,backwards=True)
-        if ind: nind = '%s wordstart' % ind
-        else:   nind = '1.0'
-    self.moveToHelper(event,nind,extend)
+    s = w.get('1.0','end') ; n = len(s)
+
+    def toGui (i): return g.app.gui.toGuiIndex(s,w,i)
+    def toPython (i): return g.app.gui.toPythonIndex(s,w,i)
+    def isWordChar(ch): return ch in (string.letters + string.digits + '_')
+
+    i = toPython(w.index('insert'))
+    delta = g.choose(forward,1,-1)
+    
+    if not forward: i -= 1
+    while 0 <= i < n and isWordChar(s[i]):
+        i += delta
+    while 0 <= i < n and not isWordChar(s[i]):
+        i += delta
+    if not forward: i += 1
+
+    self.moveToHelper(event,toGui(i),extend)
 #@nonl
 #@-node:ekr.20051218121447:moveWordHelper
 #@+node:ekr.20060131084938:masterDoubleClickHandler

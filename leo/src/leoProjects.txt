@@ -1486,6 +1486,7 @@ def getArg (self,event,
     returnKind=None,returnState=None,handler=None,
     prefix=None,tabList=[],completion=True,oneCharacter=False,
     stroke=None, # New in 4.4.1.
+    useMinibuffer=True # New in 4.4.1
 ):
     
     '''Accumulate an argument until the user hits return (or control-g).
@@ -1508,7 +1509,7 @@ def getArg (self,event,
         k.afterGetArgState=returnKind,returnState,handler
         k.setState('getArg',1,k.getArg)
         k.afterArgWidget = event and event.widget or c.frame.body.bodyCtrl
-        if k.useTextWidget: c.minibufferWantsFocusNow() # 9/8/06
+        if useMinibuffer and k.useTextWidget: c.minibufferWantsFocusNow()
     elif keysym == 'Return' or k.oneCharacterArg or stroke in k.getArgEscapes:
         if stroke in k.getArgEscapes: k.getArgEscape = stroke
         if k.oneCharacterArg:
@@ -4475,7 +4476,9 @@ def defineCmdsMenuCursorTable (self):
     ]
     
     self.cursorMenuForwardExtendTable = [
-        # &: b,c,l,n,p,s,w
+        # &: e,b,c,l,n,p,s,w
+        ('&Extend To Word',                     'extend-to-word'),
+        ('-',None),
         ('End Of &Buffer Extend Selection',     'end-of-buffer-extend-selection'),
         ('End Of &Line Extend Selection',       'end-of-line-extend-selection'),
         ('-',None),
@@ -4521,7 +4524,7 @@ def createCmndsMenuFromTable (self):
     ):
         menu = self.createNewMenu(name,'&Cmds')
         self.createMenuEntries(menu,table)
-        
+
     for name,table in (
         # &: b,e,f,s,x
         ('Cursor &Back...',                     self.cursorMenuBackTable),
@@ -4618,7 +4621,398 @@ def defineCmdsMenuScrollTable (self):
 #@nonl
 #@-node:ekr.20060923060822.1:defineCmdsMenuScrollTable
 #@-node:ekr.20060923065819:Put cursor/focus/pane/scroll/selection commands in Cmds menu
-#@-node:ekr.20060912093334:New features
+#@+node:ekr.20060926085352:Improved  quick-find commands
+# Rewrote moveWordHelper. It now avoids Tk and regexes.  *Much* simpler.
+#@nonl
+#@+node:ekr.20031218072017.3756:defineEditMenuFindMenuTable
+def defineEditMenuFindMenuTable (self):
+    
+    self.editMenuFindMenuTable = [
+        # &: a,b,c,d,e,h,i,l,n,o,p,q,r,t,u,w,x
+        ("&Open Find Tab",              'open-find-tab'),
+        ("&Hide Find Tab",              'hide-find-tab'),
+        ("Search &With Present Options",'search-with-present-options'),
+        ("-",None),
+        ("Find &Next",                  'find-tab-find'),
+        ("Find &Previous",              'find-tab-find-prev'),
+        ("&Replace",                    'find-tab-change'),
+        ("Replace, &Then Find",         'find-with-present-options'),
+        ('Find &All',                   'find-tab-find-all'),
+        ('Clone Fin&d All',             'clone-find-all'),
+        ('Change A&ll',                 'find-tab-change-all'),
+        ('-',None),
+        ('&Quick Find Character',                'find-character'),
+        ('Quic&k Find Char And Extend',          'find-character-extend-selection'),
+        ('Quick &Backward Find Character',       'backward-find-character'),
+        ('Quick Backward Find Char And &Extend', 'backward-find-character-extend-selection'),
+        ('-',None),
+        ('&I-Search Forward',           'isearch-forward'),
+        ('I-Sear&ch Reverse',           'isearch-backward'),
+        ('I-Search Rege&xp Forward',    'isearch-forward-regexp'),
+        ('I-Search Regex&p Reverse',    'isearch-backward-regexp'),
+        ('-',None),
+        ('&Query Replace',              'query-replace'),
+        ('Q&uery Replace Regexp',       'query-replace-regexp'),
+    ]
+
+# find-character-reverse            = Alt-P
+# isearch-with-present-options      = None
+#@nonl
+#@-node:ekr.20031218072017.3756:defineEditMenuFindMenuTable
+#@+node:ekr.20051218122116:moveToHelper
+def moveToHelper (self,event,spot,extend):
+
+    '''Common helper method for commands the move the cursor
+    in a way that can be described by a Tk Text expression.'''
+
+    c = self.c ; k = c.k ; w = event.widget
+    if not g.app.gui.isTextWidget(w): return
+
+    c.widgetWantsFocusNow(w)
+
+    wname = c.widget_name(w)
+    if wname.startswith('mini'):
+        # Put the request in the proper range.
+        i, j = k.getEditableTextRange()
+        ins1 = w.index('insert')
+        spot = w.index(spot)
+        if w.compare(spot,'<',i):
+            spot = i
+        elif w.compare(spot,'>',j):
+            spot = j
+        w.mark_set('insert',spot)
+        self.extendHelper(w,extend,ins1,spot,setSpot=False)
+        w.see(spot)
+    else:
+        # Remember the original insert point.  This may become the moveSpot.
+        ins1 = w.index('insert')
+
+        # Move to the spot.
+        w.mark_set('insert',spot)
+        spot = w.index('insert')
+
+        # Handle the selection.
+        self.extendHelper(w,extend,ins1,spot,setSpot=True)
+        w.see(spot)
+#@-node:ekr.20051218122116:moveToHelper
+#@+node:ekr.20060417194232:find (quick)
+#@+node:ekr.20060925151926:backward/findCharacter & helper
+def backwardFindCharacter (self,event):
+    return self.findCharacterHelper(event,backward=True,extend=False)
+    
+def backwardFindCharacterExtendSelection (self,event):
+    return self.findCharacterHelper(event,backward=True,extend=True)
+    
+def findCharacter (self,event):
+    return self.findCharacterHelper(event,backward=False,extend=False)
+    
+def findCharacterExtendSelection (self,event):
+    return self.findCharacterHelper(event,backward=False,extend=True)
+#@nonl
+#@+node:ekr.20060417194232.1:findCharacterHelper
+def findCharacterHelper (self,event,backward,extend):
+
+    '''Put the cursor at the next occurance of a character on a line.'''
+
+    c = self.c ; k = c.k ; tag = 'find-char' ; state = k.getState(tag)
+
+    if state == 0:
+        self.event = event ; self.widget = w = event.widget
+        self.backward = backward ; self.extend = extend ;
+        self.insert = w.index('insert')
+        s = '%s character %s' % (
+            g.choose(backward,'Backward find','Find'),
+            g.choose(extend,' & extend',''))
+        c.frame.clearStatusLine()
+        c.frame.putStatusLine(s,color='blue')
+        # Get the arg without touching the focus.
+        k.getArg(event,tag,1,self.findCharacter,oneCharacter=True,useMinibuffer=False)
+    else:
+        event = self.event ; w = self.widget
+        backward = self.backward ; extend = self.extend
+        ch = k.arg ; s = g.app.gui.getAllText(w)
+        def toGui (i): return g.app.gui.toGuiIndex(s,w,i)
+        def toPython (i): return g.app.gui.toPythonIndex(s,w,i)
+        ins = toPython(self.insert)
+        i = ins + g.choose(backward,-1,+1) # skip the present character.
+        if backward:
+            start = s.rfind('\n',0,i)
+            if start == -1: start = 0
+            j = s.rfind(ch,start,max(start,i)) # Skip the character at the cursor.
+            if j > -1:
+                spot = toGui(j)
+                self.moveToHelper(event,spot,extend)
+        else:
+            end = s.find('\n',i)
+            if end == -1: end = len(s)
+            j = s.find(ch,min(i,end),end) # Skip the character at the cursor.
+            if j > -1:
+                spot = toGui(j)
+                self.moveToHelper(event,spot,extend)
+        c.frame.clearStatusLine()
+        k.clearState()
+#@nonl
+#@-node:ekr.20060417194232.1:findCharacterHelper
+#@-node:ekr.20060925151926:backward/findCharacter & helper
+#@+node:ekr.20060417194232.2:findWord
+def findWord (self,event):
+    
+    '''Put the cursor at the next word (on a line) that starts with a character.'''
+
+    k = self.k ; tag = 'find-word-on-line' ; state = k.getState(tag)
+    
+    if state == 0:
+        self.widget = event.widget
+        k.setLabelBlue('Find word: ')
+        k.getArg(event,tag,1,self.findWord)
+    else:        
+        word = k.arg ; w = self.widget ; c = k.c
+        if word:
+            i = w.index('insert')
+            s = g.app.gui.getAllText(w)
+            i = g.app.gui.toPythonIndex(s,w,i)
+            j = s.find('\n',i) # Limit to this line.
+            s = s[:j]
+            word_chars = string.letters + string.digits + '_'
+            while i < len(s):
+                if i == -1: break
+                ok = g.match_word(s,i,word) and (i == 0 or s[i-1] not in word_chars)
+                # g.trace(ok,repr(word),i,repr(s))
+                if ok:
+                    i1 = g.app.gui.toGuiIndex(s,w,i)
+                    i2 = g.app.gui.toGuiIndex(s,w,i+len(word))
+                    g.app.gui.setSelectionRange(w,i1,i2)
+                    break
+                else:
+                    i += 1
+        k.resetLabel()
+        k.clearState()
+#@-node:ekr.20060417194232.2:findWord
+#@-node:ekr.20060417194232:find (quick)
+#@+node:ekr.20051218121447:moveWordHelper
+def moveWordHelper (self,event,extend,forward):
+
+    '''This function moves the cursor to the next word, direction dependent on the way parameter'''
+
+    c = self.c ; w = event.widget
+    if not g.app.gui.isTextWidget(w): return
+    
+    c.widgetWantsFocus(w)
+    s = w.get('1.0','end') ; n = len(s)
+
+    def toGui (i): return g.app.gui.toGuiIndex(s,w,i)
+    def toPython (i): return g.app.gui.toPythonIndex(s,w,i)
+    def isWordChar(ch): return ch in (string.letters + string.digits + '_')
+
+    i = toPython(w.index('insert'))
+    delta = g.choose(forward,1,-1)
+    
+    if not forward: i -= 1
+    while 0 <= i < n and isWordChar(s[i]):
+        i += delta
+    while 0 <= i < n and not isWordChar(s[i]):
+        i += delta
+    if not forward: i += 1
+
+    self.moveToHelper(event,toGui(i),extend)
+#@nonl
+#@-node:ekr.20051218121447:moveWordHelper
+#@+node:ekr.20050920084036.261:incremental search...
+def isearchForward (self,event):
+    '''Begin a forward incremental search.'''
+    self.startIncremental(event,forward=True,ignoreCase=False,regexp=False)
+    
+def isearchBackward (self,event):
+    '''Begin a backward incremental search.'''
+    self.startIncremental(event,forward=False,ignoreCase=False,regexp=False)
+    
+def isearchForwardRegexp (self,event):
+    '''Begin a forward incremental regexp search.'''
+    self.startIncremental(event,forward=True,ignoreCase=False,regexp=True)
+    
+def isearchBackwardRegexp (self,event):
+    '''Begin a backard incremental regexp search.'''
+    self.startIncremental(event,forward=False,ignoreCase=False,regexp=True)
+    
+def isearchWithPresentOptions (self,event):
+    '''Begin an incremental regexp search using the regexp and reverse options from the find panel.'''
+    self.startIncremental(event,forward=None,ignoreCase=None,regexp=None)
+#@+node:ekr.20060420144640:iSearchBackspace
+def iSearchBackspace (self):
+    
+    c = self.c ; k = self.k ; gui = g.app.gui ; w = self.w
+    
+    if not self.isearch_stack:
+        ins = gui.getInsertPoint(w)
+        self.endSearch(ins,ins)
+        return 
+    
+    gui.set_focus(c,w)
+    pattern = k.getLabel(ignorePrompt=True)
+    self.scolorizer(event=None,pattern=pattern)
+
+    sel,ins = self.isearch_stack.pop()
+    
+    if sel:
+        i,j = sel
+        gui.setTextSelection(w,i,j,insert=ins)
+    else:
+        gui.setInsertPoint(w,ins)
+
+    w.see('insert')
+    
+    if not self.isearch_stack:
+        self.endSearch(ins,ins)
+#@-node:ekr.20060420144640:iSearchBackspace
+#@+node:ekr.20050920084036.262:startIncremental
+def startIncremental (self,event,forward,ignoreCase,regexp):
+
+    c = self.c ; k = self.k ; w = self.w
+    
+    # None is a signal to get the option from the find tab.
+    if forward is None or regexp is None:
+        self.openFindTab(show=False)
+        if not self.minibufferFindHandler:
+            self.minibufferFindHandler = minibufferFind(c,self.findTabHandler)
+        getOption = self.minibufferFindHandler.getOption
+        # g.trace('reverse',getOption('reverse'))
+        # g.trace('pattern',getOption('pattern_match'))
+    else:
+        getOption = lambda a: False # The value isn't used.
+
+    self.event = event
+    self.forward    = g.choose(forward is None,not getOption('reverse'),forward)
+    self.ignoreCase = g.choose(ignoreCase is None,getOption('ignore_case'),ignoreCase)
+    self.regexp     = g.choose(regexp  is None,getOption('pattern_match'),regexp)
+    # Note: the word option can't be used with isearches!
+    
+    self.ins1 = ins = g.app.gui.getInsertPoint(w)
+    sel = g.app.gui.getSelectionRange(w) or (ins,ins),
+    self.isearch_stack = [(sel,ins),]
+
+    k.setLabelBlue('Isearch%s%s%s: ' % (
+            g.choose(self.forward,'',' Backward'),
+            g.choose(self.regexp,' Regexp',''),
+            g.choose(self.ignoreCase,' NoCase',''),
+        ),protect=True)
+    k.setState('isearch',1,handler=self.iSearchStateHandler)
+    c.minibufferWantsFocusNow()
+#@-node:ekr.20050920084036.262:startIncremental
+#@+node:ekr.20050920084036.264:iSearchStateHandler
+# Called when from the state manager when the state is 'isearch'
+
+def iSearchStateHandler (self,event):
+
+    c = self.c ; k = self.k ; w = self.w
+    
+    if not event:
+        g.trace('no event',g.callers())
+        return
+    keysym = event.keysym
+    ch = event.char
+    if keysym == 'Control_L': return
+    
+    c.bodyWantsFocusNow()
+    if keysym == 'Return':
+        sel = g.app.gui.getSelectionRange(w)
+        if sel: i,j = sel
+        else:   i = j = g.app.gui.getInsertPoint(w)
+        if not self.forward: i,j = j,i
+        self.endSearch(i,j)
+    elif keysym == 'BackSpace':
+        k.updateLabel(event)
+        self.iSearchBackspace()
+    elif ch:
+        k.updateLabel(event)
+        self.iSearchHelper(event)
+        self.scolorizer(event)
+#@-node:ekr.20050920084036.264:iSearchStateHandler
+#@+node:ekr.20050920084036.265:scolorizer
+def scolorizer (self,event,pattern=None):
+    
+    '''Colorizer for incremental searches.'''
+
+    k = self.k ; w = self.w
+    s = pattern or k.getLabel(ignorePrompt=True)
+    # g.trace(repr(s))
+    w.tag_delete('color','color1')
+    if not s: return
+    ind = '1.0'
+    index = w.index('insert')
+    index2 = w.index('%s+%dc' % (index,len(s)))
+    # g.trace(index,index2)
+    # Colorize in the forward direction, regardless of the kind of search.
+    while ind:
+        try:
+            ind = w.search(s,ind,stopindex='end',regexp=self.regexp)
+        except: break
+        if ind:
+            i, d = ind.split('.')
+            d = str(int(d)+len(s))
+            # g.trace(ind)
+            if ind in (index,index2):
+                w.tag_add('color1',ind,'%s.%s' % (i,d))
+            w.tag_add('color',ind,'%s.%s' % (i,d))
+            ind = i + '.' + d
+
+    w.tag_config('color',foreground='red')
+    w.tag_config('color1',background='lightblue')
+#@-node:ekr.20050920084036.265:scolorizer
+#@+node:ekr.20050920084036.263:iSearchHelper
+def iSearchHelper (self,event):
+
+    '''Move the cursor to position that matches the pattern in the miniBuffer.
+    isearches do not cross node boundaries.'''
+    
+    c = self.c ; gui = g.app.gui ; k = self.k ; w = self.w
+    p = c.currentPosition() ;
+    self.searchString = pattern = k.getLabel(ignorePrompt=True)
+    if not pattern: return
+    s = gui.getAllText(w)
+
+    if self.isearch_v != p.v:
+        self.isearch_v = p.v
+        self.isearch_stack = []
+
+    sel = gui.getSelectionRange(w)
+    startindex = insert = gui.getInsertPoint(w)
+    
+    if self.forward:
+        i1 = gui.toPythonIndex(s,w,startindex)
+        j1 = len(s)
+    else:
+        i1 = 0
+        j1 = min(len(s),gui.toPythonIndex(s,w,startindex) + len(pattern))
+    
+    i,j = self.ifinder.searchHelper(s,i1,j1,pattern,
+        backwards=not self.forward,
+        nocase=self.ignoreCase,
+        regexp=self.regexp,
+        word=False, # Incremental word-matches are not possible!
+        swapij=False)
+
+    if i != -1:
+        self.isearch_stack.append((sel,insert),)
+        pos    = gui.toGuiIndex(s,w,i)
+        newpos = gui.toGuiIndex(s,w,j)
+        # g.trace(i1,j1,i,j,pos,newpos)
+        gui.set_focus(c,w)
+        gui.setTextSelection(w,pos,newpos,insert=pos)
+#@-node:ekr.20050920084036.263:iSearchHelper
+#@+node:ekr.20060203072636:endSearch
+def endSearch (self,i,j):
+
+    w = self.w
+    w.tag_delete('color','color1')
+    
+    insert = g.choose(self.forward,'sel.end','sel.start')
+    g.app.gui.setTextSelection (self.w,i,j,insert=insert)
+
+    self.k.keyboardQuit(event=None)
+#@nonl
+#@-node:ekr.20060203072636:endSearch
+#@-node:ekr.20050920084036.261:incremental search...
+#@-node:ekr.20060926085352:Improved  quick-find commands
 #@+node:ekr.20041228084018.5:Finished/retired zodb plugin
 @nocolor
 
@@ -4686,6 +5080,7 @@ P.P.S. A couple of unit tests involving the new v/t.__hash__ methods just failed
 EKR
 #@-node:ekr.20060913085557:Scripting using zodb
 #@-node:ekr.20041228084018.5:Finished/retired zodb plugin
+#@-node:ekr.20060912093334:New features
 #@-node:ekr.20060904165452:4.4.2 projects
 #@-all
 #@nonl
