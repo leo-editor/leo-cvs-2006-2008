@@ -398,7 +398,7 @@ class leoMenu:
         ):
             menu = self.createNewMenu(name,'&Cmds')
             self.createMenuEntries(menu,table)
-            
+    
         for name,table in (
             # &: b,e,f,s,x
             ('Cursor &Back...',                     self.cursorMenuBackTable),
@@ -550,7 +550,7 @@ class leoMenu:
     def defineEditMenuFindMenuTable (self):
         
         self.editMenuFindMenuTable = [
-            # &: a,c,d,h,i,l,n,o,p,q,r,t,u,w,x
+            # &: a,b,c,d,e,h,i,l,n,o,p,q,r,t,u,w,x
             ("&Open Find Tab",              'open-find-tab'),
             ("&Hide Find Tab",              'hide-find-tab'),
             ("Search &With Present Options",'search-with-present-options'),
@@ -563,7 +563,11 @@ class leoMenu:
             ('Clone Fin&d All',             'clone-find-all'),
             ('Change A&ll',                 'find-tab-change-all'),
             ('-',None),
-            ('&Quick Find Character',       'find-character'),
+            ('&Quick Find Character',                'find-character'),
+            ('Quic&k Find Char And Extend',          'find-character-extend-selection'),
+            ('Quick &Backward Find Character',       'backward-find-character'),
+            ('Quick Backward Find Char And &Extend', 'backward-find-character-extend-selection'),
+            ('-',None),
             ('&I-Search Forward',           'isearch-forward'),
             ('I-Sear&ch Reverse',           'isearch-backward'),
             ('I-Search Rege&xp Forward',    'isearch-forward-regexp'),
@@ -987,7 +991,9 @@ class leoMenu:
         ]
         
         self.cursorMenuForwardExtendTable = [
-            # &: b,c,l,n,p,s,w
+            # &: e,b,c,l,n,p,s,w
+            ('&Extend To Word',                     'extend-to-word'),
+            ('-',None),
             ('End Of &Buffer Extend Selection',     'end-of-buffer-extend-selection'),
             ('End Of &Line Extend Selection',       'end-of-line-extend-selection'),
             ('-',None),
