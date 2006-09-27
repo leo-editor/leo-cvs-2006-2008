@@ -4191,7 +4191,7 @@ virtual_event_name = angleBrackets
 # Simplified version by EKR: stringCompare not used.
 
 def CheckVersion (s1,s2,condition=">=",stringCompare=None,delimiter='.',trace=False):
-
+    
     vals1 = [int(s) for s in s1.split(delimiter)] ; n1 = len(vals1)
     vals2 = [int(s) for s in s2.split(delimiter)] ; n2 = len(vals2)
     n = max(n1,n2)
