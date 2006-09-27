@@ -228,8 +228,9 @@ class tkinterGui(leoGui.leoGui):
         
         if multiple:
             # askopenfilenames requires Python 2.3 and Tk 8.4.
+            version = '.'.join([str(sys.version_info[i]) for i in (0,1,2)])
             if (
-                g.CheckVersion(sys.version,"2.3") and
+                g.CheckVersion(version,"2.3") and
                 g.CheckVersion(self.root.getvar("tk_patchLevel"),"8.4")
             ):
                 files = tkFileDialog.askopenfilenames(
