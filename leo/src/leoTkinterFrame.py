@@ -1585,12 +1585,15 @@ class leoTkinterFrame (leoFrame.leoFrame):
         '''End editing of a headline and move focus to the body pane.'''
     
         frame = self ; c = frame.c
-        
         if g.app.batchMode:
             c.notValidInBatchMode("End Edit Headline")
         else:
             c.endEditing()
-            c.bodyWantsFocusNow() # New in 4.4.1 b2 (was c.bodyWantFocus)
+            if c.config.getBool('stayInTreeAfterEditHeadline'):
+                c.treeWantsFocusNow()
+            else:
+                c.bodyWantsFocusNow() 
+    #@nonl
     #@-node:ekr.20031218072017.3982:endEditLabelCommand
     #@+node:ekr.20031218072017.3983:insertHeadlineTime
     def insertHeadlineTime (self,event=None):
