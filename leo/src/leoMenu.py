@@ -227,6 +227,39 @@ class leoMenu:
     #@-node:ekr.20031218072017.3780:hasSelection
     #@-node:ekr.20031218072017.3776:Gui-independent menu enablers
     #@+node:ekr.20031218072017.3781:Gui-independent menu routines
+    #@+node:ekr.20060926213642:capitalizeMinibufferMenuName
+    def capitalizeMinibufferMenuName (self,s):
+        
+        result = []
+        for i in xrange(len(s)):
+            ch = s[i]
+            prev = i > 0 and s[i-1] or ''
+            prevprev = i > 1 and s[i-2] or ''
+            if 1: # Just capitalize the start of each word.
+                if (
+                    i == 0 or
+                    i == 1 and prev == '&' or
+                    prev == '-' or
+                    prev == '&' and prevprev == '-'
+                ):
+                    result.append(ch.capitalize())
+                else:
+                    result.append(ch)
+            else: # Capitalizing accelerators in the middle of a word is dubious.
+                next = i+1 < len(s) and s[i+1] or ''
+                if (
+                    i == 0 and next != '&' or
+                    prev == '&' or
+                    prev == '-' and next != '&'
+                ):
+                    result.append(ch.capitalize())
+                else:
+                    result.append(ch)
+        return ''.join(result)
+            
+        
+    #@nonl
+    #@-node:ekr.20060926213642:capitalizeMinibufferMenuName
     #@+node:ekr.20031218072017.3785:createMenusFromTables & helpers
     def createMenusFromTables (self):
         
@@ -381,8 +414,8 @@ class leoMenu:
         self.createMenuEntries(cmdsMenu,self.cmdsMenuTopTable)
     
         for name,table in (
-            # Used in top table: l,e,q.
-            # &: a,b,c,d,f,g,h,m,o,p,r,s,t
+            # Used in top table: q,u,x
+            # &: a,b,c,d,f,g,h,m,n,o,p,r,s,t
             ('&Abbrev...',          self.cmdsMenuAbbrevTable),
             ('Body E&ditors',       self.cmdsMenuBodyEditorsTable),
             ('&Buffers...',         self.cmdsMenuBuffersTable),
@@ -395,6 +428,7 @@ class leoMenu:
             ('Scr&olling...',       self.cmdsMenuScrollTable),
             ('Spell C&heck...',     self.cmdsMenuSpellCheckTable),
             ('&Text Commands',      self.cmdsMenuTextTable),
+            ('Toggle Setti&ngs',     self.cmdsMenuToggleTable),
         ):
             menu = self.createNewMenu(name,'&Cmds')
             self.createMenuEntries(menu,table)
@@ -444,6 +478,7 @@ class leoMenu:
             self.defineCmdsMenuTables()
     
         self.defineHelpMenuTables()
+    
     #@+node:ekr.20031218072017.3753:defineEditMenuTables & helpers
     def defineEditMenuTables (self):
     
@@ -475,7 +510,7 @@ class leoMenu:
         # Top-level shortcuts here:  a,d,p,t,u,y,z
         # Top-level shortcuts later: e,g,n,v
     #@-node:ekr.20031218072017.839:defineEditMenuTopTable
-    #@+node:ekr.20050711091931:defineEditMenuEditCursorTable
+    #@+node:ekr.20050711091931:defineEditMenuEditCursorTable (not ready yet)
     def defineEditMenuEditCursorTable (self):
         
         __pychecker__ = 'no-unusednames=c,f'
@@ -502,7 +537,7 @@ class leoMenu:
                 ('Extend To End of Node',c.extendToEndOfNode),
                 # The mark...
             ]
-    #@-node:ekr.20050711091931:defineEditMenuEditCursorTable
+    #@-node:ekr.20050711091931:defineEditMenuEditCursorTable (not ready yet)
     #@+node:ekr.20031218072017.3754:defineEditMenuEditBodyTable
     def defineEditMenuEditBodyTable (self):
         
@@ -549,31 +584,31 @@ class leoMenu:
     def defineEditMenuFindMenuTable (self):
         
         self.editMenuFindMenuTable = [
-            # &: a,b,c,d,e,h,i,l,n,o,p,q,r,t,u,w,x
-            ("&Open Find Tab",              'open-find-tab'),
-            ("&Hide Find Tab",              'hide-find-tab'),
-            ("Search &With Present Options",'search-with-present-options'),
-            ("-",None),
-            ("Find &Next",                  'find-tab-find'),
-            ("Find &Previous",              'find-tab-find-prev'),
-            ("&Replace",                    'find-tab-change'),
-            ("Replace, &Then Find",         'find-with-present-options'),
-            ('Find &All',                   'find-tab-find-all'),
-            ('Clone Fin&d All',             'clone-find-all'),
-            ('Change A&ll',                 'find-tab-change-all'),
-            ('-',None),
-            ('&Quick Find Character',                'find-character'),
-            ('Quic&k Find Char And Extend',          'find-character-extend-selection'),
-            ('Quick &Backward Find Character',       'backward-find-character'),
-            ('Quick Backward Find Char And &Extend', 'backward-find-character-extend-selection'),
-            ('-',None),
-            ('&I-Search Forward',           'isearch-forward'),
-            ('I-Sear&ch Reverse',           'isearch-backward'),
-            ('I-Search Rege&xp Forward',    'isearch-forward-regexp'),
-            ('I-Search Regex&p Reverse',    'isearch-backward-regexp'),
-            ('-',None),
-            ('&Query Replace',              'query-replace'),
-            ('Q&uery Replace Regexp',       'query-replace-regexp'),
+            # &: a,b,c,d,e,f,h,i,l,n,o,p,q,r,s,t,u,w,x
+            '&open-find-tab',
+            '&hide-find-tab',
+            'search-&with-present-options',
+            '-',
+            'find-tab-find-&next',
+            'find-tab-find-&prev',
+            'find-tab-&change',
+            'find-with-present-op&tions',
+            'find-tab-find-&all',
+            'clone-fi&nd-all',
+            'find-tab-change-a&ll',
+            '-',
+            '&find-character',
+            'find-character-extend-&selection',
+            '&backward-find-character',
+            'backward-find-character-&extend-selection',
+            '-',
+            '&isearch-forward',
+            'isea&rch-backward',
+            'isearch-forward-rege&xp',
+            'isearch-backward-regex&p',
+            '-',
+            '&query-replace',
+            'q&uery-replace-regex',
         ]
     
     # find-character-reverse            = Alt-P
@@ -890,15 +925,16 @@ class leoMenu:
         self.defineCmdsMenuScrollTable()
         self.defineCmdsMenuSpellCheckTable()
         self.defineCmdsMenuTextTable()
+        self.defineCmdsMenuToggleTable()
     #@nonl
     #@+node:ekr.20060117094955: defineCmdsMenuTopTable
     def defineCmdsMenuTopTable (self):
         
         self.cmdsMenuTopTable = [
-            ('Repeat &Last Complex Command',    'repeat-complex-command'),
-            ('&Execute Named Command',          'full-command'),
-            ('Keyboard &Quit',                  'keyboard-quit'),
-            ('-', None),
+            'repeat-comple&x-command',
+            'f&ull-command',
+            'keyboard-&quit',
+            '-',
         ]
     #@-node:ekr.20060117094955: defineCmdsMenuTopTable
     #@+node:ekr.20060117094955.1:defineCmdsMenuAbbrevTable
@@ -907,18 +943,19 @@ class leoMenu:
         c = self.c
         
         self.cmdsMenuAbbrevTable = [
-            ('&Toggle Abbreviation Mode',    'abbrev-mode'),
-            ('-', None),
-            ('&List Abbrevs',                'list-abbrevs'),
-            ('&Read Abbrevs',                'read-abbrev-file'),
-            ('&Write Abbrevs',               'write-abbrev-file'),
-            ('-', None),
-            ('&Add Global Abbrev',           'add-global-abbrev'),
-            ('&Inverse Add Global Abbrev',   'inverse-add-global-abbrev'),
-            ('&Kill All Abbrevs',            'kill-all-abbrevs'),
-            ('-', None),
-            # ('&Expand Abbrev',             'expand-abbrev'), # Not a command
-            ('&Expand Abbrev in Region',     'expand-region-abbrevs'),
+            # &: a,e,i,k,l,r,w,v
+            'abbre&v-mode',
+            '-',
+            '&list-abbrevs',
+            '&read-abbrev-file',
+            '&write-abbrev-file',
+            '-',
+            '&add-global-abbrev',
+            '&inverse-add-global-abbrev',
+            '&kill-all-abbrevs',
+            '-',
+            # 'expand-abbrev', # Not a command
+            '&expand-region-abbrevs',
         ]
     #@-node:ekr.20060117094955.1:defineCmdsMenuAbbrevTable
     #@+node:ekr.20060912093104:defineCmdsMenuBodyEditorsTable
@@ -926,9 +963,9 @@ class leoMenu:
     
         self.cmdsMenuBodyEditorsTable = [
             # &: a,c,d
-            ('&Add Body Editor',    'add-editor'),
-            ('&Change Body Editor', 'cycle-editor-focus'),
-            ('&Delete Body Editor', 'delete-editor'),
+            '&add-editor',
+            '&cycle-editor-focus',
+            '&delete-editor',
         ]
     #@nonl
     #@-node:ekr.20060912093104:defineCmdsMenuBodyEditorsTable
@@ -936,13 +973,13 @@ class leoMenu:
     def defineCmdsMenuBuffersTable (self):
     
         self.cmdsMenuBuffersTable = [
-            ('&Append To Buffer',             'append-to-buffer'),
-            ('&Kill Buffer',                  'kill-buffer'),
-            ('List &Buffers',                 'list-buffers'),
-            ('&List Buffers Alphbetically',   'list-buffers-alphabetically'),
-            ('&Prepend To Buffer',            'prepend-to-buffer'),
-            ('&Rename Buffer',                'rename-buffer'),
-            ('&Switch To Buffer',             'switch-to-buffer'),
+            '&append-to-buffer',
+            '&kill-buffer',
+            'list-&buffers',
+            '&list-buffers-alphabetically',
+            '&prepend-to-buffer',
+            '&rename-buffer',
+            '&switch-to-buffer',
         ]
     #@-node:ekr.20060117095212:defineCmdsMenuBufferTable
     #@+node:ekr.20060924124119:defineCmdsMenuCursorTable
@@ -952,58 +989,58 @@ class leoMenu:
         
         self.cursorMenuBackTable = [
             # &: b,c,l,p,s,v,w
-            ('Back &Character',      'back-char'),
-            ('Back &Paragraph',      'back-paragraph'),
-            ('Back &Sentence',       'back-sentence'),
-            ('Back &Word',           'back-word'),
-            ('-',None),
-            ('Beginning Of &Buffer', 'beginning-of-buffer'),
-            ('Beginning Of &Line',   'beginning-of-line'),
-            ('-',None),
-            ('Pre&vious Line',       'previous-line'),
+            'back-&char',
+            'back-&paragraph',
+            'back-&sentence',
+            'back-&word',
+            '-',
+            'beginning-of-&buffer',
+            'beginning-of-&line',
+            '-',
+            'pre&vious-line',
         ]
         
         self.cursorMeuuBackExtendTable = [
             # &: b,c,l,p,s,v,w
-            ('Back &Character Extend Selection',        'back-char-extend-selection'),
-            ('Back &Paragraph Extend Selection',        'back-paragraph-extend-selection'),
-            ('Back &Sentence Extend Selection',         'back-sentence-extend-selection'),
-            ('Back &Word Extend Selection',             'back-word-extend-selection'),
-            ('-',None),
-            ('Beginning of &Buffer Extend Selection',   'beginning-of-buffer-extend-selection'),
-            ('Beginning of &Line Extend Selection',     'beginning-of-line-extend-selection'),
-            ('-',None),
-            ('Pre&vious Line Extend Selection',         'previous-line-extend-selection'),
+            'back-&char-extend-selection',
+            'back-&paragraph-extend-selection',
+            'back-&sentence-extend-selection',
+            'back-&word-extend-selection',
+            '-',
+            'beginning-of-&buffer-extend-selection',
+            'beginning-of-&line-extend-selection',
+            '-',
+            'pre&vious-line-extend-selection',
         ]
         
         self.cursorMenuForwardTable = [
             # &: b,c,l,n,p,s,w
-            ('End Of &Buffer',      'end-of-buffer'),
-            ('End of &Line',        'end-of-line'),
-            ('-',None),
-            ('Forward &Character',  'forward-char'),
-            ('Forward &Pargraph',   'forward-paragraph'),
-            ('Forward &Sentence',   'forward-sentence'),
-            ('Forward &Word',       'forward-word'),
-            ('-',None),
-            ('&Next Line',          'next-line'),
+            'end-of-&buffer',
+            'end-of-&line',
+            '-',
+            'forward-&char',
+            'forward-&paragraph',
+            'forward-&sentence',
+            'forward-&word',
+            '-',
+            '&next-line',
         ]
         
         self.cursorMenuForwardExtendTable = [
             # &: e,b,c,l,n,p,s,w
-            ('&Extend To Word',                     'extend-to-word'),
-            ('-',None),
-            ('End Of &Buffer Extend Selection',     'end-of-buffer-extend-selection'),
-            ('End Of &Line Extend Selection',       'end-of-line-extend-selection'),
-            ('-',None),
-            ('Forward &Character Extend Selection', 'forward-char-extend-selection'),
-            ('Forward &Paragraph Extend Selection', 'forward-paragraph-extend-selection'),
-            ('Forward &Sentence Extend Selection',  'forward-sentence-extend-selection'),
-            ('Forward &Word Extend Selection',      'forward-word-extend-selection'),
-            ('-',None),
-            ('&Next Line Extend Selection',         'next-line-extend-selection'),    
+            '&extend-to-word',
+            '-',
+            'end-of-&buffer-extend-selection',
+            'end-of-&line-extend-selection',
+            '-',
+            'forward-&char-extend-selection',
+            'forward-&paragraph-extend-selection',
+            'forward-&sentence-extend-selection',
+            'forward-&word-extend-selection',
+            '-',
+            '&next-line-extend-selection',    
         ]
-    
+    #@nonl
     #@-node:ekr.20060924124119:defineCmdsMenuCursorTable
     #@+node:ekr.20060923060822:defineCmdsMenuFocusTable
     def defineCmdsMenuFocusTable (self):
@@ -1011,10 +1048,11 @@ class leoMenu:
         c = self.c
     
         self.cmdsMenuFocusTable = [
-            ('Focus To Body',       'focus-to-body'),          
-            ('Focus To Log',        'focus-to-log'),             
-            ('Focus To Minibuffer', 'focus-to-minibuffer'),     
-            ('Focus To Outline',    'focus-to-tree'),             
+            '&cycle-all-focus',
+            'focus-to-&body',          
+            'focus-to-&log',             
+            'focus-to-&minibuffer',     
+            'focus-to-&tree',             
         ]
     #@-node:ekr.20060923060822:defineCmdsMenuFocusTable
     #@+node:ekr.20060117114315:defineCmdsMenuMacroTable
@@ -1023,14 +1061,14 @@ class leoMenu:
         c = self.c
     
         self.cmdsMenuMacroTable = [
-            ('&Load Macro File',     'load-file'),
-            ("-", None),
-            ('&Start Macro',         'start-kbd-macro'),
-            ('&End Macro',           'end-kbd-macro'),
-            ('&Name Last Macro',     'name-last-kbd-macro'),
-            ("-", None),
-            ('&Call Last Macro',     'call-last-keyboard-macro'),
-            ('&Insert Macro',        'insert-keyboard-macro'),
+            '&load-file',
+            '-',
+            '&start-kbd-macro',
+            '&end-kbd-macro',
+            '&name-last-kbd-macro',
+            '-',
+            '&call-last-keyboard-macro',
+            '&insert-keyboard-macro',
         ]
     #@-node:ekr.20060117114315:defineCmdsMenuMacroTable
     #@+node:ekr.20060924120752:defineCmdsMenuPanesTable
@@ -1038,21 +1076,22 @@ class leoMenu:
     
         c = self.c
     
-        self.cmdsMenuPanesTable = [        
-            ('Contract Body',       'contract-body-pane'),
-            ('Contract Log',        'contract-log-pane'),
-            ('Contract Outline',    'contract-outline-pane'),
-            ('Contract Pane',       'contract-pane'),
-            ('-',None),
-            ('Expand Body',         'expand-body-pane'),
-            ('Expand Log',          'expand-log-pane'),
-            ('Expand Outline',      'expand-outline-pane'),
-            ('Expand Pane',         'expand-pane'),
-            ('-',None),
-            ('Fully Expand Body',   'fully-expand-body-pane'),
-            ('Fully Expand Log',    'fully-expand-log-pane'),
-            ('Fully Expand Outline','fully-expand-outline-pane'),
-            ('Fully Expand Pane',   'fully-expand-pane'),
+        self.cmdsMenuPanesTable = [
+            # &: a,b,d,f,l,n,o,p,u,x,y
+            'contract-&body-pane',
+            'contract-&log-pane',
+            'contract-&outline-pane',
+            'contract-&pane',
+            '-',
+            'expand-bo&dy-pane',
+            'expand-lo&g-pane',
+            'expand-o&utline-pane',
+            'expand-pa&ne',
+            '-',
+            '&fully-expand-body-pane',
+            'full&y-expand-log-pane',
+            'fully-e&xpand-outline-pane',
+            'fully-exp&and-pane',
         ]
         
     #@nonl
@@ -1063,13 +1102,13 @@ class leoMenu:
         c = self.c
     
         self.cmdsMenuRectanglesTable = [
-            ('&Clear Rect',  'clear-rectangle'),
-            ('C&lose Rect',  'close-rectangle'),
-            ('&Delete Rect', 'delete-rectangle'),
-            ('&Kill Rect',   'kill-rectangle'),
-            ('&Open Rect',   'open-rectangle'),
-            ('&String Rect', 'string-rectangle'),
-            ('&Yank Rect',   'yank-rectangle'),
+            '&clear-rectangle',
+            'c&lose-rectangle',
+            '&delete-rectangle',
+            '&kill-rectangle',
+            '&open-rectangle',
+            '&string-rectangle',
+            '&yank-rectangle',
         ]
     #@-node:ekr.20060117095212.2:defineCmdsMenuRectanglesTable
     #@+node:ekr.20060117095212.1:defineCmdsMenuRegistersTable
@@ -1078,16 +1117,17 @@ class leoMenu:
         c = self.c
     
         self.cmdsMenuRegistersTable = [
-            ('&Append To Reg',   'append-to-register'),
-            ('Copy R&ect To Reg','copy-rectangle-to-register'),
-            ('&Copy To Reg',     'copy-to-register'),
-            ('I&nc Reg',         'increment-register'),
-            ('&Insert Reg',      'insert-register'),
-            ('&Jump To Reg',     'jump-to-register'),
-            # ('xxx',           'number-to-register'),
-            ('&Point to Reg',    'point-to-register'),
-            ('P&repend To Reg',  'prepend-to-register'),
-            ('&View Reg',        'view-register'),
+            # &: a,c,e,i,j,n,p,r,v
+            '&append-to-register',
+            'copy-r&ectangle-to-register',
+            '&copy-to-register',
+            'i&ncrement-register',
+            '&insert-register',
+            '&jump-to-register',
+            # 'number-to-register',
+            '&point-to-register',
+            'p&repend-to-register',
+            '&view-register',
         ]
     #@-node:ekr.20060117095212.1:defineCmdsMenuRegistersTable
     #@+node:ekr.20060923060822.1:defineCmdsMenuScrollTable
@@ -1097,18 +1137,18 @@ class leoMenu:
     
         self.cmdsMenuScrollTable = [
             # &: c,d,e,f,l,o,p,r,v,x
-            ('Scroll Outline Down &Line',    'scroll-outline-down-line'),
-            ('Scroll Outline Down &Page',    'scroll-outline-down-page'),
-            ('Scroll Outline Le&ft',         'scroll-outline-left'),
-            ('Scroll Outline &Right',        'scroll-outline-right'),
-            ('S&croll Outline Up Line',      'scroll-outline-up-line'),
-            ('Scr&oll Outline Up Page',      'scroll-outline-up-page'),
-            ('-',None),
-            ('Scroll Pane &Down',             'scroll-down'),
-            ('Scroll Pane &Up',               'scroll-up'),
-            ('-',None),
-            ('Scroll Down &Extend Selection',   'scroll-down-extend-selection'),
-            ('Scroll Up E&xtend Selection',     'scroll-up-extend-selection'),
+            'scroll-outline-down-&line',
+            'scroll-outline-down-&page',
+            'scroll-outline-le&ft',
+            'scroll-outline-&right',
+            's&croll-outline-up-line',
+            'scr&oll-outline-up-page',
+            '-',
+            'scroll-&down',
+            'scroll-&up',
+            '-',
+            'scroll-down-&extend-selection',
+            'scroll-up-e&xtend-selection',
         ]
     #@nonl
     #@-node:ekr.20060923060822.1:defineCmdsMenuScrollTable
@@ -1118,11 +1158,11 @@ class leoMenu:
         c = self.c
     
         self.cmdsMenuSpellCheckTable = [
-            ('Check &Spelling',      'open-spell-tab'),
-            ('&Change',              'spell-change'),
-            ('Change, &Then Find',   'spell-change-then-find'),
-            ('&Find',                'spell-find'),
-            ('&Ignore',              'spell-ignore'),
+            '&open-spell-tab',
+            'spell-&change',
+            'spell-change-&then-find',
+            'spell-&find',
+            'spell-&ignore',
         ]
     #@-node:ekr.20060117095212.7:defineCmdsMenuSpellCheckTable
     #@+node:ekr.20060924161901:defineCmdsMenuTextTable
@@ -1132,30 +1172,55 @@ class leoMenu:
     
         self.cmdsMenuTextTable = [
             # &: b,c,d,e,f,g,i,l,m,n,o,p,r,s,u,y
-            ("&Beautify Python Code",c.prettyPrintPythonCode),
-            ("Beautify All P&ython Code",c.prettyPrintAllPythonCode),
-            ("-",None),
-            ('Center &Line',     'center-line'),
-            ('Center &Region',   'center-region'),
-            ('-',None),
-            ('&Capitalize Word', 'capitalize-word'),
-            ('&Downcase Word',   'downcase-word'),
-            ('&Upcase Word',     'upcase-word'),
-            ('-', None),
-            ('D&owncase Region', 'downcase-region'),
-            ('U&pcase Region',   'upcase-region'),
-            ('-',None),
-            ('&Indent Region',   'indent-region'),
-            ('Indent R&elative', 'indent-relative'),
-            ('Indent Ri&gidly',  'indent-rigidly'),
-            ('U&nindent Region', 'unindent-region'),
-            ('-',None),
-            ('Sort Colu&mns',    'sort-columns'),
-            ('Sort &Fields',     'sort-fields'),
-            ('&Sort Lines',      'sort-lines'),
+            '&beautify-python-code',
+            'beautify-all-p&ython-code',
+            '-',
+            'center-&line',
+            'center-&region',
+            '-',
+            '&capitalize-word',
+            '&downcase-word',
+            '&upcase-word',
+            '-',
+            'd&owncase-region',
+            'u&pcase-region',
+            '-',
+            '&indent-region',
+            'indent-r&elative',
+            'indent-ri&gidly',
+            'u&nindent-region',
+            '-',
+            'sort-colu&mns',
+            'sort-&fields',
+            '&sort-lines',
         ]
-    
+    #@nonl
     #@-node:ekr.20060924161901:defineCmdsMenuTextTable
+    #@+node:ekr.20060926161940:defineCmdsMenuToggleTable
+    def defineCmdsMenuToggleTable (self):
+    
+        self.cmdsMenuToggleTable = [
+            # &: d,e,m,s,t,u,v
+            'toggle-a&utocompleter',
+            'toggle-call&tips',
+            'toggle-&extend-mode',
+            'toggle-input-&state',
+            'toggle-in&visibles',
+            'toggle-&mini-buffer',
+            'toggle-split-&direction',
+            '-',
+            # &: a,b,c,f,h,i,r,w,x
+            'toggle-find-&ignore-case-option',
+            'toggle-find-in-&body-option',
+            'toggle-find-in-&headline-option',
+            'toggle-find-mark-&changes-option',
+            'toggle-find-mark-&finds-option',
+            'toggle-find-rege&x-option',
+            'toggle-find-&reverse-option',
+            'toggle-find-&word-option',
+            'toggle-find-wrap-&around-option',
+        ]
+    #@-node:ekr.20060926161940:defineCmdsMenuToggleTable
     #@-node:ekr.20050921103230:defineCmdsMenuTables & helpers
     #@+node:ekr.20031218072017.3773:defineWindowMenuTables
     def defineWindowMenuTables (self):
@@ -1185,25 +1250,25 @@ class leoMenu:
         c = self.c ; f = self.frame
     
         self.helpMenuTable = [
-            # &:a,b,c,d,f,h,n,m,p,r,s,t,u,
+            # &:a,b,c,d,f,h,l,n,m,p,r,s,t,u,
             ("&About Leo...",           c.about),
             ("Online &Home Page",       c.leoHome),
             ("Open Online &Tutorial",   c.leoTutorial),
             ("Open &Users Guide",       c.leoUsersGuide),
-            ("-",None,None),
+            '-',
             ("Open Leo&Docs.leo",       c.leoDocumentation),
             ("Open Leo&Plugins.leo",    c.openLeoPlugins),
             ("Open Leo&Settings.leo",   c.openLeoSettings),
-            ('-',None),
-            ('&Getting Started',         'help'),
-            ('Help For &Command',        'help-for-command'),
-            ('-', None),
-            ('Ap&ropos Autocompletion',  'apropos-autocompletion'),
-            ('Apropos &Bindings',        'apropos-bindings'),
-            ('Apropos &Find Commands',   'apropos-find-commands'),
-            ('-',None),
-            ('Pri&nt Bindings',           'print-bindings'),
-            ('Print Co&mmands',           'print-commands')
+            '-',
+            'he&lp',
+            'help-for-&command',
+            '-',
+            '&apropos-autocompletion',
+            'apropos-&bindings',
+            'apropos-&find-commands',
+            '-',
+            'pri&nt-bindings',
+            'print-co&mmands',
         ]
     #@-node:ekr.20031218072017.3774:defineHelpMenuTables
     #@-node:ekr.20031218072017.3752:defineMenuTables & helpers
@@ -1251,25 +1316,31 @@ class leoMenu:
         for data in table:
             #@        << get label & command or continue >>
             #@+node:ekr.20051021091958:<< get label & command or continue >>
-            ok = (
-                type(data) in (type(()), type([])) and
-                len(data) in (2,3)
-            )
-                
-            if ok:
-                if len(data) == 2:
-                    # New in 4.4b2: command can be a minibuffer-command name (a string)
-                    label,command = data
-                else:
-                    # New in 4.4: we ignore shortcuts bound in menu tables.
-                    label,junk,command = data
+            if type(data) == type(''):
+                # New in Leo 4.4.2: Can use the same string for both the label and the command string.
+                ok = True
+                label = self.capitalizeMinibufferMenuName(data)
+                command = data.replace('&','')
+                if label == '-':
+                    self.add_separator(menu)
+                    continue # That's all.
             else:
-                g.trace('bad data in menu table: %s' % repr(data))
-                continue # Ignore bad data
-                 
-            if ok and label in (None,'-'):
-                self.add_separator(menu)
-                continue # That's all.
+                ok = type(data) in (type(()), type([])) and len(data) in (2,3)
+                if ok:
+                    if len(data) == 2:
+                        # New in 4.4b2: command can be a minibuffer-command name (a string)
+                        label,command = data
+                    else:
+                        # New in 4.4: we ignore shortcuts bound in menu tables.
+                        label,junk,command = data
+                        
+                    if label in (None,'-'):
+                        self.add_separator(menu)
+                        continue # That's all.
+                else:
+                    g.trace('bad data in menu table: %s' % repr(data))
+                    continue # Ignore bad data
+            #@nonl
             #@-node:ekr.20051021091958:<< get label & command or continue >>
             #@nl
             #@        << compute commandName & accel from label & command >>

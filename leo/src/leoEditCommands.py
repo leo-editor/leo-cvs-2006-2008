@@ -3427,13 +3427,13 @@ class editCommandsClass (baseEditCommandsClass):
     def setExtendMode (self,event):
         '''Turn on extend mode: cursor movement commands do extend the selection.'''
         self.extendModeHelper(event,True)
-        
+    
     def toggleExtendMode (self,event):
         '''Toggle extend mode, i.e., toggle whether cursor movement commands extend the selections.'''
         self.extendModeHelper(event,not self.extendMode)
-        
+    
     def extendModeHelper (self,event,val):
-        
+    
         c = self.c ; w = event.widget
         self.extendMode = val
         g.es('Extend mode %s' % (g.choose(val,'on','off')), color='red')
@@ -4924,12 +4924,12 @@ class helpCommandsClass (baseEditCommandsClass):
         
         Search again commands
         
-        - The find-tab-find command (F3) is the same as the search-with-present-options command, except that it uses the search string in the find-tab.  Recommended as the default 'search again' command.
+        - The find-tab-find-next command (F3) is the same as the search-with-present-options command, except that it uses the search string in the find-tab.  Recommended as the default 'search again' command.
         
         - Similarly, the find-tab-find-previous command (F2) repeats the command specified by the Find tab,
           but in reverse.
         
-        - The find-again is the same as the find-tab-find command if a search pattern is not '<find pattern here>'.
+        - The find-again is the same as the find-tab-find-next command if a search pattern is not '<find pattern here>'.
           Otherwise, the find-again is the same as the search-with-present-options command.
         
         Setting find options
@@ -4970,7 +4970,7 @@ class helpCommandsClass (baseEditCommandsClass):
         
         - The find-tab-change-then-find (Ctrl--) replaces the selected text with the 'change' text in the Find tab, then executes the find command again.
         
-        The find-tab-find, find-tab-change and find-tab-change-then-find commands can simulate any kind of query-replace command.  **Important**: Leo presently has separate query-replace and query-replace-regex commands, but they are buggy and 'under-powered'.  Fixing these commands has low priority.
+        The find-tab-find-next, find-tab-change and find-tab-change-then-find commands can simulate any kind of query-replace command.  **Important**: Leo presently has separate query-replace and query-replace-regex commands, but they are buggy and 'under-powered'.  Fixing these commands has low priority.
         
         - The find-tab-change-all command changes all occurrences of the 'find' text with the 'change' text.  Important: the radio buttons in the Find tab (Entire Outline, Suboutline Only and Node only) control how much of the outline is affected by this command.
         
@@ -7530,7 +7530,7 @@ class searchCommandsClass (baseEditCommandsClass):
             'find-tab-find-all':                    self.findAll,
             
             # Thin wrappers on Find tab
-            'find-tab-find':                        self.findTabFindNext,
+            'find-tab-find-next':                   self.findTabFindNext,
             'find-tab-find-prev':                   self.findTabFindPrev,
             'find-tab-change':                      self.findTabChange,
             'find-tab-change-all':                  self.findTabChangeAll,
@@ -7780,7 +7780,7 @@ class searchCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20060204120158.2:findAgain
     def findAgain (self,event):
     
-        '''The find-again command is the same as the find-tab-find command
+        '''The find-again command is the same as the find-tab-find-next command
         if the search pattern in the Find tab is not '<find pattern here>'
         Otherwise, the find-again is the same as the search-with-present-options command.'''
         
