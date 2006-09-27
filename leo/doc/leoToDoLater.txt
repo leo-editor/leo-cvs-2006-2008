@@ -1331,112 +1331,6 @@ rename-buffer       probably should change headline too
 switch-to-buffer    use typing completion to get node name (headline)
 #@nonl
 #@-node:ekr.20051202102337.2:bufferCommandsClass Inot ready yet)
-#@+node:ekr.20051202102337.3:controlCommandsClass (ok)
-advertised-undo
-keyboard-quit
-iconify-frame
-save-buffers-kill-leo
-shell-command
-shell-command-on-region
-suspend
-#@nonl
-#@-node:ekr.20051202102337.3:controlCommandsClass (ok)
-#@+node:ekr.20051202102337.4:editCommandsClass
-back-sentence
-back-to-indentation
-backward-char
-backward-delete-char
-backward-kill-paragraph
-backward-paragraph
-backward-word
-beginning-of-buffer
-beginning-of-line
-capitalize-word
-center-line
-center-region
-count-region
-cycle-focus
-dabbrev-completion
-dabbrev-expands
-delete-char
-delete-indentation
-delete-spaces
-downcase-region
-downcase-word
-end-of-buffer
-end-of-line
-escape
-eval-expression
-exchange-point-mark
-fill-paragraph
-fill-region
-fill-region-as-paragraph
-flush-lines
-focus-to-body
-focus-to-log
-focus-to-minibuffer
-focus-to-tree
-forward-char
-forward-paragraph
-forward-sentence
-forward-word
-goto-char
-goto-line
-how-many
-# Use indentBody in leoCommands.py
-#indent-region
-indent-relative
-indent-rigidly
-indent-to-comment-column
-insert-newline
-insert-parentheses
-keep-lines
-kill-paragraph
-line-number
-move-past-close
-newline-and-indent
-next-line
-previous-line
-remove-blank-lines
-replace-regex
-replace-string
-reverse-region
-scroll-down
-scroll-up
-select-paragraph
-# Exists, but can not be executed via the minibuffer.
-# self-insert-command
-set-comment-column
-set-fill-column
-set-fill-prefix
-set-mark-command
-show-colors
-show-fonts
-# save-buffer
-sort-columns
-sort-fields
-sort-lines
-split-line
-tabify
-transpose-chars
-transpose-lines
-transpose-words
-untabify
-upcase-region
-upcase-word
-view-lossage
-what-line
-#@nonl
-#@-node:ekr.20051202102337.4:editCommandsClass
-#@+node:ekr.20051202102337.6:editFileCommandsClass
-delete-file
-diff
-insert-file
-make-directory
-remove-directory
-save-file
-#@nonl
-#@-node:ekr.20051202102337.6:editFileCommandsClass
 #@+node:ekr.20051202102752.1:keyHandlerCommandsClass (not ready yet)
 digit-argument
 help
@@ -1488,16 +1382,6 @@ query-replace
 query-replace-regex
 #@nonl
 #@-node:ekr.20051202102752.4:queryReplaceCommandsClass
-#@+node:ekr.20051202102752.5:rectangleCommandsClass (ok)
-clear-rectangle
-close-rectangle
-delete-rectangle
-kill-rectangle
-open-rectangle
-string-rectangle
-yank-rectangle
-#@nonl
-#@-node:ekr.20051202102752.5:rectangleCommandsClass (ok)
 #@+node:ekr.20051202102752.6:registerCommandsClass (ok, but could be expanded)
 append-to-register
 copy-rectangle-to-register
@@ -1515,39 +1399,6 @@ To do:
 point-to-register should write an 'expanded point' so inter-node jumps are possible.
 #@nonl
 #@-node:ekr.20051202102752.6:registerCommandsClass (ok, but could be expanded)
-#@+node:ekr.20051202102752.7:searchCommandsClass (ok, but could be expanded)
-hide-find-tab
-open-find-tab
-find-tab-find
-find-tab-find-prev
-find-tab-change
-find-tab-change-then-find
-
-isearch-forward
-isearch-backward
-isearch-forward-regexp
-isearch-backward-regexp
-
-re-search-forward
-re-search-backward
-
-search-forward
-search-backward
-word-search-forward
-word-search-backward
-#@nonl
-#@-node:ekr.20051202102752.7:searchCommandsClass (ok, but could be expanded)
-#@+node:ekr.20051202102752.8:spellCommandsClass (ok)
-ok:
-
-hide-spell-tab
-open-spell-tab
-spell-find
-spell-change
-spell-change-then-find
-spell-ignore
-#@nonl
-#@-node:ekr.20051202102752.8:spellCommandsClass (ok)
 #@-node:ekr.20051202102337:Finish minibuffer commands
 #@+node:ekr.20051110155735.1:Improve Spell tab
 @nocolor
