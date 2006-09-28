@@ -4240,6 +4240,26 @@ class baseCommands:
                 c.endUpdate()
         c.treeWantsFocusNow()
     #@-node:ekr.20040930064232.1:expandNodeAnd/OrGoToFirstChild
+    #@+node:ekr.20060928062431:expandOnlyAncestorsOfNode
+    def expandOnlyAncestorsOfNode (self,event=None):
+        
+        '''Contract all nodes in the outline.'''
+    
+        c = self ; level = 1
+        
+        c.beginUpdate()
+        try:
+            for p in c.allNodes_iter():
+                p.contract()
+            for p in c.currentPosition().parents_iter():
+                p.expand()
+                level += 1
+        finally:
+            c.endUpdate()
+            c.treeWantsFocusNow()
+    
+        c.expansionLevel = level # Reset expansion level.
+    #@-node:ekr.20060928062431:expandOnlyAncestorsOfNode
     #@+node:ekr.20031218072017.2908:expandPrevLevel
     def expandPrevLevel (self,event=None):
         
