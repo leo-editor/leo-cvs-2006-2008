@@ -6049,7 +6049,7 @@ def defineHelpMenuTables (self):
     c = self.c ; f = self.frame
 
     self.helpMenuTable = [
-        # &:a,b,c,d,f,h,l,n,m,p,r,s,t,u,
+        # &: a,b,c,d,f,h,l,m,n,o,p,r,s,t,u
         ("&About Leo...",           c.about),
         ("Online &Home Page",       c.leoHome),
         ("Open Online &Tutorial",   c.leoTutorial),
@@ -6058,6 +6058,7 @@ def defineHelpMenuTables (self):
         ("Open Leo&Docs.leo",       c.leoDocumentation),
         ("Open Leo&Plugins.leo",    c.openLeoPlugins),
         ("Open Leo&Settings.leo",   c.openLeoSettings),
+        ("Open &myLeoSettings.leo", c.openMyLeoSettings),
         '-',
         'he&lp',
         'help-for-&command',
@@ -6067,11 +6068,439 @@ def defineHelpMenuTables (self):
         'apropos-&find-commands',
         '-',
         'pri&nt-bindings',
-        'print-co&mmands',
+        'print-c&ommands',
     ]
 #@-node:ekr.20031218072017.3774:defineHelpMenuTables
 #@-node:ekr.20031218072017.3752:defineMenuTables & helpers
 #@-node:ekr.20060923043845:Improved how Leo works w/o the mousre
+#@+node:ekr.20060928054124:Increased speed of arrow keys
+http://sourceforge.net/forum/message.php?msg_id=3935368
+#@nonl
+#@+node:ekr.20031218072017.2996:selectVisNext
+def selectVisNext (self,event=None):
+    
+    '''Select the visible node following the presently selected node.'''
+
+    c = self ; current = c.currentPosition()
+    if not current: return
+    
+    p = current.visNext()
+    if p:
+        redraw = not p.isVisible()
+        if not redraw: c.frame.tree.setSelectedLabelState(current)
+        c.beginUpdate()
+        try:
+            c.selectVnode(p)
+        finally:
+            c.endUpdate(redraw)
+
+    c.treeWantsFocusNow()
+#@-node:ekr.20031218072017.2996:selectVisNext
+#@+node:ekr.20031218072017.2995:selectVisBack
+# This has an up arrow for a control key.
+
+def selectVisBack (self,event=None):
+    
+    '''Select the visible node preceding the presently selected node.'''
+
+    c = self ; current = c.currentPosition()
+    if not current: return
+
+    p = current.visBack()
+    if p:
+        redraw = not p.isVisible()
+        if not redraw: c.frame.tree.setSelectedLabelState(current)
+        c.beginUpdate()
+        try:
+            c.selectVnode(p)
+        finally:
+            c.endUpdate(redraw)
+    c.treeWantsFocusNow()
+#@-node:ekr.20031218072017.2995:selectVisBack
+#@-node:ekr.20060928054124:Increased speed of arrow keys
+#@+node:ekr.20060928062431.1:Sparse find command
+http://sourceforge.net/forum/message.php?msg_id=3935780
+
+This greatly speeds searches that used to open many nodes.
+#@nonl
+#@+node:ekr.20050920084036.189:<< define dictionary d of names and Leo commands >>
+c = self.c ; f = c.frame
+
+d = {
+    'abort-edit-headline':          f.abortEditLabelCommand,
+    'about-leo':                    c.about,
+    'add-comments':                 c.addComments,     
+    'beautify-all-python-code':     c.beautifyAllPythonCode,
+    'beautify-python-code':         c.beautifyPythonCode,
+    'cascade-windows':              f.cascade,
+    'clear-recent-files':           c.clearRecentFiles,
+    'close-window':                 c.close,
+    'contract-or-go-left':          c.contractNodeOrGoToParent,
+    'check-python-code':            c.checkPythonCode,
+    'check-all-python-code':        c.checkAllPythonCode,
+    'check-outline':                c.checkOutline,
+    'clear-recent-files':           c.clearRecentFiles,
+    'clone-node':                   c.clone,
+    'contract-node':                c.contractNode,
+    'contract-all':                 c.contractAllHeadlines,
+    'contract-parent':              c.contractParent,
+    'convert-all-blanks':           c.convertAllBlanks,
+    'convert-all-tabs':             c.convertAllTabs,
+    'convert-blanks':               c.convertBlanks,
+    'convert-tabs':                 c.convertTabs,
+    'copy-node':                    c.copyOutline,
+    'copy-text':                    f.copyText,
+    'cut-node':                     c.cutOutline,
+    'cut-text':                     f.cutText,
+    'de-hoist':                     c.dehoist,
+    'delete-comments':              c.deleteComments,
+    'delete-node':                  c.deleteOutline,
+    'demote':                       c.demote,
+    'dump-outline':                 c.dumpOutline,
+    'edit-headline':                c.editHeadline,
+    'end-edit-headline':            f.endEditLabelCommand,
+    'equal-sized-panes':            f.equalSizedPanes,
+    'execute-script':               c.executeScript,
+    'exit-leo':                     g.app.onQuit,
+    'expand-all':                   c.expandAllHeadlines,
+    'expand-next-level':            c.expandNextLevel,
+    'expand-node':                  c.expandNode,
+    'expand-and-go-right':          c.expandNodeAndGoToFirstChild,
+    'expand-ancestors-only':        c.expandOnlyAncestorsOfNode,
+    'expand-or-go-right':           c.expandNodeOrGoToFirstChild,
+    'expand-prev-level':            c.expandPrevLevel,
+    'expand-to-level-1':            c.expandLevel1,
+    'expand-to-level-2':            c.expandLevel2,
+    'expand-to-level-3':            c.expandLevel3,
+    'expand-to-level-4':            c.expandLevel4,
+    'expand-to-level-5':            c.expandLevel5,
+    'expand-to-level-6':            c.expandLevel6,
+    'expand-to-level-7':            c.expandLevel7,
+    'expand-to-level-8':            c.expandLevel8,
+    'expand-to-level-9':            c.expandLevel9,
+    'export-headlines':             c.exportHeadlines,
+    'extract':                      c.extract,
+    'extract-names':                c.extractSectionNames,
+    'extract-section':              c.extractSection,
+    'flatten-outline':              c.flattenOutline,
+    'go-back':                      c.goPrevVisitedNode,
+    'go-forward':                   c.goNextVisitedNode,
+    'goto-first-node':              c.goToFirstNode,
+    'goto-first-sibling':           c.goToFirstSibling,
+    'goto-last-node':               c.goToLastNode,
+    'goto-last-sibling':            c.goToLastSibling,
+    'goto-last-visible':            c.goToLastVisibleNode,
+    'goto-line-number':             c.goToLineNumber,
+    'goto-next-changed':            c.goToNextDirtyHeadline,
+    'goto-next-clone':              c.goToNextClone,
+    'goto-next-marked':             c.goToNextMarkedHeadline,
+    'goto-next-node':               c.selectThreadNext,
+    'goto-next-sibling':            c.goToNextSibling,
+    'goto-next-visible':            c.selectVisNext,
+    'goto-parent':                  c.goToParent,
+    'goto-prev-node':               c.selectThreadBack,
+    'goto-prev-sibling':            c.goToPrevSibling,
+    'goto-prev-visible':            c.selectVisBack,
+    'hide-invisibles':              c.hideInvisibles,
+    'hoist':                        c.hoist,
+    'import-at-file':               c.importAtFile,
+    'import-at-root':               c.importAtRoot,
+    'import-cweb-files':            c.importCWEBFiles,
+    'import-derived-file':          c.importDerivedFile,
+    'import-flattened-outline':     c.importFlattenedOutline,
+    'import-noweb-files':           c.importNowebFiles,
+    'indent-region':                c.indentBody,
+    'insert-node':                  c.insertHeadline,
+    'insert-body-time':             c.insertBodyTime,
+    'insert-headline-time':         f.insertHeadlineTime,
+    'mark':                         c.markHeadline,
+    'mark-changed-items':           c.markChangedHeadlines,
+    'mark-changed-roots':           c.markChangedRoots,
+    'mark-clones':                  c.markClones,
+    'mark-subheads':                c.markSubheads,
+    'match-bracket':                c.findMatchingBracket,
+    'minimize-all':                 f.minimizeAll,
+    'move-outline-down':            c.moveOutlineDown,
+    'move-outline-left':            c.moveOutlineLeft,
+    'move-outline-right':           c.moveOutlineRight,
+    'move-outline-up':              c.moveOutlineUp,
+    'new':                          c.new,
+    'open-compare-window':          c.openCompareWindow,
+    'open-find-dialog':             c.showFindPanel, # Deprecated.
+    'open-leoDocs-leo':             c.leoDocumentation,
+    'open-leoPlugins-leo':          c.openLeoPlugins,
+    'open-leoSettings-leo':         c.openLeoSettings,
+    'open-myLeoSettings-leo':       c.openMyLeoSettings,
+    'open-online-home':             c.leoHome,
+    'open-online-tutorial':         c.leoTutorial,
+    'open-offline-tutorial':        f.leoHelp,
+    'open-outline':                 c.open,
+    'open-python-window':           c.openPythonWindow,
+    'open-users-guide':             c.leoUsersGuide,
+    'open-with':                    c.openWith,
+    'outline-to-CWEB':              c.outlineToCWEB,
+    'outline-to-noweb':             c.outlineToNoweb,
+    'paste-node':                   c.pasteOutline,
+    'paste-retaining-clones':       c.pasteOutlineRetainingClones,
+    'paste-text':                   f.pasteText,
+    'pretty-print-all-python-code': c.prettyPrintAllPythonCode,
+    'pretty-print-python-code':     c.prettyPrintPythonCode,
+    'promote':                      c.promote,
+    'read-at-file-nodes':           c.readAtFileNodes,
+    'read-outline-only':            c.readOutlineOnly,
+    'redo':                         c.undoer.redo,
+    'reformat-paragraph':           c.reformatParagraph,
+    'remove-sentinels':             c.removeSentinels,
+    'resize-to-screen':             f.resizeToScreen,
+    'revert':                       c.revert,
+    'save-file':                    c.save,
+    'save-file-as':                 c.saveAs,
+    'save-file-to':                 c.saveTo,
+    'select-all':                   f.body.selectAllText,
+    'settings':                     c.preferences,
+    'set-colors':                   c.colorPanel,
+    'set-font':                     c.fontPanel,
+    'show-invisibles':              c.showInvisibles,
+    'sort-children':                c.sortChildren,
+    'sort-siblings':                c.sortSiblings,
+    'tangle':                       c.tangle,
+    'tangle-all':                   c.tangleAll,
+    'tangle-marked':                c.tangleMarked,
+    'toggle-active-pane':           f.toggleActivePane,
+    'toggle-angle-brackets':        c.toggleAngleBrackets,
+    'toggle-invisibles':            c.toggleShowInvisibles,
+    'toggle-split-direction':       f.toggleSplitDirection,
+    'undo':                         c.undoer.undo,
+    'unindent-region':              c.dedentBody,
+    'unmark-all':                   c.unmarkAll,
+    'untangle':                     c.untangle,
+    'untangle-all':                 c.untangleAll,
+    'untangle-marked':              c.untangleMarked,
+    'weave':                        c.weave,
+    'write-at-file-nodes':          c.fileCommands.writeAtFileNodes,
+    'write-dirty-at-file-nodes':    c.fileCommands.writeDirtyAtFileNodes,
+    'write-missing-at-file-nodes':  c.fileCommands.writeMissingAtFileNodes,
+    'write-outline-only':           c.fileCommands.writeOutlineOnly,
+}
+#@-node:ekr.20050920084036.189:<< define dictionary d of names and Leo commands >>
+#@+node:ekr.20060928062431:expandOnlyAncestorsOfNode
+def expandOnlyAncestorsOfNode (self,event=None):
+    
+    '''Contract all nodes in the outline.'''
+
+    c = self ; level = 1
+    
+    c.beginUpdate()
+    try:
+        for p in c.allNodes_iter():
+            p.contract()
+        for p in c.currentPosition().parents_iter():
+            p.expand()
+            level += 1
+    finally:
+        c.endUpdate()
+        c.treeWantsFocusNow()
+
+    c.expansionLevel = level # Reset expansion level.
+#@-node:ekr.20060928062431:expandOnlyAncestorsOfNode
+#@+node:ekr.20031218072017.3091:showSuccess
+def showSuccess(self,pos,newpos):
+
+    """Displays the final result.
+
+    Returns self.dummy_vnode, c.edit_widget(p) or c.frame.bodyCtrl with
+    "insert" and "sel" points set properly."""
+
+    c = self.c ; p = self.p ; gui = g.app.gui
+    
+    c.frame.bringToFront() # Needed on the Mac
+    redraw = not p.isVisible()
+    c.beginUpdate()
+    try:
+        # New in Leo 4.4.2: show only the 'sparse' tree when redrawing.
+        for p in c.allNodes_iter():
+            if not p.isAncestorOf(self.p):
+                p.contract()
+                redraw = True
+        for p in self.p.parents_iter():
+            if not p.isExpanded():
+                p.expand()
+                redraw = True
+        p = self.p
+        c.selectPosition(p)
+    finally:
+        c.endUpdate(redraw)
+    if self.in_headline:
+        c.editPosition(p)
+    # Set the focus and selection after the redraw.
+    t = g.choose(self.in_headline,c.edit_widget(p),c.frame.bodyCtrl)
+    insert = g.choose(self.reverse,pos,newpos)
+    # New in 4.4a3: a much better way to ensure progress in backward searches.
+    # g.trace(id(t),pos,newpos)
+    c.widgetWantsFocusNow(t)
+    gui.setSelectionRange(t,pos,newpos,insert=insert)
+    # c.widgetWantsFocusNow(t)
+    gui.makeIndexVisible(t,insert)
+    if self.wrap and not self.wrapPosition:
+        self.wrapPosition = self.p
+#@nonl
+#@-node:ekr.20031218072017.3091:showSuccess
+#@-node:ekr.20060928062431.1:Sparse find command
+#@+node:ekr.20060928082153:Added support for myLeoSettings.leo
+#@+node:ekr.20041117083857:initSettingsFiles
+def initSettingsFiles (self):
+    
+    """Set self.globalConfigFile, self.homeFile and self.myConfigFile."""
+
+    dirs = [] # Directories that have already been searched.
+    
+    self.myConfigFile = None
+    
+    for ivar,theDir in (
+        ("globalConfigFile",g.app.globalConfigDir),
+        ("homeFile",g.app.homeDir),
+    ):
+
+        if theDir not in dirs:
+            dirs.append(theDir)
+            path = g.os_path_join(theDir,"leoSettings.leo")
+            if g.os_path_exists(path):
+                setattr(self,ivar,path)
+            else:
+                setattr(self,ivar,None)
+                
+            if not self.myConfigFile:
+                path = g.os_path_join(theDir,"myLeoSettings.leo")
+                if g.os_path_exists(path):
+                    self.myConfigFile = path
+    if 0:   
+        g.trace("global:",self.globalConfigFile)
+        g.trace("home:",self.homeFile)
+        g.trace("my:",self.myConfigFile)
+#@nonl
+#@-node:ekr.20041117083857:initSettingsFiles
+#@+node:ekr.20031218072017.2943:openLeoSettings and openMyLeoSettings
+def openLeoSettings (self,event=None):
+    '''Open leoSettings.leo in a new Leo window.'''
+    self.openSettingsHelper('leoSettings.leo')
+    
+def openMyLeoSettings (self,event=None):
+    '''Open myLeoSettings.leo in a new Leo window.'''
+    self.openSettingsHelper('myLeoSettings.leo')
+    
+def openSettingsHelper(self,name):
+    c = self
+    homeDir = g.app.homeDir
+    loadDir = g.app.loadDir
+    configDir = g.app.globalConfigDir
+
+    # Look in configDir first.
+    fileName = g.os_path_join(configDir,name)
+
+    # Look in homeDir second.
+    ok, frame = g.openWithFileName(fileName,c)
+    if not ok:
+        if configDir == loadDir:
+            g.es("%s not found in %s" % (name,configDir))
+        else:
+            fileName = g.os_path_join(homeDir,name)
+            ok, frame = g.openWithFileName(fileName,c)
+            if not ok:
+                g.es("%s not found in %s or %s" % (name,configDir,homeDir))
+#@-node:ekr.20031218072017.2943:openLeoSettings and openMyLeoSettings
+#@+node:ekr.20041117093246:Scanning @settings (g.app.config)
+#@+node:ekr.20041117085625:g.app.config.openSettingsFile
+def openSettingsFile (self,path):
+    
+    try:
+        # Open the file in binary mode to allow 0x1a in bodies & headlines.
+        theFile = open(path,'rb')
+    except IOError:
+        g.es("can not open: " + path, color="blue")
+        return None
+        
+    # Similar to g.openWithFileName except it uses a null gui.
+    # Changing g.app.gui here is a major hack.
+    oldGui = g.app.gui
+    g.app.gui = leoGui.nullGui("nullGui")
+    c,frame = g.app.newLeoCommanderAndFrame(path,updateRecentFiles=False)
+    frame.log.enable(False)
+    c.setLog()
+    g.app.lockLog()
+    ok = frame.c.fileCommands.open(
+        theFile,path,readAtFileNodesFlag=False,silent=True) # closes theFile.
+    g.app.unlockLog()
+    frame.openDirectory = g.os_path_dirname(path)
+    g.app.gui = oldGui
+    return ok and c
+#@-node:ekr.20041117085625:g.app.config.openSettingsFile
+#@+node:ekr.20041120064303:g.app.config.readSettingsFiles
+def readSettingsFiles (self,fileName,verbose=True):
+    
+    seen = []
+    localDirectory = g.os_path_dirname(fileName)
+    localConfigFile = g.os_path_join(localDirectory,'leoSettings.leo')
+    if not g.os_path_exists(localConfigFile): localConfigFile = None
+    
+    # Init settings from leoSettings.leo files, including myLeoSettings.leo.
+    for path,localFlag in (
+        (self.globalConfigFile,False),
+        (self.homeFile,False),
+        (localConfigFile,False), # New in Leo 4.4.1.
+        (self.myConfigFile,False), # New in Leo 4.4.2.
+        (fileName,True),
+    ):
+        if path and path.lower() not in seen:
+            seen.append(path.lower())
+            if verbose:
+                g.es_print('reading settings in %s' % path)
+            c = self.openSettingsFile(path)
+            if c:
+                self.updateSettings(c,localFlag)
+                g.app.destroyWindow(c.frame)
+            self.readRecentFilesFile(path)
+
+    self.inited = True
+    self.setIvarsFromSettings(None)
+#@-node:ekr.20041120064303:g.app.config.readSettingsFiles
+#@+node:ekr.20041117083857.1:g.app.config.readSettings
+# Called to read all leoSettings.leo files.
+# Also called when opening an .leo file to read @settings tree.
+
+def readSettings (self,c):
+    
+    """Read settings from a file that may contain an @settings tree."""
+    
+    # g.trace(c.fileName())
+    
+    # Create a settings dict for c for set()
+    if c and self.localOptionsDict.get(c.hash()) is None:
+        self.localOptionsDict[c.hash()] = {}
+
+    parser = settingsTreeParser(c)
+    d = parser.traverse()
+
+    return d
+#@-node:ekr.20041117083857.1:g.app.config.readSettings
+#@+node:ekr.20051013161232:g.app.config.updateSettings
+def updateSettings (self,c,localFlag):
+
+    d = self.readSettings(c)
+    
+    if d:
+        d['_hash'] = theHash = c.hash()
+        if localFlag:
+            self.localOptionsDict[theHash] = d
+        else:
+            self.localOptionsList.insert(0,d)
+            
+    if 0: # Good trace.
+        if localFlag:
+            g.trace(c.fileName())
+            g.trace(d and d.keys())
+#@-node:ekr.20051013161232:g.app.config.updateSettings
+#@-node:ekr.20041117093246:Scanning @settings (g.app.config)
+#@-node:ekr.20060928082153:Added support for myLeoSettings.leo
 #@-node:ekr.20060912093334:New features
 #@-node:ekr.20060904165452:4.4.2 projects
 #@-all

@@ -2,6 +2,8 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20060914102842:To do before 4.4.2 beta 1
+#@+node:ekr.20060928090038:Document myLeoSettings.leo
+#@-node:ekr.20060928090038:Document myLeoSettings.leo
 #@+node:ekr.20060927100500.1:Fix bugs in new colorizer
 @nocolor
 
