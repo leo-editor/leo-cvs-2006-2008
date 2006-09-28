@@ -871,9 +871,11 @@ class configClass:
     #@+node:ekr.20041117083857:initSettingsFiles
     def initSettingsFiles (self):
         
-        """Set self.globalConfigFile, self.homeFile"""
+        """Set self.globalConfigFile, self.homeFile and self.myConfigFile."""
     
         dirs = [] # Directories that have already been searched.
+        
+        self.myConfigFile = None
         
         for ivar,theDir in (
             ("globalConfigFile",g.app.globalConfigDir),
@@ -887,10 +889,16 @@ class configClass:
                     setattr(self,ivar,path)
                 else:
                     setattr(self,ivar,None)
-                 
+                    
+                if not self.myConfigFile:
+                    path = g.os_path_join(theDir,"myLeoSettings.leo")
+                    if g.os_path_exists(path):
+                        self.myConfigFile = path
         if 0:   
-            g.trace("globalConfigFile",g.app.globalConfigDir)
-            g.trace("homeFile",g.app.homeDir)
+            g.trace("global:",self.globalConfigFile)
+            g.trace("home:",self.homeFile)
+            g.trace("my:",self.myConfigFile)
+    #@nonl
     #@-node:ekr.20041117083857:initSettingsFiles
     #@-node:ekr.20041117083202:Birth... (g.app.config)
     #@+node:ekr.20041117081009:Getters... (g.app.config)
@@ -1327,11 +1335,12 @@ class configClass:
         localConfigFile = g.os_path_join(localDirectory,'leoSettings.leo')
         if not g.os_path_exists(localConfigFile): localConfigFile = None
         
-        # Init settings from leoSettings.leo files.
+        # Init settings from leoSettings.leo files, including myLeoSettings.leo.
         for path,localFlag in (
             (self.globalConfigFile,False),
             (self.homeFile,False),
-            (localConfigFile,False), # New in 4.4.1.
+            (localConfigFile,False), # New in Leo 4.4.1.
+            (self.myConfigFile,False), # New in Leo 4.4.2.
             (fileName,True),
         ):
             if path and path.lower() not in seen:

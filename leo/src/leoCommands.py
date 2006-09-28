@@ -5182,13 +5182,17 @@ class baseCommands:
     
         g.app.gui.runAboutLeoDialog(c,version,theCopyright,url,email)
     #@-node:ekr.20031218072017.2939:about (version number & date)
-    #@+node:ekr.20031218072017.2943:leoConfig
+    #@+node:ekr.20031218072017.2943:openLeoSettings and openMyLeoSettings
     def openLeoSettings (self,event=None):
-        
         '''Open leoSettings.leo in a new Leo window.'''
-    
+        self.openSettingsHelper('leoSettings.leo')
+        
+    def openMyLeoSettings (self,event=None):
+        '''Open myLeoSettings.leo in a new Leo window.'''
+        self.openSettingsHelper('myLeoSettings.leo')
+        
+    def openSettingsHelper(self,name):
         c = self
-        name = 'leoSettings.leo'
         homeDir = g.app.homeDir
         loadDir = g.app.loadDir
         configDir = g.app.globalConfigDir
@@ -5206,7 +5210,7 @@ class baseCommands:
                 ok, frame = g.openWithFileName(fileName,c)
                 if not ok:
                     g.es("%s not found in %s or %s" % (name,configDir,homeDir))
-    #@-node:ekr.20031218072017.2943:leoConfig
+    #@-node:ekr.20031218072017.2943:openLeoSettings and openMyLeoSettings
     #@+node:ekr.20031218072017.2940:leoDocumentation
     def leoDocumentation (self,event=None):
         
