@@ -4602,16 +4602,18 @@ class baseCommands:
         
         '''Select the visible node preceding the presently selected node.'''
     
-        c = self ; current = c.currentVnode()
+        c = self ; current = c.currentPosition()
         if not current: return
     
-        v = current.visBack()
-        if v:
+        p = current.visBack()
+        if p:
+            redraw = not p.isVisible()
+            if not redraw: c.frame.tree.setSelectedLabelState(current)
             c.beginUpdate()
             try:
-                c.selectVnode(v)
+                c.selectVnode(p)
             finally:
-                c.endUpdate()
+                c.endUpdate(redraw)
         c.treeWantsFocusNow()
     #@-node:ekr.20031218072017.2995:selectVisBack
     #@+node:ekr.20031218072017.2996:selectVisNext
@@ -4619,16 +4621,19 @@ class baseCommands:
         
         '''Select the visible node following the presently selected node.'''
     
-        c = self ; current = c.currentVnode()
+        c = self ; current = c.currentPosition()
         if not current: return
         
-        v = current.visNext()
-        if v:
+        p = current.visNext()
+        if p:
+            redraw = not p.isVisible()
+            if not redraw: c.frame.tree.setSelectedLabelState(current)
             c.beginUpdate()
             try:
-                c.selectVnode(v)
+                c.selectVnode(p)
             finally:
-                c.endUpdate()
+                c.endUpdate(redraw)
+    
         c.treeWantsFocusNow()
     #@-node:ekr.20031218072017.2996:selectVisNext
     #@-node:ekr.20031218072017.2913:Goto
