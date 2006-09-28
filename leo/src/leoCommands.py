@@ -6331,7 +6331,7 @@ class baseCommands:
             t.configure(state="normal")
             t.delete("1.0","end")
             t.insert("end",s)
-            t.configure(state=state)
+            t.configure(state=state,width=c.frame.tree.headWidth(s=s))
     
         p.setDirty()
     #@nonl
