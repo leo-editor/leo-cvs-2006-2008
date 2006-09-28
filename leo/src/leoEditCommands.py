@@ -5465,6 +5465,7 @@ class leoCommandsClass (baseEditCommandsClass):
             'open-leoDocs-leo':             c.leoDocumentation,
             'open-leoPlugins-leo':          c.openLeoPlugins,
             'open-leoSettings-leo':         c.openLeoSettings,
+            'open-myLeoSettings-leo':       c.openMyLeoSettings,
             'open-online-home':             c.leoHome,
             'open-online-tutorial':         c.leoTutorial,
             'open-offline-tutorial':        f.leoHelp,

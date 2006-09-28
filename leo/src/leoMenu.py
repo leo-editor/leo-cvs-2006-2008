@@ -1250,7 +1250,7 @@ class leoMenu:
         c = self.c ; f = self.frame
     
         self.helpMenuTable = [
-            # &:a,b,c,d,f,h,l,n,m,p,r,s,t,u,
+            # &: a,b,c,d,f,h,l,m,n,o,p,r,s,t,u
             ("&About Leo...",           c.about),
             ("Online &Home Page",       c.leoHome),
             ("Open Online &Tutorial",   c.leoTutorial),
@@ -1259,6 +1259,7 @@ class leoMenu:
             ("Open Leo&Docs.leo",       c.leoDocumentation),
             ("Open Leo&Plugins.leo",    c.openLeoPlugins),
             ("Open Leo&Settings.leo",   c.openLeoSettings),
+            ("Open &myLeoSettings.leo", c.openMyLeoSettings),
             '-',
             'he&lp',
             'help-for-&command',
@@ -1268,7 +1269,7 @@ class leoMenu:
             'apropos-&find-commands',
             '-',
             'pri&nt-bindings',
-            'print-co&mmands',
+            'print-c&ommands',
         ]
     #@-node:ekr.20031218072017.3774:defineHelpMenuTables
     #@-node:ekr.20031218072017.3752:defineMenuTables & helpers
