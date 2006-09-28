@@ -5401,6 +5401,7 @@ class leoCommandsClass (baseEditCommandsClass):
             'expand-next-level':            c.expandNextLevel,
             'expand-node':                  c.expandNode,
             'expand-and-go-right':          c.expandNodeAndGoToFirstChild,
+            'expand-ancestors-only':        c.expandOnlyAncestorsOfNode,
             'expand-or-go-right':           c.expandNodeOrGoToFirstChild,
             'expand-prev-level':            c.expandPrevLevel,
             'expand-to-level-1':            c.expandLevel1,
