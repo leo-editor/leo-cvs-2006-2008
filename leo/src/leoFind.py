@@ -1122,11 +1122,22 @@ class leoFind:
         c = self.c ; p = self.p ; gui = g.app.gui
         
         c.frame.bringToFront() # Needed on the Mac
+        redraw = not p.isVisible()
         c.beginUpdate()
         try:
+            # New in Leo 4.4.2: show only the 'sparse' tree when redrawing.
+            for p in c.allNodes_iter():
+                if not p.isAncestorOf(self.p):
+                    p.contract()
+                    redraw = True
+            for p in self.p.parents_iter():
+                if not p.isExpanded():
+                    p.expand()
+                    redraw = True
+            p = self.p
             c.selectPosition(p)
         finally:
-            c.endUpdate()
+            c.endUpdate(redraw)
         if self.in_headline:
             c.editPosition(p)
         # Set the focus and selection after the redraw.
@@ -1140,6 +1151,7 @@ class leoFind:
         gui.makeIndexVisible(t,insert)
         if self.wrap and not self.wrapPosition:
             self.wrapPosition = self.p
+    #@nonl
     #@-node:ekr.20031218072017.3091:showSuccess
     #@-node:ekr.20031218072017.3082:Initing & finalizing
     #@+node:ekr.20031218072017.3092:Must be overridden in subclasses
