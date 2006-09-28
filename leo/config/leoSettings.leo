@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="338" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="71" left="252" height="544" width="959"/>
+	<global_window_position top="71" left="252" height="525" width="959"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -45,7 +45,7 @@
 <v t="ekr.20060112104823"><vh>main</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
@@ -265,12 +265,12 @@
 </v>
 <v t="ekr.20060127050605"><vh>@int max_undo_stack_size = 50</vh></v>
 </v>
-<v t="ekr.20060122105527.3"><vh>Keyboard and minibuffer options</vh>
+<v t="ekr.20060122105527.3" a="E"><vh>Keyboard and minibuffer options</vh>
 <v t="ekr.20060215094146"><vh>@@bool ignore_caps_lock = True</vh></v>
 <v t="ekr.20060216170801"><vh>@bool enable_calltips = True</vh></v>
 <v t="ekr.20060215102141"><vh>@bool ignore_unbound_non_ascii_keys = True</vh></v>
 <v t="ekr.20060122105527.8"><vh>@bool showHelpWhenEnteringModes = True</vh></v>
-<v t="ekr.20060926160657"><vh>@bool stayInTreeAfterEditHeadline = True</vh></v>
+<v t="ekr.20060926160657" a="TV"><vh>@bool stayInTreeAfterEditHeadline = False</vh></v>
 <v t="ekr.20060122105527.7" annotate="7d71002e"><vh>@bool stayInTreeAfterSelect = True</vh></v>
 <v t="ekr.20060215104345"><vh>@bool swap_mac_keys = False</vh></v>
 <v t="ekr.20060627065953"><vh>@bool trace_bind_key_exceptions = True</vh></v>
@@ -692,7 +692,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060603215208" a="V"><vh>@keys EKR bindings: Emacs keys + modes</vh>
+<v t="ekr.20060603215208"><vh>@keys EKR bindings: Emacs keys + modes</vh>
 <v t="ekr.20060925053958"><vh>Bindings (alpha order)</vh></v>
 <v t="ekr.20060923115440"><vh>Changes made</vh></v>
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
@@ -6301,7 +6301,9 @@ scroll-down-extend-selection        ! text = Shift-PageDn
 scroll-up-extend-selection          ! text = Shift-PageUp
 </t>
 <t tx="ekr.20060926160657">True: Focus moves to outline pane after editing a headline.
-False: Focus moves to body pane after editing a headline.</t>
+
+False: (legacy operation) Focus moves to body pane after editing a headline.
+       </t>
 <t tx="ekr.20060926161207.1"></t>
 <t tx="ekr.20060926161207.2">@nocolor
 

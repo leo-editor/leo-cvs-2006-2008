@@ -1,6 +1,411 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
+#@+node:ekr.20060914102842:To do before 4.4.2 beta 1
+#@+node:ekr.20060927100500.1:Fix bugs in new colorizer
+@nocolor
+
+- Does not restore selection after indent/undent commands.
+#@nonl
+#@-node:ekr.20060927100500.1:Fix bugs in new colorizer
+#@+node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
+#@-node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
+#@+node:ekr.20060914103242:Document new plugins
+leo_to_rtf
+leo_to_html
+leoOPML
+paste_as_headlines
+slideshow
+word_count
+
+remove zodb docs
+#@nonl
+#@-node:ekr.20060914103242:Document new plugins
+#@+node:ekr.20060912091922:Test all plugins
+** Create separate @test node for each plugin.
+#@nonl
+#@+node:ekr.20060914085747:Have plugin-specific unit tests
+chapter_hoist.py
+leoOPML.py
+leo_to_html.py
+leo_to_rtf.py
+mod_scripting.py
+paste_as_headlines.py
+open_with.py
+rst3.py
+UNL.py
+#@-node:ekr.20060914085747:Have plugin-specific unit tests
+#@+node:ekr.20060914130034:Tested, no unit tests
+# No unit tests needed: these are always active.
+plugins_manager.py
+plugins_menu.py
+
+# Unit tests needed...
+word_count.py
+zodb.py
+#@nonl
+#@-node:ekr.20060914130034:Tested, no unit tests
+#@+node:ekr.20060914090250:To test next
+__jEdit_colorizer__.py
+
+
+vim.py
+word_export.py
+xemacs.py
+#@nonl
+#@-node:ekr.20060914090250:To test next
+#@+node:ekr.20060914085747.1:To test
+ConceptualSort.py
+EditAttributes.py
+FileActions.py
+Library.py
+TabWindow.py
+UASearch.py
+URLloader.py
+UniversalScrolling.py
+
+add_directives.py
+arrows.py
+at_view.py
+autotrees.py
+base64Packager.py
+bibtex.py
+cleo.py
+color_markup.py
+datenodes.py
+detect_urls.py
+dyna_menu.py
+fastGotoNode.py
+footprints.py
+groupOperations.py
+hoist.py
+image.py
+import_cisco_config.py
+leoupdate.py
+macros.py
+mod_autosave.py
+mod_http.py
+mod_labels.py
+mod_read_dir_outline.py
+mod_shadow.py
+nav_buttons.py
+newButtons.py
+niceNosent.py
+nodebar.py
+nodenavigator.py
+open_shell.py
+pie_menus.py
+pretty_print.py
+print_cp.py
+rClick.py
+read_only_nodes.py
+rowcol.py
+run_nodes.py
+scheduler.py
+scripts_menu.py
+searchbox.py
+shortcut_button.py
+slideshow.py
+table.py
+templates.py
+trace_tags.py
+xcc_nodes.py
+xsltWithNodes.py
+#@nonl
+#@-node:ekr.20060914085747.1:To test
+#@-node:ekr.20060912091922:Test all plugins
+#@-node:ekr.20060914102842:To do before 4.4.2 beta 1
+#@+node:ekr.20060927172440:To do before 4.4.2 final
+#@+node:ekr.20060927073203:Fix rst3 problem
+http://sourceforge.net/forum/message.php?msg_id=3932641
+By: craigj3
+
+Has anybody got the rst3 pluging to handle rst Block Quotes in a single node?
+
+They are indented paragraphs that should then be rendered indented.
+
+Looking at the intermediate file, it would appear that LEO *always* outputs
+the first line of a node without indentation even if it is indented in the node.
+#@-node:ekr.20060927073203:Fix rst3 problem
+#@+node:ekr.20060927173836.7:The default script button buttons should create press-x-button commands
+#@-node:ekr.20060927173836.7:The default script button buttons should create press-x-button commands
+#@+node:ekr.20060915175024:Maintain vertical node position?
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3916155
+
+When a node is among several other nodes at the same level of hierarchy, which
+are all children of a node, and the "MOVE LFET" command is executed, the node
+does move left in the outline hierarchy, but it also move down to just before
+the next node at the higher hierarchy level - the level to which it is moving
+left.
+#@nonl
+#@-node:ekr.20060915175024:Maintain vertical node position?
+#@+node:ekr.20060920190138:Document tnodeList, vnodeList and make better unit tests
+#@-node:ekr.20060920190138:Document tnodeList, vnodeList and make better unit tests
+#@+node:ekr.20060920150119:Fix undo problems (important)
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3924236
+
+Clear the * mark if all changes have been done.
+There are serious problems with undoing and redoing text.
+#@nonl
+#@-node:ekr.20060920150119:Fix undo problems (important)
+#@+node:ekr.20060927173836.1:Disable calltips in @nocolor sections
+@nocolor
+
+Show calltips treats the node as code, and that can have very weird effects in @nocolor sections.
+#@nonl
+#@-node:ekr.20060927173836.1:Disable calltips in @nocolor sections
+#@+node:ekr.20060824112937.1:Fix unicode problem with double-click word Stéphane
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3882798
+By: jujusl
+
+When I double-click in the body on a word with accents, only a part of the word
+is selected (up to the accentuated char, forward and backward)
+
+This does not happen in headlines.
+
+I saw that using Windows ; I will test it on Linux machine.
+
+Maybe is it a Tk problem, may be not. You'll tell me...
+
+Stéphane
+
+@color
+#@nonl
+#@+node:ekr.20051218121447:moveWordHelper
+def moveWordHelper (self,event,extend,forward):
+
+    '''This function moves the cursor to the next word, direction dependent on the way parameter'''
+
+    c = self.c ; w = event.widget
+    if not g.app.gui.isTextWidget(w): return
+    
+    c.widgetWantsFocus(w)
+    s = w.get('1.0','end') ; n = len(s)
+
+    def toGui (i): return g.app.gui.toGuiIndex(s,w,i)
+    def toPython (i): return g.app.gui.toPythonIndex(s,w,i)
+    def isWordChar(ch): return ch in (string.letters + string.digits + '_')
+
+    i = toPython(w.index('insert'))
+    delta = g.choose(forward,1,-1)
+    
+    if not forward: i -= 1
+    while 0 <= i < n and isWordChar(s[i]):
+        i += delta
+    while 0 <= i < n and not isWordChar(s[i]):
+        i += delta
+    if not forward: i += 1
+
+    self.moveToHelper(event,toGui(i),extend)
+#@nonl
+#@-node:ekr.20051218121447:moveWordHelper
+#@+node:ekr.20060131084938:masterDoubleClickHandler
+def masterDoubleClickHandler (self,event,func=None):
+    
+    k = self ; c = k.c ; w = event and event.widget
+    
+    if c.config.getBool('trace_masterClickHandler'):
+        g.trace(c.widget_name(w),func and func.__name__)
+
+    if event and func:
+        # Don't event *think* of overriding this.
+        return func(event)
+    else:
+        i = w.index("@%d,%d" % (event.x,event.y))
+        start = w.index(i+' wordstart')
+        end = w.index(i+' wordend')
+        g.app.gui.setTextSelection(w,start,end)
+        return 'break'
+#@-node:ekr.20060131084938:masterDoubleClickHandler
+#@+node:ekr.20031218072017.3978:OnBodyDoubleClick (Events)
+def OnBodyDoubleClick (self,event=None):
+
+    try:
+        c = self.c ; p = c.currentPosition()
+        if not g.doHook("bodydclick1",c=c,p=p,v=p,event=event):
+            if event: # Prevent wandering insertion point.
+                w = self.bodyCtrl
+                index = w.index("@%d,%d" % (event.x, event.y)) # Find where we clicked.
+                start = w.index(index + " wordstart")
+                end   = w.index(index + " wordend")
+                # g.trace(index,start,end,w.get('1.0','end'))
+                self.body.setTextSelection(start,end)
+        g.doHook("bodydclick2",c=c,p=p,v=p,event=event)
+    except:
+        g.es_event_exception("bodydclick")
+        
+    return "break" # Restore this to handle proper double-click logic.
+#@-node:ekr.20031218072017.3978:OnBodyDoubleClick (Events)
+#@+node:ekr.20060203114017:f.setMinibufferBindings
+def setMinibufferBindings (self):
+    
+    '''Create bindings for the minibuffer..'''
+    
+    f = self ; c = f.c ; k = c.k ; t = f.miniBufferWidget
+    
+    if not c.useTextMinibuffer: return
+    
+    for kind,callback in (
+        ('<Key>',           k.masterKeyHandler),
+        ('<Button-1>',      k.masterClickHandler),
+        ('<Button-3>',      k.masterClick3Handler),
+        ('<Double-1>',      k.masterDoubleClickHandler),
+        ('<Double-3>',      k.masterDoubleClick3Handler),
+    ):
+        t.bind(kind,callback)
+
+    if 0:
+        if sys.platform.startswith('win'):
+            # Support Linux middle-button paste easter egg.
+            t.bind("<Button-2>",frame.OnPaste)
+#@-node:ekr.20060203114017:f.setMinibufferBindings
+#@+node:ekr.20040803072955.87:onHeadlineClick
+def onHeadlineClick (self,event,p=None):
+    
+    c = self.c ; w = event.widget
+    
+    if not p:
+        try:
+            p = w.leo_position
+        except AttributeError:
+            g.trace('*'*20,'oops')
+    if not p: return 'break'
+        
+    # g.trace(p.headString())
+    
+    c.setLog()
+
+    try:
+        if not g.doHook("headclick1",c=c,p=p,v=p,event=event):
+            returnVal = self.OnActivateHeadline(p)
+        g.doHook("headclick2",c=c,p=p,v=p,event=event)
+    except:
+        returnVal = 'break'
+        g.es_event_exception("headclick")
+
+    # 'continue' is sometimes correct here.
+    # 'break' would make it impossible to unselect the headline text.
+    # g.trace('returnVal',returnVal,'stayInTree',self.stayInTree)
+    return returnVal
+#@-node:ekr.20040803072955.87:onHeadlineClick
+#@+node:ekr.20040803072955.105:OnActivateHeadline (tkTree)
+def OnActivateHeadline (self,p,event=None):
+    
+    '''Handle common process when any part of a headline is clicked.'''
+    
+    # g.trace(p.headString())
+    
+    returnVal = 'break' # Default: do nothing more.
+
+    try:
+        c = self.c
+        c.setLog()
+        << activate this window >>
+    except:
+        g.es_event_exception("activate tree")
+        
+    return returnVal
+#@+node:ekr.20040803072955.106:<< activate this window >>
+if p == c.currentPosition():
+    # g.trace("is current")
+    # The *second* click in the headline starts editing.
+    if self.active:
+        self.editLabel(p)
+        returnVal = 'continue'
+    else:
+        # Set the focus immediately.  This is essential for proper editing.
+        c.treeWantsFocusNow()
+        returnVal = 'break'
+else:
+    # g.trace("not current")
+    self.select(p)
+    if c.frame.findPanel:
+        c.frame.findPanel.handleUserClick(p)
+    if p.v.t.insertSpot != None:
+        c.frame.bodyCtrl.mark_set("insert",p.v.t.insertSpot)
+        c.frame.bodyCtrl.see(p.v.t.insertSpot)
+    else:
+        c.frame.bodyCtrl.mark_set("insert","1.0")
+        
+    if self.stayInTree:
+        c.treeWantsFocusNow()
+    else:
+        c.bodyWantsFocusNow()
+    returnVal = 'break'
+
+# The next click *in the same headline* will start editing.
+self.active = True
+#@-node:ekr.20040803072955.106:<< activate this window >>
+#@-node:ekr.20040803072955.105:OnActivateHeadline (tkTree)
+#@+node:ekr.20051024102724:tkTtree.setBindings
+def setBindings (self):
+    
+    '''Create master bindings for all headlines.'''
+    
+    tree = self ; k = self.c.k
+    
+    << make bindings for a common binding widget >>
+
+    self.canvas.bind('<Key>',k.masterKeyHandler)
+    self.canvas.bind('<Button-1>',self.onTreeClick)
+
+    << make bindings for tagged items on the canvas >>
+    << create baloon bindings for tagged items on the canvas >>
+#@+node:ekr.20060131173440:<< make bindings for a common binding widget >>
+self.bindingWidget = t = Tk.Text(self.canvas,name='bindingWidget')
+
+t.bind('<Key>',k.masterKeyHandler)
+
+table = (
+    ('<Button-1>',       k.masterClickHandler,          tree.onHeadlineClick),
+    ('<Button-3>',       k.masterClick3Handler,         tree.onHeadlineRightClick),
+    ('<Double-Button-1>',k.masterDoubleClickHandler,    tree.onHeadlineClick),
+    ('<Double-Button-3>',k.masterDoubleClick3Handler,   tree.onHeadlineRightClick),
+)
+
+for a,handler,func in table:
+    def treeBindingCallback(event,handler=handler,func=func):
+        return handler(event,func)
+    t.bind(a,treeBindingCallback)
+    
+self.textBindings = t.bindtags()
+#@-node:ekr.20060131173440:<< make bindings for a common binding widget >>
+#@+node:ekr.20060131173440.2:<< make bindings for tagged items on the canvas >>
+where = g.choose(self.expanded_click_area,'clickBox','plusBox')
+
+table = (
+    (where,    '<Button-1>',self.onClickBoxClick),
+    ('iconBox','<Button-1>',self.onIconBoxClick),
+    ('iconBox','<Double-1>',self.onIconBoxDoubleClick),
+    ('iconBox','<Button-3>',self.onIconBoxRightClick),
+    ('iconBox','<Double-3>',self.onIconBoxRightClick),
+    ('iconBox','<B1-Motion>',self.onDrag),
+    ('iconBox','<Any-ButtonRelease-1>',self.onEndDrag),
+)
+for tag,event,callback in table:
+    self.canvas.tag_bind(tag,event,callback)
+#@-node:ekr.20060131173440.2:<< make bindings for tagged items on the canvas >>
+#@+node:ekr.20060307080642:<< create baloon bindings for tagged items on the canvas >>
+if 0: # I find these very irritating.
+    for tag,text in (
+        # ('plusBox','plusBox'),
+        ('iconBox','Icon Box'),
+        ('selectBox','Click to select'),
+        ('clickBox','Click to expand or contract'),
+        # ('textBox','Headline'),
+    ):
+        # A fairly long wait is best.
+        balloon = Pmw.Balloon(self.canvas,initwait=700)
+        balloon.tagbind(self.canvas,tag,balloonHelp=text)
+#@-node:ekr.20060307080642:<< create baloon bindings for tagged items on the canvas >>
+#@-node:ekr.20051024102724:tkTtree.setBindings
+#@-node:ekr.20060824112937.1:Fix unicode problem with double-click word Stéphane
+#@-node:ekr.20060927172440:To do before 4.4.2 final
 #@+node:ekr.20060822174843:Most important
 #@+node:ekr.20050831131028:opml
 #@+node:ekr.20050831131452:Original post
@@ -485,11 +890,7 @@ other?
 #@-node:ekr.20060601073503:Postings
 #@-node:ekr.20051202094427:Resolve cvs conflicts
 #@-node:ekr.20060822174843:Most important
-#@+node:ekr.20060531161030:To do: 4.4.x
-#@+node:ekr.20060822162521:Make headlines scroll
-Limit the with of the headline to the width of the outline pane.
-#@nonl
-#@-node:ekr.20060822162521:Make headlines scroll
+#@+node:ekr.20060927173836.3:New & improved commands
 #@+node:ekr.20060628103226:Finish emacs commands
 #@+node:ekr.20060628103226.2:Alt-x handlers should add to lossage
 #@-node:ekr.20060628103226.2:Alt-x handlers should add to lossage
@@ -776,6 +1177,32 @@ def zapToCharacter (self,event):
 #@+node:ekr.20060628103226.3:Make sure repeat counts work on basic editing commands
 #@-node:ekr.20060628103226.3:Make sure repeat counts work on basic editing commands
 #@-node:ekr.20060628103226:Finish emacs commands
+#@+node:ekr.20060914090030:add sort-lines-ignoring-case commad
+#@-node:ekr.20060914090030:add sort-lines-ignoring-case commad
+#@+node:ekr.20060927174531:New gui commands
+- delete-completion-tab (somewhat useful for cycling focus)
+#@nonl
+#@-node:ekr.20060927174531:New gui commands
+#@+node:ekr.20060927173836.4:New move outlihe commands
+- move-to-last-sibling
+- move-to-first-sibling
+- move-outline-all-the-way-left
+#@nonl
+#@-node:ekr.20060927173836.4:New move outlihe commands
+#@+node:ekr.20060927173836.5:Repeat counts for cursor moves
+#@-node:ekr.20060927173836.5:Repeat counts for cursor moves
+#@+node:ekr.20060927173836:Better print-binding command
+# Separate sections for single-character Ctrl and Alt keys.
+#@nonl
+#@-node:ekr.20060927173836:Better print-binding command
+#@+node:ekr.20060927173836.2:Find next doesn't find any more if regexp matches an empty string.
+#@-node:ekr.20060927173836.2:Find next doesn't find any more if regexp matches an empty string.
+#@-node:ekr.20060927173836.3:New & improved commands
+#@+node:ekr.20060531161030:To do: 4.4.x
+#@+node:ekr.20060822162521:Make headlines scroll
+Limit the with of the headline to the width of the outline pane.
+#@nonl
+#@-node:ekr.20060822162521:Make headlines scroll
 #@+node:ekr.20060724071225:Look at Paste Node As Clone
 @nocolor
 
@@ -1269,253 +1696,6 @@ def getExistingVnode (self,tref,headline):
 #@-node:ekr.20040326063413:getExistingVnode
 #@-node:ekr.20031218072017.1566:getVnode & helpers
 #@-node:ekr.20060724071225:Look at Paste Node As Clone
-#@+node:ekr.20060824112937.1:Fix unicode problem with double-click word Stéphane
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3882798
-By: jujusl
-
-When I double-click in the body on a word with accents, only a part of the word
-is selected (up to the accentuated char, forward and backward)
-
-This does not happen in headlines.
-
-I saw that using Windows ; I will test it on Linux machine.
-
-Maybe is it a Tk problem, may be not. You'll tell me...
-
-Stéphane
-
-@color
-#@nonl
-#@+node:ekr.20051218121447:moveWordHelper
-def moveWordHelper (self,event,extend,forward):
-
-    '''This function moves the cursor to the next word, direction dependent on the way parameter'''
-
-    c = self.c ; w = event.widget
-    if not g.app.gui.isTextWidget(w): return
-    
-    c.widgetWantsFocus(w)
-    s = w.get('1.0','end') ; n = len(s)
-
-    def toGui (i): return g.app.gui.toGuiIndex(s,w,i)
-    def toPython (i): return g.app.gui.toPythonIndex(s,w,i)
-    def isWordChar(ch): return ch in (string.letters + string.digits + '_')
-
-    i = toPython(w.index('insert'))
-    delta = g.choose(forward,1,-1)
-    
-    if not forward: i -= 1
-    while 0 <= i < n and isWordChar(s[i]):
-        i += delta
-    while 0 <= i < n and not isWordChar(s[i]):
-        i += delta
-    if not forward: i += 1
-
-    self.moveToHelper(event,toGui(i),extend)
-#@nonl
-#@-node:ekr.20051218121447:moveWordHelper
-#@+node:ekr.20060131084938:masterDoubleClickHandler
-def masterDoubleClickHandler (self,event,func=None):
-    
-    k = self ; c = k.c ; w = event and event.widget
-    
-    if c.config.getBool('trace_masterClickHandler'):
-        g.trace(c.widget_name(w),func and func.__name__)
-
-    if event and func:
-        # Don't event *think* of overriding this.
-        return func(event)
-    else:
-        i = w.index("@%d,%d" % (event.x,event.y))
-        start = w.index(i+' wordstart')
-        end = w.index(i+' wordend')
-        g.app.gui.setTextSelection(w,start,end)
-        return 'break'
-#@-node:ekr.20060131084938:masterDoubleClickHandler
-#@+node:ekr.20031218072017.3978:OnBodyDoubleClick (Events)
-def OnBodyDoubleClick (self,event=None):
-
-    try:
-        c = self.c ; p = c.currentPosition()
-        if not g.doHook("bodydclick1",c=c,p=p,v=p,event=event):
-            if event: # Prevent wandering insertion point.
-                w = self.bodyCtrl
-                index = w.index("@%d,%d" % (event.x, event.y)) # Find where we clicked.
-                start = w.index(index + " wordstart")
-                end   = w.index(index + " wordend")
-                # g.trace(index,start,end,w.get('1.0','end'))
-                self.body.setTextSelection(start,end)
-        g.doHook("bodydclick2",c=c,p=p,v=p,event=event)
-    except:
-        g.es_event_exception("bodydclick")
-        
-    return "break" # Restore this to handle proper double-click logic.
-#@-node:ekr.20031218072017.3978:OnBodyDoubleClick (Events)
-#@+node:ekr.20060203114017:f.setMinibufferBindings
-def setMinibufferBindings (self):
-    
-    '''Create bindings for the minibuffer..'''
-    
-    f = self ; c = f.c ; k = c.k ; t = f.miniBufferWidget
-    
-    if not c.useTextMinibuffer: return
-    
-    for kind,callback in (
-        ('<Key>',           k.masterKeyHandler),
-        ('<Button-1>',      k.masterClickHandler),
-        ('<Button-3>',      k.masterClick3Handler),
-        ('<Double-1>',      k.masterDoubleClickHandler),
-        ('<Double-3>',      k.masterDoubleClick3Handler),
-    ):
-        t.bind(kind,callback)
-
-    if 0:
-        if sys.platform.startswith('win'):
-            # Support Linux middle-button paste easter egg.
-            t.bind("<Button-2>",frame.OnPaste)
-#@-node:ekr.20060203114017:f.setMinibufferBindings
-#@+node:ekr.20040803072955.87:onHeadlineClick
-def onHeadlineClick (self,event,p=None):
-    
-    c = self.c ; w = event.widget
-    
-    if not p:
-        try:
-            p = w.leo_position
-        except AttributeError:
-            g.trace('*'*20,'oops')
-    if not p: return 'break'
-        
-    # g.trace(p.headString())
-    
-    c.setLog()
-
-    try:
-        if not g.doHook("headclick1",c=c,p=p,v=p,event=event):
-            returnVal = self.OnActivateHeadline(p)
-        g.doHook("headclick2",c=c,p=p,v=p,event=event)
-    except:
-        returnVal = 'break'
-        g.es_event_exception("headclick")
-
-    # 'continue' is sometimes correct here.
-    # 'break' would make it impossible to unselect the headline text.
-    # g.trace('returnVal',returnVal,'stayInTree',self.stayInTree)
-    return returnVal
-#@-node:ekr.20040803072955.87:onHeadlineClick
-#@+node:ekr.20040803072955.105:OnActivateHeadline (tkTree)
-def OnActivateHeadline (self,p,event=None):
-    
-    '''Handle common process when any part of a headline is clicked.'''
-    
-    # g.trace(p.headString())
-    
-    returnVal = 'break' # Default: do nothing more.
-
-    try:
-        c = self.c
-        c.setLog()
-        << activate this window >>
-    except:
-        g.es_event_exception("activate tree")
-        
-    return returnVal
-#@+node:ekr.20040803072955.106:<< activate this window >>
-if p == c.currentPosition():
-    # g.trace("is current")
-    # The *second* click in the headline starts editing.
-    if self.active:
-        self.editLabel(p)
-        returnVal = 'continue'
-    else:
-        # Set the focus immediately.  This is essential for proper editing.
-        c.treeWantsFocusNow()
-        returnVal = 'break'
-else:
-    # g.trace("not current")
-    self.select(p)
-    if c.frame.findPanel:
-        c.frame.findPanel.handleUserClick(p)
-    if p.v.t.insertSpot != None:
-        c.frame.bodyCtrl.mark_set("insert",p.v.t.insertSpot)
-        c.frame.bodyCtrl.see(p.v.t.insertSpot)
-    else:
-        c.frame.bodyCtrl.mark_set("insert","1.0")
-        
-    if self.stayInTree:
-        c.treeWantsFocusNow()
-    else:
-        c.bodyWantsFocusNow()
-    returnVal = 'break'
-
-# The next click *in the same headline* will start editing.
-self.active = True
-#@-node:ekr.20040803072955.106:<< activate this window >>
-#@-node:ekr.20040803072955.105:OnActivateHeadline (tkTree)
-#@+node:ekr.20051024102724:tkTtree.setBindings
-def setBindings (self):
-    
-    '''Create master bindings for all headlines.'''
-    
-    tree = self ; k = self.c.k
-    
-    << make bindings for a common binding widget >>
-
-    self.canvas.bind('<Key>',k.masterKeyHandler)
-    self.canvas.bind('<Button-1>',self.onTreeClick)
-
-    << make bindings for tagged items on the canvas >>
-    << create baloon bindings for tagged items on the canvas >>
-#@+node:ekr.20060131173440:<< make bindings for a common binding widget >>
-self.bindingWidget = t = Tk.Text(self.canvas,name='bindingWidget')
-
-t.bind('<Key>',k.masterKeyHandler)
-
-table = (
-    ('<Button-1>',       k.masterClickHandler,          tree.onHeadlineClick),
-    ('<Button-3>',       k.masterClick3Handler,         tree.onHeadlineRightClick),
-    ('<Double-Button-1>',k.masterDoubleClickHandler,    tree.onHeadlineClick),
-    ('<Double-Button-3>',k.masterDoubleClick3Handler,   tree.onHeadlineRightClick),
-)
-
-for a,handler,func in table:
-    def treeBindingCallback(event,handler=handler,func=func):
-        return handler(event,func)
-    t.bind(a,treeBindingCallback)
-    
-self.textBindings = t.bindtags()
-#@-node:ekr.20060131173440:<< make bindings for a common binding widget >>
-#@+node:ekr.20060131173440.2:<< make bindings for tagged items on the canvas >>
-where = g.choose(self.expanded_click_area,'clickBox','plusBox')
-
-table = (
-    (where,    '<Button-1>',self.onClickBoxClick),
-    ('iconBox','<Button-1>',self.onIconBoxClick),
-    ('iconBox','<Double-1>',self.onIconBoxDoubleClick),
-    ('iconBox','<Button-3>',self.onIconBoxRightClick),
-    ('iconBox','<Double-3>',self.onIconBoxRightClick),
-    ('iconBox','<B1-Motion>',self.onDrag),
-    ('iconBox','<Any-ButtonRelease-1>',self.onEndDrag),
-)
-for tag,event,callback in table:
-    self.canvas.tag_bind(tag,event,callback)
-#@-node:ekr.20060131173440.2:<< make bindings for tagged items on the canvas >>
-#@+node:ekr.20060307080642:<< create baloon bindings for tagged items on the canvas >>
-if 0: # I find these very irritating.
-    for tag,text in (
-        # ('plusBox','plusBox'),
-        ('iconBox','Icon Box'),
-        ('selectBox','Click to select'),
-        ('clickBox','Click to expand or contract'),
-        # ('textBox','Headline'),
-    ):
-        # A fairly long wait is best.
-        balloon = Pmw.Balloon(self.canvas,initwait=700)
-        balloon.tagbind(self.canvas,tag,balloonHelp=text)
-#@-node:ekr.20060307080642:<< create baloon bindings for tagged items on the canvas >>
-#@-node:ekr.20051024102724:tkTtree.setBindings
-#@-node:ekr.20060824112937.1:Fix unicode problem with double-click word Stéphane
 #@-node:ekr.20060531161030:To do: 4.4.x
 #@+node:ekr.20060527164612:Important 1-2 day projects
 #@+node:ekr.20060531161030.1:Make body editors persistant
@@ -1772,17 +1952,6 @@ def newOpen( self,file,fileName,readAtFileNodesFlag=True,silent=False):
 #@nonl
 #@-node:ekr.20050428063105:newOpen (From chapters.py)
 #@-node:ekr.20031218072017.801:Support .leo.gz or .leo.zip files
-#@+node:ekr.20060603184747:New commands for mouseless Leo
-@nocolor
-
-- Repeat counts for cursor moves.
-
-- move-to-last-sibling, move-to-first-sibling, Alt-1, Alt-9?
-
-
-@color
-#@nonl
-#@-node:ekr.20060603184747:New commands for mouseless Leo
 #@+node:ekr.20060530130736.2:Customize Open With menu without writing code
 http://sourceforge.net/forum/message.php?msg_id=3737745
 
