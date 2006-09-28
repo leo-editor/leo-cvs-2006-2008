@@ -4,14 +4,6 @@
 #@+node:ekr.20060914102842:To do before 4.4.2 beta 1
 #@+node:ekr.20060928090038:Document myLeoSettings.leo
 #@-node:ekr.20060928090038:Document myLeoSettings.leo
-#@+node:ekr.20060927100500.1:Fix bugs in new colorizer
-@nocolor
-
-- Does not restore selection after indent/undent commands.
-#@nonl
-#@-node:ekr.20060927100500.1:Fix bugs in new colorizer
-#@+node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
-#@-node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
 #@+node:ekr.20060914103242:Document new plugins
 leo_to_rtf
 leo_to_html
@@ -23,6 +15,8 @@ word_count
 remove zodb docs
 #@nonl
 #@-node:ekr.20060914103242:Document new plugins
+#@-node:ekr.20060914102842:To do before 4.4.2 beta 1
+#@+node:ekr.20060927172440:To do before 4.4.2 final
 #@+node:ekr.20060912091922:Test all plugins
 ** Create separate @test node for each plugin.
 #@nonl
@@ -116,8 +110,16 @@ xsltWithNodes.py
 #@nonl
 #@-node:ekr.20060914085747.1:To test
 #@-node:ekr.20060912091922:Test all plugins
-#@-node:ekr.20060914102842:To do before 4.4.2 beta 1
-#@+node:ekr.20060927172440:To do before 4.4.2 final
+#@+node:ekr.20060928111002:Make showing the Run Script button optional
+#@-node:ekr.20060928111002:Make showing the Run Script button optional
+#@+node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
+#@-node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
+#@+node:ekr.20060927100500.1:Fix bugs in new colorizer
+@nocolor
+
+- Does not restore selection after indent/undent commands.
+#@nonl
+#@-node:ekr.20060927100500.1:Fix bugs in new colorizer
 #@+node:ekr.20060927073203:Fix rst3 problem
 http://sourceforge.net/forum/message.php?msg_id=3932641
 By: craigj3
