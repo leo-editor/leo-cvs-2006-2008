@@ -43,7 +43,7 @@ http://webpages.charter.net/edreamleo/rstplugin3.html
 
 from __future__ import generators # To make this plugin work with Python 2.2.
 
-__version__ = '1.17'
+__version__ = '1.18'
 
 #@<< imports >>
 #@+node:ekr.20050805162550.2:<< imports >>
@@ -128,6 +128,7 @@ except ImportError:
 # - Support show_headlines in doc-only mode.
 # - .txt files are now written to default_path directory, just like special 
 # files.
+# 1.18 EKR: Fixed bug: leading indentation in a node is now preserved.
 #@-at
 #@nonl
 #@-node:ekr.20050805162550.3:<< change log >>
@@ -1345,8 +1346,8 @@ class rstClass:
             if self.getOption('generate_rst') and self.getOption('use_alternate_code_block'):
                 lines = self.replaceCodeBlockDirectives(lines)
     
-        s = '\n'.join(lines).strip()
-        if s:
+        s = '\n'.join(lines)
+        if s.strip():
             self.write('%s\n\n' % s)
     #@nonl
     #@+node:ekr.20050811150541:handleCodeMode & helper
