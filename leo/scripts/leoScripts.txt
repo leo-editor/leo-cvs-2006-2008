@@ -9071,6 +9071,72 @@ def update (self):
 #@-node:update
 #@-node:class updateClass
 #@-node:updateSettings
+#@+node:zodb get/put scripts
+#@+node:@@button zodb-get-tree
+name = c.config.getString('zodb_storage_file')
+db = g.init_zodb(name)
+connection = db.open()
+try:
+    fileName = c.fileName()
+    root = connection.root()
+    v = root.get(fileName)
+    if v:
+        g.es_print('get-tree: %s' % repr(v))
+    else:
+        g.es_print('get-tree failed: %s' % fileName)
+finally:
+    get_transaction().commit()
+    connection.close()
+#@nonl
+#@-node:@@button zodb-get-tree
+#@+node:@@button zodb-get-node
+name = c.config.getString('zodb_storage_file')
+db = g.init_zodb(name)
+connection = db.open()
+try:
+    fileName = c.fileName()
+    root = connection.root()
+    key = 'vnode: %s' % p.headString()
+    v = root.get(key)
+    if v:
+        g.es_print('get-node %s: %s' % (key,repr(v)))
+    else:
+        g.es_print('get-node %s failed.' % key)
+finally:
+    get_transaction().commit()
+    connection.close()
+#@nonl
+#@-node:@@button zodb-get-node
+#@+node:@@button zodb-put-tree
+name = c.config.getString('zodb_storage_file')
+db = g.init_zodb(name)
+connection = db.open()
+try:
+    fileName = c.fileName()
+    root = connection.root()
+    root[fileName] = c.rootPosition().v
+finally:
+    get_transaction().commit()
+    connection.close()
+#@nonl
+#@-node:@@button zodb-put-tree
+#@+node:@@button zodb-put-node
+name = c.config.getString('zodb_storage_file')
+db = g.init_zodb(name)
+connection = db.open()
+try:
+    fileName = c.fileName()
+    root = connection.root()
+    v = p.v.detach()
+    key = 'vnode: %s' % v.headString()
+    g.es_print('put-node %s :%s' % (v.headString(),repr(v)))
+    root[key] = v
+finally:
+    get_transaction().commit()
+    connection.close()
+#@nonl
+#@-node:@@button zodb-put-node
+#@-node:zodb get/put scripts
 #@-node:Important
 #@+node:Others
 #@+node:AutoIt script from e

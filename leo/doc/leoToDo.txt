@@ -1,21 +1,6 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
-#@+node:ekr.20060914102842:To do before 4.4.2 beta 1
-#@+node:ekr.20060928090038:Document myLeoSettings.leo
-#@-node:ekr.20060928090038:Document myLeoSettings.leo
-#@+node:ekr.20060914103242:Document new plugins
-leo_to_rtf
-leo_to_html
-leoOPML
-paste_as_headlines
-slideshow
-word_count
-
-remove zodb docs
-#@nonl
-#@-node:ekr.20060914103242:Document new plugins
-#@-node:ekr.20060914102842:To do before 4.4.2 beta 1
 #@+node:ekr.20060927172440:To do before 4.4.2 final
 #@+node:ekr.20060912091922:Test all plugins
 ** Create separate @test node for each plugin.
@@ -409,6 +394,8 @@ if 0: # I find these very irritating.
 #@-node:ekr.20060307080642:<< create baloon bindings for tagged items on the canvas >>
 #@-node:ekr.20051024102724:tkTtree.setBindings
 #@-node:ekr.20060824112937.1:Fix unicode problem with double-click word Stéphane
+#@+node:ekr.20060928194335:Fix bug: closing a window after removing a script button can crash
+#@-node:ekr.20060928194335:Fix bug: closing a window after removing a script button can crash
 #@-node:ekr.20060927172440:To do before 4.4.2 final
 #@+node:ekr.20060822174843:Most important
 #@+node:ekr.20050831131028:opml

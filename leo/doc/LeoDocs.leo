@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="25843" clone_windows="0"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="26108" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="104" left="160" height="722" width="1021"/>
+	<global_window_position top="104" left="160" height="703" width="1021"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -46,7 +46,7 @@
 <v t="ekr.20060525110217"><vh>@@button rst-&gt;rst</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
+<v t="ekr.20040414161647"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -446,8 +446,8 @@
 <v t="ekr.20050901092232.7"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20050912125144" a="E"><vh>Chapter 12: Plugins</vh>
-<v t="ekr.20050912125144.1" a="E"><vh>@rst html\plugins.html</vh>
+<v t="ekr.20050912125144"><vh>Chapter 12: Plugins</vh>
+<v t="ekr.20050912125144.1"><vh>@rst html\plugins.html</vh>
 <v t="ekr.20050912125735"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20050912125735.868"><vh>Body pane</vh>
 <v t="ekr.20050912125735.869"><vh>arrows.py</vh></v>
@@ -471,10 +471,12 @@
 <v t="ekr.20050912125735.172"><vh>mod_read_dir_outline.py</vh></v>
 <v t="ekr.20050912125735.184"><vh>mod_timestamp.py</vh></v>
 <v t="ekr.20050912125735.186"><vh>outline_export.py</vh></v>
+<v t="ekr.20060928200600"><vh>paste_as_headlines.py</vh></v>
 <v t="ekr.20050912125735.188"><vh>pretty_print.py</vh></v>
 <v t="ekr.20050912125735.204"><vh>scheduler.py</vh></v>
 <v t="ekr.20050912125735.318"><vh>table.py</vh></v>
 <v t="ekr.20050912125735.225"><vh>templates.py</vh></v>
+<v t="ekr.20060928201227"><vh>word_cound.py</vh></v>
 </v>
 <v t="ekr.20050912125735.334"><vh>Debugging &amp;  testing</vh>
 <v t="ekr.20050912125735.335"><vh>failed_import.py</vh></v>
@@ -493,12 +495,15 @@
 <v t="ekr.20050912125735.2749"><vh>word_export.py</vh></v>
 <v t="ekr.20050912125735.2743"><vh>xemacs.py</vh></v>
 </v>
-<v t="ekr.20050912125735.2759" a="E"><vh>Files</vh>
+<v t="ekr.20050912125735.2759"><vh>Files</vh>
 <v t="ekr.20050912125735.2760"><vh>empty_leo_file.py</vh></v>
-<v t="ekr.20060920054924" a="V"><vh>leoOPML.py</vh></v>
+<v t="ekr.20060920054924"><vh>leoOPML.py</vh></v>
 <v t="ekr.20050912125735.2763"><vh>lineNumbers.py</vh></v>
 <v t="ekr.20050912125735.2768"><vh>multifile.py</vh></v>
 <v t="ekr.20050912125735.2779"><vh>niceNosent.py</vh></v>
+<v t="ekr.20060928200207.1"><vh>leoToRTF</vh></v>
+<v t="ekr.20060928200207.2"><vh>leoToHTML</vh></v>
+<v t="ekr.20060928200207.3"><vh>leoOPML</vh></v>
 </v>
 <v t="ekr.20050912125735.980"><vh>Icon and status areas</vh>
 <v t="ekr.20060601112502"><vh>chapter_hoist.py</vh></v>
@@ -526,6 +531,7 @@
 <v t="ekr.20050912125735.597"><vh>mod_labels.py</vh></v>
 <v t="ekr.20050912125735.647"><vh>read_only_nodes.py</vh></v>
 <v t="ekr.20050912125735.674"><vh>run_nodes.py</vh></v>
+<v t="ekr.20060928201227.1"><vh>slideshow.py</vh></v>
 <v t="ekr.20050912125735.694"><vh>startfile.py</vh></v>
 </v>
 <v t="ekr.20050912125735.2867"><vh>Plugins manager &amp; menu</vh>
@@ -562,9 +568,6 @@
 <v t="ekr.20050912125735.1323"><vh>UASearch.py</vh></v>
 <v t="ekr.20050912125735.1333"><vh>UniversalScrolling.py</vh></v>
 <v t="ekr.20050912125735.1342"><vh>URLloader.py</vh></v>
-</v>
-<v t="ekr.20050912125735.3944"><vh>Zope and zodb</vh>
-<v t="ekr.20050912125735.3945"><vh>zodb.py</vh></v>
 </v>
 <v t="ekr.20050912133515"><vh>@rst-no-head end stuff</vh></v>
 </v>
@@ -691,6 +694,17 @@
 </v>
 <v t="ekr.20060620094033"><vh>What's New...</vh>
 <v t="ekr.20060620141510"><vh>Patterns</vh></v>
+<v t="ekr.20060928172457"><vh>What's New in Leo 4.4.2</vh>
+<v t="ekr.20060928172457.1"><vh>@rst html\new-4-4-2.html</vh>
+<v t="ekr.20060928172457.2"><vh>@rst-no-head links</vh></v>
+<v t="ekr.20060928172457.3"><vh>New commands</vh></v>
+<v t="ekr.20060928172457.4"><vh>New features</vh></v>
+<v t="ekr.20060928172457.5"><vh>New and improved plugins</vh></v>
+<v t="ekr.20060928172457.6"><vh>New and improved settings</vh></v>
+<v t="ekr.20060928172457.7"><vh>Minor improvements</vh></v>
+<v t="ekr.20060928172457.8"><vh>@rst-no-head end stuff</vh></v>
+</v>
+</v>
 <v t="ekr.20060620094033.1"><vh>What's New in Leo 4.4.1 and 4.4.1.1</vh>
 <v t="ekr.20060620094645.310"><vh>@rst html\new-4-4-1.html</vh>
 <v t="ekr.20060621132547"><vh>@rst-no-head links</vh></v>
@@ -972,9 +986,8 @@
 <v t="ekr.20060608111953.60"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20060613075343"><vh>To do: Chapter 15: Using the scripting plugin</vh></v>
 </v>
-<v t="edream.110203163054.46"><vh>Release Notes</vh>
+<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
 <v t="edream.110203163054.117"><vh>Previous versions...</vh>
 <v t="ekr.20060206111717"><vh>Ancient...</vh>
 <v t="edream.110203163054.118"><vh>3.x...</vh>
@@ -2809,10 +2822,27 @@
 <v t="ekr.20060629083935.100"><vh>Added bracket flash settings</vh></v>
 </v>
 </v>
-</v>
-</v>
-<v t="edream.110203163054.63"><vh>Latest version</vh>
 <v t="ekr.20060903102158"><vh>4.4.1.1 final</vh></v>
+</v>
+</v>
+<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
+<v t="ekr.20060928172040" a="ETV"><vh>4.4.2 beta 1</vh>
+<v t="ekr.20060928172525.81"><vh>The 'big reorg':  vnode, tnode and position classes are independent of the rest of Leo</vh></v>
+<v t="ekr.20060928195040"><vh>New features</vh>
+<v t="ekr.20060928194633.1"><vh>myLeoSettings.leo</vh></v>
+<v t="ekr.20060928172525.195"><vh>Created simple support for ZODB databases</vh>
+<v t="ekr.20060928172525.197"><vh>Scripting using zodb</vh></v>
+</v>
+<v t="ekr.20060928172525.172"><vh>Improved help-for-command</vh></v>
+<v t="ekr.20060928172525.180"><vh>Improved  quick-find commands</vh></v>
+<v t="ekr.20060928172525.198"><vh>Improved how Leo works w/o the mousre</vh></v>
+<v t="ekr.20060928172525.237"><vh>Increased speed of arrow keys</vh></v>
+<v t="ekr.20060928172525.240"><vh>Find command now collapses nodes during searches</vh></v>
+<v t="ekr.20060928172525.252"><vh>Added support  -- comments in @url nodes</vh></v>
+<v t="ekr.20060928172525.167"><vh>Added many new commands to Cmds menu</vh></v>
+</v>
+<v t="ekr.20060928195040.1"><vh>New plugins</vh></v>
+</v>
 </v>
 </v>
 </vnodes>
@@ -20327,10 +20357,6 @@ Notes:
   None converts the @rst tree to a single reStructuredText string, as shown in @button rst-&gt;rst.
 
 - There is some support for ext='.pdf', but this is experimental code.  Expect crashes.</t>
-<t tx="ekr.20050912125735.3944"></t>
-<t tx="ekr.20050912125735.3945">An **experimental** plugin that stores all Leo outline data in a single zodb
-database. This plugin replaces the Open, Save and Revert commands with methods
-that access the zodb database.</t>
 <t tx="ekr.20050912133515">-----------------------
 
 |back| |leo| |next|</t>
@@ -26819,7 +26845,6 @@ Here is the full list of mode-related commands::
     toggle-calltips
     toggle-extend-mode
     toggle-input-state</t>
-<t tx="ekr.20060613075343"></t>
 <t tx="ekr.20060620094033"></t>
 <t tx="ekr.20060620094033.1"></t>
 <t tx="ekr.20060620094033.2">@nocolor</t>
@@ -27681,7 +27706,7 @@ or leoPluginsRef.leo if you are using cvs.</t>
 
 .. WARNING: image targets may not have upper case letters!
 
-.. _prev:   glossary.html
+.. _prev:   new-4-4-2.html
 .. _home:   front.html
 .. _next:   new-4-4.html
 
@@ -28381,8 +28406,6 @@ The default values are shown.
 
   If True, Leo reads derived files when reading .opml files.
 
-False: Do not read derived when reading .opml files.
-
 - ``@string opml_namespace = leo:com:leo-opml-version-1``
 
   The namespace urn for the xmlns attribute of ``&lt;opml&gt;`` elements.
@@ -28594,5 +28617,348 @@ In the following discussion, ``gnx`` denotes a gnx as described above.
       &lt;&lt; ref &gt;&gt; #+others
     
     This sentinel is required only when blank lines are suppressed between sentinel lines.</t>
+<t tx="ekr.20060928172040">Leo 4.4.2 beta 1                                  September 29, 2006
+
+Leo 4.4.2 beta 1 is available at:
+http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+
+Leo is a text editor, data organizer, project manager and much more. See:
+http://webpages.charter.net/edreamleo/intro.html
+
+The highlights of Leo 4.4.1:
+----------------------------
+- You can now store settings in mySettings.leo without fear of those settings
+  being changed by cvs updates or in future versions of Leo.
+- Leo's vnode and tnode classes are now completely independent of the rest of Leo.
+  Some api's have been changed.  This 'the big reorg' and may affect scripts and plugins.
+- Leo's vnode and tnode classes can optionally be compatible with ZODB databases,
+  i.e., they can optionally derive from ZODB.Persistence.Persistent.
+- The leoOPML plugin defines commands to read and write OPML files.
+- The slideshow plugin allows Leo to run slideshows defined by @slideshow and @slide nodes.
+- The leo_to_rtf and leo_to_html plugins create rtf and html files from Leo outlines.
+- Much faster navigation through the outline using Alt-arrow keys.
+- The find command now closes nodes not needed to show the node containing the present match.
+- Many new minibuffer commands now appear in the Cmds menu.
+
+Links:
+------
+Leo:      http://webpages.charter.net/edreamleo/front.html
+Home:     http://sourceforge.net/projects/leo/
+Download: http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:      http://leo.tigris.org/source/browse/leo/
+Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
+<t tx="ekr.20060928172457"></t>
+<t tx="ekr.20060928172457.1">@ @rst-options
+code_mode=False
+generate_rst=True
+http_server_support = False
+show_organizer_nodes=True
+show_headlines=True
+show_leo_directives=True
+stylesheet_path=..\doc
+write_intermediate_file = False
+verbose=True
+@c
+
+|prev| |leo| |next|
+
+##########################################
+What's New in Leo 4.4.2
+##########################################
+
+This page summarizes the changes made in Leo 4.4.2
+For full details see the release notes section in LeoDocs.leo.
+
+The main features of Leo 4.4.1 are:
+
+- Multiple editors in Leo's body pane and
+- A new colorizer plugin controlled by jEdit language description files.
+- Search commands now support regex replace patterns: \1, \2, etc.
+- Support for external debuggers: see http://webpages.charter.net/edreamleo/debuggers.html
+- The scripting plugin now creates a Debug Script button.
+- Several new commands including run-unit-test, python-help and toggle-invisibles.
+- The help-for-command commands now contains information for almost all commands.
+- A new shortcut_button plugin.
+
+.. contents::</t>
+<t tx="ekr.20060928172457.2">.. Links used in this document.
+
+.. WARNING: image targets may not have upper case letters!
+
+.. _prev:   glossary.html
+.. _home:   front.html
+.. _next:   new-4-4-1.html
+
+.. |prev| image:: arrow_lt.gif
+	:target: prev_
+
+.. |leo|  image:: leo.gif
+	:target: home_
+
+.. |next| image:: arrow_rt.gif
+    :target: next_
+</t>
+<t tx="ekr.20060928172457.3"></t>
+<t tx="ekr.20060928172457.4">New in Leo 4.4.2 b1:
+    
+- Eliminated unnecessary redraws when moving the cursor in the outline pane.</t>
+<t tx="ekr.20060928172457.5">New in Leo 4.4.2 b1:
+    
+leo_to_rtf
+leo_to_html
+leoOPML
+paste_as_headlines
+slideshow
+word_count
+</t>
+<t tx="ekr.20060928172457.6">New in Leo 4.4.2 b1</t>
+<t tx="ekr.20060928172457.7"></t>
+<t tx="ekr.20060928172457.8">-----------------------
+
+|prev| |leo| |next|</t>
+<t tx="ekr.20060928172525.81">What I did:
+    
+- Removed c argument from t, v and p ctors.
+- Removed c argument from most position methods.
+    - In particular, p.link, p.unlink, v.link and v.unlink no longer update c.currentPosition()
+    - Moved all position methods that still had a c argument to the Commands class.
+- Removed p.allNodes_iter.
+- Added c.findRootPosition and c.findRootVnode.
+- c.rootPosition now returns c.findRootPosition(c.currentPosition())
+
+As a result:
+    
+- The tnode, vnode and position classes are *completely* independent of Leo.
+  In particular, no tnode, vnode or position method gets a c argument.
+- The p.link, p.unlink, v.link and v.unlink are significantly simpler.
+- The machinery for keeping the root position up-to-date is
+  simple and confined to one place in the Commands class.</t>
+<t tx="ekr.20060928172525.167"></t>
+<t tx="ekr.20060928172525.172">It now prints the binding for the command.</t>
+<t tx="ekr.20060928172525.180">Rewrote moveWordHelper. It now avoids Tk and regexes.  *Much* simpler.</t>
+<t tx="ekr.20060928172525.195">@nocolor
+
+My present thinking is that scripts should be able to store/retrieve persistent
+objects to/from the zodb. That is, the zodb plugin is likely to be retired.
+
+Leo's vnode and tnode classes now derive from ZODB.Persistence.Persistent if
+leoNodes.use_zodb is True. It remains to be seen whether having use_zodb = True
+will cause any serious problems.
+
+See the posting below (Scripting using zodb) for latest details.
+
+See the node 'zodb get/put buttons' in test.leo for examples of how scripts can access zodb easily.
+
+Created g.init_zodb and v.detach.</t>
+<t tx="ekr.20060928172525.197">&gt; Do you see zodb as persisting Leo files or Leo nodes?
+
+Interesting question.  I now see the zodb plugin as a proof-of-concept for *user-defined* scripts.  The zodb plugin is probably going to go away.
+
+Let us suppose that db is a ZODB.DB instance. (To see how to create such an instance, see the init_zodb method in the zodb plugin.  Perhaps I'll defines something like g.openZodb to make this easier.)  Then the statements:
+
+connection = db.open()
+root = connection.root()
+root[aKey] = v
+get_transaction().commit()
+connection.close()
+
+will write all of v's data (all vnodes and tnodes) to the zodb.  This is true whatever v is: it can be the root of an entire outline, or any suboutline.  If you want to write a single node, you would have to 'detach' that node from the outline.  You can do this by copying the node and then unlinking the node from its descendents. Perhaps I could add a convenience method to the vnode class to make this easier.
+
+&gt;Do you see zodb work as providing enhanced access to nodes across multiple files?
+
+Scripts could do so easily.  Happily, the distinction between 'long-lived' and 'short-lived' connections is not important for scripts: a script should hold a connection open only for as long as needed.  So it would be easy to write any number of vnode trees to the zodb.  Later, another script could access any of the data in the zodb by zodb key.  Like this:
+
+connection = db.open()
+root = connection.root()
+v = root.get(aKey)
+p = leoNodes.position(v,[])
+
+After running this script, p is a position representing the root of the tree of 'imported' vnodes.  The script above does not 'connect' the imported trees to an outline, nor should it do so.  As I write this, I realize that the position ctor should make the second argument optional, so that leoNodes.position(v) would be equivalent to leoNodes.position(v,[]).
+
+Each script should open at most connection at a time and be sure to close any zodb connection it creates.  The proper way to do this is in a finally statement, like this:
+
+try:
+....connection = db.open()
+....root = connection.root()
+....v = root.get(aKey)
+....p = leoNodes.position(v,[])
+....&lt;&lt; do something with the nodes in p's tree&gt;&gt;
+finally:
+....get_transaction().commit()
+....connection.close()
+
+In short, the recent changes to Leo's vnode and tnode classes give scripts the ability to save/retrieve Leo data to/from the zodb in any way a script wants, without any further support from Leo, or from me.
+
+I shall spend an hour or two more with the zodb plugin, but it looks to me that the plugin has served its purpose.  Rather than trying to guess how people will want to use the zodb, it will be simpler and more general to have people write scripts that do exactly what they want.  In particular, such scripts can easily sidestep the problems with multiple open connections.
+
+Edward
+
+P.S. Please note that the scripts shown above could not have been written without all the recent work with the zodb plugin and the big code reorg.
+
+P.P.S. A couple of unit tests involving the new v/t.__hash__ methods just failed, so it may be just a little bit longer before the code on cvs is truly zodb ready.  I'll also be working on example scripts and the convenience methods described above.
+
+EKR
+</t>
+<t tx="ekr.20060928172525.198">- Removed all modes except Alt-C mode.
+- Use Shift-arrows for outline moves when focus is in outline pane.
+- Put help / apropos commands in help menu.
+- Put focus commands in Cmds menu.
+- When focus is in outline, normal character navagates like Windows explorer.
+- Put Scrolling commands in Cmds menu.
+- Screened out(some) unwanted characters from affecting outline navigation.More work is needed.
+- Esc character is never inserted into text.
+- Replaced @button clones-tab with @command clones-tab.
+- Scripting plugins now sets verbose=True so @commands get shown.
+* Alt keys (outline move commands) should set focus to outline even if nothing else happens.
+- Closing a window no longer puts focus in limbo: added force argument to c.set_focus.
+- New gui bindings: (I should actually be able to remember these).
+    cycle-all-focus                     = Alt-Y
+    contract-pane                       = Alt+Ctrl+-
+    expand-pane                         = Alt+Ctrl-=
+    focus-to-tree                       = Alt-space
+    scroll-outline-down-page            = Alt-PageDn
+    scroll-outline-down-page            ! tree = PageDn
+    scroll-outline-up-page              = Alt-PageUp
+    scroll-outline-up-page              ! tree = PageUp
+    scroll-outline-left                 = Alt+Ctrl+LtArrow
+    scroll-outline-right                = Alt+Ctrl+RtArrow
+- Put find-character and back-find-character in Edit:Find menu.
+- Use Alt-S,Alt-R for incremental searches.
+- Created find-character-extend-selection and back-find-character-extend-selection.
+- Added binding (Ctrl-W) and entry in Cmds menu for select-word-at-cursor.
+- Added binding (Ctrl-P) for repeat-complex-command.
+- Added binding (Ctrl-B) for execute-script.
+* Fixed bug in extend mode.
+- Added binding (Ctrl-space) for toggle extend mode.
+- Removed most cursor move bindings involving ctrl keys. Exception: ctrl-a and ctrl-e.
+    ** The idea is that I'll use extend mode instead.
+- Stay in outline mode: added @bool stayInTreeAfterEditHeadline setting.
+- Added Cmds:Toggle Settings submenu.
+- Use emacs names in Cmds menu (and in some other places): allow single item in menu tables.</t>
+<t tx="ekr.20060928172525.237">http://sourceforge.net/forum/message.php?msg_id=3935368</t>
+<t tx="ekr.20060928172525.240">http://sourceforge.net/forum/message.php?msg_id=3935780
+
+This greatly speeds searches that used to open many nodes.</t>
+<t tx="ekr.20060928172525.252">http://sourceforge.net/forum/message.php?msg_id=3935981
+
+@url nodes of the form::
+
+    @url -- aComment
+    
+now get the actual url from the entire first line of body text.
+Such url's need not be quoted if they contain spaces.
+
+</t>
+<t tx="ekr.20060928194633.1">The myLeoSettings.leo file is a way of ensuring that your customized settings are not altered when updating Leo from cvs or while installing a new version of Leo.  The myLeoSettings.leo acts much like Python's site-customize.py file.  The myLeoSettings.leo file will never be part of any Leo distribution, and it will never exist in Leo's cvs repository.  This solution is *much* better than tring to update leoSettings.leo with scripts.
+
+Leo loads settings from myLeoSettings.leo *after* loading settings from leoSettings.leo files but *before* loading settings from the .leo file being opened.</t>
+<t tx="ekr.20060928195040"></t>
+<t tx="ekr.20060928195040.1">The following plugins are new in Leo 4.4.2 b2:
+    
+leo_to_rtf
+leo_to_html
+leoOPML  (At present, contained in leoOPML.leo instead of leoPlugins.leo)
+paste_as_headlines
+slideshow
+word_count
+
+The __saxRead__.py plugin is an **experimental** for use by EKR.
+It will be folded into Leo's core in the near future.</t>
+<t tx="ekr.20060928200207.1">This plugin takes an outline stored in LEO and outputs it as a numbered list to
+an RTF file. The RTF file can be loaded into Microsoft Word and formatted as a
+proper outline.
+
+If this plug-in loads properly, you should have an "Outline to Microsoft RTF"
+option added to your File &gt; Export... menu in Leo.
+
+Settings such as outputing just the headlines (vs. headlines &amp; body text) and whether
+to include or ignore the contents of @file nodes are stored in the rtf_export.ini file
+in your Leo\plugins folder.
+
+The default export path is also stored in the INI file. By default, it's set to c:\ so
+you may need to modify it depending on your system.</t>
+<t tx="ekr.20060928200207.2">This plugin takes an outline stored in LEO and outputs it as an HTML file. The outline
+is output as either a set of headings or an unordered list.
+
+If this plug-in loads properly, you should have an "Outline to HTML"
+option added to your File &gt; Export... menu in Leo.
+
+Settings such as outputing just the headlines (vs. headlines &amp; body text) and whether
+to include or ignore the contents of @file nodes are stored in the html_export.ini file
+in your Leo\plugins folder.
+
+The default export path is also stored in the INI file. By default, it's set to c:\ so
+you may need to modify it depending on your system.</t>
+<t tx="ekr.20060928200207.3">This plugin reads and writes Leo outlines in .opml (http://en.wikipedia.org/wiki/OPML) format.
+
+The OPML plugin creates two new commands that read and write Leo outlines in OPML format.
+The read-opml-file command creates a Leo outline from an .opml file.
+The write-opml-file command writes the present Leo outline to an .opml file.
+
+Various settings control what gets written to .opml files, and in what format.
+As usual, you specify settings for the OPML plugin using leoSettings.leo.
+The settigns for the OPML are found in the node: @settings--&gt;Plugins--&gt;opml plugin
+
+Here are the settings that control the format of .opml files. The default values are shown.
+
+- @string opml_namespace = leo:com:leo-opml-version-1
+
+  The namespace urn for the xmlns attribute of &lt;opml&gt; elements.
+  This value typically is not used, but it should refer to Leo in some way.
+
+- @bool opml_use_outline_elements = True
+
+  If True, Leo writes body text to &lt;:body&gt; elements nested in &lt;outline&gt; elements.
+  Otherwise, Leo writes body text to :body attributes of &lt;outline&gt; elements.
+
+- @string opml_version = 2.0
+
+  The opml version string written to the &lt;OPML&gt; element.
+  Use 2.0 unless there is a specific reason to use 1.0.
+
+- @bool opml_write_body_text = True
+
+  Leo writes body text to the OPML file only if this is True.
+
+- @bool opml_write_leo_details = True
+
+  If True, Leo writes the native attributes of Leo's &lt;v&gt; elements as attributes of
+  the opml &lt;outline&gt; elements. The native attributes of &lt;v&gt; elements are a,
+  descendentTnodeUnknownAttributes, expanded, marks, t, and tnodeList.
+
+- @bool opml_write_leo_globals_attributes = True
+
+  If True, Leo writes body_outline_ratio` and global_window_position attributes to
+  the &lt;head&gt; element of the .opml file.</t>
+<t tx="ekr.20060928200600">This plug-in takes any text is stored in the clipboard and creates new headlines
+for each line of text. The paste routine checks to make sure the line of text is not
+greater than 50 characters in length. If it is, the routine truncates the headline to
+50 characters and pastes the entire line into the body text of that node.
+
+If the plug-in is functioning properly, a "Paste as Headlines" option should appear in
+the Edit menu directly under the existing Paste option.</t>
+<t tx="ekr.20060928201227">This plugin displays a messagebox with information about the body text of the current node 
+such as number of: characters, words, lines, and paragraphs. It adds a "Word Count..." option
+to the bottom of the Edit menu that will activate the messagebox.
+
+The Word Count... menu has a shortcut key of 'W'.</t>
+<t tx="ekr.20060928201227.1">This plugin supports slideshows in Leo outlines.
+
+It defines four new commands:
+
+- next-slide-show:  move to the start of the next slide show,
+  or the first slide show if no slide show has been seen yet.
+  
+- prev-slide-show:  move to the start of the previous slide show,
+  or the first slide show if no slide show has been seen yet.
+
+- next-slide: move to the next slide of a present slide show.
+
+- prev-slide: move to the previous slide of the present slide show.
+
+Slides shows consist of a root @slideshow node with descendent @slide nodes.
+@slide nodes may be organized via non-@slide nodes that do not appear in the slideshow.
+
+All these commands ignore @ignore trees.</t>
 </tnodes>
 </leo_file>
