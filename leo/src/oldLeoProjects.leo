@@ -32,7 +32,7 @@
 <v t="ekr.20031218072017.1926"><vh>Linux headline bug</vh></v>
 </v>
 <v t="ekr.20060227101317" a="E"><vh>Found memory leaks</vh></v>
-<v t="ekr.20050924073836" a="E"><vh>4.4 projects</vh>
+<v t="ekr.20050924073836"><vh>4.4 projects</vh>
 <v t="ekr.20060608175017"><vh>4.4 x </vh>
 <v t="ekr.20060106104442"><vh>4.4a5 projects</vh>
 <v t="ekr.20060106104442.1"><vh>cvs snapshot 1</vh>
@@ -4280,7 +4280,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060608175017.1" a="ETV"><vh>4.4.1</vh>
+<v t="ekr.20060608175017.1" a="E"><vh>4.4.1</vh>
 <v t="ekr.20060608175017.2"><vh>4.4.1 b1 projects</vh>
 <v t="ekr.20060608175017.3"><vh>Fixed bugs</vh>
 <v t="ekr.20060608175017.4"><vh>Fixed crasher in searchbox plugin</vh>
@@ -5554,6 +5554,7 @@
 </v>
 </v>
 </v>
+<v t="ekr.20060929110823" a="TV"><vh>Time test</vh></v>
 </vnodes>
 <tnodes>
 <t tx="EKR.20040604090913"># Get the preceeding characters.
@@ -61126,5 +61127,8 @@ def statusLineIsEnabled(self):
     
 def updateStatusLine(self):
     if self.statusLine: self.statusLine.update()</t>
+<t tx="ekr.20060929110823">fileName = c.fileName()
+c.fileCommands.write_Leo_file(fileName,outlineOnlyFlag=True,toString=True,toOPML=False)
+g.es_print(len(g.app.write_Leo_file_string))</t>
 </tnodes>
 </leo_file>
