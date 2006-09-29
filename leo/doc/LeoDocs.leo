@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="26108" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="104" left="160" height="703" width="1021"/>
+	<global_window_position top="104" left="160" height="646" width="1021"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -210,6 +210,7 @@
 <v t="EKR.20040524104904.41"><vh>Indenting body text automatically</vh></v>
 <v t="EKR.20040524104904.43"><vh>Marking nodes</vh></v>
 <v t="EKR.20040524104904.44"><vh>Moving &amp; Reorganizing nodes</vh></v>
+<v t="ekr.20060929040750"><vh>Navigating through the outline</vh></v>
 <v t="EKR.20040524104904.45"><vh>Opening URL's automatically</vh></v>
 <v t="EKR.20040524104904.47"><vh>Resizing panes</vh></v>
 <v t="EKR.20040524104904.48"><vh>Undoing operations</vh></v>
@@ -697,11 +698,10 @@
 <v t="ekr.20060928172457"><vh>What's New in Leo 4.4.2</vh>
 <v t="ekr.20060928172457.1"><vh>@rst html\new-4-4-2.html</vh>
 <v t="ekr.20060928172457.2"><vh>@rst-no-head links</vh></v>
-<v t="ekr.20060928172457.3"><vh>New commands</vh></v>
+<v t="ekr.20060929043325"><vh>A major code reorg</vh></v>
 <v t="ekr.20060928172457.4"><vh>New features</vh></v>
 <v t="ekr.20060928172457.5"><vh>New and improved plugins</vh></v>
-<v t="ekr.20060928172457.6"><vh>New and improved settings</vh></v>
-<v t="ekr.20060928172457.7"><vh>Minor improvements</vh></v>
+<v t="ekr.20060929043325.1"><vh>ZODB scripting</vh></v>
 <v t="ekr.20060928172457.8"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
@@ -2826,7 +2826,7 @@
 </v>
 </v>
 <v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20060928172040" a="ETV"><vh>4.4.2 beta 1</vh>
+<v t="ekr.20060928172040" a="TV"><vh>4.4.2 beta 1</vh>
 <v t="ekr.20060928172525.81"><vh>The 'big reorg':  vnode, tnode and position classes are independent of the rest of Leo</vh></v>
 <v t="ekr.20060928195040"><vh>New features</vh>
 <v t="ekr.20060928194633.1"><vh>myLeoSettings.leo</vh></v>
@@ -3506,6 +3506,13 @@ arbitrarily complex user options with ``@settings`` trees. Leo settings outlines
 are, in fact, much more flexible and powerful than any scheme based on
 flat text.
 
+**New in Leo 4.4.2**: The ``myLeoSettings.leo`` file is a way of ensuring that your
+customized settings are not altered when updating Leo from cvs or while
+installing a new version of Leo. The myLeoSettings.leo acts much like Python's
+site-customize.py file. The ``myLeoSettings.leo`` file will never be part of any Leo
+distribution, and it will never exist in Leo's cvs repository. This solution is
+*much* better than tring to update leoSettings.leo with scripts.
+
 The ``Settings`` command opens the file leoSettings.leo.
 
 Leo stores options in ``@settings`` trees, that is, parts of Leo outlines whose root
@@ -3514,6 +3521,8 @@ node has the headline ``@settings``. When opening a .leo file, Leo looks for
 
 - The file ``leoSettings.leo`` in the leo/config directory.
 - The file ``leoSettings.leo`` in the user's home directory.
+- The file ``myLeoSettings.leo`` in the leo/config directory.
+- The file ``myLeoSettings.leo`` in the user's home directory.
 - The file being loaded.
 
 Settings that appear later in the above list override settings found earlier. For
@@ -6146,7 +6155,7 @@ About distribution:
 Leo won't complain when you open LeoPy.leo.
 
 2. Most plugins actually are disabled: the code that registers the hooks is
-contained in #if 0: blocks. So to create a pluging you have to remove the
+contained in #if 0: blocks. So to create a plugin you have to remove the
 @ignore and you have to change #if 0: to #if 1.
 
 3. Most mod_*.py will never be part of Leo distributions, and the single-click
@@ -6727,7 +6736,7 @@ Note: The value of top() may change during a new or open command, which may chan
 </t>
 <t tx="edream.110203163054.312">Leo no longer massages comments when importing Java files.
 
-There was a bug in massageBody that prevented text from being undented properly.  There was a bug in find_line_start (!!) that caused the start of the previous line to be found if s[i] was a newline.  It's amazing that these bugs were undiscovered for so long.
+There was a bug in massageBody that prevented text from being indented properly.  There was a bug in find_line_start (!!) that caused the start of the previous line to be found if s[i] was a newline.  It's amazing that these bugs were undiscovered for so long.
 
 Treat interface like class.</t>
 <t tx="edream.110203163054.313"></t>
@@ -9697,7 +9706,7 @@ The highlights of this release:
 <t tx="edream.121403162622">New in 4.1: The plugins test suite creates a new convention: if a plugin has a
 function at the outer (module) level called unitTest, Leo will call that
 function when doing unit testing for plugins. So it would be good if writers of
-plugins would create such a unitTest funcion. The unitTest function should run
+plugins would create such a unitTest function. The unitTest function should run
 some tests. All unitTest needs to do to indicate failure is throw an exception
 or cause an assert to fail. Leo's plugins test suite takes care of the rest.</t>
 <t tx="edream.121403165221">- Corrected counts when replacing tabs/blanks.
@@ -10176,7 +10185,7 @@ Here is how to access data at position ``p``.
 
     body = p.bodyString()
     head = p.headString()
-    c.setBodyString(p,body)     # set body text of p to body.
+    c.setBodyString(p,body) # set body text of p to body.
     c.setHeadString(p,head) # set headline text of p to head.</t>
 <t tx="ekr.20040403173920.9">The proper way to traverse an outline is with an iterator.
 Iterators are defined only by the position class;
@@ -10376,10 +10385,7 @@ The following script prints all the names defined in ``leoGlobals.py``::
 outline. The following sections summarizes the most useful methods that your
 scripts can use. For a complete list, see the ``leoNodes.py`` in of ``LeoPy.leo``.
 </t>
-<t tx="ekr.20040403173920.27">``p.c`` is an 'official' ivar of the ``position`` class.  ``p.c`` is ``p``'s commander.
-
-
-Here are the most useful getters of the ``vnode`` and ``position`` classes.
+<t tx="ekr.20040403173920.27">Here are the most useful getters of the ``vnode`` and ``position`` classes.
     
 Returning strings::
 
@@ -10495,9 +10501,7 @@ for that frame::
     Cloned *vnodes* share the tnode *of their first child*.
     For any vnode ``v``, ``v.t`` is v's tnode.
     **Important**: If ``p`` is a ``position``, ``p.v.t`` is the tnode associated with that position.
-    Many positions may share the same tnode.
-
-</t>
+    Many positions may share the same tnode.</t>
 <t tx="ekr.20040411151245">Iterators exist only in the position class::
 
 	c.allNodes_iter            # returns all positions in c's outline.
@@ -10586,6 +10590,8 @@ Leo's Users Guide
 Appendices_
 
 Glossary_
+
+`What's new in Leo 4.4.2`_
 
 `What's new in Leo 4.4.1`_
 
@@ -15003,6 +15009,7 @@ Just use ``@thin`` to create your `derived files`_.</t>
 .. _`Chapter 17\: Using ZODB with Leo`:             zodb.html
 .. _`Appendices`:                                   appendices.html
 .. _`Glossary`:                                     glossary.html
+.. _`What's new in Leo 4.4.2`:                      new-4-4-2.html
 .. _`What's new in Leo 4.4.1`:                      new-4-4-1.html
 .. _`What's new in Leo 4.4`:                        new-4-4.html
 
@@ -17444,7 +17451,7 @@ Glossary
 
 .. _appendices: appendices.html
 .. _home:       front.html
-.. _next:       new-4-4-1.html
+.. _next:       new-4-4-2.html
 
 .. |prev| image:: arrow_lt.gif
 	:target: appendices_
@@ -19077,7 +19084,7 @@ Hook name (tag argument)      Stop?    When called                         Keys 
     This hook gives plugins the chance to clean up after themselves when Leo shuts down.
 
 13. New in Leo 4.4: Leo calls the 'headkey1' and 'headkey2' hooks only when the user completes
-    the editing of a headling, and ch is always '\r', regardless of platform.</t>
+    the editing of a headline, and ch is always '\r', regardless of platform.</t>
 <t tx="ekr.20050903075144">A **plugin** is a Python file that appears in Leo's plugin directory. Plugins
 are a powerful way of enhancing and customizing Leo. The file
 ``pluginsManager.txt`` in the plugins directory controls tells which plugins are
@@ -20392,7 +20399,7 @@ The highlights of 4.3.2:
 https://sourceforge.net/forum/message.php?msg_id=3341105
 By: rogererens
 
-Here would be a nice place to insert 2 screenshots that illustrate the points
+Here would be a nice place to insert 2 screen shots that illustrate the points
 discussed: one of a very small @thin tree in Leo, and one of the contents of
 the file that's derived from that node, as seen in vim or jEdit or notepad.
 
@@ -20492,10 +20499,10 @@ Plugins, @button nodes and @script nodes can create other kinds of special nodes
     @rst         Outputs a tree containing markup for reStructuredText. Requires rst2 plugin.
     @run command Double clicking the node’s icon executes the command.  Requires run_nodes plugin.</t>
 <t tx="ekr.20050916184158.6">Leo’s Execute Script command **preprocesses** the script to be executed by scanning
-a node N and its descendents looking for markup. **Markup** is special syntax that
+a node N and its descendants looking for markup. **Markup** is special syntax that
 controls this preprocessing. If node N contains no markup, the resulting script
 is just N’s body text. Otherwise, the preprocessed script will include text from
-descendent nodes as described below. The main kinds of markup are **section
+descendant nodes as described below. The main kinds of markup are **section
 references**, **directives** and **doc parts**.
 
 1.  **Section references** have the form::
@@ -20540,7 +20547,7 @@ references**, **directives** and **doc parts**.
     Here is a list of all of Leo’s standard directives::
     
         @whitespace (or @doc)   Starts a doc part &amp; ends code part.
-        @all                    Like @others, but includes all descendent nodes.
+        @all                    Like @others, but includes all descendant nodes.
         @c, @code               Starts a code part and ends a doc part.
         @color                  Enables syntax coloring.
         @delims                 Temporarily changes comment delims.
@@ -20548,7 +20555,7 @@ references**, **directives** and **doc parts**.
         @comment                Sets comment delimiters in external (derived) files.
         @language languagename  Sets language for syntax coloring and comments.
         @lineending lineending  Sets ending of lines in derived files.
-        @others                 Inserts body text of all descendents except definition nodes. 
+        @others                 Inserts body text of all descendants except definition nodes. 
         @pagewidth n            Sets page width for justifying comments in doc parts.
         @path path              Sets prefix to use in relative file names in @file nodes, etc.
         @root filename          Marks the root of a tree that creates an external file.
@@ -22829,7 +22836,7 @@ To summarize:
 
 - Scripts can be composed of multiple nodes using noweb markup.
   Not only do outlines organize scripts, but scripts can be composed of outlines.
-  In other words, Leo can *compose* scripts by concatentaing descendent nodes and sections.
+  In other words, Leo can *compose* scripts by concatenating descendant nodes and sections.
   Leo uses the noweb markup language to compose scripts in a flexible manner.
 
 - Outline nodes split text, including programs and scripts, into *easily accessible*, discreet parts.
@@ -22861,14 +22868,14 @@ Scripting
 - The scripting plugin creates support for script nodes.
   We can treat a node as a script, and *apply that script to any other part of an outline*.
   This is called 'bringing scripts to data'.
-  Leo's users can do this using script buttons as follos.
+  Leo's users can do this using script buttons as follows.
   Any @button node creates a script button in Leo's icon area.
   The name of the button is the node's headline; the script is the node's body text.
   The user can also create new script buttons using the 'Script Button' button.
   Pressing the 'Script Button' button creates a new script button,
   just as if the presently selected node were an @button node.
   Bringing scripts to data is an immensely powerful and useful feature:
-  it has eliminated the need for Leo's previous script-find feeatures.
+  it has eliminated the need for Leo's previous script-find features.
 
 - @command nodes create new minibuffer commands, complete with keyboard shortcuts.
   The headline defines the command name and an optional keyboard shortcut;
@@ -22900,7 +22907,7 @@ Organizing data
 
 Plugins
 
-- Plugins supppor many other kinds of user-defined objects and their associated operations.
+- Plugins support many other kinds of user-defined objects and their associated operations.
   Some examples are @view, @read-only, @folder, @produce, @run, @startfile, etc.
   Writing plugins is easy.
   Python makes the programming as easy as possible;
@@ -22935,7 +22942,7 @@ a) other scripts,
 b) fragments of code for exec or eval or
 c) other data.
 
-**Result 3**: Scipts have can treat outline structure as first-class data.
+**Result 3**: Scripts have can treat outline structure as first-class data.
 
 The first "big" reason why the combination of Python &amp; Leo is spectacular.
 It gets better...</t>
@@ -23673,7 +23680,7 @@ Try to keep this part short.
 Related resources
 Link to other stuff that you know about. It will help you research requirements and provide a useful resource to potential contributors. 
 Why reinvent the wheel? What is better about this wheel? Is there any existing project that you can partner with or reuse? 
-Where would you go to try to find potential contibutors? 
+Where would you go to try to find potential contributors? 
 </t>
 <t tx="ekr.20060414071350.1"></t>
 <t tx="ekr.20060414071350.8">@nocolor
@@ -23809,7 +23816,8 @@ The following commands affect the minibuffer:
   defined in leoSettings.leo. It is useful for commonly-used commands.
 
 - **universal-argument**: (default shortcut: Alt-u) Like Emacs Ctrl-u. Adds a repeat
-  count for later command. Ctrl-u 999 a adds 999 a's. Many features remain
+  count for later command. Ctrl-u 999 a adds 999 
+. Many features remain
   unfinished.
 
 - **keyboard-quit**: (default shortcut: Ctrl-g) Exits any minibuffer mode and puts
@@ -24653,7 +24661,7 @@ The valid keys are:
 
 - ``'default'``: the default token type.  ``'null'`` is the default.
 
-- ``'digit_re'``: a regular expession.
+- ``'digit_re'``: a regular expression.
   Words matching this regular expression are colored with the ``digit`` token type.
 
 - ``'ignore_case'``: ``'true'`` or ``'false'``.  Default is ``'true'``.
@@ -25128,7 +25136,7 @@ This plugin replaces the old chapters plugin.</t>
 <t tx="ekr.20060602142732">@nocolor
 
 leoKeys.py handles key bindings.
-There are two kinds of bindings, gui bindings and pane bidings.
+There are two kinds of bindings, gui bindings and pane bindings.
 
 **Gui bindings** are the actual binding as seen by Tkinter (or whatever gui is in effect).
 Leo binds every key that has a binding to k.masterKeyHander.
@@ -25180,7 +25188,7 @@ Here are the dictionaries that k.masterKeyHandler uses:
   Important: this table has no inverse.
 
 - inverseBindingDict:
-  This is *not* an ivar; it is omputed by k.computeInverseBindingDict().
+  This is *not* an ivar; it is computed by k.computeInverseBindingDict().
   Keys are emacs command names; values are *lists* of shortcuts.</t>
 <t tx="ekr.20060603072938">This prompts for a string s, then puts the result of help(s) in Leo's log pane.</t>
 <t tx="ekr.20060603081045">Creates a 'Shortcut' button in the icon area.
@@ -25213,7 +25221,7 @@ verbose=True
 
 .. August 28, 2005
 
-# Note the use fo @ @rst-markup and @ @rst-options throughout this tree to control doc_mode_only mode.
+# Note the use of @ @rst-markup and @ @rst-options throughout this tree to control doc_mode_only mode.
 
 |back| |leo| |next|
 
@@ -25283,7 +25291,7 @@ class leoFind:
    discussed below.
 
 2. The Find and Change commands must not change the state of the outline or body
-   pane during xecution. That would cause severe flashing and slow down the
+   pane during execution. That would cause severe flashing and slow down the
    commands a great deal. In particular, c.selectVnode and c.editPosition
    methods must not be called while looking for matches.
 
@@ -26347,7 +26355,7 @@ Chapter 13: Writing Plugins
 Apropos commands print longer discussions of specific topics.
 The help-for-command command prompts for a command name
 (you can use typing completion to specify the command)
-and then prints a brief discription of that command::
+and then prints a brief description of that command::
 
     apropos-autocompletion
     apropos-bindings
@@ -26359,7 +26367,7 @@ and then prints a brief discription of that command::
     print-commands
     python-help</t>
 <t tx="ekr.20060613062025.4">The following commands work just like their Emacs counterparts.
-Use the help-for-command command for futher details::
+Use the help-for-command command for further details::
 
     abbrev-mode
     add-global-abbrev
@@ -27674,7 +27682,7 @@ Plugins--&gt; Templates: these show recommended ways of defining plugins.--&gt;T
         
    The print_cp method must have the event argument as shown because it implements a minibuffer command.
    The print_cp method gets the proper commander from the ``c`` ivar (instance variable) and computes
-   the current postion ``p`` as shown.
+   the current position ``p`` as shown.
    
 8. Enable the print_cp plugin using the plugins manager plugin,
    or just add the following line somewhere in pluginsManager.txt::
@@ -27682,7 +27690,7 @@ Plugins--&gt; Templates: these show recommended ways of defining plugins.--&gt;T
     print_cp.py
 
 9. Test the plugin by restarting Leo (I just start test.leo).
-   You can test the plugin by pressing the 'Print c&amp;p' buttor
+   You can test the plugin by pressing the 'Print c&amp;p' button
    or by typing &lt;Alt-x&gt; print-cp &lt;Return&gt;.
    
 That's all.  You can find the completed version of the print_cp plugin in leoPlugins.leo,
@@ -27801,7 +27809,7 @@ Recent projects include:
     
 - Controlling syntax coloring with jEdit's xml language-description files.
   See Chapter 15.
-- Support for debugging scripts using external debutters.
+- Support for debugging scripts using external debuggers.
   See Chapter 16.
 - Modifying Leo's vnodes and tnodes so that Leo's data can be used with ZODB.
   See Chapter 17.
@@ -28546,7 +28554,7 @@ In the following discussion, ``gnx`` denotes a gnx as described above.
 
 \@+leo
     Marks the start of any derived file.
-    This sentinal has the form::
+    This sentinel has the form::
     
         &lt;opening_delim&gt;@leo&lt;closing_delim&gt;
     
@@ -28575,7 +28583,7 @@ In the following discussion, ``gnx`` denotes a gnx as described above.
     Mark the start and end of a node.
     
     **Leo 4.2 and later**::
-    ``@+node`` and ``@-node`` sentinels use gnx's as descibed above::
+    ``@+node`` and ``@-node`` sentinels use gnx's as described above::
     
         @+node:gnx:&lt;headline&gt;
         @-node:gnx:&lt;headline&gt;
@@ -28625,19 +28633,22 @@ http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
 Leo is a text editor, data organizer, project manager and much more. See:
 http://webpages.charter.net/edreamleo/intro.html
 
-The highlights of Leo 4.4.1:
+The highlights of Leo 4.4.2:
 ----------------------------
-- You can now store settings in mySettings.leo without fear of those settings
+- You can now store settings in myLeoSettings.leo without fear of those settings
   being changed by cvs updates or in future versions of Leo.
 - Leo's vnode and tnode classes are now completely independent of the rest of Leo.
-  Some api's have been changed.  This 'the big reorg' and may affect scripts and plugins.
+  Some api's have been changed.  This 'big reorg' and may affect scripts and plugins.
 - Leo's vnode and tnode classes can optionally be compatible with ZODB databases,
   i.e., they can optionally derive from ZODB.Persistence.Persistent.
+  See Chapter 17: Using ZODB with Leo for details.
 - The leoOPML plugin defines commands to read and write OPML files.
 - The slideshow plugin allows Leo to run slideshows defined by @slideshow and @slide nodes.
 - The leo_to_rtf and leo_to_html plugins create rtf and html files from Leo outlines.
 - Much faster navigation through the outline using Alt-arrow keys.
+- When focus is in the outline pane, you can move to headlines by typing the first letter of headlines.
 - The find command now closes nodes not needed to show the node containing the present match.
+- Numerous changes that make Leo easier to use without using a mouse.
 - Many new minibuffer commands now appear in the Cmds menu.
 
 Links:
@@ -28669,16 +28680,7 @@ What's New in Leo 4.4.2
 This page summarizes the changes made in Leo 4.4.2
 For full details see the release notes section in LeoDocs.leo.
 
-The main features of Leo 4.4.1 are:
 
-- Multiple editors in Leo's body pane and
-- A new colorizer plugin controlled by jEdit language description files.
-- Search commands now support regex replace patterns: \1, \2, etc.
-- Support for external debuggers: see http://webpages.charter.net/edreamleo/debuggers.html
-- The scripting plugin now creates a Debug Script button.
-- Several new commands including run-unit-test, python-help and toggle-invisibles.
-- The help-for-command commands now contains information for almost all commands.
-- A new shortcut_button plugin.
 
 .. contents::</t>
 <t tx="ekr.20060928172457.2">.. Links used in this document.
@@ -28698,21 +28700,34 @@ The main features of Leo 4.4.1 are:
 .. |next| image:: arrow_rt.gif
     :target: next_
 </t>
-<t tx="ekr.20060928172457.3"></t>
 <t tx="ekr.20060928172457.4">New in Leo 4.4.2 b1:
     
-- Eliminated unnecessary redraws when moving the cursor in the outline pane.</t>
+- You can now store settings in myLeoSettings.leo without fear of those settings
+  being changed by cvs updates or in future versions of Leo.
+  
+- Eliminated unnecessary redraws when moving the cursor in the outline pane.
+
+- Much faster navigation through the outline using Alt-arrow keys.
+
+- When focus is in the outline pane, you can move to headlines by typing the first letter of headlines.
+
+- The find command now closes nodes not needed to show the node containing the present match.
+
+- Numerous changes that make Leo easier to use without using a mouse.
+
+- Many new minibuffer commands now appear in the Cmds menu.</t>
 <t tx="ekr.20060928172457.5">New in Leo 4.4.2 b1:
     
-leo_to_rtf
-leo_to_html
-leoOPML
-paste_as_headlines
-slideshow
-word_count
+- The leoOPML.py plugin defines commands to read and write OPML files.
+
+- The slideshow.py plugin allows Leo to run slideshows defined by @slideshow and @slide nodes.
+
+- The leo_to_rtf and leo_to_html plugins create rtf and html files from Leo outlines.
+    
+- The paste_as_headlines.py plugins creates multiple headlines at once.
+
+- The word_count.py plugin.
 </t>
-<t tx="ekr.20060928172457.6">New in Leo 4.4.2 b1</t>
-<t tx="ekr.20060928172457.7"></t>
 <t tx="ekr.20060928172457.8">-----------------------
 
 |prev| |leo| |next|</t>
@@ -28871,7 +28886,7 @@ proper outline.
 If this plug-in loads properly, you should have an "Outline to Microsoft RTF"
 option added to your File &gt; Export... menu in Leo.
 
-Settings such as outputing just the headlines (vs. headlines &amp; body text) and whether
+Settings such as outputting just the headlines (vs. headlines &amp; body text) and whether
 to include or ignore the contents of @file nodes are stored in the rtf_export.ini file
 in your Leo\plugins folder.
 
@@ -28883,7 +28898,7 @@ is output as either a set of headings or an unordered list.
 If this plug-in loads properly, you should have an "Outline to HTML"
 option added to your File &gt; Export... menu in Leo.
 
-Settings such as outputing just the headlines (vs. headlines &amp; body text) and whether
+Settings such as outputting just the headlines (vs. headlines &amp; body text) and whether
 to include or ignore the contents of @file nodes are stored in the html_export.ini file
 in your Leo\plugins folder.
 
@@ -28897,7 +28912,7 @@ The write-opml-file command writes the present Leo outline to an .opml file.
 
 Various settings control what gets written to .opml files, and in what format.
 As usual, you specify settings for the OPML plugin using leoSettings.leo.
-The settigns for the OPML are found in the node: @settings--&gt;Plugins--&gt;opml plugin
+The settings for the OPML are found in the node: @settings--&gt;Plugins--&gt;opml plugin
 
 Here are the settings that control the format of .opml files. The default values are shown.
 
@@ -28937,9 +28952,9 @@ greater than 50 characters in length. If it is, the routine truncates the headli
 
 If the plug-in is functioning properly, a "Paste as Headlines" option should appear in
 the Edit menu directly under the existing Paste option.</t>
-<t tx="ekr.20060928201227">This plugin displays a messagebox with information about the body text of the current node 
+<t tx="ekr.20060928201227">This plugin displays a message box with information about the body text of the current node 
 such as number of: characters, words, lines, and paragraphs. It adds a "Word Count..." option
-to the bottom of the Edit menu that will activate the messagebox.
+to the bottom of the Edit menu that will activate the message box.
 
 The Word Count... menu has a shortcut key of 'W'.</t>
 <t tx="ekr.20060928201227.1">This plugin supports slideshows in Leo outlines.
@@ -28956,9 +28971,23 @@ It defines four new commands:
 
 - prev-slide: move to the previous slide of the present slide show.
 
-Slides shows consist of a root @slideshow node with descendent @slide nodes.
+Slides shows consist of a root @slideshow node with descendant @slide nodes.
 @slide nodes may be organized via non-@slide nodes that do not appear in the slideshow.
 
 All these commands ignore @ignore trees.</t>
+<t tx="ekr.20060929040750">Leo has many commands that select nodes in the outline. These commands can be
+found in the Outline:Go To menu.
+
+**New in Leo 4.4.2**: When focus is in the outline Pane, you can move to from
+node to node by typing the first letter of a headline. For example, typing 'a'
+will go to the next visible headline that starts with either 'a' or 'A',
+wrapping around to the start of the outline if needed. Typing an uppercase 'A'
+will go to the next headline that starts with 'a' or 'A', making the node
+visible (expanding its ancestors) if the node was not visible.</t>
+<t tx="ekr.20060929043325">Leo's vnode and tnode classes are now completely independent of the rest of Leo.
+Some api's have been changed.  This 'big reorg' and may affect scripts and plugins.</t>
+<t tx="ekr.20060929043325.1">Leo's vnode and tnode classes can optionally be compatible with ZODB databases,
+i.e., they can optionally derive from ZODB.Persistence.Persistent.
+See Chapter 17: Using ZODB with Leo for details.</t>
 </tnodes>
 </leo_file>

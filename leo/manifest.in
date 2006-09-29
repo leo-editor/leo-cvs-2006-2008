@@ -41,12 +41,12 @@ include doc/default.css
 include doc/leo_rst.css
 include doc/silver_city.css
 
-include doc\LeoN\sun98achieving.pdf
-include doc\LeoN\sun97generic.pdf
-include doc\LeoN\sun98operational.pdf
-include doc\LeoN\sun98reversible.pdf
+include doc/LeoN/sun98achieving.pdf
+include doc/LeoN/sun97generic.pdf
+include doc/LeoN/sun98operational.pdf
+include doc/LeoN/sun98reversible.pdf
 
-include doc\html\*.*
+include doc/html/*.*
 
 include extensions/aspell23.pyd
 include extensions/aspell24.pyd

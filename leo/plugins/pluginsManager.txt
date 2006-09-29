@@ -22,8 +22,8 @@
 plugins_menu.py
 plugin_manager.py
 
-__saxRead__.py
-leoOPML.py
+#__saxRead__.py
+#leoOPML.py
 
 #################
 #zodb.py

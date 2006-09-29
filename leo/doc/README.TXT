@@ -1,28 +1,28 @@
-Leo 4.4.1.1 final                                       September 3, 2006
+Leo 4.4.2 beta 1                                    September 29, 2006
 
-Leo 4.4.1.1 final is available at:
+Leo 4.4.2 beta 1 is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&package_id=29106
-
-Leo 4.4.1.1 corrects a serious last-minute unicode bug in Leo 4.4.1.
-This version also adds the new slideshow plugin.
 
 Leo is a text editor, data organizer, project manager and much more. See:
 http://webpages.charter.net/edreamleo/intro.html
 
-The highlights of Leo 4.4.1:
+The highlights of Leo 4.4.2:
 ----------------------------
-- Leo outputs decorators correctly, provided that the decorator is not a Leo directive.
-- A new colorizer plugin controlled by jEdit language description files.
-- A new shadow files plugin that allows derived files not to have sentinel lines.
-- A new slide show plugin allows you to use Leo outlines as slide shows.
-- Multiple editors in Leo's body pane.
-- Search commands now support regex replace patterns: \1, \2, etc.
-- Support for external debuggers: see http://webpages.charter.net/edreamleo/debuggers.html
-- The scripting plugin now creates a Debug Script button.
-- Several new commands including run-unit-test, python-help, toggle-invisibles,
-  and scroll-outline-left/right.
-- The help-for-command commands now contains information for almost all commands.
-- A new shortcut_button plugin.
+- You can now store settings in myLeoSettings.leo without fear of those settings
+  being changed by cvs updates or in future versions of Leo.
+- Leo's vnode and tnode classes are now completely independent of the rest of Leo.
+  Some api's have been changed.  This 'big reorg' and may affect scripts and plugins.
+- Leo's vnode and tnode classes can optionally be compatible with ZODB databases,
+  i.e., they can optionally derive from ZODB.Persistence.Persistent.
+  See Chapter 17: Using ZODB with Leo for details.
+- The leoOPML plugin defines commands to read and write OPML files.
+- The slideshow plugin allows Leo to run slideshows defined by @slideshow and @slide nodes.
+- The leo_to_rtf and leo_to_html plugins create rtf and html files from Leo outlines.
+- Much faster navigation through the outline using Alt-arrow keys.
+- When focus is in the outline pane, you can move to headlines by typing the first letter of headlines.
+- The find command now closes nodes not needed to show the node containing the present match.
+- Numerous changes that make Leo easier to use without using a mouse.
+- Many new minibuffer commands now appear in the Cmds menu.
 
 Links:
 ------

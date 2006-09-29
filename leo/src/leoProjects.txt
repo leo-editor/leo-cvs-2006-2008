@@ -106,8 +106,6 @@ def selfInsertCommand(self,event,action='insert'):
 def test_selfInsertCommand(self):
     
     self = c.editCommands
-    import Tkinter as Tk
-
     event = g.Bunch(char='É',keysym=None,widget=c.frame.body.bodyCtrl)
     self.selfInsertCommand(event)
 #@nonl
@@ -2505,7 +2503,7 @@ def compare_directories (self,path1,path2):
     if self.outputFileName:
         self.openOutputFile()
     ok = self.outputFileName == None or self.outputFile
-    if not ok: return
+    if not ok: return None
 
     # Create files and files2, the lists of files to be compared.
     files1 = []
@@ -2561,6 +2559,9 @@ def compare_directories (self,path1,path2):
     if self.outputFile:
         self.outputFile.close()
         self.outputFile = None
+
+    return None # To keep pychecker happy.
+#@nonl
 #@-node:ekr.20031218072017.3635:compare_directories (entry)
 #@-node:ekr.20060920145332:Fixed compare bug
 #@+node:ekr.20060921113950:Fixed problem with g.CheckVersion

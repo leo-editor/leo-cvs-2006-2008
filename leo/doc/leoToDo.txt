@@ -2,6 +2,8 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20060927172440:To do before 4.4.2 final
+#@+node:ekr.20060929042321:Allow two copies of myLeoSettings.leo
+#@-node:ekr.20060929042321:Allow two copies of myLeoSettings.leo
 #@+node:ekr.20060912091922:Test all plugins
 ** Create separate @test node for each plugin.
 #@nonl
