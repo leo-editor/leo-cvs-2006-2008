@@ -1143,7 +1143,9 @@ def initIvars(self):
     self.read_only = False
     self.outputFile = None
     self.openDirectory = None
+    self.putCount = 0
     self.topVnode = None
+    self.toString = False
     self.usingClipboard = False
     self.currentPosition = None
     # New in 3.12
@@ -1469,6 +1471,7 @@ def undoMark (self):
 #@-node:ekr.20060830064138:Bugs fixed
 #@-node:ekr.20060824095221:4.4.1 final projects
 #@+node:ekr.20060904165452:4.4.2 projects
+#@+node:ekr.20060929090247.1:4.4.2 b1
 #@+node:ekr.20060908092306:Bugs
 #@+node:ekr.20060906220124:Clone-find-all doesn't put focus in minibuffer
 # getArg now has:
@@ -2966,6 +2969,8 @@ def setHeadString (self,p,s,encoding="utf-8"):
 def write_Leo_file(self,fileName,outlineOnlyFlag,toString=False,toOPML=False):
 
     c = self.c
+    self.putCount = 0
+    self.toString = toString
     self.assignFileIndices()
     if not outlineOnlyFlag or toOPML:
         # Update .leoRecentFiles.txt if possible.
@@ -2973,20 +2978,20 @@ def write_Leo_file(self,fileName,outlineOnlyFlag,toString=False,toOPML=False):
         << write all @file nodes >>
     << return if the .leo file is read-only >>
     try:
-        theActualFile = None
-        if not toString:
-            << create backup file >>
+        << create backup file >>
         self.mFileName = fileName
         if toOPML:
             << ensure that filename ends with .opml >>
         self.outputFile = cStringIO.StringIO()
-        if not toString:
-            theActualFile = open(fileName, 'wb')
+        << create theActualFile >>
+        # t1 = time.clock()
         if toOPML:
             self.putToOPML()
         else:
             self.putLeoFile()
+        # t2 = time.clock()
         s = self.outputFile.getvalue()
+        # g.trace(self.leo_file_encoding)
         if toString:
             # For support of chapters plugin.
             g.app.write_Leo_file_string = s
@@ -2994,15 +2999,20 @@ def write_Leo_file(self,fileName,outlineOnlyFlag,toString=False,toOPML=False):
             theActualFile.write(s)
             theActualFile.close()
             << delete backup file >>
+            # t3 = time.clock()
+            # g.es_print('len',len(s),'putCount',self.putCount,'put',t2-t1,'write&close',t3-t2)
         self.outputFile = None
+        self.toString = False
         return True
     except Exception:
         g.es("exception writing: " + fileName)
         g.es_exception(full=False)
         if theActualFile: theActualFile.close()
         self.outputFile = None
-        << delete fileName >>
-        << rename backupName to fileName >>
+        if backupName:
+            << delete fileName >>
+            << rename backupName to fileName >>
+        self.toString = False
         return False
 
 write_LEO_file = write_Leo_file # For compatibility with old plugins.
@@ -3034,8 +3044,10 @@ fileName = self.mFileName
 #@nonl
 #@-node:ekr.20060919070145:<< ensure that filename ends with .opml >>
 #@+node:ekr.20031218072017.3047:<< create backup file >>
+backupName = None
+
 # rename fileName to fileName.bak if fileName exists.
-if g.os_path_exists(fileName):
+if not toString and g.os_path_exists(fileName):
     backupName = g.os_path_join(g.app.loadDir,fileName)
     backupName = fileName + ".bak"
     if g.os_path_exists(backupName):
@@ -3045,8 +3057,7 @@ if g.os_path_exists(fileName):
         if self.read_only:
             g.es("read only",color="red")
         return False
-else:
-    backupName = None
+#@nonl
 #@-node:ekr.20031218072017.3047:<< create backup file >>
 #@+node:ekr.20031218072017.3048:<< delete backup file >>
 if backupName and g.os_path_exists(backupName):
@@ -3062,6 +3073,13 @@ if backupName:
     g.es("restoring " + fileName + " from " + backupName)
     g.utils_rename(backupName,fileName)
 #@-node:ekr.20050405103712.1:<< rename backupName to fileName >>
+#@+node:ekr.20060929103258:<< create theActualFile >>
+if toString:
+    theActualFile = None
+else:
+    theActualFile = open(fileName, 'wb')
+#@nonl
+#@-node:ekr.20060929103258:<< create theActualFile >>
 #@-node:ekr.20031218072017.3046:write_Leo_file
 #@-node:ekr.20060904114302:Added OPML support to fileCommands
 #@+node:ekr.20060905092512.2:Eliminated v.c and p.c
@@ -6619,6 +6637,150 @@ except:
 #@-node:ekr.20031218072017.2312:tree.OnIconDoubleClick (@url)
 #@-node:ekr.20060928110801:Allow -- comments in @url nodes
 #@-node:ekr.20060912093334:New features
+#@-node:ekr.20060929090247.1:4.4.2 b1
+#@+node:ekr.20060929090247:4.4.2 b2
+#@+node:ekr.20060929091051:Bugs
+#@+node:ekr.20060927073203:Fixed rst3 problem
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3932641
+
+LEO *always* outputs the first line of a node without indentation even if it is indented in the node.
+#@-node:ekr.20060927073203:Fixed rst3 problem
+#@-node:ekr.20060929091051:Bugs
+#@+node:ekr.20060929100150:Tested Python 2.5 exception reporting
+Used brief traceback in g.handleScriptException
+#@nonl
+#@+node:ekr.20031218072017.3111:es_event_exception
+def es_event_exception (eventName,full=False):
+
+    g.es("exception handling ", eventName, " event")
+    typ,val,tb = sys.exc_info()
+
+    if full:
+        errList = traceback.format_exception(typ,val,tb)
+    else:
+        errList = traceback.format_exception_only(typ,val)
+
+    for i in errList:
+        g.es(i)
+        
+    if not g.stdErrIsRedirected(): # 2/16/04
+        traceback.print_exc()
+#@-node:ekr.20031218072017.3111:es_event_exception
+#@+node:ekr.20040731204831:getLastTracebackFileAndLineNumber
+def getLastTracebackFileAndLineNumber():
+    
+    typ,val,tb = sys.exc_info()
+    
+    if typ in (exceptions.SyntaxError,exceptions.IndentationError):
+        # Syntax and indentation errors are a special case.
+        # extract_tb does _not_ return the proper line number!
+        # This code is similar to the code in format_exception_only(!!)
+        try:
+            # g.es_print(repr(val))
+            msg,(filename, lineno, offset, line) = val
+            return filename,lineno
+        except:
+            g.trace("bad line number")
+            return None,0
+
+    else:
+        # The proper line number is the second element in the last tuple.
+        data = traceback.extract_tb(tb)
+        # g.es_print(repr(data))
+        item = data[-1]
+        filename = item[0]
+        n = item[1]
+        return filename,n
+#@-node:ekr.20040731204831:getLastTracebackFileAndLineNumber
+#@+node:ekr.20031218072017.3112:es_exception & test
+def es_exception (full=True,c=None,color="red"):
+    
+    __pychecker__ = '--no-argsused' # c not used. retained for compatibility.
+
+    typ,val,tb = sys.exc_info()
+
+    # g.trace(full,typ,tb)
+    
+    fileName,n = g.getLastTracebackFileAndLineNumber()
+
+    if full or g.app.debugSwitch > 0:
+        lines = traceback.format_exception(typ,val,tb)
+    else:
+        lines = traceback.format_exception_only(typ,val)
+        if 0: # We might as well print the entire SyntaxError message.
+            lines = lines[-1:] # Usually only one line, but more for Syntax errors!
+
+    for line in lines:
+        g.es_error(line,color=color)
+        if not g.stdErrIsRedirected():
+            print line
+
+    if g.app.debugSwitch > 1:
+        import pdb # Be careful: g.pdb may or may not have been defined.
+        pdb.set_trace()
+
+    return fileName,n
+#@+node:ekr.20050220030850:test_g_es_exception
+def test_g_es_exception():
+    
+    if c.config.redirect_execute_script_output_to_log_pane:
+        return # Test doesn't work when redirection is on.
+
+    try:
+        import sys
+        # Catch the output of g.es_exception.
+        # We catch the AssertionError, so nothing gets written to stderr.
+        sys.stdout = fo = g.fileLikeObject()
+        try: # Create an exception to catch.
+            assert False, 'Assert False in test_g_es_exception'
+        except AssertionError:
+            g.es_exception(color='suppress')
+            result = fo.get()
+            s1 = 'Traceback (most recent call last):'
+            s2 = 'AssertionError: Assert False in test_g_es_exception'
+            assert result.find(s1) > -1, 'No traceback line: %s' % repr(result)
+            assert result.find(s2) > -1, 'No AssertionError line: %s' % repr(result)
+    finally:
+        # Not needed unless we execute this script as selected text.
+        sys.stdout = sys.__stdout__
+#@-node:ekr.20050220030850:test_g_es_exception
+#@-node:ekr.20031218072017.3112:es_exception & test
+#@+node:ekr.20060624085200:g.handleScriptException
+def handleScriptException (c,p,script,script1):
+
+    g.es("exception executing script",color='blue')
+
+    fileName, n = g.es_exception(full=False)
+
+    if p and not script1 and fileName == "<string>":
+        c.goToScriptLineNumber(p,script,n)
+
+    << dump the lines near the error >>
+#@+node:EKR.20040612215018:<< dump the lines near the error >>
+if g.os_path_exists(fileName):
+    f = file(fileName)
+    lines = f.readlines()
+    f.close()
+else:
+    lines = g.splitLines(script)
+
+s = '-' * 20
+g.es_print(s)
+
+# Print surrounding lines.
+i = max(0,n-2)
+j = min(n+2,len(lines))
+while i < j:
+    ch = g.choose(i==n-1,'*',' ')
+    s = "%s line %d: %s" % (ch,i+1,lines[i])
+    g.es(s,newline=False)
+    i += 1
+#@-node:EKR.20040612215018:<< dump the lines near the error >>
+#@-node:ekr.20060624085200:g.handleScriptException
+#@-node:ekr.20060929100150:Tested Python 2.5 exception reporting
+#@-node:ekr.20060929090247:4.4.2 b2
 #@-node:ekr.20060904165452:4.4.2 projects
 #@-all
 #@nonl

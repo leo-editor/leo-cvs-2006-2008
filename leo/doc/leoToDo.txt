@@ -2,103 +2,21 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20060927172440:To do before 4.4.2 final
-#@+node:ekr.20060929042321:Allow two copies of myLeoSettings.leo
-#@-node:ekr.20060929042321:Allow two copies of myLeoSettings.leo
-#@+node:ekr.20060912091922:Test all plugins
-** Create separate @test node for each plugin.
-#@nonl
-#@+node:ekr.20060914085747:Have plugin-specific unit tests
-chapter_hoist.py
-leoOPML.py
-leo_to_html.py
-leo_to_rtf.py
-mod_scripting.py
-paste_as_headlines.py
-open_with.py
-rst3.py
-UNL.py
-#@-node:ekr.20060914085747:Have plugin-specific unit tests
-#@+node:ekr.20060914130034:Tested, no unit tests
-# No unit tests needed: these are always active.
-plugins_manager.py
-plugins_menu.py
+#@+node:ekr.20060929122217:Options
+#@+node:ekr.20060929122217.1:Options not to use sparse finds
+#@-node:ekr.20060929122217.1:Options not to use sparse finds
+#@+node:ekr.20060927173836.1:Disable calltips in @nocolor sections
+@nocolor
 
-# Unit tests needed...
-word_count.py
-zodb.py
+Show calltips treats the node as code, and that can have very weird effects in @nocolor sections.
 #@nonl
-#@-node:ekr.20060914130034:Tested, no unit tests
-#@+node:ekr.20060914090250:To test next
-__jEdit_colorizer__.py
-
-
-vim.py
-word_export.py
-xemacs.py
-#@nonl
-#@-node:ekr.20060914090250:To test next
-#@+node:ekr.20060914085747.1:To test
-ConceptualSort.py
-EditAttributes.py
-FileActions.py
-Library.py
-TabWindow.py
-UASearch.py
-URLloader.py
-UniversalScrolling.py
-
-add_directives.py
-arrows.py
-at_view.py
-autotrees.py
-base64Packager.py
-bibtex.py
-cleo.py
-color_markup.py
-datenodes.py
-detect_urls.py
-dyna_menu.py
-fastGotoNode.py
-footprints.py
-groupOperations.py
-hoist.py
-image.py
-import_cisco_config.py
-leoupdate.py
-macros.py
-mod_autosave.py
-mod_http.py
-mod_labels.py
-mod_read_dir_outline.py
-mod_shadow.py
-nav_buttons.py
-newButtons.py
-niceNosent.py
-nodebar.py
-nodenavigator.py
-open_shell.py
-pie_menus.py
-pretty_print.py
-print_cp.py
-rClick.py
-read_only_nodes.py
-rowcol.py
-run_nodes.py
-scheduler.py
-scripts_menu.py
-searchbox.py
-shortcut_button.py
-slideshow.py
-table.py
-templates.py
-trace_tags.py
-xcc_nodes.py
-xsltWithNodes.py
-#@nonl
-#@-node:ekr.20060914085747.1:To test
-#@-node:ekr.20060912091922:Test all plugins
-#@+node:ekr.20060928111002:Make showing the Run Script button optional
-#@-node:ekr.20060928111002:Make showing the Run Script button optional
+#@-node:ekr.20060927173836.1:Disable calltips in @nocolor sections
+#@+node:ekr.20060929100640:Why are calltips enabled at all??
+#@-node:ekr.20060929100640:Why are calltips enabled at all??
+#@+node:ekr.20060929100640.1:New option: @bool outline_pane_has_initial_focus = True
+#@-node:ekr.20060929100640.1:New option: @bool outline_pane_has_initial_focus = True
+#@-node:ekr.20060929122217:Options
+#@+node:ekr.20060929122217.2:Bugs
 #@+node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
 #@-node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
 #@+node:ekr.20060927100500.1:Fix bugs in new colorizer
@@ -107,48 +25,8 @@ xsltWithNodes.py
 - Does not restore selection after indent/undent commands.
 #@nonl
 #@-node:ekr.20060927100500.1:Fix bugs in new colorizer
-#@+node:ekr.20060927073203:Fix rst3 problem
-http://sourceforge.net/forum/message.php?msg_id=3932641
-By: craigj3
-
-Has anybody got the rst3 pluging to handle rst Block Quotes in a single node?
-
-They are indented paragraphs that should then be rendered indented.
-
-Looking at the intermediate file, it would appear that LEO *always* outputs
-the first line of a node without indentation even if it is indented in the node.
-#@-node:ekr.20060927073203:Fix rst3 problem
-#@+node:ekr.20060927173836.7:The default script button buttons should create press-x-button commands
-#@-node:ekr.20060927173836.7:The default script button buttons should create press-x-button commands
-#@+node:ekr.20060915175024:Maintain vertical node position?
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3916155
-
-When a node is among several other nodes at the same level of hierarchy, which
-are all children of a node, and the "MOVE LFET" command is executed, the node
-does move left in the outline hierarchy, but it also move down to just before
-the next node at the higher hierarchy level - the level to which it is moving
-left.
-#@nonl
-#@-node:ekr.20060915175024:Maintain vertical node position?
-#@+node:ekr.20060920190138:Document tnodeList, vnodeList and make better unit tests
-#@-node:ekr.20060920190138:Document tnodeList, vnodeList and make better unit tests
-#@+node:ekr.20060920150119:Fix undo problems (important)
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3924236
-
-Clear the * mark if all changes have been done.
-There are serious problems with undoing and redoing text.
-#@nonl
-#@-node:ekr.20060920150119:Fix undo problems (important)
-#@+node:ekr.20060927173836.1:Disable calltips in @nocolor sections
-@nocolor
-
-Show calltips treats the node as code, and that can have very weird effects in @nocolor sections.
-#@nonl
-#@-node:ekr.20060927173836.1:Disable calltips in @nocolor sections
+#@+node:ekr.20060928194335:Fix bug: closing a window after removing a script button can crash
+#@-node:ekr.20060928194335:Fix bug: closing a window after removing a script button can crash
 #@+node:ekr.20060824112937.1:Fix unicode problem with double-click word Stéphane
 @nocolor
 http://sourceforge.net/forum/message.php?msg_id=3882798
@@ -396,108 +274,139 @@ if 0: # I find these very irritating.
 #@-node:ekr.20060307080642:<< create baloon bindings for tagged items on the canvas >>
 #@-node:ekr.20051024102724:tkTtree.setBindings
 #@-node:ekr.20060824112937.1:Fix unicode problem with double-click word Stéphane
-#@+node:ekr.20060928194335:Fix bug: closing a window after removing a script button can crash
-#@-node:ekr.20060928194335:Fix bug: closing a window after removing a script button can crash
+#@+node:ekr.20060920150119:Fix undo problems (important)
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3924236
+
+Clear the * mark if all changes have been done.
+There are serious problems with undoing and redoing text.
+#@nonl
+#@-node:ekr.20060920150119:Fix undo problems (important)
+#@-node:ekr.20060929122217.2:Bugs
+#@+node:ekr.20060929122217.3:Plugins
+#@+node:ekr.20060928111002:Make showing the Run Script button optional
+#@-node:ekr.20060928111002:Make showing the Run Script button optional
+#@+node:ekr.20060929090247.2:rst3 plugin should register a command equivalent to rst3 button
+#@-node:ekr.20060929090247.2:rst3 plugin should register a command equivalent to rst3 button
+#@+node:ekr.20060927173836.7:The default script button button should create the press-script-button-button command
+#@-node:ekr.20060927173836.7:The default script button button should create the press-script-button-button command
+#@-node:ekr.20060929122217.3:Plugins
+#@+node:ekr.20060929122217.4:Features
+#@+node:ekr.20060929084830.1:Suppress redraw on all applicable outline:goto commands
+#@-node:ekr.20060929084830.1:Suppress redraw on all applicable outline:goto commands
+#@+node:ekr.20060929042321:Allow two copies of myLeoSettings.leo
+#@-node:ekr.20060929042321:Allow two copies of myLeoSettings.leo
+#@+node:ekr.20060915175024:Maintain vertical node position?
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3916155
+
+When a node is among several other nodes at the same level of hierarchy, which
+are all children of a node, and the "MOVE LFET" command is executed, the node
+does move left in the outline hierarchy, but it also move down to just before
+the next node at the higher hierarchy level - the level to which it is moving
+left.
+#@nonl
+#@-node:ekr.20060915175024:Maintain vertical node position?
+#@-node:ekr.20060929122217.4:Features
+#@+node:ekr.20060920190138:Document tnodeList, vnodeList and make better unit tests
+#@-node:ekr.20060920190138:Document tnodeList, vnodeList and make better unit tests
+#@+node:ekr.20060912091922:Test all plugins
+** Create separate @test node for each plugin.
+#@nonl
+#@+node:ekr.20060914085747:Have plugin-specific unit tests
+chapter_hoist.py
+leoOPML.py
+leo_to_html.py
+leo_to_rtf.py
+mod_scripting.py
+paste_as_headlines.py
+open_with.py
+rst3.py
+UNL.py
+#@-node:ekr.20060914085747:Have plugin-specific unit tests
+#@+node:ekr.20060914130034:Tested, no unit tests
+# No unit tests needed: these are always active.
+plugins_manager.py
+plugins_menu.py
+
+# Unit tests needed...
+word_count.py
+zodb.py
+#@nonl
+#@-node:ekr.20060914130034:Tested, no unit tests
+#@+node:ekr.20060914090250:To test next
+__jEdit_colorizer__.py
+
+
+vim.py
+word_export.py
+xemacs.py
+#@nonl
+#@-node:ekr.20060914090250:To test next
+#@+node:ekr.20060914085747.1:To test
+ConceptualSort.py
+EditAttributes.py
+FileActions.py
+Library.py
+TabWindow.py
+UASearch.py
+URLloader.py
+UniversalScrolling.py
+
+add_directives.py
+arrows.py
+at_view.py
+autotrees.py
+base64Packager.py
+bibtex.py
+cleo.py
+color_markup.py
+datenodes.py
+detect_urls.py
+dyna_menu.py
+fastGotoNode.py
+footprints.py
+groupOperations.py
+hoist.py
+image.py
+import_cisco_config.py
+leoupdate.py
+macros.py
+mod_autosave.py
+mod_http.py
+mod_labels.py
+mod_read_dir_outline.py
+mod_shadow.py
+nav_buttons.py
+newButtons.py
+niceNosent.py
+nodebar.py
+nodenavigator.py
+open_shell.py
+pie_menus.py
+pretty_print.py
+print_cp.py
+rClick.py
+read_only_nodes.py
+rowcol.py
+run_nodes.py
+scheduler.py
+scripts_menu.py
+searchbox.py
+shortcut_button.py
+slideshow.py
+table.py
+templates.py
+trace_tags.py
+xcc_nodes.py
+xsltWithNodes.py
+#@nonl
+#@-node:ekr.20060914085747.1:To test
+#@-node:ekr.20060912091922:Test all plugins
 #@-node:ekr.20060927172440:To do before 4.4.2 final
 #@+node:ekr.20060822174843:Most important
-#@+node:ekr.20050831131028:opml
-#@+node:ekr.20050831131452:Original post
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3280949
-By: billp9619
-
->>Making Leo a friendly part of the opml world has the potential to be very
-important to Leo. <<
-
-This is probably point 5. and covers the implementation of opml features as
-exposed in Leo.
-
-Because Leo is highly scripted there may be many requests... currently out on
-the OPML list... that are solveable....such as how to see their outlines as
-HTML without passing thru the OPML web server /host. BTW...all this new opml
-stuff is only a week or two in production. The first message on
-http://groups.yahoo.com/group/opml-newbies/
-is July 25.
-
->> The question of whether to duplicate body text in <outline> elements
-is minor<<
-
-Good. 
-
-Really, the opml tools are pretty much raw text/xml  and I was thinking the
-default fallback is ... all clone text is "duplicate". If you want clones then
-you will take care to only edit them in Leo. But if opml users all know and
-use clones routinely in other editors,  then this is good news for opml
-as technology.
-
->>more complicated than it needs to be<<
-
-Well, both Leo and opml have only a few elements and each primarilly uses one
-which recusively nests to make up the outline portion. I suppose body nodes
-could be included more directly in headlines ... allowing un-numbered headlines
-basically, ... but I am not sure that the current way is inferior
-or complicated.
-
- A simpler (forgiving?) format might make it easier to create with external
-apps and encourage transforming other xml to Leo via XSLT. It would have to
-just "work".
-
-(One thing about Leo's bias towards elements to contain markup, versus attributes,
-is that ...you can cheat a little on escaping &quot; in vh or t nodes ?...which
-makes code blocks smaller in the Leo xml.)
-
-Your list above is pretty much how I see it as well.
-
-regards,
-
-bill p
-
-#@-node:ekr.20050831131452:Original post
-#@+node:ekr.20050831131452.1:opml attributes v elements
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3282460
-By: billp9619
-
-Looking at some discussion of outline formats there was a remark that because
-opml places all text in attributes it is limited in not being able to contan
-other elements. On xml-dev I also saw some advice about opml followed by the
-comment that it is not a good format.
-
-opml is crippled in this regard but  Leo only restricts itself as a choice in
-order to  discern leo xml from content.(out of necessity we know).
-
-Of course with xml you can mix vocabularies based on the use of namespaces.
-By becoming namespace aware Leo could be adapted for non-escaped markup. The
-purpose then is xml parsing of leo as a standard container of other xml. I do
-not believe this is unthinkable  for some future capabilities... especially
-if such nodes would contain exclusively xml from another namespace.
-
-Just interesting that leo's format is more versatile than opml, 
-but, ...by choice for its own purposes, ...
- is in this part "backward" compatible with opml. :)  
-
-regards,
-
-bill p
-#@-node:ekr.20050831131452.1:opml attributes v elements
-#@+node:ekr.20050912063133:@url http://sourceforge.net/forum/message.php?msg_id=3273977
-#@-node:ekr.20050912063133:@url http://sourceforge.net/forum/message.php?msg_id=3273977
-#@+node:ekr.20050912065811:@url http://sourceforge.net/forum/message.php?msg_id=3279900 (summary)
-#@-node:ekr.20050912065811:@url http://sourceforge.net/forum/message.php?msg_id=3279900 (summary)
-#@+node:ekr.20050915062404:My post
-@nocolor
-
-Hi,
-
-I am the author of Leo http://webpages.charter.net/edreamleo/front.html an outline editor supporting clones http://webpages.charter.net/edreamleo/intro.html#clones-views.
-
-I am interested in having Leo be able to read and write opml files.  My understanding is that applications are free to use attributes of <outline> elements as they please, but I am wondering whether there are guidelines or existing conventions for representing clones.  Have any namespaces been defined for that purpose?
-
-Thanks.
-
-Edward
-#@-node:ekr.20050915062404:My post
-#@-node:ekr.20050831131028:opml
 #@+node:ekr.20041228084830.3:Finish wxWindows plugin
 # Don't use body wrappers, use g.app.gui methods instead
 #@-node:ekr.20041228084830.3:Finish wxWindows plugin

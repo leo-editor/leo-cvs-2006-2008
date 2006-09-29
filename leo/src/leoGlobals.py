@@ -1095,6 +1095,7 @@ def getLastTracebackFileAndLineNumber():
         # extract_tb does _not_ return the proper line number!
         # This code is similar to the code in format_exception_only(!!)
         try:
+            # g.es_print(repr(val))
             msg,(filename, lineno, offset, line) = val
             return filename,lineno
         except:
@@ -1104,7 +1105,7 @@ def getLastTracebackFileAndLineNumber():
     else:
         # The proper line number is the second element in the last tuple.
         data = traceback.extract_tb(tb)
-        # g.trace(data)
+        # g.es_print(repr(data))
         item = data[-1]
         filename = item[0]
         n = item[1]
@@ -3663,9 +3664,7 @@ def handleScriptException (c,p,script,script1):
 
     g.es("exception executing script",color='blue')
 
-    fileName, n = g.es_exception(full=True,c=c)
-    
-    g.trace(fileName,n)
+    fileName, n = g.es_exception(full=False)
 
     if p and not script1 and fileName == "<string>":
         c.goToScriptLineNumber(p,script,n)
