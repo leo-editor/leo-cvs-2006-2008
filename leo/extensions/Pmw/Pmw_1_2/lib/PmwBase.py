@@ -1776,9 +1776,11 @@ def _reporterror(func, args):
     exc_type, exc_value, exc_traceback = sys.exc_info()
 
     # Give basic information about the callback exception.
+    # print 'EKR: _reporterror'
     if type(exc_type) == types.ClassType:
-	# Handle python 1.5 class exceptions.
-	exc_type = exc_type.__name__
+        # Handle python 1.5 class exceptions.
+        pass # EKR 9/29/06: some weird indentation here.
+    exc_type = exc_type.__name__ # EKR: we can safely assume Python > 1.5
     msg = exc_type + ' Exception in Tk callback\n'
     msg = msg + '  Function: %s (type: %s)\n' % (repr(func), type(func))
     msg = msg + '  Args: %s\n' % str(args)
