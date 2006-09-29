@@ -1355,7 +1355,6 @@ class leoMenu:
                 if command:
                     rawKey,bunchList = c.config.getShortcut(commandName)
                     # Pick the first entry that is not a mode.
-                    best = None
                     for bunch in bunchList:
                         if not bunch.pane.endswith('-mode'):
                             # g.trace('1',bunch)

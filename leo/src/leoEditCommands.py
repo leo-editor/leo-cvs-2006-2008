@@ -2847,8 +2847,6 @@ class editCommandsClass (baseEditCommandsClass):
     def test_selfInsertCommand(self):
         
         self = c.editCommands
-        import Tkinter as Tk
-    
         event = g.Bunch(char='É',keysym=None,widget=c.frame.body.bodyCtrl)
         self.selfInsertCommand(event)
     #@nonl

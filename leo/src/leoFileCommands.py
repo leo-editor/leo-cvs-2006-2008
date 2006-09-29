@@ -106,21 +106,26 @@ class saxContentHandler (xml.sax.saxutils.XMLGenerator):
     #@-node:ekr.20060919110638.20: __init__ & helpers
     #@+node:ekr.20060919110638.29: Do nothing
     def endElementNS(self,name,qname):
+        __pychecker__ = '--no-argsused'
         g.trace(name)
         
     def endDocument(self):
         pass
     
-    def ignorableWhitespace(self):
+    def ignorableWhitespace(self,whitespace):
+        __pychecker__ = '--no-argsused'
         pass
     
     def processingInstruction (self,target,data):
+        __pychecker__ = '--no-argsused'
         pass # For <?xml-stylesheet ekr_stylesheet?>
     
     def skippedEntity(self,name):
+        __pychecker__ = '--no-argsused'
         g.trace(name)
     
     def startElementNS(self,name,qname,attrs):
+        __pychecker__ = '--no-argsused'
         g.trace(name)
         
     def startDocument(self):
@@ -342,11 +347,13 @@ class saxContentHandler (xml.sax.saxutils.XMLGenerator):
     #@-node:ekr.20060919110638.38:startWinPos
     #@+node:ekr.20060919110638.39:startLeoHeader
     def startLeoHeader (self,attrs):
-        
+        __pychecker__ = '--no-argsused'
         self.tnxToListDict = {}
     #@-node:ekr.20060919110638.39:startLeoHeader
     #@+node:ekr.20060919112118:startVnodes
     def startVnodes (self,attrs):
+        
+        __pychecker__ = '--no-argsused'
         
         c = self.c
     
@@ -358,6 +365,8 @@ class saxContentHandler (xml.sax.saxutils.XMLGenerator):
     #@-node:ekr.20060919112118:startVnodes
     #@+node:ekr.20060919110638.40:startVH
     def startVH (self,attrs):
+        
+        __pychecker__ = '--no-argsused'
     
         self.content = []
     #@nonl
