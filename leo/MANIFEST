@@ -84,6 +84,7 @@ doc\html\LeoCodeGray.gif
 doc\html\LeoProse.gif
 doc\html\PCWindow.gif
 doc\html\PythonPowered.gif
+doc\html\Thumbs.db
 doc\html\appendices.html
 doc\html\arrow_lt.gif
 doc\html\arrow_rt.gif
@@ -95,7 +96,7 @@ doc\html\default.css
 doc\html\design.html
 doc\html\directives.html
 doc\html\docModeOnlyTest.html
-doc\html\docOnlyTest.html
+doc\html\front.html
 doc\html\frontMatter.html
 doc\html\glossary.html
 doc\html\history.html
@@ -106,6 +107,7 @@ doc\html\leo.gif
 doc\html\leo_TOC.html
 doc\html\leo_rst.css
 doc\html\new-4-4-1.html
+doc\html\new-4-4-2.html
 doc\html\new-4-4.html
 doc\html\outlines.html
 doc\html\plugins.html
@@ -117,7 +119,7 @@ doc\html\testimonials.html
 doc\html\theory.html
 doc\html\whitepapers.html
 doc\html\writingPlugins.html
-doc\html\writingPlugins.html.txt
+doc\html\zodb.html
 doc\html\CVS\Entries.Extra
 doc\html\CVS\Entries.Extra.Old
 doc\html\CVS\Entries.Old
@@ -519,8 +521,6 @@ plugins\FileActions.py
 plugins\LeoN.py
 plugins\Library.ini
 plugins\Library.py
-plugins\TabWindow.py
-plugins\Tknotebook.py
 plugins\UASearch.py
 plugins\UNL.py
 plugins\URLloader.py
@@ -530,6 +530,7 @@ plugins\__ipython.py
 plugins\__jEdit_colorizer__.py
 plugins\__outlineExperiments.py
 plugins\__overrideClasses.py
+plugins\__saxRead__.py
 plugins\__vnx__.py
 plugins\__wx_gui.py
 plugins\add_directives.py
@@ -568,9 +569,14 @@ plugins\import_cisco_config.py
 plugins\keybindings.py
 plugins\leo-forthstringwords.txt
 plugins\leo-forthwords.txt
+plugins\leoOPML.py
 plugins\leoPlugins.leo
 plugins\leo_interface.py
 plugins\leo_pdf.py
+plugins\leo_to_html.ini
+plugins\leo_to_html.py
+plugins\leo_to_rtf.ini
+plugins\leo_to_rtf.py
 plugins\leoupdate.py
 plugins\lineNumbers.py
 plugins\macros.py
@@ -598,6 +604,7 @@ plugins\open_shell.py
 plugins\open_with.py
 plugins\outline_export.py
 plugins\override_commands.py
+plugins\paste_as_headlines.py
 plugins\pie_menus.py
 plugins\plugin_manager.py
 plugins\pluginsManager.txt
@@ -634,12 +641,12 @@ plugins\trace_tags.py
 plugins\usetemacs.ini
 plugins\usetemacs.py
 plugins\vim.py
+plugins\word_count.py
 plugins\word_export.ini
 plugins\word_export.py
 plugins\xcc_nodes.py
 plugins\xemacs.py
 plugins\xsltWithNodes.py
-plugins\zodb.py
 plugins\trees\doc.py
 plugins\trees\news.py
 plugins\trees\pluginsManager.txt
@@ -700,7 +707,6 @@ src\leo_run.py
 src\oldLeoProjects.leo
 test\__init__.py
 test\test.leo
-test\testRemoveSentinels.py
 test\unitTest.leo
 test\unittest\batchTest.py
 test\unittest\errorTest.py
