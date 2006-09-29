@@ -4,24 +4,22 @@
 #@+node:tbrown.20060903211930:<< docstring >>
 '''cleo.py  -- Coloured LEo Outlines
 
-Cleo allows you to annotate or colour leo outlines based on priority, code
-archetype, node types or some arbitary criteria. The annotations and colour
-coding can play a similar role like that of syntax highlighting. Right-click on
-the icon area to popup its menu to play with it.
+Cleo adds time required, progress and priority settings for nodes.
+It also allows you to colour nodes.  With the @project tag a
+branch can display progress and time required with dynamic updates.
 
-@settings for priority arrow colours:
-    @color cleo_color_pri_1 = pink
-    @color cleo_color_pri_2 = #123abc
-    etc.
-    @color cleo_color_prog_red = orange
-    @color cleo_color_prog_green = blue
-    (these last two for colour blind friendly progress bars)
-    
+See 
+
+  http://leo.zwiki.org/Cleo 
+           and 
+  http://leo.zwiki.org/cleodoc.html
+  
+for full documentation.
+
 User colours that exist on a node but not on the colour list
 can be restored to the colour list by right clicking on the
 node's icon box (this also displays the cleo menu).
 
-Requires Leo 4.2a3 or greater, as it uses new drawing hooks.
 '''
 #@nonl
 #@-node:tbrown.20060903211930:<< docstring >>
