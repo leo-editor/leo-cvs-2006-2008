@@ -22,6 +22,7 @@ import cStringIO
 import os
 import pickle
 import string
+import time
 import xml.sax
 import xml.sax.saxutils
 #@nonl
@@ -539,7 +540,9 @@ class baseFileCommands:
         self.read_only = False
         self.outputFile = None
         self.openDirectory = None
+        self.putCount = 0
         self.topVnode = None
+        self.toString = False
         self.usingClipboard = False
         self.currentPosition = None
         # New in 3.12
@@ -2172,10 +2175,20 @@ class baseFileCommands:
         Put string s to self.outputFile.
         All output eventually comes here.
         '''
+    
         # Improved code: self.outputFile (a cStringIO object) always exists.
         if s:
+            self.putCount += 1
             s = g.toEncodedString(s,self.leo_file_encoding,reportErrors=True)
             self.outputFile.write(s)
+            # New in Leo 4.4.2: writing non-ascii characters to a cStringIO object will throw a UnicodeError,
+            # but this try/except block might save a little time when encoding is not needed.
+            # try:
+                # # s = g.toEncodedString(s,self.leo_file_encoding,reportErrors=True)
+                # self.outputFile.write(s)
+            # except UnicodeError:
+                # s = g.toEncodedString(s,self.leo_file_encoding,reportErrors=True)
+                # self.outputFile.write(s)
     
     def put_dquote (self):
         self.put('"')
@@ -2807,6 +2820,8 @@ class baseFileCommands:
     def write_Leo_file(self,fileName,outlineOnlyFlag,toString=False,toOPML=False):
     
         c = self.c
+        self.putCount = 0
+        self.toString = toString
         self.assignFileIndices()
         if not outlineOnlyFlag or toOPML:
             # Update .leoRecentFiles.txt if possible.
@@ -2836,25 +2851,24 @@ class baseFileCommands:
         #@-node:ekr.20040324080359.1:<< return if the .leo file is read-only >>
         #@nl
         try:
-            theActualFile = None
-            if not toString:
-                #@            << create backup file >>
-                #@+node:ekr.20031218072017.3047:<< create backup file >>
-                # rename fileName to fileName.bak if fileName exists.
-                if g.os_path_exists(fileName):
-                    backupName = g.os_path_join(g.app.loadDir,fileName)
-                    backupName = fileName + ".bak"
-                    if g.os_path_exists(backupName):
-                        g.utils_remove(backupName)
-                    ok = g.utils_rename(fileName,backupName)
-                    if not ok:
-                        if self.read_only:
-                            g.es("read only",color="red")
-                        return False
-                else:
-                    backupName = None
-                #@-node:ekr.20031218072017.3047:<< create backup file >>
-                #@nl
+            #@        << create backup file >>
+            #@+node:ekr.20031218072017.3047:<< create backup file >>
+            backupName = None
+            
+            # rename fileName to fileName.bak if fileName exists.
+            if not toString and g.os_path_exists(fileName):
+                backupName = g.os_path_join(g.app.loadDir,fileName)
+                backupName = fileName + ".bak"
+                if g.os_path_exists(backupName):
+                    g.utils_remove(backupName)
+                ok = g.utils_rename(fileName,backupName)
+                if not ok:
+                    if self.read_only:
+                        g.es("read only",color="red")
+                    return False
+            #@nonl
+            #@-node:ekr.20031218072017.3047:<< create backup file >>
+            #@nl
             self.mFileName = fileName
             if toOPML:
                 #@            << ensure that filename ends with .opml >>
@@ -2866,13 +2880,23 @@ class baseFileCommands:
                 #@-node:ekr.20060919070145:<< ensure that filename ends with .opml >>
                 #@nl
             self.outputFile = cStringIO.StringIO()
-            if not toString:
+            #@        << create theActualFile >>
+            #@+node:ekr.20060929103258:<< create theActualFile >>
+            if toString:
+                theActualFile = None
+            else:
                 theActualFile = open(fileName, 'wb')
+            #@nonl
+            #@-node:ekr.20060929103258:<< create theActualFile >>
+            #@nl
+            # t1 = time.clock()
             if toOPML:
                 self.putToOPML()
             else:
                 self.putLeoFile()
+            # t2 = time.clock()
             s = self.outputFile.getvalue()
+            # g.trace(self.leo_file_encoding)
             if toString:
                 # For support of chapters plugin.
                 g.app.write_Leo_file_string = s
@@ -2886,26 +2910,31 @@ class baseFileCommands:
                     self.deleteFileWithMessage(backupName,'backup')
                 #@-node:ekr.20031218072017.3048:<< delete backup file >>
                 #@nl
+                # t3 = time.clock()
+                # g.es_print('len',len(s),'putCount',self.putCount,'put',t2-t1,'write&close',t3-t2)
             self.outputFile = None
+            self.toString = False
             return True
         except Exception:
             g.es("exception writing: " + fileName)
             g.es_exception(full=False)
             if theActualFile: theActualFile.close()
             self.outputFile = None
-            #@        << delete fileName >>
-            #@+node:ekr.20050405103712:<< delete fileName >>
-            if fileName and g.os_path_exists(fileName):
-                self.deleteFileWithMessage(fileName,'')
-            #@-node:ekr.20050405103712:<< delete fileName >>
-            #@nl
-            #@        << rename backupName to fileName >>
-            #@+node:ekr.20050405103712.1:<< rename backupName to fileName >>
             if backupName:
-                g.es("restoring " + fileName + " from " + backupName)
-                g.utils_rename(backupName,fileName)
-            #@-node:ekr.20050405103712.1:<< rename backupName to fileName >>
-            #@nl
+                #@            << delete fileName >>
+                #@+node:ekr.20050405103712:<< delete fileName >>
+                if fileName and g.os_path_exists(fileName):
+                    self.deleteFileWithMessage(fileName,'')
+                #@-node:ekr.20050405103712:<< delete fileName >>
+                #@nl
+                #@            << rename backupName to fileName >>
+                #@+node:ekr.20050405103712.1:<< rename backupName to fileName >>
+                if backupName:
+                    g.es("restoring " + fileName + " from " + backupName)
+                    g.utils_rename(backupName,fileName)
+                #@-node:ekr.20050405103712.1:<< rename backupName to fileName >>
+                #@nl
+            self.toString = False
             return False
     
     write_LEO_file = write_Leo_file # For compatibility with old plugins.
