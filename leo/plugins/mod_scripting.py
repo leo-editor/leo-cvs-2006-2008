@@ -68,7 +68,7 @@ import sys
 #@-node:ekr.20060328125248.2:<< imports >>
 #@nl
 
-__version__ = "0.24"
+__version__ = "0.25"
 #@<< version history >>
 #@+node:ekr.20060328125248.3:<< version history >>
 #@+at
@@ -116,6 +116,11 @@ __version__ = "0.24"
 #           and you can specify settings for such commands using @shortcuts 
 # nodes.
 # 0.24 EKR: Use 'button' pane for bindings.
+# 0.25 EKR:
+# - Added createRunButton and createScriptButton option.
+# - All standard buttons now create the corresponding press-x-button commands.
+# - cleanButtonText removes leading @..@button and does various other 
+# cleanings.
 #@-at
 #@nonl
 #@-node:ekr.20060328125248.3:<< version history >>
@@ -131,6 +136,10 @@ atScriptNodes = False
     # True: dynamically executes script in @script nodes when a window is created.  DANGEROUS!
 createDebugButton = False
     # True: create Debug Script button.
+createRunButton = False
+    # True: create Run Script button.
+createScriptButton = True
+# True: create Run Script button.
 useBaloons = True
     # True: add Pmw baloons.
 maxButtonSize = 18
@@ -196,8 +205,10 @@ class scriptingController:
     
         if not self.scanned: # Not really needed, but can't hurt.
             self.scanned = True
-            self.createRunScriptIconButton()
-            self.createScriptButtonIconButton()
+            if createRunButton:
+                self.createRunScriptIconButton()
+            if createScriptButton:
+                self.createScriptButtonIconButton()
             if createDebugButton:
                 self.createDebugIconButton()
     
@@ -365,6 +376,25 @@ class scriptingController:
         return shortcut
     #@nonl
     #@-node:ekr.20060328125248.16:getShortcut
+    #@+node:ekr.20060929135558:cleanButtonText
+    def cleanButtonText (self,s):
+        
+        # Strip @...@button.
+        while s.startswith('@'):
+            s = s[1:]
+        if s.startswith('button'):
+            s = s[6:]
+        chars = g.toUnicode(string.letters + string.digits,g.app.tkEncoding)
+        aList = [g.choose(ch in chars,ch,'-') for ch in g.toUnicode(s,g.app.tkEncoding)]
+        s = ''.join(aList)
+        s = s.replace('--','-')
+        while s.startswith('-'):
+            s = s[1:]
+        while s.endswith('-'):
+            s = s[:-1]
+        return s
+    #@nonl
+    #@-node:ekr.20060929135558:cleanButtonText
     #@+node:ekr.20060328125248.17:createIconButton
     def createIconButton (self,text,statusLine,bg):
         b = self.iconBar.add(text=text)
@@ -473,6 +503,7 @@ class scriptingController:
         #@-node:ekr.20060522105937.1:<< define runDebugScriptCommand >>
         #@nl
         b.configure(command=runDebugScriptCommand)
+        self.definePressButtonCommand('debug-script',atButtonCallback=runDebugScriptCommand)
         return b
     #@nonl
     #@-node:ekr.20060522105937:createDebugIconButton
@@ -495,6 +526,7 @@ class scriptingController:
         #@-node:ekr.20060328125248.21:<< define runScriptCommand >>
         #@nl
         b.configure(command=runScriptCommand)
+        self.definePressButtonCommand('run-script',atButtonCallback=runScriptCommand)
         return b
     #@nonl
     #@-node:ekr.20060328125248.20:createRunScriptIconButton
@@ -516,12 +548,14 @@ class scriptingController:
         #@-node:ekr.20060328125248.23:<< define addScriptButtonCommand >>
         #@nl
         b.configure(command=addScriptButtonCommand)
+        self.definePressButtonCommand('script-button',atButtonCallback=addScriptButtonCommand)
         return b
     #@nonl
     #@-node:ekr.20060328125248.22:createScriptButtonIconButton
     #@+node:ekr.20060328125248.24:createAtButtonIconButton
     def createAtButtonIconButton (self,p,buttonText,statusLine,shortcut,bg='LightSteelBlue1'):
         c = self.c ; k = c.k
+        buttonText = self.cleanButtonText(buttonText)
         b = self.createIconButton(text=buttonText,statusLine=statusLine,bg=bg)
         def deleteButtonCallback(event=None,self=self,b=b):
             self.deleteButton(b)
@@ -543,22 +577,16 @@ class scriptingController:
             #@-node:ekr.20060328125248.25:<< bind the shortcut to atButtonCallback >>
             #@nl
         else:
-            #@        << create press-buttonText-button command >>
-            #@+node:ekr.20060609174006:<< create press-buttonText-button command >>
-            chars = g.toUnicode(string.letters + string.digits,g.app.tkEncoding)
-            aList = [g.choose(ch in chars,ch,'-') for ch in g.toUnicode(buttonText,g.app.tkEncoding)]
-            
-            buttonCommandName = ''.join(aList)
-            buttonCommandName = buttonCommandName.replace('--','-')
-            buttonCommandName = 'press-%s-button' % buttonCommandName.lower()
-            
-            # This will use any shortcut defined in an @shortcuts node.
-            k.registerCommand(buttonCommandName,None,atButtonCallback,pane='button',verbose=False)
-            #@nonl
-            #@-node:ekr.20060609174006:<< create press-buttonText-button command >>
-            #@nl
+            self.definePressButtonCommand(buttonText,atButtonCallback=atButtonCallback)
         return b
     #@-node:ekr.20060328125248.24:createAtButtonIconButton
+    #@+node:ekr.20060929131245:definePressButtonCommand
+    def definePressButtonCommand (self,buttonText,atButtonCallback):
+    
+        # This will use any shortcut defined in an @shortcuts node.
+        buttonText = 'press-%s-button' % buttonText.lower()
+        self.c.k.registerCommand(buttonText,None,atButtonCallback,pane='button',verbose=False)
+    #@-node:ekr.20060929131245:definePressButtonCommand
     #@+node:ekr.20060328125248.26:deleteButton
     def deleteButton(self,button):
         
