@@ -2358,23 +2358,32 @@ class baseFileCommands:
     #@-node:ekr.20031218072017.1246:putProlog & helpers
     #@+node:ekr.20031218072017.1577:putTnode
     def putTnode (self,t):
+        
+        if 1: # New in Leo 4.4.2 b2: call put just once.
+            gnx = g.app.nodeIndices.toString(t.fileIndex)
+            ua = hasattr(t,'unknownAttributes') and self.putUnknownAttributes(t) or ''
+            body = t.bodyString and self.xmlEscape(t.bodyString) or ''
+            self.put('<t tx="%s"%s>%s</t>\n' % (gnx,ua,body))
     
-        self.put("<t")
-        self.put(" tx=")
-    
-        gnx = g.app.nodeIndices.toString(t.fileIndex)
-        self.put_in_dquotes(gnx)
-    
-        if hasattr(t,"unknownAttributes"):
-            self.putUnknownAttributes(t)
-    
-        self.put(">")
-    
-        # g.trace(t)
-        if t.bodyString:
-            self.putEscapedString(t.bodyString)
-    
-        self.put("</t>") ; self.put_nl()
+        else:
+            self.put("<t")
+            self.put(" tx=")
+        
+            gnx = g.app.nodeIndices.toString(t.fileIndex)
+            self.put_in_dquotes(gnx)
+        
+            if hasattr(t,"unknownAttributes"):
+                self.putUnknownAttributes(t)
+        
+            self.put(">")
+        
+            # g.trace(t)
+            if t.bodyString:
+                self.putEscapedString(t.bodyString)
+        
+            self.put("</t>") ; self.put_nl()
+        
+    #@nonl
     #@-node:ekr.20031218072017.1577:putTnode
     #@+node:ekr.20031218072017.1575:putTnodes
     def putTnodes (self):
@@ -2421,11 +2430,13 @@ class baseFileCommands:
         attrDict = torv.unknownAttributes
         if type(attrDict) != type({}):
             g.es("ignoring non-dictionary unknownAttributes for",torv,color="blue")
-            return
-    
-        for key in attrDict.keys():
-            val = attrDict[key]
-            self.putUaHelper(torv,key,val)
+            return ''
+        else:
+            # for key in attrDict.keys():
+                # val = attrDict[key]
+                # self.putUaHelper(torv,key,val)
+                
+            return ''.join([self.putUaHelper(torv,key,val) for key,val in attrDict.items()])
     #@nonl
     #@+node:ekr.20050418161620.2:putUaHelper
     def putUaHelper (self,torv,key,val):
@@ -2436,11 +2447,12 @@ class baseFileCommands:
         if key.startswith('str_'):
             if type(val) == type(''):
                 attr = ' %s="%s"' % (key,self.xmlEscape(val))
-                self.put(attr)
+                # self.put(attr)
+                return attr
             else:
                 g.es("ignoring non-string attribute %s in %s" % (
                     key,torv),color="blue")
-            return
+                return ''
         try:
             try:
                 # Protocol argument is new in Python 2.3
@@ -2449,12 +2461,14 @@ class baseFileCommands:
             except TypeError:
                 s = pickle.dumps(val,bin=True)
             attr = ' %s="%s"' % (key,binascii.hexlify(s))
-            self.put(attr)
+            return attr
+            # self.put(attr)
     
         except pickle.PicklingError:
             # New in 4.2 beta 1: keep going after error.
             g.es("ignoring non-pickleable attribute %s in %s" % (
                 key,torv),color="blue")
+            return ''
     #@-node:ekr.20050418161620.2:putUaHelper
     #@-node:EKR.20040526202501:putUnknownAttributes & helper
     #@+node:ekr.20031218072017.1579:putVnodes & helpers
@@ -2475,7 +2489,8 @@ class baseFileCommands:
             self.putVnode(self.currentPosition) # Write only current tree.
         else:
             for p in c.rootPosition().self_and_siblings_iter():
-                self.putVnode(p) # Write the next top-level node.
+                if not p.isAtIgnoreNode(): # New in Leo 4.4.2 b2 An optimization:
+                    self.putVnode(p) # Write the next top-level node.
     
         self.put("</vnodes>") ; self.put_nl()
     #@+node:ekr.20031218072017.1863:putVnode (3.x and 4.x)
@@ -2485,20 +2500,13 @@ class baseFileCommands:
     
         fc = self ; c = fc.c ; v = p.v
         isThin = p.isAtThinFileNode()
-        # Must check all parents.
-        isIgnore = False
-        for p2 in p.self_and_parents_iter():
-            if p2.isAtIgnoreNode():
-                isIgnore = True ; break
         isOrphan = p.isOrphan()
-        forceWrite = isIgnore or not isThin or (isThin and isOrphan)
-    
-        fc.put("<v")
-        #@    << Put tnode index >>
-        #@+node:ekr.20031218072017.1864:<< Put tnode index >>
+        forceWrite = not isThin or (isThin and isOrphan)
+        #@    << Set gnx = tnode index >>
+        #@+node:ekr.20031218072017.1864:<< Set gnx = tnode index >>
         if v.t.fileIndex:
             gnx = g.app.nodeIndices.toString(v.t.fileIndex)
-            fc.put(" t=") ; fc.put_in_dquotes(gnx)
+            ### fc.put(" t=") ; fc.put_in_dquotes(gnx)
         
             # g.trace(v.t)
             if forceWrite or self.usingClipboard:
@@ -2507,10 +2515,11 @@ class baseFileCommands:
             g.trace(v.t.fileIndex,v)
             g.es("error writing file(bad v.t.fileIndex)!")
             g.es("try using the Save To command")
-        #@-node:ekr.20031218072017.1864:<< Put tnode index >>
+        #@-node:ekr.20031218072017.1864:<< Set gnx = tnode index >>
         #@nl
-        #@    << Put attribute bits >>
-        #@+node:ekr.20031218072017.1865:<< Put attribute bits >>
+        attrs = []
+        #@    << Append attribute bits to attrs >>
+        #@+node:ekr.20031218072017.1865:<< Append attribute bits to attrs >>
         attr = ""
         if p.v.isExpanded(): attr += "E"
         if p.v.isMarked():   attr += "M"
@@ -2521,11 +2530,14 @@ class baseFileCommands:
             if p.equal(self.topPosition):   attr += "T" # was a bottleneck
             if c.isCurrentPosition(p):      attr += "V" # was a bottleneck
         
-        if attr: fc.put(' a="%s"' % attr)
-        #@-node:ekr.20031218072017.1865:<< Put attribute bits >>
+        # if attr: fc.put(' a="%s"' % attr)
+        
+        if attr:
+            attrs.append(' a="%s"' % (attr))
+        #@-node:ekr.20031218072017.1865:<< Append attribute bits to attrs >>
         #@nl
-        #@    << Put tnodeList and unKnownAttributes >>
-        #@+node:ekr.20040324082713:<< Put tnodeList and unKnownAttributes >>
+        #@    << Append tnodeList and unKnownAttributes to attrs >>
+        #@+node:ekr.20040324082713:<< Append tnodeList and unKnownAttributes to attrs>>
         # Write the tnodeList only for @file nodes.
         # New in 4.2: tnode list is in tnode.
         
@@ -2544,29 +2556,19 @@ class baseFileCommands:
                 # This is safe: cloning can't change the type of this node!
                 delattr(v.t,"tnodeList")
             else:
-                fc.putTnodeList(v) # New in 4.0
+                attrs.append(fc.putTnodeList(v)) # New in 4.0
         
         if hasattr(v,"unknownAttributes"): # New in 4.0
-            self.putUnknownAttributes(v)
+            attrs.append(self.putUnknownAttributes(v))
             
         if p.hasChildren() and not forceWrite and not self.usingClipboard:
             # We put the entire tree when using the clipboard, so no need for this.
-            self.putDescendentUnknownAttributes(p)
-            self.putDescendentAttributes(p)
-        #@-node:ekr.20040324082713:<< Put tnodeList and unKnownAttributes >>
+            attrs.append(self.putDescendentUnknownAttributes(p))
+            attrs.append(self.putDescendentAttributes(p))
+        #@-node:ekr.20040324082713:<< Append tnodeList and unKnownAttributes to attrs>>
         #@nl
-        fc.put(">")
-        #@    << Write the head text >>
-        #@+node:ekr.20031218072017.1866:<< Write the head text >>
-        headString = p.v.headString()
-        
-        if headString:
-            fc.put("<vh>")
-            fc.putEscapedString(headString)
-            fc.put("</vh>")
-        #@-node:ekr.20031218072017.1866:<< Write the head text >>
-        #@nl
-        
+        attrs = ''.join(attrs)
+        v_head = '<v t="%s"%s><vh>%s</vh>' % (gnx,attrs,self.xmlEscape(p.v.headString()or''))
         if not self.usingClipboard:
             #@        << issue informational messages >>
             #@+node:ekr.20040702085529:<< issue informational messages >>
@@ -2581,20 +2583,21 @@ class baseFileCommands:
                                 g.es("Writing @ignore'd: %s" % p2.headString(),color="blue")
             #@-node:ekr.20040702085529:<< issue informational messages >>
             #@nl
-    
-       # New in 4.2: don't write child nodes of @file-thin trees (except when writing to clipboard)
-        if p.hasChildren():
-            if forceWrite or self.usingClipboard:
-                fc.put_nl()
-                # This optimization eliminates all "recursive" copies.
-                p.moveToFirstChild()
-                while 1:
+        # New in 4.2: don't write child nodes of @file-thin trees (except when writing to clipboard)
+        if p.hasChildren() and (forceWrite or self.usingClipboard):
+            fc.put('%s\n' % v_head)
+            # This optimization eliminates all "recursive" copies.
+            p.moveToFirstChild()
+            while 1:
+                if not p.isAtIgnoreNode(): # New in Leo 4.4.2 b2 An optimization:
                     fc.putVnode(p)
-                    if p.hasNext(): p.moveToNext()
-                    else:           break
-                p.moveToParent()
-    
-        fc.put("</v>") ; fc.put_nl()
+                if p.hasNext(): p.moveToNext()
+                else:           break
+            p.moveToParent()
+            fc.put("</v>\n")
+        else:
+            fc.put('%s</v>\n' % v_head) # Call put only once.
+    #@nonl
     #@-node:ekr.20031218072017.1863:putVnode (3.x and 4.x)
     #@+node:ekr.20031218072017.2002:putTnodeList (4.0,4.2)
     def putTnodeList (self,v):
@@ -2609,7 +2612,7 @@ class baseFileCommands:
         tnodeList = v.t.tnodeList
         if tnodeList:
             # g.trace("%4d" % len(tnodeList),v)
-            fc.put(" tnodeList=") ; fc.put_dquote()
+            ### fc.put(" tnodeList=") ; fc.put_dquote()
             for t in tnodeList:
                 try: # Will fail for None or any pre 4.1 file index.
                     theId,time,n = t.fileIndex
@@ -2618,7 +2621,10 @@ class baseFileCommands:
                     gnx = nodeIndices.getNewIndex()
                     v.t.setFileIndex(gnx) # Don't convert to string until the actual write.
             s = ','.join([nodeIndices.toString(t.fileIndex) for t in tnodeList])
-            fc.put(s) ; fc.put_dquote()
+            ### fc.put(s) ; fc.put_dquote()
+            return ' tnodeList="%s"' % (s)
+        else:
+            return ''
     #@nonl
     #@-node:ekr.20031218072017.2002:putTnodeList (4.0,4.2)
     #@+node:ekr.20040701065235.2:putDescendentAttributes
@@ -2634,7 +2640,8 @@ class baseFileCommands:
             if p.hasChildren() and p.isExpanded() and not p in expanded:
                 expanded.append(p.copy())
     
-        for theList,tag in ((marks,"marks="),(expanded,"expanded=")):
+        result = []
+        for theList,tag in ((marks,"marks"),(expanded,"expanded")):
             if theList:
                 sList = []
                 for p in theList:
@@ -2642,8 +2649,12 @@ class baseFileCommands:
                     sList.append("%s," % nodeIndices.toString(gnx))
                 s = string.join(sList,'')
                 # g.trace(tag,[str(p.headString()) for p in theList])
-                self.put('\n' + tag)
-                self.put_in_dquotes(s)
+                if 1:
+                    result.append('\n%s="%s"' % (tag,s))
+                else:
+                    self.put('\n%s="%s"' % (tag,s))
+                
+        return ''.join(result)
     #@-node:ekr.20040701065235.2:putDescendentAttributes
     #@+node:EKR.20040627113418:putDescendentUnknownAttributes
     def putDescendentUnknownAttributes (self,p):
@@ -2690,9 +2701,13 @@ class baseFileCommands:
                 tag = "descendentTnodeUnknownAttributes"
                 s = pickle.dumps(resultDict,bin=True)
                 field = ' %s="%s"' % (tag,binascii.hexlify(s))
-                self.put(field)
+                return field
+                # self.put(field)
             except pickle.PicklingError:
                 g.trace("can't happen",color="red")
+                return ''
+        else:
+            return ''
     #@-node:EKR.20040627113418:putDescendentUnknownAttributes
     #@-node:ekr.20031218072017.1579:putVnodes & helpers
     #@-node:ekr.20040324080819.1:putLeoFile & helpers
