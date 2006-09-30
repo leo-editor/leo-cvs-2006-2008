@@ -2772,6 +2772,7 @@ class keyHandlerClass:
         
         k = self ; c = k.c
         f = c.commandsDict.get(commandName)
+        verbose = verbose and not g.app.unitTesting
         if f and f.__name__ != 'dummyCallback' and verbose:
             g.es_print('Redefining %s' % (commandName), color='red')
             
