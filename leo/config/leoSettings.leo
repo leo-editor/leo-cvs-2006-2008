@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="339" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="71" left="252" height="694" width="908"/>
+	<global_window_position top="71" left="252" height="675" width="908"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -458,8 +458,8 @@
 <v t="ekr.20060930111325.4"><vh>@bool scripting-at-plugin-nodes = False</vh></v>
 <v t="ekr.20060930111325.5"><vh>@bool scripting-at-script-nodes = False</vh></v>
 <v t="ekr.20060930111325.6"><vh>@bool scripting-create-debug-button = False</vh></v>
-<v t="ekr.20060930111325.7" a="V"><vh>@bool scripting-create-run-script-button = False</vh></v>
-<v t="ekr.20060930112030"><vh>@bool scripting-create-script-button-button = True</vh></v>
+<v t="ekr.20060930111325.7"><vh>@bool scripting-create-run-script-button = False</vh></v>
+<v t="ekr.20060930112030" a="TV"><vh>@bool scripting-create-script-button-button = True</vh></v>
 <v t="ekr.20060930111325.1"><vh>@int scripting-max-button-size = 18</vh></v>
 </v>
 <v t="ekr.20051123100536.1"><vh>vim plugin</vh>
@@ -6166,7 +6166,7 @@ False: The find command expands nodes needed to show the match, but does not col
 <t tx="ekr.20060930111325.7">True: create Run Script button.
 
 Note: The plugin creates the press-run-script-button regardless of this setting.</t>
-<t tx="ekr.20060930112030">True: create Run Script button in icon area.
+<t tx="ekr.20060930112030">True: create Script Button button in icon area.
 
 Note: The plugin creates the press-script-button-button regardless of this setting.</t>
 </tnodes>

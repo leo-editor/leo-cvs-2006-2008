@@ -4,14 +4,14 @@
 #@+node:ekr.20060328125248.1:<< docstring >>
 """A plugin to create script buttons and @button, @command, @plugin and @script nodes.
 
-This plugin puts two buttons in the icon area: a button called 'run Script' and
-a button called 'script Button'.
+This plugin puts buttons in the icon area. Depending on settings the plugin will
+create the 'Run Script', the 'Script Button' and the 'Debug Script' buttons.
 
-The 'run Script' button is simply another way of doing the Execute Script
+The 'Run Script' button is simply another way of doing the Execute Script
 command: it executes the selected text of the presently selected node, or the
 entire text if no text is selected.
 
-The 'script Button' button creates another button in the icon area every time
+The 'Script Button' button creates *another* button in the icon area every time
 you push it. The name of the button is the headline of the presently selected
 node. Hitting this *newly created* button executes the button's script.
 
@@ -23,6 +23,8 @@ For example, to run a script on any part of an outline do the following:
 4.  Push button X.
 
 That's all.  You can delete a script button by right-clicking on it.
+
+The 'Debug Script' button runs a script using an external debugger.
 
 This plugin optionally scans for @button nodes, @command, @plugin nodes and
 @script nodes whenever a .leo file is opened.
@@ -36,6 +38,35 @@ Such nodes may be security risks. This plugin scans for such nodes only if the
 corresponding atButtonNodes, atPluginNodes, and atScriptNodes constants are set
 to True in this plugin.
 
+You can specify the following options in leoSettings.leo.  See the node:
+@settings-->Plugins-->scripting plugin.  Recommended defaults are shown.
+
+- @bool scripting-at-button-nodes = True
+  True: adds a button for every @button node.
+
+- @bool scripting-at-commands-nodes = True
+  True: define a minibuffer command for every @command node.
+
+- @bool scripting-at-plugin-nodes = False
+  True: dynamically loads plugins in @plugins nodes when a window is created.
+
+- @bool scripting-at-script-nodes = False
+  True: dynamically executes script in @script nodes when a window is created.  DANGEROUS!
+
+- @bool scripting-create-debug-button = False
+  True: create Debug Script button.
+
+- @bool scripting-create-run-script-button = False
+  True: create Run Script button.
+  Note: The plugin creates the press-run-script-button regardless of this setting.
+
+- @bool scripting-create-script-button-button = True
+  True: create Script Button button in icon area.
+  Note: The plugin creates the press-script-button-button regardless of this setting.
+
+- @int scripting-max-button-size = 18
+  The maximum length of button names: longer names are truncated.
+
 You can bind key shortcuts to @button and @command nodes as follows:
 
 @button name @key=shortcut
@@ -48,7 +79,8 @@ mouse over the button.
 
 This creates a new minibuffer command and binds shortcut to it.
 
-This plugin is based on ideas from e's dynabutton plugin.   
+This plugin is based on ideas from e's dynabutton plugin,
+quite possibly the most brilliant idea in Leo's history.
 """
 #@nonl
 #@-node:ekr.20060328125248.1:<< docstring >>
@@ -68,7 +100,7 @@ import sys
 #@-node:ekr.20060328125248.2:<< imports >>
 #@nl
 
-__version__ = '1.0'
+__version__ = '1.1'
 #@<< version history >>
 #@+node:ekr.20060328125248.3:<< version history >>
 #@+at
@@ -122,7 +154,9 @@ __version__ = '1.0'
 # - cleanButtonText removes leading @..@button and does various other 
 # cleanings.
 # 1.0 EKR: Use settigns in leoSettings.leo instead of hard-coded settings.
+# 1.1 EKR: Updated docstring to reflect new settings.
 #@-at
+#@nonl
 #@-node:ekr.20060328125248.3:<< version history >>
 #@nl
 
