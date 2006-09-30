@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="338" clone_windows="0"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="339" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="71" left="252" height="732" width="908"/>
+	<global_window_position top="71" left="252" height="713" width="908"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -45,7 +45,7 @@
 <v t="ekr.20060112104823"><vh>main</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" a="TV" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
@@ -221,6 +221,7 @@
 </v>
 </v>
 <v t="ekr.20041119034357.20" annotate="7d71002e"><vh>Find/Change panel</vh>
+<v t="ekr.20060930085532"><vh>@bool collapse_nodes_during_finds = True</vh></v>
 <v t="ekr.20060125104049"><vh>@bool show_only_find_tab_options = True</vh></v>
 <v t="ekr.20060204124608"><vh>@bool minibufferSearchesShowFindTab = True</vh></v>
 <v t="ekr.20041119050105.1"><vh>@string change_text = None</vh></v>
@@ -265,7 +266,7 @@
 </v>
 <v t="ekr.20060127050605"><vh>@int max_undo_stack_size = 50</vh></v>
 </v>
-<v t="ekr.20060122105527.3" a="E"><vh>Keyboard and minibuffer options</vh>
+<v t="ekr.20060122105527.3"><vh>Keyboard and minibuffer options</vh>
 <v t="ekr.20060215094146"><vh>@@bool ignore_caps_lock = True</vh></v>
 <v t="ekr.20060216170801"><vh>@bool enable_calltips = True</vh></v>
 <v t="ekr.20060215102141"><vh>@bool ignore_unbound_non_ascii_keys = True</vh></v>
@@ -397,8 +398,6 @@
 <v t="ekr.20060112093227.2"><vh>@shortcuts No bindings: N-Z</vh></v>
 </v>
 <v t="ekr.20060603215208"><vh>@keys EKR bindings: Emacs keys + modes</vh>
-<v t="ekr.20060925053958"><vh>Bindings (alpha order)</vh></v>
-<v t="ekr.20060923115440"><vh>Changes made</vh></v>
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
 </v>
@@ -452,6 +451,17 @@
 <v t="ekr.20060919173031.1"><vh>@bool opml_write_leo_globals_attributes = True</vh></v>
 <v t="ekr.20060922110220"><vh>@bool opml_write_uAs = True</vh></v>
 <v t="ekr.20060919171527.2"><vh>@string opml_namespace = leo:com:leo-opml-version-1</vh></v>
+</v>
+<v t="ekr.20060930111325"><vh>scripting plugin</vh>
+<v t="ekr.20060930111325.1"><vh>@int maxButtonSize = 18</vh></v>
+<v t="ekr.20060930111325.2"><vh>@bool atButtonNodes = True</vh></v>
+<v t="ekr.20060930111325.3"><vh>@bool atCommandsNodes = True</vh></v>
+<v t="ekr.20060930111325.4"><vh>@bool atPluginNodes = False</vh></v>
+<v t="ekr.20060930111325.5"><vh>@bool atScriptNodes = False</vh></v>
+<v t="ekr.20060930111325.6"><vh>@bool createDebugButton = False</vh></v>
+<v t="ekr.20060930111325.7"><vh>@bool createRunButton = False</vh></v>
+<v t="ekr.20060930112030"><vh>@bool createScriptButton = True</vh></v>
+<v t="ekr.20060930112030.1"><vh>@bool useBaloons = True</vh></v>
 </v>
 <v t="ekr.20051123100536.1"><vh>vim plugin</vh>
 <v t="ekr.20051123100536.2"><vh>@string vim_cmd = c:\Program Files\vim\vim63\gvim --servername LEO</vh></v>
@@ -516,6 +526,7 @@
 <v t="ekr.20041119052015.1"><vh>@bool log_pane_wraps = False</vh></v>
 </v>
 <v t="ekr.20041119034357.56"><vh>Options for new windows</vh>
+<v t="ekr.20060930085332"><vh>@bool outline_pane_has_initial_focus = True</vh></v>
 <v t="ekr.20041119034357.59"><vh>@strings[vertical,horizontal] initial_splitter_orientation = vertical</vh></v>
 <v t="ekr.20041119034357.57"><vh>@ratio initial_horizontal_ratio = 0.4</vh></v>
 <v t="ekr.20041119034357.58"><vh>@ratio initial_horizontal_secondary_ratio = 0.8</vh></v>
@@ -541,14 +552,14 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060512084639" a="E"><vh>Recent</vh>
+<v t="ekr.20060512084639"><vh>Recent</vh>
 <v t="ekr.20060216135834"><vh>@bool enable_autocompleter_initially = False</vh></v>
 <v t="ekr.20060603070801"><vh>@bool enable_calltips_initially = False</vh></v>
 <v t="ekr.20060926160657"><vh>@bool stayInTreeAfterEditHeadline = False</vh></v>
 <v t="ekr.20060309022759"><vh>@bool trace_colorizer = False</vh></v>
 <v t="ekr.20060131071947"><vh>@bool trace_masterClickHandler = False</vh></v>
 <v t="ekr.20060209045356"><vh>@bool trace_masterFocusHandler = False</vh></v>
-<v t="ekr.20060131071612" a="TV"><vh>@bool trace_masterKeyHandler = False</vh></v>
+<v t="ekr.20060131071612"><vh>@bool trace_masterKeyHandler = False</vh></v>
 </v>
 <v t="ekr.20051007200824"><vh>Keyboard shortcuts</vh>
 <v t="ekr.20051101160257" annotate="7d71002e"><vh>About keyboard shortcuts</vh>
@@ -665,8 +676,6 @@
 <v t="ekr.20060112093227.2"><vh>@shortcuts No bindings: N-Z</vh></v>
 </v>
 <v t="ekr.20060603215208"><vh>@keys EKR bindings: Emacs keys + modes</vh>
-<v t="ekr.20060925053958"><vh>Bindings (alpha order)</vh></v>
-<v t="ekr.20060923115440"><vh>Changes made</vh></v>
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
 </v>
@@ -686,8 +695,6 @@
 </v>
 </v>
 <v t="ekr.20060603215208"><vh>@keys EKR bindings: Emacs keys + modes</vh>
-<v t="ekr.20060925053958"><vh>Bindings (alpha order)</vh></v>
-<v t="ekr.20060923115440"><vh>Changes made</vh></v>
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
 </v>
@@ -5210,8 +5217,9 @@ forward-word                        ! mini = Alt-f          # Usually opens file
 forward-word-extend-selection       ! mini = Alt-Shift-f
 # forward-word                        ! mini = Ctrl-RtArrow
 # forward-word-extend-selection       ! mini = Ctrl-Shift-RtArrow
-
+kill-line                           ! mini = Ctrl-K
 select-all                          ! mini = Alt-Shift-A
+yank                                ! mini = Ctrl-Y
 
 # Find options.  Important: conflicts with non-minibuffer bindings do not matter here!
 find-tab-find-next                  ! mini = F3
@@ -5978,176 +5986,6 @@ write-at-file-nodes                 = Shift-Ctrl-W
 write-dirty-at-file-nodes           = Shift+Ctrl+Q
 yank                                = Ctrl-Y
 zap-to-character                    = Alt-z</t>
-<t tx="ekr.20060923115440">Old:
-move-outline-down       = Ctrl-D, Alt-Shift-DnArrow
-move-outline-left       = Ctrl-L, Alt-Shift-LtArrow
-move-outline-right      = Ctrl-R, Alt-Shift-RtArrow
-move-outline-up         = Ctrl-U, Alt-Shift-UpArrow
-
-New:
-move-outline-down       = Ctrl-D, ! tree = Shift-DnArrow
-move-outline-left       = Ctrl-L, ! tree = Shift-LtArrow
-move-outline-right      = Ctrl-R, ! tree = Shift-RtArrow
-move-outline-up         = Ctrl=U, ! tree = Shift-UpArrow
-execute-script          = Ctrl-B
-repeat-complex-command  = Ctrl-P
-toggle-extend-mode      = Ctrl-space</t>
-<t tx="ekr.20060925053958">       (            show-calltips
-       .            auto-complete
-       Alt+(        show-calltips-force
-       Alt+)        move-past-close
-       Alt+-        contract-all
-       Alt+=        expand-next-level
-       
-       Alt+A        sort-siblings
- text: Alt+B        back-word
-       Alt+C        @mode quick-command
-       Alt+D        kill-word
- text: Alt+E        forward-sentence
- text: Alt+F        forward-word
-       Alt+G        goto-global-line
-#      Alt+H
-#      Alt+I       
-#      Alt+J
-       Alt+K        kill-sentence
-#      Alt+L
-       Alt+M        exchange-point-mark
-       Alt+N        goto-next-clone
-#      Alt+O
-       Alt+P        backward-find-character
-       Alt+Q        find-character
-       Alt+R        isearch-backword
-       Alt+S        isearch-forward
-#      Alt+T
-       Alt+U        universal-argument
-#      Alt+V
-       Alt+W        kill-region-save
-       Alt+X        full-command
-       Alt+Y        cycle-all-focus
-       Alt+Z        zap-to-character
-#      Alt+[        contract-node
-#      Alt+\        delete-spaces
-#      Alt+]        expand-node
- text: Alt+}        forward-paragraph
-       Alt+Ctrl+!   fully-expand-pane
-       Alt+Ctrl+-   contract-pane
-       Alt+Ctrl+=   expand-pane
- 
-       Alt+Ctrl+Down expand-outline-pane
- text: Alt+Ctrl+I   open-with-idle
-       Alt+Ctrl+Left expand-log-pane
-       Alt+Ctrl+O   split-line
-       Alt+Ctrl+P   cycle-all-focus
-       Alt+Ctrl+Right contract-log-pane
-       Alt+Ctrl+Shift+F print-focus
- text: Alt+Ctrl+T   open-with-wordpad
-       Alt+Ctrl+Up  expand-body-pane
- text: Alt+Ctrl+W   open-with-word
-       Alt+Delete   backward-kill-word
- text: Alt+Down     goto-next-visible
- tree: Alt+Down     goto-next-visible
- text: Alt+End      goto-last-visible
- tree: Alt+End      goto-last-visible
-       Alt+F4       close-window
- text: Alt+Home     goto-first-node
- tree: Alt+Home     goto-first-node
- text: Alt+Left     contract-or-go-left
- tree: Alt+Left     contract-or-go-left
- text: Alt+Right    expand-and-go-right
- tree: Alt+Right    expand-and-go-right
- text: Alt+Shift+A  select-all
-       Alt+Shift+D  debug
- text: Alt+Up       goto-prev-visible
- tree: Alt+Up       goto-prev-visible
-       BackSpace    backward-delete-char
-       Ctrl+(       add-comments
-       Ctrl+)       delete-comments
-       Ctrl+-       find-tab-change-then-find
-       Ctrl+.       auto-complete-force
-       Ctrl+=       find-tab-change
- text: Ctrl+A       beginning-of-line
-       Ctrl+B       execute-script
-       Ctrl+C       copy-text
-       Ctrl+D       move-outline-down
- text: Ctrl+E       end-of-line
-       Ctrl+F       search-with-present-options
-       Ctrl+G       keyboard-quit
-       Ctrl+H       edit-headline
-       Ctrl+I       insert-node
-       Ctrl+J       newline-and-indent
- text: Ctrl+K       kill-line
-       Ctrl+L       move-outline-left
- text: Ctrl+Left    back-word
-       Ctrl+M       mark
-       Ctrl+N       new
-       Ctrl+O       open-outline
-       Ctrl+P       repeat-complext-command
-       Ctrl+Q       exit-leo
- text: Ctrl+Right   forward-word
-       Ctrl+R       move-outline-right
-       Ctrl+S       save-file
-       Ctrl+T       toggle-active-pane
-       Ctrl+U       move-outline-up
-       Ctrl+V       paste-text
-       Ctrl+W       extend-to-word
-       Ctrl+X       cut-text
-       Ctrl+Y       yank
-       Ctrl+Z       undo
-       Ctrl+[       unindent-region
-       Ctrl+]       indent-region
-       Ctrl+`       clone-node
-       Ctrl+{       promote
-       Ctrl+}       demote
-       Ctrl+Shift+BackSpace delete-node
-       Ctrl+Shift+C copy-node
-       Ctrl+Shift+D extract
-       Ctrl+Shift+N extract-names
-       Ctrl+Shift+P reformat-paragraph
-       Ctrl+Shift+Q write-dirty-at-file-nodes
-       Ctrl+Shift+R replace-string
-       Ctrl+Shift+S extract-section
-       Ctrl+Shift+V paste-node
-       Ctrl+Shift+W write-at-file-nodes
-       Ctrl+Shift+X cut-node
-       Ctrl+Shift+Z redo
-       
-       Delete       delete-char
- tree: Down         goto-next-visible
- text: Down         next-line
- text: End          end-of-buffer
- tree: End          goto-last-visible
-       F1           help
-       F2           find-tab-find-prev
-       F3           find-tab-find
-       F7           open-spell-tab
- text: Home         beginning-of-buffer
- tree: Home         goto-first-node
- text: Left         back-char
- tree: Left         contract-or-go-left
- text: Next         scroll-down
- tree: Next         scroll-outline-down-line
- tree: Prior        scroll-outline-up-line
- text: Prior        scroll-up
- tree: Return       end-edit-headline
- tree: Right        expand-and-go-right
- text: Right        forward-char
- tree: Shift+Down   move-outline-down
- text: Shift+Down   next-line-extend-selection
- text: Shift+End    end-of-buffer-extend-selection
- text: Shift+Home   beginning-of-buffer-extend-selection
- text: Shift+Left   back-char-extend-selection
- tree: Shift+Left   move-outline-left
- text: Shift+Next   scroll-down-extend-selection
- tree: Shift+Next   scroll-outline-down-page
- tree: Shift+Prior  scroll-outline-up-page
- text: Shift+Prior  scroll-up-extend-selection
- text: Shift+Right  forward-char-extend-selection
- tree: Shift+Right  move-outline-right
- tree: Shift+Up     move-outline-up
- text: Shift+Up     previous-line-extend-selection
- tree: Up           goto-prev-visible
- text: Up           previous-line
-</t>
 <t tx="ekr.20060925060533.1">back-char                           ! text = LtArrow
 back-word                           ! text = Alt-b  
 beginning-of-buffer                 ! text = Home
@@ -6156,6 +5994,7 @@ end-of-buffer                       ! text = End
 end-of-line                         ! text = Ctrl-e
 exchange-point-mark                 = Alt-M     # Should be Ctrl-X Ctrl-X.
 extend-to-word                      = Ctrl-W
+extend-to-word                      = Alt-W
 forward-char                        ! text = RtArrow
 forward-paragraph                   ! text = Alt-braceright
 forward-sentence                    ! text = Alt-e
@@ -6308,5 +6147,28 @@ The valid values are::
 ignore:  Leo ignores the key (like Vim).
 insert:  Leo inserts the key at the cursor (like Emacs)
 overwrite: Leo replaces the character at the cursor.</t>
+<t tx="ekr.20060930085332">True: Outline gets focus when a new window is opened.
+False Body pane gets focus when a new window is opened.</t>
+<t tx="ekr.20060930085532">True: (Recommended) The find commands collapse all nodes that are not ancestors of the node containing the match.
+False: The find command expands nodes needed to show the match, but does not collapse any nodes.</t>
+<t tx="ekr.20060930111325"></t>
+<t tx="ekr.20060930111325.1">The maximum length of button names.
+</t>
+<t tx="ekr.20060930111325.2">True: adds a button for every @button node.
+</t>
+<t tx="ekr.20060930111325.3">True: define a minibuffer command for every @command node.
+</t>
+<t tx="ekr.20060930111325.4">True: dynamically loads plugins in @plugins nodes when a window is created.
+</t>
+<t tx="ekr.20060930111325.5">True: dynamically executes script in @script nodes when a window is created.  DANGEROUS!
+</t>
+<t tx="ekr.20060930111325.6">True: create Debug Script button.
+</t>
+<t tx="ekr.20060930111325.7">True: create Run Script button.
+</t>
+<t tx="ekr.20060930112030">True: create Run Script button in icon area.
+
+Note: The plugin creates the press-run-script-button regardless of this setting.</t>
+<t tx="ekr.20060930112030.1">True: Enable balloons in script buttons</t>
 </tnodes>
 </leo_file>
