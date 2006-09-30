@@ -43,7 +43,7 @@ http://webpages.charter.net/edreamleo/rstplugin3.html
 
 from __future__ import generators # To make this plugin work with Python 2.2.
 
-__version__ = '1.18'
+__version__ = '1.19'
 
 #@<< imports >>
 #@+node:ekr.20050805162550.2:<< imports >>
@@ -129,6 +129,7 @@ except ImportError:
 # - .txt files are now written to default_path directory, just like special 
 # files.
 # 1.18 EKR: Fixed bug: leading indentation in a node is now preserved.
+# 1.19 EKR: Register rst3-process-tree command on entry.
 #@-at
 #@nonl
 #@-node:ekr.20050805162550.3:<< change log >>
@@ -641,8 +642,19 @@ class rstClass:
         self.initHeadlineCommands() # Only needs to be done once.
         self.initSingleNodeOptions()
         self.addMenu()
+        self.registerRstCommand()
     #@nonl
     #@-node:ekr.20050805162550.10: ctor (rstClass)
+    #@+node:ekr.20060929201955:registerRstCommand
+    def registerRstCommand (self):
+        
+        def rst3Callback (event=None,self=self):
+            g.trace('event',event,'self',self)
+            self.processTopTree(self.c.currentPosition())
+        
+        self.c.k.registerCommand('rst3-process-tree',None,rst3Callback,pane='all',verbose=True)
+    #@nonl
+    #@-node:ekr.20060929201955:registerRstCommand
     #@+node:ekr.20050805162550.12:addMenu
     def addMenu (self):
     
