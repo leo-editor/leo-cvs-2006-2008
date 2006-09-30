@@ -61127,8 +61127,12 @@ def statusLineIsEnabled(self):
     
 def updateStatusLine(self):
     if self.statusLine: self.statusLine.update()</t>
-<t tx="ekr.20060929110823">fileName = c.fileName()
+<t tx="ekr.20060929110823">import time
+fileName = c.fileName()
+t1 = time.clock()
 c.fileCommands.write_Leo_file(fileName,outlineOnlyFlag=True,toString=True,toOPML=False)
-g.es_print(len(g.app.write_Leo_file_string))</t>
+t2 = time.clock()
+g.es_print(len(g.app.write_Leo_file_string))
+g.es_print('time: %s' % str(t2-t1))</t>
 </tnodes>
 </leo_file>

@@ -2,21 +2,26 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20060927172440:To do before 4.4.2 final
-#@+node:ekr.20060929122217:Options
-#@+node:ekr.20060929122217.1:Options not to use sparse finds
-#@-node:ekr.20060929122217.1:Options not to use sparse finds
+#@+node:ekr.20060929122217.4:Features: 3
 #@+node:ekr.20060927173836.1:Disable calltips in @nocolor sections
 @nocolor
+
+Why are calltips enabled at all??
 
 Show calltips treats the node as code, and that can have very weird effects in @nocolor sections.
 #@nonl
 #@-node:ekr.20060927173836.1:Disable calltips in @nocolor sections
-#@+node:ekr.20060929100640:Why are calltips enabled at all??
-#@-node:ekr.20060929100640:Why are calltips enabled at all??
-#@+node:ekr.20060929100640.1:New option: @bool outline_pane_has_initial_focus = True
-#@-node:ekr.20060929100640.1:New option: @bool outline_pane_has_initial_focus = True
-#@-node:ekr.20060929122217:Options
-#@+node:ekr.20060929122217.2:Bugs
+#@+node:ekr.20060929084830.1:Suppress redraw on all applicable outline:goto commands
+#@-node:ekr.20060929084830.1:Suppress redraw on all applicable outline:goto commands
+#@-node:ekr.20060929122217.4:Features: 3
+#@+node:ekr.20060929122217.2:Bugs: 6
+#@+node:ekr.20060930111450:Make sure yank/kill work in minibuffer
+#@-node:ekr.20060930111450:Make sure yank/kill work in minibuffer
+#@+node:ekr.20060930110925:Fix arrow keys (if possible)
+Up/down arrow keys should move straight up/down, but this is difficult with Tk.
+Still the present way is very bad.
+#@nonl
+#@-node:ekr.20060930110925:Fix arrow keys (if possible)
 #@+node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
 #@-node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
 #@+node:ekr.20060927100500.1:Fix bugs in new colorizer
@@ -283,35 +288,11 @@ Clear the * mark if all changes have been done.
 There are serious problems with undoing and redoing text.
 #@nonl
 #@-node:ekr.20060920150119:Fix undo problems (important)
-#@-node:ekr.20060929122217.2:Bugs
-#@+node:ekr.20060929122217.3:Plugins
-#@+node:ekr.20060928111002:Make showing the Run Script button optional
-#@-node:ekr.20060928111002:Make showing the Run Script button optional
-#@+node:ekr.20060929090247.2:rst3 plugin should register a command equivalent to rst3 button
-#@-node:ekr.20060929090247.2:rst3 plugin should register a command equivalent to rst3 button
-#@+node:ekr.20060927173836.7:The default script button button should create the press-script-button-button command
-#@-node:ekr.20060927173836.7:The default script button button should create the press-script-button-button command
-#@-node:ekr.20060929122217.3:Plugins
-#@+node:ekr.20060929122217.4:Features
-#@+node:ekr.20060929084830.1:Suppress redraw on all applicable outline:goto commands
-#@-node:ekr.20060929084830.1:Suppress redraw on all applicable outline:goto commands
-#@+node:ekr.20060929042321:Allow two copies of myLeoSettings.leo
-#@-node:ekr.20060929042321:Allow two copies of myLeoSettings.leo
-#@+node:ekr.20060915175024:Maintain vertical node position?
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3916155
-
-When a node is among several other nodes at the same level of hierarchy, which
-are all children of a node, and the "MOVE LFET" command is executed, the node
-does move left in the outline hierarchy, but it also move down to just before
-the next node at the higher hierarchy level - the level to which it is moving
-left.
-#@nonl
-#@-node:ekr.20060915175024:Maintain vertical node position?
-#@-node:ekr.20060929122217.4:Features
+#@-node:ekr.20060929122217.2:Bugs: 6
+#@+node:ekr.20060929141941:Docs
 #@+node:ekr.20060920190138:Document tnodeList, vnodeList and make better unit tests
 #@-node:ekr.20060920190138:Document tnodeList, vnodeList and make better unit tests
+#@-node:ekr.20060929141941:Docs
 #@+node:ekr.20060912091922:Test all plugins
 ** Create separate @test node for each plugin.
 #@nonl
@@ -406,701 +387,19 @@ xsltWithNodes.py
 #@-node:ekr.20060914085747.1:To test
 #@-node:ekr.20060912091922:Test all plugins
 #@-node:ekr.20060927172440:To do before 4.4.2 final
-#@+node:ekr.20060822174843:Most important
-#@+node:ekr.20041228084830.3:Finish wxWindows plugin
-# Don't use body wrappers, use g.app.gui methods instead
-#@-node:ekr.20041228084830.3:Finish wxWindows plugin
-#@+node:ekr.20060823105514.1:Really solid perfect import
-@nocolor
-
-- Make sure whitespace is preserved properly.
-
-- Make sure perfect import works.
-#@nonl
-#@-node:ekr.20060823105514.1:Really solid perfect import
-#@+node:ekr.20051202094427:Resolve cvs conflicts
-Investigate meld:  http://meld.sourceforge.net/
-#@nonl
-#@+node:ekr.20060823105514:Simulate cvs conflicts by using 2 repositories simultaneously
-#@-node:ekr.20060823105514:Simulate cvs conflicts by using 2 repositories simultaneously
-#@+node:ekr.20060601073503:Postings
-@nocolor
-#@nonl
-#@+node:ekr.20031218072017.658:Stepen Schaefer 1
-@nocolor
-
-There have been a couple different suggestions on how to obtain a .leo file
-that presents the conflicts for resolution.  My initial thought was to have
-some sort of external file containing only the structure information of interest.
-Edward has suggested that we could process the CVS created .leo file with all
-its conflict indicators.
-
-I'd like to offer another alternative: based on the ad-hoc procedure that Edward
-is currently using, i.e.,
-
-* Save your work to foo.leo file.
-* copy your foo.leo file to fooCvsTmp.leo
-* cvs ci
-* if there are no conflicts (hurray)
-*    remove fooCvsTmp.leo; finished
-* otherwise
-*    remove foo.leo
-*    cvs up foo.leo
-*    read foo.leo into an internal directed acyclic graph (DAG)
-*    generate the conflict resolution DAG from the proposed new leo internal
-DAG (which Leo already has as a matter of course) and the CVS derived DAG
-*    present for editting
-*    when you are satisfied and want to try to check in again, repeat.
-
-From the user's point of view, a CVS check in either succeeds or requires that
-the conflicts be resolved, after which another check in may be attempted.  If
-we're somehow interrupted in the middle of the process, the fooCvsTmp.leo file
-preserves the users work.
-#@-node:ekr.20031218072017.658:Stepen Schaefer 1
-#@+node:ekr.20050501111900:Stephen Schaefer 2
-@killcolor
-https://sourceforge.net/forum/message.php?msg_id=3125092
-By: thyrsus
-
-About a month ago, I posted a screed on how @thin was inadequate to address
-my needs; that what I needed to collaborate on via version control was exactly
-the essence of Leo's value: the multiple expressions of structure, which by
-their nature must exist outside of @thin.  I said I was going to live the pain
-to discover a modus vivendi.
-
-Having done that, let me now say:
-
-AAAAAAAAAAAAGGGGGGGGHHHHHHHHHH!
-
-But the exercise has led me to a vision, which I will implement to the extent
-my nonexistent spare time and paltry programming talents permit.
-
-The essence of the pain is "conflicts", which become more  certain to occur
-as the leo file encompases ever more related files.  As I work on a change to
-the Linux configuration, my colleague works on a change to the Solaris configuration,
-and one of us checks in our version of the leo file documenting the site
-configuration first, and the other cannot check in his version of that file.
-The conflict must be resolved by the human.  Using the "diff" tool on the .leo
-XML is not an answer (though thank Heaven and Ed for gnxs).  The resolution
-needs two levels of support: outline and node.
-
-With the .leo file declared binary, in the event of a conflict CVS leaves you
-with the most recent CVS version and your rejected version, and you're responsible
-for performing a reconciliation and then resubmitting that.  Leo will recognize
-the problem, and present both versions of the project, side by side, splitting
-the outline pane.  The parallel trees will scroll/expand/contract in unison.
-Outline branches present in CVS and not yours will display as blank space in
-your version; nodes present in your version and not CVS will display as blank
-space in the CVS version. The CVS version will be read only, your version editable.
-The same node with differences in its text or in its children will be highlighted.
-You will be able to drag nodes from the CVS version into your version. If the
-text of a selected node has conflicts, the text area will split in two, showing
-the CVS version and your version, with differences highlighted, both sides of
-the pane scrolling in unison, the CVS side read-only, and you can copy from
-that side to your side.  I intend to take as many ideas as I can from tkdiff
-(http://sourceforge.net/projects/tkdiff/ - see also
-http://freshmeat.net/screenshots/10602/ ).  (I have begun translating tkdiff
-from from tcl to python - nearly 9000 lines and I'm still learning both languages,
-so draw your own timeline.)  You edit your nodes, you edit your tree, you hit
-the "reconcile" button, and your reconciliation of the conflict goes into CVS.
-If, meanwhile, another one of your over-achieving colleages has again updated
-CVS, the process repeats with the most current CVS version.  Or you can hit
-the "abandon" button to give up on your changes.
-
-As the Hebrews say at Passover: "Next year in Jerusalem."
-#@nonl
-#@-node:ekr.20050501111900:Stephen Schaefer 2
-#@+node:ekr.20031218072017.659:Jonathon 1
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=1803722
-By: jmgilligan
-
-What is the intended behavior when foo.leo has a cloned node that appears several
-times in a derived (or multiple derived files) and the user edits this file
-or files to change two or more instances of the cloned node in different ways.
-
-Example:
-
-@file foo.py
-****begin tnode
-@others
-****end tnode
-...definition of procedure a
-***begin tnode
-def a:
-...print "a:", <<bar>>
-***end tnode
-...<<bar>>
-****begin tnode
-"bar"
-****end tnode
-
-...definition of procedure b
-***begin tnode
-def b:
-...print "b:", <<bar>>
-***end tnode
-...<<bar>>
-****begin tnode
-"bar"
-****end tnode
-
-...definition of procedure c
-***begin tnode
-def c:
-...print "a:", <<bar>>
-***end tnode
-...<<bar>>
-****begin tnode
-"bar"
-****end tnode
-
-In the .leo, if I edit <<bar>>, it will change simultaneously in each place,
-always in synch. However, suppose I edit foo.py in a text editor and change
-foo.py to read:
-
-#@verbatim
-#@+leo
-#@verbatim
-#@+node:0::@file foo.py
-#@verbatim
-#@+body
-#@verbatim
-#@+others
-#@verbatim
-#@+node:1::definition of a
-#@verbatim
-#@+body
-print "a:", 
-#@verbatim
-#@<<bar>>
-#@verbatim
-#@+node:1::<<bar>>
-#@verbatim
-#@+body
-"bar"
-#@verbatim
-#@-body
-#@verbatim
-#@-node:1::<<bar>>
-#@verbatim
-#@-body
-#@verbatim
-#@-node:1::definition of a
-#@verbatim
-#@+node:2::definition of b
-#@verbatim
-#@+body
-print "b:", 
-#@verbatim
-#@<<bar>>
-#@verbatim
-#@+node:1::<<bar>>
-#@verbatim
-#@+body
-"variation b"
-#@verbatim
-#@-body
-#@verbatim
-#@-node:1::<<bar>>
-#@verbatim
-#@-body
-#@verbatim
-#@-node:2::definition of b
-#@verbatim
-#@+node:3::definition of c
-#@verbatim
-#@+body
-print "c:", 
-#@verbatim
-#@<<bar>>
-#@verbatim
-#@+node:1::<<bar>>
-#@verbatim
-#@+body
-"variation c"
-#@verbatim
-#@-body
-#@verbatim
-#@-node:1::<<bar>>
-#@verbatim
-#@-body
-#@verbatim
-#@-node:3::definition of c
-#@verbatim
-#@-others
-#@verbatim
-#@-body
-#@verbatim
-#@-node:0::@file foo.py
-#@verbatim
-#@-leo
-
-Now what is supposed to happen when leo tries to read foo.py back in? It seems
-that there are three possible behaviors:
-
-1) leo reports a conflict that the user needs to resolve.
-2) leo breaks the clone: the three nodes become separate vnodes, not clones
-of the same one.
-3) leo arbitrarily takes one of the tnodes to be the new tnode for all of the
-clones. This is currently what happens. It creates something like a race condition,
-where the last node in the derived file determines what the final result will
-be. In this case, all three tnodes get text "variation c".
-
-This general question of how Leo should deal with conflicts in clone nodes seems
-to me that it needs to be addressed, particularly with respect to trying to
-avoid cvs conflicts via thick/thin modes.
-
-Note that this can become quite a subtle question because the same node can
-be cloned across several different derived files, in which case a serious race
-condition may pertain.
-
-At the least, I would like to see leo perform consistency checking on cloned
-nodes when it reads a derived file back in and warn the user if cloned nodes
-are inconsistent.
-
-Note that the issue also occurs with OpenWith: I can open each instance of a
-cloned node as a separate file in the external text editor. Which version is
-read back into leo depends on the order in which I save them from the external
-editor.
-#@-node:ekr.20031218072017.659:Jonathon 1
-#@+node:ekr.20031218072017.660:Jonathan 2
-@nocolor
-
-By: jmgilligan ( Jonathan M. Gilligan ) 
- Possible solution   
-2003-01-13 20:55  
-One possible solution for the conflicting clones problem is to have Leo, when it detects a conflicting clone, generate a text file (perhaps named LeoConflict_NNNN.leo, where NNNN is the gid of the node in question), which contains all the different versions of the node in question, output in leo XML format. 
-
-The vnode would then be marked with a "conflict" flag that would prevent the user from opening it in Leo until the conflict is resolved. See below for how the user resolves the conflict. 
-
-What I have in mind is something similar to the CVS conflict file, where a conflict between two versions is marked 
-
-<<<<<<< 
-blah blah blah? 
-======= 
-blah blah blah! 
->>>>>>> 
-
-Except that we would output this file in Leo XML format. The reason for XML format would be to avoid problems of how to generically delimit the different sections (different versions of the cloned node). Here leo's XML tags can unambiguously delimit the sections. 
-
-The user would then edit the conflict file and delete all but the desired version. Then he would tell leo to resolve the conflict by reading the corrected file in and replacing the contents of the conflicting node with the contents of the LeoConflict_NNNN.leo file. 
-
-On the down side, this may well be too baroque a fix for a problem that most users may never encounter. If so, perhaps it's best left alone until more pressing problems are solved. I know what I am doing with Leo and am always careful NOT to generate conflicting clones when I edit in an external text editor, so I don't absolutely need a resolution to this problem. I raised it because it's good for a program to have well-defined behavior when presented with anomalous input. 
-
-In this sense, perhaps the best thing is to allow users to generate code from clones (what Allan Holub referred to as "enough rope to shoot yourself in the foot"), but to tell them that this practice is frowned upon.  
-#@-node:ekr.20031218072017.660:Jonathan 2
-#@+node:ekr.20031218072017.661:Gil 1
-http://sourceforge.net/forum/message.php?msg_id=1836117
-By: gilshwartz
-
-Edward, now that conflicting clones may not be the result of bad style, I would
-like to propose yet another solution that I have been thinking of for a while.
-
-My basic approach is that cloning is not just a convenience tool, it may also
-reflect some of the properties of the code/code set. Therefore my goal is for
-clone links to remain even if they are conflicting, and let the user resolve
-them at any convenient time. I also think that Leo's user interface is the best
-tool to resolve such conflicts.
-
-Thus here is my view of clone management and resolution inside Leo. Anytime
-content is loaded into Leo, if a clone set agrees (i.e. have the same content)
-all clone copies are marked "green". When one green clone is edited, all green
-clones are changed. This is Leo as it is now.
-
-If at some point conflicting clones are loaded, Leo decides on some representing
-content (may be based on policies like most occurring content, or latest timestamp,
-etc.) and provides visual clues for the conflict. The visual clue is give by
-a double node box, e.g.
-
-+---------------+
-+ clone org +
-+---------------+
-+ resolution +
-+---------------+
-
-such that it is a single node in the tree, but has two content node, the original
-text, and the possibly arbitrary resolution.
-
-The resolution pseudo node is marked "blue", while the original text is either
-"green", if it is identical to the blue node, or "red", if it is not. To emphasis,
-the red/green nodes contain the specific (possibly) unique code associated with
-the derived file, while the pseudo blue node contains the shared clone content.
-During save to derived files, only the red/green content is saved, so effectively
-the file is not changed and the conflict is not resolved until the user chooses
-to do so. However, the clone relationship (via the gti) remains.
-
-During editing, changes to red/green clones are local and do not propagate to
-other clone copies (actually any change to a green node would turn it red).
-Changes to the blue nodes do propagate since it is a single view of the clone.
-A node pair may be converted to a regular node, effectively getting a new gti
-and eliminating the blue copy. Or, it may be converted to the shared copy,
-effectively forgetting its original content (leaving only the blue node). Once
-there are no more red nodes in a clone set, all its nodes become green again
-and the conflict is resolved.
-
-Some additional clone actions I think are useful are:
-
-1. Go to next/prev clone.
-2. Go to next/prev green clone (useful when there are red ones).
-3. Convert all green copies to a new clone group (useful when some clone copies
-needs to remain clones, but break from the original clone set, thus getting
-a new clone gti)
-
-Action 3 enables the user to partition its clone set to several clone groups
-by copying a clone's original content to its blue copy and finding matching
-(green) clones.
-
-What do we gain by all this?
-
-1. We can have conflicting clones without catastrophes.
-2. We get tools to handle conflicts and resolve them.
-3. We keep on working is Leo's environment, which is the most supportive one
-we can expect.
-
-Gil
-
-(By the way, I have a feeling that it would be useful to include along with
-the gti a hash of its node content, which could tell Leo is a node was changed
-outside of it. Also, including a timestamp in the opening sentinel, indicating
-when Leo last saved it. These may help having intelligent decisions by Leo in
-cases like conflicting clones.)
-#@-node:ekr.20031218072017.661:Gil 1
-#@+node:ekr.20031218072017.662:Gil 2
-http://sourceforge.net/forum/message.php?msg_id=1804169
-By: gilshwartz
-
-Another thing to think about is what should happen when close heading is changing.
-Right now, if you are inside Leo, all headings will be changed, and if you try
-to change by hand it in the derived file, clone links are removed (after some
-error reporting). This is quite reasonable in the current scheme of things,
-where one is not really expected to mess up with Leo sentinels.
-
-However, if/when @include is implemented, one would probably edit some files
-with clones that may extend to other files and changing the clone node name
-(via Leo) is quite feasible. Note that the gti for the cloned node would probably
-not change. So
-
-1. Do Leo resync the clone content based on the gti?
-2. Does it break cloning and allocates a new gti for one (arbitrary?) clone
-set?
-3. Let the user resolve manually, offer undoable auto-resolution with reporting,
-other?
-#@nonl
-#@-node:ekr.20031218072017.662:Gil 2
-#@-node:ekr.20060601073503:Postings
-#@-node:ekr.20051202094427:Resolve cvs conflicts
-#@-node:ekr.20060822174843:Most important
-#@+node:ekr.20060927173836.3:New & improved commands
-#@+node:ekr.20060628103226:Finish emacs commands
-#@+node:ekr.20060628103226.2:Alt-x handlers should add to lossage
-#@-node:ekr.20060628103226.2:Alt-x handlers should add to lossage
-#@+node:ekr.20060628095110:Fix yank and kill-line commands
-Blank lines: deletes the newline.
-Non-blank lines: deletes up to the newline.
-#@nonl
-#@+node:ekr.20050920084036.183:addToKillBuffer
-def addToKillBuffer (self,text):
-    
-    killKeys =(
-        '<Control-k>', '<Control-w>',
-        '<Alt-d>', '<Alt-Delete', '<Alt-z>', '<Delete>',
-        '<Control-Alt-w>')
-
-    k = self.k
-    self.reset = True
-
-    # g.trace(repr(text))
-
-    if self.killBuffer and k.stroke in killKeys:
-        self.killBuffer [0] = self.killBuffer [0] + text
-    else:
-        self.killBuffer.insert(0,text)
-#@-node:ekr.20050920084036.183:addToKillBuffer
-#@+node:ekr.20050920084036.174:killBufferCommandsClass (add docstrings)
-class killBufferCommandsClass (baseEditCommandsClass):
-    
-    '''A class to manage the kill buffer.'''
-
-    @others
-#@+node:ekr.20050920084036.175: ctor & finishCreate
-def __init__ (self,c):
-
-    baseEditCommandsClass.__init__(self,c) # init the base class.
-
-    self.killBuffer = [] # May be changed in finishCreate.
-    self.kbiterator = self.iterateKillBuffer()
-    self.last_clipboard = None # For interacting with system clipboard.
-    self.reset = False
-    try:
-        self.widget = c.frame.body.bodyCtrl
-    except AttributeError:
-        self.widget = None
-
-def finishCreate (self):
-    
-    baseEditCommandsClass.finishCreate(self)
-        # Call the base finishCreate.
-        # This sets self.k
-    
-    if self.k.useGlobalKillbuffer:
-        self.killBuffer = leoKeys.keyHandlerClass.global_killbuffer
-#@-node:ekr.20050920084036.175: ctor & finishCreate
-#@+node:ekr.20050920084036.176: getPublicCommands
-def getPublicCommands (self):
-    
-    return {
-        'backward-kill-sentence':   self.backwardKillSentence,
-        'backward-kill-word':       self.backwardKillWord,
-        'clear-kill-ring':          self.clearKillRing,
-        'kill-line':                self.killLine,
-        'kill-word':                self.killWord,
-        'kill-sentence':            self.killSentence,
-        'kill-region':              self.killRegion,
-        'kill-region-save':         self.killRegionSave,
-        'yank':                     self.yank,
-        'yank-pop':                 self.yankPop,
-        'zap-to-character':         self.zapToCharacter,
-    }
-#@-node:ekr.20050920084036.176: getPublicCommands
-#@+node:ekr.20050920084036.183:addToKillBuffer
-def addToKillBuffer (self,text):
-    
-    killKeys =(
-        '<Control-k>', '<Control-w>',
-        '<Alt-d>', '<Alt-Delete', '<Alt-z>', '<Delete>',
-        '<Control-Alt-w>')
-
-    k = self.k
-    self.reset = True
-
-    # g.trace(repr(text))
-
-    if self.killBuffer and k.stroke in killKeys:
-        self.killBuffer [0] = self.killBuffer [0] + text
-    else:
-        self.killBuffer.insert(0,text)
-#@-node:ekr.20050920084036.183:addToKillBuffer
-#@+node:ekr.20050920084036.181:backwardKillSentence
-def backwardKillSentence (self,event):
-    
-    '''Kill the previous sentence.'''
-    
-    w = event.widget
-    i = w.search('.','insert',backwards=True,stopindex='1.0')
-
-    if i:
-        i2 = w.search('.',i,backwards=True,stopindex='1.0')
-        i2 = g.choose(i2=='','1.0',i2+'+1c ')
-        self.kill(event,i2,'%s + 1c' % i,undoType='backward-kill-sentence')
-#@-node:ekr.20050920084036.181:backwardKillSentence
-#@+node:ekr.20050920084036.180:backwardKillWord
-def backwardKillWord (self,event):
-    
-    '''Kill the previous word.'''
-
-    c = self.c
-    c.editCommands.backwardWord(event)
-    self.killWs(event)
-    self.killWord(event)
-    # c.editCommands.backwardWord(event)
-#@-node:ekr.20050920084036.180:backwardKillWord
-#@+node:ekr.20051216151811:clearKillRing
-def clearKillRing (self,event=None):
-    
-    '''Clear the kill ring.'''
-    
-    self.killBuffer = []
-#@-node:ekr.20051216151811:clearKillRing
-#@+node:ekr.20050920084036.185:getClipboard
-def getClipboard (self,w):
-
-    try:
-        ctxt = w.selection_get(selection='CLIPBOARD')
-        if not self.killBuffer or ctxt != self.last_clipboard:
-            self.last_clipboard = ctxt
-            if not self.killBuffer or self.killBuffer [0] != ctxt:
-                return ctxt
-    except: pass
-
-    return None
-#@-node:ekr.20050920084036.185:getClipboard
-#@+node:ekr.20050920084036.184:iterateKillBuffer
-def iterateKillBuffer (self):
-
-    while 1:
-        if self.killBuffer:
-            self.last_clipboard = None
-            for z in self.killBuffer:
-                if self.reset:
-                    self.reset = False
-                    break
-                yield z
-#@-node:ekr.20050920084036.184:iterateKillBuffer
-#@+node:ekr.20050920084036.178:kill, killLine, killWord
-def kill (self,event,frm,to,undoType=None):
-
-    k = self.k ; w = event.widget
-    s = w.get(frm,to)
-    
-    if undoType: self.beginCommand(undoType=undoType)
-    self.addToKillBuffer(s)
-    w.clipboard_clear()
-    w.clipboard_append(s)
-    w.delete(frm,to)
-    if undoType: self.endCommand(changed=True,setLabel=True)
-
-def killLine (self,event):
-    '''Kill the line containing the cursor.'''
-    self.kill(event,'insert linestart','insert lineend+1c','kill-line')
-
-def killWord (self,event):
-    '''Kill the word containing the cursor.'''
-    self.kill(event,'insert wordstart','insert wordend','kill-word')
-    self.killWs(event)
-#@-node:ekr.20050920084036.178:kill, killLine, killWord
-#@+node:ekr.20050920084036.182:killRegion & killRegionSave & helper
-def killRegion (self,event):
-    '''Kill the text selection.'''
-    self.killRegionHelper(event,deleteFlag=True)
-    
-def killRegionSave (self,event):
-    '''Add the selected text to the kill ring, but do not delete it.'''
-    self.killRegionHelper(event,deleteFlag=False)
-
-def killRegionHelper (self,event,deleteFlag):
-
-    w = event.widget
-
-    if g.app.gui.isTextWidget(w):
-        theRange = w.tag_ranges('sel')
-        if theRange:
-            s = w.get(theRange[0],theRange[-1])
-            if deleteFlag:
-                w.delete(theRange[0],theRange[-1])
-            self.addToKillBuffer(s)
-            w.clipboard_clear()
-            w.clipboard_append(s)
-            self.removeRKeys(w)
-#@-node:ekr.20050920084036.182:killRegion & killRegionSave & helper
-#@+node:ekr.20050930095323.1:killSentence
-def killSentence (self,event):
-    
-    '''Kill the sentence containing the cursor.'''
-
-    w = event.widget
-    i  = w.search('.','insert',stopindex='end')
-    if i:
-        i2 = w.search('.','insert',backwards=True,stopindex='1.0')
-        i2 = g.choose(i2=='','1.0',i2+'+1c ')
-        self.kill(event,i2,'%s + 1c' % i,undoType='kill-sentence')
-#@-node:ekr.20050930095323.1:killSentence
-#@+node:ekr.20050930100733:killWs
-def killWs (self,event):
-    
-    ws = '' ; w = event.widget
-
-    while 1:
-        s = w.get('insert')
-        if s in (' ','\t'):
-            w.delete('insert')
-            ws = ws + s
-        else:
-            break
-            
-    if ws:
-        self.addToKillBuffer(ws)
-#@-node:ekr.20050930100733:killWs
-#@+node:ekr.20050930091642.1:yank
-def yank (self,event):
-    
-    '''Insert the next entry in the kill ring at the insert point.'''
-
-    k = self.k ; w = self.w
-    i = w.index('insert')
-    clip_text = self.getClipboard(w)
-
-    if self.killBuffer or clip_text:
-        self.reset = True
-        s = clip_text or self.kbiterator.next()
-        w.tag_delete('kb')
-        w.insert('insert',s,('kb'))
-        w.mark_set('insert',i)
-#@-node:ekr.20050930091642.1:yank
-#@+node:ekr.20050930091642.2:yankPop
-def yankPop (self,event):
-    
-    '''Replaces the just-yanked kill buffer with the contents of the previous kill buffer.'''
-
-    k = self.k ; w = event.widget
-    i = w.index('insert') ; t, t1 = i.split('.')
-    clip_text = self.getClipboard(w)
-
-    if self.killBuffer or clip_text:
-        if clip_text: s = clip_text
-        else:         s = self.kbiterator.next()
-        t1 = str(int(t1)+len(s))
-        r = w.tag_ranges('kb')
-        if r and r [0] == i:
-            w.delete(r[0],r[-1])
-        w.tag_delete('kb')
-        w.insert('insert',s,('kb'))
-        w.mark_set('insert',i)
-#@-node:ekr.20050930091642.2:yankPop
-#@+node:ekr.20050920084036.128:zapToCharacter
-def zapToCharacter (self,event):
-    
-    '''Kill characters from the insertion point to a given character.'''
-
-    k = self.k ; state = k.getState('zap-to-char')
-
-    if state == 0:
-        k.setLabelBlue('Zap To Character: ',protect=True)
-        k.setState('zap-to-char',1,handler=self.zapToCharacter)
-    else:
-        c = k.c ; w = event.widget ; ch = event.char
-        k.resetLabel()
-        k.clearState()
-        if (
-            len(event.char) != 0 and
-            ch in (string.ascii_letters + string.digits + string.punctuation)
-        ):
-            i = w.search(ch,'insert',stopindex='end')
-            if i:
-                t = w.get('insert','%s+1c' % i)
-                self.addToKillBuffer(t)
-                w.delete('insert','%s+1c' % i)
-#@-node:ekr.20050920084036.128:zapToCharacter
-#@-node:ekr.20050920084036.174:killBufferCommandsClass (add docstrings)
-#@-node:ekr.20060628095110:Fix yank and kill-line commands
-#@+node:ekr.20060628094329.2:Test/Fix macros
-#@-node:ekr.20060628094329.2:Test/Fix macros
-#@+node:ekr.20060628103226.3:Make sure repeat counts work on basic editing commands
-#@-node:ekr.20060628103226.3:Make sure repeat counts work on basic editing commands
-#@-node:ekr.20060628103226:Finish emacs commands
-#@+node:ekr.20060914090030:add sort-lines-ignoring-case commad
-#@-node:ekr.20060914090030:add sort-lines-ignoring-case commad
-#@+node:ekr.20060927174531:New gui commands
-- delete-completion-tab (somewhat useful for cycling focus)
-#@nonl
-#@-node:ekr.20060927174531:New gui commands
-#@+node:ekr.20060927173836.4:New move outlihe commands
-- move-to-last-sibling
-- move-to-first-sibling
-- move-outline-all-the-way-left
-#@nonl
-#@-node:ekr.20060927173836.4:New move outlihe commands
-#@+node:ekr.20060927173836.5:Repeat counts for cursor moves
-#@-node:ekr.20060927173836.5:Repeat counts for cursor moves
-#@+node:ekr.20060927173836:Better print-binding command
-# Separate sections for single-character Ctrl and Alt keys.
-#@nonl
-#@-node:ekr.20060927173836:Better print-binding command
-#@+node:ekr.20060927173836.2:Find next doesn't find any more if regexp matches an empty string.
-#@-node:ekr.20060927173836.2:Find next doesn't find any more if regexp matches an empty string.
-#@-node:ekr.20060927173836.3:New & improved commands
 #@+node:ekr.20060531161030:To do: 4.4.x
+#@+node:ekr.20060915175024:Maintain vertical node position if possible
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3916155
+
+When a node is among several other nodes at the same level of hierarchy, which
+are all children of a node, and the "MOVE LFET" command is executed, the node
+does move left in the outline hierarchy, but it also move down to just before
+the next node at the higher hierarchy level - the level to which it is moving
+left.
+#@nonl
+#@-node:ekr.20060915175024:Maintain vertical node position if possible
 #@+node:ekr.20060822162521:Make headlines scroll
 Limit the with of the headline to the width of the outline pane.
 #@nonl
@@ -1598,7 +897,701 @@ def getExistingVnode (self,tref,headline):
 #@-node:ekr.20040326063413:getExistingVnode
 #@-node:ekr.20031218072017.1566:getVnode & helpers
 #@-node:ekr.20060724071225:Look at Paste Node As Clone
+#@+node:ekr.20060927173836.3:New & improved commands
+#@+node:ekr.20060628103226:Finish emacs commands
+#@+node:ekr.20060628103226.2:Alt-x handlers should add to lossage
+#@-node:ekr.20060628103226.2:Alt-x handlers should add to lossage
+#@+node:ekr.20060628095110:Fix yank and kill-line commands
+Blank lines: deletes the newline.
+Non-blank lines: deletes up to the newline.
+#@nonl
+#@+node:ekr.20050920084036.183:addToKillBuffer
+def addToKillBuffer (self,text):
+    
+    killKeys =(
+        '<Control-k>', '<Control-w>',
+        '<Alt-d>', '<Alt-Delete', '<Alt-z>', '<Delete>',
+        '<Control-Alt-w>')
+
+    k = self.k
+    self.reset = True
+
+    # g.trace(repr(text))
+
+    if self.killBuffer and k.stroke in killKeys:
+        self.killBuffer [0] = self.killBuffer [0] + text
+    else:
+        self.killBuffer.insert(0,text)
+#@-node:ekr.20050920084036.183:addToKillBuffer
+#@+node:ekr.20050920084036.174:killBufferCommandsClass (add docstrings)
+class killBufferCommandsClass (baseEditCommandsClass):
+    
+    '''A class to manage the kill buffer.'''
+
+    @others
+#@+node:ekr.20050920084036.175: ctor & finishCreate
+def __init__ (self,c):
+
+    baseEditCommandsClass.__init__(self,c) # init the base class.
+
+    self.killBuffer = [] # May be changed in finishCreate.
+    self.kbiterator = self.iterateKillBuffer()
+    self.last_clipboard = None # For interacting with system clipboard.
+    self.reset = False
+    try:
+        self.widget = c.frame.body.bodyCtrl
+    except AttributeError:
+        self.widget = None
+
+def finishCreate (self):
+    
+    baseEditCommandsClass.finishCreate(self)
+        # Call the base finishCreate.
+        # This sets self.k
+    
+    if self.k.useGlobalKillbuffer:
+        self.killBuffer = leoKeys.keyHandlerClass.global_killbuffer
+#@-node:ekr.20050920084036.175: ctor & finishCreate
+#@+node:ekr.20050920084036.176: getPublicCommands
+def getPublicCommands (self):
+    
+    return {
+        'backward-kill-sentence':   self.backwardKillSentence,
+        'backward-kill-word':       self.backwardKillWord,
+        'clear-kill-ring':          self.clearKillRing,
+        'kill-line':                self.killLine,
+        'kill-word':                self.killWord,
+        'kill-sentence':            self.killSentence,
+        'kill-region':              self.killRegion,
+        'kill-region-save':         self.killRegionSave,
+        'yank':                     self.yank,
+        'yank-pop':                 self.yankPop,
+        'zap-to-character':         self.zapToCharacter,
+    }
+#@-node:ekr.20050920084036.176: getPublicCommands
+#@+node:ekr.20050920084036.183:addToKillBuffer
+def addToKillBuffer (self,text):
+    
+    killKeys =(
+        '<Control-k>', '<Control-w>',
+        '<Alt-d>', '<Alt-Delete', '<Alt-z>', '<Delete>',
+        '<Control-Alt-w>')
+
+    k = self.k
+    self.reset = True
+
+    # g.trace(repr(text))
+
+    if self.killBuffer and k.stroke in killKeys:
+        self.killBuffer [0] = self.killBuffer [0] + text
+    else:
+        self.killBuffer.insert(0,text)
+#@-node:ekr.20050920084036.183:addToKillBuffer
+#@+node:ekr.20050920084036.181:backwardKillSentence
+def backwardKillSentence (self,event):
+    
+    '''Kill the previous sentence.'''
+    
+    w = event.widget
+    i = w.search('.','insert',backwards=True,stopindex='1.0')
+
+    if i:
+        i2 = w.search('.',i,backwards=True,stopindex='1.0')
+        i2 = g.choose(i2=='','1.0',i2+'+1c ')
+        self.kill(event,i2,'%s + 1c' % i,undoType='backward-kill-sentence')
+#@-node:ekr.20050920084036.181:backwardKillSentence
+#@+node:ekr.20050920084036.180:backwardKillWord
+def backwardKillWord (self,event):
+    
+    '''Kill the previous word.'''
+
+    c = self.c
+    c.editCommands.backwardWord(event)
+    self.killWs(event)
+    self.killWord(event)
+    # c.editCommands.backwardWord(event)
+#@-node:ekr.20050920084036.180:backwardKillWord
+#@+node:ekr.20051216151811:clearKillRing
+def clearKillRing (self,event=None):
+    
+    '''Clear the kill ring.'''
+    
+    self.killBuffer = []
+#@-node:ekr.20051216151811:clearKillRing
+#@+node:ekr.20050920084036.185:getClipboard
+def getClipboard (self,w):
+
+    try:
+        ctxt = w.selection_get(selection='CLIPBOARD')
+        if not self.killBuffer or ctxt != self.last_clipboard:
+            self.last_clipboard = ctxt
+            if not self.killBuffer or self.killBuffer [0] != ctxt:
+                return ctxt
+    except: pass
+
+    return None
+#@-node:ekr.20050920084036.185:getClipboard
+#@+node:ekr.20050920084036.184:iterateKillBuffer
+def iterateKillBuffer (self):
+
+    while 1:
+        if self.killBuffer:
+            self.last_clipboard = None
+            for z in self.killBuffer:
+                if self.reset:
+                    self.reset = False
+                    break
+                yield z
+#@-node:ekr.20050920084036.184:iterateKillBuffer
+#@+node:ekr.20050920084036.178:kill, killLine, killWord
+def kill (self,event,frm,to,undoType=None):
+
+    k = self.k ; w = event.widget
+    s = w.get(frm,to)
+    
+    if undoType: self.beginCommand(undoType=undoType)
+    self.addToKillBuffer(s)
+    w.clipboard_clear()
+    w.clipboard_append(s)
+    w.delete(frm,to)
+    if undoType: self.endCommand(changed=True,setLabel=True)
+
+def killLine (self,event):
+    '''Kill the line containing the cursor.'''
+    self.kill(event,'insert linestart','insert lineend+1c','kill-line')
+
+def killWord (self,event):
+    '''Kill the word containing the cursor.'''
+    self.kill(event,'insert wordstart','insert wordend','kill-word')
+    self.killWs(event)
+#@-node:ekr.20050920084036.178:kill, killLine, killWord
+#@+node:ekr.20050920084036.182:killRegion & killRegionSave & helper
+def killRegion (self,event):
+    '''Kill the text selection.'''
+    self.killRegionHelper(event,deleteFlag=True)
+    
+def killRegionSave (self,event):
+    '''Add the selected text to the kill ring, but do not delete it.'''
+    self.killRegionHelper(event,deleteFlag=False)
+
+def killRegionHelper (self,event,deleteFlag):
+
+    w = event.widget
+
+    if g.app.gui.isTextWidget(w):
+        theRange = w.tag_ranges('sel')
+        if theRange:
+            s = w.get(theRange[0],theRange[-1])
+            if deleteFlag:
+                w.delete(theRange[0],theRange[-1])
+            self.addToKillBuffer(s)
+            w.clipboard_clear()
+            w.clipboard_append(s)
+            self.removeRKeys(w)
+#@-node:ekr.20050920084036.182:killRegion & killRegionSave & helper
+#@+node:ekr.20050930095323.1:killSentence
+def killSentence (self,event):
+    
+    '''Kill the sentence containing the cursor.'''
+
+    w = event.widget
+    i  = w.search('.','insert',stopindex='end')
+    if i:
+        i2 = w.search('.','insert',backwards=True,stopindex='1.0')
+        i2 = g.choose(i2=='','1.0',i2+'+1c ')
+        self.kill(event,i2,'%s + 1c' % i,undoType='kill-sentence')
+#@-node:ekr.20050930095323.1:killSentence
+#@+node:ekr.20050930100733:killWs
+def killWs (self,event):
+    
+    ws = '' ; w = event.widget
+
+    while 1:
+        s = w.get('insert')
+        if s in (' ','\t'):
+            w.delete('insert')
+            ws = ws + s
+        else:
+            break
+            
+    if ws:
+        self.addToKillBuffer(ws)
+#@-node:ekr.20050930100733:killWs
+#@+node:ekr.20050930091642.1:yank
+def yank (self,event):
+    
+    '''Insert the next entry in the kill ring at the insert point.'''
+
+    k = self.k ; w = self.w
+    i = w.index('insert')
+    clip_text = self.getClipboard(w)
+
+    if self.killBuffer or clip_text:
+        self.reset = True
+        s = clip_text or self.kbiterator.next()
+        w.tag_delete('kb')
+        w.insert('insert',s,('kb'))
+        w.mark_set('insert',i)
+#@-node:ekr.20050930091642.1:yank
+#@+node:ekr.20050930091642.2:yankPop
+def yankPop (self,event):
+    
+    '''Replaces the just-yanked kill buffer with the contents of the previous kill buffer.'''
+
+    k = self.k ; w = event.widget
+    i = w.index('insert') ; t, t1 = i.split('.')
+    clip_text = self.getClipboard(w)
+
+    if self.killBuffer or clip_text:
+        if clip_text: s = clip_text
+        else:         s = self.kbiterator.next()
+        t1 = str(int(t1)+len(s))
+        r = w.tag_ranges('kb')
+        if r and r [0] == i:
+            w.delete(r[0],r[-1])
+        w.tag_delete('kb')
+        w.insert('insert',s,('kb'))
+        w.mark_set('insert',i)
+#@-node:ekr.20050930091642.2:yankPop
+#@+node:ekr.20050920084036.128:zapToCharacter
+def zapToCharacter (self,event):
+    
+    '''Kill characters from the insertion point to a given character.'''
+
+    k = self.k ; state = k.getState('zap-to-char')
+
+    if state == 0:
+        k.setLabelBlue('Zap To Character: ',protect=True)
+        k.setState('zap-to-char',1,handler=self.zapToCharacter)
+    else:
+        c = k.c ; w = event.widget ; ch = event.char
+        k.resetLabel()
+        k.clearState()
+        if (
+            len(event.char) != 0 and
+            ch in (string.ascii_letters + string.digits + string.punctuation)
+        ):
+            i = w.search(ch,'insert',stopindex='end')
+            if i:
+                t = w.get('insert','%s+1c' % i)
+                self.addToKillBuffer(t)
+                w.delete('insert','%s+1c' % i)
+#@-node:ekr.20050920084036.128:zapToCharacter
+#@-node:ekr.20050920084036.174:killBufferCommandsClass (add docstrings)
+#@-node:ekr.20060628095110:Fix yank and kill-line commands
+#@+node:ekr.20060628094329.2:Test/Fix macros
+#@-node:ekr.20060628094329.2:Test/Fix macros
+#@+node:ekr.20060628103226.3:Make sure repeat counts work on basic editing commands
+#@-node:ekr.20060628103226.3:Make sure repeat counts work on basic editing commands
+#@-node:ekr.20060628103226:Finish emacs commands
+#@+node:ekr.20060914090030:add sort-lines-ignoring-case commad
+#@-node:ekr.20060914090030:add sort-lines-ignoring-case commad
+#@+node:ekr.20060927174531:New gui commands
+- delete-completion-tab (somewhat useful for cycling focus)
+#@nonl
+#@-node:ekr.20060927174531:New gui commands
+#@+node:ekr.20060927173836.4:New move outlihe commands
+- move-to-last-sibling
+- move-to-first-sibling
+- move-outline-all-the-way-left
+#@nonl
+#@-node:ekr.20060927173836.4:New move outlihe commands
+#@+node:ekr.20060927173836.5:Repeat counts for cursor moves
+#@-node:ekr.20060927173836.5:Repeat counts for cursor moves
+#@+node:ekr.20060927173836:Better print-binding command
+# Separate sections for single-character Ctrl and Alt keys.
+#@nonl
+#@-node:ekr.20060927173836:Better print-binding command
+#@+node:ekr.20060927173836.2:Find next doesn't find any more if regexp matches an empty string.
+#@-node:ekr.20060927173836.2:Find next doesn't find any more if regexp matches an empty string.
+#@-node:ekr.20060927173836.3:New & improved commands
 #@-node:ekr.20060531161030:To do: 4.4.x
+#@+node:ekr.20060822174843:Most important
+#@+node:ekr.20041228084830.3:Finish wxWindows plugin
+# Don't use body wrappers, use g.app.gui methods instead
+#@-node:ekr.20041228084830.3:Finish wxWindows plugin
+#@+node:ekr.20060823105514.1:Really solid perfect import
+@nocolor
+
+- Make sure whitespace is preserved properly.
+
+- Make sure perfect import works.
+#@nonl
+#@-node:ekr.20060823105514.1:Really solid perfect import
+#@+node:ekr.20051202094427:Resolve cvs conflicts
+Investigate meld:  http://meld.sourceforge.net/
+#@nonl
+#@+node:ekr.20060823105514:Simulate cvs conflicts by using 2 repositories simultaneously
+#@-node:ekr.20060823105514:Simulate cvs conflicts by using 2 repositories simultaneously
+#@+node:ekr.20060601073503:Postings
+@nocolor
+#@nonl
+#@+node:ekr.20031218072017.658:Stepen Schaefer 1
+@nocolor
+
+There have been a couple different suggestions on how to obtain a .leo file
+that presents the conflicts for resolution.  My initial thought was to have
+some sort of external file containing only the structure information of interest.
+Edward has suggested that we could process the CVS created .leo file with all
+its conflict indicators.
+
+I'd like to offer another alternative: based on the ad-hoc procedure that Edward
+is currently using, i.e.,
+
+* Save your work to foo.leo file.
+* copy your foo.leo file to fooCvsTmp.leo
+* cvs ci
+* if there are no conflicts (hurray)
+*    remove fooCvsTmp.leo; finished
+* otherwise
+*    remove foo.leo
+*    cvs up foo.leo
+*    read foo.leo into an internal directed acyclic graph (DAG)
+*    generate the conflict resolution DAG from the proposed new leo internal
+DAG (which Leo already has as a matter of course) and the CVS derived DAG
+*    present for editting
+*    when you are satisfied and want to try to check in again, repeat.
+
+From the user's point of view, a CVS check in either succeeds or requires that
+the conflicts be resolved, after which another check in may be attempted.  If
+we're somehow interrupted in the middle of the process, the fooCvsTmp.leo file
+preserves the users work.
+#@-node:ekr.20031218072017.658:Stepen Schaefer 1
+#@+node:ekr.20050501111900:Stephen Schaefer 2
+@killcolor
+https://sourceforge.net/forum/message.php?msg_id=3125092
+By: thyrsus
+
+About a month ago, I posted a screed on how @thin was inadequate to address
+my needs; that what I needed to collaborate on via version control was exactly
+the essence of Leo's value: the multiple expressions of structure, which by
+their nature must exist outside of @thin.  I said I was going to live the pain
+to discover a modus vivendi.
+
+Having done that, let me now say:
+
+AAAAAAAAAAAAGGGGGGGGHHHHHHHHHH!
+
+But the exercise has led me to a vision, which I will implement to the extent
+my nonexistent spare time and paltry programming talents permit.
+
+The essence of the pain is "conflicts", which become more  certain to occur
+as the leo file encompases ever more related files.  As I work on a change to
+the Linux configuration, my colleague works on a change to the Solaris configuration,
+and one of us checks in our version of the leo file documenting the site
+configuration first, and the other cannot check in his version of that file.
+The conflict must be resolved by the human.  Using the "diff" tool on the .leo
+XML is not an answer (though thank Heaven and Ed for gnxs).  The resolution
+needs two levels of support: outline and node.
+
+With the .leo file declared binary, in the event of a conflict CVS leaves you
+with the most recent CVS version and your rejected version, and you're responsible
+for performing a reconciliation and then resubmitting that.  Leo will recognize
+the problem, and present both versions of the project, side by side, splitting
+the outline pane.  The parallel trees will scroll/expand/contract in unison.
+Outline branches present in CVS and not yours will display as blank space in
+your version; nodes present in your version and not CVS will display as blank
+space in the CVS version. The CVS version will be read only, your version editable.
+The same node with differences in its text or in its children will be highlighted.
+You will be able to drag nodes from the CVS version into your version. If the
+text of a selected node has conflicts, the text area will split in two, showing
+the CVS version and your version, with differences highlighted, both sides of
+the pane scrolling in unison, the CVS side read-only, and you can copy from
+that side to your side.  I intend to take as many ideas as I can from tkdiff
+(http://sourceforge.net/projects/tkdiff/ - see also
+http://freshmeat.net/screenshots/10602/ ).  (I have begun translating tkdiff
+from from tcl to python - nearly 9000 lines and I'm still learning both languages,
+so draw your own timeline.)  You edit your nodes, you edit your tree, you hit
+the "reconcile" button, and your reconciliation of the conflict goes into CVS.
+If, meanwhile, another one of your over-achieving colleages has again updated
+CVS, the process repeats with the most current CVS version.  Or you can hit
+the "abandon" button to give up on your changes.
+
+As the Hebrews say at Passover: "Next year in Jerusalem."
+#@nonl
+#@-node:ekr.20050501111900:Stephen Schaefer 2
+#@+node:ekr.20031218072017.659:Jonathon 1
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=1803722
+By: jmgilligan
+
+What is the intended behavior when foo.leo has a cloned node that appears several
+times in a derived (or multiple derived files) and the user edits this file
+or files to change two or more instances of the cloned node in different ways.
+
+Example:
+
+@file foo.py
+****begin tnode
+@others
+****end tnode
+...definition of procedure a
+***begin tnode
+def a:
+...print "a:", <<bar>>
+***end tnode
+...<<bar>>
+****begin tnode
+"bar"
+****end tnode
+
+...definition of procedure b
+***begin tnode
+def b:
+...print "b:", <<bar>>
+***end tnode
+...<<bar>>
+****begin tnode
+"bar"
+****end tnode
+
+...definition of procedure c
+***begin tnode
+def c:
+...print "a:", <<bar>>
+***end tnode
+...<<bar>>
+****begin tnode
+"bar"
+****end tnode
+
+In the .leo, if I edit <<bar>>, it will change simultaneously in each place,
+always in synch. However, suppose I edit foo.py in a text editor and change
+foo.py to read:
+
+#@verbatim
+#@+leo
+#@verbatim
+#@+node:0::@file foo.py
+#@verbatim
+#@+body
+#@verbatim
+#@+others
+#@verbatim
+#@+node:1::definition of a
+#@verbatim
+#@+body
+print "a:", 
+#@verbatim
+#@<<bar>>
+#@verbatim
+#@+node:1::<<bar>>
+#@verbatim
+#@+body
+"bar"
+#@verbatim
+#@-body
+#@verbatim
+#@-node:1::<<bar>>
+#@verbatim
+#@-body
+#@verbatim
+#@-node:1::definition of a
+#@verbatim
+#@+node:2::definition of b
+#@verbatim
+#@+body
+print "b:", 
+#@verbatim
+#@<<bar>>
+#@verbatim
+#@+node:1::<<bar>>
+#@verbatim
+#@+body
+"variation b"
+#@verbatim
+#@-body
+#@verbatim
+#@-node:1::<<bar>>
+#@verbatim
+#@-body
+#@verbatim
+#@-node:2::definition of b
+#@verbatim
+#@+node:3::definition of c
+#@verbatim
+#@+body
+print "c:", 
+#@verbatim
+#@<<bar>>
+#@verbatim
+#@+node:1::<<bar>>
+#@verbatim
+#@+body
+"variation c"
+#@verbatim
+#@-body
+#@verbatim
+#@-node:1::<<bar>>
+#@verbatim
+#@-body
+#@verbatim
+#@-node:3::definition of c
+#@verbatim
+#@-others
+#@verbatim
+#@-body
+#@verbatim
+#@-node:0::@file foo.py
+#@verbatim
+#@-leo
+
+Now what is supposed to happen when leo tries to read foo.py back in? It seems
+that there are three possible behaviors:
+
+1) leo reports a conflict that the user needs to resolve.
+2) leo breaks the clone: the three nodes become separate vnodes, not clones
+of the same one.
+3) leo arbitrarily takes one of the tnodes to be the new tnode for all of the
+clones. This is currently what happens. It creates something like a race condition,
+where the last node in the derived file determines what the final result will
+be. In this case, all three tnodes get text "variation c".
+
+This general question of how Leo should deal with conflicts in clone nodes seems
+to me that it needs to be addressed, particularly with respect to trying to
+avoid cvs conflicts via thick/thin modes.
+
+Note that this can become quite a subtle question because the same node can
+be cloned across several different derived files, in which case a serious race
+condition may pertain.
+
+At the least, I would like to see leo perform consistency checking on cloned
+nodes when it reads a derived file back in and warn the user if cloned nodes
+are inconsistent.
+
+Note that the issue also occurs with OpenWith: I can open each instance of a
+cloned node as a separate file in the external text editor. Which version is
+read back into leo depends on the order in which I save them from the external
+editor.
+#@-node:ekr.20031218072017.659:Jonathon 1
+#@+node:ekr.20031218072017.660:Jonathan 2
+@nocolor
+
+By: jmgilligan ( Jonathan M. Gilligan ) 
+ Possible solution   
+2003-01-13 20:55  
+One possible solution for the conflicting clones problem is to have Leo, when it detects a conflicting clone, generate a text file (perhaps named LeoConflict_NNNN.leo, where NNNN is the gid of the node in question), which contains all the different versions of the node in question, output in leo XML format. 
+
+The vnode would then be marked with a "conflict" flag that would prevent the user from opening it in Leo until the conflict is resolved. See below for how the user resolves the conflict. 
+
+What I have in mind is something similar to the CVS conflict file, where a conflict between two versions is marked 
+
+<<<<<<< 
+blah blah blah? 
+======= 
+blah blah blah! 
+>>>>>>> 
+
+Except that we would output this file in Leo XML format. The reason for XML format would be to avoid problems of how to generically delimit the different sections (different versions of the cloned node). Here leo's XML tags can unambiguously delimit the sections. 
+
+The user would then edit the conflict file and delete all but the desired version. Then he would tell leo to resolve the conflict by reading the corrected file in and replacing the contents of the conflicting node with the contents of the LeoConflict_NNNN.leo file. 
+
+On the down side, this may well be too baroque a fix for a problem that most users may never encounter. If so, perhaps it's best left alone until more pressing problems are solved. I know what I am doing with Leo and am always careful NOT to generate conflicting clones when I edit in an external text editor, so I don't absolutely need a resolution to this problem. I raised it because it's good for a program to have well-defined behavior when presented with anomalous input. 
+
+In this sense, perhaps the best thing is to allow users to generate code from clones (what Allan Holub referred to as "enough rope to shoot yourself in the foot"), but to tell them that this practice is frowned upon.  
+#@-node:ekr.20031218072017.660:Jonathan 2
+#@+node:ekr.20031218072017.661:Gil 1
+http://sourceforge.net/forum/message.php?msg_id=1836117
+By: gilshwartz
+
+Edward, now that conflicting clones may not be the result of bad style, I would
+like to propose yet another solution that I have been thinking of for a while.
+
+My basic approach is that cloning is not just a convenience tool, it may also
+reflect some of the properties of the code/code set. Therefore my goal is for
+clone links to remain even if they are conflicting, and let the user resolve
+them at any convenient time. I also think that Leo's user interface is the best
+tool to resolve such conflicts.
+
+Thus here is my view of clone management and resolution inside Leo. Anytime
+content is loaded into Leo, if a clone set agrees (i.e. have the same content)
+all clone copies are marked "green". When one green clone is edited, all green
+clones are changed. This is Leo as it is now.
+
+If at some point conflicting clones are loaded, Leo decides on some representing
+content (may be based on policies like most occurring content, or latest timestamp,
+etc.) and provides visual clues for the conflict. The visual clue is give by
+a double node box, e.g.
+
++---------------+
++ clone org +
++---------------+
++ resolution +
++---------------+
+
+such that it is a single node in the tree, but has two content node, the original
+text, and the possibly arbitrary resolution.
+
+The resolution pseudo node is marked "blue", while the original text is either
+"green", if it is identical to the blue node, or "red", if it is not. To emphasis,
+the red/green nodes contain the specific (possibly) unique code associated with
+the derived file, while the pseudo blue node contains the shared clone content.
+During save to derived files, only the red/green content is saved, so effectively
+the file is not changed and the conflict is not resolved until the user chooses
+to do so. However, the clone relationship (via the gti) remains.
+
+During editing, changes to red/green clones are local and do not propagate to
+other clone copies (actually any change to a green node would turn it red).
+Changes to the blue nodes do propagate since it is a single view of the clone.
+A node pair may be converted to a regular node, effectively getting a new gti
+and eliminating the blue copy. Or, it may be converted to the shared copy,
+effectively forgetting its original content (leaving only the blue node). Once
+there are no more red nodes in a clone set, all its nodes become green again
+and the conflict is resolved.
+
+Some additional clone actions I think are useful are:
+
+1. Go to next/prev clone.
+2. Go to next/prev green clone (useful when there are red ones).
+3. Convert all green copies to a new clone group (useful when some clone copies
+needs to remain clones, but break from the original clone set, thus getting
+a new clone gti)
+
+Action 3 enables the user to partition its clone set to several clone groups
+by copying a clone's original content to its blue copy and finding matching
+(green) clones.
+
+What do we gain by all this?
+
+1. We can have conflicting clones without catastrophes.
+2. We get tools to handle conflicts and resolve them.
+3. We keep on working is Leo's environment, which is the most supportive one
+we can expect.
+
+Gil
+
+(By the way, I have a feeling that it would be useful to include along with
+the gti a hash of its node content, which could tell Leo is a node was changed
+outside of it. Also, including a timestamp in the opening sentinel, indicating
+when Leo last saved it. These may help having intelligent decisions by Leo in
+cases like conflicting clones.)
+#@-node:ekr.20031218072017.661:Gil 1
+#@+node:ekr.20031218072017.662:Gil 2
+http://sourceforge.net/forum/message.php?msg_id=1804169
+By: gilshwartz
+
+Another thing to think about is what should happen when close heading is changing.
+Right now, if you are inside Leo, all headings will be changed, and if you try
+to change by hand it in the derived file, clone links are removed (after some
+error reporting). This is quite reasonable in the current scheme of things,
+where one is not really expected to mess up with Leo sentinels.
+
+However, if/when @include is implemented, one would probably edit some files
+with clones that may extend to other files and changing the clone node name
+(via Leo) is quite feasible. Note that the gti for the cloned node would probably
+not change. So
+
+1. Do Leo resync the clone content based on the gti?
+2. Does it break cloning and allocates a new gti for one (arbitrary?) clone
+set?
+3. Let the user resolve manually, offer undoable auto-resolution with reporting,
+other?
+#@nonl
+#@-node:ekr.20031218072017.662:Gil 2
+#@-node:ekr.20060601073503:Postings
+#@-node:ekr.20051202094427:Resolve cvs conflicts
+#@-node:ekr.20060822174843:Most important
 #@+node:ekr.20060527164612:Important 1-2 day projects
 #@+node:ekr.20060531161030.1:Make body editors persistant
 #@-node:ekr.20060531161030.1:Make body editors persistant
