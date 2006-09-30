@@ -5724,10 +5724,10 @@ if p.v.isExpanded(): attr += "E"
 if p.v.isMarked():   attr += "M"
 if p.v.isOrphan():   attr += "O"
 
-if 1: # No longer a bottleneck now that we use p.equal rather than p.__cmp__
-    # Almost 30% of the entire writing time came from here!!!
-    if p.equal(self.topPosition):   attr += "T" # was a bottleneck
-    if c.isCurrentPosition(p):      attr += "V" # was a bottleneck
+# No longer a bottleneck now that we use p.equal rather than p.__cmp__
+# Almost 30% of the entire writing time came from here!!!
+if p.equal(self.topPosition):   attr += "T" # was a bottleneck
+if c.isCurrentPosition(p):      attr += "V" # was a bottleneck
 
 # if attr: fc.put(' a="%s"' % attr)
 
@@ -5825,10 +5825,8 @@ def putDescendentAttributes (self,p):
                 sList.append("%s," % nodeIndices.toString(gnx))
             s = string.join(sList,'')
             # g.trace(tag,[str(p.headString()) for p in theList])
-            if 1:
-                result.append('\n%s="%s"' % (tag,s))
-            else:
-                self.put('\n%s="%s"' % (tag,s))
+            result.append('\n%s="%s"' % (tag,s))
+            # self.put('\n%s="%s"' % (tag,s))
             
     return ''.join(result)
 #@-node:ekr.20040701065235.2:putDescendentAttributes
@@ -6164,10 +6162,10 @@ if p.v.isExpanded(): attr += "E"
 if p.v.isMarked():   attr += "M"
 if p.v.isOrphan():   attr += "O"
 
-if 1: # No longer a bottleneck now that we use p.equal rather than p.__cmp__
-    # Almost 30% of the entire writing time came from here!!!
-    if p.equal(self.topPosition):   attr += "T" # was a bottleneck
-    if c.isCurrentPosition(p):      attr += "V" # was a bottleneck
+# No longer a bottleneck now that we use p.equal rather than p.__cmp__
+# Almost 30% of the entire writing time came from here!!!
+if p.equal(self.topPosition):   attr += "T" # was a bottleneck
+if c.isCurrentPosition(p):      attr += "V" # was a bottleneck
 
 # if attr: fc.put(' a="%s"' % attr)
 

@@ -2359,31 +2359,23 @@ class baseFileCommands:
     #@+node:ekr.20031218072017.1577:putTnode
     def putTnode (self,t):
         
-        if 1: # New in Leo 4.4.2 b2: call put just once.
-            gnx = g.app.nodeIndices.toString(t.fileIndex)
-            ua = hasattr(t,'unknownAttributes') and self.putUnknownAttributes(t) or ''
-            body = t.bodyString and self.xmlEscape(t.bodyString) or ''
-            self.put('<t tx="%s"%s>%s</t>\n' % (gnx,ua,body))
+        # New in Leo 4.4.2 b2: call put just once.
+        gnx = g.app.nodeIndices.toString(t.fileIndex)
+        ua = hasattr(t,'unknownAttributes') and self.putUnknownAttributes(t) or ''
+        body = t.bodyString and self.xmlEscape(t.bodyString) or ''
+        self.put('<t tx="%s"%s>%s</t>\n' % (gnx,ua,body))
     
-        else:
-            self.put("<t")
-            self.put(" tx=")
-        
-            gnx = g.app.nodeIndices.toString(t.fileIndex)
-            self.put_in_dquotes(gnx)
-        
-            if hasattr(t,"unknownAttributes"):
-                self.putUnknownAttributes(t)
-        
-            self.put(">")
-        
-            # g.trace(t)
-            if t.bodyString:
-                self.putEscapedString(t.bodyString)
-        
-            self.put("</t>") ; self.put_nl()
-        
-    #@nonl
+        # Old code.
+        # self.put("<t")
+        # self.put(" tx=")
+        # gnx = g.app.nodeIndices.toString(t.fileIndex)
+        # self.put_in_dquotes(gnx)
+        # if hasattr(t,"unknownAttributes"):
+            # self.putUnknownAttributes(t)
+        # self.put(">")
+        # if t.bodyString:
+            # self.putEscapedString(t.bodyString)
+        # self.put("</t>") ; self.put_nl()
     #@-node:ekr.20031218072017.1577:putTnode
     #@+node:ekr.20031218072017.1575:putTnodes
     def putTnodes (self):
@@ -2525,10 +2517,10 @@ class baseFileCommands:
         if p.v.isMarked():   attr += "M"
         if p.v.isOrphan():   attr += "O"
         
-        if 1: # No longer a bottleneck now that we use p.equal rather than p.__cmp__
-            # Almost 30% of the entire writing time came from here!!!
-            if p.equal(self.topPosition):   attr += "T" # was a bottleneck
-            if c.isCurrentPosition(p):      attr += "V" # was a bottleneck
+        # No longer a bottleneck now that we use p.equal rather than p.__cmp__
+        # Almost 30% of the entire writing time came from here!!!
+        if p.equal(self.topPosition):   attr += "T" # was a bottleneck
+        if c.isCurrentPosition(p):      attr += "V" # was a bottleneck
         
         # if attr: fc.put(' a="%s"' % attr)
         
@@ -2649,10 +2641,8 @@ class baseFileCommands:
                     sList.append("%s," % nodeIndices.toString(gnx))
                 s = string.join(sList,'')
                 # g.trace(tag,[str(p.headString()) for p in theList])
-                if 1:
-                    result.append('\n%s="%s"' % (tag,s))
-                else:
-                    self.put('\n%s="%s"' % (tag,s))
+                result.append('\n%s="%s"' % (tag,s))
+                # self.put('\n%s="%s"' % (tag,s))
                 
         return ''.join(result)
     #@-node:ekr.20040701065235.2:putDescendentAttributes
