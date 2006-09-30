@@ -872,32 +872,28 @@ class configClass:
     def initSettingsFiles (self):
         
         """Set self.globalConfigFile, self.homeFile and self.myConfigFile."""
-    
-        dirs = [] # Directories that have already been searched.
         
-        self.myConfigFile = None
+        settingsFile = 'leoSettings.leo'
+        mySettingsFile = 'myLeoSettings.leo'
         
-        for ivar,theDir in (
-            ("globalConfigFile",g.app.globalConfigDir),
-            ("homeFile",g.app.homeDir),
+        for ivar,theDir,fileName in (
+            ('globalConfigFile',    g.app.globalConfigDir,  settingsFile),
+            ('homeFile',            g.app.homeDir,          settingsFile),
+            ('myGlobalConfigFile',  g.app.globalConfigDir,  mySettingsFile),
+            ('myHomeConfigFile',    g.app.homeDir,          mySettingsFile),
         ):
-    
-            if theDir not in dirs:
-                dirs.append(theDir)
-                path = g.os_path_join(theDir,"leoSettings.leo")
-                if g.os_path_exists(path):
-                    setattr(self,ivar,path)
-                else:
-                    setattr(self,ivar,None)
-                    
-                if not self.myConfigFile:
-                    path = g.os_path_join(theDir,"myLeoSettings.leo")
-                    if g.os_path_exists(path):
-                        self.myConfigFile = path
-        if 0:   
-            g.trace("global:",self.globalConfigFile)
-            g.trace("home:",self.homeFile)
-            g.trace("my:",self.myConfigFile)
+            # The same file may be assigned to multiple ivars:
+            # readSettingsFiles checks for such duplications.
+            path = g.os_path_join(theDir,fileName)
+            if g.os_path_exists(path):
+                setattr(self,ivar,path)
+            else:
+                setattr(self,ivar,None)
+        if 0:
+            g.trace('global:',self.globalConfigFile)
+            g.trace('home:',self.homeFile)
+            g.trace('myGlobal:',self.myGlobalConfigFile)
+            g.trace('myHome:',self.myHomeConfigFile)
     #@nonl
     #@-node:ekr.20041117083857:initSettingsFiles
     #@-node:ekr.20041117083202:Birth... (g.app.config)
@@ -1331,16 +1327,26 @@ class configClass:
     def readSettingsFiles (self,fileName,verbose=True):
         
         seen = []
+    
+        # This can't be done in initSettingsFiles because the local directory does not exits.
         localDirectory = g.os_path_dirname(fileName)
+        
+        #  Set the local leoSettings.leo file.
         localConfigFile = g.os_path_join(localDirectory,'leoSettings.leo')
         if not g.os_path_exists(localConfigFile): localConfigFile = None
+        
+        # Set the local myLeoSetting.leo file.
+        myLocalConfigFile = g.os_path_join(localDirectory,'myLeoSettings.leo')
+        if not g.os_path_exists(myLocalConfigFile): myLocalConfigFile = None
         
         # Init settings from leoSettings.leo files, including myLeoSettings.leo.
         for path,localFlag in (
             (self.globalConfigFile,False),
             (self.homeFile,False),
-            (localConfigFile,False), # New in Leo 4.4.1.
-            (self.myConfigFile,False), # New in Leo 4.4.2.
+            (localConfigFile,False),
+            (self.myGlobalConfigFile,False),
+            (self.myHomeConfigFile,False),
+            (myLocalConfigFile,False),
             (fileName,True),
         ):
             if path and path.lower() not in seen:
@@ -1355,6 +1361,7 @@ class configClass:
     
         self.inited = True
         self.setIvarsFromSettings(None)
+    #@nonl
     #@-node:ekr.20041120064303:g.app.config.readSettingsFiles
     #@+node:ekr.20041117083857.1:g.app.config.readSettings
     # Called to read all leoSettings.leo files.
