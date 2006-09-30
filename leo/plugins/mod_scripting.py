@@ -68,7 +68,7 @@ import sys
 #@-node:ekr.20060328125248.2:<< imports >>
 #@nl
 
-__version__ = "0.25"
+__version__ = '1.0'
 #@<< version history >>
 #@+node:ekr.20060328125248.3:<< version history >>
 #@+at
@@ -121,29 +121,10 @@ __version__ = "0.25"
 # - All standard buttons now create the corresponding press-x-button commands.
 # - cleanButtonText removes leading @..@button and does various other 
 # cleanings.
+# 1.0 EKR: Use settigns in leoSettings.leo instead of hard-coded settings.
 #@-at
-#@nonl
 #@-node:ekr.20060328125248.3:<< version history >>
 #@nl
-
-atButtonNodes = True
-    # True: adds a button for every @button node.
-atCommandsNodes = True
-    # True: define a minibuffer command for every @command node.
-atPluginNodes = False
-    # True: dynamically loads plugins in @plugins nodes when a window is created.
-atScriptNodes = False
-    # True: dynamically executes script in @script nodes when a window is created.  DANGEROUS!
-createDebugButton = False
-    # True: create Debug Script button.
-createRunButton = False
-    # True: create Run Script button.
-createScriptButton = True
-# True: create Run Script button.
-useBaloons = True
-    # True: add Pmw baloons.
-maxButtonSize = 18
-    # Maximum length of button names.
 
 #@+others
 #@+node:ekr.20060328125248.4:init
@@ -186,10 +167,28 @@ class scriptingController:
     def __init__ (self,c,iconBar=None):
         
         self.c = c
+        getBool = c.config.getBool
         self.scanned = False
         kind = c.config.getString('debugger_kind') or 'idle'
         self.debuggerKind = kind.lower()
-    
+        
+        self.atButtonNodes = getBool('scripting-at-button-nodes')
+            # True: adds a button for every @button node.
+        self.atCommandsNodes = getBool('scripting-at-commands-nodes')
+            # True: define a minibuffer command for every @command node.
+        self.atPluginNodes = getBool('scripting-at-plugin-nodes')
+            # True: dynamically loads plugins in @plugins nodes when a window is created.
+        self.atScriptNodes = getBool('scripting-at-script-nodes')
+            # True: dynamically executes script in @script nodes when a window is created.  DANGEROUS!
+        self.createDebugButton = getBool('scripting-create-debug-button')
+            # True: create Debug Script button.
+        self.createRunScriptButton = getBool('scripting-create-run-script-button')
+            # True: create Run Script button.
+        self.createScriptButtonButton = getBool('scripting-create-script-button-button')
+            # True: create Script Button button.
+        self.maxButtonSize = c.config.getInt('scripting-max-button-size')
+            # Maximum length of button names.
+        
         if not iconBar:
             self.iconBar = c.frame.getIconBarObject()
         else:
@@ -198,29 +197,27 @@ class scriptingController:
     #@-node:ekr.20060328125248.7: ctor
     #@+node:ekr.20060328125248.8:createAllButtons
     def createAllButtons (self):
-    
-        global atButtonNodes,atPluginNodes,atScriptNodes
         
         c = self.c
     
         if not self.scanned: # Not really needed, but can't hurt.
             self.scanned = True
-            if createRunButton:
+            if self.createRunScriptButton:
                 self.createRunScriptIconButton()
-            if createScriptButton:
+            if self.createScriptButtonButton:
                 self.createScriptButtonIconButton()
-            if createDebugButton:
+            if self.createDebugButton:
                 self.createDebugIconButton()
     
             # scan for user-defined nodes.
             for p in c.allNodes_iter():
-                if atButtonNodes and p.headString().startswith("@button"):
+                if self.atButtonNodes and p.headString().startswith("@button"):
                     self.createAtButtonButton(p)
-                if atCommandsNodes and p.headString().startswith("@command"):
+                if self.atCommandsNodes and p.headString().startswith("@command"):
                     self.createMinibufferCommand(p)
-                if atPluginNodes and p.headString().startswith("@plugin"):
+                if self.atPluginNodes and p.headString().startswith("@plugin"):
                     self.loadPlugin(p)
-                if atScriptNodes and p.headString().startswith("@script"):
+                if self.atScriptNodes and p.headString().startswith("@script"):
                     self.executeScriptNode(p)
     #@nonl
     #@-node:ekr.20060328125248.8:createAllButtons
@@ -286,9 +283,7 @@ class scriptingController:
     #@-node:ekr.20060328125248.12:createAtButtonButton (Improved for 4.4)
     #@+node:ekr.20060328125248.13:loadPlugin
     def loadPlugin (self,p):
-        
-        global atPluginNodes
-        
+            
         c = self.c
         tag = "@plugin"
         h = p.headString()
@@ -356,7 +351,7 @@ class scriptingController:
             buttonText = h
         
         fullButtonText = buttonText
-        buttonText = buttonText[:maxButtonSize]
+        buttonText = buttonText[:self.maxButtonSize]
         return buttonText
     #@nonl
     #@-node:ekr.20060328125248.15:getButtonText
