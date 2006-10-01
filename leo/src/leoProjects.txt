@@ -7168,6 +7168,175 @@ def putDescendentUnknownAttributes (self,p):
 #@-node:ekr.20031218072017.1579:putVnodes & helpers
 #@-node:ekr.20060930125206:Made writing .leo files faster
 #@-node:ekr.20060929090247:4.4.2 b2
+#@+node:ekr.20061001094334:Added unit tests for uA's
+# The tests are in unitTest.leo.
+# Important: test_ methods do not get an accurate value of p!
+
+# Fixed several bugs relating to different signatures for pickle.dumps.
+#@nonl
+#@+node:EKR.20040526202501:putUnknownAttributes & helper
+def putUnknownAttributes (self,torv):
+    
+    """Put pickleable values for all keys in torv.unknownAttributes dictionary."""
+    
+    attrDict = torv.unknownAttributes
+    if type(attrDict) != type({}):
+        g.es("ignoring non-dictionary unknownAttributes for",torv,color="blue")
+        return ''
+    else:
+        return ''.join([self.putUaHelper(torv,key,val) for key,val in attrDict.items()])
+#@nonl
+#@+node:ekr.20050418161620.2:putUaHelper
+def putUaHelper (self,torv,key,val):
+    
+    '''Put attribute whose name is key and value is val to the output stream.'''
+    
+    # New in 4.3: leave string attributes starting with 'str_' alone.
+    if key.startswith('str_'):
+        if type(val) == type(''):
+            attr = ' %s="%s"' % (key,xml.sax.saxutils.escape(val))
+            return attr
+        else:
+            g.es("ignoring non-string attribute %s in %s" % (
+                key,torv),color="blue")
+            return ''
+    try:
+        version = '.'.join([str(sys.version_info[i]) for i in (0,1)])
+        python23 = g.CheckVersion(version,'2.3')
+        try:
+            if python23:
+                # Protocol argument is new in Python 2.3
+                # Use protocol 1 for compatibility with bin.
+                s = pickle.dumps(val,protocol=1)
+            else:
+                s = pickle.dumps(val,bin=True)
+            attr = ' %s="%s"' % (key,binascii.hexlify(s))
+            return attr
+        except Exception:
+            g.es('putUaHelper: unexpected pickling exception',color='red')
+            g.es_exception()
+            return ''
+        
+
+    except pickle.PicklingError:
+        # New in 4.2 beta 1: keep going after error.
+        g.es("ignoring non-pickleable attribute %s in %s" % (
+            key,torv),color="blue")
+        return ''
+#@-node:ekr.20050418161620.2:putUaHelper
+#@+node:ekr.20061001085722:@test_putUa
+def test_putUa (self):
+    
+    g.trace(p.headString())
+    
+    fc = c.fileCommands # self is a dummy
+    p.v.unknownAttributes = {'unit_test':'abcd'}
+    s = fc.putUnknownAttributes (p.v)
+    expected = ' unit_test="55046162636471002e"'
+    assert s == expected, 'expected: %s, got: %s' % (repr(expected),repr(s))
+    
+# test_putUa(None)
+#@nonl
+#@-node:ekr.20061001085722:@test_putUa
+#@-node:EKR.20040526202501:putUnknownAttributes & helper
+#@+node:ekr.20040701065235.2:putDescendentAttributes & test
+def putDescendentAttributes (self,p):
+    
+    nodeIndices = g.app.nodeIndices
+
+    # Create a list of all tnodes whose vnodes are marked or expanded
+    marks = [] ; expanded = []
+    for p in p.subtree_iter():
+        if p.isMarked() and not p in marks:
+            marks.append(p.copy())
+        if p.hasChildren() and p.isExpanded() and not p in expanded:
+            expanded.append(p.copy())
+
+    result = []
+    for theList,tag in ((marks,"marks"),(expanded,"expanded")):
+        if theList:
+            sList = []
+            for p in theList:
+                gnx = p.v.t.fileIndex
+                sList.append("%s," % nodeIndices.toString(gnx))
+            s = string.join(sList,'')
+            # g.trace(tag,[str(p.headString()) for p in theList])
+            result.append('\n%s="%s"' % (tag,s))
+            
+    return ''.join(result)
+#@-node:ekr.20040701065235.2:putDescendentAttributes & test
+#@+node:EKR.20040627113418:putDescendentUnknownAttributes
+def putDescendentUnknownAttributes (self,p):
+    
+    # The bin param doesn't exist in Python 2.3;
+    # the protocol param doesn't exist in earlier versions of Python.
+    version = '.'.join([str(sys.version_info[i]) for i in (0,1)])
+    python23 = g.CheckVersion(version,'2.3')
+
+    # Create a list of all tnodes having a valid unknownAttributes dict.
+    tnodes = []
+    for p2 in p.subtree_iter():
+        t = p2.v.t
+        if hasattr(t,"unknownAttributes"):
+            if t not in tnodes :
+                tnodes.append((p,t),)
+    
+    # Create a list of pairs (t,d) where d contains only pickleable entries.
+    data = []
+    for p,t in tnodes:
+        if type(t.unknownAttributes) != type({}):
+             g.es("ignoring non-dictionary unknownAttributes for",p,color="blue")
+        else:
+            # Create a new dict containing only entries that can be pickled.
+            d = dict(t.unknownAttributes) # Copy the dict.
+            
+            for key in d.keys():
+                try:
+                    # We don't actually save the pickled values here.
+                    if python23:
+                        pickle.dumps(d[key],protocol=1) # Requires Python 2.3
+                    else:
+                        pickle.dumps(d[key],bin=True) # Requires earlier versions of Python.
+                except pickle.PicklingError:
+                    del d[key]
+                    g.es("ignoring bad unknownAttributes key %s in %s" % (
+                        key,p),color="blue")
+                except Exception:
+                    del d[key]
+                    g.es('putDescendentUnknownAttributes: unexpected pickling exception',color='red')
+                    g.es_exception()
+            data.append((t,d),)
+            
+    # Create resultDict, an enclosing dict to hold all the data.
+    resultDict = {}
+    nodeIndices = g.app.nodeIndices
+    for t,d in data:
+        gnx = nodeIndices.toString(t.fileIndex)
+        resultDict[gnx]=d
+    
+    if 0:
+        print "resultDict"
+        for key in resultDict:
+            print ; print key,resultDict[key]
+        
+    # Pickle and hexlify resultDict.
+    if resultDict:
+        try:
+            tag = "descendentTnodeUnknownAttributes"
+            if python23:
+                s = pickle.dumps(resultDict,protocol=1) # Requires Python 2.3
+            else:
+                s = pickle.dumps(resultDict,bin=True) # Requires Earlier version of Python.
+            field = ' %s="%s"' % (tag,binascii.hexlify(s))
+            return field
+        except pickle.PicklingError:
+            g.trace("putDescendentUnknownAttributes can't happen 1",color="red")
+        except Exception:
+            g.es("putDescendentUnknownAttributes can't happen 2",color='red')
+            g.es_exception()
+    return ''
+#@-node:EKR.20040627113418:putDescendentUnknownAttributes
+#@-node:ekr.20061001094334:Added unit tests for uA's
 #@-node:ekr.20060904165452:4.4.2 projects
 #@-all
 #@nonl
