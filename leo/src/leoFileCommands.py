@@ -2219,14 +2219,6 @@ class baseFileCommands:
             n -= 1
     #@nonl
     #@-node:ekr.20031218072017.1470:put
-    #@+node:ekr.20031218072017.3034:putEscapedString
-    # Surprisingly, the call to xmlEscape here is _much_ faster than calling put for each characters of s.
-    
-    def putEscapedString (self,s):
-    
-        if s and len(s) > 0:
-            self.put(self.xmlEscape(s))
-    #@-node:ekr.20031218072017.3034:putEscapedString
     #@+node:ekr.20040324080819.1:putLeoFile & helpers
     def putLeoFile (self):
     
@@ -2362,20 +2354,9 @@ class baseFileCommands:
         # New in Leo 4.4.2 b2: call put just once.
         gnx = g.app.nodeIndices.toString(t.fileIndex)
         ua = hasattr(t,'unknownAttributes') and self.putUnknownAttributes(t) or ''
-        body = t.bodyString and self.xmlEscape(t.bodyString) or ''
+        body = t.bodyString and xml.sax.saxutils.escape(t.bodyString) or ''
         self.put('<t tx="%s"%s>%s</t>\n' % (gnx,ua,body))
-    
-        # Old code.
-        # self.put("<t")
-        # self.put(" tx=")
-        # gnx = g.app.nodeIndices.toString(t.fileIndex)
-        # self.put_in_dquotes(gnx)
-        # if hasattr(t,"unknownAttributes"):
-            # self.putUnknownAttributes(t)
-        # self.put(">")
-        # if t.bodyString:
-            # self.putEscapedString(t.bodyString)
-        # self.put("</t>") ; self.put_nl()
+    #@nonl
     #@-node:ekr.20031218072017.1577:putTnode
     #@+node:ekr.20031218072017.1575:putTnodes
     def putTnodes (self):
@@ -2384,7 +2365,7 @@ class baseFileCommands:
     
         c = self.c
     
-        self.put("<tnodes>") ; self.put_nl()
+        self.put("<tnodes>\n")
         #@    << write only those tnodes that were referenced >>
         #@+node:ekr.20031218072017.1576:<< write only those tnodes that were referenced >>
         if self.usingClipboard: # write the current tree.
@@ -2412,7 +2393,7 @@ class baseFileCommands:
         #@nonl
         #@-node:ekr.20031218072017.1576:<< write only those tnodes that were referenced >>
         #@nl
-        self.put("</tnodes>") ; self.put_nl()
+        self.put("</tnodes>\n")
     #@-node:ekr.20031218072017.1575:putTnodes
     #@+node:EKR.20040526202501:putUnknownAttributes & helper
     def putUnknownAttributes (self,torv):
@@ -2424,10 +2405,6 @@ class baseFileCommands:
             g.es("ignoring non-dictionary unknownAttributes for",torv,color="blue")
             return ''
         else:
-            # for key in attrDict.keys():
-                # val = attrDict[key]
-                # self.putUaHelper(torv,key,val)
-                
             return ''.join([self.putUaHelper(torv,key,val) for key,val in attrDict.items()])
     #@nonl
     #@+node:ekr.20050418161620.2:putUaHelper
@@ -2438,8 +2415,7 @@ class baseFileCommands:
         # New in 4.3: leave string attributes starting with 'str_' alone.
         if key.startswith('str_'):
             if type(val) == type(''):
-                attr = ' %s="%s"' % (key,self.xmlEscape(val))
-                # self.put(attr)
+                attr = ' %s="%s"' % (key,xml.sax.saxutils.escape(val))
                 return attr
             else:
                 g.es("ignoring non-string attribute %s in %s" % (
@@ -2454,7 +2430,6 @@ class baseFileCommands:
                 s = pickle.dumps(val,bin=True)
             attr = ' %s="%s"' % (key,binascii.hexlify(s))
             return attr
-            # self.put(attr)
     
         except pickle.PicklingError:
             # New in 4.2 beta 1: keep going after error.
@@ -2471,7 +2446,7 @@ class baseFileCommands:
         c = self.c
         c.clearAllVisited()
     
-        self.put("<vnodes>") ; self.put_nl()
+        self.put("<vnodes>\n")
     
         # Make only one copy for all calls.
         self.currentPosition = c.currentPosition() 
@@ -2484,7 +2459,8 @@ class baseFileCommands:
                 if not p.isAtIgnoreNode(): # New in Leo 4.4.2 b2 An optimization:
                     self.putVnode(p) # Write the next top-level node.
     
-        self.put("</vnodes>") ; self.put_nl()
+        self.put("</vnodes>\n")
+    #@nonl
     #@+node:ekr.20031218072017.1863:putVnode (3.x and 4.x)
     def putVnode (self,p):
     
@@ -2498,9 +2474,6 @@ class baseFileCommands:
         #@+node:ekr.20031218072017.1864:<< Set gnx = tnode index >>
         if v.t.fileIndex:
             gnx = g.app.nodeIndices.toString(v.t.fileIndex)
-            ### fc.put(" t=") ; fc.put_in_dquotes(gnx)
-        
-            # g.trace(v.t)
             if forceWrite or self.usingClipboard:
                 v.t.setWriteBit() # 4.2: Indicate we wrote the body text.
         else:
@@ -2521,8 +2494,6 @@ class baseFileCommands:
         # Almost 30% of the entire writing time came from here!!!
         if p.equal(self.topPosition):   attr += "T" # was a bottleneck
         if c.isCurrentPosition(p):      attr += "V" # was a bottleneck
-        
-        # if attr: fc.put(' a="%s"' % attr)
         
         if attr:
             attrs.append(' a="%s"' % (attr))
@@ -2560,7 +2531,7 @@ class baseFileCommands:
         #@-node:ekr.20040324082713:<< Append tnodeList and unKnownAttributes to attrs>>
         #@nl
         attrs = ''.join(attrs)
-        v_head = '<v t="%s"%s><vh>%s</vh>' % (gnx,attrs,self.xmlEscape(p.v.headString()or''))
+        v_head = '<v t="%s"%s><vh>%s</vh>' % (gnx,attrs,xml.sax.saxutils.escape(p.v.headString()or''))
         if not self.usingClipboard:
             #@        << issue informational messages >>
             #@+node:ekr.20040702085529:<< issue informational messages >>
@@ -2596,15 +2567,12 @@ class baseFileCommands:
         
         """Put the tnodeList attribute of a tnode."""
         
-        # g.trace(v)
-        
         # Remember: entries in the tnodeList correspond to @+node sentinels, _not_ to tnodes!
     
         fc = self ; nodeIndices = g.app.nodeIndices
         tnodeList = v.t.tnodeList
         if tnodeList:
             # g.trace("%4d" % len(tnodeList),v)
-            ### fc.put(" tnodeList=") ; fc.put_dquote()
             for t in tnodeList:
                 try: # Will fail for None or any pre 4.1 file index.
                     theId,time,n = t.fileIndex
@@ -2613,7 +2581,6 @@ class baseFileCommands:
                     gnx = nodeIndices.getNewIndex()
                     v.t.setFileIndex(gnx) # Don't convert to string until the actual write.
             s = ','.join([nodeIndices.toString(t.fileIndex) for t in tnodeList])
-            ### fc.put(s) ; fc.put_dquote()
             return ' tnodeList="%s"' % (s)
         else:
             return ''
@@ -2642,7 +2609,6 @@ class baseFileCommands:
                 s = string.join(sList,'')
                 # g.trace(tag,[str(p.headString()) for p in theList])
                 result.append('\n%s="%s"' % (tag,s))
-                # self.put('\n%s="%s"' % (tag,s))
                 
         return ''.join(result)
     #@-node:ekr.20040701065235.2:putDescendentAttributes
@@ -2692,7 +2658,6 @@ class baseFileCommands:
                 s = pickle.dumps(resultDict,bin=True)
                 field = ' %s="%s"' % (tag,binascii.hexlify(s))
                 return field
-                # self.put(field)
             except pickle.PicklingError:
                 g.trace("can't happen",color="red")
                 return ''
@@ -2916,7 +2881,7 @@ class baseFileCommands:
                 #@-node:ekr.20031218072017.3048:<< delete backup file >>
                 #@nl
                 # t3 = time.clock()
-                # g.es_print('len',len(s),'putCount',self.putCount,'put',t2-t1,'write&close',t3-t2)
+                # g.es_print('len %d, putCount %d' % (len(s),self.putCount)) # 'put',t2-t1,'write&close',t3-t2)
             self.outputFile = None
             self.toString = False
             return True
@@ -2997,18 +2962,6 @@ class baseFileCommands:
         c.endEditing()
         self.write_Leo_file(self.mFileName,True) # outlineOnlyFlag
     #@-node:ekr.20031218072017.3050:writeOutlineOnly
-    #@+node:ekr.20031218072017.3051:xmlEscape
-    # Surprisingly, this is a time critical routine.
-    
-    def xmlEscape(self,s):
-    
-        assert(s and len(s) > 0) # check is made in putEscapedString
-        s = string.replace(s, '\r', '')
-        s = string.replace(s, '&', "&amp;")
-        s = string.replace(s, '<', "&lt;")
-        s = string.replace(s, '>', "&gt;")
-        return s
-    #@-node:ekr.20031218072017.3051:xmlEscape
     #@-node:ekr.20031218072017.3032:Writing
     #@-others
     
