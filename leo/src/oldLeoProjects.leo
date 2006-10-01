@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="6888" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="34" left="113" height="732" width="953"/>
+	<global_window_position top="61" left="234" height="732" width="953"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -5554,7 +5554,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060929110823" a="TV"><vh>Time test</vh></v>
+<v t="ekr.20060929110823" a="V"><vh>Time test</vh></v>
 </vnodes>
 <tnodes>
 <t tx="EKR.20040604090913"># Get the preceeding characters.

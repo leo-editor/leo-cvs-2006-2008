@@ -4445,6 +4445,28 @@ if 0:
         "Pascal","PerlPod","Perl","Plain","Python","tcl/tk")
 #@nonl
 #@-node:ekr.20050405141130.1:<< xml_language_names >>
+#@+node:ekr.20031218072017.3051:xmlEscape
+# Surprisingly, this is a time critical routine.
+# It has been deprecated:  Use xml.sax.saxutils.escape instead
+
+def xmlEscape(self,s):
+    
+    return xml.sax.saxutils.escape(s)
+
+    # assert(s and len(s) > 0) # check is made in putEscapedString
+    s = string.replace(s, '\r', '')
+    s = string.replace(s, '&', "&amp;")
+    s = string.replace(s, '<', "&lt;")
+    s = string.replace(s, '>', "&gt;")
+    return s
+
+#@-node:ekr.20031218072017.3051:xmlEscape
+#@+node:ekr.20031218072017.3034:putEscapedString
+def putEscapedString (self,s):
+
+    if s:
+        self.put(xml.sax.saxutils.escape(s))
+#@-node:ekr.20031218072017.3034:putEscapedString
 #@-node:ekr.20060919105703:from leoFileCommands.py
 #@-node:ekr.20031218072017.434:Unused code
 #@-all
