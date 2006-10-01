@@ -1738,10 +1738,25 @@ class leoTkinterTree (leoFrame.leoTree):
                 p = c.rootPosition() ; wrapped = True
             if p == p1 and wrapped: # Not found.
                 return
-            if p.headString().lower().startswith(ch):
+            h = p.headString().lower()
+            if h.startswith(ch):
                 if all: self.expandAllAncestors(p)
                 c.selectPosition(p)
                 return
+            # New feature: search for first non-blank character after @x for common x.
+            if ch != '@' and h.startswith('@'):
+                for s in ('button','command','file','thin','asis','nosent','noref'):
+                    if h.startswith('@'+s):
+                        n = len(s) + 1
+                        h2 = h[n:] ; ch2 = h2 and h2[0] or ''
+                        if ch2.isspace():
+                            h2 = h2.strip()
+                            if h2.startswith(ch):
+                                if all: self.expandAllAncestors(p)
+                                c.selectPosition(p)
+                                return
+                                
+            
     #@nonl
     #@-node:ekr.20060923202156:onCanvasKey
     #@+node:ekr.20040803072955.90:head key handlers
