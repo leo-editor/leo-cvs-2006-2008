@@ -667,7 +667,6 @@ def getLeoFile (self,theFile,fileName,readAtFileNodesFlag=True,silent=False):
             v = self.readSaxFile(theFile,fileName,silent)
             c.setRootVnode(v)
             self.rootVnode = v
-            # readAtFileNodesFlag = False ### testing
         else:
             self.getAllLeoElements(fileName,silent)
     except BadLeoFile, message:
@@ -675,6 +674,10 @@ def getLeoFile (self,theFile,fileName,readAtFileNodesFlag=True,silent=False):
             g.es_exception()
             g.alert(self.mFileName + " is not a valid Leo file: " + str(message))
         ok = False
+        
+    # New in Leo 4.2.2: before reading derived files.
+    if use_sax:
+        self.resolveTnodeLists()
 
     if ok and readAtFileNodesFlag:
         # Redraw before reading the @file nodes so the screen isn't blank.
@@ -682,9 +685,8 @@ def getLeoFile (self,theFile,fileName,readAtFileNodesFlag=True,silent=False):
         c.redraw_now()
         c.atFileCommands.readAll(c.rootVnode(),partialFlag=False)
     
-    # New in 4.3.1: do this after reading derived files.
+    # New in 4.2.2: do this after reading derived files.
     if use_sax:
-        self.resolveTnodeLists()
         self.restoreDescendentAttributes()
         self.setPositionsFromVnodes()
     else:
@@ -6695,6 +6697,49 @@ def updateSettings (self,c,localFlag):
 #@-node:ekr.20060928082153:Completed support for myLeoSettings.leo
 #@+node:ekr.20060930110140:Added settings for all mod_scripting switches
 #@-node:ekr.20060930110140:Added settings for all mod_scripting switches
+#@+node:ekr.20061001145550:Generalized navigation in outline pane to ignore @file, @thin, etc prefixes
+#@+node:ekr.20060923202156:onCanvasKey
+def onCanvasKey (self,event):
+    
+    '''Navigate to the next headline starting with ch = event.char.
+    If ch is uppercase, search all headlines; otherwise search only visible headlines.
+    This is modelled on Windows explorer.'''
+    
+    if not event or not event.char or not event.keysym.isalnum(): return
+    c  = self.c ; p = c.currentPosition() ; p1 = p.copy()
+    ch = event.char ; all = ch.isupper()
+    ch = ch.lower() ; wrapped = False
+    while 1:
+        if all:
+            p.moveToThreadNext()
+        else:
+            p.moveToVisNext()
+        if not p:
+            p = c.rootPosition() ; wrapped = True
+        if p == p1 and wrapped: # Not found.
+            return
+        h = p.headString().lower()
+        if h.startswith(ch):
+            if all: self.expandAllAncestors(p)
+            c.selectPosition(p)
+            return
+        # New feature: search for first non-blank character after @x for common x.
+        if ch != '@' and h.startswith('@'):
+            for s in ('button','command','file','thin','asis','nosent','noref'):
+                if h.startswith('@'+s):
+                    n = len(s) + 1
+                    h2 = h[n:] ; ch2 = h2 and h2[0] or ''
+                    if ch2.isspace():
+                        h2 = h2.strip()
+                        if h2.startswith(ch):
+                            if all: self.expandAllAncestors(p)
+                            c.selectPosition(p)
+                            return
+                            
+        
+#@nonl
+#@-node:ekr.20060923202156:onCanvasKey
+#@-node:ekr.20061001145550:Generalized navigation in outline pane to ignore @file, @thin, etc prefixes
 #@-node:ekr.20060929141921:Features
 #@+node:ekr.20060929141921.1:Tests
 #@+node:ekr.20060929100150:Tested Python 2.5 exception reporting
