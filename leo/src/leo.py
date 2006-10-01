@@ -168,8 +168,7 @@ You may download Python from http://python.org/download/
         return 0
     try:
         version = '.'.join([str(sys.version_info[i]) for i in (0,1,2)])
-        # g.trace(version)
-        ok = g.CheckVersion(version, "2.2.1")
+        ok = g.CheckVersion(version,'2.2.1')
         if not ok:
             print message
             g.app.gui.runAskOkDialog(None,"Python version error",message=message,text="Exit")
