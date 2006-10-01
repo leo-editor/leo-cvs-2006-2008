@@ -88,7 +88,7 @@ class saxContentHandler (xml.sax.saxutils.XMLGenerator):
         self.printElements = [] # 'all', 'v'
         
         # Global attributes of the .leo file...
-        self.body_outline_ratio = None
+        # self.body_outline_ratio = '0.5'
         self.global_window_position = {}
         self.encoding = 'utf-8' 
     
@@ -334,8 +334,9 @@ class saxContentHandler (xml.sax.saxutils.XMLGenerator):
             name = bunch.name ; val = bunch.val
             
             if name == 'body_outline_ratio':
-                self.body_outline_ratio = val
-                # g.trace(name,val)
+                # self.body_outline_ratio = val
+                self.c.ratio = val
+                g.trace(name,val)
             else:
                 g.trace(name,len(val))
     #@nonl
@@ -344,7 +345,6 @@ class saxContentHandler (xml.sax.saxutils.XMLGenerator):
     def startWinPos (self,attrs):
         
         self.global_window_position = self.getPositionAttributes(attrs)
-        # g.trace(self.global_window_position)
     #@nonl
     #@-node:ekr.20060919110638.38:startWinPos
     #@+node:ekr.20060919110638.39:startLeoHeader
@@ -352,19 +352,6 @@ class saxContentHandler (xml.sax.saxutils.XMLGenerator):
         __pychecker__ = '--no-argsused'
         self.tnxToListDict = {}
     #@-node:ekr.20060919110638.39:startLeoHeader
-    #@+node:ekr.20060919112118:startVnodes
-    def startVnodes (self,attrs):
-        
-        __pychecker__ = '--no-argsused'
-        
-        c = self.c
-    
-        # Causes window to appear.
-        c.frame.resizePanesToRatio(c.frame.ratio,c.frame.secondary_ratio)
-        if not self.silent:
-            g.es("reading: " + self.fileName)
-    #@nonl
-    #@-node:ekr.20060919112118:startVnodes
     #@+node:ekr.20060919110638.40:startVH
     def startVH (self,attrs):
         
@@ -373,6 +360,32 @@ class saxContentHandler (xml.sax.saxutils.XMLGenerator):
         self.content = []
     #@nonl
     #@-node:ekr.20060919110638.40:startVH
+    #@+node:ekr.20060919112118:startVnodes
+    def startVnodes (self,attrs):
+        
+        __pychecker__ = '--no-argsused'
+        
+        c = self.c ; d = self.global_window_position
+    
+        w = d.get('width',700)
+        h = d.get('height',500)
+        x = d.get('left',50)
+        y = d.get('top',50)
+        g.trace(d,w,h,x,y)
+        
+        # Redraw the window before writing into it.
+        c.frame.setTopGeometry(w,h,x,y)
+        c.frame.deiconify()
+        c.frame.lift()
+        c.frame.update()
+    
+        # Causes window to appear.
+        g.trace('ratio',c.frame.ratio,c.frame.secondary_ratio)
+        c.frame.resizePanesToRatio(c.frame.ratio,c.frame.secondary_ratio)
+        if not self.silent:
+            g.es("reading: " + self.fileName)
+    #@nonl
+    #@-node:ekr.20060919112118:startVnodes
     #@+node:ekr.20060919110638.41:startTnode
     def startTnode (self,attrs):
         
@@ -707,7 +720,6 @@ class baseFileCommands:
                 v = self.readSaxFile(theFile,fileName,silent)
                 c.setRootVnode(v)
                 self.rootVnode = v
-                # readAtFileNodesFlag = False ### testing
             else:
                 self.getAllLeoElements(fileName,silent)
         except BadLeoFile, message:
@@ -715,6 +727,10 @@ class baseFileCommands:
                 g.es_exception()
                 g.alert(self.mFileName + " is not a valid Leo file: " + str(message))
             ok = False
+            
+        # New in Leo 4.2.2: before reading derived files.
+        if use_sax:
+            self.resolveTnodeLists()
     
         if ok and readAtFileNodesFlag:
             # Redraw before reading the @file nodes so the screen isn't blank.
@@ -722,9 +738,8 @@ class baseFileCommands:
             c.redraw_now()
             c.atFileCommands.readAll(c.rootVnode(),partialFlag=False)
         
-        # New in 4.3.1: do this after reading derived files.
+        # New in 4.2.2: do this after reading derived files.
         if use_sax:
-            self.resolveTnodeLists()
             self.restoreDescendentAttributes()
             self.setPositionsFromVnodes()
         else:
@@ -1454,7 +1469,7 @@ class baseFileCommands:
             return "c" # default
         #@-node:ekr.20031218072017.2063:getTargetLanguage
         #@-node:ekr.20031218072017.2062:getPrefs
-        #@+node:ekr.20031218072017.3026:getSize
+        #@+node:ekr.20031218072017.3026:getSize (not used!)
         def getSize (self):
         
             # New in version 1.7: attributes may appear in any order.
@@ -1466,7 +1481,7 @@ class baseFileCommands:
                     width = self.getLong() ; self.getDquote()
                 else: break
             return height, width
-        #@-node:ekr.20031218072017.3026:getSize
+        #@-node:ekr.20031218072017.3026:getSize (not used!)
         #@+node:ekr.20031218072017.1561:getTnode (changed for 4.4)
         def getTnode (self):
         
@@ -1932,14 +1947,6 @@ class baseFileCommands:
             # Pass two: create the tree of vnodes and tnodes from the intermediate nodes.
             v = dummyRoot and self.createVnodes(dummyRoot)
             return v
-        
-            if 0:  #########  Much of this is presently in getLeoFile
-                c2 = c.new()
-                c2.setRootVnode(v)
-                self.resolveTnodeLists()
-                self.restoreDescendentAttributes()
-                c2.checkOutline() 
-                self.setCurrentPosition(c2)
         #@nonl
         #@-node:ekr.20060919110638.3:readSaxFile
         #@+node:ekr.20060919110638.4:createVnodes & helpers
@@ -2002,6 +2009,8 @@ class baseFileCommands:
         
             if not t:
                 t = leoNodes.tnode(bodyString=b,headString=h)
+                if node.tnx:
+                    t.fileIndex = g.app.nodeIndices.scanGnx(node.tnx,0)
             v = leoNodes.vnode(t)
             v.t.vnodeList.append(v)
             v._parent = parent_v
@@ -2036,7 +2045,7 @@ class baseFileCommands:
             tnodeList = s and s.split(',')
             if tnodeList:
                 # This tnode list will be resolved later.
-                g.trace(v.headString(),len(tnodeList))
+                g.trace('found tnodeList',v.headString(),tnodeList)
                 v.tempTnodeList = tnodeList
                 
             aDict = d.get('descendentTnodeUnknownAttributes')
