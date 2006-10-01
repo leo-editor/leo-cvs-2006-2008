@@ -22,6 +22,7 @@ import cStringIO
 import os
 import pickle
 import string
+import sys
 import time
 import xml.sax
 import xml.sax.saxutils
@@ -2422,14 +2423,22 @@ class baseFileCommands:
                     key,torv),color="blue")
                 return ''
         try:
+            version = '.'.join([str(sys.version_info[i]) for i in (0,1)])
+            python23 = g.CheckVersion(version,'2.3')
             try:
-                # Protocol argument is new in Python 2.3
-                # Use protocol 1 for compatibility with bin.
-                s = pickle.dumps(val,protocol=1)
-            except TypeError:
-                s = pickle.dumps(val,bin=True)
-            attr = ' %s="%s"' % (key,binascii.hexlify(s))
-            return attr
+                if python23:
+                    # Protocol argument is new in Python 2.3
+                    # Use protocol 1 for compatibility with bin.
+                    s = pickle.dumps(val,protocol=1)
+                else:
+                    s = pickle.dumps(val,bin=True)
+                attr = ' %s="%s"' % (key,binascii.hexlify(s))
+                return attr
+            except Exception:
+                g.es('putUaHelper: unexpected pickling exception',color='red')
+                g.es_exception()
+                return ''
+            
     
         except pickle.PicklingError:
             # New in 4.2 beta 1: keep going after error.
@@ -2437,6 +2446,20 @@ class baseFileCommands:
                 key,torv),color="blue")
             return ''
     #@-node:ekr.20050418161620.2:putUaHelper
+    #@+node:ekr.20061001085722:@test_putUa
+    def test_putUa (self):
+        
+        g.trace(p.headString())
+        
+        fc = c.fileCommands # self is a dummy
+        p.v.unknownAttributes = {'unit_test':'abcd'}
+        s = fc.putUnknownAttributes (p.v)
+        expected = ' unit_test="55046162636471002e"'
+        assert s == expected, 'expected: %s, got: %s' % (repr(expected),repr(s))
+        
+    # test_putUa(None)
+    #@nonl
+    #@-node:ekr.20061001085722:@test_putUa
     #@-node:EKR.20040526202501:putUnknownAttributes & helper
     #@+node:ekr.20031218072017.1579:putVnodes & helpers
     def putVnodes (self):
@@ -2604,7 +2627,7 @@ class baseFileCommands:
             return ''
     #@nonl
     #@-node:ekr.20031218072017.2002:putTnodeList (4.0,4.2)
-    #@+node:ekr.20040701065235.2:putDescendentAttributes
+    #@+node:ekr.20040701065235.2:putDescendentAttributes & test
     def putDescendentAttributes (self,p):
         
         nodeIndices = g.app.nodeIndices
@@ -2629,9 +2652,14 @@ class baseFileCommands:
                 result.append('\n%s="%s"' % (tag,s))
                 
         return ''.join(result)
-    #@-node:ekr.20040701065235.2:putDescendentAttributes
+    #@-node:ekr.20040701065235.2:putDescendentAttributes & test
     #@+node:EKR.20040627113418:putDescendentUnknownAttributes
     def putDescendentUnknownAttributes (self,p):
+        
+        # The bin param doesn't exist in Python 2.3;
+        # the protocol param doesn't exist in earlier versions of Python.
+        version = '.'.join([str(sys.version_info[i]) for i in (0,1)])
+        python23 = g.CheckVersion(version,'2.3')
     
         # Create a list of all tnodes having a valid unknownAttributes dict.
         tnodes = []
@@ -2649,12 +2677,22 @@ class baseFileCommands:
             else:
                 # Create a new dict containing only entries that can be pickled.
                 d = dict(t.unknownAttributes) # Copy the dict.
+                
                 for key in d.keys():
-                    try: pickle.dumps(d[key],bin=True)
+                    try:
+                        # We don't actually save the pickled values here.
+                        if python23:
+                            pickle.dumps(d[key],protocol=1) # Requires Python 2.3
+                        else:
+                            pickle.dumps(d[key],bin=True) # Requires earlier versions of Python.
                     except pickle.PicklingError:
                         del d[key]
                         g.es("ignoring bad unknownAttributes key %s in %s" % (
                             key,p),color="blue")
+                    except Exception:
+                        del d[key]
+                        g.es('putDescendentUnknownAttributes: unexpected pickling exception',color='red')
+                        g.es_exception()
                 data.append((t,d),)
                 
         # Create resultDict, an enclosing dict to hold all the data.
@@ -2673,14 +2711,18 @@ class baseFileCommands:
         if resultDict:
             try:
                 tag = "descendentTnodeUnknownAttributes"
-                s = pickle.dumps(resultDict,bin=True)
+                if python23:
+                    s = pickle.dumps(resultDict,protocol=1) # Requires Python 2.3
+                else:
+                    s = pickle.dumps(resultDict,bin=True) # Requires Earlier version of Python.
                 field = ' %s="%s"' % (tag,binascii.hexlify(s))
                 return field
             except pickle.PicklingError:
-                g.trace("can't happen",color="red")
-                return ''
-        else:
-            return ''
+                g.trace("putDescendentUnknownAttributes can't happen 1",color="red")
+            except Exception:
+                g.es("putDescendentUnknownAttributes can't happen 2",color='red')
+                g.es_exception()
+        return ''
     #@-node:EKR.20040627113418:putDescendentUnknownAttributes
     #@-node:ekr.20031218072017.1579:putVnodes & helpers
     #@-node:ekr.20040324080819.1:putLeoFile & helpers
