@@ -2,7 +2,25 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20060927172440:To do before 4.4.2 final
-#@+node:ekr.20060929122217.4:Features: 3
+#@+node:ekr.20061001060913.1:To do first
+#@+node:ekr.20060930172926:Make sure unit tests test tnodeList, etc.
+#@-node:ekr.20060930172926:Make sure unit tests test tnodeList, etc.
+#@+node:ekr.20061001060913.2:install sax read code into Leo's core
+#@-node:ekr.20061001060913.2:install sax read code into Leo's core
+#@+node:ekr.20060929100640.1:Add setting: @bool outline_pane_has_initial_focus
+True: Outline gets focus when a new window is opened.
+False Body pane gets focus when a new window is opened.
+#@nonl
+#@-node:ekr.20060929100640.1:Add setting: @bool outline_pane_has_initial_focus
+#@+node:ekr.20060930085556:Add setting: @bool collapse_nodes_during_finds = True
+True: (Recommended) The find commands collapse all nodes that are not ancestors of the node containing the match.
+False: The find command expands nodes needed to show the match, but does not collapse any nodes.
+#@nonl
+#@-node:ekr.20060930085556:Add setting: @bool collapse_nodes_during_finds = True
+#@+node:ekr.20060929084830.1:Suppress redraw on all applicable outline:goto commands
+#@-node:ekr.20060929084830.1:Suppress redraw on all applicable outline:goto commands
+#@-node:ekr.20061001060913.1:To do first
+#@+node:ekr.20060929122217.2:Bugs: 5
 #@+node:ekr.20060927173836.1:Disable calltips in @nocolor sections
 @nocolor
 
@@ -11,17 +29,8 @@ Why are calltips enabled at all??
 Show calltips treats the node as code, and that can have very weird effects in @nocolor sections.
 #@nonl
 #@-node:ekr.20060927173836.1:Disable calltips in @nocolor sections
-#@+node:ekr.20060929084830.1:Suppress redraw on all applicable outline:goto commands
-#@-node:ekr.20060929084830.1:Suppress redraw on all applicable outline:goto commands
-#@-node:ekr.20060929122217.4:Features: 3
-#@+node:ekr.20060929122217.2:Bugs: 6
-#@+node:ekr.20060930111450:Make sure yank/kill work in minibuffer
-#@-node:ekr.20060930111450:Make sure yank/kill work in minibuffer
-#@+node:ekr.20060930110925:Fix arrow keys (if possible)
-Up/down arrow keys should move straight up/down, but this is difficult with Tk.
-Still the present way is very bad.
-#@nonl
-#@-node:ekr.20060930110925:Fix arrow keys (if possible)
+#@+node:ekr.20060930111450:Make yank/kill work in minibuffer
+#@-node:ekr.20060930111450:Make yank/kill work in minibuffer
 #@+node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
 #@-node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
 #@+node:ekr.20060927100500.1:Fix bugs in new colorizer
@@ -30,8 +39,6 @@ Still the present way is very bad.
 - Does not restore selection after indent/undent commands.
 #@nonl
 #@-node:ekr.20060927100500.1:Fix bugs in new colorizer
-#@+node:ekr.20060928194335:Fix bug: closing a window after removing a script button can crash
-#@-node:ekr.20060928194335:Fix bug: closing a window after removing a script button can crash
 #@+node:ekr.20060824112937.1:Fix unicode problem with double-click word Stéphane
 @nocolor
 http://sourceforge.net/forum/message.php?msg_id=3882798
@@ -288,7 +295,16 @@ Clear the * mark if all changes have been done.
 There are serious problems with undoing and redoing text.
 #@nonl
 #@-node:ekr.20060920150119:Fix undo problems (important)
-#@-node:ekr.20060929122217.2:Bugs: 6
+#@-node:ekr.20060929122217.2:Bugs: 5
+#@+node:ekr.20061001060913:Minor bugs 2:
+#@+node:ekr.20060928194335:Fix bug: closing a window after removing a script button can crash
+#@-node:ekr.20060928194335:Fix bug: closing a window after removing a script button can crash
+#@+node:ekr.20060930110925:Fix arrow keys (if possible)
+Up/down arrow keys should move straight up/down, but this is difficult with Tk.
+Still the present way is very bad.
+#@nonl
+#@-node:ekr.20060930110925:Fix arrow keys (if possible)
+#@-node:ekr.20061001060913:Minor bugs 2:
 #@+node:ekr.20060929141941:Docs
 #@+node:ekr.20060920190138:Document tnodeList, vnodeList and make better unit tests
 #@-node:ekr.20060920190138:Document tnodeList, vnodeList and make better unit tests
