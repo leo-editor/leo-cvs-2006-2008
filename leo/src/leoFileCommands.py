@@ -2455,20 +2455,6 @@ class baseFileCommands:
                 key,torv),color="blue")
             return ''
     #@-node:ekr.20050418161620.2:putUaHelper
-    #@+node:ekr.20061001085722:@test_putUa
-    def test_putUa (self):
-        
-        g.trace(p.headString())
-        
-        fc = c.fileCommands # self is a dummy
-        p.v.unknownAttributes = {'unit_test':'abcd'}
-        s = fc.putUnknownAttributes (p.v)
-        expected = ' unit_test="55046162636471002e"'
-        assert s == expected, 'expected: %s, got: %s' % (repr(expected),repr(s))
-        
-    # test_putUa(None)
-    #@nonl
-    #@-node:ekr.20061001085722:@test_putUa
     #@-node:EKR.20040526202501:putUnknownAttributes & helper
     #@+node:ekr.20031218072017.1579:putVnodes & helpers
     def putVnodes (self):
@@ -2636,7 +2622,7 @@ class baseFileCommands:
             return ''
     #@nonl
     #@-node:ekr.20031218072017.2002:putTnodeList (4.0,4.2)
-    #@+node:ekr.20040701065235.2:putDescendentAttributes & test
+    #@+node:ekr.20040701065235.2:putDescendentAttributes
     def putDescendentAttributes (self,p):
         
         nodeIndices = g.app.nodeIndices
@@ -2661,7 +2647,7 @@ class baseFileCommands:
                 result.append('\n%s="%s"' % (tag,s))
                 
         return ''.join(result)
-    #@-node:ekr.20040701065235.2:putDescendentAttributes & test
+    #@-node:ekr.20040701065235.2:putDescendentAttributes
     #@+node:EKR.20040627113418:putDescendentUnknownAttributes
     def putDescendentUnknownAttributes (self,p):
         
