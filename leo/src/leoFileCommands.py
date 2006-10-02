@@ -2474,20 +2474,21 @@ class baseFileCommands:
             self.putVnode(self.currentPosition) # Write only current tree.
         else:
             for p in c.rootPosition().self_and_siblings_iter():
-                if not p.isAtIgnoreNode(): # New in Leo 4.4.2 b2 An optimization:
-                    self.putVnode(p) # Write the next top-level node.
+                # New in Leo 4.4.2 b2 An optimization:
+                self.putVnode(p,isIgnore=p.isAtIgnoreNode()) # Write the next top-level node.
     
         self.put("</vnodes>\n")
     #@nonl
     #@+node:ekr.20031218072017.1863:putVnode (3.x and 4.x)
-    def putVnode (self,p):
+    def putVnode (self,p,isIgnore=False):
     
         """Write a <v> element corresponding to a vnode."""
     
         fc = self ; c = fc.c ; v = p.v
         isThin = p.isAtThinFileNode()
         isOrphan = p.isOrphan()
-        forceWrite = not isThin or (isThin and isOrphan)
+        if not isIgnore: isIgnore = p.isAtIgnoreNode()
+        forceWrite = isIgnore or not isThin or (isThin and isOrphan)
         #@    << Set gnx = tnode index >>
         #@+node:ekr.20031218072017.1864:<< Set gnx = tnode index >>
         if v.t.fileIndex:
@@ -2561,12 +2562,7 @@ class baseFileCommands:
         #@nl
         attrs = ''.join(attrs)
         v_head = '<v t="%s"%s><vh>%s</vh>' % (gnx,attrs,xml.sax.saxutils.escape(p.v.headString()or''))
-        # The string catentation is faster than these calls.
-        # fc.put('<v t="') ; fc.put(gnx) ; fc.put('"')
-        # fc.put(attrs)
-        # fc.put('><vh>')
-        # fc.put(xml.sax.saxutils.escape(p.v.headString()or''))
-        # fc.put('</vh>')
+        # The string catentation is faster than repeated calls to fc.put.
         if not self.usingClipboard:
             #@        << issue informational messages >>
             #@+node:ekr.20040702085529:<< issue informational messages >>
@@ -2587,15 +2583,13 @@ class baseFileCommands:
             # This optimization eliminates all "recursive" copies.
             p.moveToFirstChild()
             while 1:
-                if not p.isAtIgnoreNode(): # New in Leo 4.4.2 b2 An optimization:
-                    fc.putVnode(p)
+                fc.putVnode(p,isIgnore)
                 if p.hasNext(): p.moveToNext()
                 else:           break
-            p.moveToParent()
+            p.moveToParent() # Restore p in the caller.
             fc.put('</v>\n')
         else:
             fc.put('%s</v>\n' % v_head) # Call put only once.
-            # fc.put('</v>\n')
     #@nonl
     #@-node:ekr.20031218072017.1863:putVnode (3.x and 4.x)
     #@+node:ekr.20031218072017.2002:putTnodeList (4.0,4.2)
