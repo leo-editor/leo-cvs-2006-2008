@@ -1120,20 +1120,21 @@ class leoFind:
         "insert" and "sel" points set properly."""
     
         c = self.c ; p = self.p ; gui = g.app.gui
-        
+        sparseFind = c.config.getBool('collapse_nodes_during_finds')
         c.frame.bringToFront() # Needed on the Mac
         redraw = not p.isVisible()
         c.beginUpdate()
         try:
-            # New in Leo 4.4.2: show only the 'sparse' tree when redrawing.
-            for p in c.allNodes_iter():
-                if not p.isAncestorOf(self.p):
-                    p.contract()
-                    redraw = True
-            for p in self.p.parents_iter():
-                if not p.isExpanded():
-                    p.expand()
-                    redraw = True
+            if sparseFind:
+                # New in Leo 4.4.2: show only the 'sparse' tree when redrawing.
+                for p in c.allNodes_iter():
+                    if not p.isAncestorOf(self.p):
+                        p.contract()
+                        redraw = True
+                for p in self.p.parents_iter():
+                    if not p.isExpanded():
+                        p.expand()
+                        redraw = True
             p = self.p
             c.selectPosition(p)
         finally:
