@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="339" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="71" left="252" height="656" width="908"/>
+	<global_window_position top="71" left="252" height="637" width="908"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -17,6 +17,7 @@
 <v t="ekr.20041119044139"><vh>@directory</vh></v>
 <v t="ekr.20041119042929.3"><vh>@encoding</vh></v>
 <v t="ekr.20041119042929.4"><vh>@int</vh></v>
+<v t="ekr.20061002115414"><vh>@float</vh></v>
 <v t="ekr.20041119042929.5"><vh>@font</vh></v>
 <v t="ekr.20041120181045"><vh>@ratio</vh></v>
 <v t="ekr.20041119042929.6"><vh>@shortcut</vh></v>
@@ -221,7 +222,7 @@
 </v>
 </v>
 <v t="ekr.20041119034357.20" a="E" annotate="7d71002e"><vh>Find/Change panel</vh>
-<v t="ekr.20060930085532" a="TV"><vh>@bool collapse_nodes_during_finds = True</vh></v>
+<v t="ekr.20060930085532"><vh>@bool collapse_nodes_during_finds = True</vh></v>
 <v t="ekr.20060125104049"><vh>@bool show_only_find_tab_options = True</vh></v>
 <v t="ekr.20060204124608"><vh>@bool minibufferSearchesShowFindTab = True</vh></v>
 <v t="ekr.20041119050105.1"><vh>@string change_text = None</vh></v>
@@ -266,9 +267,9 @@
 </v>
 <v t="ekr.20060127050605"><vh>@int max_undo_stack_size = 50</vh></v>
 </v>
-<v t="ekr.20060122105527.3"><vh>Keyboard and minibuffer options</vh>
+<v t="ekr.20060122105527.3" a="E"><vh>Keyboard and minibuffer options</vh>
 <v t="ekr.20060215094146"><vh>@@bool ignore_caps_lock = True</vh></v>
-<v t="ekr.20060216170801"><vh>@bool enable_calltips = True</vh></v>
+<v t="ekr.20060216170801"><vh>@bool enable_calltips = False</vh></v>
 <v t="ekr.20060215102141"><vh>@bool ignore_unbound_non_ascii_keys = True</vh></v>
 <v t="ekr.20060122105527.8"><vh>@bool showHelpWhenEnteringModes = True</vh></v>
 <v t="ekr.20060926160657"><vh>@bool stayInTreeAfterEditHeadline = False</vh></v>
@@ -279,6 +280,7 @@
 <v t="ekr.20060122105527.6" annotate="7d71002e"><vh>@bool useMinibuffer = True</vh></v>
 <v t="ekr.20060125165241"><vh>@bool useTextMinibuffer = True</vh></v>
 <v t="ekr.20060926161207.1"><vh>@bool warn_about_redefined_shortcuts = True</vh></v>
+<v t="ekr.20061002115414.1"><vh>@float outline_nav_extend_delay = 2.0</vh></v>
 <v t="ekr.20060804095015.1"><vh>@string close_flash_brackets = )]}</vh></v>
 <v t="ekr.20060804095015"><vh>@string open_flash_brackets = ([{</vh></v>
 <v t="ekr.20060926161207.2" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
@@ -551,14 +553,17 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060512084639"><vh>Recent</vh>
+<v t="ekr.20060512084639" a="E"><vh>Recent</vh>
+<v t="ekr.20060930085532"><vh>@bool collapse_nodes_during_finds = True</vh></v>
 <v t="ekr.20060216135834"><vh>@bool enable_autocompleter_initially = False</vh></v>
+<v t="ekr.20060216170801" a="MTV"><vh>@bool enable_calltips = False</vh></v>
 <v t="ekr.20060603070801"><vh>@bool enable_calltips_initially = False</vh></v>
 <v t="ekr.20060926160657"><vh>@bool stayInTreeAfterEditHeadline = False</vh></v>
 <v t="ekr.20060309022759"><vh>@bool trace_colorizer = False</vh></v>
 <v t="ekr.20060131071947"><vh>@bool trace_masterClickHandler = False</vh></v>
 <v t="ekr.20060209045356"><vh>@bool trace_masterFocusHandler = False</vh></v>
 <v t="ekr.20060131071612"><vh>@bool trace_masterKeyHandler = False</vh></v>
+<v t="ekr.20061002115414.1"><vh>@float outline_nav_extend_delay = 2.0</vh></v>
 </v>
 <v t="ekr.20051007200824"><vh>Keyboard shortcuts</vh>
 <v t="ekr.20051101160257" annotate="7d71002e"><vh>About keyboard shortcuts</vh>
@@ -6169,5 +6174,12 @@ Note: The plugin creates the press-run-script-button regardless of this setting.
 <t tx="ekr.20060930112030">True: create Script Button button in icon area.
 
 Note: The plugin creates the press-script-button-button regardless of this setting.</t>
+<t tx="ekr.20061002115414"></t>
+<t tx="ekr.20061002115414.1">A time (in seconds) that controls how handles keystrokes when the outline pane has focus.
+
+When two keystrokes are separated by less than this time, Leo will attempt to
+find the next headline that starts with the previous match, extended by the key
+just typed. Otherwise, Leo will find the next headline that starts with the key
+just typed.</t>
 </tnodes>
 </leo_file>

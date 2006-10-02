@@ -6475,49 +6475,6 @@ def updateSettings (self,c,localFlag):
 #@-node:ekr.20060928082153:Completed support for myLeoSettings.leo
 #@+node:ekr.20060930110140:Added settings for all mod_scripting switches
 #@-node:ekr.20060930110140:Added settings for all mod_scripting switches
-#@+node:ekr.20061001145550:Generalized navigation in outline pane to ignore @file, @thin, etc prefixes
-#@+node:ekr.20060923202156:onCanvasKey
-def onCanvasKey (self,event):
-    
-    '''Navigate to the next headline starting with ch = event.char.
-    If ch is uppercase, search all headlines; otherwise search only visible headlines.
-    This is modelled on Windows explorer.'''
-    
-    if not event or not event.char or not event.keysym.isalnum(): return
-    c  = self.c ; p = c.currentPosition() ; p1 = p.copy()
-    ch = event.char ; all = ch.isupper()
-    ch = ch.lower() ; wrapped = False
-    while 1:
-        if all:
-            p.moveToThreadNext()
-        else:
-            p.moveToVisNext()
-        if not p:
-            p = c.rootPosition() ; wrapped = True
-        if p == p1 and wrapped: # Not found.
-            return
-        h = p.headString().lower()
-        if h.startswith(ch):
-            if all: self.expandAllAncestors(p)
-            c.selectPosition(p)
-            return
-        # New feature: search for first non-blank character after @x for common x.
-        if ch != '@' and h.startswith('@'):
-            for s in ('button','command','file','thin','asis','nosent','noref'):
-                if h.startswith('@'+s):
-                    n = len(s) + 1
-                    h2 = h[n:] ; ch2 = h2 and h2[0] or ''
-                    if ch2.isspace():
-                        h2 = h2.strip()
-                        if h2.startswith(ch):
-                            if all: self.expandAllAncestors(p)
-                            c.selectPosition(p)
-                            return
-                            
-        
-#@nonl
-#@-node:ekr.20060923202156:onCanvasKey
-#@-node:ekr.20061001145550:Generalized navigation in outline pane to ignore @file, @thin, etc prefixes
 #@+node:ekr.20060928062431.1:Sparse find command
 @nocolor
 
@@ -6806,20 +6763,6 @@ def putUaHelper (self,torv,key,val):
             key,torv),color="blue")
         return ''
 #@-node:ekr.20050418161620.2:putUaHelper
-#@+node:ekr.20061001085722:@test_putUa
-def test_putUa (self):
-    
-    g.trace(p.headString())
-    
-    fc = c.fileCommands # self is a dummy
-    p.v.unknownAttributes = {'unit_test':'abcd'}
-    s = fc.putUnknownAttributes (p.v)
-    expected = ' unit_test="55046162636471002e"'
-    assert s == expected, 'expected: %s, got: %s' % (repr(expected),repr(s))
-    
-# test_putUa(None)
-#@nonl
-#@-node:ekr.20061001085722:@test_putUa
 #@-node:EKR.20040526202501:putUnknownAttributes & helper
 #@+node:ekr.20031218072017.1577:putTnode
 def putTnode (self,t):
@@ -6993,7 +6936,7 @@ def putTnodeList (self,v):
         return ''
 #@nonl
 #@-node:ekr.20031218072017.2002:putTnodeList (4.0,4.2)
-#@+node:ekr.20040701065235.2:putDescendentAttributes & test
+#@+node:ekr.20040701065235.2:putDescendentAttributes
 def putDescendentAttributes (self,p):
     
     nodeIndices = g.app.nodeIndices
@@ -7018,7 +6961,7 @@ def putDescendentAttributes (self,p):
             result.append('\n%s="%s"' % (tag,s))
             
     return ''.join(result)
-#@-node:ekr.20040701065235.2:putDescendentAttributes & test
+#@-node:ekr.20040701065235.2:putDescendentAttributes
 #@+node:EKR.20040627113418:putDescendentUnknownAttributes
 def putDescendentUnknownAttributes (self,p):
     
@@ -7092,6 +7035,701 @@ def putDescendentUnknownAttributes (self,p):
 #@-node:EKR.20040627113418:putDescendentUnknownAttributes
 #@-node:ekr.20031218072017.1579:putVnodes & helpers
 #@-node:ekr.20060930125206:Made writing .leo files faster
+#@+node:ekr.20061002073144:Installed latest word patch
+@nocolor 
+
+A patch for 4.4.2 beta 1 to make Leo jump to the start of word while searching backwards. It is default behavior windows editors:
+
+--- E:/ENV/Leo/src/leoEditCommands_old.py   Sun Oct 01 14:35:38 2006
++++ E:/ENV/Leo/src/leoEditCommands_var2.py  Sun Oct 01 14:42:48 2006
+@@ -3302,12 +3302,18 @@
+         i = toPython(w.index('insert'))
+         delta = g.choose(forward,1,-1)
+         
+-        if not forward: i -= 1
+-        while 0 <= i < n and isWordChar(s[i]):
+-            i += delta
+-        while 0 <= i < n and not isWordChar(s[i]):
+-            i += delta
+-        if not forward: i += 1;
++        if not forward:
++            i -= 1
++            while 0 <= i < n and not isWordChar(s[i]):
++                i += delta
++            while 0 <= i < n and isWordChar(s[i]):
++                i += delta
++            i += 1
++        else:
++            while 0 <= i < n and isWordChar(s[i]):
++                i += delta
++            while 0 <= i < n and not isWordChar(s[i]):
++                i += delta
+     
+         self.moveToHelper(event,toGui(i),extend)
+#@verbatim
+     #@nonl
+     
+@color
+#@nonl
+#@+node:ekr.20051218121447:moveWordHelper
+def moveWordHelper (self,event,extend,forward):
+
+    '''This function moves the cursor to the next word, direction dependent on the way parameter'''
+
+    c = self.c ; w = event.widget
+    if not g.app.gui.isTextWidget(w): return
+    
+    c.widgetWantsFocus(w)
+    s = w.get('1.0','end') ; n = len(s)
+
+    def toGui (i): return g.app.gui.toGuiIndex(s,w,i)
+    def toPython (i): return g.app.gui.toPythonIndex(s,w,i)
+    def isWordChar(ch): return ch in (string.letters + string.digits + '_')
+
+    i = toPython(w.index('insert'))
+    delta = g.choose(forward,1,-1)
+    
+    if forward:
+        while 0 <= i < n and isWordChar(s[i]):
+            i += delta
+        while 0 <= i < n and not isWordChar(s[i]):
+            i += delta
+    else:
+        i -= 1
+        while 0 <= i < n and not isWordChar(s[i]):
+            i += delta
+        while 0 <= i < n and isWordChar(s[i]):
+            i += delta
+        i += 1
+
+    self.moveToHelper(event,toGui(i),extend)
+#@nonl
+#@-node:ekr.20051218121447:moveWordHelper
+#@-node:ekr.20061002073144:Installed latest word patch
+#@+node:ekr.20061002064811:Added support for outline_pane_has_initial_focus setting
+@nocolor
+
+Added support for @bool outline_pane_has_initial_focus setting
+
+@color
+#@nonl
+#@+node:ekr.20061002060833:Finish opml plugin: enhance open/save dialogs when opml is present
+#@-node:ekr.20061002060833:Finish opml plugin: enhance open/save dialogs when opml is present
+#@+node:ekr.20031218072017.2052:g.openWithFileName
+def openWithFileName(fileName,old_c,
+    enableLog=True,readAtFileNodesFlag=True):
+    
+    """Create a Leo Frame for the indicated fileName if the file exists."""
+
+    if not fileName or len(fileName) == 0:
+        return False, None
+        
+    def munge(name):
+        name = name or ''
+        return g.os_path_normpath(name).lower()
+
+    # Create a full, normalized, Unicode path name, preserving case.
+    fileName = g.os_path_normpath(g.os_path_abspath(fileName))
+
+    # If the file is already open just bring its window to the front.
+    theList = app.windowList
+    for frame in theList:
+        if munge(fileName) == munge(frame.c.mFileName):
+            frame.bringToFront()
+            frame.c.setLog()
+            return True, frame
+    try:
+        if old_c:
+            # New in 4.4: We must read the file *twice*.
+            # The first time sets settings for the later call to c.finishCreate.
+            # g.trace('***** prereading',fileName)
+            c2 = g.app.config.openSettingsFile(fileName)
+            if c2: g.app.config.updateSettings(c2,localFlag=True)
+        # Open the file in binary mode to allow 0x1a in bodies & headlines.
+        theFile = open(fileName,'rb')
+        c,frame = app.newLeoCommanderAndFrame(fileName)
+        frame.log.enable(enableLog)
+        g.app.writeWaitingLog() # New in 4.3: write queued log first.
+        c.beginUpdate()
+        try:
+            if not g.doHook("open1",old_c=old_c,c=c,new_c=c,fileName=fileName):
+                c.setLog()
+                app.lockLog()
+                frame.c.fileCommands.open(
+                    theFile,fileName,
+                    readAtFileNodesFlag=readAtFileNodesFlag) # closes file.
+                app.unlockLog()
+                for frame in g.app.windowList:
+                    # The recent files list has been updated by menu.updateRecentFiles.
+                    frame.c.config.setRecentFiles(g.app.config.recentFiles)
+            # Bug fix in 4.4.
+            frame.openDirectory = g.os_path_abspath(g.os_path_dirname(fileName))
+            g.doHook("open2",old_c=old_c,c=c,new_c=frame.c,fileName=fileName)
+        finally:
+            c.endUpdate()
+            k = c.k
+            k and k.setInputState(k.unboundKeyAction)
+            if c.config.getBool('outline_pane_has_initial_focus'):
+                c.treeWantsFocusNow()
+            else:
+                c.bodyWantsFocusNow()
+        return True, frame
+    except IOError:
+        # Do not use string + here: it will fail for non-ascii strings!
+        g.es("can not open: %s" % (fileName), color="blue")
+        return False, None
+    except Exception:
+        g.es("exceptions opening: %s" % (fileName),color="red")
+        g.es_exception()
+        return False, None
+#@nonl
+#@-node:ekr.20031218072017.2052:g.openWithFileName
+#@+node:ekr.20031218072017.2820:top level (file menu)
+#@+node:ekr.20031218072017.1623:new
+def new (self,event=None):
+    
+    '''Create a new Leo window.'''
+
+    c,frame = g.app.newLeoCommanderAndFrame(fileName=None)
+    
+    # Needed for plugins.
+    g.doHook("new",old_c=self,c=c,new_c=c)
+    # Use the config params to set the size and location of the window.
+    c.beginUpdate()
+    try:
+        frame.setInitialWindowGeometry()
+        frame.deiconify()
+        frame.lift()
+        frame.resizePanesToRatio(frame.ratio,frame.secondary_ratio) # Resize the _new_ frame.
+        t = leoNodes.tnode()
+        v = leoNodes.vnode(t)
+        p = leoNodes.position(v,[])
+        v.initHeadString("NewHeadline")
+        v.moveToRoot(oldRoot=None)
+        c.setRootVnode(v) # New in Leo 4.4.2.
+        c.editPosition(p)
+    finally:
+        c.endUpdate()
+        if c.config.getBool('outline_pane_has_initial_focus'):
+            c.treeWantsFocusNow()
+        else:
+            c.bodyWantsFocusNow()
+    return c # For unit test.
+#@-node:ekr.20031218072017.1623:new
+#@+node:ekr.20031218072017.2821:open
+def open (self,event=None):
+    
+    '''Open a Leo window containing the contents of a .leo file.'''
+
+    c = self
+    << Set closeFlag if the only open window is empty >>
+
+    fileName = g.app.gui.runOpenFileDialog(
+        title = "Open",
+        filetypes = [("Leo files","*.leo"), ("All files","*")],
+        defaultextension = ".leo")
+    c.bringToFront()
+
+    ok = False
+    if fileName and len(fileName) > 0:
+        ok, frame = g.openWithFileName(fileName,c)
+        if ok:
+            g.setGlobalOpenDir(fileName)
+        if ok and closeFlag:
+            g.app.destroyWindow(c.frame)
+            
+    # openWithFileName sets focus if ok.
+    if not ok:
+        if c.config.getBool('outline_pane_has_initial_focus'):
+            c.treeWantsFocusNow()
+        else:
+            c.bodyWantsFocusNow()
+#@nonl
+#@+node:ekr.20031218072017.2822:<< Set closeFlag if the only open window is empty >>
+@ If this is the only open window was opened when the app started, and the window has never been written to or saved, then we will automatically close that window if this open command completes successfully.
+@c
+    
+closeFlag = (
+    c.frame.startupWindow and # The window was open on startup
+    not c.changed and not c.frame.saved and # The window has never been changed
+    g.app.numberOfWindows == 1) # Only one untitled window has ever been opened
+#@-node:ekr.20031218072017.2822:<< Set closeFlag if the only open window is empty >>
+#@-node:ekr.20031218072017.2821:open
+#@+node:ekr.20031218072017.2823:openWith and allies
+def openWith(self,event=None,data=None):
+
+    """This routine handles the items in the Open With... menu.
+
+    These items can only be created by createOpenWithMenuFromTable().
+    Typically this would be done from the "open2" hook.
+    
+    New in 4.3: The "os.spawnv" now works. You may specify arguments to spawnv
+    using a list, e.g.:
+        
+    openWith("os.spawnv", ["c:/prog.exe","--parm1","frog","--switch2"], None)
+    """
+    
+    c = self ; p = c.currentPosition()
+    n = data and len(data) or 0
+    if n != 3:
+        g.trace('bad data, length must be 3, got %d' % n)
+        return
+    try:
+        openType,arg,ext=data
+        if not g.doHook("openwith1",c=c,p=p,v=p.v,openType=openType,arg=arg,ext=ext):
+            g.enableIdleTimeHook(idleTimeDelay=100)
+            << set ext based on the present language >>
+            << create or reopen temp file, testing for conflicting changes >>
+            << execute a command to open path in external editor >>
+        g.doHook("openwith2",c=c,p=p,v=p.v,openType=openType,arg=arg,ext=ext)
+    except Exception:
+        g.es("unexpected exception in c.openWith")
+        g.es_exception()
+
+    return "break"
+#@+node:ekr.20031218072017.2824:<< set ext based on the present language >>
+if not ext:
+    theDict = g.scanDirectives(c)
+    language = theDict.get("language")
+    ext = g.app.language_extension_dict.get(language)
+    # print language,ext
+    if ext == None:
+        ext = "txt"
+    
+if ext[0] != ".":
+    ext = "."+ext
+    
+# print "ext",ext
+#@-node:ekr.20031218072017.2824:<< set ext based on the present language >>
+#@+node:ekr.20031218072017.2825:<< create or reopen temp file, testing for conflicting changes >>
+theDict = None ; path = None
+<< set dict and path if a temp file already refers to p.v.t >>
+if path:
+    << create or recreate temp file as needed >>
+else:
+    path = c.createOpenWithTempFile(p,ext)
+
+if not path:
+    return # An error has occured.
+#@+node:ekr.20031218072017.2826:<<set dict and path if a temp file already refers to p.v.t >>
+searchPath = c.openWithTempFilePath(p,ext)
+
+if g.os_path_exists(searchPath):
+    for theDict in g.app.openWithFiles:
+        if p.v == theDict.get('v') and searchPath == theDict.get("path"):
+            path = searchPath
+            break
+#@-node:ekr.20031218072017.2826:<<set dict and path if a temp file already refers to p.v.t >>
+#@+node:ekr.20031218072017.2827:<< create or recreate temp file as needed >>
+@ We test for changes in both p and the temp file:
+
+- If only p's body text has changed, we recreate the temp file.
+- If only the temp file has changed, do nothing here.
+- If both have changed we must prompt the user to see which code to use.
+@c
+
+encoding = theDict.get("encoding")
+old_body = theDict.get("body")
+new_body = p.bodyString()
+new_body = g.toEncodedString(new_body,encoding,reportErrors=True)
+
+old_time = theDict.get("time")
+try:
+    new_time = g.os_path_getmtime(path)
+except:
+    new_time = None
+    
+body_changed = old_body != new_body
+temp_changed = old_time != new_time
+
+if body_changed and temp_changed:
+    << Raise dialog about conflict and set result >>
+    if result == "cancel": return
+    rewrite = result == "outline"
+else:
+    rewrite = body_changed
+        
+if rewrite:
+    path = c.createOpenWithTempFile(p,ext)
+else:
+    g.es("reopening: " + g.shortFileName(path),color="blue")
+#@+node:ekr.20031218072017.2828:<< Raise dialog about conflict and set result >>
+message = (
+    "Conflicting changes in outline and temp file\n\n" +
+    "Do you want to use the code in the outline or the temp file?\n\n")
+
+result = g.app.gui.runAskYesNoCancelDialog(c,
+    "Conflict!", message,
+    yesMessage = "Outline",
+    noMessage = "File",
+    defaultButton = "Cancel")
+#@-node:ekr.20031218072017.2828:<< Raise dialog about conflict and set result >>
+#@-node:ekr.20031218072017.2827:<< create or recreate temp file as needed >>
+#@-node:ekr.20031218072017.2825:<< create or reopen temp file, testing for conflicting changes >>
+#@+node:ekr.20031218072017.2829:<< execute a command to open path in external editor >>
+try:
+    if arg == None: arg = ""
+    shortPath = path # g.shortFileName(path)
+    if openType == "os.system":
+        if 1:
+            # This works, _provided_ that arg does not contain blanks.  Sheesh.
+            command = 'os.system(%s)' % (arg+shortPath)
+            os.system(arg+shortPath)
+        else:
+            # XP does not like this format!
+            command = 'os.system("%s" "%s")' % (arg,shortPath)
+            os.system('"%s" "%s"' % (arg,shortPath))
+    elif openType == "os.startfile":
+        command = "os.startfile(%s)" % (arg+shortPath)
+        os.startfile(arg+path)
+    elif openType == "exec":
+        command = "exec(%s)" % (arg+shortPath)
+        exec arg+path in {}
+    elif openType == "os.spawnl":
+        filename = g.os_path_basename(arg)
+        command = "os.spawnl(%s,%s,%s)" % (arg,filename,path)
+        apply(os.spawnl,(os.P_NOWAIT,arg,filename,path))
+    elif openType == "os.spawnv":
+        filename = os.path.basename(arg[0]) 
+        vtuple = arg[1:]
+        vtuple.insert(0, filename)
+            # add the name of the program as the first argument.
+            # Change suggested by Jim Sizelove.
+        vtuple.append(path)
+        command = "os.spawnv(%s,%s)" % (arg[0],repr(vtuple))
+        apply(os.spawnv,(os.P_NOWAIT,arg[0],vtuple))
+    # This clause by Jim Sizelove.
+    elif openType == "subprocess.Popen":
+        if isinstance(arg, basestring):
+            vtuple = arg + " " + path
+        elif isinstance(arg, (list, tuple)):
+            vtuple = arg[:]
+            vtuple.append(path)
+        command = "subprocess.Popen(%s)" % repr(vtuple)
+        if subprocess:
+            subprocess.Popen(vtuple)
+        else:
+            g.grace('Can not import subprocess.  Skipping: "%s"' % command)
+    else:
+        command="bad command:"+str(openType)
+        g.trace(command)
+except Exception:
+    g.es("exception executing: "+command)
+    g.es_exception()
+#@-node:ekr.20031218072017.2829:<< execute a command to open path in external editor >>
+#@+node:ekr.20031218072017.2830:createOpenWithTempFile
+def createOpenWithTempFile (self,p,ext):
+    
+    c = self
+    path = c.openWithTempFilePath(p,ext)
+    try:
+        if g.os_path_exists(path):
+            g.es("recreating:  " + g.shortFileName(path),color="red")
+        else:
+            g.es("creating:  " + g.shortFileName(path),color="blue")
+        theFile = open(path,"w")
+        # Convert s to whatever encoding is in effect.
+        s = p.bodyString()
+        theDict = g.scanDirectives(c,p=p)
+        encoding = theDict.get("encoding",None)
+        if encoding == None:
+            encoding = c.config.default_derived_file_encoding
+        s = g.toEncodedString(s,encoding,reportErrors=True) 
+        theFile.write(s)
+        theFile.flush()
+        theFile.close()
+        try:    time = g.os_path_getmtime(path)
+        except: time = None
+        # g.es("time: " + str(time))
+        # New in 4.3: theDict now contains both 'p' and 'v' entries, of the expected type.
+        theDict = {
+            "body":s, "c":c, "encoding":encoding,
+            "f":theFile, "path":path, "time":time,
+            "p":p, "v":p.v }
+        << remove previous entry from app.openWithFiles if it exists >>
+        g.app.openWithFiles.append(theDict)
+        return path
+    except:
+        if theFile:
+            theFile.close()
+        theFile = None
+        g.es("exception creating temp file",color="red")
+        g.es_exception()
+        return None
+#@+node:ekr.20031218072017.2831:<< remove previous entry from app.openWithFiles if it exists >>
+for d in g.app.openWithFiles[:]:
+    p2 = d.get("p")
+    if p.v.t == p2.v.t:
+        # print "removing previous entry in g.app.openWithFiles for",p.headString()
+        g.app.openWithFiles.remove(d)
+#@-node:ekr.20031218072017.2831:<< remove previous entry from app.openWithFiles if it exists >>
+#@-node:ekr.20031218072017.2830:createOpenWithTempFile
+#@+node:ekr.20031218072017.2832:c.openWithTempFilePath
+def openWithTempFilePath (self,p,ext):
+    
+    """Return the path to the temp file corresponding to p and ext."""
+    
+    if 0: # new code: similar to code in mod_tempfname.py plugin.
+        try:
+            # At least in Windows, user name may contain special characters
+            # which would require escaping quotes.
+            leoTempDir = g.sanitize_filename(getpass.getuser()) + "_" + "Leo"
+        except:
+            leoTempDir = "LeoTemp"
+            g.es("Could not retrieve your user name.")
+            g.es("Temporary files will be stored in: %s" % leoTempDir)
+        
+        td = os.path.join(g.os_path_abspath(tempfile.gettempdir()),leoTempDir)
+        if not os.path.exists(td):
+            os.mkdir(td)
+        
+        name = g.sanitize_filename(v.headString()) + '_' + str(id(v.t))  + ext
+        path = os.path.join(td,name)
+        return path
+    else: # Original code.
+        name = "LeoTemp_%s_%s%s" % (
+            str(id(p.v.t)),
+            g.sanitize_filename(p.headString()),
+            ext)
+    
+        name = g.toUnicode(name,g.app.tkEncoding)
+    
+        if 1:
+            td = g.os_path_abspath(tempfile.gettempdir())
+        else:
+            td = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','temp'))
+    
+        path = g.os_path_join(td,name)
+    
+        return path
+#@-node:ekr.20031218072017.2832:c.openWithTempFilePath
+#@-node:ekr.20031218072017.2823:openWith and allies
+#@+node:ekr.20031218072017.2833:close
+def close (self,event=None):
+    
+    '''Close the Leo window, prompting to save it if it has been changed.'''
+
+    g.app.closeLeoWindow(self.frame)
+#@-node:ekr.20031218072017.2833:close
+#@+node:ekr.20031218072017.2834:save
+def save (self,event=None):
+    
+    '''Save a Leo outline to a file.'''
+
+    c = self
+    
+    if g.app.disableSave:
+        g.es("Save commands disabled",color="purple")
+        return
+    
+    # Make sure we never pass None to the ctor.
+    if not c.mFileName:
+        c.frame.title = ""
+        c.mFileName = ""
+
+    if c.mFileName != "":
+        # Calls c.setChanged(False) if no error.
+        c.fileCommands.save(c.mFileName)
+    else:
+        fileName = g.app.gui.runSaveFileDialog(
+            initialfile = c.mFileName,
+            title="Save",
+            filetypes=[("Leo files", "*.leo")],
+            defaultextension=".leo")
+        c.bringToFront()
+
+        if fileName:
+            # Don't change mFileName until the dialog has suceeded.
+            c.mFileName = g.ensure_extension(fileName, ".leo")
+            c.frame.title = c.mFileName
+            c.frame.setTitle(g.computeWindowTitle(c.mFileName))
+            c.frame.openDirectory = g.os_path_dirname(c.mFileName) # Bug fix in 4.4b2.
+            c.fileCommands.save(c.mFileName)
+            c.updateRecentFiles(c.mFileName)
+#@-node:ekr.20031218072017.2834:save
+#@+node:ekr.20031218072017.2835:saveAs
+def saveAs (self,event=None):
+    
+    '''Save a Leo outline to a file with a new filename.'''
+    
+    c = self
+    
+    if g.app.disableSave:
+        g.es("Save commands disabled",color="purple")
+        return
+
+    # Make sure we never pass None to the ctor.
+    if not c.mFileName:
+        c.frame.title = ""
+
+    fileName = g.app.gui.runSaveFileDialog(
+        initialfile = c.mFileName,
+        title="Save As",
+        filetypes=[("Leo files", "*.leo")],
+        defaultextension=".leo")
+    c.bringToFront()
+
+    if fileName:
+        # 7/2/02: don't change mFileName until the dialog has suceeded.
+        c.mFileName = g.ensure_extension(fileName, ".leo")
+        c.frame.title = c.mFileName
+        c.frame.setTitle(g.computeWindowTitle(c.mFileName))
+        c.frame.openDirectory = g.os_path_dirname(c.mFileName) # Bug fix in 4.4b2.
+        # Calls c.setChanged(False) if no error.
+        c.fileCommands.saveAs(c.mFileName)
+        c.updateRecentFiles(c.mFileName)
+#@-node:ekr.20031218072017.2835:saveAs
+#@+node:ekr.20031218072017.2836:saveTo
+def saveTo (self,event=None):
+    
+    '''Save a Leo outline to a file, leaving the file associated with the Leo outline unchanged.'''
+    
+    c = self
+    
+    if g.app.disableSave:
+        g.es("Save commands disabled",color="purple")
+        return
+
+    # Make sure we never pass None to the ctor.
+    if not c.mFileName:
+        c.frame.title = ""
+
+    # set local fileName, _not_ c.mFileName
+    fileName = g.app.gui.runSaveFileDialog(
+        initialfile = c.mFileName,
+        title="Save To",
+        filetypes=[("Leo files", "*.leo")],
+        defaultextension=".leo")
+    c.bringToFront()
+
+    if fileName:
+        fileName = g.ensure_extension(fileName, ".leo")
+        c.fileCommands.saveTo(fileName)
+        c.updateRecentFiles(fileName)
+#@-node:ekr.20031218072017.2836:saveTo
+#@+node:ekr.20031218072017.2837:revert
+def revert (self,event=None):
+    
+    '''Revert the contents of a Leo outline to last saved contents.'''
+    
+    c = self
+
+    # Make sure the user wants to Revert.
+    if not c.mFileName:
+        return
+        
+    reply = g.app.gui.runAskYesNoDialog(c,"Revert",
+        "Revert to previous version of " + c.mFileName + "?")
+    c.bringToFront()
+
+    if reply=="no":
+        return
+
+    # Kludge: rename this frame so openWithFileName won't think it is open.
+    fileName = c.mFileName ; c.mFileName = ""
+
+    # Create a new frame before deleting this frame.
+    ok, frame = g.openWithFileName(fileName,c)
+    if ok:
+        frame.deiconify()
+        g.app.destroyWindow(c.frame)
+    else:
+        c.mFileName = fileName
+#@-node:ekr.20031218072017.2837:revert
+#@-node:ekr.20031218072017.2820:top level (file menu)
+#@-node:ekr.20061002064811:Added support for outline_pane_has_initial_focus setting
+#@+node:ekr.20061001145550:Generalized navigation in outline pane to ignore @file, @thin, etc prefixes
+#@+node:ekr.20060923202156:c.onCanvasKey
+def onCanvasKey (self,event):
+    
+    '''Navigate to the next headline starting with ch = event.char.
+    If ch is uppercase, search all headlines; otherwise search only visible headlines.
+    This is modelled on Windows explorer.'''
+    
+    if not event or not event.char or not event.keysym.isalnum():
+        return
+    c  = self ; p = c.currentPosition() ; p1 = p.copy()
+    ch = event.char ; all = ch.isupper()
+    found = False
+    extend = self.navQuickKey(p)
+    attempts = g.choose(extend,(True,False),(False,))
+    for extend2 in attempts:
+        p = p1.copy()
+        while 1:
+            if all:
+                p.moveToThreadNext()
+            else:
+                p.moveToVisNext()
+            if not p:
+                p = c.rootPosition()
+            if p == p1: # Never try to match the same position.
+                # g.trace('failed',extend2)
+                found = False ; break
+            newPrefix = c.navHelper(p,ch,all,extend2)
+            if newPrefix:
+                found = True ; break
+        if found: break
+    if found:
+        if all: self.expandAllAncestors(p)
+        c.selectPosition(p)
+        c.navTime = time.clock()
+        c.navPrefix = newPrefix
+        # g.trace('extend',extend,'extend2',extend2,'navPrefix',c.navPrefix,'p',p.headString())
+    else:
+        c.navTime = None
+        c.navPrefix = ''
+    c.treeWantsFocusNow()
+#@nonl
+#@+node:ekr.20061002095711.1:c.navQuickKey
+def navQuickKey (self,p):
+    
+    '''return true if there are two quick outline navigation keys
+    in quick succession.
+    
+    Returns False if @float outline_nav_extend_delay setting is 0.0 or unspecified.'''
+    
+    c = self
+   
+    deltaTime = c.config.getFloat('outline_nav_extend_delay')
+
+    if deltaTime in (None,0.0):
+        return False
+    else:
+        nearTime = c.navTime and time.clock() - c.navTime < deltaTime
+        # g.trace(nearTime,p.headString())
+        return nearTime
+#@nonl
+#@-node:ekr.20061002095711.1:c.navQuickKey
+#@+node:ekr.20061002095711:c.navHelper
+def navHelper (self,p,ch,all,extend):
+    
+    c = self ; h = p.headString().lower()
+    
+    if extend:
+        prefix = c.navPrefix + ch
+        return h.startswith(prefix.lower()) and prefix
+
+    if h.startswith(ch):
+        return ch
+    
+    # New feature: search for first non-blank character after @x for common x.
+    if ch != '@' and h.startswith('@'):
+        for s in ('button','command','file','thin','asis','nosent','noref'):
+            prefix = '@'+s
+            if h.startswith('@'+s):
+                while 1:
+                    n = len(prefix)
+                    ch2 = n < len(h) and h[n] or ''
+                    if ch2.isspace():
+                        prefix = prefix + ch2
+                    else: break
+                if len(prefix) < len(h) and h.startswith(prefix + ch.lower()):
+                    return prefix + ch
+    return ''
+#@nonl
+#@-node:ekr.20061002095711:c.navHelper
+#@-node:ekr.20060923202156:c.onCanvasKey
+#@-node:ekr.20061001145550:Generalized navigation in outline pane to ignore @file, @thin, etc prefixes
 #@-node:ekr.20060929141921:Features
 #@+node:ekr.20060929141921.1:Tests
 #@+node:ekr.20060929100150:Tested Python 2.5 exception reporting
@@ -7282,22 +7920,8 @@ def putUaHelper (self,torv,key,val):
             key,torv),color="blue")
         return ''
 #@-node:ekr.20050418161620.2:putUaHelper
-#@+node:ekr.20061001085722:@test_putUa
-def test_putUa (self):
-    
-    g.trace(p.headString())
-    
-    fc = c.fileCommands # self is a dummy
-    p.v.unknownAttributes = {'unit_test':'abcd'}
-    s = fc.putUnknownAttributes (p.v)
-    expected = ' unit_test="55046162636471002e"'
-    assert s == expected, 'expected: %s, got: %s' % (repr(expected),repr(s))
-    
-# test_putUa(None)
-#@nonl
-#@-node:ekr.20061001085722:@test_putUa
 #@-node:EKR.20040526202501:putUnknownAttributes & helper
-#@+node:ekr.20040701065235.2:putDescendentAttributes & test
+#@+node:ekr.20040701065235.2:putDescendentAttributes
 def putDescendentAttributes (self,p):
     
     nodeIndices = g.app.nodeIndices
@@ -7322,7 +7946,7 @@ def putDescendentAttributes (self,p):
             result.append('\n%s="%s"' % (tag,s))
             
     return ''.join(result)
-#@-node:ekr.20040701065235.2:putDescendentAttributes & test
+#@-node:ekr.20040701065235.2:putDescendentAttributes
 #@+node:EKR.20040627113418:putDescendentUnknownAttributes
 def putDescendentUnknownAttributes (self,p):
     
