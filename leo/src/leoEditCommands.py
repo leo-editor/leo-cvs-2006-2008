@@ -3302,12 +3302,18 @@ class editCommandsClass (baseEditCommandsClass):
         i = toPython(w.index('insert'))
         delta = g.choose(forward,1,-1)
         
-        if not forward: i -= 1
-        while 0 <= i < n and isWordChar(s[i]):
-            i += delta
-        while 0 <= i < n and not isWordChar(s[i]):
-            i += delta
-        if not forward: i += 1
+        if forward:
+            while 0 <= i < n and isWordChar(s[i]):
+                i += delta
+            while 0 <= i < n and not isWordChar(s[i]):
+                i += delta
+        else:
+            i -= 1
+            while 0 <= i < n and not isWordChar(s[i]):
+                i += delta
+            while 0 <= i < n and isWordChar(s[i]):
+                i += delta
+            i += 1
     
         self.moveToHelper(event,toGui(i),extend)
     #@nonl
