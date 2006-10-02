@@ -2709,12 +2709,11 @@ def os_path_join(*args,**keys):
         c = keys.get('c')
         if c and c.openDirectory:
             uargs[0] = c.openDirectory
-            g.trace(c.openDirectory)
+            # g.trace(c.openDirectory)
 
     path = os.path.join(*uargs)
-    
+    # May not be needed on some Pythons.
     path = g.toUnicodeFileEncoding(path,encoding)
-
     return path
 #@-node:ekr.20031218072017.2154:os_path_join
 #@+node:ekr.20031218072017.2155:os_path_norm NOT USED
@@ -5069,6 +5068,7 @@ def getScript (c,p,useSelectedText=True,forcePythonSentinels=True,useSentinels=T
                 forcePythonSentinels=forcePythonSentinels,
                 useSentinels=useSentinels)
             script = script.replace("\r\n","\n") # Use brute force.
+            # Important, the script is an **encoded string**, not a unicode string.
             g.app.scriptDict["script2"]=script
         else: script = ''
     except Exception:
@@ -5077,6 +5077,7 @@ def getScript (c,p,useSelectedText=True,forcePythonSentinels=True,useSentinels=T
         g.es_exception()
         script = ''
 
+    # g.trace(type(script),repr(script))
     return script
 #@+node:ekr.20050211100535:test_g_getScript_strips_crlf
 def test_g_getScript_strips_crlf():
