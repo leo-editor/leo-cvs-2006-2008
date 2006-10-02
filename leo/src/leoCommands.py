@@ -423,7 +423,7 @@ class baseCommands:
     #@-node:ekr.20051106040126:c.executeMinibufferCommand
     #@+node:ekr.20031218072017.2818:Command handlers...
     #@+node:ekr.20031218072017.2819:File Menu
-    #@+node:ekr.20031218072017.2820:top level
+    #@+node:ekr.20031218072017.2820:top level (file menu)
     #@+node:ekr.20031218072017.1623:new
     def new (self,event=None):
         
@@ -449,7 +449,10 @@ class baseCommands:
             c.editPosition(p)
         finally:
             c.endUpdate()
-            frame.body.setFocus()
+            if c.config.getBool('outline_pane_has_initial_focus'):
+                c.treeWantsFocusNow()
+            else:
+                c.bodyWantsFocusNow()
         return c # For unit test.
     #@-node:ekr.20031218072017.1623:new
     #@+node:ekr.20031218072017.2821:open
@@ -482,14 +485,21 @@ class baseCommands:
             defaultextension = ".leo")
         c.bringToFront()
     
+        ok = False
         if fileName and len(fileName) > 0:
             ok, frame = g.openWithFileName(fileName,c)
             if ok:
                 g.setGlobalOpenDir(fileName)
             if ok and closeFlag:
                 g.app.destroyWindow(c.frame)
-        else:
-            c.bodyWantsFocus()
+                
+        # openWithFileName sets focus if ok.
+        if not ok:
+            if c.config.getBool('outline_pane_has_initial_focus'):
+                c.treeWantsFocusNow()
+            else:
+                c.bodyWantsFocusNow()
+    #@nonl
     #@-node:ekr.20031218072017.2821:open
     #@+node:ekr.20031218072017.2823:openWith and allies
     def openWith(self,event=None,data=None):
@@ -884,7 +894,7 @@ class baseCommands:
         else:
             c.mFileName = fileName
     #@-node:ekr.20031218072017.2837:revert
-    #@-node:ekr.20031218072017.2820:top level
+    #@-node:ekr.20031218072017.2820:top level (file menu)
     #@+node:ekr.20031218072017.2079:Recent Files submenu & allies
     #@+node:ekr.20031218072017.2080:clearRecentFiles
     def clearRecentFiles (self,event=None):

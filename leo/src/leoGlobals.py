@@ -796,7 +796,10 @@ def openWithFileName(fileName,old_c,
             c.endUpdate()
             k = c.k
             k and k.setInputState(k.unboundKeyAction)
-            c.bodyWantsFocusNow()
+            if c.config.getBool('outline_pane_has_initial_focus'):
+                c.treeWantsFocusNow()
+            else:
+                c.bodyWantsFocusNow()
         return True, frame
     except IOError:
         # Do not use string + here: it will fail for non-ascii strings!
@@ -806,6 +809,7 @@ def openWithFileName(fileName,old_c,
         g.es("exceptions opening: %s" % (fileName),color="red")
         g.es_exception()
         return False, None
+#@nonl
 #@-node:ekr.20031218072017.2052:g.openWithFileName
 #@+node:ekr.20031218072017.3100:wrap_lines
 #@+at 
