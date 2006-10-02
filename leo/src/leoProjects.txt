@@ -4934,12 +4934,18 @@ def moveWordHelper (self,event,extend,forward):
     i = toPython(w.index('insert'))
     delta = g.choose(forward,1,-1)
     
-    if not forward: i -= 1
-    while 0 <= i < n and isWordChar(s[i]):
-        i += delta
-    while 0 <= i < n and not isWordChar(s[i]):
-        i += delta
-    if not forward: i += 1
+    if forward:
+        while 0 <= i < n and isWordChar(s[i]):
+            i += delta
+        while 0 <= i < n and not isWordChar(s[i]):
+            i += delta
+    else:
+        i -= 1
+        while 0 <= i < n and not isWordChar(s[i]):
+            i += delta
+        while 0 <= i < n and isWordChar(s[i]):
+            i += delta
+        i += 1
 
     self.moveToHelper(event,toGui(i),extend)
 #@nonl
@@ -6158,234 +6164,6 @@ def selectVisBack (self,event=None):
     c.treeWantsFocusNow()
 #@-node:ekr.20031218072017.2995:selectVisBack
 #@-node:ekr.20060928054124:Increased speed of arrow keys
-#@+node:ekr.20060928062431.1:Sparse find command
-http://sourceforge.net/forum/message.php?msg_id=3935780
-
-This greatly speeds searches that used to open many nodes.
-#@nonl
-#@+node:ekr.20050920084036.189:<< define dictionary d of names and Leo commands >>
-c = self.c ; f = c.frame
-
-d = {
-    'abort-edit-headline':          f.abortEditLabelCommand,
-    'about-leo':                    c.about,
-    'add-comments':                 c.addComments,     
-    'beautify-all-python-code':     c.beautifyAllPythonCode,
-    'beautify-python-code':         c.beautifyPythonCode,
-    'cascade-windows':              f.cascade,
-    'clear-recent-files':           c.clearRecentFiles,
-    'close-window':                 c.close,
-    'contract-or-go-left':          c.contractNodeOrGoToParent,
-    'check-python-code':            c.checkPythonCode,
-    'check-all-python-code':        c.checkAllPythonCode,
-    'check-outline':                c.checkOutline,
-    'clear-recent-files':           c.clearRecentFiles,
-    'clone-node':                   c.clone,
-    'contract-node':                c.contractNode,
-    'contract-all':                 c.contractAllHeadlines,
-    'contract-parent':              c.contractParent,
-    'convert-all-blanks':           c.convertAllBlanks,
-    'convert-all-tabs':             c.convertAllTabs,
-    'convert-blanks':               c.convertBlanks,
-    'convert-tabs':                 c.convertTabs,
-    'copy-node':                    c.copyOutline,
-    'copy-text':                    f.copyText,
-    'cut-node':                     c.cutOutline,
-    'cut-text':                     f.cutText,
-    'de-hoist':                     c.dehoist,
-    'delete-comments':              c.deleteComments,
-    'delete-node':                  c.deleteOutline,
-    'demote':                       c.demote,
-    'dump-outline':                 c.dumpOutline,
-    'edit-headline':                c.editHeadline,
-    'end-edit-headline':            f.endEditLabelCommand,
-    'equal-sized-panes':            f.equalSizedPanes,
-    'execute-script':               c.executeScript,
-    'exit-leo':                     g.app.onQuit,
-    'expand-all':                   c.expandAllHeadlines,
-    'expand-next-level':            c.expandNextLevel,
-    'expand-node':                  c.expandNode,
-    'expand-and-go-right':          c.expandNodeAndGoToFirstChild,
-    'expand-ancestors-only':        c.expandOnlyAncestorsOfNode,
-    'expand-or-go-right':           c.expandNodeOrGoToFirstChild,
-    'expand-prev-level':            c.expandPrevLevel,
-    'expand-to-level-1':            c.expandLevel1,
-    'expand-to-level-2':            c.expandLevel2,
-    'expand-to-level-3':            c.expandLevel3,
-    'expand-to-level-4':            c.expandLevel4,
-    'expand-to-level-5':            c.expandLevel5,
-    'expand-to-level-6':            c.expandLevel6,
-    'expand-to-level-7':            c.expandLevel7,
-    'expand-to-level-8':            c.expandLevel8,
-    'expand-to-level-9':            c.expandLevel9,
-    'export-headlines':             c.exportHeadlines,
-    'extract':                      c.extract,
-    'extract-names':                c.extractSectionNames,
-    'extract-section':              c.extractSection,
-    'flatten-outline':              c.flattenOutline,
-    'go-back':                      c.goPrevVisitedNode,
-    'go-forward':                   c.goNextVisitedNode,
-    'goto-first-node':              c.goToFirstNode,
-    'goto-first-sibling':           c.goToFirstSibling,
-    'goto-last-node':               c.goToLastNode,
-    'goto-last-sibling':            c.goToLastSibling,
-    'goto-last-visible':            c.goToLastVisibleNode,
-    'goto-line-number':             c.goToLineNumber,
-    'goto-next-changed':            c.goToNextDirtyHeadline,
-    'goto-next-clone':              c.goToNextClone,
-    'goto-next-marked':             c.goToNextMarkedHeadline,
-    'goto-next-node':               c.selectThreadNext,
-    'goto-next-sibling':            c.goToNextSibling,
-    'goto-next-visible':            c.selectVisNext,
-    'goto-parent':                  c.goToParent,
-    'goto-prev-node':               c.selectThreadBack,
-    'goto-prev-sibling':            c.goToPrevSibling,
-    'goto-prev-visible':            c.selectVisBack,
-    'hide-invisibles':              c.hideInvisibles,
-    'hoist':                        c.hoist,
-    'import-at-file':               c.importAtFile,
-    'import-at-root':               c.importAtRoot,
-    'import-cweb-files':            c.importCWEBFiles,
-    'import-derived-file':          c.importDerivedFile,
-    'import-flattened-outline':     c.importFlattenedOutline,
-    'import-noweb-files':           c.importNowebFiles,
-    'indent-region':                c.indentBody,
-    'insert-node':                  c.insertHeadline,
-    'insert-body-time':             c.insertBodyTime,
-    'insert-headline-time':         f.insertHeadlineTime,
-    'mark':                         c.markHeadline,
-    'mark-changed-items':           c.markChangedHeadlines,
-    'mark-changed-roots':           c.markChangedRoots,
-    'mark-clones':                  c.markClones,
-    'mark-subheads':                c.markSubheads,
-    'match-bracket':                c.findMatchingBracket,
-    'minimize-all':                 f.minimizeAll,
-    'move-outline-down':            c.moveOutlineDown,
-    'move-outline-left':            c.moveOutlineLeft,
-    'move-outline-right':           c.moveOutlineRight,
-    'move-outline-up':              c.moveOutlineUp,
-    'new':                          c.new,
-    'open-compare-window':          c.openCompareWindow,
-    'open-find-dialog':             c.showFindPanel, # Deprecated.
-    'open-leoDocs-leo':             c.leoDocumentation,
-    'open-leoPlugins-leo':          c.openLeoPlugins,
-    'open-leoSettings-leo':         c.openLeoSettings,
-    'open-myLeoSettings-leo':       c.openMyLeoSettings,
-    'open-online-home':             c.leoHome,
-    'open-online-tutorial':         c.leoTutorial,
-    'open-offline-tutorial':        f.leoHelp,
-    'open-outline':                 c.open,
-    'open-python-window':           c.openPythonWindow,
-    'open-users-guide':             c.leoUsersGuide,
-    'open-with':                    c.openWith,
-    'outline-to-CWEB':              c.outlineToCWEB,
-    'outline-to-noweb':             c.outlineToNoweb,
-    'paste-node':                   c.pasteOutline,
-    'paste-retaining-clones':       c.pasteOutlineRetainingClones,
-    'paste-text':                   f.pasteText,
-    'pretty-print-all-python-code': c.prettyPrintAllPythonCode,
-    'pretty-print-python-code':     c.prettyPrintPythonCode,
-    'promote':                      c.promote,
-    'read-at-file-nodes':           c.readAtFileNodes,
-    'read-outline-only':            c.readOutlineOnly,
-    'redo':                         c.undoer.redo,
-    'reformat-paragraph':           c.reformatParagraph,
-    'remove-sentinels':             c.removeSentinels,
-    'resize-to-screen':             f.resizeToScreen,
-    'revert':                       c.revert,
-    'save-file':                    c.save,
-    'save-file-as':                 c.saveAs,
-    'save-file-to':                 c.saveTo,
-    'select-all':                   f.body.selectAllText,
-    'settings':                     c.preferences,
-    'set-colors':                   c.colorPanel,
-    'set-font':                     c.fontPanel,
-    'show-invisibles':              c.showInvisibles,
-    'sort-children':                c.sortChildren,
-    'sort-siblings':                c.sortSiblings,
-    'tangle':                       c.tangle,
-    'tangle-all':                   c.tangleAll,
-    'tangle-marked':                c.tangleMarked,
-    'toggle-active-pane':           f.toggleActivePane,
-    'toggle-angle-brackets':        c.toggleAngleBrackets,
-    'toggle-invisibles':            c.toggleShowInvisibles,
-    'toggle-split-direction':       f.toggleSplitDirection,
-    'undo':                         c.undoer.undo,
-    'unindent-region':              c.dedentBody,
-    'unmark-all':                   c.unmarkAll,
-    'untangle':                     c.untangle,
-    'untangle-all':                 c.untangleAll,
-    'untangle-marked':              c.untangleMarked,
-    'weave':                        c.weave,
-    'write-at-file-nodes':          c.fileCommands.writeAtFileNodes,
-    'write-dirty-at-file-nodes':    c.fileCommands.writeDirtyAtFileNodes,
-    'write-missing-at-file-nodes':  c.fileCommands.writeMissingAtFileNodes,
-    'write-outline-only':           c.fileCommands.writeOutlineOnly,
-}
-#@-node:ekr.20050920084036.189:<< define dictionary d of names and Leo commands >>
-#@+node:ekr.20060928062431:expandOnlyAncestorsOfNode
-def expandOnlyAncestorsOfNode (self,event=None):
-    
-    '''Contract all nodes in the outline.'''
-
-    c = self ; level = 1
-    
-    c.beginUpdate()
-    try:
-        for p in c.allNodes_iter():
-            p.contract()
-        for p in c.currentPosition().parents_iter():
-            p.expand()
-            level += 1
-    finally:
-        c.endUpdate()
-        c.treeWantsFocusNow()
-
-    c.expansionLevel = level # Reset expansion level.
-#@-node:ekr.20060928062431:expandOnlyAncestorsOfNode
-#@+node:ekr.20031218072017.3091:showSuccess
-def showSuccess(self,pos,newpos):
-
-    """Displays the final result.
-
-    Returns self.dummy_vnode, c.edit_widget(p) or c.frame.bodyCtrl with
-    "insert" and "sel" points set properly."""
-
-    c = self.c ; p = self.p ; gui = g.app.gui
-    
-    c.frame.bringToFront() # Needed on the Mac
-    redraw = not p.isVisible()
-    c.beginUpdate()
-    try:
-        # New in Leo 4.4.2: show only the 'sparse' tree when redrawing.
-        for p in c.allNodes_iter():
-            if not p.isAncestorOf(self.p):
-                p.contract()
-                redraw = True
-        for p in self.p.parents_iter():
-            if not p.isExpanded():
-                p.expand()
-                redraw = True
-        p = self.p
-        c.selectPosition(p)
-    finally:
-        c.endUpdate(redraw)
-    if self.in_headline:
-        c.editPosition(p)
-    # Set the focus and selection after the redraw.
-    t = g.choose(self.in_headline,c.edit_widget(p),c.frame.bodyCtrl)
-    insert = g.choose(self.reverse,pos,newpos)
-    # New in 4.4a3: a much better way to ensure progress in backward searches.
-    # g.trace(id(t),pos,newpos)
-    c.widgetWantsFocusNow(t)
-    gui.setSelectionRange(t,pos,newpos,insert=insert)
-    # c.widgetWantsFocusNow(t)
-    gui.makeIndexVisible(t,insert)
-    if self.wrap and not self.wrapPosition:
-        self.wrapPosition = self.p
-#@nonl
-#@-node:ekr.20031218072017.3091:showSuccess
-#@-node:ekr.20060928062431.1:Sparse find command
 #@+node:ekr.20060928110801:Allow -- comments in @url nodes
 http://sourceforge.net/forum/message.php?msg_id=3935981
 #@+node:ekr.20031218072017.2312:tree.OnIconDoubleClick (@url)
@@ -6740,142 +6518,244 @@ def onCanvasKey (self,event):
 #@nonl
 #@-node:ekr.20060923202156:onCanvasKey
 #@-node:ekr.20061001145550:Generalized navigation in outline pane to ignore @file, @thin, etc prefixes
-#@-node:ekr.20060929141921:Features
-#@+node:ekr.20060929141921.1:Tests
-#@+node:ekr.20060929100150:Tested Python 2.5 exception reporting
-Used brief traceback in g.handleScriptException
+#@+node:ekr.20060928062431.1:Sparse find command
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3935780
+
+This greatly speeds searches that used to open many nodes.
+
+New in Leo 4.4.2 b2: support for @bool collapse_nodes_during_finds setting.
 #@nonl
-#@+node:ekr.20031218072017.3111:es_event_exception
-def es_event_exception (eventName,full=False):
+#@+node:ekr.20050920084036.189:<< define dictionary d of names and Leo commands >>
+c = self.c ; f = c.frame
 
-    g.es("exception handling ", eventName, " event")
-    typ,val,tb = sys.exc_info()
-
-    if full:
-        errList = traceback.format_exception(typ,val,tb)
-    else:
-        errList = traceback.format_exception_only(typ,val)
-
-    for i in errList:
-        g.es(i)
-        
-    if not g.stdErrIsRedirected(): # 2/16/04
-        traceback.print_exc()
-#@-node:ekr.20031218072017.3111:es_event_exception
-#@+node:ekr.20040731204831:getLastTracebackFileAndLineNumber
-def getLastTracebackFileAndLineNumber():
+d = {
+    'abort-edit-headline':          f.abortEditLabelCommand,
+    'about-leo':                    c.about,
+    'add-comments':                 c.addComments,     
+    'beautify-all-python-code':     c.beautifyAllPythonCode,
+    'beautify-python-code':         c.beautifyPythonCode,
+    'cascade-windows':              f.cascade,
+    'clear-recent-files':           c.clearRecentFiles,
+    'close-window':                 c.close,
+    'contract-or-go-left':          c.contractNodeOrGoToParent,
+    'check-python-code':            c.checkPythonCode,
+    'check-all-python-code':        c.checkAllPythonCode,
+    'check-outline':                c.checkOutline,
+    'clear-recent-files':           c.clearRecentFiles,
+    'clone-node':                   c.clone,
+    'contract-node':                c.contractNode,
+    'contract-all':                 c.contractAllHeadlines,
+    'contract-parent':              c.contractParent,
+    'convert-all-blanks':           c.convertAllBlanks,
+    'convert-all-tabs':             c.convertAllTabs,
+    'convert-blanks':               c.convertBlanks,
+    'convert-tabs':                 c.convertTabs,
+    'copy-node':                    c.copyOutline,
+    'copy-text':                    f.copyText,
+    'cut-node':                     c.cutOutline,
+    'cut-text':                     f.cutText,
+    'de-hoist':                     c.dehoist,
+    'delete-comments':              c.deleteComments,
+    'delete-node':                  c.deleteOutline,
+    'demote':                       c.demote,
+    'dump-outline':                 c.dumpOutline,
+    'edit-headline':                c.editHeadline,
+    'end-edit-headline':            f.endEditLabelCommand,
+    'equal-sized-panes':            f.equalSizedPanes,
+    'execute-script':               c.executeScript,
+    'exit-leo':                     g.app.onQuit,
+    'expand-all':                   c.expandAllHeadlines,
+    'expand-next-level':            c.expandNextLevel,
+    'expand-node':                  c.expandNode,
+    'expand-and-go-right':          c.expandNodeAndGoToFirstChild,
+    'expand-ancestors-only':        c.expandOnlyAncestorsOfNode,
+    'expand-or-go-right':           c.expandNodeOrGoToFirstChild,
+    'expand-prev-level':            c.expandPrevLevel,
+    'expand-to-level-1':            c.expandLevel1,
+    'expand-to-level-2':            c.expandLevel2,
+    'expand-to-level-3':            c.expandLevel3,
+    'expand-to-level-4':            c.expandLevel4,
+    'expand-to-level-5':            c.expandLevel5,
+    'expand-to-level-6':            c.expandLevel6,
+    'expand-to-level-7':            c.expandLevel7,
+    'expand-to-level-8':            c.expandLevel8,
+    'expand-to-level-9':            c.expandLevel9,
+    'export-headlines':             c.exportHeadlines,
+    'extract':                      c.extract,
+    'extract-names':                c.extractSectionNames,
+    'extract-section':              c.extractSection,
+    'flatten-outline':              c.flattenOutline,
+    'go-back':                      c.goPrevVisitedNode,
+    'go-forward':                   c.goNextVisitedNode,
+    'goto-first-node':              c.goToFirstNode,
+    'goto-first-sibling':           c.goToFirstSibling,
+    'goto-last-node':               c.goToLastNode,
+    'goto-last-sibling':            c.goToLastSibling,
+    'goto-last-visible':            c.goToLastVisibleNode,
+    'goto-line-number':             c.goToLineNumber,
+    'goto-next-changed':            c.goToNextDirtyHeadline,
+    'goto-next-clone':              c.goToNextClone,
+    'goto-next-marked':             c.goToNextMarkedHeadline,
+    'goto-next-node':               c.selectThreadNext,
+    'goto-next-sibling':            c.goToNextSibling,
+    'goto-next-visible':            c.selectVisNext,
+    'goto-parent':                  c.goToParent,
+    'goto-prev-node':               c.selectThreadBack,
+    'goto-prev-sibling':            c.goToPrevSibling,
+    'goto-prev-visible':            c.selectVisBack,
+    'hide-invisibles':              c.hideInvisibles,
+    'hoist':                        c.hoist,
+    'import-at-file':               c.importAtFile,
+    'import-at-root':               c.importAtRoot,
+    'import-cweb-files':            c.importCWEBFiles,
+    'import-derived-file':          c.importDerivedFile,
+    'import-flattened-outline':     c.importFlattenedOutline,
+    'import-noweb-files':           c.importNowebFiles,
+    'indent-region':                c.indentBody,
+    'insert-node':                  c.insertHeadline,
+    'insert-body-time':             c.insertBodyTime,
+    'insert-headline-time':         f.insertHeadlineTime,
+    'mark':                         c.markHeadline,
+    'mark-changed-items':           c.markChangedHeadlines,
+    'mark-changed-roots':           c.markChangedRoots,
+    'mark-clones':                  c.markClones,
+    'mark-subheads':                c.markSubheads,
+    'match-bracket':                c.findMatchingBracket,
+    'minimize-all':                 f.minimizeAll,
+    'move-outline-down':            c.moveOutlineDown,
+    'move-outline-left':            c.moveOutlineLeft,
+    'move-outline-right':           c.moveOutlineRight,
+    'move-outline-up':              c.moveOutlineUp,
+    'new':                          c.new,
+    'open-compare-window':          c.openCompareWindow,
+    'open-find-dialog':             c.showFindPanel, # Deprecated.
+    'open-leoDocs-leo':             c.leoDocumentation,
+    'open-leoPlugins-leo':          c.openLeoPlugins,
+    'open-leoSettings-leo':         c.openLeoSettings,
+    'open-myLeoSettings-leo':       c.openMyLeoSettings,
+    'open-online-home':             c.leoHome,
+    'open-online-tutorial':         c.leoTutorial,
+    'open-offline-tutorial':        f.leoHelp,
+    'open-outline':                 c.open,
+    'open-python-window':           c.openPythonWindow,
+    'open-users-guide':             c.leoUsersGuide,
+    'open-with':                    c.openWith,
+    'outline-to-CWEB':              c.outlineToCWEB,
+    'outline-to-noweb':             c.outlineToNoweb,
+    'paste-node':                   c.pasteOutline,
+    'paste-retaining-clones':       c.pasteOutlineRetainingClones,
+    'paste-text':                   f.pasteText,
+    'pretty-print-all-python-code': c.prettyPrintAllPythonCode,
+    'pretty-print-python-code':     c.prettyPrintPythonCode,
+    'promote':                      c.promote,
+    'read-at-file-nodes':           c.readAtFileNodes,
+    'read-outline-only':            c.readOutlineOnly,
+    'redo':                         c.undoer.redo,
+    'reformat-paragraph':           c.reformatParagraph,
+    'remove-sentinels':             c.removeSentinels,
+    'resize-to-screen':             f.resizeToScreen,
+    'revert':                       c.revert,
+    'save-file':                    c.save,
+    'save-file-as':                 c.saveAs,
+    'save-file-to':                 c.saveTo,
+    'select-all':                   f.body.selectAllText,
+    'settings':                     c.preferences,
+    'set-colors':                   c.colorPanel,
+    'set-font':                     c.fontPanel,
+    'show-invisibles':              c.showInvisibles,
+    'sort-children':                c.sortChildren,
+    'sort-siblings':                c.sortSiblings,
+    'tangle':                       c.tangle,
+    'tangle-all':                   c.tangleAll,
+    'tangle-marked':                c.tangleMarked,
+    'toggle-active-pane':           f.toggleActivePane,
+    'toggle-angle-brackets':        c.toggleAngleBrackets,
+    'toggle-invisibles':            c.toggleShowInvisibles,
+    'toggle-split-direction':       f.toggleSplitDirection,
+    'undo':                         c.undoer.undo,
+    'unindent-region':              c.dedentBody,
+    'unmark-all':                   c.unmarkAll,
+    'untangle':                     c.untangle,
+    'untangle-all':                 c.untangleAll,
+    'untangle-marked':              c.untangleMarked,
+    'weave':                        c.weave,
+    'write-at-file-nodes':          c.fileCommands.writeAtFileNodes,
+    'write-dirty-at-file-nodes':    c.fileCommands.writeDirtyAtFileNodes,
+    'write-missing-at-file-nodes':  c.fileCommands.writeMissingAtFileNodes,
+    'write-outline-only':           c.fileCommands.writeOutlineOnly,
+}
+#@-node:ekr.20050920084036.189:<< define dictionary d of names and Leo commands >>
+#@+node:ekr.20060928062431:expandOnlyAncestorsOfNode
+def expandOnlyAncestorsOfNode (self,event=None):
     
-    typ,val,tb = sys.exc_info()
+    '''Contract all nodes in the outline.'''
+
+    c = self ; level = 1
     
-    if typ in (exceptions.SyntaxError,exceptions.IndentationError):
-        # Syntax and indentation errors are a special case.
-        # extract_tb does _not_ return the proper line number!
-        # This code is similar to the code in format_exception_only(!!)
-        try:
-            # g.es_print(repr(val))
-            msg,(filename, lineno, offset, line) = val
-            return filename,lineno
-        except:
-            g.trace("bad line number")
-            return None,0
-
-    else:
-        # The proper line number is the second element in the last tuple.
-        data = traceback.extract_tb(tb)
-        # g.es_print(repr(data))
-        item = data[-1]
-        filename = item[0]
-        n = item[1]
-        return filename,n
-#@-node:ekr.20040731204831:getLastTracebackFileAndLineNumber
-#@+node:ekr.20031218072017.3112:es_exception & test
-def es_exception (full=True,c=None,color="red"):
-    
-    __pychecker__ = '--no-argsused' # c not used. retained for compatibility.
-
-    typ,val,tb = sys.exc_info()
-
-    # g.trace(full,typ,tb)
-    
-    fileName,n = g.getLastTracebackFileAndLineNumber()
-
-    if full or g.app.debugSwitch > 0:
-        lines = traceback.format_exception(typ,val,tb)
-    else:
-        lines = traceback.format_exception_only(typ,val)
-        if 0: # We might as well print the entire SyntaxError message.
-            lines = lines[-1:] # Usually only one line, but more for Syntax errors!
-
-    for line in lines:
-        g.es_error(line,color=color)
-        if not g.stdErrIsRedirected():
-            print line
-
-    if g.app.debugSwitch > 1:
-        import pdb # Be careful: g.pdb may or may not have been defined.
-        pdb.set_trace()
-
-    return fileName,n
-#@+node:ekr.20050220030850:test_g_es_exception
-def test_g_es_exception():
-    
-    if c.config.redirect_execute_script_output_to_log_pane:
-        return # Test doesn't work when redirection is on.
-
+    c.beginUpdate()
     try:
-        import sys
-        # Catch the output of g.es_exception.
-        # We catch the AssertionError, so nothing gets written to stderr.
-        sys.stdout = fo = g.fileLikeObject()
-        try: # Create an exception to catch.
-            assert False, 'Assert False in test_g_es_exception'
-        except AssertionError:
-            g.es_exception(color='suppress')
-            result = fo.get()
-            s1 = 'Traceback (most recent call last):'
-            s2 = 'AssertionError: Assert False in test_g_es_exception'
-            assert result.find(s1) > -1, 'No traceback line: %s' % repr(result)
-            assert result.find(s2) > -1, 'No AssertionError line: %s' % repr(result)
+        for p in c.allNodes_iter():
+            p.contract()
+        for p in c.currentPosition().parents_iter():
+            p.expand()
+            level += 1
     finally:
-        # Not needed unless we execute this script as selected text.
-        sys.stdout = sys.__stdout__
-#@-node:ekr.20050220030850:test_g_es_exception
-#@-node:ekr.20031218072017.3112:es_exception & test
-#@+node:ekr.20060624085200:g.handleScriptException
-def handleScriptException (c,p,script,script1):
+        c.endUpdate()
+        c.treeWantsFocusNow()
 
-    g.es("exception executing script",color='blue')
+    c.expansionLevel = level # Reset expansion level.
+#@-node:ekr.20060928062431:expandOnlyAncestorsOfNode
+#@+node:ekr.20031218072017.3091:showSuccess
+def showSuccess(self,pos,newpos):
 
-    fileName, n = g.es_exception(full=False)
+    """Displays the final result.
 
-    if p and not script1 and fileName == "<string>":
-        c.goToScriptLineNumber(p,script,n)
+    Returns self.dummy_vnode, c.edit_widget(p) or c.frame.bodyCtrl with
+    "insert" and "sel" points set properly."""
 
-    << dump the lines near the error >>
-#@+node:EKR.20040612215018:<< dump the lines near the error >>
-if g.os_path_exists(fileName):
-    f = file(fileName)
-    lines = f.readlines()
-    f.close()
-else:
-    lines = g.splitLines(script)
-
-s = '-' * 20
-g.es_print(s)
-
-# Print surrounding lines.
-i = max(0,n-2)
-j = min(n+2,len(lines))
-while i < j:
-    ch = g.choose(i==n-1,'*',' ')
-    s = "%s line %d: %s" % (ch,i+1,lines[i])
-    g.es(s,newline=False)
-    i += 1
-#@-node:EKR.20040612215018:<< dump the lines near the error >>
-#@-node:ekr.20060624085200:g.handleScriptException
-#@-node:ekr.20060929100150:Tested Python 2.5 exception reporting
-#@-node:ekr.20060929141921.1:Tests
+    c = self.c ; p = self.p ; gui = g.app.gui
+    sparseFind = c.config.getBool('collapse_nodes_during_finds')
+    c.frame.bringToFront() # Needed on the Mac
+    redraw = not p.isVisible()
+    c.beginUpdate()
+    try:
+        if sparseFind:
+            # New in Leo 4.4.2: show only the 'sparse' tree when redrawing.
+            for p in c.allNodes_iter():
+                if not p.isAncestorOf(self.p):
+                    p.contract()
+                    redraw = True
+            for p in self.p.parents_iter():
+                if not p.isExpanded():
+                    p.expand()
+                    redraw = True
+        p = self.p
+        c.selectPosition(p)
+    finally:
+        c.endUpdate(redraw)
+    if self.in_headline:
+        c.editPosition(p)
+    # Set the focus and selection after the redraw.
+    t = g.choose(self.in_headline,c.edit_widget(p),c.frame.bodyCtrl)
+    insert = g.choose(self.reverse,pos,newpos)
+    # New in 4.4a3: a much better way to ensure progress in backward searches.
+    # g.trace(id(t),pos,newpos)
+    c.widgetWantsFocusNow(t)
+    gui.setSelectionRange(t,pos,newpos,insert=insert)
+    # c.widgetWantsFocusNow(t)
+    gui.makeIndexVisible(t,insert)
+    if self.wrap and not self.wrapPosition:
+        self.wrapPosition = self.p
+#@nonl
+#@-node:ekr.20031218072017.3091:showSuccess
+#@-node:ekr.20060928062431.1:Sparse find command
 #@+node:ekr.20060930125206:Made writing .leo files faster
+@nocolor
+
+The code that writes .leo files is now almost exactly twice as fast as the old code.
+#@nonl
 #@+node:EKR.20040526202501:putUnknownAttributes & helper
 def putUnknownAttributes (self,torv):
     
@@ -7212,7 +7092,140 @@ def putDescendentUnknownAttributes (self,p):
 #@-node:EKR.20040627113418:putDescendentUnknownAttributes
 #@-node:ekr.20031218072017.1579:putVnodes & helpers
 #@-node:ekr.20060930125206:Made writing .leo files faster
-#@-node:ekr.20060929090247:4.4.2 b2
+#@-node:ekr.20060929141921:Features
+#@+node:ekr.20060929141921.1:Tests
+#@+node:ekr.20060929100150:Tested Python 2.5 exception reporting
+Used brief traceback in g.handleScriptException
+#@nonl
+#@+node:ekr.20031218072017.3111:es_event_exception
+def es_event_exception (eventName,full=False):
+
+    g.es("exception handling ", eventName, " event")
+    typ,val,tb = sys.exc_info()
+
+    if full:
+        errList = traceback.format_exception(typ,val,tb)
+    else:
+        errList = traceback.format_exception_only(typ,val)
+
+    for i in errList:
+        g.es(i)
+        
+    if not g.stdErrIsRedirected(): # 2/16/04
+        traceback.print_exc()
+#@-node:ekr.20031218072017.3111:es_event_exception
+#@+node:ekr.20040731204831:getLastTracebackFileAndLineNumber
+def getLastTracebackFileAndLineNumber():
+    
+    typ,val,tb = sys.exc_info()
+    
+    if typ in (exceptions.SyntaxError,exceptions.IndentationError):
+        # Syntax and indentation errors are a special case.
+        # extract_tb does _not_ return the proper line number!
+        # This code is similar to the code in format_exception_only(!!)
+        try:
+            # g.es_print(repr(val))
+            msg,(filename, lineno, offset, line) = val
+            return filename,lineno
+        except:
+            g.trace("bad line number")
+            return None,0
+
+    else:
+        # The proper line number is the second element in the last tuple.
+        data = traceback.extract_tb(tb)
+        # g.es_print(repr(data))
+        item = data[-1]
+        filename = item[0]
+        n = item[1]
+        return filename,n
+#@-node:ekr.20040731204831:getLastTracebackFileAndLineNumber
+#@+node:ekr.20031218072017.3112:es_exception & test
+def es_exception (full=True,c=None,color="red"):
+    
+    __pychecker__ = '--no-argsused' # c not used. retained for compatibility.
+
+    typ,val,tb = sys.exc_info()
+
+    # g.trace(full,typ,tb)
+    
+    fileName,n = g.getLastTracebackFileAndLineNumber()
+
+    if full or g.app.debugSwitch > 0:
+        lines = traceback.format_exception(typ,val,tb)
+    else:
+        lines = traceback.format_exception_only(typ,val)
+        if 0: # We might as well print the entire SyntaxError message.
+            lines = lines[-1:] # Usually only one line, but more for Syntax errors!
+
+    for line in lines:
+        g.es_error(line,color=color)
+        if not g.stdErrIsRedirected():
+            print line
+
+    if g.app.debugSwitch > 1:
+        import pdb # Be careful: g.pdb may or may not have been defined.
+        pdb.set_trace()
+
+    return fileName,n
+#@+node:ekr.20050220030850:test_g_es_exception
+def test_g_es_exception():
+    
+    if c.config.redirect_execute_script_output_to_log_pane:
+        return # Test doesn't work when redirection is on.
+
+    try:
+        import sys
+        # Catch the output of g.es_exception.
+        # We catch the AssertionError, so nothing gets written to stderr.
+        sys.stdout = fo = g.fileLikeObject()
+        try: # Create an exception to catch.
+            assert False, 'Assert False in test_g_es_exception'
+        except AssertionError:
+            g.es_exception(color='suppress')
+            result = fo.get()
+            s1 = 'Traceback (most recent call last):'
+            s2 = 'AssertionError: Assert False in test_g_es_exception'
+            assert result.find(s1) > -1, 'No traceback line: %s' % repr(result)
+            assert result.find(s2) > -1, 'No AssertionError line: %s' % repr(result)
+    finally:
+        # Not needed unless we execute this script as selected text.
+        sys.stdout = sys.__stdout__
+#@-node:ekr.20050220030850:test_g_es_exception
+#@-node:ekr.20031218072017.3112:es_exception & test
+#@+node:ekr.20060624085200:g.handleScriptException
+def handleScriptException (c,p,script,script1):
+
+    g.es("exception executing script",color='blue')
+
+    fileName, n = g.es_exception(full=False)
+
+    if p and not script1 and fileName == "<string>":
+        c.goToScriptLineNumber(p,script,n)
+
+    << dump the lines near the error >>
+#@+node:EKR.20040612215018:<< dump the lines near the error >>
+if g.os_path_exists(fileName):
+    f = file(fileName)
+    lines = f.readlines()
+    f.close()
+else:
+    lines = g.splitLines(script)
+
+s = '-' * 20
+g.es_print(s)
+
+# Print surrounding lines.
+i = max(0,n-2)
+j = min(n+2,len(lines))
+while i < j:
+    ch = g.choose(i==n-1,'*',' ')
+    s = "%s line %d: %s" % (ch,i+1,lines[i])
+    g.es(s,newline=False)
+    i += 1
+#@-node:EKR.20040612215018:<< dump the lines near the error >>
+#@-node:ekr.20060624085200:g.handleScriptException
+#@-node:ekr.20060929100150:Tested Python 2.5 exception reporting
 #@+node:ekr.20061001094334:Added unit tests for uA's
 # The tests are in unitTest.leo.
 # Important: test_ methods do not get an accurate value of p!
@@ -7382,6 +7395,8 @@ def putDescendentUnknownAttributes (self,p):
     return ''
 #@-node:EKR.20040627113418:putDescendentUnknownAttributes
 #@-node:ekr.20061001094334:Added unit tests for uA's
+#@-node:ekr.20060929141921.1:Tests
+#@-node:ekr.20060929090247:4.4.2 b2
 #@-node:ekr.20060904165452:4.4.2 projects
 #@-all
 #@nonl

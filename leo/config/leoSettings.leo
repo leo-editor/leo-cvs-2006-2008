@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="339" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="71" left="252" height="675" width="908"/>
+	<global_window_position top="71" left="252" height="656" width="908"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -220,8 +220,8 @@
 </v>
 </v>
 </v>
-<v t="ekr.20041119034357.20" annotate="7d71002e"><vh>Find/Change panel</vh>
-<v t="ekr.20060930085532"><vh>@bool collapse_nodes_during_finds = True</vh></v>
+<v t="ekr.20041119034357.20" a="E" annotate="7d71002e"><vh>Find/Change panel</vh>
+<v t="ekr.20060930085532" a="TV"><vh>@bool collapse_nodes_during_finds = True</vh></v>
 <v t="ekr.20060125104049"><vh>@bool show_only_find_tab_options = True</vh></v>
 <v t="ekr.20060204124608"><vh>@bool minibufferSearchesShowFindTab = True</vh></v>
 <v t="ekr.20041119050105.1"><vh>@string change_text = None</vh></v>
@@ -416,7 +416,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20051123100536" a="E" annotate="7d71002e"><vh>Plugins</vh>
+<v t="ekr.20051123100536" annotate="7d71002e"><vh>Plugins</vh>
 <v t="ekr.20041119034357.13"><vh>@bool use_plugins = True</vh></v>
 <v t="ekr.20060807103220"><vh>datenodes plugin</vh>
 <v t="ekr.20060807103220.1"><vh>@string datenodes_body_text = To do...</vh></v>
@@ -452,14 +452,14 @@
 <v t="ekr.20060922110220"><vh>@bool opml_write_uAs = True</vh></v>
 <v t="ekr.20060919171527.2"><vh>@string opml_namespace = leo:com:leo-opml-version-1</vh></v>
 </v>
-<v t="ekr.20060930111325" a="E"><vh>scripting plugin</vh>
+<v t="ekr.20060930111325"><vh>scripting plugin</vh>
 <v t="ekr.20060930111325.2"><vh>@bool scripting-at-button-nodes = True</vh></v>
 <v t="ekr.20060930111325.3"><vh>@bool scripting-at-commands-nodes = True</vh></v>
 <v t="ekr.20060930111325.4"><vh>@bool scripting-at-plugin-nodes = False</vh></v>
 <v t="ekr.20060930111325.5"><vh>@bool scripting-at-script-nodes = False</vh></v>
 <v t="ekr.20060930111325.6"><vh>@bool scripting-create-debug-button = False</vh></v>
 <v t="ekr.20060930111325.7"><vh>@bool scripting-create-run-script-button = False</vh></v>
-<v t="ekr.20060930112030" a="TV"><vh>@bool scripting-create-script-button-button = True</vh></v>
+<v t="ekr.20060930112030"><vh>@bool scripting-create-script-button-button = True</vh></v>
 <v t="ekr.20060930111325.1"><vh>@int scripting-max-button-size = 18</vh></v>
 </v>
 <v t="ekr.20051123100536.1"><vh>vim plugin</vh>
