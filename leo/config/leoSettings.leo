@@ -46,7 +46,7 @@
 <v t="ekr.20060112104823"><vh>main</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
@@ -221,7 +221,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20041119034357.20" a="E" annotate="7d71002e"><vh>Find/Change panel</vh>
+<v t="ekr.20041119034357.20" annotate="7d71002e"><vh>Find/Change panel</vh>
 <v t="ekr.20060930085532"><vh>@bool collapse_nodes_during_finds = True</vh></v>
 <v t="ekr.20060125104049"><vh>@bool show_only_find_tab_options = True</vh></v>
 <v t="ekr.20060204124608"><vh>@bool minibufferSearchesShowFindTab = True</vh></v>
@@ -267,7 +267,7 @@
 </v>
 <v t="ekr.20060127050605"><vh>@int max_undo_stack_size = 50</vh></v>
 </v>
-<v t="ekr.20060122105527.3" a="E"><vh>Keyboard and minibuffer options</vh>
+<v t="ekr.20060122105527.3"><vh>Keyboard and minibuffer options</vh>
 <v t="ekr.20060215094146"><vh>@@bool ignore_caps_lock = True</vh></v>
 <v t="ekr.20060216170801"><vh>@bool enable_calltips = False</vh></v>
 <v t="ekr.20060215102141"><vh>@bool ignore_unbound_non_ascii_keys = True</vh></v>
@@ -553,10 +553,10 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060512084639" a="E"><vh>Recent</vh>
+<v t="ekr.20060512084639" a="TV"><vh>Recent</vh>
 <v t="ekr.20060930085532"><vh>@bool collapse_nodes_during_finds = True</vh></v>
 <v t="ekr.20060216135834"><vh>@bool enable_autocompleter_initially = False</vh></v>
-<v t="ekr.20060216170801" a="MTV"><vh>@bool enable_calltips = False</vh></v>
+<v t="ekr.20060216170801" a="M"><vh>@bool enable_calltips = False</vh></v>
 <v t="ekr.20060603070801"><vh>@bool enable_calltips_initially = False</vh></v>
 <v t="ekr.20060926160657"><vh>@bool stayInTreeAfterEditHeadline = False</vh></v>
 <v t="ekr.20060309022759"><vh>@bool trace_colorizer = False</vh></v>
