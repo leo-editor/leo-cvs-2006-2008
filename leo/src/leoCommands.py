@@ -39,6 +39,7 @@ subprocess = g.importExtension('subprocess',None,verbose=False)
 
 import sys
 import tempfile
+import time
 
 import tabnanny # for Check Python command
 import tokenize # for Check Python command
@@ -139,10 +140,12 @@ class baseCommands:
         self.tab_width = -4
         self.tangle_batch_flag = False
         self.untangle_batch_flag = False
+        
         # Default Tangle options
         self.tangle_directory = ""
         self.use_header_flag = False
         self.output_doc_flag = False
+        
         # Default Target Language
         self.target_language = "python" # Required if leoConfig.txt does not exist.
         
@@ -156,6 +159,10 @@ class baseCommands:
             # Stack of nodes to be root of drawn tree.
             # Affects drawing routines and find commands.
         self.recentFiles = [] # List of recent files
+        
+        # For outline navigation.
+        self.navPrefix = '' # Must always be a string.
+        self.navTime = None
         #@-node:ekr.20031218072017.2813:<< initialize ivars >> (commands)
         #@nl
         self.config = configSettings(c)
@@ -6490,7 +6497,7 @@ class baseCommands:
     
     selectVnode = selectPosition
     #@-node:ekr.20031218072017.2997:c.selectPosition
-    #@+node:ekr.20031218072017.2998:selectVnodeWithEditing
+    #@+node:ekr.20031218072017.2998:c.selectVnodeWithEditing
     # Selects the given node and enables editing of the headline if editFlag is True.
     
     def selectVnodeWithEditing(self,v,editFlag):
@@ -6502,7 +6509,97 @@ class baseCommands:
             c.selectVnode(v)
     
     selectPositionWithEditing = selectVnodeWithEditing
-    #@-node:ekr.20031218072017.2998:selectVnodeWithEditing
+    #@-node:ekr.20031218072017.2998:c.selectVnodeWithEditing
+    #@+node:ekr.20060923202156:c.onCanvasKey
+    def onCanvasKey (self,event):
+        
+        '''Navigate to the next headline starting with ch = event.char.
+        If ch is uppercase, search all headlines; otherwise search only visible headlines.
+        This is modelled on Windows explorer.'''
+        
+        if not event or not event.char or not event.keysym.isalnum():
+            return
+        c  = self ; p = c.currentPosition() ; p1 = p.copy()
+        ch = event.char ; all = ch.isupper()
+        found = False
+        extend = self.navQuickKey(p)
+        attempts = g.choose(extend,(True,False),(False,))
+        for extend2 in attempts:
+            p = p1.copy()
+            while 1:
+                if all:
+                    p.moveToThreadNext()
+                else:
+                    p.moveToVisNext()
+                if not p:
+                    p = c.rootPosition()
+                if p == p1: # Never try to match the same position.
+                    # g.trace('failed',extend2)
+                    found = False ; break
+                newPrefix = c.navHelper(p,ch,all,extend2)
+                if newPrefix:
+                    found = True ; break
+            if found: break
+        if found:
+            if all: self.expandAllAncestors(p)
+            c.selectPosition(p)
+            c.navTime = time.clock()
+            c.navPrefix = newPrefix
+            # g.trace('extend',extend,'extend2',extend2,'navPrefix',c.navPrefix,'p',p.headString())
+        else:
+            c.navTime = None
+            c.navPrefix = ''
+        c.treeWantsFocusNow()
+    #@nonl
+    #@+node:ekr.20061002095711.1:c.navQuickKey
+    def navQuickKey (self,p):
+        
+        '''return true if there are two quick outline navigation keys
+        in quick succession.
+        
+        Returns False if @float outline_nav_extend_delay setting is 0.0 or unspecified.'''
+        
+        c = self
+       
+        deltaTime = c.config.getFloat('outline_nav_extend_delay')
+    
+        if deltaTime in (None,0.0):
+            return False
+        else:
+            nearTime = c.navTime and time.clock() - c.navTime < deltaTime
+            # g.trace(nearTime,p.headString())
+            return nearTime
+    #@nonl
+    #@-node:ekr.20061002095711.1:c.navQuickKey
+    #@+node:ekr.20061002095711:c.navHelper
+    def navHelper (self,p,ch,all,extend):
+        
+        c = self ; h = p.headString().lower()
+        
+        if extend:
+            prefix = c.navPrefix + ch
+            return h.startswith(prefix.lower()) and prefix
+    
+        if h.startswith(ch):
+            return ch
+        
+        # New feature: search for first non-blank character after @x for common x.
+        if ch != '@' and h.startswith('@'):
+            for s in ('button','command','file','thin','asis','nosent','noref'):
+                prefix = '@'+s
+                if h.startswith('@'+s):
+                    while 1:
+                        n = len(prefix)
+                        ch2 = n < len(h) and h[n] or ''
+                        if ch2.isspace():
+                            prefix = prefix + ch2
+                        else: break
+                    if len(prefix) < len(h) and h.startswith(prefix + ch.lower()):
+                        return prefix + ch
+        return ''
+    #@nonl
+    #@-node:ekr.20061002095711:c.navHelper
+    #@-node:ekr.20060923202156:c.onCanvasKey
     #@-node:ekr.20031218072017.2990:Selecting & Updating (commands)
     #@+node:ekr.20031218072017.2999:Syntax coloring interface
     #@+at 

@@ -1718,47 +1718,6 @@ class leoTkinterTree (leoFrame.leoTree):
         g.doHook("enddrag2",c=c,p=p,v=p,event=event)
     #@-node:ekr.20040803072955.103:onEndDrag
     #@-node:ekr.20040803072955.99:Dragging
-    #@+node:ekr.20060923202156:onCanvasKey
-    def onCanvasKey (self,event):
-        
-        '''Navigate to the next headline starting with ch = event.char.
-        If ch is uppercase, search all headlines; otherwise search only visible headlines.
-        This is modelled on Windows explorer.'''
-        
-        if not event or not event.char or not event.keysym.isalnum(): return
-        c  = self.c ; p = c.currentPosition() ; p1 = p.copy()
-        ch = event.char ; all = ch.isupper()
-        ch = ch.lower() ; wrapped = False
-        while 1:
-            if all:
-                p.moveToThreadNext()
-            else:
-                p.moveToVisNext()
-            if not p:
-                p = c.rootPosition() ; wrapped = True
-            if p == p1 and wrapped: # Not found.
-                return
-            h = p.headString().lower()
-            if h.startswith(ch):
-                if all: self.expandAllAncestors(p)
-                c.selectPosition(p)
-                return
-            # New feature: search for first non-blank character after @x for common x.
-            if ch != '@' and h.startswith('@'):
-                for s in ('button','command','file','thin','asis','nosent','noref'):
-                    if h.startswith('@'+s):
-                        n = len(s) + 1
-                        h2 = h[n:] ; ch2 = h2 and h2[0] or ''
-                        if ch2.isspace():
-                            h2 = h2.strip()
-                            if h2.startswith(ch):
-                                if all: self.expandAllAncestors(p)
-                                c.selectPosition(p)
-                                return
-                                
-            
-    #@nonl
-    #@-node:ekr.20060923202156:onCanvasKey
     #@+node:ekr.20040803072955.90:head key handlers
     #@+node:ekr.20040803072955.88:onHeadlineKey
     def onHeadlineKey (self,event):
