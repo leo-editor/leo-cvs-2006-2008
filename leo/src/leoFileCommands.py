@@ -336,8 +336,8 @@ class saxContentHandler (xml.sax.saxutils.XMLGenerator):
             if name == 'body_outline_ratio':
                 # self.body_outline_ratio = val
                 self.c.ratio = val
-                g.trace(name,val)
-            else:
+                # g.trace(name,val)
+            elif 0:
                 g.trace(name,len(val))
     #@nonl
     #@-node:ekr.20060919110638.37:startGlobals
@@ -371,7 +371,7 @@ class saxContentHandler (xml.sax.saxutils.XMLGenerator):
         h = d.get('height',500)
         x = d.get('left',50)
         y = d.get('top',50)
-        g.trace(d,w,h,x,y)
+        # g.trace(d,w,h,x,y)
         
         # Redraw the window before writing into it.
         c.frame.setTopGeometry(w,h,x,y)
@@ -380,7 +380,7 @@ class saxContentHandler (xml.sax.saxutils.XMLGenerator):
         c.frame.update()
     
         # Causes window to appear.
-        g.trace('ratio',c.frame.ratio,c.frame.secondary_ratio)
+        # g.trace('ratio',c.frame.ratio,c.frame.secondary_ratio)
         c.frame.resizePanesToRatio(c.frame.ratio,c.frame.secondary_ratio)
         if not self.silent:
             g.es("reading: " + self.fileName)
@@ -411,7 +411,7 @@ class saxContentHandler (xml.sax.saxutils.XMLGenerator):
                     self.error('Bad leo file: no node for <t tx=%s>' % (val))
             else:
                 # Do **not** set any saxNodeClass attributes here!
-                self.error('Unexpected tnode attribute %s = %s' % (name,val))
+                self.error('********* Unexpected tnode attribute %s = %s' % (name,val))
                 
         if not self.nodeList:
             self.error('Bad leo file: no tx attribute for tnode')
@@ -455,7 +455,7 @@ class saxContentHandler (xml.sax.saxutils.XMLGenerator):
                 node.tnx = val
             else:
                 node.attributes[name] = val
-                # g.trace(name,len(val))
+                if name == 'a': g.trace(name,val,id(self.node))
     #@nonl
     #@-node:ekr.20060919110638.44:vnodeAttributes
     #@-node:ekr.20060919110638.43:startVnode
@@ -528,8 +528,6 @@ class baseFileCommands:
     
         # General
         c = self.c
-        self.maxTnodeIndex = 0
-        self.numberOfTnodes = 0
         self.mFileName = ""
         self.fileDate = -1
         self.leo_file_encoding = c.config.new_leo_file_encoding
@@ -537,7 +535,6 @@ class baseFileCommands:
         self.checking = False # True: checking only: do *not* alter the outline.
         self.descendentExpandedList = []
         self.descendentMarksList = []
-        self.fileFormatNumber = 0
         self.forbiddenTnodes = []
         self.descendentUnknownAttributesDictList = []
         self.ratio = 0.5
@@ -608,14 +605,18 @@ class baseFileCommands:
             #@-at
             #@@c
             
+            nodeIndices = g.app.nodeIndices
+            
             current.clearVisitedInTree()
             
             for p in current.self_and_subtree_iter():
                 t = p.v.t
                 if not t.isVisited():
                     t.setVisited()
-                    self.maxTnodeIndex += 1
-                    t.setFileIndex(self.maxTnodeIndex)
+                    # New in Leo 4.4.2 b2: use gnx's.  maxTnodeIndex is no longer used.
+                    t.fileIndex = nodeIndices.getNewIndex()
+                    # g.trace(t.fileIndex)
+            #@nonl
             #@-node:ekr.20031218072017.1558:<< reassign tnode indices >>
             #@nl
         c.selectPosition(current)
@@ -675,7 +676,7 @@ class baseFileCommands:
     
         while 1:
             if self.matchTag("file_format="):
-                self.getDquote() ; self.fileFormatNumber = self.getLong() ; self.getDquote()
+                self.getDquote() ; self.getLong() ; self.getDquote()
             elif self.matchTag("tnodes="):
                 self.getDquote() ; self.getLong() ; self.getDquote() # no longer used
             elif self.matchTag("max_tnode_index="):
@@ -718,6 +719,7 @@ class baseFileCommands:
             ok = True
             if use_sax:
                 v = self.readSaxFile(theFile,fileName,silent)
+                g.trace('root',v)
                 c.setRootVnode(v)
                 self.rootVnode = v
             else:
@@ -731,16 +733,17 @@ class baseFileCommands:
         # New in Leo 4.2.2: before reading derived files.
         if use_sax:
             self.resolveTnodeLists()
-    
         if ok and readAtFileNodesFlag:
             # Redraw before reading the @file nodes so the screen isn't blank.
             # This is important for big files like LeoPy.leo.
             c.redraw_now()
             c.atFileCommands.readAll(c.rootVnode(),partialFlag=False)
         
-        # New in 4.2.2: do this after reading derived files.
-        if use_sax:
+        # Do this after reading derived files.
+        if readAtFileNodesFlag:
+            # The descendent nodes won't exist unless we have read the @thin nodes!
             self.restoreDescendentAttributes()
+        if use_sax:
             self.setPositionsFromVnodes()
         else:
             if not self.usingClipboard:
@@ -751,8 +754,6 @@ class baseFileCommands:
         c.selectVnode(c.currentPosition()) # load body pane
         c.loading = False # reenable c.changed
         c.setChanged(c.changed) # Refresh the changed marker.
-        if not use_sax:
-            self.restoreDescendentAttributes()
         self.initReadIvars()
         return ok, self.ratio
     #@nonl
@@ -876,15 +877,6 @@ class baseFileCommands:
     #@+node:ekr.20060919133249:Common
     # Methods common to both the sax and non-sax code.
     #@nonl
-    #@+node:ekr.20060919142200.1:initReadIvars
-    def initReadIvars (self):
-    
-        self.descendentUnknownAttributesDictList = []
-        self.descendentExpandedList = []
-        self.descendentMarksList = []
-        self.tnodesDict = {}
-    #@nonl
-    #@-node:ekr.20060919142200.1:initReadIvars
     #@+node:ekr.20031218072017.2004:canonicalTnodeIndex
     def canonicalTnodeIndex(self,index):
         
@@ -898,49 +890,54 @@ class baseFileCommands:
     
         return index
     #@-node:ekr.20031218072017.2004:canonicalTnodeIndex
-    #@+node:EKR.20040627120120:restoreDescendentAttributes
-    def restoreDescendentAttributes (self):
+    #@+node:ekr.20040701065235.1:getDescendentAttributes
+    def getDescendentAttributes (self,s,tag=""):
         
-        c = self.c
+        '''s is a list of gnx's, separated by commas from a <v> or <t> element.
+        Parses s into a list.
+        
+        This is used to record marked and expanded nodes.
+        '''
+        
+        __pychecker__ = '--no-argsused' # tag used only for debugging.
     
-        for resultDict in self.descendentUnknownAttributesDictList:
-            for gnx in resultDict.keys():
-                tref = self.canonicalTnodeIndex(gnx)
-                t = self.tnodesDict.get(tref)
-                if t:
-                    t.unknownAttributes = resultDict[gnx]
-                    t._p_changed = 1
-                # else: g.trace("can not find tnode: gnx = %s" % gnx,color="red")
+        gnxs = s.split(',')
+        result = [gnx for gnx in gnxs if len(gnx) > 0]
+        # g.trace(tag,result)
+        return result
+    #@-node:ekr.20040701065235.1:getDescendentAttributes
+    #@+node:EKR.20040627114602:getDescendentUnknownAttributes
+    # Only @thin vnodes have the descendentTnodeUnknownAttributes field.
+    # The question is: what are we to do about this?
+    
+    def getDescendentUnknownAttributes (self,s):
         
-        marks = {} ; expanded = {}
-        for gnx in self.descendentExpandedList:
-            t = self.tnodesDict.get(gnx)
-            if t: expanded[t]=t
-            # else: g.trace("can not find tnode: gnx = %s" % gnx,color="red")
-            
-        for gnx in self.descendentMarksList:
-            t = self.tnodesDict.get(gnx)
-            if t: marks[t]=t
-            # else: g.trace("can not find tnode: gnx = %s" % gnx,color="red")
-        
-        if marks or expanded:
-            # g.trace("marks",len(marks),"expanded",len(expanded))
-            for p in c.all_positions_iter():
-                if marks.get(p.v.t):
-                    p.v.initMarkedBit()
-                        # This was the problem: was p.setMark.
-                        # There was a big performance bug in the mark hook in the Node Navigator plugin.
-                if expanded.get(p.v.t):
-                    p.expand()
+        try:
+            bin = binascii.unhexlify(s) # Throws a TypeError if val is not a hex string.
+            val = pickle.loads(bin)
+            return val
+    
+        except (TypeError,pickle.UnpicklingError,ImportError):
+            g.trace('Can not unpickle',s)
+            return None
+    #@-node:EKR.20040627114602:getDescendentUnknownAttributes
+    #@+node:ekr.20060919142200.1:initReadIvars
+    def initReadIvars (self):
+    
+        self.descendentUnknownAttributesDictList = []
+        self.descendentExpandedList = []
+        self.descendentMarksList = []
+        self.tnodesDict = {}
     #@nonl
-    #@-node:EKR.20040627120120:restoreDescendentAttributes
-    #@+node:ekr.20060919110638.11:resolveTnodeLists (SAX)
+    #@-node:ekr.20060919142200.1:initReadIvars
+    #@+node:ekr.20060919110638.11:resolveTnodeLists (Sax)
     def resolveTnodeLists (self):
     
         c = self.c
     
         for p in c.allNodes_iter():
             if hasattr(p.v,'tempTnodeList'):
+                g.trace(p.v.headString())
                 result = []
                 for tnx in p.v.tempTnodeList:
                     index = self.canonicalTnodeIndex(tnx)
@@ -953,46 +950,70 @@ class baseFileCommands:
                 p.v.t.tnodeList = result
                 delattr(p.v,'tempTnodeList')
     #@nonl
-    #@-node:ekr.20060919110638.11:resolveTnodeLists (SAX)
+    #@-node:ekr.20060919110638.11:resolveTnodeLists (Sax)
+    #@+node:EKR.20040627120120:restoreDescendentAttributes (sax)
+    def restoreDescendentAttributes (self):
+    
+        c = self.c ; verbose = True 
+    
+        for resultDict in self.descendentUnknownAttributesDictList:
+            for gnx in resultDict.keys():
+                tref = self.canonicalTnodeIndex(gnx)
+                t = self.tnodesDict.get(tref)
+                if t:
+                    t.unknownAttributes = resultDict[gnx]
+                    t._p_changed = 1
+                elif verbose:
+                    g.trace('can not find tnode (duA): gnx = %s' % gnx,color='red')
+                    # print 'can not find tnode (duA): gnx = %s' % gnx
+        marks = {} ; expanded = {}
+        for gnx in self.descendentExpandedList:
+            tref = self.canonicalTnodeIndex(gnx) ###
+            t = self.tnodesDict.get(gnx)
+            if t: expanded[t]=t
+            elif verbose:
+                g.trace('can not find tnode (expanded): gnx = %s, tref: %s' % (gnx,tref),color='red')
+                # print 'can not find tnode (expanded): gnx = %s' % gnx
+            
+        for gnx in self.descendentMarksList:
+            tref = self.canonicalTnodeIndex(gnx)
+            t = self.tnodesDict.get(gnx)
+            if t: marks[t]=t
+            elif verbose:
+                g.trace('can not find tnode (marks): gnx = %s tref: %s' % (gnx,tref),color='red')
+                # print 'can not find tnode (marks): gnx = %s' % gnx
+        
+        if marks or expanded:
+            # g.trace('marks',len(marks),'expanded',len(expanded))
+            for p in c.all_positions_iter():
+                if marks.get(p.v.t):
+                    p.v.initMarkedBit()
+                        # This was the problem: was p.setMark.
+                        # There was a big performance bug in the mark hook in the Node Navigator plugin.
+                if expanded.get(p.v.t):
+                    p.expand()
+    #@-node:EKR.20040627120120:restoreDescendentAttributes (sax)
     #@+node:ekr.20060919110638.13:setPositionsFromVnodes (Sax)
     def setPositionsFromVnodes (self):
         
         c = self.c
         
         v = self.currentVnode
-        if not v: return
-    
-        for p in c.allNodes_iter():
-            if p.v == v:
-                c.selectPosition(p)
-                break
+        if v:
+            for p in c.allNodes_iter():
+                if p.v == v:
+                    g.trace(p,c.shortFileName())
+                    c.selectPosition(p)
+                    return
+        
+        g.trace('**** no present position. ****',self.currentVnode)
+        c.selectPosition(c.rootPosition())
     #@nonl
     #@-node:ekr.20060919110638.13:setPositionsFromVnodes (Sax)
     #@-node:ekr.20060919133249:Common
     #@+node:ekr.20031218072017.3021:Non-sax
     if not use_sax:
         #@    @+others
-        #@+node:ekr.20040326054052:setPositionsFromStacks (silly)
-        def setPositionsFromStacks (self):
-            
-            c = self.c
-        
-            current = self.convertStackToPosition(self.currentVnodeStack)
-            
-            if current:
-                # g.trace('using convertStackToPosition',current)
-                c.setCurrentPosition(current)
-            else:
-                # g.trace(self.currentVnodeStack)
-                c.setCurrentPosition(c.rootPosition())
-                
-            # At present this is useless: the drawing code doesn't set the top position properly.
-            if 0:
-                top = self.convertStackToPosition(self.topVnodeStack)
-                if top:
-                    c.setTopPosition(top)
-        #@nonl
-        #@-node:ekr.20040326054052:setPositionsFromStacks (silly)
         #@+node:ekr.20040326052245:convertStackToPosition (silly)
         def convertStackToPosition (self,stack):
         
@@ -1359,22 +1380,17 @@ class baseFileCommands:
         #@+node:ekr.20031218072017.1970:getLeoHeader
         def getLeoHeader (self):
         
-            # Set defaults.
-            self.maxTnodeIndex = 0
-            self.numberOfTnodes = 0
-        
             if self.getOpenTag("<leo_header"):
                 return # <leo_header/> seen.
         
             # New in version 1.7: attributes may appear in any order.
             while 1:
                 if self.matchTag("file_format="):
-                    self.getDquote() ; self.fileFormatNumber = self.getLong() ; self.getDquote()
+                    self.getDquote() ; self.getLong() ; self.getDquote()
                 elif self.matchTag("tnodes="):
-                    self.getDquote() ; self.numberOfTnodes = self.getLong() ; self.getDquote()
+                    self.getDquote() ; self.getLong() ; self.getDquote()
                 elif self.matchTag("max_tnode_index="):
-                    self.getDquote() ; self.maxTnodeIndex = self.getLong() ; self.getDquote()
-                    # g.trace("max_tnode_index:",self.maxTnodeIndex)
+                    self.getDquote() ; self.getLong() ; self.getDquote()
                 elif self.matchTag("clone_windows="):
                     self.getDquote() ; self.getLong() ; self.getDquote() # no longer used.
                 elif self.matchTag("></leo_header>"): # new in 4.2: allow this form.
@@ -1795,37 +1811,6 @@ class baseFileCommands:
             return v,skip
         #@nonl
         #@-node:ekr.20031218072017.1860:createVnode
-        #@+node:ekr.20040701065235.1:getDescendentAttributes
-        def getDescendentAttributes (self,s,tag=""):
-            
-            '''s is a list of gnx's, separated by commas from a <v> or <t> element.
-            Parses s into a list.
-            
-            This is used to record marked and expanded nodes.
-            '''
-            
-            __pychecker__ = '--no-argsused' # tag used only for debugging.
-        
-            gnxs = s.split(',')
-            result = [gnx for gnx in gnxs if len(gnx) > 0]
-            # g.trace(tag,result)
-            return result
-        #@-node:ekr.20040701065235.1:getDescendentAttributes
-        #@+node:EKR.20040627114602:getDescendentUnknownAttributes
-        # Only @thin vnodes have the descendentTnodeUnknownAttributes field.
-        # The question is: what are we to do about this?
-        
-        def getDescendentUnknownAttributes (self,s):
-            
-            try:
-                bin = binascii.unhexlify(s) # Throws a TypeError if val is not a hex string.
-                val = pickle.loads(bin)
-                return val
-        
-            except (TypeError,pickle.UnpicklingError,ImportError):
-                g.trace('oops: getDescendentUnknownAttributes')
-                return None
-        #@-node:EKR.20040627114602:getDescendentUnknownAttributes
         #@+node:ekr.20040326063413:getExistingVnode
         def getExistingVnode (self,tref,headline):
         
@@ -1917,6 +1902,27 @@ class baseFileCommands:
             else:
                 g.es("invalid encoding in .leo file: " + encoding, color="red")
         #@-node:ekr.20031218072017.1468:getXmlVersionTag
+        #@+node:ekr.20040326054052:setPositionsFromStacks (silly)
+        def setPositionsFromStacks (self):
+            
+            c = self.c
+        
+            current = self.convertStackToPosition(self.currentVnodeStack)
+            
+            if current:
+                # g.trace('using convertStackToPosition',current)
+                c.setCurrentPosition(current)
+            else:
+                # g.trace(self.currentVnodeStack)
+                c.setCurrentPosition(c.rootPosition())
+                
+            # At present this is useless: the drawing code doesn't set the top position properly.
+            if 0:
+                top = self.convertStackToPosition(self.topVnodeStack)
+                if top:
+                    c.setTopPosition(top)
+        #@nonl
+        #@-node:ekr.20040326054052:setPositionsFromStacks (silly)
         #@-others
     #@nonl
     #@-node:ekr.20031218072017.3021:Non-sax
@@ -1949,7 +1955,7 @@ class baseFileCommands:
             return v
         #@nonl
         #@-node:ekr.20060919110638.3:readSaxFile
-        #@+node:ekr.20060919110638.4:createVnodes & helpers
+        #@+node:ekr.20060919110638.4:createVnodes & helpers (sax)
         def createVnodes (self, dummyRoot):
             
             '''**Important**: this method and its helpers are low-level code
@@ -1964,6 +1970,8 @@ class baseFileCommands:
         
             children = self.createChildren(dummyRoot,parent_v = None)
             firstChild = children and children[0]
+            
+            g.trace(firstChild)
         
             return firstChild
         #@nonl
@@ -1979,8 +1987,8 @@ class baseFileCommands:
                 t = self.tnodesDict.get(tnx)
                 if t:
                     # A clone.  Create a new clone node, but share the subtree, i.e., the tnode.
-                    # g.trace('clone',child.headString,v.t,v.t.bodyString)
                     v = self.createVnode(child,parent_v,t=t)
+                    g.trace('clone',id(child),child.headString,'t',v.t)
                 else:
                     v = self.createVnodeTree(child,parent_v)
                 result.append(v)
@@ -1994,8 +2002,7 @@ class baseFileCommands:
         def createVnodeTree (self,node,parent_v):
         
             v = self.createVnode(node,parent_v)
-            
-            # To do: create the children only if v is not a clone.
+        
             self.createChildren(node,v)
         
             return v
@@ -2031,15 +2038,17 @@ class baseFileCommands:
         def handleVnodeAttributes (self,node,v):
             
             d = node.attributes
-            a = d.get('a')
-            if a:
-                # g.trace('a=%s %s' % (attrs,v.headString()))
+            s = d.get('a')
+            if s:
+                g.trace('%s a=%s %s' % (id(node),s,v.headString()))
                 # 'C' (clone) and 'D' bits are not used.
-                if 'M' in a: v.setMarked()
-                if 'E' in a: v.expand()
-                if 'O' in a: v.setOrphan()
-                if 'T' in a: self.topVnode = v
-                if 'V' in a: self.currentVnode = v
+                if 'M' in s: v.setMarked()
+                if 'E' in s: v.expand()
+                if 'O' in s: v.setOrphan()
+                if 'T' in s: self.topVnode = v
+                if 'V' in s:
+                    g.trace('setting currentVnode',v,color='red')
+                    self.currentVnode = v
         
             s = d.get('tnodeList','')
             tnodeList = s and s.split(',')
@@ -2048,20 +2057,37 @@ class baseFileCommands:
                 g.trace('found tnodeList',v.headString(),tnodeList)
                 v.tempTnodeList = tnodeList
                 
-            aDict = d.get('descendentTnodeUnknownAttributes')
-            if aDict: self.descendentUnknownAttributesDictList.append(aDict)
+            s = d.get('descendentTnodeUnknownAttributes') # Correct: only tnode have descendent uA's.
+            if s: 
+                aDict = self.getDescendentUnknownAttributes(s)
+                if aDict:
+                    g.trace('descendentUaDictList',aDict)
+                    self.descendentUnknownAttributesDictList.append(aDict)
             
-            aList = d.get('expanded')
-            if aList: self.descendentExpandedList.append(aList)
+            s = d.get('expanded')
+            if s:
+                aList = self.getDescendentAttributes(s,tag="expanded")
+                # g.trace('expanded list',len(aList))
+                self.descendentExpandedList.extend(aList)
             
-            aList = d.get('marks')
-            if aList: self.descendentMarksList.append(aList)
+            s = d.get('marks')
+            if s:
+                aList = self.getDescendentAttributes(s,tag="marks")
+                # g.trace('marks list',len(aList))
+                self.descendentMarksList.extend(aList)
                 
             aDict = {}
             for key in d.keys():
-                if key not in self.nativeVnodeAttributes:
-                    aDict[key] = d.get(key)
-            if aDict: v.unknownAttributes = aDict
+                if key in self.nativeVnodeAttributes:
+                    if 0: g.trace('****ignoring***',key,d.get(key))
+                else:
+                    val = d.get(key)
+                    val2 = self.getUa(key,val)
+                    aDict[key] = val2
+                    # g.trace(key,val,val2)
+            if aDict:
+                # g.trace('uA',aDict)
+                v.unknownAttributes = aDict
         #@nonl
         #@-node:ekr.20060919110638.8:handleVnodeAttributes
         #@-node:ekr.20060919110638.7:createVnode
@@ -2095,7 +2121,7 @@ class baseFileCommands:
                 v._next = (i+1 <  n and sibs[i+1]) or None
         #@nonl
         #@-node:ekr.20060919110638.10:linkSiblings
-        #@-node:ekr.20060919110638.4:createVnodes & helpers
+        #@-node:ekr.20060919110638.4:createVnodes & helpers (sax)
         #@+node:ekr.20060919110638.14:parse_leo_file
         def parse_leo_file (self,theFile,inputFileName,silent):
             
@@ -2122,6 +2148,39 @@ class baseFileCommands:
             return node
         #@nonl
         #@-node:ekr.20060919110638.14:parse_leo_file
+        #@+node:ekr.20061003093021:getUa (sax)
+        def getUa(self,attr,val):
+            
+            """Parse an unknown attribute in a <v> or <t> element.
+            The unknown tag has been pickled and hexlify'd.
+            """
+                
+            # New in 4.3: leave string attributes starting with 'str_' alone.
+            if attr.startswith('str_') and type(val) == type(''):
+                # g.trace(attr,val)
+                return val
+                
+            # New in 4.3: convert attributes starting with 'b64_' using the base64 conversion.
+            if 0: # Not ready yet.
+                if attr.startswith('b64_'):
+                    try: pass
+                    except Exception: pass
+                
+            try:
+                binString = binascii.unhexlify(val) # Throws a TypeError if val is not a hex string.
+            except TypeError:
+                # Assume that Leo 4.1 wrote the attribute.
+                g.trace('can not unhexlify',val)
+                return val
+            try:
+                # No change needed to support protocols.
+                val2 = pickle.loads(binString)
+                # g.trace('v.3 val:',val2)
+                return attr,val2
+            except (pickle.UnpicklingError,ImportError):
+                g.trace('can not unpickle',val)
+                return val
+        #@-node:ekr.20061003093021:getUa (sax)
         #@-others
     #@nonl
     #@-node:ekr.20060919104530:Sax
@@ -2302,7 +2361,7 @@ class baseFileCommands:
         self.put("<leo_header")
         self.put(" file_format=") ; self.put_in_dquotes("2")
         self.put(" tnodes=") ; self.put_in_dquotes(str(tnodes))
-        self.put(" max_tnode_index=") ; self.put_in_dquotes(str(self.maxTnodeIndex))
+        self.put(" max_tnode_index=") ; self.put_in_dquotes(str(0))
         self.put(" clone_windows=") ; self.put_in_dquotes(str(clone_windows))
         self.put("/>") ; self.put_nl()
     #@-node:ekr.20031218072017.3041:putHeader
@@ -2504,14 +2563,6 @@ class baseFileCommands:
         attrs = []
         #@    << Append attribute bits to attrs >>
         #@+node:ekr.20031218072017.1865:<< Append attribute bits to attrs >>
-        # attr = ''.join([
-            # v.isExpanded() and 'E' or '',
-            # v.isMarked()   and 'M' or '',
-            # v.isOrphan()   and 'O' or '',
-            # p.equal(self.topPosition) and 'T' or '',    # was a bottleneck
-            # p.equal(self.currentPosition) and 'V' or '' # was bottleneck.
-        # ])
-        
         # These string catenations are benign because they rarely happen.
         attr = ""
         if v.isExpanded(): attr += "E"
@@ -2622,25 +2673,48 @@ class baseFileCommands:
         nodeIndices = g.app.nodeIndices
     
         # Create a list of all tnodes whose vnodes are marked or expanded
-        marks = [] ; expanded = []
-        for p in p.subtree_iter():
-            if p.isMarked() and not p in marks:
-                marks.append(p.copy())
-            if p.hasChildren() and p.isExpanded() and not p in expanded:
-                expanded.append(p.copy())
-    
-        result = []
-        for theList,tag in ((marks,"marks"),(expanded,"expanded")):
-            if theList:
-                sList = []
-                for p in theList:
-                    gnx = p.v.t.fileIndex
-                    sList.append("%s," % nodeIndices.toString(gnx))
-                s = string.join(sList,'')
-                # g.trace(tag,[str(p.headString()) for p in theList])
-                result.append('\n%s="%s"' % (tag,s))
+        if 1: # New in Leo 4.4.2 b2.
+            # Put each tnode in the list only once.
+            # This should have been done long ago.
+            marks = [] ; expanded = []
+            for p in p.subtree_iter():
+                t = p.v.t
+                if p.isMarked() and p.v.t not in marks:
+                    marks.append(t)
+                if p.hasChildren() and p.isExpanded() and t not in expanded:
+                    expanded.append(t)
+        
+            result = []
+            for theList,tag in ((marks,"marks"),(expanded,"expanded")):
+                if theList:
+                    sList = []
+                    for t in theList:
+                        gnx = t.fileIndex
+                        sList.append("%s," % nodeIndices.toString(gnx))
+                    s = string.join(sList,'')
+                    # g.trace(tag,[str(p.headString()) for p in theList])
+                    result.append('\n%s="%s"' % (tag,s))
+        else:
+            marks = [] ; expanded = []
+            for p in p.subtree_iter():
+                if p.isMarked() and not p in marks:
+                    marks.append(p.copy())
+                if p.hasChildren() and p.isExpanded() and not p in expanded:
+                    expanded.append(p.copy())
+        
+            result = []
+            for theList,tag in ((marks,"marks"),(expanded,"expanded")):
+                if theList:
+                    sList = []
+                    for p in theList:
+                        gnx = p.v.t.fileIndex
+                        sList.append("%s," % nodeIndices.toString(gnx))
+                    s = string.join(sList,'')
+                    # g.trace(tag,[str(p.headString()) for p in theList])
+                    result.append('\n%s="%s"' % (tag,s))
                 
         return ''.join(result)
+    #@nonl
     #@-node:ekr.20040701065235.2:putDescendentAttributes
     #@+node:EKR.20040627113418:putDescendentUnknownAttributes
     def putDescendentUnknownAttributes (self,p):
