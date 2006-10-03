@@ -5720,14 +5720,6 @@ else:
     g.es("try using the Save To command")
 #@-node:ekr.20031218072017.1864:<< Set gnx = tnode index >>
 #@+node:ekr.20031218072017.1865:<< Append attribute bits to attrs >>
-# attr = ''.join([
-    # v.isExpanded() and 'E' or '',
-    # v.isMarked()   and 'M' or '',
-    # v.isOrphan()   and 'O' or '',
-    # p.equal(self.topPosition) and 'T' or '',    # was a bottleneck
-    # p.equal(self.currentPosition) and 'V' or '' # was bottleneck.
-# ])
-
 # These string catenations are benign because they rarely happen.
 attr = ""
 if v.isExpanded(): attr += "E"
@@ -5815,25 +5807,48 @@ def putDescendentAttributes (self,p):
     nodeIndices = g.app.nodeIndices
 
     # Create a list of all tnodes whose vnodes are marked or expanded
-    marks = [] ; expanded = []
-    for p in p.subtree_iter():
-        if p.isMarked() and not p in marks:
-            marks.append(p.copy())
-        if p.hasChildren() and p.isExpanded() and not p in expanded:
-            expanded.append(p.copy())
-
-    result = []
-    for theList,tag in ((marks,"marks"),(expanded,"expanded")):
-        if theList:
-            sList = []
-            for p in theList:
-                gnx = p.v.t.fileIndex
-                sList.append("%s," % nodeIndices.toString(gnx))
-            s = string.join(sList,'')
-            # g.trace(tag,[str(p.headString()) for p in theList])
-            result.append('\n%s="%s"' % (tag,s))
+    if 1: # New in Leo 4.4.2 b2.
+        # Put each tnode in the list only once.
+        # This should have been done long ago.
+        marks = [] ; expanded = []
+        for p in p.subtree_iter():
+            t = p.v.t
+            if p.isMarked() and p.v.t not in marks:
+                marks.append(t)
+            if p.hasChildren() and p.isExpanded() and t not in expanded:
+                expanded.append(t)
+    
+        result = []
+        for theList,tag in ((marks,"marks"),(expanded,"expanded")):
+            if theList:
+                sList = []
+                for t in theList:
+                    gnx = t.fileIndex
+                    sList.append("%s," % nodeIndices.toString(gnx))
+                s = string.join(sList,'')
+                # g.trace(tag,[str(p.headString()) for p in theList])
+                result.append('\n%s="%s"' % (tag,s))
+    else:
+        marks = [] ; expanded = []
+        for p in p.subtree_iter():
+            if p.isMarked() and not p in marks:
+                marks.append(p.copy())
+            if p.hasChildren() and p.isExpanded() and not p in expanded:
+                expanded.append(p.copy())
+    
+        result = []
+        for theList,tag in ((marks,"marks"),(expanded,"expanded")):
+            if theList:
+                sList = []
+                for p in theList:
+                    gnx = p.v.t.fileIndex
+                    sList.append("%s," % nodeIndices.toString(gnx))
+                s = string.join(sList,'')
+                # g.trace(tag,[str(p.headString()) for p in theList])
+                result.append('\n%s="%s"' % (tag,s))
             
     return ''.join(result)
+#@nonl
 #@-node:ekr.20040701065235.2:putDescendentAttributes
 #@+node:EKR.20040627113418:putDescendentUnknownAttributes
 def putDescendentUnknownAttributes (self,p):
@@ -6089,37 +6104,6 @@ if keys:
             g.es_print(s)
 #@-node:ekr.20031218072017.1861:<< handle unknown vnode attributes >>
 #@-node:ekr.20031218072017.1860:createVnode
-#@+node:ekr.20040701065235.1:getDescendentAttributes
-def getDescendentAttributes (self,s,tag=""):
-    
-    '''s is a list of gnx's, separated by commas from a <v> or <t> element.
-    Parses s into a list.
-    
-    This is used to record marked and expanded nodes.
-    '''
-    
-    __pychecker__ = '--no-argsused' # tag used only for debugging.
-
-    gnxs = s.split(',')
-    result = [gnx for gnx in gnxs if len(gnx) > 0]
-    # g.trace(tag,result)
-    return result
-#@-node:ekr.20040701065235.1:getDescendentAttributes
-#@+node:EKR.20040627114602:getDescendentUnknownAttributes
-# Only @thin vnodes have the descendentTnodeUnknownAttributes field.
-# The question is: what are we to do about this?
-
-def getDescendentUnknownAttributes (self,s):
-    
-    try:
-        bin = binascii.unhexlify(s) # Throws a TypeError if val is not a hex string.
-        val = pickle.loads(bin)
-        return val
-
-    except (TypeError,pickle.UnpicklingError,ImportError):
-        g.trace('oops: getDescendentUnknownAttributes')
-        return None
-#@-node:EKR.20040627114602:getDescendentUnknownAttributes
 #@+node:ekr.20040326063413:getExistingVnode
 def getExistingVnode (self,tref,headline):
 
@@ -6178,14 +6162,6 @@ else:
     g.es("try using the Save To command")
 #@-node:ekr.20031218072017.1864:<< Set gnx = tnode index >>
 #@+node:ekr.20031218072017.1865:<< Append attribute bits to attrs >>
-# attr = ''.join([
-    # v.isExpanded() and 'E' or '',
-    # v.isMarked()   and 'M' or '',
-    # v.isOrphan()   and 'O' or '',
-    # p.equal(self.topPosition) and 'T' or '',    # was a bottleneck
-    # p.equal(self.currentPosition) and 'V' or '' # was bottleneck.
-# ])
-
 # These string catenations are benign because they rarely happen.
 attr = ""
 if v.isExpanded(): attr += "E"
