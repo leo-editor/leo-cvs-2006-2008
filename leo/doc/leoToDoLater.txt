@@ -5860,15 +5860,18 @@ def putDescendentUnknownAttributes (self,p):
 
     # Create a list of all tnodes having a valid unknownAttributes dict.
     tnodes = []
+    tnodesData = []
     for p2 in p.subtree_iter():
         t = p2.v.t
         if hasattr(t,"unknownAttributes"):
             if t not in tnodes :
-                tnodes.append((p,t),)
+                # g.trace(p2.headString(),t)
+                tnodes.append(t) # Bug fix: 10/4/06.
+                tnodesData.append((p2,t),)
     
     # Create a list of pairs (t,d) where d contains only pickleable entries.
     data = []
-    for p,t in tnodes:
+    for p,t in tnodesData:
         if type(t.unknownAttributes) != type({}):
              g.es("ignoring non-dictionary unknownAttributes for",p,color="blue")
         else:
@@ -5900,18 +5903,20 @@ def putDescendentUnknownAttributes (self,p):
         resultDict[gnx]=d
     
     if 0:
-        print "resultDict"
+        print "resultDict..."
         for key in resultDict:
-            print ; print key,resultDict[key]
-        
+            print repr(key),repr(resultDict.get(key))
+
     # Pickle and hexlify resultDict.
     if resultDict:
         try:
             tag = "descendentTnodeUnknownAttributes"
             if python23:
                 s = pickle.dumps(resultDict,protocol=1) # Requires Python 2.3
+                # g.trace('protocol=1')
             else:
                 s = pickle.dumps(resultDict,bin=True) # Requires Earlier version of Python.
+                # g.trace('bin=True')
             field = ' %s="%s"' % (tag,binascii.hexlify(s))
             return field
         except pickle.PicklingError:

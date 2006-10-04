@@ -3,12 +3,12 @@
 #@+all
 #@+node:ekr.20060927172440:To do before 4.4.2 final
 #@+node:ekr.20061001060913.1:To do first
-#@+node:ekr.20061003075953:Better unit tests for write logic: test @ignore logic
-#@-node:ekr.20061003075953:Better unit tests for write logic: test @ignore logic
 #@+node:ekr.20061003072809.1:Make word selection work with Russion characters
 #@-node:ekr.20061003072809.1:Make word selection work with Russion characters
 #@+node:ekr.20060929084830.1:Suppress redraw on all applicable outline:goto commands
 #@-node:ekr.20060929084830.1:Suppress redraw on all applicable outline:goto commands
+#@+node:ekr.20061003075953:Better unit tests for write logic: test @ignore logic
+#@-node:ekr.20061003075953:Better unit tests for write logic: test @ignore logic
 #@+node:ekr.20061002093442:Add opml support to new,open, save commands
 #@+node:ekr.20031218072017.2820:top level (file menu)
 #@+node:ekr.20031218072017.1623:new

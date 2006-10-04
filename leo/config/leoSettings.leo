@@ -2,7 +2,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="71" left="252" height="618" width="908"/>
+	<global_window_position top="71" left="252" height="599" width="908"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -45,7 +45,7 @@
 <v t="ekr.20060112104823"><vh>main</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" a="TV" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
@@ -221,7 +221,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20061003173413"><vh>File options</vh>
+<v t="ekr.20061003173413" a="E"><vh>File options</vh>
 <v t="ekr.20041119034357.5"><vh>@bool read_only = False</vh></v>
 <v t="ekr.20041119034357.11"><vh>directory options</vh>
 <v t="ekr.20041119041304"><vh>@bool create_nonexistent_directories = False</vh></v>
@@ -232,9 +232,9 @@
 <v t="ekr.20041119041747.1"><vh>@string trailing_body_newlines = one</vh></v>
 <v t="ekr.20041119041747.4"><vh>@bool write_strips_blank_lines = True</vh></v>
 </v>
-<v t="ekr.20041119034357.7"><vh>.leo file options</vh>
+<v t="ekr.20041119034357.7" a="E"><vh>.leo file options</vh>
 <v t="ekr.20041119034357.8"><vh>@string output_initial_comment = None</vh></v>
-<v t="ekr.20041119034357.9"><vh>@string stylesheet = None</vh></v>
+<v t="ekr.20041119034357.9" a="TV"><vh>@string stylesheet = ekr_test</vh></v>
 </v>
 </v>
 <v t="ekr.20041119034357.20" annotate="7d71002e"><vh>Find/Change panel</vh>
@@ -736,10 +736,13 @@ the opening xml line.
 For example:
   &lt;?xml ....?&gt; 
   &lt;?xml-stylesheet ekr_stylesheet?&gt;
-Note 1: The string s should contain any needed XML escapes.
-      Leo simply copies this line as given.
-Note 2: Please set this field empty when uploading to CVS.
-Note 3: This field must be empty for compatibility with older versions of Leo.</t>
+  
+Notes:
+- The string s should contain any needed XML escapes.
+- Leo writes the line &lt;?xml-stylesheet s ?&gt;
+  where s is the value of this setting.
+- Please set this field empty when uploading to CVS.
+- Very old versions of Leo did not support reading files containing xml-stylesheet lines.</t>
 <t tx="ekr.20041119034357.10"></t>
 <t tx="ekr.20041119034357.11"></t>
 <t tx="ekr.20041119034357.12"></t>
