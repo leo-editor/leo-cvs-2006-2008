@@ -2237,7 +2237,7 @@ What do you think of this?
 def open(self,theFile,fileName,readAtFileNodesFlag=True,silent=False):
 
     c = self.c ; frame = c.frame
-    if not use_sax: # Read the entire file into the buffer
+    if not self.use_sax: # Read the entire file into the buffer
         self.fileBuffer = theFile.read() ; theFile.close()
         self.fileIndex = 0
     << Set the default directory >>
@@ -2250,7 +2250,7 @@ def open(self,theFile,fileName,readAtFileNodesFlag=True,silent=False):
     if 0: # 1/30/04: this is useless.
         if self.topPosition: 
             c.setTopVnode(self.topPosition)
-    if not use_sax: # Delete the file buffer
+    if not self.use_sax: # Delete the file buffer
         self.fileBuffer = ""
     return ok
 #@nonl

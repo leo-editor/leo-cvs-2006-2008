@@ -664,7 +664,7 @@ def getLeoFile (self,theFile,fileName,readAtFileNodesFlag=True,silent=False):
     try:
         ok = True
         # t1 = time.clock()
-        if use_sax:
+        if self.use_sax:
             v = self.readSaxFile(theFile,fileName,silent)
             if v: # v == None for minimal .leo files.
                 c.setRootVnode(v)
@@ -682,7 +682,7 @@ def getLeoFile (self,theFile,fileName,readAtFileNodesFlag=True,silent=False):
         ok = False
         
     # New in Leo 4.2.2: before reading derived files.
-    if use_sax:
+    if self.use_sax:
         self.resolveTnodeLists()
     if ok and readAtFileNodesFlag:
         # Redraw before reading the @file nodes so the screen isn't blank.
@@ -694,7 +694,7 @@ def getLeoFile (self,theFile,fileName,readAtFileNodesFlag=True,silent=False):
     if readAtFileNodesFlag:
         # The descendent nodes won't exist unless we have read the @thin nodes!
         self.restoreDescendentAttributes()
-    if use_sax:
+    if self.use_sax:
         self.setPositionsFromVnodes()
     else:
         if not self.usingClipboard:
@@ -1085,6 +1085,9 @@ def __init__(self,c):
     # g.trace("__init__", "fileCommands.__init__")
     self.c = c
     self.frame = c.frame
+    self.use_sax = c.config.getBool('use_sax_based_read')
+    if self.use_sax and not g.app.unitTesting:
+        print 'use_sax = True'
     self.nativeTnodeAttributes = ('tx',)
     self.nativeVnodeAttributes = (
         'a','descendentTnodeUnknownAttributes',
@@ -1107,7 +1110,7 @@ def initIvars(self):
     self.forbiddenTnodes = []
     self.descendentUnknownAttributesDictList = []
     self.ratio = 0.5
-    if use_sax:
+    if self.use_sax:
         self.currentVnode = None
         self.rootVnode = None
     else:

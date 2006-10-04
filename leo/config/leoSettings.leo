@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="71" left="252" height="599" width="908"/>
+	<global_window_position top="71" left="252" height="580" width="908"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -221,7 +222,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20061003173413" a="E"><vh>File options</vh>
+<v t="ekr.20061003173413"><vh>File options</vh>
 <v t="ekr.20041119034357.5"><vh>@bool read_only = False</vh></v>
 <v t="ekr.20041119034357.11"><vh>directory options</vh>
 <v t="ekr.20041119041304"><vh>@bool create_nonexistent_directories = False</vh></v>
@@ -232,9 +233,9 @@
 <v t="ekr.20041119041747.1"><vh>@string trailing_body_newlines = one</vh></v>
 <v t="ekr.20041119041747.4"><vh>@bool write_strips_blank_lines = True</vh></v>
 </v>
-<v t="ekr.20041119034357.7" a="E"><vh>.leo file options</vh>
+<v t="ekr.20041119034357.7"><vh>.leo file options</vh>
 <v t="ekr.20041119034357.8"><vh>@string output_initial_comment = None</vh></v>
-<v t="ekr.20041119034357.9" a="TV"><vh>@string stylesheet = ekr_test</vh></v>
+<v t="ekr.20041119034357.9"><vh>@string stylesheet = ekr_test</vh></v>
 </v>
 </v>
 <v t="ekr.20041119034357.20" annotate="7d71002e"><vh>Find/Change panel</vh>
@@ -497,7 +498,8 @@
 <v t="ekr.20051025085144"><vh>@string aspell_dir = c:\aspell</vh></v>
 <v t="ekr.20051025085144.1"><vh>@string aspell_bin_dir = c:\aspell\bin</vh></v>
 </v>
-<v t="ekr.20041119034357.15"><vh>Unicode options</vh>
+<v t="ekr.20041119034357.15" a="E"><vh>Unicode options</vh>
+<v t="ekr.20061004150211" a="V"><vh>@bool use_sax_based_read = False</vh></v>
 <v t="ekr.20041119042929.9"><vh>@string default_derived_file_encoding = utf-8</vh></v>
 <v t="ekr.20041119042929.10"><vh>@string new_leo_file_encoding = utf-8</vh></v>
 <v t="ekr.20041119042929.11"><vh>@string tk_encoding = None</vh></v>
@@ -6183,5 +6185,8 @@ find the next headline that starts with the previous match, extended by the key
 just typed. Otherwise, Leo will find the next headline that starts with the key
 just typed.</t>
 <t tx="ekr.20061003173413"></t>
+<t tx="ekr.20061004150211">True:  Use a sax-based parser to read .leo files.
+       This is slower than using Leo's legacy xml parser, but may solve some unicode problems.
+False: Use Leo's legacy xml parser code.</t>
 </tnodes>
 </leo_file>
