@@ -3217,6 +3217,8 @@ def putUaHelper (self,torv,key,val):
     
     '''Put attribute whose name is key and value is val to the output stream.'''
     
+    # g.trace(key,repr(val))
+    
     # New in 4.3: leave string attributes starting with 'str_' alone.
     if key.startswith('str_'):
         if type(val) == type(''):
@@ -3242,8 +3244,6 @@ def putUaHelper (self,torv,key,val):
             g.es('putUaHelper: unexpected pickling exception',color='red')
             g.es_exception()
             return ''
-        
-
     except pickle.PicklingError:
         # New in 4.2 beta 1: keep going after error.
         g.es("ignoring non-pickleable attribute %s in %s" % (

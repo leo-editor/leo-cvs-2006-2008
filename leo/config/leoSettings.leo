@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet ekr_stylesheet?>
+<?xml version="1.0" encoding="utf-8"?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="339" clone_windows="0"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="71" left="252" height="637" width="908"/>
+	<global_window_position top="71" left="252" height="618" width="908"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -46,7 +45,7 @@
 <v t="ekr.20060112104823"><vh>main</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" a="TV" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
@@ -145,6 +144,7 @@
 <v t="ekr.20041119050749.11"><vh>@string headline_gmt_time = None</vh></v>
 <v t="ekr.20050126083026"><vh>@string undo_granularity = None</vh></v>
 <v t="ekr.20051027175030"><vh>@bool autocomplete-brackets = False</vh></v>
+<v t="ekr.20060127050605"><vh>@int max_undo_stack_size = 50</vh></v>
 </v>
 <v t="ekr.20041119034357.16" annotate="7d71002e"><vh>Compare panel</vh>
 <v t="ekr.20041119034357.17"><vh>files &amp; directories</vh>
@@ -221,6 +221,22 @@
 </v>
 </v>
 </v>
+<v t="ekr.20061003173413"><vh>File options</vh>
+<v t="ekr.20041119034357.5"><vh>@bool read_only = False</vh></v>
+<v t="ekr.20041119034357.11"><vh>directory options</vh>
+<v t="ekr.20041119041304"><vh>@bool create_nonexistent_directories = False</vh></v>
+<v t="ekr.20041119041304.1"><vh>@string relative_path_base_directory = .</vh></v>
+</v>
+<v t="ekr.20041119034357.12"><vh>derived files options</vh>
+<v t="ekr.20041119041747"><vh>@string output_newline = nl</vh></v>
+<v t="ekr.20041119041747.1"><vh>@string trailing_body_newlines = one</vh></v>
+<v t="ekr.20041119041747.4"><vh>@bool write_strips_blank_lines = True</vh></v>
+</v>
+<v t="ekr.20041119034357.7"><vh>.leo file options</vh>
+<v t="ekr.20041119034357.8"><vh>@string output_initial_comment = None</vh></v>
+<v t="ekr.20041119034357.9"><vh>@string stylesheet = None</vh></v>
+</v>
+</v>
 <v t="ekr.20041119034357.20" annotate="7d71002e"><vh>Find/Change panel</vh>
 <v t="ekr.20060930085532"><vh>@bool collapse_nodes_during_finds = True</vh></v>
 <v t="ekr.20060125104049"><vh>@bool show_only_find_tab_options = True</vh></v>
@@ -249,23 +265,6 @@
 <v t="ekr.20041119034357.45"><vh>@font body text font</vh></v>
 <v t="ekr.20060702100257"><vh>@font menu text font</vh></v>
 <v t="ekr.20041119051246.4"><vh>@font outline font</vh></v>
-</v>
-<v t="ekr.20041119034357.3" annotate="7d71002e"><vh>General options</vh>
-<v t="ekr.20041119034357.5"><vh>@bool read_only = False</vh></v>
-<v t="ekr.20041119034357.7"><vh>.leo file options</vh>
-<v t="ekr.20041119034357.8"><vh>@string output_initial_comment = None</vh></v>
-<v t="ekr.20041119034357.9"><vh>@string stylesheet = None</vh></v>
-</v>
-<v t="ekr.20041119034357.11"><vh>directory options</vh>
-<v t="ekr.20041119041304"><vh>@bool create_nonexistent_directories = False</vh></v>
-<v t="ekr.20041119041304.1"><vh>@string relative_path_base_directory = .</vh></v>
-</v>
-<v t="ekr.20041119034357.12"><vh>derived files options</vh>
-<v t="ekr.20041119041747"><vh>@string output_newline = nl</vh></v>
-<v t="ekr.20041119041747.1"><vh>@string trailing_body_newlines = one</vh></v>
-<v t="ekr.20041119041747.4"><vh>@bool write_strips_blank_lines = True</vh></v>
-</v>
-<v t="ekr.20060127050605"><vh>@int max_undo_stack_size = 50</vh></v>
 </v>
 <v t="ekr.20060122105527.3"><vh>Keyboard and minibuffer options</vh>
 <v t="ekr.20060215094146"><vh>@@bool ignore_caps_lock = True</vh></v>
@@ -553,7 +552,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060512084639" a="TV"><vh>Recent</vh>
+<v t="ekr.20060512084639"><vh>Recent</vh>
 <v t="ekr.20060930085532"><vh>@bool collapse_nodes_during_finds = True</vh></v>
 <v t="ekr.20060216135834"><vh>@bool enable_autocompleter_initially = False</vh></v>
 <v t="ekr.20060216170801" a="M"><vh>@bool enable_calltips = False</vh></v>
@@ -719,7 +718,6 @@
 </vnodes>
 <tnodes>
 <t tx="ekr.20041119034357.1">@nocolor</t>
-<t tx="ekr.20041119034357.3"></t>
 <t tx="ekr.20041119034357.5">False: Leo writes leoSettings.leo files.</t>
 <t tx="ekr.20041119034357.7"></t>
 <t tx="ekr.20041119034357.8">Example:
@@ -737,7 +735,7 @@ Notes:
 the opening xml line. 
 For example:
   &lt;?xml ....?&gt; 
-  &lt;?xml-stylesheet s?&gt;
+  &lt;?xml-stylesheet ekr_stylesheet?&gt;
 Note 1: The string s should contain any needed XML escapes.
       Leo simply copies this line as given.
 Note 2: Please set this field empty when uploading to CVS.
@@ -6181,5 +6179,6 @@ When two keystrokes are separated by less than this time, Leo will attempt to
 find the next headline that starts with the previous match, extended by the key
 just typed. Otherwise, Leo will find the next headline that starts with the key
 just typed.</t>
+<t tx="ekr.20061003173413"></t>
 </tnodes>
 </leo_file>

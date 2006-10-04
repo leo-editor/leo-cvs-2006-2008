@@ -665,7 +665,6 @@ def getLeoFile (self,theFile,fileName,readAtFileNodesFlag=True,silent=False):
         ok = True
         if use_sax:
             v = self.readSaxFile(theFile,fileName,silent)
-            g.trace('root',v)
             c.setRootVnode(v)
             self.rootVnode = v
         else:
@@ -5487,7 +5486,7 @@ def defineFileMenuTop2Table (self):
         ("&Close",c.close),
         ("&Save",c.save),
         ("Save &As",c.saveAs),
-        ("Save To",c.saveTo), # &Tangle
+        ("Save &To",c.saveTo), # &Tangle
         ("Re&vert To Saved",c.revert), # &Read/Write
     ]
 #@-node:ekr.20031218072017.3760:defineFileMenuTop2Table
@@ -6801,6 +6800,8 @@ def putUaHelper (self,torv,key,val):
     
     '''Put attribute whose name is key and value is val to the output stream.'''
     
+    # g.trace(key,repr(val))
+    
     # New in 4.3: leave string attributes starting with 'str_' alone.
     if key.startswith('str_'):
         if type(val) == type(''):
@@ -6826,8 +6827,6 @@ def putUaHelper (self,torv,key,val):
             g.es('putUaHelper: unexpected pickling exception',color='red')
             g.es_exception()
             return ''
-        
-
     except pickle.PicklingError:
         # New in 4.2 beta 1: keep going after error.
         g.es("ignoring non-pickleable attribute %s in %s" % (
@@ -8146,6 +8145,8 @@ def putUaHelper (self,torv,key,val):
     
     '''Put attribute whose name is key and value is val to the output stream.'''
     
+    # g.trace(key,repr(val))
+    
     # New in 4.3: leave string attributes starting with 'str_' alone.
     if key.startswith('str_'):
         if type(val) == type(''):
@@ -8171,8 +8172,6 @@ def putUaHelper (self,torv,key,val):
             g.es('putUaHelper: unexpected pickling exception',color='red')
             g.es_exception()
             return ''
-        
-
     except pickle.PicklingError:
         # New in 4.2 beta 1: keep going after error.
         g.es("ignoring non-pickleable attribute %s in %s" % (

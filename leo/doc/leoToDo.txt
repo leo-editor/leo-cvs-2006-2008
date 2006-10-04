@@ -5,8 +5,6 @@
 #@+node:ekr.20061001060913.1:To do first
 #@+node:ekr.20061003075953:Better unit tests for write logic: test @ignore logic
 #@-node:ekr.20061003075953:Better unit tests for write logic: test @ignore logic
-#@+node:ekr.20061003072809:Document how to access log and replace panes
-#@-node:ekr.20061003072809:Document how to access log and replace panes
 #@+node:ekr.20061003072809.1:Make word selection work with Russion characters
 #@-node:ekr.20061003072809.1:Make word selection work with Russion characters
 #@+node:ekr.20060929084830.1:Suppress redraw on all applicable outline:goto commands
