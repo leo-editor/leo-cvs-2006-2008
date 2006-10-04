@@ -296,7 +296,7 @@ class opmlFileCommandsClass (leoFileCommands.fileCommands):
         if body and self.opml_write_body_text:
             if self.opml_use_outline_elements:
                 self.put('>') ; closed = True
-                self.put('<leo:body>%s</leo:body>' % self.xmlEscape(body))
+                self.put('<leo:body>%s</leo:body>' % xml.sax.saxutils.escape(body))
             else:
                 self.put(attrFormat % ('leo:body',self.attributeEscape(body)))
     
@@ -315,7 +315,7 @@ class opmlFileCommandsClass (leoFileCommands.fileCommands):
     #@+node:ekr.20060919172012.7:attributeEscape
     def attributeEscape(self,s):
     
-        # Unlike xmlEscape, replace " by &quot; and replace newlines by character reference.
+        # Unlike xml.sax.saxutils.escape, replace " by &quot; and replace newlines by character reference.
         s = s or ''
         return (
             s.replace('&','&amp;')

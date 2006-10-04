@@ -10,7 +10,7 @@
 <find_panel_settings/>
 <vnodes>
 <v t="ekr.20060904103412" a="E"
-expanded="ekr.20060904134958.164,ekr.20060904134958.179,ekr.20060904134958.180,ekr.20060917190349,"><vh>@thin leoOPML.py</vh></v>
+expanded="ekr.20060919172012.1,ekr.20060919172012.2,"><vh>@thin leoOPML.py</vh></v>
 </vnodes>
 <tnodes>
 </tnodes>
