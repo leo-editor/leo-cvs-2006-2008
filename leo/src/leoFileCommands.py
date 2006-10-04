@@ -120,7 +120,7 @@ class saxContentHandler (xml.sax.saxutils.XMLGenerator):
     
     def processingInstruction (self,target,data):
         __pychecker__ = '--no-argsused'
-        pass # For <?xml-stylesheet ekr_stylesheet?>
+        g.trace(target,data) # For <?xml-stylesheet ekr_stylesheet?>
     
     def skippedEntity(self,name):
         __pychecker__ = '--no-argsused'
@@ -455,7 +455,6 @@ class saxContentHandler (xml.sax.saxutils.XMLGenerator):
                 node.tnx = val
             else:
                 node.attributes[name] = val
-                if name == 'a': g.trace(name,val,id(self.node))
     #@nonl
     #@-node:ekr.20060919110638.44:vnodeAttributes
     #@-node:ekr.20060919110638.43:startVnode
@@ -719,7 +718,6 @@ class baseFileCommands:
             ok = True
             if use_sax:
                 v = self.readSaxFile(theFile,fileName,silent)
-                g.trace('root',v)
                 c.setRootVnode(v)
                 self.rootVnode = v
             else:
@@ -937,13 +935,13 @@ class baseFileCommands:
     
         for p in c.allNodes_iter():
             if hasattr(p.v,'tempTnodeList'):
-                g.trace(p.v.headString())
+                # g.trace(p.v.headString())
                 result = []
                 for tnx in p.v.tempTnodeList:
                     index = self.canonicalTnodeIndex(tnx)
                     t = self.tnodesDict.get(index)
                     if t:
-                        g.trace(tnx,t)
+                        # g.trace(tnx,t)
                         result.append(t)
                     else:
                         g.trace('No tnode for %s' % tnx)
@@ -965,7 +963,6 @@ class baseFileCommands:
                     t._p_changed = 1
                 elif verbose:
                     g.trace('can not find tnode (duA): gnx = %s' % gnx,color='red')
-                    # print 'can not find tnode (duA): gnx = %s' % gnx
         marks = {} ; expanded = {}
         for gnx in self.descendentExpandedList:
             tref = self.canonicalTnodeIndex(gnx) ###
@@ -973,7 +970,6 @@ class baseFileCommands:
             if t: expanded[t]=t
             elif verbose:
                 g.trace('can not find tnode (expanded): gnx = %s, tref: %s' % (gnx,tref),color='red')
-                # print 'can not find tnode (expanded): gnx = %s' % gnx
             
         for gnx in self.descendentMarksList:
             tref = self.canonicalTnodeIndex(gnx)
@@ -981,7 +977,6 @@ class baseFileCommands:
             if t: marks[t]=t
             elif verbose:
                 g.trace('can not find tnode (marks): gnx = %s tref: %s' % (gnx,tref),color='red')
-                # print 'can not find tnode (marks): gnx = %s' % gnx
         
         if marks or expanded:
             # g.trace('marks',len(marks),'expanded',len(expanded))
@@ -1002,7 +997,7 @@ class baseFileCommands:
         if v:
             for p in c.allNodes_iter():
                 if p.v == v:
-                    g.trace(p,c.shortFileName())
+                    # g.trace(p,c.shortFileName())
                     c.selectPosition(p)
                     return
         
@@ -1585,7 +1580,7 @@ class baseFileCommands:
         
             self.getTag("</tnodes>")
         #@-node:ekr.20031218072017.1560:getTnodes
-        #@+node:EKR.20040526204036.1:getUa
+        #@+node:EKR.20040526204036.1:getUa (non-sax)
         # changed for 4.3.
         
         def getUa(self,nodeType):
@@ -1596,6 +1591,7 @@ class baseFileCommands:
             
             # New in 4.2.  The unknown tag has been pickled and hexlify'd.
             attr,val = self.getUnknownTag()
+            # g.trace(attr,repr(val))
             if not attr:
                 return None,None
                 
@@ -1623,7 +1619,7 @@ class baseFileCommands:
                 return attr,val2
             except (pickle.UnpicklingError,ImportError):
                 return attr,val
-        #@-node:EKR.20040526204036.1:getUa
+        #@-node:EKR.20040526204036.1:getUa (non-sax)
         #@+node:ekr.20031218072017.1566:getVnode & helpers
         # changed for 4.2 & 4.4
         def getVnode (self,parent,back,skip,appendToCurrentStack,appendToTopStack):
@@ -1970,8 +1966,6 @@ class baseFileCommands:
         
             children = self.createChildren(dummyRoot,parent_v = None)
             firstChild = children and children[0]
-            
-            g.trace(firstChild)
         
             return firstChild
         #@nonl
@@ -1988,7 +1982,7 @@ class baseFileCommands:
                 if t:
                     # A clone.  Create a new clone node, but share the subtree, i.e., the tnode.
                     v = self.createVnode(child,parent_v,t=t)
-                    g.trace('clone',id(child),child.headString,'t',v.t)
+                    # g.trace('clone',id(child),child.headString,'t',v.t)
                 else:
                     v = self.createVnodeTree(child,parent_v)
                 result.append(v)
@@ -2008,7 +2002,7 @@ class baseFileCommands:
             return v
         #@nonl
         #@-node:ekr.20060919110638.6:createVnodeTree
-        #@+node:ekr.20060919110638.7:createVnode
+        #@+node:ekr.20060919110638.7:createVnode (sax)
         def createVnode (self,node,parent_v,t=None):
             
             h = node.headString
@@ -2040,28 +2034,28 @@ class baseFileCommands:
             d = node.attributes
             s = d.get('a')
             if s:
-                g.trace('%s a=%s %s' % (id(node),s,v.headString()))
+                # g.trace('%s a=%s %s' % (id(node),s,v.headString()))
                 # 'C' (clone) and 'D' bits are not used.
                 if 'M' in s: v.setMarked()
                 if 'E' in s: v.expand()
                 if 'O' in s: v.setOrphan()
                 if 'T' in s: self.topVnode = v
                 if 'V' in s:
-                    g.trace('setting currentVnode',v,color='red')
+                    # g.trace('setting currentVnode',v,color='red')
                     self.currentVnode = v
         
             s = d.get('tnodeList','')
             tnodeList = s and s.split(',')
             if tnodeList:
                 # This tnode list will be resolved later.
-                g.trace('found tnodeList',v.headString(),tnodeList)
+                # g.trace('found tnodeList',v.headString(),tnodeList)
                 v.tempTnodeList = tnodeList
                 
             s = d.get('descendentTnodeUnknownAttributes') # Correct: only tnode have descendent uA's.
             if s: 
                 aDict = self.getDescendentUnknownAttributes(s)
                 if aDict:
-                    g.trace('descendentUaDictList',aDict)
+                    # g.trace('descendentUaDictList',aDict)
                     self.descendentUnknownAttributesDictList.append(aDict)
             
             s = d.get('expanded')
@@ -2090,7 +2084,7 @@ class baseFileCommands:
                 v.unknownAttributes = aDict
         #@nonl
         #@-node:ekr.20060919110638.8:handleVnodeAttributes
-        #@-node:ekr.20060919110638.7:createVnode
+        #@-node:ekr.20060919110638.7:createVnode (sax)
         #@+node:ekr.20060919110638.9:linkParentAndChildren
         def linkParentAndChildren (self, parent_v, children):
             
@@ -2132,7 +2126,7 @@ class baseFileCommands:
                 parser = xml.sax.make_parser()
                 # Do not include external general entities.
                 # The actual feature name is "http://xml.org/sax/features/external-general-entities"
-                parser.setFeature(xml.sax.handler.feature_external_ges,0)
+                parser.setFeature(xml.sax.handler.feature_external_ges,1)
                 # Hopefully the content handler can figure out the encoding from the <?xml> element.
                 handler = saxContentHandler(c,inputFileName,silent)
                 parser.setContentHandler(handler)
@@ -2154,6 +2148,14 @@ class baseFileCommands:
             """Parse an unknown attribute in a <v> or <t> element.
             The unknown tag has been pickled and hexlify'd.
             """
+            
+            try:
+                val = str(val)
+            except UnicodeError:
+                g.es_print('Unexpected exception converting hexlified string to string')
+                g.es_exception()
+                
+            # g.trace(attr,repr(val))
                 
             # New in 4.3: leave string attributes starting with 'str_' alone.
             if attr.startswith('str_') and type(val) == type(''):
@@ -2176,7 +2178,7 @@ class baseFileCommands:
                 # No change needed to support protocols.
                 val2 = pickle.loads(binString)
                 # g.trace('v.3 val:',val2)
-                return attr,val2
+                return val2
             except (pickle.UnpicklingError,ImportError):
                 g.trace('can not unpickle',val)
                 return val
@@ -2392,16 +2394,12 @@ class baseFileCommands:
     def putXMLLine (self):
         
         '''Put the **properly encoded** <?xml> element.'''
-    
-        # Use self.leo_file_encoding encoding.
-        self.put(g.app.prolog_prefix_string)
         
-        self.put_dquote()
-        self.put(self.leo_file_encoding)
-        self.put_dquote()
-    
-        self.put(g.app.prolog_postfix_string)
-        self.put_nl()    
+        # Use self.leo_file_encoding encoding.
+        self.put('%s"%s"%s\n' % (
+            g.app.prolog_prefix_string,
+            self.leo_file_encoding,
+            g.app.prolog_postfix_string))
     #@nonl
     #@-node:ekr.20031218072017.1247:putXMLLine
     #@+node:ekr.20031218072017.1248:putStyleSheetLine
@@ -2481,6 +2479,8 @@ class baseFileCommands:
         
         '''Put attribute whose name is key and value is val to the output stream.'''
         
+        # g.trace(key,repr(val))
+        
         # New in 4.3: leave string attributes starting with 'str_' alone.
         if key.startswith('str_'):
             if type(val) == type(''):
@@ -2506,8 +2506,6 @@ class baseFileCommands:
                 g.es('putUaHelper: unexpected pickling exception',color='red')
                 g.es_exception()
                 return ''
-            
-    
         except pickle.PicklingError:
             # New in 4.2 beta 1: keep going after error.
             g.es("ignoring non-pickleable attribute %s in %s" % (
