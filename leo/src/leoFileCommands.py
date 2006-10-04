@@ -4,7 +4,9 @@
 #@@tabwidth -4
 #@@pagewidth 80
 
-use_sax = False # For transition to sax-based read code.
+use_sax = True # For transition to sax-based read code.
+if use_sax:
+    print ; print '*** use_sax = True ***' ; print
 
 #@<< imports >>
 #@+node:ekr.20050405141130:<< imports >>
@@ -118,10 +120,6 @@ class saxContentHandler (xml.sax.saxutils.XMLGenerator):
         __pychecker__ = '--no-argsused'
         pass
     
-    def processingInstruction (self,target,data):
-        __pychecker__ = '--no-argsused'
-        g.trace(target,data) # For <?xml-stylesheet ekr_stylesheet?>
-    
     def skippedEntity(self,name):
         __pychecker__ = '--no-argsused'
         g.trace(name)
@@ -130,8 +128,8 @@ class saxContentHandler (xml.sax.saxutils.XMLGenerator):
         __pychecker__ = '--no-argsused'
         g.trace(name)
         
-    def startDocument(self):
-        pass
+    def startDocument(self,*args,**keys):
+        pass # g.trace(args,keys)
     #@nonl
     #@-node:ekr.20060919110638.29: Do nothing
     #@+node:ekr.20060919134313: Utils
@@ -245,7 +243,8 @@ class saxContentHandler (xml.sax.saxutils.XMLGenerator):
         data = self.dispatchDict.get(name)
     
         if data is None:
-            g.trace('unknown element',name)
+            if 0:
+                g.trace('unknown element',name)
         else:
             junk,func = data
             if func:
@@ -291,6 +290,17 @@ class saxContentHandler (xml.sax.saxutils.XMLGenerator):
         return self.topNode
     #@nonl
     #@-node:ekr.20060919110638.45:getters
+    #@+node:ekr.20061004054323:processingInstruction (stylesheet)
+    def processingInstruction (self,target,data):
+        
+        if target == 'xml-stylesheet':
+            self.c.frame.stylesheet = data
+            if not self.silent:
+                g.es('%s: %s' % (target,data),color='blue')
+        else:
+            g.trace(target,data)
+    #@nonl
+    #@-node:ekr.20061004054323:processingInstruction (stylesheet)
     #@+node:ekr.20060919110638.35:startElement & helpers
     def startElement(self,name,attrs):
         
@@ -303,7 +313,8 @@ class saxContentHandler (xml.sax.saxutils.XMLGenerator):
         data = self.dispatchDict.get(name)
     
         if data is None:
-            g.trace('unknown element',name)
+            if 0:
+                g.trace('unknown element',name)
         else:
             func,junk = data
             if func:
@@ -401,6 +412,7 @@ class saxContentHandler (xml.sax.saxutils.XMLGenerator):
         
         # The tnode must have a tx attribute to associate content with the proper node.
             
+        node = self.node
         self.nodeList = []
     
         for bunch in self.attrsToList(attrs):
@@ -410,8 +422,7 @@ class saxContentHandler (xml.sax.saxutils.XMLGenerator):
                 if not self.nodeList:
                     self.error('Bad leo file: no node for <t tx=%s>' % (val))
             else:
-                # Do **not** set any saxNodeClass attributes here!
-                self.error('********* Unexpected tnode attribute %s = %s' % (name,val))
+                node.tnodeAttributes[name] = val
                 
         if not self.nodeList:
             self.error('Bad leo file: no tx attribute for tnode')
@@ -452,7 +463,7 @@ class saxContentHandler (xml.sax.saxutils.XMLGenerator):
                 aList = self.tnxToListDict.get(val,[])
                 aList.append(self.node)
                 self.tnxToListDict[val] = aList
-                node.tnx = val
+                node.tnx = str(val) # nodeIndices.toString returns a string.
             else:
                 node.attributes[name] = val
     #@nonl
@@ -477,6 +488,7 @@ class saxNodeClass:
         self.bodyString = ''
         self.headString = ''
         self.children = []
+        self.tnodeAttributes = {}
         self.tnodeList = []
         self.tnx = None
     #@nonl
@@ -718,8 +730,11 @@ class baseFileCommands:
             ok = True
             if use_sax:
                 v = self.readSaxFile(theFile,fileName,silent)
-                c.setRootVnode(v)
-                self.rootVnode = v
+                if v: # v == None for minimal .leo files.
+                    c.setRootVnode(v)
+                    self.rootVnode = v
+                else:
+                    self.rootVnode = c.rootPosition().v
             else:
                 self.getAllLeoElements(fileName,silent)
         except BadLeoFile, message:
@@ -928,28 +943,7 @@ class baseFileCommands:
         self.tnodesDict = {}
     #@nonl
     #@-node:ekr.20060919142200.1:initReadIvars
-    #@+node:ekr.20060919110638.11:resolveTnodeLists (Sax)
-    def resolveTnodeLists (self):
-    
-        c = self.c
-    
-        for p in c.allNodes_iter():
-            if hasattr(p.v,'tempTnodeList'):
-                # g.trace(p.v.headString())
-                result = []
-                for tnx in p.v.tempTnodeList:
-                    index = self.canonicalTnodeIndex(tnx)
-                    t = self.tnodesDict.get(index)
-                    if t:
-                        # g.trace(tnx,t)
-                        result.append(t)
-                    else:
-                        g.trace('No tnode for %s' % tnx)
-                p.v.t.tnodeList = result
-                delattr(p.v,'tempTnodeList')
-    #@nonl
-    #@-node:ekr.20060919110638.11:resolveTnodeLists (Sax)
-    #@+node:EKR.20040627120120:restoreDescendentAttributes (sax)
+    #@+node:EKR.20040627120120:restoreDescendentAttributes
     def restoreDescendentAttributes (self):
     
         c = self.c ; verbose = True 
@@ -987,24 +981,7 @@ class baseFileCommands:
                         # There was a big performance bug in the mark hook in the Node Navigator plugin.
                 if expanded.get(p.v.t):
                     p.expand()
-    #@-node:EKR.20040627120120:restoreDescendentAttributes (sax)
-    #@+node:ekr.20060919110638.13:setPositionsFromVnodes (Sax)
-    def setPositionsFromVnodes (self):
-        
-        c = self.c
-        
-        v = self.currentVnode
-        if v:
-            for p in c.allNodes_iter():
-                if p.v == v:
-                    # g.trace(p,c.shortFileName())
-                    c.selectPosition(p)
-                    return
-        
-        g.trace('**** no present position. ****',self.currentVnode)
-        c.selectPosition(c.rootPosition())
-    #@nonl
-    #@-node:ekr.20060919110638.13:setPositionsFromVnodes (Sax)
+    #@-node:EKR.20040627120120:restoreDescendentAttributes
     #@-node:ekr.20060919133249:Common
     #@+node:ekr.20031218072017.3021:Non-sax
     if not use_sax:
@@ -1925,32 +1902,6 @@ class baseFileCommands:
     #@+node:ekr.20060919104530:Sax
     if use_sax:
         #@    @+others
-        #@+node:ekr.20060919110638.2:dumpSaxTree
-        def dumpSaxTree (self,root,dummy):
-            
-            if not root:
-                print 'dumpSaxTree: empty tree'
-                return
-            if not dummy:
-                root.dump()
-            for child in root.children:
-                self.dumpSaxTree(child,dummy=False)
-        #@nonl
-        #@-node:ekr.20060919110638.2:dumpSaxTree
-        #@+node:ekr.20060919110638.3:readSaxFile
-        def readSaxFile (self,theFile,fileName,silent):
-        
-            c = self.c
-        
-            # Pass one: create the intermediate nodes.
-            self.dummyRoot = dummyRoot = self.parse_leo_file(theFile,fileName,silent=silent)
-            # self.dumpSaxTree(dummyRoot,dummy=True)
-        
-            # Pass two: create the tree of vnodes and tnodes from the intermediate nodes.
-            v = dummyRoot and self.createVnodes(dummyRoot)
-            return v
-        #@nonl
-        #@-node:ekr.20060919110638.3:readSaxFile
         #@+node:ekr.20060919110638.4:createVnodes & helpers (sax)
         def createVnodes (self, dummyRoot):
             
@@ -2022,10 +1973,27 @@ class baseFileCommands:
             # g.trace('tnx','%-22s' % (index),'v',id(v),'v.t',id(v.t),'body','%-4d' % (len(b)),h)
             
             self.handleVnodeAttributes(node,v)
+            self.handleTnodeAttributes(node,t)
             
             return v
         #@nonl
-        #@+node:ekr.20060919110638.8:handleVnodeAttributes
+        #@+node:ekr.20060919110638.8:handleTnodeAttributes
+        def handleTnodeAttributes (self,node,t):
+            
+            d = node.tnodeAttributes
+                
+            aDict = {}
+            for key in d.keys():
+                val = d.get(key)
+                val2 = self.getUa(key,val)
+                aDict[key] = val2
+        
+            if aDict:
+                # g.trace('uA',aDict)
+                t.unknownAttributes = aDict
+        #@nonl
+        #@-node:ekr.20060919110638.8:handleTnodeAttributes
+        #@+node:ekr.20061004053644:handleVnodeAttributes
         # The native attributes of <v> elements are a, t, vtag, tnodeList,
         # marks, expanded and descendentTnodeUnknownAttributes.
         
@@ -2083,7 +2051,7 @@ class baseFileCommands:
                 # g.trace('uA',aDict)
                 v.unknownAttributes = aDict
         #@nonl
-        #@-node:ekr.20060919110638.8:handleVnodeAttributes
+        #@-node:ekr.20061004053644:handleVnodeAttributes
         #@-node:ekr.20060919110638.7:createVnode (sax)
         #@+node:ekr.20060919110638.9:linkParentAndChildren
         def linkParentAndChildren (self, parent_v, children):
@@ -2116,32 +2084,18 @@ class baseFileCommands:
         #@nonl
         #@-node:ekr.20060919110638.10:linkSiblings
         #@-node:ekr.20060919110638.4:createVnodes & helpers (sax)
-        #@+node:ekr.20060919110638.14:parse_leo_file
-        def parse_leo_file (self,theFile,inputFileName,silent):
+        #@+node:ekr.20060919110638.2:dumpSaxTree
+        def dumpSaxTree (self,root,dummy):
             
-            c = self.c
-        
-            try:
-                node = None
-                parser = xml.sax.make_parser()
-                # Do not include external general entities.
-                # The actual feature name is "http://xml.org/sax/features/external-general-entities"
-                parser.setFeature(xml.sax.handler.feature_external_ges,1)
-                # Hopefully the content handler can figure out the encoding from the <?xml> element.
-                handler = saxContentHandler(c,inputFileName,silent)
-                parser.setContentHandler(handler)
-                parser.parse(theFile)
-                node = handler.getRootNode()
-            except xml.sax.SAXParseException:
-                g.es_print('Error parsing %s' % (inputFileName),color='red')
-                g.es_exception()
-            except Exception:
-                g.es_print('Unexpected exception parsing %s' % (inputFileName),color='red')
-                g.es_exception()
-                
-            return node
+            if not root:
+                print 'dumpSaxTree: empty tree'
+                return
+            if not dummy:
+                root.dump()
+            for child in root.children:
+                self.dumpSaxTree(child,dummy=False)
         #@nonl
-        #@-node:ekr.20060919110638.14:parse_leo_file
+        #@-node:ekr.20060919110638.2:dumpSaxTree
         #@+node:ekr.20061003093021:getUa (sax)
         def getUa(self,attr,val):
             
@@ -2183,6 +2137,93 @@ class baseFileCommands:
                 g.trace('can not unpickle',val)
                 return val
         #@-node:ekr.20061003093021:getUa (sax)
+        #@+node:ekr.20060919110638.14:parse_leo_file
+        def parse_leo_file (self,theFile,inputFileName,silent):
+            
+            c = self.c
+        
+            try:
+                # Use cStringIo to avoid a crash in sax when inputFileName has unicode characters.
+                s = theFile.read()
+                theFile = cStringIO.StringIO(s)
+                # g.trace(repr(inputFileName))
+                node = None
+                parser = xml.sax.make_parser()
+                parser.setFeature(xml.sax.handler.feature_external_ges,1)
+                    # Include external general entities, esp. xml-stylesheet lines.
+                if 0: # Expat does not read external features.
+                    parser.setFeature(xml.sax.handler.feature_external_pes,1)
+                        # Include all external parameter entities
+                        # Hopefully the parser can figure out the encoding from the <?xml> element.
+                handler = saxContentHandler(c,inputFileName,silent)
+                parser.setContentHandler(handler)
+                parser.parse(theFile) # expat does not support parseString
+                node = handler.getRootNode()
+            except xml.sax.SAXParseException:
+                g.es_print('Error parsing %s' % (inputFileName),color='red')
+                g.es_exception()
+            except Exception:
+                g.es_print('Unexpected exception parsing %s' % (inputFileName),color='red')
+                g.es_exception()
+                
+            return node
+        #@nonl
+        #@-node:ekr.20060919110638.14:parse_leo_file
+        #@+node:ekr.20060919110638.3:readSaxFile
+        def readSaxFile (self,theFile,fileName,silent):
+        
+            c = self.c
+        
+            # Pass one: create the intermediate nodes.
+            if 0: # This has no effect.
+                fileName = g.toEncodedString(fileName,'ascii',reportErrors=False)
+        
+            self.dummyRoot = dummyRoot = self.parse_leo_file(theFile,fileName,silent=silent)
+            # self.dumpSaxTree(dummyRoot,dummy=True)
+        
+            # Pass two: create the tree of vnodes and tnodes from the intermediate nodes.
+            v = dummyRoot and self.createVnodes(dummyRoot)
+            return v
+        #@nonl
+        #@-node:ekr.20060919110638.3:readSaxFile
+        #@+node:ekr.20060919110638.11:resolveTnodeLists
+        def resolveTnodeLists (self):
+        
+            c = self.c
+        
+            for p in c.allNodes_iter():
+                if hasattr(p.v,'tempTnodeList'):
+                    # g.trace(p.v.headString())
+                    result = []
+                    for tnx in p.v.tempTnodeList:
+                        index = self.canonicalTnodeIndex(tnx)
+                        t = self.tnodesDict.get(index)
+                        if t:
+                            # g.trace(tnx,t)
+                            result.append(t)
+                        else:
+                            g.trace('No tnode for %s' % tnx)
+                    p.v.t.tnodeList = result
+                    delattr(p.v,'tempTnodeList')
+        #@nonl
+        #@-node:ekr.20060919110638.11:resolveTnodeLists
+        #@+node:ekr.20060919110638.13:setPositionsFromVnodes
+        def setPositionsFromVnodes (self):
+            
+            c = self.c
+            
+            v = self.currentVnode
+            if v:
+                for p in c.allNodes_iter():
+                    if p.v == v:
+                        # g.trace(p,c.shortFileName())
+                        c.selectPosition(p)
+                        return
+            
+            g.trace('**** no present position. ****',self.currentVnode,c.rootPosition())
+            c.setCurrentPosition(c.rootPosition())
+        #@nonl
+        #@-node:ekr.20060919110638.13:setPositionsFromVnodes
         #@-others
     #@nonl
     #@-node:ekr.20060919104530:Sax
@@ -2724,15 +2765,18 @@ class baseFileCommands:
     
         # Create a list of all tnodes having a valid unknownAttributes dict.
         tnodes = []
+        tnodesData = []
         for p2 in p.subtree_iter():
             t = p2.v.t
             if hasattr(t,"unknownAttributes"):
                 if t not in tnodes :
-                    tnodes.append((p,t),)
+                    # g.trace(p2.headString(),t)
+                    tnodes.append(t) # Bug fix: 10/4/06.
+                    tnodesData.append((p2,t),)
         
         # Create a list of pairs (t,d) where d contains only pickleable entries.
         data = []
-        for p,t in tnodes:
+        for p,t in tnodesData:
             if type(t.unknownAttributes) != type({}):
                  g.es("ignoring non-dictionary unknownAttributes for",p,color="blue")
             else:
@@ -2764,18 +2808,20 @@ class baseFileCommands:
             resultDict[gnx]=d
         
         if 0:
-            print "resultDict"
+            print "resultDict..."
             for key in resultDict:
-                print ; print key,resultDict[key]
-            
+                print repr(key),repr(resultDict.get(key))
+    
         # Pickle and hexlify resultDict.
         if resultDict:
             try:
                 tag = "descendentTnodeUnknownAttributes"
                 if python23:
                     s = pickle.dumps(resultDict,protocol=1) # Requires Python 2.3
+                    # g.trace('protocol=1')
                 else:
                     s = pickle.dumps(resultDict,bin=True) # Requires Earlier version of Python.
+                    # g.trace('bin=True')
                 field = ' %s="%s"' % (tag,binascii.hexlify(s))
                 return field
             except pickle.PicklingError:
