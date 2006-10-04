@@ -663,6 +663,7 @@ def getLeoFile (self,theFile,fileName,readAtFileNodesFlag=True,silent=False):
     
     try:
         ok = True
+        # t1 = time.clock()
         if use_sax:
             v = self.readSaxFile(theFile,fileName,silent)
             if v: # v == None for minimal .leo files.
@@ -672,6 +673,8 @@ def getLeoFile (self,theFile,fileName,readAtFileNodesFlag=True,silent=False):
                 self.rootVnode = c.rootPosition().v
         else:
             self.getAllLeoElements(fileName,silent)
+        # t2 = time.clock()
+        # g.trace('time',t2-t1)
     except BadLeoFile, message:
         if not silent:
             g.es_exception()
