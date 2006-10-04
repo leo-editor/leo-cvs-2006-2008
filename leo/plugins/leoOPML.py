@@ -23,8 +23,8 @@ This value typically is not used, but it should refer to Leo in some way.
 
 - @bool opml_use_outline_elements = True
 
-- If True, Leo writes body text to <:body> elements nested in <outline> elements.
-Otherwise, Leo writes body text to :body attributes of <outline> elements.
+- If True, Leo writes body text to <leo:body> elements nested in <outline> elements.
+Otherwise, Leo writes body text to leo:body attributes of <outline> elements.
 
 - @string opml_version = 2.0
 
@@ -45,6 +45,21 @@ descendentTnodeUnknownAttributes, expanded, marks, t, and tnodeList.
 
 If True, Leo writes body_outline_ratio` and global_window_position attributes to
 the <head> element of the .opml file.
+
+- @bool opml_write_ua_attributes
+
+If True, write unknownAttributes  **NOTE** ua_attributes are not currently read from opml
+
+- @bool opml_expand_ua_dictionary
+
+If True, expand an unknownAttriubte 'x' of type dict to 'ua_x_key0', 'ua_x_key1' etc.
+**WARNING** using this feature may prevent reading these ua_attributes from opml,
+if that feature is implemented in the future.
+
+- @bool opml_skip_ua_dictionary_blanks
+
+If True, when expanding as above, skip blank dict entries.
+
 '''
 #@nonl
 #@-node:ekr.20060904103412.1:<< docstring >>
@@ -121,11 +136,12 @@ printElements = [] # ['all','outline','head','body',]
 # - create c.fileCommands.tnodeDict before calling c.atFileCommands.readAll.
 # - Properly init t.fileIndex to an actual gnx using scanGnx.
 # 0.92 EKR: Support for opml_write_leo_globals_attributes setting:
-# - Read and write :body_outline_ratio attribute and <:global_window_position> 
-# element.
+# - Read and write leo:body_outline_ratio attribute and 
+# <leo:global_window_position> element.
 # 0.93 EKR: Support opml_read_derived_files & opml_write_derived_files
+# 0.94 TNB: write unknownAttributes, use leo: rather than just : for 
+# namespace, tweaked SAX content reading
 #@-at
-#@nonl
 #@-node:ekr.20060904103412.2:<< version history >>
 #@nl
 #@<< imports >>
@@ -182,7 +198,7 @@ class opmlFileCommandsClass (leoFileCommands.fileCommands):
     
     #@    @+others
     #@+node:ekr.20060919172012.2:putToOPML & helpers
-    # All elements and attributes prefixed by ':' are leo-specific.
+    # All elements and attributes prefixed by 'leo:' are leo-specific.
     # All other elements and attributes are specified by the OPML 1 spec.
     
     def putToOPML (self):
@@ -195,6 +211,9 @@ class opmlFileCommandsClass (leoFileCommands.fileCommands):
             'opml_write_leo_details',
             'opml_write_leo_globals_attributes',
             'opml_write_body_text',
+            'opml_write_ua_attributes',
+            'opml_expand_ua_dictionary',
+            'opml_skip_ua_dictionary_blanks',
         ):
             setattr(self,ivar,c.config.getBool(ivar))
         
@@ -210,7 +229,7 @@ class opmlFileCommandsClass (leoFileCommands.fileCommands):
         s   = self.c.config.getString('opml_namespace') or 'leo:com:leo-opml'
         ver = self.c.config.getString('opml_version') or '2.0'
     
-        self.put('<opml version="%s" xmlns="%s">' % (ver,s))
+        self.put('<opml version="%s" xmlns:leo="%s">' % (ver,s))
     #@-node:ekr.20060919172012.3:putOPMLProlog
     #@+node:ekr.20060919172012.4:putOPMLHeader
     def putOPMLHeader (self):
@@ -220,11 +239,11 @@ class opmlFileCommandsClass (leoFileCommands.fileCommands):
         c = self.c ; indent = ' ' * 4
     
         if self.opml_write_leo_globals_attributes:
-            self.put('\n<head :body_outline_ratio="%s">' % str(c.frame.ratio))
+            self.put('\n<head leo:body_outline_ratio="%s">' % str(c.frame.ratio))
             
             width,height,left,top = c.frame.get_window_info()
     
-            self.put('\n%s<:global_window_position' % indent)
+            self.put('\n%s<leo:global_window_position' % indent)
             self.put(' top="%s" left="%s" height="%s" width="%s"/>' % (
                 str(top),str(left),str(height),str(width)))
     
@@ -260,26 +279,26 @@ class opmlFileCommandsClass (leoFileCommands.fileCommands):
     
         if self.opml_write_leo_details: # Put leo-specific attributes.
             for name,val in (
-                (':t', g.app.nodeIndices.toString(p.v.t.fileIndex)),
-                (':a', self.aAttributes(p)),
-                (':tnodeList',self.tnodeListAttributes(p)),
+                ('leo:t', g.app.nodeIndices.toString(p.v.t.fileIndex)),
+                ('leo:a', self.aAttributes(p)),
+                ('leo:tnodeList',self.tnodeListAttributes(p)),
             ):
                 if val: self.put(attrFormat % (name,val))
             
             data = self.uAAttributes(p)
             if data:
-                for name,val in data:
+                for name,val in data.iteritems():
                     self.put(attrFormat % (name,val))
         
-        self.put(attrFormat % ('text',self.attributeEscape(head)))
+        self.put(attrFormat % ('text',self.attributeEscape(head)))    
         
         closed = False
         if body and self.opml_write_body_text:
             if self.opml_use_outline_elements:
                 self.put('>') ; closed = True
-                self.put('<:body>%s</:body>' % self.xmlEscape(body))
+                self.put('<leo:body>%s</leo:body>' % self.xmlEscape(body))
             else:
-                self.put(attrFormat % (':body',self.attributeEscape(body)))
+                self.put(attrFormat % ('leo:body',self.attributeEscape(body)))
     
         if p.hasChildren():
             if not closed:
@@ -349,12 +368,21 @@ class opmlFileCommandsClass (leoFileCommands.fileCommands):
         return s
     #@nonl
     #@-node:ekr.20060919172012.9:tnodeListAttributes
-    #@+node:ekr.20060919172012.10:uAAttributes (Not yet, and maybe never)
-    def uAAttributes (self,p):
-        
-        return ''
+    #@+node:tbrown.20061004094757:uAAttributes
+    def uAAttributes(self, p):
+        """write unknownAttributes with various levels of expansion"""
+        data = {}
+        if self.opml_write_ua_attributes and hasattr(p.v, 'unknownAttributes'):
+            for uak, uav in p.v.unknownAttributes.iteritems():
+                if self.opml_expand_ua_dictionary and type(uav) == type({}):
+                    for uakc, uavc in uav.iteritems():
+                        if str(uavc)!='' or not self.opml_skip_ua_dictionary_blanks:
+                            data['leo:ua_'+uak+'_'+uakc] = self.attributeEscape(str(uavc))
+                else:
+                    data['leo:ua_'+uak] = self.attributeEscape(str(uav))
+        return data
     #@nonl
-    #@-node:ekr.20060919172012.10:uAAttributes (Not yet, and maybe never)
+    #@-node:tbrown.20061004094757:uAAttributes
     #@-node:ekr.20060919172012.6:putOPMLNode
     #@+node:ekr.20060919172012.11:putOPMLPostlog
     def putOPMLPostlog (self):
@@ -470,7 +498,7 @@ class opmlController:
     #@+node:ekr.20060917213611:handleVnodeAttributes
     def handleVnodeAttributes (self,node,v):
     
-        a = node.attributes.get(':a')
+        a = node.attributes.get('leo:a')
         if a:
             # 'C' (clone) and 'D' bits are not used.
             if 'M' in a: v.setMarked()
@@ -479,7 +507,7 @@ class opmlController:
             if 'T' in a: self.topVnode = v
             if 'V' in a: self.currentVnode = v
             
-        s = node.attributes.get(':tnodeList')
+        s = node.attributes.get('leo:tnodeList')
         tnodeList = s and s.split(',')
         if tnodeList:
             # This tnode list will be resolved later.
@@ -767,8 +795,8 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
             'head':                     (self.startHead,None),
             'opml':                     (None,None),
             'outline':                  (self.startOutline,self.endOutline),
-            ':body':                    (self.startBodyText,self.endBodyText),
-            ':global_window_position':  (self.startWinPos,None)
+            'leo:body':                    (self.startBodyText,self.endBodyText),
+            'leo:global_window_position':  (self.startWinPos,None)
         }
         #@nonl
         #@-node:ekr.20060917185525:<< define dispatch dict >>
@@ -895,13 +923,14 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         
         # Opml elements should not have content: everything is carried in attributes.
         
-        if content.strip():
-            if name == ':body':
-                if self.node:
-                    self.node.bodyString = content
-                else:
-                    self.error('No node for :body content')
+        # if content.strip():
+        if name == 'leo:body':
+            if self.node:
+                self.content.append(content)
             else:
+                self.error('No node for leo:body content')
+        else:
+            if content.strip():
                 print 'content:',name,repr(content)
     #@nonl
     #@-node:ekr.20060904134958.178:characters
@@ -928,7 +957,7 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
     #@+node:ekr.20060919193501:endBodyText
     def endBodyText (self):
         
-        '''End a <:body> element.'''
+        '''End a <leo:body> element.'''
         
         if self.content:
             self.node.bodyString = ''.join(self.content)
@@ -965,7 +994,7 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
     #@+node:ekr.20060919193501.1:startBodyText
     def startBodyText (self,attrs):
         
-        '''Start a <:body> element.'''
+        '''Start a <leo:body> element.'''
         
         self.content = []
     #@nonl
@@ -985,7 +1014,7 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         
         for bunch in self.attrsToList(attrs):
             name = bunch.name ; val = bunch.val
-            if name == ':body_outline_ratio':
+            if name == 'leo:body_outline_ratio':
                 try:
                     ratio = float(val)
                     # g.trace(ratio)
@@ -1025,11 +1054,11 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
     
             if name == 'text': # Text is the 'official' opml attribute for headlines.
                 node.headString = val
-            elif name == ':body':
+            elif name == 'leo:body':
                 #g.trace(repr(val))
                 #g.es_dump (val[:30])
                 node.bodyString = val
-            elif name == ':t':
+            elif name == 'leo:t':
                 node.tnx = val
             else:
                 node.attributes[name] = val
@@ -1040,7 +1069,7 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
     def startWinPos (self,attrs):
         
         if not self.inElement('head'):
-            self.error('<:global_window_position> outside <body>')
+            self.error('<leo:global_window_position> outside <body>')
     
         self.doGlobalWindowAttributes(attrs)
     #@+node:ekr.20060922071010.1:doGlobalWindowAttributes
