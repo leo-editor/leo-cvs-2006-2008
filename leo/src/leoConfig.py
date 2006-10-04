@@ -1433,6 +1433,7 @@ class configClass:
         if lines and self.munge(lines[0])=='readonly':
             lines = lines[1:]
         if lines:
+            lines = [g.toUnicode(g.os_path_normpath(line),'utf-8') for line in lines]
             self.appendToRecentFiles(lines)
     #@-node:ekr.20050424115658:readRecentFilesFile
     #@+node:ekr.20050424114937.2:writeRecentFilesFile & helper
@@ -1441,6 +1442,9 @@ class configClass:
         '''Write the appropriate .leoRecentFiles.txt file.'''
         
         tag = '.leoRecentFiles.txt'
+        
+        if g.app.unitTesting:
+            return
         
         localFileName = c.fileName()
         if not localFileName:
@@ -1491,7 +1495,8 @@ class configClass:
             # g.trace('writing',fileName)
             theFile = file(fileName,'w')
             if self.recentFiles:
-                theFile.write('\n'.join(self.recentFiles))
+                lines = [g.toEncodedString(line,'utf-8') for line in self.recentFiles]
+                theFile.write('\n'.join(lines))
             else:
                 theFile.write('\n')
     
