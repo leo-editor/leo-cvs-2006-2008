@@ -4,7 +4,7 @@
 #@@tabwidth -4
 #@@pagewidth 80
 
-use_sax = True # For transition to sax-based read code.
+use_sax = False # For transition to sax-based read code.
 if use_sax:
     print ; print '*** use_sax = True ***' ; print
 
@@ -728,6 +728,7 @@ class baseFileCommands:
         
         try:
             ok = True
+            # t1 = time.clock()
             if use_sax:
                 v = self.readSaxFile(theFile,fileName,silent)
                 if v: # v == None for minimal .leo files.
@@ -737,6 +738,8 @@ class baseFileCommands:
                     self.rootVnode = c.rootPosition().v
             else:
                 self.getAllLeoElements(fileName,silent)
+            # t2 = time.clock()
+            # g.trace('time',t2-t1)
         except BadLeoFile, message:
             if not silent:
                 g.es_exception()
@@ -1900,332 +1903,326 @@ class baseFileCommands:
     #@nonl
     #@-node:ekr.20031218072017.3021:Non-sax
     #@+node:ekr.20060919104530:Sax
-    if use_sax:
-        #@    @+others
-        #@+node:ekr.20060919110638.4:createVnodes & helpers (sax)
-        def createVnodes (self, dummyRoot):
-            
-            '''**Important**: this method and its helpers are low-level code
-            corresponding to link/unlink methods in leoNodes.py.
-            Modify this with extreme care.'''
-            
-            if 0: # inited by top-level methods...
-                self.descendentExpandedList = []
-                self.descendentMarksList = []
-                self.descendentUnknownAttributesDictList = {}
-                self.tnodesDict = {} # Keys are tnx's (strings).  Values are tnodes.
+    #@+node:ekr.20060919110638.4:createSaxVnodes & helpers
+    def createSaxVnodes (self, dummyRoot):
         
-            children = self.createChildren(dummyRoot,parent_v = None)
-            firstChild = children and children[0]
+        '''**Important**: this method and its helpers are low-level code
+        corresponding to link/unlink methods in leoNodes.py.
+        Modify this with extreme care.'''
         
-            return firstChild
-        #@nonl
-        #@+node:ekr.20060919110638.5:createChildren
-        # node is a saxNodeClass object, parent_v is a vnode.
-        
-        def createChildren (self, node, parent_v):
-            
-            result = []
-            
-            for child in node.children:
-                tnx = child.tnx
-                t = self.tnodesDict.get(tnx)
-                if t:
-                    # A clone.  Create a new clone node, but share the subtree, i.e., the tnode.
-                    v = self.createVnode(child,parent_v,t=t)
-                    # g.trace('clone',id(child),child.headString,'t',v.t)
-                else:
-                    v = self.createVnodeTree(child,parent_v)
-                result.append(v)
-                
-            self.linkSiblings(result)
-            if parent_v: self.linkParentAndChildren(parent_v,result)
-            return result
-        #@nonl
-        #@-node:ekr.20060919110638.5:createChildren
-        #@+node:ekr.20060919110638.6:createVnodeTree
-        def createVnodeTree (self,node,parent_v):
-        
-            v = self.createVnode(node,parent_v)
-        
-            self.createChildren(node,v)
-        
-            return v
-        #@nonl
-        #@-node:ekr.20060919110638.6:createVnodeTree
-        #@+node:ekr.20060919110638.7:createVnode (sax)
-        def createVnode (self,node,parent_v,t=None):
-            
-            h = node.headString
-            b = node.bodyString
-        
-            if not t:
-                t = leoNodes.tnode(bodyString=b,headString=h)
-                if node.tnx:
-                    t.fileIndex = g.app.nodeIndices.scanGnx(node.tnx,0)
-            v = leoNodes.vnode(t)
-            v.t.vnodeList.append(v)
-            v._parent = parent_v
-        
-            index = self.canonicalTnodeIndex(node.tnx)
-            self.tnodesDict [index] = t
-            
-            # g.trace('tnx','%-22s' % (index),'v',id(v),'v.t',id(v.t),'body','%-4d' % (len(b)),h)
-            
-            self.handleVnodeAttributes(node,v)
-            self.handleTnodeAttributes(node,t)
-            
-            return v
-        #@nonl
-        #@+node:ekr.20060919110638.8:handleTnodeAttributes
-        def handleTnodeAttributes (self,node,t):
-            
-            d = node.tnodeAttributes
-                
-            aDict = {}
-            for key in d.keys():
-                val = d.get(key)
-                val2 = self.getUa(key,val)
-                aDict[key] = val2
-        
-            if aDict:
-                # g.trace('uA',aDict)
-                t.unknownAttributes = aDict
-        #@nonl
-        #@-node:ekr.20060919110638.8:handleTnodeAttributes
-        #@+node:ekr.20061004053644:handleVnodeAttributes
-        # The native attributes of <v> elements are a, t, vtag, tnodeList,
-        # marks, expanded and descendentTnodeUnknownAttributes.
-        
-        def handleVnodeAttributes (self,node,v):
-            
-            d = node.attributes
-            s = d.get('a')
-            if s:
-                # g.trace('%s a=%s %s' % (id(node),s,v.headString()))
-                # 'C' (clone) and 'D' bits are not used.
-                if 'M' in s: v.setMarked()
-                if 'E' in s: v.expand()
-                if 'O' in s: v.setOrphan()
-                if 'T' in s: self.topVnode = v
-                if 'V' in s:
-                    # g.trace('setting currentVnode',v,color='red')
-                    self.currentVnode = v
-        
-            s = d.get('tnodeList','')
-            tnodeList = s and s.split(',')
-            if tnodeList:
-                # This tnode list will be resolved later.
-                # g.trace('found tnodeList',v.headString(),tnodeList)
-                v.tempTnodeList = tnodeList
-                
-            s = d.get('descendentTnodeUnknownAttributes') # Correct: only tnode have descendent uA's.
-            if s: 
-                aDict = self.getDescendentUnknownAttributes(s)
-                if aDict:
-                    # g.trace('descendentUaDictList',aDict)
-                    self.descendentUnknownAttributesDictList.append(aDict)
-            
-            s = d.get('expanded')
-            if s:
-                aList = self.getDescendentAttributes(s,tag="expanded")
-                # g.trace('expanded list',len(aList))
-                self.descendentExpandedList.extend(aList)
-            
-            s = d.get('marks')
-            if s:
-                aList = self.getDescendentAttributes(s,tag="marks")
-                # g.trace('marks list',len(aList))
-                self.descendentMarksList.extend(aList)
-                
-            aDict = {}
-            for key in d.keys():
-                if key in self.nativeVnodeAttributes:
-                    if 0: g.trace('****ignoring***',key,d.get(key))
-                else:
-                    val = d.get(key)
-                    val2 = self.getUa(key,val)
-                    aDict[key] = val2
-                    # g.trace(key,val,val2)
-            if aDict:
-                # g.trace('uA',aDict)
-                v.unknownAttributes = aDict
-        #@nonl
-        #@-node:ekr.20061004053644:handleVnodeAttributes
-        #@-node:ekr.20060919110638.7:createVnode (sax)
-        #@+node:ekr.20060919110638.9:linkParentAndChildren
-        def linkParentAndChildren (self, parent_v, children):
-            
-            # if children: g.trace(parent_v,len(children))
-            
-            firstChild_v = children and children[0] or None
-        
-            parent_v.t._firstChild = firstChild_v
-            
-            for child in children:
-                child._parent = parent_v
-            
-            v = parent_v
-            if v not in v.t.vnodeList:
-                v.t.vnodeList.append(v)
-        #@nonl
-        #@-node:ekr.20060919110638.9:linkParentAndChildren
-        #@+node:ekr.20060919110638.10:linkSiblings
-        def linkSiblings (self, sibs):
-            
-            '''Set the v._back and v._next links for all vnodes v in sibs.'''
-            
-            n = len(sibs)
-        
-            for i in xrange(n):
-                v = sibs[i]
-                v._back = (i-1 >= 0 and sibs[i-1]) or None
-                v._next = (i+1 <  n and sibs[i+1]) or None
-        #@nonl
-        #@-node:ekr.20060919110638.10:linkSiblings
-        #@-node:ekr.20060919110638.4:createVnodes & helpers (sax)
-        #@+node:ekr.20060919110638.2:dumpSaxTree
-        def dumpSaxTree (self,root,dummy):
-            
-            if not root:
-                print 'dumpSaxTree: empty tree'
-                return
-            if not dummy:
-                root.dump()
-            for child in root.children:
-                self.dumpSaxTree(child,dummy=False)
-        #@nonl
-        #@-node:ekr.20060919110638.2:dumpSaxTree
-        #@+node:ekr.20061003093021:getUa (sax)
-        def getUa(self,attr,val):
-            
-            """Parse an unknown attribute in a <v> or <t> element.
-            The unknown tag has been pickled and hexlify'd.
-            """
-            
-            try:
-                val = str(val)
-            except UnicodeError:
-                g.es_print('Unexpected exception converting hexlified string to string')
-                g.es_exception()
-                
-            # g.trace(attr,repr(val))
-                
-            # New in 4.3: leave string attributes starting with 'str_' alone.
-            if attr.startswith('str_') and type(val) == type(''):
-                # g.trace(attr,val)
-                return val
-                
-            # New in 4.3: convert attributes starting with 'b64_' using the base64 conversion.
-            if 0: # Not ready yet.
-                if attr.startswith('b64_'):
-                    try: pass
-                    except Exception: pass
-                
-            try:
-                binString = binascii.unhexlify(val) # Throws a TypeError if val is not a hex string.
-            except TypeError:
-                # Assume that Leo 4.1 wrote the attribute.
-                g.trace('can not unhexlify',val)
-                return val
-            try:
-                # No change needed to support protocols.
-                val2 = pickle.loads(binString)
-                # g.trace('v.3 val:',val2)
-                return val2
-            except (pickle.UnpicklingError,ImportError):
-                g.trace('can not unpickle',val)
-                return val
-        #@-node:ekr.20061003093021:getUa (sax)
-        #@+node:ekr.20060919110638.14:parse_leo_file
-        def parse_leo_file (self,theFile,inputFileName,silent):
-            
-            c = self.c
-        
-            try:
-                # Use cStringIo to avoid a crash in sax when inputFileName has unicode characters.
-                s = theFile.read()
-                theFile = cStringIO.StringIO(s)
-                # g.trace(repr(inputFileName))
-                node = None
-                parser = xml.sax.make_parser()
-                parser.setFeature(xml.sax.handler.feature_external_ges,1)
-                    # Include external general entities, esp. xml-stylesheet lines.
-                if 0: # Expat does not read external features.
-                    parser.setFeature(xml.sax.handler.feature_external_pes,1)
-                        # Include all external parameter entities
-                        # Hopefully the parser can figure out the encoding from the <?xml> element.
-                handler = saxContentHandler(c,inputFileName,silent)
-                parser.setContentHandler(handler)
-                parser.parse(theFile) # expat does not support parseString
-                node = handler.getRootNode()
-            except xml.sax.SAXParseException:
-                g.es_print('Error parsing %s' % (inputFileName),color='red')
-                g.es_exception()
-            except Exception:
-                g.es_print('Unexpected exception parsing %s' % (inputFileName),color='red')
-                g.es_exception()
-                
-            return node
-        #@nonl
-        #@-node:ekr.20060919110638.14:parse_leo_file
-        #@+node:ekr.20060919110638.3:readSaxFile
-        def readSaxFile (self,theFile,fileName,silent):
-        
-            c = self.c
-        
-            # Pass one: create the intermediate nodes.
-            if 0: # This has no effect.
-                fileName = g.toEncodedString(fileName,'ascii',reportErrors=False)
-        
-            self.dummyRoot = dummyRoot = self.parse_leo_file(theFile,fileName,silent=silent)
-            # self.dumpSaxTree(dummyRoot,dummy=True)
-        
-            # Pass two: create the tree of vnodes and tnodes from the intermediate nodes.
-            v = dummyRoot and self.createVnodes(dummyRoot)
-            return v
-        #@nonl
-        #@-node:ekr.20060919110638.3:readSaxFile
-        #@+node:ekr.20060919110638.11:resolveTnodeLists
-        def resolveTnodeLists (self):
-        
-            c = self.c
-        
-            for p in c.allNodes_iter():
-                if hasattr(p.v,'tempTnodeList'):
-                    # g.trace(p.v.headString())
-                    result = []
-                    for tnx in p.v.tempTnodeList:
-                        index = self.canonicalTnodeIndex(tnx)
-                        t = self.tnodesDict.get(index)
-                        if t:
-                            # g.trace(tnx,t)
-                            result.append(t)
-                        else:
-                            g.trace('No tnode for %s' % tnx)
-                    p.v.t.tnodeList = result
-                    delattr(p.v,'tempTnodeList')
-        #@nonl
-        #@-node:ekr.20060919110638.11:resolveTnodeLists
-        #@+node:ekr.20060919110638.13:setPositionsFromVnodes
-        def setPositionsFromVnodes (self):
-            
-            c = self.c
-            
-            v = self.currentVnode
-            if v:
-                for p in c.allNodes_iter():
-                    if p.v == v:
-                        # g.trace(p,c.shortFileName())
-                        c.selectPosition(p)
-                        return
-            
-            g.trace('**** no present position. ****',self.currentVnode,c.rootPosition())
-            c.setCurrentPosition(c.rootPosition())
-        #@nonl
-        #@-node:ekr.20060919110638.13:setPositionsFromVnodes
-        #@-others
+        if 0: # inited by top-level methods...
+            self.descendentExpandedList = []
+            self.descendentMarksList = []
+            self.descendentUnknownAttributesDictList = {}
+            self.tnodesDict = {} # Keys are tnx's (strings).  Values are tnodes.
+    
+        children = self.createSaxChildren(dummyRoot,parent_v = None)
+        firstChild = children and children[0]
+    
+        return firstChild
     #@nonl
+    #@+node:ekr.20060919110638.5:createSaxChildren
+    # node is a saxNodeClass object, parent_v is a vnode.
+    
+    def createSaxChildren (self, node, parent_v):
+        
+        result = []
+        
+        for child in node.children:
+            tnx = child.tnx
+            t = self.tnodesDict.get(tnx)
+            if t:
+                # A clone.  Create a new clone node, but share the subtree, i.e., the tnode.
+                v = self.createSaxVnode(child,parent_v,t=t)
+                # g.trace('clone',id(child),child.headString,'t',v.t)
+            else:
+                v = self.createSaxVnodeTree(child,parent_v)
+            result.append(v)
+            
+        self.linkSiblings(result)
+        if parent_v: self.linkParentAndChildren(parent_v,result)
+        return result
+    #@nonl
+    #@-node:ekr.20060919110638.5:createSaxChildren
+    #@+node:ekr.20060919110638.6:createSaxVnodeTree
+    def createSaxVnodeTree (self,node,parent_v):
+    
+        v = self.createSaxVnode(node,parent_v)
+    
+        self.createSaxChildren(node,v)
+    
+        return v
+    #@nonl
+    #@-node:ekr.20060919110638.6:createSaxVnodeTree
+    #@+node:ekr.20060919110638.7:createSaxVnode
+    def createSaxVnode (self,node,parent_v,t=None):
+        
+        h = node.headString
+        b = node.bodyString
+    
+        if not t:
+            t = leoNodes.tnode(bodyString=b,headString=h)
+            if node.tnx:
+                t.fileIndex = g.app.nodeIndices.scanGnx(node.tnx,0)
+        v = leoNodes.vnode(t)
+        v.t.vnodeList.append(v)
+        v._parent = parent_v
+    
+        index = self.canonicalTnodeIndex(node.tnx)
+        self.tnodesDict [index] = t
+        
+        # g.trace('tnx','%-22s' % (index),'v',id(v),'v.t',id(v.t),'body','%-4d' % (len(b)),h)
+        
+        self.handleVnodeSaxAttributes(node,v)
+        self.handleTnodeSaxAttributes(node,t)
+        
+        return v
+    #@nonl
+    #@+node:ekr.20060919110638.8:handleTnodeSaxAttributes
+    def handleTnodeSaxAttributes (self,node,t):
+        
+        d = node.tnodeAttributes
+            
+        aDict = {}
+        for key in d.keys():
+            val = d.get(key)
+            val2 = self.getSaxUa(key,val)
+            aDict[key] = val2
+    
+        if aDict:
+            # g.trace('uA',aDict)
+            t.unknownAttributes = aDict
+    #@nonl
+    #@-node:ekr.20060919110638.8:handleTnodeSaxAttributes
+    #@+node:ekr.20061004053644:handleVnodeSaxAttributes
+    # The native attributes of <v> elements are a, t, vtag, tnodeList,
+    # marks, expanded and descendentTnodeUnknownAttributes.
+    
+    def handleVnodeSaxAttributes (self,node,v):
+        
+        d = node.attributes
+        s = d.get('a')
+        if s:
+            # g.trace('%s a=%s %s' % (id(node),s,v.headString()))
+            # 'C' (clone) and 'D' bits are not used.
+            if 'M' in s: v.setMarked()
+            if 'E' in s: v.expand()
+            if 'O' in s: v.setOrphan()
+            if 'T' in s: self.topVnode = v
+            if 'V' in s:
+                # g.trace('setting currentVnode',v,color='red')
+                self.currentVnode = v
+    
+        s = d.get('tnodeList','')
+        tnodeList = s and s.split(',')
+        if tnodeList:
+            # This tnode list will be resolved later.
+            # g.trace('found tnodeList',v.headString(),tnodeList)
+            v.tempTnodeList = tnodeList
+            
+        s = d.get('descendentTnodeUnknownAttributes') # Correct: only tnode have descendent uA's.
+        if s: 
+            aDict = self.getDescendentUnknownAttributes(s)
+            if aDict:
+                # g.trace('descendentUaDictList',aDict)
+                self.descendentUnknownAttributesDictList.append(aDict)
+        
+        s = d.get('expanded')
+        if s:
+            aList = self.getDescendentAttributes(s,tag="expanded")
+            # g.trace('expanded list',len(aList))
+            self.descendentExpandedList.extend(aList)
+        
+        s = d.get('marks')
+        if s:
+            aList = self.getDescendentAttributes(s,tag="marks")
+            # g.trace('marks list',len(aList))
+            self.descendentMarksList.extend(aList)
+            
+        aDict = {}
+        for key in d.keys():
+            if key in self.nativeVnodeAttributes:
+                if 0: g.trace('****ignoring***',key,d.get(key))
+            else:
+                val = d.get(key)
+                val2 = self.getSaxUa(key,val)
+                aDict[key] = val2
+                # g.trace(key,val,val2)
+        if aDict:
+            # g.trace('uA',aDict)
+            v.unknownAttributes = aDict
+    #@nonl
+    #@-node:ekr.20061004053644:handleVnodeSaxAttributes
+    #@-node:ekr.20060919110638.7:createSaxVnode
+    #@+node:ekr.20060919110638.9:linkParentAndChildren
+    def linkParentAndChildren (self, parent_v, children):
+        
+        # if children: g.trace(parent_v,len(children))
+        
+        firstChild_v = children and children[0] or None
+    
+        parent_v.t._firstChild = firstChild_v
+        
+        for child in children:
+            child._parent = parent_v
+        
+        v = parent_v
+        if v not in v.t.vnodeList:
+            v.t.vnodeList.append(v)
+    #@nonl
+    #@-node:ekr.20060919110638.9:linkParentAndChildren
+    #@+node:ekr.20060919110638.10:linkSiblings
+    def linkSiblings (self, sibs):
+        
+        '''Set the v._back and v._next links for all vnodes v in sibs.'''
+        
+        n = len(sibs)
+    
+        for i in xrange(n):
+            v = sibs[i]
+            v._back = (i-1 >= 0 and sibs[i-1]) or None
+            v._next = (i+1 <  n and sibs[i+1]) or None
+    #@nonl
+    #@-node:ekr.20060919110638.10:linkSiblings
+    #@-node:ekr.20060919110638.4:createSaxVnodes & helpers
+    #@+node:ekr.20060919110638.2:dumpSaxTree
+    def dumpSaxTree (self,root,dummy):
+        
+        if not root:
+            print 'dumpSaxTree: empty tree'
+            return
+        if not dummy:
+            root.dump()
+        for child in root.children:
+            self.dumpSaxTree(child,dummy=False)
+    #@nonl
+    #@-node:ekr.20060919110638.2:dumpSaxTree
+    #@+node:ekr.20061003093021:getSaxUa
+    def getSaxUa(self,attr,val):
+        
+        """Parse an unknown attribute in a <v> or <t> element.
+        The unknown tag has been pickled and hexlify'd.
+        """
+        
+        try:
+            val = str(val)
+        except UnicodeError:
+            g.es_print('Unexpected exception converting hexlified string to string')
+            g.es_exception()
+            
+        # g.trace(attr,repr(val))
+            
+        # New in 4.3: leave string attributes starting with 'str_' alone.
+        if attr.startswith('str_') and type(val) == type(''):
+            # g.trace(attr,val)
+            return val
+            
+        # New in 4.3: convert attributes starting with 'b64_' using the base64 conversion.
+        if 0: # Not ready yet.
+            if attr.startswith('b64_'):
+                try: pass
+                except Exception: pass
+            
+        try:
+            binString = binascii.unhexlify(val) # Throws a TypeError if val is not a hex string.
+        except TypeError:
+            # Assume that Leo 4.1 wrote the attribute.
+            g.trace('can not unhexlify',val)
+            return val
+        try:
+            # No change needed to support protocols.
+            val2 = pickle.loads(binString)
+            # g.trace('v.3 val:',val2)
+            return val2
+        except (pickle.UnpicklingError,ImportError):
+            g.trace('can not unpickle',val)
+            return val
+    #@-node:ekr.20061003093021:getSaxUa
+    #@+node:ekr.20060919110638.14:parse_leo_file
+    def parse_leo_file (self,theFile,inputFileName,silent):
+        
+        c = self.c
+    
+        try:
+            # Use cStringIo to avoid a crash in sax when inputFileName has unicode characters.
+            s = theFile.read()
+            theFile = cStringIO.StringIO(s)
+            # g.trace(repr(inputFileName))
+            node = None
+            parser = xml.sax.make_parser()
+            parser.setFeature(xml.sax.handler.feature_external_ges,1)
+                # Include external general entities, esp. xml-stylesheet lines.
+            if 0: # Expat does not read external features.
+                parser.setFeature(xml.sax.handler.feature_external_pes,1)
+                    # Include all external parameter entities
+                    # Hopefully the parser can figure out the encoding from the <?xml> element.
+            handler = saxContentHandler(c,inputFileName,silent)
+            parser.setContentHandler(handler)
+            parser.parse(theFile) # expat does not support parseString
+            node = handler.getRootNode()
+        except xml.sax.SAXParseException:
+            g.es_print('Error parsing %s' % (inputFileName),color='red')
+            g.es_exception()
+        except Exception:
+            g.es_print('Unexpected exception parsing %s' % (inputFileName),color='red')
+            g.es_exception()
+            
+        return node
+    #@nonl
+    #@-node:ekr.20060919110638.14:parse_leo_file
+    #@+node:ekr.20060919110638.3:readSaxFile
+    def readSaxFile (self,theFile,fileName,silent):
+    
+        c = self.c
+    
+        # Pass one: create the intermediate nodes.
+        self.dummyRoot = dummyRoot = self.parse_leo_file(theFile,fileName,silent=silent)
+    
+        # self.dumpSaxTree(dummyRoot,dummy=True)
+    
+        # Pass two: create the tree of vnodes and tnodes from the intermediate nodes.
+        v = dummyRoot and self.createSaxVnodes(dummyRoot)
+        return v
+    #@nonl
+    #@-node:ekr.20060919110638.3:readSaxFile
+    #@+node:ekr.20060919110638.11:resolveTnodeLists
+    def resolveTnodeLists (self):
+    
+        c = self.c
+    
+        for p in c.allNodes_iter():
+            if hasattr(p.v,'tempTnodeList'):
+                # g.trace(p.v.headString())
+                result = []
+                for tnx in p.v.tempTnodeList:
+                    index = self.canonicalTnodeIndex(tnx)
+                    t = self.tnodesDict.get(index)
+                    if t:
+                        # g.trace(tnx,t)
+                        result.append(t)
+                    else:
+                        g.trace('No tnode for %s' % tnx)
+                p.v.t.tnodeList = result
+                delattr(p.v,'tempTnodeList')
+    #@nonl
+    #@-node:ekr.20060919110638.11:resolveTnodeLists
+    #@+node:ekr.20060919110638.13:setPositionsFromVnodes
+    def setPositionsFromVnodes (self):
+        
+        c = self.c
+        
+        v = self.currentVnode
+        if v:
+            for p in c.allNodes_iter():
+                if p.v == v:
+                    # g.trace(p,c.shortFileName())
+                    c.selectPosition(p)
+                    return
+        
+        g.trace('**** no present position. ****',self.currentVnode,c.rootPosition())
+        c.setCurrentPosition(c.rootPosition())
+    #@nonl
+    #@-node:ekr.20060919110638.13:setPositionsFromVnodes
     #@-node:ekr.20060919104530:Sax
     #@-node:ekr.20031218072017.3020:Reading
     #@+node:ekr.20031218072017.3032:Writing
