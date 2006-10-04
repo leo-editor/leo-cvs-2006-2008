@@ -4,10 +4,6 @@
 #@@tabwidth -4
 #@@pagewidth 80
 
-use_sax = False # For transition to sax-based read code.
-if use_sax:
-    print ; print '*** use_sax = True ***' ; print
-
 #@<< imports >>
 #@+node:ekr.20050405141130:<< imports >>
 import leoGlobals as g
@@ -527,6 +523,9 @@ class baseFileCommands:
         # g.trace("__init__", "fileCommands.__init__")
         self.c = c
         self.frame = c.frame
+        self.use_sax = c.config.getBool('use_sax_based_read')
+        if self.use_sax and not g.app.unitTesting:
+            print 'use_sax = True'
         self.nativeTnodeAttributes = ('tx',)
         self.nativeVnodeAttributes = (
             'a','descendentTnodeUnknownAttributes',
@@ -549,7 +548,7 @@ class baseFileCommands:
         self.forbiddenTnodes = []
         self.descendentUnknownAttributesDictList = []
         self.ratio = 0.5
-        if use_sax:
+        if self.use_sax:
             self.currentVnode = None
             self.rootVnode = None
         else:
@@ -729,7 +728,7 @@ class baseFileCommands:
         try:
             ok = True
             # t1 = time.clock()
-            if use_sax:
+            if self.use_sax:
                 v = self.readSaxFile(theFile,fileName,silent)
                 if v: # v == None for minimal .leo files.
                     c.setRootVnode(v)
@@ -747,7 +746,7 @@ class baseFileCommands:
             ok = False
             
         # New in Leo 4.2.2: before reading derived files.
-        if use_sax:
+        if self.use_sax:
             self.resolveTnodeLists()
         if ok and readAtFileNodesFlag:
             # Redraw before reading the @file nodes so the screen isn't blank.
@@ -759,7 +758,7 @@ class baseFileCommands:
         if readAtFileNodesFlag:
             # The descendent nodes won't exist unless we have read the @thin nodes!
             self.restoreDescendentAttributes()
-        if use_sax:
+        if self.use_sax:
             self.setPositionsFromVnodes()
         else:
             if not self.usingClipboard:
@@ -814,7 +813,7 @@ class baseFileCommands:
     def open(self,theFile,fileName,readAtFileNodesFlag=True,silent=False):
     
         c = self.c ; frame = c.frame
-        if not use_sax: # Read the entire file into the buffer
+        if not self.use_sax: # Read the entire file into the buffer
             self.fileBuffer = theFile.read() ; theFile.close()
             self.fileIndex = 0
         #@    << Set the default directory >>
@@ -843,7 +842,7 @@ class baseFileCommands:
         if 0: # 1/30/04: this is useless.
             if self.topPosition: 
                 c.setTopVnode(self.topPosition)
-        if not use_sax: # Delete the file buffer
+        if not self.use_sax: # Delete the file buffer
             self.fileBuffer = ""
         return ok
     #@nonl
@@ -987,920 +986,916 @@ class baseFileCommands:
     #@-node:EKR.20040627120120:restoreDescendentAttributes
     #@-node:ekr.20060919133249:Common
     #@+node:ekr.20031218072017.3021:Non-sax
-    if not use_sax:
-        #@    @+others
-        #@+node:ekr.20040326052245:convertStackToPosition (silly)
-        def convertStackToPosition (self,stack):
+    #@+node:ekr.20040326052245:convertStackToPosition (silly)
+    def convertStackToPosition (self,stack):
+    
+        c = self.c ; p2 = None
+        if not stack: return None
+    
+        for p in c.allNodes_iter():
+            if p.v == stack[0]:
+                p2 = p.copy()
+                for n in xrange(len(stack)):
+                    if not p2: break
+                    # g.trace("compare",n,p2.v,stack[n])
+                    if p2.v != stack[n]:
+                        p2 = None
+                    elif n + 1 == len(stack):
+                        break
+                    else:
+                        p2.moveToParent()
+                if p2:
+                    return p
+    
+        return None
+    #@-node:ekr.20040326052245:convertStackToPosition (silly)
+    #@+node:ekr.20031218072017.1243:get, match & skip (basic)
+    #@+node:ekr.20031218072017.1244:get routines (basic)
+    #@+node:EKR.20040526204706:getBool
+    def getBool (self):
+    
+        self.skipWs() # guarantees at least one more character.
+        ch = self.fileBuffer[self.fileIndex]
+        if ch == '0':
+            self.fileIndex += 1 ; return False
+        elif ch == '1':
+            self.fileIndex += 1 ; return True
+        else:
+            raise BadLeoFile("expecting bool constant")
+    #@-node:EKR.20040526204706:getBool
+    #@+node:EKR.20040526204706.1:getDouble
+    def getDouble (self):
+    
+        self.skipWs()
+        i = self.fileIndex ; buf = self.fileBuffer
+        floatChars = string.digits + 'e' + 'E' + '.' + '+' + '-'
+        n = len(buf)
+        while i < n and buf[i] in floatChars:
+            i += 1
+        if i == self.fileIndex:
+            raise BadLeoFile("expecting float constant")
+        val = float(buf[self.fileIndex:i])
+        self.fileIndex = i
+        return val
+    #@-node:EKR.20040526204706.1:getDouble
+    #@+node:EKR.20040526204706.2:getDqBool
+    def getDqBool (self):
+    
+        self.getDquote()
+        val = self.getBool()
+        self.getDquote()
+        return val
+    #@-node:EKR.20040526204706.2:getDqBool
+    #@+node:EKR.20040526204706.3:getDqString
+    def getDqString (self):
+    
+        self.getDquote()
+        i = self.fileIndex
+        self.fileIndex = j = string.find(self.fileBuffer,'"',i)
+        if j == -1: raise BadLeoFile("unterminated double quoted string")
+        s = self.fileBuffer[i:j]
+        self.getDquote()
+        return s
+    #@-node:EKR.20040526204706.3:getDqString
+    #@+node:EKR.20040526204706.4:getDquote
+    def getDquote (self):
+    
+        self.getTag('"')
+    #@-node:EKR.20040526204706.4:getDquote
+    #@+node:ekr.20031218072017.3024:getEscapedString
+    def getEscapedString (self):
+    
+        # The next '<' begins the ending tag.
+        i = self.fileIndex
+        self.fileIndex = j = string.find(self.fileBuffer,'<',i)
+        if j == -1:
+            print self.fileBuffer[i:]
+            raise BadLeoFile("unterminated escaped string")
+        else:
+            # Allocates memory
+            return self.xmlUnescape(self.fileBuffer[i:j])
+    #@-node:ekr.20031218072017.3024:getEscapedString
+    #@+node:EKR.20040526204706.5:getIndex
+    def getIndex (self):
+    
+        val = self.getLong()
+        if val < 0: raise BadLeoFile("expecting index")
+        return val
+    #@-node:EKR.20040526204706.5:getIndex
+    #@+node:EKR.20040526204706.6:getLong
+    def getLong (self):
+    
+        self.skipWs() # guarantees at least one more character.
+        i = self.fileIndex
+        if self.fileBuffer[i] == '-':
+            i += 1
+        n = len(self.fileBuffer)
+        while i < n and self.fileBuffer[i] in string.digits:
+            i += 1
+        if i == self.fileIndex:
+            raise BadLeoFile("expecting int constant")
+        val = int(self.fileBuffer[self.fileIndex:i])
+        self.fileIndex = i
+        return val
+    #@-node:EKR.20040526204706.6:getLong
+    #@+node:EKR.20040526204706.7:getOpenTag
+    def getOpenTag (self,tag):
         
-            c = self.c ; p2 = None
-            if not stack: return None
-        
-            for p in c.allNodes_iter():
-                if p.v == stack[0]:
-                    p2 = p.copy()
-                    for n in xrange(len(stack)):
-                        if not p2: break
-                        # g.trace("compare",n,p2.v,stack[n])
-                        if p2.v != stack[n]:
-                            p2 = None
-                        elif n + 1 == len(stack):
-                            break
-                        else:
-                            p2.moveToParent()
-                    if p2:
-                        return p
-        
-            return None
-        #@-node:ekr.20040326052245:convertStackToPosition (silly)
-        #@+node:ekr.20031218072017.1243:get, match & skip (basic)
-        #@+node:ekr.20031218072017.1244:get routines (basic)
-        #@+node:EKR.20040526204706:getBool
-        def getBool (self):
-        
-            self.skipWs() # guarantees at least one more character.
-            ch = self.fileBuffer[self.fileIndex]
-            if ch == '0':
-                self.fileIndex += 1 ; return False
-            elif ch == '1':
-                self.fileIndex += 1 ; return True
+        """
+        Look ahead for collapsed tag: tag may or may not end in ">"
+        Skips tag and /> if found, otherwise does not alter index.
+        Returns True if the closing part was found.
+        Throws BadLeoFile if the tag does not exist.
+        """
+    
+        if tag[-1] == ">":
+            # Only the tag itself or a collapsed tag are valid.
+            if self.matchTag(tag):
+                return False # Not a collapsed tag.
+            elif self.matchTag(tag[:-1]):
+                # It must be a collapsed tag.
+                self.skipWs()
+                if self.matchTag("/>"):
+                    return True
+            print "getOpenTag(", tag, ") failed:"
+            raise BadLeoFile("expecting" + tag)
+        else:
+            # The tag need not be followed by "/>"
+            if self.matchTag(tag):
+                old_index = self.fileIndex
+                self.skipWs()
+                if self.matchTag("/>"):
+                    return True
+                else:
+                    self.fileIndex = old_index
+                    return False
             else:
-                raise BadLeoFile("expecting bool constant")
-        #@-node:EKR.20040526204706:getBool
-        #@+node:EKR.20040526204706.1:getDouble
-        def getDouble (self):
-        
-            self.skipWs()
-            i = self.fileIndex ; buf = self.fileBuffer
-            floatChars = string.digits + 'e' + 'E' + '.' + '+' + '-'
-            n = len(buf)
-            while i < n and buf[i] in floatChars:
-                i += 1
-            if i == self.fileIndex:
-                raise BadLeoFile("expecting float constant")
-            val = float(buf[self.fileIndex:i])
-            self.fileIndex = i
-            return val
-        #@-node:EKR.20040526204706.1:getDouble
-        #@+node:EKR.20040526204706.2:getDqBool
-        def getDqBool (self):
-        
-            self.getDquote()
-            val = self.getBool()
-            self.getDquote()
-            return val
-        #@-node:EKR.20040526204706.2:getDqBool
-        #@+node:EKR.20040526204706.3:getDqString
-        def getDqString (self):
-        
-            self.getDquote()
-            i = self.fileIndex
-            self.fileIndex = j = string.find(self.fileBuffer,'"',i)
-            if j == -1: raise BadLeoFile("unterminated double quoted string")
-            s = self.fileBuffer[i:j]
-            self.getDquote()
-            return s
-        #@-node:EKR.20040526204706.3:getDqString
-        #@+node:EKR.20040526204706.4:getDquote
-        def getDquote (self):
-        
-            self.getTag('"')
-        #@-node:EKR.20040526204706.4:getDquote
-        #@+node:ekr.20031218072017.3024:getEscapedString
-        def getEscapedString (self):
-        
-            # The next '<' begins the ending tag.
-            i = self.fileIndex
-            self.fileIndex = j = string.find(self.fileBuffer,'<',i)
-            if j == -1:
-                print self.fileBuffer[i:]
-                raise BadLeoFile("unterminated escaped string")
-            else:
-                # Allocates memory
-                return self.xmlUnescape(self.fileBuffer[i:j])
-        #@-node:ekr.20031218072017.3024:getEscapedString
-        #@+node:EKR.20040526204706.5:getIndex
-        def getIndex (self):
-        
-            val = self.getLong()
-            if val < 0: raise BadLeoFile("expecting index")
-            return val
-        #@-node:EKR.20040526204706.5:getIndex
-        #@+node:EKR.20040526204706.6:getLong
-        def getLong (self):
-        
-            self.skipWs() # guarantees at least one more character.
-            i = self.fileIndex
-            if self.fileBuffer[i] == '-':
-                i += 1
-            n = len(self.fileBuffer)
-            while i < n and self.fileBuffer[i] in string.digits:
-                i += 1
-            if i == self.fileIndex:
-                raise BadLeoFile("expecting int constant")
-            val = int(self.fileBuffer[self.fileIndex:i])
-            self.fileIndex = i
-            return val
-        #@-node:EKR.20040526204706.6:getLong
-        #@+node:EKR.20040526204706.7:getOpenTag
-        def getOpenTag (self,tag):
-            
-            """
-            Look ahead for collapsed tag: tag may or may not end in ">"
-            Skips tag and /> if found, otherwise does not alter index.
-            Returns True if the closing part was found.
-            Throws BadLeoFile if the tag does not exist.
-            """
-        
-            if tag[-1] == ">":
-                # Only the tag itself or a collapsed tag are valid.
-                if self.matchTag(tag):
-                    return False # Not a collapsed tag.
-                elif self.matchTag(tag[:-1]):
-                    # It must be a collapsed tag.
-                    self.skipWs()
-                    if self.matchTag("/>"):
-                        return True
                 print "getOpenTag(", tag, ") failed:"
                 raise BadLeoFile("expecting" + tag)
-            else:
-                # The tag need not be followed by "/>"
-                if self.matchTag(tag):
-                    old_index = self.fileIndex
-                    self.skipWs()
-                    if self.matchTag("/>"):
-                        return True
-                    else:
-                        self.fileIndex = old_index
-                        return False
-                else:
-                    print "getOpenTag(", tag, ") failed:"
-                    raise BadLeoFile("expecting" + tag)
-        #@-node:EKR.20040526204706.7:getOpenTag
-        #@+node:EKR.20040526204706.8:getStringToTag
-        def getStringToTag (self,tag):
+    #@-node:EKR.20040526204706.7:getOpenTag
+    #@+node:EKR.20040526204706.8:getStringToTag
+    def getStringToTag (self,tag):
+    
+        buf = self.fileBuffer
+        blen = len(buf) ; tlen = len(tag)
+        i = j = self.fileIndex
+        while i < blen:
+            if tag == buf[i:i+tlen]:
+                self.fileIndex = i
+                return buf[j:i]
+            else: i += 1
+        raise BadLeoFile("expecting string terminated by " + tag)
+        return ""
+    #@-node:EKR.20040526204706.8:getStringToTag
+    #@+node:EKR.20040526204706.9:getTag
+    def getTag (self,tag):
         
-            buf = self.fileBuffer
-            blen = len(buf) ; tlen = len(tag)
-            i = j = self.fileIndex
-            while i < blen:
-                if tag == buf[i:i+tlen]:
-                    self.fileIndex = i
-                    return buf[j:i]
-                else: i += 1
-            raise BadLeoFile("expecting string terminated by " + tag)
-            return ""
-        #@-node:EKR.20040526204706.8:getStringToTag
-        #@+node:EKR.20040526204706.9:getTag
-        def getTag (self,tag):
-            
-            """
-            Look ahead for closing />
-            Return True if found.
-            """
-            
-            if self.matchTag(tag):
-                return
-            else:
-                print "getTag(", tag, ") failed:"
-                raise BadLeoFile("expecting" + tag)
-        #@-node:EKR.20040526204706.9:getTag
-        #@+node:EKR.20040526204036:getUnknownTag
-        def getUnknownTag(self):
-            
-            self.skipWsAndNl() # guarantees at least one more character.
-            tag = self.getStringToTag('=')
-            if not tag:
-                print "getUnknownTag failed"
-                raise BadLeoFile("unknown tag not followed by '='")
+        """
+        Look ahead for closing />
+        Return True if found.
+        """
         
-            self.fileIndex += 1
-            val = self.getDqString()
-            # g.trace(tag,val)
-            return tag,val
-        #@-node:EKR.20040526204036:getUnknownTag
-        #@-node:ekr.20031218072017.1244:get routines (basic)
-        #@+node:ekr.20031218072017.1245:match routines
-        def matchChar (self,ch):
-            self.skipWs() # guarantees at least one more character.
-            if ch == self.fileBuffer[self.fileIndex]:
-                self.fileIndex += 1 ; return True
-            else: return False
+        if self.matchTag(tag):
+            return
+        else:
+            print "getTag(", tag, ") failed:"
+            raise BadLeoFile("expecting" + tag)
+    #@-node:EKR.20040526204706.9:getTag
+    #@+node:EKR.20040526204036:getUnknownTag
+    def getUnknownTag(self):
         
-        # Warning: does not check for end-of-word,
-        # so caller must match prefixes first.
-        def matchTag (self,tag):
-            self.skipWsAndNl() # guarantees at least one more character.
-            i = self.fileIndex
-            if tag == self.fileBuffer[i:i+len(tag)]:
-                self.fileIndex += len(tag)
-                return True
-            else:
-                return False
+        self.skipWsAndNl() # guarantees at least one more character.
+        tag = self.getStringToTag('=')
+        if not tag:
+            print "getUnknownTag failed"
+            raise BadLeoFile("unknown tag not followed by '='")
+    
+        self.fileIndex += 1
+        val = self.getDqString()
+        # g.trace(tag,val)
+        return tag,val
+    #@-node:EKR.20040526204036:getUnknownTag
+    #@-node:ekr.20031218072017.1244:get routines (basic)
+    #@+node:ekr.20031218072017.1245:match routines
+    def matchChar (self,ch):
+        self.skipWs() # guarantees at least one more character.
+        if ch == self.fileBuffer[self.fileIndex]:
+            self.fileIndex += 1 ; return True
+        else: return False
+    
+    # Warning: does not check for end-of-word,
+    # so caller must match prefixes first.
+    def matchTag (self,tag):
+        self.skipWsAndNl() # guarantees at least one more character.
+        i = self.fileIndex
+        if tag == self.fileBuffer[i:i+len(tag)]:
+            self.fileIndex += len(tag)
+            return True
+        else:
+            return False
+    
+    def matchTagWordIgnoringCase (self,tag):
+        self.skipWsAndNl() # guarantees at least one more character.
+        i = self.fileIndex
+        tag = string.lower(tag)
+        j = g.skip_c_id(self.fileBuffer,i)
+        word = self.fileBuffer[i:j]
+        word = string.lower(word)
+        if tag == word:
+            self.fileIndex += len(tag)
+            return True
+        else:
+            return False
+    #@-node:ekr.20031218072017.1245:match routines
+    #@+node:ekr.20031218072017.3027:skipWs
+    def skipWs (self):
+    
+        while self.fileIndex < len(self.fileBuffer):
+            ch = self.fileBuffer[self.fileIndex]
+            if ch == ' ' or ch == '\t':
+                self.fileIndex += 1
+            else: break
+    
+        # The caller is entitled to get the next character.
+        if  self.fileIndex >= len(self.fileBuffer):
+            raise BadLeoFile("")
+    #@-node:ekr.20031218072017.3027:skipWs
+    #@+node:ekr.20031218072017.3028:skipWsAndNl
+    def skipWsAndNl (self):
+    
+        while self.fileIndex < len(self.fileBuffer):
+            ch = self.fileBuffer[self.fileIndex]
+            if ch == ' ' or ch == '\t' or ch == '\r' or ch == '\n':
+                self.fileIndex += 1
+            else: break
+    
+        # The caller is entitled to get the next character.
+        if  self.fileIndex >= len(self.fileBuffer):
+            raise BadLeoFile("")
+    #@-node:ekr.20031218072017.3028:skipWsAndNl
+    #@+node:ekr.20031218072017.3031:xmlUnescape
+    def xmlUnescape(self,s):
+    
+        if s:
+            s = string.replace(s, '\r', '')
+            s = string.replace(s, "&lt;", '<')
+            s = string.replace(s, "&gt;", '>')
+            s = string.replace(s, "&amp;", '&')
+        return s
+    #@-node:ekr.20031218072017.3031:xmlUnescape
+    #@-node:ekr.20031218072017.1243:get, match & skip (basic)
+    #@+node:ekr.20031218072017.1555:getAllLeoElements
+    def getAllLeoElements (self,fileName,silent):
+        c = self.c
+    
+        self.getXmlVersionTag()
+        self.getXmlStylesheetTag()
+    
+        self.getTag("<leo_file>") # Must match exactly.
+        self.getLeoHeader()
+        self.getGlobals()
+        self.getPrefs()
+        self.getFindPanelSettings()
         
-        def matchTagWordIgnoringCase (self,tag):
-            self.skipWsAndNl() # guarantees at least one more character.
-            i = self.fileIndex
-            tag = string.lower(tag)
-            j = g.skip_c_id(self.fileBuffer,i)
-            word = self.fileBuffer[i:j]
-            word = string.lower(word)
-            if tag == word:
-                self.fileIndex += len(tag)
-                return True
-            else:
-                return False
-        #@-node:ekr.20031218072017.1245:match routines
-        #@+node:ekr.20031218072017.3027:skipWs
-        def skipWs (self):
+        # Causes window to appear.
+        c.frame.resizePanesToRatio(c.frame.ratio,c.frame.secondary_ratio)
+        if not silent:
+            g.es("reading: " + fileName)
         
-            while self.fileIndex < len(self.fileBuffer):
-                ch = self.fileBuffer[self.fileIndex]
-                if ch == ' ' or ch == '\t':
-                    self.fileIndex += 1
-                else: break
-        
-            # The caller is entitled to get the next character.
-            if  self.fileIndex >= len(self.fileBuffer):
-                raise BadLeoFile("")
-        #@-node:ekr.20031218072017.3027:skipWs
-        #@+node:ekr.20031218072017.3028:skipWsAndNl
-        def skipWsAndNl (self):
-        
-            while self.fileIndex < len(self.fileBuffer):
-                ch = self.fileBuffer[self.fileIndex]
-                if ch == ' ' or ch == '\t' or ch == '\r' or ch == '\n':
-                    self.fileIndex += 1
-                else: break
-        
-            # The caller is entitled to get the next character.
-            if  self.fileIndex >= len(self.fileBuffer):
-                raise BadLeoFile("")
-        #@-node:ekr.20031218072017.3028:skipWsAndNl
-        #@+node:ekr.20031218072017.3031:xmlUnescape
-        def xmlUnescape(self,s):
-        
-            if s:
-                s = string.replace(s, '\r', '')
-                s = string.replace(s, "&lt;", '<')
-                s = string.replace(s, "&gt;", '>')
-                s = string.replace(s, "&amp;", '&')
-            return s
-        #@-node:ekr.20031218072017.3031:xmlUnescape
-        #@-node:ekr.20031218072017.1243:get, match & skip (basic)
-        #@+node:ekr.20031218072017.1555:getAllLeoElements
-        def getAllLeoElements (self,fileName,silent):
-            c = self.c
-        
-            self.getXmlVersionTag()
-            self.getXmlStylesheetTag()
-        
-            self.getTag("<leo_file>") # Must match exactly.
-            self.getLeoHeader()
-            self.getGlobals()
-            self.getPrefs()
-            self.getFindPanelSettings()
-            
-            # Causes window to appear.
-            c.frame.resizePanesToRatio(c.frame.ratio,c.frame.secondary_ratio)
-            if not silent:
-                g.es("reading: " + fileName)
-            
-            self.getVnodes()
-            self.getTnodes()
-            self.getCloneWindows()
-            self.getTag("</leo_file>")
-        #@nonl
-        #@-node:ekr.20031218072017.1555:getAllLeoElements
-        #@+node:ekr.20031218072017.3023:getCloneWindows
-        # For compatibility with old file formats.
-        
-        def getCloneWindows (self):
-        
-            if not self.matchTag("<clone_windows>"):
-                return # <clone_windows/> seen.
-        
-            while self.matchTag("<clone_window vtag=\"V"):
-                self.getLong() ; self.getDquote() ; self.getTag(">")
-                if not self.getOpenTag("<global_window_position"):
-                    self.getTag("<global_window_position")
-                    self.getPosition()
-                    self.getTag("/>")
-                self.getTag("</clone_window>")
-            self.getTag("</clone_windows>")
-        #@-node:ekr.20031218072017.3023:getCloneWindows
-        #@+node:ekr.20031218072017.2064:getFindPanelSettings
-        def getFindPanelSettings (self):
-            
-            if self.getOpenTag("<find_panel_settings"):
-                return # <find_panel_settings/> seen.
-            
-            # New in 4.3: ignore all pre-4.3 find settings.
-            while 1:
-                if   self.matchTag("batch="):           self.getDqBool()
-                elif self.matchTag("ignore_case="):     self.getDqBool()
-                elif self.matchTag("mark_changes="):    self.getDqBool()
-                elif self.matchTag("mark_finds="):      self.getDqBool()
-                elif self.matchTag("node_only="):       self.getDqBool()
-                elif self.matchTag("pattern_match="):   self.getDqBool()
-                elif self.matchTag("reverse="):         self.getDqBool()
-                elif self.matchTag("script_change="):   self.getDqBool()
-                elif self.matchTag("script_search="):   self.getDqBool()
-                elif self.matchTag("search_headline="): self.getDqBool()
-                elif self.matchTag("search_body="):     self.getDqBool()
-                elif self.matchTag("selection_only="):  self.getDqBool()
-                elif self.matchTag("suboutline_only="): self.getDqBool()
-                elif self.matchTag("whole_word="):      self.getDqBool()
-                elif self.matchTag("wrap="):            self.getDqBool()
-                elif self.matchTag(">"): break
-                else: self.getUnknownTag() # Ignore all other tags.
-            # Allow only <find_string> or <find_string/>
-            if self.getOpenTag("<find_string>"): 
-                pass
-            else:
-                self.getEscapedString() ; self.getTag("</find_string>")
-            # Allow only <change_string> or <change_string/>
-            if self.getOpenTag("<change_string>"): 
-                pass
-            else:
-                self.getEscapedString() ; self.getTag("</change_string>")
-            self.getTag("</find_panel_settings>")
-        #@-node:ekr.20031218072017.2064:getFindPanelSettings
-        #@+node:ekr.20031218072017.2306:getGlobals
-        def getGlobals (self):
-        
-            if self.getOpenTag("<globals"):
-                # <globals/> seen: set reasonable defaults:
-                self.ratio = 0.5
-                y,x,h,w = 50,50,500,700
-            else:
-                self.getTag("body_outline_ratio=\"")
-                self.ratio = self.getDouble() ; self.getDquote() ; self.getTag(">")
-        
+        self.getVnodes()
+        self.getTnodes()
+        self.getCloneWindows()
+        self.getTag("</leo_file>")
+    #@nonl
+    #@-node:ekr.20031218072017.1555:getAllLeoElements
+    #@+node:ekr.20031218072017.3023:getCloneWindows
+    # For compatibility with old file formats.
+    
+    def getCloneWindows (self):
+    
+        if not self.matchTag("<clone_windows>"):
+            return # <clone_windows/> seen.
+    
+        while self.matchTag("<clone_window vtag=\"V"):
+            self.getLong() ; self.getDquote() ; self.getTag(">")
+            if not self.getOpenTag("<global_window_position"):
                 self.getTag("<global_window_position")
-                y,x,h,w = self.getPosition()
-                self.getTag("/>")
-        
-                self.getTag("<global_log_window_position")
                 self.getPosition()
-                self.getTag("/>") # no longer used.
+                self.getTag("/>")
+            self.getTag("</clone_window>")
+        self.getTag("</clone_windows>")
+    #@-node:ekr.20031218072017.3023:getCloneWindows
+    #@+node:ekr.20031218072017.2064:getFindPanelSettings
+    def getFindPanelSettings (self):
         
-                self.getTag("</globals>")
+        if self.getOpenTag("<find_panel_settings"):
+            return # <find_panel_settings/> seen.
         
-            # Redraw the window before writing into it.
-            self.frame.setTopGeometry(w,h,x,y)
-            self.frame.deiconify()
-            self.frame.lift()
-            self.frame.update()
-        #@-node:ekr.20031218072017.2306:getGlobals
-        #@+node:ekr.20031218072017.1970:getLeoHeader
-        def getLeoHeader (self):
+        # New in 4.3: ignore all pre-4.3 find settings.
+        while 1:
+            if   self.matchTag("batch="):           self.getDqBool()
+            elif self.matchTag("ignore_case="):     self.getDqBool()
+            elif self.matchTag("mark_changes="):    self.getDqBool()
+            elif self.matchTag("mark_finds="):      self.getDqBool()
+            elif self.matchTag("node_only="):       self.getDqBool()
+            elif self.matchTag("pattern_match="):   self.getDqBool()
+            elif self.matchTag("reverse="):         self.getDqBool()
+            elif self.matchTag("script_change="):   self.getDqBool()
+            elif self.matchTag("script_search="):   self.getDqBool()
+            elif self.matchTag("search_headline="): self.getDqBool()
+            elif self.matchTag("search_body="):     self.getDqBool()
+            elif self.matchTag("selection_only="):  self.getDqBool()
+            elif self.matchTag("suboutline_only="): self.getDqBool()
+            elif self.matchTag("whole_word="):      self.getDqBool()
+            elif self.matchTag("wrap="):            self.getDqBool()
+            elif self.matchTag(">"): break
+            else: self.getUnknownTag() # Ignore all other tags.
+        # Allow only <find_string> or <find_string/>
+        if self.getOpenTag("<find_string>"): 
+            pass
+        else:
+            self.getEscapedString() ; self.getTag("</find_string>")
+        # Allow only <change_string> or <change_string/>
+        if self.getOpenTag("<change_string>"): 
+            pass
+        else:
+            self.getEscapedString() ; self.getTag("</change_string>")
+        self.getTag("</find_panel_settings>")
+    #@-node:ekr.20031218072017.2064:getFindPanelSettings
+    #@+node:ekr.20031218072017.2306:getGlobals
+    def getGlobals (self):
+    
+        if self.getOpenTag("<globals"):
+            # <globals/> seen: set reasonable defaults:
+            self.ratio = 0.5
+            y,x,h,w = 50,50,500,700
+        else:
+            self.getTag("body_outline_ratio=\"")
+            self.ratio = self.getDouble() ; self.getDquote() ; self.getTag(">")
+    
+            self.getTag("<global_window_position")
+            y,x,h,w = self.getPosition()
+            self.getTag("/>")
+    
+            self.getTag("<global_log_window_position")
+            self.getPosition()
+            self.getTag("/>") # no longer used.
+    
+            self.getTag("</globals>")
+    
+        # Redraw the window before writing into it.
+        self.frame.setTopGeometry(w,h,x,y)
+        self.frame.deiconify()
+        self.frame.lift()
+        self.frame.update()
+    #@-node:ekr.20031218072017.2306:getGlobals
+    #@+node:ekr.20031218072017.1970:getLeoHeader
+    def getLeoHeader (self):
+    
+        if self.getOpenTag("<leo_header"):
+            return # <leo_header/> seen.
+    
+        # New in version 1.7: attributes may appear in any order.
+        while 1:
+            if self.matchTag("file_format="):
+                self.getDquote() ; self.getLong() ; self.getDquote()
+            elif self.matchTag("tnodes="):
+                self.getDquote() ; self.getLong() ; self.getDquote()
+            elif self.matchTag("max_tnode_index="):
+                self.getDquote() ; self.getLong() ; self.getDquote()
+            elif self.matchTag("clone_windows="):
+                self.getDquote() ; self.getLong() ; self.getDquote() # no longer used.
+            elif self.matchTag("></leo_header>"): # new in 4.2: allow this form.
+                break
+            else:
+                self.getTag("/>")
+                break
+    #@-node:ekr.20031218072017.1970:getLeoHeader
+    #@+node:ekr.20031218072017.3025:getPosition
+    def getPosition (self):
+    
+        top = left = height = width = 0
+        # New in version 1.7: attributes may appear in any order.
+        while 1:
+            if self.matchTag("top=\""):
+                top = self.getLong() ; self.getDquote()
+            elif self.matchTag("left=\""):
+                left = self.getLong() ; self.getDquote()
+            elif self.matchTag("height=\""):
+                height = self.getLong() ; self.getDquote()
+            elif self.matchTag("width=\""):
+                width = self.getLong() ; self.getDquote()
+            else: break
+        return top, left, height, width
+    #@-node:ekr.20031218072017.3025:getPosition
+    #@+node:ekr.20031218072017.2062:getPrefs
+    # Note: Leo 4.3 does not write these settings to local .leo files.
+    # Instead, corresponding settings are contained in leoConfig.leo files.
+    
+    def getPrefs (self):
+    
+        c = self.c
         
-            if self.getOpenTag("<leo_header"):
-                return # <leo_header/> seen.
+        if self.getOpenTag("<preferences"):
+            return # <preferences/> seen
+    
+        table = (
+            ("allow_rich_text",None,None), # Ignored.
+            ("tab_width","tab_width",self.getLong),
+            ("page_width","page_width",self.getLong),
+            ("tangle_bat","tangle_batch_flag",self.getBool),
+            ("untangle_bat","untangle_batch_flag",self.getBool),
+            ("output_doc_chunks","output_doc_flag",self.getBool),
+            ("noweb_flag",None,None), # Ignored.
+            ("extended_noweb_flag",None,None), # Ignored.
+            ("defaultTargetLanguage","target_language",self.getTargetLanguage),
+            ("use_header_flag","use_header_flag",self.getBool))
         
-            # New in version 1.7: attributes may appear in any order.
-            while 1:
-                if self.matchTag("file_format="):
-                    self.getDquote() ; self.getLong() ; self.getDquote()
-                elif self.matchTag("tnodes="):
-                    self.getDquote() ; self.getLong() ; self.getDquote()
-                elif self.matchTag("max_tnode_index="):
-                    self.getDquote() ; self.getLong() ; self.getDquote()
-                elif self.matchTag("clone_windows="):
-                    self.getDquote() ; self.getLong() ; self.getDquote() # no longer used.
-                elif self.matchTag("></leo_header>"): # new in 4.2: allow this form.
+        done = False
+        while 1:
+            found = False
+            for tag,var,f in table:
+                if self.matchTag("%s=" % tag):
+                    if var:
+                        self.getDquote() ; val = f() ; self.getDquote()
+                        setattr(c,var,val)
+                        # g.trace(var,val)
+                    else:
+                        self.getDqString()
+                    found = True ; break
+            if not found:
+                if self.matchTag("/>"):
+                    done = True ; break
+                if self.matchTag(">"):
                     break
-                else:
-                    self.getTag("/>")
-                    break
-        #@-node:ekr.20031218072017.1970:getLeoHeader
-        #@+node:ekr.20031218072017.3025:getPosition
-        def getPosition (self):
-        
-            top = left = height = width = 0
-            # New in version 1.7: attributes may appear in any order.
+                else: # New in 4.1: ignore all other tags.
+                    self.getUnknownTag()
+    
+        if not done:
             while 1:
-                if self.matchTag("top=\""):
-                    top = self.getLong() ; self.getDquote()
-                elif self.matchTag("left=\""):
-                    left = self.getLong() ; self.getDquote()
-                elif self.matchTag("height=\""):
-                    height = self.getLong() ; self.getDquote()
-                elif self.matchTag("width=\""):
-                    width = self.getLong() ; self.getDquote()
+                if self.matchTag("<defaultDirectory>"):
+                    # New in version 0.16.
+                    c.tangle_directory = self.getEscapedString()
+                    self.getTag("</defaultDirectory>")
+                    if not g.os_path_exists(c.tangle_directory):
+                        g.es("default tangle directory not found:" + c.tangle_directory)
+                elif self.matchTag("<TSyntaxMemo_options>"):
+                    self.getEscapedString() # ignored
+                    self.getTag("</TSyntaxMemo_options>")
                 else: break
-            return top, left, height, width
-        #@-node:ekr.20031218072017.3025:getPosition
-        #@+node:ekr.20031218072017.2062:getPrefs
-        # Note: Leo 4.3 does not write these settings to local .leo files.
-        # Instead, corresponding settings are contained in leoConfig.leo files.
+            self.getTag("</preferences>")
+    #@+node:ekr.20031218072017.2063:getTargetLanguage
+    def getTargetLanguage (self):
         
-        def getPrefs (self):
+        # Must match longer tags before short prefixes.
+        for name in g.app.language_delims_dict.keys():
+            if self.matchTagWordIgnoringCase(name):
+                language = name.replace("/","")
+                # self.getDquote()
+                return language
+                
+        return "c" # default
+    #@-node:ekr.20031218072017.2063:getTargetLanguage
+    #@-node:ekr.20031218072017.2062:getPrefs
+    #@+node:ekr.20031218072017.3026:getSize (not used!)
+    def getSize (self):
+    
+        # New in version 1.7: attributes may appear in any order.
+        height = 0 ; width = 0
+        while 1:
+            if self.matchTag("height=\""):
+                height = self.getLong() ; self.getDquote()
+            elif self.matchTag("width=\""):
+                width = self.getLong() ; self.getDquote()
+            else: break
+        return height, width
+    #@-node:ekr.20031218072017.3026:getSize (not used!)
+    #@+node:ekr.20031218072017.1561:getTnode (changed for 4.4)
+    def getTnode (self):
+    
+        # we have already matched <t.
+        index = -1 ; attrDict = {}
+    
+        # New in Leo 4.4: support collapsed tnodes.
+        if self.matchTag('/>'): # A collapsed tnode.
+            return
+    
+        # Attributes may appear in any order.
+        while 1:
+            if self.matchTag("tx="):
+                # New for 4.1.  Read either "Tnnn" or "gnx".
+                index = self.getDqString()
+            elif self.matchTag("rtf=\"1\""): pass # ignored
+            elif self.matchTag("rtf=\"0\""): pass # ignored
+            elif self.matchTag(">"):         break
+            else: # New for 4.0: allow unknown attributes.
+                # New in 4.2: allow pickle'd and hexlify'ed values.
+                attr,val = self.getUa("tnode")
+                if attr: attrDict[attr] = val
+                
+        # index might be Tnnn, nnn, or gnx.
+        theId,time,n = g.app.nodeIndices.scanGnx(index,0)
+        if time == None: # A pre-4.1 file index.
+            if index[0] == "T":
+                index = index[1:]
+    
+        index = self.canonicalTnodeIndex(index)
+        t = self.tnodesDict.get(index)
+        #@    << handle unknown attributes >>
+        #@+node:ekr.20031218072017.1564:<< handle unknown attributes >>
+        keys = attrDict.keys()
+        if keys:
+            t.unknownAttributes = attrDict
+            t._p_changed = 1
+            if 0: # For debugging.
+                s = "unknown attributes for tnode"
+                g.es_print(s, color = "blue")
+                for key in keys:
+                    s = "%s = %s" % (key,attrDict.get(key))
+                    g.es_print(s)
+        #@-node:ekr.20031218072017.1564:<< handle unknown attributes >>
+        #@nl
+        if t:
+            s = self.getEscapedString()
+            t.setTnodeText(s,encoding=self.leo_file_encoding)
+        else:
+            g.es("no tnode with index: %s.  The text will be discarded" % str(index))
+        self.getTag("</t>")
+    #@-node:ekr.20031218072017.1561:getTnode (changed for 4.4)
+    #@+node:ekr.20031218072017.2008:getTnodeList (4.0,4.2)
+    def getTnodeList (self,s):
+    
+        """Parse a list of tnode indices in string s."""
         
-            c = self.c
-            
-            if self.getOpenTag("<preferences"):
-                return # <preferences/> seen
+        # Remember: entries in the tnodeList correspond to @+node sentinels, _not_ to tnodes!
         
-            table = (
-                ("allow_rich_text",None,None), # Ignored.
-                ("tab_width","tab_width",self.getLong),
-                ("page_width","page_width",self.getLong),
-                ("tangle_bat","tangle_batch_flag",self.getBool),
-                ("untangle_bat","untangle_batch_flag",self.getBool),
-                ("output_doc_chunks","output_doc_flag",self.getBool),
-                ("noweb_flag",None,None), # Ignored.
-                ("extended_noweb_flag",None,None), # Ignored.
-                ("defaultTargetLanguage","target_language",self.getTargetLanguage),
-                ("use_header_flag","use_header_flag",self.getBool))
-            
-            done = False
-            while 1:
-                found = False
-                for tag,var,f in table:
-                    if self.matchTag("%s=" % tag):
-                        if var:
-                            self.getDquote() ; val = f() ; self.getDquote()
-                            setattr(c,var,val)
-                            # g.trace(var,val)
-                        else:
-                            self.getDqString()
-                        found = True ; break
-                if not found:
-                    if self.matchTag("/>"):
-                        done = True ; break
-                    if self.matchTag(">"):
-                        break
-                    else: # New in 4.1: ignore all other tags.
-                        self.getUnknownTag()
-        
-            if not done:
-                while 1:
-                    if self.matchTag("<defaultDirectory>"):
-                        # New in version 0.16.
-                        c.tangle_directory = self.getEscapedString()
-                        self.getTag("</defaultDirectory>")
-                        if not g.os_path_exists(c.tangle_directory):
-                            g.es("default tangle directory not found:" + c.tangle_directory)
-                    elif self.matchTag("<TSyntaxMemo_options>"):
-                        self.getEscapedString() # ignored
-                        self.getTag("</TSyntaxMemo_options>")
-                    else: break
-                self.getTag("</preferences>")
-        #@+node:ekr.20031218072017.2063:getTargetLanguage
-        def getTargetLanguage (self):
-            
-            # Must match longer tags before short prefixes.
-            for name in g.app.language_delims_dict.keys():
-                if self.matchTagWordIgnoringCase(name):
-                    language = name.replace("/","")
-                    # self.getDquote()
-                    return language
-                    
-            return "c" # default
-        #@-node:ekr.20031218072017.2063:getTargetLanguage
-        #@-node:ekr.20031218072017.2062:getPrefs
-        #@+node:ekr.20031218072017.3026:getSize (not used!)
-        def getSize (self):
-        
-            # New in version 1.7: attributes may appear in any order.
-            height = 0 ; width = 0
-            while 1:
-                if self.matchTag("height=\""):
-                    height = self.getLong() ; self.getDquote()
-                elif self.matchTag("width=\""):
-                    width = self.getLong() ; self.getDquote()
-                else: break
-            return height, width
-        #@-node:ekr.20031218072017.3026:getSize (not used!)
-        #@+node:ekr.20031218072017.1561:getTnode (changed for 4.4)
-        def getTnode (self):
-        
-            # we have already matched <t.
-            index = -1 ; attrDict = {}
-        
-            # New in Leo 4.4: support collapsed tnodes.
-            if self.matchTag('/>'): # A collapsed tnode.
-                return
-        
-            # Attributes may appear in any order.
-            while 1:
-                if self.matchTag("tx="):
-                    # New for 4.1.  Read either "Tnnn" or "gnx".
-                    index = self.getDqString()
-                elif self.matchTag("rtf=\"1\""): pass # ignored
-                elif self.matchTag("rtf=\"0\""): pass # ignored
-                elif self.matchTag(">"):         break
-                else: # New for 4.0: allow unknown attributes.
-                    # New in 4.2: allow pickle'd and hexlify'ed values.
-                    attr,val = self.getUa("tnode")
-                    if attr: attrDict[attr] = val
-                    
-            # index might be Tnnn, nnn, or gnx.
-            theId,time,n = g.app.nodeIndices.scanGnx(index,0)
-            if time == None: # A pre-4.1 file index.
-                if index[0] == "T":
-                    index = index[1:]
-        
+        fc = self ; 
+    
+        indexList = s.split(',') # The list never ends in a comma.
+        tnodeList = []
+        for index in indexList:
             index = self.canonicalTnodeIndex(index)
-            t = self.tnodesDict.get(index)
-            #@    << handle unknown attributes >>
-            #@+node:ekr.20031218072017.1564:<< handle unknown attributes >>
-            keys = attrDict.keys()
-            if keys:
-                t.unknownAttributes = attrDict
-                t._p_changed = 1
-                if 0: # For debugging.
-                    s = "unknown attributes for tnode"
-                    g.es_print(s, color = "blue")
-                    for key in keys:
-                        s = "%s = %s" % (key,attrDict.get(key))
-                        g.es_print(s)
-            #@-node:ekr.20031218072017.1564:<< handle unknown attributes >>
-            #@nl
-            if t:
-                s = self.getEscapedString()
-                t.setTnodeText(s,encoding=self.leo_file_encoding)
-            else:
-                g.es("no tnode with index: %s.  The text will be discarded" % str(index))
-            self.getTag("</t>")
-        #@-node:ekr.20031218072017.1561:getTnode (changed for 4.4)
-        #@+node:ekr.20031218072017.2008:getTnodeList (4.0,4.2)
-        def getTnodeList (self,s):
-        
-            """Parse a list of tnode indices in string s."""
+            t = fc.tnodesDict.get(index)
+            if not t:
+                # Not an error: create a new tnode and put it in fc.tnodesDict.
+                # g.trace("not allocated: %s" % index)
+                t = self.newTnode(index)
+            tnodeList.append(t)
             
-            # Remember: entries in the tnodeList correspond to @+node sentinels, _not_ to tnodes!
-            
-            fc = self ; 
+        # if tnodeList: g.trace(len(tnodeList))
+        return tnodeList
+    #@-node:ekr.20031218072017.2008:getTnodeList (4.0,4.2)
+    #@+node:ekr.20031218072017.1560:getTnodes
+    def getTnodes (self):
+    
+        # A slight change: we require a tnodes element.  But Leo always writes this.
+        if self.getOpenTag("<tnodes>"):
+            return # <tnodes/> seen.
         
-            indexList = s.split(',') # The list never ends in a comma.
-            tnodeList = []
-            for index in indexList:
-                index = self.canonicalTnodeIndex(index)
-                t = fc.tnodesDict.get(index)
-                if not t:
-                    # Not an error: create a new tnode and put it in fc.tnodesDict.
-                    # g.trace("not allocated: %s" % index)
-                    t = self.newTnode(index)
-                tnodeList.append(t)
+        while self.matchTag("<t"):
+                self.getTnode()
+    
+        self.getTag("</tnodes>")
+    #@-node:ekr.20031218072017.1560:getTnodes
+    #@+node:EKR.20040526204036.1:getUa (non-sax)
+    # changed for 4.3.
+    
+    def getUa(self,nodeType):
+        
+        """Parse an unknown attribute in a <v> or <t> element."""
+        
+        __pychecker__ = '--no-argsused' # nodeType not used: good for debugging.
+        
+        # New in 4.2.  The unknown tag has been pickled and hexlify'd.
+        attr,val = self.getUnknownTag()
+        # g.trace(attr,repr(val))
+        if not attr:
+            return None,None
+            
+        # New in 4.3: leave string attributes starting with 'str_' alone.
+        if attr.startswith('str_') and type(val) == type(''):
+            # g.trace(attr,val)
+            return attr,val
+            
+        # New in 4.3: convert attributes starting with 'b64_' using the base64 conversion.
+        if 0: # Not ready yet.
+            if attr.startswith('b64_'):
+                try: pass
+                except Exception: pass
+            
+        try:
+            binString = binascii.unhexlify(val) # Throws a TypeError if val is not a hex string.
+        except TypeError:
+            # Assume that Leo 4.1 wrote the attribute.
+            # g.trace('4.1 val:',val2)
+            return attr,val
+        try:
+            # No change needed to support protocols.
+            val2 = pickle.loads(binString)
+            # g.trace('v.3 val:',val2)
+            return attr,val2
+        except (pickle.UnpicklingError,ImportError):
+            return attr,val
+    #@-node:EKR.20040526204036.1:getUa (non-sax)
+    #@+node:ekr.20031218072017.1566:getVnode & helpers
+    # changed for 4.2 & 4.4
+    def getVnode (self,parent,back,skip,appendToCurrentStack,appendToTopStack):
+    
+        v = None
+        setCurrent = setExpanded = setMarked = setOrphan = setTop = False
+        tref = -1 ; headline = '' ; tnodeList = None ; attrDict = {}
+    
+        # we have already matched <v.
+        
+        # New in Leo 4.4: support collapsed tnodes.
+        if self.matchTag('/>'): # A collapsed vnode.
+            v,skip2 = self.createVnode(parent,back,tref,headline,attrDict)
+            if self.checking: return None
+            else: return v
+        
+        while 1:
+            if self.matchTag("a=\""):
+                #@            << Handle vnode attribute bits >>
+                #@+node:ekr.20031218072017.1567:<< Handle vnode attribute bits  >>
+                # The a=" has already been seen.
+                while 1:
+                    if   self.matchChar('C'): pass # Not used: clone bits are recomputed later.
+                    elif self.matchChar('D'): pass # Not used.
+                    elif self.matchChar('E'): setExpanded = True
+                    elif self.matchChar('M'): setMarked = True
+                    elif self.matchChar('O'): setOrphan = True
+                    elif self.matchChar('T'): setTop = True
+                    elif self.matchChar('V'): setCurrent = True
+                    else: break
                 
-            # if tnodeList: g.trace(len(tnodeList))
-            return tnodeList
-        #@-node:ekr.20031218072017.2008:getTnodeList (4.0,4.2)
-        #@+node:ekr.20031218072017.1560:getTnodes
-        def getTnodes (self):
-        
-            # A slight change: we require a tnodes element.  But Leo always writes this.
-            if self.getOpenTag("<tnodes>"):
-                return # <tnodes/> seen.
-            
-            while self.matchTag("<t"):
-                    self.getTnode()
-        
-            self.getTag("</tnodes>")
-        #@-node:ekr.20031218072017.1560:getTnodes
-        #@+node:EKR.20040526204036.1:getUa (non-sax)
-        # changed for 4.3.
-        
-        def getUa(self,nodeType):
-            
-            """Parse an unknown attribute in a <v> or <t> element."""
-            
-            __pychecker__ = '--no-argsused' # nodeType not used: good for debugging.
-            
-            # New in 4.2.  The unknown tag has been pickled and hexlify'd.
-            attr,val = self.getUnknownTag()
-            # g.trace(attr,repr(val))
-            if not attr:
-                return None,None
-                
-            # New in 4.3: leave string attributes starting with 'str_' alone.
-            if attr.startswith('str_') and type(val) == type(''):
-                # g.trace(attr,val)
-                return attr,val
-                
-            # New in 4.3: convert attributes starting with 'b64_' using the base64 conversion.
-            if 0: # Not ready yet.
-                if attr.startswith('b64_'):
-                    try: pass
-                    except Exception: pass
-                
-            try:
-                binString = binascii.unhexlify(val) # Throws a TypeError if val is not a hex string.
-            except TypeError:
-                # Assume that Leo 4.1 wrote the attribute.
-                # g.trace('4.1 val:',val2)
-                return attr,val
-            try:
-                # No change needed to support protocols.
-                val2 = pickle.loads(binString)
-                # g.trace('v.3 val:',val2)
-                return attr,val2
-            except (pickle.UnpicklingError,ImportError):
-                return attr,val
-        #@-node:EKR.20040526204036.1:getUa (non-sax)
-        #@+node:ekr.20031218072017.1566:getVnode & helpers
-        # changed for 4.2 & 4.4
-        def getVnode (self,parent,back,skip,appendToCurrentStack,appendToTopStack):
-        
-            v = None
-            setCurrent = setExpanded = setMarked = setOrphan = setTop = False
-            tref = -1 ; headline = '' ; tnodeList = None ; attrDict = {}
-        
-            # we have already matched <v.
-            
-            # New in Leo 4.4: support collapsed tnodes.
-            if self.matchTag('/>'): # A collapsed vnode.
-                v,skip2 = self.createVnode(parent,back,tref,headline,attrDict)
-                if self.checking: return None
-                else: return v
-            
-            while 1:
-                if self.matchTag("a=\""):
-                    #@            << Handle vnode attribute bits >>
-                    #@+node:ekr.20031218072017.1567:<< Handle vnode attribute bits  >>
-                    # The a=" has already been seen.
-                    while 1:
-                        if   self.matchChar('C'): pass # Not used: clone bits are recomputed later.
-                        elif self.matchChar('D'): pass # Not used.
-                        elif self.matchChar('E'): setExpanded = True
-                        elif self.matchChar('M'): setMarked = True
-                        elif self.matchChar('O'): setOrphan = True
-                        elif self.matchChar('T'): setTop = True
-                        elif self.matchChar('V'): setCurrent = True
-                        else: break
-                    
-                    self.getDquote()
-                    #@-node:ekr.20031218072017.1567:<< Handle vnode attribute bits  >>
-                    #@nl
-                elif self.matchTag("t="):
-                    # New for 4.1.  Read either "Tnnn" or "gnx".
-                    tref = index = self.getDqString()
-                    if self.usingClipboard:
-                        #@                << raise invalidPaste if the tnode is in self.forbiddenTnodes >>
-                        #@+node:ekr.20041023110111:<< raise invalidPaste if the tnode is in self.forbiddenTnodes >>
-                        # Bug fix in 4.3 a1: make sure we have valid paste.
-                        theId,time,n = g.app.nodeIndices.scanGnx(index,0)
-                        if not time and index[0] == "T":
-                            index = index[1:]
-                            
-                        index = self.canonicalTnodeIndex(index)
-                        t = self.tnodesDict.get(index)
+                self.getDquote()
+                #@-node:ekr.20031218072017.1567:<< Handle vnode attribute bits  >>
+                #@nl
+            elif self.matchTag("t="):
+                # New for 4.1.  Read either "Tnnn" or "gnx".
+                tref = index = self.getDqString()
+                if self.usingClipboard:
+                    #@                << raise invalidPaste if the tnode is in self.forbiddenTnodes >>
+                    #@+node:ekr.20041023110111:<< raise invalidPaste if the tnode is in self.forbiddenTnodes >>
+                    # Bug fix in 4.3 a1: make sure we have valid paste.
+                    theId,time,n = g.app.nodeIndices.scanGnx(index,0)
+                    if not time and index[0] == "T":
+                        index = index[1:]
                         
-                        if t in self.forbiddenTnodes:
-                            # g.trace(t)
-                            raise invalidPaste
-                        #@-node:ekr.20041023110111:<< raise invalidPaste if the tnode is in self.forbiddenTnodes >>
-                        #@nl
-                elif self.matchTag("vtag=\"V"):
-                    self.getIndex() ; self.getDquote() # ignored
-                elif self.matchTag("tnodeList="):
-                    s = self.getDqString()
-                    tnodeList = self.getTnodeList(s) # New for 4.0
-                elif self.matchTag("descendentTnodeUnknownAttributes="):
-                    # New for 4.2, deprecated for 4.3?
-                    s = self.getDqString()
-                    theDict = self.getDescendentUnknownAttributes(s)
-                    if theDict:
-                        self.descendentUnknownAttributesDictList.append(theDict)
-                elif self.matchTag("expanded="): # New in 4.2
-                    s = self.getDqString()
-                    self.descendentExpandedList.extend(self.getDescendentAttributes(s,tag="expanded"))
-                elif self.matchTag("marks="): # New in 4.2.
-                    s = self.getDqString()
-                    self.descendentMarksList.extend(self.getDescendentAttributes(s,tag="marks"))
-                elif self.matchTag(">"):
-                    break
-                else: # New for 4.0: allow unknown attributes.
-                    # New in 4.2: allow pickle'd and hexlify'ed values.
-                    attr,val = self.getUa("vnode")
-                    if attr: attrDict[attr] = val
-            # Headlines are optional.
-            if self.matchTag("<vh>"):
-                headline = self.getEscapedString() ; self.getTag("</vh>")
-            # g.trace("skip:",skip,"parent:",parent,"back:",back,"headline:",headline)
-            if skip:
-                v = self.getExistingVnode(tref,headline)
-                if v: # Bug fix: 4/18/05: The headline may change during paste as clone.
-                    v.initHeadString(headline,encoding=self.leo_file_encoding)
-            if v is None:
-                v,skip2 = self.createVnode(parent,back,tref,headline,attrDict)
-                if not self.checking:
-                    skip = skip or skip2
-                    if tnodeList:
-                        v.t.tnodeList = tnodeList # New for 4.0, 4.2: now in tnode.
+                    index = self.canonicalTnodeIndex(index)
+                    t = self.tnodesDict.get(index)
                     
+                    if t in self.forbiddenTnodes:
+                        # g.trace(t)
+                        raise invalidPaste
+                    #@-node:ekr.20041023110111:<< raise invalidPaste if the tnode is in self.forbiddenTnodes >>
+                    #@nl
+            elif self.matchTag("vtag=\"V"):
+                self.getIndex() ; self.getDquote() # ignored
+            elif self.matchTag("tnodeList="):
+                s = self.getDqString()
+                tnodeList = self.getTnodeList(s) # New for 4.0
+            elif self.matchTag("descendentTnodeUnknownAttributes="):
+                # New for 4.2, deprecated for 4.3?
+                s = self.getDqString()
+                theDict = self.getDescendentUnknownAttributes(s)
+                if theDict:
+                    self.descendentUnknownAttributesDictList.append(theDict)
+            elif self.matchTag("expanded="): # New in 4.2
+                s = self.getDqString()
+                self.descendentExpandedList.extend(self.getDescendentAttributes(s,tag="expanded"))
+            elif self.matchTag("marks="): # New in 4.2.
+                s = self.getDqString()
+                self.descendentMarksList.extend(self.getDescendentAttributes(s,tag="marks"))
+            elif self.matchTag(">"):
+                break
+            else: # New for 4.0: allow unknown attributes.
+                # New in 4.2: allow pickle'd and hexlify'ed values.
+                attr,val = self.getUa("vnode")
+                if attr: attrDict[attr] = val
+        # Headlines are optional.
+        if self.matchTag("<vh>"):
+            headline = self.getEscapedString() ; self.getTag("</vh>")
+        # g.trace("skip:",skip,"parent:",parent,"back:",back,"headline:",headline)
+        if skip:
+            v = self.getExistingVnode(tref,headline)
+            if v: # Bug fix: 4/18/05: The headline may change during paste as clone.
+                v.initHeadString(headline,encoding=self.leo_file_encoding)
+        if v is None:
+            v,skip2 = self.createVnode(parent,back,tref,headline,attrDict)
             if not self.checking:
-                #@        << Set the remembered status bits >>
-                #@+node:ekr.20031218072017.1568:<< Set the remembered status bits >>
-                if setCurrent:
-                    self.currentVnodeStack = [v]
+                skip = skip or skip2
+                if tnodeList:
+                    v.t.tnodeList = tnodeList # New for 4.0, 4.2: now in tnode.
                 
-                if setTop:
-                    self.topVnodeStack = [v]
-                    
-                if setExpanded:
-                    v.initExpandedBit()
-                    
-                if setMarked:
-                    v.initMarkedBit() # 3/25/03: Do not call setMarkedBit here!
+        if not self.checking:
+            #@        << Set the remembered status bits >>
+            #@+node:ekr.20031218072017.1568:<< Set the remembered status bits >>
+            if setCurrent:
+                self.currentVnodeStack = [v]
+            
+            if setTop:
+                self.topVnodeStack = [v]
                 
-                if setOrphan:
-                    v.setOrphan()
-                #@-node:ekr.20031218072017.1568:<< Set the remembered status bits >>
-                #@nl
-        
-            # Recursively create all nested nodes.
-            parent = v ; back = None
-            while self.matchTag("<v"):
-                append1 = appendToCurrentStack and len(self.currentVnodeStack) == 0
-                append2 = appendToTopStack and len(self.topVnodeStack) == 0
-                back = self.getVnode(parent,back,skip,
-                    appendToCurrentStack=append1,appendToTopStack=append2)
+            if setExpanded:
+                v.initExpandedBit()
+                
+            if setMarked:
+                v.initMarkedBit() # 3/25/03: Do not call setMarkedBit here!
             
-            if not self.checking:
-                #@        << Append to current or top stack >>
-                #@+node:ekr.20040326055828:<< Append to current or top stack >>
-                if not setCurrent and len(self.currentVnodeStack) > 0 and appendToCurrentStack:
-                    #g.trace("append current",v)
-                    self.currentVnodeStack.append(v)
-                    
-                if not setTop and len(self.topVnodeStack) > 0 and appendToTopStack:
-                    #g.trace("append top",v)
-                    self.topVnodeStack.append(v)
-                #@-node:ekr.20040326055828:<< Append to current or top stack >>
-                #@nl
-        
-            # End this vnode.
-            self.getTag("</v>")
-            return v
-        #@nonl
-        #@+node:ekr.20031218072017.1860:createVnode
-        # (changed for 4.2) sets skip
-        
-        def createVnode (self,parent,back,tref,headline,attrDict):
-            
-            # g.trace(parent,headline)
-            v = None ; c = self.c
-            # Shared tnodes are placed in the file even if empty.
-            if tref == -1:
-                t = leoNodes.tnode()
-            else:
-                tref = self.canonicalTnodeIndex(tref)
-                t = self.tnodesDict.get(tref)
-                if not t:
-                    t = self.newTnode(tref)
-                    
-            if self.checking: return None,False
-            
-            if back: # create v after back.
-                v = back.insertAfter(t)
-            elif parent: # create v as the parent's first child.
-                v = parent.insertAsNthChild(0,t)
-            else: # create a root vnode
-                v = leoNodes.vnode(t)
-                v.moveToRoot(oldRoot=None)
-                c.setRootVnode(v) # New in Leo 4.4.2.
-        
-            if v not in v.t.vnodeList:
-                v.t.vnodeList.append(v) # New in 4.2.
-        
-            skip = len(v.t.vnodeList) > 1
-            v.initHeadString(headline,encoding=self.leo_file_encoding)
-            #@    << handle unknown vnode attributes >>
-            #@+node:ekr.20031218072017.1861:<< handle unknown vnode attributes >>
-            keys = attrDict.keys()
-            if keys:
-                v.unknownAttributes = attrDict
-                v._p_changed = 1
-            
-                if 0: # For debugging.
-                    s = "unknown attributes for " + v.headString()
-                    g.es_print(s,color="blue")
-                    for key in keys:
-                        s = "%s = %s" % (key,attrDict.get(key))
-                        g.es_print(s)
-            #@-node:ekr.20031218072017.1861:<< handle unknown vnode attributes >>
+            if setOrphan:
+                v.setOrphan()
+            #@-node:ekr.20031218072017.1568:<< Set the remembered status bits >>
             #@nl
-            # g.trace(skip,tref,v,v.t,len(v.t.vnodeList))
-            return v,skip
-        #@nonl
-        #@-node:ekr.20031218072017.1860:createVnode
-        #@+node:ekr.20040326063413:getExistingVnode
-        def getExistingVnode (self,tref,headline):
+    
+        # Recursively create all nested nodes.
+        parent = v ; back = None
+        while self.matchTag("<v"):
+            append1 = appendToCurrentStack and len(self.currentVnodeStack) == 0
+            append2 = appendToTopStack and len(self.topVnodeStack) == 0
+            back = self.getVnode(parent,back,skip,
+                appendToCurrentStack=append1,appendToTopStack=append2)
         
-            assert(tref > -1)
+        if not self.checking:
+            #@        << Append to current or top stack >>
+            #@+node:ekr.20040326055828:<< Append to current or top stack >>
+            if not setCurrent and len(self.currentVnodeStack) > 0 and appendToCurrentStack:
+                #g.trace("append current",v)
+                self.currentVnodeStack.append(v)
+                
+            if not setTop and len(self.topVnodeStack) > 0 and appendToTopStack:
+                #g.trace("append top",v)
+                self.topVnodeStack.append(v)
+            #@-node:ekr.20040326055828:<< Append to current or top stack >>
+            #@nl
+    
+        # End this vnode.
+        self.getTag("</v>")
+        return v
+    #@nonl
+    #@+node:ekr.20031218072017.1860:createVnode
+    # (changed for 4.2) sets skip
+    
+    def createVnode (self,parent,back,tref,headline,attrDict):
+        
+        # g.trace(parent,headline)
+        v = None ; c = self.c
+        # Shared tnodes are placed in the file even if empty.
+        if tref == -1:
+            t = leoNodes.tnode()
+        else:
             tref = self.canonicalTnodeIndex(tref)
             t = self.tnodesDict.get(tref)
-            try:
-                return t.vnodeList[0]
-            except (IndexError,AttributeError):
-                g.es("Missing vnode:",headline,color="red")
-                g.es("Probably an outline topology error.")
-                return None
-        #@-node:ekr.20040326063413:getExistingVnode
-        #@-node:ekr.20031218072017.1566:getVnode & helpers
-        #@+node:ekr.20031218072017.1565:getVnodes
-        def getVnodes (self,reassignIndices=True):
-        
-            c = self.c
-        
-            if self.getOpenTag("<vnodes>"):
-                return # <vnodes/> seen.
+            if not t:
+                t = self.newTnode(tref)
                 
-            self.forbiddenTnodes = []
-            back = parent = None # This routine _must_ work on vnodes!
-            self.currentVnodeStack = []
-            self.topVnodeStack = []
-                
-            if self.usingClipboard:
-                oldRoot = c.rootPosition()
-                oldCurrent = c.currentPosition()
-                if not reassignIndices:
-                    #@            << set self.forbiddenTnodes to tnodes than must not be pasted >>
-                    #@+node:ekr.20041023105832:<< set self.forbiddenTnodes to tnodes than must not be pasted >>
-                    self.forbiddenTnodes = []
-                    
-                    for p in oldCurrent.self_and_parents_iter():
-                        if p.v.t not in self.forbiddenTnodes:
-                            self.forbiddenTnodes.append(p.v.t)
-                            
-                    # g.trace("forbiddenTnodes",self.forbiddenTnodes)
-                    #@-node:ekr.20041023105832:<< set self.forbiddenTnodes to tnodes than must not be pasted >>
-                    #@nl
+        if self.checking: return None,False
         
-            while self.matchTag("<v"):
-                append1 = not self.usingClipboard and len(self.currentVnodeStack) == 0
-                append2 = not self.usingClipboard and len(self.topVnodeStack) == 0
-                back = self.getVnode(parent,back,skip=False,
-                    appendToCurrentStack=append1,appendToTopStack=append2)
+        if back: # create v after back.
+            v = back.insertAfter(t)
+        elif parent: # create v as the parent's first child.
+            v = parent.insertAsNthChild(0,t)
+        else: # create a root vnode
+            v = leoNodes.vnode(t)
+            v.moveToRoot(oldRoot=None)
+            c.setRootVnode(v) # New in Leo 4.4.2.
+    
+        if v not in v.t.vnodeList:
+            v.t.vnodeList.append(v) # New in 4.2.
+    
+        skip = len(v.t.vnodeList) > 1
+        v.initHeadString(headline,encoding=self.leo_file_encoding)
+        #@    << handle unknown vnode attributes >>
+        #@+node:ekr.20031218072017.1861:<< handle unknown vnode attributes >>
+        keys = attrDict.keys()
+        if keys:
+            v.unknownAttributes = attrDict
+            v._p_changed = 1
         
-            if self.usingClipboard and not self.checking:
-                # Link in the pasted nodes after the current position.
-                newRoot = c.rootPosition()
-                c.setRootPosition(oldRoot)
-                newRoot.v.linkAfter(oldCurrent.v)
-                newCurrent = oldCurrent.copy()
-                newCurrent.v = newRoot.v
-                c.setCurrentPosition(newCurrent)
-        
-            self.getTag("</vnodes>")
-        #@-node:ekr.20031218072017.1565:getVnodes
-        #@+node:ekr.20031218072017.1249:getXmlStylesheetTag
-        def getXmlStylesheetTag (self):
-        
-            """Parses the optional xml stylesheet string, and sets the corresponding config option.
-            
-            For example, given: <?xml_stylesheet s?> the config option is s."""
-            
-            c = self.c
-            tag = "<?xml-stylesheet "
-        
-            if self.matchTag(tag):
-                s = self.getStringToTag("?>")
-                # print "reading:", tag + s + "?>"
-                c.frame.stylesheet = s
-                self.getTag("?>")
-        #@-node:ekr.20031218072017.1249:getXmlStylesheetTag
-        #@+node:ekr.20031218072017.1468:getXmlVersionTag
-        # Parses the encoding string, and sets self.leo_file_encoding.
-        
-        def getXmlVersionTag (self):
-        
-            self.getTag(g.app.prolog_prefix_string)
-            encoding = self.getDqString()
-            self.getTag(g.app.prolog_postfix_string)
-        
-            if g.isValidEncoding(encoding):
-                self.leo_file_encoding = encoding
-                # g.trace('self.leo_file_encoding:',encoding, color="blue")
-            else:
-                g.es("invalid encoding in .leo file: " + encoding, color="red")
-        #@-node:ekr.20031218072017.1468:getXmlVersionTag
-        #@+node:ekr.20040326054052:setPositionsFromStacks (silly)
-        def setPositionsFromStacks (self):
-            
-            c = self.c
-        
-            current = self.convertStackToPosition(self.currentVnodeStack)
-            
-            if current:
-                # g.trace('using convertStackToPosition',current)
-                c.setCurrentPosition(current)
-            else:
-                # g.trace(self.currentVnodeStack)
-                c.setCurrentPosition(c.rootPosition())
-                
-            # At present this is useless: the drawing code doesn't set the top position properly.
-            if 0:
-                top = self.convertStackToPosition(self.topVnodeStack)
-                if top:
-                    c.setTopPosition(top)
-        #@nonl
-        #@-node:ekr.20040326054052:setPositionsFromStacks (silly)
-        #@-others
+            if 0: # For debugging.
+                s = "unknown attributes for " + v.headString()
+                g.es_print(s,color="blue")
+                for key in keys:
+                    s = "%s = %s" % (key,attrDict.get(key))
+                    g.es_print(s)
+        #@-node:ekr.20031218072017.1861:<< handle unknown vnode attributes >>
+        #@nl
+        # g.trace(skip,tref,v,v.t,len(v.t.vnodeList))
+        return v,skip
     #@nonl
+    #@-node:ekr.20031218072017.1860:createVnode
+    #@+node:ekr.20040326063413:getExistingVnode
+    def getExistingVnode (self,tref,headline):
+    
+        assert(tref > -1)
+        tref = self.canonicalTnodeIndex(tref)
+        t = self.tnodesDict.get(tref)
+        try:
+            return t.vnodeList[0]
+        except (IndexError,AttributeError):
+            g.es("Missing vnode:",headline,color="red")
+            g.es("Probably an outline topology error.")
+            return None
+    #@-node:ekr.20040326063413:getExistingVnode
+    #@-node:ekr.20031218072017.1566:getVnode & helpers
+    #@+node:ekr.20031218072017.1565:getVnodes
+    def getVnodes (self,reassignIndices=True):
+    
+        c = self.c
+    
+        if self.getOpenTag("<vnodes>"):
+            return # <vnodes/> seen.
+            
+        self.forbiddenTnodes = []
+        back = parent = None # This routine _must_ work on vnodes!
+        self.currentVnodeStack = []
+        self.topVnodeStack = []
+            
+        if self.usingClipboard:
+            oldRoot = c.rootPosition()
+            oldCurrent = c.currentPosition()
+            if not reassignIndices:
+                #@            << set self.forbiddenTnodes to tnodes than must not be pasted >>
+                #@+node:ekr.20041023105832:<< set self.forbiddenTnodes to tnodes than must not be pasted >>
+                self.forbiddenTnodes = []
+                
+                for p in oldCurrent.self_and_parents_iter():
+                    if p.v.t not in self.forbiddenTnodes:
+                        self.forbiddenTnodes.append(p.v.t)
+                        
+                # g.trace("forbiddenTnodes",self.forbiddenTnodes)
+                #@-node:ekr.20041023105832:<< set self.forbiddenTnodes to tnodes than must not be pasted >>
+                #@nl
+    
+        while self.matchTag("<v"):
+            append1 = not self.usingClipboard and len(self.currentVnodeStack) == 0
+            append2 = not self.usingClipboard and len(self.topVnodeStack) == 0
+            back = self.getVnode(parent,back,skip=False,
+                appendToCurrentStack=append1,appendToTopStack=append2)
+    
+        if self.usingClipboard and not self.checking:
+            # Link in the pasted nodes after the current position.
+            newRoot = c.rootPosition()
+            c.setRootPosition(oldRoot)
+            newRoot.v.linkAfter(oldCurrent.v)
+            newCurrent = oldCurrent.copy()
+            newCurrent.v = newRoot.v
+            c.setCurrentPosition(newCurrent)
+    
+        self.getTag("</vnodes>")
+    #@-node:ekr.20031218072017.1565:getVnodes
+    #@+node:ekr.20031218072017.1249:getXmlStylesheetTag
+    def getXmlStylesheetTag (self):
+    
+        """Parses the optional xml stylesheet string, and sets the corresponding config option.
+        
+        For example, given: <?xml_stylesheet s?> the config option is s."""
+        
+        c = self.c
+        tag = "<?xml-stylesheet "
+    
+        if self.matchTag(tag):
+            s = self.getStringToTag("?>")
+            # print "reading:", tag + s + "?>"
+            c.frame.stylesheet = s
+            self.getTag("?>")
+    #@-node:ekr.20031218072017.1249:getXmlStylesheetTag
+    #@+node:ekr.20031218072017.1468:getXmlVersionTag
+    # Parses the encoding string, and sets self.leo_file_encoding.
+    
+    def getXmlVersionTag (self):
+    
+        self.getTag(g.app.prolog_prefix_string)
+        encoding = self.getDqString()
+        self.getTag(g.app.prolog_postfix_string)
+    
+        if g.isValidEncoding(encoding):
+            self.leo_file_encoding = encoding
+            # g.trace('self.leo_file_encoding:',encoding, color="blue")
+        else:
+            g.es("invalid encoding in .leo file: " + encoding, color="red")
+    #@-node:ekr.20031218072017.1468:getXmlVersionTag
+    #@+node:ekr.20040326054052:setPositionsFromStacks (silly)
+    def setPositionsFromStacks (self):
+        
+        c = self.c
+    
+        current = self.convertStackToPosition(self.currentVnodeStack)
+        
+        if current:
+            # g.trace('using convertStackToPosition',current)
+            c.setCurrentPosition(current)
+        else:
+            # g.trace(self.currentVnodeStack)
+            c.setCurrentPosition(c.rootPosition())
+            
+        # At present this is useless: the drawing code doesn't set the top position properly.
+        if 0:
+            top = self.convertStackToPosition(self.topVnodeStack)
+            if top:
+                c.setTopPosition(top)
+    #@nonl
+    #@-node:ekr.20040326054052:setPositionsFromStacks (silly)
     #@-node:ekr.20031218072017.3021:Non-sax
     #@+node:ekr.20060919104530:Sax
     #@+node:ekr.20060919110638.4:createSaxVnodes & helpers
