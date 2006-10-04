@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="26108" clone_windows="0"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="104" left="160" height="646" width="1021"/>
+	<global_window_position top="104" left="160" height="627" width="1021"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -46,7 +46,7 @@
 <v t="ekr.20060525110217"><vh>@@button rst-&gt;rst</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="TV"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -349,7 +349,14 @@
 <v t="ekr.20040403173920.24" rst_http_attribute="5d71002855463c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d333722206e616d653d22687474702d6e6f64652d6d61726b65722d3337223e710155043c2f613e71025d71032855263c64697620636c6173733d2273656374696f6e222069643d22672d726566696e64616c6c223e710455063c2f6469763e71055d710628554f3c64697620636c6173733d2273656374696f6e222069643d2266756e6374696f6e732d666f722d66696e64696e672d616e642d6368616e67696e672d746578742d66726f6d2d73637269707473223e710755063c2f6469763e71085d710928553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710a55063c2f6469763e710b5d710c2855063c626f64793e710d55073c2f626f64793e710e5d710f2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e711055073c2f68746d6c3e71114e656565656555073c2f6469763e0a711255073c2f6469763e0a711355353c64697620636c6173733d2273656374696f6e222069643d2272756e6e696e672d6c656f2d696e2d62617463682d6d6f6465223e0a7114556c3c68313e3c6120636c6173733d22746f632d6261636b7265662220687265663d22236964313922206e616d653d2272756e6e696e672d6c656f2d696e2d62617463682d6d6f6465223e52756e6e696e67204c656f20696e206261746368206d6f64653c2f613e3c2f68313e0a7115652e"><vh>Running Leo in batch mode</vh></v>
 <v t="ekr.20040403173920.25" rst_http_attribute="5d71002855463c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d333922206e616d653d22687474702d6e6f64652d6d61726b65722d3339223e710155043c2f613e71025d71032855343c64697620636c6173733d2273656374696f6e222069643d2272756e6e696e672d6c656f2d696e2d62617463682d6d6f6465223e710455063c2f6469763e71055d710628553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710755063c2f6469763e71085d71092855063c626f64793e710a55073c2f626f64793e710b5d710c2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e710d55073c2f68746d6c3e710e4e6565656555073c2f6469763e0a710f553e3c64697620636c6173733d2273656374696f6e222069643d2266756e6374696f6e732d646566696e65642d696e2d6c656f676c6f62616c732d7079223e0a7110557e3c68313e3c6120636c6173733d22746f632d6261636b7265662220687265663d22236964323022206e616d653d2266756e6374696f6e732d646566696e65642d696e2d6c656f676c6f62616c732d7079223e46756e6374696f6e7320646566696e656420696e206c656f476c6f62616c732e70793c2f613e3c2f68313e0a7111652e"><vh>Functions defined in leoGlobals.py</vh></v>
 <v t="ekr.20040403173920.5" rst_http_attribute="5d71002855463c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d343122206e616d653d22687474702d6e6f64652d6d61726b65722d3431223e710155043c2f613e71025d710328553d3c64697620636c6173733d2273656374696f6e222069643d2266756e6374696f6e732d646566696e65642d696e2d6c656f676c6f62616c732d7079223e710455063c2f6469763e71055d710628553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710755063c2f6469763e71085d71092855063c626f64793e710a55073c2f626f64793e710b5d710c2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e710d55073c2f68746d6c3e710e4e6565656555073c2f6469763e0a710f553b3c64697620636c6173733d2273656374696f6e222069643d227265646972656374696e672d6f75747075742d66726f6d2d73637269707473223e0a711055783c68313e3c6120636c6173733d22746f632d6261636b7265662220687265663d22236964323122206e616d653d227265646972656374696e672d6f75747075742d66726f6d2d73637269707473223e5265646972656374696e67206f75747075742066726f6d20736372697074733c2f613e3c2f68313e0a7111652e"><vh>Redirecting output from scripts</vh></v>
-<v t="ekr.20051101171734"><vh>Adding new Tabs to the log pane</vh></v>
+<v t="ekr.20061003204952"><vh>Writing to different log tabs</vh></v>
+<v t="ekr.20051101171734"><vh>Customizing panes with different widgets</vh>
+<v t="ekr.20061003204952.1"><vh>Official ivars</vh></v>
+<v t="ekr.20061003212136"><vh>Common operations on Tk.Text widgets</vh></v>
+<v t="ekr.20061003204952.2"><vh>Customizing the log pane</vh></v>
+<v t="ekr.20061003204952.3"><vh>Customizing the body pane</vh></v>
+<v t="ekr.20061003204952.4"><vh>Customizing the outine pane</vh></v>
+</v>
 <v t="ekr.20040403173920.26" rst_http_attribute="5d71002855463c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d343322206e616d653d22687474702d6e6f64652d6d61726b65722d3433223e710155043c2f613e71025d710328553a3c64697620636c6173733d2273656374696f6e222069643d227265646972656374696e672d6f75747075742d66726f6d2d73637269707473223e710455063c2f6469763e71055d710628553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710755063c2f6469763e71085d71092855063c626f64793e710a55073c2f626f64793e710b5d710c2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e710d55073c2f68746d6c3e710e4e6565656555073c2f6469763e0a710f55453c64697620636c6173733d2273656374696f6e222069643d2273756d6d6172792d6f662d7468652d766e6f64652d616e642d706f736974696f6e2d636c6173736573223e0a7110558c3c68313e3c6120636c6173733d22746f632d6261636b7265662220687265663d22236964323222206e616d653d2273756d6d6172792d6f662d7468652d766e6f64652d616e642d706f736974696f6e2d636c6173736573223e53756d6d617279206f662074686520766e6f646520616e6420706f736974696f6e20636c61737365733c2f613e3c2f68313e0a7111652e"><vh>Summary of the vnode and position classes</vh>
 <v t="ekr.20040411151245" rst_http_attribute="5d71002855463c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d343522206e616d653d22687474702d6e6f64652d6d61726b65722d3435223e710155043c2f613e71025d71032855443c64697620636c6173733d2273656374696f6e222069643d2273756d6d6172792d6f662d7468652d766e6f64652d616e642d706f736974696f6e2d636c6173736573223e710455063c2f6469763e71055d710628553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710755063c2f6469763e71085d71092855063c626f64793e710a55073c2f626f64793e710b5d710c2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e710d55073c2f68746d6c3e710e4e6565656555253c64697620636c6173733d2273656374696f6e222069643d226974657261746f7273223e0a710f554c3c68323e3c6120636c6173733d22746f632d6261636b7265662220687265663d22236964323322206e616d653d226974657261746f7273223e4974657261746f72733c2f613e3c2f68323e0a7110652e"><vh>Iterators</vh></v>
 <v t="ekr.20040403173920.27" rst_http_attribute="5d71002855463c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d343722206e616d653d22687474702d6e6f64652d6d61726b65722d3437223e710155043c2f613e71025d71032855243c64697620636c6173733d2273656374696f6e222069643d226974657261746f7273223e710455063c2f6469763e71055d71062855443c64697620636c6173733d2273656374696f6e222069643d2273756d6d6172792d6f662d7468652d766e6f64652d616e642d706f736974696f6e2d636c6173736573223e710755063c2f6469763e71085d710928553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710a55063c2f6469763e710b5d710c2855063c626f64793e710d55073c2f626f64793e710e5d710f2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e711055073c2f68746d6c3e71114e656565656555073c2f6469763e0a711255233c64697620636c6173733d2273656374696f6e222069643d2267657474657273223e0a711355483c68323e3c6120636c6173733d22746f632d6261636b7265662220687265663d22236964323422206e616d653d2267657474657273223e476574746572733c2f613e3c2f68323e0a7114652e"><vh>Getters</vh></v>
@@ -987,7 +994,7 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
+<v t="edream.110203163054.46"><vh>Release Notes</vh>
 <v t="edream.110203163054.117"><vh>Previous versions...</vh>
 <v t="ekr.20060206111717"><vh>Ancient...</vh>
 <v t="edream.110203163054.118"><vh>3.x...</vh>
@@ -2825,8 +2832,8 @@
 <v t="ekr.20060903102158"><vh>4.4.1.1 final</vh></v>
 </v>
 </v>
-<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20060928172040" a="TV"><vh>4.4.2 beta 1</vh>
+<v t="edream.110203163054.63"><vh>Latest version</vh>
+<v t="ekr.20060928172040"><vh>4.4.2 beta 1</vh>
 <v t="ekr.20060928172525.81"><vh>The 'big reorg':  vnode, tnode and position classes are independent of the rest of Leo</vh></v>
 <v t="ekr.20060928195040"><vh>New features</vh>
 <v t="ekr.20060928194633.1"><vh>myLeoSettings.leo</vh></v>
@@ -21243,43 +21250,10 @@ significant. For full details, see the (Projects) section of LeoPy.leo.</t>
 <t tx="ekr.20051101163404">The following bugs existed in the 4.4a1 code base and have now been fixed:
 
 - Removed warnings from compare dialog.</t>
-<t tx="ekr.20051101171734">**New in Leo 4.4a2**: Plugins and scripts can create new tabs in the log panel.
-The following creates a tab named test or make it visible if it already exists::
- 
-    c.frame.log.selectTab('Test')
-
-When first created, a tab contains a text widget.
-The c.frame.log class contains the following 'official' ivars:
-
-- c.frame.log.tabName is the name of the active tab.
-- c.frame.log.tabFrame is the Tk.Frame containing all the other widgets of the tab.
-- c.frame.log.logCtrl is the initial Tk.Text widget.
-
-The following line removes the initial text widget::
-    
-    c.frame.log.logCtrl.pack_forget()
-
-To make the text widget visible again:
-
-    c.frame.log.logCtrl.pack(side='top',expand=1,fill='both')
-
-Plugins and scripts can pack any other widgets into c.frame.log.tabFrame.
-For example, the following replaces the default text widget with a red box::
-
-    import Tkinter as Tk ; log = c.frame.log
-    log.selectTab('Test')
-    log.logCtrl.pack_forget()
-    f = Tk.Frame(log.tabFrame,bg='red',height='1inch',width='2inch')
-    f.pack(side='left',expand=0,fill='none')
-
-Notes:
-
-- g.es, g.enl, g.ecnl, g.ecnls write to the log tab specified by the optional
-  tabName argument. The default for tabName is 'Log', so existing code works as
-  before.
-
-- The put and putnl methods of the tkinterLog class also take an optional
-  tabName argument which defaults to 'Log'.</t>
+<t tx="ekr.20051101171734">Tk/Tkinter make it easy to customize the contents of any of Leo's panes. The
+following sections will discuss the 'official' ivars that make it possible for
+scripts to access and alter the contents of panes. The next three sections will
+give examples of modifying each pane.</t>
 <t tx="ekr.20051101182739">- The node::
 
     @shortcuts traditional Leo shortcuts with important emacs bindings
@@ -28989,5 +28963,114 @@ Some api's have been changed.  This 'big reorg' and may affect scripts and plugi
 <t tx="ekr.20060929043325.1">Leo's vnode and tnode classes can optionally be compatible with ZODB databases,
 i.e., they can optionally derive from ZODB.Persistence.Persistent.
 See Chapter 17: Using ZODB with Leo for details.</t>
+<t tx="ekr.20061003204952">Plugins and scripts can create new tabs in the log panel.
+The following creates a tab named test or make it visible if it already exists::
+ 
+    c.frame.log.selectTab('Test')
+    
+g.es, g.enl, g.ecnl, g.ecnls write to the log tab specified by the optional
+tabName argument. The default for tabName is 'Log'. The put and putnl methods of
+the tkinterLog class also take an optional tabName argument which defaults to
+'Log'.</t>
+<t tx="ekr.20061003204952.1">The c.frame.log class contains the following 'official' ivars::
+
+    g.es('tabName',c.frame.log.tabName)     # The name of the active tab.
+    g.es('tabFrame',c.frame.log.tabFrame)   # The Tk.Frame containing all the other widgets of the tab.
+    g.es('logCtrl',c.frame.log.logCtrl)     # Tk.Text widget containing the log text.
+
+The following ivars provide access to the body pane::
+     
+    g.es('bodyFrame',c.frame.body.frame)    # The Tk.Frame widget containing the c.frame.body.bodyCtrl
+    
+The following ivars provide access to the outline pane::
+    
+    g.es('canvas',c.frame.tree.canvas) # The Tk.Canvas on which Leo's outline is drawn.
+    
+Tkinter provides a way of determining the enclosing widget of any widget.
+The body text is enclosed in a Pmw.PanedWidget to support multiple editors.
+    
+    w = c.frame.body.bodyCtrl
+    parent = w.pack_info().get('in') 
+    g.es('bodyCtrl.parent',parent) # The Tk.Frame containing the body text.</t>
+<t tx="ekr.20061003204952.2">The following line removes the initial text widget::
+    
+    c.frame.log.logCtrl.pack_forget()
+
+To make the text widget visible again::
+
+    c.frame.log.logCtrl.pack(side='top',expand=1,fill='both')
+
+Plugins and scripts can pack any other widgets into c.frame.log.tabFrame.
+For example, the following replaces the default text widget with a red box::
+
+    import Tkinter as Tk
+
+    # Remove the old contents.
+    w = c.frame.log.logCtrl
+    parent =  w.pack_info().get('in')
+    w.pack_forget()
+    
+    # Replace with a red frame.
+    f = c.frame.newLog = Tk.Frame(parent,background='red')
+    f.pack(side='left',expand=1,fill='both')
+    
+And the following will restore the original pane::
+    
+    c.frame.newLog.pack_forget()
+    w = c.frame.log.logCtrl
+    w.pack(side='left',expand=1,fill='both')</t>
+<t tx="ekr.20061003204952.3">Warning: you will find it hard to execute scripts after removing the body pane,
+so you had best make the following two scripts into script buttons before
+executing them :-)
+
+Plugins and scripts can pack any other widgets into c.frame.log.tabFrame.
+For example, the following replaces the default text widget with a red box::
+
+    import Tkinter as Tk
+    
+    w = c.frame.body.bodyCtrl
+    parent =  w.pack_info().get('in')
+    w.pack_forget()
+    
+    f = c.frame.newBody = Tk.Frame(parent,background='red')
+    f.pack(side='left',expand=1,fill='both')
+    
+To restore::
+    
+    c.frame.newBody.pack_forget()
+    w = c.frame.body.bodyCtrl
+    w.pack(side='left',expand=1,fill='both')</t>
+<t tx="ekr.20061003204952.4">The following replaces the outline pane with a red frame::
+
+    import Tkinter as Tk
+    
+    w = c.frame.tree.canvas
+    parent =  w.pack_info().get('in')
+    w.pack_forget()
+    
+    f = c.frame.newTree = Tk.Frame(parent,background='red')
+    f.pack(side='left',expand=1,fill='both')
+    
+And this script restores the outline::
+
+    c.frame.newTree.pack_forget()
+    c.frame.tree.canvas.pack(side='left',expand=1,fill='both')</t>
+<t tx="ekr.20061003212136">The following is no substitute for a full discussion of programming the Tk.Text
+widget: it can do lots.
+
+To clear the log::
+    
+    w = c.frame.log.logCtrl
+    w.delete('1.0','end')
+    
+To write a line to the end of the log::
+    
+    w = c.frame.log.logCtrl
+    w.insert('end','This is a test\n')
+    
+To get the entire contents of the log::
+    
+    w = c.frame.log.logCtrl
+    g.es(w.get('1.0','end')+'\n')</t>
 </tnodes>
 </leo_file>
