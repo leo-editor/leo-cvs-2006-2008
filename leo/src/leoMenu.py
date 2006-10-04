@@ -672,7 +672,7 @@ class leoMenu:
             ("&Close",c.close),
             ("&Save",c.save),
             ("Save &As",c.saveAs),
-            ("Save To",c.saveTo), # &Tangle
+            ("Save &To",c.saveTo), # &Tangle
             ("Re&vert To Saved",c.revert), # &Read/Write
         ]
     #@-node:ekr.20031218072017.3760:defineFileMenuTop2Table
