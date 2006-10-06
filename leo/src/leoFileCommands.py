@@ -986,7 +986,7 @@ class baseFileCommands:
     #@-node:EKR.20040627120120:restoreDescendentAttributes
     #@-node:ekr.20060919133249:Common
     #@+node:ekr.20031218072017.3021:Non-sax
-    #@+node:ekr.20040326052245:convertStackToPosition (silly)
+    #@+node:ekr.20040326052245:convertStackToPosition
     def convertStackToPosition (self,stack):
     
         c = self.c ; p2 = None
@@ -1008,7 +1008,7 @@ class baseFileCommands:
                     return p
     
         return None
-    #@-node:ekr.20040326052245:convertStackToPosition (silly)
+    #@-node:ekr.20040326052245:convertStackToPosition
     #@+node:ekr.20031218072017.1243:get, match & skip (basic)
     #@+node:ekr.20031218072017.1244:get routines (basic)
     #@+node:EKR.20040526204706:getBool
