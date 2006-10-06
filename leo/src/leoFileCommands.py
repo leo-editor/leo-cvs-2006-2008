@@ -2633,7 +2633,7 @@ class baseFileCommands:
             aList = [str(z) for z in self.currentPosition.archivedPosition()]
             d = hasattr(v,'unKnownAttributes') and v.unknownAttributes or {}
             d['str_leo_pos'] = ','.join(aList)
-            g.trace(aList,d)
+            # g.trace(aList,d)
             v.unknownAttributes = d
         #@nonl
         #@-node:ekr.20031218072017.1865:<< Append attribute bits to attrs >>

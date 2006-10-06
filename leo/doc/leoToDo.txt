@@ -3,8 +3,6 @@
 #@+all
 #@+node:ekr.20060927172440:To do before 4.4.2 final
 #@+node:ekr.20061001060913.1:To do first
-#@+node:ekr.20061003072809.1:Make word selection work with Russion characters
-#@-node:ekr.20061003072809.1:Make word selection work with Russion characters
 #@+node:ekr.20060929084830.1:Suppress redraw on all applicable outline:goto commands
 #@-node:ekr.20060929084830.1:Suppress redraw on all applicable outline:goto commands
 #@+node:ekr.20061003075953:Better unit tests for write logic: test @ignore logic
@@ -524,22 +522,20 @@ def moveWordHelper (self,event,extend,forward):
 
     def toGui (i): return g.app.gui.toGuiIndex(s,w,i)
     def toPython (i): return g.app.gui.toPythonIndex(s,w,i)
-    def isWordChar(ch): return ch in (string.letters + string.digits + '_')
 
     i = toPython(w.index('insert'))
-    delta = g.choose(forward,1,-1)
     
     if forward:
-        while 0 <= i < n and isWordChar(s[i]):
-            i += delta
-        while 0 <= i < n and not isWordChar(s[i]):
-            i += delta
+        while 0 <= i < n and g.isWordChar(s[i]):
+            i += 1
+        while 0 <= i < n and not g.isWordChar(s[i]):
+            i += 1
     else:
         i -= 1
-        while 0 <= i < n and not isWordChar(s[i]):
-            i += delta
-        while 0 <= i < n and isWordChar(s[i]):
-            i += delta
+        while 0 <= i < n and not g.isWordChar(s[i]):
+            i -= 1
+        while 0 <= i < n and g.isWordChar(s[i]):
+            i -= 1
         i += 1
 
     self.moveToHelper(event,toGui(i),extend)
@@ -568,14 +564,8 @@ def OnBodyDoubleClick (self,event=None):
 
     try:
         c = self.c ; p = c.currentPosition()
-        if not g.doHook("bodydclick1",c=c,p=p,v=p,event=event):
-            if event: # Prevent wandering insertion point.
-                w = self.bodyCtrl
-                index = w.index("@%d,%d" % (event.x, event.y)) # Find where we clicked.
-                start = w.index(index + " wordstart")
-                end   = w.index(index + " wordend")
-                # g.trace(index,start,end,w.get('1.0','end'))
-                self.body.setTextSelection(start,end)
+        if event and not g.doHook("bodydclick1",c=c,p=p,v=p,event=event):
+            c.editCommands.extendToWord(event) # Handles unicode properly.
         g.doHook("bodydclick2",c=c,p=p,v=p,event=event)
     except:
         g.es_event_exception("bodydclick")
