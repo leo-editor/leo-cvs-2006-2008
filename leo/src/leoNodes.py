@@ -1473,7 +1473,7 @@ class basePosition (object):
         '''Return a representation of a position suitable for use in .leo files.'''
         
         p = self
-        aList = [p.childIndex() for p in p.self_and_parents_iter()]
+        aList = [p2.v.childIndex() for p2 in p.self_and_parents_iter()]
         aList.reverse()
         return aList
     #@nonl

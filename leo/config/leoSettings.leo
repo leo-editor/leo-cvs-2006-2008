@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="71" left="252" height="580" width="908"/>
+	<global_window_position top="71" left="252" height="561" width="908"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -499,7 +499,7 @@
 <v t="ekr.20051025085144.1"><vh>@string aspell_bin_dir = c:\aspell\bin</vh></v>
 </v>
 <v t="ekr.20041119034357.15" a="E"><vh>Unicode options</vh>
-<v t="ekr.20061004150211" a="V"><vh>@bool use_sax_based_read = False</vh></v>
+<v t="ekr.20061004150211" a="TV"><vh>@bool use_sax_based_read = True</vh></v>
 <v t="ekr.20041119042929.9"><vh>@string default_derived_file_encoding = utf-8</vh></v>
 <v t="ekr.20041119042929.10"><vh>@string new_leo_file_encoding = utf-8</vh></v>
 <v t="ekr.20041119042929.11"><vh>@string tk_encoding = None</vh></v>

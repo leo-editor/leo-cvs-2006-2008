@@ -3217,7 +3217,7 @@ def putUaHelper (self,torv,key,val):
     
     '''Put attribute whose name is key and value is val to the output stream.'''
     
-    # g.trace(key,repr(val))
+    # g.trace(key,repr(val),g.callers())
     
     # New in 4.3: leave string attributes starting with 'str_' alone.
     if key.startswith('str_'):
@@ -5665,6 +5665,7 @@ def putVnodes (self):
 
     # Make only one copy for all calls.
     self.currentPosition = c.currentPosition() 
+    self.rootPosition    = c.rootPosition()
     self.topPosition     = c.topPosition()
 
     if self.usingClipboard:
@@ -5728,11 +5729,20 @@ if v.isOrphan():   attr += "O"
 
 # No longer a bottleneck now that we use p.equal rather than p.__cmp__
 # Almost 30% of the entire writing time came from here!!!
-if p.equal(self.topPosition):     attr += "T" # was a bottleneck
-if p.equal(self.currentPosition): attr += "V" # was a bottleneck
+if not self.use_sax:
+    if p.equal(self.topPosition):     attr += "T" # was a bottleneck
+    if p.equal(self.currentPosition): attr += "V" # was a bottleneck
 
 if attr:
-    attrs.append(' a="%s"' % (attr))
+    attrs.append(' a="%s"' % attr)
+    
+# Put the archived *current* position in the *root* positions <v> element.
+if self.use_sax and p.equal(self.rootPosition):
+    aList = [str(z) for z in self.currentPosition.archivedPosition()]
+    d = hasattr(v,'unKnownAttributes') and v.unknownAttributes or {}
+    d['str_leo_pos'] = ','.join(aList)
+    g.trace(aList,d)
+    v.unknownAttributes = d
 #@nonl
 #@-node:ekr.20031218072017.1865:<< Append attribute bits to attrs >>
 #@+node:ekr.20040324082713:<< Append tnodeList and unKnownAttributes to attrs>>
@@ -6175,11 +6185,20 @@ if v.isOrphan():   attr += "O"
 
 # No longer a bottleneck now that we use p.equal rather than p.__cmp__
 # Almost 30% of the entire writing time came from here!!!
-if p.equal(self.topPosition):     attr += "T" # was a bottleneck
-if p.equal(self.currentPosition): attr += "V" # was a bottleneck
+if not self.use_sax:
+    if p.equal(self.topPosition):     attr += "T" # was a bottleneck
+    if p.equal(self.currentPosition): attr += "V" # was a bottleneck
 
 if attr:
-    attrs.append(' a="%s"' % (attr))
+    attrs.append(' a="%s"' % attr)
+    
+# Put the archived *current* position in the *root* positions <v> element.
+if self.use_sax and p.equal(self.rootPosition):
+    aList = [str(z) for z in self.currentPosition.archivedPosition()]
+    d = hasattr(v,'unKnownAttributes') and v.unknownAttributes or {}
+    d['str_leo_pos'] = ','.join(aList)
+    g.trace(aList,d)
+    v.unknownAttributes = d
 #@nonl
 #@-node:ekr.20031218072017.1865:<< Append attribute bits to attrs >>
 #@+node:ekr.20040324082713:<< Append tnodeList and unKnownAttributes to attrs>>
