@@ -2140,12 +2140,22 @@ class editCommandsClass (baseEditCommandsClass):
         
         '''Select the word at the cursor.'''
         
-        w = event.widget
-        if g.app.gui.hasSelection(w):
-            i,j = g.app.gui.getSelectionRange(w)
-        else:
-            i = g.app.gui.getInsertPoint(w)
-        g.app.gui.setSelectionRange(w, i+' wordstart', i+' wordend')
+        w = event.widget ; s = w.get('1.0','end') ; n = len(s)
+        def toGui (i): return g.app.gui.toGuiIndex(s,w,i)
+        def toPython (i): return g.app.gui.toPythonIndex(s,w,i)
+    
+        i = toPython(w.index('insert'))
+        while 0 <= i < n and not g.isWordChar(s[i]):
+            i -= 1
+        while 0 <= i < n and g.isWordChar(s[i]):
+            i -= 1
+        i += 1
+        # Move to the end of the word.
+        i1 = i
+        while 0 <= i < n and g.isWordChar(s[i]):
+            i += 1
+        g.app.gui.setSelectionRange(w,toGui(i1),toGui(i))
+    #@nonl
     #@-node:ekr.20060116074839.2:extend-to-word
     #@+node:ekr.20050920084036.66:fill column and centering
     #@+at
@@ -3297,22 +3307,20 @@ class editCommandsClass (baseEditCommandsClass):
     
         def toGui (i): return g.app.gui.toGuiIndex(s,w,i)
         def toPython (i): return g.app.gui.toPythonIndex(s,w,i)
-        def isWordChar(ch): return ch in (string.letters + string.digits + '_')
     
         i = toPython(w.index('insert'))
-        delta = g.choose(forward,1,-1)
         
         if forward:
-            while 0 <= i < n and isWordChar(s[i]):
-                i += delta
-            while 0 <= i < n and not isWordChar(s[i]):
-                i += delta
+            while 0 <= i < n and g.isWordChar(s[i]):
+                i += 1
+            while 0 <= i < n and not g.isWordChar(s[i]):
+                i += 1
         else:
             i -= 1
-            while 0 <= i < n and not isWordChar(s[i]):
-                i += delta
-            while 0 <= i < n and isWordChar(s[i]):
-                i += delta
+            while 0 <= i < n and not g.isWordChar(s[i]):
+                i -= 1
+            while 0 <= i < n and g.isWordChar(s[i]):
+                i -= 1
             i += 1
     
         self.moveToHelper(event,toGui(i),extend)
