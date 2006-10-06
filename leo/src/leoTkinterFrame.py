@@ -1278,14 +1278,8 @@ class leoTkinterFrame (leoFrame.leoFrame):
     
         try:
             c = self.c ; p = c.currentPosition()
-            if not g.doHook("bodydclick1",c=c,p=p,v=p,event=event):
-                if event: # Prevent wandering insertion point.
-                    w = self.bodyCtrl
-                    index = w.index("@%d,%d" % (event.x, event.y)) # Find where we clicked.
-                    start = w.index(index + " wordstart")
-                    end   = w.index(index + " wordend")
-                    # g.trace(index,start,end,w.get('1.0','end'))
-                    self.body.setTextSelection(start,end)
+            if event and not g.doHook("bodydclick1",c=c,p=p,v=p,event=event):
+                c.editCommands.extendToWord(event) # Handles unicode properly.
             g.doHook("bodydclick2",c=c,p=p,v=p,event=event)
         except:
             g.es_event_exception("bodydclick")
