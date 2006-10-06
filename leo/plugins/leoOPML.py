@@ -922,8 +922,7 @@ class contentHandler (xml.sax.saxutils.XMLGenerator):
         name = self.elementStack and self.elementStack[-1].lower() or '<no element name>'
         
         # Opml elements should not have content: everything is carried in attributes.
-        
-        # if content.strip():
+    
         if name == 'leo:body':
             if self.node:
                 self.content.append(content)
