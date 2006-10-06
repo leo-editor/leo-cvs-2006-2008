@@ -42,6 +42,7 @@ import tempfile
 import time
 import traceback
 import types
+import unicodedata
 #@-node:ekr.20050208101229:<< imports >>
 #@nl
 #@<< define general constants >>
@@ -3814,6 +3815,22 @@ def makeScriptButton (c,
 #@-node:ekr.20060621164312:g.makeScriptButton
 #@-node:ekr.20040327103735.2:Script Tools (leoGlobals.py)
 #@+node:ekr.20031218072017.1498:Unicode utils...
+#@+node:ekr.20061006152327:g.isWordChar
+def isWordChar (ch):
+    
+    '''Return True if ch should be considered a letter.'''
+    
+    # First, handle the easy cases.
+    if ch in (string.letters + string.digits + '_'):
+        return True
+    if ch in (string.punctuation + string.whitespace):
+        return False
+    # Now get the unicode
+    cat = unicodedata.category(ch)
+    # g.trace(cat)
+    return cat.startswith('L') or cat.startswith('N')
+#@nonl
+#@-node:ekr.20061006152327:g.isWordChar
 #@+node:ekr.20060216115304.2:g.safeStringCompare & test (Do not use)
 #@+at 
 #@nonl
@@ -3842,6 +3859,71 @@ if 0:
         assert g.safeStringCompare('á','á') is True
         assert g.safeStringCompare(u'á',u'á') is True
 #@-node:ekr.20060216115304.2:g.safeStringCompare & test (Do not use)
+#@+node:ekr.20031218072017.1503:getpreferredencoding from 2.3a2
+# Suppress warning about redefining getpreferredencoding
+__pychecker__ = '--no-reuseattr'
+
+try:
+    # Use Python's version of getpreferredencoding if it exists.
+    # It is new in Python 2.3.
+    import locale
+    getpreferredencoding = locale.getpreferredencoding
+except Exception:
+    # Use code copied from locale.py in Python 2.3alpha2.
+    if sys.platform in ('win32', 'darwin', 'mac'):
+        #@        << define getpreferredencoding using _locale >>
+        #@+node:ekr.20031218072017.1504:<< define getpreferredencoding using _locale >>
+        # On Win32, this will return the ANSI code page
+        # On the Mac, it should return the system encoding;
+        # it might return "ascii" instead.
+        
+        def getpreferredencoding(do_setlocale = True):
+            """Return the charset that the user is likely using."""
+            try:
+                import _locale
+                return _locale._getdefaultlocale()[1]
+            except:
+                return None
+        #@-node:ekr.20031218072017.1504:<< define getpreferredencoding using _locale >>
+        #@nl
+    else:
+        #@        << define getpreferredencoding for *nix >>
+        #@+node:ekr.20031218072017.1505:<< define getpreferredencoding for *nix >>
+        # On Unix, if CODESET is available, use that.
+        
+        __pychecker__ = '--no-noeffect' # Note: this is at the top level!
+        
+        try:
+            locale.CODESET # Bug fix, 2/12/05
+        except NameError:
+            # Fall back to parsing environment variables :-(
+            def getpreferredencoding(do_setlocale = True):
+                """Return the charset that the user is likely using,
+                by looking at environment variables."""
+                try:
+                    return locale.getdefaultlocale()[1]
+                except:
+                    return None
+        else:
+            def getpreferredencoding(do_setlocale = True):
+                """Return the charset that the user is likely using,
+                according to the system configuration."""
+                try:
+                    if do_setlocale:
+                        oldloc = locale.setlocale(LC_CTYPE)
+                        locale.setlocale(LC_CTYPE, "")
+                        result = locale.nl_langinfo(CODESET)
+                        locale.setlocale(LC_CTYPE, oldloc)
+                        return result
+                    else:
+                        return locale.nl_langinfo(CODESET)
+                except:
+                    return None
+        #@-node:ekr.20031218072017.1505:<< define getpreferredencoding for *nix >>
+        #@nl
+        
+__pychecker__ = '--reuseattr'
+#@-node:ekr.20031218072017.1503:getpreferredencoding from 2.3a2
 #@+node:ekr.20031218072017.1499:isUnicode
 def isUnicode(s):
     
@@ -3997,71 +4079,6 @@ def test_failure_with_ascii_encodings():
     assert not ok, 'toEncodedStringWithErrorCode returns True for %s with ascii encoding' % s
 #@-node:ekr.20050208112123:test_failure_with_ascii_encodings
 #@-node:ekr.20031218072017.1502:toUnicode & toEncodedString (and tests)
-#@+node:ekr.20031218072017.1503:getpreferredencoding from 2.3a2
-# Suppress warning about redefining getpreferredencoding
-__pychecker__ = '--no-reuseattr'
-
-try:
-    # Use Python's version of getpreferredencoding if it exists.
-    # It is new in Python 2.3.
-    import locale
-    getpreferredencoding = locale.getpreferredencoding
-except Exception:
-    # Use code copied from locale.py in Python 2.3alpha2.
-    if sys.platform in ('win32', 'darwin', 'mac'):
-        #@        << define getpreferredencoding using _locale >>
-        #@+node:ekr.20031218072017.1504:<< define getpreferredencoding using _locale >>
-        # On Win32, this will return the ANSI code page
-        # On the Mac, it should return the system encoding;
-        # it might return "ascii" instead.
-        
-        def getpreferredencoding(do_setlocale = True):
-            """Return the charset that the user is likely using."""
-            try:
-                import _locale
-                return _locale._getdefaultlocale()[1]
-            except:
-                return None
-        #@-node:ekr.20031218072017.1504:<< define getpreferredencoding using _locale >>
-        #@nl
-    else:
-        #@        << define getpreferredencoding for *nix >>
-        #@+node:ekr.20031218072017.1505:<< define getpreferredencoding for *nix >>
-        # On Unix, if CODESET is available, use that.
-        
-        __pychecker__ = '--no-noeffect' # Note: this is at the top level!
-        
-        try:
-            locale.CODESET # Bug fix, 2/12/05
-        except NameError:
-            # Fall back to parsing environment variables :-(
-            def getpreferredencoding(do_setlocale = True):
-                """Return the charset that the user is likely using,
-                by looking at environment variables."""
-                try:
-                    return locale.getdefaultlocale()[1]
-                except:
-                    return None
-        else:
-            def getpreferredencoding(do_setlocale = True):
-                """Return the charset that the user is likely using,
-                according to the system configuration."""
-                try:
-                    if do_setlocale:
-                        oldloc = locale.setlocale(LC_CTYPE)
-                        locale.setlocale(LC_CTYPE, "")
-                        result = locale.nl_langinfo(CODESET)
-                        locale.setlocale(LC_CTYPE, oldloc)
-                        return result
-                    else:
-                        return locale.nl_langinfo(CODESET)
-                except:
-                    return None
-        #@-node:ekr.20031218072017.1505:<< define getpreferredencoding for *nix >>
-        #@nl
-        
-__pychecker__ = '--reuseattr'
-#@-node:ekr.20031218072017.1503:getpreferredencoding from 2.3a2
 #@-node:ekr.20031218072017.1498:Unicode utils...
 #@+node:EKR.20040612114220:Utility classes, functions & objects...
 #@+node:ekr.20031218072017.3140: List utilities...
