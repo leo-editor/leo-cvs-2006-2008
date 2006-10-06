@@ -1467,6 +1467,17 @@ class basePosition (object):
             
     __repr__ = __str__
     #@-node:ekr.20040301205720:p.__str__ and p.__repr__
+    #@+node:ekr.20061006092649:p.archivedPosition
+    def archivedPosition (self):
+        
+        '''Return a representation of a position suitable for use in .leo files.'''
+        
+        p = self
+        aList = [p.childIndex() for p in p.self_and_parents_iter()]
+        aList.reverse()
+        return aList
+    #@nonl
+    #@-node:ekr.20061006092649:p.archivedPosition
     #@+node:ekr.20040117171654:p.copy
     # Using this routine can generate huge numbers of temporary positions during a tree traversal.
     
