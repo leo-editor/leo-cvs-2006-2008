@@ -524,8 +524,6 @@ class baseFileCommands:
         self.c = c
         self.frame = c.frame
         self.use_sax = c.config.getBool('use_sax_based_read')
-        if self.use_sax and not g.app.unitTesting:
-            print 'use_sax = True'
         self.nativeTnodeAttributes = ('tx',)
         self.nativeVnodeAttributes = (
             'a','descendentTnodeUnknownAttributes',
@@ -1904,12 +1902,6 @@ class baseFileCommands:
         '''**Important**: this method and its helpers are low-level code
         corresponding to link/unlink methods in leoNodes.py.
         Modify this with extreme care.'''
-        
-        if 0: # inited by top-level methods...
-            self.descendentExpandedList = []
-            self.descendentMarksList = []
-            self.descendentUnknownAttributesDictList = {}
-            self.tnodesDict = {} # Keys are tnx's (strings).  Values are tnodes.
     
         children = self.createSaxChildren(dummyRoot,parent_v = None)
         firstChild = children and children[0]
@@ -2201,23 +2193,49 @@ class baseFileCommands:
                 delattr(p.v,'tempTnodeList')
     #@nonl
     #@-node:ekr.20060919110638.11:resolveTnodeLists
-    #@+node:ekr.20060919110638.13:setPositionsFromVnodes
+    #@+node:ekr.20060919110638.13:setPositionsFromVnodes & helper
     def setPositionsFromVnodes (self):
         
-        c = self.c
+        c = self.c ; p = c.rootPosition()
         
-        v = self.currentVnode
-        if v:
-            for p in c.allNodes_iter():
-                if p.v == v:
-                    # g.trace(p,c.shortFileName())
-                    c.selectPosition(p)
-                    return
+        current = None
+        d = hasattr(p.v,'unknownAttributes') and p.v.unknownAttributes
+        if d:
+            s = d.get('str_leo_pos')
+            if s:
+                current = self.archivedPositionToPosition(s)
         
-        g.trace('**** no present position. ****',self.currentVnode,c.rootPosition())
-        c.setCurrentPosition(c.rootPosition())
+        c.setCurrentPosition(current or c.rootPosition())
     #@nonl
-    #@-node:ekr.20060919110638.13:setPositionsFromVnodes
+    #@+node:ekr.20061006104837.1:archivedPositionToPosition
+    def archivedPositionToPosition (self,s):
+    
+        c = self.c
+        aList = s.split(',')
+        try:
+            aList = [int(z) for z in aList]
+        except Exception:
+            g.trace('oops: bad archived position:',aList)
+            aList = None
+        if not aList: return None
+        p = c.rootPosition() ; level = 0
+        while level < len(aList):
+            i = aList[level]
+            while i > 0:
+                if p.hasNext():
+                    p.moveToNext()
+                    i -= 1
+                else:
+                    g.trace('oops: bad archived position:',aList)
+                    return None
+            level += 1
+            if level < len(aList):
+                p.moveToFirstChild()
+                # g.trace('level',level,'index',aList[level],p.headString())
+        return p
+    #@nonl
+    #@-node:ekr.20061006104837.1:archivedPositionToPosition
+    #@-node:ekr.20060919110638.13:setPositionsFromVnodes & helper
     #@-node:ekr.20060919104530:Sax
     #@-node:ekr.20031218072017.3020:Reading
     #@+node:ekr.20031218072017.3032:Writing
@@ -2512,7 +2530,7 @@ class baseFileCommands:
         
         '''Put attribute whose name is key and value is val to the output stream.'''
         
-        # g.trace(key,repr(val))
+        # g.trace(key,repr(val),g.callers())
         
         # New in 4.3: leave string attributes starting with 'str_' alone.
         if key.startswith('str_'):
@@ -2558,6 +2576,7 @@ class baseFileCommands:
     
         # Make only one copy for all calls.
         self.currentPosition = c.currentPosition() 
+        self.rootPosition    = c.rootPosition()
         self.topPosition     = c.topPosition()
     
         if self.usingClipboard:
@@ -2602,11 +2621,20 @@ class baseFileCommands:
         
         # No longer a bottleneck now that we use p.equal rather than p.__cmp__
         # Almost 30% of the entire writing time came from here!!!
-        if p.equal(self.topPosition):     attr += "T" # was a bottleneck
-        if p.equal(self.currentPosition): attr += "V" # was a bottleneck
+        if not self.use_sax:
+            if p.equal(self.topPosition):     attr += "T" # was a bottleneck
+            if p.equal(self.currentPosition): attr += "V" # was a bottleneck
         
         if attr:
-            attrs.append(' a="%s"' % (attr))
+            attrs.append(' a="%s"' % attr)
+            
+        # Put the archived *current* position in the *root* positions <v> element.
+        if self.use_sax and p.equal(self.rootPosition):
+            aList = [str(z) for z in self.currentPosition.archivedPosition()]
+            d = hasattr(v,'unKnownAttributes') and v.unknownAttributes or {}
+            d['str_leo_pos'] = ','.join(aList)
+            g.trace(aList,d)
+            v.unknownAttributes = d
         #@nonl
         #@-node:ekr.20031218072017.1865:<< Append attribute bits to attrs >>
         #@nl
