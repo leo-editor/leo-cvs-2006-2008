@@ -63,6 +63,7 @@ class baseEditCommandsClass:
         '''Called from k.keyboardQuit to init all classes.'''
         
         pass
+    #@nonl
     #@-node:ekr.20050920084036.2: ctor, finishCreate, init (baseEditCommandsClass)
     #@+node:ekr.20051214132256:begin/endCommand
     #@+node:ekr.20051214133130:beginCommand  & beginCommandWithEvent
@@ -93,7 +94,7 @@ class baseEditCommandsClass:
                 ch=ch,name=name,oldSel=oldSel,oldText=oldText,w=w,undoType=undoType)
         else:
             self.undoData = None
-            
+    
         return w
     #@-node:ekr.20051215102349:beingCommandHelper
     #@-node:ekr.20051214133130:beginCommand  & beginCommandWithEvent
@@ -123,6 +124,22 @@ class baseEditCommandsClass:
                 k.resetLabel()
     #@-node:ekr.20051214133130.1:endCommand
     #@-node:ekr.20051214132256:begin/endCommand
+    #@+node:ekr.20061007105001:editWidget
+    def editWidget (self,event):
+        
+        c = self.c ; w = event and event.widget
+        
+        if w and g.app.gui.isTextWidget(w):
+            self.w = w
+        else:
+            self.w = self.c.frame.body and self.c.frame.body.bodyCtrl
+    
+        if self.w:
+            c.widgetWantsFocusNow(self.w)
+            
+        return self.w
+    #@nonl
+    #@-node:ekr.20061007105001:editWidget
     #@+node:ekr.20050920084036.5:getPublicCommands & getStateCommands
     def getPublicCommands (self):
     
@@ -169,9 +186,9 @@ class baseEditCommandsClass:
     
         c = self.c ; k = self.k
         
-        w = event and event.widget
+        w = self.editWidget(event)
     
-        val = 'sel' in w.tag_names() and w.tag_ranges('sel')
+        val = w and 'sel' in w.tag_names() and w.tag_ranges('sel')
         
         if warning and not val:
             k.setLabelGrey(warning)
@@ -205,10 +222,10 @@ class baseEditCommandsClass:
         return t1 == t2
     #@-node:ekr.20050920084036.10:contRanges
     #@+node:ekr.20050920084036.233:getRectanglePoints
-    def getRectanglePoints (self):
+    def getRectanglePoints (self,w):
     
-        c = self.c ; w = self.w
-        c.bodyWantsFocus()
+        c = self.c
+        c.widgetWantsFocusNow(w)
     
         i  = w.index('sel.first')
         i2 = w.index('sel.last')
@@ -408,10 +425,12 @@ class abbrevCommandsClass (baseEditCommandsClass):
         k = self.k ; state = k.getState('add-abbr')
     
         if state == 0:
+            w = self.editWidget(event) # Sets self.w
+            if not w: return
             k.setLabelBlue('Add Abbreviation: ',protect=True)
             k.getArg(event,'add-abbr',1,self.addAbbreviation)
         else:
-            w = event.widget
+            w = self.w
             k.clearState()
             k.resetLabel()
             word = w.get('insert -1c wordstart','insert -1c wordend')
@@ -432,11 +451,12 @@ class abbrevCommandsClass (baseEditCommandsClass):
         k = self.k ; state = k.getState('add-inverse-abbr')
     
         if state == 0:
+            w = self.editWidget(event) # Sets self.w
+            if not w: return
             k.setLabelBlue('Add Inverse Abbreviation: ',protect=True)
             k.getArg(event,'add-inverse-abbr',1,self.addInverseAbbreviation)
-            
         else:
-            w = event.widget
+            w = self.w
             k.clearState()
             k.resetLabel()
             word = w.get('insert -1c wordstart','insert -1c wordend').strip()
@@ -449,11 +469,12 @@ class abbrevCommandsClass (baseEditCommandsClass):
         '''Not a command.  Called from k.masterCommand to expand
         abbreviations in event.widget.'''
     
-        k = self.k ; ch = event.char.strip() ; w = event.widget 
+        k = self.k ; ch = event.char.strip()
+        w = self.editWidget(event)
+        if not w: return
+    
         word = w.get('insert -1c wordstart','insert -1c wordend')
-        
         g.trace('ch',repr(ch),'word',repr(word))
-        
         if ch:
             # We must do this: expandAbbrev is called from Alt-x and Control-x,
             # we get two differnt types of data and w states.
@@ -503,11 +524,10 @@ class abbrevCommandsClass (baseEditCommandsClass):
         
         '''Exapand abbreviations throughout a region.'''
     
-        if not self._chckSel(event):
-            return
-    
         k = self.k
-        w = event.widget
+        w = self.editWidget(event)
+        if not w or not self._chckSel(event): return
+    
         i1 = w.index('sel.first')
         i2 = w.index('sel.last')
         ins = w.index('insert')
@@ -521,7 +541,10 @@ class abbrevCommandsClass (baseEditCommandsClass):
         #@-at
         #@@c
         def searchXR (i1,i2,ins,event):
-            k = self.k ; w = event.widget
+            k = self.k
+            w = self.editWidget(event)
+            if not w: return
+        
             w.tag_add('sXR',i1,i2)
             while i1:
                 tr = w.tag_ranges('sXR')
@@ -548,6 +571,7 @@ class abbrevCommandsClass (baseEditCommandsClass):
             self.k.regx = g.bunch(iter=None,key=None)
         #@-node:ekr.20050920084036.22:<< define a new generator searchXR >>
         #@nl
+    
         # EKR: the 'result' of calling searchXR is a generator object.
         k.regx.iter = searchXR(i1,i2,ins,event)
         k.regx.iter.next() # Call it the first time.
@@ -628,6 +652,9 @@ class bufferCommandsClass (baseEditCommandsClass):
     def appendToBuffer (self,event):
         
         '''Add the selected body text to the end of the body text of a named buffer (node).'''
+        
+        w = self.editWidget(event) # Sets self.w
+        if not w: return
     
         self.k.setLabelBlue('Append to buffer: ')
         self.getBufferName(self.appendToBufferFinisher)
@@ -640,6 +667,7 @@ class bufferCommandsClass (baseEditCommandsClass):
         if s and p:
             c.beginUpdate()
             try:
+                w = self.w
                 c.selectPosition(p)
                 self.beginCommand('append-to-buffer: %s' % p.headString())
                 w.insert('end',s)
@@ -654,6 +682,9 @@ class bufferCommandsClass (baseEditCommandsClass):
     def copyToBuffer (self,event):
         
         '''Add the selected body text to the end of the body text of a named buffer (node).'''
+        
+        w = self.editWidget(event) # Sets self.w
+        if not w: return
     
         self.k.setLabelBlue('Copy to buffer: ')
         self.getBufferName(self.copyToBufferFinisher)
@@ -666,6 +697,7 @@ class bufferCommandsClass (baseEditCommandsClass):
         if s and p:
             c.beginUpdate()
             try:
+                w = self.w
                 c.selectPosition(p)
                 self.beginCommand('copy-to-buffer: %s' % p.headString())
                 w.insert('end',s)
@@ -680,6 +712,9 @@ class bufferCommandsClass (baseEditCommandsClass):
     def insertToBuffer (self,event):
         
         '''Add the selected body text at the insert point of the body text of a named buffer (node).'''
+        
+        w = self.editWidget(event) # Sets self.w
+        if not w: return
     
         self.k.setLabelBlue('Insert to buffer: ')
         self.getBufferName(self.insertToBufferFinisher)
@@ -692,6 +727,7 @@ class bufferCommandsClass (baseEditCommandsClass):
         if s and p:
             c.beginUpdate()
             try:
+                w = self.w
                 c.selectPosition(p)
                 self.beginCommand('insert-to-buffer: %s' % p.headString())
                 w.insert('insert',s)
@@ -704,6 +740,9 @@ class bufferCommandsClass (baseEditCommandsClass):
     def killBuffer (self,event):
         
         '''Delete a buffer (node) and all its descendants.'''
+        
+        w = self.editWidget(event) # Sets self.w
+        if not w: return
     
         self.k.setLabelBlue('Kill buffer: ')
         self.getBufferName(self.killBufferFinisher)
@@ -727,7 +766,6 @@ class bufferCommandsClass (baseEditCommandsClass):
         '''
         
         self.computeData()
-        
         g.es('Buffers...')
         for name in self.nameList:
             g.es(name)
@@ -748,6 +786,9 @@ class bufferCommandsClass (baseEditCommandsClass):
     def prependToBuffer (self,event):
         
         '''Add the selected body text to the start of the body text of a named buffer (node).'''
+        
+        w = self.editWidget(event) # Sets self.w
+        if not w: return
     
         self.k.setLabelBlue('Prepend to buffer: ')
         self.getBufferName(self.prependToBufferFinisher)
@@ -760,6 +801,7 @@ class bufferCommandsClass (baseEditCommandsClass):
         if s and p:
             c.beginUpdate()
             try:
+                w = self.w
                 c.selectPosition(p)
                 self.beginCommand('prepend-to-buffer: %s' % p.headString())
                 w.insert('1.0',s)
@@ -769,6 +811,7 @@ class bufferCommandsClass (baseEditCommandsClass):
             finally:
                 c.endUpdate()
                 c.recolor_now()
+    
     #@-node:ekr.20050920084036.39:prependToBuffer
     #@+node:ekr.20050920084036.43:renameBuffer
     def renameBuffer (self,event):
@@ -912,9 +955,11 @@ class controlCommandsClass (baseEditCommandsClass):
         
         '''Execute a command in a separate process.'''
         
-        k = self.k ; w = event.widget
-        k.setLabelBlue('started  shell-command: %s' % command)
+        k = self.k
+        w = self.editWidget(event)
+        if not w: return
     
+        k.setLabelBlue('started  shell-command: %s' % command)
         try:
             ofile = os.tmpfile()
             efile = os.tmpfile()
@@ -930,7 +975,6 @@ class controlCommandsClass (baseEditCommandsClass):
             okout = ofile.read()
             if okout: w.insert('insert',okout)
         except Exception, x:
-            w = event.widget
             w.insert('insert',x)
             
         k.setLabelGrey('finished shell-command: %s' % command)
@@ -968,9 +1012,13 @@ class controlCommandsClass (baseEditCommandsClass):
     def shellCommandOnRegion (self,event):
         
         '''Execute a command taken from the selected text in a separate process.'''
+        
+        k = self.k
+        w = self.editWidget(event)
+        if not w: return
     
         if subprocess:
-            k = self.k ; is1,is2 = None,None ; w = event.widget
+            is1,is2 = None,None
             try:
                 is1 = w.index('sel.first')
                 is2 = w.index('sel.last')
@@ -999,7 +1047,8 @@ class controlCommandsClass (baseEditCommandsClass):
         
         '''Minimize the present Leo window.'''
     
-        w = event.widget
+        w = self.editWidget(event)
+        if not w: return
         w.winfo_toplevel().iconify()
         
     # Must be a separate function so that k.inverseCommandsDict will be a true inverse.
@@ -1224,7 +1273,7 @@ class editCommandsClass (baseEditCommandsClass):
         self.sampleWidget = None # Created later.
         self.swapSpots = []
         self._useRegex = False # For replace-string
-        self.widget = None # For use by state handlers.
+        self.w = None # For use by state handlers.
         
         # Settings...
         self.autocompleteBrackets   = c.config.getBool('autocomplete-brackets')
@@ -1419,11 +1468,12 @@ class editCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20050920084036.145:changePreviousWord (not used)
     def changePreviousWord (self,event):
     
-        k = self.k ; stroke = k.stroke ; w = event.widget
-        i = w.index('insert')
-        
-        self.beginCommand(undoType='change-previous-word')
+        k = self.k ; stroke = k.stroke
+        w = self.editWidget(event)
+        if not w: return
     
+        i = w.index('insert')
+        self.beginCommand(undoType='change-previous-word')
         self.moveWordHelper(event,extend=False,forward=False)
     
         if stroke == '<Alt-c>':
@@ -1440,7 +1490,9 @@ class editCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20051015114221.1:capitalizeHelper
     def capitalizeHelper (self,event,which,undoType):
     
-        w = event.widget
+        w = self.editWidget(event)
+        if not w: return
+    
         text = w.get('insert wordstart','insert wordend')
         i = w.index('insert')
         if text == ' ': return
@@ -1530,7 +1582,10 @@ class editCommandsClass (baseEditCommandsClass):
         '''Cycle the keyboard focus between Leo's outline,
         all body editors and all tabs in the log pane.'''
     
-        c = self.c ; w = event.widget ; pane = None ; w_name = g.app.gui.widget_name
+        c = self.c
+        w = event and event.widget # Does **not** require a text widget.
+    
+        pane = None ; w_name = g.app.gui.widget_name
         trace = False
         if trace:
             g.trace(
@@ -1968,7 +2023,10 @@ class editCommandsClass (baseEditCommandsClass):
         
         '''Set the comment column for the indent-to-comment-column command.'''
     
-        cc = event.widget.index('insert')
+        w = self.editWidget(event)
+        if not w: return
+    
+        cc = w.index('insert')
         cc1, cc2 = cc.split('.')
         self.ccolumn = cc2
     #@-node:ekr.20050920084036.133:setCommentColumn
@@ -1977,7 +2035,9 @@ class editCommandsClass (baseEditCommandsClass):
     
         '''Insert whitespace to indent to the comment column.'''
     
-        k = self.k ; w = event.widget
+        k = self.k
+        w = self.editWidget(event)
+        if not w: return
         
         self.beginCommand(undoType='indent-to-comment-column')
     
@@ -2000,7 +2060,10 @@ class editCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20050920084036.59:dynamicExpansion
     def dynamicExpansion (self,event): #, store = {'rlist': [], 'stext': ''} ):
     
-        k = self.k ; w = event.widget
+        k = self.k
+        w = self.editWidget(event)
+        if not w: return
+    
         rlist = self.store ['rlist']
         stext = self.store ['stext']
         i = w.index('insert -1c wordstart')
@@ -2038,7 +2101,10 @@ class editCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20050920084036.60:dynamicExpansion2
     def dynamicExpansion2 (self,event):
     
-        k = self.k ; w = event.widget
+        k = self.k
+        w = self.editWidget(event)
+        if not w: return
+    
         i = w.index('insert -1c wordstart')
         i2 = w.index('insert -1c wordend')
         txt = w.get(i,i2)
@@ -2096,7 +2162,9 @@ class editCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20050920084036.64:escEvaluate (Revise)
     def escEvaluate (self,event):
     
-        k = self.k ; w = event.widget
+        k = self.k
+        w = self.editWidget(event)
+        if not w: return
     
         if k.getLabel() == 'Eval:':
             k.setLabel('')
@@ -2164,7 +2232,9 @@ class editCommandsClass (baseEditCommandsClass):
     
         '''Centers line within current fill column'''
     
-        k = self.k ; w = event.widget
+        k = self.k
+        w = self.editWidget(event)
+        if not w: return
     
         ind = w.index('insert linestart')
         txt = w.get('insert linestart','insert lineend')
@@ -2207,7 +2277,10 @@ class editCommandsClass (baseEditCommandsClass):
     
         '''Centers the selected text within the fill column'''
     
-        k = self.k ; w = event.widget
+        k = self.k
+        w = self.editWidget(event)
+        if not w: return
+    
         start = w.index( 'sel.first linestart' )
         sindex , x = start.split( '.' )
         sindex = int( sindex )
@@ -2240,7 +2313,9 @@ class editCommandsClass (baseEditCommandsClass):
         
         '''Make the selected text the fill prefix.'''
     
-        w = event.widget
+        w = self.editWidget(event)
+        if not w: return
+    
         txt = w.get( 'insert linestart', 'insert' )
         self.fillPrefix = txt
     #@-node:ekr.20050920084036.70:setFillPrefix
@@ -2276,7 +2351,9 @@ class editCommandsClass (baseEditCommandsClass):
         c = self.c ; k = c.k ; tag = 'find-char' ; state = k.getState(tag)
     
         if state == 0:
-            self.event = event ; self.widget = w = event.widget
+            w = self.editWidget(event) # Sets self.w
+            if not w: return
+            self.event = event
             self.backward = backward ; self.extend = extend ;
             self.insert = w.index('insert')
             s = '%s character %s' % (
@@ -2287,7 +2364,7 @@ class editCommandsClass (baseEditCommandsClass):
             # Get the arg without touching the focus.
             k.getArg(event,tag,1,self.findCharacter,oneCharacter=True,useMinibuffer=False)
         else:
-            event = self.event ; w = self.widget
+            event = self.event ; w = self.w
             backward = self.backward ; extend = self.extend
             ch = k.arg ; s = g.app.gui.getAllText(w)
             def toGui (i): return g.app.gui.toGuiIndex(s,w,i)
@@ -2321,11 +2398,12 @@ class editCommandsClass (baseEditCommandsClass):
         k = self.k ; tag = 'find-word-on-line' ; state = k.getState(tag)
         
         if state == 0:
-            self.widget = event.widget
+            w = self.editWidget(event) # Sets self.w
+            if not w: return
             k.setLabelBlue('Find word: ')
             k.getArg(event,tag,1,self.findWord)
         else:        
-            word = k.arg ; w = self.widget ; c = k.c
+            word = k.arg ; w = self.w ; c = k.c
             if word:
                 i = w.index('insert')
                 s = g.app.gui.getAllText(w)
@@ -2346,6 +2424,7 @@ class editCommandsClass (baseEditCommandsClass):
                         i += 1
             k.resetLabel()
             k.clearState()
+    
     #@-node:ekr.20060417194232.2:findWord
     #@-node:ekr.20060417194232:find (quick)
     #@+node:ekr.20050920084036.72:goto...
@@ -2357,11 +2436,12 @@ class editCommandsClass (baseEditCommandsClass):
         k = self.k ; state = k.getState('goto-char')
     
         if state == 0:
-            self.widget = event.widget
+            w = self.editWidget(event) # Sets self.w
+            if not w: return
             k.setLabelBlue('Goto character: ')
             k.getArg(event,'goto-char',1,self.gotoCharacter)
         else:
-            n = k.arg ; w = self.widget
+            n = k.arg ; w = self.w
             if n.isdigit():
                 w.mark_set('insert','1.0 +%sc' % n)
                 w.see('insert')
@@ -2377,7 +2457,8 @@ class editCommandsClass (baseEditCommandsClass):
         k = self.k ; tag = 'goto-global-line' ; state = k.getState(tag)
         
         if state == 0:
-            self.widget = event.widget
+            w = self.editWidget(event) # Sets self.w
+            if not w: return
             k.setLabelBlue('Goto global line: ')
             k.getArg(event,tag,1,self.gotoGlobalLine)
         else:
@@ -2395,11 +2476,12 @@ class editCommandsClass (baseEditCommandsClass):
         k = self.k ; state = k.getState('goto-line')
         
         if state == 0:
-            self.widget = event.widget
+            w = self.editWidget(event) # Sets self.w
+            if not w: return
             k.setLabelBlue('Goto line: ')
             k.getArg(event,'goto-line',1,self.gotoLine)
         else:
-            n = k.arg ;  w = self.widget
+            n = k.arg ;  w = self.w
             if n.isdigit():
                 w.mark_set('insert','%s.0' % n)
                 w.see('insert')
@@ -2412,10 +2494,12 @@ class editCommandsClass (baseEditCommandsClass):
     def backToIndentation (self,event):
         
         '''Position the point at the first non-blank character on the line.'''
+        
+        w = self.editWidget(event)
+        if not w: return
     
         self.beginCommand(undoType='back-to-indentation')
     
-        w = event.widget
         i = w.index('insert linestart')
         i2 = w.search(r'\w',i,stopindex='%s lineend' % i,regexp=True)
         w.mark_set('insert',i2)
@@ -2427,7 +2511,9 @@ class editCommandsClass (baseEditCommandsClass):
         
         '''Delete indentation in the presently line.'''
     
-        k = self.k ; w = event.widget
+        k = self.k
+        w = self.editWidget(event)
+        if not w: return
         
         self.beginCommand(undoType='delete-indentation')
     
@@ -2456,7 +2542,10 @@ class editCommandsClass (baseEditCommandsClass):
         
         c = self.c ; undoType = 'indent-relative'
         
-        k = self.k ; w = event.widget
+        k = self.k
+        w = self.editWidget(event)
+        if not w: return
+    
         self.beginCommand(undoType=undoType)
         i = w.index('insert')
         oldSel = (i,i)
@@ -2507,7 +2596,10 @@ class editCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20060417172056:addRemoveHelper
     def addRemoveHelper(self,event,ch,add,undoType):
     
-        c = self.c ; k = self.k ; w = event.widget
+        c = self.c ; k = self.k
+        w = self.editWidget(event)
+        if not w: return
+    
         if g.app.gui.hasSelection(w):
             s = g.app.gui.getSelectedText(w)
         else:
@@ -2540,10 +2632,8 @@ class editCommandsClass (baseEditCommandsClass):
         '''Delete the character to the left of the cursor.'''
         
         c = self.c ; p = c.currentPosition()
-        w = event and event.widget
-        if not g.app.gui.isTextWidget(w):
-            g.trace('*'*40,'Not a text widget',c.widget_name(w))
-            return
+        w = self.editWidget(event)
+        if not w: return
         
         wname = c.widget_name(w)
         i,j = g.app.gui.getTextSelection(w)
@@ -2596,7 +2686,9 @@ class editCommandsClass (baseEditCommandsClass):
         
         '''Removes leading whitespace from otherwise blanks lines.'''
     
-        k = self.k ; w = event.widget
+        k = self.k
+        w = self.editWidget(event)
+        if not w: return
         
         if g.app.gui.hasSelection(w):
             s = g.app.gui.getSelectedText(w)
@@ -2630,8 +2722,9 @@ class editCommandsClass (baseEditCommandsClass):
         
         '''Delete the selected text.'''
         
-        c = self.c ; w = event and event.widget
-        if not g.app.gui.isTextWidget(w): return
+        c = self.c
+        w = self.editWidget(event)
+        if not w: return
     
         i,j = g.app.gui.getTextSelection(w)
         if i == j: return
@@ -2645,8 +2738,9 @@ class editCommandsClass (baseEditCommandsClass):
         
         '''Delete the character to the right of the cursor.'''
     
-        c = self.c ; w = event and event.widget
-        if not g.app.gui.isTextWidget(w): return
+        c = self.c
+        w = self.editWidget(event)
+        if not w: return
     
         i,j = g.app.gui.getTextSelection(w)
         end = w.index('end-1c')
@@ -2668,8 +2762,9 @@ class editCommandsClass (baseEditCommandsClass):
         
         '''Delete all whitespace surrounding the cursor.'''
     
-        c = self.c ; w = event and event.widget
-        if not g.app.gui.isTextWidget(w): return
+        c = self.c
+        w = self.editWidget(event)
+        if not w: return
     
         char = w.get('insert','insert + 1c ')
         if not char.isspace(): return
@@ -2691,7 +2786,9 @@ class editCommandsClass (baseEditCommandsClass):
         
         '''Insert a newline at the cursor.'''
     
-        w = event.widget
+        w = self.editWidget(event)
+        if not w: return
+    
         wname = g.app.gui.widget_name(w)
         
         if not wname.startswith('head'):
@@ -2706,7 +2803,9 @@ class editCommandsClass (baseEditCommandsClass):
     
         '''Insert a newline and tab at the cursor.'''
     
-        w = event.widget
+        w = self.editWidget(event)
+        if not w: return
+    
         wname = g.app.gui.widget_name(w)
         
         if not wname.startswith('head'):
@@ -2719,7 +2818,9 @@ class editCommandsClass (baseEditCommandsClass):
         
         '''Insert () at the cursor.'''
     
-        w = event.widget
+        w = self.editWidget(event)
+        if not w: return
+    
         self.beginCommand(undoType='insert-parenthesis')
         w.insert('insert','()')
         w.mark_set('insert','insert -1c')
@@ -2765,7 +2866,9 @@ class editCommandsClass (baseEditCommandsClass):
         c = self.c ; p = c.currentPosition()
         ch = event and event.char or ''
         if event and event.keysym == 'Return': ch = '\n' # This fixes the MacOS return bug.
-        w = event and event.widget
+        w = self.editWidget(event)
+        if not w: return 'break'
+    
         name = c.widget_name(w)
         oldSel =  name.startswith('body') and g.app.gui.getTextSelection(w) or (None,None)
         oldText = name.startswith('body') and p.bodyString() or ''
@@ -2982,8 +3085,11 @@ class editCommandsClass (baseEditCommandsClass):
         '''Print how many occurances of a regular expression are found
         in the body text of the presently selected node.'''
         
-        k = self.k ; w = event.widget ; state = k.getState('how-many')
-        
+        k = self.k
+        w = self.editWidget(event)
+        if not w: return
+    
+        state = k.getState('how-many')
         if state == 0:
             k.setLabelBlue('How many: ',protect = True)
             k.getArg(event,'how-many',1,self.howMany)
@@ -2999,7 +3105,8 @@ class editCommandsClass (baseEditCommandsClass):
         
         '''Print the line and column number and percentage of insert point.'''
     
-        k = self.k ; w = event.widget
+        k = self.k
+        w = self.editWidget(event)
     
         i = w.index('insert')
         i1, i2 = i.split('.')
@@ -3031,7 +3138,10 @@ class editCommandsClass (baseEditCommandsClass):
         
         '''Print the line number of the line containing the cursor.'''
     
-        k = self.k ; w = event.widget
+        k = self.k
+        w = self.editWidget(event)
+        if not w: return
+    
         i = w.index('insert')
         i1, i2 = i.split('.')
         k.keyboardQuit(event)
@@ -3079,7 +3189,9 @@ class editCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20050920084036.92:linesHelper
     def linesHelper (self,event,pattern,which):
     
-        k = self.k ; w = event.widget
+        k = self.k
+        w = self.editWidget(event)
+        if not w: return
        
         self.beginCommand(undoType=which+'-lines')
         if w.tag_ranges('sel'):
@@ -3113,7 +3225,9 @@ class editCommandsClass (baseEditCommandsClass):
         
         '''Split a line at the cursor position.'''
     
-        w = event.widget
+        w = self.editWidget(event)
+        if not w: return
+    
         s = w.get('insert linestart','insert lineend')
         
         self.beginCommand(undoType='split-line')
@@ -3170,8 +3284,10 @@ class editCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20060113105246.1:moveUpOrDownHelper
     def moveUpOrDownHelper (self,event,direction,extend):
     
-        c = self.c ; w = event.widget
-        if not g.app.gui.isTextWidget(w): return
+        c = self.c
+        w = self.editWidget(event)
+        if not w: return
+    
         # Make the insertion cursor visible so bbox won't return an empty list.
         w.see('insert')
         # Remember the original insert point.  This may become the moveSpot.
@@ -3217,11 +3333,11 @@ class editCommandsClass (baseEditCommandsClass):
         '''Common helper method for commands the move the cursor
         in a way that can be described by a Tk Text expression.'''
     
-        c = self.c ; k = c.k ; w = event.widget
-        if not g.app.gui.isTextWidget(w): return
+        c = self.c ; k = c.k
+        w = self.editWidget(event)
+        if not w: return
     
         c.widgetWantsFocusNow(w)
-    
         wname = c.widget_name(w)
         if wname.startswith('mini'):
             # Put the request in the proper range.
@@ -3250,10 +3366,11 @@ class editCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20051218171457:movePastCloseHelper
     def movePastCloseHelper (self,event,extend):
     
-        c = self.c ; w = event.widget
-        if not g.app.gui.isTextWidget(w): return
+        c = self.c
+        w = self.editWidget(event)
+        if not w: return
     
-        c.widgetWantsFocus(w)
+        c.widgetWantsFocusNow(w)
         i = w.search('(','insert',backwards=True,stopindex='1.0')
         if '' == i: return
     
@@ -3278,10 +3395,11 @@ class editCommandsClass (baseEditCommandsClass):
     
         '''This function moves the cursor to the next word, direction dependent on the way parameter'''
     
-        c = self.c ; w = event.widget
-        if not g.app.gui.isTextWidget(w): return
+        c = self.c
+        w = self.editWidget(event)
+        if not w: return
         
-        c.widgetWantsFocus(w)
+        c.widgetWantsFocusNow(w)
         s = w.get('1.0','end') ; n = len(s)
     
         def toGui (i): return g.app.gui.toGuiIndex(s,w,i)
@@ -3308,10 +3426,11 @@ class editCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20051213094517:backSentenceHelper
     def backSentenceHelper (self,event,extend):
     
-        c = self.c ; w = event.widget
-        if not g.app.gui.isTextWidget(w): return
+        c = self.c
+        w = self.editWidget(event)
+        if not w: return
     
-        c.widgetWantsFocus(w)
+        c.widgetWantsFocusNow(w)
         i = w.search('.','insert',backwards=True,stopindex='1.0')
         if i:
             i2 = w.search('.',i,backwards=True,stopindex='1.0')
@@ -3327,10 +3446,11 @@ class editCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20050920084036.137:forwardSentenceHelper
     def forwardSentenceHelper (self,event,extend):
     
-        c = self.c ; w = event.widget
-        if not g.app.gui.isTextWidget(w): return
+        c = self.c
+        w = self.editWidget(event)
+        if not w: return
     
-        c.widgetWantsFocus(w)
+        c.widgetWantsFocusNow(w)
         ins = w.index('insert')
         # sel_i,sel_j = g.app.gui.getTextSelection(w)
         i = w.search('.','insert',stopindex='end')
@@ -3340,10 +3460,11 @@ class editCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20051218133207.1:forwardParagraphHelper
     def forwardParagraphHelper (self,event,extend):
         
-        c = self.c ; w = event.widget
-        if not g.app.gui.isTextWidget(w): return
+        c = self.c
+        w = self.editWidget(event)
+        if not w: return
     
-        c.widgetWantsFocus(w)
+        c.widgetWantsFocusNow(w)
         i = w.index('insert')
         while 1:
             txt = w.get('%s linestart' % i,'%s lineend' % i).strip()
@@ -3363,10 +3484,11 @@ class editCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20051218133207:backwardParagraphHelper
     def backwardParagraphHelper (self,event,extend):
         
-        c = self.c ; w = event.widget
-        if not g.app.gui.isTextWidget(w): return
+        c = self.c
+        w = self.editWidget(event)
+        if not w: return
     
-        c.widgetWantsFocus(w)
+        c.widgetWantsFocusNow(w)
         i = w.index('insert')
         while 1:
             s = w.get('%s linestart' % i,'%s lineend' % i).strip()
@@ -3443,20 +3565,24 @@ class editCommandsClass (baseEditCommandsClass):
     
     def extendModeHelper (self,event,val):
     
-        c = self.c ; w = event.widget
+        c = self.c
+        w = self.editWidget(event)
+        if not w: return
+    
         self.extendMode = val
         g.es('Extend mode %s' % (g.choose(val,'on','off')), color='red')
-        c.widgetWantsFocus(w)
+        c.widgetWantsFocusNow(w)
     #@-node:ekr.20051218174113:clear/set/ToggleExtendMode
     #@+node:ekr.20050920084036.136:exchangePointMark
     def exchangePointMark (self,event):
         
         '''Exchange the point (insert point) with the mark (the other end of the selected text).'''
         
-        c = self.c ; w = event.widget
-        if not g.app.gui.isTextWidget(w): return
+        c = self.c
+        w = self.editWidget(event)
+        if not w: return
     
-        c.widgetWantsFocus(w)
+        c.widgetWantsFocusNow(w)
         i,j = g.app.gui.getTextSelection(w,sort=False)
         if i != j:
             ins = w.index('insert')
@@ -3469,16 +3595,17 @@ class editCommandsClass (baseEditCommandsClass):
         
         '''Select the line at the cursor.'''
         
-        w = event.widget ; s = w.get('1.0','end') ; n = len(s)
-    
+        c = self.c
+        w = self.editWidget(event)
+        if not w: return
+        
         def toGui(i): return g.app.gui.toGuiIndex(s,w,i)
         def toPython(i): return g.app.gui.toPythonIndex(s,w,i)
-    
-        i = toPython(w.index('insert'))
         
+        s = w.get('1.0','end') ; n = len(s)
+        i = toPython(w.index('insert'))
         while 0 <= i < n and not s[i] == '\n':
             i -= 1
-    
         i += 1 ; i1 = i
         while 0 <= i < n and not s[i] == '\n':
             i += 1
@@ -3490,10 +3617,14 @@ class editCommandsClass (baseEditCommandsClass):
         
         '''Select the word at the cursor.'''
         
-        w = event.widget ; s = w.get('1.0','end') ; n = len(s)
+        c = self.c
+        w = self.editWidget(event)
+        if not w: return
+    
         def toGui (i): return g.app.gui.toGuiIndex(s,w,i)
         def toPython (i): return g.app.gui.toPythonIndex(s,w,i)
     
+        s = w.get('1.0','end') ; n = len(s)
         i = toPython(w.index('insert'))
         while 0 <= i < n and not g.isWordChar(s[i]):
             i -= 1
@@ -3608,7 +3739,10 @@ class editCommandsClass (baseEditCommandsClass):
         
         '''Kill the previous paragraph.'''
     
-        k = self.k ; c = k.c ; w = event.widget
+        k = self.k ; c = k.c
+        w = self.editWidget(event)
+        if not w: return
+    
         i = w.index('insert')
         i2 = i
         txt = w.get('insert linestart','insert lineend')
@@ -3630,7 +3764,10 @@ class editCommandsClass (baseEditCommandsClass):
     def fillParagraph( self, event ):
         
         '''Fill the selected paragraph'''
-        k = self.k ; w = event.widget
+        k = self.k
+        w = self.editWidget(event)
+        if not w: return
+    
         txt = w.get( 'insert linestart', 'insert lineend' )
         txt = txt.strip()
         if txt:
@@ -3667,8 +3804,9 @@ class editCommandsClass (baseEditCommandsClass):
     def fillRegion (self,event):
     
         '''Fill all paragraphs in the selected text.'''
-        k = self.k ; w = event.widget
-        if not self._chckSel(event): return
+        k = self.k
+        w = self.editWidget(event)
+        if not w or not self._chckSel(event): return
         
         self.beginCommand(undoType='fill-region')
     
@@ -3691,8 +3829,9 @@ class editCommandsClass (baseEditCommandsClass):
         
         '''Fill the selected text.'''
     
-        k = self.k ; w = event.widget
-        if not self._chckSel(event): return
+        k = self.k
+        w = self.editWidget(event)
+        if not w or not self._chckSel(event): return
         
         self.beginCommand(undoType='fill-region-as-paragraph')
     
@@ -3710,7 +3849,10 @@ class editCommandsClass (baseEditCommandsClass):
         
         '''Kill the present paragraph.'''
     
-        k = self.k ; c = k.c ; w = event.widget
+        k = self.k ; c = k.c
+        w = self.editWidget(event)
+        if not w: return
+    
         i = w.index('insert')
         txt = w.get('insert linestart','insert lineend')
         
@@ -3731,7 +3873,10 @@ class editCommandsClass (baseEditCommandsClass):
         
         '''Select the paragraph surrounding the cursor.'''
     
-        k = self.k ; w = event.widget
+        k = self.k
+        w = self.editWidget(event)
+        if not w: return
+    
         txt = w.get('insert linestart','insert lineend')
         txt = txt.strip()
         i = w.index('insert')
@@ -3778,13 +3923,16 @@ class editCommandsClass (baseEditCommandsClass):
     def setRegion (self,event):
     
         mrk = 'sel'
-        w = event.widget
+        w = self.editWidget(event) # sets self.w
+        if not w: return
     
+        # define callbacks.
         #@    @+others
         #@+node:ekr.20051002102410:down
         def down (event):
         
-            w = event.widget
+            w = self.editWidget(event)
+            if not w: return
         
             if self.testinrange(w):
                 w.tag_add(mrk,'insert','insert lineend')
@@ -3801,7 +3949,9 @@ class editCommandsClass (baseEditCommandsClass):
         #@+node:ekr.20051002102410.1:extend
         def extend (event):
         
-            w = event.widget
+            w = self.editWidget(event)
+            if not w: return
+        
             w.mark_set('insert','insert + 1c')
         
             if self.inRange(w,mrk):
@@ -3816,7 +3966,9 @@ class editCommandsClass (baseEditCommandsClass):
         #@+node:ekr.20051002102410.2:truncate
         def truncate (event):
         
-            w = event.widget
+            w = self.editWidget(event)
+            if not w: return
+        
             w.mark_set('insert','insert -1c')
         
             if self.inRange(w,mrk):
@@ -3832,7 +3984,8 @@ class editCommandsClass (baseEditCommandsClass):
         #@+node:ekr.20051002102410.3:up
         def up (event):
         
-            w = event.widget
+            w = self.editWidget(event)
+            if not w: return
         
             if self.testinrange(w):
                 w.tag_add(mrk,'insert linestart','insert')
@@ -3858,7 +4011,9 @@ class editCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20050920084036.106:setRegion
     #@+node:ekr.20050920084036.107:indentRegion (not used: use c.indentBody instead)
     def indentRegion (self,event):
-        w = event.widget
+        w = self.editWidget(event)
+        if not w: return
+    
         mrk = 'sel'
         trange = w.tag_ranges(mrk)
         if len(trange) != 0:
@@ -3892,8 +4047,9 @@ class editCommandsClass (baseEditCommandsClass):
         
         '''Insert a hard tab at the start of each line of the selected text.'''
     
-        k = self.k ; w = event.widget
-        if not self._chckSel(event): return
+        k = self.k
+        w = self.editWidget(event)
+        if not w or not self._chckSel(event): return
         
         self.beginCommand(undoType='indent-rigidly')
     
@@ -3911,7 +4067,9 @@ class editCommandsClass (baseEditCommandsClass):
         
         '''Print the number of lines and characters in the selected text.'''
     
-        k = self.k ; w = event.widget
+        k = self.k
+        w = self.editWidget(event)
+        if not w: return
     
         txt = w.get('sel.first','sel.last')
         lines = 1 ; chars = 0
@@ -3928,8 +4086,9 @@ class editCommandsClass (baseEditCommandsClass):
         '''Move all lines containing any selected text down one line,
         moving to the next node if the lines are the last lines of the body.'''
     
-        c = self.c ; w = event.widget
-        if not g.app.gui.hasSelection(w): return
+        c = self.c
+        w = self.editWidget(event)
+        if not w or not self._chckSel(event): return
     
         self.beginCommand(undoType='move-lines-down')
     
@@ -3972,7 +4131,9 @@ class editCommandsClass (baseEditCommandsClass):
         '''Move all lines containing any selected text up one line,
         moving to the previous node as needed.'''
     
-        c = self.c ; w = event.widget
+        c = self.c
+        w = self.editWidget(event)
+        if not w: return
     
         if not g.app.gui.hasSelection(w): return
         
@@ -4024,8 +4185,9 @@ class editCommandsClass (baseEditCommandsClass):
         
         '''Reverse the order of lines in the selected text.'''
     
-        k = self.k ; w = event.widget
-        if not self._chckSel(event): return
+        k = self.k
+        w = self.editWidget(event)
+        if not w or not self._chckSel(event): return
     
         self.beginCommand(undoType='reverse-region')
     
@@ -4058,8 +4220,10 @@ class editCommandsClass (baseEditCommandsClass):
         
     def caseHelper (self,event,way,undoType):
     
-        w = event.widget ; trange = w.tag_ranges('sel')
+        w = self.editWidget(event)
+        if not w: return
     
+        trange = w.tag_ranges('sel')
         if len(trange) != 0:
             self.beginCommand(undoType=undoType)
             text = w.get(trange[0],trange[-1])
@@ -4096,12 +4260,13 @@ class editCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20060113082917:scrollHelper
     def scrollHelper (self,event,direction,extend):
     
-        k = self.k ; c = k.c ; w = event.widget
-        # g.trace(g.app.gui.widget_name(w))
+        k = self.k ; c = k.c
+        w = event and event.widget
+        if not w: return #  This does **not** require a text widget.
     
         if g.app.gui.isTextWidget(w):
     
-            c.widgetWantsFocus(w)
+            c.widgetWantsFocusNow(w)
         
             # Remember the original insert point.  This may become the moveSpot.
             ins1 = w.index('insert')
@@ -4296,9 +4461,9 @@ class editCommandsClass (baseEditCommandsClass):
         '''Sort lines of the selected text by comparing the entire text of a line.
         A prefix argument means sort in descending order.'''
     
-        c = self.c ; k = c.k ; w = event.widget
-        # g.trace(c.widget_name(w))
-        if not self._chckSel(event): return
+        c = self.c ; k = c.k
+        w = self.editWidget(event)
+        if not w or not self._chckSel(event): return
     
         self.beginCommand(undoType='sort-lines')
         i = w.index('sel.first')
@@ -4324,8 +4489,9 @@ class editCommandsClass (baseEditCommandsClass):
         
         '''Sort lines of selected text using only lines in the given columns to do the comparison.'''
     
-        k = self.k ; w = event.widget
-        if not self._chckSel(event): return
+        k = self.k
+        w = self.editWidget(event)
+        if not w or not self._chckSel(event): return
     
         self.beginCommand(undoType='sort-columns')
         ins = w.index('insert')
@@ -4366,8 +4532,9 @@ class editCommandsClass (baseEditCommandsClass):
          field 1, etc. A negative argument means sort in descending order. Thus,
          minus 2 means sort by field 2 in reverse-alphabetical order.'''
     
-        k = self.k ; w = event.widget
-        if not self._chckSel(event): return
+        k = self.k
+        w = self.editWidget(event)
+        if not w or not self._chckSel(event): return
     
         self.beginCommand(undoType='sort-fields')
         ins = w.index('insert')
@@ -4415,7 +4582,10 @@ class editCommandsClass (baseEditCommandsClass):
         
         '''Transpose the line containing the cursor with the preceding line.'''
     
-        k = self.k ; w = event.widget
+        k = self.k
+        w = self.editWidget(event)
+        if not w: return
+    
         i = w.index('insert')
         i1, i2 = i.split('.')
         i1 = str(int(i1)-1)
@@ -4438,9 +4608,10 @@ class editCommandsClass (baseEditCommandsClass):
         
         '''Transpose the word at the cursor with the preceding word.'''
     
-        w = event.widget
+        w = self.editWidget(event)
+        if not w: return
+    
         txt = w.get('insert wordstart','insert wordend')
-        g.trace(txt)
         if not txt: return
         
         i = w.index('insert wordstart')
@@ -4463,6 +4634,9 @@ class editCommandsClass (baseEditCommandsClass):
         
         '''Transpose the word at the cursor with the preceding word.'''
         
+        w = self.editWidget(event)
+        if not w: return
+        
         self.beginCommand(undoType='transpose-words')
         self.swapWords(event,self.swapSpots)
         self.endCommand(changed=True,setLabel=True)
@@ -4470,7 +4644,10 @@ class editCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20050920084036.124:swapCharacters & transeposeCharacters
     def swapCharacters (self,event):
     
-        k = self.k ; w = event.widget
+        k = self.k
+        w = self.editWidget(event)
+        if not w: return
+    
         i = w.index('insert')
         c1 = w.get('insert','insert +1c')
         c2 = w.get('insert -1c','insert')
@@ -4497,7 +4674,10 @@ class editCommandsClass (baseEditCommandsClass):
     
     def tabifyHelper (self,event,which):
     
-        k = self.k ; w = event.widget
+        k = self.k
+        w = self.editWidget(event)
+        if not w: return
+    
         if w.tag_ranges('sel'):
             self.beginCommand(undoType=which)
             i = w.index('sel.first')
@@ -4566,7 +4746,9 @@ class editFileCommandsClass (baseEditCommandsClass):
     
         '''Creates a node and puts the diff between 2 files into it.'''
     
-        k = self.k ; w = event.widget
+        k = self.k
+        w = self.editWidget(event)
+        if not w: return
     
         try:
             f, name = self.getReadableTextFile()
@@ -4598,7 +4780,10 @@ class editFileCommandsClass (baseEditCommandsClass):
         
         '''Prompt for the name of a file and put the selected text into it.'''
     
-        k = self.k ; c = k.c ; w = event.widget
+        k = self.k ; c = k.c
+        w = self.editWidget(event)
+        if not w: return
+    
         f, name = self.getReadableTextFile()
         if f:
             txt = f.read()
@@ -4668,7 +4853,9 @@ class editFileCommandsClass (baseEditCommandsClass):
         
         '''Prompt for the name of a file and put the body text of the selected node into it..'''
     
-        w = event.widget
+        w = self.editWidget(event)
+        if not w: return
+    
         txt = w.get('1.0','end')
         f = tkFileDialog and tkFileDialog.asksaveasfile()
         if f:
@@ -5184,7 +5371,9 @@ class killBufferCommandsClass (baseEditCommandsClass):
         
         '''Kill the previous sentence.'''
         
-        w = event.widget
+        w = self.editWidget(event)
+        if not w: return
+    
         i = w.search('.','insert',backwards=True,stopindex='1.0')
     
         if i:
@@ -5238,9 +5427,11 @@ class killBufferCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20050920084036.178:kill, killLine, killWord
     def kill (self,event,frm,to,undoType=None):
     
-        k = self.k ; w = event.widget
+        k = self.k
+        w = self.editWidget(event)
+        if not w: return
+    
         s = w.get(frm,to)
-        
         if undoType: self.beginCommand(undoType=undoType)
         self.addToKillBuffer(s)
         w.clipboard_clear()
@@ -5268,25 +5459,27 @@ class killBufferCommandsClass (baseEditCommandsClass):
     
     def killRegionHelper (self,event,deleteFlag):
     
-        w = event.widget
-    
-        if g.app.gui.isTextWidget(w):
-            theRange = w.tag_ranges('sel')
-            if theRange:
-                s = w.get(theRange[0],theRange[-1])
-                if deleteFlag:
-                    w.delete(theRange[0],theRange[-1])
-                self.addToKillBuffer(s)
-                w.clipboard_clear()
-                w.clipboard_append(s)
-                self.removeRKeys(w)
+        w = self.editWidget(event)
+        if not w: return
+        theRange = w.tag_ranges('sel')
+        if not theRange: return
+        
+        s = w.get(theRange[0],theRange[-1])
+        if deleteFlag:
+            w.delete(theRange[0],theRange[-1])
+        self.addToKillBuffer(s)
+        w.clipboard_clear()
+        w.clipboard_append(s)
+        self.removeRKeys(w)
     #@-node:ekr.20050920084036.182:killRegion & killRegionSave & helper
     #@+node:ekr.20050930095323.1:killSentence
     def killSentence (self,event):
         
         '''Kill the sentence containing the cursor.'''
     
-        w = event.widget
+        w = self.editWidget(event)
+        if not w: return
+    
         i  = w.search('.','insert',stopindex='end')
         if i:
             i2 = w.search('.','insert',backwards=True,stopindex='1.0')
@@ -5296,7 +5489,9 @@ class killBufferCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20050930100733:killWs
     def killWs (self,event):
         
-        ws = '' ; w = event.widget
+        ws = ''
+        w = self.editWidget(event)
+        if not w: return
     
         while 1:
             s = w.get('insert')
@@ -5314,7 +5509,10 @@ class killBufferCommandsClass (baseEditCommandsClass):
         
         '''Insert the next entry in the kill ring at the insert point.'''
     
-        k = self.k ; w = event.widget
+        k = self.k
+        w = self.editWidget(event)
+        if not w: return
+    
         i = w.index('insert')
         clip_text = self.getClipboard(w)
     
@@ -5330,7 +5528,10 @@ class killBufferCommandsClass (baseEditCommandsClass):
         
         '''Replaces the just-yanked kill buffer with the contents of the previous kill buffer.'''
     
-        k = self.k ; w = event.widget
+        k = self.k
+        w = self.editWidget(event)
+        if not w: return
+    
         i = w.index('insert') ; t, t1 = i.split('.')
         clip_text = self.getClipboard(w)
     
@@ -5350,13 +5551,17 @@ class killBufferCommandsClass (baseEditCommandsClass):
         
         '''Kill characters from the insertion point to a given character.'''
     
-        k = self.k ; state = k.getState('zap-to-char')
-    
+        k = self.k
+        w = self.editWidget(event)
+        if not w: return
+        
+        state = k.getState('zap-to-char')
         if state == 0:
             k.setLabelBlue('Zap To Character: ',protect=True)
             k.setState('zap-to-char',1,handler=self.zapToCharacter)
         else:
-            c = k.c ; w = event.widget ; ch = event.char
+            c = k.c
+            ch = event and event.char
             k.resetLabel()
             k.clearState()
             if (
@@ -5365,9 +5570,9 @@ class killBufferCommandsClass (baseEditCommandsClass):
             ):
                 i = w.search(ch,'insert',stopindex='end')
                 if i:
-                    t = w.get('insert','%s+1c' % i)
-                    self.addToKillBuffer(t)
-                    w.delete('insert','%s+1c' % i)
+                    s = w.get('insert','%s' % i)
+                    self.addToKillBuffer(s)
+                    w.delete('insert','%s' % i)
     #@-node:ekr.20050920084036.128:zapToCharacter
     #@-others
 #@-node:ekr.20050920084036.174:killBufferCommandsClass (add docstrings)
@@ -5742,8 +5947,9 @@ class macroCommandsClass (baseEditCommandsClass):
     def callLastKeyboardMacro (self,event):
         
         '''Call the last recorded keyboard macro.'''
-    
-        w = event.widget
+        
+        w = event and event.widget
+        # This does **not** require a text widget.
     
         if self.lastMacro:
             self._executeMacro(self.lastMacro,w)
@@ -5783,7 +5989,9 @@ class macroCommandsClass (baseEditCommandsClass):
             return False
     
         def func (event,macro=macro):
-            return self._executeMacro(macro,event.widget)
+            w = event and event.widget
+            # This does **not** require a text widget.
+            return self._executeMacro(macro,w)
     
         c.commandsDict [name] = func
         self.namedMacros [name] = macro
@@ -5836,9 +6044,12 @@ class queryReplaceCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20050920084036.212:doOneReplace
     def doOneReplace (self,event):
     
-        i = event.widget.tag_ranges('qR')
-        event.widget.delete(i[0],i[1])
-        event.widget.insert('insert',self.qR)
+        w = self.editWidget(event)
+        if not w: return
+        
+        i = w.tag_ranges('qR')
+        w.delete(i[0],i[1])
+        w.insert('insert',self.qR)
         self.replaced += 1
     #@-node:ekr.20050920084036.212:doOneReplace
     #@+node:ekr.20050920084036.219:findNextMatch
@@ -5848,10 +6059,11 @@ class queryReplaceCommandsClass (baseEditCommandsClass):
         Return True if a match was found.
         Otherwise, call quitSearch and return False.'''
     
-        k = self.k ; w = event.widget
+        k = self.k
+        w = self.editWidget(event)
+        if not w: return
         
         w.tag_delete('qR')
-    
         if self.regexp:
             #@        << handle regexp >>
             #@+node:ekr.20051005155611:<< handle regexp >>
@@ -5898,9 +6110,10 @@ class queryReplaceCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20050920084036.211:getUserResponse
     def getUserResponse (self,event):
         
-        w = event.widget
+        w = self.editWidget(event)
+        if not w or not hasattr(event,'keysym'): return
+        
         # g.trace(event.keysym)
-    
         if event.keysym == 'y':
             self.doOneReplace(event)
             if not self.findNextMatch(event):
@@ -5921,7 +6134,10 @@ class queryReplaceCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20050920084036.220:quitSearch
     def quitSearch (self,event,message=None):
     
-        k = self.k ; w = event.widget
+        k = self.k
+        w = self.editWidget(event)
+        if not w: return
+    
         w.tag_delete('qR')
         k.clearState()
         if message is None:
@@ -6014,7 +6230,7 @@ class rectangleCommandsClass (baseEditCommandsClass):
     
         w = baseEditCommandsClass.beginCommand(self,undoType)
     
-        r1, r2, r3, r4 = self.getRectanglePoints()
+        r1, r2, r3, r4 = self.getRectanglePoints(w)
     
         return w, r1, r2, r3, r4
         
@@ -6024,7 +6240,7 @@ class rectangleCommandsClass (baseEditCommandsClass):
         
         w = baseEditCommandsClass.beginCommandWithEvent(self,event,undoType)
         
-        r1, r2, r3, r4 = self.getRectanglePoints()
+        r1, r2, r3, r4 = self.getRectanglePoints(w)
     
         return w, r1, r2, r3, r4
     #@-node:ekr.20051215103053:beginCommand & beginCommandWithEvent (rectangle)
@@ -6033,8 +6249,9 @@ class rectangleCommandsClass (baseEditCommandsClass):
     def clearRectangle (self,event):
         
         '''Clear the rectangle defined by the start and end of selected text.'''
-    
-        if not self.check(event): return
+        
+        w = self.editWidget(event)
+        if not w or not self.check(event): return
         
         w,r1,r2,r3,r4 = self.beginCommand('clear-rectangle')
     
@@ -6052,7 +6269,8 @@ class rectangleCommandsClass (baseEditCommandsClass):
         
         '''Delete the rectangle if it contains nothing but whitespace..'''
     
-        if not self.check(event): return
+        w = self.editWidget(event)
+        if not w or not self.check(event): return
     
         w,r1,r2,r3,r4 = self.beginCommand('close-rectangle')
       
@@ -6072,7 +6290,8 @@ class rectangleCommandsClass (baseEditCommandsClass):
         
         '''Delete the rectangle defined by the start and end of selected text.'''
     
-        if not self.check(event): return
+        w = self.editWidget(event)
+        if not w or not self.check(event): return
         
         w,r1,r2,r3,r4 = self.beginCommand('delete-rectangle')
     
@@ -6086,7 +6305,8 @@ class rectangleCommandsClass (baseEditCommandsClass):
         
         '''Kill the rectangle defined by the start and end of selected text.'''
     
-        if not self.check(event): return
+        w = self.editWidget(event)
+        if not w or not self.check(event): return
         
         w,r1,r2,r3,r4 = self.beginCommand('kill-rectangle')
     
@@ -6108,7 +6328,8 @@ class rectangleCommandsClass (baseEditCommandsClass):
         '''Insert blanks in the rectangle defined by the start and end of selected text.
         This pushes the previous contents of the rectangle rightward.'''
     
-        if not self.check(event): return
+        w = self.editWidget(event)
+        if not w or not self.check(event): return
         
         w,r1,r2,r3,r4 = self.beginCommand('open-rectangle')
         
@@ -6123,7 +6344,9 @@ class rectangleCommandsClass (baseEditCommandsClass):
         
         '''Yank into the rectangle defined by the start and end of selected text.'''
         
-        c = self.c ; k = self.k ; w = self.w
+        c = self.c ; k = self.k
+        w = self.editWidget(event)
+        if not w: return
     
         killRect = killRect or self.theKillRectangle
         if not killRect:
@@ -6155,16 +6378,17 @@ class rectangleCommandsClass (baseEditCommandsClass):
         
         '''Prompt for a string, then replace the contents of a rectangle with a string on each line.'''
     
-        c = self.c ; k = self.k ; w = self.w
-        state = k.getState('string-rect')
+        c = self.c ; k = self.k ; state = k.getState('string-rect')
         if state == 0:
-            if not self.check(event): return
-            self.stringRect = self.getRectanglePoints()
+            w = self.editWidget(event) # sets self.w
+            if not w or not self.check(event): return
+            self.stringRect = self.getRectanglePoints(w)
             k.setLabelBlue('String rectangle: ',protect=True)
             k.getArg(event,'string-rect',1,self.stringRectangle)
         else:
             k.clearState()
             k.resetLabel()
+            w = self.w
             self.beginCommand('string-rectangle')
             r1, r2, r3, r4 = self.stringRect
             w.mark_set('sel.start','%d.%d' % (r1,r2))
@@ -6174,6 +6398,7 @@ class rectangleCommandsClass (baseEditCommandsClass):
                 w.delete('%s.%s' % (r,r2),'%s.%s' % (r,r4))
                 w.insert('%s.%s' % (r,r2),k.arg)
             self.endCommand()
+    #@nonl
     #@-node:ekr.20050920084036.232:stringRectangle
     #@-node:ekr.20050920084036.224:Entries
     #@-others
@@ -6326,6 +6551,8 @@ class registerCommandsClass (baseEditCommandsClass):
         c = self.c ; k = self.k ; state = k.getState('copy-rect-to-reg')
     
         if state == 0:
+            w = self.editWidget(w) # sets self.w
+            if not w: return
             k.commandName = 'copy-rectangle-to-register'
             k.setLabelBlue('Copy Rectangle To Register: ',protect=True)
             k.setState('copy-rect-to-reg',1,self.copyRectangleToRegister)
@@ -6333,9 +6560,9 @@ class registerCommandsClass (baseEditCommandsClass):
             k.clearState()
             if event.keysym in string.letters:
                 key = event.keysym.lower()
-                w = c.frame.body.bodyCtrl
-                c.bodyWantsFocus()
-                r1, r2, r3, r4 = self.getRectanglePoints()
+                w = self.w
+                c.widgetWantsFocusNow(w)
+                r1, r2, r3, r4 = self.getRectanglePoints(w)
                 rect = []
                 while r1 <= r3:
                     txt = w.get('%s.%s' % (r1,r2),'%s.%s' % (r1,r4))
@@ -6537,14 +6764,16 @@ class registerCommandsClass (baseEditCommandsClass):
     #@-others
 #@-node:ekr.20050920084036.234:registerCommandsClass
 #@+node:ekr.20051023094009:Search classes
-#@+node:ekr.20060123125256:class minibufferFind (the findHandler)
-class minibufferFind:
+#@+node:ekr.20060123125256:class minibufferFind( (the findHandler)
+class minibufferFind (baseEditCommandsClass):
 
     '''An adapter class that implements minibuffer find commands using the (hidden) Find Tab.'''
 
     #@    @+others
     #@+node:ekr.20060123125317.2: ctor (minibufferFind)
     def __init__(self,c,finder):
+        
+        baseEditCommandsClass.__init__(self,c) # init the base class.
     
         self.c = c
         self.k = k = c.k
@@ -6723,7 +6952,8 @@ class minibufferFind:
         state = k.getState(tag)
     
         if state == 0:
-            self.w = event and event.widget
+            w = self.editWidget(event) # sets self.w
+            if not w: return
             self.setupArgs(forward=None,regexp=None,word=None)
             k.setLabelBlue('Clone Find All: ',protect=True)
             k.getArg(event,tag,1,self.cloneFindAll)
@@ -6749,7 +6979,8 @@ class minibufferFind:
     
         k = self.k ; state = k.getState('find-all')
         if state == 0:
-            self.w = event and event.widget
+            w = self.editWidget(event) # sets self.w
+            if not w: return
             self.setupArgs(forward=True,regexp=False,word=True)
             k.setLabelBlue('Find All: ',protect=True)
             k.getArg(event,'find-all',1,self.findAll)
@@ -6947,7 +7178,9 @@ class minibufferFind:
     def stateZeroHelper (self,event,tag,prefix,handler,escapes=[]):
     
         k = self.k
-        self.w = event and event.widget
+        self.w = self.editWidget(event)
+        if not self.w: return
+    
         k.setLabelBlue(prefix,protect=True)
         self.addFindStringToLabel(protect=False)
         
@@ -6992,7 +7225,7 @@ class minibufferFind:
             self.generalSearchHelper(k.arg)
     #@-node:ekr.20060124140224.2:wordSearchBackward/Forward
     #@-others
-#@-node:ekr.20060123125256:class minibufferFind (the findHandler)
+#@-node:ekr.20060123125256:class minibufferFind( (the findHandler)
 #@+node:ekr.20051020120306.6:class findTab (leoFind.leoFind)
 class findTab (leoFind.leoFind):
     
@@ -7123,7 +7356,7 @@ class findTab (leoFind.leoFind):
         #@+node:ekr.20051020120306.16:<< Bind Tab and control-tab >>
         def setFocus(w):
             c = self.c
-            c.widgetWantsFocus(w)
+            c.widgetWantsFocusNow(w)
             g.app.gui.setSelectionRange(w,"1.0","1.0")
             return "break"
             
@@ -7432,11 +7665,11 @@ class findTab (leoFind.leoFind):
     
         """Bring the Find Tab to the front and select the entire find text."""
     
-        c = self.c ; t = self.find_ctrl
+        c = self.c ; w = self.find_ctrl
             
-        c.widgetWantsFocus(t)
-        g.app.gui.selectAllText(t)
-        c.widgetWantsFocus(t)
+        c.widgetWantsFocusNow(w)
+        g.app.gui.selectAllText(w)
+        c.widgetWantsFocus(w)
     #@-node:ekr.20051020120306.26:bringToFront
     #@+node:ekr.20051020120306.27:selectAllFindText
     def selectAllFindText (self,event=None):
