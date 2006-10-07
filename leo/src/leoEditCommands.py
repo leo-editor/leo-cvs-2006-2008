@@ -1308,6 +1308,7 @@ class editCommandsClass (baseEditCommandsClass):
             'expand-log-pane':                      c.frame.expandLogPane,
             'expand-outline-pane':                  c.frame.expandOutlinePane,
             'expand-pane':                          c.frame.expandPane,
+            'extend-to-line':                       self.extendToLine,
             'extend-to-word':                       self.extendToWord,
             'fill-paragraph':                       self.fillParagraph,
             'fill-region':                          self.fillRegion,
@@ -2135,28 +2136,6 @@ class editCommandsClass (baseEditCommandsClass):
             except Exception:
                 k.setLabelGrey('Invalid Expression: %s' % e)
     #@-node:ekr.20050920084036.65:evalExpression
-    #@+node:ekr.20060116074839.2:extend-to-word
-    def extendToWord (self,event):
-        
-        '''Select the word at the cursor.'''
-        
-        w = event.widget ; s = w.get('1.0','end') ; n = len(s)
-        def toGui (i): return g.app.gui.toGuiIndex(s,w,i)
-        def toPython (i): return g.app.gui.toPythonIndex(s,w,i)
-    
-        i = toPython(w.index('insert'))
-        while 0 <= i < n and not g.isWordChar(s[i]):
-            i -= 1
-        while 0 <= i < n and g.isWordChar(s[i]):
-            i -= 1
-        i += 1
-        # Move to the end of the word.
-        i1 = i
-        while 0 <= i < n and g.isWordChar(s[i]):
-            i += 1
-        g.app.gui.setSelectionRange(w,toGui(i1),toGui(i))
-    #@nonl
-    #@-node:ekr.20060116074839.2:extend-to-word
     #@+node:ekr.20050920084036.66:fill column and centering
     #@+at
     # These methods are currently just used in tandem to center the line or 
@@ -3415,42 +3394,6 @@ class editCommandsClass (baseEditCommandsClass):
                 'col',self.moveCol)
     #@-node:ekr.20060209095101:setMoveCol
     #@-node:ekr.20051218170358: helpers
-    #@+node:ekr.20050920084036.136:exchangePointMark
-    def exchangePointMark (self,event):
-        
-        '''Exchange the point (insert point) with the mark (the other end of the selected text).'''
-        
-        c = self.c ; w = event.widget
-        if not g.app.gui.isTextWidget(w): return
-    
-        c.widgetWantsFocus(w)
-        i,j = g.app.gui.getTextSelection(w,sort=False)
-        if i != j:
-            ins = w.index('insert')
-            ins = g.choose(ins==i,j,i)
-            g.app.gui.setInsertPoint(w,ins)
-            g.app.gui.setTextSelection(w,i,j,insert=None)
-    #@-node:ekr.20050920084036.136:exchangePointMark
-    #@+node:ekr.20051218174113:clear/set/ToggleExtendMode
-    def clearExtendMode (self,event):
-        '''Turn off extend mode: cursor movement commands do not extend the selection.'''
-        self.extendModeHelper(event,False)
-    
-    def setExtendMode (self,event):
-        '''Turn on extend mode: cursor movement commands do extend the selection.'''
-        self.extendModeHelper(event,True)
-    
-    def toggleExtendMode (self,event):
-        '''Toggle extend mode, i.e., toggle whether cursor movement commands extend the selections.'''
-        self.extendModeHelper(event,not self.extendMode)
-    
-    def extendModeHelper (self,event,val):
-    
-        c = self.c ; w = event.widget
-        self.extendMode = val
-        g.es('Extend mode %s' % (g.choose(val,'on','off')), color='red')
-        c.widgetWantsFocus(w)
-    #@-node:ekr.20051218174113:clear/set/ToggleExtendMode
     #@+node:ekr.20050920084036.148:buffers
     def beginningOfBuffer (self,event):
         '''Move the cursor to the start of the body text.'''
@@ -3485,6 +3428,85 @@ class editCommandsClass (baseEditCommandsClass):
         '''Extend the selection by moving the cursor forward one character.'''
         self.moveToHelper (event,'insert+1c',extend=True)
     #@-node:ekr.20051213080533:characters
+    #@+node:ekr.20051218174113:clear/set/ToggleExtendMode
+    def clearExtendMode (self,event):
+        '''Turn off extend mode: cursor movement commands do not extend the selection.'''
+        self.extendModeHelper(event,False)
+    
+    def setExtendMode (self,event):
+        '''Turn on extend mode: cursor movement commands do extend the selection.'''
+        self.extendModeHelper(event,True)
+    
+    def toggleExtendMode (self,event):
+        '''Toggle extend mode, i.e., toggle whether cursor movement commands extend the selections.'''
+        self.extendModeHelper(event,not self.extendMode)
+    
+    def extendModeHelper (self,event,val):
+    
+        c = self.c ; w = event.widget
+        self.extendMode = val
+        g.es('Extend mode %s' % (g.choose(val,'on','off')), color='red')
+        c.widgetWantsFocus(w)
+    #@-node:ekr.20051218174113:clear/set/ToggleExtendMode
+    #@+node:ekr.20050920084036.136:exchangePointMark
+    def exchangePointMark (self,event):
+        
+        '''Exchange the point (insert point) with the mark (the other end of the selected text).'''
+        
+        c = self.c ; w = event.widget
+        if not g.app.gui.isTextWidget(w): return
+    
+        c.widgetWantsFocus(w)
+        i,j = g.app.gui.getTextSelection(w,sort=False)
+        if i != j:
+            ins = w.index('insert')
+            ins = g.choose(ins==i,j,i)
+            g.app.gui.setInsertPoint(w,ins)
+            g.app.gui.setTextSelection(w,i,j,insert=None)
+    #@-node:ekr.20050920084036.136:exchangePointMark
+    #@+node:ekr.20061007082956:extend-to-line
+    def extendToLine (self,event):
+        
+        '''Select the line at the cursor.'''
+        
+        w = event.widget ; s = w.get('1.0','end') ; n = len(s)
+    
+        def toGui(i): return g.app.gui.toGuiIndex(s,w,i)
+        def toPython(i): return g.app.gui.toPythonIndex(s,w,i)
+    
+        i = toPython(w.index('insert'))
+        
+        while 0 <= i < n and not s[i] == '\n':
+            i -= 1
+    
+        i += 1 ; i1 = i
+        while 0 <= i < n and not s[i] == '\n':
+            i += 1
+    
+        g.app.gui.setSelectionRange(w,toGui(i1),toGui(i))
+    #@-node:ekr.20061007082956:extend-to-line
+    #@+node:ekr.20060116074839.2:extend-to-word
+    def extendToWord (self,event):
+        
+        '''Select the word at the cursor.'''
+        
+        w = event.widget ; s = w.get('1.0','end') ; n = len(s)
+        def toGui (i): return g.app.gui.toGuiIndex(s,w,i)
+        def toPython (i): return g.app.gui.toPythonIndex(s,w,i)
+    
+        i = toPython(w.index('insert'))
+        while 0 <= i < n and not g.isWordChar(s[i]):
+            i -= 1
+        while 0 <= i < n and g.isWordChar(s[i]):
+            i -= 1
+        i += 1
+        # Move to the end of the word.
+        i1 = i
+        while 0 <= i < n and g.isWordChar(s[i]):
+            i += 1
+        g.app.gui.setSelectionRange(w,toGui(i1),toGui(i))
+    #@nonl
+    #@-node:ekr.20060116074839.2:extend-to-word
     #@+node:ekr.20051218141237:lines
     def beginningOfLine (self,event):
         '''Move the cursor to the start of the line, extending the selection if in extend mode.'''
@@ -5112,10 +5134,6 @@ class killBufferCommandsClass (baseEditCommandsClass):
         self.kbiterator = self.iterateKillBuffer()
         self.last_clipboard = None # For interacting with system clipboard.
         self.reset = False
-        try:
-            self.widget = c.frame.body.bodyCtrl
-        except AttributeError:
-            self.widget = None
     
     def finishCreate (self):
         
