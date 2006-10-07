@@ -1584,7 +1584,8 @@ class leoMenu:
             def recentFilesCallback (event=None,c=c,name=name):
                 __pychecker__ = '--no-argsused' # event not used, but must be present.
                 c.openRecentFile(name)
-            label = "%d %s" % (i-2,g.computeWindowTitle(name))
+            accel_ch = (string.digits + string.letters.upper())
+            label = "%s %s" % (accel_ch[i-2],g.computeWindowTitle(name))
             self.add_command(recentFilesMenu,label=label,command=recentFilesCallback,underline=0)
             i += 1
     #@-node:ekr.20031218072017.2078:createRecentFilesMenuItems (leoMenu)
