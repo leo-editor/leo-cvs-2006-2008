@@ -5563,7 +5563,7 @@ class baseCommands:
             # Should not happen, except during unit testing.
             # c.masterFocusHandler sets c.hasFocusWidget,
             # so if it is not set here it is because this method cleared it.
-            if not g.app.unitTesting: g.trace('oops: no requested or present widget.')
+            if not g.app.unitTesting: g.trace('oops: no requested or present widget.',g.callers())
             c.bodyWantsFocusNow()
         
         if c.inCommand:
