@@ -2514,7 +2514,6 @@ class keyHandlerClass:
         d = k.bindingsDict ; tabName = 'Bindings'
         keys = d.keys() ; keys.sort()
         c.frame.log.clearTab(tabName)
-    
         data = [] ; n1 = 4 ; n2 = 20
         for key in keys:
             bunchList = d.get(key,[])
@@ -2526,15 +2525,36 @@ class keyHandlerClass:
                 n1 = max(n1,len(s1))
                 n2 = max(n2,len(s2))
                 data.append((s1,s2,s3),)
-    
-        data.sort(lambda x,y: cmp(x[1],y[1]))
                 
-        # This isn't perfect in variable-width fonts.
-        for s1,s2,s3 in data:
-            g.es('%*s %*s %s' % (-n1,s1,-(min(12,n2)),s2,s3),tabName=tabName)
-                       
+        # Print keys by type:
+        sep = '-' * n1
+        for prefix in (
+            'Alt+Ctrl+Shift', 'Alt+Shift', 'Alt+Ctrl', 'Alt',
+            'Ctrl+Shift', 'Ctrl', 'Shift',
+        ):
+            data2 = []
+            for item in data:
+                s1,s2,s3 = item
+                if s2.startswith(prefix):
+                    data2.append(item)
+            g.es('%s %s' % (sep, prefix),tabName=tabName)
+            self.printBindingsHelper(data2,n1,n2)
+            # Remove all the items in data2 from data.
+            # This must be done outside the iterator on data.
+            for item in data2:
+                data.remove(item)
+        # Print all plain bindings.
+        g.es('%s %s' % (sep, 'Plain Keys',),tabName=tabName)
+        self.printBindingsHelper(data,n1,n2)
         state = k.unboundKeyAction 
         k.showStateAndMode()
+        
+    def printBindingsHelper (self,data,n1,n2):
+                    
+        # This isn't perfect in variable-width fonts.
+        data.sort(lambda x,y: cmp(x[1],y[1]))
+        for s1,s2,s3 in data:
+            g.es('%*s %*s %s' % (-n1,s1,-(min(12,n2)),s2,s3),tabName='Bindings')
     #@-node:ekr.20051012201831:printBindings
     #@+node:ekr.20051014061332:printCommands
     def printCommands (self,event):
