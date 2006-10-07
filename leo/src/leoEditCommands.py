@@ -5296,7 +5296,7 @@ class killBufferCommandsClass (baseEditCommandsClass):
         
         '''Insert the next entry in the kill ring at the insert point.'''
     
-        k = self.k ; w = self.w
+        k = self.k ; w = event.widget
         i = w.index('insert')
         clip_text = self.getClipboard(w)
     
