@@ -149,6 +149,7 @@ class generalTestCase(unittest.TestCase):
         else:
             # Execute the test in a totally pristine environment.
             exec script + '\n' in {}
+    #@nonl
     #@-node:ekr.20051104075904.10:runTest
     #@+node:ekr.20051104075904.11:shortDescription
     def shortDescription (self):
@@ -611,9 +612,10 @@ def fail ():
 def runLeoTest(c,path,verbose=False,full=False):
 
     frame = None ; ok = False ; old_gui = g.app.gui
+    
+    # Do not set or clear g.app.unitTesting: that is only done in leoTest.runTest.
 
     try:
-        g.app.unitTesting = True
         ok, frame = g.openWithFileName(path,c,enableLog=False)
         assert(ok and frame)
         errors = frame.c.checkOutline(verbose=verbose,unittest=True,full=full)
@@ -624,9 +626,7 @@ def runLeoTest(c,path,verbose=False,full=False):
         if frame and frame.c != c:
             g.app.closeLeoWindow(frame.c.frame)
         c.frame.top.update()
-        g.app.unitTesting = False
-
-    if not ok: raise
+#@nonl
 #@-node:ekr.20051104075904.42:leoTest.runLeoTest
 #@+node:ekr.20051104075904.43:Specific to particular unit tests...
 #@+node:ekr.20051104075904.44:at-File test code (leoTest.py)
@@ -705,8 +705,8 @@ class reformatParagraphTest:
                 ok = False
         finally:
             self.tearDown()
-        if not ok:
-            raise
+    
+        # if not ok: raise
     #@-node:ekr.20051104075904.49:go
     #@+node:ekr.20051104075904.50:checkPosition
     def checkPosition(self,expRow,expCol):
