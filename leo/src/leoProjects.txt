@@ -53,7 +53,9 @@ def selfInsertCommand(self,event,action='insert'):
     c = self.c ; p = c.currentPosition()
     ch = event and event.char or ''
     if event and event.keysym == 'Return': ch = '\n' # This fixes the MacOS return bug.
-    w = event and event.widget
+    w = self.editWidget(event)
+    if not w: return 'break'
+
     name = c.widget_name(w)
     oldSel =  name.startswith('body') and g.app.gui.getTextSelection(w) or (None,None)
     oldText = name.startswith('body') and p.bodyString() or ''
@@ -1538,7 +1540,8 @@ def cloneFindAll (self,event):
     state = k.getState(tag)
 
     if state == 0:
-        self.w = event and event.widget
+        w = self.editWidget(event) # sets self.w
+        if not w: return
         self.setupArgs(forward=None,regexp=None,word=None)
         k.setLabelBlue('Clone Find All: ',protect=True)
         k.getArg(event,tag,1,self.cloneFindAll)
@@ -4580,8 +4583,9 @@ def defineCmdsMenuCursorTable (self):
     ]
     
     self.cursorMenuForwardExtendTable = [
-        # &: e,b,c,l,n,p,s,w
-        '&extend-to-word',
+        # &: e,b,c,l,n,p,s,w,x
+        '&extend-to-line',
+        'e&xtend-to-word',
         '-',
         'end-of-&buffer-extend-selection',
         'end-of-&line-extend-selection',
@@ -4589,7 +4593,7 @@ def defineCmdsMenuCursorTable (self):
         'forward-&char-extend-selection',
         'forward-&paragraph-extend-selection',
         'forward-&sentence-extend-selection',
-        'forward-&word-extend-selection',
+        'forward-&word-extend-selection',#
         '-',
         '&next-line-extend-selection',    
     ]
@@ -4768,11 +4772,11 @@ def moveToHelper (self,event,spot,extend):
     '''Common helper method for commands the move the cursor
     in a way that can be described by a Tk Text expression.'''
 
-    c = self.c ; k = c.k ; w = event.widget
-    if not g.app.gui.isTextWidget(w): return
+    c = self.c ; k = c.k
+    w = self.editWidget(event)
+    if not w: return
 
     c.widgetWantsFocusNow(w)
-
     wname = c.widget_name(w)
     if wname.startswith('mini'):
         # Put the request in the proper range.
@@ -4820,7 +4824,9 @@ def findCharacterHelper (self,event,backward,extend):
     c = self.c ; k = c.k ; tag = 'find-char' ; state = k.getState(tag)
 
     if state == 0:
-        self.event = event ; self.widget = w = event.widget
+        w = self.editWidget(event) # Sets self.w
+        if not w: return
+        self.event = event
         self.backward = backward ; self.extend = extend ;
         self.insert = w.index('insert')
         s = '%s character %s' % (
@@ -4831,7 +4837,7 @@ def findCharacterHelper (self,event,backward,extend):
         # Get the arg without touching the focus.
         k.getArg(event,tag,1,self.findCharacter,oneCharacter=True,useMinibuffer=False)
     else:
-        event = self.event ; w = self.widget
+        event = self.event ; w = self.w
         backward = self.backward ; extend = self.extend
         ch = k.arg ; s = g.app.gui.getAllText(w)
         def toGui (i): return g.app.gui.toGuiIndex(s,w,i)
@@ -4865,11 +4871,12 @@ def findWord (self,event):
     k = self.k ; tag = 'find-word-on-line' ; state = k.getState(tag)
     
     if state == 0:
-        self.widget = event.widget
+        w = self.editWidget(event) # Sets self.w
+        if not w: return
         k.setLabelBlue('Find word: ')
         k.getArg(event,tag,1,self.findWord)
     else:        
-        word = k.arg ; w = self.widget ; c = k.c
+        word = k.arg ; w = self.w ; c = k.c
         if word:
             i = w.index('insert')
             s = g.app.gui.getAllText(w)
@@ -4890,6 +4897,7 @@ def findWord (self,event):
                     i += 1
         k.resetLabel()
         k.clearState()
+
 #@-node:ekr.20060417194232.2:findWord
 #@-node:ekr.20060417194232:find (quick)
 #@+node:ekr.20051218121447:moveWordHelper
@@ -4897,10 +4905,11 @@ def moveWordHelper (self,event,extend,forward):
 
     '''This function moves the cursor to the next word, direction dependent on the way parameter'''
 
-    c = self.c ; w = event.widget
-    if not g.app.gui.isTextWidget(w): return
+    c = self.c
+    w = self.editWidget(event)
+    if not w: return
     
-    c.widgetWantsFocus(w)
+    c.widgetWantsFocusNow(w)
     s = w.get('1.0','end') ; n = len(s)
 
     def toGui (i): return g.app.gui.toGuiIndex(s,w,i)
@@ -5245,10 +5254,13 @@ def toggleExtendMode (self,event):
 
 def extendModeHelper (self,event,val):
 
-    c = self.c ; w = event.widget
+    c = self.c
+    w = self.editWidget(event)
+    if not w: return
+
     self.extendMode = val
     g.es('Extend mode %s' % (g.choose(val,'on','off')), color='red')
-    c.widgetWantsFocus(w)
+    c.widgetWantsFocusNow(w)
 #@-node:ekr.20051218174113:clear/set/ToggleExtendMode
 #@+node:ekr.20060926213642:capitalizeMinibufferMenuName
 def capitalizeMinibufferMenuName (self,s):
@@ -5846,8 +5858,9 @@ def defineCmdsMenuCursorTable (self):
     ]
     
     self.cursorMenuForwardExtendTable = [
-        # &: e,b,c,l,n,p,s,w
-        '&extend-to-word',
+        # &: e,b,c,l,n,p,s,w,x
+        '&extend-to-line',
+        'e&xtend-to-word',
         '-',
         'end-of-&buffer-extend-selection',
         'end-of-&line-extend-selection',
@@ -5855,7 +5868,7 @@ def defineCmdsMenuCursorTable (self):
         'forward-&char-extend-selection',
         'forward-&paragraph-extend-selection',
         'forward-&sentence-extend-selection',
-        'forward-&word-extend-selection',
+        'forward-&word-extend-selection',#
         '-',
         '&next-line-extend-selection',    
     ]
@@ -6401,10 +6414,11 @@ def moveWordHelper (self,event,extend,forward):
 
     '''This function moves the cursor to the next word, direction dependent on the way parameter'''
 
-    c = self.c ; w = event.widget
-    if not g.app.gui.isTextWidget(w): return
+    c = self.c
+    w = self.editWidget(event)
+    if not w: return
     
-    c.widgetWantsFocus(w)
+    c.widgetWantsFocusNow(w)
     s = w.get('1.0','end') ; n = len(s)
 
     def toGui (i): return g.app.gui.toGuiIndex(s,w,i)
@@ -6446,10 +6460,14 @@ def extendToWord (self,event):
     
     '''Select the word at the cursor.'''
     
-    w = event.widget ; s = w.get('1.0','end') ; n = len(s)
+    c = self.c
+    w = self.editWidget(event)
+    if not w: return
+
     def toGui (i): return g.app.gui.toGuiIndex(s,w,i)
     def toPython (i): return g.app.gui.toPythonIndex(s,w,i)
 
+    s = w.get('1.0','end') ; n = len(s)
     i = toPython(w.index('insert'))
     while 0 <= i < n and not g.isWordChar(s[i]):
         i -= 1
@@ -7332,10 +7350,11 @@ def moveWordHelper (self,event,extend,forward):
 
     '''This function moves the cursor to the next word, direction dependent on the way parameter'''
 
-    c = self.c ; w = event.widget
-    if not g.app.gui.isTextWidget(w): return
+    c = self.c
+    w = self.editWidget(event)
+    if not w: return
     
-    c.widgetWantsFocus(w)
+    c.widgetWantsFocusNow(w)
     s = w.get('1.0','end') ; n = len(s)
 
     def toGui (i): return g.app.gui.toGuiIndex(s,w,i)
@@ -8171,16 +8190,17 @@ def extendToLine (self,event):
     
     '''Select the line at the cursor.'''
     
-    w = event.widget ; s = w.get('1.0','end') ; n = len(s)
-
+    c = self.c
+    w = self.editWidget(event)
+    if not w: return
+    
     def toGui(i): return g.app.gui.toGuiIndex(s,w,i)
     def toPython(i): return g.app.gui.toPythonIndex(s,w,i)
-
-    i = toPython(w.index('insert'))
     
+    s = w.get('1.0','end') ; n = len(s)
+    i = toPython(w.index('insert'))
     while 0 <= i < n and not s[i] == '\n':
         i -= 1
-
     i += 1 ; i1 = i
     while 0 <= i < n and not s[i] == '\n':
         i += 1
@@ -8245,6 +8265,8 @@ def printBindingsHelper (self,data,n1,n2):
 #@-node:ekr.20061007084626:Improved print-bindings command
 #@+node:ekr.20061007094718.1:Added bindings for Alt-Shift-Arrow keys to force an outline move
 #@-node:ekr.20061007094718.1:Added bindings for Alt-Shift-Arrow keys to force an outline move
+#@+node:ekr.20061007100804:Added extend-to-line command to Cmds menu
+#@-node:ekr.20061007100804:Added extend-to-line command to Cmds menu
 #@-node:ekr.20060929141921:Features
 #@+node:ekr.20060929141921.1:Tests
 #@+node:ekr.20060929100150:Tested Python 2.5 exception reporting

@@ -479,8 +479,6 @@ def revert (self,event=None):
 #@-node:ekr.20061002093442:Add opml support to new,open, save commands
 #@-node:ekr.20061001060913.1:To do first
 #@+node:ekr.20060929122217.2:Fix bugs
-#@+node:ekr.20061007083402:do full recolor after paste/yank
-#@-node:ekr.20061007083402:do full recolor after paste/yank
 #@+node:ekr.20061007094817:Alt-y moves to Bindings pane, but does not select the text
 #@-node:ekr.20061007094817:Alt-y moves to Bindings pane, but does not select the text
 #@+node:ekr.20061007075350:Make sure errors are reported properly in Python 2.5
@@ -1289,7 +1287,9 @@ def backwardKillSentence (self,event):
     
     '''Kill the previous sentence.'''
     
-    w = event.widget
+    w = self.editWidget(event)
+    if not w: return
+
     i = w.search('.','insert',backwards=True,stopindex='1.0')
 
     if i:
@@ -1343,9 +1343,11 @@ def iterateKillBuffer (self):
 #@+node:ekr.20050920084036.178:kill, killLine, killWord
 def kill (self,event,frm,to,undoType=None):
 
-    k = self.k ; w = event.widget
+    k = self.k
+    w = self.editWidget(event)
+    if not w: return
+
     s = w.get(frm,to)
-    
     if undoType: self.beginCommand(undoType=undoType)
     self.addToKillBuffer(s)
     w.clipboard_clear()
@@ -1373,25 +1375,27 @@ def killRegionSave (self,event):
 
 def killRegionHelper (self,event,deleteFlag):
 
-    w = event.widget
-
-    if g.app.gui.isTextWidget(w):
-        theRange = w.tag_ranges('sel')
-        if theRange:
-            s = w.get(theRange[0],theRange[-1])
-            if deleteFlag:
-                w.delete(theRange[0],theRange[-1])
-            self.addToKillBuffer(s)
-            w.clipboard_clear()
-            w.clipboard_append(s)
-            self.removeRKeys(w)
+    w = self.editWidget(event)
+    if not w: return
+    theRange = w.tag_ranges('sel')
+    if not theRange: return
+    
+    s = w.get(theRange[0],theRange[-1])
+    if deleteFlag:
+        w.delete(theRange[0],theRange[-1])
+    self.addToKillBuffer(s)
+    w.clipboard_clear()
+    w.clipboard_append(s)
+    self.removeRKeys(w)
 #@-node:ekr.20050920084036.182:killRegion & killRegionSave & helper
 #@+node:ekr.20050930095323.1:killSentence
 def killSentence (self,event):
     
     '''Kill the sentence containing the cursor.'''
 
-    w = event.widget
+    w = self.editWidget(event)
+    if not w: return
+
     i  = w.search('.','insert',stopindex='end')
     if i:
         i2 = w.search('.','insert',backwards=True,stopindex='1.0')
@@ -1401,7 +1405,9 @@ def killSentence (self,event):
 #@+node:ekr.20050930100733:killWs
 def killWs (self,event):
     
-    ws = '' ; w = event.widget
+    ws = ''
+    w = self.editWidget(event)
+    if not w: return
 
     while 1:
         s = w.get('insert')
@@ -1419,7 +1425,10 @@ def yank (self,event):
     
     '''Insert the next entry in the kill ring at the insert point.'''
 
-    k = self.k ; w = event.widget
+    k = self.k
+    w = self.editWidget(event)
+    if not w: return
+
     i = w.index('insert')
     clip_text = self.getClipboard(w)
 
@@ -1435,7 +1444,10 @@ def yankPop (self,event):
     
     '''Replaces the just-yanked kill buffer with the contents of the previous kill buffer.'''
 
-    k = self.k ; w = event.widget
+    k = self.k
+    w = self.editWidget(event)
+    if not w: return
+
     i = w.index('insert') ; t, t1 = i.split('.')
     clip_text = self.getClipboard(w)
 
@@ -1455,13 +1467,17 @@ def zapToCharacter (self,event):
     
     '''Kill characters from the insertion point to a given character.'''
 
-    k = self.k ; state = k.getState('zap-to-char')
-
+    k = self.k
+    w = self.editWidget(event)
+    if not w: return
+    
+    state = k.getState('zap-to-char')
     if state == 0:
         k.setLabelBlue('Zap To Character: ',protect=True)
         k.setState('zap-to-char',1,handler=self.zapToCharacter)
     else:
-        c = k.c ; w = event.widget ; ch = event.char
+        c = k.c
+        ch = event and event.char
         k.resetLabel()
         k.clearState()
         if (
@@ -1470,9 +1486,9 @@ def zapToCharacter (self,event):
         ):
             i = w.search(ch,'insert',stopindex='end')
             if i:
-                t = w.get('insert','%s+1c' % i)
-                self.addToKillBuffer(t)
-                w.delete('insert','%s+1c' % i)
+                s = w.get('insert','%s' % i)
+                self.addToKillBuffer(s)
+                w.delete('insert','%s' % i)
 #@-node:ekr.20050920084036.128:zapToCharacter
 #@-node:ekr.20050920084036.174:killBufferCommandsClass (add docstrings)
 #@-node:ekr.20060628095110:Fix yank and kill-line commands
