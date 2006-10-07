@@ -102,6 +102,7 @@ doc\html\glossary.html
 doc\html\history.html
 doc\html\install.html
 doc\html\intro.html
+doc\html\intro.tex
 doc\html\jythonShell.html
 doc\html\leo.gif
 doc\html\leo_TOC.html
@@ -530,7 +531,6 @@ plugins\__ipython.py
 plugins\__jEdit_colorizer__.py
 plugins\__outlineExperiments.py
 plugins\__overrideClasses.py
-plugins\__saxRead__.py
 plugins\__vnx__.py
 plugins\__wx_gui.py
 plugins\add_directives.py

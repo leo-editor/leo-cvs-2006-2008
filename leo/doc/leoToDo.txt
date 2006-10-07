@@ -2,11 +2,24 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20060927172440:To do before 4.4.2 final
-#@+node:ekr.20061001060913.1:To do first
-#@+node:ekr.20060929084830.1:Suppress redraw on all applicable outline:goto commands
-#@-node:ekr.20060929084830.1:Suppress redraw on all applicable outline:goto commands
+#@+node:ekr.20061001060913.1:To do first: 4
+#@+node:ekr.20051112080017:delete-x-script-button
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3423121
+By: nobody
+
+Hi! I need help removing script buttons. It says I should right click the ofending
+button. I have a mac and Ctl-click, Command-click, etc doesn't work. What should
+I do?
+
+EKR: This is on the list of unfixable bugs, but I have a hard time believing there is no workaround.
+#@nonl
+#@-node:ekr.20051112080017:delete-x-script-button
 #@+node:ekr.20061003075953:Better unit tests for write logic: test @ignore logic
 #@-node:ekr.20061003075953:Better unit tests for write logic: test @ignore logic
+#@+node:ekr.20060929084830.1:Suppress redraw on all applicable outline:goto commands
+#@-node:ekr.20060929084830.1:Suppress redraw on all applicable outline:goto commands
 #@+node:ekr.20061002093442:Add opml support to new,open, save commands
 #@+node:ekr.20031218072017.2820:top level (file menu)
 #@+node:ekr.20031218072017.1623:new
@@ -462,6 +475,114 @@ def revert (self,event=None):
 #@-node:ekr.20031218072017.2837:revert
 #@-node:ekr.20031218072017.2820:top level (file menu)
 #@-node:ekr.20061002093442:Add opml support to new,open, save commands
+#@-node:ekr.20061001060913.1:To do first: 4
+#@+node:ekr.20060929122217.2:Fix bugs: 6
+#@+node:ekr.20060116083043:Use special Help menu on the Mac
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3237845
+
+http://tkinter.unpythonic.net/wiki/Widgets/Menu
+
+On the Macintosh, access to the special Apple and Help menus is provided. These
+menus must be created with the command name of the menubar menu concatenated
+with the special name. 
+
+For a menubar named .menubar, on the Macintosh, the special menus are .menubar.apple and .menubar.help.
+
+On Windows, the special menu is .menubar.system.
+
+On X Windows, the help menu is .menubar.help.
+
+[XXX how to create widgets with these names in Tkinter]
+
+@color
+#@nonl
+#@+node:ekr.20031218072017.3803:createHelpMenuFromTable
+def createHelpMenuFromTable (self):
+
+    if 0: ## sys.platform == 'darwin':
+        helpMenu = self.getMacHelpMenu()
+        if not helpMenu: return
+    else:
+        helpMenu = self.createNewMenu("&Help")
+    
+    self.createMenuEntries(helpMenu,self.helpMenuTable)
+#@nonl
+#@-node:ekr.20031218072017.3803:createHelpMenuFromTable
+#@+node:ekr.20031218072017.4113:new_menu
+def new_menu(self,parent,tearoff=False):
+    
+    """Wrapper for the Tkinter new_menu menu method."""
+    
+    if self.font:
+        try:
+            return Tk.Menu(parent,tearoff=tearoff,font=self.font)
+        except Exception:
+            g.es_exception()
+            return Tk.Menu(parent,tearoff=tearoff)
+    else:
+        return Tk.Menu(parent,tearoff=tearoff)
+#@-node:ekr.20031218072017.4113:new_menu
+#@+node:ekr.20031218072017.3804:createNewMenu
+def createNewMenu (self,menuName,parentName="top",before=None):
+
+    try:
+        parent = self.getMenu(parentName) # parent may be None.
+        menu = self.getMenu(menuName)
+        if menu:
+            g.es("menu already exists: " + menuName,color="red")
+        else:
+            menu = self.new_menu(parent,tearoff=0)
+            self.setMenu(menuName,menu)
+            label = self.getRealMenuName(menuName)
+            amp_index = label.find("&")
+            label = label.replace("&","")
+            if before: # Insert the menu before the "before" menu.
+                index_label = self.getRealMenuName(before)
+                amp_index = index_label.find("&")
+                index_label = index_label.replace("&","")
+                index = parent.index(index_label)
+                self.insert_cascade(parent,index=index,label=label,menu=menu,underline=amp_index)
+            else:
+                self.add_cascade(parent,label=label,menu=menu,underline=amp_index)
+            return menu
+    except:
+        g.es("exception creating " + menuName + " menu")
+        g.es_exception()
+        return None
+#@-node:ekr.20031218072017.3804:createNewMenu
+#@+node:ekr.20031218072017.3807:getMenu, setMenu, destroyMenu
+def getMenu (self,menuName):
+
+    cmn = self.canonicalizeMenuName(menuName)
+    return self.menus.get(cmn)
+    
+def setMenu (self,menuName,menu):
+    
+    cmn = self.canonicalizeMenuName(menuName)
+    self.menus [cmn] = menu
+    
+def destroyMenu (self,menuName):
+    
+    cmn = self.canonicalizeMenuName(menuName)
+    del self.menus[cmn]
+#@-node:ekr.20031218072017.3807:getMenu, setMenu, destroyMenu
+#@+node:ekr.20060211144330.1:getMacHelpMenu
+def getMacHelpMenu (self):
+    
+    return None ###
+    
+    try:
+        helpMenu = Tk.Menu('top.help')
+        return helpMenu
+        
+    except Exception:
+        g.trace('Can not get MacOS Help menu')
+        g.es_exception()
+        return None
+#@-node:ekr.20060211144330.1:getMacHelpMenu
+#@-node:ekr.20060116083043:Use special Help menu on the Mac
 #@+node:ekr.20060927100500.1:Fix bugs in new colorizer
 @nocolor
 
@@ -477,8 +598,6 @@ Clear the * mark if all changes have been done.
 There are serious problems with undoing and redoing text.
 #@nonl
 #@-node:ekr.20060920150119:Fix undo problems (important)
-#@-node:ekr.20061001060913.1:To do first
-#@+node:ekr.20060929122217.2:Fix minor bugs: 6
 #@+node:ekr.20060927173836.1:Disable calltips in @nocolor sections
 @nocolor
 
@@ -487,267 +606,13 @@ Why are calltips enabled at all??
 Show calltips treats the node as code, and that can have very weird effects in @nocolor sections.
 #@nonl
 #@-node:ekr.20060927173836.1:Disable calltips in @nocolor sections
-#@+node:ekr.20060930111450:Make yank/kill work in minibuffer
-#@-node:ekr.20060930111450:Make yank/kill work in minibuffer
 #@+node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
 #@-node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
-#@+node:ekr.20060824112937.1:Fix unicode problem with double-click word Stéphane
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3882798
-By: jujusl
-
-When I double-click in the body on a word with accents, only a part of the word
-is selected (up to the accentuated char, forward and backward)
-
-This does not happen in headlines.
-
-I saw that using Windows ; I will test it on Linux machine.
-
-Maybe is it a Tk problem, may be not. You'll tell me...
-
-Stéphane
-
-@color
-#@nonl
-#@+node:ekr.20051218121447:moveWordHelper
-def moveWordHelper (self,event,extend,forward):
-
-    '''This function moves the cursor to the next word, direction dependent on the way parameter'''
-
-    c = self.c ; w = event.widget
-    if not g.app.gui.isTextWidget(w): return
-    
-    c.widgetWantsFocus(w)
-    s = w.get('1.0','end') ; n = len(s)
-
-    def toGui (i): return g.app.gui.toGuiIndex(s,w,i)
-    def toPython (i): return g.app.gui.toPythonIndex(s,w,i)
-
-    i = toPython(w.index('insert'))
-    
-    if forward:
-        while 0 <= i < n and g.isWordChar(s[i]):
-            i += 1
-        while 0 <= i < n and not g.isWordChar(s[i]):
-            i += 1
-    else:
-        i -= 1
-        while 0 <= i < n and not g.isWordChar(s[i]):
-            i -= 1
-        while 0 <= i < n and g.isWordChar(s[i]):
-            i -= 1
-        i += 1
-
-    self.moveToHelper(event,toGui(i),extend)
-#@nonl
-#@-node:ekr.20051218121447:moveWordHelper
-#@+node:ekr.20060131084938:masterDoubleClickHandler
-def masterDoubleClickHandler (self,event,func=None):
-    
-    k = self ; c = k.c ; w = event and event.widget
-    
-    if c.config.getBool('trace_masterClickHandler'):
-        g.trace(c.widget_name(w),func and func.__name__)
-
-    if event and func:
-        # Don't event *think* of overriding this.
-        return func(event)
-    else:
-        i = w.index("@%d,%d" % (event.x,event.y))
-        start = w.index(i+' wordstart')
-        end = w.index(i+' wordend')
-        g.app.gui.setTextSelection(w,start,end)
-        return 'break'
-#@-node:ekr.20060131084938:masterDoubleClickHandler
-#@+node:ekr.20031218072017.3978:OnBodyDoubleClick (Events)
-def OnBodyDoubleClick (self,event=None):
-
-    try:
-        c = self.c ; p = c.currentPosition()
-        if event and not g.doHook("bodydclick1",c=c,p=p,v=p,event=event):
-            c.editCommands.extendToWord(event) # Handles unicode properly.
-        g.doHook("bodydclick2",c=c,p=p,v=p,event=event)
-    except:
-        g.es_event_exception("bodydclick")
-        
-    return "break" # Restore this to handle proper double-click logic.
-#@-node:ekr.20031218072017.3978:OnBodyDoubleClick (Events)
-#@+node:ekr.20060203114017:f.setMinibufferBindings
-def setMinibufferBindings (self):
-    
-    '''Create bindings for the minibuffer..'''
-    
-    f = self ; c = f.c ; k = c.k ; t = f.miniBufferWidget
-    
-    if not c.useTextMinibuffer: return
-    
-    for kind,callback in (
-        ('<Key>',           k.masterKeyHandler),
-        ('<Button-1>',      k.masterClickHandler),
-        ('<Button-3>',      k.masterClick3Handler),
-        ('<Double-1>',      k.masterDoubleClickHandler),
-        ('<Double-3>',      k.masterDoubleClick3Handler),
-    ):
-        t.bind(kind,callback)
-
-    if 0:
-        if sys.platform.startswith('win'):
-            # Support Linux middle-button paste easter egg.
-            t.bind("<Button-2>",frame.OnPaste)
-#@-node:ekr.20060203114017:f.setMinibufferBindings
-#@+node:ekr.20040803072955.87:onHeadlineClick
-def onHeadlineClick (self,event,p=None):
-    
-    c = self.c ; w = event.widget
-    
-    if not p:
-        try:
-            p = w.leo_position
-        except AttributeError:
-            g.trace('*'*20,'oops')
-    if not p: return 'break'
-        
-    # g.trace(p.headString())
-    
-    c.setLog()
-
-    try:
-        if not g.doHook("headclick1",c=c,p=p,v=p,event=event):
-            returnVal = self.OnActivateHeadline(p)
-        g.doHook("headclick2",c=c,p=p,v=p,event=event)
-    except:
-        returnVal = 'break'
-        g.es_event_exception("headclick")
-
-    # 'continue' is sometimes correct here.
-    # 'break' would make it impossible to unselect the headline text.
-    # g.trace('returnVal',returnVal,'stayInTree',self.stayInTree)
-    return returnVal
-#@-node:ekr.20040803072955.87:onHeadlineClick
-#@+node:ekr.20040803072955.105:OnActivateHeadline (tkTree)
-def OnActivateHeadline (self,p,event=None):
-    
-    '''Handle common process when any part of a headline is clicked.'''
-    
-    # g.trace(p.headString())
-    
-    returnVal = 'break' # Default: do nothing more.
-
-    try:
-        c = self.c
-        c.setLog()
-        << activate this window >>
-    except:
-        g.es_event_exception("activate tree")
-        
-    return returnVal
-#@+node:ekr.20040803072955.106:<< activate this window >>
-if p == c.currentPosition():
-    # g.trace("is current")
-    # The *second* click in the headline starts editing.
-    if self.active:
-        self.editLabel(p)
-        returnVal = 'continue'
-    else:
-        # Set the focus immediately.  This is essential for proper editing.
-        c.treeWantsFocusNow()
-        returnVal = 'break'
-else:
-    # g.trace("not current")
-    self.select(p)
-    if c.frame.findPanel:
-        c.frame.findPanel.handleUserClick(p)
-    if p.v.t.insertSpot != None:
-        c.frame.bodyCtrl.mark_set("insert",p.v.t.insertSpot)
-        c.frame.bodyCtrl.see(p.v.t.insertSpot)
-    else:
-        c.frame.bodyCtrl.mark_set("insert","1.0")
-        
-    if self.stayInTree:
-        c.treeWantsFocusNow()
-    else:
-        c.bodyWantsFocusNow()
-    returnVal = 'break'
-
-# The next click *in the same headline* will start editing.
-self.active = True
-#@-node:ekr.20040803072955.106:<< activate this window >>
-#@-node:ekr.20040803072955.105:OnActivateHeadline (tkTree)
-#@+node:ekr.20051024102724:tkTtree.setBindings
-def setBindings (self):
-    
-    '''Create master bindings for all headlines.'''
-    
-    tree = self ; k = self.c.k
-    
-    << make bindings for a common binding widget >>
-
-    self.canvas.bind('<Key>',k.masterKeyHandler)
-    self.canvas.bind('<Button-1>',self.onTreeClick)
-
-    << make bindings for tagged items on the canvas >>
-    << create baloon bindings for tagged items on the canvas >>
-#@+node:ekr.20060131173440:<< make bindings for a common binding widget >>
-self.bindingWidget = t = Tk.Text(self.canvas,name='bindingWidget')
-
-t.bind('<Key>',k.masterKeyHandler)
-
-table = (
-    ('<Button-1>',       k.masterClickHandler,          tree.onHeadlineClick),
-    ('<Button-3>',       k.masterClick3Handler,         tree.onHeadlineRightClick),
-    ('<Double-Button-1>',k.masterDoubleClickHandler,    tree.onHeadlineClick),
-    ('<Double-Button-3>',k.masterDoubleClick3Handler,   tree.onHeadlineRightClick),
-)
-
-for a,handler,func in table:
-    def treeBindingCallback(event,handler=handler,func=func):
-        return handler(event,func)
-    t.bind(a,treeBindingCallback)
-    
-self.textBindings = t.bindtags()
-#@-node:ekr.20060131173440:<< make bindings for a common binding widget >>
-#@+node:ekr.20060131173440.2:<< make bindings for tagged items on the canvas >>
-where = g.choose(self.expanded_click_area,'clickBox','plusBox')
-
-table = (
-    (where,    '<Button-1>',self.onClickBoxClick),
-    ('iconBox','<Button-1>',self.onIconBoxClick),
-    ('iconBox','<Double-1>',self.onIconBoxDoubleClick),
-    ('iconBox','<Button-3>',self.onIconBoxRightClick),
-    ('iconBox','<Double-3>',self.onIconBoxRightClick),
-    ('iconBox','<B1-Motion>',self.onDrag),
-    ('iconBox','<Any-ButtonRelease-1>',self.onEndDrag),
-)
-for tag,event,callback in table:
-    self.canvas.tag_bind(tag,event,callback)
-#@-node:ekr.20060131173440.2:<< make bindings for tagged items on the canvas >>
-#@+node:ekr.20060307080642:<< create baloon bindings for tagged items on the canvas >>
-if 0: # I find these very irritating.
-    for tag,text in (
-        # ('plusBox','plusBox'),
-        ('iconBox','Icon Box'),
-        ('selectBox','Click to select'),
-        ('clickBox','Click to expand or contract'),
-        # ('textBox','Headline'),
-    ):
-        # A fairly long wait is best.
-        balloon = Pmw.Balloon(self.canvas,initwait=700)
-        balloon.tagbind(self.canvas,tag,balloonHelp=text)
-#@-node:ekr.20060307080642:<< create baloon bindings for tagged items on the canvas >>
-#@-node:ekr.20051024102724:tkTtree.setBindings
-#@-node:ekr.20060824112937.1:Fix unicode problem with double-click word Stéphane
 #@+node:ekr.20060928194335:Fix bug: closing a window after removing a script button can crash
 #@-node:ekr.20060928194335:Fix bug: closing a window after removing a script button can crash
-#@+node:ekr.20060930110925:Fix arrow keys (if possible)
-Up/down arrow keys should move straight up/down, but this is difficult with Tk.
-Still the present way is very bad.
-#@nonl
-#@-node:ekr.20060930110925:Fix arrow keys (if possible)
-#@-node:ekr.20060929122217.2:Fix minor bugs: 6
-#@+node:ekr.20060929141941:Docs
+#@-node:ekr.20060929122217.2:Fix bugs: 6
 #@+node:ekr.20060920190138:Document tnodeList, vnodeList
 #@-node:ekr.20060920190138:Document tnodeList, vnodeList
-#@-node:ekr.20060929141941:Docs
 #@+node:ekr.20060912091922:Test all plugins
 ** Create separate @test node for each plugin.
 #@nonl
@@ -1550,9 +1415,11 @@ def yank (self,event):
     
     '''Insert the next entry in the kill ring at the insert point.'''
 
-    k = self.k ; w = self.w
+    k = self.k ; w = event.widget
     i = w.index('insert')
     clip_text = self.getClipboard(w)
+    
+    g.trace(repr(clip_text),g.app.gui.widget_name(w))
 
     if self.killBuffer or clip_text:
         self.reset = True
@@ -2023,171 +1890,25 @@ other?
 #@+node:ekr.20060527164612:Important 1-2 day projects
 #@+node:ekr.20060531161030.1:Make body editors persistant
 #@-node:ekr.20060531161030.1:Make body editors persistant
-#@+node:ekr.20060624082529:Fix minor bugs
-#@+node:ekr.20060117074259:Handle Mac issues
-#@+node:ekr.20060117074259.1:Mac indentation problem
+#@+node:ekr.20061006165447:Let import commands decide what kind of import to do
 @nocolor
-http://sourceforge.net/forum/message.php?msg_id=3526056
-By: nobody
+http://sourceforge.net/forum/message.php?msg_id=3940843
+By: ktenney
 
-Hi Edward. I've been using the linux and windows version but would like to try
-leo on the mac. The install instructions seem a bit out of date. I take it any
-additional downloading of TclTkAqua is unneccessary?
+>the distiction between importing 'foreign' text files and importing derived
+files created by Leo.
 
-I have python2.4 in addition to the stock python 2.3.5 that comes with osx 10.4.
-Launching leo like so:  "python2.4 leo.py", as I do on linux, seems to run just
-fine.
+Couldn't Leo make this distinction by looking at
+the file being imported? If so, I think it should.
 
-I don't know if this was fixed on osx or in leo in general, but moving the mouse
-to each of the panes and scrolling with the wheel works just great now. Thanks.
+This could eliminate a lot of confusion IMO, if
+I want to bring a file into a node, just
+'import' it, and the right thing happens.
 
-Plugin manager: the plugin text font is really tiny, and the window opens to
-a default width such that the 'Installed Plugins' button reads 'talled Plugi'.
-Resizing the window does stretch the buttons horizontally.
-
-Ok -- here's maybe a big issue. I open a new leo file (File->New) and type in:
-
-for i in range(3):
-
-I hit return after the colon, but a newline is not entered.
-
-Stephen
-#@-node:ekr.20060117074259.1:Mac indentation problem
-#@+node:ekr.20051112080017:Problem removing script buttons on the mac
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3423121
-By: nobody
-
-Hi! I need help removing script buttons. It says I should right click the ofending
-button. I have a mac and Ctl-click, Command-click, etc doesn't work. What should
-I do?
-
-EKR: This is on the list of unfixable bugs, but I have a hard time believing there is no workaround.
+An emergency measure could be available in a 
+'File Special' menu.
 #@nonl
-#@-node:ekr.20051112080017:Problem removing script buttons on the mac
-#@+node:ekr.20060116083043:Use special Help menu on the Mac
-# http://sourceforge.net/forum/message.php?msg_id=3237845
-#@nonl
-#@+node:ekr.20031218072017.3803:createHelpMenuFromTable
-def createHelpMenuFromTable (self):
-
-    if 0: ## sys.platform == 'darwin':
-        helpMenu = self.getMacHelpMenu()
-        if not helpMenu: return
-    else:
-        helpMenu = self.createNewMenu("&Help")
-    
-    self.createMenuEntries(helpMenu,self.helpMenuTable)
-#@nonl
-#@-node:ekr.20031218072017.3803:createHelpMenuFromTable
-#@+node:ekr.20031218072017.4113:new_menu
-def new_menu(self,parent,tearoff=False):
-    
-    """Wrapper for the Tkinter new_menu menu method."""
-    
-    if self.font:
-        try:
-            return Tk.Menu(parent,tearoff=tearoff,font=self.font)
-        except Exception:
-            g.es_exception()
-            return Tk.Menu(parent,tearoff=tearoff)
-    else:
-        return Tk.Menu(parent,tearoff=tearoff)
-#@-node:ekr.20031218072017.4113:new_menu
-#@+node:ekr.20031218072017.3804:createNewMenu
-def createNewMenu (self,menuName,parentName="top",before=None):
-
-    try:
-        parent = self.getMenu(parentName) # parent may be None.
-        menu = self.getMenu(menuName)
-        if menu:
-            g.es("menu already exists: " + menuName,color="red")
-        else:
-            menu = self.new_menu(parent,tearoff=0)
-            self.setMenu(menuName,menu)
-            label = self.getRealMenuName(menuName)
-            amp_index = label.find("&")
-            label = label.replace("&","")
-            if before: # Insert the menu before the "before" menu.
-                index_label = self.getRealMenuName(before)
-                amp_index = index_label.find("&")
-                index_label = index_label.replace("&","")
-                index = parent.index(index_label)
-                self.insert_cascade(parent,index=index,label=label,menu=menu,underline=amp_index)
-            else:
-                self.add_cascade(parent,label=label,menu=menu,underline=amp_index)
-            return menu
-    except:
-        g.es("exception creating " + menuName + " menu")
-        g.es_exception()
-        return None
-#@-node:ekr.20031218072017.3804:createNewMenu
-#@+node:ekr.20031218072017.3807:getMenu, setMenu, destroyMenu
-def getMenu (self,menuName):
-
-    cmn = self.canonicalizeMenuName(menuName)
-    return self.menus.get(cmn)
-    
-def setMenu (self,menuName,menu):
-    
-    cmn = self.canonicalizeMenuName(menuName)
-    self.menus [cmn] = menu
-    
-def destroyMenu (self,menuName):
-    
-    cmn = self.canonicalizeMenuName(menuName)
-    del self.menus[cmn]
-#@-node:ekr.20031218072017.3807:getMenu, setMenu, destroyMenu
-#@+node:ekr.20060211144330.1:getMacHelpMenu
-def getMacHelpMenu (self):
-    
-    return None ###
-    
-    try:
-        helpMenu = Tk.Menu('top.help')
-        return helpMenu
-        
-    except Exception:
-        g.trace('Can not get MacOS Help menu')
-        g.es_exception()
-        return None
-#@-node:ekr.20060211144330.1:getMacHelpMenu
-#@-node:ekr.20060116083043:Use special Help menu on the Mac
-#@-node:ekr.20060117074259:Handle Mac issues
-#@+node:ekr.20060202235215.3:Remove deprecation warning
-#@+node:EKR.20040627114602:getDescendentUnknownAttributes
-# Only @thin vnodes have the descendentTnodeUnknownAttributes field.
-# The question is: what are we to do about this?
-
-def getDescendentUnknownAttributes (self,s):
-    
-    try:
-        bin = binascii.unhexlify(s) # Throws a TypeError if val is not a hex string.
-        val = pickle.loads(bin)
-        return val
-
-    except (TypeError,pickle.UnpicklingError,ImportError):
-        g.trace('Can not unpickle',s)
-        return None
-#@-node:EKR.20040627114602:getDescendentUnknownAttributes
-#@-node:ekr.20060202235215.3:Remove deprecation warning
-#@+node:ekr.20060610193837:open python window does not appear to work on Solaris
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3771068
-By: leouser
-
-The open python window does not appear to work on Solaris.
-
-http://sourceforge.net/forum/message.php?msg_id=3771167
-By: nobody
-
-from what I could see it looked like it was trying to start the shell up with
-a location that pointed to a nonexistent path.
-#@nonl
-#@-node:ekr.20060610193837:open python window does not appear to work on Solaris
-#@-node:ekr.20060624082529:Fix minor bugs
+#@-node:ekr.20061006165447:Let import commands decide what kind of import to do
 #@+node:ekr.20031218072017.801:Support .leo.gz or .leo.zip files
 #@+node:ekr.20050428062312:Request 1
 @nocolor

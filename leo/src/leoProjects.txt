@@ -6464,6 +6464,68 @@ def extendToWord (self,event):
 #@nonl
 #@-node:ekr.20060116074839.2:extend-to-word
 #@-node:ekr.20061003072809.1:Fixed various unicode word-select problems
+#@+node:ekr.20061006170725:Installed installer patch
+@nocolor
+
+Installer does not complain about missing Python and does not install anything either. Here is a fix to this behavior. In most user-friendly way it would be better to provide a clickable link to Python site and a way to specify the path manually, but for now it is just that - a fix.
+
+--- E:/ENV/Leo/dist/leo-4-3_old.nsi Fri Sep 29 12:55:58 2006
++++ E:/ENV/Leo/dist/leo-4-3.nsi     Sun Oct 01 17:01:00 2006
+@@ -175,7 +175,9 @@
+     # repeating the logic of tryMSIformat:
+     # is the first character a "
+     StrCpy $8 $9 1
+-    StrCmp $8 '"' foundQuoteCurrentUser oops
++    StrCmp $8 '"' foundQuoteCurrentUser 0
++      StrCpy $StrNoUsablePythonFound "${STRING_PYTHON_NOT_FOUND}"
++      Goto oops
+     
+     foundQuoteCurrentUser:
+     # OK. Strip off the " at the start as well as the 9 characters at the end
+@@ -488,7 +490,7 @@
+ 
+ ; UninstallText "This will uninstall Leo from your system"
+ UninstallCaption "Uninstall Leo"
+-UninstallIcon c:\prog\tigris-cvs\leo\Icons\uninst.ico
++UninstallIcon ..\Icons\uninst.ico
+ ;@nonl
+ ;@-node:ekr.20050118092706.18:<< Uninstall-related Settings >>
+ ;@nl
+
+
+#@-node:ekr.20061006170725:Installed installer patch
+#@+node:ekr.20061006191936:Use letter accellerators for recent files after 9
+#@+node:ekr.20031218072017.2078:createRecentFilesMenuItems (leoMenu)
+def createRecentFilesMenuItems (self):
+    
+    c = self.c
+    recentFilesMenu = self.getMenu("Recent Files...")
+    
+    # Delete all previous entries.
+    self.delete_range(recentFilesMenu,0,len(c.recentFiles)+2)
+    
+    # Create the first two entries.
+    table = (
+        ("Clear Recent Files",None,c.clearRecentFiles),
+        ("-",None,None))
+    self.createMenuEntries(recentFilesMenu,table)
+    
+    # Create all the other entries.
+    i = 3
+    for name in c.recentFiles:
+        def recentFilesCallback (event=None,c=c,name=name):
+            __pychecker__ = '--no-argsused' # event not used, but must be present.
+            c.openRecentFile(name)
+        accel_ch = (string.digits + string.letters.upper())
+        label = "%s %s" % (accel_ch[i-2],g.computeWindowTitle(name))
+        self.add_command(recentFilesMenu,label=label,command=recentFilesCallback,underline=0)
+        i += 1
+#@-node:ekr.20031218072017.2078:createRecentFilesMenuItems (leoMenu)
+#@-node:ekr.20061006191936:Use letter accellerators for recent files after 9
+#@+node:ekr.20060930111450:Made yank work in minibuffer
+# w was set to self.w, rather than event.widget.
+#@nonl
+#@-node:ekr.20060930111450:Made yank work in minibuffer
 #@-node:ekr.20060929091051:Bugs
 #@+node:ekr.20060929141921:Features
 #@+node:ekr.20060929141750:Improved the mod_scripting plugin

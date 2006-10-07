@@ -4211,6 +4211,11 @@ RodrigoB.
 #@-node:ekr.20031218072017.411:From Rodrigo
 #@-node:ekr.20041228094138:4.5  LeoN and collaboration
 #@+node:ekr.20041228084143:Maybe never
+#@+node:ekr.20060930110925:Fix arrow keys (if possible)
+Up/down arrow keys should move straight up/down, but this is difficult with Tk.
+Still the present way is very bad.
+#@nonl
+#@-node:ekr.20060930110925:Fix arrow keys (if possible)
 #@+node:ekr.20041022070154:(options for setting working directory during startup)
 #@+node:ekr.20041022070154.1:Request & response
 @killcolor
@@ -4872,6 +4877,37 @@ def next(self):
 #@-node:ekr.20040812170616:Pyrex versions of key classes
 #@-node:ekr.20041228084143:Maybe never
 #@+node:ekr.20040123102724:Can't or won't
+#@+node:ekr.20060610193837:open python window does not appear to work on Solaris
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3771068
+By: leouser
+
+The open python window does not appear to work on Solaris.
+
+http://sourceforge.net/forum/message.php?msg_id=3771167
+By: nobody
+
+from what I could see it looked like it was trying to start the shell up with
+a location that pointed to a nonexistent path.
+
+@color
+#@nonl
+#@+node:ekr.20031218072017.2932:openPythonWindow
+def openPythonWindow (self,event=None):
+    
+    '''Open Python's Idle debugger in a separate process.'''
+    
+    pythonDir = g.os_path_dirname(sys.executable)
+    idle = g.os_path_join(pythonDir,'Lib','idlelib','idle.py')
+    args = [sys.executable, idle ]
+    
+    if 1: # Use present environment.
+        os.spawnv(os.P_NOWAIT, sys.executable, args)
+    else: # Use a pristine environment.
+        os.spawnve(os.P_NOWAIT, sys.executable, args, os.environ)
+#@-node:ekr.20031218072017.2932:openPythonWindow
+#@-node:ekr.20060610193837:open python window does not appear to work on Solaris
 #@+node:ekr.20031218072017.835:(Use pywin extensions to improve cut/paste between apps)
 @color
 

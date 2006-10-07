@@ -18,7 +18,7 @@
 ;@+node:ekr.20050118092706.1:<< defines >>
 ;@<< 4.3 nsi installer version >>
 ;@+node:ekr.20050118124408:<< 4.3 nsi installer version >>
-!define PRODUCT_VERSION "4.4.2-beta-1"
+!define PRODUCT_VERSION "4.4.2-beta-2"
 ;@nonl
 ;@-node:ekr.20050118124408:<< 4.3 nsi installer version >>
 ;@nl
@@ -73,7 +73,7 @@ WindowIcon off
 
 ; settings from HM NIS Edit Wizard
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "LeoSetup-4-4-2-beta-1.exe"
+OutFile "LeoSetup-4-4-2-beta-2.exe"
 LoadLanguageFile "${NSISDIR}\Contrib\Language files\English.nlf"
 InstallDir "$PROGRAMFILES\Leo"
 Icon "..\Icons\leo_inst.ico"
@@ -176,6 +176,11 @@ Function .onInit
     # is the first character a "
     StrCpy $8 $9 1
     StrCmp $8 '"' foundQuoteCurrentUser oops
+    
+    # Patch: 10/6/06: Complain if Python not found.
+    StrCmp $8 '"' foundQuoteCurrentUser 0
+    StrCpy $StrNoUsablePythonFound "${STRING_PYTHON_NOT_FOUND}"
+    Goto oops
     
     foundQuoteCurrentUser:
     # OK. Strip off the " at the start as well as the 9 characters at the end
