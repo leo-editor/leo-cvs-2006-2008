@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="71" left="252" height="561" width="908"/>
+	<global_window_position top="71" left="252" height="668" width="941"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -404,7 +404,7 @@
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
 </v>
-<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20060925060533.1"><vh>@shortcuts Cursor Moves</vh></v>
 <v t="ekr.20060926115909"><vh>@shortcuts Cursor Moves with extension</vh></v>
@@ -554,7 +554,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060512084639" a="E"><vh>Recent</vh>
+<v t="ekr.20060512084639"><vh>Recent</vh>
 <v t="ekr.20060930085532"><vh>@bool collapse_nodes_during_finds = True</vh></v>
 <v t="ekr.20060216135834"><vh>@bool enable_autocompleter_initially = False</vh></v>
 <v t="ekr.20060216170801" a="M"><vh>@bool enable_calltips = False</vh></v>
@@ -685,7 +685,7 @@
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
 </v>
-<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20060925060533.1"><vh>@shortcuts Cursor Moves</vh></v>
 <v t="ekr.20060926115909"><vh>@shortcuts Cursor Moves with extension</vh></v>
@@ -704,7 +704,7 @@
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
 </v>
-<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20060925060533.1"><vh>@shortcuts Cursor Moves</vh></v>
 <v t="ekr.20060926115909"><vh>@shortcuts Cursor Moves with extension</vh></v>
@@ -718,6 +718,7 @@
 <v t="ekr.20060925060533.4"><vh>@shortcuts Text operations</vh></v>
 </v>
 </v>
+<v t="ekr.20061007084118" a="TV"><vh>bindings</vh></v>
 </vnodes>
 <tnodes>
 <t tx="ekr.20041119034357.1">@nocolor</t>
@@ -6001,6 +6002,7 @@ beginning-of-line                   ! text = Ctrl-a
 end-of-buffer                       ! text = End
 end-of-line                         ! text = Ctrl-e
 exchange-point-mark                 = Alt-M     # Should be Ctrl-X Ctrl-X.
+extend-to-line                      = None
 extend-to-word                      = Ctrl-W
 extend-to-word                      = Alt-W
 forward-char                        ! text = RtArrow
@@ -6059,14 +6061,23 @@ goto-prev-visible           = Alt-UpArrow
 goto-prev-visible           ! tree = UpArrow
 insert-node                 = Ctrl-I
 mark                        = Ctrl-M
+
+move-outline-down           = Alt-Shift-DnArrow
 move-outline-down           ! tree = Shift-DnArrow
 move-outline-down           = Ctrl-D
+
+move-outline-left           = Alt-Shift-LtArrow
 move-outline-left           ! tree = Shift-LtArrow
 move-outline-left           = Ctrl-L
+
+move-outline-right          = Alt-Shift-RtArrow
 move-outline-right          ! tree = Shift-RtArrow
 move-outline-right          = Ctrl-R
+
+move-outline-up             = Alt-Shift-UpArrow
 move-outline-up             ! tree = Shift-UpArrow
 move-outline-up             = Ctrl-U
+
 paste-node                  = Shift-Ctrl-V
 promote                     = Ctrl-{      </t>
 <t tx="ekr.20060925060533.4">add-comments                        = Ctrl-parenleft
@@ -6189,5 +6200,177 @@ just typed.</t>
 <t tx="ekr.20061004150211">True:  Use a sax-based parser to read .leo files.
        This is slower than using Leo's legacy xml parser, but may solve some unicode problems.
 False: Use Leo's legacy xml parser code.</t>
+<t tx="ekr.20061007084118">       (            show-calltips
+       .            auto-complete
+       Alt+(        show-calltips-force
+       Alt+)        move-past-close
+       Alt+-        contract-all
+       Alt+A        sort-siblings
+ text: Alt+B        back-word
+ mini: Alt+B        back-word
+       Alt+C        enter-quick-command-mode
+       Alt+Ctrl+-   contract-pane
+       Alt+Ctrl+=   expand-pane
+ mini: Alt+Ctrl+A   toggle-find-wrap-around-option
+ mini: Alt+Ctrl+B   toggle-find-in-body-option
+ mini: Alt+Ctrl+C   toggle-find-mark-changes-option
+ mini: Alt+Ctrl+E   set-find-everywhere
+ mini: Alt+Ctrl+F   toggle-find-mark-finds-option
+ mini: Alt+Ctrl+H   toggle-find-in-headline-option
+ mini: Alt+Ctrl+I   toggle-find-ignore-case-option
+ text: Alt+Ctrl+I   open-with-idle
+       Alt+Ctrl+Left scroll-outline-left
+ mini: Alt+Ctrl+N   set-find-node-only
+ mini: Alt+Ctrl+R   toggle-find-reverse-option
+       Alt+Ctrl+Right scroll-outline-right
+ mini: Alt+Ctrl+S   set-find-suboutline-only
+ text: Alt+Ctrl+T   open-with-wordpad
+ mini: Alt+Ctrl+W   toggle-find-word-option
+ text: Alt+Ctrl+W   open-with-word
+ mini: Alt+Ctrl+X   toggle-find-regex-option
+       Alt+Delete   backward-kill-word
+       Alt+Down     goto-next-visible
+ text: Alt+E        forward-sentence
+       Alt+End      goto-last-visible
+ text: Alt+F        forward-word
+ mini: Alt+F        forward-word
+       Alt+F4       close-window
+       Alt+G        goto-global-line
+       Alt+Home     goto-first-node
+       Alt+Left     contract-or-go-left
+       Alt+M        exchange-point-mark
+       Alt+N        goto-next-clone
+       Alt+Next     scroll-outline-down-page
+       Alt+P        find-character
+       Alt+Prior    scroll-outline-up-page
+       Alt+Q        backward-find-character
+       Alt+R        isearch-backward
+       Alt+Right    expand-and-go-right
+       Alt+S        isearch-forward
+ text: Alt+Shift+A  select-all
+ mini: Alt+Shift+A  select-all
+ text: Alt+Shift+B  back-word-extend-selection
+ mini: Alt+Shift+B  back-word-extend-selection
+       Alt+Shift+Down move-outline-down
+ mini: Alt+Shift+F  forward-word-extend-selection
+       Alt+Shift+Left move-outline-left
+       Alt+Shift+P  find-character-extend-selection
+       Alt+Shift+Q  backward-find-character-extend-selection
+       Alt+Shift+Right move-outline-right
+       Alt+Shift+Up move-outline-up
+       Alt+U        universal-argument
+       Alt+Up       goto-prev-visible
+       Alt+W        extend-to-word
+       Alt+X        full-command
+       Alt+Y        cycle-all-focus
+       Alt+Z        zap-to-character
+       Alt+\        delete-spaces
+       Alt+]        expand-node
+       Alt+space    focus-to-tree
+ text: Alt+}        forward-paragraph
+       BackSpace    backward-delete-char
+       Ctrl+(       add-comments
+       Ctrl+)       delete-comments
+       Ctrl+-       find-tab-change-then-find
+ mini: Ctrl+-       find-tab-change-then-find
+       Ctrl+.       auto-complete-force
+       Ctrl+=       find-tab-change
+ mini: Ctrl+=       find-tab-change
+ text: Ctrl+A       beginning-of-line
+ mini: Ctrl+A       beginning-of-line
+       Ctrl+B       execute-script
+       Ctrl+C       copy-text
+       Ctrl+D       move-outline-down
+ text: Ctrl+E       end-of-line
+ mini: Ctrl+E       end-of-line
+       Ctrl+F       search-with-present-options
+       Ctrl+G       keyboard-quit
+       Ctrl+H       edit-headline
+       Ctrl+I       insert-node
+       Ctrl+J       newline-and-indent
+       Ctrl+K       kill-line
+       Ctrl+L       move-outline-left
+       Ctrl+M       mark
+       Ctrl+N       new
+       Ctrl+O       open-outline
+       Ctrl+P       repeat-complex-command
+       Ctrl+Q       exit-leo
+       Ctrl+R       move-outline-right
+       Ctrl+S       save-file
+ mini: Ctrl+S       save-file
+ text: Ctrl+Shift+A beginning-of-line-extend-selection
+ mini: Ctrl+Shift+A beginning-of-line-extend-selection
+       Ctrl+Shift+C copy-node
+       Ctrl+Shift+D extract
+ text: Ctrl+Shift+E end-of-line-extend-selection
+ mini: Ctrl+Shift+E end-of-line-extend-selection
+       Ctrl+Shift+N extract-names
+       Ctrl+Shift+P reformat-paragraph
+       Ctrl+Shift+Q write-dirty-at-file-nodes
+       Ctrl+Shift+R replace-string
+       Ctrl+Shift+S extract-section
+       Ctrl+Shift+V paste-node
+       Ctrl+Shift+W write-at-file-nodes
+       Ctrl+Shift+X cut-node
+       Ctrl+Shift+Z redo
+       Ctrl+T       toggle-active-pane
+       Ctrl+U       move-outline-up
+       Ctrl+V       paste-text
+       Ctrl+W       extend-to-word
+       Ctrl+X       cut-text
+       Ctrl+Y       yank
+       Ctrl+Z       undo
+       Ctrl+[       unindent-region
+       Ctrl+]       indent-region
+       Ctrl+`       clone-node
+       Ctrl+space   toggle-extend-mode
+       Ctrl+{       promote
+       Ctrl+}       demote
+       Delete       delete-char
+ tree: Down         goto-next-visible
+ text: Down         next-line
+ text: End          end-of-buffer
+ mini: End          end-of-line
+ tree: End          goto-last-visible
+       F1           help-for-command
+       F2           find-tab-find-prev
+ mini: F2           find-tab-find-prev
+       F3           find-tab-find-next
+ mini: F3           find-tab-find-next
+       F7           open-spell-tab
+ text: Home         beginning-of-buffer
+ mini: Home         beginning-of-line
+ tree: Home         goto-first-node
+ text: Left         back-char
+ mini: Left         back-char
+ tree: Left         contract-or-go-left
+ text: Next         scroll-down
+ tree: Next         scroll-outline-down-page
+ tree: Prior        scroll-outline-up-page
+ text: Prior        scroll-up
+ tree: Return       end-edit-headline
+ tree: Right        expand-and-go-right
+ text: Right        forward-char
+ mini: Right        forward-char
+ tree: Shift+Down   move-outline-down
+ text: Shift+Down   next-line-extend-selection
+ text: Shift+End    end-of-buffer-extend-selection
+ mini: Shift+End    end-of-line-extend-selection
+ text: Shift+Home   beginning-of-buffer-extend-selection
+ mini: Shift+Home   beginning-of-line-extend-selection
+ text: Shift+Left   back-char-extend-selection
+ mini: Shift+Left   back-char-extend-selection
+ tree: Shift+Left   move-outline-left
+ text: Shift+Next   scroll-down-extend-selection
+ text: Shift+Prior  scroll-up-extend-selection
+ text: Shift+Right  forward-char-extend-selection
+ mini: Shift+Right  forward-char-extend-selection
+ tree: Shift+Right  move-outline-right
+ tree: Shift+Up     move-outline-up
+ text: Shift+Up     previous-line-extend-selection
+ tree: Up           goto-prev-visible
+ text: Up           previous-line
+
+</t>
 </tnodes>
 </leo_file>
