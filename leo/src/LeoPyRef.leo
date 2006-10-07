@@ -1,15 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet ekr_stylesheet?>
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet ekr_test?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="9852" clone_windows="0"/>
-<globals body_outline_ratio="0.466594827586">
-	<global_window_position top="20" left="239" height="928" width="978"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
+<globals body_outline_ratio="0.5">
+	<global_window_position top="78" left="183" height="825" width="909"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
 <find_panel_settings/>
 <vnodes>
-<v t="ekr.20051031040240"><vh>Buttons and settings</vh>
+<v t="ekr.20051031040240" str_leo_pos="9"><vh>Buttons and settings</vh>
 <v t="ekr.20051027111215"><vh>@thin buttons.txt</vh></v>
 <v t="ekr.20041119040438"><vh>@settings</vh>
 <v t="ekr.20050420073615"><vh>@recent-files</vh></v>
@@ -25,13 +25,12 @@
 </v>
 <v t="EKR.20040519090151.3"><vh>Projects</vh>
 <v t="EKR.20040429143933"
-marks="ekr.20051113110851,ekr.20031218072017.3419,ekr.20031218072017.3421,ekr.20040303175026.3,ekr.20040303175026.5,ekr.20040303214038,ekr.20040303163330,ekr.20051113110851,ekr.20040303175026.2,ekr.20040310062332.4,ekr.20040303175026.10,ekr.20040306060312,ekr.20040303175026.11,ekr.20040310062332.5,ekr.20031218072017.3426,ekr.20031218072017.3438,ekr.20040303175026.2,ekr.20050921103736,"><vh>@thin leoProjects.txt</vh></v>
+marks="ekr.20051113110851,ekr.20031218072017.3419,ekr.20031218072017.3421,ekr.20040303175026.3,ekr.20040303175026.5,ekr.20040303214038,ekr.20040303163330,ekr.20040303175026.2,ekr.20040310062332.4,ekr.20040303175026.10,ekr.20040306060312,ekr.20040303175026.11,ekr.20040310062332.5,ekr.20031218072017.3426,ekr.20031218072017.3438,ekr.20050921103736,ekr.20040701065235.2,ekr.20060919110638.44,"><vh>@thin leoProjects.txt</vh></v>
 </v>
 <v t="EKR.20040519090151.2"><vh>To do</vh>
-<v t="ekr.20040117181936"
-marks="ekr.20060912091922,"
-expanded="ekr.20061001060913,"><vh>@thin ../doc/leoToDo.txt</vh></v>
-<v t="ekr.20060207133601"><vh>@thin ../doc/leoToDoLater.txt</vh></v>
+<v t="ekr.20040117181936"><vh>@thin ../doc/leoToDo.txt</vh></v>
+<v t="ekr.20060207133601"
+marks="ekr.20040701065235.2,"><vh>@thin ../doc/leoToDoLater.txt</vh></v>
 </v>
 <v t="ekr.20060904165452"><vh>4.4.2 projects</vh>
 <v t="ekr.20060929090247.1"><vh>4.4.2 b1</vh>
@@ -352,11 +351,6 @@ expanded="ekr.20061001060913,"><vh>@thin ../doc/leoToDo.txt</vh></v>
 <v t="ekr.20031218072017.2996"><vh>selectVisNext</vh></v>
 <v t="ekr.20031218072017.2995"><vh>selectVisBack</vh></v>
 </v>
-<v t="ekr.20060928062431.1"><vh>Sparse find command</vh>
-<v t="ekr.20050920084036.189"><vh>&lt;&lt; define dictionary d of names and Leo commands &gt;&gt;</vh></v>
-<v t="ekr.20060928062431"><vh>expandOnlyAncestorsOfNode</vh></v>
-<v t="ekr.20031218072017.3091"><vh>showSuccess</vh></v>
-</v>
 <v t="ekr.20060928110801"><vh>Allow -- comments in @url nodes</vh>
 <v t="ekr.20031218072017.2312"><vh>tree.OnIconDoubleClick (@url)</vh>
 <v t="ekr.20031218072017.2313"><vh>&lt;&lt; stop the url after any whitespace  &gt;&gt;</vh></v>
@@ -370,6 +364,26 @@ expanded="ekr.20061001060913,"><vh>@thin ../doc/leoToDo.txt</vh></v>
 <v t="ekr.20060929091051"><vh>Bugs</vh>
 <v t="ekr.20060927073203"><vh>Fixed rst3 problem</vh></v>
 <v t="ekr.20060929133002"><vh>Fixed apparent bug in pmw</vh></v>
+<v t="ekr.20061002135140"><vh>Looked at problems with unicode characters in scripts</vh>
+<v t="EKR.20040614071102.1"><vh>g.getScript &amp; tests</vh>
+<v t="ekr.20050211100535"><vh>test_g_getScript_strips_crlf</vh></v>
+</v>
+<v t="ekr.20031218072017.2140"><vh>c.executeScript</vh>
+<v t="ekr.20031218072017.2143"><vh>&lt;&lt; redirect output &gt;&gt;</vh></v>
+<v t="EKR.20040627100424"><vh>&lt;&lt; unredirect output &gt;&gt;</vh></v>
+</v>
+</v>
+<v t="ekr.20061003072809.1"><vh>Fixed various unicode word-select problems</vh>
+<v t="ekr.20061006152327"><vh>g.isWordChar</vh></v>
+<v t="ekr.20051218121447"><vh>moveWordHelper</vh></v>
+<v t="ekr.20031218072017.3978"><vh>OnBodyDoubleClick (Events)</vh></v>
+<v t="ekr.20060116074839.2"><vh>extend-to-word</vh></v>
+</v>
+<v t="ekr.20061006170725"><vh>Installed installer patch</vh></v>
+<v t="ekr.20061006191936"><vh>Use letter accellerators for recent files after 9</vh>
+<v t="ekr.20031218072017.2078"><vh>createRecentFilesMenuItems (leoMenu)</vh></v>
+</v>
+<v t="ekr.20060930111450"><vh>Made yank work in minibuffer</vh></v>
 </v>
 <v t="ekr.20060929141921"><vh>Features</vh>
 <v t="ekr.20060929141750"><vh>Improved the mod_scripting plugin</vh></v>
@@ -385,18 +399,10 @@ expanded="ekr.20061001060913,"><vh>@thin ../doc/leoToDo.txt</vh></v>
 </v>
 </v>
 <v t="ekr.20060930110140"><vh>Added settings for all mod_scripting switches</vh></v>
-</v>
-<v t="ekr.20060929141921.1"><vh>Tests</vh>
-<v t="ekr.20060929100150"><vh>Tested Python 2.5 exception reporting</vh>
-<v t="ekr.20031218072017.3111"><vh>es_event_exception</vh></v>
-<v t="ekr.20040731204831"><vh>getLastTracebackFileAndLineNumber</vh></v>
-<v t="ekr.20031218072017.3112"><vh>es_exception &amp; test</vh>
-<v t="ekr.20050220030850"><vh>test_g_es_exception</vh></v>
-</v>
-<v t="ekr.20060624085200"><vh>g.handleScriptException</vh>
-<v t="EKR.20040612215018"><vh>&lt;&lt; dump the lines near the error &gt;&gt;</vh></v>
-</v>
-</v>
+<v t="ekr.20060928062431.1"><vh>Sparse find command</vh>
+<v t="ekr.20050920084036.189"><vh>&lt;&lt; define dictionary d of names and Leo commands &gt;&gt;</vh></v>
+<v t="ekr.20060928062431"><vh>expandOnlyAncestorsOfNode</vh></v>
+<v t="ekr.20031218072017.3091"><vh>showSuccess</vh></v>
 </v>
 <v t="ekr.20060930125206"><vh>Made writing .leo files faster</vh>
 <v t="EKR.20040526202501"><vh>putUnknownAttributes &amp; helper</vh>
@@ -411,69 +417,319 @@ expanded="ekr.20061001060913,"><vh>@thin ../doc/leoToDo.txt</vh></v>
 <v t="ekr.20040702085529"><vh>&lt;&lt; issue informational messages &gt;&gt;</vh></v>
 </v>
 <v t="ekr.20031218072017.2002"><vh>putTnodeList (4.0,4.2)</vh></v>
-<v t="ekr.20040701065235.2"><vh>putDescendentAttributes</vh></v>
+<v t="ekr.20040701065235.2" a="M"><vh>putDescendentAttributes</vh></v>
 <v t="EKR.20040627113418"><vh>putDescendentUnknownAttributes</vh></v>
 </v>
 </v>
-</v>
-</v>
-<v t="ekr.20060927172440"><vh>To do before 4.4.2 final</vh>
-<v t="ekr.20061001060913.1"><vh>To do first</vh>
-<v t="ekr.20060930172926"><vh>Make sure unit tests test tnodeList, etc.</vh></v>
-<v t="ekr.20061001060913.2"><vh>install sax read code into Leo's core</vh></v>
-<v t="ekr.20060929100640.1"><vh>Add setting: @bool outline_pane_has_initial_focus</vh></v>
-<v t="ekr.20060930085556"><vh>Add setting: @bool collapse_nodes_during_finds = True</vh></v>
-<v t="ekr.20060929084830.1"><vh>Suppress redraw on all applicable outline:goto commands</vh></v>
-</v>
-<v t="ekr.20060929122217.2"><vh>Bugs: 5</vh>
-<v t="ekr.20060927173836.1"><vh>Disable calltips in @nocolor sections</vh></v>
-<v t="ekr.20060930111450"><vh>Make yank/kill work in minibuffer</vh></v>
-<v t="ekr.20060927173836.6"><vh>Don't abort mode if there are problems with bindings</vh></v>
-<v t="ekr.20060927100500.1"><vh>Fix bugs in new colorizer</vh></v>
-<v t="ekr.20060824112937.1"><vh>Fix unicode problem with double-click word Stéphane</vh>
+<v t="ekr.20061002073144"><vh>Installed latest word patch</vh>
 <v t="ekr.20051218121447"><vh>moveWordHelper</vh></v>
-<v t="ekr.20060131084938"><vh>masterDoubleClickHandler</vh></v>
-<v t="ekr.20031218072017.3978"><vh>OnBodyDoubleClick (Events)</vh></v>
-<v t="ekr.20060203114017"><vh>f.setMinibufferBindings</vh></v>
-<v t="ekr.20040803072955.87"><vh>onHeadlineClick</vh></v>
-<v t="ekr.20040803072955.105"><vh>OnActivateHeadline (tkTree)</vh>
-<v t="ekr.20040803072955.106"><vh>&lt;&lt; activate this window &gt;&gt;</vh></v>
 </v>
-<v t="ekr.20051024102724"><vh>tkTtree.setBindings</vh>
-<v t="ekr.20060131173440"><vh>&lt;&lt; make bindings for a common binding widget &gt;&gt;</vh></v>
-<v t="ekr.20060131173440.2"><vh>&lt;&lt; make bindings for tagged items on the canvas &gt;&gt;</vh></v>
-<v t="ekr.20060307080642"><vh>&lt;&lt; create baloon bindings for tagged items on the canvas &gt;&gt;</vh></v>
+<v t="ekr.20061002064811"><vh>Added support for outline_pane_has_initial_focus setting</vh>
+<v t="ekr.20061002060833"><vh>Finish opml plugin: enhance open/save dialogs when opml is present</vh></v>
+<v t="ekr.20031218072017.2052"><vh>g.openWithFileName</vh></v>
+<v t="ekr.20031218072017.2820"><vh>top level (file menu)</vh>
+<v t="ekr.20031218072017.1623"><vh>new</vh></v>
+<v t="ekr.20031218072017.2821"><vh>open</vh>
+<v t="ekr.20031218072017.2822"><vh>&lt;&lt; Set closeFlag if the only open window is empty &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20031218072017.2823"><vh>openWith and allies</vh>
+<v t="ekr.20031218072017.2824"><vh>&lt;&lt; set ext based on the present language &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2825"><vh>&lt;&lt; create or reopen temp file, testing for conflicting changes &gt;&gt;</vh>
+<v t="ekr.20031218072017.2826"><vh>&lt;&lt;set dict and path if a temp file already refers to p.v.t &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2827"><vh>&lt;&lt; create or recreate temp file as needed &gt;&gt;</vh>
+<v t="ekr.20031218072017.2828"><vh>&lt;&lt; Raise dialog about conflict and set result &gt;&gt;</vh></v>
 </v>
 </v>
-<v t="ekr.20060920150119"><vh>Fix undo problems (important)</vh></v>
+<v t="ekr.20031218072017.2829"><vh>&lt;&lt; execute a command to open path in external editor &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2830"><vh>createOpenWithTempFile</vh>
+<v t="ekr.20031218072017.2831"><vh>&lt;&lt; remove previous entry from app.openWithFiles if it exists &gt;&gt;</vh></v>
 </v>
-<v t="ekr.20061001060913" a="E"><vh>Minor bugs 2:</vh>
+<v t="ekr.20031218072017.2832"><vh>c.openWithTempFilePath</vh></v>
+</v>
+<v t="ekr.20031218072017.2833"><vh>close</vh></v>
+<v t="ekr.20031218072017.2834"><vh>save</vh></v>
+<v t="ekr.20031218072017.2835"><vh>saveAs</vh></v>
+<v t="ekr.20031218072017.2836"><vh>saveTo</vh></v>
+<v t="ekr.20031218072017.2837"><vh>revert</vh></v>
+</v>
+</v>
+<v t="ekr.20061001145550"><vh>Generalized navigation in outline pane to ignore @file, @thin, etc prefixes</vh>
+<v t="ekr.20060923202156"><vh>c.onCanvasKey</vh>
+<v t="ekr.20061002095711.1"><vh>c.navQuickKey</vh></v>
+<v t="ekr.20061002095711"><vh>c.navHelper</vh></v>
+</v>
+</v>
+<v t="ekr.20061002064543"><vh>Make outline navigation cumulative</vh>
+<v t="ekr.20031218072017.2813"><vh>&lt;&lt; initialize ivars &gt;&gt; (commands)</vh></v>
+<v t="ekr.20060923202156"><vh>c.onCanvasKey</vh>
+<v t="ekr.20061002095711.1"><vh>c.navQuickKey</vh></v>
+<v t="ekr.20061002095711"><vh>c.navHelper</vh></v>
+</v>
+</v>
+<v t="ekr.20061006092649.1"><vh>added p.archivedPosition</vh></v>
+<v t="ekr.20061007094718"><vh>Added extend-to-line command</vh>
+<v t="ekr.20061007082956"><vh>extend-to-line</vh></v>
+</v>
+<v t="ekr.20061007084626"><vh>Improved print-bindings command</vh>
+<v t="ekr.20051012201831"><vh>printBindings</vh></v>
+</v>
+<v t="ekr.20061007094718.1"><vh>Added bindings for Alt-Shift-Arrow keys to force an outline move</vh></v>
+</v>
+<v t="ekr.20060929141921.1"><vh>Tests</vh>
+<v t="ekr.20060929100150"><vh>Tested Python 2.5 exception reporting</vh>
+<v t="ekr.20031218072017.3111"><vh>es_event_exception</vh></v>
+<v t="ekr.20040731204831"><vh>getLastTracebackFileAndLineNumber</vh></v>
+<v t="ekr.20031218072017.3112"><vh>es_exception &amp; test</vh>
+<v t="ekr.20050220030850"><vh>test_g_es_exception</vh></v>
+</v>
+<v t="ekr.20060624085200"><vh>g.handleScriptException</vh>
+<v t="EKR.20040612215018"><vh>&lt;&lt; dump the lines near the error &gt;&gt;</vh></v>
+</v>
+</v>
+<v t="ekr.20061001094334"><vh>Added unit tests for uA's</vh>
+<v t="EKR.20040526202501"><vh>putUnknownAttributes &amp; helper</vh>
+<v t="ekr.20050418161620.2"><vh>putUaHelper</vh></v>
+</v>
+<v t="ekr.20040701065235.2" a="M"><vh>putDescendentAttributes</vh></v>
+<v t="EKR.20040627113418"><vh>putDescendentUnknownAttributes</vh></v>
+</v>
+</v>
+<v t="ekr.20061001145928"><vh>(Integrated sax with read logic)</vh>
+<v t="ekr.20061004081725"><vh>To do</vh></v>
+<v t="ekr.20061003084249"><vh>What I did</vh></v>
+<v t="ekr.20061006102948"><vh>Support str_leo_pos attribute of root vnode</vh>
+<v t="ekr.20031218072017.1579"><vh>putVnodes &amp; helpers</vh>
+<v t="ekr.20031218072017.1863"><vh>putVnode (3.x and 4.x)</vh>
+<v t="ekr.20031218072017.1864"><vh>&lt;&lt; Set gnx = tnode index &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.1865"><vh>&lt;&lt; Append attribute bits to attrs &gt;&gt;</vh></v>
+<v t="ekr.20040324082713"><vh>&lt;&lt; Append tnodeList and unKnownAttributes to attrs&gt;&gt;</vh></v>
+<v t="ekr.20040702085529"><vh>&lt;&lt; issue informational messages &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20031218072017.2002"><vh>putTnodeList (4.0,4.2)</vh></v>
+<v t="ekr.20040701065235.2" a="M"><vh>putDescendentAttributes</vh></v>
+<v t="EKR.20040627113418"><vh>putDescendentUnknownAttributes</vh></v>
+</v>
+<v t="ekr.20061006092649"><vh>p.archivedPosition</vh></v>
+<v t="ekr.20031218072017.1865"><vh>&lt;&lt; Append attribute bits to attrs &gt;&gt;</vh></v>
+<v t="ekr.20060919110638.13"><vh>setPositionsFromVnodes &amp; helper</vh>
+<v t="ekr.20061006104837.1"><vh>archivedPositionToPosition</vh></v>
+</v>
+<v t="EKR.20040526202501"><vh>putUnknownAttributes &amp; helper</vh>
+<v t="ekr.20050418161620.2"><vh>putUaHelper</vh></v>
+</v>
+</v>
+<v t="ekr.20060919145406"><vh>&lt;&lt; define sax classes &gt;&gt;</vh>
+<v t="ekr.20060919110638.19"><vh>class saxContentHandler (XMLGenerator)</vh>
+<v t="ekr.20060919110638.20"><vh> __init__ &amp; helpers</vh>
+<v t="ekr.20060919110638.21"><vh>&lt;&lt; define dispatch dict &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20060919110638.29"><vh> Do nothing</vh></v>
+<v t="ekr.20060919134313"><vh> Utils</vh>
+<v t="ekr.20060919110638.23"><vh>attrsToList</vh></v>
+<v t="ekr.20060919110638.26"><vh>error</vh></v>
+<v t="ekr.20060919110638.27"><vh>inElement</vh></v>
+<v t="ekr.20060919110638.28"><vh>printStartElement</vh>
+<v t="ekr.20060919110638.24"><vh>attrsToString</vh></v>
+<v t="ekr.20060919110638.25"><vh>clean</vh></v>
+</v>
+</v>
+<v t="ekr.20060919110638.30"><vh>characters</vh></v>
+<v t="ekr.20060919110638.31"><vh>endElement &amp; helpers</vh>
+<v t="ekr.20060919110638.32"><vh>endTnode</vh></v>
+<v t="ekr.20060919110638.33"><vh>endVnode</vh></v>
+<v t="ekr.20060919110638.34"><vh>endVH</vh></v>
+</v>
+<v t="ekr.20060919110638.45"><vh>getters</vh></v>
+<v t="ekr.20061004054323"><vh>processingInstruction (stylesheet)</vh></v>
+<v t="ekr.20060919110638.35"><vh>startElement &amp; helpers</vh>
+<v t="ekr.20060919110638.36"><vh>getPositionAttributes</vh></v>
+<v t="ekr.20060919110638.37"><vh>startGlobals</vh></v>
+<v t="ekr.20060919110638.38"><vh>startWinPos</vh></v>
+<v t="ekr.20060919110638.39"><vh>startLeoHeader</vh></v>
+<v t="ekr.20060919110638.40"><vh>startVH</vh></v>
+<v t="ekr.20060919112118"><vh>startVnodes</vh></v>
+<v t="ekr.20060919110638.41"><vh>startTnode</vh>
+<v t="ekr.20060919110638.42"><vh>tnodeAttributes</vh></v>
+</v>
+<v t="ekr.20060919110638.43"><vh>startVnode</vh>
+<v t="ekr.20060919110638.44" a="M"><vh>vnodeAttributes</vh></v>
+</v>
+</v>
+</v>
+<v t="ekr.20060919110638.15"><vh>class saxNodeClass</vh>
+<v t="ekr.20060919110638.16"><vh> node.__init__</vh></v>
+<v t="ekr.20060919110638.17"><vh> node.__str__ &amp; __repr__</vh></v>
+<v t="ekr.20060919110638.18"><vh>node.dump</vh></v>
+</v>
+</v>
+<v t="ekr.20031218072017.1553"><vh>getLeoFile</vh>
+<v t="ekr.20031218072017.1554"><vh>&lt;&lt; warn on read-only files &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20031218072017.3020"><vh>Reading</vh>
+<v t="ekr.20060919104836"><vh> Top-level</vh>
+<v t="ekr.20031218072017.1559"><vh>getLeoOutlineFromClipboard &amp; helpers</vh>
+<v t="ekr.20031218072017.1557"><vh>finishPaste</vh>
+<v t="ekr.20031218072017.1558"><vh>&lt;&lt; reassign tnode indices &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20060826052453.1"><vh>getLeoOutlineHelper</vh>
+<v t="EKR.20040610134756"><vh>&lt;&lt; recreate tnodesDict &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20031218072017.3022"><vh>getClipboardHeader</vh></v>
+</v>
+<v t="ekr.20031218072017.1553"><vh>getLeoFile</vh>
+<v t="ekr.20031218072017.1554"><vh>&lt;&lt; warn on read-only files &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20031218072017.2009"><vh>newTnode</vh></v>
+<v t="ekr.20031218072017.3029"><vh>readAtFileNodes (leoAtFile)</vh></v>
+<v t="ekr.20031218072017.2297"><vh>open (leoFileCommands)</vh>
+<v t="ekr.20031218072017.2298"><vh>&lt;&lt; Set the default directory &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20031218072017.3030"><vh>readOutlineOnly</vh>
+<v t="ekr.20031218072017.2298"><vh>&lt;&lt; Set the default directory &gt;&gt;</vh></v>
+</v>
+</v>
+<v t="ekr.20060919133249"><vh>Common</vh>
+<v t="ekr.20031218072017.2004"><vh>canonicalTnodeIndex</vh></v>
+<v t="ekr.20040701065235.1"><vh>getDescendentAttributes</vh></v>
+<v t="EKR.20040627114602"><vh>getDescendentUnknownAttributes</vh></v>
+<v t="ekr.20060919142200.1"><vh>initReadIvars</vh></v>
+<v t="EKR.20040627120120"><vh>restoreDescendentAttributes</vh></v>
+</v>
+<v t="ekr.20031218072017.3021"><vh>Non-sax</vh>
+<v t="ekr.20040326052245"><vh>convertStackToPosition</vh></v>
+<v t="ekr.20031218072017.1243"><vh>get, match &amp; skip (basic)</vh>
+<v t="ekr.20031218072017.1244"><vh>get routines (basic)</vh>
+<v t="EKR.20040526204706"><vh>getBool</vh></v>
+<v t="EKR.20040526204706.1"><vh>getDouble</vh></v>
+<v t="EKR.20040526204706.2"><vh>getDqBool</vh></v>
+<v t="EKR.20040526204706.3"><vh>getDqString</vh></v>
+<v t="EKR.20040526204706.4"><vh>getDquote</vh></v>
+<v t="ekr.20031218072017.3024"><vh>getEscapedString</vh></v>
+<v t="EKR.20040526204706.5"><vh>getIndex</vh></v>
+<v t="EKR.20040526204706.6"><vh>getLong</vh></v>
+<v t="EKR.20040526204706.7"><vh>getOpenTag</vh></v>
+<v t="EKR.20040526204706.8"><vh>getStringToTag</vh></v>
+<v t="EKR.20040526204706.9"><vh>getTag</vh></v>
+<v t="EKR.20040526204036"><vh>getUnknownTag</vh></v>
+</v>
+<v t="ekr.20031218072017.1245"><vh>match routines</vh></v>
+<v t="ekr.20031218072017.3027"><vh>skipWs</vh></v>
+<v t="ekr.20031218072017.3028"><vh>skipWsAndNl</vh></v>
+<v t="ekr.20031218072017.3031"><vh>xmlUnescape</vh></v>
+</v>
+<v t="ekr.20031218072017.1555"><vh>getAllLeoElements</vh></v>
+<v t="ekr.20031218072017.3023"><vh>getCloneWindows</vh></v>
+<v t="ekr.20031218072017.2064"><vh>getFindPanelSettings</vh></v>
+<v t="ekr.20031218072017.2306"><vh>getGlobals</vh></v>
+<v t="ekr.20031218072017.1970"><vh>getLeoHeader</vh></v>
+<v t="ekr.20031218072017.3025"><vh>getPosition</vh></v>
+<v t="ekr.20031218072017.2062"><vh>getPrefs</vh>
+<v t="ekr.20031218072017.2063"><vh>getTargetLanguage</vh></v>
+</v>
+<v t="ekr.20031218072017.3026"><vh>getSize (not used!)</vh></v>
+<v t="ekr.20031218072017.1561"><vh>getTnode (changed for 4.4)</vh>
+<v t="ekr.20031218072017.1564"><vh>&lt;&lt; handle unknown attributes &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20031218072017.2008"><vh>getTnodeList (4.0,4.2)</vh></v>
+<v t="ekr.20031218072017.1560"><vh>getTnodes</vh></v>
+<v t="EKR.20040526204036.1"><vh>getUa (non-sax)</vh></v>
+<v t="ekr.20031218072017.1566"><vh>getVnode &amp; helpers</vh>
+<v t="ekr.20031218072017.1567"><vh>&lt;&lt; Handle vnode attribute bits  &gt;&gt;</vh></v>
+<v t="ekr.20041023110111"><vh>&lt;&lt; raise invalidPaste if the tnode is in self.forbiddenTnodes &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.1568"><vh>&lt;&lt; Set the remembered status bits &gt;&gt;</vh></v>
+<v t="ekr.20040326055828"><vh>&lt;&lt; Append to current or top stack &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.1860"><vh>createVnode</vh>
+<v t="ekr.20031218072017.1861"><vh>&lt;&lt; handle unknown vnode attributes &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20040326063413"><vh>getExistingVnode</vh></v>
+</v>
+<v t="ekr.20031218072017.1565"><vh>getVnodes</vh>
+<v t="ekr.20041023105832"><vh>&lt;&lt; set self.forbiddenTnodes to tnodes than must not be pasted &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20031218072017.1249"><vh>getXmlStylesheetTag</vh></v>
+<v t="ekr.20031218072017.1468"><vh>getXmlVersionTag</vh></v>
+<v t="ekr.20040326054052"><vh>setPositionsFromStacks (silly)</vh></v>
+</v>
+<v t="ekr.20060919104530"><vh>Sax</vh>
+<v t="ekr.20060919110638.4"><vh>createSaxVnodes &amp; helpers</vh>
+<v t="ekr.20060919110638.5"><vh>createSaxChildren</vh></v>
+<v t="ekr.20060919110638.6"><vh>createSaxVnodeTree</vh></v>
+<v t="ekr.20060919110638.7"><vh>createSaxVnode</vh>
+<v t="ekr.20060919110638.8"><vh>handleTnodeSaxAttributes</vh></v>
+<v t="ekr.20061004053644"><vh>handleVnodeSaxAttributes</vh></v>
+</v>
+<v t="ekr.20060919110638.9"><vh>linkParentAndChildren</vh></v>
+<v t="ekr.20060919110638.10"><vh>linkSiblings</vh></v>
+</v>
+<v t="ekr.20060919110638.2"><vh>dumpSaxTree</vh></v>
+<v t="ekr.20061003093021"><vh>getSaxUa</vh></v>
+<v t="ekr.20060919110638.14"><vh>parse_leo_file</vh></v>
+<v t="ekr.20060919110638.3"><vh>readSaxFile</vh></v>
+<v t="ekr.20060919110638.11"><vh>resolveTnodeLists</vh></v>
+<v t="ekr.20060919110638.13"><vh>setPositionsFromVnodes &amp; helper</vh>
+<v t="ekr.20061006104837.1"><vh>archivedPositionToPosition</vh></v>
+</v>
+</v>
+</v>
+</v>
+</v>
+</v>
+<v t="ekr.20060929122217.2"><vh>Fix bugs</vh>
+<v t="ekr.20061007083402"><vh>do full recolor after paste/yank</vh></v>
+<v t="ekr.20061007094817"><vh>Alt-y moves to Bindings pane, but does not select the text</vh></v>
+<v t="ekr.20061007075350"><vh>Make sure errors are reported properly in Python 2.5</vh></v>
 <v t="ekr.20060928194335"><vh>Fix bug: closing a window after removing a script button can crash</vh></v>
-<v t="ekr.20060930110925"><vh>Fix arrow keys (if possible)</vh></v>
+<v t="ekr.20060116083043"><vh>Use special Help menu on the Mac</vh>
+<v t="ekr.20031218072017.3803"><vh>createHelpMenuFromTable</vh></v>
+<v t="ekr.20031218072017.4113"><vh>new_menu</vh></v>
+<v t="ekr.20031218072017.3804"><vh>createNewMenu</vh></v>
+<v t="ekr.20031218072017.3807"><vh>getMenu, setMenu, destroyMenu</vh></v>
+<v t="ekr.20060211144330.1"><vh>getMacHelpMenu</vh></v>
 </v>
-<v t="ekr.20060929141941"><vh>Docs</vh>
-<v t="ekr.20060920190138"><vh>Document tnodeList, vnodeList and make better unit tests</vh></v>
-</v>
-<v t="ekr.20060912091922" a="M"><vh>Test all plugins</vh>
-<v t="ekr.20060914085747"><vh>Have plugin-specific unit tests</vh></v>
-<v t="ekr.20060914130034"><vh>Tested, no unit tests</vh></v>
-<v t="ekr.20060914090250"><vh>To test next</vh></v>
-<v t="ekr.20060914085747.1"><vh>To test</vh></v>
-</v>
+<v t="ekr.20060927100500.1"><vh>Fix bugs in new colorizer</vh></v>
+<v t="ekr.20060920150119"><vh>Fix undo problems (important)</vh></v>
+<v t="ekr.20060927173836.1"><vh>Disable calltips in @nocolor sections</vh></v>
+<v t="ekr.20060927173836.6"><vh>Don't abort mode if there are problems with bindings</vh></v>
 </v>
 <v t="ekr.20061001060913.1" a="TV"><vh>To do first</vh>
-<v t="ekr.20060930172926"><vh>Make sure unit tests test tnodeList, etc.</vh></v>
-<v t="ekr.20061001060913.2"><vh>install sax read code into Leo's core</vh></v>
-<v t="ekr.20060929100640.1"><vh>Add setting: @bool outline_pane_has_initial_focus</vh></v>
-<v t="ekr.20060930085556"><vh>Add setting: @bool collapse_nodes_during_finds = True</vh></v>
+<v t="ekr.20061007094718.2"><vh>Add shortcut for extend-to-line</vh></v>
+<v t="ekr.20051112080017"><vh>delete-x-script-button</vh></v>
+<v t="ekr.20061003075953"><vh>Better unit tests for write logic: test @ignore logic</vh></v>
 <v t="ekr.20060929084830.1"><vh>Suppress redraw on all applicable outline:goto commands</vh></v>
+<v t="ekr.20061002093442"><vh>Add opml support to new,open, save commands</vh>
+<v t="ekr.20031218072017.2820"><vh>top level (file menu)</vh>
+<v t="ekr.20031218072017.1623"><vh>new</vh></v>
+<v t="ekr.20031218072017.2821"><vh>open</vh>
+<v t="ekr.20031218072017.2822"><vh>&lt;&lt; Set closeFlag if the only open window is empty &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20031218072017.2823"><vh>openWith and allies</vh>
+<v t="ekr.20031218072017.2824"><vh>&lt;&lt; set ext based on the present language &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2825"><vh>&lt;&lt; create or reopen temp file, testing for conflicting changes &gt;&gt;</vh>
+<v t="ekr.20031218072017.2826"><vh>&lt;&lt;set dict and path if a temp file already refers to p.v.t &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2827"><vh>&lt;&lt; create or recreate temp file as needed &gt;&gt;</vh>
+<v t="ekr.20031218072017.2828"><vh>&lt;&lt; Raise dialog about conflict and set result &gt;&gt;</vh></v>
+</v>
+</v>
+<v t="ekr.20031218072017.2829"><vh>&lt;&lt; execute a command to open path in external editor &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2830"><vh>createOpenWithTempFile</vh>
+<v t="ekr.20031218072017.2831"><vh>&lt;&lt; remove previous entry from app.openWithFiles if it exists &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20031218072017.2832"><vh>c.openWithTempFilePath</vh></v>
+</v>
+<v t="ekr.20031218072017.2833"><vh>close</vh></v>
+<v t="ekr.20031218072017.2834"><vh>save</vh></v>
+<v t="ekr.20031218072017.2835"><vh>saveAs</vh></v>
+<v t="ekr.20031218072017.2836"><vh>saveTo</vh></v>
+<v t="ekr.20031218072017.2837"><vh>revert</vh></v>
+</v>
+</v>
 </v>
 <v t="ekr.20031218072017.2406"><vh>Code</vh>
 <v t="ekr.20031218072017.2606"><vh>&lt;&lt; Import pychecker &gt;&gt;</vh></v>
 <v t="ekr.20031218072017.2582"><vh> version &amp; signon stuff</vh>
 <v t="ekr.20040629121554"><vh>getBuildNumber</vh></v>
 <v t="ekr.20040629121554.1"><vh>getSignOnLine (Contains hard-coded version info)</vh></v>
-<v t="ekr.20040629121554.2" a="M" labels="540801000032383634373033303061353332373632363536363666373236353230363336383631366536373635336132373061373033313061353636343635363632303639366536393734353636353732373336393666366532303238373336353663363632393361356337353330333033303631323032303230323036333230336432303733363536633636356337353330333033303631323032303230323036333265373636353732323033643230323232343532363537363639373336393666366533613230333132653332333233353230323432323230323332303433353635333230373537303634363137343635373332303734363836393733326530613730333230613733326571002e"><vh>initVersion</vh></v>
+<v t="ekr.20040629121554.2" a="M" labels="2858060000006c6162656c737100540801000032383634373033303061353332373632363536363666373236353230363336383631366536373635336132373061373033313061353636343635363632303639366536393734353636353732373336393666366532303238373336353663363632393361356337353330333033303631323032303230323036333230336432303733363536633636356337353330333033303631323032303230323036333265373636353732323033643230323232343532363537363639373336393666366533613230333132653332333233353230323432323230323332303433353635333230373537303634363137343635373332303734363836393733326530613730333230613733326571017471022e"><vh>initVersion</vh></v>
 <v t="ekr.20040629121554.3"><vh>c.signOnWithVersion</vh></v>
 </v>
 <v t="ekr.20031218072017.2604"><vh>Core classes...</vh>
@@ -486,15 +742,15 @@ marks="ekr.20040629121554.2,"><vh>@thin leoCommands.py</vh></v>
 <v t="ekr.20041117062700"><vh>@thin leoConfig.py</vh></v>
 <v t="ekr.20050710142719"><vh>@thin leoEditCommands.py</vh></v>
 <v t="ekr.20031218072017.3018"
-marks="ekr.20060919110638.44,ekr.20060919110638.8,"><vh>@thin leoFileCommands.py</vh></v>
+marks="ekr.20060919110638.44,ekr.20040701065235.2,"><vh>@thin leoFileCommands.py</vh></v>
 <v t="ekr.20031218072017.3093"><vh>@thin leoGlobals.py</vh></v>
 <v t="ekr.20031218072017.3206"><vh>@thin leoImport.py</vh></v>
 <v t="ekr.20031218072017.3748"><vh>@thin leoKeys.py</vh></v>
 <v t="ekr.20031218072017.3320"
-marks="ekr.20031218072017.3419,ekr.20031218072017.3421,ekr.20031218072017.3426,ekr.20031218072017.3438,ekr.20031218072017.3390,ekr.20040306220634.9,ekr.20040303214038,ekr.20040303163330,ekr.20040303175026.2,ekr.20040303175026.3,ekr.20040303175026.5,ekr.20040303175026.10,ekr.20040306060312,ekr.20040303175026.11,ekr.20040310062332.4,ekr.20040310062332.5,"><vh>@thin leoNodes.py</vh></v>
+marks="ekr.20031218072017.3419,ekr.20031218072017.3421,ekr.20031218072017.3426,ekr.20031218072017.3438,ekr.20040303214038,ekr.20040303163330,ekr.20040303175026.2,ekr.20040303175026.3,ekr.20040303175026.5,ekr.20040303175026.10,ekr.20040306060312,ekr.20040303175026.11,ekr.20040310062332.4,ekr.20040310062332.5,"><vh>@thin leoNodes.py</vh></v>
 <v t="ekr.20031218072017.3439"><vh>@thin leoPlugins.py</vh></v>
 <v t="ekr.20031218072017.3446"><vh>@thin leoTangle.py</vh></v>
-<v t="ekr.20051104075904" annotate="7d71002e"><vh>@thin leoTest.py</vh></v>
+<v t="ekr.20051104075904" annotate="285808000000616e6e6f7461746571007d71017471022e"><vh>@thin leoTest.py</vh></v>
 <v t="ekr.20031218072017.3603"><vh>@thin leoUndo.py</vh></v>
 </v>
 <v t="ekr.20031218072017.3625"><vh>Gui Base classes</vh>
@@ -585,6 +841,185 @@ def isEnabled(self):
         return ''
     else:
         return ''.join([self.putUaHelper(torv,key,val) for key,val in attrDict.items()])</t>
+<t tx="EKR.20040526204036">def getUnknownTag(self):
+    
+    self.skipWsAndNl() # guarantees at least one more character.
+    tag = self.getStringToTag('=')
+    if not tag:
+        print "getUnknownTag failed"
+        raise BadLeoFile("unknown tag not followed by '='")
+
+    self.fileIndex += 1
+    val = self.getDqString()
+    # g.trace(tag,val)
+    return tag,val
+</t>
+<t tx="EKR.20040526204036.1"># changed for 4.3.
+
+def getUa(self,nodeType):
+    
+    """Parse an unknown attribute in a &lt;v&gt; or &lt;t&gt; element."""
+    
+    __pychecker__ = '--no-argsused' # nodeType not used: good for debugging.
+    
+    # New in 4.2.  The unknown tag has been pickled and hexlify'd.
+    attr,val = self.getUnknownTag()
+    # g.trace(attr,repr(val))
+    if not attr:
+        return None,None
+        
+    # New in 4.3: leave string attributes starting with 'str_' alone.
+    if attr.startswith('str_') and type(val) == type(''):
+        # g.trace(attr,val)
+        return attr,val
+        
+    # New in 4.3: convert attributes starting with 'b64_' using the base64 conversion.
+    if 0: # Not ready yet.
+        if attr.startswith('b64_'):
+            try: pass
+            except Exception: pass
+        
+    try:
+        binString = binascii.unhexlify(val) # Throws a TypeError if val is not a hex string.
+    except TypeError:
+        # Assume that Leo 4.1 wrote the attribute.
+        # g.trace('4.1 val:',val2)
+        return attr,val
+    try:
+        # No change needed to support protocols.
+        val2 = pickle.loads(binString)
+        # g.trace('v.3 val:',val2)
+        return attr,val2
+    except (pickle.UnpicklingError,ImportError):
+        return attr,val
+</t>
+<t tx="EKR.20040526204706">def getBool (self):
+
+    self.skipWs() # guarantees at least one more character.
+    ch = self.fileBuffer[self.fileIndex]
+    if ch == '0':
+        self.fileIndex += 1 ; return False
+    elif ch == '1':
+        self.fileIndex += 1 ; return True
+    else:
+        raise BadLeoFile("expecting bool constant")
+</t>
+<t tx="EKR.20040526204706.1">def getDouble (self):
+
+    self.skipWs()
+    i = self.fileIndex ; buf = self.fileBuffer
+    floatChars = string.digits + 'e' + 'E' + '.' + '+' + '-'
+    n = len(buf)
+    while i &lt; n and buf[i] in floatChars:
+        i += 1
+    if i == self.fileIndex:
+        raise BadLeoFile("expecting float constant")
+    val = float(buf[self.fileIndex:i])
+    self.fileIndex = i
+    return val
+</t>
+<t tx="EKR.20040526204706.2">def getDqBool (self):
+
+    self.getDquote()
+    val = self.getBool()
+    self.getDquote()
+    return val
+</t>
+<t tx="EKR.20040526204706.3">def getDqString (self):
+
+    self.getDquote()
+    i = self.fileIndex
+    self.fileIndex = j = string.find(self.fileBuffer,'"',i)
+    if j == -1: raise BadLeoFile("unterminated double quoted string")
+    s = self.fileBuffer[i:j]
+    self.getDquote()
+    return s
+</t>
+<t tx="EKR.20040526204706.4">def getDquote (self):
+
+    self.getTag('"')
+</t>
+<t tx="EKR.20040526204706.5">def getIndex (self):
+
+    val = self.getLong()
+    if val &lt; 0: raise BadLeoFile("expecting index")
+    return val
+</t>
+<t tx="EKR.20040526204706.6">def getLong (self):
+
+    self.skipWs() # guarantees at least one more character.
+    i = self.fileIndex
+    if self.fileBuffer[i] == '-':
+        i += 1
+    n = len(self.fileBuffer)
+    while i &lt; n and self.fileBuffer[i] in string.digits:
+        i += 1
+    if i == self.fileIndex:
+        raise BadLeoFile("expecting int constant")
+    val = int(self.fileBuffer[self.fileIndex:i])
+    self.fileIndex = i
+    return val
+</t>
+<t tx="EKR.20040526204706.7">def getOpenTag (self,tag):
+    
+    """
+    Look ahead for collapsed tag: tag may or may not end in "&gt;"
+    Skips tag and /&gt; if found, otherwise does not alter index.
+    Returns True if the closing part was found.
+    Throws BadLeoFile if the tag does not exist.
+    """
+
+    if tag[-1] == "&gt;":
+        # Only the tag itself or a collapsed tag are valid.
+        if self.matchTag(tag):
+            return False # Not a collapsed tag.
+        elif self.matchTag(tag[:-1]):
+            # It must be a collapsed tag.
+            self.skipWs()
+            if self.matchTag("/&gt;"):
+                return True
+        print "getOpenTag(", tag, ") failed:"
+        raise BadLeoFile("expecting" + tag)
+    else:
+        # The tag need not be followed by "/&gt;"
+        if self.matchTag(tag):
+            old_index = self.fileIndex
+            self.skipWs()
+            if self.matchTag("/&gt;"):
+                return True
+            else:
+                self.fileIndex = old_index
+                return False
+        else:
+            print "getOpenTag(", tag, ") failed:"
+            raise BadLeoFile("expecting" + tag)
+</t>
+<t tx="EKR.20040526204706.8">def getStringToTag (self,tag):
+
+    buf = self.fileBuffer
+    blen = len(buf) ; tlen = len(tag)
+    i = j = self.fileIndex
+    while i &lt; blen:
+        if tag == buf[i:i+tlen]:
+            self.fileIndex = i
+            return buf[j:i]
+        else: i += 1
+    raise BadLeoFile("expecting string terminated by " + tag)
+    return ""
+</t>
+<t tx="EKR.20040526204706.9">def getTag (self,tag):
+    
+    """
+    Look ahead for closing /&gt;
+    Return True if found.
+    """
+    
+    if self.matchTag(tag):
+        return
+    else:
+        print "getTag(", tag, ") failed:"
+        raise BadLeoFile("expecting" + tag)
+</t>
 <t tx="EKR.20040529091232"># New in Leo 4.4.2 (It used to be defined in terms of p.allNodes_iter.)
 
 class allNodes_iter_class:
@@ -599,6 +1034,21 @@ def allNodes_iter (self,copy=False):
     return self.allNodes_iter_class(c,copy)
 
 all_positions_iter = allNodes_iter</t>
+<t tx="EKR.20040610134756">nodeIndices = g.app.nodeIndices
+
+self.tnodesDict = {}
+
+for t in self.c.all_unique_tnodes_iter():
+    tref = t.fileIndex
+    if nodeIndices.isGnx(tref):
+        tref = nodeIndices.toString(tref)
+    self.tnodesDict[tref] = t
+    
+if 0:
+    print '-'*40
+    for key in self.tnodesDict.keys():
+        print key,self.tnodesDict[key]
+</t>
 <t tx="EKR.20040612215018">if g.os_path_exists(fileName):
     f = file(fileName)
     lines = f.readlines()
@@ -618,30 +1068,92 @@ while i &lt; j:
     g.es(s,newline=False)
     i += 1
 </t>
+<t tx="EKR.20040614071102.1">def getScript (c,p,useSelectedText=True,forcePythonSentinels=True,useSentinels=True):
+    
+    '''Return the expansion of the selected text of node p.
+    Return the expansion of all of node p's body text if there
+    is p is not the current node or if there is no text selection.'''
+
+    at = c.atFileCommands
+    if not p:
+        p = c.currentPosition()
+    try:
+        if g.app.batchMode:
+            s = p.bodyString()
+        elif p == c.currentPosition():
+            if useSelectedText and c.frame.body.hasTextSelection():
+                s = c.frame.body.getSelectedText()
+            else:
+                s = c.frame.body.getAllText()
+        else:
+            s = p.bodyString()
+        # Remove extra leading whitespace so the user may execute indented code.
+        s = g.removeExtraLws(s,c.tab_width)
+        if s.strip():
+            g.app.scriptDict["script1"]=s
+            script = at.writeFromString(p.copy(),s,
+                forcePythonSentinels=forcePythonSentinels,
+                useSentinels=useSentinels)
+            script = script.replace("\r\n","\n") # Use brute force.
+            # Important, the script is an **encoded string**, not a unicode string.
+            g.app.scriptDict["script2"]=script
+        else: script = ''
+    except Exception:
+        s = "unexpected exception in g.getScript"
+        g.es_print(s)
+        g.es_exception()
+        script = ''
+
+    # g.trace(type(script),repr(script))
+    return script
+</t>
+<t tx="EKR.20040627100424">if c.exists and c.config.redirect_execute_script_output_to_log_pane:
+
+    g.restoreStderr()
+    g.restoreStdout()
+</t>
 <t tx="EKR.20040627113418">def putDescendentUnknownAttributes (self,p):
+    
+    # The bin param doesn't exist in Python 2.3;
+    # the protocol param doesn't exist in earlier versions of Python.
+    version = '.'.join([str(sys.version_info[i]) for i in (0,1)])
+    python23 = g.CheckVersion(version,'2.3')
 
     # Create a list of all tnodes having a valid unknownAttributes dict.
     tnodes = []
+    tnodesData = []
     for p2 in p.subtree_iter():
         t = p2.v.t
         if hasattr(t,"unknownAttributes"):
             if t not in tnodes :
-                tnodes.append((p,t),)
+                # g.trace(p2.headString(),t)
+                tnodes.append(t) # Bug fix: 10/4/06.
+                tnodesData.append((p2,t),)
     
     # Create a list of pairs (t,d) where d contains only pickleable entries.
     data = []
-    for p,t in tnodes:
+    for p,t in tnodesData:
         if type(t.unknownAttributes) != type({}):
              g.es("ignoring non-dictionary unknownAttributes for",p,color="blue")
         else:
             # Create a new dict containing only entries that can be pickled.
             d = dict(t.unknownAttributes) # Copy the dict.
+            
             for key in d.keys():
-                try: pickle.dumps(d[key],bin=True)
+                try:
+                    # We don't actually save the pickled values here.
+                    if python23:
+                        pickle.dumps(d[key],protocol=1) # Requires Python 2.3
+                    else:
+                        pickle.dumps(d[key],bin=True) # Requires earlier versions of Python.
                 except pickle.PicklingError:
                     del d[key]
                     g.es("ignoring bad unknownAttributes key %s in %s" % (
                         key,p),color="blue")
+                except Exception:
+                    del d[key]
+                    g.es('putDescendentUnknownAttributes: unexpected pickling exception',color='red')
+                    g.es_exception()
             data.append((t,d),)
             
     # Create resultDict, an enclosing dict to hold all the data.
@@ -652,22 +1164,80 @@ while i &lt; j:
         resultDict[gnx]=d
     
     if 0:
-        print "resultDict"
+        print "resultDict..."
         for key in resultDict:
-            print ; print key,resultDict[key]
-        
+            print repr(key),repr(resultDict.get(key))
+
     # Pickle and hexlify resultDict.
     if resultDict:
         try:
             tag = "descendentTnodeUnknownAttributes"
-            s = pickle.dumps(resultDict,bin=True)
+            if python23:
+                s = pickle.dumps(resultDict,protocol=1) # Requires Python 2.3
+                # g.trace('protocol=1')
+            else:
+                s = pickle.dumps(resultDict,bin=True) # Requires Earlier version of Python.
+                # g.trace('bin=True')
             field = ' %s="%s"' % (tag,binascii.hexlify(s))
             return field
         except pickle.PicklingError:
-            g.trace("can't happen",color="red")
-            return ''
-    else:
-        return ''
+            g.trace("putDescendentUnknownAttributes can't happen 1",color="red")
+        except Exception:
+            g.es("putDescendentUnknownAttributes can't happen 2",color='red')
+            g.es_exception()
+    return ''
+</t>
+<t tx="EKR.20040627114602"># Only @thin vnodes have the descendentTnodeUnknownAttributes field.
+# The question is: what are we to do about this?
+
+def getDescendentUnknownAttributes (self,s):
+    
+    try:
+        bin = binascii.unhexlify(s) # Throws a TypeError if val is not a hex string.
+        val = pickle.loads(bin)
+        return val
+
+    except (TypeError,pickle.UnpicklingError,ImportError):
+        g.trace('Can not unpickle',s)
+        return None
+</t>
+<t tx="EKR.20040627120120">def restoreDescendentAttributes (self):
+
+    c = self.c ; verbose = True 
+
+    for resultDict in self.descendentUnknownAttributesDictList:
+        for gnx in resultDict.keys():
+            tref = self.canonicalTnodeIndex(gnx)
+            t = self.tnodesDict.get(tref)
+            if t:
+                t.unknownAttributes = resultDict[gnx]
+                t._p_changed = 1
+            elif verbose:
+                g.trace('can not find tnode (duA): gnx = %s' % gnx,color='red')
+    marks = {} ; expanded = {}
+    for gnx in self.descendentExpandedList:
+        tref = self.canonicalTnodeIndex(gnx) ###
+        t = self.tnodesDict.get(gnx)
+        if t: expanded[t]=t
+        elif verbose:
+            g.trace('can not find tnode (expanded): gnx = %s, tref: %s' % (gnx,tref),color='red')
+        
+    for gnx in self.descendentMarksList:
+        tref = self.canonicalTnodeIndex(gnx)
+        t = self.tnodesDict.get(gnx)
+        if t: marks[t]=t
+        elif verbose:
+            g.trace('can not find tnode (marks): gnx = %s tref: %s' % (gnx,tref),color='red')
+    
+    if marks or expanded:
+        # g.trace('marks',len(marks),'expanded',len(expanded))
+        for p in c.all_positions_iter():
+            if marks.get(p.v.t):
+                p.v.initMarkedBit()
+                    # This was the problem: was p.setMark.
+                    # There was a big performance bug in the mark hook in the Node Navigator plugin.
+            if expanded.get(p.v.t):
+                p.expand()
 </t>
 <t tx="ekr.20031218072017.839">def defineEditMenuTopTable (self):
     
@@ -739,6 +1309,53 @@ def __init__ (self,v,stack=None,trace=True):
 
     c.validateOutline()
 </t>
+<t tx="ekr.20031218072017.1243"></t>
+<t tx="ekr.20031218072017.1244"></t>
+<t tx="ekr.20031218072017.1245">def matchChar (self,ch):
+    self.skipWs() # guarantees at least one more character.
+    if ch == self.fileBuffer[self.fileIndex]:
+        self.fileIndex += 1 ; return True
+    else: return False
+
+# Warning: does not check for end-of-word,
+# so caller must match prefixes first.
+def matchTag (self,tag):
+    self.skipWsAndNl() # guarantees at least one more character.
+    i = self.fileIndex
+    if tag == self.fileBuffer[i:i+len(tag)]:
+        self.fileIndex += len(tag)
+        return True
+    else:
+        return False
+
+def matchTagWordIgnoringCase (self,tag):
+    self.skipWsAndNl() # guarantees at least one more character.
+    i = self.fileIndex
+    tag = string.lower(tag)
+    j = g.skip_c_id(self.fileBuffer,i)
+    word = self.fileBuffer[i:j]
+    word = string.lower(word)
+    if tag == word:
+        self.fileIndex += len(tag)
+        return True
+    else:
+        return False
+</t>
+<t tx="ekr.20031218072017.1249">def getXmlStylesheetTag (self):
+
+    """Parses the optional xml stylesheet string, and sets the corresponding config option.
+    
+    For example, given: &lt;?xml_stylesheet s?&gt; the config option is s."""
+    
+    c = self.c
+    tag = "&lt;?xml-stylesheet "
+
+    if self.matchTag(tag):
+        s = self.getStringToTag("?&gt;")
+        # print "reading:", tag + s + "?&gt;"
+        c.frame.stylesheet = s
+        self.getTag("?&gt;")
+</t>
 <t tx="ekr.20031218072017.1385">@ We search the descendents of v looking for the definition node matching name.
 There should be exactly one such node (descendents of other definition nodes are not searched).
 @c
@@ -752,6 +1369,357 @@ def findReference(c,name,root):
 
     # g.trace("not found:",name,root)
     return c.nullPosition()
+</t>
+<t tx="ekr.20031218072017.1468"># Parses the encoding string, and sets self.leo_file_encoding.
+
+def getXmlVersionTag (self):
+
+    self.getTag(g.app.prolog_prefix_string)
+    encoding = self.getDqString()
+    self.getTag(g.app.prolog_postfix_string)
+
+    if g.isValidEncoding(encoding):
+        self.leo_file_encoding = encoding
+        # g.trace('self.leo_file_encoding:',encoding, color="blue")
+    else:
+        g.es("invalid encoding in .leo file: " + encoding, color="red")
+</t>
+<t tx="ekr.20031218072017.1553"># The caller should enclose this in begin/endUpdate.
+
+def getLeoFile (self,theFile,fileName,readAtFileNodesFlag=True,silent=False):
+
+    c = self.c
+    c.setChanged(False) # May be set when reading @file nodes.
+    &lt;&lt; warn on read-only files &gt;&gt;
+    self.checking = False
+    self.mFileName = c.mFileName
+    self.initReadIvars()
+    c.loading = True # disable c.changed
+    
+    try:
+        ok = True
+        # t1 = time.clock()
+        if self.use_sax:
+            v = self.readSaxFile(theFile,fileName,silent)
+            if v: # v == None for minimal .leo files.
+                c.setRootVnode(v)
+                self.rootVnode = v
+            else:
+                self.rootVnode = c.rootPosition().v
+        else:
+            self.getAllLeoElements(fileName,silent)
+        # t2 = time.clock()
+        # g.trace('time',t2-t1)
+    except BadLeoFile, message:
+        if not silent:
+            g.es_exception()
+            g.alert(self.mFileName + " is not a valid Leo file: " + str(message))
+        ok = False
+        
+    # New in Leo 4.2.2: before reading derived files.
+    if self.use_sax:
+        self.resolveTnodeLists()
+    if ok and readAtFileNodesFlag:
+        # Redraw before reading the @file nodes so the screen isn't blank.
+        # This is important for big files like LeoPy.leo.
+        c.redraw_now()
+        c.atFileCommands.readAll(c.rootVnode(),partialFlag=False)
+    
+    # Do this after reading derived files.
+    if readAtFileNodesFlag:
+        # The descendent nodes won't exist unless we have read the @thin nodes!
+        self.restoreDescendentAttributes()
+    if self.use_sax:
+        self.setPositionsFromVnodes()
+    else:
+        if not self.usingClipboard:
+            self.setPositionsFromStacks()
+        if not c.currentPosition():
+            c.setCurrentPosition(c.rootPosition())
+
+    c.selectVnode(c.currentPosition()) # load body pane
+    c.loading = False # reenable c.changed
+    c.setChanged(c.changed) # Refresh the changed marker.
+    self.initReadIvars()
+    return ok, self.ratio</t>
+<t tx="ekr.20031218072017.1554"># os.access may not exist on all platforms.
+
+try:
+    self.read_only = not os.access(fileName,os.W_OK)
+except AttributeError:
+    self.read_only = False
+except UnicodeError:
+    self.read_only = False
+        
+if self.read_only:
+    g.es("read only: " + fileName,color="red")
+</t>
+<t tx="ekr.20031218072017.1555">def getAllLeoElements (self,fileName,silent):
+    c = self.c
+
+    self.getXmlVersionTag()
+    self.getXmlStylesheetTag()
+
+    self.getTag("&lt;leo_file&gt;") # Must match exactly.
+    self.getLeoHeader()
+    self.getGlobals()
+    self.getPrefs()
+    self.getFindPanelSettings()
+    
+    # Causes window to appear.
+    c.frame.resizePanesToRatio(c.frame.ratio,c.frame.secondary_ratio)
+    if not silent:
+        g.es("reading: " + fileName)
+    
+    self.getVnodes()
+    self.getTnodes()
+    self.getCloneWindows()
+    self.getTag("&lt;/leo_file&gt;")</t>
+<t tx="ekr.20031218072017.1557">def finishPaste(self,reassignIndices=True):
+    
+    """Finish pasting an outline from the clipboard.
+    
+    Retain clone links if reassignIndices is False."""
+
+    c = self.c
+    current = c.currentPosition()
+    if reassignIndices:
+        &lt;&lt; reassign tnode indices &gt;&gt;
+    c.selectPosition(current)
+    return current
+</t>
+<t tx="ekr.20031218072017.1558">@ putLeoOutline calls assignFileIndices (when copying nodes) so that vnode can be associated with tnodes.
+However, we must _reassign_ the indices here so that no "False clones" are created.
+@c
+
+nodeIndices = g.app.nodeIndices
+
+current.clearVisitedInTree()
+
+for p in current.self_and_subtree_iter():
+    t = p.v.t
+    if not t.isVisited():
+        t.setVisited()
+        # New in Leo 4.4.2 b2: use gnx's.  maxTnodeIndex is no longer used.
+        t.fileIndex = nodeIndices.getNewIndex()
+        # g.trace(t.fileIndex)</t>
+<t tx="ekr.20031218072017.1559">def getLeoOutlineFromClipboard (self,s,reassignIndices=True):
+    
+    '''Read a Leo outline from string s in clipboard format.'''
+
+    try:
+        v = self.getLeoOutlineHelper(s,reassignIndices,checking=True)
+        v = self.getLeoOutlineHelper(s,reassignIndices,checking=False)
+    except invalidPaste:
+        v = None
+        g.es("Invalid Paste As Clone",color="blue")
+    except BadLeoFile:
+        v = None
+        g.es("The clipboard is not valid ",color="blue")
+
+    return v
+    
+getLeoOutline = getLeoOutlineFromClipboard # for compatibility</t>
+<t tx="ekr.20031218072017.1560">def getTnodes (self):
+
+    # A slight change: we require a tnodes element.  But Leo always writes this.
+    if self.getOpenTag("&lt;tnodes&gt;"):
+        return # &lt;tnodes/&gt; seen.
+    
+    while self.matchTag("&lt;t"):
+            self.getTnode()
+
+    self.getTag("&lt;/tnodes&gt;")
+</t>
+<t tx="ekr.20031218072017.1561">def getTnode (self):
+
+    # we have already matched &lt;t.
+    index = -1 ; attrDict = {}
+
+    # New in Leo 4.4: support collapsed tnodes.
+    if self.matchTag('/&gt;'): # A collapsed tnode.
+        return
+
+    # Attributes may appear in any order.
+    while 1:
+        if self.matchTag("tx="):
+            # New for 4.1.  Read either "Tnnn" or "gnx".
+            index = self.getDqString()
+        elif self.matchTag("rtf=\"1\""): pass # ignored
+        elif self.matchTag("rtf=\"0\""): pass # ignored
+        elif self.matchTag("&gt;"):         break
+        else: # New for 4.0: allow unknown attributes.
+            # New in 4.2: allow pickle'd and hexlify'ed values.
+            attr,val = self.getUa("tnode")
+            if attr: attrDict[attr] = val
+            
+    # index might be Tnnn, nnn, or gnx.
+    theId,time,n = g.app.nodeIndices.scanGnx(index,0)
+    if time == None: # A pre-4.1 file index.
+        if index[0] == "T":
+            index = index[1:]
+
+    index = self.canonicalTnodeIndex(index)
+    t = self.tnodesDict.get(index)
+    &lt;&lt; handle unknown attributes &gt;&gt;
+    if t:
+        s = self.getEscapedString()
+        t.setTnodeText(s,encoding=self.leo_file_encoding)
+    else:
+        g.es("no tnode with index: %s.  The text will be discarded" % str(index))
+    self.getTag("&lt;/t&gt;")
+</t>
+<t tx="ekr.20031218072017.1564">keys = attrDict.keys()
+if keys:
+    t.unknownAttributes = attrDict
+    t._p_changed = 1
+    if 0: # For debugging.
+        s = "unknown attributes for tnode"
+        g.es_print(s, color = "blue")
+        for key in keys:
+            s = "%s = %s" % (key,attrDict.get(key))
+            g.es_print(s)
+</t>
+<t tx="ekr.20031218072017.1565">def getVnodes (self,reassignIndices=True):
+
+    c = self.c
+
+    if self.getOpenTag("&lt;vnodes&gt;"):
+        return # &lt;vnodes/&gt; seen.
+        
+    self.forbiddenTnodes = []
+    back = parent = None # This routine _must_ work on vnodes!
+    self.currentVnodeStack = []
+    self.topVnodeStack = []
+        
+    if self.usingClipboard:
+        oldRoot = c.rootPosition()
+        oldCurrent = c.currentPosition()
+        if not reassignIndices:
+            &lt;&lt; set self.forbiddenTnodes to tnodes than must not be pasted &gt;&gt;
+
+    while self.matchTag("&lt;v"):
+        append1 = not self.usingClipboard and len(self.currentVnodeStack) == 0
+        append2 = not self.usingClipboard and len(self.topVnodeStack) == 0
+        back = self.getVnode(parent,back,skip=False,
+            appendToCurrentStack=append1,appendToTopStack=append2)
+
+    if self.usingClipboard and not self.checking:
+        # Link in the pasted nodes after the current position.
+        newRoot = c.rootPosition()
+        c.setRootPosition(oldRoot)
+        newRoot.v.linkAfter(oldCurrent.v)
+        newCurrent = oldCurrent.copy()
+        newCurrent.v = newRoot.v
+        c.setCurrentPosition(newCurrent)
+
+    self.getTag("&lt;/vnodes&gt;")
+</t>
+<t tx="ekr.20031218072017.1566"># changed for 4.2 &amp; 4.4
+def getVnode (self,parent,back,skip,appendToCurrentStack,appendToTopStack):
+
+    v = None
+    setCurrent = setExpanded = setMarked = setOrphan = setTop = False
+    tref = -1 ; headline = '' ; tnodeList = None ; attrDict = {}
+
+    # we have already matched &lt;v.
+    
+    # New in Leo 4.4: support collapsed tnodes.
+    if self.matchTag('/&gt;'): # A collapsed vnode.
+        v,skip2 = self.createVnode(parent,back,tref,headline,attrDict)
+        if self.checking: return None
+        else: return v
+    
+    while 1:
+        if self.matchTag("a=\""):
+            &lt;&lt; Handle vnode attribute bits &gt;&gt;
+        elif self.matchTag("t="):
+            # New for 4.1.  Read either "Tnnn" or "gnx".
+            tref = index = self.getDqString()
+            if self.usingClipboard:
+                &lt;&lt; raise invalidPaste if the tnode is in self.forbiddenTnodes &gt;&gt;
+        elif self.matchTag("vtag=\"V"):
+            self.getIndex() ; self.getDquote() # ignored
+        elif self.matchTag("tnodeList="):
+            s = self.getDqString()
+            tnodeList = self.getTnodeList(s) # New for 4.0
+        elif self.matchTag("descendentTnodeUnknownAttributes="):
+            # New for 4.2, deprecated for 4.3?
+            s = self.getDqString()
+            theDict = self.getDescendentUnknownAttributes(s)
+            if theDict:
+                self.descendentUnknownAttributesDictList.append(theDict)
+        elif self.matchTag("expanded="): # New in 4.2
+            s = self.getDqString()
+            self.descendentExpandedList.extend(self.getDescendentAttributes(s,tag="expanded"))
+        elif self.matchTag("marks="): # New in 4.2.
+            s = self.getDqString()
+            self.descendentMarksList.extend(self.getDescendentAttributes(s,tag="marks"))
+        elif self.matchTag("&gt;"):
+            break
+        else: # New for 4.0: allow unknown attributes.
+            # New in 4.2: allow pickle'd and hexlify'ed values.
+            attr,val = self.getUa("vnode")
+            if attr: attrDict[attr] = val
+    # Headlines are optional.
+    if self.matchTag("&lt;vh&gt;"):
+        headline = self.getEscapedString() ; self.getTag("&lt;/vh&gt;")
+    # g.trace("skip:",skip,"parent:",parent,"back:",back,"headline:",headline)
+    if skip:
+        v = self.getExistingVnode(tref,headline)
+        if v: # Bug fix: 4/18/05: The headline may change during paste as clone.
+            v.initHeadString(headline,encoding=self.leo_file_encoding)
+    if v is None:
+        v,skip2 = self.createVnode(parent,back,tref,headline,attrDict)
+        if not self.checking:
+            skip = skip or skip2
+            if tnodeList:
+                v.t.tnodeList = tnodeList # New for 4.0, 4.2: now in tnode.
+            
+    if not self.checking:
+        &lt;&lt; Set the remembered status bits &gt;&gt;
+
+    # Recursively create all nested nodes.
+    parent = v ; back = None
+    while self.matchTag("&lt;v"):
+        append1 = appendToCurrentStack and len(self.currentVnodeStack) == 0
+        append2 = appendToTopStack and len(self.topVnodeStack) == 0
+        back = self.getVnode(parent,back,skip,
+            appendToCurrentStack=append1,appendToTopStack=append2)
+    
+    if not self.checking:
+        &lt;&lt; Append to current or top stack &gt;&gt;
+
+    # End this vnode.
+    self.getTag("&lt;/v&gt;")
+    return v</t>
+<t tx="ekr.20031218072017.1567"># The a=" has already been seen.
+while 1:
+    if   self.matchChar('C'): pass # Not used: clone bits are recomputed later.
+    elif self.matchChar('D'): pass # Not used.
+    elif self.matchChar('E'): setExpanded = True
+    elif self.matchChar('M'): setMarked = True
+    elif self.matchChar('O'): setOrphan = True
+    elif self.matchChar('T'): setTop = True
+    elif self.matchChar('V'): setCurrent = True
+    else: break
+
+self.getDquote()
+</t>
+<t tx="ekr.20031218072017.1568">if setCurrent:
+    self.currentVnodeStack = [v]
+
+if setTop:
+    self.topVnodeStack = [v]
+    
+if setExpanded:
+    v.initExpandedBit()
+    
+if setMarked:
+    v.initMarkedBit() # 3/25/03: Do not call setMarkedBit here!
+
+if setOrphan:
+    v.setOrphan()
 </t>
 <t tx="ekr.20031218072017.1577">def putTnode (self,t):
     
@@ -771,16 +1739,47 @@ def findReference(c,name,root):
 
     # Make only one copy for all calls.
     self.currentPosition = c.currentPosition() 
+    self.rootPosition    = c.rootPosition()
     self.topPosition     = c.topPosition()
 
     if self.usingClipboard:
         self.putVnode(self.currentPosition) # Write only current tree.
     else:
         for p in c.rootPosition().self_and_siblings_iter():
-            if not p.isAtIgnoreNode(): # New in Leo 4.4.2 b2 An optimization:
-                self.putVnode(p) # Write the next top-level node.
+            # New in Leo 4.4.2 b2 An optimization:
+            self.putVnode(p,isIgnore=p.isAtIgnoreNode()) # Write the next top-level node.
 
     self.put("&lt;/vnodes&gt;\n")</t>
+<t tx="ekr.20031218072017.1623">def new (self,event=None):
+    
+    '''Create a new Leo window.'''
+
+    c,frame = g.app.newLeoCommanderAndFrame(fileName=None)
+    
+    # Needed for plugins.
+    g.doHook("new",old_c=self,c=c,new_c=c)
+    # Use the config params to set the size and location of the window.
+    c.beginUpdate()
+    try:
+        frame.setInitialWindowGeometry()
+        frame.deiconify()
+        frame.lift()
+        frame.resizePanesToRatio(frame.ratio,frame.secondary_ratio) # Resize the _new_ frame.
+        t = leoNodes.tnode()
+        v = leoNodes.vnode(t)
+        p = leoNodes.position(v,[])
+        v.initHeadString("NewHeadline")
+        v.moveToRoot(oldRoot=None)
+        c.setRootVnode(v) # New in Leo 4.4.2.
+        c.editPosition(p)
+    finally:
+        c.endUpdate()
+        if c.config.getBool('outline_pane_has_initial_focus'):
+            c.treeWantsFocusNow()
+        else:
+            c.bodyWantsFocusNow()
+    return c # For unit test.
+</t>
 <t tx="ekr.20031218072017.1733">def update (self):
     
     c = self.c ; w = c.frame.bodyCtrl ; lab = self.labelWidget
@@ -850,26 +1849,68 @@ def findReference(c,name,root):
         print "exception setting bitmap"
         import traceback ; traceback.print_exc()
 </t>
-<t tx="ekr.20031218072017.1863">def putVnode (self,p):
+<t tx="ekr.20031218072017.1860"># (changed for 4.2) sets skip
+
+def createVnode (self,parent,back,tref,headline,attrDict):
+    
+    # g.trace(parent,headline)
+    v = None ; c = self.c
+    # Shared tnodes are placed in the file even if empty.
+    if tref == -1:
+        t = leoNodes.tnode()
+    else:
+        tref = self.canonicalTnodeIndex(tref)
+        t = self.tnodesDict.get(tref)
+        if not t:
+            t = self.newTnode(tref)
+            
+    if self.checking: return None,False
+    
+    if back: # create v after back.
+        v = back.insertAfter(t)
+    elif parent: # create v as the parent's first child.
+        v = parent.insertAsNthChild(0,t)
+    else: # create a root vnode
+        v = leoNodes.vnode(t)
+        v.moveToRoot(oldRoot=None)
+        c.setRootVnode(v) # New in Leo 4.4.2.
+
+    if v not in v.t.vnodeList:
+        v.t.vnodeList.append(v) # New in 4.2.
+
+    skip = len(v.t.vnodeList) &gt; 1
+    v.initHeadString(headline,encoding=self.leo_file_encoding)
+    &lt;&lt; handle unknown vnode attributes &gt;&gt;
+    # g.trace(skip,tref,v,v.t,len(v.t.vnodeList))
+    return v,skip</t>
+<t tx="ekr.20031218072017.1861">keys = attrDict.keys()
+if keys:
+    v.unknownAttributes = attrDict
+    v._p_changed = 1
+
+    if 0: # For debugging.
+        s = "unknown attributes for " + v.headString()
+        g.es_print(s,color="blue")
+        for key in keys:
+            s = "%s = %s" % (key,attrDict.get(key))
+            g.es_print(s)
+</t>
+<t tx="ekr.20031218072017.1863">def putVnode (self,p,isIgnore=False):
 
     """Write a &lt;v&gt; element corresponding to a vnode."""
 
     fc = self ; c = fc.c ; v = p.v
     isThin = p.isAtThinFileNode()
     isOrphan = p.isOrphan()
-    forceWrite = not isThin or (isThin and isOrphan)
+    if not isIgnore: isIgnore = p.isAtIgnoreNode()
+    forceWrite = isIgnore or not isThin or (isThin and isOrphan)
     &lt;&lt; Set gnx = tnode index &gt;&gt;
     attrs = []
     &lt;&lt; Append attribute bits to attrs &gt;&gt;
     &lt;&lt; Append tnodeList and unKnownAttributes to attrs &gt;&gt;
     attrs = ''.join(attrs)
     v_head = '&lt;v t="%s"%s&gt;&lt;vh&gt;%s&lt;/vh&gt;' % (gnx,attrs,xml.sax.saxutils.escape(p.v.headString()or''))
-    # The string catentation is faster than these calls.
-    # fc.put('&lt;v t="') ; fc.put(gnx) ; fc.put('"')
-    # fc.put(attrs)
-    # fc.put('&gt;&lt;vh&gt;')
-    # fc.put(xml.sax.saxutils.escape(p.v.headString()or''))
-    # fc.put('&lt;/vh&gt;')
+    # The string catentation is faster than repeated calls to fc.put.
     if not self.usingClipboard:
         &lt;&lt; issue informational messages &gt;&gt;
     # New in 4.2: don't write child nodes of @file-thin trees (except when writing to clipboard)
@@ -878,15 +1919,13 @@ def findReference(c,name,root):
         # This optimization eliminates all "recursive" copies.
         p.moveToFirstChild()
         while 1:
-            if not p.isAtIgnoreNode(): # New in Leo 4.4.2 b2 An optimization:
-                fc.putVnode(p)
+            fc.putVnode(p,isIgnore)
             if p.hasNext(): p.moveToNext()
             else:           break
-        p.moveToParent()
+        p.moveToParent() # Restore p in the caller.
         fc.put('&lt;/v&gt;\n')
     else:
-        fc.put('%s&lt;/v&gt;\n' % v_head) # Call put only once.
-        # fc.put('&lt;/v&gt;\n')</t>
+        fc.put('%s&lt;/v&gt;\n' % v_head) # Call put only once.</t>
 <t tx="ekr.20031218072017.1864">if v.t.fileIndex:
     gnx = g.app.nodeIndices.toString(v.t.fileIndex)
     if forceWrite or self.usingClipboard:
@@ -896,15 +1935,7 @@ else:
     g.es("error writing file(bad v.t.fileIndex)!")
     g.es("try using the Save To command")
 </t>
-<t tx="ekr.20031218072017.1865"># attr = ''.join([
-    # v.isExpanded() and 'E' or '',
-    # v.isMarked()   and 'M' or '',
-    # v.isOrphan()   and 'O' or '',
-    # p.equal(self.topPosition) and 'T' or '',    # was a bottleneck
-    # p.equal(self.currentPosition) and 'V' or '' # was bottleneck.
-# ])
-
-# These string catenations are benign because they rarely happen.
+<t tx="ekr.20031218072017.1865"># These string catenations are benign because they rarely happen.
 attr = ""
 if v.isExpanded(): attr += "E"
 if v.isMarked():   attr += "M"
@@ -912,11 +1943,20 @@ if v.isOrphan():   attr += "O"
 
 # No longer a bottleneck now that we use p.equal rather than p.__cmp__
 # Almost 30% of the entire writing time came from here!!!
-if p.equal(self.topPosition):     attr += "T" # was a bottleneck
-if p.equal(self.currentPosition): attr += "V" # was a bottleneck
+if not self.use_sax:
+    if p.equal(self.topPosition):     attr += "T" # was a bottleneck
+    if p.equal(self.currentPosition): attr += "V" # was a bottleneck
 
 if attr:
-    attrs.append(' a="%s"' % (attr))</t>
+    attrs.append(' a="%s"' % attr)
+    
+# Put the archived *current* position in the *root* positions &lt;v&gt; element.
+if self.use_sax and p.equal(self.rootPosition):
+    aList = [str(z) for z in self.currentPosition.archivedPosition()]
+    d = hasattr(v,'unKnownAttributes') and v.unknownAttributes or {}
+    d['str_leo_pos'] = ','.join(aList)
+    # g.trace(aList,d)
+    v.unknownAttributes = d</t>
 <t tx="ekr.20031218072017.1936">def isValidPython():
 
     message = """\
@@ -935,8 +1975,7 @@ You may download Python from http://python.org/download/
         return 0
     try:
         version = '.'.join([str(sys.version_info[i]) for i in (0,1,2)])
-        # g.trace(version)
-        ok = g.CheckVersion(version, "2.2.1")
+        ok = g.CheckVersion(version,'2.2.1')
         if not ok:
             print message
             g.app.gui.runAskOkDialog(None,"Python version error",message=message,text="Exit")
@@ -945,6 +1984,27 @@ You may download Python from http://python.org/download/
         print "isValidPython: unexpected exception: g.CheckVersion"
         import traceback ; traceback.print_exc()
         return 0</t>
+<t tx="ekr.20031218072017.1970">def getLeoHeader (self):
+
+    if self.getOpenTag("&lt;leo_header"):
+        return # &lt;leo_header/&gt; seen.
+
+    # New in version 1.7: attributes may appear in any order.
+    while 1:
+        if self.matchTag("file_format="):
+            self.getDquote() ; self.getLong() ; self.getDquote()
+        elif self.matchTag("tnodes="):
+            self.getDquote() ; self.getLong() ; self.getDquote()
+        elif self.matchTag("max_tnode_index="):
+            self.getDquote() ; self.getLong() ; self.getDquote()
+        elif self.matchTag("clone_windows="):
+            self.getDquote() ; self.getLong() ; self.getDquote() # no longer used.
+        elif self.matchTag("&gt;&lt;/leo_header&gt;"): # new in 4.2: allow this form.
+            break
+        else:
+            self.getTag("/&gt;")
+            break
+</t>
 <t tx="ekr.20031218072017.1999">def toString (self,index,removeDefaultId=False):
     
     """Convert a gnx (a tuple) to its string representation"""
@@ -981,6 +2041,317 @@ You may download Python from http://python.org/download/
         return ' tnodeList="%s"' % (s)
     else:
         return ''</t>
+<t tx="ekr.20031218072017.2004">def canonicalTnodeIndex(self,index):
+    
+    """Convert Tnnn to nnn, leaving gnx's unchanged."""
+
+    # index might be Tnnn, nnn, or gnx.
+    theId,time,n = g.app.nodeIndices.scanGnx(index,0)
+    if time == None: # A pre-4.1 file index.
+        if index[0] == "T":
+            index = index[1:]
+
+    return index
+</t>
+<t tx="ekr.20031218072017.2008">def getTnodeList (self,s):
+
+    """Parse a list of tnode indices in string s."""
+    
+    # Remember: entries in the tnodeList correspond to @+node sentinels, _not_ to tnodes!
+    
+    fc = self ; 
+
+    indexList = s.split(',') # The list never ends in a comma.
+    tnodeList = []
+    for index in indexList:
+        index = self.canonicalTnodeIndex(index)
+        t = fc.tnodesDict.get(index)
+        if not t:
+            # Not an error: create a new tnode and put it in fc.tnodesDict.
+            # g.trace("not allocated: %s" % index)
+            t = self.newTnode(index)
+        tnodeList.append(t)
+        
+    # if tnodeList: g.trace(len(tnodeList))
+    return tnodeList
+</t>
+<t tx="ekr.20031218072017.2009">def newTnode(self,index):
+
+    if self.tnodesDict.has_key(index):
+        g.es("bad tnode index: %s. Using empty text." % str(index))
+        return leoNodes.tnode()
+    else:
+        # Create the tnode.  Use the _original_ index as the key in tnodesDict.
+        t = leoNodes.tnode()
+        self.tnodesDict[index] = t
+    
+        if type(index) not in (type(""),type(u"")):
+            g.es("newTnode: unexpected index type:",type(index),index,color="red")
+        
+        # Convert any pre-4.1 index to a gnx.
+        theId,time,n = gnx = g.app.nodeIndices.scanGnx(index,0)
+        if time != None:
+            t.setFileIndex(gnx)
+
+        return t
+</t>
+<t tx="ekr.20031218072017.2052">def openWithFileName(fileName,old_c,
+    enableLog=True,readAtFileNodesFlag=True):
+    
+    """Create a Leo Frame for the indicated fileName if the file exists."""
+
+    if not fileName or len(fileName) == 0:
+        return False, None
+        
+    def munge(name):
+        name = name or ''
+        return g.os_path_normpath(name).lower()
+
+    # Create a full, normalized, Unicode path name, preserving case.
+    fileName = g.os_path_normpath(g.os_path_abspath(fileName))
+
+    # If the file is already open just bring its window to the front.
+    theList = app.windowList
+    for frame in theList:
+        if munge(fileName) == munge(frame.c.mFileName):
+            frame.bringToFront()
+            frame.c.setLog()
+            return True, frame
+    try:
+        if old_c:
+            # New in 4.4: We must read the file *twice*.
+            # The first time sets settings for the later call to c.finishCreate.
+            # g.trace('***** prereading',fileName)
+            c2 = g.app.config.openSettingsFile(fileName)
+            if c2: g.app.config.updateSettings(c2,localFlag=True)
+        # Open the file in binary mode to allow 0x1a in bodies &amp; headlines.
+        theFile = open(fileName,'rb')
+        c,frame = app.newLeoCommanderAndFrame(fileName)
+        frame.log.enable(enableLog)
+        g.app.writeWaitingLog() # New in 4.3: write queued log first.
+        c.beginUpdate()
+        try:
+            if not g.doHook("open1",old_c=old_c,c=c,new_c=c,fileName=fileName):
+                c.setLog()
+                app.lockLog()
+                frame.c.fileCommands.open(
+                    theFile,fileName,
+                    readAtFileNodesFlag=readAtFileNodesFlag) # closes file.
+                app.unlockLog()
+                for frame in g.app.windowList:
+                    # The recent files list has been updated by menu.updateRecentFiles.
+                    frame.c.config.setRecentFiles(g.app.config.recentFiles)
+            # Bug fix in 4.4.
+            frame.openDirectory = g.os_path_abspath(g.os_path_dirname(fileName))
+            g.doHook("open2",old_c=old_c,c=c,new_c=frame.c,fileName=fileName)
+        finally:
+            c.endUpdate()
+            k = c.k
+            k and k.setInputState(k.unboundKeyAction)
+            if c.config.getBool('outline_pane_has_initial_focus'):
+                c.treeWantsFocusNow()
+            else:
+                c.bodyWantsFocusNow()
+        return True, frame
+    except IOError:
+        # Do not use string + here: it will fail for non-ascii strings!
+        g.es("can not open: %s" % (fileName), color="blue")
+        return False, None
+    except Exception:
+        g.es("exceptions opening: %s" % (fileName),color="red")
+        g.es_exception()
+        return False, None</t>
+<t tx="ekr.20031218072017.2062"># Note: Leo 4.3 does not write these settings to local .leo files.
+# Instead, corresponding settings are contained in leoConfig.leo files.
+
+def getPrefs (self):
+
+    c = self.c
+    
+    if self.getOpenTag("&lt;preferences"):
+        return # &lt;preferences/&gt; seen
+
+    table = (
+        ("allow_rich_text",None,None), # Ignored.
+        ("tab_width","tab_width",self.getLong),
+        ("page_width","page_width",self.getLong),
+        ("tangle_bat","tangle_batch_flag",self.getBool),
+        ("untangle_bat","untangle_batch_flag",self.getBool),
+        ("output_doc_chunks","output_doc_flag",self.getBool),
+        ("noweb_flag",None,None), # Ignored.
+        ("extended_noweb_flag",None,None), # Ignored.
+        ("defaultTargetLanguage","target_language",self.getTargetLanguage),
+        ("use_header_flag","use_header_flag",self.getBool))
+    
+    done = False
+    while 1:
+        found = False
+        for tag,var,f in table:
+            if self.matchTag("%s=" % tag):
+                if var:
+                    self.getDquote() ; val = f() ; self.getDquote()
+                    setattr(c,var,val)
+                    # g.trace(var,val)
+                else:
+                    self.getDqString()
+                found = True ; break
+        if not found:
+            if self.matchTag("/&gt;"):
+                done = True ; break
+            if self.matchTag("&gt;"):
+                break
+            else: # New in 4.1: ignore all other tags.
+                self.getUnknownTag()
+
+    if not done:
+        while 1:
+            if self.matchTag("&lt;defaultDirectory&gt;"):
+                # New in version 0.16.
+                c.tangle_directory = self.getEscapedString()
+                self.getTag("&lt;/defaultDirectory&gt;")
+                if not g.os_path_exists(c.tangle_directory):
+                    g.es("default tangle directory not found:" + c.tangle_directory)
+            elif self.matchTag("&lt;TSyntaxMemo_options&gt;"):
+                self.getEscapedString() # ignored
+                self.getTag("&lt;/TSyntaxMemo_options&gt;")
+            else: break
+        self.getTag("&lt;/preferences&gt;")
+</t>
+<t tx="ekr.20031218072017.2063">def getTargetLanguage (self):
+    
+    # Must match longer tags before short prefixes.
+    for name in g.app.language_delims_dict.keys():
+        if self.matchTagWordIgnoringCase(name):
+            language = name.replace("/","")
+            # self.getDquote()
+            return language
+            
+    return "c" # default
+</t>
+<t tx="ekr.20031218072017.2064">def getFindPanelSettings (self):
+    
+    if self.getOpenTag("&lt;find_panel_settings"):
+        return # &lt;find_panel_settings/&gt; seen.
+    
+    # New in 4.3: ignore all pre-4.3 find settings.
+    while 1:
+        if   self.matchTag("batch="):           self.getDqBool()
+        elif self.matchTag("ignore_case="):     self.getDqBool()
+        elif self.matchTag("mark_changes="):    self.getDqBool()
+        elif self.matchTag("mark_finds="):      self.getDqBool()
+        elif self.matchTag("node_only="):       self.getDqBool()
+        elif self.matchTag("pattern_match="):   self.getDqBool()
+        elif self.matchTag("reverse="):         self.getDqBool()
+        elif self.matchTag("script_change="):   self.getDqBool()
+        elif self.matchTag("script_search="):   self.getDqBool()
+        elif self.matchTag("search_headline="): self.getDqBool()
+        elif self.matchTag("search_body="):     self.getDqBool()
+        elif self.matchTag("selection_only="):  self.getDqBool()
+        elif self.matchTag("suboutline_only="): self.getDqBool()
+        elif self.matchTag("whole_word="):      self.getDqBool()
+        elif self.matchTag("wrap="):            self.getDqBool()
+        elif self.matchTag("&gt;"): break
+        else: self.getUnknownTag() # Ignore all other tags.
+    # Allow only &lt;find_string&gt; or &lt;find_string/&gt;
+    if self.getOpenTag("&lt;find_string&gt;"): 
+        pass
+    else:
+        self.getEscapedString() ; self.getTag("&lt;/find_string&gt;")
+    # Allow only &lt;change_string&gt; or &lt;change_string/&gt;
+    if self.getOpenTag("&lt;change_string&gt;"): 
+        pass
+    else:
+        self.getEscapedString() ; self.getTag("&lt;/change_string&gt;")
+    self.getTag("&lt;/find_panel_settings&gt;")
+</t>
+<t tx="ekr.20031218072017.2078">def createRecentFilesMenuItems (self):
+    
+    c = self.c
+    recentFilesMenu = self.getMenu("Recent Files...")
+    
+    # Delete all previous entries.
+    self.delete_range(recentFilesMenu,0,len(c.recentFiles)+2)
+    
+    # Create the first two entries.
+    table = (
+        ("Clear Recent Files",None,c.clearRecentFiles),
+        ("-",None,None))
+    self.createMenuEntries(recentFilesMenu,table)
+    
+    # Create all the other entries.
+    i = 3
+    for name in c.recentFiles:
+        def recentFilesCallback (event=None,c=c,name=name):
+            __pychecker__ = '--no-argsused' # event not used, but must be present.
+            c.openRecentFile(name)
+        accel_ch = (string.digits + string.letters.upper())
+        label = "%s %s" % (accel_ch[i-2],g.computeWindowTitle(name))
+        self.add_command(recentFilesMenu,label=label,command=recentFilesCallback,underline=0)
+        i += 1
+</t>
+<t tx="ekr.20031218072017.2140">def executeScript(self,event=None,p=None,script=None,
+    useSelectedText=True,define_g=True,define_name='__main__',silent=False):
+
+    """This executes body text as a Python script.
+    
+    We execute the selected text, or the entire body text if no text is selected."""
+    
+    c = self ; script1 = script
+    if not script:
+        script = g.getScript(c,p,useSelectedText=useSelectedText)
+    &lt;&lt; redirect output &gt;&gt;
+    try:
+        if script.strip():
+            sys.path.insert(0,c.frame.openDirectory)
+            script += '\n' # Make sure we end the script properly.
+            try:
+                p = c.currentPosition()
+                d = g.choose(define_g,{'c':c,'g':g,'p':p},{})
+                if define_name: d['__name__'] = define_name
+                # g.trace(script)
+                exec script in d
+                if not script1 and not silent:
+                    g.es("end of script",color="purple")
+            except Exception:
+                g.handleScriptException(c,p,script,script1)
+            del sys.path[0]
+        else:
+            g.es("no script selected",color="blue")
+    finally: # New in 4.3 beta 2: unredirect output last.
+        &lt;&lt; unredirect output &gt;&gt;
+</t>
+<t tx="ekr.20031218072017.2143">if c.config.redirect_execute_script_output_to_log_pane:
+
+    g.redirectStdout() # Redirect stdout
+    g.redirectStderr() # Redirect stderr
+</t>
+<t tx="ekr.20031218072017.2297">def open(self,theFile,fileName,readAtFileNodesFlag=True,silent=False):
+
+    c = self.c ; frame = c.frame
+    if not self.use_sax: # Read the entire file into the buffer
+        self.fileBuffer = theFile.read() ; theFile.close()
+        self.fileIndex = 0
+    &lt;&lt; Set the default directory &gt;&gt;
+    self.topPosition = None
+    ok, ratio = self.getLeoFile(
+        theFile,fileName,
+        readAtFileNodesFlag=readAtFileNodesFlag,
+        silent=silent)
+    frame.resizePanesToRatio(ratio,frame.secondary_ratio)
+    if 0: # 1/30/04: this is useless.
+        if self.topPosition: 
+            c.setTopVnode(self.topPosition)
+    if not self.use_sax: # Delete the file buffer
+        self.fileBuffer = ""
+    return ok</t>
+<t tx="ekr.20031218072017.2298">@ The most natural default directory is the directory containing the .leo file that we are about to open.  If the user has specified the "Default Directory" preference that will over-ride what we are about to set.
+@c
+
+theDir = g.os_path_dirname(fileName)
+
+if len(theDir) &gt; 0:
+    c.openDirectory = theDir
+</t>
 <t tx="ekr.20031218072017.2306">def getGlobals (self):
 
     if self.getOpenTag("&lt;globals"):
@@ -1113,7 +2484,7 @@ s:  a string
 t:  a tnode or a text widget.
 u:  an undoer
 v:  a vnode
- z:  a local temp.</t>
+z:  a local temp.</t>
 <t tx="ekr.20031218072017.2582"></t>
 <t tx="ekr.20031218072017.2604"></t>
 <t tx="ekr.20031218072017.2606">@color
@@ -1133,6 +2504,473 @@ if 0: # Set to 1 for lint-like testing.
         print ; print "Warning (in leo.py): pychecker.checker running..." ; print
     except:
         print ; print 'Can not import pychecker' ; print
+</t>
+<t tx="ekr.20031218072017.2813">self._currentPosition = self.nullPosition()
+self._rootPosition    = self.nullPosition()
+self._topPosition     = self.nullPosition()
+
+# Delayed focus.
+self.hasFocusWidget = None
+self.requestedFocusWidget = None
+
+# Official ivars.
+self.gui = g.app.gui
+
+# Interlocks to prevent premature closing of a window.
+self.inCommand = False
+self.requestCloseWindow = False
+
+# For emacs/vim key handling.
+self.commandsDict = None
+self.keyHandler = self.k = None
+self.miniBufferWidget = None
+
+# per-document info...
+self.disableCommandsMessage = ''
+    # The presence of this message disables all commands.
+self.hookFunction = None
+self.openDirectory = None
+
+self.expansionLevel = 0  # The expansion level of this outline.
+self.expansionNode = None # The last node we expanded or contracted.
+self.changed = False # True if any data has been changed since the last save.
+self.loading = False # True if we are loading a file: disables c.setChanged()
+self.outlineToNowebDefaultFileName = "noweb.nw" # For Outline To Noweb dialog.
+self.promptingForClose = False # To lock out additional closing dialogs.
+
+# For tangle/untangle
+self.tangle_errors = 0
+
+# Global options
+self.page_width = 132
+self.tab_width = -4
+self.tangle_batch_flag = False
+self.untangle_batch_flag = False
+
+# Default Tangle options
+self.tangle_directory = ""
+self.use_header_flag = False
+self.output_doc_flag = False
+
+# Default Target Language
+self.target_language = "python" # Required if leoConfig.txt does not exist.
+
+# These are defined here, and updated by the tree.select()
+self.beadList = [] # list of vnodes for the Back and Forward commands.
+self.beadPointer = -1 # present item in the list.
+self.visitedList = [] # list of positions for the Nodes dialog.
+
+# For hoist/dehoist commands.
+self.hoistStack = []
+    # Stack of nodes to be root of drawn tree.
+    # Affects drawing routines and find commands.
+self.recentFiles = [] # List of recent files
+
+# For outline navigation.
+self.navPrefix = '' # Must always be a string.
+self.navTime = None
+</t>
+<t tx="ekr.20031218072017.2820"></t>
+<t tx="ekr.20031218072017.2821">def open (self,event=None):
+    
+    '''Open a Leo window containing the contents of a .leo file.'''
+
+    c = self
+    &lt;&lt; Set closeFlag if the only open window is empty &gt;&gt;
+
+    fileName = g.app.gui.runOpenFileDialog(
+        title = "Open",
+        filetypes = [("Leo files","*.leo"), ("All files","*")],
+        defaultextension = ".leo")
+    c.bringToFront()
+
+    ok = False
+    if fileName and len(fileName) &gt; 0:
+        ok, frame = g.openWithFileName(fileName,c)
+        if ok:
+            g.setGlobalOpenDir(fileName)
+        if ok and closeFlag:
+            g.app.destroyWindow(c.frame)
+            
+    # openWithFileName sets focus if ok.
+    if not ok:
+        if c.config.getBool('outline_pane_has_initial_focus'):
+            c.treeWantsFocusNow()
+        else:
+            c.bodyWantsFocusNow()</t>
+<t tx="ekr.20031218072017.2822">@ If this is the only open window was opened when the app started, and the window has never been written to or saved, then we will automatically close that window if this open command completes successfully.
+@c
+    
+closeFlag = (
+    c.frame.startupWindow and # The window was open on startup
+    not c.changed and not c.frame.saved and # The window has never been changed
+    g.app.numberOfWindows == 1) # Only one untitled window has ever been opened
+</t>
+<t tx="ekr.20031218072017.2823">def openWith(self,event=None,data=None):
+
+    """This routine handles the items in the Open With... menu.
+
+    These items can only be created by createOpenWithMenuFromTable().
+    Typically this would be done from the "open2" hook.
+    
+    New in 4.3: The "os.spawnv" now works. You may specify arguments to spawnv
+    using a list, e.g.:
+        
+    openWith("os.spawnv", ["c:/prog.exe","--parm1","frog","--switch2"], None)
+    """
+    
+    c = self ; p = c.currentPosition()
+    n = data and len(data) or 0
+    if n != 3:
+        g.trace('bad data, length must be 3, got %d' % n)
+        return
+    try:
+        openType,arg,ext=data
+        if not g.doHook("openwith1",c=c,p=p,v=p.v,openType=openType,arg=arg,ext=ext):
+            g.enableIdleTimeHook(idleTimeDelay=100)
+            &lt;&lt; set ext based on the present language &gt;&gt;
+            &lt;&lt; create or reopen temp file, testing for conflicting changes &gt;&gt;
+            &lt;&lt; execute a command to open path in external editor &gt;&gt;
+        g.doHook("openwith2",c=c,p=p,v=p.v,openType=openType,arg=arg,ext=ext)
+    except Exception:
+        g.es("unexpected exception in c.openWith")
+        g.es_exception()
+
+    return "break"
+</t>
+<t tx="ekr.20031218072017.2824">if not ext:
+    theDict = g.scanDirectives(c)
+    language = theDict.get("language")
+    ext = g.app.language_extension_dict.get(language)
+    # print language,ext
+    if ext == None:
+        ext = "txt"
+    
+if ext[0] != ".":
+    ext = "."+ext
+    
+# print "ext",ext
+</t>
+<t tx="ekr.20031218072017.2825">theDict = None ; path = None
+&lt;&lt; set dict and path if a temp file already refers to p.v.t &gt;&gt;
+if path:
+    &lt;&lt; create or recreate temp file as needed &gt;&gt;
+else:
+    path = c.createOpenWithTempFile(p,ext)
+
+if not path:
+    return # An error has occured.
+</t>
+<t tx="ekr.20031218072017.2826">searchPath = c.openWithTempFilePath(p,ext)
+
+if g.os_path_exists(searchPath):
+    for theDict in g.app.openWithFiles:
+        if p.v == theDict.get('v') and searchPath == theDict.get("path"):
+            path = searchPath
+            break
+</t>
+<t tx="ekr.20031218072017.2827">@ We test for changes in both p and the temp file:
+
+- If only p's body text has changed, we recreate the temp file.
+- If only the temp file has changed, do nothing here.
+- If both have changed we must prompt the user to see which code to use.
+@c
+
+encoding = theDict.get("encoding")
+old_body = theDict.get("body")
+new_body = p.bodyString()
+new_body = g.toEncodedString(new_body,encoding,reportErrors=True)
+
+old_time = theDict.get("time")
+try:
+    new_time = g.os_path_getmtime(path)
+except:
+    new_time = None
+    
+body_changed = old_body != new_body
+temp_changed = old_time != new_time
+
+if body_changed and temp_changed:
+    &lt;&lt; Raise dialog about conflict and set result &gt;&gt;
+    if result == "cancel": return
+    rewrite = result == "outline"
+else:
+    rewrite = body_changed
+        
+if rewrite:
+    path = c.createOpenWithTempFile(p,ext)
+else:
+    g.es("reopening: " + g.shortFileName(path),color="blue")
+</t>
+<t tx="ekr.20031218072017.2828">message = (
+    "Conflicting changes in outline and temp file\n\n" +
+    "Do you want to use the code in the outline or the temp file?\n\n")
+
+result = g.app.gui.runAskYesNoCancelDialog(c,
+    "Conflict!", message,
+    yesMessage = "Outline",
+    noMessage = "File",
+    defaultButton = "Cancel")
+</t>
+<t tx="ekr.20031218072017.2829">try:
+    if arg == None: arg = ""
+    shortPath = path # g.shortFileName(path)
+    if openType == "os.system":
+        if 1:
+            # This works, _provided_ that arg does not contain blanks.  Sheesh.
+            command = 'os.system(%s)' % (arg+shortPath)
+            os.system(arg+shortPath)
+        else:
+            # XP does not like this format!
+            command = 'os.system("%s" "%s")' % (arg,shortPath)
+            os.system('"%s" "%s"' % (arg,shortPath))
+    elif openType == "os.startfile":
+        command = "os.startfile(%s)" % (arg+shortPath)
+        os.startfile(arg+path)
+    elif openType == "exec":
+        command = "exec(%s)" % (arg+shortPath)
+        exec arg+path in {}
+    elif openType == "os.spawnl":
+        filename = g.os_path_basename(arg)
+        command = "os.spawnl(%s,%s,%s)" % (arg,filename,path)
+        apply(os.spawnl,(os.P_NOWAIT,arg,filename,path))
+    elif openType == "os.spawnv":
+        filename = os.path.basename(arg[0]) 
+        vtuple = arg[1:]
+        vtuple.insert(0, filename)
+            # add the name of the program as the first argument.
+            # Change suggested by Jim Sizelove.
+        vtuple.append(path)
+        command = "os.spawnv(%s,%s)" % (arg[0],repr(vtuple))
+        apply(os.spawnv,(os.P_NOWAIT,arg[0],vtuple))
+    # This clause by Jim Sizelove.
+    elif openType == "subprocess.Popen":
+        if isinstance(arg, basestring):
+            vtuple = arg + " " + path
+        elif isinstance(arg, (list, tuple)):
+            vtuple = arg[:]
+            vtuple.append(path)
+        command = "subprocess.Popen(%s)" % repr(vtuple)
+        if subprocess:
+            subprocess.Popen(vtuple)
+        else:
+            g.grace('Can not import subprocess.  Skipping: "%s"' % command)
+    else:
+        command="bad command:"+str(openType)
+        g.trace(command)
+except Exception:
+    g.es("exception executing: "+command)
+    g.es_exception()
+</t>
+<t tx="ekr.20031218072017.2830">def createOpenWithTempFile (self,p,ext):
+    
+    c = self
+    path = c.openWithTempFilePath(p,ext)
+    try:
+        if g.os_path_exists(path):
+            g.es("recreating:  " + g.shortFileName(path),color="red")
+        else:
+            g.es("creating:  " + g.shortFileName(path),color="blue")
+        theFile = open(path,"w")
+        # Convert s to whatever encoding is in effect.
+        s = p.bodyString()
+        theDict = g.scanDirectives(c,p=p)
+        encoding = theDict.get("encoding",None)
+        if encoding == None:
+            encoding = c.config.default_derived_file_encoding
+        s = g.toEncodedString(s,encoding,reportErrors=True) 
+        theFile.write(s)
+        theFile.flush()
+        theFile.close()
+        try:    time = g.os_path_getmtime(path)
+        except: time = None
+        # g.es("time: " + str(time))
+        # New in 4.3: theDict now contains both 'p' and 'v' entries, of the expected type.
+        theDict = {
+            "body":s, "c":c, "encoding":encoding,
+            "f":theFile, "path":path, "time":time,
+            "p":p, "v":p.v }
+        &lt;&lt; remove previous entry from app.openWithFiles if it exists &gt;&gt;
+        g.app.openWithFiles.append(theDict)
+        return path
+    except:
+        if theFile:
+            theFile.close()
+        theFile = None
+        g.es("exception creating temp file",color="red")
+        g.es_exception()
+        return None
+</t>
+<t tx="ekr.20031218072017.2831">for d in g.app.openWithFiles[:]:
+    p2 = d.get("p")
+    if p.v.t == p2.v.t:
+        # print "removing previous entry in g.app.openWithFiles for",p.headString()
+        g.app.openWithFiles.remove(d)
+</t>
+<t tx="ekr.20031218072017.2832">def openWithTempFilePath (self,p,ext):
+    
+    """Return the path to the temp file corresponding to p and ext."""
+    
+    if 0: # new code: similar to code in mod_tempfname.py plugin.
+        try:
+            # At least in Windows, user name may contain special characters
+            # which would require escaping quotes.
+            leoTempDir = g.sanitize_filename(getpass.getuser()) + "_" + "Leo"
+        except:
+            leoTempDir = "LeoTemp"
+            g.es("Could not retrieve your user name.")
+            g.es("Temporary files will be stored in: %s" % leoTempDir)
+        
+        td = os.path.join(g.os_path_abspath(tempfile.gettempdir()),leoTempDir)
+        if not os.path.exists(td):
+            os.mkdir(td)
+        
+        name = g.sanitize_filename(v.headString()) + '_' + str(id(v.t))  + ext
+        path = os.path.join(td,name)
+        return path
+    else: # Original code.
+        name = "LeoTemp_%s_%s%s" % (
+            str(id(p.v.t)),
+            g.sanitize_filename(p.headString()),
+            ext)
+    
+        name = g.toUnicode(name,g.app.tkEncoding)
+    
+        if 1:
+            td = g.os_path_abspath(tempfile.gettempdir())
+        else:
+            td = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','temp'))
+    
+        path = g.os_path_join(td,name)
+    
+        return path
+</t>
+<t tx="ekr.20031218072017.2833">def close (self,event=None):
+    
+    '''Close the Leo window, prompting to save it if it has been changed.'''
+
+    g.app.closeLeoWindow(self.frame)
+</t>
+<t tx="ekr.20031218072017.2834">def save (self,event=None):
+    
+    '''Save a Leo outline to a file.'''
+
+    c = self
+    
+    if g.app.disableSave:
+        g.es("Save commands disabled",color="purple")
+        return
+    
+    # Make sure we never pass None to the ctor.
+    if not c.mFileName:
+        c.frame.title = ""
+        c.mFileName = ""
+
+    if c.mFileName != "":
+        # Calls c.setChanged(False) if no error.
+        c.fileCommands.save(c.mFileName)
+    else:
+        fileName = g.app.gui.runSaveFileDialog(
+            initialfile = c.mFileName,
+            title="Save",
+            filetypes=[("Leo files", "*.leo")],
+            defaultextension=".leo")
+        c.bringToFront()
+
+        if fileName:
+            # Don't change mFileName until the dialog has suceeded.
+            c.mFileName = g.ensure_extension(fileName, ".leo")
+            c.frame.title = c.mFileName
+            c.frame.setTitle(g.computeWindowTitle(c.mFileName))
+            c.frame.openDirectory = g.os_path_dirname(c.mFileName) # Bug fix in 4.4b2.
+            c.fileCommands.save(c.mFileName)
+            c.updateRecentFiles(c.mFileName)
+</t>
+<t tx="ekr.20031218072017.2835">def saveAs (self,event=None):
+    
+    '''Save a Leo outline to a file with a new filename.'''
+    
+    c = self
+    
+    if g.app.disableSave:
+        g.es("Save commands disabled",color="purple")
+        return
+
+    # Make sure we never pass None to the ctor.
+    if not c.mFileName:
+        c.frame.title = ""
+
+    fileName = g.app.gui.runSaveFileDialog(
+        initialfile = c.mFileName,
+        title="Save As",
+        filetypes=[("Leo files", "*.leo")],
+        defaultextension=".leo")
+    c.bringToFront()
+
+    if fileName:
+        # 7/2/02: don't change mFileName until the dialog has suceeded.
+        c.mFileName = g.ensure_extension(fileName, ".leo")
+        c.frame.title = c.mFileName
+        c.frame.setTitle(g.computeWindowTitle(c.mFileName))
+        c.frame.openDirectory = g.os_path_dirname(c.mFileName) # Bug fix in 4.4b2.
+        # Calls c.setChanged(False) if no error.
+        c.fileCommands.saveAs(c.mFileName)
+        c.updateRecentFiles(c.mFileName)
+</t>
+<t tx="ekr.20031218072017.2836">def saveTo (self,event=None):
+    
+    '''Save a Leo outline to a file, leaving the file associated with the Leo outline unchanged.'''
+    
+    c = self
+    
+    if g.app.disableSave:
+        g.es("Save commands disabled",color="purple")
+        return
+
+    # Make sure we never pass None to the ctor.
+    if not c.mFileName:
+        c.frame.title = ""
+
+    # set local fileName, _not_ c.mFileName
+    fileName = g.app.gui.runSaveFileDialog(
+        initialfile = c.mFileName,
+        title="Save To",
+        filetypes=[("Leo files", "*.leo")],
+        defaultextension=".leo")
+    c.bringToFront()
+
+    if fileName:
+        fileName = g.ensure_extension(fileName, ".leo")
+        c.fileCommands.saveTo(fileName)
+        c.updateRecentFiles(fileName)
+</t>
+<t tx="ekr.20031218072017.2837">def revert (self,event=None):
+    
+    '''Revert the contents of a Leo outline to last saved contents.'''
+    
+    c = self
+
+    # Make sure the user wants to Revert.
+    if not c.mFileName:
+        return
+        
+    reply = g.app.gui.runAskYesNoDialog(c,"Revert",
+        "Revert to previous version of " + c.mFileName + "?")
+    c.bringToFront()
+
+    if reply=="no":
+        return
+
+    # Kludge: rename this frame so openWithFileName won't think it is open.
+    fileName = c.mFileName ; c.mFileName = ""
+
+    # Create a new frame before deleting this frame.
+    ok, frame = g.openWithFileName(fileName,c)
+    if ok:
+        frame.deiconify()
+        g.app.destroyWindow(c.frame)
+    else:
+        c.mFileName = fileName
 </t>
 <t tx="ekr.20031218072017.2943">def openLeoSettings (self,event=None):
     '''Open leoSettings.leo in a new Leo window.'''
@@ -1282,6 +3120,153 @@ def selectVisBack (self,event=None):
 
 selectVnode = selectPosition
 </t>
+<t tx="ekr.20031218072017.3020"></t>
+<t tx="ekr.20031218072017.3021"></t>
+<t tx="ekr.20031218072017.3022">def getClipboardHeader (self):
+
+    if self.getOpenTag("&lt;leo_header"):
+        return # &lt;leo_header&gt; or &lt;leo_header/&gt; has been seen.
+
+    while 1:
+        if self.matchTag("file_format="):
+            self.getDquote() ; self.getLong() ; self.getDquote()
+        elif self.matchTag("tnodes="):
+            self.getDquote() ; self.getLong() ; self.getDquote() # no longer used
+        elif self.matchTag("max_tnode_index="):
+            self.getDquote() ; self.getLong() ; self.getDquote() # no longer used
+        elif self.matchTag("&gt;&lt;/leo_header&gt;"): # new in 4.2: allow this form.
+            break
+        else:
+            self.getTag("/&gt;")
+            break
+</t>
+<t tx="ekr.20031218072017.3023"># For compatibility with old file formats.
+
+def getCloneWindows (self):
+
+    if not self.matchTag("&lt;clone_windows&gt;"):
+        return # &lt;clone_windows/&gt; seen.
+
+    while self.matchTag("&lt;clone_window vtag=\"V"):
+        self.getLong() ; self.getDquote() ; self.getTag("&gt;")
+        if not self.getOpenTag("&lt;global_window_position"):
+            self.getTag("&lt;global_window_position")
+            self.getPosition()
+            self.getTag("/&gt;")
+        self.getTag("&lt;/clone_window&gt;")
+    self.getTag("&lt;/clone_windows&gt;")
+</t>
+<t tx="ekr.20031218072017.3024">def getEscapedString (self):
+
+    # The next '&lt;' begins the ending tag.
+    i = self.fileIndex
+    self.fileIndex = j = string.find(self.fileBuffer,'&lt;',i)
+    if j == -1:
+        print self.fileBuffer[i:]
+        raise BadLeoFile("unterminated escaped string")
+    else:
+        # Allocates memory
+        return self.xmlUnescape(self.fileBuffer[i:j])
+</t>
+<t tx="ekr.20031218072017.3025">def getPosition (self):
+
+    top = left = height = width = 0
+    # New in version 1.7: attributes may appear in any order.
+    while 1:
+        if self.matchTag("top=\""):
+            top = self.getLong() ; self.getDquote()
+        elif self.matchTag("left=\""):
+            left = self.getLong() ; self.getDquote()
+        elif self.matchTag("height=\""):
+            height = self.getLong() ; self.getDquote()
+        elif self.matchTag("width=\""):
+            width = self.getLong() ; self.getDquote()
+        else: break
+    return top, left, height, width
+</t>
+<t tx="ekr.20031218072017.3026">def getSize (self):
+
+    # New in version 1.7: attributes may appear in any order.
+    height = 0 ; width = 0
+    while 1:
+        if self.matchTag("height=\""):
+            height = self.getLong() ; self.getDquote()
+        elif self.matchTag("width=\""):
+            width = self.getLong() ; self.getDquote()
+        else: break
+    return height, width
+</t>
+<t tx="ekr.20031218072017.3027">def skipWs (self):
+
+    while self.fileIndex &lt; len(self.fileBuffer):
+        ch = self.fileBuffer[self.fileIndex]
+        if ch == ' ' or ch == '\t':
+            self.fileIndex += 1
+        else: break
+
+    # The caller is entitled to get the next character.
+    if  self.fileIndex &gt;= len(self.fileBuffer):
+        raise BadLeoFile("")
+</t>
+<t tx="ekr.20031218072017.3028">def skipWsAndNl (self):
+
+    while self.fileIndex &lt; len(self.fileBuffer):
+        ch = self.fileBuffer[self.fileIndex]
+        if ch == ' ' or ch == '\t' or ch == '\r' or ch == '\n':
+            self.fileIndex += 1
+        else: break
+
+    # The caller is entitled to get the next character.
+    if  self.fileIndex &gt;= len(self.fileBuffer):
+        raise BadLeoFile("")
+</t>
+<t tx="ekr.20031218072017.3029">def readAtFileNodes (self):
+
+    c = self.c ; p = c.currentPosition()
+    
+    c.beginUpdate()
+    try:
+        c.atFileCommands.readAll(p,partialFlag=True)
+    finally:
+        c.endUpdate()
+    
+    # Force an update of the body pane.
+    c.setBodyString(p,p.bodyString())
+    c.frame.body.onBodyChanged(undoType=None)
+</t>
+<t tx="ekr.20031218072017.3030">def readOutlineOnly (self,theFile,fileName):
+
+    c = self.c
+    # Read the entire file into the buffer
+    self.fileBuffer = theFile.read() ; theFile.close()
+    self.fileIndex = 0
+    &lt;&lt; Set the default directory &gt;&gt;
+    c.beginUpdate()
+    try:
+        ok, ratio = self.getLeoFile(theFile,fileName,readAtFileNodesFlag=False)
+    finally:
+        c.endUpdate()
+    c.frame.deiconify()
+    vflag,junk,secondary_ratio = self.frame.initialRatios()
+    c.frame.resizePanesToRatio(ratio,secondary_ratio)
+    if 0: # 1/30/04: this is useless.
+        # This should be done after the pane size has been set.
+        if self.topPosition:
+            c.frame.tree.setTopPosition(self.topPosition)
+            c.redraw_now()
+    # delete the file buffer
+    self.fileBuffer = ""
+    return ok
+</t>
+<t tx="ekr.20031218072017.3031">def xmlUnescape(self,s):
+
+    if s:
+        s = string.replace(s, '\r', '')
+        s = string.replace(s, "&amp;lt;", '&lt;')
+        s = string.replace(s, "&amp;gt;", '&gt;')
+        s = string.replace(s, "&amp;amp;", '&amp;')
+    return s
+</t>
 <t tx="ekr.20031218072017.3046">def write_Leo_file(self,fileName,outlineOnlyFlag,toString=False,toOPML=False):
 
     c = self.c
@@ -1387,20 +3372,21 @@ if not toString and g.os_path_exists(fileName):
     "insert" and "sel" points set properly."""
 
     c = self.c ; p = self.p ; gui = g.app.gui
-    
+    sparseFind = c.config.getBool('collapse_nodes_during_finds')
     c.frame.bringToFront() # Needed on the Mac
     redraw = not p.isVisible()
     c.beginUpdate()
     try:
-        # New in Leo 4.4.2: show only the 'sparse' tree when redrawing.
-        for p in c.allNodes_iter():
-            if not p.isAncestorOf(self.p):
-                p.contract()
-                redraw = True
-        for p in self.p.parents_iter():
-            if not p.isExpanded():
-                p.expand()
-                redraw = True
+        if sparseFind:
+            # New in Leo 4.4.2: show only the 'sparse' tree when redrawing.
+            for p in c.allNodes_iter():
+                if not p.isAncestorOf(self.p):
+                    p.contract()
+                    redraw = True
+            for p in self.p.parents_iter():
+                if not p.isExpanded():
+                    p.expand()
+                    redraw = True
         p = self.p
         c.selectPosition(p)
     finally:
@@ -1817,7 +3803,7 @@ def compare_directories (self,path1,path2):
         ("&amp;Close",c.close),
         ("&amp;Save",c.save),
         ("Save &amp;As",c.saveAs),
-        ("Save To",c.saveTo), # &amp;Tangle
+        ("Save &amp;To",c.saveTo), # &amp;Tangle
         ("Re&amp;vert To Saved",c.revert), # &amp;Read/Write
     ]
 </t>
@@ -2072,6 +4058,57 @@ def compare_directories (self,path1,path2):
         'print-c&amp;ommands',
     ]
 </t>
+<t tx="ekr.20031218072017.3803">def createHelpMenuFromTable (self):
+
+    if 0: ## sys.platform == 'darwin':
+        helpMenu = self.getMacHelpMenu()
+        if not helpMenu: return
+    else:
+        helpMenu = self.createNewMenu("&amp;Help")
+    
+    self.createMenuEntries(helpMenu,self.helpMenuTable)</t>
+<t tx="ekr.20031218072017.3804">def createNewMenu (self,menuName,parentName="top",before=None):
+
+    try:
+        parent = self.getMenu(parentName) # parent may be None.
+        menu = self.getMenu(menuName)
+        if menu:
+            g.es("menu already exists: " + menuName,color="red")
+        else:
+            menu = self.new_menu(parent,tearoff=0)
+            self.setMenu(menuName,menu)
+            label = self.getRealMenuName(menuName)
+            amp_index = label.find("&amp;")
+            label = label.replace("&amp;","")
+            if before: # Insert the menu before the "before" menu.
+                index_label = self.getRealMenuName(before)
+                amp_index = index_label.find("&amp;")
+                index_label = index_label.replace("&amp;","")
+                index = parent.index(index_label)
+                self.insert_cascade(parent,index=index,label=label,menu=menu,underline=amp_index)
+            else:
+                self.add_cascade(parent,label=label,menu=menu,underline=amp_index)
+            return menu
+    except:
+        g.es("exception creating " + menuName + " menu")
+        g.es_exception()
+        return None
+</t>
+<t tx="ekr.20031218072017.3807">def getMenu (self,menuName):
+
+    cmn = self.canonicalizeMenuName(menuName)
+    return self.menus.get(cmn)
+    
+def setMenu (self,menuName,menu):
+    
+    cmn = self.canonicalizeMenuName(menuName)
+    self.menus [cmn] = menu
+    
+def destroyMenu (self,menuName):
+    
+    cmn = self.canonicalizeMenuName(menuName)
+    del self.menus[cmn]
+</t>
 <t tx="ekr.20031218072017.3821"></t>
 <t tx="ekr.20031218072017.3961">def __init__ (self,c,parentFrame):
     
@@ -2136,19 +4173,26 @@ def compare_directories (self,path1,path2):
 
     try:
         c = self.c ; p = c.currentPosition()
-        if not g.doHook("bodydclick1",c=c,p=p,v=p,event=event):
-            if event: # Prevent wandering insertion point.
-                w = self.bodyCtrl
-                index = w.index("@%d,%d" % (event.x, event.y)) # Find where we clicked.
-                start = w.index(index + " wordstart")
-                end   = w.index(index + " wordend")
-                # g.trace(index,start,end,w.get('1.0','end'))
-                self.body.setTextSelection(start,end)
+        if event and not g.doHook("bodydclick1",c=c,p=p,v=p,event=event):
+            c.editCommands.extendToWord(event) # Handles unicode properly.
         g.doHook("bodydclick2",c=c,p=p,v=p,event=event)
     except:
         g.es_event_exception("bodydclick")
         
     return "break" # Restore this to handle proper double-click logic.
+</t>
+<t tx="ekr.20031218072017.4113">def new_menu(self,parent,tearoff=False):
+    
+    """Wrapper for the Tkinter new_menu menu method."""
+    
+    if self.font:
+        try:
+            return Tk.Menu(parent,tearoff=tearoff,font=self.font)
+        except Exception:
+            g.es_exception()
+            return Tk.Menu(parent,tearoff=tearoff)
+    else:
+        return Tk.Menu(parent,tearoff=tearoff)
 </t>
 <t tx="ekr.20031218072017.4146">def lastVisible(self):
     
@@ -2578,6 +4622,66 @@ if p.hasChildren() and not forceWrite and not self.usingClipboard:
     # We put the entire tree when using the clipboard, so no need for this.
     attrs.append(self.putDescendentUnknownAttributes(p))
     attrs.append(self.putDescendentAttributes(p))</t>
+<t tx="ekr.20040326052245">def convertStackToPosition (self,stack):
+
+    c = self.c ; p2 = None
+    if not stack: return None
+
+    for p in c.allNodes_iter():
+        if p.v == stack[0]:
+            p2 = p.copy()
+            for n in xrange(len(stack)):
+                if not p2: break
+                # g.trace("compare",n,p2.v,stack[n])
+                if p2.v != stack[n]:
+                    p2 = None
+                elif n + 1 == len(stack):
+                    break
+                else:
+                    p2.moveToParent()
+            if p2:
+                return p
+
+    return None
+</t>
+<t tx="ekr.20040326054052">def setPositionsFromStacks (self):
+    
+    c = self.c
+
+    current = self.convertStackToPosition(self.currentVnodeStack)
+    
+    if current:
+        # g.trace('using convertStackToPosition',current)
+        c.setCurrentPosition(current)
+    else:
+        # g.trace(self.currentVnodeStack)
+        c.setCurrentPosition(c.rootPosition())
+        
+    # At present this is useless: the drawing code doesn't set the top position properly.
+    if 0:
+        top = self.convertStackToPosition(self.topVnodeStack)
+        if top:
+            c.setTopPosition(top)</t>
+<t tx="ekr.20040326055828">if not setCurrent and len(self.currentVnodeStack) &gt; 0 and appendToCurrentStack:
+    #g.trace("append current",v)
+    self.currentVnodeStack.append(v)
+    
+if not setTop and len(self.topVnodeStack) &gt; 0 and appendToTopStack:
+    #g.trace("append top",v)
+    self.topVnodeStack.append(v)
+</t>
+<t tx="ekr.20040326063413">def getExistingVnode (self,tref,headline):
+
+    assert(tref &gt; -1)
+    tref = self.canonicalTnodeIndex(tref)
+    t = self.tnodesDict.get(tref)
+    try:
+        return t.vnodeList[0]
+    except (IndexError,AttributeError):
+        g.es("Missing vnode:",headline,color="red")
+        g.es("Probably an outline topology error.")
+        return None
+</t>
 <t tx="ekr.20040409203454.1">def deleteLinksInTree (self):
     
     """Delete and otherwise adjust links when deleting node."""
@@ -2656,31 +4760,67 @@ if p.hasChildren() and not forceWrite and not self.usingClipboard:
     g.es("Python %d.%d.%d, Tk %s, Pmw %s\n%s" % (n1,n2,n3,tkLevel,Pmw.version(),version))
     g.enl()
 </t>
+<t tx="ekr.20040701065235.1">def getDescendentAttributes (self,s,tag=""):
+    
+    '''s is a list of gnx's, separated by commas from a &lt;v&gt; or &lt;t&gt; element.
+    Parses s into a list.
+    
+    This is used to record marked and expanded nodes.
+    '''
+    
+    __pychecker__ = '--no-argsused' # tag used only for debugging.
+
+    gnxs = s.split(',')
+    result = [gnx for gnx in gnxs if len(gnx) &gt; 0]
+    # g.trace(tag,result)
+    return result
+</t>
 <t tx="ekr.20040701065235.2">def putDescendentAttributes (self,p):
     
     nodeIndices = g.app.nodeIndices
 
     # Create a list of all tnodes whose vnodes are marked or expanded
-    marks = [] ; expanded = []
-    for p in p.subtree_iter():
-        if p.isMarked() and not p in marks:
-            marks.append(p.copy())
-        if p.hasChildren() and p.isExpanded() and not p in expanded:
-            expanded.append(p.copy())
-
-    result = []
-    for theList,tag in ((marks,"marks"),(expanded,"expanded")):
-        if theList:
-            sList = []
-            for p in theList:
-                gnx = p.v.t.fileIndex
-                sList.append("%s," % nodeIndices.toString(gnx))
-            s = string.join(sList,'')
-            # g.trace(tag,[str(p.headString()) for p in theList])
-            result.append('\n%s="%s"' % (tag,s))
+    if 1: # New in Leo 4.4.2 b2.
+        # Put each tnode in the list only once.
+        # This should have been done long ago.
+        marks = [] ; expanded = []
+        for p in p.subtree_iter():
+            t = p.v.t
+            if p.isMarked() and p.v.t not in marks:
+                marks.append(t)
+            if p.hasChildren() and p.isExpanded() and t not in expanded:
+                expanded.append(t)
+    
+        result = []
+        for theList,tag in ((marks,"marks"),(expanded,"expanded")):
+            if theList:
+                sList = []
+                for t in theList:
+                    gnx = t.fileIndex
+                    sList.append("%s," % nodeIndices.toString(gnx))
+                s = string.join(sList,'')
+                # g.trace(tag,[str(p.headString()) for p in theList])
+                result.append('\n%s="%s"' % (tag,s))
+    else:
+        marks = [] ; expanded = []
+        for p in p.subtree_iter():
+            if p.isMarked() and not p in marks:
+                marks.append(p.copy())
+            if p.hasChildren() and p.isExpanded() and not p in expanded:
+                expanded.append(p.copy())
+    
+        result = []
+        for theList,tag in ((marks,"marks"),(expanded,"expanded")):
+            if theList:
+                sList = []
+                for p in theList:
+                    gnx = p.v.t.fileIndex
+                    sList.append("%s," % nodeIndices.toString(gnx))
+                s = string.join(sList,'')
+                # g.trace(tag,[str(p.headString()) for p in theList])
+                result.append('\n%s="%s"' % (tag,s))
             
-    return ''.join(result)
-</t>
+    return ''.join(result)</t>
 <t tx="ekr.20040702085529">if isOrphan and isThin:
     g.es("Writing erroneous: %s" % p.headString(),color="blue")
     p.clearOrphan()
@@ -2924,81 +5064,6 @@ else:
     except:
         g.es_event_exception("hyperleave")
 </t>
-<t tx="ekr.20040803072955.87">def onHeadlineClick (self,event,p=None):
-    
-    c = self.c ; w = event.widget
-    
-    if not p:
-        try:
-            p = w.leo_position
-        except AttributeError:
-            g.trace('*'*20,'oops')
-    if not p: return 'break'
-        
-    # g.trace(p.headString())
-    
-    c.setLog()
-
-    try:
-        if not g.doHook("headclick1",c=c,p=p,v=p,event=event):
-            returnVal = self.OnActivateHeadline(p)
-        g.doHook("headclick2",c=c,p=p,v=p,event=event)
-    except:
-        returnVal = 'break'
-        g.es_event_exception("headclick")
-
-    # 'continue' is sometimes correct here.
-    # 'break' would make it impossible to unselect the headline text.
-    # g.trace('returnVal',returnVal,'stayInTree',self.stayInTree)
-    return returnVal
-</t>
-<t tx="ekr.20040803072955.105">def OnActivateHeadline (self,p,event=None):
-    
-    '''Handle common process when any part of a headline is clicked.'''
-    
-    # g.trace(p.headString())
-    
-    returnVal = 'break' # Default: do nothing more.
-
-    try:
-        c = self.c
-        c.setLog()
-        &lt;&lt; activate this window &gt;&gt;
-    except:
-        g.es_event_exception("activate tree")
-        
-    return returnVal
-</t>
-<t tx="ekr.20040803072955.106">if p == c.currentPosition():
-    # g.trace("is current")
-    # The *second* click in the headline starts editing.
-    if self.active:
-        self.editLabel(p)
-        returnVal = 'continue'
-    else:
-        # Set the focus immediately.  This is essential for proper editing.
-        c.treeWantsFocusNow()
-        returnVal = 'break'
-else:
-    # g.trace("not current")
-    self.select(p)
-    if c.frame.findPanel:
-        c.frame.findPanel.handleUserClick(p)
-    if p.v.t.insertSpot != None:
-        c.frame.bodyCtrl.mark_set("insert",p.v.t.insertSpot)
-        c.frame.bodyCtrl.see(p.v.t.insertSpot)
-    else:
-        c.frame.bodyCtrl.mark_set("insert","1.0")
-        
-    if self.stayInTree:
-        c.treeWantsFocusNow()
-    else:
-        c.bodyWantsFocusNow()
-    returnVal = 'break'
-
-# The next click *in the same headline* will start editing.
-self.active = True
-</t>
 <t tx="ekr.20040803140033">def currentPosition (self,copy=True):
     
     """Return the presently selected position."""
@@ -3080,6 +5145,26 @@ rootVnode = rootPosition</t>
     p = self ; c = p.c
     
     return c.isRootPosition(p)
+</t>
+<t tx="ekr.20041023105832">self.forbiddenTnodes = []
+
+for p in oldCurrent.self_and_parents_iter():
+    if p.v.t not in self.forbiddenTnodes:
+        self.forbiddenTnodes.append(p.v.t)
+        
+# g.trace("forbiddenTnodes",self.forbiddenTnodes)
+</t>
+<t tx="ekr.20041023110111"># Bug fix in 4.3 a1: make sure we have valid paste.
+theId,time,n = g.app.nodeIndices.scanGnx(index,0)
+if not time and index[0] == "T":
+    index = index[1:]
+    
+index = self.canonicalTnodeIndex(index)
+t = self.tnodesDict.get(index)
+
+if t in self.forbiddenTnodes:
+    # g.trace(t)
+    raise invalidPaste
 </t>
 <t tx="ekr.20041026132435">def get (self):
     
@@ -3268,6 +5353,11 @@ def widgetWantsFocus(self,w):
     background = self.statusFrame.cget("background")
     self.enable(background=background)
 </t>
+<t tx="ekr.20050211100535">def test_g_getScript_strips_crlf():
+
+    script = g.getScript(c,p) # This will get the text of this node.
+    assert script.find('\r\n') == -1, repr(script)
+</t>
 <t tx="ekr.20050220030850">def test_g_es_exception():
     
     if c.config.redirect_execute_script_output_to_log_pane:
@@ -3404,6 +5494,8 @@ def widgetWantsFocus(self,w):
     
     '''Put attribute whose name is key and value is val to the output stream.'''
     
+    # g.trace(key,repr(val),g.callers())
+    
     # New in 4.3: leave string attributes starting with 'str_' alone.
     if key.startswith('str_'):
         if type(val) == type(''):
@@ -3414,15 +5506,21 @@ def widgetWantsFocus(self,w):
                 key,torv),color="blue")
             return ''
     try:
+        version = '.'.join([str(sys.version_info[i]) for i in (0,1)])
+        python23 = g.CheckVersion(version,'2.3')
         try:
-            # Protocol argument is new in Python 2.3
-            # Use protocol 1 for compatibility with bin.
-            s = pickle.dumps(val,protocol=1)
-        except TypeError:
-            s = pickle.dumps(val,bin=True)
-        attr = ' %s="%s"' % (key,binascii.hexlify(s))
-        return attr
-
+            if python23:
+                # Protocol argument is new in Python 2.3
+                # Use protocol 1 for compatibility with bin.
+                s = pickle.dumps(val,protocol=1)
+            else:
+                s = pickle.dumps(val,bin=True)
+            attr = ' %s="%s"' % (key,binascii.hexlify(s))
+            return attr
+        except Exception:
+            g.es('putUaHelper: unexpected pickling exception',color='red')
+            g.es_exception()
+            return ''
     except pickle.PicklingError:
         # New in 4.2 beta 1: keep going after error.
         g.es("ignoring non-pickleable attribute %s in %s" % (
@@ -3924,6 +6022,56 @@ k.mb_tabList = []
 k.mb_tabListPrefix = k.getLabel()
 k.oneCharacterArg = oneCharacter
 </t>
+<t tx="ekr.20051012201831">def printBindings (self,event):
+
+    '''Print all the bindings presently in effect.'''
+
+    k = self ; c = k.c
+    d = k.bindingsDict ; tabName = 'Bindings'
+    keys = d.keys() ; keys.sort()
+    c.frame.log.clearTab(tabName)
+    data = [] ; n1 = 4 ; n2 = 20
+    for key in keys:
+        bunchList = d.get(key,[])
+        for b in bunchList:
+            pane = g.choose(b.pane=='all','',' %s:' % (b.pane))
+            s1 = pane
+            s2 = k.prettyPrintKey(key,brief=True)
+            s3 = b.commandName
+            n1 = max(n1,len(s1))
+            n2 = max(n2,len(s2))
+            data.append((s1,s2,s3),)
+            
+    # Print keys by type:
+    sep = '-' * n1
+    for prefix in (
+        'Alt+Ctrl+Shift', 'Alt+Shift', 'Alt+Ctrl', 'Alt',
+        'Ctrl+Shift', 'Ctrl', 'Shift',
+    ):
+        data2 = []
+        for item in data:
+            s1,s2,s3 = item
+            if s2.startswith(prefix):
+                data2.append(item)
+        g.es('%s %s' % (sep, prefix),tabName=tabName)
+        self.printBindingsHelper(data2,n1,n2)
+        # Remove all the items in data2 from data.
+        # This must be done outside the iterator on data.
+        for item in data2:
+            data.remove(item)
+    # Print all plain bindings.
+    g.es('%s %s' % (sep, 'Plain Keys',),tabName=tabName)
+    self.printBindingsHelper(data,n1,n2)
+    state = k.unboundKeyAction 
+    k.showStateAndMode()
+    
+def printBindingsHelper (self,data,n1,n2):
+                
+    # This isn't perfect in variable-width fonts.
+    data.sort(lambda x,y: cmp(x[1],y[1]))
+    for s1,s2,s3 in data:
+        g.es('%*s %*s %s' % (-n1,s1,-(min(12,n2)),s2,s3),tabName='Bindings')
+</t>
 <t tx="ekr.20051013161232">def updateSettings (self,c,localFlag):
 
     d = self.readSettings(c)
@@ -3939,20 +6087,6 @@ k.oneCharacterArg = oneCharacter
         if localFlag:
             g.trace(c.fileName())
             g.trace(d and d.keys())
-</t>
-<t tx="ekr.20051024102724">def setBindings (self):
-    
-    '''Create master bindings for all headlines.'''
-    
-    tree = self ; k = self.c.k
-    
-    &lt;&lt; make bindings for a common binding widget &gt;&gt;
-
-    self.canvas.bind('&lt;Key&gt;',k.masterKeyHandler)
-    self.canvas.bind('&lt;Button-1&gt;',self.onTreeClick)
-
-    &lt;&lt; make bindings for tagged items on the canvas &gt;&gt;
-    &lt;&lt; create baloon bindings for tagged items on the canvas &gt;&gt;
 </t>
 <t tx="ekr.20051031040240"></t>
 <t tx="ekr.20051104075904.30">def findNodeInTree(self,p,headline):
@@ -3982,6 +6116,16 @@ k.oneCharacterArg = oneCharacter
     c.setRootPosition(c.findRootPosition(copy)) # New in 4.4.2.
     c.selectPosition(copy)
 </t>
+<t tx="ekr.20051112080017">@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3423121
+By: nobody
+
+Hi! I need help removing script buttons. It says I should right click the ofending
+button. I have a mac and Ctl-click, Command-click, etc doesn't work. What should
+I do?
+
+EKR: This is on the list of unfixable bugs, but I have a hard time believing there is no workaround.</t>
 <t tx="ekr.20051113110735">u.beforeChangeGroup(c.currentPosition(),undoType)
 
 undoData = u.beforeInsertNode(c.currentPosition())
@@ -4011,17 +6155,21 @@ u.afterCloneNode(q,undoType,undoData,dirtyVnodeList=[])
 
     def toGui (i): return g.app.gui.toGuiIndex(s,w,i)
     def toPython (i): return g.app.gui.toPythonIndex(s,w,i)
-    def isWordChar(ch): return ch in (string.letters + string.digits + '_')
 
     i = toPython(w.index('insert'))
-    delta = g.choose(forward,1,-1)
     
-    if not forward: i -= 1
-    while 0 &lt;= i &lt; n and isWordChar(s[i]):
-        i += delta
-    while 0 &lt;= i &lt; n and not isWordChar(s[i]):
-        i += delta
-    if not forward: i += 1
+    if forward:
+        while 0 &lt;= i &lt; n and g.isWordChar(s[i]):
+            i += 1
+        while 0 &lt;= i &lt; n and not g.isWordChar(s[i]):
+            i += 1
+    else:
+        i -= 1
+        while 0 &lt;= i &lt; n and not g.isWordChar(s[i]):
+            i -= 1
+        while 0 &lt;= i &lt; n and g.isWordChar(s[i]):
+            i -= 1
+        i += 1
 
     self.moveToHelper(event,toGui(i),extend)</t>
 <t tx="ekr.20051218122116">def moveToHelper (self,event,spot,extend):
@@ -4078,6 +6226,44 @@ def extendModeHelper (self,event,val):
     g.es('Extend mode %s' % (g.choose(val,'on','off')), color='red')
     c.widgetWantsFocus(w)
 </t>
+<t tx="ekr.20060116074839.2">def extendToWord (self,event):
+    
+    '''Select the word at the cursor.'''
+    
+    w = event.widget ; s = w.get('1.0','end') ; n = len(s)
+    def toGui (i): return g.app.gui.toGuiIndex(s,w,i)
+    def toPython (i): return g.app.gui.toPythonIndex(s,w,i)
+
+    i = toPython(w.index('insert'))
+    while 0 &lt;= i &lt; n and not g.isWordChar(s[i]):
+        i -= 1
+    while 0 &lt;= i &lt; n and g.isWordChar(s[i]):
+        i -= 1
+    i += 1
+    # Move to the end of the word.
+    i1 = i
+    while 0 &lt;= i &lt; n and g.isWordChar(s[i]):
+        i += 1
+    g.app.gui.setSelectionRange(w,toGui(i1),toGui(i))</t>
+<t tx="ekr.20060116083043">@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3237845
+
+http://tkinter.unpythonic.net/wiki/Widgets/Menu
+
+On the Macintosh, access to the special Apple and Help menus is provided. These
+menus must be created with the command name of the menubar menu concatenated
+with the special name. 
+
+For a menubar named .menubar, on the Macintosh, the special menus are .menubar.apple and .menubar.help.
+
+On Windows, the special menu is .menubar.system.
+
+On X Windows, the help menu is .menubar.help.
+
+[XXX how to create widgets with these names in Tkinter]
+
+@color</t>
 <t tx="ekr.20060117094955">def defineCmdsMenuTopTable (self):
     
     self.cmdsMenuTopTable = [
@@ -4201,55 +6387,6 @@ def extendModeHelper (self,event,val):
         k.showStateAndMode()
         self.generalSearchHelper(k.arg,cloneFindAll=True)
 </t>
-<t tx="ekr.20060131084938">def masterDoubleClickHandler (self,event,func=None):
-    
-    k = self ; c = k.c ; w = event and event.widget
-    
-    if c.config.getBool('trace_masterClickHandler'):
-        g.trace(c.widget_name(w),func and func.__name__)
-
-    if event and func:
-        # Don't event *think* of overriding this.
-        return func(event)
-    else:
-        i = w.index("@%d,%d" % (event.x,event.y))
-        start = w.index(i+' wordstart')
-        end = w.index(i+' wordend')
-        g.app.gui.setTextSelection(w,start,end)
-        return 'break'
-</t>
-<t tx="ekr.20060131173440">self.bindingWidget = t = Tk.Text(self.canvas,name='bindingWidget')
-
-t.bind('&lt;Key&gt;',k.masterKeyHandler)
-
-table = (
-    ('&lt;Button-1&gt;',       k.masterClickHandler,          tree.onHeadlineClick),
-    ('&lt;Button-3&gt;',       k.masterClick3Handler,         tree.onHeadlineRightClick),
-    ('&lt;Double-Button-1&gt;',k.masterDoubleClickHandler,    tree.onHeadlineClick),
-    ('&lt;Double-Button-3&gt;',k.masterDoubleClick3Handler,   tree.onHeadlineRightClick),
-)
-
-for a,handler,func in table:
-    def treeBindingCallback(event,handler=handler,func=func):
-        return handler(event,func)
-    t.bind(a,treeBindingCallback)
-    
-self.textBindings = t.bindtags()
-</t>
-<t tx="ekr.20060131173440.2">where = g.choose(self.expanded_click_area,'clickBox','plusBox')
-
-table = (
-    (where,    '&lt;Button-1&gt;',self.onClickBoxClick),
-    ('iconBox','&lt;Button-1&gt;',self.onIconBoxClick),
-    ('iconBox','&lt;Double-1&gt;',self.onIconBoxDoubleClick),
-    ('iconBox','&lt;Button-3&gt;',self.onIconBoxRightClick),
-    ('iconBox','&lt;Double-3&gt;',self.onIconBoxRightClick),
-    ('iconBox','&lt;B1-Motion&gt;',self.onDrag),
-    ('iconBox','&lt;Any-ButtonRelease-1&gt;',self.onEndDrag),
-)
-for tag,event,callback in table:
-    self.canvas.tag_bind(tag,event,callback)
-</t>
 <t tx="ekr.20060203072636">def endSearch (self,i,j):
 
     w = self.w
@@ -4259,28 +6396,6 @@ for tag,event,callback in table:
     g.app.gui.setTextSelection (self.w,i,j,insert=insert)
 
     self.k.keyboardQuit(event=None)</t>
-<t tx="ekr.20060203114017">def setMinibufferBindings (self):
-    
-    '''Create bindings for the minibuffer..'''
-    
-    f = self ; c = f.c ; k = c.k ; t = f.miniBufferWidget
-    
-    if not c.useTextMinibuffer: return
-    
-    for kind,callback in (
-        ('&lt;Key&gt;',           k.masterKeyHandler),
-        ('&lt;Button-1&gt;',      k.masterClickHandler),
-        ('&lt;Button-3&gt;',      k.masterClick3Handler),
-        ('&lt;Double-1&gt;',      k.masterDoubleClickHandler),
-        ('&lt;Double-3&gt;',      k.masterDoubleClick3Handler),
-    ):
-        t.bind(kind,callback)
-
-    if 0:
-        if sys.platform.startswith('win'):
-            # Support Linux middle-button paste easter egg.
-            t.bind("&lt;Button-2&gt;",frame.OnPaste)
-</t>
 <t tx="ekr.20060205103842">def get_focus (self):
     
     c = self
@@ -4332,6 +6447,19 @@ def treeWantsFocusNow(self):
 def widgetWantsFocusNow(self,w):
     c = self ; c.set_focus(w,force=True)
 </t>
+<t tx="ekr.20060211144330.1">def getMacHelpMenu (self):
+    
+    return None ###
+    
+    try:
+        helpMenu = Tk.Menu('top.help')
+        return helpMenu
+        
+    except Exception:
+        g.trace('Can not get MacOS Help menu')
+        g.es_exception()
+        return None
+</t>
 <t tx="ekr.20060212061804">def runOpenFileDialog(self,title,filetypes,defaultextension,multiple=False):
 
     """Create and run an Tkinter open file dialog ."""
@@ -4377,18 +6505,6 @@ remove-leading-ws:  ^[ \t]+             --&gt;  empty
 remove-trailing-ws: [ \t]+$             --&gt;  empty
 paste-at-column:    ^(.{4})             --&gt;  \1x
 paste-after-lws:    ^([ \t]+)           --&gt;  \1x</t>
-<t tx="ekr.20060307080642">if 0: # I find these very irritating.
-    for tag,text in (
-        # ('plusBox','plusBox'),
-        ('iconBox','Icon Box'),
-        ('selectBox','Click to select'),
-        ('clickBox','Click to expand or contract'),
-        # ('textBox','Headline'),
-    ):
-        # A fairly long wait is best.
-        balloon = Pmw.Balloon(self.canvas,initwait=700)
-        balloon.tagbind(self.canvas,tag,balloonHelp=text)
-</t>
 <t tx="ekr.20060417194232"></t>
 <t tx="ekr.20060417194232.1">def findCharacterHelper (self,event,backward,extend):
 
@@ -4738,22 +6854,32 @@ if w.leo_selection:
 
     &lt;&lt; dump the lines near the error &gt;&gt;
 </t>
-<t tx="ekr.20060824112937.1">@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3882798
-By: jujusl
+<t tx="ekr.20060826052453.1">def getLeoOutlineHelper (self,s,reassignIndices,checking):
+    
+    self.checking = checking
+    self.usingClipboard = True
+    self.fileBuffer = s ; self.fileIndex = 0
+    self.descendentUnknownAttributesDictList = []
+    v = None
 
-When I double-click in the body on a word with accents, only a part of the word
-is selected (up to the accentuated char, forward and backward)
-
-This does not happen in headlines.
-
-I saw that using Windows ; I will test it on Linux machine.
-
-Maybe is it a Tk problem, may be not. You'll tell me...
-
-Stéphane
-
-@color</t>
+    self.tnodesDict = {}
+    if not reassignIndices:
+        &lt;&lt; recreate tnodesDict &gt;&gt;
+    try:
+        self.getXmlVersionTag()
+        self.getXmlStylesheetTag()
+        self.getTag("&lt;leo_file&gt;")
+        self.getClipboardHeader()
+        self.getVnodes(reassignIndices)
+        self.getTnodes()
+        self.getTag("&lt;/leo_file&gt;")
+        if not checking:
+            v = self.finishPaste(reassignIndices)
+    finally:
+        self.fileBuffer = None ; self.fileIndex = 0
+        self.usingClipboard = False
+        self.tnodesDict = {}
+    return v</t>
 <t tx="ekr.20060904114302"></t>
 <t tx="ekr.20060904165452"></t>
 <t tx="ekr.20060905090957"># A step towards removing c ivars from vnode and position classes.</t>
@@ -4986,7 +7112,6 @@ replace self.bodyCtrl with c.frame.bodyCtrl.
 self.bodyCtrl = self.frame.bodyCtrl = w
 
 just before the call to self.onFocusIn(w).</t>
-<t tx="ekr.20060912091922">** Create separate @test node for each plugin.</t>
 <t tx="ekr.20060912093104">def defineCmdsMenuBodyEditorsTable (self):
 
     self.cmdsMenuBodyEditorsTable = [
@@ -5104,85 +7229,6 @@ def init_zodb (pathToZodbStorage,verbose=True):
         headString=v.headString())
     
     return vnode(t2)</t>
-<t tx="ekr.20060914085747">chapter_hoist.py
-leoOPML.py
-leo_to_html.py
-leo_to_rtf.py
-mod_scripting.py
-paste_as_headlines.py
-open_with.py
-rst3.py
-UNL.py
-</t>
-<t tx="ekr.20060914085747.1">ConceptualSort.py
-EditAttributes.py
-FileActions.py
-Library.py
-TabWindow.py
-UASearch.py
-URLloader.py
-UniversalScrolling.py
-
-add_directives.py
-arrows.py
-at_view.py
-autotrees.py
-base64Packager.py
-bibtex.py
-cleo.py
-color_markup.py
-datenodes.py
-detect_urls.py
-dyna_menu.py
-fastGotoNode.py
-footprints.py
-groupOperations.py
-hoist.py
-image.py
-import_cisco_config.py
-leoupdate.py
-macros.py
-mod_autosave.py
-mod_http.py
-mod_labels.py
-mod_read_dir_outline.py
-mod_shadow.py
-nav_buttons.py
-newButtons.py
-niceNosent.py
-nodebar.py
-nodenavigator.py
-open_shell.py
-pie_menus.py
-pretty_print.py
-print_cp.py
-rClick.py
-read_only_nodes.py
-rowcol.py
-run_nodes.py
-scheduler.py
-scripts_menu.py
-searchbox.py
-shortcut_button.py
-slideshow.py
-table.py
-templates.py
-trace_tags.py
-xcc_nodes.py
-xsltWithNodes.py</t>
-<t tx="ekr.20060914090250">__jEdit_colorizer__.py
-
-
-vim.py
-word_export.py
-xemacs.py</t>
-<t tx="ekr.20060914130034"># No unit tests needed: these are always active.
-plugins_manager.py
-plugins_menu.py
-
-# Unit tests needed...
-word_count.py
-zodb.py</t>
 <t tx="ekr.20060915113237">@nocolor
 http://sourceforge.net/forum/message.php?msg_id=3914969
 
@@ -5201,6 +7247,550 @@ so the do-nothing base class method was executed instead.
 <t tx="ekr.20060919070145">if not self.mFileName.endswith('opml'):
     self.mFileName = self.mFileName + '.opml'
 fileName = self.mFileName</t>
+<t tx="ekr.20060919104530"></t>
+<t tx="ekr.20060919104836"></t>
+<t tx="ekr.20060919110638.2">def dumpSaxTree (self,root,dummy):
+    
+    if not root:
+        print 'dumpSaxTree: empty tree'
+        return
+    if not dummy:
+        root.dump()
+    for child in root.children:
+        self.dumpSaxTree(child,dummy=False)</t>
+<t tx="ekr.20060919110638.3">def readSaxFile (self,theFile,fileName,silent):
+
+    c = self.c
+
+    # Pass one: create the intermediate nodes.
+    self.dummyRoot = dummyRoot = self.parse_leo_file(theFile,fileName,silent=silent)
+
+    # self.dumpSaxTree(dummyRoot,dummy=True)
+
+    # Pass two: create the tree of vnodes and tnodes from the intermediate nodes.
+    v = dummyRoot and self.createSaxVnodes(dummyRoot)
+    return v</t>
+<t tx="ekr.20060919110638.4">def createSaxVnodes (self, dummyRoot):
+    
+    '''**Important**: this method and its helpers are low-level code
+    corresponding to link/unlink methods in leoNodes.py.
+    Modify this with extreme care.'''
+
+    children = self.createSaxChildren(dummyRoot,parent_v = None)
+    firstChild = children and children[0]
+
+    return firstChild</t>
+<t tx="ekr.20060919110638.5"># node is a saxNodeClass object, parent_v is a vnode.
+
+def createSaxChildren (self, node, parent_v):
+    
+    result = []
+    
+    for child in node.children:
+        tnx = child.tnx
+        t = self.tnodesDict.get(tnx)
+        if t:
+            # A clone.  Create a new clone node, but share the subtree, i.e., the tnode.
+            v = self.createSaxVnode(child,parent_v,t=t)
+            # g.trace('clone',id(child),child.headString,'t',v.t)
+        else:
+            v = self.createSaxVnodeTree(child,parent_v)
+        result.append(v)
+        
+    self.linkSiblings(result)
+    if parent_v: self.linkParentAndChildren(parent_v,result)
+    return result</t>
+<t tx="ekr.20060919110638.6">def createSaxVnodeTree (self,node,parent_v):
+
+    v = self.createSaxVnode(node,parent_v)
+
+    self.createSaxChildren(node,v)
+
+    return v</t>
+<t tx="ekr.20060919110638.7">def createSaxVnode (self,node,parent_v,t=None):
+    
+    h = node.headString
+    b = node.bodyString
+
+    if not t:
+        t = leoNodes.tnode(bodyString=b,headString=h)
+        if node.tnx:
+            t.fileIndex = g.app.nodeIndices.scanGnx(node.tnx,0)
+    v = leoNodes.vnode(t)
+    v.t.vnodeList.append(v)
+    v._parent = parent_v
+
+    index = self.canonicalTnodeIndex(node.tnx)
+    self.tnodesDict [index] = t
+    
+    # g.trace('tnx','%-22s' % (index),'v',id(v),'v.t',id(v.t),'body','%-4d' % (len(b)),h)
+    
+    self.handleVnodeSaxAttributes(node,v)
+    self.handleTnodeSaxAttributes(node,t)
+    
+    return v</t>
+<t tx="ekr.20060919110638.8">def handleTnodeSaxAttributes (self,node,t):
+    
+    d = node.tnodeAttributes
+        
+    aDict = {}
+    for key in d.keys():
+        val = d.get(key)
+        val2 = self.getSaxUa(key,val)
+        aDict[key] = val2
+
+    if aDict:
+        # g.trace('uA',aDict)
+        t.unknownAttributes = aDict</t>
+<t tx="ekr.20060919110638.9">def linkParentAndChildren (self, parent_v, children):
+    
+    # if children: g.trace(parent_v,len(children))
+    
+    firstChild_v = children and children[0] or None
+
+    parent_v.t._firstChild = firstChild_v
+    
+    for child in children:
+        child._parent = parent_v
+    
+    v = parent_v
+    if v not in v.t.vnodeList:
+        v.t.vnodeList.append(v)</t>
+<t tx="ekr.20060919110638.10">def linkSiblings (self, sibs):
+    
+    '''Set the v._back and v._next links for all vnodes v in sibs.'''
+    
+    n = len(sibs)
+
+    for i in xrange(n):
+        v = sibs[i]
+        v._back = (i-1 &gt;= 0 and sibs[i-1]) or None
+        v._next = (i+1 &lt;  n and sibs[i+1]) or None</t>
+<t tx="ekr.20060919110638.11">def resolveTnodeLists (self):
+
+    c = self.c
+
+    for p in c.allNodes_iter():
+        if hasattr(p.v,'tempTnodeList'):
+            # g.trace(p.v.headString())
+            result = []
+            for tnx in p.v.tempTnodeList:
+                index = self.canonicalTnodeIndex(tnx)
+                t = self.tnodesDict.get(index)
+                if t:
+                    # g.trace(tnx,t)
+                    result.append(t)
+                else:
+                    g.trace('No tnode for %s' % tnx)
+            p.v.t.tnodeList = result
+            delattr(p.v,'tempTnodeList')</t>
+<t tx="ekr.20060919110638.13">def setPositionsFromVnodes (self):
+    
+    c = self.c ; p = c.rootPosition()
+    
+    current = None
+    d = hasattr(p.v,'unknownAttributes') and p.v.unknownAttributes
+    if d:
+        s = d.get('str_leo_pos')
+        if s:
+            current = self.archivedPositionToPosition(s)
+    
+    c.setCurrentPosition(current or c.rootPosition())</t>
+<t tx="ekr.20060919110638.14">def parse_leo_file (self,theFile,inputFileName,silent):
+    
+    c = self.c
+
+    try:
+        # Use cStringIo to avoid a crash in sax when inputFileName has unicode characters.
+        s = theFile.read()
+        theFile = cStringIO.StringIO(s)
+        # g.trace(repr(inputFileName))
+        node = None
+        parser = xml.sax.make_parser()
+        parser.setFeature(xml.sax.handler.feature_external_ges,1)
+            # Include external general entities, esp. xml-stylesheet lines.
+        if 0: # Expat does not read external features.
+            parser.setFeature(xml.sax.handler.feature_external_pes,1)
+                # Include all external parameter entities
+                # Hopefully the parser can figure out the encoding from the &lt;?xml&gt; element.
+        handler = saxContentHandler(c,inputFileName,silent)
+        parser.setContentHandler(handler)
+        parser.parse(theFile) # expat does not support parseString
+        node = handler.getRootNode()
+    except xml.sax.SAXParseException:
+        g.es_print('Error parsing %s' % (inputFileName),color='red')
+        g.es_exception()
+    except Exception:
+        g.es_print('Unexpected exception parsing %s' % (inputFileName),color='red')
+        g.es_exception()
+        
+    return node</t>
+<t tx="ekr.20060919110638.15">class saxNodeClass:
+    
+    '''A class representing one &lt;v&gt; element.
+    
+    Use getters to access the attributes, properties and rules of this mode.'''
+    
+    @others</t>
+<t tx="ekr.20060919110638.16">def __init__ (self):
+
+    self.attributes = {}
+    self.bodyString = ''
+    self.headString = ''
+    self.children = []
+    self.tnodeAttributes = {}
+    self.tnodeList = []
+    self.tnx = None</t>
+<t tx="ekr.20060919110638.17">def __str__ (self):
+
+    return '&lt;v: %s&gt;' % self.headString
+
+__repr__ = __str__</t>
+<t tx="ekr.20060919110638.18">def dump (self):
+     
+    print
+    print 'node: tnx: %s body: %d %s' % (self.tnx,len(self.bodyString),self.headString)
+    print 'children:',g.listToString([child for child in self.children])
+    print 'attrs:',self.attributes.values()</t>
+<t tx="ekr.20060919110638.19">class saxContentHandler (xml.sax.saxutils.XMLGenerator):
+    
+    '''A sax content handler class that reads Leo files.'''
+
+    @others</t>
+<t tx="ekr.20060919110638.20">def __init__ (self,c,fileName,silent):
+
+    self.c = c
+    self.fileName = fileName
+    self.silent = silent
+
+    # Init the base class.
+    xml.sax.saxutils.XMLGenerator.__init__(self)
+    
+    &lt;&lt; define dispatch dict &gt;&gt;
+    
+    self.printElements = [] # 'all', 'v'
+    
+    # Global attributes of the .leo file...
+    # self.body_outline_ratio = '0.5'
+    self.global_window_position = {}
+    self.encoding = 'utf-8' 
+
+    # Semantics...
+    self.content = None
+    self.currentNode = None
+    self.elementStack = []
+    self.errors = 0
+    self.tnxToListDict = {} # Keys are tnx's (strings), values are *lists* of saxNodeClass objects.
+    self.level = 0
+    self.node = None
+    self.nodeList = [] # List of saxNodeClass objects with the present tnode.
+    self.nodeStack = []
+    self.rootNode = None
+    self.topNode = None</t>
+<t tx="ekr.20060919110638.21"># There is no need for an 'end' method if all info is carried in attributes.
+
+self.dispatchDict = {
+    'find_panel_settings':         (None,None),
+    'globals':                     (self.startGlobals,None),
+    'global_log_window_position':  (None,None), # The position of the log window is no longer used.
+    'global_window_position':      (self.startWinPos,None),
+    'leo_file':                    (None,None),
+    'leo_header':                  (self.startLeoHeader,None),
+    'preferences':                 (None,None),
+    't':                           (self.startTnode,self.endTnode),
+    'tnodes':                      (None,None),
+    'v':                           (self.startVnode,self.endVnode),
+    'vh':                          (self.startVH,self.endVH),
+    'vnodes':                      (self.startVnodes,None), # Causes window to appear.
+}</t>
+<t tx="ekr.20060919110638.23">def attrsToList (self,attrs):
+    
+    '''Convert the attributes to a list of g.Bunches.
+    
+    attrs: an Attributes item passed to startElement.'''
+    
+    if 1:
+        for name in attrs.getNames():
+            val = attrs.getValue(name)
+            if type(val) != type(u''):
+                g.trace('Non-unicode attribute',name,val)
+
+    # g.trace(g.listToString([repr() for name in attrs.getNames()]))
+    
+    return [
+        g.Bunch(name=name,val=attrs.getValue(name))
+            for name in attrs.getNames()]</t>
+<t tx="ekr.20060919110638.24">def attrsToString (self,attrs,sep='\n'):
+    
+    '''Convert the attributes to a string.
+    
+    attrs: an Attributes item passed to startElement.
+    
+    sep: the separator charater between attributes.'''
+
+    result = [
+        '%s="%s"' % (bunch.name,bunch.val)
+        for bunch in self.attrsToList(attrs)
+    ]
+
+    return sep.join(result)</t>
+<t tx="ekr.20060919110638.25">def clean(self,s):
+
+    return g.toEncodedString(s,"ascii")</t>
+<t tx="ekr.20060919110638.26">def error (self, message):
+    
+    print
+    print
+    print 'XML error: %s' % (message)
+    print
+    
+    self.errors += 1</t>
+<t tx="ekr.20060919110638.27">def inElement (self,name):
+    
+    return self.elementStack and name in self.elementStack</t>
+<t tx="ekr.20060919110638.28">def printStartElement(self,name,attrs):
+    
+    indent = '\t' * self.level or ''
+
+    if attrs.getLength() &gt; 0:
+        print '%s&lt;%s %s&gt;' % (
+            indent,
+            self.clean(name).strip(),
+            self.attrsToString(attrs,sep=' ')),
+    else:
+        print '%s&lt;%s&gt;' % (
+            indent,
+            self.clean(name).strip()),
+
+    if name.lower() in ['v','t','vnodes','tnodes',]:
+        print</t>
+<t tx="ekr.20060919110638.29">def endElementNS(self,name,qname):
+    __pychecker__ = '--no-argsused'
+    g.trace(name)
+    
+def endDocument(self):
+    pass
+
+def ignorableWhitespace(self,whitespace):
+    __pychecker__ = '--no-argsused'
+    pass
+
+def skippedEntity(self,name):
+    __pychecker__ = '--no-argsused'
+    g.trace(name)
+
+def startElementNS(self,name,qname,attrs):
+    __pychecker__ = '--no-argsused'
+    g.trace(name)
+    
+def startDocument(self,*args,**keys):
+    pass # g.trace(args,keys)</t>
+<t tx="ekr.20060919110638.30">def characters(self,content):
+    
+    if content and type(content) != type(u''):
+        g.trace('Non-unicode content',repr(content))
+
+    content = content.replace('\r','')
+    if not content: return
+
+    elementName = self.elementStack and self.elementStack[-1].lower() or '&lt;no element name&gt;'
+    
+    if elementName in ('t','vh'):
+        # if elementName == 'vh': g.trace(elementName,repr(content))
+        self.content.append(content)
+
+    elif content.strip():
+        print 'unexpected content:',elementName,repr(content)</t>
+<t tx="ekr.20060919110638.31">def endElement(self,name):
+    
+    name = name.lower()
+    if name in self.printElements or 'all' in self.printElements:
+        indent = '\t' * (self.level-1) or ''
+        print '%s&lt;/%s&gt;' % (indent,self.clean(name).strip())
+    
+    data = self.dispatchDict.get(name)
+
+    if data is None:
+        if 0:
+            g.trace('unknown element',name)
+    else:
+        junk,func = data
+        if func:
+            func()
+
+    name2 = self.elementStack.pop()
+    assert name == name2</t>
+<t tx="ekr.20060919110638.32">def endTnode (self):
+    
+    for node in self.nodeList:
+        node.bodyString = ''.join(self.content)
+
+    self.content = []</t>
+<t tx="ekr.20060919110638.33">def endVnode (self):
+    
+    self.level -= 1
+    self.node = self.nodeStack.pop()</t>
+<t tx="ekr.20060919110638.34">def endVH (self):
+      
+    if self.node:
+        self.node.headString = ''.join(self.content)
+
+    self.content = []</t>
+<t tx="ekr.20060919110638.35">def startElement(self,name,attrs):
+    
+    name = name.lower()
+    if name in self.printElements or 'all' in self.printElements:
+        self.printStartElement(name,attrs)
+
+    self.elementStack.append(name)
+    
+    data = self.dispatchDict.get(name)
+
+    if data is None:
+        if 0:
+            g.trace('unknown element',name)
+    else:
+        func,junk = data
+        if func:
+            func(attrs)</t>
+<t tx="ekr.20060919110638.36">def getPositionAttributes (self,attrs):
+    
+    d = {}
+    
+    for bunch in self.attrsToList(attrs):
+        name = bunch.name ; val = bunch.val
+        if name in ('top','left','width','height'):
+            try:
+                d[name] = int(val)
+            except ValueError:
+                d[name] = 100 # A reasonable emergency default.
+        else:
+            g.trace(name,len(val))
+            
+    return d</t>
+<t tx="ekr.20060919110638.37">def startGlobals (self,attrs):
+    
+    for bunch in self.attrsToList(attrs):
+        name = bunch.name ; val = bunch.val
+        
+        if name == 'body_outline_ratio':
+            # self.body_outline_ratio = val
+            self.c.ratio = val
+            # g.trace(name,val)
+        elif 0:
+            g.trace(name,len(val))</t>
+<t tx="ekr.20060919110638.38">def startWinPos (self,attrs):
+    
+    self.global_window_position = self.getPositionAttributes(attrs)</t>
+<t tx="ekr.20060919110638.39">def startLeoHeader (self,attrs):
+    __pychecker__ = '--no-argsused'
+    self.tnxToListDict = {}
+</t>
+<t tx="ekr.20060919110638.40">def startVH (self,attrs):
+    
+    __pychecker__ = '--no-argsused'
+
+    self.content = []</t>
+<t tx="ekr.20060919110638.41">def startTnode (self,attrs):
+    
+    if not self.inElement('tnodes'):
+        self.error('&lt;t&gt; outside &lt;tnodes&gt;')
+        
+    self.content = []
+    
+    self.tnodeAttributes(attrs)</t>
+<t tx="ekr.20060919110638.42">def tnodeAttributes (self,attrs):
+    
+    # The tnode must have a tx attribute to associate content with the proper node.
+        
+    node = self.node
+    self.nodeList = []
+
+    for bunch in self.attrsToList(attrs):
+        name = bunch.name ; val = bunch.val
+        if name == 'tx':
+            self.nodeList = self.tnxToListDict.get(val,[])
+            if not self.nodeList:
+                self.error('Bad leo file: no node for &lt;t tx=%s&gt;' % (val))
+        else:
+            node.tnodeAttributes[name] = val
+            
+    if not self.nodeList:
+        self.error('Bad leo file: no tx attribute for tnode')</t>
+<t tx="ekr.20060919110638.43">def startVnode (self,attrs):
+    
+    if not self.inElement('vnodes'):
+        self.error('&lt;v&gt; outside &lt;vnodes&gt;')
+
+    if self.rootNode:
+        parent = self.node
+    else:
+        self.rootNode = parent = saxNodeClass() # The dummy parent node.
+        parent.headString = 'dummyNode'
+
+    self.node = saxNodeClass()
+
+    parent.children.append(self.node)
+    self.vnodeAttributes(attrs)
+    self.nodeStack.append(parent)
+        
+    return parent</t>
+<t tx="ekr.20060919110638.44"># The native attributes of &lt;v&gt; elements are a, t, vtag, tnodeList,
+# marks, expanded and descendentTnodeUnknownAttributes.
+
+def vnodeAttributes (self,attrs):
+    
+    node = self.node
+
+    for bunch in self.attrsToList(attrs):
+        name = bunch.name ; val = bunch.val
+        if name == 't':
+            aList = self.tnxToListDict.get(val,[])
+            aList.append(self.node)
+            self.tnxToListDict[val] = aList
+            node.tnx = str(val) # nodeIndices.toString returns a string.
+        else:
+            node.attributes[name] = val</t>
+<t tx="ekr.20060919110638.45">def getCurrentNode (self):
+    return self.currentNode
+    
+def getRootNode (self):
+    return self.rootNode
+    
+def getTopNode (self):
+    return self.topNode</t>
+<t tx="ekr.20060919112118">def startVnodes (self,attrs):
+    
+    __pychecker__ = '--no-argsused'
+    
+    c = self.c ; d = self.global_window_position
+
+    w = d.get('width',700)
+    h = d.get('height',500)
+    x = d.get('left',50)
+    y = d.get('top',50)
+    # g.trace(d,w,h,x,y)
+    
+    # Redraw the window before writing into it.
+    c.frame.setTopGeometry(w,h,x,y)
+    c.frame.deiconify()
+    c.frame.lift()
+    c.frame.update()
+
+    # Causes window to appear.
+    # g.trace('ratio',c.frame.ratio,c.frame.secondary_ratio)
+    c.frame.resizePanesToRatio(c.frame.ratio,c.frame.secondary_ratio)
+    if not self.silent:
+        g.es("reading: " + self.fileName)</t>
+<t tx="ekr.20060919133249"># Methods common to both the sax and non-sax code.</t>
+<t tx="ekr.20060919134313"></t>
+<t tx="ekr.20060919142200.1">def initReadIvars (self):
+
+    self.descendentUnknownAttributesDictList = []
+    self.descendentExpandedList = []
+    self.descendentMarksList = []
+    self.tnodesDict = {}</t>
+<t tx="ekr.20060919145406">@others</t>
 <t tx="ekr.20060920145332"></t>
 <t tx="ekr.20060920150119">@nocolor
 
@@ -5240,7 +7830,6 @@ The actual usages of vnodeList:
 - vParentWithStack: uses len(vnodeList)
 ** moveOutlineUp: if back2 and p.v in back2.v.t.vnodeList:
 * findChild4: uses vnodeList[0], but it's a weird use.</t>
-<t tx="ekr.20060920190138"></t>
 <t tx="ekr.20060921100435"># Simplified version by EKR: stringCompare not used.
 
 def CheckVersion (s1,s2,condition="&gt;=",stringCompare=None,delimiter='.',trace=False):
@@ -5410,6 +7999,45 @@ def oldCheckVersion( version, againstVersion, condition="&gt;=", stringCompare="
         'scroll-up-e&amp;xtend-selection',
     ]</t>
 <t tx="ekr.20060923065819"></t>
+<t tx="ekr.20060923202156">def onCanvasKey (self,event):
+    
+    '''Navigate to the next headline starting with ch = event.char.
+    If ch is uppercase, search all headlines; otherwise search only visible headlines.
+    This is modelled on Windows explorer.'''
+    
+    if not event or not event.char or not event.keysym.isalnum():
+        return
+    c  = self ; p = c.currentPosition() ; p1 = p.copy()
+    ch = event.char ; all = ch.isupper()
+    found = False
+    extend = self.navQuickKey(p)
+    attempts = g.choose(extend,(True,False),(False,))
+    for extend2 in attempts:
+        p = p1.copy()
+        while 1:
+            if all:
+                p.moveToThreadNext()
+            else:
+                p.moveToVisNext()
+            if not p:
+                p = c.rootPosition()
+            if p == p1: # Never try to match the same position.
+                # g.trace('failed',extend2)
+                found = False ; break
+            newPrefix = c.navHelper(p,ch,all,extend2)
+            if newPrefix:
+                found = True ; break
+        if found: break
+    if found:
+        if all: self.expandAllAncestors(p)
+        c.selectPosition(p)
+        c.navTime = time.clock()
+        c.navPrefix = newPrefix
+        # g.trace('extend',extend,'extend2',extend2,'navPrefix',c.navPrefix,'p',p.headString())
+    else:
+        c.navTime = None
+        c.navPrefix = ''
+    c.treeWantsFocusNow()</t>
 <t tx="ekr.20060924120752">def defineCmdsMenuPanesTable (self):
 
     c = self.c
@@ -5635,7 +8263,6 @@ LEO *always* outputs the first line of a node without indentation even if it is 
 <t tx="ekr.20060927100500.1">@nocolor
 
 - Does not restore selection after indent/undent commands.</t>
-<t tx="ekr.20060927172440"></t>
 <t tx="ekr.20060927173836.1">@nocolor
 
 Why are calltips enabled at all??
@@ -5662,9 +8289,13 @@ Show calltips treats the node as code, and that can have very weird effects in @
 
     c.expansionLevel = level # Reset expansion level.
 </t>
-<t tx="ekr.20060928062431.1">http://sourceforge.net/forum/message.php?msg_id=3935780
+<t tx="ekr.20060928062431.1">@nocolor
 
-This greatly speeds searches that used to open many nodes.</t>
+http://sourceforge.net/forum/message.php?msg_id=3935780
+
+This greatly speeds searches that used to open many nodes.
+
+New in Leo 4.4.2 b2: support for @bool collapse_nodes_during_finds setting.</t>
 <t tx="ekr.20060928082153">@nocolor
 
 New in beta 2: Leo looks for myLeoSettings.leo files in the same place Leo looks for leoSettings.leo files.
@@ -5680,8 +8311,6 @@ New in beta 2: Leo looks for myLeoSettings.leo files in the same place Leo looks
 <t tx="ekr.20060929090247.2"></t>
 <t tx="ekr.20060929091051"></t>
 <t tx="ekr.20060929100150">Used brief traceback in g.handleScriptException</t>
-<t tx="ekr.20060929100640.1">True: Outline gets focus when a new window is opened.
-False Body pane gets focus when a new window is opened.</t>
 <t tx="ekr.20060929103258">if toString:
     theActualFile = None
 else:
@@ -5715,17 +8344,365 @@ TypeError: unsupported operand type(s) for +: 'type' and 'str'
 </t>
 <t tx="ekr.20060929141921"></t>
 <t tx="ekr.20060929141921.1"></t>
-<t tx="ekr.20060929141941"></t>
-<t tx="ekr.20060930085556">True: (Recommended) The find commands collapse all nodes that are not ancestors of the node containing the match.
-False: The find command expands nodes needed to show the match, but does not collapse any nodes.</t>
 <t tx="ekr.20060930110140"></t>
-<t tx="ekr.20060930110925">Up/down arrow keys should move straight up/down, but this is difficult with Tk.
-Still the present way is very bad.</t>
-<t tx="ekr.20060930111450"></t>
-<t tx="ekr.20060930125206"></t>
-<t tx="ekr.20060930172926"></t>
-<t tx="ekr.20061001060913"></t>
+<t tx="ekr.20060930111450"># w was set to self.w, rather than event.widget.</t>
+<t tx="ekr.20060930125206">@nocolor
+
+The code that writes .leo files is now almost exactly twice as fast as the old code.</t>
 <t tx="ekr.20061001060913.1"></t>
-<t tx="ekr.20061001060913.2"></t>
+<t tx="ekr.20061001094334"># The tests are in unitTest.leo.
+# Important: test_ methods do not get an accurate value of p!
+
+# Fixed several bugs relating to different signatures for pickle.dumps.</t>
+<t tx="ekr.20061001145550"></t>
+<t tx="ekr.20061001145928"></t>
+<t tx="ekr.20061002060833"></t>
+<t tx="ekr.20061002064543">@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3941670
+
+The code on cvs now supports the 'extended' character search. When keystrokes
+(in the outline pane) are typed 'close' together in time Leo first tries to look
+for prefix + ch, where ch is the character just typed and prefix is the previous
+match.
+
+By 'close together' I mean the time interval specified by the new setting:
+
+@float outline_nav_extend_delay = 2.0
+
+The unit of time is seconds.
+
+The outline nav search revers to a single-character if the extended search
+fails, so in fact the delay is not too significant. In practice everything works
+well without me thinking at all about what is happening.
+
+@color</t>
+<t tx="ekr.20061002064811">@nocolor
+
+Added support for @bool outline_pane_has_initial_focus setting
+
+@color</t>
+<t tx="ekr.20061002073144">@nocolor 
+
+A patch for 4.4.2 beta 1 to make Leo jump to the start of word while searching backwards. It is default behavior windows editors:
+
+--- E:/ENV/Leo/src/leoEditCommands_old.py   Sun Oct 01 14:35:38 2006
++++ E:/ENV/Leo/src/leoEditCommands_var2.py  Sun Oct 01 14:42:48 2006
+@@ -3302,12 +3302,18 @@
+         i = toPython(w.index('insert'))
+         delta = g.choose(forward,1,-1)
+         
+-        if not forward: i -= 1
+-        while 0 &lt;= i &lt; n and isWordChar(s[i]):
+-            i += delta
+-        while 0 &lt;= i &lt; n and not isWordChar(s[i]):
+-            i += delta
+-        if not forward: i += 1;
++        if not forward:
++            i -= 1
++            while 0 &lt;= i &lt; n and not isWordChar(s[i]):
++                i += delta
++            while 0 &lt;= i &lt; n and isWordChar(s[i]):
++                i += delta
++            i += 1
++        else:
++            while 0 &lt;= i &lt; n and isWordChar(s[i]):
++                i += delta
++            while 0 &lt;= i &lt; n and not isWordChar(s[i]):
++                i += delta
+     
+         self.moveToHelper(event,toGui(i),extend)
+     #@nonl
+     
+@color</t>
+<t tx="ekr.20061002093442"></t>
+<t tx="ekr.20061002095711">def navHelper (self,p,ch,all,extend):
+    
+    c = self ; h = p.headString().lower()
+    
+    if extend:
+        prefix = c.navPrefix + ch
+        return h.startswith(prefix.lower()) and prefix
+
+    if h.startswith(ch):
+        return ch
+    
+    # New feature: search for first non-blank character after @x for common x.
+    if ch != '@' and h.startswith('@'):
+        for s in ('button','command','file','thin','asis','nosent','noref'):
+            prefix = '@'+s
+            if h.startswith('@'+s):
+                while 1:
+                    n = len(prefix)
+                    ch2 = n &lt; len(h) and h[n] or ''
+                    if ch2.isspace():
+                        prefix = prefix + ch2
+                    else: break
+                if len(prefix) &lt; len(h) and h.startswith(prefix + ch.lower()):
+                    return prefix + ch
+    return ''</t>
+<t tx="ekr.20061002095711.1">def navQuickKey (self,p):
+    
+    '''return true if there are two quick outline navigation keys
+    in quick succession.
+    
+    Returns False if @float outline_nav_extend_delay setting is 0.0 or unspecified.'''
+    
+    c = self
+   
+    deltaTime = c.config.getFloat('outline_nav_extend_delay')
+
+    if deltaTime in (None,0.0):
+        return False
+    else:
+        nearTime = c.navTime and time.clock() - c.navTime &lt; deltaTime
+        # g.trace(nearTime,p.headString())
+        return nearTime</t>
+<t tx="ekr.20061002135140">@
+
+The conclusion is:
+- Unicode strings: use unicode escapes for all non-ascii characters.
+- Plain strings: use the actual characters.
+
+No changes were made to any of Leo's methods.
+In particular, getScript *is* correct.</t>
+<t tx="ekr.20061003072809.1">@ What I did:
+    
+- created g.isWordChar.  It does proper test for letters and numbers.
+- Used g.isWordChar in extendToWord and moveWordHelper.
+- OnBodyDoubleClick now just calls c.editCommands.extendToWord.
+
+So Russian characters, e.g., no longer 'interrrupt' words.
+
+Another fix: extend-to-word now works properly at the very end of a word.</t>
+<t tx="ekr.20061003075953"></t>
+<t tx="ekr.20061003084249">@nocolor
+
+Drat.  The sax code is almost twice as slow as Leo's original code.
+
+- Eliminated maxTnodeIndex, fileFormatNumber and other fileCommands ivars set only in getHeader.
+    
+- fileCommands.finishPaste now assigns gnx's rather than the old fileIndices based on maxTnodeIndex.
+
+- Improved code in putDescendentAttributes.
+
+- Made sure that uA keys are strings, not unicode strings.  This makes a difference to pickle.
+
+- Renamed most sax methods so they don't conflict with non-sax methods.
+  This prepares to convert use_sax to a user option.
+  
+- Made the use_sax switch a user option.</t>
+<t tx="ekr.20061003093021">def getSaxUa(self,attr,val):
+    
+    """Parse an unknown attribute in a &lt;v&gt; or &lt;t&gt; element.
+    The unknown tag has been pickled and hexlify'd.
+    """
+    
+    try:
+        val = str(val)
+    except UnicodeError:
+        g.es_print('Unexpected exception converting hexlified string to string')
+        g.es_exception()
+        
+    # g.trace(attr,repr(val))
+        
+    # New in 4.3: leave string attributes starting with 'str_' alone.
+    if attr.startswith('str_') and type(val) == type(''):
+        # g.trace(attr,val)
+        return val
+        
+    # New in 4.3: convert attributes starting with 'b64_' using the base64 conversion.
+    if 0: # Not ready yet.
+        if attr.startswith('b64_'):
+            try: pass
+            except Exception: pass
+        
+    try:
+        binString = binascii.unhexlify(val) # Throws a TypeError if val is not a hex string.
+    except TypeError:
+        # Assume that Leo 4.1 wrote the attribute.
+        g.trace('can not unhexlify',val)
+        return val
+    try:
+        # No change needed to support protocols.
+        val2 = pickle.loads(binString)
+        # g.trace('v.3 val:',val2)
+        return val2
+    except (pickle.UnpicklingError,ImportError):
+        g.trace('can not unpickle',val)
+        return val
+</t>
+<t tx="ekr.20061004053644"># The native attributes of &lt;v&gt; elements are a, t, vtag, tnodeList,
+# marks, expanded and descendentTnodeUnknownAttributes.
+
+def handleVnodeSaxAttributes (self,node,v):
+    
+    d = node.attributes
+    s = d.get('a')
+    if s:
+        # g.trace('%s a=%s %s' % (id(node),s,v.headString()))
+        # 'C' (clone) and 'D' bits are not used.
+        if 'M' in s: v.setMarked()
+        if 'E' in s: v.expand()
+        if 'O' in s: v.setOrphan()
+        if 'T' in s: self.topVnode = v
+        if 'V' in s:
+            # g.trace('setting currentVnode',v,color='red')
+            self.currentVnode = v
+
+    s = d.get('tnodeList','')
+    tnodeList = s and s.split(',')
+    if tnodeList:
+        # This tnode list will be resolved later.
+        # g.trace('found tnodeList',v.headString(),tnodeList)
+        v.tempTnodeList = tnodeList
+        
+    s = d.get('descendentTnodeUnknownAttributes') # Correct: only tnode have descendent uA's.
+    if s: 
+        aDict = self.getDescendentUnknownAttributes(s)
+        if aDict:
+            # g.trace('descendentUaDictList',aDict)
+            self.descendentUnknownAttributesDictList.append(aDict)
+    
+    s = d.get('expanded')
+    if s:
+        aList = self.getDescendentAttributes(s,tag="expanded")
+        # g.trace('expanded list',len(aList))
+        self.descendentExpandedList.extend(aList)
+    
+    s = d.get('marks')
+    if s:
+        aList = self.getDescendentAttributes(s,tag="marks")
+        # g.trace('marks list',len(aList))
+        self.descendentMarksList.extend(aList)
+        
+    aDict = {}
+    for key in d.keys():
+        if key in self.nativeVnodeAttributes:
+            if 0: g.trace('****ignoring***',key,d.get(key))
+        else:
+            val = d.get(key)
+            val2 = self.getSaxUa(key,val)
+            aDict[key] = val2
+            # g.trace(key,val,val2)
+    if aDict:
+        # g.trace('uA',aDict)
+        v.unknownAttributes = aDict</t>
+<t tx="ekr.20061004054323">def processingInstruction (self,target,data):
+    
+    if target == 'xml-stylesheet':
+        self.c.frame.stylesheet = data
+        if not self.silent:
+            g.es('%s: %s' % (target,data),color='blue')
+    else:
+        g.trace(target,data)</t>
+<t tx="ekr.20061004081725">@nocolor
+
+- Solve the c.currentPosition in skipped tree problem.</t>
+<t tx="ekr.20061006092649">def archivedPosition (self):
+    
+    '''Return a representation of a position suitable for use in .leo files.'''
+    
+    p = self
+    aList = [p2.v.childIndex() for p2 in p.self_and_parents_iter()]
+    aList.reverse()
+    return aList</t>
+<t tx="ekr.20061006092649.1"></t>
+<t tx="ekr.20061006102948"></t>
+<t tx="ekr.20061006104837.1">def archivedPositionToPosition (self,s):
+
+    c = self.c
+    aList = s.split(',')
+    try:
+        aList = [int(z) for z in aList]
+    except Exception:
+        g.trace('oops: bad archived position:',aList)
+        aList = None
+    if not aList: return None
+    p = c.rootPosition() ; level = 0
+    while level &lt; len(aList):
+        i = aList[level]
+        while i &gt; 0:
+            if p.hasNext():
+                p.moveToNext()
+                i -= 1
+            else:
+                g.trace('oops: bad archived position:',aList)
+                return None
+        level += 1
+        if level &lt; len(aList):
+            p.moveToFirstChild()
+            # g.trace('level',level,'index',aList[level],p.headString())
+    return p</t>
+<t tx="ekr.20061006152327">def isWordChar (ch):
+    
+    '''Return True if ch should be considered a letter.'''
+    
+    # First, handle the easy cases.
+    if ch in (string.letters + string.digits + '_'):
+        return True
+    if ch in (string.punctuation + string.whitespace):
+        return False
+    # Now get the unicode
+    cat = unicodedata.category(ch)
+    # g.trace(cat)
+    return cat.startswith('L') or cat.startswith('N')</t>
+<t tx="ekr.20061006170725">@nocolor
+
+Installer does not complain about missing Python and does not install anything either. Here is a fix to this behavior. In most user-friendly way it would be better to provide a clickable link to Python site and a way to specify the path manually, but for now it is just that - a fix.
+
+--- E:/ENV/Leo/dist/leo-4-3_old.nsi Fri Sep 29 12:55:58 2006
++++ E:/ENV/Leo/dist/leo-4-3.nsi     Sun Oct 01 17:01:00 2006
+@@ -175,7 +175,9 @@
+     # repeating the logic of tryMSIformat:
+     # is the first character a "
+     StrCpy $8 $9 1
+-    StrCmp $8 '"' foundQuoteCurrentUser oops
++    StrCmp $8 '"' foundQuoteCurrentUser 0
++      StrCpy $StrNoUsablePythonFound "${STRING_PYTHON_NOT_FOUND}"
++      Goto oops
+     
+     foundQuoteCurrentUser:
+     # OK. Strip off the " at the start as well as the 9 characters at the end
+@@ -488,7 +490,7 @@
+ 
+ ; UninstallText "This will uninstall Leo from your system"
+ UninstallCaption "Uninstall Leo"
+-UninstallIcon c:\prog\tigris-cvs\leo\Icons\uninst.ico
++UninstallIcon ..\Icons\uninst.ico
+ ;@nonl
+ ;@-node:ekr.20050118092706.18:&lt;&lt; Uninstall-related Settings &gt;&gt;
+ ;@nl
+
+
+</t>
+<t tx="ekr.20061006191936"></t>
+<t tx="ekr.20061007075350"></t>
+<t tx="ekr.20061007082956">def extendToLine (self,event):
+    
+    '''Select the line at the cursor.'''
+    
+    w = event.widget ; s = w.get('1.0','end') ; n = len(s)
+
+    def toGui(i): return g.app.gui.toGuiIndex(s,w,i)
+    def toPython(i): return g.app.gui.toPythonIndex(s,w,i)
+
+    i = toPython(w.index('insert'))
+    
+    while 0 &lt;= i &lt; n and not s[i] == '\n':
+        i -= 1
+
+    i += 1 ; i1 = i
+    while 0 &lt;= i &lt; n and not s[i] == '\n':
+        i += 1
+
+    g.app.gui.setSelectionRange(w,toGui(i1),toGui(i))
+</t>
+<t tx="ekr.20061007083402"></t>
+<t tx="ekr.20061007084626"># This is a big help in understanding bindings.</t>
+<t tx="ekr.20061007094718"></t>
+<t tx="ekr.20061007094718.1"></t>
+<t tx="ekr.20061007094718.2"></t>
+<t tx="ekr.20061007094817"></t>
 </tnodes>
 </leo_file>

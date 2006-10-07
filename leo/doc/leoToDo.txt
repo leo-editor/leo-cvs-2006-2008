@@ -2,7 +2,9 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20060927172440:To do before 4.4.2 final
-#@+node:ekr.20061001060913.1:To do first: 4
+#@+node:ekr.20061001060913.1:To do first
+#@+node:ekr.20061007094718.2:Add shortcut for extend-to-line
+#@-node:ekr.20061007094718.2:Add shortcut for extend-to-line
 #@+node:ekr.20051112080017:delete-x-script-button
 @nocolor
 
@@ -475,8 +477,16 @@ def revert (self,event=None):
 #@-node:ekr.20031218072017.2837:revert
 #@-node:ekr.20031218072017.2820:top level (file menu)
 #@-node:ekr.20061002093442:Add opml support to new,open, save commands
-#@-node:ekr.20061001060913.1:To do first: 4
-#@+node:ekr.20060929122217.2:Fix bugs: 6
+#@-node:ekr.20061001060913.1:To do first
+#@+node:ekr.20060929122217.2:Fix bugs
+#@+node:ekr.20061007083402:do full recolor after paste/yank
+#@-node:ekr.20061007083402:do full recolor after paste/yank
+#@+node:ekr.20061007094817:Alt-y moves to Bindings pane, but does not select the text
+#@-node:ekr.20061007094817:Alt-y moves to Bindings pane, but does not select the text
+#@+node:ekr.20061007075350:Make sure errors are reported properly in Python 2.5
+#@-node:ekr.20061007075350:Make sure errors are reported properly in Python 2.5
+#@+node:ekr.20060928194335:Fix bug: closing a window after removing a script button can crash
+#@-node:ekr.20060928194335:Fix bug: closing a window after removing a script button can crash
 #@+node:ekr.20060116083043:Use special Help menu on the Mac
 @nocolor
 
@@ -608,9 +618,7 @@ Show calltips treats the node as code, and that can have very weird effects in @
 #@-node:ekr.20060927173836.1:Disable calltips in @nocolor sections
 #@+node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
 #@-node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
-#@+node:ekr.20060928194335:Fix bug: closing a window after removing a script button can crash
-#@-node:ekr.20060928194335:Fix bug: closing a window after removing a script button can crash
-#@-node:ekr.20060929122217.2:Fix bugs: 6
+#@-node:ekr.20060929122217.2:Fix bugs
 #@+node:ekr.20060920190138:Document tnodeList, vnodeList
 #@-node:ekr.20060920190138:Document tnodeList, vnodeList
 #@+node:ekr.20060912091922:Test all plugins
@@ -1231,10 +1239,6 @@ def __init__ (self,c):
     self.kbiterator = self.iterateKillBuffer()
     self.last_clipboard = None # For interacting with system clipboard.
     self.reset = False
-    try:
-        self.widget = c.frame.body.bodyCtrl
-    except AttributeError:
-        self.widget = None
 
 def finishCreate (self):
     
@@ -1418,8 +1422,6 @@ def yank (self,event):
     k = self.k ; w = event.widget
     i = w.index('insert')
     clip_text = self.getClipboard(w)
-    
-    g.trace(repr(clip_text),g.app.gui.widget_name(w))
 
     if self.killBuffer or clip_text:
         self.reset = True

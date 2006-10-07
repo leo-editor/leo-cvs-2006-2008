@@ -2137,32 +2137,6 @@ These might get the tab name from the minibuffer...
 #@-node:ekr.20060116074450:Drive tabs from keyboard
 #@+node:ekr.20051021074728:Space completion
 #@-node:ekr.20051021074728:Space completion
-#@+node:ekr.20040918165519:Mark Task & Clone To Task commands
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=2415033
-By: nobody
-
-Ive been scanning Speed Reams Slash post and the Faq and saw an interesting
-usage pattern: Creating a node called a Task and adding cloned nodes to it that
-represent that task(I hope that explains it).  I can see myself using this idiom
-in the future.  Now my question is does the Task/clone idiom warrant special
-commands in Leo?  My basis:
-
-1. Do enough Leo users work with this idiom that making it easier to utilize
-would be desirable?  I guess a good rule of thumb might be, if the sequence
-of actions occur more frequently than the primitive commands like opening a
-file it should be considered.
-
-Maybe a way of doing it:
-
-1. A special mark node as Task command.
-2. A Add to lask marked task command, that clones a node and moves that node
-into the Task node.
-#@nonl
-#@-node:ekr.20040918165519:Mark Task & Clone To Task commands
-#@+node:ekr.20041022091645.1:Find Next Clone command
-#@-node:ekr.20041022091645.1:Find Next Clone command
 #@+node:ekr.20040315060557:Declone command
 By: nobody ( Nobody/Anonymous ) 
  having a declone() method for vnodes?   

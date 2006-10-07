@@ -8165,6 +8165,86 @@ def navHelper (self,p,ch,all,extend):
 #@-node:ekr.20061002064543:Make outline navigation cumulative
 #@+node:ekr.20061006092649.1:added p.archivedPosition
 #@-node:ekr.20061006092649.1:added p.archivedPosition
+#@+node:ekr.20061007094718:Added extend-to-line command
+#@+node:ekr.20061007082956:extend-to-line
+def extendToLine (self,event):
+    
+    '''Select the line at the cursor.'''
+    
+    w = event.widget ; s = w.get('1.0','end') ; n = len(s)
+
+    def toGui(i): return g.app.gui.toGuiIndex(s,w,i)
+    def toPython(i): return g.app.gui.toPythonIndex(s,w,i)
+
+    i = toPython(w.index('insert'))
+    
+    while 0 <= i < n and not s[i] == '\n':
+        i -= 1
+
+    i += 1 ; i1 = i
+    while 0 <= i < n and not s[i] == '\n':
+        i += 1
+
+    g.app.gui.setSelectionRange(w,toGui(i1),toGui(i))
+#@-node:ekr.20061007082956:extend-to-line
+#@-node:ekr.20061007094718:Added extend-to-line command
+#@+node:ekr.20061007084626:Improved print-bindings command
+# This is a big help in understanding bindings.
+#@nonl
+#@+node:ekr.20051012201831:printBindings
+def printBindings (self,event):
+
+    '''Print all the bindings presently in effect.'''
+
+    k = self ; c = k.c
+    d = k.bindingsDict ; tabName = 'Bindings'
+    keys = d.keys() ; keys.sort()
+    c.frame.log.clearTab(tabName)
+    data = [] ; n1 = 4 ; n2 = 20
+    for key in keys:
+        bunchList = d.get(key,[])
+        for b in bunchList:
+            pane = g.choose(b.pane=='all','',' %s:' % (b.pane))
+            s1 = pane
+            s2 = k.prettyPrintKey(key,brief=True)
+            s3 = b.commandName
+            n1 = max(n1,len(s1))
+            n2 = max(n2,len(s2))
+            data.append((s1,s2,s3),)
+            
+    # Print keys by type:
+    sep = '-' * n1
+    for prefix in (
+        'Alt+Ctrl+Shift', 'Alt+Shift', 'Alt+Ctrl', 'Alt',
+        'Ctrl+Shift', 'Ctrl', 'Shift',
+    ):
+        data2 = []
+        for item in data:
+            s1,s2,s3 = item
+            if s2.startswith(prefix):
+                data2.append(item)
+        g.es('%s %s' % (sep, prefix),tabName=tabName)
+        self.printBindingsHelper(data2,n1,n2)
+        # Remove all the items in data2 from data.
+        # This must be done outside the iterator on data.
+        for item in data2:
+            data.remove(item)
+    # Print all plain bindings.
+    g.es('%s %s' % (sep, 'Plain Keys',),tabName=tabName)
+    self.printBindingsHelper(data,n1,n2)
+    state = k.unboundKeyAction 
+    k.showStateAndMode()
+    
+def printBindingsHelper (self,data,n1,n2):
+                
+    # This isn't perfect in variable-width fonts.
+    data.sort(lambda x,y: cmp(x[1],y[1]))
+    for s1,s2,s3 in data:
+        g.es('%*s %*s %s' % (-n1,s1,-(min(12,n2)),s2,s3),tabName='Bindings')
+#@-node:ekr.20051012201831:printBindings
+#@-node:ekr.20061007084626:Improved print-bindings command
+#@+node:ekr.20061007094718.1:Added bindings for Alt-Shift-Arrow keys to force an outline move
+#@-node:ekr.20061007094718.1:Added bindings for Alt-Shift-Arrow keys to force an outline move
 #@-node:ekr.20060929141921:Features
 #@+node:ekr.20060929141921.1:Tests
 #@+node:ekr.20060929100150:Tested Python 2.5 exception reporting
