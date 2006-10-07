@@ -1027,8 +1027,9 @@ class leoMenu:
         ]
         
         self.cursorMenuForwardExtendTable = [
-            # &: e,b,c,l,n,p,s,w
-            '&extend-to-word',
+            # &: e,b,c,l,n,p,s,w,x
+            '&extend-to-line',
+            'e&xtend-to-word',
             '-',
             'end-of-&buffer-extend-selection',
             'end-of-&line-extend-selection',
@@ -1036,7 +1037,7 @@ class leoMenu:
             'forward-&char-extend-selection',
             'forward-&paragraph-extend-selection',
             'forward-&sentence-extend-selection',
-            'forward-&word-extend-selection',
+            'forward-&word-extend-selection',#
             '-',
             '&next-line-extend-selection',    
         ]
