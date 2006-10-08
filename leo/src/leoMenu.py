@@ -434,9 +434,10 @@ class leoMenu:
             self.createMenuEntries(menu,table)
     
         for name,table in (
-            # &: b,e,f,s,x
+            # &: b,e,f,s,t,x
             ('Cursor &Back...',                     self.cursorMenuBackTable),
             ('Cursor Back &Extend Selection...',    self.cursorMeuuBackExtendTable),
+            ('Cursor Extend &To...',                self.cursorMenuExtendTable),
             ('Cursor &Forward...',                  self.cursorMenuForwardTable),
             ('Cursor Forward E&xtend Selection...', self.cursorMenuForwardExtendTable),
         ):
@@ -1013,6 +1014,14 @@ class leoMenu:
             'pre&vious-line-extend-selection',
         ]
         
+        self.cursorMenuExtendTable = [
+            # &: l,p,s,w
+            'extend-to-&line',
+            'extend-to-&paragraph',
+            'extend-to-&sentence',
+            'extend-to-&word',
+        ]
+        
         self.cursorMenuForwardTable = [
             # &: b,c,l,n,p,s,w
             'end-of-&buffer',
@@ -1027,10 +1036,7 @@ class leoMenu:
         ]
         
         self.cursorMenuForwardExtendTable = [
-            # &: e,b,c,l,n,p,s,w,x
-            '&extend-to-line',
-            'e&xtend-to-word',
-            '-',
+            # &: b,c,l,n,p,s,w
             'end-of-&buffer-extend-selection',
             'end-of-&line-extend-selection',
             '-',
