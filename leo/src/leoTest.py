@@ -468,16 +468,18 @@ class testUtils:
         return p
     #@-node:ekr.20051104075904.29:findNodeInRootTree
     #@+node:ekr.20051104075904.30:u.findNodeInTree
-    def findNodeInTree(self,p,headline):
+    def findNodeInTree(self,p,headline,startswith=False):
     
         """Search for a node in p's tree matching the given headline."""
     
         c = self.c
+        h = headline.strip().lower()
         for p in p.subtree_iter():
-            h = headline.strip().lower()
-            if p.headString().strip().lower() == h:
+            h2 = p.headString().strip().lower()
+            if h2 == h or startswith and h2.startswith(h):
                 return p.copy()
         return c.nullPosition()
+    
     #@-node:ekr.20051104075904.30:u.findNodeInTree
     #@+node:ekr.20051104075904.31:findNodeAnywhere
     def findNodeAnywhere(self,headline):
@@ -1419,6 +1421,48 @@ def throwAssertionError():
     
     assert 0, 'assert(0) as a test of catching assertions'
 #@-node:ekr.20051104075904.95:throwAssertionError
+#@+node:ekr.20061008140603:runEditCommandTest
+def runEditCommandTest (c,p):
+    
+    u = testUtils(c) ; atTest = p.copy()
+    w = c.frame.body.bodyCtrl
+
+    h = atTest.headString()
+    assert h.startswith('@test '),'expected head: %s, got: %s' % ('@test',h)
+    commandName = h[6:].strip()
+    assert commandName, 'empty command name'
+    command = c.commandsDict.get(commandName)
+    assert command, 'no command: %s' % (commandName)
+    g.trace(command.__name__)
+    
+    work,before,after = u.findChildrenOf(atTest)
+    before_h = 'before sel='
+    after_h = 'after sel='
+    for node,h in ((work,'work'),(before,before_h),(after,after_h)):
+        h2 = node.headString()
+        assert h2.startswith(h),'expected head: %s, got: %s' % (h,h2)
+
+    sels = []
+    for node,h in ((before,before_h),(after,after_h)):
+        sel = node.headString()[len(h):].strip()
+        aList = [str(z) for z in sel.split(',')]
+        sels.append(tuple(aList))
+    sel1,sel2 = sels
+    
+    c.beginUpdate()
+    try:
+        c.selectPosition(work)
+        c.setBodyString(work,before.bodyString())
+        g.app.gui.setTextSelection(w,sel1[0],sel1[1])
+        c.k.simulateCommand(commandName)
+        s1 = work.bodyString() ; s2 = after.bodyString()
+        assert s1 == s2, 'expected body: %s, got: %s' % (repr(s1),repr(s2))
+        sel3 = g.app.gui.getTextSelection(w)
+        assert sel2 == sel3, 'expected sel: %s, got: %s' % (sel2,sel3)
+    finally:
+        c.endUpdate()
+#@nonl
+#@-node:ekr.20061008140603:runEditCommandTest
 #@-node:ekr.20051104075904.43:Specific to particular unit tests...
 #@+node:ekr.20051104075904.96:Test of doctest
 #@+node:ekr.20051104075904.97:factorial
