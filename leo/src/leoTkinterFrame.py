@@ -1516,6 +1516,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
             g.app.gui.replaceClipboardWith(s)
     
         if name.startswith('body'):
+            c.frame.body.forceFullRecolor()
             c.frame.body.onBodyChanged('Cut',oldSel=oldSel,oldText=oldText)
         elif name.startswith('head'):
             # The headline is not officially changed yet.
@@ -1555,6 +1556,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
             w.insert(i,s)
         
             if wname.startswith('body'):
+                c.frame.body.forceFullRecolor()
                 c.frame.body.onBodyChanged('Paste',oldSel=oldSel,oldText=oldText)
             elif singleLine:
                 s = w.get('1.0','end')
