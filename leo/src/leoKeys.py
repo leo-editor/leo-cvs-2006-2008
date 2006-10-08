@@ -2505,7 +2505,7 @@ class keyHandlerClass:
         '''Execute command number 9.'''
         return self.numberCommand (event,None,9)
     #@-node:ekr.20050920085536.77:numberCommand
-    #@+node:ekr.20051012201831:printBindings
+    #@+node:ekr.20051012201831:printBindings & helper
     def printBindings (self,event):
     
         '''Print all the bindings presently in effect.'''
@@ -2538,24 +2538,33 @@ class keyHandlerClass:
                 if s2.startswith(prefix):
                     data2.append(item)
             g.es('%s %s' % (sep, prefix),tabName=tabName)
-            self.printBindingsHelper(data2,n1,n2)
+            self.printBindingsHelper(data2,n1,n2,prefix=prefix)
             # Remove all the items in data2 from data.
             # This must be done outside the iterator on data.
             for item in data2:
                 data.remove(item)
         # Print all plain bindings.
         g.es('%s %s' % (sep, 'Plain Keys',),tabName=tabName)
-        self.printBindingsHelper(data,n1,n2)
+        self.printBindingsHelper(data,n1,n2,prefix=None)
         state = k.unboundKeyAction 
         k.showStateAndMode()
+    #@+node:ekr.20061007185125:printBindingsHelper
+    def printBindingsHelper (self,data,n1,n2,prefix):
+            
+        n = prefix and len(prefix)+1 or 0 # Add 1 for the '+' after the prefix.
         
-    def printBindingsHelper (self,data,n1,n2):
+        data1 = [z for z in data if z and z[1] and len(z[1][n:]) == 1]
+            # The list of all items with only one character following the prefix.
+        data2 = [z for z in data if z and z[1] and len(z[1][n:]) >  1]
+            # The list of all other items.
                     
         # This isn't perfect in variable-width fonts.
-        data.sort(lambda x,y: cmp(x[1],y[1]))
-        for s1,s2,s3 in data:
-            g.es('%*s %*s %s' % (-n1,s1,-(min(12,n2)),s2,s3),tabName='Bindings')
-    #@-node:ekr.20051012201831:printBindings
+        for data in (data1,data2):
+            data.sort(lambda x,y: cmp(x[1],y[1]))
+            for s1,s2,s3 in data:
+                g.es('%*s %*s %s' % (-n1,s1,-(min(12,n2)),s2,s3),tabName='Bindings')
+    #@-node:ekr.20061007185125:printBindingsHelper
+    #@-node:ekr.20051012201831:printBindings & helper
     #@+node:ekr.20051014061332:printCommands
     def printCommands (self,event):
     
