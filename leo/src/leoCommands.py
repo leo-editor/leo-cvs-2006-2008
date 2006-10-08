@@ -4986,6 +4986,7 @@ class baseCommands:
     
         inAtIgnoreRange = p.inAtIgnoreRange()
         parent = p.parent()
+        sparseMove = c.config.getBool('sparse_move_outline_left')
         c.beginUpdate()
         try: # In update...
             c.endEditing()
@@ -5000,12 +5001,22 @@ class baseCommands:
                 dirtyVnodeList.extend(dirtyVnodeList2)
             c.setChanged(True)
             u.afterMoveNode(p,'Move Left',undoData,dirtyVnodeList)
-            
+            if sparseMove: # New in Leo 4.4.2
+                if 1: # Just collapsing the orignal parent is more reasonable.
+                    parent.contract()
+                else:
+                    for p2 in c.allNodes_iter():
+                        if not p.isAncestorOf(p):
+                            p2.contract()
+                    for p2 in p.parents_iter():
+                        if not p2.isExpanded():
+                            p2.expand()
         finally:
             c.selectPosition(p) # Also sets rootPosition.
             c.endUpdate()
             c.treeWantsFocusNow()
         c.updateSyntaxColorer(p) # Moving can change syntax coloring.
+    #@nonl
     #@-node:ekr.20031218072017.1770:moveOutlineLeft
     #@+node:ekr.20031218072017.1771:moveOutlineRight
     def moveOutlineRight (self,event=None):
