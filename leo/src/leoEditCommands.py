@@ -1358,6 +1358,8 @@ class editCommandsClass (baseEditCommandsClass):
             'expand-outline-pane':                  c.frame.expandOutlinePane,
             'expand-pane':                          c.frame.expandPane,
             'extend-to-line':                       self.extendToLine,
+            'extend-to-paragraph':                  self.extendToParagraph,
+            'extend-to-sentence':                   self.extendToSentence,
             'extend-to-word':                       self.extendToWord,
             'fill-paragraph':                       self.fillParagraph,
             'fill-region':                          self.fillRegion,
@@ -1422,7 +1424,6 @@ class editCommandsClass (baseEditCommandsClass):
             'scroll-outline-up-page':               self.scrollOutlineUpPage,
             'scroll-up':                            self.scrollUp,
             'scroll-up-extend-selection':           self.scrollUpExtendSelection,
-            'select-paragraph':                     self.selectParagraph,
             # Exists, but can not be executed via the minibuffer.
             # 'self-insert-command':                self.selfInsertCommand,
             'set-comment-column':                   self.setCommentColumn,
@@ -3612,6 +3613,27 @@ class editCommandsClass (baseEditCommandsClass):
     
         g.app.gui.setSelectionRange(w,toGui(i1),toGui(i))
     #@-node:ekr.20061007082956:extend-to-line
+    #@+node:ekr.20061007214835.4:extend-to-sentence
+    def extendToSentence (self,event):
+        
+        '''Select the line at the cursor.'''
+        
+        c = self.c
+        w = self.editWidget(event)
+        if not w: return
+        
+        def toGui(i): return g.app.gui.toGuiIndex(s,w,i)
+        def toPython(i): return g.app.gui.toPythonIndex(s,w,i)
+        
+        s = w.get('1.0','end') ; n = len(s)
+        i = toPython(w.index('insert'))
+        i2 = 1 + s.find('.',i)
+        if i2 == -1: i2 = n
+        i1 = 1 + s.rfind('.',0,i2-1)
+    
+        g.app.gui.setSelectionRange(w,toGui(i1),toGui(i2))
+    #@nonl
+    #@-node:ekr.20061007214835.4:extend-to-sentence
     #@+node:ekr.20060116074839.2:extend-to-word
     def extendToWord (self,event):
         
@@ -3868,8 +3890,8 @@ class editCommandsClass (baseEditCommandsClass):
     
         self.endCommand(changed=True,setLabel=True)
     #@-node:ekr.20050920084036.98:killParagraph (Test)
-    #@+node:ekr.20050920084036.96:selectParagraph & helper
-    def selectParagraph (self,event):
+    #@+node:ekr.20050920084036.96:extend-to-paragraph & helper
+    def extendToParagraph (self,event):
         
         '''Select the paragraph surrounding the cursor.'''
     
@@ -3914,7 +3936,7 @@ class editCommandsClass (baseEditCommandsClass):
         w.tag_add('sel','%s linestart' % start,'%s lineend' % i2)
         w.mark_set('insert','%s lineend' % i2)
     #@-node:ekr.20050920084036.97:selectParagraphHelper
-    #@-node:ekr.20050920084036.96:selectParagraph & helper
+    #@-node:ekr.20050920084036.96:extend-to-paragraph & helper
     #@-others
     #@-node:ekr.20050920084036.95:paragraph...
     #@+node:ekr.20050920084036.105:region...
@@ -5445,8 +5467,11 @@ class killBufferCommandsClass (baseEditCommandsClass):
     
     def killWord (self,event):
         '''Kill the word containing the cursor.'''
-        self.kill(event,'insert wordstart','insert wordend','kill-word')
+        self.beginCommand(undoType='kill-word')
+        self.kill(event,'insert wordstart','insert wordend',undoType=None)
         self.killWs(event)
+        self.c.frame.body.forceFullRecolor()
+        self.endCommand(changed=True,setLabel=True)
     #@-node:ekr.20050920084036.178:kill, killLine, killWord
     #@+node:ekr.20050920084036.182:killRegion & killRegionSave & helper
     def killRegion (self,event):
@@ -5466,7 +5491,10 @@ class killBufferCommandsClass (baseEditCommandsClass):
         
         s = w.get(theRange[0],theRange[-1])
         if deleteFlag:
+            self.beginCommand(undoType='kill-region')
             w.delete(theRange[0],theRange[-1])
+            self.c.frame.body.forceFullRecolor()
+            self.endCommand(changed=True,setLabel=True)
         self.addToKillBuffer(s)
         w.clipboard_clear()
         w.clipboard_append(s)
@@ -5482,12 +5510,15 @@ class killBufferCommandsClass (baseEditCommandsClass):
     
         i  = w.search('.','insert',stopindex='end')
         if i:
+            self.beginCommand(undoType='kill-sentence')
             i2 = w.search('.','insert',backwards=True,stopindex='1.0')
             i2 = g.choose(i2=='','1.0',i2+'+1c ')
             self.kill(event,i2,'%s + 1c' % i,undoType='kill-sentence')
+            self.c.frame.body.forceFullRecolor()
+            self.endCommand(changed=True,setLabel=True)
     #@-node:ekr.20050930095323.1:killSentence
     #@+node:ekr.20050930100733:killWs
-    def killWs (self,event):
+    def killWs (self,event,undoType=None):
         
         ws = ''
         w = self.editWidget(event)
@@ -5500,16 +5531,18 @@ class killBufferCommandsClass (baseEditCommandsClass):
                 ws = ws + s
             else:
                 break
-                
+       
         if ws:
+            if undoType: self.beginCommand(undoType=undoType)
             self.addToKillBuffer(ws)
+            if undoType: self.endCommand(changed=True,setLabel=True)
     #@-node:ekr.20050930100733:killWs
     #@+node:ekr.20050930091642.1:yank
     def yank (self,event):
         
         '''Insert the next entry in the kill ring at the insert point.'''
     
-        k = self.k
+        c = self.c ; k = self.k
         w = self.editWidget(event)
         if not w: return
     
@@ -5517,11 +5550,14 @@ class killBufferCommandsClass (baseEditCommandsClass):
         clip_text = self.getClipboard(w)
     
         if self.killBuffer or clip_text:
+            self.beginCommand(undoType='yank')
             self.reset = True
             s = clip_text or self.kbiterator.next()
             w.tag_delete('kb')
             w.insert('insert',s,('kb'))
             w.mark_set('insert',i)
+            c.frame.body.forceFullRecolor()
+            self.endCommand(changed=True,setLabel=True)
     #@-node:ekr.20050930091642.1:yank
     #@+node:ekr.20050930091642.2:yankPop
     def yankPop (self,event):
