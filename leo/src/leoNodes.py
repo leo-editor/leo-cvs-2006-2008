@@ -1212,7 +1212,9 @@ class nodeIndices (object):
         
         """Create a new gnx using self.timeString and self.lastIndex"""
         
-        theId = self.userId # Bug fix 5/1/03: always use the user's id for new ids!
+        theId = self.userId # Always use the user's id for new ids!
+        if not self.timeString:
+            self.setTimestamp()
         t = self.timeString
         assert(t)
         n = None
