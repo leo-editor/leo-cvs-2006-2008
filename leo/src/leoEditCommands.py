@@ -3774,7 +3774,7 @@ class editCommandsClass (baseEditCommandsClass):
         if not txt.rstrip().lstrip():
             self.backwardParagraph(event)
             i2 = w.index('insert')
-        self.selectParagraph(event)
+        self.extendToParagraph(event)
         i3 = w.index('sel.first')
         c.killBufferCommands.kill(event,i3,i2)
         w.mark_set('insert',i)
@@ -6587,7 +6587,7 @@ class registerCommandsClass (baseEditCommandsClass):
         c = self.c ; k = self.k ; state = k.getState('copy-rect-to-reg')
     
         if state == 0:
-            w = self.editWidget(w) # sets self.w
+            w = self.editWidget(event) # sets self.w
             if not w: return
             k.commandName = 'copy-rectangle-to-register'
             k.setLabelBlue('Copy Rectangle To Register: ',protect=True)

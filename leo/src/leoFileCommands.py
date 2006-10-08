@@ -124,8 +124,8 @@ class saxContentHandler (xml.sax.saxutils.XMLGenerator):
         __pychecker__ = '--no-argsused'
         g.trace(name)
         
-    def startDocument(self,*args,**keys):
-        pass # g.trace(args,keys)
+    def startDocument(self):
+        pass
     #@nonl
     #@-node:ekr.20060919110638.29: Do nothing
     #@+node:ekr.20060919134313: Utils
@@ -2708,8 +2708,7 @@ class baseFileCommands:
         """Put the tnodeList attribute of a tnode."""
         
         # Remember: entries in the tnodeList correspond to @+node sentinels, _not_ to tnodes!
-    
-        fc = self ; nodeIndices = g.app.nodeIndices
+        nodeIndices = g.app.nodeIndices
         tnodeList = v.t.tnodeList
         if tnodeList:
             # g.trace("%4d" % len(tnodeList),v)

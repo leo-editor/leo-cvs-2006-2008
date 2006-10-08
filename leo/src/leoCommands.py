@@ -6533,7 +6533,7 @@ class baseCommands:
         c  = self ; p = c.currentPosition() ; p1 = p.copy()
         ch = event.char ; all = ch.isupper()
         found = False
-        extend = self.navQuickKey(p)
+        extend = self.navQuickKey()
         attempts = g.choose(extend,(True,False),(False,))
         for extend2 in attempts:
             p = p1.copy()
@@ -6547,12 +6547,12 @@ class baseCommands:
                 if p == p1: # Never try to match the same position.
                     # g.trace('failed',extend2)
                     found = False ; break
-                newPrefix = c.navHelper(p,ch,all,extend2)
+                newPrefix = c.navHelper(p,ch,extend2)
                 if newPrefix:
                     found = True ; break
             if found: break
         if found:
-            if all: self.expandAllAncestors(p)
+            if all: c.frame.tree.expandAllAncestors(p)
             c.selectPosition(p)
             c.navTime = time.clock()
             c.navPrefix = newPrefix
@@ -6563,7 +6563,7 @@ class baseCommands:
         c.treeWantsFocusNow()
     #@nonl
     #@+node:ekr.20061002095711.1:c.navQuickKey
-    def navQuickKey (self,p):
+    def navQuickKey (self):
         
         '''return true if there are two quick outline navigation keys
         in quick succession.
@@ -6578,12 +6578,11 @@ class baseCommands:
             return False
         else:
             nearTime = c.navTime and time.clock() - c.navTime < deltaTime
-            # g.trace(nearTime,p.headString())
             return nearTime
     #@nonl
     #@-node:ekr.20061002095711.1:c.navQuickKey
     #@+node:ekr.20061002095711:c.navHelper
-    def navHelper (self,p,ch,all,extend):
+    def navHelper (self,p,ch,extend):
         
         c = self ; h = p.headString().lower()
         

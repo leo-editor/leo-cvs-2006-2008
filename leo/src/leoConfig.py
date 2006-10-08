@@ -790,6 +790,8 @@ class configClass:
         self.homeFile = None # Set in initSettingsFiles
         self.inited = False
         self.modeCommandsDict = {} # For use by @mode logic. Keys are command names, values are g.Bunches.
+        self.myGlobalConfigFile = None
+        self.myHomeConfigFile = None
         self.recentFilesFiles = [] # List of g.Bunches describing .leoRecentFiles.txt files.
         
         # Inited later...
