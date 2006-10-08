@@ -3,8 +3,7 @@
 #@+all
 #@+node:ekr.20060927172440:To do before 4.4.2 final
 #@+node:ekr.20061001060913.1:To do first
-#@+node:ekr.20061007094718.2:Add shortcut for extend-to-line
-#@-node:ekr.20061007094718.2:Add shortcut for extend-to-line
+#@+node:ekr.20061007214835:before b2
 #@+node:ekr.20051112080017:delete-x-script-button
 @nocolor
 
@@ -18,10 +17,157 @@ I do?
 EKR: This is on the list of unfixable bugs, but I have a hard time believing there is no workaround.
 #@nonl
 #@-node:ekr.20051112080017:delete-x-script-button
-#@+node:ekr.20061003075953:Better unit tests for write logic: test @ignore logic
-#@-node:ekr.20061003075953:Better unit tests for write logic: test @ignore logic
-#@+node:ekr.20060929084830.1:Suppress redraw on all applicable outline:goto commands
-#@-node:ekr.20060929084830.1:Suppress redraw on all applicable outline:goto commands
+#@+node:ekr.20061007094817:Alt-y moves to Bindings pane, but does not select the text
+#@-node:ekr.20061007094817:Alt-y moves to Bindings pane, but does not select the text
+#@+node:ekr.20061007075350:Make sure errors are reported properly in Python 2.5
+#@-node:ekr.20061007075350:Make sure errors are reported properly in Python 2.5
+#@+node:ekr.20060927173836.1:Disable calltips in @nocolor sections
+@nocolor
+
+Why are calltips enabled at all??
+
+Show calltips treats the node as code, and that can have very weird effects in @nocolor sections.
+#@nonl
+#@-node:ekr.20060927173836.1:Disable calltips in @nocolor sections
+#@+node:ekr.20060920150119:Fix undo problems (important)
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3924236
+
+Clear the * mark if all changes have been done.
+There are serious problems with undoing and redoing text.
+
+The recent work with yank/kill commands may have fixed some problems.
+
+Make unlimited undo the default.
+#@nonl
+#@-node:ekr.20060920150119:Fix undo problems (important)
+#@+node:ekr.20060116083043:Use special Help menu on the Mac
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3237845
+
+http://tkinter.unpythonic.net/wiki/Widgets/Menu
+
+On the Macintosh, access to the special Apple and Help menus is provided. These
+menus must be created with the command name of the menubar menu concatenated
+with the special name. 
+
+For a menubar named .menubar, on the Macintosh, the special menus are .menubar.apple and .menubar.help.
+
+On Windows, the special menu is .menubar.system.
+
+On X Windows, the help menu is .menubar.help.
+
+[XXX how to create widgets with these names in Tkinter]
+
+@color
+#@nonl
+#@+node:ekr.20031218072017.3803:createHelpMenuFromTable
+def createHelpMenuFromTable (self):
+
+    if 0: ## sys.platform == 'darwin':
+        helpMenu = self.getMacHelpMenu()
+        if not helpMenu: return
+    else:
+        helpMenu = self.createNewMenu("&Help")
+    
+    self.createMenuEntries(helpMenu,self.helpMenuTable)
+#@nonl
+#@-node:ekr.20031218072017.3803:createHelpMenuFromTable
+#@+node:ekr.20031218072017.4113:new_menu
+def new_menu(self,parent,tearoff=False):
+    
+    """Wrapper for the Tkinter new_menu menu method."""
+    
+    if self.font:
+        try:
+            return Tk.Menu(parent,tearoff=tearoff,font=self.font)
+        except Exception:
+            g.es_exception()
+            return Tk.Menu(parent,tearoff=tearoff)
+    else:
+        return Tk.Menu(parent,tearoff=tearoff)
+#@-node:ekr.20031218072017.4113:new_menu
+#@+node:ekr.20031218072017.3804:createNewMenu
+def createNewMenu (self,menuName,parentName="top",before=None):
+
+    try:
+        parent = self.getMenu(parentName) # parent may be None.
+        menu = self.getMenu(menuName)
+        if menu:
+            g.es("menu already exists: " + menuName,color="red")
+        else:
+            menu = self.new_menu(parent,tearoff=0)
+            self.setMenu(menuName,menu)
+            label = self.getRealMenuName(menuName)
+            amp_index = label.find("&")
+            label = label.replace("&","")
+            if before: # Insert the menu before the "before" menu.
+                index_label = self.getRealMenuName(before)
+                amp_index = index_label.find("&")
+                index_label = index_label.replace("&","")
+                index = parent.index(index_label)
+                self.insert_cascade(parent,index=index,label=label,menu=menu,underline=amp_index)
+            else:
+                self.add_cascade(parent,label=label,menu=menu,underline=amp_index)
+            return menu
+    except:
+        g.es("exception creating " + menuName + " menu")
+        g.es_exception()
+        return None
+#@-node:ekr.20031218072017.3804:createNewMenu
+#@+node:ekr.20031218072017.3807:getMenu, setMenu, destroyMenu
+def getMenu (self,menuName):
+
+    cmn = self.canonicalizeMenuName(menuName)
+    return self.menus.get(cmn)
+    
+def setMenu (self,menuName,menu):
+    
+    cmn = self.canonicalizeMenuName(menuName)
+    self.menus [cmn] = menu
+    
+def destroyMenu (self,menuName):
+    
+    cmn = self.canonicalizeMenuName(menuName)
+    del self.menus[cmn]
+#@-node:ekr.20031218072017.3807:getMenu, setMenu, destroyMenu
+#@+node:ekr.20060211144330.1:getMacHelpMenu
+def getMacHelpMenu (self):
+    
+    return None ###
+    
+    try:
+        helpMenu = Tk.Menu('top.help')
+        return helpMenu
+        
+    except Exception:
+        g.trace('Can not get MacOS Help menu')
+        g.es_exception()
+        return None
+#@-node:ekr.20060211144330.1:getMacHelpMenu
+#@-node:ekr.20060116083043:Use special Help menu on the Mac
+#@+node:ekr.20061008091617:@key Alt-1 doesn't work
+#@-node:ekr.20061008091617:@key Alt-1 doesn't work
+#@-node:ekr.20061007214835:before b2
+#@+node:ekr.20061007214835.1:before b3:
+#@+node:ekr.20061008094530:Bind **every** f_n key so we can tell what was pressed
+@nocolor
+
+I am totally fed up with the present scheme.
+The only solution is to beind every printable key, and every combination of modifiers.
+This doesn't solve the problem of unicode (non-ascii) keys, but it is a start.
+#@nonl
+#@-node:ekr.20061008094530:Bind **every** f_n key so we can tell what was pressed
+#@+node:ekr.20061008064111:Add Open scripts.leo to help menu
+#@-node:ekr.20061008064111:Add Open scripts.leo to help menu
+#@+node:ekr.20060927100500.1:Fix bugs in new colorizer
+@nocolor
+
+- Does not restore selection after indent/undent commands.
+#@nonl
+#@-node:ekr.20060927100500.1:Fix bugs in new colorizer
 #@+node:ekr.20061002093442:Add opml support to new,open, save commands
 #@+node:ekr.20031218072017.2820:top level (file menu)
 #@+node:ekr.20031218072017.1623:new
@@ -477,146 +623,26 @@ def revert (self,event=None):
 #@-node:ekr.20031218072017.2837:revert
 #@-node:ekr.20031218072017.2820:top level (file menu)
 #@-node:ekr.20061002093442:Add opml support to new,open, save commands
-#@-node:ekr.20061001060913.1:To do first
-#@+node:ekr.20060929122217.2:Fix bugs
-#@+node:ekr.20061007094817:Alt-y moves to Bindings pane, but does not select the text
-#@-node:ekr.20061007094817:Alt-y moves to Bindings pane, but does not select the text
-#@+node:ekr.20061007075350:Make sure errors are reported properly in Python 2.5
-#@-node:ekr.20061007075350:Make sure errors are reported properly in Python 2.5
+#@+node:ekr.20060915175024:Maintain vertical node position if possible
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3916155
+
+When a node is among several other nodes at the same level of hierarchy, which
+are all children of a node, and the "MOVE LFET" command is executed, the node
+does move left in the outline hierarchy, but it also move down to just before
+the next node at the higher hierarchy level - the level to which it is moving
+left.
+#@nonl
+#@-node:ekr.20060915175024:Maintain vertical node position if possible
+#@+node:ekr.20060929084830.1:Suppress redraw on all applicable outline:goto commands
+#@-node:ekr.20060929084830.1:Suppress redraw on all applicable outline:goto commands
 #@+node:ekr.20060928194335:Fix bug: closing a window after removing a script button can crash
 #@-node:ekr.20060928194335:Fix bug: closing a window after removing a script button can crash
-#@+node:ekr.20060116083043:Use special Help menu on the Mac
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3237845
-
-http://tkinter.unpythonic.net/wiki/Widgets/Menu
-
-On the Macintosh, access to the special Apple and Help menus is provided. These
-menus must be created with the command name of the menubar menu concatenated
-with the special name. 
-
-For a menubar named .menubar, on the Macintosh, the special menus are .menubar.apple and .menubar.help.
-
-On Windows, the special menu is .menubar.system.
-
-On X Windows, the help menu is .menubar.help.
-
-[XXX how to create widgets with these names in Tkinter]
-
-@color
-#@nonl
-#@+node:ekr.20031218072017.3803:createHelpMenuFromTable
-def createHelpMenuFromTable (self):
-
-    if 0: ## sys.platform == 'darwin':
-        helpMenu = self.getMacHelpMenu()
-        if not helpMenu: return
-    else:
-        helpMenu = self.createNewMenu("&Help")
-    
-    self.createMenuEntries(helpMenu,self.helpMenuTable)
-#@nonl
-#@-node:ekr.20031218072017.3803:createHelpMenuFromTable
-#@+node:ekr.20031218072017.4113:new_menu
-def new_menu(self,parent,tearoff=False):
-    
-    """Wrapper for the Tkinter new_menu menu method."""
-    
-    if self.font:
-        try:
-            return Tk.Menu(parent,tearoff=tearoff,font=self.font)
-        except Exception:
-            g.es_exception()
-            return Tk.Menu(parent,tearoff=tearoff)
-    else:
-        return Tk.Menu(parent,tearoff=tearoff)
-#@-node:ekr.20031218072017.4113:new_menu
-#@+node:ekr.20031218072017.3804:createNewMenu
-def createNewMenu (self,menuName,parentName="top",before=None):
-
-    try:
-        parent = self.getMenu(parentName) # parent may be None.
-        menu = self.getMenu(menuName)
-        if menu:
-            g.es("menu already exists: " + menuName,color="red")
-        else:
-            menu = self.new_menu(parent,tearoff=0)
-            self.setMenu(menuName,menu)
-            label = self.getRealMenuName(menuName)
-            amp_index = label.find("&")
-            label = label.replace("&","")
-            if before: # Insert the menu before the "before" menu.
-                index_label = self.getRealMenuName(before)
-                amp_index = index_label.find("&")
-                index_label = index_label.replace("&","")
-                index = parent.index(index_label)
-                self.insert_cascade(parent,index=index,label=label,menu=menu,underline=amp_index)
-            else:
-                self.add_cascade(parent,label=label,menu=menu,underline=amp_index)
-            return menu
-    except:
-        g.es("exception creating " + menuName + " menu")
-        g.es_exception()
-        return None
-#@-node:ekr.20031218072017.3804:createNewMenu
-#@+node:ekr.20031218072017.3807:getMenu, setMenu, destroyMenu
-def getMenu (self,menuName):
-
-    cmn = self.canonicalizeMenuName(menuName)
-    return self.menus.get(cmn)
-    
-def setMenu (self,menuName,menu):
-    
-    cmn = self.canonicalizeMenuName(menuName)
-    self.menus [cmn] = menu
-    
-def destroyMenu (self,menuName):
-    
-    cmn = self.canonicalizeMenuName(menuName)
-    del self.menus[cmn]
-#@-node:ekr.20031218072017.3807:getMenu, setMenu, destroyMenu
-#@+node:ekr.20060211144330.1:getMacHelpMenu
-def getMacHelpMenu (self):
-    
-    return None ###
-    
-    try:
-        helpMenu = Tk.Menu('top.help')
-        return helpMenu
-        
-    except Exception:
-        g.trace('Can not get MacOS Help menu')
-        g.es_exception()
-        return None
-#@-node:ekr.20060211144330.1:getMacHelpMenu
-#@-node:ekr.20060116083043:Use special Help menu on the Mac
-#@+node:ekr.20060927100500.1:Fix bugs in new colorizer
-@nocolor
-
-- Does not restore selection after indent/undent commands.
-#@nonl
-#@-node:ekr.20060927100500.1:Fix bugs in new colorizer
-#@+node:ekr.20060920150119:Fix undo problems (important)
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3924236
-
-Clear the * mark if all changes have been done.
-There are serious problems with undoing and redoing text.
-#@nonl
-#@-node:ekr.20060920150119:Fix undo problems (important)
-#@+node:ekr.20060927173836.1:Disable calltips in @nocolor sections
-@nocolor
-
-Why are calltips enabled at all??
-
-Show calltips treats the node as code, and that can have very weird effects in @nocolor sections.
-#@nonl
-#@-node:ekr.20060927173836.1:Disable calltips in @nocolor sections
 #@+node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
 #@-node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
-#@-node:ekr.20060929122217.2:Fix bugs
+#@-node:ekr.20061007214835.1:before b3:
+#@-node:ekr.20061001060913.1:To do first
 #@+node:ekr.20060920190138:Document tnodeList, vnodeList
 #@-node:ekr.20060920190138:Document tnodeList, vnodeList
 #@+node:ekr.20060912091922:Test all plugins
@@ -714,18 +740,6 @@ xsltWithNodes.py
 #@-node:ekr.20060912091922:Test all plugins
 #@-node:ekr.20060927172440:To do before 4.4.2 final
 #@+node:ekr.20060531161030:To do: 4.4.x
-#@+node:ekr.20060915175024:Maintain vertical node position if possible
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3916155
-
-When a node is among several other nodes at the same level of hierarchy, which
-are all children of a node, and the "MOVE LFET" command is executed, the node
-does move left in the outline hierarchy, but it also move down to just before
-the next node at the higher hierarchy level - the level to which it is moving
-left.
-#@nonl
-#@-node:ekr.20060915175024:Maintain vertical node position if possible
 #@+node:ekr.20060822162521:Make headlines scroll
 Limit the with of the headline to the width of the outline pane.
 #@nonl
@@ -1361,8 +1375,11 @@ def killLine (self,event):
 
 def killWord (self,event):
     '''Kill the word containing the cursor.'''
-    self.kill(event,'insert wordstart','insert wordend','kill-word')
+    self.beginCommand(undoType='kill-word')
+    self.kill(event,'insert wordstart','insert wordend',undoType=None)
     self.killWs(event)
+    self.c.frame.body.forceFullRecolor()
+    self.endCommand(changed=True,setLabel=True)
 #@-node:ekr.20050920084036.178:kill, killLine, killWord
 #@+node:ekr.20050920084036.182:killRegion & killRegionSave & helper
 def killRegion (self,event):
@@ -1382,7 +1399,10 @@ def killRegionHelper (self,event,deleteFlag):
     
     s = w.get(theRange[0],theRange[-1])
     if deleteFlag:
+        self.beginCommand(undoType='kill-region')
         w.delete(theRange[0],theRange[-1])
+        self.c.frame.body.forceFullRecolor()
+        self.endCommand(changed=True,setLabel=True)
     self.addToKillBuffer(s)
     w.clipboard_clear()
     w.clipboard_append(s)
@@ -1398,12 +1418,15 @@ def killSentence (self,event):
 
     i  = w.search('.','insert',stopindex='end')
     if i:
+        self.beginCommand(undoType='kill-sentence')
         i2 = w.search('.','insert',backwards=True,stopindex='1.0')
         i2 = g.choose(i2=='','1.0',i2+'+1c ')
         self.kill(event,i2,'%s + 1c' % i,undoType='kill-sentence')
+        self.c.frame.body.forceFullRecolor()
+        self.endCommand(changed=True,setLabel=True)
 #@-node:ekr.20050930095323.1:killSentence
 #@+node:ekr.20050930100733:killWs
-def killWs (self,event):
+def killWs (self,event,undoType=None):
     
     ws = ''
     w = self.editWidget(event)
@@ -1416,16 +1439,18 @@ def killWs (self,event):
             ws = ws + s
         else:
             break
-            
+   
     if ws:
+        if undoType: self.beginCommand(undoType=undoType)
         self.addToKillBuffer(ws)
+        if undoType: self.endCommand(changed=True,setLabel=True)
 #@-node:ekr.20050930100733:killWs
 #@+node:ekr.20050930091642.1:yank
 def yank (self,event):
     
     '''Insert the next entry in the kill ring at the insert point.'''
 
-    k = self.k
+    c = self.c ; k = self.k
     w = self.editWidget(event)
     if not w: return
 
@@ -1433,11 +1458,14 @@ def yank (self,event):
     clip_text = self.getClipboard(w)
 
     if self.killBuffer or clip_text:
+        self.beginCommand(undoType='yank')
         self.reset = True
         s = clip_text or self.kbiterator.next()
         w.tag_delete('kb')
         w.insert('insert',s,('kb'))
         w.mark_set('insert',i)
+        c.frame.body.forceFullRecolor()
+        self.endCommand(changed=True,setLabel=True)
 #@-node:ekr.20050930091642.1:yank
 #@+node:ekr.20050930091642.2:yankPop
 def yankPop (self,event):

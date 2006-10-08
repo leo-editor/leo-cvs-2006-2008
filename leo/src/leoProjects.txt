@@ -4569,6 +4569,14 @@ def defineCmdsMenuCursorTable (self):
         'pre&vious-line-extend-selection',
     ]
     
+    self.cursorMenuExtendTable = [
+        # &: l,p,s,w
+        'extend-to-&line',
+        'extend-to-&paragraph',
+        'extend-to-&sentence',
+        'extend-to-&word',
+    ]
+    
     self.cursorMenuForwardTable = [
         # &: b,c,l,n,p,s,w
         'end-of-&buffer',
@@ -4583,10 +4591,7 @@ def defineCmdsMenuCursorTable (self):
     ]
     
     self.cursorMenuForwardExtendTable = [
-        # &: e,b,c,l,n,p,s,w,x
-        '&extend-to-line',
-        'e&xtend-to-word',
-        '-',
+        # &: b,c,l,n,p,s,w
         'end-of-&buffer-extend-selection',
         'end-of-&line-extend-selection',
         '-',
@@ -4626,9 +4631,10 @@ def createCmndsMenuFromTable (self):
         self.createMenuEntries(menu,table)
 
     for name,table in (
-        # &: b,e,f,s,x
+        # &: b,e,f,s,t,x
         ('Cursor &Back...',                     self.cursorMenuBackTable),
         ('Cursor Back &Extend Selection...',    self.cursorMeuuBackExtendTable),
+        ('Cursor Extend &To...',                self.cursorMenuExtendTable),
         ('Cursor &Forward...',                  self.cursorMenuForwardTable),
         ('Cursor Forward E&xtend Selection...', self.cursorMenuForwardExtendTable),
     ):
@@ -5844,6 +5850,14 @@ def defineCmdsMenuCursorTable (self):
         'pre&vious-line-extend-selection',
     ]
     
+    self.cursorMenuExtendTable = [
+        # &: l,p,s,w
+        'extend-to-&line',
+        'extend-to-&paragraph',
+        'extend-to-&sentence',
+        'extend-to-&word',
+    ]
+    
     self.cursorMenuForwardTable = [
         # &: b,c,l,n,p,s,w
         'end-of-&buffer',
@@ -5858,10 +5872,7 @@ def defineCmdsMenuCursorTable (self):
     ]
     
     self.cursorMenuForwardExtendTable = [
-        # &: e,b,c,l,n,p,s,w,x
-        '&extend-to-line',
-        'e&xtend-to-word',
-        '-',
+        # &: b,c,l,n,p,s,w
         'end-of-&buffer-extend-selection',
         'end-of-&line-extend-selection',
         '-',
@@ -6544,6 +6555,726 @@ def createRecentFilesMenuItems (self):
 # w was set to self.w, rather than event.widget.
 #@nonl
 #@-node:ekr.20060930111450:Made yank work in minibuffer
+#@+node:ekr.20061007101303:Mass change to edit commands: made sure w is a text widget
+@nocolor
+
+- Added self.editWidget.  This sets self.w and makes sure w is a text widget.
+
+@color
+#@nonl
+#@+node:ekr.20061007115425:Methods changed significantly
+#@+node:ekr.20050930112126:shellCommandOnRegion
+def shellCommandOnRegion (self,event):
+    
+    '''Execute a command taken from the selected text in a separate process.'''
+    
+    k = self.k
+    w = self.editWidget(event)
+    if not w: return
+
+    if subprocess:
+        is1,is2 = None,None
+        try:
+            is1 = w.index('sel.first')
+            is2 = w.index('sel.last')
+        finally:
+            if is1:
+                command = w.get(is1,is2)
+                k.commandName = 'shell-command: %s' % command
+                self.executeSubprocess(event,command,input=None)
+            else:
+                k.clearState()
+                k.resetLabel()
+    else:
+        k.setLabelGrey('can not execute shell-command: can not import subprocess')
+#@-node:ekr.20050930112126:shellCommandOnRegion
+#@+node:ekr.20050920084036.128:zapToCharacter
+def zapToCharacter (self,event):
+    
+    '''Kill characters from the insertion point to a given character.'''
+
+    k = self.k
+    w = self.editWidget(event)
+    if not w: return
+    
+    state = k.getState('zap-to-char')
+    if state == 0:
+        k.setLabelBlue('Zap To Character: ',protect=True)
+        k.setState('zap-to-char',1,handler=self.zapToCharacter)
+    else:
+        c = k.c
+        ch = event and event.char
+        k.resetLabel()
+        k.clearState()
+        if (
+            len(event.char) != 0 and
+            ch in (string.ascii_letters + string.digits + string.punctuation)
+        ):
+            i = w.search(ch,'insert',stopindex='end')
+            if i:
+                s = w.get('insert','%s' % i)
+                self.addToKillBuffer(s)
+                w.delete('insert','%s' % i)
+#@-node:ekr.20050920084036.128:zapToCharacter
+#@+node:ekr.20050920084036.138:insertNewLine
+def insertNewLine (self,event):
+    
+    '''Insert a newline at the cursor.'''
+
+    w = self.editWidget(event)
+    if not w: return
+
+    wname = g.app.gui.widget_name(w)
+    
+    if not wname.startswith('head'):
+        self.beginCommand(undoType='insert-newline')
+        w.insert('insert','\n')
+        self.endCommand(changed=True,setLabel=False)
+
+insertNewline = insertNewLine
+#@-node:ekr.20050920084036.138:insertNewLine
+#@+node:ekr.20050920084036.25:addAbbreviation
+def addAbbreviation (self,event):
+    
+    '''Add an abbreviation:
+    The selected text is the abbreviation;
+    the minibuffer prompts you for the name of the abbreviation.
+    Also sets abbreviations on.'''
+            
+    k = self.k ; state = k.getState('add-abbr')
+
+    if state == 0:
+        w = self.editWidget(event) # Sets self.w
+        if not w: return
+        k.setLabelBlue('Add Abbreviation: ',protect=True)
+        k.getArg(event,'add-abbr',1,self.addAbbreviation)
+    else:
+        w = self.w
+        k.clearState()
+        k.resetLabel()
+        word = w.get('insert -1c wordstart','insert -1c wordend')
+        if k.arg.strip():
+            self.abbrevs [k.arg] = word
+            k.abbrevOn = True
+            k.setLabelGrey(
+                "Abbreviations are on.\nAbbreviation: '%s' = '%s'" % (
+                k.arg,word))
+#@-node:ekr.20050920084036.25:addAbbreviation
+#@+node:ekr.20051004080550:addInverseAbbreviation
+def addInverseAbbreviation (self,event):
+    
+    '''Add an inverse abbreviation:
+    The selected text is the abbreviation name;
+    the minibuffer prompts you for the value of the abbreviation.'''
+    
+    k = self.k ; state = k.getState('add-inverse-abbr')
+
+    if state == 0:
+        w = self.editWidget(event) # Sets self.w
+        if not w: return
+        k.setLabelBlue('Add Inverse Abbreviation: ',protect=True)
+        k.getArg(event,'add-inverse-abbr',1,self.addInverseAbbreviation)
+    else:
+        w = self.w
+        k.clearState()
+        k.resetLabel()
+        word = w.get('insert -1c wordstart','insert -1c wordend').strip()
+        if word:
+            self.abbrevs [word] = k.arg
+#@-node:ekr.20051004080550:addInverseAbbreviation
+#@+node:ekr.20050920084036.232:stringRectangle
+def stringRectangle (self,event):
+    
+    '''Prompt for a string, then replace the contents of a rectangle with a string on each line.'''
+
+    c = self.c ; k = self.k ; state = k.getState('string-rect')
+    if state == 0:
+        w = self.editWidget(event) # sets self.w
+        if not w or not self.check(event): return
+        self.stringRect = self.getRectanglePoints(w)
+        k.setLabelBlue('String rectangle: ',protect=True)
+        k.getArg(event,'string-rect',1,self.stringRectangle)
+    else:
+        k.clearState()
+        k.resetLabel()
+        w = self.w
+        self.beginCommand('string-rectangle')
+        r1, r2, r3, r4 = self.stringRect
+        w.mark_set('sel.start','%d.%d' % (r1,r2))
+        w.mark_set('sel.end',  '%d.%d' % (r3,r4))
+        c.bodyWantsFocus()
+        for r in xrange(r1,r3+1):
+            w.delete('%s.%s' % (r,r2),'%s.%s' % (r,r4))
+            w.insert('%s.%s' % (r,r2),k.arg)
+        self.endCommand()
+#@nonl
+#@-node:ekr.20050920084036.232:stringRectangle
+#@+node:ekr.20050920084036.34:Entry points
+#@+node:ekr.20050920084036.35:appendToBuffer
+def appendToBuffer (self,event):
+    
+    '''Add the selected body text to the end of the body text of a named buffer (node).'''
+    
+    w = self.editWidget(event) # Sets self.w
+    if not w: return
+
+    self.k.setLabelBlue('Append to buffer: ')
+    self.getBufferName(self.appendToBufferFinisher)
+
+def appendToBufferFinisher (self,name):
+
+    c = self.c ; k = self.k ; w = self.w
+    s = g.app.gui.getSelectedText(w)
+    p = self.findBuffer(name)
+    if s and p:
+        c.beginUpdate()
+        try:
+            w = self.w
+            c.selectPosition(p)
+            self.beginCommand('append-to-buffer: %s' % p.headString())
+            w.insert('end',s)
+            w.mark_set('insert','end')
+            w.see('end')
+            self.endCommand()
+        finally:
+            c.endUpdate()
+            c.recolor_now()
+#@-node:ekr.20050920084036.35:appendToBuffer
+#@+node:ekr.20050920084036.36:copyToBuffer
+def copyToBuffer (self,event):
+    
+    '''Add the selected body text to the end of the body text of a named buffer (node).'''
+    
+    w = self.editWidget(event) # Sets self.w
+    if not w: return
+
+    self.k.setLabelBlue('Copy to buffer: ')
+    self.getBufferName(self.copyToBufferFinisher)
+
+def copyToBufferFinisher (self,event,name):
+
+    c = self.c ; k = self.k ; w = self.w
+    s = g.app.gui.getSelectedText(w)
+    p = self.findBuffer(name)
+    if s and p:
+        c.beginUpdate()
+        try:
+            w = self.w
+            c.selectPosition(p)
+            self.beginCommand('copy-to-buffer: %s' % p.headString())
+            w.insert('end',s)
+            w.mark_set('insert','end')
+            w.see('end')
+            self.endCommand()
+        finally:
+            c.endUpdate()
+            c.recolor_now()
+#@-node:ekr.20050920084036.36:copyToBuffer
+#@+node:ekr.20050920084036.37:insertToBuffer
+def insertToBuffer (self,event):
+    
+    '''Add the selected body text at the insert point of the body text of a named buffer (node).'''
+    
+    w = self.editWidget(event) # Sets self.w
+    if not w: return
+
+    self.k.setLabelBlue('Insert to buffer: ')
+    self.getBufferName(self.insertToBufferFinisher)
+
+def insertToBufferFinisher (self,event,name):
+    
+    c = self.c ; k = self.k ; w = self.w
+    s = g.app.gui.getSelectedText(w)
+    p = self.findBuffer(name)
+    if s and p:
+        c.beginUpdate()
+        try:
+            w = self.w
+            c.selectPosition(p)
+            self.beginCommand('insert-to-buffer: %s' % p.headString())
+            w.insert('insert',s)
+            w.see('insert')
+            self.endCommand()
+        finally:
+            c.endUpdate()
+#@-node:ekr.20050920084036.37:insertToBuffer
+#@+node:ekr.20050920084036.38:killBuffer
+def killBuffer (self,event):
+    
+    '''Delete a buffer (node) and all its descendants.'''
+    
+    w = self.editWidget(event) # Sets self.w
+    if not w: return
+
+    self.k.setLabelBlue('Kill buffer: ')
+    self.getBufferName(self.killBufferFinisher)
+
+def killBufferFinisher (self,name):
+
+    c = self.c ; p = self.findBuffer(name)
+    if p:
+        h = p.headString()
+        current = c.currentPosition()
+        c.selectPosition(p)
+        c.deleteOutline (op_name='kill-buffer: %s' % h)
+        c.selectPosition(current)
+        self.k.setLabelBlue('Killed buffer: %s' % h)
+#@-node:ekr.20050920084036.38:killBuffer
+#@+node:ekr.20050920084036.42:listBuffers & listBuffersAlphabetically
+def listBuffers (self,event):
+    
+    '''List all buffers (node headlines), in outline order.
+    Nodes with the same headline are disambiguated by giving their parent or child index.
+    '''
+    
+    self.computeData()
+    g.es('Buffers...')
+    for name in self.nameList:
+        g.es(name)
+        
+def listBuffersAlphabetically (self,event):
+    
+    '''List all buffers (node headlines), in alphabetical order.
+    Nodes with the same headline are disambiguated by giving their parent or child index.'''
+    
+    self.computeData()
+    names = self.nameList[:] ; names.sort()
+    
+    g.es('Buffers...')
+    for name in names:
+        g.es(name)
+#@-node:ekr.20050920084036.42:listBuffers & listBuffersAlphabetically
+#@+node:ekr.20050920084036.39:prependToBuffer
+def prependToBuffer (self,event):
+    
+    '''Add the selected body text to the start of the body text of a named buffer (node).'''
+    
+    w = self.editWidget(event) # Sets self.w
+    if not w: return
+
+    self.k.setLabelBlue('Prepend to buffer: ')
+    self.getBufferName(self.prependToBufferFinisher)
+    
+def prependToBufferFinisher (self,event,name):
+    
+    c = self.c ; k = self.k ; w = self.w
+    s = g.app.gui.getSelectedText(w)
+    p = self.findBuffer(name)
+    if s and p:
+        c.beginUpdate()
+        try:
+            w = self.w
+            c.selectPosition(p)
+            self.beginCommand('prepend-to-buffer: %s' % p.headString())
+            w.insert('1.0',s)
+            w.mark_set('insert','1.0')
+            w.see('1.0')
+            self.endCommand()
+        finally:
+            c.endUpdate()
+            c.recolor_now()
+
+#@-node:ekr.20050920084036.39:prependToBuffer
+#@+node:ekr.20050920084036.43:renameBuffer
+def renameBuffer (self,event):
+    
+    '''Rename a buffer, i.e., change a node's headline.'''
+    
+    self.k.setLabelBlue('Rename buffer from: ')
+    self.getBufferName(self.renameBufferFinisher1)
+    
+def renameBufferFinisher1 (self,name):
+    
+    self.fromName = name
+    self.k.setLabelBlue('Rename buffer from: %s to: ' % (name))
+    self.getBufferName(self.renameBufferFinisher2)
+    
+def renameBufferFinisher2 (self,name):
+    
+    c = self.c ; p = self.findBuffer(self.fromName)
+    if p:
+        c.endEditing()
+        c.beginUpdate()
+        c.setHeadString(p,name)
+        c.endUpdate()
+#@-node:ekr.20050920084036.43:renameBuffer
+#@+node:ekr.20050920084036.40:switchToBuffer
+def switchToBuffer (self,event):
+    
+    '''Select a buffer (node) by its name (headline).'''
+
+    self.k.setLabelBlue('Switch to buffer: ')
+    self.getBufferName(self.switchToBufferFinisher)
+    
+def switchToBufferFinisher (self,name):
+    
+    c = self.c ; p = self.findBuffer(name)
+    if p:
+        c.beginUpdate()
+        try:
+            c.selectPosition(p)
+        finally:
+            c.endUpdate()
+#@-node:ekr.20050920084036.40:switchToBuffer
+#@-node:ekr.20050920084036.34:Entry points
+#@+node:ekr.20060417194232.1:findCharacterHelper
+def findCharacterHelper (self,event,backward,extend):
+
+    '''Put the cursor at the next occurance of a character on a line.'''
+
+    c = self.c ; k = c.k ; tag = 'find-char' ; state = k.getState(tag)
+
+    if state == 0:
+        w = self.editWidget(event) # Sets self.w
+        if not w: return
+        self.event = event
+        self.backward = backward ; self.extend = extend ;
+        self.insert = w.index('insert')
+        s = '%s character %s' % (
+            g.choose(backward,'Backward find','Find'),
+            g.choose(extend,' & extend',''))
+        c.frame.clearStatusLine()
+        c.frame.putStatusLine(s,color='blue')
+        # Get the arg without touching the focus.
+        k.getArg(event,tag,1,self.findCharacter,oneCharacter=True,useMinibuffer=False)
+    else:
+        event = self.event ; w = self.w
+        backward = self.backward ; extend = self.extend
+        ch = k.arg ; s = g.app.gui.getAllText(w)
+        def toGui (i): return g.app.gui.toGuiIndex(s,w,i)
+        def toPython (i): return g.app.gui.toPythonIndex(s,w,i)
+        ins = toPython(self.insert)
+        i = ins + g.choose(backward,-1,+1) # skip the present character.
+        if backward:
+            start = s.rfind('\n',0,i)
+            if start == -1: start = 0
+            j = s.rfind(ch,start,max(start,i)) # Skip the character at the cursor.
+            if j > -1:
+                spot = toGui(j)
+                self.moveToHelper(event,spot,extend)
+        else:
+            end = s.find('\n',i)
+            if end == -1: end = len(s)
+            j = s.find(ch,min(i,end),end) # Skip the character at the cursor.
+            if j > -1:
+                spot = toGui(j)
+                self.moveToHelper(event,spot,extend)
+        c.frame.clearStatusLine()
+        k.clearState()
+#@nonl
+#@-node:ekr.20060417194232.1:findCharacterHelper
+#@+node:ekr.20050920084036.239:copyRectangleToRegister
+def copyRectangleToRegister (self,event):
+    
+    '''Prompt for a register name and append the rectangle defined by selected
+    text to the register's contents.'''
+
+    c = self.c ; k = self.k ; state = k.getState('copy-rect-to-reg')
+
+    if state == 0:
+        w = self.editWidget(w) # sets self.w
+        if not w: return
+        k.commandName = 'copy-rectangle-to-register'
+        k.setLabelBlue('Copy Rectangle To Register: ',protect=True)
+        k.setState('copy-rect-to-reg',1,self.copyRectangleToRegister)
+    elif self.checkBodySelection('No rectangle selected'):
+        k.clearState()
+        if event.keysym in string.letters:
+            key = event.keysym.lower()
+            w = self.w
+            c.widgetWantsFocusNow(w)
+            r1, r2, r3, r4 = self.getRectanglePoints(w)
+            rect = []
+            while r1 <= r3:
+                txt = w.get('%s.%s' % (r1,r2),'%s.%s' % (r1,r4))
+                rect.append(txt)
+                r1 = r1 + 1
+            self.registers [key] = rect
+            k.setLabelGrey('Register %s = %s' % (key,repr(rect)))
+        else:
+            k.setLabelGrey('Register must be a letter')
+    c.bodyWantsFocus()
+#@-node:ekr.20050920084036.239:copyRectangleToRegister
+#@-node:ekr.20061007115425:Methods changed significantly
+#@-node:ekr.20061007101303:Mass change to edit commands: made sure w is a text widget
+#@+node:ekr.20061007083402:Fixed bug: do full recolor after cut/paste/yank
+#@+node:ekr.20051011072903.5:pasteText
+def pasteText (self,event=None):
+
+    '''Paste the clipboard into a widget.'''
+
+    f = self ; c = f.c ; w = event and event.widget
+    if not w or not g.app.gui.isTextWidget(w): return
+
+    wname = c.widget_name(w)
+    oldSel = g.app.gui.getTextSelection(w)
+    oldText = w.get('1.0','end')
+    i,j = g.app.gui.getTextSelection(w)
+    s = s1 = g.app.gui.getTextFromClipboard()
+    # g.trace(wname,s,repr(s))
+    
+    singleLine = wname.startswith('head') or wname.startswith('minibuffer')
+    
+    if singleLine:
+        # Strip trailing newlines so the truncation doesn't cause confusion.
+        while s and s [ -1] in ('\n','\r'):
+            s = s [: -1]
+
+    try:
+        # Update the widget.
+        if i != j:
+            w.delete(i,j)
+        w.insert(i,s)
+    
+        if wname.startswith('body'):
+            c.frame.body.forceFullRecolor()
+            c.frame.body.onBodyChanged('Paste',oldSel=oldSel,oldText=oldText)
+        elif singleLine:
+            s = w.get('1.0','end')
+            while s and s [ -1] in ('\n','\r'):
+                s = s [: -1]
+            if wname.startswith('head'):
+                # The headline is not officially changed yet.
+                # p.initHeadString(s)
+                w.configure(width=f.tree.headWidth(s=s))
+        else: pass
+    except Exception:
+        pass # Tk sometimes throws weird exceptions here.
+        
+    return 'break' # Essential
+
+OnPasteFromMenu = pasteText
+#@-node:ekr.20051011072903.5:pasteText
+#@+node:ekr.20051011072049.2:cutText
+def cutText (self,event=None):
+    
+    '''Invoked from the mini-buffer and from shortcuts.'''
+    
+    f = self ; c = f.c ; w = event and event.widget
+    if not w or not g.app.gui.isTextWidget(w): return
+
+    name = c.widget_name(w)
+    oldSel = g.app.gui.getTextSelection(w)
+    oldText = g.app.gui.getAllText(w)
+    i,j = g.app.gui.getTextSelection(w)
+    
+    # Update the widget and set the clipboard text.
+    s = w.get(i,j)
+    if i != j:
+        w.delete(i,j)
+        g.app.gui.replaceClipboardWith(s)
+
+    if name.startswith('body'):
+        c.frame.body.forceFullRecolor()
+        c.frame.body.onBodyChanged('Cut',oldSel=oldSel,oldText=oldText)
+    elif name.startswith('head'):
+        # The headline is not officially changed yet.
+        # p.initHeadString(s)
+        s=g.app.gui.getAllText(w)
+        w.configure(width=f.tree.headWidth(s=s))
+    else: pass
+
+OnCutFromMenu = cutText
+#@-node:ekr.20051011072049.2:cutText
+#@+node:ekr.20031218072017.1329:onBodyChanged (tkBody)
+# This is the only key handler for the body pane.
+def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None):
+    
+    '''Update Leo after the body has been changed.'''
+    
+    body = self ; c = self.c ; bodyCtrl = body.bodyCtrl
+    trace = self.trace_onBodyChanged
+    p = c.currentPosition()
+    insert = bodyCtrl.index('insert')
+    ch = g.choose(insert=='1.0','',bodyCtrl.get('insert-1c'))
+    ch = g.toUnicode(ch,g.app.tkEncoding)
+    newText = g.app.gui.getAllText(bodyCtrl) # Note: getAllText converts to unicode.
+    # g.trace('newText',repr(newText))
+    newSel = g.app.gui.getTextSelection(bodyCtrl)
+    if oldText is None: oldText = p.bodyString()
+    changed = oldText != newText
+    if trace:
+        g.trace(repr(ch),'changed:',changed)
+        g.trace('newText:',repr(newText))
+    if changed:
+        c.undoer.setUndoTypingParams(p,undoType,
+            oldText=oldText,newText=newText,oldSel=oldSel,newSel=newSel,oldYview=oldYview)
+        p.v.setTnodeText(newText)
+        p.v.t.insertSpot = body.getInsertionPoint()
+        << recolor the body >>
+        if not c.changed: c.setChanged(True)
+        self.updateEditors()
+        << redraw the screen if necessary >>
+#@+node:ekr.20051026083733.6:<< recolor the body >>
+body.colorizer.interrupt()
+c.frame.scanForTabWidth(p)
+body.recolor_now(p,incremental=not self.forceFullRecolorFlag)
+self.forceFullRecolorFlag = False
+#@-node:ekr.20051026083733.6:<< recolor the body >>
+#@+node:ekr.20051026083733.7:<< redraw the screen if necessary >>
+c.beginUpdate()
+try:
+    redraw_flag = False
+    # Update dirty bits.
+    # p.setDirty() sets all cloned and @file dirty bits.
+    if not p.isDirty() and p.setDirty():
+        redraw_flag = True
+        
+    # Update icons. p.v.iconVal may not exist during unit tests.
+    val = p.computeIcon()
+    if not hasattr(p.v,"iconVal") or val != p.v.iconVal:
+        p.v.iconVal = val
+        redraw_flag = True
+finally:
+    c.endUpdate(redraw_flag)
+#@-node:ekr.20051026083733.7:<< redraw the screen if necessary >>
+#@-node:ekr.20031218072017.1329:onBodyChanged (tkBody)
+#@+node:ekr.20050930091642.1:yank
+def yank (self,event):
+    
+    '''Insert the next entry in the kill ring at the insert point.'''
+
+    c = self.c ; k = self.k
+    w = self.editWidget(event)
+    if not w: return
+
+    i = w.index('insert')
+    clip_text = self.getClipboard(w)
+
+    if self.killBuffer or clip_text:
+        self.beginCommand(undoType='yank')
+        self.reset = True
+        s = clip_text or self.kbiterator.next()
+        w.tag_delete('kb')
+        w.insert('insert',s,('kb'))
+        w.mark_set('insert',i)
+        c.frame.body.forceFullRecolor()
+        self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050930091642.1:yank
+#@+node:ekr.20050920084036.178:kill, killLine, killWord
+def kill (self,event,frm,to,undoType=None):
+
+    k = self.k
+    w = self.editWidget(event)
+    if not w: return
+
+    s = w.get(frm,to)
+    if undoType: self.beginCommand(undoType=undoType)
+    self.addToKillBuffer(s)
+    w.clipboard_clear()
+    w.clipboard_append(s)
+    w.delete(frm,to)
+    if undoType: self.endCommand(changed=True,setLabel=True)
+
+def killLine (self,event):
+    '''Kill the line containing the cursor.'''
+    self.kill(event,'insert linestart','insert lineend+1c','kill-line')
+
+def killWord (self,event):
+    '''Kill the word containing the cursor.'''
+    self.beginCommand(undoType='kill-word')
+    self.kill(event,'insert wordstart','insert wordend',undoType=None)
+    self.killWs(event)
+    self.c.frame.body.forceFullRecolor()
+    self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050920084036.178:kill, killLine, killWord
+#@+node:ekr.20050920084036.182:killRegion & killRegionSave & helper
+def killRegion (self,event):
+    '''Kill the text selection.'''
+    self.killRegionHelper(event,deleteFlag=True)
+    
+def killRegionSave (self,event):
+    '''Add the selected text to the kill ring, but do not delete it.'''
+    self.killRegionHelper(event,deleteFlag=False)
+
+def killRegionHelper (self,event,deleteFlag):
+
+    w = self.editWidget(event)
+    if not w: return
+    theRange = w.tag_ranges('sel')
+    if not theRange: return
+    
+    s = w.get(theRange[0],theRange[-1])
+    if deleteFlag:
+        self.beginCommand(undoType='kill-region')
+        w.delete(theRange[0],theRange[-1])
+        self.c.frame.body.forceFullRecolor()
+        self.endCommand(changed=True,setLabel=True)
+    self.addToKillBuffer(s)
+    w.clipboard_clear()
+    w.clipboard_append(s)
+    self.removeRKeys(w)
+#@-node:ekr.20050920084036.182:killRegion & killRegionSave & helper
+#@+node:ekr.20050930095323.1:killSentence
+def killSentence (self,event):
+    
+    '''Kill the sentence containing the cursor.'''
+
+    w = self.editWidget(event)
+    if not w: return
+
+    i  = w.search('.','insert',stopindex='end')
+    if i:
+        self.beginCommand(undoType='kill-sentence')
+        i2 = w.search('.','insert',backwards=True,stopindex='1.0')
+        i2 = g.choose(i2=='','1.0',i2+'+1c ')
+        self.kill(event,i2,'%s + 1c' % i,undoType='kill-sentence')
+        self.c.frame.body.forceFullRecolor()
+        self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050930095323.1:killSentence
+#@+node:ekr.20050930100733:killWs
+def killWs (self,event,undoType=None):
+    
+    ws = ''
+    w = self.editWidget(event)
+    if not w: return
+
+    while 1:
+        s = w.get('insert')
+        if s in (' ','\t'):
+            w.delete('insert')
+            ws = ws + s
+        else:
+            break
+   
+    if ws:
+        if undoType: self.beginCommand(undoType=undoType)
+        self.addToKillBuffer(ws)
+        if undoType: self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050930100733:killWs
+#@-node:ekr.20061007083402:Fixed bug: do full recolor after cut/paste/yank
+#@+node:ekr.20061008090503:Fixed crash when pasting a node
+Create a node in leoPy.leo
+Copy the node
+Switch to test.leo
+Paste the node:  crash
+
+The solution was to call setTimestamp if needed in getNewIndex.
+
+exception executing command
+Traceback (most recent call last):
+
+  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 263, in doCommand
+    val = command(event)
+
+  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 2960, in pasteOutline
+    pasted = c.fileCommands.getLeoOutline(s,reassignIndices)
+
+  File "c:\prog\tigris-cvs\leo\src\leoFileCommands.py", line 583, in getLeoOutlineFromClipboard
+    v = self.getLeoOutlineHelper(s,reassignIndices,checking=False)
+
+  File "c:\prog\tigris-cvs\leo\src\leoFileCommands.py", line 671, in getLeoOutlineHelper
+    v = self.finishPaste(reassignIndices)
+
+  File "c:\prog\tigris-cvs\leo\src\leoFileCommands.py", line 625, in finishPaste
+    t.fileIndex = nodeIndices.getNewIndex()
+
+  File "c:\prog\tigris-cvs\leo\src\leoNodes.py", line 1217, in getNewIndex
+    assert(t)
+
+AssertionError
+
+#@-node:ekr.20061008090503:Fixed crash when pasting a node
 #@-node:ekr.20060929091051:Bugs
 #@+node:ekr.20060929141921:Features
 #@+node:ekr.20060929141750:Improved the mod_scripting plugin
@@ -6733,6 +7464,8 @@ http://sourceforge.net/forum/message.php?msg_id=3935780
 This greatly speeds searches that used to open many nodes.
 
 New in Leo 4.4.2 b2: support for @bool collapse_nodes_during_finds setting.
+
+@color
 #@nonl
 #@+node:ekr.20050920084036.189:<< define dictionary d of names and Leo commands >>
 c = self.c ; f = c.frame
@@ -8211,7 +8944,7 @@ def extendToLine (self,event):
 #@+node:ekr.20061007084626:Improved print-bindings command
 # This is a big help in understanding bindings.
 #@nonl
-#@+node:ekr.20051012201831:printBindings
+#@+node:ekr.20051012201831:printBindings & helper
 def printBindings (self,event):
 
     '''Print all the bindings presently in effect.'''
@@ -8244,29 +8977,461 @@ def printBindings (self,event):
             if s2.startswith(prefix):
                 data2.append(item)
         g.es('%s %s' % (sep, prefix),tabName=tabName)
-        self.printBindingsHelper(data2,n1,n2)
+        self.printBindingsHelper(data2,n1,n2,prefix=prefix)
         # Remove all the items in data2 from data.
         # This must be done outside the iterator on data.
         for item in data2:
             data.remove(item)
     # Print all plain bindings.
     g.es('%s %s' % (sep, 'Plain Keys',),tabName=tabName)
-    self.printBindingsHelper(data,n1,n2)
+    self.printBindingsHelper(data,n1,n2,prefix=None)
     state = k.unboundKeyAction 
     k.showStateAndMode()
+#@+node:ekr.20061007185125:printBindingsHelper
+def printBindingsHelper (self,data,n1,n2,prefix):
+        
+    n = prefix and len(prefix)+1 or 0 # Add 1 for the '+' after the prefix.
     
-def printBindingsHelper (self,data,n1,n2):
+    data1 = [z for z in data if z and z[1] and len(z[1][n:]) == 1]
+        # The list of all items with only one character following the prefix.
+    data2 = [z for z in data if z and z[1] and len(z[1][n:]) >  1]
+        # The list of all other items.
                 
     # This isn't perfect in variable-width fonts.
-    data.sort(lambda x,y: cmp(x[1],y[1]))
-    for s1,s2,s3 in data:
-        g.es('%*s %*s %s' % (-n1,s1,-(min(12,n2)),s2,s3),tabName='Bindings')
-#@-node:ekr.20051012201831:printBindings
+    for data in (data1,data2):
+        data.sort(lambda x,y: cmp(x[1],y[1]))
+        for s1,s2,s3 in data:
+            g.es('%*s %*s %s' % (-n1,s1,-(min(12,n2)),s2,s3),tabName='Bindings')
+#@-node:ekr.20061007185125:printBindingsHelper
+#@-node:ekr.20051012201831:printBindings & helper
 #@-node:ekr.20061007084626:Improved print-bindings command
+#@+node:ekr.20061007184303:Improved print-bindings further
+# For each prefix, first print items with only a single character after the prefix.
+#@nonl
+#@+node:ekr.20051012201831:printBindings & helper
+def printBindings (self,event):
+
+    '''Print all the bindings presently in effect.'''
+
+    k = self ; c = k.c
+    d = k.bindingsDict ; tabName = 'Bindings'
+    keys = d.keys() ; keys.sort()
+    c.frame.log.clearTab(tabName)
+    data = [] ; n1 = 4 ; n2 = 20
+    for key in keys:
+        bunchList = d.get(key,[])
+        for b in bunchList:
+            pane = g.choose(b.pane=='all','',' %s:' % (b.pane))
+            s1 = pane
+            s2 = k.prettyPrintKey(key,brief=True)
+            s3 = b.commandName
+            n1 = max(n1,len(s1))
+            n2 = max(n2,len(s2))
+            data.append((s1,s2,s3),)
+            
+    # Print keys by type:
+    sep = '-' * n1
+    for prefix in (
+        'Alt+Ctrl+Shift', 'Alt+Shift', 'Alt+Ctrl', 'Alt',
+        'Ctrl+Shift', 'Ctrl', 'Shift',
+    ):
+        data2 = []
+        for item in data:
+            s1,s2,s3 = item
+            if s2.startswith(prefix):
+                data2.append(item)
+        g.es('%s %s' % (sep, prefix),tabName=tabName)
+        self.printBindingsHelper(data2,n1,n2,prefix=prefix)
+        # Remove all the items in data2 from data.
+        # This must be done outside the iterator on data.
+        for item in data2:
+            data.remove(item)
+    # Print all plain bindings.
+    g.es('%s %s' % (sep, 'Plain Keys',),tabName=tabName)
+    self.printBindingsHelper(data,n1,n2,prefix=None)
+    state = k.unboundKeyAction 
+    k.showStateAndMode()
+#@+node:ekr.20061007185125:printBindingsHelper
+def printBindingsHelper (self,data,n1,n2,prefix):
+        
+    n = prefix and len(prefix)+1 or 0 # Add 1 for the '+' after the prefix.
+    
+    data1 = [z for z in data if z and z[1] and len(z[1][n:]) == 1]
+        # The list of all items with only one character following the prefix.
+    data2 = [z for z in data if z and z[1] and len(z[1][n:]) >  1]
+        # The list of all other items.
+                
+    # This isn't perfect in variable-width fonts.
+    for data in (data1,data2):
+        data.sort(lambda x,y: cmp(x[1],y[1]))
+        for s1,s2,s3 in data:
+            g.es('%*s %*s %s' % (-n1,s1,-(min(12,n2)),s2,s3),tabName='Bindings')
+#@-node:ekr.20061007185125:printBindingsHelper
+#@-node:ekr.20051012201831:printBindings & helper
+#@-node:ekr.20061007184303:Improved print-bindings further
 #@+node:ekr.20061007094718.1:Added bindings for Alt-Shift-Arrow keys to force an outline move
 #@-node:ekr.20061007094718.1:Added bindings for Alt-Shift-Arrow keys to force an outline move
 #@+node:ekr.20061007100804:Added extend-to-line command to Cmds menu
 #@-node:ekr.20061007100804:Added extend-to-line command to Cmds menu
+#@+node:ekr.20061007185125.1:Added support for @bool sparse_move_outline_left
+
+
+
+   
+       
+#@nonl
+#@+node:ekr.20031218072017.1770:moveOutlineLeft
+def moveOutlineLeft (self,event=None):
+    
+    '''Move the selected node left if possible.'''
+    
+    c = self ; u = c.undoer ; p = c.currentPosition()
+    if not p: return
+    if not c.canMoveOutlineLeft(): # 11/4/03: Support for hoist.
+        if c.hoistStack: g.es("Can't move node out of hoisted outline",color="blue")
+        c.treeWantsFocusNow()
+        return
+    if not p.hasParent():
+        c.treeWantsFocusNow()
+        return
+
+    inAtIgnoreRange = p.inAtIgnoreRange()
+    parent = p.parent()
+    sparseMove = c.config.getBool('sparse_move_outline_left')
+    c.beginUpdate()
+    try: # In update...
+        c.endEditing()
+        undoData = u.beforeMoveNode(p)
+        dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+        p.moveAfter(parent)
+        if inAtIgnoreRange and not p.inAtIgnoreRange():
+            # The moved nodes have just become newly unignored.
+            p.setDirty() # Mark descendent @thin nodes dirty.
+        else: # No need to mark descendents dirty.
+            dirtyVnodeList2 = p.setAllAncestorAtFileNodesDirty()
+            dirtyVnodeList.extend(dirtyVnodeList2)
+        c.setChanged(True)
+        u.afterMoveNode(p,'Move Left',undoData,dirtyVnodeList)
+        if sparseMove: # New in Leo 4.4.2
+            if 1: # Just collapsing the orignal parent is more reasonable.
+                parent.contract()
+            else:
+                for p2 in c.allNodes_iter():
+                    if not p.isAncestorOf(p):
+                        p2.contract()
+                for p2 in p.parents_iter():
+                    if not p2.isExpanded():
+                        p2.expand()
+    finally:
+        c.selectPosition(p) # Also sets rootPosition.
+        c.endUpdate()
+        c.treeWantsFocusNow()
+    c.updateSyntaxColorer(p) # Moving can change syntax coloring.
+#@nonl
+#@-node:ekr.20031218072017.1770:moveOutlineLeft
+#@-node:ekr.20061007185125.1:Added support for @bool sparse_move_outline_left
+#@+node:ekr.20061007184303.1:Created extend-to-sentence and extend-to-paragraph commands
+Possibly define kill-sentence and kill-paragraph in terms of these.
+#@nonl
+#@+node:ekr.20050920084036.55: getPublicCommands (editCommandsClass)
+def getPublicCommands (self):        
+
+    c = self.c ; k = self.k 
+
+    return {
+        'activate-cmds-menu':                   self.activateCmdsMenu,
+        'activate-edit-menu':                   self.activateEditMenu,
+        'activate-file-menu':                   self.activateFileMenu,
+        'activate-help-menu':                   self.activateHelpMenu,
+        'activate-outline-menu':                self.activateOutlineMenu,
+        'activate-plugins-menu':                self.activatePluginsMenu,
+        'activate-window-menu':                 self.activateWindowMenu,
+        'add-editor':                           c.frame.body.addEditor,
+        'add-space-to-lines':                   self.addSpaceToLines,
+        'add-tab-to-lines':                     self.addTabToLines, 
+        'back-to-indentation':                  self.backToIndentation,
+        'back-char':                            self.backCharacter,
+        'back-char-extend-selection':           self.backCharacterExtendSelection,
+        'back-paragraph':                       self.backwardParagraph,
+        'back-paragraph-extend-selection':      self.backwardParagraphExtendSelection,
+        'back-sentence':                        self.backSentence,
+        'back-sentence-extend-selection':       self.backSentenceExtendSelection,
+        'back-word':                            self.backwardWord,
+        'back-word-extend-selection':           self.backwardWordExtendSelection,
+        'backward-delete-char':                 self.backwardDeleteCharacter,
+        'backward-kill-paragraph':              self.backwardKillParagraph,
+        'backward-find-character':              self.backwardFindCharacter,
+        'backward-find-character-extend-selection': self.backwardFindCharacterExtendSelection,
+        'beginning-of-buffer':                  self.beginningOfBuffer,
+        'beginning-of-buffer-extend-selection': self.beginningOfBufferExtendSelection,
+        'beginning-of-line':                    self.beginningOfLine,
+        'beginning-of-line-extend-selection':   self.beginningOfLineExtendSelection,
+        'capitalize-word':                      self.capitalizeWord,
+        'center-line':                          self.centerLine,
+        'center-region':                        self.centerRegion,
+        'clean-lines':                          self.cleanLines,
+        'clear-extend-mode':                    self.clearExtendMode,
+        'clear-selected-text':                  self.clearSelectedText,
+        'click-click-box':                      self.clickClickBox,
+        'click-headline':                       self.clickHeadline,
+        'click-icon-box':                       self.clickIconBox,
+        'contract-body-pane':                   c.frame.contractBodyPane,
+        'contract-log-pane':                    c.frame.contractLogPane,
+        'contract-outline-pane':                c.frame.contractOutlinePane,
+        'contract-pane':                        c.frame.contractPane,
+        'count-region':                         self.countRegion,
+        'cycle-focus':                          self.cycleFocus,
+        'cycle-all-focus':                      self.cycleAllFocus,
+        'cycle-editor-focus':                   c.frame.body.cycleEditorFocus,
+        'dabbrev-completion':                   self.dynamicExpansion2,
+        'dabbrev-expands':                      self.dynamicExpansion,
+        'delete-char':                          self.deleteNextChar,
+        'delete-editor':                        c.frame.body.deleteEditor,
+        'delete-indentation':                   self.deleteIndentation,
+        'delete-spaces':                        self.deleteSpaces,
+        'downcase-region':                      self.downCaseRegion,
+        'downcase-word':                        self.downCaseWord,
+        'double-click-headline':                self.doubleClickHeadline,
+        'double-click-icon-box':                self.doubleClickIconBox,
+        'end-of-buffer':                        self.endOfBuffer,
+        'end-of-buffer-extend-selection':       self.endOfBufferExtendSelection,
+        'end-of-line':                          self.endOfLine,
+        'end-of-line-extend-selection':         self.endOfLineExtendSelection,
+        'escape':                               self.watchEscape,
+        'eval-expression':                      self.evalExpression,
+        'exchange-point-mark':                  self.exchangePointMark,
+        'expand-body-pane':                     c.frame.expandBodyPane,
+        'expand-log-pane':                      c.frame.expandLogPane,
+        'expand-outline-pane':                  c.frame.expandOutlinePane,
+        'expand-pane':                          c.frame.expandPane,
+        'extend-to-line':                       self.extendToLine,
+        'extend-to-paragraph':                  self.extendToParagraph,
+        'extend-to-sentence':                   self.extendToSentence,
+        'extend-to-word':                       self.extendToWord,
+        'fill-paragraph':                       self.fillParagraph,
+        'fill-region':                          self.fillRegion,
+        'fill-region-as-paragraph':             self.fillRegionAsParagraph,
+        'find-character':                       self.findCharacter,
+        'find-character-extend-selection':      self.findCharacterExtendSelection,
+        'find-word':                            self.findWord,
+        'flush-lines':                          self.flushLines,
+        'focus-to-body':                        self.focusToBody,
+        'focus-to-log':                         self.focusToLog,
+        'focus-to-minibuffer':                  self.focusToMinibuffer,
+        'focus-to-tree':                        self.focusToTree,
+        'forward-char':                         self.forwardCharacter,
+        'forward-char-extend-selection':        self.forwardCharacterExtendSelection,
+        'forward-paragraph':                    self.forwardParagraph,
+        'forward-paragraph-extend-selection':   self.forwardParagraphExtendSelection,
+        'forward-sentence':                     self.forwardSentence,
+        'forward-sentence-extend-selection':    self.forwardSentenceExtendSelection,
+        'forward-word':                         self.forwardWord,
+        'forward-word-extend-selection':        self.forwardWordExtendSelection,
+        'fully-expand-body-pane':               c.frame.fullyExpandBodyPane,
+        'fully-expand-log-pane':                c.frame.fullyExpandLogPane,
+        'fully-expand-pane':                    c.frame.fullyExpandPane,
+        'fully-expand-outline-pane':            c.frame.fullyExpandOutlinePane,
+        'goto-char':                            self.gotoCharacter,
+        'goto-global-line':                     self.gotoGlobalLine,
+        'goto-line':                            self.gotoLine,
+        'hide-body-pane':                       c.frame.hideBodyPane,
+        'hide-log-pane':                        c.frame.hideLogPane,
+        'hide-pane':                            c.frame.hidePane,
+        'hide-outline-pane':                    c.frame.hideOutlinePane,
+        'how-many':                             self.howMany,
+        # Use indentBody in leoCommands.py
+        'indent-relative':                      self.indentRelative,
+        'indent-rigidly':                       self.tabIndentRegion,
+        'indent-to-comment-column':             self.indentToCommentColumn,
+        'insert-newline':                       self.insertNewline,
+        'insert-parentheses':                   self.insertParentheses,
+        'keep-lines':                           self.keepLines,
+        'kill-paragraph':                       self.killParagraph,
+        'line-number':                          self.lineNumber,
+        'move-lines-down':                      self.moveLinesDown,
+        'move-lines-up':                        self.moveLinesUp,
+        'move-past-close':                      self.movePastClose,
+        'move-past-close-extend-selection':     self.movePastCloseExtendSelection,
+        'newline-and-indent':                   self.insertNewLineAndTab,
+        'next-line':                            self.nextLine,
+        'next-line-extend-selection':           self.nextLineExtendSelection,
+        'previous-line':                        self.prevLine,
+        'previous-line-extend-selection':       self.prevLineExtendSelection,
+        'remove-blank-lines':                   self.removeBlankLines,
+        'remove-space-from-lines':              self.removeSpaceFromLines,
+        'remove-tab-from-lines':                self.removeTabFromLines,
+        'reverse-region':                       self.reverseRegion,
+        'scroll-down':                          self.scrollDown,
+        'scroll-down-extend-selection':         self.scrollDownExtendSelection,
+        'scroll-outline-down-line':             self.scrollOutlineDownLine,
+        'scroll-outline-down-page':             self.scrollOutlineDownPage,
+        'scroll-outline-left':                  self.scrollOutlineLeft,
+        'scroll-outline-right':                 self.scrollOutlineRight,
+        'scroll-outline-up-line':               self.scrollOutlineUpLine,
+        'scroll-outline-up-page':               self.scrollOutlineUpPage,
+        'scroll-up':                            self.scrollUp,
+        'scroll-up-extend-selection':           self.scrollUpExtendSelection,
+        # Exists, but can not be executed via the minibuffer.
+        # 'self-insert-command':                self.selfInsertCommand,
+        'set-comment-column':                   self.setCommentColumn,
+        'set-extend-mode':                      self.setExtendMode,
+        'set-fill-column':                      self.setFillColumn,
+        'set-fill-prefix':                      self.setFillPrefix,
+        'set-mark-command':                     self.setRegion,
+        'show-colors':                          self.showColors,
+        'show-fonts':                           self.showFonts,
+        'simulate-begin-drag':                  self.simulateBeginDrag,
+        'simulate-end-drag':                    self.simulateEndDrag,
+        'sort-columns':                         self.sortColumns,
+        'sort-fields':                          self.sortFields,
+        'sort-lines':                           self.sortLines,
+        'split-line':                           self.splitLine,
+        'tabify':                               self.tabify,
+        'toggle-extend-mode':                   self.toggleExtendMode,
+        'transpose-chars':                      self.transposeCharacters,
+        'transpose-lines':                      self.transposeLines,
+        'transpose-words':                      self.transposeWords,
+        'untabify':                             self.untabify,
+        'upcase-region':                        self.upCaseRegion,
+        'upcase-word':                          self.upCaseWord,
+        'view-lossage':                         self.viewLossage,
+        'what-line':                            self.whatLine,
+    }
+#@-node:ekr.20050920084036.55: getPublicCommands (editCommandsClass)
+#@+node:ekr.20050930095323.1:killSentence
+def killSentence (self,event):
+    
+    '''Kill the sentence containing the cursor.'''
+
+    w = self.editWidget(event)
+    if not w: return
+
+    i  = w.search('.','insert',stopindex='end')
+    if i:
+        self.beginCommand(undoType='kill-sentence')
+        i2 = w.search('.','insert',backwards=True,stopindex='1.0')
+        i2 = g.choose(i2=='','1.0',i2+'+1c ')
+        self.kill(event,i2,'%s + 1c' % i,undoType='kill-sentence')
+        self.c.frame.body.forceFullRecolor()
+        self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050930095323.1:killSentence
+#@+node:ekr.20050920084036.98:killParagraph (Test)
+def killParagraph (self,event):
+    
+    '''Kill the present paragraph.'''
+
+    k = self.k ; c = k.c
+    w = self.editWidget(event)
+    if not w: return
+
+    i = w.index('insert')
+    txt = w.get('insert linestart','insert lineend')
+    
+    self.beginCommand(undoType='kill-paragraph')
+
+    if not txt.strip():
+        i = w.search(r'\w',i,regexp=True,stopindex='end')
+    self.selectParagraphHelper(w,i)
+    i2 = w.index('insert')
+    c.killBufferCommands.kill(event,i,i2)
+    w.mark_set('insert',i)
+    w.selection_clear()
+
+    self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050920084036.98:killParagraph (Test)
+#@+node:ekr.20061007082956:extend-to-line
+def extendToLine (self,event):
+    
+    '''Select the line at the cursor.'''
+    
+    c = self.c
+    w = self.editWidget(event)
+    if not w: return
+    
+    def toGui(i): return g.app.gui.toGuiIndex(s,w,i)
+    def toPython(i): return g.app.gui.toPythonIndex(s,w,i)
+    
+    s = w.get('1.0','end') ; n = len(s)
+    i = toPython(w.index('insert'))
+    while 0 <= i < n and not s[i] == '\n':
+        i -= 1
+    i += 1 ; i1 = i
+    while 0 <= i < n and not s[i] == '\n':
+        i += 1
+
+    g.app.gui.setSelectionRange(w,toGui(i1),toGui(i))
+#@-node:ekr.20061007082956:extend-to-line
+#@+node:ekr.20061007214835.4:extend-to-sentence
+def extendToSentence (self,event):
+    
+    '''Select the line at the cursor.'''
+    
+    c = self.c
+    w = self.editWidget(event)
+    if not w: return
+    
+    def toGui(i): return g.app.gui.toGuiIndex(s,w,i)
+    def toPython(i): return g.app.gui.toPythonIndex(s,w,i)
+    
+    s = w.get('1.0','end') ; n = len(s)
+    i = toPython(w.index('insert'))
+    i2 = 1 + s.find('.',i)
+    if i2 == -1: i2 = n
+    i1 = 1 + s.rfind('.',0,i2-1)
+
+    g.app.gui.setSelectionRange(w,toGui(i1),toGui(i2))
+#@nonl
+#@-node:ekr.20061007214835.4:extend-to-sentence
+#@+node:ekr.20050920084036.96:extend-to-paragraph & helper
+def extendToParagraph (self,event):
+    
+    '''Select the paragraph surrounding the cursor.'''
+
+    k = self.k
+    w = self.editWidget(event)
+    if not w: return
+
+    txt = w.get('insert linestart','insert lineend')
+    txt = txt.strip()
+    i = w.index('insert')
+
+    if not txt:
+        while 1:
+            i = w.index('%s + 1 lines' % i)
+            txt = w.get('%s linestart' % i,'%s lineend' % i).strip()
+            if txt:
+                self.selectParagraphHelper(w,i) ; break
+            if w.index('%s lineend' % i) == w.index('end'):
+                return
+
+    if txt:
+        while 1:
+            i = w.index('%s - 1 lines' % i)
+            txt = w.get('%s linestart' % i,'%s lineend' % i).strip()
+            if not txt or w.index('%s linestart' % i) == w.index('1.0'):
+                if not txt: i = w.index('%s + 1 lines' % i)
+                self.selectParagraphHelper(w,i)
+                break
+#@+node:ekr.20050920084036.97:selectParagraphHelper
+def selectParagraphHelper (self,w,start):
+
+    i2 = start
+    while 1:
+        txt = w.get('%s linestart' % i2,'%s lineend' % i2)
+        if w.index('%s lineend' % i2) == w.index('end'):
+            break
+        txt = txt.strip()
+        if not txt: break
+        else:
+            i2 = w.index('%s + 1 lines' % i2)
+
+    w.tag_add('sel','%s linestart' % start,'%s lineend' % i2)
+    w.mark_set('insert','%s lineend' % i2)
+#@-node:ekr.20050920084036.97:selectParagraphHelper
+#@-node:ekr.20050920084036.96:extend-to-paragraph & helper
+#@-node:ekr.20061007184303.1:Created extend-to-sentence and extend-to-paragraph commands
+#@+node:ekr.20061007184303.2:Created new extend submenu
+#@-node:ekr.20061007184303.2:Created new extend submenu
 #@-node:ekr.20060929141921:Features
 #@+node:ekr.20060929141921.1:Tests
 #@+node:ekr.20060929100150:Tested Python 2.5 exception reporting
