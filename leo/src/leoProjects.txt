@@ -6974,7 +6974,7 @@ def copyRectangleToRegister (self,event):
     c = self.c ; k = self.k ; state = k.getState('copy-rect-to-reg')
 
     if state == 0:
-        w = self.editWidget(w) # sets self.w
+        w = self.editWidget(event) # sets self.w
         if not w: return
         k.commandName = 'copy-rectangle-to-register'
         k.setLabelBlue('Copy Rectangle To Register: ',protect=True)
@@ -7899,8 +7899,7 @@ def putTnodeList (self,v):
     """Put the tnodeList attribute of a tnode."""
     
     # Remember: entries in the tnodeList correspond to @+node sentinels, _not_ to tnodes!
-
-    fc = self ; nodeIndices = g.app.nodeIndices
+    nodeIndices = g.app.nodeIndices
     tnodeList = v.t.tnodeList
     if tnodeList:
         # g.trace("%4d" % len(tnodeList),v)
@@ -8659,7 +8658,7 @@ def onCanvasKey (self,event):
     c  = self ; p = c.currentPosition() ; p1 = p.copy()
     ch = event.char ; all = ch.isupper()
     found = False
-    extend = self.navQuickKey(p)
+    extend = self.navQuickKey()
     attempts = g.choose(extend,(True,False),(False,))
     for extend2 in attempts:
         p = p1.copy()
@@ -8673,12 +8672,12 @@ def onCanvasKey (self,event):
             if p == p1: # Never try to match the same position.
                 # g.trace('failed',extend2)
                 found = False ; break
-            newPrefix = c.navHelper(p,ch,all,extend2)
+            newPrefix = c.navHelper(p,ch,extend2)
             if newPrefix:
                 found = True ; break
         if found: break
     if found:
-        if all: self.expandAllAncestors(p)
+        if all: c.frame.tree.expandAllAncestors(p)
         c.selectPosition(p)
         c.navTime = time.clock()
         c.navPrefix = newPrefix
@@ -8689,7 +8688,7 @@ def onCanvasKey (self,event):
     c.treeWantsFocusNow()
 #@nonl
 #@+node:ekr.20061002095711.1:c.navQuickKey
-def navQuickKey (self,p):
+def navQuickKey (self):
     
     '''return true if there are two quick outline navigation keys
     in quick succession.
@@ -8704,12 +8703,11 @@ def navQuickKey (self,p):
         return False
     else:
         nearTime = c.navTime and time.clock() - c.navTime < deltaTime
-        # g.trace(nearTime,p.headString())
         return nearTime
 #@nonl
 #@-node:ekr.20061002095711.1:c.navQuickKey
 #@+node:ekr.20061002095711:c.navHelper
-def navHelper (self,p,ch,all,extend):
+def navHelper (self,p,ch,extend):
     
     c = self ; h = p.headString().lower()
     
@@ -8838,7 +8836,7 @@ def onCanvasKey (self,event):
     c  = self ; p = c.currentPosition() ; p1 = p.copy()
     ch = event.char ; all = ch.isupper()
     found = False
-    extend = self.navQuickKey(p)
+    extend = self.navQuickKey()
     attempts = g.choose(extend,(True,False),(False,))
     for extend2 in attempts:
         p = p1.copy()
@@ -8852,12 +8850,12 @@ def onCanvasKey (self,event):
             if p == p1: # Never try to match the same position.
                 # g.trace('failed',extend2)
                 found = False ; break
-            newPrefix = c.navHelper(p,ch,all,extend2)
+            newPrefix = c.navHelper(p,ch,extend2)
             if newPrefix:
                 found = True ; break
         if found: break
     if found:
-        if all: self.expandAllAncestors(p)
+        if all: c.frame.tree.expandAllAncestors(p)
         c.selectPosition(p)
         c.navTime = time.clock()
         c.navPrefix = newPrefix
@@ -8868,7 +8866,7 @@ def onCanvasKey (self,event):
     c.treeWantsFocusNow()
 #@nonl
 #@+node:ekr.20061002095711.1:c.navQuickKey
-def navQuickKey (self,p):
+def navQuickKey (self):
     
     '''return true if there are two quick outline navigation keys
     in quick succession.
@@ -8883,12 +8881,11 @@ def navQuickKey (self,p):
         return False
     else:
         nearTime = c.navTime and time.clock() - c.navTime < deltaTime
-        # g.trace(nearTime,p.headString())
         return nearTime
 #@nonl
 #@-node:ekr.20061002095711.1:c.navQuickKey
 #@+node:ekr.20061002095711:c.navHelper
-def navHelper (self,p,ch,all,extend):
+def navHelper (self,p,ch,extend):
     
     c = self ; h = p.headString().lower()
     
@@ -9447,7 +9444,6 @@ def runEditCommandTest (c,p):
     assert commandName, 'empty command name'
     command = c.commandsDict.get(commandName)
     assert command, 'no command: %s' % (commandName)
-    g.trace(command.__name__)
     
     work,before,after = u.findChildrenOf(atTest)
     before_h = 'before sel='
@@ -9963,8 +9959,7 @@ def putTnodeList (self,v):
     """Put the tnodeList attribute of a tnode."""
     
     # Remember: entries in the tnodeList correspond to @+node sentinels, _not_ to tnodes!
-
-    fc = self ; nodeIndices = g.app.nodeIndices
+    nodeIndices = g.app.nodeIndices
     tnodeList = v.t.tnodeList
     if tnodeList:
         # g.trace("%4d" % len(tnodeList),v)
@@ -10320,8 +10315,8 @@ def startElementNS(self,name,qname,attrs):
     __pychecker__ = '--no-argsused'
     g.trace(name)
     
-def startDocument(self,*args,**keys):
-    pass # g.trace(args,keys)
+def startDocument(self):
+    pass
 #@nonl
 #@-node:ekr.20060919110638.29: Do nothing
 #@+node:ekr.20060919134313: Utils

@@ -697,18 +697,11 @@ class reformatParagraphTest:
     #@+node:ekr.20051104075904.49:go
     def go (self):
         
-        ok = True
         try:
-            try:
-                self.setUp()
-                self.runTest()
-            except Exception:
-                g.es_exception()
-                ok = False
+            self.setUp()
+            self.runTest()
         finally:
             self.tearDown()
-    
-        # if not ok: raise
     #@-node:ekr.20051104075904.49:go
     #@+node:ekr.20051104075904.50:checkPosition
     def checkPosition(self,expRow,expCol):
@@ -1433,7 +1426,6 @@ def runEditCommandTest (c,p):
     assert commandName, 'empty command name'
     command = c.commandsDict.get(commandName)
     assert command, 'no command: %s' % (commandName)
-    g.trace(command.__name__)
     
     work,before,after = u.findChildrenOf(atTest)
     before_h = 'before sel='

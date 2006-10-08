@@ -1,9 +1,67 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
-#@+node:ekr.20060927172440:To do before 4.4.2 final
-#@+node:ekr.20061001060913.1:To do first
-#@+node:ekr.20061007214835:before b2
+#@+node:ekr.20060927172440:To do before 4.4.2 b3
+#@+node:ekr.20061008160553:bugs
+#@+node:ekr.20061008091617:@key Alt-1 doesn't work
+#@-node:ekr.20061008091617:@key Alt-1 doesn't work
+#@+node:ekr.20061008094530:Bind **every** key so we can tell what was pressed
+@nocolor
+
+I am totally fed up with the present scheme.
+The only solution is to beind every printable key, and every combination of modifiers.
+This doesn't solve the problem of unicode (non-ascii) keys, but it is a start.
+#@nonl
+#@-node:ekr.20061008094530:Bind **every** key so we can tell what was pressed
+#@+node:ekr.20061007094817:Alt-y moves to Bindings pane, but does not select the text
+#@-node:ekr.20061007094817:Alt-y moves to Bindings pane, but does not select the text
+#@+node:ekr.20060927100500.1:Fix bugs in new colorizer
+@nocolor
+
+- Does not restore selection after indent/undent commands.
+#@nonl
+#@-node:ekr.20060927100500.1:Fix bugs in new colorizer
+#@+node:ekr.20060928194335:Fix bug: closing a window after removing a script button can crash
+#@-node:ekr.20060928194335:Fix bug: closing a window after removing a script button can crash
+#@+node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
+#@-node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
+#@+node:ekr.20060920150119:Fix undo problems
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3924236
+
+Clear the * mark if all changes have been done.
+There are serious problems with undoing and redoing text.
+
+The recent work with yank/kill commands may have fixed some problems.
+
+Make unlimited undo the default.
+#@nonl
+#@-node:ekr.20060920150119:Fix undo problems
+#@-node:ekr.20061008160553:bugs
+#@+node:ekr.20061008160553.1:features
+#@+node:ekr.20061008163540:add do-nothing command as a way to create arbitrary bindings
+This may be an important hack.
+#@nonl
+#@-node:ekr.20061008163540:add do-nothing command as a way to create arbitrary bindings
+#@+node:ekr.20061008114340:Finish collapse-on-move-left
+@nocolor
+
+cvs now contains support for this new setting:
+
+@bool sparse_move_outline_left
+
+When True, Leo will collapse the (former) parent of a node when moving that node left.  This makes moving outlines left extremely fast, but it takes getting used to it.  I think I like it :-)
+
+To do:
+
+- The move-outline-up/down commands can have the effect of moving an outline left.  At present, the outline isn't collapsed in those cases, but it should be.
+
+- set/clear/toggle-sparce-move-outline-left commands are needed to turn this option on or off at will.
+
+@color
+#@nonl
+#@-node:ekr.20061008114340:Finish collapse-on-move-left
 #@+node:ekr.20051112080017:delete-x-script-button
 @nocolor
 
@@ -17,10 +75,6 @@ I do?
 EKR: This is on the list of unfixable bugs, but I have a hard time believing there is no workaround.
 #@nonl
 #@-node:ekr.20051112080017:delete-x-script-button
-#@+node:ekr.20061007094817:Alt-y moves to Bindings pane, but does not select the text
-#@-node:ekr.20061007094817:Alt-y moves to Bindings pane, but does not select the text
-#@+node:ekr.20061007075350:Make sure errors are reported properly in Python 2.5
-#@-node:ekr.20061007075350:Make sure errors are reported properly in Python 2.5
 #@+node:ekr.20060927173836.1:Disable calltips in @nocolor sections
 @nocolor
 
@@ -29,145 +83,8 @@ Why are calltips enabled at all??
 Show calltips treats the node as code, and that can have very weird effects in @nocolor sections.
 #@nonl
 #@-node:ekr.20060927173836.1:Disable calltips in @nocolor sections
-#@+node:ekr.20060920150119:Fix undo problems (important)
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3924236
-
-Clear the * mark if all changes have been done.
-There are serious problems with undoing and redoing text.
-
-The recent work with yank/kill commands may have fixed some problems.
-
-Make unlimited undo the default.
-#@nonl
-#@-node:ekr.20060920150119:Fix undo problems (important)
-#@+node:ekr.20060116083043:Use special Help menu on the Mac
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3237845
-
-http://tkinter.unpythonic.net/wiki/Widgets/Menu
-
-On the Macintosh, access to the special Apple and Help menus is provided. These
-menus must be created with the command name of the menubar menu concatenated
-with the special name. 
-
-For a menubar named .menubar, on the Macintosh, the special menus are .menubar.apple and .menubar.help.
-
-On Windows, the special menu is .menubar.system.
-
-On X Windows, the help menu is .menubar.help.
-
-[XXX how to create widgets with these names in Tkinter]
-
-@color
-#@nonl
-#@+node:ekr.20031218072017.3803:createHelpMenuFromTable
-def createHelpMenuFromTable (self):
-
-    if 0: ## sys.platform == 'darwin':
-        helpMenu = self.getMacHelpMenu()
-        if not helpMenu: return
-    else:
-        helpMenu = self.createNewMenu("&Help")
-    
-    self.createMenuEntries(helpMenu,self.helpMenuTable)
-#@nonl
-#@-node:ekr.20031218072017.3803:createHelpMenuFromTable
-#@+node:ekr.20031218072017.4113:new_menu
-def new_menu(self,parent,tearoff=False):
-    
-    """Wrapper for the Tkinter new_menu menu method."""
-    
-    if self.font:
-        try:
-            return Tk.Menu(parent,tearoff=tearoff,font=self.font)
-        except Exception:
-            g.es_exception()
-            return Tk.Menu(parent,tearoff=tearoff)
-    else:
-        return Tk.Menu(parent,tearoff=tearoff)
-#@-node:ekr.20031218072017.4113:new_menu
-#@+node:ekr.20031218072017.3804:createNewMenu
-def createNewMenu (self,menuName,parentName="top",before=None):
-
-    try:
-        parent = self.getMenu(parentName) # parent may be None.
-        menu = self.getMenu(menuName)
-        if menu:
-            g.es("menu already exists: " + menuName,color="red")
-        else:
-            menu = self.new_menu(parent,tearoff=0)
-            self.setMenu(menuName,menu)
-            label = self.getRealMenuName(menuName)
-            amp_index = label.find("&")
-            label = label.replace("&","")
-            if before: # Insert the menu before the "before" menu.
-                index_label = self.getRealMenuName(before)
-                amp_index = index_label.find("&")
-                index_label = index_label.replace("&","")
-                index = parent.index(index_label)
-                self.insert_cascade(parent,index=index,label=label,menu=menu,underline=amp_index)
-            else:
-                self.add_cascade(parent,label=label,menu=menu,underline=amp_index)
-            return menu
-    except:
-        g.es("exception creating " + menuName + " menu")
-        g.es_exception()
-        return None
-#@-node:ekr.20031218072017.3804:createNewMenu
-#@+node:ekr.20031218072017.3807:getMenu, setMenu, destroyMenu
-def getMenu (self,menuName):
-
-    cmn = self.canonicalizeMenuName(menuName)
-    return self.menus.get(cmn)
-    
-def setMenu (self,menuName,menu):
-    
-    cmn = self.canonicalizeMenuName(menuName)
-    self.menus [cmn] = menu
-    
-def destroyMenu (self,menuName):
-    
-    cmn = self.canonicalizeMenuName(menuName)
-    del self.menus[cmn]
-#@-node:ekr.20031218072017.3807:getMenu, setMenu, destroyMenu
-#@+node:ekr.20060211144330.1:getMacHelpMenu
-def getMacHelpMenu (self):
-    
-    return None ###
-    
-    try:
-        helpMenu = Tk.Menu('top.help')
-        return helpMenu
-        
-    except Exception:
-        g.trace('Can not get MacOS Help menu')
-        g.es_exception()
-        return None
-#@-node:ekr.20060211144330.1:getMacHelpMenu
-#@-node:ekr.20060116083043:Use special Help menu on the Mac
-#@+node:ekr.20061008091617:@key Alt-1 doesn't work
-#@-node:ekr.20061008091617:@key Alt-1 doesn't work
-#@-node:ekr.20061007214835:before b2
-#@+node:ekr.20061007214835.1:before b3:
-#@+node:ekr.20061008094530:Bind **every** f_n key so we can tell what was pressed
-@nocolor
-
-I am totally fed up with the present scheme.
-The only solution is to beind every printable key, and every combination of modifiers.
-This doesn't solve the problem of unicode (non-ascii) keys, but it is a start.
-#@nonl
-#@-node:ekr.20061008094530:Bind **every** f_n key so we can tell what was pressed
 #@+node:ekr.20061008064111:Add Open scripts.leo to help menu
 #@-node:ekr.20061008064111:Add Open scripts.leo to help menu
-#@+node:ekr.20060927100500.1:Fix bugs in new colorizer
-@nocolor
-
-- Does not restore selection after indent/undent commands.
-#@nonl
-#@-node:ekr.20060927100500.1:Fix bugs in new colorizer
 #@+node:ekr.20061002093442:Add opml support to new,open, save commands
 #@+node:ekr.20031218072017.2820:top level (file menu)
 #@+node:ekr.20031218072017.1623:new
@@ -637,12 +554,7 @@ left.
 #@-node:ekr.20060915175024:Maintain vertical node position if possible
 #@+node:ekr.20060929084830.1:Suppress redraw on all applicable outline:goto commands
 #@-node:ekr.20060929084830.1:Suppress redraw on all applicable outline:goto commands
-#@+node:ekr.20060928194335:Fix bug: closing a window after removing a script button can crash
-#@-node:ekr.20060928194335:Fix bug: closing a window after removing a script button can crash
-#@+node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
-#@-node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
-#@-node:ekr.20061007214835.1:before b3:
-#@-node:ekr.20061001060913.1:To do first
+#@-node:ekr.20061008160553.1:features
 #@+node:ekr.20060920190138:Document tnodeList, vnodeList
 #@-node:ekr.20060920190138:Document tnodeList, vnodeList
 #@+node:ekr.20060912091922:Test all plugins
@@ -738,8 +650,8 @@ xsltWithNodes.py
 #@nonl
 #@-node:ekr.20060914085747.1:To test
 #@-node:ekr.20060912091922:Test all plugins
-#@-node:ekr.20060927172440:To do before 4.4.2 final
-#@+node:ekr.20060531161030:To do: 4.4.x
+#@-node:ekr.20060927172440:To do before 4.4.2 b3
+#@+node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20060822162521:Make headlines scroll
 Limit the with of the headline to the width of the outline pane.
 #@nonl
@@ -1546,7 +1458,7 @@ def zapToCharacter (self,event):
 #@+node:ekr.20060927173836.2:Find next doesn't find any more if regexp matches an empty string.
 #@-node:ekr.20060927173836.2:Find next doesn't find any more if regexp matches an empty string.
 #@-node:ekr.20060927173836.3:New & improved commands
-#@-node:ekr.20060531161030:To do: 4.4.x
+#@-node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20060822174843:Most important
 #@+node:ekr.20041228084830.3:Finish wxWindows plugin
 # Don't use body wrappers, use g.app.gui methods instead

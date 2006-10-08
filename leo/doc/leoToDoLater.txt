@@ -5807,8 +5807,7 @@ def putTnodeList (self,v):
     """Put the tnodeList attribute of a tnode."""
     
     # Remember: entries in the tnodeList correspond to @+node sentinels, _not_ to tnodes!
-
-    fc = self ; nodeIndices = g.app.nodeIndices
+    nodeIndices = g.app.nodeIndices
     tnodeList = v.t.tnodeList
     if tnodeList:
         # g.trace("%4d" % len(tnodeList),v)
