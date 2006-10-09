@@ -2,7 +2,38 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20060927172440:To do before 4.4.2 b3
-#@+node:ekr.20061008160553:bugs
+#@+node:ekr.20061009154843:First
+#@+node:ekr.20061009153206:Installs
+@nocolor
+
+- Install aspell for Python 2.5.
+- Install pylint.
+#@nonl
+#@-node:ekr.20061009153206:Installs
+#@+node:ekr.20061009152554:Remove .leoRecentFiles.txt from distribution and cvs
+@nocolor
+
+- @bool write_recent_files_as_needed = True
+
+People who don't want Leo to update .leoRecentFiles.txt can set this to False.
+
+- Remove .leoRecentFiles from cvs
+- Remove .leoRecentFiles from distribution list.
+#@nonl
+#@-node:ekr.20061009152554:Remove .leoRecentFiles.txt from distribution and cvs
+#@+node:ekr.20061009153818.1:Post about solution to .leoRecentFiles.txt problem
+#@-node:ekr.20061009153818.1:Post about solution to .leoRecentFiles.txt problem
+#@+node:ekr.20061009153010:Posting: contest rules
+#@-node:ekr.20061009153010:Posting: contest rules
+#@-node:ekr.20061009154843:First
+#@+node:ekr.20061008160553:Bugs
+#@+node:ekr.20061008163540:add do-nothing command as a way to create arbitrary bindings
+This may be an important hack.
+#@nonl
+#@-node:ekr.20061008163540:add do-nothing command as a way to create arbitrary bindings
+#@+node:ekr.20061009152210.1:yank/kill/undo do not work as expected
+http://sourceforge.net/forum/message.php?msg_id=3924236
+#@-node:ekr.20061009152210.1:yank/kill/undo do not work as expected
 #@+node:ekr.20061008091617:@key Alt-1 doesn't work
 #@-node:ekr.20061008091617:@key Alt-1 doesn't work
 #@+node:ekr.20061008094530:Bind **every** key so we can tell what was pressed
@@ -25,19 +56,6 @@ This doesn't solve the problem of unicode (non-ascii) keys, but it is a start.
 #@-node:ekr.20060928194335:Fix bug: closing a window after removing a script button can crash
 #@+node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
 #@-node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
-#@+node:ekr.20060920150119:Fix undo problems
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3924236
-
-Clear the * mark if all changes have been done.
-There are serious problems with undoing and redoing text.
-
-The recent work with yank/kill commands may have fixed some problems.
-
-Make unlimited undo the default.
-#@nonl
-#@-node:ekr.20060920150119:Fix undo problems
 #@+node:ekr.20060116083043:Use special Help menu on the Mac
 @nocolor
 
@@ -144,12 +162,10 @@ def getMacHelpMenu (self):
         return None
 #@-node:ekr.20060211144330.1:getMacHelpMenu
 #@-node:ekr.20060116083043:Use special Help menu on the Mac
-#@-node:ekr.20061008160553:bugs
-#@+node:ekr.20061008160553.1:features
-#@+node:ekr.20061008163540:add do-nothing command as a way to create arbitrary bindings
-This may be an important hack.
-#@nonl
-#@-node:ekr.20061008163540:add do-nothing command as a way to create arbitrary bindings
+#@-node:ekr.20061008160553:Bugs
+#@+node:ekr.20061008160553.1:Features: 7
+#@+node:ekr.20061009153818:Option: select headline when editing
+#@-node:ekr.20061009153818:Option: select headline when editing
 #@+node:ekr.20061008114340:Finish collapse-on-move-left
 @nocolor
 
@@ -660,11 +676,24 @@ left.
 #@-node:ekr.20060915175024:Maintain vertical node position if possible
 #@+node:ekr.20060929084830.1:Suppress redraw on all applicable outline:goto commands
 #@-node:ekr.20060929084830.1:Suppress redraw on all applicable outline:goto commands
-#@-node:ekr.20061008160553.1:features
-#@+node:ekr.20060920190138:Document tnodeList, vnodeList
-#@-node:ekr.20060920190138:Document tnodeList, vnodeList
-#@+node:ekr.20061009094114:Install aspell for Python 2.5
-#@-node:ekr.20061009094114:Install aspell for Python 2.5
+#@-node:ekr.20061008160553.1:Features: 7
+#@+node:ekr.20061009152210:Docs
+@nocolor
+
+- FAQ Entries:
+    - Caps-lock key problem.
+    - @bool setting for unicode problems.
+        @bool ignore_unbound_non_ascii_keys = False
+    (Set this to False in leoSettings.leo, and True in myLeoSettings.leo)
+
+- Put link to what's new in readme file.
+
+- Highlights: discovered how to make Leo's data structures compatible with arbitrary directed graphs.
+
+- Document tnodeList, vnodeList.
+#@nonl
+#@-node:ekr.20061009152210:Docs
+#@+node:ekr.20061009153504.1:Tests
 #@+node:ekr.20061009094114.1:Check Leo with pylint
 #@-node:ekr.20061009094114.1:Check Leo with pylint
 #@+node:ekr.20060912091922:Test all plugins
@@ -760,6 +789,7 @@ xsltWithNodes.py
 #@nonl
 #@-node:ekr.20060914085747.1:To test
 #@-node:ekr.20060912091922:Test all plugins
+#@-node:ekr.20061009153504.1:Tests
 #@-node:ekr.20060927172440:To do before 4.4.2 b3
 #@+node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20060822162521:Make headlines scroll

@@ -711,7 +711,6 @@ The highlights of Leo 4.4.2:
 
 Quote of the month:
 ------------------
-
 For the non-leo python project I'm (supposed to be) working on, I'm switching from emacs to leo :-)
 -- Terry Brown
 
@@ -4886,6 +4885,11 @@ The highlights of Leo 4.4.2:
 - Many more minibuffer commands appear in the Cmds menu.
 - A sax parser can now optionally read .leo files.
 - Dozens of bug fixes.
+
+Quote of the month:
+------------------
+For the non-leo python project I'm (supposed to be) working on, I'm switching from emacs to leo :-)
+-- Terry Brown
 
 Links:
 ------

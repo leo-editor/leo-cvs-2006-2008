@@ -28,7 +28,6 @@ The highlights of Leo 4.4.2:
 
 Quote of the month:
 ------------------
-
 For the non-leo python project I'm (supposed to be) working on, I'm switching from emacs to leo :-)
 -- Terry Brown
 

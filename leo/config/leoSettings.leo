@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="71" left="252" height="554" width="941"/>
+	<global_window_position top="71" left="252" height="672" width="801"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -46,7 +46,7 @@
 <v t="ekr.20060112104823"><vh>main</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" a="TV" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
@@ -136,7 +136,7 @@
 </v>
 <v t="ekr.20041119034357.67"><vh>@color split_bar_color = LightSteelBlue2</vh></v>
 </v>
-<v t="ekr.20041119034357.10" annotate="7d71002e"><vh>Command options</vh>
+<v t="ekr.20041119034357.10" a="E" annotate="7d71002e"><vh>Command options</vh>
 <v t="ekr.20061007211759"><vh>@bool sparse_move_outline_left = True</vh></v>
 <v t="ekr.20041119034357.14"><vh>@bool at_root_bodies_start_in_doc_mode = True</vh></v>
 <v t="ekr.20041119041019"><vh>@bool redirect_execute_script_output_to_log_pane = False</vh></v>
@@ -146,7 +146,7 @@
 <v t="ekr.20041119050749.11"><vh>@string headline_gmt_time = None</vh></v>
 <v t="ekr.20050126083026"><vh>@string undo_granularity = None</vh></v>
 <v t="ekr.20051027175030"><vh>@bool autocomplete-brackets = False</vh></v>
-<v t="ekr.20060127050605"><vh>@int max_undo_stack_size = 50</vh></v>
+<v t="ekr.20060127050605" a="TV"><vh>@int max_undo_stack_size = 0</vh></v>
 </v>
 <v t="ekr.20041119034357.16" annotate="7d71002e"><vh>Compare panel</vh>
 <v t="ekr.20041119034357.17"><vh>files &amp; directories</vh>
@@ -4653,7 +4653,8 @@ False: (legacy)     The Find tab shows text, options and buttons.</t>
 <t tx="ekr.20060125165241"></t>
 <t tx="ekr.20060126075152"># True: calls to the garbage collector.</t>
 <t tx="ekr.20060126083715"># True: verbose trace the garbage collector.</t>
-<t tx="ekr.20060127050605"></t>
+<t tx="ekr.20060127050605">Zero (recommended): unlimited stack size.
+Non-zero: limit the maximum stack size to the given number.</t>
 <t tx="ekr.20060131071612">
 </t>
 <t tx="ekr.20060131071947"></t>
