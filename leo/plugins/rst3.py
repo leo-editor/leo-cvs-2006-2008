@@ -649,7 +649,7 @@ class rstClass:
     def registerRstCommand (self):
         
         def rst3Callback (event=None,self=self):
-            g.trace('event',event,'self',self)
+            # g.trace('event',event,'self',self)
             self.processTopTree(self.c.currentPosition())
         
         self.c.k.registerCommand('rst3-process-tree',None,rst3Callback,pane='all',verbose=True)

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet ekr_stylesheet?>
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="104" left="160" height="627" width="1021"/>
+	<global_window_position top="93" left="245" height="768" width="966"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -46,7 +46,7 @@
 <v t="ekr.20060525110217"><vh>@@button rst-&gt;rst</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647" a="TV"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="V"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -683,6 +683,9 @@
 <v t="ekr.20050831231852"><vh>@rst html\appendices.html</vh>
 <v t="ekr.20050831232205"><vh>@rst-no-head links</vh></v>
 <v t="EKR.20040524104904.351"><vh>Bugs</vh></v>
+<v t="ekr.20061009074501"><vh>Coming soon</vh>
+<v t="ekr.20061009074305"><vh>Leap 204. "New" positions allow Leo outlines to represent arbitrary directed graphs</vh></v>
+</v>
 <v t="EKR.20040524104904.307"><vh>Errors while tangling</vh></v>
 <v t="EKR.20040524104904.327"><vh>Errors while untangling</vh></v>
 <v t="EKR.20040524104904.333"><vh>Errors while reading @file nodes</vh></v>
@@ -706,9 +709,12 @@
 <v t="ekr.20060928172457.1"><vh>@rst html\new-4-4-2.html</vh>
 <v t="ekr.20060928172457.2"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20060929043325"><vh>A major code reorg</vh></v>
+<v t="ekr.20061009111417.18"><vh>New commands</vh></v>
 <v t="ekr.20060928172457.4"><vh>New features</vh></v>
 <v t="ekr.20060928172457.5"><vh>New and improved plugins</vh></v>
+<v t="ekr.20061009111417.11"><vh>Settings</vh></v>
 <v t="ekr.20060929043325.1"><vh>ZODB scripting</vh></v>
+<v t="ekr.20061009074305"><vh>Leap 204. "New" positions allow Leo outlines to represent arbitrary directed graphs</vh></v>
 <v t="ekr.20060928172457.8"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
@@ -741,6 +747,7 @@
 <v t="edream.110203163054.1657"><vh>Leap 201. (Finished)  Represent clones as shared trees of vnodes</vh></v>
 <v t="edream.110203163054.1658"><vh>Leap 202. (Finished) Create cvs-friendly file format for derived files</vh></v>
 <v t="edream.110203163054.1659"><vh>Leap 203. (Finished) Use Python Mega Widgets</vh></v>
+<v t="ekr.20061009074305"><vh>Leap 204. "New" positions allow Leo outlines to represent arbitrary directed graphs</vh></v>
 </v>
 <v t="edream.110203163054.1661"><vh>300's LeoN and beyond</vh>
 <v t="edream.110203163054.1662"><vh>Leap 301: Use central server</vh></v>
@@ -2831,8 +2838,7 @@
 </v>
 <v t="ekr.20060903102158"><vh>4.4.1.1 final</vh></v>
 </v>
-</v>
-<v t="edream.110203163054.63"><vh>Latest version</vh>
+<v t="ekr.20061008190905"><vh>4.4.2...</vh>
 <v t="ekr.20060928172040"><vh>4.4.2 beta 1</vh>
 <v t="ekr.20060928172525.81"><vh>The 'big reorg':  vnode, tnode and position classes are independent of the rest of Leo</vh></v>
 <v t="ekr.20060928195040"><vh>New features</vh>
@@ -2849,6 +2855,47 @@
 <v t="ekr.20060928172525.167"><vh>Added many new commands to Cmds menu</vh></v>
 </v>
 <v t="ekr.20060928195040.1"><vh>New plugins</vh></v>
+</v>
+</v>
+</v>
+<v t="edream.110203163054.63"><vh>Latest version</vh>
+<v t="ekr.20061008190655"><vh>4.4.2 beta 2</vh>
+<v t="ekr.20061008190633.248"><vh>Bugs</vh>
+<v t="ekr.20061008190633.249"><vh>Fixed rst3 problem</vh></v>
+<v t="ekr.20061008190633.250"><vh>Fixed apparent bug in pmw</vh></v>
+<v t="ekr.20061008190633.257"><vh>Fixed various unicode word-select problems</vh></v>
+<v t="ekr.20061008190633.261"><vh>Installed installer patch</vh></v>
+<v t="ekr.20061008190633.262"><vh>Use letter accellerators for recent files after 9</vh></v>
+<v t="ekr.20061008190633.264"><vh>Made yank work in minibuffer</vh></v>
+<v t="ekr.20061008190633.265"><vh>Mass change to edit commands: made sure w is a text widget</vh></v>
+<v t="ekr.20061008190633.283"><vh>Do full recolor after cut/paste/yank</vh></v>
+<v t="ekr.20061008190633.294"><vh>Fixed crash when pasting a node</vh></v>
+</v>
+<v t="ekr.20061008192040"><vh>Settings</vh>
+<v t="ekr.20061008190633.298"><vh>Completed support for myLeoSettings.leo</vh></v>
+<v t="ekr.20061008190633.306"><vh>Added settings for all mod_scripting switches</vh></v>
+<v t="ekr.20061008190633.307"><vh>Added @bool collapse_nodes_during_finds</vh></v>
+<v t="ekr.20061008190633.325"><vh>Added @bool outline_pane_has_initial_focus</vh></v>
+<v t="ekr.20061008190633.362"><vh>Added @bool sparse_move_outline_left</vh></v>
+<v t="ekr.20061008190633.360"><vh>Added bindings for Alt-Shift-Arrow keys to force an outline move</vh></v>
+<v t="ekr.20061009112808"><vh>Added @bool use_sax_based_read </vh></v>
+</v>
+<v t="ekr.20061008192040.1"><vh>New commands</vh>
+<v t="ekr.20061008190633.354"><vh>Added extend-to-line command</vh></v>
+<v t="ekr.20061008190633.356"><vh>Improved print-bindings command</vh></v>
+<v t="ekr.20061008190633.364"><vh>Created extend-to-sentence and extend-to-paragraph commands</vh></v>
+<v t="ekr.20061008190633.371"><vh>Created runEditCommandTest</vh></v>
+</v>
+<v t="ekr.20061008190633.295"><vh>Features</vh>
+<v t="ekr.20061008190633.296"><vh>Improved the mod_scripting plugin</vh></v>
+<v t="ekr.20061008190633.297"><vh>rst3 plugin now registers the rst3-process-tree command</vh></v>
+<v t="ekr.20061008190633.311"><vh>Made writing .leo files faster</vh></v>
+<v t="ekr.20061008190633.347"><vh>Generalized navigation in outline pane to ignore @file, @thin, etc prefixes</vh></v>
+<v t="ekr.20061008190633.351"><vh>Made outline navigation cumulative</vh></v>
+<v t="ekr.20061008190633.353"><vh>added p.archivedPosition</vh></v>
+<v t="ekr.20061008190633.382"><vh>(Integrated sax with read logic)</vh></v>
+</v>
+<v t="ekr.20061009074305"><vh>Leap 204. "New" positions allow Leo outlines to represent arbitrary directed graphs</vh></v>
 </v>
 </v>
 </v>
@@ -12794,20 +12841,16 @@ Removes @ignore, @nocolor, @wrap directives.
 .. _scripting:          intro.html#scripting-leo
 .. _users:              http://sourceforge.net/projects/leo/
 
-.. WARNING: image targets may not have upper case letters!
-
-.. _home:           front.html
-.. _toc:            leo_TOC.html
-.. _quotes:         testimonials.html
+.. WARNING: image targets may not have upper case letters!     
 
 .. |leo|  image:: leo.gif
-	:target: home_
+	:target: front.html
 
 .. |prev| image:: arrow_lt.gif
-	:target: toc_
+	:target: leo_TOC.html
 
 .. |next| image:: arrow_rt.gif
-    :target: quotes_</t>
+    :target: testimonials.html</t>
 <t tx="ekr.20050812134441.1">.. Links used in this document.
 
 .. _front:      front.html
@@ -12818,18 +12861,15 @@ Removes @ignore, @nocolor, @wrap directives.
 
 .. WARNING: image targets may not have upper case letters!
 
-.. _back:   design.html
-.. _home:   front.html
-.. _next:   customizing.html
-
 .. |back| image:: arrow_lt.gif
-	:target: back_
+	:target: design.html
 
 .. |leo|   image:: leo.gif
-	:target: home_
+	:target: front.html
 
 .. |next| image:: arrow_rt.gif
-	:target: next_</t>
+	:target: customizing.html
+</t>
 <t tx="ekr.20050812134441.3">------------
 
 |leo| |next|</t>
@@ -12865,7 +12905,7 @@ verbose=True
 
 .. |blank| image:: blank.gif
 .. |leo|   image:: leo.gif
-    :target: front_</t>
+    :target: http://webpages.charter.net/edreamleo/front.html</t>
 <t tx="ekr.20050813102008.3">The rst3 plugin creates output files from Leo outlines containing
 reStructuredText_ (rST) ReStructuredText is a simple and powerful text
 formatting markup language. Outlines are a natural way to organize rST (or any
@@ -13415,20 +13455,16 @@ You should see Leo's main window, something like this:
 
 .. WARNING: image targets may not have upper case letters!
 
-.. _back: install.html
-.. _home: front.html
-.. _next: outlines.html
-
 .. |leoMainWinow| image:: PCWindow.gif
 
 .. |back| image:: arrow_lt.gif
-    :target: back_
+    :target: install.html
 
 .. |next| image:: arrow_rt.gif
-    :target: next_
+    :target: outlines.html
 
 .. |leo|   image:: leo.gif
-    :target: home_</t>
+    :target: front.html</t>
 <t tx="ekr.20050816073824">-------------
 
 |back| |leo| |next|</t>
@@ -13472,20 +13508,15 @@ Chapter 14: Using the rst3 plugin
 
 .. WARNING: image targets may not have upper case letters!
 
-.. _front:  front.html
-    
-.. _back:   writingPlugins.html
-.. _home:   front.html
-.. _next:   coloring.html
-
 .. |back| image:: arrow_lt.gif
-    :target: back_
+    :target: writingPlugins.html
 
 .. |leo|  image:: leo.gif
-    :target: home_
+    :target: front.html
 
 .. |next| image:: arrow_rt.gif
-    :target: next_</t>
+    :target: coloring.html
+</t>
 <t tx="ekr.20050818163826.2">The rst3 plugin creates output files from Leo outlines containing
 reStructuredText_ (rST) ReStructuredText is a simple and powerful text
 formatting markup language. Outlines are a natural way to organize rST (or any
@@ -15044,20 +15075,16 @@ Just use ``@thin`` to create your `derived files`_.</t>
 
 .. WARNING: image targets may not have upper case letters!
 
-.. _back:   outlines.html
-.. _home:   front.html
-.. _next:   commands.html
-
 .. |back| image:: arrow_lt.gif
-    :target: back_
+    :target: outlines.html
 
 .. |next| image:: arrow_rt.gif
-    :target: next_
+    :target: commands.html
 
 .. |blank| image:: blank.gif
 
 .. |leo|   image:: leo.gif
-    :target: home_</t>
+    :target: front.html</t>
 <t tx="ekr.20050828161117">An **orphan node** is a descendant of an `@thin`_ node_ that will not be copied
 to the `derived file`_. Orphan nodes can arise because an `@thin`_ tree has no
 ``@others`` or ``@all`` directives. Sections that are defined but not used also
@@ -15400,7 +15427,7 @@ Chapter 4: Writing Programs in Leo
 .. |blank| image:: blank.gif
 
 .. |leo|   image:: leo.gif
-    :target: front_
+    :target: front.html
 
 .. _`Leo's tutorial`:       http://webpages.charter.net/edreamleo/intro.html
 </t>
@@ -16613,22 +16640,19 @@ the same Leo node for LaTeX to process.
 -- Dan</t>
 <t tx="ekr.20050830075229">.. Relative links...
 
-.. _faq:            FAQ.html
-.. _frontmatter:    frontMatter.html
-.. _home:           front.html
 .. _quotes:         testimonials.html
 .. _toc:            leo_TOC.html
 
 .. WARNING: image targets may not have upper case letters!
 
 .. |leo|  image:: leo.gif
-	:target: home_
+	:target: front.html
 
 .. |prev| image:: arrow_lt.gif
-	:target: frontmatter_
+	:target: frontMatter.html
 
 .. |next| image:: arrow_rt.gif
-    :target: faq_</t>
+    :target: FAQ.html</t>
 <t tx="ekr.20050830080545">--------------------
 
 |prev| |leo| |next|</t>
@@ -17243,18 +17267,14 @@ Flash file gets mapped to an &lt;embed&gt; tag, etc).</t>
 
 .. WARNING: image targets may not have upper case letters!
 
-.. _quotes:     testimonials.html
-.. _home:       front.html
-.. _install:    install.html
-
 .. |back| image:: arrow_lt.gif
-	:target: quotes_
+	:target: testimonials.html
 
 .. |leo|  image:: leo.gif
-	:target: home_
+	:target: front.html
 
 .. |next| image:: arrow_rt.gif
-    :target: install_</t>
+    :target: install.html</t>
 <t tx="ekr.20050830120844">``c.frame.menu.createMenuItemsFromTable`` will append items to the end of an existing menu.
 For example, the following script will add a new item at the end of the 'File' menu::
 
@@ -17456,18 +17476,15 @@ Glossary
 
 .. WARNING: image targets may not have upper case letters!
 
-.. _appendices: appendices.html
-.. _home:       front.html
-.. _next:       new-4-4-2.html
-
 .. |prev| image:: arrow_lt.gif
-	:target: appendices_
+	:target: appendices.html
 
 .. |leo|  image:: leo.gif
-	:target: home_
+	:target: front.html
 
 .. |next| image:: arrow_rt.gif
-    :target: next_
+    :target: new-4-4-2.html
+
 </t>
 <t tx="ekr.20050901071613">----------------------
 
@@ -17995,18 +18012,14 @@ I wrote the third in November 2004, and rewrote it in February 2006.
 
 .. WARNING: image targets may not have upper case letters!
 
-.. _back:   theory.html
-.. _home:   front.html
-.. _next:   plugins.html
-
 .. |back| image:: arrow_lt.gif
-    :target: back_
+    :target: theory.html
 
 .. |leo|  image:: leo.gif
-    :target: home_
+    :target: front.html
 
 .. |next| image:: arrow_rt.gif
-    :target: next_
+    :target: plugins.html
 </t>
 <t tx="ekr.20050901092232.2">What struck me first as I converted C++ code to Python is how much less blah,
 blah, blah there is in Python. No braces, no stupid semicolons and most
@@ -18114,18 +18127,14 @@ This chapter tells how to use Leo's outlines.
 
 .. WARNING: image targets may not have upper case letters!
 
-.. _back:   intro.html
-.. _home:   front.html
-.. _next:   directives.html
-
 .. |back| image:: arrow_lt.gif
-    :target: back_
+    :target: intro.html 
 
 .. |leo|  image:: leo.gif
-    :target: home_
+    :target: front.html
 
 .. |next| image:: arrow_rt.gif
-    :target: next_
+    :target: directives.html
 
 </t>
 <t tx="ekr.20050901101608.2">@ @rst-options
@@ -18256,18 +18265,15 @@ This chapter will be of use primarily to those wanting to change Leo's code.
 
 .. WARNING: image targets may not have upper case letters!
 
-.. _back:   directives.html
-.. _home:   front.html
-.. _next:   design.html
-
 .. |back| image:: arrow_lt.gif
-    :target: back_
+    :target: directives.html
 
 .. |leo|  image:: leo.gif
-    :target: home_
+    :target: front.html
 
 .. |next| image:: arrow_rt.gif
-    :target: next_</t>
+    :target: design.html
+</t>
 <t tx="ekr.20050901101949">.. Relative links...
 
 .. _`Chapter 5\: Using Leo's Commands`:             commands.html
@@ -18301,18 +18307,15 @@ This chapter will be of use primarily to those wanting to change Leo's code.
 
 .. WARNING: image targets may not have upper case letters!
 
-.. _back:   commands.html
-.. _home:   front.html
-.. _next:   scripting.html
-
 .. |back| image:: arrow_lt.gif
-    :target: back_
+    :target: commands.html
 
 .. |leo|  image:: leo.gif
-    :target: home_
+    :target: front.html
 
 .. |next| image:: arrow_rt.gif
-    :target: next_</t>
+    :target: scripting.html
+</t>
 <t tx="ekr.20050901102055">.. _`Chapter 7\: Scripting Leo with Python`:    scripting.html
 .. _`Chapter 9\: History of Leo`:               history.html
 .. _`rst3 plugin`:                              glossary.html#rst3-plugin
@@ -18320,55 +18323,49 @@ This chapter will be of use primarily to those wanting to change Leo's code.
 
 .. WARNING: image targets may not have upper case letters!
 
-.. _back:   scripting.html
-.. _home:   front.html
-.. _next:   history.html
-
 .. |back| image:: arrow_lt.gif
-    :target: back_
+    :target: scripting.html
 
 .. |leo|  image:: leo.gif
-    :target: home_
+    :target: front.html
 
 .. |next| image:: arrow_rt.gif
-    :target: next_</t>
+    :target: history.html
+</t>
 <t tx="ekr.20050901102147">.. Relative links...
 
 .. _`Chapter 7\: Scripting Leo with Python`:        scripting.html
 .. _`Chapter 8\: Settings, Modes and Key Bindings`: customizing.html
 .. _`Chapter 10\: Theory of Operation`:             theory.html
 
+.. Absolute links..
+
+.. _OPML:   http://en.wikipedia.org/wiki/OPML
+
 .. WARNING: image targets may not have upper case letters!
 
-.. _back:   customizing.html
-.. _home:   front.html
-.. _next:   theory.html
-
 .. |back| image:: arrow_lt.gif
-    :target: back_
+    :target: customizing.html
 
 .. |leo|  image:: leo.gif
-    :target: home_
+    :target: front.html
 
 .. |next| image:: arrow_rt.gif
-    :target: next_</t>
+    :target: theory.html
+</t>
 <t tx="ekr.20050901102300">.. _`Chapter 9\: History of Leo`:   history.html
 .. _`Chapter 11\: White Papers`:    whitepapers.html
 
 .. WARNING: image targets may not have upper case letters!
 
-.. _back:   history.html
-.. _home:   front.html
-.. _next:   whitepapers.html
-
 .. |back| image:: arrow_lt.gif
-    :target: back_
+    :target: history.html
 
 .. |leo|  image:: leo.gif
-    :target: home_
+    :target: front.html
 
 .. |next| image:: arrow_rt.gif
-    :target: next_</t>
+    :target: whitepapers.html</t>
 <t tx="ekr.20050901102400">-------------
 
 |back| |leo| |next|</t>
@@ -18400,18 +18397,14 @@ This chapter will be of use primarily to those wanting to change Leo's code.
 
 .. WARNING: image targets may not have upper case letters!
 
-.. _back: FAQ.html
-.. _home: front.html
-.. _next: intro.html
-
 .. |back| image:: arrow_lt.gif
-    :target: back_
+    :target: FAQ.html
 
 .. |leo|   image:: leo.gif
-    :target: home_
+    :target: front.html
 
 .. |next| image:: arrow_rt.gif
-    :target: next_</t>
+    :target: intro.html</t>
 <t tx="ekr.20050901121617">@color
 
 # Puts each sentence on a separate line
@@ -19510,18 +19503,15 @@ instantly hooked.
 
 .. WARNING: image targets may not have upper case letters!
 
-.. _back:   whitepapers.html
-.. _home:   front.html
-.. _next:   writingPlugins.html
-
 .. |back| image:: arrow_lt.gif
-    :target: back_
+    :target: whitepapers.html
 
 .. |leo|  image:: leo.gif
-    :target: home_
+    :target: front.html
 
 .. |next| image:: arrow_rt.gif
-    :target: next_</t>
+    :target: writingPlugins.html
+</t>
 <t tx="ekr.20050912125735.26"></t>
 <t tx="ekr.20050912125735.28">This plugin adds a menu item under the File-&gt;Import menu to import
 Cisco configuration files.
@@ -21452,7 +21442,6 @@ This chapter describes how to use the Jython Shell created by LeoUser.
 .. WARNING: image targets may not have upper case letters!
 
 .. _front:  front.html
-.. _home:   front.html
 
 .. |blank| image:: blank.gif
 .. |leo|   image:: leo.gif
@@ -23387,18 +23376,15 @@ because as a last resort Leo prints error messages to the console.</t>
 
 .. WARNING: image targets may not have upper case letters!
 
-.. _back: FAQ.html
-.. _home: front.html
-.. _next: intro.html
-
 .. |back| image:: arrow_lt.gif
-    :target: back_
+    :target: FAQ.html
 
 .. |leo|   image:: leo.gif
-    :target: home_
+    :target: front.html
 
 .. |next| image:: arrow_rt.gif
-    :target: next_</t>
+    :target: intro.html
+</t>
 <t tx="ekr.20060409104957.2">Leo will work on any platform that supports Python 2.2.1 or later and Tk 8.4 or later.
 
 -   Download the latest version of Leo from:
@@ -23790,9 +23776,7 @@ The following commands affect the minibuffer:
   defined in leoSettings.leo. It is useful for commonly-used commands.
 
 - **universal-argument**: (default shortcut: Alt-u) Like Emacs Ctrl-u. Adds a repeat
-  count for later command. Ctrl-u 999 a adds 999 
-. Many features remain
-  unfinished.
+  count for later command. Ctrl-u 999 a adds 999 a's.
 
 - **keyboard-quit**: (default shortcut: Ctrl-g) Exits any minibuffer mode and puts
   the focus in the body pane.
@@ -24084,18 +24068,15 @@ This chapter discusses how to control Leo's new syntax colorer using Python file
 
 .. WARNING: image targets may not have upper case letters!
 
-.. _back:   rstplugin3.html
-.. _home:   front.html
-.. _next:   debuggers.html
-
 .. |back| image:: arrow_lt.gif
-    :target: back_
+    :target: rstplugin3.html
 
 .. |leo|  image:: leo.gif
-    :target: home_
+    :target: front.html
 
 .. |next| image:: arrow_rt.gif
-    :target: next_</t>
+    :target: debuggers.html
+</t>
 <t tx="ekr.20060430223116">-----------------------
 
 |back| |leo| |next|</t>
@@ -24965,18 +24946,15 @@ I would *still* want to run the modified winpdb in a separate process.</t>
 
 .. WARNING: image targets may not have upper case letters!
 
-.. _back:   coloring.html
-.. _home:   front.html
-.. _next:   zodb.html
-
 .. |back| image:: arrow_lt.gif
-    :target: back_
+    :target: coloring.html
 
 .. |leo|  image:: leo.gif
-    :target: home_
+    :target: front.html
 
 .. |next| image:: arrow_rt.gif
-    :target: next_</t>
+    :target: zodb.html
+</t>
 <t tx="ekr.20060527112801">The @string debugger_kind setting controls what debugger the 'Debug Script' script button uses.
 Eventually this setting will control what debugger the debug command uses.
 At present the only valid values are 'winpdb' and 'idle'.
@@ -25220,20 +25198,16 @@ Documentation for leoFind.py
 
 .. WARNING: image targets may not have upper case letters!
 
-.. _back:   outlines.html
-.. _home:   front.html
-.. _next:   commands.html
-
 .. |back| image:: arrow_lt.gif
-    :target: back_
+    :target: outlines.html
 
 .. |next| image:: arrow_rt.gif
-    :target: next_
+    :target: commands.html
 
 .. |blank| image:: blank.gif
 
 .. |leo|   image:: leo.gif
-    :target: home_</t>
+    :target: front.html</t>
 <t tx="ekr.20060608111953.2">@language python
 @tabwidth -4
 @pagewidth 80
@@ -26296,18 +26270,15 @@ Chapter 13: Writing Plugins
 
 .. WARNING: image targets may not have upper case letters!
 
-.. _back:   plugins.html
-.. _home:   front.html
-.. _next:   rstplugin3.html
-
 .. |back| image:: arrow_lt.gif
-    :target: back_
+    :target: plugins.html
 
 .. |leo|  image:: leo.gif
-    :target: home_
+    :target: front.html
 
 .. |next| image:: arrow_rt.gif
-    :target: next_</t>
+    :target: rstplugin3.html
+</t>
 <t tx="ekr.20060612104638">-----------------------
 
 |back| |leo| |next|</t>
@@ -27671,16 +27642,13 @@ That's all.  You can find the completed version of the print_cp plugin in leoPlu
 or leoPluginsRef.leo if you are using cvs.</t>
 <t tx="ekr.20060621132338">.. Links used in this document.
 
-.. WARNING: image targets may not have upper case letters!
-
-.. _prev:   new-4-4-1.html
-.. _home:   front.html
+.. WARNING: image targets may not have upper case letters!   
 
 .. |prev| image:: arrow_lt.gif
-	:target: prev_
+	:target: new-4-4-1.html
 
 .. |leo|  image:: leo.gif
-	:target: home_
+	:target: front.html
 
 .. |next| image:: Blank.gif
 </t>
@@ -27688,18 +27656,14 @@ or leoPluginsRef.leo if you are using cvs.</t>
 
 .. WARNING: image targets may not have upper case letters!
 
-.. _prev:   new-4-4-2.html
-.. _home:   front.html
-.. _next:   new-4-4.html
-
 .. |prev| image:: arrow_lt.gif
-	:target: prev_
+	:target: new-4-4-2.html
 
 .. |leo|  image:: leo.gif
-	:target: home_
+	:target: front.html
 
 .. |next| image:: arrow_rt.gif
-    :target: next_
+    :target: new-4-4.html
 </t>
 <t tx="ekr.20060621132923">-----------------------
 
@@ -28185,18 +28149,15 @@ This chapter discusses how to write Leo scripts that store and retrieve data usi
 
 .. WARNING: image targets may not have upper case letters!
 
-.. _back:   debuggers.html
-.. _home:   front.html
-.. _next:   appendices.html
-
 .. |back| image:: arrow_lt.gif
-    :target: back_
+    :target: debuggers.html
 
 .. |leo|  image:: leo.gif
-    :target: home_
+    :target: front.html
 
 .. |next| image:: arrow_rt.gif
-    :target: next_</t>
+    :target: appendices.html
+</t>
 <t tx="ekr.20060913164729">-----------------------
 
 |back| |leo| |next|</t>
@@ -28661,20 +28622,47 @@ For full details see the release notes section in LeoDocs.leo.
 
 .. WARNING: image targets may not have upper case letters!
 
-.. _prev:   glossary.html
-.. _home:   front.html
-.. _next:   new-4-4-1.html
-
 .. |prev| image:: arrow_lt.gif
-	:target: prev_
+	:target: glossary.html
 
 .. |leo|  image:: leo.gif
-	:target: home_
+	:target: front.html
 
 .. |next| image:: arrow_rt.gif
-    :target: next_
+    :target: new-4-4-1.html
 </t>
-<t tx="ekr.20060928172457.4">New in Leo 4.4.2 b1:
+<t tx="ekr.20060928172457.4">New in Leo 4.4.2 beta 2:
+    
+- Leo looks for myLeoSettings.leo files in the same place Leo looks for leoSettings.leo files.
+
+- Created three scripts (in test.leo) that help create unit tests for Leo's edit commands.
+  Create Created runEditCommandTest for use by these scripts.
+  
+- Improved print-bindings command.
+  The bindings are sorted by prefix: this is a big help in understanding bindings.
+  For each prefix, first print items with only a single character after the prefix.
+
+- Made writing .leo files faster.
+  The new code almost exactly twice as fast as the old.
+  
+- Further improved outline navigation:
+  
+    - Generalized navigation in outline pane to ignore @file, @thin, etc prefixes.
+  
+    - Made outline navigation cumulative.
+      When keystrokes in the outline pane are typed 'close' together Leo first tries to look
+      for prefix + ch, where ch is the character just typed and prefix is the previous match.
+      The term 'close together' is specified by the setting @float outline_nav_extend_delay.
+      The outline nav search revers to a single-character if the extended search
+      fails, so in fact the delay is not too significant. In practice everything works
+      well without me thinking at all about what is happening.
+  
+- Added p.archivedPosition.
+  This is a key first step towards Leop 204.
+  
+- Integrated sax with read logic.
+
+New in Leo 4.4.2 b1:
     
 - You can now store settings in myLeoSettings.leo without fear of those settings
   being changed by cvs updates or in future versions of Leo.
@@ -28690,7 +28678,17 @@ For full details see the release notes section in LeoDocs.leo.
 - Numerous changes that make Leo easier to use without using a mouse.
 
 - Many new minibuffer commands now appear in the Cmds menu.</t>
-<t tx="ekr.20060928172457.5">New in Leo 4.4.2 b1:
+<t tx="ekr.20060928172457.5">New in Leo 4.4.2 b2:
+    
+- Improved the mod_scripting plugin.
+
+    - Made showing the Run Script button optional.
+    - The Script Button button now creates the press-script-button-button command.
+    - A new utility method does a much better job of massaging button and command names.
+
+- The rst3 plugin now registers the rst3-process-tree command.
+
+New in Leo 4.4.2 b1:
     
 - The leoOPML.py plugin defines commands to read and write OPML files.
 
@@ -28700,8 +28698,7 @@ For full details see the release notes section in LeoDocs.leo.
     
 - The paste_as_headlines.py plugins creates multiple headlines at once.
 
-- The word_count.py plugin.
-</t>
+- The word_count.py plugin.</t>
 <t tx="ekr.20060928172457.8">-----------------------
 
 |prev| |leo| |next|</t>
@@ -28957,7 +28954,17 @@ node to node by typing the first letter of a headline. For example, typing 'a'
 will go to the next visible headline that starts with either 'a' or 'A',
 wrapping around to the start of the outline if needed. Typing an uppercase 'A'
 will go to the next headline that starts with 'a' or 'A', making the node
-visible (expanding its ancestors) if the node was not visible.</t>
+visible (expanding its ancestors) if the node was not visible.
+
+When keystrokes (in the outline pane) are typed 'close' together in time Leo
+first looks for prefix + ch, where ch is the character just typed and prefix is
+the previous match. The term 'close together' is defined by the setting: 
+ 
+@float outline_nav_extend_delay = 2.0 
+ 
+The outline nav search reverts to a single-character search if the extended
+search fails, so in fact the delay is not too significant. In practice
+everything works well without thinking about what is happening. </t>
 <t tx="ekr.20060929043325">Leo's vnode and tnode classes are now completely independent of the rest of Leo.
 Some api's have been changed.  This 'big reorg' and may affect scripts and plugins.</t>
 <t tx="ekr.20060929043325.1">Leo's vnode and tnode classes can optionally be compatible with ZODB databases,
@@ -29072,5 +29079,223 @@ To get the entire contents of the log::
     
     w = c.frame.log.logCtrl
     g.es(w.get('1.0','end')+'\n')</t>
+<t tx="ekr.20061008190633.248"></t>
+<t tx="ekr.20061008190633.249">http://sourceforge.net/forum/message.php?msg_id=3932641
+
+LEO *always* outputs the first line of a node without indentation even if it is indented in the node.
+</t>
+<t tx="ekr.20061008190633.250">This was a very weird one.  It's not clear why it wasn't biting before.
+
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leo.py", line 321, in &lt;module&gt;
+    run(fileName)
+  File "c:\prog\tigris-cvs\leo\src\leo.py", line 151, in run
+    g.app.gui.runMainLoop()
+  File "c:\prog\tigris-cvs\leo\src\leoTkinterGui.py", line 182, in runMainLoop
+    self.root.mainloop()
+  File "c:\python25\lib\lib-tk\Tkinter.py", line 1023, in mainloop
+    self.tk.mainloop(n)
+  File "C:\prog\tigris-cvs\leo\extensions\Pmw\Pmw_1_2\lib\PmwBase.py", line 1756, in __call__
+    _reporterror(self.func, args)
+  File "C:\prog\tigris-cvs\leo\extensions\Pmw\Pmw_1_2\lib\PmwBase.py", line 1782, in _reporterror
+    msg = exc_type + ' Exception in Tk callback\n'
+TypeError: unsupported operand type(s) for +: 'type' and 'str'</t>
+<t tx="ekr.20061008190633.257">- created g.isWordChar.  It does proper test for letters and numbers.
+- Used g.isWordChar in extendToWord and moveWordHelper.
+- OnBodyDoubleClick now just calls c.editCommands.extendToWord.
+
+So Russian characters, e.g., no longer 'interrrupt' words.
+
+Another fix: extend-to-word now works properly at the very end of a word.</t>
+<t tx="ekr.20061008190633.261">Installer does not complain about missing Python and does not install anything
+either. Here is a fix to this behavior. In most user-friendly way it would be
+better to provide a clickable link to Python site and a way to specify the path
+manually, but for now it is just that - a fix.</t>
+<t tx="ekr.20061008190633.262"></t>
+<t tx="ekr.20061008190633.264">w was set to self.w, rather than event.widget.</t>
+<t tx="ekr.20061008190633.265">Added self.editWidget.  This sets self.w and makes sure w is a text widget.</t>
+<t tx="ekr.20061008190633.283">This fixes a long-standing, annoying bug.</t>
+<t tx="ekr.20061008190633.294">The solution was to call setTimestamp if needed in getNewIndex.
+
+</t>
+<t tx="ekr.20061008190633.295"></t>
+<t tx="ekr.20061008190633.296">- Make showing the Run Script button optional.
+- The Script Button button now creates the press-script-button-button command.
+- A new utility method does a much better job of massaging button and command names.
+</t>
+<t tx="ekr.20061008190633.297"></t>
+<t tx="ekr.20061008190633.298">New in beta 2: Leo looks for myLeoSettings.leo files in the same place Leo looks for leoSettings.leo files.
+</t>
+<t tx="ekr.20061008190633.306"></t>
+<t tx="ekr.20061008190633.307">http://sourceforge.net/forum/message.php?msg_id=3935780
+
+This greatly speeds searches that used to open many nodes.
+
+Added support for @bool collapse_nodes_during_finds setting.</t>
+<t tx="ekr.20061008190633.311">The code that writes .leo files is now almost exactly twice as fast as the old code.</t>
+<t tx="ekr.20061008190633.325"></t>
+<t tx="ekr.20061008190633.347"></t>
+<t tx="ekr.20061008190633.351">http://sourceforge.net/forum/message.php?msg_id=3941670
+
+The code on cvs now supports the 'extended' character search. When keystrokes
+(in the outline pane) are typed 'close' together in time Leo first tries to look
+for prefix + ch, where ch is the character just typed and prefix is the previous
+match.
+
+By 'close together' I mean the time interval specified by the new setting:
+
+@float outline_nav_extend_delay = 2.0
+
+The unit of time is seconds.
+
+The outline nav search revers to a single-character if the extended search
+fails, so in fact the delay is not too significant. In practice everything works
+well without me thinking at all about what is happening.
+</t>
+<t tx="ekr.20061008190633.353"></t>
+<t tx="ekr.20061008190633.354"></t>
+<t tx="ekr.20061008190633.356">The bindings are sorted by prefix: this is a big help in understanding bindings.
+For each prefix, first print items with only a single character after the prefix.
+</t>
+<t tx="ekr.20061008190633.360"></t>
+<t tx="ekr.20061008190633.362">
+
+
+   
+       </t>
+<t tx="ekr.20061008190633.364">Possibly define kill-sentence and kill-paragraph in terms of these.</t>
+<t tx="ekr.20061008190633.371"></t>
+<t tx="ekr.20061008190633.382"></t>
+<t tx="ekr.20061008190655">Leo 4.4.2 beta 2                                  October 9, 2006
+
+Leo 4.4.2 beta 2 is available at:
+http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+
+Leo is a text editor, data organizer, project manager and much more. See:
+http://webpages.charter.net/edreamleo/intro.html
+
+The highlights of Leo 4.4.2:
+----------------------------
+- You can now store settings in myLeoSettings.leo without fear of those settings
+  being changed by cvs updates or in future versions of Leo.
+- Leo's vnode and tnode classes are now completely independent of the rest of Leo.
+  Some api's have been changed.  This 'big reorg' and may affect scripts and plugins.
+- Leo's vnode and tnode classes can optionally be compatible with ZODB databases,
+  i.e., they can optionally derive from ZODB.Persistence.Persistent.
+  See Chapter 17: Using ZODB with Leo for details.
+- The leoOPML plugin defines commands to read and write OPML files.
+- The slideshow plugin allows Leo to run slideshows defined by @slideshow and @slide nodes.
+- The leo_to_rtf and leo_to_html plugins create rtf and html files from Leo outlines.
+- Much faster navigation through the outline.
+- When focus is in the outline pane, you can move to headlines by typing the first letter of headlines.
+- The find command now optionally closes nodes not needed to show the node containing the present match.
+- Numerous changes that make Leo easier to use without using a mouse, including new commands and options.
+- Many new minibuffer commands now appear in the Cmds menu.
+- A sax parser can now optionally read .leo files.
+- Fixed numerous bugs.
+
+Links:
+------
+Leo:      http://webpages.charter.net/edreamleo/front.html
+Home:     http://sourceforge.net/projects/leo/
+Download: http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:      http://leo.tigris.org/source/browse/leo/
+Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
+<t tx="ekr.20061008190905"></t>
+<t tx="ekr.20061008192040"></t>
+<t tx="ekr.20061008192040.1"></t>
+<t tx="ekr.20061009074305">See: http://sourceforge.net/forum/forum.php?thread_id=1587064&amp;forum_id=10226
+
+Leo's theory of relativity
+
+1. We can archive any position p by saving the list [p.childIndex() for p in
+   p.self_and_parents_iter()]. Let us call the *reverse* of this list the
+   **parents index list**. Clearly, this list provides an unambiguous way of
+   reaching position p from the root node. Archived positions, like all other
+   positions, become invalid when the outline changes. 
+ 
+2. Leo's position class can be based on parents index lists. Let us call such
+   positions **new positions**. Replacing legacy positions with new position
+   will have important benefits: 
+ 
+- The only structure information in vnodes will be a v.links field. Two
+  interpretations of v.links are possible. When Leo's data is a DAG (the clone
+  world), v.links is a lists of v's children. This is the legacy world we all
+  know and love. When Leo's data is an arbitrary graph, v.links is simply the
+  list of all vnodes to which v points, with *no* necessary restrictions on what
+  nodes may be contained in v.links. 
+ 
+- New positions provide a self contained way of traversing an arbitrary graphs
+  **largely independently** of the data. This is Leo's theory of relativity. The
+  notions of 'parent' and 'sibling' have meaning *only* in the context of a
+  particular position. The v.links field appears to be the absolute minimum
+  amount of structure information that vnodes must contain. v.links defines the
+  children or linked-to nodes in a general graph. 
+ 
+- Leo's data can be considered an unrooted tree: *any* node could be considered
+  the root. New positions provide enough information to traverse an arbitrary
+  graph starting at any node. 
+ 
+- The fundamental p.moveToX methods should be significantly faster. All of Leo's
+  iterators use p.moveToX methods. 
+ 
+3. The changeover to new positions can be done easily. Initially, the api of the
+   new position class will be identical to the api of the present position
+   class. Later, the api for the new position class might be extended in an
+   upward compatible manner. The api's for the vnode and tnode class will remain
+   strictly unchanged. 
+ 
+4. These changes imply no change to the separation of data into vnodes and
+   tnodes. This separation is required to handle clones. Furthermore, the format
+   of .leo files is a separate issue from the internal representation of Leo's
+   data, as proved by the opml plugin. Thus, the transition to new positions
+   will have *no* effect on file formats, and no effect of scripts. All scripts
+   will continue to work *exactly* as they have before, *except* scripts, e.g.
+   unit tests, that probe Leo's internals. 
+ 
+Summary 
+ 
+Leo's theory of relativity is this: the position class provides a 'frame of
+reference' for traversing data. **Only in a particular frame of reference** do
+the notions of 'parent' and 'siblings' have meaning. Leo's theory of relatively
+is the ultimate expression of LeoUser's notion of a 'sea of nodes'. It provides
+a solid context on which to base traversals of either outlines with clones
+(DAG's) or general directed graphs. 
+ 
+Leo's position class, far from being just a technical tool, is important
+theoretically. The position class (old or new) provides the essential tool
+needed to separate data from traversals of the data. The re-visioning of the
+position and vnode classes brings that potential into reality. 
+</t>
+<t tx="ekr.20061009074501"></t>
+<t tx="ekr.20061009111417.11">New in Leo 4.4.2 beta 2:
+    
+- Leo looks for myLeoSettings.leo files in the same place Leo looks for leoSettings.leo files.
+
+- Added settings for all mod_scripting switches.
+
+- Added @bool collapse_nodes_during_finds.
+  This greatly speeds searches that used to open many nodes.
+  See: http://sourceforge.net/forum/message.php?msg_id=3935780
+
+- Added @bool outline_pane_has_initial_focus.
+
+- Added @bool sparse_move_outline_left.
+
+- Added bindings for Alt-Shift-Arrow keys to force an outline move.
+
+- Added @bool use_sax_based_read = False.
+  True:  Use a sax-based parser to read .leo files.
+  This is slower than using Leo's legacy xml parser, but may solve some unicode problems.
+</t>
+<t tx="ekr.20061009111417.18">New in Leo 4.4.2 beta 2::
+    
+    extend-to-line
+    extend-to-sentence
+    extend-to-paragraph</t>
+<t tx="ekr.20061009112808">True:  Use a sax-based parser to read .leo files.
+       This is slower than using Leo's legacy xml parser, but may solve some unicode problems.
+
+False: Use Leo's legacy xml parser code.</t>
 </tnodes>
 </leo_file>

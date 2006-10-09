@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="23" left="396" height="824" width="863"/>
+	<global_window_position top="23" left="396" height="786" width="863"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -26,7 +26,7 @@
 <v t="EKR.20040519091259.3"><vh>November 2003</vh></v>
 <v t="EKR.20040519091259.4"><vh>October 2003</vh></v>
 </v>
-<v t="ekr.20060929055249"><vh>ANN: Leo 4.4.2 beta 1</vh></v>
+<v t="ekr.20061008193307"><vh>ANN: Leo 4.4.2 beta 2</vh></v>
 <v t="EKR.20040519091259.30"><vh>Previous announcements</vh>
 <v t="ekr.20060903103403"><vh>ANN: Leo 4.4.1.1 final</vh></v>
 <v t="ekr.20060929055249.2"><vh>4.4.1</vh>
@@ -132,7 +132,7 @@
 <v t="ekr.20040629180414"><vh>pycheckrc (reference)</vh></v>
 </v>
 <v t="ekr.20051205102401"><vh>Note: do search replace to update version numbers</vh></v>
-<v t="ekr.20050118095021" a="V"><vh>Leo 4.x installer  (update for each release)</vh>
+<v t="ekr.20050118095021"><vh>Leo 4.x installer  (update for each release)</vh>
 <v t="EKR.20040519082027.28"><vh>&lt;&lt; setup info for createLeoDist.py &gt;&gt;</vh></v>
 <v t="ekr.20050118124408"><vh>&lt;&lt; 4.3 nsi installer version &gt;&gt;</vh></v>
 <v t="ekr.20050118092706.4"><vh>&lt;&lt; Settings &gt;&gt;</vh></v>
@@ -185,10 +185,9 @@
 <v t="ekr.20050118103447.1"><vh>&lt;&lt; uninstall top-level files &gt;&gt;</vh></v>
 </v>
 </v>
-<v t="ekr.20050118092706" a="E"
-expanded="ekr.20050118092706.6,ekr.20050118092706.9,"><vh>@thin leo-4-3.nsi</vh></v>
+<v t="ekr.20050118092706"><vh>@thin leo-4-3.nsi</vh></v>
 </v>
-<v t="EKR.20040519090846"><vh>Distribution files (update for each release)</vh>
+<v t="EKR.20040519090846" a="TV"><vh>Distribution files (update for each release)</vh>
 <v t="EKR.20040519090846.2"><vh>@asis ../doc/INSTALL.TXT</vh>
 <v t="EKR.20040519090846.3"><vh>System requirements</vh></v>
 <v t="EKR.20040519090846.4"><vh>Linux installation</vh></v>
@@ -682,9 +681,9 @@ Description: Leo is an outline-oriented editor written in 100% pure Python.
 		Download tkIcon from http://www.effbot.org/downloads/#tkIcon
 Platform: Windows, Linux, Macintosh
 </t>
-<t tx="EKR.20040519090846.9">Leo 4.4.2 beta 1                                    September 29, 2006
+<t tx="EKR.20040519090846.9">Leo 4.4.2 beta 2                                  October 9, 2006
 
-Leo 4.4.2 beta 1 is available at:
+Leo 4.4.2 beta 2 is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
 
 Leo is a text editor, data organizer, project manager and much more. See:
@@ -694,7 +693,7 @@ The highlights of Leo 4.4.2:
 ----------------------------
 - You can now store settings in myLeoSettings.leo without fear of those settings
   being changed by cvs updates or in future versions of Leo.
-- Leo's vnode and tnode classes are now completely independent of the rest of Leo.
+- Leo's vnode tnode and position classes are now completely independent of the rest of Leo.
   Some api's have been changed.  This 'big reorg' and may affect scripts and plugins.
 - Leo's vnode and tnode classes can optionally be compatible with ZODB databases,
   i.e., they can optionally derive from ZODB.Persistence.Persistent.
@@ -702,11 +701,19 @@ The highlights of Leo 4.4.2:
 - The leoOPML plugin defines commands to read and write OPML files.
 - The slideshow plugin allows Leo to run slideshows defined by @slideshow and @slide nodes.
 - The leo_to_rtf and leo_to_html plugins create rtf and html files from Leo outlines.
-- Much faster navigation through the outline using Alt-arrow keys.
+- Much faster navigation through the outline.
 - When focus is in the outline pane, you can move to headlines by typing the first letter of headlines.
-- The find command now closes nodes not needed to show the node containing the present match.
-- Numerous changes that make Leo easier to use without using a mouse.
-- Many new minibuffer commands now appear in the Cmds menu.
+- The find command now optionally closes nodes not needed to show the node containing the present match.
+- Numerous changes that make Leo easier to use without using a mouse, including new commands and options.
+- Many more minibuffer commands appear in the Cmds menu.
+- A sax parser can now optionally read .leo files.
+- Dozens of bug fixes.
+
+Quote of the month:
+------------------
+
+For the non-leo python project I'm (supposed to be) working on, I'm switching from emacs to leo :-)
+-- Terry Brown
 
 Links:
 ------
@@ -714,7 +721,8 @@ Leo:      http://webpages.charter.net/edreamleo/front.html
 Home:     http://sourceforge.net/projects/leo/
 Download: http://sourceforge.net/project/showfiles.php?group_id=3458
 CVS:      http://leo.tigris.org/source/browse/leo/
-Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
+Quotes:   http://webpages.charter.net/edreamleo/testimonials.html
+</t>
 <t tx="EKR.20040519090846.10"># The manifest template: specifies all files to be included in the distribution.
 
 # Note: these are glob patterns.
@@ -4850,9 +4858,10 @@ Download: http://sourceforge.net/project/showfiles.php?group_id=3458
 CVS:      http://leo.tigris.org/source/browse/leo/
 Quotes:   http://webpages.charter.net/edreamleo/testimonials.html
 </t>
-<t tx="ekr.20060929055249">Leo 4.4.2 beta 1                                    September 29, 2006
+<t tx="ekr.20060929055249.2"></t>
+<t tx="ekr.20061008193307">Leo 4.4.2 beta 2                                  October 9, 2006
 
-Leo 4.4.2 beta 1 is available at:
+Leo 4.4.2 beta 2 is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
 
 Leo is a text editor, data organizer, project manager and much more. See:
@@ -4862,7 +4871,7 @@ The highlights of Leo 4.4.2:
 ----------------------------
 - You can now store settings in myLeoSettings.leo without fear of those settings
   being changed by cvs updates or in future versions of Leo.
-- Leo's vnode and tnode classes are now completely independent of the rest of Leo.
+- Leo's vnode tnode and position classes are now completely independent of the rest of Leo.
   Some api's have been changed.  This 'big reorg' and may affect scripts and plugins.
 - Leo's vnode and tnode classes can optionally be compatible with ZODB databases,
   i.e., they can optionally derive from ZODB.Persistence.Persistent.
@@ -4870,23 +4879,21 @@ The highlights of Leo 4.4.2:
 - The leoOPML plugin defines commands to read and write OPML files.
 - The slideshow plugin allows Leo to run slideshows defined by @slideshow and @slide nodes.
 - The leo_to_rtf and leo_to_html plugins create rtf and html files from Leo outlines.
-- Much faster navigation through the outline using Alt-arrow keys.
+- Much faster navigation through the outline.
 - When focus is in the outline pane, you can move to headlines by typing the first letter of headlines.
-- The find command now closes nodes not needed to show the node containing the present match.
-- Numerous changes that make Leo easier to use without using a mouse.
-- Many new minibuffer commands now appear in the Cmds menu.
-
+- The find command now optionally closes nodes not needed to show the node containing the present match.
+- Numerous changes that make Leo easier to use without using a mouse, including new commands and options.
+- Many more minibuffer commands appear in the Cmds menu.
+- A sax parser can now optionally read .leo files.
+- Dozens of bug fixes.
 
 Links:
 ------
-4.4.1:    http://webpages.charter.net/edreamleo/new-4-4-1.html
-4.4:      http://webpages.charter.net/edreamleo/new-4-4.html
 Leo:      http://webpages.charter.net/edreamleo/front.html
 Home:     http://sourceforge.net/projects/leo/
 Download: http://sourceforge.net/project/showfiles.php?group_id=3458
 CVS:      http://leo.tigris.org/source/browse/leo/
 Quotes:   http://webpages.charter.net/edreamleo/testimonials.html
 </t>
-<t tx="ekr.20060929055249.2"></t>
 </tnodes>
 </leo_file>

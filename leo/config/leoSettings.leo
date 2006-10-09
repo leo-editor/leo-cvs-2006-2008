@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="71" left="252" height="611" width="941"/>
+	<global_window_position top="71" left="252" height="554" width="941"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -21,7 +21,6 @@
 <v t="ekr.20041119042929.5"><vh>@font</vh></v>
 <v t="ekr.20041120181045"><vh>@ratio</vh></v>
 <v t="ekr.20041119042929.6"><vh>@shortcut</vh></v>
-<v t="ekr.20041120155431.1"><vh>@shortcuts</vh></v>
 <v t="ekr.20041119042929.2"><vh>@path</vh></v>
 <v t="ekr.20041119042929.7"><vh>@string</vh></v>
 </v>
@@ -32,6 +31,7 @@
 <v t="ekr.20041119035704.2"><vh>\@ignore comment</vh></v>
 <v t="ekr.20041119035931.1"><vh>\@page comment</vh></v>
 <v t="ekr.20041119105509"><vh>\@set name = value</vh></v>
+<v t="ekr.20041120155431.1"><vh>\@shortcuts</vh></v>
 <v t="ekr.20041119035704.3"><vh>\@type type-name: base-type = [list of valid values]</vh></v>
 <v t="ekr.20041120155431.2"><vh>\@type type-name: script: script-name</vh></v>
 </v>
@@ -46,7 +46,7 @@
 <v t="ekr.20060112104823"><vh>main</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" a="TV" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
@@ -136,8 +136,8 @@
 </v>
 <v t="ekr.20041119034357.67"><vh>@color split_bar_color = LightSteelBlue2</vh></v>
 </v>
-<v t="ekr.20041119034357.10" a="E" annotate="7d71002e"><vh>Command options</vh>
-<v t="ekr.20061007211759" a="TV"><vh>@bool sparse_move_outline_left = True</vh></v>
+<v t="ekr.20041119034357.10" annotate="7d71002e"><vh>Command options</vh>
+<v t="ekr.20061007211759"><vh>@bool sparse_move_outline_left = True</vh></v>
 <v t="ekr.20041119034357.14"><vh>@bool at_root_bodies_start_in_doc_mode = True</vh></v>
 <v t="ekr.20041119041019"><vh>@bool redirect_execute_script_output_to_log_pane = False</vh></v>
 <v t="ekr.20041119041019.1"><vh>@string remove_sentinels_extension = .txt</vh></v>
@@ -272,7 +272,7 @@
 <v t="ekr.20060122105527.3"><vh>Keyboard and minibuffer options</vh>
 <v t="ekr.20060215094146"><vh>@@bool ignore_caps_lock = True</vh></v>
 <v t="ekr.20060216170801"><vh>@bool enable_calltips = False</vh></v>
-<v t="ekr.20060215102141"><vh>@bool ignore_unbound_non_ascii_keys = True</vh></v>
+<v t="ekr.20060215102141"><vh>@bool ignore_unbound_non_ascii_keys = False</vh></v>
 <v t="ekr.20060122105527.8"><vh>@bool showHelpWhenEnteringModes = True</vh></v>
 <v t="ekr.20060926160657"><vh>@bool stayInTreeAfterEditHeadline = False</vh></v>
 <v t="ekr.20060122105527.7" annotate="7d71002e"><vh>@bool stayInTreeAfterSelect = True</vh></v>
@@ -548,6 +548,7 @@
 <v t="ekr.20060120123529"><vh>@bool initialClickExpandsOrContractsNode = True</vh></v>
 <v t="ekr.20041119050749.17"><vh>@bool look_for_control_drag_on_mouse_down = True</vh></v>
 <v t="ekr.20041119050749.18"><vh>@bool outline_pane_scrolls_horizontally = True</vh></v>
+<v t="ekr.20061002115414.1"><vh>@float outline_nav_extend_delay = 2.0</vh></v>
 </v>
 <v t="ekr.20041213105954.2"><vh>Splitter options</vh>
 <v t="ekr.20041119034357.68"><vh>@string split_bar_relief = groove</vh></v>
@@ -565,141 +566,8 @@
 <v t="ekr.20060131071947"><vh>@bool trace_masterClickHandler = False</vh></v>
 <v t="ekr.20060209045356"><vh>@bool trace_masterFocusHandler = False</vh></v>
 <v t="ekr.20060131071612"><vh>@bool trace_masterKeyHandler = False</vh></v>
-<v t="ekr.20061002115414.1"><vh>@float outline_nav_extend_delay = 2.0</vh></v>
 <v t="ekr.20061004150211"><vh>@bool use_sax_based_read = False</vh></v>
-</v>
-<v t="ekr.20051007200824"><vh>Keyboard shortcuts</vh>
-<v t="ekr.20051101160257" annotate="7d71002e"><vh>About keyboard shortcuts</vh>
-<v t="ekr.20051007200824.1" annotate="7d71002e"><vh>About shortcut specifiers</vh></v>
-<v t="ekr.20060116090646"><vh>Reference for function keys</vh></v>
-</v>
-<v t="ekr.20060117092249"><vh>About modes</vh></v>
-<v t="ekr.20060303075452"><vh>Commands for mouseless Leo</vh></v>
-<v t="ekr.20060104093101" annotate="7d71002e"><vh>@ignore Unused key bindings</vh>
-<v t="ekr.20060122105527.4" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
-<v t="ekr.20060110141538" annotate="7d71002e"><vh>@keys Default Emacs shortcuts</vh>
-<v t="ekr.20051007193321"><vh>@shortcuts Emacs: A-E</vh></v>
-<v t="ekr.20060112090844"><vh>@shortcuts Emacs: F-M</vh></v>
-<v t="ekr.20060112090844.1"><vh>@shortcuts Emads: N-Z</vh></v>
-<v t="ekr.20060112112006"><vh>@shortcuts Emacs: missing</vh></v>
-</v>
-<v t="ekr.20060103103812" annotate="7d71002e"><vh>@keys Legacy Leo shortcuts with important Emacs bindings</vh>
-<v t="ekr.20060111082632.1"><vh>@shortcuts Legacy+: A-E</vh></v>
-<v t="ekr.20060112085643"><vh>@shortcuts Legacy+: F-M</vh></v>
-<v t="ekr.20060112085643.1"><vh>@shortcuts Legacy+: N-Z</vh></v>
-</v>
-<v t="ekr.20060110141538.2" annotate="7d71002e"><vh>@keys Legacy Leo bindings</vh>
-<v t="ekr.20051218203646" annotate="7d71002e"><vh>@shortcuts Legacy: A-E</vh></v>
-<v t="ekr.20060112090844.4"><vh>@shortcuts Legacy: F-M</vh></v>
-<v t="ekr.20060112090844.5"><vh>@shortcuts Legacy: N-Z</vh></v>
-</v>
-<v t="ekr.20060607182402"><vh>@keys groupoperstions plugin</vh>
-<v t="ekr.20060325091143"><vh>@shortcuts group-operations</vh></v>
-</v>
-<v t="ekr.20051010112558"><vh>@keys EKR bindings: a mix of legacy Leo shortcuts with important Emacs bindings</vh>
-<v t="ekr.20060122105438"><vh>To do</vh></v>
-<v t="ekr.20060122105438.1"><vh>Summary of Ctrl bindings</vh></v>
-<v t="ekr.20060115162748"><vh>Modes</vh>
-<v t="ekr.20060121131041.2"><vh>@mode Command</vh></v>
-<v t="ekr.20060102113259" annotate="7d71002e"><vh>@mode File</vh></v>
-<v t="ekr.20060117182225"><vh>@mode Find (Control-F)</vh></v>
-<v t="ekr.20060122103118"><vh>@mode Find-reverse</vh></v>
-<v t="ekr.20060117130936"><vh>@mode Find-options</vh></v>
-<v t="ekr.20060115153348"><vh>@mode Quick-command</vh></v>
-<v t="ekr.20060115160004"><vh>@mode Register</vh></v>
-<v t="ekr.20060115160004.1"><vh>@mode Rect</vh></v>
-</v>
-<v t="ekr.20060115162748.1"><vh>Shortcuts</vh>
-<v t="ekr.20060103103812.1" annotate="7d71002e"><vh>@shortcuts EKR: mode-changing commands</vh></v>
-<v t="ekr.20060102102958" annotate="7d71002e"><vh>@shortcuts EKR: A-E</vh></v>
-<v t="ekr.20060112085325"><vh>@shortcuts EKR: F-M</vh></v>
-<v t="ekr.20060102102958.1" annotate="7d71002e"><vh>@shortcuts EKR: N-Z</vh></v>
-</v>
-</v>
-<v t="ekr.20060122105527"><vh>@keys EKR bindings: Mode-oriented bindings + Emacs bindings</vh>
-<v t="ekr.20060604180807" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
-<v t="ekr.20060122105527.2"><vh>Summary of Ctrl bindings</vh></v>
-<v t="ekr.20060122105527.9"><vh>Modes</vh>
-<v t="ekr.20060122113439"><vh>@mode Edit (Alt-Control-space)</vh>
-<v t="ekr.20060122122150"><vh>@mode Edit-extend</vh></v>
-</v>
-<v t="ekr.20060122105527.11" annotate="7d71002e"><vh>@mode File</vh></v>
-<v t="ekr.20060122182825"><vh>@mode File-open</vh></v>
-<v t="ekr.20060122105527.12"><vh>@mode Find </vh>
-<v t="ekr.20060122105527.13"><vh>@@mode Find-reverse</vh></v>
-</v>
-<v t="ekr.20060122105527.14"><vh>@mode Find-options</vh></v>
-<v t="ekr.20060122105732" annotate="7d71002e"><vh>@mode Outline (Control-Shift-O)</vh>
-<v t="ekr.20060122130002"><vh>@mode Outline-move</vh></v>
-</v>
-<v t="ekr.20060122105527.15"><vh>@mode Quick-command (Alt-C)</vh></v>
-</v>
-<v t="ekr.20060122105527.18"><vh>Shortcuts</vh>
-<v t="ekr.20060122105527.19" annotate="7d71002e"><vh>@shortcuts EKR: mode-changing commands</vh></v>
-<v t="ekr.20060124070546"><vh>@shortcuts Find Commands</vh></v>
-<v t="ekr.20060203131942"><vh>@shortcuts Minibuffer bindings</vh></v>
-<v t="ekr.20060122105527.20" annotate="7d71002e"><vh>@shortcuts EKR: A-E</vh></v>
-<v t="ekr.20060122105527.21"><vh>@shortcuts EKR: F-M</vh></v>
-<v t="ekr.20060122105527.22" annotate="7d71002e"><vh>@shortcuts EKR: N-Z</vh></v>
-</v>
-</v>
-<v t="ekr.20060923114638"><vh>@keys EKR bindings: Emacs keys + modes (prior to Leo 4.4.2)</vh>
-<v t="ekr.20060923114638.1"><vh>Settings related to key bindings</vh>
-<v t="ekr.20060923114638.2"><vh>@bool warn_about_redefined_shortcuts = True</vh></v>
-<v t="ekr.20060923114638.3" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
-</v>
-<v t="ekr.20060923114638.4"><vh>Modes</vh>
-<v t="ekr.20060923114638.5"><vh>@mode quick-command (Alt-C)</vh></v>
-<v t="ekr.20060923114638.6"><vh>@mode apropos</vh></v>
-<v t="ekr.20060923114638.7"><vh>@mode buttons</vh></v>
-<v t="ekr.20060923114638.8"><vh>@mode commands</vh></v>
-<v t="ekr.20060923114638.9"><vh>@mode edit</vh></v>
-<v t="ekr.20060923114638.10"><vh>@mode Edit-extend</vh></v>
-<v t="ekr.20060923114638.11"><vh>@mode emacs</vh></v>
-<v t="ekr.20060923114638.12"><vh>@mode extract</vh></v>
-<v t="ekr.20060923114638.13"><vh>@mode file</vh></v>
-<v t="ekr.20060923114638.14" a="M"><vh>@mode gui</vh></v>
-<v t="ekr.20060923114638.15"><vh>@mode help</vh></v>
-<v t="ekr.20060923114638.16"><vh>@mode kill</vh></v>
-<v t="ekr.20060923114638.17"><vh>@mode modes</vh></v>
-<v t="ekr.20060923114638.18"><vh>@mode move-outline</vh></v>
-<v t="ekr.20060923114638.19"><vh>@mode outline</vh></v>
-<v t="ekr.20060923114638.20"><vh>@mode toggle-find</vh></v>
-</v>
-<v t="ekr.20060923114638.21"><vh>Shortcuts</vh>
-<v t="ekr.20060923114638.22"><vh>@@@@shortcuts top-level keys (like vim)</vh></v>
-<v t="ekr.20060923114638.23"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
-<v t="ekr.20060923114638.24"><vh>@shortcuts Find Commands</vh></v>
-<v t="ekr.20060923114638.25"><vh>@shortcuts Minibuffer bindings</vh></v>
-<v t="ekr.20060923114638.26" annotate="7d71002e"><vh>@shortcuts EKR: A-E</vh></v>
-<v t="ekr.20060923114638.27"><vh>@shortcuts EKR: F-M</vh></v>
-<v t="ekr.20060923114638.28" annotate="7d71002e"><vh>@shortcuts EKR: N-Z</vh></v>
-</v>
-</v>
-</v>
-<v t="ekr.20060110141538.1" annotate="7d71002e"><vh>@keys No bindings</vh>
-<v t="ekr.20051218202206" annotate="7d71002e"><vh>@shortcuts No bindings: A-E</vh></v>
-<v t="ekr.20060112093227.1"><vh>@shortcuts No bindings: F-M</vh></v>
-<v t="ekr.20060112093227.2"><vh>@shortcuts No bindings: N-Z</vh></v>
-</v>
-<v t="ekr.20060603215208"><vh>@keys EKR bindings: Emacs keys + modes</vh>
-<v t="ekr.20060603215208.4"><vh>Modes</vh>
-<v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
-</v>
-<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
-<v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
-<v t="ekr.20060925060533.1"><vh>@shortcuts Cursor Moves</vh></v>
-<v t="ekr.20060926115909"><vh>@shortcuts Cursor Moves with extension</vh></v>
-<v t="ekr.20060926114943"><vh>@@@@shortcuts Disabled Emacs bindings</vh></v>
-<v t="ekr.20060925060533.2"><vh>@shortcuts Gui operations</vh></v>
-<v t="ekr.20060925061845"><vh>@shortcuts File commands</vh></v>
-<v t="ekr.20060603215208.19"><vh>@shortcuts Find commands</vh></v>
-<v t="ekr.20060603215208.20"><vh>@shortcuts Minibuffer commands/bindings</vh></v>
-<v t="ekr.20060925061845.1"><vh>@shortcuts Other commands</vh></v>
-<v t="ekr.20060925060533.3"><vh>@shortcuts Outline operations</vh></v>
-<v t="ekr.20060925060533.4"><vh>@shortcuts Text operations</vh></v>
-</v>
-</v>
+<v t="ekr.20061002115414.1"><vh>@float outline_nav_extend_delay = 2.0</vh></v>
 </v>
 <v t="ekr.20060603215208"><vh>@keys EKR bindings: Emacs keys + modes</vh>
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
@@ -972,14 +840,19 @@ For example, the color of "if", "try" and "except" in Python.</t>
 <t tx="ekr.20041119035137">@nocolor
 @pagewidth 80
 
-This is Leo's main settings file.  It specifies all the settings that Leo supports.
+This is Leo's main settings file.  It specifies settings used to customize Leo.
 
-@settings trees are composed of various kinds of nodes. The _headline_ of each
-node indicates its type. The body text of most nodes contain comments used by
-the dialog creator. The body text of other nodes contain scripts. See the
-children of this node for more details.
+**New in Leo 4.4.2**: You can 'override' settings defined here by placing your
+own settings in myLeoSettings.leo, either in your HOME directory or in the
+leo/config directory (the directory containing this file.) Distributions of Leo
+leave myLeoSettings.leo along, and myLeoSettings.leo is not part of Leo's cvs
+repository, so Leo never changes myLeoSettings.leo.
 
-You can set settings by editing this file, by editing @settings trees in .leo files, and by using the Preferences command.</t>
+@settings trees are composed of various kinds of nodes. The headline of each
+node indicates its type. The body text of most nodes contain comments. However,
+the body text of @font and @shortcuts nodes contain settings. See the children
+of this node for details.
+</t>
 <t tx="ekr.20041119035704">These nodes describe the type, name and value of a single setting.  Headlines have the form:
 
 @type-name setting-name = value
@@ -1533,6 +1406,7 @@ expand-to-level-7                   = None
 expand-to-level-8                   = None
 expand-to-level-9                   = None
 export-headlines                    = None
+extend-to-paragraph                 = Alt-h
 extract                             = Shift-Ctrl-D
 extract-names                       = Shift-Ctrl-N
 extract-section                     = Shift-Ctrl-E</t>
@@ -1893,6 +1767,8 @@ expand-to-level-8                   = None
 expand-to-level-9                   = None
 export-headlines                    = None
 extend-to-line                      = None
+extend-to-paragraph                 = None
+extend-to-sentence                  = None
 extend-to-word                      = None
 extract                             = None
 extract-names                       = None
@@ -2216,7 +2092,6 @@ search-again                        = None
 search-backward                     = None
 search-forward                      = None
 select-all                          = None # Shift-Ctrl-A conflicts with beginning-of-line-extend-selection.
-select-paragraph                    = None
 set-colors                          = None
 set-comment-column                  = None
 set-extend-mode                     = None
@@ -2801,7 +2676,6 @@ search-again                            = None
 search-backward                         = None
 search-forward                          = None
 select-all                              = Shift-Ctrl-A # Ctrl-Shift-a conflicts with beginning-of-line-extend-selection.
-select-paragraph                        = None
 set-colors                              = None
 set-comment-column                      = None
 set-extend-mode                         = None
@@ -3076,7 +2950,6 @@ search-again                    = None
 search-backward                 = None
 search-forward                  = None
 select-all                      = None  # Ctrl-A conflicts with beginning-of-line.
-select-paragraph                = Alt-h
 set-colors                      = None
 set-comment-column              = None
 set-extend-mode                 = None
@@ -3345,7 +3218,6 @@ search-again                        = None
 search-backward                     = None
 search-forward                      = None
 select-all                          = Ctrl-A
-select-paragraph                    = None
 set-colors                          = None
 set-comment-column                  = None
 set-extend-mode                     = None
@@ -3656,7 +3528,6 @@ search-backward                     = None
 search-forward                      = None
 search-with-present-options         = None
 select-all                          = None
-select-paragraph                    = None
 set-colors                          = None
 set-comment-column                  = None
 set-extend-mode                     = None
@@ -5121,7 +4992,18 @@ commands to enable or disable autocompletion at any time.
 Note: The 'initially' prefix is needed to distinguish this setting from
 enable-calltips command. Otherwised they would get 'munged' to the same
 configuration value.</t>
-<t tx="ekr.20060603215208">@color</t>
+<t tx="ekr.20060603215208">@nocolor
+
+This tree contains the active keyboard settings. You can find other **ignored**
+settings in the node
+
+@settings--&gt;Keyboard shortcuts--&gt;@ignore Unused key bindings
+
+The activate another set of keyboard settings, move *this* node so it is a child
+of the @ignore node, and move *another* node so it is no longer a child of the
+@ignore node.
+
+@color</t>
 <t tx="ekr.20060603215208.4">@color
 
 # Important: input state is **not** a mode.</t>
@@ -6191,12 +6073,19 @@ Note: The plugin creates the press-run-script-button regardless of this setting.
 
 Note: The plugin creates the press-script-button-button regardless of this setting.</t>
 <t tx="ekr.20061002115414"></t>
-<t tx="ekr.20061002115414.1">A time (in seconds) that controls how handles keystrokes when the outline pane has focus.
+<t tx="ekr.20061002115414.1">This setting appears in two places: 'Keyboard and minibuffer options' and 'Outline pane options'.
+
+A time (in seconds) that controls how handles keystrokes when the outline pane has focus.
 
 When two keystrokes are separated by less than this time, Leo will attempt to
 find the next headline that starts with the previous match, extended by the key
 just typed. Otherwise, Leo will find the next headline that starts with the key
-just typed.</t>
+just typed.
+
+The outline nav search reverts to a single-character search if the extended
+search fails, so in practice everything works well without thinking about what
+is happening.
+</t>
 <t tx="ekr.20061003173413"></t>
 <t tx="ekr.20061004150211">True:  Use a sax-based parser to read .leo files.
        This is slower than using Leo's legacy xml parser, but may solve some unicode problems.

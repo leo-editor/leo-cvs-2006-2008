@@ -38,6 +38,112 @@ The recent work with yank/kill commands may have fixed some problems.
 Make unlimited undo the default.
 #@nonl
 #@-node:ekr.20060920150119:Fix undo problems
+#@+node:ekr.20060116083043:Use special Help menu on the Mac
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3237845
+
+http://tkinter.unpythonic.net/wiki/Widgets/Menu
+
+On the Macintosh, access to the special Apple and Help menus is provided. These
+menus must be created with the command name of the menubar menu concatenated
+with the special name. 
+
+For a menubar named .menubar, on the Macintosh, the special menus are .menubar.apple and .menubar.help.
+
+On Windows, the special menu is .menubar.system.
+
+On X Windows, the help menu is .menubar.help.
+
+[XXX how to create widgets with these names in Tkinter]
+
+@colorhh
+#@nonl
+#@+node:ekr.20031218072017.3803:createHelpMenuFromTable
+def createHelpMenuFromTable (self):
+
+    if 0: ## sys.platform == 'darwin':
+        helpMenu = self.getMacHelpMenu()
+        if not helpMenu: return
+    else:
+        helpMenu = self.createNewMenu("&Help")
+    
+    self.createMenuEntries(helpMenu,self.helpMenuTable)
+#@nonl
+#@-node:ekr.20031218072017.3803:createHelpMenuFromTable
+#@+node:ekr.20031218072017.4113:new_menu
+def new_menu(self,parent,tearoff=False):
+    
+    """Wrapper for the Tkinter new_menu menu method."""
+    
+    if self.font:
+        try:
+            return Tk.Menu(parent,tearoff=tearoff,font=self.font)
+        except Exception:
+            g.es_exception()
+            return Tk.Menu(parent,tearoff=tearoff)
+    else:
+        return Tk.Menu(parent,tearoff=tearoff)
+#@-node:ekr.20031218072017.4113:new_menu
+#@+node:ekr.20031218072017.3804:createNewMenu
+def createNewMenu (self,menuName,parentName="top",before=None):
+
+    try:
+        parent = self.getMenu(parentName) # parent may be None.
+        menu = self.getMenu(menuName)
+        if menu:
+            g.es("menu already exists: " + menuName,color="red")
+        else:
+            menu = self.new_menu(parent,tearoff=0)
+            self.setMenu(menuName,menu)
+            label = self.getRealMenuName(menuName)
+            amp_index = label.find("&")
+            label = label.replace("&","")
+            if before: # Insert the menu before the "before" menu.
+                index_label = self.getRealMenuName(before)
+                amp_index = index_label.find("&")
+                index_label = index_label.replace("&","")
+                index = parent.index(index_label)
+                self.insert_cascade(parent,index=index,label=label,menu=menu,underline=amp_index)
+            else:
+                self.add_cascade(parent,label=label,menu=menu,underline=amp_index)
+            return menu
+    except:
+        g.es("exception creating " + menuName + " menu")
+        g.es_exception()
+        return None
+#@-node:ekr.20031218072017.3804:createNewMenu
+#@+node:ekr.20031218072017.3807:getMenu, setMenu, destroyMenu
+def getMenu (self,menuName):
+
+    cmn = self.canonicalizeMenuName(menuName)
+    return self.menus.get(cmn)
+    
+def setMenu (self,menuName,menu):
+    
+    cmn = self.canonicalizeMenuName(menuName)
+    self.menus [cmn] = menu
+    
+def destroyMenu (self,menuName):
+    
+    cmn = self.canonicalizeMenuName(menuName)
+    del self.menus[cmn]
+#@-node:ekr.20031218072017.3807:getMenu, setMenu, destroyMenu
+#@+node:ekr.20060211144330.1:getMacHelpMenu
+def getMacHelpMenu (self):
+    
+    return None ###
+    
+    try:
+        helpMenu = Tk.Menu('top.help')
+        return helpMenu
+        
+    except Exception:
+        g.trace('Can not get MacOS Help menu')
+        g.es_exception()
+        return None
+#@-node:ekr.20060211144330.1:getMacHelpMenu
+#@-node:ekr.20060116083043:Use special Help menu on the Mac
 #@-node:ekr.20061008160553:bugs
 #@+node:ekr.20061008160553.1:features
 #@+node:ekr.20061008163540:add do-nothing command as a way to create arbitrary bindings
@@ -557,6 +663,10 @@ left.
 #@-node:ekr.20061008160553.1:features
 #@+node:ekr.20060920190138:Document tnodeList, vnodeList
 #@-node:ekr.20060920190138:Document tnodeList, vnodeList
+#@+node:ekr.20061009094114:Install aspell for Python 2.5
+#@-node:ekr.20061009094114:Install aspell for Python 2.5
+#@+node:ekr.20061009094114.1:Check Leo with pylint
+#@-node:ekr.20061009094114.1:Check Leo with pylint
 #@+node:ekr.20060912091922:Test all plugins
 ** Create separate @test node for each plugin.
 #@nonl
