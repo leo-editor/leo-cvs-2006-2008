@@ -1,9 +1,0 @@
-C:\prog\tigris-cvs\leo\config\myLeoSettings.leo
-C:\prog\tigris-cvs\leo\src\oldLeoProjects.leo
-C:\prog\tigris-cvs\leo\config\leoSettings.leo
-C:\prog\tigris-cvs\leo\src\LeoPy.leo
-C:\prog\tigris-cvs\leo\doc\LeoDocs.leo
-C:\Documents and Settings\Ed\My Documents\Leo Data\ekr.leo
-C:\prog\tigris-cvs\leo\dist\leoDist.leo
-C:\prog\tigris-cvs\leo\test\unitTest.leo
-C:\prog\tigris-cvs\leo\test\test.leo
