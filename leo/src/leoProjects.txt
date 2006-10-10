@@ -750,6 +750,222 @@ def set_focus (self,w,force=False):
         c.masterFocusHandler()
 #@-node:ekr.20060205103842:c.get/request/set_focus
 #@-node:ekr.20061007094817:Fixed bugs in cycle-all-focus command
+#@+node:ekr.20061008091617:Fixed bug: with Alt-n keys
+@
+
+@command whaterver @key Alt-1 didn't work
+Actually, no Alt-n keys worked for n in (1,2,3,4,5) in any context.
+
+Happily, the problem was a confusion about what Alt-1 means.
+Apparently it means Alt-Button-1 rather than Alt-Key-1.
+
+The solution was to insert an explicit Key- prefix in k.tkBindingFromStroke.
+I also made a minor mod to printBindings.
+#@nonl
+#@+node:ekr.20051015110547:k.registerCommand
+def registerCommand (self,commandName,shortcut,func,pane='all',verbose=False):
+    
+    '''Make the function available as a minibuffer command,
+    and optionally attempt to bind a shortcut.
+    
+    You can wrap any method in a callback function, so the
+    restriction to functions is not significant.'''
+    
+    k = self ; c = k.c
+    f = c.commandsDict.get(commandName)
+    verbose = verbose and not g.app.unitTesting
+    if f and f.__name__ != 'dummyCallback' and verbose:
+        g.es_print('Redefining %s' % (commandName), color='red')
+        
+    c.commandsDict [commandName] = func
+    k.inverseCommandsDict [func.__name__] = commandName
+    # g.trace('leoCommands %24s = %s' % (func.__name__,commandName))
+    
+    if shortcut:
+        stroke = k.shortcutFromSetting(shortcut)
+    else:
+        # Try to get a shortcut from leoSettings.leo.
+        junk,bunchList = c.config.getShortcut(commandName)
+        for bunch in bunchList:
+            accel2 = bunch.val ; pane2 = bunch.pane
+            if accel2 and not pane2.endswith('-mode'):
+                shortcut2 = accel2
+                stroke = k.shortcutFromSetting(shortcut2)
+                break
+        else: stroke = None
+  
+    if stroke:
+        ok = k.bindKey (pane,stroke,func,commandName) # Must be a stroke.
+        k.makeMasterGuiBinding(stroke) # Must be a stroke.
+        if verbose and ok:
+             g.es_print('@command: %s = %s' % (
+                commandName,k.prettyPrintKey(stroke)),color='blue')
+    elif verbose:
+        g.es_print('@command: %s' % (commandName),color='blue')
+                
+    # Fixup any previous abbreviation to press-x-button commands.
+    if commandName.startswith('press-') and commandName.endswith('-button'):
+        d = c.config.getAbbrevDict()
+            # Keys are full command names, values are abbreviations.
+        if commandName in d.values():
+            for key in d.keys():
+                if d.get(key) == commandName:
+                    c.commandsDict [key] = c.commandsDict.get(commandName)
+                    break
+#@nonl
+#@-node:ekr.20051015110547:k.registerCommand
+#@+node:ekr.20060605130652:makeMasterGuiBinding
+def makeMasterGuiBinding (self,stroke,w=None):
+    
+    '''Make a master gui binding for stroke in pane w, or in all the standard widgets.'''
+    
+    k = self ; c = k.c ; f = c.frame
+   
+    bindStroke = k.tkbindingFromStroke(stroke)
+    # g.trace('stroke',stroke,'bindStroke',bindStroke)
+    
+    if w:
+        widgets = [w]
+    else:
+        bodyCtrl = f.body and hasattr(f.body,'bodyCtrl') and f.body.bodyCtrl or None
+        canvas   = f.tree and hasattr(f.tree,'canvas')   and f.tree.canvas   or None
+        bindingWidget = f.tree and hasattr(f.tree,'bindingWidget') and f.tree.bindingWidget or None
+        widgets=(c.miniBufferWidget,bodyCtrl,canvas,bindingWidget)
+    
+    # This is the only real key callback.
+    def masterBindKeyCallback (event,k=k,stroke=stroke):
+        # g.trace(stroke)
+        return k.masterKeyHandler(event,stroke=stroke)
+
+    for w in widgets:
+        if not w: continue
+        # Make the binding only if no binding for the stroke exists in the widget.
+        aList = k.masterGuiBindingsDict.get(bindStroke,[])
+        if w not in aList:
+            aList.append(w)
+            k.masterGuiBindingsDict [bindStroke] = aList
+            try:
+                w.bind(bindStroke,masterBindKeyCallback)
+                # g.trace(stroke,bindStroke,g.app.gui.widget_name(w))
+            except Exception:
+                if self.trace_bind_key_exceptions:
+                    g.es_exception()
+                g.es_print('exception binding %s to %s' % (
+                    bindStroke, c.widget_name(w)), color = 'blue')
+                if g.app.unitTesting: raise
+#@-node:ekr.20060605130652:makeMasterGuiBinding
+#@+node:ekr.20060131075440:k.tkbindingFromStroke
+def tkbindingFromStroke (self,stroke):
+    
+    '''Convert a stroke (key to k.bindingsDict) to an actual Tk binding.'''
+    
+    stroke = g.stripBrackets(stroke)
+    
+    for a,b in (
+        ('Alt+','Alt-'),
+        ('Ctrl+','Control-'),
+        ('Shift+','Shift-'),
+        ('Command+','Command-'),
+    ):
+        stroke = stroke.replace(a,b)
+        
+    # g.trace('<%s>' % stroke)
+    return '<%s>' % stroke
+#@-node:ekr.20060131075440:k.tkbindingFromStroke
+#@+node:ekr.20051012201831:printBindings & helper
+def printBindings (self,event):
+
+    '''Print all the bindings presently in effect.'''
+
+    k = self ; c = k.c
+    d = k.bindingsDict ; tabName = 'Bindings'
+    keys = d.keys() ; keys.sort()
+    c.frame.log.clearTab(tabName)
+    data = [] ; n1 = 4 ; n2 = 20
+    for key in keys:
+        bunchList = d.get(key,[])
+        for b in bunchList:
+            pane = g.choose(b.pane=='all','',' %s:' % (b.pane))
+            s1 = pane
+            s2 = k.prettyPrintKey(key,brief=True)
+            s3 = b.commandName
+            n1 = max(n1,len(s1))
+            n2 = max(n2,len(s2))
+            data.append((s1,s2,s3),)
+            
+    # Print keys by type:
+    sep = '-' * n1
+    for prefix in (
+        'Alt+Ctrl+Shift', 'Alt+Shift', 'Alt+Ctrl', 'Alt+Key','Alt',
+        'Ctrl+Shift', 'Ctrl', 'Shift',
+    ):
+        data2 = []
+        for item in data:
+            s1,s2,s3 = item
+            if s2.startswith(prefix):
+                data2.append(item)
+        g.es('%s %s' % (sep, prefix),tabName=tabName)
+        self.printBindingsHelper(data2,n1,n2,prefix=prefix)
+        # Remove all the items in data2 from data.
+        # This must be done outside the iterator on data.
+        for item in data2:
+            data.remove(item)
+    # Print all plain bindings.
+    g.es('%s %s' % (sep, 'Plain Keys',),tabName=tabName)
+    self.printBindingsHelper(data,n1,n2,prefix=None)
+    state = k.unboundKeyAction 
+    k.showStateAndMode()
+#@+node:ekr.20061007185125:printBindingsHelper
+def printBindingsHelper (self,data,n1,n2,prefix):
+        
+    n = prefix and len(prefix)+1 or 0 # Add 1 for the '+' after the prefix.
+    
+    data1 = [z for z in data if z and z[1] and len(z[1][n:]) == 1]
+        # The list of all items with only one character following the prefix.
+    data2 = [z for z in data if z and z[1] and len(z[1][n:]) >  1]
+        # The list of all other items.
+                
+    # This isn't perfect in variable-width fonts.
+    for data in (data1,data2):
+        data.sort(lambda x,y: cmp(x[1],y[1]))
+        for s1,s2,s3 in data:
+            g.es('%*s %*s %s' % (-n1,s1,-(min(12,n2)),s2,s3),tabName='Bindings')
+#@-node:ekr.20061007185125:printBindingsHelper
+#@-node:ekr.20051012201831:printBindings & helper
+#@+node:ekr.20060201083154:k.prettyPrintKey
+def prettyPrintKey (self,stroke,brief=False):
+    
+    k = self
+    s = stroke and g.stripBrackets(stroke.strip())
+    if not s: return ''
+
+    shift = s.find("shift") >= 0 or s.find("shft") >= 0
+    
+    # Replace all minus signs by plus signs, except a trailing minus:
+    if s.endswith('-'): s = s[:-1].replace('-','+') + '-'
+    else:               s = s.replace('-','+')
+    fields = s.split('+')
+    last = fields and fields[-1]
+    if last and len(last) == 1:
+        prev = s[:-1]
+        if last.isalpha():
+            if last.isupper():
+                if not shift:
+                    s = prev + 'Shift+' + last
+            elif last.islower():
+                if not prev and not brief:
+                    s = 'Key+' + last.upper()
+                else:
+                    s = prev + last.upper()
+    else:
+        last = k.tkBindNamesInverseDict.get(last,last)
+        if fields and fields[:-1]:
+            s = '%s+%s' % ('+'.join(fields[:-1]),last)
+        else:
+            s = last
+    return g.choose(brief,s,'<%s>' % s)
+#@-node:ekr.20060201083154:k.prettyPrintKey
+#@-node:ekr.20061008091617:Fixed bug: with Alt-n keys
 #@-node:ekr.20061010104745:Bugs
 #@+node:ekr.20061010115312:Features
 #@+node:ekr.20061009153818:Added @bool select_all_text_when_editing_headlines

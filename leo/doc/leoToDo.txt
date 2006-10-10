@@ -3,9 +3,6 @@
 #@+all
 #@+node:ekr.20060927172440:To do before 4.4.2 b3
 #@+node:ekr.20061010115312.1:Urgent: 5
-#@+node:ekr.20061009152210.1:yank/kill/undo do not work as expected
-http://sourceforge.net/forum/message.php?msg_id=3924236
-#@-node:ekr.20061009152210.1:yank/kill/undo do not work as expected
 #@+node:ekr.20060927173836.1:Disable calltips in @nocolor sections
 @nocolor
 
@@ -51,6 +48,9 @@ To do:
 - Does not restore selection after indent/undent commands.
 #@nonl
 #@-node:ekr.20060927100500.1:Fix bugs in new colorizer
+#@+node:ekr.20061009152210.1:yank/kill/undo do not work as expected
+http://sourceforge.net/forum/message.php?msg_id=3924236
+#@-node:ekr.20061009152210.1:yank/kill/undo do not work as expected
 #@-node:ekr.20061010115312.1:Urgent: 5
 #@+node:ekr.20061008160553:Asap
 #@+node:ekr.20060928194335:Fix bug: closing a window after removing a script button can crash
