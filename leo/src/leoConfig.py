@@ -1359,7 +1359,7 @@ class configClass:
                 if c:
                     self.updateSettings(c,localFlag)
                     g.app.destroyWindow(c.frame)
-                self.readRecentFilesFile(path)
+                self.readRecentFilesFile(c,path)
     
         self.inited = True
         self.setIvarsFromSettings(None)
@@ -1404,7 +1404,7 @@ class configClass:
     #@-node:ekr.20041117093246:Scanning @settings (g.app.config)
     #@+node:ekr.20050424114937.1:Reading and writing .leoRecentFiles.txt (g.app.config)
     #@+node:ekr.20050424115658:readRecentFilesFile
-    def readRecentFilesFile (self,path):
+    def readRecentFilesFile (self,c,path):
         
         # Set the kind of file for later.
         for path2,kind in (
@@ -1418,13 +1418,24 @@ class configClass:
         path,junk = g.os_path_split(path)
         fileName = g.os_path_join(path,'.leoRecentFiles.txt')
         
-        if not g.os_path_exists(fileName):
-            # g.trace('----- no file',kind,fileName)
-            return
-    
         for bunch in self.recentFilesFiles:
             if bunch.fileName == fileName:
                 # g.trace('-----already read',kind,fileName)
+                return
+            
+        if not g.os_path_exists(fileName):
+            # Create at most one file.
+            if not self.recentFilesFiles and c and c.config.getBool('write_recent_files_as_needed'):
+                try:
+                    f = file(fileName,'w')
+                    f.close()
+                    g.es_print('Created %s' % (fileName),color='red')
+                except Exception:
+                    g.es_print('Exception creating %s' % (fileName),color='red')
+                    g.es_exception()
+                    return
+            else:
+                # g.trace('----- no file',kind,fileName)
                 return
                 
         # g.trace('-----',kind,fileName)
@@ -1437,6 +1448,7 @@ class configClass:
         if lines:
             lines = [g.toUnicode(g.os_path_normpath(line),'utf-8') for line in lines]
             self.appendToRecentFiles(lines)
+    #@nonl
     #@-node:ekr.20050424115658:readRecentFilesFile
     #@+node:ekr.20050424114937.2:writeRecentFilesFile & helper
     def writeRecentFilesFile (self,c):
