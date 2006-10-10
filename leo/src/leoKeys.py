@@ -2100,6 +2100,7 @@ class keyHandlerClass:
         k = self ; c = k.c ; f = c.frame
        
         bindStroke = k.tkbindingFromStroke(stroke)
+        # g.trace('stroke',stroke,'bindStroke',bindStroke)
         
         if w:
             widgets = [w]
@@ -2111,6 +2112,7 @@ class keyHandlerClass:
         
         # This is the only real key callback.
         def masterBindKeyCallback (event,k=k,stroke=stroke):
+            # g.trace(stroke)
             return k.masterKeyHandler(event,stroke=stroke)
     
         for w in widgets:
@@ -2533,7 +2535,7 @@ class keyHandlerClass:
         # Print keys by type:
         sep = '-' * n1
         for prefix in (
-            'Alt+Ctrl+Shift', 'Alt+Shift', 'Alt+Ctrl', 'Alt',
+            'Alt+Ctrl+Shift', 'Alt+Shift', 'Alt+Ctrl', 'Alt+Key','Alt',
             'Ctrl+Shift', 'Ctrl', 'Shift',
         ):
             data2 = []
@@ -3980,6 +3982,10 @@ class keyHandlerClass:
                     shift = False
                 else:
                     last = last.lower()
+                    
+                # New in Leo 4.4.2: Alt-2 is not a key event!
+                if last in (string.digits):
+                    last = 'Key-' + last
         else:
             # Translate from a made-up (or lowercase) name to 'official' Tk binding name.
             # This is a *one-way* translation, done only here.
@@ -4022,6 +4028,7 @@ class keyHandlerClass:
         ):
             stroke = stroke.replace(a,b)
             
+        # g.trace('<%s>' % stroke)
         return '<%s>' % stroke
     #@-node:ekr.20060131075440:k.tkbindingFromStroke
     #@+node:ekr.20060201083154:k.prettyPrintKey
