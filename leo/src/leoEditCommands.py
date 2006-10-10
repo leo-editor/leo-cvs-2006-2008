@@ -1552,87 +1552,92 @@ class editCommandsClass (baseEditCommandsClass):
         
         '''Cycle the keyboard focus between Leo's outline, body and log panes.'''
     
-        c = self.c
+        c = self.c ;  w = event.widget
+       
         
         body = c.frame.body.bodyCtrl
         log  = c.frame.log.logCtrl
         tree = c.frame.tree.canvas
         panes = [body,log,tree]
     
-        for w in panes:
-            if w == event.widget:
-                i = panes.index(w)
-                if i >= len(panes) - 1:
-                    i = 0
-                else:
-                    i += 1
-                pane = panes[i] ; break
+        if w in panes:
+            i = panes.index(w) + 1
+            if i >= len(panes): i = 0
+            pane = panes[i]
         else:
-            # Assume we were somewhere in the tree.
             pane = body
-            
-        # g.trace(pane)
-        c.set_focus(pane)
+        
+        # Warning: traces mess up the focus
+        # print g.app.gui.widget_name(w),g.app.gui.widget_name(pane)
+        
+        # This works from the minibuffer *only* if there is no typing completion.
+        c.widgetWantsFocusNow(pane)
+        c.k.newMinibufferWidget = pane
+    #@nonl
     #@-node:ekr.20051022144825.1:cycleFocus
     #@+node:ekr.20060613090701:cycleAllFocus
-    firstEditorWidget = None
-    firstLogWidget = None
+    editWidgetCount = 0
+    logWidgetCount = 0
     
     def cycleAllFocus (self,event):
         
         '''Cycle the keyboard focus between Leo's outline,
         all body editors and all tabs in the log pane.'''
     
-        c = self.c
+        c = self.c ; k = c.k
         w = event and event.widget # Does **not** require a text widget.
     
         pane = None ; w_name = g.app.gui.widget_name
         trace = False
-        if trace:
-            g.trace(
-                '---- w',w_name(w),id(w),
-                'bodyCtrl',w_name(c.frame.body.bodyCtrl),id(c.frame.body.bodyCtrl))
+        if trace: print (
+            '---- w',w_name(w),id(w),
+            '#tabs',c.frame.log.numberOfVisibleTabs(),
+            'bodyCtrl',w_name(c.frame.body.bodyCtrl),id(c.frame.body.bodyCtrl))
     
         # w may not be the present body widget, so test its name, not its id.
         if w_name(w).startswith('body'):
-            if c.frame.body.numberOfEditors > 1:
-                if not self.firstEditorWidget:
-                    self.firstEditorWidget = c.frame.body.bodyCtrl
-                    c.frame.body.cycleEditorFocus(event)
+            n = c.frame.body.numberOfEditors
+            if n > 1:
+                self.editWidgetCount += 1
+                if self.editWidgetCount == 1:
+                    pane = c.frame.body.bodyCtrl
+                elif self.editWidgetCount > n:
+                    self.editWidgetCount = 0 ; self.logWidgetCount = 1
+                    c.frame.log.selectTab('Log')
+                    pane = c.frame.log.logCtrl
                 else:
-                    c.frame.body.cycleEditorFocus(event)
-                    if c.frame.body.bodyCtrl == self.firstEditorWidget:
-                        self.firstEditorWidget = None
-                        c.frame.log.selectTab('Log')
-                        pane = c.frame.log.logCtrl
+                    c.frame.body.cycleEditorFocus(event) ; pane = None
             else:
-                self.firstEditorWidget = None
+                self.editWidgetCount = 0 ; self.logWidgetCount = 1
                 c.frame.log.selectTab('Log')
                 pane = c.frame.log.logCtrl
         elif w_name(w).startswith('log'):
-            if c.frame.log.numberOfVisibleTabs() > 1:
-                if not self.firstLogWidget:
-                    self.firstLogWidget = c.frame.log.logCtrl
-                    c.frame.log.cycleTabFocus()
+            n = c.frame.log.numberOfVisibleTabs()
+            if n > 1:
+                self.logWidgetCount += 1
+                if self.logWidgetCount == 1:
+                    c.frame.log.selectTab('Log')
+                    pane = c.frame.log.logCtrl
+                elif self.logWidgetCount > n:
+                    self.logWidgetCount = 0
+                    pane = c.frame.tree.canvas
                 else:
                     c.frame.log.cycleTabFocus()
-                    if c.frame.log.logCtrl == self.firstLogWidget:
-                        self.firstLogWidget = None
-                        pane = c.frame.tree.canvas
+                    pane = c.frame.log.logCtrl
             else:
-                self.firstLogWidget = None
+                self.logWidgetCount = 0
                 pane = c.frame.tree.canvas
         else:
             pane = c.frame.body.bodyCtrl
-            self.firstEditorWidget = self.firstLogWidget = None
+            editWidgetCount = logWidgetCount = 0
             
         if trace:
-            first = self.firstEditorWidget or self.firstLogWidget
-            if trace: g.trace(
-                'first: %10s' % (w_name(first)),first and id(first),
-                'old: %10s' % (w_name(w)),id(w),
-                'new: %10s' % (w_name(pane)),pane and id(pane))
-        if pane: c.set_focus(pane)
+            print 'old: %10s new: %10s' % (
+                w_name(w),id(w),w_name(pane),pane and id(pane))
+        if pane:
+            k.newMinibufferWidget = pane
+            c.widgetWantsFocusNow(pane)
+    #@nonl
     #@-node:ekr.20060613090701:cycleAllFocus
     #@+node:ekr.20051022144825:focusTo...
     def focusToBody (self,event):
@@ -2411,7 +2416,7 @@ class editCommandsClass (baseEditCommandsClass):
                 i = g.app.gui.toPythonIndex(s,w,i)
                 j = s.find('\n',i) # Limit to this line.
                 s = s[:j]
-                word_chars = string.letters + string.digits + '_'
+                word_chars = g.toUnicode(string.letters + string.digits + '_',encoding='ascii')
                 while i < len(s):
                     if i == -1: break
                     ok = g.match_word(s,i,word) and (i == 0 or s[i-1] not in word_chars)
@@ -8902,9 +8907,9 @@ class spellTab(leoFind.leoFind):
     
         # Allow quotes and underscores in the middle of words, but not at the beginning or end.
         # This breaks words at non-ascii 'letters' such as é.  I don't know what the solution is.
-        word_start = string.letters
-        word_end   = string.letters + string.digits
-        word_chars = string.letters + string.digits + "`" + "'" + "_"
+        word_start = toUnicode(string.letters,encoding='ascii')
+        word_end   = toUnicode(string.letters + string.digits,encoding='ascii')
+        word_chars = toUnicode(string.letters + string.digits + "`" + "'" + "_",encoding='ascii')
         while 1:
             line = t.get('insert wordstart','insert lineend')
             # g.trace('insert',t.index('insert'),'insert wordstart',t.index('insert wordstart'))
