@@ -39,13 +39,738 @@ if 0: # Set to 1 for lint-like testing.
         print ; print 'Can not import pychecker' ; print
 #@-node:ekr.20031218072017.2606:<< Import pychecker >>
 #@+node:ekr.20060904165452:4.4.2 projects
-#@+node:ekr.20061009154800:Settings
-#@+node:ekr.20061009153504:Made unlimited undo the default
+#@+node:ekr.20061010104745:Bugs
+#@+node:ekr.20061010105844:Fixed crash when searching for headllines containing unicode chars
+leoID = ekr (in c:\Documents and Settings\Ed)
+reading settings in C:\prog\tigris-cvs\leo\config\leoSettings.leo
+reading settings in C:\prog\tigris-cvs\leo\config\myLeoSettings.leo
+reading settings in C:\prog\tigris-cvs\leo\test\unitTest.leo
+FAILED (failures=1)
+UnicodeDecodeError Exception in Tk callback
+  Function: <function masterBindKeyCallback at 0x018BD970> (type: <type 'function'>)
+  Args: (<Tkinter.Event instance at 0x02B0B5F8>,)
+  Event type: KeyPress (type num: 2)
+  
+Traceback (innermost last):
+  File "C:\prog\tigris-cvs\leo\extensions\Pmw\Pmw_1_2\lib\PmwBase.py", line 1752, in __call__
+    return apply(self.func, args)
+  File "c:\prog\tigris-cvs\leo\src\leoKeys.py", line 2118, in masterBindKeyCallback
+    return k.masterKeyHandler(event,stroke=stroke)
+  File "c:\prog\tigris-cvs\leo\src\leoKeys.py", line 3133, in masterKeyHandler
+    return k.getArg(event,stroke=stroke)
+  File "c:\prog\tigris-cvs\leo\src\leoKeys.py", line 2755, in getArg
+    if handler: handler(event)
+  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 7191, in searchWithPresentOptions
+    self.generalSearchHelper(k.arg)
+  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 7066, in generalSearchHelper
+    self.finder.findNextCommand()
+  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 7676, in findNextCommand
+    self.findNext()
+  File "c:\prog\tigris-cvs\leo\src\leoFind.py", line 684, in findNext
+    pos, newpos = self.findNextMatch()
+  File "c:\prog\tigris-cvs\leo\src\leoFind.py", line 711, in findNextMatch
+    pos, newpos = self.search()
+  File "c:\prog\tigris-cvs\leo\src\leoFind.py", line 746, in search
+    regexp=self.pattern_match,word=self.whole_word)
+  File "c:\prog\tigris-cvs\leo\src\leoFind.py", line 780, in searchHelper
+    pos,newpos = self.plainHelper(s,i,j,pattern,nocase,word)
+  File "c:\prog\tigris-cvs\leo\src\leoFind.py", line 856, in plainHelper
+    elif self.matchWord(s,k,pattern):
+  File "c:\prog\tigris-cvs\leo\src\leoFind.py", line 871, in matchWord
+    s[i-1] not in self.word_chars or
+UnicodeDecodeError: 'ascii' codec can't decode byte 0x83 in position 52: ordinal not in range(128)
+
+================================================
+  Event contents:
+    char:
+    delta: 13
+    height: ??
+    keycode: 13
+    keysym: Return
+    keysym_num: 65293
+    num: ??
+    serial: 49425
+    state: 0
+    time: 17007655
+    type: 2
+    widget: .21619056.21619656.24867464.minibuffer
+    width: ??
+    x: 526
+    x_root: 782
+    y: -648
+    y_root: 240
+
+#@+node:ekr.20031218072017.3054:<< init the gui-independent ivars >>
+self.wrapPosition = None
+self.onlyPosition = None
+self.find_text = ""
+self.change_text = ""
+self.unstick = False
+
+@
+New in 4.3:
+- These are the names of leoFind ivars. (no more _flag hack).
+- There are no corresponding commander ivars to keep in synch (hurray!)
+- These ivars are inited (in the subclass by init) when this class is created.
+- These ivars are updated (in the subclass by update_ivars) just before doing any find.
+@c
+
+<< do dummy initialization to keep Pychecker happy >>
+
+self.intKeys = [
+    "batch","ignore_case", "node_only",
+    "pattern_match", "search_headline", "search_body",
+    "suboutline_only", "mark_changes", "mark_finds", "reverse",
+    "script_search","script_change","selection_only",
+    "wrap", "whole_word",
+]
+
+self.newStringKeys = ["radio-find-type", "radio-search-scope"]
+
+# To do: this should depend on language.
+self.word_chars = g.toUnicode(string.letters + string.digits + '_',encoding='ascii')
+
+# Ivars containing internal state...
+self.c = None # The commander for this search.
+self.clone_find_all = False
+self.p = None # The position being searched.  Never saved between searches!
+self.in_headline = False # True: searching headline text.
+self.s_ctrl = None # The search text for this search.
+self.wrapping = False # True: wrapping is enabled.
+    # This is _not_ the same as self.wrap for batch searches.
+
+@ Initializing a wrapped search is tricky.  The search() method will fail if p==wrapPosition and pos >= wrapPos.  selectNextPosition() will fail if p == wrapPosition.  We set wrapPos on entry, before the first search.  We set wrapPosition in selectNextPosition after the first search fails.  We also set wrapPosition on exit if the first search suceeds.
+@c
+
+self.wrapPosition = None # The start of wrapped searches: persists between calls.
+self.onlyPosition = None # The starting node for suboutline-only searches.
+self.wrapPos = None # The starting position of the wrapped search: persists between calls.
+self.errors = 0
+self.selStart = self.selEnd = None # For selection-only searches.
+#@+node:ekr.20050123164539:<< do dummy initialization to keep Pychecker happy >>
+if 1:
+    self.batch = None
+    self.clone_find_all = None
+    self.ignore_case = None
+    self.node_only = None
+    self.pattern_match = None
+    self.search_headline = None
+    self.search_body = None
+    self.suboutline_only = None
+    self.mark_changes = None
+    self.mark_finds = None
+    self.reverse = None
+    self.script_search = None
+    self.script_change = None
+    self.selection_only = None
+    self.wrap = None
+    self.whole_word = None
+#@-node:ekr.20050123164539:<< do dummy initialization to keep Pychecker happy >>
+#@-node:ekr.20031218072017.3054:<< init the gui-independent ivars >>
+#@+node:ekr.20060417194232.2:findWord
+def findWord (self,event):
+    
+    '''Put the cursor at the next word (on a line) that starts with a character.'''
+
+    k = self.k ; tag = 'find-word-on-line' ; state = k.getState(tag)
+    
+    if state == 0:
+        w = self.editWidget(event) # Sets self.w
+        if not w: return
+        k.setLabelBlue('Find word: ')
+        k.getArg(event,tag,1,self.findWord)
+    else:        
+        word = k.arg ; w = self.w ; c = k.c
+        if word:
+            i = w.index('insert')
+            s = g.app.gui.getAllText(w)
+            i = g.app.gui.toPythonIndex(s,w,i)
+            j = s.find('\n',i) # Limit to this line.
+            s = s[:j]
+            word_chars = g.toUnicode(string.letters + string.digits + '_',encoding='ascii')
+            while i < len(s):
+                if i == -1: break
+                ok = g.match_word(s,i,word) and (i == 0 or s[i-1] not in word_chars)
+                # g.trace(ok,repr(word),i,repr(s))
+                if ok:
+                    i1 = g.app.gui.toGuiIndex(s,w,i)
+                    i2 = g.app.gui.toGuiIndex(s,w,i+len(word))
+                    g.app.gui.setSelectionRange(w,i1,i2)
+                    break
+                else:
+                    i += 1
+        k.resetLabel()
+        k.clearState()
+
+#@-node:ekr.20060417194232.2:findWord
+#@+node:ekr.20051025071455.47:findNextWord
+# Unicode characters may cause index problems.
+
+def findNextWord(self,p):
+
+    """Scan for the next word, leaving the result in the work widget"""
+
+    t = self.workCtrl
+
+    # Allow quotes and underscores in the middle of words, but not at the beginning or end.
+    # This breaks words at non-ascii 'letters' such as é.  I don't know what the solution is.
+    word_start = toUnicode(string.letters,encoding='ascii')
+    word_end   = toUnicode(string.letters + string.digits,encoding='ascii')
+    word_chars = toUnicode(string.letters + string.digits + "`" + "'" + "_",encoding='ascii')
+    while 1:
+        line = t.get('insert wordstart','insert lineend')
+        # g.trace('insert',t.index('insert'),'insert wordstart',t.index('insert wordstart'))
+        # g.trace(repr(line))
+        # Start the word at the first letter.
+        i = 0
+        while i < len(line) and line[i] not in word_start:
+            i += 1
+        if i < len(line):
+            # A non-empty word has been found.
+            line = t.get('insert wordstart','insert lineend')
+            j = i
+            while j < len(line) and line[j] in word_chars:
+                j += 1
+            word = line[i:j]
+            while word and word[-1] not in word_end:
+                word = word[:-1]
+            # This trace is important: it verifies that all words have actually been checked.
+            # g.trace(repr(word))
+            x1 = t.index('insert + %dc' % (i))
+            x2 = t.index('insert + %dc' % (i+len(word)))
+            g.app.gui.setTextSelection(t,x1,x2)
+            return p, word
+        else:
+            # End of the line. Bug fix: 9/8/05.
+            t.mark_set('insert','insert lineend + 1c')
+            if t.compare("insert",">=", "end - 1c"):
+                p.moveToThreadNext()
+                if not p: return None,None
+                t.delete("1.0", "end")
+                t.insert("end", p.bodyString())
+                t.mark_set("insert", "1.0")
+                
+    __pychecker__ = '--no-implicitreturns' # This is not really an implicit return.
+#@-node:ekr.20051025071455.47:findNextWord
+#@-node:ekr.20061010105844:Fixed crash when searching for headllines containing unicode chars
+#@+node:ekr.20061010105932:Fixed failed unit test
 @nocolor
 
-As always, you can set max_undo_stack_size in myLeoSettings.leo.
+FAIL: @test k.inverseCommandsDict is inverse of c.commandsDict
+AssertionError: cl not in inverseCommandsDict.values()
+
+I just hacked the unit test not to complain about abbreviations.
+Another solution would be to allow the values of k.inverseCommandsDict to be lists.
 #@nonl
-#@-node:ekr.20061009153504:Made unlimited undo the default
+#@+node:ekr.20060609150503:k.initAbbrev
+def initAbbrev (self):
+    
+    k = self ; c = k.c ; d = c.config.getAbbrevDict()
+    if d:
+        for key in d.keys():
+            commandName = d.get(key)
+            if commandName.startswith('press-') and commandName.endswith('-button'):
+                pass # Must be done later in k.registerCommand.
+            else:
+                self.initOneAbbrev(commandName,key)
+
+def initOneAbbrev (self,commandName,key):
+    k = self ; c = k.c
+    if c.commandsDict.get(key):
+        g.trace('ignoring duplicate abbrev: %s',key)
+    else:
+        func = c.commandsDict.get(commandName)
+        if func:
+            # g.trace(key,commandName,func.__name__)
+            c.commandsDict [key] = func
+            # k.inverseCommandsDict[func.__name__] = key
+        else:
+            g.es_print('bad abbrev: %s: unknown command name: %s' %
+                (key,commandName),color='blue')
+#@-node:ekr.20060609150503:k.initAbbrev
+#@-node:ekr.20061010105932:Fixed failed unit test
+#@+node:ekr.20061007094817:Fixed bugs in cycle-all-focus command
+@
+
+The logic in cycleAllFocus is now much cleaner.
+The cycle focus commands work in the minibuffer *only* if not tab-completion is done.
+I think this is the old, horrible problems with Pmw focus: it's a very small nit.
+#@nonl
+#@+node:ekr.20051022144825.1:cycleFocus
+def cycleFocus (self,event):
+    
+    '''Cycle the keyboard focus between Leo's outline, body and log panes.'''
+
+    c = self.c ;  w = event.widget
+   
+    
+    body = c.frame.body.bodyCtrl
+    log  = c.frame.log.logCtrl
+    tree = c.frame.tree.canvas
+    panes = [body,log,tree]
+
+    if w in panes:
+        i = panes.index(w) + 1
+        if i >= len(panes): i = 0
+        pane = panes[i]
+    else:
+        pane = body
+    
+    # Warning: traces mess up the focus
+    # print g.app.gui.widget_name(w),g.app.gui.widget_name(pane)
+    
+    # This works from the minibuffer *only* if there is no typing completion.
+    c.widgetWantsFocusNow(pane)
+    c.k.newMinibufferWidget = pane
+#@nonl
+#@-node:ekr.20051022144825.1:cycleFocus
+#@+node:ekr.20060613090701:cycleAllFocus
+editWidgetCount = 0
+logWidgetCount = 0
+
+def cycleAllFocus (self,event):
+    
+    '''Cycle the keyboard focus between Leo's outline,
+    all body editors and all tabs in the log pane.'''
+
+    c = self.c ; k = c.k
+    w = event and event.widget # Does **not** require a text widget.
+
+    pane = None ; w_name = g.app.gui.widget_name
+    trace = False
+    if trace: print (
+        '---- w',w_name(w),id(w),
+        '#tabs',c.frame.log.numberOfVisibleTabs(),
+        'bodyCtrl',w_name(c.frame.body.bodyCtrl),id(c.frame.body.bodyCtrl))
+
+    # w may not be the present body widget, so test its name, not its id.
+    if w_name(w).startswith('body'):
+        n = c.frame.body.numberOfEditors
+        if n > 1:
+            self.editWidgetCount += 1
+            if self.editWidgetCount == 1:
+                pane = c.frame.body.bodyCtrl
+            elif self.editWidgetCount > n:
+                self.editWidgetCount = 0 ; self.logWidgetCount = 1
+                c.frame.log.selectTab('Log')
+                pane = c.frame.log.logCtrl
+            else:
+                c.frame.body.cycleEditorFocus(event) ; pane = None
+        else:
+            self.editWidgetCount = 0 ; self.logWidgetCount = 1
+            c.frame.log.selectTab('Log')
+            pane = c.frame.log.logCtrl
+    elif w_name(w).startswith('log'):
+        n = c.frame.log.numberOfVisibleTabs()
+        if n > 1:
+            self.logWidgetCount += 1
+            if self.logWidgetCount == 1:
+                c.frame.log.selectTab('Log')
+                pane = c.frame.log.logCtrl
+            elif self.logWidgetCount > n:
+                self.logWidgetCount = 0
+                pane = c.frame.tree.canvas
+            else:
+                c.frame.log.cycleTabFocus()
+                pane = c.frame.log.logCtrl
+        else:
+            self.logWidgetCount = 0
+            pane = c.frame.tree.canvas
+    else:
+        pane = c.frame.body.bodyCtrl
+        editWidgetCount = logWidgetCount = 0
+        
+    if trace:
+        print 'old: %10s new: %10s' % (
+            w_name(w),id(w),w_name(pane),pane and id(pane))
+    if pane:
+        k.newMinibufferWidget = pane
+        c.widgetWantsFocusNow(pane)
+#@nonl
+#@-node:ekr.20060613090701:cycleAllFocus
+#@+node:ekr.20051016101724.1:selectTab
+def selectTab (self,tabName,wrap='none'):
+
+    '''Create the tab if necessary and make it active.'''
+
+    c = self.c ; tabFrame = self.frameDict.get(tabName)
+
+    if tabFrame:
+        # Switch to a new colorTags list.
+        newColorTags = self.colorTagsDict.get(tabName)
+        self.colorTagsDict [self.tabName] = self.colorTags [:]
+        self.colorTags = newColorTags
+    else:
+        self.createTab(tabName,wrap=wrap)
+        
+    self.nb.selectpage(tabName)
+    # Update the status vars.
+    self.tabName = tabName
+    self.logCtrl = self.textDict.get(tabName)
+    self.tabFrame = self.frameDict.get(tabName)
+
+    if 0: # Absolutely do not do this here!  It is a cause of the 'sticky focus' problem.
+        c.widgetWantsFocusNow(self.logCtrl)
+    return tabFrame
+#@-node:ekr.20051016101724.1:selectTab
+#@+node:ekr.20060528170438:cycleEditorFocus
+def cycleEditorFocus (self,event=None):
+    
+    '''Cycle keyboard focus between the body text editors.'''
+    
+    c = self.c ; d = self.editorWidgets ; w = self.bodyCtrl
+    values = d.values()
+    if len(values) > 1:
+        i = values.index(w) + 1
+        if i == len(values): i = 0
+        w2 = d.values()[i]
+        assert(w!=w2)
+        self.onFocusIn(w2,setFocus=True)
+        self.bodyCtrl = self.frame.bodyCtrl = w2
+        # print '***',g.app.gui.widget_name(w2),id(w2)
+
+    return 'break'
+#@-node:ekr.20060528170438:cycleEditorFocus
+#@+node:ekr.20060613131217:cycleTabFocus
+def cycleTabFocus (self,event=None,stop_w = None):
+
+    '''Cycle keyboard focus between the tabs in the log pane.'''
+
+    c = self.c ; d = self.frameDict # Keys are page names. Values are Tk.Frames.
+    w = d.get(self.tabName)
+    # g.trace(self.tabName,w)
+    values = d.values()
+    if self.numberOfVisibleTabs() > 1:
+        i = i2 = values.index(w) + 1
+        if i == len(values): i = 0
+        tabName = d.keys()[i]
+        self.selectTab(tabName)
+        return 
+#@nonl
+#@-node:ekr.20060613131217:cycleTabFocus
+#@+node:ekr.20050920085536.45:callAltXFunction
+def callAltXFunction (self,event):
+    
+    k = self ; c = k.c ; s = k.getLabel()
+    k.mb_tabList = []
+    commandName = s[len(k.mb_prefix):].strip()
+    func = c.commandsDict.get(commandName)
+    k.newMinibufferWidget = None
+    
+    # print 'callAltXFunc',func
+
+    if func:
+        # These must be done *after* getting the command.
+        k.clearState()
+        k.resetLabel()
+        if commandName != 'repeat-complex-command':
+            k.mb_history.insert(0,commandName)
+        c.widgetWantsFocusNow(event.widget) # Important, so cut-text works, e.g.
+        func(event)
+        k.endCommand(event,commandName)
+    else:
+        if 1: # Useful.
+            k.doTabCompletion(c.commandsDict.keys())
+        else: # Annoying.
+            k.keyboardQuit(event)
+            k.setLabel('Command does not exist: %s' % commandName)
+            c.bodyWantsFocus()
+#@-node:ekr.20050920085536.45:callAltXFunction
+#@+node:ekr.20051001050607:endCommand
+def endCommand (self,event,commandName):
+
+    '''Make sure Leo updates the widget following a command.
+    
+    Never changes the minibuffer label: individual commands must do that.
+    '''
+
+    k = self ; c = k.c
+    # The command may have closed the window.
+    if g.app.quitting or not c.exists: return
+
+    # Set the best possible undoType: prefer explicit commandName to k.commandName.
+    commandName = commandName or k.commandName or ''
+    k.commandName = k.commandName or commandName or ''
+    if commandName:
+        bodyCtrl = c.frame.body.bodyCtrl
+        if not k.inState():
+            __pychecker__ = '--no-classattr --no-objattrs'
+                # initAllEditCommanders *does* exist.
+            k.commandName = None
+            leoEditCommands.initAllEditCommanders(c)
+            try:
+                bodyCtrl.tag_delete('color')
+                bodyCtrl.tag_delete('color1')
+            except Exception:
+                pass
+        if 0: # Do *not* call this by default.  It interferes with undo.
+            c.frame.body.onBodyChanged(undoType='Typing')
+        if k.newMinibufferWidget:
+            c.widgetWantsFocusNow(k.newMinibufferWidget)
+            # print 'endCommand', g.app.gui.widget_name(k.newMinibufferWidget),g.callers()
+            k.newMinibufferWidget = None
+#@-node:ekr.20051001050607:endCommand
+#@+node:ekr.20060207142332:c.traceFocus
+trace_focus_count = 0
+
+def traceFocus (self,w):
+    
+    c = self
+
+    if not g.app.unitTesting and c.config.getBool('trace_focus'):
+        c.trace_focus_count += 1
+        print '%4d' % (c.trace_focus_count),c.widget_name(w),g.callers(8)
+#@-node:ekr.20060207142332:c.traceFocus
+#@+node:ekr.20060207140352:c.masterFocusHandler
+def masterFocusHandler (self):
+    
+    c = self ; 
+    trace = not g.app.unitTesting and c.config.getBool('trace_masterFocusHandler')
+    
+    # Give priority to later requests, but default to previously set widget.
+    w = c.requestedFocusWidget or c.hasFocusWidget
+    
+    if trace: print \
+        'requested',c.widget_name(c.requestedFocusWidget),\
+        'present',c.widget_name(c.hasFocusWidget)
+    
+    if c.hasFocusWidget and (
+        not c.requestedFocusWidget or c.requestedFocusWidget == c.hasFocusWidget):
+        if trace: print 'no change.',c.widget_name(w)
+        c.requestedFocusWidget = None
+    elif w:
+        # Ignore whatever g.app.gui.get_focus might say.
+        ok = g.app.gui.set_focus(c,w)
+        if ok: c.hasFocusWidget = w
+        c.requestedFocusWidget = None
+    else:
+        # This is not an error: it can arise because of a call to k.invalidateFocus.
+        if trace: print '*'*20,'oops: moving to body pane.'
+        c.bodyWantsFocusNow()
+
+restoreRequestedFocus = masterFocusHandler
+#@-node:ekr.20060207140352:c.masterFocusHandler
+#@+node:ekr.20060127183752:masterKeyHandler
+master_key_count = 0
+
+def masterKeyHandler (self,event,stroke=None):
+    
+    '''This is the handler for almost all key bindings.'''
+
+    << define vars >>
+
+    if keysym in special_keys:
+        return None
+
+    << do key traces >>
+
+    # Handle keyboard-quit first.
+    if k.abortAllModesKey and stroke == k.abortAllModesKey:
+        return k.masterCommand(event,k.keyboardQuit,stroke,'keyboard-quit')
+
+    if k.inState():
+        # This will return unless k.autoCompleterStateHandler
+        # (called from k.callStateFunction) returns 'do-standard-keys'
+        << handle mode bindings >>
+        
+    << handle per-pane bindings >>
+    << handle keys without bindings >>
+#@+node:ekr.20060321105403:<< define vars >>
+k = self ; c = k.c
+w = event and event.widget
+w_name = c.widget_name(w)
+keysym = event.keysym or ''
+state = k.state.kind
+special_keys = (
+    'Caps_Lock', 'Num_Lock', 'Control_L', 'Alt_L',
+    'Shift_L', 'Control_R', 'Alt_R','Shift_R','Win_L','Win_R')
+    
+trace = c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
+#@-node:ekr.20060321105403:<< define vars >>
+#@+node:ekr.20060321105403.1:<< do key traces >>
+self.master_key_count += 1
+
+if trace:
+    if (self.master_key_count % 100) == 0:
+        g.printGcSummary(trace=True)
+    g.trace(
+        # 'keysym',repr(event.keysym or ''),
+        'stroke',repr(stroke),
+        'state',state,
+        'unboundKeyAction',k.unboundKeyAction)
+#@-node:ekr.20060321105403.1:<< do key traces >>
+#@+node:ekr.20060321105403.2:<< handle mode bindings >>
+# First, honor minibuffer bindings for all except user modes.
+if state in ('getArg','getFileName','full-command','auto-complete'):
+    if k.handleMiniBindings(event,state,stroke):
+        return 'break'
+
+# Second, honor general modes.
+if state == 'getArg':
+    return k.getArg(event,stroke=stroke)
+elif state == 'getFileName':
+    return k.getFileName(event)
+elif state in ('full-command','auto-complete'):
+    # Do the default state action.
+    if trace: g.trace('calling state function')
+    val = k.callStateFunction(event) # Calls end-command.
+    if val != 'do-standard-keys': return 'break'
+        
+# Third, pass keys to user modes.
+else:
+    d =  k.masterBindingsDict.get(state)
+    if d:
+        b = d.get(stroke)
+        if b:
+            if trace: g.trace('calling generalModeHandler')
+            k.generalModeHandler (event,
+                commandName=b.commandName,func=b.func,
+                modeName=state,nextMode=b.nextMode)
+            return 'break'
+        else:
+            ok = k.handleMiniBindings(event,state,stroke)
+            if ok:
+                return 'break'
+            elif stroke and len(stroke) == 1:
+                # if trace: g.trace('calling modeHelp')
+                k.modeHelp(event)
+                return 'break'
+            else:
+                # End the mode and fall through to the pane bindings!
+                k.endMode(event)
+    else:
+        # New in 4.4b4.
+        handler = k.getStateHandler()
+        if handler:
+            handler(event)
+        else:
+            g.trace('No state handler for %s' % state)
+        return 'break'
+#@-node:ekr.20060321105403.2:<< handle mode bindings >>
+#@+node:ekr.20060321105403.3:<< handle per-pane bindings >>
+key_states = ('command','insert','overwrite')
+isPlain =  k.isPlainKey(stroke)
+
+for key,name in (
+    # Order here is similar to bindtags order.
+    ('command',None),
+    ('insert',None),
+    ('overwrite',None),
+    ('button',None),
+    ('body','body'),
+    ('text','head'), # Important: text bindings in head before tree bindings.
+    ('tree','head'),
+    ('tree','canvas'),
+    ('log', 'log'),
+    ('text','log'),
+    ('text',None), ('all',None),
+):
+    if (
+        key in key_states and isPlain and k.unboundKeyAction == key or
+        name and w_name.startswith(name) or
+        key in ('text','all') and g.app.gui.isTextWidget(w) or
+        key in ('button','all')
+    ):
+        d = k.masterBindingsDict.get(key)
+        # g.trace(g.app.gui.isTextWidget(w),w_name,key,name,d and len(d.keys()))
+        if d:
+            b = d.get(stroke)
+            if b:
+                if trace: g.trace('%s found %s = %s' % (key,b.stroke,b.commandName))
+                return k.masterCommand(event,b.func,b.stroke,b.commandName)
+#@-node:ekr.20060321105403.3:<< handle per-pane bindings >>
+#@+node:ekr.20060608070318:<< handle keys without bindings >>
+if stroke and k.isPlainKey(stroke) and k.unboundKeyAction in ('insert','overwrite'):
+    # insert/overwrite normal character.  <Return> is *not* a normal character.
+    if trace: g.trace('plain key in insert mode',stroke)
+    return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
+
+elif k.ignore_unbound_non_ascii_keys and len(event.char) > 1:
+    # (stroke.find('Alt+') > -1 or stroke.find('Ctrl+') > -1)):
+    if trace: g.trace('ignoring unbound non-ascii key')
+    return 'break'
+    
+elif event and event.keysym.find('Escape') != -1:
+    # Never insert escape characters.
+    return 'break'
+
+else:
+    # g.trace(stroke,event.char,event.keysym)
+    if trace: g.trace(repr(stroke),'no func')
+    return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
+#@-node:ekr.20060608070318:<< handle keys without bindings >>
+#@+node:ekr.20060309065445:handleMiniBindings
+def handleMiniBindings (self,event,state,stroke):
+    
+    k = self ; c = k.c
+    trace = c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
+    
+    if not state.startswith('auto-'):
+        d = k.masterBindingsDict.get('mini')
+        if d:
+            b = d.get(stroke)
+            if b:
+                if trace: g.trace(repr(stroke),'mini binding',b.commandName)
+                # Pass this on for macro recording.
+                k.masterCommand(event,b.func,stroke,b.commandName)
+                if not k.silentMode:
+                    c.minibufferWantsFocus()
+                return True
+
+    return False
+#@-node:ekr.20060309065445:handleMiniBindings
+#@-node:ekr.20060127183752:masterKeyHandler
+#@+node:ekr.20060205103842:c.get/request/set_focus
+def get_focus (self):
+    
+    c = self
+    return g.app.gui.get_focus(c)
+    
+def get_requested_focus (self):
+    
+    c = self
+    return c.requestedFocusWidget or c.hasFocusWidget or g.app.gui.get_focus(c)
+    
+def request_focus(self,w):
+
+    c = self
+    if w: c.requestedFocusWidget = w
+    c.traceFocus(w)
+    
+def set_focus (self,w,force=False):
+    
+    c = self
+    
+    if force: # New in Leo 4.4.2: safer.
+        c.hasFocusWidget = c.requestedFocusWidget = w
+        g.app.gui.set_focus(c,w)
+        c.traceFocus(w)
+    else: # An optimization.
+        c.requestedFocusWidget = w
+        c.masterFocusHandler()
+#@-node:ekr.20060205103842:c.get/request/set_focus
+#@-node:ekr.20061007094817:Fixed bugs in cycle-all-focus command
+#@-node:ekr.20061010104745:Bugs
+#@+node:ekr.20061010115312:Features
+#@+node:ekr.20061009153818:Added @bool select_all_text_when_editing_headlines
+A highly useful option
+#@+node:ekr.20040803072955.135:setEditLabelState
+def setEditLabelState (self,p): # selected, editing
+
+    c = self.c ; w = c.edit_widget(p)
+
+    if p and w:
+        c.widgetWantsFocusNow(w)
+        self.setEditHeadlineColors(p)
+        w.tag_remove('sel','1.0','end')
+        start = g.choose(c.config.getBool('select_all_text_when_editing_headlines'),'1.0','end')
+        w.tag_add('sel',start,'end')
+    else:
+        g.trace('no edit_widget')
+        
+setNormalLabelState = setEditLabelState # For compatibility.
+#@-node:ekr.20040803072955.135:setEditLabelState
+#@-node:ekr.20061009153818:Added @bool select_all_text_when_editing_headlines
 #@+node:ekr.20061009152554:Removed .leoRecentFiles.txt from distribution and cvs
 @nocolor
 
@@ -55,7 +780,79 @@ People who don't want Leo to update .leoRecentFiles.txt can set this to False.
 
 - Remove .leoRecentFiles from cvs
 - Remove .leoRecentFiles from distribution list.
+
+@color
 #@nonl
+#@+node:ekr.20041117062717.2:ctor (configClass)
+def __init__ (self):
+    
+    self.configsExist = False # True when we successfully open a setting file.
+    self.defaultFont = None # Set in gui.getDefaultConfigFont.
+    self.defaultFontFamily = None # Set in gui.getDefaultConfigFont.
+    self.globalConfigFile = None # Set in initSettingsFiles
+    self.homeFile = None # Set in initSettingsFiles
+    self.inited = False
+    self.modeCommandsDict = {} # For use by @mode logic. Keys are command names, values are g.Bunches.
+    self.myGlobalConfigFile = None
+    self.myHomeConfigFile = None
+    self.recentFilesFiles = [] # List of g.Bunches describing .leoRecentFiles.txt files.
+    self.write_recent_files_as_needed = False # Will be set later.
+    
+    # Inited later...
+    self.panes = None
+    self.sc = None
+    self.tree = None
+
+    self.initDicts()
+    self.initIvarsFromSettings()
+    self.initSettingsFiles()
+    self.initRecentFiles()
+#@-node:ekr.20041117062717.2:ctor (configClass)
+#@+node:ekr.20041120064303:g.app.config.readSettingsFiles
+def readSettingsFiles (self,fileName,verbose=True):
+    
+    seen = []
+
+    # This can't be done in initSettingsFiles because the local directory does not exits.
+    localDirectory = g.os_path_dirname(fileName)
+    
+    #  Set the local leoSettings.leo file.
+    localConfigFile = g.os_path_join(localDirectory,'leoSettings.leo')
+    if not g.os_path_exists(localConfigFile): localConfigFile = None
+    
+    # Set the local myLeoSetting.leo file.
+    myLocalConfigFile = g.os_path_join(localDirectory,'myLeoSettings.leo')
+    if not g.os_path_exists(myLocalConfigFile): myLocalConfigFile = None
+    
+    self.write_recent_files_as_needed = False # Will be set later.
+    
+    # Init settings from leoSettings.leo files, including myLeoSettings.leo.
+    for path,localFlag in (
+        (self.globalConfigFile,False),
+        (self.homeFile,False),
+        (localConfigFile,False),
+        (self.myGlobalConfigFile,False),
+        (self.myHomeConfigFile,False),
+        (myLocalConfigFile,False),
+        (fileName,True),
+    ):
+        if path and path.lower() not in seen:
+            seen.append(path.lower())
+            if verbose:
+                g.es_print('reading settings in %s' % path)
+            c = self.openSettingsFile(path)
+            if c:
+                self.updateSettings(c,localFlag)
+                g.app.destroyWindow(c.frame)
+            if c and localFlag:
+                self.write_recent_files_as_needed = c.config.getBool('write_recent_files_as_needed')
+            self.readRecentFilesFile(c,path)
+    if self.write_recent_files_as_needed:
+        self.createRecentFiles(fileName)
+
+    self.inited = True
+    self.setIvarsFromSettings(None)
+#@-node:ekr.20041120064303:g.app.config.readSettingsFiles
 #@+node:ekr.20050424115658:readRecentFilesFile
 def readRecentFilesFile (self,c,path):
     
@@ -67,30 +864,18 @@ def readRecentFilesFile (self,c,path):
         if path2 and path2 == path: break
     else:
         kind = 'local'
-
+    
     path,junk = g.os_path_split(path)
     fileName = g.os_path_join(path,'.leoRecentFiles.txt')
-    
+    if not g.os_path_exists(fileName):
+        # g.trace('does not exist',fileName)
+        return
+        
     for bunch in self.recentFilesFiles:
         if bunch.fileName == fileName:
             # g.trace('-----already read',kind,fileName)
             return
-        
-    if not g.os_path_exists(fileName):
-        # Create at most one file.
-        if not self.recentFilesFiles and c and c.config.getBool('write_recent_files_as_needed'):
-            try:
-                f = file(fileName,'w')
-                f.close()
-                g.es_print('Created %s' % (fileName),color='red')
-            except Exception:
-                g.es_print('Exception creating %s' % (fileName),color='red')
-                g.es_exception()
-                return
-        else:
-            # g.trace('----- no file',kind,fileName)
-            return
-            
+
     # g.trace('-----',kind,fileName)
     self.recentFilesFiles.append(
         g.Bunch(fileName=fileName,kind=kind))
@@ -103,7 +888,102 @@ def readRecentFilesFile (self,c,path):
         self.appendToRecentFiles(lines)
 #@nonl
 #@-node:ekr.20050424115658:readRecentFilesFile
+#@+node:ekr.20061010121944:createRecentFiles
+def createRecentFiles (self,fileName):
+    
+    localPath,junk = g.os_path_split(fileName)
+
+    for path in (g.app.homeDir,g.app.globalConfigDir,localPath):
+        fileName = g.os_path_join(path,'.leoRecentFiles.txt')
+        if g.os_path_exists(fileName):
+            # g.es_print('found %s' % fileName)
+            return
+
+    # Create the file in the home directory.
+    try:
+        fileName = g.os_path_join(g.app.homeDir,'.leoRecentFiles.txt')
+        f = file(fileName,'w')
+        f.close()
+        g.es_print('Created %s' % (fileName),color='red')
+        return
+    except Exception:
+        g.es_print('Exception creating %s' % (fileName),color='red')
+        g.es_exception()
+#@nonl
+#@-node:ekr.20061010121944:createRecentFiles
+#@+node:ekr.20050424114937.2:writeRecentFilesFile & helper
+def writeRecentFilesFile (self,c):
+    
+    '''Write the appropriate .leoRecentFiles.txt file.'''
+    
+    tag = '.leoRecentFiles.txt'
+    
+    if g.app.unitTesting:
+        return
+    
+    localFileName = c.fileName()
+    if localFileName:
+        localPath,junk = g.os_path_split(localFileName)
+    else:
+        localPath = None
+        
+    for path in (localPath,g.app.globalConfigDir,g.app.homeDir):
+        if path:
+            fileName = g.os_path_join(path,'.leoRecentFiles.txt')
+            if g.os_path_exists(fileName):
+                # g.es_print('wrote %s' % fileName)
+                self.writeRecentFilesFileHelper(fileName)
+                return
+    else:
+        g.trace('----- not found:',localFileName)
+        return
+#@+node:ekr.20050424131051:writeRecentFilesFileHelper
+def writeRecentFilesFileHelper (self,fileName):
+    # g.trace(fileName)
+    
+    # Don't update the file if it begins with read-only.
+    theFile = None
+    try:
+        theFile = file(fileName)
+        lines = theFile.readlines()
+        if lines and self.munge(lines[0])=='readonly':
+            # g.trace('read-only: %s' %fileName)
+            return
+    except IOError:
+        # The user may have erased a file.  Not an error.
+        if theFile: theFile.close()
+
+    theFile = None
+    try:
+        # g.trace('writing',fileName)
+        theFile = file(fileName,'w')
+        if self.recentFiles:
+            lines = [g.toEncodedString(line,'utf-8') for line in self.recentFiles]
+            theFile.write('\n'.join(lines))
+        else:
+            theFile.write('\n')
+
+    except IOError:
+        # The user may have erased a file.  Not an error.
+        pass
+            
+    except Exception:
+        g.es('unexpected exception writing %s' % fileName,color='red')
+        g.es_exception()
+    
+    if theFile:
+        theFile.close()
+#@-node:ekr.20050424131051:writeRecentFilesFileHelper
+#@-node:ekr.20050424114937.2:writeRecentFilesFile & helper
 #@-node:ekr.20061009152554:Removed .leoRecentFiles.txt from distribution and cvs
+#@-node:ekr.20061010115312:Features
+#@+node:ekr.20061009154800:Settings
+#@+node:ekr.20061009153504:Made unlimited undo the default
+@nocolor
+
+As always, you can set max_undo_stack_size in myLeoSettings.leo.
+#@nonl
+#@-node:ekr.20061009153504:Made unlimited undo the default
 #@-node:ekr.20061009154800:Settings
 #@-node:ekr.20060904165452:4.4.2 projects
 #@-all

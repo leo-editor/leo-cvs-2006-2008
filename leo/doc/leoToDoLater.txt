@@ -2005,9 +2005,9 @@ def findNextWord(self,p):
 
     # Allow quotes and underscores in the middle of words, but not at the beginning or end.
     # This breaks words at non-ascii 'letters' such as é.  I don't know what the solution is.
-    word_start = string.letters
-    word_end   = string.letters + string.digits
-    word_chars = string.letters + string.digits + "`" + "'" + "_"
+    word_start = toUnicode(string.letters,encoding='ascii')
+    word_end   = toUnicode(string.letters + string.digits,encoding='ascii')
+    word_chars = toUnicode(string.letters + string.digits + "`" + "'" + "_",encoding='ascii')
     while 1:
         line = t.get('insert wordstart','insert lineend')
         # g.trace('insert',t.index('insert'),'insert wordstart',t.index('insert wordstart'))
