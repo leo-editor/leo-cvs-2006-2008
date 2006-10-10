@@ -2104,7 +2104,7 @@ class leoTkinterBody (leoFrame.leoBody):
             assert(w!=w2)
             self.onFocusIn(w2,setFocus=True)
             self.bodyCtrl = self.frame.bodyCtrl = w2
-            # g.trace('***',g.app.gui.widget_name(w2),id(w2))
+            # print '***',g.app.gui.widget_name(w2),id(w2)
     
         return 'break'
     #@-node:ekr.20060528170438:cycleEditorFocus
@@ -3264,29 +3264,21 @@ class leoTkinterLog (leoFrame.leoLog):
             self.setTabBindings(tabName)
     #@-node:ekr.20051024173701:createTab
     #@+node:ekr.20060613131217:cycleTabFocus
-    def cycleTabFocus (self,event=None):
+    def cycleTabFocus (self,event=None,stop_w = None):
     
         '''Cycle keyboard focus between the tabs in the log pane.'''
     
         c = self.c ; d = self.frameDict # Keys are page names. Values are Tk.Frames.
         w = d.get(self.tabName)
+        # g.trace(self.tabName,w)
         values = d.values()
         if self.numberOfVisibleTabs() > 1:
             i = i2 = values.index(w) + 1
-            while 1:
-                if i == len(values): i = 0
-                w2 = values [i]
-                tabName = d.keys() [i]
-                if self.frameDict.get(tabName):
-                    # g.trace(tabName)
-                    assert (w!=w2)
-                    self.selectTab(tabName)
-                    break
-                else:
-                    i += 1
-                    if i == i2:
-                        g.trace("can't happen") ; break
-        return 'break'
+            if i == len(values): i = 0
+            tabName = d.keys()[i]
+            self.selectTab(tabName)
+            return 
+    #@nonl
     #@-node:ekr.20060613131217:cycleTabFocus
     #@+node:ekr.20051018102027:deleteTab
     def deleteTab (self,tabName):
@@ -3370,6 +3362,8 @@ class leoTkinterLog (leoFrame.leoLog):
         self.logCtrl = self.textDict.get(tabName)
         self.tabFrame = self.frameDict.get(tabName)
     
+        if 0: # Absolutely do not do this here!  It is a cause of the 'sticky focus' problem.
+            c.widgetWantsFocusNow(self.logCtrl)
         return tabFrame
     #@-node:ekr.20051016101724.1:selectTab
     #@+node:ekr.20051022162730:setTabBindings
