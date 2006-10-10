@@ -24,7 +24,6 @@ import types
 #@-node:ekr.20050920094258:<< imports >>
 #@nl
 #@<< about 'internal' bindings >>
-#@+middle:ekr.20060131101205: docs
 #@+node:ekr.20060130103826:<< about 'internal' bindings >>
 #@@nocolor
 #@+at
@@ -59,10 +58,8 @@ import types
 # confusing set of rules.
 #@-at
 #@-node:ekr.20060130103826:<< about 'internal' bindings >>
-#@-middle:ekr.20060131101205: docs
 #@nl
 #@<< about key dicts >>
-#@+middle:ekr.20060131101205: docs
 #@+node:ekr.20051010062551.1:<< about key dicts >>
 #@@nocolor
 #@+at
@@ -97,12 +94,9 @@ import types
 #     Keys are emacs command names; values are *lists* of shortcuts.
 #@-at
 #@-node:ekr.20051010062551.1:<< about key dicts >>
-#@-middle:ekr.20060131101205: docs
 #@nl
 
 #@+others
-#@+node:ekr.20060131101205: docs
-#@-node:ekr.20060131101205: docs
 #@+node:ekr.20051126123249:class autoCompleterClass
 class autoCompleterClass:
     
@@ -1701,6 +1695,7 @@ class keyHandlerClass:
         self.inverseCommandsDict = {}
             # Completed in k.finishCreate, but leoCommands.getPublicCommands adds entries first.
         self.negativeArg = False
+        self.newMinibufferWidget = None # Usually the minibuffer restores focus.  This overrides this default.
         self.regx = g.bunch(iter=None,key=None)
         self.repeatCount = None
         self.state = g.bunch(kind=None,n=None,handler=None)
@@ -2025,7 +2020,9 @@ class keyHandlerClass:
         else:
             func = c.commandsDict.get(commandName)
             if func:
+                # g.trace(key,commandName,func.__name__)
                 c.commandsDict [key] = func
+                # k.inverseCommandsDict[func.__name__] = key
             else:
                 g.es_print('bad abbrev: %s: unknown command name: %s' %
                     (key,commandName),color='blue')
@@ -2348,6 +2345,9 @@ class keyHandlerClass:
         k.mb_tabList = []
         commandName = s[len(k.mb_prefix):].strip()
         func = c.commandsDict.get(commandName)
+        k.newMinibufferWidget = None
+        
+        # print 'callAltXFunc',func
     
         if func:
             # These must be done *after* getting the command.
@@ -2396,6 +2396,10 @@ class keyHandlerClass:
                     pass
             if 0: # Do *not* call this by default.  It interferes with undo.
                 c.frame.body.onBodyChanged(undoType='Typing')
+            if k.newMinibufferWidget:
+                c.widgetWantsFocusNow(k.newMinibufferWidget)
+                # print 'endCommand', g.app.gui.widget_name(k.newMinibufferWidget),g.callers()
+                k.newMinibufferWidget = None
     #@-node:ekr.20051001050607:endCommand
     #@-node:ekr.20051001051355:Dispatching (keyHandler)
     #@+node:ekr.20050920085536.32:Externally visible commands
