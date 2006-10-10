@@ -5554,8 +5554,7 @@ class baseCommands:
     
         if not g.app.unitTesting and c.config.getBool('trace_focus'):
             c.trace_focus_count += 1
-            g.trace('%4d' % (c.trace_focus_count),
-                c.widget_name(w),g.callers(8))
+            print '%4d' % (c.trace_focus_count),c.widget_name(w),g.callers(8)
     #@-node:ekr.20060207142332:c.traceFocus
     #@+node:ekr.20060208143543:c.restoreFocus
     def restoreFocus (self):
@@ -5637,15 +5636,13 @@ class baseCommands:
         # Give priority to later requests, but default to previously set widget.
         w = c.requestedFocusWidget or c.hasFocusWidget
         
-        if trace: g.trace(
-            'requested',c.widget_name(c.requestedFocusWidget),
-            'present',c.widget_name(c.hasFocusWidget),
-            # g.callers()
-        )
+        if trace: print \
+            'requested',c.widget_name(c.requestedFocusWidget),\
+            'present',c.widget_name(c.hasFocusWidget)
         
         if c.hasFocusWidget and (
             not c.requestedFocusWidget or c.requestedFocusWidget == c.hasFocusWidget):
-            # if trace: g.trace('no change.',c.widget_name(w))
+            if trace: print 'no change.',c.widget_name(w)
             c.requestedFocusWidget = None
         elif w:
             # Ignore whatever g.app.gui.get_focus might say.
@@ -5654,7 +5651,7 @@ class baseCommands:
             c.requestedFocusWidget = None
         else:
             # This is not an error: it can arise because of a call to k.invalidateFocus.
-            # g.trace('*'*20,'oops: moving to body pane.')
+            if trace: print '*'*20,'oops: moving to body pane.'
             c.bodyWantsFocusNow()
     
     restoreRequestedFocus = masterFocusHandler
@@ -5693,6 +5690,7 @@ class baseCommands:
         if force: # New in Leo 4.4.2: safer.
             c.hasFocusWidget = c.requestedFocusWidget = w
             g.app.gui.set_focus(c,w)
+            c.traceFocus(w)
         else: # An optimization.
             c.requestedFocusWidget = w
             c.masterFocusHandler()
