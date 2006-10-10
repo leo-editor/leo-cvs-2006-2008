@@ -137,7 +137,7 @@ class leoFind:
         self.newStringKeys = ["radio-find-type", "radio-search-scope"]
         
         # To do: this should depend on language.
-        self.word_chars = string.letters + string.digits + '_'
+        self.word_chars = g.toUnicode(string.letters + string.digits + '_',encoding='ascii')
         
         # Ivars containing internal state...
         self.c = None # The commander for this search.
