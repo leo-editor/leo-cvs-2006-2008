@@ -2562,8 +2562,9 @@ class leoTkinterTree (leoFrame.leoTree):
         if p and w:
             c.widgetWantsFocusNow(w)
             self.setEditHeadlineColors(p)
-            w.tag_remove("sel","1.0","end")
-            w.tag_add("sel","1.0","end")
+            w.tag_remove('sel','1.0','end')
+            start = g.choose(c.config.getBool('select_all_text_when_editing_headlines'),'1.0','end')
+            w.tag_add('sel',start,'end')
         else:
             g.trace('no edit_widget')
             
