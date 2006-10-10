@@ -46,6 +46,64 @@ if 0: # Set to 1 for lint-like testing.
 As always, you can set max_undo_stack_size in myLeoSettings.leo.
 #@nonl
 #@-node:ekr.20061009153504:Made unlimited undo the default
+#@+node:ekr.20061009152554:Removed .leoRecentFiles.txt from distribution and cvs
+@nocolor
+
+- @bool write_recent_files_as_needed = True
+
+People who don't want Leo to update .leoRecentFiles.txt can set this to False.
+
+- Remove .leoRecentFiles from cvs
+- Remove .leoRecentFiles from distribution list.
+#@nonl
+#@+node:ekr.20050424115658:readRecentFilesFile
+def readRecentFilesFile (self,c,path):
+    
+    # Set the kind of file for later.
+    for path2,kind in (
+        (self.globalConfigFile,'global'),
+        (self.homeFile,'home'),
+    ):
+        if path2 and path2 == path: break
+    else:
+        kind = 'local'
+
+    path,junk = g.os_path_split(path)
+    fileName = g.os_path_join(path,'.leoRecentFiles.txt')
+    
+    for bunch in self.recentFilesFiles:
+        if bunch.fileName == fileName:
+            # g.trace('-----already read',kind,fileName)
+            return
+        
+    if not g.os_path_exists(fileName):
+        # Create at most one file.
+        if not self.recentFilesFiles and c and c.config.getBool('write_recent_files_as_needed'):
+            try:
+                f = file(fileName,'w')
+                f.close()
+                g.es_print('Created %s' % (fileName),color='red')
+            except Exception:
+                g.es_print('Exception creating %s' % (fileName),color='red')
+                g.es_exception()
+                return
+        else:
+            # g.trace('----- no file',kind,fileName)
+            return
+            
+    # g.trace('-----',kind,fileName)
+    self.recentFilesFiles.append(
+        g.Bunch(fileName=fileName,kind=kind))
+
+    lines = file(fileName).readlines()
+    if lines and self.munge(lines[0])=='readonly':
+        lines = lines[1:]
+    if lines:
+        lines = [g.toUnicode(g.os_path_normpath(line),'utf-8') for line in lines]
+        self.appendToRecentFiles(lines)
+#@nonl
+#@-node:ekr.20050424115658:readRecentFilesFile
+#@-node:ekr.20061009152554:Removed .leoRecentFiles.txt from distribution and cvs
 #@-node:ekr.20061009154800:Settings
 #@-node:ekr.20060904165452:4.4.2 projects
 #@-all

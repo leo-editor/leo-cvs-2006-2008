@@ -234,7 +234,6 @@ Section "Leo" SEC01
   ;@  << install config files >>
   ;@+node:ekr.20050118104149.1:<< install config files >>
   File "..\config\leoSettings.leo"
-  File "..\config\.leoRecentFiles.txt"
   ;@nonl
   ;@-node:ekr.20050118104149.1:<< install config files >>
   ;@nl
@@ -547,7 +546,6 @@ Section Uninstall
   ;@+node:ekr.20050118104149.2:<< uninstall config files >>
   Delete "$INSTDIR\config\leoSettings.leo"
   Delete "$INSTDIR\config\.leoID.txt"
-  Delete "$INSTDIR\config\.leoRecentFiles.txt"
   ;@nonl
   ;@-node:ekr.20050118104149.2:<< uninstall config files >>
   ;@nl

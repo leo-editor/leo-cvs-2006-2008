@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="23" left="396" height="786" width="863"/>
+	<global_window_position top="23" left="396" height="767" width="863"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -108,7 +108,7 @@
 <v t="ekr.20050119191034"><vh>Create manifest.in from manifest-nn.in</vh></v>
 </v>
 <v t="EKR.20040519080201.1"><vh>Distribution checklist</vh></v>
-<v t="ekr.20040629175400"><vh>Pychecker stuff</vh>
+<v t="ekr.20040629175400" a="TV"><vh>Pychecker stuff</vh>
 <v t="ekr.20050910192724"><vh>Pychecker warnings</vh></v>
 <v t="EKR.20040519080201.2" tnodeList="EKR.20040519080201.2"><vh>@file-nosent c:\prog\leoCVS\.pycheckrc</vh></v>
 <v t="ekr.20050430095952"><vh>Pychecker statements</vh></v>
@@ -187,7 +187,7 @@
 </v>
 <v t="ekr.20050118092706"><vh>@thin leo-4-3.nsi</vh></v>
 </v>
-<v t="EKR.20040519090846" a="TV"><vh>Distribution files (update for each release)</vh>
+<v t="EKR.20040519090846"><vh>Distribution files (update for each release)</vh>
 <v t="EKR.20040519090846.2"><vh>@asis ../doc/INSTALL.TXT</vh>
 <v t="EKR.20040519090846.3"><vh>System requirements</vh></v>
 <v t="EKR.20040519090846.4"><vh>Linux installation</vh></v>
@@ -736,7 +736,6 @@ include uninstall
 exclude createLeoDist.py
 
 include config/leoSettings.leo
-include config/.leoRecentFiles.txt
 
 # 1. createLeoDist.py is distributed in dist directory.
 #    The distribution script temporarily copies createLeoDist.py to the leo directory.
@@ -3121,11 +3120,9 @@ Delete "$INSTDIR\uninstall"
 
 </t>
 <t tx="ekr.20050118104149"></t>
-<t tx="ekr.20050118104149.1">File "..\config\leoSettings.leo"
-File "..\config\.leoRecentFiles.txt"</t>
+<t tx="ekr.20050118104149.1">File "..\config\leoSettings.leo"</t>
 <t tx="ekr.20050118104149.2">Delete "$INSTDIR\config\leoSettings.leo"
-Delete "$INSTDIR\config\.leoID.txt"
-Delete "$INSTDIR\config\.leoRecentFiles.txt"</t>
+Delete "$INSTDIR\config\.leoID.txt"</t>
 <t tx="ekr.20050118104149.3"></t>
 <t tx="ekr.20050118104149.4">File "createLeoDist.py"
 
