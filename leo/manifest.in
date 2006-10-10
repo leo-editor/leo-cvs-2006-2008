@@ -12,7 +12,6 @@ include uninstall
 exclude createLeoDist.py
 
 include config/leoSettings.leo
-include config/.leoRecentFiles.txt
 
 # 1. createLeoDist.py is distributed in dist directory.
 #    The distribution script temporarily copies createLeoDist.py to the leo directory.
