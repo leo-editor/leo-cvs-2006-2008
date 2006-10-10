@@ -271,16 +271,14 @@ class scriptingController:
         tag = '@command' ; shortcut = None
         
         i = h.find('@key')
-        
         if i > -1:
             commandName = h[len(tag):i].strip()
             j = g.skip_ws(h,i+len('@key'))
-            if g.match(h,j,'='):
-                shortcut = h[j+1:].strip()
+            if g.match(h,j,'='): # Make the equal sign optional.
+                j += 1
+            shortcut = h[j:].strip()
         else:
             commandName = h[len(tag):].strip()
-            
-        # g.trace(commandName,'shortcut',shortcut)
         #@nonl
         #@-node:ekr.20060328125248.11:<< get the commandName and optional shortcut >>
         #@nl
