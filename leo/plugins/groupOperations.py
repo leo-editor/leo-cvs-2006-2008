@@ -156,7 +156,7 @@ transferFromPI = Tkinter.PhotoImage( data = transferFrom )
 # globals
 lassoers = {}
 
-__version__ = ".5"
+__version__ = ".6"
 #@<<version history>>
 #@+node:mork.20041021120027:<<version history>>
 #@@killcolor
@@ -177,11 +177,11 @@ __version__ = ".5"
 # .3 EKR:
 # - Removed start2 hook.
 # - Use keywords to get c, not g.top().
-# .4 EKR
-# - Removed all calls to g.top().
+# .4 EKR: Removed all calls to g.top().
 # .5 EKR
 # - Major cleanup of code.
 # - Added support for minibuffer commands.
+# .6 EKR: Fixed a crasher introduced by 'the big reorg'.
 #@-at
 #@nonl
 #@-node:mork.20041021120027:<<version history>>
@@ -467,7 +467,7 @@ class Lassoer(object):
     
         if not mN: mN = self.moveNode
         for z in self.mvForClone:
-            clo = z.clone(z)
+            clo = z.clone()
             clo.moveAfter(mN)
             mN = clo
     #@-node:mork.20041019125724.1:cloneTo
