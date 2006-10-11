@@ -3130,7 +3130,7 @@ class baseCommands:
             c.endUpdate()
         c.beginUpdate()
         try:
-            c.editPosition(p)
+            c.editPosition(p,selectAll=True)
         finally:
             c.endUpdate(False)
     
@@ -6468,13 +6468,13 @@ class baseCommands:
     #@+node:ekr.20031218072017.2991:c.editPosition
     # Selects v: sets the focus to p and edits p.
     
-    def editPosition(self,p):
+    def editPosition(self,p,selectAll=False):
     
         c = self ; k = c.k
     
         if p:
             c.selectPosition(p)
-            c.frame.tree.editLabel(p)
+            c.frame.tree.editLabel(p,selectAll=selectAll)
             
             if k:
                 k.setDefaultUnboundKeyAction()
