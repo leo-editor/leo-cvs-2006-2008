@@ -1180,6 +1180,421 @@ def writeRecentFilesFileHelper (self,fileName):
 #@-node:ekr.20050424131051:writeRecentFilesFileHelper
 #@-node:ekr.20050424114937.2:writeRecentFilesFile & helper
 #@-node:ekr.20061009152554:Removed .leoRecentFiles.txt from distribution and cvs
+#@+node:ekr.20060527184656:Added minibuffer and Settings menus
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3588148
+By: vpe
+
+One way to make Leo more newbie friendly is to add menu items for key features
+that are likely to cause confusion in the beginning.
+
+What I did:
+    
+- Added minibuffer submenu.
+- Renamed help to help-for-minibuffer
+- Added Pickers submenu
+- Added help-for-settings command
+
+@color
+#@nonl
+#@+node:ekr.20050921103230:defineCmdsMenuTables & helpers
+def defineCmdsMenuTables (self):
+    
+    if 0: # Replaced by minibuffer submenu.
+        self.defineCmdsMenuTopTable()
+
+    self.defineCmdsMenuAbbrevTable()
+    self.defineCmdsMenuBodyEditorsTable()
+    self.defineCmdsMenuBuffersTable()
+    self.defineCmdsMenuCursorTable()
+    self.defineCmdsMenuFocusTable()
+    self.defineCmdsMenuMacroTable()
+    self.defineCmdsMenuMinibufferTable()
+    self.defineCmdsMenuPanesTable()
+    self.defineCmdsMenuPickersTable()
+    self.defineCmdsMenuRectanglesTable()
+    self.defineCmdsMenuRegistersTable()
+    self.defineCmdsMenuScrollTable()
+    self.defineCmdsMenuSpellCheckTable()
+    self.defineCmdsMenuTextTable()
+    self.defineCmdsMenuToggleTable()
+#@nonl
+#@+node:ekr.20060117094955: defineCmdsMenuTopTable: no longer used
+def defineCmdsMenuTopTable (self):
+    
+    self.cmdsMenuTopTable = [
+        'repeat-comple&x-command',
+        'f&ull-command',
+        'keyboard-&quit',
+        '-',
+    ]
+#@-node:ekr.20060117094955: defineCmdsMenuTopTable: no longer used
+#@+node:ekr.20060117094955.1:defineCmdsMenuAbbrevTable
+def defineCmdsMenuAbbrevTable (self):
+    
+    self.cmdsMenuAbbrevTable = [
+        # &: a,e,i,k,l,r,w,v
+        'abbre&v-mode',
+        '-',
+        '&list-abbrevs',
+        '&read-abbrev-file',
+        '&write-abbrev-file',
+        '-',
+        '&add-global-abbrev',
+        '&inverse-add-global-abbrev',
+        '&kill-all-abbrevs',
+        '-',
+        # 'expand-abbrev', # Not a command
+        '&expand-region-abbrevs',
+    ]
+#@-node:ekr.20060117094955.1:defineCmdsMenuAbbrevTable
+#@+node:ekr.20060912093104:defineCmdsMenuBodyEditorsTable
+def defineCmdsMenuBodyEditorsTable (self):
+
+    self.cmdsMenuBodyEditorsTable = [
+        # &: a,c,d
+        '&add-editor',
+        '&cycle-editor-focus',
+        '&delete-editor',
+    ]
+#@nonl
+#@-node:ekr.20060912093104:defineCmdsMenuBodyEditorsTable
+#@+node:ekr.20060117095212:defineCmdsMenuBufferTable
+def defineCmdsMenuBuffersTable (self):
+
+    self.cmdsMenuBuffersTable = [
+        '&append-to-buffer',
+        '&kill-buffer',
+        'list-&buffers',
+        '&list-buffers-alphabetically',
+        '&prepend-to-buffer',
+        '&rename-buffer',
+        '&switch-to-buffer',
+    ]
+#@-node:ekr.20060117095212:defineCmdsMenuBufferTable
+#@+node:ekr.20060924124119:defineCmdsMenuCursorTable
+def defineCmdsMenuCursorTable (self):
+
+    self.cursorMenuBackTable = [
+        # &: b,c,l,p,s,v,w
+        'back-&char',
+        'back-&paragraph',
+        'back-&sentence',
+        'back-&word',
+        '-',
+        'beginning-of-&buffer',
+        'beginning-of-&line',
+        '-',
+        'pre&vious-line',
+    ]
+    
+    self.cursorMeuuBackExtendTable = [
+        # &: b,c,l,p,s,v,w
+        'back-&char-extend-selection',
+        'back-&paragraph-extend-selection',
+        'back-&sentence-extend-selection',
+        'back-&word-extend-selection',
+        '-',
+        'beginning-of-&buffer-extend-selection',
+        'beginning-of-&line-extend-selection',
+        '-',
+        'pre&vious-line-extend-selection',
+    ]
+    
+    self.cursorMenuExtendTable = [
+        # &: l,p,s,w
+        'extend-to-&line',
+        'extend-to-&paragraph',
+        'extend-to-&sentence',
+        'extend-to-&word',
+    ]
+    
+    self.cursorMenuForwardTable = [
+        # &: b,c,l,n,p,s,w
+        'end-of-&buffer',
+        'end-of-&line',
+        '-',
+        'forward-&char',
+        'forward-&paragraph',
+        'forward-&sentence',
+        'forward-&word',
+        '-',
+        '&next-line',
+    ]
+    
+    self.cursorMenuForwardExtendTable = [
+        # &: b,c,l,n,p,s,w
+        'end-of-&buffer-extend-selection',
+        'end-of-&line-extend-selection',
+        '-',
+        'forward-&char-extend-selection',
+        'forward-&paragraph-extend-selection',
+        'forward-&sentence-extend-selection',
+        'forward-&word-extend-selection',#
+        '-',
+        '&next-line-extend-selection',    
+    ]
+#@nonl
+#@-node:ekr.20060924124119:defineCmdsMenuCursorTable
+#@+node:ekr.20060923060822:defineCmdsMenuFocusTable
+def defineCmdsMenuFocusTable (self):
+
+    self.cmdsMenuFocusTable = [
+        '&cycle-all-focus',
+        'focus-to-&body',          
+        'focus-to-&log',             
+        'focus-to-&minibuffer',     
+        'focus-to-&tree',             
+    ]
+#@-node:ekr.20060923060822:defineCmdsMenuFocusTable
+#@+node:ekr.20060117114315:defineCmdsMenuMacroTable
+def defineCmdsMenuMacroTable (self):
+
+    self.cmdsMenuMacroTable = [
+        '&load-file',
+        '-',
+        '&start-kbd-macro',
+        '&end-kbd-macro',
+        '&name-last-kbd-macro',
+        '-',
+        '&call-last-keyboard-macro',
+        '&insert-keyboard-macro',
+    ]
+#@-node:ekr.20060117114315:defineCmdsMenuMacroTable
+#@+node:ekr.20061011084101.1:defineCmdsMenuMinibufferTable
+def defineCmdsMenuMinibufferTable (self):
+    
+    self.cmdsMenuMinibufferTable = [
+        # &: f,h,i,q,r,s 
+        '&full-command',
+        'keyboard-&quit',
+        '&repeat-complex-command',
+        '-',
+        '&show-mini-buffer',
+        'h&ide-mini-buffer',
+        '-',
+        '&help-for-minibuffer',
+    ]
+#@-node:ekr.20061011084101.1:defineCmdsMenuMinibufferTable
+#@+node:ekr.20060924120752:defineCmdsMenuPanesTable
+def defineCmdsMenuPanesTable (self):
+
+    self.cmdsMenuPanesTable = [
+        # &: a,b,d,f,l,n,o,p,u,x,y
+        'contract-&body-pane',
+        'contract-&log-pane',
+        'contract-&outline-pane',
+        'contract-&pane',
+        '-',
+        'expand-bo&dy-pane',
+        'expand-lo&g-pane',
+        'expand-o&utline-pane',
+        'expand-pa&ne',
+        '-',
+        '&fully-expand-body-pane',
+        'full&y-expand-log-pane',
+        'fully-e&xpand-outline-pane',
+        'fully-exp&and-pane',
+    ]
+    
+#@nonl
+#@-node:ekr.20060924120752:defineCmdsMenuPanesTable
+#@+node:ekr.20061011085641:defineCmdsMenuPickersTable
+def defineCmdsMenuPickersTable (self):
+    
+    self. cmdsMenuPickersTable = [
+        'show-&colors',
+        'show-find-&options',
+        'show-&fonts',
+    ]
+#@nonl
+#@-node:ekr.20061011085641:defineCmdsMenuPickersTable
+#@+node:ekr.20060117095212.2:defineCmdsMenuRectanglesTable
+def defineCmdsMenuRectanglesTable (self):
+
+    self.cmdsMenuRectanglesTable = [
+        '&clear-rectangle',
+        'c&lose-rectangle',
+        '&delete-rectangle',
+        '&kill-rectangle',
+        '&open-rectangle',
+        '&string-rectangle',
+        '&yank-rectangle',
+    ]
+#@-node:ekr.20060117095212.2:defineCmdsMenuRectanglesTable
+#@+node:ekr.20060117095212.1:defineCmdsMenuRegistersTable
+def defineCmdsMenuRegistersTable (self):
+
+    self.cmdsMenuRegistersTable = [
+        # &: a,c,e,i,j,n,p,r,v
+        '&append-to-register',
+        'copy-r&ectangle-to-register',
+        '&copy-to-register',
+        'i&ncrement-register',
+        '&insert-register',
+        '&jump-to-register',
+        # 'number-to-register',
+        '&point-to-register',
+        'p&repend-to-register',
+        '&view-register',
+    ]
+#@-node:ekr.20060117095212.1:defineCmdsMenuRegistersTable
+#@+node:ekr.20060923060822.1:defineCmdsMenuScrollTable
+def defineCmdsMenuScrollTable (self):
+
+    self.cmdsMenuScrollTable = [
+        # &: c,d,e,f,l,o,p,r,v,x
+        'scroll-outline-down-&line',
+        'scroll-outline-down-&page',
+        'scroll-outline-le&ft',
+        'scroll-outline-&right',
+        's&croll-outline-up-line',
+        'scr&oll-outline-up-page',
+        '-',
+        'scroll-&down',
+        'scroll-&up',
+        '-',
+        'scroll-down-&extend-selection',
+        'scroll-up-e&xtend-selection',
+    ]
+#@nonl
+#@-node:ekr.20060923060822.1:defineCmdsMenuScrollTable
+#@+node:ekr.20060117095212.7:defineCmdsMenuSpellCheckTable
+def defineCmdsMenuSpellCheckTable (self):
+
+    self.cmdsMenuSpellCheckTable = [
+        '&open-spell-tab',
+        'spell-&change',
+        'spell-change-&then-find',
+        'spell-&find',
+        'spell-&ignore',
+    ]
+#@-node:ekr.20060117095212.7:defineCmdsMenuSpellCheckTable
+#@+node:ekr.20060924161901:defineCmdsMenuTextTable
+def defineCmdsMenuTextTable (self):
+
+    self.cmdsMenuTextTable = [
+        # &: b,c,d,e,f,g,i,l,m,n,o,p,r,s,u,y
+        '&beautify-python-code',
+        'beautify-all-p&ython-code',
+        '-',
+        'center-&line',
+        'center-&region',
+        '-',
+        '&capitalize-word',
+        '&downcase-word',
+        '&upcase-word',
+        '-',
+        'd&owncase-region',
+        'u&pcase-region',
+        '-',
+        '&indent-region',
+        'indent-r&elative',
+        'indent-ri&gidly',
+        'u&nindent-region',
+        '-',
+        'sort-colu&mns',
+        'sort-&fields',
+        '&sort-lines',
+    ]
+#@nonl
+#@-node:ekr.20060924161901:defineCmdsMenuTextTable
+#@+node:ekr.20060926161940:defineCmdsMenuToggleTable
+def defineCmdsMenuToggleTable (self):
+
+    self.cmdsMenuToggleTable = [
+        # &: d,e,m,s,t,u,v
+        'toggle-a&utocompleter',
+        'toggle-call&tips',
+        'toggle-&extend-mode',
+        'toggle-input-&state',
+        'toggle-in&visibles',
+        'toggle-&mini-buffer',
+        'toggle-split-&direction',
+        '-',
+        # &: a,b,c,f,h,i,r,w,x
+        'toggle-find-&ignore-case-option',
+        'toggle-find-in-&body-option',
+        'toggle-find-in-&headline-option',
+        'toggle-find-mark-&changes-option',
+        'toggle-find-mark-&finds-option',
+        'toggle-find-rege&x-option',
+        'toggle-find-&reverse-option',
+        'toggle-find-&word-option',
+        'toggle-find-wrap-&around-option',
+    ]
+#@-node:ekr.20060926161940:defineCmdsMenuToggleTable
+#@-node:ekr.20050921103230:defineCmdsMenuTables & helpers
+#@+node:ekr.20050921103736:createCmndsMenuFromTable
+def createCmndsMenuFromTable (self):
+    
+    cmdsMenu = self.createNewMenu('&Cmds')
+    
+    if 0: # Now in the minibuffer table.
+        # Used in top table: q,u,x
+        self.createMenuEntries(cmdsMenu,self.cmdsMenuTopTable)
+
+    for name,table in (
+        # &: a,b,c,d,f,g,h,i,m,n,o,p,r,s,t
+        ('&Abbrev...',          self.cmdsMenuAbbrevTable),
+        ('Body E&ditors',       self.cmdsMenuBodyEditorsTable),
+        ('&Buffers...',         self.cmdsMenuBuffersTable),
+        ('&Cursor/Selection...',[]),
+        ('&Focus...',           self.cmdsMenuFocusTable),
+        ('&Macro...',           self.cmdsMenuMacroTable),
+        ('M&inibuffer',         self.cmdsMenuMinibufferTable),
+        ('&Panes...',           self.cmdsMenuPanesTable),
+        ('Pic&kers...',         self.cmdsMenuPickersTable),
+        ('&Rectangles...',      self.cmdsMenuRectanglesTable),
+        ('Re&gisters...',       self.cmdsMenuRegistersTable),
+        ('Scr&olling...',       self.cmdsMenuScrollTable),
+        ('Spell C&heck...',     self.cmdsMenuSpellCheckTable),
+        ('&Text Commands',      self.cmdsMenuTextTable),
+        ('Toggle Setti&ngs',     self.cmdsMenuToggleTable),
+    ):
+        menu = self.createNewMenu(name,'&Cmds')
+        self.createMenuEntries(menu,table)
+
+    for name,table in (
+        # &: b,e,f,s,t,x
+        ('Cursor &Back...',                     self.cursorMenuBackTable),
+        ('Cursor Back &Extend Selection...',    self.cursorMeuuBackExtendTable),
+        ('Cursor Extend &To...',                self.cursorMenuExtendTable),
+        ('Cursor &Forward...',                  self.cursorMenuForwardTable),
+        ('Cursor Forward E&xtend Selection...', self.cursorMenuForwardExtendTable),
+    ):
+        menu = self.createNewMenu(name,'C&ursor/Selection...')
+        self.createMenuEntries(menu,table)
+#@nonl
+#@-node:ekr.20050921103736:createCmndsMenuFromTable
+#@+node:ekr.20031218072017.3774:defineHelpMenuTables
+def defineHelpMenuTables (self):
+    
+    self.helpMenuTable = [
+        # &: a,b,c,d,f,h,l,m,n,o,p,r,s,t,u
+        ("&About Leo...",           'about-leo'),
+        ("Online &Home Page",       'open-online-home'),
+        ("Open Online &Tutorial",   'open-online-tutorial'),
+        ("Open &Users Guide",       'open-users-guide'),
+        '-',
+        ("Open Leo&Docs.leo",       'open-leoDocs-leo'),
+        ("Open Leo&Plugins.leo",    'open-leoPlugins-leo'),
+        ("Open Leo&Settings.leo",   'open-leoSetting-leo'),
+        ("Open &myLeoSettings.leo", 'open-myLeoSettings-leo'),
+        '-',
+        'he&lp-for-minibuffer',
+        'help-for-&command',
+        '-',
+        '&apropos-autocompletion',
+        'apropos-&bindings',
+        'apropos-&find-commands',
+        '-',
+        'pri&nt-bindings',
+        'print-c&ommands',
+    ]
+#@-node:ekr.20031218072017.3774:defineHelpMenuTables
+#@-node:ekr.20060527184656:Added minibuffer and Settings menus
 #@-node:ekr.20061010115312:Features
 #@+node:ekr.20061009154800:Settings
 #@+node:ekr.20061009153504:Made unlimited undo the default
@@ -1280,6 +1695,37 @@ def editPosition(self,p,selectAll=False):
             k.showStateAndMode()
 #@-node:ekr.20031218072017.2991:c.editPosition
 #@-node:ekr.20061009153818:Added @bool select_all_text_when_editing_headlines
+#@+node:ekr.20061011080052:Added bindings to toggle-autocompleter and toggle-calltips
+@nocolor
+
+- Added bindings for toggle-autocompleter (Alt-1) and toggle-calltips (Alt-2)
+
+- Ctrl-. and ctrl-( do not seem to do anything.
+
+** Mystery solved: there was a trace in the calltip logic!
+
+Disabled these binding:
+
+auto-complete-force         = None # This command needs work before it is useful. Ctrl-period
+show-calltips-force         = None # This command needs work before it is useful. Alt-parenleft
+
+The problem is that autocompletion depends on state: self.leadinWord,
+prevObjects, etc. Thus, it's not presently possible to start the proces
+anywhere. Similar remarks apply to calltips, which relies on autocompleter
+state.
+
+This is a complex problem, and not very serious now that there is an easy way of
+toggling autocompleter and calltips on and off. It's been added to a 'later'
+section of the to-do list.
+#@nonl
+#@-node:ekr.20061011080052:Added bindings to toggle-autocompleter and toggle-calltips
+#@+node:ekr.20061011070742.3:Added 'Candidates for myLeoSettings.leo' to leoSettings.leo
+@nocolor
+
+Added the node: Candidates for settings in myLeoSettings.leo. This lists the
+most 'controversial' settings in leoSetting.leo, and is a quick-start to
+creating myLeoSettings.leo."
+#@-node:ekr.20061011070742.3:Added 'Candidates for myLeoSettings.leo' to leoSettings.leo
 #@-node:ekr.20061009154800:Settings
 #@-node:ekr.20060904165452:4.4.2 projects
 #@-all

@@ -2116,25 +2116,10 @@ def updateButtons (self):
 #@-node:ekr.20051025071455:Spell classes
 #@-node:ekr.20051110155735.1:Improve Spell tab
 #@+node:ekr.20041022083833.1:Easy
-#@+node:ekr.20060209105218.2:contract-all-except-present-tree
-#@-node:ekr.20060209105218.2:contract-all-except-present-tree
-#@+node:ekr.20060206114203:toggle-find-tab-views
-show/hide buttons, etc.
-#@-node:ekr.20060206114203:toggle-find-tab-views
 #@+node:ekr.20060109183500.1:execute-named-script
 execute-named-script executes script in leo/scripts.
 #@nonl
 #@-node:ekr.20060109183500.1:execute-named-script
-#@+node:ekr.20060116074450:Drive tabs from keyboard
-- create-tab
-- clear-tab
-- delete-tab
-- hide-tab
-- show-tab, show-log
-
-These might get the tab name from the minibuffer...
-#@nonl
-#@-node:ekr.20060116074450:Drive tabs from keyboard
 #@+node:ekr.20051021074728:Space completion
 #@-node:ekr.20051021074728:Space completion
 #@+node:ekr.20040315060557:Declone command
@@ -2357,6 +2342,10 @@ Hence the menu item would be better called something like "Open as..." with subm
 
 Or, use something else instead of "os.startfile" to really use the intended editor.
 #@nonl
+#@+node:ekr.20060125113540:Specify open-with bindings from settings
+Maybe the entire table should be specified this way.
+#@nonl
+#@-node:ekr.20060125113540:Specify open-with bindings from settings
 #@-node:ekr.20040217090833:Change how Open with works?
 #@+node:ekr.20031218072017.748:Import/Export to yaml
 Need a good yaml parser first: I don't want to write another parser by hand.
@@ -3303,27 +3292,6 @@ leouser
 #@-node:ekr.20051207130144.1:@url http://www.8ung.at/klappnase/TkinterDnD/TkinterDnD.html
 #@-node:ekr.20051207130144:Investigate Tk DnD
 #@-node:ekr.20060527184335:Gui
-#@+node:ekr.20060227131445:Introductory dialogs for newbies
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3588054
-By: tfer
-
-You could mediate at bit of this with some initial set up dialogs.  Basically
-a series of intro sreen of "Welcome to Leo"... Find operations can be used with
-or without buttons in the log pane, while the key-only version is very useful,
-new users may prefer the button version as they get to learn Leo, Would you
-like me to activate the buttons?...Auto completions is a plugin that reduces
-typing and helps  with tooltips to fill in the proper arguments to function
-and method calls, would you like me...
-
-Changed features with "use old style blah-blah setting" could be presented with
-a "would you like use old style blah? checkbox.
-
-It may not yet be time to worry about such "out of the box" experience enhancing
-touches yet, but all this would be part of the "is Leo ready for Prime Time"
-push.
-#@nonl
-#@-node:ekr.20060227131445:Introductory dialogs for newbies
 #@+node:ekr.20050509085713:Installer
 #@+node:ekr.20050328093147.1:Report: improving installer
 @killcolor
@@ -3415,57 +3383,7 @@ so there's no rush.
 #@nonl
 #@-node:ekr.20050328093147.1:Report: improving installer
 #@-node:ekr.20050509085713:Installer
-#@+node:ekr.20060227131445.1:Menus
-#@+node:ekr.20060527184656:Add minibuffer and Settings menus
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3588148
-By: vpe
-
-One way to make Leo more newbie friendly is to add menu items for key features
-that are likely to cause confusion in the beginning.
-
-Menu group 'minibuffer' can contain
-show-mini-buffer
-hide-mini-buffer
-activate mini-buffer (Alt-X)
-exit mini-buffer (Ctrl-G)
-Help on mini-buffer
-
-Group 'Settings' can contain
-global LeoSettings.leo
-local LeoSettings.leo (if does not exist, gives explanation)
-Color Picker (show-colors)
-Font Picker (show-fonts)
-
-Spellcheck should be in the menu.
-#@nonl
-#@-node:ekr.20060527184656:Add minibuffer and Settings menus
-#@+node:ekr.20060202231708.1:Use minibuffer names for all menu entries
-This will allow @menu nodes in leoSettings.leo
-#@nonl
-#@-node:ekr.20060202231708.1:Use minibuffer names for all menu entries
-#@-node:ekr.20060227131445.1:Menus
 #@+node:ekr.20041228085245:Options & settings
-#@+node:ekr.20050713105353:Add configuration setting to set menu fonts
-#@+node:ekr.20050713105353.1:Email from Martin Moncrieffe <mcm35@cam.ac.uk>
-@nocolor
-
-I have looked into leo's code and managed to figure out how to change 
-some fonts. Here's what I did to change the menu fonts for example.
-
-Fonts for the menu can be set in Code->Gui Tkinter classes->@thin 
-leoTkinterMenu.py->Tkinter menu bindings->Routines with Tk 
-spellings->new_menu
-
-so to use the system font (linux) I changed the return statement to:
-
-return Tk.Menu(parent,tearoff=tearoff, font=("System",11))
-
-I'll try using .leo_xresources file and see if that works as well.
-#@nonl
-#@-node:ekr.20050713105353.1:Email from Martin Moncrieffe <mcm35@cam.ac.uk>
-#@-node:ekr.20050713105353:Add configuration setting to set menu fonts
 #@+node:ekr.20031218072017.740:Disallow writes outside a "top-level" folder
 1. Warn when creating _any_ new file.
 
@@ -3474,45 +3392,10 @@ I'll try using .leo_xresources file and see if that works as well.
 This prevents "hijacking" an already existing file.
 #@nonl
 #@-node:ekr.20031218072017.740:Disallow writes outside a "top-level" folder
-#@+node:ekr.20040213090121:* Insert at end
-@nocolor
-
-By: tibi ( Thiébaut Champenier ) 
- inserting a new node   
-2004-02-13 13:23  
-
- Hi,
-
-When doing ctrl+i I on the node that has children I would prefer Leo to insert the new node as the last children instead of the first. It just makes more sense to me, for exemple when you take a big file and cut it in subnodes you typically start at the top and create new nodes while paging down the file.
-What do you think ?
-To try it just make this little change:
-RCS file: /cvsroot/leo/leo/src/leoCommands.py,v
-retrieving revision 1.76
-diff -r1.76 leoCommands.py
-2516c2516
-< v = current.insertAsNthChild(0)
----
-> v = current.insertAsLastChild()  
-#@nonl
-#@-node:ekr.20040213090121:* Insert at end
 #@+node:ekr.20040311022923:Make sentinel name in @-node optional
 #@-node:ekr.20040311022923:Make sentinel name in @-node optional
-#@+node:ekr.20050116094523:Option not to write marks/expansion attributes in .leo files
-@
-
-I suppose the rationale is that they interfere with comparing .leo files, but so what?
-#@nonl
-#@-node:ekr.20050116094523:Option not to write marks/expansion attributes in .leo files
-#@+node:ekr.20060227163911:@bool enable_autocomplete_in_nocolor
-#@-node:ekr.20060227163911:@bool enable_autocomplete_in_nocolor
 #@-node:ekr.20041228085245:Options & settings
 #@+node:ekr.20041228090855.2:Plugins
-#@+node:ekr.20060111152145:Improve scripts menu plugin
-- Organize scripts menu from subfolders of leo/scripts folder.
-
-- Create minibuffer commands for each script?
-#@nonl
-#@-node:ekr.20060111152145:Improve scripts menu plugin
 #@+node:ekr.20041022083005.3:@path and other directives accept python expressions
 #@-node:ekr.20041022083005.3:@path and other directives accept python expressions
 #@+node:ekr.20031218072017.797:Allow @file http & @file ftp
@@ -3554,205 +3437,10 @@ Scott Powell
 CEO, Dev Designs
 #@-node:ekr.20031218072017.810:Remote access Scott Powell
 #@-node:ekr.20031218072017.797:Allow @file http & @file ftp
-#@+node:ekr.20040123102724.2:Templates (already done?)
-@nocolor
-#@nonl
-#@+node:ekr.20040123102724.3:daliuslt
-https://sourceforge.net/forum/message.php?msg_id=2385991
-By: nobody
-
-I often found myself using the same template for many projects but something differs in them. E.g. name of files. So my offer is add new directive variable:
-
-@variable ProjectName MyFunProject
-
-Later in parent node, child nodes or headers I could use this as:
-
-$(ProjectNode).py or smth. similar.
-This line when tangling could be replaces with
-MyFunProject.py
-
-Of course, there comes some complexity with untangling, but it is just an offer :)
-
-Dalius
-#@-node:ekr.20040123102724.3:daliuslt
-#@+node:ekr.20040123102724.4:Rich: @constant
-https://sourceforge.net/forum/message.php?msg_id=2386199
-By: nobody
-
-Dalius-
-FWIW, I like it! I also can think of a LOAD of variations (i.e., multi-line
-variables, etc.), but I'll limit myself to one thing: 'variable' by definition
-should be changeable. May I suggest you call the directive "@constant"?
-
---Rich
-#@nonl
-#@-node:ekr.20040123102724.4:Rich: @constant
-#@+node:ekr.20040123102724.5:paulpaterson
-https://sourceforge.net/forum/message.php?msg_id=2386359
-By: paulpaterson
-
-I like this idea because I think templating is an important "design pattern"
-that Leo could usefully support. Currently you can only do this in a limited
-way by cloning nodes across derived files, which is something Edward doesn't
-like to do because it makes reading derived files ambiguous (same information
-in more than one place). I still do this because I rarely read files into Leo,
-I mostly explicitely tangle files out of Leo.
-
-Back to your idea ;) ISTM that your idea works well for directives (you can
-do the variable substitution) but for general text (where I think there is a
-bigger gain) there are two issues,
-
-1. The template itself is now present in multiple derived files (see above)
-
-2. The file derived from the template has now lost the variable name because
-it was substituted out for the variable value
-
-The end result is that templated files would almost certainly have to be a one
-way street for Leo - they are derived from the Leo file but never read back
-in. If you don't mind having this restriction, which basically means you have
-to use @root nodes, then I don't see a problem.
-
-Presumably most of this could all be done with a tangle_done script - the only
-problem is how to change directives.
-#@nonl
-#@-node:ekr.20040123102724.5:paulpaterson
-#@+node:ekr.20040123102724.6:daliuslt
-http://sourceforge.net/forum/message.php?msg_id=2389750
-By: daliuslt
-
-Just for your interests where is one way to create constants in leo (even multiline).
-Let's way we have outline:
-
-+-[ ] @file-nosent objects.mak
-|   +-[clone] << my_const >>
-+-[ ] @file-nosent makefile
-    +-[close] << my_const >>
-
-objects.mak is:
---
-<< my_const >>.o:
-gcc -g -c << my_const >>.c -o << my_const >>.o
-
-<< my_const >>cmd.o:
-gcc -g -c << my_const >>cmd.c -o << my_const >>cmd.o
---
-
-makefile is
---
-<< my_const >>:
-gcc << my_const >>.o << my_const >>cmd.o -o << my_const >>
---
-
-<< my_const >> can be:
-test
-
-While it works pretty good it still have some drawbacks:
-1. You are forced to use @file-nosent. You can edit your files outside of Leo.
-2. You can't use << my_const >> in header lines, while it would be really nice
-if you could write
-@file-nosent obj_<< my_const >>.mak
-(Leo lacks introspection?)
-3. Result is not 100% what you expect.
-
----
-
-(constant = variable = define) ???
-
-Constants and clones in fact are the same. Usually clones are used like symbolic
-links (or shortcuts) not like clones or constants. I think this could be
-separated.
-
-Constants could be read back into leo. E.g.: you have constant value in leo
-file and while reading back files to outline you change all values with constant
-name.
-
-I hope I am clear :)
-Dalius
-#@nonl
-#@-node:ekr.20040123102724.6:daliuslt
-#@-node:ekr.20040123102724.2:Templates (already done?)
-#@+node:ekr.20060125113540:Specify open-with bindings from settings
-Maybe the entire table should be specified this way.
-#@nonl
-#@-node:ekr.20060125113540:Specify open-with bindings from settings
 #@+node:ekr.20040124074218.3:pyGtk plugin
 #@-node:ekr.20040124074218.3:pyGtk plugin
 #@-node:ekr.20041228090855.2:Plugins
 #@+node:ekr.20041228092223.3:Scripting
-#@+node:ekr.20041004193600:Add safeguards on @button and @script
-#@+node:ekr.20041004193600.1:Paul's first posting
-@killcolor
-http://sourceforge.net/forum/message.php?msg_id=2788477
-By: paulpaterson
-
-Perhaps some minor bridling ...
-
-What about managing the security of scripts using some algorithm like this,
-
-1. When Leo scans for @buttons, @scripts etc it makes a list of scripts
-2. For each script ...
-3.   Calculate a secure hash of the script contents
-4.   Consult central repository to see if hash is recognized
-5.   If hash recognized
-6.     Accept it
-7.   Else
-8.     Force user to acknowledge the script or disable it
-
-The cental repository could be a file in your Leo directory which stores "approved"
-hashes.
-
-Clicking on a @buttons, @script node and selecting "Approve script" would add
-the hash to the repository. Selecting "Disable script" would remove it. There
-could also be a menu item to bring up a window of approved/not approved script
-nodes so that you could centrally manage them.
-
-
-Additional housekeeping on the list of hashes is possible but probably isn't
-required since the size is small and there shouldn't be any collisions. If required
-you could just blow away the file and then re-enable all scripts.
-
-Using this approach, no new script would be able to run without being enabled
-by the user. There is still the possibility that another plugin or script could
-disable the security mechanism or tamper with the repository but with Leo's
-architecture a plugin could already do anything anyway so this isn't an additional
-hole.
-
-It would protect from 
-
-@script
-import os
-os.system("del *.*")
-
-being submitted to an OS project!
-#@nonl
-#@-node:ekr.20041004193600.1:Paul's first posting
-#@+node:ekr.20041005075955:Pault's second posting
-@killcolor
-
-http://sourceforge.net/forum/message.php?msg_id=2789123
-By: paulpaterson
-
-I'm not an expert but from the Python docs this looks like the way to do it,
-
-> import sha
-> s = sha.sha("hello there")
-> s.hexdigest()
-'6e71b3cac15d32fe2d36c270887df9479c25c640'
-
-> s = sha.sha("hello there hacked")
-'a42837bba84c53cabd52a98f3671809d475c707f'
-
-It looks like the md5 module offers a similar function but uses less bits.
-
-From what I understand the hexdigest should be different for any change in the
-text. Also no two strings should give the same hash (although I seem to recall
-that someone found a collision recently).
-#@-node:ekr.20041005075955:Pault's second posting
-#@+node:ekr.20041003115036:Add --noscripting command-line option
-This will disable @button, @script, etc.
-#@nonl
-#@-node:ekr.20041003115036:Add --noscripting command-line option
-#@-node:ekr.20041004193600:Add safeguards on @button and @script
 #@+node:ekr.20031218072017.733:Execute scripts like IDE's do (does executeFile do this?)
 @nocolor
 
@@ -3869,115 +3557,6 @@ Edward
 #@-node:ekr.20050108051818:Add hyperlinks for url's
 #@+node:ekr.20041022083005.2:add a Stop button for find/change
 #@-node:ekr.20041022083005.2:add a Stop button for find/change
-#@+node:ekr.20031218072017.746:Minimizing/maximizing windows
-@nocolor
-
-Open Discussion
-https://sourceforge.net/forum/message.php?msg_id=2090601
-By: jasonic
-
-I'll be happy to run some test and report to you. But  I suspect from your post
-a slight misunderstanding about Alt+Tab.
-
-Alt+Tab just toggles the active window.
-It works fine with Leo on Windows wherver I have tried it.
-
-Resizing wondows via hotkeys is another matter.
-The special "Windows" Key + m will minimize all windows. 
-
-But unfortunately I've not yet discovered any opposite shortcut to  maximize
-all windows :-(
-I've tried various 3rd party hotkey utililties, but somehow always end up dropping
-them.
-
-<rant>
-I really hate wasting any time dragging windows around and resizing them or
-clicking to bring them into top focus. As I work mainly with graphics, and mult-task
-intesenlty bwetn apps,  it is especially important to reduce visual clutter
-on screen.
-
-For many years the way to do this has been combining maximized [or minimized]
-windows with  Alt+Tab. Alt+Tab  lets one jump rapidly betwen open apps and windows
-without ever need to repostion or resize them.
-
-As a consultant, its one of the first things I ever teach clients. Often it
-transforms their perception of using Windows.
-
-It is so painful to watch people dragging and rescaling  windows all over the
-place. Ironically, I've witnessed some very smart programmers fly through vi
-or emacs but then slow to tortoises when navigation mice and windows. I beleive
-as long as we have the curertn wnidows UI paradigm,  use of Alt+Tab is an essential
-part of  GUI 'litteracy' - an essentail skill all shoudl have. Alas its still
-little known or discussed.
-
-There is also a nice toggle feature so one can jump back to the last app/window
-as its first "stop". Typically one is working between two apps for some specific
-task, even though many are open.
-
-Keeping one's finger on the 'Alt' key then tapping 'Tab' lets one hop along
-the list.
-
-Adding 'shift' to the mix helps one to go in reverse. 
-
-Above all one can keep one hand on the mouse, the other on the keyboard [ALt+Tab]
-and ones mind/eye on teh screen. For me it means left hand "plays" the bass
-pattern using Alt+Tab along with the clipboard shortcuts [CTRL+ z,x,c,v] ,while
-right hand on the mouse mouse  provides the melody.
-
-I've been using variations on the above since 1987 when I bought an Amiga2000.
-I seem to recall SGI had one also. And after learning about Alt+Tab on windows,
-I  found a utility to work the same way on Macintosh.  I am very happy to discover
-that MacOSX now has built-in ALt+Tab :-)
-</rant>
-
-Meanwhile, Iam  still wondering how to set Leo [3.12 beta 1, Python 2.2.2, Tk
-8.3.2] default to a maxmimized or minimized window size by itself.
-
-And also to remember the last size/position it had. I vaguely remember that
-it used to do that, but perhaps I am mistaking it for some other software ?
-
-thanks
-Jason
-#@-node:ekr.20031218072017.746:Minimizing/maximizing windows
-#@+node:ekr.20031218072017.852:Scroll improvement
-@nocolor
-
-By: jwashin ( James Washington ) 
- Scrolling and the Tree Frame in Linux   
-2003-10-20 12:13  
-
-I'm using tk-8.4.3, python-2.2.3 on linux. The MouseWheel events do not work for me in the Tree Frame.
-
-I added <Button-4> and <Button-5> bindings similar to the existing <MouseWheel> binding in LeoFrame.finishCreate(), associating them with two methods, LeoFrame.OnMouseScrollDown and LeoFrame.OnMouseScrollUp that took the appropriate parts of OnMouseWheel()
-
-Now it works, sort-of. It scrolls properly unless the cursor is an I-Bar, e.g., over text. But at least this removes in-part the most glaring UI problem for me with Leo in tk. I suppose I am spoiled with the mouse wheel and want it to work everywhere.
-
-Thanks for the great program.
-
--- Jim Washington  
-#@-node:ekr.20031218072017.852:Scroll improvement
-#@+node:ekr.20040220110030:Change cursor when caps lock is down
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=2431552
-By: nobody
-
-From: Rich
-
- I just got nipped twice by the following effect: the Caps-Lock key is ON, but
-because the LED is on the Caps-Lock key, it is hidden behind my hand. I hit
-Ctrl-x, expecting to cut my selection, but the entire node is cut.
-
-   I know there's a problem with tk and the shift key status, so I'm wondering
-if it would be possible to change the shape of the cursor when the Caps-Lock
-is ON (preferrably a big red flashing blot 8-), or otherwise show that Caps-Lock
-is active ( "CAPS" on a status line, for instance).
-
-  Another way: I don't know if this goes against an "anti-modalism rule," but
-only allowing Ctrl-Shift-x|c|v in the outline pane would also be acceptable
-to me.
-#@nonl
-#@-node:ekr.20040220110030:Change cursor when caps lock is down
 #@+node:ekr.20040908104644:Leo splash screen
 To create a splash screen:
     
@@ -3986,17 +3565,6 @@ To create a splash screen:
 #@+node:ekr.20040908221501:@url http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/120687
 #@-node:ekr.20040908221501:@url http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/120687
 #@-node:ekr.20040908104644:Leo splash screen
-#@+node:ekr.20031218072017.743:Note window for each node
-http://sourceforge.net/forum/message.php?msg_id=2205285
-From: Rich
-
-I envision a short window at the bottom of the edit window that could hold notes
-and comments about the code, such as "Test this harder" or "Find a better way of
-phrasing this". This is currently available in uSoft Office and the Eclipse IDE
-(http://www.eclipse.org). Perhaps a numeric reference, such as "<<1>>" could be
-used.
-#@nonl
-#@-node:ekr.20031218072017.743:Note window for each node
 #@-node:ekr.20041228092223.4:Windows
 #@+node:ekr.20041228094138:4.5  LeoN and collaboration
 This may not be so big a project.  LeoN already exists.
@@ -4433,11 +4001,6 @@ def createBindings (self,w=None):
 #@nonl
 #@-node:EKR.20040604082214:Use virtual events for Copy, Paste etc.
 #@-node:ekr.20041007052853:(Fix problems with paste on Linux)
-#@+node:ekr.20031218072017.736:Use xml parser to read .leo files
-http://www.reportlab.com
-
-import xml.sax
-#@-node:ekr.20031218072017.736:Use xml parser to read .leo files
 #@+node:ekr.20031218072017.995:(Incremental update of screen)
 @ignore
 @nocolor
@@ -4853,6 +4416,39 @@ def next(self):
 #@-node:ekr.20040812170616:Pyrex versions of key classes
 #@-node:ekr.20041228084143:Maybe never
 #@+node:ekr.20040123102724:Can't or won't
+#@+node:ekr.20040220110030:Change cursor when caps lock is down
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=2431552
+By: nobody
+
+From: Rich
+
+ I just got nipped twice by the following effect: the Caps-Lock key is ON, but
+because the LED is on the Caps-Lock key, it is hidden behind my hand. I hit
+Ctrl-x, expecting to cut my selection, but the entire node is cut.
+
+   I know there's a problem with tk and the shift key status, so I'm wondering
+if it would be possible to change the shape of the cursor when the Caps-Lock
+is ON (preferrably a big red flashing blot 8-), or otherwise show that Caps-Lock
+is active ( "CAPS" on a status line, for instance).
+
+  Another way: I don't know if this goes against an "anti-modalism rule," but
+only allowing Ctrl-Shift-x|c|v in the outline pane would also be acceptable
+to me.
+#@nonl
+#@-node:ekr.20040220110030:Change cursor when caps lock is down
+#@+node:ekr.20031218072017.743:Note window for each node
+http://sourceforge.net/forum/message.php?msg_id=2205285
+From: Rich
+
+I envision a short window at the bottom of the edit window that could hold notes
+and comments about the code, such as "Test this harder" or "Find a better way of
+phrasing this". This is currently available in uSoft Office and the Eclipse IDE
+(http://www.eclipse.org). Perhaps a numeric reference, such as "<<1>>" could be
+used.
+#@nonl
+#@-node:ekr.20031218072017.743:Note window for each node
 #@+node:ekr.20060610193837:open python window does not appear to work on Solaris
 @nocolor
 
