@@ -411,18 +411,22 @@ class leoMenu:
     def createCmndsMenuFromTable (self):
         
         cmdsMenu = self.createNewMenu('&Cmds')
-        self.createMenuEntries(cmdsMenu,self.cmdsMenuTopTable)
+        
+        if 0: # Now in the minibuffer table.
+            # Used in top table: q,u,x
+            self.createMenuEntries(cmdsMenu,self.cmdsMenuTopTable)
     
         for name,table in (
-            # Used in top table: q,u,x
-            # &: a,b,c,d,f,g,h,m,n,o,p,r,s,t
+            # &: a,b,c,d,f,g,h,i,m,n,o,p,r,s,t
             ('&Abbrev...',          self.cmdsMenuAbbrevTable),
             ('Body E&ditors',       self.cmdsMenuBodyEditorsTable),
             ('&Buffers...',         self.cmdsMenuBuffersTable),
             ('&Cursor/Selection...',[]),
             ('&Focus...',           self.cmdsMenuFocusTable),
             ('&Macro...',           self.cmdsMenuMacroTable),
+            ('M&inibuffer',         self.cmdsMenuMinibufferTable),
             ('&Panes...',           self.cmdsMenuPanesTable),
+            ('Pic&kers...',         self.cmdsMenuPickersTable),
             ('&Rectangles...',      self.cmdsMenuRectanglesTable),
             ('Re&gisters...',       self.cmdsMenuRegistersTable),
             ('Scr&olling...',       self.cmdsMenuScrollTable),
@@ -912,7 +916,8 @@ class leoMenu:
     #@+node:ekr.20050921103230:defineCmdsMenuTables & helpers
     def defineCmdsMenuTables (self):
         
-        self.defineCmdsMenuTopTable()
+        if 0: # Replaced by minibuffer submenu.
+            self.defineCmdsMenuTopTable()
     
         self.defineCmdsMenuAbbrevTable()
         self.defineCmdsMenuBodyEditorsTable()
@@ -920,7 +925,9 @@ class leoMenu:
         self.defineCmdsMenuCursorTable()
         self.defineCmdsMenuFocusTable()
         self.defineCmdsMenuMacroTable()
+        self.defineCmdsMenuMinibufferTable()
         self.defineCmdsMenuPanesTable()
+        self.defineCmdsMenuPickersTable()
         self.defineCmdsMenuRectanglesTable()
         self.defineCmdsMenuRegistersTable()
         self.defineCmdsMenuScrollTable()
@@ -928,7 +935,7 @@ class leoMenu:
         self.defineCmdsMenuTextTable()
         self.defineCmdsMenuToggleTable()
     #@nonl
-    #@+node:ekr.20060117094955: defineCmdsMenuTopTable
+    #@+node:ekr.20060117094955: defineCmdsMenuTopTable: no longer used
     def defineCmdsMenuTopTable (self):
         
         self.cmdsMenuTopTable = [
@@ -937,11 +944,9 @@ class leoMenu:
             'keyboard-&quit',
             '-',
         ]
-    #@-node:ekr.20060117094955: defineCmdsMenuTopTable
+    #@-node:ekr.20060117094955: defineCmdsMenuTopTable: no longer used
     #@+node:ekr.20060117094955.1:defineCmdsMenuAbbrevTable
     def defineCmdsMenuAbbrevTable (self):
-        
-        c = self.c
         
         self.cmdsMenuAbbrevTable = [
             # &: a,e,i,k,l,r,w,v
@@ -986,8 +991,6 @@ class leoMenu:
     #@+node:ekr.20060924124119:defineCmdsMenuCursorTable
     def defineCmdsMenuCursorTable (self):
     
-        c = self.c
-        
         self.cursorMenuBackTable = [
             # &: b,c,l,p,s,v,w
             'back-&char',
@@ -1052,8 +1055,6 @@ class leoMenu:
     #@+node:ekr.20060923060822:defineCmdsMenuFocusTable
     def defineCmdsMenuFocusTable (self):
     
-        c = self.c
-    
         self.cmdsMenuFocusTable = [
             '&cycle-all-focus',
             'focus-to-&body',          
@@ -1064,8 +1065,6 @@ class leoMenu:
     #@-node:ekr.20060923060822:defineCmdsMenuFocusTable
     #@+node:ekr.20060117114315:defineCmdsMenuMacroTable
     def defineCmdsMenuMacroTable (self):
-    
-        c = self.c
     
         self.cmdsMenuMacroTable = [
             '&load-file',
@@ -1078,10 +1077,23 @@ class leoMenu:
             '&insert-keyboard-macro',
         ]
     #@-node:ekr.20060117114315:defineCmdsMenuMacroTable
+    #@+node:ekr.20061011084101.1:defineCmdsMenuMinibufferTable
+    def defineCmdsMenuMinibufferTable (self):
+        
+        self.cmdsMenuMinibufferTable = [
+            # &: f,h,i,q,r,s 
+            '&full-command',
+            'keyboard-&quit',
+            '&repeat-complex-command',
+            '-',
+            '&show-mini-buffer',
+            'h&ide-mini-buffer',
+            '-',
+            '&help-for-minibuffer',
+        ]
+    #@-node:ekr.20061011084101.1:defineCmdsMenuMinibufferTable
     #@+node:ekr.20060924120752:defineCmdsMenuPanesTable
     def defineCmdsMenuPanesTable (self):
-    
-        c = self.c
     
         self.cmdsMenuPanesTable = [
             # &: a,b,d,f,l,n,o,p,u,x,y
@@ -1103,10 +1115,18 @@ class leoMenu:
         
     #@nonl
     #@-node:ekr.20060924120752:defineCmdsMenuPanesTable
+    #@+node:ekr.20061011085641:defineCmdsMenuPickersTable
+    def defineCmdsMenuPickersTable (self):
+        
+        self. cmdsMenuPickersTable = [
+            'show-&colors',
+            'show-find-&options',
+            'show-&fonts',
+        ]
+    #@nonl
+    #@-node:ekr.20061011085641:defineCmdsMenuPickersTable
     #@+node:ekr.20060117095212.2:defineCmdsMenuRectanglesTable
     def defineCmdsMenuRectanglesTable (self):
-    
-        c = self.c
     
         self.cmdsMenuRectanglesTable = [
             '&clear-rectangle',
@@ -1120,8 +1140,6 @@ class leoMenu:
     #@-node:ekr.20060117095212.2:defineCmdsMenuRectanglesTable
     #@+node:ekr.20060117095212.1:defineCmdsMenuRegistersTable
     def defineCmdsMenuRegistersTable (self):
-    
-        c = self.c
     
         self.cmdsMenuRegistersTable = [
             # &: a,c,e,i,j,n,p,r,v
@@ -1139,8 +1157,6 @@ class leoMenu:
     #@-node:ekr.20060117095212.1:defineCmdsMenuRegistersTable
     #@+node:ekr.20060923060822.1:defineCmdsMenuScrollTable
     def defineCmdsMenuScrollTable (self):
-    
-        c = self.c
     
         self.cmdsMenuScrollTable = [
             # &: c,d,e,f,l,o,p,r,v,x
@@ -1162,8 +1178,6 @@ class leoMenu:
     #@+node:ekr.20060117095212.7:defineCmdsMenuSpellCheckTable
     def defineCmdsMenuSpellCheckTable (self):
     
-        c = self.c
-    
         self.cmdsMenuSpellCheckTable = [
             '&open-spell-tab',
             'spell-&change',
@@ -1174,8 +1188,6 @@ class leoMenu:
     #@-node:ekr.20060117095212.7:defineCmdsMenuSpellCheckTable
     #@+node:ekr.20060924161901:defineCmdsMenuTextTable
     def defineCmdsMenuTextTable (self):
-    
-        c = self.c
     
         self.cmdsMenuTextTable = [
             # &: b,c,d,e,f,g,i,l,m,n,o,p,r,s,u,y
@@ -1252,23 +1264,19 @@ class leoMenu:
     #@+node:ekr.20031218072017.3774:defineHelpMenuTables
     def defineHelpMenuTables (self):
         
-        __pychecker__ = 'no-unusednames=c,f'
-        
-        c = self.c ; f = self.frame
-    
         self.helpMenuTable = [
             # &: a,b,c,d,f,h,l,m,n,o,p,r,s,t,u
-            ("&About Leo...",           c.about),
-            ("Online &Home Page",       c.leoHome),
-            ("Open Online &Tutorial",   c.leoTutorial),
-            ("Open &Users Guide",       c.leoUsersGuide),
+            ("&About Leo...",           'about-leo'),
+            ("Online &Home Page",       'open-online-home'),
+            ("Open Online &Tutorial",   'open-online-tutorial'),
+            ("Open &Users Guide",       'open-users-guide'),
             '-',
-            ("Open Leo&Docs.leo",       c.leoDocumentation),
-            ("Open Leo&Plugins.leo",    c.openLeoPlugins),
-            ("Open Leo&Settings.leo",   c.openLeoSettings),
-            ("Open &myLeoSettings.leo", c.openMyLeoSettings),
+            ("Open Leo&Docs.leo",       'open-leoDocs-leo'),
+            ("Open Leo&Plugins.leo",    'open-leoPlugins-leo'),
+            ("Open Leo&Settings.leo",   'open-leoSettings-leo'),
+            ("Open &myLeoSettings.leo", 'open-myLeoSettings-leo'),
             '-',
-            'he&lp',
+            'he&lp-for-minibuffer',
             'help-for-&command',
             '-',
             '&apropos-autocompletion',
