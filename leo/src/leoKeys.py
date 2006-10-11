@@ -343,7 +343,6 @@ class autoCompleterClass:
             self.prefix = ''
             self.selection = g.app.gui.getTextSelection(w)
             self.selectedText = g.app.gui.getSelectedText(w)
-            # self.getLeadinWord(w)
             self.leadinWord = self.findCalltipWord(w)
             self.object = None
             self.membersList = None
@@ -456,7 +455,7 @@ class autoCompleterClass:
             f = __builtins__.get(self.leadinWord)
             doc = f and type(f) != types.ClassType and f.__doc__
             if doc:
-                g.trace(doc)
+                # g.trace(doc)
                 s = g.splitLines(doc)
                 s = args = s and s [0] or ''
                 i = s.find('(')
