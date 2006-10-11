@@ -1580,7 +1580,7 @@ def defineHelpMenuTables (self):
         '-',
         ("Open Leo&Docs.leo",       'open-leoDocs-leo'),
         ("Open Leo&Plugins.leo",    'open-leoPlugins-leo'),
-        ("Open Leo&Settings.leo",   'open-leoSetting-leo'),
+        ("Open Leo&Settings.leo",   'open-leoSettings-leo'),
         ("Open &myLeoSettings.leo", 'open-myLeoSettings-leo'),
         '-',
         'he&lp-for-minibuffer',
@@ -1726,6 +1726,13 @@ Added the node: Candidates for settings in myLeoSettings.leo. This lists the
 most 'controversial' settings in leoSetting.leo, and is a quick-start to
 creating myLeoSettings.leo."
 #@-node:ekr.20061011070742.3:Added 'Candidates for myLeoSettings.leo' to leoSettings.leo
+#@+node:ekr.20061011154712:Recent changes to settings
+- Added shift-ctrl keys to extend the selection.
+focus-to-body = Alt-D
+focus-to-tree = Alt-T
+toggle-extend-mode = Alt-3
+#@nonl
+#@-node:ekr.20061011154712:Recent changes to settings
 #@-node:ekr.20061009154800:Settings
 #@-node:ekr.20060904165452:4.4.2 projects
 #@-all

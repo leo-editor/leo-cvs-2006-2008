@@ -109,6 +109,20 @@ def getMacHelpMenu (self):
         return None
 #@-node:ekr.20060211144330.1:getMacHelpMenu
 #@-node:ekr.20060116083043:Use special Help menu on the Mac
+#@+node:ekr.20061011151640:Warning if minibuffer command does not exist when making menus
+#@-node:ekr.20061011151640:Warning if minibuffer command does not exist when making menus
+#@+node:ekr.20061011131836:Fix new unicode bug
+@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=3957980
+By: dcbbcd
+
+> theConstant = g.toUnicode(theConstant,encoding='ascii')
+
+This is dangerous. string.letters is locale dependent and may contain non ASCII
+characters. You could use string.ascii_characters or get the current encoding.
+
+#@-node:ekr.20061011131836:Fix new unicode bug
 #@+node:ekr.20061008114340:Finish collapse-on-move-left
 @nocolor
 
@@ -151,7 +165,7 @@ EKR: This is on the list of unfixable bugs, but I have a hard time believing the
 #@+node:ekr.20061009152210.1:yank/kill/undo do not work as expected
 http://sourceforge.net/forum/message.php?msg_id=3924236
 #@-node:ekr.20061009152210.1:yank/kill/undo do not work as expected
-#@+node:ekr.20040213090121:* Insert at end
+#@+node:ekr.20040213090121:Insert at end
 @nocolor
 
 By: tibi ( Thiébaut Champenier ) 
@@ -171,34 +185,7 @@ diff -r1.76 leoCommands.py
 ---
 > v = current.insertAsLastChild()  
 #@nonl
-#@-node:ekr.20040213090121:* Insert at end
-#@+node:ekr.20050713105353:Add configuration setting to set menu fonts
-#@+node:ekr.20050713105353.1:Email from Martin Moncrieffe <mcm35@cam.ac.uk>
-@nocolor
-
-I have looked into leo's code and managed to figure out how to change 
-some fonts. Here's what I did to change the menu fonts for example.
-
-Fonts for the menu can be set in Code->Gui Tkinter classes->@thin 
-leoTkinterMenu.py->Tkinter menu bindings->Routines with Tk 
-spellings->new_menu
-
-so to use the system font (linux) I changed the return statement to:
-
-return Tk.Menu(parent,tearoff=tearoff, font=("System",11))
-
-I'll try using .leo_xresources file and see if that works as well.
-#@nonl
-#@-node:ekr.20050713105353.1:Email from Martin Moncrieffe <mcm35@cam.ac.uk>
-#@-node:ekr.20050713105353:Add configuration setting to set menu fonts
-#@+node:ekr.20061011084101:Remove binding of Return?
-@nocolor
-
-The problem with return is that will add a newline to the body pane if typed there by mistake.
-#@nonl
-#@-node:ekr.20061011084101:Remove binding of Return?
-#@+node:ekr.20061011105922:Better binding than Alt-space
-#@-node:ekr.20061011105922:Better binding than Alt-space
+#@-node:ekr.20040213090121:Insert at end
 #@+node:ekr.20061011105922.1:Unit tests for forward/backward move commands
 The must work with unicode characters.  (They do now.)
 #@nonl
@@ -208,6 +195,16 @@ The must work with unicode characters.  (They do now.)
 
 the properties dialog in the plugin menu for datenodes is no longer needed because the settings are stored in LeoSettings.leo. Could you please remove the dialog? 
 #@-node:ekr.20061011110132:Removed properties dialog for datenodes plugin
+#@-node:ekr.20061010115312.1:Urgent
+#@+node:ekr.20061008160553:Asap
+#@+node:ekr.20061011145700:Remove title of body editor when penultimate editor removed
+@nocolor
+
+This may a rewrite of the way-too-complex event handling code for body editors.
+
+@color
+#@nonl
+#@-node:ekr.20061011145700:Remove title of body editor when penultimate editor removed
 #@+node:ekr.20061011111007:@bool autoload_most_recent_leo_file
 @nocolor
 
@@ -218,8 +215,6 @@ http://sourceforge.net/forum/message.php?msg_id=3957908
 @color
 #@nonl
 #@-node:ekr.20061011111007:@bool autoload_most_recent_leo_file
-#@-node:ekr.20061010115312.1:Urgent
-#@+node:ekr.20061008160553:Asap
 #@+node:ekr.20060928194335:Fix bug: closing a window after removing a script button can crash
 #@-node:ekr.20060928194335:Fix bug: closing a window after removing a script button can crash
 #@+node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
@@ -695,6 +690,25 @@ left.
 #@-node:ekr.20060915175024:Maintain vertical node position if possible
 #@+node:ekr.20060929084830.1:Suppress redraw on all applicable outline:goto commands
 #@-node:ekr.20060929084830.1:Suppress redraw on all applicable outline:goto commands
+#@+node:ekr.20050713105353:Add configuration setting to set menu fonts
+#@+node:ekr.20050713105353.1:Email from Martin Moncrieffe <mcm35@cam.ac.uk>
+@nocolor
+
+I have looked into leo's code and managed to figure out how to change 
+some fonts. Here's what I did to change the menu fonts for example.
+
+Fonts for the menu can be set in Code->Gui Tkinter classes->@thin 
+leoTkinterMenu.py->Tkinter menu bindings->Routines with Tk 
+spellings->new_menu
+
+so to use the system font (linux) I changed the return statement to:
+
+return Tk.Menu(parent,tearoff=tearoff, font=("System",11))
+
+I'll try using .leo_xresources file and see if that works as well.
+#@nonl
+#@-node:ekr.20050713105353.1:Email from Martin Moncrieffe <mcm35@cam.ac.uk>
+#@-node:ekr.20050713105353:Add configuration setting to set menu fonts
 #@-node:ekr.20061008160553:Asap
 #@+node:ekr.20061009152210:Docs
 @nocolor
