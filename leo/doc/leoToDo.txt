@@ -2,15 +2,7 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20060927172440:To do before 4.4.2 b3
-#@+node:ekr.20061010115312.1:Urgent: 5
-#@+node:ekr.20060927173836.1:Disable calltips in @nocolor sections
-@nocolor
-
-Why are calltips enabled at all??
-
-Show calltips treats the node as code, and that can have very weird effects in @nocolor sections.
-#@nonl
-#@-node:ekr.20060927173836.1:Disable calltips in @nocolor sections
+#@+node:ekr.20061010115312.1:Urgent: 4
 #@+node:ekr.20051112080017:delete-x-script-button
 @nocolor
 
@@ -51,7 +43,7 @@ To do:
 #@+node:ekr.20061009152210.1:yank/kill/undo do not work as expected
 http://sourceforge.net/forum/message.php?msg_id=3924236
 #@-node:ekr.20061009152210.1:yank/kill/undo do not work as expected
-#@-node:ekr.20061010115312.1:Urgent: 5
+#@-node:ekr.20061010115312.1:Urgent: 4
 #@+node:ekr.20061008160553:Asap
 #@+node:ekr.20060928194335:Fix bug: closing a window after removing a script button can crash
 #@-node:ekr.20060928194335:Fix bug: closing a window after removing a script button can crash

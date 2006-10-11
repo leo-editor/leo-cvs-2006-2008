@@ -966,27 +966,15 @@ def prettyPrintKey (self,stroke,brief=False):
     return g.choose(brief,s,'<%s>' % s)
 #@-node:ekr.20060201083154:k.prettyPrintKey
 #@-node:ekr.20061008091617:Fixed bug: with Alt-n keys
+#@+node:ekr.20061010192251:Fix bug in ops plugin
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3956836
+
+p.clone(p) -> p.clone() in the big reorg.
+#@-node:ekr.20061010192251:Fix bug in ops plugin
 #@-node:ekr.20061010104745:Bugs
 #@+node:ekr.20061010115312:Features
-#@+node:ekr.20061009153818:Added @bool select_all_text_when_editing_headlines
-A highly useful option
-#@+node:ekr.20040803072955.135:setEditLabelState
-def setEditLabelState (self,p): # selected, editing
-
-    c = self.c ; w = c.edit_widget(p)
-
-    if p and w:
-        c.widgetWantsFocusNow(w)
-        self.setEditHeadlineColors(p)
-        w.tag_remove('sel','1.0','end')
-        start = g.choose(c.config.getBool('select_all_text_when_editing_headlines'),'1.0','end')
-        w.tag_add('sel',start,'end')
-    else:
-        g.trace('no edit_widget')
-        
-setNormalLabelState = setEditLabelState # For compatibility.
-#@-node:ekr.20040803072955.135:setEditLabelState
-#@-node:ekr.20061009153818:Added @bool select_all_text_when_editing_headlines
 #@+node:ekr.20061009152554:Removed .leoRecentFiles.txt from distribution and cvs
 @nocolor
 
@@ -1200,6 +1188,98 @@ def writeRecentFilesFileHelper (self,fileName):
 As always, you can set max_undo_stack_size in myLeoSettings.leo.
 #@nonl
 #@-node:ekr.20061009153504:Made unlimited undo the default
+#@+node:ekr.20061009153818:Added @bool select_all_text_when_editing_headlines
+A highly useful option.
+However, creating a new node always selects the entire text, regardless of this options.
+#@+node:ekr.20040803072955.135:setEditLabelState
+def setEditLabelState (self,p,selectAll=False): # selected, editing
+
+    c = self.c ; w = c.edit_widget(p)
+
+    if p and w:
+        c.widgetWantsFocusNow(w)
+        self.setEditHeadlineColors(p)
+        w.tag_remove('sel','1.0','end')
+        selectAll = selectAll or c.config.getBool('select_all_text_when_editing_headlines')
+        start = g.choose(selectAll,'1.0','end')
+        w.tag_add('sel',start,'end')
+    else:
+        g.trace('no edit_widget')
+        
+setNormalLabelState = setEditLabelState # For compatibility.
+#@-node:ekr.20040803072955.135:setEditLabelState
+#@+node:ekr.20040803072955.127:editLabel
+def editLabel (self,p,selectAll=False):
+    
+    """Start editing p's headline."""
+
+    c = self.c
+
+    if self.editPosition() and p != self.editPosition():
+        c.beginUpdate()
+        try:
+            self.endEditLabel()
+        finally:
+            c.endUpdate(False)
+
+    self.setEditPosition(p) # That is, self._editPosition = p
+    
+    if self.trace_edit and not g.app.unitTesting:
+        g.trace(p.headString(),g.choose(c.edit_widget(p),'','no edit widget'))
+
+    if p and c.edit_widget(p):
+        self.revertHeadline = p.headString() # New in 4.4b2: helps undo.
+        self.setEditLabelState(p,selectAll=selectAll) # Sets the focus immediately.
+        c.headlineWantsFocus(p) # Make sure the focus sticks.
+#@-node:ekr.20040803072955.127:editLabel
+#@+node:ekr.20031218072017.1761:c.insertHeadline
+def insertHeadline (self,event=None,op_name="Insert Node"):
+    
+    '''Insert a node after the presently selected node.'''
+
+    c = self ; u = c.undoer
+    current = c.currentPosition()
+    
+    if not current: return
+
+    c.beginUpdate()
+    try:
+        undoData = c.undoer.beforeInsertNode(current)
+        # Make sure the new node is visible when hoisting.
+        if ((current.hasChildren() and current.isExpanded()) or
+            (c.hoistStack and current == c.hoistStack[-1].p)):
+            p = current.insertAsNthChild(0)
+        else:
+            p = current.insertAfter()
+        dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+        c.setChanged(True)
+        u.afterInsertNode(p,op_name,undoData,dirtyVnodeList=dirtyVnodeList)
+    finally:
+        c.endUpdate()
+    c.beginUpdate()
+    try:
+        c.editPosition(p,selectAll=True)
+    finally:
+        c.endUpdate(False)
+
+    return p # for mod_labels plugin.
+#@-node:ekr.20031218072017.1761:c.insertHeadline
+#@+node:ekr.20031218072017.2991:c.editPosition
+# Selects v: sets the focus to p and edits p.
+
+def editPosition(self,p,selectAll=False):
+
+    c = self ; k = c.k
+
+    if p:
+        c.selectPosition(p)
+        c.frame.tree.editLabel(p,selectAll=selectAll)
+        
+        if k:
+            k.setDefaultUnboundKeyAction()
+            k.showStateAndMode()
+#@-node:ekr.20031218072017.2991:c.editPosition
+#@-node:ekr.20061009153818:Added @bool select_all_text_when_editing_headlines
 #@-node:ekr.20061009154800:Settings
 #@-node:ekr.20060904165452:4.4.2 projects
 #@-all

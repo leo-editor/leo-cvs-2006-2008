@@ -74,7 +74,7 @@ open_with.py
 #nav_buttons.py
 #base64Packager.py
 #EditAttributes.py
-#groupOperations.py
+groupOperations.py
 #xsltWithNodes.py
 #cleo.py
 #mod_read_dir_outline.py
