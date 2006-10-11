@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="71" left="252" height="615" width="801"/>
+	<global_window_position top="71" left="252" height="733" width="937"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -44,6 +44,29 @@
 <v t="ekr.20060112105523"><vh>doShortcuts</vh></v>
 <v t="ekr.20060112104333.1"><vh>checkSets</vh></v>
 <v t="ekr.20060112104823"><vh>main</vh></v>
+</v>
+</v>
+<v t="ekr.20061011082224" a="TV"><vh>Candidates for settings in myLeoSettings.leo</vh>
+<v t="ekr.20060930085532"><vh>@bool collapse_nodes_during_finds = True</vh></v>
+<v t="ekr.20060215102141"><vh>@bool ignore_unbound_non_ascii_keys = False</vh></v>
+<v t="ekr.20061007211759"><vh>@bool sparse_move_outline_left = True</vh></v>
+<v t="ekr.20060926160657"><vh>@bool stayInTreeAfterEditHeadline = False</vh></v>
+<v t="ekr.20060122105527.7"><vh>@bool stayInTreeAfterSelect = True</vh></v>
+<v t="ekr.20060127050605"><vh>@int max_undo_stack_size = 0</vh></v>
+<v t="ekr.20041119034357.31"><vh>@int tab_width = -4</vh></v>
+<v t="ekr.20041119050105.3"><vh>Checkboxes in the Find panel</vh>
+<v t="ekr.20041119050105.4"><vh>@bool batch = False</vh></v>
+<v t="ekr.20041119050105.5"><vh>@bool ignore_case = True</vh></v>
+<v t="ekr.20041119050105.6"><vh>@bool mark_changes = False</vh></v>
+<v t="ekr.20041119050105.7"><vh>@bool mark_finds = False</vh></v>
+<v t="ekr.20041119050105.12"><vh>@bool node_only = False</vh></v>
+<v t="ekr.20041119050105.9"><vh>@bool reverse = False</vh></v>
+<v t="ekr.20041119050105.8"><vh>@bool pattern_match = False</vh></v>
+<v t="ekr.20041120152657"><vh>@bool script_change = None</vh></v>
+<v t="ekr.20041119050105.14"><vh>@bool search_body = True</vh></v>
+<v t="ekr.20041119050105.15"><vh>@bool search_headline = False</vh></v>
+<v t="ekr.20041119050105.10"><vh>@bool whole_word = False</vh></v>
+<v t="ekr.20041119050105.11"><vh>@bool wrap = False</vh></v>
 </v>
 </v>
 <v t="ekr.20041119034357.1" annotate="7d71002e"><vh>@settings</vh>
@@ -247,7 +270,7 @@
 <v t="ekr.20060204124608"><vh>@bool minibufferSearchesShowFindTab = True</vh></v>
 <v t="ekr.20041119050105.1"><vh>@string change_text = None</vh></v>
 <v t="ekr.20041119050105.2"><vh>@string find_text = None</vh></v>
-<v t="ekr.20041119050105.3"><vh>Checkboxes</vh>
+<v t="ekr.20041119050105.3"><vh>Checkboxes in the Find panel</vh>
 <v t="ekr.20041119050105.4"><vh>@bool batch = False</vh></v>
 <v t="ekr.20041119050105.5"><vh>@bool ignore_case = True</vh></v>
 <v t="ekr.20041119050105.6"><vh>@bool mark_changes = False</vh></v>
@@ -558,7 +581,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060512084639" a="E"><vh>Recent</vh>
+<v t="ekr.20060512084639"><vh>Recent</vh>
 <v t="ekr.20060930085532"><vh>@bool collapse_nodes_during_finds = True</vh></v>
 <v t="ekr.20060216135834"><vh>@bool enable_autocompleter_initially = False</vh></v>
 <v t="ekr.20060216170801" a="M"><vh>@bool enable_calltips = False</vh></v>
@@ -570,12 +593,12 @@
 <v t="ekr.20060207142012"><vh>@bool trace_focus = False</vh></v>
 <v t="ekr.20060131071947"><vh>@bool trace_masterClickHandler = False</vh></v>
 <v t="ekr.20060209045356"><vh>@bool trace_masterFocusHandler = False</vh></v>
-<v t="ekr.20060131071612" a="V"><vh>@bool trace_masterKeyHandler = False</vh></v>
+<v t="ekr.20060131071612"><vh>@bool trace_masterKeyHandler = False</vh></v>
 <v t="ekr.20061004150211"><vh>@bool use_sax_based_read = False</vh></v>
 <v t="ekr.20061009190510"><vh>@bool write_recent_files_as_needed = True</vh></v>
 <v t="ekr.20061002115414.1"><vh>@float outline_nav_extend_delay = 2.0</vh></v>
 </v>
-<v t="ekr.20060603215208"><vh>@keys EKR bindings: Emacs keys + modes</vh>
+<v t="ekr.20060603215208" a="E"><vh>@keys EKR bindings: Emacs keys + modes</vh>
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
 </v>
@@ -5911,6 +5934,8 @@ select-all                          ! text =  Alt-Shift-A
 <t tx="ekr.20060925060533.2">cycle-all-focus             = Alt-Y
 contract-pane               = Alt+Ctrl+-
 expand-pane                 = Alt+Ctrl-=
+
+focus-to-body               = Alt-T
 focus-to-tree               = Alt-space
 
 scroll-outline-down-page    = Alt-PageDn
@@ -5996,7 +6021,7 @@ save-file                   = Ctrl-s
 write-at-file-nodes         = Shift-Ctrl-W
 write-dirty-at-file-nodes   = Shift+Ctrl+Q
 </t>
-<t tx="ekr.20060925061845.1">auto-complete-force         = Ctrl-period
+<t tx="ekr.20060925061845.1">auto-complete-force         = None # This command needs work before it is useful. Ctrl-period
 auto-complete               = period
 debug                       = None
 execute-script              = Ctrl+B
@@ -6005,8 +6030,10 @@ open-spell-tab              = F7
 redo                        = Shift-Ctrl-Z
 run-unit-tests              = None
 show-calltips               = parenleft
-show-calltips-force         = Alt-parenleft
+show-calltips-force         = None # This command needs work before it is useful. Alt-parenleft
 sort-siblings               = Alt-A
+toggle-autocompleter        = Alt-1
+toggle-calltips             = Alt-2
 toggle-extend-mode          = Ctrl-Space
 undo                        = Ctrl-Z</t>
 <t tx="ekr.20060926114943"># Disabled because they destroy my hand: I use extend-mode instead.
@@ -6102,5 +6129,26 @@ False: Use Leo's legacy xml parser code.</t>
 False: don't update .leoRecentFiles and don't create it.</t>
 <t tx="ekr.20061010111324">True: (legacy) Select all headline text when editing a headline.
 False: Put the cursor at the end of the headline text.</t>
+<t tx="ekr.20061011082224">@nocolor
+
+myLeoSettings.leo is a major improvement in how Leo handles settings. You can
+'override' settings defined in any leoSettings.leo file by placing your own
+settings in myLeoSettings.leo, either in your HOME directory or in the
+leo/config directory (the directory containing this file.) Distributions of Leo
+leave myLeoSettings.leo along, and myLeoSettings.leo is not part of Leo's cvs
+repository, so Leo never changes myLeoSettings.leo.
+
+This section lists settings that would be natural candidates for inclusion in
+myLeoSettings.leo. That is, you may have strong preferences for these settings
+that differ from mine.
+
+Notes:
+
+- The actual settings here have no effect because they are in an
+@ignore node. However, their *clones* have effect elsewhere in this file.
+You can use the Go To Next Clone (Alt-N) to find clones elsewhere in the file.
+
+- I have not included any keyboard shortcuts here because they are highly personal.
+  However, the ignore_unbound_non_ascii_keys option affects how Leo handles 'plain' keys.</t>
 </tnodes>
 </leo_file>
