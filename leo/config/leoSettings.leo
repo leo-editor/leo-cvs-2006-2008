@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="71" left="252" height="733" width="937"/>
+	<global_window_position top="71" left="252" height="695" width="937"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -46,7 +46,7 @@
 <v t="ekr.20060112104823"><vh>main</vh></v>
 </v>
 </v>
-<v t="ekr.20061011082224" a="TV"><vh>Candidates for settings in myLeoSettings.leo</vh>
+<v t="ekr.20061011082224"><vh>Candidates for settings in myLeoSettings.leo</vh>
 <v t="ekr.20060930085532"><vh>@bool collapse_nodes_during_finds = True</vh></v>
 <v t="ekr.20060215102141"><vh>@bool ignore_unbound_non_ascii_keys = False</vh></v>
 <v t="ekr.20061007211759"><vh>@bool sparse_move_outline_left = True</vh></v>
@@ -68,6 +68,7 @@
 <v t="ekr.20041119050105.10"><vh>@bool whole_word = False</vh></v>
 <v t="ekr.20041119050105.11"><vh>@bool wrap = False</vh></v>
 </v>
+<v t="ekr.20061009190510"><vh>@bool write_recent_files_as_needed = True</vh></v>
 </v>
 <v t="ekr.20041119034357.1" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
@@ -433,7 +434,6 @@
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20060925060533.1"><vh>@shortcuts Cursor Moves</vh></v>
 <v t="ekr.20060926115909"><vh>@shortcuts Cursor Moves with extension</vh></v>
-<v t="ekr.20060926114943"><vh>@@@@shortcuts Disabled Emacs bindings</vh></v>
 <v t="ekr.20060925060533.2"><vh>@shortcuts Gui operations</vh></v>
 <v t="ekr.20060925061845"><vh>@shortcuts File commands</vh></v>
 <v t="ekr.20060603215208.19"><vh>@shortcuts Find commands</vh></v>
@@ -581,7 +581,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060512084639"><vh>Recent</vh>
+<v t="ekr.20060512084639" a="TV"><vh>Recent</vh>
 <v t="ekr.20060930085532"><vh>@bool collapse_nodes_during_finds = True</vh></v>
 <v t="ekr.20060216135834"><vh>@bool enable_autocompleter_initially = False</vh></v>
 <v t="ekr.20060216170801" a="M"><vh>@bool enable_calltips = False</vh></v>
@@ -606,7 +606,6 @@
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20060925060533.1"><vh>@shortcuts Cursor Moves</vh></v>
 <v t="ekr.20060926115909"><vh>@shortcuts Cursor Moves with extension</vh></v>
-<v t="ekr.20060926114943"><vh>@@@@shortcuts Disabled Emacs bindings</vh></v>
 <v t="ekr.20060925060533.2"><vh>@shortcuts Gui operations</vh></v>
 <v t="ekr.20060925061845"><vh>@shortcuts File commands</vh></v>
 <v t="ekr.20060603215208.19"><vh>@shortcuts Find commands</vh></v>
@@ -5910,9 +5909,11 @@ yank                                = Ctrl-Y
 zap-to-character                    = Alt-z</t>
 <t tx="ekr.20060925060533.1">back-char                           ! text = LtArrow
 back-word                           ! text = Alt-b  
-beginning-of-buffer                 ! text = Home
+beginning-of-buffer                 ! text = Ctrl-Home
+beginning-of-line                   ! text = Home
 beginning-of-line                   ! text = Ctrl-a
-end-of-buffer                       ! text = End
+end-of-buffer                       ! text = Ctrl-End
+end-of-line                         ! text = End
 end-of-line                         ! text = Ctrl-e
 exchange-point-mark                 = Alt-M     # Should be Ctrl-X Ctrl-X.
 extend-to-line                      = Alt-L
@@ -5935,8 +5936,8 @@ select-all                          ! text =  Alt-Shift-A
 contract-pane               = Alt+Ctrl+-
 expand-pane                 = Alt+Ctrl-=
 
-focus-to-body               = Alt-T
-focus-to-tree               = Alt-space
+focus-to-body               = Alt-D  # boDy
+focus-to-tree               = Alt-T
 
 scroll-outline-down-page    = Alt-PageDn
 scroll-outline-down-page    ! tree = PageDn
@@ -6034,37 +6035,40 @@ show-calltips-force         = None # This command needs work before it is useful
 sort-siblings               = Alt-A
 toggle-autocompleter        = Alt-1
 toggle-calltips             = Alt-2
-toggle-extend-mode          = Ctrl-Space
+toggle-extend-mode          = Alt-3
 undo                        = Ctrl-Z</t>
-<t tx="ekr.20060926114943"># Disabled because they destroy my hand: I use extend-mode instead.
- 
-forward-paragraph-extend-selection  ! text = Alt-Shift-braceright
-forward-sentence-extend-selection   ! text = Alt-Shift-e
-forward-word-extend-selection       ! text = Alt-Shift-f
-move-past-close-extend-selection    = None
-
-# Disabled because I like other bindings more:
-
-back-word                           ! text = Ctrl-LtArrow
-back-word-extend-selection          ! text = Ctrl-Shift-LtArrow
-forward-word                        ! text = Ctrl-RtArrow
-forward-word-extend-selection       ! text = Ctrl-Shift-RtArrow
-next-line                           ! text = Ctrl-N
-next-line-extend-selection          ! text = Ctrl-Shift-N
-previous-line                       ! text = Ctrl-P
-previous-line-extend-selection      ! text = Ctrl-Shift-P</t>
 <t tx="ekr.20060926115909"># A minimal set.
 # I prefer using extension mode, but these are so standard...
-
 back-char-extend-selection          ! text = Shift-LtArrow
+back-word                           ! text = Ctrl-LtArrow
 back-word-extend-selection          ! text = Alt-Shift-b
-beginning-of-buffer-extend-selection! text = Shift-Home
+back-word-extend-selection          ! text = Ctrl-Shift-LtArrow
+
+beginning-of-buffer-extend-selection! text = Ctrl-Shift-Home
+beginning-of-line-extend-selection  ! text = Shift-Home
 beginning-of-line-extend-selection  ! text = Ctrl-Shift-a
-end-of-buffer-extend-selection      ! text = Shift-End
+
+end-of-buffer-extend-selection      ! text = Ctrl-Shift-End
+end-of-line-extend-selection        ! text = Shift-End
 end-of-line-extend-selection        ! text = Ctrl-Shift-e
+
 forward-char-extend-selection       ! text = Shift-RtArrow
+forward-paragraph-extend-selection  ! text = Alt-Shift-braceright
+forward-sentence-extend-selection   ! text = Alt-Shift-e
+forward-word                        ! text = Ctrl-RtArrow
+forward-word-extend-selection       ! text = Alt-Shift-f
+forward-word-extend-selection       ! text = Ctrl-Shift-RtArrow
+
+move-past-close-extend-selection    = None
+
+# next-line                           ! text = Ctrl-N
+# next-line-extend-selection          ! text = Ctrl-Shift-N
 next-line-extend-selection          ! text = Shift-DnArrow
+
+# previous-line                       ! text = Ctrl-P
+# previous-line-extend-selection      ! text = Ctrl-Shift-P
 previous-line-extend-selection      ! text = Shift-UpArrow
+
 scroll-down-extend-selection        ! text = Shift-PageDn
 scroll-up-extend-selection          ! text = Shift-PageUp
 </t>
