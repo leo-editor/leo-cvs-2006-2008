@@ -4901,7 +4901,7 @@ class helpCommandsClass (baseEditCommandsClass):
     def getPublicCommands (self):
         
         return {
-            'help':                     self.help,
+            'help-for-minibuffer':      self.helpForMinibuffer,
             'help-for-command':         self.helpForCommand,
             'apropos-autocompletion':   self.aproposAutocompletion,
             'apropos-bindings':         self.aproposBindings,
@@ -4909,8 +4909,8 @@ class helpCommandsClass (baseEditCommandsClass):
             'python-help':              self.pythonHelp,
         }
     #@-node:ekr.20060205165501:getPublicCommands (helpCommands)
-    #@+node:ekr.20051014170754:help
-    def help (self,event=None):
+    #@+node:ekr.20051014170754:helpForMinibuffer
+    def helpForMinibuffer (self,event=None):
         
         '''Print a messages telling you how to get started with Leo.'''
     
@@ -4942,12 +4942,12 @@ class helpCommandsClass (baseEditCommandsClass):
         
         if not g.app.unitTesting:
             g.es_print(s)
-    #@+node:ekr.20060205165654:test_help
+    #@+node:ekr.20060205165654:test_helpForMinibuffer
     def test_help(self):
         
-        c.helpCommands.help()
-    #@-node:ekr.20060205165654:test_help
-    #@-node:ekr.20051014170754:help
+        c.helpCommands.helpForMinibuffer()
+    #@-node:ekr.20060205165654:test_helpForMinibuffer
+    #@-node:ekr.20051014170754:helpForMinibuffer
     #@+node:ekr.20060417203717:helpForCommand
     def helpForCommand (self,event):
         
