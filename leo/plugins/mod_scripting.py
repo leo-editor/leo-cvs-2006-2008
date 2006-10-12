@@ -425,7 +425,8 @@ class scriptingController:
         commandName= 'delete-%s-button' % buttonText
         def atButtonDeleteCallback(event=None,self=self,b=b):
             self.deleteButton(b)
-        k.registerCommand(commandName,shortcut=None,func=atButtonDeleteCallback,pane='button',verbose=True)
+        # Reporting this command is way too annoying.
+        k.registerCommand(commandName,shortcut=None,func=atButtonDeleteCallback,pane='button',verbose=False)
     
         return b
     #@nonl
