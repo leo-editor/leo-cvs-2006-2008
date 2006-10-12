@@ -3,7 +3,7 @@
 #@+all
 #@+node:ekr.20060927172440:To do before 4.4.2 b3
 #@+node:ekr.20061010115312.1:Urgent
-#@+node:ekr.20061011214705:Easy 7
+#@+node:ekr.20061011214705:Easy 6
 #@+node:ekr.20061011131836:Fix new unicode bug
 @nocolor
 
@@ -70,14 +70,7 @@ diff -r1.76 leoCommands.py
 The must work with unicode characters.  (They do now.)
 #@nonl
 #@-node:ekr.20061011105922.1:Unit tests for forward/backward move commands
-#@+node:ekr.20061011184009:The end-of-script message yanks focus from tabs
-@nocolor
-
-Do *not* bother with trying to preserve the focus.
-Instead, the 'end of script' message should just go to whatever log pane is on top.
-#@nonl
-#@-node:ekr.20061011184009:The end-of-script message yanks focus from tabs
-#@-node:ekr.20061011214705:Easy 7
+#@-node:ekr.20061011214705:Easy 6
 #@+node:ekr.20061012075711:Plugins 3
 #@+node:ekr.20061012095927:Fix multifile plugin
 (via email)
@@ -118,7 +111,7 @@ or `<markname>) works very good (for me) in vim. Switching between the two most
 recent marks is done in vim using the shortcut '' or ``.
 #@-node:ekr.20061012061050:Fix nodenavigator plugin
 #@-node:ekr.20061012075711:Plugins 3
-#@+node:ekr.20061011214705.1:Other 4
+#@+node:ekr.20061011214705.1:Other 5
 #@+node:ekr.20061012082613:Fix body editor problems: 2
 #@+node:ekr.20061012082613.1:Find does not work when there are multiple body editors
 #@-node:ekr.20061012082613.1:Find does not work when there are multiple body editors
@@ -247,7 +240,9 @@ def getMacHelpMenu (self):
 #@+node:ekr.20061009152210.1:yank/kill/undo do not work as expected
 http://sourceforge.net/forum/message.php?msg_id=3924236
 #@-node:ekr.20061009152210.1:yank/kill/undo do not work as expected
-#@-node:ekr.20061011214705.1:Other 4
+#@+node:ekr.20061010082258:Minibuffer does not show on Mac
+#@-node:ekr.20061010082258:Minibuffer does not show on Mac
+#@-node:ekr.20061011214705.1:Other 5
 #@-node:ekr.20061010115312.1:Urgent
 #@+node:ekr.20061008160553:Asap
 #@+node:ekr.20061011145700:Remove title of body editor when penultimate editor removed
@@ -268,8 +263,6 @@ http://sourceforge.net/forum/message.php?msg_id=3957908
 @color
 #@nonl
 #@-node:ekr.20061011111007:@bool autoload_most_recent_leo_file
-#@+node:ekr.20060928194335:Fix bug: closing a window after removing a script button can crash
-#@-node:ekr.20060928194335:Fix bug: closing a window after removing a script button can crash
 #@+node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
 #@-node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
 #@+node:ekr.20061008064111:Add Open scripts.leo to help menu
@@ -885,8 +878,6 @@ xsltWithNodes.py
 - (Problem installing the common libraries) Install pylint.
 #@nonl
 #@-node:ekr.20061009153206:Installs
-#@+node:ekr.20061010082258:Minibuffer does not show on Mac
-#@-node:ekr.20061010082258:Minibuffer does not show on Mac
 #@-node:ekr.20061010115434:On hold
 #@+node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20060822162521:Make headlines scroll

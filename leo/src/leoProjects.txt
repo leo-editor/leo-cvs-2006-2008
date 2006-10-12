@@ -1016,6 +1016,8 @@ This is strange: I never have a problem with it.
 The fix: don't call balloon.bind if balloon is None.
 #@nonl
 #@-node:ekr.20061011163719:Fixed crasher on script button balloons
+#@+node:ekr.20060928194335:Fix bug: closing a window after removing a script button can crash
+#@-node:ekr.20060928194335:Fix bug: closing a window after removing a script button can crash
 #@-node:ekr.20061010104745:Bugs
 #@+node:ekr.20061010115312:Features
 #@+node:ekr.20061009152554:Removed .leoRecentFiles.txt from distribution and cvs
@@ -1663,6 +1665,17 @@ It appears that the current directory in use when running Leo has changed to
 /Leo/test/plugins ?!
 #@nonl
 #@-node:ekr.20061011163905:Fixed keyBindings plugin
+#@+node:ekr.20051112080017:The scripting plugin now creates a delete-x-script-button command for each script button
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3423121
+By: nobody
+
+Hi! I need help removing script buttons. It says I should right click the ofending
+button. I have a mac and Ctl-click, Command-click, etc doesn't work. What should
+I do?
+#@nonl
+#@-node:ekr.20051112080017:The scripting plugin now creates a delete-x-script-button command for each script button
 #@-node:ekr.20061012064024:Plugins
 #@+node:ekr.20061009154800:Settings
 #@+node:ekr.20061009153504:Made unlimited undo the default
